@@ -20,28 +20,26 @@
 		height: 600px;
 		position: absolute;
 		left: 50%;
-
-		margin:50px auto auto -600px;
-		//background: rgba(255, 255, 255, 0.9);
-
-		//border:1px solid #fff;
+		.radius(5px);
+		overflow:hidden;
+		.b-shadow(~"inset 0 0 0 2px rgba(255, 255, 255, 0.5)");
 		//.b-shadow(~"inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12), 0 0 1px 0 #ccc");
+		margin:50px auto auto -600px;
 
-		.b-shadow(~"inset 0 0 0 2px #f5f5f5");
+		//wood back
+		background:url(../patterns/wood-pattern/wood-pattern-@2X.png) left top repeat;
 
+		//silver back
+		//#gradient > .vertical-three-colors( #ffffff, #f5f5f5, 80%, #f5f5f5 );
 
-		#gradient > .vertical-three-colors( #ffffff, #f5f5f5, 80%, #f5f5f5 );
-
+		//turqoise back
 		//#gradient > .vertical-three-colors( #5ec0b9, #348c7f, 80%, #348c7f );
 		//color:#a3fff8 !important;
 
-		.radius(5px);
-		overflow:hidden;
+		//background:url(../patterns/dark_wood/dark_wood_@2X.png) left top repeat;
+
 		> div{
 			padding:10px 15px 15px 15px;
-			//border:none !important;
-			//#gradient > .vertical( #f5f5f5, #ebebeb );
-			//.b-shadow(~"inset 0 0 0 1px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12)");
 			&:hover{
 				.b-shadow(~"inset 0 5px 0 0 #7cb830, inset 0 6px 0 0 #fff");
 			}
@@ -61,14 +59,18 @@
 	}
 }
 
+@ccc : rgba(203, 156, 92, 0.89);
+@fff : rgba(253, 234, 196, 0.88);
+
+
 /*User Card*/
 #user-card{
 	padding: 0 !important;
 	height: 84%;
 	width: 20%;
 	float: left;
-	border-right:1px solid #ccc;
-	border-bottom:1px solid #ccc;
+	border-right:1px solid @ccc;
+	border-bottom:1px solid @ccc;
 	text-align:center;
 	h3{
 		margin:0 0 10px 0;
@@ -92,29 +94,40 @@
 		//border: 1px solid #f5f5f5;
 		//padding: 4px;
 		//background:#fff;
-		.radius(5px 0 0 0);
+		//.radius(5px 0 0 0);
+		max-width: 80%;
+		.radius(50%);
+		margin-top: 10px;
+		border:1px solid rgba(255, 255, 255, 0.5);
 	}
 }
 
 #mini-stats-card{
-	margin-top: 20px;
+	margin-top: 0px;
 	.clearfix();
 	> div{
-		#gradient > .vertical(#f5f5f5, #f1f1f1);
+		//#gradient > .vertical(#f5f5f5, #f1f1f1);
 		//.b-shadow(inset 0 1px 0 rgba(255, 255, 255, 1));
 		//.t-shadow(0 1px 0 #fff);
 		//border-top: 5px solid #e7e7e7;
 		//background: #7f8c8d;// rgba(240, 240, 240, 0.9);
 		//color: #fff;
 		//
-
 	}
+
+	#chartdiv{
+		svg g:last-child > g:first-child{
+			display: none;
+		}
+	}
+
 	.level{
+		margin-top: -113px;
 		.radius(4px 4px 0 0);
 		position: relative;
 		z-index: 3;
 		padding: 10px;
-		.b-shadow(0 5px 10px 0 rgba(0, 0, 0, 0.23));
+		//.b-shadow(0 5px 10px 0 rgba(0, 0, 0, 0.23));
 	}
 	strong{
 		font-size:36px;
@@ -131,17 +144,20 @@
 		margin:0 0 10px 0;
 	}
 	.percentHolder{
+		display: none;
 		text-align: left;
 		margin-bottom: 5px;
 		+ span{
 			font-weight: bold;
+			position: relative;
+			top: 10px;
 		}
 	}
 
 	.num-badges, .num-collections{
-		.radius(0 0 0 4px);
-		.b-shadow(0 5px 10px 0 rgba(0, 0, 0, 0.25));
-		#gradient > .vertical(#e5e5e5, #e1e1e1);
+		//.radius(0 0 0 4px);
+		//.b-shadow(0 5px 10px 0 rgba(0, 0, 0, 0.25));
+		//#gradient > .vertical(#e5e5e5, #e1e1e1);
 		position: relative;
 		z-index: 1;
 		text-align: center;
@@ -150,7 +166,7 @@
 		width: 45%;
 		margin:0;
 		font-weight: bold;
-		//border-top:1px solid #fff;
+		//border-top:1px solid @fff;
 		strong{
 			font-size: 24px;
 			display: block;
@@ -161,7 +177,7 @@
 		.radius(0 0 4px 0);
 		float: right;
 		margin-right: 5%;
-		//border-right:1px solid #fff
+		//border-right:1px solid @fff
 	}
 }
 
@@ -172,9 +188,9 @@
 	height: 84%;
 	width: 30%;
 	float: left;
-	border-left:1px solid #fff;
-	border-right:1px solid #ccc;
-	border-bottom:1px solid #ccc;
+	border-left:1px solid @fff;
+	border-right:1px solid @ccc;
+	border-bottom:1px solid @ccc;
 	li{
 		.clearfix();
 		+ li{
@@ -206,9 +222,9 @@
 	width: 15%;
 	height: 25%;
 	float: left;
-	border-left:1px solid #fff;
-	border-right:1px solid #ccc;
-	border-bottom:1px solid #ccc;
+	border-left:1px solid @fff;
+	border-right:1px solid @ccc;
+	border-bottom:1px solid @ccc;
 	position: relative;
 	text-align: center;
 	a{
@@ -249,8 +265,8 @@
 	width: 35%;
 	height: 25%;
 	float: left;
-	border-bottom:1px solid #ccc;
-	border-left:1px solid #fff;
+	border-bottom:1px solid @ccc;
+	border-left:1px solid @fff;
 }
 
 .leaderboard-rank{
@@ -288,9 +304,9 @@
 	width: 50%;
 	height: 59%;
 	float: left;
-	border-top:1px solid #fff;
-	border-bottom:1px solid #ccc;
-	border-left:1px solid #fff;
+	border-top:1px solid @fff;
+	border-bottom:1px solid @ccc;
+	border-left:1px solid @fff;
 	&:hover{
 		border-top:1px solid #7cb830;
 	}
@@ -357,7 +373,7 @@
 	width: 100%;
 	height: 16%;
 	float: left;
-	border-top:1px solid #fff;
+	border-top:1px solid @fff;
 	padding:0 !important;
 	position: relative;
 	z-index: 100;
@@ -385,7 +401,7 @@
 	display: block;
 	.t-shadow(0 -1px 0 #fff);
 	.b-shadow( 0 0 4px 0 #ccc);
-	#gradient > .vertical-three-colors( #ffffff, #f5f5f5, 80%, #f5f5f5 );
+	//#gradient > .vertical-three-colors( #ffffff, #f5f5f5, 80%, #f5f5f5 );
 	position: relative;
 	z-index: 10;
 	overflow: hidden;
@@ -414,22 +430,23 @@
 	> div{
 		.animateAll(.25s);
 		-webkit-transform:translate(0, 0%);
-		&.open-panel,
-		&:hover{
-			-webkit-transform:translate(0, -50%);
-			width: 525px;
-			z-index: 100;
-			.b-shadow(~"0 0 5px 0 #aaa, inset 0 5px 0 0 #7cb830, inset 0 6px 0 0 #fff");
-		}
 		position: absolute;
 		top: 0;
 		left: 0;
 		width: 100%;
 		height: 200%;
 		padding:15px 15px;
-		#gradient > .vertical-three-colors( #ffffff, #f5f5f5, 80%, #f5f5f5 );
-
-		.b-shadow(inset 0 0 1px 0 #ccc);
+		//#gradient > .vertical-three-colors( #ffffff, #f5f5f5, 80%, #f5f5f5 );
+		background:url(../patterns/wood-pattern/wood-pattern-@2X.png) left top repeat;
+		//.b-shadow(inset 0 0 1px 0 #ccc);
+		.b-shadow(~"inset 0 30px 30px 0 rgba(0, 0, 0, 0.1)");
+		&.open-panel,
+		&:hover{
+			-webkit-transform:translate(0, -50%);
+			width: 525px;
+			z-index: 100;
+			.b-shadow(~"0 0 5px 0 #aaa, inset 0 5px 0 0 #7cb830, inset 0 6px 0 0 #fff, inset 0 30px 30px 0 rgba(0, 0, 0, 0.1)");
+		}
 	}
 	.number-collected{
 		visibility: hidden;
@@ -492,8 +509,13 @@
 	}
 
 	.missing{
-		.opacity(50);
-		-webkit-filter: grayscale(100%);
+		img{
+			.opacity(50);
+			-webkit-filter: grayscale(100%);
+		}
+		.num-collected{
+			background: #c0392b;
+		}
 	}
 
 	.collection-item{
