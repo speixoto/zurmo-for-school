@@ -7386,16 +7386,22 @@ td {
   font-weight: normal;
   text-align: left;
 }
-#list-view,
-#import-temp-table-list-view {
+#import-temp-table-list-view,
+#list-view {
   overflow-x: auto;
   position: relative;
   background: -webkit-linear-gradient(left, #ffffff 30%, rgba(255, 255, 255, 0)), -webkit-linear-gradient(left, rgba(255, 255, 255, 0), #ffffff 70%) 100%, -webkit-radial-gradient(0 50%, farthest-side, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0)), -webkit-radial-gradient(100% 50%, farthest-side, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0)) 100% 0;
   background-repeat: no-repeat;
-  background-size: 40px 100%, 40px 100%, 20px 100%, 20px 100%;
+  background-size: 40px 100%,
+		40px 100%,
+		20px 100%,
+		20px 100%;
   /* Opera doesn't support this in the shorthand */
 
-  background-attachment: local, local, scroll, scroll;
+  background-attachment: local,
+		local,
+		scroll,
+		scroll;
 }
 .items {
   width: 100%;
@@ -7407,9 +7413,8 @@ td {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
-.items > thead > tr > td,
 .items > tbody > tr > td,
-.items > tfoot > tr > td {
+.items > thead > tr > td {
   border: 1px solid #DFDFDF;
   border-right: none;
   border-left: none;
@@ -7417,9 +7422,8 @@ td {
   padding: 10px 5px;
   word-wrap: break-word;
 }
-.items > thead > tr > th,
 .items > tbody > tr > th,
-.items > tfoot > tr > th {
+.items > thead > tr > th {
   font-weight: bold !important;
   height: 35px;
   line-height: 35px;
@@ -7505,6 +7509,10 @@ td {
   margin-top: 2px;
   float: left;
 }
+.stacked-list td .star-column {
+  margin: -6px 15px 0 0 !important;
+  float: right;
+}
 .stacked-list tr:first-child > div:first-child {
   font-size: 13px;
   font-weight: bold;
@@ -7547,6 +7555,11 @@ tr.even {
 .checkbox-column .hasCheckBox {
   margin: -4px auto 0 auto;
 }
+.star-column {
+  width: 20px;
+  text-align: center;
+  padding: 0 !important;
+}
 .button-column {
   width: 35px;
   text-align: center;
@@ -7559,6 +7572,40 @@ tr.even {
   font-size: 24px;
   font-family: "zurmo_gamification_symbly_rRg";
   visibility: hidden;
+}
+.icon-star {
+  font-weight: normal;
+  font-size: 26px;
+  font-family: "zurmo_gamification_symbly_rRg";
+  color: #ccc !important;
+  -webkit-text-shadow: 0 0 1px #333333;
+  -moz-text-shadow: 0 0 1px #333333;
+  -o-text-shadow: 0 0 1px #333333;
+  -ms-text-shadow: 0 0 1px #333333;
+  text-shadow: 0 0 1px #333333;
+  top: -1px;
+  position: relative;
+  line-height: 1;
+}
+.icon-star:hover,
+.icon-star.starred {
+  color: #ffef42 !important;
+}
+#list-view_columnStar {
+  line-height: 1;
+  width: 20px;
+  text-align: center;
+  padding-right: 0 !important;
+  padding-left: 0 !important;
+}
+#list-view_columnStar .icon-star {
+  top: 0;
+  left: -2px;
+}
+h1 .icon-star,
+.juiportlet-widget-head .icon-star {
+  top: 1px;
+  margin-left: 5px;
 }
 .juiportlet-widget .empty {
   padding: 5px 0 10px 0;
@@ -19055,7 +19102,7 @@ a + .autoresponder-stats {
   content: '\00CE';
   font-weight: normal;
   font-size: 145px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   line-height: 60px;
   position: absolute;
   top: 10px;
