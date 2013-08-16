@@ -85,7 +85,7 @@
             $dataProvider = $this->resolveSearchDataProvider(
                 $searchForm,
                 $pageSize,
-                null,
+                'NonSystemUsersStateMetadataAdapter',
                 'UsersSearchView'
             );
             $title           = Zurmo::t('UsersModule', 'Users');
@@ -115,10 +115,18 @@
                 RightsUtil::canUserAccessModule('UsersModule', Yii::app()->user->userModel))
             {
                 $user                 = User::getById(intval($id));
-                $userAvatarForm       = new UserAvatarForm($user);
-                $this->attemptToValidateAjaxFromPost($userAvatarForm, 'UserAvatarForm');
-                $viewForModal = new UserChangeAvatarView($this->getId(), $this->getModule()->getId(), $userAvatarForm);
-                $this->attemptToSaveModelFromPost($userAvatarForm);
+                if(UserAccessUtil::resolveCanCurrentUserAccessRootUser($user, false) &&
+                   UserAccessUtil::resolveAccessingASystemUser($user, false))
+                {
+                    $userAvatarForm       = new UserAvatarForm($user);
+                    $this->attemptToValidateAjaxFromPost($userAvatarForm, 'UserAvatarForm');
+                    $viewForModal = new UserChangeAvatarView($this->getId(), $this->getModule()->getId(), $userAvatarForm);
+                    $this->attemptToSaveModelFromPost($userAvatarForm);
+                }
+                else
+                {
+                    $viewForModal = new AccessFailureView();
+                }
             }
             else
             {
@@ -133,6 +141,7 @@
         public function actionDetails($id)
         {
             $user = User::getById(intval($id));
+            UserAccessUtil::resolveAccessingASystemUser($user);
             $title           = Zurmo::t('UsersModule', 'Profile');
             $breadcrumbLinks = array(strval($user) => array('default/details',  'id' => $id), $title);
             AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED, array(strval($user), 'UsersModule'), $user);
@@ -155,6 +164,14 @@
         {
             UserAccessUtil::resolveCanCurrentUserAccessAction(intval($id));
             parent::actionAuditEventsModalList($id);
+        }
+
+        protected function resolveModelForAuditEventsModalList($id)
+        {
+            $user = User::getById((int)$id);
+            UserAccessUtil::resolveCanCurrentUserAccessRootUser($user);
+            UserAccessUtil::resolveAccessingASystemUser($user);
+            return $user;
         }
 
         public function actionCreate()
@@ -180,6 +197,8 @@
         {
             UserAccessUtil::resolveCanCurrentUserAccessAction(intval($id));
             $user            = User::getById(intval($id));
+            UserAccessUtil::resolveCanCurrentUserAccessRootUser($user);
+            UserAccessUtil::resolveAccessingASystemUser($user);
             $user->setScenario('editUser');
             $title           = Zurmo::t('UsersModule', 'Details');
             $breadcrumbLinks = array(strval($user) => array('default/details',  'id' => $id), $title);
@@ -213,6 +232,8 @@
         {
             UserAccessUtil::resolveCanCurrentUserAccessAction(intval($id));
             $user = User::getById(intval($id));
+            UserAccessUtil::resolveCanCurrentUserAccessRootUser($user);
+            UserAccessUtil::resolveAccessingASystemUser($user);
             $title           = Zurmo::t('UsersModule', 'Change Password');
             $breadcrumbLinks = array(strval($user) => array('default/details',  'id' => $id), $title);
             $user->setScenario('changePassword');
@@ -393,13 +414,16 @@
                                             $_GET['modalTransferInformation']['sourceNameFieldId'],
                                             $_GET['modalTransferInformation']['modalId']
             );
-            echo ModalSearchListControllerUtil::setAjaxModeAndRenderModalSearchList($this, $modalListLinkProvider);
+            echo ModalSearchListControllerUtil::setAjaxModeAndRenderModalSearchList($this, $modalListLinkProvider,
+                                                'SelectableUsersStateMetadataAdapter');
         }
 
         public function actionSecurityDetails($id)
         {
             UserAccessUtil::resolveCanCurrentUserAccessAction(intval($id));
             $user = User::getById(intval($id));
+            UserAccessUtil::resolveCanCurrentUserAccessRootUser($user);
+            UserAccessUtil::resolveAccessingASystemUser($user);
             $title           = Zurmo::t('UsersModule', 'Security Overview');
             $breadcrumbLinks = array(strval($user) => array('default/details',  'id' => $id), $title);
             $modulePermissionsData =  PermissionsUtil::getAllModulePermissionsDataByPermitable($user);
@@ -440,6 +464,8 @@
         {
             UserAccessUtil::resolveCanCurrentUserAccessAction(intval($id));
             $user = User::getById(intval($id));
+            UserAccessUtil::resolveCanCurrentUserAccessRootUser($user);
+            UserAccessUtil::resolveAccessingASystemUser($user);
             $title           = Zurmo::t('UsersModule', 'Configuration');
             $breadcrumbLinks = array(strval($user) => array('default/details',  'id' => $id), $title);
             $configurationForm = UserConfigurationFormAdapter::makeFormFromUserConfigurationByUser($user);
@@ -474,10 +500,12 @@
             echo $view->render();
         }
 
-        public function actionEmailConfiguration($id)
+        public function actionEmailConfiguration($id, $redirectUrl = null)
         {
             UserAccessUtil::resolveCanCurrentUserAccessAction(intval($id));
             $user  = User::getById(intval($id));
+            UserAccessUtil::resolveCanCurrentUserAccessRootUser($user);
+            UserAccessUtil::resolveAccessingASystemUser($user);
             $title = Zurmo::t('UsersModule', 'Email Configuration');
             $breadcrumbLinks = array(strval($user) => array('default/details',  'id' => $id), $title);
             $emailAccount = EmailAccount::resolveAndGetByUserAndName($user);
@@ -494,7 +522,15 @@
                     Yii::app()->user->setFlash('notification',
                         Zurmo::t('UsersModule', 'User email configuration saved successfully.')
                     );
-                    $this->redirect(array($this->getId() . '/details', 'id' => $user->id));
+
+                    if ($redirectUrl != null)
+                    {
+                        $this->redirect($redirectUrl);
+                    }
+                    else
+                    {
+                        $this->redirect(array($this->getId() . '/details', 'id' => $user->id));
+                    }
                 }
             }
             $titleBarAndEditView = new UserActionBarAndEmailConfigurationEditView(
@@ -561,6 +597,37 @@
                 return ZurmoDefaultAdminViewUtil::
                     makeViewWithBreadcrumbsForCurrentUser($this, $containedView, $breadcrumbLinks, $breadcrumbViewClassName);
             }
+        }
+
+        /**
+         * Override to handle userStatus validation
+         * @param User | ModelForm $model
+         * @param string $postVariableName
+         */
+        protected function attemptToValidateAjaxFromPost($model, $postVariableName)
+        {
+            if (isset($_POST['ajax']) && $_POST['ajax'] == 'edit-form')
+            {
+                $model->setAttributes($_POST[$postVariableName]);
+                $model->validate();
+                $userStatus = UserStatusUtil::makeByPostData($_POST[$postVariableName]);
+                if($model instanceof User)
+                {
+                    Yii::app()->licenseManager->resolveValidationOnCreateOrEditUser($model, $userStatus);
+                }
+                elseif($model instanceof ModelForm)
+                {
+                    Yii::app()->licenseManager->resolveValidationOnCreateOrEditUser($model->getModel(), $userStatus);
+                }
+                $errorData = ZurmoActiveForm::makeErrorsDataAndResolveForOwnedModelAttributes($model);
+                echo CJSON::encode($errorData);
+                Yii::app()->end(0, false);
+            }
+        }
+
+        protected function resolveStateMetadataAdapterClassNameForExport()
+        {
+            return 'NonSystemUsersStateMetadataAdapter';
         }
     }
 ?>

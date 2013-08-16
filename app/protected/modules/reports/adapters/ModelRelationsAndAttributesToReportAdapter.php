@@ -155,6 +155,14 @@
         {
             return get_class($this->model);
         }
+        
+        /**
+         * @return string
+         */
+        public function getModuleClassName()
+        {
+            return $this->moduleClassName;
+        }
 
         /**
          * @return ReportRules
@@ -496,7 +504,7 @@
                 }
                 else
                 {
-                    throw new NotSupportedException();
+                    throw new NotSupportedException($relation);
                 }
             }
             return $relations;

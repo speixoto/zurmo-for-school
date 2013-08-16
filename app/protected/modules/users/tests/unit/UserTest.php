@@ -48,6 +48,18 @@
             Yii::app()->user->userModel = User::getByUsername('super');
         }
 
+        /**
+         * You can only use setIsSystemUser to set the isSystemUser attribute
+         * @expectedException NotSupportedException
+         */
+        public function testCannotSetIsSystemUserDirectlyOnModel()
+        {
+            $user = User::getByUsername('super');
+            Yii::app()->user->userModel = $user;
+            $user = new User();
+            $user->isSystemUser = true;
+        }
+
         public function testEmailUniquenessValidation()
         {
             $user = User::getByUsername('super');
@@ -1153,6 +1165,20 @@
             User::authenticate('lastloginuser', 'lastlogin');
             $user = User::getByUsername('lastloginuser');
             $this->assertLessThanOrEqual(5, $user->lastLoginDateTime - $now);
+        }
+
+        public function testTrimUsername()
+        {
+            $user = new User();
+            $user->username           = ' trimusername ';
+            $user->title->value       = 'Mr.';
+            $user->firstName          = 'trim';
+            $user->lastName           = 'username';
+            $user->setPassword('trimusername');
+            $this->assertTrue($user->save());
+
+            $user = User::getByUsername('trimusername');
+            $this->assertEquals('trimusername', $user->username);
         }
     }
 ?>

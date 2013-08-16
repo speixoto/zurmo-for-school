@@ -166,8 +166,8 @@
                                  $this->form, $params);
             $innerContent      = '<table><colgroup><col class="col-0"><col class="col-1">' .
                                  '</colgroup><tr>' . $element->render() . '</tr>';
-            $element           = new EmailMessageSendAfterDurationStaticDropDownElement(
-                                 $this->model, 'sendAfterDurationSeconds', $this->form, $params);
+            $element           = new EmailMessageSendAfterDurationElement(
+                                 $this->model, null, $this->form, $params);
             $innerContent     .= '<tr>' . $element->render() . '</tr>';
             $element           = new EmailMessageSendFromTypeStaticDropDownElement(
                                  $this->model, 'sendFromType', $this->form, $params);

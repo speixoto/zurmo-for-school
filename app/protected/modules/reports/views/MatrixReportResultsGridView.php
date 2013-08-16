@@ -89,28 +89,35 @@
         {
             $columns        = array();
             $attributeKey   = 0;
-
+            $isFirstRow     = true;
             foreach ($this->dataProvider->getDisplayAttributesThatAreYAxisGroupBys() as $displayAttribute)
             {
                 $columnClassName  = $this->resolveColumnClassNameForListViewColumnAdapter($displayAttribute);
                 $attributeName    = MatrixReportDataProvider::resolveHeaderColumnAliasName(
-                                    $displayAttribute->columnAliasName);
+                                    $displayAttribute->columnAliasName);                
                 $params           = $this->resolveParamsForColumnElement($displayAttribute);
                 $columnAdapter    = new $columnClassName($attributeName, $this, $params);
                 $column           = $columnAdapter->renderGridViewData();
                 $column['header'] = $displayAttribute->label;
                 $column['class']  = 'YAxisHeaderColumn';
+                if ($isFirstRow)
+                {
+                    $column['footer'] = Zurmo::t('ReportsModule', 'Total');
+                    $column['footerHtmlOptions'] = array('colSpan' => $this->dataProvider->getYAxisGroupByDataValuesCount());
+                }
                 array_push($columns, $column);
-            }
-
+                $isFirstRow = false;
+            }            
+            $grandTotals    = $this->dataProvider->runQueryAndGrandTotalsData();              
             for ($i = 0; $i < $this->dataProvider->getXAxisGroupByDataValuesCount(); $i++)
-            {
+            {                
+                $grandTotalsRow = $grandTotals[$i];
                 foreach ($this->dataProvider->resolveDisplayAttributes() as $displayAttribute)
                 {
                     if (!$displayAttribute->queryOnly)
                     {
                         $columnClassName  = $this->resolveColumnClassNameForListViewColumnAdapter($displayAttribute);
-                        $attributeName    = MatrixReportDataProvider::resolveColumnAliasName($attributeKey);
+                        $attributeName    = MatrixReportDataProvider::resolveColumnAliasName($attributeKey);                        
                         $params           = $this->resolveParamsForColumnElement($displayAttribute);
                         $columnAdapter    = new $columnClassName($attributeName, $this, $params);
                         $column           = $columnAdapter->renderGridViewData();
@@ -119,11 +126,38 @@
                         {
                             $column['class'] = 'DataColumn';
                         }
+                        if (isset($grandTotalsRow[$displayAttribute->columnAliasName]))
+                        {                                                                        
+                            $column['footer'] = $columnAdapter->renderValue($grandTotalsRow[$displayAttribute->columnAliasName]);
+                        }
                         array_push($columns, $column);
                         $attributeKey++;
                     }
-                }
+                }                
             }
+            
+            $attributeKey = 0;
+            foreach ($this->dataProvider->resolveDisplayAttributes() as $displayAttribute)
+            {
+                if (!$displayAttribute->queryOnly)
+                {
+                    $columnClassName                = $this->resolveColumnClassNameForListViewColumnAdapter($displayAttribute);
+                    $attributeName                  = MatrixReportDataProvider::resolveTotalColumnAliasName(
+                                                            $displayAttribute->columnAliasName);                           
+                    $params                         = $this->resolveParamsForColumnElement($displayAttribute);
+                    $columnAdapter                  = new $columnClassName($attributeName, $this, $params);
+                    $column                         = $columnAdapter->renderGridViewData();
+                    $column['header']               = $displayAttribute->label;
+                    $column['htmlOptions']          = array('class' => 'total-column');
+                    $column['headerHtmlOptions']    = array('class' => 'total-column');
+                    if (!isset($column['class']))
+                    {
+                        $column['class'] = 'DataColumn';
+                    }                    
+                    array_push($columns, $column);
+                    $attributeKey++;
+                }
+            }                
             return $columns;
         }
 

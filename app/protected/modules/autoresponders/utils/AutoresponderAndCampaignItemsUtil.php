@@ -45,7 +45,7 @@
             $itemId                     = $item->id;
             $itemClass                  = get_class($item);
             assert('$itemClass === "AutoresponderItem" || $itemClass === "CampaignItem"');
-            $contact                                = $item->contact;
+            $contact                    = $item->contact;
             if (empty($contact) || $contact->id < 0)
             {
                 throw new NotFoundException();
@@ -54,7 +54,11 @@
             $itemOwnerModel             = $item->$ownerModelRelationName;
             assert('is_object($itemOwnerModel)');
             assert('get_class($itemOwnerModel) === "Autoresponder" || get_class($itemOwnerModel) === "Campaign"');
-            if ($contact->primaryEmail->optOut)
+            if ($contact->primaryEmail->optOut ||
+               (get_class($itemOwnerModel) === "Campaign" && MarketingListMember::getByMarketingListIdContactIdAndSubscribed(
+                                                                                $itemOwnerModel->marketingList->id,
+                                                                                $contact->id,
+                                                                                true) != false))
             {
                 $activityClass  = $itemClass . 'Activity';
                 $personId       = $contact->getClassId('Person');
@@ -67,9 +71,13 @@
                 assert('is_object($marketingList)');
                 assert('get_class($marketingList) === "MarketingList"');
                 $textContent                = $itemOwnerModel->textContent;
-                $htmlContent                = $itemOwnerModel->htmlContent;
+                $htmlContent                = null;
+                if (($itemClass == 'CampaignItem' && $itemOwnerModel->supportsRichText) || ($itemClass == 'AutoresponderItem'))
+                {
+                    $htmlContent = $itemOwnerModel->htmlContent;
+                }
                 static::resolveContent($textContent, $htmlContent, $contact, $itemOwnerModel->enableTracking,
-                                                                    $itemId, $itemClass, $contact, $marketingList->id);
+                                       (int)$itemId, $itemClass, (int)$marketingList->id);
                 try
                 {
                     $item->emailMessage = static::resolveEmailMessage($textContent, $htmlContent, $itemOwnerModel,
@@ -86,6 +94,8 @@
         protected static function resolveContent(& $textContent, & $htmlContent, Contact $contact,
                                                             $enableTracking, $modelId, $modelType, $marketingListId)
         {
+            assert('is_int($modelId)');
+            assert('is_int($marketingListId)');
             static::resolveContentForMergeTags($textContent, $htmlContent, $contact);
             static::resolveContentForTrackingAndFooter($textContent, $htmlContent, $enableTracking, $modelId,
                                                                                 $modelType, $contact, $marketingListId);
@@ -96,7 +106,6 @@
             // TODO: @Shoaibi/@Jason: High: we might add support for language
             $language               = null;
             $errorOnFirstMissing    = true;
-            $invalidTags            = null; // this could be an empty array, only used when $errorOnFirstMissing is false
             $templateType           = EmailTemplate::TYPE_CONTACT;
             $invalidTags            = array();
             $textMergeTagsUtil      = MergeTagsUtilFactory::make($templateType, $language, $textContent);
@@ -110,39 +119,46 @@
                                                                             $language,
                                                                             $errorOnFirstMissing);
 
-            if ($resolvedTextContent && $resolvedHtmlContent)
+            if ($resolvedTextContent === false || $resolvedHtmlContent === false)
             {
-                $textContent    = $resolvedTextContent;
-                $htmlContent    = $resolvedHtmlContent;
+                throw new NotSupportedException(Zurmo::t('EmailTemplatesModule', 'Provided content contains few invalid merge tags.'));
             }
             else
             {
-                throw new NotSupportedException(Zurmo::t('EmailTemplatesModule', 'Provided content contains few invalid merge tags.'));
+                $textContent    = $resolvedTextContent;
+                $htmlContent    = $resolvedHtmlContent;
             }
         }
 
         protected static function resolveContentForTrackingAndFooter(& $textContent, & $htmlContent, $enableTracking, $modelId,
                                                                         $modelType, Contact $contact, $marketingListId)
         {
+            assert('is_int($modelId)');
+            assert('is_int($marketingListId)');
             $personId                 = $contact->getClassId('Person');
             $activityUtil             = $modelType . 'ActivityUtil';
-            $activityUtil::resolveContentForTrackingAndFooter($enableTracking, $textContent, $modelId, $modelType,
+            if ($textContent != null)
+            {
+                $activityUtil::resolveContentForTrackingAndFooter($enableTracking, $textContent, $modelId, $modelType,
                                                                                     $personId, $marketingListId, false);
-            $activityUtil::resolveContentForTrackingAndFooter($enableTracking, $htmlContent, $modelId, $modelType,
+            }
+            if ($htmlContent != null)
+            {
+                $activityUtil::resolveContentForTrackingAndFooter($enableTracking, $htmlContent, $modelId, $modelType,
                                                                                     $personId, $marketingListId, true);
+            }
         }
 
         protected static function resolveEmailMessage($textContent, $htmlContent, Item $itemOwnerModel,
                                                     Contact $contact, MarketingList $marketingList, $itemId, $itemClass)
         {
-            $emailMessage                   = new EmailMessage();
-            $emailMessage->owner            = $marketingList->owner;
-            $emailMessage->subject          = $itemOwnerModel->subject;
-            $emailContent                   = new EmailMessageContent();
-            $emailContent->textContent      = $textContent;
-            $emailContent->htmlContent      = $htmlContent;
-            $emailMessage->content          = $emailContent;
-            $emailMessage->sender           = static::resolveSender($marketingList);
+            $emailMessage                       = new EmailMessage();
+            $emailMessage->subject              = $itemOwnerModel->subject;
+            $emailContent                       = new EmailMessageContent();
+            $emailContent->textContent          = $textContent;
+            $emailContent->htmlContent          = $htmlContent;
+            $emailMessage->content              = $emailContent;
+            $emailMessage->sender               = static::resolveSender($marketingList, $itemOwnerModel);
             static::resolveRecipient($emailMessage, $contact);
             static::resolveAttachments($emailMessage, $itemOwnerModel);
             static::resolveHeaders($emailMessage, $itemId, $itemClass, $contact->getClassId('Person'));
@@ -150,16 +166,26 @@
             {
                 throw new MissingRecipientsForEmailMessageException();
             }
-            $boxName                        = static::resolveEmailBoxName(get_class($itemOwnerModel));
-            $box                            = EmailBox::resolveAndGetByName($boxName);
-            $emailMessage->folder           = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_DRAFT);
+            $boxName                            = static::resolveEmailBoxName(get_class($itemOwnerModel));
+            $box                                = EmailBox::resolveAndGetByName($boxName);
+            $emailMessage->folder               = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_DRAFT);
             Yii::app()->emailHelper->send($emailMessage);
+            $emailMessage->owner                = $marketingList->owner;
+            $explicitReadWriteModelPermissions  = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($marketingList);
+            ExplicitReadWriteModelPermissionsUtil::resolveExplicitReadWriteModelPermissions($emailMessage,
+                                                                                    $explicitReadWriteModelPermissions);
             return $emailMessage;
         }
 
-        protected static function resolveSender(MarketingList $marketingList)
+        protected static function resolveSender(MarketingList $marketingList, $itemOwnerModel)
         {
             $sender                         = new EmailMessageSender();
+            if (get_class($itemOwnerModel) == 'Campaign')
+            {
+                $sender->fromAddress        = $itemOwnerModel->fromAddress;
+                $sender->fromName           = $itemOwnerModel->fromName;
+                return $sender;
+            }
             if (!empty($marketingList->fromName) && !empty($marketingList->fromAddress))
             {
                 $sender->fromAddress        = $marketingList->fromAddress;
@@ -167,16 +193,16 @@
             }
             else
             {
-                $userToSendMessagesFrom     = BaseJobControlUserConfigUtil::getUserToRunAs();
-                $sender->fromAddress        = Yii::app()->emailHelper->resolveFromAddressByUser($userToSendMessagesFrom);
-                $sender->fromName           = strval($userToSendMessagesFrom);
+                $userToSendMessagesFrom         = BaseJobControlUserConfigUtil::getUserToRunAs();
+                $sender->fromAddress            = Yii::app()->emailHelper->resolveFromAddressByUser($userToSendMessagesFrom);
+                $sender->fromName               = strval($userToSendMessagesFrom);
             }
             return $sender;
         }
 
         protected static function resolveRecipient(EmailMessage $emailMessage, Contact $contact)
         {
-            if ($contact->primaryEmail->emailAddress !== null)
+            if ($contact->primaryEmail->emailAddress != null)
             {
                 $recipient                  = new EmailMessageRecipient();
                 $recipient->toAddress       = $contact->primaryEmail->emailAddress;

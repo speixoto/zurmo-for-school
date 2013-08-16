@@ -72,6 +72,8 @@
                                               'listPageSize', get_class($this->getModule()));
             $savedReport                    = new SavedReport(false);
             $searchForm                     = new ReportsSearchForm($savedReport);
+            $listAttributesSelector         = new ListAttributesSelector('ReportsListView', get_class($this->getModule()));
+            $searchForm->setListAttributesSelector($listAttributesSelector);
             $dataProvider                   = $this->resolveSearchDataProvider(
                 $searchForm,
                 $pageSize,
@@ -388,30 +390,23 @@
             ControllerSecurityUtil::resolveCanCurrentUserAccessModule($savedReport->moduleClassName);
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($savedReport);
             $report                         = SavedReportToReportAdapter::makeReportBySavedReport($savedReport);
-            $dataProvider                   = $this->getDataProviderForExport($report, $report->getId(), false);
+            $dataProvider                   = $this->getDataProviderForExport($report, $report->getId(), false);            
             $totalItems                     = intval($dataProvider->calculateTotalItemCount());
-            $data                           = array();
+            $data                           = array();           
             if ($totalItems > 0)
             {
                 if ($totalItems <= ExportModule::$asynchronusThreshold)
                 {
                     // Output csv file directly to user browser
+                    $count = count($dataProvider->getData());
                     if ($dataProvider)
-                    {
-                        $data1 = ExportUtil::getDataForExport($dataProvider);
-                        $headerData = array();
-                        foreach ($data1 as $reportResultsRowData)
-                        {
-                          $reportToExportAdapter  = new ReportToExportAdapter($reportResultsRowData, $report);
-                          if (count($headerData) == 0)
-                          {
-                              $headerData = $reportToExportAdapter->getHeaderData();
-                          }
-                          $data[] = $reportToExportAdapter->getData();
-                        }
+                    {                                       
+                          $reportToExportAdapter  = ReportToExportAdapterFactory::createReportToExportAdapter($report, $dataProvider);                        
+                          $headerData             = $reportToExportAdapter->getHeaderData();                          
+                          $data                   = $reportToExportAdapter->getData();                        
                     }
                     // Output data
-                    if (count($data))
+                    if ($count)
                     {
                         $fileName = $this->getModule()->getName() . ".csv";
                         ExportItemToCsvFileUtil::export($data, $headerData, $fileName, true);
@@ -575,11 +570,11 @@
             }
             $pageSize     = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                             'reportResultsListPageSize', get_class($this->getModule()));
-            $dataProvider = ReportDataProviderFactory::makeByReport($report, $pageSize);
+            $dataProvider = ReportDataProviderFactory::makeByReport($report, $pageSize);            
             if ($runReport)
             {
                 $dataProvider->setRunReport($runReport);
-            }
+            }            
             return $dataProvider;
         }
 

@@ -70,6 +70,7 @@
         {
             $leftSideContent   = null;
             $element           = new TextElement($this->model, 'name', $this->form);
+            $element->editableTemplate = '<th>{label}<span class="required">*</span></th><td colspan="{colspan}">{content}{error}</td>';;
             $leftSideContent   = '<table><colgroup><col class="col-0"><col class="col-1">' . '</colgroup><tr>' . $element->render() . '</tr>';
             $element           = new TextAreaElement($this->model, 'description', $this->form, array('rows' => 5));
             $leftSideContent  .= '<tr>' . $element->render() . '</tr>';
@@ -99,7 +100,7 @@
             $element  = new OwnerNameIdElement($this->model, 'null', $this->form);
             $element->editableTemplate = '{label}{content}{error}';
             $content .= $element->render().'</div>';
-            $element  = new ExplicitReadWriteModelPermissionsElement($this->model,
+            $element  = new ReportExplicitReadWriteModelPermissionsElement($this->model,
                                              'explicitReadWriteModelPermissions', $this->form);
             $element->editableTemplate = '{label}{content}{error}';
             $content .= $element->render();
