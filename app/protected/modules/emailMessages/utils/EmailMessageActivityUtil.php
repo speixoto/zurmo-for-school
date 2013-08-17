@@ -241,9 +241,17 @@
         protected static function resolvePlainLinksForClickTracking(& $content, $isHtmlContent)
         {
             $spacePrefixedAndSuffixedLinkRegex = static::getPlainLinkRegex($isHtmlContent);
+            if ($isHtmlContent)
+            {
+                $callBack = 'static::resolveTrackingUrlForMatchedPlainLinkArrayWithHtmlContent';
+            }
+            else
+            {
+                $callBack = 'static::resolveTrackingUrlForMatchedHrefLinkArray';
+            }
             $content = preg_replace_callback($spacePrefixedAndSuffixedLinkRegex,
-                                                'static::resolveTrackingUrlForMatchedPlainLinkArray' ,
-                                                $content);
+                                             $callBack,
+                                             $content);
             if ($content === null)
             {
                 throw new NotSupportedException();
@@ -256,8 +264,8 @@
             {
                 $hrefPrefixedLinkRegex  = static::getHrefLinkRegex();
                 $content = preg_replace_callback($hrefPrefixedLinkRegex,
-                                                'static::resolveTrackingUrlForMatchedHrefLinkArray' ,
-                                                $content);
+                                                 'static::resolveTrackingUrlForMatchedHrefLinkArray',
+                                                 $content);
                 if ($content === null)
                 {
                     throw new NotSupportedException();
@@ -270,6 +278,14 @@
             $matchPosition  = strpos($matches[0], $matches[2]);
             $prefix = substr($matches[1], 0, $matchPosition);
             return $prefix . static::resolveTrackingUrlForLink(trim($matches[2])) . ' ';
+        }
+        
+        protected static function resolveTrackingUrlForMatchedPlainLinkArrayWithHtmlContent($matches)
+        {
+            $matchPosition  = strpos($matches[0], $matches[2]);
+            $prefix = substr($matches[1], 0, $matchPosition);            
+            $trackingUrl = $prefix . '<a href="' . static::resolveTrackingUrlForLink(trim($matches[2])) . '">' . trim($matches[2]) . '</a> ';            
+            return $trackingUrl;
         }
 
         protected static function resolveTrackingUrlForMatchedHrefLinkArray($matches)

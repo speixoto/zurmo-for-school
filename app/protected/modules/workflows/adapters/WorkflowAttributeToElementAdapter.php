@@ -79,8 +79,8 @@
             }
             $content                            = $this->getContentForTimeTriggerOrTrigger();
             $params                             = array('inputPrefix' => $this->inputPrefixData);
-            $durationElement                    = new TimeTriggerDurationStaticDropDownElement($this->model,
-                                                  'durationSeconds', $this->form, $params);
+            $durationElement                    = new TimeTriggerDurationElement($this->model,
+                                                  null, $this->form, $params);
             $durationElement->editableTemplate  = '{content}{error}';
             $durationContent                    = $durationElement->render();
             self::resolveDivWrapperForContent($durationContent, $content, 'dynamic-row-duration');

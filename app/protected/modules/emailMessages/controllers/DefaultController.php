@@ -401,8 +401,7 @@
                     if (!$emailMessage->save())
                     {
                         throw new FailedToSaveModelException();
-                    }
-                    ZurmoControllerUtil::updatePermissionsWithDefaultForModelByCurrentUser($emailMessage);
+                    }                    
                 }
             }
             else
@@ -410,6 +409,7 @@
                 static::attemptToMatchAndSaveLeadOrContact($emailMessage, 'Contact', (int)$id);
                 static::attemptToMatchAndSaveLeadOrContact($emailMessage, 'Lead', (int)$id);
             }
+            ZurmoControllerUtil::updatePermissionsWithDefaultForModelByCurrentUser($emailMessage);
         }
 
         protected static function attemptToMatchAndSaveLeadOrContact($emailMessage, $type, $emailMessageId)
@@ -584,7 +584,7 @@
             $pageSize               = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                                                 'autoCompleteListPageSize', get_class($this->getModule()));
             $usersByFullName        = UserSearch::getUsersByPartialFullName($term, $pageSize);
-            $usersByEmailAddress    = UserSearch::getUsersByEmailAddress($term, 'contains');
+            $usersByEmailAddress    = UserSearch::getUsersByEmailAddress($term, 'contains', true);
             $contacts               = ContactSearch::getContactsByPartialFullNameOrAnyEmailAddress($term, $pageSize, null, 'contains');
             $autoCompleteResults    = array();
             foreach ($usersByEmailAddress as $user)

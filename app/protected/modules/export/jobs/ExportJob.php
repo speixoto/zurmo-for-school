@@ -108,12 +108,12 @@
                         {
                             foreach ($formattedData as $reportResultsRowData)
                             {
-                                $reportToExportAdapter  = new ReportToExportAdapter($reportResultsRowData, $unserializedData->getReport());
+                                $reportToExportAdapter  = ReportToExportAdapterFactory::createReportToExportAdapter($unserializedData->getReport(), $unserializedData); 
                                 if (count($headerData) == 0)
                                 {
                                     $headerData = $reportToExportAdapter->getHeaderData();
                                 }
-                                $data[] = $reportToExportAdapter->getData();
+                                $data = $reportToExportAdapter->getData();
                             }
                         }
                         else

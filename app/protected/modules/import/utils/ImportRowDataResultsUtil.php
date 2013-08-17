@@ -77,6 +77,45 @@
          */
         private $status;
 
+        public static function getStatusLabelByType($type)
+        {
+            assert('is_int($type)');
+            if($type == self::UPDATED)
+            {
+                $label = Zurmo::t('ImportModule', 'Updated');
+            }
+            elseif($type == self::CREATED)
+            {
+                $label = Zurmo::t('ImportModule', 'Created');
+            }
+            elseif($type == self::ERROR)
+            {
+                $label = Zurmo::t('ImportModule', 'Skipped');
+            }
+            return $label;
+        }
+
+        public static function getStatusLabelAndVisualIdentifierContentByType($type)
+        {
+            assert('is_int($type)');
+            $label = static::getStatusLabelByType($type);
+            if($type == self::UPDATED)
+            {
+                $stageContent = ' stage-true';
+            }
+            elseif($type == self::CREATED)
+            {
+                $stageContent = null;
+            }
+            elseif($type == self::ERROR)
+            {
+                $stageContent = ' stage-false';
+            }
+            $content = ZurmoHtml::tag('div', array('class' => "import-item-stage-status" . $stageContent),
+                '<i>●</i>' . ZurmoHtml::tag('span', array(), $label));
+            return ZurmoHtml::wrapAndRenderContinuumButtonContent($content);
+        }
+
         /**
          * Given an identifier of the row, set this identifier as the id.
          * @param integer $id

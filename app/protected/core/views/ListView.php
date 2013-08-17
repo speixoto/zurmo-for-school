@@ -211,6 +211,7 @@
                 'summaryText'          => static::getSummaryText(),
                 'summaryCssClass'      => static::getSummaryCssClass(),
                 'summaryCloneId'       => $this->getSummaryCloneId(),
+                'tableColumnGroup'     => $this->getTableColumnGroup(),
             );
             return $this->resolveCGridViewParamsForKanbanBoard($params);
         }
@@ -239,6 +240,11 @@
         public function getSummaryCloneId()
         {
             return  $this->getGridViewId() . "-summary-clone";
+        }
+
+        public function getTableColumnGroup()
+        {
+            return array();
         }
 
         protected function getCGridViewPagerParams()

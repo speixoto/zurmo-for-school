@@ -95,8 +95,8 @@
 
 html.zurmo,
 html.zurmo body{
-		background:#DDDEDE;
-		min-height:100%;
+	background:#DDDEDE;
+	min-height:100%;
 }
 
 .zurmo body{
@@ -935,7 +935,7 @@ body > .ui-autocomplete{
 		position: absolute;
 		top:0;
 		left:0;
-	/*Conversation button*/
+		/*Conversation button*/
 		> span{
 			position: relative;
 			top:-2px;
@@ -1063,7 +1063,7 @@ body > .ui-autocomplete{
 		}
 		a:hover{
 			span{
-			//.t-shadow(rgba(156, 156, 156, 0.8) 0px 1px);
+				//.t-shadow(rgba(156, 156, 156, 0.8) 0px 1px);
 				background-image: url(../images/main-nav-selected.png);
 				background-repeat: no-repeat;
 				background-position-x: 0;
@@ -1096,7 +1096,7 @@ body > .ui-autocomplete{
 @recentlyViewedIconSize : 24px;
 
 #RecentlyViewedView {
-/*deafult for if an icon doesnt exist*/
+	/*deafult for if an icon doesnt exist*/
 	li{
 		em:before{
 			content: "z";
@@ -1246,7 +1246,7 @@ body > .ui-autocomplete{
 
 .DynamicSearchView{
 	position: relative;
-//z-index: 9999;
+	//z-index: 9999;
 	float: left;
 	width: 100%;
 }
@@ -1929,6 +1929,7 @@ caption, th, td {
 	text-align: left;
 }
 
+#import-temp-table-list-view,
 #list-view{
 	overflow-x:auto;
 	position:relative;
@@ -1938,13 +1939,13 @@ caption, th, td {
 		-webkit-radial-gradient( 0    50%, farthest-side, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0) ),
 		-webkit-radial-gradient( 100% 50%, farthest-side, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0) ) 100% 0;
 	background-repeat: no-repeat;
-//background-color: white;
+	//background-color: white;
 	background-size:
 		40px 100%,
 		40px 100%,
 		20px 100%,
 		20px 100%;
-/* Opera doesn't support this in the shorthand */
+	/* Opera doesn't support this in the shorthand */
 	background-attachment:
 		local,
 		local,
@@ -1968,7 +1969,7 @@ caption, th, td {
 			vertical-align:middle;
 			padding:10px 5px;
 			word-wrap: break-word;
-		//word-break: break-all;
+			//word-break: break-all;
 		}
 	}
 	> tbody,
@@ -1994,7 +1995,7 @@ caption, th, td {
 			#gradient > .vertical(#f9f9f9, #f4f4f4);
 		}
 		th:first-child{
-		//border-left:1px solid #DFDFDF;
+			//border-left:1px solid #DFDFDF;
 		}
 	}
 	> tbody{
@@ -2033,7 +2034,7 @@ caption, th, td {
 			~ div{
 				padding-left:25px;
 				++.border-box;
-			 }
+			}
 		}
 		> div{
 			margin:0 0 2px 0;
@@ -2046,6 +2047,11 @@ caption, th, td {
 			margin-top:2px;
 			float:left;
 		}
+		.star-column{
+			margin:-6px 15px 0 0 !important;
+			float:right
+		}
+
 	}
 	tr:first-child{
 		> div:first-child{
@@ -2064,7 +2070,7 @@ caption, th, td {
 
 
 .sort-link:after{
-//content:"↑";
+	//content:"↑";
 	margin-left: 10px;
 	font-size: 12px;
 	position: relative;
@@ -2096,6 +2102,12 @@ tr.even{
 	}
 }
 
+.star-column{
+	width:20px;
+	text-align:center;
+	padding:0 !important;
+}
+
 .button-column{
 	width:35px;
 	text-align:center;
@@ -2107,6 +2119,39 @@ tr.even{
 	margin-top:-2px;
 	.symbly(24px);
 	visibility:hidden;
+}
+
+.icon-star{
+	.symbly(26px);
+	color:#ccc !important;
+	.t-shadow(0 0 1px #333);
+	top:-1px;
+	position:relative;
+	line-height:1;
+	&:hover,
+	&.starred{
+		color: #ffef42 !important;
+	}
+}
+
+#list-view_columnStar{
+	line-height:1;
+	width: 20px;
+	text-align: center;
+	padding-right: 0 !important;
+	padding-left: 0 !important;
+	.icon-star{
+		top:0;
+		left:-2px;
+	}
+}
+
+h1,
+.juiportlet-widget-head{
+	.icon-star{
+		top:1px;
+		margin-left:5px
+	}
 }
 
 .juiportlet-widget{
@@ -2461,7 +2506,7 @@ body div.form-toolbar{
 		margin:0 !important;
 		font-size:15px;
 		font-weight:bold;
-	//++.themeColor;
+		//++.themeColor;
 		.t-shadow( rgba( 255, 255, 255, 0.8 ) 0 1px 0 );
 		width: 100%;
 		height: 40px;
@@ -3817,14 +3862,14 @@ div.wide.form{
 		border-bottom:1px solid #ccc;
 		overflow: hidden;
 	}
-//for opt in email checkboxes
+	//for opt in email checkboxes
 	input[type="checkbox"] + label{
 		width:60px;
 		margin-top:0;
 	}
-//for address fields
+	//for address fields
 	td > label:first-child{}
-//for 2 columns
+	//for 2 columns
 	td + th{
 		padding-left:30px;
 	}
@@ -4325,6 +4370,34 @@ div.hasHalfs{
 	width:64%;
 }
 
+.operation-duration-fields{
+	++.cf;
+	&.twoFields{
+		input[type="text"]{
+			width: 49%;
+			float: left;
+		}
+		> div{
+			width: 49% !important;
+			float: right;
+		}
+	}
+
+
+	&.threeFields{
+		> div.hasDropDown,
+		> input[type="text"]{
+			width:32% !important;
+			float: left;
+			margin-left:2%;
+		}
+		> input[type="text"]{
+			margin-left: 0;
+		}
+	}
+
+}
+
 .juiportlet-widget.OpportunitiesForAccountRelatedListView,
 .juiportlet-widget.ContactsForAccountRelatedListView{
 	div.button-column{
@@ -4539,7 +4612,7 @@ div.hasHalfs{
 			color:#ccc;
 		}
 	}
-//doesnt work in IE
+	//doesnt work in IE
 	&:empty{
 		display:none;
 	}
@@ -5084,7 +5157,7 @@ div.hasHalfs{
 	}
 	#sequential-process-spinner + #progressBar-msg{
 		display:block;
-	//text-indent:30px;
+		//text-indent:30px;
 	}
 }
 
@@ -5298,7 +5371,7 @@ div.hasHalfs{
 	}
 	.pager{
 		.b-shadow(none) !important;
-	//.no-ie-shadow();
+		//.no-ie-shadow();
 		border: 1px solid #DFDFDF;
 		border-top: none;
 		ul{

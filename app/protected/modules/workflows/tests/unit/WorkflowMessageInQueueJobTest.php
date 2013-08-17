@@ -57,7 +57,9 @@
 
         /**
          * Test sending an email that should go out as a processing that this job would typically do.
-         * Also tests that item does not get trashed when deleting the WorkflowMessageInQueue
+         * Also tests that item does not get trashed when deleting the WorkflowMessageInQueue.
+         * Also tests that if there is more than one emailmessage against the workflow, that it does not send
+         * to all of them
          * @depends testWorkflowMessageInQueueProperlySavesWithoutTrashingRelatedModelItem
          */
         public function testRun()
@@ -66,7 +68,6 @@
             $emailTemplate                 = new EmailTemplate();
             $emailTemplate->name           = 'the name';
             $emailTemplate->modelClassName = 'Account';
-            $emailTemplate->textContent    = 'some content';
             $emailTemplate->type           = 2;
             $emailTemplate->subject        = 'subject';
             $saved                         = $emailTemplate->save();
@@ -82,7 +83,7 @@
             $model = Contact::getById($modelId);
             $trigger = array('attributeIndexOrDerivedType' => 'firstName',
                              'operator'                    => OperatorRules::TYPE_EQUALS,
-                             'value'                       => 'jason');
+ 							 'durationInterval'             => '333');
             $actions     = array(array('type' => ActionForWorkflowForm::TYPE_UPDATE_SELF,
                                        ActionForWorkflowForm::ACTION_ATTRIBUTES =>
                                             array('description' => array('shouldSetValue'    => '1',
@@ -93,6 +94,14 @@
             $emailMessages[0]['sendFromType']    = EmailMessageForWorkflowForm::SEND_FROM_TYPE_DEFAULT;
             $emailMessages[0]['sendAfterDurationSeconds'] = '0';
             $emailMessages[0][EmailMessageForWorkflowForm::EMAIL_MESSAGE_RECIPIENTS] =
+                array(
+                    array('type'          => WorkflowEmailMessageRecipientForm::TYPE_DYNAMIC_TRIGGERED_MODEL,
+                        'audienceType'    => EmailMessageRecipient::TYPE_TO),
+                );
+            $emailMessages[1]['emailTemplateId'] = $emailTemplate->id;
+            $emailMessages[1]['sendFromType']    = EmailMessageForWorkflowForm::SEND_FROM_TYPE_DEFAULT;
+            $emailMessages[1]['sendAfterDurationSeconds'] = '10000';
+            $emailMessages[1][EmailMessageForWorkflowForm::EMAIL_MESSAGE_RECIPIENTS] =
                 array(
                     array('type'          => WorkflowEmailMessageRecipientForm::TYPE_DYNAMIC_TRIGGERED_MODEL,
                         'audienceType'    => EmailMessageRecipient::TYPE_TO),
@@ -110,7 +119,7 @@
             $savedWorkflow->isActive        = true;
             $saved                          = $savedWorkflow->save();
             $this->assertTrue($saved);
-            WorkflowTestHelper::createExpiredWorkflowMessageInQueue($model, $savedWorkflow);
+            WorkflowTestHelper::createExpiredWorkflowMessageInQueue($model, $savedWorkflow, serialize($emailMessages[1]));
 
             RedBeanModelsCache::forgetAll(true); //simulates page change, required to confirm Item does not get trashed
             $this->assertEquals(1, count(WorkflowMessageInQueue::getAll()));
@@ -131,7 +140,7 @@
             $timeTrigger = array('attributeIndexOrDerivedType' => 'string',
                                     'operator'                    => OperatorRules::TYPE_EQUALS,
                                     'value'                       => '514',
-                                    'durationSeconds'             => '333');
+                                    'durationInterval'             => '333');
             $actions     = array(array('type' => ActionForWorkflowForm::TYPE_UPDATE_SELF,
                                     ActionForWorkflowForm::ACTION_ATTRIBUTES =>
                                     array('string' => array('shouldSetValue'    => '1',

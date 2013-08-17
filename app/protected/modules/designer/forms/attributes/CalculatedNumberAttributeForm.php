@@ -102,11 +102,8 @@
         public function validateFormula($attribute, $params)
         {
             assert('$attribute == "formula"');
-            assert('$this->modelClassName != null');
-            $modelClassName = $this->modelClassName;
-            $model          = new $modelClassName(false);
-            $adapter        = new ModelNumberOrCurrencyAttributesAdapter($model);
-            if (!CalculatedNumberUtil::isFormulaValid($this->{$attribute}, $adapter))
+            assert('$this->modelClassName != null');            
+            if (!CalculatedNumberUtil::isFormulaValid($this->{$attribute}, $this->modelClassName))
             {
                 $this->addError('formula', Zurmo::t('DesignerModule', 'The formula is invalid.'));
             }

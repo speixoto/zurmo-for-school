@@ -166,25 +166,6 @@
         }
 
         /**
-         * Given an array of import instructions data, merge this data into the mapping data.
-         * @param array $mappingData
-         * @param array $importInstructionsData
-         */
-        public static function resolveImportInstructionsDataIntoMappingData($mappingData, $importInstructionsData)
-        {
-            assert('is_array($mappingData)');
-            assert('is_array($importInstructionsData) || $importInstructionsData == null');
-            foreach ($mappingData as $columnName => $columnMappingData)
-            {
-                if ($importInstructionsData != null && isset($importInstructionsData[$columnName]))
-                {
-                    $mappingData[$columnName]['importInstructionsData'] = $importInstructionsData[$columnName];
-                }
-            }
-            return $mappingData;
-        }
-
-        /**
          *
          * Make an array of index/values that are the column names and their respective labels.
          * @param array $mappingData
@@ -277,18 +258,17 @@
          * @return array
          */
         public static function makeDropDownColumnMappingData($attributeName, $defaultValue = null,
-                                                             $importInstructionsData = null)
+                                                             $customFieldsInstructionData = null)
         {
-            if ($importInstructionsData == null)
+            if ($customFieldsInstructionData == null)
             {
-                $importInstructionsData = array('DropDown' => array(DropDownSanitizerUtil::ADD_MISSING_VALUE => array()));
+                $customFieldsInstructionData = array(CustomFieldsInstructionData::ADD_MISSING_VALUES => array());
             }
-            return array('attributeIndexOrDerivedType' => $attributeName,
-                         'type'                        => 'importColumn',
-                         'mappingRulesData'            => array(
-                             'DefaultValueDropDownModelAttributeMappingRuleForm' =>
-                             array('defaultValue'      => $defaultValue)),
-                         'importInstructionsData'      => $importInstructionsData);
+            return array('attributeIndexOrDerivedType'  => $attributeName,
+                         'type'                         => 'importColumn',
+                         'mappingRulesData'             => array('DefaultValueDropDownModelAttributeMappingRuleForm' =>
+                                                           array('defaultValue'=> $defaultValue)),
+                         'customFieldsInstructionData' => $customFieldsInstructionData);
         }
 
         /**
@@ -298,18 +278,17 @@
          * @return array
          */
         public static function makeMultiSelectDropDownColumnMappingData($attributeName, $defaultValue = null,
-                                                                        $importInstructionsData = null)
+                                                                        $customFieldsInstructionData = null)
         {
-            if ($importInstructionsData == null)
+            if ($customFieldsInstructionData == null)
             {
-                $importInstructionsData = array('MultiSelectDropDown' => array(DropDownSanitizerUtil::ADD_MISSING_VALUE => array()));
+                $customFieldsInstructionData = array(CustomFieldsInstructionData::ADD_MISSING_VALUES => array());
             }
-            return array('attributeIndexOrDerivedType' => $attributeName,
-                         'type'                        => 'importColumn',
-                         'mappingRulesData'            => array(
-                             'DefaultValueMultiSelectDropDownModelAttributeMappingRuleForm' =>
-                             array('defaultValue'      => $defaultValue)),
-                         'importInstructionsData'      => $importInstructionsData);
+            return array('attributeIndexOrDerivedType'  => $attributeName,
+                         'type'                         => 'importColumn',
+                         'mappingRulesData'             => array('DefaultValueMultiSelectDropDownModelAttributeMappingRuleForm' =>
+                                                           array('defaultValue' => $defaultValue)),
+                         'customFieldsInstructionData' => $customFieldsInstructionData);
         }
 
         /**
@@ -319,18 +298,17 @@
          * @return array
          */
         public static function makeTagCloudColumnMappingData($attributeName, $defaultValue = null,
-                                                                             $importInstructionsData = null)
+                                                             $customFieldsInstructionData = null)
         {
-            if ($importInstructionsData == null)
+            if ($customFieldsInstructionData == null)
             {
-                $importInstructionsData = array('MultiSelectDropDown' => array(DropDownSanitizerUtil::ADD_MISSING_VALUE => array()));
+                $customFieldsInstructionData = array(CustomFieldsInstructionData::ADD_MISSING_VALUES => array());
             }
-            return array('attributeIndexOrDerivedType' => $attributeName,
-                         'type'                        => 'importColumn',
-                         'mappingRulesData'            => array(
-                             'DefaultValueMultiSelectDropDownModelAttributeMappingRuleForm' =>
-                             array('defaultValue'      => $defaultValue)),
-                         'importInstructionsData'      => $importInstructionsData);
+            return array('attributeIndexOrDerivedType'  => $attributeName,
+                         'type'                         => 'importColumn',
+                         'mappingRulesData'             => array('DefaultValueMultiSelectDropDownModelAttributeMappingRuleForm' =>
+                                                           array('defaultValue' => $defaultValue)),
+                         'customFieldsInstructionData' => $customFieldsInstructionData);
         }
 
         /**
