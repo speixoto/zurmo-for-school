@@ -73,6 +73,7 @@
                        $this->renderXHtmlHead()      .
                        $this->renderXHtmlBodyStart() .
                        parent::render()              .
+                       $this->renderXHtmlBeforeBodyEnd() .
                        $this->renderXHtmlBodyEnd()   .
                        $this->renderXHtmlEnd();
             Yii::app()->getClientScript()->render($content);
@@ -229,6 +230,14 @@
             return '<!DOCTYPE html>' .
                    '<!--[if IE 8]><html class="zurmo ie8" lang="en"><![endif]-->' .
                    '<!--[if gt IE 8]><!--><html class="zurmo" lang="en"><!--<![endif]-->';
+        }
+
+        /**
+         * Renders the XHtml before the ending body tag
+         */
+        protected function renderXHtmlBeforeBodyEnd()
+        {
+            return Yii::app()->userInterface->renderXHtmlBeforeBodyEndContent();
         }
 
         /**
