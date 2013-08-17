@@ -142,9 +142,12 @@
         {                                            
             $expression = trim($expression);
             if (static::isAttribute($expression, get_class($model)))
-            {                               
-                $formatType = ModelAttributeToMixedTypeUtil::getType($model, $expression);                                                
-                return strval($model->{$expression});
+            {   
+                if (!($model->{$expression} instanceof CurrencyValue))
+                {
+                    $formatType = ModelAttributeToMixedTypeUtil::getType($model, $expression);                     
+                    return strval($model->{$expression});
+                }
             }
             if (static::isString($expression))
             {                
