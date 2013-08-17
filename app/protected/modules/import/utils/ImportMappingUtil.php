@@ -220,7 +220,7 @@
 
         /**
          * @param string $attributeName
-         * @param object $currency
+         * @param Currency $currency
          * @param null $defaultValue
          * @param int $rateToBase
          * @return array
