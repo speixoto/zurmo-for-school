@@ -79,8 +79,8 @@
             }
             $content                            = $this->getContentForTimeTriggerOrTrigger();
             $params                             = array('inputPrefix' => $this->inputPrefixData);
-            $durationElement                    = new TimeTriggerDurationStaticDropDownElement($this->model,
-                                                  'durationSeconds', $this->form, $params);
+            $durationElement                    = new TimeTriggerDurationElement($this->model,
+                                                  null, $this->form, $params);
             $durationElement->editableTemplate  = '{content}{error}';
             $durationContent                    = $durationElement->render();
             self::resolveDivWrapperForContent($durationContent, $content, 'dynamic-row-duration');
@@ -121,6 +121,7 @@
                 {
                     $valueElement->setIdAttributeId('value');
                     $valueElement->setNameAttributeName('stringifiedModelForValue');
+                    $valueElement->doNotHideSelectLinkWhenDisabled();
                 }
                 if ($valueElement instanceof MixedNumberTypesElement)
                 {
@@ -135,7 +136,9 @@
                 else
                 {
                     $startingDivStyleFirstValue     = null;
-                    if (in_array($this->model->getOperator(), array(OperatorRules::TYPE_IS_NULL, OperatorRules::TYPE_IS_NOT_NULL)))
+                    if (!in_array($this->model->getOperator(),
+                                    OperatorRules::getOperatorsWhereValueIsRequired()) &&
+                        $this->model->getOperator() != null)
                     {
                         $startingDivStyleFirstValue         = "display:none;";
                         $valueElement->params['disabled']   = 'disabled';

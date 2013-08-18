@@ -65,7 +65,7 @@
             echo CJSON::encode($countArray);
         }
 
-        public function actionSubscribeContacts($marketingListId, $id, $type)
+        public function actionSubscribeContacts($marketingListId, $id, $type, $page = 1, $subscribedCount = 0, $skippedCount = 0)
         {
             assert('is_int($id)');
             assert('$type === "contact" || $type === "report"');
@@ -76,17 +76,51 @@
             $contactIds = array($id);
             if  ($type === 'report')
             {
-                $contactIds = SavedReport::getContactIdsByReportId($id);
+                $attributeName      = null;
+                $pageSize           = Yii::app()->pagination->resolveActiveForCurrentUserByType(
+                                      'reportResultsListPageSize', get_class($this->getModule()));
+                $reportDataProvider = MarketingListMembersUtil::makeReportDataProviderAndResolveAttributeName($id, $pageSize, $attributeName);
+                $contactIds         = MarketingListMembersUtil::getContactIdsByReportDataProviderAndAttributeName(
+                                      $reportDataProvider, $attributeName);
+                $pageCount = $reportDataProvider->getPagination()->getPageCount();
+                $subscriberInformation = $this->addNewSubscribers($marketingListId, $contactIds);
+                if ($pageCount == $page || $pageCount == 0)
+                {
+                    $subscriberInformation = array('subscribedCount' => $subscribedCount + $subscriberInformation['subscribedCount'],
+                                                   'skippedCount'    => $skippedCount    + $subscriberInformation['skippedCount']);
+                    $message = $this->renderCompleteMessageBySubscriberInformation($subscriberInformation);
+                    echo CJSON::encode(array('message' => $message, 'type' => 'message'));
+                }
+                else
+                {
+                    $percentageComplete = (round($page / $pageCount, 2) * 100) . ' %';
+                    $message            = Zurmo::t('MarketingListsModule', 'Processing: {percentageComplete} complete',
+                                          array('{percentageComplete}' => $percentageComplete));
+                    echo CJSON::encode(array('message'         => $message,
+                                             'type'            => 'message',
+                                             'nextPage'        => $page + 1,
+                                             'subscribedCount' => $subscribedCount + $subscriberInformation['subscribedCount'],
+                                             'skippedCount'    => $skippedCount    + $subscriberInformation['skippedCount']));
+                }
             }
-            $subscriberInformation = $this->addNewSubscribers($marketingListId, $contactIds);
+            else
+            {
+                $subscriberInformation = $this->addNewSubscribers($marketingListId, $contactIds);
+                $message = $this->renderCompleteMessageBySubscriberInformation($subscriberInformation);
+                echo CJSON::encode(array('message' => $message, 'type' => 'message'));
+            }
+        }
+
+        protected function renderCompleteMessageBySubscriberInformation(array $subscriberInformation)
+        {
             $message = Zurmo::t('MarketingListsModule', '{subscribedCount} subscribed.',
-                                                array('{subscribedCount}' => $subscriberInformation['subscribedCount']));
+                array('{subscribedCount}' => $subscriberInformation['subscribedCount']));
             if (array_key_exists('skippedCount', $subscriberInformation) && $subscriberInformation['skippedCount'])
             {
-                $message .= ' ' . Zurmo::t('MarketingListsModule', '{skippedCount} skipped.',
-                                                        array('{skippedCount}' => $subscriberInformation['skippedCount']));
+                $message .= ' ' . Zurmo::t('MarketingListsModule', '{skippedCount} skipped, already in the list.',
+                        array('{skippedCount}' => $subscriberInformation['skippedCount']));
             }
-            echo CJSON::encode(array('message' => $message, 'type' => 'message'));
+            return $message;
         }
 
         protected function addNewSubscribers($marketingListId, $contactIds)
@@ -106,6 +140,68 @@
                 }
             }
             return $subscriberInformation;
+        }
+
+        /**
+         * Override to support adding a contact to a marketing list.  This is currently the only type of select from related
+         * model that is supported for adding a marketing list
+         * @param string $modelId
+         * @param string $portletId
+         * @param string $uniqueLayoutId
+         * @param string $relationAttributeName
+         * @param string $relationModelId
+         * @param string $relationModuleId
+         * @param null|string $relationModelClassName
+         * @throws NotSupportedException
+         */
+        public function actionSelectFromRelatedListSave($modelId, $portletId, $uniqueLayoutId,
+                                                        $relationAttributeName, $relationModelId, $relationModuleId,
+                                                        $relationModelClassName = null)
+        {
+            if ($relationModelClassName == null)
+            {
+                $relationModelClassName = Yii::app()->getModule($relationModuleId)->getPrimaryModelName();
+            }
+            if($relationModelClassName != 'Contact' && $relationAttributeName != 'contact')
+            {
+                throw new NotSupportedException();
+            }
+            $relationModel          = $relationModelClassName::getById((int)$relationModelId);
+            $modelClassName         = $this->getModule()->getPrimaryModelName();
+            $model                  = $modelClassName::getById((int)$modelId);
+            $redirectUrl            = $this->createUrl('/' . $relationModuleId . '/default/details',
+                                      array('id' => $relationModelId));
+            try
+            {
+                if (!$model->addNewMember($relationModel->id, false))
+                {
+                    $this->processSelectFromRelatedListSaveAlreadyConnected($model, $relationModel);
+                }
+            }
+            catch(FailedToSaveModelException $e)
+            {
+                $this->processSelectFromRelatedListSaveFails($model);
+            }
+            $this->redirect(array('/' . $relationModuleId . '/defaultPortlet/modalRefresh',
+                'id'                   => $relationModelId,
+                'portletId'            => $portletId,
+                'uniqueLayoutId'       => $uniqueLayoutId,
+                'redirectUrl'          => $redirectUrl,
+                'portletParams'        => array(  'relationModuleId' => $relationModuleId,
+                    'relationModelId'  => $relationModelId),
+                'portletsAreRemovable' => false));
+        }
+
+        protected function processSelectFromRelatedListSaveAlreadyConnected(RedBeanModel $model, Contact $contact = null)
+        {
+            if($contact == null)
+            {
+                throw new NotSupportedException();
+            }
+            echo CJSON::encode(array('message' => Zurmo::t('MarketingListsModule', '{contactString} is already subscribed to {modelString}.',
+                                                  array('{modelString}' => strval($model), '{contactString}' => strval($contact))),
+                                                        'messageType'   => 'message'));
+            Yii::app()->end(0, false);
         }
     }
 ?>

@@ -62,13 +62,17 @@
 
         public static function resolveContactWithLink(Contact $contact)
         {
-            $moduleClassName = static::resolveModuleClassName($contact);
-            $linkRoute       = '/' . $moduleClassName::getDirectoryName() . '/default/details';
-            $linkContent     = ActionSecurityUtil::resolveLinkToModelForCurrentUser(strval($contact), $contact,
-                               $moduleClassName, $linkRoute);
-            if ($linkContent == null)
+            $linkContent = static::renderRestrictedContactAccessLink($contact);
+            if (ActionSecurityUtil::canCurrentUserPerformAction('Details', $contact))
             {
-                $linkContent = static::renderRestrictedContactAccessLink($contact);
+                $moduleClassName = static::resolveModuleClassName($contact);
+                $linkRoute       = '/' . $moduleClassName::getDirectoryName() . '/default/details';
+                $link            = ActionSecurityUtil::resolveLinkToModelForCurrentUser(strval($contact), $contact,
+                                       $moduleClassName, $linkRoute);
+                if ($link != null)
+                {
+                    $linkContent = $link;
+                }
             }
             return ZurmoHtml::tag('div', array('class' => 'email-recipient-name'), $linkContent);
         }
@@ -117,13 +121,13 @@
             {
                 return static::renderRestrictedEmailMessageAccessLink($campaignItem->emailMessage);
             }
-            $isQueuedOrSkipped     = $campaignItem->isQueuedOrSkipped();
+            $isQueued              = $campaignItem->isQueued();
             $isSkipped             = $campaignItem->isSkipped();
-            if ($isQueuedOrSkipped && !$isSkipped)
+            if ($isQueued)
             {
                 $content = static::getQueuedContent();
             }
-            elseif ($isQueuedOrSkipped && $isSkipped)
+            elseif ($isSkipped)
             {
                 $content = static::getSkippedContent();
             }
@@ -131,7 +135,7 @@
             {
                 $content = static::getSendFailedContent();
             }
-            else //sent
+            elseif ($campaignItem->isSent())
             {
                 $content = static::getSentContent();
                 if ($campaignItem->hasAtLeastOneOpenActivity())
@@ -151,8 +155,11 @@
                     $content .= static::getBouncedContent();
                 }
             }
-            $clearFixContent = ZurmoHtml::tag('div', array('class' => 'clearfix'), $content);
-            return ZurmoHtml::tag('div', array('class' => 'continuum'), $clearFixContent);
+            else //still awaiting queueing
+            {
+                $content = static::getAwaitingQueueingContent();
+            }
+            return ZurmoHtml::wrapAndRenderContinuumButtonContent($content);
         }
 
         protected static function getQueuedContent()
@@ -201,6 +208,12 @@
         {
             $content = '<i>&#9679;</i><span>' . Zurmo::t('MarketingModule', 'Bounced') . '</span>';
             return ZurmoHtml::tag('div', array('class' => 'email-recipient-stage-status stage-false'), $content);
+        }
+
+        protected static function getAwaitingQueueingContent()
+        {
+            $content = '<i>&#9679;</i><span>' . Zurmo::t('MarketingModule', 'Awaiting queueing') . '</span>';
+            return ZurmoHtml::tag('div', array('class' => 'email-recipient-stage-status queued'), $content);
         }
     }
 ?>

@@ -51,7 +51,8 @@
 
         protected function renderContent()
         {
-            $placedViewTypes = $this->getPlacedViewTypes();
+            $placedViewTypes = Portlet::getPlacedViewTypesByLayoutIdAndUser($this->uniqueLayoutId,
+                                                                            Yii::app()->user->userModel->id);
             $content = '<ul class="available-portlets">';
             $modules = Module::getModuleObjects();
             $sortablePortlets = array();
@@ -92,19 +93,24 @@
                     }
                 }
             }
-            return PortletUtil::renderAddPortletsContent($sortablePortlets);
-        }
-
-        protected function getPlacedViewTypes()
-        {
-            $portlets        = Portlet::getByLayoutIdAndUserSortedById($this->uniqueLayoutId,
-                                                                       Yii::app()->user->userModel->id);
-            $placedViewTypes = array();
-            foreach ($portlets as $portlet)
+            if (empty($sortablePortlets))
             {
-                $placedViewTypes[] = $portlet->viewType;
+                $messageView = new NoPortletsToPlaceView();
+                return $messageView->render();
             }
-            return $placedViewTypes;
+            //Sort by title
+            ksort($sortablePortlets);
+            foreach ($sortablePortlets as $title => $url)
+            {
+                $onClick = 'window.location.href = "' . $url . '"';
+                $content .= '<li>';
+
+                $label    = '<span>\</span>' . $title;
+                $content .= ZurmoHtml::link(Zurmo::t('HomeModule', $label ), null, array('onclick' => $onClick));
+                $content .= '</li>';
+            }
+            $content .= '</ul>';
+            return $content;
         }
 
         private function resolveLayoutIdInAllowedOnPortletViewClassNames($className)

@@ -62,7 +62,32 @@
          */
         protected function getModalTitleForSelectingModel()
         {
-            return Zurmo::t('ProductTemplatesModule', 'Catalog Item Search');
+            $params = LabelUtil::getTranslationParamsForAllModules();
+            return Zurmo::t('ProductTemplatesModule', 'ProductTemplatesModuleSingularLabel Search', $params);
+        }
+
+        /**
+         * Registers scripts for autocomplete text field
+         */
+        protected function registerScriptForAutoCompleteTextField()
+        {
+            parent::registerScriptForAutoCompleteTextField();
+            Yii::app()->clientScript->registerScriptFile(Yii::app()->getAssetManager()->publish(
+                    Yii::getPathOfAlias('application.modules.productTemplates.elements.assets')
+                    ) . '/ProductTemplateUtils.js',
+                CClientScript::POS_END);
+        }
+
+        /**
+         * Gets on select option for the automcomplete text field
+         * @param string $idInputName
+         * @return string
+         */
+        protected function getOnSelectOptionForAutoComplete($idInputName)
+        {
+            $url = Yii::app()->createUrl("productTemplates/default/getProductTemplateDataForProduct");
+            return 'js:function(event, ui){ jQuery("#' . $idInputName . '").val(ui.item["id"]).trigger("change");
+                        copyProductTemplateDataForProduct(ui.item["id"], \'' . $url . '\')}';
         }
     }
 ?>

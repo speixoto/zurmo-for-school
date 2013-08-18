@@ -97,7 +97,7 @@
             try
             {
                 $emailAccount = static::getByUserAndName($user, $name);
-                //$emailAccount->outboundPassword = ZurmoPasswordSecurityUtil::decrypt($emailAccount->outboundPassword);
+                $emailAccount->outboundPassword = ZurmoPasswordSecurityUtil::decrypt($emailAccount->outboundPassword);
             }
             catch (NotFoundException $e)
             {

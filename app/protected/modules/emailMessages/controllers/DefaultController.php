@@ -71,12 +71,29 @@
             );
         }
 
+        public function actionEdit($id, $redirectUrl = null)
+        {
+            $emailMessage = EmailMessage::getById(intval($id));
+            ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($emailMessage);
+            $this->processEdit($emailMessage, $redirectUrl);
+        }
+
+        protected function processEdit(EmailMessage $emailMessage, $redirectUrl = null)
+        {
+            $view = new EmailMessagesPageView(ZurmoDefaultViewUtil::
+                        makeStandardViewForCurrentUser($this, $this->makeEditAndDetailsView(
+                            $this->attemptToSaveModelFromPost($emailMessage, $redirectUrl), 'Edit')));
+            echo $view->render();
+        }
+
+
         public function actionDetails($id, $redirectUrl = null)
         {
             $emailMessage          = EmailMessage::getById(intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($emailMessage);
-            $detailsView           = new EmailMessageDetailsView($this->getId(), $this->getModule()->getId(), $emailMessage);
-            $view              = new EmailMessagesPageView(ZurmoDefaultViewUtil::
+            $detailsView           = new EmailMessageEditAndDetailsView('Details', $this->getId(),
+                                     $this->getModule()->getId(), $emailMessage);
+            $view                  = new EmailMessagesPageView(ZurmoDefaultViewUtil::
                                          makeStandardViewForCurrentUser($this, $detailsView));
             echo $view->render();
         }
@@ -181,7 +198,8 @@
                 }
                 if ($configurationForm->aTestToAddress != null)
                 {
-                    $emailHelper = new EmailHelper;
+                    $emailHelper = new EmailHelper();
+                    $emailHelper->loadDefaultFromAndToAddresses();
                     $emailHelper->outboundHost     = $configurationForm->host;
                     $emailHelper->outboundPort     = $configurationForm->port;
                     $emailHelper->outboundUsername = $configurationForm->username;
@@ -204,14 +222,29 @@
                                                                       $configurationForm->aTestToAddress);
                     }
                     $messageContent  = null;
-                    if (!$emailMessage->hasSendError())
+                    if (!($emailMessage->hasErrors() || $emailMessage->hasSendError()))
                     {
                         $messageContent .= Zurmo::t('EmailMessagesModule', 'Message successfully sent') . "\n";
                     }
                     else
                     {
                         $messageContent .= Zurmo::t('EmailMessagesModule', 'Message failed to send') . "\n";
-                        $messageContent .= $emailMessage->error     . "\n";
+                        if ($emailMessage->hasSendError())
+                        {
+                            $messageContent .= $emailMessage->error     . "\n";
+                        }
+                        else
+                        {
+                            $errors = $emailMessage->getErrors();
+                            $data = array();
+                            foreach ($errors as $attributeNameWithErrors)
+                            {
+                                foreach ($attributeNameWithErrors as $attributeError)
+                                {
+                                    $messageContent .= reset($attributeError) . "\n";
+                                }
+                            }
+                        }
                     }
                 }
                 else
@@ -230,11 +263,21 @@
         }
 
         /**
-        * Assumes before calling this, the inbound settings have been validated in the form.
-        */
-        public function actionTestImapConnection()
+         * Assumes before calling this, the inbound settings have been validated in the form.
+         */
+        public function actionTestImapConnection($type = 1)
         {
-            $configurationForm = EmailArchivingConfigurationFormAdapter::makeFormFromGlobalConfiguration();
+            $type   = intval($type);
+            if ($type < 1 || $type > 2 )
+            {
+                throw new CHttpException(400);
+            }
+            $adapterClassName   = 'EmailArchivingConfigurationFormAdapter';
+            if ($type == 2)
+            {
+                $adapterClassName   = 'BounceConfigurationFormAdapter';
+            }
+            $configurationForm = $adapterClassName::makeFormFromGlobalConfiguration();
             $postVariableName   = get_class($configurationForm);
             if (isset($_POST[$postVariableName]))
             {
@@ -358,7 +401,7 @@
                     if (!$emailMessage->save())
                     {
                         throw new FailedToSaveModelException();
-                    }
+                    }                    
                 }
             }
             else
@@ -366,6 +409,7 @@
                 static::attemptToMatchAndSaveLeadOrContact($emailMessage, 'Contact', (int)$id);
                 static::attemptToMatchAndSaveLeadOrContact($emailMessage, 'Lead', (int)$id);
             }
+            ZurmoControllerUtil::updatePermissionsWithDefaultForModelByCurrentUser($emailMessage);
         }
 
         protected static function attemptToMatchAndSaveLeadOrContact($emailMessage, $type, $emailMessageId)
@@ -420,7 +464,7 @@
                 $saved = $contact->save();
                 if (!$saved)
                 {
-                    throw new FailedToSaveModelException($message, $code, $previous);
+                    throw new FailedToSaveModelException();
                 }
                 $this->redirect(array($this->getId() . '/createEmailMessage',
                                       'relatedId'             => $contact->id,
@@ -477,6 +521,7 @@
                 EmailMessageUtil::resolveEmailMessageFromPostData($postData, $emailMessageForm, Yii::app()->user->userModel);
                 $this->actionValidateCreateEmailMessage($postData, $emailMessageForm);
                 $this->attemptToSaveModelFromPost($emailMessageForm, null, false);
+                ZurmoControllerUtil::updatePermissionsWithDefaultForModelByCurrentUser($emailMessageForm->getModel());
             }
             else
             {
@@ -511,30 +556,7 @@
             }
             return $personOrAccount;
         }
-
-        /**
-         * Override to process the security on the email message to match a related model if present.
-         * (non-PHPdoc)
-         * @see ZurmoBaseController::actionAfterSuccessfulModelSave()
-         */
-        protected function actionAfterSuccessfulModelSave($model, $modelToStringValue, $redirectUrlParams = null)
-        {
-            assert('$model instanceof CreateEmailMessageForm');
-            $emailMessage          = $model->getModel();
-            $relatedId             = ArrayUtil::getArrayValue(GetUtil::getData(), 'relatedId');
-            $relatedModelClassName = ArrayUtil::getArrayValue(GetUtil::getData(), 'relatedModelClassName');
-            if ($relatedId != null &&
-                $relatedModelClassName != null &&
-                is_subclass_of($relatedModelClassName, 'OwnedSecurableItem'))
-            {
-                $relatedModel                      = $relatedModelClassName::getById((int)$relatedId);
-                $explicitReadWriteModelPermissions = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($relatedModel);
-                ExplicitReadWriteModelPermissionsUtil::resolveExplicitReadWriteModelPermissions($emailMessage,
-                                                       $explicitReadWriteModelPermissions);
-            }
-            parent::actionAfterSuccessfulModelSave($model, $modelToStringValue, $redirectUrlParams);
-        }
-
+        
         protected function actionValidateCreateEmailMessage($postData, CreateEmailMessageForm $emailMessageForm)
         {
             if (isset($postData['ajax']) && $postData['ajax'] == 'edit-form')
@@ -562,7 +584,7 @@
             $pageSize               = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                                                 'autoCompleteListPageSize', get_class($this->getModule()));
             $usersByFullName        = UserSearch::getUsersByPartialFullName($term, $pageSize);
-            $usersByEmailAddress    = UserSearch::getUsersByEmailAddress($term, 'contains');
+            $usersByEmailAddress    = UserSearch::getUsersByEmailAddress($term, 'contains', true);
             $contacts               = ContactSearch::getContactsByPartialFullNameOrAnyEmailAddress($term, $pageSize, null, 'contains');
             $autoCompleteResults    = array();
             foreach ($usersByEmailAddress as $user)
@@ -611,11 +633,25 @@
             return $selectForm;
         }
 
-        public function actionDelete($id)
+        public function actionDelete($id, $redirectUrl = null, $redirect = true)
         {
             $emailMessage = EmailMessage::getById(intval($id));
+            if ($redirectUrl == null)
+            {
+                $redirectUrl = array('/home/default');
+            }
             ControllerSecurityUtil::resolveAccessCanCurrentUserDeleteModel($emailMessage);
             $emailMessage->delete();
+            if($redirect)
+            {
+                $this->redirect($redirectUrl);
+            }
         }
+
+        protected static function getZurmoControllerUtil()
+        {
+            return new FileZurmoControllerUtil();
+        }
+
     }
 ?>

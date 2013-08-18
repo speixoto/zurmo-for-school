@@ -121,7 +121,7 @@
                     $htmlContent = Zurmo::t('EmailMessagesModule', 'Email message could not be saved') . "<br\><br\>" . $originalMessage->htmlBody;
                     break;
                 default:
-                    throw NotSupportedException();
+                    throw new NotSupportedException();
             }
             return EmailMessageHelper::sendSystemEmail($subject, array($originalMessage->fromEmail), $textContent, $htmlContent);
         }
@@ -283,7 +283,14 @@
             {
                 $emailSenderOrRecipientEmailNotFoundInSystem = $emailRecipientNotFoundInSystem;
             }
-            $box                       = EmailBox::resolveAndGetByName(EmailBox::NOTIFICATIONS_NAME);
+            if ($emailOwner instanceof User)
+            {
+                $box =EmailBoxUtil::getDefaultEmailBoxByUser($emailOwner);
+            }
+            else
+            {
+                $box = EmailBox::resolveAndGetByName(EmailBox::NOTIFICATIONS_NAME);
+            }
             if ($emailSenderOrRecipientEmailNotFoundInSystem)
             {
                 $emailMessage->folder  = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_ARCHIVED_UNMATCHED);

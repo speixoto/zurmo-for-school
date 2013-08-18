@@ -208,6 +208,10 @@
         */
         public function getMessageBoxStats()
         {
+            if($this->imapStream == null)
+            {
+                return false;
+            }
             return imap_check($this->imapStream);
         }
 
@@ -221,19 +225,21 @@
         {
             $imapMessage = new ImapMessage();
             $structure = imap_fetchstructure($this->imapStream, $messageNumber);
-            foreach ($mailHeaderInfo->to as $key => $to)
+            if (isset($mailHeaderInfo->to))
             {
-                if (isset($to->personal))
+                foreach ($mailHeaderInfo->to as $key => $to)
                 {
-                    $imapMessage->to[$key]['name'] = $to->personal;
+                    if (isset($to->personal))
+                    {
+                        $imapMessage->to[$key]['name'] = $to->personal;
+                    }
+                    else
+                    {
+                        $imapMessage->to[$key]['name'] = $to->mailbox;
+                    }
+                    $imapMessage->to[$key]['email'] = $to->mailbox . '@' . $to->host;
                 }
-                else
-                {
-                    $imapMessage->to[$key]['name'] = $to->mailbox;
-                }
-                $imapMessage->to[$key]['email'] = $to->mailbox . '@' . $to->host;
             }
-
             if (isset($mailHeaderInfo->cc))
             {
                 foreach ($mailHeaderInfo->cc as $key => $cc)
@@ -277,7 +283,8 @@
                 $imapMessage->senderEmail = $imapMessage->fromName;
             }
 
-            $imapMessage->subject       = $mailHeaderInfo->subject;
+            $subject                    = imap_mime_header_decode($mailHeaderInfo->subject);
+            $imapMessage->subject       = $subject[0]->text;
             $imapMessage->textBody      = $this->getPart($messageNumber, 'TEXT/PLAIN', $structure);
             $imapMessage->htmlBody      = $this->getPart($messageNumber, 'TEXT/HTML', $structure);
             $imapMessage->attachments   = $this->getAttachments($structure, $messageNumber);
@@ -292,16 +299,18 @@
 
         /**
          * Get all messages, that satisfy some criteria, for example: 'ALL', 'UNSEEN', 'SUBJECT "Hello"'
-         * @param array $searchCriteria the find conditions and params
+         * @param string $searchCriteria
          * @param int $messagesSinceTimestamp
          * @return array the messages that was found
          */
         public function getMessages($searchCriteria = 'ALL', $messagesSinceTimestamp = 0)
         {
             $messages = array();
-            $imapInfo = $this->getMessageBoxStats();
+            if($this->imapStream == null)
+            {
+                return $messages;
+            }
             $messageNumbers = imap_search($this->imapStream, $searchCriteria);
-
             if (is_array($messageNumbers) && count($messageNumbers) > 0)
             {
                 foreach ($messageNumbers as $messageNumber)
@@ -321,6 +330,10 @@
          */
         public function expungeMessages()
         {
+            if($this->imapStream == null)
+            {
+                return false;
+            }
             imap_expunge($this->imapStream);
             return true;
         }
@@ -348,9 +361,14 @@
         /**
          * Delete message on IMAP server
          * @param int $msgUid
+         * @return mixed bool false if there is no imapStream available, otherwise result of imap_delete
          */
         public function deleteMessage($msgUid)
         {
+            if($this->imapStream == null)
+            {
+                return false;
+            }
             imap_delete($this->imapStream, $msgUid, FT_UID);
         }
 
@@ -425,6 +443,10 @@
          */
         protected function getMessageUId($msgNo)
         {
+            if($this->imapStream == null)
+            {
+                return false;
+            }
             return imap_uid($this->imapStream, $msgNo);
         }
 
@@ -438,13 +460,16 @@
          */
         protected function mailCount($query)
         {
+            if($this->imapStream == null)
+            {
+                return false;
+            }
             return imap_num_msg($this->imapStream);
         }
 
         /**
-         *
-         * Get mime type.
-         * @param object $structure
+         * @param $structure
+         * @return string
          */
         protected function getMimeType($structure)
         {
@@ -458,12 +483,11 @@
         }
 
         /**
-         *
-         * Get message part
-         * @param int $msgNumber
-         * @param string $mimeType
-         * @param structure $structure
-         * @param int $partNumber
+         * @param $msgNumber
+         * @param $mimeType
+         * @param null $structure
+         * @param bool $partNumber
+         * @return bool|string
          */
         protected function getPart($msgNumber, $mimeType, $structure = null, $partNumber = false)
         {

@@ -90,7 +90,9 @@
             $content       .= $this->renderViewToolBarContainer($form);
             $formEnd        = $clipWidget->renderEndWidget();
             $content       .= $formEnd;
-            $content       .= '</div></div></div>';
+            $content       .= '</div></div>';
+            $content       .= $this->renderModalContainer();
+            $content       .= '</div>';
             return $content;
         }
 
@@ -114,7 +116,12 @@
             $wizardFormClassName        = $this->getWizardFormClassName();
             $treeType                   = ComponentForReportForm::TYPE_FILTERS;
             $trackableStructurePosition = false; //can we set this to false without jacking things up?
-            foreach ($this->params["relationModel"]->getFilters() as $filterForReportForm)
+            $report                     = $this->params["relationModel"];
+            if (null != $stickyData = StickyReportUtil::getDataByKey($report->id))
+            {
+                StickyReportUtil::resolveStickyDataToReport($report, $stickyData);
+            }
+            foreach ($report->getFilters() as $filterForReportForm)
             {
                 if ($filterForReportForm->availableAtRunTime)
                 {
@@ -215,6 +222,13 @@
                                          $this->params['relationModel']->getId(), array());
             $applyElement          = new SaveButtonActionElement(null, null, null, $params);
             return $resetElement->render() . $applyElement->render();
+        }
+
+        protected function renderModalContainer()
+        {
+            return ZurmoHtml::tag('div', array(
+                        'id' => ModelElement::MODAL_CONTAINER_PREFIX . '-' . $this->getFormId()
+                   ), '');
         }
     }
 ?>

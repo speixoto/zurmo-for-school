@@ -97,12 +97,58 @@
             // Test all default controller actions that do not require any POST/GET variables to be passed.
             $this->runControllerWithNoExceptionsAndGetContent('campaigns/default');
             $this->runControllerWithNoExceptionsAndGetContent('campaigns/default/index');
-            $this->runControllerWithNoExceptionsAndGetContent('campaigns/default/list');
-            $this->runControllerWithNoExceptionsAndGetContent('campaigns/default/create');
+            $content = $this->runControllerWithNoExceptionsAndGetContent('campaigns/default/list');
+            $compareContent = 'Campaigns will not run properly until scheduled jobs are set up. Contact your administrator.';
+            $this->assertTrue(strpos($content, $compareContent) === false);
+            $content = $this->runControllerWithNoExceptionsAndGetContent('campaigns/default/create');
+            $compareContent = 'Campaigns will not run properly until scheduled jobs are set up. Contact your administrator.';
+            $this->assertTrue(strpos($content, $compareContent) !== false);
         }
 
         /**
          * @depends testSuperUserAllDefaultControllerActions
+         */
+        public function testWhenJobsHaveRunTheFlashMessageDoesNotShowUp()
+        {
+            $jobLog                = new JobLog();
+            $jobLog->type          = 'CampaignGenerateDueCampaignItems';
+            $jobLog->startDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
+            $jobLog->endDateTime   = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
+            $jobLog->status        = JobLog::STATUS_COMPLETE_WITHOUT_ERROR;
+            $jobLog->isProcessed   = false;
+            $this->assertTrue($jobLog->save());
+
+            $jobLog                = new JobLog();
+            $jobLog->type          = 'CampaignMarkCompleted';
+            $jobLog->startDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
+            $jobLog->endDateTime   = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
+            $jobLog->status        = JobLog::STATUS_COMPLETE_WITHOUT_ERROR;
+            $jobLog->isProcessed   = false;
+            $this->assertTrue($jobLog->save());
+
+            $jobLog                = new JobLog();
+            $jobLog->type          = 'CampaignQueueMessagesInOutbox';
+            $jobLog->startDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
+            $jobLog->endDateTime   = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
+            $jobLog->status        = JobLog::STATUS_COMPLETE_WITHOUT_ERROR;
+            $jobLog->isProcessed   = false;
+            $this->assertTrue($jobLog->save());
+
+            $jobLog                = new JobLog();
+            $jobLog->type          = 'ProcessOutboundEmail';
+            $jobLog->startDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
+            $jobLog->endDateTime   = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
+            $jobLog->status        = JobLog::STATUS_COMPLETE_WITHOUT_ERROR;
+            $jobLog->isProcessed   = false;
+            $this->assertTrue($jobLog->save());
+
+            $content = $this->runControllerWithNoExceptionsAndGetContent('campaigns/default/create');
+            $compareContent = 'Campaigns will not run properly until scheduled jobs are set up. Contact your administrator.';
+            $this->assertTrue(strpos($content, $compareContent) === false);
+        }
+
+        /**
+         * @depends testWhenJobsHaveRunTheFlashMessageDoesNotShowUp
          */
         public function testSuperUserListAction()
         {
@@ -273,9 +319,8 @@
             $this->assertTrue(strpos($content, '<td colspan="1"><input id="Campaign_subject" name="Campaign[subject]" ' .
                                                 'type="text" maxlength="64"') !== false);
             $this->assertTrue(strpos($content, '<tr><th>Enable Tracking<span id="enable-tracking-tooltip" ' .
-                                                'class="tooltip" title="Enabling tracking would record when recipients' .
-                                                ' open email or click any links in outgoing message.">' .
-                                                '?</span></th>') !== false);
+                                                'class="tooltip" title="Check to track when recipients open ' .
+                                                'an email or click any links.">?</span></th>') !== false);
             $this->assertTrue(strpos($content, '<td colspan="1"><input id="ytCampaign_enableTracking" type="hidden" ' .
                                                 'value="0" name="Campaign[enableTracking]"') !== false);
             $this->assertTrue(strpos($content, '<label class="hasCheckBox c_on"><input id="Campaign_enableTracking" ' .
@@ -310,16 +355,16 @@
             $this->assertTrue(strpos($content, '<div class="right-column">') !== false);
             $this->assertTrue(strpos($content, '<div class="email-template-combined-content">') !== false);
             $this->assertTrue(strpos($content, '<div class="email-template-content"><div class="tabs-nav">') !== false);
-            $this->assertTrue(strpos($content, '<a class="active-tab" href="#tab1">Text Content</a>') !== false);
-            $this->assertTrue(strpos($content, '<a href="#tab2">Html Content</a>') !== false);
+            $this->assertTrue(strpos($content, '<a href="#tab1">Text Content</a>') !== false);
+            $this->assertTrue(strpos($content, '<a class="active-tab" href="#tab2">Html Content</a>') !== false);
             $this->assertTrue(strpos($content, '<a id="mergetag-guide" class="simple-link" href="#">' .
                                                 'MergeTag Guide</a></div>') !== false);
-            $this->assertTrue(strpos($content, '<div id="tab1" class="active-tab tab email-template-textContent">') !== false);
+            $this->assertTrue(strpos($content, '<div id="tab1" class=" tab email-template-textContent">') !== false);
             $this->assertTrue(strpos($content, '<th><label for="Campaign_textContent">Text Content</label></th>') !== false);
             $this->assertTrue(strpos($content, '<td colspan="1"><textarea id="Campaign_textContent" ' .
                                                 'name="Campaign[textContent]" rows="6" cols="50">' .
                                                 '</textarea></td></div>') !== false);
-            $this->assertTrue(strpos($content, '<div id="tab2" class="tab email-template-htmlContent">' .
+            $this->assertTrue(strpos($content, '<div id="tab2" class="active-tab tab email-template-htmlContent">' .
                                                 '<label for="Campaign_htmlContent">Html Content</label>') !== false);
             $this->assertTrue(strpos($content, '<textarea id=\'Campaign_htmlContent\' name=\'Campaign[htmlContent]\'>' .
                                                 '</textarea></div></div></td></div>') !== false);
@@ -412,6 +457,9 @@
             $this->assertEquals(3, count($campaigns));
         }
 
+        /**
+         * @depends testSuperUserCreateAction
+         */
         public function testSuperUserDetailsAction()
         {
             $campaignId = self::getModelIdByModelNameAndName ('Campaign', 'New Campaign using Create');
@@ -453,7 +501,7 @@
                                                 'FrameView PortletFrameView MetadataView">') !== false);
             $this->assertTrue(strpos($content, '<div class="juiportlet-columns"> ') !== false);
             $this->assertTrue(strpos($content, '<ul class="juiportlet-columns-CampaignDetailsAndRelationsViewLeft' .
-                                                'BottomView juiportlet-widget-column1 ">') !== false);
+                                                'BottomView juiportlet-widget-column1 juiportlet-column juiportlet-column-no-split">') !== false);
             $this->assertTrue(strpos($content, '<li class="juiportlet-widget CampaignOverallMetricsView" id="Campaign' .
                                                 'DetailsAndRelationsViewLeftBottomView') !== false);
             $this->assertTrue(strpos($content, '<div class="juiportlet-widget-head">') !== false);
@@ -511,10 +559,8 @@
             $this->assertTrue(strpos($content, '<div class="campaign-items-container">') !== false);
             $this->assertTrue(strpos($content, '<div class="cgrid-view" id="list-viewCampaignDetailsAndRelations' .
                                                 'ViewLeftBottomView') !== false);
-            $this->assertTrue(strpos($content, '<div class="general-issue-notice no-email-recipients-found">' .
-                                                '<span class="icon-notice"></span>') !== false);
-            $this->assertTrue(strpos($content, '<p>Email recipients will appear here once the campaign begins ' .
-                                                'sending out</p></div></span>') !== false);
+            $this->assertTrue(strpos($content, 'Email recipients will appear here once the campaign begins ' .
+                                                'sending out') !== false);
         }
 
         /**
@@ -574,9 +620,9 @@
             $this->assertTrue(strpos($content, '<td colspan="1"><input id="Campaign_subject" name="Campaign[subject]" ' .
                                                 'type="text" maxlength="64" value="New Campaign ' .
                                                 'using Create Subject"') !== false);
-            $this->assertTrue(strpos($content, '<th>Enable Tracking<span id="enable-tracking-tooltip" class="tooltip" ' .
-                                                'title="Enabling tracking would record when recipients open email or ' .
-                                                'click any links in outgoing message.">?</span></th>') !== false);
+            $this->assertTrue(strpos($content, '<tr><th>Enable Tracking<span id="enable-tracking-tooltip" ' .
+                                                'class="tooltip" title="Check to track when recipients open ' .
+                                                'an email or click any links.">?</span></th>') !== false);
             $this->assertTrue(strpos($content, '<td colspan="1"><input id="ytCampaign_enableTracking" type="hidden" ' .
                                                 'value="0" name="Campaign[enableTracking]"') !== false);
             $this->assertTrue(strpos($content, '<label class="hasCheckBox c_on"><input id="Campaign_enableTracking" ' .
@@ -616,7 +662,7 @@
             $this->assertTrue(strpos($content, '<td colspan="1"><textarea id="Campaign_textContent" ' .
                                                 'name="Campaign[textContent]" rows="6" cols="50">Text' .
                                                 '</textarea></td></div>') !== false);
-            $this->assertTrue(strpos($content, '<div id="tab2" class="tab email-template-htmlContent">' .
+            $this->assertTrue(strpos($content, '<div id="tab2" class=" tab email-template-htmlContent">' .
                                                 '<label for="Campaign_htmlContent">Html Content</label>') !== false);
             $this->assertTrue(strpos($content, '<textarea id=\'Campaign_htmlContent\' name=\'Campaign[htmlContent]\'>' .
                                                 'Html</textarea></div>') !== false);
@@ -708,6 +754,41 @@
             $this->assertEquals($redirectUrl, $compareRedirectUrl);
             $campaigns = Campaign::getAll();
             $this->assertEquals(2, count($campaigns));
+        }
+
+        /**
+         * @depends testSuperUserDeleteAction
+         */
+        public function testSuperUserCreateFromRelationAction()
+        {
+            $super          = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $campaigns      = Campaign::getAll();
+            $this->assertEquals(2, count($campaigns));
+            $marketingList  = MarketingListTestHelper::createMarketingListByName('my list');
+            //Create a new campaign from a related marketing list.
+            $this->setGetArray(array(   'relationAttributeName' => 'marketingList',
+                'relationModelId'       => $marketingList->id,
+                'relationModuleId'      => 'marketingLists',
+                'redirectUrl'           => 'someRedirect'));
+            $this->setPostArray(array('Campaign' => array(
+                'name'           => 'New Campaign using Create',
+                'fromName'       => 'Zurmo Sales',
+                'fromAddress'    => 'sales@zurmo.com',
+                'sendOnDateTime' => '6/13/13 10:54 AM',
+                'subject' => 'New Campaign using Create Subject',
+                'enableTracking' => '1',
+                'supportsRichText' => '0',
+                'textContent'    => 'Text',
+                'htmlContent'    => 'Html',
+            )));
+            $this->runControllerWithRedirectExceptionAndGetContent('campaigns/default/createFromRelation');
+            $campaigns = Campaign::getByName('New Campaign using Create');
+            $this->assertEquals(1, count($campaigns));
+            $this->assertTrue($campaigns[0]->id > 0);
+            $this->assertTrue($campaigns[0]->owner   == $super);
+            $this->assertTrue($campaigns[0]->marketingList->id == $marketingList->id);
+            $campaigns = Campaign::getAll();
+            $this->assertEquals(3, count($campaigns));
         }
     }
 ?>

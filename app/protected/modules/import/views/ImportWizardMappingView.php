@@ -160,7 +160,7 @@
         protected function getFormLayoutHeaderColumnsContent()
         {
             $headerColumns = array();
-            $headerColumns[] = Zurmo::t('ImportModule', 'Zurmo Field');
+            $headerColumns[] = Zurmo::t('ImportModule', 'Zurmo Field', LabelUtil::getTranslationParamsForAllModules());
             if ($this->model->firstRowIsHeaderRow)
             {
                 $headerColumns[] = Zurmo::t('ImportModule', 'Header');
@@ -263,6 +263,16 @@
                 $previousStep = 'step3';
             }
             return $this->getPreviousPageLinkContentByControllerAction($previousStep);
+        }
+
+        protected function renderPreviousPageLinkLabel()
+        {
+            return Zurmo::t('ZurmoModule', 'Select Permissions');
+        }
+
+        protected function renderNextPageLinkLabel()
+        {
+            return Zurmo::t('ImportModule', 'Analyze Data');
         }
     }
 ?>
