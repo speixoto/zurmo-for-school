@@ -73,7 +73,6 @@
         {
             try
             {
-                $emailMessageForWorkflowForm->getEmailMessageRecipientFormsCount();
                 if ($emailMessageForWorkflowForm->getEmailMessageRecipientFormsCount() > 0)
                 {
                     $helper = new WorkflowEmailMessageProcessingHelper($emailMessageForWorkflowForm, $model, $triggeredByUser);
@@ -135,7 +134,9 @@
             $moduleClassName             = $workflow->getModuleClassName();
             $emailMessageForWorkflowForm = new EmailMessageForWorkflowForm($moduleClassName::getPrimaryModelName(),
                                            $workflow->getType(), 0);
-            $emailMessageForWorkflowForm->setAttributes(unserialize($workflowMessageInQueue->serializedData));
+
+            $unserializedData = unserialize($workflowMessageInQueue->serializedData);
+            $emailMessageForWorkflowForm->setAttributes(reset($unserializedData));
             return $emailMessageForWorkflowForm;
         }
     }
