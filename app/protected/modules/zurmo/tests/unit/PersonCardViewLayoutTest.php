@@ -72,7 +72,7 @@
             $address = new Address();
             $address->street1 = 'testStreet';
 
-            $user->firstName  = 'test' ;
+            $user->firstName  = 'test';
             $user->lastName   = 'me' ;
             $user->title->value = 'testTitle.';
             $user->primaryAddress = $address;
