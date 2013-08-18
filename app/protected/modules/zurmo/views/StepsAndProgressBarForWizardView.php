@@ -49,7 +49,7 @@
 
         public function __construct($zeroBasedStepIndex = 0)
         {
-            assert('is_int($zeroIndexStep)');
+            assert('is_int($zeroBasedStepIndex)');
             $this->zeroBasedStepIndex = $zeroBasedStepIndex;
         }
 

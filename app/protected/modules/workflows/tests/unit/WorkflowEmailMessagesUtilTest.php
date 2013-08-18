@@ -289,7 +289,7 @@
                                     array('type'          => WorkflowEmailMessageRecipientForm::TYPE_DYNAMIC_TRIGGERED_MODEL,
                                         'audienceType'    => EmailMessageRecipient::TYPE_TO),
                                 );
-            $workflowMessageInQueue = WorkflowTestHelper::createExpiredWorkflowMessageInQueue($model, $savedWorkflow, serialize($emailMessage));
+            $workflowMessageInQueue = WorkflowTestHelper::createExpiredWorkflowMessageInQueue($model, $savedWorkflow, serialize(array($emailMessage)));
             $workflow               = new Workflow();
             $workflow->setModuleClassName('WorkflowsTestModule');
             $workflow->setType(Workflow::TYPE_ON_SAVE);

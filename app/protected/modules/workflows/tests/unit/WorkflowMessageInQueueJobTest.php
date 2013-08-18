@@ -70,6 +70,7 @@
             $emailTemplate->modelClassName = 'Account';
             $emailTemplate->type           = 2;
             $emailTemplate->subject        = 'subject';
+            $emailTemplate->textContent    = 'sample text content';
             $saved                         = $emailTemplate->save();
             $this->assertTrue($saved);
             $this->assertEquals(0, Yii::app()->emailHelper->getQueuedCount());
@@ -119,7 +120,7 @@
             $savedWorkflow->isActive        = true;
             $saved                          = $savedWorkflow->save();
             $this->assertTrue($saved);
-            WorkflowTestHelper::createExpiredWorkflowMessageInQueue($model, $savedWorkflow, serialize($emailMessages[1]));
+            WorkflowTestHelper::createExpiredWorkflowMessageInQueue($model, $savedWorkflow, serialize(array($emailMessages[1])));
 
             RedBeanModelsCache::forgetAll(true); //simulates page change, required to confirm Item does not get trashed
             $this->assertEquals(1, count(WorkflowMessageInQueue::getAll()));

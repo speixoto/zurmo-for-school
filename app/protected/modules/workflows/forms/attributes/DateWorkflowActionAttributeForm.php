@@ -67,7 +67,7 @@
                 }
                 else
                 {
-                    $validator             = CValidator::createValidator('CRequiredValidator', $this, 'durationInterval');
+                    $validator = CValidator::createValidator('CRequiredValidator', $this, 'durationInterval');
                     $validator->validate($this);
                     return !$this->hasErrors();
                 }
