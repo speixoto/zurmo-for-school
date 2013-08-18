@@ -134,7 +134,6 @@
             $moduleClassName             = $workflow->getModuleClassName();
             $emailMessageForWorkflowForm = new EmailMessageForWorkflowForm($moduleClassName::getPrimaryModelName(),
                                            $workflow->getType(), 0);
-
             $unserializedData = unserialize($workflowMessageInQueue->serializedData);
             $emailMessageForWorkflowForm->setAttributes(reset($unserializedData));
             return $emailMessageForWorkflowForm;
