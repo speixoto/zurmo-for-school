@@ -136,7 +136,7 @@
             $pageSize       = Yii::app()->pagination->resolveActiveForCurrentUserByType('subListPageSize');
             $sortAttribute  = SearchUtil::resolveSortAttributeFromGetArray($this->modelClassName);
             $sortDescending =  SearchUtil::resolveSortDescendingFromGetArray($this->modelClassName);
-            return new RedBeanModelDataProvider( $this->modelClassName, $sortAttribute, $sortDescending,
+            return new RedBeanModelDataProvider( $this->modelClassName, $sortAttribute, (bool)$sortDescending,
                                                                 $searchAttributeData, array(
                                                                     'pagination' => array(
                                                                         'pageSize' => $pageSize,

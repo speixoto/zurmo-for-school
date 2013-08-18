@@ -100,12 +100,12 @@
             }
             //Sort by title
             ksort($sortablePortlets);
-            foreach ($sortablePortlets as $title => $url)
+            foreach ($sortablePortlets as $data)
             {
-                $onClick = 'window.location.href = "' . $url . '"';
+                $onClick = 'window.location.href = "' . $data['url'] . '"';
                 $content .= '<li>';
 
-                $label    = '<span>\</span>' . $title;
+                $label    = '<span>\</span>' . $data['title'];
                 $content .= ZurmoHtml::link(Zurmo::t('HomeModule', $label ), null, array('onclick' => $onClick));
                 $content .= '</li>';
             }
