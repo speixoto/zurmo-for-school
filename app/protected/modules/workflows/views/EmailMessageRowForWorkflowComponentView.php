@@ -190,9 +190,9 @@
          */
         protected function renderRecipientsContent()
         {
-            $content  = '<div class="' . self::RECIPIENTS_CONTAINER_CLASS_NAME . '">';
-            $content .= $this->renderRecipientsContentAndWrapper();
+            $content  = '<div class="' . self::RECIPIENTS_CONTAINER_CLASS_NAME . '">';            
             $content .= $this->renderRecipientSelectorContentAndWrapper();
+            $content .= $this->renderRecipientsContentAndWrapper();
             $content .= $this->renderHiddenRecipientsInputForValidationContent();
             $content .= '</div>';
             return $content;
@@ -222,7 +222,7 @@
         {
             $content     = ZurmoHtml::tag('h2', array(), Zurmo::t('WorkflowsModule', 'Recipients'));
             $htmlOptions = array('id' => $this->resolveAddRecipientId(), 'class' => self::ADD_RECIPIENT_CLASS_NAME);
-            $content     = ZurmoHtml::dropDownList(self::ADD_RECIPIENT_TYPE_NAME, null,
+            $content    .= ZurmoHtml::dropDownList(self::ADD_RECIPIENT_TYPE_NAME, null,
                            $this->resolveRecipientTypeDataAndLabels(), $htmlOptions);
             return         ZurmoHtml::tag('div', array('class' => 'email-message-recipient-type-selector-container'), $content);
         }
@@ -249,7 +249,7 @@
             $recipientsContent           = ZurmoHtml::tag('div',
                                            array('class' => self::EMAIL_MESSAGE_RECIPIENTS_ROW_CLASS_NAME), $itemsContent);
             $content                     = ZurmoHtml::hiddenField($hiddenInputName, $rowCount, $idInputHtmlOptions);
-            $content                    .= ZurmoHtml::tag('div', array(), $content . $recipientsContent);
+            $content                    .= ZurmoHtml::tag('div', array(), $recipientsContent);
             return $content;
         }
 
@@ -373,13 +373,13 @@
                              $(this).parentsUntil(".' . self::RECIPIENTS_CONTAINER_CLASS_NAME . '").parent().find(".' . self::RECIPIENTS_ROW_COUNTER_CLASS_NAME . '").val()',
                 'url'     =>  $url,
                 'success' => 'js:function(data){
-                    existingRowNumber = parseInt(triggeredObject.parentsUntil(".' . self::RECIPIENTS_CONTAINER_CLASS_NAME . '").parent().
+                    existingRowNumber = parseInt(triggeredObject.parentsUntil(".' . self::RECIPIENTS_CONTAINER_CLASS_NAME . '").parent().                        
                     find(".' . self::RECIPIENTS_ROW_COUNTER_CLASS_NAME . '").val());
                     triggeredObject.parentsUntil(".' . self::RECIPIENTS_CONTAINER_CLASS_NAME . '").parent().
                     find(".' . self::RECIPIENTS_ROW_COUNTER_CLASS_NAME . '")
                     .val(existingRowNumber + 1);
                     triggeredObject.parentsUntil(".' . self::RECIPIENTS_CONTAINER_CLASS_NAME . '").parent()
-                    .find(".' . self::EMAIL_MESSAGE_RECIPIENTS_ROW_CLASS_NAME . '").find("ul").append(data);
+                    .find(".' . self::EMAIL_MESSAGE_RECIPIENTS_ROW_CLASS_NAME . '").find("ul:first").append(data);
                     rebuildWorkflowEmailMessageRecipientRowNumbers(triggeredObject.
                     parentsUntil(".' . self::RECIPIENTS_CONTAINER_CLASS_NAME . '").parent()
                     .find(".' . self::EMAIL_MESSAGE_RECIPIENTS_ROW_CLASS_NAME . '"));
