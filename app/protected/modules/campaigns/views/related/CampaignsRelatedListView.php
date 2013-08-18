@@ -40,7 +40,7 @@
         {
             $metadata = array(
                 'perUser' => array(
-                    'title' => "eval:Zurmo::t('CampaignsModule', 'Camapaigns')",
+                    'title' => "eval:Zurmo::t('CampaignsModule', 'Campaigns')",
                 ),
                 'global' => array(
                     'toolbar' => array(
