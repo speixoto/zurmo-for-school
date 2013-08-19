@@ -88,10 +88,11 @@
                 $view       = new ProductsPageView($mixedView);
             }
             else
-            {
+            {                
+                $introView        = new ProductsIntroView(get_class($this->getModule()));
                 $mixedView  = $this->makeActionBarSearchAndListView($searchForm, $dataProvider,
                                    'SecuredActionBarForProductsSearchAndListView',
-                                    null, $activeActionElementType);
+                                    null, $activeActionElementType, $introView);
                 $view       = new ProductsPageView(ZurmoDefaultViewUtil::
                                                     makeViewWithBreadcrumbsForCurrentUser(
                                                         $this, $mixedView, $breadcrumbLinks, 'ProductBreadCrumbView'));

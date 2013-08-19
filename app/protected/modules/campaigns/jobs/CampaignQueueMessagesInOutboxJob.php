@@ -73,6 +73,7 @@
                     $this->errorMessage = $e->getMessage();
                     return false;
                 }
+                $this->runGarbageCollection($campaignItem);
             }
             return true;
         }
@@ -80,6 +81,20 @@
         protected function processCampaignItemInQueue(CampaignItem $campaignItem)
         {
             CampaignItemsUtil::processDueItem($campaignItem);
+        }
+
+        /**
+         * Not pretty, but gets the job done. Solves memory leak problem.
+         * @param CampaignItem $campaignItem
+         */
+        protected function runGarbageCollection($campaignItem)
+        {
+            assert('$campaignItem instanceof CampaignItem');
+            $campaignItem->campaign->marketingList->forgetValidators();
+            $campaignItem->campaign->forgetValidators();
+            unset($campaignItem->campaign->marketingList);
+            unset($campaignItem->campaign);
+            parent::runGarbageCollection($campaignItem);
         }
     }
 ?>

@@ -61,12 +61,18 @@
          * @var integer | null
          */
         protected $offset;
+        
+        /**
+         * Set to true if you dataProvider should get grand totals
+         * @var bool
+         */
+        protected $haveGrandTotals = false;
 
         /**
          * @var array
          */
         private $_rowsData;
-
+        
         /**
          * @param Report $report
          * @param array $config
@@ -113,7 +119,7 @@
         {
             return $this->report->getGroupBys();
         }
-
+            
         /**
          * See the yii documentation. This function is made public for unit testing.
          * @return int|string
@@ -149,7 +155,7 @@
             $selectQueryAdapter     = new RedBeanModelSelectQueryAdapter();
             return $this->makeSqlQueryForFetchingData($selectQueryAdapter, $offset, $limit);
         }
-
+                
         /**
          * Public for testing purposes only
          * @param $filters
@@ -236,7 +242,7 @@
             }
             return $filters;
         }
-
+                
         /**
          * @return array
          */
@@ -326,10 +332,20 @@
                 }
                 $resultsData[$key] = $reportResultsRowData;
                 $idByOffset++;
-            }
+            }            
             return $resultsData;
         }
-
+        
+        public function runQueryAndGrandTotalsData()
+        {                       
+            if (!$this->haveGrandTotals)
+            {
+                return null;
+            }
+            $rows = $this->getGrandTotalsRowsData();            
+            return $rows;
+        }
+                
         /**
          * @param $offset
          * @return int
@@ -349,13 +365,19 @@
          * @return array
          */
         protected function getRowsData($sql)
-        {
+        {            
             assert('is_string($sql)');
             if ($this->_rowsData == null)
             {
                 $this->_rowsData = ZurmoRedBean::getAll($sql);
             }
             return $this->_rowsData;
+        }
+        
+        protected function getGrandTotalsRowsData()
+        {
+            $sql = $this->makeSqlQueryForGrandTotals();              
+            return R::getAll($sql);
         }
 
         /**
@@ -371,7 +393,7 @@
             }
             return $keys;
         }
-
+              
         /**
          * @param RedBeanModelSelectQueryAdapter $selectQueryAdapter
          * @param $offset
@@ -392,7 +414,7 @@
             return                    SQLQueryUtil::makeQuery($modelClassName::getTableName($modelClassName),
                                       $selectQueryAdapter, $joinTablesAdapter, $offset, $limit, $where, $orderBy, $groupBy);
         }
-
+                                
         /**
          * @param $selectQueryAdapter
          * @param bool $selectJustCount
@@ -421,6 +443,40 @@
             }
             return                    SQLQueryUtil::makeQuery($modelClassName::getTableName($modelClassName),
                                       $selectQueryAdapter, $joinTablesAdapter, null, null, $where, $orderBy, $groupBy);
+        }
+        
+        protected function getDisplayAttributesForGrandTotals()
+        {
+            $displayAttributes = $this->resolveDisplayAttributes();
+            foreach ($displayAttributes as $key => $displayAttribute)
+            {
+                foreach ($this->resolveGroupBys() as $groupBy)
+                {                    
+                    if ($displayAttribute->attributeIndexOrDerivedType == $groupBy->attributeIndexOrDerivedType)
+                    {
+                        unset($displayAttributes[$key]);
+                    }
+                }
+            }        
+            return $displayAttributes;
+        }
+        
+        protected function makeSqlQueryForGrandTotals()
+        {            
+            $selectQueryAdapter     = new RedBeanModelSelectQueryAdapter();            
+            $moduleClassName        = $this->report->getModuleClassName();
+            $modelClassName         = $moduleClassName::getPrimaryModelName();
+            $joinTablesAdapter      = new RedBeanModelJoinTablesQueryAdapter($modelClassName);                                         
+            $builder                = new DisplayAttributesReportQueryBuilder($joinTablesAdapter, $selectQueryAdapter,
+                                          $this->report->getCurrencyConversionType());
+            $builder->makeQueryContent($this->getDisplayAttributesForGrandTotals());            
+            $where                  = $this->makeFiltersContent($joinTablesAdapter);
+            $orderBy                = null;
+            $groupBy                = $this->makeGroupBysContentForGrandTotals($joinTablesAdapter);
+            $offset                 = null;
+            $limit                  = null;                   
+            return                    SQLQueryUtil::makeQuery($modelClassName::getTableName($modelClassName),
+                                      $selectQueryAdapter, $joinTablesAdapter, $offset, $limit, $where, $orderBy, $groupBy);            
         }
 
         /**
@@ -468,7 +524,16 @@
             $builder = new GroupBysReportQueryBuilder($joinTablesAdapter);
             return $builder->makeQueryContent($this->resolveGroupBys());
         }
-
+        
+        /**
+         * @param RedBeanModelJoinTablesQueryAdapter $joinTablesAdapter
+         * @return null|string
+         */
+        protected function makeGroupBysContentForGrandTotals(RedBeanModelJoinTablesQueryAdapter $joinTablesAdapter)
+        {
+            return null;
+        }
+                
         /**
          * @param RedBeanModelJoinTablesQueryAdapter $joinTablesAdapter
          * @return null|string

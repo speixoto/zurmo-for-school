@@ -48,6 +48,16 @@
          * @param string $enclosure
          * @return bool
          */
+
+        /**
+         * Given a file resource, convert the file into a database table based on the table name provided.
+         * Assumes the file is a csv.
+         * @param object $fileHandle
+         * @param string $tableName
+         * @param string $delimiter
+         * @param string $enclosure
+         * @return bool
+         */
         public static function makeDatabaseTableByFileHandleAndTableName($fileHandle, $tableName, $delimiter = ',', // Not Coding Standard
                                                                          $enclosure = "'")
         {
@@ -74,7 +84,7 @@
             return true;
         }
 
-        protected static function optimizeTableNonImportColumns($tableName)
+        public static function optimizeTableNonImportColumns($tableName)
         {
             $bean         = ZurmoRedBean::dispense($tableName);
             $bean->analysisStatus = '2147483647'; //Creates an integer todo: optimize to status SET
@@ -83,9 +93,9 @@
             {
                 $bean->serializedAnalysisMessages .= chr(rand(ord('a'), ord('z')));
             }
-            while (strlen($bean->serializedmessages) < '1024')
+            while (strlen($bean->serializedMessages) < '1024')
             {
-                $bean->serializedmessages .= chr(rand(ord('a'), ord('z')));
+                $bean->serializedMessages .= chr(rand(ord('a'), ord('z')));
             }
             ZurmoRedBean::store($bean);
             ZurmoRedBean::trash($bean);

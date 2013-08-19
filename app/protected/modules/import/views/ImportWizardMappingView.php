@@ -272,7 +272,7 @@
 
         protected function renderNextPageLinkLabel()
         {
-            return Zurmo::t('ImportModule', 'Analysis Data');
+            return Zurmo::t('ImportModule', 'Analyze Data');
         }
     }
 ?>

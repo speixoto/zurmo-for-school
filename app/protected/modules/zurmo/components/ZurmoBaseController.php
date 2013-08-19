@@ -102,7 +102,8 @@
 
         protected function makeActionBarSearchAndListView($searchModel, $dataProvider,
                                                           $actionBarViewClassName = 'SecuredActionBarForSearchAndListView',
-                                                          $viewPrefixName = null, $activeActionElementType = null)
+                                                          $viewPrefixName = null, $activeActionElementType = null,
+                                                          IntroView $introView = null)
         {
             assert('is_string($actionBarViewClassName)');
             assert('is_string($viewPrefixName) || $viewPrefixName == null');
@@ -121,7 +122,8 @@
                 $dataProvider,
                 GetUtil::resolveSelectedIdsFromGet(),
                 $actionBarViewClassName,
-                $activeActionElementType
+                $activeActionElementType,
+                $introView
             );
         }
 
@@ -244,6 +246,7 @@
                 {
                     SavedSearchUtil::resolveSearchFormByStickyDataAndModel($stickySearchData, $searchModel);
                     SavedSearchUtil::resolveSearchFormByStickySortData($getData, $searchModel, $stickySearchData);
+                    SearchUtil::resolveSearchFormByStickyFilterByStarredData($getData, $searchModel, $stickySearchData);
                     $dataCollection = new SavedSearchAttributesDataCollection($searchModel);
                 }
                 else

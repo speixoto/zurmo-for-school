@@ -233,15 +233,8 @@
          */
         protected function getCGridViewParams()
         {
-            $columns = $this->getCGridViewColumns();
-            assert('is_array($columns)');
-            $gridViewParams = parent::getCGridViewParams();
-            $gridViewParams['id']              = $this->getGridViewId();
-            $gridViewParams['pager']           = $this->getCGridViewPagerParams();
-            $gridViewParams['afterAjaxUpdate'] = $this->getCGridViewAfterAjaxUpdate();
-            $gridViewParams['columns']         = $columns;
-            $gridViewParams['template']        = static::getGridTemplate();
-            $gridViewParams['params']          = $this->params;
+            $gridViewParams           = parent::getCGridViewParams();
+            $gridViewParams['params'] = $this->params;
             return $gridViewParams;
         }
 
@@ -251,7 +244,7 @@
         protected function getCGridViewPagerParams()
         {
             $gridViewPagerParams = parent::getCGridViewPagerParams();
-            $defaultData = array('id' => $this->params["relationModel"]->id, 'stickyOffset' => 0);
+            $defaultData = array_merge(GetUtil::getData(), array('id' => $this->params["relationModel"]->id, 'stickyOffset' => 0));
             $gridViewPagerParams['paginationParams'] = array_merge($defaultData, array('portletId' => $this->params['portletId']));
             return $gridViewPagerParams;
         }

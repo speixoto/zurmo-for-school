@@ -99,7 +99,7 @@
             $owner->attachEventHandler('onBeginRequest', array($this, 'handleImports'));
             $owner->attachEventHandler('onBeginRequest', array($this, 'handleLibraryCompatibilityCheck'));
             $owner->attachEventHandler('onBeginRequest', array($this, 'handleStartPerformanceClock'));
-            if (!Yii::app()->getRequest()->isExternalRequest())
+            if (!Yii::app()->getRequest()->isAnExternalRequestVariant())
             {
                 $owner->attachEventHandler('onBeginRequest', array($this, 'handleBrowserCheck'));
             }

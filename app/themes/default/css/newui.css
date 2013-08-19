@@ -275,8 +275,11 @@ a.ModalGameNotification a,
 .email-template-combined-content .big-spinner,
 .email-template-content .big-spinner,
 .autoresponder-stats,
+.module-intro-steps > div,
 #marketing-intro-steps > div,
+.module-intro-steps h3,
 #marketing-intro-steps h3,
+.module-intro-steps p,
 #marketing-intro-steps p,
 .continuum > div,
 .import-item-stage-status,
@@ -298,6 +301,8 @@ a.ModalGameNotification a,
 }
 .cf:before,
 .cf:after,
+.operation-duration-fields:before,
+.operation-duration-fields:after,
 .recipient:before,
 .recipient:after,
 #NoUserEmailConfigurationYetView:before,
@@ -322,6 +327,7 @@ a.ModalGameNotification a,
   display: table;
 }
 .cf:after,
+.operation-duration-fields:after,
 .recipient:after,
 #NoUserEmailConfigurationYetView:after,
 .dynamic-row:after,
@@ -335,6 +341,7 @@ a.ModalGameNotification a,
   clear: both;
 }
 .cf,
+.operation-duration-fields,
 .recipient,
 #NoUserEmailConfigurationYetView,
 .dynamic-row,
@@ -1009,6 +1016,7 @@ body.blue .configuration-list td:last-child a:hover span:before,
 body.blue .addfileinput-button:hover span,
 body.blue .available-portlets span,
 body.blue .hide-welcome span,
+body.blue .hide-module-intro span,
 body.blue .hide-marketing-intro span,
 body.blue #kanban-board-options-link:hover,
 body.blue #more-search-link:hover,
@@ -1027,8 +1035,7 @@ body.blue .portlet-toolbar .icon-create:hover,
 body.blue .portlet-toolbar a:hover,
 body.blue .portlet-toolbar .icon-create:before,
 body.blue #filter-latest-activities-link:hover,
-body.blue .badge-message h3,
-body.blue #marketing-list-member-select-contact-or-report-form a.close-flyout:hover {
+body.blue .badge-message h3 {
   color: #7cb830 !important;
 }
 body.blue #InstallAccessFailurePageView a,
@@ -1584,6 +1591,7 @@ body.brown .configuration-list td:last-child a:hover span:before,
 body.brown .addfileinput-button:hover span,
 body.brown .available-portlets span,
 body.brown .hide-welcome span,
+body.brown .hide-module-intro span,
 body.brown .hide-marketing-intro span,
 body.brown #kanban-board-options-link:hover,
 body.brown #more-search-link:hover,
@@ -1602,8 +1610,7 @@ body.brown .portlet-toolbar .icon-create:hover,
 body.brown .portlet-toolbar a:hover,
 body.brown .portlet-toolbar .icon-create:before,
 body.brown #filter-latest-activities-link:hover,
-body.brown .badge-message h3,
-body.brown #marketing-list-member-select-contact-or-report-form a.close-flyout:hover {
+body.brown .badge-message h3 {
   color: #b88f30 !important;
 }
 body.brown #InstallAccessFailurePageView a,
@@ -2159,6 +2166,7 @@ body.lime .configuration-list td:last-child a:hover span:before,
 body.lime .addfileinput-button:hover span,
 body.lime .available-portlets span,
 body.lime .hide-welcome span,
+body.lime .hide-module-intro span,
 body.lime .hide-marketing-intro span,
 body.lime #kanban-board-options-link:hover,
 body.lime #more-search-link:hover,
@@ -2177,8 +2185,7 @@ body.lime .portlet-toolbar .icon-create:hover,
 body.lime .portlet-toolbar a:hover,
 body.lime .portlet-toolbar .icon-create:before,
 body.lime #filter-latest-activities-link:hover,
-body.lime .badge-message h3,
-body.lime #marketing-list-member-select-contact-or-report-form a.close-flyout:hover {
+body.lime .badge-message h3 {
   color: #bcc98e !important;
 }
 body.lime #InstallAccessFailurePageView a,
@@ -2734,6 +2741,7 @@ body.cherry .configuration-list td:last-child a:hover span:before,
 body.cherry .addfileinput-button:hover span,
 body.cherry .available-portlets span,
 body.cherry .hide-welcome span,
+body.cherry .hide-module-intro span,
 body.cherry .hide-marketing-intro span,
 body.cherry #kanban-board-options-link:hover,
 body.cherry #more-search-link:hover,
@@ -2752,8 +2760,7 @@ body.cherry .portlet-toolbar .icon-create:hover,
 body.cherry .portlet-toolbar a:hover,
 body.cherry .portlet-toolbar .icon-create:before,
 body.cherry #filter-latest-activities-link:hover,
-body.cherry .badge-message h3,
-body.cherry #marketing-list-member-select-contact-or-report-form a.close-flyout:hover {
+body.cherry .badge-message h3 {
   color: #933140 !important;
 }
 body.cherry #InstallAccessFailurePageView a,
@@ -3309,6 +3316,7 @@ body.turquoise .configuration-list td:last-child a:hover span:before,
 body.turquoise .addfileinput-button:hover span,
 body.turquoise .available-portlets span,
 body.turquoise .hide-welcome span,
+body.turquoise .hide-module-intro span,
 body.turquoise .hide-marketing-intro span,
 body.turquoise #kanban-board-options-link:hover,
 body.turquoise #more-search-link:hover,
@@ -3327,8 +3335,7 @@ body.turquoise .portlet-toolbar .icon-create:hover,
 body.turquoise .portlet-toolbar a:hover,
 body.turquoise .portlet-toolbar .icon-create:before,
 body.turquoise #filter-latest-activities-link:hover,
-body.turquoise .badge-message h3,
-body.turquoise #marketing-list-member-select-contact-or-report-form a.close-flyout:hover {
+body.turquoise .badge-message h3 {
   color: #44bbcc !important;
 }
 body.turquoise #InstallAccessFailurePageView a,
@@ -3884,6 +3891,7 @@ body.violet .configuration-list td:last-child a:hover span:before,
 body.violet .addfileinput-button:hover span,
 body.violet .available-portlets span,
 body.violet .hide-welcome span,
+body.violet .hide-module-intro span,
 body.violet .hide-marketing-intro span,
 body.violet #kanban-board-options-link:hover,
 body.violet #more-search-link:hover,
@@ -3902,8 +3910,7 @@ body.violet .portlet-toolbar .icon-create:hover,
 body.violet .portlet-toolbar a:hover,
 body.violet .portlet-toolbar .icon-create:before,
 body.violet #filter-latest-activities-link:hover,
-body.violet .badge-message h3,
-body.violet #marketing-list-member-select-contact-or-report-form a.close-flyout:hover {
+body.violet .badge-message h3 {
   color: #91a1dc !important;
 }
 body.violet #InstallAccessFailurePageView a,
@@ -4459,6 +4466,7 @@ body.honey .configuration-list td:last-child a:hover span:before,
 body.honey .addfileinput-button:hover span,
 body.honey .available-portlets span,
 body.honey .hide-welcome span,
+body.honey .hide-module-intro span,
 body.honey .hide-marketing-intro span,
 body.honey #kanban-board-options-link:hover,
 body.honey #more-search-link:hover,
@@ -4477,8 +4485,7 @@ body.honey .portlet-toolbar .icon-create:hover,
 body.honey .portlet-toolbar a:hover,
 body.honey .portlet-toolbar .icon-create:before,
 body.honey #filter-latest-activities-link:hover,
-body.honey .badge-message h3,
-body.honey #marketing-list-member-select-contact-or-report-form a.close-flyout:hover {
+body.honey .badge-message h3 {
   color: #abbc42 !important;
 }
 body.honey #InstallAccessFailurePageView a,
@@ -7383,8 +7390,8 @@ td {
   font-weight: normal;
   text-align: left;
 }
-#list-view,
-#import-temp-table-list-view {
+#import-temp-table-list-view,
+#list-view {
   overflow-x: auto;
   position: relative;
   background: -webkit-linear-gradient(left, #ffffff 30%, rgba(255, 255, 255, 0)), -webkit-linear-gradient(left, rgba(255, 255, 255, 0), #ffffff 70%) 100%, -webkit-radial-gradient(0 50%, farthest-side, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0)), -webkit-radial-gradient(100% 50%, farthest-side, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0)) 100% 0;
@@ -7500,6 +7507,10 @@ td {
   margin-top: 2px;
   float: left;
 }
+.stacked-list td .star-column {
+  margin: -6px 15px 0 0 !important;
+  float: right;
+}
 .stacked-list tr:first-child > div:first-child {
   font-size: 13px;
   font-weight: bold;
@@ -7542,6 +7553,11 @@ tr.even {
 .checkbox-column .hasCheckBox {
   margin: -4px auto 0 auto;
 }
+.star-column {
+  width: 20px;
+  text-align: center;
+  padding: 0 !important;
+}
 .button-column {
   width: 35px;
   text-align: center;
@@ -7554,6 +7570,40 @@ tr.even {
   font-size: 24px;
   font-family: "zurmo_gamification_symbly_rRg";
   visibility: hidden;
+}
+.icon-star {
+  font-weight: normal;
+  font-size: 26px;
+  font-family: "zurmo_gamification_symbly_rRg";
+  color: #ccc !important;
+  -webkit-text-shadow: 0 0 1px #333333;
+  -moz-text-shadow: 0 0 1px #333333;
+  -o-text-shadow: 0 0 1px #333333;
+  -ms-text-shadow: 0 0 1px #333333;
+  text-shadow: 0 0 1px #333333;
+  top: -1px;
+  position: relative;
+  line-height: 1;
+}
+.icon-star:hover,
+.icon-star.starred {
+  color: #ffef42 !important;
+}
+#list-view_columnStar {
+  line-height: 1;
+  width: 20px;
+  text-align: center;
+  padding-right: 0 !important;
+  padding-left: 0 !important;
+}
+#list-view_columnStar .icon-star {
+  top: 0;
+  left: -2px;
+}
+h1 .icon-star,
+.juiportlet-widget-head .icon-star {
+  top: 1px;
+  margin-left: 5px;
 }
 .juiportlet-widget .empty {
   padding: 5px 0 10px 0;
@@ -10183,6 +10233,23 @@ div.hasHalfs > div input {
 .twoThirds {
   width: 64%;
 }
+.operation-duration-fields.twoFields input[type="text"] {
+  width: 49%;
+  float: left;
+}
+.operation-duration-fields.twoFields > div {
+  width: 49% !important;
+  float: right;
+}
+.operation-duration-fields.threeFields > div.hasDropDown,
+.operation-duration-fields.threeFields > input[type="text"] {
+  width: 32% !important;
+  float: left;
+  margin-left: 2%;
+}
+.operation-duration-fields.threeFields > input[type="text"] {
+  margin-left: 0;
+}
 .juiportlet-widget.OpportunitiesForAccountRelatedListView div.button-column,
 .juiportlet-widget.ContactsForAccountRelatedListView div.button-column {
   padding-top: 4px;
@@ -12398,6 +12465,7 @@ table.configuration-list td:last-child a .z-label:before {
   margin-right: 5px;
 }
 #JobsCollectionView table {
+  table-layout: auto;
   border-top: 1px solid #DFDFDF;
 }
 #JobsCollectionView table:first-child {
@@ -13468,7 +13536,7 @@ div.wide.form .row {
 div.wide.form .buttons,
 div.wide.form .hint,
 div.wide.form .errorMessage {
-  clear: left;
+  clear: both;
   padding-left: 2px;
 }
 .field-description {
@@ -17607,6 +17675,9 @@ a.user-link {
   -ms-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
 }
+.dynamic-row .errorMessage {
+  margin-bottom: 5px;
+}
 .dynamic-row .hasDropDown {
   width: auto !important;
 }
@@ -17741,7 +17812,6 @@ a.user-link {
   width: 80%;
 }
 .first-date-area {
-  margin-top: 10px;
   display: block;
 }
 .dynamic-and-for-mixed {
@@ -17818,8 +17888,23 @@ a.user-link {
   padding-left: 5px !important;
   border-left: none !important;
 }
-.ReportResultsGridView #report-results-grid-view > .items tbody td:first-child {
+.ReportResultsGridView #report-results-grid-view > .items tbody td:first-child,
+.ReportResultsGridView #report-results-grid-view > .items tfoot td:first-child {
   border-left: none !important;
+}
+.ReportResultsGridView #report-results-grid-view > .items .total-column,
+.ReportResultsGridView #report-results-grid-view > .items tfoot td {
+  display: block;
+  padding: 10px;
+  border-top: 1px solid #DFDFDF;
+  background: #111111 url(../images/dark-texture-table-footer.png) left top repeat-x !important;
+  color: #FFF;
+  font-weight: bold;
+  background-color: #3d3d3d !important;
+  display: table-cell;
+  border-color: transparent !important;
+  border: none !important;
+  border-left: 1px solid #3d3d3d !important;
 }
 .ReportResultsGridView #report-results-grid-view > .items .expanded-row td,
 .ReportResultsGridView #report-results-grid-view > .items .expanded-row th {
@@ -18178,6 +18263,7 @@ a.user-link {
 .all-related-field {
   float: left;
   width: 80%;
+  padding-left: 10px;
 }
 .all-related-field .value-data {
   width: 42.5%;
@@ -18237,6 +18323,9 @@ a.user-link {
   margin-left: 25%;
   margin-top: 10px;
   padding-left: 15px;
+}
+.dynamic-row-duration > div {
+  margin-top: 0 !important;
 }
 /*for actions in WORKFLOWS hide/show sequence*/
 .ComponentForWorkflowWizardView .add-email-message-button-container,
@@ -18879,14 +18968,24 @@ a + .autoresponder-stats {
 		}*/
 
 }
+.module-intro-content,
 #marketing-intro-content {
   margin-bottom: 30px;
 }
+.module-intro-examples h3 {
+  margin-bottom: 10px;
+}
+.module-intro-examples ol {
+  padding-left: 15px;
+  line-height: 175%;
+}
+.module-intro-steps,
 #marketing-intro-steps {
   float: left;
   width: 100%;
   margin: 30px 0 15px 0;
 }
+.module-intro-steps > div,
 #marketing-intro-steps > div {
   float: left;
   margin-left: 2%;
@@ -18914,9 +19013,11 @@ a + .autoresponder-stats {
   box-shadow: inset 0 1px 1px 0 rgba(200, 200, 200, 0.4), 0 1px 0 0 #111;
   padding: 1px 0 0 0;
 }
+.module-intro-steps > div:first-child,
 #marketing-intro-steps > div:first-child {
   margin-left: 0;
 }
+.module-intro-steps h3,
 #marketing-intro-steps h3 {
   color: #fff;
   font-size: 14px;
@@ -18935,11 +19036,13 @@ a + .autoresponder-stats {
   width: 85px;
   border-right: 1px solid #282828;
 }
+.module-intro-steps h3 strong,
 #marketing-intro-steps h3 strong {
   display: block;
   font-size: 50px;
   line-height: 1;
 }
+.module-intro-steps h3 span,
 #marketing-intro-steps h3 span {
   color: #fff;
   display: inline-block;
@@ -18948,6 +19051,7 @@ a + .autoresponder-stats {
   line-height: 50px;
   margin-top: -5px;
 }
+.module-intro-steps p,
 #marketing-intro-steps p {
   min-height: 149px;
   padding: 10px 10px 10px 10px;
@@ -18957,15 +19061,27 @@ a + .autoresponder-stats {
   border-left: 1px solid #333333;
   color: #ececec;
 }
+.module-intro-steps p strong,
 #marketing-intro-steps p strong {
   color: #fff;
   display: block;
   font-size: 14px;
   line-height: 22px;
 }
+.module-intro-steps span,
 #marketing-intro-steps span {
   display: block;
 }
+#products-intro-steps img {
+  float: left;
+  margin: 10px 15px 10px 10px;
+  opacity: 0.83;
+}
+#products-intro-steps .third p {
+  border-left: none !important;
+  padding-top: 0;
+}
+.hide-module-intro,
 .hide-marketing-intro {
   display: block;
   clear: both;
@@ -18978,6 +19094,7 @@ a + .autoresponder-stats {
   float: right;
   margin-bottom: 30px;
 }
+.hide-module-intro span,
 .hide-marketing-intro span {
   font-weight: normal;
   font-size: 26px;
@@ -18988,8 +19105,54 @@ a + .autoresponder-stats {
   outline: none !important;
   display: inline-block;
 }
+.hide-module-intro span:before,
 .hide-marketing-intro span:before {
   content: "•";
+}
+.catalog-item-description .icon,
+.product-description .icon,
+.catalog-description .icon {
+  position: relative;
+  margin: 0px 15px 0 0;
+  display: inline-block;
+  height: 100%;
+}
+.catalog-item-description .icon:before,
+.product-description .icon:before,
+.catalog-description .icon:before {
+  content: '\00CE';
+  font-weight: normal;
+  font-size: 145px;
+  font-family: "zurmo_gamification_symbly_rRg";
+  line-height: 60px;
+  position: absolute;
+  top: 10px;
+  -webkit-text-shadow: 0 -1px 0 #000000;
+  -moz-text-shadow: 0 -1px 0 #000000;
+  -o-text-shadow: 0 -1px 0 #000000;
+  -ms-text-shadow: 0 -1px 0 #000000;
+  text-shadow: 0 -1px 0 #000000;
+}
+.catalog-item-description p {
+  margin-left: 95px;
+}
+.catalog-item-description .icon:before {
+  content: '\00CF';
+  font-size: 160px;
+}
+.product-description p {
+  margin-left: 110px;
+}
+.product-description .icon:before {
+  left: 10px;
+  content: '\0027';
+  font-size: 160px;
+}
+.products .product-description {
+  color: #fff !important;
+}
+.producttemplates .catalog-item-description .icon:before {
+  color: #fff !important;
 }
 /*Continuum*/
 .email-recipient-name {
@@ -19110,28 +19273,51 @@ a + .autoresponder-stats {
 .no-autoresponders-found .icon-notice:before {
   content: "g7";
 }
+#ProductIntroLinkActionElement ul,
 #MarketingIntroLinkActionElement ul {
   right: 0;
 }
+#ProductIntroLinkActionElement ul li,
 #MarketingIntroLinkActionElement ul li {
   padding: 0 5px 5px 5px;
 }
+#ProductIntroLinkActionElement ul li .hasCheckBox,
 #MarketingIntroLinkActionElement ul li .hasCheckBox {
   display: inline-block;
   margin-right: 5px;
   position: relative;
   top: 4px;
 }
+#ProductIntroLinkActionElement .parent,
+#MarketingIntroLinkActionElement .parent {
+  /*> a > span:after{
+			content:"n";
+			.symbly(24px);
+			position: relative;
+			top: 2px;
+		}*/
+
+}
+#ProductIntroLinkActionElement .parent a,
 #MarketingIntroLinkActionElement .parent a {
   padding-left: 10px;
 }
+#ProductIntroLinkActionElement .parent > a > span,
 #MarketingIntroLinkActionElement .parent > a > span {
+  text-indent: -9999px;
+  display: inline-block;
+  width: 0;
+}
+#ProductIntroLinkActionElement .parent > a:before,
+#MarketingIntroLinkActionElement .parent > a:before {
+  content: "n";
   font-weight: normal;
   font-size: 24px;
   font-family: "zurmo_gamification_symbly_rRg";
   position: relative;
   top: 2px;
 }
+#ProductIntroLinkActionElement .parent a:after,
 #MarketingIntroLinkActionElement .parent a:after {
   margin-left: 2px;
   top: 0;
