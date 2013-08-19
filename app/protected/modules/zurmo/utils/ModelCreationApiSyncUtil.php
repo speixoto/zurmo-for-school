@@ -56,6 +56,13 @@
             }
         }
 
+        /**
+         * Insert item into modelcreationapisync table
+         * @param $serviceName
+         * @param $modelId
+         * @param $modelClassName
+         * @param $dateTime
+         */
         public static function insertItem($serviceName, $modelId, $modelClassName, $dateTime)
         {
             assert('is_string($serviceName)');
