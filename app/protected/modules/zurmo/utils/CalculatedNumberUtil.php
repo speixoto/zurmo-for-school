@@ -59,7 +59,7 @@
             $value = static::calculateByFormulaAndModel($formula, $model, $formatType, $currencyCode);
             if ($formatType == self::FORMAT_TYPE_INTEGER)
             {
-                return Yii::app()->format->formatNumber((int)$value);
+                return Yii::app()->numberFormatter->formatDecimal((int)$value);
             }
             elseif ($formatType == self::FORMAT_TYPE_DECIMAL)
             {
