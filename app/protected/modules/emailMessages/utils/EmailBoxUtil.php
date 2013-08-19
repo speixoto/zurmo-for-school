@@ -104,9 +104,7 @@
             assert('$user->id > 0');
             if ($user->emailBoxes->count() == 0)
             {
-                $box = self::createBoxAndDefaultFoldersByUserAndName($user, EmailBox::USER_DEFAULT_NAME);
-                $user->emailBoxes->add($box);
-                return $box;
+                return self::createBoxAndDefaultFoldersByUserAndName($user, EmailBox::USER_DEFAULT_NAME);
             }
             elseif ($user->emailBoxes->count() > 1)
             {
