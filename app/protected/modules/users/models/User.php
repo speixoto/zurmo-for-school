@@ -966,5 +966,15 @@
                 $this->save();
             }
         }
+
+        public function unsetIsRootUser()
+        {
+            $this->unrestrictedSet('isRootUser', false);
+        }
+
+        public function unsetIsSystemUser()
+        {
+            $this->unrestrictedSet('isSystemUser', false);
+        }
     }
 ?>

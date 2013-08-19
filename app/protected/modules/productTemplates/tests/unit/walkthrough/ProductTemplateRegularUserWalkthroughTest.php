@@ -35,10 +35,7 @@
      ********************************************************************************/
 
     /**
-     * Product Template Super User Walkthrough.
-     * Walkthrough for the super user of all possible actions.
-     * Since this is a super user, he should have access to all controller actions
-     * without any exceptions being thrown.
+     * Product Template Regular User Walkthrough.
      */
     class ProductTemplateRegularUserWalkthroughTest extends ZurmoRegularUserWalkthroughBaseTest
     {
@@ -74,8 +71,7 @@
                                         'relationModelClassName' => 'Account'
                                     ));
 
-            $content = $this->runControllerWithAccessDeniedSecurityExceptionAndGetContent('productTemplates/default/selectFromRelatedList');
-            echo $content;
+            $this->runControllerWithNoExceptionsAndGetContent('productTemplates/default/selectFromRelatedList');
         }
     }
 ?>
