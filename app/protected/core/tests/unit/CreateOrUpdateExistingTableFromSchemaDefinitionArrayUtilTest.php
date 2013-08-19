@@ -682,6 +682,7 @@
             $this->assertEquals('tableWithNoColumns', $processedTables[0]);
             $this->assertEquals('tableName1', $processedTables[1]);
             $this->assertEquals('tableName3', $processedTables[2]);
+            Yii::app()->params['isFreshInstall'] = false;
         }
 
         /**

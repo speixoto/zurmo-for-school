@@ -47,10 +47,11 @@
         /**
          * Get entry from php cache and/or memcache
          * @param string $identifier
+         * @param mixed $default
          * @return mixed
          * @throws NotFoundException
          */
-        public static function getEntry($identifier)
+        public static function getEntry($identifier, $default = 'NOT_FOUND_EXCEPTION')
         {
             assert('is_string($identifier)');
             if (PHP_CACHING_ON)
@@ -76,7 +77,14 @@
                     return $unserializedData;
                 }
             }
-            throw new NotFoundException();
+            if ($default === 'NOT_FOUND_EXCEPTION')
+            {
+                throw new NotFoundException();
+            }
+            else
+            {
+                return $default;
+            }
         }
 
         /**

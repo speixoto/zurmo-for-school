@@ -39,7 +39,10 @@
      */
     abstract class RedBeanModelRelationToColumnAdapter
     {
-        protected static $polymorphicLinkColumns = array();
+        /**
+         * Key to cache polymorphic columns for tables
+         */
+        const CACHE_KEY = 'RedBeanModelRelationToColumnAdapter_polymorphicColumns';
 
         /**
          * Return column definition for any polymorphic relationships to provided tableName
@@ -48,9 +51,10 @@
          */
         public static function resolvePolymorphicColumnsByTableName($tableName)
         {
-            if (isset(static::$polymorphicLinkColumns[$tableName]))
+            $polymorphicLinkColumns = GeneralCache::getEntry(static::CACHE_KEY, array());
+            if (isset($polymorphicLinkColumns[$tableName]))
             {
-                return static::$polymorphicLinkColumns[$tableName];
+                return $polymorphicLinkColumns[$tableName];
             }
             return null;
         }
@@ -118,7 +122,9 @@
                                                 RedBeanModelMemberToColumnNameUtil::resolve($linkName). '_id');
             $columns[]      = static::resolvePolymorphicTypeColumnByLinkName($linkName);
             $tableName      = RedBeanModel::getTableName($relatedModelClassName);
-            static::$polymorphicLinkColumns[$tableName] = $columns;
+            $polymorphicLinkColumns             = GeneralCache::getEntry(static::CACHE_KEY, array());
+            $polymorphicLinkColumns[$tableName] = $columns;
+            GeneralCache::cacheEntry(static::CACHE_KEY, $polymorphicLinkColumns);
         }
 
         protected static function resolvePolymorphicTypeColumnByLinkName($linkName)

@@ -55,10 +55,10 @@
          */
         const FORCE_DEFAULT_MODEL_CLASS = true;
 
-        /*
-         * list of uniqueIndexes built from Unique Validators
+        /**
+         * Key to store unique indexes for unique validators against models
          */
-        protected static $uniqueIndexes = array();
+        const CACHE_KEY = 'RedBeanModelMemberRulesToColumnAdapter_uniqueIndexes';
 
         /**
          * returns unique indexes for a modelClass if there are any unique validators for its members
@@ -67,9 +67,10 @@
          */
         public static function resolveUniqueIndexesFromValidator($modelClassName)
         {
-            if (isset(static::$uniqueIndexes[$modelClassName]))
+            $uniqueIndexes  = GeneralCache::getEntry(static::CACHE_KEY, array());
+            if (isset($uniqueIndexes[$modelClassName]))
             {
-                return static::$uniqueIndexes[$modelClassName];
+                return $uniqueIndexes[$modelClassName];
             }
             return null;
         }
@@ -280,7 +281,9 @@
         protected static function registerUniqueIndexByMemberName($member, $modelClassName)
         {
             $indexName  = RedBeanModelMemberIndexMetadataAdapter::resolveRandomIndexName($member, true);
-            static::$uniqueIndexes[$modelClassName][$indexName] = array('members' => array($member), 'unique' => true);
+            $uniqueIndexes  = GeneralCache::getEntry(static::CACHE_KEY, array());
+            $uniqueIndexes[$modelClassName][$indexName] = array('members' => array($member), 'unique' => true);
+            GeneralCache::cacheEntry(static::CACHE_KEY, $uniqueIndexes);
         }
     }
 ?>

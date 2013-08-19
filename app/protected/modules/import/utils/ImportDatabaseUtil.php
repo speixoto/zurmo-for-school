@@ -42,14 +42,6 @@
         /**
          * Given a file resource, convert the file into a database table based on the table name provided.
          * Assumes the file is a csv.
-         * @param resource $fileHandle
-         * @param string $tableName
-         * @return true on success.
-         */
-
-        /**
-         * Given a file resource, convert the file into a database table based on the table name provided.
-         * Assumes the file is a csv.
          * @param object $fileHandle
          * @param string $tableName
          * @param string $delimiter

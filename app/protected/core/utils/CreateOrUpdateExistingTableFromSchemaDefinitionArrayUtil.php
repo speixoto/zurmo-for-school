@@ -228,8 +228,10 @@
                     {
                         return static::returnSchemaValidationResult(
                             Zurmo::t('Core', 'Index: {{indexName}} column: {{columnName}} does not exist' .
-                                                ' in current schema definition provided',
-                                            array('{{indexName}}' => $indexName, '{{columnName}}' => $column)));
+                                                ' in current schema definition provided. Columns: {{columns}}',
+                                            array('{{indexName}}' => $indexName,
+                                                    '{{columnName}}' => $column,
+                                                    '{{columns}}' => print_r($columnNames, true))));
                     }
                 }
             }

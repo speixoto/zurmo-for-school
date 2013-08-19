@@ -81,7 +81,7 @@
          */
         public function dropTableByTableName($tableName)
         {
-            assert('$tableName == strtolower($tableName)');
+            $tableName = strtolower($tableName);
             $this->adapter->exec("drop table if exists $tableName");
         }
     }

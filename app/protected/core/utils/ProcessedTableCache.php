@@ -38,41 +38,18 @@
     {
         public static function resolveProcessedTableNames($identifier)
         {
-            $processedTables    = array();
-            try
-            {
-                $processedTables = GeneralCache::getEntry($identifier);
-            }
-            catch (NotFoundException $e)
-            {
-            }
-            return $processedTables;
+            return GeneralCache::getEntry($identifier, array());
         }
 
         public static function isProcessed($tableName, $identifier)
         {
-            $processedTables    = array();
-            try
-            {
-                $processedTables = GeneralCache::getEntry($identifier);
-            }
-            catch (NotFoundException $e)
-            {
-                return false;
-            }
+            $processedTables    = static::resolveProcessedTableNames($identifier);
             return in_array($tableName, $processedTables);
         }
 
         public static function setAsProcessed($tableName, $identifier)
         {
-            $processedTables    = array();
-            try
-            {
-                $processedTables = GeneralCache::getEntry($identifier);
-            }
-            catch (NotFoundException $e)
-            {
-            }
+            $processedTables    = static::resolveProcessedTableNames($identifier);
             if (!in_array($tableName, $processedTables))
             {
                 $processedTables[]  = $tableName;

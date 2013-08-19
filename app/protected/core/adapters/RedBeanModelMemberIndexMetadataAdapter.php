@@ -40,6 +40,7 @@
     abstract class RedBeanModelMemberIndexMetadataAdapter
     {
         const MAX_INDEX_NAME_LENGTH = 40;
+
         /**
          * Provided indexName and metadata is resolved to match the requirements of schema definition
          * @param array $indexMetadata passed by reference, array containing index definition
