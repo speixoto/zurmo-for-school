@@ -185,10 +185,6 @@
             {
                 return 'api';
             }
-            elseif (strpos($url, '/riva/') !== false)
-            {
-                return 'riva';
-            }
             else
             {
                 return false;
