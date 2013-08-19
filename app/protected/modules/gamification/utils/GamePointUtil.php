@@ -87,7 +87,7 @@
         {
             $sql = self::makeUserLeaderboardCountSqlQuery($type);
             $count = ZurmoRedBean::getCell($sql);
-            if ($count === null)
+            if ($count === null || (is_array($count) && count($count) == 0))
             {
                 $count = 0;
             }
@@ -121,7 +121,7 @@
         {
             assert('is_string($type)');
             $quote                     = DatabaseCompatibilityUtil::getQuote();
-            $where                     = null;
+            $where                     = '_user.hidefromleaderboard IS NULL OR _user.hidefromleaderboard = 0';
             $selectDistinct            = true;
             $joinTablesAdapter         = new RedBeanModelJoinTablesQueryAdapter('GamePointTransaction');
             static::resolveLeaderboardWhereClausesByType($type, $where);
@@ -131,7 +131,7 @@
             $joinTablesAdapter->addFromTableAndGetAliasName('permitable', 'person_item_id', 'gamepoint', 'item_id');
             $joinTablesAdapter->addFromTableAndGetAliasName('_user', 'id', 'permitable', 'permitable_id');
             $sql                       = SQLQueryUtil::makeQuery('gamepointtransaction', $selectQueryAdapter,
-                $joinTablesAdapter, null, null, $where);
+                                         $joinTablesAdapter, null, null, $where);
             return $sql;
         }
 
@@ -139,7 +139,7 @@
         {
             if ($type == static::LEADERBOARD_TYPE_OVERALL)
             {
-                //Nothing to add to the where clause.
+                $where = '(' . $where . ')';
                 return;
             }
             $quote = DatabaseCompatibilityUtil::getQuote();

@@ -127,7 +127,7 @@
             $permissionTableRows = R::getAll($sql);
             $this->assertEquals(0, count($permissionTableRows));
 
-            ReadPermissionsSubscriptionUtil::updateReadSubscriptionTableForModelClassnameAndUser('Contact', Yii::app()->user->userModel, true, true);
+            ReadPermissionsSubscriptionUtil::updateReadSubscriptionTableByModelClassnameAndUser('Contact', Yii::app()->user->userModel, true, true);
             $sql = "SELECT * FROM contact_read_subscription  order by modifieddatetime ASC, modelid  ASC";
             $permissionTableRows = R::getAll($sql);
             $this->assertEquals(2, count($permissionTableRows));
@@ -142,7 +142,7 @@
             $nowDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
             $contact3 = ContactTestHelper::createContactByNameForOwner('Jimmy',  $super);
             sleep(1);
-            ReadPermissionsSubscriptionUtil::updateReadSubscriptionTableForModelClassnameAndUser('Contact', Yii::app()->user->userModel, true, true);
+            ReadPermissionsSubscriptionUtil::updateReadSubscriptionTableByModelClassnameAndUser('Contact', Yii::app()->user->userModel, true, true);
             $sql = "SELECT * FROM contact_read_subscription";
             $permissionTableRows = R::getAll($sql);
             $this->assertEquals(3, count($permissionTableRows));
@@ -162,7 +162,7 @@
             $nowDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
             $contact4 = ContactTestHelper::createContactByNameForOwner('Jill',  $super);
             sleep(1);
-            ReadPermissionsSubscriptionUtil::updateReadSubscriptionTableForModelClassnameAndUser('Contact', Yii::app()->user->userModel, true, true);
+            ReadPermissionsSubscriptionUtil::updateReadSubscriptionTableByModelClassnameAndUser('Contact', Yii::app()->user->userModel, true, true);
             $sql = "SELECT * FROM contact_read_subscription WHERE userid = " . Yii::app()->user->userModel->id .
                 " AND subscriptiontype = " . ReadPermissionsSubscriptionUtil::TYPE_ADD . " order by modifieddatetime ASC, modelid  ASC";
             $permissionTableRows = R::getAll($sql);
@@ -190,7 +190,7 @@
             ReadPermissionsOptimizationUtil::rebuild();
             sleep(1);
             Yii::app()->user->userModel = $steven;
-            ReadPermissionsSubscriptionUtil::updateReadSubscriptionTableForModelClassnameAndUser('Account', Yii::app()->user->userModel, false, false);
+            ReadPermissionsSubscriptionUtil::updateReadSubscriptionTableByModelClassnameAndUser('Account', Yii::app()->user->userModel, false, false);
             $sql = "SELECT * FROM account_read_subscription";
             $this->assertTrue(empty($permissionTableRows));
 
@@ -204,7 +204,7 @@
             ReadPermissionsOptimizationUtil::rebuild();
 
             Yii::app()->user->userModel = $steven;
-            ReadPermissionsSubscriptionUtil::updateReadSubscriptionTableForModelClassnameAndUser('Account', Yii::app()->user->userModel, false, false);
+            ReadPermissionsSubscriptionUtil::updateReadSubscriptionTableByModelClassnameAndUser('Account', Yii::app()->user->userModel, false, false);
             $sql = "SELECT * FROM account_read_subscription";
             $permissionTableRows = R::getAll($sql);
             $this->assertEquals(1, count($permissionTableRows));
@@ -214,7 +214,7 @@
 
             // Test as super
             Yii::app()->user->userModel = $super;
-            ReadPermissionsSubscriptionUtil::updateReadSubscriptionTableForModelClassnameAndUser('Account', Yii::app()->user->userModel, false, false);
+            ReadPermissionsSubscriptionUtil::updateReadSubscriptionTableByModelClassnameAndUser('Account', Yii::app()->user->userModel, false, false);
             $sql = "SELECT * FROM account_read_subscription WHERE userid = " . Yii::app()->user->userModel->id;
             $permissionTableRows = R::getAll($sql);
             $this->assertEquals(1, count($permissionTableRows));
@@ -231,7 +231,7 @@
             ReadPermissionsOptimizationUtil::rebuild();
 
             Yii::app()->user->userModel = $steven;
-            ReadPermissionsSubscriptionUtil::updateReadSubscriptionTableForModelClassnameAndUser('Account', Yii::app()->user->userModel, false, false);
+            ReadPermissionsSubscriptionUtil::updateReadSubscriptionTableByModelClassnameAndUser('Account', Yii::app()->user->userModel, false, false);
             $sql = "SELECT * FROM account_read_subscription WHERE userid = " . Yii::app()->user->userModel->id;
             $permissionTableRows = R::getAll($sql);
             $this->assertEquals(1, count($permissionTableRows));
