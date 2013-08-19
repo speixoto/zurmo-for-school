@@ -57,7 +57,7 @@
 
         protected function renderFrontOfCardContent()
         {
-            $content  = $this-> resolveAvatarContent();
+            $content  = $this->resolveAvatarContent();
             $content .= $this->resolveNameContent();
             $content .= $this->resolveBackOfCardLinkContent();
             $content .= $this->resolveJobTitleContent();
@@ -84,8 +84,15 @@
         protected function resolveNameContent()
         {
             $element                       = new DropDownElement($this->model, 'title', null);
-            $element->nonEditableTemplate  = '{content}';            
-            $starLink                      = StarredUtil::getToggleStarStatusLink($this->model, null);                        
+            $element->nonEditableTemplate  = '{content}';       
+            if (StarredUtil::modelHasStarredInterface($this->model))
+            {
+                $starLink = StarredUtil::getToggleStarStatusLink($this->model, null);                           
+            }            
+            else
+            {
+                $starLink = null;
+            }
             $salutation                    = $element->render();
             if($salutation != null)
             {

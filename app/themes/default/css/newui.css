@@ -301,6 +301,8 @@ a.ModalGameNotification a,
 }
 .cf:before,
 .cf:after,
+.operation-duration-fields:before,
+.operation-duration-fields:after,
 .recipient:before,
 .recipient:after,
 #NoUserEmailConfigurationYetView:before,
@@ -325,6 +327,7 @@ a.ModalGameNotification a,
   display: table;
 }
 .cf:after,
+.operation-duration-fields:after,
 .recipient:after,
 #NoUserEmailConfigurationYetView:after,
 .dynamic-row:after,
@@ -338,6 +341,7 @@ a.ModalGameNotification a,
   clear: both;
 }
 .cf,
+.operation-duration-fields,
 .recipient,
 #NoUserEmailConfigurationYetView,
 .dynamic-row,
@@ -10235,6 +10239,23 @@ div.hasHalfs > div input {
 .twoThirds {
   width: 64%;
 }
+.operation-duration-fields.twoFields input[type="text"] {
+  width: 49%;
+  float: left;
+}
+.operation-duration-fields.twoFields > div {
+  width: 49% !important;
+  float: right;
+}
+.operation-duration-fields.threeFields > div.hasDropDown,
+.operation-duration-fields.threeFields > input[type="text"] {
+  width: 32% !important;
+  float: left;
+  margin-left: 2%;
+}
+.operation-duration-fields.threeFields > input[type="text"] {
+  margin-left: 0;
+}
 .juiportlet-widget.OpportunitiesForAccountRelatedListView div.button-column,
 .juiportlet-widget.ContactsForAccountRelatedListView div.button-column {
   padding-top: 4px;
@@ -13521,7 +13542,7 @@ div.wide.form .row {
 div.wide.form .buttons,
 div.wide.form .hint,
 div.wide.form .errorMessage {
-  clear: left;
+  clear: both;
   padding-left: 2px;
 }
 .field-description {
@@ -17660,6 +17681,9 @@ a.user-link {
   -ms-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
 }
+.dynamic-row .errorMessage {
+  margin-bottom: 5px;
+}
 .dynamic-row .hasDropDown {
   width: auto !important;
 }
@@ -17794,7 +17818,6 @@ a.user-link {
   width: 80%;
 }
 .first-date-area {
-  margin-top: 10px;
   display: block;
 }
 .dynamic-and-for-mixed {
@@ -18246,6 +18269,7 @@ a.user-link {
 .all-related-field {
   float: left;
   width: 80%;
+  padding-left: 10px;
 }
 .all-related-field .value-data {
   width: 42.5%;
@@ -18305,6 +18329,9 @@ a.user-link {
   margin-left: 25%;
   margin-top: 10px;
   padding-left: 15px;
+}
+.dynamic-row-duration > div {
+  margin-top: 0 !important;
 }
 /*for actions in WORKFLOWS hide/show sequence*/
 .ComponentForWorkflowWizardView .add-email-message-button-container,

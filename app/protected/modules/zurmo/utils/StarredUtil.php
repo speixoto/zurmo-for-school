@@ -213,7 +213,7 @@
         {
             $starredClass   = 'icon-star unstarred';
             $text           = 'w'; //w=Star in Icon-Font
-            if(StarredUtil::isModelStarred($data))
+            if(static::isModelStarred($data))
             {
                 $starredClass = 'icon-star starred';
             }

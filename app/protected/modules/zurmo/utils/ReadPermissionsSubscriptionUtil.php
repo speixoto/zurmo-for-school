@@ -133,7 +133,7 @@
          * Update read subscription table for all users and models
          * @param bool $partialBuild
          */
-        public static function updateReadSubscriptionTableForAllUsersAndModels($partialBuild = true)
+        public static function updateAllReadSubscriptionTables($partialBuild = true)
         {
             $loggedUser = Yii::app()->user->userModel;
             $users = User::getAll();
@@ -147,12 +147,12 @@
                     {
                         if ($modelClassName != 'Account')
                         {
-                            self::updateReadSubscriptionTableForModelClassNameAndUser($modelClassName,
+                            self::updateReadSubscriptionTableByModelClassNameAndUser($modelClassName,
                                 Yii::app()->user->userModel, $partialBuild, true);
                         }
                         else
                         {
-                            self::updateReadSubscriptionTableForModelClassNameAndUser($modelClassName,
+                            self::updateReadSubscriptionTableByModelClassNameAndUser($modelClassName,
                                 Yii::app()->user->userModel, $partialBuild, false);
                         }
                     }
@@ -168,7 +168,7 @@
          * @param bool $partialBuild
          * @param bool $onlyOwnedModels
          */
-        public static function updateReadSubscriptionTableForModelClassNameAndUser($modelClassName, $user,
+        public static function updateReadSubscriptionTableByModelClassNameAndUser($modelClassName, $user,
                                                                                    $partialBuild = true, $onlyOwnedModels = false)
         {
             assert('$user instanceof User');

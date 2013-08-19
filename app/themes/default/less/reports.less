@@ -273,6 +273,13 @@
         font-weight: bold;
         .t-shadow(0 1px 0 rgba(255, 255, 255, 0.8));
     }
+  .errorMessage{
+    margin-bottom: 5px;
+  }
+    .errorMessage + .hasDropDown{
+      //margin-top: 15px;
+      //clear: left;
+    }
     .hasDropDown{
         width: auto !important;
     }
@@ -437,7 +444,7 @@
 }
 
 .first-date-area{
-	margin-top: 10px;
+	//margin-top: 10px;
 	display: block;
 }
 
@@ -939,9 +946,7 @@
     ++.border-box;
     float: left;
     width: 80%;
-    //padding-left: 15px;
-
-
+    padding-left: 10px;
     .value-data{
         width: 42.5%;
 	    float:left;
@@ -1009,6 +1014,9 @@
 	margin-top: 10px;
 	++.border-box;
 	padding-left: 15px;
+    > div{
+      margin-top: 0 !important;
+    }
 }
 
 /*for actions in WORKFLOWS hide/show sequence*/

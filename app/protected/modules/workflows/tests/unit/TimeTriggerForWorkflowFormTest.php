@@ -34,14 +34,23 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Element for displaying the autoresponder seconds from operation options.
-     */
-    class AutoresponderSecondsFromOperationElement extends StaticDropDownFormElement
+    class TimeTriggerForWorkflowFormTest extends WorkflowBaseTest
     {
-        protected function getDropDownArray()
+        public function testResolveNewTimeStampForDuration()
         {
-            return Autoresponder::getIntervalDropDownArray();
+            $timeTrigger = new TimeTriggerForWorkflowForm('WorkflowsTestModule', 'WorkflowModelTestItem', Workflow::TYPE_ON_SAVE);
+            $timeTrigger->durationInterval = 5;
+            $timeTrigger->durationType     = TimeDurationUtil::DURATION_TYPE_DAY;
+            $timeTrigger->durationSign     = TimeDurationUtil::DURATION_SIGN_POSITIVE;
+            $this->assertEquals(5 * 24 * 60 * 60, $timeTrigger->resolveNewTimeStampForDuration(0));
+            $timeTrigger->durationType     = TimeDurationUtil::DURATION_TYPE_MINUTE;
+            $this->assertEquals(5 * 60, $timeTrigger->resolveNewTimeStampForDuration(0));
+            $timeTrigger->durationInterval = 10;
+            $this->assertEquals(10 * 60, $timeTrigger->resolveNewTimeStampForDuration(0));
+            $timeTrigger->durationType     = TimeDurationUtil::DURATION_TYPE_HOUR;
+            $this->assertEquals(10 * 60 * 60, $timeTrigger->resolveNewTimeStampForDuration(0));
+            $timeTrigger->durationSign     = TimeDurationUtil::DURATION_SIGN_NEGATIVE;
+            $this->assertEquals(-10 * 60 * 60, $timeTrigger->resolveNewTimeStampForDuration(0));
         }
     }
 ?>

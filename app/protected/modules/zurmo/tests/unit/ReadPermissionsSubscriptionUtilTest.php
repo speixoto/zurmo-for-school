@@ -259,7 +259,7 @@
             $account1 = AccountTestHelper::createAccountByNameForOwner('First Account', $super);
             sleep(1);
             $account2 = AccountTestHelper::createAccountByNameForOwner('First Account', $steven);
-            ReadPermissionsSubscriptionUtil::updateReadSubscriptionTableForAllUsersAndModels(false);
+            ReadPermissionsSubscriptionUtil::updateAllReadSubscriptionTables(false);
 
             $sql = "SELECT * FROM account_read_subscription WHERE userid = " . $super->id;
             $permissionTableRows = R::getAll($sql);
@@ -286,7 +286,7 @@
             Yii::app()->user->userModel = $super;
 
             $task = TaskTestHelper::createTaskByNameForOwner('Test Task', $super);
-            ReadPermissionsSubscriptionUtil::updateReadSubscriptionTableForAllUsersAndModels(false);
+            ReadPermissionsSubscriptionUtil::updateAllReadSubscriptionTables(false);
             $sql = "SELECT * FROM task_read_subscription WHERE userid = " . $super->id;
             $permissionTableRows = R::getAll($sql);
             $this->assertEquals(1, count($permissionTableRows));

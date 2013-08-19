@@ -34,18 +34,16 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Class used by an email message in workflow to show the duration data. For example send the email message
-     * 4 hours after the workflow runs
-     */
-    class EmailMessageSendAfterDurationStaticDropDownElement extends DataFromFormStaticDropDownFormElement
+    class CampaignsForMarketingListRelatedListView extends CampaignsRelatedListView
     {
-        /**
-         * @return string
-         */
-        protected function getDataAndLabelsModelPropertyName()
+        protected function getRelationAttributeName()
         {
-            return 'getSendAfterDurationValuesAndLabels';
+            return 'marketingList';
+        }
+
+        public static function getDisplayDescription()
+        {
+            return Zurmo::t('CampaignsModule', 'Campaigns For Marketing List');
         }
     }
 ?>

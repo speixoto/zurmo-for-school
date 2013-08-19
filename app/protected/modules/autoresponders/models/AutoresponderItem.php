@@ -204,7 +204,7 @@
             $now = time();
             foreach ($autoresponders as $autoresponder)
             {
-                $processTimestamp = $now + $autoresponder->secondsFromOperation;
+                $processTimestamp = $autoresponder->resolveNewTimeStampForDuration($now);
                 $processDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime($processTimestamp);
                 $processed = false;
                 static::addNewItem($processed, $processDateTime, $contact, $autoresponder);
