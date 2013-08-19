@@ -285,7 +285,7 @@
                 {
                     $attributeAlias = $displayAttribute->resolveAttributeNameForGridViewColumn($key);
                     if ($this->shouldResolveValueFromModel($attributeAlias))
-                    {
+                    {                        
                         list($notUsed, $displayAttributeKey) = explode(self::ATTRIBUTE_NAME_PREFIX, $attributeAlias);
                         $model = $this->resolveModel($displayAttributeKey);
                         if ($model == null)
@@ -301,8 +301,10 @@
                     {
                         $value = $this->selectedColumnNamesAndValues[$attributeAlias];
                     }
-
-                    $dataParams[self::resolveDataParamKeyForDrillDown($displayAttribute->attributeIndexOrDerivedType)] = $value;
+                    if (!is_null($value))
+                    {
+                        $dataParams[self::resolveDataParamKeyForDrillDown($displayAttribute->attributeIndexOrDerivedType)] = $value;
+                    }
                 }
             }
             return $dataParams;
@@ -442,7 +444,7 @@
                 return $model->{$realAttributeName}->id;
             }
             elseif ($type == 'DropDown')
-            {
+            {                                
                 return $model->{$attribute}->value;
             }
             elseif (null != $rawValueRelatedAttribute = $displayAttribute->getRawValueRelatedAttribute())
