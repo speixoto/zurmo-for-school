@@ -103,7 +103,7 @@
                 $view       = new ProductTemplatesPageView($mixedView);
             }
             else
-            {                
+            {
                 $introView        = new ProductsIntroView('ProductsModule');
                 $mixedView  = $this->makeActionBarSearchAndListView($searchForm, $dataProvider,
                                     'SecuredActionBarForProductsSearchAndListView',
