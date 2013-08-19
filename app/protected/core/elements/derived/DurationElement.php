@@ -122,7 +122,7 @@
             {
                 return $this->getFormattedAttributeLabel();
             }
-            $id = $this->getEditableInputId($this->attribute, $this->intervalAttributeName);
+            $id = $this->getEditableInputId($this->intervalAttributeName);
             return $this->form->labelEx($this->model, $this->intervalAttributeName, array('for' => $id));
         }
 
