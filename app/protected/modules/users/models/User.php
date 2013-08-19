@@ -726,8 +726,8 @@
                     array('username', 'length',  'max'   => 64),
                     array('username', 'filter', 'filter' => 'trim'),
                     array('serializedAvatarData', 'type', 'type' => 'string'),
-                    array('isActive', 'readOnly'),
-                    array('isActive', 'boolean'),
+                    array('isActive',            'readOnly'),
+                    array('isActive',            'boolean'),
                     array('isRootUser',          'readOnly'),
                     array('isRootUser',          'boolean'),
                     array('hideFromSelecting',   'boolean'),
@@ -965,6 +965,26 @@
                 $this->unrestrictedSet('lastLoginDateTime',  DateTimeUtil::convertTimestampToDbFormatDateTime(time()));
                 $this->save();
             }
+        }
+                
+        /**
+         * Handle the search scenario for isActive, isRootUser and isSystemUser attributes.         
+         */
+        public function isAllowedToSetReadOnlyAttribute($attributeName)
+        {
+            if ($this->getScenario() == 'importModel' || $this->getScenario() == 'searchModel')
+            {                
+                if ( in_array($attributeName, array('isActive',
+                                                    'isRootUser',
+                                                    'isSystemUser')))
+                {
+                    return true;
+                }
+                else
+                {
+                    return parent::isAllowedToSetReadOnlyAttribute($attributeName);
+                }
+            }            
         }
     }
 ?>
