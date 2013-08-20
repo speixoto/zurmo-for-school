@@ -75,12 +75,25 @@
             {
                 throw new BadPasswordException();
             }
+            self::resolveAuthenticatedUserCanLogin($user);
+            $user->login();
+            return $user;
+        }
+
+        /**
+         * Check if authenticated user can login
+         * @param User $user
+         * @return bool
+         * @throws NoRightWebLoginException
+         * @throws ApiNoRightWebApiLoginException
+         */
+        public static function resolveAuthenticatedUserCanLogin(User $user)
+        {
             if (Right::ALLOW != $user->getEffectiveRight('UsersModule', UsersModule::RIGHT_LOGIN_VIA_WEB) &&
                 !ApiRequest::isApiRequest())
             {
                 throw new NoRightWebLoginException();
             }
-
             if (Right::ALLOW != $user->getEffectiveRight('UsersModule', UsersModule::RIGHT_LOGIN_VIA_WEB_API) &&
                 ApiRequest::isApiRequest())
             {
@@ -94,8 +107,7 @@
             {
                 throw new ApiNoRightWebApiLoginException();
             }
-            $user->login();
-            return $user;
+            return true;
         }
 
         protected function constructDerived($bean, $setDefaults)

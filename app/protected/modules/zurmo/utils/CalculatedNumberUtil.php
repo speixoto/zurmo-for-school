@@ -179,6 +179,10 @@
                 {
                     self::resolveFormatTypeAndCurrencyCode($formatType, $currencyCode, $model, $attribute);
                 }
+                elseif (strpos($expression,'.') !== false)
+                {
+                    $formatType = self::FORMAT_TYPE_DECIMAL;
+                }
             }
             $result = static::mathEval($expression);
             if ($result === false)

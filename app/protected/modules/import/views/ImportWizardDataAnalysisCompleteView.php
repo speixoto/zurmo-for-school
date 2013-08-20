@@ -129,7 +129,7 @@
 
             $label    = Zurmo::t('ImportModule', 'Ok');
             $count    = ZurmoHtml::tag('strong', array(), self::findCountByGroupDataAndStatus($groupData, ImportDataAnalyzer::STATUS_CLEAN));
-            $led      = ZurmoHtml::tag('i', array('class' => 'led state-true'), ''); //●
+            $led      = ZurmoHtml::tag('i', array('class' => 'led state-true'), '');
             $content .= ZurmoHtml::tag('li', array(), $count . $label . $led );
 
             $label    = Zurmo::t('ImportModule', 'Warning');

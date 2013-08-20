@@ -131,6 +131,10 @@
             $result = CalculatedNumberUtil::calculateByFormulaAndModelAndResolveFormat('IF(1 != 1; "true"; "false")', 
                                                                        $model);
             $this->assertEquals("false", $result);
+            
+            $result = CalculatedNumberUtil::calculateByFormulaAndModelAndResolveFormat('IF(1 == 1; 12.5; 0.65)', 
+                                                                       $model);
+            $this->assertEquals(12.5, $result);
 
             //Make attributes have actual values.
             $model->integerStandard = 1000;
