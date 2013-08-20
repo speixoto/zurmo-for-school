@@ -99,7 +99,7 @@
             return self::getMainTableName($modelClassName) . '_starred';
         }
 
-        public static function markModelAsStarred($model)
+        public static function markModelAsStarred(RedBeanModel $model)
         {
             static::markModelAsStarredForUser(get_class($model),
                                               Yii::app()->user->userModel->id,
@@ -124,11 +124,11 @@
             ));
         }
 
-        public static function unmarkModelAsStarred($model)
+        public static function unmarkModelAsStarred(RedBeanModel $model)
         {
             static::unmarkModelAsStarredForUser(get_class($model),
-                                              Yii::app()->user->userModel->id,
-                                              $model->id);
+                                                Yii::app()->user->userModel->id,
+                                                $model->id);
         }
 
         protected static function unmarkModelAsStarredForUser($modelClassName, $userId, $modelId)
@@ -149,7 +149,7 @@
             ));
         }
 
-        public static function isModelStarred($model)
+        public static function isModelStarred(RedBeanModel $model)
         {
             return static::isModelStarredForUser(get_class($model),
                                                  Yii::app()->user->userModel->id,
@@ -176,7 +176,7 @@
             return true;
         }
 
-        public static function unmarkModelAsStarredForAllUsers($model)
+        public static function unmarkModelAsStarredForAllUsers(RedBeanModel $model)
         {
             $modelClassName = get_class($model);
             if(!static::modelHasStarredInterface($modelClassName))
