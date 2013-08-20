@@ -285,11 +285,11 @@
         {
             if(TasksUtil::isUserSubscribedForTask($data, Yii::app()->user->userModel) === false)
             {
-                return ZurmoHtml::link('<strong>' . Zurmo::t('TasksModule', 'Subscribe') . '</strong>', '#', array('id' => 'subscribe-task-link')) ;
+                return ZurmoHtml::link('<strong>' . Zurmo::t('TasksModule', 'Subscribe') . '</strong>', '#', array('class' => 'subscribe-task-link')) ;
             }
             else
             {
-                return ZurmoHtml::link('<strong>' . Zurmo::t('TasksModule', 'Unsubscribe') . '</strong>', '#', array('id' => 'unsubscribe-task-link')) ;
+                return ZurmoHtml::link('<strong>' . Zurmo::t('TasksModule', 'Unsubscribe') . '</strong>', '#', array('class' => 'unsubscribe-task-link')) ;
             }
         }
     }

@@ -404,16 +404,16 @@
         /**
          * Get subscription script
          * @param string $url
-         * @param string $sourceId
-         * @param string $targetId
+         * @param string $sourceClass
+         * @param string $targetClass
          * @param string $link
          * @return string
          */
-        protected function getSubscriptionScript($url, $sourceId, $targetId, $link)
+        protected function getSubscriptionScript($url, $sourceClass, $targetClass, $link)
         {
-            return "$('#" . $sourceId . "').click(
-                                                    function()
+            return "$('body').on('click', '." . $sourceClass . "', function()
                                                     {
+                                                        var linkElement = $(this);
                                                         var element = $(this).parent().parent().parent();
                                                         var id = $(element).attr('id');
                                                         var idParts = id.split('_');
@@ -425,8 +425,8 @@
                                                             url  : '" . $url . "',
                                                             success : function(data)
                                                                       {
-                                                                        $('#" . $sourceId . "').html('" . $link . "');
-                                                                        $('#" . $sourceId . "').attr('id', '" . $targetId . "');
+                                                                        $(linkElement).html('" . $link . "');
+                                                                        $(linkElement).attr('class', '" . $targetClass . "');
                                                                       }
                                                         }
                                                         );
