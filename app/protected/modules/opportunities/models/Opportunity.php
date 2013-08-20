@@ -54,7 +54,10 @@
         {            
             if (parent::beforeSave())
             {                
-                $this->resolveStageToProbability();
+                if (!isset($this->originalAttributeValues['probability']))
+                {
+                    $this->resolveStageToProbability();
+                }
                 return true;
             }
             else
