@@ -966,14 +966,14 @@
                 $this->save();
             }
         }
-                
+
         /**
-         * Handle the search scenario for isActive, isRootUser and isSystemUser attributes.         
+         * Handle the search scenario for isActive, isRootUser and isSystemUser attributes.
          */
         public function isAllowedToSetReadOnlyAttribute($attributeName)
         {
             if ($this->getScenario() == 'importModel' || $this->getScenario() == 'searchModel')
-            {                
+            {
                 if ( in_array($attributeName, array('isActive',
                                                     'isRootUser',
                                                     'isSystemUser')))
@@ -984,15 +984,15 @@
                 {
                     return parent::isAllowedToSetReadOnlyAttribute($attributeName);
                 }
-            }            
+            }
         }
 
-        public function unsetIsRootUser()
+        public function setIsRootUserToFalse()
         {
             $this->unrestrictedSet('isRootUser', false);
         }
 
-        public function unsetIsSystemUser()
+        public function setIsSystemUserToFalse()
         {
             $this->unrestrictedSet('isSystemUser', false);
         }

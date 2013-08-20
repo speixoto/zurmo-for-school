@@ -500,7 +500,7 @@
             $content = $this->runControllerWithNoExceptionsAndGetContent('users/default/changeAvatar');
             $this->assertTrue(strpos($content, 'You have tried to access a page') > 0);
 
-            $aUser->unsetIsSystemUser();
+            $aUser->setIsSystemUserToFalse();
             $aUser->setIsRootUser();
             $this->assertTrue($aUser->save());
             unset($aUser);
@@ -514,8 +514,8 @@
             $content = $this->runControllerWithNoExceptionsAndGetContent('users/default/changeAvatar');
             $this->assertTrue(strpos($content, 'You have tried to access a page') > 0);
 
-            $aUser->unsetIsSystemUser();
-            $aUser->unsetIsRootUser();
+            $aUser->setIsSystemUserToFalse();
+            $aUser->setIsRootUserToFalse();
             $this->assertTrue($aUser->save());
             unset($aUser);
 
@@ -551,7 +551,7 @@
         {
             $aUser = User::getByUsername('auser');
             $aUser->setIsSystemUser();
-            $aUser->unsetIsRootUser();
+            $aUser->setIsRootUserToFalse();
             $this->assertTrue($aUser->save());
             unset($aUser);
 
@@ -565,7 +565,7 @@
             $content = $this->runControllerWithNoExceptionsAndGetContent('zurmo/default/login');
             $this->assertTrue(strpos($content, 'Incorrect username or password') > 0);
 
-            $aUser->unsetIsSystemUser();
+            $aUser->setIsSystemUserToFalse();
             $this->assertTrue($aUser->save());
             unset($aUser);
 
