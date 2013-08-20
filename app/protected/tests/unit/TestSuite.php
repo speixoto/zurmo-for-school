@@ -250,7 +250,7 @@
                 // TODO: @Shoaibi/@Jason: Critical: Shouldn't ::rebuild take care of this.
                 foreach (static::$dependentTestModelClassNames as $modelClassName)
                 {
-                    if ($modelClassName::hasReadPermissionsOptimization())
+                    if (is_subclass_of($modelClassName, 'SecurableItem') && $modelClassName::hasReadPermissionsOptimization())
                     {
                         ReadPermissionsOptimizationUtil::recreateTable(
                             ReadPermissionsOptimizationUtil::getMungeTableName($modelClassName));
