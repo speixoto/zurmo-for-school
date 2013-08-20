@@ -42,6 +42,9 @@
             $saved              = $autoresponderItem->unrestrictedSave();
             if(!$saved)
             {
+                echo "<pre>";
+                print_r($autoresponderItem->getErrors());
+                echo "</pre>";
                 throw new FailedToSaveModelException();
             }
             return $autoresponderItem;
