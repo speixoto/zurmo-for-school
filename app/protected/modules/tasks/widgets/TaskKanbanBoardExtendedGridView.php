@@ -395,7 +395,7 @@
          */
         protected function registerUnsubscriptionScript()
         {
-            $url = Yii::app()->createUrl('tasks/default/removeSubscriber');
+            $url = Yii::app()->createUrl('tasks/default/removeKanbanSubscriber');
             $subscribeLink = '<strong>' . Zurmo::t('TasksModule', 'Subscribe') . '</strong>';
             $script = $this->getSubscriptionScript($url, 'unsubscribe-task-link', 'subscribe-task-link', $subscribeLink);
             Yii::app()->clientScript->registerScript('unsubscribe-task-link-script', $script);
@@ -425,8 +425,8 @@
                                                             url  : '" . $url . "',
                                                             success : function(data)
                                                                       {
-                                                                        $(this).html('" . $link . "');
-                                                                        $(this).attr('id', '" . $targetId . "');
+                                                                        $('#" . $sourceId . "').html('" . $link . "');
+                                                                        $('#" . $sourceId . "').attr('id', '" . $targetId . "');
                                                                       }
                                                         }
                                                         );

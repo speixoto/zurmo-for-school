@@ -275,21 +275,21 @@
             return $toolbarContent;
         }
 
+        /**
+         * Get subscription link for the task
+         * @param Task $data
+         * @param int $row
+         * @return string
+         */
         public static function getSubscriptionLink($data, $row)
         {
             if(TasksUtil::isUserSubscribedForTask($data, Yii::app()->user->userModel) === false)
             {
-                return ZurmoHtml::ajaxLink('<strong>' . Zurmo::t('TasksModule', 'Subscribe') . '</strong>',
-                                                        TasksUtil::resolveSubscribeUrl($data->id),
-                                                        TasksUtil::resolveSubscriberAjaxOptions(),
-                                                        array('id' => 'subscribe-task-link')) ;
+                return ZurmoHtml::link('<strong>' . Zurmo::t('TasksModule', 'Subscribe') . '</strong>', '#', array('id' => 'subscribe-task-link')) ;
             }
             else
             {
-                return ZurmoHtml::ajaxLink('<strong>' . Zurmo::t('TasksModule', 'Unsubscribe') . '</strong>',
-                                                        TasksUtil::resolveUnsubscribeUrl($data->id),
-                                                        TasksUtil::resolveUnsubscriberAjaxOptions(),
-                                                        array('id' => 'unsubscribe-task-link')) ;
+                return ZurmoHtml::link('<strong>' . Zurmo::t('TasksModule', 'Unsubscribe') . '</strong>', '#', array('id' => 'unsubscribe-task-link')) ;
             }
         }
     }

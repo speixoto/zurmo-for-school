@@ -430,10 +430,14 @@
         {
             $task = Task::getById(intval($id));
             $user = Yii::app()->user->userModel;
-            $notificationSubscriber = new NotificationSubscriber();
-            $notificationSubscriber->person = $user;
-            $notificationSubscriber->hasReadLatest = false;
-            $task->notificationSubscribers->add($notificationSubscriber);
+            foreach($task->notificationSubscribers as $notificationSubscriber)
+            {
+                if($notificationSubscriber->person->getClassId('Item') == $user->getClassId('Item'))
+                {
+                    $task->notificationSubscribers->remove($notificationSubscriber);
+                    break;
+                }
+            }
             $task->save();
 
             TasksUtil::sendNotificationOnTaskUpdate($task, Zurmo::t('TasksModule', $user->getFullName() . ' has unsubscribed for the task #' . $task->id));
