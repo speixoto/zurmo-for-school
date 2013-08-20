@@ -140,6 +140,15 @@
         }
 
         /**
+         * Update owner or requested by user for task
+         * @param int $id
+         */
+        public function actionAddKanbanSubscriber($id)
+        {
+            $this->processSubscriptionRequest($id);
+        }
+
+        /**
          * Update status via ajax
          * @param int $id
          */
@@ -280,7 +289,6 @@
                     Yii::app()->getClientScript()->setToAjaxMode();
                     Yii::app()->end(0, true);
                 }
-                /*TODO Might have to remove RelatedModalEditAndDetailsLinkProvider*/
                 else
                 {
                     $cs = Yii::app()->getClientScript();
@@ -323,21 +331,19 @@
         {
             $getData = GetUtil::getData();
             $counter = 1;
-            foreach($getData['items'] as $itemId)
+            foreach($getData['items'] as $taskId)
             {
-                  //ToDo: Ask Jason, it shud be refereatial problem
-                $kanbanItem        = KanbanItem::getKanbanItemForTask(intval($itemId));
-//                $kanbanItem->order = $counter;
-//                $kanbanItem->save();
+                $kanbanItem         = KanbanItem::getByTask(intval($taskId));
                 if($getData['type'] == $kanbanItem->type)
                 {
-                    $sql = "update kanbanitem set sortorder = '" . $counter . "' where task_id = " . $itemId;
+                    $kanbanItem->sortOrder = $counter;
                 }
                 else
                 {
-                    $sql = "update kanbanitem set sortorder = '" . $counter . "', type = '" . $getData['type'] . "' where task_id = " . $itemId;
+                    $kanbanItem->sortOrder = $counter;
+                    $kanbanItem->type      = $getData['type'];
                 }
-                R::exec($sql);
+                $kanbanItem->save();
                 $counter++;
             }
         }
@@ -389,7 +395,7 @@
         }
 
         /**
-         * Update owner or requested by user for task
+         * Process subscription request for task
          * @param int $id
          */
         protected function processSubscriptionRequest($id)
@@ -403,6 +409,34 @@
             $task->save();
 
             TasksUtil::sendNotificationOnTaskUpdate($task, Zurmo::t('TasksModule', $user->getFullName() . ' has subscribed for the task #' . $task->id));
+
+            return $task;
+        }
+
+        /**
+         * Unsubscribe the user from the task
+         * @param int $id
+         */
+        public function actionRemoveKanbanSubscriber($id)
+        {
+            $this->processUnsubscriptionRequest($id);
+        }
+
+        /**
+         * Process unsubscription request for task
+         * @param int $id
+         */
+        protected function processUnsubscriptionRequest($id)
+        {
+            $task = Task::getById(intval($id));
+            $user = Yii::app()->user->userModel;
+            $notificationSubscriber = new NotificationSubscriber();
+            $notificationSubscriber->person = $user;
+            $notificationSubscriber->hasReadLatest = false;
+            $task->notificationSubscribers->add($notificationSubscriber);
+            $task->save();
+
+            TasksUtil::sendNotificationOnTaskUpdate($task, Zurmo::t('TasksModule', $user->getFullName() . ' has unsubscribed for the task #' . $task->id));
 
             return $task;
         }

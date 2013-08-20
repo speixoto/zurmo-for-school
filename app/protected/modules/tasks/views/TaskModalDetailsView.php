@@ -227,8 +227,8 @@
             if(TasksUtil::isUserSubscribedForTask($task, Yii::app()->user->userModel) === false)
             {
                 $content .= ' ' . ZurmoHtml::ajaxLink('<strong>' . Zurmo::t('TasksModule', 'Subscribe') . '</strong>',
-                                                        $this->resolveSubscribeUrl(),
-                                                        $this->resolveSubscriberAjaxOptions(),
+                                                        TasksUtil::resolveSubscribeUrl($this->model->id),
+                                                        TasksUtil::resolveSubscriberAjaxOptions(),
                                                         array('id' => 'subscribe-task-link')) ;
             }
 
@@ -242,33 +242,6 @@
             $content .= '</div>';
             $content .= '</div>';
             return $content;
-        }
-
-        /**
-         * Resolves Subscribe Url
-         * @return string
-         */
-        protected function resolveSubscribeUrl()
-        {
-            return Yii::app()->createUrl('tasks/default/addSubscriber', array('id' => $this->model->id));
-        }
-
-        /**
-         * Resolve subscriber ajax options
-         * @return array
-         */
-        protected function resolveSubscriberAjaxOptions()
-        {
-            return array(
-                'type'    => 'GET',
-                'dataType'=> 'html',
-                'data'    => array(),
-                'success' => 'function(data)
-                              {
-                                $("#subscribe-task-link").hide();
-                                $("#subscriberList").replaceWith(data);
-                              }'
-            );
         }
 
         /**

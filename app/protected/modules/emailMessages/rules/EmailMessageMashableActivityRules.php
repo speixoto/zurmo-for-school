@@ -112,7 +112,6 @@
 
         public function getLatestActivitiesOrderByAttributeName()
         {
-            assert('is_array($searchAttributeData)');
             return 'modifiedDateTime';
         }
 

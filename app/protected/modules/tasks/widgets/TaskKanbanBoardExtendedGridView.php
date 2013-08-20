@@ -56,7 +56,7 @@
 
             foreach ($this->dataProvider->data as $row => $data)
             {
-                $kanbanItem  = KanbanItem::getKanbanItemForTask($data->id);
+                $kanbanItem  = KanbanItem::getByTask($data->id);
                 if($kanbanItem == null)
                 {
                     //Create KanbanItem here
@@ -173,7 +173,7 @@
                  $type = $columnDataKeys[$count];
                  if($type != KanbanItem::TYPE_COMPLETED)
                  {
-                     $taskSortableScript .= $this->registerKanbanColumnSortableScript($count, $type);
+                     $taskSortableScript .= $this->registerKanbanColumnSortableScript($count + 1, $type);
                  }
             }
 
@@ -183,6 +183,8 @@
             $this->registerKanbanColumnFinishActionScript(Zurmo::t('TasksModule', 'Accept'), Zurmo::t('TasksModule', 'Reject'), Task::TASK_STATUS_AWAITING_ACCEPTANCE, $url);
             $this->registerKanbanColumnAcceptActionScript('', Task::TASK_STATUS_COMPLETED, $url);
             $this->registerKanbanColumnRejectActionScript(Zurmo::t('TasksModule', 'Start'), Task::TASK_STATUS_NEW, $url);
+            $this->registerSubscriptionScript();
+            $this->registerUnsubscriptionScript();
         }
 
         /**
@@ -365,6 +367,71 @@
         {
             $script = $this->registerButtonActionScript('task-reject-action', KanbanItem::TYPE_TODO, $label, 'task-start-action', $url, $targetStatus);
             Yii::app()->clientScript->registerScript('reject-action-script', $script);
+        }
+
+        /**
+         * Wraps card details content
+         * @param int $row
+         * @return string
+         */
+        protected function wrapCardDetailsContent($row)
+        {
+            return ZurmoHtml::tag('div', array('style' => 'height:90px'), $this->renderCardDetailsContent($row));
+        }
+
+        /**
+         * Register subscription script
+         */
+        protected function registerSubscriptionScript()
+        {
+            $url = Yii::app()->createUrl('tasks/default/addKanbanSubscriber');
+            $unsubscribeLink = '<strong>' . Zurmo::t('TasksModule', 'Unsubscribe') . '</strong>';
+            $script = $this->getSubscriptionScript($url, 'subscribe-task-link', 'unsubscribe-task-link', $unsubscribeLink);
+            Yii::app()->clientScript->registerScript('subscribe-task-link-script', $script);
+        }
+
+        /**
+         * Register unsubscription script
+         */
+        protected function registerUnsubscriptionScript()
+        {
+            $url = Yii::app()->createUrl('tasks/default/removeSubscriber');
+            $subscribeLink = '<strong>' . Zurmo::t('TasksModule', 'Subscribe') . '</strong>';
+            $script = $this->getSubscriptionScript($url, 'unsubscribe-task-link', 'subscribe-task-link', $subscribeLink);
+            Yii::app()->clientScript->registerScript('unsubscribe-task-link-script', $script);
+        }
+
+        /**
+         * Get subscription script
+         * @param string $url
+         * @param string $sourceId
+         * @param string $targetId
+         * @param string $link
+         * @return string
+         */
+        protected function getSubscriptionScript($url, $sourceId, $targetId, $link)
+        {
+            return "$('#" . $sourceId . "').click(
+                                                    function()
+                                                    {
+                                                        var element = $(this).parent().parent().parent();
+                                                        var id = $(element).attr('id');
+                                                        var idParts = id.split('_');
+                                                        var taskId = parseInt(idParts[1]);
+                                                        $.ajax(
+                                                        {
+                                                            type : 'GET',
+                                                            data : {'id':taskId},
+                                                            url  : '" . $url . "',
+                                                            success : function(data)
+                                                                      {
+                                                                        $(this).html('" . $link . "');
+                                                                        $(this).attr('id', '" . $targetId . "');
+                                                                      }
+                                                        }
+                                                        );
+                                                    }
+                                                );";
         }
     }
 ?>

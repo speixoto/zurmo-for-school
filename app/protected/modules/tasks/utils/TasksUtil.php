@@ -486,13 +486,39 @@
         {
             $task = Task::getById($taskId);
             $status = intval($task->status);
-            print $status;
             if($status == null)
             {
                 return KanbanItem::TYPE_TODO;
             }
             $data = self::getTaskStatusMappingToKanbanItemTypeArray();
             return $data[$status];
+        }
+
+        /**
+         * Resolves Subscribe Url
+         * @return string
+         */
+        public static function resolveSubscribeUrl($taskId)
+        {
+            return Yii::app()->createUrl('tasks/default/addSubscriber', array('id' => $taskId));
+        }
+
+        /**
+         * Resolve subscriber ajax options
+         * @return array
+         */
+        public static function resolveSubscriberAjaxOptions()
+        {
+            return array(
+                'type'    => 'GET',
+                'dataType'=> 'html',
+                'data'    => array(),
+                'success' => 'function(data)
+                              {
+                                $("#subscribe-task-link").hide();
+                                $("#subscriberList").replaceWith(data);
+                              }'
+            );
         }
     }
 ?>

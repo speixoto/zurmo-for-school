@@ -146,7 +146,8 @@
             $moduleId     = $this->moduleId;
             return array('name'                 => array('value'  => $this->getLinkString('$data->name', 'name'), 'class' => 'task-name'),
                          'requestedByUser'      => array('value'  => $this->getRelatedLinkString('$data->requestedByUser', 'requestedByUser', 'users'), 'class'  => 'requestedByUser-name'),
-                         'status'               => array('value' => 'TasksUtil::resolveActionButtonForTaskByStatus(intval($data->status), "' . $controllerId . '", "' . $moduleId . '", $data->id)', 'class' => 'task-status')
+                         'status'               => array('value' => 'TasksUtil::resolveActionButtonForTaskByStatus(intval($data->status), "' . $controllerId . '", "' . $moduleId . '", $data->id)', 'class' => 'task-status'),
+                         'subscribe'            => array('value' => array('TasksForRelatedKanbanView', 'getSubscriptionLink'), 'class' => 'task-subscription')
                         );
         }
 
@@ -272,6 +273,24 @@
 
             $toolbarContent = ZurmoHtml::tag('div', array('class' => 'view-toolbar'), $content);
             return $toolbarContent;
+        }
+
+        public static function getSubscriptionLink($data, $row)
+        {
+            if(TasksUtil::isUserSubscribedForTask($data, Yii::app()->user->userModel) === false)
+            {
+                return ZurmoHtml::ajaxLink('<strong>' . Zurmo::t('TasksModule', 'Subscribe') . '</strong>',
+                                                        TasksUtil::resolveSubscribeUrl($data->id),
+                                                        TasksUtil::resolveSubscriberAjaxOptions(),
+                                                        array('id' => 'subscribe-task-link')) ;
+            }
+            else
+            {
+                return ZurmoHtml::ajaxLink('<strong>' . Zurmo::t('TasksModule', 'Unsubscribe') . '</strong>',
+                                                        TasksUtil::resolveUnsubscribeUrl($data->id),
+                                                        TasksUtil::resolveUnsubscriberAjaxOptions(),
+                                                        array('id' => 'unsubscribe-task-link')) ;
+            }
         }
     }
 ?>

@@ -177,11 +177,11 @@
         }
 
         /**
-         * Get the row count in a given table.
-         * @param string $tableName
+         * Get the kanban item by task
+         * @param int $taskId
          * @return integer
          */
-        public static function getKanbanItemForTask($taskId)
+        public static function getByTask($taskId)
         {
             assert('is_int($taskId)');
             $searchAttributeData = array();
@@ -210,6 +210,11 @@
             }
         }
 
+        /**
+         * Get maximum sort order by type
+         * @param int $taskType
+         * @return int
+         */
         public static function getMaximumSortOrderByType($taskType)
         {
             assert('is_int($taskType)');
