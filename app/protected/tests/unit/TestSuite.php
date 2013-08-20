@@ -247,7 +247,15 @@
                 static::setupDatabaseConnection();
                 RedBeanModelsToTablesAdapter::generateTablesFromModelClassNames(static::$dependentTestModelClassNames,
                                                                                                     $messageLogger);
-                ReadPermissionsOptimizationUtil::rebuild();
+                // TODO: @Shoaibi/@Jason: Critical: Shouldn't ::rebuild take care of this.
+                foreach (static::$dependentTestModelClassNames as $modelClassName)
+                {
+                    if ($modelClassName::hasReadPermissionsOptimization())
+                    {
+                        ReadPermissionsOptimizationUtil::recreateTable(
+                            ReadPermissionsOptimizationUtil::getMungeTableName($modelClassName));
+                    }
+                }
             }
         }
 
