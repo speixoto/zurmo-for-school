@@ -97,7 +97,7 @@
             $model->subject                 = $this->seedData['subject'][$this->index];
             $model->htmlContent             = $this->seedData['htmlContent'][$this->index];
             $model->textContent             = $this->seedData['textContent'][$this->index];
-            $model->fromOperationDurationInterval    = $this->seedData['fromOperationDurationInterval'][$this->index];
+            $model->fromOperationDurationInterval    = mt_rand(1,30);
             $model->fromOperationDurationType        = TimeDurationUtil::DURATION_TYPE_DAY;
             $model->operationType           = $this->seedData['operationType'][$this->index];
             $model->enableTracking          = (rand() % 2);

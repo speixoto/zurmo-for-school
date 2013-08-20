@@ -175,7 +175,7 @@
 
         protected function resolveMissingValueToAdd($missingCustomFieldValue, $columnName)
         {
-            assert('is_string($missingCustomFieldValue)');
+            assert('is_string($missingCustomFieldValue) || is_numeric($missingCustomFieldValue)');
             assert('is_string($columnName)');
             if(!isset($this->missingValuesToAdd[$columnName]))
             {
@@ -194,7 +194,7 @@
          */
         protected function resolveMissingValueToMap($missingCustomFieldValue, $mapToValue, $columnName)
         {
-            assert('is_string($missingCustomFieldValue)');
+            assert('is_string($missingCustomFieldValue) || is_numeric($missingCustomFieldValue)');
             assert('is_string($mapToValue)');
             assert('is_string($columnName)');
             if(!isset($this->missingValuesToMap[$columnName]))
