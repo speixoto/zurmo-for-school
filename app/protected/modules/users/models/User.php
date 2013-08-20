@@ -998,5 +998,15 @@
                 }
             }
         }
+
+        public function setIsRootUserToFalse()
+        {
+            $this->unrestrictedSet('isRootUser', false);
+        }
+
+        public function setIsSystemUserToFalse()
+        {
+            $this->unrestrictedSet('isSystemUser', false);
+        }
     }
 ?>

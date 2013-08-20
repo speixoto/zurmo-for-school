@@ -93,7 +93,6 @@
             {
                 $metadata['structure'] = '(1)';
             }
-            $metadata['structure'] = '(1)';
             $joinTablesAdapter   = new RedBeanModelJoinTablesQueryAdapter('User');
             $where  = RedBeanModelDataProvider::makeWhere('User', $metadata, $joinTablesAdapter);
             $users = User::getSubset($joinTablesAdapter, null, null, $where);
