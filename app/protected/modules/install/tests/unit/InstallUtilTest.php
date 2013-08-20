@@ -510,7 +510,7 @@
                                                 $this->temporaryDatabasePort);
                 Yii::app()->user->userModel = InstallUtil::createSuperUser('super', 'super');
                 $messageLogger = new MessageLogger();
-                InstallUtil::autoBuildDatabase($messageLogger);
+                InstallUtil::autoBuildDatabase($messageLogger, true);
                 $this->assertFalse($messageLogger->isErrorMessagePresent());
                 ReadPermissionsOptimizationUtil::rebuild();
                 InstallUtil::freezeDatabase();

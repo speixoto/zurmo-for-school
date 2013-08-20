@@ -48,7 +48,7 @@
             Yii::app()->user->userModel = $super;
             $this->assertTrue(ContactsModule::loadStartingData());
             $messageLogger              = new MessageLogger();
-            InstallUtil::autoBuildDatabase($messageLogger);
+            InstallUtil::autoBuildDatabase($messageLogger, true);
 
             chdir(COMMON_ROOT . DIRECTORY_SEPARATOR . 'protected' . DIRECTORY_SEPARATOR . 'commands');
             $command = "php zurmocTest.php manageMetadata super saveAllMetadata";

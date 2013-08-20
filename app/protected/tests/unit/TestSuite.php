@@ -148,7 +148,7 @@
                 ZurmoRedBean::$writer->wipeAll();
                 Yii::app()->user->userModel = InstallUtil::createSuperUser('super', 'super');
                 $messageLogger = new MessageLogger();
-                InstallUtil::autoBuildDatabase($messageLogger);
+                InstallUtil::autoBuildDatabase($messageLogger, true);
                 $messageLogger->printMessages();
                 ReadPermissionsOptimizationUtil::rebuild();
                 assert('RedBeanDatabase::isSetup()');
@@ -167,21 +167,17 @@
                 {
                     echo 'Dumping schema using system command. Output: ' . $systemOutput . PHP_EOL . PHP_EOL;
                 }
+                static::closeDatabaseConnection();
             }
-
-            if (!empty(static::$dependentTestModelClassNames))
+            else
             {
                 static::setupDatabaseConnection();
-                echo PHP_EOL . "Autobuilding required test models." . PHP_EOL;
-                $messageLogger = new MessageLogger();
-                RedBeanModelsToTablesAdapter::generateTablesFromModelClassNames(static::$dependentTestModelClassNames,
-                                                                                $messageLogger);
+                echo PHP_EOL;
+                $messageLogger  = new MessageLogger();
+                static::buildDependentTestModels($messageLogger);
                 $messageLogger->printMessages();
-                ReadPermissionsOptimizationUtil::rebuild();
-                echo "Autobuild of test models complete." . PHP_EOL . PHP_EOL;
+                static::closeDatabaseConnection();
             }
-            static::closeDatabaseConnection();
-
             return $suite;
         }
 
@@ -241,6 +237,17 @@
                 {
                     $parentSuite->addTestSuite($suite);
                 }
+            }
+        }
+
+        public static function buildDependentTestModels($messageLogger)
+        {
+            if (!empty(static::$dependentTestModelClassNames))
+            {
+                static::setupDatabaseConnection();
+                RedBeanModelsToTablesAdapter::generateTablesFromModelClassNames(static::$dependentTestModelClassNames,
+                                                                                                    $messageLogger);
+                ReadPermissionsOptimizationUtil::rebuild();
             }
         }
 

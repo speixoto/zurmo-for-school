@@ -642,7 +642,7 @@
             return $user;
         }
 
-        public static function autoBuildDatabase(& $messageLogger)
+        public static function autoBuildDatabase(& $messageLogger, $autoBuildTestModels = false)
         {
             ZurmoDatabaseCompatibilityUtil::createStoredFunctionsAndProcedures();
             $messageLogger->addInfoMessage(Zurmo::t('InstallModule','Searching for models'));
@@ -652,6 +652,10 @@
             // TODO: @Shoaibi/@Jason: Critical: What are these for? May be refactor these too.
             StarredUtil::createStarredTables();
             ReadPermissionsSubscriptionUtil::buildTables();
+            if ($autoBuildTestModels)
+            {
+                TestSuite::buildDependentTestModels($messageLogger);
+            }
         }
 
         /**
@@ -952,7 +956,7 @@
             $messageStreamer->add('debugOn:' . BooleanUtil::boolToString(YII_DEBUG));
             $messageStreamer->add('phpLevelCaching:' . BooleanUtil::boolToString(PHP_CACHING_ON));
             $messageStreamer->add('memcacheLevelCaching:' . BooleanUtil::boolToString(MEMCACHE_ON));
-            static::autoBuildDatabase($messageLogger);
+            static::autoBuildDatabase($messageLogger, false);
             $endTime = microtime(true);
             $messageStreamer->add(Zurmo::t('InstallModule', 'Total autobuild time: {formattedTime} seconds.',
                 array('{formattedTime}' => number_format(($endTime - $startTime), 3))));

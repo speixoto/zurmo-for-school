@@ -78,7 +78,7 @@
             Yii::app()->user->userModel = $super;
             $messageLogger              = new MessageLogger();
             $beforeRowCount             = DatabaseCompatibilityUtil::getTableRowsCountTotal();
-            InstallUtil::autoBuildDatabase($messageLogger);
+            InstallUtil::autoBuildDatabase($messageLogger, true);
 
             $afterRowCount              = DatabaseCompatibilityUtil::getTableRowsCountTotal();
             $this->assertEquals($beforeRowCount, $afterRowCount);
@@ -234,7 +234,7 @@
             Yii::app()->user->userModel = $super;
             $messageLogger              = new MessageLogger();
             $beforeRowCount             = DatabaseCompatibilityUtil::getTableRowsCountTotal();
-            InstallUtil::autoBuildDatabase($messageLogger);
+            InstallUtil::autoBuildDatabase($messageLogger, true);
 
             $afterRowCount              = DatabaseCompatibilityUtil::getTableRowsCountTotal();
             $this->assertEquals($beforeRowCount, $afterRowCount);
@@ -280,7 +280,7 @@
                 }
             }
             Account::setMetadata($metadata);
-            InstallUtil::autoBuildDatabase($messageLogger);
+            InstallUtil::autoBuildDatabase($messageLogger, true);
 
             RedBeanModel::forgetAll();
             $modifiedAccount = Account::getById($account->id);

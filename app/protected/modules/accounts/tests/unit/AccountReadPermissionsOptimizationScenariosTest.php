@@ -42,7 +42,7 @@
             // we are using some hardcoded Ids, we need fresh tables so these Ids are what we expect, rebuild:
             ForgetAllCacheUtil::forgetAllCaches();
             ZurmoRedBean::$writer->wipeAll();
-            InstallUtil::autoBuildDatabase(new MessageLogger());
+            InstallUtil::autoBuildDatabase(new MessageLogger(), true);
 
             // This is setting up users and groups to match Jason's
             // powerpoint workings out of how the munge should look
