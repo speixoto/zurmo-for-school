@@ -100,7 +100,7 @@
             $user   = User::getByUsername('mysysuser');
             $this->assertTrue((bool)$user->isSystemUser);
 
-            $user->unsetIsSystemUser();
+            $user->setIsNotSystemUser();
             $this->assertTrue($user->save());
             unset($user);
             $user   = User::getByUsername('mysysuser');

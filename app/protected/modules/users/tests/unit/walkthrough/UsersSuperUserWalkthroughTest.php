@@ -55,9 +55,9 @@
             {
                 throw new NotSupportedException();
             }
-            $bUser = UserTestHelper::createBasicUser('bUser');
-            $cUser = UserTestHelper::createBasicUser('cUser');
-            $dUser = UserTestHelper::createBasicUser('dUser');
+            UserTestHelper::createBasicUser('bUser');
+            UserTestHelper::createBasicUser('cUser');
+            UserTestHelper::createBasicUser('dUser');
         }
 
         public function testSuperUserAllDefaultControllerActions()
@@ -500,7 +500,7 @@
             $content = $this->runControllerWithNoExceptionsAndGetContent('users/default/changeAvatar');
             $this->assertTrue(strpos($content, 'You have tried to access a page') > 0);
 
-            $aUser->setIsSystemUserToFalse();
+            $aUser->setIsNotSystemUser();
             $aUser->setIsRootUser();
             $this->assertTrue($aUser->save());
             unset($aUser);
@@ -514,8 +514,8 @@
             $content = $this->runControllerWithNoExceptionsAndGetContent('users/default/changeAvatar');
             $this->assertTrue(strpos($content, 'You have tried to access a page') > 0);
 
-            $aUser->setIsSystemUserToFalse();
-            $aUser->setIsRootUserToFalse();
+            $aUser->setIsNotSystemUser();
+            $aUser->setIsNotRootUser();
             $this->assertTrue($aUser->save());
             unset($aUser);
 
@@ -543,15 +543,14 @@
             $this->assertFalse((bool)$aUser->isSystemUser);
 
             $this->setGetArray(array('id' => $aUser->id));
-            $content = $this->runControllerWithNoExceptionsAndGetContent('users/default/details');
-            //$this->assertFalse(strpos($content, 'edit') > 0);
+            $this->runControllerWithNoExceptionsAndGetContent('users/default/details');
         }
 
         public function testExplicitLoginPermissions()
         {
             $aUser = User::getByUsername('auser');
             $aUser->setIsSystemUser();
-            $aUser->setIsRootUserToFalse();
+            $aUser->setIsNotRootUser();
             $this->assertTrue($aUser->save());
             unset($aUser);
 
@@ -560,12 +559,12 @@
             $this->assertTrue((bool)$aUser->isSystemUser);
             $this->setPostArray(array('LoginForm' => array(
                                                         'username' => $aUser->username,
-                                                        'password' => 'auser',
+                                                        'password' => 'bNewPassword',
                                                         'rememberMe' => '0')));
             $content = $this->runControllerWithNoExceptionsAndGetContent('zurmo/default/login');
             $this->assertTrue(strpos($content, 'Incorrect username or password') > 0);
 
-            $aUser->setIsSystemUserToFalse();
+            $aUser->setIsNotSystemUser();
             $this->assertTrue($aUser->save());
             unset($aUser);
 
@@ -574,7 +573,7 @@
             $this->assertFalse((bool)$aUser->isSystemUser);
             $this->setPostArray(array('LoginForm' => array(
                                                         'username' => $aUser->username,
-                                                        'password' => 'auser',
+                                                        'password' => 'bNewPassword',
                                                         'rememberMe' => '0')));
             $this->runControllerWithRedirectExceptionAndGetContent('zurmo/default/login');
         }

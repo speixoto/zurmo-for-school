@@ -999,12 +999,12 @@
             }
         }
 
-        public function setIsRootUserToFalse()
+        public function setIsNotRootUser()
         {
             $this->unrestrictedSet('isRootUser', false);
         }
 
-        public function setIsSystemUserToFalse()
+        public function setIsNotSystemUser()
         {
             $this->unrestrictedSet('isSystemUser', false);
         }

@@ -1350,7 +1350,7 @@
             $this->assertEquals(25, $activeUserCount);
 
             $user = User::getByUsername('rootuser');
-            $user->setIsRootUserToFalse();
+            $user->setIsNotRootUser();
             $this->assertTrue($user->save());
             unset($user);
 
