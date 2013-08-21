@@ -42,11 +42,6 @@
 
         const CONFIG_DEFAULT_VALUE   = 100;
 
-        /**
-         * @param bool $returnDefaultIfMissing
-         * @param bool $setDefaultIfMissing
-         * @return configuration|int $size
-         */
         public static function getBatchSize($returnDefaultIfMissing = true, $setDefaultIfMissing = false)
         {
             $size = ZurmoConfigurationUtil::getByModuleName(static::CONFIG_MODULE_NAME, static::CONFIG_KEY);
@@ -61,9 +56,6 @@
             return $size;
         }
 
-        /**
-         * @param int $size
-         */
         public static function setBatchSize($size)
         {
             assert('is_int($size) || $size === null');

@@ -108,7 +108,7 @@
             $this->assertFalse($importSanitizeResultsUtil->shouldSaveModel());
             $messages = $importSanitizeResultsUtil->getMessages();
             $this->assertEquals(1, count($messages));
-            $compareMessage = 'Contact - Status specified does not exist.';
+            $compareMessage = 'Contact - The status specified does not exist.';
             $this->assertEquals($compareMessage, $messages[0]);
 
             //Test a required contact state with a state that is for leads, not contacts.
@@ -124,7 +124,7 @@
             $this->assertFalse($importSanitizeResultsUtil->shouldSaveModel());
             $messages = $importSanitizeResultsUtil->getMessages();
             $this->assertEquals(1, count($messages));
-            $compareMessage = 'Contact - Status specified is invalid.';
+            $compareMessage = 'Contact - The status specified is invalid.';
             $this->assertEquals($compareMessage, $messages[0]);
         }
     }

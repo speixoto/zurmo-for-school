@@ -238,7 +238,6 @@
         {
             if(!$this->hideHeader)
             {
-                echo "<thead>\n";
                 $this->renderTableColumnGroup();
                 if($this->filterPosition===self::FILTER_POS_HEADER)
                 {
@@ -264,7 +263,7 @@
                 echo "</thead>\n";
             }
         }
-                
+
         protected function renderTableColumnGroup()
         {
             if(!empty($this->tableColumnGroup))

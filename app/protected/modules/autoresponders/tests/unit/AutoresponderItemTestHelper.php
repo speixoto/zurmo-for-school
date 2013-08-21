@@ -40,15 +40,7 @@
         {
             $autoresponderItem  = static::populateAutoresponderItem($processed, $processDateTime, $autoresponder, $contact);
             $saved              = $autoresponderItem->unrestrictedSave();
-            if(!$saved)
-            {
-                echo "<pre>";
-                print_r('xx' . $processDateTime);
-                print_r($autoresponderItem->getErrors());
-                print_r($autoresponderItem->processDateTime);
-                echo "</pre>";
-                throw new FailedToSaveModelException();
-            }
+            assert('$saved');
             return $autoresponderItem;
         }
 

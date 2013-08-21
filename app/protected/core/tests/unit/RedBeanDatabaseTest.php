@@ -96,9 +96,6 @@
             catch (NotSupportedException $e)
             {
             }
-            catch (FailedAssertionException $e)
-            {
-            }
         }
 
         public function testGetDatabaseNameFromConnectionString()
@@ -114,9 +111,6 @@
                 $this->fail();
             }
             catch (NotSupportedException $e)
-            {
-            }
-            catch (FailedAssertionException $e)
             {
             }
         }

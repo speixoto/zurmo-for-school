@@ -73,7 +73,6 @@
                        $this->renderXHtmlHead()      .
                        $this->renderXHtmlBodyStart() .
                        parent::render()              .
-                       $this->renderXHtmlBeforeBodyEnd() .
                        $this->renderXHtmlBodyEnd()   .
                        $this->renderXHtmlEnd();
             Yii::app()->getClientScript()->render($content);
@@ -233,14 +232,6 @@
         }
 
         /**
-         * Renders the XHtml before the ending body tag
-         */
-        protected function renderXHtmlBeforeBodyEnd()
-        {
-            return Yii::app()->userInterface->renderXHtmlBeforeBodyEndContent();
-        }
-
-        /**
          * Renders the XHtml header element containing the title
          * and the default stylesheets screen, print, and ie. Additional
          * stylesheets can be specified by overriding getStyles() in
@@ -278,11 +269,11 @@
             else
             {
                 $cs->registerCssFile($themeBaseUrl . '/css/newui.css');
-                if (file_exists("themes/$themeName/css/commercial.css"))
+                if (file_exists($themeBaseUrl . '/css/commercial.css'))
                 {
                     $cs->registerCssFile($themeBaseUrl . '/css/commercial.css');
                 }
-                if (file_exists("themes/$themeName/css/custom.css"))
+                if (file_exists($themeBaseUrl . '/css/custom.css'))
                 {
                     $cs->registerCssFile($themeBaseUrl . '/css/custom.css');
                 }

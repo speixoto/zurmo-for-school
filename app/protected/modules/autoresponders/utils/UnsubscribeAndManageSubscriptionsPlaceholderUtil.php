@@ -46,15 +46,9 @@
 
         const MANAGE_SUBSCRIPTIONS_URL_PLACEHOLDER  = '{{MANAGE_SUBSCRIPTIONS_URL}}';
 
-        /**
-         * @param $isHtmlContent
-         * @param bool $returnDefault
-         * @return configuration|string
-         */
         public static function getContentByType($isHtmlContent, $returnDefault = true)
         {
-            assert('is_bool($isHtmlContent)');
-            $key        = static::resolveConfigKeyByContentType((bool) $isHtmlContent);
+            $key        = static::resolveConfigKeyByContentType($isHtmlContent);
             $content    = ZurmoConfigurationUtil::getByModuleName(static::CONFIG_MODULE_NAME, $key);
             if (empty($content) && $returnDefault)
             {
@@ -63,21 +57,14 @@
             return $content;
         }
 
-        /**
-         * @param string $content
-         * @param bool $isHtmlContent
-         */
         public static function setContentByType($content, $isHtmlContent)
         {
-            assert('is_string($content)');
-            assert('is_bool($isHtmlContent)');
-            $key        = static::resolveConfigKeyByContentType((bool) $isHtmlContent);
+            $key        = static::resolveConfigKeyByContentType($isHtmlContent);
             ZurmoConfigurationUtil::setByModuleName(static::CONFIG_MODULE_NAME, $key, $content);
         }
 
         protected static function resolveConfigKeyByContentType($isHtmlContent)
         {
-            assert('is_bool($isHtmlContent)');
             if ($isHtmlContent)
             {
                 return static::CONFIG_KEY_RICH_TEXT;

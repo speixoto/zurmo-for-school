@@ -43,10 +43,6 @@
 
         protected $relationName;
 
-        /**
-         * @param $relatedModel
-         * @param string $relationName
-         */
         public function __construct($relatedModel, $relationName)
         {
             assert('is_string($relationName)');
@@ -99,6 +95,11 @@
             elseif ($this->relatedModel instanceof Mission)
             {
                 $participants = MissionsUtil::resolvePeopleToSendNotificationToOnNewComment($this->relatedModel, $user);
+                CommentsUtil::sendNotificationOnNewComment($this->relatedModel, $model, $user, $participants);
+            }
+            elseif ($this->relatedModel instanceof Task)
+            {
+                $participants = TasksUtil::resolvePeopleToSendNotificationToOnNewComment($this->relatedModel, $user);
                 CommentsUtil::sendNotificationOnNewComment($this->relatedModel, $model, $user, $participants);
             }
         }

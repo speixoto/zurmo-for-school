@@ -206,7 +206,7 @@
         /**
         * Get info about imap mail box
         */
-        public function resolveMessageBoxStats()
+        public function getMessageBoxStats()
         {
             if($this->imapStream == null)
             {
@@ -310,7 +310,6 @@
             {
                 return $messages;
             }
-            $this->resolveMessageBoxStats();
             $messageNumbers = imap_search($this->imapStream, $searchCriteria);
             if (is_array($messageNumbers) && count($messageNumbers) > 0)
             {

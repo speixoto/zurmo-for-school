@@ -178,14 +178,6 @@
         }
 
         /**
-         * Renders the XHtml before the ending body tag. Override as needed
-         * @return string content to place before </body> tag in @pageView html content rendering.
-         */
-        public function renderXHtmlBeforeBodyEndContent()
-        {
-        }
-
-        /**
          * Determine user interface type, based on device signature.
          * @return string
          */

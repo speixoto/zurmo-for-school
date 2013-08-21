@@ -159,27 +159,18 @@
             {
                 if ($value !== null)
                 {
-                    $currentClauseCount          = $clauseCount;
-                    $secondAdaptedMetadataClause = null;
+                    $currentClauseCount = $clauseCount;
                     $this->resolveOperatorAndCastsAndAppendClauseAsAndToStructureString(  $model,
                                                                                            $attributeName,
                                                                                            $operatorType,
                                                                                            $value,
                                                                                            $basePartAtRequiredDepth,
-                                                                                           $secondAdaptedMetadataClause,
                                                                                            $structure,
                                                                                            $clauseCount);
                     $adaptedMetadataClauses[$currentClauseCount] = static::getAppendedAdaptedMetadataClauseBasePart(
                                                                                 $adaptedMetadataClauseBasePart,
                                                                                 $basePartAtRequiredDepth,
                                                                                 $depth);
-                    if($secondAdaptedMetadataClause != null)
-                    {
-                        $adaptedMetadataClauses[$currentClauseCount + 1] = static::getAppendedAdaptedMetadataClauseBasePart(
-                                                                            $adaptedMetadataClauseBasePart,
-                                                                            $secondAdaptedMetadataClause,
-                                                                            $depth);
-                    }
                 }
             }
             //non-relation attribute that has array of data
@@ -187,27 +178,18 @@
             {
                 if (isset($value['value']) && $value['value'] != '')
                 {
-                    $currentClauseCount          = $clauseCount;
-                    $secondAdaptedMetadataClause = null;
+                    $currentClauseCount                         = $clauseCount;
                     $this->resolveOperatorAndCastsAndAppendClauseAsAndToStructureString(   $model,
                                                                                            $attributeName,
                                                                                            $operatorType,
                                                                                            $value['value'],
                                                                                            $basePartAtRequiredDepth,
-                                                                                           $secondAdaptedMetadataClause,
                                                                                            $structure,
                                                                                            $clauseCount);
                     $adaptedMetadataClauses[$currentClauseCount] = static::getAppendedAdaptedMetadataClauseBasePart(
                                                                                 $adaptedMetadataClauseBasePart,
                                                                                 $basePartAtRequiredDepth,
                                                                                 $depth);
-                    if($secondAdaptedMetadataClause != null)
-                    {
-                        $adaptedMetadataClauses[$currentClauseCount + 1] = static::getAppendedAdaptedMetadataClauseBasePart(
-                                                                                $adaptedMetadataClauseBasePart,
-                                                                                $secondAdaptedMetadataClause,
-                                                                                $depth);
-                    }
                 }
             }
             //relation attribute that is relatedData
@@ -256,14 +238,12 @@
                         {
                             if ($model::isRelation($attributeName))
                             {
-                                $secondAdaptedMetadataClause = null;
                                 $this->resolveOperatorAndCastsAndAppendClauseAsAndToStructureString(
                                                                                                $model->$attributeName,
                                                                                                $relatedAttributeName,
                                                                                                $operatorType,
                                                                                                $relatedValue,
                                                                                                $basePartAtRequiredDepth,
-                                                                                               $secondAdaptedMetadataClause,
                                                                                                $structure,
                                                                                                $clauseCount,
                                                                                                $attributeName);
@@ -271,13 +251,6 @@
                                                                                             $adaptedMetadataClauseBasePart,
                                                                                             $basePartAtRequiredDepth,
                                                                                             $depth);
-                                if($secondAdaptedMetadataClause != null)
-                                {
-                                    $adaptedMetadataClauses[$currentClauseCount + 1] = static::getAppendedAdaptedMetadataClauseBasePart(
-                                                                                            $adaptedMetadataClauseBasePart,
-                                                                                            $secondAdaptedMetadataClause,
-                                                                                            $depth);
-                                }
                             }
                             else
                             {
@@ -365,14 +338,12 @@
                                                                                            $operatorType,
                                                                                            $value,
                                                                                            & $adaptedMetadataClause,
-                                                                                           & $secondAdaptedMetadataClause,
                                                                                            & $structure,
                                                                                            & $clauseCount,
                                                                                            $previousAttributeName = null)
         {
             assert('$previousAttributeName == null || is_string($previousAttributeName)');
             $modelForTypeOperations = static::resolveAsRedBeanModel($model);
-            $mixedType              = null;
             if ($operatorType == null)
             {
                 $operatorType = ModelAttributeToOperatorTypeUtil::getOperatorType($modelForTypeOperations, $attributeName);
@@ -399,66 +370,19 @@
                                                                                         $value,
                                                                                         $operatorType);
             }
-            if(static::isBooleanNullOrEmptyOperation($mixedType, $operatorType, $value))
-            {
-                $secondAdaptedMetadataClause = $adaptedMetadataClause;
-            }
             if ($previousAttributeName == null)
             {
                 $adaptedMetadataClause['attributeName']        = $attributeName;
-                if(static::isBooleanNullOrEmptyOperation($mixedType, $operatorType, $value))
-                {
-                    $secondAdaptedMetadataClause['attributeName'] = $attributeName;
-                }
             }
             else
             {
                 $adaptedMetadataClause['attributeName']        = $previousAttributeName;
                 $adaptedMetadataClause['relatedAttributeName'] = $attributeName;
-                if(static::isBooleanNullOrEmptyOperation($mixedType, $operatorType, $value))
-                {
-                    $secondAdaptedMetadataClause['attributeName']        = $previousAttributeName;
-                    $secondAdaptedMetadataClause['relatedAttributeName'] = $attributeName;
-                }
             }
             $adaptedMetadataClause['operatorType']  = $operatorType;
             $adaptedMetadataClause['value']         = $value;
-            if(static::isBooleanNullOrEmptyOperation($mixedType, $operatorType, $value))
-            {
-                $secondAdaptedMetadataClause['operatorType']  = OperatorRules::TYPE_IS_NULL;
-                $secondAdaptedMetadataClause['value']         = null;
-                $partialStructure = null;
-                $this->resolveAppendClauseAsAndToStructureString($partialStructure, $clauseCount);
-                static::appendClauseAsOrToStructureString($partialStructure, $clauseCount);
-                $partialStructure = '(' . $partialStructure . ')';
-                if($this->appendStructureAsAnd)
-                {
-                    if($structure != null)
-                    {
-                        $structure .= ' and ' . $partialStructure;
-                    }
-                    else
-                    {
-                        $structure .= $partialStructure;
-                    }
-                }
-                else
-                {
-                    if($structure != null)
-                    {
-                        $structure .= ' or ' . $partialStructure;
-                    }
-                    else
-                    {
-                        $structure .= $partialStructure;
-                    }
-                }
-                $clauseCount++;
-            }
-            else
-            {
-                $this->resolveAppendClauseAsAndToStructureString($structure, $clauseCount);
-            }
+            $this->resolveAppendClauseAsAndToStructureString($structure,
+                                                              $clauseCount);
         }
 
         protected function resolveAppendClauseAsAndToStructureString(& $structure, & $clauseCount)
@@ -650,27 +574,9 @@
             assert('is_string($operatorType)');
             if ($type == 'CheckBox' && ($value == '0' || !$value))
             {
-                $value = '0';
+                $operatorType = 'doesNotEqual';
+                $value        = (bool)1;
             }
-        }
-
-        /**
-         * @param $mixedType
-         * @param $operatorType
-         * @param $value
-         * @return bool true if boolean operator is equals and the value is false or 0. This means we we are looking for
-         * when the boolean value is NULL or 0
-         *
-         */
-        protected function isBooleanNullOrEmptyOperation($mixedType, $operatorType, $value)
-        {
-            assert('is_string($mixedType) || $mixedType == null');
-            assert('is_string($operatorType)');
-            if($mixedType == 'CheckBox' && $operatorType == OperatorRules::TYPE_EQUALS && ($value == '0' || !$value))
-            {
-                return true;
-            }
-            return false;
         }
 
         protected static function getAdaptedMetadataClauseBasePartAtRequiredDepth($adaptedMetadataClauseBasePart, $depth)
