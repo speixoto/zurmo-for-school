@@ -115,6 +115,11 @@
                     TimeDurationUtil::DURATION_SIGN_POSITIVE,
                     TimeDurationUtil::DURATION_TYPE_YEAR,
                     500000 + (4 * 365 + 1) * 24 * 60 * 60),
+                array(123456,
+                    0,
+                    TimeDurationUtil::DURATION_SIGN_NEGATIVE,
+                    TimeDurationUtil::DURATION_TYPE_DAY,
+                    123456),
             );
         }
     }

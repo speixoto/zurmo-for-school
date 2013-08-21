@@ -70,7 +70,7 @@
             assert('is_string($durationType)');
             if($durationInterval == 0)
             {
-                return 0;
+                return $initialTimeStamp;
             }
             $dateTime = DateTime::createFromFormat('U', (int)$initialTimeStamp,
                 new DateTimeZone(Yii::app()->timeZoneHelper->getForCurrentUser()));

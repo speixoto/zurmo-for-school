@@ -37,14 +37,14 @@
     /**
      * A job for updating read permission tables
      */
-    class ReadPermissionSubscriptionUpdatePartialJob extends BaseJob
+    class ReadPermissionSubscriptionQuickUpdateJob extends BaseJob
     {
         /**
          * @returns Translated label that describes this job type.
          */
         public static function getDisplayName()
         {
-            return Zurmo::t('ZurmoModule', 'Read Permission Subscription Partial Update Job');
+            return Zurmo::t('ZurmoModule', 'Read Permission Subscription Quick Update Job');
         }
 
         /**
@@ -52,7 +52,7 @@
          */
         public static function getType()
         {
-            return 'ReadPermissionSubscriptionUpdatePartial';
+            return 'ReadPermissionSubscriptionQuickUpdate';
         }
 
         public static function getRecommendedRunFrequencyContent()
@@ -62,7 +62,15 @@
 
         public function run()
         {
-            ReadPermissionsSubscriptionUtil::updateAllReadSubscriptionTables(true);
+            //Do not run this job if ReadPermissionSubscriptionUpdateComplete is already running
+            try
+            {
+                JobInProcess::getByType('ReadPermissionSubscriptionComprehensiveUpdate');
+            }
+            catch (NotFoundException $e)
+            {
+                ReadPermissionsSubscriptionUtil::updateAllReadSubscriptionTables(true);
+            }
             return true;
         }
     }

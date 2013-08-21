@@ -39,14 +39,35 @@
      */
     class ImportStepsAndProgressBarForWizardView extends StepsAndProgressBarForWizardView
     {
+        protected $importRulesClassName;
+
+        public function __construct($importRulesClassName, $zeroBasedStepIndex = 0)
+        {
+            assert('is_string($importRulesClassName)');
+            $this->importRulesClassName = $importRulesClassName;
+            parent::__construct($zeroBasedStepIndex);
+        }
+
         protected function getSpanLabels()
         {
-            return array(Zurmo::t('Core',         'Select Module'),
-                         Zurmo::t('ZurmoModule',  'Upload File'),
-                         Zurmo::t('ZurmoModule',  'Select Permissions'),
-                         Zurmo::t('ImportModule', 'Map Fields'),
-                         Zurmo::t('ImportModule', 'Analyze Data'),
-                         Zurmo::t('ImportModule', 'Import Data'));
+            $importRulesClassName  = $this->importRulesClassName;
+            if (!is_subclass_of($importRulesClassName::getModelClassName(), 'SecurableItem'))
+            {
+                return array(Zurmo::t('Core',         'Select Module'),
+                             Zurmo::t('ZurmoModule',  'Upload File'),
+                             Zurmo::t('ImportModule', 'Map Fields'),
+                             Zurmo::t('ImportModule', 'Analyze Data'),
+                             Zurmo::t('ImportModule', 'Import Data'));
+            }
+            else
+            {
+                return array(Zurmo::t('Core',         'Select Module'),
+                             Zurmo::t('ZurmoModule',  'Upload File'),
+                             Zurmo::t('ZurmoModule',  'Select Permissions'),
+                             Zurmo::t('ImportModule', 'Map Fields'),
+                             Zurmo::t('ImportModule', 'Analyze Data'),
+                             Zurmo::t('ImportModule', 'Import Data'));
+            }
         }
     }
 ?>
