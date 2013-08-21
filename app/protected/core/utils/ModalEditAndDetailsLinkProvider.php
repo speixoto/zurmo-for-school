@@ -35,24 +35,10 @@
      ********************************************************************************/
 
     /**
-     * Display the duration derived attributes including the sign, type, and duration in seconds
+     * Helper class for ModalEditAndDetailsViews.
      */
-    class WorkflowActionAttributeDurationElement extends DurationElement
+    abstract class ModalEditAndDetailsLinkProvider
     {
-        protected function getDurationTypeDropDownArray()
-        {
-            if($this->model->getFormType() == 'Date')
-            {
-                return TimeDurationUtil::getDateOnlyValueAndLabels();
-            }
-            elseif($this->model->getFormType() == 'DateTime')
-            {
-                return TimeDurationUtil::getValueAndLabels();
-            }
-            else
-            {
-                throw new NotSupportedException();
-            }
-        }
+        
     }
 ?>

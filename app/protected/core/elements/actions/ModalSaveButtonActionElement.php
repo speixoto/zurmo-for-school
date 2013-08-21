@@ -34,44 +34,16 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Product Template Regular User Walkthrough.
-     */
-    class ProductTemplateRegularUserWalkthroughTest extends ZurmoRegularUserWalkthroughBaseTest
+    class ModalSaveButtonActionElement extends SaveButtonActionElement
     {
-        public static function setUpBeforeClass()
+        public function render()
         {
-            parent::setUpBeforeClass();
+            return ZurmoHtml::ajaxSubmitButton($this->getLabel(), $this->route, $this->getAjaxOptions(), $this->getHtmlOptions());
         }
 
-        public function testRegularUserProductPortletAccess()
+        protected function getDefaultRoute()
         {
-            $benny = $this->logoutCurrentUserLoginNewUserAndGetByUsername('nobody');
-            $account = AccountTestHelper::createAccountByNameForOwner('superAccount',  Yii::app()->user->userModel);
-            $superAccountId = $account->id;
-            $benny->setRight('ProductTemplatesModule', ProductTemplatesModule::getAccessRight(), Right::DENY);
-            $this->assertTrue($benny->save());
-            $this->assertFalse(RightsUtil::canUserAccessModule('ProductTemplatesModule', $benny));
-
-            $portlet = new Portlet();
-            $portlet->column    = 1;
-            $portlet->position  = 1;
-            $portlet->layoutId  = 'Test';
-            $portlet->collapsed = true;
-            $portlet->viewType  = 'RssReader';
-            $portlet->user      = $benny;
-            $this->assertTrue($portlet->save());
-
-            $this->setGetArray(array(
-                                        'uniqueLayoutId' => 'AccountDetailsAndRelationsView_' . $portlet->id,
-                                        'portletId'      => $portlet->id,
-                                        'relationAttributeName' => 'account',
-                                        'relationModelId' => $superAccountId,
-                                        'relationModuleId' => 'accounts',
-                                        'relationModelClassName' => 'Account'
-                                    ));
-
-            $this->runControllerWithNoExceptionsAndGetContent('productTemplates/default/selectFromRelatedList');
+            return $this->params['url'];
         }
     }
 ?>

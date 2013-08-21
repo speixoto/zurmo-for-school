@@ -34,23 +34,21 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class TimeTriggerForWorkflowFormTest extends WorkflowBaseTest
+    abstract class ModalLinkActionElement extends LinkActionElement
     {
-        public function testResolveNewTimeStampForDuration()
+        const RELATED_MODAL_CONTAINER_PREFIX = 'relatedModalContainer';
+
+        public function render()
         {
-            $timeTrigger = new TimeTriggerForWorkflowForm('WorkflowsTestModule', 'WorkflowModelTestItem', Workflow::TYPE_ON_SAVE);
-            $timeTrigger->durationInterval = 5;
-            $timeTrigger->durationType     = TimeDurationUtil::DURATION_TYPE_DAY;
-            $timeTrigger->durationSign     = TimeDurationUtil::DURATION_SIGN_POSITIVE;
-            $this->assertEquals(5 * 24 * 60 * 60, $timeTrigger->resolveNewTimeStampForDuration(0));
-            $timeTrigger->durationType     = TimeDurationUtil::DURATION_TYPE_MINUTE;
-            $this->assertEquals(5 * 60, $timeTrigger->resolveNewTimeStampForDuration(0));
-            $timeTrigger->durationInterval = 10;
-            $this->assertEquals(10 * 60, $timeTrigger->resolveNewTimeStampForDuration(0));
-            $timeTrigger->durationType     = TimeDurationUtil::DURATION_TYPE_HOUR;
-            $this->assertEquals(10 * 60 * 60, $timeTrigger->resolveNewTimeStampForDuration(0));
-            $timeTrigger->durationSign     = TimeDurationUtil::DURATION_SIGN_NEGATIVE;
-            $this->assertEquals(-10 * 60 * 60, $timeTrigger->resolveNewTimeStampForDuration(0));
+            return ZurmoHtml::ajaxLink($this->resolveLabelAndWrap(), $this->route, $this->getAjaxOptions(), $this->getHtmlOptions());
+        }
+
+        public function renderMenuItem()
+        {
+            return array('label'            => $this->getLabel(),
+                         'url'              => $this->route,
+                         'ajaxLinkOptions'  => $this->getAjaxOptions(),
+                         'linkOptions'      => $this->resolveHtmlOptionsForRenderingMenuItem());
         }
     }
 ?>
