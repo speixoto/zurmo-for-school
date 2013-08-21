@@ -177,9 +177,7 @@
                     'nextPageLabel'     => '<span>next</span>',
                     'lastPageLabel'     => '<span>last</span>',
                     'class'             => 'SimpleListLinkPager',
-                    'paginationParams' => array_merge(GetUtil::getData(),
-                                            array('portletId'   => $this->params['portletId'],
-                                                  'redirectUrl' => $this->params['redirectUrl'])),
+                    'paginationParams'  => $this->resolvePaginationParams(),
                     'route'             => 'defaultPortlet/details',
                 );
         }
@@ -298,6 +296,17 @@
         public static function allowMultiplePlacement()
         {
             return false;
+        }
+
+        /**
+         * Resolves pagination params
+         * @return array
+         */
+        protected function resolvePaginationParams()
+        {
+            return array_merge(GetUtil::getData(),
+                                            array('portletId'   => $this->params['portletId'],
+                                                  'redirectUrl' => $this->params['redirectUrl']));
         }
     }
 ?>

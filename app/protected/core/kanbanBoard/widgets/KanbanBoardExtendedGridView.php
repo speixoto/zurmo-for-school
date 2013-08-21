@@ -113,7 +113,7 @@
                     echo "<div data-value='" . $attributeValue . "' class='droppable-dynamic-rows-container'>";
                     echo ZurmoHtml::tag('div', array('class' => 'column-header'), $this->resolveGroupByColumnHeaderLabel($attributeValue));
                     $listItems = $this->getListItemsByAttributeValueAndData($attributeValueAndData);
-                    echo $this->createUlTagForKanbanColumn($listItems, $attributeValue);
+                    echo $this->renderUlTagForKanbanColumn($listItems, $attributeValue);
                     $dropZone =  ZurmoHtml::tag('div', array('class' => 'drop-zone'), '');
                     echo ZurmoHtml::tag('div', array('class' => 'drop-zone-container'), $dropZone);
                     echo "</div>";
@@ -275,7 +275,7 @@
          * @param string $attributeValue
          * @return string
          */
-        protected function createUlTagForKanbanColumn($listItems, $attributeValue = null)
+        protected function renderUlTagForKanbanColumn($listItems, $attributeValue = null)
         {
             return ZurmoHtml::tag('ul', array(), $listItems);
         }

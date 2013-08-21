@@ -79,15 +79,15 @@
 
         /**
          * Given a related model id return a list of check items models.
-         * @param integer $relatedId
+         * @param integer $taskId
          */
-        public static function getTaskCheckListItemsByTask($relatedId)
+        public static function getByTask($taskId)
         {
-            assert('is_int($relatedId)');
+            assert('is_int($taskId)');
             $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('TaskCheckListItem');
             $orderByColumnName = RedBeanModelDataProvider::
                                  resolveSortAttributeColumnName('TaskCheckListItem', $joinTablesAdapter, 'id');
-            $where             = "task_id = '" . $relatedId . "'";
+            $where             = "task_id = '" . $taskId . "'";
             $orderBy           = $orderByColumnName . ' desc';
             return self::getSubset($joinTablesAdapter, null, null, $where, $orderBy);
         }

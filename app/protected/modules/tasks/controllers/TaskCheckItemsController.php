@@ -96,7 +96,7 @@
             $relatedModelId           = ArrayUtil::getArrayValue($getData, 'relatedModelId');
             $relatedModelClassName    = ArrayUtil::getArrayValue($getData, 'relatedModelClassName');
             $relatedModelRelationName = ArrayUtil::getArrayValue($getData, 'relatedModelRelationName');
-            $checkItemsData           = TaskCheckListItem::getTaskCheckListItemsByTask((int)$relatedModelId);
+            $checkItemsData           = TaskCheckListItem::getByTask((int)$relatedModelId);
             $getParams                = array('uniquePageId'             => $uniquePageId,
                                               'relatedModelId'           => $relatedModelId,
                                               'relatedModelClassName'    => $relatedModelClassName,

@@ -45,9 +45,9 @@
          * @throws NotSupportedException
          */
         public static function updatePermissionsWithDefaultForModelByUser(SecurableItem $model, User $user)
-        {                        
+        {
             if ($model instanceof SecurableItem && count($model->permissions) === 0)
-            {                
+            {
                 $defaultPermission  = UserConfigurationFormAdapter::resolveAndGetDefaultPermissionSetting(
                                                                                         $user);
                 $nonEveryoneGroup   = UserConfigurationFormAdapter::resolveAndGetValue($user,
@@ -100,7 +100,7 @@
          * @param string $modelToStringValue
          * @return OwnedSecurableItem
          */
-        public function saveModelFromPost($postData, $model, & $savedSuccessfully, & $modelToStringValue, $returnOnValidate = false)  
+        public function saveModelFromPost($postData, $model, & $savedSuccessfully, & $modelToStringValue, $returnOnValidate = false)
         {
             $sanitizedPostData                 = PostUtil::sanitizePostByDesignerTypeForSavingModel(
                                                  $model, $postData);
@@ -129,12 +129,12 @@
                                                  removeElementFromPostDataForSavingModel($readyToUseData, 'owner');
             $model->setAttributes($sanitizedDataWithoutOwner);
             $this->afterSetAttributesDuringSave($model, $explicitReadWriteModelPermissions);
-            $isValidData = $model->validate();
+            $isDataValid = $model->validate();
             if($returnOnValidate)
             {
                 return $model;
             }
-            elseif ($isValidData)
+            elseif ($isDataValid)
             {
                 $modelToStringValue = strval($model);
                 if ($sanitizedOwnerData != null)

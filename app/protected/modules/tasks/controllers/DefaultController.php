@@ -205,7 +205,7 @@
             if($id == null)
             {
                 $task   = new Task();
-                $task   = $this->resolveNewModelByRelationInformation( new $task,
+                $task   = $this->resolveNewModelByRelationInformation( $task,
                                                                         $relationAttributeName,
                                                                         (int)$relationModelId,
                                                                         $relationModuleId);
@@ -266,7 +266,7 @@
         }
 
         /**
-         * Create task from related view
+         * Edit task from related view
          */
         public function actionModalEditFromRelation($id)
         {
@@ -304,7 +304,7 @@
         }
 
         /**
-         * Should support in addition to custome field as well
+         * Should support in addition to custom field as well
          * @param string $id
          * @param string $attribute
          * @param string $value
@@ -360,9 +360,11 @@
            $sourceKanbanType = TasksUtil::resolveKanbanItemTypeForTask(intval($taskId));
            if($sourceKanbanType != $targetKanbanType)
            {
-              $sortOrder = KanbanItem::getMaximumSortOrderByType($targetKanbanType);
-              $sql       = "update kanbanitem set sortorder = '" . $sortOrder . "', type = '" . $targetKanbanType . "' where task_id = " . $taskId;
-              R::exec($sql);
+              $sortOrder             = KanbanItem::getMaximumSortOrderByType($targetKanbanType);
+              $kanbanItem            = KanbanItem::getByTask(intval($taskId));
+              $kanbanItem->sortOrder = $sortOrder;
+              $kanbanItem->type      = $targetKanbanType;
+              $kanbanItem->save();
            }
            //Run update queries for update task staus and update type and sort order in kanban column
            $this->processStatusUpdateViaAjax($taskId, $targetStatus);

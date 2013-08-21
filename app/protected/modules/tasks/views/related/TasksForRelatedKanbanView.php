@@ -170,20 +170,12 @@
         }
 
         /**
-         * Gets params related to the pagination in the grid view
+         * Resolves pagination params
          * @return array
          */
-        protected function getCGridViewPagerParams()
+        protected function resolvePaginationParams()
         {
-            return array(
-                    'firstPageLabel'    => '<span>first</span>',
-                    'prevPageLabel'     => '<span>previous</span>',
-                    'nextPageLabel'     => '<span>next</span>',
-                    'lastPageLabel'     => '<span>last</span>',
-                    'class'             => 'SimpleListLinkPager',
-                    'paginationParams'  => GetUtil::getData(),
-                    'route'             => 'default/details',
-                );
+            return GetUtil::getData();
         }
 
         /**

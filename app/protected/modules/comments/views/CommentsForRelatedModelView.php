@@ -72,11 +72,17 @@
             $this->uniquePageId           = $uniquePageId;
         }
 
+        /**
+         * @return string
+         */
         protected function getId()
         {
             return 'CommentsForRelatedModelView' . $this->uniquePageId;
         }
 
+        /**
+         * @return string
+         */
         protected function renderContent()
         {
             $content = '<div>' . $this->renderHiddenRefreshLinkContent() . '</div>';
@@ -91,6 +97,9 @@
             return $content;
         }
 
+        /**
+         * @return string
+         */
         protected function renderHiddenRefreshLinkContent()
         {
             $url     =   Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/ajaxListForRelatedModel',
@@ -104,6 +113,9 @@
                                 'style'     => 'display:none;'));
         }
 
+        /**
+         * @return string
+         */
         protected function renderShowAllLinkContent()
         {
             $url     =   Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/ajaxListForRelatedModel',
@@ -116,6 +128,9 @@
                                 'namespace' => 'refresh'));
         }
 
+        /**
+         * @return string
+         */
         protected function renderCommentsContent()
         {
             $content  = null;
@@ -164,30 +179,34 @@
             return $content;
         }
 
+        /**
+         * @return string
+         */
         protected function renderDeleteLinkContent(Comment $comment)
         {
             $url     =   Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/deleteViaAjax',
                             array_merge($this->getParams, array('id' => $comment->id)));
-            // Begin Not Coding Standard
             return       ZurmoHtml::ajaxLink(Zurmo::t('CommentsModule', 'Delete'), $url,
                          array('type'     => 'GET',
                                'complete' => "function(XMLHttpRequest, textStatus){
                                               $('#deleteCommentLink" . $comment->id . "').parent().parent().parent().remove();}"),
-                         array('id'         => 'deleteCommentLink' . $comment->id,
+                         array( 'id'         => 'deleteCommentLink' . $comment->id,
                                 'class'     => 'deleteCommentLink' . $comment->id,
                                 'namespace' => 'delete'));
-            // End Not Coding Standard
         }
 
-        /*TODO*/
+        /**
+         * @return string
+         */
         protected function renderEditLinkContent(Comment $comment)
         {
             $url     =   '';
-            // Begin Not Coding Standard
             return       ZurmoHtml::ajaxLink(Zurmo::t('CommentsModule', 'Edit'), $url);
-            // End Not Coding Standard
         }
 
+        /**
+         * @return bool
+         */
         public function isUniqueToAPage()
         {
             return false;

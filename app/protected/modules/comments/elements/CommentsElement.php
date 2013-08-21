@@ -55,8 +55,7 @@
          * In the case of needing to show editable information, a form is
          * also provided.
          * @param $form Optional. If supplied an editable element will be rendered.
-         * @param $params Can have additional parameters for use.
-         *               'wide' true or false is an example parameter
+         * @param $params Can have additional parameters for use
          */
         public function __construct($model, $attribute, $form = null, array $params = array())
         {

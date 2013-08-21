@@ -203,10 +203,8 @@
             $task = TaskTestHelper::createTaskByNameForOwner('My New Task', $super);
             $this->runControllerWithNoExceptionsAndGetContent('tasks/default/create');
 
-            //add related task for account using createFromRelation action
             $activityItemPostData = array();
             $this->setGetArray(array('id' => $task->id));
-            //$this->setPostArray(array('ActivityItemForm' => $activityItemPostData, 'Task' => array('name' => 'myTask')));
             $this->runControllerWithNoExceptionsAndGetContent('tasks/default/edit');
 
             //Save task.

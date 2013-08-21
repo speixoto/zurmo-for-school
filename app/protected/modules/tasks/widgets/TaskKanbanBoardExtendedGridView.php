@@ -140,7 +140,7 @@
          * @param string $attributeValue
          * @return string
          */
-        protected function createUlTagForKanbanColumn($listItems, $attributeValue = null)
+        protected function renderUlTagForKanbanColumn($listItems, $attributeValue = null)
         {
             return ZurmoHtml::tag('ul id="task-sortable-rows-' . $attributeValue . '"' , array(), $listItems);
         }
