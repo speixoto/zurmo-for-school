@@ -36,6 +36,11 @@
 
     class BeanModelTest extends BaseTest
     {
+        public static function getDependentTestModelClassNames()
+        {
+            return array('TestInvalidSpecificLinkType');
+        }
+
         public function testIssetAndEmptyOnPrivateStaticProperty()
         {
             $this->assertFalse(A::isPrivateStaticIsset());
@@ -47,10 +52,6 @@
             $this->assertFalse(A::isPrivateStaticIsset());
         }
 
-        /**
-         * Test when using an incompatible relation definition. @see TestInvalidSpecificLinkType model  for more info
-         * @expectedException NotSupportedException
-         */
         public function testInvalidSpecificLinkType()
         {
             $model = new TestInvalidSpecificLinkType();

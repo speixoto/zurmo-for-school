@@ -70,6 +70,11 @@
             SecurityTestHelper::createSuperAdmin();
         }
 
+        public static function getDependentTestModelClassNames()
+        {
+            return array('TestDatabaseBulkInsertModel');
+        }
+
         public function setup()
         {
             RedBeanDatabase::close();

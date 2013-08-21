@@ -49,6 +49,11 @@
     {
         const MANY_COUNT = 10;
 
+        public static function getDependentTestModelClassNames()
+        {
+            return array('H', 'I', 'J', 'K', 'L');
+        }
+
         public function testSetupAllKindsOfRelations()
         {
             // Give an I... a J, a bunch of Ks, and a bunch of Ls.

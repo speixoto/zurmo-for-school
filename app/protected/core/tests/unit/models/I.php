@@ -55,7 +55,8 @@
                     'manyManyRelation' => array(RedBeanModel::MANY_MANY,           'Z'),
                 ),
                 'rules' => array(
-                    array('iMember', 'safe'),
+                    array('iMember',      'type', 'type' => 'string'),
+                    array('iMember',      'length', 'max' => 255),
                 ),
             );
             return $metadata;

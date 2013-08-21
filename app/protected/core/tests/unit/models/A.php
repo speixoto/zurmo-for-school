@@ -74,6 +74,8 @@
                     array('uniqueRequiredEmail', 'required', 'on'   => 'Tuesday'),
                     array('uniqueRequiredEmail', 'unique'),
                     array('name',                'type',     'type' => 'string'),
+                    array('junk',               'type', 'type' => 'string'),
+                    array('junk',               'length', 'max' => 255),
                 ),
             );
             return $metadata;

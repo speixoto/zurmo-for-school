@@ -96,6 +96,7 @@
                 throw $e;
             }
             assert('static::isSetup()');
+            assert('RedBeanDatabase::isFrozen()');
         }
 
         /**

@@ -67,7 +67,7 @@
                     array('name',          'length',  'min'  => 3, 'max' => 64),
                 ),
                 'relations' => array(
-                    'ppAssumptive'        => array(RedBeanModel::HAS_ONE, 'PP'),
+                    'pp'        => array(RedBeanModel::HAS_ONE, 'PP'),
                     'pp1'                 => array(RedBeanModel::HAS_ONE, 'PP',  RedBeanModel::NOT_OWNED,
                                                    RedBeanModel::LINK_TYPE_SPECIFIC, 'pp1Link'),
                 ),

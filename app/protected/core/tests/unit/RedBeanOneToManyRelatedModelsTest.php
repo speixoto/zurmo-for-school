@@ -36,6 +36,11 @@
 
     class RedBeanOneToManyRelatedModelsTest extends BaseTest
     {
+        public static function getDependentTestModelClassNames()
+        {
+            return array('H', 'I', 'K');
+        }
+
         public function testGetStringifiedData()
         {
             $i = new I();

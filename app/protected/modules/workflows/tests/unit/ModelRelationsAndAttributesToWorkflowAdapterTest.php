@@ -87,6 +87,7 @@
          */
         public function testPassingPrecedingRelationThatHasAssumptiveLinkIsProperlyHandled()
         {
+            $this->markTestSkipped("New autobuild requires this to be link type specific so this tests isn't needed.");
             $model              = new WorkflowModelTestItem3();
             $rules              = new WorkflowsTestWorkflowRules();
             $workflow             = new Workflow();
@@ -94,8 +95,7 @@
             $workflow->setModuleClassName('WorkflowsTestModule');
             $adapter            = new ModelRelationsAndAttributesToWorkflowAdapter($model, $rules, $workflow->getType());
             $relations = $adapter->getSelectableRelationsData(new WorkflowModelTestItem(), 'hasMany');
-            //var_dump($relations);
-            //$this->assertFalse(isset($relations['hasMany1']));
+            $this->assertFalse(isset($relations['hasMany1']));
         }
 
         /**

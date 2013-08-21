@@ -43,6 +43,10 @@
                 'members' => array(
                     'g',
                 ),
+                'rules' => array(
+                    array('g',      'type', 'type' => 'string'),
+                    array('g',      'length', 'max' => 255),
+                ),
                 'defaultSortAttribute' => 'g',
             );
             return $metadata;

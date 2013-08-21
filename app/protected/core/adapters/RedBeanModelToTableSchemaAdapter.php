@@ -62,8 +62,16 @@
             $indexes                        = array();
             $uniqueIndexesFromValidators    = array();
             $parentColumnName               = null;
-            if (isset($modelMetadata['members'], $modelMetadata['rules']))
+
+            if (isset($modelMetadata['members']))
             {
+                if (!isset($modelMetadata['rules']))
+                {
+                    $errorMessage = Zurmo::t('Core', '{{model}} must have both, members and rules, set.',
+                                                array('{{model}}' => $modelClassName));
+                    $messageLogger->addErrorMessage($errorMessage);
+                    throw new CException($errorMessage);
+                }
                 $memberColumns      = RedBeanModelMemberRulesToColumnsAdapter::resolve($modelClassName,
                                                                                         $modelMetadata['members'],
                                                                                         $modelMetadata['rules'],
@@ -71,7 +79,6 @@
                 $uniqueIndexesFromValidators = RedBeanModelMemberRulesToColumnAdapter::
                                                                 resolveUniqueIndexesFromValidator($modelClassName);
             }
-
             if (isset($modelMetadata['relations']))
             {
                 $relationColumns    = RedBeanModelRelationsToColumnsAdapter::resolve($modelClassName,

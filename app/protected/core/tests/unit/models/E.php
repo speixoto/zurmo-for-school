@@ -40,13 +40,7 @@
         {
             assert('is_string($e)');
             assert('$e != ""');
-            $bean = ZurmoRedBean::findOne('e', "e = '$e'");
-            assert('$bean === false || $bean instanceof RedBean_OODBBean');
-            if ($bean === false)
-            {
-                throw new NotFoundException();
-            }
-            return self::makeModel($bean);
+            return strrev($e);
         }
 
         public static function getDefaultMetadata()

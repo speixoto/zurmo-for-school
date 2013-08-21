@@ -80,6 +80,19 @@
             assert($saved);    // Not Coding Standard
         }
 
+        public static function getDependentTestModelClassNames()
+        {
+            return array(
+                'G',
+                'GG',
+                'H',
+                'I',
+                'II',
+                'K',
+                'L',
+                'TestCustomFieldsModel');
+        }
+
         public function testSearchByCustomFieldWithMultipleValues()
         {
             //Save a sample model.

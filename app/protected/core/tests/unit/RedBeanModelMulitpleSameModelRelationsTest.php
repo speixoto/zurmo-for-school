@@ -41,6 +41,11 @@
      */
     class RedBeanModelMulitpleSameModelRelationsTest extends BaseTest
     {
+        public static function getDependentTestModelClassNames()
+        {
+            return array('P', 'PP', 'PPP', 'PPPP');
+        }
+
         public function testMultipleHasOnesToTheSameModel()
         {
             $pp1       = new PP();
@@ -186,7 +191,7 @@
 
             $pppp               = new PPPP();
             $pppp->name         = 'name1';
-            $pppp->ppAssumptive = $pp1;
+            $pppp->pp           = $pp1;
             $pppp->pp1          = $pp2;
             $this->assertTrue($pppp->save());
 
@@ -209,7 +214,7 @@
             $searchAttributeData = array();
             $searchAttributeData['clauses'] = array(
                 1 => array(
-                    'attributeName' => 'ppAssumptive',
+                    'attributeName' => 'pp',
                     'relatedModelData' => array(
                         'attributeName'     => 'name',
                         'operatorType'      => 'equals',

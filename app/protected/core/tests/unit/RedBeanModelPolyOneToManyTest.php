@@ -41,6 +41,15 @@
      */
     class RedBeanModelPolyOneToManyTest extends BaseTest
     {
+        public static function getDependentTestModelClassNames()
+        {
+            return array('TestPolyOneToManyOneSide',
+                            'TestPolyOneToManyOneSideTwo',
+                            'TestPolyOneToManyPolySide',
+                            'TestPolyOneToManyPolySideOwned'
+                        );
+        }
+
         public function testPolyOneToManyNotOwned()
         {
             $polySide = new TestPolyOneToManyPolySide();

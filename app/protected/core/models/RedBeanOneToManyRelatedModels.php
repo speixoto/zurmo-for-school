@@ -174,7 +174,8 @@
             $tableName = RedBeanModel::getTableName($this->relatedModelClassName);
             foreach ($this->deferredUnrelateBeans as $bean)
             {
-                if (!$this->owns)
+                // TODO: @Shoaibi/@Jason: Critical: We need the second condition else we get a third column with RedBeanModelPolyOneToManyTest
+                if (!$this->owns)// && $this->linkType != RedBeanModel::LINK_TYPE_POLYMORPHIC)
                 {
                     ZurmoRedBeanLinkManager::breakLink($bean, $tableName, $this->resolveLinkNameForCasing());
                     ZurmoRedBean::store($bean);

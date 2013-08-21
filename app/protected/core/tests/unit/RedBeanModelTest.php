@@ -60,6 +60,17 @@
 
     class RedBeanModelTest extends BaseTest
     {
+        public static function getDependentTestModelClassNames()
+        {
+            return array('A',
+                        'B',
+                'C',
+                'E',
+                'G',
+
+            );
+        }
+
         public function testA()
         {
             $a = new A();

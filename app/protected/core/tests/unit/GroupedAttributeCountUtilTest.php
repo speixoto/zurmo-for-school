@@ -36,6 +36,11 @@
 
     class GroupedAttributeCountUtilTest extends BaseTest
     {
+        public static function getDependentTestModelClassNames()
+        {
+            return array('H', 'J', 'ZZ');
+        }
+
         public function testGetCountData()
         {
             $zModels = ZZ::getAll();

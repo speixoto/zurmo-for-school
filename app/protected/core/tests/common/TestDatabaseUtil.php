@@ -38,24 +38,29 @@
     {
         public static function deleteAllTablesExceptLog()
         {
-            assert('RedBeanDatabase::isSetup()');
-            $tableNames = DatabaseCompatibilityUtil::getAllTableNames();
-            foreach ($tableNames as $tableName)
-            {
-                if ($tableName != 'log')
-                {
-                    ZurmoRedBean::$writer->dropTableByTableName($tableName);
-                }
-            }
+            static::deleteAllTablesOrRowsExceptLog(true);
         }
 
         public static function deleteRowsFromAllTablesExceptLog()
         {
+            static::deleteAllTablesOrRowsExceptLog(false);
+        }
+
+        protected static function deleteAllTablesOrRowsExceptLog($deleteTables)
+        {
             assert('RedBeanDatabase::isSetup()');
             $tableNames = DatabaseCompatibilityUtil::getAllTableNames();
+            if (($logTableNameKey = array_search('log', $tableNames)) !== false)
+            {
+                unset($tableNames[$logTableNameKey]);
+            }
             foreach ($tableNames as $tableName)
             {
-                if ($tableName != 'log')
+                if ($deleteTables)
+                {
+                    ZurmoRedBean::$writer->dropTableByTableName($tableName);
+                }
+                else
                 {
                     ZurmoRedBean::exec("delete from $tableName");
                 }

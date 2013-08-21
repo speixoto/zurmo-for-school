@@ -36,6 +36,11 @@
 
     class CustomFieldsModelTest extends BaseTest
     {
+        public static function getDependentTestModelClassNames()
+        {
+            return array('AAA');
+        }
+
         /**
          * There previously was a problem with a model being created, then a new custom field added, then if you try
          * to access the available CustomFieldData it was not available on that model.  Since performance3 work

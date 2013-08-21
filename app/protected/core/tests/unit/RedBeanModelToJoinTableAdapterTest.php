@@ -38,8 +38,6 @@
     {
         protected static $messageLogger;
 
-        public $freeze = false;
-
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
@@ -47,27 +45,6 @@
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
             static::$messageLogger = new MessageLogger();
-        }
-
-        public function setup()
-        {
-            parent::setUp();
-            $freeze = false;
-            if (RedBeanDatabase::isFrozen())
-            {
-                RedBeanDatabase::unfreeze();
-                $freeze = true;
-            }
-            $this->freeze = $freeze;
-        }
-
-        public function tearDown()
-        {
-            if ($this->freeze)
-            {
-                RedBeanDatabase::freeze();
-            }
-            parent::teardown();
         }
 
         public function testResolveWithEmptyClassName()
