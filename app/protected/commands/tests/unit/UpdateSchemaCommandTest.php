@@ -58,7 +58,7 @@
             }
 
             exec($command, $output);
-            $this->assertTrue(array_search('Info - Auto built Account saved.', $output) !== false);
+            $this->assertTrue(array_search('Info - Schema generation completed', $output) !== false);
             $this->assertTrue(array_search('Schema update complete.', $output) !== false);
         }
     }
