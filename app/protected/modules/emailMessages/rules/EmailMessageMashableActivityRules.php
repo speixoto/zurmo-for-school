@@ -61,6 +61,10 @@
             return $this->resolveSearchAttributeDataForLatestActivities($searchAttributeData);
         }
 
+        /**
+         * @param array $relationItemIds
+         * @return array
+         */
         public function resolveSearchAttributesDataByRelatedItemIds($relationItemIds)
         {
             assert('is_array($relationItemIds)');

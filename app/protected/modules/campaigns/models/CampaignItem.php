@@ -92,6 +92,10 @@
             return true;
         }
 
+        /**
+         * @param int $processed
+         * @param null|int $pageSize
+         */
         public static function getByProcessed($processed, $pageSize = null)
         {
             assert('is_int($processed)');
@@ -109,6 +113,11 @@
             return self::getSubset($joinTablesAdapter, null, $pageSize, $where, null);
         }
 
+        /**
+         * @param int $processed
+         * @param null $timestamp
+         * @param null|int $pageSize
+         */
         public static function getByProcessedAndSendOnDateTime($processed, $timestamp = null, $pageSize = null)
         {
             if (empty($timestamp))
@@ -172,6 +181,11 @@
             return self::getSubset($joinTablesAdapter, null, $pageSize, $where, null);
         }
 
+        /**
+         * @param int $processed
+         * @param int $campaignId
+         * @param null|int $pageSize
+         */
         public static function getByProcessedAndCampaignId($processed, $campaignId, $pageSize = null)
         {
             assert('is_int($processed)');

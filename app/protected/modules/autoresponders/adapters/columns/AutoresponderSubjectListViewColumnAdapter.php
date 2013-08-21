@@ -47,6 +47,11 @@
             );
         }
 
+        /**
+         * @param Autoresponder $autoresponder
+         * @param string $redirectUrl
+         * @return string $content
+         */
         public static function resolveSubjectAndMetricsSummary(Autoresponder $autoresponder, $redirectUrl)
         {
             $content  = static::resolveSubjectWithRedirectURl($autoresponder->subject, $autoresponder->id, $redirectUrl);
