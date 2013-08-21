@@ -49,7 +49,7 @@
         }
 
         protected function resolveDefaultOptions()
-        {
+        {            
             $this->options['stepMinute']      = 5;
             $this->options['timeText']        = Zurmo::t('Core', 'Time');
             $this->options['hourText']        = Zurmo::t('Core', 'Hour');
@@ -59,10 +59,8 @@
             $this->options['buttonText']      = ZurmoHtml::tag('span', array(), '<!--Date-->');
             $this->options['buttonImageOnly'] = false;
             $this->options['dateFormat']      = YiiToJqueryUIDatePickerLocalization::resolveDateFormat(
-                                                    DateTimeUtil::getLocaleDateFormat());
-            $this->options['timeFormat']      = YiiToJqueryUIDatePickerLocalization::resolveTimeFormat(
-                                                    DateTimeUtil::getLocaleTimeFormat());
-            $this->options['ampm']            = DateTimeUtil::isLocaleTimeDisplayedAs12Hours();
+                                                    DateTimeUtil::getLocaleDateFormat());            
+            $this->resolveTimezoneOptions();
         }
 
         protected function resolveDefaultLanguage()
@@ -74,5 +72,38 @@
         {
             $this->htmlOptions['style'] = 'position:relative;z-index:10000;';
         }
+        
+        protected function resolveTimezoneOptions()
+        {
+            $this->options['timeFormat']      = $this->getTimeFormat();
+            $this->options['timezoneList']    = $this->getTimezoneList();            
+        }
+        
+        protected function getTimezoneList()
+        {
+            $label1 = Zurmo::t('Core', 'Your timezone');
+            $label2 = Zurmo::t('Core', 'Browser timezone');            
+            $offset = $this->getOffsetForCurrentUserTimezone();
+            return "js:[{ value: 0,                                     label: '{$label1}'}, " .
+                       "{ value: (new Date()).getTimezoneOffset() + {$offset}, label: '{$label2}'},]";
+        }
+        
+        protected function getTimeformat()
+        {
+            $localeTimeFormat = YiiToJqueryUIDatePickerLocalization::resolveTimeFormat(
+                                                        DateTimeUtil::getLocaleTimeFormat());
+            $offset = $this->getOffsetForCurrentUserTimezone();
+            return "js: eval('if ((new Date()).getTimezoneOffset() + {$offset} == 0) " .
+                             "{\'{$localeTimeFormat}\';} else {\'{$localeTimeFormat}\' + \' z\';}')";
+        }
+        
+        protected function getOffsetForCurrentUserTimezone()
+        {
+            $timezone           = Yii::app()->timeZoneHelper->getForCurrentUser();
+            $dateTimeZoneObject = new DateTimeZone($timezone);
+            $offset             = $dateTimeZoneObject->getOffset(new DateTime())/60;                                                            
+            return $offset;
+        }        
+        
     }
 ?>

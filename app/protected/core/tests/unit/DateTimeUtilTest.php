@@ -322,6 +322,10 @@
             date_default_timezone_set('GMT');
             $dbValue = DateTimeUtil::convertDateTimeLocaleFormattedDisplayToDbFormattedDateTimeWithSecondsAsZero('6/3/80 12:00 AM');
             $this->assertEquals('1980-06-03 00:00:00', $dbValue);
+            
+            //test with timezone correction
+            $dbValue = DateTimeUtil::convertDateTimeLocaleFormattedDisplayToDbFormattedDateTimeWithSecondsAsZero('6/3/80 12:00 AM +0325');
+            $this->assertEquals('1980-06-03 03:25:00', $dbValue);
 
             //other locales
             Yii::app()->setLanguage('de');
@@ -339,7 +343,31 @@
             //test null value returns null.
             $displayValue = DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay(null);
             $this->assertEquals(null, $displayValue);
-            date_default_timezone_set($timeZone);
+            date_default_timezone_set($timeZone);                                    
+        }
+        
+        public function testGetTimestampAdjustedByTimezoneCorrection()
+        {
+            $originalTimestamp  = 9872618;
+            $timezoneCorrection = '+0430';
+            $expectedTimestamp  = $originalTimestamp + 4 * 60 * 60 + 30 * 60;
+            $this->assertEquals($expectedTimestamp, 
+                                DateTimeUtil::getTimestampAdjustedByTimezoneCorrection($originalTimestamp, 
+                                                                                       $timezoneCorrection));
+            
+            $originalTimestamp  = 1234567;
+            $timezoneCorrection = '-1210';
+            $expectedTimestamp  = $originalTimestamp - 12 * 60 * 60 - 10 * 60;
+            $this->assertEquals($expectedTimestamp, 
+                                DateTimeUtil::getTimestampAdjustedByTimezoneCorrection($originalTimestamp, 
+                                                                                       $timezoneCorrection));
+            
+            $originalTimestamp  = 57852313;
+            $timezoneCorrection = '+0000';
+            $expectedTimestamp  = $originalTimestamp;
+            $this->assertEquals($expectedTimestamp, 
+                                DateTimeUtil::getTimestampAdjustedByTimezoneCorrection($originalTimestamp, 
+                                                                                       $timezoneCorrection));
         }
     }
 ?>
