@@ -162,7 +162,7 @@
                 {
                     $autoresponder  = $autoresponderTenDaysFromNow;
                 }
-                $timestamp          = $autoresponder->resolveNewTimeStampForDuration(time());
+                $timestamp          = time() - 10000000000; //forces all processed stamps to be in the past
                 $processDateTime    = DateTimeUtil::convertTimestampToDbFormatDateTime((int)$timestamp);
                 $autoresponderItem = AutoresponderItemTestHelper::createAutoresponderItem($processed,
                                                                                         $processDateTime,

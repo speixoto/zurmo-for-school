@@ -336,7 +336,6 @@
         {
             if ((bool)$this->resolveValueForOperator() === false)
             {
-                $resolvedOperatorType = OperatorRules::TYPE_DOES_NOT_EQUAL;
                 $this->clauses[1] = array(  'attributeName'        => $this->getRealAttributeName(),
                                             'operatorType'         => OperatorRules::TYPE_EQUALS,
                                             'value'                => '0');

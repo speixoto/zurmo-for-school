@@ -57,8 +57,14 @@
             }
             $errorId  = $this->getEditableInputId($this->intervalAttributeName);
             $content .= $this->form->error($this->model, $this->intervalAttributeName, array('inputID' => $errorId), true, true);
-            $content  = ZurmoHtml::tag('div', array('class' => 'operation-duration-fields ' . $cssClass), $content);
+            $content  = $this->resolveEditableWrapper($cssClass, $content);
             return $content;
+        }
+
+
+        protected function resolveEditableWrapper($cssClass, $content)
+        {
+            return ZurmoHtml::tag('div', array('class' => 'operation-duration-fields ' . $cssClass), $content);
         }
 
         protected function renderEditableDurationIntervalTextField()
@@ -98,8 +104,8 @@
 
         protected function getDurationSignDropDownArray()
         {
-            return array(TimeDurationUtil::DURATION_SIGN_POSITIVE => Zurmo::t('WorkflowsModule', 'From now'),
-                         TimeDurationUtil::DURATION_SIGN_NEGATIVE => Zurmo::t('WorkflowsModule', 'Ago'));
+            return array(TimeDurationUtil::DURATION_SIGN_POSITIVE => Zurmo::t('WorkflowsModule', 'After'),
+                         TimeDurationUtil::DURATION_SIGN_NEGATIVE => Zurmo::t('WorkflowsModule', 'Before'));
         }
 
         protected function getDurationTypeDropDownArray()

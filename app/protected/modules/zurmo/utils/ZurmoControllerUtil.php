@@ -39,6 +39,11 @@
      */
     class ZurmoControllerUtil
     {
+        /**
+         * @param SecurableItem $model
+         * @param User $user
+         * @throws NotSupportedException
+         */
         public static function updatePermissionsWithDefaultForModelByUser(SecurableItem $model, User $user)
         {
             // TODO: @Shoaibi: Critical: Tests
@@ -65,6 +70,9 @@
             }
         }
 
+        /**
+         * @param SecurableItem $model
+         */
         public static function updatePermissionsWithDefaultForModelByCurrentUser(SecurableItem $model)
         {
             // TODO: @Shoaibi: Critical: Tests
@@ -87,6 +95,13 @@
             }
         }
 
+        /**
+         * @param array $postData
+         * @param $model
+         * @param bool $savedSuccessfully
+         * @param string $modelToStringValue
+         * @return OwnedSecurableItem
+         */
         public function saveModelFromPost($postData, $model, & $savedSuccessfully, & $modelToStringValue)
         {
             $sanitizedPostData                 = PostUtil::sanitizePostByDesignerTypeForSavingModel(
@@ -94,6 +109,13 @@
             return $this->saveModelFromSanitizedData($sanitizedPostData, $model, $savedSuccessfully, $modelToStringValue);
         }
 
+        /**
+         * @param $sanitizedData
+         * @param object $model
+         * @param bool $savedSuccessfully
+         * @param string $modelToStringValue
+         * @return OwnedSecurableItem
+         */
         public function saveModelFromSanitizedData($sanitizedData, $model, & $savedSuccessfully, & $modelToStringValue)
         {
             //note: the logic for ExplicitReadWriteModelPermission might still need to be moved up into the

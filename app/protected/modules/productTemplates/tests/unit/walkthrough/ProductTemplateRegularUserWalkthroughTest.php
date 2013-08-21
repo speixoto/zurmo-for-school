@@ -35,33 +35,43 @@
      ********************************************************************************/
 
     /**
-     * This is a policy caching helper. Currently it just wraps the general cache until we can split out the caching
-     * in memcache by categories. This way in the future we can flush just the policies cache instead of having to flush
-     * the entire cache like we are doing now.
+     * Product Template Regular User Walkthrough.
      */
-    class PoliciesCache
+    class ProductTemplateRegularUserWalkthroughTest extends ZurmoRegularUserWalkthroughBaseTest
     {
-        /**
-         * @param $identifier
-         * @return mixed
-         */
-        public static function getEntry($identifier)
+        public static function setUpBeforeClass()
         {
-            return GeneralCache::getEntry($identifier);
+            parent::setUpBeforeClass();
         }
 
-        /**
-         * @param $identifier
-         * @param $entry
-         */
-        public static function cacheEntry($identifier, $entry)
+        public function testRegularUserProductPortletAccess()
         {
-            GeneralCache::cacheEntry($identifier, $entry);
-        }
+            $benny = $this->logoutCurrentUserLoginNewUserAndGetByUsername('nobody');
+            $account = AccountTestHelper::createAccountByNameForOwner('superAccount',  Yii::app()->user->userModel);
+            $superAccountId = $account->id;
+            $benny->setRight('ProductTemplatesModule', ProductTemplatesModule::getAccessRight(), Right::DENY);
+            $this->assertTrue($benny->save());
+            $this->assertFalse(RightsUtil::canUserAccessModule('ProductTemplatesModule', $benny));
 
-        public static function forgetAll()
-        {
-            GeneralCache::forgetAll();
+            $portlet = new Portlet();
+            $portlet->column    = 1;
+            $portlet->position  = 1;
+            $portlet->layoutId  = 'Test';
+            $portlet->collapsed = true;
+            $portlet->viewType  = 'RssReader';
+            $portlet->user      = $benny;
+            $this->assertTrue($portlet->save());
+
+            $this->setGetArray(array(
+                                        'uniqueLayoutId' => 'AccountDetailsAndRelationsView_' . $portlet->id,
+                                        'portletId'      => $portlet->id,
+                                        'relationAttributeName' => 'account',
+                                        'relationModelId' => $superAccountId,
+                                        'relationModuleId' => 'accounts',
+                                        'relationModelClassName' => 'Account'
+                                    ));
+
+            $this->runControllerWithNoExceptionsAndGetContent('productTemplates/default/selectFromRelatedList');
         }
     }
 ?>

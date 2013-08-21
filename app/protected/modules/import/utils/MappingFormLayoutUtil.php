@@ -53,6 +53,12 @@
 
         protected $mappableAttributeIndicesAndDerivedTypesForExtraColumns;
 
+        /**
+         * @param string $mappingFormModelClassName
+         * @param ZurmoActiveForm $form
+         * @param array $mappableAttributeIndicesAndDerivedTypesForImportColumns
+         * @param array $mappableAttributeIndicesAndDerivedTypesForExtraColumns
+         */
         public function __construct($mappingFormModelClassName, $form,
                                     $mappableAttributeIndicesAndDerivedTypesForImportColumns,
                                     $mappableAttributeIndicesAndDerivedTypesForExtraColumns)
@@ -84,6 +90,13 @@
             return $this->mappableAttributeIndicesAndDerivedTypesForExtraColumns;
         }
 
+        /**
+         * @param string $columnName
+         * @param string $columnType
+         * @param string $attributeIndexOrDerivedType
+         * @param string $ajaxOnChangeUrl
+         * @return string
+         */
         public function renderAttributeAndColumnTypeContent  ($columnName,
                                                               $columnType,
                                                               $attributeIndexOrDerivedType,
@@ -154,6 +167,11 @@
             return ZurmoHtml::hiddenField($hiddenInputName, $columnType, $idInputHtmlOptions);
         }
 
+        /**
+         * @param string $columnName
+         * @param string $headerValue
+         * @return string
+         */
         public function renderHeaderColumnContent($columnName, $headerValue)
         {
             assert('is_string($columnName)');
@@ -162,6 +180,11 @@
             return $content;
         }
 
+        /**
+         * @param string $columnName
+         * @param string $sampleValue
+         * @return string
+         */
         public function renderImportColumnContent($columnName, $sampleValue)
         {
             assert('is_string($columnName)');
@@ -171,6 +194,14 @@
             return $content;
         }
 
+        /**
+         * @param string $columnName
+         * @param string $attributeIndexOrDerivedType
+         * @param string $importRulesType
+         * @param string $columnType
+         * @param array $mappingRuleFormsAndElementTypes
+         * @return string
+         */
         public function renderMappingRulesElements($columnName,
                                                    $attributeIndexOrDerivedType,
                                                    $importRulesType,
@@ -282,6 +313,10 @@
             );";
         }
 
+        /**
+         * @param string $columnName
+         * @return string
+         */
         public static function resolveSampleColumnIdByColumnName($columnName)
         {
             assert('is_string($columnName)');

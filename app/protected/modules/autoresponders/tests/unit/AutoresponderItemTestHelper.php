@@ -42,6 +42,11 @@
             $saved              = $autoresponderItem->unrestrictedSave();
             if(!$saved)
             {
+                echo "<pre>";
+                print_r('xx' . $processDateTime);
+                print_r($autoresponderItem->getErrors());
+                print_r($autoresponderItem->processDateTime);
+                echo "</pre>";
                 throw new FailedToSaveModelException();
             }
             return $autoresponderItem;

@@ -245,6 +245,11 @@
             return $content;
         }
 
+        /**
+         * @param string $htmlContent
+         * @param string $textContent
+         * @return mixed
+         */
         public static function resolveTextContent($htmlContent, $textContent)
         {
            if ($htmlContent != null && $textContent == null)

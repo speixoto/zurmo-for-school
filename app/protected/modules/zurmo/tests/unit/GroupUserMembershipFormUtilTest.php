@@ -127,5 +127,32 @@
             $this->assertEquals(2, $group->users ->count());
             $this->assertEquals(0, $group->groups ->count());
         }
+
+        public function testValidateMembershipChange()
+        {
+            $bill = User::getByUsername('billy');
+            $jim  = User::getByUsername('jimmy');
+            $fakePostData = array(
+                'userMembershipData'    => array(0 => $bill->id),
+                'userNonMembershipData' => array(0 => $jim->id)
+            );
+            $form = new GroupUserMembershipForm();
+            $this->assertEmpty($form->userMembershipData);
+            $this->assertEmpty($form->userNonMembershipData);
+
+            $bill->setIsSystemUser();
+            $bill->firstName = '';
+            $bill->lastName = '';
+            $bill->save();
+            $group = Group::getByName(Group::SUPER_ADMINISTRATORS_GROUP_NAME);
+            $content = GroupUserMembershipFormUtil::validateMembershipChange($form, $group);
+            $this->assertTrue(strpos($content, 'There must be at') == 0);
+
+            $group->users->add($bill);
+            $this->assertTrue($group->save());
+            $form = GroupUserMembershipFormUtil::setFormFromCastedPost($form, $fakePostData);
+            $content = GroupUserMembershipFormUtil::validateMembershipChange($form, $group);
+            $this->assertTrue(strpos($content, 'You cannot remove') == 0);
+        }
     }
 ?>

@@ -43,6 +43,7 @@
         /**
          *
          * @param string $filePath
+         * @param string $fileName
          * @return $fileModel or false on failure
          */
         public static function makeByFilePathAndName($filePath, $fileName, $fileModelClassName = 'FileModel')
@@ -90,6 +91,11 @@
             return $file;
         }
 
+        /**
+         * @param $model
+         * @param $relationName
+         * @param $postDataVariableName
+         */
         public static function resolveModelsHasManyFilesFromPost(& $model, $relationName, $postDataVariableName)
         {
             assert('$model instanceof RedBeanModel');
