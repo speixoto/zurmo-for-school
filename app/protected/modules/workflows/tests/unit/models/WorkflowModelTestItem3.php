@@ -52,6 +52,8 @@
                 ),
                 'relations' => array(
                     'hasMany1' => array(RedBeanModel::MANY_MANY, 'WorkflowModelTestItem'),
+                    'hasOne' => array(RedBeanModel::HAS_ONE, 'WorkflowModelTestItem', RedBeanModel::NOT_OWNED,
+                                        RedBeanModel::LINK_TYPE_SPECIFIC, 'hasMany'),
                 )
             );
             return $metadata;

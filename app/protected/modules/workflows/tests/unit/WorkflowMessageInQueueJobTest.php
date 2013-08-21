@@ -36,6 +36,11 @@
 
     class WorkflowMessageInQueueJobTest extends WorkflowBaseTest
     {
+        public static function getDependentTestModelClassNames()
+        {
+            return array('WorkflowModelTestItem');
+        }
+
         public function testWorkflowMessageInQueueProperlySavesWithoutTrashingRelatedModelItem()
         {
             $model                  = WorkflowTestHelper::createWorkflowModelTestItem('Jason', 'Green');

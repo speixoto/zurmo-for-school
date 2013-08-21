@@ -43,6 +43,12 @@
      */
     class WorkflowTriggersUtilForCheckBoxTest extends WorkflowTriggersUtilBaseTest
     {
+        public static function getDependentTestModelClassNames()
+        {
+            $ownDependencies = array('WorkflowModelTestItem2','WorkflowModelTestItem3', 'WorkflowModelTestItem9');
+            return CMap::mergeArray(parent::getDependentTestModelClassNames(), $ownDependencies);
+        }
+
         public function testTimeTriggerBeforeSaveEquals()
         {
             $workflow = self::makeOnSaveWorkflowAndTimeTriggerWithoutValueType('boolean', 'equals', '1', 500);

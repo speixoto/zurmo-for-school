@@ -46,7 +46,8 @@
                 ),
                 'relations' => array(
                     'workflowItems' => array(RedBeanModel::MANY_MANY, 'Item'),
-                    'hasOne'        => array(RedBeanModel::HAS_ONE,   'WorkflowModelTestItem9'),
+                    'hasOne'        => array(RedBeanModel::HAS_ONE,   'WorkflowModelTestItem9', RedBeanModel::NOT_OWNED,
+                                            RedBeanModel::LINK_TYPE_SPECIFIC, 'hasOne'),
                 ),
                 'rules' => array(
                     array('name',    'type',   'type' => 'string'),

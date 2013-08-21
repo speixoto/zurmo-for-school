@@ -36,8 +36,6 @@
 
     class WorkflowEmailMessagesUtilTest extends WorkflowBaseTest
     {
-        public $freeze = false;
-
         protected static $savedWorkflow;
 
         public static function setUpBeforeClass()
@@ -60,25 +58,9 @@
             self::$savedWorkflow = $savedWorkflow;
         }
 
-        public function setup()
+        public static function getDependentTestModelClassNames()
         {
-            parent::setUp();
-            $freeze = false;
-            if (RedBeanDatabase::isFrozen())
-            {
-                RedBeanDatabase::unfreeze();
-                $freeze = true;
-            }
-            $this->freeze = $freeze;
-        }
-
-        public function teardown()
-        {
-            if ($this->freeze)
-            {
-                RedBeanDatabase::freeze();
-            }
-            parent::teardown();
+            return array('WorkflowModelTestItem');
         }
 
         public function testProcessAfterSaveWhenSendIsInFuture()

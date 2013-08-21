@@ -42,6 +42,11 @@
             ContactsModule::loadStartingData();
         }
 
+        public static function getDependentTestModelClassNames()
+        {
+            return array();
+        }
+
         public function testResolveStructureToPHPString()
         {
             $this->assertEquals('1', WorkflowTriggersUtil::resolveStructureToPHPString('1'));

@@ -36,8 +36,6 @@
 
     class DynamicTriggeredModelRelationUserWorkflowEmailMessageRecipientFormTest extends WorkflowBaseTest
     {
-        public $freeze = false;
-
         protected static $super;
 
         protected static $bobby;
@@ -49,27 +47,6 @@
         protected static $jimmy2;
 
         protected static $jimmy3;
-
-        public function setup()
-        {
-            parent::setUp();
-            $freeze = false;
-            if (RedBeanDatabase::isFrozen())
-            {
-                RedBeanDatabase::unfreeze();
-                $freeze = true;
-            }
-            $this->freeze = $freeze;
-        }
-
-        public function teardown()
-        {
-            if ($this->freeze)
-            {
-                RedBeanDatabase::freeze();
-            }
-            parent::teardown();
-        }
 
         public static function setUpBeforeClass()
         {
@@ -89,6 +66,15 @@
             self::$jimmy  = $jimmy;
             self::$jimmy2 = $jimmy2;
             self::$jimmy3 = $jimmy3;
+        }
+
+        public static function getDependentTestModelClassNames()
+        {
+            return array('WorkflowModelTestItem',
+                            'WorkflowModelTestItem2',
+                            'WorkflowModelTestItem3',
+                            'WorkflowModelTestItem5'
+                        );
         }
 
         /**

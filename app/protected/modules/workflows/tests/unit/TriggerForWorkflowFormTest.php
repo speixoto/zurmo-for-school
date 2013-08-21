@@ -36,6 +36,11 @@
 
     class TriggerForWorkflowFormTest extends WorkflowBaseTest
     {
+        public static function getDependentTestModelClassNames()
+        {
+            return array('WorkflowModelTestItem');
+        }
+
         public function testValidateValueForUserNameIdAttributeWhenOperatorIsChanged()
         {
             $trigger     = new TriggerForWorkflowForm('AccountsModule', 'Account', Workflow::TYPE_ON_SAVE);

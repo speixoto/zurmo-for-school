@@ -135,6 +135,7 @@
             echo "Testing with database: '"  . Yii::app()->db->connectionString . '\', ' .
                                                 'username: \'' . Yii::app()->db->username         . "'." . PHP_EOL;
 
+            static::setupDatabaseConnection();
             if ($freeze && !$reuse)
             {
                 if (!is_writable(sys_get_temp_dir()))
@@ -143,7 +144,6 @@
                     echo "Temp directory: " . sys_get_temp_dir() .  PHP_EOL . PHP_EOL; // Not Coding Standard
                     exit;
                 }
-                static::setupDatabaseConnection();
                 echo "Auto building database schema..." . PHP_EOL;
                 ZurmoRedBean::$writer->wipeAll();
                 $messageLogger = new MessageLogger();
@@ -167,17 +167,15 @@
                 {
                     echo 'Dumping schema using system command. Output: ' . $systemOutput . PHP_EOL . PHP_EOL;
                 }
-                static::closeDatabaseConnection();
             }
             else
             {
-                static::setupDatabaseConnection();
                 echo PHP_EOL;
                 $messageLogger  = new MessageLogger();
                 static::buildDependentTestModels($messageLogger);
                 $messageLogger->printMessages();
-                static::closeDatabaseConnection();
             }
+            static::closeDatabaseConnection();
             return $suite;
         }
 
@@ -244,7 +242,7 @@
         {
             if (!empty(static::$dependentTestModelClassNames))
             {
-                static::setupDatabaseConnection();
+
                 RedBeanModelsToTablesAdapter::generateTablesFromModelClassNames(static::$dependentTestModelClassNames,
                                                                                                     $messageLogger);
                 // TODO: @Shoaibi/@Jason: Critical: Shouldn't ::rebuild take care of this.
@@ -288,7 +286,6 @@
             if (RedBeanDatabase::isSetup())
             {
                 RedBeanDatabase::close();
-                echo "Database closed." . PHP_EOL;
                 assert('!RedBeanDatabase::isSetup()');
             }
         }
