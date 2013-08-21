@@ -79,6 +79,7 @@
             $pageSize                       = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                                               'listPageSize', get_class($this->getModule()));
             $user                           = new User(false);
+            $user->setScenario('searchModel');
             $searchForm                     = new UsersSearchForm($user);
             $listAttributesSelector         = new ListAttributesSelector('UsersListView', get_class($this->getModule()));
             $searchForm->setListAttributesSelector($listAttributesSelector);
@@ -613,10 +614,18 @@
                 $userStatus = UserStatusUtil::makeByPostData($_POST[$postVariableName]);
                 if($model instanceof User)
                 {
+                    if($userStatus == null)
+                    {
+                        $userStatus = UserStatusUtil::makeByUser($model);
+                    }
                     Yii::app()->licenseManager->resolveValidationOnCreateOrEditUser($model, $userStatus);
                 }
                 elseif($model instanceof ModelForm)
                 {
+                    if($userStatus == null)
+                    {
+                        $userStatus = UserStatusUtil::makeByUser($model->getModel());
+                    }
                     Yii::app()->licenseManager->resolveValidationOnCreateOrEditUser($model->getModel(), $userStatus);
                 }
                 $errorData = ZurmoActiveForm::makeErrorsDataAndResolveForOwnedModelAttributes($model);

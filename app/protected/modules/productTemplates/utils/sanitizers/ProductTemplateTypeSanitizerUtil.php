@@ -63,7 +63,6 @@
          */
         public function sanitizeValue($value)
         {
-            assert('$this->attributeName == null');
             if ($value == null)
             {
                 return $value;

@@ -684,7 +684,6 @@
 
             $compareData = array();
             $compareData['column_0']   = array();
-            $compareData['column_0'][] = 'Is too short. Minimum length is 3.';
             $compareData['column_0'][] = 'Is  required.';
             $compareData['column_9']   = array();
             $compareData['column_9'][] = 'Is  required.';

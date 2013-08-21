@@ -55,15 +55,12 @@
 
 
         /**
-         * Given a user status, attempt to resolve it as a valid status.  If the status is invalid, a
-         * InvalidValueToSanitizeException will be thrown.
          * @param mixed $value
          * @return sanitized value
          * @throws InvalidValueToSanitizeException
          */
         public function sanitizeValue($value)
         {
-            assert('$this->attributeName == null');
             if ($value == null)
             {
                 return $value;

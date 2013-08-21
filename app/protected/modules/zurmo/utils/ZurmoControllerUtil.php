@@ -39,6 +39,11 @@
      */
     class ZurmoControllerUtil
     {
+        /**
+         * @param SecurableItem $model
+         * @param User $user
+         * @throws NotSupportedException
+         */
         public static function updatePermissionsWithDefaultForModelByUser(SecurableItem $model, User $user)
         {                        
             if ($model instanceof SecurableItem && count($model->permissions) === 0)
@@ -64,6 +69,9 @@
             }
         }
 
+        /**
+         * @param SecurableItem $model
+         */
         public static function updatePermissionsWithDefaultForModelByCurrentUser(SecurableItem $model)
         {
             static::updatePermissionsWithDefaultForModelByUser($model, Yii::app()->user->userModel);
@@ -85,13 +93,27 @@
             }
         }
 
-        public function saveModelFromPost($postData, $model, & $savedSuccessfully, & $modelToStringValue, $returnOnValidate = false)
+        /*
+         * @param array $postData
+         * @param $model
+         * @param bool $savedSuccessfully
+         * @param string $modelToStringValue
+         * @return OwnedSecurableItem
+         */
+        public function saveModelFromPost($postData, $model, & $savedSuccessfully, & $modelToStringValue, $returnOnValidate = false)  
         {
             $sanitizedPostData                 = PostUtil::sanitizePostByDesignerTypeForSavingModel(
                                                  $model, $postData);
             return $this->saveModelFromSanitizedData($sanitizedPostData, $model, $savedSuccessfully, $modelToStringValue, $returnOnValidate);
         }
 
+        /**
+         * @param $sanitizedData
+         * @param object $model
+         * @param bool $savedSuccessfully
+         * @param string $modelToStringValue
+         * @return OwnedSecurableItem
+         */
         public function saveModelFromSanitizedData($sanitizedData, $model, & $savedSuccessfully, & $modelToStringValue, $returnOnValidate)
         {
             //note: the logic for ExplicitReadWriteModelPermission might still need to be moved up into the
