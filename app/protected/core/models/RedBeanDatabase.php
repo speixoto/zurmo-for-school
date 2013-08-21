@@ -66,6 +66,7 @@
             try
             {
                 ZurmoRedBean::setup($dsn, $username, $password);
+                static::freeze();
                 if (SHOW_QUERY_DATA)
                 {
                     Yii::app()->performance->setRedBeanQueryLogger(ZurmoRedBeanPluginQueryLogger::
@@ -94,6 +95,7 @@
                 self::close();
                 throw $e;
             }
+            assert('static::isSetup()');
         }
 
         /**

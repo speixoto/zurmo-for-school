@@ -36,8 +36,8 @@
 
     /**
      * The purpose of this class is to drill through Modules,
-     * build the database for freezing, and provide the other
-     * function required to complete an install.
+     * build the database, and provide the other function
+     * required to complete an install.
      */
     class InstallUtil
     {
@@ -560,19 +560,7 @@
             assert('is_string($username)     && $username     != ""');
             assert('is_string($password)');
             $connectionString = "$databaseType:host=$host;port=$port;dbname=$databaseName"; // Not Coding Standard
-            static::connectToDatabaseWithConnectionString($connectionString, $username, $password);
-        }
-
-        /**
-         * Connects to the database with a connection string.
-         */
-        public static function connectToDatabaseWithConnectionString($connectionString, $username, $password)
-        {
-            assert('is_string($connectionString) && $connectionString != ""');
-            assert('is_string($username)         && $username         != ""');
-            assert('is_string($password)');
             RedBeanDatabase::setup($connectionString, $username, $password);
-            assert('RedBeanDatabase::isSetup()');
         }
 
         /**
@@ -659,22 +647,6 @@
         }
 
         /**
-         * Freezes the database.
-         */
-        public static function freezeDatabase()
-        {
-            RedBeanDatabase::freeze();
-        }
-
-        /**
-         * Closes the database.
-         */
-        public static function close()
-        {
-            RedBeanDatabase::close();
-        }
-
-        /**
          * Writes configuration to debug.php and phpInstance.php.
          */
         public static function writeConfiguration($instanceRoot,
@@ -713,9 +685,6 @@
             $contents = file_get_contents($debugConfigFile);
             $contents = preg_replace('/\$debugOn\s*=\s*true;/',
                                      '$debugOn = false;',
-                                     $contents);
-            $contents = preg_replace('/\$forceNoFreeze\s*=\s*true;/',
-                                     '$forceNoFreeze = false;',
                                      $contents);
             if (!$submitCrashToSentry)
             {
@@ -970,8 +939,6 @@
             ReadPermissionsOptimizationUtil::rebuild();
             $messageStreamer->add(Zurmo::t('InstallModule', 'Rebuilding Read Permissions Subscription tables.'));
             ReadPermissionsSubscriptionUtil::buildTables();
-            $messageStreamer->add(Zurmo::t('InstallModule', 'Freezing database.'));
-            static::freezeDatabase();
             $messageStreamer->add(Zurmo::t('InstallModule', 'Writing Configuration File.'));
 
             static::writeConfiguration(INSTANCE_ROOT,
@@ -1134,20 +1101,7 @@
         {
             assert('$messageLogger instanceof MessageLogger');
             ForgetAllCacheUtil::forgetAllCaches();
-            $freezeWhenDone     = false;
-            if (RedBeanDatabase::isFrozen())
-            {
-                RedBeanDatabase::unfreeze();
-                $freezeWhenDone = true;
-            }
-
             static::autoBuildDatabase($messageLogger);
-
-            if ($freezeWhenDone)
-            {
-                RedBeanDatabase::freeze();
-            }
-
             // Send notification to super admin to clean assets folder(optional).
             $message                    = new NotificationMessage();
             $message->textContent       = Zurmo::t('InstallModule', 'Please delete all files from assets folder on server.');

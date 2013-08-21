@@ -42,8 +42,6 @@
      */
     class AutoBuildDatabaseTest extends ZurmoBaseTest
     {
-        protected $unfreezeWhenDone = false;
-
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
@@ -57,23 +55,8 @@
             parent::tearDownAfterClass();
         }
 
-        public function teardown()
-        {
-            if ($this->unfreezeWhenDone)
-            {
-                RedBeanDatabase::freeze();
-            }
-            parent::teardown();
-        }
-
         public function testAutoBuildDatabase()
         {
-            $this->unfreezeWhenDone     = false;
-            if (RedBeanDatabase::isFrozen())
-            {
-                RedBeanDatabase::unfreeze();
-                $this->unfreezeWhenDone = true;
-            }
             $super                      = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
             $messageLogger              = new MessageLogger();
@@ -89,62 +72,59 @@
          */
         public function testColumnType()
         {
-            if (RedBeanDatabase::isFrozen())
+            $rootModels = array();
+            foreach (Module::getModuleObjects() as $module)
             {
-                $rootModels = array();
-                foreach (Module::getModuleObjects() as $module)
-                {
-                    $moduleAndDependenciesRootModelNames    = $module->getRootModelNamesIncludingDependencies();
-                    $rootModels                             = array_merge(  $rootModels,
-                                                                        array_diff($moduleAndDependenciesRootModelNames,
-                                                                        $rootModels));
-                }
+                $moduleAndDependenciesRootModelNames    = $module->getRootModelNamesIncludingDependencies();
+                $rootModels                             = array_merge(  $rootModels,
+                                                                    array_diff($moduleAndDependenciesRootModelNames,
+                                                                    $rootModels));
+            }
 
-                foreach ($rootModels as $model)
+            foreach ($rootModels as $model)
+            {
+                $meta = $model::getDefaultMetadata();
+                if (isset($meta[$model]['rules']))
                 {
-                    $meta = $model::getDefaultMetadata();
-                    if (isset($meta[$model]['rules']))
+                    $tableName      = RedBeanModel::getTableName($model);
+                    $columns = ZurmoRedBean::$writer->getColumns($tableName);
+                    foreach ($meta[$model]['rules'] as $rule)
                     {
-                        $tableName      = RedBeanModel::getTableName($model);
-                        $columns = ZurmoRedBean::$writer->getColumns($tableName);
-                        foreach ($meta[$model]['rules'] as $rule)
+                        if (is_array($rule) && count($rule) >= 3)
                         {
-                            if (is_array($rule) && count($rule) >= 3)
+                            $attributeName       = $rule[0];
+                            $validatorName       = $rule[1];
+                            $validatorParameters = array_slice($rule, 2);
+                            switch ($validatorName)
                             {
-                                $attributeName       = $rule[0];
-                                $validatorName       = $rule[1];
-                                $validatorParameters = array_slice($rule, 2);
-                                switch ($validatorName)
-                                {
-                                    case 'type':
-                                        if (isset($validatorParameters['type']))
+                                case 'type':
+                                    if (isset($validatorParameters['type']))
+                                    {
+                                        $type           = $validatorParameters['type'];
+                                        $field          = strtolower($attributeName);
+                                        $columnType = false;
+                                        if (isset($columns[$field]))
                                         {
-                                            $type           = $validatorParameters['type'];
-                                            $field          = strtolower($attributeName);
-                                            $columnType = false;
-                                            if (isset($columns[$field]))
-                                            {
-                                                $columnType         = $columns[$field];
-                                            }
-                                            $compareType    = null;
-                                            $compareTypes = $this->getDatabaseTypesByType($type);
-                                            // Remove brackets from database type
-                                            $bracketPosition = stripos($columnType, '(');
-                                            if ($bracketPosition !== false)
-                                            {
-                                                $columnType = substr($columnType, 0, $bracketPosition);
-                                            }
-
-                                            $databaseColumnType = strtoupper(trim($columnType));
-                                            $compareTypeString  = implode(',', $compareTypes); // Not Coding Standard
-                                            if (!in_array($databaseColumnType, $compareTypes))
-                                            {
-                                                $compareTypeString  = implode(',', $compareTypes); // Not Coding Standard
-                                                $this->fail("Actual database type {$databaseColumnType} not in expected types: {$compareTypeString}.");
-                                            }
+                                            $columnType         = $columns[$field];
                                         }
-                                        break;
-                                }
+                                        $compareType    = null;
+                                        $compareTypes = $this->getDatabaseTypesByType($type);
+                                        // Remove brackets from database type
+                                        $bracketPosition = stripos($columnType, '(');
+                                        if ($bracketPosition !== false)
+                                        {
+                                            $columnType = substr($columnType, 0, $bracketPosition);
+                                        }
+
+                                        $databaseColumnType = strtoupper(trim($columnType));
+                                        $compareTypeString  = implode(',', $compareTypes); // Not Coding Standard
+                                        if (!in_array($databaseColumnType, $compareTypes))
+                                        {
+                                            $compareTypeString  = implode(',', $compareTypes); // Not Coding Standard
+                                            $this->fail("Actual database type {$databaseColumnType} not in expected types: {$compareTypeString}.");
+                                        }
+                                    }
+                                    break;
                             }
                         }
                     }
@@ -157,13 +137,6 @@
          */
         public function testAutoBuildUpgrade()
         {
-            $this->unfreezeWhenDone = false;
-            if (RedBeanDatabase::isFrozen())
-            {
-                RedBeanDatabase::unfreeze();
-                $this->unfreezeWhenDone = true;
-            }
-
             // adding Text Field
             $metadata = Account::getMetadata();
             $metadata['Account']['members'][] = 'newField';

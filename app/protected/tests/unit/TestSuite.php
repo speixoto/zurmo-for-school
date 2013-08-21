@@ -146,12 +146,12 @@
                 static::setupDatabaseConnection();
                 echo "Auto building database schema..." . PHP_EOL;
                 ZurmoRedBean::$writer->wipeAll();
-                Yii::app()->user->userModel = InstallUtil::createSuperUser('super', 'super');
                 $messageLogger = new MessageLogger();
                 InstallUtil::autoBuildDatabase($messageLogger, true);
                 $messageLogger->printMessages();
                 ReadPermissionsOptimizationUtil::rebuild();
                 assert('RedBeanDatabase::isSetup()');
+                Yii::app()->user->userModel = InstallUtil::createSuperUser('super', 'super');
 
                 echo "Saving auto built schema..." . PHP_EOL;
                 $schemaFile = sys_get_temp_dir() . '/autobuilt.sql';
@@ -277,9 +277,9 @@
         {
             if (!RedBeanDatabase::isSetup() || $force)
             {
-                InstallUtil::connectToDatabaseWithConnectionString(Yii::app()->db->connectionString,
-                    Yii::app()->db->username,
-                    Yii::app()->db->password);
+                RedBeanDatabase::setup(Yii::app()->db->connectionString,
+                                        Yii::app()->db->username,
+                                        Yii::app()->db->password);
             }
         }
 
@@ -287,7 +287,7 @@
         {
             if (RedBeanDatabase::isSetup())
             {
-                InstallUtil::close();
+                RedBeanDatabase::close();
                 echo "Database closed." . PHP_EOL;
                 assert('!RedBeanDatabase::isSetup()');
             }

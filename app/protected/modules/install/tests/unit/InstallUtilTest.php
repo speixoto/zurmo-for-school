@@ -483,7 +483,7 @@
                                 10060 == $results[0]);
         }
 
-        public function testConnectToDatabaseCreateSuperUserBuildDatabaseAndFreeze()
+        public function testConnectToDatabaseCreateSuperUserBuildDatabase()
         {
             // This test cannot run as saltdev. It is therefore skipped on the server.
             if ($this->temporaryDatabaseUsername == 'root')
@@ -513,7 +513,6 @@
                 InstallUtil::autoBuildDatabase($messageLogger, true);
                 $this->assertFalse($messageLogger->isErrorMessagePresent());
                 ReadPermissionsOptimizationUtil::rebuild();
-                InstallUtil::freezeDatabase();
                 $tableNames = ZurmoRedBean::$writer->getTables();
                 $this->assertEquals(array(
                                         '_group',
@@ -584,8 +583,6 @@
             $debugConfiguration = file_get_contents($debugConfigFile);
 
             $this->assertRegExp('/\$debugOn = false;/', $debugConfiguration);
-            $this->assertRegExp('/\$forceNoFreeze = true;/', $debugConfiguration);
-
             try
             {
                 InstallUtil::writeConfiguration($instanceRoot,
@@ -597,8 +594,6 @@
                 $debugConfiguration       = file_get_contents($debugConfigFile);
                 $perInstanceConfiguration = file_get_contents($perInstanceConfigFile);
                 $this->assertRegExp('/\$debugOn = false;/',
-                                       $debugConfiguration);
-                $this->assertRegExp('/\$forceNoFreeze = false;/',
                                        $debugConfiguration);
                 $this->assertRegExp('/\$language         = \'es\';/',
                                        $perInstanceConfiguration);
