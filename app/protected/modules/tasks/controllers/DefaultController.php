@@ -129,7 +129,7 @@
         }
 
         /**
-         * Update owner or requested by user for task
+         * Add subscriber for task
          * @param int $id
          */
         public function actionAddSubscriber($id)
@@ -140,12 +140,39 @@
         }
 
         /**
+         * Remove subscriber for task
+         * @param int $id
+         */
+        public function actionRemoveSubscriber($id)
+        {
+            $task    = $this->processUnsubscriptionRequest($id);
+            $content = TasksUtil::getTaskSubscriberData($task);
+            if($content == null)
+            {
+                echo "";
+            }
+            else
+            {
+                echo $content;
+            }
+        }
+
+        /**
          * Update owner or requested by user for task
          * @param int $id
          */
         public function actionAddKanbanSubscriber($id)
         {
             $this->processSubscriptionRequest($id);
+        }
+
+        /**
+         * Unsubscribe the user from the task
+         * @param int $id
+         */
+        public function actionRemoveKanbanSubscriber($id)
+        {
+            $this->processUnsubscriptionRequest($id);
         }
 
         /**
@@ -413,15 +440,6 @@
             TasksUtil::sendNotificationOnTaskUpdate($task, Zurmo::t('TasksModule', $user->getFullName() . ' has subscribed for the task #' . $task->id));
 
             return $task;
-        }
-
-        /**
-         * Unsubscribe the user from the task
-         * @param int $id
-         */
-        public function actionRemoveKanbanSubscriber($id)
-        {
-            $this->processUnsubscriptionRequest($id);
         }
 
         /**

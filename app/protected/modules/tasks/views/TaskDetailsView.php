@@ -220,15 +220,7 @@
             $notificationSubscribers = $task->notificationSubscribers;
             $content = '<div id="task-subscriber-box">';
             $content .= Zurmo::t('TasksModule', 'Who is receiving notifications');
-
-            if(TasksUtil::isUserSubscribedForTask($task, Yii::app()->user->userModel) === false)
-            {
-                $content .= ' ' . ZurmoHtml::ajaxLink('<strong>' . Zurmo::t('TasksModule', 'Subscribe') . '</strong>',
-                                                        $this->resolveSubscribeUrl(),
-                                                        $this->resolveSubscriberAjaxOptions(),
-                                                        array('id' => 'subscribe-task-link')) ;
-            }
-
+            $content .= TasksUtil::getDetailSubscriptionLink($task, 0);
             $content .= '<div id="subscriberList">';
 
             if ($task->notificationSubscribers->count() > 0)
@@ -238,6 +230,9 @@
 
             $content .= '</div>';
             $content .= '</div>';
+
+            TasksUtil::registerSubscriptionScript($this->model->id);
+            TasksUtil::registerUnsubscriptionScript($this->model->id);
             return $content;
         }
 

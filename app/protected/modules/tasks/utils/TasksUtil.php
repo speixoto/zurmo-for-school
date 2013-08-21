@@ -461,6 +461,10 @@
 
         }
 
+        /**
+         * Maps task status to kanban item type
+         * @return array
+         */
         public static function getTaskStatusMappingToKanbanItemTypeArray()
         {
             return array(
@@ -472,6 +476,10 @@
                         );
         }
 
+        /**
+         * Resolve kanban item type for task status
+         * @return int
+         */
         public static function resolveKanbanItemTypeForTaskStatus($status)
         {
             if($status == null)
@@ -482,16 +490,21 @@
             return $data[$status];
         }
 
+        /**
+         * Resolve kanban item type for task
+         * @param int $taskId
+         * @return int
+         */
         public static function resolveKanbanItemTypeForTask($taskId)
         {
             $task = Task::getById($taskId);
-            $status = intval($task->status);
+            $status = $task->status;
             if($status == null)
             {
                 return KanbanItem::TYPE_TODO;
             }
             $data = self::getTaskStatusMappingToKanbanItemTypeArray();
-            return $data[$status];
+            return $data[intval($status)];
         }
 
         /**
@@ -519,6 +532,156 @@
                                 $("#subscriberList").replaceWith(data);
                               }'
             );
+        }
+
+        /**
+         * Register subscription script
+         */
+        public static function registerSubscriptionScript($taskId = null)
+        {
+            $unsubscribeLink = '<strong>' . Zurmo::t('TasksModule', 'Unsubscribe') . '</strong>';
+            if($taskId == null)
+            {
+                $url             = Yii::app()->createUrl('tasks/default/addKanbanSubscriber');
+                $script      = self::getKanbanSubscriptionScript($url, 'subscribe-task-link', 'unsubscribe-task-link', $unsubscribeLink);
+                Yii::app()->clientScript->registerScript('kanban-subscribe-task-link-script', $script);
+            }
+            else
+            {
+                $url             = Yii::app()->createUrl('tasks/default/addSubscriber', array('id' => $taskId));
+                $script      = self::getDetailSubscriptionScript($url, 'detail-subscribe-task-link', 'detail-unsubscribe-task-link', $unsubscribeLink, $taskId);
+                Yii::app()->clientScript->registerScript('detail-subscribe-task-link-script', $script);
+            }
+        }
+
+        /**
+         * Register unsubscription script
+         */
+        public static function registerUnsubscriptionScript($taskId = null)
+        {
+            $subscribeLink = '<strong>' . Zurmo::t('TasksModule', 'Subscribe') . '</strong>';
+            if($taskId == null)
+            {
+                $url           = Yii::app()->createUrl('tasks/default/removeKanbanSubscriber');
+                $script    = self::getKanbanSubscriptionScript($url, 'unsubscribe-task-link', 'subscribe-task-link', $subscribeLink);
+                Yii::app()->clientScript->registerScript('kanban-unsubscribe-task-link-script', $script);
+            }
+            else
+            {
+                $url             = Yii::app()->createUrl('tasks/default/removeSubscriber', array('id' => $taskId));
+                $script    = self::getDetailSubscriptionScript($url, 'detail-unsubscribe-task-link', 'detail-subscribe-task-link', $subscribeLink, $taskId);
+                Yii::app()->clientScript->registerScript('detail-unsubscribe-task-link-script', $script);
+            }
+        }
+
+        /**
+         * Get subscription script
+         * @param string $url
+         * @param string $sourceClass
+         * @param string $targetClass
+         * @param string $link
+         * @return string
+         */
+        public static function getKanbanSubscriptionScript($url, $sourceClass, $targetClass, $link)
+        {
+            return "$('body').on('click', '." . $sourceClass . "', function()
+                                                    {
+                                                        var linkElement = $(this);
+                                                        var element     = $(this).parent().parent().parent();
+                                                        var id          = $(element).attr('id');
+                                                        var idParts     = id.split('_');
+                                                        var taskId      = parseInt(idParts[1]);
+                                                        $.ajax(
+                                                        {
+                                                            type : 'GET',
+                                                            data : {'id':taskId},
+                                                            url  : '" . $url . "',
+                                                            success : function(data)
+                                                                      {
+                                                                        $(linkElement).html('" . $link . "');
+                                                                        $(linkElement).attr('class', '" . $targetClass . "');
+                                                                      }
+                                                        }
+                                                        );
+                                                    }
+                                                );";
+        }
+
+        /**
+         * Get subscription script
+         * @param string $url
+         * @param string $sourceClass
+         * @param string $targetClass
+         * @param string $link
+         * @return string
+         */
+        public static function getDetailSubscriptionScript($url, $sourceClass, $targetClass, $link, $taskId)
+        {
+            return "$('body').on('click', '." . $sourceClass . "', function()
+                                                    {
+                                                        var linkElement = $(this);
+                                                        $.ajax(
+                                                        {
+                                                            type : 'GET',
+                                                            url  : '" . $url . "',
+                                                            success : function(data)
+                                                                      {
+                                                                        $(linkElement).html('" . $link . "');
+                                                                        $(linkElement).attr('class', '" . $targetClass . "');
+                                                                        if(data == '')
+                                                                        {
+                                                                            $('#subscriberList').html('');
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            $('#subscriberList').html(data);
+                                                                        }
+                                                                      }
+                                                        }
+                                                        );
+                                                    }
+                                                );";
+        }
+
+        /**
+         * Get subscription link for the task
+         * @param Task $task
+         * @param int $row
+         * @return string
+         */
+        public static function getKanbanSubscriptionLink($task, $row)
+        {
+            return self::resolveSubscriptionLink($task, 'subscribe-task-link', 'unsubscribe-task-link');
+        }
+
+        /**
+         * Get subscription link for the task
+         * @param Task $task
+         * @param int $row
+         * @return string
+         */
+        public static function getDetailSubscriptionLink($task, $row)
+        {
+            return self::resolveSubscriptionLink($task, 'detail-subscribe-task-link', 'detail-unsubscribe-task-link');
+        }
+
+        /**
+         * Resolve subscription link for detail and kanban view
+         * @param Task $task
+         * @param string $subscribeLinkClass
+         * @param string $unsubscribeLinkClass
+         * @return string
+         */
+        public static function resolveSubscriptionLink($task, $subscribeLinkClass, $unsubscribeLinkClass)
+        {
+            if(TasksUtil::isUserSubscribedForTask($task, Yii::app()->user->userModel) === false)
+            {
+                return ZurmoHtml::link('<strong>' . Zurmo::t('TasksModule', 'Subscribe') . '</strong>', '#', array('class' => $subscribeLinkClass)) ;
+            }
+            else
+            {
+                return ZurmoHtml::link('<strong>' . Zurmo::t('TasksModule', 'Unsubscribe') . '</strong>', '#', array('class' => $unsubscribeLinkClass)) ;
+            }
         }
     }
 ?>

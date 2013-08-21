@@ -128,9 +128,6 @@
                 $content      = $this->evaluateExpression($cardData['value'], array('data' => $data, 'offset' => $offset));
                 $cardDetails .= ZurmoHtml::tag('span', array('class' => $cardData['class']), $content);
             }
-            //$userUrl      = Yii::app()->createUrl('/users/default/details', array('id' => $this->dataProvider->data[$row]->owner->id));
-            /*$cardDetails .= ZurmoHtml::link($this->dataProvider->data[$row]->owner->getAvatarImage(20), $userUrl,
-                                            array('class' => 'opportunity-owner'));*/
             return $cardDetails;
         }
 
@@ -183,8 +180,8 @@
             $this->registerKanbanColumnFinishActionScript(Zurmo::t('TasksModule', 'Accept'), Zurmo::t('TasksModule', 'Reject'), Task::TASK_STATUS_AWAITING_ACCEPTANCE, $url);
             $this->registerKanbanColumnAcceptActionScript('', Task::TASK_STATUS_COMPLETED, $url);
             $this->registerKanbanColumnRejectActionScript(Zurmo::t('TasksModule', 'Start'), Task::TASK_STATUS_NEW, $url);
-            $this->registerSubscriptionScript();
-            $this->registerUnsubscriptionScript();
+            TasksUtil::registerSubscriptionScript();
+            TasksUtil::registerUnsubscriptionScript();
         }
 
         /**
@@ -377,61 +374,6 @@
         protected function wrapCardDetailsContent($row)
         {
             return ZurmoHtml::tag('div', array('style' => 'height:90px'), $this->renderCardDetailsContent($row));
-        }
-
-        /**
-         * Register subscription script
-         */
-        protected function registerSubscriptionScript()
-        {
-            $url = Yii::app()->createUrl('tasks/default/addKanbanSubscriber');
-            $unsubscribeLink = '<strong>' . Zurmo::t('TasksModule', 'Unsubscribe') . '</strong>';
-            $script = $this->getSubscriptionScript($url, 'subscribe-task-link', 'unsubscribe-task-link', $unsubscribeLink);
-            Yii::app()->clientScript->registerScript('subscribe-task-link-script', $script);
-        }
-
-        /**
-         * Register unsubscription script
-         */
-        protected function registerUnsubscriptionScript()
-        {
-            $url = Yii::app()->createUrl('tasks/default/removeKanbanSubscriber');
-            $subscribeLink = '<strong>' . Zurmo::t('TasksModule', 'Subscribe') . '</strong>';
-            $script = $this->getSubscriptionScript($url, 'unsubscribe-task-link', 'subscribe-task-link', $subscribeLink);
-            Yii::app()->clientScript->registerScript('unsubscribe-task-link-script', $script);
-        }
-
-        /**
-         * Get subscription script
-         * @param string $url
-         * @param string $sourceClass
-         * @param string $targetClass
-         * @param string $link
-         * @return string
-         */
-        protected function getSubscriptionScript($url, $sourceClass, $targetClass, $link)
-        {
-            return "$('body').on('click', '." . $sourceClass . "', function()
-                                                    {
-                                                        var linkElement = $(this);
-                                                        var element = $(this).parent().parent().parent();
-                                                        var id = $(element).attr('id');
-                                                        var idParts = id.split('_');
-                                                        var taskId = parseInt(idParts[1]);
-                                                        $.ajax(
-                                                        {
-                                                            type : 'GET',
-                                                            data : {'id':taskId},
-                                                            url  : '" . $url . "',
-                                                            success : function(data)
-                                                                      {
-                                                                        $(linkElement).html('" . $link . "');
-                                                                        $(linkElement).attr('class', '" . $targetClass . "');
-                                                                      }
-                                                        }
-                                                        );
-                                                    }
-                                                );";
         }
     }
 ?>
