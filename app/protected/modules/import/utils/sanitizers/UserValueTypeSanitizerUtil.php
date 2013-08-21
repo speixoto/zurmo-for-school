@@ -156,7 +156,8 @@
 
         protected function assertMappingRuleDataIsValid()
         {
-            assert('$this->mappingRuleData["type"] == UserValueTypeModelAttributeMappingRuleForm::ZURMO_USER_ID ||
+            assert('!isset($this->mappingRuleData["type"]) ||
+                    $this->mappingRuleData["type"] == UserValueTypeModelAttributeMappingRuleForm::ZURMO_USER_ID ||
                     $this->mappingRuleData["type"] == UserValueTypeModelAttributeMappingRuleForm::EXTERNAL_SYSTEM_USER_ID ||
                     $this->mappingRuleData["type"] == UserValueTypeModelAttributeMappingRuleForm::ZURMO_USERNAME');
         }

@@ -73,7 +73,8 @@
                 $this->attemptToValidateImportWizardFormAndSave($importWizardForm, $import, 'step2');
             }
             $title = Zurmo::t('ImportModule', 'Import Wizard - Select Module');
-            $progressBarAndStepsView = new ImportStepsAndProgressBarForWizardView(0);
+            $importRulesClassName  = ImportRulesUtil::getImportRulesClassNameByType($importWizardForm->importRulesType);
+            $progressBarAndStepsView = new ImportStepsAndProgressBarForWizardView($importRulesClassName, 0);
             $importView = new ImportWizardImportRulesView($this->getId(),
                                                           $this->getModule()->getId(),
                                                           $importWizardForm, $title);
@@ -126,7 +127,8 @@
                 }
             }
             $title = Zurmo::t('ImportModule', 'Import Wizard - Upload File');
-            $progressBarAndStepsView = new ImportStepsAndProgressBarForWizardView(1);
+            $importRulesClassName  = ImportRulesUtil::getImportRulesClassNameByType($importWizardForm->importRulesType);
+            $progressBarAndStepsView = new ImportStepsAndProgressBarForWizardView($importRulesClassName, 1);
             $importView = new ImportWizardUploadFileView($this->getId(), $this->getModule()->getId(),
                                                          $importWizardForm, $title);
             $view       = new ImportPageView(ZurmoDefaultAdminViewUtil::
@@ -147,7 +149,8 @@
                 $this->attemptToValidateImportWizardFormAndSave($importWizardForm, $import, 'step4');
             }
             $title      = Zurmo::t('ImportModule', 'Import Wizard - Select Permissions');
-            $progressBarAndStepsView = new ImportStepsAndProgressBarForWizardView(2);
+            $importRulesClassName  = ImportRulesUtil::getImportRulesClassNameByType($importWizardForm->importRulesType);
+            $progressBarAndStepsView = new ImportStepsAndProgressBarForWizardView($importRulesClassName, 2);
             $importView = new ImportWizardSetModelPermissionsView($this->getId(),
                                                                   $this->getModule()->getId(),
                                                                   $importWizardForm, $title);
@@ -164,7 +167,6 @@
             $import               = Import::getById((int)$id);
             $importWizardForm     = ImportWizardUtil::makeFormByImport($import);
             $importWizardForm->setScenario('saveMappingData');
-            $tempTableName        = $import->getTempTableName();
             $importRulesClassName = ImportRulesUtil::getImportRulesClassNameByType($importWizardForm->importRulesType);
             if (isset($_POST[get_class($importWizardForm)]))
             {
@@ -226,7 +228,10 @@
             $mappableAttributeIndicesAndDerivedTypes        = $importRulesClassName::
                                                               getMappableAttributeIndicesAndDerivedTypes();
             $title                                          = Zurmo::t('ImportModule', 'Import Wizard - Map Fields');
-            $progressBarAndStepsView                        = new ImportStepsAndProgressBarForWizardView(3);
+            $importRulesClassName                           = ImportRulesUtil::getImportRulesClassNameByType(
+                                                              $importWizardForm->importRulesType);
+            $progressBarAndStepsView                        = new ImportStepsAndProgressBarForWizardView(
+                                                              $importRulesClassName, 3);
             $importView                                     = new ImportWizardMappingView($this->getId(),
                                                               $this->getModule()->getId(),
                                                               $importWizardForm,
@@ -313,7 +318,8 @@
             if ($step == null)
             {
                 $title                   = Zurmo::t('ImportModule', 'Import Wizard - Analyze Data');
-                $progressBarAndStepsView = new ImportStepsAndProgressBarForWizardView(4);
+                $importRulesClassName    = ImportRulesUtil::getImportRulesClassNameByType($importWizardForm->importRulesType);
+                $progressBarAndStepsView = new ImportStepsAndProgressBarForWizardView($importRulesClassName, 4);
                 $wrapperView  = new ImportSequentialProcessContainerView($resolvedView,
                                                                          $sequentialProcess->getAllStepsMessage(),
                                                                          $title);
@@ -420,7 +426,8 @@
             if ($step == null)
             {
                 $title = Zurmo::t('ImportModule', 'Import Wizard - Import Data');
-                $progressBarAndStepsView = new ImportStepsAndProgressBarForWizardView(5);
+                $importRulesClassName    = ImportRulesUtil::getImportRulesClassNameByType($importWizardForm->importRulesType);
+                $progressBarAndStepsView = new ImportStepsAndProgressBarForWizardView($importRulesClassName, 5);
                 $wrapperView  = new ImportSequentialProcessContainerView($resolvedView, $sequentialProcess->getAllStepsMessage(), $title);
                 $wrapperView->setCssClasses(array('DetailsView'));
                 $view = new ImportPageView(ZurmoDefaultAdminViewUtil::makeTwoStandardViewsForCurrentUser($this,

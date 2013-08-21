@@ -219,7 +219,11 @@
             $this->attributeModelClassName = $this->resolveAttributeModelClassName($model, $this->attributeName);
             $attributeModelClassName       = $this->attributeModelClassName;
             $model                         = new $attributeModelClassName(false);
-            assert('$model->isAttribute("name")');
+            if($this->mappingRuleData["type"] == RelatedModelValueTypeMappingRuleForm::ZURMO_MODEL_NAME &&
+               !$model->isAttribute("name"))
+            {
+                throw new NotSupportedException();
+            }
             $this->maxNameLength = StringValidatorHelper::getMaxLengthByModelAndAttributeName($model, 'name');
         }
 

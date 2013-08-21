@@ -56,12 +56,12 @@
             }
             $modelClassName          = $this->modelClassName;
             $model                   = new $modelClassName(false);
-            $attributeModelClassName = $modelClassName::resolveAttributeModelClassName($this->attributeName);
+            $relationModelClassName = $modelClassName::getRelationModelClassName($this->attributeName);
             if ($this->mappingRuleData["type"] == IdValueTypeMappingRuleForm::ZURMO_MODEL_ID)
             {
                 try
                 {
-                    return $attributeModelClassName::getById((int)$value);
+                    return $relationModelClassName::getById((int)$value);
                 }
                 catch (NotFoundException $e)
                 {
@@ -72,7 +72,7 @@
             {
                 try
                 {
-                    return static::getModelByExternalSystemIdAndModelClassName($value, $attributeModelClassName);
+                    return static::getModelByExternalSystemIdAndModelClassName($value, $relationModelClassName);
                 }
                 catch (NotFoundException $e)
                 {
