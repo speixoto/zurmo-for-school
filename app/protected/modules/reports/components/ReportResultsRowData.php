@@ -285,7 +285,7 @@
                 {
                     $attributeAlias = $displayAttribute->resolveAttributeNameForGridViewColumn($key);
                     if ($this->shouldResolveValueFromModel($attributeAlias))
-                    {
+                    {                        
                         list($notUsed, $displayAttributeKey) = explode(self::ATTRIBUTE_NAME_PREFIX, $attributeAlias);
                         $model = $this->resolveModel($displayAttributeKey);
                         if ($model == null)
@@ -301,8 +301,10 @@
                     {
                         $value = $this->selectedColumnNamesAndValues[$attributeAlias];
                     }
-
-                    $dataParams[self::resolveDataParamKeyForDrillDown($displayAttribute->attributeIndexOrDerivedType)] = $value;
+                    if (!is_null($value))
+                    {
+                        $dataParams[self::resolveDataParamKeyForDrillDown($displayAttribute->attributeIndexOrDerivedType)] = $value;
+                    }
                 }
             }
             return $dataParams;
@@ -398,6 +400,9 @@
         }
 
         /**
+         * The check for OwnedModel below, is because it is possible that something like Address 'state' would be coming
+         * into this method for retrieval. but depending how things are called, it might need to use the penultimate
+         * relation instead of looking for the attribute on the $model.
          * @param RedBeanModel $model
          * @param string $attribute
          * @param DisplayAttributeForReportForm $displayAttribute
@@ -407,7 +412,8 @@
         protected function resolveModelAttributeValueForPenultimateRelation(RedBeanModel $model, $attribute,
                                                                             DisplayAttributeForReportForm $displayAttribute)
         {
-            if ($model->isAttribute($attribute))
+            if ($model->isAttribute($attribute) &&
+                !is_subclass_of($displayAttribute->getResolvedAttributeModelClassName(), 'OwnedModel'))
             {
                 return $model->$attribute;
             }
@@ -438,7 +444,7 @@
                 return $model->{$realAttributeName}->id;
             }
             elseif ($type == 'DropDown')
-            {
+            {                                
                 return $model->{$attribute}->value;
             }
             elseif (null != $rawValueRelatedAttribute = $displayAttribute->getRawValueRelatedAttribute())

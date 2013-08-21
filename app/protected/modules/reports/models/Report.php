@@ -715,7 +715,14 @@
             foreach ($this->getGroupBys() as $groupBy)
             {
                 $index = ReportResultsRowData::resolveDataParamKeyForDrillDown($groupBy->attributeIndexOrDerivedType);
-                $value = $getData[$index];
+                if (isset($getData[$index]))
+                {
+                    $value = $getData[$index];
+                }
+                else
+                {
+                    $value = null;
+                }
                 $filter                              = new FilterForReportForm($groupBy->getModuleClassName(),
                                                        $groupBy->getModelClassName(),
                                                        $this->type);
@@ -733,6 +740,7 @@
             $structure = '(' . $structure . ')';
             if ($this->filtersStructure != null)
             {
+                $this->filtersStructure  = '(' . $this->filtersStructure . ')';
                 $this->filtersStructure .= ' AND ';
             }
             $this->filtersStructure .= $structure;
@@ -746,7 +754,7 @@
          */
         protected static function resolveGroupByAsFilterValue($value, FilterForReportForm $filter)
         {
-            if ($value != null)
+            if ($value !== null)
             {
                 $filter->operator                    = OperatorRules::TYPE_EQUALS;
                 $filter->value                       = $value;

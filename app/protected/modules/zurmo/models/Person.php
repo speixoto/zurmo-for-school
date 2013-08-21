@@ -133,7 +133,7 @@
                     array('firstName',      'type',   'type' => 'string'),
                     array('firstName',      'length', 'min'  => 1, 'max' => 32),
                     array('jobTitle',       'type',   'type' => 'string'),
-                    array('jobTitle',       'length', 'min'  => 3, 'max' => 64),
+                    array('jobTitle',       'length', 'min'  => 1, 'max' => 64),
                     array('lastName',       'required'),
                     array('lastName',       'type',   'type' => 'string'),
                     array('lastName',       'length', 'min'  => 1, 'max' => 32),

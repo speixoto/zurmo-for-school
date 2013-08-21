@@ -501,7 +501,7 @@
                                                 'FrameView PortletFrameView MetadataView">') !== false);
             $this->assertTrue(strpos($content, '<div class="juiportlet-columns"> ') !== false);
             $this->assertTrue(strpos($content, '<ul class="juiportlet-columns-CampaignDetailsAndRelationsViewLeft' .
-                                                'BottomView juiportlet-widget-column1 ">') !== false);
+                                                'BottomView juiportlet-widget-column1 juiportlet-column juiportlet-column-no-split">') !== false);
             $this->assertTrue(strpos($content, '<li class="juiportlet-widget CampaignOverallMetricsView" id="Campaign' .
                                                 'DetailsAndRelationsViewLeftBottomView') !== false);
             $this->assertTrue(strpos($content, '<div class="juiportlet-widget-head">') !== false);
@@ -754,6 +754,41 @@
             $this->assertEquals($redirectUrl, $compareRedirectUrl);
             $campaigns = Campaign::getAll();
             $this->assertEquals(2, count($campaigns));
+        }
+
+        /**
+         * @depends testSuperUserDeleteAction
+         */
+        public function testSuperUserCreateFromRelationAction()
+        {
+            $super          = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $campaigns      = Campaign::getAll();
+            $this->assertEquals(2, count($campaigns));
+            $marketingList  = MarketingListTestHelper::createMarketingListByName('my list');
+            //Create a new campaign from a related marketing list.
+            $this->setGetArray(array(   'relationAttributeName' => 'marketingList',
+                'relationModelId'       => $marketingList->id,
+                'relationModuleId'      => 'marketingLists',
+                'redirectUrl'           => 'someRedirect'));
+            $this->setPostArray(array('Campaign' => array(
+                'name'           => 'New Campaign using Create',
+                'fromName'       => 'Zurmo Sales',
+                'fromAddress'    => 'sales@zurmo.com',
+                'sendOnDateTime' => '6/13/13 10:54 AM',
+                'subject' => 'New Campaign using Create Subject',
+                'enableTracking' => '1',
+                'supportsRichText' => '0',
+                'textContent'    => 'Text',
+                'htmlContent'    => 'Html',
+            )));
+            $this->runControllerWithRedirectExceptionAndGetContent('campaigns/default/createFromRelation');
+            $campaigns = Campaign::getByName('New Campaign using Create');
+            $this->assertEquals(1, count($campaigns));
+            $this->assertTrue($campaigns[0]->id > 0);
+            $this->assertTrue($campaigns[0]->owner   == $super);
+            $this->assertTrue($campaigns[0]->marketingList->id == $marketingList->id);
+            $campaigns = Campaign::getAll();
+            $this->assertEquals(3, count($campaigns));
         }
     }
 ?>

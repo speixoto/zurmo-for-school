@@ -72,6 +72,8 @@
                                               'listPageSize', get_class($this->getModule()));
             $savedReport                    = new SavedReport(false);
             $searchForm                     = new ReportsSearchForm($savedReport);
+            $listAttributesSelector         = new ListAttributesSelector('ReportsListView', get_class($this->getModule()));
+            $searchForm->setListAttributesSelector($listAttributesSelector);
             $dataProvider                   = $this->resolveSearchDataProvider(
                 $searchForm,
                 $pageSize,
@@ -195,6 +197,7 @@
             ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($savedReport);
             if ($savedReport->save())
             {
+                StickyReportUtil::clearDataByKey($savedReport->id);
                 if ($explicitReadWriteModelPermissions != null)
                 {
                     ExplicitReadWriteModelPermissionsUtil::resolveExplicitReadWriteModelPermissions($savedReport,
@@ -396,22 +399,15 @@
                 if ($totalItems <= ExportModule::$asynchronusThreshold)
                 {
                     // Output csv file directly to user browser
+                    $count = count($dataProvider->getData());
                     if ($dataProvider)
                     {
-                        $data1 = ExportUtil::getDataForExport($dataProvider);
-                        $headerData = array();
-                        foreach ($data1 as $reportResultsRowData)
-                        {
-                          $reportToExportAdapter  = new ReportToExportAdapter($reportResultsRowData, $report);
-                          if (count($headerData) == 0)
-                          {
-                              $headerData = $reportToExportAdapter->getHeaderData();
-                          }
-                          $data[] = $reportToExportAdapter->getData();
-                        }
+                          $reportToExportAdapter  = ReportToExportAdapterFactory::createReportToExportAdapter($report, $dataProvider);
+                          $headerData             = $reportToExportAdapter->getHeaderData();
+                          $data                   = $reportToExportAdapter->getData();
                     }
                     // Output data
-                    if (count($data))
+                    if ($count)
                     {
                         $fileName = $this->getModule()->getName() . ".csv";
                         ExportItemToCsvFileUtil::export($data, $headerData, $fileName, true);

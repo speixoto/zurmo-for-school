@@ -188,17 +188,17 @@ a.z-button.attachLoading.z-button,
 .white-button.attachLoading.z-button {
   color: #fff;
 }
-.modal-view-toolbar a:not(.attachLoading) .z-label,
-.modal-view-toolbar input[type="submit"]:not(.attachLoading) .z-label,
-.modal-view-toolbar input[type="button"]:not(.attachLoading) .z-label,
-.form-toolbar a:not(.attachLoading) .z-label,
-.form-toolbar input[type="submit"]:not(.attachLoading) .z-label,
-.form-toolbar input[type="button"]:not(.attachLoading) .z-label,
-.zButton:not(.attachLoading) .z-label,
-.z-button:not(.attachLoading) .z-label,
-a.zButton:not(.attachLoading) .z-label,
-a.z-button:not(.attachLoading) .z-label,
-.white-button:not(.attachLoading) .z-label {
+.modal-view-toolbar a:not(.attachLoading):not(.green-button) .z-label,
+.modal-view-toolbar input[type="submit"]:not(.attachLoading):not(.green-button) .z-label,
+.modal-view-toolbar input[type="button"]:not(.attachLoading):not(.green-button) .z-label,
+.form-toolbar a:not(.attachLoading):not(.green-button) .z-label,
+.form-toolbar input[type="submit"]:not(.attachLoading):not(.green-button) .z-label,
+.form-toolbar input[type="button"]:not(.attachLoading):not(.green-button) .z-label,
+.zButton:not(.attachLoading):not(.green-button) .z-label,
+.z-button:not(.attachLoading):not(.green-button) .z-label,
+a.zButton:not(.attachLoading):not(.green-button) .z-label,
+a.z-button:not(.attachLoading):not(.green-button) .z-label,
+.white-button:not(.attachLoading):not(.green-button) .z-label {
   background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
 }
 .white-button .z-label {
@@ -253,7 +253,7 @@ a.z-button:not(.attachLoading) .z-label,
 .default-btn.attachLoading.z-button {
   color: #fff;
 }
-.default-btn:not(.attachLoading) .z-label {
+.default-btn:not(.attachLoading):not(.green-button) .z-label {
   background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
 }
 /*
@@ -570,7 +570,7 @@ body > div {
   content: "n";
   font-weight: normal;
   font-size: 30px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   line-height: 26px;
   margin-left: -1px;
   background: none;
@@ -729,7 +729,7 @@ body > div {
   border-radius: 4px;
   font-weight: normal;
   font-size: 24px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   -webkit-text-shadow: none !important;
   -moz-text-shadow: none !important;
   -o-text-shadow: none !important;
@@ -1046,7 +1046,7 @@ div:not(#MashableInboxActionBarForViews) .toolbar-mbmenu .options-menu > li > a:
   content: "{";
   font-weight: normal;
   font-size: 24px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   left: -5px;
   top: -1px;
   margin-left: 10px;

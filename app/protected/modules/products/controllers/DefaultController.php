@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -20,8 +20,18 @@
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU Affero General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     class ProductsDefaultController extends ZurmoModuleController
@@ -31,7 +41,8 @@
 
         public static function getListBreadcrumbLinks()
         {
-            $title = Zurmo::t('ProductsModule', 'Products');
+            $params = LabelUtil::getTranslationParamsForAllModules();
+            $title = Zurmo::t('ProductsModule', 'ProductsModulePluralLabel', $params);
             return array($title);
         }
 
@@ -88,9 +99,10 @@
             }
             else
             {
+                $introView        = new ProductsIntroView(get_class($this->getModule()));
                 $mixedView  = $this->makeActionBarSearchAndListView($searchForm, $dataProvider,
                                    'SecuredActionBarForProductsSearchAndListView',
-                                    null, $activeActionElementType);
+                                    null, $activeActionElementType, $introView);
                 $view       = new ProductsPageView(ZurmoDefaultViewUtil::
                                                     makeViewWithBreadcrumbsForCurrentUser(
                                                         $this, $mixedView, $breadcrumbLinks, 'ProductBreadCrumbView'));
@@ -113,7 +125,8 @@
 
         public function actionCreate()
         {
-            $title                  = Zurmo::t('ProductsModule', 'Create Product');
+            $params                 = LabelUtil::getTranslationParamsForAllModules();
+            $title                  = Zurmo::t('ProductsModule', 'Create ProductsModuleSingularLabel', $params);
             $breadcrumbLinks        = array($title);
             $editAndDetailsView     = $this->makeEditAndDetailsView(
                                             $this->attemptToSaveModelFromPost(new Product()), 'Edit');
@@ -230,7 +243,8 @@
          */
         public function actionMassDelete()
         {
-            $title           = Zurmo::t('ProductTemplatesModule', 'Mass Delete Products');
+            $params          = LabelUtil::getTranslationParamsForAllModules();
+            $title           = Zurmo::t('ProductTemplatesModule', 'Mass Delete ProductsModulePluralLabel', $params);
             $breadcrumbLinks = array(
                  $title,
             );
@@ -371,7 +385,6 @@
             $product->name              = $productTemplate->name;
             $product->description       = $productTemplate->description;
             $product->quantity          = 1;
-            $product->stage->value      = Product::OPEN_STAGE;
             $product->productTemplate   = $productTemplate;
             $sellPrice                  = new CurrencyValue();
             $sellPrice->value           = $productTemplate->sellPrice->value;
@@ -379,26 +392,28 @@
             $product->priceFrequency    = $productTemplate->priceFrequency;
             $product->sellPrice         = $sellPrice;
             $product->type              = $productTemplate->type;
-
-            foreach($productTemplate->productCategories as $productCategory)
+            $controllerUtil             = static::getZurmoControllerUtil();
+            $controllerUtil->resolveStageDefaultValue($product);
+            foreach ($productTemplate->productCategories as $productCategory)
             {
                 $product->productCategories->add($productCategory);
             }
-
-            $relationModel              = $relationModelClassName::getById((int)$relationModelId);
-            $product->$relationAttributeName = $relationModel;
+            $relationModel                      = $relationModelClassName::getById((int)$relationModelId);
+            $product->$relationAttributeName    = $relationModel;
             $product->save();
+            ZurmoControllerUtil::updatePermissionsWithDefaultForModelByCurrentUser($product);
 
-            if((bool)$redirect)
+            if ((bool)$redirect)
             {
-                $redirectUrl = Yii::app()->createUrl('/' . $relationModuleId . '/default/details', array('id' => $relationModelId));
+                $isViewLocked = ZurmoDefaultViewUtil::getLockKeyForDetailsAndRelationsView('lockPortletsForDetailsAndRelationsView');
+                $redirectUrl  = Yii::app()->createUrl('/' . $relationModuleId . '/default/details', array('id' => $relationModelId));
                 $this->redirect(array('/' . $relationModuleId . '/defaultPortlet/modalRefresh',
                                         'portletId'            => $portletId,
                                         'uniqueLayoutId'       => $uniqueLayoutId,
                                         'redirectUrl'          => $redirectUrl,
                                         'portletParams'        => array(  'relationModuleId' => $relationModuleId,
                                                                           'relationModelId'  => $relationModelId),
-                                ));
+                                        'portletsAreRemovable' => !$isViewLocked));
             }
         }
 

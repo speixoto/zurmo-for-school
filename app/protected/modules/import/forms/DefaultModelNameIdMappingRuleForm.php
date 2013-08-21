@@ -87,7 +87,6 @@
                                                          $this->modelAttributeName,
                                                          'defaultModelStringifiedName',
                                                          $requiredRuleIsApplicable);
-                                                         return array_merge(parent::rules(), $defaultValueApplicableModelAttributeRules);
             return array_merge(parent::rules(), $defaultValueApplicableModelAttributeRules);
         }
 

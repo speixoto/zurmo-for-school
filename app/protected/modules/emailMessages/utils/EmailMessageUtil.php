@@ -225,7 +225,6 @@
             }
             if ($showLink && !($model instanceof Account))
             {
-
                 $url               = Yii::app()->createUrl('/emailMessages/default/createEmailMessage',
                                                            array('toAddress'             => $emailAddress,
                                                                  'relatedId'             => $model->id,
@@ -246,6 +245,11 @@
             return $content;
         }
 
+        /**
+         * @param string $htmlContent
+         * @param string $textContent
+         * @return mixed
+         */
         public static function resolveTextContent($htmlContent, $textContent)
         {
            if ($htmlContent != null && $textContent == null)
