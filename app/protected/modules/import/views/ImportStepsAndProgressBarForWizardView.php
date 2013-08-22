@@ -39,14 +39,48 @@
      */
     class ImportStepsAndProgressBarForWizardView extends StepsAndProgressBarForWizardView
     {
+        protected $importRulesClassName;
+
+        public static function resolveAfterUploadStepByImportClassName($zeroBasedStepIndex, $importRulesClassName)
+        {
+            assert('is_int($zeroBasedStepIndex)');
+            if (!is_subclass_of($importRulesClassName::getModelClassName(), 'SecurableItem'))
+            {
+                return $zeroBasedStepIndex - 1;
+            }
+            else
+            {
+                return $zeroBasedStepIndex;
+            }
+        }
+
+        public function __construct($importRulesClassName, $zeroBasedStepIndex = 0)
+        {
+            assert('is_string($importRulesClassName) || $importRulesClassName === null');
+            $this->importRulesClassName = $importRulesClassName;
+            parent::__construct($zeroBasedStepIndex);
+        }
+
         protected function getSpanLabels()
         {
-            return array(Zurmo::t('Core',         'Select Module'),
-                         Zurmo::t('ZurmoModule',  'Upload File'),
-                         Zurmo::t('ZurmoModule',  'Select Permissions'),
-                         Zurmo::t('ImportModule', 'Map Fields'),
-                         Zurmo::t('ImportModule', 'Analyze Data'),
-                         Zurmo::t('ImportModule', 'Import Data'));
+            $importRulesClassName  = $this->importRulesClassName;
+            if ($importRulesClassName !== null && !is_subclass_of($importRulesClassName::getModelClassName(), 'SecurableItem'))
+            {
+                return array(Zurmo::t('Core',         'Select Module'),
+                             Zurmo::t('ZurmoModule',  'Upload File'),
+                             Zurmo::t('ImportModule', 'Map Fields'),
+                             Zurmo::t('ImportModule', 'Analyze Data'),
+                             Zurmo::t('ImportModule', 'Import Data'));
+            }
+            else
+            {
+                return array(Zurmo::t('Core',         'Select Module'),
+                             Zurmo::t('ZurmoModule',  'Upload File'),
+                             Zurmo::t('ZurmoModule',  'Select Permissions'),
+                             Zurmo::t('ImportModule', 'Map Fields'),
+                             Zurmo::t('ImportModule', 'Analyze Data'),
+                             Zurmo::t('ImportModule', 'Import Data'));
+            }
         }
     }
 ?>

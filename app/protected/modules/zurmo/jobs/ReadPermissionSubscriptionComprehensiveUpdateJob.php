@@ -37,14 +37,15 @@
     /**
      * A job for updating read permission subscription tables
      */
-    class ReadPermissionSubscriptionUpdateCompleteJob extends BaseJob
+    class ReadPermissionSubscriptionComprehensiveUpdateJob extends BaseJob
     {
+        const MAX_NUMBER_OF_TRIES = 10;
         /**
          * @returns Translated label that describes this job type.
          */
         public static function getDisplayName()
         {
-            return Zurmo::t('ZurmoModule', 'Read Permission Subscription Partial Update Job');
+            return Zurmo::t('ZurmoModule', 'Read Permission Subscription Comprehensive Update Job');
         }
 
         /**
@@ -52,7 +53,7 @@
          */
         public static function getType()
         {
-            return 'ReadPermissionSubscriptionUpdateComplete';
+            return 'ReadPermissionSubscriptionComprehensiveUpdate';
         }
 
         public static function getRecommendedRunFrequencyContent()
@@ -62,8 +63,22 @@
 
         public function run()
         {
-            ReadPermissionsSubscriptionUtil::updateAllReadSubscriptionTables(false);
-            return true;
+            $counter = 0;
+            try
+            {
+                while (JobInProcess::getByType('ReadPermissionSubscriptionQuickUpdate') instanceof RedBeanModel &&
+                    $counter <= self::MAX_NUMBER_OF_TRIES)
+                {
+                    sleep(30);
+                    $counter++;
+                }
+            }
+            catch (NotFoundException $e)
+            {
+                ReadPermissionsSubscriptionUtil::updateAllReadSubscriptionTables(false);
+                return true;
+            }
+            return false;
         }
     }
 ?>

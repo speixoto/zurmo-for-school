@@ -33,17 +33,38 @@
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
-    /**
-     * Status dropdown element for product template
-     */
-    class ProductTemplateStatusDropDownElement extends StaticDropDownFormElement
+
+    class DateTimeTriggerRulesTest extends WorkflowBaseTest
     {
-        /**
-         * @return array
-         */
-        protected function getDropDownArray()
+        public function testEvaluateTimeTriggerBeforeSave()
         {
-            return ProductTemplateElementUtil::getProductTemplateStatusDropdownArray();
+            $model = new WorkflowModelTestItem();
+            $triggerForm            = new TriggerForWorkflowForm('WorkflowTestModule', 'WorkflowModelTestItem',
+                                      Workflow::TYPE_ON_SAVE);
+            $triggerForm->valueType = MixedDateTypesSearchFormAttributeMappingRules::TYPE_IS_TIME_FOR;
+            $rules = new DateTimeTriggerRules($triggerForm);
+
+            //New model
+            $this->assertTrue($rules->evaluateTimeTriggerBeforeSave($model, 'createdDateTime', true));
+            $this->assertTrue($rules->evaluateTimeTriggerBeforeSave($model, 'modifiedDateTime', true));
+            $this->assertFalse($rules->evaluateTimeTriggerBeforeSave($model, 'dateTime', true));
+
+            $model->lastName = 'test';
+            $model->string   = 'test';
+            $this->assertTrue($model->save());
+            $modelId = $model->id;
+            $model->forget();
+
+            $model = WorkflowModelTestItem::getById($modelId);
+
+            //Existing model
+            $this->assertFalse($rules->evaluateTimeTriggerBeforeSave($model, 'createdDateTime', true));
+            $this->assertTrue($rules->evaluateTimeTriggerBeforeSave($model, 'modifiedDateTime', true));
+            $this->assertFalse($rules->evaluateTimeTriggerBeforeSave($model, 'dateTime', true));
+
+            //Modify dateTime
+            $model->dateTime = '2000-02-02 05:05:05';
+            $this->assertTrue($rules->evaluateTimeTriggerBeforeSave($model, 'dateTime', true));
         }
     }
 ?>

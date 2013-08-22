@@ -103,7 +103,7 @@
          */
         public static function convertSerializedMessagesToDisplayReadyString($messages)
         {
-            assert('is_array($messages)');
+            assert('is_string($messages)');
             $unserializedMessages = unserialize($messages);
             $content = null;
             foreach ($unserializedMessages as $message)
