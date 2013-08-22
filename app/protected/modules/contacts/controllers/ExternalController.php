@@ -195,6 +195,7 @@
         {
             assert('$contactWebForm instanceof ContactWebForm');
             $contactWebFormAttributes = unserialize($contactWebForm->serializedData);
+            $contactWebFormAttributes = self::resolveWebFormWithAllRequiredAttributes($contactWebFormAttributes);
             $viewClassName            = 'ContactExternalEditAndDetailsView';
             $moduleClassName          = 'ContactsModule';
             $modelClassName           = $moduleClassName::getPrimaryModelName();
@@ -224,6 +225,20 @@
                 }
             }
             return $metadata;
+        }
+
+        public static function resolveWebFormWithAllRequiredAttributes($contactWebFormAttributes)
+        {
+            $attributes = ContactWebFormsUtil::getAllAttributes();
+            foreach ($attributes as $attributeName => $attributeData)
+            {
+                if (!$attributeData['isReadOnly'] && $attributeData['isRequired'] &&
+                    !in_array($attributeName, $contactWebFormAttributes))
+                {
+                    $contactWebFormAttributes[] = $attributeName;
+                }
+            }
+            return $contactWebFormAttributes;
         }
     }
 ?>

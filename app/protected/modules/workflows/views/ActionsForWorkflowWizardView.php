@@ -428,7 +428,6 @@
                 {
                     $("#' . self::ACTION_TYPE_NAME . '").val("").removeAttr("disabled");
                     size = $(this).parents("ul").find("li").size();
-                    console.log(size);
                     $(this).parentsUntil("ul").siblings().show();
                     $(this).parents("li").remove(); //removes the <li>
                     if (size <= 2)

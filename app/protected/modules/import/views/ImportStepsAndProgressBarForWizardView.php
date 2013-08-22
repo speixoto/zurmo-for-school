@@ -41,9 +41,22 @@
     {
         protected $importRulesClassName;
 
+        public static function resolveAfterUploadStepByImportClassName($zeroBasedStepIndex, $importRulesClassName)
+        {
+            assert('is_int($zeroBasedStepIndex)');
+            if (!is_subclass_of($importRulesClassName::getModelClassName(), 'SecurableItem'))
+            {
+                return $zeroBasedStepIndex - 1;
+            }
+            else
+            {
+                return $zeroBasedStepIndex;
+            }
+        }
+
         public function __construct($importRulesClassName, $zeroBasedStepIndex = 0)
         {
-            assert('is_string($importRulesClassName)');
+            assert('is_string($importRulesClassName) || $importRulesClassName === null');
             $this->importRulesClassName = $importRulesClassName;
             parent::__construct($zeroBasedStepIndex);
         }
@@ -51,7 +64,7 @@
         protected function getSpanLabels()
         {
             $importRulesClassName  = $this->importRulesClassName;
-            if (!is_subclass_of($importRulesClassName::getModelClassName(), 'SecurableItem'))
+            if ($importRulesClassName !== null && !is_subclass_of($importRulesClassName::getModelClassName(), 'SecurableItem'))
             {
                 return array(Zurmo::t('Core',         'Select Module'),
                              Zurmo::t('ZurmoModule',  'Upload File'),

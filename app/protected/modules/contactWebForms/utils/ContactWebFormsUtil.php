@@ -56,21 +56,12 @@
 
         /**
          * @param $attributes
-         * @param null $contactWebFormAttributes
+         * @param array $contactWebFormAttributes
          * @return array of attributes placed on web form, default to required fields
          */
-        public static function getAllPlacedAttributes($attributes, $contactWebFormAttributes = null)
+        public static function getAllPlacedAttributes($attributes, $contactWebFormAttributes = array())
         {
             $items = array();
-            if ($contactWebFormAttributes !== null)
-            {
-                $allPlacedAttributes = array();
-                foreach ($contactWebFormAttributes as $contactWebFormAttribute)
-                {
-                    $allPlacedAttributes[$contactWebFormAttribute] = $attributes[$contactWebFormAttribute];
-                }
-                $attributes = $allPlacedAttributes;
-            }
             foreach ($attributes as $attributeName => $attributeData)
             {
                 if (!$attributeData['isReadOnly'])
@@ -80,7 +71,7 @@
                         $items[$attributeName] = array('{content}'            => $attributeData['attributeLabel'],
                                                        '{checkedAndReadOnly}' => '');
                     }
-                    elseif ($contactWebFormAttributes !== null)
+                    elseif (in_array($attributeName, $contactWebFormAttributes))
                     {
                         $checkedAndReadOnly    = '<a class="remove-dynamic-row-link" id="ContactWebForm_serializedData_' .
                                                   $attributeName . '" data-value="' . $attributeName . '" href="#">—</a>';
@@ -94,10 +85,10 @@
 
         /**
          * @param $attributes
-         * @param null $contactWebFormAttributes
+         * @param array $contactWebFormAttributes
          * @return array of attributes not placed on web form, but can be placed
          */
-        public static function getAllNonPlacedAttributes($attributes, $contactWebFormAttributes = null)
+        public static function getAllNonPlacedAttributes($attributes, $contactWebFormAttributes = array())
         {
             $items = array();
             foreach ($attributes as $attributeName => $attributeData)
@@ -107,14 +98,7 @@
                 {
                     if (!$attributeData['isRequired'])
                     {
-                        if ($contactWebFormAttributes !== null)
-                        {
-                            if (!in_array($attributeName, $contactWebFormAttributes))
-                            {
-                                $items[$attributeName] = $attributeData['attributeLabel'];
-                            }
-                        }
-                        else
+                        if (!in_array($attributeName, $contactWebFormAttributes))
                         {
                             $items[$attributeName] = $attributeData['attributeLabel'];
                         }
