@@ -73,7 +73,7 @@
             $imgUrl     = Yii::app()->themeManager->baseUrl . '/' . $themeName . '/images/landscape-3.png';
             return array(
                 'perUser' => array(
-                    'title' => "eval:Zurmo::t('HomeModule', 'Zurmo', LabelUtil::getTranslationParamsForAllModules())",
+                    'title' => "eval:Zurmo::t('HomeModule', 'Iframe Portal')",
                     'iframeUrl' => $imgUrl,
                 ),
                 'global' => array(

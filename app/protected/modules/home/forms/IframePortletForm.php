@@ -47,7 +47,7 @@
             return array(
                 array('title', 'required'),
                 array('iframeUrl', 'required'),
-                array('iframeUrl', 'url'),
+                array('iframeUrl', 'url', 'defaultScheme' => 'http'),
             );
         }
 
