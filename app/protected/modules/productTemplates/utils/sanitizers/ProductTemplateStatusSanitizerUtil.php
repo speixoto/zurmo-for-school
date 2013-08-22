@@ -86,8 +86,8 @@
                 {
                     return ProductTemplate::STATUS_ACTIVE;
                 }
-                elseif (strtolower($value) == strtolower(ProductTemplate::STATUS_INACTIVE ||
-                    strtolower($value) == strtolower('Inactive')))
+                elseif (strtolower($value) == strtolower(ProductTemplate::STATUS_INACTIVE) ||
+                        strtolower($value) == strtolower('Inactive'))
                 {
                     return ProductTemplate::STATUS_INACTIVE;
                 }

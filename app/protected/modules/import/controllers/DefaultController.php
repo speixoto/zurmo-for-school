@@ -73,7 +73,14 @@
                 $this->attemptToValidateImportWizardFormAndSave($importWizardForm, $import, 'step2');
             }
             $title = Zurmo::t('ImportModule', 'Import Wizard - Select Module');
-            $importRulesClassName  = ImportRulesUtil::getImportRulesClassNameByType($importWizardForm->importRulesType);
+            if($importWizardForm->importRulesType != null)
+            {
+                $importRulesClassName  = ImportRulesUtil::getImportRulesClassNameByType($importWizardForm->importRulesType);
+            }
+            else
+            {
+                $importRulesClassName  = null;
+            }
             $progressBarAndStepsView = new ImportStepsAndProgressBarForWizardView($importRulesClassName, 0);
             $importView = new ImportWizardImportRulesView($this->getId(),
                                                           $this->getModule()->getId(),
@@ -391,7 +398,7 @@
             $filteredByStatus       = $this->resolveFilteredByStatus();
             $dataProvider         = new ImportDataProvider($import->getTempTableName(),
                                                            (bool)$importWizardForm->firstRowIsHeaderRow,
-                                                           $config, $filteredByStatus);
+                                                           $config, (int)$filteredByStatus);
             $sequentialProcess    = new ImportCreateUpdateModelsSequentialProcess($import, $dataProvider);
             Yii::app()->gameHelper->muteScoringModelsOnSave();
             $sequentialProcess->run($step, $nextParams);
