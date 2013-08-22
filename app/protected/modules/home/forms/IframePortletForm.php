@@ -55,7 +55,7 @@
         {
             return array(
                 'title' => Zurmo::t('HomeModule', 'Title'),
-                'iframeUrl'   => Zurmo::t('HomeModule', 'Iframe URL'),
+                'iframeUrl' => Zurmo::t('HomeModule', 'Iframe URL'),
             );
         }
 
