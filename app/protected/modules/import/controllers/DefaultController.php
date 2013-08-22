@@ -230,8 +230,9 @@
             $title                                          = Zurmo::t('ImportModule', 'Import Wizard - Map Fields');
             $importRulesClassName                           = ImportRulesUtil::getImportRulesClassNameByType(
                                                               $importWizardForm->importRulesType);
+            $stepToUse = ImportStepsAndProgressBarForWizardView::resolveAfterUploadStepByImportClassName(3, $importRulesClassName);
             $progressBarAndStepsView                        = new ImportStepsAndProgressBarForWizardView(
-                                                              $importRulesClassName, 3);
+                                                              $importRulesClassName, $stepToUse);
             $importView                                     = new ImportWizardMappingView($this->getId(),
                                                               $this->getModule()->getId(),
                                                               $importWizardForm,
@@ -319,7 +320,8 @@
             {
                 $title                   = Zurmo::t('ImportModule', 'Import Wizard - Analyze Data');
                 $importRulesClassName    = ImportRulesUtil::getImportRulesClassNameByType($importWizardForm->importRulesType);
-                $progressBarAndStepsView = new ImportStepsAndProgressBarForWizardView($importRulesClassName, 4);
+                $stepToUse = ImportStepsAndProgressBarForWizardView::resolveAfterUploadStepByImportClassName(4, $importRulesClassName);
+                $progressBarAndStepsView = new ImportStepsAndProgressBarForWizardView($importRulesClassName, $stepToUse);
                 $wrapperView  = new ImportSequentialProcessContainerView($resolvedView,
                                                                          $sequentialProcess->getAllStepsMessage(),
                                                                          $title);
@@ -427,7 +429,8 @@
             {
                 $title = Zurmo::t('ImportModule', 'Import Wizard - Import Data');
                 $importRulesClassName    = ImportRulesUtil::getImportRulesClassNameByType($importWizardForm->importRulesType);
-                $progressBarAndStepsView = new ImportStepsAndProgressBarForWizardView($importRulesClassName, 5);
+                $stepToUse = ImportStepsAndProgressBarForWizardView::resolveAfterUploadStepByImportClassName(5, $importRulesClassName);
+                $progressBarAndStepsView = new ImportStepsAndProgressBarForWizardView($importRulesClassName, $stepToUse);
                 $wrapperView  = new ImportSequentialProcessContainerView($resolvedView, $sequentialProcess->getAllStepsMessage(), $title);
                 $wrapperView->setCssClasses(array('DetailsView'));
                 $view = new ImportPageView(ZurmoDefaultAdminViewUtil::makeTwoStandardViewsForCurrentUser($this,

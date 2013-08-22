@@ -41,6 +41,19 @@
     {
         protected $importRulesClassName;
 
+        public static function resolveAfterUploadStepByImportClassName($zeroBasedStepIndex, $importRulesClassName)
+        {
+            assert('is_int($zeroBasedStepIndex)');
+            if (!is_subclass_of($importRulesClassName::getModelClassName(), 'SecurableItem'))
+            {
+                return $zeroBasedStepIndex - 1;
+            }
+            else
+            {
+                return $zeroBasedStepIndex;
+            }
+        }
+
         public function __construct($importRulesClassName, $zeroBasedStepIndex = 0)
         {
             assert('is_string($importRulesClassName)');
