@@ -34,57 +34,37 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Class to help evaluate dateTime triggers against model values.
-     */
-    class DateTimeTriggerRules extends DateTriggerRules
+    class DateTimeTriggerRulesTest extends WorkflowBaseTest
     {
-        /**
-         * @see parent::evaluateTimeTriggerBeforeSave for explanation of method
-         * @param RedBeanModel $model
-         * @param $attribute
-         * @param $changeRequiredToProcess - if a change in value is required to confirm the time trigger is true
-         * @return bool
-         * @throws NotSupportedException
-         */
-        public function evaluateTimeTriggerBeforeSave(RedBeanModel $model, $attribute, $changeRequiredToProcess = true)
+        public function testEvaluateTimeTriggerBeforeSave()
         {
-            assert('is_string($attribute)');
-            assert('is_bool($changeRequiredToProcess)');
-            if ($this->trigger->valueType != MixedDateTypesSearchFormAttributeMappingRules::TYPE_IS_TIME_FOR)
-            {
-                throw new NotSupportedException();
-            }
-            return ($this->resolveAttributeValueIsChanged($model, $attribute)  || !$changeRequiredToProcess) &&
-                   (DateTimeUtil::isDateTimeValueNull($model, $attribute) === false);
-        }
+            $model = new WorkflowModelTestItem();
+            $triggerForm            = new TriggerForWorkflowForm('WorkflowTestModule', 'WorkflowModelTestItem',
+                                      Workflow::TYPE_ON_SAVE);
+            $triggerForm->valueType = MixedDateTypesSearchFormAttributeMappingRules::TYPE_IS_TIME_FOR;
+            $rules = new DateTimeTriggerRules($triggerForm);
 
-        /**
-         * Resolves for special attributes.
-         * CreatedDateTime should resolve true if the model is new, otherwise false
-         * ModifiedDateTime should always resolve as true because it would always change
-         * @param RedBeanModel $model
-         * @param $attribute
-         * @return bool
-         */
-        protected function resolveAttributeValueIsChanged(RedBeanModel $model, $attribute)
-        {
-            if($attribute === 'createdDateTime' && $model->id < 0 )
-            {
-                return true;
-            }
-            elseif($attribute === 'createdDateTime')
-            {
-                return false;
-            }
-            elseif($attribute === 'modifiedDateTime')
-            {
-                return true;
-            }
-            else
-            {
-                return array_key_exists($attribute, $model->originalAttributeValues);
-            }
+            //New model
+            $this->assertTrue($rules->evaluateTimeTriggerBeforeSave($model, 'createdDateTime', true));
+            $this->assertTrue($rules->evaluateTimeTriggerBeforeSave($model, 'modifiedDateTime', true));
+            $this->assertFalse($rules->evaluateTimeTriggerBeforeSave($model, 'dateTime', true));
+
+            $model->lastName = 'test';
+            $model->string   = 'test';
+            $this->assertTrue($model->save());
+            $modelId = $model->id;
+            $model->forget();
+
+            $model = WorkflowModelTestItem::getById($modelId);
+
+            //Existing model
+            $this->assertFalse($rules->evaluateTimeTriggerBeforeSave($model, 'createdDateTime', true));
+            $this->assertTrue($rules->evaluateTimeTriggerBeforeSave($model, 'modifiedDateTime', true));
+            $this->assertFalse($rules->evaluateTimeTriggerBeforeSave($model, 'dateTime', true));
+
+            //Modify dateTime
+            $model->dateTime = '2000-02-02 05:05:05';
+            $this->assertTrue($rules->evaluateTimeTriggerBeforeSave($model, 'dateTime', true));
         }
     }
 ?>
