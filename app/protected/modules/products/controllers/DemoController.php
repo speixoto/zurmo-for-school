@@ -35,8 +35,6 @@
      ********************************************************************************/
 
     Yii::import('application.modules.products.controllers.DefaultController', true);
-    Yii::import('application.modules.accounts.tests.unit.AccountTestHelper', true);
-    Yii::import('application.modules.contacts.tests.unit.ContactTestHelper', true);
     class ProductsDemoController extends ProductsDefaultController
     {
         /**
@@ -60,21 +58,32 @@
             }
             
             //Load 6 so there is sufficient data for product related view pagination testing
-            for ($i = 0; $i < 5; $i++)
+            for ($i = 0; $i < 8; $i++)
             {
-                $product                    = new Product();
-                $product->name              = 'Product with open stage'. $i;
-                $product->owner             = Yii::app()->user->userModel;
-                $product->quantity          = mt_rand(1, 95);
-                $product->account           = 'My Account For Product Test';
-                $product->type              = 'Product';
-                $product->priceFrequency    = 'Monthly';
-                $sellPrice                  = new CurrencyValue();
-                $sellPrice->value           = 0;
-                $sellPrice->currency        = 'USA';
-                $product->sellPrice         = 1000;
-                $product->stage             = 'Open';
-                $saved                      = $product->save();
+                $product                            = new Product();
+                if ($i<6)
+                {
+                    $product->name                  = 'Product with open stage '. $i;
+                    $product->stage->value          = 'Open';
+                }
+                else if ($i==6)
+                {
+                    $product->name                  = 'Product with lost stage '. $i;
+                    $product->stage->value          = 'Lost';
+                }
+                else if ($i==7)
+                {
+                    $product->name                  = 'Product with won stage '. $i;
+                    $product->stage->value          = 'Won';
+                }
+                $product->owner                     = Yii::app()->user->userModel;
+                $product->quantity                  = mt_rand(1, 95);
+                $product->account                   = $account;
+                $product->type                      = 1;
+                $product->sellPrice->value          = 786.0;
+                $product->sellPrice->currency->code = 'USD';
+                $product->priceFrequency            = 2;
+                $saved                              = $product->save();
                 if (!$saved)
                 {
                     throw new NotSupportedException();
