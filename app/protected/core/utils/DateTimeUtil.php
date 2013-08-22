@@ -287,23 +287,13 @@
          * @param string $localeFormattedDateTime
          */
         public static function convertDateTimeLocaleFormattedDisplayToDbFormattedDateTimeWithSecondsAsZero($localeFormattedDateTime)
-        {            
+        {
             assert('is_string($localeFormattedDateTime) || $localeFormattedDateTime == null');
             if ($localeFormattedDateTime == null)
             {
                 return null;
             }
-            preg_match('/[+-][0-9]{4}/', $localeFormattedDateTime, $matches);
-            if (!empty($matches))
-            {
-                $localeFormattedDateTime = trim(str_replace($matches[0], '', $localeFormattedDateTime));
-                $originalTimestamp       = CDateTimeParser::parse($localeFormattedDateTime, self::getLocaleDateTimeFormat());
-                $timestamp               = static::getTimestampAdjustedByTimezoneCorrection($originalTimestamp, $matches[0]);                
-            }            
-            else 
-            {
-                $timestamp = CDateTimeParser::parse($localeFormattedDateTime, self::getLocaleDateTimeFormat());            
-            }            
+            $timestamp = CDateTimeParser::parse($localeFormattedDateTime, self::getLocaleDateTimeFormat());
             if ($timestamp == null)
             {
                 return null;
@@ -311,22 +301,6 @@
             $dbFormattedDateTime =  self::convertTimestampToDbFormatDateTime($timestamp);
             //todo deal with potential diffferent db format
             return substr_replace($dbFormattedDateTime, '00', -2, 2);
-        }
-        
-        public static function getTimestampAdjustedByTimezoneCorrection($timestamp, $timezoneCorrection)
-        {
-            $dateTimeObject = new DateTime();
-            $dateTimeObject->setTimestamp($timestamp);
-            preg_match('/([+-])([0-9]{2})([0-9]{2})/', $timezoneCorrection, $matches);
-            if (empty($matches))
-            {
-                throw new NotSupportedException('Invalid timezoneCorrection');
-            }
-            $sign    = $matches[1];
-            $hours   = $matches[2];
-            $minutes = $matches[3];
-            $dateTimeObject->modify("{$sign}{$hours} hours {$sign}{$minutes} minutes");
-            return $dateTimeObject->getTimestamp();
         }
 
         /**
