@@ -46,7 +46,7 @@
             return 'IdValueType';
         }
 
-        protected function resolveForUnfoundModel()
+        protected function resolveForUnfoundModel(RedBean_OODBBean $rowBean)
         {
             if ($this->mappingRuleData["type"] == IdValueTypeMappingRuleForm::ZURMO_MODEL_ID)
             {

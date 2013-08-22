@@ -44,11 +44,13 @@
          */
         public function analyzeByRow(RedBean_OODBBean $rowBean)
         {
-            if ($rowBean->{$this->columnName} != null &&
-                strtolower($rowBean->{$this->columnName}) != strtolower(UserStatusUtil::ACTIVE) &&
-                strtolower($rowBean->{$this->columnName}) == strtolower(UserStatusUtil::INACTIVE))
+            $resolvedAcceptableValues = ArrayUtil::resolveArrayToLowerCase(static::getAcceptableValues());
+            if (!in_array(strtolower($rowBean->{$this->columnName}), $resolvedAcceptableValues))
             {
-                $label = Zurmo::t('ImportModule', 'Status value is invalid. This status will be set to active upon import.');
+                $label = Zurmo::t('ImportModule',
+                                  '{attributeLabel} specified is invalid and this row will be skipped during import.',
+                                  array('{attributeLabel}' => ProductTemplate::getAnAttributeLabel('sellPriceFormula')));
+                $this->shouldSkipRow      = true;
                 $this->analysisMessages[] = $label;
             }
         }
@@ -67,23 +69,28 @@
             }
             try
             {
-                if (strtolower($value) == strtolower(SellPriceFormula::TYPE_EDITABLE))
+                if (strtolower($value) == strtolower(SellPriceFormula::TYPE_EDITABLE) ||
+                    strtolower($value) == strtolower('Editable'))
                 {
                     return SellPriceFormula::TYPE_EDITABLE;
                 }
-                elseif (strtolower($value) == strtolower(SellPriceFormula::TYPE_DISCOUNT_FROM_LIST))
+                elseif (strtolower($value) == strtolower(SellPriceFormula::TYPE_DISCOUNT_FROM_LIST) ||
+                    strtolower($value) == strtolower('Discount From List Percent'))
                 {
                     return SellPriceFormula::TYPE_DISCOUNT_FROM_LIST;
                 }
-                elseif (strtolower($value) == strtolower(SellPriceFormula::TYPE_MARKUP_OVER_COST))
+                elseif (strtolower($value) == strtolower(SellPriceFormula::TYPE_MARKUP_OVER_COST) ||
+                    strtolower($value) == strtolower('Markup Over Cost Percent'))
                 {
                     return SellPriceFormula::TYPE_MARKUP_OVER_COST;
                 }
-                elseif (strtolower($value) == strtolower(SellPriceFormula::TYPE_PROFIT_MARGIN))
+                elseif (strtolower($value) == strtolower(SellPriceFormula::TYPE_PROFIT_MARGIN) ||
+                    strtolower($value) == strtolower('Profit Margin Percent'))
                 {
                     return SellPriceFormula::TYPE_PROFIT_MARGIN;
                 }
-                elseif (strtolower($value) == strtolower(SellPriceFormula::TYPE_MARKUP_OVER_COST))
+                elseif (strtolower($value) == strtolower(SellPriceFormula::TYPE_MARKUP_OVER_COST) ||
+                    strtolower($value) == strtolower('Same As List'))
                 {
                     return SellPriceFormula::TYPE_MARKUP_OVER_COST;
                 }
@@ -94,8 +101,23 @@
             }
             catch (NotFoundException $e)
             {
-                throw new InvalidValueToSanitizeException(Zurmo::t('ProductTemplatesModule', 'Sell Price Formula type specified is invalid.'));
+                throw new InvalidValueToSanitizeException(Zurmo::t('ProductTemplatesModule',
+                                                                   'Sell Price Formula type specified is invalid.'));
             }
+        }
+
+        protected static function getAcceptableValues()
+        {
+            return array(SellPriceFormula::TYPE_EDITABLE,
+                         SellPriceFormula::TYPE_DISCOUNT_FROM_LIST,
+                         SellPriceFormula::TYPE_MARKUP_OVER_COST,
+                         SellPriceFormula::TYPE_PROFIT_MARGIN,
+                         SellPriceFormula::TYPE_SAME_AS_LIST,
+                        'Editable',
+                        'Discount From List Percent',
+                        'Markup Over Cost Percent',
+                        'Profit Margin Percent',
+                        'Same As List');
         }
     }
 ?>

@@ -390,9 +390,7 @@
             $compareData = array();
             $compareData['column_10'] = array('Is an existing record and will be updated.');
             $compareData['column_11'] = array('Was not found and will create a new record during import.');
-            $compareData['column_12'] = array('Is an existing record and will be updated.');
             $compareData['column_13'] = array('Was not found and this row will be skipped during import.');
-            $compareData['column_14'] = array('Is an existing record and will be updated.');
             $compareData['column_15'] = array('Was not found and this row will be skipped during import.');
             $compareData['column_16'] = array('Was not found and will create a new record during import.');
             $compareData['column_17'] = array('Is an existing record and will be updated.');
@@ -404,9 +402,7 @@
             $compareData['column_1']  = array('Is too long. Maximum length is 14. This value will truncated upon import.');
             $compareData['column_10'] = array('Is an existing record and will be updated.');
             $compareData['column_11'] = array('Was not found and will create a new record during import.');
-            $compareData['column_12'] = array('Is an existing record and will be updated.');
             $compareData['column_13'] = array('Was not found and this row will be skipped during import.');
-            $compareData['column_14'] = array('Is an existing record and will be updated.');
             $compareData['column_15'] = array('Was not found and this row will be skipped during import.');
             $compareData['column_16'] = array('Was not found and will create a new record during import.');
             $compareData['column_17'] = array('Is an existing record and will be updated.');
@@ -423,12 +419,8 @@
             $compareData['column_10'][] = 'Is an existing record and will be updated.';
             $compareData['column_11']   = array();
             $compareData['column_11'][] = 'Was not found and will create a new record during import.';
-            $compareData['column_12']   = array();
-            $compareData['column_12'][] = 'Is an existing record and will be updated.';
             $compareData['column_13']   = array();
             $compareData['column_13'][] = 'Was not found and this row will be skipped during import.';
-            $compareData['column_14']   = array();
-            $compareData['column_14'][] = 'Is an existing record and will be updated.';
             $compareData['column_15']   = array();
             $compareData['column_15'][] = 'Was not found and this row will be skipped during import.';
             $compareData['column_16']   = array();
@@ -445,12 +437,8 @@
             $compareData['column_10'][] = 'Was not found and this row will be skipped during import.';
             $compareData['column_11']   = array();
             $compareData['column_11'][] = 'Was not found and will create a new record during import.';
-            $compareData['column_12']   = array();
-            $compareData['column_12'][] = 'Is an existing record and will be updated.';
             $compareData['column_13']   = array();
             $compareData['column_13'][] = 'Was not found and this row will be skipped during import.';
-            $compareData['column_14']   = array();
-            $compareData['column_14'][] = 'Is an existing record and will be updated.';
             $compareData['column_15']   = array();
             $compareData['column_15'][] = 'Was not found and this row will be skipped during import.';
             $compareData['column_16']   = array();
@@ -469,8 +457,6 @@
             $compareData['column_10'][] = 'Was not found and this row will be skipped during import.';
             $compareData['column_11']   = array();
             $compareData['column_11'][] = 'Was not found and will create a new record during import.';
-            $compareData['column_12']   = array();
-            $compareData['column_12'][] = 'Is an existing record and will be updated.';
             $compareData['column_13']   = array();
             $compareData['column_13'][] = 'Was not found and this row will be skipped during import.';
             $compareData['column_14']   = array();
@@ -567,8 +553,6 @@
             $compareData['column_11'][] = 'Was not found and will create a new record during import.';
             $compareData['column_12']   = array();
             $compareData['column_12'][] = 'Was not found and this row will be skipped during import.';
-            $compareData['column_13']   = array();
-            $compareData['column_13'][] = 'Is an existing record and will be updated.';
             $compareData['column_14']   = array();
             $compareData['column_14'][] = 'Was not found and this row will be skipped during import.';
             $compareData['column_15']   = array();
@@ -603,8 +587,6 @@
             $compareData['column_11'][] = 'Is an existing record and will be updated.';
             $compareData['column_12']   = array();
             $compareData['column_12'][] = 'Was not found and this row will be skipped during import.';
-            $compareData['column_13']   = array();
-            $compareData['column_13'][] = 'Is an existing record and will be updated.';
             $compareData['column_14']   = array();
             $compareData['column_14'][] = 'Was not found and this row will be skipped during import.';
             $compareData['column_15']   = array();
@@ -671,8 +653,6 @@
             $compareData['column_13'][] = 'Was not found and this row will be skipped during import.';
             $compareData['column_14']   = array();
             $compareData['column_14'][] = 'Was not found and this row will be skipped during import.';
-            $compareData['column_15']   = array();
-            $compareData['column_15'][] = 'Is an existing record and will be updated.';
             $compareData['column_16']   = array();
             $compareData['column_16'][] = 'Was not found and will create a new record during import.';
             $compareData['column_17']   = array();
@@ -691,20 +671,8 @@
             $compareData['column_10'][] = 'Was not found and this row will be skipped during import.';
             $compareData['column_11']   = array();
             $compareData['column_11'][] = 'Was not found and will create a new record during import.';
-            $compareData['column_12']   = array();
-            $compareData['column_12'][] = 'Was not found and this row will be skipped during import.';
-            $compareData['column_13']   = array();
-            $compareData['column_13'][] = 'Was not found and this row will be skipped during import.';
-            $compareData['column_14']   = array();
-            $compareData['column_14'][] = 'Was not found and this row will be skipped during import.';
-            $compareData['column_15']   = array();
-            $compareData['column_15'][] = 'Was not found and this row will be skipped during import.';
             $compareData['column_16']   = array();
             $compareData['column_16'][] = 'Was not found and will create a new record during import.';
-            $compareData['column_17']   = array();
-            $compareData['column_17'][] = 'Was not found and this row will be skipped during import.';
-            $compareData['column_18']   = array();
-            $compareData['column_18'][] = 'Was not found and this row will be skipped during import.';
             $this->assertEquals($compareData, unserialize($data[11]->serializedAnalysisMessages));
             $this->assertEquals(ImportDataAnalyzer::STATUS_SKIP, $data[11]->analysisStatus);
 

@@ -243,8 +243,10 @@
             $rowCount                    = 0;
             $items                       = $this->getRecipientItemsContent($rowCount);
             $itemsContent                = $this->getNonSortableListContent($items);
-            $idInputHtmlOptions          = array('id'    => $this->getRecipientsRowCounterInputId($this->resolveRecipientsPrefix()),
-                                                 'class' => self::RECIPIENTS_ROW_COUNTER_CLASS_NAME);
+            $idInputHtmlOptions          = array('id'                  => $this->getRecipientsRowCounterInputId($this->resolveRecipientsPrefix()),
+                                                 'class'               => self::RECIPIENTS_ROW_COUNTER_CLASS_NAME,
+                                                 'data-email-row-number' => $this->rowNumber
+                                           );
             $hiddenInputName             = $this->resolveRecipientsPrefix() . 'RowCounter';
             $recipientsContent           = ZurmoHtml::tag('div',
                                            array('class' => self::EMAIL_MESSAGE_RECIPIENTS_ROW_CLASS_NAME), $itemsContent);
@@ -368,7 +370,7 @@
                 'type'    => 'GET',
                 'data'    => 'js:\'recipientType=\' + $(this).val() + ' .
                              '\'&moduleClassName=\' + $("input:radio[name=\"' . $moduleClassNameId . '\"]:checked").val() + ' .
-                             '\'&rowNumber=\' + ($("#' . $this->emailMessagesRowCounterInputId . '").val() - 1) + ' .
+                             '\'&rowNumber=\' + ($(this).parentsUntil(".' . self::RECIPIENTS_CONTAINER_CLASS_NAME . '").parent().find("input.' . self::RECIPIENTS_ROW_COUNTER_CLASS_NAME . '").data("email-row-number")) + ' .
                              '\'&recipientRowNumber=\' +
                              $(this).parentsUntil(".' . self::RECIPIENTS_CONTAINER_CLASS_NAME . '").parent().find(".' . self::RECIPIENTS_ROW_COUNTER_CLASS_NAME . '").val()',
                 'url'     =>  $url,
@@ -381,8 +383,8 @@
                     triggeredObject.parentsUntil(".' . self::RECIPIENTS_CONTAINER_CLASS_NAME . '").parent()
                     .find(".' . self::EMAIL_MESSAGE_RECIPIENTS_ROW_CLASS_NAME . '").find("ul:first").append(data);
                     rebuildWorkflowEmailMessageRecipientRowNumbers(triggeredObject.
-                    parentsUntil(".' . self::RECIPIENTS_CONTAINER_CLASS_NAME . '").parent()
-                    .find(".' . self::EMAIL_MESSAGE_RECIPIENTS_ROW_CLASS_NAME . '"));
+                        parentsUntil(".' . self::RECIPIENTS_CONTAINER_CLASS_NAME . '").parent()
+                        .find(".' . self::EMAIL_MESSAGE_RECIPIENTS_ROW_CLASS_NAME . '"));
                     triggeredObject.val("");
                 }',
             ));
