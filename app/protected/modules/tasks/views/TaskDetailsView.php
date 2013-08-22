@@ -67,7 +67,7 @@
         {
             $content  = '<div class="details-table">';
             $content .= $this->renderTitleContent();
-            //$content .= $this->resolveAndRenderActionElementMenu();
+            $content .= $this->resolveAndRenderActionElementMenu();
             $leftContent  = $this->renderBeforeFormLayoutForDetailsContent();
             $leftContent .= $this->renderFormLayout();
             $content .= ZurmoHtml::tag('div', array('class' => 'left-column'), $leftContent);

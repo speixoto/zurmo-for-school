@@ -231,17 +231,18 @@
         {
             if($id == null)
             {
-                $task   = new Task();
-                $task   = $this->resolveNewModelByRelationInformation( $task,
-                                                                        $relationAttributeName,
-                                                                        (int)$relationModelId,
-                                                                        $relationModuleId);
+                $task                  = new Task();
+                $this->setDefaultValuesForTask($task);
+                $task                  = $this->resolveNewModelByRelationInformation( $task,
+                                                                                        $relationAttributeName,
+                                                                                        (int)$relationModelId,
+                                                                                        $relationModuleId);
             }
             else
             {
-                $task = Task::getById(intval($id));
+                $task   = Task::getById(intval($id));
             }
-            $task   = $this->attemptToSaveModelFromPost($task, null, false);
+            $task       = $this->attemptToSaveModelFromPost($task, null, false);
             $this->actionModalViewFromRelation($task->id);
         }
 
@@ -253,6 +254,7 @@
             if($id == null)
             {
                 $task = new Task();
+                $this->setDefaultValuesForTask($task);
             }
             else
             {
@@ -297,7 +299,7 @@
          */
         public function actionModalEditFromRelation($id)
         {
-            $task             = Task::getById(intval($id));
+            $task = Task::getById(intval($id));
             $this->processTaskEdit($task);
         }
 
@@ -460,9 +462,23 @@
             }
             $task->save();
 
-            TasksUtil::sendNotificationOnTaskUpdate($task, Zurmo::t('TasksModule', $user->getFullName() . ' has unsubscribed for the task #' . $task->id));
+            TasksUtil::sendNotificationOnTaskUpdate($task, Zurmo::t('TasksModule', $user->getFullName() . ' has unsubscribed from the task #' . $task->id));
 
             return $task;
+        }
+
+        /**
+         * Set default values for task
+         * @param Task $task
+         */
+        protected function setDefaultValuesForTask($task)
+        {
+            $user = Yii::app()->user->userModel;
+            $task->requestedByUser = $user;
+            $notificationSubscriber = new NotificationSubscriber();
+            $notificationSubscriber->person = $user;
+            $notificationSubscriber->hasReadLatest = false;
+            $task->notificationSubscribers->add($notificationSubscriber);
         }
     }
 ?>
