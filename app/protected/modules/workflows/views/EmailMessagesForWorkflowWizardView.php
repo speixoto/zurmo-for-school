@@ -162,7 +162,11 @@
                             $moduleClassNameId . '\"]:checked").val() + ' .
                             '\'&rowNumber=\' + $(\'#' . $rowCounterInputId . '\').val()',
                         'url'     =>  $url,
-                        'beforeSend' => 'js:function(){ $(this).makeOrRemoveLoadingSpinner(true, "#" + $(this).attr("id")); }',
+                        'beforeSend' => 'js:function()
+                        {                                                       ;
+                            $(".ui-overlay-block").fadeIn(50);
+                            $(this).makeLargeLoadingSpinner(true, ".ui-overlay-block"); //- add spinner to block anything else
+                        }',
                         'success' => 'js:function(data)
                         {
                             $(\'#' . $rowCounterInputId . '\').val(parseInt($(\'#' . $rowCounterInputId . '\').val()) + 1);
@@ -170,6 +174,8 @@
                                 . '").find(".dynamic-rows").find("ul:first").first().append(data);
                             rebuildWorkflowEmailMessageRowNumbers("' . get_class($this) . '");
                             $(".' . static::getZeroComponentsClassName() . '").hide();
+                            $(this).makeLargeLoadingSpinner(false, ".ui-overlay-block");
+                            $(".ui-overlay-block").fadeOut(50);
                         }',
                     ),
                     array('id' => self::ADD_EMAIL_MESSAGE_LINK_ID,
