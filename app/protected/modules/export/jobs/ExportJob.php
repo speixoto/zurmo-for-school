@@ -69,122 +69,180 @@
         */
         public static function getRunTimeThresholdInSeconds()
         {
-            return 300;
+            return 600;
         }
 
         public function run()
         {
             $exportItems = ExportItem::getUncompletedItems();
+            $startTime   = Yii::app()->performance->startClock();
+            Yii::app()->performance->startMemoryUsageMarker();
             if (count($exportItems) > 0)
             {
                 foreach ($exportItems as $exportItem)
                 {
-                    Yii::app()->performance->startMemoryUsageMarker();
-                    $startTime = Yii::app()->performance->startClock();
-                    if (isset($exportItem->exportFileModel))
-                    {
-                        //continue;
-                    }
-                    $unserializedData = unserialize($exportItem->serializedData);
-                    if ($unserializedData instanceOf RedBeanModelDataProvider ||
-                        $unserializedData instanceOf ReportDataProvider)
-                    {
-                        $formattedData = $unserializedData->getData();
-                    }
-                    else
-                    {
-                        $formattedData = array();
-                        foreach ($unserializedData as $idsToExport)
-                        {
-                            $model = call_user_func(array($exportItem->modelClassName, 'getById'), intval($idsToExport));
-                            $formattedData[] = $model;
-                        }
-                    }
-                    if ($exportItem->exportFileType == 'csv')
-                    {
-                        $headerData = array();
-                        $data       = array();
-                        if($unserializedData instanceOf ReportDataProvider)
-                        {                            
-                                $reportToExportAdapter  = ReportToExportAdapterFactory::
-                                                                createReportToExportAdapter($unserializedData->getReport(), 
-                                                                                            $unserializedData); 
-                                if (count($headerData) == 0)
-                                {
-                                    $headerData = $reportToExportAdapter->getHeaderData();
-                                }
-                                $data = $reportToExportAdapter->getData();
-                        }
-                        else
-                        {
-
-                            foreach ($formattedData as $model)
-                            {
-                                if (ControllerSecurityUtil::doesCurrentUserHavePermissionOnSecurableItem($model, Permission::READ))
-                                {
-                                    $modelToExportAdapter  = new ModelToExportAdapter($model);
-                                    if (count($headerData) == 0)
-                                    {
-                                        $headerData        = $modelToExportAdapter->getHeaderData();
-                                    }
-                                    $data[]                = $modelToExportAdapter->getData();
-                                    unset($modelToExportAdapter);
-                                }
-
-                                //Avoid endless memory hogging, by forgetting validator data. Clears memory
-                                foreach ($model->attributeNames() as $attributeName)
-                                {
-                                    if($model->isRelation($attributeName) && $model->{$attributeName} instanceof RedBeanModel)
-                                    {
-                                        $model->{$attributeName}->forgetValidators();
-                                    }
-                                }
-                            }
-                        }
-                        $output                       = ExportItemToCsvFileUtil::export($data, $headerData);
-                        $fileContent                  = new FileContent();
-                        $fileContent->content         = $output;
-                        $exportFileModel              = new ExportFileModel();
-                        $exportFileModel->fileContent = $fileContent;
-                        $exportFileModel->name        = $exportItem->exportFileName . ".csv";
-                        $exportFileModel->type        = 'application/octet-stream';
-                        $exportFileModel->size        = strlen($output);
-                        $saved                        = $exportFileModel->save();
-                        if ($saved)
-                        {
-                            $exportItem->isCompleted = 1;
-                            $exportItem->exportFileModel = $exportFileModel;
-                            $exportItem->save();
-                            $message                    = new NotificationMessage();
-                            $message->htmlContent       = Zurmo::t('ExportModule', 'Export of {fileName} requested on {dateTime} is completed. <a href="{url}">Click here</a> to download file!',
-                                array(
-                                    '{fileName}' => $exportItem->exportFileName,
-                                    '{url}'      => Yii::app()->createUrl('export/default/download', array('id' => $exportItem->id)),
-                                    '{dateTime}' => DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay($exportItem->createdDateTime, 'long'),
-                                )
-                            );
-                            $rules                      = new ExportProcessCompletedNotificationRules();
-                            NotificationsUtil::submit($message, $rules);
-                        }
-                    }
-                    $memoryUsageIncrease = Yii::app()->performance->getMemoryMarkerUsage();
-                    $endTime             = Yii::app()->performance->endClockAndGet();
-
-                    $this->getMessageLogger()->addInfoMessage(
-                        Zurmo::t('ExportModule',
-                            'Memory in use: {memoryInUse} Memory Increase: {memoryUsageIncrease} Processing Time: {processingTime}',
-                                array('{memoryInUse}'         => Yii::app()->performance->getMemoryUsage(),
-                                    '{memoryUsageIncrease}' => $memoryUsageIncrease,
-                                    '{processingTime}'      => number_format(($endTime - $startTime), 3))));
-                    unset($formattedData);
-                    unset($unserializedData);
+                    //todo: some of this should be combined with non-async for better non-async memory management and reuse
+                    //todo: change userModel to user who requested this... so security pans.
+                    //todo: deal with proper paging for report export
+                    //todo: add tests
+                    //todo: manual tests
+                    $this->processExportItem($exportItem);
                 }
+            }
+            $this->processEndMemoryUsageMessage($startTime);
+            return true;
+        }
+
+        protected function processExportItem(ExportItem $exportItem)
+        {
+            $dataProviderOrIdsToExport = unserialize($exportItem->serializedData);
+            if($dataProviderOrIdsToExport instanceOf RedBeanModelDataProvider)
+            {
+                $this->processRedBeanModelDataProviderExport($exportItem, $dataProviderOrIdsToExport);
+            }
+            elseif($dataProviderOrIdsToExport instanceOf ReportDataProvider)
+            {
+                $this->processReportDataProviderExport($exportItem, $dataProviderOrIdsToExport);
             }
             else
             {
-                return true;
+                $this->processIdsToExport($exportItem, $dataProviderOrIdsToExport);
             }
-            return true;
+            unset($dataProviderOrIdsToExport);
+        }
+
+        protected function processRedBeanModelDataProviderExport(ExportItem $exportItem, RedBeanModelDataProvider $dataProvider)
+        {
+
+            $dataProvider->getPagination()->setPageSize(6);
+
+            $headerData = array();
+            $data       = array();
+            $offset     = 0;
+            $this->processExportPage($dataProvider, $offset, $headerData, $data);
+            $content         = ExportItemToCsvFileUtil::export($data, $headerData);
+            $exportFileModel = $this->makeExportFileModelByContent($content, $exportItem->exportFileName);
+            $this->processCompletedExportItem($exportItem, $exportFileModel);
+        }
+
+        protected function processReportDataProviderExport(ExportItem $exportItem, ReportDataProvider $dataProvider)
+        {
+            $headerData = array();
+            $reportToExportAdapter  = ReportToExportAdapterFactory::
+                createReportToExportAdapter($dataProvider->getReport(),
+                    $dataProvider);
+            if (count($headerData) == 0)
+            {
+                $headerData = $reportToExportAdapter->getHeaderData();
+            }
+            $data            = $reportToExportAdapter->getData();
+            $content         = ExportItemToCsvFileUtil::export($data, $headerData);
+            $exportFileModel = $this->makeExportFileModelByContent($content, $exportItem->exportFileName);
+            $this->processCompletedExportItem($exportItem, $exportFileModel);
+        }
+
+        protected function processIdsToExport(ExportItem $exportItem, $idsToExport)
+        {
+            $headerData = array();
+            $data       = array();
+            $models     = array();
+            foreach ($idsToExport as $idToExport)
+            {
+                $models[] = call_user_func(array($exportItem->modelClassName, 'getById'), intval($idToExport));
+            }
+            $this->processExportModels($models, $headerData, $data);
+            $content         = ExportItemToCsvFileUtil::export($data, $headerData);
+            $exportFileModel = $this->makeExportFileModelByContent($content, $exportItem->exportFileName);
+            $this->processCompletedExportItem($exportItem, $exportFileModel);
+        }
+
+        protected function makeExportFileModelByContent($content, $exportFileName)
+        {
+            assert('is_string($exportFileName)');
+            $fileContent                  = new FileContent();
+            $fileContent->content         = $content;
+            $exportFileModel              = new ExportFileModel();
+            $exportFileModel->fileContent = $fileContent;
+            $exportFileModel->name        = $exportFileName . ".csv";
+            $exportFileModel->type        = 'application/octet-stream';
+            $exportFileModel->size        = strlen($content);
+            $saved = $exportFileModel->save();
+            if(!$saved)
+            {
+                throw new FailedToSaveFileModelException();
+            }
+            return $exportFileModel;
+        }
+
+        protected function processCompletedExport(ExportItem $exportItem, ExportFileModel $exportFileModel)
+        {
+            $exportItem->isCompleted = true;
+            $exportItem->exportFileModel = $exportFileModel;
+            $exportItem->save();
+            $message                    = new NotificationMessage();
+            $message->htmlContent       = Zurmo::t('ExportModule', 'Export of {fileName} requested on {dateTime} is completed. <a href="{url}">Click here</a> to download file!',
+                array(
+                    '{fileName}' => $exportItem->exportFileName,
+                    '{url}'      => Yii::app()->createUrl('export/default/download', array('id' => $exportItem->id)),
+                    '{dateTime}' => DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay($exportItem->createdDateTime, 'long'),
+                )
+            );
+            $rules                      = new ExportProcessCompletedNotificationRules();
+            NotificationsUtil::submit($message, $rules);
+        }
+
+        protected function processEndMemoryUsageMessage($startTime)
+        {
+            $memoryUsageIncrease = Yii::app()->performance->getMemoryMarkerUsage();
+            $endTime             = Yii::app()->performance->endClockAndGet();
+
+            $this->getMessageLogger()->addInfoMessage(
+                Zurmo::t('ExportModule',
+                    'Memory in use: {memoryInUse} Memory Increase: {memoryUsageIncrease} Processing Time: {processingTime}',
+                    array('{memoryInUse}'         => Yii::app()->performance->getMemoryUsage(),
+                        '{memoryUsageIncrease}' => $memoryUsageIncrease,
+                        '{processingTime}'      => number_format(($endTime - $startTime), 3))));
+        }
+
+        protected function processExportPage(CDataProvider $dataProvider, $offset, & $headerData, & $data)
+        {
+            $dataProvider->setOffset($offset);
+            $models = $dataProvider->getData(true);
+            $this->processExportModels($models, $headerData, $data);
+        }
+
+        protected function processExportModels(array $models, & $headerData, & $data)
+        {
+            foreach($models as $model)
+            {
+                $canRead = ControllerSecurityUtil::doesCurrentUserHavePermissionOnSecurableItem($model, Permission::READ);
+                if ($canRead)
+                {
+                    $modelToExportAdapter  = new ModelToExportAdapter($model);
+                    if (count($headerData) == 0)
+                    {
+                        $headerData        = $modelToExportAdapter->getHeaderData();
+                    }
+                    $data[]                = $modelToExportAdapter->getData();
+                    unset($modelToExportAdapter);
+                }
+                $this->runGarbageCollection($model);
+            }
+            unset($models);
+        }
+
+        protected function runGarbageCollection($model)
+        {
+            foreach ($model->attributeNames() as $attributeName)
+            {
+                if($model->isRelation($attributeName) && $model->{$attributeName} instanceof RedBeanModel)
+                {
+                    $model->{$attributeName}->forgetValidators();
+                    $model->{$attributeName}->forget();
+                }
+            }
+            $model->forgetValidators();
+            $model->forget();
         }
     }
 ?>
