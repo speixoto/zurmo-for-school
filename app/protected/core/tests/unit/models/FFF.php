@@ -49,6 +49,7 @@
                 ),
                 'rules' => array(
                     array('fffMember', 'type', 'type' => 'string'),
+                    array('fffMember', 'length', 'max' => 255),
                 ),
             );
             return $metadata;

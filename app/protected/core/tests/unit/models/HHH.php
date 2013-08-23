@@ -49,6 +49,7 @@
                 ),
                 'rules' => array(
                     array('aaaMember', 'type', 'type' => 'string'),
+                    array('aaaMember', 'length', 'max' => 255),
                 ),
             );
             return $metadata;

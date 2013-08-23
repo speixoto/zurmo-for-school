@@ -925,11 +925,10 @@
             {
                 case 'mysql':
                     $result = true;
-                    if (($connection = @mysql_connect($host . ':' . $port, $rootUsername, $rootPassword))                               === false ||
+                    if (($connection = @mysql_connect($host . ':' . $port, $rootUsername, $rootPassword)) === false             ||
                     // The === 666 is to execute this command ignoring whether it fails.
-                    @mysql_query("drop user `$username`", $connection) === 666                                  ||
-                    @mysql_query("grant all on `$databaseName`.* to `$username`",        $connection) === false ||
-                    @mysql_query("set password for `$username` = password('$password')", $connection) === false)
+                        ($userDropped = @mysql_query("drop user `$username`", $connection)) === 666                             ||
+                        ($userCreated = @mysql_query("grant all on `$databaseName`.* to `$username`@'$host' IDENTIFIED BY '$password'", $connection)) === false)
                     {
                         $result = array(mysql_errno(), mysql_error());
                     }

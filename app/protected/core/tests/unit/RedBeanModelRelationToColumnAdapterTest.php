@@ -435,10 +435,10 @@
         /**
          * @depends testResolveWithHasManyBelongsToAndNoLinkTypeAndSameRelationNameRelatedModelClassName
          */
-        public function testResolveWithHasManyBelongsToAndNoLinkTypeAndDifferentRelationNameRelatedModelClassName()
+        public function testResolveWithHasManyBelongsToAndNoLinkType()
         {
             $modelClassName     = 'K';
-            $relationName       = 'ii';
+            $relationName       = 'i';
             $relationMetadata   = array(RedBeanModel::HAS_MANY_BELONGS_TO, 'I');
             $column             = RedBeanModelRelationToColumnAdapter::resolve($modelClassName,
                                                                                 $relationName,
@@ -451,7 +451,7 @@
             $this->assertArrayHasKey('notNull', $column);
             $this->assertArrayHasKey('collation', $column);
             $this->assertArrayHasKey('default', $column);
-            $this->assertEquals('ii_i_id', $column['name']);
+            $this->assertEquals('i_id', $column['name']);
             $this->assertEquals('INT(11)', $column['type']);
             $this->assertEquals('UNSIGNED', $column['unsigned']);
             $this->assertEquals('NULL', $column['notNull']);
@@ -460,13 +460,13 @@
         }
 
         /**
-         * @depends testResolveWithHasManyBelongsToAndNoLinkTypeAndDifferentRelationNameRelatedModelClassName
+         * @depends testResolveWithHasManyBelongsToAndNoLinkType
          */
         public function testResolveWithHasManyBelongsToAndLinkTypeAssumptive()
         {
             $modelClassName     = 'K';
             $relationName       = 'ii';
-            $relationMetadata   = array(RedBeanModel::HAS_MANY_BELONGS_TO, 'I',
+            $relationMetadata   = array(RedBeanModel::HAS_MANY_BELONGS_TO, 'II',
                                             RedBeanModel::NOT_OWNED, RedBeanModel::LINK_TYPE_ASSUMPTIVE);
             $column             = RedBeanModelRelationToColumnAdapter::resolve($modelClassName,
                                                                                 $relationName,
@@ -479,7 +479,7 @@
             $this->assertArrayHasKey('notNull', $column);
             $this->assertArrayHasKey('collation', $column);
             $this->assertArrayHasKey('default', $column);
-            $this->assertEquals('ii_i_id', $column['name']);
+            $this->assertEquals('ii_id', $column['name']);
             $this->assertEquals('INT(11)', $column['type']);
             $this->assertEquals('UNSIGNED', $column['unsigned']);
             $this->assertEquals('NULL', $column['notNull']);
@@ -494,7 +494,7 @@
         {
             $modelClassName     = 'K';
             $relationName       = 'iii';
-            $relationMetadata   = array(RedBeanModel::HAS_MANY_BELONGS_TO, 'I', RedBeanModel::OWNED,
+            $relationMetadata   = array(RedBeanModel::HAS_MANY_BELONGS_TO, 'III', RedBeanModel::OWNED,
                                                 RedBeanModel::LINK_TYPE_SPECIFIC, 'ilink');
             $column             = RedBeanModelRelationToColumnAdapter::resolve($modelClassName,
                                                                                 $relationName,
@@ -507,7 +507,7 @@
             $this->assertArrayHasKey('notNull', $column);
             $this->assertArrayHasKey('collation', $column);
             $this->assertArrayHasKey('default', $column);
-            $this->assertEquals('i_id', $column['name']);
+            $this->assertEquals('iii_id', $column['name']);
             $this->assertEquals('INT(11)', $column['type']);
             $this->assertEquals('UNSIGNED', $column['unsigned']);
             $this->assertEquals('NULL', $column['notNull']);

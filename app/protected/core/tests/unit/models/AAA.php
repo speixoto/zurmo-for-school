@@ -56,7 +56,9 @@
                 ),
                 'rules' => array(
                     array('aaaMember',  'type', 'type' => 'string'),
+                    array('aaaMember', 'length', 'max' => 255),
                     array('aaaMember2', 'type', 'type' => 'string'),
+                    array('aaaMember2', 'length', 'max' => 255),
                     array('aaaBoolean', 'boolean'),
                 ),
                 'customFields' => array(

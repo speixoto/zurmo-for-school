@@ -67,6 +67,11 @@
                 ),
                 'relations' => array(
                     'bunch' => array(self::HAS_MANY, 'TestSelfRelatingModel'),
+                    'testSelfRelatingModel' => array(static::HAS_ONE, 'TestSelfRelatingModel'),
+                ),
+                'rules' => array(
+                    array('name', 'type', 'type' => 'string'),
+                    array('name', 'length', 'max' => 255),
                 ),
             );
             return $metadata;

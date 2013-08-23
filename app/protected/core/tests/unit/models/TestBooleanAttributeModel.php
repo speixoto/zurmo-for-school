@@ -47,6 +47,7 @@
                     'a'  => array(RedBeanModel::HAS_ONE, 'A'),
                 ),
                 'rules' => array(
+                    array('bool', 'type', 'type' => 'boolean'),
                     array('bool', 'boolean'),
                 )
             );

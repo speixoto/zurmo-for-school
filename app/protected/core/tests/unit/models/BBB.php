@@ -56,6 +56,7 @@
                 ),
                 'rules' => array(
                     array('bbbMember', 'type', 'type' => 'string'),
+                    array('bbbMember', 'length', 'max' => 255),
                 ),
                 'customFields' => array(
                     'industry'           => 'Industries',

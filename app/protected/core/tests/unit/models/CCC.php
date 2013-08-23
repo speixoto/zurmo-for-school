@@ -59,7 +59,9 @@
                 ),
                 'rules' => array(
                     array('cccMember',  'type', 'type' => 'string'),
+                    array('cccMember', 'length', 'max' => 255),
                     array('cccMember2', 'type', 'type' => 'string'),
+                    array('cccMember', 'length', 'max' => 255),
                     array('date',       'type', 'type' => 'date'),
                     array('date2',      'type', 'type' => 'date'),
                     array('dateTime',   'type', 'type' => 'datetime'),

@@ -45,6 +45,9 @@
                 ),
                 'rules' => array(
                     array('name', 'safe'),
+                    array('name', 'type', 'type' => 'string'),
+                    array('name', 'length', 'max' => 255),
+
                 ),
             );
             return $metadata;

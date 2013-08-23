@@ -49,7 +49,9 @@
                 ),
                 'rules' => array(
                     array('gggMember',  'type', 'type' => 'string'),
+                    array('gggMember', 'length', 'max' => 255),
                     array('gggMember2', 'type', 'type' => 'string'),
+                    array('gggMember2', 'length', 'max' => 255),
                 ),
             );
             return $metadata;

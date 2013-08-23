@@ -47,6 +47,10 @@
                     'yesterday',
                 ),
                 'rules' => array(
+                    array('now',        'type', 'type' => 'datetime'),
+                    array('today',      'type', 'type' => 'date'),
+                    array('tomorrow',   'type', 'type' => 'date'),
+                    array('yesterday',  'type', 'type' => 'date'),
                     array('now',       'dateTimeDefault', 'value' => DateTimeCalculatorUtil::NOW),
                     array('today',     'dateTimeDefault', 'value' => DateTimeCalculatorUtil::TODAY),
                     array('tomorrow',  'dateTimeDefault', 'value' => DateTimeCalculatorUtil::TOMORROW),
@@ -59,6 +63,11 @@
 
     class RedBeanModelDefaultCalculatedDateValidatorTest extends BaseTest
     {
+        public static function getDependentTestModelClassNames()
+        {
+            return array('ThingWithCalculatedDates');
+        }
+
         public function testDefaultCalculatedDates()
         {
             $now = time();

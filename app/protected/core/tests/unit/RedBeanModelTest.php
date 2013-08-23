@@ -64,11 +64,23 @@
         {
             return array('A',
                         'B',
-                'C',
-                'E',
-                'G',
-
-            );
+                        'C',
+                        'E',
+                        'G',
+                        'H',
+                        'I',
+                        'J',
+                        'M',
+                        'TestAttributeNamedLikeSqlKeywordModel',
+                        'TestBlobModel',
+                        'TestBooleanAttributeModel',
+                        'TestDateTimeModel',
+                        'TestDefaultedAttributeModel',
+                        'TestIdentityModel',
+                        'TestNameModel',
+                        'TestSelfRelatingModel',
+                        'TestSimplestModel',
+                        );
         }
 
         public function testA()

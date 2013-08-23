@@ -64,6 +64,7 @@
                 'rules' => array(
                     array('m', 'required'),
                     array('m', 'type', 'type' => 'string'),
+                    array('m', 'length', 'max' => 255),
                 ),
             );
             return $metadata;

@@ -46,7 +46,9 @@
                 ),
                 'rules' => array(
                     array('eeeMember', 'type', 'type' => 'string'),
+                    array('eeeMember', 'length', 'max' => 255),
                     array('eeeMember2', 'type', 'type' => 'string'),
+                    array('eeeMember2', 'length', 'max' => 255),
                 ),
                 'relations' => array(
                     'industry'           => array(RedBeanModel::HAS_ONE, 'CustomField', RedBeanModel::NOT_OWNED,
