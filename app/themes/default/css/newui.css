@@ -17831,10 +17831,6 @@ a.user-link {
 #show-filters-structure-wrapper span {
   width: 120px;
 }
-#show-triggers-structure-wrapper input,
-#show-filters-structure-wrapper input {
-  text-indent: 50px;
-}
 #RuntimeFiltersForPortletView {
   float: left;
   width: 100%;
@@ -18258,7 +18254,7 @@ a.user-link {
 }
 .email-message-recipient-type-selector-container {
   width: 22%;
-  margin-top: 20px;
+  margin: 0 0 15px 0;
 }
 .all-related-field {
   float: left;
@@ -20811,6 +20807,11 @@ div.special-pager .hidden.next:after {
     padding: 0;
     padding: 0 0 0 0;
     background: none;
+  }
+  .module-intro-steps > div {
+    width: 100%;
+    float: none;
+    margin: 0 0 15px 0;
   }
 }
 @media all and (max-width: 601px) and (max-height: 451px) {
