@@ -85,20 +85,6 @@
                                     $sortablePortlets[$title] = array('url' => $url,
                                         'title' => $title,
                                         'portletRules' => $portletRules);
-                                    /**
-                                    $onClick = 'window.location.href="' . $url . '"';
-                                    $content .= '<li>';
-                                    $portletName    = $metadata['perUser']['title'];
-                                    MetadataUtil::resolveEvaluateSubString($portletName);
-                                    $link     = ZurmoHtml::link(Zurmo::t('HomeModule', $portletName) , null, array('onclick' => $onClick));
-                                    $icon     = '<span class="' . $portletRules->resolveIconName() . '"></span>';
-                                    $content .= ZurmoHtml::tag('h3', array(), $icon . $link );
-                                    $button   = ZurmoHtml::link(ZurmoHtml::tag('span', array(), Zurmo::t('HomeModule', 'Add Portlet')),
-                                                null, array('onclick' => $onClick, 'class' => 'mini-button'));
-                                    $description = $portletRules->getDescription();
-                                    $content .= ZurmoHtml::tag('div', array('class' => 'clearfix'), $description . $button );
-                                    $content .= '</li>';
-                                     * **/
                                 }
                             }
                         }
