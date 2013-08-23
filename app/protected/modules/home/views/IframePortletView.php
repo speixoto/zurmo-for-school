@@ -59,7 +59,8 @@
         public function renderContent()
         {
             return '<iframe src=' . $this->resolveViewAndMetadataValueByName('iframeUrl') .
-                   ' width="100%" height="100%" frameborder="0" seamless></iframe>';
+                   ' width="100%" height='. $this->resolveViewAndMetadataValueByName('iframeHeight') . 
+                   ' frameborder="0" seamless></iframe>';
         }
 
         public function renderPortletHeadContent()
@@ -75,6 +76,7 @@
                 'perUser' => array(
                     'title' => "eval:Zurmo::t('HomeModule', 'Iframe Portal')",
                     'iframeUrl' => $imgUrl,
+                    'iframeHeight' => 400,
                 ),
                 'global' => array(
                 ),

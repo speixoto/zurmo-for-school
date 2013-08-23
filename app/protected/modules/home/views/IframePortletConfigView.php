@@ -71,6 +71,15 @@
                                         ),
                                     )
                                 ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'iframeHeight', 'type' => 'Integer'),
+                                            ),
+                                        ),
+                                    )
+                                ),
                             ),
                         ),
                     ),
