@@ -143,7 +143,7 @@
             $content .= $this->renderEmailMessageContent();
             $content .= '</div>';
             $content  =  ZurmoHtml::tag('div', array('class' => 'dynamic-row'), $content);
-            return ZurmoHtml::tag('li', array(), $content);
+            return $content;
         }
 
         /**
