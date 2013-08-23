@@ -105,7 +105,7 @@
             }
             elseif($type == self::CREATED)
             {
-                $stageContent = null;
+                $stageContent = ' stage-true';
             }
             elseif($type == self::ERROR)
             {
