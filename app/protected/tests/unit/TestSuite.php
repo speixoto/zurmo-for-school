@@ -148,7 +148,7 @@
                 ZurmoRedBean::$writer->wipeAll();
                 $messageLogger = new MessageLogger();
                 InstallUtil::autoBuildDatabase($messageLogger, true);
-                $messageLogger->printMessages();
+                $messageLogger->printMessages(); // var_dump
                 ReadPermissionsOptimizationUtil::rebuild();
                 assert('RedBeanDatabase::isSetup()');
                 Yii::app()->user->userModel = InstallUtil::createSuperUser('super', 'super');
@@ -242,7 +242,6 @@
         {
             if (!empty(static::$dependentTestModelClassNames))
             {
-
                 RedBeanModelsToTablesAdapter::generateTablesFromModelClassNames(static::$dependentTestModelClassNames,
                                                                                                     $messageLogger);
                 // TODO: @Shoaibi/@Jason: Critical: Shouldn't ::rebuild take care of this.

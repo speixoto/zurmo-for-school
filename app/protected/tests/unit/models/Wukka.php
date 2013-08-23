@@ -34,44 +34,26 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    // This is for testing details of how PDO works.
-    class PDOTest extends BaseTest
+    class Wukka extends RedBeanModel
     {
-        public static function getDependentTestModelClassNames()
+        public static function getDefaultMetadata()
         {
-            return array('Wukka');
-        }
-
-        public function testPDOTypesToShowTheDodginessOfNotBeingAbleToGetNumbersOut()
-        {
-            $wukka = ZurmoRedBean::dispense('wukka');
-            $wukka->integer = 69;
-            ZurmoRedBean::store($wukka);
-            $id = $wukka->id;
-            unset($wukka);
-
-            $pdo = new PDO(Yii::app()->db->connectionString, Yii::app()->db->username, Yii::app()->db->password); // Not Coding Standard
-
-            $statement = $pdo->prepare('select version() as version;');
-            $statement->execute();
-            $rows = $statement->fetchAll();
-
-            // These is what we are interested in. They seem to be ignored in
-            // php 5.3 with mysql 5.1, but works in php 5.3.6 & mysql 5.5.
-            // Both are needed to be set false.
-            // Whether it is the newer php version or the newer mysql version
-            // or both together, and at exactly which versions it works is
-            // unknown. That is for some future investigation.
-            $pdo->setAttribute(PDO::ATTR_STRINGIFY_FETCHES, false);
-            $pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES,  false);
-
-            $wukka = ZurmoRedBean::load('wukka', $id);
-
-            $statement = $pdo->prepare('select * from wukka;');
-            $statement->execute();
-            $rows = $statement->fetchAll();
-             $this->assertEquals('integer', gettype($rows[0]['integer'])); // Good! This is what we want!!!
-             $this->assertEquals('string',  gettype($wukka->integer));     // Dodgy!!!
+            $metadata = parent::getDefaultMetadata();
+            $metadata[__CLASS__] = array(
+                'members' => array(
+                    'integer',
+                    'string',
+                    'prop',
+                ),
+                'rules' => array(
+                    array('integer', 'type',      'type' => 'integer'),
+                    array('integer', 'numerical', 'min' => 1, 'max' => 255),
+                    array('string',   'type', 'type' => 'string'),
+                    array('string',   'length', 'max' => 255),
+                    array('prop',       'type', 'type' => 'datetime'),
+                ),
+            );
+            return $metadata;
         }
     }
 ?>

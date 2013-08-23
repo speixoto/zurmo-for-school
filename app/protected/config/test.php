@@ -42,6 +42,7 @@
         array(
             'import' => array(
                 'application.tests.unit.*',
+                'application.tests.unit.models.*',
                 'ext.userinterface.UserInterface',
     ////////////////////////////////////////////////////////////////////////////////
     // Temporary - See Readme.txt in the app/protected/tests/unit/notSupposedToBeHere directory.
