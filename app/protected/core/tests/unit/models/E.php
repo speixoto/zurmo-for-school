@@ -40,16 +40,26 @@
         {
             assert('is_string($e)');
             assert('$e != ""');
-            return strrev($e);
-            /*
             $bean = ZurmoRedBean::findOne('e', "e = '$e'");
             assert('$bean === false || $bean instanceof RedBean_OODBBean');
             if ($bean === false)
             {
-                throw new NotFoundException();
+                // we need this because C uses dynamic default values from it and we need this table to be available.
+                RedBeanModelsToTablesAdapter::generateTablesFromModelClassNames(array('E'), new MessageLogger());
+                $model = new E();
+                $model->e = $e;
+                $saved = $model->save();
+                if (!$saved)
+                {
+                    throw new FailedToSaveModelException();
+                }
+                return $model;
             }
-            return self::makeModel($bean);
-            /**/
+            else
+            {
+                $model = static::makeModel($bean);
+            }
+            return $model;
         }
 
         public static function getDefaultMetadata()

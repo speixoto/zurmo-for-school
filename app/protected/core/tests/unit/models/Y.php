@@ -43,6 +43,10 @@
                 'members' => array(
                     'y',
                 ),
+                'rules' => array(
+                    array('y',  'type', 'type' => 'string'),
+                    array('y',  'length', 'max' => 255),
+                ),
             );
             return $metadata;
         }

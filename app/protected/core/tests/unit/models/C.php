@@ -75,7 +75,7 @@
 
         protected static function getTheDefaultE()
         {
-            if (self::$theDefaultE === null)
+            if (self::$theDefaultE === null || !self::theDefaultEIsAvailable())
             {
                 // The tests needing the default E must create it.
                 // In real life it would need to make sense that it
@@ -83,6 +83,19 @@
                 self::$theDefaultE = E::getByE('theDefaultE');
             }
             return self::$theDefaultE;
+        }
+
+        protected static function theDefaultEIsAvailable()
+        {
+            try
+            {
+                $e = E::getById(self::$theDefaultE->id);
+                return true;
+            }
+            catch (NotFoundException $ex)
+            {
+                return false;
+            }
         }
     }
 ?>
