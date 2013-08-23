@@ -266,7 +266,7 @@
             {
                 if ($this->report->getCurrencyConversionType() == Report::CURRENCY_CONVERSION_TYPE_ACTUAL)
                 {
-                    return Yii::app()->format->formatDecimal((float)$value);
+                    return Yii::app()->numberFormatter->formatDecimal((float)$value);
                 }
                 elseif ($this->report->getCurrencyConversionType() == Report::CURRENCY_CONVERSION_TYPE_BASE)
                 {
@@ -284,7 +284,7 @@
             }
             elseif ($displayAttribute->getDisplayElementType() == 'Decimal')
             {
-                return Yii::app()->format->formatDecimal($value);
+                return Yii::app()->numberFormatter->formatDecimal((float)$value);
             }
             elseif ($displayAttribute->getDisplayElementType() == 'Integer')
             {
