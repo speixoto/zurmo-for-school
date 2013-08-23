@@ -41,13 +41,15 @@
     {
         public $title;
         public $iframeUrl;
+        public $iframeHeight;
 
         public function rules()
         {
             return array(
                 array('title', 'required'),
+                array('iframeHeight', 'required'),
                 array('iframeUrl', 'required'),
-                array('iframeUrl', 'url', 'defaultScheme' => 'http'),
+                array('iframeUrl', 'url', 'defaultScheme' => 'http'),          
             );
         }
 
@@ -56,6 +58,7 @@
             return array(
                 'title' => Zurmo::t('HomeModule', 'Title'),
                 'iframeUrl' => Zurmo::t('HomeModule', 'Iframe URL'),
+                'iframeHeight' => Zurmo::t('HomeModule', 'Iframe Height in pixels'),
             );
         }
 
