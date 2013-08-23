@@ -55,6 +55,8 @@
             $statement = $pdo->prepare('select version() as version;');
             $statement->execute();
             $rows = $statement->fetchAll();
+            $mysqlVersion = substr($rows[0]['version'], 0, 3);
+            $phpVersion = substr(phpversion(), 0, 5);
 
             // These is what we are interested in. They seem to be ignored in
             // php 5.3 with mysql 5.1, but works in php 5.3.6 & mysql 5.5.
@@ -70,8 +72,16 @@
             $statement = $pdo->prepare('select * from wukka;');
             $statement->execute();
             $rows = $statement->fetchAll();
-             $this->assertEquals('integer', gettype($rows[0]['integer'])); // Good! This is what we want!!!
-             $this->assertEquals('string',  gettype($wukka->integer));     // Dodgy!!!
+            if (($phpVersion == '5.3.6' || $phpVersion == '5.3.5' || $phpVersion == '5.5.2') && $mysqlVersion == '5.5')
+            {
+                $this->assertEquals('integer', gettype($rows[0]['integer'])); // Good! This is what we want!!!
+                $this->assertEquals('string',  gettype($wukka->integer));     // Dodgy!!!
+            }
+            else
+            {
+                $this->assertEquals('string',  gettype($rows[0]['integer'])); // Dodgy!!!
+                $this->assertEquals('string',  gettype($wukka->integer));     // Dodgy!!!
+            }
         }
     }
 ?>

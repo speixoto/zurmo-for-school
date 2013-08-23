@@ -148,7 +148,7 @@
                 ZurmoRedBean::$writer->wipeAll();
                 $messageLogger = new MessageLogger();
                 InstallUtil::autoBuildDatabase($messageLogger, true);
-                $messageLogger->printMessages(); // var_dump
+                $messageLogger->printMessages();
                 ReadPermissionsOptimizationUtil::rebuild();
                 assert('RedBeanDatabase::isSetup()');
                 Yii::app()->user->userModel = InstallUtil::createSuperUser('super', 'super');
