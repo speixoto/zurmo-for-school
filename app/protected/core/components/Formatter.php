@@ -81,5 +81,11 @@
         {
             return CHtml::mailto($value, $email, $htmlOptions);
         }
+        
+        public function formatDecimal($value)
+        {
+            $formatter = new ZurmoNumberFormatter(Yii::app()->getLocale());
+            return $formatter->formatDecimal($value);
+        }
     }
 ?>
