@@ -92,6 +92,12 @@
             return $keys;
         }
 
+        /**
+         * @param string $type
+         * @param null|int $offset
+         * @param null|int $count
+         * @return array
+         */
         public static function getUserLeaderboardData($type, $offset = null, $count = null)
         {
             assert('is_string($type)');

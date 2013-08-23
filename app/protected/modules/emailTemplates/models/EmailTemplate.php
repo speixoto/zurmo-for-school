@@ -209,6 +209,10 @@
             return self::getSubset($joinTablesAdapter, null, null, $where, 'name');
         }
 
+        /**
+         * @param int $type
+         * @return array
+         */
         public static function getDataAndLabelsByType($type)
         {
             assert('is_int($type)');

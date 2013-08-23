@@ -56,6 +56,14 @@
          */
         protected $mappingData;
 
+        /**
+         * @param string $controllerId
+         * @param string $moduleId
+         * @param ImportWizardForm $model
+         * @param null $columnNamesAndAttributeIndexOrDerivedTypeLabels
+         * @param ImportDataProvider $dataProvider
+         * @param array $mappingData
+         */
         public function __construct($controllerId, $moduleId, ImportWizardForm $model,
                                     $columnNamesAndAttributeIndexOrDerivedTypeLabels, ImportDataProvider $dataProvider,
                                     array $mappingData)

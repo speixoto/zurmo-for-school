@@ -49,6 +49,9 @@
             );
         }
 
+        /**
+         * @param array $data
+         */
         public static function resolveValue($data)
         {
             return ZurmoHtml::tag('span', array('class' => 'ranking'), $data['rank']);
