@@ -63,10 +63,6 @@
             $import->serializedData            = serialize($serializedData);
             $this->assertTrue($import->save());
 
-            $accountTableName     = Account::getTableName('Account');
-            $contactTableName     = Contact::getTableName('Contact');
-            $opportunityTableName = Opportunity::getTableName('Opportunity');
-
             $account1 = AccountTestHelper::createAccountByNameForOwner('account1', $super);
             $account2 = AccountTestHelper::createAccountByNameForOwner('account2', $super);
             $account3 = AccountTestHelper::createAccountByNameForOwner('account3', $super);
@@ -212,15 +208,9 @@
             $this->assertEquals($compareData, unserialize($data[8]->serializedAnalysisMessages));
             $this->assertEquals(ImportDataAnalyzer::STATUS_SKIP, $data[8]->analysisStatus);
 
-            $compareData = array();
-            $compareData['column_0'][] = 'Was not found and this row will be skipped during import.';
-            $compareData['column_1'][] = 'Was not found and this row will be skipped during import.';
-            $compareData['column_2'][] = 'Was not found and this row will be skipped during import.';
-            $compareData['column_3'][] = 'Was not found and this row will be skipped during import.';
-            $compareData['column_4'][] = 'Was not found and this row will be skipped during import.';
-            $compareData['column_5'][] = 'Was not found and this row will be skipped during import.';
-            $this->assertEquals($compareData, unserialize($data[9]->serializedAnalysisMessages));
-            $this->assertEquals(ImportDataAnalyzer::STATUS_SKIP, $data[9]->analysisStatus);
+            //Will result with no problems since it is all blank.
+            $this->assertFalse(unserialize($data[9]->serializedAnalysisMessages));
+            $this->assertEquals(ImportDataAnalyzer::STATUS_CLEAN, $data[9]->analysisStatus);
         }
     }
 ?>

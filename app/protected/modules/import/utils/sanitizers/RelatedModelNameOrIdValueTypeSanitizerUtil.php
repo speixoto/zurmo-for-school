@@ -103,7 +103,7 @@
             }
             else
             {
-                $this->resolveForUnfoundModel();
+                $this->resolveForUnfoundModel($rowBean);
             }
             if ($this->mappingRuleData["type"] == IdValueTypeMappingRuleForm::EXTERNAL_SYSTEM_ID)
             {
@@ -227,19 +227,32 @@
             $this->maxNameLength = StringValidatorHelper::getMaxLengthByModelAndAttributeName($model, 'name');
         }
 
-        protected function resolveForUnfoundModel()
+        protected function resolveForFoundModel()
+        {
+            if ($this->mappingRuleData["type"] == RelatedModelValueTypeMappingRuleForm::ZURMO_MODEL_NAME)
+            {
+                $label = Zurmo::t('ImportModule', 'Is an existing record and will be updated.');
+                $this->analysisMessages[] = $label;
+            }
+        }
+
+        protected function resolveForUnfoundModel(RedBean_OODBBean $rowBean)
         {
             if ($this->mappingRuleData["type"] == RelatedModelValueTypeMappingRuleForm::ZURMO_MODEL_ID ||
                 $this->mappingRuleData["type"] == RelatedModelValueTypeMappingRuleForm::EXTERNAL_SYSTEM_ID)
             {
-                $label = Zurmo::t('ImportModule', 'Was not found and this row will be skipped during import.');
-                $this->shouldSkipRow = true;
+                if ($rowBean->{$this->columnName} != null)
+                {
+                    $label = Zurmo::t('ImportModule', 'Was not found and this row will be skipped during import.');
+                    $this->shouldSkipRow = true;
+                    $this->analysisMessages[] = $label;
+                }
             }
             else
             {
                 $label = Zurmo::t('ImportModule', 'Was not found and will create a new record during import.');
+                $this->analysisMessages[] = $label;
             }
-            $this->analysisMessages[] = $label;
         }
     }
 ?>

@@ -34,37 +34,34 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class CampaignStatusElement extends StaticDropDownElement
+    /**
+     * Form for configuring an Iframe portlet.
+     */
+    class IframePortletForm extends ConfigurableMetadataModel
     {
-        /**
-         * Called from outside to render status value as label. @see CampaignStatusListViewColumnAdapter
-         * Called from outside to render status value as label. @see CampaignStatusListViewColumnAdapter
-         * @param int $status
-         * @return string, translated status if available otherwise just return status value
-         */
-        public static function renderNonEditableStringContent($status)
+        public $title;
+        public $iframeUrl;
+
+        public function rules()
         {
-            assert('is_int($status)');
-            $data = Campaign::getStatusDropDownArray();
-            if (isset($data[$status]))
-            {
-                return $data[$status];
-            }
-            return $status;
+            return array(
+                array('title', 'required'),
+                array('iframeUrl', 'required'),
+                array('iframeUrl', 'url', 'defaultScheme' => 'http'),
+            );
         }
 
-        /**
-         * @return A|void
-         * @throws NotSupportedException
-         */
-        protected function renderControlEditable()
+        public function attributeLabels()
         {
-            throw new NotSupportedException();
+            return array(
+                'title' => Zurmo::t('HomeModule', 'Title'),
+                'iframeUrl' => Zurmo::t('HomeModule', 'Iframe URL'),
+            );
         }
 
-        protected function getDropDownArray()
+        public function __toString()
         {
-            return Campaign::getStatusDropDownArray();
+            return $this->title;
         }
     }
 ?>

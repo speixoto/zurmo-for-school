@@ -46,10 +46,13 @@
                 $durationType,
                 $expectedTimeStamp)
         {
+            $timeZone = date_default_timezone_get();
+            date_default_timezone_set('America/Chicago'); //Test using an alternative time zone from GMT
             $this->assertEquals(
                         $expectedTimeStamp,
                         TimeDurationUtil::resolveNewTimeStampForDuration($initialTimeStamp, $durationInterval, $durationSign, $durationType)
                     );
+            date_default_timezone_set($timeZone);
         }
 
         public function dataProviderForTestResolveNewTimeStampForDuration()
@@ -115,11 +118,16 @@
                     TimeDurationUtil::DURATION_SIGN_POSITIVE,
                     TimeDurationUtil::DURATION_TYPE_YEAR,
                     500000 + (4 * 365 + 1) * 24 * 60 * 60),
-                array(123456,
+              array(123456,
                     0,
                     TimeDurationUtil::DURATION_SIGN_NEGATIVE,
                     TimeDurationUtil::DURATION_TYPE_DAY,
                     123456),
+              array(123456,
+                    1,
+                    TimeDurationUtil::DURATION_SIGN_POSITIVE,
+                    TimeDurationUtil::DURATION_TYPE_MINUTE,
+                    123516),
             );
         }
     }

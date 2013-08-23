@@ -46,7 +46,7 @@
         protected function renderControlNonEditable()
         {
             $attributes = ContactWebFormsUtil::getAllAttributes();
-            $contactWebFormAttributes = null;
+            $contactWebFormAttributes = array();
             if (isset($this->model->serializedData))
             {
                 $contactWebFormAttributes = unserialize($this->model->serializedData);
@@ -70,7 +70,7 @@
         protected function renderControlEditable()
         {
             $attributes = ContactWebFormsUtil::getAllAttributes();
-            $contactWebFormAttributes = null;
+            $contactWebFormAttributes = array();
             if (isset($this->model->serializedData))
             {
                 $contactWebFormAttributes = unserialize($this->model->serializedData);

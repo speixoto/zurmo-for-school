@@ -34,37 +34,19 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class CampaignStatusElement extends StaticDropDownElement
+    /**
+     * Class defines rules for any Iframe
+     * portlets.
+     */
+    class IframePortletRules extends PortletRules
     {
         /**
-         * Called from outside to render status value as label. @see CampaignStatusListViewColumnAdapter
-         * Called from outside to render status value as label. @see CampaignStatusListViewColumnAdapter
-         * @param int $status
-         * @return string, translated status if available otherwise just return status value
+         * Iframe portlets are allowed
+         * on dashboards.
          */
-        public static function renderNonEditableStringContent($status)
+        public function allowOnDashboard()
         {
-            assert('is_int($status)');
-            $data = Campaign::getStatusDropDownArray();
-            if (isset($data[$status]))
-            {
-                return $data[$status];
-            }
-            return $status;
-        }
-
-        /**
-         * @return A|void
-         * @throws NotSupportedException
-         */
-        protected function renderControlEditable()
-        {
-            throw new NotSupportedException();
-        }
-
-        protected function getDropDownArray()
-        {
-            return Campaign::getStatusDropDownArray();
+            return true;
         }
     }
 ?>

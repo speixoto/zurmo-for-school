@@ -34,37 +34,37 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class CampaignStatusElement extends StaticDropDownElement
+    class DateTimeTriggerRulesTest extends WorkflowBaseTest
     {
-        /**
-         * Called from outside to render status value as label. @see CampaignStatusListViewColumnAdapter
-         * Called from outside to render status value as label. @see CampaignStatusListViewColumnAdapter
-         * @param int $status
-         * @return string, translated status if available otherwise just return status value
-         */
-        public static function renderNonEditableStringContent($status)
+        public function testEvaluateTimeTriggerBeforeSave()
         {
-            assert('is_int($status)');
-            $data = Campaign::getStatusDropDownArray();
-            if (isset($data[$status]))
-            {
-                return $data[$status];
-            }
-            return $status;
-        }
+            $model = new WorkflowModelTestItem();
+            $triggerForm            = new TriggerForWorkflowForm('WorkflowTestModule', 'WorkflowModelTestItem',
+                                      Workflow::TYPE_ON_SAVE);
+            $triggerForm->valueType = MixedDateTypesSearchFormAttributeMappingRules::TYPE_IS_TIME_FOR;
+            $rules = new DateTimeTriggerRules($triggerForm);
 
-        /**
-         * @return A|void
-         * @throws NotSupportedException
-         */
-        protected function renderControlEditable()
-        {
-            throw new NotSupportedException();
-        }
+            //New model
+            $this->assertTrue($rules->evaluateTimeTriggerBeforeSave($model, 'createdDateTime', true));
+            $this->assertTrue($rules->evaluateTimeTriggerBeforeSave($model, 'modifiedDateTime', true));
+            $this->assertFalse($rules->evaluateTimeTriggerBeforeSave($model, 'dateTime', true));
 
-        protected function getDropDownArray()
-        {
-            return Campaign::getStatusDropDownArray();
+            $model->lastName = 'test';
+            $model->string   = 'test';
+            $this->assertTrue($model->save());
+            $modelId = $model->id;
+            $model->forget();
+
+            $model = WorkflowModelTestItem::getById($modelId);
+
+            //Existing model
+            $this->assertFalse($rules->evaluateTimeTriggerBeforeSave($model, 'createdDateTime', true));
+            $this->assertTrue($rules->evaluateTimeTriggerBeforeSave($model, 'modifiedDateTime', true));
+            $this->assertFalse($rules->evaluateTimeTriggerBeforeSave($model, 'dateTime', true));
+
+            //Modify dateTime
+            $model->dateTime = '2000-02-02 05:05:05';
+            $this->assertTrue($rules->evaluateTimeTriggerBeforeSave($model, 'dateTime', true));
         }
     }
 ?>
