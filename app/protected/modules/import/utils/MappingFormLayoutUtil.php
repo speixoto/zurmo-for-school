@@ -254,7 +254,7 @@
                                                   $attributeName,
                                                   $this->form,
                                                   $params);
-                    $content .= '<table><tbody><tr>';
+                    $content .= '<table><thead><th>Rules</th></thead><tbody><tr>';
                     $content .= $element->render();
                     $content .= '</tr></tbody></table>';
                 }
