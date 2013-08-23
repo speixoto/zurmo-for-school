@@ -49,7 +49,7 @@
         }
 
         protected function resolveDefaultOptions()
-        {
+        {            
             $this->options['stepMinute']      = 5;
             $this->options['timeText']        = Zurmo::t('Core', 'Time');
             $this->options['hourText']        = Zurmo::t('Core', 'Hour');
@@ -58,11 +58,9 @@
             $this->options['showOn']          = 'both';
             $this->options['buttonText']      = ZurmoHtml::tag('span', array(), '<!--Date-->');
             $this->options['buttonImageOnly'] = false;
+            $this->options['timeFormat']      = $this->getTimeFormat();  
             $this->options['dateFormat']      = YiiToJqueryUIDatePickerLocalization::resolveDateFormat(
-                                                    DateTimeUtil::getLocaleDateFormat());
-            $this->options['timeFormat']      = YiiToJqueryUIDatePickerLocalization::resolveTimeFormat(
-                                                    DateTimeUtil::getLocaleTimeFormat());
-            $this->options['ampm']            = DateTimeUtil::isLocaleTimeDisplayedAs12Hours();
+                                                    DateTimeUtil::getLocaleDateFormat());            
         }
 
         protected function resolveDefaultLanguage()
@@ -74,5 +72,11 @@
         {
             $this->htmlOptions['style'] = 'position:relative;z-index:10000;';
         }
+                                        
+        protected function getTimeformat()
+        {
+            return $localeTimeFormat = YiiToJqueryUIDatePickerLocalization::resolveTimeFormat(
+                                                        DateTimeUtil::getLocaleTimeFormat());            
+        }                        
     }
 ?>
