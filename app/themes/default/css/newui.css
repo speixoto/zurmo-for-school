@@ -12722,6 +12722,7 @@ table.configuration-list td:last-child a .z-label:before {
 #import-temp-table-list-view table {
   table-layout: auto;
   border-bottom: 1px solid #CCCCCC;
+  background: #fafafa;
 }
 #import-temp-table-list-view tr:first-child th {
   line-height: 1;
@@ -12839,9 +12840,7 @@ table.configuration-list td:last-child a .z-label:before {
   font-weight: bold !important;
 }
 #ImportWizardCreateUpdateModelsCompleteView td {
-  text-align: left;
   padding: 5px !important;
-  font-weight: normal !important;
 }
 #ImportWizardCreateUpdateModelsCompleteView th {
   text-align: left;
