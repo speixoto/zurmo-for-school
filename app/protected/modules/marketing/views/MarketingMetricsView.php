@@ -138,6 +138,9 @@
 
         /**
          * Some extra assertions are made to ensure this view is used in a way that it supports.
+         * @param array $viewData
+         * @param array $params
+         * @param string $uniqueLayoutId
          */
         public function __construct($viewData, $params, $uniqueLayoutId)
         {
@@ -250,7 +253,7 @@
         }
 
         /**
-         * @param $type
+         * @param string $type
          * @return ChartDataProvider
          */
         protected function resolveChartDataProvider($type)
