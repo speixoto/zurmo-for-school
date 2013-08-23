@@ -75,12 +75,25 @@
             {
                 throw new BadPasswordException();
             }
+            self::resolveAuthenticatedUserCanLogin($user);
+            $user->login();
+            return $user;
+        }
+
+        /**
+         * Check if authenticated user can login
+         * @param User $user
+         * @return bool
+         * @throws NoRightWebLoginException
+         * @throws ApiNoRightWebApiLoginException
+         */
+        public static function resolveAuthenticatedUserCanLogin(User $user)
+        {
             if (Right::ALLOW != $user->getEffectiveRight('UsersModule', UsersModule::RIGHT_LOGIN_VIA_WEB) &&
                 !ApiRequest::isApiRequest())
             {
                 throw new NoRightWebLoginException();
             }
-
             if (Right::ALLOW != $user->getEffectiveRight('UsersModule', UsersModule::RIGHT_LOGIN_VIA_WEB_API) &&
                 ApiRequest::isApiRequest())
             {
@@ -94,8 +107,7 @@
             {
                 throw new ApiNoRightWebApiLoginException();
             }
-            $user->login();
-            return $user;
+            return true;
         }
 
         protected function constructDerived($bean, $setDefaults)
@@ -726,8 +738,8 @@
                     array('username', 'length',  'max'   => 64),
                     array('username', 'filter', 'filter' => 'trim'),
                     array('serializedAvatarData', 'type', 'type' => 'string'),
-                    array('isActive', 'readOnly'),
-                    array('isActive', 'boolean'),
+                    array('isActive',            'readOnly'),
+                    array('isActive',            'boolean'),
                     array('isRootUser',          'readOnly'),
                     array('isRootUser',          'boolean'),
                     array('hideFromSelecting',   'boolean'),
@@ -965,6 +977,36 @@
                 $this->unrestrictedSet('lastLoginDateTime',  DateTimeUtil::convertTimestampToDbFormatDateTime(time()));
                 $this->save();
             }
+        }
+
+        /**
+         * Handle the search scenario for isActive, isRootUser and isSystemUser attributes.
+         */
+        public function isAllowedToSetReadOnlyAttribute($attributeName)
+        {
+            if ($this->getScenario() == 'importModel' || $this->getScenario() == 'searchModel')
+            {
+                if ( in_array($attributeName, array('isActive',
+                                                    'isRootUser',
+                                                    'isSystemUser')))
+                {
+                    return true;
+                }
+                else
+                {
+                    return parent::isAllowedToSetReadOnlyAttribute($attributeName);
+                }
+            }
+        }
+
+        public function setIsNotRootUser()
+        {
+            $this->unrestrictedSet('isRootUser', false);
+        }
+
+        public function setIsNotSystemUser()
+        {
+            $this->unrestrictedSet('isSystemUser', false);
         }
     }
 ?>

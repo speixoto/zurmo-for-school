@@ -79,6 +79,7 @@
             $pageSize                       = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                                               'listPageSize', get_class($this->getModule()));
             $user                           = new User(false);
+            $user->setScenario('searchModel');
             $searchForm                     = new UsersSearchForm($user);
             $listAttributesSelector         = new ListAttributesSelector('UsersListView', get_class($this->getModule()));
             $searchForm->setListAttributesSelector($listAttributesSelector);

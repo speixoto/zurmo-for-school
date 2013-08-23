@@ -150,7 +150,6 @@
          */
         public function addMessages($messages)
         {
-            assert('is_array($messages) && count($messages) > 0');
             foreach ($messages as $message)
             {
                 $this->addMessage($message);
@@ -200,16 +199,28 @@
             return $this->status;
         }
 
+        /**
+         * @param string $tableName
+         * @return int
+         */
         public static function getCreatedCount($tableName)
         {
             return ImportDatabaseUtil::getCount($tableName, "status = " . ImportRowDataResultsUtil::CREATED);
         }
 
+        /**
+         * @param string $tableName
+         * @return int
+         */
         public static function getUpdatedCount($tableName)
         {
             return ImportDatabaseUtil::getCount($tableName, "status = " . ImportRowDataResultsUtil::UPDATED);
         }
 
+        /**
+         * @param string $tableName
+         * @return int
+         */
         public static function getErrorCount($tableName)
         {
             return ImportDatabaseUtil::getCount($tableName, "status = " . ImportRowDataResultsUtil::ERROR);

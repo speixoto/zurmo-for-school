@@ -44,12 +44,17 @@
          */
         public function analyzeByRow(RedBean_OODBBean $rowBean)
         {
-            if ($rowBean->{$this->columnName} != null &&
-                strtolower($rowBean->{$this->columnName}) != strtolower(UserStatusUtil::ACTIVE) &&
-                strtolower($rowBean->{$this->columnName}) == strtolower(UserStatusUtil::INACTIVE))
+            if ($rowBean->{$this->columnName} != null)
             {
-                $label = Zurmo::t('ImportModule', 'Status value is invalid. This status will be set to active upon import.');
-                $this->analysisMessages[] = $label;
+                $resolvedAcceptableValues = ArrayUtil::resolveArrayToLowerCase(static::getAcceptableValues());
+                if (!in_array(strtolower($rowBean->{$this->columnName}), $resolvedAcceptableValues))
+                {
+                    $label = Zurmo::t('ImportModule',
+                                      '{attributeLabel} specified is invalid and this row will be skipped during import.',
+                                      array('{attributeLabel}' => ProductTemplate::getAnAttributeLabel('type')));
+                    $this->shouldSkipRow      = true;
+                    $this->analysisMessages[] = $label;
+                }
             }
         }
 
@@ -63,22 +68,24 @@
          */
         public function sanitizeValue($value)
         {
-            assert('$this->attributeName == null');
             if ($value == null)
             {
                 return $value;
             }
             try
             {
-                if (strtolower($value) == strtolower(ProductTemplate::TYPE_PRODUCT))
+                if (strtolower($value) == strtolower(ProductTemplate::TYPE_PRODUCT) ||
+                    strtolower($value) == strtolower('Product'))
                 {
                     return ProductTemplate::TYPE_PRODUCT;
                 }
-                elseif (strtolower($value) == strtolower(ProductTemplate::TYPE_SERVICE))
+                elseif (strtolower($value) == strtolower(ProductTemplate::TYPE_SERVICE) ||
+                        strtolower($value) == strtolower('Service'))
                 {
                     return ProductTemplate::TYPE_SERVICE;
                 }
-                elseif (strtolower($value) == strtolower(ProductTemplate::TYPE_SUBSCRIPTION))
+                elseif (strtolower($value) == strtolower(ProductTemplate::TYPE_SUBSCRIPTION) ||
+                        strtolower($value) == strtolower('Subscription'))
                 {
                     return ProductTemplate::TYPE_SUBSCRIPTION;
                 }
@@ -91,6 +98,16 @@
             {
                 throw new InvalidValueToSanitizeException(Zurmo::t('ProductTemplatesModule', 'Type specified is invalid.'));
             }
+        }
+
+        protected static function getAcceptableValues()
+        {
+            return array(ProductTemplate::TYPE_PRODUCT,
+                         ProductTemplate::TYPE_SERVICE,
+                         ProductTemplate::TYPE_SUBSCRIPTION,
+                         'Product',
+                         'Service',
+                         'Subscription');
         }
     }
 ?>

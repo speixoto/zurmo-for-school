@@ -70,10 +70,11 @@
             assert('is_string($durationType)');
             if($durationInterval == 0)
             {
-                return 0;
+                return $initialTimeStamp;
             }
-            $dateTime = DateTime::createFromFormat('U', (int)$initialTimeStamp,
-                new DateTimeZone(Yii::app()->timeZoneHelper->getForCurrentUser()));
+            $timeZone = date_default_timezone_get();
+            date_default_timezone_set('GMT');
+            $dateTime = DateTime::createFromFormat('U', (int)$initialTimeStamp);
             if($durationSign == self::DURATION_SIGN_NEGATIVE)
             {
                 $dateTime->modify('-' . $durationInterval . ' ' . $durationType); // Not Coding Standard
@@ -82,7 +83,9 @@
             {
                 $dateTime->modify('+' . $durationInterval . ' ' . $durationType); // Not Coding Standard
             }
-            return $dateTime->getTimestamp();
+            $resolvedTimeStamp = $dateTime->getTimestamp();
+            date_default_timezone_set($timeZone);
+            return $resolvedTimeStamp;
         }
 
         public static function getValueAndLabels()

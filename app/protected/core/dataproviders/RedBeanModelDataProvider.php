@@ -53,7 +53,7 @@
         {
             assert('is_string($modelClassName) && $modelClassName != ""');
             assert('$sortAttribute === null || is_string($sortAttribute) && $sortAttribute != ""');
-            assert('is_bool($sortDescending)');
+            assert('is_bool($sortDescending) || $sortDescending === null');
             $this->modelClassName               = $modelClassName;
             $this->sortAttribute                = $sortAttribute;
             $this->sortDescending               = $sortDescending;

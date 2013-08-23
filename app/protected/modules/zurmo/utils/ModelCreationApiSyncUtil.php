@@ -56,11 +56,17 @@
             }
         }
 
+        /**
+         * Insert item into modelcreationapisync table
+         * @param $serviceName
+         * @param $modelId
+         * @param $modelClassName
+         * @param $dateTime
+         */
         public static function insertItem($serviceName, $modelId, $modelClassName, $dateTime)
         {
             assert('is_string($serviceName)');
             assert('is_int($modelId)');
-            assert('is_string($modelType)');
             assert('is_string($dateTime)');
             $sql = "INSERT INTO " . self::TABLE_NAME .
                 " VALUES (NULL, '{$serviceName}', '{$modelId}', '{$modelClassName}', '{$dateTime}')";
