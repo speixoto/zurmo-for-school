@@ -273,25 +273,22 @@
 
         public function testToggleStar()
         {
-            if (!RedBeanDatabase::isFrozen())
-            {
-                StarredUtil::createStarredTables();
-                $super                = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
-                $account              = new Account();
-                $account->owner       = $super;
-                $account->name        = 'Test Account';
-                $account->officePhone = '1234567890';
-                $this->assertTrue($account->save());
+            StarredUtil::createStarredTables();
+            $super                = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $account              = new Account();
+            $account->owner       = $super;
+            $account->name        = 'Test Account';
+            $account->officePhone = '1234567890';
+            $this->assertTrue($account->save());
 
-                $this->setGetArray(array('modelClassName' => 'Account',
-                                         'modelId' => $account->id));
-                $content = $this->runControllerWithNoExceptionsAndGetContent('zurmo/default/toggleStar');
-                $this->assertEquals('icon-star starred', $content);
-                $this->assertTrue(StarredUtil::isModelStarred($account));
-                $content = $this->runControllerWithNoExceptionsAndGetContent('zurmo/default/toggleStar');
-                $this->assertEquals('icon-star unstarred', $content);
-                $this->assertFalse(StarredUtil::isModelStarred($account));
-            }
+            $this->setGetArray(array('modelClassName' => 'Account',
+                                     'modelId' => $account->id));
+            $content = $this->runControllerWithNoExceptionsAndGetContent('zurmo/default/toggleStar');
+            $this->assertEquals('icon-star starred', $content);
+            $this->assertTrue(StarredUtil::isModelStarred($account));
+            $content = $this->runControllerWithNoExceptionsAndGetContent('zurmo/default/toggleStar');
+            $this->assertEquals('icon-star unstarred', $content);
+            $this->assertFalse(StarredUtil::isModelStarred($account));
         }
 
         public function testSuperUserEditUserMembershipAction()
