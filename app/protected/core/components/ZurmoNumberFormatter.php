@@ -33,37 +33,29 @@
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
-
-    class ImportSanitizeResultsUtilTest extends ImportBaseTest
-    {
-        public static function setUpBeforeClass()
-        {
-            parent::setUpBeforeClass();
-            SecurityTestHelper::createSuperAdmin();
-        }
-
-        public function testMessages()
-        {
-            $resultsUtil = new ImportSanitizeResultsUtil();
-            $this->assertEquals(0, count($resultsUtil->getMessages()));
-            $resultsUtil->addMessage('some message');
-            $messages = $resultsUtil->getMessages();
-            $this->assertEquals(1, count($messages));
-            $this->assertEquals('some message', $messages[0]);
-        }
-
-        public function testShouldSaveModel()
-        {
-            $resultsUtil = new ImportSanitizeResultsUtil();
-            $this->assertEquals(true, $resultsUtil->shouldSaveModel());
-            $resultsUtil->setModelShouldNotBeSaved();
-            $this->assertEquals(false, $resultsUtil->shouldSaveModel());
-        }
-
-        public function testGetMessages()
-        {
-            $util = new ImportSanitizeResultsUtil();
-            $this->assertTrue(is_array($util->getMessages()));
-        }
+    
+    class ZurmoNumberFormatter extends CNumberFormatter
+    {        
+       
+	/**
+	 * Override to make the format decimal part the same as the passed value
+	 * @param mixed $value the number to be formatted
+	 * @return string the formatting result.
+	 */
+	public function formatDecimal($value)
+	{
+            $decimalFormat = "#,##0.";
+            $pos = strpos($value, '.');
+            if ($pos > 0)
+            {   
+                for ($i=0; $i < strlen($value) - $pos - 2; $i++)
+                {
+                    $decimalFormat .= "#";
+                }
+                $decimalFormat .= "0";
+            }
+            return $this->format($decimalFormat,$value);
+	}
+	
     }
 ?>

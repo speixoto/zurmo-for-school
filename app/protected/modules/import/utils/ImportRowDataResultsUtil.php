@@ -150,7 +150,6 @@
          */
         public function addMessages($messages)
         {
-            assert('is_array($messages) && count($messages) > 0');
             foreach ($messages as $message)
             {
                 $this->addMessage($message);

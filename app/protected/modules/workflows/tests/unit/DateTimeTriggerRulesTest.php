@@ -34,36 +34,37 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class ImportSanitizeResultsUtilTest extends ImportBaseTest
+    class DateTimeTriggerRulesTest extends WorkflowBaseTest
     {
-        public static function setUpBeforeClass()
+        public function testEvaluateTimeTriggerBeforeSave()
         {
-            parent::setUpBeforeClass();
-            SecurityTestHelper::createSuperAdmin();
-        }
+            $model = new WorkflowModelTestItem();
+            $triggerForm            = new TriggerForWorkflowForm('WorkflowTestModule', 'WorkflowModelTestItem',
+                                      Workflow::TYPE_ON_SAVE);
+            $triggerForm->valueType = MixedDateTypesSearchFormAttributeMappingRules::TYPE_IS_TIME_FOR;
+            $rules = new DateTimeTriggerRules($triggerForm);
 
-        public function testMessages()
-        {
-            $resultsUtil = new ImportSanitizeResultsUtil();
-            $this->assertEquals(0, count($resultsUtil->getMessages()));
-            $resultsUtil->addMessage('some message');
-            $messages = $resultsUtil->getMessages();
-            $this->assertEquals(1, count($messages));
-            $this->assertEquals('some message', $messages[0]);
-        }
+            //New model
+            $this->assertTrue($rules->evaluateTimeTriggerBeforeSave($model, 'createdDateTime', true));
+            $this->assertTrue($rules->evaluateTimeTriggerBeforeSave($model, 'modifiedDateTime', true));
+            $this->assertFalse($rules->evaluateTimeTriggerBeforeSave($model, 'dateTime', true));
 
-        public function testShouldSaveModel()
-        {
-            $resultsUtil = new ImportSanitizeResultsUtil();
-            $this->assertEquals(true, $resultsUtil->shouldSaveModel());
-            $resultsUtil->setModelShouldNotBeSaved();
-            $this->assertEquals(false, $resultsUtil->shouldSaveModel());
-        }
+            $model->lastName = 'test';
+            $model->string   = 'test';
+            $this->assertTrue($model->save());
+            $modelId = $model->id;
+            $model->forget();
 
-        public function testGetMessages()
-        {
-            $util = new ImportSanitizeResultsUtil();
-            $this->assertTrue(is_array($util->getMessages()));
+            $model = WorkflowModelTestItem::getById($modelId);
+
+            //Existing model
+            $this->assertFalse($rules->evaluateTimeTriggerBeforeSave($model, 'createdDateTime', true));
+            $this->assertTrue($rules->evaluateTimeTriggerBeforeSave($model, 'modifiedDateTime', true));
+            $this->assertFalse($rules->evaluateTimeTriggerBeforeSave($model, 'dateTime', true));
+
+            //Modify dateTime
+            $model->dateTime = '2000-02-02 05:05:05';
+            $this->assertTrue($rules->evaluateTimeTriggerBeforeSave($model, 'dateTime', true));
         }
     }
 ?>

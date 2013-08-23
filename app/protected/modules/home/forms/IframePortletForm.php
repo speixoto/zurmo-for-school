@@ -34,36 +34,34 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class ImportSanitizeResultsUtilTest extends ImportBaseTest
+    /**
+     * Form for configuring an Iframe portlet.
+     */
+    class IframePortletForm extends ConfigurableMetadataModel
     {
-        public static function setUpBeforeClass()
+        public $title;
+        public $iframeUrl;
+
+        public function rules()
         {
-            parent::setUpBeforeClass();
-            SecurityTestHelper::createSuperAdmin();
+            return array(
+                array('title', 'required'),
+                array('iframeUrl', 'required'),
+                array('iframeUrl', 'url', 'defaultScheme' => 'http'),
+            );
         }
 
-        public function testMessages()
+        public function attributeLabels()
         {
-            $resultsUtil = new ImportSanitizeResultsUtil();
-            $this->assertEquals(0, count($resultsUtil->getMessages()));
-            $resultsUtil->addMessage('some message');
-            $messages = $resultsUtil->getMessages();
-            $this->assertEquals(1, count($messages));
-            $this->assertEquals('some message', $messages[0]);
+            return array(
+                'title' => Zurmo::t('HomeModule', 'Title'),
+                'iframeUrl' => Zurmo::t('HomeModule', 'Iframe URL'),
+            );
         }
 
-        public function testShouldSaveModel()
+        public function __toString()
         {
-            $resultsUtil = new ImportSanitizeResultsUtil();
-            $this->assertEquals(true, $resultsUtil->shouldSaveModel());
-            $resultsUtil->setModelShouldNotBeSaved();
-            $this->assertEquals(false, $resultsUtil->shouldSaveModel());
-        }
-
-        public function testGetMessages()
-        {
-            $util = new ImportSanitizeResultsUtil();
-            $this->assertTrue(is_array($util->getMessages()));
+            return $this->title;
         }
     }
 ?>

@@ -34,36 +34,44 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class ImportSanitizeResultsUtilTest extends ImportBaseTest
-    {
-        public static function setUpBeforeClass()
-        {
-            parent::setUpBeforeClass();
-            SecurityTestHelper::createSuperAdmin();
+    class DecimalListViewColumnAdapterTest extends BaseTest
+    {        
+        private $model;
+        
+        private $view;
+        
+        private $adapter;
+        
+        private $decimal;
+        
+        public function setup() {
+            parent::setup();
+            $this->model = new TestPrecisionModel();
+            $viewStub    = $this->getMockBuilder('AListView')
+                              ->disableOriginalConstructor()
+                              ->getMock();
+            $this->view  = $viewStub;
+            $this->adapter = new DecimalListViewColumnAdapter('numberPositive5Precision', 
+                                                              $this->view, array());
+            $this->decimal = 'numberPositive5Precision';
         }
-
-        public function testMessages()
-        {
-            $resultsUtil = new ImportSanitizeResultsUtil();
-            $this->assertEquals(0, count($resultsUtil->getMessages()));
-            $resultsUtil->addMessage('some message');
-            $messages = $resultsUtil->getMessages();
-            $this->assertEquals(1, count($messages));
-            $this->assertEquals('some message', $messages[0]);
-        }
-
-        public function testShouldSaveModel()
-        {
-            $resultsUtil = new ImportSanitizeResultsUtil();
-            $this->assertEquals(true, $resultsUtil->shouldSaveModel());
-            $resultsUtil->setModelShouldNotBeSaved();
-            $this->assertEquals(false, $resultsUtil->shouldSaveModel());
-        }
-
-        public function testGetMessages()
-        {
-            $util = new ImportSanitizeResultsUtil();
-            $this->assertTrue(is_array($util->getMessages()));
+        
+        public function testRenderDataCellContent()
+        {                                                   
+            $this->model->{$this->decimal} = 1234.56789;
+            $this->assertEquals('1,234.56789', $this->adapter->renderDataCellContent($this->model, 0));
+            
+            $this->model->{$this->decimal} = 123.456789;
+            $this->assertEquals('123.456789', $this->adapter->renderDataCellContent($this->model, 0));
+            
+            $this->model->{$this->decimal} = 123.4000;
+            $this->assertEquals('123.4000', $this->adapter->renderDataCellContent($this->model, 0));
+            
+            $this->model->{$this->decimal} = 123;
+            $this->assertEquals('123.0', $this->adapter->renderDataCellContent($this->model, 0));
+            
+            $this->model->{$this->decimal} = 0.123456789;
+            $this->assertEquals('0.123456789', $this->adapter->renderDataCellContent($this->model, 0));
         }
     }
 ?>

@@ -34,36 +34,19 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class ImportSanitizeResultsUtilTest extends ImportBaseTest
+    /**
+     * Class defines rules for any Iframe
+     * portlets.
+     */
+    class IframePortletRules extends PortletRules
     {
-        public static function setUpBeforeClass()
+        /**
+         * Iframe portlets are allowed
+         * on dashboards.
+         */
+        public function allowOnDashboard()
         {
-            parent::setUpBeforeClass();
-            SecurityTestHelper::createSuperAdmin();
-        }
-
-        public function testMessages()
-        {
-            $resultsUtil = new ImportSanitizeResultsUtil();
-            $this->assertEquals(0, count($resultsUtil->getMessages()));
-            $resultsUtil->addMessage('some message');
-            $messages = $resultsUtil->getMessages();
-            $this->assertEquals(1, count($messages));
-            $this->assertEquals('some message', $messages[0]);
-        }
-
-        public function testShouldSaveModel()
-        {
-            $resultsUtil = new ImportSanitizeResultsUtil();
-            $this->assertEquals(true, $resultsUtil->shouldSaveModel());
-            $resultsUtil->setModelShouldNotBeSaved();
-            $this->assertEquals(false, $resultsUtil->shouldSaveModel());
-        }
-
-        public function testGetMessages()
-        {
-            $util = new ImportSanitizeResultsUtil();
-            $this->assertTrue(is_array($util->getMessages()));
+            return true;
         }
     }
 ?>

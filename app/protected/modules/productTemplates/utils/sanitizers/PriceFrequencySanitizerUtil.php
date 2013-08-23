@@ -44,12 +44,17 @@
          */
         public function analyzeByRow(RedBean_OODBBean $rowBean)
         {
-            if ($rowBean->{$this->columnName} != null &&
-                strtolower($rowBean->{$this->columnName}) != strtolower(UserStatusUtil::ACTIVE) &&
-                strtolower($rowBean->{$this->columnName}) == strtolower(UserStatusUtil::INACTIVE))
+            if ($rowBean->{$this->columnName} != null)
             {
-                $label = Zurmo::t('ImportModule', 'Status value is invalid. This value will be set to active upon import.');
-                $this->analysisMessages[] = $label;
+                $resolvedAcceptableValues = ArrayUtil::resolveArrayToLowerCase(static::getAcceptableValues());
+                if (!in_array(strtolower($rowBean->{$this->columnName}), $resolvedAcceptableValues))
+                {
+                    $label = Zurmo::t('ImportModule',
+                                      '{attributeLabel} specified is invalid and this row will be skipped during import.',
+                                      array('{attributeLabel}' => ProductTemplate::getAnAttributeLabel('priceFrequency')));
+                    $this->shouldSkipRow      = true;
+                    $this->analysisMessages[] = $label;
+                }
             }
         }
 
@@ -67,15 +72,18 @@
             }
             try
             {
-                if (strtolower($value) == strtolower(ProductTemplate::PRICE_FREQUENCY_ONE_TIME))
+                if (strtolower($value) == strtolower(ProductTemplate::PRICE_FREQUENCY_ONE_TIME) ||
+                    strtolower($value) == strtolower('One Time'))
                 {
                     return ProductTemplate::PRICE_FREQUENCY_ONE_TIME;
                 }
-                elseif (strtolower($value) == strtolower(ProductTemplate::PRICE_FREQUENCY_MONTHLY))
+                elseif (strtolower($value) == strtolower(ProductTemplate::PRICE_FREQUENCY_MONTHLY) ||
+                        strtolower($value) == strtolower('Monthly'))
                 {
                     return ProductTemplate::PRICE_FREQUENCY_MONTHLY;
                 }
-                elseif (strtolower($value) == strtolower(ProductTemplate::PRICE_FREQUENCY_ANNUALLY))
+                elseif (strtolower($value) == strtolower(ProductTemplate::PRICE_FREQUENCY_ANNUALLY) ||
+                        strtolower($value) == strtolower('Annually'))
                 {
                     return ProductTemplate::PRICE_FREQUENCY_ANNUALLY;
                 }
@@ -88,6 +96,16 @@
             {
                 throw new InvalidValueToSanitizeException(Zurmo::t('ProductTemplatesModule', 'Price Frequency specified is invalid.'));
             }
+        }
+
+        protected static function getAcceptableValues()
+        {
+            return array(ProductTemplate::PRICE_FREQUENCY_ONE_TIME,
+                ProductTemplate::PRICE_FREQUENCY_MONTHLY,
+                ProductTemplate::PRICE_FREQUENCY_ANNUALLY,
+                'One Time',
+                'Monthly',
+                'Annually');
         }
     }
 ?>
