@@ -130,6 +130,13 @@
             return $metadata;
         }
 
+        /**
+         * Override to add a description for the view to be shown when adding a portlet
+         */
+        public static function getPortletDescription()
+        {
+        }
+
         public function getTitle()
         {
             return Zurmo::t('LeadsModule', 'ContactsModulePluralLabel/LeadsModulePluralLabel',

@@ -89,6 +89,13 @@
             return $metadata;
         }
 
+        /**
+         * Override to add a description for the view to be shown when adding a portlet
+         */
+        public static function getPortletDescription()
+        {
+        }
+
         public function getTitle()
         {
             $title  = Zurmo::t('MissionsModule', 'My Missions');
