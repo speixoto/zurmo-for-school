@@ -78,8 +78,8 @@
             }
             $emailAccount                           = EmailAccount::getByUserAndName($userToSendMessagesFrom);
             $sender                                 = new EmailMessageSender();
-            $sender->fromName                       = Yii::app()->emailHelper->fromName;
-            $sender->fromAddress                    = Yii::app()->emailHelper->fromAddress;
+            $sender->fromName                       = $emailAccount->fromName;
+            $sender->fromAddress                    = $emailAccount->fromAddress;
             $sender->personOrAccount                = $userToSendMessagesFrom;
             $emailMessageForm->sender               = $sender;
             $emailMessageForm->account              = $emailAccount;
