@@ -184,5 +184,10 @@
             }
             return static::getLabel($language) . 's';
         }
+
+        public static function hasReadPermissionsSubscriptionOptimization()
+        {
+            return true;
+        }
     }
 ?>

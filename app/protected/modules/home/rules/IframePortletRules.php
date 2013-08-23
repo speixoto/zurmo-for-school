@@ -35,17 +35,18 @@
      ********************************************************************************/
 
     /**
-     * Class used by an email message in workflow to show the duration data. For example send the email message
-     * 4 hours after the workflow runs
+     * Class defines rules for any Iframe
+     * portlets.
      */
-    class EmailMessageSendAfterDurationStaticDropDownElement extends DataFromFormStaticDropDownFormElement
+    class IframePortletRules extends PortletRules
     {
         /**
-         * @return string
+         * Iframe portlets are allowed
+         * on dashboards.
          */
-        protected function getDataAndLabelsModelPropertyName()
+        public function allowOnDashboard()
         {
-            return 'getSendAfterDurationValuesAndLabels';
+            return true;
         }
     }
 ?>

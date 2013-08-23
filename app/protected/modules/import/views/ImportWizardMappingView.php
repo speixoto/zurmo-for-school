@@ -267,12 +267,20 @@
 
         protected function renderPreviousPageLinkLabel()
         {
-            return Zurmo::t('ZurmoModule', 'Select Permissions');
+            $importRulesClassName  = ImportRulesUtil::getImportRulesClassNameByType($this->model->importRulesType);
+            if (!is_subclass_of($importRulesClassName::getModelClassName(), 'SecurableItem'))
+            {
+                return Zurmo::t('ZurmoModule', 'Upload File');
+            }
+            else
+            {
+                return Zurmo::t('ZurmoModule', 'Select Permissions');
+            }
         }
 
         protected function renderNextPageLinkLabel()
         {
-            return Zurmo::t('ImportModule', 'Analysis Data');
+            return Zurmo::t('ImportModule', 'Analyze Data');
         }
     }
 ?>

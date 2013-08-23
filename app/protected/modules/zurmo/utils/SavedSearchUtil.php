@@ -39,6 +39,12 @@
      */
     class SavedSearchUtil
     {
+        /**
+         * @param DynamicSearchForm $searchForm
+         * @param string $viewClassName
+         * @param null $stickySearchData
+         * @return A|SavedSearch
+         */
         public static function makeSavedSearchBySearchForm(DynamicSearchForm $searchForm, $viewClassName, $stickySearchData = null)
         {
             assert('is_string($viewClassName)');
@@ -93,6 +99,10 @@
             return $savedSearch;
         }
 
+        /**
+         * @param array $getData
+         * @param DynamicSearchForm $searchForm
+         */
         public static function resolveSearchFormByGetData(array $getData, DynamicSearchForm $searchForm)
         {
             if (isset($getData['savedSearchId']) && $getData['savedSearchId'] != '')
@@ -145,6 +155,11 @@
             }
         }
 
+        /**
+         * @param string $key
+         * @param SearchAttributesDataCollection $dataCollection
+         * @param array $stickyData
+         */
         public static function setDataByKeyAndDataCollection($key, SearchAttributesDataCollection $dataCollection, $stickyData)
         {
             assert('is_string($key)');
@@ -205,6 +220,10 @@
             StickySearchUtil::setDataByKeyAndData($key, $stickyData);
         }
 
+        /**
+         * @param array $stickyData
+         * @param SavedDynamicSearchForm $model
+         */
         public static function resolveSearchFormByStickyDataAndModel($stickyData, SavedDynamicSearchForm $model)
         {
             assert('$stickyData != null && is_array($stickyData)');
@@ -272,6 +291,11 @@
             }
         }
 
+        /**
+         * @param array $getData
+         * @param DynamicSearchForm $searchForm
+         * @param $stickyData
+         */
         public static function resolveSearchFormByStickySortData(array $getData, DynamicSearchForm $searchForm, $stickyData)
         {
             if (isset($getData[get_class($searchForm)]))

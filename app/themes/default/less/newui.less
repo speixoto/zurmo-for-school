@@ -1929,8 +1929,8 @@ caption, th, td {
 	text-align: left;
 }
 
-#list-view,
-#import-temp-table-list-view{
+#import-temp-table-list-view,
+#list-view{
 	overflow-x:auto;
 	position:relative;
 	background:
@@ -1940,13 +1940,17 @@ caption, th, td {
 		-webkit-radial-gradient( 100% 50%, farthest-side, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0) ) 100% 0;
 	background-repeat: no-repeat;
 	//background-color: white;
-	background-size: 40px 100%, 40px 100%, 20px 100%, 20px 100%;
+	background-size:
+		40px 100%,
+		40px 100%,
+		20px 100%,
+		20px 100%;
 	/* Opera doesn't support this in the shorthand */
-	background-attachment: local, local, scroll, scroll;
-	.icon-empty:before{
-		content: 'C';
-		.view-toolbar-icons(45px);
-	}
+	background-attachment:
+		local,
+		local,
+		scroll,
+		scroll;
 }
 
 .items{
@@ -1956,7 +1960,6 @@ caption, th, td {
 	border-spacing: 1px;
 	margin: 0 -100% 0 0;
 	.box-sizing();
-	> thead,
 	> tbody,
 	> thead{
 		> tr > td{
@@ -1967,25 +1970,17 @@ caption, th, td {
 			padding:10px 5px;
 			word-wrap: break-word;
 			//word-break: break-all;
-	> tfoot{
-		> tr{
-			> td{
-				border: 1px solid #DFDFDF;
-				border-right:none;
-				border-left:none;
-				vertical-align:middle;
-				padding:10px 5px;
-				word-wrap: break-word;
-				//word-break: break-all;
-			}
-			> th{
-				font-weight:bold !important;
-				height:35px;
-				line-height: 35px;
-				background: url(../images/table-items-header.png) left top repeat-x;
-				padding:0 5px;
-				white-space: nowrap;
-			}
+		}
+	}
+	> tbody,
+	> thead{
+		> tr > th{
+			font-weight:bold !important;
+			height:35px;
+			line-height: 35px;
+			background: url(../images/table-items-header.png) left top repeat-x;
+			padding:0 5px;
+			white-space: nowrap;
 		}
 	}
 	tr:hover{
@@ -2041,10 +2036,6 @@ caption, th, td {
 				++.border-box;
 			}
 		}
-		.star-column{
-			margin:-6px 15px 0 0 !important;
-			float:right
-		}
 		> div{
 			margin:0 0 2px 0;
 		}
@@ -2056,6 +2047,11 @@ caption, th, td {
 			margin-top:2px;
 			float:left;
 		}
+		.star-column{
+			margin:-6px 15px 0 0 !important;
+			float:right
+		}
+
 	}
 	tr:first-child{
 		> div:first-child{
@@ -2105,6 +2101,7 @@ tr.even{
 		margin:-4px auto 0 auto;
 	}
 }
+
 .star-column{
 	width:20px;
 	text-align:center;
@@ -4371,6 +4368,34 @@ div.hasHalfs{
 }
 .twoThirds{
 	width:64%;
+}
+
+.operation-duration-fields{
+	++.cf;
+	&.twoFields{
+		input[type="text"]{
+			width: 49%;
+			float: left;
+		}
+		> div{
+			width: 49% !important;
+			float: right;
+		}
+	}
+
+
+	&.threeFields{
+		> div.hasDropDown,
+		> input[type="text"]{
+			width:32% !important;
+			float: left;
+			margin-left:2%;
+		}
+		> input[type="text"]{
+			margin-left: 0;
+		}
+	}
+
 }
 
 .juiportlet-widget.OpportunitiesForAccountRelatedListView,

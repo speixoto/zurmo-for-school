@@ -63,7 +63,8 @@
                                                          '(field1 * field2) / field3. The formula can also include an if ' .
                                                          'statement, use the IF(condition;trueValue;falseValue) syntax. ' .
                                                          'Within the condition and values you can use strings, string fields, ' .
-                                                         'number fields or math expressions. In the condition you can ' .
+                                                         'number fields or math expressions. Strings should be surrounded by ' .
+                                                         '\'. In the condition you can ' .
                                                          'use the operators <,>,==,!=,<= and >=. An example of an if ' .
                                                          'statement is IF(field1 == field4;field2/365;0)');
             $spanContent    = '<span id="formula-tooltip" class="tooltip" title="' . $title . '">?</span>';

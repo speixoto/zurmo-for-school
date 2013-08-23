@@ -125,7 +125,8 @@
                 $previousGroupByValuesCount = count($this->leadingHeaders['rows'][$i]['groupByValues']);
                 if ($i == 0 && isset($this->leadingHeaders['renderTotalColumn']) && $this->leadingHeaders['renderTotalColumn'])
                 {                    
-                    $colSpanForTotal = end($this->leadingHeaders['rows'])['colSpan'];
+                    $lastRow         = end($this->leadingHeaders['rows']);
+                    $colSpanForTotal = $lastRow['colSpan'];
                     echo ZurmoHtml::tag('th', 
                                         array('class' => 'total-column', 
                                               'colspan' => $colSpanForTotal, 

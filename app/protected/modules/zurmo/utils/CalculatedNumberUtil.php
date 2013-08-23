@@ -53,17 +53,17 @@
          * @throws NotSupportedException
          */
         public static function calculateByFormulaAndModelAndResolveFormat($formula, RedBeanModel $model)
-        {
+        {                        
             $formatType   = self::FORMAT_TYPE_INTEGER;
             $currencyCode = null;
             $value = static::calculateByFormulaAndModel($formula, $model, $formatType, $currencyCode);
             if ($formatType == self::FORMAT_TYPE_INTEGER)
             {
-                return Yii::app()->format->formatNumber((int)$value);
+                return Yii::app()->numberFormatter->formatDecimal((int)$value);
             }
             elseif ($formatType == self::FORMAT_TYPE_DECIMAL)
             {
-                return Yii::app()->numberFormatter->formatDecimal((float)$value);
+                return Yii::app()->format->formatDecimal($value);
             }
             elseif ($formatType == self::FORMAT_TYPE_CURRENCY_VALUE && $currencyCode != null)
             {
@@ -89,7 +89,7 @@
          * @return bool|int|string calculated value as number.
          */
         public static function calculateByFormulaAndModel($formula, RedBeanModel $model, & $formatType, & $currencyCode)
-        {
+        {            
             assert('is_string($formula)');
             assert('is_int($formatType)');
             assert('is_string($currencyCode) || $currencyCode === null');                
@@ -97,7 +97,7 @@
             if ($ifStatementParts)
             {                        
                 $conditionValue     = false;
-                $conditionParts     = static::getConditionParts($ifStatementParts['condition']);    
+                $conditionParts     = static::getConditionParts($ifStatementParts['condition']);                    
                 if ($conditionParts)
                 {
                     $leftFormat         = null;
@@ -105,7 +105,7 @@
                     $left  = static::calculateByExpressionAndModel($conditionParts['left'], 
                                                                    $model, 
                                                                    $leftFormat, 
-                                                                   $leftCurrencyCode);                                
+                                                                   $leftCurrencyCode);                                  
                     $rightFormat         = null;
                     $rightCurrencyCode   = null;
                     $right = static::calculateByExpressionAndModel($conditionParts['right'], 
@@ -120,8 +120,8 @@
                     if (is_string($right))
                     {
                         $right = "'" . $right . "'";
-                    }
-                    @eval("\$conditionValue = " . $left . $operator . $right . ';');                                        
+                    }                   
+                    @eval("\$conditionValue = " . $left . $operator . $right . ";");                                        
                 }                              
                 if ((bool) $conditionValue)
                 {                    
@@ -139,12 +139,15 @@
         }
         
         protected static function calculateByExpressionAndModel($expression, RedBeanModel $model, & $formatType, & $currencyCode)
-        {                     
+        {                                            
             $expression = trim($expression);
             if (static::isAttribute($expression, get_class($model)))
-            {                
-                $formatType = ModelAttributeToMixedTypeUtil::getType($model, $expression);                
-                return $model->{$expression};
+            {   
+                if (!($model->{$expression} instanceof CurrencyValue))
+                {
+                    $formatType = ModelAttributeToMixedTypeUtil::getType($model, $expression);                     
+                    return strval($model->{$expression});
+                }
             }
             if (static::isString($expression))
             {                
@@ -170,19 +173,25 @@
                         $replacementValue = $model->{$attribute};
                     }
                 }
-                $oldExpression = $expression;
-                $expression = str_replace($attribute, $replacementValue, $expression);
+                $oldExpression            = $expression;
+                $expression               = str_replace($attribute, $replacementValue, $expression);
+                $extraZerosForDecimalPart = '';
                 if ($expression !== $oldExpression)
                 {
                     self::resolveFormatTypeAndCurrencyCode($formatType, $currencyCode, $model, $attribute);
                 }
-            }
-            $result = static::mathEval($expression);
+                elseif (strpos($expression,'.') !== false)
+                {
+                    $formatType               = self::FORMAT_TYPE_DECIMAL;
+                    $extraZerosForDecimalPart = str_replace((float)$expression, '', $expression);
+                }
+            }            
+            $result = static::mathEval($expression);            
             if ($result === false)
             {
                 return Zurmo::t('ZurmoModule', 'Invalid');
-            }
-            return $result;
+            }            
+            return $result . $extraZerosForDecimalPart;
         }
 
         /**
@@ -237,7 +246,11 @@
 
         protected static function isExpressionValid($expression, $modelClassName)
         {
-            assert('is_string($expression)');                        
+            assert('is_string($expression)');                  
+            if (strpos($expression, '"') !== false)
+            {
+                return false;
+            }
             $expression = trim($expression);            
             if (static::isString($expression))
             {                           

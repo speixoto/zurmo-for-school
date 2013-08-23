@@ -86,6 +86,15 @@
             return ImportRowDataResultsUtil::getStatusLabelAndVisualIdentifierContentByType((int)$data->status);
         }
 
+        /**
+         * Override and implement in children classes
+         * @throws NotImplementedException
+         */
+        protected static function getExpandableContentType()
+        {
+            throw new NotImplementedException();
+        }
+
         protected static function resolveHeaderLabelByColumnNameAndLabel($columnName, $label)
         {
             if($label == null)
@@ -233,9 +242,10 @@
             if ($this->rowsAreExpandable())
             {
                 $firstColumn = array(
-                    'class'               => 'ImportDrillDownColumn',
-                    'id'                  => $this->gridId . $this->gridIdSuffix . '-rowDrillDown',
-                    'htmlOptions'         => array('class' => 'hasDrillDownLink')
+                    'class'                 => 'ImportDrillDownColumn',
+                    'id'                    => $this->gridId . $this->gridIdSuffix . '-rowDrillDown',
+                    'expandableContentType' => static::getExpandableContentType(),
+                    'htmlOptions'           => array('class' => 'hasDrillDownLink')
                 );
                 array_push($columns, $firstColumn);
             }

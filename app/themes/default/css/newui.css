@@ -301,6 +301,8 @@ a.ModalGameNotification a,
 }
 .cf:before,
 .cf:after,
+.operation-duration-fields:before,
+.operation-duration-fields:after,
 .recipient:before,
 .recipient:after,
 #NoUserEmailConfigurationYetView:before,
@@ -325,6 +327,7 @@ a.ModalGameNotification a,
   display: table;
 }
 .cf:after,
+.operation-duration-fields:after,
 .recipient:after,
 #NoUserEmailConfigurationYetView:after,
 .dynamic-row:after,
@@ -338,6 +341,7 @@ a.ModalGameNotification a,
   clear: both;
 }
 .cf,
+.operation-duration-fields,
 .recipient,
 #NoUserEmailConfigurationYetView,
 .dynamic-row,
@@ -7386,16 +7390,22 @@ td {
   font-weight: normal;
   text-align: left;
 }
-#list-view,
-#import-temp-table-list-view {
+#import-temp-table-list-view,
+#list-view {
   overflow-x: auto;
   position: relative;
   background: -webkit-linear-gradient(left, #ffffff 30%, rgba(255, 255, 255, 0)), -webkit-linear-gradient(left, rgba(255, 255, 255, 0), #ffffff 70%) 100%, -webkit-radial-gradient(0 50%, farthest-side, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0)), -webkit-radial-gradient(100% 50%, farthest-side, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0)) 100% 0;
   background-repeat: no-repeat;
-  background-size: 40px 100%, 40px 100%, 20px 100%, 20px 100%;
+  background-size: 40px 100%,
+		40px 100%,
+		20px 100%,
+		20px 100%;
   /* Opera doesn't support this in the shorthand */
 
-  background-attachment: local, local, scroll, scroll;
+  background-attachment: local,
+		local,
+		scroll,
+		scroll;
 }
 .items {
   width: 100%;
@@ -7407,9 +7417,8 @@ td {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
-.items > thead > tr > td,
 .items > tbody > tr > td,
-.items > tfoot > tr > td {
+.items > thead > tr > td {
   border: 1px solid #DFDFDF;
   border-right: none;
   border-left: none;
@@ -7417,9 +7426,8 @@ td {
   padding: 10px 5px;
   word-wrap: break-word;
 }
-.items > thead > tr > th,
 .items > tbody > tr > th,
-.items > tfoot > tr > th {
+.items > thead > tr > th {
   font-weight: bold !important;
   height: 35px;
   line-height: 35px;
@@ -7505,6 +7513,10 @@ td {
   margin-top: 2px;
   float: left;
 }
+.stacked-list td .star-column {
+  margin: -6px 15px 0 0 !important;
+  float: right;
+}
 .stacked-list tr:first-child > div:first-child {
   font-size: 13px;
   font-weight: bold;
@@ -7547,6 +7559,11 @@ tr.even {
 .checkbox-column .hasCheckBox {
   margin: -4px auto 0 auto;
 }
+.star-column {
+  width: 20px;
+  text-align: center;
+  padding: 0 !important;
+}
 .button-column {
   width: 35px;
   text-align: center;
@@ -7559,6 +7576,40 @@ tr.even {
   font-size: 24px;
   font-family: "zurmo_gamification_symbly_rRg";
   visibility: hidden;
+}
+.icon-star {
+  font-weight: normal;
+  font-size: 26px;
+  font-family: "zurmo_gamification_symbly_rRg";
+  color: #ccc !important;
+  -webkit-text-shadow: 0 0 1px #333333;
+  -moz-text-shadow: 0 0 1px #333333;
+  -o-text-shadow: 0 0 1px #333333;
+  -ms-text-shadow: 0 0 1px #333333;
+  text-shadow: 0 0 1px #333333;
+  top: -1px;
+  position: relative;
+  line-height: 1;
+}
+.icon-star:hover,
+.icon-star.starred {
+  color: #ffef42 !important;
+}
+#list-view_columnStar {
+  line-height: 1;
+  width: 20px;
+  text-align: center;
+  padding-right: 0 !important;
+  padding-left: 0 !important;
+}
+#list-view_columnStar .icon-star {
+  top: 0;
+  left: -2px;
+}
+h1 .icon-star,
+.juiportlet-widget-head .icon-star {
+  top: 1px;
+  margin-left: 5px;
 }
 .juiportlet-widget .empty {
   padding: 5px 0 10px 0;
@@ -10187,6 +10238,23 @@ div.hasHalfs > div input {
 }
 .twoThirds {
   width: 64%;
+}
+.operation-duration-fields.twoFields input[type="text"] {
+  width: 49%;
+  float: left;
+}
+.operation-duration-fields.twoFields > div {
+  width: 49% !important;
+  float: right;
+}
+.operation-duration-fields.threeFields > div.hasDropDown,
+.operation-duration-fields.threeFields > input[type="text"] {
+  width: 32% !important;
+  float: left;
+  margin-left: 2%;
+}
+.operation-duration-fields.threeFields > input[type="text"] {
+  margin-left: 0;
 }
 .juiportlet-widget.OpportunitiesForAccountRelatedListView div.button-column,
 .juiportlet-widget.ContactsForAccountRelatedListView div.button-column {
@@ -13474,7 +13542,7 @@ div.wide.form .row {
 div.wide.form .buttons,
 div.wide.form .hint,
 div.wide.form .errorMessage {
-  clear: left;
+  clear: both;
   padding-left: 2px;
 }
 .field-description {
@@ -13755,6 +13823,9 @@ div.wide.form .errorMessage {
 .fileupload-buttonbar .toggle {
   margin-bottom: 5px;
 }
+#ui-datepicker-div {
+  max-width: 250px;
+}
 .ui-datepicker {
   z-index: 10000;
   background-color: #f5f5f5 ;
@@ -13914,8 +13985,10 @@ div.wide.form .errorMessage {
   background: #f5f5f5 url(../images/datepicker-sprite-ie.png) left bottom repeat-x !important;
 }
 .ui-datepicker .ui-datepicker-buttonpane {
-  border-top: 1px solid #BBB;
-  padding: 5px;
+  float: left;
+  width: 100%;
+  border-top: 1px solid #fff;
+  padding: 5px 0;
   zoom: 1;
 }
 .ui-datepicker .ui-datepicker-buttonpane:before {
@@ -13929,23 +14002,39 @@ div.wide.form .errorMessage {
 }
 .ui-datepicker .ui-datepicker-current {
   float: left;
-  margin: 0;
+  margin: 0 10px;
 }
 .ui-datepicker .ui-datepicker-close {
   float: right;
-  margin: 0;
+  margin: 0 10px;
 }
 .ui-datepicker .ui-timepicker-div {
-  padding: 5px;
-  border-bottom: 1px solid #FFF;
+  float: left;
+  padding: 10px 5px 0 5px;
+  border-bottom: 1px solid #bbb;
+  line-height: 1;
 }
 .ui-datepicker .ui-timepicker-div dt {
+  float: left;
+  width: 30%;
+  height: auto !important;
   font-weight: bold;
   -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0 1px 0;
   -moz-text-shadow: rgba(255, 255, 255, 0.8) 0 1px 0;
   -o-text-shadow: rgba(255, 255, 255, 0.8) 0 1px 0;
   -ms-text-shadow: rgba(255, 255, 255, 0.8) 0 1px 0;
   text-shadow: rgba(255, 255, 255, 0.8) 0 1px 0;
+}
+.ui-datepicker .ui-timepicker-div dd {
+  margin: 0 0 0 0 !important;
+  float: left;
+  width: 70%;
+  height: 25px;
+}
+.ui-datepicker .ui-timepicker-div select {
+  position: relative;
+  top: -4px;
+  width: 100%;
 }
 .ui-datepicker .ui-slider {
   background: #111111 url(../images/datepicker-header.png) left top repeat-x !important;
@@ -13956,7 +14045,7 @@ div.wide.form .errorMessage {
   -o-border-radius: 2px !important;
   border-radius: 2px !important;
   position: relative;
-  margin-top: -21px;
+  top: 4px;
 }
 .ui-datepicker .ui-slider-handle {
   background: #fff;
@@ -14017,6 +14106,11 @@ div.wide.form .errorMessage {
 }
 .ui-datepicker .calendar-events-6 span:before {
   content: "‧‧‧\202F‧‧‧";
+}
+.ui-datepicker .ui_tpicker_second,
+.ui-datepicker .ui_tpicker_millisec,
+.ui-datepicker .ui_tpicker_microsec {
+  display: none;
 }
 .token-input-list {
   position: relative;
@@ -17613,6 +17707,9 @@ a.user-link {
   -ms-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
 }
+.dynamic-row .errorMessage {
+  margin-bottom: 5px;
+}
 .dynamic-row .hasDropDown {
   width: auto !important;
 }
@@ -17747,7 +17844,6 @@ a.user-link {
   width: 80%;
 }
 .first-date-area {
-  margin-top: 10px;
   display: block;
 }
 .dynamic-and-for-mixed {
@@ -17766,10 +17862,6 @@ a.user-link {
 #show-triggers-structure-wrapper span,
 #show-filters-structure-wrapper span {
   width: 120px;
-}
-#show-triggers-structure-wrapper input,
-#show-filters-structure-wrapper input {
-  text-indent: 50px;
 }
 #RuntimeFiltersForPortletView {
   float: left;
@@ -18194,11 +18286,12 @@ a.user-link {
 }
 .email-message-recipient-type-selector-container {
   width: 22%;
-  margin-top: 20px;
+  margin: 0 0 15px 0;
 }
 .all-related-field {
   float: left;
   width: 80%;
+  padding-left: 10px;
 }
 .all-related-field .value-data {
   width: 42.5%;
@@ -18258,6 +18351,9 @@ a.user-link {
   margin-left: 25%;
   margin-top: 10px;
   padding-left: 15px;
+}
+.dynamic-row-duration > div {
+  margin-top: 0 !important;
 }
 /*for actions in WORKFLOWS hide/show sequence*/
 .ComponentForWorkflowWizardView .add-email-message-button-container,
@@ -18499,6 +18595,11 @@ a.user-link {
 .tabs-container > .tab .redactor_box,
 .email-template-content > .tab .redactor_box {
   border: none !important;
+}
+.tabs-container > .tab .redactor_box textarea,
+.email-template-content > .tab .redactor_box textarea {
+  color: #fff !important;
+  background: #111 !important;
 }
 .tabs-container > .tab textarea,
 .email-template-content > .tab textarea {
@@ -19055,7 +19156,7 @@ a + .autoresponder-stats {
   content: '\00CE';
   font-weight: normal;
   font-size: 145px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   line-height: 60px;
   position: absolute;
   top: 10px;
@@ -20738,6 +20839,11 @@ div.special-pager .hidden.next:after {
     padding: 0;
     padding: 0 0 0 0;
     background: none;
+  }
+  .module-intro-steps > div {
+    width: 100%;
+    float: none;
+    margin: 0 0 15px 0;
   }
 }
 @media all and (max-width: 601px) and (max-height: 451px) {

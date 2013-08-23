@@ -52,7 +52,7 @@
         
         public function renderValue($value) 
         {
-            return Yii::app()->numberFormatter->formatDecimal((float)$value);
+            return Yii::app()->format->formatDecimal($value);
         }
     }
 ?>
