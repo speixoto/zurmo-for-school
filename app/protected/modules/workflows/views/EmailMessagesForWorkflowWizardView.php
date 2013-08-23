@@ -171,7 +171,7 @@
                         {
                             $(\'#' . $rowCounterInputId . '\').val(parseInt($(\'#' . $rowCounterInputId . '\').val()) + 1);
                             $(".droppable-dynamic-rows-container.' . ComponentForWorkflowForm::TYPE_EMAIL_MESSAGES
-                                . '").find(".dynamic-rows").find("ul:first").first().append(data);
+                                . '").find(".dynamic-rows").find("ul:first").first().append("<li>" + data + "</li>");
                             rebuildWorkflowEmailMessageRowNumbers("' . get_class($this) . '");
                             $(".' . static::getZeroComponentsClassName() . '").hide();
                             $(this).makeLargeLoadingSpinner(false, ".ui-overlay-block");
@@ -209,7 +209,7 @@
         {
             assert('is_int($rowCount)');
             assert('is_array($emailMessages)');
-            $items                      = array();
+            $items = array();
             foreach ($emailMessages as $emailMessage)
             {
                 $inputPrefixData   = array(get_class($this->model), ComponentForWorkflowForm::TYPE_EMAIL_MESSAGES, (int)$rowCount);

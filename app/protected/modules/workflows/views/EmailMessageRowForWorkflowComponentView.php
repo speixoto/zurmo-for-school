@@ -143,7 +143,7 @@
             $content .= $this->renderEmailMessageContent();
             $content .= '</div>';
             $content  =  ZurmoHtml::tag('div', array('class' => 'dynamic-row'), $content);
-            return ZurmoHtml::tag('li', array(), $content);
+            return $content;
         }
 
         /**
@@ -220,7 +220,7 @@
          */
         protected function renderRecipientSelectorContentAndWrapper()
         {
-            $content     = ZurmoHtml::tag('h2', array(), Zurmo::t('WorkflowsModule', 'Recipients'));
+            $content     = ZurmoHtml::tag('h3', array(), Zurmo::t('WorkflowsModule', 'Recipients'));
             $htmlOptions = array('id' => $this->resolveAddRecipientId(), 'class' => self::ADD_RECIPIENT_CLASS_NAME);
             $content    .= ZurmoHtml::dropDownList(self::ADD_RECIPIENT_TYPE_NAME, null,
                            $this->resolveRecipientTypeDataAndLabels(), $htmlOptions);
