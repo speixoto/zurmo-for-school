@@ -300,13 +300,14 @@
             $script = '$(".editable").editInPlace({
                                                     url: "' . $taskCheckItemUrl . '",
                                                     element_id : "id",
-                                                    show_buttons: true
+                                                    show_buttons: true,
+                                                    value_required : true
                                                     });';
 
             $scriptTextArea = '$(".editableTextarea").editInPlace({
                                                     url: "' . $updateDesctiptionUrl . '",
                                                     element_id : "id",
-                                                    show_buttons: true,
+                                                    show_buttons: false,
                                                     field_type: "textarea",
                                                     textarea_rows: "15",
                                                     textarea_cols: "35",
