@@ -149,5 +149,10 @@
         {
             return null;
         }
+
+        protected function renderTitleContent()
+        {
+            return null;
+        }
     }
 ?>
