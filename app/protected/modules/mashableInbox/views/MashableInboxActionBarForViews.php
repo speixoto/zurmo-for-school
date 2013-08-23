@@ -259,10 +259,7 @@
             }
             if($modelsImplementsStarredInterface)
             {
-                $content .= $form->hiddenField(
-                        $model,
-                        'filterByStarred',
-                        array('class' => $form->id . '_filterByStarred'));
+                $content .= $form->hiddenField($model, 'filterByStarred', array('class' => $form->id . '_filterByStarred'));
             }
             return $content;
         }

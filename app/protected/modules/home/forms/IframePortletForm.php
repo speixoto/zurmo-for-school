@@ -49,7 +49,7 @@
                 array('title', 'required'),
                 array('iframeHeight', 'required'),
                 array('iframeUrl', 'required'),
-                array('iframeUrl', 'url', 'defaultScheme' => 'http'),          
+                array('iframeUrl', 'url', 'defaultScheme' => 'http'),
             );
         }
 
