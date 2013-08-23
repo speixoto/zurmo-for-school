@@ -141,6 +141,13 @@
             return false;
         }
 
+        /**
+         * Override to add a description for the view to be shown when adding a portlet
+         */
+        public static function getPortletDescription()
+        {
+        }
+
         public static function hasRollupSwitch()
         {
             return false;

@@ -301,8 +301,6 @@ a.ModalGameNotification a,
 }
 .cf:before,
 .cf:after,
-.operation-duration-fields:before,
-.operation-duration-fields:after,
 .recipient:before,
 .recipient:after,
 #NoUserEmailConfigurationYetView:before,
@@ -327,7 +325,6 @@ a.ModalGameNotification a,
   display: table;
 }
 .cf:after,
-.operation-duration-fields:after,
 .recipient:after,
 #NoUserEmailConfigurationYetView:after,
 .dynamic-row:after,
@@ -341,7 +338,6 @@ a.ModalGameNotification a,
   clear: both;
 }
 .cf,
-.operation-duration-fields,
 .recipient,
 #NoUserEmailConfigurationYetView,
 .dynamic-row,
@@ -1013,7 +1009,7 @@ body.blue .configuration-list li a:hover span:before,
 body.blue .configuration-list td:last-child a:hover,
 body.blue .configuration-list td:last-child a:hover span:before,
 body.blue .addfileinput-button:hover span,
-body.blue .available-portlets span,
+body.blue .mini-button:hover span,
 body.blue .hide-welcome span,
 body.blue .hide-module-intro span,
 body.blue .hide-marketing-intro span,
@@ -1572,7 +1568,7 @@ body.brown .configuration-list li a:hover span:before,
 body.brown .configuration-list td:last-child a:hover,
 body.brown .configuration-list td:last-child a:hover span:before,
 body.brown .addfileinput-button:hover span,
-body.brown .available-portlets span,
+body.brown .mini-button:hover span,
 body.brown .hide-welcome span,
 body.brown .hide-module-intro span,
 body.brown .hide-marketing-intro span,
@@ -2131,7 +2127,7 @@ body.lime .configuration-list li a:hover span:before,
 body.lime .configuration-list td:last-child a:hover,
 body.lime .configuration-list td:last-child a:hover span:before,
 body.lime .addfileinput-button:hover span,
-body.lime .available-portlets span,
+body.lime .mini-button:hover span,
 body.lime .hide-welcome span,
 body.lime .hide-module-intro span,
 body.lime .hide-marketing-intro span,
@@ -2690,7 +2686,7 @@ body.cherry .configuration-list li a:hover span:before,
 body.cherry .configuration-list td:last-child a:hover,
 body.cherry .configuration-list td:last-child a:hover span:before,
 body.cherry .addfileinput-button:hover span,
-body.cherry .available-portlets span,
+body.cherry .mini-button:hover span,
 body.cherry .hide-welcome span,
 body.cherry .hide-module-intro span,
 body.cherry .hide-marketing-intro span,
@@ -3249,7 +3245,7 @@ body.turquoise .configuration-list li a:hover span:before,
 body.turquoise .configuration-list td:last-child a:hover,
 body.turquoise .configuration-list td:last-child a:hover span:before,
 body.turquoise .addfileinput-button:hover span,
-body.turquoise .available-portlets span,
+body.turquoise .mini-button:hover span,
 body.turquoise .hide-welcome span,
 body.turquoise .hide-module-intro span,
 body.turquoise .hide-marketing-intro span,
@@ -3808,7 +3804,7 @@ body.violet .configuration-list li a:hover span:before,
 body.violet .configuration-list td:last-child a:hover,
 body.violet .configuration-list td:last-child a:hover span:before,
 body.violet .addfileinput-button:hover span,
-body.violet .available-portlets span,
+body.violet .mini-button:hover span,
 body.violet .hide-welcome span,
 body.violet .hide-module-intro span,
 body.violet .hide-marketing-intro span,
@@ -4367,7 +4363,7 @@ body.honey .configuration-list li a:hover span:before,
 body.honey .configuration-list td:last-child a:hover,
 body.honey .configuration-list td:last-child a:hover span:before,
 body.honey .addfileinput-button:hover span,
-body.honey .available-portlets span,
+body.honey .mini-button:hover span,
 body.honey .hide-welcome span,
 body.honey .hide-module-intro span,
 body.honey .hide-marketing-intro span,
@@ -4905,6 +4901,7 @@ section {
 }
 /*=Login*/
 #LoginView {
+  min-width: 900px;
   height: 100%;
   margin: 30px;
   -webkit-box-shadow: 0 0 12px 5px rgba(153, 153, 153, 0.3);
@@ -4982,8 +4979,8 @@ section {
   left: 6px;
 }
 #login-box {
-  max-width: 475px;
-  margin: 150px auto 0 -237px;
+  width: 500px;
+  margin: 150px auto 0 -250px;
   height: 200px;
   position: relative;
   left: 50%;
@@ -7268,7 +7265,6 @@ td {
   font-weight: normal;
   text-align: left;
 }
-#import-temp-table-list-view,
 #list-view {
   overflow-x: auto;
   position: relative;
@@ -7388,10 +7384,6 @@ td {
   margin-top: 2px;
   float: left;
 }
-.stacked-list td .star-column {
-  margin: -6px 15px 0 0 !important;
-  float: right;
-}
 .stacked-list tr:first-child > div:first-child {
   font-size: 13px;
   font-weight: bold;
@@ -7434,11 +7426,6 @@ tr.even {
 .checkbox-column .hasCheckBox {
   margin: -4px auto 0 auto;
 }
-.star-column {
-  width: 20px;
-  text-align: center;
-  padding: 0 !important;
-}
 .button-column {
   width: 35px;
   text-align: center;
@@ -7451,40 +7438,6 @@ tr.even {
   font-size: 24px;
   font-family: "zurmo_gamification_symbly_rRg";
   visibility: hidden;
-}
-.icon-star {
-  font-weight: normal;
-  font-size: 26px;
-  font-family: "zurmo_gamification_symbly_rRg";
-  color: #ccc !important;
-  -webkit-text-shadow: 0 0 1px #333333;
-  -moz-text-shadow: 0 0 1px #333333;
-  -o-text-shadow: 0 0 1px #333333;
-  -ms-text-shadow: 0 0 1px #333333;
-  text-shadow: 0 0 1px #333333;
-  top: -1px;
-  position: relative;
-  line-height: 1;
-}
-.icon-star:hover,
-.icon-star.starred {
-  color: #ffef42 !important;
-}
-#list-view_columnStar {
-  line-height: 1;
-  width: 20px;
-  text-align: center;
-  padding-right: 0 !important;
-  padding-left: 0 !important;
-}
-#list-view_columnStar .icon-star {
-  top: 0;
-  left: -2px;
-}
-h1 .icon-star,
-.juiportlet-widget-head .icon-star {
-  top: 1px;
-  margin-left: 5px;
 }
 .juiportlet-widget .empty {
   padding: 5px 0 10px 0;
@@ -7556,13 +7509,6 @@ td.empty {
   line-height: 60px !important;
 }
 .general-issue-notice p {
-  font-size: 14px;
-  line-height: 21px;
-}
-.splash-view .general-issue-notice p {
-  margin: 0;
-  float: none;
-  width: 100%;
   font-size: 14px;
   line-height: 21px;
 }
@@ -7668,20 +7614,17 @@ td.empty {
   display: inline-block;
   font-style: italic;
   font-size: 11px;
-  padding: 0 20px 5px 0;
-  position: relative;
-  left: 20px;
-  top: 5px;
+  padding: 0 0 5px 0;
 }
 .form .row-description:before {
   content: "T";
   font-weight: normal;
   font-size: 24px;
   font-family: "zurmo_gamification_symbly_rRg";
-  margin-left: -20px;
+  margin-right: 6px;
   font-style: normal;
-  position: absolute;
-  top: -4px;
+  position: relative;
+  top: 2px;
 }
 .AppContent label {
   font-size: 12px;
@@ -7846,7 +7789,7 @@ body div.form-toolbar a.simple-link:not(.z-button) span.z-label {
 body div.form-toolbar a.simple-link:not(.z-button) span.z-label:before {
   content: "" !important;
 }
-.zurmo body a.simple-link {
+a.simple-link {
   background: none !important;
   background-image: none !important;
   -webkit-box-shadow: none  !important;
@@ -7866,7 +7809,7 @@ body div.form-toolbar a.simple-link:not(.z-button) span.z-label:before {
   font-size: 11px;
   font-weight: normal;
 }
-.zurmo body a.simple-link:before {
+a.simple-link:before {
   content: "" !important;
 }
 .normal-size {
@@ -8336,13 +8279,6 @@ div.wide.form label.hasCheckBox {
   font-size: 300px;
   font-family: "zurmo_gamification_symbly_rRg";
   line-height: 52%;
-}
-.highlight-create-button {
-  -o-animation: throb 2.5s infinite ease-in-out;
-  -ms-animation: throb 2.5s infinite ease-in-out;
-  -moz-animation: throb 2.5s infinite ease-in-out;
-  -webkit-animation: throb 2.5s infinite ease-in-out;
-  animation: throb 2.5s infinite ease-in-out;
 }
 #NoUserEmailConfigurationYetView .z-label {
   z-index: auto;
@@ -9154,7 +9090,6 @@ div.wide.form label.hasCheckBox {
   width: 100%;
 }
 .has-model-select {
-  z-index: 0;
   clear: left;
   padding: 0 !important;
 }
@@ -9388,10 +9323,6 @@ div.wide.form label.hasCheckBox {
 }
 .mapcanvas {
   width: 600px;
-  height: 400px;
-}
-.mapCanvasPortlet {
-  width: 100%;
   height: 400px;
 }
 /*=tasks portelt*/
@@ -10106,23 +10037,6 @@ div.hasHalfs > div input {
 }
 .twoThirds {
   width: 64%;
-}
-.operation-duration-fields.twoFields input[type="text"] {
-  width: 49%;
-  float: left;
-}
-.operation-duration-fields.twoFields > div {
-  width: 49% !important;
-  float: right;
-}
-.operation-duration-fields.threeFields > div.hasDropDown,
-.operation-duration-fields.threeFields > input[type="text"] {
-  width: 32% !important;
-  float: left;
-  margin-left: 2%;
-}
-.operation-duration-fields.threeFields > input[type="text"] {
-  margin-left: 0;
 }
 .juiportlet-widget.OpportunitiesForAccountRelatedListView div.button-column,
 .juiportlet-widget.ContactsForAccountRelatedListView div.button-column {
@@ -11094,24 +11008,16 @@ div.hasHalfs > div input {
   background-image: linear-gradient(0deg, #969696, #afafaf) !important;
 }
 /*=About*/
-#RunJobView,
-#DiagnosticCheckServicesView,
 #AboutView {
   position: relative;
 }
-#RunJobView #ZurmoLogo,
-#DiagnosticCheckServicesView #ZurmoLogo,
 #AboutView #ZurmoLogo {
   width: 300px;
 }
-#RunJobView #ZurmoLogo strong,
-#DiagnosticCheckServicesView #ZurmoLogo strong,
 #AboutView #ZurmoLogo strong {
   float: right;
   margin-top: 26px;
 }
-#RunJobView h1,
-#DiagnosticCheckServicesView h1,
 #AboutView h1 {
   text-indent: 15px;
   font-size: 15px;
@@ -11132,8 +11038,6 @@ div.hasHalfs > div input {
   box-shadow: inset 0 1px 0 0 #ffffff;
   border-bottom: 1px solid #ccc;
 }
-#RunJobView > div,
-#DiagnosticCheckServicesView > div,
 #AboutView > div {
   margin-right: 0;
   margin-bottom: 20px;
@@ -11152,13 +11056,9 @@ div.hasHalfs > div input {
   background-image: -o-linear-gradient(#ffffff, #f5f5f5 80%, #f5f5f5) ;
   background-image: linear-gradient(#ffffff, #f5f5f5 80%, #f5f5f5) ;
 }
-#RunJobView #aboutText,
-#DiagnosticCheckServicesView #aboutText,
 #AboutView #aboutText {
   position: relative;
 }
-#RunJobView #leftCol,
-#DiagnosticCheckServicesView #leftCol,
 #AboutView #leftCol {
   padding: 15px 0 50px 15px;
   width: 65%;
@@ -11167,13 +11067,9 @@ div.hasHalfs > div input {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
-#RunJobView #leftCol > div,
-#DiagnosticCheckServicesView #leftCol > div,
 #AboutView #leftCol > div {
   margin-bottom: 20px;
 }
-#RunJobView #rightCol,
-#DiagnosticCheckServicesView #rightCol,
 #AboutView #rightCol {
   float: right;
   width: 30%;
@@ -11182,16 +11078,12 @@ div.hasHalfs > div input {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
-#RunJobView #rightCol > div,
-#DiagnosticCheckServicesView #rightCol > div,
 #AboutView #rightCol > div {
   padding: 8px 10px;
   background: #F4F4F4;
   margin-bottom: 15px;
   float: left;
 }
-#RunJobView #aboutContactDetails,
-#DiagnosticCheckServicesView #aboutContactDetails,
 #AboutView #aboutContactDetails {
   width: 100%;
   float: left;
@@ -11201,31 +11093,19 @@ div.hasHalfs > div input {
   position: absolute;
   bottom: 0;
 }
-#RunJobView #aboutContactDetails span,
-#DiagnosticCheckServicesView #aboutContactDetails span,
 #AboutView #aboutContactDetails span {
   margin: 0 10px;
 }
-#RunJobView p,
-#DiagnosticCheckServicesView p,
 #AboutView p,
-#RunJobView ul,
-#DiagnosticCheckServicesView ul,
 #AboutView ul {
   font-size: 12px;
   line-height: 21px;
   font-weight: normal;
 }
-#RunJobView p a,
-#DiagnosticCheckServicesView p a,
 #AboutView p a,
-#RunJobView ul a,
-#DiagnosticCheckServicesView ul a,
 #AboutView ul a {
   text-decoration: underline !important;
 }
-#RunJobView ul,
-#DiagnosticCheckServicesView ul,
 #AboutView ul {
   margin-top: 4px;
   padding-left: 20px;
@@ -11410,9 +11290,6 @@ div.hasHalfs > div input {
 .juiportlet-column-no-split {
   width: 100%;
 }
-.juiportlet-column-no-split .juiportlet-widget {
-  margin-right: 0 !important;
-}
 .juiportlet-column-split-left-75 {
   width: 65%;
 }
@@ -11517,12 +11394,10 @@ div.hasHalfs > div input {
   border-bottom: none;
 }
 /*ICONS..*/
-.juiportlet-widget.OpportunitiesForContactRelatedListView h3:before,
-.juiportlet-widget.OpportunitiesForAccountRelatedListView h3:before {
+.juiportlet-widget.type-opportunities h3:before {
   content: "9";
 }
-.juiportlet-widget.OpportunitiesForContactRelatedListView .icon-empty:before,
-.juiportlet-widget.OpportunitiesForAccountRelatedListView .icon-empty:before {
+.juiportlet-widget.type-opportunities .icon-empty:before {
   content: "9";
   font-weight: normal;
   font-size: 45px;
@@ -11535,12 +11410,10 @@ div.hasHalfs > div input {
   vertical-align: middle;
   position: relative;
 }
-.juiportlet-widget.ContactsForOpportunityRelatedListView h3:before,
-.juiportlet-widget.ContactsForAccountRelatedListView h3:before {
+.juiportlet-widget.type-contacts h3:before {
   content: "e";
 }
-.juiportlet-widget.ContactsForOpportunityRelatedListView .icon-empty:before,
-.juiportlet-widget.ContactsForAccountRelatedListView .icon-empty:before {
+.juiportlet-widget.type-contacts .icon-empty:before {
   content: "e";
   font-weight: normal;
   font-size: 45px;
@@ -11553,10 +11426,7 @@ div.hasHalfs > div input {
   vertical-align: middle;
   position: relative;
 }
-.juiportlet-widget.TasksMyListView .icon-empty:before,
-.juiportlet-widget.OpenTasksForOpportunityRelatedListView .icon-empty:before,
-.juiportlet-widget.OpenTasksForContactRelatedListView .icon-empty:before,
-.juiportlet-widget.OpenTasksForAccountRelatedListView .icon-empty:before {
+.juiportlet-widget.type-tasks .icon-empty:before {
   content: "4";
   font-weight: normal;
   font-size: 45px;
@@ -11569,10 +11439,7 @@ div.hasHalfs > div input {
   vertical-align: middle;
   position: relative;
 }
-.juiportlet-widget.AllLatestActivitiesForPortletView .icon-empty:before,
-.juiportlet-widget.OpportunityLatestActivitiesForPortletView .icon-empty:before,
-.juiportlet-widget.AccountLatestActivitiesForPortletView .icon-empty:before,
-.juiportlet-widget.ContactLatestActivitiesForPortletView .icon-empty:before {
+.juiportlet-widget.type-activities .icon-empty:before {
   content: '\00A5';
   font-weight: normal;
   font-size: 45px;
@@ -11585,7 +11452,7 @@ div.hasHalfs > div input {
   vertical-align: middle;
   position: relative;
 }
-.juiportlet-widget.ProductsForAccountRelatedListView .icon-empty:before {
+.juiportlet-widget.type-products .icon-empty:before {
   content: '\003E';
   font-weight: normal;
   font-size: 45px;
@@ -11598,10 +11465,7 @@ div.hasHalfs > div input {
   vertical-align: middle;
   position: relative;
 }
-.juiportlet-widget.AllSocialItemsForPortletView .empty {
-  display: none;
-}
-.juiportlet-widget.AllSocialItemsForPortletView .icon-empty:before {
+.juiportlet-widget.type-socialItems .icon-empty:before {
   content: 'u';
   font-weight: normal;
   font-size: 45px;
@@ -11614,7 +11478,7 @@ div.hasHalfs > div input {
   vertical-align: middle;
   position: relative;
 }
-.juiportlet-widget.MyMissionsForPortletView .icon-empty:before {
+.juiportlet-widget.type-missions .icon-empty:before {
   content: 'Q';
   font-weight: normal;
   font-size: 45px;
@@ -11627,7 +11491,7 @@ div.hasHalfs > div input {
   vertical-align: middle;
   position: relative;
 }
-.juiportlet-widget.LeadsMyListView .icon-empty:before {
+.juiportlet-widget.type-leads .icon-empty:before {
   content: '.';
   font-weight: normal;
   font-size: 45px;
@@ -11640,7 +11504,7 @@ div.hasHalfs > div input {
   vertical-align: middle;
   position: relative;
 }
-.juiportlet-widget.AccountsMyListView .icon-empty:before {
+.type-accounts .icon-empty:before {
   content: 'P';
   font-weight: normal;
   font-size: 45px;
@@ -11653,7 +11517,7 @@ div.hasHalfs > div input {
   vertical-align: middle;
   position: relative;
 }
-.juiportlet-widget.ContactsMyListView .icon-empty:before {
+.juiportlet-widget.type-contacts .icon-empty:before {
   content: "e";
   font-weight: normal;
   font-size: 45px;
@@ -11666,7 +11530,7 @@ div.hasHalfs > div input {
   vertical-align: middle;
   position: relative;
 }
-#ProductTemplatesModalListView .icon-empty:before {
+.juiportlet-widget.type-products .icon-empty:before {
   content: '\00AC';
   font-weight: normal;
   font-size: 45px;
@@ -11679,17 +11543,11 @@ div.hasHalfs > div input {
   vertical-align: middle;
   position: relative;
 }
-.juiportlet-widget.OpportunitiesForContactRelatedListView h3,
-.juiportlet-widget.OpportunitiesForAccountRelatedListView h3,
-.juiportlet-widget.ContactsForOpportunityRelatedListView h3,
-.juiportlet-widget.ContactsForAccountRelatedListView h3 {
+.juiportlet-widget.type-opportunities h3 {
   padding-left: 30px;
   position: relative;
 }
-.juiportlet-widget.OpportunitiesForContactRelatedListView h3:before,
-.juiportlet-widget.OpportunitiesForAccountRelatedListView h3:before,
-.juiportlet-widget.ContactsForOpportunityRelatedListView h3:before,
-.juiportlet-widget.ContactsForAccountRelatedListView h3:before {
+.juiportlet-widget.type-opportunities h3:before {
   font-weight: normal;
   font-size: 32px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -13181,9 +13039,23 @@ table.configuration-list td:last-child a .z-label:before {
   text-align: center;
 }
 .available-portlets {
-  padding: 20px;
+  padding: 15px 15px 0 15px;
   list-style: none;
   zoom: 1;
+  max-height: 400px;
+  overflow-y: scroll;
+  /*
+	.icon-:before{
+		content: "z";
+	}
+	.icon-:before{
+		content: "z";
+	}
+	.icon-:before{
+		content: "z";
+	}
+	*/
+
 }
 .available-portlets:before {
   content: "";
@@ -13195,21 +13067,29 @@ table.configuration-list td:last-child a .z-label:before {
   clear: both;
 }
 .available-portlets li {
-  width: 50%;
-  float: left;
   margin-bottom: 15px;
   color: #666;
   vertical-align: middle;
 }
-.available-portlets span {
+.available-portlets h3 {
+  position: relative;
+}
+.available-portlets h3 a {
+  padding-left: 40px;
+}
+.available-portlets h3 span:before {
+  content: "z";
   font-weight: normal;
-  font-size: 24px;
+  font-size: 40px;
   font-family: "zurmo_gamification_symbly_rRg";
-  line-height: 11px;
+  line-height: 1;
+  position: absolute;
+  top: -8px;
   border: none;
-  margin-right: 6px;
   outline: none !important;
   display: inline-block;
+  color: #666;
+  margin: 0;
 }
 .available-portlets a {
   outline: none !important;
@@ -13217,6 +13097,56 @@ table.configuration-list td:last-child a .z-label:before {
 }
 .available-portlets a:foucs {
   outline: none;
+}
+.available-portlets div {
+  padding-left: 40px;
+}
+.available-portlets .mini-button {
+  float: right;
+  position: relative;
+  margin-left: 0;
+  top: -10px;
+}
+.available-portlets .mini-button span {
+  display: block;
+  padding: 0 6px 0 6px;
+  background: none;
+}
+.available-portlets .icon-contacts:before {
+  content: "y";
+}
+.available-portlets .icon-leads:before {
+  content: ".";
+}
+.available-portlets .icon-opportunities:before {
+  content: "9";
+}
+.available-portlets .icon-reports:before {
+  content: '\V';
+}
+.available-portlets .icon-products:before {
+  content: '\003E';
+}
+.available-portlets .icon-rssReader:before {
+  content: "z";
+}
+.available-portlets .icon-tasks:before {
+  content: "4";
+}
+.available-portlets .icon-missions:before {
+  content: 'Q';
+}
+.available-portlets .icon-accounts:before {
+  content: "P";
+}
+.available-portlets .icon-activities:before {
+  content: '00A5';
+}
+.available-portlets .icon-socialItems:before {
+  content: "u";
+}
+.available-portlets .icon-activities:before {
+  content: 'u';
 }
 /*Edit Portlet*/
 #modal-edit-form th {
@@ -19670,7 +19600,7 @@ a + .autoresponder-stats {
   box-sizing: border-box;
   position: relative;
 }
-div.showing-panel {
+.business-card {
   display: block;
 }
 .business-card .gravatar {
@@ -20014,15 +19944,6 @@ div.showing-panel {
 .icon-youtube {
   background: url(../images/social-icons/youtube.png) center center no-repeat;
 }
-.icon-klout {
-  background: url(../images/social-icons/klout.png) center center no-repeat;
-}
-.icon-gravatar {
-  background: url(../images/social-icons/gravatar.png) center center no-repeat;
-}
-.icon-plancast {
-  background: url(../images/social-icons/plancast.png) center center no-repeat;
-}
 .back-of-card {
   display: none;
 }
@@ -20140,430 +20061,6 @@ div.special-pager .hidden.next:after {
 }
 .mini-button .show {
   display: block;
-}
-#game-dashboard {
-  position: relative;
-  z-index: 100;
-}
-#game-dashboard * {
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-}
-#game-dashboard #overlay {
-  width: 100%;
-  height: 100%;
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.65);
-}
-#game-dashboard #dashboard {
-  width: 1200px;
-  height: 600px;
-  position: fixed;
-  left: 50%;
-  top: 50%;
-  margin: -290px auto auto -600px;
-  -webkit-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12), 0 0 1px 0 #ccc;
-  -moz-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12), 0 0 1px 0 #ccc;
-  -o-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12), 0 0 1px 0 #ccc;
-  -ms-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12), 0 0 1px 0 #ccc;
-  box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12), 0 0 1px 0 #ccc;
-  background-color: #f5f5f5 ;
-  background-repeat: no-repeat ;
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), color-stop(80%, #f5f5f5), to(#f5f5f5)) ;
-  background-image: -webkit-linear-gradient(#ffffff, #f5f5f5 80%, #f5f5f5) ;
-  background-image: -moz-linear-gradient(top, #ffffff, #f5f5f5 80%, #f5f5f5) ;
-  background-image: -ms-linear-gradient(#ffffff, #f5f5f5 80%, #f5f5f5) ;
-  background-image: -o-linear-gradient(#ffffff, #f5f5f5 80%, #f5f5f5) ;
-  background-image: linear-gradient(#ffffff, #f5f5f5 80%, #f5f5f5) ;
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  -ms-border-radius: 5px;
-  -o-border-radius: 5px;
-  border-radius: 5px;
-  overflow: hidden;
-}
-#game-dashboard #dashboard > div {
-  padding: 15px;
-}
-#game-dashboard ul {
-  list-style: none;
-}
-#game-dashboard h2 {
-  margin-bottom: 15px;
-}
-/*User Card*/
-#user-card {
-  height: 84%;
-  width: 20%;
-  float: left;
-  border-right: 1px solid #ccc;
-  text-align: center;
-}
-#user-card h3 {
-  margin: 15px 0;
-}
-#user-card ul {
-  font-size: 14px;
-  font-weight: bold;
-}
-#user-card ul li {
-  line-height: 1.75;
-}
-#mini-stats-card {
-  margin-top: 10px;
-  background: rgba(240, 240, 240, 0.9);
-  -webkit-box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.2);
-  -moz-box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.2);
-  -o-box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.2);
-  -ms-box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.2);
-  box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.2);
-  zoom: 1;
-}
-#mini-stats-card:before {
-  content: "";
-  display: table;
-}
-#mini-stats-card:after {
-  content: "";
-  display: table;
-  clear: both;
-}
-#mini-stats-card .level {
-  padding: 10px;
-}
-#mini-stats-card strong {
-  font-size: 36px;
-  line-height: 1;
-  display: block;
-}
-#mini-stats-card strong + span {
-  display: block;
-  font-size: 14px;
-  font-weight: bold;
-  color: #999;
-  margin: 0 0 10px 0;
-}
-#mini-stats-card .percentHolder {
-  text-align: left;
-  margin-bottom: 5px;
-}
-#mini-stats-card .percentHolder + span {
-  font-weight: bold;
-}
-#mini-stats-card .num-badges,
-#mini-stats-card .num-collections {
-  padding: 5px;
-  float: left;
-  width: 50%;
-  border-top: 1px solid #fff;
-}
-#mini-stats-card .num-badges {
-  border-right: 1px solid #ffffff;
-}
-/*Badges*/
-#achievements-list {
-  overflow-y: scroll;
-  height: 84%;
-  width: 30%;
-  float: left;
-  border-right: 1px solid #ccc;
-}
-#achievements-list li {
-  zoom: 1;
-}
-#achievements-list li:before {
-  content: "";
-  display: table;
-}
-#achievements-list li:after {
-  content: "";
-  display: table;
-  clear: both;
-}
-#achievements-list li + li {
-  padding-top: 20px;
-}
-#achievements-list .badge {
-  float: left;
-  margin-right: 15px;
-}
-#achievements-list .badge-grade {
-  right: auto;
-  left: -8px;
-}
-#achievements-list h3,
-#achievements-list p {
-  margin-bottom: 5px;
-}
-#achievements-list p {
-  line-height: 1.4;
-}
-#achievements-list p + span {
-  font-size: 11px;
-  color: #aaa;
-}
-/*Coins*/
-#z-coins {
-  width: 15%;
-  height: 25%;
-  float: left;
-  border-right: 1px solid #ccc;
-  border-bottom: 1px solid #ccc;
-  position: relative;
-  text-align: center;
-}
-#z-coins a {
-  position: absolute;
-  right: 5px;
-  bottom: 5px;
-  font-size: 11px;
-}
-#z-coin {
-  display: block;
-  width: 85px;
-  height: 85px;
-  line-height: 85px;
-  font-size: 36px;
-  font-style: italic;
-  background: gold;
-  -webkit-border-radius: 50%;
-  -moz-border-radius: 50%;
-  -ms-border-radius: 50%;
-  -o-border-radius: 50%;
-  border-radius: 50%;
-  margin: 0 auto 7px auto;
-}
-#z-coin:hover {
-  -webkit-animation: spinCoin 1s infinite;
-}
-/*Leaderboard*/
-#leaderboard {
-  width: 35%;
-  height: 25%;
-  float: left;
-  border-bottom: 1px solid #ccc;
-}
-.leaderboard-rank {
-  float: left;
-  width: 120px;
-  margin-right: 15px;
-  padding: 10px;
-  text-align: center;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  -ms-border-radius: 4px;
-  -o-border-radius: 4px;
-  border-radius: 4px;
-  background-color: #f5f5f5 ;
-  background-repeat: no-repeat ;
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), color-stop(80%, #f5f5f5), to(#f5f5f5)) ;
-  background-image: -webkit-linear-gradient(#ffffff, #f5f5f5 80%, #f5f5f5) ;
-  background-image: -moz-linear-gradient(top, #ffffff, #f5f5f5 80%, #f5f5f5) ;
-  background-image: -ms-linear-gradient(#ffffff, #f5f5f5 80%, #f5f5f5) ;
-  background-image: -o-linear-gradient(#ffffff, #f5f5f5 80%, #f5f5f5) ;
-  background-image: linear-gradient(#ffffff, #f5f5f5 80%, #f5f5f5) ;
-  -webkit-box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.2), 0 -1px 0 0 rgba(0, 0, 0, 0.1);
-  -moz-box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.2), 0 -1px 0 0 rgba(0, 0, 0, 0.1);
-  -o-box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.2), 0 -1px 0 0 rgba(0, 0, 0, 0.1);
-  -ms-box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.2), 0 -1px 0 0 rgba(0, 0, 0, 0.1);
-  box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.2), 0 -1px 0 0 rgba(0, 0, 0, 0.1);
-}
-.leaderboard-rank:last-child {
-  margin-right: 0;
-}
-.leaderboard-rank strong,
-.leaderboard-rank span {
-  display: block;
-}
-.leaderboard-rank strong {
-  font-size: 24px;
-  line-height: 1.5;
-}
-.leaderboard-rank span {
-  font-size: 16px;
-  font-weight: bold;
-  color: #999;
-}
-/*Stats*/
-#stats {
-  width: 50%;
-  height: 59%;
-  float: left;
-}
-.stat-row {
-  width: 70%;
-  padding: 0 0 30px 0;
-  white-space: nowrap;
-}
-.stat-row h3 {
-  width: 35%;
-  text-align: right;
-  display: inline-block;
-}
-.stat-row .stat-level,
-.stat-row .stat-points {
-  float: none;
-  display: inline-block;
-  width: 5%;
-  text-align: center;
-}
-.stat-row .stat-level {
-  font-weight: bold;
-}
-.stat-row .stat-points {
-  width: 10%;
-  position: relative;
-  top: -8px;
-}
-.stat-row .stat-points em {
-  position: absolute;
-  top: 14px;
-  left: 0;
-  text-align: center;
-  font-size: 11px;
-  width: 100%;
-  font-style: normal;
-}
-.stat-row .percentHolder {
-  width: 45%;
-  float: right;
-}
-/*Collections*/
-#collections {
-  width: 100%;
-  height: 16%;
-  float: left;
-  border-top: 1px solid #ccc;
-  padding: 0 !important;
-  position: relative;
-  z-index: 100;
-}
-#carousel-wrapper {
-  width: 92%;
-  height: 100%;
-  float: left;
-}
-#carousel {
-  height: 100%;
-  position: relative;
-}
-.nav-button {
-  width: 4%;
-  height: 100%;
-  text-align: center;
-  line-height: 96px;
-  font-size: 30px;
-  float: left;
-  display: block;
-  -webkit-text-shadow: 0 -1px 0 #ffffff;
-  -moz-text-shadow: 0 -1px 0 #ffffff;
-  -o-text-shadow: 0 -1px 0 #ffffff;
-  -ms-text-shadow: 0 -1px 0 #ffffff;
-  text-shadow: 0 -1px 0 #ffffff;
-  -webkit-box-shadow: 0 0 4px 0 #cccccc;
-  -moz-box-shadow: 0 0 4px 0 #cccccc;
-  -o-box-shadow: 0 0 4px 0 #cccccc;
-  -ms-box-shadow: 0 0 4px 0 #cccccc;
-  box-shadow: 0 0 4px 0 #cccccc;
-  background-color: #f5f5f5 ;
-  background-repeat: no-repeat ;
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), color-stop(80%, #f5f5f5), to(#f5f5f5)) ;
-  background-image: -webkit-linear-gradient(#ffffff, #f5f5f5 80%, #f5f5f5) ;
-  background-image: -moz-linear-gradient(top, #ffffff, #f5f5f5 80%, #f5f5f5) ;
-  background-image: -ms-linear-gradient(#ffffff, #f5f5f5 80%, #f5f5f5) ;
-  background-image: -o-linear-gradient(#ffffff, #f5f5f5 80%, #f5f5f5) ;
-  background-image: linear-gradient(#ffffff, #f5f5f5 80%, #f5f5f5) ;
-  position: relative;
-  z-index: 10;
-}
-.collection-panel {
-  position: relative;
-  width: 350px;
-  height: 100%;
-  float: left;
-}
-.collection-panel .badge {
-  margin: 0;
-  float: left;
-  margin-right: 15px;
-}
-.collection-panel > div {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 200%;
-  padding: 15px 15px;
-  background-color: #f5f5f5 ;
-  background-repeat: no-repeat ;
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), color-stop(80%, #f5f5f5), to(#f5f5f5)) ;
-  background-image: -webkit-linear-gradient(#ffffff, #f5f5f5 80%, #f5f5f5) ;
-  background-image: -moz-linear-gradient(top, #ffffff, #f5f5f5 80%, #f5f5f5) ;
-  background-image: -ms-linear-gradient(#ffffff, #f5f5f5 80%, #f5f5f5) ;
-  background-image: -o-linear-gradient(#ffffff, #f5f5f5 80%, #f5f5f5) ;
-  background-image: linear-gradient(#ffffff, #f5f5f5 80%, #f5f5f5) ;
-  -webkit-box-shadow: inset 0 0 1px 0 #cccccc;
-  -moz-box-shadow: inset 0 0 1px 0 #cccccc;
-  -o-box-shadow: inset 0 0 1px 0 #cccccc;
-  -ms-box-shadow: inset 0 0 1px 0 #cccccc;
-  box-shadow: inset 0 0 1px 0 #cccccc;
-}
-.collection-panel > div:hover {
-  -webkit-animation-name: slideCollectionUp;
-  -webkit-animation-duration: .25s;
-  -webkit-animation-timing-function: linear;
-  -webkit-animation-delay: 0;
-  -webkit-animation-iteration-count: 1;
-  -webkit-animation-direction: alternate;
-  -webkit-animation-play-state: running;
-  -webkit-animation-fill-mode: forwards;
-  z-index: 100;
-  -webkit-box-shadow: 0 0 5px 0 #aaaaaa;
-  -moz-box-shadow: 0 0 5px 0 #aaaaaa;
-  -o-box-shadow: 0 0 5px 0 #aaaaaa;
-  -ms-box-shadow: 0 0 5px 0 #aaaaaa;
-  box-shadow: 0 0 5px 0 #aaaaaa;
-}
-.collection-panel .number-collected {
-  margin: 10px 0;
-}
-.collection-panel .number-collected .have-it,
-.collection-panel .number-collected .have-it-not {
-  display: inline-block;
-  width: 12px;
-  height: 12px;
-  -webkit-border-radius: 50%;
-  -moz-border-radius: 50%;
-  -ms-border-radius: 50%;
-  -o-border-radius: 50%;
-  border-radius: 50%;
-  background: green;
-}
-.collection-panel .number-collected .have-it-not {
-  background: #ccc;
-  filter: alpha(opacity=50);
-  -khtml-opacity: 0.5;
-  -moz-opacity: 0.5;
-  opacity: 0.5;
-}
-.collection-panel .number-collected .total-completed {
-  float: right;
-}
-.collection-items {
-  margin-top: 30px;
-}
-.collection-items .collection-item {
-  width: 40px;
-  height: 40px;
-  background: pink;
-  display: inline-block;
-  float: left;
-  margin-right: 10px;
 }
 /*********************************************************************************
  * Zurmo is a customer relationship management program developed by
