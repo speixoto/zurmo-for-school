@@ -480,5 +480,29 @@
             $notificationSubscriber->hasReadLatest = false;
             $task->notificationSubscribers->add($notificationSubscriber);
         }
+
+        /**
+         * Update description
+         * @param int $id
+         */
+        public function actionUpdateDescriptionViaAjax()
+        {
+            $getData = GetUtil::getData();
+            $descriptionId = $getData['id'];
+            $descriptionFieldArray = explode('_' , $descriptionId);
+            $model   = Task::getById(intval($descriptionFieldArray[1]));
+            ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($model);
+            $model->description = $getData['update_value'];
+            $saved = $model->save();
+            assert('$saved');
+            if($model->description != '')
+            {
+                echo $model->description;
+            }
+            else
+            {
+                echo Zurmo::t('TasksModule', 'Click here to enter description');
+            }
+        }
     }
 ?>

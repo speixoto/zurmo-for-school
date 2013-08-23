@@ -24,6 +24,9 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * Details view for the task
+     */
     class TaskDetailsView extends SecuredEditAndDetailsView
     {
         public static function getDefaultMetadata()
@@ -65,16 +68,17 @@
          */
         protected function renderContent()
         {
-            $content  = '<div class="details-table">';
-            $content .= $this->renderTitleContent();
-            $content .= $this->resolveAndRenderActionElementMenu();
+            $content      = '<div class="details-table">';
+            $content     .= $this->renderTitleContent();
+            $content     .= $this->resolveAndRenderActionElementMenu();
             $leftContent  = $this->renderBeforeFormLayoutForDetailsContent();
             $leftContent .= $this->renderFormLayout();
-            $content .= ZurmoHtml::tag('div', array('class' => 'left-column'), $leftContent);
-            $content .= $this->renderRightSideContent();
-            $content .= $this->renderAfterRightSideContent();
-            $content .= '</div>';
-            $content .= $this->renderAfterDetailsTable();
+            $content     .= ZurmoHtml::tag('div', array('class' => 'left-column'), $leftContent);
+            $content     .= $this->renderRightSideContent();
+            $content     .= $this->renderAfterRightSideContent();
+            $content     .= '</div>';
+            $content     .= $this->renderAfterDetailsTable();
+            $this->registerEditInPlaceScript();
             return $content;
         }
 
@@ -119,7 +123,7 @@
          */
         protected function renderBeforeFormLayoutForDetailsContent()
         {
-            $leftContent = '<p>' . $this->model->description . '</p>';
+            $leftContent = '<p class="editableTextarea" id="description_' . $this->model->id . '">' . $this->model->description . '</p>';
             $content     = ZurmoHtml::tag('div', array('class' => 'left-column'), $leftContent);
             return $content;
         }
@@ -281,6 +285,35 @@
             $content .= '</span>';
             $content .= '</div>';
             return $content;
+        }
+
+        /**
+         * Registers edit in place script
+         */
+        protected function registerEditInPlaceScript()
+        {
+            $taskCheckItemUrl     = Yii::app()->createUrl('tasks/taskCheckItems/updateNameViaAjax');
+            $updateDesctiptionUrl = Yii::app()->createUrl('tasks/default/updateDescriptionViaAjax');
+            Yii::app()->clientScript->registerScriptFile(
+                            Yii::app()->getAssetManager()->publish(
+                                     Yii::getPathOfAlias('application.modules.tasks.views.assets')) . '/jquery.editinplace.js');
+            $script = '$(".editable").editInPlace({
+                                                    url: "' . $taskCheckItemUrl . '",
+                                                    element_id : "id",
+                                                    show_buttons: true
+                                                    });';
+
+            $scriptTextArea = '$(".editableTextarea").editInPlace({
+                                                    url: "' . $updateDesctiptionUrl . '",
+                                                    element_id : "id",
+                                                    show_buttons: true,
+                                                    field_type: "textarea",
+                                                    textarea_rows: "15",
+                                                    textarea_cols: "35",
+                                                    default_text: "' . Zurmo::t('TasksModule', 'Click here to enter description') . '"
+                                                    });';
+            Yii::app()->getClientScript()->registerScript('editableScript', $script, ClientScript::POS_END);
+            Yii::app()->getClientScript()->registerScript('editableTextAreaScript', $scriptTextArea, ClientScript::POS_END);
         }
     }
 ?>

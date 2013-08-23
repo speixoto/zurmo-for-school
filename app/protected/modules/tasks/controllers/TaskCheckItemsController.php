@@ -119,5 +119,20 @@
             $taskCheckListItem->completed = (bool)$checkListItemCompleted;
             $taskCheckListItem->unrestrictedSave();
         }
+
+        /**
+         * Update checklist item name
+         * @param int $id
+         */
+        public function actionUpdateNameViaAjax()
+        {
+            $getData = GetUtil::getData();
+            $checkListItemFieldId = $getData['id'];
+            $checkListItemFieldArray = explode('_', $checkListItemFieldId);
+            $taskCheckListItem = TaskCheckListItem::getById(intval($checkListItemFieldArray[1]));
+            $taskCheckListItem->name = $getData['update_value'];
+            $taskCheckListItem->unrestrictedSave();
+            echo $getData['update_value'];
+        }
     }
 ?>

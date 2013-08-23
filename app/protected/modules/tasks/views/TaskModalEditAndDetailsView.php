@@ -58,27 +58,6 @@
              return null;
          }
 
-         /**
-          * @return array
-          */
-         protected static function resolveAjaxOptionsForSave($relationAttributeName, $relationModelId, $relationModuleId, $uniqueLayoutId, $modalId)
-         {
-            return array(
-                'type'      => 'post',
-                'data'      => 'js:$("#task-modal-edit-form").serialize()',
-                'beforeSend'=> 'function(xhr)
-                                {
-                                    $(this).makeLargeLoadingSpinner(true, "#' . $modalId . '");
-                                }',
-                'success'   => 'function(data, textStatus, xmlReq)
-                                {
-                                    $(this).makeLargeLoadingSpinner(false, "#' . $modalId . '");
-                                    console.log("success");
-                                }
-                               '
-            );
-        }
-
         /**
          * @return string
          */

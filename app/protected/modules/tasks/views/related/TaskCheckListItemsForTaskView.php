@@ -92,7 +92,7 @@
             $content = '<div>' . $this->renderHiddenRefreshLinkContent() . '</div>';
             if (count($this->checkListItemsData) > 0)
             {
-                $content .= '<div id="TaskCheckListItems' . $this->uniquePageId . '" class="CommentList">' . $this->renderCheckListItemsContent() . '</div>';
+                $content .= '<div id="TaskCheckListItems' . $this->uniquePageId . '" class="TaskCheckItemsList">' . $this->renderCheckListItemsContent() . '</div>';
             }
             $this->registerCheckBoxEventHandlerScript();
             return $content;
@@ -137,13 +137,17 @@
 
                 $content .= ZurmoHtml::checkBox('TaskCheckListItem_' . $checkListItem->id, $checked,
                                                     array('class' => 'checkListItem',
-                                                            'value' => $checkListItem->id)
-                                                ) . $checkListItem->name;
+                                                          'value' => $checkListItem->id
+                                                        )
+                                                ) . '<span class="editable" id="checkListItem_' . $checkListItem->id . '">' . $checkListItem->name . '</span>';
 
             }
             return $content;
         }
 
+        /**
+         * Register check box event handler script
+         */
         protected function registerCheckBoxEventHandlerScript()
         {
             $url     =   Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/updateStatusViaAjax');
