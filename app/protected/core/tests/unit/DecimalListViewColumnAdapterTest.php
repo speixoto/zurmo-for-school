@@ -34,37 +34,44 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class CampaignStatusElement extends StaticDropDownElement
-    {
-        /**
-         * Called from outside to render status value as label. @see CampaignStatusListViewColumnAdapter
-         * Called from outside to render status value as label. @see CampaignStatusListViewColumnAdapter
-         * @param int $status
-         * @return string, translated status if available otherwise just return status value
-         */
-        public static function renderNonEditableStringContent($status)
-        {
-            assert('is_int($status)');
-            $data = Campaign::getStatusDropDownArray();
-            if (isset($data[$status]))
-            {
-                return $data[$status];
-            }
-            return $status;
+    class DecimalListViewColumnAdapterTest extends BaseTest
+    {        
+        private $model;
+        
+        private $view;
+        
+        private $adapter;
+        
+        private $decimal;
+        
+        public function setup() {
+            parent::setup();
+            $this->model = new TestPrecisionModel();
+            $viewStub    = $this->getMockBuilder('AListView')
+                              ->disableOriginalConstructor()
+                              ->getMock();
+            $this->view  = $viewStub;
+            $this->adapter = new DecimalListViewColumnAdapter('numberPositive5Precision', 
+                                                              $this->view, array());
+            $this->decimal = 'numberPositive5Precision';
         }
-
-        /**
-         * @return A|void
-         * @throws NotSupportedException
-         */
-        protected function renderControlEditable()
-        {
-            throw new NotSupportedException();
-        }
-
-        protected function getDropDownArray()
-        {
-            return Campaign::getStatusDropDownArray();
+        
+        public function testRenderDataCellContent()
+        {                                                   
+            $this->model->{$this->decimal} = 1234.56789;
+            $this->assertEquals('1,234.56789', $this->adapter->renderDataCellContent($this->model, 0));
+            
+            $this->model->{$this->decimal} = 123.456789;
+            $this->assertEquals('123.456789', $this->adapter->renderDataCellContent($this->model, 0));
+            
+            $this->model->{$this->decimal} = 123.4000;
+            $this->assertEquals('123.4000', $this->adapter->renderDataCellContent($this->model, 0));
+            
+            $this->model->{$this->decimal} = 123;
+            $this->assertEquals('123.0', $this->adapter->renderDataCellContent($this->model, 0));
+            
+            $this->model->{$this->decimal} = 0.123456789;
+            $this->assertEquals('0.123456789', $this->adapter->renderDataCellContent($this->model, 0));
         }
     }
 ?>

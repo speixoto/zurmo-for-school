@@ -105,16 +105,15 @@
                         $headerData = array();
                         $data       = array();
                         if($unserializedData instanceOf ReportDataProvider)
-                        {
-                            foreach ($formattedData as $reportResultsRowData)
-                            {
-                                $reportToExportAdapter  = ReportToExportAdapterFactory::createReportToExportAdapter($unserializedData->getReport(), $unserializedData); 
+                        {                            
+                                $reportToExportAdapter  = ReportToExportAdapterFactory::
+                                                                createReportToExportAdapter($unserializedData->getReport(), 
+                                                                                            $unserializedData); 
                                 if (count($headerData) == 0)
                                 {
                                     $headerData = $reportToExportAdapter->getHeaderData();
                                 }
                                 $data = $reportToExportAdapter->getData();
-                            }
                         }
                         else
                         {

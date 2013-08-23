@@ -33,38 +33,29 @@
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
-
-    class CampaignStatusElement extends StaticDropDownElement
-    {
-        /**
-         * Called from outside to render status value as label. @see CampaignStatusListViewColumnAdapter
-         * Called from outside to render status value as label. @see CampaignStatusListViewColumnAdapter
-         * @param int $status
-         * @return string, translated status if available otherwise just return status value
-         */
-        public static function renderNonEditableStringContent($status)
-        {
-            assert('is_int($status)');
-            $data = Campaign::getStatusDropDownArray();
-            if (isset($data[$status]))
-            {
-                return $data[$status];
+    
+    class ZurmoNumberFormatter extends CNumberFormatter
+    {        
+       
+	/**
+	 * Override to make the format decimal part the same as the passed value
+	 * @param mixed $value the number to be formatted
+	 * @return string the formatting result.
+	 */
+	public function formatDecimal($value)
+	{
+            $decimalFormat = "#,##0.";
+            $pos = strpos($value, '.');
+            if ($pos > 0)
+            {   
+                for ($i=0; $i < strlen($value) - $pos - 2; $i++)
+                {
+                    $decimalFormat .= "#";
+                }
+                $decimalFormat .= "0";
             }
-            return $status;
-        }
-
-        /**
-         * @return A|void
-         * @throws NotSupportedException
-         */
-        protected function renderControlEditable()
-        {
-            throw new NotSupportedException();
-        }
-
-        protected function getDropDownArray()
-        {
-            return Campaign::getStatusDropDownArray();
-        }
+            return $this->format($decimalFormat,$value);
+	}
+	
     }
 ?>
