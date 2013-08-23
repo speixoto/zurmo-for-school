@@ -60,11 +60,14 @@
                     'eMany'       => array(RedBeanModel::HAS_MANY, 'E')
                 ),
                 'rules' => array(
-                    array('eRequired',    'required'),
-                    array('eUnique',      'unique'),
-                    array('defaultedInt', 'default', 'value' => 69),
-                    array('eDefaulted1',  'default', 'value' => E::getByE('theDefaultE')),
-                    array('eDefaulted2',  'default', 'value' => self::getTheDefaultE()),
+                    array('eRequired',      'required'),
+                    array('eUnique',        'unique'),
+                    array('c',              'type', 'type' => 'string'),
+                    array('c',              'length', 'max' => 255),
+                    array('defaultedInt',   'type', 'type' => 'integer'),
+                    array('defaultedInt',   'default', 'value' => 69),
+                    array('eDefaulted1',    'default', 'value' => E::getByE('theDefaultE')),
+                    array('eDefaulted2',    'default', 'value' => self::getTheDefaultE()),
                 ),
             );
             return $metadata;
