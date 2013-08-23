@@ -157,5 +157,16 @@
             $entry = GeneralCache::getEntry("SomethingThatDoesNotExistForSure", $default);
             $this->assertEquals($default, $entry);
         }
+
+        public function testGetEntryReturnsDefaultAfterCachedOnce()
+        {
+            $default = "DEFAULT";
+            $entry = GeneralCache::getEntry("SomethingThatDoesNotExistForSure", $default, true);
+            $this->assertEquals($default, $entry);
+
+            // get it again but without a default value this time
+            $entry = GeneralCache::getEntry("SomethingThatDoesNotExistForSure");
+            $this->assertEquals($default, $entry);
+        }
     }
 ?>

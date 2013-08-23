@@ -51,7 +51,7 @@
          * @return mixed
          * @throws NotFoundException
          */
-        public static function getEntry($identifier, $default = 'NOT_FOUND_EXCEPTION')
+        public static function getEntry($identifier, $default = 'NOT_FOUND_EXCEPTION', $cacheDefaultValue = false)
         {
             assert('is_string($identifier)');
             if (PHP_CACHING_ON)
@@ -83,6 +83,10 @@
             }
             else
             {
+                if ($cacheDefaultValue)
+                {
+                    static::cacheEntry($identifier, $default);
+                }
                 return $default;
             }
         }
