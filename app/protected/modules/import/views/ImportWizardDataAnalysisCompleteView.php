@@ -176,5 +176,10 @@
         {
             return Zurmo::t('ImportModule', 'Import Data');
         }
+
+        protected function renderTitleContent()
+        {
+            return null;
+        }
     }
 ?>

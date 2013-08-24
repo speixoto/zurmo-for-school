@@ -51,6 +51,13 @@
             $this->uniqueLayoutId = $uniqueLayoutId;
         }
 
+        /**
+         * Override to add a description for the view to be shown when adding a portlet
+         */
+        public static function getPortletDescription()
+        {
+        }
+
         public function getPortletParams()
         {
             return array();
@@ -58,8 +65,9 @@
 
         public function renderContent()
         {
-            return '<iframe src=' . $this->resolveViewAndMetadataValueByName('iframeUrl') .
-                   ' width="100%" height="100%" frameborder="0" seamless></iframe>';
+            return '<iframe src=' . Yii::app()->format->resolveForUrl($this->resolveViewAndMetadataValueByName('iframeUrl')) .
+                   ' width="100%" height='. $this->resolveViewAndMetadataValueByName('iframeHeight') .
+                   ' frameborder="0" seamless></iframe>';
         }
 
         public function renderPortletHeadContent()
@@ -70,17 +78,18 @@
         public static function getDefaultMetadata()
         {
             $themeName  = Yii::app()->theme->name;
-            $imgUrl     = Yii::app()->themeManager->baseUrl . '/' . $themeName . '/images/landscape-3.png';
+            $imgUrl = Yii::app()->getRequest()->getHostInfo() . Yii::app()->themeManager->baseUrl . '/' . $themeName . '/images/landscape-3.png';
             return array(
                 'perUser' => array(
-                    'title' => "eval:Zurmo::t('HomeModule', 'Iframe Portal')",
+                    'title' => "eval:Zurmo::t('HomeModule', 'IFrame Portal')",
                     'iframeUrl' => $imgUrl,
+                    'iframeHeight' => 200,
                 ),
                 'global' => array(
                 ),
             );
-        }                
-        
+        }
+
         public static function canUserConfigure()
         {
             return true;
@@ -89,7 +98,7 @@
         public function isUniqueToAPage()
         {
             return false;
-        }       
+        }
 
         public function getConfigurationView()
         {

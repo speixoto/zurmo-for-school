@@ -231,7 +231,7 @@
         {
             if ($this->mappingRuleData["type"] == RelatedModelValueTypeMappingRuleForm::ZURMO_MODEL_NAME)
             {
-                $label = Zurmo::t('ImportModule', 'Is an existing record and will be updated.');
+                $label = Zurmo::t('ImportModule', 'Is an existing record and will be linked.');
                 $this->analysisMessages[] = $label;
             }
         }
@@ -250,8 +250,11 @@
             }
             else
             {
-                $label = Zurmo::t('ImportModule', 'Was not found and will create a new record during import.');
-                $this->analysisMessages[] = $label;
+                if ($rowBean->{$this->columnName} != null)
+                {
+                    $label = Zurmo::t('ImportModule', 'Was not found and will create a new record during import.');
+                    $this->analysisMessages[] = $label;
+                }
             }
         }
     }

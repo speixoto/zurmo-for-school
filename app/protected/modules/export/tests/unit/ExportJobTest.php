@@ -120,5 +120,50 @@
             // Check if user got notification message, and if its type is ExportProcessCompleted
             $this->assertEquals($numberOfUserNotifications + 1, Notification::getCountByTypeAndUser('ExportProcessCompleted', Yii::app()->user->userModel));
         }
+
+        public function testExportByModelIds()
+        {
+
+        }
+
+        public function testExportRedBeanDataProviderWithSinglePageOfData()
+        {
+
+        }
+
+        public function testExportRedBeanDataProviderWithMultiplePagesOfData()
+        {
+
+        }
+
+        public function testExportRedBeanDataProviderGoesOverMaximumProcessingCountLimit()
+        {
+            //test this for when it goes over during the processing of a single export item
+            //Test that the next run properly appends the content without the header
+            //Test that the processOffset value is set correctly after the first run
+
+        }
+
+        public function testExportRedBeanDataProviderGoesOverMaximumProcessingCountLimitGlobally()
+        {
+            //test this for when it goes over after processing an exportItem but before the next item.
+            //Test the next run properly runs the next exportItem
+        }
+
+        public function testExportReportWithSinglePageOfData()
+        {
+
+        }
+
+        public function testExportReportWithMultiplePagesOfData()
+        {
+
+        }
+
+        public function testSecurityExceptionThrownDuringExport()
+        {
+            //if the user who owns the exportItem for some reason loses permissions/rights, an exception gets
+            //thrown. make sure this code works and notification goes out correctly.
+        }
     }
 ?>

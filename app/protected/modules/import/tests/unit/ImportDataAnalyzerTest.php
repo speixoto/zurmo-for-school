@@ -624,7 +624,7 @@
             $compareData['column_15']   = array();
             $compareData['column_15'][] = 'Was not found and this row will be skipped during import.';
             $compareData['column_16']   = array();
-            $compareData['column_16'][] = 'Is an existing record and will be updated.';
+            $compareData['column_16'][] = 'Is an existing record and will be linked.';
             $compareData['column_17']   = array();
             $compareData['column_17'][] = 'Was not found and this row will be skipped during import.';
             $compareData['column_18']   = array();
@@ -671,8 +671,6 @@
             $compareData['column_10'][] = 'Was not found and this row will be skipped during import.';
             $compareData['column_11']   = array();
             $compareData['column_11'][] = 'Was not found and will create a new record during import.';
-            $compareData['column_16']   = array();
-            $compareData['column_16'][] = 'Was not found and will create a new record during import.';
             $this->assertEquals($compareData, unserialize($data[11]->serializedAnalysisMessages));
             $this->assertEquals(ImportDataAnalyzer::STATUS_SKIP, $data[11]->analysisStatus);
 
