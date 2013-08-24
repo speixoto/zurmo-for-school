@@ -34,6 +34,10 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
+    // we don't want to be left in dark if any occurs occur.
+    error_reporting(E_ALL);
+    ini_set('display_errors', true);
+
     $cwd = getcwd();
 
     require_once('../PhpUnitServiceUtil.php');
