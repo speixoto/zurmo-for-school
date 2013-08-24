@@ -40,5 +40,14 @@
         {
             return 'ZurmoRedBeanSetup';
         }
+
+        public static function freeze($tf = true)
+        {
+            if (!$tf)
+            {
+                throw new NotSupportedException("We are getting rid of no-freeze. Talk to @Shoaibi or @Jason");
+            }
+            parent::freeze($tf);
+        }
     }
 ?>
