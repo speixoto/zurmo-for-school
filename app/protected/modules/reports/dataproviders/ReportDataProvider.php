@@ -300,8 +300,8 @@
         }
 
         /**
-         * @param $offset
-         * @param $limit
+         * @param int $offset
+         * @param int $limit
          * @return array
          */
         protected function runQueryAndGetResolveResultsData($offset, $limit)
@@ -347,7 +347,7 @@
         }
                 
         /**
-         * @param $offset
+         * @param int $offset
          * @return int
          */
         protected static function resolveIdByOffset($offset)
@@ -396,8 +396,8 @@
               
         /**
          * @param RedBeanModelSelectQueryAdapter $selectQueryAdapter
-         * @param $offset
-         * @param $limit
+         * @param int $offset
+         * @param int $limit
          * @return string
          */
         protected function makeSqlQueryForFetchingData(RedBeanModelSelectQueryAdapter $selectQueryAdapter, $offset, $limit)
@@ -544,8 +544,8 @@
         }
 
         /**
-         * @param $attributeIndexOrDerivedTypePrefix
-         * @param $attributeOrDerivedAttributeType
+         * @param string|null $attributeIndexOrDerivedTypePrefix
+         * @param string $attributeOrDerivedAttributeType
          * @return FilterForReportForm
          * @throws NotSupportedException
          */
@@ -597,8 +597,8 @@
         }
 
         /**
-         * @param $attributeIndexOrDerivedTypePrefix
-         * @param $variableStateData
+         * @param string $attributeIndexOrDerivedTypePrefix
+         * @param array $variableStateData
          * @return FilterForReportForm
          */
         protected function resolveFilterForVariableStateAttributeIndex($attributeIndexOrDerivedTypePrefix, $variableStateData)

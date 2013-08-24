@@ -41,6 +41,12 @@
     {
         abstract protected function makeModel();
 
+        /**
+         * @param string $controllerId
+         * @param string $moduleId
+         * @param null|string $activeActionElementType
+         * @param IntroView $introView
+         */
         public function __construct($controllerId, $moduleId, $activeActionElementType = null, IntroView $introView = null)
         {
             assert('is_string($controllerId)');
@@ -92,6 +98,11 @@
             return $metadata;
         }
 
+        /**
+         * @param ActionElement $element
+         * @param array $elementInformation
+         * @return bool
+         */
         protected function shouldRenderToolBarElement($element, $elementInformation)
         {
             assert('$element instanceof ActionElement');

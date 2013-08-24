@@ -172,6 +172,10 @@
                                      LabelUtil::getTranslationParamsForAllModules());
         }
 
+        /**
+         * @param ZurmoActiveForm $form
+         * @return string|void
+         */
         protected function renderRightSideFormLayoutForEdit($form)
         {
             assert('$form instanceof ZurmoActiveForm');

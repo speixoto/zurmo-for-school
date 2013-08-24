@@ -55,6 +55,11 @@
             $this->treatCurrentUserAsOwnerForPermissions = $value;
         }
 
+        /**
+         * @param RedBean_OODBBean $bean
+         * @param bool $setDefaults
+         * @throws NoCurrentUserSecurityException
+         */
         protected function constructDerived($bean, $setDefaults)
         {
             assert('$bean === null || $bean instanceof RedBean_OODBBean');
@@ -219,6 +224,17 @@
 
         /**
          * Override to add ReadPermissionOptimization query parts.
+         * @param string $tableName
+         * @param RedBeanModelJoinTablesQueryAdapter $joinTablesAdapter
+         * @param null|int  $offset
+         * @param null|int  $count
+         * @param null|string $where
+         * @param null|string $orderBy
+         * @param bool $selectCount
+         * @param bool $selectDistinct
+         * @param array $quotedExtraSelectColumnNameAndAliases
+         * @return string
+         * @throws NoCurrentUserSecurityException
          */
         public static function makeSubsetOrCountSqlQuery($tableName,
                                                          RedBeanModelJoinTablesQueryAdapter $joinTablesAdapter = null,

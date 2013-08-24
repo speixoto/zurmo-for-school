@@ -387,6 +387,11 @@
             echo CJSON::encode($autoCompleteResults);
         }
 
+        /**
+         * @param string $partialName
+         * @param int $pageSize
+         * @param null|string $stateMetadataAdapterClassName
+         */
         public static function getProductCategoriesByPartialName($partialName, $pageSize, $stateMetadataAdapterClassName = null)
         {
             assert('is_string($partialName)');
@@ -409,12 +414,21 @@
             return ProductCategory::getSubset($joinTablesAdapter, null, $pageSize, $where, "productcategory.name");
         }
 
+        /**
+         * @param string $partialName
+         * @return string
+         */
         protected static function getWherePartForPartialNameSearchByPartialName($partialName)
         {
             assert('is_string($partialName)');
             return "   (productcategory.name  like '$partialName%') ";
         }
 
+        /**
+         * @param ProductCategory $productCategory
+         * @param string $keyword
+         * @return string
+         */
         public static function renderHtmlContentLabelFromProductCategoryAndKeyword($productCategory, $keyword)
         {
             assert('$productCategory instanceof ProductCategory && $productCategory->id > 0');
