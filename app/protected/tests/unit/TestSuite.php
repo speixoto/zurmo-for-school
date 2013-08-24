@@ -40,9 +40,9 @@
 
     $cwd = getcwd();
 
-    require_once('../PhpUnitServiceUtil.php');
-    require_once('../testRoots.php');
-    require_once('../bootstrap.php');
+    require_once('../common/PhpUnitServiceUtil.php');
+    require_once('../common/testRoots.php');
+    require_once('../common/bootstrap.php');
 
     class TestSuite
     {
@@ -150,7 +150,7 @@
                 ZurmoRedBean::$writer->wipeAll();
                 $messageLogger = new MessageLogger();
                 InstallUtil::autoBuildDatabase($messageLogger, true);
-                $messageLogger->printMessages();
+                //$messageLogger->printMessages();
                 ReadPermissionsOptimizationUtil::rebuild();
                 assert('RedBeanDatabase::isSetup()');
                 Yii::app()->user->userModel = InstallUtil::createSuperUser('super', 'super');

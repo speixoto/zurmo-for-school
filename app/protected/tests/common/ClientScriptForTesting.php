@@ -34,48 +34,49 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    require_once('../../config/debug.php');
-    require_once('../common/bootstrap.php');
+    /**
+     * Contains methods used specifically for testing.
+     */
+    class ClientScriptForTesting extends ClientScript
+    {
+        public function getScriptFiles()
+        {
+            return $this->scriptFiles;
+        }
 
-    if (!($argc == 1 || $argc == 3 && $argv[1] == '-n' && is_numeric($argv[2])))
-    {
-        echo "
-AuditLog - Displays the audit log.
-Usage:   php AuditLog.php [-n #]
-Options: -n # Displays the tail of the log up to # entries.
-";
-        exit;
+        /**
+         * Override since there will not be a baseUrl available from the request object. Need to alter what is returned
+         * in that scenario.
+         * (non-PHPdoc)
+         * @see CClientScript::getPackageBaseUrl()
+         */
+        public function getPackageBaseUrl($name)
+        {
+            if (!isset($this->coreScripts[$name]))
+            {
+                return false;
+            }
+            $package = $this->coreScripts[$name];
+            if (isset($package['baseUrl']))
+            {
+                $baseUrl = $package['baseUrl'];
+                echo 'grapes:' . $baseUrl . "\n";
+                if ($baseUrl === '' || $baseUrl[0] !== '/' && strpos($baseUrl, '://') === false)
+                {
+                    //do not return because it will render a slash in front of the actual url
+                    //$baseUrl = Yii::app()->getRequest()->getBaseUrl() . '/' . $baseUrl;
+                }
+                $baseUrl = rtrim($baseUrl, '/');
+            }
+            elseif (isset($package['basePath']))
+            {
+                $baseUrl = Yii::app()->getAssetManager()->publish(Yii::getPathOfAlias($package['basePath']));
+            }
+            else
+            {
+                $baseUrl = $this->getCoreScriptUrl();
+            }
+            return $this->coreScripts[$name]['baseUrl'] = $baseUrl;
+        }
     }
-
-    $count = $argc == 3 ? intval($argv[2]) : null;
-
-    try
-    {
-        RedBeanDatabase::setup(Yii::app()->db->connectionString,
-                               Yii::app()->db->username,
-                               Yii::app()->db->password);
-    }
-    catch (Exception $e)
-    {
-        echo "Could not open the database.\n";
-        exit;
-    }
-
-    try
-    {
-        Yii::app()->user->userModel = User::getByUsername('super');
-    }
-    catch (Exception $e)
-    {
-        echo "Super user does not exist.\n";
-        exit;
-    }
-
-    $AuditEventsList = $count === null ? AuditEvent::getAll() : AuditEvent::getTailEvents($count);
-    foreach ($AuditEventsList as $auditEvent)
-    {
-        $moduleName = $auditEvent->moduleName;
-        echo $moduleName::stringifyAuditEvent($auditEvent) . "\n";
-    }
-    echo '(' . count($AuditEventsList) . " events)\n";
 ?>

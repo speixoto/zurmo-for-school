@@ -34,48 +34,20 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    require_once('../../config/debug.php');
-    require_once('../common/bootstrap.php');
+    // Separate class for tests because setting cookies gave the "headers already sent" error.
+    class UserInterfaceForTesting extends UserInterface
+    {
+        public function resolveDefaultUserInterfaceType()
+        {
+            $this->defaultUserInterfaceType = static::DESKTOP;
+        }
 
-    if (!($argc == 1 || $argc == 3 && $argv[1] == '-n' && is_numeric($argv[2])))
-    {
-        echo "
-AuditLog - Displays the audit log.
-Usage:   php AuditLog.php [-n #]
-Options: -n # Displays the tail of the log up to # entries.
-";
-        exit;
+        public function resolveSelectedUserInterfaceType($userInterfaceType = null)
+        {
+            if (!$userInterfaceType)
+            {
+                $userInterfaceType = $this->defaultUserInterfaceType;
+            }
+            $this->selectedUserInterfaceType = $userInterfaceType;
+        }
     }
-
-    $count = $argc == 3 ? intval($argv[2]) : null;
-
-    try
-    {
-        RedBeanDatabase::setup(Yii::app()->db->connectionString,
-                               Yii::app()->db->username,
-                               Yii::app()->db->password);
-    }
-    catch (Exception $e)
-    {
-        echo "Could not open the database.\n";
-        exit;
-    }
-
-    try
-    {
-        Yii::app()->user->userModel = User::getByUsername('super');
-    }
-    catch (Exception $e)
-    {
-        echo "Super user does not exist.\n";
-        exit;
-    }
-
-    $AuditEventsList = $count === null ? AuditEvent::getAll() : AuditEvent::getTailEvents($count);
-    foreach ($AuditEventsList as $auditEvent)
-    {
-        $moduleName = $auditEvent->moduleName;
-        echo $moduleName::stringifyAuditEvent($auditEvent) . "\n";
-    }
-    echo '(' . count($AuditEventsList) . " events)\n";
-?>

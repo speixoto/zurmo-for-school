@@ -34,48 +34,54 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    require_once('../../config/debug.php');
-    require_once('../common/bootstrap.php');
+    /**
+     * Application to be used during unit testing
+     */
+    class WebTestApplication extends WebApplication
+    {
+        private $configLanguageValue;
+        private $configTimeZoneValue;
 
-    if (!($argc == 1 || $argc == 3 && $argv[1] == '-n' && is_numeric($argv[2])))
-    {
-        echo "
-AuditLog - Displays the audit log.
-Usage:   php AuditLog.php [-n #]
-Options: -n # Displays the tail of the log up to # entries.
-";
-        exit;
-    }
+        /**
+         * Override for walkthrough tests. Need to store the config data so certain values can
+         *  be reset to the original config value when resetting the application to run another walkthrough.
+         */
+        public function __construct($config = null)
+        {
+            parent::__construct($config);
+            $this->configLanguageValue = $this->language;
+            $this->configTimeZoneValue = $this->timeZoneHelper->getTimeZone();
 
-    $count = $argc == 3 ? intval($argv[2]) : null;
+            // We need explicitly to raise this event, because CApplication::run() method
+            // where OnBeginRequest event is raised is never called
+            // For more informationn check: app/protected/tests/common/bootstrap.php
+            if ($this->hasEventHandler('onBeginRequest'))
+            {
+                $this->onBeginRequest(new CEvent($this));
+            }
+        }
 
-    try
-    {
-        RedBeanDatabase::setup(Yii::app()->db->connectionString,
-                               Yii::app()->db->username,
-                               Yii::app()->db->password);
-    }
-    catch (Exception $e)
-    {
-        echo "Could not open the database.\n";
-        exit;
-    }
+        /**
+         * Override because when testing, we always want to raise the event
+         * instead of only raising it once.  This is because using phpunit and
+         * unit tests, it is possible we will have the application execute ->end
+         * multiple times during testing.
+         * Raised right AFTER the application processes the request.
+         * @param CEvent $event the event parameter
+         */
+        public function onEndRequest($event)
+        {
+            $this->raiseEvent('onEndRequest', $event);
+        }
 
-    try
-    {
-        Yii::app()->user->userModel = User::getByUsername('super');
-    }
-    catch (Exception $e)
-    {
-        echo "Super user does not exist.\n";
-        exit;
-    }
+        public function getConfigLanguageValue()
+        {
+            return $this->configLanguageValue;
+        }
 
-    $AuditEventsList = $count === null ? AuditEvent::getAll() : AuditEvent::getTailEvents($count);
-    foreach ($AuditEventsList as $auditEvent)
-    {
-        $moduleName = $auditEvent->moduleName;
-        echo $moduleName::stringifyAuditEvent($auditEvent) . "\n";
+        public function getConfigTimeZoneValue()
+        {
+            return $this->configTimeZoneValue;
+        }
     }
-    echo '(' . count($AuditEventsList) . " events)\n";
 ?>

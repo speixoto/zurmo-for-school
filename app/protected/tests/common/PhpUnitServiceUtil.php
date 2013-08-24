@@ -33,49 +33,45 @@
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
-
-    require_once('../../config/debug.php');
-    require_once('../common/bootstrap.php');
-
-    if (!($argc == 1 || $argc == 3 && $argv[1] == '-n' && is_numeric($argv[2])))
+    require_once 'PHPUnit/Runner/Version.php';
+    class PhpUnitServiceUtil
     {
-        echo "
-AuditLog - Displays the audit log.
-Usage:   php AuditLog.php [-n #]
-Options: -n # Displays the tail of the log up to # entries.
-";
-        exit;
-    }
+        // Installed version must be equal or higher then phpUnitMinimumVersion
+        public static $phpUnitMinimumVersion = '3.5';
 
-    $count = $argc == 3 ? intval($argv[2]) : null;
+        // Installed version must be less then phpUnitMaximumVersion
+        public static $phpUnitMaximumVersion = '3.71';
 
-    try
-    {
-        RedBeanDatabase::setup(Yii::app()->db->connectionString,
-                               Yii::app()->db->username,
-                               Yii::app()->db->password);
-    }
-    catch (Exception $e)
-    {
-        echo "Could not open the database.\n";
-        exit;
-    }
+        public static function checkVersion()
+        {
+            try
+            {
+                $actualVersion = PHPUnit_Runner_Version::id();
 
-    try
-    {
-        Yii::app()->user->userModel = User::getByUsername('super');
-    }
-    catch (Exception $e)
-    {
-        echo "Super user does not exist.\n";
-        exit;
-    }
+                if (version_compare($actualVersion, self::$phpUnitMinimumVersion) < 0)
+                {
+                    echo "\n Zurmo tests are not working with PHPUnit {$actualVersion} \n";
+                    echo "PHPUnit version must be equal and higher then PHPUnit " . self::$phpUnitMinimumVersion . " and ";
+                    echo "lower then " .self::$phpUnitMaximumVersion . "\n";
+                    echo "Please upgrade your PHPUnit version \n\n";
+                    exit;
+                }
 
-    $AuditEventsList = $count === null ? AuditEvent::getAll() : AuditEvent::getTailEvents($count);
-    foreach ($AuditEventsList as $auditEvent)
-    {
-        $moduleName = $auditEvent->moduleName;
-        echo $moduleName::stringifyAuditEvent($auditEvent) . "\n";
+                if (version_compare($actualVersion, self::$phpUnitMaximumVersion) >= 0)
+                {
+                    echo "\n Zurmo tests are not working with PHPUnit {$actualVersion} \n";
+                    echo "PHPUnit version must be equal and higher then PHPUnit " . self::$phpUnitMinimumVersion . " and ";
+                    echo "lower then " .self::$phpUnitMaximumVersion . "\n";
+                    echo "Please downgrade your PHPUnit version \n\n";
+                    exit;
+                }
+                return;
+            }
+            catch (Exception $e)
+            {
+                echo "You must install PHPUnit, before running tests";
+                exit;
+            }
+        }
     }
-    echo '(' . count($AuditEventsList) . " events)\n";
 ?>

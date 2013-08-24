@@ -34,48 +34,21 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    require_once('../../config/debug.php');
-    require_once('../common/bootstrap.php');
+    require_once('testRoots.php');
+    require_once('TestConfigFileUtils.php');
 
-    if (!($argc == 1 || $argc == 3 && $argv[1] == '-n' && is_numeric($argv[2])))
-    {
-        echo "
-AuditLog - Displays the audit log.
-Usage:   php AuditLog.php [-n #]
-Options: -n # Displays the tail of the log up to # entries.
-";
-        exit;
-    }
+    TestConfigFileUtils::configureConfigFiles();
+    require_once(COMMON_ROOT   . '/version.php');
+    require_once(COMMON_ROOT   . '/protected/modules/install/utils/InstallUtil.php');
+    require_once(COMMON_ROOT   . '/protected/core/utils/ZurmoPasswordSecurityUtil.php');
+    InstallUtil::setZurmoTokenAndWriteToPerInstanceFile(INSTANCE_ROOT, 'perInstanceTest.php');
+    ZurmoPasswordSecurityUtil::setPasswordSaltAndWriteToPerInstanceFile(INSTANCE_ROOT, 'perInstanceTest.php');
 
-    $count = $argc == 3 ? intval($argv[2]) : null;
+    require_once(INSTANCE_ROOT . '/protected/config/debugTest.php');
+    require_once(COMMON_ROOT   . '/../yii/framework/yiit.php');
+    require_once(COMMON_ROOT . '/protected/core/components/WebApplication.php');
+    require_once(COMMON_ROOT . '/protected/tests/common/WebTestApplication.php');
 
-    try
-    {
-        RedBeanDatabase::setup(Yii::app()->db->connectionString,
-                               Yii::app()->db->username,
-                               Yii::app()->db->password);
-    }
-    catch (Exception $e)
-    {
-        echo "Could not open the database.\n";
-        exit;
-    }
-
-    try
-    {
-        Yii::app()->user->userModel = User::getByUsername('super');
-    }
-    catch (Exception $e)
-    {
-        echo "Super user does not exist.\n";
-        exit;
-    }
-
-    $AuditEventsList = $count === null ? AuditEvent::getAll() : AuditEvent::getTailEvents($count);
-    foreach ($AuditEventsList as $auditEvent)
-    {
-        $moduleName = $auditEvent->moduleName;
-        echo $moduleName::stringifyAuditEvent($auditEvent) . "\n";
-    }
-    echo '(' . count($AuditEventsList) . " events)\n";
+    $config = INSTANCE_ROOT . '/protected/config/test.php';
+    Yii::createApplication('WebTestApplication', $config);
 ?>

@@ -34,48 +34,47 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    require_once('../../config/debug.php');
-    require_once('../common/bootstrap.php');
+    Yii::import('application.core.components.ZurmoHttpRequest');
 
-    if (!($argc == 1 || $argc == 3 && $argv[1] == '-n' && is_numeric($argv[2])))
+    /**
+     * Override class is used specifically by the
+     * testing framework to provide an exception
+     * during a redirect call.
+     */
+    class HttpRequestForTesting extends ZurmoHttpRequest
     {
-        echo "
-AuditLog - Displays the audit log.
-Usage:   php AuditLog.php [-n #]
-Options: -n # Displays the tail of the log up to # entries.
-";
-        exit;
-    }
+        public function redirect($url, $terminate = true, $statusCode = 302)
+        {
+            throw new RedirectException($url);
+        }
 
-    $count = $argc == 3 ? intval($argv[2]) : null;
+        /**
+         * Override returns a fake Uri. Request URI is not relevant when doing
+         * command line unit tests.
+         */
+        public function getRequestUri()
+        {
+            return '/app/test/index.php/somewhereForTheTest'; // Not Coding Standard
+        }
 
-    try
-    {
-        RedBeanDatabase::setup(Yii::app()->db->connectionString,
-                               Yii::app()->db->username,
-                               Yii::app()->db->password);
-    }
-    catch (Exception $e)
-    {
-        echo "Could not open the database.\n";
-        exit;
-    }
+        /**
+         * Override for testing since you cannot set headers during testing.
+         * @see CHttpRequest::sendFile()
+         */
+        public function sendFile($fileName, $content, $mimeType = null, $terminate = true)
+        {
+            echo 'Testing download.';
+            Yii::app()->end(0, false);
+        }
 
-    try
-    {
-        Yii::app()->user->userModel = User::getByUsername('super');
+        /**
+         * Override to avoid when parameters such as SERVER_NAME are not available via unit testing.
+         * (non-PHPdoc)
+         * @see CHttpRequest::getHostInfo()
+         */
+        public function getHostInfo($schema = '')
+        {
+            return 'localhost';
+        }
     }
-    catch (Exception $e)
-    {
-        echo "Super user does not exist.\n";
-        exit;
-    }
-
-    $AuditEventsList = $count === null ? AuditEvent::getAll() : AuditEvent::getTailEvents($count);
-    foreach ($AuditEventsList as $auditEvent)
-    {
-        $moduleName = $auditEvent->moduleName;
-        echo $moduleName::stringifyAuditEvent($auditEvent) . "\n";
-    }
-    echo '(' . count($AuditEventsList) . " events)\n";
 ?>

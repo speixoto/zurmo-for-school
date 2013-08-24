@@ -34,48 +34,41 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    require_once('../../config/debug.php');
-    require_once('../common/bootstrap.php');
+    class BeginRequestTestBehavior extends BeginRequestBehavior
+    {
+        public function attach($owner)
+        {
+            $owner->attachEventHandler('onBeginRequest', array($this, 'handleApplicationCache'));
+            $owner->attachEventHandler('onBeginRequest', array($this, 'handleImports'));
+            $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadWorkflowsObserver'));
+        }
 
-    if (!($argc == 1 || $argc == 3 && $argv[1] == '-n' && is_numeric($argv[2])))
-    {
-        echo "
-AuditLog - Displays the audit log.
-Usage:   php AuditLog.php [-n #]
-Options: -n # Displays the tail of the log up to # entries.
-";
-        exit;
-    }
+        /**
+        * Import all files that need to be included(for lazy loading)
+        * @param $event
+        */
+        public function handleImports($event)
+        {
+            try
+            {
+                $filesToInclude = GeneralCache::getEntry('filesToIncludeForTests');
+            }
+            catch (NotFoundException $e)
+            {
+                $filesToInclude   = FileUtil::getFilesFromDir(Yii::app()->basePath . '/modules', Yii::app()->basePath . '/modules', 'application.modules', true);
+                $filesToIncludeFromFramework = FileUtil::getFilesFromDir(Yii::app()->basePath . '/core', Yii::app()->basePath . '/core', 'application.core', true);
+                $totalFilesToIncludeFromModules = count($filesToInclude);
 
-    $count = $argc == 3 ? intval($argv[2]) : null;
-
-    try
-    {
-        RedBeanDatabase::setup(Yii::app()->db->connectionString,
-                               Yii::app()->db->username,
-                               Yii::app()->db->password);
+                foreach ($filesToIncludeFromFramework as $key => $file)
+                {
+                    $filesToInclude[$totalFilesToIncludeFromModules + $key] = $file;
+                }
+                GeneralCache::cacheEntry('filesToIncludeForTests', $filesToInclude);
+            }
+            foreach ($filesToInclude as $file)
+            {
+                Yii::import($file);
+            }
+        }
     }
-    catch (Exception $e)
-    {
-        echo "Could not open the database.\n";
-        exit;
-    }
-
-    try
-    {
-        Yii::app()->user->userModel = User::getByUsername('super');
-    }
-    catch (Exception $e)
-    {
-        echo "Super user does not exist.\n";
-        exit;
-    }
-
-    $AuditEventsList = $count === null ? AuditEvent::getAll() : AuditEvent::getTailEvents($count);
-    foreach ($AuditEventsList as $auditEvent)
-    {
-        $moduleName = $auditEvent->moduleName;
-        echo $moduleName::stringifyAuditEvent($auditEvent) . "\n";
-    }
-    echo '(' . count($AuditEventsList) . " events)\n";
 ?>

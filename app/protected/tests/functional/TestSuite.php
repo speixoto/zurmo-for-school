@@ -36,7 +36,7 @@
 
     $basePath = realpath(dirname(__FILE__) . '/../../../');
 
-    require_once('../PhpUnitServiceUtil.php');
+    require_once('../common/PhpUnitServiceUtil.php');
     require_once 'File/Iterator.php';
     require_once('File/Iterator/Factory.php');
 

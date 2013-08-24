@@ -34,48 +34,28 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    require_once('../../config/debug.php');
-    require_once('../common/bootstrap.php');
+    define('TEST_BASE_URL', 'http://localhost/app/');
 
-    if (!($argc == 1 || $argc == 3 && $argv[1] == '-n' && is_numeric($argv[2])))
+    /**
+     * The base class for functional test cases.
+     * In this class, we set the base URL for the test application.
+     * We also provide some common methods to be used by concrete test classes.
+     */
+    class WebTestCase extends CWebTestCase
     {
-        echo "
-AuditLog - Displays the audit log.
-Usage:   php AuditLog.php [-n #]
-Options: -n # Displays the tail of the log up to # entries.
-";
-        exit;
-    }
+        var $ajaxWaitTimeout = 10;
 
-    $count = $argc == 3 ? intval($argv[2]) : null;
-
-    try
-    {
-        RedBeanDatabase::setup(Yii::app()->db->connectionString,
-                               Yii::app()->db->username,
-                               Yii::app()->db->password);
+        /**
+         * Sets up before each test method runs.
+         * This mainly sets the base URL for the test application.
+         */
+        protected function setUp()
+        {
+            parent::setUp();
+            $this->setBrowser('*firefox');
+            //$this->setTimeout(5);
+            $this->setBrowserUrl(TEST_BASE_URL);
+            $this->setSpeed(3000);  //1000 is one second
+        }
     }
-    catch (Exception $e)
-    {
-        echo "Could not open the database.\n";
-        exit;
-    }
-
-    try
-    {
-        Yii::app()->user->userModel = User::getByUsername('super');
-    }
-    catch (Exception $e)
-    {
-        echo "Super user does not exist.\n";
-        exit;
-    }
-
-    $AuditEventsList = $count === null ? AuditEvent::getAll() : AuditEvent::getTailEvents($count);
-    foreach ($AuditEventsList as $auditEvent)
-    {
-        $moduleName = $auditEvent->moduleName;
-        echo $moduleName::stringifyAuditEvent($auditEvent) . "\n";
-    }
-    echo '(' . count($AuditEventsList) . " events)\n";
 ?>
