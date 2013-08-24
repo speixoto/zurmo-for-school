@@ -84,22 +84,22 @@
             ReadPermissionsSubscriptionUtil::recreateTable('account_read_subscription');
 
             $sql = 'INSERT INTO account_read_subscription VALUES (NULL, \'1\', \'2\', \'2013-05-03 15:16:06\', \'1\')';
-            R::exec($sql);
-            $accountReadSubscription = R::getRow("SELECT * FROM account_read_subscription");
+            ZurmoRedBean::exec($sql);
+            $accountReadSubscription = ZurmoRedBean::getRow("SELECT * FROM account_read_subscription");
             $this->assertTrue($accountReadSubscription['id'] > 0);
             $this->assertEquals(1, $accountReadSubscription['userid']);
             $this->assertEquals(2, $accountReadSubscription['modelid']);
             $this->assertEquals('2013-05-03 15:16:06', $accountReadSubscription['modifieddatetime']);
             $this->assertEquals(1, $accountReadSubscription['subscriptiontype']);
             $sql = 'DELETE FROM account_read_subscription';
-            R::exec($sql);
+            ZurmoRedBean::exec($sql);
         }
 
         public function testRebuild()
         {
             ReadPermissionsSubscriptionUtil::buildTables();
             $sql = "SHOW TABLES LIKE '%_read_subscription'";
-            $allSubscriptionTableRows = R::getAll($sql);
+            $allSubscriptionTableRows = ZurmoRedBean::getAll($sql);
             $this->assertEquals(4, count($allSubscriptionTableRows));
 
             $readSubscriptionTables = array();
@@ -124,12 +124,12 @@
             $contact2 = ContactTestHelper::createContactByNameForOwner('Jake', $super);
 
             $sql = "SELECT * FROM contact_read_subscription WHERE userid = " . Yii::app()->user->userModel->id;
-            $permissionTableRows = R::getAll($sql);
+            $permissionTableRows = ZurmoRedBean::getAll($sql);
             $this->assertEquals(0, count($permissionTableRows));
 
             ReadPermissionsSubscriptionUtil::updateReadSubscriptionTableByModelClassnameAndUser('Contact', Yii::app()->user->userModel, true, true);
             $sql = "SELECT * FROM contact_read_subscription  order by modifieddatetime ASC, modelid  ASC";
-            $permissionTableRows = R::getAll($sql);
+            $permissionTableRows = ZurmoRedBean::getAll($sql);
             $this->assertEquals(2, count($permissionTableRows));
             $this->assertEquals($contact1->id, $permissionTableRows[0]['modelid']);
             $this->assertEquals(Yii::app()->user->userModel->id, $permissionTableRows[0]['userid']);
@@ -144,11 +144,11 @@
             sleep(1);
             ReadPermissionsSubscriptionUtil::updateReadSubscriptionTableByModelClassnameAndUser('Contact', Yii::app()->user->userModel, true, true);
             $sql = "SELECT * FROM contact_read_subscription";
-            $permissionTableRows = R::getAll($sql);
+            $permissionTableRows = ZurmoRedBean::getAll($sql);
             $this->assertEquals(3, count($permissionTableRows));
 
             $sql = "SELECT * FROM contact_read_subscription WHERE modifieddatetime>='" . $nowDateTime . "'";
-            $permissionTableRows = R::getAll($sql);
+            $permissionTableRows = ZurmoRedBean::getAll($sql);
             $this->assertEquals(1, count($permissionTableRows));
             $this->assertEquals($contact3->id, $permissionTableRows[0]['modelid']);
             $this->assertEquals(Yii::app()->user->userModel->id, $permissionTableRows[0]['userid']);
@@ -165,7 +165,7 @@
             ReadPermissionsSubscriptionUtil::updateReadSubscriptionTableByModelClassnameAndUser('Contact', Yii::app()->user->userModel, true, true);
             $sql = "SELECT * FROM contact_read_subscription WHERE userid = " . Yii::app()->user->userModel->id .
                 " AND subscriptiontype = " . ReadPermissionsSubscriptionUtil::TYPE_ADD . " order by modifieddatetime ASC, modelid  ASC";
-            $permissionTableRows = R::getAll($sql);
+            $permissionTableRows = ZurmoRedBean::getAll($sql);
             $this->assertEquals(3, count($permissionTableRows));
             $this->assertEquals($contact2->id, $permissionTableRows[0]['modelid']);
             $this->assertEquals($contact3->id, $permissionTableRows[1]['modelid']);
@@ -173,7 +173,7 @@
 
             $sql = "SELECT * FROM contact_read_subscription WHERE userid = " . Yii::app()->user->userModel->id .
                 " AND subscriptiontype = " . ReadPermissionsSubscriptionUtil::TYPE_DELETE . " order by modifieddatetime ASC, modelid  ASC";
-            $permissionTableRows = R::getAll($sql);
+            $permissionTableRows = ZurmoRedBean::getAll($sql);
             $this->assertEquals(1, count($permissionTableRows));
             $this->assertEquals($deletedContactId, $permissionTableRows[0]['modelid']);
             $this->assertEquals(Yii::app()->user->userModel->id, $permissionTableRows[0]['userid']);
@@ -206,7 +206,7 @@
             Yii::app()->user->userModel = $steven;
             ReadPermissionsSubscriptionUtil::updateReadSubscriptionTableByModelClassnameAndUser('Account', Yii::app()->user->userModel, false, false);
             $sql = "SELECT * FROM account_read_subscription";
-            $permissionTableRows = R::getAll($sql);
+            $permissionTableRows = ZurmoRedBean::getAll($sql);
             $this->assertEquals(1, count($permissionTableRows));
             $this->assertEquals($account1Id, $permissionTableRows[0]['modelid']);
             $this->assertEquals($steven->id, $permissionTableRows[0]['userid']);
@@ -216,7 +216,7 @@
             Yii::app()->user->userModel = $super;
             ReadPermissionsSubscriptionUtil::updateReadSubscriptionTableByModelClassnameAndUser('Account', Yii::app()->user->userModel, false, false);
             $sql = "SELECT * FROM account_read_subscription WHERE userid = " . Yii::app()->user->userModel->id;
-            $permissionTableRows = R::getAll($sql);
+            $permissionTableRows = ZurmoRedBean::getAll($sql);
             $this->assertEquals(1, count($permissionTableRows));
             $this->assertEquals($account1Id, $permissionTableRows[0]['modelid']);
             $this->assertEquals($super->id, $permissionTableRows[0]['userid']);
@@ -233,7 +233,7 @@
             Yii::app()->user->userModel = $steven;
             ReadPermissionsSubscriptionUtil::updateReadSubscriptionTableByModelClassnameAndUser('Account', Yii::app()->user->userModel, false, false);
             $sql = "SELECT * FROM account_read_subscription WHERE userid = " . Yii::app()->user->userModel->id;
-            $permissionTableRows = R::getAll($sql);
+            $permissionTableRows = ZurmoRedBean::getAll($sql);
             $this->assertEquals(1, count($permissionTableRows));
             $this->assertEquals($account1Id, $permissionTableRows[0]['modelid']);
             $this->assertEquals($steven->id, $permissionTableRows[0]['userid']);
@@ -247,7 +247,7 @@
             $steven = User::getByUsername('steven');
 
             $sql = "DELETE FROM account_read_subscription";
-            R::exec($sql);
+            ZurmoRedBean::exec($sql);
 
             $accounts = Account::getAll();
             foreach($accounts as $account)
@@ -262,7 +262,7 @@
             ReadPermissionsSubscriptionUtil::updateAllReadSubscriptionTables(false);
 
             $sql = "SELECT * FROM account_read_subscription WHERE userid = " . $super->id;
-            $permissionTableRows = R::getAll($sql);
+            $permissionTableRows = ZurmoRedBean::getAll($sql);
             $this->assertEquals(2, count($permissionTableRows));
             $this->assertEquals($account1->id, $permissionTableRows[0]['modelid']);
             $this->assertEquals($super->id, $permissionTableRows[0]['userid']);
@@ -272,7 +272,7 @@
             $this->assertEquals(ReadPermissionsSubscriptionUtil::TYPE_ADD, $permissionTableRows[1]['subscriptiontype']);
 
             $sql = "SELECT * FROM account_read_subscription WHERE userid = " . $steven->id;
-            $permissionTableRows = R::getAll($sql);
+            $permissionTableRows = ZurmoRedBean::getAll($sql);
             $this->assertEquals(1, count($permissionTableRows));
             $this->assertEquals($account2->id, $permissionTableRows[0]['modelid']);
             $this->assertEquals($steven->id, $permissionTableRows[0]['userid']);
@@ -288,7 +288,7 @@
             $task = TaskTestHelper::createTaskByNameForOwner('Test Task', $super);
             ReadPermissionsSubscriptionUtil::updateAllReadSubscriptionTables(false);
             $sql = "SELECT * FROM task_read_subscription WHERE userid = " . $super->id;
-            $permissionTableRows = R::getAll($sql);
+            $permissionTableRows = ZurmoRedBean::getAll($sql);
             $this->assertEquals(1, count($permissionTableRows));
 
             $addedModelIds = ReadPermissionsSubscriptionUtil::getAddedOrDeletedModelsFromReadSubscriptionTable(

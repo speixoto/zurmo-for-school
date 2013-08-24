@@ -339,7 +339,7 @@
             $this->addDefaultColumnNamesAndValuesToReportResultsRowData($resultsData[$idByOffset],
                                                                         $xAxisGroupByDataValuesCount);
             $sqlForRowTotals = $this->makeSqlQueryForRowTotals();  
-            $rowTotals       = R::getAll($sqlForRowTotals); 
+            $rowTotals       = ZurmoRedBean::getAll($sqlForRowTotals); 
             foreach ($rows as $row)
             {                
                 $currentYAxisDisplayAttributesUniqueIndex = $this->resolveYAxisDisplayAttributesUniqueIndex(

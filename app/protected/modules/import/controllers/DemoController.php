@@ -92,7 +92,7 @@
             //Make header row
             if($firstRowIsHeaderRow)
             {
-                $newBean = R::dispense($import->getTempTableName());
+                $newBean = ZurmoRedBean::dispense($import->getTempTableName());
                 $newBean->column_0 = 'Header #1';
                 $newBean->column_1 = 'Header #2';
                 $newBean->column_2 = 'Header #3';
@@ -101,13 +101,13 @@
                 $newBean->column_5 = 'Header #6';
                 $newBean->column_6 = 'Header #7';
                 $newBean->column_7 = 'Header #8';
-                R::store($newBean);
+                ZurmoRedBean::store($newBean);
             }
 
             //Make data rows that are clean
             for ($i = 0; $i < 3; $i++)
             {
-                $newBean = R::dispense($import->getTempTableName());
+                $newBean = ZurmoRedBean::dispense($import->getTempTableName());
                 $newBean->column_0 = 'aa1' . $i;
                 $newBean->column_1 = 'aa2' . $i;
                 $newBean->column_2 = 'aa3' . $i;
@@ -125,13 +125,13 @@
                 $analysisData['column_2'][] = 'a test message 1';
                 $analysisData['column_2'][] = 'a test message 2';
                 $newBean->serializedAnalysisMessages = serialize($analysisData);
-                R::store($newBean);
+                ZurmoRedBean::store($newBean);
             }
 
             //Make data rows that have a warning
             for ($i = 0; $i < 3; $i++)
             {
-                $newBean = R::dispense($import->getTempTableName());
+                $newBean = ZurmoRedBean::dispense($import->getTempTableName());
                 $newBean->column_0 = 'ba1' . $i;
                 $newBean->column_1 = 'ba2' . $i;
                 $newBean->column_2 = 'ba3' . $i;
@@ -149,13 +149,13 @@
                 $analysisData['column_2'][] = 'a test message 1';
                 $analysisData['column_2'][] = 'a test message 2';
                 $newBean->serializedAnalysisMessages = serialize($analysisData);
-                R::store($newBean);
+                ZurmoRedBean::store($newBean);
             }
 
             //Make data rows that are skipped
             for ($i = 0; $i < 10; $i++)
             {
-                $newBean = R::dispense($import->getTempTableName());
+                $newBean = ZurmoRedBean::dispense($import->getTempTableName());
                 $newBean->column_0 = 'ca1' . $i;
                 $newBean->column_1 = 'ca2' . $i;
                 $newBean->column_2 = 'ca3' . $i;
@@ -173,10 +173,10 @@
                 $analysisData['column_2'][] = 'a test message 1';
                 $analysisData['column_2'][] = 'a test message 2';
                 $newBean->serializedAnalysisMessages = serialize($analysisData);
-                R::store($newBean);
+                ZurmoRedBean::store($newBean);
             }
 
-            R::store($newBean);
+            ZurmoRedBean::store($newBean);
             echo 'the import id is: ' . $import->id;
         }
 
@@ -188,18 +188,18 @@
                 RedBeanDatabase::unfreeze();
                 $freezeWhenComplete = true;
             }
-            $newBean = R::dispense($tableName);
+            $newBean = ZurmoRedBean::dispense($tableName);
             for ($i = 0; $i < $columnCount; $i++)
             {
                 $columnName = 'column_' . $i;
                 $newBean->{$columnName} = str_repeat(' ', 50);
                 $columns[] = $columnName;
             }
-            R::store($newBean);
-            R::trash($newBean);
-            R::wipe($tableName);
+            ZurmoRedBean::store($newBean);
+            ZurmoRedBean::trash($newBean);
+            ZurmoRedBean::$writer->wipe($tableName);
             ImportDatabaseUtil::optimizeTableNonImportColumns($tableName);
-            R::wipe($tableName);
+            ZurmoRedBean::$writer->wipe($tableName);
             if ($freezeWhenComplete)
             {
                 RedBeanDatabase::freeze();

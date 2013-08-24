@@ -199,7 +199,7 @@
                     $rowBean->serializedAnalysisMessages = null;
                     $rowBean->analysisStatus             = static::STATUS_CLEAN;
                 }
-                R::store($rowBean);
+                ZurmoRedBean::store($rowBean);
             }
         }
 

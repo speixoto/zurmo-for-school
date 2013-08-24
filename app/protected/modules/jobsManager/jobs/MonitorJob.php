@@ -152,7 +152,7 @@
         protected static function updateUnprocessedJobLogsWithoutErrors()
         {
             $sql = 'update joblog set isprocessed = 1 where joblog.isprocessed = 0';
-            R::exec($sql);
+            ZurmoRedBean::exec($sql);
         }
 
         /**

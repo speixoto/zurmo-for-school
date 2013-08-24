@@ -377,7 +377,7 @@
         protected function getGrandTotalsRowsData()
         {
             $sql = $this->makeSqlQueryForGrandTotals();              
-            return R::getAll($sql);
+            return ZurmoRedBean::getAll($sql);
         }
 
         /**

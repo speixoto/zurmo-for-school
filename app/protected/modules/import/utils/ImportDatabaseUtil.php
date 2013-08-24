@@ -140,7 +140,7 @@
                 }
                 ZurmoRedBean::store($newBean);
                 ZurmoRedBean::trash($newBean);
-                ZurmoRedBean::wipe($tableName);
+                ZurmoRedBean::$writer->wipe($tableName);
             }
             return $columns;
         }

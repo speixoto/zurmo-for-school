@@ -42,11 +42,11 @@
          */
         public static function buildTable()
         {
-            $result = R::getAll("SHOW TABLES LIKE '" . self::TABLE_NAME . "'");
+            $result = ZurmoRedBean::getAll("SHOW TABLES LIKE '" . self::TABLE_NAME . "'");
             $tableExists = count($result);
             if (!$tableExists)
             {
-                R::exec("create table " . self::TABLE_NAME . " (
+                ZurmoRedBean::exec("create table " . self::TABLE_NAME . " (
                                 id int(11)         unsigned NOT NULL PRIMARY KEY AUTO_INCREMENT ,
                                 servicename        varchar(50) NOT NULL,
                                 modelid int(11)    unsigned NOT NULL,
@@ -70,7 +70,7 @@
             assert('is_string($dateTime)');
             $sql = "INSERT INTO " . self::TABLE_NAME .
                 " VALUES (NULL, '{$serviceName}', '{$modelId}', '{$modelClassName}', '{$dateTime}')";
-            R::exec($sql);
+            ZurmoRedBean::exec($sql);
         }
     }
 ?>
