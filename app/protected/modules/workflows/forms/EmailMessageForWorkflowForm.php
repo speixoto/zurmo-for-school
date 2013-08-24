@@ -227,7 +227,8 @@
         public function setAttributes($values, $safeOnly = true)
         {
             $recipients = null;
-            if (isset($values[self::EMAIL_MESSAGE_RECIPIENTS]))
+            if (isset($values[self::EMAIL_MESSAGE_RECIPIENTS]) &&
+                is_array($values[self::EMAIL_MESSAGE_RECIPIENTS]))
             {
                 $recipients = $values[self::EMAIL_MESSAGE_RECIPIENTS];
                 unset($values[self::EMAIL_MESSAGE_RECIPIENTS]);
