@@ -61,11 +61,34 @@
             Yii::app()->user->userModel = $super;
             $messageLogger              = new MessageLogger();
             $beforeRowCount             = DatabaseCompatibilityUtil::getTableRowsCountTotal();
+
+            $rowsBefore                 = array();
+            foreach (DatabaseCompatibilityUtil::getAllTableNames() as $tableName)
+            {
+                $rowsBefore[$tableName]['count'] = ZurmoRedBean::$writer->count($tableName);
+                $rowsBefore[$tableName]['rows']  = ZurmoRedBean::getAll("select * from $tableName");
+            }
             $messageLogger->addInfoMessage(print_r(DatabaseCompatibilityUtil::getAllTableNames(), true));
             InstallUtil::autoBuildDatabase($messageLogger, true);
             $afterRowCount              = DatabaseCompatibilityUtil::getTableRowsCountTotal();
-            $messageLogger->addInfoMessage(print_r(DatabaseCompatibilityUtil::getAllTableNames(), true));
+
+            $rowsAfter                 = array();
+            foreach (DatabaseCompatibilityUtil::getAllTableNames() as $tableName)
+            {
+                $rowsAfter[$tableName]['count'] = ZurmoRedBean::$writer->count($tableName);
+                $rowsAfter[$tableName]['rows']  = ZurmoRedBean::getAll("select * from $tableName");
+            }
+            $messageLogger = new MessageLogger();
+            $messageLogger->addInfoMessage(PHP_EOL . PHP_EOL . PHP_EOL . PHP_EOL);
+            $messageLogger->addInfoMessage("Rows Count: before: " . $beforeRowCount);
+            $messageLogger->addInfoMessage(var_export($rowsBefore, true));
+            $messageLogger->addInfoMessage(PHP_EOL . PHP_EOL . PHP_EOL . PHP_EOL);
+            $messageLogger->addInfoMessage("Rows Count after: " . $afterRowCount);
+            $messageLogger->addInfoMessage(var_export($rowsAfter, true));
+            $messageLogger->addInfoMessage(PHP_EOL . PHP_EOL . PHP_EOL . PHP_EOL);
             $messageLogger->printMessages();
+
+
             $this->assertEquals($beforeRowCount, $afterRowCount);
         }
 
