@@ -626,6 +626,11 @@
                                 );
             foreach ($expectedTables as $expectedTable)
             {
+                if (!in_array($expectedTable, $tableNames))
+                {
+                    var_dump($expectedTable . " could not be found in: ");
+                    print_r($tableNames);
+                }
                 $this->assertTrue(in_array($expectedTable, $tableNames));
             }
         }
