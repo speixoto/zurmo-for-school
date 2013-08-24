@@ -61,9 +61,11 @@
             Yii::app()->user->userModel = $super;
             $messageLogger              = new MessageLogger();
             $beforeRowCount             = DatabaseCompatibilityUtil::getTableRowsCountTotal();
+            $messageLogger->addInfoMessage(print_r(DatabaseCompatibilityUtil::getAllTableNames(), true));
             InstallUtil::autoBuildDatabase($messageLogger, true);
-
             $afterRowCount              = DatabaseCompatibilityUtil::getTableRowsCountTotal();
+            $messageLogger->addInfoMessage(print_r(DatabaseCompatibilityUtil::getAllTableNames(), true));
+            $messageLogger->printMessages();
             $this->assertEquals($beforeRowCount, $afterRowCount);
         }
 
