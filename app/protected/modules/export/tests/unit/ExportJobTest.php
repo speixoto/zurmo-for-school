@@ -36,39 +36,112 @@
 
     class ExportJobTest extends ZurmoBaseTest
     {
+        protected static $asynchronousPageSize;
+        
+        protected static $asynchronousMaximumModelsToProcess;
+        
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
             SecurityTestHelper::createSuperAdmin();
+            SecurityTestHelper::createUsers();
+            static::$asynchronousPageSize = ExportModule::$asynchronousPageSize;
+            static::$asynchronousMaximumModelsToProcess = ExportModule::$asynchronousMaximumModelsToProcess;
+        }
+        
+        public function tearDown()
+        {
+            ExportModule::$asynchronousPageSize = static::$asynchronousPageSize;
+            ExportModule::$asynchronousMaximumModelsToProcess = static::$asynchronousMaximumModelsToProcess;
+        }
+                
+        public function testExportByModelIds()
+        {            
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
+
+            $numberOfUserNotifications = Notification::getCountByTypeAndUser('ExportProcessCompleted', Yii::app()->user->userModel);
+                                    
+            $idsToExport = array();
+            
+            $account1 = new Account();
+            $account1->owner       = $super;
+            $account1->name        = 'Test Account';
+            $account1->officePhone = '1234567890';
+            $this->assertTrue($account1->save());
+
+            $account2 = new Account();
+            $account2->owner       = $super;
+            $account2->name        = 'Test Account 2';
+            $account2->officePhone = '1234567899';
+            $this->assertTrue($account2->save());
+            $idsToExport[]  = $account2->id;     
+
+            $account3 = new Account();
+            $account3->owner       = $super;
+            $account3->name        = 'Test Account 3';
+            $account3->officePhone = '987654321';
+            $this->assertTrue($account3->save());                        
+            $idsToExport[] = $account3->id;
+            
+            $account4 = new Account();
+            $account4->owner       = $super;
+            $account4->name        = 'Test Account 4';
+            $account4->officePhone = '198765432';
+            $this->assertTrue($account4->save());                                         
+            
+            $exportItem = new ExportItem();
+            $exportItem->isCompleted = 0;
+            $exportItem->exportFileType = 'csv';
+            $exportItem->exportFileName = 'test';
+            $exportItem->modelClassName = 'Account';
+            $exportItem->serializedData = serialize($idsToExport);
+            $this->assertTrue($exportItem->save());
+
+            $id = $exportItem->id;
+            $exportItem->forget();
+            unset($exportItem);
+
+            $job = new ExportJob();
+            $this->assertTrue($job->run());
+
+            $exportItem = ExportItem::getById($id);
+            $fileModel  = $exportItem->exportFileModel;
+
+            $this->assertEquals(1, $exportItem->isCompleted);
+            $this->assertEquals('csv', $exportItem->exportFileType);
+            $this->assertEquals('test', $exportItem->exportFileName);
+            $this->assertTrue($fileModel instanceOf ExportFileModel);
+
+            // Get csv string via regular csv export process(directly, not in background)
+            // We suppose that csv generated thisway is corrected, this function itself
+            // is tested in another test.
+            $data                  = array();          
+            $modelToExportAdapter  = new ModelToExportAdapter($account2);
+            $headerData            = $modelToExportAdapter->getHeaderData();                       
+            $data[]                = $modelToExportAdapter->getData();
+            $modelToExportAdapter  = new ModelToExportAdapter($account3);
+            $data[]                = $modelToExportAdapter->getData();
+            $output                = ExportItemToCsvFileUtil::export($data, $headerData, 'test.csv', false);
+            $this->assertEquals($output, $fileModel->fileContent->content);
+
+            // Check if user got notification message, and if its type is ExportProcessCompleted
+            $this->assertEquals($numberOfUserNotifications + 1, 
+                                Notification::getCountByTypeAndUser('ExportProcessCompleted', Yii::app()->user->userModel));
         }
 
         /**
-         * Test if background export job generated csv file,
-         * check if content of this csv file is correct, and
-         * finally check if user got notification message that
-         * his downloads are completed.
+         * @depends testExportByModelIds
          */
-        public function testRun()
+        public function testExportRedBeanDataProviderWithSinglePageOfData()
         {
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
 
             $numberOfUserNotifications = Notification::getCountByTypeAndUser('ExportProcessCompleted', Yii::app()->user->userModel);
-
-            $account = new Account();
-            $account->owner       = $super;
-            $account->name        = 'Test Account';
-            $account->officePhone = '1234567890';
-            $this->assertTrue($account->save());
-
-            $account = new Account();
-            $account->owner       = $super;
-            $account->name        = 'Test Account 2';
-            $account->officePhone = '1234567899';
-            $this->assertTrue($account->save());
-
-            $account = new Account(false);
-            $searchForm = new AccountsSearchForm($account);
+            
+            $account      = new Account(false);
+            $searchForm   = new AccountsSearchForm($account);
             $dataProvider = ExportTestHelper::makeRedBeanDataProvider(
                 $searchForm,
                 'Account',
@@ -77,12 +150,12 @@
             );
 
             $totalItems = $dataProvider->getTotalItemCount();
-            $this->assertEquals(2, $totalItems);
+            $this->assertEquals(4, $totalItems);
 
             $exportItem = new ExportItem();
             $exportItem->isCompleted = 0;
             $exportItem->exportFileType = 'csv';
-            $exportItem->exportFileName = 'test';
+            $exportItem->exportFileName = 'test2';
             $exportItem->modelClassName = 'Account';
             $exportItem->serializedData = serialize($dataProvider);
             $this->assertTrue($exportItem->save());
@@ -99,7 +172,7 @@
 
             $this->assertEquals(1, $exportItem->isCompleted);
             $this->assertEquals('csv', $exportItem->exportFileType);
-            $this->assertEquals('test', $exportItem->exportFileName);
+            $this->assertEquals('test2', $exportItem->exportFileName);
             $this->assertTrue($fileModel instanceOf ExportFileModel);
 
             // Get csv string via regular csv export process(directly, not in background)
@@ -114,42 +187,342 @@
                 $modelToExportAdapter  = new ModelToExportAdapter($model);
                 $data[] = $modelToExportAdapter->getData();
             }
-            $output = ExportItemToCsvFileUtil::export($data, $headerData, 'test.csv', false);
+            $output = ExportItemToCsvFileUtil::export($data, $headerData, 'test2.csv', false);
             $this->assertEquals($output, $fileModel->fileContent->content);
 
             // Check if user got notification message, and if its type is ExportProcessCompleted
-            $this->assertEquals($numberOfUserNotifications + 1, Notification::getCountByTypeAndUser('ExportProcessCompleted', Yii::app()->user->userModel));
+            $this->assertEquals($numberOfUserNotifications + 1, 
+                                Notification::getCountByTypeAndUser('ExportProcessCompleted', Yii::app()->user->userModel));                        
         }
 
-        public function testExportByModelIds()
-        {
-
-        }
-
-        public function testExportRedBeanDataProviderWithSinglePageOfData()
-        {
-
-        }
-
+        /**
+         * @depends testExportByModelIds
+         */
         public function testExportRedBeanDataProviderWithMultiplePagesOfData()
         {
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
 
+            $numberOfUserNotifications = Notification::getCountByTypeAndUser('ExportProcessCompleted', Yii::app()->user->userModel);
+            
+            $account      = new Account(false);
+            $searchForm   = new AccountsSearchForm($account);
+            $dataProvider = ExportTestHelper::makeRedBeanDataProvider(
+                $searchForm,
+                'Account',
+                0,
+                Yii::app()->user->userModel->id
+            );
+
+            $totalItems = $dataProvider->getTotalItemCount();
+            $this->assertEquals(4, $totalItems);
+
+            $exportItem = new ExportItem();
+            $exportItem->isCompleted = 0;
+            $exportItem->exportFileType = 'csv';
+            $exportItem->exportFileName = 'test3';
+            $exportItem->modelClassName = 'Account';
+            $exportItem->serializedData = serialize($dataProvider);
+            $this->assertTrue($exportItem->save());
+
+            $id = $exportItem->id;
+            $exportItem->forget();
+            unset($exportItem);
+
+            ExportModule::$asynchronousPageSize = 2;
+            
+            $job = new ExportJob();
+            $this->assertTrue($job->run());
+
+            $exportItem = ExportItem::getById($id);
+            $fileModel = $exportItem->exportFileModel;
+
+            $this->assertEquals(1, $exportItem->isCompleted);
+            $this->assertEquals('csv', $exportItem->exportFileType);
+            $this->assertEquals('test3', $exportItem->exportFileName);
+            $this->assertTrue($fileModel instanceOf ExportFileModel);
+
+            // Get csv string via regular csv export process(directly, not in background)
+            // We suppose that csv generated thisway is corrected, this function itself
+            // is tested in another test.
+            $data                  = array();
+            $rows                  = $dataProvider->getData();
+            $modelToExportAdapter  = new ModelToExportAdapter($rows[0]);
+            $headerData            = $modelToExportAdapter->getHeaderData();
+            foreach ($rows as $model)
+            {
+                $modelToExportAdapter  = new ModelToExportAdapter($model);
+                $data[] = $modelToExportAdapter->getData();
+            }
+            $output = ExportItemToCsvFileUtil::export($data, $headerData, 'test3.csv', false);
+            $this->assertEquals($output, $fileModel->fileContent->content);
+
+            // Check if user got notification message, and if its type is ExportProcessCompleted
+            $this->assertEquals($numberOfUserNotifications + 1, 
+                                Notification::getCountByTypeAndUser('ExportProcessCompleted', Yii::app()->user->userModel));       
         }
 
+        /**
+         * @depends testExportByModelIds
+         */
         public function testExportRedBeanDataProviderGoesOverMaximumProcessingCountLimit()
         {
-            //test this for when it goes over during the processing of a single export item
-            //Test that the next run properly appends the content without the header
-            //Test that the processOffset value is set correctly after the first run
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
 
+            $numberOfUserNotifications = Notification::getCountByTypeAndUser('ExportProcessCompleted', Yii::app()->user->userModel);
+            
+            $account      = new Account(false);
+            $searchForm   = new AccountsSearchForm($account);
+            $dataProvider = ExportTestHelper::makeRedBeanDataProvider(
+                $searchForm,
+                'Account',
+                0,
+                Yii::app()->user->userModel->id
+            );
+
+            $totalItems = $dataProvider->getTotalItemCount();
+            $this->assertEquals(4, $totalItems);
+
+            $exportItem = new ExportItem();
+            $exportItem->isCompleted = 0;
+            $exportItem->exportFileType = 'csv';
+            $exportItem->exportFileName = 'test4';
+            $exportItem->modelClassName = 'Account';
+            $exportItem->serializedData = serialize($dataProvider);
+            $this->assertTrue($exportItem->save());
+
+            $id = $exportItem->id;
+            $exportItem->forget();
+            unset($exportItem);
+
+            ExportModule::$asynchronousPageSize = 2;
+            ExportModule::$asynchronousMaximumModelsToProcess = 3;
+            
+            $job = new ExportJob();
+            $this->assertTrue($job->run());
+
+            $exportItem = ExportItem::getById($id);
+            $fileModel = $exportItem->exportFileModel;
+
+            $this->assertEquals(0, $exportItem->isCompleted);
+            $this->assertEquals(2, $exportItem->processOffset);
+            $this->assertEquals('csv', $exportItem->exportFileType);
+            $this->assertEquals('test4', $exportItem->exportFileName);
+            $this->assertTrue($fileModel instanceOf ExportFileModel);
+
+            // Get csv string via regular csv export process(directly, not in background)
+            // We suppose that csv generated thisway is corrected, this function itself
+            // is tested in another test.
+            $data                  = array();
+            $rows                  = $dataProvider->getData();
+            $modelToExportAdapter  = new ModelToExportAdapter($rows[0]);
+            $headerData            = $modelToExportAdapter->getHeaderData();            
+            
+            //Only 2 rows were processed in the first run
+            $modelToExportAdapter  = new ModelToExportAdapter($rows[0]);
+            $data[] = $modelToExportAdapter->getData();
+            $modelToExportAdapter  = new ModelToExportAdapter($rows[1]);
+            $data[] = $modelToExportAdapter->getData();
+            
+            $output = ExportItemToCsvFileUtil::export($data, $headerData, 'test4.csv', false);
+            $this->assertEquals($output, $fileModel->fileContent->content);
+
+            // Check that user got no notification message
+            $this->assertEquals($numberOfUserNotifications, 
+                                Notification::getCountByTypeAndUser('ExportProcessCompleted', Yii::app()->user->userModel));       
+            
+            //Second run will finish the job
+            $this->assertTrue($job->run());
+            $this->assertTrue($job->run());         //TODO: @sergio: Why we need an aditional run here?
+            
+            $exportItem = ExportItem::getById($id);
+            $fileModel = $exportItem->exportFileModel;
+
+            $this->assertEquals(1, $exportItem->isCompleted);
+            $this->assertEquals(4, $exportItem->processOffset);
+            $this->assertEquals('csv', $exportItem->exportFileType);
+            $this->assertEquals('test4', $exportItem->exportFileName);
+            $this->assertTrue($fileModel instanceOf ExportFileModel);
+           
+            //The last 2 rows were processed
+            $modelToExportAdapter  = new ModelToExportAdapter($rows[2]);
+            $data[] = $modelToExportAdapter->getData();
+            $modelToExportAdapter  = new ModelToExportAdapter($rows[3]);
+            $data[] = $modelToExportAdapter->getData();
+            
+            $output = ExportItemToCsvFileUtil::export($data, $headerData, 'test4.csv', false);
+            $this->assertEquals($output, $fileModel->fileContent->content);
+
+             // Check if user got notification message, and if its type is ExportProcessCompleted
+            $this->assertEquals($numberOfUserNotifications + 1, 
+                                Notification::getCountByTypeAndUser('ExportProcessCompleted', Yii::app()->user->userModel));       
         }
 
+        /**
+         * @depends testExportByModelIds
+         */
         public function testExportRedBeanDataProviderGoesOverMaximumProcessingCountLimitGlobally()
-        {
-            //test this for when it goes over after processing an exportItem but before the next item.
-            //Test the next run properly runs the next exportItem
-        }
+        {                        
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
+           
+            $numberOfUserNotifications = Notification::getCountByTypeAndUser('ExportProcessCompleted', Yii::app()->user->userModel);
+            
+            $account      = new Account(false);
+            $searchForm   = new AccountsSearchForm($account);
+            $dataProvider = ExportTestHelper::makeRedBeanDataProvider(
+                $searchForm,
+                'Account',
+                0,
+                Yii::app()->user->userModel->id
+            );
 
+            $totalItems = $dataProvider->getTotalItemCount();
+            $this->assertEquals(4, $totalItems);
+
+            $exportItem = new ExportItem();
+            $exportItem->isCompleted = 0;
+            $exportItem->exportFileType = 'csv';
+            $exportItem->exportFileName = 'test5';
+            $exportItem->modelClassName = 'Account';
+            $exportItem->serializedData = serialize($dataProvider);
+            $this->assertTrue($exportItem->save());
+            $id1 = $exportItem->id;
+            
+            $exportItem = new ExportItem();
+            $exportItem->isCompleted = 0;
+            $exportItem->exportFileType = 'csv';
+            $exportItem->exportFileName = 'test6';
+            $exportItem->modelClassName = 'Account';
+            $exportItem->serializedData = serialize($dataProvider);
+            $this->assertTrue($exportItem->save());
+            $id2 = $exportItem->id;
+            
+            $exportItem->forget();
+            unset($exportItem);
+
+            ExportModule::$asynchronousMaximumModelsToProcess = 6;
+            
+            $job = new ExportJob();
+            $this->assertTrue($job->run());
+
+            $exportItem = ExportItem::getById($id1);
+            $fileModel = $exportItem->exportFileModel;
+
+            $this->assertEquals(1, $exportItem->isCompleted);
+            $this->assertEquals(0, $exportItem->processOffset);
+            $this->assertEquals('csv', $exportItem->exportFileType);
+            $this->assertEquals('test5', $exportItem->exportFileName);
+            $this->assertTrue($fileModel instanceOf ExportFileModel);
+
+            $data                  = array();
+            $rows                  = $dataProvider->getData();
+            $modelToExportAdapter  = new ModelToExportAdapter($rows[0]);
+            $headerData            = $modelToExportAdapter->getHeaderData();
+            foreach ($rows as $model)
+            {
+                $modelToExportAdapter  = new ModelToExportAdapter($model);
+                $data[] = $modelToExportAdapter->getData();
+            }
+            $output = ExportItemToCsvFileUtil::export($data, $headerData, 'test5.csv', false);
+            $this->assertEquals($output, $fileModel->fileContent->content);
+                       
+            // Check if user got notification message, and if its type is ExportProcessCompleted
+            $this->assertEquals($numberOfUserNotifications + 1, 
+                                Notification::getCountByTypeAndUser('ExportProcessCompleted', Yii::app()->user->userModel));    
+            
+            //The second item was not processed
+            $exportItem = ExportItem::getById($id2);
+            $fileModel  = $exportItem->exportFileModel;
+            $this->assertNull($fileModel->fileContent->content);
+            
+            $this->assertTrue($job->run());
+            
+            //The second item is processed
+            $exportItem = ExportItem::getById($id2);
+            $fileModel = $exportItem->exportFileModel;
+
+            $this->assertEquals(1, $exportItem->isCompleted);
+            $this->assertEquals(0, $exportItem->processOffset);
+            $this->assertEquals('csv', $exportItem->exportFileType);
+            $this->assertEquals('test6', $exportItem->exportFileName);
+            $this->assertTrue($fileModel instanceOf ExportFileModel);
+                        
+            $output = ExportItemToCsvFileUtil::export($data, $headerData, 'test6.csv', false);
+            $this->assertEquals($output, $fileModel->fileContent->content);
+
+            // Check if user got notification message, and if its type is ExportProcessCompleted
+            $this->assertEquals($numberOfUserNotifications + 2, 
+                                Notification::getCountByTypeAndUser('ExportProcessCompleted', Yii::app()->user->userModel));                         
+            
+        }
+                        
+        public function testSecurityExceptionThrownDuringExport()
+        {            
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;            
+            SecurityTestHelper::createAccounts();
+            $billy = User::getByUsername('billy');
+            Yii::app()->user->userModel = $billy;                            
+            ReadPermissionsOptimizationUtil::rebuild();
+                                   
+            $numberOfUserNotifications = Notification::getCountByTypeAndUser('ExportProcessCompleted', $billy);
+            
+            $account      = new Account(false);
+            $searchForm   = new AccountsSearchForm($account);
+            $dataProvider = ExportTestHelper::makeRedBeanDataProvider(
+                $searchForm,
+                'Account',
+                0,
+                $billy->id
+            );
+
+            $totalItems = $dataProvider->getTotalItemCount();
+            $this->assertEquals(3, $totalItems);
+
+            $exportItem = new ExportItem();
+            $exportItem->isCompleted = 0;
+            $exportItem->exportFileType = 'csv';
+            $exportItem->exportFileName = 'test7';
+            $exportItem->modelClassName = 'Account';
+            $exportItem->serializedData = serialize($dataProvider);
+            $exportItem->owner          = $super;
+            $this->assertTrue($exportItem->save());
+
+            $id = $exportItem->id;
+            $exportItem->forget();
+            unset($exportItem);
+                                   
+            $job = new ExportJob();
+            $this->assertTrue($job->run());
+
+            $exportItem = ExportItem::getById($id);
+            $fileModel = $exportItem->exportFileModel;
+
+            $this->assertEquals(1, $exportItem->isCompleted);
+            $this->assertEquals('csv', $exportItem->exportFileType);
+            $this->assertEquals('test7', $exportItem->exportFileName);
+            $this->assertTrue($fileModel instanceOf ExportFileModel);
+           
+            $data                  = array();
+            $rows                  = $dataProvider->getData();
+            $modelToExportAdapter  = new ModelToExportAdapter($rows[0]);
+            $headerData            = $modelToExportAdapter->getHeaderData();
+            foreach ($rows as $model)
+            {
+                $modelToExportAdapter  = new ModelToExportAdapter($model);
+                $data[] = $modelToExportAdapter->getData();
+            }
+            $output = ExportItemToCsvFileUtil::export($data, $headerData, 'test7.csv', false);
+            //$this->assertEquals($output, $fileModel->fileContent->content);
+
+            // Check if user got notification message, and if its type is ExportProcessCompleted
+//            $this->assertEquals($numberOfUserNotifications + 1, 
+//                                Notification::getCountByTypeAndUser('ExportProcessCompleted', $billy));     
+//            
+        }
+        
         public function testExportReportWithSinglePageOfData()
         {
 
@@ -158,12 +531,6 @@
         public function testExportReportWithMultiplePagesOfData()
         {
 
-        }
-
-        public function testSecurityExceptionThrownDuringExport()
-        {
-            //if the user who owns the exportItem for some reason loses permissions/rights, an exception gets
-            //thrown. make sure this code works and notification goes out correctly.
         }
     }
 ?>

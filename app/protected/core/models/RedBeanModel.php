@@ -343,7 +343,7 @@
             {
                 $count = 0;
             }
-            return $count;
+            return intval($count);
         }
 
         /**
