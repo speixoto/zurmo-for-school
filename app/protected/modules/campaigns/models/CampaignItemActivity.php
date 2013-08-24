@@ -49,7 +49,7 @@
             $metadata = parent::getDefaultMetadata();
             $metadata[__CLASS__] = array(
                 'relations' => array(
-                    'campaignItem'                     => array(RedBeanModel::HAS_ONE,     'CampaignItem'),
+                    'campaignItem'                     => array(static::HAS_ONE,     'CampaignItem'),
                 ),
             );
             return $metadata;

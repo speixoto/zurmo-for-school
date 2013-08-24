@@ -58,7 +58,7 @@
                     array('member', 'length', 'max' => 255),
                 ),
                 'relations' => array(
-                    'currencyValue'    => array(RedBeanModel::HAS_ONE,   'CurrencyValue',    RedBeanModel::OWNED),
+                    'currencyValue'    => array(static::HAS_ONE,   'CurrencyValue',    static::OWNED),
                 ),
             );
             return $metadata;

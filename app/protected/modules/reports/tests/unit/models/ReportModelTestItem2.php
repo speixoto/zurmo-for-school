@@ -51,9 +51,9 @@
                     'phone',
                 ),
                 'relations' => array(
-                    'hasMany2'          => array(RedBeanModel::HAS_MANY,   'ReportModelTestItem', RedBeanModel::NOT_OWNED,
-                                                 RedBeanModel::LINK_TYPE_SPECIFIC, 'hasOne'),
-                    'hasMany3'          => array(RedBeanModel::MANY_MANY, 'ReportModelTestItem3'),
+                    'hasMany2'          => array(static::HAS_MANY,   'ReportModelTestItem', static::NOT_OWNED,
+                                                 static::LINK_TYPE_SPECIFIC, 'hasOne'),
+                    'hasMany3'          => array(static::MANY_MANY, 'ReportModelTestItem3'),
                 ),
                 'rules' => array(
                     array('name',  'type',   'type' => 'string'),

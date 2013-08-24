@@ -136,7 +136,7 @@
             }
             echo "Testing with database: '"  . Yii::app()->db->connectionString . '\', ' .
                                                 'username: \'' . Yii::app()->db->username         . "'." . PHP_EOL;
-
+            
             static::setupDatabaseConnection();
             if (!$reuse)
             {

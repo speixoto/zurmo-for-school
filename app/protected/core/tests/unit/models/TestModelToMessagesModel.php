@@ -62,7 +62,7 @@
                     'name',
                 ),
                 'relations' => array(
-                    'e' => array(RedBeanModel::HAS_ONE, 'E'),
+                    'e' => array(static::HAS_ONE, 'E'),
                 ),
                 'rules' => array(
                     array('name',    'required'),

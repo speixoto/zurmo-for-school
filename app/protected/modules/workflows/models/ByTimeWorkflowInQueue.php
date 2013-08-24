@@ -61,9 +61,9 @@
                     'processDateTime',
                 ),
                 'relations' => array(
-                    'modelItem'     => array(RedBeanModel::HAS_ONE, 'Item',          RedBeanModel::NOT_OWNED,
-                                             RedBeanModel::LINK_TYPE_SPECIFIC, 'modelItem'),
-                    'savedWorkflow' => array(RedBeanModel::HAS_ONE, 'SavedWorkflow', RedBeanModel::NOT_OWNED),
+                    'modelItem'     => array(static::HAS_ONE, 'Item',          static::NOT_OWNED,
+                                             static::LINK_TYPE_SPECIFIC, 'modelItem'),
+                    'savedWorkflow' => array(static::HAS_ONE, 'SavedWorkflow', static::NOT_OWNED),
                 ),
                 'rules' => array(
                     array('modelClassName',   'required'),

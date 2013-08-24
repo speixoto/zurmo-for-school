@@ -189,8 +189,8 @@
                     'name',
                 ),
                 'relations' => array(
-                    'folders' => array(RedBeanModel::HAS_MANY, 'EmailFolder'),
-                    'user'    => array(RedBeanModel::HAS_MANY_BELONGS_TO, 'User'),
+                    'folders' => array(static::HAS_MANY, 'EmailFolder'),
+                    'user'    => array(static::HAS_MANY_BELONGS_TO, 'User'),
                 ),
                 'rules' => array(
                     array('name',          'required'),

@@ -44,8 +44,8 @@
                     'amount',
                 ),
                 'relations' => array(
-                    'amount'        => array(RedBeanModel::HAS_ONE,   'CurrencyValue',    RedBeanModel::OWNED,
-                                         RedBeanModel::LINK_TYPE_SPECIFIC, 'amount'),
+                    'amount'        => array(static::HAS_ONE,   'CurrencyValue',    static::OWNED,
+                                         static::LINK_TYPE_SPECIFIC, 'amount'),
                 ),
                 'rules' => array(
                     array('amount', 'required'),

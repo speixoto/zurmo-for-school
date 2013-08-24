@@ -51,7 +51,7 @@
             assert('is_string($modelClassName)');
             assert('$modelClassName != ""');
             assert('get_called_class() != "DerivedAttributeMetadata"');
-            $derivedAttirbuteMetadataTableName   = RedBeanModel::getTableName('DerivedAttributeMetadata');
+            $derivedAttirbuteMetadataTableName   = static::getTableName('DerivedAttributeMetadata');
             $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter(get_called_class());
             $joinTablesAdapter->addFromTableAndGetAliasName($derivedAttirbuteMetadataTableName,
                                                             "{$derivedAttirbuteMetadataTableName}_id");
@@ -72,7 +72,7 @@
         public static function getAllByModelClassName($modelClassName)
         {
             assert('$modelClassName != ""');
-            $derivedAttirbuteMetadataTableName   = RedBeanModel::getTableName('DerivedAttributeMetadata');
+            $derivedAttirbuteMetadataTableName   = static::getTableName('DerivedAttributeMetadata');
             $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter(get_called_class());
             $joinTablesAdapter->addFromTableAndGetAliasName($derivedAttirbuteMetadataTableName,
                                                             "{$derivedAttirbuteMetadataTableName}_id");

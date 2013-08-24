@@ -76,9 +76,9 @@
                     'type',
                 ),
                 'relations' => array(
-                    'personOrAccount'      => array(RedBeanModel::HAS_ONE, 'Item',    RedBeanModel::NOT_OWNED,
-                                                    RedBeanModel::LINK_TYPE_SPECIFIC, 'personOrAccount'),
-                    'emailMessage'         => array(RedBeanModel::HAS_ONE,  'EmailMessage',    RedBeanModel::NOT_OWNED),
+                    'personOrAccount'      => array(static::HAS_ONE, 'Item',    static::NOT_OWNED,
+                                                    static::LINK_TYPE_SPECIFIC, 'personOrAccount'),
+                    'emailMessage'         => array(static::HAS_ONE,  'EmailMessage',    static::NOT_OWNED),
                 ),
                 'rules' => array(
                     array('toAddress', 'required'),

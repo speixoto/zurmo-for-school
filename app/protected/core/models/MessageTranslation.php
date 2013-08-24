@@ -45,11 +45,7 @@
                     'language',
                 ),
                 'relations' => array(
-                    'messagesource'   => array(
-                                               RedBeanModel::HAS_ONE,
-                                               'MessageSource',
-                                               RedBeanModel::OWNED
-                                               ),
+                    'messagesource'   => array(static::HAS_ONE, 'MessageSource', static::OWNED),
                 ),
                 'rules' => array(
                     array('translation',        'required'),

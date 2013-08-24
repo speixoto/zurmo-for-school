@@ -69,7 +69,7 @@
                     'serializedData'
                 ),
                 'relations' => array(
-                    'exportFileModel' => array(RedBeanModel::HAS_ONE,  'ExportFileModel', RedBeanModel::OWNED),
+                    'exportFileModel' => array(static::HAS_ONE,  'ExportFileModel', static::OWNED),
                 ),
                 'rules' => array(
                     array('isCompleted',      'boolean'),

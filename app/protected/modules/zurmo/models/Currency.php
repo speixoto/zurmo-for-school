@@ -97,7 +97,7 @@
             {
                 throw new NotFoundException();
             }
-            return RedBeanModel::makeModel(end($beans), 'Currency');
+            return static::makeModel(end($beans), 'Currency');
         }
 
         /**

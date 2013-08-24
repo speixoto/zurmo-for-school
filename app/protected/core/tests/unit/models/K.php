@@ -54,11 +54,11 @@
                     'kMember',
                 ),
                 'relations' => array(
-                    'i'  => array(RedBeanModel::HAS_MANY_BELONGS_TO, 'I'),
-                    'ii' => array(RedBeanModel::HAS_MANY_BELONGS_TO, 'II', RedBeanModel::NOT_OWNED,
-                                    RedBeanModel::LINK_TYPE_ASSUMPTIVE),
-                    'iii' => array(RedBeanModel::HAS_MANY_BELONGS_TO, 'III', RedBeanModel::OWNED,
-                                    RedBeanModel::LINK_TYPE_SPECIFIC, 'ilink'),
+                    'i'  => array(static::HAS_MANY_BELONGS_TO, 'I'),
+                    'ii' => array(static::HAS_MANY_BELONGS_TO, 'II', static::NOT_OWNED,
+                                    static::LINK_TYPE_ASSUMPTIVE),
+                    'iii' => array(static::HAS_MANY_BELONGS_TO, 'III', static::OWNED,
+                                    static::LINK_TYPE_SPECIFIC, 'ilink'),
                 ),
                 'rules' => array(
                     array('kMember',      'type', 'type' => 'string'),

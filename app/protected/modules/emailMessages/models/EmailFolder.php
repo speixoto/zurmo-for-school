@@ -200,7 +200,7 @@
                     'type',
                 ),
                 'relations' => array(
-                    'emailBox' => array(RedBeanModel::HAS_ONE, 'EmailBox'),
+                    'emailBox' => array(static::HAS_ONE, 'EmailBox'),
                 ),
                 'rules' => array(
                     array('name',          'required'),

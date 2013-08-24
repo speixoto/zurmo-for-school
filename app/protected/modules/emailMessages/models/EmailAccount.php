@@ -135,9 +135,9 @@
                     'outboundSecurity',
                 ),
                 'relations' => array(
-                    'messages' => array(RedBeanModel::HAS_MANY, 'EmailMessage', RedBeanModel::NOT_OWNED,
-                                                                        RedBeanModel::LINK_TYPE_SPECIFIC, 'account'),
-                    'user'     => array(RedBeanModel::HAS_ONE,  'User'),
+                    'messages' => array(static::HAS_MANY, 'EmailMessage', static::NOT_OWNED,
+                                            static::LINK_TYPE_SPECIFIC, 'account'),
+                    'user'     => array(static::HAS_ONE,  'User'),
                 ),
                 'rules'     => array(
                                   array('fromName',                  'required'),

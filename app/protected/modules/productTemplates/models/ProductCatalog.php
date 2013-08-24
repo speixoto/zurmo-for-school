@@ -164,7 +164,7 @@
                     'name',
                 ),
                 'relations' => array(
-                    'productCategories'         => array(RedBeanModel::MANY_MANY, 'ProductCategory'),
+                    'productCategories'         => array(static::MANY_MANY, 'ProductCategory'),
                 ),
                 'rules' => array(
                     array('name',  'required'),

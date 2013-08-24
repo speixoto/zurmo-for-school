@@ -67,9 +67,9 @@
                     array('name',          'length',  'min'  => 3, 'max' => 64),
                 ),
                 'relations' => array(
-                    'pp'        => array(RedBeanModel::HAS_ONE, 'PP'),
-                    'pp1'                 => array(RedBeanModel::HAS_ONE, 'PP',  RedBeanModel::NOT_OWNED,
-                                                   RedBeanModel::LINK_TYPE_SPECIFIC, 'pp1Link'),
+                    'pp'        => array(static::HAS_ONE, 'PP'),
+                    'pp1'                 => array(static::HAS_ONE, 'PP',  static::NOT_OWNED,
+                                                   static::LINK_TYPE_SPECIFIC, 'pp1Link'),
                 ),
             );
             return $metadata;

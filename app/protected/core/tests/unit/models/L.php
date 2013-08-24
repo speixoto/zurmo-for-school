@@ -44,7 +44,7 @@
                     'lMember',
                 ),
                 'relations' => array(
-                    'is' => array(RedBeanModel::MANY_MANY, 'I'),
+                    'is' => array(static::MANY_MANY, 'I'),
                 ),
                 'rules' => array(
                     array('lMember',      'type', 'type' => 'string'),

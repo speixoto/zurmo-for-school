@@ -44,8 +44,8 @@
                     'fffMember',
                 ),
                 'relations' => array(
-                    'bbb'                => array(RedBeanModel::HAS_ONE,            'BBB'),
-                    'eee'                => array(RedBeanModel::HAS_ONE,            'EEE'),
+                    'bbb'                => array(static::HAS_ONE,            'BBB'),
+                    'eee'                => array(static::HAS_ONE,            'EEE'),
                 ),
                 'rules' => array(
                     array('fffMember', 'type', 'type' => 'string'),

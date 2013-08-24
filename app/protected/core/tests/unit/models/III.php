@@ -49,8 +49,8 @@
                     'dateTime2'
                 ),
                 'relations' => array(
-                    'ccc'                => array(RedBeanModel::HAS_ONE,            'CCC'),
-                    'eee'                => array(RedBeanModel::HAS_ONE,            'EEE'),
+                    'ccc'                => array(static::HAS_ONE,            'CCC'),
+                    'eee'                => array(static::HAS_ONE,            'EEE'),
                 ),
                 'rules' => array(
                     array('iiiMember',  'type', 'type' => 'string'),

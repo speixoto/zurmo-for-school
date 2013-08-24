@@ -70,7 +70,7 @@
                     'e',
                 ),
                 'relations' => array(
-                    'g' => array(RedBeanModel::HAS_ONE, 'G'),
+                    'g' => array(static::HAS_ONE, 'G'),
                 ),
                 'rules' => array(
                     array('e', 'length', 'min' => 1, 'max' => 16),

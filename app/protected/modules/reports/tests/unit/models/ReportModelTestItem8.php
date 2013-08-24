@@ -44,9 +44,9 @@
                     'name',
                 ),
                 'relations' => array(
-                    'dropDownX'       => array(RedBeanModel::HAS_ONE,   'OwnedCustomField', RedBeanModel::OWNED,
-                                         RedBeanModel::LINK_TYPE_SPECIFIC, 'dropDownX'),
-                    'reportModelTestItems' => array(RedBeanModel::HAS_MANY, 'ReportModelTestItem'),
+                    'dropDownX'       => array(static::HAS_ONE,   'OwnedCustomField', static::OWNED,
+                                         static::LINK_TYPE_SPECIFIC, 'dropDownX'),
+                    'reportModelTestItems' => array(static::HAS_MANY, 'ReportModelTestItem'),
                 ),
                 'rules' => array(
                     array('name',  'type',   'type' => 'string'),

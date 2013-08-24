@@ -44,9 +44,9 @@
                     'name',
                 ),
                 'relations' => array(
-                    'dropDownX'       => array(RedBeanModel::HAS_ONE,   'OwnedCustomField', RedBeanModel::OWNED,
-                                         RedBeanModel::LINK_TYPE_SPECIFIC, 'dropDownX'),
-                    'workflowModelTestItems' => array(RedBeanModel::HAS_MANY, 'WorkflowModelTestItem'),
+                    'dropDownX'       => array(static::HAS_ONE,   'OwnedCustomField', static::OWNED,
+                                         static::LINK_TYPE_SPECIFIC, 'dropDownX'),
+                    'workflowModelTestItems' => array(static::HAS_MANY, 'WorkflowModelTestItem'),
                 ),
                 'rules' => array(
                     array('name',  'type',   'type' => 'string'),

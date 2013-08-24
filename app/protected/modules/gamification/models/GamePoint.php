@@ -182,9 +182,9 @@
                     'value',
                 ),
                 'relations' => array(
-                    'person'       => array(RedBeanModel::HAS_ONE, 'Item', RedBeanModel::NOT_OWNED,
-                                            RedBeanModel::LINK_TYPE_SPECIFIC, 'person'),
-                    'transactions' => array(RedBeanModel::HAS_MANY, 'GamePointTransaction', RedBeanModel::OWNED),
+                    'person'       => array(static::HAS_ONE, 'Item', static::NOT_OWNED,
+                                            static::LINK_TYPE_SPECIFIC, 'person'),
+                    'transactions' => array(static::HAS_MANY, 'GamePointTransaction', static::OWNED),
                 ),
                 'rules' => array(
                     array('type',          'required'),

@@ -45,7 +45,7 @@
                     'gggMember2',
                 ),
                 'relations' => array(
-                    'eee'                => array(RedBeanModel::HAS_ONE,            'EEE'),
+                    'eee'                => array(static::HAS_ONE,            'EEE'),
                 ),
                 'rules' => array(
                     array('gggMember',  'type', 'type' => 'string'),

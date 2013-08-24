@@ -97,7 +97,7 @@
                     'value',
                 ),
                 'relations'   => array(
-                    'permitable' => array(RedBeanModel::HAS_MANY_BELONGS_TO, 'Permitable'),
+                    'permitable' => array(static::HAS_MANY_BELONGS_TO, 'Permitable'),
                 ),
                 'rules' => array(
                     array('moduleName', 'required'),

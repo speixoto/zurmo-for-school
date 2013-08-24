@@ -41,12 +41,12 @@
             $metadata = parent::getDefaultMetadata();
             $metadata[__CLASS__] = array(
                 'relations' => array(
-                    'industry'           => array(RedBeanModel::HAS_ONE, 'OwnedCustomField', RedBeanModel::OWNED,
-                                         RedBeanModel::LINK_TYPE_SPECIFIC, 'industry'),
-                    'multipleIndustries' => array(RedBeanModel::HAS_ONE, 'OwnedMultipleValuesCustomField', RedBeanModel::OWNED,
-                                         RedBeanModel::LINK_TYPE_SPECIFIC, 'multipleIndustries'),
-                    'multipleSomethings' => array(RedBeanModel::HAS_ONE, 'OwnedMultipleValuesCustomField', RedBeanModel::OWNED,
-                                         RedBeanModel::LINK_TYPE_SPECIFIC, 'multipleSomethings'),
+                    'industry'           => array(static::HAS_ONE, 'OwnedCustomField', static::OWNED,
+                                         static::LINK_TYPE_SPECIFIC, 'industry'),
+                    'multipleIndustries' => array(static::HAS_ONE, 'OwnedMultipleValuesCustomField', static::OWNED,
+                                         static::LINK_TYPE_SPECIFIC, 'multipleIndustries'),
+                    'multipleSomethings' => array(static::HAS_ONE, 'OwnedMultipleValuesCustomField', static::OWNED,
+                                         static::LINK_TYPE_SPECIFIC, 'multipleSomethings'),
                 ),
                 'customFields' => array(
                     'industry'           => 'Industries',

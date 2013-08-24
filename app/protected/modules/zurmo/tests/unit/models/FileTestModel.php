@@ -41,8 +41,8 @@
             $metadata = parent::getDefaultMetadata();
             $metadata[__CLASS__] = array(
                 'relations' => array(
-                    'modelWithAttachmentTestItem' => array(RedBeanModel::HAS_ONE, 'ModelWithAttachmentTestItem',
-                                                            RedBeanModel::NOT_OWNED),
+                    'modelWithAttachmentTestItem' => array(static::HAS_ONE, 'ModelWithAttachmentTestItem',
+                                                            static::NOT_OWNED),
                 ),
             );
             return $metadata;

@@ -49,7 +49,7 @@
             $metadata = parent::getDefaultMetadata();
             $metadata[__CLASS__] = array(
                 'relations' => array(
-                    'autoresponderItem'   => array(RedBeanModel::HAS_ONE, 'AutoresponderItem', RedBeanModel::NOT_OWNED),
+                    'autoresponderItem'   => array(static::HAS_ONE, 'AutoresponderItem', static::NOT_OWNED),
                 ),
             );
             return $metadata;

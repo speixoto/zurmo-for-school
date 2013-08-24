@@ -79,7 +79,7 @@
 
         /**
          * Renders the Sell Price Formula Dropdown
-         * @param Redbean $model
+         * @param RedBeanModel $model
          * @param Object $form
          * @param string $inputNameIdPrefix
          * @param string $attribute

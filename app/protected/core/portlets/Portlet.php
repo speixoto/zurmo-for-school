@@ -174,7 +174,7 @@
                     'collapsed',
                 ),
                 'relations' => array(
-                    'user' => array(RedBeanModel::HAS_ONE, 'User'),
+                    'user' => array(static::HAS_ONE, 'User'),
                 ),
                 'rules' => array(
                     array('column',             'required'),

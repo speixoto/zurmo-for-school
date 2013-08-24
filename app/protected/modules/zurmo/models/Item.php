@@ -226,10 +226,10 @@
                     'modifiedDateTime',
                 ),
                 'relations' => array(
-                    'createdByUser'  => array(RedBeanModel::HAS_ONE,  'User', RedBeanModel::NOT_OWNED,
-                                     RedBeanModel::LINK_TYPE_SPECIFIC, 'createdByUser'),
-                    'modifiedByUser' => array(RedBeanModel::HAS_ONE,  'User', RedBeanModel::NOT_OWNED,
-                                     RedBeanModel::LINK_TYPE_SPECIFIC, 'modifiedByUser'),
+                    'createdByUser'  => array(static::HAS_ONE,  'User', static::NOT_OWNED,
+                                     static::LINK_TYPE_SPECIFIC, 'createdByUser'),
+                    'modifiedByUser' => array(static::HAS_ONE,  'User', static::NOT_OWNED,
+                                     static::LINK_TYPE_SPECIFIC, 'modifiedByUser'),
                 ),
                 'rules' => array(
                     array('createdDateTime',  'required'),

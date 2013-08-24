@@ -52,8 +52,8 @@
                     'name',
                 ),
                 'relations' => array(
-                    'modelItem'        => array(RedBeanModel::HAS_ONE,   'ApiTestModelItem', RedBeanModel::NOT_OWNED,
-                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'modelItem')
+                    'modelItem'        => array(static::HAS_ONE,   'ApiTestModelItem', static::NOT_OWNED,
+                                                static::LINK_TYPE_SPECIFIC, 'modelItem')
                 ),
                 'rules' => array(
                     array('name',  'type',   'type' => 'string'),

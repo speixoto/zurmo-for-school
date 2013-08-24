@@ -112,9 +112,9 @@
                     'hashIndex'
                 ),
                 'relations' => array(
-                    'contact'            => array(RedBeanModel::HAS_ONE, 'Contact'),
-                    'contactWebForm'     => array(RedBeanModel::HAS_ONE, 'ContactWebForm', RedBeanModel::NOT_OWNED,
-                                                                    RedBeanModel::LINK_TYPE_SPECIFIC, 'entries'),
+                    'contact'            => array(static::HAS_ONE, 'Contact'),
+                    'contactWebForm'     => array(static::HAS_ONE, 'ContactWebForm', static::NOT_OWNED,
+                                                                    static::LINK_TYPE_SPECIFIC, 'entries'),
                 ),
                 'rules' => array(
                     array('serializedData',    'type', 'type' => 'string'),
@@ -171,7 +171,7 @@
             }
             else
             {
-                return RedBeanModel::makeModel(end($beans), $modelClassName);
+                return static::makeModel(end($beans), $modelClassName);
             }
         }
     }

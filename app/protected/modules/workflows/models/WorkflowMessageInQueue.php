@@ -62,11 +62,11 @@
                     'serializedData',
                 ),
                 'relations' => array(
-                    'modelItem'       => array(RedBeanModel::HAS_ONE,   'Item',          RedBeanModel::NOT_OWNED,
-                                               RedBeanModel::LINK_TYPE_SPECIFIC, 'modelItem'),
-                    'savedWorkflow'   => array(RedBeanModel::HAS_ONE,   'SavedWorkflow', RedBeanModel::NOT_OWNED),
-                    'triggeredByUser' => array(RedBeanModel::HAS_ONE,   'User',          RedBeanModel::NOT_OWNED,
-                                               RedBeanModel::LINK_TYPE_SPECIFIC, 'triggeredByUser'),
+                    'modelItem'       => array(static::HAS_ONE,   'Item',          static::NOT_OWNED,
+                                               static::LINK_TYPE_SPECIFIC, 'modelItem'),
+                    'savedWorkflow'   => array(static::HAS_ONE,   'SavedWorkflow', static::NOT_OWNED),
+                    'triggeredByUser' => array(static::HAS_ONE,   'User',          static::NOT_OWNED,
+                                               static::LINK_TYPE_SPECIFIC, 'triggeredByUser'),
                 ),
                 'rules' => array(
                     array('modelClassName',   'required'),

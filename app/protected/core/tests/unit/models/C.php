@@ -48,16 +48,16 @@
 
                 ),
                 'relations' => array(
-                    'e'           => array(RedBeanModel::HAS_ONE,  'E'),
-                    'eRequired'   => array(RedBeanModel::HAS_ONE,  'E', RedBeanModel::NOT_OWNED,
-                                           RedBeanModel::LINK_TYPE_SPECIFIC, 'eRequired'),
-                    'eUnique'     => array(RedBeanModel::HAS_ONE,  'E', RedBeanModel::NOT_OWNED,
-                                           RedBeanModel::LINK_TYPE_SPECIFIC, 'eUnique'),
-                    'eDefaulted1' => array(RedBeanModel::HAS_ONE,  'E', RedBeanModel::NOT_OWNED,
-                                           RedBeanModel::LINK_TYPE_SPECIFIC, 'eDefaulted1'),
-                    'eDefaulted2' => array(RedBeanModel::HAS_ONE,  'E', RedBeanModel::NOT_OWNED,
-                                           RedBeanModel::LINK_TYPE_SPECIFIC, 'eDefaulted2'),
-                    'eMany'       => array(RedBeanModel::HAS_MANY, 'E')
+                    'e'           => array(static::HAS_ONE,  'E'),
+                    'eRequired'   => array(static::HAS_ONE,  'E', static::NOT_OWNED,
+                                           static::LINK_TYPE_SPECIFIC, 'eRequired'),
+                    'eUnique'     => array(static::HAS_ONE,  'E', static::NOT_OWNED,
+                                           static::LINK_TYPE_SPECIFIC, 'eUnique'),
+                    'eDefaulted1' => array(static::HAS_ONE,  'E', static::NOT_OWNED,
+                                           static::LINK_TYPE_SPECIFIC, 'eDefaulted1'),
+                    'eDefaulted2' => array(static::HAS_ONE,  'E', static::NOT_OWNED,
+                                           static::LINK_TYPE_SPECIFIC, 'eDefaulted2'),
+                    'eMany'       => array(static::HAS_MANY, 'E')
                 ),
                 'rules' => array(
                     array('eRequired',      'required'),

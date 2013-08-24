@@ -372,7 +372,7 @@
             {
                 throw new NotFoundException();
             }
-            return RedBeanModel::makeModel(end($beans), $modelClassName);
+            return static::makeModel(end($beans), $modelClassName);
         }
 
         public function getIsNewModel()
@@ -1438,7 +1438,7 @@
                     {
                         $this->unrestrictedGet($attributeName);
                     }
-                    elseif ($value !== null && $owns == RedBeanModel::OWNED &&
+                    elseif ($value !== null && $owns == static::OWNED &&
                            !in_array($attributeName, $this->unlinkedRelationNames) &&
                            !isset($this->relationNameToRelatedModel[$attributeName]))
                     {
@@ -1457,7 +1457,7 @@
                             isset($this->relationNameToRelatedModel[$attributeName]))
                         {
                             $this->unlinkedRelationNames[] = $attributeName;
-                            if ($owns == RedBeanModel::OWNED)
+                            if ($owns == static::OWNED)
                             {
                                 $this->unlinkedOwnedRelatedModelsToRemove[$attributeName] =
                                        $this->relationNameToRelatedModel[$attributeName];
@@ -1917,8 +1917,8 @@
                                 {
                                     $linkName = null;
                                 }
-                                elseif ($relationType == RedBeanModel::HAS_MANY_BELONGS_TO ||
-                                        $relationType == RedBeanModel::HAS_ONE_BELONGS_TO)
+                                elseif ($relationType == static::HAS_MANY_BELONGS_TO ||
+                                        $relationType == static::HAS_ONE_BELONGS_TO)
                                 {
                                     $label = 'Relations of type HAS_MANY_BELONGS_TO OR HAS_ONE_BELONGS_TO must have the relation name ' .
                                              'the same as the related model class name. Relation: {relationName} ' .
@@ -1929,7 +1929,7 @@
                                 }
                                 //Needed to exclude HAS_ONE_BELONGS_TO because an additional column was being created
                                 //on the wrong side.
-                                if ($relationType != RedBeanModel::HAS_ONE_BELONGS_TO && ($relatedModel->isModified() ||
+                                if ($relationType != static::HAS_ONE_BELONGS_TO && ($relatedModel->isModified() ||
                                     $relatedModel->id > 0       ||
                                     $this->isAttributeRequired($relationName)))
                                 {
@@ -1938,7 +1938,7 @@
                                     //Exclude HAS_MANY_BELONGS_TO because if the existing relation is unlinked, then
                                     //this link should not be reactivated, because it will improperly create the bean
                                     //in the database.
-                                    if (!($relationType == RedBeanModel::HAS_MANY_BELONGS_TO && $this->{$relationName}->id < 0))
+                                    if (!($relationType == static::HAS_MANY_BELONGS_TO && $this->{$relationName}->id < 0))
                                     {
                                         ZurmoRedBeanLinkManager::link($bean, $relatedBean, $linkName);
                                     }

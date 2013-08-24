@@ -44,8 +44,8 @@
                     'name',
                 ),
                 'relations' => array(
-                    'a' => array(RedBeanModel::HAS_ONE, 'A', RedBeanModel::NOT_OWNED,
-                                 RedBeanModel::LINK_TYPE_SPECIFIC, 'aSomething'),
+                    'a' => array(static::HAS_ONE, 'A', static::NOT_OWNED,
+                                 static::LINK_TYPE_SPECIFIC, 'aSomething'),
                 ),
                 'rules' => array(
                     array('name', 'type',   'type' => 'string'),

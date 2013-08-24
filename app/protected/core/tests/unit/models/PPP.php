@@ -67,11 +67,11 @@
                     array('name',          'length',  'min'  => 3, 'max' => 64),
                 ),
                 'relations' => array(
-                    'p'     => array(RedBeanModel::HAS_ONE, 'P'),
-                    'p1'    => array(RedBeanModel::HAS_ONE, 'P', RedBeanModel::NOT_OWNED,
-                                    RedBeanModel::LINK_TYPE_SPECIFIC, 'ppp1Link'),
-                    'p2'    => array(RedBeanModel::HAS_ONE, 'P', RedBeanModel::NOT_OWNED,
-                                    RedBeanModel::LINK_TYPE_SPECIFIC, 'ppp2Link'),
+                    'p'     => array(static::HAS_ONE, 'P'),
+                    'p1'    => array(static::HAS_ONE, 'P', static::NOT_OWNED,
+                                    static::LINK_TYPE_SPECIFIC, 'ppp1Link'),
+                    'p2'    => array(static::HAS_ONE, 'P', static::NOT_OWNED,
+                                    static::LINK_TYPE_SPECIFIC, 'ppp2Link'),
                 ),
             );
             return $metadata;

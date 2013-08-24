@@ -422,8 +422,8 @@
             $metadata = parent::getDefaultMetadata();
             $metadata[__CLASS__] = array(
                 'relations' => array(
-                    'policies'    => array(RedBeanModel::HAS_MANY, 'Policy', RedBeanModel::OWNED),
-                    'rights'      => array(RedBeanModel::HAS_MANY, 'Right',  RedBeanModel::OWNED),
+                    'policies'    => array(static::HAS_MANY, 'Policy', static::OWNED),
+                    'rights'      => array(static::HAS_MANY, 'Right',  static::OWNED),
                 ),
                 'foreignRelations' => array(
                     'Permission',

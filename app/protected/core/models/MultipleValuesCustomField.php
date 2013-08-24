@@ -68,7 +68,7 @@
                 'members' => array(
                 ),
                 'relations' => array(
-                    'values' => array(RedBeanModel::HAS_MANY, 'CustomFieldValue', RedBeanModel::OWNED),
+                    'values' => array(static::HAS_MANY, 'CustomFieldValue', static::OWNED),
                 ),
                 'rules' => array(
                 ),
@@ -79,12 +79,12 @@
         public static function updateValueByDataIdAndOldValueAndNewValue($customFieldDataId, $oldValue, $newValue)
         {
             $quote                         = DatabaseCompatibilityUtil::getQuote();
-            $customFieldTableName          = RedBeanModel::getTableName('MultipleValuesCustomField');
-            $baseCustomFieldTableName      = RedBeanModel::getTableName('BaseCustomField');
-            $customFieldValueTableName     = RedBeanModel::getTableName('CustomFieldValue');
+            $customFieldTableName          = static::getTableName('MultipleValuesCustomField');
+            $baseCustomFieldTableName      = static::getTableName('BaseCustomField');
+            $customFieldValueTableName     = static::getTableName('CustomFieldValue');
             $baseCustomFieldJoinColumnName = $baseCustomFieldTableName . '_id';
             $valueAttributeColumnName      = 'value';
-            $dataAttributeColumnName       = RedBeanModel::getForeignKeyName('BaseCustomField', 'data');
+            $dataAttributeColumnName       = static::getForeignKeyName('BaseCustomField', 'data');
             $sql  = "update {$quote}{$customFieldValueTableName}{$quote}, {$quote}{$customFieldTableName}{$quote}, ";
             $sql .= "{$quote}{$baseCustomFieldTableName}{$quote} ";
             $sql .= "set {$quote}{$customFieldValueTableName}{$quote}.{$valueAttributeColumnName} = '{$newValue}' ";

@@ -45,7 +45,7 @@
                     'integer',
                 ),
                 'relations' => array(
-                    'reportItems' => array(RedBeanModel::MANY_MANY, 'Item'),
+                    'reportItems' => array(static::MANY_MANY, 'Item'),
                 ),
                 'rules' => array(
                     array('name',    'type',   'type' => 'string'),

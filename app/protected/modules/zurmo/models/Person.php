@@ -120,12 +120,12 @@
                     'officeFax',
                 ),
                 'relations' => array(
-                    'primaryAddress' => array(RedBeanModel::HAS_ONE, 'Address',          RedBeanModel::OWNED,
-                                         RedBeanModel::LINK_TYPE_SPECIFIC, 'primaryAddress'),
-                    'primaryEmail'   => array(RedBeanModel::HAS_ONE, 'Email',            RedBeanModel::OWNED,
-                                         RedBeanModel::LINK_TYPE_SPECIFIC, 'primaryEmail'),
-                    'title'          => array(RedBeanModel::HAS_ONE, 'OwnedCustomField', RedBeanModel::OWNED,
-                                         RedBeanModel::LINK_TYPE_SPECIFIC, 'title'),
+                    'primaryAddress' => array(static::HAS_ONE, 'Address',          static::OWNED,
+                                         static::LINK_TYPE_SPECIFIC, 'primaryAddress'),
+                    'primaryEmail'   => array(static::HAS_ONE, 'Email',            static::OWNED,
+                                         static::LINK_TYPE_SPECIFIC, 'primaryEmail'),
+                    'title'          => array(static::HAS_ONE, 'OwnedCustomField', static::OWNED,
+                                         static::LINK_TYPE_SPECIFIC, 'title'),
                 ),
                 'rules' => array(
                     array('department',     'type',   'type' => 'string'),

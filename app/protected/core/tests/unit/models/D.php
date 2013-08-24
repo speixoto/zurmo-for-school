@@ -44,7 +44,7 @@
                     'd',
                 ),
                 'relations' => array(
-                    'f' => array(RedBeanModel::HAS_ONE, 'F'),
+                    'f' => array(static::HAS_ONE, 'F'),
                 ),
                 'rules' => array(
                     array('d',  'type', 'type' => 'string'),

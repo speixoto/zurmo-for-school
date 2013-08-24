@@ -44,7 +44,7 @@
                     'jMember',
                 ),
                 'relations' => array(
-                    'i'  => array(RedBeanModel::HAS_ONE_BELONGS_TO, 'I'),
+                    'i'  => array(static::HAS_ONE_BELONGS_TO, 'I'),
                     ),
                     'rules' => array(
                         array('jMember',      'type', 'type' => 'string'),
