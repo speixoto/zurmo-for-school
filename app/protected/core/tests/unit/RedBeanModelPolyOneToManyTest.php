@@ -129,10 +129,7 @@
             $this->assertEquals(3, count(TestPolyOneToManyPolySide::getAll()));
             $this->assertTrue($oneSide->delete());
             $this->assertEquals(3, count(TestPolyOneToManyPolySide::getAll()));
-            foreach (TestPolyOneToManyPolySide::getAll() as $poly)
-            {
-               $poly->delete();
-            }
+            TestPolyOneToManyPolySide::deleteAll();
             $this->assertEquals(0, count(TestPolyOneToManyPolySide::getAll()));
         }
 

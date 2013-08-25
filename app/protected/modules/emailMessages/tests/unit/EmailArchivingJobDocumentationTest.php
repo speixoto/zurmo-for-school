@@ -87,11 +87,7 @@
          */
         public function testCase1A()
         {
-            $messages = EmailMessage::getAll();
-            foreach ($messages as $message)
-            {
-                $message->delete();
-            }
+            EmailMessage::deleteAll();
 
             $imapMessage              = new ImapMessage();
             $imapMessage->fromName    = 'steve';
@@ -136,11 +132,7 @@
          */
         public function testCase1B()
         {
-            $messages = EmailMessage::getAll();
-            foreach ($messages as $message)
-            {
-                $message->delete();
-            }
+            EmailMessage::deleteAll();
             $imapMessage              = new ImapMessage();
             $imapMessage->fromName    = 'steve';
             $imapMessage->fromEmail   = self::$user->primaryEmail->emailAddress;
@@ -191,12 +183,7 @@
          */
         public function testCase2A()
         {
-            $messages = EmailMessage::getAll();
-            foreach ($messages as $message)
-            {
-                $message->delete();
-            }
-
+            EmailMessage::deleteAll();
             $imapMessage              = new ImapMessage();
             $imapMessage->fromName    = 'steve';
             $imapMessage->fromEmail   = self::$user->primaryEmail->emailAddress;
@@ -240,11 +227,7 @@
          */
         public function testCase2B()
         {
-            $messages = EmailMessage::getAll();
-            foreach ($messages as $message)
-            {
-                $message->delete();
-            }
+            EmailMessage::deleteAll();
 
             $imapMessage              = new ImapMessage();
             $imapMessage->fromName    = 'steve';
@@ -296,11 +279,7 @@
          */
         public function testCase3A()
         {
-            $messages = EmailMessage::getAll();
-            foreach ($messages as $message)
-            {
-                $message->delete();
-            }
+            EmailMessage::deleteAll();
 
             $imapMessage              = new ImapMessage();
             $imapMessage->fromName    = 'steve';
@@ -347,11 +326,7 @@
          */
         public function testCase3B()
         {
-            $messages = EmailMessage::getAll();
-            foreach ($messages as $message)
-            {
-                $message->delete();
-            }
+            EmailMessage::deleteAll();
 
             $imapMessage              = new ImapMessage();
             $imapMessage->fromName    = 'steve';
@@ -398,11 +373,7 @@
          */
         public function testCase5A()
         {
-            $messages = EmailMessage::getAll();
-            foreach ($messages as $message)
-            {
-                $message->delete();
-            }
+            EmailMessage::deleteAll();
 
             $imapMessage              = new ImapMessage();
             $imapMessage->fromName    = 'steve';
@@ -451,11 +422,7 @@
          */
         public function testCase5B()
         {
-            $messages = EmailMessage::getAll();
-            foreach ($messages as $message)
-            {
-                $message->delete();
-            }
+            EmailMessage::deleteAll();
 
             $imapMessage              = new ImapMessage();
             $imapMessage->fromName    = 'steve';
@@ -511,11 +478,7 @@
          */
         public function testCase6A()
         {
-            $messages = EmailMessage::getAll();
-            foreach ($messages as $message)
-            {
-                $message->delete();
-            }
+            EmailMessage::deleteAll();
 
             $imapMessage              = new ImapMessage();
             $imapMessage->fromName    = 'steve';
@@ -564,11 +527,7 @@
          */
         public function testCase6B()
         {
-            $messages = EmailMessage::getAll();
-            foreach ($messages as $message)
-            {
-                $message->delete();
-            }
+            EmailMessage::deleteAll();
 
             $imapMessage              = new ImapMessage();
             $imapMessage->fromName    = 'steve';

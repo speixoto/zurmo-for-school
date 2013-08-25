@@ -84,11 +84,7 @@
 
             Yii::app()->imap->connect();
 
-            $messages = EmailMessage::getAll();
-            foreach ($messages as $message)
-            {
-                $message->delete();
-            }
+            EmailMessage::deleteAll();
             // Expunge all emails from dropbox
             Yii::app()->imap->deleteMessages(true);
             $this->assertEquals(0, count(EmailMessage::getAll()));

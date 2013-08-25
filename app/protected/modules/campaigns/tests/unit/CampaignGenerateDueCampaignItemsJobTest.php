@@ -219,7 +219,7 @@
          */
         public function testRunWithDueActiveCampaignsWithCustomBatchSize()
         {
-            $this->purgeAllCampaigns();
+            Campaign::deleteAll();
             $contactIds         = array();
             $marketingListIds   = array();
             $campaignIds        = array();
@@ -317,15 +317,6 @@
                 }
             }
             // TODO: @Shoaibi: Medium: Add tests for the other campaign type.
-        }
-
-        protected function purgeAllCampaigns()
-        {
-            $campaigns = Campaign::getAll();
-            foreach ($campaigns as $campaign)
-            {
-                $campaign->delete();
-            }
         }
     }
 ?>

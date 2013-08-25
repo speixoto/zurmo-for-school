@@ -479,6 +479,25 @@
             $this->modified = false;
         }
 
+        /**
+         * Delete all models
+         */
+        public static function deleteAll()
+        {
+            if (static::getCanHaveBean() && static::isTypeDeletable())
+            {
+                foreach(static::getAll() as $model)
+                {
+                    $model->delete();
+                }
+                // we could have used ZurmoRedBean::$writer->wipe() but that won't fire events related to delete.
+            }
+            else
+            {
+                throw new NotSupportedException(get_called_class() . "Can either not have bean or is not deletable");
+            }
+        }
+
         // Derived classes can insert additional steps into the construction.
         protected function constructDerived($bean, $setDefaults)
         {

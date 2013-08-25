@@ -46,11 +46,7 @@
         {
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
-            $accounts = Account::getAll();
-            foreach ($accounts as $account)
-            {
-                $account->delete();
-            }
+            Account::deleteAll();
             parent::teardown();
         }
 

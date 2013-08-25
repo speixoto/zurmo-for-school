@@ -249,13 +249,7 @@
             $sql = "DELETE FROM account_read_subscription";
             ZurmoRedBean::exec($sql);
 
-            $accounts = Account::getAll();
-            foreach($accounts as $account)
-            {
-                $account->delete();
-                $account->forgetAll();
-            }
-
+            Account::deleteAll();
             $account1 = AccountTestHelper::createAccountByNameForOwner('First Account', $super);
             sleep(1);
             $account2 = AccountTestHelper::createAccountByNameForOwner('First Account', $steven);

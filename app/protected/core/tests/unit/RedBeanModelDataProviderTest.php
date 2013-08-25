@@ -848,11 +848,7 @@
 
         public function testGetDataReturningAllResults()
         {
-            $allGG          = GG::getAll();
-            foreach ($allGG as $gg)
-            {
-                $gg->delete();
-            }
+            GG::deleteAll();
             $numberOfRecords = rand (12, 100);
             for ($i = 1; $i <= $numberOfRecords; $i++)
             {

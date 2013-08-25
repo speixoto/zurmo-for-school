@@ -50,7 +50,7 @@
             parent::setUp();
             $this->user                 = User::getByUsername('super');
             Yii::app()->user->userModel = $this->user;
-            $this->purgeAllCampaigns();
+            Campaign::deleteAll();
         }
 
         /**
@@ -1068,15 +1068,6 @@
                                                                                 $personId);
             $this->assertNotEmpty($activities);
             $this->assertCount(1, $activities);
-        }
-
-        protected function purgeAllCampaigns()
-        {
-            $campaigns = Campaign::getAll();
-            foreach ($campaigns as $campaign)
-            {
-                $campaign->delete();
-            }
         }
     }
 ?>
