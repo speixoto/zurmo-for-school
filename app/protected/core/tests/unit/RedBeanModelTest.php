@@ -86,6 +86,12 @@
                         );
         }
 
+        public static function tearDownAfterClass()
+        {
+            E::deleteAll();
+            parent::tearDownAfterClass();
+        }
+
         public function testA()
         {
             $a = new A();
