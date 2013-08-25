@@ -573,7 +573,6 @@
                                     'item',
                                     'jobinprocess',
                                     'joblog',
-                                    'log',
                                     'marketinglist',
                                     'marketinglist_read',
                                     'marketinglistmember',
