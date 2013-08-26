@@ -456,6 +456,7 @@
                 CampaignItemTestHelper::createCampaignItem($processed, $campaign, $contact);
             }
             $this->assertTrue($job->run());
+            ForgetAllCacheUtil::forgetAllCaches();
             $campaignItemsCountExpected = $campaignItemsCountBefore + 5;
             $campaignItemsCountAfter    = CampaignItem::getCount();
             $this->assertEquals($campaignItemsCountExpected, $campaignItemsCountAfter);
