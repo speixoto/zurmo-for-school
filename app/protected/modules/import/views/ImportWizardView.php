@@ -43,6 +43,12 @@
 
         protected $disableFloatOnToolbar  = true;
 
+        /**
+         * @param string $controllerId
+         * @param string $moduleId
+         * @param ImportWizardForm $model
+         * @param null|string $title
+         */
         public function __construct($controllerId, $moduleId, ImportWizardForm $model, $title = null)
         {
             assert('is_string($controllerId)');

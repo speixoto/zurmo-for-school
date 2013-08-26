@@ -62,6 +62,13 @@
             }
         }
 
+        /**
+         * @param string $type
+         * @param int $startingRank
+         * @param null|int $offset
+         * @param null|int $count
+         * @return array
+         */
         public static function getUserLeaderboardData($type, $startingRank = 1, $offset = null, $count = null)
         {
             assert('is_string($type)');
@@ -94,6 +101,12 @@
             return $count;
         }
 
+        /**
+         * @param string $type
+         * @param null|int $offset
+         * @param null|int $count
+         * @return string
+         */
         protected static function makeUserLeaderboardSqlQuery($type, $offset = null, $count = null)
         {
             assert('is_string($type)');
@@ -117,6 +130,10 @@
             return $sql;
         }
 
+        /**
+         * @param string $type
+         * @return string
+         */
         protected static function makeUserLeaderboardCountSqlQuery($type)
         {
             assert('is_string($type)');
@@ -176,6 +193,10 @@
             }
         }
 
+        /**
+         * @param User $user
+         * @return array
+         */
         public static function getUserRankingData(User $user)
         {
             $weeklyData  = self::getUserLeaderboardData(GamePointUtil::LEADERBOARD_TYPE_WEEKLY);

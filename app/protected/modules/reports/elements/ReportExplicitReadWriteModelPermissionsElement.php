@@ -51,7 +51,11 @@
             }
             return $resolveSelectedType;
         }
-        
+
+        /**
+         * @param int $selectedType
+         * @return mixed
+         */
         protected function resolveUserPermissionConfigurationToPermissionType($selectedType)
         {
             assert('is_int($selectedType)');

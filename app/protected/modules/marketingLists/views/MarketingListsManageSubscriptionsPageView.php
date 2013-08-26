@@ -36,6 +36,10 @@
 
     class MarketingListsManageSubscriptionsPageView extends ZurmoPageView
     {
+        /**
+         * @param CController $controller
+         * @param MetadataView $listView
+         */
         public function __construct(CController $controller, MetadataView $listView)
         {
             $flashMessageView   = new FlashMessageView($controller);

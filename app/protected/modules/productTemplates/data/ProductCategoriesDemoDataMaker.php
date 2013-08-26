@@ -46,6 +46,9 @@
             return array();
         }
 
+        /**
+         * @param DemoDataHelper $demoDataHelper
+         */
         public function makeAll(& $demoDataHelper)
         {
             assert('$demoDataHelper instanceof DemoDataHelper');
@@ -63,6 +66,10 @@
             $demoDataHelper->setRangeByModelName('ProductCategory', $productCategories[0], $productCategories[count($productCategories)-1]);
         }
 
+        /**
+         * @param $model
+         * @param $counter
+         */
         public function populateModelData(& $model, $counter)
         {
             assert('$model instanceof ProductCategory');

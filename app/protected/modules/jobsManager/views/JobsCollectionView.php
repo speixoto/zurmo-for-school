@@ -51,6 +51,14 @@
 
         protected $showRunJobLink;
 
+        /**
+         * @param string $controllerId
+         * @param string $moduleId
+         * @param array $monitorJobData
+         * @param array $jobsData
+         * @param null|string $messageBoxContent
+         * @param bool $showRunJobLink
+         */
         public function __construct($controllerId, $moduleId, $monitorJobData, $jobsData, $messageBoxContent = null,
                                     $showRunJobLink = false)
         {
@@ -124,6 +132,11 @@
                                           self::renderMonitorJobHeaderContent());
         }
 
+        /**
+         * @param array $jobsData
+         * @param string $jobLabelHeaderContent
+         * @return string
+         */
         protected function renderJobLayout($jobsData, $jobLabelHeaderContent)
         {
             assert('is_array($jobsData)');

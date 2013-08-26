@@ -89,6 +89,10 @@
             return array('status' => $value);
         }
 
+        /**
+         * @param RedBeanModel $model
+         * @param array $attributeValueData
+         */
         public static function processAfterSaveAction(RedBeanModel $model, $attributeValueData)
         {
             assert('$model instanceof User');

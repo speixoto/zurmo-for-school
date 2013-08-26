@@ -38,6 +38,11 @@
     {
         const DEFAULT_USER_LAYOUT_ID = 1;
 
+        /**
+         * @param int $layoutId
+         * @param User $user
+         * @throws NotFoundException
+         */
         public static function getByLayoutIdAndUser($layoutId, $user)
         {
             assert('is_integer($layoutId) && $layoutId >= 1');
@@ -67,6 +72,10 @@
             return self::makeModel($bean);
         }
 
+        /**
+         * @param int $userId
+         * @return array
+         */
         public static function getRowsByUserId($userId)
         {
             assert('is_integer($userId) && $userId >= 1');

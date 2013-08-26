@@ -53,6 +53,17 @@
 
         protected $requiredAttributesLabelsData;
 
+        /**
+         * @param string $controllerId
+         * @param string $moduleId
+         * @param ImportWizardForm $model
+         * @param null $sampleColumnPagerContent
+         * @param array $mappingDataMetadata
+         * @param array $mappingDataMappingRuleFormsAndElementTypes
+         * @param array $mappableAttributeIndicesAndDerivedTypes
+         * @param array $requiredAttributesLabelsData
+         * @param $title
+         */
         public function __construct($controllerId,
                                     $moduleId,
                                     ImportWizardForm $model,
@@ -171,6 +182,14 @@
             return $headerColumns;
         }
 
+        /**
+         * @param $mappingFormLayoutUtil
+         * @param $mappingDataMetadata
+         * @param $firstRowIsHeaderRow
+         * @param $importRulesType
+         * @param $id
+         * @return array
+         */
         protected function resolveMappingDataMetadataWithRenderedElements($mappingFormLayoutUtil, $mappingDataMetadata,
                                                                           $firstRowIsHeaderRow, $importRulesType, $id)
         {
@@ -208,6 +227,10 @@
             return $metadata;
         }
 
+        /**
+         * @param int $columnCount
+         * @return string
+         */
         protected function renderAddExtraColumnContent($columnCount)
         {
             assert('is_int($columnCount)');
@@ -236,6 +259,10 @@
             return $content;
         }
 
+        /**
+         * @param string $columnName
+         * @return array
+         */
         protected function resolveMappingRuleFormsAndElementTypesByColumn($columnName)
         {
             assert('is_string($columnName)');

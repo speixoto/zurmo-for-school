@@ -46,6 +46,11 @@
 
         protected $containerIdSuffix;
 
+        /**
+         * @param array $viewData
+         * @param array $params
+         * @param array $uniqueLayoutId
+         */
         public function __construct($viewData, $params, $uniqueLayoutId)
         {
             assert('is_array($viewData) || $viewData == null');

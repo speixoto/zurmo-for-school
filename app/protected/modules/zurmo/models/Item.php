@@ -146,6 +146,11 @@
             return $this->_processWorkflowOnSave;
         }
 
+        /**
+         * @param string $attributeName
+         * @param string $value
+         * @return An
+         */
         protected static function getByNameOrEquivalent($attributeName, $value)
         {
             assert('is_string($attributeName)');

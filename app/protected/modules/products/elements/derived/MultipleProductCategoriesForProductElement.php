@@ -150,6 +150,8 @@
         }
 
         /**
+         * @param ProductCategory $productCategory
+         * @param string $keyword
          * @return string
          */
         public static function renderHtmlContentLabelFromProductCategoryAndKeyword($productCategory, $keyword)
