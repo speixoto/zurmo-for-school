@@ -73,6 +73,7 @@
             unset($item->emailMessage);
             unset($item->contact->primaryEmail);
             unset($item->contact);
+            ForgetAllCacheUtil::forgetAllCaches();
         }
     }
 ?>
