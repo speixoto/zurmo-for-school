@@ -343,11 +343,7 @@
             $this->assertTrue(strpos($content, '<div id="MarketingListsManageSubscriptionsPageView" ' .
                                                     'class="ZurmoPageView PageView">') !== false);
             $this->assertTrue(strpos($content, '<div class="GridView">') !== false);
-            $this->assertTrue(strpos($content, '<div id="HeaderLinksView">') !== false);
-            $this->assertTrue(strpos($content, '<div id="corp-logo">') !== false);
-            $this->assertTrue(strpos($content, '/home/default"><img src="') !== false);
-            $this->assertTrue(strpos($content, '/themes/default/images/Zurmo_logo.png" alt="Zurmo Logo" ' .
-                                                    'height="32" width="107" /></a>') !== false);
+            $this->assertTrue(strpos($content, '<div id="HeaderLinksView">') === false);
             $this->assertTrue(strpos($content, '<div id="MarketingListsManageSubscriptionsListView" ' .
                                                     'class="MetadataView">') !== false);
             $this->assertTrue(strpos($content, '<div class="wrapper">') !== false);
@@ -484,11 +480,7 @@
             $this->assertTrue(strpos($content, '<div id="MarketingListsManageSubscriptionsPageView" ' .
                                                     'class="ZurmoPageView PageView">') !== false);
             $this->assertTrue(strpos($content, '<div class="GridView">') !== false);
-            $this->assertTrue(strpos($content, '<div id="HeaderLinksView">') !== false);
-            $this->assertTrue(strpos($content, '<div id="corp-logo">') !== false);
-            $this->assertTrue(strpos($content, '/home/default"><img src="') !== false);
-            $this->assertTrue(strpos($content, '/themes/default/images/Zurmo_logo.png" alt="Zurmo Logo" ' .
-                                                    'height="32" width="107" /></a>') !== false);
+            $this->assertTrue(strpos($content, '<div id="HeaderLinksView">') === false);
             $this->assertTrue(strpos($content, '<div id="MarketingListsManageSubscriptionsListView" ' .
                                                     'class="MetadataView">') !== false);
             $this->assertTrue(strpos($content, '<div class="wrapper">') !== false);

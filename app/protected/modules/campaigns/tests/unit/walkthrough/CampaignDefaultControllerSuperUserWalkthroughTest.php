@@ -502,7 +502,7 @@
             $this->assertTrue(strpos($content, '<div class="juiportlet-columns"> ') !== false);
             $this->assertTrue(strpos($content, '<ul class="juiportlet-columns-CampaignDetailsAndRelationsViewLeft' .
                                                 'BottomView juiportlet-widget-column1 juiportlet-column juiportlet-column-no-split">') !== false);
-            $this->assertTrue(strpos($content, '<li class="juiportlet-widget CampaignOverallMetricsView" id="Campaign' .
+            $this->assertTrue(strpos($content, '<li class="juiportlet-widget CampaignOverallMetricsView type-campaigns" id="Campaign' .
                                                 'DetailsAndRelationsViewLeftBottomView') !== false);
             $this->assertTrue(strpos($content, '<div class="juiportlet-widget-head">') !== false);
             $this->assertTrue(strpos($content, '<h3>Campaign Dashboard</h3><ul class="options-menu '.
@@ -549,7 +549,7 @@
                                                 "LeftBottomView") !== false);
             $this->assertTrue(strpos($content, "EmailsInThisList' style='width: 100%; " .
                                                 "height: 400px;'></div>") !== false);
-            $this->assertTrue(strpos($content, '<li class="juiportlet-widget CampaignItemsRelatedListView" ' .
+            $this->assertTrue(strpos($content, '<li class="juiportlet-widget CampaignItemsRelatedListView type-campaigns" ' .
                                                 'id="CampaignDetailsAndRelationsViewLeftBottomView') !== false);
             $this->assertTrue(strpos($content, '<div class="juiportlet-widget-head">') !== false);
             $this->assertTrue(strpos($content, '<h3>Email Recipients</h3>') !== false);
@@ -557,7 +557,7 @@
             $this->assertTrue(strpos($content, '<div class="CampaignItemsRelatedListView RelatedListView ListView ' .
                                                 'ModelView ConfigurableMetadataView MetadataView">') !== false);
             $this->assertTrue(strpos($content, '<div class="campaign-items-container">') !== false);
-            $this->assertTrue(strpos($content, '<div class="cgrid-view" id="list-viewCampaignDetailsAndRelations' .
+            $this->assertTrue(strpos($content, '<div class="cgrid-view type-campaigns" id="list-viewCampaignDetailsAndRelations' .
                                                 'ViewLeftBottomView') !== false);
             $this->assertTrue(strpos($content, 'Email recipients will appear here once the campaign begins ' .
                                                 'sending out') !== false);

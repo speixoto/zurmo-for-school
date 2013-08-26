@@ -63,7 +63,7 @@
             }
             elseif ($formatType == self::FORMAT_TYPE_DECIMAL)
             {
-                return Yii::app()->numberFormatter->formatDecimal((float)$value);
+                return Yii::app()->format->formatDecimal($value);
             }
             elseif ($formatType == self::FORMAT_TYPE_CURRENCY_VALUE && $currencyCode != null)
             {
@@ -173,23 +173,25 @@
                         $replacementValue = $model->{$attribute};
                     }
                 }
-                $oldExpression = $expression;
-                $expression = str_replace($attribute, $replacementValue, $expression);
+                $oldExpression            = $expression;
+                $expression               = str_replace($attribute, $replacementValue, $expression);
+                $extraZerosForDecimalPart = '';
                 if ($expression !== $oldExpression)
                 {
                     self::resolveFormatTypeAndCurrencyCode($formatType, $currencyCode, $model, $attribute);
                 }
                 elseif (strpos($expression,'.') !== false)
                 {
-                    $formatType = self::FORMAT_TYPE_DECIMAL;
+                    $formatType               = self::FORMAT_TYPE_DECIMAL;
+                    $extraZerosForDecimalPart = str_replace((float)$expression, '', $expression);
                 }
-            }
-            $result = static::mathEval($expression);
+            }            
+            $result = static::mathEval($expression);            
             if ($result === false)
             {
                 return Zurmo::t('ZurmoModule', 'Invalid');
-            }
-            return $result;
+            }            
+            return $result . $extraZerosForDecimalPart;
         }
 
         /**

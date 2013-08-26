@@ -111,6 +111,10 @@
             }
         }
 
+        /**
+         * @param array $modelsAndStringData
+         * @return null|string
+         */
         protected static function resolveStringValueModelsDataToStringContent($modelsAndStringData)
         {
             assert('is_array($modelsAndStringData)');
@@ -126,6 +130,10 @@
             return $content;
         }
 
+        /**
+         * @param array $searchAttributesData
+         * @param $ownedByFilter
+         */
         public static function resolveSearchAttributesDataByOwnedByFilter(& $searchAttributesData, $ownedByFilter)
         {
             assert('is_array($searchAttributesData)');
@@ -146,6 +154,10 @@
             }
         }
 
+        /**
+         * @param array $searchAttributesData
+         * @param int $userId
+         */
         protected static function resolveSearchAttributesDataByOwnedByFilterClauses(& $searchAttributesData, $userId)
         {
             assert('is_array($searchAttributesData)');

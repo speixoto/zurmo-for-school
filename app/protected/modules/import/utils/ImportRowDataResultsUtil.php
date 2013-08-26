@@ -105,7 +105,7 @@
             }
             elseif($type == self::CREATED)
             {
-                $stageContent = null;
+                $stageContent = ' stage-true';
             }
             elseif($type == self::ERROR)
             {
@@ -150,7 +150,6 @@
          */
         public function addMessages($messages)
         {
-            assert('is_array($messages) && count($messages) > 0');
             foreach ($messages as $message)
             {
                 $this->addMessage($message);

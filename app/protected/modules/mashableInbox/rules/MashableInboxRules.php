@@ -251,6 +251,10 @@
             return true;
         }
 
+        /**
+         * @param $model
+         * @param User $user
+         */
         public function markUserAsHavingUnreadLatestModel($model, User $user)
         {
             if ($this->hasUserReadLatest($model, $user))
@@ -262,6 +266,10 @@
             $model->save();
         }
 
+        /**
+         * @param $model
+         * @param User $user
+         */
         public function markUserAsHavingReadLatestModel($model, User $user)
         {
             $haveNotReadRelationName = $this->getHaveNotReadRelationName();

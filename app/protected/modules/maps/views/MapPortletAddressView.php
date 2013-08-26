@@ -46,6 +46,11 @@
 
         protected $containerIdSuffix;
 
+        /**
+         * @param array $viewData
+         * @param array $params
+         * @param array $uniqueLayoutId
+         */
         public function __construct($viewData, $params, $uniqueLayoutId)
         {
             assert('is_array($viewData) || $viewData == null');
@@ -139,6 +144,13 @@
 	    public static function canUserConfigure()
         {
             return false;
+        }
+
+        /**
+         * Override to add a description for the view to be shown when adding a portlet
+         */
+        public static function getPortletDescription()
+        {
         }
 
         public static function hasRollupSwitch()

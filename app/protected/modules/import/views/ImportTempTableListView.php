@@ -123,8 +123,8 @@
         }
 
         /**
-         * @param $controllerId
-         * @param $moduleId
+         * @param string $controllerId
+         * @param string $moduleId
          * @param ImportDataProvider $dataProvider
          * @param $mappingData
          * @param $importRulesType
@@ -333,6 +333,10 @@
             return $content;
         }
 
+        /**
+         * @param ZurmoActiveForm $form
+         * @return string
+         */
         protected function renderConfigurationFormLayout($form)
         {
             assert('$form instanceof ZurmoActiveForm');

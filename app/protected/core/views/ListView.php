@@ -191,10 +191,11 @@
         {
             $columns = $this->getCGridViewColumns();
             assert('is_array($columns)');
+            $listTypeCssClass = 'type-' . $this->moduleId;
             $params = array(
                 'id' => $this->getGridViewId(),
                 'htmlOptions' => array(
-                    'class' => 'cgrid-view'
+                    'class' => 'cgrid-view ' . $listTypeCssClass
                 ),
                 'loadingCssClass'      => 'loading',
                 'dataProvider'         => $this->getDataProvider(),

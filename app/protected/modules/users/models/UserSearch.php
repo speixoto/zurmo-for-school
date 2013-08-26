@@ -39,7 +39,8 @@
         /**
          * For a give User name, run a partial search by
          * full name and retrieve user models.
-         *
+         * @param string $partialName
+         * @param int $pageSize
          */
         public static function getUsersByPartialFullName($partialName, $pageSize)
         {
@@ -59,6 +60,12 @@
                                             $where, "person.firstname, person.lastname");
         }
 
+        /**
+         * @param string $emailAddress
+         * @param null|string $operatorType
+         * @param bool $filterOutHideFromSelecting
+         * @return An
+         */
         public static function getUsersByEmailAddress($emailAddress, $operatorType = null, $filterOutHideFromSelecting = false)
         {
             assert('is_string($emailAddress)');

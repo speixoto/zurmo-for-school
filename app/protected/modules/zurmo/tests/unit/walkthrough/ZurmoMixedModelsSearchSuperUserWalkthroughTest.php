@@ -62,10 +62,10 @@
                 )));
             $this->resetPostArray();
             $content = $this->runControllerWithNoExceptionsAndGetContent('zurmo/default/globallist');
-            $this->assertContains('<div class="cgrid-view" id="list-view-accounts">', $content);
-            $this->assertContains('<div class="cgrid-view" id="list-view-contacts">', $content);
-            $this->assertContains('<div class="cgrid-view" id="list-view-leads">', $content);
-            $this->assertContains('<div class="cgrid-view" id="list-view-opportunities">', $content);
+            $this->assertContains('<div class="cgrid-view type-accounts" id="list-view-accounts">', $content);
+            $this->assertContains('<div class="cgrid-view type-contacts" id="list-view-contacts">', $content);
+            $this->assertContains('<div class="cgrid-view type-leads" id="list-view-leads">', $content);
+            $this->assertContains('<div class="cgrid-view type-opportunities" id="list-view-opportunities">', $content);
             //Even if there are results it should return a cgridview with no text
             $this->assertNotContains('No results found.', $content);
 

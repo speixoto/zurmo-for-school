@@ -50,6 +50,12 @@
          * Override to handle the special scenario of relations for an activity. Since relations are done in the
          * ActivityItems, the relation information needs to handled in a specific way.
          * @see ZurmoModuleController->resolveNewModelByRelationInformation
+         * @param Activity $model
+         * @param string $relationModelClassName
+         * @param int $relationModelId
+         * @param string $relationModuleId
+         * @return mixed
+         * @throws NotSupportedException
          */
         protected function resolveNewModelByRelationInformation(    $model, $relationModelClassName,
                                                                     $relationModelId, $relationModuleId)

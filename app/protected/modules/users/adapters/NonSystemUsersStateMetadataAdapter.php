@@ -47,6 +47,9 @@
             throw new NotImplementedException();
         }
 
+        /**
+         * @param array $metadata
+         */
         public function __construct(array $metadata)
         {
             assert('isset($metadata["clauses"])');

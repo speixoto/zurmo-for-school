@@ -90,7 +90,11 @@
                 $this->data[] = $data;                
             }
         }
-                                       
+
+        /**
+         * @param DisplayAttributeForReportForm $displayAttribute
+         * @return string
+         */
         protected function resolveExportClassNameForReportToExportValueAdapter(DisplayAttributeForReportForm $displayAttribute)
         {
             $displayElementType = $displayAttribute->getDisplayElementType();
@@ -104,6 +108,10 @@
             }
         }
 
+        /**
+         * @param DisplayAttributeForReportForm $displayAttribute
+         * @param array $params
+         */
         protected function resolveParamsForCurrencyTypes(DisplayAttributeForReportForm $displayAttribute, & $params)
         {
             assert('is_array($params)');

@@ -44,15 +44,27 @@
          */
         public function analyzeByRow(RedBean_OODBBean $rowBean)
         {
-            if ($rowBean->{$this->columnName} != null &&
-                strtolower($rowBean->{$this->columnName}) != strtolower(UserStatusUtil::ACTIVE) &&
-                strtolower($rowBean->{$this->columnName}) == strtolower(UserStatusUtil::INACTIVE))
+            if ($rowBean->{$this->columnName} != null)
             {
-                $label = Zurmo::t('ImportModule', 'Status value is invalid. This status will be set to active upon import.');
-                $this->analysisMessages[] = $label;
+                $resolvedAcceptableValues = ArrayUtil::resolveArrayToLowerCase(static::getAcceptableValues());
+                if (!in_array(strtolower($rowBean->{$this->columnName}), $resolvedAcceptableValues))
+                {
+                    $label = Zurmo::t('ImportModule',
+                                      '{attributeLabel} specified is invalid and this row will be skipped during import.',
+                                      array('{attributeLabel}' => ProductTemplate::getAnAttributeLabel('status')));
+                    $this->shouldSkipRow      = true;
+                    $this->analysisMessages[] = $label;
+                }
             }
         }
 
+        /**
+         * If a status value is missing or invalid, then skip the entire row during import.
+         */
+        public static function shouldNotSaveModelOnSanitizingValueFailure()
+        {
+            return true;
+        }
 
         /**
          * Given a type, attempt to resolve it as a valid type.  If the type is invalid, a
@@ -69,11 +81,13 @@
             }
             try
             {
-                if (strtolower($value) == strtolower(ProductTemplate::STATUS_ACTIVE))
+                if (strtolower($value) == strtolower(ProductTemplate::STATUS_ACTIVE) ||
+                    strtolower($value) == strtolower('Active'))
                 {
                     return ProductTemplate::STATUS_ACTIVE;
                 }
-                elseif (strtolower($value) == strtolower(ProductTemplate::STATUS_INACTIVE))
+                elseif (strtolower($value) == strtolower(ProductTemplate::STATUS_INACTIVE) ||
+                        strtolower($value) == strtolower('Inactive'))
                 {
                     return ProductTemplate::STATUS_INACTIVE;
                 }
@@ -86,6 +100,14 @@
             {
                 throw new InvalidValueToSanitizeException(Zurmo::t('ProductTemplatesModule', 'Status specified is invalid.'));
             }
+        }
+
+        protected static function getAcceptableValues()
+        {
+            return array(ProductTemplate::STATUS_ACTIVE,
+                         ProductTemplate::STATUS_INACTIVE,
+                         'Active',
+                         'Inactive');
         }
     }
 ?>

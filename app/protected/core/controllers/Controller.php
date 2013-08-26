@@ -176,6 +176,7 @@
                 'relationModuleId' => $this->getModule()->getId(),
                 'relationModel'    => $model,
                 'redirectUrl'      => $redirectUrl,
+                'relationModelId'  => $model->id
             );
             $gridView = new GridView($verticalColumns, 1);
             if ($breadCrumbView != null)

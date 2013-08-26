@@ -49,19 +49,17 @@
         public function sanitizeValue($value)
         {
             assert('is_string($this->attributeName) && $this->attributeName != "id"');
-            assert('$value != ""');
             if ($value == null)
             {
                 return $value;
             }
             $modelClassName          = $this->modelClassName;
-            $model                   = new $modelClassName(false);
-            $attributeModelClassName = $modelClassName::resolveAttributeModelClassName($this->attributeName);
+            $relationModelClassName = $modelClassName::getRelationModelClassName($this->attributeName);
             if ($this->mappingRuleData["type"] == IdValueTypeMappingRuleForm::ZURMO_MODEL_ID)
             {
                 try
                 {
-                    return $attributeModelClassName::getById((int)$value);
+                    return $relationModelClassName::getById((int)$value);
                 }
                 catch (NotFoundException $e)
                 {
@@ -72,13 +70,20 @@
             {
                 try
                 {
-                    return static::getModelByExternalSystemIdAndModelClassName($value, $attributeModelClassName);
+                    return static::getModelByExternalSystemIdAndModelClassName($value, $relationModelClassName);
                 }
                 catch (NotFoundException $e)
                 {
                     throw new InvalidValueToSanitizeException(Zurmo::t('ImportModule', 'Other Id specified did not match any existing records.'));
                 }
             }
+        }
+
+        /**
+         * No message is needed, because it found the model and will relate to it ok.
+         */
+        protected function resolveForFoundModel()
+        {
         }
     }
 ?>

@@ -645,10 +645,8 @@
             $content = null;
             if(in_array('StarredInterface', class_implements($this->model->getModel())))
             {
-                $content .= $form->hiddenField(
-                        $this->model,
-                        'filterByStarred',
-                        array('class' => $form->id . '_filterByStarred'));
+                $content .= $form->hiddenField($this->model, 'filterByStarred',
+                                               array('class' => $form->id . '_filterByStarred'));
             }
             return $content;
         }

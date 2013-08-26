@@ -65,7 +65,7 @@
         {
             assert('isset($params["controllerId"])');
             assert('isset($params["relationModuleId"])');
-            assert('$params["relationModel"] instanceof RedBeanModel || $params["relationModel"] instanceof ModelForm');
+            //assert('$params["relationModel"] instanceof RedBeanModel || $params["relationModel"] instanceof ModelForm');
             assert('isset($params["portletId"])');
             assert('isset($params["redirectUrl"])');
             assert('$this->getRelationAttributeName() != null');
@@ -78,11 +78,12 @@
             $this->gridId            = 'list-view';
             $this->controllerId      = $this->resolveControllerId();
             $this->moduleId          = $this->resolveModuleId();
+            $this->resolveModelAndSetInParams();
         }
 
         public function getPortletParams()
         {
-            return array();
+            return $this->params;
         }
 
         protected function getShowTableOnEmpty()
@@ -136,7 +137,7 @@
             $pageSize       = Yii::app()->pagination->resolveActiveForCurrentUserByType('subListPageSize');
             $sortAttribute  = SearchUtil::resolveSortAttributeFromGetArray($this->modelClassName);
             $sortDescending =  SearchUtil::resolveSortDescendingFromGetArray($this->modelClassName);
-            return new RedBeanModelDataProvider( $this->modelClassName, $sortAttribute, $sortDescending,
+            return new RedBeanModelDataProvider( $this->modelClassName, $sortAttribute, (bool)$sortDescending,
                                                                 $searchAttributeData, array(
                                                                     'pagination' => array(
                                                                         'pageSize' => $pageSize,
@@ -299,6 +300,33 @@
         }
 
         /**
+         * Override to add a description for the view to be shown when adding a portlet
+         */
+        public static function getPortletDescription()
+        {
+        }
+
+        /**
+         * Resolve model by model id and set the model in params
+         */
+        protected function resolveModelAndSetInParams()
+        {
+            $modelClassName = $this->getRelatedModelClassName();
+            $model = $modelClassName::getById(intval($this->params['relationModelId']));
+            $this->params['relationModel'] = $model;
+        }
+
+        /**
+         * Get related model class name
+         * @return string
+         */
+        protected function getRelatedModelClassName()
+        {
+            $moduleClassName = get_class(Yii::app()->getModule($this->params['relationModuleId']));
+            return $moduleClassName::getPrimaryModelName();
+        }
+        
+         /**
          * Resolves pagination params
          * @return array
          */
