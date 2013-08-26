@@ -43,6 +43,12 @@
      */
     abstract class ZurmoCache
     {
+        const ALLOW_PHP_CACHING         = true;
+
+        const ALLOW_MEMCACHE_CACHING    = true;
+
+        const ALLOW_DB_CACHING          = true;
+
         protected static $cacheIncrementValueVariableName = 'CacheIncrementValue';
 
         protected static $additionalStringForCachePrefix = '';
@@ -55,19 +61,19 @@
          */
         public static function getCachePrefix($identifier)
         {
-            if (self::isIdentifierCacheIncrementValueName($identifier))
+            if (static::isIdentifierCacheIncrementValueName($identifier))
             {
                 $prefix = ZURMO_TOKEN . '_' . static::$cacheType;
             }
             else
             {
-                $cacheIncrementValue = self::getCacheIncrementValue(static::$cacheType);
+                $cacheIncrementValue = static::getCacheIncrementValue(static::$cacheType);
                 $prefix = ZURMO_TOKEN . '_' . $cacheIncrementValue . '_' . static::$cacheType;
             }
 
-            if (self::getAdditionalStringForCachePrefix() != '')
+            if (static::getAdditionalStringForCachePrefix() != '')
             {
-                $prefix = self::getAdditionalStringForCachePrefix() . '_' . $prefix;
+                $prefix = static::getAdditionalStringForCachePrefix() . '_' . $prefix;
             }
 
             return $prefix;
@@ -87,12 +93,12 @@
         {
             try
             {
-                $cacheIncrementValue = GeneralCache::getEntry(self::$cacheIncrementValueVariableName . $cacheType);
+                $cacheIncrementValue = static::getEntry(static::$cacheIncrementValueVariableName . $cacheType);
             }
             catch (NotFoundException $e)
             {
                 $cacheIncrementValue = 0;
-                self::setCacheIncrementValue($cacheType, $cacheIncrementValue);
+                static::setCacheIncrementValue($cacheType, $cacheIncrementValue);
             }
             return $cacheIncrementValue;
         }
@@ -103,7 +109,7 @@
          */
         protected static function setCacheIncrementValue($cacheType, $value)
         {
-            GeneralCache::cacheEntry(self::$cacheIncrementValueVariableName . $cacheType, $value);
+            static::cacheEntry(static::$cacheIncrementValueVariableName . $cacheType, $value);
         }
 
         /**
@@ -112,19 +118,19 @@
          */
         protected static function incrementCacheIncrementValue($cacheType)
         {
-            $currentCacheIncrementValue = self::getCacheIncrementValue($cacheType);
+            $currentCacheIncrementValue = static::getCacheIncrementValue($cacheType);
             $currentCacheIncrementValue++;
-            self::setCacheIncrementValue($cacheType, $currentCacheIncrementValue);
+            static::setCacheIncrementValue($cacheType, $currentCacheIncrementValue);
         }
 
         /**
-         * Check if identifier is same as self::$cacheIncrementValueVariableName.
+         * Check if identifier is same as static::$cacheIncrementValueVariableName.
          * @param $identifier
          * @return bool
          */
         protected static function isIdentifierCacheIncrementValueName($identifier)
         {
-            if (strstr($identifier, self::$cacheIncrementValueVariableName) !== false)
+            if (strstr($identifier, static::$cacheIncrementValueVariableName) !== false)
             {
                 return true;
             }
@@ -143,7 +149,7 @@
          */
         public static function setAdditionalStringForCachePrefix($prefix = '')
         {
-            self::$additionalStringForCachePrefix = $prefix;
+            static::$additionalStringForCachePrefix = $prefix;
         }
 
         /**
@@ -152,7 +158,74 @@
          */
         public static function getAdditionalStringForCachePrefix()
         {
-            return self::$additionalStringForCachePrefix;
+            return static::$additionalStringForCachePrefix;
+        }
+
+        /**
+         * Get entry from php cache and/or memcache
+         * @param string $identifier
+         * @param mixed $default
+         * @param boolean $cacheDefaultValue
+         * @return mixed
+         * @throws NotFoundException
+         */
+        public static function getEntry($identifier, $default = 'NOT_FOUND_EXCEPTION', $cacheDefaultValue = false)
+        {
+            GeneralCache::getEntry($identifier, $default, $cacheDefaultValue);
+        }
+
+        /**
+         * Add entry to php cache and/or memcache
+         * @param string $identifier
+         * @param mixed $entry
+         */
+        public static function cacheEntry($identifier, $entry)
+        {
+            GeneralCache::cacheEntry($identifier, $entry);
+        }
+
+        /**
+         * Remove entry from php cache and/or memcache
+         * @param string $identifier
+         */
+        public static function forgetEntry($identifier)
+        {
+            GeneralCache::forgetEntry($identifier);
+        }
+
+        /**
+         * Remove all GeneralCache data from php cache and/or memcache
+         * Please note that we are not using $Yii::app()->cache->forget function, because
+         * this function remove all data from memcache, so it would remove memcache data
+         * that are added by other application on same server(if there is only one instance of memcache on server)
+         */
+        public static function forgetAll()
+        {
+            GeneralCache::forgetAll();
+        }
+
+        /**
+         * Check if Memcache caching is allowed and supported
+         */
+        public static function supportsAndAllowsMemcache()
+        {
+            return (static::ALLOW_MEMCACHE_CACHING && MEMCACHE_ON && Yii::app()->cache !== null);
+        }
+
+        /**
+         * Check if PHP caching is allowed and supported
+         */
+        public static function supportsAndAllowsPhpCaching()
+        {
+            return (static::ALLOW_PHP_CACHING && PHP_CACHING_ON);
+        }
+
+        /**
+         * Check if DB caching is allowed and supported
+         */
+        public static function supportsAndAllowsDatabaseCaching()
+        {
+            return (static::ALLOW_DB_CACHING && DB_CACHING_ON);
         }
     }
 ?>

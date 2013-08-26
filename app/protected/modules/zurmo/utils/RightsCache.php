@@ -39,29 +39,8 @@
      * in memcache by categories. This way in the future we can flush just the rights cache instead of having to flush
      * the entire cache like we are doing now.
      */
-    class RightsCache
+    abstract class RightsCache extends GeneralCache
     {
-        /**
-         * @param $identifier
-         * @return mixed
-         */
-        public static function getEntry($identifier)
-        {
-            return GeneralCache::getEntry($identifier);
-        }
 
-        /**
-         * @param $identifier
-         * @param $entry
-         */
-        public static function cacheEntry($identifier, $entry)
-        {
-            GeneralCache::cacheEntry($identifier, $entry);
-        }
-
-        public static function forgetAll()
-        {
-            GeneralCache::forgetAll();
-        }
     }
 ?>
