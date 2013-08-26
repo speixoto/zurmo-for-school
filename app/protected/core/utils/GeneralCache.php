@@ -40,7 +40,7 @@
      */
     abstract class GeneralCache extends ZurmoCache
     {
-        private static $cachedEntries = array();
+        protected static $cachedEntries = array();
 
         public static $cacheType = 'G:';
 
