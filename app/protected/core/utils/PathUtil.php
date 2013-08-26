@@ -41,6 +41,7 @@
             assert('is_string($alias)');
             try
             {
+                // not using default value to save cpu cycles on requests that follow the first exception.
                 $classNames = GeneralCache::getEntry($alias);
             }
             catch (NotFoundException $e)

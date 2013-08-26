@@ -552,6 +552,7 @@
         {
             try
             {
+                // not using default value to save cpu cycles on requests that follow the first exception.
                 $cachedData = BeanModelCache::getEntry(self::CACHE_IDENTIFIER . get_called_class());
                 self::$attributeNamesToClassNames[get_called_class()]                              =
                     $cachedData['attributeNamesToClassNames'][get_called_class()];

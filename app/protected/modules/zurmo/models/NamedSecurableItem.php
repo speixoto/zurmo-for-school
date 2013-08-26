@@ -53,6 +53,7 @@
             assert('$name != ""');
             try
             {
+                // not using default value to save cpu cycles on requests that follow the first exception.
                 return GeneralCache::getEntry('NamedSecurableItem' . $name);
             }
             catch (NotFoundException $e)

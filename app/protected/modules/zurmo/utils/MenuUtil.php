@@ -57,6 +57,7 @@
             assert('$user instanceof User && $user != null');
             try
             {
+                // not using default value to save cpu cycles on requests that follow the first exception.
                 $items = GeneralCache::getEntry(self::getMenuViewItemsCacheIdentifier());
             }
             catch (NotFoundException $e)
@@ -83,6 +84,7 @@
             assert('$user instanceof User && $user != null');
             try
             {
+                // not using default value to save cpu cycles on requests that follow the first exception.
                 $items = GeneralCache::getEntry(self::getAdminMenuViewItemsCacheIdentifier());
             }
             catch (NotFoundException $e)

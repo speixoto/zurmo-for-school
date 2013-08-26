@@ -96,6 +96,7 @@
             $cacheIdentifier = 'l10nServerInfo';
             try
             {
+                // not using default value to save cpu cycles on requests that follow the first exception.
                 self::$l10nInfo = GeneralCache::getEntry($cacheIdentifier);
             }
             catch (NotFoundException $e)

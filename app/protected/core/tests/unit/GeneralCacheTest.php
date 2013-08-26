@@ -114,7 +114,7 @@
 
         public function testForgetAllNotDeleteOtherDataFromCache()
         {
-            if (MEMCACHE_ON && !PHP_CACHING_ON)
+            if (GeneralCache::supportsAndAllowsMemcache() && !GeneralCache::supportsAndAllowsPhpCaching())
             {
                 GeneralCache::cacheEntry('somethingForTesting4', 34);
                 $value = GeneralCache::getEntry('somethingForTesting4');

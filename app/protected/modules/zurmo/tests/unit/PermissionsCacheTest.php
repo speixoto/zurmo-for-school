@@ -45,7 +45,7 @@
 
         public function testCachingCombinedPermissions()
         {
-            if (MEMCACHE_ON && Yii::app()->cache !== null)
+            if (PermissionsCache::supportsAndAllowsMemcache())
             {
                 $account = new Account();
                 $account->name = 'Yooples';
@@ -76,7 +76,7 @@ exit;
 
         public function testCachingNamedSecurableItemActualPermissions()
         {
-            if (MEMCACHE_ON && Yii::app()->cache !== null)
+            if (PermissionsCache::supportsAndAllowsMemcache())
             {
                 Yii::app()->user->userModel = User::getByUsername('super');
                 $super = User::getByUsername('super');
@@ -92,7 +92,7 @@ exit;
 
         public function testForgetSecurableItem()
         {
-            if (MEMCACHE_ON && Yii::app()->cache !== null)
+            if (PermissionsCache::supportsAndAllowsMemcache())
             {
                 $super = User::getByUsername('super');
                 Yii::app()->user->userModel = $super;
@@ -122,7 +122,7 @@ exit;
 
         public function testForgetAll()
         {
-            if (MEMCACHE_ON && Yii::app()->cache !== null)
+            if (PermissionsCache::supportsAndAllowsMemcache())
             {
                 $super = User::getByUsername('super');
                 Yii::app()->user->userModel = $super;

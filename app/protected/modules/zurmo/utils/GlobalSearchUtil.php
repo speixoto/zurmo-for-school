@@ -50,6 +50,7 @@
             assert('$user->id > 0');
             try
             {
+                // not using default value to save cpu cycles on requests that follow the first exception.
                 return GeneralCache::getEntry(self::getGlobalSearchScopingCacheIdentifier($user));
             }
             catch (NotFoundException $e)
