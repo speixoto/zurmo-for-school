@@ -50,25 +50,25 @@
         protected static function resolveMappingData(& $mappingData, CustomFieldsInstructionData $customFieldsInstructionData)
         {
             assert('is_array($mappingData)');
-            foreach($customFieldsInstructionData->getMissingValuesToAdd() as $columnName => $columnData)
+            foreach ($customFieldsInstructionData->getMissingValuesToAdd() as $columnName => $columnData)
             {
-                foreach($columnData as $missingValueToAdd)
+                foreach ($columnData as $missingValueToAdd)
                 {
-                    if(!isset($mappingData[$columnName]))
+                    if (!isset($mappingData[$columnName]))
                     {
                         $mappingData[$columnName] = array();
                     }
-                    if(!isset($mappingData[$columnName]['customFieldsInstructionData']))
+                    if (!isset($mappingData[$columnName]['customFieldsInstructionData']))
                     {
                         $mappingData[$columnName]['customFieldsInstructionData'] = array();
                     }
-                    if(!isset($mappingData[$columnName]['customFieldsInstructionData']
+                    if (!isset($mappingData[$columnName]['customFieldsInstructionData']
                                           [CustomFieldsInstructionData::ADD_MISSING_VALUES]))
                     {
                         $mappingData[$columnName]['customFieldsInstructionData']
                                     [CustomFieldsInstructionData::ADD_MISSING_VALUES] = array();
                     }
-                    if(!in_array($missingValueToAdd, $mappingData[$columnName]['customFieldsInstructionData']
+                    if (!in_array($missingValueToAdd, $mappingData[$columnName]['customFieldsInstructionData']
                                                                  [CustomFieldsInstructionData::ADD_MISSING_VALUES]))
                     {
                         $mappingData[$columnName]['customFieldsInstructionData']
@@ -76,25 +76,25 @@
                     }
                 }
             }
-            foreach($customFieldsInstructionData->getMissingValuesToMap() as $columnName => $columnData)
+            foreach ($customFieldsInstructionData->getMissingValuesToMap() as $columnName => $columnData)
             {
-                foreach($columnData as $missingValueToMap  => $mapToValue)
+                foreach ($columnData as $missingValueToMap  => $mapToValue)
                 {
-                    if(!isset($mappingData[$columnName]))
+                    if (!isset($mappingData[$columnName]))
                     {
                         $mappingData[$columnName] = array();
                     }
-                    if(!isset($mappingData[$columnName]['customFieldsInstructionData']))
+                    if (!isset($mappingData[$columnName]['customFieldsInstructionData']))
                     {
                         $mappingData[$columnName]['customFieldsInstructionData'] = array();
                     }
-                    if(!isset($mappingData[$columnName]['customFieldsInstructionData']
+                    if (!isset($mappingData[$columnName]['customFieldsInstructionData']
                                           [CustomFieldsInstructionData::MAP_MISSING_VALUES]))
                     {
                         $mappingData[$columnName]['customFieldsInstructionData']
                                     [CustomFieldsInstructionData::MAP_MISSING_VALUES] = array();
                     }
-                    if(!isset($mappingData[$columnName]['customFieldsInstructionData']
+                    if (!isset($mappingData[$columnName]['customFieldsInstructionData']
                                           [CustomFieldsInstructionData::MAP_MISSING_VALUES][$missingValueToMap]))
                     {
                         $mappingData[$columnName]['customFieldsInstructionData']
@@ -113,7 +113,7 @@
         {
             $unserializedData                = unserialize($this->import->serializedData);
             $existingInstructionsData        = new CustomFieldsInstructionData();
-            if(isset($unserializedData['mappingData']))
+            if (isset($unserializedData['mappingData']))
             {
                 $mappingData = $unserializedData['mappingData'];
                 $this->populateCustomFieldsInstructionDataByMappingData($existingInstructionsData, $unserializedData['mappingData']);
@@ -133,7 +133,7 @@
         {
             foreach ($mappingData as $columnName => $columnMappingData)
             {
-                if(isset($mappingData[$columnName]['customFieldsInstructionData']))
+                if (isset($mappingData[$columnName]['customFieldsInstructionData']))
                 {
                     $instructionsData->addByInstructionsDataAndColumnName($mappingData[$columnName]['customFieldsInstructionData'], $columnName);
                 }

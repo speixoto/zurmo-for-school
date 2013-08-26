@@ -77,7 +77,6 @@
             $this->assertEquals('hasone_reportmodeltestitem2_id', $leftTablesAndAliases[0]['tableJoinIdName']);
             $this->assertEquals('reportmodeltestitem2',           $leftTablesAndAliases[0]['onTableAliasName']);
             $this->assertEquals('id',                             $leftTablesAndAliases[0]['onTableJoinIdName']);
-
         }
 
         public function testAttributeOnHasManyOwnedModelWithNoBeanSkips()

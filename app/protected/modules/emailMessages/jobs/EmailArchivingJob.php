@@ -285,7 +285,7 @@
             }
             if ($emailOwner instanceof User)
             {
-                $box =EmailBoxUtil::getDefaultEmailBoxByUser($emailOwner);
+                $box = EmailBoxUtil::getDefaultEmailBoxByUser($emailOwner);
             }
             else
             {

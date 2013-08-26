@@ -86,7 +86,7 @@
         public function hasDataByColumnName($columnName)
         {
             assert('is_string($columnName)');
-            if((isset($this->missingValuesToAdd[$columnName]) && !empty($this->missingValuesToAdd[$columnName])) ||
+            if ((isset($this->missingValuesToAdd[$columnName]) && !empty($this->missingValuesToAdd[$columnName])) ||
                (isset($this->missingValuesToMap[$columnName]) && !empty($this->missingValuesToMap[$columnName])))
             {
                 return true;
@@ -102,11 +102,11 @@
         {
             assert('is_string($columnName)');
             $data = array();
-            if(isset($this->missingValuesToAdd[$columnName]))
+            if (isset($this->missingValuesToAdd[$columnName]))
             {
                 $data[static::ADD_MISSING_VALUES] = $this->missingValuesToAdd[$columnName];
             }
-            if(isset($this->missingValuesToMap[$columnName]))
+            if (isset($this->missingValuesToMap[$columnName]))
             {
                 $data[static::MAP_MISSING_VALUES] = $this->missingValuesToMap[$columnName];
             }
@@ -135,16 +135,16 @@
         public function addByInstructionsDataAndColumnName($instructionsData, $columnName)
         {
             assert('is_string($columnName)');
-            if(isset($instructionsData[static::ADD_MISSING_VALUES]))
+            if (isset($instructionsData[static::ADD_MISSING_VALUES]))
             {
-                foreach($instructionsData[static::ADD_MISSING_VALUES] as $missingValueToAdd)
+                foreach ($instructionsData[static::ADD_MISSING_VALUES] as $missingValueToAdd)
                 {
                     $this->resolveMissingValueToAdd($missingValueToAdd, $columnName);
                 }
             }
-            if(isset($instructionsData[static::MAP_MISSING_VALUES]))
+            if (isset($instructionsData[static::MAP_MISSING_VALUES]))
             {
-                foreach($instructionsData[static::MAP_MISSING_VALUES] as $missingValueToMap => $mapToValue)
+                foreach ($instructionsData[static::MAP_MISSING_VALUES] as $missingValueToMap => $mapToValue)
                 {
                     $this->resolveMissingValueToMap($missingValueToMap, $mapToValue, $columnName);
                 }
@@ -177,11 +177,11 @@
         {
             assert('is_string($missingCustomFieldValue) || is_numeric($missingCustomFieldValue)');
             assert('is_string($columnName)');
-            if(!isset($this->missingValuesToAdd[$columnName]))
+            if (!isset($this->missingValuesToAdd[$columnName]))
             {
                 $this->missingValuesToAdd[$columnName] = array();
             }
-            if(!in_array($missingCustomFieldValue, $this->missingValuesToAdd[$columnName]))
+            if (!in_array($missingCustomFieldValue, $this->missingValuesToAdd[$columnName]))
             {
                 $this->missingValuesToAdd[$columnName][] = $missingCustomFieldValue;
             }
@@ -197,7 +197,7 @@
             assert('is_string($missingCustomFieldValue) || is_numeric($missingCustomFieldValue)');
             assert('is_string($mapToValue)');
             assert('is_string($columnName)');
-            if(!isset($this->missingValuesToMap[$columnName]))
+            if (!isset($this->missingValuesToMap[$columnName]))
             {
                 $this->missingValuesToMap[$columnName] = array();
             }

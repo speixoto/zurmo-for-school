@@ -40,7 +40,7 @@
         {
             $autoresponderItem  = static::populateAutoresponderItem($processed, $processDateTime, $autoresponder, $contact);
             $saved              = $autoresponderItem->unrestrictedSave();
-            if(!$saved)
+            if (!$saved)
             {
                 echo "<pre>";
                 print_r('xx' . $processDateTime);

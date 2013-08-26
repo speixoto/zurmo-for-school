@@ -294,7 +294,6 @@
                 {
                     if(get_class($item) == $resolvedAttributeModelClassName)
                     {
-
                         $relatedModels[] = $item;
                     }
                     else

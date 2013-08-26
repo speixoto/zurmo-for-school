@@ -210,11 +210,11 @@
          */
         public function attributeLabels()
         {
-            return array('emailTemplateId'          => Zurmo::t('WorkflowsModule', 'Template'),
-                         'sendAfterDurationInterval'=> Zurmo::t('WorkflowsModule', 'Send After'),
-                         'sendFromType'             => Zurmo::t('WorkflowsModule', 'Send From'),
-                         'sendFromName'             => Zurmo::t('WorkflowsModule', 'From Name'),
-                         'sendFromAddress'          => Zurmo::t('WorkflowsModule', 'From Address'),
+            return array('emailTemplateId'           => Zurmo::t('WorkflowsModule', 'Template'),
+                         'sendAfterDurationInterval' => Zurmo::t('WorkflowsModule', 'Send After'),
+                         'sendFromType'              => Zurmo::t('WorkflowsModule', 'Send From'),
+                         'sendFromName'              => Zurmo::t('WorkflowsModule', 'From Name'),
+                         'sendFromAddress'           => Zurmo::t('WorkflowsModule', 'From Address'),
             );
         }
 

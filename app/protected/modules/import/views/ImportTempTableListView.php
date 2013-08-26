@@ -145,7 +145,6 @@
             $this->gridId            = 'import-temp-table-list-view';
         }
 
-
         protected function renderContent()
         {
             $cClipWidget = new CClipWidget();
@@ -253,7 +252,6 @@
             $headerRow = ImportDatabaseUtil::getFirstRowByTableName($this->dataProvider->getTableName());
             foreach ($headerRow as $columnName => $label)
             {
-
                 if (!in_array($columnName, ImportDatabaseUtil::getReservedColumnNames()) &&
                     $this->mappingData[$columnName]['type'] == 'importColumn' &&
                     $this->mappingData[$columnName]['attributeIndexOrDerivedType'] != null)
@@ -355,15 +353,16 @@
             assert('$form instanceof ZurmoActiveForm');
             $url       = Yii::app()->createUrl($this->moduleId . '/' . $this->getDefaultRoute());
             $urlScript = 'js:$.param.querystring("' . $url . '", "' .
-                         $this->dataProvider->getPagination()->pageVar . '=1&id=' .
-                         $this->importId . '&step=complete&ajax=' . $this->gridId. '&pageSize=' . $this->dataProvider->getPagination()->getPageSize() . '")';
+                         $this->dataProvider->getPagination()->pageVar . '=1&id=' . // Not Coding Standard
+                         $this->importId . '&step=complete&ajax=' . $this->gridId . '&pageSize=' . $this->dataProvider->getPagination()->getPageSize() . '")'; // Not Coding Standard
             $ajaxSubmitScript = ZurmoHtml::ajax(array(
                     'type'       => 'GET',
                     'url'        =>  $urlScript,
                     'beforeSend' => 'js:function(){$(this).makeSmallLoadingSpinner(true, "#' .
                                     $this->getGridViewId() . '"); $("#' .
                                     $this->getUniquePageId() . '").find(".cgrid-view").addClass("loading");}',
-                    'success'    => 'js:function(data){
+                    'success'    => 'js:function(data)
+                    {
                                     $("#' . $this->getUniquePageId() . '").replaceWith(data);
                     }',
             ));
