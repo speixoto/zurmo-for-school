@@ -891,14 +891,50 @@
         {
             assert('is_string($mungeTableName) && $mungeTableName  != ""');
             ZurmoRedBean::$writer->dropTableByTableName($mungeTableName);
-            ZurmoRedBean::exec("create table $mungeTableName (
-                        securableitem_id int(11)     unsigned not null,
-                        munge_id         varchar(12)          not null,
-                        count            int(8)      unsigned not null,
-                        primary key (securableitem_id, munge_id)
-                     )");
-            ZurmoRedBean::exec("create index index_${mungeTableName}_securable_item_id
-                     on $mungeTableName (securableitem_id);");
+            $schema = static::getMungeTableSchemaByName($mungeTableName);
+            CreateOrUpdateExistingTableFromSchemaDefinitionArrayUtil::generateOrUpdateTableBySchemaDefinition(
+                                                                                        $schema, new MessageLogger());
+        }
+
+        protected static function getMungeTableSchemaByName($tableName)
+        {
+            return array($tableName =>  array('columns' => array(
+                                                    array(
+                                                        'name' => 'securableitem_id',
+                                                        'type' => 'INT(11)',
+                                                        'unsigned' => 'UNSIGNED',
+                                                        'notNull' => 'NOT NULL',
+                                                        'collation' => null,
+                                                        'default' => null,
+                                                    ),
+                                                    array(
+                                                        'name' => 'munge_id',
+                                                        'type' => 'VARCHAR(12)',
+                                                        'unsigned' => null,
+                                                        'notNull' => 'NOT NULL',
+                                                        'collation' => 'COLLATE utf8_unicode_ci',
+                                                        'default' => null,
+                                                    ),
+                                                    array(
+                                                        'name' => 'count',
+                                                        'type' => 'INT(8)',
+                                                        'unsigned' => 'UNSIGNED',
+                                                        'notNull' => 'NOT NULL',
+                                                        'collation' => null,
+                                                        'default' => null,
+                                                    ),
+                                                ),
+                                            'indexes' => array('securableitem_id_munge_id' => array(
+                                                                'columns' => array('securableitem_id', 'munge_id'),
+                                                                'unique' => true,
+                                                            ),
+                                                            $tableName . '_securableitem_id' => array(
+                                                                'columns' => array('securableitem_id'),
+                                                                'unique' => false,
+                                                            ),
+                                                    ),
+                                            )
+                                        );
         }
 
         protected static function incrementCount($mungeTableName, $securableItemId, $item)
@@ -911,9 +947,9 @@
             $mungeId = "$type$itemId";
             ZurmoRedBean::exec("insert into $mungeTableName
                                  (securableitem_id, munge_id, count)
-                     values ($securableItemId, '$mungeId', 1)
-                     on duplicate key
-                     update count = count + 1");
+                                 values ($securableItemId, '$mungeId', 1)
+                                 on duplicate key
+                                 update count = count + 1");
         }
 
         protected static function setCount($mungeTableName, $securableItemId, $item, $count)
@@ -926,9 +962,9 @@
             $mungeId = "$type$itemId";
             ZurmoRedBean::exec("insert into $mungeTableName
                                  (securableitem_id, munge_id, count)
-                     values ($securableItemId, '$mungeId', $count)
-                     on duplicate key
-                     update count = $count");
+                                 values ($securableItemId, '$mungeId', $count)
+                                 on duplicate key
+                                 update count = $count");
         }
 
         protected static function decrementCount($mungeTableName, $securableItemId, $item)
@@ -940,9 +976,9 @@
             $type    = self::getMungeType($item);
             $mungeId = "$type$itemId";
             ZurmoRedBean::exec("update $mungeTableName
-                     set count = count - 1
-                     where securableitem_id = $securableItemId and
-                           munge_id         = '$mungeId'");
+                                 set count = count - 1
+                                 where securableitem_id = $securableItemId and
+                                 munge_id         = '$mungeId'");
         }
 
         protected static function decrementCountForAllSecurableItems($mungeTableName, $item)
@@ -953,8 +989,8 @@
             $type    = self::getMungeType($item);
             $mungeId = "$type$itemId";
             ZurmoRedBean::exec("update $mungeTableName
-                     set count = count - 1
-                     where munge_id = '$mungeId'");
+                                 set count = count - 1
+                                 where munge_id = '$mungeId'");
         }
 
         protected static function bulkIncrementCount($mungeTableName, $securableItemIds, $item)
