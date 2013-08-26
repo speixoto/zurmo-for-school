@@ -108,13 +108,13 @@
 
             if (!$tableExists)
             {
-                ZurmoRedBean::exec("create table $modelSubscriptionTableName (
-                                    id int(11)         unsigned NOT NULL PRIMARY KEY AUTO_INCREMENT ,
-                                    userid int(11)     unsigned NOT NULL,
-                                    modelid int(11)    unsigned NOT NULL,
-                                    modifieddatetime   datetime DEFAULT NULL,
-                                    subscriptiontype   tinyint(4) DEFAULT NULL
-                             )");
+                 ZurmoRedBean::exec("create table $modelSubscriptionTableName (
+                                            id int(11)         unsigned NOT NULL PRIMARY KEY AUTO_INCREMENT ,
+                                            userid int(11)     unsigned NOT NULL,
+                                            modelid int(11)    unsigned NOT NULL,
+                                            modifieddatetime   datetime DEFAULT NULL,
+                                            subscriptiontype   tinyint(4) DEFAULT NULL
+                                     )");
             }
         }
 
@@ -169,10 +169,9 @@
          * @param bool $partialBuild
          * @param bool $onlyOwnedModels
          */
-        public static function updateReadSubscriptionTableByModelClassNameAndUser($modelClassName, $user,
-                                                                                   $partialBuild = true, $onlyOwnedModels = false)
+        public static function updateReadSubscriptionTableByModelClassNameAndUser($modelClassName, User $user,
+                                                                                  $partialBuild = true, $onlyOwnedModels = false)
         {
-            assert('$user instanceof User');
             assert('$modelClassName === null || is_string($modelClassName) && $modelClassName != ""');
             $metadata = array();
             $lastReadPermissionUpdateTimestamp = self::getLastReadPermissionUpdateTimestamp();
@@ -207,7 +206,7 @@
 
             $joinTablesAdapter   = new RedBeanModelJoinTablesQueryAdapter($modelClassName);
             $where  = RedBeanModelDataProvider::makeWhere($modelClassName, $metadata, $joinTablesAdapter);
-            $userModelIds = $modelClassName::getSubsetIds($joinTablesAdapter,null, null, $where, 'createdDateTime asc');
+            $userModelIds = $modelClassName::getSubsetIds($joinTablesAdapter, null, null, $where, 'createdDateTime asc');
 
             // Get models from subscription table
             $tableName = self::getSubscriptionTableName($modelClassName);
@@ -230,13 +229,13 @@
                 foreach ($modelIdsToAdd as $modelId)
                 {
                     $sql = "DELETE FROM $tableName WHERE
-                                    userid = '" . $user->id . "'
-                                    AND modelid = '{$modelId}'
-                                    AND subscriptiontype='" . self::TYPE_DELETE . "';";
+                                            userid = '" . $user->id . "'
+                                            AND modelid = '{$modelId}'
+                                            AND subscriptiontype='" . self::TYPE_DELETE . "';";
                     ZurmoRedBean::exec($sql);
 
                     $sql = "INSERT INTO $tableName VALUES
-                                    (null, '" . $user->id . "', '{$modelId}', '{$nowDateTime}', '" . self::TYPE_ADD . "');";
+                                            (null, '" . $user->id . "', '{$modelId}', '{$nowDateTime}', '" . self::TYPE_ADD . "');";
                     ZurmoRedBean::exec($sql);
                 }
             }
@@ -246,13 +245,13 @@
                 foreach ($modelIdsToDelete as $modelId)
                 {
                     $sql = "DELETE FROM $tableName WHERE
-                                    userid = '" . $user->id . "'
-                                    AND modelid = '{$modelId}'
-                                    AND subscriptiontype='" . self::TYPE_ADD . "';";
+                                            userid = '" . $user->id . "'
+                                            AND modelid = '{$modelId}'
+                                            AND subscriptiontype='" . self::TYPE_ADD . "';";
                     ZurmoRedBean::exec($sql);
 
                     $sql = "INSERT INTO $tableName VALUES
-                                    (null, '" . $user->id . "', '{$modelId}', '{$nowDateTime}', '" . self::TYPE_DELETE . "');";
+                                            (null, '" . $user->id . "', '{$modelId}', '{$nowDateTime}', '" . self::TYPE_DELETE . "');";
                     ZurmoRedBean::exec($sql);
                 }
             }
@@ -274,10 +273,7 @@
         {
             assert('$user instanceof User');
             $tableName = self::getSubscriptionTableName($modelClassName);
-
-            $dateTime = Yii::app()->dateFormatter->format(DatabaseCompatibilityUtil::getDateTimeFormat(),
-                $lastUpdateTimestamp);
-
+            $dateTime = DateTimeUtil::convertTimestampToDbFormatDateTime($lastUpdateTimestamp);
             if ($type == ReadPermissionsSubscriptionUtil::TYPE_DELETE)
             {
                 $sql = "SELECT {$tableName}.modelid FROM $tableName" .
@@ -299,7 +295,6 @@
                     " AND isct.modelid is null" .
                     " order by {$tableName}.modifieddatetime ASC, {$tableName}.modelid  ASC";
             }
-
             $modelIdsRows = ZurmoRedBean::getAll($sql);
             $modelIds = array();
             if (is_array($modelIdsRows) && !empty($modelIdsRows))

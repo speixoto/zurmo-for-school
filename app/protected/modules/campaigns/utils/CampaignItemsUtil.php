@@ -60,7 +60,7 @@
                     $dueCampaign->status = Campaign::STATUS_PROCESSING;
                     if (!$dueCampaign->save())
                     {
-                        return false;
+                        throw new FailedToSaveModelException("Unable to save campaign");
                     }
                 }
             }
@@ -79,7 +79,8 @@
                     left join {$quote}campaignitem{$quote} on {$quote}campaignitem{$quote}.{$quote}contact_id{$quote} " .
                     "= {$quote}marketinglistmember{$quote}.{$quote}contact_id{$quote} " .
                     "AND {$quote}campaignitem{$quote}.{$quote}campaign_id{$quote} = " . $campaign->id .
-                    " where {$quote}marketinglistmember{$quote}.{$quote}marketinglist_id{$quote} = " .
+                    " where {$quote}marketinglistmember{$quote}.{$quote}unsubscribed{$quote} != 1 and " .
+                    "{$quote}marketinglistmember{$quote}.{$quote}marketinglist_id{$quote} = " .
                     $campaign->marketingList->id . " and {$quote}campaignitem{$quote}.{$quote}id{$quote} IS NULL limit " . $pageSize; // Not Coding Standard
             $ids = ZurmoRedBean::getCol($sql);
             foreach ($ids as $contactId)

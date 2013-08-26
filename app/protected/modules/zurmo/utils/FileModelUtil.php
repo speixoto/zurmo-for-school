@@ -73,6 +73,7 @@
          * Given an instance of a CUploadedFile, make a FileModel, save it, and return it.
          * If the file is empty, an exception is thrown otherwise the fileModel is returned.
          * @param object $uploadedFile CUploadedFile
+         * @param string $fileModelClassName
          */
         public static function makeByUploadedFile($uploadedFile, $fileModelClassName = 'FileModel')
         {
@@ -140,12 +141,24 @@
         /**
          *
          * @param integer $fileModelId
+         * @param string $fileModelClassName
          * @return $fileModel or false on failure
          */
         public static function makeByExistingFileModelId($fileModelId, $fileModelClassName = 'FileModel')
         {
             assert('is_int($fileModelId) || (is_string($fileModelId) && !empty($fileModelId))');
             $existingFileModel      = $fileModelClassName::getById($fileModelId);
+            return static::makeByFileModel($existingFileModel, $fileModelClassName);
+        }
+
+        /**
+         *
+         * @param FileModel $existingFileModel
+         * @param string $fileModelClassName
+         * @return $fileModel or false on failure
+         */
+        public static function makeByFileModel($existingFileModel, $fileModelClassName = 'FileModel')
+        {
             $file                   = new $fileModelClassName();
             // TODO: @Shoaibi/@Jason: High: Following should also clone FileContent as its HAS_ONE.
             ZurmoCopyModelUtil::copy($existingFileModel, $file);
