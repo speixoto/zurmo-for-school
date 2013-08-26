@@ -461,7 +461,7 @@
             $this->assertEquals($campaignItemsCountExpected, $campaignItemsCountAfter);
             $campaignItemsProcessed = CampaignItem::getByProcessedAndCampaignId(1, $campaign->id);
             $this->assertCount(5, $campaignItemsProcessed);
-            foreach ($campaignItemsProcessed as $index => $campaignItem)
+            foreach ($campaignItemsProcessed as $campaignItem)
             {
                 $emailMessage               = $campaignItem->emailMessage;
                 $this->assertNotEmpty($emailMessage->files);
