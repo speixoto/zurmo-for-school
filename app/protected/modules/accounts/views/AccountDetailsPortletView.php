@@ -52,7 +52,7 @@
         {
             assert('isset($params["controllerId"])');
             assert('isset($params["relationModuleId"])');
-            assert('$params["relationModel"] instanceof RedBeanModel || $params["relationModel"] instanceof ModelForm');
+            //assert('$params["relationModel"] instanceof RedBeanModel || $params["relationModel"] instanceof ModelForm');
             assert('isset($params["portletId"])');
             assert('isset($params["redirectUrl"])');
             $this->modelClassName    = $this->getModelClassName();
@@ -64,12 +64,13 @@
             $this->gridId            = 'list-view';
             $this->controllerId      = $this->resolveControllerId();
             $this->moduleId          = $this->resolveModuleId();
-            parent::__construct('Details', $this->controllerId, $this->moduleId, $params["relationModel"]);
+            $this->resolveModelAndSetInParams();
+            parent::__construct('Details', $this->controllerId, $this->moduleId, $this->params["relationModel"]);
         }
 
         public function getPortletParams()
         {
-            return array();
+            return $this->params;
         }
 
         public static function getPortletRulesType()
@@ -114,7 +115,7 @@
 
         public static function canUserConfigure()
         {
-            return false;
+            return true;
         }
 
         protected function renderTitleContent()
@@ -154,6 +155,15 @@
         public function renderPortletHeadContent()
         {
             return $this->renderWrapperAndActionElementMenu();
+        }
+
+        /**
+         * Resolve model by model id and set the model in params
+         */
+        protected function resolveModelAndSetInParams()
+        {
+            $account = Account::getById(intval($this->params['relationModelId']));
+            $this->params['relationModel'] = $account;
         }
     }
 ?>

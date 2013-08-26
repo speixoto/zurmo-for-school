@@ -91,6 +91,11 @@
                 'moduleId'              => $this->getModule()->getId(),
                 'uniquePortletPageId'   => $portlet->getUniquePortletPageId(),
             );
+            //Check for portlet params passed in request
+            if(isset($_GET['portletParams']))
+            {
+                $portlet->params = array_merge($portlet->params, $_GET['portletParams']);
+            }
             $configurableView = $portlet->getView()->getConfigurationView();
             $view = new ModalView($this, $configurableView);
             echo $view->render();
