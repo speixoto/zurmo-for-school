@@ -51,28 +51,6 @@
             Yii::app()->user->userModel = User::getByUsername('super');
         }
 
-        public function testFindReadSubscriptionModelClassNames()
-        {
-            $modelClassNames = ReadPermissionsSubscriptionUtil::findReadSubscriptionModelClassNames();
-            $compareData = array('Account', 'Contact', 'Meeting', 'Task');
-            $this->assertEquals($compareData, $modelClassNames);
-            $modelClassNames2 = ReadPermissionsSubscriptionUtil::findReadSubscriptionModelClassNames();
-            $this->assertEquals($modelClassNames, $modelClassNames2);
-            $modelClassNames3 = ReadPermissionsSubscriptionUtil::findReadSubscriptionModelClassNames();
-            $this->assertEquals($modelClassNames2, $modelClassNames3);
-        }
-
-        public function testGetReadSubscriptionModelClassNames()
-        {
-            $modelClassNames = ReadPermissionsSubscriptionUtil::getReadSubscriptionModelClassNames();
-            $compareData = array('Account', 'Contact', 'Meeting', 'Task');
-            $this->assertEquals($compareData, $modelClassNames);
-
-            // Now test with caching
-            $modelClassNames = ReadPermissionsSubscriptionUtil::getReadSubscriptionModelClassNames();
-            $this->assertEquals($compareData, $modelClassNames);
-        }
-
         public function testGetSubscriptionTableName()
         {
             $subscriptionTableName = ReadPermissionsSubscriptionUtil::getSubscriptionTableName('Account');

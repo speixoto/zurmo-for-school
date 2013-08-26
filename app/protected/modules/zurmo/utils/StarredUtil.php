@@ -63,7 +63,7 @@
             return array($tableName =>  array('columns' => array(
                                                 array(
                                                     'name' => 'user_id',
-                                                    'type' => 'int(11)',
+                                                    'type' => 'INT(11)',
                                                     'unsigned' => 'UNSIGNED',
                                                     'notNull' => 'NOT NULL',
                                                     'collation' => null,
@@ -71,7 +71,7 @@
                                                 ),
                                                 array(
                                                     'name' => 'model_id',
-                                                    'type' => 'int(11)',
+                                                    'type' => 'INT(11)',
                                                     'unsigned' => 'UNSIGNED',
                                                     'notNull' => 'NOT NULL',
                                                     'collation' => null,

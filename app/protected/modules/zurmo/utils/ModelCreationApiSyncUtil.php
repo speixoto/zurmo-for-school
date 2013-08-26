@@ -42,18 +42,9 @@
          */
         public static function buildTable()
         {
-            $result = ZurmoRedBean::getAll("SHOW TABLES LIKE '" . self::TABLE_NAME . "'");
-            $tableExists = count($result);
-            if (!$tableExists)
-            {
-                ZurmoRedBean::exec("create table " . self::TABLE_NAME . " (
-                                id int(11)         unsigned NOT NULL PRIMARY KEY AUTO_INCREMENT ,
-                                servicename        varchar(50) NOT NULL,
-                                modelid int(11)    unsigned NOT NULL,
-                                modelclassname     varchar(50) NOT NULL,
-                                createddatetime    datetime DEFAULT NULL
-                             )");
-            }
+            $schema = static::getTableSchema();
+            CreateOrUpdateExistingTableFromSchemaDefinitionArrayUtil::generateOrUpdateTableBySchemaDefinition(
+                                                                                        $schema, new MessageLogger());
         }
 
         /**
@@ -68,9 +59,50 @@
             assert('is_string($serviceName)');
             assert('is_int($modelId)');
             assert('is_string($dateTime)');
-            $sql = "INSERT INTO " . self::TABLE_NAME .
+            $sql = "INSERT INTO " . static::TABLE_NAME .
                 " VALUES (NULL, '{$serviceName}', '{$modelId}', '{$modelClassName}', '{$dateTime}')";
             ZurmoRedBean::exec($sql);
+        }
+
+        protected static function getTableSchema()
+        {
+            return array(static::TABLE_NAME =>  array('columns' => array(
+                                                                    array(
+                                                                        'name' => 'servicename',
+                                                                        'type' => 'VARCHAR(50)',
+                                                                        'unsigned' => null,
+                                                                        'notNull' => 'NOT NULL',
+                                                                        'collation' => 'COLLATE utf8_unicode_ci',
+                                                                        'default' => null,
+                                                                    ),
+                                                                    array(
+                                                                        'name' => 'modelid',
+                                                                        'type' => 'INT(11)',
+                                                                        'unsigned' => 'UNSIGNED',
+                                                                        'notNull' => 'NOT NULL',
+                                                                        'collation' => null,
+                                                                        'default' => null,
+                                                                    ),
+                                                                    array(
+                                                                        'name' => 'modelclassname',
+                                                                        'type' => 'VARCHAR(50)',
+                                                                        'unsigned' => null,
+                                                                        'notNull' => 'NOT NULL',
+                                                                        'collation' => 'COLLATE utf8_unicode_ci',
+                                                                        'default' => null,
+                                                                    ),
+                                                                    array(
+                                                                        'name' => 'createddatetime',
+                                                                        'type' => 'DATETIME',
+                                                                        'unsigned' => null,
+                                                                        'notNull' => 'NULL',
+                                                                        'collation' => null,
+                                                                        'default' => 'NULL',
+                                                                    ),
+                                                                ),
+                                                        'indexes' => array(),
+                                                            )
+                                                        );
         }
     }
 ?>

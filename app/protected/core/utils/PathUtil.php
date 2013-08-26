@@ -42,7 +42,7 @@
             try
             {
                 // not using default value to save cpu cycles on requests that follow the first exception.
-                $classNames = GeneralCache::getEntry($alias);
+                $classNames = GeneralCache::getEntry($alias . '.ClassNames');
             }
             catch (NotFoundException $e)
             {
@@ -68,21 +68,29 @@
 
         public static function getAllModelClassNames($filter = null)
         {
-            $allModelClasses            = array();
-            $nonModuleModelPathAliases  = Yii::app()->additionalModelsConfig->resolvePathAliases();
-            $modules                    = Module::getModuleObjects();
-            foreach ($modules as $module)
+            try
             {
-                $modelClasses	=  $module::getModelClassNames();
-                if (!empty($modelClasses))
-                {
-                    $allModelClasses = CMap::mergeArray($allModelClasses, array_values($modelClasses));
-                }
+                $allModelClasses = GeneralCache::getEntry('allModelClassNames');
             }
-            foreach ($nonModuleModelPathAliases as $alias)
+            catch (NotFoundException $e)
             {
-                $models             = array_values(static::getAllClassNamesByPathAlias($alias));
-                $allModelClasses    = CMap::mergeArray($allModelClasses, $models);
+                $allModelClasses            = array();
+                $nonModuleModelPathAliases  = Yii::app()->additionalModelsConfig->resolvePathAliases();
+                $modules                    = Module::getModuleObjects();
+                foreach ($modules as $module)
+                {
+                    $modelClasses	=  $module::getModelClassNames();
+                    if (!empty($modelClasses))
+                    {
+                        $allModelClasses = CMap::mergeArray($allModelClasses, array_values($modelClasses));
+                    }
+                }
+                foreach ($nonModuleModelPathAliases as $alias)
+                {
+                    $models             = array_values(static::getAllClassNamesByPathAlias($alias));
+                    $allModelClasses    = CMap::mergeArray($allModelClasses, $models);
+                }
+                GeneralCache::cacheEntry('allModelClassNames', $allModelClasses);
             }
             if ($filter && is_callable($filter))
             {
@@ -94,21 +102,42 @@
 
         public static function getAllCanHaveBeanModelClassNames()
         {
-            return static::getAllModelClassNames('static::filterCanHaveBeenModels');
+            return static::getAllModelClassNamesWithFilterFromCache('canHaveBeanModelClassNames',
+                                                                    'static::filterCanHaveBeanModels');
         }
 
         public static function getAllStarredModelClassNames()
         {
-            return static::getAllModelClassNames('static::filterImplementsStarredInterfaceModels');
+            return static::getAllModelClassNamesWithFilterFromCache('implementsStarredInterfaceModelClassNames',
+                                                                    'static::filterImplementsStarredInterfaceModels');
         }
 
-        protected static function filterCanHaveBeenModels($model)
+        public static function getAllReadSubscriptionModelClassNames()
+        {
+            return static::getAllModelClassNamesWithFilterFromCache('readPermissionsSubscriptionModelClassNames',
+                                                                    'static::filterReadSubscriptionModels');
+        }
+
+        protected static function getAllModelClassNamesWithFilterFromCache($identifier, $filter)
+        {
+            try
+            {
+                $filteredModelClassNames = GeneralCache::getEntry($identifier);
+            }
+            catch (NotFoundException $e)
+            {
+                $filteredModelClassNames = static::getAllModelClassNames($filter);
+                GeneralCache::cacheEntry($identifier, $filteredModelClassNames);
+            }
+            return $filteredModelClassNames;
+        }
+
+        protected static function filterCanHaveBeanModels($model)
         {
             if (is_subclass_of($model, 'RedBeanModel') && $model::getCanHaveBean())
             {
                 return $model;
             }
-            return null;
         }
 
         protected static function filterImplementsStarredInterfaceModels($model)
@@ -118,7 +147,14 @@
             {
                 return $model;
             }
-            return null;
+        }
+
+        protected static function filterReadSubscriptionModels($model)
+        {
+            if (is_subclass_of($model, 'OwnedSecurableItem') && $model::hasReadPermissionsSubscriptionOptimization())
+            {
+                return $model;
+            }
         }
     }
 ?>
