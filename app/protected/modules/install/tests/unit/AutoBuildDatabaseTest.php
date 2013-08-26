@@ -70,6 +70,7 @@
             }
             $messageLogger->addInfoMessage(print_r(DatabaseCompatibilityUtil::getAllTableNames(), true));
             InstallUtil::autoBuildDatabase($messageLogger, true);
+            E::deleteAll(); // because if we are running All, C, D and E get autobuild and 2 validators in E cause E to have a record which gets deleted on tearDown.
             $afterRowCount              = DatabaseCompatibilityUtil::getTableRowsCountTotal();
 
             $rowsAfter                 = array();

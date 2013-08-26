@@ -36,6 +36,14 @@
 
     class E extends RedBeanModel
     {
+        public static function deleteAll()
+        {
+            if (ZurmoRedBean::$writer->doesTableExist(static::getTableName(get_called_class())))
+            {
+                parent::deleteAll();
+            }
+        }
+
         public static function getByE($e)
         {
             assert('is_string($e)');

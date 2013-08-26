@@ -88,7 +88,6 @@
 
         public static function tearDownAfterClass()
         {
-            E::deleteAll();
             parent::tearDownAfterClass();
         }
 
