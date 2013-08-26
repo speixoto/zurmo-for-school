@@ -142,8 +142,7 @@
 
         protected static function filterImplementsStarredInterfaceModels($model)
         {
-            $classToEvaluate     = new ReflectionClass($model);
-            if ($classToEvaluate->implementsInterface('StarredInterface') && !$classToEvaluate->isAbstract())
+            if (StarredUtil::modelHasStarredInterfaceAndNotAbstract($model))
             {
                 return $model;
             }

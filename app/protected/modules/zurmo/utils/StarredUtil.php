@@ -39,10 +39,20 @@
      */
     class StarredUtil
     {
-        public static function modelHasStarredInterface($modelClassName)
+        public static function modelHasStarredInterface($modelClassName, $reflectionClass = null)
         {
-            $refelectionClass = new ReflectionClass($modelClassName);
-            return in_array('StarredInterface', $refelectionClass->getInterfaceNames());
+            if (!isset($reflectionClass))
+            {
+                $reflectionClass = new ReflectionClass($modelClassName);
+            }
+            return $reflectionClass->implementsInterface('StarredInterface');
+        }
+
+        public static function modelHasStarredInterfaceAndNotAbstract($modelClassName)
+        {
+            $reflectionClass = new ReflectionClass($modelClassName);
+            return (static::modelHasStarredInterface($modelClassName, $reflectionClass) &&
+                        !$reflectionClass->isAbstract());
         }
 
         public static function createStarredTables()
