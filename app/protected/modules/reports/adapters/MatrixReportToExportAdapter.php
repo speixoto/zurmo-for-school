@@ -38,11 +38,19 @@
      * Helper class used to convert MatrixReport models into arrays
      */
     class MatrixReportToExportAdapter extends ReportToExportAdapter
-    {
+    {        
+        public function __construct(ReportDataProvider $dataProvider, Report $report)
+        {
+            $this->dataProvider     = $dataProvider;
+            $this->report           = $report;                           
+            $this->dataForExport    = $dataProvider->getData();
+            $this->makeData();
+        }
+        
         protected function makeData()
         {
             $data                      = array();
-            $this->headerData          = array();
+            $this->headerData          = array();            
             foreach ($this->dataForExport as $reportResultsRowData)
             {
                 $line                      = array();
