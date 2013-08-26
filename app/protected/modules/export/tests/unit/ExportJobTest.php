@@ -588,9 +588,65 @@
                 Notification::getCountByTypeAndUser('ExportProcessCompleted', Yii::app()->user->userModel));
         }
 
+        /**
+         * @depends testExportByModelIds
+         */
         public function testExportReportWithMultiplePagesOfData()
         {
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
 
+            $numberOfUserNotifications = Notification::getCountByTypeAndUser('ExportProcessCompleted', Yii::app()->user->userModel);
+
+            $report = new Report();
+            $report->setType(Report::TYPE_ROWS_AND_COLUMNS);
+            $report->setModuleClassName('AccountsModule');
+            $report->setFiltersStructure('');
+
+            $displayAttribute = new DisplayAttributeForReportForm('AccountsModule', 'Account',
+                                        Report::TYPE_ROWS_AND_COLUMNS);
+            $displayAttribute->setModelAliasUsingTableAliasName('model1');
+            $displayAttribute->attributeIndexOrDerivedType = 'name';
+            $report->addDisplayAttribute($displayAttribute);
+
+            $dataProvider                = new RowsAndColumnsReportDataProvider($report);
+            $exportItem                  = new ExportItem();
+            $exportItem->isCompleted     = 0;
+            $exportItem->exportFileType  = 'csv';
+            $exportItem->exportFileName  = 'rowAndColumnsTest2';
+            $exportItem->modelClassName  = 'SavedReport';
+            $exportItem->serializedData  = ExportUtil::getSerializedDataForExport($dataProvider);
+            $this->assertTrue($exportItem->save());
+            $id = $exportItem->id;
+            $exportItem->forget();
+            unset($exportItem);
+
+            ExportModule::$asynchronousPageSize = 2;
+            
+            $job = new ExportJob();
+            $this->assertTrue($job->run());
+
+            $exportItem = ExportItem::getById($id);
+            $fileModel = $exportItem->exportFileModel;
+
+            $this->assertEquals(1, $exportItem->isCompleted);
+            $this->assertEquals('csv', $exportItem->exportFileType);
+            $this->assertEquals('rowAndColumnsTest2', $exportItem->exportFileName);
+            $this->assertTrue($fileModel instanceOf ExportFileModel);
+
+            $accounts              = Account::getAll();
+            $headerData            = array('Name');
+            $data                  = array();
+            foreach ($accounts as $account)
+            {
+                $data[]                = array($account->name);
+            }
+            $output = ExportItemToCsvFileUtil::export($data, $headerData, 'rowAndColumnsTest2.csv', false);
+            $this->assertEquals($output, $fileModel->fileContent->content);
+
+            // Check if user got notification message, and if its type is ExportProcessCompleted
+            $this->assertEquals($numberOfUserNotifications + 1,
+                Notification::getCountByTypeAndUser('ExportProcessCompleted', Yii::app()->user->userModel));
         }
     }
 ?>

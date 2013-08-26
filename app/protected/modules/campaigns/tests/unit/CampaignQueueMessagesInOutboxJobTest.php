@@ -456,12 +456,13 @@
                 CampaignItemTestHelper::createCampaignItem($processed, $campaign, $contact);
             }
             $this->assertTrue($job->run());
+            ForgetAllCacheUtil::forgetAllCaches();
             $campaignItemsCountExpected = $campaignItemsCountBefore + 5;
             $campaignItemsCountAfter    = CampaignItem::getCount();
             $this->assertEquals($campaignItemsCountExpected, $campaignItemsCountAfter);
             $campaignItemsProcessed = CampaignItem::getByProcessedAndCampaignId(1, $campaign->id);
             $this->assertCount(5, $campaignItemsProcessed);
-            foreach ($campaignItemsProcessed as $index => $campaignItem)
+            foreach ($campaignItemsProcessed as $campaignItem)
             {
                 $emailMessage               = $campaignItem->emailMessage;
                 $this->assertNotEmpty($emailMessage->files);

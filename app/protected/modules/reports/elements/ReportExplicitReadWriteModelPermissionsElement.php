@@ -35,10 +35,10 @@
      ********************************************************************************/
 
     /**
-     * @see ExplicitReadWriteModelPermissionsElement.  
+     * @see ExplicitReadWriteModelPermissionsElement.
      * Used so when creating a report the default settings can be resolver«d
      */
-    class ReportExplicitReadWriteModelPermissionsElement extends ExplicitReadWriteModelPermissionsElement    
+    class ReportExplicitReadWriteModelPermissionsElement extends ExplicitReadWriteModelPermissionsElement
     {
         protected function resolveSelectedType()
         {
@@ -65,17 +65,16 @@
             $explicitReadWritePermissionTypes   = parent::getPermissionTypes();
             return array_search($userConfigPermissionTypes[$selectedType], $explicitReadWritePermissionTypes);
         }
-        
+
         protected function resolveSelectedGroup()
-        {            
+        {
             $resolvedSelectedGroup = parent::resolveSelectedGroup();
             if ($resolvedSelectedGroup === null)
             {
                 return UserConfigurationFormAdapter::resolveAndGetValue(Yii::app()->user->userModel,
                             'defaultPermissionGroupSetting', false);
             }
-            return $resolvedSelectedGroup;            
+            return $resolvedSelectedGroup;
         }
-
     }
 ?>

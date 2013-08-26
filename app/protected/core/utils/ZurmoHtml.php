@@ -670,6 +670,5 @@ EOD;
             $clearFixContent = ZurmoHtml::tag('div', array('class' => 'clearfix'), $content);
             return ZurmoHtml::tag('div', array('class' => 'continuum'), $clearFixContent);
         }
-
     }
 ?>

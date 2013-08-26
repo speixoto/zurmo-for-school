@@ -83,7 +83,6 @@
          */
         public function sanitizeValue($value)
         {
-
             if ($value == null)
             {
                 return $value;
