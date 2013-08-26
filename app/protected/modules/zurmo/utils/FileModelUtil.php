@@ -146,6 +146,16 @@
         {
             assert('is_int($fileModelId) || (is_string($fileModelId) && !empty($fileModelId))');
             $existingFileModel      = FileModel::getById($fileModelId);
+            return static::makeByFileModel($existingFileModel);
+        }
+
+        /**
+         *
+         * @param FileModel $existingFileModel
+         * @return $fileModel or false on failure
+         */
+        public static function makeByFileModel($existingFileModel)
+        {
             $file                   = new FileModel();
             // TODO: @Shoaibi/@Jason: High: Following should also clone FileContent as its HAS_ONE.
             ZurmoCopyModelUtil::copy($existingFileModel, $file);
