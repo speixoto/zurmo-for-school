@@ -66,8 +66,8 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'null',
-                                                                        'type' => 'AutoresponderFromOperationDuration'),
+                                                array('attributeName' => 'secondsFromOperation',
+                                                                        'type' => 'AutoresponderSecondsFromOperation'),
                                             ),
                                         ),
                                     )

@@ -230,9 +230,6 @@
             return $contactStatesData;
         }
 
-        /**
-         * @param int $startingStateId
-         */
         public static function setStartingStateById($startingStateId)
         {
             assert('is_int($startingStateId)');
@@ -241,10 +238,6 @@
             ContactsModule::setMetadata($metadata);
         }
 
-        /**
-         * @param $startingStateOrder
-         * @throws NotSupportedException
-         */
         public static function setStartingStateByOrder($startingStateOrder)
         {
             $states = ContactState::getAll('order');

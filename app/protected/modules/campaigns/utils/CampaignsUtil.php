@@ -39,10 +39,6 @@
      */
     abstract class CampaignsUtil
     {
-        /**
-         * @param null $pageSize | int $pageSize
-         * @return bool
-         */
         public static function markProcessedCampaignsAsCompleted($pageSize = null)
         {
             $processingCampaigns = Campaign::getByStatus(Campaign::STATUS_PROCESSING, $pageSize);

@@ -45,11 +45,6 @@
      */
     class DropDownDefaultValueOrderUtil
     {
-        /**
-         * @param $defaultValue
-         * @param $customFieldDataData
-         * @return array mixed|null
-         */
         public static function getDefaultValueOrderFromDefaultValue(
             $defaultValue, $customFieldDataData)
         {
@@ -61,11 +56,6 @@
             return null;
         }
 
-        /**
-         * @param $defaultValueOrder
-         * @param $customFieldDataData
-         * @return null
-         */
         public static function getDefaultValueFromDefaultValueOrder(
             $defaultValueOrder, $customFieldDataData)
         {

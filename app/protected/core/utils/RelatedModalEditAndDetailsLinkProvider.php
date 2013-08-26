@@ -34,16 +34,41 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class CampaignsForMarketingListRelatedListView extends CampaignsRelatedListView
+    /**
+     * Helper class for ModalEditAndDetailsViews.
+     */
+    class RelatedModalEditAndDetailsLinkProvider extends ModalEditAndDetailsLinkProvider
     {
-        protected function getRelationAttributeName()
+        protected $relationAttributeName;
+
+        protected $relationModelId;
+
+        protected $relationModuleId;
+
+        protected $redirectUrl;
+
+        protected $modalId;
+
+        protected $portletId;
+
+        protected $uniqueLayoutId;
+
+        function __construct($relationAttributeName, $relationModelId, $relationModuleId, $redirectUrl, $modalId,
+                                $portletId, $uniqueLayoutId)
         {
-            return 'marketingList';
+            $this->relationAttributeName = $relationAttributeName;
+            $this->relationModelId       = $relationModelId;
+            $this->relationModuleId      = $relationModuleId;
+            $this->redirectUrl           = $redirectUrl;
+            $this->modalId               = $modalId;
+            $this->portletId             = $portletId;
+            $this->uniqueLayoutId        = $uniqueLayoutId;
         }
 
-        public static function getDisplayDescription()
+        public function getAttribute($attribute)
         {
-            return Zurmo::t('CampaignsModule', 'Campaigns For Marketing List');
+            return $this->$attribute;
         }
+
     }
 ?>

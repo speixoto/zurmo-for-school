@@ -77,7 +77,7 @@
         {
             $formName = $this->getFormName();
             $afterValidateAjax = $this->renderConfigSaveAjax($formName);
-            $content = '<div class="wide form">';
+            $content = $this->renderFormStartHtml();
             $clipWidget = new ClipWidget();
             list($form, $formStart) = $clipWidget->renderBeginWidget(
                 'ZurmoActiveForm',
@@ -108,14 +108,12 @@
             $actionElementContent = $this->renderActionElementBar(true);
             if ($actionElementContent != null)
             {
-                $content .= '<div class="view-toolbar-container clearfix"><div class="form-toolbar clearfix">';
-                $content .= $actionElementContent;
-                $content .= '</div></div>';
+                $content .= $this->renderActionElementContent($actionElementContent);
             }
             $formEnd = $clipWidget->renderEndWidget();
             $content .= $formEnd;
             $content .= $this->renderModalContainer();
-            $content .= '</div>';
+            $content .= $this->renderFormEndHtml();
             return $content;
         }
 
@@ -194,6 +192,37 @@
         public static function getDisplayDescription()
         {
             return null;
+        }
+
+        /**
+         * Renders action element content
+         * @param string $content
+         * @return string
+         */
+        protected function renderActionElementContent($actionElementContent)
+        {
+            $content = '<div class="view-toolbar-container clearfix"><div class="form-toolbar clearfix">';
+            $content .= $actionElementContent;
+            $content .= '</div></div>';
+            return $content;
+        }
+
+        /**
+         * Render form start html
+         * @return string
+         */
+        protected function renderFormStartHtml()
+        {
+            return '<div class="wide form">';
+        }
+
+        /**
+         * Render form end html
+         * @return string
+         */
+        protected function renderFormEndHtml()
+        {
+            return '</div>';
         }
     }
 ?>

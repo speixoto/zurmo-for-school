@@ -92,13 +92,31 @@
             $contact = static::getModelAndCatchNotFoundAndDisplayError('Contact', intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($contact);
             AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED, array(strval($contact), 'ContactsModule'), $contact);
-            $breadCrumbView          = StickySearchUtil::resolveBreadCrumbViewForDetailsControllerAction($this, 'ContactsSearchView', $contact);
-            $detailsAndRelationsView = $this->makeDetailsAndRelationsView($contact, 'ContactsModule',
-                                                                          'ContactDetailsAndRelationsView',
-                                                                          Yii::app()->request->getRequestUri(),
-                                                                          $breadCrumbView);
-            $view = new ContactsPageView(ZurmoDefaultViewUtil::
-                                         makeStandardViewForCurrentUser($this, $detailsAndRelationsView));
+            $getData                 = GetUtil::getData();
+            $isKanbanBoardInRequest  = ArrayUtil::getArrayValue($getData, 'kanbanBoard');
+            if ($isKanbanBoardInRequest == 0 || $isKanbanBoardInRequest == null)
+            {
+                $breadCrumbView          = StickySearchUtil::resolveBreadCrumbViewForDetailsControllerAction($this, 'ContactsSearchView', $contact);
+                $detailsAndRelationsView = $this->makeDetailsAndRelationsView($contact, 'ContactsModule',
+                                                                              'ContactDetailsAndRelationsView',
+                                                                              Yii::app()->request->getRequestUri(),
+                                                                              $breadCrumbView);
+                $view                    = new ContactsPageView(ZurmoDefaultViewUtil::
+                                                                        makeStandardViewForCurrentUser($this, $detailsAndRelationsView));
+            }
+            else
+            {
+                $kanbanItem   = new KanbanItem();
+                $kanbanBoard  = new TaskKanbanBoard($kanbanItem, 'type', $contact, get_class($contact));
+                $kanbanBoard->setIsActive();
+                $params['relationModel']    = $contact;
+                $params['relationModuleId'] = $this->getModule()->getId();
+                $params['redirectUrl']      = null;
+                $listView     = new TasksForContactKanbanView($this->getId(),
+                                                                  'tasks', 'Task', null, $params, null, array(), $kanbanBoard);
+                $view         = new ContactsPageView(ZurmoDefaultViewUtil::
+                                                            makeStandardViewForCurrentUser($this, $listView));
+            }
             echo $view->render();
         }
 

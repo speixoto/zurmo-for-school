@@ -33,70 +33,107 @@
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
-
     /**
-     * Displays a date/time localized
-     * display.
+     * Action element which renders create link on clicking of which opens a modal window
      */
-    class DateTimeElement extends Element
+    class CreateFromRelatedModalLinkActionElement extends RelatedModalLinkActionElement
     {
         /**
-         * Render a datetime JUI widget
-         * @return The element's content as a string.
+         * Gets default label
+         * @return string
          */
-        protected function renderControlEditable()
+        protected function getDefaultLabel()
         {
-            $themePath = Yii::app()->themeManager->baseUrl . '/' . Yii::app()->theme->name;
-            $value     = DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay(
-                            $this->model->{$this->attribute});
-            $cClipWidget = new CClipWidget();
-            $cClipWidget->beginClip("EditableDateTimeElement");
-            $cClipWidget->widget('application.core.widgets.ZurmoJuiDateTimePicker', array(
-                'attribute'   => $this->attribute,
-                'value'       => $value,
-                'htmlOptions' => $this->resolveHtmlOptions(),
-                'options'     => $this->resolveDatePickerOptions()
-            ));
-            $cClipWidget->endClip();
-            $content = $cClipWidget->getController()->clips['EditableDateTimeElement'];
-            return ZurmoHtml::tag('div', array('class' => 'has-date-select'), $content);
+            return Zurmo::t('Core', 'Create');
         }
 
         /**
-         * Renders the attribute from the model.
-         * @return The element's content.
+         * Gets default route
+         * @return string
          */
-        protected function renderControlNonEditable()
+        protected function getDefaultRoute()
         {
-            if ($this->model->{$this->attribute} != null)
+            return Yii::app()->createUrl($this->getRouteModuleId() . '/' .
+                        $this->controllerId . '/modalCreateFromRelation/', $this->getCreateLinkUrlParams());
+        }
+
+        /**
+         * Gets route module id
+         * @return string
+         */
+        protected function getRouteModuleId()
+        {
+            if (!isset($this->params['routeModuleId']))
             {
-                $content = DateTimeUtil::
-                           convertDbFormattedDateTimeToLocaleFormattedDisplay(
-                               $this->model->{$this->attribute});
-                return ZurmoHtml::encode($content);
+                return null;
             }
+            return $this->params['routeModuleId'];
         }
 
         /**
-         * Resolve html options
+         * @return string
+         */
+        public function getActionType()
+        {
+            return 'Create';
+        }
+
+        /**
          * @return array
          */
-        protected function resolveHtmlOptions()
+        protected function getCreateLinkUrlParams()
         {
             return array(
-                    'id'              => $this->getEditableInputId(),
-                    'name'            => $this->getEditableInputName(),
-                    'disabled'        => $this->getDisabledValue(),
-                );
+                'modalTransferInformation' => $this->getModalTransferInformation(),
+            );
         }
 
         /**
-         * Resolve datepicker options
          * @return array
          */
-        protected function resolveDatePickerOptions()
+        protected function getModalTransferInformation()
         {
-            return array();
+            return array_merge(array(
+                    'modalId'           => $this->getModalContainerId(),
+                    'portletId'         => $this->getPortletId(),
+                    'uniqueLayoutId'    => $this->getUniqueLayoutId()
+            ), $this->getRouteParameters());
+        }
+
+        /**
+         * @return string
+         */
+        protected function getModalContainerId()
+        {
+            if (!isset($this->params['modalContainerId']))
+            {
+                return array();
+            }
+            return $this->params['modalContainerId'];
+        }
+
+        /**
+         * @return string
+         */
+        protected function getPortletId()
+        {
+            if (!isset($this->params['portletId']))
+            {
+                return array();
+            }
+            return $this->params['portletId'];
+        }
+
+        /**
+         * @return string
+         */
+        protected function getUniqueLayoutId()
+        {
+            if (!isset($this->params['uniqueLayoutId']))
+            {
+                return array();
+            }
+            return $this->params['uniqueLayoutId'];
         }
     }
 ?>

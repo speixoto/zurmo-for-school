@@ -39,31 +39,12 @@
      */
     class ModelMetadataUtil
     {
-        /**
-         * @param $name
-         * @return string
-         */
         public static function resolveName($name)
         {
             assert('is_string($name)');
             return $name . 'Cstm'; // . 'Custom';
         }
 
-        /**
-         * @param string $modelClassName
-         * @param string $memberName
-         * @param array $attributeLabels
-         * @param $defaultValue
-         * @param int $maxLength
-         * @param int $minValue
-         * @param int $maxValue
-         * @param int $precision
-         * @param bool $isRequired
-         * @param bool $isAudited
-         * @param string $elementType
-         * @param array $partialTypeRule
-         * @param array $mixedRule
-         */
         public static function addOrUpdateMember($modelClassName,
                                                  $memberName,
                                                  $attributeLabels,
@@ -107,13 +88,6 @@
         /**
          * Updating existing relation attributes and add new has_one relations that are owned only.
          * Currently does not support setting the default value.
-         * @param string $modelClassName
-         * @param string $relationName
-         * @param array $attributeLabels
-         * @param string $elementType
-         * @param bool $isRequired
-         * @param bool $isAudited
-         * @param string $relationModelClassName
          */
         public static function addOrUpdateRelation($modelClassName,
                                               $relationName,
@@ -152,21 +126,6 @@
             $modelClassName::setMetadata($metadata);
         }
 
-        /**
-         * @param string $modelClassName
-         * @param string $relationName
-         * @param array $attributeLabels
-         * @param $defaultValue
-         * @param bool $isRequired
-         * @param bool $isAudited
-         * @param string $elementType
-         * @param string $customFieldDataName
-         * @param null $customFieldDataData
-         * @param null $customFieldDataLabels
-         * @param string $relationModelClassName
-         * @param bool $owned
-         * @throws NotSupportedException
-         */
         public static function addOrUpdateCustomFieldRelation($modelClassName,
                                                               $relationName,
                                                               $attributeLabels,
@@ -395,10 +354,6 @@
             $metadata[$modelClassName]['rules'] = array_values($metadata[$modelClassName]['rules']);
         }
 
-        /**
-         * @param $modelClassName
-         * @param $attributeName
-         */
         public static function removeAttribute($modelClassName,
                                                $attributeName)
         {

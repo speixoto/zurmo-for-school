@@ -33,101 +33,108 @@
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
-
     /**
-     * Helper class for handling GET
-     * arrays.
+     * Action element which renders edit link on clicking of which opens a modal window
      */
-    class GetUtil extends DataUtil
+    class EditModalLinkActionElement extends ModalLinkActionElement
     {
-        public static function getData()
-        {
-            $getData = array();
-            if (isset($_GET))
-            {
-                $getData = $_GET;
-            }
-            return $getData;
-        }
-
-         /**
-         * Resets page to 1 for a grid view.
-         * @param $pageVariableName - typically the model class name.
+        /**
+         * Gets default label
+         * @return string
          */
-        public static function resetGetPageVariableToNull($pageVariableName)
+        protected function getDefaultLabel()
         {
-            $_GET[$pageVariableName . '_page'] = null;
+            return Zurmo::t('Core', 'Edit');
         }
 
         /**
-         * Resolve selectedIds value based on $_GET['selectedIds'].
+         * Gets default route
+         * @return string
          */
-        public static function resolveSelectedIdsFromGet()
+        protected function getDefaultRoute()
         {
-            if (!empty($_GET['selectedIds']))
+            return Yii::app()->createUrl($this->getRouteModuleId() . '/' .
+                        $this->controllerId . '/modalEditFromRelation', array_merge(array('id' => $this->modelId),
+                                                                                       $this->getCreateLinkUrlParams()));
+        }
+
+        /**
+         * Gets route module id
+         * @return string
+         */
+        protected function getRouteModuleId()
+        {
+            if (!isset($this->params['routeModuleId']))
             {
-                return explode(",", $_GET['selectedIds']); // Not Coding Standard
+                return null;
             }
-            else
+            return $this->params['routeModuleId'];
+        }
+
+        /**
+         * @return string
+         */
+        public function getActionType()
+        {
+            return 'Create';
+        }
+
+        /**
+         * @return array
+         */
+        protected function getCreateLinkUrlParams()
+        {
+            return array(
+                'modalTransferInformation' => $this->getModalTransferInformation(),
+            );
+        }
+
+        /**
+         * @return array
+         */
+        protected function getModalTransferInformation()
+        {
+            return array_merge(array(
+                    'modalId'           => $this->getModalContainerId(),
+                    'portletId'         => $this->getPortletId(),
+                    'uniqueLayoutId'    => $this->getUniqueLayoutId()
+            ), $this->getRouteParameters());
+        }
+
+        /**
+         * @return string
+         */
+        protected function getModalContainerId()
+        {
+            if (!isset($this->params['modalContainerId']))
             {
                 return array();
             }
+            return $this->params['modalContainerId'];
         }
 
         /**
-         * Resolve selectAll value based on $_GET['selectAll'].
+         * @return string
          */
-        public static function resolveSelectAllFromGet()
+        protected function getPortletId()
         {
-            if (!empty($_GET['selectAll']))
+            if (!isset($this->params['portletId']))
             {
-                return true;
+                return array();
             }
-            else
-            {
-                return false;
-            }
+            return $this->params['portletId'];
         }
 
         /**
-         * Sanitizes get data for date and date time attributes by converting them to the proper
-         * format and timezone for saving.  Wrapper for the method with the logic in PostUtil which completes this
-         * task.
-         * @return - array sanitized get data
+         * @return string
          */
-        public static function sanitizePostByDesignerTypeForSavingModel($model, $postData)
+        protected function getUniqueLayoutId()
         {
-            return PostUtil::sanitizePostByDesignerTypeForSavingModel($model, $postData);
-        }
-
-        /**
-         * Resolve param from get request for modalTransferInformation
-         * @param string $param
-         * @param bool $defaultValue
-         * @return string|bool
-         */
-        public static function resolveModalTransferInformationParamFromRequest($param, $defaultValue = null)
-        {
-            if (isset($_GET['modalTransferInformation'][$param]))
+            if (!isset($this->params['uniqueLayoutId']))
             {
-                return $_GET['modalTransferInformation'][$param];
+                return array();
             }
-            return $defaultValue;
-        }
-
-        /**
-         * Resolve param from get request
-         * @param string $param
-         * @param bool $defaultValue
-         * @return string|bool
-         */
-        public static function resolveParamFromRequest($param, $defaultValue = null)
-        {
-            if (isset($_GET[$param]))
-            {
-                return $_GET[$param];
-            }
-            return $defaultValue;
+            return $this->params['uniqueLayoutId'];
         }
     }
 ?>
