@@ -93,7 +93,7 @@
         {
             try
             {
-                $cacheIncrementValue = static::getEntry(static::$cacheIncrementValueVariableName . $cacheType);
+                $cacheIncrementValue = GeneralCache::getEntry(static::$cacheIncrementValueVariableName . $cacheType);
             }
             catch (NotFoundException $e)
             {
@@ -109,7 +109,7 @@
          */
         protected static function setCacheIncrementValue($cacheType, $value)
         {
-            static::cacheEntry(static::$cacheIncrementValueVariableName . $cacheType, $value);
+            GeneralCache::cacheEntry(static::$cacheIncrementValueVariableName . $cacheType, $value);
         }
 
         /**
@@ -159,49 +159,6 @@
         public static function getAdditionalStringForCachePrefix()
         {
             return static::$additionalStringForCachePrefix;
-        }
-
-        /**
-         * Get entry from php cache and/or memcache
-         * @param string $identifier
-         * @param mixed $default
-         * @param boolean $cacheDefaultValue
-         * @return mixed
-         * @throws NotFoundException
-         */
-        public static function getEntry($identifier, $default = 'NOT_FOUND_EXCEPTION', $cacheDefaultValue = false)
-        {
-            GeneralCache::getEntry($identifier, $default, $cacheDefaultValue);
-        }
-
-        /**
-         * Add entry to php cache and/or memcache
-         * @param string $identifier
-         * @param mixed $entry
-         */
-        public static function cacheEntry($identifier, $entry)
-        {
-            GeneralCache::cacheEntry($identifier, $entry);
-        }
-
-        /**
-         * Remove entry from php cache and/or memcache
-         * @param string $identifier
-         */
-        public static function forgetEntry($identifier)
-        {
-            GeneralCache::forgetEntry($identifier);
-        }
-
-        /**
-         * Remove all GeneralCache data from php cache and/or memcache
-         * Please note that we are not using $Yii::app()->cache->forget function, because
-         * this function remove all data from memcache, so it would remove memcache data
-         * that are added by other application on same server(if there is only one instance of memcache on server)
-         */
-        public static function forgetAll()
-        {
-            GeneralCache::forgetAll();
         }
 
         /**
