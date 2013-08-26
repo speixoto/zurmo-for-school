@@ -97,9 +97,24 @@
             return static::getAllModelClassNames('static::filterCanHaveBeenModels');
         }
 
+        public static function getAllStarredModelClassNames()
+        {
+            return static::getAllModelClassNames('static::filterImplementsStarredInterfaceModels');
+        }
+
         protected static function filterCanHaveBeenModels($model)
         {
             if (is_subclass_of($model, 'RedBeanModel') && $model::getCanHaveBean())
+            {
+                return $model;
+            }
+            return null;
+        }
+
+        protected static function filterImplementsStarredInterfaceModels($model)
+        {
+            $classToEvaluate     = new ReflectionClass($model);
+            if ($classToEvaluate->implementsInterface('StarredInterface') && !$classToEvaluate->isAbstract())
             {
                 return $model;
             }

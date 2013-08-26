@@ -47,43 +47,44 @@
 
         public static function createStarredTables()
         {
-            $modelClassNames = static::getStarredModels('StarredInterface');
+            $modelClassNames = PathUtil::getAllStarredModelClassNames();
             foreach ($modelClassNames as $modelClassName)
             {
                 $modelStarredTableName = static::getStarredTableName($modelClassName);
-                static::createTable($modelStarredTableName);
+                $schema                 = static::getStarredTableSchemaByName($modelStarredTableName);
+                CreateOrUpdateExistingTableFromSchemaDefinitionArrayUtil::generateOrUpdateTableBySchemaDefinition(
+                                                                                        $schema, new MessageLogger());
             }
         }
 
-        protected static function getStarredModels($interfaceClassName)
+        protected static function getStarredTableSchemaByName($tableName)
         {
-            assert('is_string($interfaceClassName)');
-            $interfaceModelClassNames = array();
-            $modules = Module::getModuleObjects();
-            foreach ($modules as $module)
-            {
-                $modelClassNames = $module::getModelClassNames();
-                foreach ($modelClassNames as $modelClassName)
-                {
-                    $classToEvaluate     = new ReflectionClass($modelClassName);
-                    if ($classToEvaluate->implementsInterface($interfaceClassName) &&
-                    !$classToEvaluate->isAbstract())
-                    {
-                        $interfaceModelClassNames[] = $modelClassName;
-                    }
-                }
-            }
-            return $interfaceModelClassNames;
-        }
-
-        protected static function createTable($modelStarredTableName)
-        {
-            assert('is_string($modelStarredTableName) && $modelStarredTableName  != ""');
-            ZurmoRedBean::exec("create table if not exists {$modelStarredTableName} (
-                        id int(11)         unsigned NOT NULL PRIMARY KEY AUTO_INCREMENT ,
-                        user_id int(11)     unsigned NOT NULL,
-                        model_id int(11)    unsigned NOT NULL
-                     )");
+            assert('is_string($tableName) && $tableName  != ""');
+            return array($tableName =>  array('columns' => array(
+                                                array(
+                                                    'name' => 'user_id',
+                                                    'type' => 'int(11)',
+                                                    'unsigned' => 'UNSIGNED',
+                                                    'notNull' => 'NOT NULL',
+                                                    'collation' => null,
+                                                    'default' => null,
+                                                ),
+                                                array(
+                                                    'name' => 'model_id',
+                                                    'type' => 'int(11)',
+                                                    'unsigned' => 'UNSIGNED',
+                                                    'notNull' => 'NOT NULL',
+                                                    'collation' => null,
+                                                    'default' => null,
+                                                ),
+                                            ),
+                                            'indexes' => array('user_id_model_id' => array(
+                                                                        'columns' => array('user_id', 'model_id'),
+                                                                        'unique' => true,
+                                                            ),
+                                                        ),
+                                                    )
+                                                );
         }
 
         protected static function getMainTableName($modelClassName)
