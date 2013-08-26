@@ -147,7 +147,8 @@
             return array('name'                 => array('value'  => $this->getLinkString('$data->name', 'name'), 'class' => 'task-name'),
                          'requestedByUser'      => array('value'  => $this->getRelatedLinkString('$data->requestedByUser', 'requestedByUser', 'users'), 'class'  => 'requestedByUser-name'),
                          'status'               => array('value' => 'TasksUtil::resolveActionButtonForTaskByStatus(intval($data->status), "' . $controllerId . '", "' . $moduleId . '", $data->id)', 'class' => 'task-status'),
-                         'subscribe'            => array('value' => array('TasksUtil', 'getKanbanSubscriptionLink'), 'class' => 'task-subscription')
+                         'subscribe'            => array('value' => array('TasksUtil', 'getKanbanSubscriptionLink'), 'class' => 'task-subscription'),
+                         'completed'            => array('value' => array('TasksForRelatedKanbanView','renderCompletionProgressBar'), 'class' => 'task-completion')
                         );
         }
 
@@ -265,6 +266,24 @@
 
             $toolbarContent = ZurmoHtml::tag('div', array('class' => 'view-toolbar'), $content);
             return $toolbarContent;
+        }
+
+        /**
+         * Render completion progress bar
+         * @param int $id
+         * @return string
+         */
+        public static function renderCompletionProgressBar($data, $row)
+        {
+            $percentage = TasksUtil::getTaskCompletionPercentage(intval($data->id));
+            if($percentage == null)
+            {
+                return null;
+            }
+            else
+            {
+                return Zurmo::t('TasksModule', '% Complete - ' . $percentage);
+            }
         }
     }
 ?>

@@ -172,6 +172,10 @@
                  {
                      $taskSortableScript .= $this->registerKanbanColumnSortableScript($count + 1, $type);
                  }
+                 else
+                 {
+                     $taskSortableScript .= $this->registerKanbanColumnSortableScript($count + 1, $type);
+                 }
             }
 
             Yii::app()->clientScript->registerScript('task-sortable-data', $taskSortableScript);
@@ -195,8 +199,8 @@
             return "$('#task-sortable-rows-" . $count . "').sortable({
                                                 forcePlaceholderSize: true,
                                                 forceHelperSize: true,
-                                                items: 'li',
-                                                //connectWith: '.connectedSortable',
+                                                items: 'li:not(.ui-state-disabled)',
+                                                connectWith: '.connectedSortable',
                                                 update : function () {
                                                     serial = $('#task-sortable-rows-" . $count . "').sortable('serialize', {key: 'items[]', attribute: 'id'});
                                                     $.ajax({
@@ -264,6 +268,21 @@
         }
 
         /**
+         * @return string
+         */
+        protected function getRowClassForTaskKanbanColumn($data)
+        {
+            if((bool)$data->completed)
+            {
+                return 'kanban-card item-to-place ui-state-disabled';
+            }
+            else
+            {
+                return 'kanban-card item-to-place';
+            }
+        }
+
+        /**
          * Creates task item for kanban column
          * @param array $data
          * @param int $row
@@ -271,7 +290,7 @@
          */
         protected function createTaskItemForKanbanColumn($data, $row)
         {
-            return ZurmoHtml::tag('li', array('class' => $this->getRowClassForKanbanColumn(),
+            return ZurmoHtml::tag('li', array('class' => $this->getRowClassForTaskKanbanColumn($data),
                                                 'id' => 'items_' . $data->id),
                                                       ZurmoHtml::tag('div', array(), $this->renderCardDetailsContentForTask($data, $row)));
         }
@@ -350,7 +369,7 @@
          */
         protected function registerKanbanColumnAcceptActionScript($label, $targetStatus, $url)
         {
-            $script = $this->registerButtonActionScript('task-accept-action', KanbanItem::TYPE_COMPLETED, $label, 'task-complete-action', $url,$targetStatus);
+            $script = $this->registerButtonActionScript('task-accept-action', KanbanItem::TYPE_COMPLETED, $label, 'task-complete-action ui-state-disabled', $url,$targetStatus);
             Yii::app()->clientScript->registerScript('accept-action-script', $script);
         }
 

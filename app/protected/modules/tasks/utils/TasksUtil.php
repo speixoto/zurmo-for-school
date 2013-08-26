@@ -683,5 +683,32 @@
                 return ZurmoHtml::link('<strong>' . Zurmo::t('TasksModule', 'Unsubscribe') . '</strong>', '#', array('class' => $unsubscribeLinkClass)) ;
             }
         }
+
+        /**
+         * Gets task percentage
+         * @param int $id
+         */
+        public static function getTaskCompletionPercentage($id)
+        {
+            $task = Task::getById($id);
+            $checkListItemsCount = count($task->checkListItems);
+            $completedItemsCount = 0;
+            if($checkListItemsCount == 0)
+            {
+                return null;
+            }
+            else
+            {
+                foreach($task->checkListItems as $checkListItem)
+                {
+                    if((bool)$checkListItem->completed)
+                    {
+                        $completedItemsCount++;
+                    }
+                }
+            }
+            $completionPercent = ($completedItemsCount/$checkListItemsCount)*100;
+            return $completionPercent;
+        }
     }
 ?>
