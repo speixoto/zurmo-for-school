@@ -61,35 +61,9 @@
             Yii::app()->user->userModel = $super;
             $messageLogger              = new MessageLogger();
             $beforeRowCount             = DatabaseCompatibilityUtil::getTableRowsCountTotal();
-
-            $rowsBefore                 = array();
-            foreach (DatabaseCompatibilityUtil::getAllTableNames() as $tableName)
-            {
-                $rowsBefore[$tableName]['count'] = ZurmoRedBean::$writer->count($tableName);
-                $rowsBefore[$tableName]['rows']  = ZurmoRedBean::getAll("select * from $tableName");
-            }
-            $messageLogger->addInfoMessage(print_r(DatabaseCompatibilityUtil::getAllTableNames(), true));
             InstallUtil::autoBuildDatabase($messageLogger, true);
             E::deleteAll(); // because if we are running All, C, D and E get autobuild and 2 validators in E cause E to have a record which gets deleted on tearDown.
             $afterRowCount              = DatabaseCompatibilityUtil::getTableRowsCountTotal();
-
-            $rowsAfter                 = array();
-            foreach (DatabaseCompatibilityUtil::getAllTableNames() as $tableName)
-            {
-                $rowsAfter[$tableName]['count'] = ZurmoRedBean::$writer->count($tableName);
-                $rowsAfter[$tableName]['rows']  = ZurmoRedBean::getAll("select * from $tableName");
-            }
-            $messageLogger = new MessageLogger();
-            $messageLogger->addInfoMessage(PHP_EOL . PHP_EOL . PHP_EOL . PHP_EOL);
-            $messageLogger->addInfoMessage("Rows Count: before: " . $beforeRowCount);
-            $messageLogger->addInfoMessage(var_export($rowsBefore, true));
-            $messageLogger->addInfoMessage(PHP_EOL . PHP_EOL . PHP_EOL . PHP_EOL);
-            $messageLogger->addInfoMessage("Rows Count after: " . $afterRowCount);
-            $messageLogger->addInfoMessage(var_export($rowsAfter, true));
-            $messageLogger->addInfoMessage(PHP_EOL . PHP_EOL . PHP_EOL . PHP_EOL);
-            $messageLogger->printMessages();
-
-
             $this->assertEquals($beforeRowCount, $afterRowCount);
         }
 
