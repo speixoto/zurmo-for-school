@@ -7344,6 +7344,9 @@ td {
 .items > tbody tr th:first-child:not(.checkbox-column) {
   padding-left: 10px;
 }
+.stacked-list {
+  table-layout: fixed;
+}
 .stacked-list td + td {
   width: 25px;
 }
@@ -7377,6 +7380,10 @@ td {
   margin-right: 10px;
   margin-top: 2px;
   float: left;
+}
+.stacked-list .star-column {
+  margin: -6px 15px 0 0 !important;
+  float: right;
 }
 .stacked-list tr:first-child > div:first-child {
   font-size: 13px;
@@ -7432,6 +7439,45 @@ tr.even {
   font-size: 24px;
   font-family: "zurmo_gamification_symbly_rRg";
   visibility: hidden;
+}
+.star-column {
+  width: 20px;
+  text-align: center;
+  padding: 0 !important;
+}
+.icon-star {
+  font-weight: normal;
+  font-size: 26px;
+  font-family: "zurmo_gamification_symbly_rRg";
+  color: #ccc !important;
+  -webkit-text-shadow: 0 0 1px #333333;
+  -moz-text-shadow: 0 0 1px #333333;
+  -o-text-shadow: 0 0 1px #333333;
+  -ms-text-shadow: 0 0 1px #333333;
+  text-shadow: 0 0 1px #333333;
+  top: -1px;
+  position: relative;
+  line-height: 1;
+}
+.icon-star:hover,
+.icon-star.starred {
+  color: #ffef42 !important;
+}
+#list-view_columnStar {
+  line-height: 1;
+  width: 20px;
+  text-align: center;
+  padding-right: 0 !important;
+  padding-left: 0 !important;
+}
+#list-view_columnStar .icon-star {
+  top: 0;
+  left: -2px;
+}
+h1 .icon-star,
+.juiportlet-widget-head .icon-star {
+  top: 1px;
+  margin-left: 5px;
 }
 .juiportlet-widget .empty {
   padding: 5px 0 10px 0;
@@ -11168,12 +11214,16 @@ div.hasHalfs > div input {
 #MixedModelsSearchView {
   position: relative;
   z-index: 5;
+  margin-bottom: 15px;
+  float: left;
+  width: 100%;
 }
 #MixedModelsSearchView h1 {
   margin-bottom: 15px;
 }
 #MixedModelsSearchView .search-view-0 {
   float: none;
+  margin: 15px 0 10px 15px;
 }
 #MixedModelsMultipleListsView {
   position: relative;
@@ -11388,10 +11438,10 @@ div.hasHalfs > div input {
   border-bottom: none;
 }
 /*ICONS..*/
-.juiportlet-widget.type-opportunities h3:before {
+.type-opportunities h3:before {
   content: "9";
 }
-.juiportlet-widget.type-opportunities .icon-empty:before {
+.type-opportunities .icon-empty:before {
   content: "9";
   font-weight: normal;
   font-size: 45px;
@@ -11404,10 +11454,22 @@ div.hasHalfs > div input {
   vertical-align: middle;
   position: relative;
 }
-.juiportlet-widget.type-contacts h3:before {
-  content: "e";
+.type-contacts h3 {
+  padding-left: 30px;
+  position: relative;
 }
-.juiportlet-widget.type-contacts .icon-empty:before {
+.type-contacts h3:before {
+  content: "e";
+  font-weight: normal;
+  font-size: 32px;
+  font-family: "zurmo_gamification_symbly_rRg";
+  color: #7A7A7A;
+  line-height: 100%;
+  position: absolute;
+  top: 6px;
+  left: 0;
+}
+.type-contacts .icon-empty:before {
   content: "e";
   font-weight: normal;
   font-size: 45px;
@@ -11420,7 +11482,7 @@ div.hasHalfs > div input {
   vertical-align: middle;
   position: relative;
 }
-.juiportlet-widget.type-tasks .icon-empty:before {
+.type-tasks .icon-empty:before {
   content: "4";
   font-weight: normal;
   font-size: 45px;
@@ -11433,7 +11495,7 @@ div.hasHalfs > div input {
   vertical-align: middle;
   position: relative;
 }
-.juiportlet-widget.type-activities .icon-empty:before {
+.type-activities .icon-empty:before {
   content: '\00A5';
   font-weight: normal;
   font-size: 45px;
@@ -11446,7 +11508,7 @@ div.hasHalfs > div input {
   vertical-align: middle;
   position: relative;
 }
-.juiportlet-widget.type-products .icon-empty:before {
+.type-products .icon-empty:before {
   content: '\003E';
   font-weight: normal;
   font-size: 45px;
@@ -11459,7 +11521,7 @@ div.hasHalfs > div input {
   vertical-align: middle;
   position: relative;
 }
-.juiportlet-widget.type-socialItems .icon-empty:before {
+.type-socialItems .icon-empty:before {
   content: 'u';
   font-weight: normal;
   font-size: 45px;
@@ -11472,7 +11534,7 @@ div.hasHalfs > div input {
   vertical-align: middle;
   position: relative;
 }
-.juiportlet-widget.type-missions .icon-empty:before {
+.type-missions .icon-empty:before {
   content: 'Q';
   font-weight: normal;
   font-size: 45px;
@@ -11485,7 +11547,7 @@ div.hasHalfs > div input {
   vertical-align: middle;
   position: relative;
 }
-.juiportlet-widget.type-leads .icon-empty:before {
+.type-leads .icon-empty:before {
   content: '.';
   font-weight: normal;
   font-size: 45px;
@@ -11511,7 +11573,7 @@ div.hasHalfs > div input {
   vertical-align: middle;
   position: relative;
 }
-.juiportlet-widget.type-contacts .icon-empty:before {
+.type-contacts .icon-empty:before {
   content: "e";
   font-weight: normal;
   font-size: 45px;
@@ -11524,7 +11586,7 @@ div.hasHalfs > div input {
   vertical-align: middle;
   position: relative;
 }
-.juiportlet-widget.type-products .icon-empty:before {
+.type-products .icon-empty:before {
   content: '\00AC';
   font-weight: normal;
   font-size: 45px;
@@ -11537,11 +11599,11 @@ div.hasHalfs > div input {
   vertical-align: middle;
   position: relative;
 }
-.juiportlet-widget.type-opportunities h3 {
+.type-opportunities h3 {
   padding-left: 30px;
   position: relative;
 }
-.juiportlet-widget.type-opportunities h3:before {
+.type-opportunities h3:before {
   font-weight: normal;
   font-size: 32px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -11550,6 +11612,19 @@ div.hasHalfs > div input {
   position: absolute;
   top: 6px;
   left: 0;
+}
+.type-campaigns .icon-empty:before {
+  content: '\002C';
+  font-weight: normal;
+  font-size: 45px;
+  font-family: "zurmo_gamification_symbly_rRg";
+  padding: 0 0 0 0;
+  margin: 0 6px 0 -30px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  vertical-align: middle;
+  position: relative;
 }
 #ZurmoLogo {
   background: url(../images/ZurmoLogo.png) left top no-repeat;
@@ -13133,13 +13208,21 @@ table.configuration-list td:last-child a .z-label:before {
   content: "P";
 }
 .available-portlets .icon-activities:before {
-  content: '00A5';
+  content: '\00A5';
 }
 .available-portlets .icon-socialItems:before {
   content: "u";
 }
 .available-portlets .icon-activities:before {
   content: 'u';
+}
+.available-portlets .icon-iframe:before {
+  content: '\0040';
+  font-size: 46px;
+}
+.available-portlets .icon-maps:before {
+  content: 'L';
+  font-size: 46px;
 }
 /*Edit Portlet*/
 #modal-edit-form th {
@@ -19613,6 +19696,9 @@ a + .autoresponder-stats {
 .business-card h2 .user-name {
   font-weight: normal;
   font-size: 80%;
+  margin-left: 5px;
+}
+.business-card .icon-star {
   margin-left: 5px;
 }
 .business-card h3.position {

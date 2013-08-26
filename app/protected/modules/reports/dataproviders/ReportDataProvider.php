@@ -242,6 +242,18 @@
             }
             return $filters;
         }
+        
+        /**
+	 * Override so when refresh is true it resets _rowsData
+	 */
+	public function getData($refresh=false)
+	{
+		if($refresh)
+                {                    
+                    $this->_rowsData = null;
+                }
+		return parent::getData($refresh);
+	}
                 
         /**
          * @return array
@@ -253,7 +265,7 @@
             if ($this->getTotalItemCount() == 0)
             {
                 return array();
-            }
+            }           
             return $this->runQueryAndGetResolveResultsData($offset, $limit);
         }
 
@@ -278,6 +290,12 @@
                 $offset = $this->offset;
             }
             return $offset;
+        }
+        
+        public function setOffset($offset)
+        {
+            assert('is_int($offset)');
+            $this->offset = $offset;            
         }
 
         /**
@@ -309,8 +327,8 @@
             assert('is_int($offset) || $offset == null');
             assert('is_int($limit) || $limit == null');
             $selectQueryAdapter     = new RedBeanModelSelectQueryAdapter();
-            $sql          = $this->makeSqlQueryForFetchingData($selectQueryAdapter, $offset, $limit);
-            $rows         = $this->getRowsData($sql);
+            $sql          = $this->makeSqlQueryForFetchingData($selectQueryAdapter, $offset, $limit);            
+            $rows         = $this->getRowsData($sql);   
             $resultsData  = array();
             $idByOffset   = self::resolveIdByOffset($offset);
             foreach ($rows as $key => $row)
@@ -359,7 +377,7 @@
             }
             return $offset;
         }
-
+                
         /**
          * @param $sql
          * @return array

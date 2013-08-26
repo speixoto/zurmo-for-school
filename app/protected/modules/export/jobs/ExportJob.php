@@ -199,18 +199,43 @@
          */
         protected function processReportDataProviderExport(ExportItem $exportItem, ReportDataProvider $dataProvider)
         {
-            $headerData = array();
-            $reportToExportAdapter  = ReportToExportAdapterFactory::
-                createReportToExportAdapter($dataProvider->getReport(),
-                    $dataProvider);
-            if (count($headerData) == 0 && $exportItem->exportFileModel->id < 0)
+            $headerData                          = array();
+            $data                                = array();
+            $offset                              = (int)$exportItem->processOffset;
+            $exportCompleted                     = true;
+            $startingMemoryUsage                 = memory_get_usage();
+            $dataProvider->pagination->pageSize  = $this->getAsynchronousPageSize();
+            $dataProvider->offset                = $offset;
+            while(true === $this->processReportExportPage($dataProvider, (int)$offset, $headerData, $data,
+                                                    ($exportItem->exportFileModel->id < 0)))
             {
-                $headerData = $reportToExportAdapter->getHeaderData();
+                $this->addMemoryMarkerMessageAfterPageIsProcessed($startingMemoryUsage);
+                $startingMemoryUsage = memory_get_usage();               
+                $offset              = $offset + $this->getAsynchronousPageSize();                
+                if($this->hasReachedMaximumProcessingCount())
+                {
+                    $this->addMaxmimumProcessingCountMessage($exportItem);
+                    $exportCompleted = false;
+                    break;
+                }
             }
-            $data            = $reportToExportAdapter->getData();
             $content         = ExportItemToCsvFileUtil::export($data, $headerData);
-            $exportFileModel = $this->makeExportFileModelByContent($content, $exportItem->exportFileName);
-            $this->processCompletedExportItem($exportItem, $exportFileModel);
+            if($exportItem->exportFileModel->id > 0)
+            {
+                $exportFileModel = $this->updateExportFileModelByExportItem($content, $exportItem);
+            }
+            else
+            {
+                $exportFileModel = $this->makeExportFileModelByContent($content, $exportItem->exportFileName);
+            }
+            if(!$exportCompleted)
+            {
+                $this->processInProgressExportItem($exportItem, $exportFileModel, $offset);
+            }
+            else
+            {
+                $this->processCompletedExportItem($exportItem, $exportFileModel);
+            }
         }
 
         /**
@@ -381,6 +406,36 @@
                                          array('{count}'    => $modelCount,
                                                '{pageSize}' => $this->getAsynchronousPageSize())));
             if ($modelCount >= $this->getAsynchronousPageSize())
+            {
+                return true;
+            }
+            return false;
+        }
+        
+        protected function processReportExportPage(ReportDataProvider $dataProvider, $offset, & $headerData, & $data, $resolveForHeader)
+        {
+            assert('is_int($offset)');
+            assert('is_bool($resolveForHeader)');                  
+            $dataProvider->offset   = $offset;
+            $reportToExportAdapter  = ReportToExportAdapterFactory::
+                createReportToExportAdapter($dataProvider->getReport(), $dataProvider);                                    
+            $rows = $reportToExportAdapter->getData();     
+            $rowsCount = count($rows);
+            $this->totalModelsProcessed = $this->totalModelsProcessed + $rowsCount;
+            if (count($headerData) == 0 && $resolveForHeader)
+            {
+                $headerData = array_merge($headerData, $reportToExportAdapter->getHeaderData());
+            }
+            if (is_array($rows))
+            {
+                $data = array_merge($data, $rows);
+            }
+            $this->getMessageLogger()->addInfoMessage(
+                Zurmo::t('ExportModule', 'processExportPage: rows processed: {count} ' .
+                                         'with asynchronousPageSize of {pageSize}' ,
+                                         array('{count}'    => $rowsCount,
+                                               '{pageSize}' => $this->getAsynchronousPageSize())));
+            if ($rowsCount >= $this->getAsynchronousPageSize())
             {
                 return true;
             }
