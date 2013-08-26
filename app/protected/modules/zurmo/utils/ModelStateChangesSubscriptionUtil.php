@@ -54,6 +54,7 @@
                                                 $stateMetadataAdapterClassName = null, $owner = null)
         {
             $metadata = array();
+
             $modelIds = ReadPermissionsSubscriptionUtil::getAddedOrDeletedModelsFromReadSubscriptionTable(
                 $serviceName, $modelClassName, $timestamp, ReadPermissionsSubscriptionUtil::TYPE_ADD,
                 Yii::app()->user->userModel);
@@ -82,6 +83,7 @@
             {
                 $metadata['structure'] = "1";
             }
+
             $joinTablesAdapter   = new RedBeanModelJoinTablesQueryAdapter($modelClassName);
             if ($stateMetadataAdapterClassName != null)
             {
@@ -93,7 +95,7 @@
         }
 
         /**
-         * Get deleted model ids.
+         * @param string $serviceName
          * @param $serviceName
          * @param $modelClassName
          * @param $pageSize
@@ -113,7 +115,7 @@
         }
 
         /**
-         * Get array of new or modified models
+         * Get array of modified models
          * @param $modelClassName
          * @param $pageSize
          * @param $offset
@@ -126,7 +128,7 @@
                                                 $stateMetadataAdapterClassName = null, $owner = null)
         {
             $metadata = array();
-            $dateTime = Yii::app()->dateFormatter->format(DatabaseCompatibilityUtil::getDateTimeFormat(), $timestamp);
+            $dateTime = DateTimeUtil::convertTimestampToDbFormatDateTime($timestamp);
             $metadata['clauses'] = array(
                 1 => array(
                     'attributeName'        => 'modifiedDateTime',
