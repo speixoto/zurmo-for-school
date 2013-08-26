@@ -81,18 +81,18 @@
                     "AND {$quote}campaignitem{$quote}.{$quote}campaign_id{$quote} = " . $campaign->id .
                     " where {$quote}marketinglistmember{$quote}.{$quote}unsubscribed{$quote} != 1 and " .
                     "{$quote}marketinglistmember{$quote}.{$quote}marketinglist_id{$quote} = " .
-                    $campaign->marketingList->id . " and {$quote}campaignitem{$quote}.{$quote}id{$quote} IS NULL limit " . $pageSize; // Not Coding Standard */
+                    $campaign->marketingList->id . " and {$quote}campaignitem{$quote}.{$quote}id{$quote} IS NULL limit " . $pageSize; // Not Coding Standard*/
 
             $marketingListMemberTableName  = RedBeanModel::getTableName('MarketingListMember');
             $campaignItemTableName = RedBeanModel::getTableName('CampaignItem');
-            $sql  = "select {$quote}{$marketingListMemberTableName}{$quote}{$quote}.contact_id{$quote} from {$quote}{$marketingListMemberTableName){$quote}";
+            $sql  = "select {$quote}{$marketingListMemberTableName}{$quote}.{$quote}contact_id{$quote} from {$quote}{$marketingListMemberTableName}{$quote}";
             $sql .= "left join {$quote}{$campaignItemTableName}{$quote} on ";
-            $sql .= "{$quote}{$campaignItemTableName}{$quote}{$quote}.contact_id{$quote} = ";
-            $sql .= "{$quote}{$marketingListMemberTableName}{$quote}.contact_id{$quote} AND ";
-            $sql .= "{$quote}{$campaignItemTableName}{$quote} {$quote}.campaign_id{$quote} = " . $campaign->id . " ";
-            $sql .= "where {$quote}{$marketingListMemberTableName}{$quote}{$quote}.unsubscribed{$quote} != 1 AND  "
-            $sql .= "{$quote}{$marketingListMemberTableName}{$quote}{$quote}.marketinglist_id{$quote} = " . $campaign->marketingList->id  ."AND"
-            $sql .= "{$quote}{$campaignItemTableName}{$quote}{$quote}.id{$quote} IS NULL limit ".$pageSize;
+            $sql .= "{$quote}{$campaignItemTableName}{$quote}.{$quote}contact_id{$quote} ";
+            $sql .= "= {$quote}{$marketingListMemberTableName}{$quote}.{$quote}contact_id{$quote}";
+            $sql .= "AND {$quote}{$campaignItemTableName}{$quote}.{$quote}campaign_id{$quote} = " . $campaign->id . " " ;
+            $sql .= "where {$quote}{$marketingListMemberTableName}{$quote}.{$quote}unsubscribed{$quote} != 1 AND  ";
+            $sql .= "{$quote}{$marketingListMemberTableName}{$quote}.{$quote}marketinglist_id{$quote} = " . $campaign->marketingList->id ;
+            $sql .= " and {$quote}{$campaignItemTableName}{$quote}.{$quote}id{$quote} IS NULL limit ".$pageSize;
             $ids = R::getCol($sql);
 
             foreach ($ids as $contactId)
