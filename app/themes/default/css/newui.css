@@ -7387,6 +7387,10 @@ td {
   margin-top: 2px;
   float: left;
 }
+.stacked-list .star-column {
+  margin: -6px 15px 0 0 !important;
+  float: right;
+}
 .stacked-list tr:first-child > div:first-child {
   font-size: 13px;
   font-weight: bold;
@@ -7441,6 +7445,45 @@ tr.even {
   font-size: 24px;
   font-family: "zurmo_gamification_symbly_rRg";
   visibility: hidden;
+}
+.star-column {
+  width: 20px;
+  text-align: center;
+  padding: 0 !important;
+}
+.icon-star {
+  font-weight: normal;
+  font-size: 26px;
+  font-family: "zurmo_gamification_symbly_rRg";
+  color: #ccc !important;
+  -webkit-text-shadow: 0 0 1px #333333;
+  -moz-text-shadow: 0 0 1px #333333;
+  -o-text-shadow: 0 0 1px #333333;
+  -ms-text-shadow: 0 0 1px #333333;
+  text-shadow: 0 0 1px #333333;
+  top: -1px;
+  position: relative;
+  line-height: 1;
+}
+.icon-star:hover,
+.icon-star.starred {
+  color: #ffef42 !important;
+}
+#list-view_columnStar {
+  line-height: 1;
+  width: 20px;
+  text-align: center;
+  padding-right: 0 !important;
+  padding-left: 0 !important;
+}
+#list-view_columnStar .icon-star {
+  top: 0;
+  left: -2px;
+}
+h1 .icon-star,
+.juiportlet-widget-head .icon-star {
+  top: 1px;
+  margin-left: 5px;
 }
 .juiportlet-widget .empty {
   padding: 5px 0 10px 0;
@@ -13171,13 +13214,21 @@ table.configuration-list td:last-child a .z-label:before {
   content: "P";
 }
 .available-portlets .icon-activities:before {
-  content: '00A5';
+  content: '\00A5';
 }
 .available-portlets .icon-socialItems:before {
   content: "u";
 }
 .available-portlets .icon-activities:before {
   content: 'u';
+}
+.available-portlets .icon-iframe:before {
+  content: '\0040';
+  font-size: 46px;
+}
+.available-portlets .icon-maps:before {
+  content: 'L';
+  font-size: 46px;
 }
 /*Edit Portlet*/
 #modal-edit-form th {
@@ -19651,6 +19702,9 @@ a + .autoresponder-stats {
 .business-card h2 .user-name {
   font-weight: normal;
   font-size: 80%;
+  margin-left: 5px;
+}
+.business-card .icon-star {
   margin-left: 5px;
 }
 .business-card h3.position {
