@@ -77,7 +77,6 @@
             $instructionsData[CustomFieldsInstructionData::MAP_MISSING_VALUES] = array('d2' => 'd2x', 'e' => 'ex', 'f2' => 'f2x');
             $newCustomFieldsInstructionData->addByInstructionsDataAndColumnName($instructionsData, 'column_0');
 
-
             $customFieldsInstructionData->resolveForNewData($newCustomFieldsInstructionData);
             $compareData = array('column_0' => array('a', 'b', 'c', 'a2', 'c2'));
             $this->assertEquals($compareData, $customFieldsInstructionData->getMissingValuesToAdd());

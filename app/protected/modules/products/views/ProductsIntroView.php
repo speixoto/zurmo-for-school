@@ -38,9 +38,9 @@
      * View when a user first comes to the marketing dashboard. Provides an overview of how products works
      */
     class ProductsIntroView extends IntroView
-    {        
+    {
         protected function renderIntroContent()
-        {            
+        {
             $content  = '<h1>' . Zurmo::t('ProductsModule', 'How do Products work in Zurmo?', LabelUtil::getTranslationParamsForAllModules()). '</h1>';
             $content .= '<div id="products-intro-steps" class="module-intro-steps clearfix">';
             $content .= '<div class="third catalog-description"><span class="icon"></span>';
@@ -75,11 +75,11 @@
         protected function registerScripts()
         {
             $content  = "$(this).resolveHighestAndEqualize($('.module-intro-steps'));";
-            $content .= "$(window).resize(function(){
+            $content .= "$(window).resize(function()
+                         {
                              $(this).resolveHighestAndEqualize($('.module-intro-steps'));
                          });";
             Yii::app()->clientScript->registerScript($this->moduleName, $content);
         }
-
     }
 ?>

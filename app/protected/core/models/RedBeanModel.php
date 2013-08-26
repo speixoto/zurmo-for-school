@@ -642,10 +642,9 @@
                                                              $relationLinkName);
                     $linkName               = self::makeCasedLinkName($metadata[$modelClassName]['relations'][$relationName][0],
                                                                      $linkType, $relationLinkName);
-                    if($metadata[$modelClassName]['relations'][$relationName][0] == self::HAS_MANY ||
+                    if ($metadata[$modelClassName]['relations'][$relationName][0] == self::HAS_MANY ||
                        $metadata[$modelClassName]['relations'][$relationName][0] == self::HAS_ONE_BELONGS_TO)
                     {
-
                         $columnName = self::getTableName($modelClassName) . '_id';
                     }
                     else
@@ -1781,7 +1780,7 @@
          */
         public function forgetValidators()
         {
-            if(!empty($this->validators))
+            if (!empty($this->validators))
             {
                 $this->validators = array();
             }

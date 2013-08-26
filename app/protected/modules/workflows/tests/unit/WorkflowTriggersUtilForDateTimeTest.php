@@ -262,7 +262,6 @@
             $model->string   = 'someString3';
             $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
 
-
             $workflow = self::makeOnSaveWorkflowAndTriggerForDateOrDateTime('createdDateTime', 'Changes', null);
             $model           = new WorkflowModelTestItem();
             $model->lastName = 'someLastName';

@@ -173,7 +173,7 @@
                                                                                 $adaptedMetadataClauseBasePart,
                                                                                 $basePartAtRequiredDepth,
                                                                                 $depth);
-                    if($secondAdaptedMetadataClause != null)
+                    if ($secondAdaptedMetadataClause != null)
                     {
                         $adaptedMetadataClauses[$currentClauseCount + 1] = static::getAppendedAdaptedMetadataClauseBasePart(
                                                                             $adaptedMetadataClauseBasePart,
@@ -201,7 +201,7 @@
                                                                                 $adaptedMetadataClauseBasePart,
                                                                                 $basePartAtRequiredDepth,
                                                                                 $depth);
-                    if($secondAdaptedMetadataClause != null)
+                    if ($secondAdaptedMetadataClause != null)
                     {
                         $adaptedMetadataClauses[$currentClauseCount + 1] = static::getAppendedAdaptedMetadataClauseBasePart(
                                                                                 $adaptedMetadataClauseBasePart,
@@ -271,7 +271,7 @@
                                                                                             $adaptedMetadataClauseBasePart,
                                                                                             $basePartAtRequiredDepth,
                                                                                             $depth);
-                                if($secondAdaptedMetadataClause != null)
+                                if ($secondAdaptedMetadataClause != null)
                                 {
                                     $adaptedMetadataClauses[$currentClauseCount + 1] = static::getAppendedAdaptedMetadataClauseBasePart(
                                                                                             $adaptedMetadataClauseBasePart,
@@ -399,14 +399,14 @@
                                                                                         $value,
                                                                                         $operatorType);
             }
-            if(static::isBooleanNullOrEmptyOperation($mixedType, $operatorType, $value))
+            if (static::isBooleanNullOrEmptyOperation($mixedType, $operatorType, $value))
             {
                 $secondAdaptedMetadataClause = $adaptedMetadataClause;
             }
             if ($previousAttributeName == null)
             {
                 $adaptedMetadataClause['attributeName']        = $attributeName;
-                if(static::isBooleanNullOrEmptyOperation($mixedType, $operatorType, $value))
+                if (static::isBooleanNullOrEmptyOperation($mixedType, $operatorType, $value))
                 {
                     $secondAdaptedMetadataClause['attributeName'] = $attributeName;
                 }
@@ -415,7 +415,7 @@
             {
                 $adaptedMetadataClause['attributeName']        = $previousAttributeName;
                 $adaptedMetadataClause['relatedAttributeName'] = $attributeName;
-                if(static::isBooleanNullOrEmptyOperation($mixedType, $operatorType, $value))
+                if (static::isBooleanNullOrEmptyOperation($mixedType, $operatorType, $value))
                 {
                     $secondAdaptedMetadataClause['attributeName']        = $previousAttributeName;
                     $secondAdaptedMetadataClause['relatedAttributeName'] = $attributeName;
@@ -423,7 +423,7 @@
             }
             $adaptedMetadataClause['operatorType']  = $operatorType;
             $adaptedMetadataClause['value']         = $value;
-            if(static::isBooleanNullOrEmptyOperation($mixedType, $operatorType, $value))
+            if (static::isBooleanNullOrEmptyOperation($mixedType, $operatorType, $value))
             {
                 $secondAdaptedMetadataClause['operatorType']  = OperatorRules::TYPE_IS_NULL;
                 $secondAdaptedMetadataClause['value']         = null;
@@ -431,9 +431,9 @@
                 $this->resolveAppendClauseAsAndToStructureString($partialStructure, $clauseCount);
                 static::appendClauseAsOrToStructureString($partialStructure, $clauseCount);
                 $partialStructure = '(' . $partialStructure . ')';
-                if($this->appendStructureAsAnd)
+                if ($this->appendStructureAsAnd)
                 {
-                    if($structure != null)
+                    if ($structure != null)
                     {
                         $structure .= ' and ' . $partialStructure;
                     }
@@ -444,7 +444,7 @@
                 }
                 else
                 {
-                    if($structure != null)
+                    if ($structure != null)
                     {
                         $structure .= ' or ' . $partialStructure;
                     }
@@ -666,7 +666,7 @@
         {
             assert('is_string($mixedType) || $mixedType == null');
             assert('is_string($operatorType)');
-            if($mixedType == 'CheckBox' && $operatorType == OperatorRules::TYPE_EQUALS && ($value == '0' || !$value))
+            if ($mixedType == 'CheckBox' && $operatorType == OperatorRules::TYPE_EQUALS && ($value == '0' || !$value))
             {
                 return true;
             }

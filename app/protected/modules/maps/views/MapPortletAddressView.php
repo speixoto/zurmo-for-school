@@ -135,7 +135,6 @@
             return $cClipWidget->getController()->clips['Map'];
         }
 
-
         public function renderPortletHeadContent()
         {
             return false;

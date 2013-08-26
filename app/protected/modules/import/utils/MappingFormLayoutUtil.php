@@ -229,7 +229,7 @@
                                                            $attributeIndexOrDerivedType,
                                                            $columnType);
                 }
-                if(count($mappingRuleFormsAndElementTypes) > 1)
+                if (count($mappingRuleFormsAndElementTypes) > 1)
                 {
                     $multipleMappingRulesCssClass = ' multiple';
                 }

@@ -33,29 +33,27 @@
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
-    
+
     class ZurmoNumberFormatter extends CNumberFormatter
-    {        
-       
-	/**
-	 * Override to make the format decimal part the same as the passed value
-	 * @param mixed $value the number to be formatted
-	 * @return string the formatting result.
-	 */
-	public function formatDecimal($value)
-	{
-            $decimalFormat = "#,##0.";
-            $pos = strpos($value, '.');
-            if ($pos > 0)
-            {   
-                for ($i=0; $i < strlen($value) - $pos - 2; $i++)
+    {
+        /**
+         * Override to make the format decimal part the same as the passed value
+         * @param mixed $value the number to be formatted
+         * @return string the formatting result.
+         */
+        public function formatDecimal($value)
+        {
+                $decimalFormat = "#,##0.";
+                $pos = strpos($value, '.');
+                if ($pos > 0)
                 {
-                    $decimalFormat .= "#";
+                    for ($i = 0; $i < strlen($value) - $pos - 2; $i++)
+                    {
+                        $decimalFormat .= "#";
+                    }
+                    $decimalFormat .= "0";
                 }
-                $decimalFormat .= "0";
-            }
-            return $this->format($decimalFormat,$value);
-	}
-	
+                return $this->format($decimalFormat,$value);
+        }
     }
 ?>

@@ -99,7 +99,8 @@
          * Override to add a starring link to the title
          * @return string
          */
-        public function getTitle() {
+        public function getTitle()
+        {
             $starLink = StarredUtil::getToggleStarStatusLink($this->model, null);
             return parent::getTitle() . $starLink;
         }

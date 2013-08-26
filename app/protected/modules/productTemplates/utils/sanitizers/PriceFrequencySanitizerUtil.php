@@ -58,7 +58,6 @@
             }
         }
 
-
         /**
          * @param mixed $value
          * @return sanitized value

@@ -68,7 +68,7 @@
             $id               = $this->grid->id;
             $url              = Yii::app()->controller->createUrl('', array('modelClassName' => $modelClassName));
             $ajaxSubmitScript = "
-                var newVal = (parseInt($('.search-form_filterByStarred').val())+1)% 2;
+                var newVal = (parseInt($('.search-form_filterByStarred').val()) + 1) % 2;
                 if(isNaN(newVal))
                 {
                     newVal = 1;

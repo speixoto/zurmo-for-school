@@ -75,15 +75,15 @@
         public static function getStatusLabelByType($type)
         {
             assert('is_int($type)');
-            if($type == self::STATUS_CLEAN)
+            if ($type == self::STATUS_CLEAN)
             {
                 $label = Zurmo::t('ImportModule', 'Ok');
             }
-            elseif($type == self::STATUS_WARN)
+            elseif ($type == self::STATUS_WARN)
             {
                 $label = Zurmo::t('ImportModule', 'Warning');
             }
-            elseif($type == self::STATUS_SKIP)
+            elseif ($type == self::STATUS_SKIP)
             {
                 $label = Zurmo::t('ImportModule', 'Skip');
             }
@@ -94,15 +94,15 @@
         {
             assert('is_int($type)');
             $label = static::getStatusLabelByType($type);
-            if($type == self::STATUS_CLEAN)
+            if ($type == self::STATUS_CLEAN)
             {
                 $stageContent = ' stage-true';
             }
-            elseif($type == self::STATUS_WARN)
+            elseif ($type == self::STATUS_WARN)
             {
                 $stageContent = null;
             }
-            elseif($type == self::STATUS_SKIP)
+            elseif ($type == self::STATUS_SKIP)
             {
                 $stageContent = ' stage-false';
             }
@@ -165,11 +165,11 @@
                                          make($attributeValueSanitizerUtilType, $modelClassName, $attributeName,
                                          $columnName, $this->mappingData[$columnName]);
                             $sanitizer->analyzeByRow($rowBean);
-                            if($sanitizer->getShouldSkipRow())
+                            if ($sanitizer->getShouldSkipRow())
                             {
                                 $shouldSkipRow = true;
                             }
-                            foreach($sanitizer->getAnalysisMessages() as $message)
+                            foreach ($sanitizer->getAnalysisMessages() as $message)
                             {
                                 $columnMessages[$columnName][] = $message;
                             }
@@ -182,10 +182,10 @@
                         }
                     }
                 }
-                if(!empty($columnMessages))
+                if (!empty($columnMessages))
                 {
                     $rowBean->serializedAnalysisMessages = serialize($columnMessages);
-                    if($shouldSkipRow)
+                    if ($shouldSkipRow)
                     {
                         $rowBean->analysisStatus             = static::STATUS_SKIP;
                     }
@@ -205,7 +205,7 @@
 
         public function getCustomFieldsInstructionData()
         {
-            if($this->customFieldsInstructionData === null)
+            if ($this->customFieldsInstructionData === null)
             {
                 $this->customFieldsInstructionData = new CustomFieldsInstructionData();
             }

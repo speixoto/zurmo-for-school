@@ -39,7 +39,6 @@
      */
     class StarredUtil
     {
-
         public static function modelHasStarredInterface($modelClassName)
         {
             $refelectionClass = new ReflectionClass($modelClassName);
@@ -212,7 +211,7 @@
         public static function getToggleStarStatusLink($data, $row)
         {
             $starredClass   = 'icon-star unstarred';
-            $text           = 'w'; //w=Star in Icon-Font
+            $text           = 'w'; //w = Star in Icon-Font
             if(static::isModelStarred($data))
             {
                 $starredClass = 'icon-star starred';

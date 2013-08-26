@@ -73,7 +73,6 @@
             return RedBeanModel::makeModel(end($beans), $modelClassName);
         }
 
-
         /**
          * Tries to find the value in the system. If found, returns true, otherwise false.
          * @param string $value

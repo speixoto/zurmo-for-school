@@ -73,7 +73,7 @@
                 $this->attemptToValidateImportWizardFormAndSave($importWizardForm, $import, 'step2');
             }
             $title = Zurmo::t('ImportModule', 'Import Wizard - Select Module');
-            if($importWizardForm->importRulesType != null)
+            if ($importWizardForm->importRulesType != null)
             {
                 $importRulesClassName  = ImportRulesUtil::getImportRulesClassNameByType($importWizardForm->importRulesType);
             }
@@ -276,7 +276,7 @@
             $import               = Import::getById((int)$id);
             $importWizardForm     = ImportWizardUtil::makeFormByImport($import);
             $unserializedData     = unserialize($import->serializedData);
-            if($pageSize == null)
+            if ($pageSize == null)
             {
                 $pageSize = Yii::app()->pagination->resolveActiveForCurrentUserByType('importPageSize');
             }
@@ -295,7 +295,7 @@
                                                                   makeColumnNamesAndAttributeIndexOrDerivedTypeLabels(
                                                                   $unserializedData['mappingData'],
                                                                   $unserializedData['importRulesType']);
-                if(isset($getData['ajax']) && $getData['ajax'] == 'import-temp-table-list-view')
+                if (isset($getData['ajax']) && $getData['ajax'] == 'import-temp-table-list-view')
                 {
                     $resolvedView = new AnalysisResultsImportTempTableListView(
                                         $this->getId(),
@@ -317,7 +317,6 @@
                                                     $unserializedData['mappingData']);
                     $resolvedView = new ContainedViewCompleteSequentialProcessView($dataAnalysisCompleteView);
                 }
-
             }
             else
             {
@@ -346,7 +345,7 @@
         protected function resolveFilteredByStatus()
         {
             $getData = GetUtil::getData();
-            if(isset($getData['ImportResultsConfigurationForm']) &&
+            if (isset($getData['ImportResultsConfigurationForm']) &&
                !empty($getData['ImportResultsConfigurationForm']['filteredByStatus']) &&
                 $getData['ImportResultsConfigurationForm']['filteredByStatus'] !=
                 ImportResultsConfigurationForm::FILTERED_BY_ALL)
@@ -359,7 +358,7 @@
         protected function resolveResettingPageOnCompletion(ImportDataProvider $dataProvider)
         {
             $getData = GetUtil::getData();
-            if(!isset($getData['ajax']))
+            if (!isset($getData['ajax']))
             {
                 $dataProvider->getPagination()->setCurrentPage(0);
             }
@@ -390,7 +389,7 @@
             $cs->registerCoreScript('bbq');
             $unserializedData     = unserialize($import->serializedData);
             $passedInPageSize     = $pageSize;
-            if($pageSize == null)
+            if ($pageSize == null)
             {
                 $pageSize             = Yii::app()->pagination->resolveActiveForCurrentUserByType('importPageSize');
             }
@@ -410,7 +409,7 @@
                 $this->resolveResettingPageOnCompletion($dataProvider);
                 $importingIntoModelClassName = $unserializedData['importRulesType'] . 'ImportRules';
                 Yii::app()->gameHelper->triggerImportEvent($importingIntoModelClassName::getModelClassName());
-                if(isset($getData['ajax']) && $getData['ajax'] == 'import-temp-table-list-view')
+                if (isset($getData['ajax']) && $getData['ajax'] == 'import-temp-table-list-view')
                 {
                     $resolvedView = new ImportResultsImportTempTableListView(
                                         $this->getId(),
@@ -453,7 +452,7 @@
         protected function makeImportCompleteView(Import $import, ImportWizardForm $importWizardForm, ImportDataProvider $dataProvider,
                                                   $setCurrentPageToFirst = false, $pageSize = null)
         {
-            if($pageSize == null)
+            if ($pageSize == null)
             {
                 $pageSize             = Yii::app()->pagination->resolveActiveForCurrentUserByType('listPageSize');
             }

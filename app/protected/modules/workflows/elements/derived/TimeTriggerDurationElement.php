@@ -56,7 +56,6 @@
             return parent::resolveEditableWrapper($cssClass, $resolvedContent);
         }
 
-
         protected function getDurationSignDropDownArray()
         {
             if($this->valueElementType != 'MixedDateTypesForWorkflow')

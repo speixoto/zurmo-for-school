@@ -108,8 +108,8 @@
             //have full access
             elseif ((($this->id < 0) &&
                    (($createdByUser->id > 0 &&
-                    $createdByUser->isSame($permitable)) || $createdByUser->id < 0))
-                    || $this->treatCurrentUserAsOwnerForPermissions)
+                    $createdByUser->isSame($permitable)) || $createdByUser->id < 0)) ||
+                    $this->treatCurrentUserAsOwnerForPermissions)
             {
                 return Permission::ALL;
             }

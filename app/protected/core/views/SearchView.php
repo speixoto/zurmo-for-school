@@ -643,7 +643,7 @@
         protected function renderStarredFilterHidenField($form)
         {
             $content = null;
-            if(in_array('StarredInterface', class_implements($this->model->getModel())))
+            if (in_array('StarredInterface', class_implements($this->model->getModel())))
             {
                 $content .= $form->hiddenField($this->model, 'filterByStarred',
                                                array('class' => $form->id . '_filterByStarred'));

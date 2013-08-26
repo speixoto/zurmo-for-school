@@ -109,7 +109,6 @@
             {
                 $data['userId']            = $userId;
                 $resolvedLeaderboardData[] = $data;
-
             }
             return $resolvedLeaderboardData;
         }

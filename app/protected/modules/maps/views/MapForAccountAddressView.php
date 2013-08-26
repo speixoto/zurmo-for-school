@@ -36,7 +36,6 @@
 
     class MapForAccountAddressView extends MapPortletAddressView
     {
-
         public function __construct($viewData, $params, $uniqueLayoutId)
         {
             parent::__construct($viewData, $params, $uniqueLayoutId);
