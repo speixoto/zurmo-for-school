@@ -83,14 +83,14 @@
             $serializedData['firstRowIsHeaderRow'] = $firstRowIsHeaderRow;
             $import->serializedData               = serialize($serializedData);
             $saved = $import->save();
-            if(!$saved)
+            if (!$saved)
             {
                 throw new FailedToSaveModelException();
             }
             $this->createImportTempTable(8, $import->getTempTableName());
 
             //Make header row
-            if($firstRowIsHeaderRow)
+            if ($firstRowIsHeaderRow)
             {
                 $newBean = R::dispense($import->getTempTableName());
                 $newBean->column_0 = 'Header #1';

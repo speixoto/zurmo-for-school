@@ -61,7 +61,8 @@
             $account->save();
         }
 
-        public function setUp() {
+        public function setUp()
+        {
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
         }

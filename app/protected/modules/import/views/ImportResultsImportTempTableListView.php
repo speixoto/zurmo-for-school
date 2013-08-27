@@ -39,11 +39,16 @@
      */
     class ImportResultsImportTempTableListView extends ImportTempTableListView
     {
+        protected static function getExpandableContentType()
+        {
+            return self::EXPANDABLE_IMPORT_RESULTS_CONTENT_TYPE;
+        }
+
         protected function resolveSecondColumn()
         {
             return $secondColumn = array(
-                'class'               => 'DataColumn',
-                'type' => 'raw',
+                'class' => 'DataColumn',
+                'type'  => 'raw',
                 'value' => 'ImportTempTableListView::resolveResultStatusLabel($data)'
             );
         }
@@ -58,13 +63,12 @@
             return 'ImportCompleteResultsFilterRadioElement';
         }
 
-
         /**
          * @return array
          */
         protected function getCGridViewParams()
         {
-            return array_merge(parent::getCGridViewParams(), array('expandableContentType' => self::EXPANDABLE_IMPORT_RESULTS_CONTENT_TYPE));
+            return array_merge(parent::getCGridViewParams(), array('expandableContentType' => static::getExpandableContentType()));
         }
     }
 ?>

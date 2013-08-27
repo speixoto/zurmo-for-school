@@ -35,17 +35,36 @@
      ********************************************************************************/
 
     /**
-     * Class used by an email message in workflow to show the duration data. For example send the email message
-     * 4 hours after the workflow runs
+     * Form for configuring an Iframe portlet.
      */
-    class EmailMessageSendAfterDurationStaticDropDownElement extends DataFromFormStaticDropDownFormElement
+    class IframePortletForm extends ConfigurableMetadataModel
     {
-        /**
-         * @return string
-         */
-        protected function getDataAndLabelsModelPropertyName()
+        public $title;
+        public $iframeUrl;
+        public $iframeHeight;
+
+        public function rules()
         {
-            return 'getSendAfterDurationValuesAndLabels';
+            return array(
+                array('title', 'required'),
+                array('iframeHeight', 'required'),
+                array('iframeUrl', 'required'),
+                array('iframeUrl', 'url', 'defaultScheme' => 'http'),
+            );
+        }
+
+        public function attributeLabels()
+        {
+            return array(
+                'title' => Zurmo::t('HomeModule', 'Title'),
+                'iframeUrl' => Zurmo::t('HomeModule', 'IFrame URL'),
+                'iframeHeight' => Zurmo::t('HomeModule', 'IFrame Height in pixels'),
+            );
+        }
+
+        public function __toString()
+        {
+            return $this->title;
         }
     }
 ?>

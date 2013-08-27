@@ -47,6 +47,11 @@
 
         protected $supportsSlidingPanels = true;
 
+        /**
+         * @param array $viewData
+         * @param array $params
+         * @param string $uniqueLayoutId
+         */
         public function __construct($viewData, $params, $uniqueLayoutId)
         {
             assert('isset($params["controllerId"])');
@@ -120,6 +125,13 @@
         public static function getDesignerRulesType()
         {
             return 'DetailsPortletView';
+        }
+
+        /**
+         * Override to add a description for the view to be shown when adding a portlet
+         */
+        public static function getPortletDescription()
+        {
         }
 
         /**

@@ -46,6 +46,11 @@
 
         protected $containerIdSuffix;
 
+        /**
+         * @param array $viewData
+         * @param array $params
+         * @param array $uniqueLayoutId
+         */
         public function __construct($viewData, $params, $uniqueLayoutId)
         {
             assert('is_array($viewData) || $viewData == null');
@@ -115,7 +120,7 @@
 
         public function renderContent()
         {
-            if(!$this->shouldRenderMap())
+            if (!$this->shouldRenderMap())
             {
                 $emptyLabel = Zurmo::t('ZurmoModule', 'No address found');
                 return ZurmoHtml::tag('span', array('class' => 'empty'),
@@ -130,7 +135,6 @@
             return $cClipWidget->getController()->clips['Map'];
         }
 
-
         public function renderPortletHeadContent()
         {
             return false;
@@ -139,6 +143,13 @@
 	    public static function canUserConfigure()
         {
             return false;
+        }
+
+        /**
+         * Override to add a description for the view to be shown when adding a portlet
+         */
+        public static function getPortletDescription()
+        {
         }
 
         public static function hasRollupSwitch()
@@ -168,7 +179,7 @@
 
         protected function shouldRenderMap()
         {
-            if($this->params['relationModel']->primaryAddress->makeAddress() == null)
+            if ($this->params['relationModel']->primaryAddress->makeAddress() == null)
             {
                 return false;
             }

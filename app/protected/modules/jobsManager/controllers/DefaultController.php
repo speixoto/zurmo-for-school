@@ -75,6 +75,9 @@
             echo $view->render();
         }
 
+        /**
+         * @param string $type
+         */
         public function actionResetJob($type)
         {
             assert('is_string($type) && $type != ""');
@@ -97,6 +100,9 @@
             }
         }
 
+        /**
+         * @param string $type
+         */
         public function actionJobLogsModalList($type)
         {
             assert('is_string($type) && $type != ""');

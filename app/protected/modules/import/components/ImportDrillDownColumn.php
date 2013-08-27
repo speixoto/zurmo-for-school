@@ -42,6 +42,8 @@
      */
     class ImportDrillDownColumn extends CGridColumn
     {
+        public $expandableContentType;
+
         public function init()
         {
             // Begin Not Coding Standard
@@ -80,7 +82,34 @@ END;
                                                                      'style' => "display:none;"), 'G');
             $collapseLinkContent      = ZurmoHtml::tag('span', array('class' => 'drillDownCollapseLink drilldown-link',
                                                                      'style' => "display:none;"), '&divide;');
-            echo $expandAndLoadLinkContent . $expandLinkContent . $collapseLinkContent;
+            if ($this->hasExpandableContent($data))
+            {
+                echo $expandAndLoadLinkContent . $expandLinkContent . $collapseLinkContent;
+            }
+        }
+
+        protected function hasExpandableContent($data)
+        {
+            $content = null;
+            if ($this->expandableContentType == ImportTempTableListView::EXPANDABLE_ANALYSIS_CONTENT_TYPE &&
+                $data->serializedAnalysisMessages != null)
+            {
+                $analysisMessages = unserialize($data->serializedAnalysisMessages);
+                if (count($analysisMessages) > 0)
+                {
+                    return true;
+                }
+            }
+            if ($this->expandableContentType == ImportTempTableListView::EXPANDABLE_IMPORT_RESULTS_CONTENT_TYPE &&
+                $data->serializedMessages != null)
+            {
+                $resultMessages = unserialize($data->serializedMessages);
+                if (count($resultMessages) > 0)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
     }
 ?>

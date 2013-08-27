@@ -42,6 +42,10 @@
 
         private $avatarImageUrl;
 
+        /**
+         * @param string $username
+         * @throws NotFoundException
+         */
         public static function getByUsername($username)
         {
             assert('is_string($username)');
@@ -75,29 +79,45 @@
             {
                 throw new BadPasswordException();
             }
+            self::resolveAuthenticatedUserCanLogin($user);
+            $user->login();
+            return $user;
+        }
+
+        /**
+         * Check if authenticated user can login
+         * @param User $user
+         * @return bool
+         * @throws NoRightWebLoginException
+         * @throws ApiNoRightWebApiLoginException
+         */
+        public static function resolveAuthenticatedUserCanLogin(User $user)
+        {
             if (Right::ALLOW != $user->getEffectiveRight('UsersModule', UsersModule::RIGHT_LOGIN_VIA_WEB) &&
                 !ApiRequest::isApiRequest())
             {
                 throw new NoRightWebLoginException();
             }
-
             if (Right::ALLOW != $user->getEffectiveRight('UsersModule', UsersModule::RIGHT_LOGIN_VIA_WEB_API) &&
                 ApiRequest::isApiRequest())
             {
                 throw new ApiNoRightWebApiLoginException();
             }
-            if($user->isSystemUser && !ApiRequest::isApiRequest())
+            if ($user->isSystemUser && !ApiRequest::isApiRequest())
             {
                 throw new NoRightWebLoginException();
             }
-            if($user->isSystemUser && ApiRequest::isApiRequest())
+            if ($user->isSystemUser && ApiRequest::isApiRequest())
             {
                 throw new ApiNoRightWebApiLoginException();
             }
-            $user->login();
-            return $user;
+            return true;
         }
 
+        /**
+         * @param RedBean_OODBBean $bean
+         * @param bool $setDefaults
+         */
         protected function constructDerived($bean, $setDefaults)
         {
             assert('$bean === null || $bean instanceof RedBean_OODBBean');
@@ -570,6 +590,11 @@
             }
         }
 
+        /**
+         * @param string $moduleName
+         * @param string $rightName
+         * @return int
+         */
         public function getInheritedActualRight($moduleName, $rightName)
         {
             assert('is_string($moduleName)');
@@ -590,6 +615,12 @@
             }
         }
 
+        /**
+         * @param string $moduleName
+         * @param string $rightName
+         * @return int|void
+         * @throws NotSupportedException
+         */
         protected function getInheritedActualRightIgnoringEveryone($moduleName, $rightName)
         {
             assert('is_string($moduleName)');
@@ -622,6 +653,11 @@
             }
         }
 
+        /**
+         * @param string $moduleName
+         * @param string $policyName
+         * @return null
+         */
         protected function getInheritedActualPolicyIgnoringEveryone($moduleName, $policyName)
         {
             assert('is_string($moduleName)');
@@ -726,8 +762,8 @@
                     array('username', 'length',  'max'   => 64),
                     array('username', 'filter', 'filter' => 'trim'),
                     array('serializedAvatarData', 'type', 'type' => 'string'),
-                    array('isActive', 'readOnly'),
-                    array('isActive', 'boolean'),
+                    array('isActive',            'readOnly'),
+                    array('isActive',            'boolean'),
                     array('isRootUser',          'readOnly'),
                     array('isRootUser',          'boolean'),
                     array('hideFromSelecting',   'boolean'),
@@ -912,7 +948,7 @@
          */
         public function setIsRootUser()
         {
-            if(User::getRootUserCount() > 0)
+            if (User::getRootUserCount() > 0)
             {
                 throw new ExistingRootUserException();
             }
@@ -965,6 +1001,36 @@
                 $this->unrestrictedSet('lastLoginDateTime',  DateTimeUtil::convertTimestampToDbFormatDateTime(time()));
                 $this->save();
             }
+        }
+
+        /**
+         * Handle the search scenario for isActive, isRootUser and isSystemUser attributes.
+         */
+        public function isAllowedToSetReadOnlyAttribute($attributeName)
+        {
+            if ($this->getScenario() == 'importModel' || $this->getScenario() == 'searchModel')
+            {
+                if ( in_array($attributeName, array('isActive',
+                                                    'isRootUser',
+                                                    'isSystemUser')))
+                {
+                    return true;
+                }
+                else
+                {
+                    return parent::isAllowedToSetReadOnlyAttribute($attributeName);
+                }
+            }
+        }
+
+        public function setIsNotRootUser()
+        {
+            $this->unrestrictedSet('isRootUser', false);
+        }
+
+        public function setIsNotSystemUser()
+        {
+            $this->unrestrictedSet('isSystemUser', false);
         }
     }
 ?>

@@ -51,10 +51,10 @@
         }
 
         protected function beforeSave()
-        {
+        {            
             if (parent::beforeSave())
-            {
-                if (array_key_exists('value', $this->stage->originalAttributeValues))
+            {                
+                if (!isset($this->originalAttributeValues['probability']))
                 {
                     $this->resolveStageToProbability();
                 }

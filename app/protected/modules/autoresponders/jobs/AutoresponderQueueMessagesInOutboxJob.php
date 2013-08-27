@@ -87,8 +87,9 @@
          * Not pretty, but gets the job done. Solves memory leak problem.
          * @param AutoresponderItem $autoresponderItem
          */
-        protected function runGarbageCollection(AutoresponderItem $autoresponderItem)
+        protected function runGarbageCollection($autoresponderItem)
         {
+            assert('$autoresponderItem instanceof AutoresponderItem');
             $autoresponderItem->autoresponder->marketingList->forgetValidators();
             $autoresponderItem->autoresponder->forgetValidators();
             unset($autoresponderItem->autoresponder->marketingList);

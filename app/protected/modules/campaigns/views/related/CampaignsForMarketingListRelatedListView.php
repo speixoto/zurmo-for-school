@@ -34,14 +34,16 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Element for displaying the autoresponder seconds from operation options.
-     */
-    class AutoresponderSecondsFromOperationElement extends StaticDropDownFormElement
+    class CampaignsForMarketingListRelatedListView extends CampaignsRelatedListView
     {
-        protected function getDropDownArray()
+        protected function getRelationAttributeName()
         {
-            return Autoresponder::getIntervalDropDownArray();
+            return 'marketingList';
+        }
+
+        public static function getDisplayDescription()
+        {
+            return Zurmo::t('CampaignsModule', 'Campaigns For Marketing List');
         }
     }
 ?>

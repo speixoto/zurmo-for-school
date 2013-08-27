@@ -60,7 +60,7 @@
                 return $value;
             }
             $modelClassName         = $this->modelClassName;
-            if(!$modelClassName::isRelation($this->attributeName))
+            if (!$modelClassName::isRelation($this->attributeName))
             {
                 throw new NotSupportedException();
             }

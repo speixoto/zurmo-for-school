@@ -69,7 +69,7 @@
         
         public function renderValue($value)
         {                       
-            return Yii::app()->format->formatNumber((int)$value);
+            return Yii::app()->numberFormatter->formatDecimal((int)$value);
         }
     }
 ?>

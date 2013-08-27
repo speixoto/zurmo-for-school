@@ -81,15 +81,15 @@
          */
         public static function validateMembershipChange(GroupUserMembershipForm $form, Group $group)
         {
-            if($group->name == Group::SUPER_ADMINISTRATORS_GROUP_NAME)
+            if ($group->name == Group::SUPER_ADMINISTRATORS_GROUP_NAME)
             {
-                if(count($form->userMembershipData) == 0)
+                if (count($form->userMembershipData) == 0)
                 {
                     return Zurmo::t('ZurmoModule', 'There must be at least one super administrator');
                 }
                 foreach ($group->users as $index => $user)
                 {
-                    if (empty($form->userMembershipData[$user->id]) && ($user->isRootUser || $user->isSystemUser))
+                    if (empty($form->userMembershipData[$user->id]) && ($user->isRootUser))
                     {
                         return Zurmo::t('ZurmoModule', 'You cannot remove {user} from this group', array('{user}' => strval($user)));
                     }
@@ -112,7 +112,7 @@
             $addedUsers   = array();
             foreach ($group->users as $index => $user)
             {
-                if (empty($form->userMembershipData[$user->id]) && !$user->isSystemUser)
+                if (empty($form->userMembershipData[$user->id]) && !$user->isSystemUser && !$user->isRootUser)
                 {
                     $group->users->removeByIndex($index);
                     $removedUsers[] = $user;
@@ -165,7 +165,7 @@
             $data = array();
             foreach ($users as $user)
             {
-                if(!$user->isSystemUser)
+                if (!$user->isSystemUser)
                 {
                     $data[$user->id] = strval($user);
                 }
