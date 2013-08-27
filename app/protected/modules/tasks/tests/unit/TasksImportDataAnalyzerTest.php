@@ -42,16 +42,14 @@
             $super = SecurityTestHelper::createSuperAdmin();
             Yii::app()->user->userModel = $super;
 
-            $accountTableName     = Account::getTableName('Account');
-            $contactTableName     = Contact::getTableName('Contact');
-            $opportunityTableName = Opportunity::getTableName('Opportunity');
-            $columnName = ExternalSystemIdUtil::EXTERNAL_SYSTEM_ID_COLUMN_NAME;
-            RedBeanColumnTypeOptimizer::
-            externalIdColumn($accountTableName,     $columnName);
-            RedBeanColumnTypeOptimizer::
-            externalIdColumn($contactTableName,     $columnName);
-            RedBeanColumnTypeOptimizer::
-            externalIdColumn($opportunityTableName, $columnName);
+            // TODO: @Shoaibi: Critical: Get rid of this with import
+            //$accountTableName     = Account::getTableName('Account');
+            //$contactTableName     = Contact::getTableName('Contact');
+            //$opportunityTableName = Opportunity::getTableName('Opportunity');
+            //$columnName = ExternalSystemIdUtil::EXTERNAL_SYSTEM_ID_COLUMN_NAME;
+            //RedBeanColumnTypeOptimizer::externalIdColumn($accountTableName,     $columnName);
+            //RedBeanColumnTypeOptimizer::externalIdColumn($contactTableName,     $columnName);
+            //RedBeanColumnTypeOptimizer::externalIdColumn($opportunityTableName, $columnName);
         }
 
         public function testImportDataAnalysisResults()

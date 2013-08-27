@@ -181,6 +181,7 @@
         public function testUniqueMeta()
         {
             $this->markTestSkipped("Test does not apply any more due to new autobuild scheme, no longer using setMeta");
+            RedBeanDatabase::unfreeze();
             $bean = ZurmoRedBean::dispense('wukka');
             $bean->setMeta("buildcommand.unique", array(array("string")));
 

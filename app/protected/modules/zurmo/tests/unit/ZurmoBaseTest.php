@@ -57,16 +57,9 @@
             Yii::app()->emailHelper->sendEmailThroughTransport = false;
         }
 
-        public static function tearDownAfterClass()
-        {
-            RedBeanColumnTypeOptimizer::$optimizedTableColumns = array();
-            parent::tearDownAfterClass();
-        }
-
         public function setUp()
         {
             parent::setUp();
-            RedBeanColumnTypeOptimizer::$optimizedTableColumns = array();
             Yii::app()->gameHelper->resetDeferredPointTypesAndValuesByUserIdToAdd();
         }
 

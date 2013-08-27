@@ -794,7 +794,7 @@
 
             //Update the external system id.
             $columnName = ExternalSystemIdUtil::EXTERNAL_SYSTEM_ID_COLUMN_NAME;
-            RedBeanColumnTypeOptimizer::
+            //RedBeanColumnTypeOptimizer::
             externalIdColumn(ImportModelTestItem3::getTableName('ImportModelTestItem3'), $columnName);
             $externalSystemIdColumnName = ExternalSystemIdUtil::EXTERNAL_SYSTEM_ID_COLUMN_NAME;
             ZurmoRedBean::exec("update " . ImportModelTestItem3::getTableName('ImportModelTestItem3')
@@ -1038,7 +1038,7 @@
 
             //Update the external system id.
             $columnName = ExternalSystemIdUtil::EXTERNAL_SYSTEM_ID_COLUMN_NAME;
-            RedBeanColumnTypeOptimizer::
+            //RedBeanColumnTypeOptimizer::
             externalIdColumn(ImportModelTestItem2::getTableName('ImportModelTestItem2'), $columnName);
             $externalSystemIdColumnName = ExternalSystemIdUtil::EXTERNAL_SYSTEM_ID_COLUMN_NAME;
             ZurmoRedBean::exec("update " . ImportModelTestItem2::getTableName('ImportModelTestItem2')
@@ -1147,7 +1147,7 @@
 
             //Update the external system id.
             $columnName = ExternalSystemIdUtil::EXTERNAL_SYSTEM_ID_COLUMN_NAME;
-            RedBeanColumnTypeOptimizer::
+            //RedBeanColumnTypeOptimizer::
             externalIdColumn(ImportModelTestItem::getTableName('ImportModelTestItem'), $columnName);
             $externalSystemIdColumnName = ExternalSystemIdUtil::EXTERNAL_SYSTEM_ID_COLUMN_NAME;
             ZurmoRedBean::exec("update " . ImportModelTestItem::getTableName('ImportModelTestItem')
@@ -1529,7 +1529,7 @@
 
             //Update the external system id.
             $columnName = ExternalSystemIdUtil::EXTERNAL_SYSTEM_ID_COLUMN_NAME;
-            RedBeanColumnTypeOptimizer::externalIdColumn(User::getTableName('User'), $columnName);
+            //RedBeanColumnTypeOptimizer::externalIdColumn(User::getTableName('User'), $columnName);
             $externalSystemIdColumnName = ExternalSystemIdUtil::EXTERNAL_SYSTEM_ID_COLUMN_NAME;
             ZurmoRedBean::exec("update " . User::getTableName('User')
             . " set $externalSystemIdColumnName = 'K' where id = {$jimmy->id}");

@@ -138,7 +138,7 @@
             {
                 $modelClassName  = $this->attributeModelClassName;
                 $tableColumnName = ExternalSystemIdUtil::EXTERNAL_SYSTEM_ID_COLUMN_NAME;
-                RedBeanColumnTypeOptimizer::externalIdColumn($modelClassName::getTableName($modelClassName),
+                //RedBeanColumnTypeOptimizer::externalIdColumn($modelClassName::getTableName($modelClassName),
                                                              $tableColumnName,
                                                              $this->externalSystemIdMaxLength);
             }
