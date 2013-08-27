@@ -172,16 +172,14 @@
         {
            if (ZurmoConfigurationUtil::getByModuleName('ZurmoModule', $fileModelIdentifier) !== null)
            {
-               $fileModelId          = ZurmoConfigurationUtil::getByModuleName('ZurmoModule', $fileModelIdentifier);
-               $file                 = FileModel::getById($fileModelId);
-               $fileContent          = FileContent::getById($file->fileContent->id);
-               $contents             = file_get_contents($filePath);
-               $fileContent->content = $contents;
-               $file->fileContent    = $fileContent;
-               $file->name           = $fileName;
-               $file->type           = ZurmoFileHelper::getMimeType($filePath);
-               $file->size           = filesize($filePath);
-               $saved                = $file->save();
+               $fileModelId                   = ZurmoConfigurationUtil::getByModuleName('ZurmoModule', $fileModelIdentifier);
+               $file                          = FileModel::getById($fileModelId);
+               $contents                      = file_get_contents($filePath);
+               $file->fileContent->content    = $contents;
+               $file->name                    = $fileName;
+               $file->type                    = ZurmoFileHelper::getMimeType($filePath);
+               $file->size                    = filesize($filePath);
+               $file->save();
                return $file->id;
            }
            else
@@ -194,8 +192,7 @@
                $file->name           = $fileName;
                $file->type           = ZurmoFileHelper::getMimeType($filePath);
                $file->size           = filesize($filePath);
-               $saved                = $file->save();
-
+               $file->save();
                return $file->id;
            }
         }
