@@ -794,8 +794,7 @@
 
             //Update the external system id.
             $columnName = ExternalSystemIdUtil::EXTERNAL_SYSTEM_ID_COLUMN_NAME;
-            //RedBeanColumnTypeOptimizer::
-            externalIdColumn(ImportModelTestItem3::getTableName('ImportModelTestItem3'), $columnName);
+            //RedBeanColumnTypeOptimizer::externalIdColumn(ImportModelTestItem3::getTableName('ImportModelTestItem3'), $columnName);
             $externalSystemIdColumnName = ExternalSystemIdUtil::EXTERNAL_SYSTEM_ID_COLUMN_NAME;
             ZurmoRedBean::exec("update " . ImportModelTestItem3::getTableName('ImportModelTestItem3')
             . " set $externalSystemIdColumnName = 'Q' where id = {$importModelTestItem3Model3->id}");
@@ -1038,8 +1037,7 @@
 
             //Update the external system id.
             $columnName = ExternalSystemIdUtil::EXTERNAL_SYSTEM_ID_COLUMN_NAME;
-            //RedBeanColumnTypeOptimizer::
-            externalIdColumn(ImportModelTestItem2::getTableName('ImportModelTestItem2'), $columnName);
+            //RedBeanColumnTypeOptimizer::externalIdColumn(ImportModelTestItem2::getTableName('ImportModelTestItem2'), $columnName);
             $externalSystemIdColumnName = ExternalSystemIdUtil::EXTERNAL_SYSTEM_ID_COLUMN_NAME;
             ZurmoRedBean::exec("update " . ImportModelTestItem2::getTableName('ImportModelTestItem2')
             . " set $externalSystemIdColumnName = 'R' where id = {$importModelTestItem2Model3->id}");
@@ -1147,8 +1145,7 @@
 
             //Update the external system id.
             $columnName = ExternalSystemIdUtil::EXTERNAL_SYSTEM_ID_COLUMN_NAME;
-            //RedBeanColumnTypeOptimizer::
-            externalIdColumn(ImportModelTestItem::getTableName('ImportModelTestItem'), $columnName);
+            //RedBeanColumnTypeOptimizer::externalIdColumn(ImportModelTestItem::getTableName('ImportModelTestItem'), $columnName);
             $externalSystemIdColumnName = ExternalSystemIdUtil::EXTERNAL_SYSTEM_ID_COLUMN_NAME;
             ZurmoRedBean::exec("update " . ImportModelTestItem::getTableName('ImportModelTestItem')
             . " set $externalSystemIdColumnName = 'J' where id = {$importModelTestItem1Model3->id}");

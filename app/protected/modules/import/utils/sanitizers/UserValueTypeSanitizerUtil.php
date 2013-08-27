@@ -59,8 +59,7 @@
         public static function getUserExternalSystemIds()
         {
             $columnName = ExternalSystemIdUtil::EXTERNAL_SYSTEM_ID_COLUMN_NAME;
-            //RedBeanColumnTypeOptimizer::
-            externalIdColumn(User::getTableName('User'), $columnName);
+            //RedBeanColumnTypeOptimizer::externalIdColumn(User::getTableName('User'), $columnName);
             $sql = 'select ' . $columnName . ' from ' . User::getTableName('User');
             return ZurmoRedBean::getCol($sql);
         }

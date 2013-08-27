@@ -76,20 +76,15 @@
 
             //Ensure the external system id column is present.
             $columnName = ExternalSystemIdUtil::EXTERNAL_SYSTEM_ID_COLUMN_NAME;
-            //RedBeanColumnTypeOptimizer::
-            externalIdColumn(User::getTableName('User'), $columnName);
+            //RedBeanColumnTypeOptimizer::externalIdColumn(User::getTableName('User'), $columnName);
             $userTableName = User::getTableName('User');
             ZurmoRedBean::exec("update " . $userTableName . " set $columnName = 'A' where id = {$super->id}");
             ZurmoRedBean::exec("update " . $userTableName . " set $columnName = 'B' where id = {$jim->id}");
 
-            //RedBeanColumnTypeOptimizer::
-            externalIdColumn(ImportModelTestItem::getTableName('ImportModelTestItem'),   $columnName);
-            //RedBeanColumnTypeOptimizer::
-            externalIdColumn(ImportModelTestItem2::getTableName('ImportModelTestItem2'), $columnName);
-            //RedBeanColumnTypeOptimizer::
-            externalIdColumn(ImportModelTestItem3::getTableName('ImportModelTestItem3'), $columnName);
-            //RedBeanColumnTypeOptimizer::
-            externalIdColumn(ImportModelTestItem4::getTableName('ImportModelTestItem4'), $columnName);
+            //RedBeanColumnTypeOptimizer::externalIdColumn(ImportModelTestItem::getTableName('ImportModelTestItem'),   $columnName);
+            //RedBeanColumnTypeOptimizer::externalIdColumn(ImportModelTestItem2::getTableName('ImportModelTestItem2'), $columnName);
+            //RedBeanColumnTypeOptimizer::externalIdColumn(ImportModelTestItem3::getTableName('ImportModelTestItem3'), $columnName);
+            //RedBeanColumnTypeOptimizer::externalIdColumn(ImportModelTestItem4::getTableName('ImportModelTestItem4'), $columnName);
         }
 
         /**
