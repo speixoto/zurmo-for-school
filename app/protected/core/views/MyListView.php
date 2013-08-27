@@ -150,6 +150,7 @@
         public function getConfigurationView()
         {
             $searchForm   = $this->getSearchModel();
+            $searchForm->getModel()->setScenario('searchModel');
             $formModel    = new MyListForm();
             if ($this->viewData != null)
             {
