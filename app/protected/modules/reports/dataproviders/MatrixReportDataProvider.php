@@ -470,7 +470,7 @@
             {
                 $this->xAxisGroupByDataValues = array();
                 $selectQueryAdapter = new RedBeanModelSelectQueryAdapter();
-                $sql                = $this->makeSqlQueryForFetchingData($selectQueryAdapter, null, null);
+                $sql                = $this->makeSqlQueryForFetchingData($selectQueryAdapter, null, null);                
                 $rows               = $this->getRowsData($sql);
                 foreach ($rows as $row)
                 {

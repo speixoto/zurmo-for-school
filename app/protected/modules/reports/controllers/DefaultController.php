@@ -398,8 +398,7 @@
             {
                 if ($totalItems <= ExportModule::$asynchronusThreshold)
                 {
-                    // Output csv file directly to user browser
-                    $count = count($dataProvider->getData());
+                    // Output csv file directly to user browser                    
                     if ($dataProvider)
                     {
                           $reportToExportAdapter  = ReportToExportAdapterFactory::createReportToExportAdapter($report, $dataProvider);
@@ -407,7 +406,7 @@
                           $data                   = $reportToExportAdapter->getData();
                     }
                     // Output data
-                    if ($count)
+                    if (count($data))
                     {
                         $fileName = $this->getModule()->getName() . ".csv";
                         ExportItemToCsvFileUtil::export($data, $headerData, $fileName, true);

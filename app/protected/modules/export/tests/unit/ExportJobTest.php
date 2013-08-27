@@ -630,6 +630,7 @@
             $fileModel = $exportItem->exportFileModel;
 
             $this->assertEquals(1, $exportItem->isCompleted);
+            $this->assertEquals(0, $exportItem->processOffset);
             $this->assertEquals('csv', $exportItem->exportFileType);
             $this->assertEquals('rowAndColumnsTest2', $exportItem->exportFileName);
             $this->assertTrue($fileModel instanceOf ExportFileModel);
@@ -646,6 +647,64 @@
 
             // Check if user got notification message, and if its type is ExportProcessCompleted
             $this->assertEquals($numberOfUserNotifications + 1,
+                Notification::getCountByTypeAndUser('ExportProcessCompleted', Yii::app()->user->userModel));
+            
+            //Matrix report should not paginate
+            $report = new Report();
+            $report->setType(Report::TYPE_MATRIX);
+            $report->setModuleClassName('AccountsModule');
+            $report->setFiltersStructure('');
+
+            $displayAttribute = new DisplayAttributeForReportForm('AccountsModule', 'Account',
+                                        Report::TYPE_MATRIX);
+            $displayAttribute->setModelAliasUsingTableAliasName('model1');
+            $displayAttribute->attributeIndexOrDerivedType = 'Count';
+            $report->addDisplayAttribute($displayAttribute);
+            
+            $groupBy           = new GroupByForReportForm('AccountsModule', 'Account',
+                                        Report::TYPE_MATRIX);
+            $groupBy->attributeIndexOrDerivedType = 'name';
+            $groupBy->axis = 'y';
+            $report->addGroupBy($groupBy);
+            
+            $groupBy           = new GroupByForReportForm('AccountsModule', 'Account',
+                                        Report::TYPE_MATRIX);
+            $groupBy->attributeIndexOrDerivedType = 'officePhone';           
+            $report->addGroupBy($groupBy);    
+
+            $dataProvider                = new MatrixReportDataProvider($report);
+            $exportItem                  = new ExportItem();
+            $exportItem->isCompleted     = 0;
+            $exportItem->exportFileType  = 'csv';
+            $exportItem->exportFileName  = 'matrixTest1';
+            $exportItem->modelClassName  = 'SavedReport';
+            $exportItem->serializedData  = ExportUtil::getSerializedDataForExport($dataProvider);
+            $this->assertTrue($exportItem->save());
+            $id = $exportItem->id;
+            $exportItem->forget();
+            unset($exportItem);
+
+            ExportModule::$asynchronousPageSize = 2;
+            
+            $job = new ExportJob();
+            $this->assertTrue($job->run());
+
+            $exportItem = ExportItem::getById($id);
+            $fileModel = $exportItem->exportFileModel;
+
+            $this->assertEquals(1, $exportItem->isCompleted);
+            $this->assertEquals(0, $exportItem->processOffset);
+            $this->assertEquals('csv', $exportItem->exportFileType);
+            $this->assertEquals('matrixTest1', $exportItem->exportFileName);
+            $this->assertTrue($fileModel instanceOf ExportFileModel);
+            $fileContent = $fileModel->fileContent->content;            
+            $this->assertContains('Test Account',   $fileContent);
+            $this->assertContains('Test Account 2', $fileContent);
+            $this->assertContains('Test Account 3', $fileContent);
+            $this->assertContains('Test Account 4', $fileContent);
+
+            // Check if user got notification message, and if its type is ExportProcessCompleted
+            $this->assertEquals($numberOfUserNotifications + 2,
                 Notification::getCountByTypeAndUser('ExportProcessCompleted', Yii::app()->user->userModel));
         }
     }

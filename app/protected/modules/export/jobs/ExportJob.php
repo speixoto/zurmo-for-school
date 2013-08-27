@@ -140,7 +140,14 @@
             }
             elseif ($dataProviderOrIdsToExport instanceOf ReportDataProvider)
             {
-                $this->processReportDataProviderExport($exportItem, $dataProviderOrIdsToExport);
+                if ($dataProviderOrIdsToExport instanceOf MatrixReportDataProvider)
+                {
+                    $this->processMatrixReportDataProviderExport($exportItem, $dataProviderOrIdsToExport);
+                }
+                else
+                {
+                    $this->processReportDataProviderExport($exportItem, $dataProviderOrIdsToExport);
+                }
             }
             else
             {
@@ -236,6 +243,17 @@
             {
                 $this->processCompletedExportItem($exportItem, $exportFileModel);
             }
+        }
+        
+        protected function processMatrixReportDataProviderExport(ExportItem $exportItem, MatrixReportDataProvider $dataProvider)
+        {                                               
+            $reportToExportAdapter  = ReportToExportAdapterFactory::
+                                            createReportToExportAdapter($dataProvider->getReport(), $dataProvider);                                    
+            $headerData             = $reportToExportAdapter->getHeaderData();
+            $data                   = $reportToExportAdapter->getData();                 
+            $content                = ExportItemToCsvFileUtil::export($data, $headerData);                        
+            $exportFileModel        = $this->makeExportFileModelByContent($content, $exportItem->exportFileName);            
+            $this->processCompletedExportItem($exportItem, $exportFileModel);                                    
         }
 
         /**
