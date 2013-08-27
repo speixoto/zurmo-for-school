@@ -42,11 +42,11 @@
          */
         public function actionLoadProductsSampler()
         {
-            if (Yii::app()->user->userModel->username != 'super')
+            if (!Group::isUserASuperAdministrator(Yii::app()->user->userModel))
             {
                 throw new NotSupportedException();
             }
-            
+
             //Create test account for product functional test on related list sorting, product related view.
             $account        = new Account();
             $account->owner = Yii::app()->user->userModel;
@@ -56,7 +56,7 @@
             {
                 throw new NotSupportedException();
             }
-            
+
             //Load 6 so there is sufficient data for product related view pagination testing.
             for ($i = 0; $i < 8; $i++)
             {

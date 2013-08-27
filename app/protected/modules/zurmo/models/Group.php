@@ -85,6 +85,23 @@
             return $group;
         }
 
+        public static function isUserASuperAdministrator(User $user)
+        {
+            if($user->id < 0)
+            {
+                throw new NotSupportedException();
+            }
+            $superGroup   = Group::getByName(Group::SUPER_ADMINISTRATORS_GROUP_NAME);
+            if ($user->groups->contains($superGroup))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         /**
          * @param RedBean_OODBBean $bean
          * @param bool $setDefaults
