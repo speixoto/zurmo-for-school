@@ -7394,6 +7394,9 @@ td {
   font-weight: bold;
   margin: 0 0 3px 0;
 }
+.juiportlet-widget-content .stacked-list {
+  border: none;
+}
 .juiportlet-widget-content .stacked-list tr:first-child td {
   border-top: none !important;
 }
@@ -11458,21 +11461,6 @@ div.hasHalfs > div input {
   vertical-align: middle;
   position: relative;
 }
-.type-contacts h3 {
-  padding-left: 30px;
-  position: relative;
-}
-.type-contacts h3:before {
-  content: "e";
-  font-weight: normal;
-  font-size: 32px;
-  font-family: "zurmo_gamification_symbly_rRg";
-  color: #7A7A7A;
-  line-height: 100%;
-  position: absolute;
-  top: 6px;
-  left: 0;
-}
 .type-contacts .icon-empty:before {
   content: "e";
   font-weight: normal;
@@ -11485,6 +11473,21 @@ div.hasHalfs > div input {
   box-sizing: border-box;
   vertical-align: middle;
   position: relative;
+}
+.juiportlet-widget-head.type-contacts h3 {
+  padding-left: 30px;
+  position: relative;
+}
+.juiportlet-widget-head.type-contacts h3:before {
+  content: "e";
+  font-weight: normal;
+  font-size: 32px;
+  font-family: "zurmo_gamification_symbly_rRg";
+  color: #7A7A7A;
+  line-height: 100%;
+  position: absolute;
+  top: 6px;
+  left: 0;
 }
 .type-tasks .icon-empty:before {
   content: "4";
@@ -19680,6 +19683,9 @@ a + .autoresponder-stats {
   box-sizing: border-box;
   position: relative;
 }
+div.showing-panel {
+  display: block;
+}
 .business-card {
   display: block;
 }
@@ -20026,6 +20032,15 @@ a + .autoresponder-stats {
 }
 .icon-youtube {
   background: url(../images/social-icons/youtube.png) center center no-repeat;
+}
+.icon-klout {
+  background: url(../images/social-icons/klout.png) center center no-repeat;
+}
+.icon-gravatar {
+  background: url(../images/social-icons/gravatar.png) center center no-repeat;
+}
+.icon-plancast {
+  background: url(../images/social-icons/plancast.png) center center no-repeat;
 }
 .back-of-card {
   display: none;
