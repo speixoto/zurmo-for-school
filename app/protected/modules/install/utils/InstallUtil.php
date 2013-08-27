@@ -574,7 +574,7 @@
             $user->lastName     = 'User';
             $user->setPassword($password);
             $saved = $user->save();
-            if(!$saved)
+            if (!$saved)
             {
                 throw new FailedToSaveModelException();
             }
@@ -582,7 +582,7 @@
             $group = Group::getByName(Group::SUPER_ADMINISTRATORS_GROUP_NAME);
             $group->users->add($user);
             $saved = $group->save();
-            if(!$saved)
+            if (!$saved)
             {
                 throw new FailedToSaveModelException();
             }
@@ -608,7 +608,7 @@
             $user->setIsSystemUser();
             $user->setPassword($password);
             $saved = $user->save();
-            if(!$saved)
+            if (!$saved)
             {
                 throw new FailedToSaveModelException();
             }
@@ -616,14 +616,14 @@
             $user->setRight('UsersModule', UsersModule::RIGHT_LOGIN_VIA_WEB,     Right::DENY);
             $user->setRight('UsersModule', UsersModule::RIGHT_LOGIN_VIA_WEB_API, Right::DENY);
             $saved = $user->save();
-            if(!$saved)
+            if (!$saved)
             {
                 throw new FailedToSaveModelException();
             }
             $group = Group::getByName(Group::SUPER_ADMINISTRATORS_GROUP_NAME);
             $group->users->add($user);
             $saved = $group->save();
-            if(!$saved)
+            if (!$saved)
             {
                 throw new FailedToSaveModelException();
             }

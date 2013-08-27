@@ -180,7 +180,7 @@
             }
             if (parent::beforeSave())
             {
-                if($this->isModified())
+                if ($this->isModified())
                 {
                     $this->onModified();
                 }

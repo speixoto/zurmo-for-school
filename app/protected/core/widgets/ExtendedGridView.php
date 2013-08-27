@@ -242,7 +242,7 @@
             {
                 echo "<thead>\n";
                 $this->renderTableColumnGroup();
-                if($this->filterPosition === self::FILTER_POS_HEADER)
+                if ($this->filterPosition === self::FILTER_POS_HEADER)
                 {
                     $this->renderFilter();
                 }

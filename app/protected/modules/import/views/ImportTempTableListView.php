@@ -97,7 +97,7 @@
 
         protected static function resolveHeaderLabelByColumnNameAndLabel($columnName, $label)
         {
-            if($label == null)
+            if ($label == null)
             {
                 $headerLabel = static::resolveColumnCountByName($columnName);
             }
@@ -111,7 +111,7 @@
         protected static function resolveColumnCountByName($columnName)
         {
             $columnNameParts = explode('_', $columnName);
-            if(count($columnNameParts) != 2)
+            if (count($columnNameParts) != 2)
             {
                 $columnNameCount = null;
             }
@@ -219,7 +219,7 @@
                     $this->mappingData[$columnName]['type'] == 'importColumn' &&
                     $this->mappingData[$columnName]['attributeIndexOrDerivedType'] != null)
                 {
-                    if(!$this->dataProvider->hasHeaderRow())
+                    if (!$this->dataProvider->hasHeaderRow())
                     {
                         $label = static::resolveColumnCountByName($columnName);
                     }
@@ -256,7 +256,7 @@
                     $this->mappingData[$columnName]['type'] == 'importColumn' &&
                     $this->mappingData[$columnName]['attributeIndexOrDerivedType'] != null)
                 {
-                    if(!$this->dataProvider->hasHeaderRow())
+                    if (!$this->dataProvider->hasHeaderRow())
                     {
                         $label = static::resolveColumnCountByName($columnName);
                     }
@@ -278,7 +278,7 @@
         protected function resolveHeaderColumnContent($columnName, $label)
         {
             $content  = static::resolveHeaderLabelByColumnNameAndLabel($columnName, $label);
-            if($this->mappingData[$columnName]['attributeIndexOrDerivedType'] != null)
+            if ($this->mappingData[$columnName]['attributeIndexOrDerivedType'] != null)
             {
                 $attributeIndexOrDerivedType = $this->mappingData[$columnName]['attributeIndexOrDerivedType'];
                 $attributeImportRules = AttributeImportRulesFactory::makeByImportRulesTypeAndAttributeIndexOrDerivedType(

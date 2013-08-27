@@ -232,7 +232,7 @@
             }
             $workflow->removeTimeTrigger();
             $moduleClassName = $workflow->getModuleClassName();
-            if($moduleClassName != null)
+            if ($moduleClassName != null)
             {
                 $timeTrigger     = new TimeTriggerForWorkflowForm($moduleClassName, $moduleClassName::getPrimaryModelName(),
                     $workflow->getType());

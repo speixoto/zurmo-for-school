@@ -118,11 +118,11 @@
 
         protected static function markModelAsStarredForUser($modelClassName, $userId, $modelId)
         {
-            if(!static::modelHasStarredInterface($modelClassName))
+            if (!static::modelHasStarredInterface($modelClassName))
             {
                 throw new NotSupportedException();
             }
-            if(static::isModelStarredForUser($modelClassName, $userId, $modelId))
+            if (static::isModelStarredForUser($modelClassName, $userId, $modelId))
             {
                 return;
             }
@@ -143,11 +143,11 @@
 
         protected static function unmarkModelAsStarredForUser($modelClassName, $userId, $modelId)
         {
-            if(!static::modelHasStarredInterface($modelClassName))
+            if (!static::modelHasStarredInterface($modelClassName))
             {
                 throw new NotSupportedException();
             }
-            if(!static::isModelStarredForUser($modelClassName, $userId, $modelId))
+            if (!static::isModelStarredForUser($modelClassName, $userId, $modelId))
             {
                 return;
             }
@@ -168,7 +168,7 @@
 
         protected static function isModelStarredForUser($modelClassName, $userId, $modelId)
         {
-            if(!static::modelHasStarredInterface($modelClassName))
+            if (!static::modelHasStarredInterface($modelClassName))
             {
                 throw new NotSupportedException();
             }
@@ -189,7 +189,7 @@
         public static function unmarkModelAsStarredForAllUsers(RedBeanModel $model)
         {
             $modelClassName = get_class($model);
-            if(!static::modelHasStarredInterface($modelClassName))
+            if (!static::modelHasStarredInterface($modelClassName))
             {
                 throw new NotSupportedException();
             }
@@ -223,7 +223,7 @@
         {
             $starredClass   = 'icon-star unstarred';
             $text           = 'w'; //w = Star in Icon-Font
-            if(static::isModelStarred($data))
+            if (static::isModelStarred($data))
             {
                 $starredClass = 'icon-star starred';
             }

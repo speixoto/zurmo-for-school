@@ -57,7 +57,7 @@
 
         protected function shouldRenderMap()
         {
-            if($this->params['relationModel']->billingAddress->makeAddress() == null)
+            if ($this->params['relationModel']->billingAddress->makeAddress() == null)
             {
                 return false;
             }

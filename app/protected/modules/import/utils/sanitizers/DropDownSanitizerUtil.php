@@ -170,7 +170,7 @@
 
         protected function getCustomFieldsInstructionDataFromColumnMappingData()
         {
-            if(isset($this->columnMappingData['customFieldsInstructionData']))
+            if (isset($this->columnMappingData['customFieldsInstructionData']))
             {
                 return $this->columnMappingData['customFieldsInstructionData'];
             }

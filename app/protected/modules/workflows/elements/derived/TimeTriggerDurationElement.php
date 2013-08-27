@@ -45,7 +45,7 @@
 
         protected function resolveEditableWrapper($cssClass, $content)
         {
-            if($this->valueElementType != 'MixedDateTypesForWorkflow')
+            if ($this->valueElementType != 'MixedDateTypesForWorkflow')
             {
                 $resolvedContent = ZurmoHtml::tag('div', array(), Zurmo::t('Core', 'For')) . $content;
             }
@@ -58,7 +58,7 @@
 
         protected function getDurationSignDropDownArray()
         {
-            if($this->valueElementType != 'MixedDateTypesForWorkflow')
+            if ($this->valueElementType != 'MixedDateTypesForWorkflow')
             {
                 return array(TimeDurationUtil::DURATION_SIGN_POSITIVE => Zurmo::t('WorkflowsModule', 'After'));
             }
@@ -73,7 +73,7 @@
 
         protected function renderEditableDurationSignDropDownField()
         {
-            if($this->valueElementType != 'MixedDateTypesForWorkflow')
+            if ($this->valueElementType != 'MixedDateTypesForWorkflow')
             {
                 return ZurmoHtml::tag('div', array('style' => "display:none;"),
                             parent::renderEditableDurationSignDropDownField());

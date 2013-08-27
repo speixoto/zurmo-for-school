@@ -83,7 +83,7 @@
             $readSubscriptionTables = array();
             foreach ($allSubscriptionTableRows as $subscriptionTableRow)
             {
-                foreach($subscriptionTableRow as $subscriptionTable)
+                foreach ($subscriptionTableRow as $subscriptionTable)
                 {
                     $readSubscriptionTables[] = $subscriptionTable;
                 }

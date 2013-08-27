@@ -150,7 +150,7 @@
                                                     $metadataByOptionAndFilter,
                                                     $this->getSearchAttributeData($searchTerm));
             $dataProviderClassName      = 'RedBeanModelDataProvider';
-            if($starred)
+            if ($starred)
             {
                 $dataProviderClassName      = 'StarredModelDataProvider';
             }

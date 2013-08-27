@@ -54,13 +54,13 @@
 
         public static function resolveCanCurrentUserAccessRootUser(User $user, $renderAccessViewOnFailure = true)
         {
-            if(!$user->isRootUser)
+            if (!$user->isRootUser)
             {
                 return true;
             }
-            if($user->id != Yii::app()->user->userModel->id)
+            if ($user->id != Yii::app()->user->userModel->id)
             {
-                if(!$renderAccessViewOnFailure)
+                if (!$renderAccessViewOnFailure)
                 {
                     return false;
                 }
@@ -80,11 +80,11 @@
 
         public static function resolveAccessingASystemUser($user, $renderAccessViewOnFailure = true)
         {
-            if(!$user->isSystemUser)
+            if (!$user->isSystemUser)
             {
                 return true;
             }
-            elseif(!$renderAccessViewOnFailure)
+            elseif (!$renderAccessViewOnFailure)
             {
                 return false;
             }
@@ -108,11 +108,11 @@
             if (Yii::app()->user->userModel->id == $user->id ||
                 RightsUtil::canUserAccessModule('UsersModule', Yii::app()->user->userModel))
             {
-                if(!$user->isRootUser)
+                if (!$user->isRootUser)
                 {
                     return true;
                 }
-                elseif($user->id != Yii::app()->user->userModel->id)
+                elseif ($user->id != Yii::app()->user->userModel->id)
                 {
                     return false;
                 }

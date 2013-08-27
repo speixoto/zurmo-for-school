@@ -103,7 +103,7 @@
                             {
                                 $elementClassName = $elementInformation['type'] . 'Element';
                                 $realAttributeName = $this->resolveRealAttributeName($elementClassName, $elementInformation['attributeName']);
-                                if($realAttributeName != null)
+                                if ($realAttributeName != null)
                                 {
                                     $content .= '<tr>';
                                     $params = array_slice($elementInformation, 2);
@@ -207,13 +207,13 @@ END;
         protected function resolveRealAttributeName($elementClassName, $attributeName)
         {
             assert('is_string($elementClassName)');
-            if($attributeName == 'null')
+            if ($attributeName == 'null')
             {
                 $classToEvaluate        = new ReflectionClass($elementClassName);
                 if ($classToEvaluate->implementsInterface('DerivedElementInterface'))
                 {
                     $modelAttributeNames = $elementClassName::getModelAttributeNames();
-                    if(count($modelAttributeNames) == 0 || count($modelAttributeNames) > 1)
+                    if (count($modelAttributeNames) == 0 || count($modelAttributeNames) > 1)
                     {
                         return null;
                     }

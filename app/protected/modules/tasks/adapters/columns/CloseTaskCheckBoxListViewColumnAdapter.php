@@ -40,7 +40,7 @@
         {
             $htmlOptions = array('class'    => 'close-task-checkbox',
                                  'onclick'  => "closeOpenTaskByCheckBoxClick('" . $checkboxId . "', '" . $modelId . "')");
-            if($completedValue == true)
+            if ($completedValue == true)
             {
                 $htmlOptions['disabled']   = 'disabled';
                 $htmlOptions['labelClass'] = 'disabled';

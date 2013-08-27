@@ -103,11 +103,11 @@
             {
                 throw new ApiNoRightWebApiLoginException();
             }
-            if($user->isSystemUser && !ApiRequest::isApiRequest())
+            if ($user->isSystemUser && !ApiRequest::isApiRequest())
             {
                 throw new NoRightWebLoginException();
             }
-            if($user->isSystemUser && ApiRequest::isApiRequest())
+            if ($user->isSystemUser && ApiRequest::isApiRequest())
             {
                 throw new ApiNoRightWebApiLoginException();
             }
@@ -928,7 +928,7 @@
          */
         public function setIsRootUser()
         {
-            if(User::getRootUserCount() > 0)
+            if (User::getRootUserCount() > 0)
             {
                 throw new ExistingRootUserException();
             }
