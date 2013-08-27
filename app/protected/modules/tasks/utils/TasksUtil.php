@@ -734,5 +734,19 @@
             $mappingArray = self::getKanbanItemTypeToDefaultTaskStatusMappingArray();
             return $mappingArray[$kanbanItemType];
         }
+
+        /**
+         * Set default values for task
+         * @param Task $task
+         */
+        public static function setDefaultValuesForTask($task)
+        {
+            $user = Yii::app()->user->userModel;
+            $task->requestedByUser = $user;
+            $notificationSubscriber = new NotificationSubscriber();
+            $notificationSubscriber->person = $user;
+            $notificationSubscriber->hasReadLatest = false;
+            $task->notificationSubscribers->add($notificationSubscriber);
+        }
     }
 ?>

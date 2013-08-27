@@ -242,5 +242,64 @@
             $kanbanItemType = TasksUtil::resolveKanbanItemTypeForTask($task->id);
             $this->assertEquals(KanbanItem::TYPE_IN_PROGRESS,$kanbanItemType);
         }
+
+        public function testResolveSubscriptionLink()
+        {
+            $tasks  = Task::getByName('MyTest');
+            $task   = $tasks[0];
+            $notificationSubscriber = new NotificationSubscriber();
+            $notificationSubscriber->person = Yii::app()->user->userModel;
+            $task->notificationSubscribers->add($notificationSubscriber);
+            $task->save();
+            $link = TasksUtil::getKanbanSubscriptionLink($task,0);
+            $this->assertTrue(strpos($link, 'Unsubscribe') > 0);
+
+            foreach($task->notificationSubscribers as $notificationSubscriber)
+            {
+                if($notificationSubscriber->person == Yii::app()->user->userModel)
+                {
+                    $task->notificationSubscribers->remove($notificationSubscriber);
+                }
+            }
+            $task->save();
+            $link = TasksUtil::getKanbanSubscriptionLink($task,0);
+            $this->assertTrue(strpos($link, 'Subscribe') > 0);
+        }
+
+        public function testTaskCompletionPercentage()
+        {
+            $tasks  = Task::getByName('MyTest');
+            $task   = $tasks[0];
+            $checkListItem = new TaskCheckListItem();
+            $checkListItem->name = 'Test Item 1';
+            $this->assertTrue($checkListItem->unrestrictedSave());
+            $task->checkListItems->add($checkListItem);
+            $task->save(false);
+
+            $checkListItem = new TaskCheckListItem();
+            $checkListItem->name = 'Test Item 2';
+            $checkListItem->completed = true;
+            $this->assertTrue($checkListItem->unrestrictedSave());
+            $task->checkListItems->add($checkListItem);
+            $task->save(false);
+
+            $this->assertEquals(2, count($task->checkListItems));
+            $percent = TasksUtil::getTaskCompletionPercentage($task->id);
+            $this->assertEquals(50, $percent);
+        }
+
+        public function testGetDefaultTaskStatusForKanbanItemType()
+        {
+            $status = TasksUtil::getDefaultTaskStatusForKanbanItemType(KanbanItem::TYPE_SOMEDAY);
+            $this->assertEquals(Task::TASK_STATUS_NEW, $status);
+        }
+
+        public function testSetDefaultValuesForTask()
+        {
+            $task = TaskTestHelper::createTaskByNameForOwner('My Default Task', Yii::app()->user->userModel);
+            TasksUtil::setDefaultValuesForTask($task);
+            $this->assertEquals(Yii::app()->user->userModel->id, $task->requestedByUser->id);
+            $this->assertEquals(1, count($task->notificationSubscribers));
+        }
     }
 ?>

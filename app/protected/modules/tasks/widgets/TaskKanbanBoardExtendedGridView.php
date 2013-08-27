@@ -209,7 +209,7 @@
                                                     //serial = serial + '&taskId=' + taskId;
                                                     console.log(serial);
                                                     $.ajax({
-                                                        'url': '" . Yii::app()->createUrl('tasks/default/updateItemsSortInKanbanView', array('type'=> $type)) . "',
+                                                        'url': '" . Yii::app()->createUrl('tasks/default/updateStatusOnDragInKanbanView', array('type'=> $type)) . "',
                                                         'type': 'get',
                                                         'data': serial,
                                                         'dataType' : 'json',

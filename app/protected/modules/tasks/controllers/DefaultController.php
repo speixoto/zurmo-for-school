@@ -181,7 +181,7 @@
          */
         public function actionUpdateStatusViaAjax($id, $status)
         {
-            $this->proecessKanbanTypeUpdate($status, $id);
+            $this->processKanbanTypeUpdate($status, $id);
             //Run update queries for update task staus and update type and sort order in kanban column
             $this->processStatusUpdateViaAjax($id, $status, true);
         }
@@ -234,7 +234,7 @@
             if($id == null)
             {
                 $task                  = new Task();
-                $this->setDefaultValuesForTask($task);
+                TasksUtil::setDefaultValuesForTask($task);
                 $task                  = $this->resolveNewModelByRelationInformation( $task,
                                                                                         $relationAttributeName,
                                                                                         (int)$relationModelId,
@@ -256,7 +256,7 @@
             if($id == null)
             {
                 $task = new Task();
-                $this->setDefaultValuesForTask($task);
+                TasksUtil::setDefaultValuesForTask($task);
             }
             else
             {
@@ -358,7 +358,7 @@
         /**
          * Update items sort in kanban view
          */
-        public function actionUpdateItemsSortInKanbanView()
+        public function actionUpdateStatusOnDragInKanbanView()
         {
             $getData = GetUtil::getData();
             $counter = 1;
@@ -409,7 +409,7 @@
          */
         public function actionUpdateStatusInKanbanView($targetStatus, $taskId)
         {
-           $this->proecessKanbanTypeUpdate($targetStatus, $taskId);
+           $this->processKanbanTypeUpdate($targetStatus, $taskId);
            //Run update queries for update task staus and update type and sort order in kanban column
            $this->processStatusUpdateViaAjax($taskId, $targetStatus, false);
         }
@@ -417,7 +417,7 @@
         /**
          * Process kanban type update
          */
-        protected function proecessKanbanTypeUpdate($targetStatus, $taskId)
+        protected function processKanbanTypeUpdate($targetStatus, $taskId)
         {
            $targetKanbanType = TasksUtil::resolveKanbanItemTypeForTaskStatus(intval($targetStatus));
            $sourceKanbanType = TasksUtil::resolveKanbanItemTypeForTask(intval($taskId));
@@ -425,9 +425,12 @@
            {
               $sortOrder             = KanbanItem::getMaximumSortOrderByType($targetKanbanType);
               $kanbanItem            = KanbanItem::getByTask(intval($taskId));
-              $kanbanItem->sortOrder = $sortOrder;
-              $kanbanItem->type      = $targetKanbanType;
-              $kanbanItem->save();
+              if($kanbanItem != null)
+              {
+                  $kanbanItem->sortOrder = $sortOrder;
+                  $kanbanItem->type      = $targetKanbanType;
+                  $kanbanItem->save();
+              }
            }
         }
 
@@ -506,20 +509,6 @@
             TasksUtil::sendNotificationOnTaskUpdate($task, Zurmo::t('TasksModule', $user->getFullName() . ' has unsubscribed from the task #' . $task->id));
 
             return $task;
-        }
-
-        /**
-         * Set default values for task
-         * @param Task $task
-         */
-        protected function setDefaultValuesForTask($task)
-        {
-            $user = Yii::app()->user->userModel;
-            $task->requestedByUser = $user;
-            $notificationSubscriber = new NotificationSubscriber();
-            $notificationSubscriber->person = $user;
-            $notificationSubscriber->hasReadLatest = false;
-            $task->notificationSubscribers->add($notificationSubscriber);
         }
 
         /**
