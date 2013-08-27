@@ -433,8 +433,9 @@
             Yii::app()->end(0, false);
         }
 
-        public function actionLogo($id)
+        public function actionLogo()
         {
+            $id   = (int)ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'logoThumbFileModelId');
             $logo = FileModel::getById($id);
             header("Content-Type:   $logo->type");
             header("Content-Length: $logo->size");
