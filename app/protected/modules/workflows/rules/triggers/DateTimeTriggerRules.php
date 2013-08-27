@@ -69,15 +69,15 @@
          */
         protected function resolveAttributeValueIsChanged(RedBeanModel $model, $attribute)
         {
-            if($attribute === 'createdDateTime' && $model->id < 0 )
+            if ($attribute === 'createdDateTime' && $model->id < 0 )
             {
                 return true;
             }
-            elseif($attribute === 'createdDateTime')
+            elseif ($attribute === 'createdDateTime')
             {
                 return false;
             }
-            elseif($attribute === 'modifiedDateTime')
+            elseif ($attribute === 'modifiedDateTime')
             {
                 return true;
             }

@@ -147,7 +147,7 @@
                 assert('$rowBean->id != null');
                 $columnMessages = array();
                 $shouldSkipRow  = false;
-                foreach($this->sanitizableColumnNames as $columnName)
+                foreach ($this->sanitizableColumnNames as $columnName)
                 {
                     $attributeIndexOrDerivedType = $this->mappingData[$columnName]['attributeIndexOrDerivedType'];
                     $attributeImportRules = AttributeImportRulesFactory::

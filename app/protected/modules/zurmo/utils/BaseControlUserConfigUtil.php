@@ -84,9 +84,9 @@
             }
             else
             {
-                foreach($superGroup->users as $user)
+                foreach ($superGroup->users as $user)
                 {
-                    if($user->isSystemUser)
+                    if ($user->isSystemUser)
                     {
                         if ($setOnMissing)
                         {

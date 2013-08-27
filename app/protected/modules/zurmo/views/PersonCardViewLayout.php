@@ -84,17 +84,17 @@
         protected function resolveNameContent()
         {
             $element                       = new DropDownElement($this->model, 'title', null);
-            $element->nonEditableTemplate  = '{content}';       
+            $element->nonEditableTemplate  = '{content}';
             if (StarredUtil::modelHasStarredInterface($this->model))
             {
-                $starLink = StarredUtil::getToggleStarStatusLink($this->model, null);                           
-            }            
+                $starLink = StarredUtil::getToggleStarStatusLink($this->model, null);
+            }
             else
             {
                 $starLink = null;
             }
             $salutation                    = $element->render();
-            if($salutation != null)
+            if ($salutation != null)
             {
                 $spanContent = ZurmoHtml::tag('span', array('class' => 'salutation'), $element->render());
             }
@@ -102,7 +102,7 @@
             {
                 $spanContent = null;
             }
-            return ZurmoHtml::tag('h2', array(), $spanContent . strval($this->model) . $starLink);            
+            return ZurmoHtml::tag('h2', array(), $spanContent . strval($this->model) . $starLink);
         }
 
         protected function resolveBackOfCardLinkContent()

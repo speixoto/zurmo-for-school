@@ -219,7 +219,7 @@
             $this->attributeModelClassName = $this->resolveAttributeModelClassName($model, $this->attributeName);
             $attributeModelClassName       = $this->attributeModelClassName;
             $model                         = new $attributeModelClassName(false);
-            if($this->mappingRuleData["type"] == RelatedModelValueTypeMappingRuleForm::ZURMO_MODEL_NAME &&
+            if ($this->mappingRuleData["type"] == RelatedModelValueTypeMappingRuleForm::ZURMO_MODEL_NAME &&
                !$model->isAttribute("name"))
             {
                 throw new NotSupportedException();

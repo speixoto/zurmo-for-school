@@ -121,7 +121,7 @@
         {
             assert('is_array($missingCustomFieldValues)');
             assert('is_string($columnName)');
-            foreach($missingCustomFieldValues as $missingCustomFieldValue)
+            foreach ($missingCustomFieldValues as $missingCustomFieldValue)
             {
                 $this->resolveMissingValueToAdd($missingCustomFieldValue, $columnName);
             }
@@ -157,16 +157,16 @@
          */
         public function resolveForNewData(CustomFieldsInstructionData $newInstructionsData)
         {
-            foreach($newInstructionsData->getMissingValuesToAdd() as $columnName => $columnData)
+            foreach ($newInstructionsData->getMissingValuesToAdd() as $columnName => $columnData)
             {
-                foreach($columnData as $missingValueToAdd)
+                foreach ($columnData as $missingValueToAdd)
                 {
                     $this->resolveMissingValueToAdd($missingValueToAdd, $columnName);
                 }
             }
-            foreach($newInstructionsData->getMissingValuesToMap() as $columnName => $columnData)
+            foreach ($newInstructionsData->getMissingValuesToMap() as $columnName => $columnData)
             {
-                foreach($columnData as $missingValueToMap  => $mapToValue)
+                foreach ($columnData as $missingValueToMap  => $mapToValue)
                 {
                     $this->resolveMissingValueToMap($missingValueToMap, $mapToValue, $columnName);
                 }

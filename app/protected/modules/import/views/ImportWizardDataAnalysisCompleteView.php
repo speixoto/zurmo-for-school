@@ -157,9 +157,9 @@
         protected function findCountByGroupDataAndStatus(array $groupData, $status)
         {
             assert('is_int($status)');
-            foreach($groupData as $group)
+            foreach ($groupData as $group)
             {
-                if((int)$group['analysisStatus'] === $status)
+                if ((int)$group['analysisStatus'] === $status)
                 {
                     return (int)$group['count'];
                 }

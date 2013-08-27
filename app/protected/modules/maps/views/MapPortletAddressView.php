@@ -120,7 +120,7 @@
 
         public function renderContent()
         {
-            if(!$this->shouldRenderMap())
+            if (!$this->shouldRenderMap())
             {
                 $emptyLabel = Zurmo::t('ZurmoModule', 'No address found');
                 return ZurmoHtml::tag('span', array('class' => 'empty'),
@@ -179,7 +179,7 @@
 
         protected function shouldRenderMap()
         {
-            if($this->params['relationModel']->primaryAddress->makeAddress() == null)
+            if ($this->params['relationModel']->primaryAddress->makeAddress() == null)
             {
                 return false;
             }
