@@ -487,7 +487,7 @@
                 return KanbanItem::TYPE_TODO;
             }
             $data = self::getTaskStatusMappingToKanbanItemTypeArray();
-            return $data[$status];
+            return $data[intval($status)];
         }
 
         /**
@@ -709,6 +709,30 @@
             }
             $completionPercent = ($completedItemsCount/$checkListItemsCount)*100;
             return $completionPercent;
+        }
+
+        /**
+         * Maps task status to kanban item type
+         * @return array
+         */
+        public static function getKanbanItemTypeToDefaultTaskStatusMappingArray()
+        {
+            return array(
+                            KanbanItem::TYPE_TODO                   => Task::TASK_STATUS_NEW,
+                            KanbanItem::TYPE_SOMEDAY                => Task::TASK_STATUS_NEW,
+                            KanbanItem::TYPE_IN_PROGRESS            => Task::TASK_STATUS_IN_PROGRESS,
+                            KanbanItem::TYPE_COMPLETED              => Task::TASK_STATUS_COMPLETED
+                        );
+        }
+
+        /**
+         * Gets default task status for kanban item type
+         * @param int $kanbanItemType
+         */
+        public static function getDefaultTaskStatusForKanbanItemType($kanbanItemType)
+        {
+            $mappingArray = self::getKanbanItemTypeToDefaultTaskStatusMappingArray();
+            return $mappingArray[$kanbanItemType];
         }
     }
 ?>

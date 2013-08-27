@@ -181,7 +181,9 @@
          */
         public function actionUpdateStatusViaAjax($id, $status)
         {
-            $this->processStatusUpdateViaAjax($id, $status);
+            $this->proecessKanbanTypeUpdate($status, $id);
+            //Run update queries for update task staus and update type and sort order in kanban column
+            $this->processStatusUpdateViaAjax($id, $status, true);
         }
 
         /**
@@ -360,21 +362,44 @@
         {
             $getData = GetUtil::getData();
             $counter = 1;
-            foreach($getData['items'] as $taskId)
+            $response = array();
+            if(count($getData['items']) > 0)
             {
-                $kanbanItem         = KanbanItem::getByTask(intval($taskId));
-                if($getData['type'] == $kanbanItem->type)
+                foreach($getData['items'] as $taskId)
                 {
-                    $kanbanItem->sortOrder = $counter;
+                    if($taskId != '')
+                    {
+                        $kanbanItem         = KanbanItem::getByTask(intval($taskId));
+                        //if kanban type is completed
+                        if($getData['type'] == KanbanItem::TYPE_COMPLETED)
+                        {
+                            $this->actionUpdateStatusInKanbanView(Task::TASK_STATUS_COMPLETED, $taskId);
+                            $response['button'] = '';
+                        }
+                        else
+                        {
+                            //When in the same column
+                            if($getData['type'] == $kanbanItem->type)
+                            {
+                                $kanbanItem->sortOrder = $counter;
+                            }
+                            else
+                            {
+                                //This would be the one which is dragged across column
+                                $kanbanItem->sortOrder = $counter;
+                                $kanbanItem->type      = $getData['type'];
+                                $targetStatus = TasksUtil::getDefaultTaskStatusForKanbanItemType($getData['type']);
+                                $this->processStatusUpdateViaAjax($taskId, $targetStatus, false);
+                                $content = TasksUtil::resolveActionButtonForTaskByStatus($targetStatus, $this->getId(), $this->getModule()->getId(), $taskId);
+                                $response['button'] = $content;
+                            }
+                            $kanbanItem->save();
+                            $counter++;
+                        }
+                    }
                 }
-                else
-                {
-                    $kanbanItem->sortOrder = $counter;
-                    $kanbanItem->type      = $getData['type'];
-                }
-                $kanbanItem->save();
-                $counter++;
             }
+            echo CJSON::encode($response);
         }
 
         /**
@@ -384,7 +409,16 @@
          */
         public function actionUpdateStatusInKanbanView($targetStatus, $taskId)
         {
-           $route            = Yii::app()->createUrl('tasks/default/updateStatusInKanbanView');
+           $this->proecessKanbanTypeUpdate($targetStatus, $taskId);
+           //Run update queries for update task staus and update type and sort order in kanban column
+           $this->processStatusUpdateViaAjax($taskId, $targetStatus, false);
+        }
+
+        /**
+         * Process kanban type update
+         */
+        protected function proecessKanbanTypeUpdate($targetStatus, $taskId)
+        {
            $targetKanbanType = TasksUtil::resolveKanbanItemTypeForTaskStatus(intval($targetStatus));
            $sourceKanbanType = TasksUtil::resolveKanbanItemTypeForTask(intval($taskId));
            if($sourceKanbanType != $targetKanbanType)
@@ -395,8 +429,6 @@
               $kanbanItem->type      = $targetKanbanType;
               $kanbanItem->save();
            }
-           //Run update queries for update task staus and update type and sort order in kanban column
-           $this->processStatusUpdateViaAjax($taskId, $targetStatus);
         }
 
         /**
@@ -404,16 +436,25 @@
          * @param int $id
          * @param int $status
          */
-        protected function processStatusUpdateViaAjax($id, $status)
+        protected function processStatusUpdateViaAjax($id, $status, $showCompletionDate = true)
         {
-            $task         = Task::getById(intval($id));
+            $task          = Task::getById(intval($id));
+            $currentStatus = $task->status;
             $task->status = intval($status);
             if(intval($status) == Task::TASK_STATUS_COMPLETED)
             {
+                foreach ($task->checkListItems as $checkItem)
+                {
+                    $checkItem->completed = true;
+                    $checkItem->unrestrictedSave();
+                }
                 $task->completedDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
                 $task->completed         = true;
                 $task->save();
-                echo '<p>' . Zurmo::t('TasksModule', 'Completed On') . ': ' . DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay($task->completedDateTime) . '</p>';
+                if($showCompletionDate)
+                {
+                    echo '<p>' . Zurmo::t('TasksModule', 'Completed On') . ': ' . DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay($task->completedDateTime) . '</p>';
+                }
             }
             else
             {

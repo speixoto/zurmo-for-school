@@ -139,7 +139,7 @@
          */
         protected function renderUlTagForKanbanColumn($listItems, $attributeValue = null)
         {
-            return ZurmoHtml::tag('ul id="task-sortable-rows-' . $attributeValue . '"' , array(), $listItems);
+            return ZurmoHtml::tag('ul id="task-sortable-rows-' . $attributeValue . '" class="connectedSortable"' , array(), $listItems);
         }
 
         /**
@@ -201,13 +201,31 @@
                                                 forceHelperSize: true,
                                                 items: 'li:not(.ui-state-disabled)',
                                                 connectWith: '.connectedSortable',
-                                                update : function () {
+                                                update : function (event, ui) {
+                                                    var id = $(ui.item).attr('id');
+                                                    var idParts = id.split('_');
+                                                    var taskId = parseInt(idParts[1]);
                                                     serial = $('#task-sortable-rows-" . $count . "').sortable('serialize', {key: 'items[]', attribute: 'id'});
+                                                    //serial = serial + '&taskId=' + taskId;
+                                                    console.log(serial);
                                                     $.ajax({
                                                         'url': '" . Yii::app()->createUrl('tasks/default/updateItemsSortInKanbanView', array('type'=> $type)) . "',
                                                         'type': 'get',
                                                         'data': serial,
+                                                        'dataType' : 'json',
                                                         'success': function(data){
+                                                            if(data.hasOwnProperty('button'))
+                                                            {
+                                                                if(data.button != '')
+                                                                {
+                                                                    $(ui.item).find('.task-status').html(data.button);
+                                                                }
+                                                                else
+                                                                {
+                                                                    console.log($(ui.item).find('.task-status'));
+                                                                    $(ui.item).find('.task-status').remove();
+                                                                }
+                                                            }
                                                         },
                                                         'error': function(request, status, error){
                                                             alert('We are unable to set the sort order at this time.  Please try again in a few minutes.');
