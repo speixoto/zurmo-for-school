@@ -62,6 +62,13 @@
             return array('Truncate');
         }
 
+        /**
+         * @param mixed $value
+         * @param string $columnName
+         * @param array $columnMappingData
+         * @param ImportSanitizeResultsUtil $importSanitizeResultsUtil
+         * @return array|void
+         */
         public function resolveValueForImport($value, $columnName, $columnMappingData, ImportSanitizeResultsUtil $importSanitizeResultsUtil)
         {
             $attributeNames = $this->getRealModelAttributeNames();

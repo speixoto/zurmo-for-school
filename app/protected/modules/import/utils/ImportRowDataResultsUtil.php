@@ -80,15 +80,15 @@
         public static function getStatusLabelByType($type)
         {
             assert('is_int($type)');
-            if($type == self::UPDATED)
+            if ($type == self::UPDATED)
             {
                 $label = Zurmo::t('ImportModule', 'Updated');
             }
-            elseif($type == self::CREATED)
+            elseif ($type == self::CREATED)
             {
                 $label = Zurmo::t('ImportModule', 'Created');
             }
-            elseif($type == self::ERROR)
+            elseif ($type == self::ERROR)
             {
                 $label = Zurmo::t('ImportModule', 'Skipped');
             }
@@ -99,15 +99,15 @@
         {
             assert('is_int($type)');
             $label = static::getStatusLabelByType($type);
-            if($type == self::UPDATED)
+            if ($type == self::UPDATED)
             {
                 $stageContent = ' stage-true';
             }
-            elseif($type == self::CREATED)
+            elseif ($type == self::CREATED)
             {
-                $stageContent = null;
+                $stageContent = ' stage-true';
             }
-            elseif($type == self::ERROR)
+            elseif ($type == self::ERROR)
             {
                 $stageContent = ' stage-false';
             }

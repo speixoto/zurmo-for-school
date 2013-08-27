@@ -35,22 +35,23 @@
      ********************************************************************************/
 
     class FormatterTest extends BaseTest
-    {                        
+    {
         private $formatter;
-        
-        public function setup() {
+
+        public function setup()
+        {
             parent::setup();
             $this->formatter = new Formatter();
         }
 
         public function testFormatDecimal()
-        {                                                                           
+        {
             $this->assertEquals('1,234.56789',  $this->formatter->formatDecimal(1234.56789));
             $this->assertEquals('1.23456789',   $this->formatter->formatDecimal(1.23456789));
             $this->assertEquals('12,345,678.9', $this->formatter->formatDecimal(12345678.9));
             $this->assertEquals('123.40000',    $this->formatter->formatDecimal(123.40000));
             $this->assertEquals('123.0',        $this->formatter->formatDecimal(123));
-            $this->assertEquals('0.123456789',  $this->formatter->formatDecimal(0.123456789));                        
+            $this->assertEquals('0.123456789',  $this->formatter->formatDecimal(0.123456789));
         }
     }
 ?>

@@ -133,7 +133,7 @@
                 }
                 elseif ($valueElement instanceof MixedDateTypesElement)
                 {
-                    if($isTimeTrigger)
+                    if ($isTimeTrigger)
                     {
                         $valueElement->editableTemplate = '<div class="dynamic-row-operator" style="display:none;">{valueType}</div>' .
                                                           '<div class="value-data has-date-inputs">' .

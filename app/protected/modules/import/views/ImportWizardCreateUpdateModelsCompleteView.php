@@ -66,6 +66,16 @@
          */
         protected $rowsWithErrors = 0;
 
+        /**
+         * @param string $controllerId
+         * @param string $moduleId
+         * @param ImportWizardForm $model
+         * @param ImportDataProvider $dataProvider
+         * @param array $mappingData
+         * @param int $modelsCreated
+         * @param int $modelsUpdated
+         * @param int $rowsWithErrors
+         */
         public function __construct($controllerId, $moduleId, ImportWizardForm $model, ImportDataProvider $dataProvider,
                                     array $mappingData, $modelsCreated = 0, $modelsUpdated = 0, $rowsWithErrors = 0)
         {
@@ -146,6 +156,11 @@
          * Override because there is no link to go to. This is the last step.
          */
         protected function renderNextPageLinkContent()
+        {
+            return null;
+        }
+
+        protected function renderTitleContent()
         {
             return null;
         }

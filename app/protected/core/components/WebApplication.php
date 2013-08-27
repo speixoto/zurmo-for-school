@@ -177,7 +177,7 @@
                 }
                 $classFile       = $basePath . DIRECTORY_SEPARATOR   . $baseClassName . '.php';
                 $customClassFile = $basePath . DIRECTORY_SEPARATOR   . 'Custom' . $baseClassName . '.php';
-                if(is_file($customClassFile))
+                if (is_file($customClassFile))
                 {
                     if (!class_exists($customClassName, false))
                     {
@@ -301,12 +301,12 @@
          * @param string $ampersand
          * @return string
          */
-        public function createUrl($route,$params=array(),$ampersand='&')
+        public function createUrl($route, $params = array(), $ampersand = '&')
         {
             if ($this->resolveAlwaysAsAbsoluteUrl)
             {
                 $url = $this->getUrlManager()->createUrl($route,$params,$ampersand);
-                if(strpos($url,'http')===0)
+                if (strpos($url, 'http') === 0)
                 {
                     return $url;
                 }

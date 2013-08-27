@@ -267,7 +267,7 @@
             return array('attributeIndexOrDerivedType'  => $attributeName,
                          'type'                         => 'importColumn',
                          'mappingRulesData'             => array('DefaultValueDropDownModelAttributeMappingRuleForm' =>
-                                                           array('defaultValue'=> $defaultValue)),
+                                                           array('defaultValue' => $defaultValue)),
                          'customFieldsInstructionData' => $customFieldsInstructionData);
         }
 

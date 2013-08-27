@@ -82,7 +82,7 @@ END;
                                                                      'style' => "display:none;"), 'G');
             $collapseLinkContent      = ZurmoHtml::tag('span', array('class' => 'drillDownCollapseLink drilldown-link',
                                                                      'style' => "display:none;"), '&divide;');
-            if($this->hasExpandableContent($data))
+            if ($this->hasExpandableContent($data))
             {
                 echo $expandAndLoadLinkContent . $expandLinkContent . $collapseLinkContent;
             }
@@ -91,20 +91,20 @@ END;
         protected function hasExpandableContent($data)
         {
             $content = null;
-            if($this->expandableContentType == ImportTempTableListView::EXPANDABLE_ANALYSIS_CONTENT_TYPE &&
+            if ($this->expandableContentType == ImportTempTableListView::EXPANDABLE_ANALYSIS_CONTENT_TYPE &&
                 $data->serializedAnalysisMessages != null)
             {
                 $analysisMessages = unserialize($data->serializedAnalysisMessages);
-                if(count($analysisMessages) > 0)
+                if (count($analysisMessages) > 0)
                 {
                     return true;
                 }
             }
-            if($this->expandableContentType == ImportTempTableListView::EXPANDABLE_IMPORT_RESULTS_CONTENT_TYPE &&
+            if ($this->expandableContentType == ImportTempTableListView::EXPANDABLE_IMPORT_RESULTS_CONTENT_TYPE &&
                 $data->serializedMessages != null)
             {
                 $resultMessages = unserialize($data->serializedMessages);
-                if(count($resultMessages) > 0)
+                if (count($resultMessages) > 0)
                 {
                     return true;
                 }

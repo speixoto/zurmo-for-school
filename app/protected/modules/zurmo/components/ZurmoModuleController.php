@@ -250,7 +250,7 @@
             $data = array();
             if ($totalItems > 0)
             {
-                if ($totalItems <= ExportModule::$asynchronusThreshold)
+                if ($totalItems <= ExportModule::$asynchronousThreshold)
                 {
                     // Output csv file directly to user browser
                     if ($dataProvider)

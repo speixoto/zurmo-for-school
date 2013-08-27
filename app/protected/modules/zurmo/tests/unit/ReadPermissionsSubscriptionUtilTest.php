@@ -105,7 +105,7 @@
             $readSubscriptionTables = array();
             foreach ($allSubscriptionTableRows as $subscriptionTableRow)
             {
-                foreach($subscriptionTableRow as $subscriptionTable)
+                foreach ($subscriptionTableRow as $subscriptionTable)
                 {
                     $readSubscriptionTables[] = $subscriptionTable;
                 }
@@ -250,7 +250,7 @@
             R::exec($sql);
 
             $accounts = Account::getAll();
-            foreach($accounts as $account)
+            foreach ($accounts as $account)
             {
                 $account->delete();
                 $account->forgetAll();

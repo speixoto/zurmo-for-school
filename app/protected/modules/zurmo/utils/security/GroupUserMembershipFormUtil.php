@@ -81,9 +81,9 @@
          */
         public static function validateMembershipChange(GroupUserMembershipForm $form, Group $group)
         {
-            if($group->name == Group::SUPER_ADMINISTRATORS_GROUP_NAME)
+            if ($group->name == Group::SUPER_ADMINISTRATORS_GROUP_NAME)
             {
-                if(count($form->userMembershipData) == 0)
+                if (count($form->userMembershipData) == 0)
                 {
                     return Zurmo::t('ZurmoModule', 'There must be at least one super administrator');
                 }
@@ -165,7 +165,7 @@
             $data = array();
             foreach ($users as $user)
             {
-                if(!$user->isSystemUser)
+                if (!$user->isSystemUser)
                 {
                     $data[$user->id] = strval($user);
                 }

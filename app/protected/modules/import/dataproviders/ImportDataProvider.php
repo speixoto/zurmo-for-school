@@ -53,6 +53,13 @@
             return $this->tableName;
         }
 
+        /**
+         * @param string $tableName
+         * @param bool $excludeFirstRow
+         * @param array $config
+         * @param null|int $filteredByStatus
+         * @param null|int $filteredByAnalysisStatus
+         */
         public function __construct($tableName, $excludeFirstRow = false, array $config = array(), $filteredByStatus = null,
                                     $filteredByAnalysisStatus = null)
         {

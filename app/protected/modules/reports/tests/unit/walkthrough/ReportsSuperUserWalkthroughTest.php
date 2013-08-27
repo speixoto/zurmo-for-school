@@ -222,7 +222,7 @@
             $content = $this->runControllerWithExitExceptionAndGetContent('reports/default/export');
             $this->assertEquals('Testing download.', $content);
             
-            ExportModule::$asynchronusThreshold = 1;
+            ExportModule::$asynchronousThreshold = 1;
             $this->runControllerWithRedirectExceptionAndGetUrl('reports/default/export');
             
             // Start background job

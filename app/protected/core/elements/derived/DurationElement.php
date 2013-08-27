@@ -50,7 +50,7 @@
             $content  = $this->renderEditableDurationIntervalTextField() . "\n";
             $content .= $this->renderEditableDurationTypeDropDownField() . "\n";
             $cssClass = 'twoFields';
-            if($this->signAttributeName != null)
+            if ($this->signAttributeName != null)
             {
                 $content .= $this->renderEditableDurationSignDropDownField() . "\n";
                 $cssClass = 'threeFields';
@@ -60,7 +60,6 @@
             $content  = $this->resolveEditableWrapper($cssClass, $content);
             return $content;
         }
-
 
         protected function resolveEditableWrapper($cssClass, $content)
         {

@@ -42,6 +42,10 @@
 
         private $avatarImageUrl;
 
+        /**
+         * @param string $username
+         * @throws NotFoundException
+         */
         public static function getByUsername($username)
         {
             assert('is_string($username)');
@@ -99,17 +103,21 @@
             {
                 throw new ApiNoRightWebApiLoginException();
             }
-            if($user->isSystemUser && !ApiRequest::isApiRequest())
+            if ($user->isSystemUser && !ApiRequest::isApiRequest())
             {
                 throw new NoRightWebLoginException();
             }
-            if($user->isSystemUser && ApiRequest::isApiRequest())
+            if ($user->isSystemUser && ApiRequest::isApiRequest())
             {
                 throw new ApiNoRightWebApiLoginException();
             }
             return true;
         }
 
+        /**
+         * @param RedBean_OODBBean $bean
+         * @param bool $setDefaults
+         */
         protected function constructDerived($bean, $setDefaults)
         {
             assert('$bean === null || $bean instanceof RedBean_OODBBean');
@@ -582,6 +590,11 @@
             }
         }
 
+        /**
+         * @param string $moduleName
+         * @param string $rightName
+         * @return int
+         */
         public function getInheritedActualRight($moduleName, $rightName)
         {
             assert('is_string($moduleName)');
@@ -602,6 +615,12 @@
             }
         }
 
+        /**
+         * @param string $moduleName
+         * @param string $rightName
+         * @return int|void
+         * @throws NotSupportedException
+         */
         protected function getInheritedActualRightIgnoringEveryone($moduleName, $rightName)
         {
             assert('is_string($moduleName)');
@@ -634,6 +653,11 @@
             }
         }
 
+        /**
+         * @param string $moduleName
+         * @param string $policyName
+         * @return null
+         */
         protected function getInheritedActualPolicyIgnoringEveryone($moduleName, $policyName)
         {
             assert('is_string($moduleName)');
@@ -924,7 +948,7 @@
          */
         public function setIsRootUser()
         {
-            if(User::getRootUserCount() > 0)
+            if (User::getRootUserCount() > 0)
             {
                 throw new ExistingRootUserException();
             }

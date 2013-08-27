@@ -72,6 +72,13 @@
             throw new NotImplementedException();
         }
 
+        /**
+         * @param mixed $value
+         * @param string $columnName
+         * @param array $columnMappingData
+         * @param ImportSanitizeResultsUtil $importSanitizeResultsUtil
+         * @return array|void
+         */
         public function resolveValueForImport($value, $columnName, $columnMappingData, ImportSanitizeResultsUtil $importSanitizeResultsUtil)
         {
             assert('is_string($columnName)');

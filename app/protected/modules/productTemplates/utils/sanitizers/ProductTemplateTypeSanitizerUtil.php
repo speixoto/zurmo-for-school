@@ -58,7 +58,6 @@
             }
         }
 
-
         /**
          * Given a type, attempt to resolve it as a valid type.  If the type is invalid, a
          * InvalidValueToSanitizeException will be thrown.

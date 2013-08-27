@@ -80,7 +80,7 @@
             {
                 return;
             }
-            if($autoresponder->fromOperationDurationInterval == 0)
+            if ($autoresponder->fromOperationDurationInterval == 0)
             {
                 return Zurmo::t('AutorespondersModule', 'Send immediately after {operation}',
                                 array('{operation}' => $operationValuesAndLabels[$autoresponder->operationType]));
@@ -93,7 +93,6 @@
                                           '{operation}' => $operationValuesAndLabels[$autoresponder->operationType]));
                 return $content;
             }
-
         }
 
         protected static function renderMetricsContent(Autoresponder $autoresponder)
