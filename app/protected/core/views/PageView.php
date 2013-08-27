@@ -264,7 +264,7 @@
 
             $specialCssContent = null;
             $publishedAssetsPath = Yii::app()->assetManager->publish(
-                    Yii::getPathOfAlias("webroot.themes.{$defaultThemeName}.fonts"));
+                    Yii::getPathOfAlias("application.core.views.assets.fonts"));
 
             $specialCssContent .= "
             <style>
