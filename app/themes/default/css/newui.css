@@ -11427,11 +11427,11 @@ div.hasHalfs > div input {
 .juiportlet-widget-content .rssHeader {
   padding: 10px 15px 0 15px;
 }
-.juiportlet-widget-content .items {
+.juiportlet-widget-coifrntent .items {
   border: none !important;
 }
-.juiportlet-widget-content .items thead > tr th,
-.juiportlet-widget-content .items thead > tr td {
+.juiportlet-widget-coifrntent .items thead > tr th,
+.juiportlet-widget-coifrntent .items thead > tr td {
   border-top: none;
 }
 .juiportlet-widget-content table.items tbody tr:last-child > td {
@@ -13217,8 +13217,8 @@ table.configuration-list td:last-child a .z-label:before {
   content: 'u';
 }
 .available-portlets .icon-iframe:before {
-  content: '\0040';
-  font-size: 46px;
+  content: '\2211';
+  font-size: 48px;
 }
 .available-portlets .icon-maps:before {
   content: 'L';
