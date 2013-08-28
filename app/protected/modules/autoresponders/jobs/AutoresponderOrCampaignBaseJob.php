@@ -36,6 +36,8 @@
 
     abstract class AutoresponderOrCampaignBaseJob extends BaseJob
     {
+        protected $modelIdentifiersForForgottenValidators = array();
+
         /**
          * @return The type of the NotificationRules
          */
