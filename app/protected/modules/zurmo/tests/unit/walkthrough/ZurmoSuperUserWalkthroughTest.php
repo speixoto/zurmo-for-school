@@ -273,7 +273,6 @@
 
         public function testToggleStar()
         {
-            StarredUtil::createStarredTables();
             $super                = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
             $account              = new Account();
             $account->owner       = $super;

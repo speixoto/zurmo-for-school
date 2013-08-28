@@ -85,22 +85,16 @@
         {
             $element                       = new DropDownElement($this->model, 'title', null);
             $element->nonEditableTemplate  = '{content}';
+            $starLink = null;
+            $spanContent = null;
             if (StarredUtil::modelHasStarredInterface($this->model))
             {
                 $starLink = StarredUtil::getToggleStarStatusLink($this->model, null);
-            }
-            else
-            {
-                $starLink = null;
             }
             $salutation                    = $element->render();
             if ($salutation != null)
             {
                 $spanContent = ZurmoHtml::tag('span', array('class' => 'salutation'), $element->render());
-            }
-            else
-            {
-                $spanContent = null;
             }
             return ZurmoHtml::tag('h2', array(), $spanContent . strval($this->model) . $starLink);
         }

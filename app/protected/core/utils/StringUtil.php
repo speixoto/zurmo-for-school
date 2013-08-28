@@ -92,12 +92,12 @@
                 return $content;
             }
         }
-        
+
         public static function renderFluidTitleContent($title)
         {
-            assert('$title == null || is_string($title)');            
+            assert('$title == null || is_string($title)');
             $content = static::renderFluidContent($title);
-            return ZurmoHtml::tag('h1', array(), $content);            
+            return ZurmoHtml::tag('h1', array(), $content);
         }
 
         /**
@@ -162,6 +162,26 @@
                 $randomString       .= $randomCharacter;
             }
             return $randomString;
+        }
+
+        /**
+         * @param $haystack
+         * @param $needle
+         * @return bool
+         */
+        public static function startsWith($haystack, $needle)
+        {
+            return $needle === "" || strpos($haystack, $needle) === 0;
+        }
+
+        /**
+         * @param $haystack
+         * @param $needle
+         * @return bool
+         */
+        public static function endsWith($haystack, $needle)
+        {
+            return $needle === "" || substr($haystack, -strlen($needle)) === $needle;
         }
     }
 ?>

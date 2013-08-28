@@ -38,21 +38,25 @@
     {
         protected function resolveExtraSql(RedBeanModelJoinTablesQueryAdapter &$joinTablesAdapter, &$where)
         {
+            $user                   = Yii::app()->user->userModel;
+            $quote                  = DatabaseCompatibilityUtil::getQuote();
             if ($where != '')
             {
                 $where .= ' and ';
             }
-            $user                   = Yii::app()->user->userModel;
-            $quote                  = DatabaseCompatibilityUtil::getQuote();
-            $starredTableName       = StarredUtil::getStarredTableName($this->modelClassName);
-            $extraOnQueryPart       = "and {$quote}{$starredTableName}{$quote}.{$quote}user_id{$quote} = {$user->id}";
+            $starredTableName       = RedBeanModel::getTableName(StarredUtil::getStarredModelClassName($this->modelClassName));
+            $modelIdColumnName      = RedBeanModel::getTableName($this->modelClassName) . '_id';
+            $baseStarredTableName   = RedBeanModel::getTableName('BaseStarredModel');
+            $baseStarredColumnName  = $baseStarredTableName . '_id';
             $starredTableAliasName  = $joinTablesAdapter->addLeftTableAndGetAliasName(
-                                                        $starredTableName,
-                                                        'id',
-                                                        null,
-                                                        'model_id',
-                                                        $extraOnQueryPart);
-            $where                 .= "{$quote}$starredTableAliasName{$quote}.{$quote}user_id{$quote} = {$user->id}";
+                $starredTableName,
+                'id',
+                null,
+                $modelIdColumnName);
+            $baseStarredTableAliasName  = $joinTablesAdapter->addFromTableAndGetAliasName($baseStarredTableName,
+                                                            $baseStarredColumnName,
+                                                            $starredTableAliasName);
+            $where                 .= "{$quote}$baseStarredTableAliasName{$quote}.{$quote}_user_id{$quote} = {$user->id}";
         }
     }
 ?>

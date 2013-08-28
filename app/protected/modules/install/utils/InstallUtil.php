@@ -638,7 +638,6 @@
             $messageLogger->addInfoMessage(Zurmo::t('InstallModule', 'Models catalog built.'));
             RedBeanModelsToTablesAdapter::generateTablesFromModelClassNames($rootModels, $messageLogger);
             // TODO: @Shoaibi/@Jason: Critical: What are these for? May be refactor these too.
-            StarredUtil::createStarredTables();
             ReadPermissionsSubscriptionUtil::buildTables();
             if ($autoBuildTestModels)
             {

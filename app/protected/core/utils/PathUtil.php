@@ -106,12 +106,6 @@
                                                                     'static::filterCanHaveBeanModels');
         }
 
-        public static function getAllStarredModelClassNames()
-        {
-            return static::getAllModelClassNamesWithFilterFromCache('implementsStarredInterfaceModelClassNames',
-                                                                    'static::filterImplementsStarredInterfaceModels');
-        }
-
         public static function getAllReadSubscriptionModelClassNames()
         {
             return static::getAllModelClassNamesWithFilterFromCache('readPermissionsSubscriptionModelClassNames',
@@ -135,14 +129,6 @@
         protected static function filterCanHaveBeanModels($model)
         {
             if (is_subclass_of($model, 'RedBeanModel') && $model::getCanHaveBean())
-            {
-                return $model;
-            }
-        }
-
-        protected static function filterImplementsStarredInterfaceModels($model)
-        {
-            if (StarredUtil::modelHasStarredInterfaceAndNotAbstract($model))
             {
                 return $model;
             }
