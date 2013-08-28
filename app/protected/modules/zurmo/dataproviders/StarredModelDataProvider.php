@@ -38,28 +38,25 @@
     {
         protected function resolveExtraSql(RedBeanModelJoinTablesQueryAdapter &$joinTablesAdapter, &$where)
         {
+            $user                   = Yii::app()->user->userModel;
+            $quote                  = DatabaseCompatibilityUtil::getQuote();
             if ($where != '')
             {
                 $where .= ' and ';
             }
-            // TODO: @Shoaibi/@Sergio: Critical: I am missing something here.
-            $user                   = Yii::app()->user->userModel;
-            $quote                  = DatabaseCompatibilityUtil::getQuote();
             $starredTableName       = RedBeanModel::getTableName(StarredUtil::getStarredModelClassName($this->modelClassName));
+            $modelIdColumnName      = RedBeanModel::getTableName($this->modelClassName) . '_id';
             $baseStarredTableName   = RedBeanModel::getTableName('BaseStarredModel');
             $baseStarredColumnName  = $baseStarredTableName . '_id';
-            $userIdColumn           = RedBeanModel::getTableName('User') . '_id';
-            $extraOnQueryPart       = "and {$quote}{$baseStarredTableName}{$quote}.{$quote}{$userIdColumn}{$quote}";
-            $extraOnQueryPart       .= " = {$user->id} and {$quote}{$baseStarredTableName}{$quote}.{$quote}id{$quote}";
-            $extraOnQueryPart       .= " = {$quote}{$starredTableName}{$quote}.{$quote}{$baseStarredColumnName}{$quote}";
-            $modelIdColumnName       = RedBeanModel::getTableName($this->modelClassName) . '_id';
             $starredTableAliasName  = $joinTablesAdapter->addLeftTableAndGetAliasName(
-                                                                                    $starredTableName,
-                                                                                    'id',
-                                                                                    null,
-                                                                                    $modelIdColumnName,
-                                                                                    $extraOnQueryPart);
-            $where                 .= "{$quote}$starredTableAliasName{$quote}.{$quote}_user_id{$quote} = {$user->id}";
+                $starredTableName,
+                'id',
+                null,
+                $modelIdColumnName);
+            $baseStarredTableAliasName  = $joinTablesAdapter->addFromTableAndGetAliasName($baseStarredTableName,
+                                                            $baseStarredColumnName,
+                                                            $starredTableAliasName);
+            $where                 .= "{$quote}$baseStarredTableAliasName{$quote}.{$quote}_user_id{$quote} = {$user->id}";
         }
     }
 ?>
