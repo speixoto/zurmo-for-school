@@ -83,8 +83,7 @@
             $sql .= "{$quote}{$campaignItemTableName}{$quote}.{$quote}contact_id{$quote} ";
             $sql .= "= {$quote}{$marketingListMemberTableName}{$quote}.{$quote}contact_id{$quote}";
             $sql .= "AND {$quote}{$campaignItemTableName}{$quote}.{$quote}campaign_id{$quote} = " . $campaign->id . " " ;
-            $sql .= "where {$quote}{$marketingListMemberTableName}{$quote}.{$quote}unsubscribed{$quote} != 1 and  ";
-            $sql .= "{$quote}{$marketingListMemberTableName}{$quote}.{$quote}marketinglist_id{$quote} = " . $campaign->marketingList->id ;
+            $sql .= "where {$quote}{$marketingListMemberTableName}{$quote}.{$quote}marketinglist_id{$quote} = " . $campaign->marketingList->id ;
             $sql .= " and {$quote}{$campaignItemTableName}{$quote}.{$quote}id{$quote} IS NULL limit ".$pageSize;
             $ids = ZurmoRedBean::getCol($sql);
 

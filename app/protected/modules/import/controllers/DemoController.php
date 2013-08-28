@@ -39,7 +39,7 @@
     {
         public function actionCreateDemoImportForAnalysis($firstRowIsHeaderRow = true)
         {
-            if (Yii::app()->user->userModel->username != 'super')
+            if (!Group::isUserASuperAdministrator(Yii::app()->user->userModel))
             {
                 throw new NotSupportedException();
             }

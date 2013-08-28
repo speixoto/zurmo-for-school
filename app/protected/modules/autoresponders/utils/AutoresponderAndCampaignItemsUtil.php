@@ -55,7 +55,7 @@
             assert('is_object($itemOwnerModel)');
             assert('get_class($itemOwnerModel) === "Autoresponder" || get_class($itemOwnerModel) === "Campaign"');
             if ($contact->primaryEmail->optOut ||
-               (get_class($itemOwnerModel) === "Campaign" && MarketingListMember::getByMarketingListIdContactIdAndSubscribed(
+               (get_class($itemOwnerModel) === "Campaign" && MarketingListMember::getByMarketingListIdContactIdAndUnsubscribed(
                                                                                 $itemOwnerModel->marketingList->id,
                                                                                 $contact->id,
                                                                                 true) != false))
