@@ -134,12 +134,18 @@
             
             //delete email message.
             $this->setGetArray(array('id' => $message1->id));
-            $this->runControllerWithRedirectExceptionAndGetUrl('emailMessages/default/delete');
+            $this->runControllerWithRedirectExceptionAndGetUrl('emailMessages/default/delete', true);
          
             //assert subject not present.
-            $this->setGetArray(array('id' => $contact->id));                        
-            $this->runControllerWithNoExceptionsAndGetContent('contacts/default/details');
-            $this->assertEquals('A test unmatched archived received email edited', $message1->subject);
+            try
+            {
+                EmailMessage::getById($message1->id);
+                $this->fail();
+            }
+            catch (NotFoundException $e)
+            {
+                //success
+            }
             
             //Test the default permission was setted            
             $everyoneGroup        = Group::getByName(Group::EVERYONE_GROUP_NAME);
