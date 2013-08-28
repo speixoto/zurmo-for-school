@@ -60,8 +60,19 @@
                         'add and schedule autoresponders and track your overall campaign performance');
             $content .= '</p>';
             $content .= '</div>';
-            $content .= '</div>';         
+            $content .= '</div>';
+            $this->registerScripts();
             return $content;
+        }
+
+        protected function registerScripts()
+        {
+            $content  = "$(this).resolveHighestAndEqualize($('.module-intro-steps'));";
+            $content .= "$(window).resize(function()
+                         {
+                             $(this).resolveHighestAndEqualize($('.module-intro-steps'));
+                         });";
+            Yii::app()->clientScript->registerScript($this->moduleName, $content);
         }
     }
 ?>
