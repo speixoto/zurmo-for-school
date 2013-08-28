@@ -276,11 +276,8 @@ a.ModalGameNotification a,
 .email-template-content .big-spinner,
 .autoresponder-stats,
 .module-intro-steps > div,
-#marketing-intro-steps > div,
 .module-intro-steps h3,
-#marketing-intro-steps h3,
 .module-intro-steps p,
-#marketing-intro-steps p,
 .continuum > div,
 .import-item-stage-status,
 .email-recipient-stage-status,
@@ -18855,14 +18852,12 @@ a + .autoresponder-stats {
   padding-left: 15px;
   line-height: 175%;
 }
-.module-intro-steps,
-#marketing-intro-steps {
+.module-intro-steps {
   float: left;
   width: 100%;
   margin: 30px 0 15px 0;
 }
-.module-intro-steps > div,
-#marketing-intro-steps > div {
+.module-intro-steps > div {
   float: left;
   margin-left: 2%;
   min-height: 150px;
@@ -18888,13 +18883,11 @@ a + .autoresponder-stats {
   box-shadow: inset 0 1px 1px 0 rgba(200, 200, 200, 0.4), 0 1px 0 0 #111;
   padding: 1px 0 0 0;
 }
-.module-intro-steps > div:first-child,
-#marketing-intro-steps > div:first-child {
+.module-intro-steps > div:first-child {
   margin-left: 0;
 }
-.module-intro-steps h3,
-#marketing-intro-steps h3 {
-  color: #fff;
+.module-intro-steps h3 {
+  color: #fff !important;
   font-size: 14px;
   padding: 34px 0 0 10px;
   font-weight: normal;
@@ -18909,16 +18902,13 @@ a + .autoresponder-stats {
   height: 100%;
   min-height: 149px;
   width: 85px;
-  border-right: 1px solid #282828;
 }
-.module-intro-steps h3 strong,
-#marketing-intro-steps h3 strong {
+.module-intro-steps h3 strong {
   display: block;
   font-size: 50px;
   line-height: 1;
 }
-.module-intro-steps h3 span,
-#marketing-intro-steps h3 span {
+.module-intro-steps h3 span {
   color: #fff;
   display: inline-block;
   font-weight: 100 !important;
@@ -18926,25 +18916,21 @@ a + .autoresponder-stats {
   line-height: 50px;
   margin-top: -5px;
 }
-.module-intro-steps p,
-#marketing-intro-steps p {
+.module-intro-steps p {
   min-height: 149px;
   padding: 10px 10px 10px 10px;
   margin-left: 85px;
   font-size: 13px;
   line-height: 21px;
-  border-left: 1px solid #333333;
   color: #ececec;
 }
-.module-intro-steps p strong,
-#marketing-intro-steps p strong {
+.module-intro-steps p strong {
   color: #fff;
   display: block;
   font-size: 14px;
   line-height: 22px;
 }
-.module-intro-steps span,
-#marketing-intro-steps span {
+.module-intro-steps span {
   display: block;
 }
 #products-intro-steps img {
