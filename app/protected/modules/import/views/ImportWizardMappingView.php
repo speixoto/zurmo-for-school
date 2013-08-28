@@ -121,9 +121,9 @@
             $content .= '<colgroup>';
             if (count($headerColumns) == 3)
             {
-                $content .= '<col style="width:40%" />';
-                $content .= '<col style="width:40%" />';
-                $content .= '<col style="width:20%" />';                
+                $content .= '<col style="width:50%" />';
+                $content .= '<col style="width:25%" />';
+                $content .= '<col style="width:25%" />';
             }
             else
             {
