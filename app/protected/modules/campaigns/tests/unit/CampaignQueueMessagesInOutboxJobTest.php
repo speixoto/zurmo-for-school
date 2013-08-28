@@ -512,12 +512,13 @@
                                                                         0,
                                                                         $marketingList);
             $this->assertNotNull($campaign);
+            $campaignId = $campaign->id;
             foreach ($contacts as $contact)
             {
                 CampaignItemTestHelper::createCampaignItem(0, $campaign, $contact);
             }
             $this->assertTrue($job->run());
-            ForgetAllCacheUtil::forgetAllCaches();
+            $campaign = Campaign::getById($campaignId);
             $campaignItemsCountExpected = $campaignItemsCountBefore + 5;
             $campaignItemsCountAfter    = CampaignItem::getCount();
             $this->assertEquals($campaignItemsCountExpected, $campaignItemsCountAfter);
@@ -549,7 +550,7 @@
                     $this->assertTrue(strpos($campaignItem->emailMessage->content->htmlContent, $contact->lastName) !== false);
                 }
             }
-            $this->assertEquals(2, $skippedCount); // Fails due to CampaignQueueMessagesInOutboxJob:95,96, even unsubscribed get email due to marketingListId being pseudo id.
+            $this->assertEquals(2, $skippedCount);
         }
     }
 ?>
