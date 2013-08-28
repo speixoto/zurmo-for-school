@@ -47,7 +47,6 @@
             SecurityTestHelper::createSuperAdmin();
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
-            StarredUtil::createStarredTables();
             $account              = new Account();
             $account->owner       = $super;
             $account->name        = 'Test Account0';

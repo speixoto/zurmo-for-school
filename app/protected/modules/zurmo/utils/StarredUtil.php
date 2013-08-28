@@ -55,60 +55,6 @@
                         !$reflectionClass->isAbstract());
         }
 
-        public static function createStarredTables()
-        {
-            $modelClassNames = PathUtil::getAllStarredModelClassNames();
-            foreach ($modelClassNames as $modelClassName)
-            {
-                $modelStarredTableName = static::getStarredTableName($modelClassName);
-                $schema                 = static::getStarredTableSchemaByName($modelStarredTableName);
-                CreateOrUpdateExistingTableFromSchemaDefinitionArrayUtil::generateOrUpdateTableBySchemaDefinition(
-                                                                                        $schema, new MessageLogger());
-            }
-        }
-
-        protected static function getStarredTableSchemaByName($tableName)
-        {
-            assert('is_string($tableName) && $tableName  != ""');
-            return array($tableName =>  array('columns' => array(
-                                                array(
-                                                    'name' => 'user_id',
-                                                    'type' => 'INT(11)',
-                                                    'unsigned' => 'UNSIGNED',
-                                                    'notNull' => 'NOT NULL',
-                                                    'collation' => null,
-                                                    'default' => null,
-                                                ),
-                                                array(
-                                                    'name' => 'model_id',
-                                                    'type' => 'INT(11)',
-                                                    'unsigned' => 'UNSIGNED',
-                                                    'notNull' => 'NOT NULL',
-                                                    'collation' => null,
-                                                    'default' => null,
-                                                ),
-                                            ),
-                                            'indexes' => array('user_id_model_id' => array(
-                                                                        'columns' => array('user_id', 'model_id'),
-                                                                        'unique' => true,
-                                                            ),
-                                                        ),
-                                                    )
-                                                );
-        }
-
-        protected static function getMainTableName($modelClassName)
-        {
-            assert('is_string($modelClassName) && $modelClassName != ""');
-            return RedBeanModel::getTableName($modelClassName);
-        }
-
-        public static function getStarredTableName($modelClassName)
-        {
-            assert('is_string($modelClassName) && $modelClassName != ""');
-            return self::getMainTableName($modelClassName) . '_starred';
-        }
-
         public static function markModelAsStarred(RedBeanModel $model)
         {
             static::markModelAsStarredForUser(get_class($model),
@@ -118,20 +64,13 @@
 
         protected static function markModelAsStarredForUser($modelClassName, $userId, $modelId)
         {
-            if (!static::modelHasStarredInterface($modelClassName))
-            {
-                throw new NotSupportedException();
-            }
+            static::ensureModelClassNameImplementsStarredInterface($modelClassName);
             if (static::isModelStarredForUser($modelClassName, $userId, $modelId))
             {
                 return;
             }
-            $tableName = static::getStarredTableName($modelClassName);
-            $sql       = "INSERT INTO {$tableName} VALUES (null, :userId, :modelId);";
-            ZurmoRedBean::exec($sql, array(
-                ':userId'  => $userId,
-                ':modelId' => $modelId,
-            ));
+            $starredModelClassName = static::getStarredModelClassName($modelClassName);
+            $starredModelClassName::markModelAsStarredByUserIdAndModelId($userId, $modelId);
         }
 
         public static function unmarkModelAsStarred(RedBeanModel $model)
@@ -143,20 +82,13 @@
 
         protected static function unmarkModelAsStarredForUser($modelClassName, $userId, $modelId)
         {
-            if (!static::modelHasStarredInterface($modelClassName))
-            {
-                throw new NotSupportedException();
-            }
+            static::ensureModelClassNameImplementsStarredInterface($modelClassName);
             if (!static::isModelStarredForUser($modelClassName, $userId, $modelId))
             {
                 return;
             }
-            $tableName = static::getStarredTableName($modelClassName);
-            $sql       = "DELETE FROM {$tableName} WHERE user_id = :userId AND model_id = :modelId;";
-            ZurmoRedBean::exec($sql, array(
-                ':userId'  => $userId,
-                ':modelId' => $modelId,
-            ));
+            $starredModelClassName = static::getStarredModelClassName($modelClassName);
+            $starredModelClassName::unmarkModelAsStarredByUserIdAndModelId($userId, $modelId);
         }
 
         public static function isModelStarred(RedBeanModel $model)
@@ -168,36 +100,18 @@
 
         protected static function isModelStarredForUser($modelClassName, $userId, $modelId)
         {
-            if (!static::modelHasStarredInterface($modelClassName))
-            {
-                throw new NotSupportedException();
-            }
-            $tableName = static::getStarredTableName($modelClassName);
-            $sql       = "SELECT id FROM {$tableName} WHERE user_id = :userId AND model_id = :modelId;";
-            $rows      = ZurmoRedBean::getAll($sql,
-                                   $values=array(
-                                    ':userId'    => $userId,
-                                    ':modelId'   => $modelId,
-                                   ));
-            if (count($rows) == 0)
-            {
-                return false;
-            }
-            return true;
+            static::ensureModelClassNameImplementsStarredInterface($modelClassName);
+            $starredModelClassName = static::getStarredModelClassName($modelClassName);
+            return (bool)$starredModelClassName::getCountByUserIdAndModelId($userId, $modelId);
         }
 
         public static function unmarkModelAsStarredForAllUsers(RedBeanModel $model)
         {
             $modelClassName = get_class($model);
-            if (!static::modelHasStarredInterface($modelClassName))
-            {
-                throw new NotSupportedException();
-            }
-            $tableName = static::getStarredTableName($modelClassName);
-            $sql       = "DELETE FROM {$tableName} WHERE model_id = :modelId;";
-            ZurmoRedBean::exec($sql, array(
-                ':modelId' => $model->id,
-            ));
+            static::ensureModelClassNameImplementsStarredInterface($modelClassName);
+            $modelId        = $model->id;
+            $starredModelClassName = static::getStarredModelClassName($modelClassName);
+            $starredModelClassName::unmarkModelAsStarredByUserIdAndModelId(null, $modelId);
         }
 
         public static function toggleModelStarStatus($modelClassName, $modelId)
@@ -243,6 +157,23 @@
         public static function renderToggleStarStatusLink($data, $row)
         {
             echo static::getToggleStarStatusLink($data, $row);
+        }
+
+        public static function getStarredModelClassName($modelClassName)
+        {
+            if (!StringUtil::endsWith($modelClassName, 'Starred'))
+            {
+                $modelClassName .= 'Starred';
+            }
+            return $modelClassName;
+        }
+
+        protected static function ensureModelClassNameImplementsStarredInterface($modelClassName)
+        {
+            if (!static::modelHasStarredInterface($modelClassName))
+            {
+                throw new NotSupportedException($modelClassName . " does not implement StarredInterface");
+            }
         }
     }
 ?>
