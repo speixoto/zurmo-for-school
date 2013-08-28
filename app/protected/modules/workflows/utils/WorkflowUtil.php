@@ -193,7 +193,7 @@
                 $content .= ' Thrown with message: ' . $exception->getMessage();
             }
             $content .= "\n" . $exception->getTraceAsString();
-            Yii::log($content, CLogger::LEVEL_WARNING, $category);
+            Yii::log($content, CLogger::LEVEL_WARNING, $category, true);
         }
     }
 ?>
