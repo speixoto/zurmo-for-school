@@ -79,7 +79,7 @@
         public function getTitle()
         {
             $applicationName    = ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'applicationName');
-            if($applicationName != null)
+            if ($applicationName != null)
             {
                 $applicationName = ' - ' . $applicationName;
             }

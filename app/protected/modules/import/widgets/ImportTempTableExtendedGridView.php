@@ -88,15 +88,15 @@
         protected function renderExpandableContent($row)
         {
             $content = null;
-            if($this->expandableContentType == ImportTempTableListView::EXPANDABLE_ANALYSIS_CONTENT_TYPE &&
+            if ($this->expandableContentType == ImportTempTableListView::EXPANDABLE_ANALYSIS_CONTENT_TYPE &&
                $row->serializedAnalysisMessages != null)
             {
                 $analysisMessages = unserialize($row->serializedAnalysisMessages);
-                foreach($analysisMessages as $columnName => $columnData)
+                foreach ($analysisMessages as $columnName => $columnData)
                 {
-                    foreach($columnData as $message)
+                    foreach ($columnData as $message)
                     {
-                        if(isset($this->columnLabelsByName[$columnName]))
+                        if (isset($this->columnLabelsByName[$columnName]))
                         {
                             $label = $this->columnLabelsByName[$columnName];
                         }
@@ -108,16 +108,16 @@
                     }
                 }
             }
-            if($this->expandableContentType == ImportTempTableListView::EXPANDABLE_IMPORT_RESULTS_CONTENT_TYPE &&
+            if ($this->expandableContentType == ImportTempTableListView::EXPANDABLE_IMPORT_RESULTS_CONTENT_TYPE &&
                 $row->serializedMessages != null)
             {
                 $resultMessages = unserialize($row->serializedMessages);
-                foreach($resultMessages as $message)
+                foreach ($resultMessages as $message)
                 {
                     $content .= ZurmoHtml::tag('li', array(), $message);
                 }
             }
-            if($content != null)
+            if ($content != null)
             {
                 return ZurmoHtml::tag('ol', array('class' => 'import-notifications'), $content);
             }

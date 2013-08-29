@@ -154,24 +154,9 @@
 
         protected function renderAfterFormLayout($form)
         {
-            $hashIndexHtmlOptions = array(
-                'name'     => $this->hashIndexHiddenField,
-                'id'       => $this->hashIndexHiddenField,
-                'value'    => md5('ContactWebFormEntry'.time()),
-            );
-            $content = $form->hiddenField($this->model, $this->hashIndexHiddenField, $hashIndexHtmlOptions);
-            $externalRequestTokenHtmlOptions = array(
-                'name'     => ZurmoHttpRequest::EXTERNAL_REQUEST_TOKEN,
-                'id'       => ZurmoHttpRequest::EXTERNAL_REQUEST_TOKEN,
-                'value'    => ZURMO_TOKEN,
-            );
-            $content .= $form->hiddenField($this->model, ZurmoHttpRequest::EXTERNAL_REQUEST_TOKEN, $externalRequestTokenHtmlOptions);
-            $googleWebTrackingIdHtmlOptions = array(
-                'name'     => self::GOOGLE_WEB_TRACKING_ID_FIELD,
-                'id'       => self::GOOGLE_WEB_TRACKING_ID_FIELD,
-                'value'    => '',
-            );
-            $content .= $form->hiddenField($this->model, self::GOOGLE_WEB_TRACKING_ID_FIELD, $googleWebTrackingIdHtmlOptions);
+            $content  = ZurmoHtml::hiddenField($this->hashIndexHiddenField, md5('ContactWebFormEntry'.time()));
+            $content .= ZurmoHtml::hiddenField(ZurmoHttpRequest::EXTERNAL_REQUEST_TOKEN, ZURMO_TOKEN);
+            $content .= ZurmoHtml::hiddenField(self::GOOGLE_WEB_TRACKING_ID_FIELD);
             return $content;
         }
 

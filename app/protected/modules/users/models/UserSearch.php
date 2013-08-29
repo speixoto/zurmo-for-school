@@ -84,7 +84,7 @@
                             'value'                => $emailAddress,
                     ),
             );
-            if($filterOutHideFromSelecting)
+            if ($filterOutHideFromSelecting)
             {
                 $metadata['clauses'][2] = array(
                     'attributeName'        => 'hideFromSelecting',

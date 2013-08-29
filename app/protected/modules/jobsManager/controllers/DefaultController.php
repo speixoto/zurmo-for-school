@@ -144,7 +144,7 @@
 
         public function actionRunJob($type, $timeLimit = 500, $messageLoggerClassName = 'MessageLogger')
         {
-            if (Yii::app()->user->userModel->username != 'super')
+            if (!Group::isUserASuperAdministrator(Yii::app()->user->userModel))
             {
                 Zurmo::t('JobsManagerModule', 'Only super administrators can run jobs from the browser');
                 Yii::app()->end(0, false);

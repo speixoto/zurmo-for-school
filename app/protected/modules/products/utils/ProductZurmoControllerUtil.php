@@ -82,7 +82,7 @@
         {
            $customFieldData    = CustomFieldData::getByName('ProductStages');
            $dropDownArray      = unserialize($customFieldData->serializedData);
-           if($product->stage->value == null)
+           if ($product->stage->value == null)
            {
                $product->stage->value = $dropDownArray[0];
            }

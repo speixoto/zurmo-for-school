@@ -208,7 +208,7 @@
         */
         public function getMessageBoxStats()
         {
-            if($this->imapStream == null)
+            if ($this->imapStream == null)
             {
                 return false;
             }
@@ -306,7 +306,7 @@
         public function getMessages($searchCriteria = 'ALL', $messagesSinceTimestamp = 0)
         {
             $messages = array();
-            if($this->imapStream == null)
+            if ($this->imapStream == null)
             {
                 return $messages;
             }
@@ -330,7 +330,7 @@
          */
         public function expungeMessages()
         {
-            if($this->imapStream == null)
+            if ($this->imapStream == null)
             {
                 return false;
             }
@@ -365,7 +365,7 @@
          */
         public function deleteMessage($msgUid)
         {
-            if($this->imapStream == null)
+            if ($this->imapStream == null)
             {
                 return false;
             }
@@ -443,7 +443,7 @@
          */
         protected function getMessageUId($msgNo)
         {
-            if($this->imapStream == null)
+            if ($this->imapStream == null)
             {
                 return false;
             }
@@ -460,7 +460,7 @@
          */
         protected function mailCount($query)
         {
-            if($this->imapStream == null)
+            if ($this->imapStream == null)
             {
                 return false;
             }

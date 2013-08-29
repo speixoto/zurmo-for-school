@@ -77,10 +77,10 @@
                     );
             $this->resetPostArray();
             $content = $this->runControllerWithNoExceptionsAndGetContent('zurmo/default/globallist');
-            $this->assertContains('id="AccountsListView"', $content);
-            $this->assertNotContains('id="ContactsListView"', $content);
-            $this->assertNotContains('id="LeadsListView"', $content);
-            $this->assertNotContains('id="OpportunitiesListView">', $content);
+            $this->assertContains('id="AccountsForMixedModelsSearchListView"', $content);
+            $this->assertNotContains('id="ContactsForMixedModelsSearchListView"', $content);
+            $this->assertNotContains('id="LeadsForMixedModelsSearchListView"', $content);
+            $this->assertNotContains('id="OpportunitiesForMixedModelsSearchListView">', $content);
             //TODO: Should test if the accounts created is shown
         }
     }

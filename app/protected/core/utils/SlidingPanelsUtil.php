@@ -64,7 +64,7 @@
          */
         public static function renderToggleLinkContent($portletId)
         {
-            if(static::resolveShouldSlideToSecondPanel($portletId))
+            if (static::resolveShouldSlideToSecondPanel($portletId))
             {
                 $slideToSecond = true;
             }
@@ -73,7 +73,7 @@
                 $slideToSecond = false;
             }
             static::registerSlidingPanelsScript($portletId);
-            if($slideToSecond)
+            if ($slideToSecond)
             {
                 $label      = static::getSlideToSecondPanelLabel();
                 $extraClass = ' slide-to-second-panel';

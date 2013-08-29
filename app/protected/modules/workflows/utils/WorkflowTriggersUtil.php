@@ -221,7 +221,7 @@
                             $attributeAndRelationData[0], $model, $penultimateRelation, $penultimateModelClassName);
                         foreach ($resolvedModels as $resolvedModel)
                         {
-                            if(get_class($resolvedModel) == $penultimateModelClassName)
+                            if (get_class($resolvedModel) == $penultimateModelClassName)
                             {
                                 if (self::resolveIsTrueByEvaluationRules($workflow, $trigger, $resolvedModel, $resolvedAttribute) &&
                                     $trigger->relationFilter == TriggerForWorkflowForm::RELATION_FILTER_ANY)
@@ -251,7 +251,7 @@
                                           $model, $firstRelation, $resolvedAttributeModelClassName);
                         foreach ($resolvedModels as $relatedModel)
                         {
-                            if(get_class($relatedModel) == $trigger->getPenultimateModelClassName())
+                            if (get_class($relatedModel) == $trigger->getPenultimateModelClassName())
                             {
                                 $resolvedModel  = $relatedModel->{$penultimateRelation};
                                 if (self::resolveIsTrueByEvaluationRules($workflow, $trigger,
@@ -287,14 +287,13 @@
 
         protected static function resolveRelatedModelsForInferredRelations($attribute, $model, $relation, $resolvedAttributeModelClassName)
         {
-            if(ModelRelationsAndAttributesToWorkflowAdapter::isAttributeInferred($attribute))
+            if (ModelRelationsAndAttributesToWorkflowAdapter::isAttributeInferred($attribute))
             {
                 $relatedModels = array();
                 foreach ($model->{$relation} as $item)
                 {
-                    if(get_class($item) == $resolvedAttributeModelClassName)
+                    if (get_class($item) == $resolvedAttributeModelClassName)
                     {
-
                         $relatedModels[] = $item;
                     }
                     else

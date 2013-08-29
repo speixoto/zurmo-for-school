@@ -142,7 +142,7 @@
 	padding:10px 15px 0 15px;
 }
 
-.juiportlet-widget-content .items{
+.juiportlet-widget-coifrntent .items{
 	//width:100%;
 	border:none !important;
 	thead > tr{
@@ -160,7 +160,7 @@
 }
 
 /*ICONS..*/
-.juiportlet-widget.type-opportunities{
+.type-opportunities{
 	h3:before{
 		content: "9";
 	}
@@ -169,46 +169,59 @@
 		.view-toolbar-icons(45px);
 	}
 }
-.juiportlet-widget.type-contacts{
-	h3:before{
-		content: "e";
-	}
+.type-contacts{
 	.icon-empty:before{
 		content: "e";
 		.view-toolbar-icons(45px);
 	}
 }
-.juiportlet-widget.type-tasks{
+.juiportlet-widget-head.type-contacts{
+	h3{
+		padding-left: 30px;
+		position: relative;
+		&:before{
+			content: "e";
+			.symbly(32px);
+			color:#7A7A7A;
+			line-height: 100%;
+			position: absolute;
+			top: 6px;
+			left: 0;
+		}
+	}
+}
+
+.type-tasks{
 	.icon-empty:before{
 		content: "4";
 		.view-toolbar-icons(45px);
 	}
 }
-.juiportlet-widget.type-activities{
+.type-activities{
 	.icon-empty:before{
 		content: '\00A5';
 		.view-toolbar-icons(45px);
 	}
 }
-.juiportlet-widget.type-products{
+.type-products{
 	.icon-empty:before{
 		content: '\003E';
 		.view-toolbar-icons(45px);
 	}
 }
-.juiportlet-widget.type-socialItems{
+.type-socialItems{
 	.icon-empty:before{
 		content: 'u';
 		.view-toolbar-icons(45px);
 	}
 }
-.juiportlet-widget.type-missions{
+.type-missions{
 	.icon-empty:before{
 		content: 'Q';
 		.view-toolbar-icons(45px);
 	}
 }
-.juiportlet-widget.type-leads{
+.type-leads{
 	.icon-empty:before{
 		content: '.';
 		.view-toolbar-icons(45px);
@@ -220,19 +233,19 @@
 		.view-toolbar-icons(45px);
 	}
 }
-.juiportlet-widget.type-contacts{
+.type-contacts{
 	.icon-empty:before{
 		content: "e";
 		.view-toolbar-icons(45px);
 	}
 }
-.juiportlet-widget.type-products{
+.type-products{
 	.icon-empty:before{
 		content: '\00AC';
 		.view-toolbar-icons(45px);
 	}
 }
-.juiportlet-widget.type-opportunities{
+.type-opportunities{
     h3{
 	    padding-left: 30px;
 	    position: relative;
@@ -244,5 +257,11 @@
 			top: 6px;
 			left: 0;
 		}
+	}
+}
+.type-campaigns{
+	.icon-empty:before{
+		content: '\002C';
+		.view-toolbar-icons(45px);
 	}
 }
