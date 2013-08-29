@@ -70,27 +70,17 @@
             {
                 $relatedModel = $relationModelClassName::getById((int)$relationModelId);
                 $model->activityItems->add($relatedModel);
-                $this->addRelatedModelAccountToModel($model, $relatedModel);
+                if ($relationModelClassName != 'Account' && in_array('Account', $metadata['Activity']['activityItemsModelClassNames']) &&
+                    isset($relatedModel->account) && $relatedModel->account->id > 0)
+                {
+                    $model->activityItems->add($relatedModel->account);
+                }
             }
             else
             {
                 throw new NotSupportedException();
             }
             return $model;
-        }
-
-        /**
-         * Override to handle the special scenario of relations for an activity.
-         * @param RedBeanModel $model
-         * @param RedBeanModel $relatedModel
-         */
-        protected function addRelatedModelAccountToModel(RedBeanModel $model, RedBeanModel $relatedModel)
-        {
-            if ($relationModelClassName != 'Account' && in_array('Account', $metadata['Activity']['activityItemsModelClassNames']) &&
-                isset($relatedModel->account) && $relatedModel->account->id > 0)
-            {
-                $model->activityItems->add($relatedModel->account);
-            }
         }
     }
 ?>
