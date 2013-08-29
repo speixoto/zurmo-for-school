@@ -748,5 +748,21 @@
             $notificationSubscriber->hasReadLatest = false;
             $task->notificationSubscribers->add($notificationSubscriber);
         }
+
+        /**
+         * Saves the kanban item from task
+         * @param type array
+         */
+        public static function createKanbanItemFromTask($data)
+        {
+            $kanbanItem                     = new KanbanItem();
+            $kanbanItem->type               = TasksUtil::resolveKanbanItemTypeForTaskStatus($data->status);
+            $kanbanItem->task               = $data;
+            $kanbanItem->kanbanRelatedItem  = $data->activityItems->offsetGet(0);
+            $sortOrder = KanbanItem::getMaximumSortOrderByType($kanbanItem->type);
+            $kanbanItem->sortOrder          = $sortOrder;
+            $kanbanItem->save();
+            return $kanbanItem;
+        }
     }
 ?>

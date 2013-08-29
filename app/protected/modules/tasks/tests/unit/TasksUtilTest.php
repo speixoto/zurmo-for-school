@@ -301,5 +301,15 @@
             $this->assertEquals(Yii::app()->user->userModel->id, $task->requestedByUser->id);
             $this->assertEquals(1, count($task->notificationSubscribers));
         }
+
+        public function testCreateKanbanItemFromTask()
+        {
+            $task = TaskTestHelper::createTaskByNameForOwner('My Kanban Task', Yii::app()->user->userModel);
+            TasksUtil::setDefaultValuesForTask($task);
+            $task->status = Task::TASK_STATUS_IN_PROGRESS;
+            $this->assertTrue($task->save());
+            $kanbanItem = TasksUtil::createKanbanItemFromTask($task);
+            $this->assertEquals($kanbanItem->type, KanbanItem::TYPE_IN_PROGRESS);
+        }
     }
 ?>
