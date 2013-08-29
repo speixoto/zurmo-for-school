@@ -41,13 +41,17 @@
             parent::setUpBeforeClass();
             SecurityTestHelper::createSuperAdmin();
             $super = User::getByUsername('super');
-            Yii::app()->user->userModel = $super;
             AccountTestHelper::createAccountByNameForOwner('anAccount', $super);
+        }
+
+        public function setUp()
+        {
+            parent::setUp();
+            Yii::app()->user->userModel = User::getByUsername('super');
         }
 
         public function testKanbanItemSave()
         {
-            Yii::app()->user->userModel = User::getByUsername('super');
             $accounts = Account::getByName('anAccount');
 
             $user                   = UserTestHelper::createBasicUser('Billy');
@@ -79,8 +83,25 @@
 
             $kanbanItem                     = KanbanItem::getById($kanbanItemId);
             $this->assertEquals(KanbanItem::TYPE_IN_PROGRESS, $kanbanItem->type);
+
+            $this->assertEquals(1, count(KanbanItem::getAll()));
         }
 
+        public function testGetKanbanItemByTask()
+        {
+            $tasks = Task::getByName('MyTask');
+            $kanbanItem = KanbanItem::getByTask($tasks[0]->id);
+            $this->assertEquals(KanbanItem::TYPE_IN_PROGRESS, $kanbanItem->type);
+            $this->assertEquals($kanbanItem->kanbanRelatedItem, $tasks[0]->activityItems->offsetGet(0));
+        }
 
+        public function testGetMaximumSortOrderByType()
+        {
+            $tasks = Task::getByName('MyTask');
+            $task  = $tasks[0];
+            $kanbanItem = KanbanItem::getByTask($task->id);
+            $sortOrder = KanbanItem::getMaximumSortOrderByType($kanbanItem->type);
+            $this->assertEquals(2, $sortOrder);
+        }
     }
 ?>
