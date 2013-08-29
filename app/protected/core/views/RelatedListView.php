@@ -65,7 +65,7 @@
         {
             assert('isset($params["controllerId"])');
             assert('isset($params["relationModuleId"])');
-            //assert('$params["relationModel"] instanceof RedBeanModel || $params["relationModel"] instanceof ModelForm');
+            assert('$params["relationModel"] instanceof RedBeanModel || $params["relationModel"] instanceof ModelForm');
             assert('isset($params["portletId"])');
             assert('isset($params["redirectUrl"])');
             assert('$this->getRelationAttributeName() != null');
@@ -78,12 +78,11 @@
             $this->gridId            = 'list-view';
             $this->controllerId      = $this->resolveControllerId();
             $this->moduleId          = $this->resolveModuleId();
-            $this->resolveModelAndSetInParams();
         }
 
         public function getPortletParams()
         {
-            return $this->params;
+            return array();
         }
 
         protected function getShowTableOnEmpty()
@@ -306,26 +305,6 @@
          */
         public static function getPortletDescription()
         {
-        }
-
-        /**
-         * Resolve model by model id and set the model in params
-         */
-        protected function resolveModelAndSetInParams()
-        {
-            $modelClassName = $this->getRelatedModelClassName();
-            $model = $modelClassName::getById(intval($this->params['relationModelId']));
-            $this->params['relationModel'] = $model;
-        }
-
-        /**
-         * Get related model class name
-         * @return string
-         */
-        protected function getRelatedModelClassName()
-        {
-            $moduleClassName = get_class(Yii::app()->getModule($this->params['relationModuleId']));
-            return $moduleClassName::getPrimaryModelName();
         }
     }
 ?>
