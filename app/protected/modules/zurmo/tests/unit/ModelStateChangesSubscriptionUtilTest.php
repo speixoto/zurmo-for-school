@@ -187,10 +187,10 @@
             $models = ModelStateChangesSubscriptionUtil::getUpdatedModels('Account', 2, 0, $timestamp);
             $this->assertTrue(is_array($models));
             $this->assertEquals(2, count($models));
-            $this->assertEquals($account2->id, $models[0]->id);
-            $this->assertEquals($account2->name, $models[0]->name);
-            $this->assertEquals($account3->id, $models[1]->id);
-            $this->assertEquals($account3->name, $models[1]->name);
+            $this->assertTrue($account2->id == $models[0]->id || $account2->id == $models[1]->id);
+            $this->assertTrue($account2->name == $models[0]->name || $account2->name == $models[1]->name);
+            $this->assertTrue($account3->id == $models[0]->id || $account3->id == $models[1]->id);
+            $this->assertTrue($account3->name == $models[0]->name || $account3->name == $models[1]->name);
 
             $models = ModelStateChangesSubscriptionUtil::getUpdatedModels('Account', 2, 2, $timestamp);
             $this->assertTrue(is_array($models));
