@@ -304,8 +304,7 @@
         public static function getPortletDescription()
         {
         }
-        }
-        
+
          /**
          * Resolves pagination params
          * @return array
@@ -315,5 +314,6 @@
             return array_merge(GetUtil::getData(),
                                             array('portletId'   => $this->params['portletId'],
                                                   'redirectUrl' => $this->params['redirectUrl']));
+        }
     }
 ?>
