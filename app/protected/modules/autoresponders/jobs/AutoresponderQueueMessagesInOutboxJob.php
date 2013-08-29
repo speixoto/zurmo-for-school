@@ -53,21 +53,11 @@
          */
         public function run()
         {
-            $processed = $this->processRun();
-            $this->forgetModelsWithForgottenValidators();
-            $this->modelIdentifiersForForgottenValidators = array();
-            return $processed;
-        }
-
-        protected function processRun()
-        {
             $batchSize = $this->resolveBatchSize();
             $autoresponderItemsToProcess    = AutoresponderItem::getByProcessedAndProcessDateTime(
                                                                                         0,
                                                                                         time(),
                                                                                         $batchSize);
-            $startingMemoryUsage = memory_get_usage();
-            $modelsProcessedCount = 0;
             foreach ($autoresponderItemsToProcess as $autoresponderItem)
             {
                 try
