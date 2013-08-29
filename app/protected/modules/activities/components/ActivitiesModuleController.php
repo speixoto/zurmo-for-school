@@ -70,11 +70,6 @@
             {
                 $relatedModel = $relationModelClassName::getById((int)$relationModelId);
                 $model->activityItems->add($relatedModel);
-                if ($relationModelClassName != 'Account' && in_array('Account', $metadata['Activity']['activityItemsModelClassNames']) &&
-                    isset($relatedModel->account) && $relatedModel->account->id > 0)
-                {
-                    $model->activityItems->add($relatedModel->account);
-                }
             }
             else
             {
