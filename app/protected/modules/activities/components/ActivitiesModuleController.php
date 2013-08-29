@@ -35,7 +35,7 @@
      ********************************************************************************/
 
     /**
-     * Activities Modules such as Meetings, Notes, and tasks
+     * Activities Modules such as Meetings, Notes, and Tasks
      * should extend this class to provide generic functionality
      * that is applicable to all activity modules.
      */
@@ -68,13 +68,29 @@
             $metadata = Activity::getMetadata();
             if (in_array($relationModelClassName, $metadata['Activity']['activityItemsModelClassNames']))
             {
-                $model->activityItems->add($relationModelClassName::getById((int)$relationModelId));
+                $relatedModel = $relationModelClassName::getById((int)$relationModelId);
+                $model->activityItems->add($relatedModel);
+                $this->addRelatedModelAccountToModel($model, $relatedModel);
             }
             else
             {
                 throw new NotSupportedException();
             }
             return $model;
+        }
+
+        /**
+         * Override to handle the special scenario of relations for an activity.
+         * @param RedBeanModel $model
+         * @param RedBeanModel $relatedModel
+         */
+        protected function addRelatedModelAccountToModel(RedBeanModel $model, RedBeanModel $relatedModel)
+        {
+            if ($relationModelClassName != 'Account' && in_array('Account', $metadata['Activity']['activityItemsModelClassNames']) &&
+                isset($relatedModel->account) && $relatedModel->account->id > 0)
+            {
+                $model->activityItems->add($relatedModel->account);
+            }
         }
     }
 ?>
