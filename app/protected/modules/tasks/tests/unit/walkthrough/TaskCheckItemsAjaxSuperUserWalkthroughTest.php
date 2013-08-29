@@ -57,10 +57,10 @@
             $task->name = 'aTest';
             $nowStamp = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
             $this->assertTrue($task->save());
-            $this->setGetArray(array('relatedModelId' => $task->id, 'relatedModelClassName' => 'Task', 'relatedModelRelationName' => 'checkListItems', 'url' => Yii::app()->createUrl('tasks/taskCheckItems/inlineCreateTaskCheckItemFromAjax', array('id' => '22', 'uniquePageId' =>'TaskCheckItemInlineEditForModelView'))));
+            $this->setGetArray(array('relatedModelId' => $task->id, 'relatedModelClassName' => 'Task', 'relatedModelRelationName' => 'checkListItems', 'url' => Yii::app()->createUrl('tasks/taskCheckItems/inlineCreateTaskCheckItemFromAjax', array('id' => $task->id, 'uniquePageId' =>'TaskCheckItemInlineEditForModelView'))));
             $this->runControllerWithNoExceptionsAndGetContent('tasks/taskCheckItems/inlineCreateTaskCheckItemSave', true);
 
-            $this->setGetArray(array('relatedModelId' => $task->id, 'relatedModelClassName' => 'Task', 'relatedModelRelationName' => 'checkListItems', 'url' => Yii::app()->createUrl('tasks/taskCheckItems/inlineCreateTaskCheckItemFromAjax', array('id' => '22', 'uniquePageId' =>'TaskCheckItemInlineEditForModelView'))));
+            $this->setGetArray(array('relatedModelId' => $task->id, 'relatedModelClassName' => 'Task', 'relatedModelRelationName' => 'checkListItems', 'url' => Yii::app()->createUrl('tasks/taskCheckItems/inlineCreateTaskCheckItemFromAjax', array('id' => $task->id, 'uniquePageId' =>'TaskCheckItemInlineEditForModelView'))));
             $this->setPostArray(array('TaskCheckListItem' => array('name' => 'Test Item'), 'ajax' => 'task-check-item-inline-edit-form'));
             $this->runControllerWithExitExceptionAndGetContent('tasks/taskCheckItems/inlineCreateTaskCheckItemSave');
         }

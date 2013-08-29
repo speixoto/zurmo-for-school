@@ -115,5 +115,33 @@
             self::$opportunity = Opportunity::getById($id);
             $this->assertEquals('Verbal', self::$opportunity->stage->value);
         }
+
+        public function testKanbanViewForOpportunityDetails()
+        {
+            $super                  = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $opportunities          = Opportunity::getByName('superOpp');
+
+            $task = TaskTestHelper::createTaskWithOwnerAndRelatedItem('MyTask', $super, $opportunities[0], Task::TASK_STATUS_IN_PROGRESS);
+            $taskNew = TaskTestHelper::createTaskWithOwnerAndRelatedItem('MyTask New', $super, $opportunities[0], Task::TASK_STATUS_NEW);
+            $this->setGetArray(array('id' => $task->id, 'kanbanBoard' => '1'));
+            $content = $this->runControllerWithNoExceptionsAndGetContent('opportunities/default/details');
+            $matcher= array(
+                'tag' => 'span',
+                'attributes' => array('class' => 'z-label'),
+                //Multiple ancestors
+                'ancestor' => array('tag' => 'li', 'id' => 'items_' . $task->id, 'tag' => 'ul', 'id' => 'task-sortable-rows-3'),
+                'content' => 'MyTask'
+            );
+            $this->assertTag($matcher, $content);
+
+            $matcher= array(
+                'tag' => 'span',
+                'attributes' => array('class' => 'z-label'),
+                //Multiple ancestors
+                'ancestor' => array('tag' => 'li', 'id' => 'items_' . $taskNew->id, 'tag' => 'ul', 'id' => 'task-sortable-rows-2'),
+                'content' => 'MyTask New'
+            );
+            $this->assertTag($matcher, $content);
+        }
     }
 ?>
