@@ -151,6 +151,13 @@
             GeneralCache::getEntry("SomethingThatDoesNotExistForSure");
         }
 
+        public function testCacheBoolean()
+        {
+            GeneralCache::cacheEntry('ABoolean', true);
+            $boolean = GeneralCache::getEntry('ABoolean');
+            $this->assertTrue($boolean);
+        }
+
         public function testGetEntryReturnsDefault()
         {
             $default = "DEFAULT";
