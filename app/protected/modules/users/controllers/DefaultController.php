@@ -116,7 +116,7 @@
                 RightsUtil::canUserAccessModule('UsersModule', Yii::app()->user->userModel))
             {
                 $user                 = User::getById(intval($id));
-                if(UserAccessUtil::resolveCanCurrentUserAccessRootUser($user, false) &&
+                if (UserAccessUtil::resolveCanCurrentUserAccessRootUser($user, false) &&
                    UserAccessUtil::resolveAccessingASystemUser($user, false))
                 {
                     $userAvatarForm       = new UserAvatarForm($user);
@@ -612,17 +612,17 @@
                 $model->setAttributes($_POST[$postVariableName]);
                 $model->validate();
                 $userStatus = UserStatusUtil::makeByPostData($_POST[$postVariableName]);
-                if($model instanceof User)
+                if ($model instanceof User)
                 {
-                    if($userStatus == null)
+                    if ($userStatus == null)
                     {
                         $userStatus = UserStatusUtil::makeByUser($model);
                     }
                     Yii::app()->licenseManager->resolveValidationOnCreateOrEditUser($model, $userStatus);
                 }
-                elseif($model instanceof ModelForm)
+                elseif ($model instanceof ModelForm)
                 {
-                    if($userStatus == null)
+                    if ($userStatus == null)
                     {
                         $userStatus = UserStatusUtil::makeByUser($model->getModel());
                     }

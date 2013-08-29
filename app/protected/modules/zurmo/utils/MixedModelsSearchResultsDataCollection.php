@@ -81,7 +81,7 @@
                     $this->user->id,
                     $sanitizedSearchAttributes
                  );
-            $listViewClassName = $module::getPluralCamelCasedName() . 'ListView';
+            $listViewClassName = $module::getPluralCamelCasedName() . 'ForMixedModelsSearchListView';
             $sortAttribute     = SearchUtil::resolveSortAttributeFromGetArray($modelClassName);
             $sortDescending    = SearchUtil::resolveSortDescendingFromGetArray($modelClassName);
             if ($forceEmptyResults)

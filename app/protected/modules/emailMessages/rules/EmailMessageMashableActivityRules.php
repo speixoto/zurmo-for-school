@@ -203,7 +203,6 @@
                     }
                     else
                     {
-
                         try
                         {
                             $castedDownModel = self::castDownItem($recipient->personOrAccount);

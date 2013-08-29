@@ -105,11 +105,10 @@
             assert('$count   === null || is_integer($count)   && $count   >= 1');
             $leaderboardData = GamePointUtil::getUserLeaderboardData($type, $offset + 1, $offset, $count);
             $resolvedLeaderboardData = array();
-            foreach($leaderboardData as $userId => $data)
+            foreach ($leaderboardData as $userId => $data)
             {
                 $data['userId']            = $userId;
                 $resolvedLeaderboardData[] = $data;
-
             }
             return $resolvedLeaderboardData;
         }

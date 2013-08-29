@@ -276,11 +276,8 @@ a.ModalGameNotification a,
 .email-template-content .big-spinner,
 .autoresponder-stats,
 .module-intro-steps > div,
-#marketing-intro-steps > div,
 .module-intro-steps h3,
-#marketing-intro-steps h3,
 .module-intro-steps p,
-#marketing-intro-steps p,
 .continuum > div,
 .import-item-stage-status,
 .email-recipient-stage-status,
@@ -293,8 +290,7 @@ a.ModalGameNotification a,
 #business-card-buttons > div,
 #business-card-buttons a,
 #sliding-panel-toggle,
-.mini-button,
-#login-box {
+.mini-button {
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
@@ -4901,7 +4897,6 @@ section {
 }
 /*=Login*/
 #LoginView {
-  min-width: 900px;
   height: 100%;
   margin: 30px;
   -webkit-box-shadow: 0 0 12px 5px rgba(153, 153, 153, 0.3);
@@ -7350,6 +7345,9 @@ td {
 .items > tbody tr th:first-child:not(.checkbox-column) {
   padding-left: 10px;
 }
+.stacked-list {
+  table-layout: fixed;
+}
 .stacked-list td + td {
   width: 25px;
 }
@@ -7384,10 +7382,17 @@ td {
   margin-top: 2px;
   float: left;
 }
+.stacked-list .star-column {
+  margin: -6px 15px 0 0 !important;
+  float: right;
+}
 .stacked-list tr:first-child > div:first-child {
   font-size: 13px;
   font-weight: bold;
   margin: 0 0 3px 0;
+}
+.juiportlet-widget-content .stacked-list {
+  border: none;
 }
 .juiportlet-widget-content .stacked-list tr:first-child td {
   border-top: none !important;
@@ -7438,6 +7443,45 @@ tr.even {
   font-size: 24px;
   font-family: "zurmo_gamification_symbly_rRg";
   visibility: hidden;
+}
+.star-column {
+  width: 20px;
+  text-align: center;
+  padding: 0 !important;
+}
+.icon-star {
+  font-weight: normal;
+  font-size: 26px;
+  font-family: "zurmo_gamification_symbly_rRg";
+  color: #ccc !important;
+  -webkit-text-shadow: 0 0 1px #333333;
+  -moz-text-shadow: 0 0 1px #333333;
+  -o-text-shadow: 0 0 1px #333333;
+  -ms-text-shadow: 0 0 1px #333333;
+  text-shadow: 0 0 1px #333333;
+  top: -1px;
+  position: relative;
+  line-height: 1;
+}
+.icon-star:hover,
+.icon-star.starred {
+  color: #ffef42 !important;
+}
+#list-view_columnStar {
+  line-height: 1;
+  width: 20px;
+  text-align: center;
+  padding-right: 0 !important;
+  padding-left: 0 !important;
+}
+#list-view_columnStar .icon-star {
+  top: 0;
+  left: -2px;
+}
+h1 .icon-star,
+.juiportlet-widget-head .icon-star {
+  top: 1px;
+  margin-left: 5px;
 }
 .juiportlet-widget .empty {
   padding: 5px 0 10px 0;
@@ -11174,12 +11218,16 @@ div.hasHalfs > div input {
 #MixedModelsSearchView {
   position: relative;
   z-index: 5;
+  margin-bottom: 15px;
+  float: left;
+  width: 100%;
 }
 #MixedModelsSearchView h1 {
   margin-bottom: 15px;
 }
 #MixedModelsSearchView .search-view-0 {
   float: none;
+  margin: 15px 0 10px 15px;
 }
 #MixedModelsMultipleListsView {
   position: relative;
@@ -11383,21 +11431,21 @@ div.hasHalfs > div input {
 .juiportlet-widget-content .rssHeader {
   padding: 10px 15px 0 15px;
 }
-.juiportlet-widget-content .items {
+.juiportlet-widget-coifrntent .items {
   border: none !important;
 }
-.juiportlet-widget-content .items thead > tr th,
-.juiportlet-widget-content .items thead > tr td {
+.juiportlet-widget-coifrntent .items thead > tr th,
+.juiportlet-widget-coifrntent .items thead > tr td {
   border-top: none;
 }
 .juiportlet-widget-content table.items tbody tr:last-child > td {
   border-bottom: none;
 }
 /*ICONS..*/
-.juiportlet-widget.type-opportunities h3:before {
+.type-opportunities h3:before {
   content: "9";
 }
-.juiportlet-widget.type-opportunities .icon-empty:before {
+.type-opportunities .icon-empty:before {
   content: "9";
   font-weight: normal;
   font-size: 45px;
@@ -11410,10 +11458,7 @@ div.hasHalfs > div input {
   vertical-align: middle;
   position: relative;
 }
-.juiportlet-widget.type-contacts h3:before {
-  content: "e";
-}
-.juiportlet-widget.type-contacts .icon-empty:before {
+.type-contacts .icon-empty:before {
   content: "e";
   font-weight: normal;
   font-size: 45px;
@@ -11426,7 +11471,22 @@ div.hasHalfs > div input {
   vertical-align: middle;
   position: relative;
 }
-.juiportlet-widget.type-tasks .icon-empty:before {
+.juiportlet-widget-head.type-contacts h3 {
+  padding-left: 30px;
+  position: relative;
+}
+.juiportlet-widget-head.type-contacts h3:before {
+  content: "e";
+  font-weight: normal;
+  font-size: 32px;
+  font-family: "zurmo_gamification_symbly_rRg";
+  color: #7A7A7A;
+  line-height: 100%;
+  position: absolute;
+  top: 6px;
+  left: 0;
+}
+.type-tasks .icon-empty:before {
   content: "4";
   font-weight: normal;
   font-size: 45px;
@@ -11439,7 +11499,7 @@ div.hasHalfs > div input {
   vertical-align: middle;
   position: relative;
 }
-.juiportlet-widget.type-activities .icon-empty:before {
+.type-activities .icon-empty:before {
   content: '\00A5';
   font-weight: normal;
   font-size: 45px;
@@ -11452,7 +11512,7 @@ div.hasHalfs > div input {
   vertical-align: middle;
   position: relative;
 }
-.juiportlet-widget.type-products .icon-empty:before {
+.type-products .icon-empty:before {
   content: '\003E';
   font-weight: normal;
   font-size: 45px;
@@ -11465,7 +11525,7 @@ div.hasHalfs > div input {
   vertical-align: middle;
   position: relative;
 }
-.juiportlet-widget.type-socialItems .icon-empty:before {
+.type-socialItems .icon-empty:before {
   content: 'u';
   font-weight: normal;
   font-size: 45px;
@@ -11478,7 +11538,7 @@ div.hasHalfs > div input {
   vertical-align: middle;
   position: relative;
 }
-.juiportlet-widget.type-missions .icon-empty:before {
+.type-missions .icon-empty:before {
   content: 'Q';
   font-weight: normal;
   font-size: 45px;
@@ -11491,7 +11551,7 @@ div.hasHalfs > div input {
   vertical-align: middle;
   position: relative;
 }
-.juiportlet-widget.type-leads .icon-empty:before {
+.type-leads .icon-empty:before {
   content: '.';
   font-weight: normal;
   font-size: 45px;
@@ -11517,7 +11577,7 @@ div.hasHalfs > div input {
   vertical-align: middle;
   position: relative;
 }
-.juiportlet-widget.type-contacts .icon-empty:before {
+.type-contacts .icon-empty:before {
   content: "e";
   font-weight: normal;
   font-size: 45px;
@@ -11530,7 +11590,7 @@ div.hasHalfs > div input {
   vertical-align: middle;
   position: relative;
 }
-.juiportlet-widget.type-products .icon-empty:before {
+.type-products .icon-empty:before {
   content: '\00AC';
   font-weight: normal;
   font-size: 45px;
@@ -11543,11 +11603,11 @@ div.hasHalfs > div input {
   vertical-align: middle;
   position: relative;
 }
-.juiportlet-widget.type-opportunities h3 {
+.type-opportunities h3 {
   padding-left: 30px;
   position: relative;
 }
-.juiportlet-widget.type-opportunities h3:before {
+.type-opportunities h3:before {
   font-weight: normal;
   font-size: 32px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -11556,6 +11616,19 @@ div.hasHalfs > div input {
   position: absolute;
   top: 6px;
   left: 0;
+}
+.type-campaigns .icon-empty:before {
+  content: '\002C';
+  font-weight: normal;
+  font-size: 45px;
+  font-family: "zurmo_gamification_symbly_rRg";
+  padding: 0 0 0 0;
+  margin: 0 6px 0 -30px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  vertical-align: middle;
+  position: relative;
 }
 #ZurmoLogo {
   background: url(../images/ZurmoLogo.png) left top no-repeat;
@@ -13139,13 +13212,21 @@ table.configuration-list td:last-child a .z-label:before {
   content: "P";
 }
 .available-portlets .icon-activities:before {
-  content: '00A5';
+  content: '\00A5';
 }
 .available-portlets .icon-socialItems:before {
   content: "u";
 }
 .available-portlets .icon-activities:before {
   content: 'u';
+}
+.available-portlets .icon-iframe:before {
+  content: '\2211';
+  font-size: 48px;
+}
+.available-portlets .icon-maps:before {
+  content: 'L';
+  font-size: 46px;
 }
 /*Edit Portlet*/
 #modal-edit-form th {
@@ -18771,14 +18852,12 @@ a + .autoresponder-stats {
   padding-left: 15px;
   line-height: 175%;
 }
-.module-intro-steps,
-#marketing-intro-steps {
+.module-intro-steps {
   float: left;
   width: 100%;
   margin: 30px 0 15px 0;
 }
-.module-intro-steps > div,
-#marketing-intro-steps > div {
+.module-intro-steps > div {
   float: left;
   margin-left: 2%;
   min-height: 150px;
@@ -18804,13 +18883,11 @@ a + .autoresponder-stats {
   box-shadow: inset 0 1px 1px 0 rgba(200, 200, 200, 0.4), 0 1px 0 0 #111;
   padding: 1px 0 0 0;
 }
-.module-intro-steps > div:first-child,
-#marketing-intro-steps > div:first-child {
+.module-intro-steps > div:first-child {
   margin-left: 0;
 }
-.module-intro-steps h3,
-#marketing-intro-steps h3 {
-  color: #fff;
+.module-intro-steps h3 {
+  color: #fff !important;
   font-size: 14px;
   padding: 34px 0 0 10px;
   font-weight: normal;
@@ -18825,16 +18902,13 @@ a + .autoresponder-stats {
   height: 100%;
   min-height: 149px;
   width: 85px;
-  border-right: 1px solid #282828;
 }
-.module-intro-steps h3 strong,
-#marketing-intro-steps h3 strong {
+.module-intro-steps h3 strong {
   display: block;
   font-size: 50px;
   line-height: 1;
 }
-.module-intro-steps h3 span,
-#marketing-intro-steps h3 span {
+.module-intro-steps h3 span {
   color: #fff;
   display: inline-block;
   font-weight: 100 !important;
@@ -18842,25 +18916,21 @@ a + .autoresponder-stats {
   line-height: 50px;
   margin-top: -5px;
 }
-.module-intro-steps p,
-#marketing-intro-steps p {
+.module-intro-steps p {
   min-height: 149px;
   padding: 10px 10px 10px 10px;
   margin-left: 85px;
   font-size: 13px;
   line-height: 21px;
-  border-left: 1px solid #333333;
   color: #ececec;
 }
-.module-intro-steps p strong,
-#marketing-intro-steps p strong {
+.module-intro-steps p strong {
   color: #fff;
   display: block;
   font-size: 14px;
   line-height: 22px;
 }
-.module-intro-steps span,
-#marketing-intro-steps span {
+.module-intro-steps span {
   display: block;
 }
 #products-intro-steps img {
@@ -19599,6 +19669,9 @@ a + .autoresponder-stats {
   box-sizing: border-box;
   position: relative;
 }
+div.showing-panel {
+  display: block;
+}
 .business-card {
   display: block;
 }
@@ -19619,6 +19692,9 @@ a + .autoresponder-stats {
 .business-card h2 .user-name {
   font-weight: normal;
   font-size: 80%;
+  margin-left: 5px;
+}
+.business-card .icon-star {
   margin-left: 5px;
 }
 .business-card h3.position {
@@ -19943,6 +20019,15 @@ a + .autoresponder-stats {
 .icon-youtube {
   background: url(../images/social-icons/youtube.png) center center no-repeat;
 }
+.icon-klout {
+  background: url(../images/social-icons/klout.png) center center no-repeat;
+}
+.icon-gravatar {
+  background: url(../images/social-icons/gravatar.png) center center no-repeat;
+}
+.icon-plancast {
+  background: url(../images/social-icons/plancast.png) center center no-repeat;
+}
 .back-of-card {
   display: none;
 }
@@ -20165,19 +20250,78 @@ div.special-pager .hidden.next:after {
     margin: 0 0 15px 0;
   }
 }
-@media all and (max-width: 601px) and (max-height: 451px) {
-  #login-box {
-    max-width: 475px;
-    margin: 60px auto 0 -237px;
-    height: auto !important;
-    position: relative;
-    left: 50%;
-    padding: 10px 10px 10px 10px;
-    background: rgba(255, 255, 255, 0.8);
-    border-radius: 5px;
+@media all and (max-width: 801px) {
+  /*and (max-height: 451px)*/
+  #LoginPageView {
+    padding-top: 0;
   }
-  #LoginLogo {
-    height: 120px;
-    background-position: 50% 35px;
+  #LoginPageView > div {
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 10px;
+    display: -ms-flex;
+    display: -moz-flex;
+    display: -webkit-flex;
+    display: flex;
+    -ms-flex-direction: column;
+    -ms-flex-wrap: wrap;
+    -moz-flex-flow: column wrap;
+    -webkit-flex-flow: column wrap;
+    flex-flow: column wrap;
+    -ms-flex-pack: start;
+    -moz-justify-content: flex-start;
+    -webkit-justify-content: flex-start;
+    justify-content: flex-start;
+    width: 100% !important;
+    height: 100% !important;
+    display: block;
+  }
+  #LoginPageView #FooterView {
+    -ms-flex: 1 0 auto;
+    -moz-flex: 1 0 auto;
+    -webkit-flex: 1 0 auto;
+    flex: 1 0 auto;
+    margin: 10px 10px 5px 10px;
+  }
+  #LoginPageView #credit-link {
+    margin-left: 0;
+  }
+  #LoginView {
+    min-width: 0 !important;
+    margin: 0;
+    background-position: left 120px;
+    height: auto;
+    -ms-flex: 1 0 auto;
+    -moz-flex: 1 0 auto;
+    -webkit-flex: 1 0 auto;
+    flex: 1 0 auto;
+  }
+  #login-box {
+    width: 100%;
+    height: auto;
+    float: none;
+    margin: 10px 0 0 0;
+    top: 0;
+    left: 0;
+  }
+  #login-box .form {
+    float: none;
+    width: 100%;
+    margin-bottom: 15px;
+  }
+  #login-box .form form {
+    border: none;
+    padding: 0 10px 10px 10px;
+  }
+  #login-box #LoginLogo {
+    float: none;
+    width: 100%;
+    height: 80px;
+    padding: 0;
+    background-position: 50% 50%;
+  }
+  #login-form {
+    padding: 0 20px !important;
   }
 }

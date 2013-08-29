@@ -39,7 +39,6 @@
      */
     class StarredUtil
     {
-
         public static function modelHasStarredInterface($modelClassName)
         {
             $refelectionClass = new ReflectionClass($modelClassName);
@@ -108,11 +107,11 @@
 
         protected static function markModelAsStarredForUser($modelClassName, $userId, $modelId)
         {
-            if(!static::modelHasStarredInterface($modelClassName))
+            if (!static::modelHasStarredInterface($modelClassName))
             {
                 throw new NotSupportedException();
             }
-            if(static::isModelStarredForUser($modelClassName, $userId, $modelId))
+            if (static::isModelStarredForUser($modelClassName, $userId, $modelId))
             {
                 return;
             }
@@ -133,11 +132,11 @@
 
         protected static function unmarkModelAsStarredForUser($modelClassName, $userId, $modelId)
         {
-            if(!static::modelHasStarredInterface($modelClassName))
+            if (!static::modelHasStarredInterface($modelClassName))
             {
                 throw new NotSupportedException();
             }
-            if(!static::isModelStarredForUser($modelClassName, $userId, $modelId))
+            if (!static::isModelStarredForUser($modelClassName, $userId, $modelId))
             {
                 return;
             }
@@ -158,14 +157,14 @@
 
         protected static function isModelStarredForUser($modelClassName, $userId, $modelId)
         {
-            if(!static::modelHasStarredInterface($modelClassName))
+            if (!static::modelHasStarredInterface($modelClassName))
             {
                 throw new NotSupportedException();
             }
             $tableName = static::getStarredTableName($modelClassName);
             $sql       = "SELECT id FROM {$tableName} WHERE user_id = :userId AND model_id = :modelId;";
             $rows      = R::getAll($sql,
-                                   $values=array(
+                                   $values = array(
                                     ':userId'    => $userId,
                                     ':modelId'   => $modelId,
                                    ));
@@ -179,7 +178,7 @@
         public static function unmarkModelAsStarredForAllUsers(RedBeanModel $model)
         {
             $modelClassName = get_class($model);
-            if(!static::modelHasStarredInterface($modelClassName))
+            if (!static::modelHasStarredInterface($modelClassName))
             {
                 throw new NotSupportedException();
             }
@@ -212,8 +211,8 @@
         public static function getToggleStarStatusLink($data, $row)
         {
             $starredClass   = 'icon-star unstarred';
-            $text           = 'w'; //w=Star in Icon-Font
-            if(static::isModelStarred($data))
+            $text           = 'w'; //w = Star in Icon-Font
+            if (static::isModelStarred($data))
             {
                 $starredClass = 'icon-star starred';
             }

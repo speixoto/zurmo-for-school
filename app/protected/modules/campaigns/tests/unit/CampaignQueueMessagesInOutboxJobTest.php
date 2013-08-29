@@ -456,12 +456,13 @@
                 CampaignItemTestHelper::createCampaignItem($processed, $campaign, $contact);
             }
             $this->assertTrue($job->run());
+            ForgetAllCacheUtil::forgetAllCaches();
             $campaignItemsCountExpected = $campaignItemsCountBefore + 5;
             $campaignItemsCountAfter    = CampaignItem::getCount();
             $this->assertEquals($campaignItemsCountExpected, $campaignItemsCountAfter);
             $campaignItemsProcessed = CampaignItem::getByProcessedAndCampaignId(1, $campaign->id);
             $this->assertCount(5, $campaignItemsProcessed);
-            foreach ($campaignItemsProcessed as $index => $campaignItem)
+            foreach ($campaignItemsProcessed as $campaignItem)
             {
                 $emailMessage               = $campaignItem->emailMessage;
                 $this->assertNotEmpty($emailMessage->files);
@@ -474,6 +475,82 @@
                     $this->assertEquals($files[$index]['contents'], $emailMessage->files[$index]->fileContent->content);
                 }
             }
+        }
+
+        /**
+         * @//depends testRunWithMultipleRecipientsWithAttachments
+         */
+        public function testRunWithSubscribedAndUnsubscribedMembers()
+        {
+            $campaignItemsCountBefore   = CampaignItem::getCount();
+            $job                = new CampaignQueueMessagesInOutboxJob();
+            $marketingList      = MarketingListTestHelper::createMarketingListByName('marketingList 10');
+            $marketingListId    = $marketingList->id;
+            $contacts           = array();
+            for ($i = 0; $i < 5; $i++)
+            {
+                $email                  = new Email();
+                $email->emailAddress    = "demo$i@zurmo.com";
+                $contact                = ContactTestHelper::createContactByNameForOwner('contact 0' . ($i + 14), $this->user);
+                $contact->primaryEmail  = $email;
+                $this->assertTrue($contact->save());
+                $contacts[]             = $contact;
+                MarketingListMemberTestHelper::createMarketingListMember(($i%2) , $marketingList, $contact);
+            }
+            $marketingList->forgetAll();
+
+            $marketingList      = MarketingList::getById($marketingListId);
+            $campaign           = CampaignTestHelper::createCampaign('campaign 10',
+                                                                        'subject 10',
+                                                                        '[[FIRST^NAME]]',
+                                                                        '[[LAST^NAME]]',
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        Campaign::STATUS_PROCESSING,
+                                                                        null,
+                                                                        0,
+                                                                        $marketingList);
+            $this->assertNotNull($campaign);
+            $campaignId = $campaign->id;
+            foreach ($contacts as $contact)
+            {
+                CampaignItemTestHelper::createCampaignItem(0, $campaign, $contact);
+            }
+            $this->assertTrue($job->run());
+            $campaign = Campaign::getById($campaignId);
+            $campaignItemsCountExpected = $campaignItemsCountBefore + 5;
+            $campaignItemsCountAfter    = CampaignItem::getCount();
+            $this->assertEquals($campaignItemsCountExpected, $campaignItemsCountAfter);
+            $campaignItemsProcessed = CampaignItem::getByProcessedAndCampaignId(1, $campaign->id);
+            $this->assertCount(5, $campaignItemsProcessed);
+            $skippedCount           = 0;
+            foreach ($campaignItemsProcessed as $campaignItem)
+            {
+                $contact    = $campaignItem->contact;
+                $member = MarketingListMember::getByMarketingListIdContactIdAndUnsubscribed($campaign->marketingList->id,
+                                                                                            $contact->id,
+                                                                                            true);
+                if ($member)
+                {
+                    $personId       = $campaignItem->contact->getClassId('Person');
+                    $type           = CampaignItemActivity::TYPE_SKIP;
+                    $activity       = CampaignItemActivity::getByTypeAndModelIdAndPersonIdAndUrl($type,
+                                                                                                $campaignItem->id,
+                                                                                                $personId);
+                    $this->assertNotNull($activity);
+                    $this->assertNotEmpty($activity);
+                    $this->assertCount(1, $activity);
+                    $skippedCount++;
+                }
+                else
+                {
+                    $this->assertNotEmpty($campaignItem->emailMessage);
+                    $this->assertTrue(strpos($campaignItem->emailMessage->content->textContent, $contact->firstName) !== false);
+                    $this->assertTrue(strpos($campaignItem->emailMessage->content->htmlContent, $contact->lastName) !== false);
+                }
+            }
+            $this->assertEquals(2, $skippedCount);
         }
     }
 ?>

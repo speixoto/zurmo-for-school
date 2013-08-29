@@ -48,5 +48,11 @@
         {
             return true;
         }
+
+
+        protected function getIconType()
+        {
+            return 'iframe';
+        }
     }
 ?>

@@ -116,7 +116,7 @@
                         $this->getMessageLogger()->addInfoMessage($message);
                         $this->processCompletedWithSecurityExceptionExportItem($exportItem);
                     }
-                    if($this->hasReachedMaximumProcessingCount())
+                    if ($this->hasReachedMaximumProcessingCount())
                     {
                         $this->addMaxmimumProcessingCountMessageForAllExportItems();
                         break;
@@ -134,13 +134,20 @@
         protected function processExportItem(ExportItem $exportItem)
         {
             $dataProviderOrIdsToExport = unserialize($exportItem->serializedData);
-            if($dataProviderOrIdsToExport instanceOf RedBeanModelDataProvider)
+            if ($dataProviderOrIdsToExport instanceOf RedBeanModelDataProvider)
             {
                 $this->processRedBeanModelDataProviderExport($exportItem, $dataProviderOrIdsToExport);
             }
-            elseif($dataProviderOrIdsToExport instanceOf ReportDataProvider)
+            elseif ($dataProviderOrIdsToExport instanceOf ReportDataProvider)
             {
-                $this->processReportDataProviderExport($exportItem, $dataProviderOrIdsToExport);
+                if ($dataProviderOrIdsToExport instanceOf MatrixReportDataProvider)
+                {
+                    $this->processMatrixReportDataProviderExport($exportItem, $dataProviderOrIdsToExport);
+                }
+                else
+                {
+                    $this->processReportDataProviderExport($exportItem, $dataProviderOrIdsToExport);
+                }
             }
             else
             {
@@ -167,7 +174,7 @@
                 $this->addMemoryMarkerMessageAfterPageIsProcessed($startingMemoryUsage);
                 $startingMemoryUsage = memory_get_usage();
                 $offset              = $offset + $this->getAsynchronousPageSize();
-                if($this->hasReachedMaximumProcessingCount())
+                if ($this->hasReachedMaximumProcessingCount())
                 {
                     $this->addMaxmimumProcessingCountMessage($exportItem);
                     $exportCompleted = false;
@@ -175,7 +182,7 @@
                 }
             }
             $content         = ExportItemToCsvFileUtil::export($data, $headerData);
-            if($exportItem->exportFileModel->id > 0)
+            if ($exportItem->exportFileModel->id > 0)
             {
                 $exportFileModel = $this->updateExportFileModelByExportItem($content, $exportItem);
             }
@@ -183,7 +190,7 @@
             {
                 $exportFileModel = $this->makeExportFileModelByContent($content, $exportItem->exportFileName);
             }
-            if(!$exportCompleted)
+            if (!$exportCompleted)
             {
                 $this->processInProgressExportItem($exportItem, $exportFileModel, $offset);
             }
@@ -199,17 +206,53 @@
          */
         protected function processReportDataProviderExport(ExportItem $exportItem, ReportDataProvider $dataProvider)
         {
-            $headerData = array();
-            $reportToExportAdapter  = ReportToExportAdapterFactory::
-                createReportToExportAdapter($dataProvider->getReport(),
-                    $dataProvider);
-            if (count($headerData) == 0 && $exportItem->exportFileModel->id < 0)
+            $headerData                          = array();
+            $data                                = array();
+            $offset                              = (int)$exportItem->processOffset;
+            $exportCompleted                     = true;
+            $startingMemoryUsage                 = memory_get_usage();
+            $dataProvider->pagination->pageSize  = $this->getAsynchronousPageSize();
+            $dataProvider->offset                = $offset;
+            while(true === $this->processReportExportPage($dataProvider, (int)$offset, $headerData, $data,
+                                                    ($exportItem->exportFileModel->id < 0)))
             {
-                $headerData = $reportToExportAdapter->getHeaderData();
+                $this->addMemoryMarkerMessageAfterPageIsProcessed($startingMemoryUsage);
+                $startingMemoryUsage = memory_get_usage();
+                $offset              = $offset + $this->getAsynchronousPageSize();
+                if ($this->hasReachedMaximumProcessingCount())
+                {
+                    $this->addMaxmimumProcessingCountMessage($exportItem);
+                    $exportCompleted = false;
+                    break;
+                }
             }
-            $data            = $reportToExportAdapter->getData();
             $content         = ExportItemToCsvFileUtil::export($data, $headerData);
-            $exportFileModel = $this->makeExportFileModelByContent($content, $exportItem->exportFileName);
+            if ($exportItem->exportFileModel->id > 0)
+            {
+                $exportFileModel = $this->updateExportFileModelByExportItem($content, $exportItem);
+            }
+            else
+            {
+                $exportFileModel = $this->makeExportFileModelByContent($content, $exportItem->exportFileName);
+            }
+            if (!$exportCompleted)
+            {
+                $this->processInProgressExportItem($exportItem, $exportFileModel, $offset);
+            }
+            else
+            {
+                $this->processCompletedExportItem($exportItem, $exportFileModel);
+            }
+        }
+
+        protected function processMatrixReportDataProviderExport(ExportItem $exportItem, MatrixReportDataProvider $dataProvider)
+        {
+            $reportToExportAdapter  = ReportToExportAdapterFactory::
+                                            createReportToExportAdapter($dataProvider->getReport(), $dataProvider);
+            $headerData             = $reportToExportAdapter->getHeaderData();
+            $data                   = $reportToExportAdapter->getData();
+            $content                = ExportItemToCsvFileUtil::export($data, $headerData);
+            $exportFileModel        = $this->makeExportFileModelByContent($content, $exportItem->exportFileName);
             $this->processCompletedExportItem($exportItem, $exportFileModel);
         }
 
@@ -243,7 +286,7 @@
         {
             $exportItem->exportFileModel->fileContent->content .= $content;
             $saved = $exportItem->exportFileModel->save();
-            if(!$saved)
+            if (!$saved)
             {
                 throw new FailedToSaveFileModelException();
             }
@@ -267,7 +310,7 @@
             $exportFileModel->type        = 'application/octet-stream';
             $exportFileModel->size        = strlen($content);
             $saved = $exportFileModel->save();
-            if(!$saved)
+            if (!$saved)
             {
                 throw new FailedToSaveFileModelException();
             }
@@ -286,7 +329,7 @@
             $exportItem->exportFileModel = $exportFileModel;
             $exportItem->processOffset   = $offset;
             $saved = $exportItem->save();
-            if(!$saved)
+            if (!$saved)
             {
                 throw new FailedToSaveFileModelException();
             }
@@ -302,7 +345,7 @@
             $exportItem->isCompleted     = true;
             $exportItem->exportFileModel = $exportFileModel;
             $saved = $exportItem->save();
-            if(!$saved)
+            if (!$saved)
             {
                throw new FailedToSaveFileModelException();
             }
@@ -326,7 +369,7 @@
         {
             $exportItem->isCompleted     = true;
             $saved = $exportItem->save();
-            if(!$saved)
+            if (!$saved)
             {
                 throw new FailedToSaveFileModelException();
             }
@@ -380,7 +423,37 @@
                                          'with asynchronousPageSize of {pageSize}' ,
                                          array('{count}'    => $modelCount,
                                                '{pageSize}' => $this->getAsynchronousPageSize())));
-            if($modelCount >= $this->getAsynchronousPageSize())
+            if ($modelCount >= $this->getAsynchronousPageSize())
+            {
+                return true;
+            }
+            return false;
+        }
+
+        protected function processReportExportPage(ReportDataProvider $dataProvider, $offset, & $headerData, & $data, $resolveForHeader)
+        {
+            assert('is_int($offset)');
+            assert('is_bool($resolveForHeader)');
+            $dataProvider->offset   = $offset;
+            $reportToExportAdapter  = ReportToExportAdapterFactory::
+                createReportToExportAdapter($dataProvider->getReport(), $dataProvider);
+            $rows = $reportToExportAdapter->getData();
+            $rowsCount = count($rows);
+            $this->totalModelsProcessed = $this->totalModelsProcessed + $rowsCount;
+            if (count($headerData) == 0 && $resolveForHeader)
+            {
+                $headerData = array_merge($headerData, $reportToExportAdapter->getHeaderData());
+            }
+            if (is_array($rows))
+            {
+                $data = array_merge($data, $rows);
+            }
+            $this->getMessageLogger()->addInfoMessage(
+                Zurmo::t('ExportModule', 'processExportPage: rows processed: {count} ' .
+                                         'with asynchronousPageSize of {pageSize}' ,
+                                         array('{count}'    => $rowsCount,
+                                               '{pageSize}' => $this->getAsynchronousPageSize())));
+            if ($rowsCount >= $this->getAsynchronousPageSize())
             {
                 return true;
             }
@@ -395,7 +468,7 @@
          */
         protected function processExportModels(array $models, & $headerData, & $data, $resolveForHeader = true)
         {
-            foreach($models as $model)
+            foreach ($models as $model)
             {
                 $canRead = ControllerSecurityUtil::doesCurrentUserHavePermissionOnSecurableItem($model, Permission::READ);
                 if ($canRead)
@@ -420,7 +493,7 @@
         {
             foreach ($model->attributeNames() as $attributeName)
             {
-                if($model->isRelation($attributeName) && $model->{$attributeName} instanceof RedBeanModel)
+                if ($model->isRelation($attributeName) && $model->{$attributeName} instanceof RedBeanModel)
                 {
                     $model->{$attributeName}->forgetValidators();
                     $model->{$attributeName}->forget();
@@ -451,7 +524,7 @@
          */
         protected function hasReachedMaximumProcessingCount()
         {
-            if(($this->totalModelsProcessed + $this->getAsynchronousPageSize()) >
+            if (($this->totalModelsProcessed + $this->getAsynchronousPageSize()) >
                 $this->getAsynchronousMaximumModelsToProcess())
             {
                 return true;

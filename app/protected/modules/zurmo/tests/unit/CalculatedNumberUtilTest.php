@@ -107,32 +107,32 @@
             $result = CalculatedNumberUtil::calculateByFormulaAndModelAndResolveFormat('(integerStandard + floatStandard)', $model);
             $this->assertEquals('9,000.39', $result); // Not Coding Standard
         }
-        
+
         public function testCalculateByFormulaAndModelAndResolveFormatForIfStatement()
         {
             $model  = new TestOperatorTypeModel();
             $formatType   = null;
             $currencyCode = null;
-            $result = CalculatedNumberUtil::calculateByFormulaAndModelAndResolveFormat('IF(1 == 1; "true"; "false")', 
+            $result = CalculatedNumberUtil::calculateByFormulaAndModelAndResolveFormat('IF(1 == 1; "true"; "false")', // Not Coding Standard
                                                                        $model);
             $this->assertEquals("true", $result);
-            $result = CalculatedNumberUtil::calculateByFormulaAndModelAndResolveFormat('IF(1 > 1; "true"; "false")', 
+            $result = CalculatedNumberUtil::calculateByFormulaAndModelAndResolveFormat('IF(1 > 1; "true"; "false")',  // Not Coding Standard
                                                                        $model);
             $this->assertEquals("false", $result);
-            $result = CalculatedNumberUtil::calculateByFormulaAndModelAndResolveFormat('IF(1 >= 1; "true"; "false")', 
+            $result = CalculatedNumberUtil::calculateByFormulaAndModelAndResolveFormat('IF(1 >= 1; "true"; "false")', // Not Coding Standard
                                                                        $model);
             $this->assertEquals("true", $result);
-            $result = CalculatedNumberUtil::calculateByFormulaAndModelAndResolveFormat('IF(1 < 1; "true"; "false")', 
+            $result = CalculatedNumberUtil::calculateByFormulaAndModelAndResolveFormat('IF(1 < 1; "true"; "false")',  // Not Coding Standard
                                                                        $model);
             $this->assertEquals("false", $result);
-            $result = CalculatedNumberUtil::calculateByFormulaAndModelAndResolveFormat('IF(1 <= 1; "true"; "false")', 
+            $result = CalculatedNumberUtil::calculateByFormulaAndModelAndResolveFormat('IF(1 <= 1; "true"; "false")', // Not Coding Standard
                                                                        $model);
             $this->assertEquals("true", $result);
-            $result = CalculatedNumberUtil::calculateByFormulaAndModelAndResolveFormat('IF(1 != 1; "true"; "false")', 
+            $result = CalculatedNumberUtil::calculateByFormulaAndModelAndResolveFormat('IF(1 != 1; "true"; "false")', // Not Coding Standard
                                                                        $model);
             $this->assertEquals("false", $result);
-            
-            $result = CalculatedNumberUtil::calculateByFormulaAndModelAndResolveFormat('IF(1 == 1; 12.5; 0.65)', 
+
+            $result = CalculatedNumberUtil::calculateByFormulaAndModelAndResolveFormat('IF(1 == 1; 12.5; 0.65)',      // Not Coding Standard
                                                                        $model);
             $this->assertEquals(12.5, $result);
 
@@ -141,23 +141,23 @@
             $model->floatStandard   = 1000.01;
             $model->booleanStandard = true;
             $model->urlStandard     = 'http://www.zurmo.com';
-            
+
             $result = CalculatedNumberUtil::calculateByFormulaAndModelAndResolveFormat(
-                                                'IF(integerStandard > 1; urlStandard; "false")', 
+                                                'IF(integerStandard > 1; urlStandard; "false")', // Not Coding Standard
                                                 $model);
-            $this->assertEquals($model->urlStandard, $result);            
+            $this->assertEquals($model->urlStandard, $result);
             $result = CalculatedNumberUtil::calculateByFormulaAndModelAndResolveFormat(
-                                                'IF(booleanStandard; urlStandard; "false")', 
+                                                'IF(booleanStandard; urlStandard; "false")',     // Not Coding Standard
                                                 $model);
-            $this->assertEquals("false", $result);            
+            $this->assertEquals("false", $result);
             $result = CalculatedNumberUtil::calculateByFormulaAndModelAndResolveFormat(
-                                                'IF(urlStandard != "zurmo.org"; floatStandard; integerStandard)', 
+                                                'IF(urlStandard != "zurmo.org"; floatStandard; integerStandard)', // Not Coding Standard
                                                 $model);
-            $this->assertEquals(1000.01, $result);            
+            $this->assertEquals(1000.01, $result);
             $result = CalculatedNumberUtil::calculateByFormulaAndModelAndResolveFormat(
-                                                'IF(urlStandard == "zurmo.org"; floatStandard; integerStandard)', 
+                                                'IF(urlStandard == "zurmo.org"; floatStandard; integerStandard)', // Not Coding Standard
                                                 $model);
-            $this->assertEquals(1000, $result);                        
+            $this->assertEquals(1000, $result);
         }
 
         public function testCurrencyValuesInFormula()
@@ -189,19 +189,19 @@
         }
 
         public function testIsFormulaValid()
-        {           
-            $this->assertFalse(CalculatedNumberUtil::isFormulaValid('IF(4 + 5;"string";"")', 'TestOperatorTypeModel'));            
-            $this->assertFalse(CalculatedNumberUtil::isFormulaValid('IF(4 >=! 5;"string";"")', 'TestOperatorTypeModel'));
-            $this->assertFalse(CalculatedNumberUtil::isFormulaValid('IF(4>=5;>string";"")', 'TestOperatorTypeModel'));
-            $this->assertFalse(CalculatedNumberUtil::isFormulaValid('IF(4>=5;"string":"")', 'TestOperatorTypeModel'));
-            $this->assertFalse(CalculatedNumberUtil::isFormulaValid('IF(4 == 5;"true string";"false string")', 'TestOperatorTypeModel'));
-            $this->assertTrue(CalculatedNumberUtil::isFormulaValid("IF(4 == 5;'true string';'false string')", 'TestOperatorTypeModel'));
-            $this->assertTrue(CalculatedNumberUtil::isFormulaValid('IF(4 <= 5;emailStandard;urlStandard)', 'TestOperatorTypeModel'));
-            $this->assertTrue(CalculatedNumberUtil::isFormulaValid('IF(4 < 5;emailStandard;urlStandard)', 'TestOperatorTypeModel'));
-            $this->assertTrue(CalculatedNumberUtil::isFormulaValid('IF(4 > 5;emailStandard;urlStandard)', 'TestOperatorTypeModel'));
-            $this->assertTrue(CalculatedNumberUtil::isFormulaValid('IF(4 >= 5;emailStandard;urlStandard)', 'TestOperatorTypeModel'));
-            $this->assertTrue(CalculatedNumberUtil::isFormulaValid('IF(4 != 5;emailStandard;urlStandard)', 'TestOperatorTypeModel'));
-            $this->assertTrue(CalculatedNumberUtil::isFormulaValid("IF(emailStandard == 'email';emailStandard;urlStandard)", 'TestOperatorTypeModel'));
+        {
+            $this->assertFalse(CalculatedNumberUtil::isFormulaValid('IF(4 + 5;"string";"")', 'TestOperatorTypeModel'));   // Not Coding Standard
+            $this->assertFalse(CalculatedNumberUtil::isFormulaValid('IF(4 >=! 5;"string";"")', 'TestOperatorTypeModel')); // Not Coding Standard
+            $this->assertFalse(CalculatedNumberUtil::isFormulaValid('IF(4>=5;>string";"")', 'TestOperatorTypeModel'));    // Not Coding Standard
+            $this->assertFalse(CalculatedNumberUtil::isFormulaValid('IF(4>=5;"string":"")', 'TestOperatorTypeModel'));    // Not Coding Standard
+            $this->assertFalse(CalculatedNumberUtil::isFormulaValid('IF(4 == 5;"true string";"false string")', 'TestOperatorTypeModel')); // Not Coding Standard
+            $this->assertTrue(CalculatedNumberUtil::isFormulaValid("IF(4 == 5;'true string';'false string')", 'TestOperatorTypeModel'));  // Not Coding Standard
+            $this->assertTrue(CalculatedNumberUtil::isFormulaValid('IF(4 <= 5;emailStandard;urlStandard)', 'TestOperatorTypeModel'));     // Not Coding Standard
+            $this->assertTrue(CalculatedNumberUtil::isFormulaValid('IF(4 < 5;emailStandard;urlStandard)', 'TestOperatorTypeModel'));      // Not Coding Standard
+            $this->assertTrue(CalculatedNumberUtil::isFormulaValid('IF(4 > 5;emailStandard;urlStandard)', 'TestOperatorTypeModel'));      // Not Coding Standard
+            $this->assertTrue(CalculatedNumberUtil::isFormulaValid('IF(4 >= 5;emailStandard;urlStandard)', 'TestOperatorTypeModel'));     // Not Coding Standard
+            $this->assertTrue(CalculatedNumberUtil::isFormulaValid('IF(4 != 5;emailStandard;urlStandard)', 'TestOperatorTypeModel'));     // Not Coding Standard
+            $this->assertTrue(CalculatedNumberUtil::isFormulaValid("IF(emailStandard == 'email';emailStandard;urlStandard)", 'TestOperatorTypeModel')); // Not Coding Standard
             $this->assertTrue(CalculatedNumberUtil::isFormulaValid('(4 + 5)', 'TestOperatorTypeModel'));
             $this->assertTrue(CalculatedNumberUtil::isFormulaValid('(integerStandard + 5)', 'TestOperatorTypeModel'));
             $this->assertTrue(CalculatedNumberUtil::isFormulaValid('(integerStandard + floatStandard)', 'TestOperatorTypeModel'));

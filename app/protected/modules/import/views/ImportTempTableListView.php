@@ -97,7 +97,7 @@
 
         protected static function resolveHeaderLabelByColumnNameAndLabel($columnName, $label)
         {
-            if($label == null)
+            if ($label == null)
             {
                 $headerLabel = static::resolveColumnCountByName($columnName);
             }
@@ -111,7 +111,7 @@
         protected static function resolveColumnCountByName($columnName)
         {
             $columnNameParts = explode('_', $columnName);
-            if(count($columnNameParts) != 2)
+            if (count($columnNameParts) != 2)
             {
                 $columnNameCount = null;
             }
@@ -144,7 +144,6 @@
             $this->importId          = $importId;
             $this->gridId            = 'import-temp-table-list-view';
         }
-
 
         protected function renderContent()
         {
@@ -220,7 +219,7 @@
                     $this->mappingData[$columnName]['type'] == 'importColumn' &&
                     $this->mappingData[$columnName]['attributeIndexOrDerivedType'] != null)
                 {
-                    if(!$this->dataProvider->hasHeaderRow())
+                    if (!$this->dataProvider->hasHeaderRow())
                     {
                         $label = static::resolveColumnCountByName($columnName);
                     }
@@ -253,12 +252,11 @@
             $headerRow = ImportDatabaseUtil::getFirstRowByTableName($this->dataProvider->getTableName());
             foreach ($headerRow as $columnName => $label)
             {
-
                 if (!in_array($columnName, ImportDatabaseUtil::getReservedColumnNames()) &&
                     $this->mappingData[$columnName]['type'] == 'importColumn' &&
                     $this->mappingData[$columnName]['attributeIndexOrDerivedType'] != null)
                 {
-                    if(!$this->dataProvider->hasHeaderRow())
+                    if (!$this->dataProvider->hasHeaderRow())
                     {
                         $label = static::resolveColumnCountByName($columnName);
                     }
@@ -280,7 +278,7 @@
         protected function resolveHeaderColumnContent($columnName, $label)
         {
             $content  = static::resolveHeaderLabelByColumnNameAndLabel($columnName, $label);
-            if($this->mappingData[$columnName]['attributeIndexOrDerivedType'] != null)
+            if ($this->mappingData[$columnName]['attributeIndexOrDerivedType'] != null)
             {
                 $attributeIndexOrDerivedType = $this->mappingData[$columnName]['attributeIndexOrDerivedType'];
                 $attributeImportRules = AttributeImportRulesFactory::makeByImportRulesTypeAndAttributeIndexOrDerivedType(
@@ -355,15 +353,16 @@
             assert('$form instanceof ZurmoActiveForm');
             $url       = Yii::app()->createUrl($this->moduleId . '/' . $this->getDefaultRoute());
             $urlScript = 'js:$.param.querystring("' . $url . '", "' .
-                         $this->dataProvider->getPagination()->pageVar . '=1&id=' .
-                         $this->importId . '&step=complete&ajax=' . $this->gridId. '&pageSize=' . $this->dataProvider->getPagination()->getPageSize() . '")';
+                         $this->dataProvider->getPagination()->pageVar . '=1&id=' . // Not Coding Standard
+                         $this->importId . '&step=complete&ajax=' . $this->gridId . '&pageSize=' . $this->dataProvider->getPagination()->getPageSize() . '")'; // Not Coding Standard
             $ajaxSubmitScript = ZurmoHtml::ajax(array(
                     'type'       => 'GET',
                     'url'        =>  $urlScript,
                     'beforeSend' => 'js:function(){$(this).makeSmallLoadingSpinner(true, "#' .
                                     $this->getGridViewId() . '"); $("#' .
                                     $this->getUniquePageId() . '").find(".cgrid-view").addClass("loading");}',
-                    'success'    => 'js:function(data){
+                    'success'    => 'js:function(data)
+                    {
                                     $("#' . $this->getUniquePageId() . '").replaceWith(data);
                     }',
             ));

@@ -58,7 +58,7 @@
                 $label = Zurmo::t('ImportModule', 'Is too short. Minimum length is {minimumLength}.',
                                   array('{minimumLength}' => $minimumLength));
 
-                if($this->isAttributeRequired())
+                if ($this->isAttributeRequired())
                 {
                     $this->shouldSkipRow      = true;
                 }

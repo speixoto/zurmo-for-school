@@ -116,7 +116,6 @@
         {
             $modelClassName = $this->modelClassName;
             $model = new $modelClassName(false);
-            $model->setScenario('searchModel');
             return new TasksSearchForm($model);
         }
 

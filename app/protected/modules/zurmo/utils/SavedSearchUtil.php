@@ -166,7 +166,7 @@
             assert('is_array($stickyData)');
             $stickyData['dynamicClauses']          = $dataCollection->getSanitizedDynamicSearchAttributes();
             $stickyData['dynamicStructure']        = $dataCollection->getDynamicStructure();
-            if($dataCollection->getFilterByStarred() != null)
+            if ($dataCollection->getFilterByStarred() != null)
             {
                 $stickyData['filterByStarred']         = $dataCollection->getFilterByStarred();
             }

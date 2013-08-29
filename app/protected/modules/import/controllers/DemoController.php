@@ -39,7 +39,7 @@
     {
         public function actionCreateDemoImportForAnalysis($firstRowIsHeaderRow = true)
         {
-            if (Yii::app()->user->userModel->username != 'super')
+            if (!Group::isUserASuperAdministrator(Yii::app()->user->userModel))
             {
                 throw new NotSupportedException();
             }
@@ -83,14 +83,14 @@
             $serializedData['firstRowIsHeaderRow'] = $firstRowIsHeaderRow;
             $import->serializedData               = serialize($serializedData);
             $saved = $import->save();
-            if(!$saved)
+            if (!$saved)
             {
                 throw new FailedToSaveModelException();
             }
             $this->createImportTempTable(8, $import->getTempTableName());
 
             //Make header row
-            if($firstRowIsHeaderRow)
+            if ($firstRowIsHeaderRow)
             {
                 $newBean = R::dispense($import->getTempTableName());
                 $newBean->column_0 = 'Header #1';

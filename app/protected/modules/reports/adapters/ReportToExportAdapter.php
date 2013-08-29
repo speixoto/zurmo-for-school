@@ -39,32 +39,31 @@
      */
     abstract class ReportToExportAdapter
     {
-                
         protected $dataProvider;
-        
+
         protected $dataForExport;
-        
+
         protected $headerData;
-        
+
         protected $data;
-                
+
         protected $report;
-                
+
         public function __construct(ReportDataProvider $dataProvider, Report $report)
         {
-            $this->dataProvider         = $dataProvider;
-            $this->report               = $report;
-            $this->dataForExport        = ExportUtil::getDataForExport($this->dataProvider);
+            $this->dataProvider     = $dataProvider;
+            $this->report           = $report;                        
+            $this->dataForExport    = $dataProvider->getData(true);
             $this->makeData();
         }
-        
+
         public function getData()
-        {                    
+        {
             return $this->data;
         }
 
         public function getHeaderData()
-        {                                       
+        {
             return $this->headerData;
         }
 
@@ -72,22 +71,22 @@
          * Override if needed to adapt the way data is made for export
          */
         protected function makeData()
-        {                        
+        {
             foreach ($this->dataForExport as $reportResultsRowData)
             {
                 $data             = array();
-                $this->headerData = array();                
+                $this->headerData = array();
                 foreach ($reportResultsRowData->getDisplayAttributes() as $key => $displayAttribute)
-                {                        
-                    $resolvedAttributeName = $displayAttribute->resolveAttributeNameForGridViewColumn($key);                    
+                {
+                    $resolvedAttributeName = $displayAttribute->resolveAttributeNameForGridViewColumn($key);
                     $className             = $this->resolveExportClassNameForReportToExportValueAdapter($displayAttribute);
                     $params                = array();
                     $this->resolveParamsForCurrencyTypes($displayAttribute, $params);
                     $adapter = new $className($reportResultsRowData, $resolvedAttributeName, $params);
                     $adapter->resolveData($data);
-                    $adapter->resolveHeaderData($this->headerData);                        
+                    $adapter->resolveHeaderData($this->headerData);
                 }
-                $this->data[] = $data;                
+                $this->data[] = $data;
             }
         }
 
@@ -121,6 +120,6 @@
                 $params['spotConversionCurrencyCode']  = $this->report->getSpotConversionCurrencyCode();
                 $params['fromBaseToSpotRate']          = $this->report->getFromBaseToSpotRate();
             }
-        }                
+        }
     }
 ?>

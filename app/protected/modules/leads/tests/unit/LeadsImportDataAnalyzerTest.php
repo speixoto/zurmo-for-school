@@ -114,7 +114,6 @@
 
             $this->assertNull($data[8]->serializedAnalysisMessages);
             $this->assertEquals(ImportDataAnalyzer::STATUS_CLEAN, $data[8]->analysisStatus);
-
         }
     }
 ?>

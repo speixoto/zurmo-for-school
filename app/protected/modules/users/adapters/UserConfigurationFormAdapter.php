@@ -86,7 +86,7 @@
             $user->hideFromSelecting   = $form->hideFromSelecting;
             $user->hideFromLeaderboard = $form->hideFromLeaderboard;
             $saved = $user->save();
-            if(!$saved)
+            if (!$saved)
             {
                 throw new FailedToSaveModelException();
             }

@@ -122,7 +122,7 @@
             {
                 return false;
             }
-            if(in_array($elementInformation['type'],
+            if (in_array($elementInformation['type'],
                     array('UserEditLink', 'AuditEventsModalListLink', 'ChangePasswordLink', 'UserConfigurationLink')) &&
                 !UserAccessUtil::canCurrentUserViewALinkRequiringElevatedAccess($this->model))
             {
