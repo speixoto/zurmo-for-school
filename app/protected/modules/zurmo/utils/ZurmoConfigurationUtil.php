@@ -39,7 +39,8 @@
      */
     class ZurmoConfigurationUtil
     {
-        const ENABLE_CACHE = true;
+        // TODO: @Shoaibi: Critical: 2.3: Refactor this to an extra optional parameter to all get and set methods, defaults to true
+        const ENABLE_CACHE = false;
 
         /**
          * For the current user, retrieve a configuration value by module name and key.
@@ -70,7 +71,7 @@
                 return null;
             }
             $value = static::getCachedValue($moduleName, $key);
-            if (!isset($value))
+            if ($value === null)
             {
                 $metadata = $moduleName::getMetadata();
                 if (isset($metadata['global']) && isset($metadata['global'][$key]))
@@ -92,7 +93,7 @@
             assert('is_string($moduleName)');
             assert('is_string($key)');
             $value = static::getCachedValue($moduleName, $key, $user->id);
-            if(!isset($value))
+            if ($value === null)
             {
                 $metadata = $moduleName::getMetadata($user);
                 if (isset($metadata['perUser']) && isset($metadata['perUser'][$key]))
