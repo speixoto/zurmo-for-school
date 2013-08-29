@@ -50,7 +50,7 @@
                 ),
                 'relations' => array(
                     'polys'           => array(static::HAS_MANY,  'TestPolyOneToManyPolySide',
-                                               static::NOT_OWNED, static::LINK_TYPE_POLYMORPHIC, 'polyTest'),
+                                               static::OWNED, static::LINK_TYPE_POLYMORPHIC, 'polyTest'),
                     'ownedPolys'      => array(static::HAS_MANY,  'TestPolyOneToManyPolySideOwned',
                                                static::OWNED, static::LINK_TYPE_POLYMORPHIC, 'polyOwnedTest'),
                 ),

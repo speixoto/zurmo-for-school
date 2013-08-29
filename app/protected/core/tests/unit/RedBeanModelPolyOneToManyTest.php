@@ -125,6 +125,7 @@
             $this->assertEquals(1, $oneSide->polys->count());
             $this->assertEquals($polySide3Id, $oneSide->polys[0]->id);
 
+            // TODO: @Shoaibi: Critical: This probably fails because polys is also owned.
             //test delete the oneSide, polySide should remain
             $this->assertEquals(3, count(TestPolyOneToManyPolySide::getAll()));
             $this->assertTrue($oneSide->delete());
