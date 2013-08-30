@@ -49,7 +49,7 @@
         {
             if ($data->{$this->attribute}->value === null)
             {
-                $value = Zurmo::t('ReportsModule', '(Null)');
+                $value = Zurmo::t('ReportsModule', '(Null)'); // Not Coding Standard
             }
             else
             {

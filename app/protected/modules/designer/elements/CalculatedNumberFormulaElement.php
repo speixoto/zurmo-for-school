@@ -65,7 +65,7 @@
                                                          'Within the condition and values you can use strings, string fields, ' .
                                                          'number fields or math expressions. Strings should be surrounded by ' .
                                                          '\'. In the condition you can ' .
-                                                         'use the operators <, >, ==, !=, <= and >=. An example of an if ' .
+                                                         'use the operators <, >, ==, !=, <= and >=. An example of an if ' . // Not Coding Standard
                                                          'statement is IF(field1 == field4;field2/365;0)'); // Not Coding Standard
             $spanContent    = '<span id="formula-tooltip" class="tooltip" title="' . $title . '">?</span>';
             $content        = null;

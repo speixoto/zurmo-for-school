@@ -33,8 +33,38 @@
 	<td>30000</td>
 </tr>
 <tr>
+	<td>assertTextPresent</td>
+	<td>Create</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTextPresent</td>
+	<td>Products</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTextPresent</td>
+	<td>Catalog Items</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTextPresent</td>
+	<td>Categories</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTextPresent</td>
+	<td>Delete</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTextPresent</td>
+	<td>Export</td>
+	<td></td>
+</tr>
+<tr>
 	<td>clickAndWait</td>
-	<td>//ul[@id='MashableInboxCreateDropdown']/li/ul/li[3]/a</td>
+	<td>//div[@id='SecuredActionBarForProductsSearchAndListView']/div[1]/div[1]/a[2]</td>
 	<td></td>
 </tr>
 <tr>
@@ -48,48 +78,68 @@
 	<td>30000</td>
 </tr>
 <tr>
-	<td>waitForTextPresent</td>
-	<td>Create Category</td>
+	<td>type</td>
+	<td>id=ProductTemplatesSearchForm_anyMixedAttributes</td>
+	<td>Test Catalog Item ${randomSuffix}</td>
+</tr>
+<tr>
+	<td>keyUp</td>
+	<td>id=ProductTemplatesSearchForm_anyMixedAttributes</td>
+	<td>\10</td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>//div[@id='list-view']/table/tbody/tr/td[2]</td>
+	<td>Test Catalog Item ${randomSuffix}</td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Test Catalog Item ${randomSuffix}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyValue</td>
+	<td>ProductTemplatesSearchForm_anyMixedAttributes</td>
+	<td>Test Catalog Item ${randomSuffix}</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//div[@id='list-view']/table/tbody/tr[1]/td[2]/a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td></td>
 	<td></td>
 </tr>
 <tr>
 	<td>waitForCondition</td>
 	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
 	<td>30000</td>
+</tr>
+<tr>
+	<td>setSpeed</td>
+	<td>3000</td>
+	<td></td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>//div[@id='ProductCategoryEditAndDetailsView']/div/div/form/div[3]/div/div/a[2]</td>
+	<td>link=Edit</td>
 	<td></td>
 </tr>
 <tr>
-	<td>waitForCondition</td>
-	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-	<td>30000</td>
-</tr>
-<tr>
-	<td>waitForTextPresent</td>
-	<td>Name cannot be blank.</td>
+	<td>setSpeed</td>
+	<td>0</td>
 	<td></td>
-</tr>
-<tr>
-	<td>waitForCondition</td>
-	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-	<td>30000</td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>ProductCategory_name</td>
-	<td>CategoryTest ${randomSuffix}</td>
-</tr>
-<tr>
-	<td>waitForCondition</td>
-	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-	<td>30000</td>
+	<td>id=ProductTemplate_description</td>
+	<td>test description edited</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>//div[@id='ProductCategoryEditAndDetailsView']/div/div/form/div[3]/div/div/a[2]</td>
+	<td>save</td>
 	<td></td>
 </tr>
 <tr>
@@ -104,7 +154,7 @@
 </tr>
 <tr>
 	<td>assertTextPresent</td>
-	<td>CategoryTest ${randomSuffix}</td>
+	<td>Test Catalog Item ${randomSuffix}</td>
 	<td></td>
 </tr>
 </tbody>

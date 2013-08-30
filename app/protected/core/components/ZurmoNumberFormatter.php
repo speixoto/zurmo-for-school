@@ -43,7 +43,7 @@
          */
         public function formatDecimal($value)
         {
-                $decimalFormat = "#,##0."; // Not coding standard
+                $decimalFormat = "#,##0."; // Not Coding Standard
                 $pos = strpos($value, '.');
                 if ($pos > 0)
                 {
