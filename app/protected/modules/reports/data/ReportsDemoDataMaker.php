@@ -353,7 +353,7 @@
             $saved = $savedReport->save();
             assert('$saved');
         }
-        
+
         public static function makeMeetingsCategoryAndMonthStartTimeByOwner()
         {
             $report                  = new Report();
@@ -363,17 +363,17 @@
             $report->setOwner          (Yii::app()->user->userModel);
             $report->setFiltersStructure('');
             $report->setCurrencyConversionType(Report::CURRENCY_CONVERSION_TYPE_BASE);
-            
+
             $groupBy = new GroupByForReportForm('MeetingsModule', 'Meeting', $report->getType());
             $groupBy->attributeIndexOrDerivedType = 'startDateTime__Month';
             $groupBy->axis                        = 'x';
             $report->addGroupBy($groupBy);
-            
+
             $groupBy = new GroupByForReportForm('MeetingsModule', 'Meeting', $report->getType());
             $groupBy->attributeIndexOrDerivedType = 'category';
             $groupBy->axis                        = 'x';
             $report->addGroupBy($groupBy);
-            
+
             $groupBy = new GroupByForReportForm('MeetingsModule', 'Meeting', $report->getType());
             $groupBy->attributeIndexOrDerivedType = 'owner__User';
             $groupBy->axis                        = 'y';
@@ -382,7 +382,7 @@
             $displayAttribute = new DisplayAttributeForReportForm('MeetingsModule', 'Meeting', $report->getType());
             $displayAttribute->attributeIndexOrDerivedType = 'Count';
             $report->addDisplayAttribute($displayAttribute);
-            
+
             $savedReport = new SavedReport();
             SavedReportToReportAdapter::resolveReportToSavedReport($report, $savedReport);
             //set explicit
@@ -395,7 +395,7 @@
                 resolveExplicitReadWriteModelPermissions($savedReport, $explicitReadWriteModelPermissions);
             assert('$success');
             $saved = $savedReport->save();
-            assert('$saved');            
+            assert('$saved');
         }
     }
 ?>

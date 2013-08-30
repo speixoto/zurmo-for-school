@@ -398,7 +398,7 @@
             {
                 if ($totalItems <= ExportModule::$asynchronousThreshold)
                 {
-                    // Output csv file directly to user browser                    
+                    // Output csv file directly to user browser
                     if ($dataProvider)
                     {
                           $reportToExportAdapter  = ReportToExportAdapterFactory::createReportToExportAdapter($report, $dataProvider);

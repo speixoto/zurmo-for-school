@@ -62,7 +62,7 @@
             $firstColumn = array(
                     'class'       => 'StarDataColumn',
                     'htmlOptions' => array('class' => 'star-column'),
-                    'value'       => array('StarredUtil','renderToggleStarStatusLink'),
+                    'value'       => array('StarredUtil', 'renderToggleStarStatusLink'),
                     'id'          => $this->gridId . $this->gridIdSuffix . '_columnStar',
                 );
             return $firstColumn;

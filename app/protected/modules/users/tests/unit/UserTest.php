@@ -1308,7 +1308,7 @@
             {
                 $user->setIsRootUser();
             }
-            catch(Exception $e)
+            catch (Exception $e)
             {
                 $this->assertEquals('ExistingRootUserException', get_class($e));
             }

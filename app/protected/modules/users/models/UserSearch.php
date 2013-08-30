@@ -52,7 +52,7 @@
             $fullNameSql = DatabaseCompatibilityUtil::concat(array('person.firstname',
                                                                    '\' \'',
                                                                    'person.lastname'));
-             $where  = '(_user.hidefromselecting IS NULL OR _user.hidefromselecting = 0) and ';
+             $where  = '(_user.hidefromselecting is null OR _user.hidefromselecting = 0) and ';
              $where .= "      (person.firstname      like lower('$partialName%') or "    .
                        "       person.lastname       like lower('$partialName%') or "    .
                        "       $fullNameSql like lower('$partialName%')) ";

@@ -35,13 +35,13 @@
      ********************************************************************************/
 
     class ReportResultsGridUtilTest extends ZurmoBaseTest
-    {               
+    {
         public $user;
-        
+
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
-            SecurityTestHelper::createSuperAdmin();            
+            SecurityTestHelper::createSuperAdmin();
             ContactsModule::loadStartingData();
         }
 
@@ -51,18 +51,18 @@
             $this->user = User::getByUsername('super');
             Yii::app()->user->userModel = $this->user;
         }
-                
+
         public function testMakeStringForMultipleLinks()
         {
             $account1 = AccountTestHelper::createAccountByNameForOwner('account1', $this->user);
             $result   = ReportResultsGridUtil::makeStringForMultipleLinks('account1', 'Account', 'AccountsModule');
             $this->assertContains   ('a target="new"', $result);
             $this->assertNotContains('tooltip',        $result);
-            
-            $account2 = AccountTestHelper::createAccountByNameForOwner('account1', $this->user);            
+
+            $account2 = AccountTestHelper::createAccountByNameForOwner('account1', $this->user);
             $result   = ReportResultsGridUtil::makeStringForMultipleLinks('account1', 'Account', 'AccountsModule');
             $this->assertContains('<span class="tooltip">2</span>', $result);
-            
+
             $result   = ReportResultsGridUtil::makeStringForMultipleLinks('account1', 'Account', 'AccountsModule', false);
             $this->assertContains   ('a target="new"', $result);
             $this->assertNotContains('tooltip',        $result);

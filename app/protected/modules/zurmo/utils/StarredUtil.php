@@ -80,9 +80,9 @@
         {
             assert('is_string($modelStarredTableName) && $modelStarredTableName  != ""');
             R::exec("create table if not exists {$modelStarredTableName} (
-                        id int(11)         unsigned NOT NULL PRIMARY KEY AUTO_INCREMENT ,
-                        user_id int(11)     unsigned NOT NULL,
-                        model_id int(11)    unsigned NOT NULL
+                        id int(11)         unsigned not null PRIMARY KEY AUTO_INCREMENT ,
+                        user_id int(11)     unsigned not null,
+                        model_id int(11)    unsigned not null
                      )");
         }
 
@@ -225,7 +225,7 @@
                         array('success' => "function(data){\$('#{$starId}').removeClass().addClass(data)}"),
                         array('class'       => $starredClass,
                               'id'          => $starId,
-                              'namespace'   => 'update',));
+                              'namespace'   => 'update'));
             return $link;
         }
 
