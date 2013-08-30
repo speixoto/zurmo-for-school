@@ -536,7 +536,7 @@
             $contact        = Contact::getByName('contact 05 contact 05son');
             $this->assertNotEmpty($contact);
             $contact        = $contact[0];
-            $member         = MarketingListMember::getByMarketingListIdContactIdAndSubscribed($marketingList->id,
+            $member         = MarketingListMember::getByMarketingListIdContactIdAndUnsubscribed($marketingList->id,
                                                                                                         $contact->id,
                                                                                                         0);
             $this->assertNotEmpty($member);
@@ -567,7 +567,7 @@
             $contact            = Contact::getByName('contact 05 contact 05son');
             $this->assertNotEmpty($contact);
             $contact            = $contact[0];
-            $member             = MarketingListMember::getByMarketingListIdContactIdAndSubscribed($marketingList->id,
+            $member             = MarketingListMember::getByMarketingListIdContactIdAndUnsubscribed($marketingList->id,
                                                                                                     $contact->id,
                                                                                                     1);
             $this->assertNotEmpty($member);
@@ -611,7 +611,7 @@
             $contact            = Contact::getByName('contact 05 contact 05son');
             $this->assertNotEmpty($contact);
             $contact            = $contact[0];
-            $member             = MarketingListMember::getByMarketingListIdContactIdAndSubscribed($marketingList->id,
+            $member             = MarketingListMember::getByMarketingListIdContactIdAndUnsubscribed($marketingList->id,
                                                                                                     $contact->id,
                                                                                                     0);
             $this->assertNotEmpty($member);
@@ -655,7 +655,7 @@
             $this->assertNotEmpty($contact);
             $contact            = $contact[0];
             $personId           = $contact->getClassId('Person');
-            $member             = MarketingListMember::getByMarketingListIdContactIdAndSubscribed($marketingList->id,
+            $member             = MarketingListMember::getByMarketingListIdContactIdAndUnsubscribed($marketingList->id,
                                                                                                     $contact->id,
                                                                                                     0);
             $this->assertNotEmpty($member);
@@ -725,7 +725,7 @@
             $this->assertNotEmpty($contact);
             $contact            = $contact[0];
             $marketingList->addNewMember($contact->id, false, $contact);
-            $member             = MarketingListMember::getByMarketingListIdContactIdAndSubscribed($marketingList->id,
+            $member             = MarketingListMember::getByMarketingListIdContactIdAndUnsubscribed($marketingList->id,
                                                                                                         $contact->id,
                                                                                                         0);
             $this->assertNotEmpty($member);
@@ -792,7 +792,7 @@
             $contact            = Contact::getByName('contact 05 contact 05son');
             $this->assertNotEmpty($contact);
             $contact            = $contact[0];
-            $member             = MarketingListMember::getByMarketingListIdContactIdAndSubscribed($marketingList->id,
+            $member             = MarketingListMember::getByMarketingListIdContactIdAndUnsubscribed($marketingList->id,
                                                                                                     $contact->id,
                                                                                                     1);
             $this->assertNotEmpty($member);
@@ -836,7 +836,7 @@
             $this->assertNotEmpty($contact);
             $contact            = $contact[0];
             $marketingList->addNewMember($contact->id, true, $contact);
-            $member             = MarketingListMember::getByMarketingListIdContactIdAndSubscribed($marketingList->id,
+            $member             = MarketingListMember::getByMarketingListIdContactIdAndUnsubscribed($marketingList->id,
                                                                                                     $contact->id,
                                                                                                     1);
             $this->assertNotEmpty($member);
@@ -869,7 +869,7 @@
             $contact            = Contact::getByName('contact 05 contact 05son');
             $this->assertNotEmpty($contact);
             $contact            = $contact[0];
-            $member             = MarketingListMember::getByMarketingListIdContactIdAndSubscribed($marketingList->id,
+            $member             = MarketingListMember::getByMarketingListIdContactIdAndUnsubscribed($marketingList->id,
                                                                                                     $contact->id,
                                                                                                     1);
             $this->assertNotEmpty($member);
@@ -914,7 +914,7 @@
             $contact            = Contact::getByName('contact 05 contact 05son');
             $this->assertNotEmpty($contact);
             $contact            = $contact[0];
-            $member             = MarketingListMember::getByMarketingListIdContactIdAndSubscribed($marketingList->id,
+            $member             = MarketingListMember::getByMarketingListIdContactIdAndUnsubscribed($marketingList->id,
                                                                                                     $contact->id,
                                                                                                     1);
             $this->assertNotEmpty($member);
@@ -1028,7 +1028,7 @@
             $contact            = $contact[0];
             $this->assertEquals(1, $contact->primaryEmail->optOut);
             $personId           = $contact->getClassId('Person');
-            $member             = MarketingListMember::getByMarketingListIdContactIdAndSubscribed($marketingList->id,
+            $member             = MarketingListMember::getByMarketingListIdContactIdAndUnsubscribed($marketingList->id,
                                                                                                     $contact->id,
                                                                                                     1);
             $this->assertNotEmpty($member);

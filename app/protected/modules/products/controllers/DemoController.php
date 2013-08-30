@@ -42,11 +42,11 @@
          */
         public function actionLoadProductsSampler()
         {
-            if (Yii::app()->user->userModel->username != 'super')
+            if (!Group::isUserASuperAdministrator(Yii::app()->user->userModel))
             {
                 throw new NotSupportedException();
             }
-            
+
             //Create test account for product functional test on related list sorting, product related view.
             $account        = new Account();
             $account->owner = Yii::app()->user->userModel;
@@ -56,7 +56,7 @@
             {
                 throw new NotSupportedException();
             }
-            
+
             //Load 6 so there is sufficient data for product related view pagination testing.
             for ($i = 0; $i < 8; $i++)
             {
@@ -66,12 +66,12 @@
                     $product->name                  = 'Product with open stage '. $i;
                     $product->stage->value          = 'Open';
                 }
-                else if ($i == 6)
+                elseif ($i == 6)
                 {
                     $product->name                  = 'Product with lost stage '. $i;
                     $product->stage->value          = 'Lost';
                 }
-                else if ($i == 7)
+                elseif ($i == 7)
                 {
                     $product->name                  = 'Product with won stage '. $i;
                     $product->stage->value          = 'Won';

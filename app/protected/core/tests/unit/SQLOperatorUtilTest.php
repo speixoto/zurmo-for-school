@@ -145,7 +145,7 @@
             $this->assertTrue(SQLOperatorUtil::doesOperatorTypeAllowNullValues('isNotEmpty'));
             $this->assertFalse(SQLOperatorUtil::doesOperatorTypeAllowNullValues('startsWith'));
         }
-        
+
         public function testResolveValueLeftSideLikePartByOperatorType()
         {
             $this->assertEquals(null, SQLOperatorUtil::resolveValueLeftSideLikePartByOperatorType('doesNotStartsWith'));
@@ -153,7 +153,7 @@
             $this->assertEquals('%',  SQLOperatorUtil::resolveValueLeftSideLikePartByOperatorType('doesNotContains'));
             $this->assertEquals('%',  SQLOperatorUtil::resolveValueLeftSideLikePartByOperatorType('contains'));
         }
-        
+
         public function testResolveValueRightSideLikePartByOperatorType()
         {
             $this->assertEquals('%',  SQLOperatorUtil::resolveValueRightSideLikePartByOperatorType('doesNotStartsWith'));

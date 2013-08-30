@@ -198,7 +198,7 @@
             unset($response['data']['hideFromLeaderboard']);
             unset($response['data']['hideFromSelecting']);
             unset($response['data']['isRootUser']);
-            unset($response['data']['isSystemUser']);            
+            unset($response['data']['isSystemUser']);
             $hash = User::encryptPassword($data['password']);
             unset($data['password']);
 

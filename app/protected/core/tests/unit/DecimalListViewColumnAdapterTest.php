@@ -60,7 +60,7 @@
         public function testRenderDataCellContent()
         {
             $this->model->{$this->decimal} = 1234.56789;
-            $this->assertEquals('1,234.56789', $this->adapter->renderDataCellContent($this->model, 0));
+            $this->assertEquals('1,234.56789', $this->adapter->renderDataCellContent($this->model, 0)); // Not Coding Standard
 
             $this->model->{$this->decimal} = 123.456789;
             $this->assertEquals('123.456789', $this->adapter->renderDataCellContent($this->model, 0));

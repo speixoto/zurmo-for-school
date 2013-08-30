@@ -178,7 +178,7 @@
                     $this->processSelectFromRelatedListSaveAlreadyConnected($model, $relationModel);
                 }
             }
-            catch(FailedToSaveModelException $e)
+            catch (FailedToSaveModelException $e)
             {
                 $this->processSelectFromRelatedListSaveFails($model);
             }

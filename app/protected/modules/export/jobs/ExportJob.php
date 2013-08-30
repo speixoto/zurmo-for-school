@@ -110,7 +110,7 @@
                     {
                         $this->processExportItem($exportItem);
                     }
-                    catch(SecurityException $e)
+                    catch (SecurityException $e)
                     {
                         $message = Zurmo::t('ExportModule', 'Export Item could not be processed due a SecurityException ' . $e->getMessage());
                         $this->getMessageLogger()->addInfoMessage($message);
@@ -168,7 +168,7 @@
             $offset     = (int)$exportItem->processOffset;
             $exportCompleted     = true;
             $startingMemoryUsage = memory_get_usage();
-            while(true === $this->processExportPage($dataProvider, (int)$offset, $headerData, $data,
+            while (true === $this->processExportPage($dataProvider, (int)$offset, $headerData, $data,
                                                     ($exportItem->exportFileModel->id < 0)))
             {
                 $this->addMemoryMarkerMessageAfterPageIsProcessed($startingMemoryUsage);
@@ -213,7 +213,7 @@
             $startingMemoryUsage                 = memory_get_usage();
             $dataProvider->pagination->pageSize  = $this->getAsynchronousPageSize();
             $dataProvider->offset                = $offset;
-            while(true === $this->processReportExportPage($dataProvider, (int)$offset, $headerData, $data,
+            while (true === $this->processReportExportPage($dataProvider, (int)$offset, $headerData, $data,
                                                     ($exportItem->exportFileModel->id < 0)))
             {
                 $this->addMemoryMarkerMessageAfterPageIsProcessed($startingMemoryUsage);
@@ -268,7 +268,7 @@
             foreach ($idsToExport as $idToExport)
             {
                 $models[] = call_user_func(array($exportItem->modelClassName, 'getById'), intval($idToExport));
-                $this->totalModelsProcessed ++;
+                $this->totalModelsProcessed++;
             }
             $this->processExportModels($models, $headerData, $data);
             $content         = ExportItemToCsvFileUtil::export($data, $headerData);

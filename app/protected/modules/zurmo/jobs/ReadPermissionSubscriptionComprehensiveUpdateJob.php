@@ -40,6 +40,7 @@
     class ReadPermissionSubscriptionComprehensiveUpdateJob extends BaseJob
     {
         const MAX_NUMBER_OF_TRIES = 10;
+
         /**
          * @returns Translated label that describes this job type.
          */

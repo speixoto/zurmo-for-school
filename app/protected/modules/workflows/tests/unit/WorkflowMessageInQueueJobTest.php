@@ -84,7 +84,7 @@
             $model = Contact::getById($modelId);
             $trigger = array('attributeIndexOrDerivedType' => 'firstName',
                              'operator'                    => OperatorRules::TYPE_EQUALS,
- 							 'durationInterval'             => '333');
+                             'durationInterval'             => '333');
             $actions     = array(array('type' => ActionForWorkflowForm::TYPE_UPDATE_SELF,
                                        ActionForWorkflowForm::ACTION_ATTRIBUTES =>
                                             array('description' => array('shouldSetValue'    => '1',

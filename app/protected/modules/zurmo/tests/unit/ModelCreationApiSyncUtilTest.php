@@ -40,7 +40,7 @@
         {
             ModelCreationApiSyncUtil::buildTable();
 
-            $sql = 'INSERT INTO ' . ModelCreationApiSyncUtil::TABLE_NAME . ' VALUES (NULL, \'ApiServiceName\', \'1\', \'Contact\', \'2013-05-03 15:16:06\')';
+            $sql = 'INSERT INTO ' . ModelCreationApiSyncUtil::TABLE_NAME . ' VALUES (null, \'ApiServiceName\', \'1\', \'Contact\', \'2013-05-03 15:16:06\')';
             R::exec($sql);
             $apiServiceCreationRow = R::getRow('SELECT * FROM ' . ModelCreationApiSyncUtil::TABLE_NAME);
             $this->assertTrue($apiServiceCreationRow['id'] > 0);
@@ -53,7 +53,7 @@
             ModelCreationApiSyncUtil::buildTable();
             $apiServiceCreationRow = R::getRow('SELECT COUNT(*) as totalRows FROM ' . ModelCreationApiSyncUtil::TABLE_NAME);
             $this->assertEquals(1, $apiServiceCreationRow['totalRows']);
-            $sql = 'INSERT INTO ' . ModelCreationApiSyncUtil::TABLE_NAME . ' VALUES (NULL, \'ApiServiceName\', \'2\', \'Contact\', \'2013-06-03 15:16:06\')';
+            $sql = 'INSERT INTO ' . ModelCreationApiSyncUtil::TABLE_NAME . ' VALUES (null, \'ApiServiceName\', \'2\', \'Contact\', \'2013-06-03 15:16:06\')';
             R::exec($sql);
             $apiServiceCreationRow = R::getRow('SELECT COUNT(*) as totalRows FROM ' . ModelCreationApiSyncUtil::TABLE_NAME);
             $this->assertEquals(2, $apiServiceCreationRow['totalRows']);

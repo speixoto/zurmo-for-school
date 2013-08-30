@@ -39,7 +39,7 @@
     {
         public function actionCreateDemoImportForAnalysis($firstRowIsHeaderRow = true)
         {
-            if (Yii::app()->user->userModel->username != 'super')
+            if (!Group::isUserASuperAdministrator(Yii::app()->user->userModel))
             {
                 throw new NotSupportedException();
             }
@@ -78,7 +78,7 @@
                     'mappingRulesData' => array()),
             );
             $serializedData['mappingData']        = $mappingData;
-            $serializedData['rowColumnDelimiter'] = ',';
+            $serializedData['rowColumnDelimiter'] = ','; // Not Coding Standard
             $serializedData['rowColumnEnclosure'] = '"';
             $serializedData['firstRowIsHeaderRow'] = $firstRowIsHeaderRow;
             $import->serializedData               = serialize($serializedData);

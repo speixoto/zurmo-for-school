@@ -44,21 +44,21 @@
          * @throws NotSupportedException if the currencyValueConversionType is invalid or null
          */
         public function renderGridViewData()
-        {            
+        {
             return array(
                 'name'  => $this->attribute,
                 'value' => array($this, 'renderDataCellContent'),
                 'type'  => 'raw',
             );
         }
-        
-        public function renderDataCellContent($data, $row) 
-        {                      
+
+        public function renderDataCellContent($data, $row)
+        {
            return $this->renderValue($data->{$this->attribute});
         }
-        
-        public function renderValue($value) 
-        {                        
+
+        public function renderValue($value)
+        {
             if ($this->getCurrencyValueConversionType() == Report::CURRENCY_CONVERSION_TYPE_ACTUAL)
             {
                 $value  = Yii::app()->numberFormatter->formatDecimal((float)$value);
@@ -66,14 +66,14 @@
             elseif ($this->getCurrencyValueConversionType() == Report::CURRENCY_CONVERSION_TYPE_BASE)
             {
                 //Assumes base conversion is done using sql math
-                $value  = Yii::app()->numberFormatter->formatCurrency((float)$value, Yii::app()->currencyHelper->getBaseCode());                
+                $value  = Yii::app()->numberFormatter->formatCurrency((float)$value, Yii::app()->currencyHelper->getBaseCode());
             }
             elseif ($this->getCurrencyValueConversionType() == Report::CURRENCY_CONVERSION_TYPE_SPOT)
             {
                 //Assumes base conversion is done using sql math
                 $value  = Yii::app()->numberFormatter->formatCurrency(
-                                (float)$value * $this->getFromBaseToSpotRate(), 
-                                $this->getSpotConversionCurrencyCode());                
+                                (float)$value * $this->getFromBaseToSpotRate(),
+                                $this->getSpotConversionCurrencyCode());
             }
             else
             {

@@ -305,7 +305,7 @@
         {
             if ($this->resolveAlwaysAsAbsoluteUrl)
             {
-                $url = $this->getUrlManager()->createUrl($route,$params,$ampersand);
+                $url = $this->getUrlManager()->createUrl($route, $params, $ampersand);
                 if (strpos($url, 'http') === 0)
                 {
                     return $url;
@@ -317,7 +317,7 @@
             }
             else
             {
-                return $this->getUrlManager()->createUrl($route,$params,$ampersand);
+                return $this->getUrlManager()->createUrl($route, $params, $ampersand);
             }
         }
 

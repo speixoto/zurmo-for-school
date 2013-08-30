@@ -83,7 +83,7 @@
         {
             ReadPermissionsSubscriptionUtil::recreateTable('account_read_subscription');
 
-            $sql = 'INSERT INTO account_read_subscription VALUES (NULL, \'1\', \'2\', \'2013-05-03 15:16:06\', \'1\')';
+            $sql = 'INSERT INTO account_read_subscription VALUES (null, \'1\', \'2\', \'2013-05-03 15:16:06\', \'1\')';
             R::exec($sql);
             $accountReadSubscription = R::getRow("SELECT * FROM account_read_subscription");
             $this->assertTrue($accountReadSubscription['id'] > 0);
@@ -111,7 +111,7 @@
                 }
             }
             $this->assertEquals($readSubscriptionTables,
-                array('account_read_subscription','contact_read_subscription','meeting_read_subscription','task_read_subscription'));
+                array('account_read_subscription', 'contact_read_subscription', 'meeting_read_subscription', 'task_read_subscription'));
         }
 
         public function testUpdateModelsInReadSubscriptionTable()

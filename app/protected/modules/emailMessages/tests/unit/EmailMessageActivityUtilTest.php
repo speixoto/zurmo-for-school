@@ -257,7 +257,7 @@ Page Title
 </html>
 HTML;
             $originalContent    = $content;
-            $result             = static::resolveContent($content);            
+            $result             = static::resolveContent($content);
             $this->assertTrue($result);
             $this->assertNotEquals($originalContent, $content);
             $this->assertTrue(strpos($content, '<p>Sample Content With Links</p>') !== false);
@@ -266,7 +266,7 @@ HTML;
             $this->assertTrue(strpos($content, '/tracking/default/track?id=') !== false);
             $this->assertEquals(2, substr_count($content, '/tracking/default/track?id='));
             $this->assertTrue(strpos($content, '/marketingLists/external/') !== false);
-            $this->assertEquals(2, substr_count($content, '/marketingLists/external/'));            
+            $this->assertEquals(2, substr_count($content, '/marketingLists/external/'));
         }
 
         /**
