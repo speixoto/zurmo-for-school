@@ -47,11 +47,11 @@
             if (!$tableExists)
             {
                 R::exec("create table " . self::TABLE_NAME . " (
-                                id int(11)         unsigned NOT NULL PRIMARY KEY AUTO_INCREMENT ,
-                                servicename        varchar(50) NOT NULL,
-                                modelid int(11)    unsigned NOT NULL,
-                                modelclassname     varchar(50) NOT NULL,
-                                createddatetime    datetime DEFAULT NULL
+                               id int(11)         unsigned not null PRIMARY KEY AUTO_INCREMENT ,
+                               servicename        varchar(50) not null,
+                               modelid int(11)    unsigned not null,
+                               modelclassname     varchar(50) not null,
+                               createddatetime    datetime DEFAULT null
                              )");
             }
         }
@@ -69,7 +69,7 @@
             assert('is_int($modelId)');
             assert('is_string($dateTime)');
             $sql = "INSERT INTO " . self::TABLE_NAME .
-                " VALUES (NULL, '{$serviceName}', '{$modelId}', '{$modelClassName}', '{$dateTime}')";
+                " VALUES (null, '{$serviceName}', '{$modelId}', '{$modelClassName}', '{$dateTime}')";
             R::exec($sql);
         }
     }

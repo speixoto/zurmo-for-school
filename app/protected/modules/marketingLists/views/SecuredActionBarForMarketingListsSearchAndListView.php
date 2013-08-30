@@ -69,7 +69,7 @@
                                 'htmlOptions'     => array( 'class' => 'icon-marketing-campaigns' )
                             ),
                         ),
-                    ),                    
+                    ),
                 ),
             );
             return $metadata;

@@ -104,7 +104,7 @@
             $this->assertTrue($user->save());
             unset($user);
             $user   = User::getByUsername('mysysuser');
-            $this->assertEquals(0,$user->isSystemUser);
+            $this->assertEquals(0, $user->isSystemUser);
 
             $where  = RedBeanModelDataProvider::makeWhere('User', $metadata, $joinTablesAdapter);
             $models = User::getSubset($joinTablesAdapter, null, null, $where, null);

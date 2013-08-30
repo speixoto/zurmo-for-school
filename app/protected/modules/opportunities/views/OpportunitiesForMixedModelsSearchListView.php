@@ -87,5 +87,10 @@
             );
             return $metadata;
         }
+
+        public static function getDesignerRulesType()
+        {
+            return 'ForMixedModelsSearchListView';
+        }
     }
 ?>

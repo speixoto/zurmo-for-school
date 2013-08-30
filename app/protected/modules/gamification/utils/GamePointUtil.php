@@ -113,7 +113,7 @@
             assert('$offset  === null || is_integer($offset)  && $offset  >= 0');
             assert('$count   === null || is_integer($count)   && $count   >= 1');
             $quote                     = DatabaseCompatibilityUtil::getQuote();
-            $where                     = '_user.hidefromleaderboard IS NULL OR _user.hidefromleaderboard = 0';
+            $where                     = '_user.hidefromleaderboard is null OR _user.hidefromleaderboard = 0';
             $selectDistinct            = false;
             $orderBy                   = "points desc";
             $joinTablesAdapter         = new RedBeanModelJoinTablesQueryAdapter('GamePointTransaction');
@@ -138,7 +138,7 @@
         {
             assert('is_string($type)');
             $quote                     = DatabaseCompatibilityUtil::getQuote();
-            $where                     = '_user.hidefromleaderboard IS NULL OR _user.hidefromleaderboard = 0';
+            $where                     = '_user.hidefromleaderboard is null OR _user.hidefromleaderboard = 0';
             $selectDistinct            = true;
             $joinTablesAdapter         = new RedBeanModelJoinTablesQueryAdapter('GamePointTransaction');
             static::resolveLeaderboardWhereClausesByType($type, $where);

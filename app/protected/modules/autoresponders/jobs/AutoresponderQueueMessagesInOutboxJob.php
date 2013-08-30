@@ -84,7 +84,7 @@
                     return false;
                 }
                 $this->runGarbageCollection($autoresponderItem);
-                $modelsProcessedCount ++;
+                $modelsProcessedCount++;
             }
             $this->addMaxmimumProcessingCountMessage($modelsProcessedCount, $startingMemoryUsage);
             return true;

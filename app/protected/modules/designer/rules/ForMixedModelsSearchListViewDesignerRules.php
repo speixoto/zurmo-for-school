@@ -34,46 +34,11 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Model for storing an autoresponder item activity.
-     */
-    class AutoresponderItemActivity extends EmailMessageActivity
+    class ForMixedModelsSearchListViewDesignerRules extends DesignerRules
     {
-        public static function getModuleClassName()
+        public function allowEditInLayoutTool()
         {
-            return 'AutorespondersModule';
-        }
-
-        public static function getDefaultMetadata()
-        {
-            $metadata = parent::getDefaultMetadata();
-            $metadata[__CLASS__] = array(
-                'relations' => array(
-                    static::getRelationName()     => array(static::HAS_ONE,  static::getRelatedModelClassName()),
-                ),
-                'indexes' => static::getIndexesDefinition(),
-            );
-            return $metadata;
-        }
-
-        protected static function getLabel($language = null)
-        {
-            return Zurmo::t('AutorespondersModule', 'Autoresponder Item Activity', array(), null, $language);
-        }
-
-        /**
-         * Returns the display name for plural of the model class.
-         * @param null|string $language
-         * @return dynamic label name based on module.
-         */
-        protected static function getPluralLabel($language = null)
-        {
-            return Zurmo::t('AutorespondersModule', 'Autoresponder Item Activities', array(), null, $language);
-        }
-
-        protected static function getRelationName()
-        {
-            return 'autoresponderItem';
+            return false;
         }
     }
 ?>

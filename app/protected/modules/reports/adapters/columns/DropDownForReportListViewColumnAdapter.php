@@ -34,46 +34,30 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Model for storing an autoresponder item activity.
-     */
-    class AutoresponderItemActivity extends EmailMessageActivity
+    class DropDownForReportListViewColumnAdapter extends DropDownListViewColumnAdapter
     {
-        public static function getModuleClassName()
+        public function renderGridViewData()
         {
-            return 'AutorespondersModule';
-        }
-
-        public static function getDefaultMetadata()
-        {
-            $metadata = parent::getDefaultMetadata();
-            $metadata[__CLASS__] = array(
-                'relations' => array(
-                    static::getRelationName()     => array(static::HAS_ONE,  static::getRelatedModelClassName()),
-                ),
-                'indexes' => static::getIndexesDefinition(),
+            return array(
+                'name'   => $this->attribute,
+                'value'  => array($this, 'renderDataCellContent'),
+                'type'   => 'raw',
             );
-            return $metadata;
         }
 
-        protected static function getLabel($language = null)
+        public function renderDataCellContent($data, $row)
         {
-            return Zurmo::t('AutorespondersModule', 'Autoresponder Item Activity', array(), null, $language);
-        }
-
-        /**
-         * Returns the display name for plural of the model class.
-         * @param null|string $language
-         * @return dynamic label name based on module.
-         */
-        protected static function getPluralLabel($language = null)
-        {
-            return Zurmo::t('AutorespondersModule', 'Autoresponder Item Activities', array(), null, $language);
-        }
-
-        protected static function getRelationName()
-        {
-            return 'autoresponderItem';
+            if ($data->{$this->attribute}->value === null)
+            {
+                $value = Zurmo::t('ReportsModule', '(Null)'); // Not Coding Standard
+            }
+            else
+            {
+                $value = CustomFieldDataUtil::getTranslatedLabelByValue($data->{$this->attribute}->data,
+                                                                        (string) $data->{$this->attribute},
+                                                                        Yii::app()->language);
+            }
+            return $value;
         }
     }
 ?>

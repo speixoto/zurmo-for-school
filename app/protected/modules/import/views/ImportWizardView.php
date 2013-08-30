@@ -120,6 +120,7 @@
         {
             return Zurmo::t('ImportModule', 'Next');
         }
+
         /**
          * There are no special requirements for this view's metadata.
          */
