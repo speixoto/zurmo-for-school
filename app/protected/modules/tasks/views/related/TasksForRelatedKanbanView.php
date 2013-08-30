@@ -260,10 +260,9 @@
             $content        = null;
             if(isset($getData['kanbanBoard']) && $getData['kanbanBoard'] == 1)
             {
-               $link    = $link    = ZurmoDefaultViewUtil::renderActionBarLinksForKanbanBoard($this->controllerId, $this->moduleId, (int)$this->params['relationModel']->id);
+               $link    = $link    = ZurmoDefaultViewUtil::renderActionBarLinksForKanbanBoard($this->controllerId, $this->params['relationModuleId'], (int)$this->params['relationModel']->id);
                $content = parent::renderActionElementBar($renderedInForm) . $link;
             }
-
             $toolbarContent = ZurmoHtml::tag('div', array('class' => 'view-toolbar'), $content);
             return $toolbarContent;
         }
