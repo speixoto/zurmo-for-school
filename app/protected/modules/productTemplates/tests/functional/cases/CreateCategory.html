@@ -17,6 +17,7 @@
 	<td>45000</td>
 	<td></td>
 </tr>
+<!--Go to create category-->
 <tr>
 	<td>open</td>
 	<td>index.php/products/default</td>
@@ -33,63 +34,38 @@
 	<td>30000</td>
 </tr>
 <tr>
-	<td>clickAndWait</td>
-	<td>//ul[@id='MashableInboxCreateDropdown']/li/ul/li[2]/a</td>
+	<td>assertTextPresent</td>
+	<td>Create</td>
 	<td></td>
 </tr>
 <tr>
-	<td>waitForPageToLoad</td>
-	<td></td>
-	<td></td>
-</tr>
-<tr>
-	<td>waitForCondition</td>
-	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-	<td>30000</td>
-</tr>
-<tr>
-	<td>waitForTextPresent</td>
-	<td>Create Catalog Item</td>
+	<td>assertTextPresent</td>
+	<td>Products</td>
 	<td></td>
 </tr>
 <tr>
-	<td>waitForCondition</td>
-	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-	<td>30000</td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>//div[@id='ProductTemplateEditAndDetailsView']/div/div/form/div[3]/div/div/a[2]</td>
+	<td>assertTextPresent</td>
+	<td>Catalog Items</td>
 	<td></td>
 </tr>
 <tr>
-	<td>waitForCondition</td>
-	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-	<td>30000</td>
-</tr>
-<tr>
-	<td>waitForTextPresent</td>
-	<td>Name cannot be blank.</td>
+	<td>assertTextPresent</td>
+	<td>Categories</td>
 	<td></td>
 </tr>
 <tr>
-	<td>waitForCondition</td>
-	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-	<td>30000</td>
+	<td>assertTextPresent</td>
+	<td>Delete</td>
+	<td></td>
 </tr>
 <tr>
-	<td>type</td>
-	<td>ProductTemplate_name</td>
-	<td>CatalogTest ${randomSuffix}</td>
-</tr>
-<tr>
-	<td>waitForCondition</td>
-	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-	<td>30000</td>
+	<td>assertTextPresent</td>
+	<td>Export</td>
+	<td></td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>//div[@id='ProductTemplateEditAndDetailsView']/div/div/form/div[3]/div/div/a[2]</td>
+	<td>//ul[@id='MashableInboxCreateDropdown']/li/ul/li[3]/a</td>
 	<td></td>
 </tr>
 <tr>
@@ -104,7 +80,84 @@
 </tr>
 <tr>
 	<td>assertTextPresent</td>
-	<td>CatalogTest ${randomSuffix}</td>
+	<td>Create Category</td>
+	<td></td>
+</tr>
+<!--check validation-->
+<tr>
+	<td>clickAndWait</td>
+	<td>save</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForCondition</td>
+	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+	<td>30000</td>
+</tr>
+<tr>
+	<td>waitForTextPresent</td>
+	<td>Name cannot be blank.</td>
+	<td></td>
+</tr>
+<!--add category details-->
+<tr>
+	<td>setSpeed</td>
+	<td>3000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=ProductCategory_name</td>
+	<td>Test Category ${randomSuffix}</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=ProductCategory_productCategory_SelectLink</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForCondition</td>
+	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+	<td>30000</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Books</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>save</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForCondition</td>
+	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+	<td>30000</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>//div[@id='ProductCategoryDetailsView']/div/div[2]/div/table/tbody/tr[1]/td</td>
+	<td>Test Category ${randomSuffix}</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>//div[@id='ProductCategoryDetailsView']/div/div[2]/div/table/tbody/tr[2]/td</td>
+	<td>Books</td>
+</tr>
+<tr>
+	<td>setSpeed</td>
+	<td>0</td>
 	<td></td>
 </tr>
 </tbody>
