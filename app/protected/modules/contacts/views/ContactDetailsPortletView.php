@@ -98,7 +98,7 @@
         {
             return 'default';
         }
-        
+
         /**
          * Module Id for the link to models from rows in the grid view.
          */
@@ -166,6 +166,7 @@
             $content .= $this->makeSecondSlidingPanelContent();
             return $content;
         }
+
         protected function makeFirstSlidingPanelContent($content)
         {
             return PersonSlidingPanelsUtil::makeFirstSlidingPanelContent((int)$this->params['portletId'], $content);

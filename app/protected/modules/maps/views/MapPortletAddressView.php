@@ -34,9 +34,9 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class MapPortletAddressView extends View implements PortletViewInterface,RelatedPortletViewInterface
+    class MapPortletAddressView extends View implements PortletViewInterface, RelatedPortletViewInterface
     {
-	    protected $params;
+        protected $params;
 
         protected $viewData;
 
@@ -99,8 +99,7 @@
                                          'latitude'  => '',
                                          'longitude' => '');
             return $modalMapAddressData;
-
-	}
+        }
 
         public static function getMetadata()
         {
@@ -140,7 +139,7 @@
             return false;
         }
 
-	    public static function canUserConfigure()
+        public static function canUserConfigure()
         {
             return false;
         }
@@ -187,4 +186,3 @@
         }
     }
 ?>
-

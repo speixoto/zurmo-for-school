@@ -44,20 +44,20 @@
                 'type'   => 'raw',
             );
         }
-        
-        public function renderDataCellContent($data, $row) 
-        {                              
-            if (is_null($data->{$this->attribute}->value))
+
+        public function renderDataCellContent($data, $row)
+        {
+            if ($data->{$this->attribute}->value === null)
             {
                 $value = Zurmo::t('ReportsModule', '(Null)');
             }
             else
             {
-                $value = CustomFieldDataUtil::getTranslatedLabelByValue($data->{$this->attribute}->data, 
-                                                                        (string) $data->{$this->attribute}, 
+                $value = CustomFieldDataUtil::getTranslatedLabelByValue($data->{$this->attribute}->data,
+                                                                        (string) $data->{$this->attribute},
                                                                         Yii::app()->language);
             }
             return $value;
-        }                
+        }
     }
 ?>

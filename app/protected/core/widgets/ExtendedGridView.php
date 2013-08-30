@@ -221,7 +221,7 @@
          */
         public function renderKeys()
         {
-            echo CHtml::openTag('div',array(
+            echo CHtml::openTag('div', array(
                 'class' => 'keys',
                 'style' => 'display:none',
                 'title' => Yii::app()->getRequest()->resolveAndGetUrl(),

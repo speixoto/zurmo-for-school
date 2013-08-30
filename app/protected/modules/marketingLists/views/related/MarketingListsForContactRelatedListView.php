@@ -88,6 +88,7 @@
         {
             return 'contact';
         }
+
         protected function makeSearchAttributeData()
         {
             $searchAttributeData = array();

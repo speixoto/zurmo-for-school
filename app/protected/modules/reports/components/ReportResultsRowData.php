@@ -301,7 +301,7 @@
                     {
                         $value = $this->selectedColumnNamesAndValues[$attributeAlias];
                     }
-                    if (!is_null($value))
+                    if ($value !== null)
                     {
                         $dataParams[self::resolveDataParamKeyForDrillDown($displayAttribute->attributeIndexOrDerivedType)] = $value;
                     }

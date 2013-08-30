@@ -51,9 +51,9 @@
         }
 
         protected function beforeSave()
-        {            
+        {
             if (parent::beforeSave())
-            {                
+            {
                 if (!isset($this->originalAttributeValues['probability']))
                 {
                     $this->resolveStageToProbability();

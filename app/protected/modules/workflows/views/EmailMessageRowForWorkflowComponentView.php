@@ -190,7 +190,7 @@
          */
         protected function renderRecipientsContent()
         {
-            $content  = '<div class="' . self::RECIPIENTS_CONTAINER_CLASS_NAME . '">';            
+            $content  = '<div class="' . self::RECIPIENTS_CONTAINER_CLASS_NAME . '">';
             $content .= $this->renderRecipientSelectorContentAndWrapper();
             $content .= $this->renderRecipientsContentAndWrapper();
             $content .= $this->renderHiddenRecipientsInputForValidationContent();
@@ -375,7 +375,7 @@
                              $(this).parentsUntil(".' . self::RECIPIENTS_CONTAINER_CLASS_NAME . '").parent().find(".' . self::RECIPIENTS_ROW_COUNTER_CLASS_NAME . '").val()',
                 'url'     =>  $url,
                 'success' => 'js:function(data){
-                    existingRowNumber = parseInt(triggeredObject.parentsUntil(".' . self::RECIPIENTS_CONTAINER_CLASS_NAME . '").parent().                        
+                    existingRowNumber = parseInt(triggeredObject.parentsUntil(".' . self::RECIPIENTS_CONTAINER_CLASS_NAME . '").parent().
                     find(".' . self::RECIPIENTS_ROW_COUNTER_CLASS_NAME . '").val());
                     triggeredObject.parentsUntil(".' . self::RECIPIENTS_CONTAINER_CLASS_NAME . '").parent().
                     find(".' . self::RECIPIENTS_ROW_COUNTER_CLASS_NAME . '")

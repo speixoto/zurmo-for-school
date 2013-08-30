@@ -290,8 +290,8 @@
             $this->assertEquals('New Name', $opportunity->name);
             $this->assertEquals(500.54,     $opportunity->amount->value);
             $this->assertEquals(50,         $opportunity->probability);
-            $this->assertEquals(1, $currencies[0]->rateToBase);     
-            
+            $this->assertEquals(1, $currencies[0]->rateToBase);
+
             //Updating probability mapping should make changes on saving opportunity
             $metadata = OpportunitiesModule::getMetadata();
             $metadata['global']['stageToProbabilityMapping']['Negotiating'] = 60;
@@ -304,7 +304,7 @@
             $this->assertEquals('New Name', $opportunity->name);
             $this->assertEquals(500.54,     $opportunity->amount->value);
             $this->assertEquals(60,         $opportunity->probability);
-            $this->assertEquals(1, $currencies[0]->rateToBase);     
+            $this->assertEquals(1, $currencies[0]->rateToBase);
         }
 
         public function testDeleteOpportunity()

@@ -84,7 +84,7 @@
          */
         public static function resolveTimeFormat($timeFormat)
         {
-            $patterns = array(                
+            $patterns = array(
                 '/[a]{1}/',
                 '/[z]{4}/',
             );

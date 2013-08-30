@@ -44,15 +44,15 @@
             Yii::app()->user->userModel = $super;
 
             //Setup test data owned by the super user.
-            ContactTestHelper::createContactByNameForOwner('superContact', $super);            
+            ContactTestHelper::createContactByNameForOwner('superContact', $super);
 
             //Setup default dashboard.
             Dashboard::getByLayoutIdAndUser(Dashboard::DEFAULT_USER_LAYOUT_ID, $super);
-            
+
             //Setup test marketingList
-            MarketingListTestHelper::createMarketingListByName('MarketingListName', 
+            MarketingListTestHelper::createMarketingListByName('MarketingListName',
                                                                'MarketingList Description',
-                                                               'first', 
+                                                               'first',
                                                                'first@zurmo.com');
         }
 
@@ -89,31 +89,31 @@
             $portlets = Portlet::getByLayoutIdAndUserSortedByColumnIdAndPosition(
                                     'ContactDetailsAndRelationsView', $super->id, array());
             $this->assertEquals (1, count($portlets[2]));
-                        
+
             //Test subscribe to list link
-            $portlet = $portlets[2][1];            
+            $portlet = $portlets[2][1];
             $this->setGetArray(array('portletId'               => $portlet->id,
                                      'relationAttributeName'   => 'contact',
-                                     'relationModelId'         => $superContactId,                                                                                
+                                     'relationModelId'         => $superContactId,
                                      'relationModuleId'        => 'contacts',
-                                     'uniqueLayoutId'          => $portlet->getUniquePortletPageId(),                                                                                                                  
-                                     'relationModelClassName'  => null,                                        
+                                     'uniqueLayoutId'          => $portlet->getUniquePortletPageId(),
+                                     'relationModelClassName'  => null,
                                     ));
             $this->resetPostArray();
-            $this->runControllerWithNoExceptionsAndGetContent('marketingLists/default/selectFromRelatedList');                                                                                           
-            
+            $this->runControllerWithNoExceptionsAndGetContent('marketingLists/default/selectFromRelatedList');
+
             //Test subscribe a marketing list
             $this->setGetArray(array('modelId'                 => $marketingListId,
                                      'portletId'               => $portlet->id,
                                      'relationAttributeName'   => 'contact',
-                                     'relationModelId'         => $superContactId,                                                                                
+                                     'relationModelId'         => $superContactId,
                                      'relationModuleId'        => 'contacts',
-                                     'uniqueLayoutId'          => $portlet->getUniquePortletPageId(),                                                                                                                  
-                                     'relationModelClassName'  => null,                                        
+                                     'uniqueLayoutId'          => $portlet->getUniquePortletPageId(),
+                                     'relationModelClassName'  => null,
                                     ));
             $this->resetPostArray();
             $content = $this->runControllerWithRedirectExceptionAndGetContent(
-                            'marketingLists/defaultPortlet/selectFromRelatedListSave');                                                                                                                             
+                            'marketingLists/defaultPortlet/selectFromRelatedListSave');
         }
     }
 ?>

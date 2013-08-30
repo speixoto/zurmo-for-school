@@ -279,12 +279,12 @@
             $prefix = substr($matches[1], 0, $matchPosition);
             return $prefix . static::resolveTrackingUrlForLink(trim($matches[2])) . ' ';
         }
-        
+
         protected static function resolveTrackingUrlForMatchedPlainLinkArrayWithHtmlContent($matches)
         {
             $matchPosition  = strpos($matches[0], $matches[2]);
-            $prefix = substr($matches[1], 0, $matchPosition);            
-            $trackingUrl = $prefix . '<a href="' . static::resolveTrackingUrlForLink(trim($matches[2])) . '">' . trim($matches[2]) . '</a> ';            
+            $prefix = substr($matches[1], 0, $matchPosition);
+            $trackingUrl = $prefix . '<a href="' . static::resolveTrackingUrlForLink(trim($matches[2])) . '">' . trim($matches[2]) . '</a> ';
             return $trackingUrl;
         }
 
