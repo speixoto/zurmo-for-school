@@ -1509,7 +1509,7 @@ form,
 .view-toolbar-icons(@size: @recentlyViewedIconSize){
 	.symbly(@size);
 	padding:0 0 0 0;
-	margin:0 6px 0 -30px;
+	//margin:0 6px 0 -30px;
 	.box-sizing();
 	vertical-align:middle;
 	position:relative;
@@ -1522,9 +1522,9 @@ form,
 	top:-2px;
 }
 
-#MarketingCreateLinkActionElement .parent > a:before,
-#MarketingListAddSubscriberLinkActionElement .parent > a:before,
-#MashableInboxCreateDropdown .parent > a:before,
+//#MarketingCreateLinkActionElement .parent > a:before,
+//#MarketingListAddSubscriberLinkActionElement .parent > a:before,
+//#MashableInboxCreateDropdown .parent > a:before,
 .icon-create:before{
 	content: "Y";
 	.view-toolbar-icons();
@@ -1559,29 +1559,30 @@ form,
 }
 
 .icon-marketing-dashboard:before,
-#ChangeDashboardsMenu .parent > a:before{
+//#ChangeDashboardsMenu .parent > a:before
+{
 	content: "/";
 	.view-toolbar-icons();
 	top:-2px;
 }
 
-#ExportLinkActionElement .parent > a:before,
-#ListViewExportActionMenu .parent > a:before,
+//#ExportLinkActionElement .parent > a:before,
+//#ListViewExportActionMenu .parent > a:before,
 .icon-export:before{
 	content: "(";
 	.view-toolbar-icons();
 	top:-2px;
 }
 
-#ListViewDetailsActionMenu .parent > a:before,
+//#ListViewDetailsActionMenu .parent > a:before,
 .icon-details:before{
 	content: 'T';
 	.view-toolbar-icons();
 	top:-2px;
 }
 
-#MashableInboxMassActionMenu .parent > a:before,
-#ListViewOptionsActionMenu .parent > a:before,
+//#MashableInboxMassActionMenu .parent > a:before,
+//#ListViewOptionsActionMenu .parent > a:before,
 .icon-options:before{
 	content: "n";
 	.view-toolbar-icons();
@@ -1737,7 +1738,7 @@ form,
 	top:-2px;
 }
 
-.icon-notification > a:before{
+.icon-notification:after{
 	content:'\00A5';
 	.view-toolbar-icons();
 	top:-2px;
@@ -2380,7 +2381,7 @@ body div.form-toolbar{
 		.radius(~"0 !important");
 		padding:0  !important;
 		border: none !important;
-		margin:!important;
+		//margin:!important;
 		text-decoration:underline;
 		font-weight:normal;
 		&:hover{
@@ -5400,4 +5401,5 @@ div.hasHalfs{
 @import 'kanban.less';
 @import 'webforms.less';
 @import 'business-card.less';
+@import 'lab.less';
 @import 'media-queries.less';
