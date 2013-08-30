@@ -221,6 +221,7 @@
 
             $content = $this->runControllerWithExitExceptionAndGetContent('reports/default/export');
             $this->assertEquals('Testing download.', $content);
+
             ExportModule::$asynchronousThreshold = 1;
             $this->runControllerWithRedirectExceptionAndGetUrl('reports/default/export');
 

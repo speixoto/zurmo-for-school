@@ -89,12 +89,12 @@
                                                  'treeType'                   => static::getTreeType(),
                                                  'trackableStructurePosition' => true)));
         }
-        
+
         /**
          * @return string
          */
         protected function renderStructureContent()
-        {            
+        {
             if (count($this->model->filters) > 0)
             {
                 $style = '';
@@ -102,14 +102,14 @@
             else
             {
                 $style = 'display:none;';
-            }            
+            }
             $content  = ZurmoHtml::tag('div',
                                        array('id'    => 'show-filters-structure-div',
-                                             'class' => 'has-lang-label'), 
+                                             'class' => 'has-lang-label'),
                                        $this->renderStructureInputContent());
-            $content  = ZurmoHtml::tag('div', 
+            $content  = ZurmoHtml::tag('div',
                                        array('id'    => 'show-filters-structure-wrapper',
-                                             'style' => $style), 
+                                             'style' => $style),
                                        $content);
             return $content;
         }

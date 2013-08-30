@@ -961,7 +961,7 @@
             static::createSuperUser('super', $form->superUserPassword);
             $messageStreamer->add(Zurmo::t('InstallModule', 'Setting up default data.'));
             DefaultDataUtil::load($messageLogger);
-            InstallUtil::createSystemUser('system', md5(time() . mt_rand(1,10000)));
+            InstallUtil::createSystemUser('system', md5(time() . mt_rand(1, 10000)));
             Yii::app()->custom->runAfterInstallationDefaultDataLoad($messageLogger);
 
             // Send notification to super admin to delete test.php file in case if this

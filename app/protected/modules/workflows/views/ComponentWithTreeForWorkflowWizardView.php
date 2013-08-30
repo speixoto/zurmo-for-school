@@ -214,7 +214,7 @@
                         ' . $this->getWorkflowAttributeRowAddOrRemoveExtraScript() . '
                         $(".' . static::getZeroComponentsClassName() . '").hide();
                         $(this).makeLargeLoadingSpinner(false, ".ui-overlay-block");
-                        $(".ui-overlay-block").fadeOut(50);    
+                        $(".ui-overlay-block").fadeOut(50);
                     }'
             ));
         }
@@ -242,7 +242,7 @@
                         ' . $this->getWorkflowAttributeRowAddOrRemoveExtraScript() . '
                         $(".' . static::getZeroComponentsClassName() . '").hide();
                         $(this).makeLargeLoadingSpinner(false, ".ui-overlay-block");
-                        $(".ui-overlay-block").fadeOut(50);    
+                        $(".ui-overlay-block").fadeOut(50);
                     }'
             ));
         }

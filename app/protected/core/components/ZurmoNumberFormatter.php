@@ -43,7 +43,7 @@
          */
         public function formatDecimal($value)
         {
-                $decimalFormat = "#,##0.";
+                $decimalFormat = "#,##0."; // Not coding standard
                 $pos = strpos($value, '.');
                 if ($pos > 0)
                 {
@@ -53,7 +53,7 @@
                     }
                     $decimalFormat .= "0";
                 }
-                return $this->format($decimalFormat,$value);
+                return $this->format($decimalFormat, $value);
         }
     }
 ?>

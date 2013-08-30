@@ -119,18 +119,18 @@
                     foreach ($this->leadingHeaders['rows'][$i]['groupByValues'] as $value)
                     {
                         echo ZurmoHtml::tag('th',
-                             array('colspan' => $this->leadingHeaders['rows'][$i]['colSpan']), $value);                        
+                             array('colspan' => $this->leadingHeaders['rows'][$i]['colSpan']), $value);
                     }
                 }
                 $previousGroupByValuesCount = count($this->leadingHeaders['rows'][$i]['groupByValues']);
                 if ($i == 0 && isset($this->leadingHeaders['renderTotalColumn']) && $this->leadingHeaders['renderTotalColumn'])
-                {                    
+                {
                     $lastRow         = end($this->leadingHeaders['rows']);
                     $colSpanForTotal = $lastRow['colSpan'];
-                    echo ZurmoHtml::tag('th', 
-                                        array('class' => 'total-column', 
-                                              'colspan' => $colSpanForTotal, 
-                                              'rowspan' => count($this->leadingHeaders['rows'])), 
+                    echo ZurmoHtml::tag('th',
+                                        array('class' => 'total-column',
+                                              'colspan' => $colSpanForTotal,
+                                              'rowspan' => count($this->leadingHeaders['rows'])),
                                         Zurmo::t('ReportsModule', 'Total'));
                 }
                 echo '</tr>';

@@ -68,11 +68,11 @@
                 'account___name' => 'Account - Name',
             );
             $this->assertEquals($compareData, $searchableAttributesAndLabels);
-            
+
             //Should sort by values
             $searchableAttributesAndLabels = DynamicSearchUtil::
                                              getSearchableAttributesAndLabels('ContactsSearchView', 'Contact');
-            $compareData = array(  
+            $compareData = array(
                 'account'                    => 'Account',
                 'account___name'             => 'Account - Name',
                 'anyCity'                    => 'Any City',
@@ -107,7 +107,7 @@
             );
             $this->assertEquals(array_values($compareData), array_values($searchableAttributesAndLabels));
         }
-                
+
         public function testResolveAndAddViewDefinedNestedAttributes()
         {
             Yii::app()->user->userModel = User::getByUsername('super');

@@ -180,7 +180,7 @@
                 {
                     self::resolveFormatTypeAndCurrencyCode($formatType, $currencyCode, $model, $attribute);
                 }
-                elseif (strpos($expression,'.') !== false)
+                elseif (strpos($expression, '.') !== false)
                 {
                     $formatType               = self::FORMAT_TYPE_DECIMAL;
                     $extraZerosForDecimalPart = str_replace((float)$expression, '', $expression);
@@ -225,7 +225,7 @@
                 return array(
                     'condition' => $matches[1],
                     'true'      => $matches[2],
-                    'false'     => $matches[3],
+                    'false'     => $matches[3]
                 );
             }
             return false;

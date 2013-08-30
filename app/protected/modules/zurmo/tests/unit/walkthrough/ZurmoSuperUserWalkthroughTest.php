@@ -313,10 +313,10 @@
 
             $group->users->add($user1);
             $saved = $group->save();
-            assert('$saved');
+            $this->assertTrue($saved);
             $group->users->add($user2);
             $saved = $group->save();
-            assert('$saved');
+            $this->assertTrue($saved);
 
             $this->setPostArray(array(
                 'GroupUserMembershipForm' => array('userMembershipData' => array($user1->id, $user2->id)

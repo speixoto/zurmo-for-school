@@ -84,9 +84,8 @@
             $sql .= "= {$quote}{$marketingListMemberTableName}{$quote}.{$quote}contact_id{$quote}";
             $sql .= "AND {$quote}{$campaignItemTableName}{$quote}.{$quote}campaign_id{$quote} = " . $campaign->id . " " ;
             $sql .= "where {$quote}{$marketingListMemberTableName}{$quote}.{$quote}marketinglist_id{$quote} = " . $campaign->marketingList->id ;
-            $sql .= " and {$quote}{$campaignItemTableName}{$quote}.{$quote}id{$quote} IS NULL limit ".$pageSize;
+            $sql .= " and {$quote}{$campaignItemTableName}{$quote}.{$quote}id{$quote} is null limit " . $pageSize;
             $ids = ZurmoRedBean::getCol($sql);
-
             foreach ($ids as $contactId)
             {
                 $contacts[] = Contact::getById((int)$contactId);

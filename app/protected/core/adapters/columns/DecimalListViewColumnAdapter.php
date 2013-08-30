@@ -44,13 +44,13 @@
                 'type'  => 'raw',
             );
         }
-                
-        public function renderDataCellContent($data, $row) 
-        {                      
+
+        public function renderDataCellContent($data, $row)
+        {
             return $this->renderValue($data->{$this->attribute});
         }
-        
-        public function renderValue($value) 
+
+        public function renderValue($value)
         {
             return Yii::app()->format->formatDecimal($value);
         }

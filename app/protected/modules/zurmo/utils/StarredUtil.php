@@ -150,7 +150,7 @@
                         array('success' => "function(data){\$('#{$starId}').removeClass().addClass(data)}"),
                         array('class'       => $starredClass,
                               'id'          => $starId,
-                              'namespace'   => 'update',));
+                              'namespace'   => 'update'));
             return $link;
         }
 

@@ -97,7 +97,7 @@
                 {
                     $value = $metadata['perUser'][$key];
                 }
-                else if (isset($metadata['global']) && isset($metadata['global'][$key]))
+                elseif (isset($metadata['global']) && isset($metadata['global'][$key]))
                 {
                     $value = $metadata['global'][$key];
                 }

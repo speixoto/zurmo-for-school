@@ -388,7 +388,7 @@
             $billy                      = User::getByUsername('billy');
             $emailMessageIds            = array();
 
-            for ($count =0 ; $count < 5; $count++)
+            for ($count = 0 ; $count < 5; $count++)
             {
                 $emailMessage = new EmailMessage();
                 $emailMessage->owner   = $jane;

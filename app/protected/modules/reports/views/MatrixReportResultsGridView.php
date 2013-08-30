@@ -94,7 +94,7 @@
             {
                 $columnClassName  = $this->resolveColumnClassNameForListViewColumnAdapter($displayAttribute);
                 $attributeName    = MatrixReportDataProvider::resolveHeaderColumnAliasName(
-                                    $displayAttribute->columnAliasName);                
+                                    $displayAttribute->columnAliasName);
                 $params           = $this->resolveParamsForColumnElement($displayAttribute);
                 $columnAdapter    = new $columnClassName($attributeName, $this, $params);
                 $column           = $columnAdapter->renderGridViewData();
@@ -107,17 +107,17 @@
                 }
                 array_push($columns, $column);
                 $isFirstRow = false;
-            }            
-            $grandTotals    = $this->dataProvider->runQueryAndGrandTotalsData();              
+            }
+            $grandTotals    = $this->dataProvider->runQueryAndGrandTotalsData();
             for ($i = 0; $i < $this->dataProvider->getXAxisGroupByDataValuesCount(); $i++)
-            {                
+            {
                 $grandTotalsRow = $grandTotals[$i];
                 foreach ($this->dataProvider->resolveDisplayAttributes() as $displayAttribute)
                 {
                     if (!$displayAttribute->queryOnly)
                     {
                         $columnClassName  = $this->resolveColumnClassNameForListViewColumnAdapter($displayAttribute);
-                        $attributeName    = MatrixReportDataProvider::resolveColumnAliasName($attributeKey);                        
+                        $attributeName    = MatrixReportDataProvider::resolveColumnAliasName($attributeKey);
                         $params           = $this->resolveParamsForColumnElement($displayAttribute);
                         $columnAdapter    = new $columnClassName($attributeName, $this, $params);
                         $column           = $columnAdapter->renderGridViewData();
@@ -127,15 +127,15 @@
                             $column['class'] = 'DataColumn';
                         }
                         if (isset($grandTotalsRow[$displayAttribute->columnAliasName]))
-                        {                                                                        
+                        {
                             $column['footer'] = $columnAdapter->renderValue($grandTotalsRow[$displayAttribute->columnAliasName]);
                         }
                         array_push($columns, $column);
                         $attributeKey++;
                     }
-                }                
+                }
             }
-            
+
             $attributeKey = 0;
             foreach ($this->dataProvider->resolveDisplayAttributes() as $displayAttribute)
             {
@@ -143,7 +143,7 @@
                 {
                     $columnClassName                = $this->resolveColumnClassNameForListViewColumnAdapter($displayAttribute);
                     $attributeName                  = MatrixReportDataProvider::resolveTotalColumnAliasName(
-                                                            $displayAttribute->columnAliasName);                           
+                                                            $displayAttribute->columnAliasName);
                     $params                         = $this->resolveParamsForColumnElement($displayAttribute);
                     $columnAdapter                  = new $columnClassName($attributeName, $this, $params);
                     $column                         = $columnAdapter->renderGridViewData();
@@ -153,11 +153,11 @@
                     if (!isset($column['class']))
                     {
                         $column['class'] = 'DataColumn';
-                    }                    
+                    }
                     array_push($columns, $column);
                     $attributeKey++;
                 }
-            }                
+            }
             return $columns;
         }
 

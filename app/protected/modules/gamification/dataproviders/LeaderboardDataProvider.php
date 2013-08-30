@@ -51,6 +51,7 @@
             }
             $this->type = $type;
         }
+
         /**
          * See the yii documentation.
          */

@@ -59,7 +59,7 @@
                         array('class'       => 'icon-star ' . $class,
                               'id'          => 'starDataColumn_filterByStarred',
                               'onclick'     => $this->getAjaxSubmitScript($modelClassName, $isFilteredByStarred),
-                              'namespace'   => 'starDataColumn',));
+                              'namespace'   => 'starDataColumn'));
             return $link;
         }
 

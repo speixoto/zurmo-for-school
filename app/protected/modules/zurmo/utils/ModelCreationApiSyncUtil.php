@@ -60,7 +60,7 @@
             assert('is_int($modelId)');
             assert('is_string($dateTime)');
             $sql = "INSERT INTO " . static::TABLE_NAME .
-                " VALUES (NULL, '{$serviceName}', '{$modelId}', '{$modelClassName}', '{$dateTime}')";
+                " VALUES (null, '{$serviceName}', '{$modelId}', '{$modelClassName}', '{$dateTime}')";
             ZurmoRedBean::exec($sql);
         }
 

@@ -52,7 +52,7 @@
         public function __construct(ReportDataProvider $dataProvider, Report $report)
         {
             $this->dataProvider     = $dataProvider;
-            $this->report           = $report;                        
+            $this->report           = $report;
             $this->dataForExport    = $dataProvider->getData(true);
             $this->makeData();
         }

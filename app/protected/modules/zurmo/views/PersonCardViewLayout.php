@@ -141,7 +141,7 @@
                 {
                     $departmentAndAccountContent .=  ' / ' . $this->model->companyName;
                 }
-                elseif($departmentAndAccountContent == null && $this->model->companyName != null)
+                elseif ($departmentAndAccountContent == null && $this->model->companyName != null)
                 {
                     $departmentAndAccountContent = $this->model->companyName;
                 }

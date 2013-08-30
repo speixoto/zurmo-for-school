@@ -64,7 +64,6 @@
                 $schema, new MessageLogger());
         }
 
-
         protected static function getReadSubscriptionTableSchemaByName($tableName)
         {
             assert('is_string($tableName) && $tableName  != ""');

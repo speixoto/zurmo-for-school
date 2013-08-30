@@ -120,8 +120,9 @@
             $attributeForm                                  = new TextAttributeForm();
             $attributeForm->attributeName                   = 'custom';
             $attributeForm->attributeLabels                 = array('en' => 'test label en');
-            $modelAttributesAdapterClassName                =
-                    $attributeForm::getModelAttributeAdapterNameForSavingAttributeFormData();
+
+            $modelAttributesAdapterClassName                = $attributeForm::
+                                                                getModelAttributeAdapterNameForSavingAttributeFormData();
             $adapter = new $modelAttributesAdapterClassName(new EmailTemplateModelTestItem());
             $adapter->setAttributeMetadataFromForm($attributeForm);
 

@@ -70,7 +70,7 @@
             $customFieldData->serializedData = serialize($values);
             $saved = $customFieldData->save();
             $this->assertTrue($saved);
-            
+
             //for fullname attribute  (derived attribute)
             $reportModelTestItem1 = new ReportModelTestItem();
             $reportModelTestItem1->firstName = 'xFirst';
@@ -91,10 +91,10 @@
             $currencyValue->currency    = $currencies[0];
             $this->assertEquals('USD', $currencyValue->currency->code);
             $reportModelTestItem1->currencyValue   = $currencyValue;
-            
+
             $reportModelTestItem1->primaryAddress->street1 = 'someString';
             $reportModelTestItem1->primaryEmail->emailAddress = "test@someString.com";
-            
+
             $customFieldValue = new CustomFieldValue();
             $customFieldValue->value = 'Multi 1';
             $reportModelTestItem1->multiDropDown->values->add($customFieldValue);
@@ -114,11 +114,11 @@
             $reportModelTestItem1->owner = Yii::app()->user->userModel;
             $saved               = $reportModelTestItem1->save();
             $this->assertTrue($saved);
-            
+
             $reportModelTestItem2 = new ReportModelTestItem();
             $reportModelTestItem2->firstName = 'xFirst';
-            $reportModelTestItem2->lastName = 'xLast';            
-            $reportModelTestItem2->boolean = true;            
+            $reportModelTestItem2->lastName = 'xLast';
+            $reportModelTestItem2->boolean = true;
             $reportModelTestItem2->date = '2013-02-14';
             $reportModelTestItem2->dateTime = '2013-02-14 23:15:00';
             $reportModelTestItem2->float = 200.5;
@@ -136,18 +136,18 @@
             $reportModelTestItem2->radioDropDown->value = $values[1];
             $reportModelTestItem2->likeContactState = $reportModelTestItem7;
             $reportModelTestItem2->owner = Yii::app()->user->userModel;
-            $saved               = $reportModelTestItem2->save();            
+            $saved               = $reportModelTestItem2->save();
             $this->assertTrue($saved);
 
             $report = new Report();
             $report->setType(Report::TYPE_MATRIX);
             $report->setModuleClassName('ReportsTestModule');
             $report->setFiltersStructure('');
-                                                            
+
             //for date summation
             $displayAttribute1 = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
                                      Report::TYPE_MATRIX);
-            $displayAttribute1->attributeIndexOrDerivedType = 'date__Maximum';            
+            $displayAttribute1->attributeIndexOrDerivedType = 'date__Maximum';
             $this->assertTrue($displayAttribute1->columnAliasName == 'col0');
             $report->addDisplayAttribute($displayAttribute1);
 
@@ -270,7 +270,7 @@
             $displayAttribute20->attributeIndexOrDerivedType = 'currencyValue__Average';
             $this->assertTrue($displayAttribute20->columnAliasName == 'col19');
             $report->addDisplayAttribute($displayAttribute20);
-            
+
             $displayAttribute21 = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
                                      Report::TYPE_MATRIX);
             $displayAttribute21->attributeIndexOrDerivedType = 'Count';
@@ -281,15 +281,15 @@
                                                                 Report::TYPE_MATRIX);
             $groupBy->attributeIndexOrDerivedType = 'firstName';
             $report->addGroupBy($groupBy);
-            
+
             $groupBy           = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem',
                                                                 Report::TYPE_MATRIX);
             $groupBy->attributeIndexOrDerivedType = 'lastName';
             $groupBy->axis = 'y';
-            $report->addGroupBy($groupBy);           
-                        
+            $report->addGroupBy($groupBy);
+
             $dataProvider       = new MatrixReportDataProvider($report);
-            $adapter            = ReportToExportAdapterFactory::createReportToExportAdapter($report, $dataProvider);                                                    
+            $adapter            = ReportToExportAdapterFactory::createReportToExportAdapter($report, $dataProvider);
             $compareRowData     = array(array('',
                                               'xFirst',
                                               'xFirst',
@@ -315,7 +315,7 @@
                                               'xFirst',
                                               'xFirst',
                                               'xFirst',
-                                              'xFirst',                                              
+                                              'xFirst',
                                              ),
                                         array('Last Name',
                                               'Date -(Max)',
@@ -342,7 +342,7 @@
                                               'Currency Value -(Sum) Currency',
                                               'Currency Value -(Avg)',
                                               'Currency Value -(Avg) Currency',
-                                              'Count',                                              
+                                              'Count',
                                              ),
                                         array('xLast',
                                               '2013-02-14',
@@ -371,23 +371,23 @@
                                               'Mixed Currency',
                                               '2'
                                             ),
-                                       );            
-            $this->assertEmpty($adapter->getHeaderData());                        
-            $this->assertEquals($compareRowData, $adapter->getData());                 
-            
+                                       );
+            $this->assertEmpty($adapter->getHeaderData());
+            $this->assertEquals($compareRowData, $adapter->getData());
+
             $groupBy           = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem',
                                                                 Report::TYPE_MATRIX);
             $groupBy->attributeIndexOrDerivedType = 'boolean';
             $report->addGroupBy($groupBy);
-            
+
             $groupBy           = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem',
                                                                 Report::TYPE_MATRIX);
             $groupBy->attributeIndexOrDerivedType = 'phone';
             $groupBy->axis = 'y';
-            $report->addGroupBy($groupBy);           
-                        
+            $report->addGroupBy($groupBy);
+
             $dataProvider       = new MatrixReportDataProvider($report);
-            $adapter            = ReportToExportAdapterFactory::createReportToExportAdapter($report, $dataProvider);                                                    
+            $adapter            = ReportToExportAdapterFactory::createReportToExportAdapter($report, $dataProvider);
             $compareRowData     = array(array('',
                                               '',
                                               'xFirst',
@@ -437,10 +437,10 @@
                                               'Yes',
                                               'Yes',
                                               'Yes',
-                                              'Yes',                                              
-                                              'Yes',                                              
-                                              'Yes',                                              
-                                              'Yes',                                              
+                                              'Yes',
+                                              'Yes',
+                                              'Yes',
+                                              'Yes',
                                               'Yes',
                                               'Yes',
                                              ),
@@ -470,7 +470,7 @@
                                               'Currency Value -(Sum) Currency',
                                               'Currency Value -(Avg)',
                                               'Currency Value -(Avg) Currency',
-                                              'Count',                                              
+                                              'Count',
                                              ),
                                         array('xLast',
                                               '7842151012',
@@ -500,9 +500,9 @@
                                               'Mixed Currency',
                                               '2'
                                             ),
-                                       );            
-            $this->assertEmpty($adapter->getHeaderData());                                    
-            $this->assertEquals($compareRowData, $adapter->getData()); 
-        }        
+                                       );
+            $this->assertEmpty($adapter->getHeaderData());
+            $this->assertEquals($compareRowData, $adapter->getData());
+        }
     }
 ?>

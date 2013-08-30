@@ -46,7 +46,6 @@
          */
         public static function updatePermissionsWithDefaultForModelByUser(SecurableItem $model, User $user)
         {
-            // TODO: @Shoaibi: Critical: Tests
             if ($model instanceof SecurableItem && count($model->permissions) === 0)
             {
                 $defaultPermission  = UserConfigurationFormAdapter::resolveAndGetDefaultPermissionSetting(
@@ -75,7 +74,6 @@
          */
         public static function updatePermissionsWithDefaultForModelByCurrentUser(SecurableItem $model)
         {
-            // TODO: @Shoaibi: Critical: Tests
             static::updatePermissionsWithDefaultForModelByUser($model, Yii::app()->user->userModel);
         }
 
