@@ -42,14 +42,16 @@
          * @param string $controllerId
          * @param string $moduleId
          * @param array $groups
+         * @param null|IntroView $introView
          */
-        public function __construct($controllerId, $moduleId, $groups)
+        public function __construct($controllerId, $moduleId, $groups, $introView = null)
         {
             assert('$controllerId != null');
             assert('$moduleId != null');
             assert('is_array($groups)');
+            assert('$introView === null || $introView instanceof IntroView');
             parent::__construct(2, 1);
-            $this->setView(new ActionBarForGroupsTreeListView ($controllerId, $moduleId), 0, 0);
+            $this->setView(new ActionBarForGroupsTreeListView ($controllerId, $moduleId, null, $introView), 0, 0);
             $groupsTreeListView = new GroupsTreeListView($controllerId, $moduleId, $groups);
             $groupsTreeListView->setCssClasses(array('DetailsView'));
             $this->setView($groupsTreeListView, 1, 0);

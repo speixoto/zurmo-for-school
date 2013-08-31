@@ -34,14 +34,11 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class MarketingIntroLinkActionElement extends IntroLinkActionElement
+    class SecurityIntroLinkActionElement extends IntroLinkActionElement
     {
         protected function shouldRender()
         {
-            return ($this->moduleId == 'marketing' && $this->controllerId == 'default' &&
-                    (Yii::app()->controller->action->id == 'dashboardDetails' ||
-                     Yii::app()->controller->action->id == null ||
-                     Yii::app()->controller->action->id == 'index'));
+            return true;
         }
     }
 ?>

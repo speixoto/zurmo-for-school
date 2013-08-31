@@ -42,14 +42,15 @@
          * @param string $controllerId
          * @param string $moduleId
          * @param array $roles
+         * @param null|IntroView $introView
          */
-        public function __construct($controllerId, $moduleId, $roles)
+        public function __construct($controllerId, $moduleId, $roles, $introView = null)
         {
             assert('$controllerId != null');
             assert('$moduleId != null');
             assert('is_array($roles)');
             parent::__construct(2, 1);
-            $this->setView(new ActionBarForRolesTreeListView ($controllerId, $moduleId), 0, 0);
+            $this->setView(new ActionBarForRolesTreeListView ($controllerId, $moduleId, null, $introView), 0, 0);
             $groupsTreeListView = new RolesTreeListView($controllerId, $moduleId, $roles);
             $groupsTreeListView->setCssClasses(array('DetailsView'));
             $this->setView($groupsTreeListView, 1, 0);
