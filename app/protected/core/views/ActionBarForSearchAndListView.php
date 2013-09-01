@@ -92,11 +92,11 @@
         protected function renderContent()
         {
             $content  = '<div class="view-toolbar-container clearfix">';
-            $content .= '<div class="view-toolbar">' . $this->renderActionElementBar(false) . '</div>';
+            $content .= '<nav class="pillbox clearfix">' . $this->renderActionElementBar(false) . '</nav>';
             if (!Yii::app()->userInterface->isMobile() &&
                 null != $secondActionElementBarContent = $this->renderSecondActionElementBar(false))
             {
-                $content .= '<div class="view-toolbar">' . $secondActionElementBarContent . '</div>';
+                $content .= '<nav class="pillbox clearfix">' . $secondActionElementBarContent . '</nav>';
             }
             $content .= '</div>';
             if (isset($this->introView))
@@ -112,9 +112,7 @@
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array('type'  => 'CreateLink',
-                                'htmlOptions' => array('class' => 'icon-create'),
-                            ),
+                            array('type'  => 'CreateLink'),
                             array('type'  => 'MassEditLink',
                                   'htmlOptions' => array('class' => 'icon-edit'),
                                   'listViewGridId' => 'eval:$this->listViewGridId',

@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class MashableInboxMassActionElement extends LinkActionElement
+    class MashableInboxMassActionElement extends MenuActionElement
     {
         private $massOptions;
 
@@ -43,22 +43,11 @@
             return 'MassEdit';
         }
 
-        public function render()
+        protected function resolveHtmlOptionsForRendering()
         {
-            $this->massOptions = $this->getDefaultMassActions();
-            if ($this->getModelClassName() !== null)
-            {
-                $this->addModelMassOptions();
-            }
-            $menuItems   = $this->getMenuItems();
-            $cClipWidget = new CClipWidget();
-            $cClipWidget->beginClip("ActionMenu");
-            $cClipWidget->widget('application.core.widgets.DividedMenu', array(
-                'htmlOptions' => array('id' => 'MashableInboxMassActionMenu'),
-                'items'       => array($menuItems),
-            ));
-            $cClipWidget->endClip();
-            return $cClipWidget->getController()->clips['ActionMenu'];
+            $htmlOptions       =  $this->getHtmlOptions();
+            $htmlOptions['id'] = 'MashableInboxMassActionMenu';
+            return $htmlOptions;
         }
 
         protected function getDefaultLabel()
@@ -91,7 +80,7 @@
 
         protected function getDefaultRoute()
         {
-            return $this->moduleId . '/' . $this->controllerId . '/list/';
+            return null;
         }
 
         private function getDefaultMassActions()
@@ -111,10 +100,15 @@
             $this->massOptions  = array_merge($this->massOptions, $mashableUtilRules->getMassOptions());
         }
 
-        private function getMenuItems()
+        public function getMenuItems()
         {
             $items  = array();
             $script = '';
+            $this->massOptions = $this->getDefaultMassActions();
+            if ($this->getModelClassName() !== null)
+            {
+                $this->addModelMassOptions();
+            }
             foreach ($this->massOptions as $massOption => $massOptionParams)
             {
                 $selectedName = $this->getListViewGridId() . '-' . $massOption;
@@ -126,11 +120,7 @@
             Yii::app()->clientScript->registerScript(
                                             $this->getListViewGridId() . 'ScriptForMashableInboxMassAction',
                                             $script);
-            $menuItems      = array('label'       => $this->getLabel(), 
-                                    'url'         => null,                                    
-                                    'itemOptions' => array('iconClass' => 'icon-options'),
-                                    'items'       => $items);
-            return $menuItems;
+            return $items;
         }
 
         private function getScriptForOptionAction($selectedName, $massOption, $isActionForAll)

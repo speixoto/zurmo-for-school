@@ -34,78 +34,61 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Class to render link for MashableInboxModels
-     */
-    class MashableInboxModelActionElement extends MenuActionElement
+    abstract class MenuActionElement extends ActionElement
     {
-        public function getActionType()
+        public function render()
+        {
+            $menuItems   = $this->renderMenuItem();
+            $cClipWidget = new CClipWidget();
+            $cClipWidget->beginClip("ActionMenu");
+            $cClipWidget->widget('application.core.widgets.DividedMenu', array(
+                'items'       => array($menuItems),
+                'htmlOptions' => $this->resolveHtmlOptionsForRendering(),
+            ));
+            $cClipWidget->endClip();
+            return $cClipWidget->getController()->clips['ActionMenu'];
+        }
+
+        public function renderMenuItem()
+        {
+            return array('label'               => $this->getLabel(),
+                         'url'                 => $this->getDefaultRoute(),
+                         'itemOptions'         => array('iconClass' => $this->getIconClass()),
+                         'dynamicLabel'        => $this->getDynamicLabel(),
+                         'items'               => $this->getMenuItems());
+        }
+
+        protected function resolveHtmlOptionsForRendering()
+        {
+            return $this->getHtmlOptions();
+        }
+
+        protected function resolveHtmlOptionsForRenderingMenuItem()
         {
             return null;
         }
 
         protected function getMenuItems()
         {
-            if ($this->getModelClassName() === null)
-            {
-                return null;
-            }
-            $mashableUtilRules  = MashableUtil::createMashableInboxRulesByModel($this->getModelClassName());
-            if ($mashableUtilRules->shouldRenderCreateAction)
-            {
-                return array(array('label'     => $this->getDefaultLabel(),
-                                   'url'       => $this->getRouteForItem($this->getModelClassName())));
-            }
-        }
-
-        protected function getMenuHeader()
-        {
-            return $this->getLabel();
-        }
-
-        protected function getDefaultLabel()
-        {
-            return Zurmo::t('MashableInboxModule', 'Create');
+            return null;
         }
 
         protected function getDynamicLabel()
         {
-            return $this->getUnreadCount();
-        }
-
-        protected function getDefaultRoute()
-        {
-            if ($this->getModelClassName() === null)
-            {
-                return Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/');
-            }
-            return Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/list',
-                                        array('modelClassName' => $this->getModelClassName()));
-        }
-
-        protected function getModelClassName()
-        {
-            if (!isset($this->params['modelClassName']))
+            if (!isset($this->params['dynamicLabel']))
             {
                 return null;
             }
-            return $this->params['modelClassName'];
+            return $this->params['dynamicLabel'];
         }
 
-        private function getRouteForItem($modelClassName)
+        protected function getIconClass()
         {
-            $moduleClassName = $modelClassName::getModuleClassName();
-            $moduleId        = $moduleClassName::getDirectoryName();
-            return Yii::app()->createUrl($moduleId . '/' . $this->controllerId . '/create');
-        }
-
-        protected function getUnreadCount()
-        {
-            if (!isset($this->params['unread']))
+            if (!isset($this->params['iconClass']))
             {
                 return null;
             }
-            return ZurmoHtml::wrapLabel($this->params['unread'], 'unread-count');
+            return $this->params['iconClass'];
         }
     }
 ?>
