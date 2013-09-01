@@ -60,6 +60,11 @@
         const TYPE_CREATE_RELATED   = 'CreateRelated';
 
         /**
+         * This action is if you trigger a contact model and then want to subscribe the contact to a marketing list
+         */
+        const TYPE_SUBSCRIBE_TO_LIST = 'SubscribeToList';
+
+        /**
          * When performing actions on related models, if there are MANY related models RELATION_FILTER_ALL means the
          * action will be performed on all related models
          */
@@ -123,12 +128,18 @@
          */
         public static function getTypeDataAndLabels()
         {
-            return array(
-                self::TYPE_UPDATE_SELF    => Zurmo::t('WorkflowsModule', 'Update'),
-                self::TYPE_UPDATE_RELATED => Zurmo::t('WorkflowsModule', 'Update Related'),
-                self::TYPE_CREATE         => Zurmo::t('WorkflowsModule', 'Create'),
-                self::TYPE_CREATE_RELATED => Zurmo::t('WorkflowsModule', 'Create Related'),
-            );
+                return array(
+                    self::TYPE_UPDATE_SELF       => Zurmo::t('WorkflowsModule', 'Update'),
+                    self::TYPE_UPDATE_RELATED    => Zurmo::t('WorkflowsModule', 'Update Related'),
+                    self::TYPE_CREATE            => Zurmo::t('WorkflowsModule', 'Create'),
+                    self::TYPE_CREATE_RELATED    => Zurmo::t('WorkflowsModule', 'Create Related'),
+                    self::TYPE_SUBSCRIBE_TO_LIST => self::getLabelForSubscribeToList(),
+                );
+        }
+
+        public static function getLabelForSubscribeToList()
+        {
+            return Zurmo::t('WorkflowsModule', 'Subscribe To List');
         }
 
         /**
@@ -209,6 +220,15 @@
             }
         }
 
+        public function isModelActionVariant()
+        {
+            if($this->type != self::TYPE_SUBSCRIBE_TO_LIST)
+            {
+                return true;
+            }
+            return false;
+        }
+
         /**
          * @return array
          */
@@ -222,7 +242,14 @@
          */
         public function resolveAllRequiredActionAttributeFormsAndLabelsAndSort()
         {
-            return $this->resolveActionAttributeFormsAndLabelsAndSortByMethod('getRequiredAttributesForActions');
+            if($this->type == self::TYPE_SUBSCRIBE_TO_LIST)
+            {
+                return $this->resolveActionAttributeFormsAndLabelsAndSortForSubscribeToList();
+            }
+            else
+            {
+                return $this->resolveActionAttributeFormsAndLabelsAndSortByMethod('getRequiredAttributesForActions');
+            }
         }
 
         /**
@@ -296,9 +323,17 @@
         public function getActionAttributesAttributeFormType($attribute)
         {
             assert('is_string($attribute)');
-            $resolvedAttributeName  = static::resolveRealAttributeName($attribute);
-            $resolvedModelClassName = $this->resolveRealModelClassName($attribute);
-            return WorkflowActionAttributeFormFactory::getType($resolvedModelClassName, $resolvedAttributeName);
+            assert('$this->type != null');
+            if($this->type == self::TYPE_SUBSCRIBE_TO_LIST)
+            {
+                return 'MarketingList';
+            }
+            else
+            {
+                $resolvedAttributeName  = static::resolveRealAttributeName($attribute);
+                $resolvedModelClassName = $this->resolveRealModelClassName($attribute);
+                return WorkflowActionAttributeFormFactory::getType($resolvedModelClassName, $resolvedAttributeName);
+            }
         }
 
         /**
@@ -352,18 +387,7 @@
             parent::setAttributes($values, $safeOnly);
             if ($valuesAttributes != null)
             {
-                foreach ($valuesAttributes as $attribute => $attributeData)
-                {
-                    $resolvedAttributeName  = static::resolveRealAttributeName($attribute);
-                    $resolvedModelClassName = static::resolveRealModelClassName($attribute, $this->_modelClassName,
-                                              $this->type, $this->relation, $this->relatedModelRelation);
-                    $form = WorkflowActionAttributeFormFactory::make($resolvedModelClassName, $resolvedAttributeName);
-                    $form->setAttributes($attributeData);
-                    if ($form->shouldSetValue)
-                    {
-                        $this->_actionAttributes[$attribute] = $form;
-                    }
-                }
+                $this->resolveSettingAttributesForSubscribeToListType($valuesAttributes);
             }
         }
 
@@ -373,7 +397,8 @@
         public function validateType()
         {
             if ($this->type == self::TYPE_UPDATE_SELF || $this->type == self::TYPE_CREATE ||
-               $this->type == self::TYPE_UPDATE_RELATED || $this->type == self::TYPE_CREATE_RELATED)
+                $this->type == self::TYPE_UPDATE_RELATED || $this->type == self::TYPE_CREATE_RELATED ||
+                $this->type == self::TYPE_SUBSCRIBE_TO_LIST)
             {
                 return true;
             }
@@ -538,7 +563,7 @@
         public function getDisplayLabel()
         {
             $typeDataAndLabels = ActionForWorkflowForm::getTypeDataAndLabels();
-            if ($this->type == self::TYPE_UPDATE_SELF)
+            if ($this->type == self::TYPE_UPDATE_SELF || $this->type == self::TYPE_SUBSCRIBE_TO_LIST)
             {
                 return $typeDataAndLabels[$this->type];
             }
@@ -654,7 +679,7 @@
          */
         protected function getModelClassNameAndResolveForRelations()
         {
-            if ($this->type == self::TYPE_UPDATE_SELF)
+            if ($this->type == self::TYPE_UPDATE_SELF || $this->type == self::TYPE_SUBSCRIBE_TO_LIST)
             {
                 return $this->_modelClassName;
             }
@@ -731,6 +756,48 @@
                     {
                         $attributeFormsIndexedByAttribute['permissions']->shouldSetValue = true;
                     }
+                }
+            }
+        }
+
+        protected function resolveActionAttributeFormsAndLabelsAndSortForSubscribeToList()
+        {
+            $actionAttributeForm = array();
+            if ($this->hasActionAttributeFormByName('marketingList'))
+            {
+                $actionAttributeForm = $this->getActionAttributeFormByName('marketingList');
+            }
+            else
+            {
+                $actionAttributeForm = new MarketingListWorkflowActionAttributeForm('MarketingList', 'id'); //todo: fix this, new form, with construct override
+            }
+            $attributeFormsIndexedByAttribute = array();
+            $attributeFormsIndexedByAttribute['marketingList'] = $actionAttributeForm;
+            $attributeFormsIndexedByAttribute['marketingList']->shouldSetValue = true;
+            $attributeFormsIndexedByAttribute['marketingList']->setDisplayLabel(Zurmo::t('MarketingListsModule', 'Marketing List'));
+            return $attributeFormsIndexedByAttribute;
+        }
+
+        protected function resolveSettingAttributesForSubscribeToListType($valuesAttributes)
+        {
+            assert('$this->type != null');
+            foreach ($valuesAttributes as $attribute => $attributeData)
+            {
+                if($this->type == self::TYPE_SUBSCRIBE_TO_LIST)
+                {
+                    $form = new MarketingListWorkflowActionAttributeForm('MarketingList', 'id');
+                }
+                else
+                {
+                    $resolvedAttributeName  = static::resolveRealAttributeName($attribute);
+                    $resolvedModelClassName = static::resolveRealModelClassName($attribute, $this->_modelClassName,
+                                              $this->type, $this->relation, $this->relatedModelRelation);
+                    $form = WorkflowActionAttributeFormFactory::make($resolvedModelClassName, $resolvedAttributeName);
+                }
+                $form->setAttributes($attributeData);
+                if ($form->shouldSetValue)
+                {
+                    $this->_actionAttributes[$attribute] = $form;
                 }
             }
         }

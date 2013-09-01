@@ -128,7 +128,8 @@
                 $missingRequired = false;
                 foreach ($workflow->getActions() as $action)
                 {
-                    if (!$action->isTypeAnUpdateVariant() && $action->isMissingRequiredActionAttributes())
+                    if ($action->isModelActionVariant() &&
+                        !$action->isTypeAnUpdateVariant() && $action->isMissingRequiredActionAttributes())
                     {
                         $missingRequired = true;
                         break;
