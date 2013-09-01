@@ -74,23 +74,26 @@
             try
             {
                 if (strtolower($value) == strtolower(ProductTemplate::TYPE_PRODUCT) ||
-                    strtolower($value) == strtolower('Product'))
+                    strtolower($value) == strtolower('Product') ||
+                    strtolower($value) == strtolower('product'))
                 {
                     return ProductTemplate::TYPE_PRODUCT;
                 }
                 elseif (strtolower($value) == strtolower(ProductTemplate::TYPE_SERVICE) ||
-                        strtolower($value) == strtolower('Service'))
+                        strtolower($value) == strtolower('Service') ||
+                        strtolower($value) == strtolower('service'))
                 {
                     return ProductTemplate::TYPE_SERVICE;
                 }
                 elseif (strtolower($value) == strtolower(ProductTemplate::TYPE_SUBSCRIPTION) ||
-                        strtolower($value) == strtolower('Subscription'))
+                        strtolower($value) == strtolower('Subscription') ||
+                        strtolower($value) == strtolower('subscription'))
                 {
                     return ProductTemplate::TYPE_SUBSCRIPTION;
                 }
                 else
                 {
-                    throw new InvalidValueToSanitizeException();
+                    throw new InvalidValueToSanitizeException(Zurmo::t('ProductTemplatesModule', 'Type specified is invalid.'));
                 }
             }
             catch (NotFoundException $e)
@@ -106,7 +109,10 @@
                          ProductTemplate::TYPE_SUBSCRIPTION,
                          'Product',
                          'Service',
-                         'Subscription');
+                         'Subscription',
+                         'product',
+                         'service',
+                         'subscription');
         }
     }
 ?>

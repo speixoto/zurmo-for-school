@@ -82,18 +82,20 @@
             try
             {
                 if (strtolower($value) == strtolower(ProductTemplate::STATUS_ACTIVE) ||
-                    strtolower($value) == strtolower('Active'))
+                    strtolower($value) == strtolower('Active') ||
+                    strtolower($value) == strtolower('active'))
                 {
                     return ProductTemplate::STATUS_ACTIVE;
                 }
                 elseif (strtolower($value) == strtolower(ProductTemplate::STATUS_INACTIVE) ||
-                        strtolower($value) == strtolower('Inactive'))
+                        strtolower($value) == strtolower('Inactive') ||
+                        strtolower($value) == strtolower('inactive'))
                 {
                     return ProductTemplate::STATUS_INACTIVE;
                 }
                 else
                 {
-                    throw new InvalidValueToSanitizeException();
+                    throw new InvalidValueToSanitizeException(Zurmo::t('ProductTemplatesModule', 'Status specified is invalid.'));
                 }
             }
             catch (NotFoundException $e)
@@ -107,7 +109,9 @@
             return array(ProductTemplate::STATUS_ACTIVE,
                          ProductTemplate::STATUS_INACTIVE,
                          'Active',
-                         'Inactive');
+                         'Inactive',
+                         'active',
+                         'inactive');
         }
     }
 ?>
