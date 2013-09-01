@@ -34,14 +34,65 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class MarketingIntroLinkActionElement extends IntroLinkActionElement
+    /**
+     * Form to work with a marketing list. Used by subscribe to list workflow action
+     */
+    class MarketingListWorkflowActionAttributeForm extends WorkflowActionAttributeForm
     {
-        protected function shouldRender()
+        /**
+         * Override to make sure the value attribute is set as a string
+         */
+        public function rules()
         {
-            return ($this->moduleId == 'marketing' && $this->controllerId == 'default' &&
-                    (Yii::app()->controller->action->id == 'dashboardDetails' ||
-                     Yii::app()->controller->action->id == null ||
-                     Yii::app()->controller->action->id == 'index'));
+            return array_merge(parent::rules(), array(array('value', 'type', 'type' => 'string')));
+        }
+
+        /**
+         * @return string
+         */
+        public function getValueElementType()
+        {
+            return 'MarketingListNameId';
+        }
+
+        public function validateValue()
+        {
+            if (parent::validateValue())
+            {
+                $validator             = CValidator::createValidator('type', $this, 'value', array('type' => 'integer'));
+                $validator->allowEmpty = false;
+                $validator->validate($this);
+                return !$this->hasErrors();
+            }
+            return false;
+        }
+
+        public function getStringifiedModelForValue()
+        {
+            if ($this->value != null)
+            {
+                try
+                {
+                    return strval(MarketingList::getById((int)$this->value));
+                }
+                catch (NotFoundException $e)
+                {
+                }
+            }
+        }
+
+        /**
+         * @param bool $isCreatingNewModel
+         * @param bool $isRequired
+         * @return array
+         */
+        protected function makeTypeValuesAndLabels($isCreatingNewModel, $isRequired)
+        {
+            assert('is_bool($isCreatingNewModel)');
+            assert('is_bool($isRequired)');
+            $data                           = array();
+            $data[static::TYPE_STATIC]      = Zurmo::t('WorkflowsModule', 'As');
+            return $data;
         }
     }
 ?>

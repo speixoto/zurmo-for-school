@@ -93,6 +93,7 @@
                         rebuildWorkflowActionRowNumbers('ActionsForWorkflowWizardView');
                         $('#EmailMessagesForWorkflowWizardView').find('.dynamic-rows').find('ul:first').find('li').remove();
                         $('." . EmailMessagesForWorkflowWizardView::getZeroComponentsClassName() . "').show();
+                        " . ActionsForWorkflowWizardView::renderScriptContentForModuleClassNameChange() . "
                         " . $this->registerModuleClassNameChangeScriptExtraPart() . "
                     }
                 );

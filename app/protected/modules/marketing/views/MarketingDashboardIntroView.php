@@ -64,15 +64,5 @@
             $this->registerScripts();
             return $content;
         }
-
-        protected function registerScripts()
-        {
-            $content  = "$(this).resolveHighestAndEqualize($('.module-intro-steps'));";
-            $content .= "$(window).resize(function()
-                         {
-                             $(this).resolveHighestAndEqualize($('.module-intro-steps'));
-                         });";
-            Yii::app()->clientScript->registerScript($this->moduleName, $content);
-        }
     }
 ?>

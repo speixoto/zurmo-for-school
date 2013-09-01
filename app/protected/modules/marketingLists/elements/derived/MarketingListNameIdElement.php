@@ -34,14 +34,16 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class MarketingIntroLinkActionElement extends IntroLinkActionElement
+    /**
+     * Display the name and hidden id of the marketing list model.
+     * Displays a select button and auto-complete input
+     */
+    class MarketingListNameIdElement extends NameIdElement
     {
-        protected function shouldRender()
-        {
-            return ($this->moduleId == 'marketing' && $this->controllerId == 'default' &&
-                    (Yii::app()->controller->action->id == 'dashboardDetails' ||
-                     Yii::app()->controller->action->id == null ||
-                     Yii::app()->controller->action->id == 'index'));
-        }
+        protected static $moduleId   = 'marketingLists';
+
+        protected $idAttributeId     = 'marketingListId';
+
+        protected $nameAttributeName = 'marketingListName';
     }
 ?>
