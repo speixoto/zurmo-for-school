@@ -37,33 +37,11 @@
     /**
      * Class to render link for MashableInboxModels
      */
-    class MashableInboxModelActionElement extends LinkActionElement
+    class MashableInboxModelActionElement extends MenuActionElement
     {
         public function getActionType()
         {
             return null;
-        }
-        
-        public function render()
-        {
-            $menuItems   = $this->renderMenuItem();
-            $cClipWidget = new CClipWidget();
-            $cClipWidget->beginClip("ActionMenu");
-            $cClipWidget->widget('application.core.widgets.DividedMenu', array(
-                'items'       => array($menuItems),
-                'htmlOptions' => $this->getHtmlOptions(),
-            ));
-            $cClipWidget->endClip();
-            return $cClipWidget->getController()->clips['ActionMenu'];
-        }
-
-        public function renderMenuItem()
-        {
-            return array('label'               => $this->getMenuHeader(), 
-                         'url'                 => $this->getDefaultRoute(),                 
-                         'itemOptions'         => array('iconClass' => $this->getIconClass()),                         
-                         'dynamicLabel'        => $this->getUnreadCount(),
-                         'items'               => $this->getMenuItems());
         }
 
         protected function getMenuItems()
@@ -75,19 +53,24 @@
             $mashableUtilRules  = MashableUtil::createMashableInboxRulesByModel($this->getModelClassName());
             if ($mashableUtilRules->shouldRenderCreateAction)
             {
-                return array(array('label'     => $this->getDefaultLabel(),                                   
+                return array(array('label'     => $this->getDefaultLabel(),
                                    'url'       => $this->getRouteForItem($this->getModelClassName())));
-            }            
+            }
         }
 
         protected function getMenuHeader()
         {
             return $this->getLabel();
-        }        
+        }
 
         protected function getDefaultLabel()
         {
             return Zurmo::t('MashableInboxModule', 'Create');
+        }
+
+        protected function getDynamicLabel()
+        {
+            return $this->getUnreadCount();
         }
 
         protected function getDefaultRoute()
@@ -99,7 +82,7 @@
             return Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/list',
                                         array('modelClassName' => $this->getModelClassName()));
         }
-        
+
         protected function getModelClassName()
         {
             if (!isset($this->params['modelClassName']))
@@ -115,23 +98,14 @@
             $moduleId        = $moduleClassName::getDirectoryName();
             return Yii::app()->createUrl($moduleId . '/' . $this->controllerId . '/create');
         }
-        
+
         protected function getUnreadCount()
         {
             if (!isset($this->params['unread']))
             {
                 return null;
-            }            
-            return ZurmoHtml::wrapLabel($this->params['unread'], 'unread-count');
-        }
-        
-        protected function getIconClass()
-        {
-            if (!isset($this->params['iconClass']))
-            {
-                return null;
             }
-            return $this->params['iconClass'];
+            return ZurmoHtml::wrapLabel($this->params['unread'], 'unread-count');
         }
     }
 ?>

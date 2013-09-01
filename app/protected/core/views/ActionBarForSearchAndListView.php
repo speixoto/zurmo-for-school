@@ -92,11 +92,11 @@
         protected function renderContent()
         {
             $content  = '<div class="view-toolbar-container clearfix">';
-            $content .= '<div class="view-toolbar">' . $this->renderActionElementBar(false) . '</div>';
+            $content .= '<nav class="pillbox clearfix">' . $this->renderActionElementBar(false) . '</nav>';
             if (!Yii::app()->userInterface->isMobile() &&
                 null != $secondActionElementBarContent = $this->renderSecondActionElementBar(false))
             {
-                $content .= '<div class="view-toolbar">' . $secondActionElementBarContent . '</div>';
+                $content .= '<nav class="pillbox clearfix">' . $secondActionElementBarContent . '</nav>';
             }
             $content .= '</div>';
             if (isset($this->introView))
@@ -113,20 +113,19 @@
                     'toolbar' => array(
                         'elements' => array(
                             array('type'  => 'CreateLink',
-                                'htmlOptions' => array('class' => 'icon-create'),
-                            ),
+                                  'iconClass' => 'icon-create'),
                             array('type'  => 'MassEditLink',
-                                  'htmlOptions' => array('class' => 'icon-edit'),
                                   'listViewGridId' => 'eval:$this->listViewGridId',
-                                  'pageVarName' => 'eval:$this->pageVarName'),
+                                  'pageVarName' => 'eval:$this->pageVarName',
+                                  'iconClass'   => 'icon-edit'),
                             array('type'  => 'ExportLink',
-                                  'htmlOptions' => array('class' => 'icon-export'),
                                   'listViewGridId' => 'eval:$this->listViewGridId',
-                                  'pageVarName' => 'eval:$this->pageVarName'),
+                                  'pageVarName' => 'eval:$this->pageVarName',
+                                  'iconClass'   => 'icon-export'),
                             array('type'  => 'MassDeleteLink',
-                                  'htmlOptions' => array('class' => 'icon-delete'),
                                   'listViewGridId' => 'eval:$this->listViewGridId',
-                                  'pageVarName' => 'eval:$this->pageVarName'),
+                                  'pageVarName' => 'eval:$this->pageVarName',
+                                  'iconClass'   => 'icon-delete'),
                         ),
                     ),
                 ),
@@ -165,7 +164,14 @@
             parent::resolveActionElementInformationDuringRender($elementInformation);
             if ($elementInformation['type'] == $this->activeActionElementType)
             {
-                $elementInformation['htmlOptions']['class'] .= ' active';
+                if (isset($elementInformation['htmlOptions']['class']))
+                {
+                    $elementInformation['htmlOptions']['class'] .= ' active';
+                }
+                else
+                {
+                    $elementInformation['htmlOptions']['class'] = 'active';
+                }
             }
         }
     }

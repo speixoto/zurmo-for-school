@@ -37,7 +37,7 @@
     /**
      * Parent class for all LinkActionElements that may apply to all or selected records.
      */
-    abstract class MassActionLinkActionElement extends DropdownSupportedLinkActionElement
+    abstract class MassActionLinkActionElement extends MenuActionElement
     {
         const SELECTED_MENU_TYPE                = 1;
 
@@ -79,13 +79,7 @@
         public function render()
         {
             $this->registerMenuScripts();
-            return $this->renderMenuWidget($this->renderMenuItem());
-        }
-
-        public function renderMenuItem()
-        {
-            return array('label' => $this->getMenuHeader(), 'url' => null,
-                'items' => $this->getMenuItems());
+            return parent::render();
         }
 
         public function getActionNameForCurrentElement()
@@ -294,18 +288,6 @@
             return get_class($this);
         }
 
-        protected function renderMenuWidget($items)
-        {
-            $cClipWidget = new CClipWidget();
-            $cClipWidget->beginClip("ActionMenu");
-            $cClipWidget->widget('application.core.widgets.MbMenu', array(
-                                    'htmlOptions'   => array('id' => $this->getMenuId()),
-                                    'items'         => array($items),
-                                    ));
-            $cClipWidget->endClip();
-            return $cClipWidget->getController()->clips['ActionMenu'];
-        }
-
         protected function getListViewGridId()
         {
             // TODO: @Shoaibi/@Jason: Low: Create a common parent for Element and ActionElement, put this there.
@@ -320,7 +302,7 @@
 
         protected function getDefaultRoute()
         {
-            return $this->moduleId . '/' . $this->getControllerId() . '/' . $this->getActionId() . '/';
+            return null;
         }
 
         protected function getDefaultLabel()

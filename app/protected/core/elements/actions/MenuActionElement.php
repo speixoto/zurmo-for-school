@@ -34,29 +34,71 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Action bar view for the marketing search and list user interface. Provides buttons like create, and links to
-     * queues.
-     */
-    class SecuredActionBarForMarketingSearchAndListView extends SecuredActionBarForMarketingListsSearchAndListView
+    abstract class MenuActionElement extends ActionElement
     {
-        /**
-         * @return array
-         */
-        public static function getDefaultMetadata()
+        public function render()
         {
-            $metadata = parent::getDefaultMetadata();
-            $metadata['global']['secondToolbar'] = array(
-                        'elements' => array(
-                            array('type'        => 'MarketingIntroLink',
-                                  'panelId'     => 'eval:$this->introView->getPanelId()',
-                                  'checked'     => 'eval:!$this->introView->isIntroViewDismissed()',
-                                  'moduleName'  => 'eval:$this->introView->getModuleName()',
-                                  'iconClass'   => 'icon-options',
-                            ),
-                        ),
-                    );
-            return $metadata;
+            $menuItems   = $this->renderMenuItem();
+            $cClipWidget = new CClipWidget();
+            $cClipWidget->beginClip("ActionMenu");
+            $cClipWidget->widget('application.core.widgets.DividedMenu', array(
+                'items'       => array($menuItems),
+                'htmlOptions' => $this->resolveHtmlOptionsForRendering(),
+            ));
+            $cClipWidget->endClip();
+            return $cClipWidget->getController()->clips['ActionMenu'];
+        }
+
+        public function renderMenuItem()
+        {
+            return array('label'               => $this->getDefaultLabel(),
+                         'url'                 => $this->getDefaultRoute(),
+                         'itemOptions'         => array('iconClass' => $this->getIconClass()),
+                         'dynamicLabel'        => $this->getDynamicLabel(),
+                         'dynamicContent'      => $this->getDynamicContent(),
+                         'items'               => $this->getMenuItems());
+        }
+
+        protected function resolveHtmlOptionsForRendering()
+        {
+            return $this->getHtmlOptions();
+        }
+
+        protected function resolveHtmlOptionsForRenderingMenuItem()
+        {
+            return null;
+        }
+
+        protected function getMenuItems()
+        {
+            return null;
+        }
+
+        protected function getDynamicLabel()
+        {
+            if (!isset($this->params['dynamicLabel']))
+            {
+                return null;
+            }
+            return $this->params['dynamicLabel'];
+        }
+
+        protected function getDynamicContent()
+        {
+            if (!isset($this->params['dynamicContent']))
+            {
+                return null;
+            }
+            return $this->params['dynamicContent'];
+        }
+
+        protected function getIconClass()
+        {
+            if (!isset($this->params['iconClass']))
+            {
+                return null;
+            }
+            return $this->params['iconClass'];
         }
     }
 ?>

@@ -45,21 +45,21 @@
             return null;
         }
 
-        public function render()
+        protected function getMenuItems()
         {
             $items = array();
             if (RightsUtil::doesUserHaveAllowByRightName('MarketingListsModule', MarketingListsModule::getCreateRight(),
-                                                        Yii::app()->user->userModel))
+                Yii::app()->user->userModel))
             {
                 $items[] = array('label'   => Zurmo::t('MarketingListsModule', 'Create List'),
-                                  'url'     => Yii::app()->createUrl('marketingLists/default/create'));
+                                 'url'     => Yii::app()->createUrl('marketingLists/default/create'));
             }
             if (RightsUtil::doesUserHaveAllowByRightName('EmailTemplatesModule', EmailTemplatesModule::getCreateRight(),
-                                                        Yii::app()->user->userModel))
+                Yii::app()->user->userModel))
             {
                 $items[] = array('label'   => Zurmo::t('EmailTemplatesModule', 'Create Template'),
                                  'url'     => Yii::app()->createUrl('emailTemplates/default/create',
-                                              array('type' => EmailTemplate::TYPE_CONTACT)));
+                                     array('type' => EmailTemplate::TYPE_CONTACT)));
             }
             if (RightsUtil::doesUserHaveAllowByRightName('CampaignsModule', CampaignsModule::getCreateRight(),
                 Yii::app()->user->userModel))
@@ -69,19 +69,15 @@
             }
             if (!empty($items))
             {
-                $menuItems = array( 'label' => $this->getLabel(),
-                                    'url'   => null,
-                                    'items' => $items);
-                $cClipWidget = new CClipWidget();
-                $cClipWidget->beginClip("ActionMenu");
-                $cClipWidget->widget('application.core.widgets.MbMenu', array(
-                    'htmlOptions' => array('id' => get_class($this)),
-                    'items'       => array($menuItems),
-                ));
-                $cClipWidget->endClip();
-                return $cClipWidget->getController()->clips['ActionMenu'];
+                return $items;
             }
             return null;
         }
+
+        protected function getDefaultRoute()
+        {
+            return null;
+        }
+
     }
 ?>

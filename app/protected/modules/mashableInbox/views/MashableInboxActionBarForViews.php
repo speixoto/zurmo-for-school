@@ -72,84 +72,7 @@
 
         protected function renderContent()
         {
-
-            $content = '<nav class="pillbox clearfix">
-                            <div class="default-button">
-                                <a href="#" class="button-action">
-                                    <i class="icon-ww"></i>
-                                    <span class="button-label">Combined</span>
-                                    <span class="unread-count">10</span>
-                                </a>
-                            </div>
-
-                            <div class="split-button">
-                                <a href="#" class="button-action">
-                                    <i class="icon-ww"></i>
-                                    <span class="button-label">Conversations</span>
-                                    <span class="unread-count">10</span>
-                                </a>
-                                <a href="#" class="button-trigger">
-                                    <i class="icon-trigger"></i>
-                                </a>
-                                <ul class="button-actions">
-                                    <li><a href="#">List</a></li>
-                                    <li><a href="#">Create</a></li>
-                                </ul>
-                            </div>
-
-                            <div class="split-button">
-                                <a href="#" class="button-action">
-                                    <i class="icon-ww"></i>
-                                    <span class="button-label">Missions</span>
-                                    <span class="unread-count">10</span>
-                                </a>
-                                <a href="#" class="button-trigger">
-                                    <i class="icon-trigger"></i>
-                                </a>
-                                <ul class="button-actions">
-                                    <li><a href="#">List</a></li>
-                                    <li><a href="#">Create</a></li>
-                                </ul>
-                            </div>
-
-                            <div class="default-button">
-                                <a href="#" class="button-action">
-                                    <i class="icon-ww"></i>
-                                    <span class="button-label">Notifications</span>
-                                    <span class="unread-count">10</span>
-                                </a>
-                            </div>
-
-                            <div class="split-button">
-                                <a href="#" class="button-action">
-                                    <i class="icon-ww"></i>
-                                    <span class="button-label">Options</span>
-                                </a>
-                                <a href="#" class="button-trigger">
-                                    <i class="icon-trigger"></i>
-                                </a>
-                                <ul class="button-actions">
-                                    <li><a href="#">List</a></li>
-                                    <li><a href="#">Create</a></li>
-                                    <li><a href="#">Something else here</a></li>
-                                    <li class="divider"></li>
-                                    <li><a href="#">Separated link</a></li>
-                                </ul>
-                            </div>
-                        </nav>
-
-                        <script>
-                            $(".button-trigger").click(
-                                function(){
-                                    $(".button-actions", $(this).parent()).show().addClass("stay-open");
-                                }
-                            );
-                        </script>
-                        ';
-
-
-
-            $content .= '<nav class="pillbox clearfix">';
+            $content  = '<nav class="pillbox clearfix">';
             $content .= $this->renderActionElementBar(false);
             $content .= $this->renderMashableInboxModelsToolbar();
             $content .= $this->renderMassActionElement();
@@ -162,10 +85,10 @@
         private function renderMassActionElement()
         {
             $params = array('type'           => 'MashableInboxMass',
-                            'htmlOptions'    => array('class' => 'icon-create'),
                             'listViewGridId' => $this->listView->getGridViewId(),
                             'modelClassName' => $this->modelClassName,
                             'formName'       => $this->formName,
+                            'iconClass'      => 'icon-options'
                         );
             $massActionElement = new MashableInboxMassActionElement($this->controllerId, $this->moduleId, 'MashableInboxForm', $params);
             return $massActionElement->render();
@@ -241,9 +164,9 @@
                               'unread'          => $unreadCount,
                               'htmlOptions'     => array('class' => $activeClass),
                               'iconClass'       => 'icon-combined');
-            $element  = new MashableInboxModelActionElement($this->controllerId, 
-                                                            $this->moduleId, 
-                                                            null, 
+            $element  = new MashableInboxModelActionElement($this->controllerId,
+                                                            $this->moduleId,
+                                                            null,
                                                             $params);
             $content  = $element->render();
 
@@ -255,7 +178,7 @@
                 {
                     $activeClass = "active";
                 }
-                $unreadCount = MashableUtil::getUnreadCountForCurrentUserByModelClassName($modelClassName);                
+                $unreadCount = MashableUtil::getUnreadCountForCurrentUserByModelClassName($modelClassName);
                 $params   = array('label'           => $modelLabel,
                                   'modelClassName'  => $modelClassName,
                                   'htmlOptions'     => array('class' => $activeClass),

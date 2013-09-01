@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    abstract class IntroLinkActionElement extends LinkActionElement
+    abstract class IntroLinkActionElement extends MenuActionElement
     {
         public function getActionType()
         {
@@ -45,34 +45,8 @@
         {
             if ($this->shouldRender())
             {
-                $items          = array($this->renderMenuItem());
-                $clipName       = get_class($this);
-                $cClipWidget    = new CClipWidget();
-                $cClipWidget->beginClip($clipName);
-                $cClipWidget->widget('application.core.widgets.MinimalDynamicLabelMbMenu', array(
-                    'htmlOptions'   => array(
-                        'id' => $clipName,
-                        'class' => 'clickable-mbmenu'
-                    ),
-                    'items'         => $items,
-                ));
-                $cClipWidget->endClip();
-                return $cClipWidget->getController()->clips[$clipName];
+                return parent::render();
             }
-        }
-
-        public function renderMenuItem()
-        {
-            return array(
-                'label' => $this->getLabel(),
-                'url'   => $this->getRoute(),
-                'items' => array(
-                    array(
-                        'label'                 => '',
-                        'dynamicLabelContent'   => $this->renderHideOrShowContent(),
-                    ),
-                ),
-            );
         }
 
         /**
@@ -82,7 +56,7 @@
 
         protected function getDefaultLabel()
         {
-            return Zurmo::t('ZurmoModule', 'Screen Options');
+            return null;
         }
 
         protected function getDefaultRoute()
@@ -90,7 +64,7 @@
             return null;
         }
 
-        protected function renderHideOrShowContent()
+        protected function getDynamicContent()
         {
             $name        = $this->getPanelId() . '-checkbox-id';
             $ajaxOptions = array('type'     => 'GET',
@@ -116,8 +90,13 @@
             $htmlOptions = array('id'   => $this->getPanelId() . '-checkbox-id',
                                  'ajax' => $ajaxOptions);
             $checkBox    = ZurmoHtml::checkBox($name, $this->getChecked(), $htmlOptions);
-            return '<div class="screen-options"><h4>' . $this->getDefaultLabel() . '</h4>' . $checkBox .
+            return '<div class="screen-options"><h4>' . $this->getLabelForDynamicContent() . '</h4>' . $checkBox .
                    Zurmo::t('ZurmoModule', 'Show intro message') . '</div>';
+        }
+
+        protected function getLabelForDynamicContent()
+        {
+            return Zurmo::t('ZurmoModule', 'Screen Options');
         }
 
         protected function getPanelId()

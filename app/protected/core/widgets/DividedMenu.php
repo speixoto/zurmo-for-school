@@ -33,137 +33,169 @@
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
-        
+
     class DividedMenu extends CMenu
-    {                            
+    {
+        public function init()
+        {
+            if (!isset($this->htmlOptions['id']))
+            {
+                $this->htmlOptions['id'] = $this->getId();
+            }
+            else
+            {
+                $this->setId($this->htmlOptions['id']);
+            }
+            $route=$this->getController()->getRoute();
+            $this->items=$this->normalizeItems($this->items,$route,$hasActiveChild);
+        }
+
         protected function renderMenu($items)
-	{                     
-		if(count($items))
-		{                    
-                    if (count($items) > 1)
-                    {
-                        throw new NotSupportedException;
-                    }                             
-                    if ($this->isButtonDivided($items[0]))
-                    {
-                        $class = 'split-button';
-                    }
-                    else
-                    {
-                        $class = 'default-button';
-                    }
-                                        
-                    if(empty($this->htmlOptions['class']))
-                    {
-                        $this->htmlOptions['class'] = $class;
-                    }
-                    else
-                    {
-			$this->htmlOptions['class'] .= ' ' . $class;
-                    }
-                    echo ZurmoHtml::openTag('div', $this->htmlOptions)."\n";                    
-                    $this->renderMenuRecursive($items);
-                    echo ZurmoHtml::closeTag('div');                
-		}
-	}
-        
-        protected function renderMenuRecursive($items)
-	{
-		$item = $items[0];		
-                $options=isset($item['itemOptions']) ? $item['itemOptions'] : array();
-                $class=array();
-                if($item['active'] && $this->activeCssClass!='')
-                        $class[]=$this->activeCssClass;                
-                if($class!==array())
+        {
+            if(count($items))
+            {
+                if (count($items) > 1)
                 {
-                        if(empty($options['class']))
-                                $options['class']=implode(' ',$class);
-                        else
-                                $options['class'].=' '.implode(' ',$class);
+                    throw new NotSupportedException;
                 }
-                
-                if (isset($item['itemOptions']['iconClass']))
+                if ($this->isButtonDivided($items[0]))
                 {
-                    $icon = ZurmoHtml::tag('i', array('class' => $item['itemOptions']['iconClass']), null);                                        
+                    $class = 'split-button';
                 }
                 else
                 {
-                    $icon = null;
+                    $class = 'default-button';
                 }
-                
-                if (!isset($item['dynamicLabel']))
+                if(empty($this->htmlOptions['class']))
                 {
-                    $item['dynamicLabel'] = null;
-                }                
-                
-                if(isset($item['url']))
-		{
-			$label = $this->linkLabelWrapper===null ? $item['label'] : CHtml::tag($this->linkLabelWrapper, $this->linkLabelWrapperHtmlOptions, $item['label']);                        
-                        $label = ZurmoHtml::tag('span', array('class' => 'button-label'), $label);                                        
-			echo CHtml::link($icon . $label . $item['dynamicLabel'],$item['url'], array('class' => 'button-action'));
-                        $spanForTrigger = null;
-		}
-		else
-                {
-                    $spanForTrigger  = $icon;
-                    $spanForTrigger .= CHtml::tag('span',isset($item['linkOptions']) ? $item['linkOptions'] : array(), $item['label']);
-                    $spanForTrigger .= $item['dynamicLabel'];
+                    $this->htmlOptions['class'] = $class;
                 }
-                                                                
+                else
+                {
+                    $this->htmlOptions['class'] .= ' ' . $class;
+                }
+                echo ZurmoHtml::openTag('div', $this->htmlOptions)."\n";
+                $this->renderMenuRecursive($items);
+                echo ZurmoHtml::closeTag('div');
+            }
+        }
+
+        protected function renderMenuRecursive($items)
+        {
+            $item = $items[0];
+            $options=isset($item['itemOptions']) ? $item['itemOptions'] : array();
+            $class=array();
+            if($item['active'] && $this->activeCssClass!='')
+            {
+                $class[]=$this->activeCssClass;
+            }
+            if($class!==array())
+            {
+                if(empty($options['class']))
+                {
+                    $options['class']=implode(' ',$class);
+                }
+                else
+                {
+                    $options['class'].=' '.implode(' ',$class);
+                }
+            }
+
+            if (isset($item['itemOptions']['iconClass']))
+            {
+                $icon = ZurmoHtml::tag('i', array('class' => $item['itemOptions']['iconClass']), null);
+            }
+            else
+            {
+                $icon = null;
+            }
+
+            if (!isset($item['dynamicLabel']))
+            {
+                $item['dynamicLabel'] = null;
+            }
+
+            if(isset($item['url']))
+            {
+                $label = $this->linkLabelWrapper===null ? $item['label'] : CHtml::tag($this->linkLabelWrapper, $this->linkLabelWrapperHtmlOptions, $item['label']);
+                            $label = ZurmoHtml::tag('span', array('class' => 'button-label'), $label);
+                echo CHtml::link($icon . $label . $item['dynamicLabel'],$item['url'], array('class' => 'button-action'));
+                            $spanForTrigger = null;
+            }
+            else
+            {
+                $spanForTrigger  = $icon;
+                $spanForTrigger .= CHtml::tag('span',isset($item['linkOptions']) ? $item['linkOptions'] : array(), $item['label']);
+                $spanForTrigger .= $item['dynamicLabel'];
+            }
+
+            if(isset($item['items']) && count($item['items']) || isset($item['dynamicContent']))
+            {
+                $label = ZurmoHtml::tag('i', array('class' => 'icon-trigger'), null);
+                if (isset($spanForTrigger))
+                {
+                    echo ZurmoHtml::link($spanForTrigger . $label, null, array('class' => 'button-action-trigger'));
+                }
+                else
+                {
+                    echo ZurmoHtml::link($label, null, array('class' => 'button-trigger'));
+                }
+                echo ZurmoHtml::openTag('ul', array('class' => 'button-actions'));
+
+                if (isset($item['dynamicContent']))
+                {
+                    echo ZurmoHtml::openTag('li');
+                    echo $item['dynamicContent'];
+                    echo ZurmoHtml::openTag('li');
+                }
+
                 if(isset($item['items']) && count($item['items']))
-                {                           
-                    $label = ZurmoHtml::tag('i', array('class' => 'icon-trigger'), null);                    
-                    if (isset($spanForTrigger))
-                    {
-                        echo ZurmoHtml::link($spanForTrigger . $label, null, array('class' => 'button-action-trigger'));                            				
-                    }
-                    else
-                    {
-                        echo ZurmoHtml::link($label, null, array('class' => 'button-trigger'));                            				
-                    }    
-                    echo ZurmoHtml::openTag('ul', array('class' => 'button-actions'));
+                {
                     foreach ($item['items'] as $item)
                     {
-                        
+
                         $options=isset($item['itemOptions']) ? $item['itemOptions'] : array();
-			$class=array();
-			if($item['active'] && $this->activeCssClass!='')
-				$class[]=$this->activeCssClass;			
-			if($class!==array())
-			{
-				if(empty($options['class']))
-					$options['class']=implode(' ',$class);
-				else
-					$options['class'].=' '.implode(' ',$class);
-			}
-                        
+                        $class=array();
+                        if($item['active'] && $this->activeCssClass!='')
+                            $class[]=$this->activeCssClass;
+                        if($class!==array())
+                        {
+                            if(empty($options['class']))
+                            {
+                                $options['class']=implode(' ',$class);
+                            }
+                            else
+                            {
+                                $options['class'].=' '.implode(' ',$class);
+                            }
+                        }
                         echo ZurmoHtml::openTag('li', $options);
                         echo $this->renderMenuItem($item);
                         echo ZurmoHtml::closeTag('li');
                     }
-                    echo ZurmoHtml::closeTag('ul');
-                }		
-	}     
-        
+                }
+                echo ZurmoHtml::closeTag('ul');
+            }
+        }
+
         public function run()
-	{
+        {
             $this->registerScripts();
             $this->renderMenu($this->items);
-	}
-        
+        }
+
         protected function registerScripts()
         {
             $script = "
-                
                     $('.button-triggerm, .button-action-trigger').click(
                                 function(){
                                     $('.button-actions', $(this).parent()).show().addClass('stay-open');
                                 }
-                            );                    
+                            );
                 ";
              Yii::app()->clientScript->registerScript('DividedMenu', $script);
-        }          
-        
+        }
+
         protected function isButtonDivided($item)
         {
             if (count($item['items']) && isset($item['url']))

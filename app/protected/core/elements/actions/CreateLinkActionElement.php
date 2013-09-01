@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class CreateLinkActionElement extends LinkActionElement
+    class CreateLinkActionElement extends MenuActionElement
     {
         public function getActionType()
         {
