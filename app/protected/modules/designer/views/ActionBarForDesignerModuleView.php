@@ -60,9 +60,9 @@
 
         protected function renderContent()
         {
-            $content  = '<div class="view-toolbar-container clearfix"><div class="view-toolbar">';
+            $content  = '<div class="view-toolbar-container clearfix"><nav class="pillbox clearfix">';
             $content .= $this->renderActionElementBar(false);
-            $content .= '</div></div>';
+            $content .= '</nav></div>';
             return $content;
         }
 
@@ -79,18 +79,18 @@
                         'elements' => array(
                             array(
                                 'type'            => 'DesignerGeneralLink',
+                                'iconClass'       => 'icon-general',
                                 'moduleClassName' => 'eval:get_class($this->module)',
-                                'htmlOptions'     => array( 'class' => 'icon-general' )
                             ),
                             array(
                                 'type'            => 'DesignerFieldsLink',
+                                'iconClass'       => 'icon-fields',
                                 'moduleClassName' => 'eval:get_class($this->module)',
-                                'htmlOptions'     => array( 'class' => 'icon-fields' )
                             ),
                             array(
                                 'type'            => 'DesignerLayoutsLink',
+                                'iconClass'       => 'icon-layout',
                                 'moduleClassName' => 'eval:get_class($this->module)',
-                                'htmlOptions'     => array( 'class' => 'icon-layout' )
                             ),
                         ),
                     ),
@@ -104,7 +104,14 @@
             parent::resolveActionElementInformationDuringRender($elementInformation);
             if ($elementInformation['type'] == $this->activeActionElementType)
             {
-                $elementInformation['htmlOptions']['class'] .= ' active';
+                if (isset($elementInformation['htmlOptions']['class']))
+                {
+                    $elementInformation['htmlOptions']['class'] .= ' active';
+                }
+                else
+                {
+                    $elementInformation['htmlOptions']['class'] = 'active';
+                }
             }
         }
 

@@ -80,9 +80,9 @@
             $actionElementContent = $this->renderActionElementBar(false);
             if ($actionElementContent != null)
             {
-                $content  = '<div class="view-toolbar-container clearfix"><div class="view-toolbar">';
+                $content  = '<div class="view-toolbar-container clearfix"><nav class="pillbox clearfix">';
                 $content .= $actionElementContent;
-                $content .= '</div></div>';
+                $content .= '</nav></div>';
             }
             $this->portlets = $this->getPortlets($this->uniqueLayoutId, self::getMetadata());
             $content .= $this->renderPortlets($this->uniqueLayoutId);

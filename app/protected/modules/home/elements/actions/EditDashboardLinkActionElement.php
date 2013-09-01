@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class EditDashboardLinkActionElement extends DropdownSupportedLinkActionElement
+    class EditDashboardLinkActionElement extends MenuActionElement
     {
         public function getActionType()
         {

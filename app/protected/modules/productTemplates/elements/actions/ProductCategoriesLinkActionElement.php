@@ -64,7 +64,7 @@
                     'ProductTemplatesModule',
                     Yii::app()->user->userModel))
             {
-                return ZurmoHtml::link($this->resolveLabelAndWrap(), $this->route, $this->getHtmlOptions());
+                return parent::render();
             }
             else
             {

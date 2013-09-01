@@ -48,7 +48,7 @@
         /**
          * @return null or string containing create link
          */
-        public function render()
+        public function getMenuItems()
         {
             $items = array();
             if (RightsUtil::doesUserHaveAllowByRightName('ProductsModule', ProductsModule::getCreateRight(),
@@ -70,19 +70,21 @@
             }
             if (!empty($items))
             {
-                $menuItems      = array( 'label' => $this->getLabel(),
-                                         'url'   => null,
-                                         'items' => $items);
-                $cClipWidget    = new CClipWidget();
-                $cClipWidget->beginClip("ActionMenu");
-                $cClipWidget->widget('application.core.widgets.MbMenu', array(
-                    'htmlOptions' => array('id' => 'MashableInboxCreateDropdown'),
-                    'items'       => array($menuItems),
-                ));
-                $cClipWidget->endClip();
-                return $cClipWidget->getController()->clips['ActionMenu'];
+                return $items;
             }
             return null;
+        }
+
+        protected function getDefaultRoute()
+        {
+            return null;
+        }
+
+        protected function resolveHtmlOptionsForRendering()
+        {
+            $htmlOptions       = $this->getHtmlOptions();
+            $htmlOptions['id'] = 'MashableInboxCreateDropdown';
+            return $htmlOptions;
         }
     }
 ?>

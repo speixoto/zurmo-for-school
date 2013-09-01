@@ -58,14 +58,9 @@
             }
         }
 
-        protected function getMenuHeader()
-        {
-            return $this->getLabel();
-        }
-
         protected function getDefaultLabel()
         {
-            return Zurmo::t('MashableInboxModule', 'Create');
+            return $this->getLabel();
         }
 
         protected function getDynamicLabel()

@@ -79,5 +79,11 @@
             return null;
         }
 
+        protected function resolveHtmlOptionsForRendering()
+        {
+            $htmlOptions       = $this->getHtmlOptions();
+            $htmlOptions['id'] = 'MarketingCreateLinkActionElement';
+            return $htmlOptions;
+        }
     }
 ?>
