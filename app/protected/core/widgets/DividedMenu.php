@@ -129,7 +129,7 @@
                 $spanForTrigger .= $item['dynamicLabel'];
             }
 
-            if(isset($item['items']) && count($item['items']))
+            if(isset($item['items']) && count($item['items']) || isset($item['dynamicContent']))
             {
                 $label = ZurmoHtml::tag('i', array('class' => 'icon-trigger'), null);
                 if (isset($spanForTrigger))
@@ -141,27 +141,38 @@
                     echo ZurmoHtml::link($label, null, array('class' => 'button-trigger'));
                 }
                 echo ZurmoHtml::openTag('ul', array('class' => 'button-actions'));
-                foreach ($item['items'] as $item)
-                {
 
-                    $options=isset($item['itemOptions']) ? $item['itemOptions'] : array();
-                    $class=array();
-                    if($item['active'] && $this->activeCssClass!='')
-                        $class[]=$this->activeCssClass;
-                    if($class!==array())
+                if (isset($item['dynamicContent']))
+                {
+                    echo ZurmoHtml::openTag('li');
+                    echo $item['dynamicContent'];
+                    echo ZurmoHtml::openTag('li');
+                }
+
+                if(isset($item['items']) && count($item['items']))
+                {
+                    foreach ($item['items'] as $item)
                     {
-                        if(empty($options['class']))
+
+                        $options=isset($item['itemOptions']) ? $item['itemOptions'] : array();
+                        $class=array();
+                        if($item['active'] && $this->activeCssClass!='')
+                            $class[]=$this->activeCssClass;
+                        if($class!==array())
                         {
-                            $options['class']=implode(' ',$class);
+                            if(empty($options['class']))
+                            {
+                                $options['class']=implode(' ',$class);
+                            }
+                            else
+                            {
+                                $options['class'].=' '.implode(' ',$class);
+                            }
                         }
-                        else
-                        {
-                            $options['class'].=' '.implode(' ',$class);
-                        }
+                        echo ZurmoHtml::openTag('li', $options);
+                        echo $this->renderMenuItem($item);
+                        echo ZurmoHtml::closeTag('li');
                     }
-                    echo ZurmoHtml::openTag('li', $options);
-                    echo $this->renderMenuItem($item);
-                    echo ZurmoHtml::closeTag('li');
                 }
                 echo ZurmoHtml::closeTag('ul');
             }

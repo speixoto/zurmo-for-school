@@ -51,10 +51,11 @@
 
         public function renderMenuItem()
         {
-            return array('label'               => $this->getLabel(),
+            return array('label'               => $this->getDefaultLabel(),
                          'url'                 => $this->getDefaultRoute(),
                          'itemOptions'         => array('iconClass' => $this->getIconClass()),
                          'dynamicLabel'        => $this->getDynamicLabel(),
+                         'dynamicContent'      => $this->getDynamicContent(),
                          'items'               => $this->getMenuItems());
         }
 
@@ -80,6 +81,15 @@
                 return null;
             }
             return $this->params['dynamicLabel'];
+        }
+
+        protected function getDynamicContent()
+        {
+            if (!isset($this->params['dynamicContent']))
+            {
+                return null;
+            }
+            return $this->params['dynamicContent'];
         }
 
         protected function getIconClass()

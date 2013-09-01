@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class MarketingIntroLinkActionElement extends LinkActionElement
+    class MarketingIntroLinkActionElement extends MenuActionElement
     {
         public function getActionType()
         {
@@ -48,39 +48,21 @@
                 Yii::app()->controller->action->id == null ||
                 Yii::app()->controller->action->id == 'index'))
             {
-                $items          = array($this->renderMenuItem());
-                $clipName       = get_class($this);
-                $cClipWidget    = new CClipWidget();
-                $cClipWidget->beginClip($clipName);
-                $cClipWidget->widget('application.core.widgets.MinimalDynamicLabelMbMenu', array(
-                    'htmlOptions'   => array(
-                        'id' => $clipName,
-                        'class' => 'clickable-mbmenu'
-                    ),
-                    'items'         => $items,
-                ));
-                $cClipWidget->endClip();
-                return $cClipWidget->getController()->clips[$clipName];
+                return parent::render();
             }
         }
 
-        public function renderMenuItem()
+        protected function resolveHtmlOptionsForRendering()
         {
-            return array(
-                'label' => $this->getLabel(),
-                'url'   => $this->getRoute(),
-                'items' => array(
-                    array(
-                        'label'                 => '',
-                        'dynamicLabelContent'   => $this->renderHideOrShowContent(),
-                    ),
-                ),
-            );
+            $parentHtmlOptions          = parent::getHtmlOptions();
+            $parentHtmlOptions['id']    = get_class($this);
+            $parentHtmlOptions['class'] = 'clickable-mbmenu';
+            return $parentHtmlOptions;
         }
 
         protected function getDefaultLabel()
         {
-            return Zurmo::t('MarketingModule', 'Screen Options');
+            return null;
         }
 
         protected function getDefaultRoute()
@@ -88,7 +70,7 @@
             return null;
         }
 
-        protected function renderHideOrShowContent()
+        protected function getDynamicContent()
         {
             $name        = $this->getPanelId() . '-checkbox-id';
             $ajaxOptions = array('type'     => 'GET',
