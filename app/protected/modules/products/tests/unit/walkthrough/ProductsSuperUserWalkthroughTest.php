@@ -322,6 +322,7 @@
             $product->stage->value = 'Open';
             $this->assertTrue($product->save());
 
+            ProductTestHelper::createProductByNameForOwner("My Product 2", $super);
             $superProductId2 = self::getModelIdByModelNameAndName('Product', 'My Product 2');
             $product = Product::getById($superProductId2);
             $product->account = $account;
