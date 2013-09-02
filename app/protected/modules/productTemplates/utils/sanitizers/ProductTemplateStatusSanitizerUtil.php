@@ -82,14 +82,12 @@
             try
             {
                 if (strtolower($value) == strtolower(ProductTemplate::STATUS_ACTIVE) ||
-                    strtolower($value) == strtolower('Active') ||
-                    strtolower($value) == strtolower('active'))
+                    strtolower($value) == strtolower('Active'))
                 {
                     return ProductTemplate::STATUS_ACTIVE;
                 }
                 elseif (strtolower($value) == strtolower(ProductTemplate::STATUS_INACTIVE) ||
-                        strtolower($value) == strtolower('Inactive') ||
-                        strtolower($value) == strtolower('inactive'))
+                        strtolower($value) == strtolower('Inactive'))
                 {
                     return ProductTemplate::STATUS_INACTIVE;
                 }
@@ -109,9 +107,7 @@
             return array(ProductTemplate::STATUS_ACTIVE,
                          ProductTemplate::STATUS_INACTIVE,
                          'Active',
-                         'Inactive',
-                         'active',
-                         'inactive');
+                         'Inactive');
         }
     }
 ?>

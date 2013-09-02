@@ -74,20 +74,17 @@
             try
             {
                 if (strtolower($value) == strtolower(ProductTemplate::TYPE_PRODUCT) ||
-                    strtolower($value) == strtolower('Product') ||
-                    strtolower($value) == strtolower('product'))
+                    strtolower($value) == strtolower('Product'))
                 {
                     return ProductTemplate::TYPE_PRODUCT;
                 }
                 elseif (strtolower($value) == strtolower(ProductTemplate::TYPE_SERVICE) ||
-                        strtolower($value) == strtolower('Service') ||
-                        strtolower($value) == strtolower('service'))
+                        strtolower($value) == strtolower('Service'))
                 {
                     return ProductTemplate::TYPE_SERVICE;
                 }
                 elseif (strtolower($value) == strtolower(ProductTemplate::TYPE_SUBSCRIPTION) ||
-                        strtolower($value) == strtolower('Subscription') ||
-                        strtolower($value) == strtolower('subscription'))
+                        strtolower($value) == strtolower('Subscription'))
                 {
                     return ProductTemplate::TYPE_SUBSCRIPTION;
                 }
@@ -109,10 +106,7 @@
                          ProductTemplate::TYPE_SUBSCRIPTION,
                          'Product',
                          'Service',
-                         'Subscription',
-                         'product',
-                         'service',
-                         'subscription');
+                         'Subscription');
         }
     }
 ?>
