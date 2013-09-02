@@ -42,14 +42,14 @@
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array('type'      => 'CreateLink',
+                            array('type'      => 'CreateMenu',
                                   'iconClass' => 'icon-create',
                             ),
-                            array('type'           => 'MassEditLink',
+                            array('type'           => 'MassEditMenu',
                                   'iconClass'      => 'icon-edit',
                                   'listViewGridId' => 'eval:$this->listViewGridId',
                                   'pageVarName'    => 'eval:$this->pageVarName'),
-                            array('type'           => 'ExportLink',
+                            array('type'           => 'ExportMenu',
                                   'iconClass'      => 'icon-export',
                                   'listViewGridId' => 'eval:$this->listViewGridId',
                                   'pageVarName'    => 'eval:$this->pageVarName'),

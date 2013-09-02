@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class EditLinkActionElement extends MenuActionElement
+    class EditLinkActionElement extends DropdownSupportedLinkActionElement
     {
         /**
          * Not all detailsLinks should render as DropDown when called up from mobile. Override if it should.

@@ -54,7 +54,7 @@
                     array(
                         static::ZERO_MODELS_CHECK_FILTER_PATH . ' + list, index',
                         'controller' => $this,
-                        'activeActionElementType' => 'ByTimeWorkflowInQueuesLink',
+                        'activeActionElementType' => 'ByTimeWorkflowInQueuesMenu',
                         'breadcrumbLinks'         => static::getListBreadcrumbLinks(),
                     ),
                 )
@@ -70,7 +70,7 @@
         {
             $pageSize                       = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                                               'listPageSize', get_class($this->getModule()));
-            $activeActionElementType        = 'ByTimeWorkflowInQueuesLink';
+            $activeActionElementType        = 'ByTimeWorkflowInQueuesMenu';
             $model                          = new ByTimeWorkflowInQueue(false);
             $searchForm                     = new ByTimeWorkflowInQueuesSearchForm($model);
             $dataProvider                   = $this->resolveSearchDataProvider($searchForm, $pageSize, null,

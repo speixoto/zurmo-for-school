@@ -45,19 +45,19 @@
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array('type'      => 'ProductCreateLink',
+                            array('type'      => 'ProductCreateMenu',
                                   'iconClass' => 'icon-create',
                             ),
                             array(
-                                'type'        => 'ProductsLink',
+                                'type'        => 'ProductsMenu',
                                 'iconClass'   => 'icon-products',
                             ),
                             array(
-                                'type'        => 'ProductTemplatesLink',
+                                'type'        => 'ProductTemplatesMenu',
                                 'iconClass'   => 'icon-catalog-items',
                             ),
                             array(
-                                'type'        => 'ProductCategoriesLink',
+                                'type'        => 'ProductCategoriesMenu',
                                 'iconClass'   => 'icon-product-categories',
                             ),
                         ),

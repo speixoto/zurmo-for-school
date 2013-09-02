@@ -46,8 +46,8 @@
         {
             $metadata      = parent::getDefaultMetadata();
             $deleteElement = array(
-                                    'type'            => 'MassDeleteLink',
-                                    'htmlOptions'     => array('class' => 'icon-delete'),
+                                    'type'            => 'MassDeleteMenu',
+                                    'iconClass'       => 'icon-delete',
                                     'listViewGridId'  => 'eval:$this->listViewGridId',
                                     'pageVarName'     => 'eval:$this->pageVarName'
                                 );

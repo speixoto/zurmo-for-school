@@ -90,7 +90,7 @@
                             'formName'       => $this->formName,
                             'iconClass'      => 'icon-options'
                         );
-            $massActionElement = new MashableInboxMassActionElement($this->controllerId, $this->moduleId, 'MashableInboxForm', $params);
+            $massActionElement = new MashableInboxMassMenuActionElement($this->controllerId, $this->moduleId, 'MashableInboxForm', $params);
             return $massActionElement->render();
         }
 
@@ -164,7 +164,7 @@
                               'unread'          => $unreadCount,
                               'htmlOptions'     => array('class' => $activeClass),
                               'iconClass'       => 'icon-combined');
-            $element  = new MashableInboxModelActionElement($this->controllerId,
+            $element  = new MashableInboxModelMenuActionElement($this->controllerId,
                                                             $this->moduleId,
                                                             null,
                                                             $params);
@@ -184,7 +184,7 @@
                                   'htmlOptions'     => array('class' => $activeClass),
                                   'unread'          => $unreadCount,
                                   'iconClass'      => 'icon-' . strtolower($modelClassName));
-                $element  = new MashableInboxModelActionElement($this->controllerId, $this->moduleId, null, $params);
+                $element  = new MashableInboxModelMenuActionElement($this->controllerId, $this->moduleId, null, $params);
                 $content .= $element->render();
             }
 

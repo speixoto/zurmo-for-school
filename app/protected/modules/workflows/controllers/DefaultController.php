@@ -72,13 +72,13 @@
                    array(
                        static::ZERO_MODELS_CHECK_FILTER_PATH . ' + list, index',
                        'controller' => $this,
-                       'activeActionElementType' => 'WorkflowsLink',
+                       'activeActionElementType' => 'WorkflowsMenu',
                        'breadcrumbLinks'         => static::getListBreadcrumbLinks(),
                    ),
                     array(
                         static::ZERO_MODELS_CHECK_FILTER_PATH . ' + manageOrder',
                         'controller' => $this,
-                        'activeActionElementType' => 'WorkflowManageOrderLink',
+                        'activeActionElementType' => 'WorkflowManageOrderMenu',
                         'breadcrumbLinks'         => static::getManageOrderBreadcrumbLinks(),
                     ),
 
@@ -95,7 +95,7 @@
         {
             $pageSize                       = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                                               'listPageSize', get_class($this->getModule()));
-            $activeActionElementType        = 'WorkflowsLink';
+            $activeActionElementType        = 'WorkflowsMenu';
             $savedWorkflow                    = new SavedWorkflow(false);
             $searchForm                     = new WorkflowsSearchForm($savedWorkflow);
             $dataProvider                   = $this->resolveSearchDataProvider($searchForm, $pageSize, null,
@@ -431,7 +431,7 @@
 
         public function actionManageOrder()
         {
-            $activeActionElementType = 'WorkflowManageOrderLink';
+            $activeActionElementType = 'WorkflowManageOrderMenu';
             $actionBarView           = new SecuredActionBarForWorkflowsSearchAndListView(
                                             $this->getId(),
                                             $this->getModule()->getId(), new SavedWorkflow(),

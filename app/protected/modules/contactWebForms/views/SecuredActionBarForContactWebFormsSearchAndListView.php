@@ -49,16 +49,16 @@
                     'toolbar' => array(
                         'elements' => array(
                             array(
-                                'type'            => 'ContactWebFormsCreateLink',
-                                'htmlOptions'     => array('class' => 'icon-create'),
+                                'type'            => 'ContactWebFormsCreateMenu',
+                                'iconClass'       => 'icon-create',
                             ),
                             array(
-                                'type'            => 'ContactWebFormsListLink',
-                                'htmlOptions'     => array( 'class' => 'icon-webforms' )
+                                'type'            => 'ContactWebFormsListMenu',
+                                'iconClass'       => 'icon-webforms',
                             ),
                             array(
-                                'type'            => 'ContactWebFormEntriesListLink',
-                                'htmlOptions'     => array( 'class' => 'icon-webforms-entries' )
+                                'type'            => 'ContactWebFormEntriesListMenu',
+                                'iconClass'       => 'icon-webforms-entries',
                             ),
                         ),
                     ),

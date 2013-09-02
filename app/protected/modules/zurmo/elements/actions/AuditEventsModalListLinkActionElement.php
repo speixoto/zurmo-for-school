@@ -41,6 +41,19 @@
             return true;
         }
 
+        public function render()
+        {
+            $content  = ZurmoHtml::openTag('div', array('class' => 'default-button'));
+            $label    = ZurmoHtml::tag('i', array('class' => $this->params['iconClass']), null);
+            $label   .= ZurmoHtml::tag('span', array('class' => 'button-label'), $this->getLabel());
+            $content .= $ajaxLink = ZurmoHtml::ajaxLink($label, $this->getDefaultRoute(),
+                $this->getAjaxLinkOptions(),
+                $this->getHtmlOptions()
+            );
+            $content .= ZurmoHtml::closeTag('div');
+            return $content;
+        }
+
         protected function getDefaultLabel()
         {
             return Zurmo::t('ZurmoModule', 'Audit Trail');

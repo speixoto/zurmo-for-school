@@ -50,23 +50,23 @@
                     'toolbar' => array(
                         'elements' => array(
                             array(
-                                'type'      => 'MarketingCreateLink',
+                                'type'      => 'MarketingCreateMenu',
                                 'iconClass' => 'icon-create'
                             ),
                             array(
-                                'type'      => 'MarketingDashboardLink',
+                                'type'      => 'MarketingDashboardMenu',
                                 'iconClass' => 'icon-marketing-dashboard'
                             ),
                             array(
-                                'type'      => 'MarketingListsLink',
+                                'type'      => 'MarketingListsMenu',
                                 'iconClass' => 'icon-marketing-lists'
                             ),
                             array(
-                                'type'      => EmailTemplatesForMarketingLinkActionElement::getType(),
+                                'type'      => EmailTemplatesForMarketingMenuActionElement::getType(),
                                 'iconClass' => 'icon-email-templates'
                             ),
                             array(
-                                'type'      => 'CampaignsLink',
+                                'type'      => 'CampaignsMenu',
                                 'iconClass' => 'icon-marketing-campaigns'
                             ),
                         ),

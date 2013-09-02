@@ -66,7 +66,7 @@
                         'modelClassName'             => $modelClassName,
                         'pageViewClassName'          => $pageViewClassName,
                         'defaultViewUtilClassName'   => 'ProductDefaultViewUtil',
-                        'activeActionElementType'    => 'ProductsLink',
+                        'activeActionElementType'    => 'ProductsMenu',
                         'breadcrumbLinks'            => static::getListBreadcrumbLinks()
                    ),
                )
@@ -77,7 +77,7 @@
         {
             $pageSize                       = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                                               'listPageSize', get_class($this->getModule()));
-            $activeActionElementType        = 'ProductsLink';
+            $activeActionElementType        = 'ProductsMenu';
             $product                        = new Product(false);
             $searchForm                     = new ProductsSearchForm($product);
             $listAttributesSelector         = new ListAttributesSelector('ProductsListView', get_class($this->getModule()));

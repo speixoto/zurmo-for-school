@@ -49,15 +49,15 @@
             }
             if ($type == GamePointUtil::LEADERBOARD_TYPE_WEEKLY)
             {
-                $activeActionElementType = 'LeaderboardWeeklyLink';
+                $activeActionElementType = 'LeaderboardWeeklyMenu';
             }
             elseif ($type == GamePointUtil::LEADERBOARD_TYPE_MONTHLY)
             {
-                $activeActionElementType = 'LeaderboardMonthlyLink';
+                $activeActionElementType = 'LeaderboardMonthlyMenu';
             }
             elseif ($type == GamePointUtil::LEADERBOARD_TYPE_OVERALL)
             {
-                $activeActionElementType = 'LeaderboardOverallLink';
+                $activeActionElementType = 'LeaderboardOverallMenu';
             }
             else
             {

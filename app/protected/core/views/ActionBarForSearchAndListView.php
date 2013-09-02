@@ -112,17 +112,17 @@
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array('type'  => 'CreateLink',
+                            array('type'  => 'CreateMenu',
                                   'iconClass' => 'icon-create'),
-                            array('type'  => 'MassEditLink',
+                            array('type'  => 'MassEditMenu',
                                   'listViewGridId' => 'eval:$this->listViewGridId',
                                   'pageVarName' => 'eval:$this->pageVarName',
                                   'iconClass'   => 'icon-edit'),
-                            array('type'  => 'ExportLink',
+                            array('type'  => 'ExportMenu',
                                   'listViewGridId' => 'eval:$this->listViewGridId',
                                   'pageVarName' => 'eval:$this->pageVarName',
                                   'iconClass'   => 'icon-export'),
-                            array('type'  => 'MassDeleteLink',
+                            array('type'  => 'MassDeleteMenu',
                                   'listViewGridId' => 'eval:$this->listViewGridId',
                                   'pageVarName' => 'eval:$this->pageVarName',
                                   'iconClass'   => 'icon-delete'),
@@ -146,13 +146,13 @@
                 return false;
             }
             if ($this->activeActionElementType == ListViewTypesToggleLinkActionElement::TYPE_KANBAN_BOARD &&
-                ($elementInformation['type'] == 'MassEditLink' ||
-                $elementInformation['type'] == 'MassDeleteLink' ||
-                $elementInformation['type'] == 'ExportLink'))
+                ($elementInformation['type'] == 'MassEditMenu' ||
+                $elementInformation['type'] == 'MassDeleteMenu' ||
+                $elementInformation['type'] == 'ExportMenu'))
             {
                 return false;
             }
-            if ($elementInformation['type'] == 'MassEditLink' && !$this->listViewRowsAreSelectable)
+            if ($elementInformation['type'] == 'MassEditMenu' && !$this->listViewRowsAreSelectable)
             {
                 return false;
             }

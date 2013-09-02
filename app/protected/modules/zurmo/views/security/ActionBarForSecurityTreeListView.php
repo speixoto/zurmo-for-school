@@ -88,7 +88,7 @@
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array('type'      => 'CreateLink',
+                            array('type'      => 'CreateMenu',
                                   'iconClass' => 'icon-create',
                             ),
                         ),

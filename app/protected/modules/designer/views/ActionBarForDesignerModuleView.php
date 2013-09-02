@@ -78,17 +78,17 @@
                     'toolbar' => array(
                         'elements' => array(
                             array(
-                                'type'            => 'DesignerGeneralLink',
+                                'type'            => 'DesignerGeneralMenu',
                                 'iconClass'       => 'icon-general',
                                 'moduleClassName' => 'eval:get_class($this->module)',
                             ),
                             array(
-                                'type'            => 'DesignerFieldsLink',
+                                'type'            => 'DesignerFieldsMenu',
                                 'iconClass'       => 'icon-fields',
                                 'moduleClassName' => 'eval:get_class($this->module)',
                             ),
                             array(
-                                'type'            => 'DesignerLayoutsLink',
+                                'type'            => 'DesignerLayoutsMenu',
                                 'iconClass'       => 'icon-layout',
                                 'moduleClassName' => 'eval:get_class($this->module)',
                             ),

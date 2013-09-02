@@ -49,7 +49,7 @@
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array('type'          => 'ProductCreateLink',
+                            array('type'          => 'ProductCreateMenu',
                                   'htmlOptions'   => array('class' => 'icon-create'),
                                  ),
                             array(

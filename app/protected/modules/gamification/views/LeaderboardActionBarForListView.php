@@ -43,16 +43,16 @@
                     'toolbar' => array(
                         'elements' => array(
                             array(
-                                'type'            => 'LeaderboardWeeklyLink',
-                                'htmlOptions'     => array( 'class' => 'icon-leaderboard-weekly' )
+                                'type'            => 'LeaderboardWeeklyMenu',
+                                'iconClass'       => 'icon-leaderboard-weekly',
                             ),
                             array(
-                                'type'            => 'LeaderboardMonthlyLink',
-                                'htmlOptions'     => array( 'class' => 'icon-leaderboard-monthly' )
+                                'type'            => 'LeaderboardMonthlyMenu',
+                                'iconClass'       => 'icon-leaderboard-monthly',
                             ),
                             array(
-                                'type'            => 'LeaderboardOverallLink',
-                                'htmlOptions'     => array( 'class' => 'icon-leaderboard-overall' )
+                                'type'            => 'LeaderboardOverallMenu',
+                                'iconClass'       => 'icon-leaderboard-overall',
                             ),
                         ),
                     ),
