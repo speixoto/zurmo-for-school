@@ -168,7 +168,9 @@
                     {
                         ExternalSystemIdUtil::updateByModel($model, $externalSystemId);
                     }
-                    $importRowDataResultsUtil->addMessage(Zurmo::t('ImportModule', 'Record saved correctly.'));
+                    $importRowDataResultsUtil->addMessage(Zurmo::t('ImportModule', '{modelLabel} saved correctly: {linkToModel}',
+                                array('{modelLabel}'  => $model->getModelLabelByTypeAndLanguage('Singular'),
+                                      '{linkToModel}' => static::resolveLinkMessageToModel($model))));
                     if ($makeNewModel)
                     {
                         if ($model instanceof SecurableItem)
@@ -223,6 +225,24 @@
                 }
                 $importRowDataResultsUtil->setStatusToError();
             }
+        }
+
+        /**
+         * Public for testing only
+         * @param RedBeanModel $model
+         * @return string
+         */
+        public static function resolveLinkMessageToModel(RedBeanModel $model)
+        {
+            $moduleClassName   = $model::getModuleClassName();
+            $stateMetadataAdapterClassName = $moduleClassName::getStateMetadataAdapterClassName();
+            if($stateMetadataAdapterClassName != null)
+            {
+                $moduleClassName = $stateMetadataAdapterClassName::getModuleClassNameByModel($model);
+            }
+            $moduleId   = $moduleClassName::getDirectoryName();
+            $urlToModel = Yii::app()->createUrl('/' . $moduleId . '/default/details', array('id' => $model->id));
+            return ZurmoHtml::link(strval($model), $urlToModel, array('target' => 'blank'));
         }
 
         protected static function sanitizeValueAndPopulateModel(RedBean_OODBBean $rowBean,
