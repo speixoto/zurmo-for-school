@@ -37,47 +37,19 @@
     /**
      * Helper class for working with ByTimeWorkflowInQueue models
      */
-    class ByTimeWorkflowInQueueUtil
+    class ByTimeWorkflowInQueueUtil extends WorkflowInQueueUtil
     {
         /**
          * @param ByTimeWorkflowInQueue $model
          * @return string
          */
-        public static function renderSummaryContent(ByTimeWorkflowInQueue $model)
+        public static function renderSummaryContent($model)
         {
-            $params          = array('label' => strval($model->savedWorkflow), 'wrapLabel' => false);
-            $moduleClassName = $model->getModuleClassName();
-            $moduleId        = $moduleClassName::getDirectoryName();
-            $element         = new DetailsLinkActionElement('default', $moduleId, $model->savedWorkflow->id, $params);
+            assert('$model instanceof ByTimeWorkflowInQueue');
             $relatedModel    = self::resolveModel($model);
-            return $element->render() . ' &mdash; <span class="less-pronounced-text">' . self::resolveModelContent($relatedModel) . '</span>';
-        }
-
-        /**
-         * @param ByTimeWorkflowInQueue $byTimeWorkflowInQueue
-         * @return RedBeanModel
-         */
-        protected static function resolveModel(ByTimeWorkflowInQueue $byTimeWorkflowInQueue)
-        {
-            $modelDerivationPathToItem = RuntimeUtil::getModelDerivationPathToItem($byTimeWorkflowInQueue->modelClassName);
-            return $byTimeWorkflowInQueue->modelItem->castDown(array($modelDerivationPathToItem));
-        }
-
-        /**
-         * @param RedBeanModel $model
-         * @return string
-         */
-        protected static function resolveModelContent(RedBeanModel $model)
-        {
-            $security = new DetailsActionSecurity(Yii::app()->user->userModel, $model);
-            if ($security->canUserPerformAction())
-            {
-                $params              = array('label' => strval($model), 'wrapLabel' => false);
-                $moduleClassName     = $model->getModuleClassName();
-                $moduleId            = $moduleClassName::getDirectoryName();
-                $relatedModelElement = new DetailsLinkActionElement('default', $moduleId, $model->id, $params);
-                return $relatedModelElement->render();
-            }
+            $content         = static::renderWorkflowLinkContent($model);
+            $content        .= static::renderRelatedModelLinkContent($relatedModel);
+            return $content;
         }
     }
 ?>

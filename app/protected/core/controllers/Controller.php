@@ -282,7 +282,8 @@
             $activeAttributes,
             $selectedRecordCount,
             $title,
-            $massDeleteViewClassName = 'MassDeleteView'
+            $massDeleteViewClassName = 'MassDeleteView',
+            $useModuleClassNameForItemLabel = true
         )
         {
             // TODO: @Shoaibi/@Jason: Low: Deprecated
@@ -290,10 +291,9 @@
             $moduleName            = $this->getModule()->getPluralCamelCasedName();
             $moduleClassName       = $moduleName . 'Module';
             $title                 = Zurmo::t('Core', 'Mass Delete') . ': ' . $title;
-            $selectedIds = GetUtil::getData();
-            //TODO This call is not correct, $selectedIds is not required in Mass Delete View contructor
             $view  = new $massDeleteViewClassName($this->getId(), $this->getModule()->getId(), $model, $activeAttributes,
-                                                      $selectedRecordCount, $title, null, $moduleClassName, $selectedIds);
+                                                  $selectedRecordCount, $title, null,
+                                                  $moduleClassName, $useModuleClassNameForItemLabel);
             return $view;
         }
 

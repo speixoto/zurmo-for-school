@@ -37,47 +37,23 @@
     /**
      * Helper class for working with WorkflowMessageInQueue models
      */
-    class WorkflowMessageInQueueUtil
+    class WorkflowMessageInQueueUtil extends WorkflowInQueueUtil
     {
         /**
          * @param WorkflowMessageInQueue $model
          * @return string
          */
-        public static function renderSummaryContent(WorkflowMessageInQueue $model)
+        public static function renderSummaryContent($model)
         {
-            $params          = array('label' => strval($model->savedWorkflow), 'wrapLabel' => false);
-            $moduleClassName = $model->getModuleClassName();
-            $moduleId        = $moduleClassName::getDirectoryName();
-            $element         = new DetailsLinkActionElement('default', $moduleId, $model->savedWorkflow->id, $params);
+            assert('$model instanceof WorkflowMessageInQueue');
+            $workflow = SavedWorkflowToWorkflowAdapter::makeWorkflowBySavedWorkflow($model->savedWorkflow);
+            $emailMessageForWorkflowForm = WorkflowEmailMessagesUtil::
+                                           makeEmailMessageForWorkflowFormByQueueModelAndWorkflow($model, $workflow);
             $relatedModel    = self::resolveModel($model);
-            return $element->render() . ' &mdash; <span class="less-pronounced-text">' . self::resolveModelContent($relatedModel) . '</span>';
-        }
-
-        /**
-         * @param WorkflowMessageInQueue $workflowMessageInQueue
-         * @return An|RedBeanModel
-         */
-        protected static function resolveModel(WorkflowMessageInQueue $workflowMessageInQueue)
-        {
-            $modelDerivationPathToItem = RuntimeUtil::getModelDerivationPathToItem($workflowMessageInQueue->modelClassName);
-            return $workflowMessageInQueue->modelItem->castDown(array($modelDerivationPathToItem));
-        }
-
-        /**
-         * @param RedBeanModel $model
-         * @return string
-         */
-        protected static function resolveModelContent(RedBeanModel $model)
-        {
-            $security = new DetailsActionSecurity(Yii::app()->user->userModel, $model);
-            if ($security->canUserPerformAction())
-            {
-                $params              = array('label' => strval($model), 'wrapLabel' => false);
-                $moduleClassName     = $model->getModuleClassName();
-                $moduleId            = $moduleClassName::getDirectoryName();
-                $relatedModelElement = new DetailsLinkActionElement('default', $moduleId, $model->id, $params);
-                return $relatedModelElement->render();
-            }
+            $content         = static::renderWorkflowLinkContent($model);
+            $content        .= static::renderRelatedModelLinkContent($relatedModel);
+            $content        .= static::renderEmailTemplateLinkContent($emailMessageForWorkflowForm);
+            return $content;
         }
     }
 ?>

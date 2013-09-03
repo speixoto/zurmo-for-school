@@ -40,26 +40,6 @@
     class ByTimeWorkflowInQueuesListView extends SecuredListView
     {
         /**
-         * Override to set rowsAreSelectable to false
-         * @see ListView::__construct
-         */
-        public function __construct(
-            $controllerId,
-            $moduleId,
-            $modelClassName,
-            $dataProvider,
-            $selectedIds,
-            $gridIdSuffix = null,
-            $gridViewPagerParams = array(),
-            $listAttributesSelector = null
-        )
-        {
-            parent::__construct($controllerId, $moduleId, $modelClassName, $dataProvider, $selectedIds, $gridIdSuffix,
-                                $gridViewPagerParams, $listAttributesSelector);
-            $this->rowsAreSelectable = false;
-        }
-
-        /**
          * Override to remove action buttons.
          */
         protected function getCGridViewLastColumn()
