@@ -76,13 +76,12 @@
                     'showMenusLink' => true,
                 ),
                 'globalSearchAttributeNames' => array(
-                    'quantity',
                     'name'
                 ),
                 'tabMenuItems' => array(
                     array(
                         'label' => "eval:Zurmo::t('ProjectsModule', 'ProjectsModulePluralLabel', \$translationParams)",
-                        'url'   => array('/products/default'),
+                        'url'   => array('/projects/default'),
                         'right' => self::RIGHT_ACCESS_PROJECTS,
                     ),
                 ),
@@ -92,17 +91,17 @@
 
         public static function getPrimaryModelName()
         {
-            return 'Product';
+            return 'Project';
         }
 
         public static function getSingularCamelCasedName()
         {
-            return 'Product';
+            return 'Project';
         }
 
         protected static function getSingularModuleLabel($language)
         {
-            return Zurmo::t('ProjectsModule', 'Product', array(), null, $language);
+            return Zurmo::t('ProjectsModule', 'Project', array(), null, $language);
         }
 
         protected static function getPluralModuleLabel($language)

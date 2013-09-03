@@ -383,6 +383,7 @@
             'users',
             'maps',
             'contactWebForms',
+            'projects'
         ),
 
         'params' => array(
