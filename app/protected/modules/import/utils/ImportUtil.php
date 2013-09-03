@@ -242,7 +242,7 @@
             }
             $moduleId   = $moduleClassName::getDirectoryName();
             $urlToModel = Yii::app()->createUrl('/' . $moduleId . '/default/details', array('id' => $model->id));
-            return ZurmoHtml::link(strval($model), $urlToModel, array('target' => 'blank'));
+            return ZurmoHtml::link(strval($model), $urlToModel, array('class' => 'simple-link', 'target' => 'blank'));
         }
 
         protected static function sanitizeValueAndPopulateModel(RedBean_OODBBean $rowBean,
