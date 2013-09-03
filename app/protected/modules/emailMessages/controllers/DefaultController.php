@@ -298,10 +298,8 @@
                 catch (Exception $e)
                 {
                     $connect = false;
-                    $messageContent = Zurmo::t('EmailMessagesModule', 'Could not connect to IMAP server.') . "\n";
                 }
-
-                if (isset($connect) && $connect == true)
+                if ($connect)
                 {
                     $messageContent = Zurmo::t('EmailMessagesModule', 'Successfully connected to IMAP server.') . "\n";
                 }
@@ -309,7 +307,6 @@
                 {
                     $messageContent = Zurmo::t('EmailMessagesModule', 'Could not connect to IMAP server.') . "\n";
                 }
-
                 Yii::app()->getClientScript()->setToAjaxMode();
                 $messageView = new TestImapConnectionMessageView($messageContent);
                 $view = new ModalView($this,
