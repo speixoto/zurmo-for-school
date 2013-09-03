@@ -55,8 +55,6 @@
          */
         public function sanitizeValue($value)
         {
-            assert('is_string($modelClassName)');
-            assert('is_string($attributeName)');
             if ($value != null)
             {
                 return $value;

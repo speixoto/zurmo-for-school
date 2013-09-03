@@ -586,7 +586,7 @@
             $user->lastName     = 'User';
             $user->setPassword($password);
             $saved = $user->save();
-            if(!$saved)
+            if (!$saved)
             {
                 throw new FailedToSaveModelException();
             }
@@ -594,7 +594,7 @@
             $group = Group::getByName(Group::SUPER_ADMINISTRATORS_GROUP_NAME);
             $group->users->add($user);
             $saved = $group->save();
-            if(!$saved)
+            if (!$saved)
             {
                 throw new FailedToSaveModelException();
             }
@@ -620,7 +620,7 @@
             $user->setIsSystemUser();
             $user->setPassword($password);
             $saved = $user->save();
-            if(!$saved)
+            if (!$saved)
             {
                 throw new FailedToSaveModelException();
             }
@@ -628,14 +628,14 @@
             $user->setRight('UsersModule', UsersModule::RIGHT_LOGIN_VIA_WEB,     Right::DENY);
             $user->setRight('UsersModule', UsersModule::RIGHT_LOGIN_VIA_WEB_API, Right::DENY);
             $saved = $user->save();
-            if(!$saved)
+            if (!$saved)
             {
                 throw new FailedToSaveModelException();
             }
             $group = Group::getByName(Group::SUPER_ADMINISTRATORS_GROUP_NAME);
             $group->users->add($user);
             $saved = $group->save();
-            if(!$saved)
+            if (!$saved)
             {
                 throw new FailedToSaveModelException();
             }
@@ -1010,7 +1010,7 @@
                                             $form->submitCrashToSentry);
             $messageStreamer->add(Zurmo::t('InstallModule', 'Setting up default data.'));
             DefaultDataUtil::load($messageLogger);
-            InstallUtil::createSystemUser('system', md5(time() . mt_rand(1,10000)));
+            InstallUtil::createSystemUser('system', md5(time() . mt_rand(1, 10000)));
             Yii::app()->custom->runAfterInstallationDefaultDataLoad($messageLogger);
 
             // Send notification to super admin to delete test.php file in case if this

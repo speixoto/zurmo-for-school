@@ -79,6 +79,7 @@
             $pageSize                       = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                                               'listPageSize', get_class($this->getModule()));
             $user                           = new User(false);
+            $user->setScenario('searchModel');
             $searchForm                     = new UsersSearchForm($user);
             $listAttributesSelector         = new ListAttributesSelector('UsersListView', get_class($this->getModule()));
             $searchForm->setListAttributesSelector($listAttributesSelector);
@@ -115,7 +116,7 @@
                 RightsUtil::canUserAccessModule('UsersModule', Yii::app()->user->userModel))
             {
                 $user                 = User::getById(intval($id));
-                if(UserAccessUtil::resolveCanCurrentUserAccessRootUser($user, false) &&
+                if (UserAccessUtil::resolveCanCurrentUserAccessRootUser($user, false) &&
                    UserAccessUtil::resolveAccessingASystemUser($user, false))
                 {
                     $userAvatarForm       = new UserAvatarForm($user);
@@ -611,12 +612,20 @@
                 $model->setAttributes($_POST[$postVariableName]);
                 $model->validate();
                 $userStatus = UserStatusUtil::makeByPostData($_POST[$postVariableName]);
-                if($model instanceof User)
+                if ($model instanceof User)
                 {
+                    if ($userStatus == null)
+                    {
+                        $userStatus = UserStatusUtil::makeByUser($model);
+                    }
                     Yii::app()->licenseManager->resolveValidationOnCreateOrEditUser($model, $userStatus);
                 }
-                elseif($model instanceof ModelForm)
+                elseif ($model instanceof ModelForm)
                 {
+                    if ($userStatus == null)
+                    {
+                        $userStatus = UserStatusUtil::makeByUser($model->getModel());
+                    }
                     Yii::app()->licenseManager->resolveValidationOnCreateOrEditUser($model->getModel(), $userStatus);
                 }
                 $errorData = ZurmoActiveForm::makeErrorsDataAndResolveForOwnedModelAttributes($model);

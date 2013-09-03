@@ -38,9 +38,9 @@
      * View when a user first comes to the marketing dashboard. Provides an overview of how marketing works
      */
     class MarketingDashboardIntroView extends IntroView
-    {        
+    {
         protected function renderIntroContent()
-        {         
+        {
             $content  = '<h1>' . Zurmo::t('MarketingModule', 'How does Email Marketing work in Zurmo?', LabelUtil::getTranslationParamsForAllModules()). '</h1>';
             $content .= '<div id="marketing-intro-steps" class="module-intro-steps clearfix">';
             $content .= '<div class="third"><h3>' . Zurmo::t('Core', 'Step') . '<strong>1<span>➜</span></strong></h3>';
@@ -60,8 +60,19 @@
                         'add and schedule autoresponders and track your overall campaign performance');
             $content .= '</p>';
             $content .= '</div>';
-            $content .= '</div>';         
+            $content .= '</div>';
+            $this->registerScripts();
             return $content;
+        }
+
+        protected function registerScripts()
+        {
+            $content  = "$(this).resolveHighestAndEqualize($('.module-intro-steps'));";
+            $content .= "$(window).resize(function()
+                         {
+                             $(this).resolveHighestAndEqualize($('.module-intro-steps'));
+                         });";
+            Yii::app()->clientScript->registerScript($this->moduleName, $content);
         }
     }
 ?>

@@ -112,7 +112,7 @@
             assert('$columnMappingData == null || is_array($columnMappingData)');
             $mappingRuleType = static::getLinkedMappingRuleType();
 
-            if($mappingRuleType === null || empty($mappingRuleType))
+            if ($mappingRuleType === null || empty($mappingRuleType))
             {
                 return array();
             }
@@ -153,7 +153,7 @@
 
         public function shouldSanitizeValue()
         {
-            if($this->columnMappingData["type"] == 'extraColumn')
+            if ($this->columnMappingData["type"] == 'extraColumn')
             {
                 return false;
             }

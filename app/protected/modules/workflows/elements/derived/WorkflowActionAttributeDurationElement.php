@@ -41,11 +41,11 @@
     {
         protected function getDurationTypeDropDownArray()
         {
-            if($this->model->getFormType() == 'Date')
+            if ($this->model->getFormType() == 'Date')
             {
                 return TimeDurationUtil::getDateOnlyValueAndLabels();
             }
-            elseif($this->model->getFormType() == 'DateTime')
+            elseif ($this->model->getFormType() == 'DateTime')
             {
                 return TimeDurationUtil::getValueAndLabels();
             }

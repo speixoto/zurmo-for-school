@@ -39,5 +39,49 @@
      */
     class TimeTriggerDurationElement extends DurationElement
     {
+        public $attributeLabel;
+
+        public $valueElementType;
+
+        protected function resolveEditableWrapper($cssClass, $content)
+        {
+            if ($this->valueElementType != 'MixedDateTypesForWorkflow')
+            {
+                $resolvedContent = ZurmoHtml::tag('div', array(), Zurmo::t('Core', 'For')) . $content;
+            }
+            else
+            {
+                $resolvedContent = $content;
+            }
+            return parent::resolveEditableWrapper($cssClass, $resolvedContent);
+        }
+
+        protected function getDurationSignDropDownArray()
+        {
+            if ($this->valueElementType != 'MixedDateTypesForWorkflow')
+            {
+                return array(TimeDurationUtil::DURATION_SIGN_POSITIVE => Zurmo::t('WorkflowsModule', 'After'));
+            }
+            else
+            {
+                return array(TimeDurationUtil::DURATION_SIGN_POSITIVE => Zurmo::t('WorkflowsModule', 'After {attributeLabel}',
+                                array('{attributeLabel}' => $this->attributeLabel)),
+                             TimeDurationUtil::DURATION_SIGN_NEGATIVE => Zurmo::t('WorkflowsModule', 'Before {attributeLabel}',
+                                array('{attributeLabel}' => $this->attributeLabel)));
+            }
+        }
+
+        protected function renderEditableDurationSignDropDownField()
+        {
+            if ($this->valueElementType != 'MixedDateTypesForWorkflow')
+            {
+                return ZurmoHtml::tag('div', array('style' => "display:none;"),
+                            parent::renderEditableDurationSignDropDownField());
+            }
+            else
+            {
+                return parent::renderEditableDurationSignDropDownField();
+            }
+        }
     }
 ?>

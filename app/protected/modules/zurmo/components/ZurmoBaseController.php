@@ -123,7 +123,7 @@
                 GetUtil::resolveSelectedIdsFromGet(),
                 $actionBarViewClassName,
                 $activeActionElementType,
-                $introView                
+                $introView
             );
         }
 
@@ -768,6 +768,11 @@
             $this->redirect($urlParams);
         }
 
+        /**
+         * @param string $modelClassName
+         * @param int $id
+         * @return mixed
+         */
         protected static function getModelAndCatchNotFoundAndDisplayError($modelClassName, $id)
         {
             assert('is_string($modelClassName)');

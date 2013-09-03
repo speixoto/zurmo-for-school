@@ -62,12 +62,6 @@
             'You are now unsubscribed. Its really sad to see you go but you can always subscribe',
             'So you are not coming back?',
         ),
-        'fromOperationDurationInterval' => array(
-            3,
-            10,
-            15,
-            30,
-        ),
         'operationType'                  => array(
             Autoresponder::OPERATION_SUBSCRIBE,
             Autoresponder::OPERATION_SUBSCRIBE,

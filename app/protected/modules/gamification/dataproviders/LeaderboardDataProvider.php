@@ -51,6 +51,7 @@
             }
             $this->type = $type;
         }
+
         /**
          * See the yii documentation.
          */
@@ -92,6 +93,12 @@
             return $keys;
         }
 
+        /**
+         * @param string $type
+         * @param null|int $offset
+         * @param null|int $count
+         * @return array
+         */
         public static function getUserLeaderboardData($type, $offset = null, $count = null)
         {
             assert('is_string($type)');
@@ -99,11 +106,10 @@
             assert('$count   === null || is_integer($count)   && $count   >= 1');
             $leaderboardData = GamePointUtil::getUserLeaderboardData($type, $offset + 1, $offset, $count);
             $resolvedLeaderboardData = array();
-            foreach($leaderboardData as $userId => $data)
+            foreach ($leaderboardData as $userId => $data)
             {
                 $data['userId']            = $userId;
                 $resolvedLeaderboardData[] = $data;
-
             }
             return $resolvedLeaderboardData;
         }
