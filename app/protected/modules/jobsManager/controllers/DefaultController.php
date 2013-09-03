@@ -146,7 +146,7 @@
         {
             if (!Group::isUserASuperAdministrator(Yii::app()->user->userModel))
             {
-                Zurmo::t('JobsManagerModule', 'Only super administrators can run jobs from the browser');
+                echo Zurmo::t('JobsManagerModule', 'Only super administrators can run jobs from the browser');
                 Yii::app()->end(0, false);
             }
             $breadcrumbLinks = array(

@@ -123,7 +123,7 @@
                 GetUtil::resolveSelectedIdsFromGet(),
                 $actionBarViewClassName,
                 $activeActionElementType,
-                $introView                
+                $introView
             );
         }
 

@@ -78,7 +78,7 @@
 
         protected function forgetModelsWithForgottenValidators()
         {
-            foreach($this->modelIdentifiersForForgottenValidators as $modelIdentifier => $notUsed)
+            foreach ($this->modelIdentifiersForForgottenValidators as $modelIdentifier => $notUsed)
             {
                 RedBeanModelsCache::forgetModelByIdentifier($modelIdentifier);
             }
@@ -88,7 +88,7 @@
         {
             assert('is_int($modelsProcessedCount)');
             $endingMemoryUsage = memory_get_usage();
-            if($modelsProcessedCount == 0)
+            if ($modelsProcessedCount == 0)
             {
                 $costPerModel =  0;
             }

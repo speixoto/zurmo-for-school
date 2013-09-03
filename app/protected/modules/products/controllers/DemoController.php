@@ -66,12 +66,12 @@
                     $product->name                  = 'Product with open stage '. $i;
                     $product->stage->value          = 'Open';
                 }
-                else if ($i == 6)
+                elseif ($i == 6)
                 {
                     $product->name                  = 'Product with lost stage '. $i;
                     $product->stage->value          = 'Lost';
                 }
-                else if ($i == 7)
+                elseif ($i == 7)
                 {
                     $product->name                  = 'Product with won stage '. $i;
                     $product->stage->value          = 'Won';

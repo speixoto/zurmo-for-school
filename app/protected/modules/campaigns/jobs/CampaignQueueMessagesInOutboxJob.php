@@ -84,7 +84,7 @@
                     return false;
                 }
                 $this->runGarbageCollection($campaignItem);
-                $modelsProcessedCount ++;
+                $modelsProcessedCount++;
             }
             $this->addMaxmimumProcessingCountMessage($modelsProcessedCount, $startingMemoryUsage);
             return true;

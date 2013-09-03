@@ -133,7 +133,7 @@
             $this->assertEquals('firstName',                 $filters[1]->getAttributeIndexOrDerivedType());
             $this->assertEmpty  ($filters[1]->value);
             $this->assertEquals(OperatorRules::TYPE_EQUALS,  $filters[1]->operator);
-            
+
             $report           = new Report();
             $report->setType(Report::TYPE_ROWS_AND_COLUMNS);
             $groupBy = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem', $report->getType());
