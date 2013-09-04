@@ -410,7 +410,7 @@
         {
             $model = Group::getById((int)$id);
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($model);
-            $searchAttributeData = UsersByModelModalListControllerUtil::makeModalSearchAttributeDataByModel($model, 'group');
+            $searchAttributeData = UsersByModelModalListControllerUtil::makeModalSearchAttributeDataByGroupModel($model);
             $dataProvider = UsersByModelModalListControllerUtil::makeDataProviderBySearchAttributeData($searchAttributeData);
             Yii::app()->getClientScript()->setToAjaxMode();
             echo UsersByModelModalListControllerUtil::renderList($this, $dataProvider, 'usersInGroupModalList');

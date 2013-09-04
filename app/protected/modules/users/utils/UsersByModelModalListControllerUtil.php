@@ -78,6 +78,21 @@
             return $searchAttributeData;
         }
 
+        public static function makeModalSearchAttributeDataByGroupModel($model)
+        {
+            $searchAttributeData = array();
+            $searchAttributeData['clauses'] = array(
+                1 => array(
+                    'attributeName'        => 'groups',
+                    'relatedAttributeName' => 'id',
+                    'operatorType'         => 'equals',
+                    'value'                => $model->id,
+                )
+            );
+            $searchAttributeData['structure'] = '1';
+            return $searchAttributeData;
+        }
+
         /**
          * Given an array of searchAttributeData, a RedBeanModelDataProvider is created and returned.
          * @param array $searchAttributeData
