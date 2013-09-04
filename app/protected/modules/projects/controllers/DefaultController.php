@@ -106,10 +106,28 @@
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($project);
             $breadcrumbLinks = array(StringUtil::getChoppedStringContent(strval($project), 25));
             AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED, array(strval($project), 'ProjectsModule'), $project);
-            $detailsView        = new ProjectEditAndDetailsView('Details', $this->getId(), $this->getModule()->getId(), $project);
-            $view               = new ProjectsPageView(ProjectDefaultViewUtil::
-                                                         makeViewWithBreadcrumbsForCurrentUser(
-                                                            $this, $detailsView, $breadcrumbLinks, 'ProjectBreadCrumbView'));
+            $getData                 = GetUtil::getData();
+            $isKanbanBoardInRequest  = ArrayUtil::getArrayValue($getData, 'kanbanBoard');
+            if ($isKanbanBoardInRequest == 0 || $isKanbanBoardInRequest == null || Yii::app()->userInterface->isMobile() === true)
+            {
+                $detailsView        = new ProjectEditAndDetailsView('Details', $this->getId(), $this->getModule()->getId(), $project);
+                $view               = new ProjectsPageView(ProjectDefaultViewUtil::
+                                                             makeViewWithBreadcrumbsForCurrentUser(
+                                                                $this, $detailsView, $breadcrumbLinks, 'ProjectBreadCrumbView'));
+            }
+            else
+            {
+                $kanbanItem   = new KanbanItem();
+                $kanbanBoard  = new TaskKanbanBoard($kanbanItem, 'type', $project, get_class($project));
+                $kanbanBoard->setIsActive();
+                $params['relationModel']    = $project;
+                $params['relationModuleId'] = $this->getModule()->getId();
+                $params['redirectUrl']      = null;
+                $listView     = new TasksForProjectKanbanView($this->getId(),
+                                                                  'tasks', 'Task', null, $params, null, array(), $kanbanBoard);
+                $view         = new ProjectsPageView(ZurmoDefaultViewUtil::
+                                                            makeStandardViewForCurrentUser($this, $listView));
+            }
             echo $view->render();
         }
 
