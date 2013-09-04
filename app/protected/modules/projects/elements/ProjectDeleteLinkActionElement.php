@@ -34,25 +34,18 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Class for showing a message and create link when there are no projects visible to the logged in user when
-     * going to the projects list view.
-     */
-    class ProjectsZeroModelsYetView extends ZeroModelsYetView
+    class ProjectDeleteLinkActionElement extends DeleteLinkActionElement
     {
-        protected function getCreateLinkDisplayLabel()
+        /**
+         * Resolve confirm alert options while deleting project
+         * @param array $htmlOptions
+         * @return array
+         */
+        protected function resolveConfirmAlertInHtmlOptions($htmlOptions)
         {
-            return Zurmo::t('ProjectsModule', 'Create ProjectsModuleSingularLabel', LabelUtil::getTranslationParamsForAllModules());
-        }
-
-        protected function getMessageContent()
-        {
-            $params = LabelUtil::getTranslationParamsForAllModules();
-            return Zurmo::t('ProjectsModule', '<h2>"A person buying ordinary projects in a supermarket is in touch with his deepest emotions."</h2>' .
-                '<i>- John Kenneth Galbraith</i>' .
-                '<div class="large-icon"></div><p>' .
-                'A CRM is sort of like a supermarket, so why not be in touch with your deepest emotions ' .
-                'and be the first to create a ProjectsModuleSingularLabel?</p>', $params);
+            $htmlOptions['confirm'] = Zurmo::t('ProjectsModule', 'Are you sure you want to delete this {modelLabel}?',
+                                      array('{modelLabel}' => ProjectsModule::getModuleLabelByTypeAndLanguage('SingularLowerCase')));
+            return $htmlOptions;
         }
     }
 ?>

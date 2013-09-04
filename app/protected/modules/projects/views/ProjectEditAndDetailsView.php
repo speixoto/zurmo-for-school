@@ -45,7 +45,7 @@
                             array('type'  => 'CancelLink',        'renderType' => 'Edit'),
                             array('type'  => 'SaveButton',        'renderType' => 'Edit'),
                             array('type'  => 'EditLink',          'renderType' => 'Details'),
-                            //array('type'  => 'ProductDeleteLink', 'renderType' => 'Details'),
+                            array('type'  => 'ProjectDeleteLink', 'renderType' => 'Details'),
                             array('type'  => 'CopyLink',          'renderType' => 'Details'),
                         ),
                     ),
@@ -96,16 +96,7 @@
         {
             assert('$form instanceof ZurmoActiveForm');
             $content = parent::renderRightSideFormLayoutForEdit($form);
-
             return $content;
-        }
-
-        protected function renderAfterFormLayout($form)
-        {
-            parent::renderAfterFormLayout($form);
-//            Yii::app()->clientScript->registerScriptFile(Yii::app()->getAssetManager()->publish(
-//                    Yii::getPathOfAlias('application.modules.projects.elements.assets')) . '/ProductTemplateUtils.js',
-//                CClientScript::POS_END);
         }
     }
 ?>
