@@ -80,6 +80,10 @@
 
         public static function makeModalSearchAttributeDataByGroupModel($model)
         {
+            if ($model->name == Group::EVERYONE_GROUP_NAME)
+            {
+                return array();
+            }
             $searchAttributeData = array();
             $searchAttributeData['clauses'] = array(
                 1 => array(

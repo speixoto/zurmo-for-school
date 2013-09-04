@@ -243,8 +243,8 @@
                 $element = new UsersModalListLinkActionElement(Yii::app()->controller->id,
                                                                Yii::app()->controller->module->id,
                                                                static::resolveIdFromRoute($route),
-                                                               array('label' => $userCount, 'htmlOptions' => array('class' => 'z-link')),
-                                                               static::resolveRouteAction());
+                                                               array('label' => $userCount, 'htmlOptions' => array('class' => 'z-link'),
+                                                                     'routeAction' => static::resolveRouteAction()));
                 return $element->render();
             }
             else
