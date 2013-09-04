@@ -36,6 +36,14 @@
 
     class UsersModalListLinkActionElement extends ModalListLinkActionElement
     {
+        protected $routeAction;
+
+        public function __construct($controllerId, $moduleId, $modelId, $params = array(), $routeAction = '/usersInRoleModalList/')
+        {
+            $this->setRouteAction($routeAction);
+            return parent::__construct($controllerId, $moduleId, $modelId, $params);
+        }
+
         protected function getDefaultLabel()
         {
             // Because we get a dynamic label(userCount) from RolesTreeListView
@@ -49,7 +57,12 @@
 
         protected function getRouteAction()
         {
-            return '/usersInRoleModalList/';
+            return $this->routeAction;
+        }
+
+        protected function setRouteAction($routeAction)
+        {
+            $this->routeAction = $routeAction;
         }
     }
 ?>
