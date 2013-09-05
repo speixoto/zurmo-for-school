@@ -7849,7 +7849,7 @@ a.simple-link {
   padding: 0  !important;
   border: none !important;
   margin-left: 10px;
-  text-decoration: underline;
+  text-decoration: underline !important;
   font-size: 11px;
   font-weight: normal;
 }
@@ -13303,6 +13303,11 @@ table.configuration-list td:last-child a .z-label:before {
   margin-right: 10px;
   position: relative;
   top: 1px;
+}
+/*Map*/
+.mapCanvasPortlet {
+  width: 100%;
+  height: 400px;
 }
 div.form fieldset {
   border: 1px solid #DDD;
