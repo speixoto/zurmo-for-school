@@ -195,5 +195,23 @@
                 CClientScript::POS_END
             );
         }
+
+        protected function renderEditableScripts()
+        {
+            parent::renderEditableScripts();
+            $this->renderScopeChangeScript();
+        }
+
+        protected function renderScopeChangeScript()
+        {
+            $script = '$("#' . $this->getIdForTextField() . '").bind("focus", function(event, ui){
+                            $("#' . $this->getIdForTextField() . '").autocomplete("option", "source", "' .
+                            $this->makeSourceUrl() . '?" + $.param($("#' .
+                            $this->getEditableInputId(SearchForm::ANY_MIXED_ATTRIBUTES_SCOPE_NAME) . '").serializeArray()));
+                        });
+                       ';
+            /// End Not Coding Standard
+            Yii::app()->clientScript->registerScript('WorkflowMixedModelsAndNameAttributeSearchScopeChanges', $script);
+        }
     }
 ?>
