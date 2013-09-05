@@ -37,54 +37,8 @@
     /**
      * View for showing a search panel to create a filtered list of WorkflowMessageInQueue models
      */
-    class WorkflowMessageInQueuesSearchView extends SearchView
+    class WorkflowInQueuesSearchView extends SearchView
     {
-        /**
-         * @var bool
-         */
-        protected $showAdvancedSearch = false;
-
-        /**
-         * @return array
-         */
-        public static function getDefaultMetadata()
-        {
-            $metadata = array(
-                'global' => array(
-                    'nonPlaceableAttributeNames' => array(
-                        'serializedData',
-                    ),
-                    'panels' => array(
-                        array(
-                            'locked' => true,
-                            'title'  => 'Basic Search',
-                            'rows' => array(
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'anyMixedAttributes',
-                                                      'type' => 'WorkflowMixedModelsAndNameAttributeSearch', 'wide' => true),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                            ),
-                        ),
-                    ),
-                ),
-            );
-            return $metadata;
-        }
-
-        /**
-         * @return string
-         */
-        public static function getModelForMetadataClassName()
-        {
-            return 'WorkflowMessageInQueuesSearchForm';
-        }
-
         protected function getExtraRenderForClearSearchLinkScript()
         {
             return parent::getExtraRenderForClearSearchLinkScript() .

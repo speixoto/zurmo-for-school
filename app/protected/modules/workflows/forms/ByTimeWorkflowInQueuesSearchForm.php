@@ -37,7 +37,7 @@
     /**
      * Search form for filtering a list of ByTimeWorkflowInQueue models in a list
      */
-    class ByTimeWorkflowInQueuesSearchForm extends SearchForm
+    class ByTimeWorkflowInQueuesSearchForm extends WorkflownQueuesSearchForm
     {
         /**
          * @var string

@@ -35,61 +35,34 @@
      ********************************************************************************/
 
     /**
-     * View for showing a search panel to create a filtered list of WorkflowMessageInQueue models
+     * Search form for handling in queue (message queue and by time queue) workflow searches
      */
-    class WorkflowMessageInQueuesSearchView extends SearchView
+    abstract class WorkflownQueuesSearchForm extends SearchForm
     {
-        /**
-         * @var bool
-         */
-        protected $showAdvancedSearch = false;
+        const ANY_MIXED_ATTRIBUTES_MODEL_ITEM_ID_NAME    = 'anyMixedAttributesModelItemId';
+
+        const ANY_MIXED_ATTRIBUTES_MODEL_CLASS_NAME_NAME = 'anyMixedAttributesModelClassName';
 
         /**
-         * @return array
+         * String of model's item id to scope the search by
+         * @var string
          */
-        public static function getDefaultMetadata()
+        public  $anyMixedAttributesModelItemId;
+
+        /**
+         * String of model class name to scope the search by
+         * @var string
+         */
+        public  $anyMixedAttributesModelClassName;
+
+        public function getAnyMixedAttributesModelItemId()
         {
-            $metadata = array(
-                'global' => array(
-                    'nonPlaceableAttributeNames' => array(
-                        'serializedData',
-                    ),
-                    'panels' => array(
-                        array(
-                            'locked' => true,
-                            'title'  => 'Basic Search',
-                            'rows' => array(
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'anyMixedAttributes',
-                                                      'type' => 'WorkflowMixedModelsAndNameAttributeSearch', 'wide' => true),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                            ),
-                        ),
-                    ),
-                ),
-            );
-            return $metadata;
+            return $this->anyMixedAttributesModelItemId;
         }
 
-        /**
-         * @return string
-         */
-        public static function getModelForMetadataClassName()
+        public function getAnyMixedAttributesModelClassName()
         {
-            return 'WorkflowMessageInQueuesSearchForm';
-        }
-
-        protected function getExtraRenderForClearSearchLinkScript()
-        {
-            return parent::getExtraRenderForClearSearchLinkScript() .
-            "$('.workflow-in-queues-hidden-input').val('');
-            ";
+            return $this->anyMixedAttributesModelClassName;
         }
     }
 ?>

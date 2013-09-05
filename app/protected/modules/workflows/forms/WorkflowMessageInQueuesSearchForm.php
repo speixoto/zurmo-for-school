@@ -37,7 +37,7 @@
     /**
      * Search form for filtering a list of WorkflowMessageInQueue models in a list
      */
-    class WorkflowMessageInQueuesSearchForm extends SearchForm
+    class WorkflowMessageInQueuesSearchForm extends WorkflownQueuesSearchForm
     {
         /**
          * @var string
