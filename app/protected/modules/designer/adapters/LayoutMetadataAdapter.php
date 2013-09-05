@@ -307,7 +307,7 @@
                 $element  = new $elementclassname($elementInformation['attributeName']);
                 $panelMetadata = $element->processToMetadata($cell, $cellMetadata);
             }
-            return $panelMetadata;
+            return $cellMetadata;
         }
 
         protected function getDerivedAttributesFromMetadata()
