@@ -79,6 +79,10 @@
         {
             $content = ob_get_contents();
             ob_end_clean();
+            while(count(ob_get_status(true)) > 1)
+            {
+                ob_end_clean();
+            }
             return $content;
         }
 
