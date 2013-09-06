@@ -161,6 +161,7 @@
             $displayAttribute1 = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
                                      Report::TYPE_MATRIX);
             $displayAttribute1->attributeIndexOrDerivedType = 'date__Maximum';
+            $displayAttribute1->label                       = 'New Label For Date -(Max)';
             $this->assertTrue($displayAttribute1->columnAliasName == 'col0');
             $report->addDisplayAttribute($displayAttribute1);
 
@@ -331,7 +332,7 @@
                                               'xFirst',
                                              ),
                                         array('Last Name',
-                                              'Date -(Max)',
+                                              'New Label For Date -(Max)',
                                               'Date -(Min)',
                                               'Date Time -(Max)',
                                               'Date Time -(Min)',
@@ -459,7 +460,7 @@
                                              ),
                                         array('Last Name',
                                               'Phone',
-                                              'Date -(Max)',
+                                              'New Label For Date -(Max)',
                                               'Date -(Min)',
                                               'Date Time -(Max)',
                                               'Date Time -(Min)',

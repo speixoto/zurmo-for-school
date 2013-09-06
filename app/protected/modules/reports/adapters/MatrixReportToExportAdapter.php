@@ -80,10 +80,10 @@
                     {
                         if (!$displayAttribute->queryOnly)
                         {
-                            $params        = array();
                             $column        = MatrixReportDataProvider::resolveColumnAliasName($attributeKey);
                             $className     = $this->resolveExportClassNameForReportToExportValueAdapter(
                                                 $displayAttribute);
+                            $params        = array('label' => $displayAttribute->label);
                             $adapter       = new $className($reportResultsRowData, $column, $params);
                             $adapter->resolveData($line);
                             if ($attributeKey < $matrixColumnCount)
