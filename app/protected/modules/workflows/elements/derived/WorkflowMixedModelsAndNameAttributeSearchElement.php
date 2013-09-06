@@ -145,7 +145,9 @@
 
         protected function makeSourceUrl()
         {
-            return Yii::app()->createUrl('workflows/default/inQueuesAutoComplete');
+
+            return Yii::app()->createUrl('workflows/default/inQueuesAutoComplete',
+                                         array('formClassName' => get_class($this->model)));
         }
 
         /**
@@ -206,7 +208,7 @@
         {
             $script = '$("#' . $this->getIdForTextField() . '").bind("focus", function(event, ui){
                             $("#' . $this->getIdForTextField() . '").autocomplete("option", "source", "' .
-                            $this->makeSourceUrl() . '?" + $.param($("#' .
+                            $this->makeSourceUrl() . '&" + $.param($("#' .
                             $this->getEditableInputId(SearchForm::ANY_MIXED_ATTRIBUTES_SCOPE_NAME) . '").serializeArray()));
                         });
                        ';

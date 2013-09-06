@@ -72,6 +72,9 @@
                     'showLayoutsLink' => true,
                     'showMenusLink' => false,
                 ),
+                'globalSearchAttributeNames' => array(
+                    'name',
+                ),
             );
             return $metadata;
         }

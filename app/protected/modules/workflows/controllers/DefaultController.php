@@ -496,52 +496,17 @@
             Yii::app()->end(0, false);
         }
 
-        public function actionInQueuesAutoComplete($term)
+        public function actionInQueuesAutoComplete($term, $formClassName)
         {
-           // $pageSize            = Yii::app()->pagination->resolveActiveForCurrentUserByType(
-           //     'autoCompleteListPageSize', get_class($this->getModule()));
-           // $autoCompleteResults = ModelAutoCompleteUtil::getByPartialName($modelClassName, $term, $pageSize);
-            $autoCompleteResults = null;
-            if (empty($autoCompleteResults))
-            {
-                $autoCompleteResults = array(array('itemId'    => null, 'modelClassName' => null,
-                    'value' => null,
-                    'label' => Zurmo::t('Core', 'No results found')),
-                    array('itemId'    => 5, 'modelClassName' => 'Account',
-                        'value' => 'Jmmy Account',
-                        'label' => 'Jmmy Account label'),
-                    array('itemId'    => 6, 'modelClassName' => 'Account',
-                        'value' => 'Jmmy AccountX',
-                        'label' => 'Jmmy Account labelX')
-
-                );
-            }
-            echo CJSON::encode($autoCompleteResults);
-            Yii::app()->end(0, false);
-
-
-
-            $scopeData = GlobalSearchUtil::resolveGlobalSearchScopeFromGetData($_GET);
-            $pageSize  = Yii::app()->pagination->resolveActiveForCurrentUserByType(
-                            'autoCompleteListPageSize', get_class($this->getModule()));
-            $autoCompleteResults = ModelAutoCompleteUtil::getGlobalSearchResultsByPartialTerm(
-                                           $term,
-                                           $pageSize,
-                                           Yii::app()->user->userModel,
-                                           $scopeData
-                                        );
-            $autoCompleteResults = array_merge(
-                    $autoCompleteResults,
-                    array(
-                        array('href'      => Yii::app()->createUrl(
-                                                '/zurmo/default/globallist',
-                                                array('MixedModelsSearchForm' =>
-                                                    array('term'                    => $_GET['term'],
-                                                          'anyMixedAttributesScope' => ArrayUtil::getArrayValue(
-                                                              GetUtil::getData(), 'globalSearchScope')))
-                                                ),
-                              'label'     => 'All results', 'iconClass' => 'autocomplete-icon-AllResults'))
-              );
+            $scopeData           = GlobalSearchUtil::resolveGlobalSearchScopeFromGetData($_GET[$formClassName],
+                                   'anyMixedAttributesScope');
+            $pageSize            = Yii::app()->pagination->resolveActiveForCurrentUserByType(
+                                   'autoCompleteListPageSize', get_class($this->getModule()));
+            $autoCompleteResults = WorkflowInQueuesModelAutoCompleteUtil::getGlobalSearchResultsByPartialTerm(
+                                    $term,
+                                    $pageSize,
+                                    Yii::app()->user->userModel,
+                                    $scopeData);
             echo CJSON::encode($autoCompleteResults);
         }
 

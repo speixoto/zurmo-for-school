@@ -55,6 +55,23 @@
          */
         public  $anyMixedAttributesModelClassName;
 
+        public static function getInQueueSearchableModelNamesAndLabels()
+        {
+            $namesAndLabels         = array();
+            $moduleNamesAndLabels   = Workflow::getWorkflowSupportedModulesAndLabelsForCurrentUser();
+            foreach($moduleNamesAndLabels as $moduleClassName => $label)
+            {
+                if($moduleClassName::getPrimaryModelName() != null &&
+                   $moduleClassName::hasAtLeastOneGlobalSearchAttributeName())
+                {
+                    $namesAndLabels[$moduleClassName::getPrimaryModelName()] = $label;
+                }
+            }
+            $modelClassName = 'SavedWorkflow';
+            $namesAndLabels[$modelClassName] = $modelClassName::getModelLabelByTypeAndLanguage('Plural');
+            return $namesAndLabels;
+        }
+
         public function getAnyMixedAttributesModelItemId()
         {
             return $this->anyMixedAttributesModelItemId;
@@ -63,6 +80,68 @@
         public function getAnyMixedAttributesModelClassName()
         {
             return $this->anyMixedAttributesModelClassName;
+        }
+
+
+        /**
+         * @return array
+         */
+        /**
+        public function rules()
+        {
+            return array_merge(parent::rules(), array(
+                array('workflowName', 'safe'),
+            ));
+        }
+         * **/
+
+        /**
+         * @return array
+         */
+        /**
+        public function attributeLabels()
+        {
+            return array_merge(parent::attributeLabels(), array(
+                'workflowName' => Zurmo::t('WorkflowsModule', 'Workflow Name'),
+            ));
+        }
+         * **/
+
+        /**
+         * @return array
+         */
+        /**
+        public function getAttributesMappedToRealAttributesMetadata()
+        {
+            return array_merge(parent::getAttributesMappedToRealAttributesMetadata(), array(
+                'workflowName' => array(
+                    array('savedWorkflow',  'name'),
+                ),
+            ));
+        }
+         **/
+
+        /**
+         * Override since the module globalSearchAttributeNames are for SavedWorkflow not the ByTimeWorkflowInQueue
+         * models.
+         * @param unknown_type $realAttributesMetadata
+         */
+        public function resolveMixedSearchAttributeMappedToRealAttributesMetadata(& $realAttributesMetadata)
+        {
+            assert('is_array($realAttributesMetadata)');
+            $data = array();
+            $data['anyMixedAttributes'][] = array('savedWorkflow', 'name');
+            $realAttributesMetadata = array_merge($realAttributesMetadata, $data);
+        }
+
+        /**
+         * @return array of attributeName and label pairings.  Based on what attributes are used
+         * in a mixed attribute search.
+         */
+        public function getGlobalSearchAttributeNamesAndLabelsAndAll()
+        {
+            $namesAndLabels = static::getInQueueSearchableModelNamesAndLabels();
+            return array_merge(array('All' => Zurmo::t('Core', 'All')), $namesAndLabels);
         }
     }
 ?>
