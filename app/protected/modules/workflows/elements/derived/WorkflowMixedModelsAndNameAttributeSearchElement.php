@@ -74,13 +74,13 @@
         protected function renderHiddenInputsForEditableContent()
         {
             $idInputHtmlOptions = array(
-                'name'     => $this->getEditableInputId(static::getModelItemIdInputName()),
+                'name'     => $this->getEditableInputName(static::getModelItemIdInputName()),
                 'id'       => $this->getEditableInputId(static::getModelItemIdInputName()),
                 'class'    => 'workflow-in-queues-hidden-input'
             );
             $content       = $this->form->hiddenField($this->model, static::getModelItemIdInputName(), $idInputHtmlOptions);
             $idInputHtmlOptions = array(
-                'name'     => $this->getEditableInputId(static::getModelClassNameInputName()),
+                'name'     => $this->getEditableInputName(static::getModelClassNameInputName()),
                 'id'       => $this->getEditableInputId(static::getModelClassNameInputName()),
                 'class'    => 'workflow-in-queues-hidden-input'
             );

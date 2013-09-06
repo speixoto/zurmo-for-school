@@ -64,7 +64,11 @@
                 if($moduleClassName::getPrimaryModelName() != null &&
                    $moduleClassName::hasAtLeastOneGlobalSearchAttributeName())
                 {
-                    $namesAndLabels[$moduleClassName::getPrimaryModelName()] = $label;
+                    $modelClassName = $moduleClassName::getPrimaryModelName();
+                    if(is_subclass_of($modelClassName, 'Item'))
+                    {
+                        $namesAndLabels[$moduleClassName::getPrimaryModelName()] = $label;
+                    }
                 }
             }
             $modelClassName = 'SavedWorkflow';
@@ -82,44 +86,14 @@
             return $this->anyMixedAttributesModelClassName;
         }
 
-
-        /**
-         * @return array
-         */
-        /**
-        public function rules()
+        public function isAttributeSafe($attributeName)
         {
-            return array_merge(parent::rules(), array(
-                array('workflowName', 'safe'),
-            ));
+            if($attributeName == 'anyMixedAttributes')
+            {
+                return false;
+            }
+            return parent::isAttributeSafe($attributeName);
         }
-         * **/
-
-        /**
-         * @return array
-         */
-        /**
-        public function attributeLabels()
-        {
-            return array_merge(parent::attributeLabels(), array(
-                'workflowName' => Zurmo::t('WorkflowsModule', 'Workflow Name'),
-            ));
-        }
-         * **/
-
-        /**
-         * @return array
-         */
-        /**
-        public function getAttributesMappedToRealAttributesMetadata()
-        {
-            return array_merge(parent::getAttributesMappedToRealAttributesMetadata(), array(
-                'workflowName' => array(
-                    array('savedWorkflow',  'name'),
-                ),
-            ));
-        }
-         **/
 
         /**
          * Override since the module globalSearchAttributeNames are for SavedWorkflow not the ByTimeWorkflowInQueue
@@ -130,8 +104,9 @@
         {
             assert('is_array($realAttributesMetadata)');
             $data = array();
-            $data['anyMixedAttributes'][] = array('savedWorkflow', 'name');
-            $realAttributesMetadata = array_merge($realAttributesMetadata, $data);
+            $data['anyMixedAttributesModelItemId']    = array(array('modelItem', 'id', 'equals'));
+            $data['anyMixedAttributesModelClassName'] = array(array('modelClassName', null, 'equals'));
+            $realAttributesMetadata                   = array_merge($realAttributesMetadata, $data);
         }
 
         /**
