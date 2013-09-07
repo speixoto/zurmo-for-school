@@ -135,7 +135,7 @@
 
         protected function getAfterFormLayoutTranslatedTitleContent()
         {
-            return Zurmo::t('DesignerModule', 'Dropdown Dependency Mapping');
+            return Zurmo::t('DesignerModule', 'Pick List Dependency Mapping');
         }
 
         protected static function renderScripts()
