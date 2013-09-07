@@ -67,32 +67,31 @@
         public static function makeModalSearchAttributeDataByModel($model, $attributeName)
         {
             $searchAttributeData = array();
-            $searchAttributeData['clauses'] = array(
-                1 => array(
-                    'attributeName'        => $attributeName,
-                    'operatorType'         => 'equals',
-                    'value'                => $model->id,
-                )
-            );
-            $searchAttributeData['structure'] = '1';
-            return $searchAttributeData;
-        }
-
-        public static function makeModalSearchAttributeDataByGroupModel($model)
-        {
-            if ($model->name == Group::EVERYONE_GROUP_NAME)
+            if ($model instanceof Group)
             {
-                return array();
+                if ($model->name == Group::EVERYONE_GROUP_NAME)
+                {
+                    return array();
+                }
+                $searchAttributeData['clauses'] = array(
+                    1 => array(
+                        'attributeName'        => $attributeName,
+                        'relatedAttributeName' => 'id',
+                        'operatorType'         => 'equals',
+                        'value'                => $model->id,
+                    )
+                );
             }
-            $searchAttributeData = array();
-            $searchAttributeData['clauses'] = array(
-                1 => array(
-                    'attributeName'        => 'groups',
-                    'relatedAttributeName' => 'id',
-                    'operatorType'         => 'equals',
-                    'value'                => $model->id,
-                )
-            );
+            else
+            {
+                $searchAttributeData['clauses'] = array(
+                    1 => array(
+                        'attributeName'        => $attributeName,
+                        'operatorType'         => 'equals',
+                        'value'                => $model->id,
+                    )
+                );
+            }
             $searchAttributeData['structure'] = '1';
             return $searchAttributeData;
         }
