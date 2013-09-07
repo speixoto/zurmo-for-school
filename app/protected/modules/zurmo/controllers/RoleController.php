@@ -175,7 +175,7 @@
 
         public function actionUsersInRoleModalList($id)
         {
-            $model = Group::getById((int)$id);
+            $model = Role::getById((int)$id);
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($model);
             $searchAttributeData = UsersByModelModalListControllerUtil::makeModalSearchAttributeDataByModel($model, 'role');
             $dataProvider = UsersByModelModalListControllerUtil::makeDataProviderBySearchAttributeData($searchAttributeData);
