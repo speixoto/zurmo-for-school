@@ -34,38 +34,49 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class EmailAddressInformationRedBeanModelAttributeValueToExportValueAdapter extends RedBeanModelAttributeValueToExportValueAdapter
+    /**
+     * Filter used by contactWebForm controllers to ascertain if any contactWebForm exist yet
+     */
+    class ContactWebFormsZeroModelsCheckControllerFilter extends ZeroModelsCheckControllerFilter
     {
-        /**
-         * @param array $data
-         */
-        public function resolveData(& $data)
+
+
+        public $activeActionElementType;
+
+        public $breadcrumbLinks;
+
+        protected function resolveMessageControllerId()
         {
-            assert('$this->model->{$this->attribute} instanceof Email');
-            $email = $this->model->{$this->attribute};
-            if ($email->id > 0)
-            {
-                $data[] = $email->emailAddress;
-                $data[] = (bool) $email->isInvalid;
-                $data[] = (bool) $email->optOut;
-            }
-            else
-            {
-                $data[] = null;
-                $data[] = null;
-                $data[] = null;
-            }
+            return 'default';
         }
 
-        /**
-         * Resolve the header data for the attribute.
-         * @param array $headerData
-         */
-        public function resolveHeaderData(& $headerData)
+        protected function resolveMessageModuleId()
         {
-            $headerData[] = $this->getLabel() . ' - ' . Zurmo::t('ZurmoModule', 'Email Address');
-            $headerData[] = $this->getLabel() . ' - ' . Zurmo::t('ZurmoModule', 'Is Invalid');
-            $headerData[] = $this->getLabel() . ' - ' . Zurmo::t('ZurmoModule', 'Opt Out');
+            return 'contactWebForms';
+        }
+
+        protected function getMessageViewClassName()
+        {
+            return $this->controller->getModule()->getPluralCamelCasedName() . 'ZeroModelsYetView';
+        }
+
+        protected function resolveAndRenderView(View $messageView)
+        {
+            $gridViewId              = 'notUsed';
+            $pageVar                 = 'notUsed';
+            $listModel               = new ContactWebForm(false);
+            $actionBarView           = new SecuredActionBarForContactWebFormsSearchAndListView(
+                                        'default',
+                                        'contactWebForms',
+                                        $listModel,
+                                        $gridViewId,
+                                        $pageVar,
+                                        false, $this->activeActionElementType);
+            $mixedView               = new ActionBarAndZeroModelsYetView($actionBarView, $messageView);
+            $view                    = new ContactWebFormsPageView(ZurmoDefaultAdminViewUtil::
+                                       makeViewWithBreadcrumbsForCurrentUser(
+                                       $this->controller, $mixedView, $this->breadcrumbLinks, 'ContactWebFormsBreadCrumbView'));
+            echo $view->render();
         }
     }
 ?>
