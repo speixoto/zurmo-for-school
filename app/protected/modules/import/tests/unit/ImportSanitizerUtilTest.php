@@ -814,7 +814,7 @@
             $this->assertFalse($importSanitizeResultsUtil->shouldSaveModel());
             $messages = $importSanitizeResultsUtil->getMessages();
             $this->assertEquals(1, count($messages));
-            $compareMessage = 'Import - ImportModelTestItem3 id specified did not match any existing records.';
+            $compareMessage = 'Import - ImportModelTestItem3 ID specified did not match any existing records.';
             $this->assertEquals($compareMessage, $messages[0]);
 
             //Test a non-required related model with no value.
@@ -1058,7 +1058,7 @@
             $this->assertTrue($importSanitizeResultsUtil->shouldSaveModel());
             $messages = $importSanitizeResultsUtil->getMessages();
             $this->assertEquals(1, count($messages));
-            $compareMessage = 'Import - Has One Id specified did not match any existing records.';
+            $compareMessage = 'Import - Has One ID specified did not match any existing records.';
             $this->assertEquals($compareMessage, $messages[0]);
 
             //Test a non-required related model with no value.
@@ -1167,7 +1167,7 @@
             $this->assertFalse($importSanitizeResultsUtil->shouldSaveModel());
             $messages = $importSanitizeResultsUtil->getMessages();
             $this->assertEquals(1, count($messages));
-            $compareMessage = 'Import - Id Id specified did not match any existing records.';
+            $compareMessage = 'Import - Id ID specified did not match any existing records.';
             $this->assertEquals($compareMessage, $messages[0]);
 
             //Test the id attribute with no value.

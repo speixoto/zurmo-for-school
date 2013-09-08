@@ -82,6 +82,13 @@
             {
                 $found = $this->resolveFoundExternalSystemIdByValue($rowBean->{$this->columnName});
             }
+            $this->resolveFindingModelDuringAnalysis($found, $rowBean);
+            $this->resolveExternalSystemIdValueIsTooLong($rowBean);
+        }
+
+        protected function resolveFindingModelDuringAnalysis($found, RedBean_OODBBean $rowBean)
+        {
+            assert('is_bool($found)');
             if ($found)
             {
                 $this->resolveForFoundModel();
@@ -90,6 +97,10 @@
             {
                 $this->resolveForUnfoundModel($rowBean);
             }
+        }
+
+        protected function resolveExternalSystemIdValueIsTooLong(RedBean_OODBBean $rowBean)
+        {
             if ($this->mappingRuleData["type"] == IdValueTypeMappingRuleForm::EXTERNAL_SYSTEM_ID)
             {
                 if (strlen($rowBean->{$this->columnName}) > $this->externalSystemIdMaxLength)
