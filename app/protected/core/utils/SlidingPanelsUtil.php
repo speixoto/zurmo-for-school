@@ -40,6 +40,7 @@
     abstract class SlidingPanelsUtil
     {
         const SHOULD_SLIDE_TO_FIRST_PANEL_KEY_NAME = 'slideToFirstPanel';
+
         /**
          * Implement in child class
          * @throws NotImplementedException

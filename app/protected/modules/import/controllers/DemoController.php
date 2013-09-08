@@ -78,7 +78,7 @@
                     'mappingRulesData' => array()),
             );
             $serializedData['mappingData']        = $mappingData;
-            $serializedData['rowColumnDelimiter'] = ',';
+            $serializedData['rowColumnDelimiter'] = ','; // Not Coding Standard
             $serializedData['rowColumnEnclosure'] = '"';
             $serializedData['firstRowIsHeaderRow'] = $firstRowIsHeaderRow;
             $import->serializedData               = serialize($serializedData);

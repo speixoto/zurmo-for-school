@@ -43,11 +43,11 @@
             assert('$moduleId != null');
             assert('is_array($categories)');
             parent::__construct(2, 1);
-            $actionBarView = new ActionBarForProductCategoriesTreeListView ($controllerId, 
-                                                                            $moduleId, 
+            $actionBarView = new ActionBarForProductCategoriesTreeListView ($controllerId,
+                                                                            $moduleId,
                                                                             $activeActionElementType,
-                                                                            $introView);            
-            $this->setView($actionBarView, 0, 0);            
+                                                                            $introView);
+            $this->setView($actionBarView, 0, 0);
             $categoriesTreeListView = new ProductCategoriesTreeListView($controllerId, $moduleId, $categories);
             $categoriesTreeListView->setCssClasses(array('DetailsView'));
             $this->setView($categoriesTreeListView, 1, 0);

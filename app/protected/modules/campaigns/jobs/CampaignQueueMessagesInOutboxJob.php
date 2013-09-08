@@ -52,12 +52,22 @@
          */
         public function run()
         {
+            $processed = $this->processRun();
+            $this->forgetModelsWithForgottenValidators();
+            $this->modelIdentifiersForForgottenValidators = array();
+            return $processed;
+        }
+
+        protected function processRun()
+        {
             $batchSize = $this->resolveBatchSize();
             $campaignItemsToProcess    = CampaignItem::getByProcessedAndStatusAndSendOnDateTime(
                                                                                         0,
                                                                                         Campaign::STATUS_PROCESSING,
                                                                                         time(),
                                                                                         $batchSize);
+            $startingMemoryUsage = memory_get_usage();
+            $modelsProcessedCount = 0;
             foreach ($campaignItemsToProcess as $campaignItem)
             {
                 try
@@ -74,7 +84,9 @@
                     return false;
                 }
                 $this->runGarbageCollection($campaignItem);
+                $modelsProcessedCount++;
             }
+            $this->addMaxmimumProcessingCountMessage($modelsProcessedCount, $startingMemoryUsage);
             return true;
         }
 
@@ -92,8 +104,8 @@
             assert('$campaignItem instanceof CampaignItem');
             $campaignItem->campaign->marketingList->forgetValidators();
             $campaignItem->campaign->forgetValidators();
-            unset($campaignItem->campaign->marketingList);
-            unset($campaignItem->campaign);
+            $this->modelIdentifiersForForgottenValidators[$campaignItem->campaign->marketingList->getModelIdentifier()] = true;
+            $this->modelIdentifiersForForgottenValidators[$campaignItem->campaign->getModelIdentifier()] = true;
             parent::runGarbageCollection($campaignItem);
         }
     }

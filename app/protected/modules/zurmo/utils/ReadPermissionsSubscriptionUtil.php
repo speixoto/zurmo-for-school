@@ -108,12 +108,12 @@
             if (!$tableExists)
             {
                 R::exec("create table $modelSubscriptionTableName (
-                                            id int(11)         unsigned NOT NULL PRIMARY KEY AUTO_INCREMENT ,
-                                            userid int(11)     unsigned NOT NULL,
-                                            modelid int(11)    unsigned NOT NULL,
-                                            modifieddatetime   datetime DEFAULT NULL,
-                                            subscriptiontype   tinyint(4) DEFAULT NULL
-                                     )");
+                                           id int(11)         unsigned not null PRIMARY KEY AUTO_INCREMENT ,
+                                           userid int(11)     unsigned not null,
+                                           modelid int(11)    unsigned not null,
+                                           modifieddatetime   datetime DEFAULT null,
+                                           subscriptiontype   tinyint(4) DEFAULT null
+                                    )");
             }
         }
 

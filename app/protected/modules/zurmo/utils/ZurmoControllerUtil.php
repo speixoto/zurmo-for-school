@@ -45,9 +45,9 @@
          * @throws NotSupportedException
          */
         public static function updatePermissionsWithDefaultForModelByUser(SecurableItem $model, User $user)
-        {                        
+        {
             if ($model instanceof SecurableItem && count($model->permissions) === 0)
-            {                
+            {
                 $defaultPermission  = UserConfigurationFormAdapter::resolveAndGetDefaultPermissionSetting(
                                                                                         $user);
                 $nonEveryoneGroup   = UserConfigurationFormAdapter::resolveAndGetValue($user,

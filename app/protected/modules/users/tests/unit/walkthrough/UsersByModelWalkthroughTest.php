@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class UsersByRoleWalkthroughTest extends ZurmoWalkthroughBaseTest
+    class UsersByModelWalkthroughTest extends ZurmoWalkthroughBaseTest
     {
         public static function setUpBeforeClass()
         {
@@ -42,7 +42,7 @@
             SecurityTestHelper::createSuperAdmin();
         }
 
-        public function testUsersInRoleModalListAction()
+        public function testUsersInModelModalListAction()
         {
             $role = new Role();
             $role->name = 'myRole';

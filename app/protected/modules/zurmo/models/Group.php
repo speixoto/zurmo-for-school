@@ -87,7 +87,7 @@
 
         public static function isUserASuperAdministrator(User $user)
         {
-            if($user->id < 0)
+            if ($user->id < 0)
             {
                 throw new NotSupportedException();
             }

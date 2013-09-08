@@ -227,9 +227,10 @@
         }
 
         /**
+         * @param bool $forExport
          * @return array
          */
-        public function makeAxisCrossingColumnCountAndLeadingHeaderRowsData()
+        public function makeAxisCrossingColumnCountAndLeadingHeaderRowsData($forExport = false)
         {
             $headerData    = array('rows' => array());
             $headerData['axisCrossingColumnCount'] = count($this->getYAxisGroupBys());
@@ -239,7 +240,7 @@
                 $xAxisDisplayAttribute = $this->getDisplayAttributeByAttribute($attributeIndexOrDerivedType);
                 foreach ($groupByValues as $key => $value)
                 {
-                    $groupByValues[$key] = $xAxisDisplayAttribute->resolveValueAsLabelForHeaderCell($value);
+                    $groupByValues[$key] = $xAxisDisplayAttribute->resolveValueAsLabelForHeaderCell($value, $forExport);
                 }
                 $headerData['rows'][]  = array('groupByValues' => $groupByValues, 'colSpan' => $lastSpanCount);
                 $lastSpanCount = count($groupByValues) * $lastSpanCount;
@@ -470,7 +471,7 @@
             {
                 $this->xAxisGroupByDataValues = array();
                 $selectQueryAdapter = new RedBeanModelSelectQueryAdapter();
-                $sql                = $this->makeSqlQueryForFetchingData($selectQueryAdapter, null, null);                
+                $sql                = $this->makeSqlQueryForFetchingData($selectQueryAdapter, null, null);
                 $rows               = $this->getRowsData($sql);
                 foreach ($rows as $row)
                 {
