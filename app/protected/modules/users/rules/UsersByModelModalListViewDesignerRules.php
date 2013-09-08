@@ -34,52 +34,11 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class UsersByRoleModalListView extends UsersModalListView
+    class UsersByModelModalListViewDesignerRules extends ModalListViewDesignerRules
     {
-        public static function getDefaultMetadata()
+        public function allowEditInLayoutTool()
         {
-            $metadata = array(
-                'global' => array(
-                    'derivedAttributeTypes' => array(
-                        'FullName',
-                    ),
-                    'nonPlaceableAttributeNames' => array(
-                        'hash',
-                        'newPassword',
-                        'newPassword_repeat',
-                    ),
-                    'panels' => array(
-                        array(
-                            'rows' => array(
-                                array('cells' =>
-                                array(
-                                    array(
-                                        'elements' => array(
-                                            array('attributeName' => 'null', 'type' => 'FullName', 'isLink' => true),
-                                        ),
-                                    ),
-                                )
-                                ),
-                                array('cells' =>
-                                array(
-                                    array(
-                                        'elements' => array(
-                                            array('attributeName' => 'username', 'type' => 'Text'),
-                                        ),
-                                    ),
-                                )
-                                ),
-                            ),
-                        ),
-                    ),
-                ),
-            );
-            return $metadata;
-        }
-
-        public static function getDesignerRulesType()
-        {
-            return get_called_class();
+            return false;
         }
     }
 ?>

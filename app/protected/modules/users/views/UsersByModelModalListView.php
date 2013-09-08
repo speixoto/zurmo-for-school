@@ -34,32 +34,52 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class UsersByRoleWalkthroughTest extends ZurmoWalkthroughBaseTest
+    class UsersByModelModalListView extends UsersModalListView
     {
-        public static function setUpBeforeClass()
+        public static function getDefaultMetadata()
         {
-            parent::setUpBeforeClass();
-            SecurityTestHelper::createSuperAdmin();
+            $metadata = array(
+                'global' => array(
+                    'derivedAttributeTypes' => array(
+                        'FullName',
+                    ),
+                    'nonPlaceableAttributeNames' => array(
+                        'hash',
+                        'newPassword',
+                        'newPassword_repeat',
+                    ),
+                    'panels' => array(
+                        array(
+                            'rows' => array(
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'null', 'type' => 'FullName', 'isLink' => true),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'username', 'type' => 'Text'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+            );
+            return $metadata;
         }
 
-        public function testUsersInRoleModalListAction()
+        public static function getDesignerRulesType()
         {
-            $role = new Role();
-            $role->name = 'myRole';
-            $role->save();
-            $super = User::getByUsername('super');
-            $super->role = $role;
-            $super->save();
-            Yii::app()->user->userModel = User::getByUsername('super');
-
-            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
-            $this->setGetArray(array('id' => $role->id));
-            $this->resetPostArray();
-            $content = $this->runControllerWithNoExceptionsAndGetContent('zurmo/role/UsersInRoleModalList');
-            $this->assertTrue(strpos($content, "1-1 of 1 result(s).") !== false);
-            $this->assertTrue(strpos($content, "/users/default/details?id=" . $super->id) !== false);
-            $this->assertTrue(strpos($content, $super->username) !== false);
-            $this->assertTrue(strpos($content, $super->getFullName()) !== false);
-      }
+            return get_called_class();
+        }
     }
 ?>
