@@ -34,11 +34,18 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class UsersByRoleModalListViewDesignerRules extends ModalListViewDesignerRules
+    /**
+     * Display the comment text area input box.
+     */
+    class CommentTextAreaElement extends TextAreaElement
     {
-        public function allowEditInLayoutTool()
+        /**
+         * Override to convert url to link
+         * @return The element's content.
+         */
+        protected function renderControlNonEditable()
         {
-            return false;
+            return TextUtil::textWithUrlToTextWithLink($this->model->{$this->attribute});
         }
     }
 ?>

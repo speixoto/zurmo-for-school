@@ -7802,7 +7802,6 @@ body div.form-toolbar a.simple-link:not(.z-button) {
   border-radius: 0 !important;
   padding: 0  !important;
   border: none !important;
-  margin: !important;
   text-decoration: underline;
   font-weight: normal;
 }
@@ -7849,7 +7848,7 @@ a.simple-link {
   padding: 0  !important;
   border: none !important;
   margin-left: 10px;
-  text-decoration: underline;
+  text-decoration: underline !important;
   font-size: 11px;
   font-weight: normal;
 }
