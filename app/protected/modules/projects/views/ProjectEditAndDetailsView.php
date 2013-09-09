@@ -83,24 +83,24 @@
                                         ),
                                     )
                                 ),
-//                                array('cells' =>
-//                                    array(
-//                                        array(
-//                                            'elements' => array(
-//                                                array('attributeName' => 'null', 'type' => 'MultipleContactsForProjects'),
-//                                            ),
-//                                        ),
-//                                    )
-//                                ),
-//                                array('cells' =>
-//                                    array(
-//                                        array(
-//                                            'elements' => array(
-//                                                array('attributeName' => 'null', 'type' => 'MultipleOpportunitiesForProjects'),
-//                                            ),
-//                                        ),
-//                                    )
-//                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'null', 'type' => 'MultipleContactsForProjects'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'null', 'type' => 'MultipleOpportunitiesForProjects'),
+                                            ),
+                                        ),
+                                    )
+                                ),
                             ),
                         ),
                     ),

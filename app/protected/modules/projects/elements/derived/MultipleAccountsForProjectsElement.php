@@ -151,25 +151,5 @@
             }
             return $existingProjectAccounts;
         }
-
-        /**
-         * @param object $project
-         * @param string $keyword
-         * @return string
-         */
-        public static function renderHtmlContentLabelFromProjectAndKeyword($project, $keyword)
-        {
-            assert('$project instanceof Project && $project->id > 0');
-            assert('$keyword == null || is_string($keyword)');
-
-            if ($project->name != null)
-            {
-                return strval($project) . '&#160&#160<b>'. '</b>';
-            }
-            else
-            {
-                return strval($project);
-            }
-        }
     }
 ?>

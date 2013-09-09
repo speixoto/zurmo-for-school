@@ -281,6 +281,9 @@
             );
         }
 
+        /**
+         * Project Modal List Field
+         */
         public function actionModalList()
         {
             $modalListLinkProvider = new SelectFromRelatedEditModalListLinkProvider(
@@ -292,18 +295,41 @@
                  setAjaxModeAndRenderModalSearchList($this, $modalListLinkProvider);
         }
 
+        /**
+         * Render autocomplete options of accounts for projects
+         * @param string $term
+         */
         public function actionAutoCompleteAllAccountsForMultiSelectAutoComplete($term)
+        {
+            $this->processAutoCompleteOptionsForRelations('Account', $term);
+        }
+
+        /**
+         * Render autocomplete options of opportunities for projects
+         * @param string $term
+         */
+        public function actionAutoCompleteAllOpportunitiesForMultiSelectAutoComplete($term)
+        {
+            $this->processAutoCompleteOptionsForRelations('Opportunity', $term);
+        }
+
+        /**
+         * Process auto complete options for relations
+         * @param string $relatedModelClassName
+         * @param string $term
+         */
+        protected function processAutoCompleteOptionsForRelations($relatedModelClassName, $term)
         {
             $pageSize     = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                             'autoCompleteListPageSize', get_class($this->getModule()));
             $adapterName  = null;
-            $projectAccounts      = self::getProjectRelationsByPartialName('Account', $term, $pageSize, $adapterName);
+            $projectRelations      = self::getProjectRelationsByPartialName($relatedModelClassName, $term, $pageSize, $adapterName);
             $autoCompleteResults    = array();
-            foreach ($projectAccounts as $projectAccount)
+            foreach ($projectRelations as $projectRelation)
             {
                 $autoCompleteResults[] = array(
-                    'id'   => $projectAccount->id,
-                    'name' => self::renderHtmlContentLabelFromRelationAndKeyword($projectAccount, $term)
+                    'id'   => $projectRelation->id,
+                    'name' => self::renderHtmlContentLabelFromRelationAndKeyword($projectRelation, $term)
                 );
             }
             echo CJSON::encode($autoCompleteResults);
@@ -332,7 +358,7 @@
             {
                 $where .= 'and';
             }
-            $where .= self::getWherePartForPartialNameSearchByPartialName('account', $partialName);
+            $where .= self::getWherePartForPartialNameSearchByPartialName(lcfirst($className), $partialName);
             return $className::getSubset($joinTablesAdapter, null, $pageSize, $where, lcfirst($className) . ".name");
         }
 
@@ -353,7 +379,7 @@
          */
         public static function renderHtmlContentLabelFromRelationAndKeyword($relatedModel, $keyword)
         {
-            assert('$relatedModel instanceof Account && $relatedModel->id > 0');
+            assert('($relatedModel instanceof Account || $relatedModel instanceof Opportunity) && $relatedModel->id > 0');
             assert('$keyword == null || is_string($keyword)');
 
             if ($relatedModel->name != null)
@@ -364,6 +390,11 @@
             {
                 return strval($relatedModel);
             }
+        }
+
+        protected static function getZurmoControllerUtil()
+        {
+            return new ProjectZurmoControllerUtil('projectItems', 'ProjectItemForm');
         }
     }
 ?>

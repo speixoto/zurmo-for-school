@@ -35,46 +35,51 @@
      ********************************************************************************/
 
     /**
-     * User interface element for managing related model relations for activities. This class supports a HAS_MANY
-     * specifically for the 'contact' relation. This is utilized by the meeting model.
+     * User interface element for managing related model relations for projects. This class supports a MANY_MANY
+     * specifically for the 'contacts' relation. This is utilized by the Project model.
      *
      */
-    class MultipleContactsForMeetingElement extends Element implements DerivedElementInterface
+    class MultipleContactsForProjectsElement extends Element implements DerivedElementInterface
     {
+        /**
+         * @return string
+         */
         protected function renderControlNonEditable()
         {
             $content  = null;
-            $contacts = $this->getExistingContactRelationsIdsAndLabels();
-            foreach ($contacts as $contactData)
+            $projectContacts = $this->getExistingContactRelationsIdsAndLabels();
+            foreach ($projectContacts as $projectContact)
             {
                 if ($content != null)
                 {
                     $content .= ', ';
                 }
-                $content .= $contactData['name'];
+                $content .= $projectContact['name'];
             }
             return $content;
         }
 
+        /**
+         * @return string
+         */
         protected function renderControlEditable()
         {
-            assert('$this->model instanceof Activity');
+            assert('$this->model instanceof Project');
             $cClipWidget = new CClipWidget();
-            $cClipWidget->beginClip("ModelElement");
+            $cClipWidget->beginClip("ContactForProjectModelElement");
             $cClipWidget->widget('application.core.widgets.MultiSelectAutoComplete', array(
-                'name'        => $this->getNameForIdField(),
-                'id'          => $this->getIdForIdField(),
-                'jsonEncodedIdsAndLabels'   => CJSON::encode($this->getExistingContactRelationsIdsAndLabels()),
-                'sourceUrl'   => Yii::app()->createUrl('contacts/variableContactState/autoCompleteAllContactsForMultiSelectAutoComplete'),
-                'htmlOptions' => array(
-                    'disabled' => $this->getDisabledValue(),
-                    ),
-                'hintText' => Zurmo::t('MeetingsModule', 'Type a ContactsModuleSingularLowerCaseLabel ' .
-                                                'or LeadsModuleSingularLowerCaseLabel: name or email address',
+                                'name'              => $this->getNameForIdField(),
+                                'id'                => $this->getIdForIdField(),
+                                'jsonEncodedIdsAndLabels'   => CJSON::encode($this->getExistingContactsRelationsIdsAndLabels()),
+                                'sourceUrl'         => Yii::app()->createUrl('contacts/variableContactState/autoCompleteAllContactsForMultiSelectAutoComplete'),
+                                'htmlOptions'       => array(
+                                                                'disabled' => $this->getDisabledValue(),
+                                                                ),
+                                'hintText' => Zurmo::t('ProjectsModule', 'Type a ' . LabelUtil::getUncapitalizedModelLabelByCountAndModelClassName(1, 'Contact'),
                                 LabelUtil::getTranslationParamsForAllModules())
             ));
             $cClipWidget->endClip();
-            $content = $cClipWidget->getController()->clips['ModelElement'];
+            $content = $cClipWidget->getController()->clips['ContactForProjectModelElement'];
             return $content;
         }
 
@@ -82,19 +87,28 @@
         {
         }
 
+        /**
+         * @return string
+         */
         protected function renderLabel()
         {
             return $this->resolveNonActiveFormFormattedLabel($this->getFormattedAttributeLabel());
         }
 
+        /**
+         * @return string
+         */
         protected function getFormattedAttributeLabel()
         {
-            return Yii::app()->format->text(Zurmo::t('MeetingsModule', 'Attendees'));
+            return Yii::app()->format->text(Zurmo::t('ProjectsModule', 'Contacts'));
         }
 
-         public static function getDisplayName()
+        /**
+         * @return string
+         */
+        public static function getDisplayName()
         {
-            return Zurmo::t('MeetingsModule', 'Related ContactsModulePluralLabel and LeadsModulePluralLabel',
+            return Zurmo::t('ContactsModule', 'Related ContactsModulePluralLabel',
                        LabelUtil::getTranslationParamsForAllModules());
         }
 
@@ -108,30 +122,31 @@
             return array();
         }
 
+        /**
+         * @return string
+         */
         protected function getNameForIdField()
         {
-                return 'ActivityItemForm[Contact][ids]';
+            return 'ProjectContactsForm[contactIds]';
         }
 
+        /**
+         * @return string
+         */
         protected function getIdForIdField()
         {
-            return 'ActivityItemForm_Contact_ids';
+            return 'ProjectContactsForm_Contact_ids';
         }
 
         protected function getExistingContactRelationsIdsAndLabels()
         {
             $existingContacts = array();
-            $modelDerivationPathToItem = RuntimeUtil::getModelDerivationPathToItem('Contact');
-            foreach ($this->model->activityItems as $item)
+            foreach ($this->model->contacts as $contact)
             {
                 try
                 {
-                    $contact = $item->castDown(array($modelDerivationPathToItem));
-                    if (get_class($contact) == 'Contact')
-                    {
-                        $existingContacts[] = array('id' => $contact->id,
-                                                    'name' => ContactsUtil::renderHtmlContentLabelFromContactAndKeyword($contact, null));
-                    }
+                    $existingContacts[] = array('id' => $contact->id,
+                                                'name' => ContactsUtil::renderHtmlContentLabelFromContactAndKeyword($contact, null));
                 }
                 catch (NotFoundException $e)
                 {

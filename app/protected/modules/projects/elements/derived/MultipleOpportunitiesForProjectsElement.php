@@ -35,46 +35,51 @@
      ********************************************************************************/
 
     /**
-     * User interface element for managing related model relations for activities. This class supports a HAS_MANY
-     * specifically for the 'contact' relation. This is utilized by the meeting model.
+     * User interface element for managing related model relations for projects. This class supports a MANY_MANY
+     * specifically for the 'opportunities' relation. This is utilized by the Project model.
      *
      */
-    class MultipleContactsForMeetingElement extends Element implements DerivedElementInterface
+    class MultipleOpportunitiesForProjectsElement extends Element implements DerivedElementInterface
     {
+        /**
+         * @return string
+         */
         protected function renderControlNonEditable()
         {
             $content  = null;
-            $contacts = $this->getExistingContactRelationsIdsAndLabels();
-            foreach ($contacts as $contactData)
+            $projectOpportunities = $this->getExistingOpportunitiesRelationsIdsAndLabels();
+            foreach ($projectOpportunities as $projectOpportunity)
             {
                 if ($content != null)
                 {
                     $content .= ', ';
                 }
-                $content .= $contactData['name'];
+                $content .= $projectOpportunity['name'];
             }
             return $content;
         }
 
+        /**
+         * @return string
+         */
         protected function renderControlEditable()
         {
-            assert('$this->model instanceof Activity');
+            assert('$this->model instanceof Project');
             $cClipWidget = new CClipWidget();
-            $cClipWidget->beginClip("ModelElement");
+            $cClipWidget->beginClip("OpportunityForProjectModelElement");
             $cClipWidget->widget('application.core.widgets.MultiSelectAutoComplete', array(
-                'name'        => $this->getNameForIdField(),
-                'id'          => $this->getIdForIdField(),
-                'jsonEncodedIdsAndLabels'   => CJSON::encode($this->getExistingContactRelationsIdsAndLabels()),
-                'sourceUrl'   => Yii::app()->createUrl('contacts/variableContactState/autoCompleteAllContactsForMultiSelectAutoComplete'),
-                'htmlOptions' => array(
-                    'disabled' => $this->getDisabledValue(),
-                    ),
-                'hintText' => Zurmo::t('MeetingsModule', 'Type a ContactsModuleSingularLowerCaseLabel ' .
-                                                'or LeadsModuleSingularLowerCaseLabel: name or email address',
+                                'name'              => $this->getNameForIdField(),
+                                'id'                => $this->getIdForIdField(),
+                                'jsonEncodedIdsAndLabels'   => CJSON::encode($this->getExistingOpportunitiesRelationsIdsAndLabels()),
+                                'sourceUrl'         => Yii::app()->createUrl('projects/default/autoCompleteAllOpportunitiesForMultiSelectAutoComplete'),
+                                'htmlOptions'       => array(
+                                                                'disabled' => $this->getDisabledValue(),
+                                                                ),
+                                'hintText' => Zurmo::t('ProjectsModule', 'Type a ' . LabelUtil::getUncapitalizedModelLabelByCountAndModelClassName(1, 'Opportunity'),
                                 LabelUtil::getTranslationParamsForAllModules())
             ));
             $cClipWidget->endClip();
-            $content = $cClipWidget->getController()->clips['ModelElement'];
+            $content = $cClipWidget->getController()->clips['OpportunityForProjectModelElement'];
             return $content;
         }
 
@@ -82,19 +87,28 @@
         {
         }
 
+        /**
+         * @return string
+         */
         protected function renderLabel()
         {
             return $this->resolveNonActiveFormFormattedLabel($this->getFormattedAttributeLabel());
         }
 
+        /**
+         * @return string
+         */
         protected function getFormattedAttributeLabel()
         {
-            return Yii::app()->format->text(Zurmo::t('MeetingsModule', 'Attendees'));
+            return Yii::app()->format->text(Zurmo::t('ProjectsModule', 'Opportunities'));
         }
 
-         public static function getDisplayName()
+        /**
+         * @return string
+         */
+        public static function getDisplayName()
         {
-            return Zurmo::t('MeetingsModule', 'Related ContactsModulePluralLabel and LeadsModulePluralLabel',
+            return Zurmo::t('OpportunitiesModule', 'Related OpportunitiesModulePluralLabel',
                        LabelUtil::getTranslationParamsForAllModules());
         }
 
@@ -108,37 +122,34 @@
             return array();
         }
 
+        /**
+         * @return string
+         */
         protected function getNameForIdField()
         {
-                return 'ActivityItemForm[Contact][ids]';
+            return 'ProjectOpportunitiesForm[opportunityIds]';
         }
 
+        /**
+         * @return string
+         */
         protected function getIdForIdField()
         {
-            return 'ActivityItemForm_Contact_ids';
+            return 'ProjectOpportunitiesForm_Opportunity_ids';
         }
 
-        protected function getExistingContactRelationsIdsAndLabels()
+        /**
+         * @return array
+         */
+        protected function getExistingOpportunitiesRelationsIdsAndLabels()
         {
-            $existingContacts = array();
-            $modelDerivationPathToItem = RuntimeUtil::getModelDerivationPathToItem('Contact');
-            foreach ($this->model->activityItems as $item)
+            $existingProjectOpportunities = array();
+            for ($i = 0; $i < count($this->model->opportunities); $i++)
             {
-                try
-                {
-                    $contact = $item->castDown(array($modelDerivationPathToItem));
-                    if (get_class($contact) == 'Contact')
-                    {
-                        $existingContacts[] = array('id' => $contact->id,
-                                                    'name' => ContactsUtil::renderHtmlContentLabelFromContactAndKeyword($contact, null));
-                    }
-                }
-                catch (NotFoundException $e)
-                {
-                    //do nothing
-                }
+                $existingProjectOpportunities[] = array('id' => $this->model->opportunities[$i]->id,
+                                                     'name' => $this->model->opportunities[$i]->name);
             }
-            return $existingContacts;
+            return $existingProjectOpportunities;
         }
     }
 ?>
