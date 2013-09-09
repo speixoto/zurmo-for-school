@@ -34,52 +34,18 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class UsersByRoleModalListView extends UsersModalListView
+    /**
+     * Run the jobManager using this messageLogger if you want to show all debug messaging regardless of if debug
+     * is true/false in the application
+     */
+    class DebuggingMessageLogger extends MessageLogger
     {
-        public static function getDefaultMetadata()
+        /**
+         * @return bool
+         */
+        protected function shouldPrintDebugMessages()
         {
-            $metadata = array(
-                'global' => array(
-                    'derivedAttributeTypes' => array(
-                        'FullName',
-                    ),
-                    'nonPlaceableAttributeNames' => array(
-                        'hash',
-                        'newPassword',
-                        'newPassword_repeat',
-                    ),
-                    'panels' => array(
-                        array(
-                            'rows' => array(
-                                array('cells' =>
-                                array(
-                                    array(
-                                        'elements' => array(
-                                            array('attributeName' => 'null', 'type' => 'FullName', 'isLink' => true),
-                                        ),
-                                    ),
-                                )
-                                ),
-                                array('cells' =>
-                                array(
-                                    array(
-                                        'elements' => array(
-                                            array('attributeName' => 'username', 'type' => 'Text'),
-                                        ),
-                                    ),
-                                )
-                                ),
-                            ),
-                        ),
-                    ),
-                ),
-            );
-            return $metadata;
-        }
-
-        public static function getDesignerRulesType()
-        {
-            return get_called_class();
+            return true;
         }
     }
 ?>

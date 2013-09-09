@@ -34,59 +34,52 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * View that renders a list of groups in the form of a
-     * tree or noded list view.
-     */
-    class GroupsTreeListView extends SecurityTreeListView
+    class UsersByModelModalListView extends UsersModalListView
     {
-        protected function renderContent()
+        public static function getDefaultMetadata()
         {
-            $content  = $this->renderViewToolBar(false); //why do we need it if its empty?
-            $content .= '<div>';
-            $content .= '<h1>' . Zurmo::t('ZurmoModule', 'Groups') . '</h1>';
-            $content .= $this->renderTreeMenu('group', 'groups', Zurmo::t('ZurmoModule', 'Group'));
-            $content .= '</div>';
-            return $content;
+            $metadata = array(
+                'global' => array(
+                    'derivedAttributeTypes' => array(
+                        'FullName',
+                    ),
+                    'nonPlaceableAttributeNames' => array(
+                        'hash',
+                        'newPassword',
+                        'newPassword_repeat',
+                    ),
+                    'panels' => array(
+                        array(
+                            'rows' => array(
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'null', 'type' => 'FullName', 'isLink' => true),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'username', 'type' => 'Text'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+            );
+            return $metadata;
         }
 
-        protected function renderTreeListView($data)
+        public static function getDesignerRulesType()
         {
-            assert('is_array($data)');
-            $content  = '<table class="configuration-list">';
-            $content .= '<colgroup>';
-            $content .= '<col style="width:50%" />';
-            $content .= '</colgroup>';
-            $content .= '<colgroup>';
-            $content .= '<col style="width:25%" />';
-            $content .= '</colgroup>';
-            $content .= '<col style="width:25%" />';
-            $content .= '</colgroup>';
-            $content .= '<tbody>';
-            $content .= '<tr><th>' . Zurmo::t('ZurmoModule', 'Name') . '</th><th>' . Zurmo::t('ZurmoModule', 'Users') . '</th><th></th></tr>';
-            static::renderTreeListViewNode($content, $data, 0);
-            $content .= '</tbody>';
-            $content .= '</table>';
-            return $content;
-        }
-
-        protected function resolveUserCountForItem(Item $item)
-        {
-            if ($item->name == Group::EVERYONE_GROUP_NAME)
-            {
-                return User::getCount();
-            }
-            return $item->{$this->getModelRelationNameForUserCount()}->count();
-        }
-
-        protected static function resolveShouldShowLinkableUserCount()
-        {
-            return true;
-        }
-
-        protected static function resolveRouteAction()
-        {
-            return '/usersInGroupModalList/';
+            return get_called_class();
         }
     }
 ?>
