@@ -36,6 +36,9 @@
 
     class AccountConvertToView extends EditView
     {
+
+        protected $wrapContentInWrapperDiv = false;
+
         /**
          * Override to pass in the relation Id as the modelId. In the case of lead conversion, the lead->id is the
          * $modelId. This can then be used for a cancel button to return to the lead detailview.

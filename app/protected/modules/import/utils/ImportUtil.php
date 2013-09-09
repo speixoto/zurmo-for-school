@@ -238,7 +238,13 @@
             $stateMetadataAdapterClassName = $moduleClassName::getStateMetadataAdapterClassName();
             if($stateMetadataAdapterClassName != null)
             {
+                //todo: eventually refactor this to be more broad in handling, but for now we want the scope of this to be narrow
+                if($model instanceof OwnedSecurableItem)
+                {
+                    $model->setTreatCurrentUserAsOwnerForPermissions(true);
+                }
                 $moduleClassName = $stateMetadataAdapterClassName::getModuleClassNameByModel($model);
+                $model->setTreatCurrentUserAsOwnerForPermissions(false);
             }
             $moduleId   = $moduleClassName::getDirectoryName();
             $urlToModel = Yii::app()->createUrl('/' . $moduleId . '/default/details', array('id' => $model->id));

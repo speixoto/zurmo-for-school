@@ -35,9 +35,9 @@
      ********************************************************************************/
 
     /**
-     * Unit test for UsersByRoleModalListControllerUtil
+     * Unit test for UsersByModelModalListControllerUtil
      */
-    class UsersByRoleModalListControllerTest extends ZurmoBaseTest
+    class UsersByModelModalListControllerTest extends ZurmoBaseTest
     {
         protected static $roleId;
 
@@ -55,10 +55,10 @@
             Yii::app()->user->userModel = User::getByUsername('super');
         }
 
-        public function testMakeModalSearchAttributeDataByRoleModel()
+        public function testMakeModalSearchAttributeDataByModel()
         {
             $role = Role::getById(self::$roleId);
-            $searchAttributeData = UsersByRoleModalListControllerUtil::makeModalSearchAttributeDataByRoleModel($role);
+            $searchAttributeData = UsersByModelModalListControllerUtil::makeModalSearchAttributeDataByModel($role, 'role');
             $this->assertTrue(is_array($searchAttributeData));
             $this->assertTrue(is_array($searchAttributeData['clauses']));
             $this->assertTrue(is_string($searchAttributeData['structure']));
@@ -75,8 +75,8 @@
         public function testMakeDataProviderBySearchAttributeData()
         {
             $role = Role::getById(self::$roleId);
-            $searchAttributeData = UsersByRoleModalListControllerUtil::makeModalSearchAttributeDataByRoleModel($role);
-            $dataProvider = UsersByRoleModalListControllerUtil::makeDataProviderBySearchAttributeData($searchAttributeData);
+            $searchAttributeData = UsersByModelModalListControllerUtil::makeModalSearchAttributeDataByModel($role, 'role');
+            $dataProvider = UsersByModelModalListControllerUtil::makeDataProviderBySearchAttributeData($searchAttributeData);
             $this->assertTrue($dataProvider instanceof RedBeanModelDataProvider);
             $data = $dataProvider->getData();
             $this->assertEquals(1, count($data));
