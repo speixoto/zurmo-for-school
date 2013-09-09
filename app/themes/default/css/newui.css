@@ -19676,9 +19676,6 @@ a + .autoresponder-stats {
 div.showing-panel {
   display: block;
 }
-.business-card {
-  display: block;
-}
 .business-card .gravatar {
   margin-right: 12px;
   margin-bottom: 6px;
