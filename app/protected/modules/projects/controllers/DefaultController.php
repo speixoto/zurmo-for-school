@@ -280,5 +280,90 @@
                 $dataProvider
             );
         }
+
+        public function actionModalList()
+        {
+            $modalListLinkProvider = new SelectFromRelatedEditModalListLinkProvider(
+                                            $_GET['modalTransferInformation']['sourceIdFieldId'],
+                                            $_GET['modalTransferInformation']['sourceNameFieldId'],
+                                            $_GET['modalTransferInformation']['modalId']
+            );
+            echo ModalSearchListControllerUtil::
+                 setAjaxModeAndRenderModalSearchList($this, $modalListLinkProvider);
+        }
+
+        public function actionAutoCompleteAllAccountsForMultiSelectAutoComplete($term)
+        {
+            $pageSize     = Yii::app()->pagination->resolveActiveForCurrentUserByType(
+                            'autoCompleteListPageSize', get_class($this->getModule()));
+            $adapterName  = null;
+            $projectAccounts      = self::getProjectRelationsByPartialName('Account', $term, $pageSize, $adapterName);
+            $autoCompleteResults    = array();
+            foreach ($projectAccounts as $projectAccount)
+            {
+                $autoCompleteResults[] = array(
+                    'id'   => $projectAccount->id,
+                    'name' => self::renderHtmlContentLabelFromRelationAndKeyword($projectAccount, $term)
+                );
+            }
+            echo CJSON::encode($autoCompleteResults);
+        }
+
+        /**
+         * @param string $partialName
+         * @param int $pageSize
+         * @param null|string $stateMetadataAdapterClassName
+         */
+        public static function getProjectRelationsByPartialName($className, $partialName, $pageSize, $stateMetadataAdapterClassName = null)
+        {
+            assert('is_string($partialName)');
+            assert('is_int($pageSize)');
+            assert('$stateMetadataAdapterClassName == null || is_string($stateMetadataAdapterClassName)');
+            $joinTablesAdapter  = new RedBeanModelJoinTablesQueryAdapter($className);
+            $metadata           = array('clauses' => array(), 'structure' => '');
+            if ($stateMetadataAdapterClassName != null)
+            {
+                $stateMetadataAdapter   = new $stateMetadataAdapterClassName($metadata);
+                $metadata               = $stateMetadataAdapter->getAdaptedDataProviderMetadata();
+                $metadata['structure']  = '(' . $metadata['structure'] . ')';
+            }
+            $where  = RedBeanModelDataProvider::makeWhere($className, $metadata, $joinTablesAdapter);
+            if ($where != null)
+            {
+                $where .= 'and';
+            }
+            $where .= self::getWherePartForPartialNameSearchByPartialName('account', $partialName);
+            return $className::getSubset($joinTablesAdapter, null, $pageSize, $where, lcfirst($className) . ".name");
+        }
+
+        /**
+         * @param string $partialName
+         * @return string
+         */
+        protected static function getWherePartForPartialNameSearchByPartialName($tableName, $partialName)
+        {
+            assert('is_string($partialName)');
+            return "   ($tableName.name  like '$partialName%') ";
+        }
+
+        /**
+         * @param ProductCategory $productCategory
+         * @param string $keyword
+         * @return string
+         */
+        public static function renderHtmlContentLabelFromRelationAndKeyword($relatedModel, $keyword)
+        {
+            assert('$relatedModel instanceof Account && $relatedModel->id > 0');
+            assert('$keyword == null || is_string($keyword)');
+
+            if ($relatedModel->name != null)
+            {
+                return strval($relatedModel) . '&#160&#160<b>'. '</b>';
+            }
+            else
+            {
+                return strval($relatedModel);
+            }
+        }
     }
 ?>

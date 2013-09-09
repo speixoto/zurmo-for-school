@@ -104,7 +104,9 @@
                     'description'
                 ),
                 'relations' => array(
-
+                    'opportunities'    => array(RedBeanModel::MANY_MANY, 'Opportunity'),
+                    'contacts'         => array(RedBeanModel::MANY_MANY, 'Contact'),
+                    'accounts'         => array(RedBeanModel::MANY_MANY, 'Account'),
                 ),
                 'rules' => array(
                     array('name',           'required'),
