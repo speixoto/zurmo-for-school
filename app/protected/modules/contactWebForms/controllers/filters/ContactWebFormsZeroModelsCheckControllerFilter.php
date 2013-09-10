@@ -34,52 +34,49 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class UsersByRoleModalListView extends UsersModalListView
+    /**
+     * Filter used by contactWebForm controllers to ascertain if any contactWebForm exist yet
+     */
+    class ContactWebFormsZeroModelsCheckControllerFilter extends ZeroModelsCheckControllerFilter
     {
-        public static function getDefaultMetadata()
+
+
+        public $activeActionElementType;
+
+        public $breadcrumbLinks;
+
+        protected function resolveMessageControllerId()
         {
-            $metadata = array(
-                'global' => array(
-                    'derivedAttributeTypes' => array(
-                        'FullName',
-                    ),
-                    'nonPlaceableAttributeNames' => array(
-                        'hash',
-                        'newPassword',
-                        'newPassword_repeat',
-                    ),
-                    'panels' => array(
-                        array(
-                            'rows' => array(
-                                array('cells' =>
-                                array(
-                                    array(
-                                        'elements' => array(
-                                            array('attributeName' => 'null', 'type' => 'FullName', 'isLink' => true),
-                                        ),
-                                    ),
-                                )
-                                ),
-                                array('cells' =>
-                                array(
-                                    array(
-                                        'elements' => array(
-                                            array('attributeName' => 'username', 'type' => 'Text'),
-                                        ),
-                                    ),
-                                )
-                                ),
-                            ),
-                        ),
-                    ),
-                ),
-            );
-            return $metadata;
+            return 'default';
         }
 
-        public static function getDesignerRulesType()
+        protected function resolveMessageModuleId()
         {
-            return get_called_class();
+            return 'contactWebForms';
+        }
+
+        protected function getMessageViewClassName()
+        {
+            return $this->controller->getModule()->getPluralCamelCasedName() . 'ZeroModelsYetView';
+        }
+
+        protected function resolveAndRenderView(View $messageView)
+        {
+            $gridViewId              = 'notUsed';
+            $pageVar                 = 'notUsed';
+            $listModel               = new ContactWebForm(false);
+            $actionBarView           = new SecuredActionBarForContactWebFormsSearchAndListView(
+                                        'default',
+                                        'contactWebForms',
+                                        $listModel,
+                                        $gridViewId,
+                                        $pageVar,
+                                        false, $this->activeActionElementType);
+            $mixedView               = new ActionBarAndZeroModelsYetView($actionBarView, $messageView);
+            $view                    = new ContactWebFormsPageView(ZurmoDefaultAdminViewUtil::
+                                       makeViewWithBreadcrumbsForCurrentUser(
+                                       $this->controller, $mixedView, $this->breadcrumbLinks, 'ContactWebFormsBreadCrumbView'));
+            echo $view->render();
         }
     }
 ?>
