@@ -122,15 +122,12 @@
             $script  .= " basicSearchOldValue = '';";
             $script  .= "   var basicSearchHandler = function(event)
                             {
-                                if ($(this).val() != '')
+                                if (basicSearchOldValue != $(this).val())
                                 {
-                                    if (basicSearchOldValue != $(this).val())
-                                    {
-                                        basicSearchOldValue = $(this).val();
-                                        basicSearchQueued = basicSearchQueued  + 1;
-                                        setTimeout('basicSearchQueued = basicSearchQueued - 1', 900);
-                                        setTimeout('$(this).searchByQueuedSearch(\"" . $inputId . "\")', 1000);
-                                    }
+                                    basicSearchOldValue = $(this).val();
+                                    basicSearchQueued = basicSearchQueued  + 1;
+                                    setTimeout('basicSearchQueued = basicSearchQueued - 1', 900);
+                                    setTimeout('$(this).searchByQueuedSearch(\"" . $inputId . "\")', 1000);
                                 }
                             };";
             if($this->bindBasicSearchHandlerToKeyUp)
