@@ -34,29 +34,23 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class ChangeDashboardLinkActionElement extends LinkActionElement
+    class ChangeDashboardMenuActionElement extends MenuActionElement
     {
         public function getActionType()
         {
             return 'Details';
         }
 
-        public function render()
+        protected function getMenuItems()
         {
-            $menuItems = array('label' => $this->getDefaultLabel(), 'items' => array());
+            $menuItems = array();
             foreach ($this->getDashboardsData() as $dashboardData)
             {
-                $menuItems['items'][] = array('label' => $dashboardData['name'],
-                                               'url'   => Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/dashboardDetails/',
-                                                   array('id' => $dashboardData['id'])));
+                $menuItems[] = array('label' => $dashboardData['name'],
+                                     'url'   => Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/dashboardDetails/',
+                                                    array('id' => $dashboardData['id'])));
             }
-            $cClipWidget = new CClipWidget();
-            $cClipWidget->beginClip("DetailsOptionMenu");
-            $cClipWidget->widget('application.core.widgets.MbMenu', array(
-                'htmlOptions' => array('id' => 'ChangeDashboardsMenu', 'class'   => 'icon-change-dashboard'),
-                'items'                   => array($menuItems)));
-            $cClipWidget->endClip();
-            return $cClipWidget->getController()->clips['DetailsOptionMenu'];
+            return $menuItems;
         }
 
         protected function getDefaultLabel()

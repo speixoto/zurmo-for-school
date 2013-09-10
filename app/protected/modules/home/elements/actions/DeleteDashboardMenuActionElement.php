@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class DeleteDashboardLinkActionElement extends LinkActionElement
+    class DeleteDashboardMenuActionElement extends MenuActionElement
     {
         public function getActionType()
         {
