@@ -149,7 +149,7 @@
 
         /**
          * Action called in the event that the mass delete quantity is larger than the pageSize.
-         * This action is called after the pageSize quantity has been delted and continues to be
+         * This action is called after the pageSize quantity has been deleted and continues to be
          * called until the mass delete action is complete.  For example, if there are 20 records to delete
          * and the pageSize is 5, then this action will be called 3 times.  The first 5 are updated when
          * the actionMassDelete is called upon the initial form submission.

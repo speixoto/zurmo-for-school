@@ -70,13 +70,12 @@
 
         protected static function renderEmailTemplateLinkContent(EmailMessageForWorkflowForm $emailMessageForWorkflowForm)
         {
-            if($emailMessageForWorkflowForm->emailTemplateId < 0)
+            if($emailMessageForWorkflowForm->emailTemplateId <= 0)
             {
                 return null;
             }
             try
             {
-                $emailTemplate = EmailTemplate::getById((int)$emailMessageForWorkflowForm->emailTemplateId);
                 $content       = '</br>';
                 $content      .= ' &mdash; ';
                 $content      .= Zurmo::t('EmailTemplatesModule', 'Email Template');
