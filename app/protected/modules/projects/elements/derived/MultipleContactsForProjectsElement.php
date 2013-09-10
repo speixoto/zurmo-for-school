@@ -70,7 +70,7 @@
             $cClipWidget->widget('application.core.widgets.MultiSelectAutoComplete', array(
                                 'name'              => $this->getNameForIdField(),
                                 'id'                => $this->getIdForIdField(),
-                                'jsonEncodedIdsAndLabels'   => CJSON::encode($this->getExistingContactsRelationsIdsAndLabels()),
+                                'jsonEncodedIdsAndLabels'   => CJSON::encode($this->getExistingContactRelationsIdsAndLabels()),
                                 'sourceUrl'         => Yii::app()->createUrl('contacts/variableContactState/autoCompleteAllContactsForMultiSelectAutoComplete'),
                                 'htmlOptions'       => array(
                                                                 'disabled' => $this->getDisabledValue(),

@@ -465,7 +465,6 @@
                 $task->completed         = false;
                 $task->save();
             }
-
             TasksUtil::sendNotificationOnTaskUpdate($task, Zurmo::t('TasksModule', 'The status for the task #' . $task->id . ' has been updated to ' . Task::getStatusDisplayName(intval($status))));
         }
 
@@ -482,9 +481,7 @@
             $notificationSubscriber->hasReadLatest = false;
             $task->notificationSubscribers->add($notificationSubscriber);
             $task->save();
-
             TasksUtil::sendNotificationOnTaskUpdate($task, Zurmo::t('TasksModule', $user->getFullName() . ' has subscribed for the task #' . $task->id));
-
             return $task;
         }
 
@@ -505,9 +502,7 @@
                 }
             }
             $task->save();
-
             TasksUtil::sendNotificationOnTaskUpdate($task, Zurmo::t('TasksModule', $user->getFullName() . ' has unsubscribed from the task #' . $task->id));
-
             return $task;
         }
 
@@ -533,6 +528,11 @@
             {
                 echo Zurmo::t('TasksModule', 'Click here to enter description');
             }
+        }
+
+        protected static function getZurmoControllerUtil()
+        {
+            return new TaskZurmoControllerUtil();
         }
     }
 ?>

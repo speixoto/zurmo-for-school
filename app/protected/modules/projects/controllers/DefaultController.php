@@ -187,7 +187,7 @@
             {
                 $project        = Project::getById((int)$id);
                 ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($project);
-                ZurmoCopyModelUtil::copy($project, $copyToProject);
+                ProjectZurmoCopyModelUtil::copy($project, $copyToProject);
             }
             $this->processEdit($copyToProject);
         }
@@ -373,7 +373,7 @@
         }
 
         /**
-         * @param ProductCategory $productCategory
+         * @param RelatedModel Account, Contact or Opportunity
          * @param string $keyword
          * @return string
          */
@@ -392,6 +392,9 @@
             }
         }
 
+        /**
+         * @return ProjectZurmoControllerUtil
+         */
         protected static function getZurmoControllerUtil()
         {
             return new ProjectZurmoControllerUtil('projectItems', 'ProjectItemForm');

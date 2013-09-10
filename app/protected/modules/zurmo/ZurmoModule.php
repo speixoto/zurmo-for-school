@@ -183,6 +183,7 @@
                     'contacts',
                     'opportunities',
                     'marketing',
+                    'projects',
                     'reports',
                     'products',
                 )
