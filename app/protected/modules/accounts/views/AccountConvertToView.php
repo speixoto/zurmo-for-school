@@ -89,5 +89,27 @@
         {
             return 'AccountConvertToView';
         }
+
+        /**
+         * Override to remove unused float-bar div
+         * @param string $content
+         * @return string
+         */
+        protected function resolveAndWrapDockableViewToolbarContent($content)
+        {
+            assert('is_string($content)');
+            if ($this->disableFloatOnToolbar)
+            {
+                $disableFloatContent = ' disable-float-bar';
+            }
+            else
+            {
+                $disableFloatContent = null;
+            }
+            $content = ZurmoHtml::tag('div', array('class' => 'form-toolbar'), $content);
+            $content = ZurmoHtml::tag('div', array('class' => 'view-toolbar-container clearfix dock' .
+            $disableFloatContent), $content);
+            return $content;
+        }
     }
 ?>

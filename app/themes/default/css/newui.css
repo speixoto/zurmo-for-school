@@ -10978,11 +10978,14 @@ div.hasHalfs > div input {
   text-align: center !important;
   font-weight: normal;
 }
-#LeadConvertView #AccountConvertToView > div {
-  margin-right: 0;
+#AccountConvertToView > div {
+  margin-bottom: 0;
+}
+#AccountConvertToView .left-column {
+  padding-right: 0;
 }
 .lead-conversion-actions {
-  padding: 10px;
+  padding: 15px 15px 5px 15px;
 }
 .lead-conversion-actions a {
   padding: 2px 4px;
@@ -19676,9 +19679,6 @@ a + .autoresponder-stats {
 div.showing-panel {
   display: block;
 }
-.business-card {
-  display: block;
-}
 .business-card .gravatar {
   margin-right: 12px;
   margin-bottom: 6px;
@@ -20294,7 +20294,7 @@ div.special-pager .hidden.next:after {
   #LoginView {
     min-width: 0 !important;
     margin: 0;
-    background-position: left 120px;
+    background-position: left bottom;
     height: auto;
     -ms-flex: 1 0 auto;
     -moz-flex: 1 0 auto;

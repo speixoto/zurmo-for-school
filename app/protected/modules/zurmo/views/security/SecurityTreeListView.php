@@ -69,6 +69,7 @@
          */
         protected function renderTreeMenu($nodeRelationName, $nodesRelationName, $title)
         {
+            $this->registerScripts();
             $parentNode = array('text' => $title);
             $itemNodes  = array();
             foreach ($this->items as $item)
@@ -261,6 +262,12 @@
         protected static function resolveRouteAction()
         {
             return '/usersInRoleModalList/';
+        }
+
+        protected function registerScripts()
+        {
+            //Registered to make sure things work when debug mode is on. Otherwise this is missing.
+            Yii::app()->getClientScript()->registerCoreScript('bbq');
         }
     }
 ?>
