@@ -118,12 +118,13 @@
             if(isset($item['url']))
             {
                 $label = $this->linkLabelWrapper===null ? $item['label'] : CHtml::tag($this->linkLabelWrapper, $this->linkLabelWrapperHtmlOptions, $item['label']);
-                            $label = ZurmoHtml::tag('span', array('class' => 'button-label'), $label);
+                $label = ZurmoHtml::tag('span', array('class' => 'button-label'), $label);
                 echo CHtml::link($icon . $label . $item['dynamicLabel'],$item['url'], array('class' => 'button-action'));
                             $spanForTrigger = null;
             }
             else
             {
+                $item['linkOptions']['class'] = 'button-label';
                 $spanForTrigger  = $icon;
                 $spanForTrigger .= CHtml::tag('span',isset($item['linkOptions']) ? $item['linkOptions'] : array(), $item['label']);
                 $spanForTrigger .= $item['dynamicLabel'];

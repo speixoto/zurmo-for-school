@@ -132,12 +132,24 @@ a:link, a:active, a:visited{
     }
 
 
+
 	#MashableInboxActionBarForViews .nav > li > a:hover,
 	#MashableInboxActionBarForViews .nav > li > a:active,
 	#MashableInboxActionBarForViews a:hover .unread-count,
 	#MashableInboxActionBarForViews a:active .unread-count,
     #notifications-flyout .single-notification h4,
-    .view-toolbar > a:hover,
+
+	a:hover i[class^="icon"],
+	a:hover i[class^="icon"]:after,
+	a:active i[class^="icon"],
+	a:active i[class^="icon"]:after,
+
+	.button-action-trigger:hover span,
+	.button-action-trigger:active span,
+	.button-action:hover span,
+	.button-action:active span,
+
+	.view-toolbar > a:hover,
     .view-toolbar > a:active,
     .view-toolbar > a:hover:before,
     .view-toolbar > a:active:before,

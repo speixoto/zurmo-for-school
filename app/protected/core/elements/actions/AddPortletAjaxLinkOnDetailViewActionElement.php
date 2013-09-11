@@ -43,7 +43,7 @@
 
         protected function getDefaultLabel()
         {
-            return Zurmo::t('HomeModule', 'Add Portlet');
+            return '<i class="icon-add"></i>'.Zurmo::t('HomeModule', 'Add Portlet');
         }
 
         protected function getDefaultRoute()
