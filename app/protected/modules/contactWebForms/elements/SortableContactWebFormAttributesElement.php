@@ -78,7 +78,7 @@
             $clip = $this->form->checkBoxList($this->model,
                                               $this->attribute,
                                               ContactWebFormsUtil::getAllNonPlacedAttributes($attributes,
-                                              $contactWebFormAttributes),
+                                              ContactWebFormsUtil::resolveWebFormAttributes($contactWebFormAttributes)),
             $this->getEditableHtmlOptions());
             $title     = ZurmoHtml::tag('h3', array(), Zurmo::t('ContactWebFormModule', 'Available Fields'));
             $content   = ZurmoHtml::tag('span', array('class' => 'row-description'),
@@ -121,10 +121,11 @@
          */
         protected function renderItemTemplate()
         {
-            return '<li><div class="dynamic-row"><div>
-                        <label for="ContactWebForm_serializedData_{id}">{content}</label>' .
-                        '<input type="hidden" name="attributeIndexOrDerivedType[]" value="{id}" />' .
-                    '</div>{checkedAndReadOnly}</div></li>';
+            return '<li><div class="dynamic-row"><div>' .
+                        '<label id="label_for_placedAttribute_{id}" for="ContactWebForm_serializedData_{id}">{content}</label>' .
+                        '<input class="inline-edit" type="hidden" id="placedAttribute_{id}" name="placedAttribute[{id}][label]" value="{content}" />' .
+                        '<div id="requiredAttribute_placedAttribute_{id}" style="display: none;"><input element-identifier="placedAttribute_{id}" class="isRequired" type="checkbox" name="placedAttribute[{id}][required]" value="1" {requiredAttribute} {readOnlyAttribute}/> Required?</div>' .
+                    '</div>{checkedAndReadOnly}<a id="editIcon_placedAttribute_{id}" onclick="editInline(\'placedAttribute_{id}\');" href="javascript: void(0);">Edit</a></div></li>';
         }
 
         protected function renderError()

@@ -100,7 +100,7 @@
             if (isset($_POST[$modelClassName]))
             {
                 unset($_POST[$modelClassName]['serializedData']);
-                $contactWebForm->serializedData = serialize($_POST['attributeIndexOrDerivedType']);
+                $contactWebForm->serializedData = serialize($_POST['placedAttribute']);
             }
             $contactWebForm->defaultOwner = Yii::app()->user->userModel;
             $contactWebForm->language     = Yii::app()->language;
@@ -126,7 +126,7 @@
             if (isset($_POST[$modelClassName]))
             {
                 unset($_POST[$modelClassName]['serializedData']);
-                $contactWebForm->serializedData = serialize($_POST['attributeIndexOrDerivedType']);
+                $contactWebForm->serializedData = serialize($_POST['placedAttribute']);
             }
             $titleBarAndEditView                = $this->makeEditAndDetailsView(
                                                   $this->attemptToSaveModelFromPost($contactWebForm), 'Edit');

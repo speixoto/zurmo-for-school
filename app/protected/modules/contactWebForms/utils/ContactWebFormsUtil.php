@@ -66,17 +66,37 @@
             {
                 if (!$attributeData['isReadOnly'])
                 {
+                    $requiredAttribute = '';
+                    if (isset($contactWebFormAttributes[$attributeName]['label']))
+                    {
+                        $attributeLabel    = $contactWebFormAttributes[$attributeName]['label'];
+                        $isPlacedAttribute = array_key_exists($attributeName, $contactWebFormAttributes);
+                        if (isset($contactWebFormAttributes[$attributeName]['required']))
+                        {
+                            $requiredAttribute = 'checked=\'checked\'';
+                        }
+                    }
+                    else
+                    {
+                        $attributeLabel    = $attributeData['attributeLabel'];
+                        $isPlacedAttribute = in_array($attributeName, $contactWebFormAttributes);
+                    }
+
                     if ($attributeData['isRequired'])
                     {
-                        $items[$attributeName] = array('{content}'            => $attributeData['attributeLabel'],
-                                                       '{checkedAndReadOnly}' => '');
+                        $items[$attributeName] = array('{content}'            => $attributeLabel,
+                                                       '{checkedAndReadOnly}' => '',
+                                                       '{requiredAttribute}'  => 'checked=\'checked\'',
+                                                       '{readOnlyAttribute}'  => 'disabled=\'disabled\'');
                     }
-                    elseif (in_array($attributeName, $contactWebFormAttributes))
+                    elseif ($isPlacedAttribute)
                     {
                         $checkedAndReadOnly    = '<a class="remove-dynamic-row-link" id="ContactWebForm_serializedData_' .
                                                   $attributeName . '" data-value="' . $attributeName . '" href="#">—</a>';
-                        $items[$attributeName] = array('{content}'            => $attributeData['attributeLabel'],
-                                                       '{checkedAndReadOnly}' => $checkedAndReadOnly);
+                        $items[$attributeName] = array('{content}'            => $attributeLabel,
+                                                       '{checkedAndReadOnly}' => $checkedAndReadOnly,
+                                                       '{requiredAttribute}'  => $requiredAttribute,
+                                                       '{readOnlyAttribute}'  => '');
                     }
                 }
             }
@@ -119,6 +139,18 @@
                            'src="' . Yii::app()->createAbsoluteUrl('contacts/external/sourceFiles/', array('id' => $id)) . '">' .
                            '</script></div>';
             return $embedScript;
+        }
+
+        public static function resolveWebFormAttributes($contactWebFormAttributes)
+        {
+            if (ArrayUtil::isAssoc($contactWebFormAttributes))
+            {
+                return array_keys($contactWebFormAttributes);
+            }
+            else
+            {
+                return $contactWebFormAttributes;
+            }
         }
     }
 ?>
