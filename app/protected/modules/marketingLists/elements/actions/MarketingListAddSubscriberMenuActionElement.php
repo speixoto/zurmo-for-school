@@ -36,6 +36,9 @@
 
     class MarketingListAddSubscriberMenuActionElement extends MenuActionElement
     {
+
+        protected $cssClasses = array('overlay-view');
+
         public function getActionType()
         {
             return 'Create';
