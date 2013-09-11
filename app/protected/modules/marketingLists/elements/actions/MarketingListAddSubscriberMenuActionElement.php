@@ -44,11 +44,17 @@
             return 'Create';
         }
 
+        public function renderMenuItem()
+        {
+            $menuItem = parent::renderMenuItem();
+            $menuItem['submenuOptions'] = array('class' => 'button-actions open-on-left');
+            return $menuItem;
+        }
+
         protected function resolveHtmlOptionsForRendering()
         {
             $htmlOptions = parent::resolveHtmlOptionsForRendering();
             $htmlOptions['id'] = get_class($this);
-            $htmlOptions['class'] = 'clickable-mbmenu';
             return $htmlOptions;
         }
 

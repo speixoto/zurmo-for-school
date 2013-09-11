@@ -36,6 +36,8 @@
 
     class DividedMenu extends CMenu
     {
+        public $submenuHtmlOptions = array('class' => 'button-actions');
+
         public function init()
         {
             if (!isset($this->htmlOptions['id']))
@@ -141,7 +143,7 @@
                 {
                     echo ZurmoHtml::link($label, null, array('class' => 'button-trigger'));
                 }
-                echo ZurmoHtml::openTag('ul', array('class' => 'button-actions'));
+                echo ZurmoHtml::openTag('ul', isset($item['submenuOptions']) ? $item['submenuOptions'] : $this->submenuHtmlOptions);
 
                 if (isset($item['dynamicContent']))
                 {
