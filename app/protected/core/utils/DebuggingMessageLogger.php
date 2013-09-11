@@ -34,32 +34,18 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class UsersByRoleWalkthroughTest extends ZurmoWalkthroughBaseTest
+    /**
+     * Run the jobManager using this messageLogger if you want to show all debug messaging regardless of if debug
+     * is true/false in the application
+     */
+    class DebuggingMessageLogger extends MessageLogger
     {
-        public static function setUpBeforeClass()
+        /**
+         * @return bool
+         */
+        protected function shouldPrintDebugMessages()
         {
-            parent::setUpBeforeClass();
-            SecurityTestHelper::createSuperAdmin();
+            return true;
         }
-
-        public function testUsersInRoleModalListAction()
-        {
-            $role = new Role();
-            $role->name = 'myRole';
-            $role->save();
-            $super = User::getByUsername('super');
-            $super->role = $role;
-            $super->save();
-            Yii::app()->user->userModel = User::getByUsername('super');
-
-            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
-            $this->setGetArray(array('id' => $role->id));
-            $this->resetPostArray();
-            $content = $this->runControllerWithNoExceptionsAndGetContent('zurmo/role/UsersInRoleModalList');
-            $this->assertTrue(strpos($content, "1-1 of 1 result(s).") !== false);
-            $this->assertTrue(strpos($content, "/users/default/details?id=" . $super->id) !== false);
-            $this->assertTrue(strpos($content, $super->username) !== false);
-            $this->assertTrue(strpos($content, $super->getFullName()) !== false);
-      }
     }
 ?>
