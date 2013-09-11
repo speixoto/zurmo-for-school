@@ -20183,7 +20183,7 @@ div.special-pager .hidden.next:after {
   display: block;
   position: absolute;
   top: -15px;
-  right: 15px;
+  right: 19px;
   width: 80%;
   height: 15px;
   background: url(../images/tip.png) right bottom no-repeat;
@@ -20217,6 +20217,14 @@ div.special-pager .hidden.next:after {
 }
 .pillbox .button-actions label {
   color: #EFEFEF;
+}
+.button-actions.open-on-left {
+  right: auto;
+  left: 0;
+}
+.button-actions.open-on-left:before {
+  right: auto;
+  width: 20px;
 }
 .juiportlet-widget-content .pillbox {
   margin: 15px 0 0 15px;

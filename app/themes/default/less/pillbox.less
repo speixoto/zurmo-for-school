@@ -145,7 +145,7 @@
 			display: block;
 			position: absolute;
 			top:-15px;
-			right:15px;
+			right:19px;
 			width:80%;
 			height: 15px;
 			background: url(../images/tip.png) right bottom no-repeat;
@@ -172,16 +172,19 @@
 			padding:6px 10px 6px 10px;
 			margin:1px;
 			.t-shadow(none);
-			&:hover{
-				//color: #fff;
-				//@topColor: #7cb830;
-				//@bottomColor: #537b20;
-				//#gradient > .vertical(@topColor, @bottomColor ); //green
-			}
 		}
 		label{
 			color:#EFEFEF;
 		}
+	}
+}
+
+.button-actions.open-on-left{
+	right:auto;
+	left: 0;
+	&:before{
+		right:auto;
+		width:20px;
 	}
 }
 
