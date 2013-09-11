@@ -304,28 +304,8 @@
                                 !$modelReflectionClass->isAbstract())
                             {
                                $modelAttributes    = $modelClassName::getAttributeNames();
-                               $translatedLabels = $modelClassName::getTranslatedAttributeLabels(Yii::app()->language);
                                foreach ($modelAttributes as $attributeName)
                                {
-                                    $attributeLabel = $modelClassName::getAnAttributeLabel($attributeName);
-                                    if (isset($translatedLabels[$attributeName]))
-                                    {
-                                        $translatedLabel = $translatedLabels[$attributeName];
-                                        if ($translatedLabels[$attributeName] == $attributeLabel ||
-                                           $translatedLabel != $attributeLabel)
-                                        {
-                                            $fileNamesToCategoriesToMessages[$fullEntryName]['Default'][] = $attributeLabel;
-                                        }
-                                        else
-                                        {
-                                            $fileNamesToCategoriesToMessages[$fullEntryName]['Default'][] =
-                                            $translatedLabels[$attributeName];
-                                        }
-                                    }
-                                    else
-                                    {
-                                        $fileNamesToCategoriesToMessages[$fullEntryName]['Default'][] = $attributeLabel;
-                                    }
                                    //Find attributes that are a CustomField relation. This means there is drop down values
                                    //that will need to be translated.
                                    if ($modelClassName::isRelation($attributeName) &&
@@ -641,6 +621,7 @@
                 {
                     foreach ($messages as $message)
                     {
+                        $message = strtolower($message);
                         if (isset($messageAndCategories[$message]))
                         {
                             if(!in_array($category, $messageAndCategories[$message]))
