@@ -27,17 +27,14 @@
 	.b-shadow(0 0 9px 5px rgba(153, 153, 153, 0.12));
 	background:url(../images/view-toolbar-gradient.png) left bottom repeat-x;
 	display: inline-block;
-	
 	+ .pillbox{
 		float: right;
 	}
-	
 	.split-button:last-child{
 		.button-trigger{
 			.radius(0 4px 4px 0);
 		}
 	}
-
 	.split-button,
 	.default-button{
 		cursor: pointer;
@@ -60,6 +57,9 @@
 			line-height:30px;
 			display: inline-block;
 			white-space: nowrap;
+			&:empty{
+				display: none;
+			}
 		}
 
 		.button-action-trigger,
@@ -82,8 +82,6 @@
 				#gradient > .vertical-three-colors(#fff, #ddd, 50%, #fff );
 				border-left:1px solid #e7e7e7;
 				i{
-					//color: #7cb830;
-					//.t-shadow(0 0 8px #7cb830);
 					.b-shadow(none);
 					border-left:none;
 				}
@@ -107,11 +105,9 @@
 		}
 		.button-action-trigger{
 			&:hover{
-				//#gradient > .vertical-three-colors(#fff, #ddd, 50%, #fff );
 				background: none;
 				border-left:none;
 				i{
-					//color: #7cb830;
 					.t-shadow(none);
 					.b-shadow(none);
 					border-left:none;
@@ -129,6 +125,7 @@
 	}
 
 	.button-actions{
+		color:#EFEFEF;
 		display: none;
 		list-style: none;
 		position: absolute;
@@ -176,14 +173,20 @@
 			margin:1px;
 			.t-shadow(none);
 			&:hover{
-				color: #fff;
-				//background: #7cb830;
-				@topColor: #7cb830;
-				@bottomColor: #537b20;
-				#gradient > .vertical(@topColor, @bottomColor ); //green
+				//color: #fff;
+				//@topColor: #7cb830;
+				//@bottomColor: #537b20;
+				//#gradient > .vertical(@topColor, @bottomColor ); //green
 			}
 		}
+		label{
+			color:#EFEFEF;
+		}
 	}
+}
+
+.juiportlet-widget-content .pillbox{
+	margin: 15px 0 0 15px;
 }
 
 .button-action-trigger{
@@ -213,4 +216,63 @@
 	&:hover{
 		color: inherit;
 	}
+}
+
+/*checkboxes in pills*/
+.hasCheckboxes{
+	float: left;
+	display: inline-block;
+	border-left: 1px solid #bababa;
+	text-indent: 0 !important;
+	vertical-align: middle;
+	padding: 0 0 0 15px;
+	line-height: 30px;
+	&:before{
+		content: "";
+		margin: 0;
+		display: none;
+	}
+	.hasCheckBox{
+		display: inline-block;
+		width: auto;
+		padding-left: 20px;
+		margin-right: 0;
+		position: relative;
+		top:3px;
+		+ label{
+			padding-right: 15px;
+			margin: 0 !important;
+			.smaller() !important;
+			font-weight: bold !important;
+		}
+	}
+}
+
+/*Overlay view*/
+.overlay-view{
+	text-align: left;
+	padding:5px 10px 10px 10px;
+	div{
+		background: none !important;
+		.b-shadow(none) !important;
+		border:none !important;
+		.unstyle-panel() !important;
+		margin-bottom: 5px !important;
+		line-height: 1.4;
+	}
+	.after-form-details-content{
+		padding: 0px;
+		color:#efefef !important;
+		text-align: left;
+		a{
+			display: inline;
+			color:#fff !important;
+			padding: 0;
+			text-decoration: underline;
+		}
+	}
+}
+
+.stay-open {
+	display: block !important;
 }

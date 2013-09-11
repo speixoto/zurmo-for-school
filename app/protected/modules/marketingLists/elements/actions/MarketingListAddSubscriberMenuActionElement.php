@@ -112,7 +112,7 @@
         {
             $script = "$('close-flyout').click(function()
                         {
-                            $(this).parentsUntil(li).parent().hide();
+                            $(this).parentsUntil(ul).parent().hide();
                         });";
             Yii::app()->clientScript->registerScript(get_class() . 'CloseFlyoutScript', $script);
         }

@@ -920,6 +920,7 @@ body > .ui-autocomplete{
 	display:block;
 	float:left;
 	position:relative;
+	z-index: 1;
 	> span{
 		font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;
 		font-weight:bold;
@@ -1601,11 +1602,14 @@ caption, th, td {
 		local,
 		scroll,
 		scroll;
+	.items{
+		border: 1px solid #dfdfdf;
+	}
 }
 
 .items{
 	width:100%;
-	border: 1px solid #dfdfdf;
+	//border: 1px solid #dfdfdf;
 	border-collapse: collapse;
 	border-spacing: 1px;
 	margin: 0 -100% 0 0;

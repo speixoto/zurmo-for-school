@@ -1294,6 +1294,22 @@ body.blue .dashboard-link:active .z-label {
   -ms-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF !important;
   box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF !important;
 }
+body.blue .button-actions a:hover {
+  color: #ffffff !important;
+  background-color: #5b7724 !important;
+  background-repeat: repeat-x !important;
+  background-image: -moz-linear-gradient(top, #97c43d, #5b7724) !important;
+  background-image: -ms-linear-gradient(top, #97c43d, #5b7724) !important;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #5b7724)) !important;
+  background-image: -webkit-linear-gradient(top, #97c43d, #5b7724) !important;
+  background-image: -o-linear-gradient(top, #97c43d, #5b7724) !important;
+  background-image: linear-gradient(top, #97c43d, #5b7724) !important;
+  -webkit-text-shadow: 0px -1px 0 #4c631e !important;
+  -moz-text-shadow: 0px -1px 0 #4c631e !important;
+  -o-text-shadow: 0px -1px 0 #4c631e !important;
+  -ms-text-shadow: 0px -1px 0 #4c631e !important;
+  text-shadow: 0px -1px 0 #4c631e !important;
+}
 body.blue .notifications-link:hover {
   border-left: 1px solid #1b1c50;
   border-right: 1px solid #1b1c50;
@@ -1871,6 +1887,22 @@ body.brown .dashboard-link:active .z-label {
   -o-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF !important;
   -ms-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF !important;
   box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF !important;
+}
+body.brown .button-actions a:hover {
+  color: #ffffff !important;
+  background-color: #286461 !important;
+  background-repeat: repeat-x !important;
+  background-image: -moz-linear-gradient(top, #45ada8, #286461) !important;
+  background-image: -ms-linear-gradient(top, #45ada8, #286461) !important;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #45ada8), color-stop(100%, #286461)) !important;
+  background-image: -webkit-linear-gradient(top, #45ada8, #286461) !important;
+  background-image: -o-linear-gradient(top, #45ada8, #286461) !important;
+  background-image: linear-gradient(top, #45ada8, #286461) !important;
+  -webkit-text-shadow: 0px -1px 0 #21524f !important;
+  -moz-text-shadow: 0px -1px 0 #21524f !important;
+  -o-text-shadow: 0px -1px 0 #21524f !important;
+  -ms-text-shadow: 0px -1px 0 #21524f !important;
+  text-shadow: 0px -1px 0 #21524f !important;
 }
 body.brown .notifications-link:hover {
   border-left: 1px solid #405c61;
@@ -2450,6 +2482,22 @@ body.lime .dashboard-link:active .z-label {
   -ms-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF !important;
   box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF !important;
 }
+body.lime .button-actions a:hover {
+  color: #ffffff !important;
+  background-color: #90a34e !important;
+  background-repeat: repeat-x !important;
+  background-image: -moz-linear-gradient(top, #bcc98e, #90a34e) !important;
+  background-image: -ms-linear-gradient(top, #bcc98e, #90a34e) !important;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #bcc98e), color-stop(100%, #90a34e)) !important;
+  background-image: -webkit-linear-gradient(top, #bcc98e, #90a34e) !important;
+  background-image: -o-linear-gradient(top, #bcc98e, #90a34e) !important;
+  background-image: linear-gradient(top, #bcc98e, #90a34e) !important;
+  -webkit-text-shadow: 0px -1px 0 #819246 !important;
+  -moz-text-shadow: 0px -1px 0 #819246 !important;
+  -o-text-shadow: 0px -1px 0 #819246 !important;
+  -ms-text-shadow: 0px -1px 0 #819246 !important;
+  text-shadow: 0px -1px 0 #819246 !important;
+}
 body.lime .notifications-link:hover {
   border-left: 1px solid #19272e;
   border-right: 1px solid #19272e;
@@ -3027,6 +3075,22 @@ body.cherry .dashboard-link:active .z-label {
   -o-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF !important;
   -ms-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF !important;
   box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF !important;
+}
+body.cherry .button-actions a:hover {
+  color: #ffffff !important;
+  background-color: #46181f !important;
+  background-repeat: repeat-x !important;
+  background-image: -moz-linear-gradient(top, #933140, #46181f) !important;
+  background-image: -ms-linear-gradient(top, #933140, #46181f) !important;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #933140), color-stop(100%, #46181f)) !important;
+  background-image: -webkit-linear-gradient(top, #933140, #46181f) !important;
+  background-image: -o-linear-gradient(top, #933140, #46181f) !important;
+  background-image: linear-gradient(top, #933140, #46181f) !important;
+  -webkit-text-shadow: 0px -1px 0 #331116 !important;
+  -moz-text-shadow: 0px -1px 0 #331116 !important;
+  -o-text-shadow: 0px -1px 0 #331116 !important;
+  -ms-text-shadow: 0px -1px 0 #331116 !important;
+  text-shadow: 0px -1px 0 #331116 !important;
 }
 body.cherry .notifications-link:hover {
   border-left: 1px solid #566675;
@@ -3606,6 +3670,22 @@ body.turquoise .dashboard-link:active .z-label {
   -ms-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF !important;
   box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF !important;
 }
+body.turquoise .button-actions a:hover {
+  color: #ffffff !important;
+  background-color: #247986 !important;
+  background-repeat: repeat-x !important;
+  background-image: -moz-linear-gradient(top, #44bbcc, #247986) !important;
+  background-image: -ms-linear-gradient(top, #44bbcc, #247986) !important;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #44bbcc), color-stop(100%, #247986)) !important;
+  background-image: -webkit-linear-gradient(top, #44bbcc, #247986) !important;
+  background-image: -o-linear-gradient(top, #44bbcc, #247986) !important;
+  background-image: linear-gradient(top, #44bbcc, #247986) !important;
+  -webkit-text-shadow: 0px -1px 0 #1f6772 !important;
+  -moz-text-shadow: 0px -1px 0 #1f6772 !important;
+  -o-text-shadow: 0px -1px 0 #1f6772 !important;
+  -ms-text-shadow: 0px -1px 0 #1f6772 !important;
+  text-shadow: 0px -1px 0 #1f6772 !important;
+}
 body.turquoise .notifications-link:hover {
   border-left: 1px solid #345c76;
   border-right: 1px solid #345c76;
@@ -4184,6 +4264,22 @@ body.violet .dashboard-link:active .z-label {
   -ms-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF !important;
   box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF !important;
 }
+body.violet .button-actions a:hover {
+  color: #ffffff !important;
+  background-color: #445fc3 !important;
+  background-repeat: repeat-x !important;
+  background-image: -moz-linear-gradient(top, #91a1dc, #445fc3) !important;
+  background-image: -ms-linear-gradient(top, #91a1dc, #445fc3) !important;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #91a1dc), color-stop(100%, #445fc3)) !important;
+  background-image: -webkit-linear-gradient(top, #91a1dc, #445fc3) !important;
+  background-image: -o-linear-gradient(top, #91a1dc, #445fc3) !important;
+  background-image: linear-gradient(top, #91a1dc, #445fc3) !important;
+  -webkit-text-shadow: 0px -1px 0 #3954b4 !important;
+  -moz-text-shadow: 0px -1px 0 #3954b4 !important;
+  -o-text-shadow: 0px -1px 0 #3954b4 !important;
+  -ms-text-shadow: 0px -1px 0 #3954b4 !important;
+  text-shadow: 0px -1px 0 #3954b4 !important;
+}
 body.violet .notifications-link:hover {
   border-left: 1px solid #34284e;
   border-right: 1px solid #34284e;
@@ -4761,6 +4857,22 @@ body.honey .dashboard-link:active .z-label {
   -o-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF !important;
   -ms-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF !important;
   box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF !important;
+}
+body.honey .button-actions a:hover {
+  color: #ffffff !important;
+  background-color: #667127 !important;
+  background-repeat: repeat-x !important;
+  background-image: -moz-linear-gradient(top, #abbc42, #667127) !important;
+  background-image: -ms-linear-gradient(top, #abbc42, #667127) !important;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #abbc42), color-stop(100%, #667127)) !important;
+  background-image: -webkit-linear-gradient(top, #abbc42, #667127) !important;
+  background-image: -o-linear-gradient(top, #abbc42, #667127) !important;
+  background-image: linear-gradient(top, #abbc42, #667127) !important;
+  -webkit-text-shadow: 0px -1px 0 #555e21 !important;
+  -moz-text-shadow: 0px -1px 0 #555e21 !important;
+  -o-text-shadow: 0px -1px 0 #555e21 !important;
+  -ms-text-shadow: 0px -1px 0 #555e21 !important;
+  text-shadow: 0px -1px 0 #555e21 !important;
 }
 body.honey .notifications-link:hover {
   border-left: 1px solid #220f0d;
@@ -5935,6 +6047,7 @@ body > .ui-autocomplete {
   display: block;
   float: left;
   position: relative;
+  z-index: 1;
 }
 #MenuView ul a > span {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -6648,9 +6761,11 @@ td {
 		scroll,
 		scroll;
 }
+#list-view .items {
+  border: 1px solid #dfdfdf;
+}
 .items {
   width: 100%;
-  border: 1px solid #dfdfdf;
   border-collapse: collapse;
   border-spacing: 1px;
   margin: 0 -100% 0 0;
@@ -10747,14 +10862,13 @@ i[class^="icon"] {
   padding: 0 0 0 0;
   margin: 0 0 0 0;
   position: relative;
-  top: -1px;
+  top: -2px;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
 .z-label i[class^="icon"] {
   margin-right: 5px;
-  top: -2px;
 }
 .icon-general:after,
 .icon-edit:after {
@@ -10768,7 +10882,7 @@ i[class^="icon"] {
 }
 .icon-lock {
   font-size: 28px !important;
-  padding: 0 5px !important;
+  padding: 0 !important;
 }
 .icon-lock:after {
   content: "F";
@@ -10776,12 +10890,13 @@ i[class^="icon"] {
 }
 .icon-unlock {
   font-size: 28px !important;
-  padding: 0 5px !important;
+  padding: 0 !important;
 }
 .icon-unlock:after {
   content: "E";
   margin: 0;
 }
+.icon-change-dashboard:after,
 .icon-marketing-dashboard:after {
   content: "/";
 }
@@ -17575,33 +17690,6 @@ a.user-link {
 #ReportDetailsView .view-toolbar ul:first-child > li > a {
   border-left: none;
 }
-.hasCheckboxes {
-  display: inline-block;
-  border-left: 1px solid #bababa;
-  text-indent: 0 !important;
-  vertical-align: middle;
-  padding: 0 0 0 15px;
-  line-height: 30px;
-}
-.hasCheckboxes:before {
-  content: "";
-  margin: 0;
-  display: none;
-}
-.hasCheckboxes .hasCheckBox {
-  display: inline-block;
-  width: auto;
-  padding-left: 20px;
-  margin-right: 0;
-  position: relative;
-  top: 3px;
-}
-.hasCheckboxes .hasCheckBox + label {
-  padding-right: 15px;
-  margin: 0 !important;
-  font-size: 11px !important;
-  font-weight: bold !important;
-}
 #reset-runtime-filters .z-label {
   color: #666 !important;
   -webkit-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
@@ -18903,8 +18991,25 @@ a + .autoresponder-stats {
   top: 0;
 }
 .screen-options {
-  padding: 5px;
+  padding: 5px 10px 10px 10px;
+  text-align: left;
+  color: #EFEFEF;
+}
+.screen-options h4 {
   text-align: right;
+  color: #EFEFEF !important;
+  font-weight: bold;
+  -webkit-text-shadow: none !important;
+  -moz-text-shadow: none !important;
+  -o-text-shadow: none !important;
+  -ms-text-shadow: none !important;
+  text-shadow: none !important;
+}
+.screen-options .hasCheckBox {
+  display: inline-block;
+  margin-right: 5px;
+  position: relative;
+  top: 4px;
 }
 /*Manage Subscriptions*/
 #MarketingListsExternalActionsPageView,
@@ -19938,6 +20043,10 @@ div.special-pager .hidden.next:after {
   display: inline-block;
   white-space: nowrap;
 }
+.pillbox .split-button .button-label:empty,
+.pillbox .default-button .button-label:empty {
+  display: none;
+}
 .pillbox .split-button .button-action-trigger,
 .pillbox .default-button .button-action-trigger,
 .pillbox .split-button .button-trigger,
@@ -20044,6 +20153,7 @@ div.special-pager .hidden.next:after {
   box-sizing: border-box;
 }
 .pillbox .button-actions {
+  color: #EFEFEF;
   display: none;
   list-style: none;
   position: absolute;
@@ -20105,16 +20215,11 @@ div.special-pager .hidden.next:after {
   -ms-text-shadow: none;
   text-shadow: none;
 }
-.pillbox .button-actions a:hover {
-  color: #fff;
-  background-color: #537b20;
-  background-repeat: repeat-x;
-  background-image: -moz-linear-gradient(top, #7cb830, #537b20);
-  background-image: -ms-linear-gradient(top, #7cb830, #537b20);
-  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #7cb830), color-stop(100%, #537b20));
-  background-image: -webkit-linear-gradient(top, #7cb830, #537b20);
-  background-image: -o-linear-gradient(top, #7cb830, #537b20);
-  background-image: linear-gradient(top, #7cb830, #537b20);
+.pillbox .button-actions label {
+  color: #EFEFEF;
+}
+.juiportlet-widget-content .pillbox {
+  margin: 15px 0 0 15px;
 }
 .button-action-trigger .icon-options:after {
   margin: 0 !important;
@@ -20166,6 +20271,75 @@ div.special-pager .hidden.next:after {
 }
 .unread-count:hover {
   color: inherit;
+}
+/*checkboxes in pills*/
+.hasCheckboxes {
+  float: left;
+  display: inline-block;
+  border-left: 1px solid #bababa;
+  text-indent: 0 !important;
+  vertical-align: middle;
+  padding: 0 0 0 15px;
+  line-height: 30px;
+}
+.hasCheckboxes:before {
+  content: "";
+  margin: 0;
+  display: none;
+}
+.hasCheckboxes .hasCheckBox {
+  display: inline-block;
+  width: auto;
+  padding-left: 20px;
+  margin-right: 0;
+  position: relative;
+  top: 3px;
+}
+.hasCheckboxes .hasCheckBox + label {
+  padding-right: 15px;
+  margin: 0 !important;
+  font-size: 11px !important;
+  font-weight: bold !important;
+}
+/*Overlay view*/
+.overlay-view {
+  text-align: left;
+  padding: 5px 10px 10px 10px;
+}
+.overlay-view div {
+  background: none !important;
+  -webkit-box-shadow: none !important;
+  -moz-box-shadow: none !important;
+  -o-box-shadow: none !important;
+  -ms-box-shadow: none !important;
+  box-shadow: none !important;
+  border: none !important;
+  border: none;
+  background: none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  -o-box-shadow: none;
+  -ms-box-shadow: none;
+  box-shadow: none;
+  padding: 0;
+  margin: 0;
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+  margin-bottom: 5px !important;
+  line-height: 1.4;
+}
+.overlay-view .after-form-details-content {
+  padding: 0px;
+  color: #efefef !important;
+  text-align: left;
+}
+.overlay-view .after-form-details-content a {
+  display: inline;
+  color: #fff !important;
+  padding: 0;
+  text-decoration: underline;
+}
+.stay-open {
+  display: block !important;
 }
 /*********************************************************************************
  * Zurmo is a customer relationship management program developed by
