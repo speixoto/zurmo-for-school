@@ -66,7 +66,8 @@
                 {
                     $sanitizer = ImportSanitizerUtilFactory::make($sanitizerUtilType,
                                                                   $modelClassName, $attributeName,
-                                                                  $columnName, $columnMappingData);
+                                                                  $columnName, $columnMappingData,
+                                                                  $importSanitizeResultsUtil);
                     if ($sanitizer->shouldSanitizeValue())
                     {
                         $value = $sanitizer->sanitizeValue($value);

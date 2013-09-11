@@ -184,6 +184,13 @@
                         throw new InvalidValueToSanitizeException(Zurmo::t('ImportModule',
                         'A new related model could not be created because there are unspecified required attributes on that related model.'));
                     }
+                    else
+                    {
+                        $this->importSanitizeResultsUtil->addRelatedModelMessage(
+                                    Zurmo::t('ImportModule', '{modelLabel} saved correctly: {linkToModel}',
+                                        array('{modelLabel}'  => $newRelatedModel->getModelLabelByTypeAndLanguage('Singular'),
+                                              '{linkToModel}' => ImportUtil::resolveLinkMessageToModel($newRelatedModel))));
+                    }
                     return $newRelatedModel;
                 }
                 else

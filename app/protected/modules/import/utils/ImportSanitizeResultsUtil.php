@@ -46,6 +46,12 @@
         private $messages = array();
 
         /**
+         * Messages generated when creating or updating a related model during row data sanitization
+         * @var array
+         */
+        private $relatedModelMessages = array();
+
+        /**
          * Some sanitization routines, if they run into an error, means the entire row should be skipped for
          * making or updating a model.  Some sanitization does not require the entire row to be skipped, just the value.
          * If the row is required to be skipped, this value should be set to false @see setModelShouldNotBeSaved()
@@ -72,6 +78,16 @@
         }
 
         /**
+         * Given a message, add it to the related model messages collection.
+         * @param string $message
+         */
+        public function addRelatedModelMessage($message)
+        {
+            assert('is_string($message)');
+            $this->relatedModelMessages[] = $message;
+        }
+
+        /**
          * @return An array of messages.
          */
         public function getMessages()
@@ -85,6 +101,11 @@
         public function shouldSaveModel()
         {
             return $this->saveModel;
+        }
+
+        public function getRelatedModelMessages()
+        {
+            return $this->relatedModelMessages;
         }
     }
 ?>
