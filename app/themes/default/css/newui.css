@@ -6386,6 +6386,10 @@ body > .ui-autocomplete {
   float: right;
   margin-bottom: 0 !important;
 }
+#AddPortletLink i {
+  top: -2px;
+  margin-right: 5px;
+}
 .juiportlet-widget-head .view-toolbar-container {
   float: right;
   width: auto;
@@ -6492,8 +6496,8 @@ form .view-toolbar-container,
 .portlet-view-toolbar .parent > a {
   color: #656565;
   font-weight: bold;
-  text-shadow: #fff 0 1px 0;
-  padding: 0 10px 0 40px;
+  text-shadow: #ffffff 0 -1px 0;
+  padding: 0 10px 0 10px;
   line-height: 30px;
   display: inline-block;
   border-left: 1px solid #bababa;
@@ -9882,7 +9886,7 @@ div.hasHalfs > div input {
 }
 .LatestActivitiesListView .items,
 .LatestActivitiesView .items {
-  border-top: none !important;
+  border: none !important;
 }
 .LatestActivitiesListView td,
 .LatestActivitiesView td,
@@ -10733,6 +10737,25 @@ div.hasHalfs > div input {
   top: 1px;
   line-height: 1;
 }
+i[class^="icon"] {
+  color: #656565;
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  font-family: "zurmo_gamification_symbly_rRg";
+  vertical-align: middle;
+  padding: 0 0 0 0;
+  margin: 0 0 0 0;
+  position: relative;
+  top: -1px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.z-label i[class^="icon"] {
+  margin-right: 5px;
+  top: -2px;
+}
 .icon-general:after,
 .icon-edit:after {
   content: "!";
@@ -10744,22 +10767,16 @@ div.hasHalfs > div input {
   content: "Y";
 }
 .icon-lock {
-  font-weight: normal !important;
-  font-weight: normal;
-  font-size: 32px;
-  font-family: "zurmo_gamification_symbly_rRg";
-  padding: 0 10px !important;
+  font-size: 28px !important;
+  padding: 0 5px !important;
 }
 .icon-lock:after {
   content: "F";
   margin: 0;
 }
 .icon-unlock {
-  font-weight: normal !important;
-  font-weight: normal;
-  font-size: 32px;
-  font-family: "zurmo_gamification_symbly_rRg";
-  padding: 0 10px !important;
+  font-size: 28px !important;
+  padding: 0 5px !important;
 }
 .icon-unlock:after {
   content: "E";

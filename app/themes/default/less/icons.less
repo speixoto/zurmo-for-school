@@ -1,3 +1,27 @@
+i[class^="icon"]{
+	color: #656565;
+	font-weight:normal;
+	font-style: normal;
+	font-size:24px;
+	font-family: "zurmo_gamification_symbly_rRg";
+	vertical-align:middle;
+
+	padding:0 0 0 0;//3px;
+	margin:0 0 0 0;
+
+	position: relative;
+	top:-1px;
+
+	.box-sizing();
+}
+
+.z-label{
+	i[class^="icon"]{
+		margin-right: 5px;
+		top:-2px;
+	}
+}
+
 .icon-general:after,
 .icon-edit:after{
 	content: "!";
@@ -12,8 +36,8 @@
 }
 
 .icon-lock{
-	.symbly();
-	padding: 0 10px !important;
+	font-size: 28px !important;
+	padding: 0 5px !important;
 	&:after{
 		content: "F";
 		margin: 0;
@@ -21,8 +45,8 @@
 }
 
 .icon-unlock{
-	.symbly();
-	padding: 0 10px !important;
+	font-size: 28px !important;
+	padding: 0 5px !important;
 	&:after{
 		content: "E";
 		margin: 0;

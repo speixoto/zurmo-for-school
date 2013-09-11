@@ -39,13 +39,14 @@
         protected function resolveHtmlOptionsForRendering()
         {
             $htmlOptions          = parent::resolveHtmlOptionsForRendering();
-            $htmlOptions['class'] = 'icon-create';
+            //$htmlOptions['class'] = 'icon-create';
             return $htmlOptions;
         }
 
         protected function getDefaultLabel()
         {
-            return Zurmo::t('Core', 'Create');
+            $icon = ZurmoHtml::tag('i', array('class' => 'icon-create'), '');
+            return $icon . Zurmo::t('Core', 'Create');
         }
 
         protected function getDefaultRoute()
