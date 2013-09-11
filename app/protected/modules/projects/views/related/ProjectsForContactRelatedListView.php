@@ -34,22 +34,27 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class ProjectsForOpportunityRelatedListView extends ProjectsRelatedListView
+    class ProjectsForContactRelatedListView extends ProjectsRelatedListView
     {
         protected function getRelationAttributeName()
         {
-            return 'opportunities';
+            return 'contacts';
         }
 
         public static function getDisplayDescription()
         {
-            return Zurmo::t('ProjectsModule', 'ProjectsModulePluralLabel For OpportunitiesModuleSingularLabel',
+            return Zurmo::t('ProjectsModule', 'ProjectsModulePluralLabel For ContactsModuleSingularLabel',
                         LabelUtil::getTranslationParamsForAllModules());
+        }
+
+        protected function getUniquePageId()
+        {
+            return 'ContactProjectsForPortletView';
         }
 
         public static function getAllowedOnPortletViewClassNames()
         {
-            return array('OpportunityDetailsAndRelationsView');
+            return array('ContactDetailsAndRelationsView');
         }
     }
 ?>

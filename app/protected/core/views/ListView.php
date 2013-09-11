@@ -557,7 +557,7 @@
          */
         protected function processColumnInfoToFetchColumnData($columnInformation)
         {
-            $columnClassName = $columnInformation['type'] . 'ListViewColumnAdapter';
+            $columnClassName = ucfirst($columnInformation['type']) . 'ListViewColumnAdapter';
             $columnAdapter   = new $columnClassName($columnInformation['attributeName'], $this, array_slice($columnInformation, 1));
             $column = $columnAdapter->renderGridViewData();
             if (!isset($column['class']))
