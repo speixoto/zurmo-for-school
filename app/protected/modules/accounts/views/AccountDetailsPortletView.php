@@ -64,7 +64,7 @@
             $this->gridId            = 'list-view';
             $this->controllerId      = $this->resolveControllerId();
             $this->moduleId          = $this->resolveModuleId();
-            parent::__construct('Details', $this->controllerId, $this->moduleId, $this->params["relationModel"]);
+            parent::__construct('Details', $this->controllerId, $this->moduleId, $params["relationModel"]);
         }
 
         public function getPortletParams()

@@ -34,11 +34,47 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class ModalCancelLinkActionElement extends CancelLinkActionElement
+    abstract class MarketingListsRelatedListView extends SecuredRelatedListView
     {
-        protected function getDefaultRoute()
+        public static function getDefaultMetadata()
         {
-            return '#';
+            $metadata = array(
+                'perUser' => array(
+                    'title' => "eval:Zurmo::t('MarketingListsModule', 'Marketing Lists')",
+                ),
+                'global' => array(
+                    'toolbar' => array(
+                        'elements' => array(),
+                    ),
+                    'rowMenu' => array(
+                        'elements' => array(
+                            array('type' => 'EditLink'),
+                        ),
+                    ),
+                    'gridViewType' => RelatedListView::GRID_VIEW_TYPE_STACKED,
+                    'panels' => array(
+                        array(
+                            'rows' => array(
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'name', 'type' => 'Text', 'isLink' => true),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+            );
+            return $metadata;
+        }
+
+        public static function getModuleClassName()
+        {
+            return 'MarketingListsModule';
         }
     }
 ?>

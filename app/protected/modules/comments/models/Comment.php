@@ -77,7 +77,7 @@
         {
             assert('is_string($type)');
             assert('is_int($relatedId)');
-            assert('is_int($pageSize) || $pageSize == null');
+            assert('is_int($pageSize) || $pageSize = null');
             $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('Comment');
             $orderByColumnName = RedBeanModelDataProvider::
                                  resolveSortAttributeColumnName('Comment', $joinTablesAdapter, 'createdDateTime');

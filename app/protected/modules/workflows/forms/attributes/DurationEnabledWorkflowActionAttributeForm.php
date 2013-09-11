@@ -34,74 +34,56 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class ViewFromRelatedModalLinkActionElement extends RelatedModalLinkActionElement
+    /**
+     * Form to work with duration enabled attributes
+     */
+    abstract class DurationEnabledWorkflowActionAttributeForm extends WorkflowActionAttributeForm
     {
+        /**
+         * @var integer.
+         */
+        public $durationInterval;
 
-        protected function getDefaultLabel()
+        /**
+         * @var string
+         */
+        public $durationSign = TimeDurationUtil::DURATION_SIGN_POSITIVE;
+
+        /**
+         * @var string
+         */
+        public $durationType = TimeDurationUtil::DURATION_TYPE_DAY;
+
+        /**
+         * @return array
+         */
+        public function rules()
         {
-            $params = LabelUtil::getTranslationParamsForAllModules();
-            $title = Zurmo::t('Core', 'View', $params);
-            return $title;
+            return array_merge(parent::rules(), array(
+                array('durationInterval', 'type', 'type' => 'integer'),
+                array('durationInterval', 'numerical', 'min' => 0),
+                array('durationSign',     'type', 'type' => 'string'),
+                array('durationType',     'type', 'type' => 'string'),
+            ));
         }
 
-        protected function getDefaultRoute()
+        /**
+         * @return array
+         */
+        public function attributeLabels()
         {
-            $params = array_merge(array('id' => $this->modelId), $this->getViewLinkUrlParams());
-            return Yii::app()->createUrl($this->getRouteModuleId() . '/' .
-                        $this->controllerId . '/modalViewFromRelation', $params);
+            return array_merge(parent::attributeLabels(), array('durationInterval' => Zurmo::t('Core', 'Interval')));
         }
 
-        protected function getRouteModuleId()
+        /**
+         * @param integer $initialTimeStamp
+         * @return integer timestamp based on durationInterval, durationSign, and durationType
+         */
+        public function resolveNewTimeStampForDuration($initialTimeStamp)
         {
-            if (!isset($this->params['routeModuleId']))
-            {
-                return array();
-            }
-            return $this->params['routeModuleId'];
-        }
-
-        public function getActionType()
-        {
-            return 'View';
-        }
-
-        protected function getViewLinkUrlParams()
-        {
-            return array(
-                'modalTransferInformation' => $this->getModalTransferInformation(),
-            );
-        }
-
-        protected function getModalTransferInformation()
-        {
-            return array_merge(array(
-                    'modalId'           => $this->getModalContainerId(),
-                    'portletId'         => $this->getPortletId(),
-                    'uniqueLayoutId'    => $this->getUniqueLayoutId()
-            ), $this->getRouteParameters());
-        }
-
-        protected function getModalContainerId()
-        {
-            return ModalLinkActionElement::RELATED_MODAL_CONTAINER_PREFIX . '-view-task';
-        }
-
-        protected function getPortletId()
-        {
-            if (!isset($this->params['portletId']))
-            {
-                return array();
-            }
-            return $this->params['portletId'];
-        }
-
-        protected function getUniqueLayoutId()
-        {
-            if (!isset($this->params['uniqueLayoutId']))
-            {
-                return array();
-            }
-            return $this->params['uniqueLayoutId'];
+            assert('is_int($initialTimeStamp)');
+            return TimeDurationUtil::resolveNewTimeStampForDuration($initialTimeStamp, (int)$this->durationInterval,
+                $this->durationSign, $this->durationType);
         }
     }
 ?>

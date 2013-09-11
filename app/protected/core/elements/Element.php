@@ -164,7 +164,7 @@
             $data['label']   = $this->renderLabel();
             $data['content'] = $this->renderControlNonEditable();
             $data['colspan'] = $this->getColumnSpan();
-            return $this->resolveContentTemplate($this->getNonEditableTemplate(), $data);
+            return $this->resolveContentTemplate($this->nonEditableTemplate, $data);
         }
 
         abstract protected function renderControlEditable();
@@ -442,11 +442,6 @@
         protected function getListViewGridId()
         {
             return ArrayUtil::getArrayValueWithExceptionIfNotFound($this->params, 'listViewGridId');
-        }
-
-        protected function getNonEditableTemplate()
-        {
-            return $this->nonEditableTemplate;
         }
     }
 ?>

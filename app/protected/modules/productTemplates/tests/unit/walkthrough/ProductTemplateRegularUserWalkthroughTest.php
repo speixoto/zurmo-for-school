@@ -34,57 +34,44 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class ProjectsModalSearchView extends SearchView
+    /**
+     * Product Template Regular User Walkthrough.
+     */
+    class ProductTemplateRegularUserWalkthroughTest extends ZurmoRegularUserWalkthroughBaseTest
     {
-        public static function getDefaultMetadata()
+        public static function setUpBeforeClass()
         {
-            $metadata = array(
-                'global' => array(
-                    'panels' => array(
-                        array(
-                            'locked' => true,
-                            'title'  => 'Basic Search',
-                            'rows' => array(
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'anyMixedAttributes',
-                                                      'type' => 'AnyMixedAttributesSearch', 'wide' => true),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                            ),
-                        ),
-                        array(
-                            'title' => 'Advanced Search',
-                            'rows' => array(
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'name', 'type' => 'Text'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                            ),
-                        ),
-                    ),
-                ),
-            );
-            return $metadata;
+            parent::setUpBeforeClass();
         }
 
-        public static function getDesignerRulesType()
+        public function testRegularUserProductPortletAccess()
         {
-            return 'ModalSearchView';
-        }
+            $benny = $this->logoutCurrentUserLoginNewUserAndGetByUsername('nobody');
+            $account = AccountTestHelper::createAccountByNameForOwner('superAccount',  Yii::app()->user->userModel);
+            $superAccountId = $account->id;
+            $benny->setRight('ProductTemplatesModule', ProductTemplatesModule::getAccessRight(), Right::DENY);
+            $this->assertTrue($benny->save());
+            $this->assertFalse(RightsUtil::canUserAccessModule('ProductTemplatesModule', $benny));
 
-        public static function getModelForMetadataClassName()
-        {
-            return 'ProjectsSearchForm';
+            $portlet = new Portlet();
+            $portlet->column    = 1;
+            $portlet->position  = 1;
+            $portlet->layoutId  = 'Test';
+            $portlet->collapsed = true;
+            $portlet->viewType  = 'RssReader';
+            $portlet->user      = $benny;
+            $this->assertTrue($portlet->save());
+
+            $this->setGetArray(array(
+                                        'uniqueLayoutId' => 'AccountDetailsAndRelationsView_' . $portlet->id,
+                                        'portletId'      => $portlet->id,
+                                        'relationAttributeName' => 'account',
+                                        'relationModelId' => $superAccountId,
+                                        'relationModuleId' => 'accounts',
+                                        'relationModelClassName' => 'Account'
+                                    ));
+
+            $this->runControllerWithNoExceptionsAndGetContent('productTemplates/default/selectFromRelatedList');
         }
     }
 ?>

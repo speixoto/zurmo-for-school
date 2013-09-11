@@ -34,8 +34,16 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    abstract class RelatedModalLinkActionElement extends ModalLinkActionElement
+    /**
+     * Class used by an email message in workflow to show the duration data. For example send the email message
+     * 4 hours after the workflow runs
+     */
+    class EmailMessageSendAfterDurationElement extends DurationElement
     {
-        
+        protected $intervalAttributeName = 'sendAfterDurationInterval';
+
+        protected $signAttributeName     = null;
+
+        protected $typeAttributeName     = 'sendAfterDurationType';
     }
 ?>

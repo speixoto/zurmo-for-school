@@ -112,8 +112,15 @@
                     echo '<div class="kanban-column" style="width:'.$width.'%;">'; // Not Coding Standard
                     echo "<div data-value='" . $attributeValue . "' class='droppable-dynamic-rows-container'>";
                     echo ZurmoHtml::tag('div', array('class' => 'column-header'), $this->resolveGroupByColumnHeaderLabel($attributeValue));
-                    $listItems = $this->getListItemsByAttributeValueAndData($attributeValueAndData);
-                    echo $this->createUlTagForKanbanColumn($listItems, $attributeValue);
+                    $listItems = '';
+                    foreach ($attributeValueAndData as $row)
+                    {
+                        $listItems .= ZurmoHtml::tag('li',
+                                                      array('class' => 'kanban-card item-to-place',
+                                                            'data-id' => $this->dataProvider->data[$row]->id),
+                                                      ZurmoHtml::tag('div', array(), $this->renderCardDetailsContent($row)));
+                    }
+                    echo ZurmoHtml::tag('ul', array(), $listItems);
                     $dropZone =  ZurmoHtml::tag('div', array('class' => 'drop-zone'), '');
                     echo ZurmoHtml::tag('div', array('class' => 'drop-zone-container'), $dropZone);
                     echo "</div>";
@@ -268,59 +275,6 @@
             $cardDetails .= ZurmoHtml::link($this->dataProvider->data[$row]->owner->getAvatarImage(20), $userUrl,
                                             array('class' => 'opportunity-owner'));
             return $cardDetails;
-        }
-
-        /**
-         * @param string $listItems
-         * @param string $attributeValue
-         * @return string
-         */
-        protected function createUlTagForKanbanColumn($listItems, $attributeValue = null)
-        {
-            return ZurmoHtml::tag('ul', array(), $listItems);
-        }
-
-        /**
-         * @return string
-         */
-        protected function getRowClassForKanbanColumn()
-        {
-            return 'kanban-card item-to-place';
-        }
-
-        /**
-         * @param int $row
-         * @return string
-         */
-        protected function createRowForKanbanColumn($row)
-        {
-            return ZurmoHtml::tag('li', array('class' => $this->getRowClassForKanbanColumn(),
-                                                'data-id' => $this->dataProvider->data[$row]->id),
-                                                    $this->wrapCardDetailsContent($row));
-        }
-
-        /**
-         * @param array $attributeValueAndData
-         * @return string
-         */
-        protected function getListItemsByAttributeValueAndData($attributeValueAndData)
-        {
-            $listItems = '';
-            foreach ($attributeValueAndData as $row)
-            {
-                $listItems .= $this->createRowForKanbanColumn($row);
-            }
-            return $listItems;
-        }
-
-        /**
-         * Wraps card details content
-         * @param int $row
-         * @return string
-         */
-        protected function wrapCardDetailsContent($row)
-        {
-            return ZurmoHtml::tag('div', array(), $this->renderCardDetailsContent($row));
         }
     }
 ?>

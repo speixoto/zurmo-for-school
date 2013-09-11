@@ -34,16 +34,11 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class ModalSaveButtonActionElement extends SaveButtonActionElement
+    class SelectMarketingListForContactFromRelatedListAjaxLinkActionElement extends SelectFromRelatedListAjaxLinkActionElement
     {
-        public function render()
+        protected function getDefaultLabel()
         {
-            return ZurmoHtml::ajaxSubmitButton($this->getLabel(), $this->route, $this->getAjaxOptions(), $this->getHtmlOptions());
-        }
-
-        protected function getDefaultRoute()
-        {
-            return $this->params['url'];
+            return Zurmo::t('Core', 'Subscribe to List');
         }
     }
 ?>
