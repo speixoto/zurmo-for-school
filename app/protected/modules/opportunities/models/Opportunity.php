@@ -130,6 +130,7 @@
                                              RedBeanModel::LINK_TYPE_SPECIFIC, 'stage'),
                     'source'        => array(RedBeanModel::HAS_ONE,   'OwnedCustomField', RedBeanModel::OWNED,
                                              RedBeanModel::LINK_TYPE_SPECIFIC, 'source'),
+                    'projects'      => array(RedBeanModel::MANY_MANY, 'Project'),
                 ),
                 'derivedRelationsViaCastedUpModel' => array(
                     'meetings' => array(RedBeanModel::MANY_MANY, 'Meeting', 'activityItems'),

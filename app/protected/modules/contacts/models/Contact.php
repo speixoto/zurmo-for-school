@@ -98,6 +98,7 @@
                                                 RedBeanModel::LINK_TYPE_SPECIFIC, 'source'),
                     'state'            => array(RedBeanModel::HAS_ONE,   'ContactState', RedBeanModel::NOT_OWNED,
                                                 RedBeanModel::LINK_TYPE_SPECIFIC, 'state'),
+                    'projects'         => array(RedBeanModel::MANY_MANY, 'Project'),
                 ),
                 'derivedRelationsViaCastedUpModel' => array(
                     'meetings' => array(RedBeanModel::MANY_MANY, 'Meeting', 'activityItems'),

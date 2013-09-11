@@ -399,5 +399,35 @@
         {
             return new ProjectZurmoControllerUtil('projectItems', 'ProjectItemForm');
         }
+
+        /**
+         * Create a project from a relation for example, on accounts details and relations view
+         * @param string $relationAttributeName
+         * @param string $relationModelId
+         * @param string $relationModuleId
+         * @param string $redirectUrl
+         */
+        public function actionCreateFromRelation($relationAttributeName, $relationModelId, $relationModuleId, $redirectUrl)
+        {
+            $project = $this->resolveNewModelByRelationInformation( new Project(),
+                                                                                $relationAttributeName,
+                                                                                (int)$relationModelId,
+                                                                                $relationModuleId);
+            $this->actionCreateByModel($project, $redirectUrl);
+        }
+
+        /**
+         * Creates by modal
+         * @param Project $project
+         * @param string $redirectUrl
+         */
+        protected function actionCreateByModel(Project $project, $redirectUrl = null)
+        {
+            $titleBarAndEditView    = $this->makeEditAndDetailsView(
+                                                $this->attemptToSaveModelFromPost($project, $redirectUrl), 'Edit');
+            $view                   = new ProjectsPageView(ZurmoDefaultViewUtil::
+                                                                makeStandardViewForCurrentUser($this, $titleBarAndEditView));
+            echo $view->render();
+        }
     }
 ?>
