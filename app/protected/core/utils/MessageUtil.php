@@ -455,11 +455,7 @@
         public static function getSecurableModuleRightsPoliciesAndAuditEventLabels($moduleClassName)
         {
             assert('is_string($moduleClassName)');
-            $rightsNames     = $moduleClassName::getTranslatedRightsLabels();
-            $policiesNames   = $moduleClassName::getTranslatedPolicyLabels();
-            $auditEventNames = $moduleClassName::getAuditEventNames();
-            $labelsData      = array_merge($rightsNames, $policiesNames);
-            return             array_merge($labelsData, $auditEventNames);
+            return $moduleClassName::getAuditEventNames();
         }
 
         public static function getModuleMenuLabelNamesByModuleName($moduleClassName)
@@ -798,17 +794,6 @@
                 return 'Near entries ' . implode(', ', $msg);
             }
             return 'OK';
-        }
-
-
-        private static function getMessageDirectoriesForCurrentModuleAndDependencies()
-        {
-            if (Yii::app()->controller instanceof CController)
-            {
-                $currentModule = Yii::app()->controller->getModule();
-                return self::getMessageDirectoriesForModuleAndDependencies($currentModule);
-            }
-            return array();
         }
 
         private static function getMessageDirectoriesForNamedModuleAndDependencies($moduleName)
