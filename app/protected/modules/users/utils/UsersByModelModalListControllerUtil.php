@@ -35,21 +35,21 @@
      ********************************************************************************/
 
     /**
-     * Helper class to render a list of users called from a model controller.
+     * Helper class to render a list of users associated to any model's instance
      */
-    class UsersByRoleModalListControllerUtil
+    class UsersByModelModalListControllerUtil
     {
         /**
          * @return rendered content from view as string.
          */
-        public static function renderList(CController $controller, $dataProvider)
+        public static function renderList(CController $controller, $dataProvider, $action)
         {
             assert('$dataProvider instanceof RedBeanModelDataProvider');
             $modalListLinkProvider = new UserDetailsModalListLinkProvider('users', 'default', 'details');
-            $usersListView = new UsersByRoleModalListView(
+            $usersListView = new UsersByModelModalListView(
                 $controller->getId(),
                 $controller->getModule()->getId(),
-                'usersInRoleModalList',
+                $action,
                 'User',
                 $modalListLinkProvider,
                 $dataProvider,
@@ -61,20 +61,37 @@
 
         /**
          * Creates the appropriate filtering of users by the specified model.
-         * @param object $model Role
+         * @param object $model
          * @return array $searchAttributeData
          */
-        public static function makeModalSearchAttributeDataByRoleModel($model)
+        public static function makeModalSearchAttributeDataByModel($model, $attributeName)
         {
-            assert('$model instanceof Role');
             $searchAttributeData = array();
-            $searchAttributeData['clauses'] = array(
-                1 => array(
-                    'attributeName'        => 'role',
-                    'operatorType'         => 'equals',
-                    'value'                => $model->id,
-                )
-            );
+            if ($model instanceof Group)
+            {
+                if ($model->name == Group::EVERYONE_GROUP_NAME)
+                {
+                    return array();
+                }
+                $searchAttributeData['clauses'] = array(
+                    1 => array(
+                        'attributeName'        => $attributeName,
+                        'relatedAttributeName' => 'id',
+                        'operatorType'         => 'equals',
+                        'value'                => $model->id,
+                    )
+                );
+            }
+            else
+            {
+                $searchAttributeData['clauses'] = array(
+                    1 => array(
+                        'attributeName'        => $attributeName,
+                        'operatorType'         => 'equals',
+                        'value'                => $model->id,
+                    )
+                );
+            }
             $searchAttributeData['structure'] = '1';
             return $searchAttributeData;
         }
