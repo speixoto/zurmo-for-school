@@ -34,57 +34,56 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class ProjectsModalSearchView extends SearchView
+    /**
+     * Form to work with duration enabled attributes
+     */
+    abstract class DurationEnabledWorkflowActionAttributeForm extends WorkflowActionAttributeForm
     {
-        public static function getDefaultMetadata()
+        /**
+         * @var integer.
+         */
+        public $durationInterval;
+
+        /**
+         * @var string
+         */
+        public $durationSign = TimeDurationUtil::DURATION_SIGN_POSITIVE;
+
+        /**
+         * @var string
+         */
+        public $durationType = TimeDurationUtil::DURATION_TYPE_DAY;
+
+        /**
+         * @return array
+         */
+        public function rules()
         {
-            $metadata = array(
-                'global' => array(
-                    'panels' => array(
-                        array(
-                            'locked' => true,
-                            'title'  => 'Basic Search',
-                            'rows' => array(
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'anyMixedAttributes',
-                                                      'type' => 'AnyMixedAttributesSearch', 'wide' => true),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                            ),
-                        ),
-                        array(
-                            'title' => 'Advanced Search',
-                            'rows' => array(
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'name', 'type' => 'Text'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                            ),
-                        ),
-                    ),
-                ),
-            );
-            return $metadata;
+            return array_merge(parent::rules(), array(
+                array('durationInterval', 'type', 'type' => 'integer'),
+                array('durationInterval', 'numerical', 'min' => 0),
+                array('durationSign',     'type', 'type' => 'string'),
+                array('durationType',     'type', 'type' => 'string'),
+            ));
         }
 
-        public static function getDesignerRulesType()
+        /**
+         * @return array
+         */
+        public function attributeLabels()
         {
-            return 'ModalSearchView';
+            return array_merge(parent::attributeLabels(), array('durationInterval' => Zurmo::t('Core', 'Interval')));
         }
 
-        public static function getModelForMetadataClassName()
+        /**
+         * @param integer $initialTimeStamp
+         * @return integer timestamp based on durationInterval, durationSign, and durationType
+         */
+        public function resolveNewTimeStampForDuration($initialTimeStamp)
         {
-            return 'ProductsSearchForm';
+            assert('is_int($initialTimeStamp)');
+            return TimeDurationUtil::resolveNewTimeStampForDuration($initialTimeStamp, (int)$this->durationInterval,
+                $this->durationSign, $this->durationType);
         }
     }
 ?>

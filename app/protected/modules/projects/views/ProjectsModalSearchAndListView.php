@@ -38,12 +38,12 @@
     {
         public static function getListViewClassName()
         {
-            return 'ProjectsModalListView';
+            return 'ProductsModalListView';
         }
 
         public static function getSearchViewClassName()
         {
-            return 'ProjectsModalSearchView';
+            return 'ProductsModalSearchView';
         }
     }
 ?>

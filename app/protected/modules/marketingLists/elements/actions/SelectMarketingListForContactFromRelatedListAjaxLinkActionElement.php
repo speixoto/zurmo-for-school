@@ -34,57 +34,11 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class ProjectsModalSearchView extends SearchView
+    class SelectMarketingListForContactFromRelatedListAjaxLinkActionElement extends SelectFromRelatedListAjaxLinkActionElement
     {
-        public static function getDefaultMetadata()
+        protected function getDefaultLabel()
         {
-            $metadata = array(
-                'global' => array(
-                    'panels' => array(
-                        array(
-                            'locked' => true,
-                            'title'  => 'Basic Search',
-                            'rows' => array(
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'anyMixedAttributes',
-                                                      'type' => 'AnyMixedAttributesSearch', 'wide' => true),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                            ),
-                        ),
-                        array(
-                            'title' => 'Advanced Search',
-                            'rows' => array(
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'name', 'type' => 'Text'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                            ),
-                        ),
-                    ),
-                ),
-            );
-            return $metadata;
-        }
-
-        public static function getDesignerRulesType()
-        {
-            return 'ModalSearchView';
-        }
-
-        public static function getModelForMetadataClassName()
-        {
-            return 'ProductsSearchForm';
+            return Zurmo::t('Core', 'Subscribe to List');
         }
     }
 ?>

@@ -34,57 +34,24 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class ProjectsModalSearchView extends SearchView
+    /**
+     * Class used by an autoresponder to show the duration data. For example send the first autoresponder 4 hours after
+     * someone subscribves
+     */
+    class AutoresponderFromOperationDurationElement extends DurationElement
     {
-        public static function getDefaultMetadata()
-        {
-            $metadata = array(
-                'global' => array(
-                    'panels' => array(
-                        array(
-                            'locked' => true,
-                            'title'  => 'Basic Search',
-                            'rows' => array(
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'anyMixedAttributes',
-                                                      'type' => 'AnyMixedAttributesSearch', 'wide' => true),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                            ),
-                        ),
-                        array(
-                            'title' => 'Advanced Search',
-                            'rows' => array(
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'name', 'type' => 'Text'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                            ),
-                        ),
-                    ),
-                ),
-            );
-            return $metadata;
-        }
+        protected $intervalAttributeName = 'fromOperationDurationInterval';
 
-        public static function getDesignerRulesType()
-        {
-            return 'ModalSearchView';
-        }
+        protected $signAttributeName     = null;
 
-        public static function getModelForMetadataClassName()
+        protected $typeAttributeName     = 'fromOperationDurationType';
+
+        protected function renderControlNonEditable()
         {
-            return 'ProductsSearchForm';
+            $dropDownArray = $this->getDurationTypeDropDownArray();
+            $content  = $this->model->{$this->intervalAttributeName} . ' ';
+            $content .= $dropDownArray[$this->model->{$this->typeAttributeName}];
+            return $content;
         }
     }
 ?>

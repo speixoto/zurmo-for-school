@@ -34,57 +34,23 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class ProjectsModalSearchView extends SearchView
+    class TimeTriggerForWorkflowFormTest extends WorkflowBaseTest
     {
-        public static function getDefaultMetadata()
+        public function testResolveNewTimeStampForDuration()
         {
-            $metadata = array(
-                'global' => array(
-                    'panels' => array(
-                        array(
-                            'locked' => true,
-                            'title'  => 'Basic Search',
-                            'rows' => array(
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'anyMixedAttributes',
-                                                      'type' => 'AnyMixedAttributesSearch', 'wide' => true),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                            ),
-                        ),
-                        array(
-                            'title' => 'Advanced Search',
-                            'rows' => array(
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'name', 'type' => 'Text'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                            ),
-                        ),
-                    ),
-                ),
-            );
-            return $metadata;
-        }
-
-        public static function getDesignerRulesType()
-        {
-            return 'ModalSearchView';
-        }
-
-        public static function getModelForMetadataClassName()
-        {
-            return 'ProductsSearchForm';
+            $timeTrigger = new TimeTriggerForWorkflowForm('WorkflowsTestModule', 'WorkflowModelTestItem', Workflow::TYPE_ON_SAVE);
+            $timeTrigger->durationInterval = 5;
+            $timeTrigger->durationType     = TimeDurationUtil::DURATION_TYPE_DAY;
+            $timeTrigger->durationSign     = TimeDurationUtil::DURATION_SIGN_POSITIVE;
+            $this->assertEquals(5 * 24 * 60 * 60, $timeTrigger->resolveNewTimeStampForDuration(0));
+            $timeTrigger->durationType     = TimeDurationUtil::DURATION_TYPE_MINUTE;
+            $this->assertEquals(5 * 60, $timeTrigger->resolveNewTimeStampForDuration(0));
+            $timeTrigger->durationInterval = 10;
+            $this->assertEquals(10 * 60, $timeTrigger->resolveNewTimeStampForDuration(0));
+            $timeTrigger->durationType     = TimeDurationUtil::DURATION_TYPE_HOUR;
+            $this->assertEquals(10 * 60 * 60, $timeTrigger->resolveNewTimeStampForDuration(0));
+            $timeTrigger->durationSign     = TimeDurationUtil::DURATION_SIGN_NEGATIVE;
+            $this->assertEquals(-10 * 60 * 60, $timeTrigger->resolveNewTimeStampForDuration(0));
         }
     }
 ?>

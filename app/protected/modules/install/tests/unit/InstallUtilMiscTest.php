@@ -34,57 +34,29 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class ProjectsModalSearchView extends SearchView
+    class InstallUtilMiscTest extends ZurmoBaseTest
     {
-        public static function getDefaultMetadata()
+        public static function setUpBeforeClass()
         {
-            $metadata = array(
-                'global' => array(
-                    'panels' => array(
-                        array(
-                            'locked' => true,
-                            'title'  => 'Basic Search',
-                            'rows' => array(
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'anyMixedAttributes',
-                                                      'type' => 'AnyMixedAttributesSearch', 'wide' => true),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                            ),
-                        ),
-                        array(
-                            'title' => 'Advanced Search',
-                            'rows' => array(
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'name', 'type' => 'Text'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                            ),
-                        ),
-                    ),
-                ),
-            );
-            return $metadata;
+            parent::setUpBeforeClass();
+            SecurityTestHelper::createSuperAdmin();
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
         }
 
-        public static function getDesignerRulesType()
+        /**
+         * test create system user
+         */
+        public function testCreateSystemUser()
         {
-            return 'ModalSearchView';
-        }
-
-        public static function getModelForMetadataClassName()
-        {
-            return 'ProductsSearchForm';
+            $user = InstallUtil::createSystemUser('testsystemuser', 'test');
+            $id   = $user->id;
+            $user->forget();
+            unset($user);
+            $user = User::getById($id);
+            $this->assertTrue((bool)$user->isSystemUser);
+            $this->assertTrue((bool)$user->hideFromSelecting);
+            $this->assertTrue((bool)$user->hideFromLeaderboard);
         }
     }
 ?>

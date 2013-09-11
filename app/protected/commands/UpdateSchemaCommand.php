@@ -62,7 +62,7 @@ EOD;
          */
         public function run($args)
         {
-            set_time_limit('3600');
+            set_time_limit('900');
             if (!isset($args[0]))
             {
                 $this->usageError('A username must be specified.');

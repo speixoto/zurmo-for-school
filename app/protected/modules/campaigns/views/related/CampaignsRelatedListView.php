@@ -34,37 +34,36 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class ProjectsModalSearchView extends SearchView
+    abstract class CampaignsRelatedListView extends SecuredRelatedListView
     {
         public static function getDefaultMetadata()
         {
             $metadata = array(
+                'perUser' => array(
+                    'title' => "eval:Zurmo::t('CampaignsModule', 'Campaigns')",
+                ),
                 'global' => array(
+                    'toolbar' => array(
+                        'elements' => array(
+                            array(  'type'            => 'CreateFromRelatedListLink',
+                                    'routeModuleId'   => 'eval:$this->moduleId',
+                                    'routeParameters' => 'eval:$this->getCreateLinkRouteParameters()'),
+                        ),
+                    ),
+                    'rowMenu' => array(
+                        'elements' => array(
+                            array('type'                      => 'EditLink'),
+                        ),
+                    ),
+                    'gridViewType' => RelatedListView::GRID_VIEW_TYPE_STACKED,
                     'panels' => array(
                         array(
-                            'locked' => true,
-                            'title'  => 'Basic Search',
                             'rows' => array(
                                 array('cells' =>
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'anyMixedAttributes',
-                                                      'type' => 'AnyMixedAttributesSearch', 'wide' => true),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                            ),
-                        ),
-                        array(
-                            'title' => 'Advanced Search',
-                            'rows' => array(
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'name', 'type' => 'Text'),
+                                                array('attributeName' => 'name', 'type' => 'Text', 'isLink' => true),
                                             ),
                                         ),
                                     )
@@ -77,14 +76,9 @@
             return $metadata;
         }
 
-        public static function getDesignerRulesType()
+        public static function getModuleClassName()
         {
-            return 'ModalSearchView';
-        }
-
-        public static function getModelForMetadataClassName()
-        {
-            return 'ProductsSearchForm';
+            return 'CampaignsModule';
         }
     }
 ?>

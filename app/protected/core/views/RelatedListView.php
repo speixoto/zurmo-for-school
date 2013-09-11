@@ -172,13 +172,13 @@
         protected function getCGridViewPagerParams()
         {
             return array(
-                    'firstPageLabel'    => '<span>first</span>',
-                    'prevPageLabel'     => '<span>previous</span>',
-                    'nextPageLabel'     => '<span>next</span>',
-                    'lastPageLabel'     => '<span>last</span>',
-                    'class'             => 'SimpleListLinkPager',
+                    'firstPageLabel' => '<span>first</span>',
+                    'prevPageLabel'  => '<span>previous</span>',
+                    'nextPageLabel'  => '<span>next</span>',
+                    'lastPageLabel'  => '<span>last</span>',
+                    'class'          => 'SimpleListLinkPager',
                     'paginationParams'  => $this->resolvePaginationParams(),
-                    'route'             => 'defaultPortlet/details',
+                    'route'         => 'defaultPortlet/details',
                 );
         }
 

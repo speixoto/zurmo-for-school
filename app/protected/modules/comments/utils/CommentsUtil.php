@@ -39,6 +39,12 @@
      */
     class CommentsUtil
     {
+        /**
+         * @param RedBeanModel $relatedModel
+         * @param Comment $comment
+         * @param $senderPerson
+         * @param array $peopleToSendNotification
+         */
         public static function sendNotificationOnNewComment(RedBeanModel $relatedModel, Comment $comment, $senderPerson, $peopleToSendNotification)
         {
             if (count($peopleToSendNotification) > 0)
@@ -69,6 +75,12 @@
             }
         }
 
+        /**
+         * @param RedBeanModel $model
+         * @param Comment $comment
+         * @param User $user
+         * @return EmailMessageContent
+         */
         public static function getEmailContent(RedBeanModel $model, Comment $comment, User $user)
         {
             $emailContent  = new EmailMessageContent();
@@ -102,9 +114,13 @@
             return $emailContent;
         }
 
+        /**
+         * @param $model
+         * @return string
+         */
         public static function getEmailSubject($model)
         {
-            if ($model instanceof Conversation || $model instanceof Mission  || $model instanceof Task)
+            if ($model instanceof Conversation || $model instanceof Mission)
             {
                 return Zurmo::t('CommentsModule', 'New comment on {modelName}: {subject}',
                                     array('{subject}'   => strval($model),
@@ -112,6 +128,10 @@
             }
         }
 
+        /**
+         * @param $model
+         * @return mixed
+         */
         public static function getUrlToEmail($model)
         {
             if ($model instanceof Conversation)
@@ -121,10 +141,6 @@
             elseif ($model instanceof Mission)
             {
                 return Yii::app()->createAbsoluteUrl('missions/default/details/', array('id' => $model->id));
-            }
-            elseif ($model instanceof Task)
-            {
-                return Yii::app()->createAbsoluteUrl('tasks/default/details/', array('id' => $model->id));
             }
         }
     }

@@ -35,13 +35,15 @@
      ********************************************************************************/
 
     /**
-     * Element for displaying the autoresponder seconds from operation options.
+     * Class used by an email message in workflow to show the duration data. For example send the email message
+     * 4 hours after the workflow runs
      */
-    class AutoresponderSecondsFromOperationElement extends StaticDropDownFormElement
+    class EmailMessageSendAfterDurationElement extends DurationElement
     {
-        protected function getDropDownArray()
-        {
-            return Autoresponder::getIntervalDropDownArray();
-        }
+        protected $intervalAttributeName = 'sendAfterDurationInterval';
+
+        protected $signAttributeName     = null;
+
+        protected $typeAttributeName     = 'sendAfterDurationType';
     }
 ?>

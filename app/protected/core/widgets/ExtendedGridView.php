@@ -240,6 +240,7 @@
         {
             if (!$this->hideHeader)
             {
+                echo "<thead>\n";
                 $this->renderTableColumnGroup();
                 if ($this->filterPosition === self::FILTER_POS_HEADER)
                 {

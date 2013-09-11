@@ -34,57 +34,16 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class ProjectsModalSearchView extends SearchView
+    class CampaignsForMarketingListRelatedListView extends CampaignsRelatedListView
     {
-        public static function getDefaultMetadata()
+        protected function getRelationAttributeName()
         {
-            $metadata = array(
-                'global' => array(
-                    'panels' => array(
-                        array(
-                            'locked' => true,
-                            'title'  => 'Basic Search',
-                            'rows' => array(
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'anyMixedAttributes',
-                                                      'type' => 'AnyMixedAttributesSearch', 'wide' => true),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                            ),
-                        ),
-                        array(
-                            'title' => 'Advanced Search',
-                            'rows' => array(
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'name', 'type' => 'Text'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                            ),
-                        ),
-                    ),
-                ),
-            );
-            return $metadata;
+            return 'marketingList';
         }
 
-        public static function getDesignerRulesType()
+        public static function getDisplayDescription()
         {
-            return 'ModalSearchView';
-        }
-
-        public static function getModelForMetadataClassName()
-        {
-            return 'ProductsSearchForm';
+            return Zurmo::t('CampaignsModule', 'Campaigns For Marketing List');
         }
     }
 ?>
