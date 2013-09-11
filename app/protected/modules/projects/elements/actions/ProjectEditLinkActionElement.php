@@ -34,22 +34,11 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class ProjectsForAccountRelatedListView extends ProjectsRelatedListView
+    class ProjectEditLinkActionElement extends EditLinkActionElement
     {
-        protected function getRelationAttributeName()
+        protected function getRedirectUrl()
         {
-            return 'accounts';
-        }
-
-        public static function getDisplayDescription()
-        {
-            return Zurmo::t('ProjectsModule', 'ProjectsModulePluralLabel For AccountsModuleSingularLabel',
-                        LabelUtil::getTranslationParamsForAllModules());
-        }
-
-        public static function getAllowedOnPortletViewClassNames()
-        {
-            return array('AccountDetailsAndRelationsView');
+            return Yii::app()->createUrl($this->params['relationModuleId'] . '/default/details?id=' . $this->params['relationModelId']);
         }
     }
 ?>
