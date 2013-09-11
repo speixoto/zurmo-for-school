@@ -20158,7 +20158,7 @@ div.special-pager .hidden.next:after {
   list-style: none;
   position: absolute;
   top: 38px;
-  right: -10px;
+  right: 0;
   min-width: 100px;
   -webkit-border-radius: 2px;
   -moz-border-radius: 2px;
@@ -20183,7 +20183,7 @@ div.special-pager .hidden.next:after {
   display: block;
   position: absolute;
   top: -15px;
-  right: 19px;
+  right: 9px;
   width: 80%;
   height: 15px;
   background: url(../images/tip.png) right bottom no-repeat;
@@ -20223,8 +20223,9 @@ div.special-pager .hidden.next:after {
   left: 0;
 }
 .button-actions.open-on-left:before {
+  width: 80%;
   right: auto;
-  width: 20px;
+  background-position: 50% bottom;
 }
 .juiportlet-widget-content .pillbox {
   margin: 15px 0 0 15px;
@@ -20312,7 +20313,7 @@ div.special-pager .hidden.next:after {
 /*Overlay view*/
 .overlay-view {
   text-align: left;
-  padding: 5px 10px 10px 10px;
+  padding: 5px 5px 10px 5px;
 }
 .overlay-view div {
   background: none !important;

@@ -183,20 +183,7 @@
 
         public function run()
         {
-            $this->registerScripts();
             $this->renderMenu($this->items);
-        }
-
-        protected function registerScripts()
-        {
-            $script = "
-                    $('.button-triggerm, .button-action-trigger').click(
-                                function(){
-                                    $('.button-actions', $(this).parent()).show().addClass('stay-open');
-                                }
-                            );
-                ";
-             Yii::app()->clientScript->registerScript('DividedMenu', $script);
         }
 
         protected function isButtonDivided($item)
