@@ -34,26 +34,18 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class UsersModalListLinkActionElement extends ModalListLinkActionElement
+    /**
+     * Run the jobManager using this messageLogger if you want to show all debug messaging regardless of if debug
+     * is true/false in the application
+     */
+    class DebuggingMessageLogger extends MessageLogger
     {
-        protected function getDefaultLabel()
+        /**
+         * @return bool
+         */
+        protected function shouldPrintDebugMessages()
         {
-            // Because we get a dynamic label(userCount) from RolesTreeListView
-            throw new NotSupportedException;
-        }
-
-        protected function getAjaxLinkTitle()
-        {
-            return Zurmo::t('UsersModule', 'Users');
-        }
-
-        protected function getRouteAction()
-        {
-            if (isset($this->params['routeAction']))
-            {
-                return $this->params['routeAction'];
-            }
-            return '/usersInRoleModalList/';
+            return true;
         }
     }
 ?>

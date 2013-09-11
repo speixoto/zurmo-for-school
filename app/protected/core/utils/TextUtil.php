@@ -51,7 +51,6 @@
         }
 
         /**
-         * Original code from: http://www.yiiframework.com/forum/index.php/topic/33842-a-function-to-convert-all-urls-to-links/
          * @param string $text
          * @return string
          */
