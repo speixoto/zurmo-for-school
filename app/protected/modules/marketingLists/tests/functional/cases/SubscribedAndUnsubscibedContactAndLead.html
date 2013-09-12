@@ -17,11 +17,7 @@
 	<td>45000</td>
 	<td></td>
 </tr>
-<tr>
-	<td>setSpeed</td>
-	<td>3000</td>
-	<td></td>
-</tr>
+<!--go to marketing list view-->
 <tr>
 	<td>open</td>
 	<td>index.php/marketing/default/dashboardDetails</td>
@@ -77,6 +73,7 @@
 	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
 	<td>30000</td>
 </tr>
+<!--search for Test Marketing List ${randomSuffix}-->
 <tr>
 	<td>type</td>
 	<td>id=MarketingListsSearchForm_anyMixedAttributes</td>
@@ -127,6 +124,12 @@
 	<td>Test Marketing List ${randomSuffix}</td>
 	<td></td>
 </tr>
+<!--select contacts/leads to unsubscribe-->
+<tr>
+	<td>setSpeed</td>
+	<td>3000</td>
+	<td></td>
+</tr>
 <tr>
 	<td>click</td>
 	<td>//div[@id='list-viewMarketingListMembersPortletView']/table/tbody/tr[1]/td[1]/label/input</td>
@@ -156,6 +159,11 @@
 	<td>waitForCondition</td>
 	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
 	<td>30000</td>
+</tr>
+<tr>
+	<td>setSpeed</td>
+	<td>0</td>
+	<td></td>
 </tr>
 <tr>
 	<td>click</td>
@@ -197,6 +205,7 @@
 	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
 	<td>30000</td>
 </tr>
+<!--check unsubscription done or not-->
 <tr>
 	<td>click</td>
 	<td>//ul[@id='ListViewDetailsActionMenu']/li/a</td>
@@ -227,6 +236,7 @@
 	<td>3 Unsubscribed</td>
 	<td></td>
 </tr>
+<!--select contacts/leads to subscribe-->
 <tr>
 	<td>click</td>
 	<td>//div[@id='list-viewMarketingListMembersPortletView']/table/tbody/tr[1]/td[1]/label/input</td>
@@ -277,6 +287,7 @@
 	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
 	<td>30000</td>
 </tr>
+<!--check subscription done or not-->
 <tr>
 	<td>click</td>
 	<td>//ul[@id='ListViewDetailsActionMenu']/li/a</td>
