@@ -61,14 +61,34 @@
             $project->name            = 'Project 1';
             $project->owner           = $user;
             $project->description     = 'Description';
+
+            $user = UserTestHelper::createBasicUser('Steven');
+            $account = new Account();
+            $account->owner       = $user;
+            $account->name        = DataUtil::purifyHtml("Tom & Jerry's Account");
+            $this->assertTrue($account->save());
+            $id = $account->id;
+            unset($account);
+            $account = Account::getById($id);
+            $this->assertEquals("Tom & Jerry's Account", $account->name);
+            //$project->accounts->add($account);
+            $contact = ContactTestHelper::createContactByNameForOwner('Jerry', $user);
+            //$project->contacts->add($contact);
+            $opportunity = OpportunityTestHelper::createOpportunityByNameForOwner('Jerry Opp', $user);
+            //$project->opportunities->add($opportunity);
             $this->assertTrue($project->save());
             $id                       = $project->id;
             $project->forget();
             unset($project);
             $project                  = Project::getById($id);
+            ProjectZurmoControllerUtil::resolveProjectManyManyAccountsFromPost($project, array('accountIds' => $account->id));
+            ProjectZurmoControllerUtil::resolveProjectManyManyContactsFromPost($project, array('contactIds' => $contact->id));
+            ProjectZurmoControllerUtil::resolveProjectManyManyOpportunitiesFromPost($project, array('opportunityIds' => $opportunity->id));
             $this->assertEquals('Project 1', $project->name);
             $this->assertEquals('Description', $project->description);
-
+            $this->assertEquals(1, $project->accounts->count());
+            $this->assertEquals(1, $project->contacts->count());
+            $this->assertEquals(1, $project->opportunities->count());
             $project                  = new Project();
             $project->name            = 'Project 2';
             $project->owner           = $user;
