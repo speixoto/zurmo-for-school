@@ -357,12 +357,13 @@
             $this->assertEquals($contact, $recipients[0]->personOrAccount);
             $this->assertNotEmpty($emailMessage->files);
             $this->assertCount(count($files), $emailMessage->files);
-            foreach ($files as $index => $file)
+            foreach ($autoresponder->files as $index => $file)
             {
-                $this->assertEquals($files[$index]['name'], $emailMessage->files[$index]->name);
-                $this->assertEquals($files[$index]['type'], $emailMessage->files[$index]->type);
-                $this->assertEquals($files[$index]['size'], $emailMessage->files[$index]->size);
-                $this->assertEquals($files[$index]['contents'], $emailMessage->files[$index]->fileContent->content);
+                $this->assertEquals($file->name, $emailMessage->files[$index]->name);
+                $this->assertEquals($file->type, $emailMessage->files[$index]->type);
+                $this->assertEquals($file->size, $emailMessage->files[$index]->size);
+                //AutoresponderItem should share the Attachments content from Autoresponder
+                $this->assertEquals($file->fileContent, $emailMessage->files[$index]->fileContent);
             }
             $headersArray               = array('zurmoItemId' => $autoresponderItem->id,
                                                 'zurmoItemClass' => get_class($autoresponderItem),

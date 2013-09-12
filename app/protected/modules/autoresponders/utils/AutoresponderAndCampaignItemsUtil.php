@@ -223,7 +223,7 @@
             {
                 foreach ($itemOwnerModel->files as $file)
                 {
-                    $emailMessageFile   = FileModelUtil::makeByFileModel($file);
+                    $emailMessageFile   = FileModelUtil::makeByFileModelWithSharedFileContent($file);
                     $emailMessage->files->add($emailMessageFile);
                 }
             }
