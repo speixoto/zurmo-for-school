@@ -88,10 +88,10 @@
                     array('endDateTime',      'RedBeanModelCompareDateTimeValidator', 'type' => 'after',
                                               'compareAttribute' => 'startDateTime'),
                     array('location',         'type',    'type' => 'string'),
-                    array('location',         'length',  'min'  => 3, 'max' => 64),
+                    array('location',         'length',  'min'  => 1, 'max' => 64),
                     array('name',             'required'),
                     array('name',             'type',    'type' => 'string'),
-                    array('name',             'length',  'min'  => 3, 'max' => 64),
+                    array('name',             'length',  'min'  => 1, 'max' => 64),
                     array('startDateTime',    'required'),
                     array('startDateTime',    'type', 'type' => 'datetime'),
                     array('startDateTime',    'RedBeanModelCompareDateTimeValidator', 'type' => 'before',
@@ -165,6 +165,11 @@
         public static function getGamificationRulesType()
         {
             return 'MeetingGamification';
+        }
+
+        public static function hasReadPermissionsSubscriptionOptimization()
+        {
+            return true;
         }
     }
 ?>

@@ -108,7 +108,14 @@
                                 $data[$attributeName]['values'] = explode(',', $data[$attributeName]['values']); // Not Coding Standard
                             }
                         }
-                        array_walk_recursive($data[$attributeName], array('DataUtil', 'purifyHtmlAndModifyInput'));
+                        if ($designerType == 'CheckBox')
+                        {
+                            $data[$attributeName] = $value['value'];
+                        }
+                        else
+                        {
+                            array_walk_recursive($data[$attributeName], array('DataUtil', 'purifyHtmlAndModifyInput'));
+                        }
                     }
                 }
             }
@@ -157,7 +164,13 @@
         {
             if (is_string($text))
             {
-                $safeCharacters     = array('&' => '&amp;', '[' => '%5B', '^' => '%5E', ']' => '%5D', '%' => '%25');
+                $safeCharacters     = array('&' => '&amp;',
+                                            '[' => '%5B',
+                                            '^' => '%5E',
+                                            ']' => '%5D',
+                                            '%' => '%25',
+                                            '<' => '&lt;',
+                                            '>' => '&gt;');
                 $purifier           = new CHtmlPurifier();
                 $purifier->options  = array('Cache.SerializerPermissions' => 0777);
                 $purifiedText       = $purifier->purify($text);

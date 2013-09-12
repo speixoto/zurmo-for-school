@@ -173,7 +173,7 @@
         {
             if ($this->getAvailableOperatorsType() != null && $this->operator == null)
             {
-                $this->addError('operator', Zurmo::t('WorkflowsModule', 'Operator cannot be blank.'));
+                $this->addError('operator', Zurmo::t('ZurmoModule', 'Operator cannot be blank.'));
                 return  false;
             }
         }
@@ -217,7 +217,7 @@
                 {
                     if (!is_string($subValue))
                     {
-                        $this->addError('value', Zurmo::t('WorkflowsModule', 'Value must be a string.'));
+                        $this->addError('value', Zurmo::t('Core', 'Value must be a string.'));
                         $passedValidation = false;
                     }
                 }
@@ -258,7 +258,7 @@
         {
             if ($this->getValueElementType() == 'MixedDateTypesForWorkflow' && $this->valueType == null)
             {
-                $this->addError('valueType', Zurmo::t('WorkflowsModule', 'Type cannot be blank.'));
+                $this->addError('valueType', Zurmo::t('ZurmoModule', 'Type cannot be blank.'));
                 return false;
             }
         }
@@ -439,7 +439,10 @@
             {
                 if (isset($rule[0], $rule[1]))
                 {
-                    $validators->add(CValidator::createValidator($rule[1], $this, $rule[0], array_slice($rule, 2)));
+                    if ($rule[1] != 'unique')
+                    {
+                        $validators->add(CValidator::createValidator($rule[1], $this, $rule[0], array_slice($rule, 2)));
+                    }
                 }
                 else
                 {
@@ -459,9 +462,8 @@
         private function resolveAndValidateValueData(Array $rules, & $passedValidation, $ruleAttributeName)
         {
             $modelToWorkflowAdapter = $this->makeResolvedAttributeModelRelationsAndAttributesToWorkflowAdapter();
-            $rules                = array_merge($rules,
-                $modelToWorkflowAdapter->getTriggerRulesByAttribute(
-                    $this->getResolvedAttribute(), $ruleAttributeName));
+            $rules                = array_merge($rules, $modelToWorkflowAdapter->getTriggerRulesByAttribute(
+                                    $this->getResolvedAttribute(), $ruleAttributeName));
             $validators           = $this->createValueValidatorsByRules($rules);
             foreach ($validators as $validator)
             {
@@ -483,7 +485,7 @@
                 $this->getAttribute() != null) ||
                 ($this->getAttribute() == null &&
                     $this->getAttributeAndRelationData()) == 2 &&
-                    $modelClassName::isOwnedRelation($this->getPenultimateRelation()))
+                    $modelClassName::isOwnedRelation($this->getResolvedRealAttributeNameForPenultimateRelation()))
             {
                 return true;
             }
@@ -500,7 +502,7 @@
                 $this->getAttribute() != null) ||
                 ($this->getAttribute() == null &&
                     $this->getAttributeAndRelationData()) == 2 &&
-                    $modelClassName::isOwnedRelation($this->getPenultimateRelation()))
+                    $modelClassName::isOwnedRelation($this->getResolvedRealAttributeNameForPenultimateRelation()))
             {
                 return true;
             }

@@ -80,7 +80,7 @@
                     array('description',      'type',    'type' => 'string'),
                     array('name',             'required'),
                     array('name',             'type',    'type' => 'string'),
-                    array('name',             'length',  'min'  => 3, 'max' => 64),
+                    array('name',             'length',  'min'  => 1, 'max' => 64),
                 ),
                 'elements' => array(
                     'completedDateTime' => 'DateTime',
@@ -146,6 +146,11 @@
         public static function getGamificationRulesType()
         {
             return 'TaskGamification';
+        }
+
+        public static function hasReadPermissionsSubscriptionOptimization()
+        {
+            return true;
         }
     }
 ?>

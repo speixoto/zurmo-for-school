@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class Contact extends Person
+    class Contact extends Person implements StarredInterface
     {
         public static function getByName($name)
         {
@@ -106,7 +106,7 @@
                 ),
                 'rules' => array(
                     array('companyName',            'type',    'type' => 'string'),
-                    array('companyName',            'length',  'min'  => 3, 'max' => 64),
+                    array('companyName',            'length',  'min'  => 1, 'max' => 64),
                     array('description',            'type',    'type' => 'string'),
                     array('state',                  'required'),
                     array('website',                'url',     'defaultScheme' => 'http'),
@@ -183,6 +183,11 @@
                 return $moduleClassName::getModuleLabelByTypeAndLanguage('Plural', $language);
             }
             return static::getLabel($language) . 's';
+        }
+
+        public static function hasReadPermissionsSubscriptionOptimization()
+        {
+            return true;
         }
     }
 ?>

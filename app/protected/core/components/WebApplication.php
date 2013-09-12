@@ -60,6 +60,12 @@
         protected $maintenanceMode;
 
         /**
+         * Flag to determine relative URLs or absolute URLs
+         * @var bool
+         */
+        protected $resolveAlwaysAsAbsoluteUrl = false;
+
+        /**
          * Override to handle when debug is turned on and the checksum fails on cached models.
          */
         public function run()
@@ -157,19 +163,37 @@
                 {
                     $controllerID .= '/';
                 }
-
                 $baseClassName = ucfirst($id) . 'Controller';
                 //this assumes owner is the module, which i am not sure is always true...
                 if ($this->isOwnerTheController($owner))
                 {
-                    $className     = $baseClassName;
+                    $className       = $baseClassName;
+                    $customClassName = 'Custom' . $baseClassName;
                 }
                 else
                 {
                     $className     = $owner::getPluralCamelCasedName() . $baseClassName;
+                    $customClassName = $owner::getPluralCamelCasedName() . 'Custom' . $baseClassName;
                 }
-                $classFile     = $basePath . DIRECTORY_SEPARATOR   . $baseClassName . '.php';
-                if (is_file($classFile))
+                $classFile       = $basePath . DIRECTORY_SEPARATOR   . $baseClassName . '.php';
+                $customClassFile = $basePath . DIRECTORY_SEPARATOR   . 'Custom' . $baseClassName . '.php';
+                if (is_file($customClassFile))
+                {
+                    if (!class_exists($customClassName, false))
+                    {
+                        require($customClassFile);
+                    }
+                    if (class_exists($customClassName, false) && is_subclass_of($customClassName, 'CController'))
+                    {
+                        $id[0] = strtolower($id[0]);
+                        return array(
+                            new $customClassName($controllerID . $id, $this->resolveWhatToPassAsParameterForOwner($owner)),
+                            $this->parseActionParams($route),
+                        );
+                    }
+                    return null;
+                }
+                elseif (is_file($classFile))
                 {
                     if (!class_exists($className, false))
                     {
@@ -268,6 +292,41 @@
         public function getEdition()
         {
             return $this->edition;
+        }
+
+        /**
+         * Override createUrl, so it returns absolute Url, for external request
+         * @param $route
+         * @param array $params
+         * @param string $ampersand
+         * @return string
+         */
+        public function createUrl($route, $params = array(), $ampersand = '&')
+        {
+            if ($this->resolveAlwaysAsAbsoluteUrl)
+            {
+                $url = $this->getUrlManager()->createUrl($route, $params, $ampersand);
+                if (strpos($url, 'http') === 0)
+                {
+                    return $url;
+                }
+                else
+                {
+                    return $this->getRequest()->getHostInfo() . $url;
+                }
+            }
+            else
+            {
+                return $this->getUrlManager()->createUrl($route, $params, $ampersand);
+            }
+        }
+
+        /**
+         * Set flag to send absolute URLs always, used in External Controllers
+         */
+        public function setResolveAlwaysAsAbsoluteUrl()
+        {
+            $this->resolveAlwaysAsAbsoluteUrl = true;
         }
     }
 ?>

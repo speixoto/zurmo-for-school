@@ -223,7 +223,7 @@
          * @param $value
          * @return string
          */
-        public function resolveValueAsLabelForHeaderCell($value)
+        public function resolveValueAsLabelForHeaderCell($value, $forExport = false)
         {
             $tContent             = null;
             $translatedValue      = $value;
@@ -275,6 +275,16 @@
             if ($translatedValue === null)
             {
                 $translatedValue = '';
+            }
+            if ($this->isALinkableAttribute() && !$forExport)
+            {
+                $modelClassName  = get_class($modelToReportAdapter->getModel());
+                $moduleClassName = $modelToReportAdapter->getModuleClassName();
+                if (isset($relationModelClassName))
+                {
+                    $modelClassName = $relationModelClassName;
+                }
+                return ReportResultsGridUtil::makeStringForMultipleLinks($value, $modelClassName, $moduleClassName);
             }
             return $translatedValue;
         }

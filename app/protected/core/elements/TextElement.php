@@ -46,22 +46,19 @@
          */
         protected function renderControlEditable()
         {
-            assert('empty($this->model->{$this->attribute}) || is_string($this->model->{$this->attribute}) ||
-            is_integer($this->model->{$this->attribute})');
             $htmlOptionsFromParams   = $this->getHtmlOptions();
             $htmlOptions             = array();
             $htmlOptions['id']       = $this->getEditableInputId();
             $htmlOptions['name']     = $this->getEditableInputName();
             $htmlOptions['disabled'] = $this->getDisabledValue();
             $htmlOptions             = array_merge($htmlOptionsFromParams, $htmlOptions);
-
-            if (isset($htmlOptionsFromParams['encode']) && $htmlOptionsFromParams['encode'])
+            if (isset($htmlOptionsFromParams['encode']) && !$htmlOptionsFromParams['encode'])
             {
-                $htmlOptions['encode'] = true;
+                $htmlOptions['encode'] = false;
             }
             else
             {
-                $htmlOptions['encode'] = false;
+                $htmlOptions['encode'] = true;
             }
             return $this->form->textField($this->model, $this->attribute, $htmlOptions);
         }

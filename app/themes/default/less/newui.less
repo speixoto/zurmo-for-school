@@ -53,6 +53,7 @@
 	font-style: normal;
 }
 */
+
 .symbly( @size : 32px ) {
 	font-weight:normal;
 	font-size:@size;
@@ -215,8 +216,8 @@ footer, header, hgroup, menu, nav, section {
 
 #login-box{
 	//float:left;
-	max-width:475px;
-	margin:150px auto 0 -237px;
+	width:500px;
+	margin:150px auto 0 -250px;
 	height:200px;
 	position:relative;
 	left:50%;
@@ -2012,6 +2013,7 @@ caption, th, td {
 }
 
 .stacked-list{
+	table-layout: fixed;
 	td + td{
 		width:25px
 	}
@@ -2047,6 +2049,10 @@ caption, th, td {
 			float:left;
 		}
 	}
+	.star-column{
+		margin:-6px 15px 0 0 !important;
+		float:right
+	}
 	tr:first-child{
 		> div:first-child{
 			font-size: 13px;
@@ -2057,6 +2063,7 @@ caption, th, td {
 }
 
 .juiportlet-widget-content .stacked-list{
+	border: none;
 	tr:first-child td{
 		border-top: none !important;
 	}
@@ -2108,6 +2115,46 @@ tr.even{
 	.symbly(24px);
 	visibility:hidden;
 }
+
+.star-column{
+	width:20px;
+	text-align:center;
+	padding:0 !important;
+}
+
+.icon-star{
+	.symbly(26px);
+	color:#ccc !important;
+	.t-shadow(0 0 1px #333);
+	top:-1px;
+	position:relative;
+	line-height:1;
+	&:hover,
+	&.starred{
+		color: #ffef42 !important;
+	}
+}
+
+#list-view_columnStar{
+	line-height:1;
+	width: 20px;
+	text-align: center;
+	padding-right: 0 !important;
+	padding-left: 0 !important;
+	.icon-star{
+		top:0;
+		left:-2px;
+	}
+}
+
+h1,
+.juiportlet-widget-head{
+	.icon-star{
+		top:1px;
+		margin-left:5px
+	}
+}
+
 
 .juiportlet-widget{
 	.empty{
@@ -2168,16 +2215,6 @@ td.empty{
 		line-height: 60px !important;
 	}
 	p{
-		font-size: 14px;
-		line-height: 21px;
-	}
-}
-
-.splash-view{
-	.general-issue-notice p{
-		margin: 0;
-		float: none;
-		width: 100%;
 		font-size: 14px;
 		line-height: 21px;
 	}
@@ -2258,18 +2295,14 @@ td.empty{
 		display: inline-block;
 		font-style: italic;
 		.smaller();
-		padding: 0 20px 5px 0;
-		//white-space: nowrap;
-		position: relative;
-		left: 20px;
-		top:5px;
+		padding: 0 0 5px 0;
 		&:before{
 			content:"T";
 			.symbly(24px);
-			margin-left: -20px;
+			margin-right: 6px;
 			font-style: normal;
-			position: absolute;
-			top: -4px;
+			position: relative;
+			top: 2px;
 		}
 	}
 }
@@ -2361,7 +2394,7 @@ body div.form-toolbar{
 		.radius(~"0 !important");
 		padding:0  !important;
 		border: none !important;
-		margin:!important;
+		//margin:!important;
 		text-decoration:underline;
 		font-weight:normal;
 		&:hover{
@@ -2396,7 +2429,7 @@ a.simple-link{
 	padding:0  !important;
 	border: none !important;
 	margin-left:10px;
-	text-decoration:underline;
+	text-decoration:underline !important;
 	.smaller();
 	font-weight:normal;
 	&:before{
@@ -2811,14 +2844,6 @@ div.wide.form{
 		.symbly(300px);
 		line-height: 52%;
 	}
-}
-
-.highlight-create-button{
-	-o-animation: throb 2.5s infinite ease-in-out;
-	-ms-animation: throb 2.5s infinite ease-in-out;
-	-moz-animation: throb 2.5s infinite ease-in-out;
-	-webkit-animation: throb 2.5s infinite ease-in-out;
-	animation: throb 2.5s infinite ease-in-out;
 }
 
 
@@ -3524,7 +3549,6 @@ div.wide.form{
 }
 
 .has-model-select{
-	z-index: 0;
 	clear:left;
 	padding:0 !important;
 	input{
@@ -3759,11 +3783,6 @@ div.wide.form{
 	height:400px;
 }
 
-.mapCanvasPortlet{
-	width: 100%;
-	height: 400px;
-}
-
 /*=tasks portelt*/
 .OpenTasksRelatedListView{
 	.button-column,
@@ -3932,6 +3951,7 @@ div.wide.form{
 #UserDetailsAndRelationsView{
 	.clearfix();
 	.GridView{
+		z-index: 0;
 		width:65%;
 		float:left;
 		.juiportlet-widget{
@@ -5065,13 +5085,19 @@ div.hasHalfs{
 			font-weight:normal;
 		}
 	}
-	#AccountConvertToView > div{
-		margin-right:0;
+}
+
+#AccountConvertToView{
+	> div{
+		margin-bottom: 0;
+	}
+	.left-column{
+		padding-right: 0;
 	}
 }
 
 .lead-conversion-actions{
-	padding:10px;
+	padding:15px 15px 5px 15px;
 	a{
 		.zLink;
 	}
@@ -5273,11 +5299,15 @@ div.hasHalfs{
 #MixedModelsSearchView{
 	position:relative;
 	z-index:5;
+	margin-bottom: 15px;
+	float: left;
+	width: 100%;
 	h1{
 		margin-bottom:15px;
 	}
 	.search-view-0{
 		float: none;
+		margin:15px 0 10px 15px;
 	}
 }
 
@@ -5389,5 +5419,5 @@ div.hasHalfs{
 @import 'marketing.less';
 @import 'kanban.less';
 @import 'webforms.less';
-@import 'lab.less';
+@import 'business-card.less';
 @import 'media-queries.less';

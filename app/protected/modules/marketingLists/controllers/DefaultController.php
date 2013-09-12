@@ -62,7 +62,7 @@
                         'controller' => $this,
                     ),
                     array(
-                        static::ZERO_MODELS_CHECK_FILTER_PATH . ' + list',
+                        static::ZERO_MODELS_CHECK_FILTER_PATH . ' + list, index',
                         'controller'                    => $this,
                         'activeActionElementType'       => 'MarketingListsLink',
                         'breadcrumbLinks'               => static::getListBreadcrumbLinks(),
@@ -102,7 +102,7 @@
             else
             {
                 $mixedView = $this->makeActionBarSearchAndListView($searchForm, $dataProvider,
-                             'SecuredActionBarForMarketingSearchAndListView', null, 'MarketingListsLink');
+                             'SecuredActionBarForMarketingListsSearchAndListView', null, 'MarketingListsLink');
                 $breadcrumbLinks = static::getListBreadcrumbLinks();
                 $view      = new MarketingListsPageView(MarketingDefaultViewUtil::
                                  makeViewWithBreadcrumbsForCurrentUser($this, $mixedView, $breadcrumbLinks,

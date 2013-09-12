@@ -61,10 +61,31 @@
             {
                 Yii::app()->user->setFlash('notification', Zurmo::t('ZurmoModule', 'Custom data updated successfully.'));
             }
-
+            $breadcrumbLinks = array(
+                Zurmo::t('ZurmoModule', 'Developer Tools'),
+            );
             $view = new ConfigurationPageView(ZurmoDefaultAdminViewUtil::
-                                                  makeStandardViewForCurrentUser($this, new DevelopmentListView()));
+                            makeViewWithBreadcrumbsForCurrentUser($this, new DevelopmentListView(), $breadcrumbLinks, 'SettingsBreadCrumbView'));
             echo $view->render();
+        }
+
+        public function actionReadMetadata($className)
+        {
+            if (!Group::isUserASuperAdministrator(Yii::app()->user->userModel))
+            {
+                throw new NotSupportedException();
+            }
+            if (GlobalMetadata::isClassMetadataSavedInDatabase($className))
+            {
+                echo 'The metadata is saved in the database ' . "<BR>";
+            }
+            else
+            {
+                echo 'The metadata is not saved in the database ' . "<BR>";
+            }
+            echo "<pre>";
+            print_r($className::getMetadata());
+            echo "</pre>";
         }
     }
 ?>

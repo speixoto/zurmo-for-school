@@ -39,10 +39,14 @@
      */
     class InstallCompleteView extends View
     {
-        private $controlerId;
+        private $controllerId;
 
         private $moduleId;
 
+        /**
+         * @param string $controllerId
+         * @param string $moduleId
+         */
         public function __construct($controllerId, $moduleId)
         {
             assert('is_string($controllerId) && $controllerId != ""');

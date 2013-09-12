@@ -52,12 +52,22 @@
          */
         public function run()
         {
+            $processed = $this->processRun();
+            $this->forgetModelsWithForgottenValidators();
+            $this->modelIdentifiersForForgottenValidators = array();
+            return $processed;
+        }
+
+        protected function processRun()
+        {
             $batchSize = $this->resolveBatchSize();
             $campaignItemsToProcess    = CampaignItem::getByProcessedAndStatusAndSendOnDateTime(
                                                                                         0,
                                                                                         Campaign::STATUS_PROCESSING,
                                                                                         time(),
                                                                                         $batchSize);
+            $startingMemoryUsage = memory_get_usage();
+            $modelsProcessedCount = 0;
             foreach ($campaignItemsToProcess as $campaignItem)
             {
                 try
@@ -73,13 +83,30 @@
                     $this->errorMessage = $e->getMessage();
                     return false;
                 }
+                $this->runGarbageCollection($campaignItem);
+                $modelsProcessedCount++;
             }
+            $this->addMaxmimumProcessingCountMessage($modelsProcessedCount, $startingMemoryUsage);
             return true;
         }
 
         protected function processCampaignItemInQueue(CampaignItem $campaignItem)
         {
             CampaignItemsUtil::processDueItem($campaignItem);
+        }
+
+        /**
+         * Not pretty, but gets the job done. Solves memory leak problem.
+         * @param CampaignItem $campaignItem
+         */
+        protected function runGarbageCollection($campaignItem)
+        {
+            assert('$campaignItem instanceof CampaignItem');
+            $campaignItem->campaign->marketingList->forgetValidators();
+            $campaignItem->campaign->forgetValidators();
+            $this->modelIdentifiersForForgottenValidators[$campaignItem->campaign->marketingList->getModelIdentifier()] = true;
+            $this->modelIdentifiersForForgottenValidators[$campaignItem->campaign->getModelIdentifier()] = true;
+            parent::runGarbageCollection($campaignItem);
         }
     }
 ?>

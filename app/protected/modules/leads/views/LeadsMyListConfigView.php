@@ -52,6 +52,7 @@
                         'LeadStateDropDown',
                     ),
                     'nonPlaceableAttributeNames' => array(
+                        'anyMixedAttributes',
                         'state',
                     ),
                     'panelsDisplayType' => FormLayout::PANELS_DISPLAY_TYPE_ALL,

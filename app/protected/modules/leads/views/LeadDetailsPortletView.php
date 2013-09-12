@@ -43,6 +43,11 @@
         protected $viewData;
         protected $uniqueLayoutId;
 
+        /**
+         * @param array $viewData
+         * @param array $params
+         * @param string $uniqueLayoutId
+         */
         public function __construct($viewData, $params, $uniqueLayoutId)
         {
             assert('isset($params["controllerId"])');
@@ -75,6 +80,13 @@
         public static function getModuleClassName()
         {
             return 'LeadsModule';
+        }
+
+        /**
+         * Override to add a description for the view to be shown when adding a portlet
+         */
+        public static function getPortletDescription()
+        {
         }
 
         protected static function resolveMetadataClassNameToUse()
@@ -153,20 +165,19 @@
 
         protected function makeFirstSlidingPanelContent($content)
         {
-            return ZurmoHtml::tag('div', array('class' => 'sliding-panel', 'id' => 'zurmoView'), $content);
+            return PersonSlidingPanelsUtil::makeFirstSlidingPanelContent((int)$this->params['portletId'], $content);
         }
 
         protected function makeSecondSlidingPanelContent()
         {
             $layout  = new PersonCardViewLayout($this->model);
             $content = $layout->renderContent();
-            return ZurmoHtml::tag('div', array('class' => 'sliding-panel business-card showing-panel',
-                                               'id'    => 'businessCardView'), $content);
+            return PersonSlidingPanelsUtil::makeSecondSlidingPanelContent((int)$this->params['portletId'], $content);
         }
 
         protected function renderAfterDetailsTable()
         {
-            return PersonSlidingPanelsUtil::renderToggleLinkContent();
+            return PersonSlidingPanelsUtil::renderToggleLinkContent((int)$this->params['portletId']);
         }
     }
 ?>

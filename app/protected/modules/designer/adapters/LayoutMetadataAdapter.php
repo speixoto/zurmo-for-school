@@ -58,6 +58,14 @@
          */
         private   $placedDirectAttributeNamesAsElements = array();
 
+        /**
+         * @param string $viewClassName
+         * @param string $moduleClassName
+         * @param array $existingMetadata
+         * @param DesignerRules $designerRules
+         * @param array $placeableLayoutAttributes
+         * @param array $requiredDerivedLayoutAttributeTypes
+         */
         public function __construct($viewClassName,
             $moduleClassName,
             $existingMetadata,
@@ -296,8 +304,8 @@
             foreach ($settingsAttributes as $elementInformation)
             {
                 $elementclassname = $elementInformation['type'] . 'LayoutSettingElement';
-                $element  = new $elementclassname($elementInformation['attributeName']);
-                $panelMetadata = $element->processToMetadata($cell, $cellMetadata);
+                $element          = new $elementclassname($elementInformation['attributeName']);
+                $cellMetadata    = $element->processToMetadata($cell, $cellMetadata);
             }
             return $cellMetadata;
         }

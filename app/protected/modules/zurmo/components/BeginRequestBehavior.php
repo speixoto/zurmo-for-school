@@ -36,13 +36,13 @@
 
     class BeginRequestBehavior extends CBehavior
     {
-        protected $allowedGuestUserRoutes = array(
-                'zurmo/default/unsupportedBrowser',
-                'zurmo/default/login',
-                'tracking/default/track',
-                'marketingLists/external/',
-                'contacts/external/',
-                'min/serve');
+        protected static $allowedGuestUserRoutes = array(
+            'zurmo/default/unsupportedBrowser',
+            'zurmo/default/login',
+            'tracking/default/track',
+            'marketingLists/external/',
+            'contacts/external/',
+            'min/serve');
 
         public function attach($owner)
         {
@@ -100,7 +100,7 @@
             $owner->attachEventHandler('onBeginRequest', array($this, 'handleImports'));
             $owner->attachEventHandler('onBeginRequest', array($this, 'handleLibraryCompatibilityCheck'));
             $owner->attachEventHandler('onBeginRequest', array($this, 'handleStartPerformanceClock'));
-            if (!Yii::app()->getRequest()->isExternalRequest())
+            if (!Yii::app()->getRequest()->isAnExternalRequestVariant())
             {
                 $owner->attachEventHandler('onBeginRequest', array($this, 'handleBrowserCheck'));
             }
@@ -112,6 +112,11 @@
             $owner->attachEventHandler('onBeginRequest', array($this, 'handleInstallCheck'));
         }
 
+        /**
+         * @see CommandBeginRequestBehavior, make sure if you change this array, you add anything needed
+         * for the command behavior as well.
+         * @param CComponent $owner
+         */
         protected function attachNonApiRequestBehaviorsForInstalledApplication(CComponent $owner)
         {
             $owner->attachEventHandler('onBeginRequest', array($this, 'handleSetupDatabaseConnection'));
@@ -322,7 +327,8 @@
         {
             // Create list of allowed urls.
             // Those urls should be accessed during upgrade process too.
-            foreach ($this->allowedGuestUserRoutes as $allowedGuestUserRoute)
+            $allowedGuestUserRoutes = static::getAllowedGuestUserRoutes();
+            foreach ($allowedGuestUserRoutes as $allowedGuestUserRoute)
             {
                 $allowedGuestUserUrls[] = Yii::app()->createUrl($allowedGuestUserRoute);
             }
@@ -567,6 +573,15 @@
                     }
                 }
             }
+        }
+
+        /**
+         * Get Allowed Guest User Routes
+         * @return array
+         */
+        protected static function getAllowedGuestUserRoutes()
+        {
+            return self::$allowedGuestUserRoutes;
         }
      }
 ?>

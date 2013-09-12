@@ -36,6 +36,9 @@
 
     class EmailAddressInformationRedBeanModelAttributeValueToExportValueAdapter extends RedBeanModelAttributeValueToExportValueAdapter
     {
+        /**
+         * @param array $data
+         */
         public function resolveData(& $data)
         {
             assert('$this->model->{$this->attribute} instanceof Email');
@@ -60,9 +63,9 @@
          */
         public function resolveHeaderData(& $headerData)
         {
-            $headerData[] = $this->model->getAttributeLabel($this->attribute) . ' - ' . Zurmo::t('ZurmoModule', 'Email Address');
-            $headerData[] = $this->model->getAttributeLabel($this->attribute) . ' - ' . Zurmo::t('ZurmoModule', 'Is Invalid');
-            $headerData[] = $this->model->getAttributeLabel($this->attribute) . ' - ' . Zurmo::t('ZurmoModule', 'Opt Out');
+            $headerData[] = $this->getLabel() . ' - ' . Zurmo::t('ZurmoModule', 'Email Address');
+            $headerData[] = $this->getLabel() . ' - ' . Zurmo::t('ZurmoModule', 'Is Invalid');
+            $headerData[] = $this->getLabel() . ' - ' . Zurmo::t('ZurmoModule', 'Opt Out');
         }
     }
 ?>
