@@ -210,11 +210,11 @@
          */
         public function attributeLabels()
         {
-            return array('emailTemplateId'          => Zurmo::t('WorkflowsModule', 'Template'),
-                         'sendAfterDurationInterval'=> Zurmo::t('WorkflowsModule', 'Send After'),
-                         'sendFromType'             => Zurmo::t('WorkflowsModule', 'Send From'),
-                         'sendFromName'             => Zurmo::t('WorkflowsModule', 'From Name'),
-                         'sendFromAddress'          => Zurmo::t('WorkflowsModule', 'From Address'),
+            return array('emailTemplateId'           => Zurmo::t('WorkflowsModule', 'Template'),
+                         'sendAfterDurationInterval' => Zurmo::t('WorkflowsModule', 'Send After'),
+                         'sendFromType'              => Zurmo::t('WorkflowsModule', 'Send From'),
+                         'sendFromName'              => Zurmo::t('WorkflowsModule', 'From Name'),
+                         'sendFromAddress'           => Zurmo::t('WorkflowsModule', 'From Address'),
             );
         }
 
@@ -227,7 +227,8 @@
         public function setAttributes($values, $safeOnly = true)
         {
             $recipients = null;
-            if (isset($values[self::EMAIL_MESSAGE_RECIPIENTS]))
+            if (isset($values[self::EMAIL_MESSAGE_RECIPIENTS]) &&
+                is_array($values[self::EMAIL_MESSAGE_RECIPIENTS]))
             {
                 $recipients = $values[self::EMAIL_MESSAGE_RECIPIENTS];
                 unset($values[self::EMAIL_MESSAGE_RECIPIENTS]);

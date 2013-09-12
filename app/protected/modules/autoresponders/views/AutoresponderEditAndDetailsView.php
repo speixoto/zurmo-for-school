@@ -66,7 +66,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => null,
+                                                array('attributeName' => 'null',
                                                                         'type' => 'AutoresponderFromOperationDuration'),
                                             ),
                                         ),

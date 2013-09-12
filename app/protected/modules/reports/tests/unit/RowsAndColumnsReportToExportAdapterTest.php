@@ -97,6 +97,7 @@
                                      Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute1->setModelAliasUsingTableAliasName('model1');
             $displayAttribute1->attributeIndexOrDerivedType = 'FullName';
+            $displayAttribute1->label = 'Name';
             $report->addDisplayAttribute($displayAttribute1);
 
             //for boolean attribute
@@ -264,7 +265,7 @@
             $saved              = $reportModelTestItem->save();
             $this->assertTrue($saved);
             $dataProvider       = new RowsAndColumnsReportDataProvider($report);
-            $adapter            = ReportToExportAdapterFactory::createReportToExportAdapter($report, $dataProvider);                                        
+            $adapter            = ReportToExportAdapterFactory::createReportToExportAdapter($report, $dataProvider);
             $compareHeaderData  = array( 'Name', 'Boolean', 'Date', 'Date Time', 'Float',
                                          'Integer', 'Phone', 'String', 'Text Area', 'Url', 'Drop Down',
                                          'Currency Value', 'Currency Value Currency', 'Primary Address >> Street 1',
@@ -278,7 +279,7 @@
             $this->assertEquals($compareRowData, $adapter->getData());
             $reportModelTestItem->delete();
         }
-        
+
         public function testExportRelationAttributes()
         {
             $values = array(
@@ -297,7 +298,7 @@
             $report->setType(Report::TYPE_ROWS_AND_COLUMNS);
             $report->setModuleClassName('ReportsTest2Module');
             $report->setFiltersStructure('');
-                       
+
             //for fullname attribute
             $reportModelTestItem = new ReportModelTestItem();
             $reportModelTestItem->firstName = 'xFirst';
@@ -306,6 +307,7 @@
                                      Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute1->setModelAliasUsingTableAliasName('relatedModel');
             $displayAttribute1->attributeIndexOrDerivedType = 'hasMany2___FullName';
+            $displayAttribute1->label = 'Name';
             $report->addDisplayAttribute($displayAttribute1);
 
             //for boolean attribute
@@ -469,14 +471,14 @@
             $displayAttribute19->setModelAliasUsingTableAliasName('relatedModel');
             $displayAttribute19->attributeIndexOrDerivedType = 'hasMany2___owner__User';
             $report->addDisplayAttribute($displayAttribute19);
-            
-            $reportModelTestItem2            = new ReportModelTestItem2();            
+
+            $reportModelTestItem2            = new ReportModelTestItem2();
             $reportModelTestItem2->owner     = Yii::app()->user->userModel;
             $reportModelTestItem2->hasMany2->add($reportModelTestItem);
             $this->assertTrue($reportModelTestItem2->save());
-            
-            $dataProvider       = new RowsAndColumnsReportDataProvider($report);             
-            $adapter            = ReportToExportAdapterFactory::createReportToExportAdapter($report, $dataProvider); 
+
+            $dataProvider       = new RowsAndColumnsReportDataProvider($report);
+            $adapter            = ReportToExportAdapterFactory::createReportToExportAdapter($report, $dataProvider);
             $compareHeaderData  = array('Name',
                                         'Reports Tests >> Boolean',
                                         'Reports Tests >> Date',
@@ -504,12 +506,12 @@
             $this->assertEquals($compareHeaderData, $adapter->getHeaderData());
             $this->assertEquals($compareRowData, $adapter->getData());
 
-            //for MANY-MANY Relationship                                               
+            //for MANY-MANY Relationship
             $report = new Report();
             $report->setType(Report::TYPE_ROWS_AND_COLUMNS);
             $report->setModuleClassName('ReportsTestModule');
             $report->setFiltersStructure('');
-            
+
             //for name attribute
             $reportModelTestItem3 = new ReportModelTestItem3();
             $reportModelTestItem3->name = 'xFirst';
@@ -524,25 +526,25 @@
             $displayAttribute2    = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
                                      Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute2->setModelAliasUsingTableAliasName('relatedModel1');
-            $displayAttribute2->attributeIndexOrDerivedType = 'hasOne___hasMany3___somethingOn3';        
+            $displayAttribute2->attributeIndexOrDerivedType = 'hasOne___hasMany3___somethingOn3';
             $report->addDisplayAttribute($displayAttribute2);
-                        
+
             $reportModelTestItem3->owner     = Yii::app()->user->userModel;
             $reportModelTestItem3->hasMany2->add($reportModelTestItem2);
             $this->assertTrue($reportModelTestItem3->save());
 
             $dataProvider       = new RowsAndColumnsReportDataProvider($report);
-            $adapter            = ReportToExportAdapterFactory::createReportToExportAdapter($report, $dataProvider);        
+            $adapter            = ReportToExportAdapterFactory::createReportToExportAdapter($report, $dataProvider);
             $compareHeaderData  = array('ReportModelTestItem2 >> ReportModelTestItem3s >> Name',
                                         'ReportModelTestItem2 >> ReportModelTestItem3s >> Something On 3');
             $compareRowData     = array(array('xFirst', 'somethingOn3'));
             $this->assertEquals($compareHeaderData, $adapter->getHeaderData());
-            $this->assertEquals($compareRowData, $adapter->getData());            
+            $this->assertEquals($compareRowData, $adapter->getData());
             $reportModelTestItem->delete();
             $reportModelTestItem2->delete();
             $reportModelTestItem3->delete();
         }
-                
+
         public function testViaSelectAndViaModelTogether()
         {
             $reportModelTestItem = new ReportModelTestItem();
@@ -551,7 +553,7 @@
             $reportModelTestItem->integer = 9000;
             $reportModelTestItem->boolean = true;
             $this->assertTrue($reportModelTestItem->save());
-            
+
             $report              = new Report();
             $report->setType(Report::TYPE_SUMMATION);
             $report->setModuleClassName('ReportsTestModule');
@@ -572,13 +574,13 @@
             $displayAttribute2->setModelAliasUsingTableAliasName('model1');
             $displayAttribute2->attributeIndexOrDerivedType = 'boolean';
             $report->addDisplayAttribute($displayAttribute2);
-            
+
             $dataProvider       = new SummationReportDataProvider($report);
-            $adapter            = ReportToExportAdapterFactory::createReportToExportAdapter($report, $dataProvider); 
+            $adapter            = ReportToExportAdapterFactory::createReportToExportAdapter($report, $dataProvider);
             $compareHeaderData  = array('Integer -(Min)', 'Boolean');
             $compareRowData     = array(array(9000, true));
             $this->assertEquals($compareHeaderData, $adapter->getHeaderData());
-            $this->assertEquals($compareRowData, $adapter->getData());            
+            $this->assertEquals($compareRowData, $adapter->getData());
             $reportModelTestItem->delete();
         }
     }

@@ -70,7 +70,11 @@
          */
         public function analyzeByRow(RedBean_OODBBean $rowBean)
         {
-            if ($this->mappingRuleData["type"] == IdValueTypeMappingRuleForm::ZURMO_MODEL_ID)
+            if ($rowBean->{$this->columnName} == null)
+            {
+                $found = false;
+            }
+            elseif ($this->mappingRuleData["type"] == IdValueTypeMappingRuleForm::ZURMO_MODEL_ID)
             {
                 $found = $this->resolveFoundIdByValue($rowBean->{$this->columnName});
             }
@@ -84,7 +88,7 @@
             }
             else
             {
-                $this->resolveForUnfoundModel();
+                $this->resolveForUnfoundModel($rowBean);
             }
             if ($this->mappingRuleData["type"] == IdValueTypeMappingRuleForm::EXTERNAL_SYSTEM_ID)
             {
@@ -97,11 +101,14 @@
             }
         }
 
-        protected function resolveForUnfoundModel()
+        protected function resolveForUnfoundModel(RedBean_OODBBean $rowBean)
         {
-            $label = Zurmo::t('ImportModule', 'Was not found and this row will be skipped during import.');
-            $this->shouldSkipRow      = true;
-            $this->analysisMessages[] = $label;
+            if ($rowBean->{$this->columnName} != null)
+            {
+                $label = Zurmo::t('ImportModule', 'Was not found and this row will be skipped during import.');
+                $this->shouldSkipRow      = true;
+                $this->analysisMessages[] = $label;
+            }
         }
 
         /**

@@ -92,12 +92,12 @@
                 return $content;
             }
         }
-        
+
         public static function renderFluidTitleContent($title)
         {
-            assert('$title == null || is_string($title)');            
+            assert('$title == null || is_string($title)');
             $content = static::renderFluidContent($title);
-            return ZurmoHtml::tag('h1', array(), $content);            
+            return ZurmoHtml::tag('h1', array(), $content);
         }
 
         /**

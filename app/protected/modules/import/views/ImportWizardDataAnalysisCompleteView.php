@@ -56,6 +56,14 @@
          */
         protected $mappingData;
 
+        /**
+         * @param string $controllerId
+         * @param string $moduleId
+         * @param ImportWizardForm $model
+         * @param null $columnNamesAndAttributeIndexOrDerivedTypeLabels
+         * @param ImportDataProvider $dataProvider
+         * @param array $mappingData
+         */
         public function __construct($controllerId, $moduleId, ImportWizardForm $model,
                                     $columnNamesAndAttributeIndexOrDerivedTypeLabels, ImportDataProvider $dataProvider,
                                     array $mappingData)
@@ -129,7 +137,7 @@
 
             $label    = Zurmo::t('ImportModule', 'Ok');
             $count    = ZurmoHtml::tag('strong', array(), self::findCountByGroupDataAndStatus($groupData, ImportDataAnalyzer::STATUS_CLEAN));
-            $led      = ZurmoHtml::tag('i', array('class' => 'led state-true'), ''); //●
+            $led      = ZurmoHtml::tag('i', array('class' => 'led state-true'), '');
             $content .= ZurmoHtml::tag('li', array(), $count . $label . $led );
 
             $label    = Zurmo::t('ImportModule', 'Warning');
@@ -149,9 +157,9 @@
         protected function findCountByGroupDataAndStatus(array $groupData, $status)
         {
             assert('is_int($status)');
-            foreach($groupData as $group)
+            foreach ($groupData as $group)
             {
-                if((int)$group['analysisStatus'] === $status)
+                if ((int)$group['analysisStatus'] === $status)
                 {
                     return (int)$group['count'];
                 }
@@ -167,6 +175,11 @@
         protected function renderNextPageLinkLabel()
         {
             return Zurmo::t('ImportModule', 'Import Data');
+        }
+
+        protected function renderTitleContent()
+        {
+            return null;
         }
     }
 ?>

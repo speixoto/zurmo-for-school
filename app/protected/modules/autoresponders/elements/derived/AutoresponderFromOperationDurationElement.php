@@ -45,5 +45,13 @@
         protected $signAttributeName     = null;
 
         protected $typeAttributeName     = 'fromOperationDurationType';
+
+        protected function renderControlNonEditable()
+        {
+            $dropDownArray = $this->getDurationTypeDropDownArray();
+            $content  = $this->model->{$this->intervalAttributeName} . ' ';
+            $content .= $dropDownArray[$this->model->{$this->typeAttributeName}];
+            return $content;
+        }
     }
 ?>

@@ -79,7 +79,7 @@
 
         protected function getDefaultLabel()
         {
-            return Zurmo::t('ProductsModule', 'Screen Options');
+            return Zurmo::t('ZurmoModule', 'Screen Options');
         }
 
         protected function getDefaultRoute()
@@ -91,10 +91,10 @@
         {
             $name        = $this->getPanelId() . '-checkbox-id';
             $ajaxOptions = array('type'     => 'GET',
-                                 'url'      => Yii::app()->createUrl('zurmo/default/toggleDismissIntroView', 
-                                                                  array('moduleName' => $this->getModuleName(), 
+                                 'url'      => Yii::app()->createUrl('zurmo/default/toggleDismissIntroView',
+                                                                  array('moduleName' => $this->getModuleName(),
                                                                         'panelId'    => $this->getPanelId())
-                                                    ), 
+                                                    ),
                                  'success'  => "function()
                                        {
                                            var checked = $('#{$this->getPanelId()}-checkbox-id').attr('checked');
@@ -107,12 +107,12 @@
                                            else
                                            {
                                              $('#{$this->getPanelId()}-checkbox-id').parent().addClass('c_on');
-                                           }                                           
+                                           }
                                        }
-            ");            
+            ");
             $htmlOptions = array('id'   => $this->getPanelId() . '-checkbox-id',
                                  'ajax' => $ajaxOptions);
-            $checkBox    = ZurmoHtml::checkBox($name, $this->getChecked(), $htmlOptions);                                                                                                
+            $checkBox    = ZurmoHtml::checkBox($name, $this->getChecked(), $htmlOptions);
             return '<div class="screen-options"><h4>Screen Options</h4>' . $checkBox . Zurmo::t('MarketingModule', 'Show intro message') . '</div>';
         }
 
@@ -120,15 +120,15 @@
         {
             return $this->params['panelId'];
         }
-        
+
         protected function getChecked()
         {
             return $this->params['checked'];
         }
-        
+
         protected function getModuleName()
         {
             return $this->params['moduleName'];
-        }     
+        }
     }
 ?>

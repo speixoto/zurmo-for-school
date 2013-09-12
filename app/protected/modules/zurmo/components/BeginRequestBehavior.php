@@ -36,13 +36,13 @@
 
     class BeginRequestBehavior extends CBehavior
     {
-        protected $allowedGuestUserRoutes = array(
-                'zurmo/default/unsupportedBrowser',
-                'zurmo/default/login',
-                'tracking/default/track',
-                'marketingLists/external/',
-                'contacts/external/',
-                'min/serve');
+        protected static $allowedGuestUserRoutes = array(
+            'zurmo/default/unsupportedBrowser',
+            'zurmo/default/login',
+            'tracking/default/track',
+            'marketingLists/external/',
+            'contacts/external/',
+            'min/serve');
 
         public function attach($owner)
         {
@@ -327,7 +327,8 @@
         {
             // Create list of allowed urls.
             // Those urls should be accessed during upgrade process too.
-            foreach ($this->allowedGuestUserRoutes as $allowedGuestUserRoute)
+            $allowedGuestUserRoutes = static::getAllowedGuestUserRoutes();
+            foreach ($allowedGuestUserRoutes as $allowedGuestUserRoute)
             {
                 $allowedGuestUserUrls[] = Yii::app()->createUrl($allowedGuestUserRoute);
             }
@@ -572,6 +573,15 @@
                     }
                 }
             }
+        }
+
+        /**
+         * Get Allowed Guest User Routes
+         * @return array
+         */
+        protected static function getAllowedGuestUserRoutes()
+        {
+            return self::$allowedGuestUserRoutes;
         }
      }
 ?>

@@ -50,15 +50,20 @@
             $content  = $this->renderEditableDurationIntervalTextField() . "\n";
             $content .= $this->renderEditableDurationTypeDropDownField() . "\n";
             $cssClass = 'twoFields';
-            if($this->signAttributeName != null)
+            if ($this->signAttributeName != null)
             {
                 $content .= $this->renderEditableDurationSignDropDownField() . "\n";
                 $cssClass = 'threeFields';
             }
             $errorId  = $this->getEditableInputId($this->intervalAttributeName);
             $content .= $this->form->error($this->model, $this->intervalAttributeName, array('inputID' => $errorId), true, true);
-            $content  = ZurmoHtml::tag('div', array('class' => 'operation-duration-fields ' . $cssClass), $content);
+            $content  = $this->resolveEditableWrapper($cssClass, $content);
             return $content;
+        }
+
+        protected function resolveEditableWrapper($cssClass, $content)
+        {
+            return ZurmoHtml::tag('div', array('class' => 'operation-duration-fields ' . $cssClass), $content);
         }
 
         protected function renderEditableDurationIntervalTextField()
@@ -98,8 +103,8 @@
 
         protected function getDurationSignDropDownArray()
         {
-            return array(TimeDurationUtil::DURATION_SIGN_POSITIVE => Zurmo::t('WorkflowsModule', 'From now'),
-                         TimeDurationUtil::DURATION_SIGN_NEGATIVE => Zurmo::t('WorkflowsModule', 'Ago'));
+            return array(TimeDurationUtil::DURATION_SIGN_POSITIVE => Zurmo::t('WorkflowsModule', 'After'),
+                         TimeDurationUtil::DURATION_SIGN_NEGATIVE => Zurmo::t('WorkflowsModule', 'Before'));
         }
 
         protected function getDurationTypeDropDownArray()
@@ -122,8 +127,13 @@
             {
                 return $this->getFormattedAttributeLabel();
             }
-            $id = $this->getEditableInputId($this->attribute, $this->intervalAttributeName);
+            $id = $this->getEditableInputId($this->intervalAttributeName);
             return $this->form->labelEx($this->model, $this->intervalAttributeName, array('for' => $id));
+        }
+
+        protected function getFormattedAttributeLabel()
+        {
+            return Yii::app()->format->text($this->model->getAttributeLabel($this->intervalAttributeName));
         }
     }
 ?>

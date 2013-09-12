@@ -61,7 +61,7 @@
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($model, true);
             $portlet         = Portlet::getById(intval($_GET['portletId']));
 
-            if(null != $redirectUrl = ArrayUtil::getArrayValue($_GET, 'redirectUrl'))
+            if (null != $redirectUrl = ArrayUtil::getArrayValue($_GET, 'redirectUrl'))
             {
                 $redirectUrl = $redirectUrl;
             }

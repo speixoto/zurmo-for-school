@@ -53,6 +53,7 @@
 	font-style: normal;
 }
 */
+
 .symbly( @size : 32px ) {
 	font-weight:normal;
 	font-size:@size;
@@ -95,8 +96,8 @@
 
 html.zurmo,
 html.zurmo body{
-	background:#DDDEDE;
-	min-height:100%;
+		background:#DDDEDE;
+		min-height:100%;
 }
 
 .zurmo body{
@@ -215,8 +216,8 @@ footer, header, hgroup, menu, nav, section {
 
 #login-box{
 	//float:left;
-	max-width:475px;
-	margin:150px auto 0 -237px;
+	width:500px;
+	margin:150px auto 0 -250px;
 	height:200px;
 	position:relative;
 	left:50%;
@@ -935,7 +936,7 @@ body > .ui-autocomplete{
 		position: absolute;
 		top:0;
 		left:0;
-		/*Conversation button*/
+	/*Conversation button*/
 		> span{
 			position: relative;
 			top:-2px;
@@ -1063,7 +1064,7 @@ body > .ui-autocomplete{
 		}
 		a:hover{
 			span{
-				//.t-shadow(rgba(156, 156, 156, 0.8) 0px 1px);
+			//.t-shadow(rgba(156, 156, 156, 0.8) 0px 1px);
 				background-image: url(../images/main-nav-selected.png);
 				background-repeat: no-repeat;
 				background-position-x: 0;
@@ -1096,7 +1097,7 @@ body > .ui-autocomplete{
 @recentlyViewedIconSize : 24px;
 
 #RecentlyViewedView {
-	/*deafult for if an icon doesnt exist*/
+/*deafult for if an icon doesnt exist*/
 	li{
 		em:before{
 			content: "z";
@@ -1246,7 +1247,7 @@ body > .ui-autocomplete{
 
 .DynamicSearchView{
 	position: relative;
-	//z-index: 9999;
+//z-index: 9999;
 	float: left;
 	width: 100%;
 }
@@ -1929,7 +1930,6 @@ caption, th, td {
 	text-align: left;
 }
 
-#import-temp-table-list-view,
 #list-view{
 	overflow-x:auto;
 	position:relative;
@@ -1939,13 +1939,13 @@ caption, th, td {
 		-webkit-radial-gradient( 0    50%, farthest-side, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0) ),
 		-webkit-radial-gradient( 100% 50%, farthest-side, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0) ) 100% 0;
 	background-repeat: no-repeat;
-	//background-color: white;
+//background-color: white;
 	background-size:
 		40px 100%,
 		40px 100%,
 		20px 100%,
 		20px 100%;
-	/* Opera doesn't support this in the shorthand */
+/* Opera doesn't support this in the shorthand */
 	background-attachment:
 		local,
 		local,
@@ -1969,7 +1969,7 @@ caption, th, td {
 			vertical-align:middle;
 			padding:10px 5px;
 			word-wrap: break-word;
-			//word-break: break-all;
+		//word-break: break-all;
 		}
 	}
 	> tbody,
@@ -1995,7 +1995,7 @@ caption, th, td {
 			#gradient > .vertical(#f9f9f9, #f4f4f4);
 		}
 		th:first-child{
-			//border-left:1px solid #DFDFDF;
+		//border-left:1px solid #DFDFDF;
 		}
 	}
 	> tbody{
@@ -2013,6 +2013,7 @@ caption, th, td {
 }
 
 .stacked-list{
+	table-layout: fixed;
 	td + td{
 		width:25px
 	}
@@ -2034,7 +2035,7 @@ caption, th, td {
 			~ div{
 				padding-left:25px;
 				++.border-box;
-			}
+			 }
 		}
 		> div{
 			margin:0 0 2px 0;
@@ -2047,11 +2048,10 @@ caption, th, td {
 			margin-top:2px;
 			float:left;
 		}
-		.star-column{
-			margin:-6px 15px 0 0 !important;
-			float:right
-		}
-
+	}
+	.star-column{
+		margin:-6px 15px 0 0 !important;
+		float:right
 	}
 	tr:first-child{
 		> div:first-child{
@@ -2063,6 +2063,7 @@ caption, th, td {
 }
 
 .juiportlet-widget-content .stacked-list{
+	border: none;
 	tr:first-child td{
 		border-top: none !important;
 	}
@@ -2070,7 +2071,7 @@ caption, th, td {
 
 
 .sort-link:after{
-	//content:"↑";
+//content:"↑";
 	margin-left: 10px;
 	font-size: 12px;
 	position: relative;
@@ -2102,12 +2103,6 @@ tr.even{
 	}
 }
 
-.star-column{
-	width:20px;
-	text-align:center;
-	padding:0 !important;
-}
-
 .button-column{
 	width:35px;
 	text-align:center;
@@ -2119,6 +2114,12 @@ tr.even{
 	margin-top:-2px;
 	.symbly(24px);
 	visibility:hidden;
+}
+
+.star-column{
+	width:20px;
+	text-align:center;
+	padding:0 !important;
 }
 
 .icon-star{
@@ -2153,6 +2154,7 @@ h1,
 		margin-left:5px
 	}
 }
+
 
 .juiportlet-widget{
 	.empty{
@@ -2213,16 +2215,6 @@ td.empty{
 		line-height: 60px !important;
 	}
 	p{
-		font-size: 14px;
-		line-height: 21px;
-	}
-}
-
-.splash-view{
-	.general-issue-notice p{
-		margin: 0;
-		float: none;
-		width: 100%;
 		font-size: 14px;
 		line-height: 21px;
 	}
@@ -2303,18 +2295,14 @@ td.empty{
 		display: inline-block;
 		font-style: italic;
 		.smaller();
-		padding: 0 20px 5px 0;
-		//white-space: nowrap;
-		position: relative;
-		left: 20px;
-		top:5px;
+		padding: 0 0 5px 0;
 		&:before{
 			content:"T";
 			.symbly(24px);
-			margin-left: -20px;
+			margin-right: 6px;
 			font-style: normal;
-			position: absolute;
-			top: -4px;
+			position: relative;
+			top: 2px;
 		}
 	}
 }
@@ -2406,7 +2394,7 @@ body div.form-toolbar{
 		.radius(~"0 !important");
 		padding:0  !important;
 		border: none !important;
-		margin:!important;
+		//margin:!important;
 		text-decoration:underline;
 		font-weight:normal;
 		&:hover{
@@ -2433,7 +2421,7 @@ body div.form-toolbar{
 	}
 }
 
-.zurmo body a.simple-link{
+a.simple-link{
 	background:none !important;
 	background-image:none !important;
 	.b-shadow( ~"none  !important" );
@@ -2441,7 +2429,7 @@ body div.form-toolbar{
 	padding:0  !important;
 	border: none !important;
 	margin-left:10px;
-	text-decoration:underline;
+	text-decoration:underline !important;
 	.smaller();
 	font-weight:normal;
 	&:before{
@@ -2506,7 +2494,7 @@ body div.form-toolbar{
 		margin:0 !important;
 		font-size:15px;
 		font-weight:bold;
-		//++.themeColor;
+	//++.themeColor;
 		.t-shadow( rgba( 255, 255, 255, 0.8 ) 0 1px 0 );
 		width: 100%;
 		height: 40px;
@@ -2856,14 +2844,6 @@ div.wide.form{
 		.symbly(300px);
 		line-height: 52%;
 	}
-}
-
-.highlight-create-button{
-	-o-animation: throb 2.5s infinite ease-in-out;
-	-ms-animation: throb 2.5s infinite ease-in-out;
-	-moz-animation: throb 2.5s infinite ease-in-out;
-	-webkit-animation: throb 2.5s infinite ease-in-out;
-	animation: throb 2.5s infinite ease-in-out;
 }
 
 
@@ -3569,7 +3549,6 @@ div.wide.form{
 }
 
 .has-model-select{
-	z-index: 0;
 	clear:left;
 	padding:0 !important;
 	input{
@@ -3804,11 +3783,6 @@ div.wide.form{
 	height:400px;
 }
 
-.mapCanvasPortlet{
-	width: 100%;
-	height: 400px;
-}
-
 /*=tasks portelt*/
 .OpenTasksRelatedListView{
 	.button-column,
@@ -3862,14 +3836,14 @@ div.wide.form{
 		border-bottom:1px solid #ccc;
 		overflow: hidden;
 	}
-	//for opt in email checkboxes
+//for opt in email checkboxes
 	input[type="checkbox"] + label{
 		width:60px;
 		margin-top:0;
 	}
-	//for address fields
+//for address fields
 	td > label:first-child{}
-	//for 2 columns
+//for 2 columns
 	td + th{
 		padding-left:30px;
 	}
@@ -3977,6 +3951,7 @@ div.wide.form{
 #UserDetailsAndRelationsView{
 	.clearfix();
 	.GridView{
+		z-index: 0;
 		width:65%;
 		float:left;
 		.juiportlet-widget{
@@ -4370,34 +4345,6 @@ div.hasHalfs{
 	width:64%;
 }
 
-.operation-duration-fields{
-	++.cf;
-	&.twoFields{
-		input[type="text"]{
-			width: 49%;
-			float: left;
-		}
-		> div{
-			width: 49% !important;
-			float: right;
-		}
-	}
-
-
-	&.threeFields{
-		> div.hasDropDown,
-		> input[type="text"]{
-			width:32% !important;
-			float: left;
-			margin-left:2%;
-		}
-		> input[type="text"]{
-			margin-left: 0;
-		}
-	}
-
-}
-
 .juiportlet-widget.OpportunitiesForAccountRelatedListView,
 .juiportlet-widget.ContactsForAccountRelatedListView{
 	div.button-column{
@@ -4612,7 +4559,7 @@ div.hasHalfs{
 			color:#ccc;
 		}
 	}
-	//doesnt work in IE
+//doesnt work in IE
 	&:empty{
 		display:none;
 	}
@@ -5138,13 +5085,19 @@ div.hasHalfs{
 			font-weight:normal;
 		}
 	}
-	#AccountConvertToView > div{
-		margin-right:0;
+}
+
+#AccountConvertToView{
+	> div{
+		margin-bottom: 0;
+	}
+	.left-column{
+		padding-right: 0;
 	}
 }
 
 .lead-conversion-actions{
-	padding:10px;
+	padding:15px 15px 5px 15px;
 	a{
 		.zLink;
 	}
@@ -5157,7 +5110,7 @@ div.hasHalfs{
 	}
 	#sequential-process-spinner + #progressBar-msg{
 		display:block;
-		//text-indent:30px;
+	//text-indent:30px;
 	}
 }
 
@@ -5205,8 +5158,6 @@ div.hasHalfs{
 }
 
 /*=About*/
-#RunJobView,
-#DiagnosticCheckServicesView,
 #AboutView{
 	position: relative;
 	#ZurmoLogo{
@@ -5348,11 +5299,15 @@ div.hasHalfs{
 #MixedModelsSearchView{
 	position:relative;
 	z-index:5;
+	margin-bottom: 15px;
+	float: left;
+	width: 100%;
 	h1{
 		margin-bottom:15px;
 	}
 	.search-view-0{
 		float: none;
+		margin:15px 0 10px 15px;
 	}
 }
 
@@ -5371,7 +5326,7 @@ div.hasHalfs{
 	}
 	.pager{
 		.b-shadow(none) !important;
-		//.no-ie-shadow();
+	//.no-ie-shadow();
 		border: 1px solid #DFDFDF;
 		border-top: none;
 		ul{
@@ -5464,6 +5419,5 @@ div.hasHalfs{
 @import 'marketing.less';
 @import 'kanban.less';
 @import 'webforms.less';
-@import 'lab.less';
-@import 'game-dashboard.less';
+@import 'business-card.less';
 @import 'media-queries.less';

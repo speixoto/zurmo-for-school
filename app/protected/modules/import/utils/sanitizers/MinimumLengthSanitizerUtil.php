@@ -53,11 +53,19 @@
         public function analyzeByRow(RedBean_OODBBean $rowBean)
         {
             $minimumLength = $this->getMinimumLength();
-            if (strlen($rowBean->{$this->columnName}) < $minimumLength)
+            if (strlen($rowBean->{$this->columnName}) < $minimumLength && strlen($rowBean->{$this->columnName}) > 0)
             {
                 $label = Zurmo::t('ImportModule', 'Is too short. Minimum length is {minimumLength}.',
                                   array('{minimumLength}' => $minimumLength));
-                $this->shouldSkipRow      = true;
+
+                if ($this->isAttributeRequired())
+                {
+                    $this->shouldSkipRow      = true;
+                }
+                else
+                {
+                    $this->shouldSkipRow      = false;
+                }
                 $this->analysisMessages[] = $label;
             }
         }
@@ -96,6 +104,13 @@
             $modelClassName = $this->modelClassName;
             $model          = new $modelClassName(false);
             return StringValidatorHelper::getMinLengthByModelAndAttributeName($model, $this->attributeName);
+        }
+
+        protected function isAttributeRequired()
+        {
+            $modelClassName = $this->modelClassName;
+            $model          = new $modelClassName(false);
+            return $model->isAttributeRequired($this->attributeName);
         }
     }
 ?>

@@ -219,7 +219,7 @@
             $this->setGetArray(array('term' => 'something'));
             $this->resetPostArray();
             $content        = $this->runControllerWithNoExceptionsAndGetContent('zurmo/default/globalSearchAutoComplete');
-            $compareContent = '[{"href":"","label":"No Results Found","iconClass":""}'; // Not Coding Standard
+            $compareContent = '[{"href":"","label":"No results found","iconClass":""}'; // Not Coding Standard
             $this->assertTrue(strpos($content, $compareContent) !== false);
         }
 
@@ -290,6 +290,41 @@
                 $this->assertEquals('icon-star unstarred', $content);
                 $this->assertFalse(StarredUtil::isModelStarred($account));
             }
+        }
+
+        public function testSuperUserEditUserMembershipAction()
+        {
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $group = Group::getByName('Super Administrators');
+            //Test all default controller actions that do not require any POST/GET variables to be passed.
+            //This does not include portlet controller actions.
+            $this->setGetArray(array('id' => $group->id));
+            $user1 = UserTestHelper::createBasicUser('Test User');
+            $user2 = UserTestHelper::createBasicUser('Test User2');
+
+            $this->setPostArray(array(
+                'GroupUserMembershipForm' => array($user1->id, $user2->id)
+            ));
+
+            $content = $this->runControllerWithNoExceptionsAndGetContent('zurmo/group/editUserMembership');
+            $pos     = strpos($content, 'There must be at least one super administrator');
+            $this->assertTrue($pos > 0);
+
+            $user2->setIsSystemUser();
+            $this->assertTrue($user2->save());
+
+            $group->users->add($user1);
+            $saved = $group->save();
+            $this->assertTrue($saved);
+            $group->users->add($user2);
+            $saved = $group->save();
+            $this->assertTrue($saved);
+
+            $this->setPostArray(array(
+                'GroupUserMembershipForm' => array('userMembershipData' => array($user1->id, $user2->id)
+            )));
+
+            $this->runControllerWithRedirectExceptionAndGetContent('zurmo/group/editUserMembership');
         }
     }
 ?>

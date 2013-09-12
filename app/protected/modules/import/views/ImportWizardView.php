@@ -43,6 +43,12 @@
 
         protected $disableFloatOnToolbar  = true;
 
+        /**
+         * @param string $controllerId
+         * @param string $moduleId
+         * @param ImportWizardForm $model
+         * @param null|string $title
+         */
         public function __construct($controllerId, $moduleId, ImportWizardForm $model, $title = null)
         {
             assert('is_string($controllerId)');
@@ -99,7 +105,7 @@
 
         protected function renderPreviousPageLinkLabel()
         {
-            return Zurmo::t('ImportModule', 'Previous');
+            return Zurmo::t('Core', 'Previous');
         }
 
         /**
@@ -112,8 +118,9 @@
 
         protected function renderNextPageLinkLabel()
         {
-            return Zurmo::t('ImportModule', 'Next');
+            return Zurmo::t('Core', 'Next');
         }
+
         /**
          * There are no special requirements for this view's metadata.
          */

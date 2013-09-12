@@ -39,7 +39,6 @@
      */
     class StarredUtil
     {
-
         public static function modelHasStarredInterface($modelClassName)
         {
             $refelectionClass = new ReflectionClass($modelClassName);
@@ -81,9 +80,9 @@
         {
             assert('is_string($modelStarredTableName) && $modelStarredTableName  != ""');
             R::exec("create table if not exists {$modelStarredTableName} (
-                        id int(11)         unsigned NOT NULL PRIMARY KEY AUTO_INCREMENT ,
-                        user_id int(11)     unsigned NOT NULL,
-                        model_id int(11)    unsigned NOT NULL
+                        id int(11)         unsigned not null PRIMARY KEY AUTO_INCREMENT ,
+                        user_id int(11)     unsigned not null,
+                        model_id int(11)    unsigned not null
                      )");
         }
 
@@ -99,7 +98,7 @@
             return self::getMainTableName($modelClassName) . '_starred';
         }
 
-        public static function markModelAsStarred($model)
+        public static function markModelAsStarred(RedBeanModel $model)
         {
             static::markModelAsStarredForUser(get_class($model),
                                               Yii::app()->user->userModel->id,
@@ -108,11 +107,11 @@
 
         protected static function markModelAsStarredForUser($modelClassName, $userId, $modelId)
         {
-            if(!static::modelHasStarredInterface($modelClassName))
+            if (!static::modelHasStarredInterface($modelClassName))
             {
                 throw new NotSupportedException();
             }
-            if(static::isModelStarredForUser($modelClassName, $userId, $modelId))
+            if (static::isModelStarredForUser($modelClassName, $userId, $modelId))
             {
                 return;
             }
@@ -124,20 +123,20 @@
             ));
         }
 
-        public static function unmarkModelAsStarred($model)
+        public static function unmarkModelAsStarred(RedBeanModel $model)
         {
             static::unmarkModelAsStarredForUser(get_class($model),
-                                              Yii::app()->user->userModel->id,
-                                              $model->id);
+                                                Yii::app()->user->userModel->id,
+                                                $model->id);
         }
 
         protected static function unmarkModelAsStarredForUser($modelClassName, $userId, $modelId)
         {
-            if(!static::modelHasStarredInterface($modelClassName))
+            if (!static::modelHasStarredInterface($modelClassName))
             {
                 throw new NotSupportedException();
             }
-            if(!static::isModelStarredForUser($modelClassName, $userId, $modelId))
+            if (!static::isModelStarredForUser($modelClassName, $userId, $modelId))
             {
                 return;
             }
@@ -149,7 +148,7 @@
             ));
         }
 
-        public static function isModelStarred($model)
+        public static function isModelStarred(RedBeanModel $model)
         {
             return static::isModelStarredForUser(get_class($model),
                                                  Yii::app()->user->userModel->id,
@@ -158,14 +157,14 @@
 
         protected static function isModelStarredForUser($modelClassName, $userId, $modelId)
         {
-            if(!static::modelHasStarredInterface($modelClassName))
+            if (!static::modelHasStarredInterface($modelClassName))
             {
                 throw new NotSupportedException();
             }
             $tableName = static::getStarredTableName($modelClassName);
             $sql       = "SELECT id FROM {$tableName} WHERE user_id = :userId AND model_id = :modelId;";
             $rows      = R::getAll($sql,
-                                   $values=array(
+                                   $values = array(
                                     ':userId'    => $userId,
                                     ':modelId'   => $modelId,
                                    ));
@@ -176,10 +175,10 @@
             return true;
         }
 
-        public static function unmarkModelAsStarredForAllUsers($model)
+        public static function unmarkModelAsStarredForAllUsers(RedBeanModel $model)
         {
             $modelClassName = get_class($model);
-            if(!static::modelHasStarredInterface($modelClassName))
+            if (!static::modelHasStarredInterface($modelClassName))
             {
                 throw new NotSupportedException();
             }
@@ -212,8 +211,8 @@
         public static function getToggleStarStatusLink($data, $row)
         {
             $starredClass   = 'icon-star unstarred';
-            $text           = 'w'; //w=Star in Icon-Font
-            if(StarredUtil::isModelStarred($data))
+            $text           = 'w'; //w = Star in Icon-Font
+            if (static::isModelStarred($data))
             {
                 $starredClass = 'icon-star starred';
             }
@@ -226,7 +225,7 @@
                         array('success' => "function(data){\$('#{$starId}').removeClass().addClass(data)}"),
                         array('class'       => $starredClass,
                               'id'          => $starId,
-                              'namespace'   => 'update',));
+                              'namespace'   => 'update'));
             return $link;
         }
 

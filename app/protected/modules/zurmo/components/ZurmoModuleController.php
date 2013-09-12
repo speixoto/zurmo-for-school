@@ -152,8 +152,8 @@
          * @param $relationModuleId
          * @return $model;
          */
-        protected function resolveNewModelByRelationInformation(    $model, $relationAttributeName,
-                                                                    $relationModelId, $relationModuleId)
+        protected function resolveNewModelByRelationInformation($model, $relationAttributeName,
+                                                                $relationModelId, $relationModuleId)
         {
             assert('$model instanceof RedBeanModel');
             assert('is_string($relationAttributeName)');
@@ -162,16 +162,32 @@
             $relationType = $model->getRelationType($relationAttributeName);
             if ($relationType == RedBeanModel::HAS_ONE || RedBeanModel::HAS_ONE_BELONGS_TO)
             {
-                $relationModel                   = $model->$relationAttributeName;
-                $model->$relationAttributeName = $relationModel::getById((int)$relationModelId);
+                $relationModel                 = $model->$relationAttributeName;
+                $relatedModel                  = $relationModel::getById((int)$relationModelId);
+                $model->$relationAttributeName = $relatedModel;
             }
             else
             {
-                $relationModelClassName          = Yii::app()->getModule($relationModuleId)->getPrimaryModelName();
-                $relatedModel                    = $relationModelClassName::getById($relationModelId);
+                $relationModelClassName        = Yii::app()->getModule($relationModuleId)->getPrimaryModelName();
+                $relatedModel                  = $relationModelClassName::getById($relationModelId);
                 $model->$relationAttributeName->add($relatedModel);
             }
+            $this->addRelatedModelAccountToModel($model, $relatedModel);
             return $model;
+        }
+
+        /**
+         * Copy the account from a related model to a model
+         * @param RedBeanModel $model
+         * @param RedBeanModel $relatedModel
+         */
+        protected function addRelatedModelAccountToModel(RedBeanModel $model, RedBeanModel $relatedModel)
+        {
+            if (isset($relatedModel->account) && $relatedModel->account->id > 0 &&
+                in_array('account', $model->attributeNames()))
+            {
+                $model->account = $relatedModel->account;
+            }
         }
 
         /**
@@ -250,7 +266,7 @@
             $data = array();
             if ($totalItems > 0)
             {
-                if ($totalItems <= ExportModule::$asynchronusThreshold)
+                if ($totalItems <= ExportModule::$asynchronousThreshold)
                 {
                     // Output csv file directly to user browser
                     if ($dataProvider)

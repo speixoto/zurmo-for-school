@@ -59,7 +59,7 @@
                         array('class'       => 'icon-star ' . $class,
                               'id'          => 'starDataColumn_filterByStarred',
                               'onclick'     => $this->getAjaxSubmitScript($modelClassName, $isFilteredByStarred),
-                              'namespace'   => 'starDataColumn',));
+                              'namespace'   => 'starDataColumn'));
             return $link;
         }
 
@@ -68,8 +68,8 @@
             $id               = $this->grid->id;
             $url              = Yii::app()->controller->createUrl('', array('modelClassName' => $modelClassName));
             $ajaxSubmitScript = "
-                var newVal = (parseInt($('.search-form_filterByStarred').val())+1)% 2;
-                if(isNaN(newVal))
+                var newVal = (parseInt($('.search-form_filterByStarred').val()) + 1) % 2;
+                if (isNaN(newVal))
                 {
                     newVal = 1;
                 }

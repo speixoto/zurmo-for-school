@@ -49,6 +49,9 @@
             );
         }
 
+        /**
+         * @param array $data
+         */
         public static function resolveValue($data)
         {
             $userUrl     = Yii::app()->createUrl('/users/default/details', array('id' => $data['userId']));

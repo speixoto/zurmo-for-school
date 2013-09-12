@@ -39,78 +39,86 @@
      */
     class MatrixReportToExportAdapter extends ReportToExportAdapter
     {
+        public function __construct(ReportDataProvider $dataProvider, Report $report)
+        {
+            $this->dataProvider     = $dataProvider;
+            $this->report           = $report;
+            $this->dataForExport    = $dataProvider->getData();
+            $this->makeData();
+        }
+
         protected function makeData()
-        {                             
-            $data                      = array(); 
-            $this->headerData          = array();                                  
+        {
+            $data                      = array();
+            $this->headerData          = array();
             foreach ($this->dataForExport as $reportResultsRowData)
-            {                                  
+            {
                 $line                      = array();
-                $header                    = array();   
-                $temporaryHeader           = array(); //This is used because when resolving header for last columns we got strange results                                
+                $header                    = array();
+                $temporaryHeader           = array(); //This is used because when resolving header for last columns we got strange results
                 $key                       = $this->dataProvider->getXAxisGroupByDataValuesCount();
-                $column                    = array();  
-                $extraLeadingHeaderColumns = 0;        
+                $column                    = array();
+                $extraLeadingHeaderColumns = 0;
                 foreach ($this->dataProvider->getDisplayAttributesThatAreYAxisGroupBys() as $displayAttribute)
-                {                           
+                {
                     $header[]           = $displayAttribute->label;
                     $className          = $this->resolveExportClassNameForReportToExportValueAdapter(
                                             $displayAttribute);
                     $attributeName      = MatrixReportDataProvider::resolveHeaderColumnAliasName(
                                             $displayAttribute->columnAliasName);
-                    $params             = array();                                                                                                                
+                    $params             = array();
                     $line[]             = $displayAttribute->resolveValueAsLabelForHeaderCell(
-                                            $reportResultsRowData->$attributeName);                    
-                }               
-                $leadingHeaders         = $this->dataProvider->makeAxisCrossingColumnCountAndLeadingHeaderRowsData();                                                
-                $rows                   = count($leadingHeaders['rows']);                
-                $matrixColumnCount      = $leadingHeaders['rows'][$rows - 1]['colSpan']; //This is the true columns count, the other are repeated for each grouping                                                                                               
+                                            $reportResultsRowData->$attributeName, true);
+                }
+                $leadingHeaders         = $this->dataProvider->makeAxisCrossingColumnCountAndLeadingHeaderRowsData(true);
+                $rows                   = count($leadingHeaders['rows']);
+                $matrixColumnCount      = $leadingHeaders['rows'][$rows - 1]['colSpan']; //This is the true columns count, the other are repeated for each grouping
                 $attributeKey           = 0;
                 for ($i = 0; $i < $this->dataProvider->getXAxisGroupByDataValuesCount(); $i++)
                 {
                     foreach ($this->dataProvider->resolveDisplayAttributes() as $displayAttribute)
                     {
                         if (!$displayAttribute->queryOnly)
-                        {          
-                            $params        = array();                                        
+                        {
                             $column        = MatrixReportDataProvider::resolveColumnAliasName($attributeKey);
                             $className     = $this->resolveExportClassNameForReportToExportValueAdapter(
-                                                $displayAttribute); 
+                                                $displayAttribute);
+                            $params        = array('label' => $displayAttribute->label);
                             $adapter       = new $className($reportResultsRowData, $column, $params);
-                            $adapter->resolveData($line);     
-                            if($attributeKey < $matrixColumnCount)
-                            {                                    
+                            $adapter->resolveData($line);
+                            if ($attributeKey < $matrixColumnCount)
+                            {
                                 $oldHeaderCount = count($temporaryHeader);
                                 $adapter->resolveHeaderData($temporaryHeader);
-                                $adapter->resolveHeaderData($header);                                                                 
-                                $extraLeadingHeaderColumns += (count($temporaryHeader) - ($oldHeaderCount+1));                                    
+                                $adapter->resolveHeaderData($header);
+                                $extraLeadingHeaderColumns += (count($temporaryHeader) - ($oldHeaderCount + 1));
                             }
-                            elseif ($attributeKey % $matrixColumnCount == 0) 
+                            elseif ($attributeKey % $matrixColumnCount == 0)
                             {
                                 foreach ($temporaryHeader as $column)
                                 {
                                     $header[] = $column;
                                 }
                             }
-                            
-                            $attributeKey++;                        
+
+                            $attributeKey++;
                         }
                     }
-                }              
-                $data[]   = $line;                             
-            }                              
-            $leadingHeaderData      = $this->getLeadingHeadersDataFromMatrixReportDataProvider($extraLeadingHeaderColumns);            
+                }
+                $data[]   = $line;
+            }
+            $leadingHeaderData      = $this->getLeadingHeadersDataFromMatrixReportDataProvider($extraLeadingHeaderColumns);
             $this->data = array_merge($leadingHeaderData, array_merge(array($header), $data));
         }
-               
+
         protected function getLeadingHeadersDataFromMatrixReportDataProvider($extraLeadingHeaderColumns)
         {
-            $leadingHeaders             = $this->dataProvider->makeAxisCrossingColumnCountAndLeadingHeaderRowsData();                        
+            $leadingHeaders             = $this->dataProvider->makeAxisCrossingColumnCountAndLeadingHeaderRowsData(true);
             $previousGroupByValuesCount = 1;
-            $headerData = array();        
+            $headerData = array();
             for ($i = 0; $i < count($leadingHeaders['rows']); $i++)
             {
-                $headerRow = array();                
+                $headerRow = array();
                 for ($j = 0; $j < $leadingHeaders['axisCrossingColumnCount']; $j++)
                 {
                     $headerRow[] = null;
@@ -121,31 +129,31 @@
                     {
                         for ($l = 0; $l < $leadingHeaders['rows'][$i]['colSpan']; $l++)
                         {
-                            $headerRow[] = $value;                                                                            
+                            $headerRow[] = $value;
                         }
                         if ($extraLeadingHeaderColumns > 0)
                         {
                             if ($i != (count($leadingHeaders['rows']) - 1))
                             {
-                                $columnsToAdd = $extraLeadingHeaderColumns * 
-                                                $leadingHeaders['rows'][$i]['colSpan'] / 
-                                                $leadingHeaders['rows'][$i+1]['colSpan'];
-                            }      
+                                $columnsToAdd = $extraLeadingHeaderColumns *
+                                                $leadingHeaders['rows'][$i]['colSpan'] /
+                                                $leadingHeaders['rows'][$i + 1]['colSpan'];
+                            }
                             else
                             {
                                 $columnsToAdd = $extraLeadingHeaderColumns;
-                            }                                
+                            }
                             for ($m = 0; $m < $columnsToAdd; $m++)
                             {
-                                $headerRow[] = $value;                                                
+                                $headerRow[] = $value;
                             }
                         }
                     }
                 }
                 $previousGroupByValuesCount = count($leadingHeaders['rows'][$i]['groupByValues']);
                 $headerData[] = $headerRow;
-            }            
+            }
             return $headerData;
-        }       
+        }
     }
 ?>

@@ -33,27 +33,26 @@
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
-    
+
     /**
-     * Base class for all into views. 
+     * Base class for all into views.
      * An intro view is a view that provides an overview on modules works
      */
     abstract class IntroView extends View
-    {                        
+    {
         protected $moduleName;
-                        
+
         /**
          * The content of the overview of how module works
          */
         protected abstract function renderIntroContent();
-                                  
-        
+
         public function __construct($moduleName)
         {
-            assert('is_string($moduleName)');            
+            assert('is_string($moduleName)');
             $this->moduleName = $moduleName;
         }
-                
+
         /**
          * The id of the intro view panel
          */
@@ -61,47 +60,47 @@
         {
             return get_class($this) . '-intro-content';
         }
-        
+
         public function getModuleName()
         {
             return $this->moduleName;
         }
-        
+
         protected function renderContent()
-        {                                                        
+        {
             $style = null;
             if ($this->isIntroViewDismissed())
             {
-                $style = "style=display:none;";
+                $style = "style=display:none;"; // Not Coding Standard
             }
             $content  = "<div id='{$this->getPanelId()}' class='module-intro-content' {$style}>";
-            $content .= $this->renderIntroContent();            
+            $content .= $this->renderIntroContent();
             $content .= $this->renderHideLinkContent();
-            $content .= '</div>';            
+            $content .= '</div>';
             return $content;
         }
 
         protected function renderHideLinkContent()
         {
             $label       = '<span></span>' . Zurmo::t('ZurmoModule', 'Dismiss');
-            $content     = '<div class="hide-module-intro">';            
+            $content     = '<div class="hide-module-intro">';
             $ajaxOptions = array('type'     => 'GET',
                                 'success'  => "function()
                                        {
                                            $('#{$this->getPanelId()}-checkbox-id').attr('checked', false).parent().removeClass('c_on');
                                            $('#{$this->getPanelId()}').slideToggle();
                                        }
-            ");            
-            $content .= ZurmoHtml::ajaxLink($label, 
-                                            Yii::app()->createUrl('zurmo/default/toggleDismissIntroView', 
-                                                                  array('moduleName' => $this->moduleName, 
+            ");
+            $content .= ZurmoHtml::ajaxLink($label,
+                                            Yii::app()->createUrl('zurmo/default/toggleDismissIntroView',
+                                                                  array('moduleName' => $this->moduleName,
                                                                         'panelId'         => $this->getPanelId())
-                                                    ), 
+                                                    ),
                                             $ajaxOptions);
             $content .= '</div>';
             return $content;
-        }        
-        
+        }
+
         public function isIntroViewDismissed()
         {
             if (ZurmoConfigurationUtil::getForCurrentUserByModuleName($this->moduleName, $this->getPanelId()))

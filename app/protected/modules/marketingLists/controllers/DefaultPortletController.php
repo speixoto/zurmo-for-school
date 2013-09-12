@@ -162,7 +162,7 @@
             {
                 $relationModelClassName = Yii::app()->getModule($relationModuleId)->getPrimaryModelName();
             }
-            if($relationModelClassName != 'Contact' && $relationAttributeName != 'contact')
+            if ($relationModelClassName != 'Contact' && $relationAttributeName != 'contact')
             {
                 throw new NotSupportedException();
             }
@@ -178,7 +178,7 @@
                     $this->processSelectFromRelatedListSaveAlreadyConnected($model, $relationModel);
                 }
             }
-            catch(FailedToSaveModelException $e)
+            catch (FailedToSaveModelException $e)
             {
                 $this->processSelectFromRelatedListSaveFails($model);
             }
@@ -194,7 +194,7 @@
 
         protected function processSelectFromRelatedListSaveAlreadyConnected(RedBeanModel $model, Contact $contact = null)
         {
-            if($contact == null)
+            if ($contact == null)
             {
                 throw new NotSupportedException();
             }
