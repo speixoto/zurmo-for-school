@@ -52,12 +52,14 @@
         public function makeAll(& $demoDataHelper)
         {
             assert('$demoDataHelper instanceof DemoDataHelper');
-
             $projects = array();
+            $super = User::getByUsername('super');
             for ($i = 0; $i < $this->resolveQuantityToLoad(); $i++)
             {
                 $project            = new Project();
                 $project->owner     = $demoDataHelper->getRandomByModelName('User');
+                $account            = $demoDataHelper->getRandomByModelName('Account');
+                $project->accounts->add($account);
                 $this->populateModel($project);
                 $saved = $project->save();
                 assert('$saved');
@@ -66,7 +68,7 @@
             $demoDataHelper->setRangeByModelName('Project', $projects[0], $projects[count($projects)-1]);
         }
 
-        public function populateModel($model)
+        public function populateModel(& $model)
         {
             assert('$model instanceof Project');
             parent::populateModel($model);

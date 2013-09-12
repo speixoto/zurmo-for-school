@@ -44,6 +44,14 @@
             Yii::app()->user->userModel = $super;
         }
 
+//        public function testDemoDataMaker()
+//        {
+//            $demoDataHelper = new DemoDataHelper();
+//            $demoDataHelper->setRangeByModelName('User', 1, 10);
+//            $projectDemoDataMaker = new ProjectsDemoDataMaker();
+//            $projectDemoDataMaker->makeAll($demoDataHelper);
+//        }
+
         public function testCreateAndGetProjectById()
         {
             Yii::app()->user->userModel = User::getByUsername('super');
