@@ -70,5 +70,14 @@
             $attributes                                 = array_keys($contactFormAttributes);
             return $attributes;
         }
+
+        public static function deleteAllContactWebForms()
+        {
+            $contactWebForms = ContactWebForm::getAll();
+            foreach ($contactWebForms as $webForm)
+            {
+                $webForm->delete();
+            }
+        }
     }
 ?>
