@@ -36,6 +36,12 @@
 
     class ProjectsDefaultController extends ZurmoModuleController
     {
+        public static function getDashboardBreadcrumbLinks()
+        {
+            $title = Zurmo::t('HomeModule', 'Dashboard');
+            return array($title);
+        }
+
         public static function getListBreadcrumbLinks()
         {
             $params = LabelUtil::getTranslationParamsForAllModules();
@@ -428,6 +434,64 @@
             $view                   = new ProjectsPageView(ZurmoDefaultViewUtil::
                                                                 makeStandardViewForCurrentUser($this, $titleBarAndEditView));
             echo $view->render();
+        }
+
+        public function actionDashboardDetails()
+        {
+            $params = array(
+                'controllerId' => $this->getId(),
+                'moduleId'     => $this->getModule()->getId(),
+            );
+            $gridViewId              = 'notUsed';
+            $pageVar                 = 'notUsed';
+            $introView               = new ProjectsDashboardIntroView(get_class($this->getModule()));
+            $actionBarView           = new SecuredActionBarForProjectsSearchAndListView(
+                                            'default',
+                                            'projects',
+                                            new Project(), //Just to fill in a marketing model
+                                            $gridViewId,
+                                            $pageVar,
+                                            false,
+                                            'ProjectsDashboardLink',
+                                            $introView);
+            $projectsDashboardView  = new ProjectsDashboardView(
+                                            $this->getId(),
+                                            $this->getModule()->getId(),
+                                            'ProjectsDashboard',
+                                            $params);
+            $projectsDashboardView->setCssClasses( array( 'clearfix' ) );
+
+            $gridView                = new GridView(2, 1);
+            $gridView->setView($actionBarView, 0, 0);
+            $gridView->setView($projectsDashboardView, 1, 0);
+            $breadcrumbLinks         = static::getDashboardBreadcrumbLinks();
+            $view                    = new ProjectsPageView(ProjectDefaultViewUtil::
+                                                                       makeViewWithBreadcrumbsForCurrentUser(
+                                                                            $this,
+                                                                            $gridView,
+                                                                            $breadcrumbLinks,
+                                                                            'ProjectBreadCrumbView'));
+            echo $view->render();
+        }
+
+        public function getActiveProjectsListView()
+        {
+            $pageSize                       = Yii::app()->pagination->resolveActiveForCurrentUserByType(
+                                              'listPageSize', get_class($this->getModule()));
+            $project                        = new Project(false);
+            $searchForm                     = new ProjectsSearchForm($project);
+            $dataProvider                   = $this->resolveSearchDataProvider(
+                                                    $searchForm,
+                                                    $pageSize,
+                                                    null,
+                                                    'ProjectsSearchView'
+                                                );
+            $mixedView  = $this->makeListView(
+                            $searchForm,
+                            $dataProvider,
+                            'ActiveProjectsListView'
+                        );
+            return $mixedView;
         }
     }
 ?>
