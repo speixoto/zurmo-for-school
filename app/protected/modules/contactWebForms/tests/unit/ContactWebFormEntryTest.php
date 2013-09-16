@@ -104,12 +104,13 @@
             $this->assertEquals('Superhero'     , $contactFormAttributes['jobTitle']);
             $this->assertEquals('Test Inc.'     , $contactFormAttributes['companyName']);
 
-            $contact                            = $contactWebFormEntry->contact;
-            $contact->firstName                 = 'Bat';
-            $contact->lastName                  = 'Man Jr.';
+            $contact                             = $contactWebFormEntry->contact;
+            $contact->firstName                  = 'Bat';
+            $contact->lastName                   = 'Man Jr.';
             $this->assertTrue($contact->save());
-            $contactFormAttributes['firstName'] = $contact->firstName;
-            $contactFormAttributes['lastName']  = $contact->lastName;
+            $contactFormAttributes['firstName']  = $contact->firstName;
+            $contactFormAttributes['lastName']   = $contact->lastName;
+            $contactWebFormEntry->serializedData = serialize($contactFormAttributes);
             $this->assertTrue($contactWebFormEntry->save());
             unset($contactWebFormEntry);
 
@@ -127,7 +128,7 @@
         public function testDeleteContactWebFormEntry()
         {
             $contactWebFormEntries = ContactWebFormEntry::getAll();
-            $initialCount = count($contactWebFormEntries);
+            $initialCount          = count($contactWebFormEntries);
             $contactWebFormEntries[0]->delete();
             $contactWebFormEntries = ContactWebFormEntry::getAll();
             $this->assertEquals(intval($initialCount-1), count($contactWebFormEntries));

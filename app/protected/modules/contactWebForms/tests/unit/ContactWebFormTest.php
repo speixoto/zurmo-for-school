@@ -105,7 +105,7 @@
             $contactWebFormEntryMessage = ContactWebFormEntry::STATUS_SUCCESS_MESSAGE;
             $this->assertTrue($contact->save());
 
-            foreach ($contactFormAttributes as $attributeName => $attributeValue)
+            foreach ($contactFormAttributes as $attributeName)
             {
                 $contactFormAttributes[$attributeName] = $contact->$attributeName;
             }
@@ -120,7 +120,7 @@
             $contactWebFormEntry->contact        = $contact;
             $this->assertTrue($contactWebFormEntry->save());
             $contactWebFormEntryId               = $contactWebFormEntry->id;
-            $contactWebForm->entries             = $contactWebFormEntry;
+            $contactWebForm->entries->add($contactWebFormEntry);
             $this->assertTrue($contactWebForm->save());
             unset($contactWebFormEntry);
             $this->assertEquals(1, count($contactWebForm->entries));
@@ -131,7 +131,7 @@
             $contactWebFormEntry->contactWebForm = $contactWebForm;
             $contactWebFormEntry->contact        = $contact;
             $this->assertTrue($contactWebFormEntry->save());
-            $contactWebForm->entries             = $contactWebFormEntry;
+            $contactWebForm->entries->add($contactWebFormEntry);
             $contactWebFormEntryId               = $contactWebFormEntry->id;
             unset($contactWebFormEntry);
             $this->assertEquals(2, count($contactWebForm->entries));
