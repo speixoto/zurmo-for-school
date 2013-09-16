@@ -152,5 +152,39 @@
                 return $contactWebFormAttributes;
             }
         }
+
+        public static function getCustomDisplayLabels(ContactWebForm $contactWebForm)
+        {
+            $contactWebFormAttributes = unserialize($contactWebForm->serializedData);
+            $customDisplayAttributes  = array();
+            if (ArrayUtil::isAssoc($contactWebFormAttributes))
+            {
+                foreach ($contactWebFormAttributes as $attributeId => $attributeData)
+                {
+                    if (isset($attributeData['label']))
+                    {
+                        $customDisplayAttributes[$attributeId] = Zurmo::t('ContactWebFormsModule', $attributeData['label']);
+                    }
+                }
+            }
+            return $customDisplayAttributes;
+        }
+
+        public static function getCustomRequiredFields(ContactWebForm $contactWebForm)
+        {
+            $contactWebFormAttributes = unserialize($contactWebForm->serializedData);
+            $customRequiredFields     = array();
+            if (ArrayUtil::isAssoc($contactWebFormAttributes))
+            {
+                foreach ($contactWebFormAttributes as $attributeId => $attributeData)
+                {
+                    if (isset($attributeData['required']))
+                    {
+                        $customRequiredFields[] = array($attributeId, 'required');
+                    }
+                }
+            }
+            return $customRequiredFields;
+        }
     }
 ?>

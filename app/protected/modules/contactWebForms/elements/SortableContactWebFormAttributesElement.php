@@ -122,10 +122,9 @@
         protected function renderItemTemplate()
         {
             return '<li><div class="dynamic-row"><div>' .
-                        '<label id="label_for_placedAttribute_{id}" for="ContactWebForm_serializedData_{id}">{content}</label>' .
-                        '<input class="inline-edit" type="hidden" id="placedAttribute_{id}" name="placedAttribute[{id}][label]" value="{content}" />' .
-                        '<div id="requiredAttribute_placedAttribute_{id}" style="display: none;"><input element-identifier="placedAttribute_{id}" class="isRequired" type="checkbox" name="placedAttribute[{id}][required]" value="1" {requiredAttribute} {readOnlyAttribute}/> Required?</div>' .
-                    '</div>{checkedAndReadOnly}<a id="editIcon_placedAttribute_{id}" onclick="editInline(\'placedAttribute_{id}\');" href="javascript: void(0);">Edit</a></div></li>';
+                        '<input style="width: 125px;" type="text" id="placedAttribute_{id}" name="placedAttribute[{id}][label]" value="{content}" />' .
+                        '<input type="checkbox" name="placedAttribute[{id}][required]" value="1" {requiredAttribute} {readOnlyAttribute}/> Required?' .
+                    '</div>{checkedAndReadOnly}</div></li>';
         }
 
         protected function renderError()

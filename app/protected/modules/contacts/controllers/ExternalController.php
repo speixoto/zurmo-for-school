@@ -85,17 +85,20 @@
             $contact->owner                          = $contactWebForm->defaultOwner;
             $contact->googleWebTrackingId            = Yii::app()->getRequest()->getPost(
                                                        ContactExternalEditAndDetailsView::GOOGLE_WEB_TRACKING_ID_FIELD);
-            $postVariableName                        = get_class($contact);
+            $customDisplayLabels                     = ContactWebFormsUtil::getCustomDisplayLabels($contactWebForm);
+            $contactWebFormModelForm                 = new ContactWebFormsModelForm($contact);
+            $contactWebFormModelForm->setCustomDisplayLabels($customDisplayLabels);
+            $postVariableName                        = get_class($contactWebFormModelForm);
             $containedView                           = new ContactExternalEditAndDetailsView('Edit',
                                                             $this->getId(),
                                                             $this->getModule()->getId(),
-                                                            $this->attemptToSaveModelFromPost($contact, null, false),
+                                                            $this->attemptToSaveModelFromPost($contactWebFormModelForm, null, false),
                                                             $metadata);
             $view = new ContactWebFormsExternalPageView(ZurmoExternalViewUtil::
                                                         makeExternalViewForCurrentUser($containedView));
             if (isset($_POST[$postVariableName]) && isset($contact->id) && intval($contact->id) > 0)
             {
-                $this->resolveContactWebFormEntry($contactWebForm, $contact);
+                $this->resolveContactWebFormEntry($contactWebForm, $contactWebFormModelForm);
                 $responseData                        = array();
                 $responseData['redirectUrl']         = $contactWebForm->redirectUrl;
                 $this->renderResponse(CJSON::encode($responseData));
@@ -128,17 +131,21 @@
             if (isset($_POST['ajax']) && $_POST['ajax'] == 'edit-form')
             {
                 $contact        = new Contact();
-                $contact->setAttributes($_POST['Contact']);
                 $contact->state = $contactWebForm->defaultState;
                 $contact->owner = $contactWebForm->defaultOwner;
-                $this->resolveContactWebFormEntry($contactWebForm, $contact);
-                if ($contact->validate())
+                $customRequiredFields = ContactWebFormsUtil::getCustomRequiredFields($contactWebForm);
+                $contactWebFormModelForm = new ContactWebFormsModelForm($contact);
+                $contactWebFormModelForm->setCustomRequiredFields($customRequiredFields);
+                $postVariableName = get_class($contactWebFormModelForm);
+                $contact->setAttributes($_POST[$postVariableName]);
+                $this->resolveContactWebFormEntry($contactWebForm, $contactWebFormModelForm);
+                if ($contactWebFormModelForm->validate())
                 {
                     $response = CJSON::encode(array());
                 }
                 else
                 {
-                    $errorData = ZurmoActiveForm::makeErrorsDataAndResolveForOwnedModelAttributes($contact);
+                    $errorData = ZurmoActiveForm::makeErrorsDataAndResolveForOwnedModelAttributes($contactWebFormModelForm);
                     $response = CJSON::encode($errorData);
                 }
                 $this->renderResponse($response);
@@ -147,7 +154,8 @@
 
         protected function resolveContactWebFormEntry($contactWebForm, $contact)
         {
-            $contactFormAttributes               = $_POST['Contact'];
+            $postVariableName                    = get_class($contact);
+            $contactFormAttributes               = $_POST[$postVariableName];
             $contactFormAttributes['owner']      = $contactWebForm->defaultOwner->id;
             $contactFormAttributes['state']      = $contactWebForm->defaultState->id;
             if ($contact->validate())
