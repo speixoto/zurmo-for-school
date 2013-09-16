@@ -34,11 +34,47 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class BaseJobControlUserConfigUtilTest extends BaseControlUserConfigUtilBaseTest
+    class BaseControlUserConfigUtilTest extends ZurmoBaseTest
     {
-        protected static function resolveConfigUtilClassName()
+        public static function setUpBeforeClass()
         {
-            return 'BaseJobControlUserConfigUtil';
+            parent::setUpBeforeClass();
+            SecurityTestHelper::createSuperAdmin();
+        }
+
+        public function setUp()
+        {
+            parent::setUp();
+            Yii::app()->user->userModel = User::getByUsername('super');
+        }
+
+        public function testGetUserToRunAsReturnsCorrectBackendUser()
+        {
+            $user               = BaseControlUserConfigUtil::getUserToRunAs();
+            $backendUser        = User::getByUsername(BaseControlUserConfigUtil::USERNAME);
+            $this->assertEquals($backendUser, $user);
+        }
+
+        /**
+         * @depends testGetUserToRunAsReturnsCorrectBackendUser
+         * @expectedException NotFoundException
+         */
+        public function testGetUserToRunAsThrowNotFoundExceptionWhenUserDoesNotExist()
+        {
+            $backendUser        = User::getByUsername(BaseControlUserConfigUtil::USERNAME);
+            $backendUser->delete();
+            BaseControlUserConfigUtil::getUserToRunAs(false);
+        }
+
+        /**
+         * @depends testGetUserToRunAsThrowNotFoundExceptionWhenUserDoesNotExist
+         */
+        public function testGetUserToRunAsCreatesBackendUserImplicitly()
+        {
+            $user               = BaseControlUserConfigUtil::getUserToRunAs();
+            $this->assertNotNull($user);
+            $backendUser        = User::getByUsername(BaseControlUserConfigUtil::USERNAME);
+            $this->assertEquals($backendUser, $user);
         }
     }
 ?>
