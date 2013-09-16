@@ -119,5 +119,15 @@
             $this->assertFalse(strpos($content, 'ModalGameNotification0') === false);
             $this->assertFalse(strpos($content, 'ModalGameNotification1') === false);
         }
+
+        public function testCollectRandomCoin()
+        {
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $gameCoin = GameCoin::resolveByPerson($super);
+            $this->assertEquals(0, $gameCoin->value);
+            $this->runControllerWithNoExceptionsAndGetContent('gamification/default/collectRandomCoin', true);
+            $gameCoin = GameCoin::resolveByPerson($super);
+            $this->assertEquals(1, $gameCoin->value);
+        }
     }
 ?>
