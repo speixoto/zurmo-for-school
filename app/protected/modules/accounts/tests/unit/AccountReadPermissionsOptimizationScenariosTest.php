@@ -43,6 +43,8 @@
 
         class AccountReadPermissionsOptimizationScenariosTest extends AccountReadPermissionsOptimizationBaseTest
         {
+            protected static $skipBackendUserCreation = true;
+
             public static function setUpBeforeClass()
             {
                 parent::setUpBeforeClass();
