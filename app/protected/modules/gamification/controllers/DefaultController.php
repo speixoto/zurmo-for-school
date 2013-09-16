@@ -94,5 +94,16 @@
             }
             echo $view->render();
         }
+
+        public function actionCollectRandomCoin()
+        {
+            $gameCoin = GameCoin::resolveByPerson(Yii::app()->user->userModel);
+            $gameCoin->addValue(10);
+            $saved = $gameCoin->save();
+            if(!$saved)
+            {
+                throw new FailedToSaveModelException();
+            }
+        }
     }
 ?>

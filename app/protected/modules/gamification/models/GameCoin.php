@@ -132,6 +132,28 @@
         }
 
         /**
+         * Eventually refactor to support different randomness seeds on a per module basis, but until this is fleshed
+         * out more, we will just hard-code the seeding here.
+         */
+        public static function showCoin(CController $controller)
+        {
+            //Reporting and Data cleanup actions should show coins more frequently
+            if($controller->getModule()->getId() == 'reports')
+            {
+                $value = mt_rand(1, 25);
+            }
+            else
+            {
+                $value = mt_rand(1, 50);
+            }
+            if($value == 7)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        /**
          * Add specified value.
          */
         public function addValue($value)
