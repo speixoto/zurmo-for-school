@@ -79,7 +79,6 @@
             {
                 return true;
             }
-            if ($attribute == 'firstName') { echo $attribute . '<pre>'; print_r($this->customRequiredFields); exit(); }
             return parent::isAttributeRequired($attribute);
         }
 
@@ -87,11 +86,12 @@
         {
             foreach ($this->customRequiredFields as $customRequiredValidator)
             {
-                if (array_key_exists($attribute, $customRequiredValidator))
+                if ($customRequiredValidator[0] == $attribute && $customRequiredValidator[1] == 'required')
                 {
                     return true;
                 }
             }
+            return false;
         }
     }
 ?>

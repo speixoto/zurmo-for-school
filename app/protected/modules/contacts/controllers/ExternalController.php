@@ -86,8 +86,10 @@
             $contact->googleWebTrackingId            = Yii::app()->getRequest()->getPost(
                                                        ContactExternalEditAndDetailsView::GOOGLE_WEB_TRACKING_ID_FIELD);
             $customDisplayLabels                     = ContactWebFormsUtil::getCustomDisplayLabels($contactWebForm);
+            $customRequiredFields                    = ContactWebFormsUtil::getCustomRequiredFields($contactWebForm);
             $contactWebFormModelForm                 = new ContactWebFormsModelForm($contact);
             $contactWebFormModelForm->setCustomDisplayLabels($customDisplayLabels);
+            $contactWebFormModelForm->setCustomRequiredFields($customRequiredFields);
             $postVariableName                        = get_class($contactWebFormModelForm);
             $containedView                           = new ContactExternalEditAndDetailsView('Edit',
                                                             $this->getId(),
