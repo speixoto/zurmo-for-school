@@ -34,27 +34,46 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class MarketingListMemberSelectContactOrLeadAutoCompleteElement extends MarketingListMemberSelectAutoCompleteBaseElement
+    /**
+     * Adapter class to showing just contact and leads marketingLists.
+     */
+    class ContactsAndLeadsMarketingListsStateMetadataAdapter extends StateMetadataAdapter
     {
-        protected function getSelectType()
+        /**
+         * Creates where clauses and adds structure information
+         * to existing DataProvider metadata.
+         */
+        public function getAdaptedDataProviderMetadata()
         {
-            return 'contact';
+            $metadata      = $this->metadata;
+            $clauseCount   = count($metadata['clauses']);
+            $startingCount = $clauseCount + 1;
+            $structure     = '';
+            $metadata['clauses'][$startingCount] = array(
+                'attributeName' => 'moduleClassName',
+                'operatorType'  => 'equals',
+                'value'         => 'ContactsModule'
+            );
+            $structure    .= $startingCount;
+            if (empty($metadata['structure']))
+            {
+                $metadata['structure'] = '(' . $structure . ')';
+            }
+            else
+            {
+                $metadata['structure'] = '(' . $metadata['structure'] . ') and (' . $structure . ')';
+            }
+            return $metadata;
         }
 
-        protected function getSource()
+        /**
+         * Not Used
+         * @return array|void
+         * @throws NotImplementedException
+         */
+        protected function getStateIds()
         {
-            return Yii::app()->createUrl('/contacts/variableContactState/autoCompleteAllContacts');
-        }
-
-        protected function getSourceUrlForSelectLink()
-        {
-            return '/contacts/variableContactState/modalListAllContacts';
-        }
-
-        protected function getModalTitleForSelectingModel()
-        {
-            return  Zurmo::t('MarketingListsModule', 'From ContactsModulePluralLabel/LeadsModulePluralLabel',
-                                LabelUtil::getTranslationParamsForAllModules());
+            throw new NotImplementedException();
         }
     }
 ?>

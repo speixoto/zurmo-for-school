@@ -44,6 +44,8 @@
 
         public $editableTemplate = '<td colspan="{colspan}">{content}</td>';
 
+        protected $shouldRenderSelectLink = true;
+
         abstract protected function getSelectType();
 
         protected function getSubscribeUrl()
@@ -100,7 +102,8 @@
             // Begin Not Coding Standard
             return 'js: function(event, ui)
                     {
-                        subscribeContactsToMarketingList' . $this->getSelectType() . ' ($(this), event, ui, 1, 0, 0)
+                        subscribeContactsToMarketingList' . $this->getSelectType() . ' ($(this), event, ui.item.id, 1, 0, 0)
+                        console.log(event);
                     }';
             // End Not Coding Standard
         }
@@ -134,7 +137,7 @@
         protected function registerSubscribeContactsAjaxScript()
         {
             // Begin Not Coding Standard
-            $script = 'function subscribeContactsToMarketingList' . $this->getSelectType() . ' (object, event, ui, page, subscribedCount, skippedCount) {
+            $script = 'function subscribeContactsToMarketingList' . $this->getSelectType() . ' (object, event, itemId, page, subscribedCount, skippedCount) {
                             var searchBox           = object;
                             var listGridViewId      = "' . $this->getListViewGridId() .'";
                             var notificationBarId   = "' . static::NOTIFICATION_BAR_ID . '";
@@ -145,7 +148,7 @@
                             var disableTextBox      = "' . static::DISABLE_TEXT_BOX_WHEN_AJAX_IN_PROGRESS . '";
                             var disableRadioButton  = "' . static::DISABLE_RADIO_BUTTON_WHEN_AJAX_IN_PROGRESS . '";
                             var event               = event;
-                            var ui                  = ui;
+                            var itemId              = itemId;
                             var page                = page;
                             var subscribedCount     = subscribedCount;
                             var skippedCount        = skippedCount;
@@ -155,7 +158,7 @@
                                     dataType:   "json",
                                     data:       {
                                                     marketingListId: modelId,
-                                                    id: ui.item.id,
+                                                    id: itemId,
                                                     type: selectType,
                                                     page: page,
                                                     subscribedCount: subscribedCount,
@@ -182,7 +185,7 @@
                                                     if (data.nextPage)
                                                     {
                                                         subscribeContactsToMarketingList' . $this->getSelectType() . '
-                                                            (object, event, ui, data.nextPage, data.subscribedCount, data.skippedCount);
+                                                            (object, event, itemId, data.nextPage, data.subscribedCount, data.skippedCount);
                                                     }
                                                 },
                                     error:      function(request, status, error)
@@ -231,6 +234,11 @@
         protected function getRadioButtonClass()
         {
             return ArrayUtil::getArrayValueWithExceptionIfNotFound($this->params, 'radioButtonClass');
+        }
+
+        protected function getAfterChangeSelectIdScript()
+        {
+            return "subscribeContactsToMarketingList{$this->getSelectType()} ($(this), event, $(this).val(), 1, 0, 0);";
         }
     }
 ?>

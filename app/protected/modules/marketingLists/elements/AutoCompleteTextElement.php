@@ -37,6 +37,8 @@
     // TODO: @Shoaibi/@Jason: Low: This should be refactored and used everywhere instead of manually creating clip.
     abstract class AutoCompleteTextElement extends TextElement
     {
+        protected $shouldRenderSelectLink = false;
+
         abstract protected function getWidgetValue();
 
         abstract protected function getSource();
@@ -62,7 +64,8 @@
 
             ));
             $cClipWidget->endClip();
-            $content = $cClipWidget->getController()->clips[$clipId];
+            $content  = $cClipWidget->getController()->clips[$clipId];
+            $content .= $this->renderSelectLink();
             return $content;
         }
 
@@ -79,6 +82,98 @@
         protected function getWidgetName()
         {
             return $this->getEditableInputName();
+        }
+
+        protected function renderSelectLink()
+        {
+            if (!$this->shouldRenderSelectLink)
+            {
+                return null;
+            }
+            $cs = Yii::app()->getClientScript();
+            $cs->registerCoreScript('bbq');
+            $cs->registerScriptFile(
+                Yii::app()->getAssetManager()->publish(
+                    Yii::getPathOfAlias('application.core.elements.assets')
+                ) . '/Modal.js',
+                CClientScript::POS_END
+            );
+            $this->registerSelectLinkScripts();
+            $content  = ZurmoHtml::openTag('div', array('class' => 'has-model-select'));
+            $content .= ZurmoHtml::hiddenField($this->getIdForHiddenSelectLinkField());
+            $content .= ZurmoHtml::ajaxLink('<span class="model-select-icon"></span>',
+                Yii::app()->createUrl($this->getSourceUrlForSelectLink(), $this->getSelectLinkUrlParams()),
+                $this->resolveAjaxOptionsForSelectingModel(),
+                array('id' => $this->getWidgetId() . '-select-link')
+            );
+            $content .= ZurmoHtml::closeTag('div');
+            return $content;
+        }
+
+        protected function getSourceUrlForSelectLink()
+        {
+            throw new NotImplementedException();
+        }
+
+        protected function getSelectLinkUrlParams()
+        {
+            return array(
+                'modalTransferInformation' => $this->getModalTransferInformation(),
+            );
+        }
+
+        protected function getModalTransferInformation()
+        {
+            return array(
+                'sourceIdFieldId'   => $this->getIdForHiddenSelectLinkField(),
+                'sourceNameFieldId' => $this->getWidgetId(),
+                'modalId'           => $this->getModalContainerId(),
+            );
+        }
+
+        protected function getIdForHiddenSelectLinkField()
+        {
+            return $this->getWidgetId() . '-transfer';
+        }
+
+        protected function resolveAjaxOptionsForSelectingModel()
+        {
+            $title = $this->getModalTitleForSelectingModel();
+            return   ModalView::getAjaxOptionsForModalLink($title, $this->getModalContainerId());
+        }
+
+        protected function getModalContainerId()
+        {
+            return 'modalContainer';
+        }
+
+        protected function getModalTitleForSelectingModel()
+        {
+            throw new NotImplementedException();
+        }
+
+        protected function registerSelectLinkScripts()
+        {
+            $scriptName = $this->getWidgetId() . '-transfer-script';
+            if (Yii::app()->clientScript->isScriptRegistered($scriptName))
+            {
+                return;
+            }
+            else
+            {
+                $selectLinkId = $this->getWidgetId() . '-select-link';
+                Yii::app()->clientScript->registerScript($scriptName, "
+                    $('#{$selectLinkId}').off();
+                    $('#{$this->getIdForHiddenSelectLinkField()}').change(function(event){
+                        {$this->getAfterChangeSelectIdScript()}
+                    });
+                ");
+            }
+        }
+
+        protected function getAfterChangeSelectIdScript()
+        {
+            throw new NotImplementedException();
         }
     }
 ?>
