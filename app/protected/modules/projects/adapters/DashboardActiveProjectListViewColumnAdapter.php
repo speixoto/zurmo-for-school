@@ -42,8 +42,73 @@
         {
             return array(
                     'name'  => $this->attribute,
-                    'value' => array('ProjectUtil', 'getProjectInformationForDashboard')
+                    'value' => 'DashboardActiveProjectListViewColumnAdapter::getProjectInformationForDashboard($data)',
+                    'type'  => 'raw'
                 );
+        }
+
+        protected static function makeSearchAttributeData($data)
+        {
+            $searchAttributeData['clauses'][1] =
+            array(
+                'attributeName'        => 'activityItems',
+                'relatedAttributeName' => 'id',
+                'operatorType'         => 'equals',
+                'value'                => (int)$data->getClassId('Item')
+            );
+            $searchAttributeData['structure'] = '(1)';
+            return $searchAttributeData;
+        }
+
+        public static function getProjectInformationForDashboard($data)
+        {
+            $content = '<h4>' . $data->name . '</h4>' . '<table>';
+            $searchAttributeData = self::makeSearchAttributeData($data);
+            $joinTablesAdapter   = new RedBeanModelJoinTablesQueryAdapter('Task');
+            $where  = RedBeanModelDataProvider::makeWhere('Task', $searchAttributeData, $joinTablesAdapter);
+            $models = Task::getSubset($joinTablesAdapter, null, null, $where, null);
+
+            if(count($models) > 0)
+            {
+                $kanbanItemsArray = array();
+                $kanbanItemsCountArray = array();
+                foreach ($models as $data)
+                {
+                    $kanbanItem  = KanbanItem::getByTask($data->id);
+                    if($kanbanItem == null)
+                    {
+                        //Create KanbanItem here
+                        $kanbanItem = TasksUtil::createKanbanItemFromTask($data);
+                    }
+
+                    $kanbanItemsArray[$kanbanItem->type] = $kanbanItem->id;
+                }
+
+                $kanbanTypeDropDownData = KanbanItem::getTypeDropDownArray();
+                $content .= '<tr>';
+                foreach($kanbanTypeDropDownData as $type => $label)
+                {
+                    $content .= '<th>' . $label . '<th>';
+                }
+                $content .= '</tr><tr>';
+                foreach($kanbanTypeDropDownData as $type => $label)
+                {
+                    if(isset($kanbanItemsArray[$type]))
+                    {
+                        $content .= '<td>' . count($kanbanItemsArray[$type]) . '<td>';
+                    }
+                    else
+                    {
+                        $content .= '<td>0<td>';
+                    }
+                }
+                $content .= '</tr></table>';
+            }
+            else
+            {
+                $content .= '<tr><td colspan="4">' . Zurmo::t('ProjectsModule','No Tasks') . '</td></tr></table>';
+            }
+            return $content;
         }
     }
 ?>

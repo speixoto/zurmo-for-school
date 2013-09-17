@@ -122,7 +122,7 @@
             return array_merge(parent::translatedAttributeLabels($language),
                 array(
                     'type'          => Zurmo::t('TasksModule', 'Type', array(), null, $language),
-                    'sortOrder'         => Zurmo::t('TasksModule', 'Order',  array(), null, $language),
+                    'sortOrder'     => Zurmo::t('TasksModule', 'Order',  array(), null, $language),
                     'kanbanItem'    => Zurmo::t('TasksModule', 'Kanban Item',  array(), null, $language),
                     'task'          => Zurmo::t('TasksModule', 'Task', array(), null, $language)
                 )
@@ -159,10 +159,10 @@
         public static function getTypeDropDownArray()
         {
             return array(
-                self::KANBAN_TYPE_SOMEDAY                  => Zurmo::t('TasksModule', 'Someday'),
-                self::KANBAN_TYPE_IN_PROGRESS              => Zurmo::t('TasksModule', 'In Progress'),
-                self::KANBAN_TYPE_TODO                     => Zurmo::t('TasksModule', 'To Do'),
-                self::KANBAN_TYPE_COMPLETED                => Zurmo::t('TasksModule', 'Completed'),
+                self::TYPE_SOMEDAY                  => Zurmo::t('TasksModule', 'Someday'),
+                self::TYPE_IN_PROGRESS              => Zurmo::t('TasksModule', 'In Progress'),
+                self::TYPE_TODO                     => Zurmo::t('TasksModule', 'To Do'),
+                self::TYPE_COMPLETED                     => Zurmo::t('TasksModule', 'Completed'),
             );
         }
 

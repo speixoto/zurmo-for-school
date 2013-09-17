@@ -58,7 +58,7 @@
         {
             $this->model            = $model;
             $this->groupByAttribute = $groupByAttribute;
-            $this->groupByDataAndTranslatedLabels = $this->resolveGroupByDataAndTranslatedLabels();
+            $this->groupByDataAndTranslatedLabels = TasksUtil::getGroupByDataAndTranslatedLabels();
             $this->groupByAttributeVisibleValues  = array_keys($this->groupByDataAndTranslatedLabels);
             $this->relatedModel                   = $relatedModel;
             $this->relatedModelClassName          = $relatedModelClassName;
@@ -67,15 +67,15 @@
         /**
          * @return array
          */
-        protected function resolveGroupByDataAndTranslatedLabels()
-        {
-            $data = array(KanbanItem::TYPE_SOMEDAY      => Zurmo::t('ProductsModule', 'Someday'),
-                          KanbanItem::TYPE_TODO         => Zurmo::t('ProductsModule', 'To Do'),
-                          KanbanItem::TYPE_IN_PROGRESS  => Zurmo::t('ProductsModule', 'In Progress'),
-                          KanbanItem::TYPE_COMPLETED    => Zurmo::t('ProductsModule', 'Completed'));
-
-            return $data;
-        }
+//        protected function resolveGroupByDataAndTranslatedLabels()
+//        {
+//            $data = array(KanbanItem::TYPE_SOMEDAY      => Zurmo::t('ProductsModule', 'Someday'),
+//                          KanbanItem::TYPE_TODO         => Zurmo::t('ProductsModule', 'To Do'),
+//                          KanbanItem::TYPE_IN_PROGRESS  => Zurmo::t('ProductsModule', 'In Progress'),
+//                          KanbanItem::TYPE_COMPLETED    => Zurmo::t('ProductsModule', 'Completed'));
+//
+//            return $data;
+//        }
 
         /**
          * @return string

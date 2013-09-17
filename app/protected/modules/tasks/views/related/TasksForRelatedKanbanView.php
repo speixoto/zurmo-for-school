@@ -284,5 +284,25 @@
                 return Zurmo::t('TasksModule', '% Complete - ' . $percentage);
             }
         }
+
+        /**
+         * Need to override it as in list view the class of kanbanboard is coming as ListView //todo ask Jason
+         * @return string
+         */
+        protected function getGridViewWidgetPath()
+        {
+            return $this->kanbanBoard->getGridViewWidgetPath();
+        }
+
+        /**
+         * Need to override it as in list view the class of kanbanboard is coming as ListView //todo ask Jason
+         * @return string
+         */
+        protected function getCGridViewParams()
+        {
+            $params = parent::getCGridViewParams();
+            $params = array_merge($params, $this->kanbanBoard->getGridViewParams());
+            return array_merge($params, $this->resolveExtraParamsForKanbanBoard());
+        }
     }
 ?>
