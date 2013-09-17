@@ -33,8 +33,8 @@
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
-
-    Yii::import('application.modules.Contacts.controllers.DefaultController', true);
+    
+    Yii::import('application.modules.contacts.controllers.DefaultController', true);
     class ContactsDemoController extends ContactsDefaultController
     {
         /**
