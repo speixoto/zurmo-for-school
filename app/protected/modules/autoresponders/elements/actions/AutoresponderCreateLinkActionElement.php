@@ -34,12 +34,18 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class AutoresponderCreateMenuActionElement extends CreateMenuActionElement
+    class AutoresponderCreateLinkActionElement extends CreateLinkActionElement
     {
         public function __construct($controllerId, $moduleId, $modelId, $params = array())
         {
             $moduleId = 'autoresponders';
             parent::__construct($controllerId, $moduleId, $modelId, $params);
+        }
+
+        protected function getDefaultLabel()
+        {
+            $icon = ZurmoHtml::tag('i', array('class' => 'icon-create'), '');
+            return $icon . Zurmo::t('Core', 'Create');
         }
     }
 ?>

@@ -44,8 +44,8 @@
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array('type'            => 'AutoresponderCreateMenu',
-                                  'iconClass'       => 'icon-create',
+                            array('type'              => 'AutoresponderCreateLink',
+                                  'iconClass'         => 'icon-create',
                                   'routeParameters'   => 'eval:$this->getAutoresponderCreateRouteParameters()',
                                   'redirectUrl'       => 'eval:$this->getNonAjaxRedirectUrl()',
                                   'pageVarName'       => 'eval:$this->getPageVarName()',

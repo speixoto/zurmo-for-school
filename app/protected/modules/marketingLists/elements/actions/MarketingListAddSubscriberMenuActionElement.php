@@ -55,6 +55,7 @@
         {
             $htmlOptions = parent::resolveHtmlOptionsForRendering();
             $htmlOptions['id'] = get_class($this);
+            $htmlOptions['class'] = 'clickable-dividedmenu';
             return $htmlOptions;
         }
 
@@ -97,6 +98,7 @@
                                                         );
             $content                        .= $selectContactOrReportElement->render();
             $content                        .= $clipWidget->renderEndWidget();
+            $this->registerScripts();
             return $content;
         }
 
@@ -119,9 +121,11 @@
 
         protected function registerScripts()
         {
-            $script = "$('close-flyout').click(function()
+            $script = "$('.close-flyout').click(function()
                         {
-                            $(this).parentsUntil(ul).parent().hide();
+                            parent = $(this).parentsUntil('div.clickable-dividedmenu').parent();
+                            parent.removeClass('nav-open');
+                            return false;
                         });";
             Yii::app()->clientScript->registerScript(get_class() . 'CloseFlyoutScript', $script);
         }
