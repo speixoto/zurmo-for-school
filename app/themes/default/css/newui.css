@@ -996,6 +996,14 @@ body.blue .button-action-trigger:hover span,
 body.blue .button-action-trigger:active span,
 body.blue .button-action:hover span,
 body.blue .button-action:active span,
+body.blue .split-button:hover span,
+body.blue .split-button:hover i[class^="icon"],
+body.blue .split-button:hover i[class^="icon"]:after,
+body.blue .split-button:hover i[class^="icon"]:before,
+body.blue .default-button:hover span,
+body.blue .default-button:hover i[class^="icon"],
+body.blue .default-button:hover i[class^="icon"]:after,
+body.blue .default-button:hover i[class^="icon"]:before,
 body.blue .view-toolbar > a:hover,
 body.blue .view-toolbar > a:active,
 body.blue .view-toolbar > a:hover:before,
@@ -1590,6 +1598,14 @@ body.brown .button-action-trigger:hover span,
 body.brown .button-action-trigger:active span,
 body.brown .button-action:hover span,
 body.brown .button-action:active span,
+body.brown .split-button:hover span,
+body.brown .split-button:hover i[class^="icon"],
+body.brown .split-button:hover i[class^="icon"]:after,
+body.brown .split-button:hover i[class^="icon"]:before,
+body.brown .default-button:hover span,
+body.brown .default-button:hover i[class^="icon"],
+body.brown .default-button:hover i[class^="icon"]:after,
+body.brown .default-button:hover i[class^="icon"]:before,
 body.brown .view-toolbar > a:hover,
 body.brown .view-toolbar > a:active,
 body.brown .view-toolbar > a:hover:before,
@@ -2184,6 +2200,14 @@ body.lime .button-action-trigger:hover span,
 body.lime .button-action-trigger:active span,
 body.lime .button-action:hover span,
 body.lime .button-action:active span,
+body.lime .split-button:hover span,
+body.lime .split-button:hover i[class^="icon"],
+body.lime .split-button:hover i[class^="icon"]:after,
+body.lime .split-button:hover i[class^="icon"]:before,
+body.lime .default-button:hover span,
+body.lime .default-button:hover i[class^="icon"],
+body.lime .default-button:hover i[class^="icon"]:after,
+body.lime .default-button:hover i[class^="icon"]:before,
 body.lime .view-toolbar > a:hover,
 body.lime .view-toolbar > a:active,
 body.lime .view-toolbar > a:hover:before,
@@ -2778,6 +2802,14 @@ body.cherry .button-action-trigger:hover span,
 body.cherry .button-action-trigger:active span,
 body.cherry .button-action:hover span,
 body.cherry .button-action:active span,
+body.cherry .split-button:hover span,
+body.cherry .split-button:hover i[class^="icon"],
+body.cherry .split-button:hover i[class^="icon"]:after,
+body.cherry .split-button:hover i[class^="icon"]:before,
+body.cherry .default-button:hover span,
+body.cherry .default-button:hover i[class^="icon"],
+body.cherry .default-button:hover i[class^="icon"]:after,
+body.cherry .default-button:hover i[class^="icon"]:before,
 body.cherry .view-toolbar > a:hover,
 body.cherry .view-toolbar > a:active,
 body.cherry .view-toolbar > a:hover:before,
@@ -3372,6 +3404,14 @@ body.turquoise .button-action-trigger:hover span,
 body.turquoise .button-action-trigger:active span,
 body.turquoise .button-action:hover span,
 body.turquoise .button-action:active span,
+body.turquoise .split-button:hover span,
+body.turquoise .split-button:hover i[class^="icon"],
+body.turquoise .split-button:hover i[class^="icon"]:after,
+body.turquoise .split-button:hover i[class^="icon"]:before,
+body.turquoise .default-button:hover span,
+body.turquoise .default-button:hover i[class^="icon"],
+body.turquoise .default-button:hover i[class^="icon"]:after,
+body.turquoise .default-button:hover i[class^="icon"]:before,
 body.turquoise .view-toolbar > a:hover,
 body.turquoise .view-toolbar > a:active,
 body.turquoise .view-toolbar > a:hover:before,
@@ -3966,6 +4006,14 @@ body.violet .button-action-trigger:hover span,
 body.violet .button-action-trigger:active span,
 body.violet .button-action:hover span,
 body.violet .button-action:active span,
+body.violet .split-button:hover span,
+body.violet .split-button:hover i[class^="icon"],
+body.violet .split-button:hover i[class^="icon"]:after,
+body.violet .split-button:hover i[class^="icon"]:before,
+body.violet .default-button:hover span,
+body.violet .default-button:hover i[class^="icon"],
+body.violet .default-button:hover i[class^="icon"]:after,
+body.violet .default-button:hover i[class^="icon"]:before,
 body.violet .view-toolbar > a:hover,
 body.violet .view-toolbar > a:active,
 body.violet .view-toolbar > a:hover:before,
@@ -4560,6 +4608,14 @@ body.honey .button-action-trigger:hover span,
 body.honey .button-action-trigger:active span,
 body.honey .button-action:hover span,
 body.honey .button-action:active span,
+body.honey .split-button:hover span,
+body.honey .split-button:hover i[class^="icon"],
+body.honey .split-button:hover i[class^="icon"]:after,
+body.honey .split-button:hover i[class^="icon"]:before,
+body.honey .default-button:hover span,
+body.honey .default-button:hover i[class^="icon"],
+body.honey .default-button:hover i[class^="icon"]:after,
+body.honey .default-button:hover i[class^="icon"]:before,
 body.honey .view-toolbar > a:hover,
 body.honey .view-toolbar > a:active,
 body.honey .view-toolbar > a:hover:before,
@@ -20029,6 +20085,10 @@ div.special-pager .hidden.next:after {
 .pillbox .default-button + .split-button {
   border-left: 1px solid #bababa;
 }
+.pillbox .split-button:hover .icon-trigger:before,
+.pillbox .default-button:hover .icon-trigger:before {
+  display: block !important;
+}
 .pillbox .split-button i,
 .pillbox .default-button i {
   font-style: normal;
@@ -20051,6 +20111,8 @@ div.special-pager .hidden.next:after {
 .pillbox .default-button .button-action-trigger,
 .pillbox .split-button .button-trigger,
 .pillbox .default-button .button-trigger {
+  position: relative;
+  z-index: 5;
   display: inline-block;
   line-height: 30px;
   margin: 0 0 0 4px;
@@ -20082,6 +20144,12 @@ div.special-pager .hidden.next:after {
   -ms-box-shadow: none;
   box-shadow: none;
   border-left: none;
+}
+.pillbox .split-button .button-action-trigger:hover .icon-trigger:before,
+.pillbox .default-button .button-action-trigger:hover .icon-trigger:before,
+.pillbox .split-button .button-trigger:hover .icon-trigger:before,
+.pillbox .default-button .button-trigger:hover .icon-trigger:before {
+  display: block;
 }
 .pillbox .split-button .button-action-trigger:hover + .button-actions,
 .pillbox .default-button .button-action-trigger:hover + .button-actions,
@@ -20115,6 +20183,19 @@ div.special-pager .hidden.next:after {
 .pillbox .split-button .button-trigger .icon-trigger:after,
 .pillbox .default-button .button-trigger .icon-trigger:after {
   content: "÷";
+}
+.pillbox .split-button .button-action-trigger .icon-trigger:before,
+.pillbox .default-button .button-action-trigger .icon-trigger:before,
+.pillbox .split-button .button-trigger .icon-trigger:before,
+.pillbox .default-button .button-trigger .icon-trigger:before {
+  content: "";
+  display: none;
+  position: absolute;
+  top: 23px;
+  right: 1px;
+  width: 13px;
+  height: 8px;
+  background: url(../images/tip.png) right bottom no-repeat;
 }
 .pillbox .split-button .button-action-trigger:hover,
 .pillbox .default-button .button-action-trigger:hover {
@@ -20186,7 +20267,7 @@ div.special-pager .hidden.next:after {
   right: 9px;
   width: 80%;
   height: 15px;
-  background: url(../images/tip.png) right bottom no-repeat;
+  background: transparent;
 }
 .pillbox .button-actions li {
   line-height: 100%;
@@ -20217,6 +20298,9 @@ div.special-pager .hidden.next:after {
 }
 .pillbox .button-actions label {
   color: #EFEFEF;
+}
+.nav-open .button-actions {
+  display: block;
 }
 .button-actions.open-on-left {
   right: auto;

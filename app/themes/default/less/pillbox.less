@@ -46,6 +46,11 @@
 		+ .split-button{
 			border-left: 1px solid #bababa;
 		}
+		&:hover{
+			.icon-trigger:before{
+				display: block !important;
+			}
+		}
 		i{
 			font-style: normal;
 			line-height:30px;
@@ -61,17 +66,10 @@
 				display: none;
 			}
 		}
-
-		.button-action-trigger,
-		.button-action{
-			&:hover{
-				span, i{
-					//color: #7cb830;
-				}
-			}
-		}
 		.button-action-trigger,
 		.button-trigger{
+			position: relative;
+			z-index: 5;
 			display: inline-block;
 			line-height:30px;
 			margin:0 0 0 4px;
@@ -84,6 +82,9 @@
 				i{
 					.b-shadow(none);
 					border-left:none;
+				}
+				.icon-trigger:before{
+					display: block;
 				}
 			}
 			&:hover + .button-actions{
@@ -100,6 +101,16 @@
 				.t-shadow(0 2px 0 #fff);
 				&:after{
 					content: "÷";
+				}
+				&:before{
+					content: "";
+					display: none;
+					position: absolute;
+					top:23px;
+					right:1px;
+					width:13px;
+					height:8px;
+					background:url(../images/tip.png) right bottom no-repeat;
 				}
 			}
 		}
@@ -148,7 +159,7 @@
 			right:9px;
 			width:80%;
 			height: 15px;
-			background: url(../images/tip.png) right bottom no-repeat;
+			background:transparent;// url(../images/tip.png) right bottom no-repeat;
 		}
 		li{
 			line-height: 100%;
@@ -176,6 +187,12 @@
 		label{
 			color:#EFEFEF;
 		}
+	}
+}
+
+.nav-open{
+	.button-actions{
+		display: block;
 	}
 }
 
