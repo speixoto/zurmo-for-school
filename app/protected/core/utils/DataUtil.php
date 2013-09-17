@@ -39,6 +39,8 @@
      */
     class DataUtil
     {
+        protected static $skippedAttributes = array();
+
         /**
         * Sanitizes data for date and date time attributes by converting them to the proper
         * format and timezone for saving.
@@ -50,7 +52,7 @@
             assert('is_array($data)');
             foreach ($data as $attributeName => $value)
             {
-                if ($value !== null)
+                if ($value !== null && static::isNotMarkedSkipped($attributeName))
                 {
                     if (!is_array($value))
                     {
@@ -66,7 +68,7 @@
                             {
                                 $data[$attributeName] = DateTimeUtil::convertDateTimeLocaleFormattedDisplayToDbFormattedDateTimeWithSecondsAsZero($value);
                             }
-                            $data[$attributeName] = self::purifyHtml($data[$attributeName]);
+                            $data[$attributeName] = static::purifyHtml($data[$attributeName]);
                         }
                     }
                     else
@@ -114,7 +116,7 @@
                         }
                         else
                         {
-                            array_walk_recursive($data[$attributeName], array('DataUtil', 'purifyHtmlAndModifyInput'));
+                            array_walk_recursive($data[$attributeName], array(get_called_class(), 'purifyHtmlAndModifyInput'));
                         }
                     }
                 }
@@ -198,8 +200,13 @@
             assert('is_scalar($item) || empty($item)');
             if (!empty($item))
             {
-                $item = self::purifyHtml($item);
+                $item = static::purifyHtml($item);
             }
+        }
+
+        protected static function isNotMarkedSkipped($attributeName)
+        {
+            return !(in_array($attributeName, static::$skippedAttributes));
         }
     }
 ?>

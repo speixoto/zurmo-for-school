@@ -109,7 +109,7 @@
          */
         public static function sanitizePostByDesignerTypeForSavingModel($model, $postData)
         {
-            $postData = DataUtil::sanitizeDataByDesignerTypeForSavingModel($model, $postData);
+            $postData = static::sanitizeDataByDesignerTypeForSavingModel($model, $postData);
             return $postData;
         }
 
@@ -121,7 +121,7 @@
          */
         public static function sanitizePostDataToJustHavingElementForSavingModel($sanitizedPostData, $elementName)
         {
-            return DataUtil::sanitizeDataToJustHavingElementForSavingModel($sanitizedPostData, $elementName);
+            return static::sanitizeDataToJustHavingElementForSavingModel($sanitizedPostData, $elementName);
         }
 
         /**
@@ -131,7 +131,7 @@
          */
         public static function removeElementFromPostDataForSavingModel($sanitizedPostData, $elementName)
         {
-            return DataUtil::removeElementFromDataForSavingModel($sanitizedPostData, $elementName);
+            return static::removeElementFromDataForSavingModel($sanitizedPostData, $elementName);
         }
     }
 ?>

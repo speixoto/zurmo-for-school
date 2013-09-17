@@ -34,7 +34,11 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class AutoresponderZurmoControllerUtil extends EmailTemplateZurmoControllerUtil
+    /*
+     * Class that deals with skip sanitization on html data for emailTemplate, autoresponders, campaigns and etc.
+     */
+    class HtmlPostUtil extends PostUtil
     {
+        protected static $skippedAttributes = array('textContent', 'htmlContent');
     }
 ?>

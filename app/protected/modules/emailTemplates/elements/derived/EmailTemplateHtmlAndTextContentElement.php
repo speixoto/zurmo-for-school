@@ -172,10 +172,13 @@
             $htmlOptions['id']       = $id;
             $htmlOptions['name']     = $this->getEditableInputName(static::HTML_CONTENT_INPUT_NAME);
             $cClipWidget             = new CClipWidget();
+            //var_dump($this->model->htmlContent);
             $cClipWidget->beginClip("Redactor");
             $cClipWidget->widget('application.core.widgets.Redactor', array(
                                         'htmlOptions' => $htmlOptions,
                                         'content'     => $this->model->htmlContent,
+                                        'paragraphy'  => "false",
+                                        'deniedTags'  => "['html', 'head', 'body', 'meta', 'applet']",
                                 ));
             $cClipWidget->endClip();
             $content                 = ZurmoHtml::label($this->renderHtmlContentAreaLabel(), $id);

@@ -53,7 +53,13 @@
 
         public $paragraphy = "true";
 
-        public $wim = "false";
+        public $cleanup = "true";
+
+        public $convertDivs = "false";
+
+        public $wym = "false";
+
+        public $deniedTags = "['html', 'head', 'link', 'body', 'meta', 'script', 'style', 'applet']";
 
         public function run()
         {
@@ -65,10 +71,13 @@
                         {
                             $('#{$id}').redactor(
                             {
-                                buttons:    {$this->buttons},
-                                source:     {$this->source},
-                                paragraphy: {$this->paragraphy},
-                                wim:        {$this->wim},
+                                buttons:        {$this->buttons},
+                                cleanup:        {$this->cleanup},
+                                convertDivs:    {$this->convertDivs},
+                                deniedTags:     {$this->deniedTags},
+                                source:         {$this->source},
+                                paragraphy:     {$this->paragraphy},
+                                wym:            {$this->wym},
                             });
                         }
                     );";
