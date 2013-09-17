@@ -67,14 +67,12 @@
 
         public function actionSubscribeContacts($marketingListId, $id, $type, $page = 1, $subscribedCount = 0, $skippedCount = 0)
         {
-            $id = (int) $id;
-            assert('is_int($id)');
             assert('$type === "contact" || $type === "report"');
             if (!in_array($type, array('contact', 'report')))
             {
                 throw new NotSupportedException();
             }
-            $contactIds = array($id);
+            $contactIds = array((int) $id);
             if  ($type === 'report')
             {
                 $attributeName      = null;
