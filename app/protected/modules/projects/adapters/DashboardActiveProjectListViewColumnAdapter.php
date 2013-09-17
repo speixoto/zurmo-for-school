@@ -33,51 +33,17 @@
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
-
-    class ActiveProjectsListView extends SecuredListView
+    /**
+     * Column adapter for account for product list in portlet
+     */
+    class DashboardActiveProjectListViewColumnAdapter extends TextListViewColumnAdapter
     {
-        /**
-         * Renders content for a list view. Utilizes a CActiveDataprovider
-         * and a CGridView widget.
-         * and form layout.
-         * @return A string containing the element's content.
-         */
-        protected function renderContent()
+        public function renderGridViewData()
         {
-            $this->setRowsAreSelectable(false);
-            $cClipWidget = new CClipWidget();
-            $cClipWidget->beginClip("ListView");
-            $cClipWidget->widget($this->getGridViewWidgetPath(), $this->getCGridViewParams());
-            $cClipWidget->endClip();
-            $content     = null;
-            $content .= $cClipWidget->getController()->clips['ListView'] . "\n";
-            $content .= $this->renderScripts();
-            return $content;
-        }
-
-        public static function getDefaultMetadata()
-        {
-            $metadata = array(
-                'global' => array(
-                    'panels' => array(
-                        array(
-                            'rows' => array(
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'name', 'type' => 'DashboardActiveProject'),
-                                            ),
-                                        ),
-                                    )
-                                )
-                            ),
-                        ),
-                    ),
-                ),
-
-            );
-            return $metadata;
+            return array(
+                    'name'  => $this->attribute,
+                    'value' => array('ProjectUtil', 'getProjectInformationForDashboard')
+                );
         }
     }
 ?>

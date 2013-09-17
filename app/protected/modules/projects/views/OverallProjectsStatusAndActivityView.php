@@ -82,27 +82,7 @@
 
         public static function getDefaultMetadata()
         {
-            $metadata = array(
-                'global' => array(
-                    'panels' => array(
-                        array(
-                            'rows' => array(
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'name', 'type' => 'Text'),
-                                            ),
-                                        ),
-                                    )
-                                )
-                            ),
-                        ),
-                    ),
-                ),
-
-            );
-            return $metadata;
+            return array();
         }
 
         /**
