@@ -48,7 +48,7 @@
             //Level up notification
             $gameNotification           = new GameNotification();
             $gameNotification->user     = $user;
-            $gameNotification->setLevelChangeByNextLevelValue(2);
+            $gameNotification->setLevelChangeByNextLevelValue(2, 5);
             $saved                      = $gameNotification->save();
             $this->assertTrue($saved);
 

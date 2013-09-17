@@ -92,7 +92,7 @@
 
         protected function renderCoinContent()
         {
-            $content = ZurmoHtml::tag('div', array('class' => 'game-coin'), 'THE RANDOM COIN - TODO REMOVE');
+            $content = ZurmoHtml::tag('div', array('class' => 'game-coin'), '');
             $content .= ZurmoHtml::tag('div', array('class' => 'smoke'), '');
             return ZurmoHtml::tag('div', array(), $content);
         }

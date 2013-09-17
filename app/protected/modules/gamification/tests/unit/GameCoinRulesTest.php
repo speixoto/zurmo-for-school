@@ -34,37 +34,24 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    Yii::import('application.modules.gamification.controllers.DefaultController', true);
-    class GamificationDemoController extends GamificationDefaultController
+    class GameCoinRulesTest extends ZurmoBaseTest
     {
-        /**
-         * Special method to load each type of game notification.  New badge, badge grade change, and level up.
-         */
-        public function actionLoadGameNotificationsSampler()
+        public static function setUpBeforeClass()
         {
-            if (!Group::isUserASuperAdministrator(Yii::app()->user->userModel))
-            {
-                throw new NotSupportedException();
-            }
-            //Level up notification
-            $coinsValue = GameCoinRules::getCoinsByLevel(2);
-            $gameNotification           = new GameNotification();
-            $gameNotification->user     = Yii::app()->user->userModel;
-            $gameNotification->setLevelChangeByNextLevelValue(2, $coinsValue);
-            $saved                      = $gameNotification->save();
+            parent::setUpBeforeClass();
+            SecurityTestHelper::createSuperAdmin();
+        }
 
-            //New badge notification
-            $gameNotification           = new GameNotification();
-            $gameNotification->user     = Yii::app()->user->userModel;
-            $gameNotification->setNewBadgeByType('LoginUser');
-            $saved                      = $gameNotification->save();
+        public function setUp()
+        {
+            parent::setUp();
+            Yii::app()->user->userModel = User::getByUsername('super');
+        }
 
-            //Badge grade up notification
-            $gameNotification           = new GameNotification();
-            $gameNotification->user     = Yii::app()->user->userModel;
-            $gameNotification->setBadgeGradeChangeByTypeAndNewGrade('LoginUser', 5);
-            $saved                      = $gameNotification->save();
-            echo "Demo data has been loaded. Go back to the application.";
+        public function testGetCoinsByLevel()
+        {
+            $this->assertEquals(2, GameCoinRules::getCoinsByLevel(2));
+            $this->assertEquals(10, GameCoinRules::getCoinsByLevel(223131));
         }
     }
 ?>

@@ -34,37 +34,49 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    Yii::import('application.modules.gamification.controllers.DefaultController', true);
-    class GamificationDemoController extends GamificationDefaultController
+    /**
+     * Rules for the game coins
+     */
+    class GameCoinRules
     {
         /**
-         * Special method to load each type of game notification.  New badge, badge grade change, and level up.
+         * Array of data that provides the point value required to move up to each level.
+         * @var array
          */
-        public function actionLoadGameNotificationsSampler()
+        protected static $levelCoinMap = array(  1  => 1,
+                                                 2  => 2,
+                                                 3  => 2,
+                                                 4  => 2,
+                                                 5  => 2,
+                                                 6  => 3,
+                                                 7  => 3,
+                                                 8  => 3,
+                                                 9  => 3,
+                                                 10 => 3,
+                                                 11 => 5,
+                                                 12 => 6,
+                                                 13 => 6,
+                                                 14 => 6,
+                                                 15 => 6,
+                                                 16 => 7,
+                                                 17 => 7,
+                                                 18 => 7,
+                                                 19 => 8,
+                                                 20 => 8,
+                                                 21 => 8,
+                                                 22 => 9,
+                                                 23 => 9,
+                                                 24 => 9,
+                                                 25 => 10);
+
+        public static function getCoinsByLevel($level)
         {
-            if (!Group::isUserASuperAdministrator(Yii::app()->user->userModel))
+            assert('is_int($level)');
+            if(isset(self::$levelCoinMap[$level]))
             {
-                throw new NotSupportedException();
+                return self::$levelCoinMap[$level];
             }
-            //Level up notification
-            $coinsValue = GameCoinRules::getCoinsByLevel(2);
-            $gameNotification           = new GameNotification();
-            $gameNotification->user     = Yii::app()->user->userModel;
-            $gameNotification->setLevelChangeByNextLevelValue(2, $coinsValue);
-            $saved                      = $gameNotification->save();
-
-            //New badge notification
-            $gameNotification           = new GameNotification();
-            $gameNotification->user     = Yii::app()->user->userModel;
-            $gameNotification->setNewBadgeByType('LoginUser');
-            $saved                      = $gameNotification->save();
-
-            //Badge grade up notification
-            $gameNotification           = new GameNotification();
-            $gameNotification->user     = Yii::app()->user->userModel;
-            $gameNotification->setBadgeGradeChangeByTypeAndNewGrade('LoginUser', 5);
-            $saved                      = $gameNotification->save();
-            echo "Demo data has been loaded. Go back to the application.";
+            return 10;
         }
     }
 ?>
