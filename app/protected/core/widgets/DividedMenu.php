@@ -144,14 +144,12 @@
                     echo ZurmoHtml::link($label, null, array('class' => 'button-trigger'));
                 }
                 echo ZurmoHtml::openTag('ul', isset($item['submenuOptions']) ? $item['submenuOptions'] : $this->submenuHtmlOptions);
-
                 if (isset($item['dynamicContent']))
                 {
                     echo ZurmoHtml::openTag('li');
                     echo $item['dynamicContent'];
-                    echo ZurmoHtml::openTag('li');
+                    echo ZurmoHtml::closeTag('li');
                 }
-
                 if(isset($item['items']) && count($item['items']))
                 {
                     foreach ($item['items'] as $item)
