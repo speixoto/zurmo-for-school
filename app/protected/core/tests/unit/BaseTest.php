@@ -38,8 +38,6 @@
     {
         public static $activateDefaultLanguages = false;
 
-        protected static $skipBackendUserCreation = false;
-
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
@@ -93,11 +91,6 @@
                 Yii::app()->languageHelper->load();
                 Yii::app()->languageHelper->activateLanguagesForTesting();
                 Yii::app()->languageHelper->importMessagesForTesting();
-            }
-            if (!static::$skipBackendUserCreation)
-            {
-                // ensure that backend user is created if it doesn't exist.
-                BaseControlUserConfigUtil::getUserToRunAs();
             }
         }
 
