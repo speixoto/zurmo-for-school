@@ -33,12 +33,38 @@
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
-
-    class BaseJobControlUserConfigUtilTest extends BaseControlUserConfigUtilBaseTest
+    
+    Yii::import('application.modules.contacts.controllers.DefaultController', true);
+    class ContactsDemoController extends ContactsDefaultController
     {
-        protected static function resolveConfigUtilClassName()
+        /**
+         * Special method to load contacts for marketing functional test.
+         */
+        public function actionLoadContactsSampler()
         {
-            return 'BaseJobControlUserConfigUtil';
+            if (!Group::isUserASuperAdministrator(Yii::app()->user->userModel))
+            {
+                throw new NotSupportedException();
+            }
+            
+            //Load 12 contacts so there is sufficient data for marketing list pagination testing.
+            for ($i = 1; $i <= 12; $i++)
+            {
+                $firstName           = 'Test';
+                $lastName            = 'Contact';
+                $owner               = Yii::app()->user->userModel;
+                $contact             = new Contact();
+                $contact->firstName  = $firstName;
+                $contact->lastName   = $lastName.' '.$i;
+                $contact->owner      = $owner;
+                $contact->state      = ContactsUtil::getStartingState();
+                $saved               = $contact->save();
+                assert('$saved');
+                if (!$saved)
+                {
+                    throw new NotSupportedException();
+                }
+            }
         }
     }
 ?>
