@@ -62,7 +62,7 @@
 
         public static function getProjectInformationForDashboard($data)
         {
-            $content = '<h4>' . $data->name . '</h4>' . '<table>';
+            $content = '<h4>' . ZurmoHtml::link($data->name, Yii::app()->createUrl('/projects/default/details', array('id' => $data->id))) . '</h4>' . '<table>';
             $searchAttributeData = self::makeSearchAttributeData($data);
             $joinTablesAdapter   = new RedBeanModelJoinTablesQueryAdapter('Task');
             $where  = RedBeanModelDataProvider::makeWhere('Task', $searchAttributeData, $joinTablesAdapter);
@@ -88,25 +88,27 @@
                 $content .= '<tr>';
                 foreach($kanbanTypeDropDownData as $type => $label)
                 {
-                    $content .= '<th>' . $label . '<th>';
+                    $content .= '<th>' . $label . '</th>';
                 }
+                $content .= '<th>' . Zurmo::t('ProjectsModule', '% Complete') . '</th>';
                 $content .= '</tr><tr>';
                 foreach($kanbanTypeDropDownData as $type => $label)
                 {
                     if(isset($kanbanItemsArray[$type]))
                     {
-                        $content .= '<td>' . count($kanbanItemsArray[$type]) . '<td>';
+                        $content .= '<td>' . count($kanbanItemsArray[$type]) . '</td>';
                     }
                     else
                     {
-                        $content .= '<td>0<td>';
+                        $content .= '<td>0</td>';
                     }
                 }
+                $content .= '<td>' . TasksUtil::getTaskCompletionPercentage($data->id) . '</td>';
                 $content .= '</tr></table>';
             }
             else
             {
-                $content .= '<tr><td colspan="4">' . Zurmo::t('ProjectsModule','No Tasks') . '</td></tr></table>';
+                $content .= '<tr><td colspan="5">' . Zurmo::t('ProjectsModule','No Tasks') . '</td></tr></table>';
             }
             return $content;
         }

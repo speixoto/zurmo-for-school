@@ -48,7 +48,7 @@
                         array(
                             'rows' => array(
                                array(
-                                    'type' => 'OverallProjectsStatusAndActivity',
+                                    'type' => 'ActiveProjectsPortlet',
                                 ),
                             )
                         ),
@@ -69,7 +69,7 @@
             $this->controllerId        = $controllerId;
             $this->moduleId            = $moduleId;
             $this->uniqueLayoutId      = $uniqueLayoutId;
-            $this->layoutType          = '100';
+            $this->layoutType          = '50,50';
             $this->params              = $params;
         }
 

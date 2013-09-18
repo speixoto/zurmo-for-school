@@ -40,7 +40,7 @@
     class TaskKanbanBoard extends KanbanBoard
     {
         /**
-         * @var object
+         * @var RedbeanModel
          */
         protected $relatedModel;
 

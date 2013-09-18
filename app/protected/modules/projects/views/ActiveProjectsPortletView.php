@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class OverallProjectsStatusAndActivityView extends ConfigurableMetadataView implements PortletViewInterface
+    class ActiveProjectsPortletView extends ConfigurableMetadataView implements PortletViewInterface
     {
         /**
          * Portlet parameters passed in from the portlet.
@@ -138,7 +138,7 @@
          */
         public function getTitle()
         {
-            $title  = Zurmo::t('ProjectsModule', 'Projects Dashboard');
+            $title  = Zurmo::t('ProjectsModule', 'Active Projects');
             return $title;
         }
 
@@ -149,7 +149,6 @@
         {
             $content  = null;
             $content .= $this->renderActiveProjectsContent();
-            $content .= $this->renderLatestActivityContent();
             return $content;
         }
 

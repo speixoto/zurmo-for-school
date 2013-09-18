@@ -765,6 +765,9 @@
             return $kanbanItem;
         }
 
+        /**
+         * @return array
+         */
         public static function getGroupByDataAndTranslatedLabels()
         {
             $data = array(KanbanItem::TYPE_SOMEDAY      => Zurmo::t('ProductsModule', 'Someday'),
@@ -773,6 +776,24 @@
                           KanbanItem::TYPE_COMPLETED    => Zurmo::t('ProductsModule', 'Completed'));
 
             return $data;
+        }
+
+        /**
+         * Render completion progress bar
+         * @param int $id
+         * @return string
+         */
+        public static function renderCompletionProgressBar($data)
+        {
+            $percentage = TasksUtil::getTaskCompletionPercentage(intval($data->id));
+            if($percentage == null)
+            {
+                return null;
+            }
+            else
+            {
+                return Zurmo::t('TasksModule', '% Complete - ' . $percentage);
+            }
         }
     }
 ?>

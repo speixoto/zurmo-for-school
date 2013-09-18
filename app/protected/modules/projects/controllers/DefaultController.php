@@ -474,6 +474,10 @@
             echo $view->render();
         }
 
+        /**
+         * Get active projects list view
+         * @return ListView
+         */
         public function getActiveProjectsListView()
         {
             $pageSize                       = Yii::app()->pagination->resolveActiveForCurrentUserByType(
@@ -492,6 +496,15 @@
                             'ActiveProjectsListView'
                         );
             return $mixedView;
+        }
+
+        /**
+         * Display list view of active projects on dashboard
+         */
+        public function actionDashboardListView()
+        {
+            $listView = $this->getActiveProjectsListView();
+            echo $listView->render();
         }
     }
 ?>

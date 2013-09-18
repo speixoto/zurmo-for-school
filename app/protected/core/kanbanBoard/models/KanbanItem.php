@@ -162,7 +162,7 @@
                 self::TYPE_SOMEDAY                  => Zurmo::t('TasksModule', 'Someday'),
                 self::TYPE_IN_PROGRESS              => Zurmo::t('TasksModule', 'In Progress'),
                 self::TYPE_TODO                     => Zurmo::t('TasksModule', 'To Do'),
-                self::TYPE_COMPLETED                     => Zurmo::t('TasksModule', 'Completed'),
+                self::TYPE_COMPLETED                => Zurmo::t('TasksModule', 'Completed'),
             );
         }
 

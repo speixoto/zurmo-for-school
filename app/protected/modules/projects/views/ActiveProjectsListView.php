@@ -79,5 +79,42 @@
             );
             return $metadata;
         }
+
+        protected function getCGridViewPagerParams()
+        {
+            return array(
+                    'firstPageLabel'   => '<span>first</span>',
+                    'prevPageLabel'    => '<span>previous</span>',
+                    'nextPageLabel'    => '<span>next</span>',
+                    'lastPageLabel'    => '<span>last</span>',
+                    'paginationParams' => GetUtil::getData(),
+                    'route'            => $this->getGridViewActionRoute($this->getListActionId(), $this->moduleId),
+                    'class'            => 'SimpleListLinkPager',
+                );
+        }
+
+        protected static function getPagerCssClass()
+        {
+            return 'pager horizontal';
+        }
+
+        protected static function getSummaryText()
+        {
+            return Zurmo::t('Core', '{start}-{end} of {count} result(s).');
+        }
+
+        protected function getListActionId()
+        {
+            return 'dashboardListView';
+        }
+
+        /**
+         * Checks if header cells have to be hidden
+         * @return bool
+         */
+        protected function isHeaderHidden()
+        {
+            return true;
+        }
     }
 ?>

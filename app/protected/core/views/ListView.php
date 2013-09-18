@@ -213,6 +213,7 @@
                 'summaryCssClass'      => static::getSummaryCssClass(),
                 'summaryCloneId'       => $this->getSummaryCloneId(),
                 'tableColumnGroup'     => $this->getTableColumnGroup(),
+                'hideHeader'           => $this->isHeaderHidden()
             );
             return $this->resolveCGridViewParamsForKanbanBoard($params);
         }
@@ -565,6 +566,15 @@
                 $column['class'] = 'DataColumn';
             }
             return $column;
+        }
+
+        /**
+         * Checks if header cells have to be hidden
+         * @return bool
+         */
+        protected function isHeaderHidden()
+        {
+            return false;
         }
     }
 ?>
