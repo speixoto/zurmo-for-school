@@ -72,9 +72,6 @@
             $this->assertEquals(52,                              $form->modalListPageSize);
             $this->assertEquals(53,                              $form->dashboardListPageSize);
             $this->assertEquals('demoCompany',                   $form->applicationName);
-            $this->assertEquals(AutoresponderOrCampaignBatchSizeConfigUtil::CONFIG_DEFAULT_VALUE, $form->autoresponderOrCampaignBatchSize);
-            $this->assertEquals(UnsubscribeAndManageSubscriptionsPlaceholderUtil::getContentByType(false), $form->autoresponderOrCampaignFooterPlainText);
-            $this->assertEquals(UnsubscribeAndManageSubscriptionsPlaceholderUtil::getContentByType(true), $form->autoresponderOrCampaignFooterRichText);
             $this->assertEquals($logoFileName,                   $form->logoFileData['name']);
             $form->timeZone              = 'America/Chicago';
             $form->listPageSize          = 60;
@@ -82,10 +79,7 @@
             $form->modalListPageSize     = 62;
             $form->dashboardListPageSize = 63;
             $form->applicationName       = 'demoCompany2';
-            $form->autoresponderOrCampaignBatchSize = 20;
             $logoFileName2               = 'testLogo2.png';
-            $form->autoresponderOrCampaignFooterPlainText   = 'abc';
-            $form->autoresponderOrCampaignFooterRichText    = 'def';
             $logoFilePath2               = Yii::getPathOfAlias('application.modules.zurmo.tests.unit.files') . DIRECTORY_SEPARATOR . $logoFileName2;
             copy($logoFilePath2, sys_get_temp_dir() . DIRECTORY_SEPARATOR . $logoFileName2);
             copy($logoFilePath2, sys_get_temp_dir() . DIRECTORY_SEPARATOR . ZurmoConfigurationForm::LOGO_THUMB_FILE_NAME_PREFIX . $logoFileName2);
@@ -98,9 +92,6 @@
             $this->assertEquals(62,                 $form->modalListPageSize);
             $this->assertEquals(63,                 $form->dashboardListPageSize);
             $this->assertEquals('demoCompany2',     $form->applicationName);
-            $this->assertEquals(20, $form->autoresponderOrCampaignBatchSize);
-            $this->assertEquals('abc', $form->autoresponderOrCampaignFooterPlainText);
-            $this->assertEquals('def', $form->autoresponderOrCampaignFooterRichText);
             $this->assertEquals($logoFileName2,     $form->logoFileData['name']);
         }
     }

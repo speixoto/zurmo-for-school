@@ -36,7 +36,8 @@
 
     class MarketingModule extends SecurableModule
     {
-        const RIGHT_ACCESS_MARKETING = 'Access Marketing Tab';
+        const RIGHT_ACCESS_CONFIGURATION    = 'Access Marketing Configuration';
+        const RIGHT_ACCESS_MARKETING        = 'Access Marketing Tab';
 
         public function getDependencies()
         {
@@ -49,7 +50,8 @@
         public static function getTranslatedRightsLabels()
         {
             $labels                                         = array();
-            $labels[self::RIGHT_ACCESS_MARKETING] = Zurmo::t('MarketingModule', 'Access Marketing Tab');
+            $labels[self::RIGHT_ACCESS_CONFIGURATION]       = Zurmo::t('EmailMessagesModule', 'Access Marketing Configuration');
+            $labels[self::RIGHT_ACCESS_MARKETING]           = Zurmo::t('MarketingModule', 'Access Marketing Tab');
             return $labels;
         }
 
@@ -62,6 +64,15 @@
                         'label'  => "eval:Zurmo::t('MarketingModule', 'Marketing')",
                         'url'    => array('/marketing/default/dashboardDetails'),
                         'mobile' => false,
+                    ),
+                ),
+                'configureMenuItems' => array(
+                    array(
+                        'category'         => ZurmoModule::ADMINISTRATION_CATEGORY_GENERAL,
+                        'titleLabel'       => "eval:Zurmo::t('MarketingModule', 'Marketing Configuration')",
+                        'descriptionLabel' => "eval:Zurmo::t('EmailMessagesModule', 'Manage Marketing Configuration')",
+                        'route'            => '/marketing/default/configurationEdit',
+                        'right'            => self::RIGHT_ACCESS_CONFIGURATION,
                     ),
                 ),
             );

@@ -59,9 +59,6 @@
                                             'listPageSize'                                  => '',
                                             'modalListPageSize'                             => '',
                                             'subListPageSize'                               => '',
-                                            'autoresponderOrCampaignBatchSize'              => '',
-                                            'autoresponderOrCampaignFooterPlainText'        => '',
-                                            'autoresponderOrCampaignFooterRichText'         => '',
                                             'timeZone'                                      => 'America/Chicago'),
                                       )
                                );
@@ -70,9 +67,6 @@
             $this->assertFalse(strpos($content, 'List page size cannot be blank.') === false);
             $this->assertFalse(strpos($content, 'Popup list page size cannot be blank.') === false);
             $this->assertFalse(strpos($content, 'Sublist page size cannot be blank.') === false);
-            $this->assertFalse(strpos($content, 'Autoresponder/Campaign batch size cannot be blank.') === false);
-            $this->assertFalse(strpos($content, 'Autoresponder/Campaign Footer(Plain Text) cannot be blank.') === false);
-            $this->assertFalse(strpos($content, 'Autoresponder/Campaign Footer(Rich Text) cannot be blank.') === false);
 
             //checking with proper values for required fields
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
@@ -84,9 +78,6 @@
                                                 'listPageSize'                              => '10',
                                                 'modalListPageSize'                         => '5',
                                                 'subListPageSize'                           => '5',
-                                                'autoresponderOrCampaignBatchSize'          => '10',
-                                                'autoresponderOrCampaignFooterPlainText'    => 'abc',
-                                                'autoresponderOrCampaignFooterRichText'     => 'def',
                                                 'timeZone'                                  => 'America/Chicago'),
                                       )
                                );

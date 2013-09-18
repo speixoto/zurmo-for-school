@@ -97,5 +97,47 @@
                                             'MarketingBreadCrumbView'));
             echo $view->render();
         }
+
+        public function actionConfigurationEdit()
+        {
+
+            //TODO: @sergio: add a getConfigurationsFromForm
+            $form                                         = new MarketingConfigurationForm();
+            $form->autoresponderOrCampaignBatchSize       = AutoresponderOrCampaignBatchSizeConfigUtil::getBatchSize();
+            $form->autoresponderOrCampaignFooterPlainText = UnsubscribeAndManageSubscriptionsPlaceholderUtil::getContentByType(false);
+            $form->autoresponderOrCampaignFooterRichText  = UnsubscribeAndManageSubscriptionsPlaceholderUtil::getContentByType(true);
+
+            $postData = PostUtil::getData();
+            $postVariableName   = get_class($form);
+            if (isset($postData[$postVariableName]))
+            {
+                $form->setAttributes($postData[$postVariableName]);
+                if ($form->validate())
+                {
+                    //ZurmoConfigurationFormAdapter::setConfigurationFromForm($form); //TODO: @sergio: Add a setConfiguratiosn to save
+                    Yii::app()->user->setFlash('notification',
+                        Zurmo::t('ZurmoModule', 'Global configuration saved successfully.')
+                    );
+                    $this->redirect(Yii::app()->createUrl('configuration/default/index'));
+                }
+            }
+            $editView = new MarketingConfigurationEditAndDetailsView(
+                'Edit',
+                $this->getId(),
+                $this->getModule()->getId(),
+                $form);
+            $editView->setCssClasses( array('AdministrativeArea') );
+            $view = new ZurmoConfigurationPageView(ZurmoDefaultAdminViewUtil::
+                makeStandardViewForCurrentUser($this, $editView));
+            echo $view->render();
+        }
+
+        public function actionPreviewFooter($isHtmlContent, $content)
+        {
+            Yii::app()->getClientScript()->setToAjaxMode();
+            $view   = new AutoresponderOrCampaignFooterTextPreviewView((bool)$isHtmlContent, $content);
+            $modalView = new ModalView($this, $view);
+            echo $modalView->render();
+        }
     }
 ?>

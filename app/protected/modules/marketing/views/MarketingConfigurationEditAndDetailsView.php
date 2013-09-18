@@ -35,13 +35,13 @@
      ********************************************************************************/
 
     /**
-     * Edit and details view for the zurmo global configuration view.
+     * Edit and details view for the marketing global configuration view.
      */
-    class ZurmoConfigurationEditAndDetailsView extends EditAndDetailsView
+    class MarketingConfigurationEditAndDetailsView extends EditAndDetailsView
     {
         public function getTitle()
         {
-            return Zurmo::t('ZurmoModule', 'Global Configuration');
+            return Zurmo::t('MarketingModule', 'Marketing Configuration');
         }
 
         public static function getDefaultMetadata()
@@ -64,7 +64,8 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'applicationName', 'type' => 'Text'),
+                                                array('attributeName' => 'autoresponderOrCampaignBatchSize',
+                                                                                                'type' => 'Integer'),
                                             ),
                                         ),
                                     )
@@ -73,7 +74,8 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'timeZone', 'type' => 'TimeZoneStaticDropDown'),
+                                                array('attributeName' => 'autoresponderOrCampaignFooterPlainText',
+                                                                                    'type' => 'TextAreaWithPreviewLink'),
                                             ),
                                         ),
                                     )
@@ -82,62 +84,8 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'subListPageSize', 'type' => 'Integer'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'listPageSize', 'type' => 'Integer'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'dashboardListPageSize', 'type' => 'Integer'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'modalListPageSize', 'type' => 'Integer'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'gamificationModalNotificationsEnabled',
-                                                                                                'type' => 'CheckBox'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'realtimeUpdatesEnabled', 'type' => 'CheckBox'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'null', 'type' => 'SettingsLogoFileUpload'),
+                                                array('attributeName' => 'autoresponderOrCampaignFooterRichText',
+                                                                                    'type' => 'RedactorWithPreviewLink'),
                                             ),
                                         ),
                                     )
