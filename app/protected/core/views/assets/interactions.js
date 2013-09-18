@@ -678,6 +678,14 @@ $(window).ready(function(){
         }
     );
 
+    $('.clickable-dividedmenu').find('a.button-trigger, a.button-action-trigger').hover(
+        function(){
+            if ( $(this).parent().hasClass('nav-open') === false ){
+                $(this).parent().addClass('nav-open');
+            }
+        }
+    );
+
     //Main nav hover
      $('#MenuView > ul > li > a, #RecentlyViewedView  > ul > li > a').hover(
         function(){
