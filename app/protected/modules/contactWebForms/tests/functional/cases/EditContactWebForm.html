@@ -19,77 +19,7 @@
 </tr>
 <tr>
 	<td>open</td>
-	<td>index.php/products/default</td>
-	<td></td>
-</tr>
-<tr>
-	<td>waitForPageToLoad</td>
-	<td></td>
-	<td></td>
-</tr>
-<tr>
-	<td>waitForCondition</td>
-	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-	<td>30000</td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>//ul[@id='MashableInboxCreateDropdown']/li/ul/li[3]/a</td>
-	<td></td>
-</tr>
-<tr>
-	<td>waitForPageToLoad</td>
-	<td></td>
-	<td></td>
-</tr>
-<tr>
-	<td>waitForCondition</td>
-	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-	<td>30000</td>
-</tr>
-<tr>
-	<td>waitForTextPresent</td>
-	<td>Create Category</td>
-	<td></td>
-</tr>
-<tr>
-	<td>waitForCondition</td>
-	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-	<td>30000</td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>//div[@id='ProductCategoryEditAndDetailsView']/div/div/form/div[3]/div/div/a[2]</td>
-	<td></td>
-</tr>
-<tr>
-	<td>waitForCondition</td>
-	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-	<td>30000</td>
-</tr>
-<tr>
-	<td>waitForTextPresent</td>
-	<td>Name cannot be blank.</td>
-	<td></td>
-</tr>
-<tr>
-	<td>waitForCondition</td>
-	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-	<td>30000</td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>ProductCategory_name</td>
-	<td>CategoryTest ${randomSuffix}</td>
-</tr>
-<tr>
-	<td>waitForCondition</td>
-	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-	<td>30000</td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>//div[@id='ProductCategoryEditAndDetailsView']/div/div/form/div[3]/div/div/a[2]</td>
+	<td>index.php/contactWebForms/default</td>
 	<td></td>
 </tr>
 <tr>
@@ -104,8 +34,98 @@
 </tr>
 <tr>
 	<td>assertTextPresent</td>
-	<td>CategoryTest ${randomSuffix}</td>
+	<td>Create</td>
 	<td></td>
+</tr>
+<tr>
+	<td>assertTextPresent</td>
+	<td>Contact Web Forms</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTextPresent</td>
+	<td>Contact Web Form Entries</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=ContactWebFormsSearchForm_anyMixedAttributes</td>
+	<td>Test Create Contact Web Form ${randomSuffix}</td>
+</tr>
+<tr>
+	<td>keyUp</td>
+	<td>id=ContactWebFormsSearchForm_anyMixedAttributes</td>
+	<td>\10</td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>//div[@id='list-view']/table/tbody/tr[1]/td[1]/a</td>
+	<td>Test Create Contact Web Form ${randomSuffix}</td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Test Create Contact Web Form ${randomSuffix}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyValue</td>
+	<td>ContactWebFormsSearchForm_anyMixedAttributes</td>
+	<td>Test Create Contact Web Form ${randomSuffix}</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//div[@id='list-view']/table/tbody/tr[1]/td[1]/a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForCondition</td>
+	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+	<td>30000</td>
+</tr>
+<tr>
+	<td>setSpeed</td>
+	<td>3000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Edit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>setSpeed</td>
+	<td>0</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id=ContactWebForm_defaultState_id</td>
+	<td>label=New</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>save</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForCondition</td>
+	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+	<td>30000</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>//div[@id='ContactWebFormEditAndDetailsView']/div/div[2]/div[2]/table/tbody/tr[5]/td</td>
+	<td>New</td>
 </tr>
 </tbody>
 </table>

@@ -34,11 +34,32 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Helper class for working with jobs
-     */
-    abstract class BaseJobControlUserConfigUtil extends BaseControlUserConfigUtil
+    class UsersByModelWalkthroughTest extends ZurmoWalkthroughBaseTest
     {
-        const CONFIG_KEY                = 'UserIdOfUserToRunJobAs';
+        public static function setUpBeforeClass()
+        {
+            parent::setUpBeforeClass();
+            SecurityTestHelper::createSuperAdmin();
+        }
+
+        public function testUsersInModelModalListAction()
+        {
+            $role = new Role();
+            $role->name = 'myRole';
+            $role->save();
+            $super = User::getByUsername('super');
+            $super->role = $role;
+            $super->save();
+            Yii::app()->user->userModel = User::getByUsername('super');
+
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $this->setGetArray(array('id' => $role->id));
+            $this->resetPostArray();
+            $content = $this->runControllerWithNoExceptionsAndGetContent('zurmo/role/UsersInRoleModalList');
+            $this->assertTrue(strpos($content, "1-1 of 1 result(s).") !== false);
+            $this->assertTrue(strpos($content, "/users/default/details?id=" . $super->id) !== false);
+            $this->assertTrue(strpos($content, $super->username) !== false);
+            $this->assertTrue(strpos($content, $super->getFullName()) !== false);
+      }
     }
 ?>

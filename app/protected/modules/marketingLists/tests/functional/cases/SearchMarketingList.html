@@ -17,9 +17,10 @@
 	<td>45000</td>
 	<td></td>
 </tr>
+<!--go to marketing list view-->
 <tr>
 	<td>open</td>
-	<td>index.php/products/default</td>
+	<td>index.php/marketing/default/dashboardDetails</td>
 	<td></td>
 </tr>
 <tr>
@@ -33,63 +34,33 @@
 	<td>30000</td>
 </tr>
 <tr>
-	<td>clickAndWait</td>
-	<td>link=Categories</td>
+	<td>assertTextPresent</td>
+	<td>Create</td>
 	<td></td>
 </tr>
 <tr>
-	<td>waitForPageToLoad</td>
-	<td></td>
-	<td></td>
-</tr>
-<tr>
-	<td>waitForCondition</td>
-	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-	<td>30000</td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>link=CategoryTest1 ${randomSuffix}</td>
+	<td>assertTextPresent</td>
+	<td>Dashboard</td>
 	<td></td>
 </tr>
 <tr>
-	<td>waitForPageToLoad</td>
-	<td></td>
-	<td></td>
-</tr>
-<tr>
-	<td>waitForCondition</td>
-	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-	<td>30000</td>
-</tr>
-<tr>
-	<td>waitForTextPresent</td>
-	<td>CategoryTest1 ${randomSuffix}</td>
+	<td>assertTextPresent</td>
+	<td>Lists</td>
 	<td></td>
 </tr>
 <tr>
-	<td>waitForCondition</td>
-	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-	<td>30000</td>
+	<td>assertTextPresent</td>
+	<td>Templates</td>
+	<td></td>
 </tr>
 <tr>
-	<td>setSpeed</td>
-	<td>3000</td>
+	<td>assertTextPresent</td>
+	<td>Campaigns</td>
 	<td></td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>link=Delete</td>
-	<td></td>
-</tr>
-<tr>
-	<td>waitForCondition</td>
-	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-	<td>30000</td>
-</tr>
-<tr>
-	<td>assertConfirmation</td>
-	<td>Are you sure you want to delete this Product Category?</td>
+	<td>//div[@id='SecuredActionBarForMarketingSearchAndListView']/div[1]/div[1]/a[2]</td>
 	<td></td>
 </tr>
 <tr>
@@ -101,6 +72,53 @@
 	<td>waitForCondition</td>
 	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
 	<td>30000</td>
+</tr>
+<!--search for Test Marketing List ${randomSuffix}-->
+<tr>
+	<td>type</td>
+	<td>id=MarketingListsSearchForm_anyMixedAttributes</td>
+	<td>Test Marketing List ${randomSuffix}</td>
+</tr>
+<tr>
+	<td>keyUp</td>
+	<td>id=MarketingListsSearchForm_anyMixedAttributes</td>
+	<td>\10</td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>//div[@id='list-view']/table/tbody/tr/td[2]</td>
+	<td>Test Marketing List ${randomSuffix}</td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Test Marketing List ${randomSuffix}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyValue</td>
+	<td>MarketingListsSearchForm_anyMixedAttributes</td>
+	<td>Test Marketing List ${randomSuffix}</td>
+</tr>
+<tr>
+	<td>assertTextPresent</td>
+	<td>Test Marketing List ${randomSuffix}</td>
+	<td></td>
+</tr>
+<!--clear search-->
+<tr>
+	<td>click</td>
+	<td>id=clear-search-link</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForCondition</td>
+	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+	<td>30000</td>
+</tr>
+<tr>
+	<td>waitForTextNotPresent</td>
+	<td>Criteria Selected</td>
+	<td></td>
 </tr>
 </tbody>
 </table>

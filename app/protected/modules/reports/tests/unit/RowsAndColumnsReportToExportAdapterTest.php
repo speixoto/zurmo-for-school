@@ -84,6 +84,7 @@
                                      Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute1->setModelAliasUsingTableAliasName('model1');
             $displayAttribute1->attributeIndexOrDerivedType = 'FullName';
+            $displayAttribute1->label = 'Name';
             $report->addDisplayAttribute($displayAttribute1);
 
             //for boolean attribute
@@ -293,6 +294,7 @@
                                      Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute1->setModelAliasUsingTableAliasName('relatedModel');
             $displayAttribute1->attributeIndexOrDerivedType = 'hasMany2___FullName';
+            $displayAttribute1->label = 'Name';
             $report->addDisplayAttribute($displayAttribute1);
 
             //for boolean attribute

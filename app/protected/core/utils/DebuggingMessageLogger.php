@@ -34,11 +34,18 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class BaseActionControlUserConfigUtilTest extends BaseControlUserConfigUtilBaseTest
+    /**
+     * Run the jobManager using this messageLogger if you want to show all debug messaging regardless of if debug
+     * is true/false in the application
+     */
+    class DebuggingMessageLogger extends MessageLogger
     {
-        protected static function resolveConfigUtilClassName()
+        /**
+         * @return bool
+         */
+        protected function shouldPrintDebugMessages()
         {
-            return 'BaseActionControlUserConfigUtil';
+            return true;
         }
     }
 ?>

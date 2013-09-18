@@ -34,32 +34,11 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class UsersByRoleWalkthroughTest extends ZurmoWalkthroughBaseTest
+    class UsersByModelModalListViewDesignerRules extends ModalListViewDesignerRules
     {
-        public static function setUpBeforeClass()
+        public function allowEditInLayoutTool()
         {
-            parent::setUpBeforeClass();
-            SecurityTestHelper::createSuperAdmin();
+            return false;
         }
-
-        public function testUsersInRoleModalListAction()
-        {
-            $role = new Role();
-            $role->name = 'myRole';
-            $role->save();
-            $super = User::getByUsername('super');
-            $super->role = $role;
-            $super->save();
-            Yii::app()->user->userModel = User::getByUsername('super');
-
-            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
-            $this->setGetArray(array('id' => $role->id));
-            $this->resetPostArray();
-            $content = $this->runControllerWithNoExceptionsAndGetContent('zurmo/role/UsersInRoleModalList');
-            $this->assertTrue(strpos($content, "1-1 of 1 result(s).") !== false);
-            $this->assertTrue(strpos($content, "/users/default/details?id=" . $super->id) !== false);
-            $this->assertTrue(strpos($content, $super->username) !== false);
-            $this->assertTrue(strpos($content, $super->getFullName()) !== false);
-      }
     }
 ?>

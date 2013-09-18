@@ -33,53 +33,38 @@
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
-
-    class UsersByRoleModalListView extends UsersModalListView
+    
+    Yii::import('application.modules.contacts.controllers.DefaultController', true);
+    class ContactsDemoController extends ContactsDefaultController
     {
-        public static function getDefaultMetadata()
+        /**
+         * Special method to load contacts for marketing functional test.
+         */
+        public function actionLoadContactsSampler()
         {
-            $metadata = array(
-                'global' => array(
-                    'derivedAttributeTypes' => array(
-                        'FullName',
-                    ),
-                    'nonPlaceableAttributeNames' => array(
-                        'hash',
-                        'newPassword',
-                        'newPassword_repeat',
-                    ),
-                    'panels' => array(
-                        array(
-                            'rows' => array(
-                                array('cells' =>
-                                array(
-                                    array(
-                                        'elements' => array(
-                                            array('attributeName' => 'null', 'type' => 'FullName', 'isLink' => true),
-                                        ),
-                                    ),
-                                )
-                                ),
-                                array('cells' =>
-                                array(
-                                    array(
-                                        'elements' => array(
-                                            array('attributeName' => 'username', 'type' => 'Text'),
-                                        ),
-                                    ),
-                                )
-                                ),
-                            ),
-                        ),
-                    ),
-                ),
-            );
-            return $metadata;
-        }
-
-        public static function getDesignerRulesType()
-        {
-            return get_called_class();
+            if (!Group::isUserASuperAdministrator(Yii::app()->user->userModel))
+            {
+                throw new NotSupportedException();
+            }
+            
+            //Load 12 contacts so there is sufficient data for marketing list pagination testing.
+            for ($i = 1; $i <= 12; $i++)
+            {
+                $firstName           = 'Test';
+                $lastName            = 'Contact';
+                $owner               = Yii::app()->user->userModel;
+                $contact             = new Contact();
+                $contact->firstName  = $firstName;
+                $contact->lastName   = $lastName.' '.$i;
+                $contact->owner      = $owner;
+                $contact->state      = ContactsUtil::getStartingState();
+                $saved               = $contact->save();
+                assert('$saved');
+                if (!$saved)
+                {
+                    throw new NotSupportedException();
+                }
+            }
         }
     }
 ?>
