@@ -50,7 +50,7 @@
             $validated  = true;
             foreach ($this->deniedTags as $deniedTag)
             {
-                if (stripos($object->$attribute, "<${deniedTag}>") !== false ||
+                if (stripos($object->$attribute, "<${deniedTag}") !== false ||
                     stripos($object->$attribute, "</${deniedTag}>") !== false)
                 {
                     $message = Zurmo::t('EmailTemplatesModule', 'Html Content: {{tag}} tag is not allowed.',
