@@ -34,11 +34,21 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class BaseActionControlUserConfigUtilTest extends BaseControlUserConfigUtilBaseTest
+    class ContactWebFormEntrySuperUserWalkthroughTest extends ZurmoWalkthroughBaseTest
     {
-        protected static function resolveConfigUtilClassName()
+        public static function setUpBeforeClass()
         {
-            return 'BaseActionControlUserConfigUtil';
+            parent::setUpBeforeClass();
+            SecurityTestHelper::createSuperAdmin();
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
+        }
+
+        public function testSuperUserAllDefaultControllerActions()
+        {
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $content = $this->runControllerWithNoExceptionsAndGetContent('contactWebForms/defaultContactWebFormEntry/list');
+            $this->assertTrue(strpos($content, 'include(ContactWebFormsDefaultController.php)') === false);
         }
     }
 ?>
