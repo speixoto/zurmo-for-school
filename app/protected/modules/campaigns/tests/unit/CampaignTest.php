@@ -147,6 +147,65 @@
         /**
          * @depends testCreateAndGetCampaignListById
          */
+        public function testDeniedTagThrowsValidationError()
+        {
+            $campaign                                  = new Campaign();
+            $campaign->name                             = 'Another Test Campaign Name';
+            $campaign->supportsRichText                 = 0;
+            $campaign->status                           = Campaign::STATUS_ACTIVE;
+            $campaign->fromName                         = 'Another From Name';
+            $campaign->fromAddress                      = 'anotherfrom@zurmo.com';
+            $campaign->fromName                         = 'From Name2';
+            $campaign->fromAddress                      = 'from2@zurmo.com';
+            $campaign->subject                         = 'Another Test subject';
+            $campaign->textContent                     = 'Text Content';
+            $campaign->htmlContent                     = '<html><head><meta></head>Html Content</body></html>';
+            $campaign->marketingList                   = self::$marketingList;
+            $this->assertFalse($campaign->save());
+            $errorMessages = $campaign->getErrors();
+            $this->assertCount(1, $errorMessages);
+            $this->assertTrue(array_key_exists('htmlContent', $errorMessages));
+            $this->assertCount(4, $errorMessages['htmlContent']);
+            $this->assertEquals('Html Content: html tag is not allowed.', $errorMessages['htmlContent'][0]);
+            $this->assertEquals('Html Content: head tag is not allowed.', $errorMessages['htmlContent'][1]);
+            $this->assertEquals('Html Content: body tag is not allowed.', $errorMessages['htmlContent'][2]);
+            $this->assertEquals('Html Content: meta tag is not allowed.', $errorMessages['htmlContent'][3]);
+            $campaign->textContent    = 'Text Content without tags';
+            $campaign->htmlContent    = 'Html Content without tags';
+            $this->assertTrue($campaign->save());
+            $this->assertEmpty($campaign->getErrors());
+        }
+
+        /**
+         * @depends testCreateAndGetCampaignListById
+         */
+        public function testHtmlContentGetsSavedCorrectly()
+        {
+            $randomData                     = ZurmoRandomDataUtil::getRandomDataByModuleAndModelClassNames(
+                                                                            'EmailTemplatesModule', 'EmailTemplate');
+            $htmlContent                    = $randomData['htmlContent'][count($randomData['htmlContent']) -1];
+            $campaign                                   = new Campaign();
+            $campaign->name                             = 'Another Test Campaign Name';
+            $campaign->supportsRichText                 = 0;
+            $campaign->status                           = Campaign::STATUS_ACTIVE;
+            $campaign->fromName                         = 'Another From Name';
+            $campaign->fromAddress                      = 'anotherfrom@zurmo.com';
+            $campaign->fromName                         = 'From Name2';
+            $campaign->fromAddress                      = 'from2@zurmo.com';
+            $campaign->subject                          = 'Another Test subject';
+            $campaign->textContent                      = 'Text Content';
+            $campaign->htmlContent                      = $htmlContent;
+            $campaign->marketingList                    = self::$marketingList;
+            $this->assertTrue($campaign->save());
+            $campaignId = $campaign->id;
+            $campaign->forgetAll();
+            $campaign = Campaign::getById($campaignId);
+            $this->assertEquals($htmlContent, $campaign->htmlContent);
+        }
+
+        /**
+         * @depends testCreateAndGetCampaignListById
+         */
         public function testGetCampaignByName()
         {
             $campaigns = Campaign::getByName('Test Campaign Name');
@@ -189,10 +248,10 @@
         {
             $totalCampaigns     = Campaign::getAll();
             $this->assertNotEmpty($totalCampaigns);
-            $this->assertCount(2, $totalCampaigns);
+            $this->assertCount(4, $totalCampaigns);
             $dueActiveCampaigns = Campaign::getByStatus(Campaign::STATUS_ACTIVE);
             $this->assertNotEmpty($dueActiveCampaigns);
-            $this->assertCount(1, $dueActiveCampaigns);
+            $this->assertCount(3, $dueActiveCampaigns);
             $campaign = $dueActiveCampaigns[0];
             $this->assertEquals('Test Campaign Name2',                      $campaign->name);
             $this->assertEquals(0,         $campaign->supportsRichText);
@@ -223,10 +282,10 @@
         {
             $totalCampaigns     = Campaign::getAll();
             $this->assertNotEmpty($totalCampaigns);
-            $this->assertCount(2, $totalCampaigns);
+            $this->assertCount(4, $totalCampaigns);
             $dueActiveCampaigns = Campaign::getByStatusAndSendingTime(Campaign::STATUS_ACTIVE, time() + 100);
             $this->assertNotEmpty($dueActiveCampaigns);
-            $this->assertCount(1, $dueActiveCampaigns);
+            $this->assertCount(3, $dueActiveCampaigns);
             $campaign = $dueActiveCampaigns[0];
             $this->assertEquals('Test Campaign Name2',                      $campaign->name);
             $this->assertEquals(0,         $campaign->supportsRichText);
@@ -256,10 +315,10 @@
         public function testDeleteCampaign()
         {
             $campaigns = Campaign::getAll();
-            $this->assertEquals(2, count($campaigns));
+            $this->assertEquals(4, count($campaigns));
             $campaigns[0]->delete();
             $campaigns = Campaign::getAll();
-            $this->assertEquals(1, count($campaigns));
+            $this->assertEquals(3, count($campaigns));
         }
     }
 ?>

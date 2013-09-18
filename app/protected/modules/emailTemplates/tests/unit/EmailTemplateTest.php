@@ -69,6 +69,9 @@
             $this->assertEquals(1, count(EmailTemplate::getAll()));
         }
 
+        /**
+         * @depends testCreateAndGetEmailTemplateById
+         */
         public function testAtLeastOneContentFieldIsRequired()
         {
             $emailTemplate                  = new EmailTemplate();
@@ -84,6 +87,9 @@
             $this->assertEquals('Please provide at least one of the contents field.', $errorMessages['textContent'][0]);
         }
 
+        /**
+         * @depends testCreateAndGetEmailTemplateById
+         */
         public function testModelClassNameExists()
         {
             // test against a class name that doesn't exist
@@ -114,6 +120,9 @@
             $this->assertEquals(2, count(EmailTemplate::getAll()));
         }
 
+        /**
+         * @depends testCreateAndGetEmailTemplateById
+         */
         public function testMergeTagsValidation()
         {
             // test against a invalid merge tags
@@ -150,6 +159,56 @@
         /**
          * @depends testCreateAndGetEmailTemplateById
          */
+        public function testDeniedTagThrowsValidationError()
+        {
+            $emailTemplate                  = new EmailTemplate();
+            $emailTemplate->type            = EmailTemplate::TYPE_CONTACT;
+            $emailTemplate->subject         = 'Another Test subject';
+            $emailTemplate->name            = 'Another Test Email Template';
+            $emailTemplate->textContent     = 'Text Content';
+            $emailTemplate->htmlContent     = '<html><head><meta></head>Html Content</body></html>';
+            $emailTemplate->modelClassName  = 'Contact';
+            $this->assertFalse($emailTemplate->save());
+            $errorMessages = $emailTemplate->getErrors();
+            $this->assertCount(1, $errorMessages);
+            $this->assertTrue(array_key_exists('htmlContent', $errorMessages));
+            $this->assertCount(4, $errorMessages['htmlContent']);
+            $this->assertEquals('Html Content: html tag is not allowed.', $errorMessages['htmlContent'][0]);
+            $this->assertEquals('Html Content: head tag is not allowed.', $errorMessages['htmlContent'][1]);
+            $this->assertEquals('Html Content: body tag is not allowed.', $errorMessages['htmlContent'][2]);
+            $this->assertEquals('Html Content: meta tag is not allowed.', $errorMessages['htmlContent'][3]);
+            $emailTemplate->textContent    = 'Text Content without tags';
+            $emailTemplate->htmlContent    = 'Html Content without tags';
+            $this->assertTrue($emailTemplate->save());
+            $this->assertEmpty($emailTemplate->getErrors());
+            $this->assertEquals(4, count(EmailTemplate::getAll()));
+        }
+
+        /**
+         * @depends testCreateAndGetEmailTemplateById
+         */
+        public function testHtmlContentGetsSavedCorrectly()
+        {
+            $randomData                     = ZurmoRandomDataUtil::getRandomDataByModuleAndModelClassNames('EmailTemplatesModule',
+                                                                                                        'EmailTemplate');
+            $htmlContent                    = $randomData['htmlContent'][count($randomData['htmlContent']) -1];
+            $emailTemplate                  = new EmailTemplate();
+            $emailTemplate->type            = EmailTemplate::TYPE_CONTACT;
+            $emailTemplate->subject         = 'Another Test subject';
+            $emailTemplate->name            = 'Another Test Email Template';
+            $emailTemplate->textContent     = 'Text Content';
+            $emailTemplate->htmlContent     = $htmlContent;
+            $emailTemplate->modelClassName  = 'Contact';
+            $this->assertTrue($emailTemplate->save());
+            $emailTemplateId = $emailTemplate->id;
+            $emailTemplate->forgetAll();
+            $emailTemplate = EmailTemplate::getById($emailTemplateId);
+            $this->assertEquals($htmlContent, $emailTemplate->htmlContent);
+        }
+
+        /**
+         * @depends testCreateAndGetEmailTemplateById
+         */
         public function testGetEmailTemplateByName()
         {
             $emailTemplate = EmailTemplate::getByName('Test Email Template');
@@ -174,10 +233,10 @@
         public function testDeleteEmailTemplate()
         {
             $emailTemplates = EmailTemplate::getAll();
-            $this->assertEquals(3, count($emailTemplates));
+            $this->assertEquals(5, count($emailTemplates));
             $emailTemplates[0]->delete();
             $emailTemplates = EmailTemplate::getAll();
-            $this->assertEquals(2, count($emailTemplates));
+            $this->assertEquals(4, count($emailTemplates));
         }
     }
 ?>
