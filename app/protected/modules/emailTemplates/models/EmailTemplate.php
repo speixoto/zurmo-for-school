@@ -142,6 +142,7 @@
                     array('htmlContent',                'type',    'type' => 'string'),
                     array('textContent',                'type',    'type' => 'string'),
                     array('htmlContent',                'AtLeastOneContentAreaRequiredValidator'),
+                    array('htmlContent',                'ContentFieldDoesNotContainDeniedTagsValidator'),
                     array('textContent',                'AtLeastOneContentAreaRequiredValidator'),
                     array('htmlContent',                'EmailTemplateMergeTagsValidator', 'except' => 'autoBuildDatabase'),
                     array('textContent',                'EmailTemplateMergeTagsValidator', 'except' => 'autoBuildDatabase'),
