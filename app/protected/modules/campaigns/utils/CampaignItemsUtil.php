@@ -39,6 +39,10 @@
      */
     abstract class CampaignItemsUtil extends AutoresponderAndCampaignItemsUtil
     {
+        const CONFIG_KEY             = 'CampaignItemsToCreatePageSize';
+
+        const CONFIG_MODULE_NAME     = 'CampaignsModule';
+
         const DEFAULT_CAMPAIGNITEMS_TO_CREATE_PAGE_SIZE = 200;
 
         /**
@@ -71,7 +75,7 @@
         {
             if ($pageSize == null)
             {
-                $pageSize = self::DEFAULT_CAMPAIGNITEMS_TO_CREATE_PAGE_SIZE;
+                $pageSize = self::getCreatePageSize();
             }
             $contacts = array();
             $quote    = DatabaseCompatibilityUtil::getQuote();
@@ -104,6 +108,36 @@
                 return true;
             }
             return false;
+        }
+
+        /**
+         * Return the page size used in the creation of campaign items
+         * @param bool $returnDefaultIfMissing
+         * @param bool $setDefaultIfMissing
+         * @return int
+         */
+        public static function getCreatePageSize($returnDefaultIfMissing = true, $setDefaultIfMissing = false)
+        {
+            $size = ZurmoConfigurationUtil::getByModuleName(static::CONFIG_MODULE_NAME, static::CONFIG_KEY);
+            if (empty($size) && $returnDefaultIfMissing)
+            {
+                $size = static::DEFAULT_CAMPAIGNITEMS_TO_CREATE_PAGE_SIZE;
+                if ($setDefaultIfMissing)
+                {
+                    static::setBatchSize($size);
+                }
+            }
+            return $size;
+        }
+
+        /**
+         * Stores the campaign items create page size as a global configuration value
+         * @param int $size
+         */
+        public static function setCreatePageSize($size)
+        {
+            assert('is_int($size) || $size === null');
+            ZurmoConfigurationUtil::setByModuleName(static::CONFIG_MODULE_NAME, static::CONFIG_KEY, $size);
         }
     }
 ?>

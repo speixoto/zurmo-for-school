@@ -40,6 +40,7 @@
     class MarketingConfigurationForm extends ConfigurationForm
     {
         public $autoresponderOrCampaignBatchSize;
+        public $campaignItemsToCreatePageSize;
         public $autoresponderOrCampaignFooterPlainText;
         public $autoresponderOrCampaignFooterRichText;
 
@@ -49,6 +50,9 @@
                 array('autoresponderOrCampaignBatchSize',       'required'),
                 array('autoresponderOrCampaignBatchSize',       'type',      'type' => 'integer'),
                 array('autoresponderOrCampaignBatchSize',       'numerical', 'min' => 1),
+                array('campaignItemsToCreatePageSize',          'required'),
+                array('campaignItemsToCreatePageSize',          'type',      'type' => 'integer'),
+                array('campaignItemsToCreatePageSize',          'numerical', 'min' => 1),
                 array('autoresponderOrCampaignFooterPlainText', 'required'),
                 array('autoresponderOrCampaignFooterPlainText', 'type',    'type' => 'string'),
                 array('autoresponderOrCampaignFooterRichText',  'required'),
@@ -59,9 +63,16 @@
         public function attributeLabels()
         {
             return array(
-                'autoresponderOrCampaignBatchSize'       => Zurmo::t('ZurmoModule', 'Autoresponder/Campaign batch size'),
-                'autoresponderOrCampaignFooterPlainText' => Zurmo::t('ZurmoModule', 'Autoresponder/Campaign Footer(Plain Text)'),
-                'autoresponderOrCampaignFooterRichText'  => Zurmo::t('ZurmoModule', 'Autoresponder/Campaign Footer(Rich Text)'),
+                'autoresponderOrCampaignBatchSize'       => Zurmo::t('MarketingModule',
+                                                                     'AutorespondersModuleSingularLabel/CampaignsModuleSingularLabel batch size',
+                                                                     LabelUtil::getTranslationParamsForAllModules()),
+                'campaignItemsToCreatePageSize'          => Zurmo::t('MarketingModule', 'Campaign Items creation page size'),
+                'autoresponderOrCampaignFooterPlainText' => Zurmo::t('MarketingModule',
+                                                                     'AutorespondersModuleSingularLabel/CampaignsModuleSingularLabel Footer(Plain Text)',
+                                                                     LabelUtil::getTranslationParamsForAllModules()),
+                'autoresponderOrCampaignFooterRichText'  => Zurmo::t('MarketingModule',
+                                                                     'AutorespondersModuleSingularLabel/CampaignsModuleSingularLabel Footer(Rich Text)',
+                                                                     LabelUtil::getTranslationParamsForAllModules())
             );
         }
     }

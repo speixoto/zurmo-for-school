@@ -65,17 +65,27 @@
                                         array(
                                             'elements' => array(
                                                 array('attributeName' => 'autoresponderOrCampaignBatchSize',
-                                                                                                'type' => 'Integer'),
+                                                      'type'          => 'BatchConfigInteger'),
                                             ),
                                         ),
                                     )
+                                ),
+                                array('cells' =>
+                                      array(
+                                          array(
+                                              'elements' => array(
+                                                  array('attributeName' => 'campaignItemsToCreatePageSize',
+                                                        'type'          => 'BatchConfigInteger'),
+                                              ),
+                                          ),
+                                      )
                                 ),
                                 array('cells' =>
                                     array(
                                         array(
                                             'elements' => array(
                                                 array('attributeName' => 'autoresponderOrCampaignFooterPlainText',
-                                                                                    'type' => 'TextAreaWithPreviewLink'),
+                                                      'type'          => 'TextAreaWithPreviewLink'),
                                             ),
                                         ),
                                     )
@@ -101,6 +111,13 @@
         protected function getNewModelTitleLabel()
         {
             return null;
+        }
+
+        /**
+         * Override sub-class if you need to set anything into the element object.
+         */
+        protected function resolveElementDuringFormLayoutRender(& $element)
+        {
         }
     }
 ?>

@@ -100,21 +100,15 @@
 
         public function actionConfigurationEdit()
         {
-
-            //TODO: @sergio: add a getConfigurationsFromForm
-            $form                                         = new MarketingConfigurationForm();
-            $form->autoresponderOrCampaignBatchSize       = AutoresponderOrCampaignBatchSizeConfigUtil::getBatchSize();
-            $form->autoresponderOrCampaignFooterPlainText = UnsubscribeAndManageSubscriptionsPlaceholderUtil::getContentByType(false);
-            $form->autoresponderOrCampaignFooterRichText  = UnsubscribeAndManageSubscriptionsPlaceholderUtil::getContentByType(true);
-
-            $postData = PostUtil::getData();
+            $form               = MarketingConfigurationFormAdapter::makeFormFromMarketingConfiguration();
+            $postData           = PostUtil::getData();
             $postVariableName   = get_class($form);
             if (isset($postData[$postVariableName]))
             {
                 $form->setAttributes($postData[$postVariableName]);
                 if ($form->validate())
                 {
-                    //ZurmoConfigurationFormAdapter::setConfigurationFromForm($form); //TODO: @sergio: Add a setConfiguratiosn to save
+                    MarketingConfigurationFormAdapter::setConfigurationFromForm($form);
                     Yii::app()->user->setFlash('notification',
                         Zurmo::t('ZurmoModule', 'Global configuration saved successfully.')
                     );
