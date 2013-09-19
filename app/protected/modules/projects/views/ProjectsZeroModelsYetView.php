@@ -40,11 +40,19 @@
      */
     class ProjectsZeroModelsYetView extends ZeroModelsYetView
     {
+        /**
+         * Gets create link display label
+         * @return string
+         */
         protected function getCreateLinkDisplayLabel()
         {
             return Zurmo::t('ProjectsModule', 'Create ProjectsModuleSingularLabel', LabelUtil::getTranslationParamsForAllModules());
         }
 
+        /**
+         * Gets message content
+         * @return string
+         */
         protected function getMessageContent()
         {
             $params = LabelUtil::getTranslationParamsForAllModules();

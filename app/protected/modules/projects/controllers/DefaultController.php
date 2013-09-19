@@ -36,12 +36,20 @@
 
     class ProjectsDefaultController extends ZurmoModuleController
     {
+        /**
+         * Gets dashboard breadcrumb links
+         * @return string
+         */
         public static function getDashboardBreadcrumbLinks()
         {
             $title = Zurmo::t('HomeModule', 'Dashboard');
             return array($title);
         }
 
+        /**
+         * Gets listview breadcrumb links
+         * @return string
+         */
         public static function getListBreadcrumbLinks()
         {
             $params = LabelUtil::getTranslationParamsForAllModules();
@@ -49,6 +57,9 @@
             return array($title);
         }
 
+        /**
+         * @return array
+         */
         public function filters()
         {
             $modelClassName             = $this->getModule()->getPrimaryModelName();
@@ -73,6 +84,9 @@
             );
         }
 
+        /**
+         * List view for projects
+         */
         public function actionList()
         {
             $pageSize                       = Yii::app()->pagination->resolveActiveForCurrentUserByType(
@@ -98,7 +112,7 @@
             }
             else
             {
-                $mixedView        = $this->makeActionBarSearchAndListView($searchForm, $dataProvider);
+                $mixedView        = $this->makeActionBarSearchAndListView($searchForm, $dataProvider, 'SecuredActionBarForProjectsSearchAndListView');
                 $view             = new ProjectsPageView(ProjectDefaultViewUtil::
                                                     makeViewWithBreadcrumbsForCurrentUser(
                                                         $this, $mixedView, $breadcrumbLinks, 'ProjectBreadCrumbView'));
@@ -106,6 +120,10 @@
             echo $view->render();
         }
 
+        /**
+         * Details view for project
+         * @param int $id
+         */
         public function actionDetails($id)
         {
             $project            = static::getModelAndCatchNotFoundAndDisplayError('Project', intval($id));
@@ -114,6 +132,7 @@
             AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED, array(strval($project), 'ProjectsModule'), $project);
             $getData                 = GetUtil::getData();
             $isKanbanBoardInRequest  = ArrayUtil::getArrayValue($getData, 'kanbanBoard');
+            //normal view
             if ($isKanbanBoardInRequest == 0 || $isKanbanBoardInRequest == null || Yii::app()->userInterface->isMobile() === true)
             {
                 $detailsView        = new ProjectEditAndDetailsView('Details', $this->getId(), $this->getModule()->getId(), $project);
@@ -121,6 +140,7 @@
                                                              makeViewWithBreadcrumbsForCurrentUser(
                                                                 $this, $detailsView, $breadcrumbLinks, 'ProjectBreadCrumbView'));
             }
+            //kanban view
             else
             {
                 $kanbanItem   = new KanbanItem();
@@ -137,6 +157,9 @@
             echo $view->render();
         }
 
+        /**
+         * Create Project
+         */
         public function actionCreate()
         {
             $params                 = LabelUtil::getTranslationParamsForAllModules();
@@ -150,6 +173,9 @@
             echo $view->render();
         }
 
+        /**
+         * Edit Project
+         */
         public function actionEdit($id, $redirectUrl = null)
         {
             $project         = Project::getById(intval($id));
@@ -163,6 +189,10 @@
             echo $view->render();
         }
 
+        /**
+         * Delete project
+         * @param int $id
+         */
         public function actionDelete($id)
         {
             $project = Project::GetById(intval($id));
@@ -176,6 +206,9 @@
             return 'ProjectsSearchForm';
         }
 
+        /**
+         * Exports project data
+         */
         public function actionExport()
         {
             $this->export('ProjectsSearchView');
@@ -436,6 +469,9 @@
             echo $view->render();
         }
 
+        /**
+         * Display projects dashboard
+         */
         public function actionDashboardDetails()
         {
             $params = array(
@@ -445,7 +481,7 @@
             $gridViewId              = 'notUsed';
             $pageVar                 = 'notUsed';
             $introView               = new ProjectsDashboardIntroView(get_class($this->getModule()));
-            $actionBarView           = new SecuredActionBarForProjectsSearchAndListView(
+            $actionBarView           = new SecuredActionBarForProjectsDashboardView(
                                             'default',
                                             'projects',
                                             new Project(), //Just to fill in a marketing model

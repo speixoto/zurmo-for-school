@@ -45,31 +45,11 @@
          */
         public static function getDefaultMetadata()
         {
-            $metadata = array(
-                'global' => array(
-                    'toolbar' => array(
-                        'elements' => array(
-                            array('type'  => 'ProjectCreateLink',
-                                'htmlOptions' => array('class' => 'icon-create'),
-                            ),
-                            array(
-                                'type'            => 'ProjectsDashboardLink',
-                                'htmlOptions'     => array( 'class' => 'icon-marketing-dashboard' )
-                            ),
-                        ),
-                    ),
-                    'secondToolBar' => array(
-                        'elements' => array(
-                            array('type'        => 'ProjectsIntroLink',
-                                  'panelId'     => 'eval:$this->introView->getPanelId()',
-                                  'checked'     => 'eval:!$this->introView->isIntroViewDismissed()',
-                                  'moduleName'  => 'eval:$this->introView->getModuleName()',
-                                  'htmlOptions' => array('class' => 'icon-intro-change-this'), //todo: need new class name
-                            ),
-                        ),
-                    )
-                ),
-            );
+            $metadata = parent::getDefaultMetadata();
+            $metadata['global']['toolbar']['elements'][] = array(
+                                                                    'type'  => 'ProjectsDashboardLink',
+                                                                    'htmlOptions'  => array( 'class' => 'icon-marketing-dashboard' )
+                                                                );
             return $metadata;
         }
     }

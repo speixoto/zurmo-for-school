@@ -34,14 +34,14 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class ProjectCreateLinkActionElement extends CreateLinkActionElement
+    class ProjectsListLinkActionElement extends EditLinkActionElement
     {
         /**
          * @return string
          */
         protected function getDefaultLabel()
         {
-            return Zurmo::t('ProjectsModule', 'Create ProjectsModuleSingularLabel',
+            return Zurmo::t('ProjectsModule', 'List ProjectsModulePluralLabel',
                                                LabelUtil::getTranslationParamsForAllModules());
         }
 
@@ -50,7 +50,7 @@
          */
         protected function getDefaultRoute()
         {
-            return Yii::app()->createUrl('projects/default/create');
+            return Yii::app()->createUrl('projects/default');
         }
     }
 ?>

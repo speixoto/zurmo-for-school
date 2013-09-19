@@ -373,7 +373,7 @@
                         //if kanban type is completed
                         if($getData['type'] == KanbanItem::TYPE_COMPLETED)
                         {
-                            $this->actionUpdateStatusInKanbanView(Task::TASK_STATUS_COMPLETED, $taskId);
+                            $this->actionUpdateStatusInKanbanView(Task::TASK_STATUS_COMPLETED, $taskId, true);
                             $response['button'] = '';
                         }
                         else
@@ -407,11 +407,15 @@
          * @param int $targetStatus
          * @param int $taskId
          */
-        public function actionUpdateStatusInKanbanView($targetStatus, $taskId)
+        public function actionUpdateStatusInKanbanView($targetStatus, $taskId, $return = false)
         {
            $this->processKanbanTypeUpdate($targetStatus, $taskId);
            //Run update queries for update task staus and update type and sort order in kanban column
            $this->processStatusUpdateViaAjax($taskId, $targetStatus, false);
+           if($return === false)
+           {
+            echo CJSON::encode('success');
+           }
         }
 
         /**

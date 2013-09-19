@@ -34,23 +34,47 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class ProjectCreateLinkActionElement extends CreateLinkActionElement
+    /**
+     * Action bar view for the marketing search and list user interface. Provides buttons like create, and links to
+     * queues.
+     */
+    class SecuredActionBarForProjectsDashboardView extends SecuredActionBarForSearchAndListView
     {
         /**
-         * @return string
+         * @return array
          */
-        protected function getDefaultLabel()
+        public static function getDefaultMetadata()
         {
-            return Zurmo::t('ProjectsModule', 'Create ProjectsModuleSingularLabel',
-                                               LabelUtil::getTranslationParamsForAllModules());
-        }
-
-        /**
-         * @return string
-         */
-        protected function getDefaultRoute()
-        {
-            return Yii::app()->createUrl('projects/default/create');
+            $metadata = array(
+                'global' => array(
+                    'toolbar' => array(
+                        'elements' => array(
+                            array('type'  => 'CreateLink',
+                                'htmlOptions' => array('class' => 'icon-create'),
+                            ),
+                            array(
+                                'type'            => 'ProjectsDashboardLink',
+                                'htmlOptions'     => array( 'class' => 'icon-marketing-dashboard' )
+                            ),
+                            array(
+                                'type'            => 'ProjectsListLink',
+                                'htmlOptions'     => array( 'class' => 'icon-marketing-lists' )
+                            ),
+                        ),
+                    ),
+                    'secondToolBar' => array(
+                        'elements' => array(
+                            array('type'        => 'ProjectsIntroLink',
+                                  'panelId'     => 'eval:$this->introView->getPanelId()',
+                                  'checked'     => 'eval:!$this->introView->isIntroViewDismissed()',
+                                  'moduleName'  => 'eval:$this->introView->getModuleName()',
+                                  'htmlOptions' => array('class' => 'icon-intro-change-this'), //todo: need new class name
+                            ),
+                        ),
+                    )
+                ),
+            );
+            return $metadata;
         }
     }
 ?>

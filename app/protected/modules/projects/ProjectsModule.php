@@ -81,7 +81,7 @@
                 'tabMenuItems' => array(
                     array(
                         'label' => "eval:Zurmo::t('ProjectsModule', 'ProjectsModulePluralLabel', \$translationParams)",
-                        'url'   => array('/projects/default'),
+                        'url'   => array('/projects/default/dashboardDetails'),
                         'right' => self::RIGHT_ACCESS_PROJECTS,
                     ),
                 ),

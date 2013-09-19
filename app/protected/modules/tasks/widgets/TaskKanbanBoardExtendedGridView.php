@@ -252,8 +252,7 @@
          */
         protected function registerKanbanColumnFinishActionScript($labelAccept, $labelReject, $targetStatus, $url)
         {
-            $script = "$('.task-finish-action').click(
-                                                    function()
+            $script = "$(document).on('click','.task-finish-action',function()
                                                     {
                                                         var element = $(this).parent().parent().parent();
                                                         var ulelement = $(element).parent();
@@ -266,6 +265,7 @@
                                                         $(this).removeClass('task-finish-action').addClass('task-accept-action');
                                                         $(rejectLinkElement).appendTo($(parent));
                                                         $(rejectLinkElement).find('.z-label').html('" . $labelReject . "');
+                                                        $(rejectLinkElement).removeClass('task-finish-action').addClass('task-reject-action');
                                                         $.ajax(
                                                             {
                                                                 type : 'GET',
@@ -335,7 +335,7 @@
          */
         protected function registerButtonActionScript($buttonClass, $targetKanbanItemType, $label, $targetButtonClass, $url, $targetStatus)
         {
-            return "$('." . $buttonClass . "').click(
+            return "$(document).on('click','." . $buttonClass . "',
                                                     function()
                                                     {
                                                         var element = $(this).parent().parent().parent();
@@ -348,11 +348,12 @@
                                                         var columnType = parseInt(ulidParts[3]);
                                                         $('#task-sortable-rows-" . $targetKanbanItemType . "').append(element);
                                                         $('#task-sortable-rows-' + columnType).remove('#' + id);
+
                                                         if(" . $targetStatus . " != " . Task::TASK_STATUS_COMPLETED . ")
                                                         {
-                                                            var addedElement = $('#task-sortable-rows-" . $targetKanbanItemType . " #' + id + ' ." . $buttonClass . "');
-                                                            $(addedElement).find('.z-label').html('" . $label . "');
-                                                            $(addedElement).removeClass('" . $buttonClass . "').addClass('" . $targetButtonClass . "');
+                                                            var linkTag = $('#task-sortable-rows-" . $targetKanbanItemType . " #' + id + ' ." . $buttonClass . "');
+                                                            $(linkTag).find('.z-label').html('" . $label . "');
+                                                            $(linkTag).removeClass('" . $buttonClass . "').addClass('" . $targetButtonClass . "');
                                                             if('" . $buttonClass . "' == 'task-reject-action')
                                                             {
                                                                 $('#task-sortable-rows-" . $targetKanbanItemType . " #' + id + ' .task-accept-action').remove();
@@ -361,6 +362,7 @@
                                                         else
                                                         {
                                                             $('#task-sortable-rows-" . $targetKanbanItemType . " #' + id + ' .task-status').remove();
+                                                            $('#task-sortable-rows-" . $targetKanbanItemType . " #' + id).addClass('ui-state-disabled');
                                                         }
                                                         $.ajax(
                                                         {
