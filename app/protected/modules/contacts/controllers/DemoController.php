@@ -33,53 +33,38 @@
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
-
-    class SummationReportDataProviderTest extends ZurmoBaseTest
+    
+    Yii::import('application.modules.contacts.controllers.DefaultController', true);
+    class ContactsDemoController extends ContactsDefaultController
     {
-        protected $super;
-
-        public static function setUpBeforeClass()
+        /**
+         * Special method to load contacts for marketing functional test.
+         */
+        public function actionLoadContactsSampler()
         {
-            parent::setUpBeforeClass();
-            ContactsModule::loadStartingData();
-            SecurityTestHelper::createSuperAdmin();
-        }
-
-        public function setUp()
-        {
-            $this->super = User::getByUsername('super');
-            Yii::app()->user->userModel = $this->super;
-        }
-
-        public function testRunQueryAndGrandTotalsData()
-        {
-            ContactTestHelper::createContactByNameForOwner('testContact', $this->super);
-
-            $report = new Report();
-            $report->setType(Report::TYPE_SUMMATION);
-            $report->setModuleClassName('ContactsModule');
-            $report->setFiltersStructure('');
-
-            $groupBy                               = new GroupByForReportForm('ContactsModule', 'Contact',
-                Report::TYPE_SUMMATION);
-            $groupBy->attributeIndexOrDerivedType  = 'createdDateTime__Day';
-            $report->addGroupBy($groupBy);
-
-            $displayAttribute = new DisplayAttributeForReportForm('ContactsModule', 'Contact',
-                Report::TYPE_SUMMATION);
-            $displayAttribute->attributeIndexOrDerivedType = 'createdDateTime__Day';
-            $report->addDisplayAttribute($displayAttribute);
-
-            $dataProvider       = new SummationReportDataProvider($report);
-            $this->assertEmpty($dataProvider->runQueryAndGrandTotalsData());
-        }
-
-        public function testMethods()
-        {
-            //especially making charts
-            //test when a drilldown row is a on a group that has null as a value because maybe it is a group on a left join so there is nothing maybe.
-            //todo:
-            //$this->fail();
+            if (!Group::isUserASuperAdministrator(Yii::app()->user->userModel))
+            {
+                throw new NotSupportedException();
+            }
+            
+            //Load 12 contacts so there is sufficient data for marketing list pagination testing.
+            for ($i = 1; $i <= 12; $i++)
+            {
+                $firstName           = 'Test';
+                $lastName            = 'Contact';
+                $owner               = Yii::app()->user->userModel;
+                $contact             = new Contact();
+                $contact->firstName  = $firstName;
+                $contact->lastName   = $lastName.' '.$i;
+                $contact->owner      = $owner;
+                $contact->state      = ContactsUtil::getStartingState();
+                $saved               = $contact->save();
+                assert('$saved');
+                if (!$saved)
+                {
+                    throw new NotSupportedException();
+                }
+            }
         }
     }
 ?>
