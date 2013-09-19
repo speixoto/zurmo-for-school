@@ -92,8 +92,6 @@
                 Yii::app()->languageHelper->activateLanguagesForTesting();
                 Yii::app()->languageHelper->importMessagesForTesting();
             }
-            // ensure that backend user is created if it doesn't exist.
-            BaseControlUserConfigUtil::getUserToRunAs();
         }
 
         public static function tearDownAfterClass()
