@@ -93,7 +93,7 @@
             AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED, array(strval($account), 'AccountsModule'), $account);
             $getData                 = GetUtil::getData();
             $isKanbanBoardInRequest  = ArrayUtil::getArrayValue($getData, 'kanbanBoard');
-            if ($isKanbanBoardInRequest == 0 || $isKanbanBoardInRequest == null || Yii::app()->userInterface->isMobile() === false)
+            if ($isKanbanBoardInRequest == 0 || $isKanbanBoardInRequest == null || Yii::app()->userInterface->isMobile() === true)
             {
                 $breadCrumbView          = StickySearchUtil::resolveBreadCrumbViewForDetailsControllerAction($this, 'AccountsSearchView', $account);
                 $detailsAndRelationsView = $this->makeDetailsAndRelationsView($account, 'AccountsModule',

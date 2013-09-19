@@ -82,8 +82,15 @@
             {
                 $kanbanItemsArray = array();
                 $kanbanItemsCountArray = array();
+                $totalToDosCount = 0;
+                $completedTodosCount = 0;
                 foreach ($models as $data)
                 {
+                    $totalToDosCount += count($data->checkListItems);
+                    if(count($data->checkListItems) != 0)
+                    {
+                        $completedTodosCount += TasksUtil::getTaskCompletedCheckListItems($data);
+                    }
                     $kanbanItem  = KanbanItem::getByTask($data->id);
                     if($kanbanItem == null)
                     {
@@ -93,7 +100,14 @@
 
                     $kanbanItemsArray[$kanbanItem->type] = $kanbanItem->id;
                 }
-
+                if($totalToDosCount != 0)
+                {
+                    $completionPercent = ($completedTodosCount/$totalToDosCount)*100;
+                }
+                else
+                {
+                    $completionPercent = 0;
+                }
                 $kanbanTypeDropDownData = KanbanItem::getTypeDropDownArray();
                 //todo:@Mayank The following content creation would change based on amit's design
                 $content .= '<tr>';
@@ -114,7 +128,7 @@
                         $content .= '<td>0</td>';
                     }
                 }
-                $content .= '<td>' . TasksUtil::getTaskCompletionPercentage($data->id) . '</td>';
+                $content .= '<td>' . $completionPercent . '</td>';
                 $content .= '</tr></table>';
             }
             else

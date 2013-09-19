@@ -699,13 +699,7 @@
             }
             else
             {
-                foreach($task->checkListItems as $checkListItem)
-                {
-                    if((bool)$checkListItem->completed)
-                    {
-                        $completedItemsCount++;
-                    }
-                }
+                $completedItemsCount = self::getTaskCompletedCheckListItems($task);
             }
             $completionPercent = ($completedItemsCount/$checkListItemsCount)*100;
             return $completionPercent;
@@ -794,6 +788,24 @@
             {
                 return Zurmo::t('TasksModule', '% Complete - ' . $percentage);
             }
+        }
+
+        /**
+         * Get task completed check list items
+         * @param Task $task
+         * @return int
+         */
+        public static function getTaskCompletedCheckListItems($task)
+        {
+            $completedItemsCount = 0;
+            foreach($task->checkListItems as $checkListItem)
+            {
+                    if((bool)$checkListItem->completed)
+                    {
+                        $completedItemsCount++;
+                    }
+            }
+            return $completedItemsCount;
         }
     }
 ?>
