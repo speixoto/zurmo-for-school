@@ -35,21 +35,53 @@
      ********************************************************************************/
 
     /**
-     * Helper class for working with WorkflowMessageInQueue models
+     * Base class for working with InQueue models
      */
-    class WorkflowMessageInQueueUtil extends InQueueUtil
+    class InQueueUtil
     {
+        protected static function resolveModelAndContent($model)
+        {
+            try
+            {
+                $relatedModel = self::resolveModel($model);
+                $modelContent = self::resolveModelContent($relatedModel);
+            }
+            catch(AccessDeniedSecurityException $e)
+            {
+                $modelContent = Zurmo::t('ZurmoModule', 'Restricted');
+            }
+            catch(NotFoundException $e)
+            {
+                $modelContent = Zurmo::t('ZurmoModule', 'Record no longer exists');
+            }
+            return ' &mdash; <span class="less-pronounced-text">' . $modelContent . '</span>';
+        }
+
         /**
-         * @param WorkflowMessageInQueue $model
+         * @param WorkflowMessageInQueue $workflowMessageInQueue
+         * @return An|RedBeanModel
+         */
+        protected static function resolveModel(RedBeanModel $inQueueModel)
+        {
+            $modelDerivationPathToItem = RuntimeUtil::getModelDerivationPathToItem($inQueueModel->modelClassName);
+            return $inQueueModel->modelItem->castDown(array($modelDerivationPathToItem));
+        }
+
+        /**
+         * @param RedBeanModel $model
          * @return string
          */
-        public static function renderSummaryContent(WorkflowMessageInQueue $model)
+        protected static function resolveModelContent(RedBeanModel $model)
         {
-            $params          = array('label' => strval($model->savedWorkflow), 'wrapLabel' => false);
-            $moduleClassName = $model->getModuleClassName();
-            $moduleId        = $moduleClassName::getDirectoryName();
-            $element         = new DetailsLinkActionElement('default', $moduleId, $model->savedWorkflow->id, $params);
-            return $element->render() . static::resolveModelAndContent($model);
+            $security = new DetailsActionSecurity(Yii::app()->user->userModel, $model);
+            if ($security->canUserPerformAction())
+            {
+                $params              = array('label' => strval($model), 'wrapLabel' => false);
+                $moduleClassName     = $model->getModuleClassName();
+                $moduleId            = $moduleClassName::getDirectoryName();
+                $relatedModelElement = new DetailsLinkActionElement('default', $moduleId, $model->id, $params);
+                return $relatedModelElement->render();
+            }
         }
     }
 ?>
