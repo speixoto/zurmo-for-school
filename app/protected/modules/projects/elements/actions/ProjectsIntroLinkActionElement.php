@@ -33,7 +33,9 @@
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
-
+    /**
+     * Intro link action element for project dashboard
+     */
     class ProjectsIntroLinkActionElement extends LinkActionElement
     {
         public function getActionType()

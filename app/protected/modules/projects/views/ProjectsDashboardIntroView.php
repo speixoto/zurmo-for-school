@@ -39,25 +39,27 @@
      */
     class ProjectsDashboardIntroView extends IntroView
     {
+        /**
+         * Renders introduction content
+         * @return string
+         */
         protected function renderIntroContent()
         {
             $content  = '<h1>' . Zurmo::t('ProjectsModule', 'Projects Dashboard', LabelUtil::getTranslationParamsForAllModules()). '</h1>';
             $content .= '<div id="projects-intro-steps" class="module-intro-steps clearfix">';
             $content .= '<div class="third"><h3>' . Zurmo::t('Core', 'Step') . '<strong>1<span>➜</span></strong></h3>';
             $content .= '<p><strong>' . Zurmo::t('ProjectsModule', 'Group') . '</strong>';
-            $content .= Zurmo::t('ProjectsModule', 'Group together the email recipients into a list, use different lists for different purposes');
+            $content .= Zurmo::t('ProjectsModule', 'Step 1');
             $content .= '</p>';
             $content .= '</div>';
             $content .= '<div class="third"><h3>' . Zurmo::t('Core', 'Step') . '<strong>2<span>➜</span></strong></h3>';
             $content .= '<p><strong>' . Zurmo::t('ProjectsModule', 'Create') . '</strong>';
-            $content .= Zurmo::t('ProjectsModule', 'Create the template for the email you are going to send, import and use either full, ' .
-                        'rich HTML templates or plain text');
+            $content .= Zurmo::t('ProjectsModule', 'Step 2');
             $content .= '</p>';
             $content .= '</div>';
             $content .= '<div class="third"><h3>' . Zurmo::t('Core', 'Step') . '<strong>3<span>➜</span></strong></h3>';
             $content .= '<p><strong>' . Zurmo::t('ProjectsModule', 'Launch') . '</strong>';
-            $content .= Zurmo::t('ProjectsModule', 'Create a campaign where you can schedule your email to go out, pick the List(s) of recipients, ' .
-                        'add and schedule autoresponders and track your overall campaign performance');
+            $content .= Zurmo::t('ProjectsModule', 'Step 3');
             $content .= '</p>';
             $content .= '</div>';
             $content .= '</div>';

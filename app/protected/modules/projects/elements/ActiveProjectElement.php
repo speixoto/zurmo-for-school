@@ -36,7 +36,6 @@
 
     /**
      * Display the active project with tasks status in different kanban types.
-     * id.
      */
     class ActiveProjectElement extends Element
     {

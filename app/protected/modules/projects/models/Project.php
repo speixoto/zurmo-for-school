@@ -36,8 +36,6 @@
 
     class Project extends OwnedSecurableItem
     {
-        const OPEN_STAGE    = 'Open';
-
         /**
          * @param string $name
          * @return string

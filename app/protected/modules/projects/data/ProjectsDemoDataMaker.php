@@ -68,6 +68,10 @@
             $demoDataHelper->setRangeByModelName('Project', $projects[0], $projects[count($projects)-1]);
         }
 
+        /**
+         * Populate model with required data
+         * @param RedBeanModel $model
+         */
         public function populateModel(& $model)
         {
             assert('$model instanceof Project');

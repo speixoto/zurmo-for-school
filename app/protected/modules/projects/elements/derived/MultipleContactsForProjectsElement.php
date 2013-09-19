@@ -138,6 +138,9 @@
             return 'ProjectContactsForm_Contact_ids';
         }
 
+        /**
+         * @return array
+         */
         protected function getExistingContactRelationsIdsAndLabels()
         {
             $existingContacts = array();

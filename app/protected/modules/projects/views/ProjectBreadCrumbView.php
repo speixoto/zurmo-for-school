@@ -35,7 +35,7 @@
      ********************************************************************************/
 
     /**
-     * View that renders products module breadcrumb content
+     * View that renders projects module breadcrumb content
      */
     class ProjectBreadCrumbView extends BreadCrumbView
     {

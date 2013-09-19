@@ -47,6 +47,11 @@
                 );
         }
 
+        /**
+         * Make search attribute data
+         * @param array $data
+         * @return string
+         */
         protected static function makeSearchAttributeData($data)
         {
             $searchAttributeData['clauses'][1] =
@@ -60,6 +65,11 @@
             return $searchAttributeData;
         }
 
+        /**
+         * Get active project information for dashboard
+         * @param array $data
+         * @return string
+         */
         public static function getProjectInformationForDashboard($data)
         {
             $content = '<h4>' . ZurmoHtml::link($data->name, Yii::app()->createUrl('/projects/default/details', array('id' => $data->id))) . '</h4>' . '<table>';
@@ -85,6 +95,7 @@
                 }
 
                 $kanbanTypeDropDownData = KanbanItem::getTypeDropDownArray();
+                //todo:@Mayank The following content creation would change based on amit's design
                 $content .= '<tr>';
                 foreach($kanbanTypeDropDownData as $type => $label)
                 {

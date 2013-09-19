@@ -412,10 +412,10 @@
            $this->processKanbanTypeUpdate($targetStatus, $taskId);
            //Run update queries for update task staus and update type and sort order in kanban column
            $this->processStatusUpdateViaAjax($taskId, $targetStatus, false);
-           if($return === false)
-           {
-            echo CJSON::encode('success');
-           }
+//           if($return === false)
+//           {
+//                echo CJSON::encode('success');
+//           }
         }
 
         /**

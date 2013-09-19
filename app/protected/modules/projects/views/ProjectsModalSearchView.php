@@ -77,11 +77,17 @@
             return $metadata;
         }
 
+        /**
+         * @return string
+         */
         public static function getDesignerRulesType()
         {
             return 'ModalSearchView';
         }
 
+        /**
+         * @return string
+         */
         public static function getModelForMetadataClassName()
         {
             return 'ProductsSearchForm';

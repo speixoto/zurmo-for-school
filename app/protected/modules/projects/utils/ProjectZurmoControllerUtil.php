@@ -161,7 +161,7 @@
             }
             else
             {
-                //remove all contacts
+                //remove all opportunities
                 $project->opportunities->removeAll();
             }
             return $newOpportunity;

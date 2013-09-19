@@ -335,6 +335,7 @@
          */
         protected function registerButtonActionScript($buttonClass, $targetKanbanItemType, $label, $targetButtonClass, $url, $targetStatus)
         {
+            $completionText = Zurmo::t('TasksModule', '% Complete - 100');
             return "$(document).on('click','." . $buttonClass . "',
                                                     function()
                                                     {
@@ -363,6 +364,7 @@
                                                         {
                                                             $('#task-sortable-rows-" . $targetKanbanItemType . " #' + id + ' .task-status').remove();
                                                             $('#task-sortable-rows-" . $targetKanbanItemType . " #' + id).addClass('ui-state-disabled');
+                                                            $('#task-sortable-rows-" . $targetKanbanItemType . " #' + id + ' .task-completion').html('" . $completionText . "');
                                                         }
                                                         $.ajax(
                                                         {

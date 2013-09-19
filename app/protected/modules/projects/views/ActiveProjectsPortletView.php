@@ -157,12 +157,20 @@
             return array();
         }
 
+        /**
+         * Renders active projects content
+         * @return string
+         */
         protected function renderActiveProjectsContent()
         {
             $listView = Yii::app()->getController()->getActiveProjectsListView();
             return $listView->render();
         }
 
+        /**
+         * Renders latest activity
+         * @return string
+         */
         protected function renderLatestActivityContent()
         {
             return null;
