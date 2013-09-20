@@ -227,8 +227,11 @@
                                 $whatToTest == $name                                           ||
                                 $whatToTest == $className)
                             {
-                                $suite->addTestSuite(new PHPUnit_Framework_TestSuite($className));
-                                static::resolveDependentTestModelClassNamesForClass($className);
+                                if (@class_exists($className, false))
+                                {
+                                    $suite->addTestSuite(new PHPUnit_Framework_TestSuite($className));
+                                    static::resolveDependentTestModelClassNamesForClass($className);
+                                }
                             }
                         }
                     }
@@ -260,15 +263,12 @@
 
         protected static function resolveDependentTestModelClassNamesForClass($className)
         {
-            if (@class_exists($className)) // some class definitions are wrapped inside if blocks
+            $dependentTestModelClassNames = $className::getDependentTestModelClassNames();
+            if (!empty($dependentTestModelClassNames))
             {
-                $dependentTestModelClassNames = $className::getDependentTestModelClassNames();
-                if (!empty($dependentTestModelClassNames))
-                {
-                    $dependentTestModelClassNames = CMap::mergeArray(static::$dependentTestModelClassNames,
-                        $dependentTestModelClassNames);
-                    static::$dependentTestModelClassNames = array_unique($dependentTestModelClassNames);
-                }
+                $dependentTestModelClassNames = CMap::mergeArray(static::$dependentTestModelClassNames,
+                    $dependentTestModelClassNames);
+                static::$dependentTestModelClassNames = array_unique($dependentTestModelClassNames);
             }
         }
 

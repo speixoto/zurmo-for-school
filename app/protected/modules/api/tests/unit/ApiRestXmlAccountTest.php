@@ -36,8 +36,9 @@
 
     /**
     * Test Account related API functions.
+     * THIS CLASS IS DISABLED INTENTIONALLY.
     */
-    class ApiRestXmlAccountTest extends ApiRestTest
+    class ApiRestXmlAccountTest_Disabled extends ApiRestTest
     {
         public function testApiServerUrl()
         {
