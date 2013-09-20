@@ -57,6 +57,11 @@
         //Load opportunity for functional testing of mass delete
         public function actionLoadOpportunitiesSampler()
         {
+            if (!Group::isUserASuperAdministrator(Yii::app()->user->userModel))
+            {
+                throw new NotSupportedException();
+            }
+            
             for ($i = 0; $i < 11; $i++)
             {
                 $owner                      = Yii::app()->user->userModel;
