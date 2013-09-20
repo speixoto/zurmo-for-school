@@ -90,7 +90,7 @@
          */
         public static function canUserConfigure()
         {
-            return true;
+            return false;
         }
 
         /**

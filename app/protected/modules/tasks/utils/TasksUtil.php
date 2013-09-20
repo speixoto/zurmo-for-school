@@ -807,5 +807,23 @@
             }
             return $completedItemsCount;
         }
+
+        /**
+         * Make search attribute data
+         * @param array $data
+         * @return string
+         */
+        public static function makeSearchAttributeData($data)
+        {
+            $searchAttributeData['clauses'][1] =
+            array(
+                'attributeName'        => 'activityItems',
+                'relatedAttributeName' => 'id',
+                'operatorType'         => 'equals',
+                'value'                => (int)$data->getClassId('Item')
+            );
+            $searchAttributeData['structure'] = '(1)';
+            return $searchAttributeData;
+        }
     }
 ?>

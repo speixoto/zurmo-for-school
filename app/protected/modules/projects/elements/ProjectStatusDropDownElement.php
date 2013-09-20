@@ -34,21 +34,42 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
     /**
-     * Helper class for working with tasks
+     * Status dropdown element for task
      */
-    class ProjectsUtil
+    class ProjectStatusDropDownElement extends StaticDropDownFormElement
     {
         /**
-         * Get projects for task
-         * @param array $searchAttributeData
+         * @return array
          */
-        public static function getTasksForProject($data)
+        protected function getDropDownArray()
         {
-            $searchAttributeData = TasksUtil::makeSearchAttributeData($data);
-            $joinTablesAdapter   = new RedBeanModelJoinTablesQueryAdapter('Task');
-            $where  = RedBeanModelDataProvider::makeWhere('Task', $searchAttributeData, $joinTablesAdapter);
-            $models = Task::getSubset($joinTablesAdapter, null, null, $where, null);
-            return $models;
+            return Project::getStatusDropDownArray();
+        }
+
+        /**
+         * Renders the editable dropdown content.
+         * @return A string containing the element's content.
+         */
+        protected function renderControlEditable()
+        {
+            $dropDownArray = $this->getDropDownArray();
+            if(Yii::app()->controller->action->id == 'edit')
+            {
+                return $this->form->dropDownList($this->model, $this->attribute, $dropDownArray, array());
+            }
+            else
+            {
+                return $this->form->hiddenField($this->model, $this->attribute, array('value' => Project::PROJECT_STATUS_ACTIVE));
+            }
+        }
+
+        protected function renderLabel()
+        {
+            if(Yii::app()->controller->action->id == 'create')
+            {
+                return null;
+            }
+            return parent::renderLabel();
         }
     }
 ?>

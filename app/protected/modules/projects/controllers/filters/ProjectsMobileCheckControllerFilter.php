@@ -33,22 +33,38 @@
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
+
     /**
-     * Helper class for working with tasks
+     * Filter used by controllers to ascertain whether
+     * the the user interface is resolved to mobile or not.  If it is then it should not allow the user to continue to
+     * the view because administrative views are not enabled for mobile.
      */
-    class ProjectsUtil
+    class ProjectsMobileCheckControllerFilter extends CFilter
     {
-        /**
-         * Get projects for task
-         * @param array $searchAttributeData
-         */
-        public static function getTasksForProject($data)
+        public $moduleClassName;
+
+        public $rightName;
+
+        protected function preFilter($filterChain)
         {
-            $searchAttributeData = TasksUtil::makeSearchAttributeData($data);
-            $joinTablesAdapter   = new RedBeanModelJoinTablesQueryAdapter('Task');
-            $where  = RedBeanModelDataProvider::makeWhere('Task', $searchAttributeData, $joinTablesAdapter);
-            $models = Task::getSubset($joinTablesAdapter, null, null, $where, null);
-            return $models;
+            if (!Yii::app()->userInterface->isMobile())
+            {
+                return true;
+            }
+            static::processMobileAccessFailure();
+            Yii::app()->end(0, false);
+        }
+
+        protected static function processMobileAccessFailure()
+        {
+            static::renderMobileAccessFailureContent();
+        }
+
+        protected static function renderMobileAccessFailureContent()
+        {
+            $messageView = new AccessFailureView(Zurmo::t('Zurmo', 'This page is not available in mobile mode.'));
+            $view        = new AccessFailurePageView($messageView);
+            echo $view->render();
         }
     }
 ?>

@@ -36,6 +36,13 @@
 
     class Project extends OwnedSecurableItem
     {
+        /*
+         * Constants for task status
+         */
+        const PROJECT_STATUS_ACTIVE             = 1;
+
+        const PROJECT_STATUS_ARCHIVED           = 0;
+
         /**
          * @param string $name
          * @return string
@@ -87,7 +94,11 @@
         public static function translatedAttributeLabels($language)
         {
             $params = LabelUtil::getTranslationParamsForAllModules();
-            return array_merge(parent::translatedAttributeLabels($language));
+            return array_merge(parent::translatedAttributeLabels($language),
+                array(
+                            'status' => Zurmo::t('ProjectsModule', 'Status',  array(), null, $language),
+                    )
+                );
         }
 
         /**
@@ -99,7 +110,8 @@
             $metadata[__CLASS__] = array(
                 'members' => array(
                     'name',
-                    'description'
+                    'description',
+                    'status'
                 ),
                 'relations' => array(
                     'opportunities'    => array(RedBeanModel::MANY_MANY, 'Opportunity'),
@@ -111,6 +123,7 @@
                     array('name',           'type',    'type' => 'string'),
                     array('name',           'length',  'min'  => 3, 'max' => 64),
                     array('description',    'type',    'type' => 'string'),
+                    array('status',         'type',    'type' => 'integer')
                 ),
                 'derivedRelationsViaCastedUpModel' => array(
                     'tasks'    => array(RedBeanModel::MANY_MANY, 'Task',    'activityItems'),
@@ -151,6 +164,31 @@
         public static function getGamificationRulesType()
         {
             return null;
+        }
+
+        /**
+         * @return array of status values and labels
+         */
+        public static function getStatusDropDownArray()
+        {
+            return array(
+                self::PROJECT_STATUS_ACTIVE                => Zurmo::t('ProjectsModule', 'Active'),
+                self::PROJECT_STATUS_ARCHIVED              => Zurmo::t('ProjectsModule', 'Archived'),
+            );
+        }
+
+        /**
+         * Delete task associated to project as well
+         * @return bool
+         */
+        protected function beforeDelete()
+        {
+            $tasks = ProjectsUtil::getTasksForProject($this);
+            foreach($tasks as $task)
+            {
+                $task->delete();
+            }
+            return parent::beforeDelete();
         }
     }
 ?>

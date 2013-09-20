@@ -48,24 +48,6 @@
         }
 
         /**
-         * Make search attribute data
-         * @param array $data
-         * @return string
-         */
-        protected static function makeSearchAttributeData($data)
-        {
-            $searchAttributeData['clauses'][1] =
-            array(
-                'attributeName'        => 'activityItems',
-                'relatedAttributeName' => 'id',
-                'operatorType'         => 'equals',
-                'value'                => (int)$data->getClassId('Item')
-            );
-            $searchAttributeData['structure'] = '(1)';
-            return $searchAttributeData;
-        }
-
-        /**
          * Get active project information for dashboard
          * @param array $data
          * @return string
@@ -73,10 +55,10 @@
         public static function getProjectInformationForDashboard($data)
         {
             $content = '<h4>' . ZurmoHtml::link($data->name, Yii::app()->createUrl('/projects/default/details', array('id' => $data->id))) . '</h4>' . '<table>';
-            $searchAttributeData = self::makeSearchAttributeData($data);
-            $joinTablesAdapter   = new RedBeanModelJoinTablesQueryAdapter('Task');
-            $where  = RedBeanModelDataProvider::makeWhere('Task', $searchAttributeData, $joinTablesAdapter);
-            $models = Task::getSubset($joinTablesAdapter, null, null, $where, null);
+//            $searchAttributeData = TasksUtil::makeSearchAttributeData($data);
+//            $joinTablesAdapter   = new RedBeanModelJoinTablesQueryAdapter('Task');
+//            $where  = RedBeanModelDataProvider::makeWhere('Task', $searchAttributeData, $joinTablesAdapter);
+            $models = ProjectsUtil::getTasksForProject($data);
 
             if(count($models) > 0)
             {

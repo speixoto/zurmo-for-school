@@ -36,6 +36,8 @@
 
     class ProjectsDefaultController extends ZurmoModuleController
     {
+        const PROJECTS_MOBILE_CHECK_FILTER_PATH = 'application.modules.projects.controllers.filters.ProjectsMobileCheckControllerFilter';
+
         /**
          * Gets dashboard breadcrumb links
          * @return string
@@ -68,6 +70,9 @@
             $pageViewClassName          = 'ProjectsPageView';
             return array_merge(parent::filters(),
                 array(
+                    array(
+                        self::PROJECTS_MOBILE_CHECK_FILTER_PATH,
+                   ),
                     array(
                         ZurmoBaseController::REQUIRED_ATTRIBUTES_FILTER_PATH . ' + create, createFromRelation, edit',
                         'moduleClassName' => get_class($this->getModule()),
@@ -200,7 +205,7 @@
             $project->delete();
             $this->redirect(array($this->getId() . '/index'));
         }
-
+        
         protected static function getSearchFormClassName()
         {
             return 'ProjectsSearchForm';

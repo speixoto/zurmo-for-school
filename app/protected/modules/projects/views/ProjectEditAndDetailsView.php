@@ -101,6 +101,15 @@
                                         ),
                                     )
                                 ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'status', 'type' => 'ProjectStatusDropDown'),
+                                            ),
+                                        ),
+                                    )
+                                )
                             ),
                         ),
                     ),
