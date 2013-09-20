@@ -38,6 +38,7 @@
     {
         public function doesTableExist($tableName)
         {
+            $tableName  = $this->safeTable($tableName);
             $result     = $this->adapter->get("SHOW TABLES LIKE '$tableName'");
             return (count($result) > 0);
         }
@@ -76,13 +77,59 @@
         }
 
         /**
+         * Gets the count of how many columns there are in a table minus the initial 'id' column.
+         * @param string $tableName
+         * @param bool $excludeIdColumn
+         * @return integer
+         */
+        public function getColumnCountByTableName($tableName, $excludeIdColumn = true)
+        {
+            $firstRowData = $this->getFirstRowByTableName($tableName);
+            $count = count($firstRowData);
+            if ($excludeIdColumn)
+            {
+                $count--;
+            }
+            return $count;
+        }
+
+        /**
+         * Get the first row of a table.  if no rows exist, an NoRowsInTableException is thrown.
+         * @param string $tableName
+         */
+        public function getFirstRowByTableName($tableName)
+        {
+            $tableName  = $this->safeTable($tableName);
+            $sql = 'select * from ' . $tableName . ' limit 1';
+            try
+            {
+                $data = $this->adapter->get($sql);
+            }
+            catch (RedBean_Exception_SQL $e)
+            {
+                throw new NoRowsInTableException();
+            }
+            return $data;
+        }
+
+        /**
          * Drops a table by the given table name.
          * @param string $tableName
          */
         public function dropTableByTableName($tableName)
         {
-            $tableName = strtolower($tableName);
+            $tableName  = $this->safeTable($tableName);
             $this->adapter->exec("drop table if exists $tableName");
+        }
+
+        /**
+         * Do everything that needs to be done to format a table name.
+         * @param string $name of table
+         * @return string table name
+         */
+        public function safeTable($name, $noQuotes = false) {
+            assert('is_string($name)');
+            return parent::safeTable(strtolower($name), $noQuotes);
         }
     }
 ?>

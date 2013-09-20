@@ -199,7 +199,7 @@
          */
         public function testGetColumnCountByTableName()
         {
-            $this->assertEquals(7, ImportDatabaseUtil::getColumnCountByTableName('testimporttable'));
+            $this->assertEquals(7, ZurmoRedBean::$writer->getColumnCountByTableName('testimporttable'));
         }
 
         /**
@@ -207,7 +207,7 @@
          */
         public function testGetFirstRowByTableName()
         {
-            $firstRowData = ImportDatabaseUtil::getFirstRowByTableName('testimporttable');
+            $firstRowData = ZurmoRedBean::$writer->getFirstRowByTableName('testimporttable');
             $compareData   = array(
                     'id' => 1,
                     'column_0'           => 'name',

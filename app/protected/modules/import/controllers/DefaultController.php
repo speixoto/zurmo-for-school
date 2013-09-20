@@ -215,7 +215,7 @@
                                                               (bool)$importWizardForm->firstRowIsHeaderRow);
             if ($importWizardForm->firstRowIsHeaderRow)
             {
-                $headerRow = ImportDatabaseUtil::getFirstRowByTableName($import->getTempTableName());
+                $headerRow = IZurmoRedBean::$writer->getFirstRowByTableName($import->getTempTableName());
                 assert('$headerRow != null');
             }
             else

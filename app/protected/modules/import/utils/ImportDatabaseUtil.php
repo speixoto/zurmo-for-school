@@ -48,16 +48,6 @@
          * @param string $enclosure
          * @return bool
          */
-
-        /**
-         * Given a file resource, convert the file into a database table based on the table name provided.
-         * Assumes the file is a csv.
-         * @param object $fileHandle
-         * @param string $tableName
-         * @param string $delimiter
-         * @param string $enclosure
-         * @return bool
-         */
         public static function makeDatabaseTableByFileHandleAndTableName($fileHandle, $tableName, $delimiter = ',', // Not Coding Standard
                                                                          $enclosure = "'")
         {
@@ -73,10 +63,10 @@
                 $freezeWhenComplete = true;
             }
             ZurmoRedBean::$writer->dropTableByTableName($tableName);
-            $columns = self::optimizeTableImportColumnsAndGetColumnNames($fileHandle, $tableName, $delimiter, $enclosure);
+            $columns = static::optimizeTableImportColumnsAndGetColumnNames($fileHandle, $tableName, $delimiter, $enclosure);
             rewind($fileHandle);
-            self::convertCsvIntoRowsInTable($fileHandle, $tableName, $delimiter, $enclosure, $columns);
-            self::optimizeTableNonImportColumns($tableName);
+            static::convertCsvIntoRowsInTable($fileHandle, $tableName, $delimiter, $enclosure, $columns);
+            static::optimizeTableNonImportColumns($tableName);
             if ($freezeWhenComplete)
             {
                 RedBeanDatabase::freeze();
@@ -184,37 +174,6 @@
             {
                 DatabaseCompatibilityUtil::bulkInsert($tableName, $importArray, $columns, $bulkQuantity);
             }
-        }
-
-        /**
-         * Gets the count of how many columns there are in a table minus the initial 'id' column.
-         * @param string $tableName
-         * @return integer
-         */
-        public static function getColumnCountByTableName($tableName)
-        {
-            assert('is_string($tableName)');
-            $firstRowData = self::getFirstRowByTableName($tableName);
-            return count($firstRowData) - 1;
-        }
-
-        /**
-         * Get the first row of a table.  if no rows exist, an NoRowsInTableException is thrown.
-         * @param string $tableName
-         */
-        public static function getFirstRowByTableName($tableName)
-        {
-            assert('is_string($tableName)');
-            $sql = 'select * from ' . $tableName;
-            try
-            {
-                $data = ZurmoRedBean::getRow($sql);
-            }
-            catch (RedBean_Exception_SQL $e)
-            {
-                throw new NoRowsInTableException();
-            }
-            return $data;
         }
 
         /**

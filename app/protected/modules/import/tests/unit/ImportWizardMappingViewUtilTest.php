@@ -58,7 +58,7 @@
             $this->assertEquals($compareData, $mappingData);
             $mappingData['column_3'] = array('type' => 'extraColumn', 'attributeIndexOrDerivedType' => 'xyz',
                                              'mappingRulesData' => null);
-            $headerRow               = ImportDatabaseUtil::getFirstRowByTableName($testTableName);
+            $headerRow               = ZurmoRedBean::$writer->getFirstRowByTableName($testTableName);
             $sampleBean              = ImportDatabaseUtil::getSubset($testTableName, null, 1, 1);
             $mappingDataMetadata     = ImportWizardMappingViewUtil::
                                        resolveMappingDataForView($mappingData, current($sampleBean), $headerRow);
