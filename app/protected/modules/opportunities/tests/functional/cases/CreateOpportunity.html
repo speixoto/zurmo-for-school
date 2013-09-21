@@ -4,12 +4,12 @@
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="selenium.base" href="http://localhost/" />
-<title>CreateEditOpportunity</title>
+<title>CreateOpportunity</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">CreateEditOpportunity</td></tr>
+<tr><td rowspan="1" colspan="3">Create Opportunity</td></tr>
 </thead><tbody>
 <tr>
   <td>setTimeout</td>
@@ -21,6 +21,7 @@
   <td>javascript{Math.floor(Math.random()*11000)}</td>
   <td>randomSuffix</td>
 </tr>
+<!--create account to link with opportunity-->
 <tr>
   <td>open</td>
   <td>index.php/accounts/default/create</td>
@@ -44,7 +45,7 @@
 <tr>
   <td>type</td>
   <td>Account_name</td>
-  <td>my account ${randomSuffix}</td>
+  <td>Test Account ${randomSuffix}</td>
 </tr>
 <tr>
   <td>clickAndWait</td>
@@ -64,32 +65,116 @@
 <tr>
   <td>waitForText</td>
   <td>//div[@id='AccountDetailsPortletView']/div/div/div/table/tbody/tr[1]/td</td>
-  <td>my account ${randomSuffix}</td>
+  <td>Test Account ${randomSuffix}</td>
+</tr>
+<!--Go to create opportunity-->
+<tr>
+	<td>open</td>
+	<td>index.php/opportunities/default?clearingSearch=1</td>
+	<td></td>
 </tr>
 <tr>
-  <td>open</td>
-  <td>index.php/opportunities/default/create</td>
-  <td></td>
+	<td>waitForPageToLoad</td>
+	<td></td>
+	<td></td>
 </tr>
 <tr>
-  <td>waitForPageToLoad</td>
-  <td></td>
-  <td></td>
+	<td>waitForCondition</td>
+	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+	<td>30000</td>
 </tr>
 <tr>
-  <td>waitForCondition</td>
-  <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-  <td>30000</td>
+	<td>assertTextPresent</td>
+	<td>Create</td>
+	<td></td>
 </tr>
 <tr>
-  <td>waitForTextPresent</td>
-  <td>Create Opportunity</td>
-  <td></td>
+	<td>assertTextPresent</td>
+	<td>Update</td>
+	<td></td>
 </tr>
+<tr>
+	<td>assertTextPresent</td>
+	<td>Export</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTextPresent</td>
+	<td>Delete</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//div[@id='OpportunitiesSecuredActionBarForSearchAndListView']/div/div[1]/a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForCondition</td>
+	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+	<td>30000</td>
+</tr>
+<tr>
+	<td>assertTextPresent</td>
+	<td>Create Opportunity</td>
+	<td></td>
+</tr>
+<!--check validation-->
+<tr>
+	<td>clickAndWait</td>
+	<td>save</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForCondition</td>
+	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+	<td>30000</td>
+</tr>
+<tr>
+	<td>waitForTextPresent</td>
+	<td>Name cannot be blank.</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForTextPresent</td>
+	<td>Close Date cannot be blank.</td>
+	<td></td>
+</tr>
+<!--check default values-->
+<tr>
+	<td>assertSelectedLabel</td>
+	<td>Opportunity_amount_currency_id</td>
+	<td>USD</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>Opportunity_amount_value</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertSelectedLabel</td>
+	<td>Opportunity_stage_value</td>
+	<td>Prospecting</td>
+</tr>
+<tr>
+	<td>assertSelectedLabel</td>
+	<td>Opportunity_source_value</td>
+	<td>(None)</td>
+</tr>
+<!--add opportunity details-->
 <tr>
   <td>type</td>
   <td>Opportunity_name</td>
   <td>Test Opportunity ${randomSuffix}</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id=Opportunity_amount_currency_id</td>
+	<td>label=EUR</td>
 </tr>
 <tr>
   <td>type</td>
@@ -114,7 +199,7 @@
 <tr>
   <td>type</td>
   <td>AccountsSearchForm_anyMixedAttributes</td>
-  <td>my account ${randomSuffix}</td>
+  <td>Test Account ${randomSuffix}</td>
 </tr>
 <tr>
     <td>keyUp</td>
@@ -129,7 +214,7 @@
 <tr>
   <td>waitForText</td>
   <td>//div[@id='list-viewmodal']/table/tbody/tr[1]/td/a</td>
-  <td>my account ${randomSuffix}</td>
+  <td>Test Account ${randomSuffix}</td>
 </tr>
 <tr>
   <td>click</td>
@@ -139,7 +224,7 @@
 <tr>
   <td>waitForValue</td>
   <td>Opportunity_account_name</td>
-  <td>my account ${randomSuffix}</td>
+  <td>Test Account ${randomSuffix}</td>
 </tr>
 <tr>
   <td>assertNotValue</td>
@@ -185,6 +270,11 @@
   <td>waitForCondition</td>
   <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
   <td>30000</td>
+</tr>
+<tr>
+  <td>type</td>
+  <td>Opportunity_description</td>
+  <td>test description</td>
 </tr>
 <tr>
   <td>click</td>
@@ -251,40 +341,11 @@
   <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
   <td>30000</td>
 </tr>
+<!--verify values after creating opportunity-->
 <tr>
-  <td>waitForText</td>
-  <td>//div[@id='OpportunityDetailsPortletView']/div/div/div/table/tbody/tr[1]/td</td>
-  <td>Test Opportunity ${randomSuffix}</td>
-</tr>
-<tr>
-  <td>verifyTextPresent</td>
-  <td>Test Opportunity ${randomSuffix}</td>
-  <td></td>
-</tr>
-<tr>
-  <td>verifyTextPresent</td>
-  <td>500.34</td>
-  <td></td>
-</tr>
-<tr>
-  <td>verifyTextPresent</td>
-  <td>Tradeshow</td>
-  <td></td>
-</tr>
-<tr>
-  <td>verifyTextPresent</td>
-  <td>Negotiating</td>
-  <td></td>
-</tr>
-<!--tr>
-  <td>assertNotText</td>
-  <td>//div[@id='OpportunityDetailsPortletView']/div/div/table/tbody/tr[8]/td</td>
-  <td></td>
-</tr-->
-<tr>
-  <td>assertText</td>
-  <td>link=my account ${randomSuffix}</td>
-  <td>my account ${randomSuffix}</td>
+	<td>assertTextPresent</td>
+	<td>Test Opportunity ${randomSuffix}</td>
+	<td></td>
 </tr>
 <tr>
 	<td>setSpeed</td>
@@ -292,69 +353,49 @@
 	<td></td>
 </tr>
 <tr>
-  <td>clickAndWait</td>
-  <td>//div[@id='OpportunityDetailsAndRelationsView']/div[1]/div/a</td>
-  <td></td>
+	<td>assertText</td>
+	<td>//div[@id='OpportunityDetailsPortletView']/div/div/div/table/tbody/tr[1]/td</td>
+	<td>Test Opportunity ${randomSuffix}</td>
 </tr>
 <tr>
-  <td>waitForCondition</td>
-  <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-  <td>30000</td>
+	<td>assertText</td>
+	<td>//div[@id='OpportunityDetailsPortletView']/div/div/div/table/tbody/tr[2]/td</td>
+	<td>€500.34</td>
 </tr>
 <tr>
-  <td>clickAndWait</td>
-  <td>link=Edit</td>
-  <td></td>
+	<td>assertText</td>
+	<td>//div[@id='OpportunityDetailsPortletView']/div/div/div/table/tbody/tr[3]/td/a</td>
+	<td>Test Account ${randomSuffix}</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>//div[@id='OpportunityDetailsPortletView']/div/div/div/table/tbody/tr[4]/td</td>
+	<td>9/3/13</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>//div[@id='OpportunityDetailsPortletView']/div/div/div/table/tbody/tr[5]/td</td>
+	<td>Negotiating</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>//div[@id='OpportunityDetailsPortletView']/div/div/div/table/tbody/tr[6]/td</td>
+	<td>50%</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>//div[@id='OpportunityDetailsPortletView']/div/div/div/table/tbody/tr[7]/td</td>
+	<td>Tradeshow</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>//div[@id='OpportunityDetailsPortletView']/div/div/div/table/tbody/tr[8]/td</td>
+	<td>test description</td>
 </tr>
 <tr>
 	<td>setSpeed</td>
-	<td>1</td>
+	<td>0</td>
 	<td></td>
-</tr>
-<tr>
-  <td>waitForPageToLoad</td>
-  <td></td>
-  <td></td>
-</tr>
-<tr>
-  <td>waitForCondition</td>
-  <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-  <td>30000</td>
-</tr>
-<tr>
-  <td>select</td>
-  <td>Opportunity_stage_value</td>
-  <td>label=Closed Won</td>
-</tr>
-<tr>
-  <td>waitForCondition</td>
-  <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-  <td>30000</td>
-</tr>
-<tr>
-  <td>clickAndWait</td>
-  <td>save</td>
-  <td></td>
-</tr>
-<tr>
-  <td>waitForPageToLoad</td>
-  <td></td>
-  <td></td>
-</tr>
-<tr>
-  <td>waitForCondition</td>
-  <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-  <td>30000</td>
-</tr>
-<tr>
-  <td>waitForText</td>
-  <td>//div[@id='OpportunityDetailsPortletView']/div/div/div/table/tbody/tr[1]/td</td>
-  <td>Test Opportunity ${randomSuffix}</td>
-</tr>
-<tr>
-  <td>verifyTextPresent</td>
-  <td>Closed Won</td>
-  <td></td>
 </tr>
 </tbody></table>
 </body>
