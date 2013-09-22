@@ -181,6 +181,23 @@
             $this->assertNull($emailMessage->sender->fromAddress);
             $this->assertNull($emailMessage->sender->fromName);
             $this->assertEquals(0, $emailMessage->recipients->count());
+
+            //Test with empty primary email address
+            $contact->primaryEmail->emailAddress = '';
+            $campaignItem               = CampaignItemTestHelper::createCampaignItem($processed, $campaign, $contact);
+            CampaignItemsUtil::processDueItem($campaignItem);
+            $this->assertEquals(1, $campaignItem->processed);
+            $emailMessage               = $campaignItem->emailMessage;
+            $this->assertEquals($marketingList->owner, $emailMessage->owner);
+            $marketingListPermissions   = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($marketingList);
+            $emailMessagePermissions    = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($emailMessage);
+            $this->assertEquals($marketingListPermissions, $emailMessagePermissions);
+            $this->assertNull($emailMessage->subject);
+            $this->assertNull($emailMessage->content->textContent);
+            $this->assertNull($emailMessage->content->htmlContent);
+            $this->assertNull($emailMessage->sender->fromAddress);
+            $this->assertNull($emailMessage->sender->fromName);
+            $this->assertEquals(0, $emailMessage->recipients->count());
         }
 
         /**
@@ -703,7 +720,7 @@
                                                                              null,
                                                                              null,
                                                                              null,
-                                                                             null,
+                                                                             false,
                                                                              null,
                                                                              null,
                                                                              null,

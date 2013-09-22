@@ -104,9 +104,30 @@
             $processed                  = 0;
             $processDateTime            = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
             $autoresponderItem          = AutoresponderItemTestHelper::createAutoresponderItem($processed,
-                                                                                                $processDateTime,
-                                                                                                $autoresponder,
-                                                                                                $contact);
+                                                                                               $processDateTime,
+                                                                                               $autoresponder,
+                                                                                               $contact);
+            AutoresponderItemsUtil::processDueItem($autoresponderItem);
+            $this->assertEquals(1, $autoresponderItem->processed);
+            $emailMessage               = $autoresponderItem->emailMessage;
+            $this->assertEquals($marketingList->owner, $emailMessage->owner);
+            $marketingListPermissions   = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($marketingList);
+            $emailMessagePermissions    = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($emailMessage);
+            $this->assertEquals($marketingListPermissions, $emailMessagePermissions);
+            $this->assertNull($emailMessage->subject);
+            $this->assertNull($emailMessage->content->textContent);
+            $this->assertNull($emailMessage->content->htmlContent);
+            $this->assertNull($emailMessage->sender->fromAddress);
+            $this->assertNull($emailMessage->sender->fromName);
+            $this->assertEquals(0, $emailMessage->recipients->count());
+
+            //Test with empty primary email address
+            $contact->primaryEmail->emailAddress = '';
+            $processDateTime            = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
+            $autoresponderItem          = AutoresponderItemTestHelper::createAutoresponderItem($processed,
+                                                                                               $processDateTime,
+                                                                                               $autoresponder,
+                                                                                               $contact);
             AutoresponderItemsUtil::processDueItem($autoresponderItem);
             $this->assertEquals(1, $autoresponderItem->processed);
             $emailMessage               = $autoresponderItem->emailMessage;
