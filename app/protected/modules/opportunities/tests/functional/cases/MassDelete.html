@@ -17,10 +17,21 @@
 	<td>45000</td>
 	<td></td>
 </tr>
-<!--Go to product list-->
+<!-- Loading mass delete demo data -->
 <tr>
 	<td>open</td>
-	<td>index.php/products/default?clearingSearch=1</td>
+	<td>index.php/opportunities/demo/loadOpportunitiesSampler</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td></td>
+	<td></td>
+</tr>
+<!--Go to opportunity list-->
+<tr>
+	<td>open</td>
+	<td>index.php/opportunities/default?clearingSearch=1</td>
 	<td></td>
 </tr>
 <tr>
@@ -40,22 +51,7 @@
 </tr>
 <tr>
 	<td>assertTextPresent</td>
-	<td>Products</td>
-	<td></td>
-</tr>
-<tr>
-	<td>assertTextPresent</td>
-	<td>Catalog Items</td>
-	<td></td>
-</tr>
-<tr>
-	<td>assertTextPresent</td>
-	<td>Categories</td>
-	<td></td>
-</tr>
-<tr>
-	<td>assertTextPresent</td>
-	<td>Delete</td>
+	<td>Update</td>
 	<td></td>
 </tr>
 <tr>
@@ -63,33 +59,48 @@
 	<td>Export</td>
 	<td></td>
 </tr>
-<!--select products created in demo controller-->
+<tr>
+	<td>assertTextPresent</td>
+	<td>Delete</td>
+	<td></td>
+</tr>
+<!--select opportunities created in demo controller-->
 <tr>
 	<td>type</td>
-	<td>id=ProductsSearchForm_anyMixedAttributes</td>
-	<td>Product</td>
+	<td>id=OpportunitiesSearchForm_anyMixedAttributes</td>
+	<td>Mass Delete</td>
 </tr>
 <tr>
 	<td>keyUp</td>
-	<td>id=ProductsSearchForm_anyMixedAttributes</td>
+	<td>id=OpportunitiesSearchForm_anyMixedAttributes</td>
 	<td>\10</td>
 </tr>
 <tr>
 	<td>waitForText</td>
-	<td>//div[@id='list-view']/table/tbody/tr[1]/td[2]/a</td>
-	<td>Product with lost stage 6</td>
+	<td>//div[@id='list-view']/table/tbody/tr[1]/td[3]/a</td>
+	<td>Mass Delete 0</td>
 </tr>
 <tr>
 	<td>verifyTextPresent</td>
-	<td>Product with lost stage 6</td>
+	<td>Mass Delete 0</td>
 	<td></td>
 </tr>
 <tr>
 	<td>verifyValue</td>
-	<td>ProductsSearchForm_anyMixedAttributes</td>
-	<td>Product</td>
+	<td>OpportunitiesSearchForm_anyMixedAttributes</td>
+	<td>Mass Delete</td>
 </tr>
 <!--select all products-->
+<tr>
+	<td>click</td>
+	<td>//a[@id='list-view-endless-page']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForCondition</td>
+	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+	<td>30000</td>
+</tr>
 <tr>
 	<td>click</td>
 	<td>id=list-view-rowSelector_all</td>

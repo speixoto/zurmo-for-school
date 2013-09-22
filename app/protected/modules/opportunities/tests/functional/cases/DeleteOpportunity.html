@@ -4,12 +4,12 @@
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="selenium.base" href="http://localhost/" />
-<title>Search</title>
+<title>DeleteOpportunity</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">Search</td></tr>
+<tr><td rowspan="1" colspan="3">Delete Opportunity</td></tr>
 </thead><tbody>
 <tr>
   <td>setTimeout</td>
@@ -70,7 +70,7 @@
 </tr>
 <tr>
   <td>waitForText</td>
-  <td>//div[@id='list-view']/table/tbody/tr/td[3]/a</td>
+  <td>//div[@id='list-view']/table/tbody/tr[1]/td[3]/a</td>
   <td>Test Opportunity ${randomSuffix}</td>
 </tr>
 <tr>
@@ -83,53 +83,68 @@
   <td>OpportunitiesSearchForm_anyMixedAttributes</td>
   <td>Test Opportunity ${randomSuffix}</td>
 </tr>
-<!--star opportunity-->
+<<!--go in detail view of opportunity-->
 <tr>
-  <td>click</td>
-  <td>//div[@id='list-view']/table/tbody/tr/td[2]/a</td>
-  <td></td>
+	<td>click</td>
+	<td>//div[@id='list-view']/table/tbody/tr[1]/td[3]/a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td></td>
+	<td></td>
 </tr>
 <tr>
 	<td>waitForCondition</td>
 	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
 	<td>30000</td>
+</tr>
+<tr>
+	<td>setSpeed</td>
+	<td>3000</td>
+	<td></td>
+</tr>
+<!--delete opportunity-->
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Delete</td>
+	<td></td>
+</tr>
+<tr>
+  <td>assertConfirmation</td>
+  <td>Are you sure you want to delete this opportunity?</td>
+  <td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForCondition</td>
+	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+	<td>30000</td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>No results found.</td>
+	<td></td>
+</tr>
+<tr>
+	<td>setSpeed</td>
+	<td>0</td>
+	<td></td>
 </tr>
 <!--clear search result-->
 <tr>
-  <td>click</td>
-  <td>id=clear-search-link</td>
-  <td></td>
-</tr>
-<!--verify opportunity is starred or not-->
-<tr>
-  <td>click</td>
-  <td>id=starDataColumn_filterByStarred</td>
-  <td></td>
+	<td>open</td>
+	<td>index.php/opportunities/default?clearingSearch=1</td>
+	<td></td>
 </tr>
 <tr>
-	<td>waitForCondition</td>
-	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-	<td>30000</td>
-</tr>
-<tr>
-  <td>assertText</td>
-  <td>//div[@id='list-view']/table/tbody/tr/td[3]/a</td>
-  <td>Test Opportunity ${randomSuffix}</td>
-</tr>
-<tr>
-  <td>click</td>
-  <td>//div[@id='list-view']/table/tbody/tr/td[2]/a</td>
-  <td></td>
-</tr>
-<tr>
-	<td>waitForCondition</td>
-	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-	<td>30000</td>
-</tr>
-<tr>
-  <td>click</td>
-  <td>id=starDataColumn_filterByStarred</td>
-  <td></td>
+	<td>waitForPageToLoad</td>
+	<td></td>
+	<td></td>
 </tr>
 <tr>
 	<td>waitForCondition</td>
