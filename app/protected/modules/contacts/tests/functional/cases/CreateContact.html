@@ -21,9 +21,56 @@
 	<td>javascript{Math.floor(Math.random()*11000)}</td>
 	<td>randomSuffix</td>
 </tr>
+<!--create account to link with contact-->
+<tr>
+  <td>open</td>
+  <td>index.php/accounts/default/create</td>
+  <td></td>
+</tr>
+<tr>
+  <td>waitForPageToLoad</td>
+  <td></td>
+  <td></td>
+</tr>
+<tr>
+  <td>waitForCondition</td>
+  <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+  <td>30000</td>
+</tr>
+<tr>
+  <td>waitForTextPresent</td>
+  <td>Create Account</td>
+  <td></td>
+</tr>
+<tr>
+  <td>type</td>
+  <td>Account_name</td>
+  <td>Test Account ${randomSuffix}</td>
+</tr>
+<tr>
+  <td>clickAndWait</td>
+  <td>save</td>
+  <td></td>
+</tr>
+<tr>
+  <td>waitForPageToLoad</td>
+  <td></td>
+  <td></td>
+</tr>
+<tr>
+  <td>waitForCondition</td>
+  <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+  <td>30000</td>
+</tr>
+<tr>
+  <td>waitForText</td>
+  <td>//div[@id='AccountDetailsPortletView']/div/div/div/table/tbody/tr[1]/td</td>
+  <td>Test Account ${randomSuffix}</td>
+</tr>
+<!--Go to create contact-->
 <tr>
 	<td>open</td>
-	<td>index.php/accounts/default/create</td>
+	<td>index.php/contacts/default?clearingSearch=1</td>
 	<td></td>
 </tr>
 <tr>
@@ -37,55 +84,68 @@
 	<td>30000</td>
 </tr>
 <tr>
-	<td>waitForTextPresent</td>
-	<td>Create Account</td>
+	<td>assertTextPresent</td>
+	<td>Create</td>
 	<td></td>
 </tr>
 <tr>
-	<td>type</td>
-	<td>Account_name</td>
-	<td>my account ${randomSuffix}</td>
+	<td>assertTextPresent</td>
+	<td>Update</td>
+	<td></td>
 </tr>
+<tr>
+	<td>assertTextPresent</td>
+	<td>Export</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTextPresent</td>
+	<td>Delete</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//div[@id='SecuredActionBarForSearchAndListView']/div/div/a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForCondition</td>
+	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+	<td>30000</td>
+</tr>
+<tr>
+	<td>assertTextPresent</td>
+	<td>Create Contact</td>
+	<td></td>
+</tr>
+<!--check validation-->
 <tr>
 	<td>clickAndWait</td>
 	<td>save</td>
 	<td></td>
 </tr>
 <tr>
-	<td>waitForText</td>
-	<td>//div[@id='AccountDetailsPortletView']/div/div/div/table/tbody/tr[1]/td</td>
-	<td>my account ${randomSuffix}</td>
-</tr>
-<tr>
-	<td>open</td>
-	<td>index.php/contacts/default</td>
-	<td></td>
-</tr>
-<tr>
-	<td>waitForPageToLoad</td>
-	<td></td>
-	<td></td>
-</tr>
-<tr>
-	<td>open</td>
-	<td>index.php/contacts/default/create</td>
-	<td></td>
-</tr>
-<tr>
-	<td>waitForPageToLoad</td>
-	<td></td>
-	<td></td>
-</tr>
-<tr>
 	<td>waitForCondition</td>
 	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
 	<td>30000</td>
 </tr>
 <tr>
 	<td>waitForTextPresent</td>
-	<td>Create Contact</td>
+	<td>Last Name cannot be blank.</td>
 	<td></td>
 </tr>
+<!--check default values-->
+<tr>
+	<td>assertSelectedLabel</td>
+	<td>Contact_state_id</td>
+	<td>Qualified</td>
+</tr>
+<!--add contact details-->
 <tr>
 	<td>type</td>
 	<td>Contact_firstName</td>
@@ -279,7 +339,7 @@
 <tr>
 	<td>type</td>
 	<td>AccountsSearchForm_anyMixedAttributes</td>
-	<td>my account ${randomSuffix}</td>
+	<td>Test Account ${randomSuffix}</td>
 </tr>
 <tr>
 	<td>keyUp</td>
@@ -294,7 +354,7 @@
 <tr>
 	<td>waitForText</td>
 	<td>//div[@id='list-viewmodal']/table/tbody/tr[1]/td/a</td>
-	<td>my account ${randomSuffix}</td>
+	<td>Test Account ${randomSuffix}</td>
 </tr>
 <tr>
 	<td>click</td>
@@ -309,7 +369,7 @@
 <tr>
 	<td>waitForValue</td>
 	<td>Contact_account_name</td>
-	<td>my account ${randomSuffix}</td>
+	<td>Test Account ${randomSuffix}</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -409,8 +469,8 @@
 </tr>
 <tr>
 	<td>assertVisible</td>
-	<td>link=my account ${randomSuffix}</td>
-	<td>my account ${randomSuffix}</td>
+	<td>link=Test Account ${randomSuffix}</td>
+	<td>Test Account ${randomSuffix}</td>
 </tr>
 <tr>
 	<td>assertNotVisible</td>
@@ -432,11 +492,11 @@
 	<td>link=123 Main Street Suite 500 Chicago IL, 60614 USA</td>
 	<td>123 Main Street Suite 500 Chicago IL, 60614 USA</td>
 </tr>
-<!--tr>
-	<td>assertText</td>
+<tr>
+	<td>assertTextNotPresent</td>
 	<td>link=456 Bee Street Suite 400 Gary Indiana, 67898 USA</td>
 	<td>456 Bee Street Suite 400 Gary Indiana, 67898 USA</td>
-</tr-->
+</tr>
 <!--Full View-->
 <tr>
 	<td>click</td>
@@ -505,8 +565,8 @@
 </tr>
 <tr>
 	<td>assertText</td>
-	<td>link=my account ${randomSuffix}</td>
-	<td>my account ${randomSuffix}</td>
+	<td>link=Test Account ${randomSuffix}</td>
+	<td>Test Account ${randomSuffix}</td>
 </tr>
 <tr>
 	<td>assertVisible</td>

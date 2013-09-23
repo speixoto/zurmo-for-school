@@ -47,7 +47,7 @@
                 throw new NotSupportedException();
             }
             
-            //Load 12 contacts so there is sufficient data for marketing list pagination testing.
+            //Load 12 contacts so there is sufficient data for marketing list pagination testing and mass delete.
             for ($i = 1; $i <= 12; $i++)
             {
                 $firstName           = 'Test';

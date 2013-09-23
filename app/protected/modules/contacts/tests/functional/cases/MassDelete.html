@@ -4,16 +4,28 @@
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="selenium.base" href="http://localhost/" />
-<title>StickyCheckBoxUsingPagination</title>
+<title>MassDeleteProduct</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">Mass Edit</td></tr>
-</thead><tbody>
+<tr><td rowspan="1" colspan="3">Mass Delete Product</td></tr>
+</thead>
+<tbody>
 <tr>
 	<td>setTimeout</td>
 	<td>45000</td>
+	<td></td>
+</tr>
+<!--load contacts for mass delete-->
+<tr>
+	<td>open</td>
+	<td>index.php/contacts/demo/loadContactsSampler</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td></td>
 	<td></td>
 </tr>
 <!--Go to contacts list-->
@@ -52,149 +64,52 @@
 	<td>Delete</td>
 	<td></td>
 </tr>
-<!--checkbox checked and unchecked-->
+<!--select contact created in functional test-->
 <tr>
-	<td>verifyValue</td>
-	<td>list-view-rowSelector_0</td>
-	<td>off</td>
+	<td>type</td>
+	<td>id=ContactsSearchForm_anyMixedAttributes</td>
+	<td>Test Contact</td>
 </tr>
 <tr>
-	<td>click</td>
-	<td>list-view-rowSelector_0</td>
-	<td></td>
+	<td>keyUp</td>
+	<td>id=ContactsSearchForm_anyMixedAttributes</td>
+	<td>\10</td>
 </tr>
 <tr>
-  <td>waitForCondition</td>
-  <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-  <td>30000</td>
-</tr>
-<tr>
-	<td>verifyValue</td>
-	<td>list-view-rowSelector_0</td>
-	<td>on</td>
-</tr>
-<!--select opportunities for mass edit-->
-<tr>
-	<td>open</td>
-	<td>index.php/contacts/default?clearingSearch=1</td>
-	<td></td>
-</tr>
-<tr>
-	<td>assertEditable</td>
-	<td>list-view-rowSelector_0</td>
-	<td></td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>list-view-rowSelector_all</td>
-	<td></td>
-</tr>
-<tr>
-	<td>verifyValue</td>
-	<td>list-view-rowSelector_0</td>
-	<td>on</td>
-</tr>
-<tr>
-	<td>verifyValue</td>
-	<td>list-view-rowSelector_1</td>
-	<td>on</td>
-</tr>
-<tr>
-	<td>open</td>
-	<td>index.php/contacts/default</td>
-	<td></td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>list-view-rowSelector_0</td>
-	<td></td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>list-view-rowSelector_1</td>
-	<td></td>
-</tr>
-<!--mass edit opportunity-->
-<tr>
-	<td>clickAndWait</td>
-	<td>//ul[@id='MassEditLinkActionElement']/li/ul/li/a/span</td>
-	<td></td>
-</tr>
-<tr>
-	<td>waitForPageToLoad</td>
-	<td></td>
-	<td></td>
-</tr>
-<tr>
-	<td>waitForCondition</td>
-	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-	<td>30000</td>
-</tr>
-<tr>
-	<td>waitForTextPresent</td>
-	<td>2 records selected for updating</td>
-	<td></td>
-</tr>
-<!--check validation-->
-<tr>
-	<td>click</td>
-	<td>MassEdit_owner</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>save</td>
-	<td></td>
-</tr>
-<tr>
-	<td>waitForPageToLoad</td>
-	<td></td>
-	<td></td>
-</tr>
-<tr>
-	<td>waitForCondition</td>
-	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-	<td>30000</td>
-</tr>
-<tr>
-	<td>waitForTextPresent</td>
-	<td>Owner cannot be blank.</td>
-	<td></td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>MassEdit_owner</td>
-	<td></td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>MassEdit_source</td>
-	<td></td>
-</tr>
-<tr>
-	<td>select</td>
-	<td>Contact_source_value</td>
-	<td>label=Inbound Call</td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>save</td>
-	<td></td>
-</tr>
-<tr>
-	<td>waitForPageToLoad</td>
-	<td></td>
-	<td></td>
-</tr>
-<tr>
-	<td>waitForCondition</td>
-	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-	<td>30000</td>
-</tr>
-<!--verify values after mass editing opportunities-->
-<tr>
-	<td>clickAndWait</td>
+	<td>waitForText</td>
 	<td>//div[@id='list-view']/table/tbody/tr[1]/td[3]/a</td>
+	<td>Test Contact 1</td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Test Contact 1</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyValue</td>
+	<td>ContactsSearchForm_anyMixedAttributes</td>
+	<td>Test Contact</td>
+</tr>
+<!--select all contacts-->
+<tr>
+	<td>click</td>
+	<td>//a[@id='list-view-endless-page']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForCondition</td>
+	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+	<td>30000</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=list-view-rowSelector_all</td>
+	<td></td>
+</tr>
+<!--go to mass delete view-->
+<tr>
+	<td>clickAndWait</td>
+	<td>//ul[@id='MassDeleteLinkActionElement']/li/ul/li/a/span</td>
 	<td></td>
 </tr>
 <tr>
@@ -208,19 +123,60 @@
 	<td>30000</td>
 </tr>
 <tr>
-    <td>waitForText</td>
-    <td>//div[@id='zurmoView']/div/table/tbody/tr[7]/td</td>
-    <td>Inbound Call</td>
+	<td>assertTextPresent</td>
+	<td>selected for removal</td>
+	<td></td>
+</tr>
+<!--mass delete products-->
+<tr>
+	<td>clickAndWait</td>
+	<td>name=delete</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForCondition</td>
+	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+	<td>30000</td>
+</tr>
+<tr>
+	<td>waitForTextPresent</td>
+	<td>records successfully deleted</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Return to List</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForCondition</td>
+	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+	<td>30000</td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>No results found.</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForCondition</td>
+	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+	<td>30000</td>
 </tr>
 <!--clear search result-->
 <tr>
-	<td>open</td>
-	<td>index.php/contacts/default?clearingSearch=1</td>
-	<td></td>
-</tr>
-<tr>
-	<td>waitForPageToLoad</td>
-	<td></td>
+	<td>click</td>
+	<td>id=clear-search-link</td>
 	<td></td>
 </tr>
 <tr>
@@ -229,15 +185,11 @@
 	<td>30000</td>
 </tr>
 <tr>
-	<td>click</td>
-	<td>//ul[@id='MassEditLinkActionElement']/li/ul/li/a/span</td>
+	<td>waitForTextNotPresent</td>
+	<td>Criteria Selected</td>
 	<td></td>
 </tr>
-<tr>
-	<td>assertAlert</td>
-	<td>You must select at least one record</td>
-	<td></td>
-</tr>
-</tbody></table>
+</tbody>
+</table>
 </body>
 </html>
