@@ -56,6 +56,11 @@
             Currency::getAll(); //forces base currency to be created.
         }
 
+        public static function getDependentTestModelClassNames()
+        {
+            return array('ImportModelTestItem3');
+        }
+
         public function testCurrencySanitizationUsingNumberSanitizerUtil()
         {
             $currency = Currency::getByCode(Yii::app()->currencyHelper->getBaseCode());
