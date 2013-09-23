@@ -38,7 +38,7 @@
     {
         public function doesTableExist($tableName)
         {
-            $tableName  = $this->safeTable($tableName);
+            $tableName  = strtolower($tableName);
             $result     = $this->adapter->get("SHOW TABLES LIKE '$tableName'");
             return (count($result) > 0);
         }
