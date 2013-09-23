@@ -1116,7 +1116,6 @@
             }
             if ($databaseColumnType == '')
             {
-                var_dump("Hint: $hintType");
                 throw new NotSupportedException();
             }
             return $databaseColumnType;
