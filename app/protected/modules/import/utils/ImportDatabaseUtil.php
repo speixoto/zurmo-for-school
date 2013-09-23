@@ -57,12 +57,12 @@
             assert('$delimiter != null && is_string($delimiter)');
             assert('$enclosure != null && is_string($enclosure)');
             ZurmoRedBean::$writer->dropTableByTableName($tableName);
-            $columns = static::optimizeTableImportColumnsAndGetColumnNames($fileHandle, $tableName, $delimiter, $enclosure);
+            $columns = static::createImportTemporaryTableAndGetColumnNames($fileHandle, $tableName, $delimiter, $enclosure);
             static::convertCsvIntoRowsInTable($fileHandle, $tableName, $delimiter, $enclosure, $columns);
             return true;
         }
 
-        protected static function optimizeTableImportColumnsAndGetColumnNames($fileHandle, $tableName, $delimiter, $enclosure)
+        protected static function createImportTemporaryTableAndGetColumnNames($fileHandle, $tableName, $delimiter, $enclosure)
         {
             assert('gettype($fileHandle) == "resource"');
             assert('is_string($tableName)');
