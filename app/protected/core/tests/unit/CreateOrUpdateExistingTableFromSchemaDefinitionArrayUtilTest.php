@@ -92,7 +92,7 @@
          */
         public function testGenerateOrUpdateTableBySchemaDefinitionWithTwoValuesInSchema()
         {
-            $schema     = array('tableName' =>  array(
+            $schema     = array('tablename' =>  array(
                                     'columns' => array(
                                         array(
                                             'name' => 'hash',
@@ -105,7 +105,7 @@
                                     ),
                                     'indexes' => array(),
                                 ),
-                                'tableName2' => array(
+                                'tablename2' => array(
                                     'columns' => array(
                                         array(
                                             'name' => 'hash',
@@ -131,7 +131,7 @@
          */
         public function testGenerateOrUpdateTableBySchemaDefinitionWithNoColumnsKey()
         {
-            $schema     = array('tableName' =>  array(
+            $schema     = array('tablename' =>  array(
                                         'indexes' => array(),
                                     ),
                                 );
@@ -144,7 +144,7 @@
          */
         public function testGenerateOrUpdateTableBySchemaDefinitionWithNoColumns()
         {
-            $schema     = array('tableWithNoColumns' =>  array(
+            $schema     = array('tablewithnocolumns' =>  array(
                                         'columns'   => array(),
                                         'indexes'   => array(),
                                     ),
@@ -154,7 +154,7 @@
             $processedTables    = CreateOrUpdateExistingTableFromSchemaDefinitionArrayUtil::resolveProcessedTables();
             $this->assertNotEmpty($processedTables);
             $this->assertCount(1, $processedTables);
-            $this->assertEquals('tableWithNoColumns', $processedTables[0]);
+            $this->assertEquals('tablewithnocolumns', $processedTables[0]);
         }
 
         /**
@@ -164,7 +164,7 @@
          */
         public function testGenerateOrUpdateTableBySchemaDefinitionWithNoIndexesKey()
         {
-            $schema     = array('tableName' =>  array(
+            $schema     = array('tablename' =>  array(
                 'columns' => array(
                     array(
                         'name' => 'hash',
@@ -186,7 +186,7 @@
          */
         public function testGenerateOrUpdateTableBySchemaDefinitionWithNoIndexes()
         {
-            $schema     = array('tableName1' => array(
+            $schema     = array('tablename1' => array(
                 'columns' => array(
                     array(
                         'name' => 'hash',
@@ -205,8 +205,8 @@
             $processedTables    = CreateOrUpdateExistingTableFromSchemaDefinitionArrayUtil::resolveProcessedTables();
             $this->assertNotEmpty($processedTables);
             $this->assertCount(2, $processedTables);
-            $this->assertEquals('tableWithNoColumns', $processedTables[0]);
-            $this->assertEquals('tableName1', $processedTables[1]);
+            $this->assertEquals('tablewithnocolumns', $processedTables[0]);
+            $this->assertEquals('tablename1', $processedTables[1]);
         }
 
         /**
@@ -216,7 +216,7 @@
          */
         public function testGenerateOrUpdateTableBySchemaDefinitionWithColumnsMissingKeys()
         {
-            $schema     = array('tableName2' => array(
+            $schema     = array('tablename2' => array(
                 'columns' => array(
                     array(
                         'name' => 'hash',
@@ -239,7 +239,7 @@
          */
         public function testGenerateOrUpdateTableBySchemaDefinitionWithColumnsHavingExtraKeys()
         {
-            $schema     = array('tableName2' => array(
+            $schema     = array('tablename2' => array(
                 'columns' => array(
                     array(
                         'name' => 'hash',
@@ -264,7 +264,7 @@
          */
         public function testGenerateOrUpdateTableBySchemaDefinitionWithIndexesHavingIntegerKeys()
         {
-            $schema     = array('tableName2' => array(
+            $schema     = array('tablename2' => array(
                 'columns' => array(
                     array(
                         'name' => 'hash',
@@ -294,7 +294,7 @@
          */
         public function testGenerateOrUpdateTableBySchemaDefinitionWithIndexesHavingMoreThanTwoItems()
         {
-            $schema     = array('tableName2' => array(
+            $schema     = array('tablename2' => array(
                 'columns' => array(
                     array(
                         'name' => 'hash',
@@ -325,7 +325,7 @@
          */
         public function testGenerateOrUpdateTableBySchemaDefinitionWithIndexesHavingNoColumnsKey()
         {
-            $schema     = array('tableName2' => array(
+            $schema     = array('tablename2' => array(
                 'columns' => array(
                     array(
                         'name' => 'hash',
@@ -356,7 +356,7 @@
          */
         public function testGenerateOrUpdateTableBySchemaDefinitionWithUIndexesHavingNoUniqueKey()
         {
-            $schema     = array('tableName2' => array(
+            $schema     = array('tablename2' => array(
                 'columns' => array(
                     array(
                         'name' => 'hash',
@@ -386,7 +386,7 @@
          */
         public function testGenerateOrUpdateTableBySchemaDefinitionWithIndexColumnKeyNotBeingArray()
         {
-            $schema     = array('tableName2' => array(
+            $schema     = array('tablename2' => array(
                 'columns' => array(
                     array(
                         'name' => 'hash',
@@ -416,7 +416,7 @@
          */
         public function testGenerateOrUpdateTableBySchemaDefinitionWithIndexColumnNotFound()
         {
-            $schema     = array('tableName2' => array(
+            $schema     = array('tablename2' => array(
                 'columns' => array(
                     array(
                         'name' => 'hash',
@@ -444,7 +444,7 @@
          */
         public function testGenerateOrUpdateTableBySchemaDefinitionWithValidSchema()
         {
-            $schema     = array('tableName3' => array(
+            $schema     = array('tablename3' => array(
                 'columns' => array(
                     array(
                         'name' => 'hash',
@@ -568,9 +568,9 @@
             $processedTables    = CreateOrUpdateExistingTableFromSchemaDefinitionArrayUtil::resolveProcessedTables();
             $this->assertNotEmpty($processedTables);
             $this->assertCount(3, $processedTables);
-            $this->assertEquals('tableWithNoColumns', $processedTables[0]);
-            $this->assertEquals('tableName1', $processedTables[1]);
-            $this->assertEquals('tableName3', $processedTables[2]);
+            $this->assertEquals('tablewithnocolumns', $processedTables[0]);
+            $this->assertEquals('tablename1', $processedTables[1]);
+            $this->assertEquals('tablename3', $processedTables[2]);
         }
 
         /**
@@ -579,7 +579,7 @@
         public function testGenerateOrUpdateTableBySchemaDefinitionWithValidButChangedSchemaForExistingTableWithIsFreshInstall()
         {
             Yii::app()->params['isFreshInstall'] = true;
-            $schema     = array('tableName3' => array(
+            $schema     = array('tablename3' => array(
                 'columns' => array(
                     array(
                         'name' => 'hash',
@@ -679,9 +679,9 @@
             $processedTables    = CreateOrUpdateExistingTableFromSchemaDefinitionArrayUtil::resolveProcessedTables();
             $this->assertNotEmpty($processedTables);
             $this->assertCount(3, $processedTables);
-            $this->assertEquals('tableWithNoColumns', $processedTables[0]);
-            $this->assertEquals('tableName1', $processedTables[1]);
-            $this->assertEquals('tableName3', $processedTables[2]);
+            $this->assertEquals('tablewithnocolumns', $processedTables[0]);
+            $this->assertEquals('tablename1', $processedTables[1]);
+            $this->assertEquals('tablename3', $processedTables[2]);
             Yii::app()->params['isFreshInstall'] = false;
         }
 
@@ -691,7 +691,7 @@
         public function testGenerateOrUpdateTableBySchemaDefinitionWithValidButChangedSchemaForExistingTableWithNoIsFreshInstall()
         {
             Yii::app()->params['isFreshInstall'] = false;
-            $schema     = array('tableName3' => array(
+            $schema     = array('tablename3' => array(
                 'columns' => array(
                     array(
                         'name' => 'hash',
@@ -779,11 +779,11 @@
             $processedTables    = CreateOrUpdateExistingTableFromSchemaDefinitionArrayUtil::resolveProcessedTables();
             $this->assertNotEmpty($processedTables);
             $this->assertCount(3, $processedTables);
-            $this->assertEquals('tableWithNoColumns', $processedTables[0]);
-            $this->assertEquals('tableName1', $processedTables[1]);
-            $this->assertEquals('tableName3', $processedTables[2]);
+            $this->assertEquals('tablewithnocolumns', $processedTables[0]);
+            $this->assertEquals('tablename1', $processedTables[1]);
+            $this->assertEquals('tablename3', $processedTables[2]);
             // we do not need try-catch here as if there was an exception it would have been thrown already.
-            $existingFields     = ZurmoRedBean::$writer->getColumnsWithDetails('tableName3');
+            $existingFields     = ZurmoRedBean::$writer->getColumnsWithDetails('tablename3');
             $this->assertNotEmpty($existingFields);
             $this->assertCount(15, $existingFields);
             $this->assertEquals('text', $existingFields['hash']['Type']);
@@ -794,7 +794,7 @@
             $this->assertEquals('superman', $existingFields['username']['Default']);
             $this->assertEquals('varchar(255)', $existingFields['serializedavatardata']['Type']);
             $this->assertEquals('abcdef', $existingFields['serializedavatardata']['Default']);
-            $existingIndexes    = ZurmoRedBean::$writer->getIndexes('tableName3');
+            $existingIndexes    = ZurmoRedBean::$writer->getIndexes('tablename3');
             $this->assertCount(6, $existingIndexes);
             $this->assertArrayHasKey('unique_language_Index', $existingIndexes);
             $this->assertArrayHasKey('role_id_Index', $existingIndexes);

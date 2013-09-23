@@ -69,7 +69,7 @@
         public static function generateOrUpdateTableBySchemaDefinition(array $schemaDefinition, & $messageLogger)
         {
             $schemaValidation  = static::validateSchemaDefinition($schemaDefinition);
-            $tableName          = key($schemaDefinition);
+            $tableName          = strtolower(key($schemaDefinition));
             if (!$schemaValidation['isValid'])
             {
                 $errorMessage   = Zurmo::t('Core', 'Invalid Schema definition received for {{tableName}}.',
