@@ -205,7 +205,7 @@
             $project->delete();
             $this->redirect(array($this->getId() . '/index'));
         }
-        
+
         protected static function getSearchFormClassName()
         {
             return 'ProjectsSearchForm';
@@ -546,6 +546,40 @@
         {
             $listView = $this->getActiveProjectsListView();
             echo $listView->render();
+        }
+
+        /**
+         * Handle audit of projects before redirection
+         * @param Project $model
+         * @param String $modelToStringValue
+         * @param array $redirectUrlParams
+         */
+        protected function actionAfterSuccessfulModelSave($model, $modelToStringValue, $redirectUrlParams = null)
+        {
+            assert('is_string($modelToStringValue)');
+            assert('$redirectUrlParams == null || is_array($redirectUrlParams) || is_string($redirectUrlParams)');
+            if (ControllerSecurityUtil::doesCurrentUserHavePermissionOnSecurableItem($model, Permission::READ))
+            {
+                if($this->getAction()->id == 'create')
+                {
+                    $data = Zurmo::t('ProjectsModule', 'A new project <i>' . $model->name . '</i> has been added');
+                    ProjectAuditEvent::logAuditEvent(ProjectsModule::PROJECT_AUDIT_EVENT_PROJECT_CREATED, $data, $model);
+                }
+                if($this->getAction()->id == 'edit' && $model->status == Project::PROJECT_STATUS_ARCHIVED)
+                {
+                    $data = Zurmo::t('ProjectsModule', 'The project <i>' . $model->name . '</i> has been archived');
+                    ProjectAuditEvent::logAuditEvent(ProjectsModule::PROJECT_AUDIT_EVENT_PROJECT_ARCHIVED, $data, $model);
+                }
+                $this->redirectAfterSaveModel($model->id, $redirectUrlParams);
+            }
+            else
+            {
+                $notificationContent = Zurmo::t('ZurmoModule', 'You no longer have permissions to access {modelName}.',
+                    array('{modelName}' => $modelToStringValue)
+                );
+                Yii::app()->user->setFlash('notification', $notificationContent);
+                $this->redirect(array($this->getId() . '/index'));
+            }
         }
     }
 ?>
