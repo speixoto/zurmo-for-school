@@ -43,6 +43,13 @@
             return (count($result) > 0);
         }
 
+        public function doesColumnExist($tableName, $columnName)
+        {
+            $tableName  = $this->safeTable($tableName);
+            $result     = $this->adapter->get("SHOW COLUMNS FROM $tableName LIKE '$columnName'");
+            return (count($result) > 0);
+        }
+
         public function getColumnsWithDetails($tableName)
         {
             $columns    = array();

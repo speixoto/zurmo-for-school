@@ -42,6 +42,24 @@
         const CACHE_KEY = 'CreateOrUpdateExistingTableFromSchemaDefinitionArrayUtil_processedTableNames';
 
         /**
+         * Returns table schema definition
+         * @param $tableName
+         * @param array $columns
+         * @param array $indexes
+         * @return array $schema
+         */
+        public static function getTableSchema($tableName, $columns = array(), $indexes = array())
+        {
+            $schema     = array(
+                $tableName    => array(
+                    'columns' => $columns,
+                    'indexes' => $indexes,
+                )
+            );
+            return $schema;
+        }
+
+        /**
          * Provide a schema definition array queries to create/update database schema are executed.
          * @param array $schemaDefinition
          * @param $messageLogger

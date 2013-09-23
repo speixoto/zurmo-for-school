@@ -292,13 +292,7 @@
             {
                 $columns = CMap::mergeArray($columns, static::getReservedColumnMetadata());
             }
-            $schema     = array(
-                $tableName    => array(
-                    'columns' => $columns,
-                    'indexes' => array(),
-                )
-            );
-            return $schema;
+            return CreateOrUpdateExistingTableFromSchemaDefinitionArrayUtil::getTableSchema($tableName, $columns);
         }
 
         /**

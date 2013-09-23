@@ -75,16 +75,23 @@
             assert($saved);    // Not Coding Standard
 
             //Ensure the external system id column is present.
-            $columnName = ExternalSystemIdUtil::EXTERNAL_SYSTEM_ID_COLUMN_NAME;
-            //RedBeanColumnTypeOptimizer::externalIdColumn(User::getTableName('User'), $columnName);
-            $userTableName = User::getTableName('User');
+            $userTableName = RedBeanModel::getTableName('User');
+            ExternalSystemIdUtil::addExternalIdColumnIfMissing($userTableName);
             ExternalSystemIdUtil::updateByModel($super, 'A');
-            ExternalSystemIdUtil::updateByModel($jin, 'B');
+            ExternalSystemIdUtil::updateByModel($jim, 'B');
 
-            //RedBeanColumnTypeOptimizer::externalIdColumn(ImportModelTestItem::getTableName('ImportModelTestItem'),   $columnName);
-            //RedBeanColumnTypeOptimizer::externalIdColumn(ImportModelTestItem2::getTableName('ImportModelTestItem2'), $columnName);
-            //RedBeanColumnTypeOptimizer::externalIdColumn(ImportModelTestItem3::getTableName('ImportModelTestItem3'), $columnName);
-            //RedBeanColumnTypeOptimizer::externalIdColumn(ImportModelTestItem4::getTableName('ImportModelTestItem4'), $columnName);
+            ExternalSystemIdUtil::addExternalIdColumnIfMissing(RedBeanModel::getTableName('ImportModelTestItem'));
+            ExternalSystemIdUtil::addExternalIdColumnIfMissing(RedBeanModel::getTableName('ImportModelTestItem2'));
+            ExternalSystemIdUtil::addExternalIdColumnIfMissing(RedBeanModel::getTableName('ImportModelTestItem3'));
+            ExternalSystemIdUtil::addExternalIdColumnIfMissing(RedBeanModel::getTableName('ImportModelTestItem4'));
+        }
+
+        public static function getDependentTestModelClassNames()
+        {
+            return array('ImportModelTestItem',
+                            'ImportModelTestItem2',
+                            'ImportModelTestItem3',
+                            'ImportModelTestItem4');
         }
 
         /**
