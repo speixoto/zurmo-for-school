@@ -35,65 +35,17 @@
      ********************************************************************************/
 
     /**
-     * Use this form when creating a new contact from web forms
+     * Overriding CCaptchaAction for web forms
      */
-    class ContactWebFormsModelForm extends ModelForm
+    class WebFormsCaptchaAction extends CCaptchaAction
     {
-        protected $customDisplayLabels = array();
-
-        protected $customRequiredFields = array();
-
-        public $verifyCode;
-
-        protected static function getRedBeanModelClassName()
+        public function run()
         {
-            return 'Contact';
-        }
-
-        public function __construct(Contact $model)
-        {
-            $this->model = $model;
-        }
-
-        public function setCustomDisplayLabels($customDisplayLabels)
-        {
-            $this->customDisplayLabels = $customDisplayLabels;
-        }
-
-        public function setCustomRequiredFields($customRequiredFields)
-        {
-            $this->customRequiredFields = $customRequiredFields;
-        }
-
-        public function attributeLabels()
-        {
-            return array_merge($this->model->attributeLabels(), $this->customDisplayLabels);
-        }
-
-        public function rules()
-        {
-            return array_merge(parent::rules(), $this->customRequiredFields);
-        }
-
-        public function isAttributeRequired($attribute)
-        {
-            if ($this->isCustomRequiredAttribute($attribute))
+            if (Yii::app()->getRequest()->isExternalRequest())
             {
-                return true;
+                ZurmoExternalViewUtil::resolveExternalRequestHeader();
             }
-            return parent::isAttributeRequired($attribute);
-        }
-
-        public function isCustomRequiredAttribute($attribute)
-        {
-            foreach ($this->customRequiredFields as $customRequiredValidator)
-            {
-                if ($customRequiredValidator[0] == $attribute && $customRequiredValidator[1] == 'required')
-                {
-                    return true;
-                }
-            }
-            return false;
+            parent::run();
         }
     }
 ?>

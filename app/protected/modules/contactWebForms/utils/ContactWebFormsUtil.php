@@ -184,6 +184,7 @@
                     }
                 }
             }
+            $customRequiredFields[] = array('verifyCode', 'captcha', 'allowEmpty'=>!ZurmoCaptcha::checkRequirements());
             return $customRequiredFields;
         }
     }

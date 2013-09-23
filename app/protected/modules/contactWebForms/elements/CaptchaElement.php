@@ -35,65 +35,46 @@
      ********************************************************************************/
 
     /**
-     * Use this form when creating a new contact from web forms
+     * Element for rendering captcha on contact/lead web forms
      */
-    class ContactWebFormsModelForm extends ModelForm
+    class CaptchaElement extends Element
     {
-        protected $customDisplayLabels = array();
-
-        protected $customRequiredFields = array();
-
-        public $verifyCode;
-
-        protected static function getRedBeanModelClassName()
+        /**
+         * @throws NotSupportedException
+         */
+        protected function renderControlNonEditable()
         {
-            return 'Contact';
+            throw new NotSupportedException();
         }
 
-        public function __construct(Contact $model)
+        /**
+         * @return string
+         */
+        protected function renderControlEditable()
         {
-            $this->model = $model;
-        }
-
-        public function setCustomDisplayLabels($customDisplayLabels)
-        {
-            $this->customDisplayLabels = $customDisplayLabels;
-        }
-
-        public function setCustomRequiredFields($customRequiredFields)
-        {
-            $this->customRequiredFields = $customRequiredFields;
-        }
-
-        public function attributeLabels()
-        {
-            return array_merge($this->model->attributeLabels(), $this->customDisplayLabels);
-        }
-
-        public function rules()
-        {
-            return array_merge(parent::rules(), $this->customRequiredFields);
-        }
-
-        public function isAttributeRequired($attribute)
-        {
-            if ($this->isCustomRequiredAttribute($attribute))
+            if (ZurmoCaptcha::checkRequirements())
             {
-                return true;
+                $cClipWidget = new CClipWidget();
+                $cClipWidget->beginClip("captchaWidget");
+                $cClipWidget->widget('application.core.widgets.ZurmoCaptcha');
+                $cClipWidget->endClip();
+                $clip       = $cClipWidget->getController()->clips['captchaWidget'];
+                $content    = $clip;
+                $content   .= ZurmoHtml::textField("ContactWebFormsModelForm[verifyCode]");
+                return $content;
             }
-            return parent::isAttributeRequired($attribute);
         }
 
-        public function isCustomRequiredAttribute($attribute)
+        protected function renderError()
         {
-            foreach ($this->customRequiredFields as $customRequiredValidator)
-            {
-                if ($customRequiredValidator[0] == $attribute && $customRequiredValidator[1] == 'required')
-                {
-                    return true;
-                }
-            }
-            return false;
+        }
+
+        /**
+         * @return string
+         */
+        protected function renderLabel()
+        {
+            return Zurmo::t('ContactWebFormModule', 'Verify Code');
         }
     }
 ?>

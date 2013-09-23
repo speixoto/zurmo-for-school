@@ -41,6 +41,17 @@
             return array();
         }
 
+        public function actions()
+        {
+            return array(
+                // captcha action renders the CAPTCHA image
+                'captcha'=>array(
+                    'class'=>'WebFormsCaptchaAction',
+                    'backColor'=>0xFFFFFF,
+                ),
+            );
+        }
+
         public function beforeAction($action)
         {
             Yii::app()->user->userModel = BaseActionControlUserConfigUtil::getUserToRunAs();

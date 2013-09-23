@@ -101,15 +101,5 @@
             $groupMap = $this->getGroupMap();
             $this -> setGroupMap($groupMap);
         }
-
-        public function generateUrl($group)
-        {
-            $url = parent::generateUrl($group);
-            if (Yii::app()->getClientScript()->isIsolationMode())
-            {
-                $url = Yii::app()->getRequest()->getHostInfo() . $url;
-            }
-            return $url;
-        }
     }
 ?>

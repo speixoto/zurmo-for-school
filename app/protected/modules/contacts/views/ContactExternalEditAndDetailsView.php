@@ -154,7 +154,9 @@
 
         protected function renderAfterFormLayout($form)
         {
-            $content  = ZurmoHtml::hiddenField($this->hashIndexHiddenField, md5('ContactWebFormEntry'.time()));
+            $element  = new CaptchaElement($this->model, null, $form);
+            $content  = $element->render();
+            $content .= ZurmoHtml::hiddenField($this->hashIndexHiddenField, md5('ContactWebFormEntry'.time()));
             $content .= ZurmoHtml::hiddenField(ZurmoHttpRequest::EXTERNAL_REQUEST_TOKEN, ZURMO_TOKEN);
             $content .= ZurmoHtml::hiddenField(self::GOOGLE_WEB_TRACKING_ID_FIELD);
             return $content;

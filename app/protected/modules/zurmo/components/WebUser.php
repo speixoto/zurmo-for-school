@@ -173,6 +173,11 @@
                 }
             }
 
+            if (Yii::app()->getRequest()->isExternalRequest())
+            {
+                Yii::app()->setResolveAlwaysAsAbsoluteUrl();
+            }
+
             if ($this->autoUpdateFlash)
             {
                 $this->updateFlash();
