@@ -92,7 +92,7 @@
 
         protected function renderCoinsContent()
         {
-            
+
         }
     }
 ?>
