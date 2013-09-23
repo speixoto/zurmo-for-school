@@ -61,6 +61,13 @@
             $customFieldData->serializedData = serialize($values);
             $saved = $customFieldData->save();
             assert($saved);    // Not Coding Standard
+            ReadPermissionsOptimizationUtil::recreateTable(
+                    ReadPermissionsOptimizationUtil::getMungeTableName('ImportModelTestItem'));
+        }
+
+        public static function getDependentTestModelClassNames()
+        {
+            return array('ImportModelTestItem', 'ImportModelTestItem2');
         }
 
         public function testResolveLinkMessageToModel()
@@ -80,14 +87,6 @@
         public function testImportNameAndRelatedNameWithApostrophes()
         {
             Yii::app()->user->userModel = User::getByUsername('super');
-
-            //Unfreeze since the test model is not part of the standard schema.
-            $freezeWhenComplete = false;
-            if (RedBeanDatabase::isFrozen())
-            {
-                RedBeanDatabase::unfreeze();
-                $freezeWhenComplete = true;
-            }
 
             $testModels                        = ImportModelTestItem::getAll();
             $this->assertEquals(0, count($testModels));
@@ -137,12 +136,6 @@
 
             //Clear out data in table
             ZurmoRedBean::exec("delete from " . ImportModelTestItem::getTableName('ImportModelTestItem'));
-
-            //Re-freeze if needed.
-            if ($freezeWhenComplete)
-            {
-                RedBeanDatabase::freeze();
-            }
         }
 
         /**
@@ -154,14 +147,6 @@
             $super = User::getByUsername('super');
             $jim   = User::getByUsername('jim');
             Yii::app()->user->userModel = $jim;
-
-            //Unfreeze since the test model is not part of the standard schema.
-            $freezeWhenComplete = false;
-            if (RedBeanDatabase::isFrozen())
-            {
-                RedBeanDatabase::unfreeze();
-                $freezeWhenComplete = true;
-            }
 
             $testModels                        = ImportModelTestItem::getAll();
             $this->assertEquals(0, count($testModels));
@@ -272,12 +257,6 @@
 
             //Clear out data in table
             ZurmoRedBean::exec("delete from " . ImportModelTestItem::getTableName('ImportModelTestItem'));
-
-            //Re-freeze if needed.
-            if ($freezeWhenComplete)
-            {
-                RedBeanDatabase::freeze();
-            }
         }
 
         /**
@@ -293,14 +272,6 @@
             //Confirm Jim can can only view ImportModelTestItems he owns.
             $item       = NamedSecurableItem::getByName('ImportModule');
             $this->assertEquals(Permission::NONE, $item->getEffectivePermissions($jim));
-
-            //Unfreeze since the test model is not part of the standard schema.
-            $freezeWhenComplete = false;
-            if (RedBeanDatabase::isFrozen())
-            {
-                RedBeanDatabase::unfreeze();
-                $freezeWhenComplete = true;
-            }
 
             $testModels                        = ImportModelTestItem::getAll();
             $this->assertEquals(0, count($testModels));
@@ -371,12 +342,6 @@
 
             //Clear out data in table
             ZurmoRedBean::exec("delete from " . ImportModelTestItem::getTableName('ImportModelTestItem'));
-
-            //Re-freeze if needed.
-            if ($freezeWhenComplete)
-            {
-                RedBeanDatabase::freeze();
-            }
         }
 
         /**
@@ -384,15 +349,7 @@
          */
         public function testImportWithoutCurrencyValues()
         {
-                    Yii::app()->user->userModel = User::getByUsername('super');
-
-            //Unfreeze since the test model is not part of the standard schema.
-            $freezeWhenComplete = false;
-            if (RedBeanDatabase::isFrozen())
-            {
-                RedBeanDatabase::unfreeze();
-                $freezeWhenComplete = true;
-            }
+            Yii::app()->user->userModel = User::getByUsername('super');
 
             $testModels                        = ImportModelTestItem::getAll();
             $this->assertEquals(0, count($testModels));
@@ -472,12 +429,6 @@
 
             //Clear out data in table
             ZurmoRedBean::exec("delete from " . ImportModelTestItem::getTableName('ImportModelTestItem'));
-
-            //Re-freeze if needed.
-            if ($freezeWhenComplete)
-            {
-                RedBeanDatabase::freeze();
-            }
         }
 
         /**
@@ -486,14 +437,6 @@
         public function testSimpleImportWithStringAndFullNameWhichAreRequiredAttributeOnImportTestModelItem()
         {
             Yii::app()->user->userModel = User::getByUsername('super');
-
-            //Unfreeze since the test model is not part of the standard schema.
-            $freezeWhenComplete = false;
-            if (RedBeanDatabase::isFrozen())
-            {
-                RedBeanDatabase::unfreeze();
-                $freezeWhenComplete = true;
-            }
 
             $testModels                        = ImportModelTestItem::getAll();
             $this->assertEquals(0, count($testModels));
@@ -575,12 +518,6 @@
 
             //Clear out data in table
             ZurmoRedBean::exec("delete from " . ImportModelTestItem::getTableName('ImportModelTestItem'));
-
-            //Re-freeze if needed.
-            if ($freezeWhenComplete)
-            {
-                RedBeanDatabase::freeze();
-            }
         }
 
         /**
@@ -596,14 +533,6 @@
             //Add a read only user for import. Then all models should be readable by jim in addition to super.
             $explicitReadWriteModelPermissions = new ExplicitReadWriteModelPermissions();
             $explicitReadWriteModelPermissions->addReadOnlyPermitable(User::getByUsername('jim'));
-
-            //Unfreeze since the test model is not part of the standard schema.
-            $freezeWhenComplete = false;
-            if (RedBeanDatabase::isFrozen())
-            {
-                RedBeanDatabase::unfreeze();
-                $freezeWhenComplete = true;
-            }
 
             $testModels                        = ImportModelTestItem::getAll();
             $this->assertEquals(0, count($testModels));
@@ -677,12 +606,6 @@
             foreach ($testModels as $model)
             {
                 $this->assertEquals(array(Permission::READ_WRITE_CHANGE_PERMISSIONS_CHANGE_OWNER, Permission::NONE), $model->getExplicitActualPermissions ($jim));
-            }
-
-            //Re-freeze if needed.
-            if ($freezeWhenComplete)
-            {
-                RedBeanDatabase::freeze();
             }
         }
     }
