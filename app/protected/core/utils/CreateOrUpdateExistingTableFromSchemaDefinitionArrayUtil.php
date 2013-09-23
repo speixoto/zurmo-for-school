@@ -178,7 +178,7 @@
 
         protected static function validateIndexDefinitionsFromSchema(array $indexes, array $columns)
         {
-            $columnNames = RedBeanModelMemberToColumnNameUtil::resolveColumnNamesArrayFromColumnSchemaDefinition($columns);
+            $columnNames = RedBeanModelMemberToColumnUtil::resolveColumnNamesArrayFromColumnSchemaDefinition($columns);
             foreach ($indexes as $indexName => $index)
             {
                 $indexNameLength = strlen($indexName);

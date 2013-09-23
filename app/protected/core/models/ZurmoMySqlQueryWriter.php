@@ -42,6 +42,7 @@
             $result     = $this->adapter->get("SHOW TABLES LIKE '$tableName'");
             return (count($result) > 0);
         }
+
         public function getColumnsWithDetails($tableName)
         {
             $columns    = array();
@@ -84,8 +85,8 @@
          */
         public function getColumnCountByTableName($tableName, $excludeIdColumn = true)
         {
-            $firstRowData = $this->getFirstRowByTableName($tableName);
-            $count = count($firstRowData);
+            $columns = $this->getColumns($tableName);
+            $count = count($columns);
             if ($excludeIdColumn)
             {
                 $count--;
@@ -103,7 +104,7 @@
             $sql = 'select * from ' . $tableName . ' limit 1';
             try
             {
-                $data = $this->adapter->get($sql);
+                $data = $this->adapter->getRow($sql); // we don't really need getRow here as we have used 'limit 1', still...
             }
             catch (RedBean_Exception_SQL $e)
             {

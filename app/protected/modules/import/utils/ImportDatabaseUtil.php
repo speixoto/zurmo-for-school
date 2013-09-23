@@ -56,39 +56,10 @@
             assert('$tableName == strtolower($tableName)');
             assert('$delimiter != null && is_string($delimiter)');
             assert('$enclosure != null && is_string($enclosure)');
-            $freezeWhenComplete = false;
-            if (RedBeanDatabase::isFrozen())
-            {
-                RedBeanDatabase::unfreeze();
-                $freezeWhenComplete = true;
-            }
             ZurmoRedBean::$writer->dropTableByTableName($tableName);
             $columns = static::optimizeTableImportColumnsAndGetColumnNames($fileHandle, $tableName, $delimiter, $enclosure);
-            rewind($fileHandle);
             static::convertCsvIntoRowsInTable($fileHandle, $tableName, $delimiter, $enclosure, $columns);
-            static::optimizeTableNonImportColumns($tableName);
-            if ($freezeWhenComplete)
-            {
-                RedBeanDatabase::freeze();
-            }
             return true;
-        }
-
-        public static function optimizeTableNonImportColumns($tableName)
-        {
-            $bean         = ZurmoRedBean::dispense($tableName);
-            $bean->analysisStatus = '2147483647'; //Creates an integer todo: optimize to status SET
-            $bean->status         = '2147483647'; //Creates an integer todo: optimize to status SET
-            while (strlen($bean->serializedAnalysisMessages) < '1024')
-            {
-                $bean->serializedAnalysisMessages .= chr(rand(ord('a'), ord('z')));
-            }
-            while (strlen($bean->serializedMessages) < '1024')
-            {
-                $bean->serializedMessages .= chr(rand(ord('a'), ord('z')));
-            }
-            ZurmoRedBean::store($bean);
-            ZurmoRedBean::trash($bean);
         }
 
         protected static function optimizeTableImportColumnsAndGetColumnNames($fileHandle, $tableName, $delimiter, $enclosure)
@@ -98,8 +69,8 @@
             assert('$tableName == strtolower($tableName)');
             assert('$delimiter != null && is_string($delimiter)');
             assert('$enclosure != null && is_string($enclosure)');
-            $maxValues = array();
-            $columns   = array();
+            $maxLengths = array();
+            $columns    = array();
 
             while (($data = fgetcsv($fileHandle, 0, $delimiter, $enclosure)) !== false)
             {
@@ -107,32 +78,41 @@
                 {
                     foreach ($data as $k => $v)
                     {
-                        if (!isset($maxValues[$k]) || strlen($maxValues[$k]) < strlen($v))
+                        $columnName          = 'column_' . $k;
+                        $currentValueLength = strlen($v);
+                        if (!isset($maxLengths[$columnName]) || $maxLengths[$columnName] < $currentValueLength)
                         {
-                            $maxValues[$k] = $v;
+                            $type       = null;
+                            $length     = null;
+                            $maxLengths[$columnName] = $currentValueLength;
+                            RedBeanModelMemberRulesToColumnAdapter::resolveStringTypeAndLengthByMaxLength(
+                                                                                                    $type,
+                                                                                                    $length,
+                                                                                                    $currentValueLength);
+                            $columns[$k]    = RedBeanModelMemberToColumnUtil::resolveColumnMetadataByHintType(
+                                                                                                    $columnName,
+                                                                                                    $type,
+                                                                                                    $length);
                         }
                     }
                 }
             }
-            if(count($maxValues) > 99)
+
+            if (count($columns) > 0)
             {
-                throw new TooManyColumnsFailedException(
-                            Zurmo::t('ImportModule', 'The file has too many columns. The maximum is 100'));
-            }
-            if (count($maxValues) > 0)
-            {
-                $newBean = ZurmoRedBean::dispense($tableName);
-                foreach ($maxValues as $columnId => $value)
+                if(count($columns) > 99)
                 {
-                    $columnName = 'column_' . $columnId;
-                    $newBean->{$columnName} = str_repeat(' ', strlen($value));
-                    $columns[] = $columnName;
+                    throw new TooManyColumnsFailedException(
+                                    Zurmo::t('ImportModule', 'The file has too many columns. The maximum is 100'));
                 }
-                ZurmoRedBean::store($newBean);
-                ZurmoRedBean::trash($newBean);
-                ZurmoRedBean::$writer->wipe($tableName);
+                $schema = static::getTableSchemaByNameAndImportColumns($tableName, $columns);
+                CreateOrUpdateExistingTableFromSchemaDefinitionArrayUtil::generateOrUpdateTableBySchemaDefinition(
+                                                                                                    $schema,
+                                                                                                    new MessageLogger());
+                $columnNames = RedBeanModelMemberToColumnUtil::resolveColumnNamesArrayFromColumnSchemaDefinition($columns);
+                return $columnNames;
             }
-            return $columns;
+            return array();
         }
 
         protected static function convertCsvIntoRowsInTable($fileHandle, $tableName, $delimiter, $enclosure, $columns)
@@ -143,8 +123,10 @@
             assert('$delimiter != null && is_string($delimiter)');
             assert('$enclosure != null && is_string($enclosure)');
             assert('is_array($columns)');
+            rewind($fileHandle);
             $bulkQuantity    = 500;
             $importArray     = array();
+            // keeping this separate from the other loop to avoid memory leaks, there should be a better way to do this...
             while (($data = fgetcsv($fileHandle, 0, $delimiter, $enclosure)) !== false)
             {
                 if (count($data) > 1 || (count($data) == 1 && trim($data['0']) != ''))
@@ -212,18 +194,22 @@
          */
         public static function getCount($tableName, $where = null)
         {
-            $sql = 'select count(*) count from ' . $tableName;
+            if ($where === null)
+            {
+                return ZurmoRedBean::$writer->count($tableName);
+            }
+            else
+            {
+                $sql    = 'select count(id) count from ' . $tableName;
+                $sql    .= ' where ' . $where;
 
-            if ($where != null)
-            {
-                $sql .= ' where ' . $where;
+                $count = ZurmoRedBean::getCell($sql);
+                if ($count === null)
+                {
+                    $count = 0;
+                }
+                return $count;
             }
-            $count = ZurmoRedBean::getCell($sql);
-            if ($count === null)
-            {
-                $count = 0;
-            }
-            return $count;
         }
 
         /**
@@ -248,7 +234,11 @@
             }
             $bean->status             = $status;
             $bean->serializedMessages = $serializedMessages;
-            ZurmoRedBean::store($bean);
+            $storedId = ZurmoRedBean::store($bean);
+            if ($storedId != $id)
+            {
+                throw new FailedToSaveModelException("Id of updated record does not match the id used in finding it.");
+            }
         }
 
         /**
@@ -259,6 +249,54 @@
         public static function getReservedColumnNames()
         {
             return array('analysisStatus', 'id', 'serializedAnalysisMessages', 'serializedMessages', 'status');
+        }
+
+        protected static function getReservedColumnMetadata()
+        {
+            $columns    = array();
+            $reservedColumnsTypes           = array(
+                'status'                        => 'integer',
+                'serializedMessages'            => 'string',
+                'analysisStatus'                => 'integer',
+                'serializedAnalysisMessages'    => 'string',
+            );
+            foreach ($reservedColumnsTypes as $columnName => $type)
+            {
+                $length     = null;
+                $unsigned   = null;
+                if ($type === 'string')
+                {
+                    // populate the proper type given it would be 1024 char string depending on db type.
+                    RedBeanModelMemberRulesToColumnAdapter::resolveStringTypeAndLengthByMaxLength($type, $length, 1024);
+                }
+                else
+                {
+                    // forcing integers to be unsigned
+                    $unsigned = DatabaseCompatibilityUtil::resolveUnsignedByHintType($type, false);
+                }
+                // last argument is false because we do not want these column names to be resolved to lower characters
+                $columns[]  = RedBeanModelMemberToColumnUtil::resolveColumnMetadataByHintType($columnName, $type,
+                                                                            $length, $unsigned, null, null, null, false);
+            }
+            return $columns;
+        }
+
+        /**
+         * Returns table schema definition for temporary import table provided name and columns, implicitly
+         * adds reserved columns too
+         * @param $tableName
+         * @param $columns
+         * @return array
+         */
+        protected static function getTableSchemaByNameAndImportColumns($tableName, $columns)
+        {
+            $schema     = array(
+                $tableName    => array(
+                    'columns' => CMap::mergeArray($columns, static::getReservedColumnMetadata()),
+                    'indexes' => array(),
+                )
+            );
+            return $schema;
         }
     }
 ?>

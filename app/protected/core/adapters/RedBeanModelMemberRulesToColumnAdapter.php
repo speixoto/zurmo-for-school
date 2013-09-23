@@ -88,30 +88,25 @@
             {
                 return false;
             }
-            $column                         = array();
             $member                         = $rules[0][0];
             assert('strpos($member, " ") === false');
-            $column['name']                 = RedBeanModelMemberToColumnNameUtil::resolve($member);
-            $column['type']                 = null;
-            $column['unsigned']             = null;
-            $column['notNull']              = 'NULL'; // TODO: @Shoaibi/@Jason: Medium: We will handle this later.
-            $column['collation']            = null;
-            $column['default']              = 'DEFAULT NULL'; // TODO: @Shoaibi/@Jason: Medium: We will handle this later.
-            $column['length']               = null;
-            static::resolveColumnTypeAndLengthFromRules($modelClassName, $member, $rules, $column, $messageLogger);
-            if (!isset($column['type']))
+            $name                           = RedBeanModelMemberToColumnUtil::resolve($member);
+            $type                           = null;
+            $length                         = null;
+            $notNull                        = null;
+            $default                        = null;
+            static::resolveColumnTypeAndLengthFromRules($modelClassName, $member, $rules, $type, $length,
+                                                            $notNull, $default, $messageLogger);
+            if (!isset($type))
             {
                 return false;
             }
-            $column['type']                 = DatabaseCompatibilityUtil::mapHintTypeIntoDatabaseColumnType(
-                                                                                                    $column['type'],
-                                                                                                    $column['length']);
-            unset($column['length']);
-            return $column;
+            return RedBeanModelMemberToColumnUtil::resolveColumnMetadataByHintType($name, $type, $length, null, $notNull, $default, null);
         }
 
         protected static function resolveColumnTypeAndLengthFromRules($modelClassName, $member, array $rules,
-                                                                                            & $column, & $messageLogger)
+                                                                        & $type, & $length, & $notNull,
+                                                                        & $default, & $messageLogger)
         {
             $suitableModelClassName = static::findSuitableModelClassName($modelClassName);
             if (!$suitableModelClassName)
@@ -123,7 +118,6 @@
             $model                              = $suitableModelClassName::model();
             $yiiValidators                      = CValidator::$builtInValidators;
             $yiiValidatorsToRedBeanValidators   = RedBeanModel::getYiiValidatorsToRedBeanValidators();
-            $intMaxValuesAllows = DatabaseCompatibilityUtil::resolveIntegerMaxAllowedValuesByType(static::ASSUME_SIGNED);
             foreach ($rules as $validatorMetadata)
             {
                 assert('isset($validatorMetadata[0])');
@@ -152,80 +146,50 @@
                         if (in_array($validator->type, array('blob', 'boolean', 'date', 'datetime', 'longblob',
                                                         'string', 'float', 'integer', 'time', 'text', 'longtext')))
                         {
-                            if (!isset($column['type']) || $validator->type == 'float') // another validator such as CNumberValidator(integer) might have set type to more precise one.
+                            if (!isset($type) || $validator->type == 'float') // another validator such as CNumberValidator(integer) might have set type to more precise one.
                             {
-                                $column['type'] = $validator->type;
+                                $type = $validator->type;
                             }
                         }
                         break;
                     case 'CBooleanValidator':
-                        $column['type'] = 'boolean';
+                        $type = 'boolean';
                         break;
                     case 'CStringValidator':
-                        if ((!isset($column['type']) || $column['type'] == 'string'))
+                        if ((!isset($type) || $type == 'string'))
                         {
-                            $column['type'] = 'text';
-                            if (isset($validator->max) && $validator->max > 0)
-                            {
-                                if ($validator->max > 65535)
-                                {
-                                    $column['type'] = 'longtext';
-                                }
-                                elseif ($validator->max <= 255)
-                                {
-                                    $column['type']     = 'string';
-                                    $column['length']   = $validator->max;
-                                }
-                            }
+                            static::resolveStringTypeAndLengthByMaxLength($type, $length, $validator->max);
                         }
                         break;
                     case 'CUrlValidator':
-                        $column['type'] = 'string';
-                        if (!isset($column['length']))
+                        $type = 'string';
+                        if (!isset($length))
                         {
-                            $column['length'] = 255;
+                            $length = 255;
                         }
                         break;
                     case 'CEmailValidator':
-                        $column['type'] = 'string';
-                        if (!isset($column['length']))
+                        $type = 'string';
+                        if (!isset($length))
                         {
-                            $column['length'] = 255;
+                            $length = 255;
                         }
                         break;
                     case 'RedBeanModelNumberValidator':
                     case 'CNumberValidator':
-                        if ((!isset($column['type']) || $column['type'] == 'integer') && !isset($validator->precision))
+                        if ((!isset($type) || $type == 'integer') && !isset($validator->precision))
                         {
-                            $column['type'] = 'integer';
-                            if (isset($validator->max))
-                            {
-                                foreach ($intMaxValuesAllows as $type => $valueLimit)
-                                {
-                                    $maxAllowedValue = $valueLimit;
-                                    $minAllowedValue = 0;
-                                    if (static::ASSUME_SIGNED)
-                                    {
-                                        $minAllowedValue = -1 * $valueLimit;
-                                    }
-                                    if ((!isset($validator->min) || $validator->min >= $minAllowedValue) &&
-                                                                                    $validator->max < $maxAllowedValue)
-                                    {
-                                        $column['type'] = $type;
-                                        break;
-                                    }
-                                }
-                            }
+                            static::resolveIntegerTypeByMinAndMaxValue($type, $validator->min, $validator->max);
                         }
                         break;
                     case 'RedBeanModelDefaultValueValidator':
                     case 'CDefaultValueValidator':
                         // TODO: @Shoaibi/@Jason: Medium: Left here for future use if we want to set defaults on db level too.
-                        //$column['default']              = 'DEFAULT ' . $validator->value;
+                        //$default              = 'DEFAULT ' . $validator->value;
                         break;
                     case 'RedBeanModelRequiredValidator':
                     case 'CRequiredValidator':
-                        //$column['notNull'] = 'NOT NULL';
+                        //$notNull = 'NOT NULL';
                         // TODO: @Shoaibi/@Jason: Medium: Left here for future use if we want to set required on db level too.
                         break;
                     case 'RedBeanModelUniqueValidator':
@@ -235,13 +199,10 @@
                 }
             }
             // we have a string and we don't know anything else about it, better to set it as text.
-            if ($column['type'] == 'string' && !isset($column['length']))
+            if ($type == 'string' && !isset($length))
             {
-                $column['type'] = 'text';
+                $type = 'text';
             }
-            $column['collation'] = DatabaseCompatibilityUtil::resolveCollationByHintType($column['type']);
-            $column['unsigned'] = DatabaseCompatibilityUtil::resolveUnsignedByHintType($column['type'],
-                                                                                            static::ASSUME_SIGNED);
         }
 
         protected static function findSuitableModelClassName($modelClassName)
@@ -284,6 +245,47 @@
             $uniqueIndexes  = GeneralCache::getEntry(static::CACHE_KEY, array());
             $uniqueIndexes[$modelClassName][$indexName] = array('members' => array($member), 'unique' => true);
             GeneralCache::cacheEntry(static::CACHE_KEY, $uniqueIndexes);
+        }
+
+        public static function resolveStringTypeAndLengthByMaxLength(& $type, & $length, $maxLength = null)
+        {
+            $type = 'text';
+            if (isset($maxLength) && $maxLength > 0)
+            {
+                if ($maxLength > 65535)
+                {
+                    $type = 'longtext';
+                }
+                elseif ($maxLength <= 255)
+                {
+                    $type     = 'string';
+                    $length   = $maxLength;
+                }
+            }
+        }
+
+        public static function resolveIntegerTypeByMinAndMaxValue(& $type, $min, $max)
+        {
+            $intMaxValuesAllows = DatabaseCompatibilityUtil::resolveIntegerMaxAllowedValuesByType(static::ASSUME_SIGNED);
+            $type = 'integer';
+            if (isset($max))
+            {
+                foreach ($intMaxValuesAllows as $relatedType => $valueLimit)
+                {
+                    $maxAllowedValue = $valueLimit;
+                    $minAllowedValue = 0;
+                    if (static::ASSUME_SIGNED)
+                    {
+                        $minAllowedValue = -1 * $valueLimit;
+                    }
+                    if ((!isset($min) || $min >= $minAllowedValue) &&
+                        $max < $maxAllowedValue)
+                    {
+                        $type = $relatedType;
+                        break;
+                    }
+                }
+            }
         }
     }
 ?>

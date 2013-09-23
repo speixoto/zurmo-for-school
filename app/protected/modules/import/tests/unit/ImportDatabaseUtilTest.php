@@ -279,10 +279,10 @@
             $bean = ZurmoRedBean::findOne('testimporttable', "id = :id", array('id' => 2));
             $this->assertEquals(4, $bean->status);
 
-            $this->assertEquals(serialize(array('a' => 'b')), $bean->serializedmessages);
+            $this->assertEquals(serialize(array('a' => 'b')), $bean->serializedMessages);
             $bean = ZurmoRedBean::findOne('testimporttable', "id = :id", array('id' => 1));
             $this->assertEquals(null, $bean->status);
-            $this->assertEquals(null, $bean->serializedmessages);
+            $this->assertEquals(null, $bean->serializedMessages);
             $bean = ZurmoRedBean::findOne('testimporttable', "id = :id", array('id' => 3));
             $this->assertEquals(null, $bean->status);
             $this->assertEquals(null, $bean->serializedMessages);

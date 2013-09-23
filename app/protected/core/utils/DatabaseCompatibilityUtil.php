@@ -1114,12 +1114,9 @@
                     }
                 }
             }
-            else
-            {
-                throw new NotSupportedException();
-            }
             if ($databaseColumnType == '')
             {
+                var_dump("Hint: $hintType");
                 throw new NotSupportedException();
             }
             return $databaseColumnType;
@@ -1184,12 +1181,12 @@
             throw new NotSupportedException();
         }
 
-        public static function resolveUnsignedByHintType($hint, $assumeSigned = false)
+        public static function resolveUnsignedByHintType($hint, $assumeSigned = false, $hintName = null)
         {
             if (RedBeanDatabase::getDatabaseType() == 'mysql')
             {
                 $integerHintTypes = array_keys(static::resolveIntegerMaxAllowedValuesByType());
-                if (in_array($hint, $integerHintTypes) && !$assumeSigned)
+                if (in_array($hint, $integerHintTypes) && (!$assumeSigned || StringUtil::endsWith($hintName, '_id')))
                 {
                     return "UNSIGNED";
                 }

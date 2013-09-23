@@ -198,7 +198,6 @@
             ZurmoRedBean::store($newBean);
             ZurmoRedBean::trash($newBean);
             ZurmoRedBean::$writer->wipe($tableName);
-            ImportDatabaseUtil::optimizeTableNonImportColumns($tableName);
             ZurmoRedBean::$writer->wipe($tableName);
             if ($freezeWhenComplete)
             {

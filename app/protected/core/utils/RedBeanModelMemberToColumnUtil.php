@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    abstract class RedBeanModelMemberToColumnNameUtil
+    abstract class RedBeanModelMemberToColumnUtil
     {
         public static function resolve($memberName)
         {
@@ -43,7 +43,6 @@
 
         public static function resolveForeignKeyColumnMetadata($name, $relatedModelClass = null)
         {
-            $column                 = array();
             if (!isset($name))
             {
                 if (isset($relatedModelClass))
@@ -55,13 +54,49 @@
                     throw new NotSupportedException();
                 }
             }
-            $column['name']         = $name;
-            $column['type']         = 'integer';
-            $column['unsigned']     = DatabaseCompatibilityUtil::resolveUnsignedByHintType($column['type'], false);
-            $column['notNull']      = 'NULL';
-            $column['collation']    = null;
-            $column['default']      = 'DEFAULT NULL';
-            $column['type']         = DatabaseCompatibilityUtil::mapHintTypeIntoDatabaseColumnType($column['type']);
+            // this is foreign key, we force it to be assumed unsigned.
+            $unsigned   = DatabaseCompatibilityUtil::resolveUnsignedByHintType('integer', false, $name);
+            return static::resolveColumnMetadataByHintType($name, 'integer', null, $unsigned);
+        }
+
+        public static function resolveColumnMetadataByHintType($name, $hintType = 'string', $length = 255,
+                                                                $unsigned = null, $notNull = 'NULL',
+                                                                $default = 'DEFAULT NULL', $collation = null,
+                                                                $resolveName = true)
+        {
+            // TODO: @Shoaibi: Critical: write tests for: integer, smallint, tinyint, blob, date, datetime, double, string, text, email, url
+            //  with and without column ending with _id, check collation, unsigned, type, default
+            if ($resolveName)
+            {
+                $name           = static::resolve($name);
+            }
+            // map reasonable default values
+            $defaults           = array(
+                'hintType'      => 'string',
+                'length'        => 255,
+                'notNull'       => 'NULL',
+                'default'       => 'DEFAULT NULL',
+                'unsigned'      => 'eval:DatabaseCompatibilityUtil::resolveUnsignedByHintType($hintType, ' .
+                                            RedBeanModelMemberRulesToColumnAdapter::ASSUME_SIGNED .", '{$name}');",
+                'collation'     => 'eval:DatabaseCompatibilityUtil::resolveCollationByHintType($hintType);',
+            );
+
+            foreach ($defaults as $key => $defaultValue)
+            {
+                if (!isset($$key))
+                {
+                    MetadataUtil::resolveEvaluateSubString($defaultValue, 'hintType', $hintType);
+                    $$key   = $defaultValue;
+                }
+            }
+            // field is set to be NOT NULL in db, its default can't be 'NULL', unsetting variable.
+            if ($notNull !== 'NULL')
+            {
+                $default    = null;
+            }
+            // resolve hint type to db type.
+            $type               = DatabaseCompatibilityUtil::mapHintTypeIntoDatabaseColumnType($hintType, $length);
+            $column             = compact('name', 'type', 'unsigned', 'notNull','collation', 'default');
             return $column;
         }
 
@@ -70,6 +105,7 @@
             $columnNames = array_map("static::extractNameFromColumnSchemaDefinition", $columns);
             return $columnNames;
         }
+
         protected static function extractNameFromColumnSchemaDefinition($column)
         {
             return $column['name'];

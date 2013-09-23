@@ -85,10 +85,7 @@
                 $errorMessage .= Zurmo::t('Core', 'Members') . ': (';
                 $errorMessage .= join(', ', $members);
                 $errorMessage .= '),' . Zurmo::t('Core', 'Columns') . ' (';
-                $columnNames = array_map(function($columnRules)
-                                            {
-                                                return $columnRules['name'];
-                                            }, $columns);
+                $columnNames = RedBeanModelMemberToColumnUtil::resolveColumnNamesArrayFromColumnSchemaDefinition($columns);
                 $columnNames = join(', ', $columnNames);
                 $errorMessage .= $columnNames . ')';
                 throw new CException($errorMessage);

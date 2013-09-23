@@ -70,9 +70,9 @@
                 return;
             }
             $columns            = array();
-            $columns[]          = RedBeanModelMemberToColumnNameUtil::resolveForeignKeyColumnMetadata(null,
+            $columns[]          = RedBeanModelMemberToColumnUtil::resolveForeignKeyColumnMetadata(null,
                                                                                                     $modelClassName);
-            $columns[]          = RedBeanModelMemberToColumnNameUtil::resolveForeignKeyColumnMetadata(null,
+            $columns[]          = RedBeanModelMemberToColumnUtil::resolveForeignKeyColumnMetadata(null,
                                                                                                 $relatedModelClassName);
             $indexes            = static::resolveIndexesByColumnNames($columns);
             $schemaDefinition   = array($tableName => array(
