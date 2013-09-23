@@ -85,7 +85,10 @@
                 }
                 catch (MissingRecipientsForEmailMessageException $e)
                 {
-                    // TODO: @Shoaibi/@Jason: Medium: Do something about it.
+                    $activityClass  = $itemClass . 'Activity';
+                    $personId       = $contact->getClassId('Person');
+                    $type           = $activityClass::TYPE_SKIP_NO_RECIPIENTS;
+                    $activityClass::createNewActivity($type, $itemId, $personId);
                 }
             }
             static::markItemAsProcessed($item);

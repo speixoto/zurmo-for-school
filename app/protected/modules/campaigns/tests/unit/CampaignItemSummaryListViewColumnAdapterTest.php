@@ -51,7 +51,10 @@
                 throw new FailedToSaveModelException();
             }
             MarketingListTestHelper::createMarketingListByName('testMarketingList');
-            $campaign                   = CampaignTestHelper::createCampaign('testCampaign', 'testSubject', 'testContent');
+            $campaign                   = CampaignTestHelper::createCampaign('testCampaign',
+                                                                             'testSubject',
+                                                                             'testContent',
+                                                                             'testHtmlContent');
             $contact                    = ContactTestHelper::createContactByNameForOwner('test', $super);
             $emailMessage               = EmailMessageTestHelper::createArchivedUnmatchedSentMessage($super);
             $campaignItem               = new CampaignItem();
@@ -128,6 +131,16 @@
             $content = CampaignItemSummaryListViewColumnAdapter::
                                 resolveContactWithLink($contacts[0]);
             $this->assertContains('You cannot see this contact due to limited access', $content);
+        }
+
+        public function testGetSkippedContent()
+        {
+            CampaignItemActivity::createNewActivity(CampaignItemActivity::TYPE_SKIP_NO_RECIPIENTS,
+                                                    $this->campaignItem->id,
+                                                    $this->contact->getClassId('Person'));
+            $content    = CampaignItemSummaryListViewColumnAdapter::
+                resolveContactAndMetricsSummary($this->campaignItem);
+            $this->assertContains('Message activity was skipped because there were no recipients for the message.', $content);
         }
     }
 ?>

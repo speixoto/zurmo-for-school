@@ -153,7 +153,7 @@
             }
             elseif ($isSkipped)
             {
-                $content = static::getSkippedContent();
+                $content = static::getSkippedContent($campaignItem);
             }
             elseif ($campaignItem->hasFailedToSend())
             {
@@ -192,10 +192,16 @@
             return ZurmoHtml::tag('div', array('class' => 'email-recipient-stage-status queued'), $content);
         }
 
-        protected static function getSkippedContent()
+        protected static function getSkippedContent(CampaignItem $campaignItem)
         {
-            $content = '<i>&#9679;</i><span>' . Zurmo::t('MarketingModule', 'Skipped') . '</span>';
-            return ZurmoHtml::tag('div', array('class' => 'email-recipient-stage-status stage-false'), $content);
+            $span       = ZurmoHtml::tag('span', array(), Zurmo::t('MarketingModule', 'Skipped'));
+            $content    = '<i>&#9679;</i>' . $span;
+            return ZurmoHtml::tag('div',
+                                  array('class'        => 'email-recipient-stage-status stage-false',
+                                        'data-tooltip' =>  $campaignItem->getSkippedDescription()
+                                  ),
+                                  $content
+            );
         }
 
         protected static function getSentContent()

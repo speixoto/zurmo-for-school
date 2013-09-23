@@ -257,10 +257,7 @@
 
         public function beforeValidate()
         {
-            if (!$this->validateHtmlOnly())
-            {
-                return false;
-            }
+            $this->validateHtmlOnly();
             return parent::beforeValidate();
         }
 

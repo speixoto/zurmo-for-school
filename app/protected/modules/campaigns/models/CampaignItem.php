@@ -369,5 +369,20 @@
             }
             return false;
         }
+
+        /**
+         * Return the skipped description for the skipped item activity
+         * @return string
+         */
+        public function getSkippedDescription()
+        {
+            $campaignItemActivities = CampaignItemActivity::getByTypeAndModelIdAndPersonIdAndUrl(CampaignItemActivity::TYPE_SKIP,
+                $this->id,
+                $this->contact->getClassId('Person'),
+                null,
+                'latestDateTime'
+            );
+            return $campaignItemActivities[0]->getSkippedDescription();
+        }
     }
 ?>
