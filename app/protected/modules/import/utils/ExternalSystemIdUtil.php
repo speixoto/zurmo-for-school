@@ -58,5 +58,16 @@
             //RedBeanColumnTypeOptimizer::externalIdColumn($tableName, $columnName);
             ZurmoRedBean::exec("update " . $tableName . " set $columnName = '" . $externalSystemId . "' where id = " . $model->id);
         }
+
+        /**
+         * Adds externalSystemId column to specific table if it does not exist
+         * @param $tableName
+         */
+        public static function addExternalIdColumnIfMissing($tableName)
+        {
+            // check if external_system_id exists in fields
+            // if not, update model and add an external_system_id field
+
+        }
     }
 ?>
