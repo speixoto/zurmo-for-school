@@ -62,6 +62,8 @@
         /**
          * Adds externalSystemId column to specific table if it does not exist
          * @param $tableName
+         * @param $maxLength
+         * @param $columnName
          */
         public static function addExternalIdColumnIfMissing($tableName, $maxLength = 255, $columnName = null)
         {
