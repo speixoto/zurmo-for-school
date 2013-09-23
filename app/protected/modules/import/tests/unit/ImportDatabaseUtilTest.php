@@ -244,17 +244,9 @@
             $sql           = 'select * from ' . $testTableName;
             $tempTableData = ZurmoRedBean::getAll($sql);
             $this->assertEquals(4, count($tempTableData));
-            if (RedBeanDatabase::isFrozen())
-            {
-                ZurmoRedBean::$writer->dropTableByTableName($testTableName);
-                $sql = 'select * from ' . $testTableName;
-                ZurmoRedBean::getAll($sql);
-            }
-            else
-            {
-                //Unfrozen will not throw an exception in this type of situation.
-                throw new RedBean_Exception_SQL();
-            }
+            ZurmoRedBean::$writer->dropTableByTableName($testTableName);
+            $sql = 'select * from ' . $testTableName;
+            ZurmoRedBean::getAll($sql);
         }
 
         /**
