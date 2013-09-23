@@ -105,10 +105,7 @@
                     throw new TooManyColumnsFailedException(
                                     Zurmo::t('ImportModule', 'The file has too many columns. The maximum is 100'));
                 }
-                $schema = static::getTableSchemaByNameAndImportColumns($tableName, $columns);
-                CreateOrUpdateExistingTableFromSchemaDefinitionArrayUtil::generateOrUpdateTableBySchemaDefinition(
-                                                                                                    $schema,
-                                                                                                    new MessageLogger());
+                static::createTableByTableNameAndImportColumns($tableName, $columns);
                 $columnNames = RedBeanModelMemberToColumnUtil::resolveColumnNamesArrayFromColumnSchemaDefinition($columns);
                 return $columnNames;
             }
@@ -286,17 +283,36 @@
          * adds reserved columns too
          * @param $tableName
          * @param $columns
+         * @apram $withReservedColumns
          * @return array
          */
-        protected static function getTableSchemaByNameAndImportColumns($tableName, $columns)
+        protected static function getTableSchemaByNameAndImportColumns($tableName, $columns, $withReservedColumns = true)
         {
+            if ($withReservedColumns)
+            {
+                $columns = CMap::mergeArray($columns, static::getReservedColumnMetadata());
+            }
             $schema     = array(
                 $tableName    => array(
-                    'columns' => CMap::mergeArray($columns, static::getReservedColumnMetadata()),
+                    'columns' => $columns,
                     'indexes' => array(),
                 )
             );
             return $schema;
+        }
+
+        /**
+         * Creates table in db give table name and import columns
+         * @param $tableName
+         * @param $columns
+         */
+        public static function createTableByTableNameAndImportColumns($tableName, $columns)
+        {
+            // this is public due to demo controller.
+            $schema = static::getTableSchemaByNameAndImportColumns($tableName, $columns);
+            CreateOrUpdateExistingTableFromSchemaDefinitionArrayUtil::generateOrUpdateTableBySchemaDefinition(
+                                                                                                $schema,
+                                                                                                new MessageLogger());
         }
     }
 ?>
