@@ -4,12 +4,12 @@
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="selenium.base" href="http://localhost/" />
-<title>EditCatalogItem</title>
+<title>CreateAccount</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">Edit Catalog Item</td></tr>
+<tr><td rowspan="1" colspan="3">Create Account</td></tr>
 </thead>
 <tbody>
 <tr>
@@ -17,10 +17,10 @@
 	<td>45000</td>
 	<td></td>
 </tr>
-<!--Go to catalog items list-->
+<!--Go to accounts list-->
 <tr>
 	<td>open</td>
-	<td>index.php/products/default?clearingSearch=1</td>
+	<td>index.php/accounts/default?clearingSearch=1</td>
 	<td></td>
 </tr>
 <tr>
@@ -40,22 +40,7 @@
 </tr>
 <tr>
 	<td>assertTextPresent</td>
-	<td>Products</td>
-	<td></td>
-</tr>
-<tr>
-	<td>assertTextPresent</td>
-	<td>Catalog Items</td>
-	<td></td>
-</tr>
-<tr>
-	<td>assertTextPresent</td>
-	<td>Categories</td>
-	<td></td>
-</tr>
-<tr>
-	<td>assertTextPresent</td>
-	<td>Delete</td>
+	<td>Update</td>
 	<td></td>
 </tr>
 <tr>
@@ -64,50 +49,40 @@
 	<td></td>
 </tr>
 <tr>
-	<td>clickAndWait</td>
-	<td>//div[@id='SecuredActionBarForProductsSearchAndListView']/div[1]/div[1]/a[2]</td>
+	<td>assertTextPresent</td>
+	<td>Delete</td>
 	<td></td>
 </tr>
-<tr>
-	<td>waitForPageToLoad</td>
-	<td></td>
-	<td></td>
-</tr>
-<tr>
-	<td>waitForCondition</td>
-	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-	<td>30000</td>
-</tr>
-<!--select catalog item created in functional test-->
+<!--select account created in functional test-->
 <tr>
 	<td>type</td>
-	<td>id=ProductTemplatesSearchForm_anyMixedAttributes</td>
-	<td>Test Catalog Item ${randomSuffix}</td>
+	<td>id=AccountsSearchForm_anyMixedAttributes</td>
+	<td>Test Account ${randomSuffix}</td>
 </tr>
 <tr>
 	<td>keyUp</td>
-	<td>id=ProductTemplatesSearchForm_anyMixedAttributes</td>
+	<td>id=AccountsSearchForm_anyMixedAttributes</td>
 	<td>\10</td>
 </tr>
 <tr>
 	<td>waitForText</td>
-	<td>//div[@id='list-view']/table/tbody/tr/td[2]</td>
-	<td>Test Catalog Item ${randomSuffix}</td>
+	<td>//div[@id='list-view']/table/tbody/tr[1]/td[3]/a</td>
+	<td>Test Account ${randomSuffix}</td>
 </tr>
 <tr>
 	<td>verifyTextPresent</td>
-	<td>Test Catalog Item ${randomSuffix}</td>
+	<td>Test Account ${randomSuffix}</td>
 	<td></td>
 </tr>
 <tr>
 	<td>verifyValue</td>
-	<td>ProductTemplatesSearchForm_anyMixedAttributes</td>
-	<td>Test Catalog Item ${randomSuffix}</td>
+	<td>AccountsSearchForm_anyMixedAttributes</td>
+	<td>Test Account ${randomSuffix}</td>
 </tr>
-<!--go in detail view of catalog item-->
+<!--go in detail view of account-->
 <tr>
 	<td>click</td>
-	<td>//div[@id='list-view']/table/tbody/tr[1]/td[2]/a</td>
+	<td>//div[@id='list-view']/table/tbody/tr[1]/td[3]/a</td>
 	<td></td>
 </tr>
 <tr>
@@ -125,7 +100,7 @@
 	<td>3000</td>
 	<td></td>
 </tr>
-<!--edit catalog item-->
+<!--edit account-->
 <tr>
 	<td>clickAndWait</td>
 	<td>link=Edit</td>
@@ -138,8 +113,8 @@
 </tr>
 <tr>
 	<td>type</td>
-	<td>id=ProductTemplate_description</td>
-	<td>test description edited</td>
+	<td>Account_description</td>
+	<td>This is a test account after editing</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -156,18 +131,14 @@
 	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
 	<td>30000</td>
 </tr>
-<!--verify values after saving catalog item-->
+<!--verify values after saving account-->
 <tr>
-	<td>assertTextPresent</td>
-	<td>Test Catalog Item ${randomSuffix}</td>
+	<td>waitForTextPresent</td>
+	<td>Test Account ${randomSuffix}</td>
 	<td></td>
 </tr>
 <tr>
 	<td>assertText</td>
-	<td>//div[@id='ProductTemplateDetailsView']/div/div[2]/div/table/tbody/tr[2]/td</td>
-	<td>test description edited</td>
+	<td>//div[@id='AccountDetailsPortletView']/div/div/div/table/tbody/tr[11]/td</td>
+	<td>This is a test account after editing</td>
 </tr>
-</tbody>
-</table>
-</body>
-</html>
