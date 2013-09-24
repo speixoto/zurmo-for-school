@@ -122,5 +122,10 @@
             $dataProvider = new RedBeanModelDataProvider('ProjectAuditEvent', null, true);
             return $dataProvider;
         }
+
+        protected function getCGridViewLastColumn()
+        {
+            return array();
+        }
     }
 ?>

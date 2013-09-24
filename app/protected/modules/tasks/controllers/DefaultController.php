@@ -249,8 +249,8 @@
             if($relationAttributeName == 'Project')
             {
                $project = Project::getById($relationModelId);
-               $data = Zurmo::t('ProjectsModule', 'A new task <i>' . $task->name . '</i> has been added to project <i>' . $project->name . '</i>');
-               ProjectAuditEvent::logAuditEvent(ProjectsModule::PROJECT_AUDIT_EVENT_TASK_ADDED, $data, $project);
+               $data = $task->name;
+               ProjectAuditEvent::logAuditEvent(ProjectAuditEvent::TASK_ADDED, $data, $project);
             }
             $this->actionModalViewFromRelation($task->id);
         }

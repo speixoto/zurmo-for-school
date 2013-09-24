@@ -565,7 +565,7 @@
         }
 
         /**
-         * Get active projects list view
+         * Get latest activity feed list view
          * @return ListView
          */
         public function getLatestActivityFeed()

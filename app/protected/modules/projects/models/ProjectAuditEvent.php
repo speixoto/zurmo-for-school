@@ -48,61 +48,28 @@
 
         public static $isTableOptimized = false;
 
-        public static function getSinceTimestamp($timestamp)
-        {
-            assert('is_int($timestamp)');
-            return getSinceDateTime(self::convertTimestampToDbFormatDateTime($timestamp));
-        }
-
-        public static function getSinceDate($date)
-        {
-            assert('DateTimeUtil::isValidDbFormattedDate($date)');
-            return self::makeModels($beans = R::find('projectauditevent', "datetime >= '$date 00-00-00'"));
-        }
-
-        public static function getSinceDateTime($dateTime)
-        {
-            assert('DateTimeUtil::isValidDbFormattedDateTime($dateTime)');
-            return self::makeModels($beans = R::find('projectauditevent', "datetime >= '$dateTime'"));
-        }
-
+        /**
+         * Gets the appropriate time difference of the event from the current time
+         * @param DateTime $dateTime in sql format
+         * @return string
+         */
         public static function getTimeDifference($dateTime)
         {
             assert('DateTimeUtil::isValidDbFormattedDateTime($dateTime)');
             $eventDateTime = new DateTime($dateTime);
             $currentDateTime = new DateTime();
             $interval = $currentDateTime->diff($eventDateTime);
-            return $interval->format('%d day(s)');
+            return $interval->d . ' d ' . $interval->h . ' h ' . $interval->m . ' m ' . $interval->s . ' s';
         }
 
-        public static function getTailEvents($count)
-        {
-            assert('is_int($count)');
-            $sql = "select id
-                    from
-                        (select   id
-                         from     projectauditevent
-                         order by id desc
-                         limit    $count) as temp
-                    order by id";
-            $ids   = R::getCol($sql);
-            $beans = R::batch ('projectauditevent', $ids);
-            return self::makeModels($beans, __CLASS__);
-        }
-
-        public static function getTailDistinctEventsByEventName($eventName, User $user, $count)
-        {
-            assert('is_string($eventName)');
-            assert('is_int($count)');
-            $sql = "select id
-                    from ( select id, modelid, datetime from projectauditevent where _user_id = {$user->id}
-                    AND eventname = '{$eventName}' order by id desc ) projectauditevent
-                    group by concat(modelid) order by datetime desc limit $count";
-            $ids   = R::getCol($sql);
-            $beans = R::batch ('projectauditevent', $ids);
-            return self::makeModels($beans, __CLASS__);
-        }
-
+        /**
+         * Logs audit event
+         * @param string $eventName
+         * @param array $data
+         * @param Project $project
+         * @param User $user
+         * @return boolean
+         */
         public static function logAuditEvent($eventName, $data = null, Project $project = null, User $user = null)
         {
             assert('is_string($eventName)  && $eventName  != ""');
@@ -146,6 +113,11 @@
             return $saved;
         }
 
+        /**
+         * Transalate attribute labels
+         * @param string $language
+         * @return array
+         */
         protected static function translatedAttributeLabels($language)
         {
             return array_merge(parent::translatedAttributeLabels($language),

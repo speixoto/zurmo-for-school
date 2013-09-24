@@ -38,12 +38,26 @@
      */
     class ProjectFeedListViewColumnAdapter extends TextListViewColumnAdapter
     {
+        /**
+         * Get message templates
+         * @return array
+         */
         public static function getMessageTemplates()
         {
+            $projectNameTemplate = '<strong><i>{projectname}</i></strong>';
+            $userNameTemplate = '<strong>{username}</strong>';
+            $taskNameTemplate = '<strong>{taskname}</strong>';
             return array(
-                ProjectAuditEvent::PROJECT_CREATED => '<strong><i>{projectname}</i></strong>'  . Zurmo::t('ProjectsModule', ' is added by user ') . '<strong>{username}</strong>',
-                ProjectAuditEvent::PROJECT_ARCHIVED => '<strong><i>{projectname}</i></strong>'  . Zurmo::t('ProjectsModule', ' is archived by user ') . '<strong>{username}</strong>',
-                ProjectAuditEvent::TASK_COMPLETED => '<strong><i>{projectname}</i></strong> <strong>{taskname}</strong>'  . Zurmo::t('ProjectsModule', 'is marked as completed by user') . '<strong>{username}</strong>',
+                ProjectAuditEvent::PROJECT_CREATED  => $projectNameTemplate  . ' ' .
+                                                        Zurmo::t('ProjectsModule', ' is added by user')  . ' ' .
+                                                        $userNameTemplate,
+                ProjectAuditEvent::PROJECT_ARCHIVED =>  $projectNameTemplate  . ' ' .
+                                                        Zurmo::t('ProjectsModule', ' is archived by user')  . ' ' .
+                                                        $userNameTemplate,
+                ProjectAuditEvent::TASK_COMPLETED   => $projectNameTemplate  . ' ' .
+                                                        $taskNameTemplate  . ' ' .
+                                                        Zurmo::t('ProjectsModule', 'is marked as completed by user')  . ' ' .
+                                                        $userNameTemplate,
             );
         }
 
@@ -57,13 +71,14 @@
         }
 
         /**
-         * Get active project information for dashboard
+         * Get feed information if projects for user
          * @param array $data
          * @return string
          */
         public static function getFeedInformationForDashboard($data)
         {
             $project = Project::getById($data->project->id);
+            $projectName = ZurmoHtml::link($project->name, Yii::app()->createUrl('projects/default/details', array('id' => $project->id)));
             $content = null;
             $user    = User::getById($data->user->id);
             $unserializedData  = unserialize($data->serializedData);
@@ -71,20 +86,38 @@
             switch($data->eventName)
             {
                 case ProjectAuditEvent::PROJECT_CREATED:
-                    $content .= str_replace(array('{projectname}', '{username}'), array($project->name, $user->getFullName()), $messageTemplates[ProjectAuditEvent::PROJECT_CREATED]);
+                    $content .= str_replace(array('{projectname}', '{username}'),
+                                            array($projectName, $user->getFullName()),
+                                            $messageTemplates[ProjectAuditEvent::PROJECT_CREATED]);
                     break;
 
                 case ProjectAuditEvent::PROJECT_ARCHIVED:
-                    $content .= str_replace(array('{projectname}', '{username}'), array($project->name, $user->getFullName()), $messageTemplates[ProjectAuditEvent::PROJECT_ARCHIVED]);
+                    $content .= str_replace(array('{projectname}', '{username}'),
+                                            array($projectName, $user->getFullName()),
+                                            $messageTemplates[ProjectAuditEvent::PROJECT_ARCHIVED]);
                     break;
 
                 case ProjectAuditEvent::TASK_COMPLETED:
-                    $content .= str_replace(array('{projectname}', '{taskname}', '{username}'), array($project->name, $unserializedData, $user->getFullName()), $messageTemplates[ProjectAuditEvent::PROJECT_ARCHIVED]);
+                    $content .= str_replace(array('{projectname}', '{taskname}', '{username}'),
+                                            array($projectName, $unserializedData, $user->getFullName()),
+                                            $messageTemplates[ProjectAuditEvent::PROJECT_ARCHIVED]);
                     break;
             }
 
-            $content .=  '<small>' . Zurmo::t('ProjectsModule', ' about ' ) . ProjectAuditEvent::getTimeDifference($data->dateTime) . Zurmo::t('ProjectsModule', ' ago');
+            $content .=  '<small>' . Zurmo::t('ProjectsModule', ' about ' ) .
+                         ProjectAuditEvent::getTimeDifference($data->dateTime) .
+                         Zurmo::t('ProjectsModule', ' ago');
             return $content;
+        }
+
+        /**
+         * Resolve project name with link to details url
+         * @param Project $project
+         * @return string
+         */
+        protected function resolveProjectName($project)
+        {
+            return ZurmoHtml::link($project->name, Yii::app()->createUrl('projects/default/details', array('id' => $project->id)));
         }
     }
 ?>
