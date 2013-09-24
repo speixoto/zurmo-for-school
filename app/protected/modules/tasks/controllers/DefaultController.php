@@ -245,6 +245,13 @@
                 $task   = Task::getById(intval($id));
             }
             $task       = $this->attemptToSaveModelFromPost($task, null, false);
+            //Log event for project audit
+            if($relationAttributeName == 'Project')
+            {
+               $project = Project::getById($relationModelId);
+               $data = Zurmo::t('ProjectsModule', 'A new task <i>' . $task->name . '</i> has been added to project <i>' . $project->name . '</i>');
+               ProjectAuditEvent::logAuditEvent(ProjectsModule::PROJECT_AUDIT_EVENT_TASK_ADDED, $data, $project);
+            }
             $this->actionModalViewFromRelation($task->id);
         }
 
@@ -450,6 +457,18 @@
                 {
                     $checkItem->completed = true;
                     $checkItem->unrestrictedSave();
+                }
+                foreach ($task->activityItems as $existingItem)
+                {
+                    try
+                    {
+                        $project = $existingItem->castDown(array('Project'));
+                        ProjectAuditEvent::logAuditEvent(ProjectAuditEvent::TASK_COMPLETED, $task->name, $project);
+                    }
+                    catch(NotFoundException $e)
+                    {
+
+                    }
                 }
                 $task->completedDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
                 $task->completed         = true;

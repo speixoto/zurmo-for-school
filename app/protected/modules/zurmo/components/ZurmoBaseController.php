@@ -747,6 +747,7 @@
             assert('$redirectUrlParams == null || is_array($redirectUrlParams) || is_string($redirectUrlParams)');
             if (ControllerSecurityUtil::doesCurrentUserHavePermissionOnSecurableItem($model, Permission::READ))
             {
+                $this->beforeRedirect($model);
                 $this->redirectAfterSaveModel($model->id, $redirectUrlParams);
             }
             else
@@ -1258,6 +1259,14 @@
             }
 
             return $detailsAndRelationsView;
+        }
+
+        /**
+         * Process info before redirection
+         */
+        protected function beforeRedirect($model)
+        {
+
         }
     }
 ?>

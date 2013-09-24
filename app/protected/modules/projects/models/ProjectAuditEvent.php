@@ -36,6 +36,16 @@
 
     class ProjectAuditEvent extends RedBeanModel
     {
+        const PROJECT_CREATED            = 'Project Created';
+
+        const TASK_ADDED                 = 'Task Added';
+
+        const COMMENT_ADDED              = 'Comment Added';
+
+        const TASK_COMPLETED             = 'Task Completed';
+
+        const PROJECT_ARCHIVED           = 'Project Archived';
+
         public static $isTableOptimized = false;
 
         public static function getSinceTimestamp($timestamp)
@@ -54,6 +64,15 @@
         {
             assert('DateTimeUtil::isValidDbFormattedDateTime($dateTime)');
             return self::makeModels($beans = R::find('projectauditevent', "datetime >= '$dateTime'"));
+        }
+
+        public static function getTimeDifference($dateTime)
+        {
+            assert('DateTimeUtil::isValidDbFormattedDateTime($dateTime)');
+            $eventDateTime = new DateTime($dateTime);
+            $currentDateTime = new DateTime();
+            $interval = $currentDateTime->diff($eventDateTime);
+            return $interval->format('%d day(s)');
         }
 
         public static function getTailEvents($count)

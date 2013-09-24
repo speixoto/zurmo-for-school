@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class ActiveProjectsPortletView extends ConfigurableMetadataView implements PortletViewInterface
+    class ProjectsActivityFeedPortletView extends ConfigurableMetadataView implements PortletViewInterface
     {
         /**
          * Portlet parameters passed in from the portlet.
@@ -138,7 +138,7 @@
          */
         public function getTitle()
         {
-            $title  = Zurmo::t('ProjectsModule', 'Active Projects');
+            $title  = Zurmo::t('ProjectsModule', 'Activity Feed');
             return $title;
         }
 
@@ -148,7 +148,7 @@
         public function renderContent()
         {
             $content  = null;
-            $content .= $this->renderActiveProjectsContent();
+            $content .= $this->renderLatestActivityFeed();
             return $content;
         }
 
@@ -158,12 +158,12 @@
         }
 
         /**
-         * Renders active projects content
+         * Renders latest activity
          * @return string
          */
-        protected function renderActiveProjectsContent()
+        protected function renderLatestActivityFeed()
         {
-            $listView = Yii::app()->getController()->getActiveProjectsListView();
+            $listView = Yii::app()->getController()->getLatestActivityFeed();
             return $listView->render();
         }
     }

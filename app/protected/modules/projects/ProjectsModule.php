@@ -42,12 +42,6 @@
 
         const RIGHT_ACCESS_PROJECTS = 'Access Projects Tab';
 
-        const PROJECT_AUDIT_EVENT_PROJECT_CREATED            = 'Project Created';
-        const PROJECT_AUDIT_EVENT_TASK_ADDED                 = 'Task Added';
-        const PROJECT_AUDIT_EVENT_COMMENT_ADDED              = 'Comment Added';
-        const PROJECT_AUDIT_EVENT_TASK_COMPLETED             = 'Task Completed';
-        const PROJECT_AUDIT_EVENT_PROJECT_ARCHIVED           = 'Project Archived';
-
         public function getDependencies()
         {
             return array(

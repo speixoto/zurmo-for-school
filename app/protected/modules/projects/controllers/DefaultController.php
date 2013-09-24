@@ -551,35 +551,41 @@
         /**
          * Handle audit of projects before redirection
          * @param Project $model
-         * @param String $modelToStringValue
-         * @param array $redirectUrlParams
          */
-        protected function actionAfterSuccessfulModelSave($model, $modelToStringValue, $redirectUrlParams = null)
+        protected function beforeRedirect($model)
         {
-            assert('is_string($modelToStringValue)');
-            assert('$redirectUrlParams == null || is_array($redirectUrlParams) || is_string($redirectUrlParams)');
-            if (ControllerSecurityUtil::doesCurrentUserHavePermissionOnSecurableItem($model, Permission::READ))
+            if($this->getAction()->id == 'create')
             {
-                if($this->getAction()->id == 'create')
-                {
-                    $data = Zurmo::t('ProjectsModule', 'A new project <i>' . $model->name . '</i> has been added');
-                    ProjectAuditEvent::logAuditEvent(ProjectsModule::PROJECT_AUDIT_EVENT_PROJECT_CREATED, $data, $model);
-                }
-                if($this->getAction()->id == 'edit' && $model->status == Project::PROJECT_STATUS_ARCHIVED)
-                {
-                    $data = Zurmo::t('ProjectsModule', 'The project <i>' . $model->name . '</i> has been archived');
-                    ProjectAuditEvent::logAuditEvent(ProjectsModule::PROJECT_AUDIT_EVENT_PROJECT_ARCHIVED, $data, $model);
-                }
-                $this->redirectAfterSaveModel($model->id, $redirectUrlParams);
+                ProjectAuditEvent::logAuditEvent(ProjectAuditEvent::PROJECT_CREATED, $model->name, $model);
             }
-            else
+            if($this->getAction()->id == 'edit' && $model->status == Project::PROJECT_STATUS_ARCHIVED)
             {
-                $notificationContent = Zurmo::t('ZurmoModule', 'You no longer have permissions to access {modelName}.',
-                    array('{modelName}' => $modelToStringValue)
-                );
-                Yii::app()->user->setFlash('notification', $notificationContent);
-                $this->redirect(array($this->getId() . '/index'));
+                ProjectAuditEvent::logAuditEvent(ProjectAuditEvent::PROJECT_ARCHIVED, $model->name, $model);
             }
+        }
+
+        /**
+         * Get active projects list view
+         * @return ListView
+         */
+        public function getLatestActivityFeed()
+        {
+            $pageSize                       = Yii::app()->pagination->resolveActiveForCurrentUserByType(
+                                              'listPageSize', get_class($this->getModule()));
+            $project                        = new Project(false);
+            $searchForm                     = new ProjectsSearchForm($project);
+            $dataProvider                   = $this->resolveSearchDataProvider(
+                                                    $searchForm,
+                                                    $pageSize,
+                                                    null,
+                                                    'ProjectsSearchView'
+                                                );
+            $mixedView  = $this->makeListView(
+                            $searchForm,
+                            $dataProvider,
+                            'ProjectsFeedListView'
+                        );
+            return $mixedView;
         }
     }
 ?>
