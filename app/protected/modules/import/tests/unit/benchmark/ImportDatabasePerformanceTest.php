@@ -36,10 +36,23 @@
 
     class ImportDatabasePerformanceTest extends ImportBaseTest
     {
+        protected static $temporaryFilePath = null;
+
+        protected static $testCounter = 0;
+
+        protected static $csvFileSizesToTest = array(1, 5, 10, 50, 100);
+
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
             SecurityTestHelper::createSuperAdmin();
+        }
+
+        public function setUp()
+        {
+            parent::setUp();
+            static::generateCsvAndReturnFileName(static::$csvFileSizesToTest[static::$testCounter]);
+            static::$testCounter++;
         }
 
         public function testBulkInsertWith1M()
@@ -81,41 +94,56 @@
 
         protected function bulkInsertTestWithSpecificSize($sizeInMB)
         {
-            $startTime = microtime(true);
-            $expectedRecordCount    = ($sizeInMB * 1018) + 1; // +1 for header
+            $startTime              = microtime(true);
+            $expectedRecordCount    = ($sizeInMB * 1018);
             $testTableName          = "testimporttable";
-            $csvFileFullPath        = static::generateCsvAndReturnFileName($sizeInMB);
-            $fileName               = basename($csvFileFullPath);
-            $dirName                = dirname($csvFileFullPath);
+            $fileName               = basename(static::$temporaryFilePath);
+            $dirName                = dirname(static::$temporaryFilePath);
             $this->assertTrue(ImportTestHelper::createTempTableByFileNameAndTableName($fileName,
                                                                                         $testTableName,
-                                                                                        true,
+                                                                                        false,
                                                                                         $dirName));
             $count = ImportDatabaseUtil::getCount($testTableName);
             $this->assertEquals($expectedRecordCount, $count);
             $endTime = microtime(true);
             $difference = number_format(($endTime - $startTime), 3);
-            echo "${sizeInMB}MB (${expectedRecordCount} rows) CSV test: ${difference} seconds." . PHP_EOL;
+            echo "${sizeInMB}MB (${expectedRecordCount} rows) CSV test: ${difference} seconds." . PHP_EOL . PHP_EOL;
         }
 
 
         protected static function generateCsvAndReturnFileName($sizeInMB)
         {
-            $temporaryFileName  = tempnam(sys_get_temp_dir(), "${sizeInMB}MB_csv_");
+            echo "Setting up dummy csv file of ${sizeInMB}MB" . PHP_EOL;
+            $startTime              = microtime(true);
+            if (!isset(static::$temporaryFilePath))
+            {
+                static::$temporaryFilePath = tempnam(sys_get_temp_dir(), "benchmark_csv_");
+            }
+            if (file_exists(static::$temporaryFilePath))
+            {
+                $existingSize = floor(filesize(static::$temporaryFilePath)/1048576);
+                $sizeInMB -= $existingSize;
+            }
             $itemCount          = $sizeInMB * 1018;
-            $descriptionLength  = 1024;
-            $headerArray = array("", "description");
+            $totalLength        = 1024; // how long each each row should be in total.
             $data               = array();
             for ($i = 0; $i < $itemCount; $i++)
             {
-                $id = "";
-                $description = StringUtil::generateRandomString($descriptionLength);
-                $data[] = compact("id", "description");
+                $remainingLength = $totalLength;
+                do
+                {
+                    $lengthOfCurrentSegment = rand(1, $remainingLength);
+                    $data[$i][] = str_repeat('_',$lengthOfCurrentSegment);
+                    $remainingLength -= $lengthOfCurrentSegment;
+                } while ($remainingLength > 0);
             }
 
-            $csv = ExportItemToCsvFileUtil::export($data, $headerArray);
-            file_put_contents($temporaryFileName, $csv); // doesn't matter even if its not binary, no special characters in this string
-            return $temporaryFileName;
+            $csv = ExportItemToCsvFileUtil::export($data);
+            // this doesn't matter even if its not binary, no special characters in this string
+            file_put_contents(static::$temporaryFilePath, $csv, FILE_APPEND);
+            $endTime = microtime(true);
+            $difference = number_format(($endTime - $startTime), 3);
+            echo "CSV generated in: ${difference} seconds." . PHP_EOL;
         }
     }
 ?>

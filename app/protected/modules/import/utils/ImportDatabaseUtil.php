@@ -43,6 +43,10 @@
 
         const MAX_IMPORT_COLUMN_COUNT   = 99;
 
+        protected static $temporaryFileName = null;
+
+        protected static $importDataRowCount = null;
+
         /**
          * Given a file resource, convert the file into a database table based on the table name provided.
          * Assumes the file is a csv.
@@ -73,17 +77,16 @@
         protected static function createTableByTableNameAndImportCsvIntoTable($fileHandle, $tableName, $delimiter,
                                                                                 $enclosure, $firstRowIsHeaderRow)
         {
-            $maxLengths     = array();
-            $importArray    = array();
-            $columns        = array();
+            $maxLengths         = array();
+            $columns            = array();
             static::determineMaximumColumnLengthAndPopulateImportArray($fileHandle, $delimiter, $enclosure,
-                                                                    $firstRowIsHeaderRow, $maxLengths,
-                                                                    $importArray, true);
-            if (!empty($importArray) && !empty($maxLengths))
+                                                                        $maxLengths, $firstRowIsHeaderRow);
+            if (!empty($maxLengths))
             {
                 $columnCount        = static::resolveColumnsByMaximumColumnLengths($maxLengths, $columns);
                 static::safeValidateColumnCountAndCreateTable($tableName, $columnCount, $columns);
-                static::importCsvToTable($tableName, $importArray, $firstRowIsHeaderRow);
+                static::loadDataFromTemporaryFileToTable($tableName);
+                unlink(static::$temporaryFileName);
             }
             else
             {
@@ -97,53 +100,30 @@
          * @param $fileHandle
          * @param $delimiter
          * @param $enclosure
-         * @param $firstRowIsHeaderRow
          * @param $maxLengths
-         * @param $importArray
-         * @param bool $clearEmptyColumns
+         * @param $firstRowIsHeaderRow
          */
         protected static function determineMaximumColumnLengthAndPopulateImportArray($fileHandle, $delimiter,
-                                                                                     $enclosure, $firstRowIsHeaderRow,
-                                                                                     array & $maxLengths,
-                                                                                     array & $importArray,
-                                                                                     $clearEmptyColumns = true)
+                                                                                     $enclosure, array & $maxLengths,
+                                                                                     $firstRowIsHeaderRow)
         {
+            $importArray    = array();
             rewind($fileHandle);
-            $emptyKeys      = array();
             while (($data = fgetcsv($fileHandle, 0, $delimiter, $enclosure)) !== false)
             {
                 if (count($data) > 1 || (count($data) == 1 && trim($data['0']) != ''))
                 {
                     $importData       = array();
-                    if (static::currentRowIsNotHeader($importArray, $firstRowIsHeaderRow))
-                    {
-                        static::padEmptyKeys($emptyKeys, count($data), 1);
-                    }
                     foreach ($data as $k => $v)
                     {
                         static::convertCurrentValueToUtf8AndPopulateImportDataArray($k, $v, $importData);
                         static::updateMaxLengthForKey($k, $v, $maxLengths);
-                        if (static::currentRowIsNotHeader($importArray, $firstRowIsHeaderRow))
-                        {
-                            static::unsetEmptyKeysForKeyIfValueNotEmpty($k, $v, $emptyKeys);
-                        }
                     }
                     $importArray[] = $importData;
                 }
             }
-            static::unsetEmptyKeysFromMaxLengthAndImportArray($clearEmptyColumns, $emptyKeys, $maxLengths, $importArray);
             array_walk($importArray, 'static::prependEmptyStringToAllImportRows');
-        }
-
-        /**
-         * Returns true/false depending on if we are current at header row or not.
-         * @param $importArray
-         * @param $firstRowIsHeaderRow
-         * @return bool
-         */
-        protected static function currentRowIsNotHeader(array $importArray, $firstRowIsHeaderRow)
-        {
-            return (count($importArray) > 0 || !$firstRowIsHeaderRow);
+            static::convertImportArrayAndWriteToTemporaryFile($importArray, $firstRowIsHeaderRow);
         }
 
         /**
@@ -289,37 +269,24 @@
             }
         }
 
-        /**
-         * Imports importArray to table
-         * @param $tableName
-         * @param $importArray
-         * @param $firstRowIsHeaderRow
-         */
-        protected static function importCsvToTable($tableName, array $importArray, $firstRowIsHeaderRow)
-        {
-            $temporaryFileName      = tempnam(sys_get_temp_dir(), 'csv_import_');
-            static::convertImportArrayAndWriteToTemporaryFile($importArray, $temporaryFileName, $firstRowIsHeaderRow);
-            static::loadDataFromTemporaryFileToTable($tableName, $temporaryFileName, count($importArray));
-            unlink($temporaryFileName);
-        }
 
         /**
          * Writes provided array as csv to a temporary file
          * @param $importArray
-         * @param $temporaryFileName
          * @param $firstRowIsHeaderRow
          * @throws NotSupportedException
          */
-        protected static function convertImportArrayAndWriteToTemporaryFile(array $importArray, $temporaryFileName,
-                                                                                $firstRowIsHeaderRow)
+        protected static function convertImportArrayAndWriteToTemporaryFile(array $importArray, $firstRowIsHeaderRow)
         {
+            static::$temporaryFileName      = tempnam(sys_get_temp_dir(), 'csv_import_');
+            static::$importDataRowCount     = count($importArray);
             $csv = static::convertImportArrayToCsv($importArray, $firstRowIsHeaderRow);
             if ($csv === null || strlen(trim($csv)) === 0)
             {
-                throw new NotSupportedException("Unable to convert importArray to csv for writting to ${temporaryFileName}");
+                throw new NotSupportedException("Unable to convert importArray to csv for writing to {${static::$importDataRowCount}}");
             }
-            static::writeCsvToTemporaryFile($csv, $temporaryFileName);
-            static::fixPermissionsOnTemporaryFile($temporaryFileName);
+            static::writeCsvToTemporaryFile($csv);
+            static::fixPermissionsOnTemporaryFile();
         }
 
         /**
@@ -342,29 +309,27 @@
         /**
          * Writes csv data to temporary file while ensuring utf-8 special characters remain unchanged
          * @param $csv
-         * @param $temporaryFileName
          * @throws NotSupportedException
          */
-        protected static function writeCsvToTemporaryFile($csv, $temporaryFileName)
+        protected static function writeCsvToTemporaryFile($csv)
         {
-            $temporaryFileHandle    = fopen($temporaryFileName, 'wb');
+            $temporaryFileHandle    = fopen(static::$temporaryFileName, 'wb');
             $bytesWritten           = fwrite($temporaryFileHandle, $csv);
             fclose($temporaryFileHandle);
             if ($bytesWritten === false)
             {
-                throw new NotSupportedException("Unable to write to ${temporaryFileName}");
+                throw new NotSupportedException("Unable to write to {${static::$importDataRowCount}}");
             }
         }
 
         /**
          * Fixes permissions on temporary file to 777
-         * @param $temporaryFileName
          * @throws NotSupportedException
          */
-        protected static function fixPermissionsOnTemporaryFile($temporaryFileName)
+        protected static function fixPermissionsOnTemporaryFile()
         {
             // to ensure that mysql can read this file.
-            if (!chmod($temporaryFileName, 0777))
+            if (!chmod(static::$temporaryFileName, 0777))
             {
                 throw new NotSupportedException("Unable to fix permissions on temporary import file");
             }
@@ -373,40 +338,36 @@
         /**
          * loads data from provided csv file to mysql using LOAD DATA INFILE
          * @param $tableName
-         * @param $temporaryFileName
-         * @param $expectedAffectedCount
          * @throws NotSupportedException
          */
-        protected static function loadDataFromTemporaryFileToTable($tableName, $temporaryFileName, $expectedAffectedCount)
+        protected static function loadDataFromTemporaryFileToTable($tableName)
         {
-            $characterSet = 'utf8'; // 'binary' would also work, actually that is kindda better.
-            $delimiter = ExportItemToCsvFileUtil::DEFAULT_DELIMITER;
-            $enclosure = ExportItemToCsvFileUtil::DEFAULT_ENCLOSURE;
-            if (in_array($delimiter, array("'", '\\')) || in_array($enclosure, array("'", '\\')))
-            {
-                // TODO: @Shoaibi: Medium: Deal with it B-)
-                throw new NotSupportedException("Delimiter and/or Enclosure should not be single quote or backslash");
-            }
-
-            $tableName = ZurmoRedBean::$writer->safeTable($tableName);
-            $query          = "LOAD DATA LOCAL INFILE '${temporaryFileName}' REPLACE INTO TABLE ${tableName}";
-            $query          .= "  CHARACTER SET ${characterSet} FIELDS TERMINATED BY '${delimiter}'";
-            $query          .= " ENCLOSED BY '${enclosure}';";
+            $queryParameters    = array(
+                'characterSet'         => 'utf8',  // 'binary' would also work, actually that is
+                                                    // kind of better as we already converted data to utf8
+                'delimiter'            => ExportItemToCsvFileUtil::DEFAULT_DELIMITER,
+                'enclosure'            => ExportItemToCsvFileUtil::DEFAULT_ENCLOSURE,
+                'temporaryFileName'    => static::$temporaryFileName,
+            );
+            $tableName      = ZurmoRedBean::$writer->safeTable($tableName);
+            $query          = "LOAD DATA LOCAL INFILE :temporaryFileName REPLACE INTO TABLE ${tableName}";
+            $query          .= " CHARACTER SET :characterSet FIELDS TERMINATED BY :delimiter";
+            $query          .= " ENCLOSED BY :enclosure";
             try
             {
-                $affectedRows   = ZurmoRedBean::exec($query);
+                $affectedRows   = ZurmoRedBean::exec($query, $queryParameters);
             }
             catch (RedBean_Exception_SQL $e)
             {
-                if (strpos($e->getMessage(), 'SQLSTATE[42000]: Syntax error or access violation: 1148 The used command is not allowed with this') === 0)
+                if (strpos($e->getMessage(), ' 1148 ') === 0)
                 {
                     $e = new NotSupportedException("Please enable LOCAL INFILE in mysql config. Add local-infile=1 to [mysqld] and [mysql] sections.");
                 }
                 throw $e;
             }
-            if ($expectedAffectedCount != $affectedRows)
+            if (static::$importDataRowCount != $affectedRows)
             {
-                throw new NotSupportedException("Unable to import all data: ${affectedRows}/${expectedAffectedCount}");
+                throw new NotSupportedException("Unable to import all data: ${affectedRows}/{${static::$importDataRowCount}}");
             }
         }
 
