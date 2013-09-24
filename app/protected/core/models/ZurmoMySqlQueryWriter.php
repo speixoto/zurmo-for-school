@@ -36,6 +36,11 @@
 
     class ZurmoMySqlQueryWriter extends RedBean_QueryWriter_MySQL
     {
+        /**
+         * Returns true/false depending on if the supplied tableName exists
+         * @param $tableName
+         * @return bool
+         */
         public function doesTableExist($tableName)
         {
             $tableName  = strtolower($tableName);
@@ -43,6 +48,12 @@
             return (count($result) > 0);
         }
 
+        /**
+         * Returns true/false depending on if the supplied columnName exists in table.
+         * @param $tableName
+         * @param $columnName
+         * @return bool
+         */
         public function doesColumnExist($tableName, $columnName)
         {
             $tableName  = $this->safeTable($tableName);
@@ -50,6 +61,11 @@
             return (count($result) > 0);
         }
 
+        /**
+         * Generates an array with column details such as not null, type, etc.
+         * @param $tableName
+         * @return array
+         */
         public function getColumnsWithDetails($tableName)
         {
             $columns    = array();
@@ -61,6 +77,11 @@
             return $columns;
         }
 
+        /**
+         * Returns array of indexes for provided tableName
+         * @param $tableName
+         * @return array
+         */
         public function getIndexes($tableName)
         {
             $indexes    = array();

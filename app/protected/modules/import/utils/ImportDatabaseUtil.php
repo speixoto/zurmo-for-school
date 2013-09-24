@@ -314,7 +314,7 @@
             {
                 $headerArray    = array_shift($importArray);
             }
-            $csv = ExportItemToCsvFileUtil::export($importArray, $headerArray, null, false);
+            $csv = ExportItemToCsvFileUtil::export($importArray, $headerArray);
             return $csv;
         }
 
