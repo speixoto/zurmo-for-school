@@ -79,7 +79,7 @@
             $this->assertTrue($import->save());
 
             ImportTestHelper::
-            createTempTableByFileNameAndTableName('importTest.csv', $import->getTempTableName(),
+            createTempTableByFileNameAndTableName('importTest.csv', $import->getTempTableName(), true,
                                                   Yii::getPathOfAlias('application.modules.accounts.tests.unit.files'));
 
             //update the ids of the account column to match the parent account.

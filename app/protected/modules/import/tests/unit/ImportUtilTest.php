@@ -96,7 +96,7 @@
             $import->serializedData                = serialize($serializedData);
             $this->assertTrue($import->save());
 
-            ImportTestHelper::createTempTableByFileNameAndTableName('importApostropheTest.csv', $import->getTempTableName());
+            ImportTestHelper::createTempTableByFileNameAndTableName('importApostropheTest.csv', $import->getTempTableName(), true);
 
             $this->assertEquals(3, ImportDatabaseUtil::getCount($import->getTempTableName())); // includes header rows.
 
@@ -156,7 +156,7 @@
             $import->serializedData                = serialize($serializedData);
             $this->assertTrue($import->save());
 
-            ImportTestHelper::createTempTableByFileNameAndTableName('importMultiSelectDropDownTest.csv', $import->getTempTableName());
+            ImportTestHelper::createTempTableByFileNameAndTableName('importMultiSelectDropDownTest.csv', $import->getTempTableName(), true);
 
             $this->assertEquals(6, ImportDatabaseUtil::getCount($import->getTempTableName())); // includes header rows.
 
@@ -281,7 +281,7 @@
             $import->serializedData                = serialize($serializedData);
             $this->assertTrue($import->save());
 
-            ImportTestHelper::createTempTableByFileNameAndTableName('importEmptyCurrencyTest.csv', $import->getTempTableName());
+            ImportTestHelper::createTempTableByFileNameAndTableName('importEmptyCurrencyTest.csv', $import->getTempTableName(), true);
 
             $this->assertEquals(3, ImportDatabaseUtil::getCount($import->getTempTableName())); // includes header rows.
 
@@ -359,7 +359,7 @@
             $import->serializedData                = serialize($serializedData);
             $this->assertTrue($import->save());
 
-            ImportTestHelper::createTempTableByFileNameAndTableName('importEmptyCurrencyTest.csv', $import->getTempTableName());
+            ImportTestHelper::createTempTableByFileNameAndTableName('importEmptyCurrencyTest.csv', $import->getTempTableName(), true);
 
             $this->assertEquals(3, ImportDatabaseUtil::getCount($import->getTempTableName())); // includes header rows.
 
@@ -446,7 +446,7 @@
             $import->serializedData                = serialize($serializedData);
             $this->assertTrue($import->save());
 
-            ImportTestHelper::createTempTableByFileNameAndTableName('importAnalyzerTest.csv', $import->getTempTableName());
+            ImportTestHelper::createTempTableByFileNameAndTableName('importAnalyzerTest.csv', $import->getTempTableName(), true);
 
             $this->assertEquals(13, ImportDatabaseUtil::getCount($import->getTempTableName())); // includes header rows.
 
@@ -542,7 +542,7 @@
             $import->serializedData                = serialize($serializedData);
             $this->assertTrue($import->save());
 
-            ImportTestHelper::createTempTableByFileNameAndTableName('importAnalyzerTest.csv', $import->getTempTableName());
+            ImportTestHelper::createTempTableByFileNameAndTableName('importAnalyzerTest.csv', $import->getTempTableName(), true);
 
             $this->assertEquals(13, ImportDatabaseUtil::getCount($import->getTempTableName())); // includes header rows.
 

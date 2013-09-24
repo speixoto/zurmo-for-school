@@ -56,7 +56,7 @@
             $this->assertTrue($import->save());
 
             ImportTestHelper::
-            createTempTableByFileNameAndTableName('productTemplates.csv', $import->getTempTableName(),
+            createTempTableByFileNameAndTableName('productTemplates.csv', $import->getTempTableName(), true,
                                                   Yii::getPathOfAlias('application.modules.productTemplates.tests.unit.files'));
 
             $this->assertEquals(3, ImportDatabaseUtil::getCount($import->getTempTableName())); // includes header rows.
@@ -146,7 +146,7 @@
             $this->assertTrue($import->save());
 
             ImportTestHelper::
-            createTempTableByFileNameAndTableName('productTemplates.csv', $import->getTempTableName(),
+            createTempTableByFileNameAndTableName('productTemplates.csv', $import->getTempTableName(), true,
                                                   Yii::getPathOfAlias('application.modules.productTemplates.tests.unit.files'));
 
             $this->assertEquals(3, ImportDatabaseUtil::getCount($import->getTempTableName())); // includes header rows.
@@ -410,7 +410,7 @@
             $this->assertTrue($import->save());
 
             ImportTestHelper::
-            createTempTableByFileNameAndTableName('productTemplatesSanitizer.csv', $import->getTempTableName(),
+            createTempTableByFileNameAndTableName('productTemplatesSanitizer.csv', $import->getTempTableName(), true,
                                                   Yii::getPathOfAlias('application.modules.productTemplates.tests.unit.files'));
 
             $this->assertEquals(5, ImportDatabaseUtil::getCount($import->getTempTableName())); // includes header rows.

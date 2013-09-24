@@ -77,7 +77,7 @@
             ImportTestHelper::updateModelsExternalId($opportunity2, 'OPP');
 
             ImportTestHelper::
-            createTempTableByFileNameAndTableName('importAnalyzerTest.csv', $import->getTempTableName(),
+            createTempTableByFileNameAndTableName('importAnalyzerTest.csv', $import->getTempTableName(), true,
                                                   Yii::getPathOfAlias('application.modules.tasks.tests.unit.files'));
             ZurmoRedBean::exec("update " . $import->getTempTableName() . " set column_0 = " .
                     $account3->id . " where id != 1 limit 3");

@@ -45,7 +45,7 @@
         public function testResolveMappingDataForView()
         {
             $testTableName = 'testimporttable';
-            $this->assertTrue(ImportTestHelper::createTempTableByFileNameAndTableName('importTest.csv', $testTableName));
+            $this->assertTrue(ImportTestHelper::createTempTableByFileNameAndTableName('importTest.csv', $testTableName, true));
             $mappingData = ImportMappingUtil::makeMappingDataByTableName($testTableName);
             $compareData = array(
                 'column_0' => array('type' => 'importColumn',   'attributeIndexOrDerivedType' => null,

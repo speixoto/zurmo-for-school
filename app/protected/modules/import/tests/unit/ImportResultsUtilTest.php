@@ -51,7 +51,7 @@
             $this->assertTrue($import->save());
 
             $testTableName = $import->getTempTableName();
-            $this->assertTrue(ImportTestHelper::createTempTableByFileNameAndTableName('importTest.csv', $testTableName));
+            $this->assertTrue(ImportTestHelper::createTempTableByFileNameAndTableName('importTest.csv', $testTableName, true));
             $count = ImportDatabaseUtil::getCount($testTableName);
             $this->assertEquals(5, $count);
 

@@ -73,8 +73,8 @@
             $import->serializedData                = serialize($serializedData);
             $this->assertTrue($import->save());
 
-            ImportTestHelper::createTempTableByFileNameAndTableName('importTest.csv', $import->getTempTableName(),
-                              Yii::getPathOfAlias('application.modules.contacts.tests.unit.files'));
+            ImportTestHelper::createTempTableByFileNameAndTableName('importTest.csv', $import->getTempTableName(), true,
+                                                Yii::getPathOfAlias('application.modules.contacts.tests.unit.files'));
 
             $this->assertEquals(4, ImportDatabaseUtil::getCount($import->getTempTableName())); // includes header rows.
 
@@ -162,7 +162,7 @@
             $this->assertTrue($import->save());
 
             ImportTestHelper::
-            createTempTableByFileNameAndTableName('importTest.csv', $import->getTempTableName(),
+            createTempTableByFileNameAndTableName('importTest.csv', $import->getTempTableName(), true,
                                                   Yii::getPathOfAlias('application.modules.contacts.tests.unit.files'));
 
             //update the ids of the account column to match the parent account.

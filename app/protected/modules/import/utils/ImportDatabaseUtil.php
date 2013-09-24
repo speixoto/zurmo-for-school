@@ -37,8 +37,12 @@
     /**
      * Helper class for working with import data tables.
      */
-    class ImportDatabaseUtil
+    abstract class ImportDatabaseUtil
     {
+        const ALLOWED_ENCODINGS_FOR_CONVERSION = 'UTF-8, UTF-7, ASCII, CP1252, EUC-JP, SJIS, eucJP-win, SJIS-win, JIS, ISO-2022-JP';
+
+        const MAX_IMPORT_COLUMN_COUNT   = 99;
+
         /**
          * Given a file resource, convert the file into a database table based on the table name provided.
          * Assumes the file is a csv.
@@ -46,112 +50,312 @@
          * @param string $tableName
          * @param string $delimiter
          * @param string $enclosure
+         * @param bool $firstRowIsHeaderRow
          * @return bool
          */
         public static function makeDatabaseTableByFileHandleAndTableName($fileHandle, $tableName, $delimiter = ',', // Not Coding Standard
-                                                                         $enclosure = "'")
+                                                                         $enclosure = "'", $firstRowIsHeaderRow = false)
         {
+            // TODO: @Shoaibi: Critical: try with load local disabled.
+            // TODO: @Shoaibi: Critical: test memory leaks???? large files, 1M, 10M, 50M, 100M
+            // TODO: @Shoaibi: Critical: test with and without header
             assert('gettype($fileHandle) == "resource"');
             assert('is_string($tableName)');
             assert('$tableName == strtolower($tableName)');
             assert('$delimiter != null && is_string($delimiter)');
             assert('$enclosure != null && is_string($enclosure)');
-            ZurmoRedBean::$writer->dropTableByTableName($tableName);
-            $columns = static::createImportTemporaryTableAndGetColumnNames($fileHandle, $tableName, $delimiter, $enclosure);
-            static::convertCsvIntoRowsInTable($fileHandle, $tableName, $delimiter, $enclosure, $columns);
+            static::createTableByTableNameAndImportCsvIntoTable($fileHandle, $tableName, $delimiter, $enclosure, $firstRowIsHeaderRow);
             return true;
         }
 
-        protected static function createImportTemporaryTableAndGetColumnNames($fileHandle, $tableName, $delimiter, $enclosure)
+
+
+        protected static function createTableByTableNameAndImportCsvIntoTable($fileHandle, $tableName, $delimiter,
+                                                                                $enclosure, $firstRowIsHeaderRow)
         {
-            assert('gettype($fileHandle) == "resource"');
-            assert('is_string($tableName)');
-            assert('$tableName == strtolower($tableName)');
-            assert('$delimiter != null && is_string($delimiter)');
-            assert('$enclosure != null && is_string($enclosure)');
-            $maxLengths = array();
-            $columns    = array();
-
-            while (($data = fgetcsv($fileHandle, 0, $delimiter, $enclosure)) !== false)
-            {
-                if (count($data) > 1 || (count($data) == 1 && trim($data['0']) != ''))
-                {
-                    foreach ($data as $k => $v)
-                    {
-                        $columnName          = 'column_' . $k;
-                        $currentValueLength = strlen($v);
-                        if (!isset($maxLengths[$columnName]) || $maxLengths[$columnName] < $currentValueLength)
-                        {
-                            $type       = null;
-                            $length     = null;
-                            $maxLengths[$columnName] = $currentValueLength;
-                            RedBeanModelMemberRulesToColumnAdapter::resolveStringTypeAndLengthByMaxLength(
-                                                                                                    $type,
-                                                                                                    $length,
-                                                                                                    $currentValueLength);
-                            $columns[$k]    = RedBeanModelMemberToColumnUtil::resolveColumnMetadataByHintType(
-                                                                                                    $columnName,
-                                                                                                    $type,
-                                                                                                    $length);
-                        }
-                    }
-                }
-            }
-
-            if (count($columns) > 0)
-            {
-                if(count($columns) > 99)
-                {
-                    throw new TooManyColumnsFailedException(
-                                    Zurmo::t('ImportModule', 'The file has too many columns. The maximum is 100'));
-                }
-                static::createTableByTableNameAndImportColumns($tableName, $columns);
-                $columnNames = RedBeanModelMemberToColumnUtil::resolveColumnNamesArrayFromColumnSchemaDefinition($columns);
-                return $columnNames;
-            }
-            return array();
+            $maxLengths     = array();
+            $importArray    = array();
+            $columns        = array();
+            static::determineMaximumColumnLengthAndPopulateImportArray($fileHandle, $delimiter, $enclosure,
+                                                                    $firstRowIsHeaderRow, $maxLengths,
+                                                                    $importArray, true);
+            $columnCount        = static::resolveColumnsByMaximumColumnLengths($maxLengths, $columns);
+            static::safeValidateColumnCountAndCreateTable($tableName, $columnCount, $columns);
+            static::importCsvToTable($tableName, $importArray, $firstRowIsHeaderRow);
         }
 
-        protected static function convertCsvIntoRowsInTable($fileHandle, $tableName, $delimiter, $enclosure, $columns)
+        /**
+         * Populates maxLengths with the max lengths of columns and importArray with converted utf8 data
+         * @param $fileHandle
+         * @param $delimiter
+         * @param $enclosure
+         * @param $firstRowIsHeaderRow
+         * @param $maxLengths
+         * @param $importArray
+         * @param bool $clearEmptyColumns
+         */
+        protected static function determineMaximumColumnLengthAndPopulateImportArray($fileHandle, $delimiter,
+                                                                                     $enclosure, $firstRowIsHeaderRow,
+                                                                                     array & $maxLengths,
+                                                                                     array & $importArray,
+                                                                                     $clearEmptyColumns = true)
         {
-            assert('gettype($fileHandle) == "resource"');
-            assert('is_string($tableName)');
-            assert('$tableName == strtolower($tableName)');
-            assert('$delimiter != null && is_string($delimiter)');
-            assert('$enclosure != null && is_string($enclosure)');
-            assert('is_array($columns)');
             rewind($fileHandle);
-            $bulkQuantity    = 500;
-            $importArray     = array();
-            // keeping this separate from the other loop to avoid memory leaks, there should be a better way to do this...
+            $emptyKeys      = array();
             while (($data = fgetcsv($fileHandle, 0, $delimiter, $enclosure)) !== false)
             {
                 if (count($data) > 1 || (count($data) == 1 && trim($data['0']) != ''))
                 {
+                    $importData       = array();
+                    static::padEmptyKeys($emptyKeys, count($data), 1);
                     foreach ($data as $k => $v)
                     {
-                        //Convert characterser to UTF-8
-                        $currentCharset = mb_detect_encoding($v, $other_charsets = 'UTF-8, UTF-7, ASCII, CP1252, EUC-JP, SJIS, eucJP-win, SJIS-win, JIS, ISO-2022-JP');
-                        if (!empty($currentCharset) && $currentCharset != "UTF-8")
+                        static::convertCurrentValueToUtf8AndPopulateImportDataArray($k, $v, $importData);
+                        static::updateMaxLengthForKey($k, $v, $maxLengths);
+                        // if its not the header row:
+                        if (count($importArray) > 0 || !$firstRowIsHeaderRow)
                         {
-                            $data[$k] = mb_convert_encoding($v, "UTF-8");
+                            static::unsetEmptyKeysForKeyIfValueNotEmpty($k, $v, $emptyKeys);
                         }
                     }
-                    $importArray[] = $data;
-                }
-                if (count($importArray) > $bulkQuantity)
-                {
-                    DatabaseCompatibilityUtil::bulkInsert($tableName, $importArray, $columns, $bulkQuantity);
-                    $importArray = array();
+                    $importArray[] = $importData;
                 }
             }
-            if (count($importArray) > $bulkQuantity)
+            static::unsetEmptyKeysFromMaxLengthAndImportArray($clearEmptyColumns, $emptyKeys, $maxLengths, $importArray);
+            array_walk($importArray, 'static::prependEmptyStringToAllImportRows');
+        }
+
+        /**
+         * Convert current value to utf8, in place. Populates values into provided array at k position
+         * @param $k
+         * @param $v
+         * @param $importData
+         */
+        protected static function convertCurrentValueToUtf8AndPopulateImportDataArray($k, & $v, array & $importData)
+        {
+            // Convert characterset to UTF-8
+            $currentCharset = mb_detect_encoding($v, static::ALLOWED_ENCODINGS_FOR_CONVERSION);
+            if (!empty($currentCharset) && $currentCharset != "UTF-8")
+            {
+                $v = mb_convert_encoding($v, "UTF-8");
+            }
+            $importData[$k] = $v;
+        }
+
+        /**
+         * Pad the sourceArray upto newSize with provided value
+         * @param $sourceArray
+         * @param $newSize
+         * @param int $value
+         */
+        protected static function padEmptyKeys(array & $sourceArray, $newSize, $value = 1)
+        {
+            if ($newSize > count($sourceArray))
+            {
+                // we are either at start or at a row that has more columns than before ones.
+                $sourceArray = array_pad($sourceArray, $newSize, $value);
+            }
+        }
+
+        /**
+         * Updates maxLengths array for k if provided v is of greater length
+         * @param $k
+         * @param $v
+         * @param $maxLengths
+         */
+        protected static function updateMaxLengthForKey($k, $v, array & $maxLengths)
+        {
+            $currentValueLength = strlen($v);
+            if (!isset($maxLengths[$k]) || $maxLengths[$k] < $currentValueLength)
+            {
+                $maxLengths[$k] = $currentValueLength;
+            }
+        }
+
+        /**
+         * Unsets key if the provided value is not empty
+         * @param $k
+         * @param $v
+         * @param $emptyKeys
+         */
+        protected static function unsetEmptyKeysForKeyIfValueNotEmpty($k, $v, array & $emptyKeys)
+        {
+            if (($v !== null || $v !== false || strlen($v) != 0) && // value is not empty
+                isset($emptyKeys[$k])) // and we already have it as empty key
+            {
+                unset($emptyKeys[$k]);
+            }
+        }
+
+        /**
+         * Unsets the keys that always remain empty from importArray and maxLengths
+         * @param $clearEmptyColumns
+         * @param $emptyKeys
+         * @param $maxLengths
+         * @param $importArray
+         */
+        protected static function unsetEmptyKeysFromMaxLengthAndImportArray($clearEmptyColumns, array $emptyKeys,
+                                                                                & $maxLengths, array & $importArray)
+        {
+            if ($clearEmptyColumns && !empty($emptyKeys))
+            {
+                foreach ($emptyKeys as $emptyKey => $notUsed)
+                {
+                    unset($maxLengths[$emptyKey]);
+                    foreach ($importArray as $importRow)
+                    {
+                        unset($importRow[$emptyKey]);
+                    }
+                }
+            }
+        }
+
+        /**
+         * Prepends an empty string to provided $val
+         * @param $val
+         * @throws NotSupportedException
+         */
+        protected static function prependEmptyStringToAllImportRows(array &$val)
+        {
+            if (!is_array($val))
             {
                 throw new NotSupportedException();
             }
-            if (count($importArray) > 0)
+            array_unshift($val, '');
+        }
+
+
+        /**
+         * Resolves string columns for given max lengths
+         * @param $maxLengths
+         * @param $columns
+         * @return int column count
+         */
+        protected static function resolveColumnsByMaximumColumnLengths(array $maxLengths, array & $columns)
+        {
+            $columnCount = 0;
+            foreach ($maxLengths as $currentValueLength)
             {
-                DatabaseCompatibilityUtil::bulkInsert($tableName, $importArray, $columns, $bulkQuantity);
+                $columnName         = 'column_' . $columnCount;
+                $type               = null;
+                $length             = null;
+                RedBeanModelMemberRulesToColumnAdapter::resolveStringTypeAndLengthByMaxLength($type, $length,
+                                                                                                $currentValueLength);
+                $columns[]    = RedBeanModelMemberToColumnUtil::resolveColumnMetadataByHintType($columnName, $type,
+                                                                                                    $length);
+                $columnCount++;
+            }
+            return $columnCount;
+        }
+
+        /**
+         * Validates if columnCount is within allowed range, and creates table if its not.
+         * @param $tableName
+         * @param $columnCount
+         * @param $columns
+         * @throws TooManyColumnsFailedException
+         */
+        protected static function safeValidateColumnCountAndCreateTable($tableName, $columnCount, array $columns)
+        {
+            if ($columnCount > 0)
+            {
+                if($columnCount > static::MAX_IMPORT_COLUMN_COUNT)
+                {
+                    throw new TooManyColumnsFailedException(
+                        Zurmo::t('ImportModule', 'The file has too many columns. The maximum is 100'));
+                }
+                static::createTableByTableNameAndImportColumns($tableName, $columns);
+            }
+        }
+
+        /**
+         * Imports importArray to table
+         * @param $tableName
+         * @param $importArray
+         * @param $firstRowIsHeaderRow
+         */
+        protected static function importCsvToTable($tableName, array $importArray, $firstRowIsHeaderRow)
+        {
+            $temporaryFileName      = tempnam(sys_get_temp_dir(), 'csv_import_');
+            static::convertImportArrayAndWriteToTemporaryFile($importArray, $temporaryFileName, $firstRowIsHeaderRow);
+            static::loadDataFromTemporaryFileToTable($tableName, $temporaryFileName, count($importArray));
+            unlink($temporaryFileName);
+        }
+
+        /**
+         * Writes provided array as csv to a temporary file
+         * @param $importArray
+         * @param $temporaryFileName
+         * @param $firstRowIsHeaderRow
+         * @throws NotSupportedException
+         */
+        protected static function convertImportArrayAndWriteToTemporaryFile(array $importArray, $temporaryFileName,
+                                                                                $firstRowIsHeaderRow)
+        {
+            $csv = static::convertImportArrayToCsv($importArray, $firstRowIsHeaderRow);
+            $bytesWritten   = file_put_contents($temporaryFileName, $csv);
+            if ($bytesWritten === false)
+            {
+                throw new NotSupportedException("Unable to write to ${temporaryFileName}");
+            }
+            static::fixPermissionsOnTemporaryFile($temporaryFileName);
+        }
+
+        /**
+         * Converts import array to csv
+         * @param $importArray
+         * @param $firstRowIsHeaderRow
+         * @return string
+         */
+        protected static function convertImportArrayToCsv(array $importArray, $firstRowIsHeaderRow)
+        {
+            $headerArray    = array();
+            if ($firstRowIsHeaderRow)
+            {
+                $headerArray    = array_shift($importArray);
+            }
+            $csv = ExportItemToCsvFileUtil::export($importArray, $headerArray, null, false);
+            return $csv;
+        }
+
+        /**
+         * Fixes permissions on temporary file to 777
+         * @param $temporaryFileName
+         * @throws NotSupportedException
+         */
+        protected static function fixPermissionsOnTemporaryFile($temporaryFileName)
+        {
+            // to ensure that mysql can read this file.
+            if (!chmod($temporaryFileName, 0777))
+            {
+                throw new NotSupportedException("Unable to fix permissions on temporary import file");
+            }
+        }
+
+        /**
+         * loads data from provided csv file to mysql using LOAD DATA INFILE
+         * @param $tableName
+         * @param $temporaryFileName
+         * @param $expectedAffectedCount
+         * @throws NotSupportedException
+         */
+        protected static function loadDataFromTemporaryFileToTable($tableName, $temporaryFileName, $expectedAffectedCount)
+        {
+            $delimiter = ExportItemToCsvFileUtil::DEFAULT_DELIMITER;
+            $enclosure = ExportItemToCsvFileUtil::DEFAULT_ENCLOSURE;
+            if (in_array($delimiter, array("'", '\\')) || in_array($enclosure, array("'", '\\')))
+            {
+                // TODO: @Shoaibi: Medium: Deal with it B-)
+                throw new NotSupportedException("Delimiter and/or Enclosure should not be single quote or backslash");
+            }
+
+            $tableName = ZurmoRedBean::$writer->safeTable($tableName);
+            $query          = "LOAD DATA LOCAL INFILE '${temporaryFileName}' REPLACE INTO TABLE ${tableName}";
+            $query          .= " FIELDS TERMINATED BY '${delimiter}' ENCLOSED BY '${enclosure}';";
+            $affectedRows   = ZurmoRedBean::exec($query);
+            if ($expectedAffectedCount != $affectedRows)
+            {
+                throw new NotSupportedException("Unable to import all data: ${affectedRows}/${expectedAffectedCount}");
             }
         }
 
@@ -286,7 +490,7 @@
          * @apram $withReservedColumns
          * @return array
          */
-        protected static function getTableSchemaByNameAndImportColumns($tableName, $columns, $withReservedColumns = true)
+        protected static function getTableSchemaByNameAndImportColumns($tableName, array $columns, $withReservedColumns = true)
         {
             if ($withReservedColumns)
             {
@@ -300,9 +504,10 @@
          * @param $tableName
          * @param $columns
          */
-        public static function createTableByTableNameAndImportColumns($tableName, $columns)
+        public static function createTableByTableNameAndImportColumns($tableName, array $columns)
         {
             // this is public due to demo controller.
+            ZurmoRedBean::$writer->dropTableByTableName($tableName);
             $schema = static::getTableSchemaByNameAndImportColumns($tableName, $columns);
             CreateOrUpdateExistingTableFromSchemaDefinitionArrayUtil::generateOrUpdateTableBySchemaDefinition(
                                                                                                 $schema,

@@ -45,7 +45,7 @@
         public function testMakeDatabaseTableByFileHandleAndTableName()
         {
             $testTableName = 'testimporttable';
-            $this->assertTrue(ImportTestHelper::createTempTableByFileNameAndTableName('importTest.csv', $testTableName));
+            $this->assertTrue(ImportTestHelper::createTempTableByFileNameAndTableName('importTest.csv', $testTableName, true));
             $sql = 'select * from ' . $testTableName;
             $tempTableData = ZurmoRedBean::getAll($sql);
             $compareData   = array(
@@ -108,7 +108,7 @@
             $this->assertEquals($compareData, $tempTableData);
 
             //Now test that using a different file on an existing temporary table will delete the temporary table first
-            $this->assertTrue(ImportTestHelper::createTempTableByFileNameAndTableName('importTest2.csv', $testTableName));
+            $this->assertTrue(ImportTestHelper::createTempTableByFileNameAndTableName('importTest2.csv', $testTableName, false));
             $sql = 'select * from ' . $testTableName;
             $tempTableData = ZurmoRedBean::getAll($sql);
             $compareData   = array(
@@ -142,7 +142,7 @@
             $testTableName = 'testimporttable';
             $this->assertTrue(ImportTestHelper::
                               createTempTableByFileNameAndTableName('importWithDifferentEnclosureAndDelimiterTest.csv',
-                                                                    $testTableName, null, "#", '"'));
+                                                                    $testTableName, true, null, "#", '"'));
             $sql = 'select * from ' . $testTableName;
             $tempTableData = ZurmoRedBean::getAll($sql);
             $compareData   = array(
@@ -255,7 +255,7 @@
         public function testGetCount()
         {
             $testTableName = 'testimporttable';
-            $this->assertTrue(ImportTestHelper::createTempTableByFileNameAndTableName('importTest.csv', $testTableName));
+            $this->assertTrue(ImportTestHelper::createTempTableByFileNameAndTableName('importTest.csv', $testTableName, true));
             $count = ImportDatabaseUtil::getCount($testTableName);
             $this->assertEquals(5, $count);
             $count = ImportDatabaseUtil::getCount($testTableName, 'column_1 = "456"');
@@ -302,7 +302,7 @@
             $this->assertFalse(is_file($copyFilePath));
             copy($filePath, $copyFilePath);
             $this->assertTrue(is_file($copyFilePath));
-            $this->assertTrue(ImportTestHelper::createTempTableByFileNameAndTableName($copyFileName, $testTableName));
+            $this->assertTrue(ImportTestHelper::createTempTableByFileNameAndTableName($copyFileName, $testTableName, true));
             unlink($copyFilePath);
             $sql = 'select * from ' . $testTableName;
             $tempTableData = ZurmoRedBean::getAll($sql);
@@ -387,7 +387,7 @@
             $this->assertFalse(is_file($copyFilePath));
             copy($filePath, $copyFilePath);
             $this->assertTrue(is_file($copyFilePath));
-            $this->assertTrue(ImportTestHelper::createTempTableByFileNameAndTableName($copyFileName, $testTableName));
+            $this->assertTrue(ImportTestHelper::createTempTableByFileNameAndTableName($copyFileName, $testTableName, true));
             unlink($copyFilePath);
             $sql = 'select * from ' . $testTableName;
             $tempTableData = ZurmoRedBean::getAll($sql);
@@ -472,7 +472,7 @@
             $this->assertFalse(is_file($copyFilePath));
             copy($filePath, $copyFilePath);
             $this->assertTrue(is_file($copyFilePath));
-            $this->assertTrue(ImportTestHelper::createTempTableByFileNameAndTableName($copyFileName, $testTableName));
+            $this->assertTrue(ImportTestHelper::createTempTableByFileNameAndTableName($copyFileName, $testTableName, true));
             unlink($copyFilePath);
             $sql = 'select * from ' . $testTableName;
             $tempTableData = ZurmoRedBean::getAll($sql);
@@ -543,7 +543,7 @@
         public function testMakeDatabaseTableFromISO188591WithAccents()
         {
             $testTableName = 'testimporttable';
-            $this->assertTrue(ImportTestHelper::createTempTableByFileNameAndTableName('importISO88591WithAccentsTest.csv', $testTableName));
+            $this->assertTrue(ImportTestHelper::createTempTableByFileNameAndTableName('importISO88591WithAccentsTest.csv', $testTableName, true));
             $sql = 'select * from ' . $testTableName;
             $tempTableData = ZurmoRedBean::getAll($sql);
             $compareData   = array(
@@ -593,7 +593,7 @@
         public function testBulkInsert()
         {
             $testTableName = 'testimporttable';
-            $this->assertTrue(ImportTestHelper::createTempTableByFileNameAndTableName('importBulkTest.csv', $testTableName));
+            $this->assertTrue(ImportTestHelper::createTempTableByFileNameAndTableName('importBulkTest.csv', $testTableName, false));
             $count = ImportDatabaseUtil::getCount($testTableName);
             $this->assertEquals(520, $count);
         }

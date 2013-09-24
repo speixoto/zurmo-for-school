@@ -585,10 +585,11 @@
                         $tempTableName = $import->getTempTableName();
                         try
                         {
-                            $tableCreated = ImportDatabaseUtil::
-                                            makeDatabaseTableByFileHandleAndTableName($fileHandle, $tempTableName,
-                                                                                      $importWizardForm->rowColumnDelimiter,
-                                                                                      $importWizardForm->rowColumnEnclosure);
+                            $tableCreated = ImportDatabaseUtil::makeDatabaseTableByFileHandleAndTableName($fileHandle,
+                                                                                    $tempTableName,
+                                                                                    $importWizardForm->rowColumnDelimiter,
+                                                                                    $importWizardForm->rowColumnEnclosure,
+                                                                                    $importWizardForm->firstRowIsHeaderRow);
                             if (!$tableCreated)
                             {
                                 throw new FailedFileUploadException(Zurmo::t('ImportModule', 'Failed to create temporary database table from CSV.'));

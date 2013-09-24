@@ -70,7 +70,7 @@
             $serializedData['firstRowIsHeaderRow'] = true;
             $import->serializedData                = serialize($serializedData);
             $this->assertTrue($import->save());
-            ImportTestHelper::createTempTableByFileNameAndTableName('importAnalyzerTest.csv', $import->getTempTableName());
+            ImportTestHelper::createTempTableByFileNameAndTableName('importAnalyzerTest.csv', $import->getTempTableName(), true);
             $config            = array('pagination' => array('pageSize' => 2));
             $dataProvider      = new ImportDataProvider($import->getTempTableName(), true, $config);
             $sequentialProcess = new ImportCreateUpdateModelsSequentialProcess($import, $dataProvider);

@@ -50,7 +50,7 @@
             $serializedData['importRulesType'] = 'ImportModelTestItem';
             $import->serializedData            = serialize($serializedData);
             $this->assertTrue($import->save());
-            ImportTestHelper::createTempTableByFileNameAndTableName('importAnalyzerTest.csv', $import->getTempTableName());
+            ImportTestHelper::createTempTableByFileNameAndTableName('importAnalyzerTest.csv', $import->getTempTableName(), true);
             $modifiedDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time() - (60 * 60 *24 * 8));
             $sql = "Update item set modifieddatetime = '" . $modifiedDateTime . "' where id = " .
                    $import->getClassId('Item');
@@ -61,7 +61,7 @@
             $serializedData['importRulesType'] = 'ImportModelTestItem';
             $import2->serializedData            = serialize($serializedData);
             $this->assertTrue($import2->save());
-            ImportTestHelper::createTempTableByFileNameAndTableName('importAnalyzerTest.csv', $import2->getTempTableName());
+            ImportTestHelper::createTempTableByFileNameAndTableName('importAnalyzerTest.csv', $import2->getTempTableName(), true);
             $this->assertEquals(2, count(Import::getAll()));
             $tableExists = ZurmoRedBean::$writer->doesTableExist($import->getTempTableName());
             $this->assertTrue($tableExists);

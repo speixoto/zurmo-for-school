@@ -38,6 +38,7 @@
     {
         public static function createTempTableByFileNameAndTableName($fileName,
                                                                      $tableName,
+                                                                     $firstRowIsHeader = false,
                                                                      $pathToFiles = null,
                                                                      $delimiter = ',', // Not Coding Standard
                                                                      $enclosure = '"')
@@ -59,7 +60,8 @@
             if ($fileHandle !== false)
             {
                 $created = ImportDatabaseUtil::makeDatabaseTableByFileHandleAndTableName($fileHandle, $tableName,
-                                                                                         $delimiter, $enclosure);
+                                                                                            $delimiter, $enclosure,
+                                                                                            $firstRowIsHeader);
                 assert('$created');
                 return true;
             }

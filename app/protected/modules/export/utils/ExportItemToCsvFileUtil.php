@@ -36,6 +36,10 @@
 
     class ExportItemToCsvFileUtil extends ExportItemToOutputUtil
     {
+        const DEFAULT_DELIMITER = ',';
+
+        const DEFAULT_ENCLOSURE = '"';
+
         /**
          * Export data array into csv format and send generated file to web browser
          * or return csv string, depending on $download parameter.
@@ -82,8 +86,17 @@
          * @param string $enclosure
          * @return string
          */
-        protected static function arrayToCsv($row, $isHeaderRow = false, $delimiter = ',', $enclosure = '"') // Not Coding Standard
+        protected static function arrayToCsv($row, $isHeaderRow = false, $delimiter = null, $enclosure = null) // Not Coding Standard
         {
+            if (!isset($delimiter))
+            {
+                $delimiter = static::DEFAULT_DELIMITER;
+            }
+            if (!isset($enclosure))
+            {
+                $enclosure = static::DEFAULT_ENCLOSURE;
+            }
+
             $fp = fopen('php://temp', 'r+'); // Not Coding Standard
 
             if (fputcsv($fp, $row, $delimiter, $enclosure) === false)

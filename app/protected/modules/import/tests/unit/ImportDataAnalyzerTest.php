@@ -118,7 +118,7 @@
             $serializedData['importRulesType'] = 'ImportModelTestItem';
             $import->serializedData            = serialize($serializedData);
             $this->assertTrue($import->save());
-            ImportTestHelper::createTempTableByFileNameAndTableName('importAnalyzerTest2.csv', $import->getTempTableName());
+            ImportTestHelper::createTempTableByFileNameAndTableName('importAnalyzerTest2.csv', $import->getTempTableName(), true);
             $mappingData = array(
                 'column_1' => array('attributeIndexOrDerivedType' => 'multiDropDown',      'type' => 'importColumn',
                     'mappingRulesData' => array(
@@ -159,7 +159,7 @@
             $serializedData['importRulesType'] = 'ImportModelTestItem';
             $import->serializedData            = serialize($serializedData);
             $this->assertTrue($import->save());
-            ImportTestHelper::createTempTableByFileNameAndTableName('importAnalyzerTest2.csv', $import->getTempTableName());
+            ImportTestHelper::createTempTableByFileNameAndTableName('importAnalyzerTest2.csv', $import->getTempTableName(), true);
             $mappingData = array(
                 'column_1' => array('attributeIndexOrDerivedType' => 'multiDropDown',      'type' => 'importColumn',
                                     'mappingRulesData' => array()),
@@ -196,7 +196,7 @@
             $serializedData['importRulesType'] = 'ImportModelTestItem';
             $import->serializedData            = serialize($serializedData);
             $this->assertTrue($import->save());
-            ImportTestHelper::createTempTableByFileNameAndTableName('importAnalyzerTest.csv', $import->getTempTableName());
+            ImportTestHelper::createTempTableByFileNameAndTableName('importAnalyzerTest.csv', $import->getTempTableName(), true);
             ZurmoRedBean::exec("update " . $import->getTempTableName() . " set column_8 = " .
                      Yii::app()->user->userModel->id . " where id != 1 limit 4");
 
@@ -699,7 +699,7 @@
             $serializedData['importRulesType'] = 'ImportModelTestItem';
             $import->serializedData            = serialize($serializedData);
             $this->assertTrue($import->save());
-            ImportTestHelper::createTempTableByFileNameAndTableName('importAnalyzerMinLengthsTest.csv', $import->getTempTableName());
+            ImportTestHelper::createTempTableByFileNameAndTableName('importAnalyzerMinLengthsTest.csv', $import->getTempTableName(), true);
             $config       = array('pagination' => array('pageSize' => 10));
             $mappingData = array(
                 'column_0' => array('attributeIndexOrDerivedType' => 'string',        'type' => 'importColumn',

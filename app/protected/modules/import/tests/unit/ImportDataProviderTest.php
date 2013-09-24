@@ -45,7 +45,7 @@
         public function testGetData()
         {
             $testTableName = 'testimporttable';
-            ImportTestHelper::createTempTableByFileNameAndTableName('importTest.csv', $testTableName);
+            ImportTestHelper::createTempTableByFileNameAndTableName('importTest.csv', $testTableName, true);
             $config = array('pagination' => array('pageSize' => 1));
             $dataProvider = new ImportDataProvider($testTableName, false, $config);
             $data = $dataProvider->getData();
@@ -76,7 +76,7 @@
         public function testGetDataFilteredByStatus()
         {
             $testTableName = 'testimporttable';
-            ImportTestHelper::createTempTableByFileNameAndTableName('importTest.csv', $testTableName);
+            ImportTestHelper::createTempTableByFileNameAndTableName('importTest.csv', $testTableName, true);
             $config = array('pagination' => array('pageSize' => 99));
             $dataProvider = new ImportDataProvider($testTableName, true, $config);
             $data = $dataProvider->getData();
