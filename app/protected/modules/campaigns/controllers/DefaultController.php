@@ -199,6 +199,16 @@
             echo ModalSearchListControllerUtil::setAjaxModeAndRenderModalSearchList($this, $modalListLinkProvider);
         }
 
+        public function actionDrillDownDetails($campaignItemId)
+        {
+            $id = (int) $campaignItemId;
+            $campaignItem = CampaignItem::getById($id);
+            ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($campaignItem->campaign);
+            ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($campaignItem->contact);
+            ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($campaignItem->emailMessage);
+            echo CampaignItemSummaryListViewColumnAdapter::resolveDrillDownMetricsSummaryContent($campaignItem);
+        }
+
         protected static function getSearchFormClassName()
         {
             return 'CampaignsSearchForm';

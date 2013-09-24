@@ -65,6 +65,55 @@
         }
 
         /**
+         * @param CampaignItem $campaignItem
+         * @return string
+         */
+        public static function resolveDrillDownMetricsSummaryContent(CampaignItem $campaignItem)
+        {
+            $isQueued              = $campaignItem->isQueued();
+            $isSkipped             = $campaignItem->isSkipped();
+            if ($isQueued)
+            {
+                $content = static::getQueuedContentForDrillDown();
+            }
+            elseif ($isSkipped)
+            {
+                $content = static::getSkippedContentForDrillDown($campaignItem);
+            }
+            elseif ($campaignItem->hasFailedToSend())
+            {
+                $content = static::getSendFailedContentForDrillDown($campaignItem);
+            }
+            elseif ($campaignItem->isSent())
+            {
+                $content = static::getSentContentForDrillDown($campaignItem->emailMessage);
+                $tableRows = null;
+                if ($campaignItem->hasAtLeastOneOpenActivity())
+                {
+                    $tableRows .= static::getOpenedContentForDrillDown($campaignItem);
+                }
+                if ($campaignItem->hasAtLeastOneClickActivity())
+                {
+                    $tableRows .= static::getClickedContentForDrillDown($campaignItem);
+                }
+                $content .= static::getWrapperTable($tableRows);
+                if ($campaignItem->hasAtLeastOneUnsubscribeActivity())
+                {
+                    $content .= static::getUnsubscribedContentForDrillDown();
+                }
+                if ($campaignItem->hasAtLeastOneBounceActivity())
+                {
+                    $content .= static::getBouncedContentForDrillDown();
+                }
+            }
+            else //still awaiting queueing
+            {
+                $content = static::getAwaitingQueueingContentForDrillDown();
+            }
+            return $content;
+        }
+
+        /**
          * @param Contact $contact
          * @return string
          */
@@ -153,7 +202,7 @@
             }
             elseif ($isSkipped)
             {
-                $content = static::getSkippedContent($campaignItem);
+                $content = static::getSkippedContent();
             }
             elseif ($campaignItem->hasFailedToSend())
             {
@@ -192,16 +241,38 @@
             return ZurmoHtml::tag('div', array('class' => 'email-recipient-stage-status queued'), $content);
         }
 
-        protected static function getSkippedContent(CampaignItem $campaignItem)
+        protected static function getQueuedContentForDrillDown()
+        {
+            $monitorJobData = JobsToJobsCollectionViewUtil::getNonMonitorJobsData();
+            $content = Zurmo::t('MarketingModule',
+                '{jobName} job last completed run on {dateTime} and did not sent this email message yeat.',
+                array('{jobName}'  => ProcessOutboundEmailJob::getDisplayName(),
+                      '{dateTime}' => $monitorJobData[ProcessOutboundEmailJob::getType()]['lastCompletedRunEncodedContent']));
+            return '<h5>' . $content . '</h5>';
+        }
+
+        protected static function getSkippedContent()
         {
             $span       = ZurmoHtml::tag('span', array(), Zurmo::t('MarketingModule', 'Skipped'));
             $content    = '<i>&#9679;</i>' . $span;
             return ZurmoHtml::tag('div',
-                                  array('class'        => 'email-recipient-stage-status stage-false',
-                                        'data-tooltip' =>  $campaignItem->getSkippedDescription()
-                                  ),
+                                  array('class'        => 'email-recipient-stage-status stage-false'),
                                   $content
             );
+        }
+
+        protected static function getSkippedContentForDrillDown(CampaignItem $campaignItem)
+        {
+            $campaignItemActivities = CampaignItemActivity::getByTypeAndModelIdAndPersonIdAndUrl(
+                                            CampaignItemActivity::TYPE_SKIP,
+                                            $campaignItem->id,
+                                            $campaignItem->contact->getClassId('Person'),
+                                            null,
+                                            'latestDateTime'
+                                      );
+            $typesArray             = CampaignItemActivity::getTypesArray();
+            $content                = $typesArray[$campaignItemActivities[0]->type];
+            return '<h5>' . $content . '</h5>';
         }
 
         protected static function getSentContent()
@@ -210,10 +281,32 @@
             return ZurmoHtml::tag('div', array('class' => 'email-recipient-stage-status stage-true'), $content);
         }
 
+        protected static function getSentContentForDrillDown(EmailMessage $emailMessage)
+        {
+            $content = Zurmo::t('MarketingModule',
+                                'Email message was sent on {sentDateTime}',
+                                array('{sentDateTime}' => $emailMessage->sentDateTime));
+            return '<h5>' . $content . '</h5>';
+        }
+
         protected static function getSendFailedContent()
         {
             $content = '<i>&#9679;</i><span>' . Zurmo::t('MarketingModule', 'Send Failed') . '</span>';
             return ZurmoHtml::tag('div', array('class' => 'email-recipient-stage-status stage-false'), $content);
+        }
+
+        protected static function getSendFailedContentForDrillDown(CampaignItem $campaignItem)
+        {
+            $emailMessage = $campaignItem->emailMessage;
+            if ($emailMessage->hasSendError())
+            {
+                //TODO: @sergio: Check why cant get the message error
+                //$errorContent = strval($emailMessage->error);
+                $errorContent = Zurmo::t('MarketingModule',
+                                         'After trying to send the message for {count} times we gave up.',
+                                         array('{count}' => $emailMessage->sendAttempts));
+            }
+            return '<h5>' . $errorContent . '</h5>';
         }
 
         protected static function getOpenedContent()
@@ -222,10 +315,58 @@
             return ZurmoHtml::tag('div', array('class' => 'email-recipient-stage-status stage-true'), $content);
         }
 
+        protected static function getOpenedContentForDrillDown(CampaignItem $campaignItem)
+        {
+            $typesArray = CampaignItemActivity::getTypesArray();
+            $campaignItemActivities = CampaignItemActivity::getByTypeAndModelIdAndPersonIdAndUrl(
+                CampaignItemActivity::TYPE_OPEN,
+                $campaignItem->id,
+                $campaignItem->contact->getClassId('Person'),
+                null,
+                'latestDateTime'
+            );
+            $content = null;
+            foreach ($campaignItemActivities as $campaignItemActivity)
+            {
+                $content .= '<tr>';
+                $content .= '<td>' . $typesArray[CampaignItemActivity::TYPE_OPEN] . '</td>';
+                $content .= '<td>' . $campaignItemActivity->latestDateTime . '</td>';
+                $content .= '<td>' . $campaignItemActivity->quantity . '</td>';
+                $content .= '<td>' . $campaignItemActivity->latestSourceIP . '</td>';
+                $content .= '<td></td>';
+                $content .= '</tr>';
+            }
+            return $content;
+        }
+
         protected static function getClickedContent()
         {
             $content = '<i>&#9679;</i><span>' . Zurmo::t('MarketingModule', 'Clicked') . '</span>';
             return ZurmoHtml::tag('div', array('class' => 'email-recipient-stage-status stage-true'), $content);
+        }
+
+        protected static function getClickedContentForDrillDown(CampaignItem $campaignItem)
+        {
+            $typesArray = CampaignItemActivity::getTypesArray();
+            $campaignItemActivities = CampaignItemActivity::getByTypeAndModelIdAndPersonIdAndUrl(
+                CampaignItemActivity::TYPE_CLICK,
+                $campaignItem->id,
+                $campaignItem->contact->getClassId('Person'),
+                null,
+                'latestDateTime'
+            );
+            $content = null;
+            foreach ($campaignItemActivities as $campaignItemActivity)
+            {
+                $content .= '<tr>';
+                $content .= '<td>' . $typesArray[CampaignItemActivity::TYPE_CLICK] . '</td>';
+                $content .= '<td>' . $campaignItemActivity->latestDateTime . '</td>';
+                $content .= '<td>' . $campaignItemActivity->quantity . '</td>';
+                $content .= '<td>' . $campaignItemActivity->latestSourceIP . '</td>';
+                $content .= '<td>' . $campaignItemActivity->emailMessageUrl . '</td>';
+                $content .= '</tr>';
+            }
+            return $content;
         }
 
         protected static function getUnsubscribedContent()
@@ -234,16 +375,55 @@
             return ZurmoHtml::tag('div', array('class' => 'email-recipient-stage-status stage-false'), $content);
         }
 
+        protected static function getUnsubscribedContentForDrillDown()
+        {
+            return null;
+        }
+
         protected static function getBouncedContent()
         {
             $content = '<i>&#9679;</i><span>' . Zurmo::t('MarketingModule', 'Bounced') . '</span>';
             return ZurmoHtml::tag('div', array('class' => 'email-recipient-stage-status stage-false'), $content);
         }
 
+        protected static function getBouncedContentForDrillDown()
+        {
+            return null;
+        }
+
         protected static function getAwaitingQueueingContent()
         {
             $content = '<i>&#9679;</i><span>' . Zurmo::t('MarketingModule', 'Awaiting queueing') . '</span>';
             return ZurmoHtml::tag('div', array('class' => 'email-recipient-stage-status queued'), $content);
+        }
+
+        protected static function getAwaitingQueueingContentForDrillDown()
+        {
+            $monitorJobData = JobsToJobsCollectionViewUtil::getNonMonitorJobsData();
+            $content = Zurmo::t('MarketingModule',
+                                '{jobName} job last completed run on {dateTime} and did not created this email message yeat.',
+                                array('{jobName}'  => CampaignQueueMessagesInOutboxJob::getDisplayName(),
+                                      '{dateTime}' => $monitorJobData[CampaignQueueMessagesInOutboxJob::getType()]['lastCompletedRunEncodedContent']));
+            return '<h5>' . $content . '</h5>';
+        }
+
+        protected static function getWrapperTable($tableRows)
+        {
+            if (empty($tableRows))
+            {
+                return null;
+            }
+            $tableContent  = '<table>';
+            $tableContent .= '<thead><tr>';
+            $tableContent .= '<th></th>';
+            $tableContent .= '<th>' . Zurmo::t('MarketingModule', 'Latest Date Time') . '</th>';
+            $tableContent .= '<th>' . Zurmo::t('MarketingModule', 'Quantity') . '</th>';
+            $tableContent .= '<th>' . Zurmo::t('MarketingModule', 'Latest source IP') . '</th>';
+            $tableContent .= '<th>' . Zurmo::t('MarketingModule', 'URL') . '</th>';
+            $tableContent .= '</tr></thead>';
+            $tableContent .= $tableRows;
+            $tableContent .= '</table>';
+            return $tableContent;
         }
     }
 ?>

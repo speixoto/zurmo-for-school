@@ -799,5 +799,17 @@
             $campaigns = Campaign::getAll();
             $this->assertEquals(3, count($campaigns));
         }
+
+        /**
+         * @depends testSuperUserCreateFromRelationAction
+         */
+        public function testDrillDownDetailsAction()
+        {
+            $campaign     = Campaign::getByName('campaign01');
+            $campaignItem = CampaignItemTestHelper::createCampaignItem(true, $campaign);
+            $this->setGetArray(array('campaignItemId' => $campaignItem->id));
+            $content      = $this->runControllerWithNoExceptionsAndGetContent('campaigns/default/drillDownDetails');
+            $this->assertNotNull($content);
+        }
     }
 ?>
