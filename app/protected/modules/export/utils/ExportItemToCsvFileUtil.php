@@ -46,17 +46,20 @@
          * @param array $data
          * @param array $headerData
          * @param string $exportFileName
-         * @param boolean $download. Should send generated csv string to output or not.
-         * @return string output
+         * @param bool $download Should send generated csv string to output or not.
+         * @param bool $allowHeaderOnlyConversion
+         * @return string|void
          */
-        public static function export($data, $headerData = array(), $exportFileName = 'exports.csv', $download = false)
+        public static function export($data, $headerData = array(), $exportFileName = 'exports.csv',
+                                                $download = false, $allowHeaderOnlyConversion = false)
         {
             assert('is_array($headerData)');
             assert('is_string($exportFileName)');
             assert('is_bool($download)');
             $output = '';
 
-            if (count($data) > 0)
+            // $allowHeaderOnlyConversion is only supplied by ImportDatabaseUtil, we need it for few import tests
+            if ((count($data) > 0) || ((count($headerData) > 0) && $allowHeaderOnlyConversion))
             {
                 if (count($headerData) > 0)
                 {

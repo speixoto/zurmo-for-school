@@ -57,14 +57,14 @@
                                                                          $enclosure = "'", $firstRowIsHeaderRow = false)
         {
             // TODO: @Shoaibi: Critical: try with load local disabled.
-            // TODO: @Shoaibi: Critical: test memory leaks???? large files, 1M, 10M, 50M, 100M
-            // TODO: @Shoaibi: Critical: test with and without header
+            // TODO: @Shoaibi: Critical: test memory leaks???? large files, 1M, 10M, 50M, 100M, generate dynamically
             assert('gettype($fileHandle) == "resource"');
             assert('is_string($tableName)');
             assert('$tableName == strtolower($tableName)');
             assert('$delimiter != null && is_string($delimiter)');
             assert('$enclosure != null && is_string($enclosure)');
-            static::createTableByTableNameAndImportCsvIntoTable($fileHandle, $tableName, $delimiter, $enclosure, $firstRowIsHeaderRow);
+            static::createTableByTableNameAndImportCsvIntoTable($fileHandle, $tableName, $delimiter,
+                                                                    $enclosure, $firstRowIsHeaderRow);
             return true;
         }
 
@@ -79,9 +79,17 @@
             static::determineMaximumColumnLengthAndPopulateImportArray($fileHandle, $delimiter, $enclosure,
                                                                     $firstRowIsHeaderRow, $maxLengths,
                                                                     $importArray, true);
-            $columnCount        = static::resolveColumnsByMaximumColumnLengths($maxLengths, $columns);
-            static::safeValidateColumnCountAndCreateTable($tableName, $columnCount, $columns);
-            static::importCsvToTable($tableName, $importArray, $firstRowIsHeaderRow);
+            if (!empty($importArray) && !empty($maxLengths))
+            {
+                $columnCount        = static::resolveColumnsByMaximumColumnLengths($maxLengths, $columns);
+                static::safeValidateColumnCountAndCreateTable($tableName, $columnCount, $columns);
+                static::importCsvToTable($tableName, $importArray, $firstRowIsHeaderRow);
+            }
+            else
+            {
+                // we need this here so even is there are nothing else to do, we clear the table, else few tests would fail.
+                ZurmoRedBean::$writer->dropTableByTableName($tableName);
+            }
         }
 
         /**
@@ -107,13 +115,15 @@
                 if (count($data) > 1 || (count($data) == 1 && trim($data['0']) != ''))
                 {
                     $importData       = array();
-                    static::padEmptyKeys($emptyKeys, count($data), 1);
+                    if (static::currentRowIsNotHeader($importArray, $firstRowIsHeaderRow))
+                    {
+                        static::padEmptyKeys($emptyKeys, count($data), 1);
+                    }
                     foreach ($data as $k => $v)
                     {
                         static::convertCurrentValueToUtf8AndPopulateImportDataArray($k, $v, $importData);
                         static::updateMaxLengthForKey($k, $v, $maxLengths);
-                        // if its not the header row:
-                        if (count($importArray) > 0 || !$firstRowIsHeaderRow)
+                        if (static::currentRowIsNotHeader($importArray, $firstRowIsHeaderRow))
                         {
                             static::unsetEmptyKeysForKeyIfValueNotEmpty($k, $v, $emptyKeys);
                         }
@@ -123,6 +133,17 @@
             }
             static::unsetEmptyKeysFromMaxLengthAndImportArray($clearEmptyColumns, $emptyKeys, $maxLengths, $importArray);
             array_walk($importArray, 'static::prependEmptyStringToAllImportRows');
+        }
+
+        /**
+         * Returns true/false depending on if we are current at header row or not.
+         * @param $importArray
+         * @param $firstRowIsHeaderRow
+         * @return bool
+         */
+        protected static function currentRowIsNotHeader(array $importArray, $firstRowIsHeaderRow)
+        {
+            return (count($importArray) > 0 || !$firstRowIsHeaderRow);
         }
 
         /**
@@ -293,11 +314,11 @@
                                                                                 $firstRowIsHeaderRow)
         {
             $csv = static::convertImportArrayToCsv($importArray, $firstRowIsHeaderRow);
-            $bytesWritten   = file_put_contents($temporaryFileName, $csv);
-            if ($bytesWritten === false)
+            if ($csv === null || strlen(trim($csv)) === 0)
             {
-                throw new NotSupportedException("Unable to write to ${temporaryFileName}");
+                throw new NotSupportedException("Unable to convert importArray to csv for writting to ${temporaryFileName}");
             }
+            static::writeCsvToTemporaryFile($csv, $temporaryFileName);
             static::fixPermissionsOnTemporaryFile($temporaryFileName);
         }
 
@@ -314,8 +335,25 @@
             {
                 $headerArray    = array_shift($importArray);
             }
-            $csv = ExportItemToCsvFileUtil::export($importArray, $headerArray);
+            $csv = ExportItemToCsvFileUtil::export($importArray, $headerArray, '', false, true);
             return $csv;
+        }
+
+        /**
+         * Writes csv data to temporary file while ensuring utf-8 special characters remain unchanged
+         * @param $csv
+         * @param $temporaryFileName
+         * @throws NotSupportedException
+         */
+        protected static function writeCsvToTemporaryFile($csv, $temporaryFileName)
+        {
+            $temporaryFileHandle    = fopen($temporaryFileName, 'wb');
+            $bytesWritten           = fwrite($temporaryFileHandle, $csv);
+            fclose($temporaryFileHandle);
+            if ($bytesWritten === false)
+            {
+                throw new NotSupportedException("Unable to write to ${temporaryFileName}");
+            }
         }
 
         /**
@@ -341,6 +379,7 @@
          */
         protected static function loadDataFromTemporaryFileToTable($tableName, $temporaryFileName, $expectedAffectedCount)
         {
+            $characterSet = 'utf8'; // 'binary' would also work, actually that is kindda better.
             $delimiter = ExportItemToCsvFileUtil::DEFAULT_DELIMITER;
             $enclosure = ExportItemToCsvFileUtil::DEFAULT_ENCLOSURE;
             if (in_array($delimiter, array("'", '\\')) || in_array($enclosure, array("'", '\\')))
@@ -351,8 +390,20 @@
 
             $tableName = ZurmoRedBean::$writer->safeTable($tableName);
             $query          = "LOAD DATA LOCAL INFILE '${temporaryFileName}' REPLACE INTO TABLE ${tableName}";
-            $query          .= " FIELDS TERMINATED BY '${delimiter}' ENCLOSED BY '${enclosure}';";
-            $affectedRows   = ZurmoRedBean::exec($query);
+            $query          .= "  CHARACTER SET ${characterSet} FIELDS TERMINATED BY '${delimiter}'";
+            $query          .= " ENCLOSED BY '${enclosure}';";
+            try
+            {
+                $affectedRows   = ZurmoRedBean::exec($query);
+            }
+            catch (RedBean_Exception_SQL $e)
+            {
+                if (strpos($e->getMessage(), 'SQLSTATE[42000]: Syntax error or access violation: 1148 The used command is not allowed with this') === 0)
+                {
+                    $e = new NotSupportedException("Please enable LOCAL INFILE in mysql config. Add local-infile=1 to [mysqld] and [mysql] sections.");
+                }
+                throw $e;
+            }
             if ($expectedAffectedCount != $affectedRows)
             {
                 throw new NotSupportedException("Unable to import all data: ${affectedRows}/${expectedAffectedCount}");
@@ -501,12 +552,13 @@
 
         /**
          * Creates table in db give table name and import columns
+         * Public due to import/DemoController
          * @param $tableName
          * @param $columns
          */
         public static function createTableByTableNameAndImportColumns($tableName, array $columns)
         {
-            // this is public due to demo controller.
+            // this dropTable is here just because as fail-safe for direct invocations from other classes.
             ZurmoRedBean::$writer->dropTableByTableName($tableName);
             $schema = static::getTableSchemaByNameAndImportColumns($tableName, $columns);
             CreateOrUpdateExistingTableFromSchemaDefinitionArrayUtil::generateOrUpdateTableBySchemaDefinition(
