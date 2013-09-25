@@ -110,7 +110,7 @@
                 }
             }
 
-            if (!AuditEvent::$isTableOptimized && (!AUDITING_OPTIMIZED || !RedBeanDatabase::isFrozen()))
+            if (!ProjectAuditEvent::$isTableOptimized && (!AUDITING_OPTIMIZED || !RedBeanDatabase::isFrozen()))
             {
                 $tableName  = self::getTableName('ProjectAuditEvent');
                 //RedBeanColumnTypeOptimizer::optimize($tableName, strtolower('modelId'), 'id');
