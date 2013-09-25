@@ -60,8 +60,6 @@
         public static function makeDatabaseTableByFileHandleAndTableName($fileHandle, $tableName, $delimiter = ',', // Not Coding Standard
                                                                          $enclosure = "'", $firstRowIsHeaderRow = false)
         {
-            // TODO: @Shoaibi: Critical: try with load local disabled.
-            // TODO: @Shoaibi: Critical: test memory leaks???? large files, 1M, 10M, 50M, 100M, generate dynamically
             assert('gettype($fileHandle) == "resource"');
             assert('is_string($tableName)');
             assert('$tableName == strtolower($tableName)');
