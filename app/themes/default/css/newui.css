@@ -19668,6 +19668,10 @@ a + .autoresponder-stats {
   -ms-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
   box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
 }
+.webform-chosen-field input[type="text"] {
+  width: 70%;
+  margin-right: 10px;
+}
 .sliding-panel {
   display: none;
   width: 100%;
