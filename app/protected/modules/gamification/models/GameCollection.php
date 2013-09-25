@@ -192,6 +192,17 @@
             return true;
         }
 
+        public static function getAvailableTypes()
+        {
+            $availableTypes = array();
+            $gameCollectionRulesClassNames = GamificationModule::getAllClassNamesByPathFolder('rules.collections');
+            foreach($gameCollectionRulesClassNames as $gameCollectionRulesClassName)
+            {
+                $availableTypes[] = $gameCollectionRulesClassName::getType();
+            }
+            return $availableTypes;
+        }
+
         /**
          * Returns the display name for the model class.
          * @param null | string $language
@@ -210,6 +221,23 @@
         protected static function getPluralLabel($language = null)
         {
             return Zurmo::t('GamificationModule', 'Game Collections', array(), null, $language);
+        }
+
+        /**
+         * @return array
+         */
+        public function getItemsData()
+        {
+            if($this->serializedData == null)
+            {
+                return array();
+            }
+            $unserializedData = unserialize($this->serializedData);
+            if(!isset($unseralizedData['Items']))
+            {
+                return array();
+            }
+            return $unseralizedData['Items'];
         }
     }
 ?>

@@ -133,5 +133,16 @@
             }
             return $data;
         }
+
+        public static function makeLargeCollectionImageName()
+        {
+            return static::getType() . '-121x127.png';
+        }
+
+        public static function makeMediumCollectionItemImageName($itemType)
+        {
+            assert('is_string($itemType)');
+            return 'Item' . $itemType. '-47x64.png';
+        }
     }
 ?>

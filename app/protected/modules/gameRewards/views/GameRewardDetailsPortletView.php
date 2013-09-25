@@ -72,6 +72,10 @@
             return 'Detail';
         }
 
+        public static function getPortletDescription()
+        {
+        }
+
         public static function getModuleClassName()
         {
             return 'GameRewardsModule';

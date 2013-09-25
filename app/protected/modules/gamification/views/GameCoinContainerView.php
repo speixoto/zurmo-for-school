@@ -39,6 +39,7 @@
      */
     class GameCoinContainerView extends View
     {
+
         protected $controller;
 
         /**
@@ -56,43 +57,59 @@
 
         protected function renderContent()
         {
-            $this->registerScripts();
-            return $this->renderDashboardContent();
+            if(GameCoin::showCoin($this->controller))
+            {
+                $this->registerScripts();
+                return $this->renderCoinContainerContent();
+            }
         }
 
         protected function registerScripts()
         {
-            $script = "";
-           Yii::app()->clientScript->registerScript('userGameDashboardScript', $script);
+            $url    = $this->makeAjaxClickUrl();
+            $script = "$('.random-game-coin').click(function(){
+                            " . ZurmoHtml::ajax(array('type' => 'GET', 'url' =>  $url)) . "
+                            //$(this).animate( { left:1200, top:300 }, 35, 'easeOutQuart' );
+                            var audio = document.getElementById('game-coin-chime');
+                            audio.play();
+                            $('.game-coin').animate({top:15},75).hide(0);
+                            $('.smoke').show(0).animate({top:0},500).animateSprite({
+                                columns: 8,
+                                totalFrames: 40,
+                                duration: 500,
+                                loop: false,
+                            });
+                        });";
+           Yii::app()->clientScript->registerScript('gameCoinClickScript', $script);
 
         }
 
-        protected function renderDashboardContent()
+        protected function renderCoinContainerContent()
         {
-            $content  = $this->renderProfileContent();
-            $content .= $this->renderBadgesContent();
-            $content .= $this->renderCoinsContent();
-            $content .= $this->renderLeaderboardContent();
-            $content .= $this->renderStatisticsContent();
-            $content .= $this->renderCollectionsContent();
-            $content  = ZurmoHtml::tag('div', array('id' => 'game-dashboard', 'class' => 'clearfix'), $content);
-            $content  = ZurmoHtml::tag('div', array('id' => 'game-overlay'), $content);
-            return     ZurmoHtml::tag('div', array('id' => 'game-dashboard-container'), $content);
+            $content = $this->renderCoinContent();
+            $content .= $this->renderAudioContent();
+            return ZurmoHtml::tag('div', array('class' => 'random-game-coin'), $content);
         }
 
-        protected function renderProfileContent()
+        protected function renderCoinContent()
         {
-
+            $content = ZurmoHtml::tag('div', array('class' => 'game-coin'), '');
+            $content .= ZurmoHtml::tag('div', array('class' => 'smoke'), '');
+            return ZurmoHtml::tag('div', array(), $content);
         }
 
-        protected function renderBadgesContent()
+        protected function renderAudioContent()
         {
-
+            $publishedAssetsPath = Yii::app()->assetManager->publish(
+                                        Yii::getPathOfAlias("application.modules.gamification.views.assets.audio"));
+            $audioFilePath = $publishedAssetsPath . '/chime.mp3';
+            $content = ZurmoHtml::tag('source', array('src' => $audioFilePath), '');
+            return ZurmoHtml::tag('audio', array('id' => 'game-coin-chime'), $content);
         }
 
-        protected function renderCoinsContent()
+        protected function makeAjaxClickUrl()
         {
-
+            return Yii::app()->createUrl('gamification/default/CollectRandomCoin');
         }
     }
 ?>
