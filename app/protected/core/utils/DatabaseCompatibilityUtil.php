@@ -848,7 +848,7 @@
             }
         }
 
-        public static function checkDatabaseSupportsLoadLocalInFile($databaseType,
+        public static function getDatabaseSupportsLoadLocalInFile($databaseType,
                                                                     $databaseHostname,
                                                                     $databaseUsername,
                                                                     $databasePassword,
@@ -868,9 +868,9 @@
                     {
                         mysql_close($connection);
                     }
-                    if (isset($row[0]))
+                    if (isset($row[1]))
                     {
-                        return ($row[1] == 'ON');
+                        return $row[1];
                     }
             }
         }

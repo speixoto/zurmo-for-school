@@ -496,6 +496,31 @@
         }
 
         /**
+         * Check if load local in enabled.
+         */
+        public static function checkDatabaseLoadLocalInFile($databaseType,
+                                                            $databaseHostname,
+                                                            $databaseUsername,
+                                                            $databasePassword,
+                                                            $databasePort)
+        {
+            assert('in_array($databaseType, static::getSupportedDatabaseTypes())');
+            $loadLocalInFileValue = DatabaseCompatibilityUtil::getDatabaseSupportsLoadLocalInFile($databaseType,
+                                                                                                    $databaseHostname,
+                                                                                                    $databaseUsername,
+                                                                                                    $databasePassword,
+                                                                                                    $databasePort);
+            if (strtolower($loadLocalInFileValue) == 'on' || $loadLocalInFileValue == '1')
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        /**
         * Check if log_bin is turned off.
         */
         public static function checkDatabaseLogBinValue($databaseType,

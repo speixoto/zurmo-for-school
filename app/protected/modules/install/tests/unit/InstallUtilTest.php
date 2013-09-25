@@ -239,48 +239,48 @@
         }
 
         /**
-      * Simple test to confirm the check doesnt break.
-      */
+         * Simple test to confirm the check doesnt break.
+         */
         public function testCheckSoap()
         {
             $this->assertNotNull(InstallUtil::checkSoap());
         }
 
         /**
-      * Simple test to confirm the check doesnt break.
-      */
+         * Simple test to confirm the check doesnt break.
+         */
         public function testCheckSPL()
         {
             $this->assertNotNull(InstallUtil::checkSPL());
         }
 
         /**
-      * Simple test to confirm the check doesnt break.
-      */
+         * Simple test to confirm the check doesnt break.
+         */
         public function testCheckCtype()
         {
             $this->assertNotNull(InstallUtil::checkCtype());
         }
 
         /**
-      * Simple test to confirm the check doesnt break.
-      */
+         * Simple test to confirm the check doesnt break.
+         */
         public function testCheckPCRE()
         {
             $this->assertNotNull(InstallUtil::checkPCRE());
         }
 
         /**
-      * Simple test to confirm the check doesnt break.
-      */
+         * Simple test to confirm the check doesnt break.
+         */
         public function testCheckImap()
         {
             $this->assertNotNull(InstallUtil::checkImap());
         }
 
         /**
-      * Simple test to confirm the check doesnt break.
-      */
+         * Simple test to confirm the check doesnt break.
+         */
         public function testCheckZip()
         {
             $this->assertNotNull(InstallUtil::checkZip());
@@ -325,8 +325,8 @@
         }
 
         /**
-       * Setting the upload_max_filesize doesn't seem to do anything.
-       */
+         * Setting the upload_max_filesize doesn't seem to do anything.
+         */
         public function testCheckPhpUploadSizeSetting()
         {
             $this->assertFalse(InstallUtil::checkPhpUploadSizeSetting(1024 * 1024 * 1024, $actualUploadLimitBytes));
@@ -334,8 +334,8 @@
         }
 
         /**
-       * Setting the post_max_size doesn't seem to do anything.
-       */
+         * Setting the post_max_size doesn't seem to do anything.
+         */
         public function testCheckPhpPostSizeSetting()
         {
             $this->assertFalse (InstallUtil::checkPhpPostSizeSetting(1024 * 1024 * 1024, $actualPostLimitBytes));
@@ -343,8 +343,8 @@
         }
 
         /**
-       * Simple test to confirm the check doesnt break.
-       */
+         * Simple test to confirm the check doesnt break.
+         */
         public function testCheckDatabaseMaxAllowedPacketsSize()
         {
             $minimumRequireBytes = 1;
@@ -359,8 +359,8 @@
         }
 
         /**
-      * Simple test to confirm the check doesnt break.
-      */
+         * Simple test to confirm the check doesnt break.
+         */
         public function testCheckDatabaseMaxSpRecursionDepth()
         {
             $minimumRequiredMaxSpRecursionDepth = 20;
@@ -375,8 +375,8 @@
         }
 
         /**
-      * Simple test to confirm the check doesnt break.
-      */
+         * Simple test to confirm the check doesnt break.
+         */
         public function testCheckThreadStackValue()
         {
             $minimumRequiredThreadStackValue = 524288;
@@ -391,8 +391,8 @@
         }
 
         /**
-      * Simple test to confirm the check doesnt break.
-      */
+         * Simple test to confirm the check doesnt break.
+         */
         public function testCheckDatabaseOptimizerSearchDepthValue()
         {
             $threadStackValue                = null;
@@ -405,8 +405,8 @@
         }
 
         /**
-      * Simple test to confirm the check doesnt break.
-      */
+         * Simple test to confirm the check doesnt break.
+         */
         public function testCheckDatabaseDefaultCollation()
         {
             $notAllowedDatabaseCollations = array('utf8_general_ci');
@@ -422,8 +422,8 @@
         }
 
         /**
-      * Simple test to confirm the check doesnt break.
-      */
+         * Simple test to confirm the check doesnt break.
+         */
         public function testIsDatabaseStrictMode()
         {
             $this->assertNotNull(DatabaseCompatibilityUtil::isDatabaseStrictMode('mysql',
@@ -434,8 +434,8 @@
         }
 
         /**
-      * Simple test to confirm the check doesnt break.
-      */
+         * Simple test to confirm the check doesnt break.
+         */
         public function testCheckDatabaseLogBinValue()
         {
             $logBinValue     = null;
@@ -449,8 +449,21 @@
         }
 
         /**
-      * Simple test to confirm the check doesnt break.
-      */
+         * Simple test to confirm the check doesnt break.
+         */
+        public function testCheckDatabaseLoadLocalInFile()
+        {
+            $this->assertNotNull(InstallUtil::checkDatabaseLoadLocalInFile('mysql',
+                                                                            $this->temporaryDatabaseHostname,
+                                                                            $this->temporaryDatabaseName,
+                                                                            $this->temporaryDatabaseUsername,
+                                                                            $this->temporaryDatabasePassword,
+                                                                            $this->temporaryDatabasePort));
+        }
+
+        /**
+         * Simple test to confirm the check doesnt break.
+         */
         public function testCheckDatabaseLogBinTrustFunctionCreatorsValue()
         {
             $logBinTrustFunctionCreatorsValue     = null;
@@ -701,8 +714,8 @@
         }
 
         /**
-      * @depends testRunInstallation
-      */
+         * @depends testRunInstallation
+         */
         public function testRunAutoBuildFromUpdateSchemaCommand()
         {
             $this->runInstallation(true);

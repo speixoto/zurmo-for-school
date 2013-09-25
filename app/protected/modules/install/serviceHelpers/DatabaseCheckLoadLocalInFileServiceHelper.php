@@ -44,11 +44,11 @@
         protected function checkService()
         {
             $passed = false;
-            if (DatabaseCompatibilityUtil::checkDatabaseSupportsLoadLocalInFile('mysql',
-                                                                 $this->form->databaseHostname,
-                                                                 $this->form->databaseUsername,
-                                                                 $this->form->databasePassword,
-                                                                 $this->form->databasePort))
+            if (InstallUtil::checkDatabaseLoadLocalInFile('mysql',
+                                                         $this->form->databaseHostname,
+                                                         $this->form->databaseUsername,
+                                                         $this->form->databasePassword,
+                                                         $this->form->databasePort))
             {
                 $this->message  = Zurmo::t('InstallModule', 'Database supports LOAD LOCAL INFILE.');
                 $passed = true;
