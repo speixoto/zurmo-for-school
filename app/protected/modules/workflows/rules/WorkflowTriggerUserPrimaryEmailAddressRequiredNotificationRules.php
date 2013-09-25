@@ -35,66 +35,20 @@
      ********************************************************************************/
 
     /**
-     * Form to work with a specific role for an email message recipient
+     * Class used to define notification when a workflow trigger action for sending email message to user,
+     * but user haven't configured his primary email address
      */
-    class StaticRoleWorkflowEmailMessageRecipientForm extends WorkflowEmailMessageRecipientForm
+    class WorkflowTriggerUserPrimaryEmailAddressRequiredNotificationRules extends NotificationRules
     {
-        /**
-         * @var string
-         */
-        public $roleId;
-
-        /**
-         * @return string
-         */
-        public static function getTypeLabel()
+        public static function getDisplayName()
         {
-            return Zurmo::t('WorkflowsModule', 'All users in a specific role');
+            return Zurmo::t('WorkflowsModule',
+                'Please configure your primary email address to be able to receive email messages triggered by workflow engine.');
         }
 
-        /**
-         * @return array
-         */
-        public function rules()
+        public static function getType()
         {
-            return array_merge(parent::rules(), array(
-                      array('roleId',  'type', 'type' =>  'integer'),
-                      array('roleId',  'required')));
-        }
-
-        /**
-         * @param RedBeanModel $model
-         * @param User $triggeredByUser
-         * @return array
-         */
-        public function makeRecipients(RedBeanModel $model, User $triggeredByUser)
-        {
-            try
-            {
-                $role       = Role::getById((int)$this->roleId);
-            }
-            catch (NotFoundException $e)
-            {
-                return array();
-            }
-            $recipients = array();
-            foreach ($role->users as $user)
-            {
-                if ($user->primaryEmail->emailAddress != null)
-                {
-                    $recipient                  = new EmailMessageRecipient();
-                    $recipient->toAddress       = $user->primaryEmail->emailAddress;
-                    $recipient->toName          = strval($user);
-                    $recipient->type            = $this->audienceType;
-                    $recipient->personOrAccount = $user;
-                    $recipients[]               = $recipient;
-                }
-                else
-                {
-                    $this->createWorkflowTriggerUserPrimaryEmailAddressRequiredNotificationForUser($user);
-                }
-            }
-            return $recipients;
+            return 'WorkflowTriggerUserPrimaryEmailAddressRequired';
         }
     }
 ?>

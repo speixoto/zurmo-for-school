@@ -58,14 +58,6 @@
         const TYPE_DYNAMIC_TRIGGERED_MODEL_RELATION         = 'DynamicTriggeredModelRelation';
 
         /**
-         *
-         * @param RedBeanModel $model
-         * @param User $triggeredByUser
-         * @return array of EmailMessageRecipients
-         */
-        abstract public function makeRecipients(RedBeanModel $model, User $triggeredByUser);
-
-        /**
          * @var string Type of recipient
          */
         public $type;
@@ -92,6 +84,14 @@
          * @var string
          */
         protected $workflowType;
+
+        /**
+         *
+         * @param RedBeanModel $model
+         * @param User $triggeredByUser
+         * @return array of EmailMessageRecipients
+         */
+        abstract public function makeRecipients(RedBeanModel $model, User $triggeredByUser);
 
         /**
          * @throws NotImplementedException if not implemented by a child class
@@ -176,6 +176,16 @@
                     DynamicTriggeredModelRelationWorkflowEmailMessageRecipientForm::getTypeLabel();
             }
             return $data;
+        }
+
+        protected function createWorkflowTriggerUserPrimaryEmailAddressRequiredNotificationForUser(User $user)
+        {
+            $notificationMessage                    = new NotificationMessage();
+            $notificationMessage->htmlContent       = Zurmo::t('WorkflowsModule',
+                'Please configure your primary email address to be able to receive workflow notifications from Zurmo.');
+            $rules                      = new WorkflowTriggerUserPrimaryEmailAddressRequiredNotificationRules();
+            $rules->addUser($user);
+            NotificationsUtil::submit($notificationMessage, $rules);
         }
     }
 ?>
