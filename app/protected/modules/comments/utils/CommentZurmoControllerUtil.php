@@ -101,6 +101,26 @@
                 $participants = MissionsUtil::resolvePeopleToSendNotificationToOnNewComment($this->relatedModel, $user);
                 CommentsUtil::sendNotificationOnNewComment($this->relatedModel, $model, $user, $participants);
             }
+            elseif ($this->relatedModel instanceof Task)
+            {
+                $participants = TasksUtil::resolvePeopleToSendNotificationToOnNewComment($this->relatedModel, $user);
+                CommentsUtil::sendNotificationOnNewComment($this->relatedModel, $model, $user, $participants);
+                //Log the event
+                $task = $this->relatedModel;
+                foreach ($task->activityItems as $existingItem)
+                {
+                    try
+                    {
+                        $modelDerivationPathToItem = RuntimeUtil::getModelDerivationPathToItem('Project');
+                        $project = $existingItem->castDown(array($modelDerivationPathToItem));
+                        ProjectAuditEvent::logAuditEvent(ProjectAuditEvent::COMMENT_ADDED, $task->name, $project);
+                    }
+                    catch(NotFoundException $e)
+                    {
+
+                    }
+                }
+            }
         }
     }
 ?>

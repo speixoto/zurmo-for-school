@@ -473,8 +473,8 @@
                 {
                     try
                     {
-                        //todo: Not working ask Jason
-                        $project = $existingItem->castDown(array('Project'));
+                        $modelDerivationPathToItem = RuntimeUtil::getModelDerivationPathToItem('Project');
+                        $project = $existingItem->castDown(array($modelDerivationPathToItem));
                         ProjectAuditEvent::logAuditEvent(ProjectAuditEvent::TASK_COMPLETED, $task->name, $project);
                     }
                     catch(NotFoundException $e)

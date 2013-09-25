@@ -46,11 +46,11 @@
         {
             $this->setRowsAreSelectable(false);
             $cClipWidget = new CClipWidget();
-            $cClipWidget->beginClip("ListView");
+            $cClipWidget->beginClip("FeedListView");
             $cClipWidget->widget($this->getGridViewWidgetPath(), $this->getCGridViewParams());
             $cClipWidget->endClip();
             $content     = null;
-            $content .= $cClipWidget->getController()->clips['ListView'] . "\n";
+            $content .= $cClipWidget->getController()->clips['FeedListView'] . "\n";
             $content .= $this->renderScripts();
             return $content;
         }
@@ -105,7 +105,7 @@
 
         protected function getListActionId()
         {
-            return 'dashboardListView';
+            return 'dashboardProjectsFeedView';
         }
 
         /**
@@ -119,13 +119,18 @@
 
         protected function getDataProvider()
         {
-            $dataProvider = new RedBeanModelDataProvider('ProjectAuditEvent', null, true);
+            $dataProvider = new RedBeanModelDataProvider('ProjectAuditEvent', 'dateTime', true);
             return $dataProvider;
         }
 
         protected function getCGridViewLastColumn()
         {
             return array();
+        }
+
+        public function getGridViewId()
+        {
+            return 'projects-feed-list-view';
         }
     }
 ?>

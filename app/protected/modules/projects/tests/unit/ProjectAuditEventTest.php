@@ -74,6 +74,14 @@
             $time = date("Y-m-d H:i:s", strtotime('-5 days', time()));
             $timeDiff = ProjectAuditEvent::getTimeDifference($time);
             $this->assertEquals('5 day(s)', $timeDiff);
+
+            $time = date("Y-m-d H:i:s", strtotime('-5 minutes', time()));
+            $timeDiff = ProjectAuditEvent::getTimeDifference($time);
+            $this->assertEquals('5 min(s)', $timeDiff);
+
+            $time = date("Y-m-d H:i:s", strtotime('-5 seconds', time()));
+            $timeDiff = ProjectAuditEvent::getTimeDifference($time);
+            $this->assertEquals('5 sec(s)', $timeDiff);
         }
     }
 ?>

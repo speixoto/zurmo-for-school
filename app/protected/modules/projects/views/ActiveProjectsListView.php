@@ -116,5 +116,10 @@
         {
             return true;
         }
+
+        public function getGridViewId()
+        {
+            return 'active-projects-list-view';
+        }
     }
 ?>

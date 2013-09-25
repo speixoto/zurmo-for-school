@@ -62,8 +62,8 @@
             $timeForString = array(
                 'days'  => floor($timeSinceLatestUpdate / 86400),
                 'hours' => floor($timeSinceLatestUpdate / 3600),
-                'minutes' => floor($timeSinceLatestUpdate / (3600*60)),
-                'seconds' => floor($timeSinceLatestUpdate / (3600*60*60))
+                'minutes' => floor($timeSinceLatestUpdate / (60)),
+                'seconds' => floor($timeSinceLatestUpdate)
             );
 
             if($timeForString['days'] >= 1)
@@ -84,7 +84,7 @@
                     }
                     else
                     {
-                        return $timeForString['minutes'] . ' sec(s)';
+                        return $timeForString['seconds'] . ' sec(s)';
                     }
                 }
             }

@@ -587,5 +587,14 @@
                         );
             return $mixedView;
         }
+
+        /**
+         * Display list view of feeds for projects on dashboard
+         */
+        public function actionDashboardProjectsFeedView()
+        {
+            $listView = $this->getLatestActivityFeed();
+            echo $listView->render();
+        }
     }
 ?>

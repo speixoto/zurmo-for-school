@@ -47,6 +47,7 @@
             $projectNameTemplate = '<strong><i>{projectname}</i></strong>';
             $userNameTemplate = '<strong>{username}</strong>';
             $taskNameTemplate = '<strong>{taskname}</strong>';
+            $commentTemplate  = '<strong>{comment}</strong>';
             return array(
                 ProjectAuditEvent::PROJECT_CREATED  => $projectNameTemplate  . ' ' .
                                                         Zurmo::t('ProjectsModule', ' is added by user')  . ' ' .
@@ -55,13 +56,20 @@
                                                         Zurmo::t('ProjectsModule', ' is archived by user')  . ' ' .
                                                         $userNameTemplate,
                 ProjectAuditEvent::TASK_COMPLETED   => $projectNameTemplate  . ' ' .
-                                                        $taskNameTemplate  . ' ' .
-                                                        Zurmo::t('ProjectsModule', 'is marked as completed by user')  . ' ' .
-                                                        $userNameTemplate,
+                                                        $userNameTemplate  . ' ' .
+                                                        Zurmo::t('ProjectsModule', 'marked')  . ' ' .
+                                                        $taskNameTemplate . ' ' .
+                                                        Zurmo::t('ProjectsModule', '<i>as completed</i>'),
                 ProjectAuditEvent::TASK_ADDED       => $projectNameTemplate  . ' ' .
-                                                        $taskNameTemplate  . ' ' .
-                                                        Zurmo::t('ProjectsModule', 'is added by user')  . ' ' .
-                                                        $userNameTemplate,
+                                                        $userNameTemplate  . ' ' .
+                                                        Zurmo::t('ProjectsModule', 'added task')  . ' ' .
+                                                        $taskNameTemplate,
+                ProjectAuditEvent::COMMENT_ADDED    => $projectNameTemplate  . ' ' .
+                                                        $userNameTemplate  . ' ' .
+                                                        Zurmo::t('ProjectsModule', 'added comment')  . ' ' .
+                                                        $commentTemplate
+
+
             );
         }
 
@@ -104,12 +112,17 @@
                 case ProjectAuditEvent::TASK_COMPLETED:
                     $content .= str_replace(array('{projectname}', '{taskname}', '{username}'),
                                             array($projectName, $unserializedData, $user->getFullName()),
-                                            $messageTemplates[ProjectAuditEvent::PROJECT_ARCHIVED]);
+                                            $messageTemplates[ProjectAuditEvent::TASK_COMPLETED]);
                     break;
                 case ProjectAuditEvent::TASK_ADDED:
                     $content .= str_replace(array('{projectname}', '{taskname}', '{username}'),
                                             array($projectName, $unserializedData, $user->getFullName()),
                                             $messageTemplates[ProjectAuditEvent::TASK_ADDED]);
+                    break;
+                case ProjectAuditEvent::COMMENT_ADDED:
+                    $content .= str_replace(array('{projectname}', '{comment}', '{username}'),
+                                            array($projectName, $unserializedData, $user->getFullName()),
+                                            $messageTemplates[ProjectAuditEvent::COMMENT_ADDED]);
                     break;
             }
 

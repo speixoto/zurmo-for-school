@@ -47,9 +47,13 @@
                     'columns' => array(
                         array(
                             'rows' => array(
-//                               array(
-//                                    'type' => 'ActiveProjectsPortlet',
-//                                ),
+                               array(
+                                    'type' => 'ActiveProjectsPortlet',
+                                ),
+                            ),
+                          ),
+                        array(
+                            'rows' => array(
                                 array(
                                     'type' => 'ProjectsActivityFeedPortlet',
                                 ),
