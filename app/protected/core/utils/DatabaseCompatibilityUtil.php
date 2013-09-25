@@ -848,6 +848,33 @@
             }
         }
 
+        public static function checkDatabaseSupportsLoadLocalInFile($databaseType,
+                                                                    $databaseHostname,
+                                                                    $databaseUsername,
+                                                                    $databasePassword,
+                                                                    $databasePort)
+        {
+            if ($databaseType != 'mysql')
+            {
+                throw new NotSupportedException();
+            }
+            switch ($databaseType)
+            {
+                case 'mysql':
+                    $connection = @mysql_connect($databaseHostname . ':' . $databasePort, $databaseUsername, $databasePassword);
+                    $result = @mysql_query("SELECT * FROM `information_schema`.`GLOBAL_VARIABLES` WHERE VARIABLE_NAME='LOCAL_INFILE';");
+                    $row    = @mysql_fetch_row($result);
+                    if (is_resource($connection))
+                    {
+                        mysql_close($connection);
+                    }
+                    if (isset($row[0]))
+                    {
+                        return ($row[1] == 'ON');
+                    }
+            }
+        }
+
         ///////////////////////////////////////////////////////////////////////
         // Methods that modify things.
         // The aim is that when all of the checks above pass

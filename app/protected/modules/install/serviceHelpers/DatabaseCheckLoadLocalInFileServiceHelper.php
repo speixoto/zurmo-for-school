@@ -35,42 +35,27 @@
      ********************************************************************************/
 
     /**
-     * Makes sure the upload file size is large enough.
+     * Check if database is not in strict mode.
      */
-    class DatabaseMaxSpRecursionDepthServiceHelper extends DatabaseBaseServiceHelper
+    class DatabaseCheckLoadLocalInFileServiceHelper extends DatabaseBaseServiceHelper
     {
         protected $required = false;
 
-        protected $minimumRequiredMaxSpRecursionDepth = 20;
-
         protected function checkService()
         {
-            $passed = true;
-            $maxSpRecursionDepth = null;
-            if (!InstallUtil::checkDatabaseMaxSpRecursionDepth('mysql',
-                                                               $this->form->databaseHostname,
-                                                               $this->form->databaseUsername,
-                                                               $this->form->databasePassword,
-                                                               $this->form->databasePort,
-                                                               $this->minimumRequiredMaxSpRecursionDepth,
-                                                               $maxSpRecursionDepth))
+            $passed = false;
+            if (DatabaseCompatibilityUtil::checkDatabaseSupportsLoadLocalInFile('mysql',
+                                                                 $this->form->databaseHostname,
+                                                                 $this->form->databaseUsername,
+                                                                 $this->form->databasePassword,
+                                                                 $this->form->databasePort))
             {
-                if ($maxSpRecursionDepth == null)
-                {
-                    $this->message = Zurmo::t('InstallModule', 'Could not get value of database max_sp_recursion_depth.');
-                }
-                else
-                {
-                    $this->message  = Zurmo::t('InstallModule', 'Database max_sp_recursion_depth size is:') . ' ';
-                    $this->message .= $maxSpRecursionDepth . ' ';
-                    $this->message .= Zurmo::t('InstallModule', 'minimum requirement is:') . ' ';
-                    $this->message .= $this->minimumRequiredMaxSpRecursionDepth;
-                }
-                $passed = false;
+                $this->message  = Zurmo::t('InstallModule', 'Database supports LOAD LOCAL INFILE.');
+                $passed = true;
             }
             else
             {
-                $this->message = Zurmo::t('InstallModule', 'Database max_sp_recursion_depth size meets minimum requirement.');
+                $this->message = Zurmo::t('InstallModule', 'Database does not support LOAD LOCAL INFILE.');
             }
             return $passed;
         }

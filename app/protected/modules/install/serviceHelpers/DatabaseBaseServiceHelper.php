@@ -35,44 +35,19 @@
      ********************************************************************************/
 
     /**
-     * Makes sure the upload file size is large enough.
+     * Base service helper for Database checks
      */
-    class DatabaseMaxSpRecursionDepthServiceHelper extends DatabaseBaseServiceHelper
+    abstract class DatabaseBaseServiceHelper extends ServiceHelper
     {
-        protected $required = false;
+        protected $form;
 
-        protected $minimumRequiredMaxSpRecursionDepth = 20;
-
-        protected function checkService()
+        /**
+         * @param InstallSettingsForm $form
+         */
+        public function __construct($form)
         {
-            $passed = true;
-            $maxSpRecursionDepth = null;
-            if (!InstallUtil::checkDatabaseMaxSpRecursionDepth('mysql',
-                                                               $this->form->databaseHostname,
-                                                               $this->form->databaseUsername,
-                                                               $this->form->databasePassword,
-                                                               $this->form->databasePort,
-                                                               $this->minimumRequiredMaxSpRecursionDepth,
-                                                               $maxSpRecursionDepth))
-            {
-                if ($maxSpRecursionDepth == null)
-                {
-                    $this->message = Zurmo::t('InstallModule', 'Could not get value of database max_sp_recursion_depth.');
-                }
-                else
-                {
-                    $this->message  = Zurmo::t('InstallModule', 'Database max_sp_recursion_depth size is:') . ' ';
-                    $this->message .= $maxSpRecursionDepth . ' ';
-                    $this->message .= Zurmo::t('InstallModule', 'minimum requirement is:') . ' ';
-                    $this->message .= $this->minimumRequiredMaxSpRecursionDepth;
-                }
-                $passed = false;
-            }
-            else
-            {
-                $this->message = Zurmo::t('InstallModule', 'Database max_sp_recursion_depth size meets minimum requirement.');
-            }
-            return $passed;
+            assert('$form instanceof InstallSettingsForm');
+            $this->form = $form;
         }
     }
 ?>
