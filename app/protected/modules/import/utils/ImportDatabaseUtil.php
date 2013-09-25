@@ -43,6 +43,8 @@
 
         const MAX_IMPORT_COLUMN_COUNT   = 99;
 
+        const BULK_INSERT_COUNT         = 500;
+
         protected static $temporaryFileName = null;
 
         protected static $importDataRowCount = null;
@@ -77,14 +79,24 @@
         {
             $maxLengths         = array();
             $columns            = array();
+            $importArray        = array();
             static::determineMaximumColumnLengthAndPopulateImportArray($fileHandle, $delimiter, $enclosure,
-                                                                        $maxLengths, $firstRowIsHeaderRow);
+                                                                        $maxLengths, $importArray, $firstRowIsHeaderRow);
             if (!empty($maxLengths))
             {
                 $columnCount        = static::resolveColumnsByMaximumColumnLengths($maxLengths, $columns);
                 static::safeValidateColumnCountAndCreateTable($tableName, $columnCount, $columns);
-                static::loadDataFromTemporaryFileToTable($tableName);
-                unlink(static::$temporaryFileName);
+                if (static::databaseSupportsLoadLocalInFile())
+                {
+                    array_walk($importArray, 'static::prependEmptyStringToAllImportRows');
+                    static::convertImportArrayAndWriteToTemporaryFile($importArray, $firstRowIsHeaderRow);
+                    static::loadDataFromTemporaryFileToTable($tableName);
+                }
+                else
+                {
+                    $columnNames    = RedBeanModelMemberToColumnUtil::resolveColumnNamesArrayFromColumnSchemaDefinition($columns);
+                    static::importArrayIntoTable($tableName, $importArray, $columnNames);
+                }
             }
             else
             {
@@ -99,13 +111,14 @@
          * @param $delimiter
          * @param $enclosure
          * @param $maxLengths
+         * @param $importArray
          * @param $firstRowIsHeaderRow
          */
         protected static function determineMaximumColumnLengthAndPopulateImportArray($fileHandle, $delimiter,
                                                                                      $enclosure, array & $maxLengths,
+                                                                                     array & $importArray,
                                                                                      $firstRowIsHeaderRow)
         {
-            $importArray    = array();
             rewind($fileHandle);
             while (($data = fgetcsv($fileHandle, 0, $delimiter, $enclosure)) !== false)
             {
@@ -120,8 +133,6 @@
                     $importArray[] = $importData;
                 }
             }
-            array_walk($importArray, 'static::prependEmptyStringToAllImportRows');
-            static::convertImportArrayAndWriteToTemporaryFile($importArray, $firstRowIsHeaderRow);
         }
 
         /**
@@ -223,6 +234,21 @@
             array_unshift($val, '');
         }
 
+        /**
+         * Check whether db supports load local infile or not.
+         * public due to usage in benchmarks
+         * @return bool
+         */
+        public static function databaseSupportsLoadLocalInFile()
+        {
+            list($databaseType, $databaseHostname, $databasePort) = array_values(
+                                    RedBeanDatabase::getDatabaseInfoFromDsnString(Yii::app()->db->connectionString));
+            return InstallUtil::checkDatabaseLoadLocalInFile($databaseType,
+                                                                $databaseHostname,
+                                                                Yii::app()->db->username,
+                                                                Yii::app()->db->password,
+                                                                $databasePort);
+        }
 
         /**
          * Resolves string columns for given max lengths
@@ -366,6 +392,49 @@
             if (static::$importDataRowCount != $affectedRows)
             {
                 throw new NotSupportedException("Unable to import all data: ${affectedRows}/{${static::$importDataRowCount}}");
+            }
+            unlink(static::$temporaryFileName);
+        }
+
+        /**
+         * Imports data from array to table
+         * @param $tableName
+         * @param $importArray
+         * @param $columnNames
+         * @throws NotSupportedException
+         */
+        protected static function importArrayIntoTable($tableName, array & $importArray, array $columnNames)
+        {
+            assert('is_string($tableName)');
+            assert('$tableName == strtolower($tableName)');
+            assert('is_array($columnNames)');
+            assert('is_array($importArray)');
+            do
+            {
+                $importSubset       = ArrayUtil::chopArray($importArray, static::BULK_INSERT_COUNT);
+                // bulkInsert needs every subarray to have same number of columns as columnNames, pad with empty strings
+                static::padSubArrays($importSubset, count($columnNames));
+                DatabaseCompatibilityUtil::bulkInsert($tableName, $importSubset, $columnNames, static::BULK_INSERT_COUNT);
+            } while (count($importSubset) > 0);
+        }
+
+        /**
+         * Pads subArrays with given value
+         * @param array $array
+         * @param $padSize
+         * @param string $value
+         */
+        protected static function padSubArrays(array & $array, $newSize, $value = '')
+        {
+            $paddedArray = array();
+            foreach ($array as $key => $subArray)
+            {
+                $subArray = array_pad($subArray, $newSize, $value);
+                $paddedArray[$key] = $subArray;
+            }
+            if (!empty($paddedArray))
+            {
+                $array = $paddedArray;
             }
         }
 

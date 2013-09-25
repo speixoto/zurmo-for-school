@@ -184,5 +184,12 @@
         {
             return (count($a) === count(static::arrayUniqueRecursive($a)));
         }
+
+        public static function chopArray(array & $array, $size)
+        {
+            $chop   = array_slice($array, 0, $size);
+            $array  = array_slice($array, $size);
+            return $chop;
+        }
     }
 ?>
