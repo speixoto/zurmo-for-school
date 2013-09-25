@@ -56,10 +56,38 @@
         public static function getTimeDifference($dateTime)
         {
             assert('DateTimeUtil::isValidDbFormattedDateTime($dateTime)');
-            $eventDateTime = new DateTime($dateTime);
-            $currentDateTime = new DateTime();
-            $interval = $currentDateTime->diff($eventDateTime);
-            return $interval->d . ' d ' . $interval->h . ' h ' . $interval->m . ' m ' . $interval->s . ' s';
+            $nowTimeStamp           = time();
+            $dateTimeStamp          = DateTimeUtil::convertDbFormatDateTimeToTimeStamp($dateTime);
+            $timeSinceLatestUpdate  = $nowTimeStamp - $dateTimeStamp;
+            $timeForString = array(
+                'days'  => floor($timeSinceLatestUpdate / 86400),
+                'hours' => floor($timeSinceLatestUpdate / 3600),
+                'minutes' => floor($timeSinceLatestUpdate / (3600*60)),
+                'seconds' => floor($timeSinceLatestUpdate / (3600*60*60))
+            );
+
+            if($timeForString['days'] >= 1)
+            {
+                return $timeForString['days'] . ' day(s)';
+            }
+            else
+            {
+                if($timeForString['hours'] >= 1)
+                {
+                    return $timeForString['hours'] . ' hour(s)';
+                }
+                else
+                {
+                    if($timeForString['minutes'] >= 1)
+                    {
+                        return $timeForString['minutes'] . ' min(s)';
+                    }
+                    else
+                    {
+                        return $timeForString['minutes'] . ' sec(s)';
+                    }
+                }
+            }
         }
 
         /**

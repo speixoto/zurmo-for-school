@@ -248,7 +248,7 @@
             //Log event for project audit
             if($relationAttributeName == 'Project')
             {
-               $project = Project::getById($relationModelId);
+               $project = Project::getById(intval($relationModelId));
                $data = $task->name;
                ProjectAuditEvent::logAuditEvent(ProjectAuditEvent::TASK_ADDED, $data, $project);
             }
@@ -296,6 +296,17 @@
          */
         public function actionModalViewFromRelation($id)
         {
+            $cs = Yii::app()->getClientScript();
+            $isScriptRegistered = $cs->isScriptFileRegistered(Yii::getPathOfAlias('application.modules.tasks.elements.assets'), CClientScript::POS_END);
+            if(!$isScriptRegistered)
+            {
+                $cs->registerScriptFile(
+                    Yii::app()->getAssetManager()->publish(
+                        Yii::getPathOfAlias('application.modules.tasks.elements.assets')
+                        ) . '/TaskUtils.js',
+                    CClientScript::POS_END
+                );
+            }
             $task = Task::getById(intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($task);
             AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED, array(strval($task), get_class($this->getModule())), $task);
@@ -462,6 +473,7 @@
                 {
                     try
                     {
+                        //todo: Not working ask Jason
                         $project = $existingItem->castDown(array('Project'));
                         ProjectAuditEvent::logAuditEvent(ProjectAuditEvent::TASK_COMPLETED, $task->name, $project);
                     }
