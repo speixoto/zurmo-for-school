@@ -196,9 +196,15 @@
         {
             $availableTypes = array();
             $gameCollectionRulesClassNames = GamificationModule::getAllClassNamesByPathFolder('rules.collections');
+
             foreach($gameCollectionRulesClassNames as $gameCollectionRulesClassName)
             {
-                $availableTypes[] = $gameCollectionRulesClassName::getType();
+                $classToEvaluate     = new ReflectionClass($gameCollectionRulesClassName);
+                if (is_subclass_of($gameCollectionRulesClassName, 'GameCollectionRules') &&
+                    !$classToEvaluate->isAbstract())
+                {
+                    $availableTypes[] = $gameCollectionRulesClassName::getType();
+                }
             }
             return $availableTypes;
         }
@@ -233,11 +239,25 @@
                 return array();
             }
             $unserializedData = unserialize($this->serializedData);
-            if(!isset($unseralizedData['Items']))
+            if(!isset($unserializedData['Items']))
             {
                 return array();
             }
-            return $unseralizedData['Items'];
+            return $unserializedData['Items'];
+        }
+
+        public function getRedemptionCount()
+        {
+            if($this->serializedData == null)
+            {
+                return array();
+            }
+            $unserializedData = unserialize($this->serializedData);
+            if(!isset($unserializedData['RedemptionItem']))
+            {
+                return array();
+            }
+            return (int)$unserializedData['RedemptionItem'];
         }
     }
 ?>

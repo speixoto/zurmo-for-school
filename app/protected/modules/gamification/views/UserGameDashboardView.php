@@ -189,7 +189,7 @@
                 $statisticsContent .= ZurmoHtml::tag('span', array('class' => 'stat-level'), $statistics['level']);
                 $pointsContent      = Zurmo::t('GamificationModule', '{n}<em>Point</em>|{n}<em>Points</em>', array($statistics['points']));
                 $statisticsContent .= ZurmoHtml::tag('span', array('class' => 'stat-points'), $pointsContent);
-                $statisticsContent .= $this->renderPercentHolderContent($statistics['nextLevelPercentageComplete']);
+                $statisticsContent .= $this->renderPercentHolderContent((int)$statistics['nextLevelPercentageComplete']);
                 $content .= ZurmoHtml::tag('div', array('class' => 'stat-row'), $statisticsContent);
             }
             $content = ZurmoHtml::tag('div', array('id' => 'gd-stats-wrapper'), $content);
@@ -280,7 +280,7 @@
             $count = 0;
             foreach($this->collectionData as $collection)
             {
-                if($collection['completed'])
+                if($collection->getRedemptionCount() > 0)
                 {
                     $count ++;
                 }

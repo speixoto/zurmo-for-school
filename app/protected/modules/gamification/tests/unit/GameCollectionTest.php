@@ -111,5 +111,43 @@
                                     'Wood'              => 0));
             $this->assertEquals($compareData, unserialize($collections['Frogs']->serializedData));
         }
+
+        /**
+         * @depends testResolvePersonAndAvailableTypes
+         */
+        public function testGetAvailableTypes()
+        {
+           $types = GameCollection::getAvailableTypes();
+            $this->assertTrue(count($types) > 0);
+        }
+
+        /**
+         * @depends testGetAvailableTypes
+         */
+        public function testGetItemsData()
+        {
+            Yii::app()->user->userModel      = User::getByUsername('steven');
+            $collections = GameCollection::resolvePersonAndAvailableTypes(Yii::app()->user->userModel, array('Frogs'));
+            $this->assertEquals(1, count($collections));
+            $itemsData = $collections['Frogs']->getItemsData();
+            $compareData = array('Goliath'           => 0,
+                                 'NorthernLeopard'   => 0,
+                                 'OrnateHorned'      => 0,
+                                 'Tree'              => 0,
+                                 'Wood'              => 0);
+            $this->assertEquals($compareData, $itemsData);
+        }
+
+        /**
+         * @depends testGetItemsData
+         */
+        public function testGetRedemptionCount()
+        {
+            Yii::app()->user->userModel      = User::getByUsername('steven');
+            $collections = GameCollection::resolvePersonAndAvailableTypes(Yii::app()->user->userModel, array('Frogs'));
+            $this->assertEquals(1, count($collections));
+            $redemptionCount = $collections['Frogs']->getRedemptionCount();
+            $this->assertEquals(0, $redemptionCount);
+        }
     }
 ?>

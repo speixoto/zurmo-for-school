@@ -52,8 +52,9 @@
             $filters = array();
             $filters[] = array(
                     ZurmoBaseController::RIGHTS_FILTER_PATH .
-                    ' - modalList, autoComplete, details, profile, edit, auditEventsModalList, changePassword, configurationEdit, emailConfiguration, securityDetails, ' .
-                        'autoCompleteForMultiSelectAutoComplete, confirmTimeZone, changeAvatar',
+                    ' - modalList, autoComplete, details, profile, edit, auditEventsModalList, changePassword, ' .
+                    'configurationEdit, emailConfiguration, securityDetails, ' .
+                    'autoCompleteForMultiSelectAutoComplete, confirmTimeZone, changeAvatar, gameDashboard',
                     'moduleClassName' => 'UsersModule',
                     'rightName' => UsersModule::getAccessRight(),
             );
@@ -575,6 +576,22 @@
                 );
             }
             echo CJSON::encode($autoCompleteResults);
+        }
+
+        public function actionGameDashboard($id)
+        {
+            $user = User::getById(intval($id));
+            UserAccessUtil::resolveAccessingASystemUser($user);
+            $title               = Zurmo::t('HomeModule', 'Dashboard');
+            $breadcrumbLinks     = array(strval($user) => array('default/gameDashboard',  'id' => $id), $title);
+            $badgeData           = GameBadge::getAllByPersonIndexedByType($user);
+            $generalLevelData    = GameLevelUtil::getStatisticsDataForAGivenLevelType($user, GameLevel::TYPE_GENERAL);
+            $rankingData         = GamePointUtil::getUserRankingData($user);
+            $statisticsData      = GameLevelUtil::getUserStatisticsData($user);
+            $collectionData      = GameCollection::resolvePersonAndAvailableTypes($user, GameCollection::getAvailableTypes());
+            $dashboardView = new UserGameDashboardView($this, $user, $generalLevelData, $badgeData, $rankingData, $statisticsData, $collectionData);
+            $view = new UsersPageView($this->resolveZurmoDefaultOrAdminView($dashboardView, $breadcrumbLinks, 'UserBreadCrumbView'));
+            echo $view->render();
         }
 
         /**
