@@ -35,51 +35,52 @@
      ********************************************************************************/
 
     /**
-     * Displays a date/time localized
-     * display.
+     * Base class for working with InQueue models
      */
-    class DateTimeElement extends Element
+    class InQueueUtil
     {
-        /**
-         * Render a datetime JUI widget
-         * @return The element's content as a string.
-         */
-        protected function renderControlEditable()
+        protected static function resolveModelAndContent($model)
         {
-            $themePath = Yii::app()->themeManager->baseUrl . '/' . Yii::app()->theme->name;
-            $value     = DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay(
-                            $this->model->{$this->attribute},
-                            DateTimeUtil::DATETIME_FORMAT_DATE_WIDTH,
-                            DateTimeUtil::DATETIME_FORMAT_TIME_WIDTH,
-                            true);
-            $cClipWidget = new CClipWidget();
-            $cClipWidget->beginClip("EditableDateTimeElement");
-            $cClipWidget->widget('application.core.widgets.ZurmoJuiDateTimePicker', array(
-                'attribute'  => $this->attribute,
-                'value'      => $value,
-                'htmlOptions' => array(
-                    'id'              => $this->getEditableInputId(),
-                    'name'            => $this->getEditableInputName(),
-                    'disabled'        => $this->getDisabledValue(),
-                )
-            ));
-            $cClipWidget->endClip();
-            $content = $cClipWidget->getController()->clips['EditableDateTimeElement'];
-            return ZurmoHtml::tag('div', array('class' => 'has-date-select'), $content);
+            try
+            {
+                $relatedModel = self::resolveModel($model);
+                $modelContent = self::resolveModelContent($relatedModel);
+            }
+            catch(AccessDeniedSecurityException $e)
+            {
+                $modelContent = Zurmo::t('ZurmoModule', 'Restricted');
+            }
+            catch(NotFoundException $e)
+            {
+                $modelContent = Zurmo::t('ZurmoModule', 'Record no longer exists');
+            }
+            return ' &mdash; <span class="less-pronounced-text">' . $modelContent . '</span>';
         }
 
         /**
-         * Renders the attribute from the model.
-         * @return The element's content.
+         * @param WorkflowMessageInQueue $workflowMessageInQueue
+         * @return An|RedBeanModel
          */
-        protected function renderControlNonEditable()
+        protected static function resolveModel(RedBeanModel $inQueueModel)
         {
-            if ($this->model->{$this->attribute} != null)
+            $modelDerivationPathToItem = RuntimeUtil::getModelDerivationPathToItem($inQueueModel->modelClassName);
+            return $inQueueModel->modelItem->castDown(array($modelDerivationPathToItem));
+        }
+
+        /**
+         * @param RedBeanModel $model
+         * @return string
+         */
+        protected static function resolveModelContent(RedBeanModel $model)
+        {
+            $security = new DetailsActionSecurity(Yii::app()->user->userModel, $model);
+            if ($security->canUserPerformAction())
             {
-                $content = DateTimeUtil::
-                           convertDbFormattedDateTimeToLocaleFormattedDisplay(
-                               $this->model->{$this->attribute});
-                return ZurmoHtml::encode($content);
+                $params              = array('label' => strval($model), 'wrapLabel' => false);
+                $moduleClassName     = $model->getModuleClassName();
+                $moduleId            = $moduleClassName::getDirectoryName();
+                $relatedModelElement = new DetailsLinkActionElement('default', $moduleId, $model->id, $params);
+                return $relatedModelElement->render();
             }
         }
     }

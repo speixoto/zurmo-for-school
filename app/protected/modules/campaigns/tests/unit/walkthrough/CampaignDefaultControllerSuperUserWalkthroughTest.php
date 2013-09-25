@@ -438,7 +438,7 @@
                                         'marketingList' => array('id' => $marketingListId),
                                         'fromName' => 'Zurmo Sales',
                                         'fromAddress' => 'sales@zurmo.com',
-                                        'sendOnDateTime' => '6/13/13 10:54 AM',
+                                        'sendOnDateTime' => '6/13/2013 10:54 AM',
                                         'subject' => 'New Campaign using Create Subject',
                                         'enableTracking' => '1',
                                         'supportsRichText' => '0',
@@ -623,7 +623,7 @@
             $this->assertTrue(strpos($content, '<td colspan="1"><div class="has-date-select"><input ' .
                                                 'id="Campaign_sendOnDateTime" name="Campaign[sendOnDateTime]" ' .
                                                 'style="position:relative;z-index:10000;" type="text" ' .
-                                                'value="6/13/13 10:54 AM"') !== false);
+                                                'value="6/13/2013 10:54 AM"') !== false);
             $this->assertTrue(strpos($content, '<th><label for="Campaign_subject" class="required">Subject ' .
                                                 '<span class="required">*</span></label></th>') !== false);
             $this->assertTrue(strpos($content, '<td colspan="1"><input id="Campaign_subject" name="Campaign[subject]" ' .
@@ -685,7 +685,7 @@
                                             'marketingList' => array('id' => $marketingList->id),
                                             'fromName' => 'Zurmo Support',
                                             'fromAddress' => 'support@zurmo.com',
-                                            'sendOnDateTime' => '5/14/13 10:54 AM',
+                                            'sendOnDateTime' => '5/14/2013 10:54 AM',
                                             'subject' => 'New Campaign Subject',
                                             'enableTracking' => '0',
                                             'supportsRichText' => '1',
@@ -783,7 +783,7 @@
                 'name'           => 'New Campaign using Create',
                 'fromName'       => 'Zurmo Sales',
                 'fromAddress'    => 'sales@zurmo.com',
-                'sendOnDateTime' => '6/13/13 10:54 AM',
+                'sendOnDateTime' => '6/13/2013 10:54 AM',
                 'subject' => 'New Campaign using Create Subject',
                 'enableTracking' => '1',
                 'supportsRichText' => '0',
