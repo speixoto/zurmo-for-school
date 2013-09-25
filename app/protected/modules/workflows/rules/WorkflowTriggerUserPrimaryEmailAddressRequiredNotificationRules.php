@@ -43,7 +43,7 @@
         public static function getDisplayName()
         {
             return Zurmo::t('WorkflowsModule',
-                'Please configure your primary email address to be able to receive email messages triggered by workflow engine.');
+                'Please set your primary email address in your user profile in order to receive email messages triggered by the workflow engine.');
         }
 
         public static function getType()
