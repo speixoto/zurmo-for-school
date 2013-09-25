@@ -43,8 +43,6 @@
 
         protected $customRequiredFields = array();
 
-        public $verifyCode;
-
         protected static function getRedBeanModelClassName()
         {
             return 'Contact';
