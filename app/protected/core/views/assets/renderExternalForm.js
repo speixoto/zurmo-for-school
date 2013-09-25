@@ -118,6 +118,7 @@ if(typeof window.jQQ !== 'object'){
 		script.src = url;
 		document.getElementsByTagName("head")[0].appendChild(script);
 	};
+    var onClickAction = '';
 	function renderFormCallback(respData)
 	{
 		var jsScriptFiles = respData.head.js;
@@ -144,7 +145,7 @@ if(typeof window.jQQ !== 'object'){
 					}
 					if (bodyJs[bodyJsIndex].type == 'codeBlock')
 					{
-						jsScriptElement.innerHTML = "jQQ.isolate (function(jQuery,$) { " + bodyJs[bodyJsIndex].body + " });";
+						jsScriptElement.innerHTML = "jQQ.isolate (function(jQuery,$) { " + bodyJs[bodyJsIndex].body + " }); enableCaptcha();";
 					}
 					jsScriptElement.async = false;
                     element.appendChild(jsScriptElement);
@@ -160,4 +161,43 @@ if(typeof window.jQQ !== 'object'){
 			});
 		});
 	}
-	getContent();
+    getContent();
+    function validateCaptcha()
+    {
+        jQQ.isolate (function(jQuery,$) {
+            $('#captchaError').remove();
+            $(this).attachLoadingOnSubmit("edit-form");
+            $.ajax({
+                type: "POST",
+                url: captchaPostBackUrl,
+                data: $("#edit-form").serialize()
+            }).done(function(validationResp) {
+                    $(this).detachLoadingOnSubmit("edit-form");
+                    if (validationResp.status == 'success')
+                    {
+                        $('#captchaHash').val(validationResp.captchaHash);
+                        $('#saveyt1').attr('onclick', onClickAction);
+                        $('#saveyt1').trigger('click');
+                    }
+                    else
+                    {
+                        $('#reCaptcha').prepend('<span id="captchaError" style=\"color: red;\">Invalid verification code</span>');
+                    }
+                });
+        });
+    }
+    function enableCaptcha()
+    {
+        requireJS(['http://www.google.com/recaptcha/api/js/recaptcha_ajax.js'], 0, function(){
+            Recaptcha.create("6Ldjl-cSAAAAAP-8r9GMK0MamygxAQa2PtHVWK_7",
+                "reCaptcha",
+                {
+                    theme: "white"
+                }
+            );
+            jQQ.isolate (function(jQuery,$) {
+                onClickAction = $('#saveyt1').attr('onclick');
+                $('#saveyt1').attr('onclick', 'validateCaptcha(); return false;');
+            });
+        });
+    }
