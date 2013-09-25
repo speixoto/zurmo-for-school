@@ -597,5 +597,31 @@
             $count = ImportDatabaseUtil::getCount($testTableName);
             $this->assertEquals(520, $count);
         }
+
+        public function testDataTypesAreGeneratedCorrectly()
+        {
+            $columnLengthsWithTypes  = array(
+                10      => 'varchar(10)',
+                250     => 'varchar(250)',
+                255     => 'varchar(255)',
+                256     => 'text',
+                65530   => 'text',
+                65535   => 'text',
+                65538   => 'longtext'
+            );
+
+            $csvFileName    = 'importColumnTypeTest.csv';
+            $testTableName  = 'testimporttable';
+            $this->assertTrue(ImportTestHelper::createTempTableByFileNameAndTableName($csvFileName, $testTableName, false));
+            $count = ImportDatabaseUtil::getCount($testTableName);
+            $this->assertEquals(1, $count);
+            $columns        = ZurmoRedBean::$writer->getColumnsWithDetails($testTableName);
+            $columnIndex    = 0;
+            foreach ($columnLengthsWithTypes as $columnType)
+            {
+                $this->assertEquals($columnType, $columns['column_' . $columnIndex]['Type']);
+                $columnIndex++;
+            }
+        }
     }
 ?>
