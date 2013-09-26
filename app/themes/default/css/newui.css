@@ -7265,20 +7265,14 @@ td {
   position: relative;
   background: -webkit-linear-gradient(left, #ffffff 30%, rgba(255, 255, 255, 0)), -webkit-linear-gradient(left, rgba(255, 255, 255, 0), #ffffff 70%) 100%, -webkit-radial-gradient(0 50%, farthest-side, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0)), -webkit-radial-gradient(100% 50%, farthest-side, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0)) 100% 0;
   background-repeat: no-repeat;
-  background-size: 40px 100%,
-		40px 100%,
-		20px 100%,
-		20px 100%;
-  /* Opera doesn't support this in the shorthand */
-
-  background-attachment: local,
-		local,
-		scroll,
-		scroll;
+  background-size: 40px 100%, 40px 100%, 20px 100%, 20px 100%;
+  background-attachment: local, ocal, scroll, scroll;
+}
+#list-view .items {
+  border: 1px solid #dfdfdf;
 }
 .items {
   width: 100%;
-  border: 1px solid #dfdfdf;
   border-collapse: collapse;
   border-spacing: 1px;
   margin: 0 -100% 0 0;
@@ -16120,9 +16114,6 @@ a.close-ModalGameNotification.simple-link {
 }
 .UserSocialItemsForPortletView .empty {
   display: none;
-}
-#UsersPageView .juiportlet-columns {
-  padding-right: 20px;
 }
 #UserDetailsView {
   padding: 0 20px 20px 0;
