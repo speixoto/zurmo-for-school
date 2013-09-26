@@ -48,7 +48,7 @@
             $adapter     = new ModelNumberOrCurrencyAttributesAdapter(new TestOperatorTypeModel());
             $attributes  = $adapter->getAttributes();
             $this->assertEquals(3, count($attributes));
-            $this->assertTrue(isset($attributes['integer']));
+            $this->assertTrue(isset($attributes['integerS']));
             $this->assertTrue(isset($attributes['integerStandard']));
             $this->assertTrue(isset($attributes['floatStandard']));
 
