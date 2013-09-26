@@ -7,7 +7,7 @@ $("[id^='ContactWebForm_serializedData_']").live('change', function()
         var attributeLabel   = $('label[for=' + elementId + ']').html();
         $(this).closest('div').remove();
         var attributeElement = '<li><div class="dynamic-row"><div>';
-        attributeElement    += '<input style="width: 125px;" type="text" id="placedAttribute_' + attributeId + '" name="placedAttribute[' + attributeId + '][label]" value="' + attributeLabel + '" />';
+        attributeElement    += '<input class="webform-chosen-field" type="text" id="placedAttribute_' + attributeId + '" name="placedAttribute[' + attributeId + '][label]" value="' + attributeLabel + '" />';
         attributeElement    += '<input type="checkbox" name="placedAttribute[' + attributeId + '][required]" value="1"/> Required?</div>';
         attributeElement    += '<a class="remove-dynamic-row-link" id="' + elementId + '" data-value="' + attributeId + '" href="#">—</a>';
         attributeElement    += '</div></li>';

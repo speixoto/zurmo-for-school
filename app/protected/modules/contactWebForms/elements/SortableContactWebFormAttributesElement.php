@@ -121,8 +121,8 @@
          */
         protected function renderItemTemplate()
         {
-            return '<li><div class="dynamic-row"><div>' .
-                        '<input style="width: 125px;" type="text" id="placedAttribute_{id}" name="placedAttribute[{id}][label]" value="{content}" />' .
+            return '<li><div class="dynamic-row webform-chosen-field"><div>' .
+                        '<input type="text" id="placedAttribute_{id}" name="placedAttribute[{id}][label]" value="{content}" />' .
                         '<input type="checkbox" name="placedAttribute[{id}][required]" value="1" {requiredAttribute} {readOnlyAttribute}/> Required?' .
                     '</div>{checkedAndReadOnly}</div></li>';
         }
