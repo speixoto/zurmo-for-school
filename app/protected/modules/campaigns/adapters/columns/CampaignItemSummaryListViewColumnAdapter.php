@@ -270,8 +270,39 @@
                                             null,
                                             'latestDateTime'
                                       );
-            $typesArray             = CampaignItemActivity::getTypesArray();
-            $content                = $typesArray[$campaignItemActivities[0]->type];
+            $content = Zurmo::t('MarketingModule', 'The message was not created.');
+            if ($campaignItem->contact->primaryEmail->emailAddress == null)
+            {
+                if ($campaignItem->contact->secondaryEmail->emailAddress == null)
+                {
+                    $content = Zurmo::t('MarketingModule', 'Contact has no primary email address set.');
+                }
+                else
+                {
+                    $content = Zurmo::t('MarketingModule', 'Secondary email address is populated, but not the primary which is used to send the email message.');
+                }
+            }
+            elseif (MarketingListMember::getByMarketingListIdContactIdAndUnsubscribed(
+                    $campaignItem->campaign->marketingList->id,
+                    $campaignItem->contact->id,
+                    true) != false)
+            {
+                $content = Zurmo::t('MarketingModule', 'The contact is not subscribed to the MarketingListsModuleSingularLabel.',
+                    LabelUtil::getTranslationParamsForAllModules());
+            }
+            elseif ($campaignItem->contact->primaryEmail->optOut)
+            {
+                if ($campaignItem->contact->secondaryEmail->optOut)
+                {
+                    $content = Zurmo::t('MarketingModule', 'Primary email address is opted out.');
+                }
+                else
+                {
+                    $content = Zurmo::t('MarketingModule', 'Secondary email address is not opted out but the primary is. ' .
+                                        'The primary email is the one used to send the email message.');
+                }
+            }
+
             return '<h5>' . $content . '</h5>';
         }
 

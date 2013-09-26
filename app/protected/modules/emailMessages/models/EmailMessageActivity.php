@@ -49,8 +49,6 @@
 
         const TYPE_SKIP                       = 5;
 
-        const TYPE_SKIP_NO_RECIPIENTS         = 6;
-
         public static function getTypesArray()
         {
             return array(
@@ -59,8 +57,6 @@
                 static::TYPE_UNSUBSCRIBE        => Zurmo::t('Core',                'Unsubscribe'),
                 static::TYPE_BOUNCE             => Zurmo::t('EmailMessagesModule', 'Bounce'),
                 static::TYPE_SKIP               => Zurmo::t('EmailMessagesModule', 'Skipped'),
-                static::TYPE_SKIP_NO_RECIPIENTS => Zurmo::t('EmailMessagesModule',
-                                                            'Skipped because there were no recipients for the email message.'),
             );
         }
 
@@ -124,15 +120,6 @@
                 ),
             );
             $searchAttributeData['structure'] = '1';
-            if ($type == static::TYPE_SKIP)
-            {
-                $searchAttributeData['clauses'][2] = array(
-                        'attributeName'        => 'type',
-                        'operatorType'         => 'equals',
-                        'value'                => static::TYPE_SKIP_NO_RECIPIENTS,
-                );
-                $searchAttributeData['structure'] = '1 or 2';
-            }
             $joinTablesAdapter                = new RedBeanModelJoinTablesQueryAdapter(get_called_class());
             $where = RedBeanModelDataProvider::makeWhere(get_called_class(), $searchAttributeData, $joinTablesAdapter);
             return self::getSubset($joinTablesAdapter, null, $pageSize, $where, 'latestDateTime');
@@ -151,15 +138,6 @@
                 'value'                     => $type,
             );
             $structure = '1';
-            if ($type == static::TYPE_SKIP)
-            {
-                $searchAttributeData['clauses'][2] = array(
-                    'attributeName'        => 'type',
-                    'operatorType'         => 'equals',
-                    'value'                => static::TYPE_SKIP_NO_RECIPIENTS,
-                );
-                $structure = '(1 or 2)';
-            }
             $clauseNumber = count($searchAttributeData['clauses']) + 1;
             $searchAttributeData['clauses'][$clauseNumber++] = array(
                     'attributeName'             => 'person',
@@ -199,15 +177,6 @@
                 'value'                     => $type,
             );
             $structure = '1';
-            if ($type == static::TYPE_SKIP)
-            {
-                $searchAttributeData['clauses'][2] = array(
-                    'attributeName'        => 'type',
-                    'operatorType'         => 'equals',
-                    'value'                => static::TYPE_SKIP_NO_RECIPIENTS,
-                );
-                $structure = '(1 or 2)';
-            }
             $clauseNumber = count($searchAttributeData['clauses']) + 1;
             $searchAttributeData['clauses'][$clauseNumber++] = array(
                     'attributeName'             => 'person',
@@ -360,21 +329,6 @@
                                 'unique' => true,
                             )
                         );
-        }
-
-        /**
-         * Return the cause that make the email message activity to be marked as skipped
-         * @return string
-         */
-        public function getSkippedDescription()
-        {
-            switch ($this->type) {
-                case static::TYPE_SKIP_NO_RECIPIENTS:
-                    return Zurmo::t('EmailMessagesModule', 'Message activity was skipped because there were no recipients for the message.');
-                    break;
-                default:
-                    return Zurmo::t('EmailMessagesModule', 'No status for the skipped message activity');
-            }
         }
     }
 ?>

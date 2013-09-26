@@ -66,7 +66,7 @@
             $emailMessageActivity->quantity = 1;
             $this->assertTrue($emailMessageActivity->save());
             $emailMessageActivity           = new EmailMessageActivity();
-            $emailMessageActivity->type     = EmailMessageActivity::TYPE_SKIP_NO_RECIPIENTS;
+            $emailMessageActivity->type     = EmailMessageActivity::TYPE_SKIP_NO_EMAIL_MESSAGE;
             $emailMessageActivity->quantity = 1;
             $this->assertTrue($emailMessageActivity->save());
         }
@@ -111,7 +111,7 @@
             $this->assertCount(1, $emailMessageActivities);
             $emailMessageActivities = EmailMessageActivity::getByType(EmailMessageActivity::TYPE_SKIP);
             $this->assertCount(2, $emailMessageActivities);
-            $emailMessageActivities = EmailMessageActivity::getByType(EmailMessageActivity::TYPE_SKIP_NO_RECIPIENTS);
+            $emailMessageActivities = EmailMessageActivity::getByType(EmailMessageActivity::TYPE_SKIP_NO_EMAIL_MESSAGE);
             $this->assertCount(1, $emailMessageActivities);
         }
 
@@ -120,7 +120,7 @@
          */
         public function testGetSkippedDescription()
         {
-            $emailMessageActivities = EmailMessageActivity::getByType(EmailMessageActivity::TYPE_SKIP_NO_RECIPIENTS);
+            $emailMessageActivities = EmailMessageActivity::getByType(EmailMessageActivity::TYPE_SKIP_NO_EMAIL_MESSAGE);
             $this->assertEquals('Message activity was skipped because there were no recipients for the message.',
                                 $emailMessageActivities[0]->getSkippedDescription());
         }
