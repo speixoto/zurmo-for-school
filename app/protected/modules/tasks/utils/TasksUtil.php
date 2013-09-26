@@ -644,7 +644,8 @@
         }
 
         /**
-         * Get subscription link for the task
+         * Get kanban subscription link for the task. This would be in kanban view for a related model
+         * for e.g Project
          * @param Task $task
          * @param int $row
          * @return string
@@ -655,7 +656,7 @@
         }
 
         /**
-         * Get subscription link for the task
+         * Get subscription link on the task detail view
          * @param Task $task
          * @param int $row
          * @return string
@@ -676,16 +677,19 @@
         {
             if(TasksUtil::isUserSubscribedForTask($task, Yii::app()->user->userModel) === false)
             {
-                return ZurmoHtml::link('<strong>' . Zurmo::t('TasksModule', 'Subscribe') . '</strong>', '#', array('class' => $subscribeLinkClass)) ;
+                $content = Zurmo::t('TasksModule', 'Subscribe');
+                $class   = $subscribeLinkClass;
             }
             else
             {
-                return ZurmoHtml::link('<strong>' . Zurmo::t('TasksModule', 'Unsubscribe') . '</strong>', '#', array('class' => $unsubscribeLinkClass)) ;
+                $content = Zurmo::t('TasksModule', 'Unsubscribe');
+                $class   = $unsubscribeLinkClass;
             }
+            return ZurmoHtml::link('<strong>' . $content . '</strong>', '#', array('class' => $class)) ;
         }
 
         /**
-         * Gets task percentage
+         * Get task completion percentage
          * @param int $id
          */
         public static function getTaskCompletionPercentage($id)

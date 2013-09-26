@@ -50,5 +50,49 @@
             $models = Task::getSubset($joinTablesAdapter, null, null, $where, null);
             return $models;
         }
+
+        /**
+         * Logs event on adding task check item for the task
+         * @param type $task
+         */
+        public static function logTaskCheckItemEvent($task, $taskCheckListItem)
+        {
+            foreach ($task->activityItems as $existingItem)
+            {
+                try
+                {
+                    $modelDerivationPathToItem = RuntimeUtil::getModelDerivationPathToItem('Project');
+                    $project = $existingItem->castDown(array($modelDerivationPathToItem));
+                    $data = $taskCheckListItem->name . Zurmo::t('TasksModule', ' in  Task ') . $task->name;
+                    ProjectAuditEvent::logAuditEvent(ProjectAuditEvent::CHECKLIST_ITEM_ADDED, $data, $project);
+                }
+                catch(NotFoundException $e)
+                {
+
+                }
+            }
+        }
+
+        /**
+         * Logs event on changing task status
+         * @param type $task
+         */
+        public static function logTaskStatusChangeEvent($task, $currentStatus, $newStatus)
+        {
+            foreach ($task->activityItems as $existingItem)
+            {
+                try
+                {
+                    $modelDerivationPathToItem = RuntimeUtil::getModelDerivationPathToItem('Project');
+                    $project = $existingItem->castDown(array($modelDerivationPathToItem));
+                    $data = $currentStatus . Zurmo::t('core', ' to ') . $newStatus;
+                    ProjectAuditEvent::logAuditEvent(ProjectAuditEvent::TASK_STATUS_CHANGED, $data, $project);
+                }
+                catch(NotFoundException $e)
+                {
+
+                }
+            }
+        }
     }
 ?>

@@ -469,19 +469,6 @@
                     $checkItem->completed = true;
                     $checkItem->unrestrictedSave();
                 }
-                foreach ($task->activityItems as $existingItem)
-                {
-                    try
-                    {
-                        $modelDerivationPathToItem = RuntimeUtil::getModelDerivationPathToItem('Project');
-                        $project = $existingItem->castDown(array($modelDerivationPathToItem));
-                        ProjectAuditEvent::logAuditEvent(ProjectAuditEvent::TASK_COMPLETED, $task->name, $project);
-                    }
-                    catch(NotFoundException $e)
-                    {
-
-                    }
-                }
                 $task->completedDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
                 $task->completed         = true;
                 $task->save();
@@ -496,6 +483,7 @@
                 $task->completed         = false;
                 $task->save();
             }
+            ProjectsUtil::logTaskStatusChangeEvent($task, Task::getStatusDisplayName(intval($currentStatus)), Task::getStatusDisplayName(intval($status)));
             TasksUtil::sendNotificationOnTaskUpdate($task, Zurmo::t('TasksModule', 'The status for the task #' . $task->id . ' has been updated to ' . Task::getStatusDisplayName(intval($status))));
         }
 

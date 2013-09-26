@@ -42,9 +42,11 @@
 
         const COMMENT_ADDED              = 'Comment Added';
 
-        const TASK_COMPLETED             = 'Task Completed';
+        const TASK_STATUS_CHANGED        = 'Task Status Changed';
 
         const PROJECT_ARCHIVED           = 'Project Archived';
+
+        const CHECKLIST_ITEM_ADDED       = 'Check List Item Added';
 
         public static $isTableOptimized = false;
 

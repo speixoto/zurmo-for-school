@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
     /**
-     * Column adapter for account for product list in portlet
+     * Column adapter for dashboard active project list view
      */
     class DashboardActiveProjectListViewColumnAdapter extends TextListViewColumnAdapter
     {
@@ -42,7 +42,7 @@
         {
             return array(
                     'name'  => $this->attribute,
-                    'value' => 'DashboardActiveProjectListViewColumnAdapter::getProjectInformationForDashboard($data)',
+                    'value' => 'DashboardActiveProjectListViewColumnAdapter::getActiveProjectInformationForDashboard($data)',
                     'type'  => 'raw'
                 );
         }
@@ -52,12 +52,9 @@
          * @param array $data
          * @return string
          */
-        public static function getProjectInformationForDashboard($data)
+        public static function getActiveProjectInformationForDashboard($data)
         {
             $content = '<h4>' . ZurmoHtml::link($data->name, Yii::app()->createUrl('/projects/default/details', array('id' => $data->id))) . '</h4>' . '<table>';
-//            $searchAttributeData = TasksUtil::makeSearchAttributeData($data);
-//            $joinTablesAdapter   = new RedBeanModelJoinTablesQueryAdapter('Task');
-//            $where  = RedBeanModelDataProvider::makeWhere('Task', $searchAttributeData, $joinTablesAdapter);
             $models = ProjectsUtil::getTasksForProject($data);
 
             if(count($models) > 0)

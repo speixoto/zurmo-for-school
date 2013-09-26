@@ -531,6 +531,7 @@
                                                     null,
                                                     'ProjectsSearchView'
                                                 );
+            $_GET['Project_sort'] = 'createdDateTime.desc';
             $mixedView  = $this->makeListView(
                             $searchForm,
                             $dataProvider,
