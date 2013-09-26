@@ -64,7 +64,7 @@
             $this->assertNull($currencyCode);
             $result = CalculatedNumberUtil::calculateByFormulaAndModelAndResolveFormat('(integerStandard + 5)', $model);
             $this->assertEquals(5, $result);
-            $result = CalculatedNumberUtil::calculateByFormulaAndModelAndResolveFormat('(integerStandard + integer)', $model);
+            $result = CalculatedNumberUtil::calculateByFormulaAndModelAndResolveFormat('(integerStandard + integerS)', $model);
             $this->assertEquals(0, $result);
 
             $formatType   = CalculatedNumberUtil::FORMAT_TYPE_INTEGER;
@@ -78,7 +78,7 @@
             $this->assertEquals(0, $result);
 
             //Make attributes have actual values.
-            $model->integer         = 1000;
+            $model->integerS        = 1000;
             $model->integerStandard = 3000;
             $model->floatStandard   = 6000.39;
             $formatType   = CalculatedNumberUtil::FORMAT_TYPE_INTEGER;
@@ -99,7 +99,7 @@
             $this->assertNull($currencyCode);
             $result = CalculatedNumberUtil::calculateByFormulaAndModelAndResolveFormat('(integerStandard + 5)', $model);
             $this->assertEquals('3,005', $result); // Not Coding Standard
-            $result = CalculatedNumberUtil::calculateByFormulaAndModelAndResolveFormat('(integerStandard + integer)', $model);
+            $result = CalculatedNumberUtil::calculateByFormulaAndModelAndResolveFormat('(integerStandard + integerS)', $model);
             $this->assertEquals('4,000', $result); // Not Coding Standard
 
             $formatType   = CalculatedNumberUtil::FORMAT_TYPE_INTEGER;
@@ -212,7 +212,7 @@
             $this->assertTrue(CalculatedNumberUtil::isFormulaValid('(integerStandard + floatStandard)', 'TestOperatorTypeModel'));
             $this->assertFalse(CalculatedNumberUtil::isFormulaValid('(integerStandard + floatStandard + jj)', 'TestOperatorTypeModel'));
             $this->assertFalse(CalculatedNumberUtil::isFormulaValid(')4(', 'TestOperatorTypeModel'));
-            $this->assertTrue(CalculatedNumberUtil::isFormulaValid('(integerStandard + integer)', 'TestOperatorTypeModel'));
+            $this->assertTrue(CalculatedNumberUtil::isFormulaValid('(integerStandard + integerS)', 'TestOperatorTypeModel'));
         }
     }
 ?>
