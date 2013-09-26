@@ -164,7 +164,8 @@
             $content  = ZurmoHtml::tag('span', array('id' => 'gd-z-coin'), 'z');
             $content .= ZurmoHtml::tag('h3', array(), Zurmo::t('GamificationModule', '{n} coin|{n} coins',
                                                                array($this->getGameCoinForUser()->value)));
-            $content .= ZurmoHtml::link(Zurmo::t('GamificationModule', 'Redeem'), '#'); //todo: where does this link to?
+            $content .= ZurmoHtml::link(Zurmo::t('GamificationModule', 'Redeem'), '#');
+            //todo: where does this link to? coonvert to story? take to redemption listview of rewards
             return      ZurmoHtml::tag('div', array('id' => 'gd-z-coins'), $content);
         }
 
@@ -198,9 +199,9 @@
 
         protected function renderCollectionsContent()
         {
-            $content  = ZurmoHtml::link('◀', '#', array('id' => 'nav-left', 'class' => 'nav-button')); //todo: what character is this arrow. strange.
+            $content  = ZurmoHtml::link('◀', '#', array('id' => 'nav-left', 'class' => 'nav-button'));
             $content .= $this->renderCollectionsCarouselWrapperAndContent();
-            $content .= ZurmoHtml::link('▶', '#', array('id' => 'nav-right', 'class' => 'nav-button')); //todo: what character is this arrow. strange.
+            $content .= ZurmoHtml::link('▶', '#', array('id' => 'nav-right', 'class' => 'nav-button'));
             return      ZurmoHtml::tag('div', array('id' => 'gd-collections'), $content);
         }
 
@@ -225,19 +226,6 @@
             $content  = ZurmoHtml::tag('div', array('class' => 'collection-badge'), $collectionBadgeImage);
             $content .= ZurmoHtml::tag('h3', array(), $gameCollectionRules->getCollectionLabel() . ' ' .
                                        Zurmo::t('GamificationModule', 'Collection'));
-
-//todO: not sure what this is for
-            /**
-             *
-
-            <div class="number-collected clearfix">
-            <span class="total-completed">x5</span>
-            <span class="have-it">:</span>
-            <span class="have-it">:</span>
-            <span class="have-it">:</span>
-            </div>
-             * **/
-
             $content .= $this->renderCollectionItemsContent($collection, $gameCollectionRules);
             $content  = ZurmoHtml::tag('div', array('class' => '_open-panel'), $content);
             return ZurmoHtml::tag('div', array('class' => 'gd-collection-panel clearfix'), $content);
@@ -271,6 +259,8 @@
             $itemRedeemContent .= ZurmoHtml::link(ZurmoHtml::tag('span', array('class' => 'z-label'), Zurmo::t('Core', 'Complete')),
                                     '#', array('class' => 'z-button _green-button')); //todo: always show complete? //todo: ajax to complete?
             //todO: maybe this button should use ZurmoHtml::button so we can get proper spinny thing.
+            //todo: add class if not clickable because you can't click it. also no onclick event then. keep that in mind.
+            //todo: # link if not clickable.
             $content  .= ZurmoHtml::tag('div', array('class' => 'gd-collection-item-redeemed'), $itemRedeemContent);
             return ZurmoHtml::tag('div', array('class' => 'gd-collection-items clearfix'), $content);
         }
