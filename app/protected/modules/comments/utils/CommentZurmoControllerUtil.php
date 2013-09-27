@@ -113,7 +113,7 @@
                     {
                         $modelDerivationPathToItem = RuntimeUtil::getModelDerivationPathToItem('Project');
                         $project = $existingItem->castDown(array($modelDerivationPathToItem));
-                        ProjectAuditEvent::logAuditEvent(ProjectAuditEvent::COMMENT_ADDED, $task->name, $project);
+                        ProjectAuditEvent::logAuditEvent(ProjectAuditEvent::COMMENT_ADDED, $model->description, $project);
                     }
                     catch(NotFoundException $e)
                     {
