@@ -40,21 +40,24 @@
     {
         public static function configureConfigFiles()
         {
-            $perInstanceTestConfigCreated = false;
             chdir(COMMON_ROOT);
+            $perInstanceTestConfigCreated = false;
+            $debugTestConfigCreated       = false;
+            $perInstanceTestPath        = INSTANCE_ROOT . '/protected/config/perInstanceTest.php';
+            $perInstanceDistPath        = INSTANCE_ROOT . '/protected/config/perInstanceDIST.php';
+            $debugTestPath              = INSTANCE_ROOT . '/protected/config/debugTest.php';
+            $debugDistPath              = INSTANCE_ROOT . '/protected/config/debugDIST.php';
 
-            if (!is_file(INSTANCE_ROOT . '/protected/config/debugTest.php'))
+            if (!is_file($debugTestPath))
             {
-                copy(INSTANCE_ROOT . '/protected/config/debugDIST.php',
-                    INSTANCE_ROOT . '/protected/config/debugTest.php');
+                $debugTestConfigCreated = copy($debugDistPath, $debugTestPath);
             }
-            if (!is_file(INSTANCE_ROOT . '/protected/config/perInstanceTest.php'))
+            if (!is_file($perInstanceTestPath))
             {
-                $perInstanceTestConfigCreated = copy(INSTANCE_ROOT . '/protected/config/perInstanceDIST.php',
-                    INSTANCE_ROOT . '/protected/config/perInstanceTest.php');
+                $perInstanceTestConfigCreated = copy($perInstanceDistPath, $perInstanceTestPath);
 
                 // Mark test application installed, because we need this variable to be set to true, for api tests
-                $contents = file_get_contents(INSTANCE_ROOT . '/protected/config/perInstanceTest.php');
+                $contents = file_get_contents($perInstanceTestPath);
                 $contents = preg_replace('/\$installed\s*=\s*false;/',
                                          '$installed = true;',
                                          $contents);
@@ -84,10 +87,10 @@ EOD;
                     $contents,
                     1);
 
-                file_put_contents(INSTANCE_ROOT . '/protected/config/perInstanceTest.php', $contents);
+                file_put_contents($perInstanceTestPath, $contents);
             }
 
-            $contents = file_get_contents(INSTANCE_ROOT . '/protected/config/perInstanceTest.php');
+            $contents = file_get_contents($perInstanceTestPath);
 
             if (!strpos($contents, '$testApiUrl'))
             {
@@ -98,7 +101,7 @@ EOD;
                 $contents = preg_replace('/\?\>/',
                         "\n" . $testApiUrlSettings . "\n" . "?>",
                         $contents);
-                file_put_contents(INSTANCE_ROOT . '/protected/config/perInstanceTest.php', $contents);
+                file_put_contents($perInstanceTestPath, $contents);
             }
 
             if (!strpos($contents, '$authenticationTestSettings'))
@@ -120,7 +123,7 @@ EOD;
                         "\n" . $authenticationTestSettings . "\n" . "?>",
                         $contents);
 
-                file_put_contents(INSTANCE_ROOT . '/protected/config/perInstanceTest.php', $contents);
+                file_put_contents($perInstanceTestPath, $contents);
             }
 
             if (!strpos($contents, '$emailTestAccounts'))
@@ -174,14 +177,17 @@ EOD;
                         "\n" . $emailSettings . "\n" . "?>",
                         $contents);
 
-                file_put_contents(INSTANCE_ROOT . '/protected/config/perInstanceTest.php', $contents);
+                file_put_contents($perInstanceTestPath, $contents);
             }
 
             if ($perInstanceTestConfigCreated)
             {
-                echo "\nPlease update the newly created ".INSTANCE_ROOT .
-                    "/protected/config/perInstanceTest.php with latest test and tempDb credentials.\n";
-                exit;
+                die(PHP_EOL . 'Please update the newly created ' . $perInstanceTestPath .
+                        ' with latest test and tempDb credentials.' . PHP_EOL);
+            }
+            if ($debugTestConfigCreated)
+            {
+                die(PHP_EOL .'Please configure functional tests in config file: ' . $debugTestPath . PHP_EOL);
             }
         }
     }

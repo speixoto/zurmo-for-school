@@ -8,8 +8,8 @@
 
   <filter>
     <blacklist>
-      <directory suffix=".php">../../../yii</directory>
-      <directory suffix=".php">../../../redbean</directory>
+      <directory suffix=".php">../../../../yii</directory>
+      <directory suffix=".php">../../../../redbean</directory>
     </blacklist>
   </filter>
 

@@ -142,7 +142,7 @@
             $this->assertEquals(array('newMember5Cstm', 'someRule', 'value' => 'someValue'), $newRule);
             //Update mixed rule for attribute.
             $mixedRule        = array('someRule' , 'value' => 'someValue2');
-            ModelMetadataUtil::addOrUpdateMember('A', 'newMember5', $attributeLabels,
+            ModelMetadataUtil::addOrUpdateMember('A', 'newMember5Cstm', $attributeLabels,
                 null, 10, null, null, null, false, false, 'Text', array(), $mixedRule);
             $metadataUpdated = A::getMetadata();
             $this->assertNotEquals($originalMetadata, $metadata);

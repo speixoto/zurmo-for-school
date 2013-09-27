@@ -263,16 +263,13 @@
         public function resolveDatabaseSchemaForModel($modelClassName)
         {
             assert('is_string($modelClassName) && $modelClassName != ""');
-            if (RedBeanDatabase::isFrozen())
+            Yii::app()->gameHelper->muteScoringModelsOnSave();
+            $messageLogger = new MessageLogger();
+            RedBeanModelsToTablesAdapter::generateTablesFromModelClassNames(array($modelClassName), $messageLogger);
+            Yii::app()->gameHelper->unmuteScoringModelsOnSave();
+            if ($messageLogger->isErrorMessagePresent())
             {
-                Yii::app()->gameHelper->muteScoringModelsOnSave();
-                $messageLogger = new MessageLogger();
-                RedBeanDatabaseBuilderUtil::manageFrozenStateAndAutoBuildModels(array('User', $modelClassName), $messageLogger);
-                Yii::app()->gameHelper->unmuteScoringModelsOnSave();
-                if ($messageLogger->isErrorMessagePresent())
-                {
-                    throw new FailedDatabaseSchemaChangeException($messageLogger->printMessages(true, true));
-                }
+                throw new FailedDatabaseSchemaChangeException($messageLogger->printMessages(true, true));
             }
         }
 

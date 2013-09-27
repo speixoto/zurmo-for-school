@@ -91,8 +91,8 @@
                     array('latestSourceIP',         'type', 'type' => 'string'),
                 ),
                 'relations' => array(
-                    'person'                        => array(RedBeanModel::HAS_ONE, 'Person', RedBeanModel::NOT_OWNED),
-                    'emailMessageUrl'               => array(RedBeanModel::HAS_ONE, 'EmailMessageUrl'),
+                    'person'                        => array(static::HAS_ONE, 'Person', static::NOT_OWNED),
+                    'emailMessageUrl'               => array(static::HAS_ONE, 'EmailMessageUrl'),
                 ),
                 'elements' => array(
                     'latestDateTime'                => 'DateTime',

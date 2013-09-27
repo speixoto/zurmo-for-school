@@ -45,6 +45,11 @@
             AccountTestHelper::createAccountByNameForOwner('anAccount', $super);
         }
 
+        public static function getDependentTestModelClassNames()
+        {
+            return array('TestManyManyRelationToItemModel');
+        }
+
         public function testCreateTaskWithZerosStampAndEditAgain()
         {
             Yii::app()->user->userModel = User::getByUsername('super');
@@ -219,42 +224,37 @@
 
         public function testManyToManyRelationInTheMiddleOfTheInheritanceHierarchy()
         {
-            if (!RedBeanDatabase::isFrozen())
-            {
-                // This test uses TestManyManyRelationToItemModel
-                // which is not created in freeze land.
-                Yii::app()->user->userModel = User::getByUsername('super');
-                $accounts = Account::getByName('anAccount');
+           Yii::app()->user->userModel = User::getByUsername('super');
+            $accounts = Account::getByName('anAccount');
 
-                $possibleDerivationPaths = array(
-                                               array('SecurableItem', 'OwnedSecurableItem', 'Account'),
-                                               array('SecurableItem', 'OwnedSecurableItem', 'Person', 'Contact'),
-                                               array('SecurableItem', 'OwnedSecurableItem', 'Opportunity'),
-                                           );
+            $possibleDerivationPaths = array(
+                                           array('SecurableItem', 'OwnedSecurableItem', 'Account'),
+                                           array('SecurableItem', 'OwnedSecurableItem', 'Person', 'Contact'),
+                                           array('SecurableItem', 'OwnedSecurableItem', 'Opportunity'),
+                                       );
 
-                $model = new TestManyManyRelationToItemModel();
-                $model->items->add($accounts[0]);
-                $this->assertTrue($model->save());
+            $model = new TestManyManyRelationToItemModel();
+            $model->items->add($accounts[0]);
+            $this->assertTrue($model->save());
 
-                $item = Item::getById($model->items[0]->getClassId('Item'));
-                $this->assertTrue ($item instanceof Item);
-                $this->assertFalse($item instanceof Account);
-                $this->assertTrue ($item->isSame($accounts[0]));
-                $account2 = $item->castDown($possibleDerivationPaths);
-                $this->assertTrue ($account2->isSame($accounts[0]));
+            $item = Item::getById($model->items[0]->getClassId('Item'));
+            $this->assertTrue ($item instanceof Item);
+            $this->assertFalse($item instanceof Account);
+            $this->assertTrue ($item->isSame($accounts[0]));
+            $account2 = $item->castDown($possibleDerivationPaths);
+            $this->assertTrue ($account2->isSame($accounts[0]));
 
-                $id = $model->id;
-                unset($model);
-                RedBeanModel::forgetAll();
+            $id = $model->id;
+            unset($model);
+            RedBeanModel::forgetAll();
 
-                $model = TestManyManyRelationToItemModel::getById($id);
-                $this->assertEquals(1, $model->items->count());
-                $this->assertTrue ($model->items[0] instanceof Item);
-                $this->assertFalse($model->items[0] instanceof Account);
-                $this->assertTrue ($model->items[0]->isSame($accounts[0]));
-                $account3 = $model->items[0]->castDown($possibleDerivationPaths);
-                $this->assertTrue ($account3->isSame($accounts[0]));
-            }
+            $model = TestManyManyRelationToItemModel::getById($id);
+            $this->assertEquals(1, $model->items->count());
+            $this->assertTrue ($model->items[0] instanceof Item);
+            $this->assertFalse($model->items[0] instanceof Account);
+            $this->assertTrue ($model->items[0]->isSame($accounts[0]));
+            $account3 = $model->items[0]->castDown($possibleDerivationPaths);
+            $this->assertTrue ($account3->isSame($accounts[0]));
         }
 
         /**

@@ -51,6 +51,7 @@
         {
             try
             {
+                // we don't ue $default here as the computation of default on each request would take more time.
                 $filesToInclude = GeneralCache::getEntry('filesToIncludeForTests');
             }
             catch (NotFoundException $e)

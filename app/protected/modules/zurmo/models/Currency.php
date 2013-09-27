@@ -91,13 +91,13 @@
         {
             assert('is_string($code)');
             $tableName = self::getTableName('Currency');
-            $beans = R::find($tableName, "code = '$code'");
+            $beans = ZurmoRedBean::find($tableName, "code = '$code'");
             assert('count($beans) <= 1');
             if (count($beans) == 0)
             {
                 throw new NotFoundException();
             }
-            return RedBeanModel::makeModel(end($beans), 'Currency');
+            return static::makeModel(end($beans), 'Currency');
         }
 
         /**
@@ -224,7 +224,7 @@
             {
                 $modelClassName = $this->attributeNameToBeanAndClassName[$attributeName][1];
                 $tableName = self::getTableName($modelClassName);
-                $rows = R::getAll('select id from ' . $tableName . " where $attributeName = ?", array($value));
+                $rows = ZurmoRedBean::getAll('select id from ' . $tableName . " where $attributeName = ?", array($value));
                 static::$currencyIdRowsByCode[$value] = $rows;
             }
             return count($rows) == 0 || count($rows) == 1 && $rows[0]['id'] == $this->id;

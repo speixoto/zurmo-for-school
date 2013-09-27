@@ -50,26 +50,26 @@
             $serializedData['importRulesType'] = 'ImportModelTestItem';
             $import->serializedData            = serialize($serializedData);
             $this->assertTrue($import->save());
-            ImportTestHelper::createTempTableByFileNameAndTableName('importAnalyzerTest.csv', $import->getTempTableName());
+            ImportTestHelper::createTempTableByFileNameAndTableName('importAnalyzerTest.csv', $import->getTempTableName(), true);
             $modifiedDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time() - (60 * 60 *24 * 8));
             $sql = "Update item set modifieddatetime = '" . $modifiedDateTime . "' where id = " .
                    $import->getClassId('Item');
-            R::exec($sql);
+            ZurmoRedBean::exec($sql);
             $staleImportId = $import->id;
 
             $import2                            = new Import();
             $serializedData['importRulesType'] = 'ImportModelTestItem';
             $import2->serializedData            = serialize($serializedData);
             $this->assertTrue($import2->save());
-            ImportTestHelper::createTempTableByFileNameAndTableName('importAnalyzerTest.csv', $import2->getTempTableName());
+            ImportTestHelper::createTempTableByFileNameAndTableName('importAnalyzerTest.csv', $import2->getTempTableName(), true);
             $this->assertEquals(2, count(Import::getAll()));
-            $row = R::getRow('show tables like "' . $import->getTempTableName(). '"');
-            $this->assertNotEmpty($row);
+            $tableExists = ZurmoRedBean::$writer->doesTableExist($import->getTempTableName());
+            $this->assertTrue($tableExists);
 
             $job = new ImportCleanupJob();
             $this->assertTrue($job->run());
-            $row = R::getRow('show tables like "' . $import->getTempTableName(). '"');
-            $this->assertEmpty($row);
+            $tableExists = ZurmoRedBean::$writer->doesTableExist($import->getTempTableName());
+            $this->assertFalse($tableExists);
             $imports = Import::getAll();
             $this->assertEquals(1, count($imports));
             $this->assertEquals($import2->id, $imports[0]->id);

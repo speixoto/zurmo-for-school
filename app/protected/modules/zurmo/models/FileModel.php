@@ -46,7 +46,7 @@
                     'type',
                 ),
                 'relations' => array(
-                    'fileContent' => array(RedBeanModel::HAS_ONE,  'FileContent', RedBeanModel::OWNED),
+                    'fileContent' => array(static::HAS_ONE,  'FileContent', static::OWNED),
                 ),
                 'rules' => array(
                     array('fileContent', 'required'),

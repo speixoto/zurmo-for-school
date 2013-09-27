@@ -34,13 +34,26 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    $basePath  =  Yii::app()->getBasePath();
-    require_once("$basePath/../../redbean/rb.php");
-
-    /**
-     * A criteria for use with RedbeanModelDataProvider.
-     */
-    class RedBeanModelDbCriteria extends CDbCriteria
+    class Wukka extends RedBeanModel
     {
+        public static function getDefaultMetadata()
+        {
+            $metadata = parent::getDefaultMetadata();
+            $metadata[__CLASS__] = array(
+                'members' => array(
+                    'integer',
+                    'string',
+                    'prop',
+                ),
+                'rules' => array(
+                    array('integer', 'type',      'type' => 'integer'),
+                    array('integer', 'numerical', 'min' => 1, 'max' => 255),
+                    array('string',   'type', 'type' => 'string'),
+                    array('string',   'length', 'max' => 255),
+                    array('prop',       'type', 'type' => 'datetime'),
+                ),
+            );
+            return $metadata;
+        }
     }
 ?>

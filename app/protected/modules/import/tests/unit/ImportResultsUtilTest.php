@@ -51,7 +51,7 @@
             $this->assertTrue($import->save());
 
             $testTableName = $import->getTempTableName();
-            $this->assertTrue(ImportTestHelper::createTempTableByFileNameAndTableName('importTest.csv', $testTableName));
+            $this->assertTrue(ImportTestHelper::createTempTableByFileNameAndTableName('importTest.csv', $testTableName, true));
             $count = ImportDatabaseUtil::getCount($testTableName);
             $this->assertEquals(5, $count);
 
@@ -76,7 +76,7 @@
             $resultsUtil->processStatusAndMessagesForEachRow();
 
             $sql = 'select * from ' . $testTableName . ' where id != 1';
-            $tempTableData = R::getAll($sql);
+            $tempTableData = ZurmoRedBean::getAll($sql);
             $compareData   = array(
                 array
                 (

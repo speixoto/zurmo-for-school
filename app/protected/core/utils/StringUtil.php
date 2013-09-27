@@ -108,6 +108,23 @@
             return strtolower(preg_replace('/[^\da-z]/i', '', Yii::app()->label));
         }
 
+        public static function uncamelize($string ) {
+            $string[0] = strtolower($string[0]);
+            $uncamelizeFunction = create_function('$c', 'return "_" . strtolower($c[1]);');
+            return preg_replace_callback( '/([A-Z])/', $uncamelizeFunction, $string);
+        }
+
+        public static function camelize($string, $capitaliseFirstCharacter = false )
+        {
+            if ($capitaliseFirstCharacter)
+            {
+                $string[0] = strtoupper($string[0]);
+            }
+            $camelizeFunction = create_function('$character', 'return strtoupper($character[1]);');
+            return preg_replace_callback('/' . preg_quote(MergeTagsUtil::CAPITAL_DELIMITER) . '([a-z])/',
+                                                                                    $camelizeFunction, $string);
+        }
+
         /**
          * used to add a new line to content.
          * @param $content
@@ -124,4 +141,47 @@
                 $content = PHP_EOL . $content;
             }
         }
+
+        /**
+         * Generate a random string
+         * @param int $length
+         * @param null $characterSet
+         * @return string
+         */
+        public static function generateRandomString($length = 10, $characterSet = null)
+        {
+            if (empty($characterSet))
+            {
+                $characterSet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            }
+            $characterSetLength = strlen($characterSet);
+            $randomString = '';
+            for ($i = 0; $i < $length; $i++)
+            {
+                $randomCharacter    = $characterSet[rand(0, $characterSetLength - 1)];
+                $randomString       .= $randomCharacter;
+            }
+            return $randomString;
+        }
+
+        /**
+         * @param $haystack
+         * @param $needle
+         * @return bool
+         */
+        public static function startsWith($haystack, $needle)
+        {
+            return $needle === "" || strpos($haystack, $needle) === 0;
+        }
+
+        /**
+         * @param $haystack
+         * @param $needle
+         * @return bool
+         */
+        public static function endsWith($haystack, $needle)
+        {
+            return $needle === "" || substr($haystack, -strlen($needle)) === $needle;
+        }
     }
+?>

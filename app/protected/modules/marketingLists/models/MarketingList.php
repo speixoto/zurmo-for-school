@@ -98,9 +98,9 @@
                     'anyoneCanSubscribe',
                 ),
                 'relations' => array(
-                    'marketingListMembers'  => array(RedBeanModel::HAS_MANY,   'MarketingListMember', RedBeanModel::OWNED),
-                    'autoresponders'        => array(RedBeanModel::HAS_MANY,   'Autoresponder', RedBeanModel::OWNED),
-                    'campaigns'             => array(RedBeanModel::HAS_MANY,   'Campaign', RedBeanModel::OWNED),
+                    'marketingListMembers'  => array(static::HAS_MANY,   'MarketingListMember', static::OWNED),
+                    'autoresponders'        => array(static::HAS_MANY,   'Autoresponder', static::OWNED),
+                    'campaigns'             => array(static::HAS_MANY,   'Campaign', static::OWNED),
                 ),
                 'rules' => array(
                     array('name',               'required'),
@@ -111,7 +111,7 @@
                     array('fromName',           'length',  'min'  => 3, 'max' => 64),
                     array('fromAddress',        'type', 'type' => 'string'),
                     array('fromAddress',        'length',  'min'  => 6, 'max' => 64),
-                    array('fromAddress',        'email', 'except' => 'autoBuildDatabase'),
+                    array('fromAddress',        'email'),
                     array('anyoneCanSubscribe', 'boolean'),
                     array('anyoneCanSubscribe', 'default', 'value' => false),
                 ),

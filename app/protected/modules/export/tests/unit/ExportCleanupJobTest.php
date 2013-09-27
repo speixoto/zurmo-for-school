@@ -72,7 +72,7 @@
             $modifiedDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time() - (60 * 60 *24 * 8));
             $sql = "Update item set modifieddatetime = '" . $modifiedDateTime . "' where id = " .
                 $exportItem->getClassId('Item');
-            R::exec($sql);
+            ZurmoRedBean::exec($sql);
 
             // Second exportItem, that shouldn't be deleted.
             $exportItem2 = new ExportItem();

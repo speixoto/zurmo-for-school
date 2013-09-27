@@ -253,9 +253,9 @@
         {
             $content = null;
             $modelsImplementsStarredInterface = false;
-            if (isset($this->modelClassName))
+            if (isset($this->modelClassName) && StarredUtil::modelHasStarredInterface($this->modelClassName))
             {
-                $modelsImplementsStarredInterface = in_array('StarredInterface', class_implements(new $this->modelClassName()));
+                $modelsImplementsStarredInterface = true;
             }
             if ($modelsImplementsStarredInterface)
             {

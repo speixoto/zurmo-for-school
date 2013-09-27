@@ -55,8 +55,37 @@
             assert('$externalSystemId == null || is_string($externalSystemId)');
             $columnName = self::EXTERNAL_SYSTEM_ID_COLUMN_NAME;
             $tableName  = $model::getTableName(get_class($model));
-            RedBeanColumnTypeOptimizer::externalIdColumn($tableName, $columnName);
-            R::exec("update " . $tableName . " set $columnName = '" . $externalSystemId . "' where id = " . $model->id);
+            static::addExternalIdColumnIfMissing($tableName);
+            ZurmoRedBean::exec("update " . $tableName . " set $columnName = '" . $externalSystemId . "' where id = " . $model->id);
+        }
+
+        /**
+         * Adds externalSystemId column to specific table if it does not exist
+         * @param $tableName
+         * @param $maxLength
+         * @param $columnName
+         */
+        public static function addExternalIdColumnIfMissing($tableName, $maxLength = 255, $columnName = null)
+        {
+            if (!isset($columnName))
+            {
+                $columnName           = static::EXTERNAL_SYSTEM_ID_COLUMN_NAME;
+            }
+            // check if external_system_id exists in fields
+            $columnExists   = ZurmoRedBean::$writer->doesColumnExist($tableName, $columnName);
+            if (!$columnExists)
+            {
+                // if not, update model and add an external_system_id field
+                $type       = 'string';
+                $length     = null;
+                RedBeanModelMemberRulesToColumnAdapter::resolveStringTypeAndLengthByMaxLength($type, $length, $maxLength);
+                $columns    = array();
+                $columns[]  = RedBeanModelMemberToColumnUtil::resolveColumnMetadataByHintType($columnName, $type, $length);
+                $schema     = CreateOrUpdateExistingTableFromSchemaDefinitionArrayUtil::getTableSchema($tableName,
+                                                                                                        $columns);
+                CreateOrUpdateExistingTableFromSchemaDefinitionArrayUtil::generateOrUpdateTableBySchemaDefinition(
+                                                                                        $schema, new MessageLogger());
+            }
         }
     }
 ?>

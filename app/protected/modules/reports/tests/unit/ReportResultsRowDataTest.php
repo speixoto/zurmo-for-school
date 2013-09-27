@@ -36,8 +36,6 @@
 
     class ReportResultsRowDataTest extends ZurmoBaseTest
     {
-        public $freeze = false;
-
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
@@ -45,28 +43,18 @@
             ContactsModule::loadStartingData();
         }
 
+        public static function getDependentTestModelClassNames()
+        {
+            return array('ReportModelTestItem10', 'ReportModelTestItem11');
+        }
+
         public function setup()
         {
             parent::setUp();
             Yii::app()->user->userModel = User::getByUsername('super');
             DisplayAttributeForReportForm::resetCount();
-            $freeze = false;
-            if (RedBeanDatabase::isFrozen())
-            {
-                RedBeanDatabase::unfreeze();
-                $freeze = true;
-            }
-            $this->freeze = $freeze;
         }
 
-        public function teardown()
-        {
-            if ($this->freeze)
-            {
-                RedBeanDatabase::freeze();
-            }
-            parent::teardown();
-        }
 
         public function testGetCurrencyValueAndDateAttributesOnOwnedModel()
         {

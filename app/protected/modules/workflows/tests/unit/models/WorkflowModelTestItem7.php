@@ -53,7 +53,7 @@
                     'name',
                 ),
                 'relations' => array(
-                    'model5' => array(RedBeanModel::HAS_MANY, 'WorkflowModelTestItem5'),
+                    'model5' => array(static::HAS_MANY, 'WorkflowModelTestItem5'),
                 ),
                 'rules' => array(
                     array('name',  'type',   'type' => 'string'),

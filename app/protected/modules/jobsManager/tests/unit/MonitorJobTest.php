@@ -65,7 +65,7 @@
             $createdDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time() - 1000);
             $sql = "Update item set createddatetime = '" . $createdDateTime . "' where id = " .
                    $jobInProcess->getClassId('Item');
-            R::exec($sql);
+            ZurmoRedBean::exec($sql);
             $jobInProcess->forget();
             $monitorJob->run();
             $this->assertEquals(1, count(Notification::getAll()));

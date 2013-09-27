@@ -34,54 +34,64 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Application to be used during unit testing
-     */
-    class WebTestApplication extends WebApplication
+    class RedBeanModelMixinToColumnAdapterTest extends BaseTest
     {
-        private $configLanguageValue;
-        private $configTimeZoneValue;
-
-        /**
-         * Override for walkthrough tests. Need to store the config data so certain values can
-         *  be reset to the original config value when resetting the application to run another walkthrough.
-         */
-        public function __construct($config = null)
+        public static function setUpBeforeClass()
         {
-            parent::__construct($config);
-            $this->configLanguageValue = $this->language;
-            $this->configTimeZoneValue = $this->timeZoneHelper->getTimeZone();
+            parent::setUpBeforeClass();
+            SecurityTestHelper::createSuperAdmin();
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
+        }
 
-            // We need explicitly to raise this event, because CApplication::run() method
-            // where OnBeginRequest event is raised is nvever called
-            // For more informationn check: app/protected/tests/bootstrap.php
-            if ($this->hasEventHandler('onBeginRequest'))
-            {
-                $this->onBeginRequest(new CEvent($this));
-            }
+        public function testResolveWithEmptyClassName()
+        {
+            $modelClassName = null;
+            $column         = RedBeanModelMixinToColumnAdapter::resolve($modelClassName);
+            $this->assertNull($column);
         }
 
         /**
-         * Override because when testing, we always want to raise the event
-         * instead of only raising it once.  This is because using phpunit and
-         * unit tests, it is possible we will have the application execute ->end
-         * multiple times during testing.
-         * Raised right AFTER the application processes the request.
-         * @param CEvent $event the event parameter
+         * @depends testResolveWithEmptyClassName
          */
-        public function onEndRequest($event)
+        public function testResolveWithInexistentClassName()
         {
-            $this->raiseEvent('onEndRequest', $event);
+            $modelClassName = 'InexistentClassName';
+            $column         = RedBeanModelMixinToColumnAdapter::resolve($modelClassName);
+            $this->assertNull($column);
         }
 
-        public function getConfigLanguageValue()
+        /**
+         * @depends testResolveWithInexistentClassName
+         */
+        public function testResolveWithClassThatCannotHaveBeen()
         {
-            return $this->configLanguageValue;
+            $modelClassName = 'OwnedModel';
+            $column         = RedBeanModelMixinToColumnAdapter::resolve($modelClassName);
+            $this->assertNull($column);
         }
 
-        public function getConfigTimeZoneValue()
+        /**
+         * @depends testResolveWithClassThatCannotHaveBeen
+         */
+        public function testResolve()
         {
-            return $this->configTimeZoneValue;
+            $modelClassName = 'Person';
+            $column         = RedBeanModelMixinToColumnAdapter::resolve($modelClassName);
+            $this->assertNotEmpty($column);
+            $this->assertCount(6, $column);
+            $this->assertArrayHasKey('name', $column);
+            $this->assertArrayHasKey('type', $column);
+            $this->assertArrayHasKey('unsigned', $column);
+            $this->assertArrayHasKey('notNull', $column);
+            $this->assertArrayHasKey('collation', $column);
+            $this->assertArrayHasKey('default', $column);
+            $this->assertEquals('person_id', $column['name']);
+            $this->assertEquals('INT(11)', $column['type']);
+            $this->assertEquals('UNSIGNED', $column['unsigned']);
+            $this->assertEquals('NULL', $column['notNull']);
+            $this->assertNull($column['collation']);
+            $this->assertEquals('DEFAULT NULL', $column['default']);
         }
     }
 ?>

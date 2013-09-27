@@ -34,25 +34,54 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    require_once('testRoots.php');
-    require_once('TestConfigFileUtils.php');
+    /**
+     * Adapter class to generate index definition when provided with indexName and indexMetadata
+     */
+    abstract class RedBeanModelMemberIndexMetadataAdapter
+    {
+        const MAX_INDEX_NAME_LENGTH = 40;
 
-    TestConfigFileUtils::configureConfigFiles();
+        /**
+         * Provided indexName and metadata is resolved to match the requirements of schema definition
+         * @param array $indexMetadata passed by reference, array containing index definition
+         * @return bool whether or not we were able to resolve index correctly
+         */
+        public static function resolve(array & $indexMetadata)
+        {
+            if (empty($indexMetadata['members']) || !is_array($indexMetadata['members']))
+            {
+                return false;
+            }
+            $unique         = false;
+            if (isset($indexMetadata['unique']))
+            {
+                $unique = $indexMetadata['unique'];
+            }
+            $indexMembers   = $indexMetadata['members'];
+            $indexMembers   = array_map(function($indexMember)
+                                        {
+                                            return RedBeanModelMemberToColumnUtil::resolve($indexMember);
+                                        }, $indexMembers);
+            $indexMetadata  = array(
+                                    'columns'   => $indexMembers,
+                                    'unique'    => $unique,
+                                );
+            return true;
+        }
 
-    $debug          = INSTANCE_ROOT . '/protected/config/debugTest.php';
-
-    $yiit   = COMMON_ROOT   . "/../yii/framework/yiit.php";
-    $config = INSTANCE_ROOT . "/protected/config/test.php";
-
-    require_once(COMMON_ROOT   . "/version.php");
-    require_once(COMMON_ROOT   . "/protected/modules/install/utils/InstallUtil.php");
-    require_once(COMMON_ROOT   . "/protected/core/utils/ZurmoPasswordSecurityUtil.php");
-    InstallUtil::setZurmoTokenAndWriteToPerInstanceFile(INSTANCE_ROOT, 'perInstanceTest.php');
-    ZurmoPasswordSecurityUtil::setPasswordSaltAndWriteToPerInstanceFile(INSTANCE_ROOT, 'perInstanceTest.php');
-
-    require_once($debug);
-    require_once($yiit);
-    require_once(COMMON_ROOT . '/protected/core/components/WebApplication.php');
-    require_once(COMMON_ROOT . '/protected/tests/WebTestApplication.php');
-    Yii::createApplication('WebTestApplication', $config);
+        /**
+         * Resolved a random index name
+         * @return string
+         */
+        public static function resolveRandomIndexName($indexName, $unique = false)
+        {
+            $prefix = null;
+            if ($unique)
+            {
+                $prefix = 'unique_';
+            }
+            $indexName          = $prefix . substr(strrev($indexName), 0, static::MAX_INDEX_NAME_LENGTH);
+            return strval($indexName);
+        }
+    }
 ?>

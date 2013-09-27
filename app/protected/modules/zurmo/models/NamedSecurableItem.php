@@ -53,11 +53,12 @@
             assert('$name != ""');
             try
             {
+                // not using default value to save cpu cycles on requests that follow the first exception.
                 return GeneralCache::getEntry('NamedSecurableItem' . $name);
             }
             catch (NotFoundException $e)
             {
-                $bean = R::findOne('namedsecurableitem', "name = :name ", array(':name' => $name));
+                $bean = ZurmoRedBean::findOne('namedsecurableitem', "name = :name ", array(':name' => $name));
                 assert('$bean === false || $bean instanceof RedBean_OODBBean');
                 if ($bean === false)
                 {

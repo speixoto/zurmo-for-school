@@ -35,8 +35,6 @@
      ********************************************************************************/
     class ContactMergeTagsUtilTest extends ZurmoBaseTest
     {
-        public static $freeze = false;
-
         protected static $emailTemplate;
 
         protected static $super;
@@ -52,12 +50,6 @@
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
-            self::$freeze = false;
-            if (RedBeanDatabase::isFrozen())
-            {
-                RedBeanDatabase::unfreeze();
-                self::$freeze = true;
-            }
             SecurityTestHelper::createSuperAdmin();
             SecurityTestHelper::createUsers();
             self::$super = User::getByUsername('super');
@@ -128,8 +120,9 @@
             $attributeForm                                  = new TextAttributeForm();
             $attributeForm->attributeName                   = 'custom';
             $attributeForm->attributeLabels                 = array('en' => 'test label en');
+
             $modelAttributesAdapterClassName                = $attributeForm::
-                getModelAttributeAdapterNameForSavingAttributeFormData();
+                                                                getModelAttributeAdapterNameForSavingAttributeFormData();
             $adapter = new $modelAttributesAdapterClassName(new EmailTemplateModelTestItem());
             $adapter->setAttributeMetadataFromForm($attributeForm);
 
@@ -168,21 +161,17 @@
             self::$compareContent                           = 'abc James Jackson 1122334455';
         }
 
+        public static function getDependentTestModelClassNames()
+        {
+            return array('EmailTemplateModelTestItem');
+        }
+
         public function setUp()
         {
             parent::setUp();
             Yii::app()->user->userModel     = self::$super;
             $this->mergeTagsUtil            = MergeTagsUtilFactory::make(EmailTemplate::TYPE_CONTACT, null, self::$content);
             $this->invalidTags              = array();
-        }
-
-        public static function tearDownAfterClass()
-        {
-            if (self::$freeze)
-            {
-                RedBeanDatabase::freeze();
-            }
-            parent::tearDownAfterClass();
         }
 
         public function testCanInstantiateContactMergeTags()

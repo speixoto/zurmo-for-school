@@ -77,15 +77,15 @@
             $quote    = DatabaseCompatibilityUtil::getQuote();
             $marketingListMemberTableName  = RedBeanModel::getTableName('MarketingListMember');
             $campaignItemTableName = RedBeanModel::getTableName('CampaignItem');
-            $sql  = "select {$quote}{$marketingListMemberTableName}{$quote}.{$quote}contact_id{$quote} from {$quote}{$marketingListMemberTableName}{$quote}"; // Not Coding Standard
+            $sql  = "select {$quote}{$marketingListMemberTableName}{$quote}.{$quote}contact_id{$quote} ";
+            $sql  .= "from {$quote}{$marketingListMemberTableName}{$quote} ";
             $sql .= "left join {$quote}{$campaignItemTableName}{$quote} on ";
             $sql .= "{$quote}{$campaignItemTableName}{$quote}.{$quote}contact_id{$quote} ";
             $sql .= "= {$quote}{$marketingListMemberTableName}{$quote}.{$quote}contact_id{$quote}";
             $sql .= "AND {$quote}{$campaignItemTableName}{$quote}.{$quote}campaign_id{$quote} = " . $campaign->id . " " ;
             $sql .= "where {$quote}{$marketingListMemberTableName}{$quote}.{$quote}marketinglist_id{$quote} = " . $campaign->marketingList->id ;
             $sql .= " and {$quote}{$campaignItemTableName}{$quote}.{$quote}id{$quote} is null limit " . $pageSize;
-            $ids = R::getCol($sql);
-
+            $ids = ZurmoRedBean::getCol($sql);
             foreach ($ids as $contactId)
             {
                 $contacts[] = Contact::getById((int)$contactId);

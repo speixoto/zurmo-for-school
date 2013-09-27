@@ -43,12 +43,6 @@
         {
             parent::setUpBeforeClass();
             SecurityTestHelper::createSuperAdmin();
-            if (!RedBeanDatabase::isFrozen())
-            {
-                // TODO: @Shoaibi: High: get rid of this for God's sake.
-                $campaignItem = CampaignItemTestHelper::createCampaignItem(0);
-                $campaignItem->delete();
-            }
         }
 
         public function setUp()
@@ -56,7 +50,7 @@
             parent::setUp();
             $this->user                 = User::getByUsername('super');
             Yii::app()->user->userModel = $this->user;
-            $this->purgeAllCampaigns();
+            Campaign::deleteAll();
         }
 
         /**
@@ -1074,15 +1068,6 @@
                                                                                 $personId);
             $this->assertNotEmpty($activities);
             $this->assertCount(1, $activities);
-        }
-
-        protected function purgeAllCampaigns()
-        {
-            $campaigns = Campaign::getAll();
-            foreach ($campaigns as $campaign)
-            {
-                $campaign->delete();
-            }
         }
     }
 ?>

@@ -56,6 +56,13 @@
             Currency::getAll(); //forces base currency to be created.
         }
 
+        public static function getDependentTestModelClassNames()
+        {
+            return array('ImportModelTestItem',
+                            'ImportModelTestItem2',
+                            'ImportModelTestItem3');
+        }
+
         public function testCurrencySanitizationUsingNumberSanitizerUtil()
         {
             $currency = Currency::getByCode(Yii::app()->currencyHelper->getBaseCode());
@@ -793,11 +800,10 @@
             $importModelTestItem3Model3 = ImportTestHelper::createImportModelTestItem3('ccc');
 
             //Update the external system id.
-            $columnName = ExternalSystemIdUtil::EXTERNAL_SYSTEM_ID_COLUMN_NAME;
-            RedBeanColumnTypeOptimizer::
-            externalIdColumn(ImportModelTestItem3::getTableName('ImportModelTestItem3'), $columnName);
+
+            ExternalSystemIdUtil::addExternalIdColumnIfMissing(RedBeanModel::getTableName('ImportModelTestItem3'));
             $externalSystemIdColumnName = ExternalSystemIdUtil::EXTERNAL_SYSTEM_ID_COLUMN_NAME;
-            R::exec("update " . ImportModelTestItem3::getTableName('ImportModelTestItem3')
+            ZurmoRedBean::exec("update " . ImportModelTestItem3::getTableName('ImportModelTestItem3')
             . " set $externalSystemIdColumnName = 'Q' where id = {$importModelTestItem3Model3->id}");
 
             //Test a non-required related model with an invalid value
@@ -1037,11 +1043,9 @@
             $importModelTestItem2Model3 = ImportTestHelper::createImportModelTestItem2('ccc');
 
             //Update the external system id.
-            $columnName = ExternalSystemIdUtil::EXTERNAL_SYSTEM_ID_COLUMN_NAME;
-            RedBeanColumnTypeOptimizer::
-            externalIdColumn(ImportModelTestItem2::getTableName('ImportModelTestItem2'), $columnName);
+            ExternalSystemIdUtil::addExternalIdColumnIfMissing(RedBeanModel::getTableName('ImportModelTestItem2'));
             $externalSystemIdColumnName = ExternalSystemIdUtil::EXTERNAL_SYSTEM_ID_COLUMN_NAME;
-            R::exec("update " . ImportModelTestItem2::getTableName('ImportModelTestItem2')
+            ZurmoRedBean::exec("update " . ImportModelTestItem2::getTableName('ImportModelTestItem2')
             . " set $externalSystemIdColumnName = 'R' where id = {$importModelTestItem2Model3->id}");
 
             //Test a non-required related model with an invalid value
@@ -1146,11 +1150,9 @@
             $importModelTestItem1Model3 = ImportTestHelper::createImportModelTestItem('ccc', 'zzzz');
 
             //Update the external system id.
-            $columnName = ExternalSystemIdUtil::EXTERNAL_SYSTEM_ID_COLUMN_NAME;
-            RedBeanColumnTypeOptimizer::
-            externalIdColumn(ImportModelTestItem::getTableName('ImportModelTestItem'), $columnName);
+            ExternalSystemIdUtil::addExternalIdColumnIfMissing(RedBeanModel::getTableName('ImportModelTestItem'));
             $externalSystemIdColumnName = ExternalSystemIdUtil::EXTERNAL_SYSTEM_ID_COLUMN_NAME;
-            R::exec("update " . ImportModelTestItem::getTableName('ImportModelTestItem')
+            ZurmoRedBean::exec("update " . ImportModelTestItem::getTableName('ImportModelTestItem')
             . " set $externalSystemIdColumnName = 'J' where id = {$importModelTestItem1Model3->id}");
 
             //Test the id attribute with an invalid value
@@ -1528,10 +1530,9 @@
             $sally = UserTestHelper::createBasicUser('sally');
 
             //Update the external system id.
-            $columnName = ExternalSystemIdUtil::EXTERNAL_SYSTEM_ID_COLUMN_NAME;
-            RedBeanColumnTypeOptimizer::externalIdColumn(User::getTableName('User'), $columnName);
+            ExternalSystemIdUtil::addExternalIdColumnIfMissing(RedBeanModel::getTableName('User'));
             $externalSystemIdColumnName = ExternalSystemIdUtil::EXTERNAL_SYSTEM_ID_COLUMN_NAME;
-            R::exec("update " . User::getTableName('User')
+            ZurmoRedBean::exec("update " . User::getTableName('User')
             . " set $externalSystemIdColumnName = 'K' where id = {$jimmy->id}");
 
             //Test a required user with no value or default value.

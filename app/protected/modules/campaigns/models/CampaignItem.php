@@ -67,10 +67,10 @@
                     'processed',
                 ),
                 'relations' => array(
-                    'contact'                       => array(RedBeanModel::HAS_ONE, 'Contact', RedBeanModel::NOT_OWNED),
-                    'emailMessage'                  => array(RedBeanModel::HAS_ONE, 'EmailMessage'),
-                    'campaignItemActivities'        => array(RedBeanModel::HAS_MANY, 'CampaignItemActivity'),
-                    'campaign'                      => array(RedBeanModel::HAS_ONE, 'Campaign', RedBeanModel::NOT_OWNED),
+                    'contact'                       => array(static::HAS_ONE, 'Contact', static::NOT_OWNED),
+                    'emailMessage'                  => array(static::HAS_ONE, 'EmailMessage'),
+                    'campaignItemActivities'        => array(static::HAS_MANY, 'CampaignItemActivity'),
+                    'campaign'                      => array(static::HAS_ONE, 'Campaign', static::NOT_OWNED),
                 ),
                 'rules' => array(
                     array('processed',              'boolean'),

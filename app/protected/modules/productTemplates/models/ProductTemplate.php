@@ -111,15 +111,15 @@
                     'type'
                 ),
                 'relations' => array(
-                    'products'                  => array(RedBeanModel::HAS_MANY, 'Product'),
-                    'sellPriceFormula'          => array(RedBeanModel::HAS_ONE,   'SellPriceFormula', RedBeanModel::OWNED),
-                    'productCategories'         => array(RedBeanModel::MANY_MANY, 'ProductCategory'),
-                    'cost'                      => array(RedBeanModel::HAS_ONE,   'CurrencyValue',    RedBeanModel::OWNED,
-                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'cost'),
-                    'listPrice'                 => array(RedBeanModel::HAS_ONE,   'CurrencyValue',    RedBeanModel::OWNED,
-                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'listPrice'),
-                    'sellPrice'                 => array(RedBeanModel::HAS_ONE,   'CurrencyValue',    RedBeanModel::OWNED,
-                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'sellPrice'),
+                    'products'                  => array(static::HAS_MANY, 'Product'),
+                    'sellPriceFormula'          => array(static::HAS_ONE,   'SellPriceFormula', static::OWNED),
+                    'productCategories'         => array(static::MANY_MANY, 'ProductCategory'),
+                    'cost'                      => array(static::HAS_ONE,   'CurrencyValue',    static::OWNED,
+                                                static::LINK_TYPE_SPECIFIC, 'cost'),
+                    'listPrice'                 => array(static::HAS_ONE,   'CurrencyValue',    static::OWNED,
+                                                static::LINK_TYPE_SPECIFIC, 'listPrice'),
+                    'sellPrice'                 => array(static::HAS_ONE,   'CurrencyValue',    static::OWNED,
+                                                static::LINK_TYPE_SPECIFIC, 'sellPrice'),
                 ),
                 'rules' => array(
                     array('name',             'required'),
@@ -188,22 +188,8 @@
          */
         protected function beforeDelete()
         {
-            if ($this->getScenario() != 'autoBuildDatabase')
-            {
-                parent::beforeDelete();
-                if (count($this->products) == 0 )
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            else
-            {
-                return parent::beforeDelete();
-            }
+            parent::beforeDelete();
+            return (count($this->products) == 0);
         }
 
         /**

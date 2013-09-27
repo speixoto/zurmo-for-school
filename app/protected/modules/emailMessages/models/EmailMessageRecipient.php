@@ -76,8 +76,9 @@
                     'type',
                 ),
                 'relations' => array(
-                    'personOrAccount'      => array(RedBeanModel::HAS_ONE, 'Item',    RedBeanModel::NOT_OWNED,
-                                                    RedBeanModel::LINK_TYPE_SPECIFIC, 'personOrAccount')
+                    'personOrAccount'      => array(static::HAS_ONE, 'Item',    static::NOT_OWNED,
+                                                    static::LINK_TYPE_SPECIFIC, 'personOrAccount'),
+                    'emailMessage'         => array(static::HAS_ONE,  'EmailMessage',    static::NOT_OWNED),
                 ),
                 'rules' => array(
                     array('toAddress', 'required'),
@@ -86,7 +87,13 @@
                     array('toName',    'length',  'max' => 64),
                     array('type',    'required'),
                     array('type',    'type',    'type' => 'integer'),
-                )
+                ),
+                'indexes' => array(
+                    'remailmessage' => array(
+                        'members'   => array('emailmessage_id'),
+                        'unique'    => false,
+                    ),
+                ),
             );
             return $metadata;
         }

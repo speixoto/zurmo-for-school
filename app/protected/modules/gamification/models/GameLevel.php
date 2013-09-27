@@ -191,8 +191,8 @@
                     'value',
                 ),
                 'relations' => array(
-                    'person' => array(RedBeanModel::HAS_ONE, 'Item', RedBeanModel::NOT_OWNED,
-                                      RedBeanModel::LINK_TYPE_SPECIFIC, 'person'),
+                    'person' => array(static::HAS_ONE, 'Item', static::NOT_OWNED,
+                                      static::LINK_TYPE_SPECIFIC, 'person'),
                 ),
                 'rules' => array(
                     array('type',          'required'),

@@ -46,7 +46,7 @@
         {
             assert('is_string($name)');
             assert('$name != ""');
-            $bean = R::findOne(ProductCatalog::getTableName('ProductCatalog'), "name = :name ", array(':name' => $name));
+            $bean = ZurmoRedBean::findOne(ProductCatalog::getTableName('ProductCatalog'), "name = :name ", array(':name' => $name));
             assert('$bean === false || $bean instanceof RedBean_OODBBean');
             if ($bean === false)
             {
@@ -164,7 +164,7 @@
                     'name',
                 ),
                 'relations' => array(
-                    'productCategories'         => array(RedBeanModel::MANY_MANY, 'ProductCategory'),
+                    'productCategories'         => array(static::MANY_MANY, 'ProductCategory'),
                 ),
                 'rules' => array(
                     array('name',  'required'),

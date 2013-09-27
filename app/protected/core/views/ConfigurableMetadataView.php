@@ -79,6 +79,7 @@
             {
                 try
                 {
+                    // not using default value to save cpu cycles on requests that follow the first exception.
                     return GeneralCache::getEntry($className . 'Metadata');
                 }
                 catch (NotFoundException $e)

@@ -76,11 +76,11 @@
             $this->assertTrue($import->save());
 
             ImportTestHelper::
-            createTempTableByFileNameAndTableName('importTest.csv', $import->getTempTableName(),
+            createTempTableByFileNameAndTableName('importTest.csv', $import->getTempTableName(), true,
                                                   Yii::getPathOfAlias('application.modules.opportunities.tests.unit.files'));
 
             //update the ids of the account column to match the parent account.
-            R::exec("update " . $import->getTempTableName() . " set column_3 = " .
+            ZurmoRedBean::exec("update " . $import->getTempTableName() . " set column_3 = " .
                     $account->id . " where id != 1 limit 4");
 
             $this->assertEquals(4, ImportDatabaseUtil::getCount($import->getTempTableName())); // includes header rows.
@@ -198,11 +198,12 @@
             $this->assertTrue($import->save());
 
             ImportTestHelper::
-                createTempTableByFileNameAndTableName('importTestIncludingRateAndCurrencyCode.csv', $import->getTempTableName(),
-                Yii::getPathOfAlias('application.modules.opportunities.tests.unit.files'));
+                createTempTableByFileNameAndTableName('importTestIncludingRateAndCurrencyCode.csv',
+                                            $import->getTempTableName(), true,
+                                            Yii::getPathOfAlias('application.modules.opportunities.tests.unit.files'));
 
             //update the ids of the account column to match the parent account.
-            R::exec("update " . $import->getTempTableName() . " set column_3 = " .
+            ZurmoRedBean::exec("update " . $import->getTempTableName() . " set column_3 = " .
                 $account->id . " where id != 1 limit 4");
 
             $this->assertEquals(4, ImportDatabaseUtil::getCount($import->getTempTableName())); // includes header rows.

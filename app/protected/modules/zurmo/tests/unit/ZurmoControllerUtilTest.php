@@ -44,6 +44,11 @@
             UserTestHelper::createBasicUser('sally');
         }
 
+        public static function getDependentTestModelClassNames()
+        {
+            return array('OwnedSecurableTestItem');
+        }
+
         public function testSaveModelFromPostFailedValidiation()
         {
             Yii::app()->user->userModel = User::getByUsername('super');
@@ -61,14 +66,6 @@
 
         public function testSaveModelFromPostSuccessfulSave()
         {
-            //Unfreeze since the test model is not part of the standard schema.
-            $freezeWhenComplete = false;
-            if (RedBeanDatabase::isFrozen())
-            {
-                RedBeanDatabase::unfreeze();
-                $freezeWhenComplete = true;
-            }
-
             Yii::app()->user->userModel = User::getByUsername('super');
             $savedSuccessfully   = false;
             $modelToStringValue = null;
@@ -81,12 +78,6 @@
             $this->assertEquals('abc', $modelToStringValue);
             $this->assertFalse($model->hasErrors());
             $this->assertTrue($model->id > 0);
-
-            //Re-freeze if needed.
-            if ($freezeWhenComplete)
-            {
-                RedBeanDatabase::freeze();
-            }
         }
     }
 ?>

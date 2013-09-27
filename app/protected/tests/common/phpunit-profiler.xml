@@ -8,8 +8,8 @@
 
     <filter>
         <blacklist>
-            <directory suffix=".php">../../../yii</directory>
-            <directory suffix=".php">../../../redbean</directory>
+            <directory suffix=".php">../../../../yii</directory>
+            <directory suffix=".php">../../../../redbean</directory>
         </blacklist>
     </filter>
 
@@ -27,7 +27,7 @@
             </arguments>
         </listener>
         <!-- do no customize the paths here. Copy this file as phpunit-profiler.xml and change that instead -->
-        <listener class="PHPUnit_Util_Log_XHProf" file="PHPUnit/Util/Log/XHProf.php">
+        <!--listener class="PHPUnit_Util_Log_XHProf" file="PHPUnit/Util/Log/XHProf.php">
             <arguments>
                 <array>
                     <element key="xhprofLibFile">
@@ -45,12 +45,12 @@
                     <element key="xhprofFlags">
                         <string>XHPROF_FLAGS_CPU,XHPROF_FLAGS_MEMORY</string>
                     </element>
-                    <!-- element key="xhprofIgnore">
+                    <element key="xhprofIgnore">
                         <string>call_user_func,call_user_func_array</string>
-                    </element -->
+                    </element>
                 </array>
             </arguments>
-        </listener>
+        </listener -->
     </listeners>
 
 </phpunit>
