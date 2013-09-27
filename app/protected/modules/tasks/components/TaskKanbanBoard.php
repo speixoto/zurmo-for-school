@@ -65,19 +65,6 @@
         }
 
         /**
-         * @return array
-         */
-//        protected function resolveGroupByDataAndTranslatedLabels()
-//        {
-//            $data = array(KanbanItem::TYPE_SOMEDAY      => Zurmo::t('ProductsModule', 'Someday'),
-//                          KanbanItem::TYPE_TODO         => Zurmo::t('ProductsModule', 'To Do'),
-//                          KanbanItem::TYPE_IN_PROGRESS  => Zurmo::t('ProductsModule', 'In Progress'),
-//                          KanbanItem::TYPE_COMPLETED    => Zurmo::t('ProductsModule', 'Completed'));
-//
-//            return $data;
-//        }
-
-        /**
          * @return string
          */
         public static function getGridViewWidgetPath()

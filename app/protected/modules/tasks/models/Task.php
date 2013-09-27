@@ -231,7 +231,11 @@
         public static function getStatusDisplayName($status)
         {
             $statusArray = self::getStatusDropDownArray();
-            return $statusArray[$status];
+            if(array_key_exists($status, $statusArray))
+            {
+                return $statusArray[$status];
+            }
+            return Zurmo::t('core', '(None)');
         }
 
         public static function hasReadPermissionsSubscriptionOptimization()
