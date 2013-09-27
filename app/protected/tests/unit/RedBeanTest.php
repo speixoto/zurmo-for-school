@@ -181,7 +181,6 @@
         public function testUniqueMeta()
         {
             $this->markTestSkipped("Test does not apply any more due to new autobuild scheme, no longer using setMeta");
-            RedBeanDatabase::unfreeze();
             $bean = ZurmoRedBean::dispense('wukka');
             $bean->setMeta("buildcommand.unique", array(array("string")));
 
@@ -201,7 +200,6 @@
                 $message = "SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry 'Pablo'";
                 $this->assertEquals($message, substr($e->getMessage(), 0, strlen($message)));
             }
-            RedBeanDatabase::freeze();
         }
 
         public function testExampleStoredProcedure()

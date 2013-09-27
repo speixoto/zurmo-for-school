@@ -35,7 +35,8 @@
      ********************************************************************************/
 
     /**
-     * Exception thrown when there are too many columns for a new table.  @see DatabaseCompatibilityUtil::optimizeTableImportColumnsAndGetColumnNames
+     * Exception thrown when there are too many columns for a new table.
+     * @see ImportDatabaseUtil::safeValidateColumnCountAndCreateTable
      */
     class TooManyColumnsFailedException extends CException
     {

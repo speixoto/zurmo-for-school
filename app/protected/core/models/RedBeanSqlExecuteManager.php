@@ -41,13 +41,6 @@
         public function onEvent($type, $info)
         {
             assert('$type == "sql_exec"');
-            //if (!RedBeanDatabase::isFrozen())
-            //{
-            //    return;
-            //}
-            //echo "<pre>";
-            //print_r($info->getSQL());
-            //echo "</pre>";
             //now we can count total queries, how many time the same query is run,
             //if we want to do db timings we would need to do this from a different listener. (actually not sure how this will work...)
         }
