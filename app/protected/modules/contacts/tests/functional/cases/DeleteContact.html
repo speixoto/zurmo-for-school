@@ -4,23 +4,22 @@
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="selenium.base" href="http://localhost/" />
-<title>CreateAccount</title>
+<title>Search</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">Create Account</td></tr>
-</thead>
-<tbody>
+<tr><td rowspan="1" colspan="3">Search</td></tr>
+</thead><tbody>
 <tr>
 	<td>setTimeout</td>
 	<td>45000</td>
 	<td></td>
 </tr>
-<!--Go to templates list-->
+<!--Go to contacts list-->
 <tr>
 	<td>open</td>
-	<td>index.php/workflows/default?clearingSearch=1</td>
+	<td>index.php/contacts/default?clearingSearch=1</td>
 	<td></td>
 </tr>
 <tr>
@@ -40,74 +39,49 @@
 </tr>
 <tr>
 	<td>assertTextPresent</td>
-	<td>Workflows</td>
+	<td>Update</td>
 	<td></td>
 </tr>
 <tr>
 	<td>assertTextPresent</td>
-	<td>Templates</td>
+	<td>Export</td>
 	<td></td>
 </tr>
 <tr>
 	<td>assertTextPresent</td>
-	<td>Time Queue</td>
+	<td>Delete</td>
 	<td></td>
 </tr>
-<tr>
-	<td>assertTextPresent</td>
-	<td>Message Queue</td>
-	<td></td>
-</tr>
-<tr>
-	<td>assertTextPresent</td>
-	<td>Ordering</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>//div[@id='SecuredActionBarForWorkflowsSearchAndListView']/div/div/a[2]/span</td>
-	<td></td>
-</tr>
-<tr>
-	<td>waitForPageToLoad</td>
-	<td></td>
-	<td></td>
-</tr>
-<tr>
-	<td>waitForCondition</td>
-	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-	<td>30000</td>
-</tr>
-<!--select template created in functional test-->
+<!--select contact created in functional test-->
 <tr>
 	<td>type</td>
-	<td>id=EmailTemplatesSearchForm_anyMixedAttributes</td>
-	<td>EmailTemplateTest ${randomSuffix}</td>
+	<td>id=ContactsSearchForm_anyMixedAttributes</td>
+	<td>Jinny Jane ${randomSuffix}</td>
 </tr>
 <tr>
 	<td>keyUp</td>
-	<td>id=EmailTemplatesSearchForm_anyMixedAttributes</td>
+	<td>id=ContactsSearchForm_anyMixedAttributes</td>
 	<td>\10</td>
 </tr>
 <tr>
 	<td>waitForText</td>
-	<td>//div[@id='list-view']/table/tbody/tr/td[2]/a</td>
-	<td>EmailTemplateTest ${randomSuffix}</td>
+	<td>//div[@id='list-view']/table/tbody/tr/td[3]</td>
+	<td>Jinny Jane ${randomSuffix}</td>
 </tr>
 <tr>
 	<td>verifyTextPresent</td>
-	<td>EmailTemplateTest ${randomSuffix}</td>
+	<td>Jinny Jane ${randomSuffix}</td>
 	<td></td>
 </tr>
 <tr>
 	<td>verifyValue</td>
-	<td>EmailTemplatesSearchForm_anyMixedAttributes</td>
-	<td>EmailTemplateTest ${randomSuffix}</td>
+	<td>ContactsSearchForm_anyMixedAttributes</td>
+	<td>Jinny Jane ${randomSuffix}</td>
 </tr>
-<!--go in detail view of template-->
+<!--go in detail view of contact-->
 <tr>
-	<td>clickAndWait</td>
-	<td>//div[@id='list-view']/table/tbody/tr[1]/td[4]/a</td>
+	<td>click</td>
+	<td>//div[@id='list-view']/table/tbody/tr[1]/td[3]/a</td>
 	<td></td>
 </tr>
 <tr>
@@ -121,18 +95,19 @@
 	<td>30000</td>
 </tr>
 <tr>
-	<td>waitForText</td>
-	<td>//div[@id='EmailTemplateEditAndDetailsView']/div/h1/span/span</td>
-	<td>EmailTemplateTest ${randomSuffix}</td>
+	<td>setSpeed</td>
+	<td>3000</td>
+	<td></td>
 </tr>
-<tr>
-	<td>type</td>
-	<td>id=EmailTemplate_textContent</td>
-	<td>Test Edited </td>
-</tr>
+<!--delete contact-->
 <tr>
 	<td>clickAndWait</td>
-	<td>link=Save</td>
+	<td>link=Delete</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertConfirmation</td>
+	<td>Are you sure you want to delete this contact?</td>
 	<td></td>
 </tr>
 <tr>
@@ -145,13 +120,32 @@
 	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
 	<td>30000</td>
 </tr>
-<!--verify values after saving template-->
 <tr>
-	<td>assertText</td>
-	<td>//div[@id='tab1']</td>
-	<td>Test Edited</td>
+	<td>verifyTextPresent</td>
+	<td>No results found.</td>
+	<td></td>
 </tr>
-</tbody>
-</table>
+<tr>
+	<td>setSpeed</td>
+	<td>0</td>
+	<td></td>
+</tr>
+<!--clear search result-->
+<tr>
+	<td>open</td>
+	<td>index.php/contacts/default?clearingSearch=1</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForCondition</td>
+	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+	<td>30000</td>
+</tr>
+</tbody></table>
 </body>
 </html>
