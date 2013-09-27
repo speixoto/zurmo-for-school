@@ -177,7 +177,7 @@
         protected function beforeDelete()
         {
             parent::beforeDelete();
-            return (count($this->productTemplates) < 0 && count($this->productCategories) < 0 );
+            return !(count($this->productTemplates) > 0 || count($this->productCategories) > 0 );
         }
 
         /**
