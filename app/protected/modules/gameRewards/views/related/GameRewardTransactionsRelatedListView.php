@@ -98,6 +98,7 @@
             return Zurmo::t('Core', 'No {moduleLabelPluralLowerCase} found', array('{moduleLabelPluralLowerCase}' => $moduleLabel));
         }
         
+        
         protected function getCGridViewLastColumn()
         {
             return array();
