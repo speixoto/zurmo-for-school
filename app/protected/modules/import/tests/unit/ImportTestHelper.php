@@ -38,6 +38,7 @@
     {
         public static function createTempTableByFileNameAndTableName($fileName,
                                                                      $tableName,
+                                                                     $firstRowIsHeader = false,
                                                                      $pathToFiles = null,
                                                                      $delimiter = ',', // Not Coding Standard
                                                                      $enclosure = '"')
@@ -59,7 +60,8 @@
             if ($fileHandle !== false)
             {
                 $created = ImportDatabaseUtil::makeDatabaseTableByFileHandleAndTableName($fileHandle, $tableName,
-                                                                                         $delimiter, $enclosure);
+                                                                                            $delimiter, $enclosure,
+                                                                                            $firstRowIsHeader);
                 assert('$created');
                 return true;
             }
@@ -68,78 +70,38 @@
 
         public static function createImportModelTestItem($string, $lastName)
         {
-            $freeze = false;
-            if (RedBeanDatabase::isFrozen())
-            {
-                RedBeanDatabase::unfreeze();
-                $freeze = true;
-            }
             $model = new ImportModelTestItem();
             $model->string   = $string;
             $model->lastName = $lastName;
             $saved           = $model->save();
             assert('$saved');
-            if ($freeze)
-            {
-                RedBeanDatabase::freeze();
-            }
             return $model;
         }
 
         public static function createImportModelTestItem2($name)
         {
-            $freeze = false;
-            if (RedBeanDatabase::isFrozen())
-            {
-                RedBeanDatabase::unfreeze();
-                $freeze = true;
-            }
             $model = new ImportModelTestItem2();
             $model->name = $name;
             $saved = $model->save();
             assert('$saved');
-            if ($freeze)
-            {
-                RedBeanDatabase::freeze();
-            }
             return $model;
         }
 
         public static function createImportModelTestItem3($name)
         {
-            $freeze = false;
-            if (RedBeanDatabase::isFrozen())
-            {
-                RedBeanDatabase::unfreeze();
-                $freeze = true;
-            }
             $model = new ImportModelTestItem3();
             $model->name = $name;
             $saved = $model->save();
             assert('$saved');
-            if ($freeze)
-            {
-                RedBeanDatabase::freeze();
-            }
             return $model;
         }
 
         public static function createImportModelTestItem4($name)
         {
-            $freeze = false;
-            if (RedBeanDatabase::isFrozen())
-            {
-                RedBeanDatabase::unfreeze();
-                $freeze = true;
-            }
             $model = new ImportModelTestItem4();
             $model->name = $name;
             $saved = $model->save();
             assert('$saved');
-            if ($freeze)
-            {
-                RedBeanDatabase::freeze();
-            }
             return $model;
         }
 

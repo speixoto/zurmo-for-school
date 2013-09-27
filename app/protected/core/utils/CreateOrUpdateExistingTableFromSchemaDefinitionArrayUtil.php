@@ -42,6 +42,24 @@
         const CACHE_KEY = 'CreateOrUpdateExistingTableFromSchemaDefinitionArrayUtil_processedTableNames';
 
         /**
+         * Returns table schema definition
+         * @param $tableName
+         * @param array $columns
+         * @param array $indexes
+         * @return array $schema
+         */
+        public static function getTableSchema($tableName, $columns = array(), $indexes = array())
+        {
+            $schema     = array(
+                $tableName    => array(
+                    'columns' => $columns,
+                    'indexes' => $indexes,
+                )
+            );
+            return $schema;
+        }
+
+        /**
          * Provide a schema definition array queries to create/update database schema are executed.
          * @param array $schemaDefinition
          * @param $messageLogger
@@ -51,7 +69,7 @@
         public static function generateOrUpdateTableBySchemaDefinition(array $schemaDefinition, & $messageLogger)
         {
             $schemaValidation  = static::validateSchemaDefinition($schemaDefinition);
-            $tableName          = key($schemaDefinition);
+            $tableName          = strtolower(key($schemaDefinition));
             if (!$schemaValidation['isValid'])
             {
                 $errorMessage   = Zurmo::t('Core', 'Invalid Schema definition received for {{tableName}}.',
@@ -178,7 +196,7 @@
 
         protected static function validateIndexDefinitionsFromSchema(array $indexes, array $columns)
         {
-            $columnNames = RedBeanModelMemberToColumnNameUtil::resolveColumnNamesArrayFromColumnSchemaDefinition($columns);
+            $columnNames = RedBeanModelMemberToColumnUtil::resolveColumnNamesArrayFromColumnSchemaDefinition($columns);
             foreach ($indexes as $indexName => $index)
             {
                 $indexNameLength = strlen($indexName);

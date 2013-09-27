@@ -608,7 +608,7 @@ class RedBean_Driver_PDO implements RedBean_Driver {
           array(1002 => 'SET NAMES utf8',
                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-
+               PDO::MYSQL_ATTR_LOCAL_INFILE => true,
           )
     );
     $this->pdo->setAttribute(PDO::ATTR_STRINGIFY_FETCHES, true);

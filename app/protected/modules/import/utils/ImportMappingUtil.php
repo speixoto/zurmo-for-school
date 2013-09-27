@@ -49,7 +49,7 @@
         public static function makeMappingDataByTableName($tableName)
         {
             assert('is_string($tableName)');
-            $firstRowData = ImportDatabaseUtil::getFirstRowByTableName($tableName);
+            $firstRowData = ZurmoRedBean::$writer->getFirstRowByTableName($tableName);
 
             if (count($firstRowData) == 1 || count($firstRowData) == 0)
             {

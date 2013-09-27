@@ -46,7 +46,7 @@
             {
                 return null;
             }
-            $column = RedBeanModelMemberToColumnNameUtil::resolveForeignKeyColumnMetadata(null,
+            $column = RedBeanModelMemberToColumnUtil::resolveForeignKeyColumnMetadata(null,
                                                                                     $canHaveBeenParentModelClassName);
             return $column;
         }

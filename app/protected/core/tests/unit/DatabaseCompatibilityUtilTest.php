@@ -504,6 +504,17 @@
             $this->assertTrue(is_bool($isDatabaseStrictMode));
         }
 
+        public function testCheckDatabaseSupportsLoadLocalInFile()
+        {
+            $loadLocalInFile = DatabaseCompatibilityUtil::getDatabaseSupportsLoadLocalInFile('mysql',
+                                                                                    $this->temporaryDatabaseHostname,
+                                                                                    $this->temporaryDatabaseUsername,
+                                                                                    $this->temporaryDatabasePassword,
+                                                                                    $this->temporaryDatabasePort);
+            $this->assertTrue(is_string($loadLocalInFile));
+            $this->assertTrue(in_array($loadLocalInFile, array('ON', 1, 'OFF', 0)));
+        }
+
         public function testDatabaseConnection_mysql()
         {
             $this->assertTrue(DatabaseCompatibilityUtil::checkDatabaseConnection('mysql',

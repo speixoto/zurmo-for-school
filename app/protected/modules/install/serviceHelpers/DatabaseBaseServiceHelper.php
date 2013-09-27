@@ -34,45 +34,20 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class ImportCleanUpJobTest extends ImportBaseTest
+    /**
+     * Base service helper for Database checks
+     */
+    abstract class DatabaseBaseServiceHelper extends ServiceHelper
     {
-        public static function setUpBeforeClass()
+        protected $form;
+
+        /**
+         * @param InstallSettingsForm $form
+         */
+        public function __construct($form)
         {
-            parent::setUpBeforeClass();
-            SecurityTestHelper::createSuperAdmin();
-        }
-
-        public function testRun()
-        {
-            $quote = DatabaseCompatibilityUtil::getQuote();
-            //Create 2 imports, and set one with a date over a week ago (8 days ago) for the modifiedDateTime
-            $import                            = new Import();
-            $serializedData['importRulesType'] = 'ImportModelTestItem';
-            $import->serializedData            = serialize($serializedData);
-            $this->assertTrue($import->save());
-            ImportTestHelper::createTempTableByFileNameAndTableName('importAnalyzerTest.csv', $import->getTempTableName(), true);
-            $modifiedDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time() - (60 * 60 *24 * 8));
-            $sql = "Update item set modifieddatetime = '" . $modifiedDateTime . "' where id = " .
-                   $import->getClassId('Item');
-            ZurmoRedBean::exec($sql);
-            $staleImportId = $import->id;
-
-            $import2                            = new Import();
-            $serializedData['importRulesType'] = 'ImportModelTestItem';
-            $import2->serializedData            = serialize($serializedData);
-            $this->assertTrue($import2->save());
-            ImportTestHelper::createTempTableByFileNameAndTableName('importAnalyzerTest.csv', $import2->getTempTableName(), true);
-            $this->assertEquals(2, count(Import::getAll()));
-            $tableExists = ZurmoRedBean::$writer->doesTableExist($import->getTempTableName());
-            $this->assertTrue($tableExists);
-
-            $job = new ImportCleanupJob();
-            $this->assertTrue($job->run());
-            $tableExists = ZurmoRedBean::$writer->doesTableExist($import->getTempTableName());
-            $this->assertFalse($tableExists);
-            $imports = Import::getAll();
-            $this->assertEquals(1, count($imports));
-            $this->assertEquals($import2->id, $imports[0]->id);
+            assert('$form instanceof InstallSettingsForm');
+            $this->form = $form;
         }
     }
 ?>

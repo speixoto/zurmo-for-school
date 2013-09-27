@@ -91,7 +91,7 @@
             {
                 return $this->tempTableName;
             }
-            $this->tempTableName = 'importtable' . $this->id;
+            $this->setTempTableName('importtable' . $this->id);
             return $this->tempTableName;
         }
 

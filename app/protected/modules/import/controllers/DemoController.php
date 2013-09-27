@@ -182,28 +182,15 @@
 
         protected function createImportTempTable($columnCount, $tableName)
         {
-            $freezeWhenComplete = false;
-            if (RedBeanDatabase::isFrozen())
-            {
-                RedBeanDatabase::unfreeze();
-                $freezeWhenComplete = true;
-            }
-            $newBean = ZurmoRedBean::dispense($tableName);
+            $importColumns = array();
             for ($i = 0; $i < $columnCount; $i++)
             {
-                $columnName = 'column_' . $i;
-                $newBean->{$columnName} = str_repeat(' ', 50);
-                $columns[] = $columnName;
+                $columnName         = 'column_' . $i;
+                $importColumns[]    = RedBeanModelMemberToColumnUtil::resolveColumnMetadataByHintType($columnName,
+                                                                                                        'string',
+                                                                                                        50);
             }
-            ZurmoRedBean::store($newBean);
-            ZurmoRedBean::trash($newBean);
-            ZurmoRedBean::$writer->wipe($tableName);
-            ImportDatabaseUtil::optimizeTableNonImportColumns($tableName);
-            ZurmoRedBean::$writer->wipe($tableName);
-            if ($freezeWhenComplete)
-            {
-                RedBeanDatabase::freeze();
-            }
+            ImportDatabaseUtil::createTableByTableNameAndImportColumns($tableName, $importColumns);
         }
     }
 ?>

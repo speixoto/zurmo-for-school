@@ -42,11 +42,9 @@
             $super = SecurityTestHelper::createSuperAdmin();
             Yii::app()->user->userModel = $super;
 
-            // TODO: @Shoaibi: Critical: Get rid of this with import
-            //$columnName = ExternalSystemIdUtil::EXTERNAL_SYSTEM_ID_COLUMN_NAME;
-            //RedBeanColumnTypeOptimizer::externalIdColumn(ImportModelTestItem::getTableName('Account'),   $columnName);
-            //RedBeanColumnTypeOptimizer::externalIdColumn(ImportModelTestItem2::getTableName('Contact'), $columnName);
-            //RedBeanColumnTypeOptimizer::externalIdColumn(ImportModelTestItem3::getTableName('Opportunity'), $columnName);
+            ExternalSystemIdUtil::addExternalIdColumnIfMissing(RedBeanModel::getTableName('Account'));
+            ExternalSystemIdUtil::addExternalIdColumnIfMissing(RedBeanModel::getTableName('Contact'));
+            ExternalSystemIdUtil::addExternalIdColumnIfMissing(RedBeanModel::getTableName('Opportunity'));
 
             $account = AccountTestHelper::createAccountByNameForOwner('testAccount', $super);
             ImportTestHelper::updateModelsExternalId($account, 'ACC');

@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class RedBeanModelMemberToColumnNameUtilTest extends BaseTest
+    class RedBeanModelMemberToColumnUtilTest extends BaseTest
     {
         public static function setUpBeforeClass()
         {
@@ -47,7 +47,7 @@
         public function testResolve()
         {
             $memberName = "memberNameGoesHere";
-            $columnName = RedBeanModelMemberToColumnNameUtil::resolve($memberName);
+            $columnName = RedBeanModelMemberToColumnUtil::resolve($memberName);
             $this->assertNotEquals($memberName, $columnName);
             $this->assertEquals(strtolower($memberName), $columnName);
         }
@@ -59,7 +59,7 @@
         public function testResolveForeignKeyColumnMetadataWithName()
         {
             $name = 'columnnamegoeshere';
-            $columnDefinition = RedBeanModelMemberToColumnNameUtil::resolveForeignKeyColumnMetadata($name);
+            $columnDefinition = RedBeanModelMemberToColumnUtil::resolveForeignKeyColumnMetadata($name);
             $this->assertNotEmpty($columnDefinition);
             $this->assertCount(6, $columnDefinition);
             $this->assertArrayHasKey('name', $columnDefinition);
@@ -80,10 +80,10 @@
         /**
          * @depends testResolveForeignKeyColumnMetadataWithName
          */
-        public function testResolveForeignKeyColumnMetadataWithelatedModelClassName()
+        public function testResolveForeignKeyColumnMetadataWithRelatedModelClassName()
         {
             $relatedModelClassName = "EmailTemplate";
-            $columnDefinition = RedBeanModelMemberToColumnNameUtil::resolveForeignKeyColumnMetadata(null,
+            $columnDefinition = RedBeanModelMemberToColumnUtil::resolveForeignKeyColumnMetadata(null,
                                                                                                 $relatedModelClassName);
             $this->assertNotEmpty($columnDefinition);
             $this->assertCount(6, $columnDefinition);
@@ -97,6 +97,30 @@
             $this->assertEquals('NULL', $columnDefinition['notNull']);
             $this->assertArrayHasKey('collation', $columnDefinition);
             $this->assertNull($columnDefinition['collation']);
+            $this->assertArrayHasKey('default', $columnDefinition);
+            $this->assertEquals('DEFAULT NULL', $columnDefinition['default']);
+            $this->assertArrayNotHasKey('length', $columnDefinition);
+        }
+
+        /**
+         * @depends testResolveForeignKeyColumnMetadataWithRelatedModelClassName
+         */
+        public function testResolveColumnMetadataByHintTypeWithStringWithoutId()
+        {
+            $unresolvedName         = 'memberNameGoesHere';
+            $columnDefinition       = RedBeanModelMemberToColumnUtil::resolveColumnMetadataByHintType($unresolvedName);
+            $this->assertNotEmpty($columnDefinition);
+            $this->assertCount(6, $columnDefinition);
+            $this->assertArrayHasKey('name', $columnDefinition);
+            $this->assertEquals('membernamegoeshere', $columnDefinition['name']);
+            $this->assertArrayHasKey('type', $columnDefinition);
+            $this->assertEquals('VARCHAR(255)', $columnDefinition['type']);
+            $this->assertArrayHasKey('unsigned', $columnDefinition);
+            $this->assertNull($columnDefinition['unsigned']);
+            $this->assertArrayHasKey('notNull', $columnDefinition);
+            $this->assertEquals('NULL', $columnDefinition['notNull']);
+            $this->assertArrayHasKey('collation', $columnDefinition);
+            $this->assertEquals('COLLATE utf8_unicode_ci', $columnDefinition['collation']);
             $this->assertArrayHasKey('default', $columnDefinition);
             $this->assertEquals('DEFAULT NULL', $columnDefinition['default']);
             $this->assertArrayNotHasKey('length', $columnDefinition);

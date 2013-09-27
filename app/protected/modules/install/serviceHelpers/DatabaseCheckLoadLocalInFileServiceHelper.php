@@ -34,50 +34,30 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    abstract class RedBeanModelMemberToColumnNameUtil
+    /**
+     * Check if database is not in strict mode.
+     */
+    class DatabaseCheckLoadLocalInFileServiceHelper extends DatabaseBaseServiceHelper
     {
-        public static function resolve($memberName)
-        {
-            return strtolower($memberName);
-        }
+        protected $required = false;
 
-        public static function resolveForeignKeyColumnMetadata($name, $relatedModelClass = null)
+        protected function checkService()
         {
-            $column                 = array();
-            if (!isset($name))
+            $passed = false;
+            if (InstallUtil::checkDatabaseLoadLocalInFile('mysql',
+                                                         $this->form->databaseHostname,
+                                                         $this->form->databaseUsername,
+                                                         $this->form->databasePassword,
+                                                         $this->form->databasePort))
             {
-                if (isset($relatedModelClass))
-                {
-                    $name       = static::resolveForeignKeyNameByModelName($relatedModelClass);
-                }
-                else
-                {
-                    throw new NotSupportedException();
-                }
+                $this->message  = Zurmo::t('InstallModule', 'Database supports LOAD LOCAL INFILE.');
+                $passed = true;
             }
-            $column['name']         = $name;
-            $column['type']         = 'integer';
-            $column['unsigned']     = DatabaseCompatibilityUtil::resolveUnsignedByHintType($column['type'], false);
-            $column['notNull']      = 'NULL';
-            $column['collation']    = null;
-            $column['default']      = 'DEFAULT NULL';
-            $column['type']         = DatabaseCompatibilityUtil::mapHintTypeIntoDatabaseColumnType($column['type']);
-            return $column;
-        }
-
-        public static function resolveColumnNamesArrayFromColumnSchemaDefinition($columns)
-        {
-            $columnNames = array_map("static::extractNameFromColumnSchemaDefinition", $columns);
-            return $columnNames;
-        }
-        protected static function extractNameFromColumnSchemaDefinition($column)
-        {
-            return $column['name'];
-        }
-
-        protected static function resolveForeignKeyNameByModelName($className)
-        {
-            return RedBeanModel::getTableName($className) . '_id';
+            else
+            {
+                $this->message = Zurmo::t('InstallModule', 'Database does not support LOAD LOCAL INFILE.');
+            }
+            return $passed;
         }
     }
 ?>

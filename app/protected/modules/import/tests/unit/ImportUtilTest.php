@@ -61,6 +61,13 @@
             $customFieldData->serializedData = serialize($values);
             $saved = $customFieldData->save();
             assert($saved);    // Not Coding Standard
+            ReadPermissionsOptimizationUtil::recreateTable(
+                    ReadPermissionsOptimizationUtil::getMungeTableName('ImportModelTestItem'));
+        }
+
+        public static function getDependentTestModelClassNames()
+        {
+            return array('ImportModelTestItem', 'ImportModelTestItem2');
         }
 
         public function testResolveLinkMessageToModel()
@@ -81,14 +88,6 @@
         {
             Yii::app()->user->userModel = User::getByUsername('super');
 
-            //Unfreeze since the test model is not part of the standard schema.
-            $freezeWhenComplete = false;
-            if (RedBeanDatabase::isFrozen())
-            {
-                RedBeanDatabase::unfreeze();
-                $freezeWhenComplete = true;
-            }
-
             $testModels                        = ImportModelTestItem::getAll();
             $this->assertEquals(0, count($testModels));
             $import                                = new Import();
@@ -97,7 +96,7 @@
             $import->serializedData                = serialize($serializedData);
             $this->assertTrue($import->save());
 
-            ImportTestHelper::createTempTableByFileNameAndTableName('importApostropheTest.csv', $import->getTempTableName());
+            ImportTestHelper::createTempTableByFileNameAndTableName('importApostropheTest.csv', $import->getTempTableName(), true);
 
             $this->assertEquals(3, ImportDatabaseUtil::getCount($import->getTempTableName())); // includes header rows.
 
@@ -137,12 +136,6 @@
 
             //Clear out data in table
             ZurmoRedBean::exec("delete from " . ImportModelTestItem::getTableName('ImportModelTestItem'));
-
-            //Re-freeze if needed.
-            if ($freezeWhenComplete)
-            {
-                RedBeanDatabase::freeze();
-            }
         }
 
         /**
@@ -155,14 +148,6 @@
             $jim   = User::getByUsername('jim');
             Yii::app()->user->userModel = $jim;
 
-            //Unfreeze since the test model is not part of the standard schema.
-            $freezeWhenComplete = false;
-            if (RedBeanDatabase::isFrozen())
-            {
-                RedBeanDatabase::unfreeze();
-                $freezeWhenComplete = true;
-            }
-
             $testModels                        = ImportModelTestItem::getAll();
             $this->assertEquals(0, count($testModels));
             $import                                = new Import();
@@ -171,7 +156,7 @@
             $import->serializedData                = serialize($serializedData);
             $this->assertTrue($import->save());
 
-            ImportTestHelper::createTempTableByFileNameAndTableName('importMultiSelectDropDownTest.csv', $import->getTempTableName());
+            ImportTestHelper::createTempTableByFileNameAndTableName('importMultiSelectDropDownTest.csv', $import->getTempTableName(), true);
 
             $this->assertEquals(6, ImportDatabaseUtil::getCount($import->getTempTableName())); // includes header rows.
 
@@ -272,12 +257,6 @@
 
             //Clear out data in table
             ZurmoRedBean::exec("delete from " . ImportModelTestItem::getTableName('ImportModelTestItem'));
-
-            //Re-freeze if needed.
-            if ($freezeWhenComplete)
-            {
-                RedBeanDatabase::freeze();
-            }
         }
 
         /**
@@ -294,14 +273,6 @@
             $item       = NamedSecurableItem::getByName('ImportModule');
             $this->assertEquals(Permission::NONE, $item->getEffectivePermissions($jim));
 
-            //Unfreeze since the test model is not part of the standard schema.
-            $freezeWhenComplete = false;
-            if (RedBeanDatabase::isFrozen())
-            {
-                RedBeanDatabase::unfreeze();
-                $freezeWhenComplete = true;
-            }
-
             $testModels                        = ImportModelTestItem::getAll();
             $this->assertEquals(0, count($testModels));
             $import                                = new Import();
@@ -310,7 +281,7 @@
             $import->serializedData                = serialize($serializedData);
             $this->assertTrue($import->save());
 
-            ImportTestHelper::createTempTableByFileNameAndTableName('importEmptyCurrencyTest.csv', $import->getTempTableName());
+            ImportTestHelper::createTempTableByFileNameAndTableName('importEmptyCurrencyTest.csv', $import->getTempTableName(), true);
 
             $this->assertEquals(3, ImportDatabaseUtil::getCount($import->getTempTableName())); // includes header rows.
 
@@ -371,12 +342,6 @@
 
             //Clear out data in table
             ZurmoRedBean::exec("delete from " . ImportModelTestItem::getTableName('ImportModelTestItem'));
-
-            //Re-freeze if needed.
-            if ($freezeWhenComplete)
-            {
-                RedBeanDatabase::freeze();
-            }
         }
 
         /**
@@ -384,15 +349,7 @@
          */
         public function testImportWithoutCurrencyValues()
         {
-                    Yii::app()->user->userModel = User::getByUsername('super');
-
-            //Unfreeze since the test model is not part of the standard schema.
-            $freezeWhenComplete = false;
-            if (RedBeanDatabase::isFrozen())
-            {
-                RedBeanDatabase::unfreeze();
-                $freezeWhenComplete = true;
-            }
+            Yii::app()->user->userModel = User::getByUsername('super');
 
             $testModels                        = ImportModelTestItem::getAll();
             $this->assertEquals(0, count($testModels));
@@ -402,7 +359,7 @@
             $import->serializedData                = serialize($serializedData);
             $this->assertTrue($import->save());
 
-            ImportTestHelper::createTempTableByFileNameAndTableName('importEmptyCurrencyTest.csv', $import->getTempTableName());
+            ImportTestHelper::createTempTableByFileNameAndTableName('importEmptyCurrencyTest.csv', $import->getTempTableName(), true);
 
             $this->assertEquals(3, ImportDatabaseUtil::getCount($import->getTempTableName())); // includes header rows.
 
@@ -472,12 +429,6 @@
 
             //Clear out data in table
             ZurmoRedBean::exec("delete from " . ImportModelTestItem::getTableName('ImportModelTestItem'));
-
-            //Re-freeze if needed.
-            if ($freezeWhenComplete)
-            {
-                RedBeanDatabase::freeze();
-            }
         }
 
         /**
@@ -487,14 +438,6 @@
         {
             Yii::app()->user->userModel = User::getByUsername('super');
 
-            //Unfreeze since the test model is not part of the standard schema.
-            $freezeWhenComplete = false;
-            if (RedBeanDatabase::isFrozen())
-            {
-                RedBeanDatabase::unfreeze();
-                $freezeWhenComplete = true;
-            }
-
             $testModels                        = ImportModelTestItem::getAll();
             $this->assertEquals(0, count($testModels));
             $import                                = new Import();
@@ -503,7 +446,7 @@
             $import->serializedData                = serialize($serializedData);
             $this->assertTrue($import->save());
 
-            ImportTestHelper::createTempTableByFileNameAndTableName('importAnalyzerTest.csv', $import->getTempTableName());
+            ImportTestHelper::createTempTableByFileNameAndTableName('importAnalyzerTest.csv', $import->getTempTableName(), true);
 
             $this->assertEquals(13, ImportDatabaseUtil::getCount($import->getTempTableName())); // includes header rows.
 
@@ -575,12 +518,6 @@
 
             //Clear out data in table
             ZurmoRedBean::exec("delete from " . ImportModelTestItem::getTableName('ImportModelTestItem'));
-
-            //Re-freeze if needed.
-            if ($freezeWhenComplete)
-            {
-                RedBeanDatabase::freeze();
-            }
         }
 
         /**
@@ -597,14 +534,6 @@
             $explicitReadWriteModelPermissions = new ExplicitReadWriteModelPermissions();
             $explicitReadWriteModelPermissions->addReadOnlyPermitable(User::getByUsername('jim'));
 
-            //Unfreeze since the test model is not part of the standard schema.
-            $freezeWhenComplete = false;
-            if (RedBeanDatabase::isFrozen())
-            {
-                RedBeanDatabase::unfreeze();
-                $freezeWhenComplete = true;
-            }
-
             $testModels                        = ImportModelTestItem::getAll();
             $this->assertEquals(0, count($testModels));
             $import                                = new Import();
@@ -613,7 +542,7 @@
             $import->serializedData                = serialize($serializedData);
             $this->assertTrue($import->save());
 
-            ImportTestHelper::createTempTableByFileNameAndTableName('importAnalyzerTest.csv', $import->getTempTableName());
+            ImportTestHelper::createTempTableByFileNameAndTableName('importAnalyzerTest.csv', $import->getTempTableName(), true);
 
             $this->assertEquals(13, ImportDatabaseUtil::getCount($import->getTempTableName())); // includes header rows.
 
@@ -677,12 +606,6 @@
             foreach ($testModels as $model)
             {
                 $this->assertEquals(array(Permission::READ_WRITE_CHANGE_PERMISSIONS_CHANGE_OWNER, Permission::NONE), $model->getExplicitActualPermissions ($jim));
-            }
-
-            //Re-freeze if needed.
-            if ($freezeWhenComplete)
-            {
-                RedBeanDatabase::freeze();
             }
         }
     }

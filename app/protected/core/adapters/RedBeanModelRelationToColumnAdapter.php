@@ -99,7 +99,7 @@
                         $linkName   = strtolower($relationName) . '_';
                     }
                     $name   = $linkName . RedBeanModel::getForeignKeyName($modelClassName, $relationName);
-                    $column = RedBeanModelMemberToColumnNameUtil::resolveForeignKeyColumnMetadata($name);
+                    $column = RedBeanModelMemberToColumnUtil::resolveForeignKeyColumnMetadata($name);
                 }
                 else if ($relationType == RedBeanModel::HAS_MANY && $linkType == RedBeanModel::LINK_TYPE_POLYMORPHIC)
                 {
@@ -118,8 +118,8 @@
         protected static function setColumnsForPolymorphicLink($relatedModelClassName, $linkName)
         {
             $columns        = array();
-            $columns[]      = RedBeanModelMemberToColumnNameUtil::resolveForeignKeyColumnMetadata(
-                                                RedBeanModelMemberToColumnNameUtil::resolve($linkName). '_id');
+            $columns[]      = RedBeanModelMemberToColumnUtil::resolveForeignKeyColumnMetadata(
+                                                RedBeanModelMemberToColumnUtil::resolve($linkName). '_id');
             $columns[]      = static::resolvePolymorphicTypeColumnByLinkName($linkName);
             $tableName      = RedBeanModel::getTableName($relatedModelClassName);
             $polymorphicLinkColumns             = GeneralCache::getEntry(static::CACHE_KEY, array());
@@ -129,17 +129,8 @@
 
         protected static function resolvePolymorphicTypeColumnByLinkName($linkName)
         {
-            $column['name']         = RedBeanModelMemberToColumnNameUtil::resolve($linkName) . '_type';
-            $column['type']         = 'string';
-            $column['length']       = 255;
-            $column['unsigned']     = DatabaseCompatibilityUtil::resolveUnsignedByHintType($column['type'], false);
-            $column['notNull']      = 'NULL';
-            $column['collation']    = DatabaseCompatibilityUtil::resolveCollationByHintType($column['type']);
-            $column['default']      = 'DEFAULT NULL';
-            $column['type']         = DatabaseCompatibilityUtil::mapHintTypeIntoDatabaseColumnType($column['type'],
-                                                                                                    $column['length']);
-            unset($column['length']);
-            return $column;
+            $linkName               .= '_type';
+            return RedBeanModelMemberToColumnUtil::resolveColumnMetadataByHintType($linkName);
         }
     }
 ?>

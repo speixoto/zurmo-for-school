@@ -848,6 +848,35 @@
             }
         }
 
+        public static function getDatabaseSupportsLoadLocalInFile($databaseType,
+                                                                    $databaseHostname,
+                                                                    $databaseUsername,
+                                                                    $databasePassword,
+                                                                    $databasePort)
+        {
+            if ($databaseType != 'mysql')
+            {
+                throw new NotSupportedException();
+            }
+            switch ($databaseType)
+            {
+                case 'mysql':
+                    $query      = "SELECT * FROM `GLOBAL_VARIABLES` WHERE VARIABLE_NAME='LOCAL_INFILE';";
+                    $connection = @mysql_connect($databaseHostname . ':' . $databasePort, $databaseUsername, $databasePassword, true);
+                    @mysql_select_db('information_schema', $connection);
+                    $result = @mysql_query($query, $connection);
+                    $row    = @mysql_fetch_row($result);
+                    if (is_resource($connection))
+                    {
+                        mysql_close($connection);
+                    }
+                    if (isset($row[1]))
+                    {
+                        return $row[1];
+                    }
+            }
+        }
+
         ///////////////////////////////////////////////////////////////////////
         // Methods that modify things.
         // The aim is that when all of the checks above pass
@@ -1114,10 +1143,6 @@
                     }
                 }
             }
-            else
-            {
-                throw new NotSupportedException();
-            }
             if ($databaseColumnType == '')
             {
                 throw new NotSupportedException();
@@ -1184,12 +1209,12 @@
             throw new NotSupportedException();
         }
 
-        public static function resolveUnsignedByHintType($hint, $assumeSigned = false)
+        public static function resolveUnsignedByHintType($hint, $assumeSigned = false, $hintName = null)
         {
             if (RedBeanDatabase::getDatabaseType() == 'mysql')
             {
                 $integerHintTypes = array_keys(static::resolveIntegerMaxAllowedValuesByType());
-                if (in_array($hint, $integerHintTypes) && !$assumeSigned)
+                if (in_array($hint, $integerHintTypes) && (!$assumeSigned || StringUtil::endsWith($hintName, '_id')))
                 {
                     return "UNSIGNED";
                 }

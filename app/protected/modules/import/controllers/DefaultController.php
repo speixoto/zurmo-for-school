@@ -215,7 +215,7 @@
                                                               (bool)$importWizardForm->firstRowIsHeaderRow);
             if ($importWizardForm->firstRowIsHeaderRow)
             {
-                $headerRow = ImportDatabaseUtil::getFirstRowByTableName($import->getTempTableName());
+                $headerRow = ZurmoRedBean::$writer->getFirstRowByTableName($import->getTempTableName());
                 assert('$headerRow != null');
             }
             else
@@ -585,10 +585,11 @@
                         $tempTableName = $import->getTempTableName();
                         try
                         {
-                            $tableCreated = ImportDatabaseUtil::
-                                            makeDatabaseTableByFileHandleAndTableName($fileHandle, $tempTableName,
-                                                                                      $importWizardForm->rowColumnDelimiter,
-                                                                                      $importWizardForm->rowColumnEnclosure);
+                            $tableCreated = ImportDatabaseUtil::makeDatabaseTableByFileHandleAndTableName($fileHandle,
+                                                                                    $tempTableName,
+                                                                                    $importWizardForm->rowColumnDelimiter,
+                                                                                    $importWizardForm->rowColumnEnclosure,
+                                                                                    $importWizardForm->firstRowIsHeaderRow);
                             if (!$tableCreated)
                             {
                                 throw new FailedFileUploadException(Zurmo::t('ImportModule', 'Failed to create temporary database table from CSV.'));

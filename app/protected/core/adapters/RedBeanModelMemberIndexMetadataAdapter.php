@@ -60,7 +60,7 @@
             $indexMembers   = $indexMetadata['members'];
             $indexMembers   = array_map(function($indexMember)
                                         {
-                                            return RedBeanModelMemberToColumnNameUtil::resolve($indexMember);
+                                            return RedBeanModelMemberToColumnUtil::resolve($indexMember);
                                         }, $indexMembers);
             $indexMetadata  = array(
                                     'columns'   => $indexMembers,
