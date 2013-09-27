@@ -111,7 +111,7 @@
                     array('fromName',           'length',  'min'  => 3, 'max' => 64),
                     array('fromAddress',        'type', 'type' => 'string'),
                     array('fromAddress',        'length',  'min'  => 6, 'max' => 64),
-                    array('fromAddress',        'email', 'except' => 'autoBuildDatabase'),
+                    array('fromAddress',        'email'),
                     array('anyoneCanSubscribe', 'boolean'),
                     array('anyoneCanSubscribe', 'default', 'value' => false),
                 ),

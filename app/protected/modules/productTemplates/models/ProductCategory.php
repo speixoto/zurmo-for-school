@@ -176,23 +176,8 @@
          */
         protected function beforeDelete()
         {
-            if ($this->getScenario() != 'autoBuildDatabase')
-            {
-                parent::beforeDelete();
-
-                if (count($this->productTemplates) > 0 || count($this->productCategories) > 0 )
-                {
-                    return false;
-                }
-                else
-                {
-                    return true;
-                }
-            }
-            else
-            {
-                return parent::beforeDelete();
-            }
+            parent::beforeDelete();
+            return (count($this->productTemplates) < 0 && count($this->productCategories) < 0 );
         }
 
         /**

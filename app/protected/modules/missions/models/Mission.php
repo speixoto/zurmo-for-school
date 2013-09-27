@@ -251,8 +251,7 @@
          */
         protected function afterSave()
         {
-            if ($this->isNewModel && $this->getScenario() != 'autoBuildDatabase' &&
-                $this->getScenario() != 'importModel')
+            if ($this->isNewModel && $this->getScenario() != 'importModel')
             {
                 MissionsUtil::makeAndSubmitNewMissionNotificationMessage($this);
             }

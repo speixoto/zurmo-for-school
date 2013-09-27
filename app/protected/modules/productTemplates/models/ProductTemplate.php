@@ -188,22 +188,8 @@
          */
         protected function beforeDelete()
         {
-            if ($this->getScenario() != 'autoBuildDatabase')
-            {
-                parent::beforeDelete();
-                if (count($this->products) == 0 )
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            else
-            {
-                return parent::beforeDelete();
-            }
+            parent::beforeDelete();
+            return (count($this->products) == 0);
         }
 
         /**
