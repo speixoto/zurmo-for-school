@@ -50,7 +50,7 @@
         public static function getTranslatedRightsLabels()
         {
             $labels                                         = array();
-            $labels[self::RIGHT_ACCESS_CONFIGURATION]       = Zurmo::t('EmailMessagesModule', 'Access Marketing Configuration');
+            $labels[self::RIGHT_ACCESS_CONFIGURATION]       = Zurmo::t('MarketingModule', 'Access Marketing Configuration');
             $labels[self::RIGHT_ACCESS_MARKETING]           = Zurmo::t('MarketingModule', 'Access Marketing Tab');
             return $labels;
         }
@@ -70,7 +70,7 @@
                     array(
                         'category'         => ZurmoModule::ADMINISTRATION_CATEGORY_GENERAL,
                         'titleLabel'       => "eval:Zurmo::t('MarketingModule', 'Marketing Configuration')",
-                        'descriptionLabel' => "eval:Zurmo::t('EmailMessagesModule', 'Manage Marketing Configuration')",
+                        'descriptionLabel' => "eval:Zurmo::t('MarketingModule', 'Manage Marketing Configuration')",
                         'route'            => '/marketing/default/configurationEdit',
                         'right'            => self::RIGHT_ACCESS_CONFIGURATION,
                     ),

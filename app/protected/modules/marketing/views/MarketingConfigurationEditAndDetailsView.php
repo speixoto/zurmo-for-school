@@ -95,7 +95,7 @@
                                         array(
                                             'elements' => array(
                                                 array('attributeName' => 'autoresponderOrCampaignFooterRichText',
-                                                                                    'type' => 'RedactorWithPreviewLink'),
+                                                      'type'          => 'RedactorWithPreviewLink'),
                                             ),
                                         ),
                                     )
@@ -111,13 +111,6 @@
         protected function getNewModelTitleLabel()
         {
             return null;
-        }
-
-        /**
-         * Override sub-class if you need to set anything into the element object.
-         */
-        protected function resolveElementDuringFormLayoutRender(& $element)
-        {
         }
     }
 ?>

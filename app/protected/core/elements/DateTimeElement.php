@@ -46,6 +46,16 @@
          */
         protected function renderControlEditable()
         {
+            $htmlOptionsFromParams   = $this->getHtmlOptions();
+            $htmlOptions             = array();
+            $htmlOptions['id']       = $this->getEditableInputId();
+            $htmlOptions['name']     = $this->getEditableInputName();
+            $htmlOptions['disabled'] = $this->getDisabledValue();
+            $htmlOptions             = array_merge($htmlOptionsFromParams, $htmlOptions);
+            if ($this->getDisabledValue())
+            {
+                return ZurmoHtml::textField($this->getEditableInputName(), $this->renderControlNonEditable(), $htmlOptions);
+            }
             $themePath = Yii::app()->themeManager->baseUrl . '/' . Yii::app()->theme->name;
             $value     = DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay(
                             $this->model->{$this->attribute},
@@ -55,13 +65,9 @@
             $cClipWidget = new CClipWidget();
             $cClipWidget->beginClip("EditableDateTimeElement");
             $cClipWidget->widget('application.core.widgets.ZurmoJuiDateTimePicker', array(
-                'attribute'  => $this->attribute,
-                'value'      => $value,
-                'htmlOptions' => array(
-                    'id'              => $this->getEditableInputId(),
-                    'name'            => $this->getEditableInputName(),
-                    'disabled'        => $this->getDisabledValue(),
-                )
+                'attribute'   => $this->attribute,
+                'value'       => $value,
+                'htmlOptions' => $htmlOptions
             ));
             $cClipWidget->endClip();
             $content = $cClipWidget->getController()->clips['EditableDateTimeElement'];

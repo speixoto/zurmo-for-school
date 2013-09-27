@@ -50,6 +50,13 @@
                 is_string($this->model->{$this->attribute}) ||
                 is_integer(BooleanUtil::boolIntVal($this->model->{$this->attribute}))'
             );
+            if ($this->getDisabledValue())
+            {
+                $htmlOptions             = array();
+                $htmlOptions['id']       = $this->getEditableInputId();
+                $htmlOptions['disabled'] = 'disabled';
+                return ZurmoHtml::checkBox($this->getEditableInputName(), $this->model->{$this->attribute} ,$htmlOptions);
+            }
             return $this->form->checkBox($this->model, $this->attribute, $this->getEditableHtmlOptions());
         }
 

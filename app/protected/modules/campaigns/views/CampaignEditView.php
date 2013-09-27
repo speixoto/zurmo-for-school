@@ -43,7 +43,7 @@
                     'toolbar' => array(
                         'elements' => array(
                             array('type'    => 'CancelLink'),
-                            array('type'    => 'SaveButton', 'label' => 'eval:Zurmo::t("CampaignsModule", "Save and Schedule")'),
+                            array('type'    => 'SaveButton', 'label' => 'eval:static::renderLabelForSaveButton()'),
                             array('type'    => 'CampaignDeleteLink'),
                         ),
                     ),
@@ -165,14 +165,13 @@
 
         protected function renderHtmlAndTextContentElement($model, $attribute, $form)
         {
-            $params = array();
             if (!$this->isCampaignEditable())
             {
                 $element = new EmailTemplateHtmlAndTextContentElement($model, $attribute);
             }
             else
             {
-                $element = new EmailTemplateHtmlAndTextContentElement($model, $attribute , $form, $params);
+                $element = new EmailTemplateHtmlAndTextContentElement($model, $attribute , $form);
             }
             if ($form !== null)
             {
@@ -180,6 +179,17 @@
             }
             $spinner = ZurmoHtml::tag('span', array('class' => 'big-spinner'), '');
             return ZurmoHtml::tag('div', array('class' => 'email-template-combined-content'), $element->render());
+        }
+
+        /**
+         * Override to mark disable elements for campaign edit
+         */
+        protected function resolveElementInformationDuringFormLayoutRender(& $elementInformation)
+        {
+            if (!$this->isCampaignEditable() && $elementInformation['attributeName'] != 'name')
+            {
+                $elementInformation['disabled'] = true;
+            }
         }
 
         protected function resolveElementDuringFormLayoutRender(& $element)
@@ -236,6 +246,18 @@
         protected function isCampaignEditable()
         {
             return ($this->model->status == Campaign::STATUS_ACTIVE);
+        }
+
+        protected function renderLabelForSaveButton()
+        {
+            if ($this->isCampaignEditable())
+            {
+                return Zurmo::t("CampaignsModule", "Save and Schedule");
+            }
+            else
+            {
+                Zurmo::t("CampaignsModule", "Save");
+            }
         }
     }
 ?>
