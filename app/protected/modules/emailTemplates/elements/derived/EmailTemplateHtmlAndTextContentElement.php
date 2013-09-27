@@ -57,6 +57,18 @@
             return $labels[$name];
         }
 
+        public static function resolveDeniedTagsArray()
+        {
+            return array(); //'html', 'head', 'body', 'meta', 'applet'
+        }
+
+        protected static function resolveDeniedTagsJavascriptArray()
+        {
+            $deniedTagsPhpArray = static::resolveDeniedTagsArray();
+            $deniedTagsJavaScriptArray = CJSON::encode($deniedTagsPhpArray);
+            return $deniedTagsJavaScriptArray;
+        }
+
         protected static function renderLabels()
         {
             $labels = array(Zurmo::t('EmailTemplatesModule', 'Html Content'),
@@ -178,7 +190,7 @@
                                         'htmlOptions' => $htmlOptions,
                                         'content'     => $this->model->htmlContent,
                                         'paragraphy'  => "false",
-                                        'deniedTags'  => "['html', 'head', 'body', 'meta', 'applet']",
+                                        'deniedTags'  => static::resolveDeniedTagsJavascriptArray(),
                                 ));
             $cClipWidget->endClip();
             $content                 = ZurmoHtml::label($this->renderHtmlContentAreaLabel(), $id);

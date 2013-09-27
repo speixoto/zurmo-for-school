@@ -36,8 +36,6 @@
 
     class ContentFieldDoesNotContainDeniedTagsValidator extends CValidator
     {
-        public $deniedTags  = array('html', 'head', 'body', 'meta', 'applet');
-
         /**
          * Validates the attribute of the model.
          * If there is any error, the error message is added to the model.
@@ -48,7 +46,8 @@
         protected function validateAttribute($object, $attribute)
         {
             $validated  = true;
-            foreach ($this->deniedTags as $deniedTag)
+            $deniedTags = EmailTemplateHtmlAndTextContentElement::resolveDeniedTagsArray();
+            foreach ($deniedTags as $deniedTag)
             {
                 if (stripos($object->$attribute, "<${deniedTag}") !== false ||
                     stripos($object->$attribute, "</${deniedTag}>") !== false)
