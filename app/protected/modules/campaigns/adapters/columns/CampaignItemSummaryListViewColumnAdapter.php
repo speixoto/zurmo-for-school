@@ -74,7 +74,7 @@
             $isSkipped             = $campaignItem->isSkipped();
             if ($isQueued)
             {
-                $content = static::getQueuedContentForDrillDown();
+                $content = static::getQueuedContentForDrillDown($campaignItem);
             }
             elseif ($isSkipped)
             {
@@ -241,13 +241,23 @@
             return ZurmoHtml::tag('div', array('class' => 'email-recipient-stage-status queued'), $content);
         }
 
-        protected static function getQueuedContentForDrillDown()
+        protected static function getQueuedContentForDrillDown(CampaignItem $campaignItem)
         {
             $monitorJobData = JobsToJobsCollectionViewUtil::getNonMonitorJobsData();
-            $content = Zurmo::t('MarketingModule',
-                '{jobName} job last completed run on {dateTime} and did not sent this email message yeat.',
-                array('{jobName}'  => ProcessOutboundEmailJob::getDisplayName(),
-                      '{dateTime}' => $monitorJobData[ProcessOutboundEmailJob::getType()]['lastCompletedRunEncodedContent']));
+            if ($campaignItem->emailMessage->folder->type == EmailFolder::TYPE_OUTBOX_ERROR)
+            {
+                $content = Zurmo::t('MarketingModule',
+                                         'We tried to send this message for {count} times but something happened ({error}).',
+                    array('{count}' => $campaignItem->emailMessage->sendAttempts,
+                          '{error}' => strval($campaignItem->emailMessage->error)));
+            }
+            else
+            {
+                $content = Zurmo::t('MarketingModule',
+                                '{jobName} job last completed run on {dateTime} and did not sent this email message yeat.',
+                                array('{jobName}'  => ProcessOutboundEmailJob::getDisplayName(),
+                                      '{dateTime}' => $monitorJobData[ProcessOutboundEmailJob::getType()]['lastCompletedRunEncodedContent']));
+            }
             return '<h5>' . $content . '</h5>';
         }
 
@@ -331,11 +341,10 @@
             $emailMessage = $campaignItem->emailMessage;
             if ($emailMessage->hasSendError())
             {
-                //TODO: @sergio: Check why cant get the message error
-                //$errorContent = strval($emailMessage->error);
                 $errorContent = Zurmo::t('MarketingModule',
-                                         'After trying to send the message for {count} times we gave up.',
-                                         array('{count}' => $emailMessage->sendAttempts));
+                                         'After trying to send the message for {count} times we gave up ({error}).',
+                                         array('{count}' => $emailMessage->sendAttempts,
+                                               '{error}' => strval($emailMessage->error)));
             }
             return '<h5>' . $errorContent . '</h5>';
         }

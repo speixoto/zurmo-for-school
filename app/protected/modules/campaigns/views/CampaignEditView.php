@@ -165,7 +165,15 @@
 
         protected function renderHtmlAndTextContentElement($model, $attribute, $form)
         {
-            $element = new EmailTemplateHtmlAndTextContentElement($model, $attribute , $form);
+            $params = array();
+            if (!$this->isCampaignEditable())
+            {
+                $element = new EmailTemplateHtmlAndTextContentElement($model, $attribute);
+            }
+            else
+            {
+                $element = new EmailTemplateHtmlAndTextContentElement($model, $attribute , $form, $params);
+            }
             if ($form !== null)
             {
                 $this->resolveElementDuringFormLayoutRender($element);
@@ -223,6 +231,11 @@
                 );
             ");
             // End Not Coding Standard
+        }
+
+        protected function isCampaignEditable()
+        {
+            return ($this->model->status == Campaign::STATUS_ACTIVE);
         }
     }
 ?>

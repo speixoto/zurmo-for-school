@@ -42,19 +42,22 @@
     {
         protected function renderControlNonEditable()
         {
+            assert('$this->model instanceof EmailMessage');
+            $content = null;
             if ($this->model->{$this->attribute} == null)
             {
                 if ($this->model->hasSendError())
                 {
-                    $content  = Zurmo::t('EmailMessagesModule', 'We tried to send this message for {count} times.',
-                                        array('{count}' => $this->model->sendAttempts));
-
-                    //TODO: @sergio: Fix this once EmailMessageSendError is fixed
-//                    $content .= Zurmo::t('EmailMessagesModule', 'Last time we got error: {error}.',
-//                                        array('{error}' => $this->model->error->serializedData));
-                    return $content;
+                    $content  = Zurmo::t('EmailMessagesModule', 'We tried to send this message for {count} times ({error}).',
+                                        array('{count}' => $this->model->sendAttempts,
+                                              '{error}' => $this->model->error));
+                }
+                elseif ($this->model->folder->type == EmailFolder::TYPE_OUTBOX)
+                {
+                    $content  = Zurmo::t('EmailMessagesModule', 'Message is queued to be sent.');
                 }
             }
+            return $content;
         }
     }
 ?>

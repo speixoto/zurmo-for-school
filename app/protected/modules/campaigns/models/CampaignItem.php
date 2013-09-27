@@ -243,7 +243,8 @@
          */
         public function isQueued()
         {
-            if ($this->emailMessage->folder->type ==  EmailFolder::TYPE_OUTBOX)
+            if ($this->emailMessage->folder->type ==  EmailFolder::TYPE_OUTBOX ||
+                $this->emailMessage->folder->type ==  EmailFolder::TYPE_OUTBOX_ERROR)
             {
                 return true;
             }
