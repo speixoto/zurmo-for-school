@@ -92,5 +92,93 @@
             $this->assertEquals(1, $gameReward->transactions[0]->quantity);
             $this->assertEquals($sally->getClassId('Item'), $gameReward->transactions[0]->person->getClassId('Item'));
         }
+        
+        /**
+         * @depends testCreateAndGetGameRewardById
+         */
+        public function testGetGameRewardsByName()
+        {
+            $gameReward = GameReward::getByName('50 dollar giftcard to somewhere');
+            $this->assertEquals(1, count($gameReward));
+            $this->assertEquals('50 dollar giftcard to somewhere', $gameReward[0]->name);
+        }
+        
+        /**
+         * @depends testCreateAndGetGameRewardById
+         */
+        public function testGetLabel()
+        {
+            $gameReward = GameReward::getByName('50 dollar giftcard to somewhere');
+            $this->assertEquals(1, count($gameReward));
+            $this->assertEquals('Game Reward',  $gameReward[0]::getModelLabelByTypeAndLanguage('Singular'));
+            $this->assertEquals('Game Rewards', $gameReward[0]::getModelLabelByTypeAndLanguage('Plural'));
+        }
+        
+        /**
+         * @depends testGetGameRewardsByName
+         */
+        public function testGetGameRewardsByNameForNonExistentName()
+        {
+            $gameReward = GameReward::getByName('59 dollar giftcard to somewhere');
+            $this->assertEquals(0, count($gameReward));
+        }
+        
+        /**
+         * @depends testCreateAndGetGameRewardById
+         */
+        public function testSetAndGetOwner()
+        {
+            $user = UserTestHelper::createBasicUser('Dicky');
+
+            $gameReward = GameReward::getByName('50 dollar giftcard to somewhere');
+            $this->assertEquals(1, count($gameReward));
+            $gameReward = $gameReward[0];
+            $gameReward->owner = $user;
+            $saved = $gameReward->save();
+            $this->assertTrue($saved);
+            unset($user);
+            $this->assertTrue($gameReward->owner->id > 0);
+            $user = $gameReward->owner;
+            $gameReward->owner = null;
+            $this->assertNotNull($gameReward->owner);
+            $this->assertFalse($gameReward->validate());
+            $gameReward->forget();
+        }
+        
+        /**
+         * @depends testSetAndGetOwner
+         */
+        public function testReplaceOwner()
+        {
+            $gameRewards = GameReward::getByName('50 dollar giftcard to somewhere');
+            $this->assertEquals(1, count($gameRewards));
+            $gameReward = $gameRewards[0];
+            $user = User::getByUsername('dicky');
+            $this->assertEquals($user->id, $gameReward->owner->id);
+            unset($user);
+            $gameReward->owner = User::getByUsername('sally');
+            $this->assertTrue($gameReward->owner !== null);
+            $user = $gameReward->owner;
+            $this->assertEquals('sally', $user->username);
+            unset($user);
+        }
+        
+        /**
+         * @depends testCreateAndGetGameRewardById
+         */
+        public function testUpdateGameRewardFromForm()
+        {
+            $gameRewards = GameReward::getByName('50 dollar giftcard to somewhere');
+            $gameReward = $gameRewards[0];
+            $this->assertEquals($gameReward->name, '50 dollar giftcard to somewhere');
+            $postData = array('name' => 'New Name');
+            $gameReward->setAttributes($postData);
+            $this->assertTrue($gameReward->save());
+
+            $id = $gameReward->id;
+            unset($gameReward);
+            $gameReward = GameReward::getById($id);
+            $this->assertEquals('New Name', $gameReward->name);
+        }
     }
 ?>
