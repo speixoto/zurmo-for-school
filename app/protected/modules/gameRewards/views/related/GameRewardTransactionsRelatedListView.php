@@ -100,7 +100,7 @@
         
         protected function getCGridViewLastColumn()
         {
-            return false;
+            return array();
         }
     }
 ?>
