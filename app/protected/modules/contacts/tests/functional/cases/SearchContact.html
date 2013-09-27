@@ -16,9 +16,10 @@
 	<td>45000</td>
 	<td></td>
 </tr>
+<!--Go to contacts list-->
 <tr>
 	<td>open</td>
-	<td>index.php/accounts/default?clearingSearch=1</td>
+	<td>index.php/contacts/default?clearingSearch=1</td>
 	<td></td>
 </tr>
 <tr>
@@ -32,50 +33,52 @@
 	<td>30000</td>
 </tr>
 <tr>
-	<td>verifyTextPresent</td>
+	<td>assertTextPresent</td>
 	<td>Create</td>
 	<td></td>
 </tr>
 <tr>
-	<td>verifyTextPresent</td>
+	<td>assertTextPresent</td>
 	<td>Update</td>
 	<td></td>
 </tr>
 <tr>
-	<td>verifyTextPresent</td>
-	<td>Advanced</td>
+	<td>assertTextPresent</td>
+	<td>Export</td>
 	<td></td>
 </tr>
 <tr>
+	<td>assertTextPresent</td>
+	<td>Delete</td>
+	<td></td>
+</tr>
+<!--select contact created in functional test-->
+<tr>
 	<td>type</td>
-	<td>AccountsSearchForm_anyMixedAttributes</td>
-	<td>Changing The Account ${randomSuffix}</td>
+	<td>id=ContactsSearchForm_anyMixedAttributes</td>
+	<td>Jinny Jane ${randomSuffix}</td>
 </tr>
 <tr>
 	<td>keyUp</td>
-	<td>AccountsSearchForm_anyMixedAttributes</td>
+	<td>id=ContactsSearchForm_anyMixedAttributes</td>
 	<td>\10</td>
 </tr>
 <tr>
-	<td>waitForCondition</td>
-	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-	<td>30000</td>
-</tr>
-<tr>
 	<td>waitForText</td>
-	<td>//div[@id='list-view']/table/tbody/tr[1]/td[3]/a</td>
-	<td>Changing The Account ${randomSuffix}</td>
+	<td>//div[@id='list-view']/table/tbody/tr/td[3]</td>
+	<td>Jinny Jane ${randomSuffix}</td>
 </tr>
 <tr>
 	<td>verifyTextPresent</td>
-	<td>Changing The Account ${randomSuffix}</td>
+	<td>Jinny Jane ${randomSuffix}</td>
 	<td></td>
 </tr>
 <tr>
 	<td>verifyValue</td>
-	<td>AccountsSearchForm_anyMixedAttributes</td>
-	<td>Changing The Account ${randomSuffix}</td>
+	<td>ContactsSearchForm_anyMixedAttributes</td>
+	<td>Jinny Jane ${randomSuffix}</td>
 </tr>
+<!--clear search result-->
 <tr>
 	<td>click</td>
 	<td>id=clear-search-link</td>
