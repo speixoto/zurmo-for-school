@@ -63,6 +63,7 @@
             $polySideId = $polySide->id;
             $this->assertTrue($polySideId > 0);
 
+
             $oneSideId = $oneSide->id;
             $oneSide->forget();
             unset($oneSide);
@@ -115,23 +116,22 @@
             $this->assertEquals($polySideId, $oneSide->polys[0]->id);
             $this->assertEquals($polySide3Id, $oneSide->polys[1]->id);
 
-            //test disconnect a polySide
+            //test disconnect a polySide, it should also remove the attached model from db. TestPolyOneToManyPolySide should be three
             $polySide = $oneSide->polys[0];
             $oneSide->polys->remove($polySide);
             $this->assertTrue($oneSide->save());
+            $this->assertEquals(2, TestPolyOneToManyPolySide::getCount());
 
             //Now test there is 1 related polys
             $oneSide = TestPolyOneToManyOneSide::getById($oneSideId);
             $this->assertEquals(1, $oneSide->polys->count());
             $this->assertEquals($polySide3Id, $oneSide->polys[0]->id);
 
-            // TODO: @Shoaibi: Critical: This probably fails because polys is also owned.
-            //test delete the oneSide, polySide should remain
-            $this->assertEquals(3, count(TestPolyOneToManyPolySide::getAll()));
+            $this->assertEquals(2, TestPolyOneToManyPolySide::getCount());
             $this->assertTrue($oneSide->delete());
-            $this->assertEquals(3, count(TestPolyOneToManyPolySide::getAll()));
+            $this->assertEquals(1, TestPolyOneToManyPolySide::getCount());
             TestPolyOneToManyPolySide::deleteAll();
-            $this->assertEquals(0, count(TestPolyOneToManyPolySide::getAll()));
+            $this->assertEquals(0, TestPolyOneToManyPolySide::getCount());
         }
 
         /**
