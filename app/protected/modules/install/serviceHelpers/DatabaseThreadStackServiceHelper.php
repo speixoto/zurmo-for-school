@@ -41,6 +41,8 @@
     {
         protected $required = false;
 
+        protected $minimumRequiredThreadStackValue = 524288;
+
         protected function checkService()
         {
             $passed = true;

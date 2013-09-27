@@ -455,7 +455,6 @@
         {
             $this->assertNotNull(InstallUtil::checkDatabaseLoadLocalInFile('mysql',
                                                                             $this->temporaryDatabaseHostname,
-                                                                            $this->temporaryDatabaseName,
                                                                             $this->temporaryDatabaseUsername,
                                                                             $this->temporaryDatabasePassword,
                                                                             $this->temporaryDatabasePort));

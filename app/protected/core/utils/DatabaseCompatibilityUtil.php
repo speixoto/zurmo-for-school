@@ -861,8 +861,10 @@
             switch ($databaseType)
             {
                 case 'mysql':
-                    $connection = @mysql_connect($databaseHostname . ':' . $databasePort, $databaseUsername, $databasePassword);
-                    $result = @mysql_query("SELECT * FROM `information_schema`.`GLOBAL_VARIABLES` WHERE VARIABLE_NAME='LOCAL_INFILE';");
+                    $query      = "SELECT * FROM `GLOBAL_VARIABLES` WHERE VARIABLE_NAME='LOCAL_INFILE';";
+                    $connection = @mysql_connect($databaseHostname . ':' . $databasePort, $databaseUsername, $databasePassword, true);
+                    @mysql_select_db('information_schema', $connection);
+                    $result = @mysql_query($query, $connection);
                     $row    = @mysql_fetch_row($result);
                     if (is_resource($connection))
                     {
