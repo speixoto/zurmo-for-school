@@ -39,6 +39,10 @@
      */
     class UserGameDashboardView extends View
     {
+        const COLLECTION_CONTAINER_ID_PREFIX  = 'game-collection-container';
+
+        const COMPLETE_COLLECTION_LINK_PREFIX = 'complete-collection-link';
+
         protected $controller;
 
         protected $user;
@@ -50,6 +54,32 @@
         protected $rankingData;
 
         protected $statisticsData;
+
+        public static function renderCollectionContent(User $user, GameCollection $collection)
+        {
+            $gameCollectionRules  = GameCollectionRulesFactory::createByType($collection->type);
+
+            $collectionImageUrl   = Yii::app()->themeManager->baseUrl . '/default/images/collections/' .
+                                    $gameCollectionRules::makeLargeCollectionImageName();
+            $collectionBadgeImage = ZurmoHtml::image($collectionImageUrl);
+            $content  = ZurmoHtml::tag('div', array('class' => 'collection-badge'), $collectionBadgeImage);
+            $content .= ZurmoHtml::tag('h3', array(), $gameCollectionRules->getCollectionLabel() . ' ' .
+                                       Zurmo::t('GamificationModule', 'Collection'));
+            $content .= static::renderCollectionItemsContent($user, $collection, $gameCollectionRules);
+            $content  = ZurmoHtml::tag('div', array('class' => '_open-panel'), $content);
+            return ZurmoHtml::tag('div', array('id'    => static::getCollectionContainerId($collection->id),
+                                               'class' => 'gd-collection-panel clearfix'), $content);
+        }
+
+        public static function renderCoinsContent($coinValue)
+        {
+            $content  = ZurmoHtml::tag('span', array('id' => 'gd-z-coin'), 'z');
+            $content .= ZurmoHtml::tag('h3', array(), Zurmo::t('GamificationModule', '{n} coin|{n} coins',
+                array($coinValue)));
+            $content .= ZurmoHtml::link(Zurmo::t('GamificationModule', 'Redeem'), '#');
+            //todo: where does this link to? coonvert to story? take to redemption listview of rewards
+            return      ZurmoHtml::tag('div', array('id' => self::getGameCoinContainerId()), $content);
+        }
 
         /**
          * @param CController $controller
@@ -94,7 +124,7 @@
         {
             $content  = $this->renderProfileContent();
             $content .= $this->renderBadgesContent();
-            $content .= $this->renderCoinsContent();
+            $content .= static::renderCoinsContent($this->getGameCoinForUser()->value);
             $content .= $this->renderLeaderboardContent();
             $content .= $this->renderStatisticsContent();
             $content .= $this->renderCollectionsContent();
@@ -135,9 +165,28 @@
         protected function renderBadgesContent()
         {
             $content  = ZurmoHtml::tag('h2', array(), Zurmo::t('GamificationModule', 'Badges Achieved'));
-            $content .= '<ul>' . "\n";
 
-            //todo: what if the badgeData is empty, what to show
+            if(empty($this->badgeData))
+            {
+                $content .= $this->renderEmptyBadgeContent();
+            }
+            else
+            {
+                $content .= $this->renderPopulatedBadgeContent();
+            }
+            return      ZurmoHtml::tag('div', array('id' => 'gd-badges-list'), $content);
+        }
+
+        protected function renderEmptyBadgeContent()
+        {
+            $content  = ZurmoHtml::tag('tag', array('class' => 'icon-empty'), '');
+            $content .= Zurmo::t('GamificationModule', 'No Achievements Found');
+            return ZurmoHtml::tag('span', array('class' => 'empty'), $content);
+        }
+
+        protected function renderPopulatedBadgeContent()
+        {
+            $content = '<ul>' . "\n";
             foreach($this->badgeData as $badge)
             {
                 $gameBadgeRulesClassName = $badge->type . 'GameBadgeRules';
@@ -146,27 +195,17 @@
                 $badgeContent      = null;
                 $badgeIconContent  = ZurmoHtml::tag('div',   array('class' => 'gloss'), '');
                 $badgeIconContent .= ZurmoHtml::tag('strong',   array('class' => 'badge-icon',
-                                                                      'title' => $badgeDisplayLabel), '');
+                    'title' => $badgeDisplayLabel), '');
                 $badgeIconContent .= ZurmoHtml::tag('span',   array('class' => 'badge-grade'), (int)$badge->grade);
                 $badgeContent .= ZurmoHtml::tag('h3',   array('class' => 'badge ' . $badge->type), $badgeIconContent);
                 $badgeContent .= ZurmoHtml::tag('h3',   array(), $badgeDisplayLabel);
                 $badgeContent .= ZurmoHtml::tag('span', array(),
-                                    DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay(
-                                    $badge->createdDateTime, 'long', null));
+                    DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay(
+                        $badge->createdDateTime, 'long', null));
                 $content      .= ZurmoHtml::tag('li',   array(), $badgeContent);
             }
             $content .= '</ul>' . "\n";
-            return      ZurmoHtml::tag('div', array('id' => 'gd-badges-list'), $content);
-        }
-
-        protected function renderCoinsContent()
-        {
-            $content  = ZurmoHtml::tag('span', array('id' => 'gd-z-coin'), 'z');
-            $content .= ZurmoHtml::tag('h3', array(), Zurmo::t('GamificationModule', '{n} coin|{n} coins',
-                                                               array($this->getGameCoinForUser()->value)));
-            $content .= ZurmoHtml::link(Zurmo::t('GamificationModule', 'Redeem'), '#');
-            //todo: where does this link to? coonvert to story? take to redemption listview of rewards
-            return      ZurmoHtml::tag('div', array('id' => 'gd-z-coins'), $content);
+            return $content;
         }
 
         protected function renderLeaderboardContent()
@@ -210,34 +249,18 @@
             $collectionsListContent = null;
             foreach($this->collectionData as $collection)
             {
-                $collectionsListContent .= $this->renderCollectionContent($collection);
+                $collectionsListContent .= $this->renderCollectionContent($this->user, $collection);
             }
             $content = ZurmoHtml::tag('div', array('id' => 'gd-carousel', 'style' => "width:2000px"), $collectionsListContent);
             return     ZurmoHtml::tag('div', array('id' => 'gd-carousel-wrapper'), $content);
         }
 
-        protected function renderCollectionContent(GameCollection $collection)
-        {
-            $gameCollectionRules  = GameCollectionRulesFactory::createByType($collection->type);
-
-            $collectionImageUrl   = Yii::app()->themeManager->baseUrl . '/default/images/collections/' .
-                                    $gameCollectionRules::makeLargeCollectionImageName();
-            $collectionBadgeImage = ZurmoHtml::image($collectionImageUrl);
-            $content  = ZurmoHtml::tag('div', array('class' => 'collection-badge'), $collectionBadgeImage);
-            $content .= ZurmoHtml::tag('h3', array(), $gameCollectionRules->getCollectionLabel() . ' ' .
-                                       Zurmo::t('GamificationModule', 'Collection'));
-            $content .= $this->renderCollectionItemsContent($collection, $gameCollectionRules);
-            $content  = ZurmoHtml::tag('div', array('class' => '_open-panel'), $content);
-            return ZurmoHtml::tag('div', array('class' => 'gd-collection-panel clearfix'), $content);
-
-
-
-        }
-
-        protected function renderCollectionItemsContent(GameCollection $collection, GameCollectionRules $gameCollectionRules)
+        protected static function renderCollectionItemsContent(User $user, GameCollection $collection,
+                                                               GameCollectionRules $gameCollectionRules)
         {
             $itemTypesAndLabels = $gameCollectionRules->getItemTypesAndLabels();
-            $content = null;
+            $content    = null;
+            $canCollect = true;
             foreach($collection->getItemsData() as $itemType => $quantityCollected)
             {
                 $itemLabel              = $itemTypesAndLabels[$itemType];
@@ -250,19 +273,54 @@
                 if($quantityCollected == 0)
                 {
                     $classContent .= ' missing';
+                    $canCollect = false;
                 }
                 $content .= ZurmoHtml::tag('div', array('class' => $classContent), $itemContent);
             }
-
             $coinImageUrl       = Yii::app()->themeManager->baseUrl . '/default/images/coin.png';
             $itemRedeemContent  = ZurmoHtml::image($coinImageUrl);
-            $itemRedeemContent .= ZurmoHtml::link(ZurmoHtml::tag('span', array('class' => 'z-label'), Zurmo::t('Core', 'Complete')),
-                                    '#', array('class' => 'z-button _green-button')); //todo: always show complete? //todo: ajax to complete?
-            //todO: maybe this button should use ZurmoHtml::button so we can get proper spinny thing.
-            //todo: add class if not clickable because you can't click it. also no onclick event then. keep that in mind.
-            //todo: # link if not clickable.
-            $content  .= ZurmoHtml::tag('div', array('class' => 'gd-collection-item-redeemed'), $itemRedeemContent);
+            $itemRedeemContent .= static::renderCompleteButton($collection->id, $user->id, $canCollect);
+            $content           .= ZurmoHtml::tag('div', array('class' => 'gd-collection-item-redeemed'), $itemRedeemContent);
             return ZurmoHtml::tag('div', array('class' => 'gd-collection-items clearfix'), $content);
+        }
+
+        protected static function renderCompleteButton($collectionId, $userId, $canCollect = true)
+        {
+            assert('is_int($collectionid)');
+            assert('is_int($userId)');
+            assert('is_bool($canCollect)');
+            $url  = Yii::app()->createUrl('gamification/default/redeemCollection/',
+                                          array('id' => $collectionId));
+            $htmlOptions = array();
+            if(!$canCollect)
+            {
+                $htmlOptions['disabled'] = 'disabled';
+            }
+            $id                      = static::getCompleteCollectionLinkId($collectionId);
+            $htmlOptions['id']       = $id;
+            $htmlOptions['name']     = $id;
+            $htmlOptions['class']    = 'attachLoading z-button';
+            $aContent                = ZurmoHtml::wrapLink(Zurmo::t('Core', 'Complete'));
+            $containerId             = static::getCollectionContainerId($collectionId);
+            return ZurmoHtml::ajaxLink($aContent, $url, array(
+                'type' => 'GET',
+                'beforeSend' => 'function ( xhr ) {$(this).makeSmallLoadingSpinner(true, "#' . $id . '");}',
+                'success' => 'js:function(data)
+                    {
+                        $("#' . $containerId . '").html(data);
+                        ' . self::renderGameCoinRefreshAjax($userId) . '
+                    }'
+            ), $htmlOptions);
+        }
+
+        protected static function getCollectionContainerId($collectionId)
+        {
+            return self::COLLECTION_CONTAINER_ID_PREFIX . '-' . $collectionId;
+        }
+
+        protected static function getCompleteCollectionLinkId($collectionId)
+        {
+            return self::COMPLETE_COLLECTION_LINK_PREFIX . '-' . $collectionId;
         }
 
         protected function getCompletedCollectionCount()
@@ -290,6 +348,27 @@
                 array('class' => 'percentComplete z_' . $percentageComplete),
                       ZurmoHtml::tag('span', array('class' => 'percent'), $percentageComplete . '%'));
             return ZurmoHtml::tag('span', array('class' => 'percentHolder'), $percentCompleteContent);
+        }
+
+        protected static function renderGameCoinRefreshAjax($userId)
+        {
+            assert('is_int($userId)');
+            return ZurmoHtml::ajax(array(
+                'type' => 'GET',
+                'url'  =>  static::getGameCoinRefreshUrl($userId),
+                'update' => '#' . self::getGameCoinContainerId(),
+            ));
+        }
+
+        protected static function getGameCoinRefreshUrl($userId)
+        {
+            assert('is_int($userId)');
+            return Yii::app()->createUrl('gamification/default/refreshGameDashboardCoinContainer', array('id' => $userId));
+        }
+
+        protected static function getGameCoinContainerId()
+        {
+            return 'gd-z-coins';
         }
     }
 ?>

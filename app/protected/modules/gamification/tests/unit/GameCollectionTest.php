@@ -149,5 +149,14 @@
             $redemptionCount = $collections['Frogs']->getRedemptionCount();
             $this->assertEquals(0, $redemptionCount);
         }
+
+        /**
+         * @depends testGetRedemptionCount
+         */
+        public function testRedeem()
+        {
+            //todO;
+            $this->fail();
+        }
     }
 ?>

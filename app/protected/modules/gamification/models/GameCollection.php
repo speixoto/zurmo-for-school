@@ -139,6 +139,11 @@
                     $gameCollection->type     = $type;
                     $gameCollection->person   = $person;
                     $gameCollection->serializedData = serialize($gameCollectionRules::makeDefaultData());
+                    $saved = $gameCollection->save();
+                    if(!$saved)
+                    {
+                        throw new FailedToSaveModelException();
+                    }
                     $modelsByType[$type] = $gameCollection;
                 }
             }
@@ -229,6 +234,15 @@
             return Zurmo::t('GamificationModule', 'Game Collections', array(), null, $language);
         }
 
+        public function getUnserializedData()
+        {
+            if($this->serializedData == null)
+            {
+                return array();
+            }
+            return unserialize($this->serializedData);
+        }
+
         /**
          * @return array
          */
@@ -246,6 +260,13 @@
             return $unserializedData['Items'];
         }
 
+        public function setItemsData($itemsData)
+        {
+            $unserializedData          = $this->getUnserializedData();
+            $unserializedData['Items'] = $itemsData;
+            $this->serializedData      = serialize($unserializedData);
+        }
+
         public function getRedemptionCount()
         {
             if($this->serializedData == null)
@@ -258,6 +279,30 @@
                 return array();
             }
             return (int)$unserializedData['RedemptionItem'];
+        }
+
+        public function setRedepmtionCount($redemptionCount)
+        {
+            $unserializedData                   = $this->getUnserializedData();
+            $unserializedData['RedemptionItem'] = $redemptionCount;
+            $this->serializedData               = serialize($unserializedData);
+        }
+
+        public function redeem()
+        {
+            $items = $this->getItemsData();
+            foreach($items as $itemType => $quantity)
+            {
+                if($quantity <= 0) //Just in case it is negative, as a safety
+                {
+                    return false;
+                }
+                $items[$itemType] = $quantity - 1;
+            }
+            $this->setItemsData($items);
+            $redemptionCount = $this->getRedemptionCount();
+            $this->setRedemptionCount($redemptionCount + 1);
+            return $this->save();
         }
     }
 ?>
