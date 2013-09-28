@@ -34,29 +34,54 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class ModelNumberOrCurrencyAttributesAdapterTest extends ZurmoBaseTest
+    /**
+     * Base class for working with InQueue models
+     */
+    class InQueueUtil
     {
-        public static function setUpBeforeClass()
+        protected static function resolveModelAndContent($model)
         {
-            parent::setUpBeforeClass();
-            $user = SecurityTestHelper::createSuperAdmin();
-            Yii::app()->user->userModel = $user;
+            try
+            {
+                $relatedModel = self::resolveModel($model);
+                $modelContent = self::resolveModelContent($relatedModel);
+            }
+            catch(AccessDeniedSecurityException $e)
+            {
+                $modelContent = Zurmo::t('ZurmoModule', 'Restricted');
+            }
+            catch(NotFoundException $e)
+            {
+                $modelContent = Zurmo::t('ZurmoModule', 'Record no longer exists');
+            }
+            return ' &mdash; <span class="less-pronounced-text">' . $modelContent . '</span>';
         }
 
-        public function testGetAttributes()
+        /**
+         * @param WorkflowMessageInQueue $workflowMessageInQueue
+         * @return An|RedBeanModel
+         */
+        protected static function resolveModel(RedBeanModel $inQueueModel)
         {
-            $adapter     = new ModelNumberOrCurrencyAttributesAdapter(new TestOperatorTypeModel());
-            $attributes  = $adapter->getAttributes();
-            $this->assertEquals(3, count($attributes));
-            $this->assertTrue(isset($attributes['integerS']));
-            $this->assertTrue(isset($attributes['integerStandard']));
-            $this->assertTrue(isset($attributes['floatStandard']));
+            $modelDerivationPathToItem = RuntimeUtil::getModelDerivationPathToItem($inQueueModel->modelClassName);
+            return $inQueueModel->modelItem->castDown(array($modelDerivationPathToItem));
+        }
 
-            $adapter     = new ModelNumberOrCurrencyAttributesAdapter(new CurrencyValueTestItem());
-            $attributes  = $adapter->getAttributes();
-            $compareData = array();
-            $this->assertEquals(1, count($attributes));
-            $this->assertTrue(isset($attributes['amount']));
+        /**
+         * @param RedBeanModel $model
+         * @return string
+         */
+        protected static function resolveModelContent(RedBeanModel $model)
+        {
+            $security = new DetailsActionSecurity(Yii::app()->user->userModel, $model);
+            if ($security->canUserPerformAction())
+            {
+                $params              = array('label' => strval($model), 'wrapLabel' => false);
+                $moduleClassName     = $model->getModuleClassName();
+                $moduleId            = $moduleClassName::getDirectoryName();
+                $relatedModelElement = new DetailsLinkActionElement('default', $moduleId, $model->id, $params);
+                return $relatedModelElement->render();
+            }
         }
     }
 ?>

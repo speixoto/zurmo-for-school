@@ -4,23 +4,22 @@
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="selenium.base" href="http://localhost/" />
-<title>CreateCategory</title>
+<title>DeleteOpportunity</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">Create Category</td></tr>
-</thead>
-<tbody>
+<tr><td rowspan="1" colspan="3">Delete Opportunity</td></tr>
+</thead><tbody>
 <tr>
-	<td>setTimeout</td>
-	<td>45000</td>
-	<td></td>
+  <td>setTimeout</td>
+  <td>45000</td>
+  <td></td>
 </tr>
-<!--Go to create category-->
+<!--Go to opportunities list-->
 <tr>
 	<td>open</td>
-	<td>index.php/products/default?clearingSearch=1</td>
+	<td>index.php/opportunities/default?clearingSearch=1</td>
 	<td></td>
 </tr>
 <tr>
@@ -40,22 +39,7 @@
 </tr>
 <tr>
 	<td>assertTextPresent</td>
-	<td>Products</td>
-	<td></td>
-</tr>
-<tr>
-	<td>assertTextPresent</td>
-	<td>Catalog Items</td>
-	<td></td>
-</tr>
-<tr>
-	<td>assertTextPresent</td>
-	<td>Categories</td>
-	<td></td>
-</tr>
-<tr>
-	<td>assertTextPresent</td>
-	<td>Delete</td>
+	<td>Update</td>
 	<td></td>
 </tr>
 <tr>
@@ -64,8 +48,45 @@
 	<td></td>
 </tr>
 <tr>
-	<td>clickAndWait</td>
-	<td>//ul[@id='MashableInboxCreateDropdown']/li/ul/li[3]/a</td>
+	<td>assertTextPresent</td>
+	<td>Delete</td>
+	<td></td>
+</tr>
+<!--select opportunity created in functional test-->
+<tr>
+  <td>type</td>
+  <td>OpportunitiesSearchForm_anyMixedAttributes</td>
+  <td>Test Opportunity ${randomSuffix}</td>
+</tr>
+<tr>
+  <td>keyUp</td>
+  <td>OpportunitiesSearchForm_anyMixedAttributes</td>
+  <td>\10</td>
+</tr>
+<tr>
+  <td>waitForCondition</td>
+  <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+  <td>30000</td>
+</tr>
+<tr>
+  <td>waitForText</td>
+  <td>//div[@id='list-view']/table/tbody/tr[1]/td[3]/a</td>
+  <td>Test Opportunity ${randomSuffix}</td>
+</tr>
+<tr>
+  <td>verifyTextPresent</td>
+  <td>Test Opportunity ${randomSuffix}</td>
+  <td></td>
+</tr>
+<tr>
+  <td>verifyValue</td>
+  <td>OpportunitiesSearchForm_anyMixedAttributes</td>
+  <td>Test Opportunity ${randomSuffix}</td>
+</tr>
+<<!--go in detail view of opportunity-->
+<tr>
+	<td>click</td>
+	<td>//div[@id='list-view']/table/tbody/tr[1]/td[3]/a</td>
 	<td></td>
 </tr>
 <tr>
@@ -78,62 +99,21 @@
 	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
 	<td>30000</td>
 </tr>
-<tr>
-	<td>assertTextPresent</td>
-	<td>Create Category</td>
-	<td></td>
-</tr>
-<!--check validation-->
-<tr>
-	<td>clickAndWait</td>
-	<td>save</td>
-	<td></td>
-</tr>
-<tr>
-	<td>waitForCondition</td>
-	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-	<td>30000</td>
-</tr>
-<tr>
-	<td>waitForTextPresent</td>
-	<td>Name cannot be blank.</td>
-	<td></td>
-</tr>
-<!--add category details-->
 <tr>
 	<td>setSpeed</td>
 	<td>3000</td>
 	<td></td>
 </tr>
-<tr>
-	<td>type</td>
-	<td>id=ProductCategory_name</td>
-	<td>Test Category ${randomSuffix}</td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>id=ProductCategory_productCategory_SelectLink</td>
-	<td></td>
-</tr>
-<tr>
-	<td>waitForPageToLoad</td>
-	<td></td>
-	<td></td>
-</tr>
-<tr>
-	<td>waitForCondition</td>
-	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-	<td>30000</td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>link=Books</td>
-	<td></td>
-</tr>
+<!--delete opportunity-->
 <tr>
 	<td>clickAndWait</td>
-	<td>save</td>
+	<td>link=Delete</td>
 	<td></td>
+</tr>
+<tr>
+  <td>assertConfirmation</td>
+  <td>Are you sure you want to delete this opportunity?</td>
+  <td></td>
 </tr>
 <tr>
 	<td>waitForPageToLoad</td>
@@ -145,23 +125,32 @@
 	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
 	<td>30000</td>
 </tr>
-<!--verify values after creating category-->
 <tr>
-	<td>assertText</td>
-	<td>//div[@id='ProductCategoryDetailsView']/div/div[2]/div/table/tbody/tr[1]/td</td>
-	<td>Test Category ${randomSuffix}</td>
-</tr>
-<tr>
-	<td>assertText</td>
-	<td>//div[@id='ProductCategoryDetailsView']/div/div[2]/div/table/tbody/tr[2]/td</td>
-	<td>Books</td>
+	<td>verifyTextPresent</td>
+	<td>No results found.</td>
+	<td></td>
 </tr>
 <tr>
 	<td>setSpeed</td>
 	<td>0</td>
 	<td></td>
 </tr>
-</tbody>
-</table>
+<!--clear search result-->
+<tr>
+	<td>open</td>
+	<td>index.php/opportunities/default?clearingSearch=1</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForCondition</td>
+	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+	<td>30000</td>
+</tr>
+</tbody></table>
 </body>
 </html>
