@@ -43,7 +43,7 @@
         protected function renderControlNonEditable()
         {
             assert('$this->model instanceof EmailMessage');
-            $content = null;
+            $content = parent::renderControlNonEditable();
             if ($this->model->{$this->attribute} == null)
             {
                 if ($this->model->hasSendError())
