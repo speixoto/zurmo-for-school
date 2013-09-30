@@ -55,6 +55,9 @@
             return $content;
         }
 
+        /**
+         * @return array
+         */
         public static function getDefaultMetadata()
         {
             $metadata = array(
@@ -80,6 +83,9 @@
             return $metadata;
         }
 
+        /**
+         * @return array
+         */
         protected function getCGridViewPagerParams()
         {
             return array(
@@ -93,16 +99,25 @@
                 );
         }
 
+        /**
+         * @return string
+         */
         protected static function getPagerCssClass()
         {
             return 'pager horizontal';
         }
 
+        /**
+         * @return string
+         */
         protected static function getSummaryText()
         {
             return Zurmo::t('Core', '{start}-{end} of {count} result(s).');
         }
 
+        /**
+         * @return string
+         */
         protected function getListActionId()
         {
             return 'dashboardListView';
@@ -117,6 +132,9 @@
             return true;
         }
 
+        /**
+         * @return string
+         */
         public function getGridViewId()
         {
             return 'active-projects-list-view';

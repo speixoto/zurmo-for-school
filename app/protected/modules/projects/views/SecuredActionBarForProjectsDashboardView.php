@@ -35,8 +35,7 @@
      ********************************************************************************/
 
     /**
-     * Action bar view for the marketing search and list user interface. Provides buttons like create, and links to
-     * queues.
+     * Action bar view for the projects dashboard
      */
     class SecuredActionBarForProjectsDashboardView extends SecuredActionBarForSearchAndListView
     {

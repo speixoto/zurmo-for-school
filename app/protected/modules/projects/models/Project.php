@@ -39,9 +39,9 @@
         /*
          * Constants for task status
          */
-        const PROJECT_STATUS_ACTIVE             = 1;
+        const PROJECT_STATUS_ACTIVE     = 1;
 
-        const PROJECT_STATUS_ARCHIVED           = 0;
+        const PROJECT_STATUS_ARCHIVED   = 0;
 
         /**
          * @param string $name
@@ -126,13 +126,11 @@
                     array('status',         'type',    'type' => 'integer')
                 ),
                 'derivedRelationsViaCastedUpModel' => array(
-                    'tasks'    => array(RedBeanModel::MANY_MANY, 'Task',    'activityItems'),
+                    'tasks'    => array(RedBeanModel::MANY_MANY, 'Task',  'activityItems'),
                 ),
                 'elements' => array(
-
                 ),
                 'customFields' => array(
-
                 ),
                 'defaultSortAttribute' => 'name',
                 'noAudit' => array(
@@ -172,8 +170,8 @@
         public static function getStatusDropDownArray()
         {
             return array(
-                self::PROJECT_STATUS_ACTIVE                => Zurmo::t('ProjectsModule', 'Active'),
-                self::PROJECT_STATUS_ARCHIVED              => Zurmo::t('ProjectsModule', 'Archived'),
+                self::PROJECT_STATUS_ACTIVE    => Zurmo::t('ProjectsModule', 'Active'),
+                self::PROJECT_STATUS_ARCHIVED  => Zurmo::t('ProjectsModule', 'Archived'),
             );
         }
 
@@ -183,12 +181,16 @@
          */
         protected function beforeDelete()
         {
-            $tasks = ProjectsUtil::getTasksForProject($this);
-            foreach($tasks as $task)
+            if(parent::beforeDelete())
             {
-                $task->delete();
+                $tasks = ProjectsUtil::getTasksByProject($this);
+                foreach($tasks as $task)
+                {
+                    $task->delete();
+                }
+                return true;
             }
-            return parent::beforeDelete();
+            return false;
         }
     }
 ?>

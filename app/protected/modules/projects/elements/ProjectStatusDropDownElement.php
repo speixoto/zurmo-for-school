@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
     /**
-     * Status dropdown element for task
+     * Status dropdown element for project
      */
     class ProjectStatusDropDownElement extends StaticDropDownFormElement
     {
@@ -63,6 +63,10 @@
             }
         }
 
+        /**
+         * Renders label
+         * @return string
+         */
         protected function renderLabel()
         {
             if(Yii::app()->controller->action->id == 'create')

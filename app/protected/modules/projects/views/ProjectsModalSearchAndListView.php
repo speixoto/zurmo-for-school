@@ -36,11 +36,17 @@
 
     class ProjectsModalSearchAndListView extends ModalSearchAndListView
     {
+        /**
+         * @return string
+         */
         public static function getListViewClassName()
         {
             return 'ProductsModalListView';
         }
 
+        /**
+         * @return string
+         */
         public static function getSearchViewClassName()
         {
             return 'ProductsModalSearchView';

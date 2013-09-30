@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
     /**
-     * Column adapter for account for product list in portlet
+     * Column adapter for project in feeds on dashboard
      */
     class ProjectFeedListViewColumnAdapter extends TextListViewColumnAdapter
     {
@@ -78,6 +78,10 @@
             );
         }
 
+        /**
+         * Renders grid view data
+         * @return array
+         */
         public function renderGridViewData()
         {
             return array(
@@ -94,6 +98,7 @@
          */
         public static function getFeedInformationForDashboard($data)
         {
+            assert('$data instanceof ProjectFeed');
             $project = Project::getById($data->project->id);
             $projectName = ZurmoHtml::link($project->name, Yii::app()->createUrl('projects/default/details', array('id' => $project->id)));
             $content = null;
@@ -149,6 +154,7 @@
          */
         protected function resolveProjectName($project)
         {
+            assert('$project instanceof Project');
             return ZurmoHtml::link($project->name, Yii::app()->createUrl('projects/default/details', array('id' => $project->id)));
         }
     }

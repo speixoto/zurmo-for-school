@@ -71,6 +71,7 @@
         public static function resolveProjectManyManyAccountsFromPost(
                                     Project $project, $postData)
         {
+            assert('$project instanceof Project');
             $newAccount = array();
             if (isset($postData['accountIds']) && strlen($postData['accountIds']) > 0)
             {
@@ -106,6 +107,7 @@
         public static function resolveProjectManyManyContactsFromPost(
                                     Project $project, $postData)
         {
+            assert('$project instanceof Project');
             $newContact = array();
             if (isset($postData['contactIds']) && strlen($postData['contactIds']) > 0)
             {
@@ -141,6 +143,7 @@
         public static function resolveProjectManyManyOpportunitiesFromPost(
                                     Project $project, $postData)
         {
+            assert('$project instanceof Project');
             $newOpportunity = array();
             if (isset($postData['opportunityIds']) && strlen($postData['opportunityIds']) > 0)
             {

@@ -55,7 +55,7 @@
         public static function getActiveProjectInformationForDashboard($data)
         {
             $content = '<h4>' . ZurmoHtml::link($data->name, Yii::app()->createUrl('/projects/default/details', array('id' => $data->id))) . '</h4>' . '<table>';
-            $models = ProjectsUtil::getTasksForProject($data);
+            $models = ProjectsUtil::getTasksByProject($data);
 
             if(count($models) > 0)
             {

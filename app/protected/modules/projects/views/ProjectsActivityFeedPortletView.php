@@ -80,6 +80,9 @@
             $this->uniqueLayoutId = $uniqueLayoutId;
         }
 
+        /**
+         * @return array
+         */
         public static function getDefaultMetadata()
         {
             return array();
@@ -152,6 +155,9 @@
             return $content;
         }
 
+        /**
+         * @return array
+         */
         public function getPortletParams()
         {
             return array();

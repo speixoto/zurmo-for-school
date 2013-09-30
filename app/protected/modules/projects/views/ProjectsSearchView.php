@@ -67,6 +67,9 @@
             return $metadata;
         }
 
+        /**
+         * @return string
+         */
         public static function getModelForMetadataClassName()
         {
             return 'ProjectsSearchForm';

@@ -34,25 +34,8 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * View that renders projects module breadcrumb content
-     */
-    class ProjectBreadCrumbView extends BreadCrumbView
+    class ProjectsModuleForm extends GlobalSearchEnabledModuleForm
     {
-        /**
-         * @return string
-         */
-        protected function getHomeLinkLabel()
-        {
-            return Zurmo::t('ProjectsModule', 'ProjectsModulePluralLabel', LabelUtil::getTranslationParamsForAllModules());
-        }
-
-        /**
-         * @return string
-         */
-        protected function getHomeUrl()
-        {
-            return Yii::app()->createUrl('projects/default/list');
-        }
+        
     }
 ?>

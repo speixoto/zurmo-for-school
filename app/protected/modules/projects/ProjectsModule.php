@@ -42,6 +42,9 @@
 
         const RIGHT_ACCESS_PROJECTS = 'Access Projects Tab';
 
+        /**
+         * @return array
+         */
         public function getDependencies()
         {
             return array(
@@ -50,11 +53,17 @@
             );
         }
 
+        /**
+         * @return array
+         */
         public function getRootModelNames()
         {
             return array('Project', 'ProjectAuditEvent');
         }
 
+        /**
+         * @return array
+         */
         public static function getTranslatedRightsLabels()
         {
             $params                              = LabelUtil::getTranslationParamsForAllModules();
@@ -65,6 +74,9 @@
             return $labels;
         }
 
+        /**
+         * @return array
+         */
         public static function getDefaultMetadata()
         {
             $metadata = array();
@@ -90,71 +102,113 @@
             return $metadata;
         }
 
+        /**
+         * @return string
+         */
         public static function getPrimaryModelName()
         {
             return 'Project';
         }
 
+        /**
+         * @return string
+         */
         public static function getSingularCamelCasedName()
         {
             return 'Project';
         }
 
+        /**
+         * @return string
+         */
         protected static function getSingularModuleLabel($language)
         {
             return Zurmo::t('ProjectsModule', 'Project', array(), null, $language);
         }
 
+        /**
+         * @return string
+         */
         protected static function getPluralModuleLabel($language)
         {
             return Zurmo::t('ProjectsModule', 'Projects', array(), null, $language);
         }
 
+        /**
+         * @return string
+         */
         public static function getAccessRight()
         {
             return self::RIGHT_ACCESS_PROJECTS;
         }
 
+        /**
+         * @return string
+         */
         public static function getCreateRight()
         {
             return self::RIGHT_CREATE_PROJECTS;
         }
 
+        /**
+         * @return string
+         */
         public static function getDeleteRight()
         {
             return self::RIGHT_DELETE_PROJECTS;
         }
 
+        /**
+         * @return string
+         */
         public static function getDefaultDataMakerClassName()
         {
             return 'ProjectsDefaultDataMaker';
         }
 
+        /**
+         * @return string
+         */
         public static function getDemoDataMakerClassNames()
         {
             return array('ProjectsDemoDataMaker');
         }
 
+        /**
+         * @return string
+         */
         public static function getGlobalSearchFormClassName()
         {
             return 'ProjectsSearchForm';
         }
 
+        /**
+         * @return bool
+         */
         public static function hasPermissions()
         {
             return true;
         }
 
+        /**
+         * @return bool
+         */
         public static function isReportable()
         {
             return true;
         }
 
+        /**
+         * @return bool
+         */
         public static function modelsAreNeverGloballySearched()
         {
             return true;
         }
 
+        /**
+         * @return bool
+         */
         public static function canHaveWorkflow()
         {
             return true;

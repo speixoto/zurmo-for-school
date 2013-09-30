@@ -34,29 +34,32 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
     /**
-     * Helper class for working with tasks
+     * Helper class for working with projects
      */
     class ProjectsUtil
     {
         /**
-         * Get projects for task
-         * @param array $searchAttributeData
+         * Get tasks by project
+         * @param Project $project
          */
-        public static function getTasksForProject($data)
+        public static function getTasksByProject(Project $project)
         {
-            $searchAttributeData = TasksUtil::makeSearchAttributeData($data);
+            assert('$project instanceof Project');
+            $searchAttributeData = TasksUtil::makeSearchAttributeData($project);
             $joinTablesAdapter   = new RedBeanModelJoinTablesQueryAdapter('Task');
             $where  = RedBeanModelDataProvider::makeWhere('Task', $searchAttributeData, $joinTablesAdapter);
-            $models = Task::getSubset($joinTablesAdapter, null, null, $where, null);
-            return $models;
+            return Task::getSubset($joinTablesAdapter, null, null, $where, null);
         }
 
         /**
          * Logs event on adding task check item for the task
-         * @param type $task
+         * @param Task $task
+         * @param TaskCheckListItem
          */
-        public static function logTaskCheckItemEvent($task, $taskCheckListItem)
+        public static function logTaskCheckItemEvent(Task $task, TaskCheckListItem $taskCheckListItem)
         {
+            assert('$task instanceof Task');
+            assert('$taskCheckListItem instanceof TaskCheckListItem');
             foreach ($task->activityItems as $existingItem)
             {
                 try
@@ -75,9 +78,10 @@
 
         /**
          * Logs event on changing task status
-         * @param type $task
+         * @param Task $task
+         * @param
          */
-        public static function logTaskStatusChangeEvent($task, $currentStatus, $newStatus)
+        public static function logTaskStatusChangeEvent(Task $task, $currentStatus, $newStatus)
         {
             foreach ($task->activityItems as $existingItem)
             {
@@ -85,7 +89,7 @@
                 {
                     $modelDerivationPathToItem = RuntimeUtil::getModelDerivationPathToItem('Project');
                     $project = $existingItem->castDown(array($modelDerivationPathToItem));
-                    $data = $currentStatus . Zurmo::t('core', ' to ') . $newStatus;
+                    $data = $currentStatus . Zurmo::t('Core', ' to ') . $newStatus;
                     ProjectAuditEvent::logAuditEvent(ProjectAuditEvent::TASK_STATUS_CHANGED, $data, $project);
                 }
                 catch(NotFoundException $e)

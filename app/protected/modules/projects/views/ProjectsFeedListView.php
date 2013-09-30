@@ -80,6 +80,9 @@
             return $metadata;
         }
 
+        /**
+         * @return array
+         */
         protected function getCGridViewPagerParams()
         {
             return array(
@@ -93,16 +96,25 @@
                 );
         }
 
+        /**
+         * @return string
+         */
         protected static function getPagerCssClass()
         {
             return 'pager horizontal';
         }
 
+        /**
+         * @return string
+         */
         protected static function getSummaryText()
         {
             return Zurmo::t('Core', '{start}-{end} of {count} result(s).');
         }
 
+        /**
+         * @return string
+         */
         protected function getListActionId()
         {
             return 'dashboardProjectsFeedView';
@@ -117,17 +129,26 @@
             return true;
         }
 
+        /**
+         * @return RedBeanModelDataProvider
+         */
         protected function getDataProvider()
         {
             $dataProvider = new RedBeanModelDataProvider('ProjectAuditEvent', 'dateTime', true);
             return $dataProvider;
         }
 
+        /**
+         * @return array
+         */
         protected function getCGridViewLastColumn()
         {
             return array();
         }
 
+        /**
+         * @return string
+         */
         public function getGridViewId()
         {
             return 'projects-feed-list-view';

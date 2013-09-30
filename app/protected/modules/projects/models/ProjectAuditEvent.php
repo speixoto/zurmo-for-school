@@ -116,13 +116,13 @@
             {
                 $tableName  = self::getTableName('ProjectAuditEvent');
                 //RedBeanColumnTypeOptimizer::optimize($tableName, strtolower('modelId'), 'id');
-                $auditEvent = new ProjectAuditEvent();
-                $auditEvent->dateTime       = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
-                $auditEvent->eventName      = $eventName;
-                $auditEvent->user           = $user;
-                $auditEvent->project        = $project;
-                $auditEvent->serializedData = serialize($data);
-                $saved                      = $auditEvent->save();
+                $projectAuditEvent = new ProjectAuditEvent();
+                $projectAuditEvent->dateTime       = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
+                $projectAuditEvent->eventName      = $eventName;
+                $projectAuditEvent->user           = $user;
+                $projectAuditEvent->project        = $project;
+                $projectAuditEvent->serializedData = serialize($data);
+                $saved                      = $projectAuditEvent->save();
                 AuditEvent::$isTableOptimized = true;
             }
             else
@@ -157,6 +157,9 @@
             );
         }
 
+        /**
+         * @return array
+         */
         public static function getDefaultMetadata()
         {
             $metadata = parent::getDefaultMetadata();

@@ -45,8 +45,10 @@
          * @param RedBeanModel $model
          * @param RedBeanModel $copyToModel - model to copy attribute values from $model to
          */
-        public static function copy(RedBeanModel $model, RedBeanModel $copyToModel)
+        public static function copy(Project $model, Project $copyToModel)
         {
+            assert('$model instanceof Project');
+            assert('$copyToModel instanceof Project');
             parent::copy($model, $copyToModel);
             foreach ($model->accounts as $account)
             {

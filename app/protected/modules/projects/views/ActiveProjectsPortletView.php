@@ -152,6 +152,9 @@
             return $content;
         }
 
+        /**
+         * @return array
+         */
         public function getPortletParams()
         {
             return array();

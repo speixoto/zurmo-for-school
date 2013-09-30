@@ -118,6 +118,9 @@
             return $metadata;
         }
 
+        /**
+         * @return string
+         */
         protected function getNewModelTitleLabel()
         {
             return Zurmo::t('ProjectsModule', 'Create ProjectsModuleSingularLabel',
