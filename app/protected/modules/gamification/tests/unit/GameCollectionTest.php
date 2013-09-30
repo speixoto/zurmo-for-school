@@ -157,7 +157,13 @@
         {   
             Yii::app()->user->userModel      = User::getByUsername('steven');
             $collections = GameCollection::resolvePersonAndAvailableTypes(Yii::app()->user->userModel, array('Frogs'));
-            $this->assertEquals(1, count($collections));
+            $itemsData = $collections['Frogs']->getItemsData();
+            $compareData = array('Goliath'           => 0,
+                                 'NorthernLeopard'   => 0,
+                                 'OrnateHorned'      => 0,
+                                 'Tree'              => 0,
+                                 'Wood'              => 0);
+            $this->assertEquals($compareData, $itemsData);                    
             $redeemData = $collections['Frogs']->redeem();
             $this->assertEquals(false, $redeemData);
             
@@ -168,7 +174,7 @@
                                'Wood'              => 7);
             $collections['Frogs']->setItemsData($itemsData);
             $this->assertEquals(0, $collections['Frogs']->getRedemptionCount());
-            $collections['Frogs']->redeem();
+            $this->assertTrue($collections['Frogs']->redeem());
             $this->assertEquals(1, $collections['Frogs']->getRedemptionCount());
         }
 
