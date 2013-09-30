@@ -346,5 +346,11 @@
             $this->assertTrue($gameLevel->id > 0);
             $this->assertEquals(3, $gameLevel->value);
         }
+
+        public function testResolveNewCollectionItems()
+        {
+            //todo:
+            $this->fail();
+        }
     }
 ?>

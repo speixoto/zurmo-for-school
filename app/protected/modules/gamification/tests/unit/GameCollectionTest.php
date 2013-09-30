@@ -101,7 +101,7 @@
             $collections = GameCollection::resolvePersonAndAvailableTypes(Yii::app()->user->userModel, array('Frogs'));
             $this->assertEquals(1, count($collections));
             $this->assertEquals('Frogs', $collections['Frogs']->type);
-            $this->assertTrue($collections['Frogs']->id < 0);
+            $this->assertTrue($collections['Frogs']->id > 0);
             $compareData = array('RedemptionItem' => 0,
                                  'Items' => array(
                                     'Goliath'           => 0,
@@ -154,6 +154,24 @@
          * @depends testGetRedemptionCount
          */
         public function testRedeem()
+        {
+            //todO;
+            $this->fail();
+        }
+
+        /**
+         * @depends testRedeem
+         */
+        public function shouldReceiveCollectionItem()
+        {
+            //todO;
+            $this->fail();
+        }
+
+        /**
+         * @depends shouldReceiveCollectionItem
+         */
+        public function processRandomReceivingCollectionItemByUser()
         {
             //todO;
             $this->fail();

@@ -64,7 +64,34 @@
             $gameNotification->user     = Yii::app()->user->userModel;
             $gameNotification->setBadgeGradeChangeByTypeAndNewGrade('LoginUser', 5);
             $saved                      = $gameNotification->save();
+
+            //New collection Item
+            GameCollection::processRandomReceivingCollectionItemByUser(Yii::app()->user->userModel);
+
             echo "Demo data has been loaded. Go back to the application.";
+        }
+
+        public function actionLoadCollectionItems()
+        {
+            if (!Group::isUserASuperAdministrator(Yii::app()->user->userModel))
+            {
+                throw new NotSupportedException();
+            }
+            $collectionData      = GameCollection::resolvePersonAndAvailableTypes(Yii::app()->user->userModel, GameCollection::getAvailableTypes());
+            foreach($collectionData as $collection)
+            {
+                $itemsData = $collection->getItemsData();
+                foreach($itemsData as $type => $quantity)
+                {
+                    $itemsData[$type] = $quantity + 1;
+                }
+                $collection->setItemsData($itemsData);
+                $saved = $collection->save();
+                if(!$saved)
+                {
+                    throw new FailedToSaveModelException();
+                }
+            }
         }
     }
 ?>

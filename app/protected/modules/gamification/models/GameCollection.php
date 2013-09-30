@@ -99,7 +99,9 @@
          * Given an  Item (Either User or Person),  try to find an existing model for each type. If the model does
          * not exist, create it and populate the Item and type. @return models found or created indexed by type.
          * @param Item $person
-         * @param array $collectionTypes - Collection types
+         * @param $collectionTypes
+         * @return array
+         * @throws FailedToSaveModelException
          */
         public static function resolvePersonAndAvailableTypes(Item $person, $collectionTypes)
         {
@@ -197,21 +199,69 @@
             return true;
         }
 
+        public static function getAvailableTypesCacheIdentifier()
+        {
+            return 'GameCollectionAvailableTypes';
+        }
+
         public static function getAvailableTypes()
         {
-            $availableTypes = array();
-            $gameCollectionRulesClassNames = GamificationModule::getAllClassNamesByPathFolder('rules.collections');
-
-            foreach($gameCollectionRulesClassNames as $gameCollectionRulesClassName)
+            $cacheIdentifier = self::getAvailableTypesCacheIdentifier();
+            try
             {
-                $classToEvaluate     = new ReflectionClass($gameCollectionRulesClassName);
-                if (is_subclass_of($gameCollectionRulesClassName, 'GameCollectionRules') &&
-                    !$classToEvaluate->isAbstract())
+                return GeneralCache::getEntry($cacheIdentifier);
+            }
+            catch (NotFoundException $e)
+            {
+                $availableTypes = array();
+                $gameCollectionRulesClassNames = GamificationModule::getAllClassNamesByPathFolder('rules.collections');
+                foreach($gameCollectionRulesClassNames as $gameCollectionRulesClassName)
                 {
-                    $availableTypes[] = $gameCollectionRulesClassName::getType();
+                    $classToEvaluate     = new ReflectionClass($gameCollectionRulesClassName);
+                    if (is_subclass_of($gameCollectionRulesClassName, 'GameCollectionRules') &&
+                        !$classToEvaluate->isAbstract())
+                    {
+                        $availableTypes[] = $gameCollectionRulesClassName::getType();
+                    }
                 }
             }
+            GeneralCache::cacheEntry($cacheIdentifier, $availableTypes);
             return $availableTypes;
+        }
+
+        /**
+         * Randomly decide if the user should receive a collection item
+         * @return bool
+         */
+        public static function shouldReceiveCollectionItem()
+        {
+            $value = mt_rand(1, 25);
+            if($value == 7)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        /**
+         * Process receiving a collection item
+         * @param User $user
+         * @throws FailedToSaveModelException
+         */
+        public static function processRandomReceivingCollectionItemByUser(User $user)
+        {
+            $availableTypes = GameCollection::getAvailableTypes();
+            $randomKey      = array_rand($availableTypes, 1);
+            $collection     = resolveByTypeAndPerson($availableTypes[$randomKey], $user);
+            $itemsData      = $collection->getItemsData();
+            $randomKey      = array_rand($itemsData, 1);
+            $itemsData[$randomKey] = $itemsData[$randomKey] + 1;
+            $collection->setItemsData($itemsData);
+            $saved = $collection->save();
+            if(!$saved)
+            {
+                throw new FailedToSaveModelException();
+            }
         }
 
         /**
@@ -281,7 +331,7 @@
             return (int)$unserializedData['RedemptionItem'];
         }
 
-        public function setRedepmtionCount($redemptionCount)
+        public function setRedemptionCount($redemptionCount)
         {
             $unserializedData                   = $this->getUnserializedData();
             $unserializedData['RedemptionItem'] = $redemptionCount;

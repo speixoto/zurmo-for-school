@@ -270,6 +270,14 @@
             }
         }
 
+        public function resolveNewCollectionItems()
+        {
+            if(GameCollection::shouldReceiveCollectionItem())
+            {
+                GameCollection::processRandomReceivingCollectionItemByUser(Yii::app()->user->userModel);
+            }
+        }
+
         /**
          * @param string $levelType
          * @param GameLevel $currentGameLevel
