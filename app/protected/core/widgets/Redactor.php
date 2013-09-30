@@ -55,6 +55,10 @@
 
         public $cleanup = "true";
 
+        public $fullpage = "true";
+
+        public $iframe  = "true";
+
         public $convertDivs = "false";
 
         public $wym = "false";
@@ -75,6 +79,8 @@
                                 cleanup:        {$this->cleanup},
                                 convertDivs:    {$this->convertDivs},
                                 deniedTags:     {$this->deniedTags},
+                                fullpage:       {$this->fullpage},
+                                iframe:         {$this->iframe},
                                 source:         {$this->source},
                                 paragraphy:     {$this->paragraphy},
                                 wym:            {$this->wym},
