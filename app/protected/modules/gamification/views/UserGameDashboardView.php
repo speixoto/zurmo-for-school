@@ -135,7 +135,7 @@
 
         protected function renderProfileContent()
         {
-            $content  = $this->user->getAvatarImage(110);
+            $content  = $this->user->getAvatarImage(240);
             $content .= ZurmoHtml::tag('h3', array(), strval($this->user));
             $content .= $this->renderMiniStatisticsContent();
             return      ZurmoHtml::tag('div', array('id' => 'gd-profile-card'), $content);
@@ -222,7 +222,8 @@
 
         protected function renderStatisticsContent()
         {
-            $content  = ZurmoHtml::tag('h2', array(), Zurmo::t('GamificationModule', 'Overall Statistics'));
+            $content = ZurmoHtml::tag('h2', array(), Zurmo::t('GamificationModule', 'Overall Statistics'));
+            $rows = '';
             foreach($this->statisticsData as $statistics)
             {
                 $statisticsContent  = ZurmoHtml::tag('h3', array(), $statistics['levelTypeLabel']);
@@ -230,10 +231,10 @@
                 $pointsContent      = Zurmo::t('GamificationModule', '{n}<em>Point</em>|{n}<em>Points</em>', array($statistics['points']));
                 $statisticsContent .= ZurmoHtml::tag('span', array('class' => 'stat-points'), $pointsContent);
                 $statisticsContent .= $this->renderPercentHolderContent((int)$statistics['nextLevelPercentageComplete']);
-                $content .= ZurmoHtml::tag('div', array('class' => 'stat-row'), $statisticsContent);
+                $rows .= ZurmoHtml::tag('div', array('class' => 'stat-row'), $statisticsContent);
             }
-            $content = ZurmoHtml::tag('div', array('id' => 'gd-stats-wrapper'), $content);
-            return     ZurmoHtml::tag('div', array('id' => 'gd-statistics'), $content);
+            $content .= ZurmoHtml::tag('div', array('id' => 'gd-stats-wrapper'), $rows);
+            return      ZurmoHtml::tag('div', array('id' => 'gd-statistics'), $content);
         }
 
         protected function renderCollectionsContent()
