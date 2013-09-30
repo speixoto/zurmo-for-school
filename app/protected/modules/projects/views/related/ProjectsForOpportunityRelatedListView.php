@@ -36,17 +36,26 @@
 
     class ProjectsForOpportunityRelatedListView extends ProjectsRelatedListView
     {
+        /**
+         * @return string
+         */
         protected function getRelationAttributeName()
         {
             return 'opportunities';
         }
 
+        /**
+         * @return string
+         */
         public static function getDisplayDescription()
         {
             return Zurmo::t('ProjectsModule', 'ProjectsModulePluralLabel For OpportunitiesModuleSingularLabel',
                         LabelUtil::getTranslationParamsForAllModules());
         }
 
+        /**
+         * @return array
+         */
         public static function getAllowedOnPortletViewClassNames()
         {
             return array('OpportunityDetailsAndRelationsView');

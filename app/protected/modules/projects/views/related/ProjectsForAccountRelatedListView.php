@@ -36,17 +36,26 @@
 
     class ProjectsForAccountRelatedListView extends ProjectsRelatedListView
     {
+        /**
+         * @return string
+         */
         protected function getRelationAttributeName()
         {
             return 'accounts';
         }
 
+        /**
+         * @return string
+         */
         public static function getDisplayDescription()
         {
             return Zurmo::t('ProjectsModule', 'ProjectsModulePluralLabel For AccountsModuleSingularLabel',
                         LabelUtil::getTranslationParamsForAllModules());
         }
 
+        /**
+         * @return array
+         */
         public static function getAllowedOnPortletViewClassNames()
         {
             return array('AccountDetailsAndRelationsView');

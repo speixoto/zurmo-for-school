@@ -36,22 +36,34 @@
 
     class ProjectsForContactRelatedListView extends ProjectsRelatedListView
     {
+        /**
+         * @return string
+         */
         protected function getRelationAttributeName()
         {
             return 'contacts';
         }
 
+        /**
+         * @return string
+         */
         public static function getDisplayDescription()
         {
             return Zurmo::t('ProjectsModule', 'ProjectsModulePluralLabel For ContactsModuleSingularLabel',
                         LabelUtil::getTranslationParamsForAllModules());
         }
 
+        /**
+         * @return string
+         */
         protected function getUniquePageId()
         {
             return 'ContactProjectsForPortletView';
         }
 
+        /**
+         * @return array
+         */
         public static function getAllowedOnPortletViewClassNames()
         {
             return array('ContactDetailsAndRelationsView');

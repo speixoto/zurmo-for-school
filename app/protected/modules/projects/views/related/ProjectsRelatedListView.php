@@ -49,8 +49,16 @@
          */
         protected $uniquePageId;
 
+        /**
+         * Params for the lsit view
+         * @var array
+         */
         protected $params;
 
+        /**
+         * Relation module id
+         * @var string
+         */
         protected $relationModuleId;
 
         function __construct($viewData, $params, $uniqueLayoutId)
