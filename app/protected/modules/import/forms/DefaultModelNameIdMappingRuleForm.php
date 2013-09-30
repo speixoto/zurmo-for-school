@@ -91,7 +91,7 @@
                                                          $this->modelAttributeName,
                                                          'defaultModelStringifiedName',
                                                          $requiredRuleIsApplicable);
-            $rules = array_merge(parent::rules(), $defaultValueApplicableModelAttributeRules);
+            $rules = $defaultValueApplicableModelAttributeRules;
             if (empty($rules))
             {
                 return array(array('defaultModelStringifiedName, defaultModelId', 'safe'));
