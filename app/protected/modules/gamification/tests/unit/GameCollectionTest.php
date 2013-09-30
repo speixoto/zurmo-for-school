@@ -154,9 +154,22 @@
          * @depends testGetRedemptionCount
          */
         public function testRedeem()
-        {
-            //todO;
-            $this->fail();
+        {   
+            Yii::app()->user->userModel      = User::getByUsername('steven');
+            $collections = GameCollection::resolvePersonAndAvailableTypes(Yii::app()->user->userModel, array('Frogs'));
+            $this->assertEquals(1, count($collections));
+            $redeemData = $collections['Frogs']->redeem();
+            $this->assertEquals(false, $redeemData);
+            
+            $itemsData = array('Goliath'           => 3,
+                               'NorthernLeopard'   => 5,
+                               'OrnateHorned'      => 6,
+                               'Tree'              => 8,
+                               'Wood'              => 7);
+            $collections['Frogs']->setItemsData($itemsData);
+            $this->assertEquals(0, $collections['Frogs']->getRedemptionCount());
+            $collections['Frogs']->redeem();
+            $this->assertEquals(1, $collections['Frogs']->getRedemptionCount());
         }
 
         /**
