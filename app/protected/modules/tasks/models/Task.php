@@ -108,6 +108,7 @@
                     'notificationSubscribers'   => array(RedBeanModel::HAS_MANY, 'NotificationSubscriber', RedBeanModel::OWNED),
                     'files'                     => array(RedBeanModel::HAS_MANY, 'FileModel', RedBeanModel::OWNED,
                                                         RedBeanModel::LINK_TYPE_POLYMORPHIC, 'relatedModel'),
+                    'project'                   => array(RedBeanModel::HAS_ONE, 'Project'),
                 ),
                 'rules' => array(
                     array('completedDateTime','type', 'type' => 'datetime'),
@@ -126,6 +127,7 @@
                     'comment'           => 'Comment',
                     'checkListItem'     => 'TaskCheckListItem',
                     'files'             => 'Files',
+                    'project'           => 'Project'
                 ),
                 'defaultSortAttribute' => 'name',
                 'noAudit' => array(

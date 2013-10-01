@@ -38,6 +38,9 @@
      */
     class DashboardActiveProjectListViewColumnAdapter extends TextListViewColumnAdapter
     {
+        /**
+         * @return array
+         */
         public function renderGridViewData()
         {
             return array(
@@ -112,7 +115,7 @@
             }
             else
             {
-                $content .= '<tr><td colspan="5">' . Zurmo::t('ProjectsModule','No Tasks') . '</td></tr></table>';
+                $content .= '<tr><td colspan="5">' . Zurmo::t('ProjectsModule','(No Tasks)') . '</td></tr></table>';
             }
             return $content;
         }

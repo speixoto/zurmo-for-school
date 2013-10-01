@@ -506,5 +506,48 @@
             }
             return $monthsData;
         }
+
+        /**
+         * Gets the appropriate time difference of the event from the current time
+         * @param string $category
+         * @param DateTime $dateTime in sql format
+         * @return string
+         */
+        public static function getTimeDifferenceForLogEvent($category, $dateTime)
+        {
+            assert('DateTimeUtil::isValidDbFormattedDateTime($dateTime)');
+            $nowTimeStamp           = time();
+            $dateTimeStamp          = DateTimeUtil::convertDbFormatDateTimeToTimeStamp($dateTime);
+            $timeSinceLatestUpdate  = $nowTimeStamp - $dateTimeStamp;
+            $timeForString = array(
+                'days'  => floor($timeSinceLatestUpdate / 86400),
+                'hours' => floor($timeSinceLatestUpdate / 3600),
+                'minutes' => floor($timeSinceLatestUpdate / (60)),
+                'seconds' => floor($timeSinceLatestUpdate)
+            );
+
+            if($timeForString['days'] >= 1)
+            {
+                return Zurmo::t($category, 'day|days', $timeForString['days']);
+            }
+            else
+            {
+                if($timeForString['hours'] >= 1)
+                {
+                    return Zurmo::t($category, 'hour|hours', $timeForString['hours']);
+                }
+                else
+                {
+                    if($timeForString['minutes'] >= 1)
+                    {
+                        return Zurmo::t($category, 'min|min(s)', $timeForString['minutes']);
+                    }
+                    else
+                    {
+                        return Zurmo::t($category, 'sec|sec(s)', $timeForString['seconds']);
+                    }
+                }
+            }
+        }
     }
 ?>

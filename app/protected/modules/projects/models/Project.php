@@ -37,7 +37,7 @@
     class Project extends OwnedSecurableItem
     {
         /*
-         * Constants for task status
+         * Constants for project status
          */
         const PROJECT_STATUS_ACTIVE     = 1;
 
@@ -96,7 +96,7 @@
             $params = LabelUtil::getTranslationParamsForAllModules();
             return array_merge(parent::translatedAttributeLabels($language),
                 array(
-                            'status' => Zurmo::t('ProjectsModule', 'Status',  array(), null, $language),
+                       'status' => Zurmo::t('ProjectsModule', 'Status',  array(), null, $language),
                     )
                 );
         }
@@ -117,6 +117,8 @@
                     'opportunities'    => array(RedBeanModel::MANY_MANY, 'Opportunity'),
                     'contacts'         => array(RedBeanModel::MANY_MANY, 'Contact'),
                     'accounts'         => array(RedBeanModel::MANY_MANY, 'Account'),
+                    'tasks'            => array(RedBeanModel::HAS_MANY,  'Task'),
+                    'auditEvents'      => array(RedBeanModel::HAS_MANY,  'ProjectAuditEvent'),
                 ),
                 'rules' => array(
                     array('name',           'required'),
@@ -126,7 +128,7 @@
                     array('status',         'type',    'type' => 'integer')
                 ),
                 'derivedRelationsViaCastedUpModel' => array(
-                    'tasks'    => array(RedBeanModel::MANY_MANY, 'Task',  'activityItems'),
+                    //'tasks'    => array(RedBeanModel::MANY_MANY, 'Task',  'activityItems'),
                 ),
                 'elements' => array(
                 ),
@@ -183,10 +185,13 @@
         {
             if(parent::beforeDelete())
             {
-                $tasks = ProjectsUtil::getTasksByProject($this);
-                foreach($tasks as $task)
+                foreach($this->tasks as $task)
                 {
                     $task->delete();
+                }
+                foreach($this->auditEvents as $auditEvent)
+                {
+                    $auditEvent->delete();
                 }
                 return true;
             }

@@ -248,9 +248,9 @@
             //Log event for project audit
             if($relationAttributeName == 'Project')
             {
-               $project = Project::getById(intval($relationModelId));
+               //$project = Project::getById(intval($relationModelId));
                $data = $task->name;
-               ProjectAuditEvent::logAuditEvent(ProjectAuditEvent::TASK_ADDED, $data, $project);
+               ProjectAuditEvent::logAuditEvent(ProjectAuditEvent::TASK_ADDED, $data, $task->project);
             }
             $this->actionModalViewFromRelation($task->id);
         }

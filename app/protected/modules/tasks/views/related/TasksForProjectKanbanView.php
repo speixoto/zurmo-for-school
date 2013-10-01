@@ -38,15 +38,36 @@
      */
     class TasksForProjectKanbanView extends TasksForRelatedKanbanView
     {
+        /**
+         * @return string
+         */
         protected function getRelationAttributeName()
         {
-            return 'Project';
+            return 'project';
         }
 
+        /**
+         * @return string
+         */
         protected function getKanbanBoardTitle()
         {
             $project = $this->params['relationModel'];
             return $project->name;
+        }
+
+        protected function makeSearchAttributeData()
+        {
+            $searchAttributeData = array();
+            $searchAttributeData['clauses'] = array(
+                1 => array(
+                    'attributeName'        => $this->getRelationAttributeName(),
+                    'relatedAttributeName' => 'id',
+                    'operatorType'         => 'equals',
+                    'value'                => (int)$this->params['relationModel']->id,
+                )
+            );
+            $searchAttributeData['structure'] = '1';
+            return $searchAttributeData;
         }
     }
 ?>
