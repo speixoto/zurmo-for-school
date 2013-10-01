@@ -43,6 +43,8 @@
 
         protected $dataForExport;
 
+        protected $dataForGrandTotals;
+
         protected $headerData;
 
         protected $data;
@@ -51,9 +53,11 @@
 
         public function __construct(ReportDataProvider $dataProvider, Report $report)
         {
-            $this->dataProvider     = $dataProvider;
-            $this->report           = $report;
-            $this->dataForExport    = $dataProvider->getData(true);
+            $this->dataProvider       = $dataProvider;
+            $this->report             = $report;
+            $this->dataForExport      = $dataProvider->getData(true);
+            $grandTotalsRows          = $dataProvider->runQueryAndGrandTotalsData();
+            $this->dataForGrandTotals = $grandTotalsRows[0];
             $this->makeData();
         }
 
@@ -72,21 +76,35 @@
          */
         protected function makeData()
         {
+            $isFirstRow      = true;
+            $grandTotalsData = array();
             foreach ($this->dataForExport as $reportResultsRowData)
             {
-                $data             = array();
-                $this->headerData = array();
+                $data                  = array();
+                $this->headerData      = array();
+                $isFirstColumn         = true;
                 foreach ($reportResultsRowData->getDisplayAttributes() as $key => $displayAttribute)
                 {
                     $resolvedAttributeName = $displayAttribute->resolveAttributeNameForGridViewColumn($key);
                     $className             = $this->resolveExportClassNameForReportToExportValueAdapter($displayAttribute);
-                    $params                = array('label' => $displayAttribute->label);
+                    $params                = array('label'      => $displayAttribute->label);
                     $this->resolveParamsForCurrencyTypes($displayAttribute, $params);
+                    $this->resolveParamsForGrandTotals($displayAttribute, $params, $isFirstRow, $isFirstColumn);
                     $adapter = new $className($reportResultsRowData, $resolvedAttributeName, $params);
                     $adapter->resolveData($data);
                     $adapter->resolveHeaderData($this->headerData);
+                    if ($isFirstRow)
+                    {
+                        $adapter->resolveGrandTotalsData($grandTotalsData);
+                    }
+                    $isFirstColumn = false;
                 }
+                $isFirstRow = false;
                 $this->data[] = $data;
+            }
+            if (!empty($grandTotalsData))
+            {
+                $this->data[] = $grandTotalsData;
             }
         }
 
@@ -119,6 +137,23 @@
                 $params['currencyValueConversionType'] = $this->report->getCurrencyConversionType();
                 $params['spotConversionCurrencyCode']  = $this->report->getSpotConversionCurrencyCode();
                 $params['fromBaseToSpotRate']          = $this->report->getFromBaseToSpotRate();
+            }
+        }
+
+        protected function resolveParamsForGrandTotals(DisplayAttributeForReportForm $displayAttribute, & $params, $isFirstRow, $isFirstColumn)
+        {
+            $grandTotal = null;
+            if (isset($this->dataForGrandTotals) && $isFirstColumn && $isFirstRow)
+            {
+                $grandTotal    = Zurmo::t('ReportsModule', 'Total');
+            }
+            if (isset($this->dataForGrandTotals[$displayAttribute->columnAliasName]) && !$isFirstColumn && $isFirstRow)
+            {
+                $grandTotal    = $this->dataForGrandTotals[$displayAttribute->columnAliasName];
+            }
+            if (isset($grandTotal))
+            {
+                $params['grandTotal'] = $grandTotal;
             }
         }
     }
