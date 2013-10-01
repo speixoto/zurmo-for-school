@@ -247,14 +247,14 @@
             if ($campaignItem->emailMessage->folder->type == EmailFolder::TYPE_OUTBOX_ERROR)
             {
                 $content = Zurmo::t('MarketingModule',
-                                         'We tried to send this message for {count} times but something happened ({error}).',
+                                    'Attempted to send the message {count} times but an error occurred: {error}.',
                     array('{count}' => $campaignItem->emailMessage->sendAttempts,
                           '{error}' => strval($campaignItem->emailMessage->error)));
             }
             else
             {
                 $content = Zurmo::t('MarketingModule',
-                                '{jobName} job last completed run on {dateTime} and did not sent this email message yeat.',
+                                'The last completed run date of the {jobName} job was on {dateTime}. The email message has not yet been sent.',
                                 array('{jobName}'  => ProcessOutboundEmailJob::getDisplayName(),
                                       '{dateTime}' => $monitorJobData[ProcessOutboundEmailJob::getType()]['lastCompletedRunEncodedContent']));
             }
@@ -285,11 +285,12 @@
             {
                 if ($campaignItem->contact->secondaryEmail->emailAddress == null)
                 {
-                    $content = Zurmo::t('MarketingModule', 'Contact has no primary email address set.');
+                    $content = Zurmo::t('MarketingModule', 'Contact has no primary email address populated.');
                 }
                 else
                 {
-                    $content = Zurmo::t('MarketingModule', 'Secondary email address is populated, but not the primary which is used to send the email message.');
+                    $content = Zurmo::t('MarketingModule', 'The primary email address is not populated. ' .
+                                        'The secondary email address is populated, but the primary email address is the one used to send the email message.');
                 }
             }
             elseif (MarketingListMember::getByMarketingListIdContactIdAndUnsubscribed(
@@ -297,19 +298,19 @@
                     $campaignItem->contact->id,
                     true) != false)
             {
-                $content = Zurmo::t('MarketingModule', 'The contact is not subscribed to the MarketingListsModuleSingularLabel.',
+                $content = Zurmo::t('MarketingModule', 'The contact is not subscribed to the MarketingListsModuleSingularLabel list',
                     LabelUtil::getTranslationParamsForAllModules());
             }
             elseif ($campaignItem->contact->primaryEmail->optOut)
             {
                 if ($campaignItem->contact->secondaryEmail->optOut)
                 {
-                    $content = Zurmo::t('MarketingModule', 'Primary email address is opted out.');
+                    $content = Zurmo::t('MarketingModule', 'The primary email address is opted out.');
                 }
                 else
                 {
-                    $content = Zurmo::t('MarketingModule', 'Secondary email address is not opted out but the primary is. ' .
-                                        'The primary email is the one used to send the email message.');
+                    $content = Zurmo::t('MarketingModule', 'The primary email address is opted out. ' .
+                                        'The secondary email address is not opted out but the primary email address is the one used to send the email message.');
                 }
             }
 
@@ -342,7 +343,7 @@
             if ($emailMessage->hasSendError())
             {
                 $errorContent = Zurmo::t('MarketingModule',
-                                         'After trying to send the message for {count} times we gave up ({error}).',
+                                         'This message was undeliverable after {count} attempts due to the following reason: {error}.',
                                          array('{count}' => $emailMessage->sendAttempts,
                                                '{error}' => strval($emailMessage->error)));
             }
@@ -441,7 +442,7 @@
         {
             $monitorJobData = JobsToJobsCollectionViewUtil::getNonMonitorJobsData();
             $content = Zurmo::t('MarketingModule',
-                                '{jobName} job last completed run on {dateTime} and did not created this email message yeat.',
+                                'The last completed run date of the {jobName} job was on {dateTime}. The email message has not yet been created.',
                                 array('{jobName}'  => CampaignQueueMessagesInOutboxJob::getDisplayName(),
                                       '{dateTime}' => $monitorJobData[CampaignQueueMessagesInOutboxJob::getType()]['lastCompletedRunEncodedContent']));
             return '<h5>' . $content . '</h5>';
