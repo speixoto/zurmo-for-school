@@ -150,9 +150,9 @@
         {
             if ($attributeName == 'owner')
             {
-                $this->triggerPreOwnerChange($value);
-                $this->triggerOwnerChange($value);
-                $this->triggerPostOwnerChange($value);
+                $this->onBeforeOwnerChange(new CEvent($this, array('newOwner' => $value)));
+                $this->ownerChange($value);
+                $this->onAfterOwnerChange(new CEvent($this, array('newOwner' => $value)));
             }
             else
             {
@@ -160,12 +160,12 @@
             }
         }
 
-        protected function triggerPreOwnerChange($newOwnerValue)
+        public function onBeforeOwnerChange($event)
         {
-
+            $this->raiseEvent('onBeforeOwnerChange', $event);
         }
 
-        protected function triggerOwnerChange($newOwnerValue)
+        protected function ownerChange($newOwnerValue)
         {
             $this->checkPermissionsHasAnyOf(Permission::CHANGE_OWNER);
             $this->isSetting = true;
@@ -185,9 +185,9 @@
             }
         }
 
-        protected function triggerPostOwnerChange($newOwnerValue)
+        public function onAfterOwnerChange($event)
         {
-
+            $this->raiseEvent('onAfterOwnerChange', $event);
         }
 
         protected function afterSave()
