@@ -66,6 +66,34 @@
             return $classNames;
         }
 
+        public static function getAllPrimaryModelClassNames($filter = null)
+        {
+            try
+            {
+                $allPrimaryModelClasses = GeneralCache::getEntry('allPrimaryModelClassNames');
+            }
+            catch (NotFoundException $e)
+            {
+                $allPrimaryModelClasses             = array();
+                $modules                            = Module::getModuleObjects();
+                foreach ($modules as $module)
+                {
+                    $modelClass	=  $module::getPrimaryModelName();
+                    if (!empty($modelClasses))
+                    {
+                        $allPrimaryModelClasses[] = $modelClass;
+                    }
+                }
+                GeneralCache::cacheEntry('allPrimaryModelClassNames', $allPrimaryModelClasses);
+            }
+            if ($filter && is_callable($filter))
+            {
+                $allPrimaryModelClasses = array_filter($allPrimaryModelClasses, $filter);
+            }
+            $allPrimaryModelClasses = array_unique($allPrimaryModelClasses);
+            return $allPrimaryModelClasses;
+        }
+
         public static function getAllModelClassNames($filter = null)
         {
             try
