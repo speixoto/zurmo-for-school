@@ -57,27 +57,6 @@
             return $labels[$name];
         }
 
-        public static function resolveDeniedTagsArray()
-        {
-            $deniedTags = array(
-                '!doctype'  => array('hasClosingTag' => false),
-                'html'      => array('hasClosingTag' => true, 'removeEnclosedContent' => false),
-                'head'      => array('hasClosingTag' => true, 'removeEnclosedContent' => true),
-                'title'     => array('hasClosingTag' => true, 'removeEnclosedContent' => true),
-                'body'      => array('hasClosingTag' => true, 'removeEnclosedContent' => false),
-                'meta'      => array('hasClosingTag' => false),
-                'link'      => array('hasClosingTag' => false),
-            );
-            return $deniedTags;
-        }
-
-        protected static function resolveDeniedTagsJavascriptArray()
-        {
-            $deniedTagsPhpArray = static::resolveDeniedTagsArray();
-            $deniedTagsJavaScriptArray = CJSON::encode(array_keys($deniedTagsPhpArray));
-            return $deniedTagsJavaScriptArray;
-        }
-
         protected static function renderLabels()
         {
             $labels = array(Zurmo::t('EmailTemplatesModule', 'Html Content'),
@@ -199,7 +178,7 @@
                                         'htmlOptions' => $htmlOptions,
                                         'content'     => $htmlContent,
                                         'paragraphy'  => "false",
-                                        'deniedTags'  => static::resolveDeniedTagsJavascriptArray(),
+                                        'deniedTags'  => json_encode(array()),
                                 ));
             $cClipWidget->endClip();
             $content                 = ZurmoHtml::label($this->renderHtmlContentAreaLabel(), $id);

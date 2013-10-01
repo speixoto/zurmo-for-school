@@ -36,34 +36,38 @@
 
     class Redactor extends ZurmoWidget
     {
-        public $scriptFile = 'redactor.min.js';
+        public $scriptFile      = 'redactor.min.js';
 
-        public $cssFile = 'redactor.css';
+        public $cssFile         = 'redactor.css';
 
         public $htmlOptions;
 
         public $content;
 
-        public $buttons = "['html', '|', 'formatting', 'bold', 'italic', 'deleted', '|',
-                           'unorderedlist', 'orderedlist', 'outdent', 'indent', '|', 'table', 'link', '|',
-                           'fontcolor', 'backcolor', '|', 'alignleft', 'aligncenter', 'alignright', 'justify', '|',
-                           'horizontalrule']";
+        public $buttons         = "['html', '|', 'formatting', 'bold', 'italic', 'deleted', '|',
+                                   'unorderedlist', 'orderedlist', 'outdent', 'indent', '|', 'table', 'link', '|',
+                                   'fontcolor', 'backcolor', '|', 'alignleft', 'aligncenter', 'alignright', 'justify', '|',
+                                   'horizontalrule']";
 
-        public $source = "false";
+        public $source          = "false";
 
-        public $paragraphy = "true";
+        public $paragraphy      = "true";
 
-        public $cleanup = "true";
+        public $cleanup         = "true";
 
-        public $fullpage = "false";
+        public $fullpage        = "true";
 
-        public $iframe  = "false";
+        public $iframe          = "false";
 
-        public $convertDivs = "false";
+        public $minHeight       = 200;
 
-        public $wym = "false";
+        public $convertDivs     = "false";
 
-        public $deniedTags = "['html', 'head', 'link', 'body', 'meta', 'script', 'style', 'applet']";
+        public $observeImages   = "false";
+
+        public $wym             = "false";
+
+        public $deniedTags      = "['html', 'head', 'link', 'body', 'meta', 'script', 'style', 'applet']";
 
         public function run()
         {
@@ -81,9 +85,12 @@
                                 deniedTags:     {$this->deniedTags},
                                 fullpage:       {$this->fullpage},
                                 iframe:         {$this->iframe},
+                                minHeight:      {$this->minHeight},
+                                observeImages:  {$this->observeImages},
                                 source:         {$this->source},
                                 paragraphy:     {$this->paragraphy},
                                 wym:            {$this->wym},
+                                tidyHtml: false,
                             });
                         }
                     );";
