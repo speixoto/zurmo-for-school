@@ -20085,10 +20085,6 @@ div.special-pager .hidden.next:after {
 .pillbox .default-button + .split-button {
   border-left: 1px solid #bababa;
 }
-.pillbox .split-button:hover .icon-trigger:before,
-.pillbox .default-button:hover .icon-trigger:before {
-  display: block !important;
-}
 .pillbox .split-button i,
 .pillbox .default-button i {
   font-style: normal;
@@ -20218,6 +20214,9 @@ div.special-pager .hidden.next:after {
 }
 .pillbox .default-button {
   padding: 0 5px 0 5px;
+}
+.pillbox .default-button:hover .icon-trigger:before {
+  display: block !important;
 }
 .pillbox i[class^="icon"] {
   color: #656565;
