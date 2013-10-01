@@ -20015,6 +20015,10 @@ div.special-pager .hidden.next:after {
 .mini-button .show {
   display: block;
 }
+/*Temp*/
+.toolbar-mbmenu i[class^="icon"] {
+  display: none !important;
+}
 .pillbox-icon {
   color: #656565;
   font-weight: normal;
