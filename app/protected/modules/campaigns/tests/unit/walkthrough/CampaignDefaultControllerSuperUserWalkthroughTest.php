@@ -111,7 +111,6 @@
             $content = $this->runControllerWithNoExceptionsAndGetContent('campaigns/default/create');
             $compareContent = 'Campaigns will not run properly until scheduled jobs are set up. Contact your administrator.';
             $this->assertTrue(strpos($content, $compareContent) !== false);
-
         }
 
         /**
