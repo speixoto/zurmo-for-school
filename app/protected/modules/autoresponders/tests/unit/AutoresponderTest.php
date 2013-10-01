@@ -114,31 +114,28 @@
         /**
          * @depends testCreateAndGetAutoresponderById
          */
-        public function testDeniedTagThrowsValidationError()
+        public function testDeniedTagDoesNotThrowValidationError()
         {
             $autoresponder                                  = new Autoresponder();
             $autoresponder->subject                         = 'Another Test subject';
             $autoresponder->textContent                     = 'Text Content';
-            $autoresponder->htmlContent                     = '<html><head><meta></head>Html Content</body></html>';
+            $autoresponder->htmlContent                     = '<html><head><meta></head><body>Html Content</body></html>';
             $autoresponder->fromOperationDurationInterval   = '1';
             $autoresponder->fromOperationDurationType       = TimeDurationUtil::DURATION_TYPE_MONTH;
             $autoresponder->operationType                   = Autoresponder::OPERATION_UNSUBSCRIBE;
             $autoresponder->enableTracking                  = 1;
-
-            $this->assertFalse($autoresponder->save());
-            $errorMessages = $autoresponder->getErrors();
-            $this->assertCount(1, $errorMessages);
-            $this->assertTrue(array_key_exists('htmlContent', $errorMessages));
-            $this->assertCount(4, $errorMessages['htmlContent']);
-            $this->assertEquals('Html Content: html tag is not allowed.', $errorMessages['htmlContent'][0]);
-            $this->assertEquals('Html Content: head tag is not allowed.', $errorMessages['htmlContent'][1]);
-            $this->assertEquals('Html Content: body tag is not allowed.', $errorMessages['htmlContent'][2]);
-            $this->assertEquals('Html Content: meta tag is not allowed.', $errorMessages['htmlContent'][3]);
-            $autoresponder->textContent    = 'Text Content without tags';
-            $autoresponder->htmlContent    = 'Html Content without tags';
             $this->assertTrue($autoresponder->save());
-            $this->assertEmpty($autoresponder->getErrors());
             $this->assertEquals(3, count(Autoresponder::getAll()));
+            $id = $autoresponder->id;
+            unset($autoresponder);
+            $autoresponder = Autoresponder::getById($id);
+            $this->assertEquals('Another Test subject',                 $autoresponder->subject);
+            $this->assertEquals('Html Content',                         $autoresponder->htmlContent);
+            $this->assertEquals('Text Content',                         $autoresponder->textContent);
+            $this->assertEquals('1',                                    $autoresponder->fromOperationDurationInterval);
+            $this->assertEquals(TimeDurationUtil::DURATION_TYPE_MONTH,  $autoresponder->fromOperationDurationType);
+            $this->assertEquals(Autoresponder::OPERATION_UNSUBSCRIBE ,  $autoresponder->operationType);
+            $this->assertEquals(1,                                      $autoresponder->enableTracking);
         }
 
         /**

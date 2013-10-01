@@ -55,9 +55,9 @@
 
         public $cleanup = "true";
 
-        public $fullpage = "true";
+        public $fullpage = "false";
 
-        public $iframe  = "true";
+        public $iframe  = "false";
 
         public $convertDivs = "false";
 
@@ -88,7 +88,7 @@
                         }
                     );";
             Yii::app()->getClientScript()->registerScript(__CLASS__ . '#' . $this->getId(), $javaScript);
-            echo "<textarea id='{$id}' name='{$name}'>{$this->content}</textarea>";
+            echo "<textarea id='{$id}' name='{$name}'>" . CHtml::encode($this->content) . "</textarea>";
         }
 
         protected function resolvePackagePath()

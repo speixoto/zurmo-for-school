@@ -195,7 +195,7 @@
                     array('htmlContent',            'type',    'type' => 'string'),
                     array('textContent',            'type',    'type' => 'string'),
                     array('htmlContent',            'AtLeastOneContentAreaRequiredValidator'),
-                    array('htmlContent',            'ContentFieldDoesNotContainDeniedTagsValidator'),
+                    array('htmlContent',            'StripDeniedTagsFromContentFieldValidator'),
                     array('textContent',            'AtLeastOneContentAreaRequiredValidator'),
                     array('htmlContent',            'CampaignMergeTagsValidator', 'except' => 'autoBuildDatabase'),
                     array('textContent',            'CampaignMergeTagsValidator', 'except' => 'autoBuildDatabase'),

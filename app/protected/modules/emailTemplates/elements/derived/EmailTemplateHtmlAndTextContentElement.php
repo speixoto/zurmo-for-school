@@ -59,13 +59,22 @@
 
         public static function resolveDeniedTagsArray()
         {
-            return array(); //'html', 'head', 'body', 'meta', 'applet'
+            $deniedTags = array(
+                '!doctype'  => array('hasClosingTag' => false),
+                'html'      => array('hasClosingTag' => true, 'removeEnclosedContent' => false),
+                'head'      => array('hasClosingTag' => true, 'removeEnclosedContent' => true),
+                'title'     => array('hasClosingTag' => true, 'removeEnclosedContent' => true),
+                'body'      => array('hasClosingTag' => true, 'removeEnclosedContent' => false),
+                'meta'      => array('hasClosingTag' => false),
+                'link'      => array('hasClosingTag' => false),
+            );
+            return $deniedTags;
         }
 
         protected static function resolveDeniedTagsJavascriptArray()
         {
             $deniedTagsPhpArray = static::resolveDeniedTagsArray();
-            $deniedTagsJavaScriptArray = CJSON::encode($deniedTagsPhpArray);
+            $deniedTagsJavaScriptArray = CJSON::encode(array_keys($deniedTagsPhpArray));
             return $deniedTagsJavaScriptArray;
         }
 

@@ -147,7 +147,7 @@
         /**
          * @depends testCreateAndGetCampaignListById
          */
-        public function testDeniedTagThrowsValidationError()
+        public function testDeniedTagDoesNotThrowValidationError()
         {
             $campaign                                  = new Campaign();
             $campaign->name                             = 'Another Test Campaign Name';
@@ -155,25 +155,23 @@
             $campaign->status                           = Campaign::STATUS_ACTIVE;
             $campaign->fromName                         = 'Another From Name';
             $campaign->fromAddress                      = 'anotherfrom@zurmo.com';
-            $campaign->fromName                         = 'From Name2';
-            $campaign->fromAddress                      = 'from2@zurmo.com';
-            $campaign->subject                         = 'Another Test subject';
+            $campaign->subject                         = 'Another Test Subject';
             $campaign->textContent                     = 'Text Content';
-            $campaign->htmlContent                     = '<html><head><meta></head>Html Content</body></html>';
+            $campaign->htmlContent                     = '<html><head><meta></head><body>Html Content</body></html>';
             $campaign->marketingList                   = self::$marketingList;
-            $this->assertFalse($campaign->save());
-            $errorMessages = $campaign->getErrors();
-            $this->assertCount(1, $errorMessages);
-            $this->assertTrue(array_key_exists('htmlContent', $errorMessages));
-            $this->assertCount(4, $errorMessages['htmlContent']);
-            $this->assertEquals('Html Content: html tag is not allowed.', $errorMessages['htmlContent'][0]);
-            $this->assertEquals('Html Content: head tag is not allowed.', $errorMessages['htmlContent'][1]);
-            $this->assertEquals('Html Content: body tag is not allowed.', $errorMessages['htmlContent'][2]);
-            $this->assertEquals('Html Content: meta tag is not allowed.', $errorMessages['htmlContent'][3]);
-            $campaign->textContent    = 'Text Content without tags';
-            $campaign->htmlContent    = 'Html Content without tags';
             $this->assertTrue($campaign->save());
-            $this->assertEmpty($campaign->getErrors());
+            $id                         = $campaign->id;
+            unset($campaign);
+            $campaign                   = Campaign::getById($id);
+            $this->assertEquals('Another Test Campaign Name',   $campaign->name);
+            $this->assertEquals(0,                              $campaign->supportsRichText);
+            $this->assertEquals(Campaign::STATUS_ACTIVE,        $campaign->status);
+            $this->assertEquals('Another From Name',            $campaign->fromName);
+            $this->assertEquals('anotherfrom@zurmo.com',        $campaign->fromAddress);
+            $this->assertEquals('Another Test Subject',         $campaign->subject);
+            $this->assertEquals('Html Content',                 $campaign->htmlContent);
+            $this->assertEquals('Text Content',                 $campaign->textContent);
+            $this->assertEquals(self::$marketingList->id,       $campaign->marketingList->id);
         }
 
         /**

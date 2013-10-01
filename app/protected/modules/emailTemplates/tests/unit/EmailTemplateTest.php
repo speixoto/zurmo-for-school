@@ -159,29 +159,25 @@
         /**
          * @depends testCreateAndGetEmailTemplateById
          */
-        public function testDeniedTagThrowsValidationError()
+        public function testDeniedTagDoesNotThrowValidationError()
         {
             $emailTemplate                  = new EmailTemplate();
             $emailTemplate->type            = EmailTemplate::TYPE_CONTACT;
             $emailTemplate->subject         = 'Another Test subject';
             $emailTemplate->name            = 'Another Test Email Template';
             $emailTemplate->textContent     = 'Text Content';
-            $emailTemplate->htmlContent     = '<html><head><meta></head>Html Content</body></html>';
+            $emailTemplate->htmlContent     = '<html><head><meta></head><body>Html Content</body></html>';
             $emailTemplate->modelClassName  = 'Contact';
-            $this->assertFalse($emailTemplate->save());
-            $errorMessages = $emailTemplate->getErrors();
-            $this->assertCount(1, $errorMessages);
-            $this->assertTrue(array_key_exists('htmlContent', $errorMessages));
-            $this->assertCount(4, $errorMessages['htmlContent']);
-            $this->assertEquals('Html Content: html tag is not allowed.', $errorMessages['htmlContent'][0]);
-            $this->assertEquals('Html Content: head tag is not allowed.', $errorMessages['htmlContent'][1]);
-            $this->assertEquals('Html Content: body tag is not allowed.', $errorMessages['htmlContent'][2]);
-            $this->assertEquals('Html Content: meta tag is not allowed.', $errorMessages['htmlContent'][3]);
-            $emailTemplate->textContent    = 'Text Content without tags';
-            $emailTemplate->htmlContent    = 'Html Content without tags';
             $this->assertTrue($emailTemplate->save());
-            $this->assertEmpty($emailTemplate->getErrors());
             $this->assertEquals(4, count(EmailTemplate::getAll()));
+            $id             = $emailTemplate->id;
+            unset($emailTemplate);
+            $emailTemplate  = EmailTemplate::getById($id);
+            $this->assertEquals(EmailTemplate::TYPE_CONTACT,    $emailTemplate->type);
+            $this->assertEquals('Another Test subject',                 $emailTemplate->subject);
+            $this->assertEquals('Another Test Email Template',          $emailTemplate->name);
+            $this->assertEquals('Html Content',            $emailTemplate->htmlContent);
+            $this->assertEquals('Text Content',            $emailTemplate->textContent);
         }
 
         /**

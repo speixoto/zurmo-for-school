@@ -34,31 +34,66 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class ContentFieldDoesNotContainDeniedTagsValidator extends CValidator
+    class StripDeniedTagsFromContentFieldValidator extends CValidator
     {
         /**
          * Validates the attribute of the model.
-         * If there is any error, the error message is added to the model.
+         * Removes deniedTags from content
          * @param RedBeanModel $object the model being validated
          * @param string $attribute the attribute being validated
          * @return boolean true if validation passes
          */
         protected function validateAttribute($object, $attribute)
         {
-            $validated  = true;
-            $deniedTags = EmailTemplateHtmlAndTextContentElement::resolveDeniedTagsArray();
-            foreach ($deniedTags as $deniedTag)
+            $content        = $object->$attribute;
+            $deniedTags     = EmailTemplateHtmlAndTextContentElement::resolveDeniedTagsArray();
+            if (empty($content) || empty($deniedTags))
             {
-                if (stripos($object->$attribute, "<${deniedTag}") !== false ||
-                    stripos($object->$attribute, "</${deniedTag}>") !== false)
+                return true;
+            }
+            foreach ($deniedTags as $deniedTag => $properties)
+            {
+                $hasClosingTag          = $properties['hasClosingTag'];
+                $removeEnclosedContent  = false;
+                if ($hasClosingTag)
                 {
-                    $message = Zurmo::t('EmailTemplatesModule', 'Html Content: {{tag}} tag is not allowed.',
-                                            array('{{tag}}' => $deniedTag));
-                    $this->addError($object, $attribute, $message);
-                    $validated = false;
+                    $removeEnclosedContent  = $properties['removeEnclosedContent'];
+                }
+                $this->stripTag($content, $deniedTag, $hasClosingTag, $removeEnclosedContent);
+            }
+            $content            = trim($content);
+            $object->$attribute = $content;
+            return true;
+        }
+
+        /**
+         * Strips tags from content that are not allowed.
+         * @param $content
+         * @param $tag
+         * @param $hasClosingTag
+         * @param $removeEnclosedContent
+         */
+        protected function stripTag(& $content, $tag, $hasClosingTag, $removeEnclosedContent)
+        {
+            $openingTag             = '<' . preg_quote($tag) . '(.*?)>';
+            $closingTag             = '';
+            $wrappedContentPattern  = '';
+            $replacement            = '';
+            if ($hasClosingTag)
+            {
+                $closingTag             = '</' . preg_quote($tag) .'>';
+                $wrappedContentPattern  = '(.*?)';
+                if (!$removeEnclosedContent)
+                {
+                        $replacement = '\2';
                 }
             }
-            return $validated;
+            $pattern        = '#' . $openingTag . $wrappedContentPattern . $closingTag . '#is';
+            $newContent     = preg_replace($pattern, $replacement, $content);
+            if (isset($newContent))
+            {
+                $content = $newContent;
+            }
         }
     }
 ?>
