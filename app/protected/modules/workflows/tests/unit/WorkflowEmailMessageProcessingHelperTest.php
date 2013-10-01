@@ -59,6 +59,7 @@
             self::$superUserId = $super->id;
             self::$bobbyUserId = $bobby->id;
             self::$sarahUserId = $sarah->id;
+            $file = ZurmoTestHelper::createFileModel();
 
             $emailTemplate                 = new EmailTemplate();
             $emailTemplate->modelClassName = 'WorkflowModelTestItem';
@@ -67,6 +68,7 @@
             $emailTemplate->subject        = 'some subject [[LAST^NAME]]';
             $emailTemplate->htmlContent    = 'html content [[STRING]]';
             $emailTemplate->textContent    = 'text content [[PHONE]]';
+            $emailTemplate->files->add($file);
             $saved = $emailTemplate->save();
             if (!$saved)
             {
@@ -123,10 +125,11 @@
             $this->assertEquals('some subject the lastName',  $emailMessages[0]->subject);
             $this->assertEquals('text content the phone',     $emailMessages[0]->content->textContent);
             $this->assertEquals('html content the string',    $emailMessages[0]->content->htmlContent);
-            $this->assertEquals('Clark Kent',      $emailMessages[0]->sender->fromName);
-            $this->assertEquals('super@zurmo.com', $emailMessages[0]->sender->fromAddress);
+            $this->assertEquals('System User',      $emailMessages[0]->sender->fromName);
+            $this->assertEquals('notification@zurmoalerts.com', $emailMessages[0]->sender->fromAddress);
             $this->assertEquals(1,                 $emailMessages[0]->recipients->count());
             $this->assertEquals('super@zurmo.com', $emailMessages[0]->recipients[0]->toAddress);
+            $this->assertEquals(self::$emailTemplate->files[0]->fileContent->content, $emailMessages[0]->files[0]->fileContent->content);
             $emailMessages[0]->delete();
         }
 
@@ -166,6 +169,7 @@
             $this->assertEquals('someone@zurmo.com', $emailMessages[0]->sender->fromAddress);
             $this->assertEquals(1,                   $emailMessages[0]->recipients->count());
             $this->assertEquals('super@zurmo.com',   $emailMessages[0]->recipients[0]->toAddress);
+            $this->assertEquals(self::$emailTemplate->files[0]->fileContent->content, $emailMessages[0]->files[0]->fileContent->content);
             $emailMessages[0]->delete();
         }
 
@@ -209,6 +213,7 @@
             $this->assertEquals('someone@zurmo.com', $emailMessages[0]->sender->fromAddress);
             $this->assertEquals(1,                   $emailMessages[0]->recipients->count());
             $this->assertEquals('super@zurmo.com',   $emailMessages[0]->recipients[0]->toAddress);
+            $this->assertEquals(self::$emailTemplate->files[0]->fileContent->content, $emailMessages[0]->files[0]->fileContent->content);
             $emailMessages[0]->delete();
         }
     }

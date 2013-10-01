@@ -37,23 +37,19 @@
     /**
      * Helper class for working with WorkflowMessageInQueue models
      */
-    class WorkflowMessageInQueueUtil extends WorkflowInQueueUtil
+    class WorkflowMessageInQueueUtil extends InQueueUtil
     {
         /**
          * @param WorkflowMessageInQueue $model
          * @return string
          */
-        public static function renderSummaryContent($model)
+        public static function renderSummaryContent(WorkflowMessageInQueue $model)
         {
-            assert('$model instanceof WorkflowMessageInQueue');
-            $workflow = SavedWorkflowToWorkflowAdapter::makeWorkflowBySavedWorkflow($model->savedWorkflow);
-            $emailMessageForWorkflowForm = WorkflowEmailMessagesUtil::
-                                           makeEmailMessageForWorkflowFormByQueueModelAndWorkflow($model, $workflow);
-            $relatedModel    = self::resolveModel($model);
-            $content         = static::renderWorkflowLinkContent($model);
-            $content        .= static::renderRelatedModelLinkContent($relatedModel);
-            $content        .= static::renderEmailTemplateLinkContent($emailMessageForWorkflowForm);
-            return $content;
+            $params          = array('label' => strval($model->savedWorkflow), 'wrapLabel' => false);
+            $moduleClassName = $model->getModuleClassName();
+            $moduleId        = $moduleClassName::getDirectoryName();
+            $element         = new DetailsLinkActionElement('default', $moduleId, $model->savedWorkflow->id, $params);
+            return $element->render() . static::resolveModelAndContent($model);
         }
     }
 ?>

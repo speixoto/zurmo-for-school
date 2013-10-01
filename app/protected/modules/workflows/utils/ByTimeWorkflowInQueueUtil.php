@@ -37,19 +37,19 @@
     /**
      * Helper class for working with ByTimeWorkflowInQueue models
      */
-    class ByTimeWorkflowInQueueUtil extends WorkflowInQueueUtil
+    class ByTimeWorkflowInQueueUtil extends InQueueUtil
     {
         /**
          * @param ByTimeWorkflowInQueue $model
          * @return string
          */
-        public static function renderSummaryContent($model)
+        public static function renderSummaryContent(ByTimeWorkflowInQueue $model)
         {
-            assert('$model instanceof ByTimeWorkflowInQueue');
-            $relatedModel    = self::resolveModel($model);
-            $content         = static::renderWorkflowLinkContent($model);
-            $content        .= static::renderRelatedModelLinkContent($relatedModel);
-            return $content;
+            $params          = array('label' => strval($model->savedWorkflow), 'wrapLabel' => false);
+            $moduleClassName = $model->getModuleClassName();
+            $moduleId        = $moduleClassName::getDirectoryName();
+            $element         = new DetailsLinkActionElement('default', $moduleId, $model->savedWorkflow->id, $params);
+            return $element->render() . static::resolveModelAndContent($model);
         }
     }
 ?>
