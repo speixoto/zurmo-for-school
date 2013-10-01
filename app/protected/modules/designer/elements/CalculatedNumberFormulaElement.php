@@ -39,35 +39,41 @@
      */
     class CalculatedNumberFormulaElement extends TextAreaElement
     {
+        public $editableTemplate = '<th>{label}</th><td colspan="{colspan}">{content}{error}{availableAttributesContent}</td>';
+
         /**
          * Render additional help information besides the text input box.
          * @return The element's content as a string.
          */
-        protected function renderControlEditable()
+        protected function renderEditable()
         {
-            $content      = parent::renderControlEditable();
-            $content     .= '<div class="field-instructions">' . $this->renderAvailableAttributesContent() . '</div>';
-
-            return $content;
+            $data                               = array();
+            $data['label']                      = $this->renderLabel();
+            $data['content']                    = $this->renderControlEditable();
+            $data['error']                      = $this->renderError();
+            $data['colspan']                    = ArrayUtil::getArrayValue($this->params, 'wide') ? 3 : 1;
+            $data['availableAttributesContent'] = $this->renderAvailableAttributesContent();
+            return $this->resolveContentTemplate($this->editableTemplate, $data);
         }
 
         protected function renderAvailableAttributesContent()
-        {            
+        {
             $modelClassName = $this->model->getModelClassName();
             $model                         = new $modelClassName(false);
             $adapter                       = new ModelNumberOrCurrencyAttributesAdapter($model);
-            $attributeDataNumerOrCurrency  = $adapter->getAttributes();           
+            $attributeDataNumerOrCurrency  = $adapter->getAttributes();
             $title          = Zurmo::t('DesignerModule', 'Create a formula that is evaluated based on other fields. ' .
                                                          'The formula can be a math expression calculated from number ' .
-                                                         'fields, for example, you can use an expression like ' . 
+                                                         'fields, for example, you can use an expression like ' .
                                                          '(field1 * field2) / field3. The formula can also include an if ' .
-                                                         'statement, use the IF(condition;trueValue;falseValue) syntax. ' .
+                                                         'statement, use the IF(condition;trueValue;falseValue) syntax. ' . // Not Coding Standard
                                                          'Within the condition and values you can use strings, string fields, ' .
-                                                         'number fields or math expressions. In the condition you can ' .
-                                                         'use the operators <,>,==,!=,<= and >=. An example of an if ' .
-                                                         'statement is IF(field1 == field4;field2/365;0)');
+                                                         'number fields or math expressions. Strings should be surrounded by ' .
+                                                         '\'. In the condition you can ' .
+                                                         'use the operators <, >, ==, !=, <= and >=. An example of an if ' . // Not Coding Standard
+                                                         'statement is IF(field1 == field4;field2/365;0)'); // Not Coding Standard
             $spanContent    = '<span id="formula-tooltip" class="tooltip" title="' . $title . '">?</span>';
-            $content        = null;                   
+            $content        = null;
             $adapter        = new ModelAttributesAdapter($model);
             $attributeData  = $adapter->getAttributes();
             if (count($attributeData) > 0)
@@ -81,7 +87,7 @@
                 foreach ($attributeData as $attributeName => $data)
                 {
                     $content .= '<tr><td>' . $data['attributeLabel'] . '</td>';
-                    $content .= '<td>' . $attributeName . '</td>';                    
+                    $content .= '<td>' . $attributeName . '</td>';
                     $canBeUsedInMathExpression = Zurmo::t('DesignerModule', 'No');
                     if (in_array($attributeName, array_keys($attributeDataNumerOrCurrency)))
                     {
@@ -95,10 +101,10 @@
             {
                 $content .= '<span class="error">' . Zurmo::t('DesignerModule', 'There are no fields in this module to be used in an expression.');
                 $content .= '</span>';
-            }       
+            }
             $qtip = new ZurmoTip();
             $qtip->addQTip("#formula-tooltip");
-            return $content;
+            return ZurmoHtml::tag('div', array('class' => 'field-instructions'), $content);
         }
     }
 ?>

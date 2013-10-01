@@ -38,6 +38,6 @@
      * Helper class used to convert RowsAndColumnsReport models into arrays
      */
     class SummationDrillDownReportToExportAdapter extends ReportToExportAdapter
-    {        
+    {
     }
 ?>

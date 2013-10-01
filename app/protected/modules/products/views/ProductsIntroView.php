@@ -38,9 +38,9 @@
      * View when a user first comes to the marketing dashboard. Provides an overview of how products works
      */
     class ProductsIntroView extends IntroView
-    {        
+    {
         protected function renderIntroContent()
-        {            
+        {
             $content  = '<h1>' . Zurmo::t('ProductsModule', 'How do Products work in Zurmo?', LabelUtil::getTranslationParamsForAllModules()). '</h1>';
             $content .= '<div id="products-intro-steps" class="module-intro-steps clearfix">';
             $content .= '<div class="third catalog-description"><span class="icon"></span>';
@@ -49,10 +49,10 @@
             $content .= '</p>';
             $content .= '</div>';
             $content .= '<div class="third catalog-item-description"><span class="icon"></span>';
-            $content .= '<p><strong>' . Zurmo::t('ProductsModule', 'Catalog Item') . '</strong>';
+            $content .= '<p><strong>' . Zurmo::t('ProductTemplatesModule', 'Catalog Item') . '</strong>';
             $content .= Zurmo::t('ProductsModule', 'Create a <em>Catalog Item</em> that describes and categorizes your ' .
                                                    'item and lists preset pricing information');
-        $content .= '</p>';
+            $content .= '</p>';
             $content .= '</div>';
             $content .= '<div class="third product-description"><span class="icon"></span>';
             $content .= '<p><strong>' . Zurmo::t('ProductsModule', 'Product') . '</strong>';
@@ -62,6 +62,7 @@
             $content .= '</p>';
             $content .= '</div>';
             $content .= '</div>';
+            $this->registerScripts();
             return $content;
         }
 
@@ -69,6 +70,16 @@
         {
             $sectionName = str_replace('link', '', strtolower($this->activeActionElementType));
             return $sectionName;
-        }        
+        }
+
+        protected function registerScripts()
+        {
+            $content  = "$(this).resolveHighestAndEqualize($('.module-intro-steps'));";
+            $content .= "$(window).resize(function()
+                         {
+                             $(this).resolveHighestAndEqualize($('.module-intro-steps'));
+                         });";
+            Yii::app()->clientScript->registerScript($this->moduleName, $content);
+        }
     }
 ?>

@@ -86,7 +86,6 @@
             echo $view->render();
         }
 
-
         public function actionDetails($id, $redirectUrl = null)
         {
             $emailMessage          = EmailMessage::getById(intval($id));
@@ -216,7 +215,7 @@
                     }
                     else
                     {
-                        $user                   = BaseJobControlUserConfigUtil::getUserToRunAs();
+                        $user                   = BaseControlUserConfigUtil::getUserToRunAs();
                         $userToSendMessagesFrom = User::getById((int)$user->id);
                         $emailMessage = EmailMessageHelper::sendTestEmailFromUser($emailHelper, $userToSendMessagesFrom,
                                                                       $configurationForm->aTestToAddress);
@@ -401,7 +400,7 @@
                     if (!$emailMessage->save())
                     {
                         throw new FailedToSaveModelException();
-                    }                    
+                    }
                 }
             }
             else
@@ -556,7 +555,7 @@
             }
             return $personOrAccount;
         }
-        
+
         protected function actionValidateCreateEmailMessage($postData, CreateEmailMessageForm $emailMessageForm)
         {
             if (isset($postData['ajax']) && $postData['ajax'] == 'edit-form')
@@ -642,7 +641,7 @@
             }
             ControllerSecurityUtil::resolveAccessCanCurrentUserDeleteModel($emailMessage);
             $emailMessage->delete();
-            if($redirect)
+            if ($redirect)
             {
                 $this->redirect($redirectUrl);
             }
@@ -652,6 +651,5 @@
         {
             return new FileZurmoControllerUtil();
         }
-
     }
 ?>

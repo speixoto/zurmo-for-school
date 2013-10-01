@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -20,8 +20,18 @@
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU Affero General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     class ProductsSuperUserWalkthroughTest extends ZurmoWalkthroughBaseTest
@@ -297,6 +307,71 @@
             $this->assertTrue(strpos($content, 'My Product 1') > 0);
             $products = Product::getAll();
             $this->assertEquals(1, count($products));
+        }
+
+        public function testFilteredResultsByStageForProductPortlet()
+        {
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            Yii::app()->user->userModel = $super;
+            //Setup test data owned by the super user.
+            $account = AccountTestHelper::createAccountByNameForOwner('superAccount', $super);
+            ProductTestHelper::createProductStagesIfDoesNotExist();
+            $superProductId = self::getModelIdByModelNameAndName('Product', 'My Product 1');
+            $product = Product::getById($superProductId);
+            $product->account = $account;
+            $product->stage->value = 'Open';
+            $this->assertTrue($product->save());
+
+            ProductTestHelper::createProductByNameForOwner("My Product 2", $super);
+            $superProductId2 = self::getModelIdByModelNameAndName('Product', 'My Product 2');
+            $product = Product::getById($superProductId2);
+            $product->account = $account;
+            $product->stage->value = 'Won';
+            $this->assertTrue($product->save());
+
+            $portlet = new Portlet();
+            $portlet->column    = 1;
+            $portlet->position  = 1;
+            $portlet->layoutId  = 'AccountDetailsAndRelationsView';
+            $portlet->user      = $super;
+            $portlet->viewType  = 'ProductsForAccountRelatedList';
+            $this->assertTrue($portlet->save());
+
+            $this->setGetArray(array(
+                'id' => $account->id,
+                'portletParams' => array('relationModuleId' => 'accounts', 'relationModelId' => $account->id),
+                'ProductsConfigurationForm' => array('filteredByStage' => 'Open'),
+                'redirectUrl' => Yii::app()->createUrl('accounts/default/details', array('id' => $account->id)),
+                'portletId'   => $portlet->id,
+                'uniqueLayoutId' => 'AccountDetailsAndRelationsView_' . $portlet->id));
+
+            $content = $this->runControllerWithNoExceptionsAndGetContent('accounts/defaultPortlet/modalRefresh');
+            $this->assertTrue(strpos($content, 'My Product 1') > 0);
+            $this->assertFalse(strpos($content, 'My Product 2') > 0);
+
+            $this->setGetArray(array(
+                'id' => $account->id,
+                'portletParams' => array('relationModuleId' => 'accounts', 'relationModelId' => $account->id),
+                'ProductsConfigurationForm' => array('filteredByStage' => 'All'),
+                'redirectUrl' => Yii::app()->createUrl('accounts/default/details', array('id' => $account->id)),
+                'portletId'   => $portlet->id,
+                'uniqueLayoutId' => 'AccountDetailsAndRelationsView_' . $portlet->id));
+
+            $content = $this->runControllerWithNoExceptionsAndGetContent('accounts/defaultPortlet/modalRefresh');
+            $this->assertTrue(strpos($content, 'My Product 1') > 0);
+            $this->assertTrue(strpos($content, 'My Product 2') > 0);
+
+            $this->setGetArray(array(
+                'id' => $account->id,
+                'portletParams' => array('relationModuleId' => 'accounts', 'relationModelId' => $account->id),
+                'ProductsConfigurationForm' => array('filteredByStage' => 'Won'),
+                'redirectUrl' => Yii::app()->createUrl('accounts/default/details', array('id' => $account->id)),
+                'portletId'   => $portlet->id,
+                'uniqueLayoutId' => 'AccountDetailsAndRelationsView_' . $portlet->id));
+
+            $content = $this->runControllerWithNoExceptionsAndGetContent('accounts/defaultPortlet/modalRefresh');
+            $this->assertFalse(strpos($content, 'My Product 1') > 0);
+            $this->assertTrue(strpos($content, 'My Product 2') > 0);
         }
     }
 ?>

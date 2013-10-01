@@ -40,11 +40,11 @@
     class MatrixReportDataProvider extends ReportDataProvider
     {
         const HEADER_COLUMN_ALIAS_SUFFIX = 'Header';
-        
+
         const TOTAL_COLUMN_ALIAS_SUFFIX = 'Total';
 
         public static $maximumGroupsCount = 400;
-        
+
         protected $haveGrandTotals = true;
 
         /**
@@ -88,7 +88,7 @@
             assert('is_int($columnAliasName) || is_string($columnAliasName)');
             return $columnAliasName . self::HEADER_COLUMN_ALIAS_SUFFIX;
         }
-        
+
         /**
          * @param $columnAliasName
          * @return string
@@ -155,11 +155,11 @@
             }
             return $this->resolvedDisplayAttributes;
         }
-        
+
         protected function getDisplayAttributesForGrandTotals()
         {
             $displayAttributes = $this->resolveDisplayAttributes();
-            return $displayAttributes;            
+            return $displayAttributes;
         }
 
         /**
@@ -227,9 +227,10 @@
         }
 
         /**
+         * @param bool $forExport
          * @return array
          */
-        public function makeAxisCrossingColumnCountAndLeadingHeaderRowsData()
+        public function makeAxisCrossingColumnCountAndLeadingHeaderRowsData($forExport = false)
         {
             $headerData    = array('rows' => array());
             $headerData['axisCrossingColumnCount'] = count($this->getYAxisGroupBys());
@@ -239,7 +240,7 @@
                 $xAxisDisplayAttribute = $this->getDisplayAttributeByAttribute($attributeIndexOrDerivedType);
                 foreach ($groupByValues as $key => $value)
                 {
-                    $groupByValues[$key] = $xAxisDisplayAttribute->resolveValueAsLabelForHeaderCell($value);
+                    $groupByValues[$key] = $xAxisDisplayAttribute->resolveValueAsLabelForHeaderCell($value, $forExport);
                 }
                 $headerData['rows'][]  = array('groupByValues' => $groupByValues, 'colSpan' => $lastSpanCount);
                 $lastSpanCount = count($groupByValues) * $lastSpanCount;
@@ -272,7 +273,7 @@
             }
             return $displayAttributes;
         }
-                
+
         /**
          * @param array $data
          * @param array $indexedXAxisGroupByDataValues
@@ -338,10 +339,10 @@
             $resultsData[$idByOffset]                  = new ReportResultsRowData($this->resolveDisplayAttributes(), 0);
             $this->addDefaultColumnNamesAndValuesToReportResultsRowData($resultsData[$idByOffset],
                                                                         $xAxisGroupByDataValuesCount);
-            $sqlForRowTotals = $this->makeSqlQueryForRowTotals();  
-            $rowTotals       = R::getAll($sqlForRowTotals); 
+            $sqlForRowTotals = $this->makeSqlQueryForRowTotals();
+            $rowTotals       = R::getAll($sqlForRowTotals);
             foreach ($rows as $row)
-            {                
+            {
                 $currentYAxisDisplayAttributesUniqueIndex = $this->resolveYAxisDisplayAttributesUniqueIndex(
                                                             $row, $displayAttributesThatAreYAxisGroupBys);
                 if ($previousYAxisDisplayAttributesUniqueIndex != $currentYAxisDisplayAttributesUniqueIndex)
@@ -365,7 +366,7 @@
                         $resultsData[$idByOffset]->addSelectedColumnNameAndValue($resolvedColumnAliasName, $value);
                         $resultsData[$idByOffset]->addSelectedColumnNameAndLabel($resolvedColumnAliasName, $displayAttribute->resolveValueAsLabelForHeaderCell($value));
                     }
-                }                               
+                }
                 //At this point $tempData is at the final level, where the actual display calculations are located
                 foreach ($this->resolveDisplayAttributes() as $displayAttribute)
                 {
@@ -374,16 +375,16 @@
                         $value = $row[$displayAttribute->columnAliasName];
                         $columnAliasName = $tempData[$displayAttribute->attributeIndexOrDerivedType];
                         $resultsData[$idByOffset]->addSelectedColumnNameAndValue($columnAliasName, $value);
-                        
+
                         //Adds the totalRows column
                         $totalValue = $rowTotals[$idByOffset][$displayAttribute->columnAliasName];
                         $resolvedColumnAliasName = static::resolveTotalColumnAliasName($displayAttribute->columnAliasName);
-                        $resultsData[$idByOffset]->addSelectedColumnNameAndValue($resolvedColumnAliasName, $totalValue);                                                
+                        $resultsData[$idByOffset]->addSelectedColumnNameAndValue($resolvedColumnAliasName, $totalValue);
                     }
                 }
                 $previousYAxisDisplayAttributesUniqueIndex = $currentYAxisDisplayAttributesUniqueIndex;
             }
-            $this->resolveRowSpansForResultsData($resultsData);                        
+            $this->resolveRowSpansForResultsData($resultsData);
             return $resultsData;
         }
 
@@ -668,29 +669,28 @@
             $builder = new GroupBysReportQueryBuilder($joinTablesAdapter);
             return $builder->makeQueryContent($this->getYAxisGroupBys());
         }
-        
+
         protected function makeGroupBysContentForGrandTotals(RedBeanModelJoinTablesQueryAdapter $joinTablesAdapter)
         {
             $builder = new GroupBysReportQueryBuilder($joinTablesAdapter);
             return $builder->makeQueryContent($this->getXAxisGroupBys());
         }
-        
-        protected function getGrandTotalsRowsData() 
-        {       
-                        
-            $headerDataRows = $this->getXAxisGroupByDataValues();             
+
+        protected function getGrandTotalsRowsData()
+        {
+            $headerDataRows = $this->getXAxisGroupByDataValues();
             $headingColumns = array();
-            $this->resolveHeadingColumns($headerDataRows, $headingColumns);                                                                                                                                                           
-            $totalRowsData                  = parent::getGrandTotalsRowsData();                        
-            $adjustedTotalsRowsData         = array();                        
+            $this->resolveHeadingColumns($headerDataRows, $headingColumns);
+            $totalRowsData                  = parent::getGrandTotalsRowsData();
+            $adjustedTotalsRowsData         = array();
             $keys                           = array_reverse(array_keys($totalRowsData[0]));
             $keysColumnArray                = array();
-            $headingsDepth                  = count($headerDataRows);       
-            for ($i=0; $i < $headingsDepth; $i++)
+            $headingsDepth                  = count($headerDataRows);
+            for ($i = 0; $i < $headingsDepth; $i++)
             {
                 $keysColumnArray[]         = $keys[$i];
             }
-            $keys = array_reverse($keysColumnArray);            
+            $keys = array_reverse($keysColumnArray);
             foreach ($headingColumns as $column)
             {
                 $totalRow = null;
@@ -700,27 +700,26 @@
                     $i                = 0;
                     foreach ($column as $row)
                     {
-                        $found = $found && ($row == $totalRowData[$keys[$i++]]);                    
+                        $found = $found && ($row == $totalRowData[$keys[$i++]]);
                     }
                     if ($found)
                     {
                         $totalRow = $totalRowData;
                         array_slice($totalRowsData, $key);
                     }
-                }                
+                }
                 if (isset($totalRow))
                 {
-                    $adjustedTotalsRowsData[] = $totalRow;                    
+                    $adjustedTotalsRowsData[] = $totalRow;
                 }
                 else
-                {                    
+                {
                     $adjustedTotalsRowsData[] = array();
                 }
-            }                    
+            }
             return $adjustedTotalsRowsData;
         }
-        
-        
+
         /**
          * Transform the headerDataRows in headingColumns
          * @param Array $headerDataRows
@@ -730,41 +729,39 @@
         private function resolveHeadingColumns($headerDataRows, & $headingColumns, $prefix = array())
         {
             if (empty($headerDataRows))
-            {                
+            {
                 $headingColumns[] = $prefix;
             }
             else
             {
-                $row = array_shift($headerDataRows);                                  
+                $row = array_shift($headerDataRows);
                 $tempPrefix = $prefix;
                 foreach ($row as $groupByValue)
-                {                                        
+                {
                     $tempPrefix[] = $groupByValue;
                     $this->resolveHeadingColumns($headerDataRows, $headingColumns, $tempPrefix);
                     $tempPrefix = $prefix;
-                }                          
+                }
             }
         }
-        
-        
-        
+
         protected function makeSqlQueryForRowTotals()
-        {            
-            $selectQueryAdapter     = new RedBeanModelSelectQueryAdapter();            
+        {
+            $selectQueryAdapter     = new RedBeanModelSelectQueryAdapter();
             $moduleClassName        = $this->report->getModuleClassName();
             $modelClassName         = $moduleClassName::getPrimaryModelName();
-            $joinTablesAdapter      = new RedBeanModelJoinTablesQueryAdapter($modelClassName);                                         
+            $joinTablesAdapter      = new RedBeanModelJoinTablesQueryAdapter($modelClassName);
             $builder                = new DisplayAttributesReportQueryBuilder($joinTablesAdapter, $selectQueryAdapter,
                                           $this->report->getCurrencyConversionType());
-            $builder->makeQueryContent($this->getDisplayAttributesForGrandTotals());            
+            $builder->makeQueryContent($this->getDisplayAttributesForGrandTotals());
             $where                  = $this->makeFiltersContent($joinTablesAdapter);
             $orderBy                = null;
-            $builder                = new GroupBysReportQueryBuilder($joinTablesAdapter);            
+            $builder                = new GroupBysReportQueryBuilder($joinTablesAdapter);
             $groupBy                = $builder->makeQueryContent($this->getYAxisGroupBys());
             $offset                 = null;
-            $limit                  = null;                   
+            $limit                  = null;
             return                    SQLQueryUtil::makeQuery($modelClassName::getTableName($modelClassName),
-                                      $selectQueryAdapter, $joinTablesAdapter, $offset, $limit, $where, $orderBy, $groupBy);            
+                                      $selectQueryAdapter, $joinTablesAdapter, $offset, $limit, $where, $orderBy, $groupBy);
         }
     }
 ?>

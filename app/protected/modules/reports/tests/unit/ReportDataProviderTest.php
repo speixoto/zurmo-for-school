@@ -37,7 +37,7 @@
     class ReportDataProviderTest extends ZurmoBaseTest
     {
         public $freeze = false;
-        
+
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
@@ -69,10 +69,10 @@
                 throw new FailedToSaveModelException();
             }
         }
-        
+
         public function setUp()
         {
-            parent::setUp();            
+            parent::setUp();
             $freeze = false;
             if (RedBeanDatabase::isFrozen())
             {
@@ -282,7 +282,7 @@
             $this->assertEquals($stateAdapter->getStateIds(),       $filters[2]->value);
             $this->assertEquals('1 and (2 and 3)', $filtersStructure);
         }
-        
+
         public function testSqlQueryWithLinkTypeSpecificOnRelatedModels()
         {
             $quote = DatabaseCompatibilityUtil::getQuote();
@@ -306,7 +306,7 @@
             $displayAttribute1->setModelAliasUsingTableAliasName('relatedModel');
             $displayAttribute1->attributeIndexOrDerivedType = 'hasMany2___FullName';
             $report->addDisplayAttribute($displayAttribute1);
-            
+
             $dataProvider = new RowsAndColumnsReportDataProvider($report);
             $content = $dataProvider->makeSqlQueryForDisplay();
             $compareContent = "select {$quote}reportmodeltestitem{$quote}.{$quote}id{$quote} reportmodeltestitemid " .

@@ -105,7 +105,7 @@
             $this->resolveKanbanBoardMetadataBeforeMakingDataProvider($searchModel, $metadata);
             $this->resolveMetadataBeforeMakingDataProvider($metadata);
             $dataProviderClassName = 'RedBeanModelDataProvider';
-            if($searchModel->filterByStarred)
+            if ($searchModel->filterByStarred)
             {
                 $dataProviderClassName = 'StarredModelDataProvider';
             }

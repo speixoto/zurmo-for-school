@@ -45,8 +45,8 @@
             );
         }
 
-        public function renderDataCellContent($data, $row) 
-        {                               
+        public function renderDataCellContent($data, $row)
+        {
             assert('$data instanceof ReportResultsRowData');
             if (null === $displayAttributeKey = $data::resolveKeyByAttributeName($this->attribute))
             {
@@ -66,10 +66,10 @@
                 return $this->renderValue($data->{$this->attribute});
             }
         }
-        
+
         public function renderValue($value)
-        {                       
-            return Yii::app()->format->formatNumber((int)$value);
+        {
+            return Yii::app()->numberFormatter->formatDecimal((int)$value);
         }
     }
 ?>

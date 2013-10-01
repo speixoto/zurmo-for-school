@@ -149,17 +149,21 @@
         public function actionEditUserMembership($id)
         {
             $group              = Group::getById(intval($id));
-            $title           = Zurmo::t('ZurmoModule', 'User Membership');
-            $breadcrumbLinks = array(strval($group) => array('group/' . static::resolveBreadCrumbActionByGroup($group),  'id' => $id), $title);
+            $title              = Zurmo::t('ZurmoModule', 'User Membership');
+            $breadcrumbLinks    = array(strval($group) => array('group/' . static::resolveBreadCrumbActionByGroup($group),  'id' => $id), $title);
             $membershipForm     = GroupUserMembershipFormUtil::makeFormFromGroup($group);
             $postVariableName   = get_class($membershipForm);
             if (isset($_POST[$postVariableName]))
             {
                 $castedPostData = GroupUserMembershipFormUtil::typeCastPostData($_POST[$postVariableName]);
                 GroupUserMembershipFormUtil::setFormFromCastedPost($membershipForm, $castedPostData);
-                if(null != $message = GroupUserMembershipFormUtil::validateMembershipChange($membershipForm, $group))
+                if (null != $message = GroupUserMembershipFormUtil::validateMembershipChange($membershipForm, $group))
                 {
                     Yii::app()->user->setFlash('notification', $message);
+                }
+                elseif (!$group->canModifyMemberships())
+                {
+                    throw new SecurityException();
                 }
                 elseif (GroupUserMembershipFormUtil::setMembershipFromForm($membershipForm, $group))
                 {
@@ -371,16 +375,16 @@
             Yii::app()->end(0, false);
         }
 
-        protected static function getGroupsOrderedByNonDeletablesFirst($includeEveryoneGroup = true)
+        protected static function getGroupsOrderedByNonDeletablesFirst($includeEveryoneAndSuperAdministratorGroups = true)
         {
-            if ($includeEveryoneGroup)
+            if ($includeEveryoneAndSuperAdministratorGroups)
             {
                 $groups = array(Group::getByName(Group::EVERYONE_GROUP_NAME),
                                 Group::getByName(Group::SUPER_ADMINISTRATORS_GROUP_NAME));
             }
             else
             {
-                $groups = array(Group::getByName(Group::SUPER_ADMINISTRATORS_GROUP_NAME));
+                $groups = array();
             }
             $where    = Group::getTableName('Group') . ".name NOT IN( '" . Group::EVERYONE_GROUP_NAME . "', '" . Group::SUPER_ADMINISTRATORS_GROUP_NAME . "')";
             $orderBy  = Group::getTableName('Group') . '.name asc';
@@ -404,6 +408,16 @@
             {
                 return 'editPolicies';
             }
+        }
+
+        public function actionUsersInGroupModalList($id)
+        {
+            $model = Group::getById((int)$id);
+            ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($model);
+            $searchAttributeData = UsersByModelModalListControllerUtil::makeModalSearchAttributeDataByModel($model, 'groups');
+            $dataProvider = UsersByModelModalListControllerUtil::makeDataProviderBySearchAttributeData($searchAttributeData);
+            Yii::app()->getClientScript()->setToAjaxMode();
+            echo UsersByModelModalListControllerUtil::renderList($this, $dataProvider, 'usersInGroupModalList');
         }
     }
 ?>

@@ -122,13 +122,13 @@
         public function getLinkString($attributeString, $attribute)
         {
             $shouldRenderMultipleLinks = $this->getShouldRenderMultipleLinksByReportDataProvider($this->dataProvider);
-            $string = 'ReportResultsGridUtil::makeStringForLinkOrLinks("' . 
-                            $attribute . '", $data, "' . $shouldRenderMultipleLinks . '", ' . $attributeString . ')';            
+            $string = 'ReportResultsGridUtil::makeStringForLinkOrLinks("' .
+                            $attribute . '", $data, "' . $shouldRenderMultipleLinks . '", ' . $attributeString . ')';
             return $string;
         }
-        
+
         protected function getShouldRenderMultipleLinksByReportDataProvider(ReportDataProvider $dataProvider)
-        {           
+        {
             if ($dataProvider instanceof RowsAndColumnsReportDataProvider)
             {
                 return false;
@@ -319,13 +319,13 @@
                     if (!isset($column['class']))
                     {
                         $column['class'] = 'DataColumn';
-                    } 
+                    }
                     if (isset($grandTotalsRow) && $isFirstRow)
                     {
                         $column['footer'] = Zurmo::t('ReportsModule', 'Total');
                     }
                     if (isset($grandTotalsRow[$displayAttribute->columnAliasName]))
-                    {                                                                    
+                    {
                         $column['footer'] = $columnAdapter->renderValue($grandTotalsRow[$displayAttribute->columnAliasName]);
                     }
                     array_push($columns, $column);

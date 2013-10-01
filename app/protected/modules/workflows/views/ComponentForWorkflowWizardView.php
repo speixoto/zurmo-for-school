@@ -53,7 +53,7 @@
         protected function renderPreviousPageLinkContent()
         {
             return ZurmoHtml::link(ZurmoHtml::tag('span', array('class' => 'z-label'),
-                   Zurmo::t('WorkflowsModule', 'Previous')), '#', array('id' => static::getPreviousPageLinkId()));
+                   Zurmo::t('Core', 'Previous')), '#', array('id' => static::getPreviousPageLinkId()));
         }
 
         /**
@@ -62,7 +62,7 @@
         protected function renderNextPageLinkContent()
         {
             $params                = array();
-            $params['label']       = Zurmo::t('WorkflowsModule', 'Next');
+            $params['label']       = Zurmo::t('Core', 'Next');
             $params['htmlOptions'] = array('id' => static::getNextPageLinkId(),
                                            'onclick' => 'js:$(this).addClass("attachLoadingTarget");');
             $element               = new SaveButtonActionElement(null, null, null, $params);
@@ -95,7 +95,7 @@
             $cClipWidget->beginClip($componentType . 'WorkflowComponentSortable');
             $cClipWidget->widget('application.core.widgets.JuiSortable', array(
                 'items' => $items,
-                'itemTemplate' => '<li>content</li>',
+                'itemTemplate' => 'content',
                 'htmlOptions' =>
                 array(
                     'id'    => $componentType . 'attributeRowsUl',

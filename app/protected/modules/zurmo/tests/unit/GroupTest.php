@@ -569,6 +569,22 @@
         }
 
         /**
+         * @depends testCannotModifyGroupMembershipForTheTheEveryoneGroup
+         */
+        public function testNonSuperAdministratorsCannotModifyGroupMembershipForTheTheSuperAdministratorsGroup()
+        {
+            $superAdministrators = Group::getByName(Group::SUPER_ADMINISTRATORS_GROUP_NAME);
+            $this->assertTrue($superAdministrators->canModifyMemberships());
+
+            $user = UserTestHelper::createBasicUser('jack');
+            $user->setRight('GroupsModule', GroupsModule::RIGHT_ACCESS_GROUPS);
+            $user->setRight('GroupsModule', GroupsModule::RIGHT_CREATE_GROUPS);
+            $user->setRight('GroupsModule', GroupsModule::RIGHT_DELETE_GROUPS);
+            Yii::app()->user->userModel = $user;
+            $this->assertFalse($superAdministrators->canModifyMemberships());
+        }
+
+        /**
          * @expectedException NotSupportedException
          */
         public function testCannotSetEveryonesParentGroup()
@@ -770,6 +786,14 @@
 
             // Which shows the group having been deleted.
             $this->assertEquals(0, count($user->groups));
+        }
+
+        public function testIsUserASuperAdministrator()
+        {
+            $this->assertEquals('super', Yii::app()->user->userModel->username);
+            $this->assertTrue(Group::isUserASuperAdministrator(Yii::app()->user->userModel));
+            $user = User::getByUsername('dood1');
+            $this->assertFalse(Group::isUserASuperAdministrator($user));
         }
     }
 ?>

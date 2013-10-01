@@ -80,7 +80,7 @@
             assert('is_string($moduleClassName)');
             assert('is_string($modelClassName)');
             assert('is_string($workflowType)');
-            $data = array('' => Zurmo::t('WorkflowsModule', 'Select Module'));
+            $data = array('' => Zurmo::t('Core', 'Select Module'));
             return array_merge($data, ActionForWorkflowForm::
                                       getTypeRelationDataAndLabels($moduleClassName, $modelClassName, $workflowType));
         }
@@ -98,7 +98,7 @@
             assert('is_string($modelClassName)');
             assert('is_string($workflowType)');
             assert('is_string($relation)');
-            $data = array('' => Zurmo::t('WorkflowsModule', 'Select Module'));
+            $data = array('' => Zurmo::t('Core', 'Select Module'));
             return array_merge($data, ActionForWorkflowForm::getTypeRelatedModelRelationDataAndLabels($moduleClassName,
                                       $modelClassName, $workflowType, $relation));
         }
@@ -427,11 +427,10 @@
                 $(".remove-dynamic-row-link, .remove-action-row-link").live("click", function()
                 {
                     $("#' . self::ACTION_TYPE_NAME . '").val("").removeAttr("disabled");
-                    size = $(this).parents("ul").find("li").size();
-                    console.log(size);
-                    $(this).parentsUntil("ul").siblings().show();
                     $(this).parents("li").remove(); //removes the <li>
-                    if (size <= 2)
+                    $("#' . ComponentForWorkflowForm::TYPE_ACTIONS .'attributeRowsUl").children("li").show();
+                    var size = $("#' . get_class($this) . ' .dynamic-rows > ul > li").length;
+                    if (size < 1)
                     {
                         $(".' . static::getZeroComponentsClassName() . '").show();
                     }

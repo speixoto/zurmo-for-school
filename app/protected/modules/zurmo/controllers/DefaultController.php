@@ -223,7 +223,7 @@
                                        $name, $term);
             if (count($autoCompleteResults) == 0)
             {
-                $data = 'No Results Found';
+                $data = Zurmo::t('Core', 'No results found');
                 $autoCompleteResults[] = array('id'    => '',
                                                'name' => $data
                 );
@@ -433,8 +433,9 @@
             Yii::app()->end(0, false);
         }
 
-        public function actionLogo($id)
+        public function actionLogo()
         {
+            $id   = (int)ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'logoThumbFileModelId');
             $logo = FileModel::getById($id);
             header("Content-Type:   $logo->type");
             header("Content-Length: $logo->size");
@@ -487,6 +488,7 @@
         {
             echo StarredUtil::toggleModelStarStatus($modelClassName, (int) $modelId);
         }
+
         public function actionToggleDismissIntroView($moduleName, $panelId)
         {
             $value = (bool) ZurmoConfigurationUtil::getForCurrentUserByModuleName($moduleName, $panelId);

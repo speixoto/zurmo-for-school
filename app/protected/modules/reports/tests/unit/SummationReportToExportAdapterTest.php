@@ -45,6 +45,7 @@
         {
             parent::setUpBeforeClass();
             $super = SecurityTestHelper::createSuperAdmin();
+            Yii::app()->pagination->setReportResultsSubListPageSize(1);
         }
 
         public function setUp()
@@ -83,7 +84,7 @@
             $customFieldData->serializedData = serialize($values);
             $saved = $customFieldData->save();
             $this->assertTrue($saved);
-            
+
             //for fullname attribute  (derived attribute)
             $reportModelTestItem1 = new ReportModelTestItem();
             $reportModelTestItem1->firstName = 'xFirst';
@@ -104,10 +105,10 @@
             $currencyValue->currency    = $currencies[0];
             $this->assertEquals('USD', $currencyValue->currency->code);
             $reportModelTestItem1->currencyValue   = $currencyValue;
-            
+
             $reportModelTestItem1->primaryAddress->street1 = 'someString';
             $reportModelTestItem1->primaryEmail->emailAddress = "test@someString.com";
-            
+
             $customFieldValue = new CustomFieldValue();
             $customFieldValue->value = 'Multi 1';
             $reportModelTestItem1->multiDropDown->values->add($customFieldValue);
@@ -127,11 +128,11 @@
             $reportModelTestItem1->owner = Yii::app()->user->userModel;
             $saved               = $reportModelTestItem1->save();
             $this->assertTrue($saved);
-            
+
             $reportModelTestItem2 = new ReportModelTestItem();
             $reportModelTestItem2->firstName = 'xFirst';
-            $reportModelTestItem2->lastName = 'xLast';            
-            $reportModelTestItem2->boolean = true;            
+            $reportModelTestItem2->lastName = 'xLast';
+            $reportModelTestItem2->boolean = true;
             $reportModelTestItem2->date = '2013-02-14';
             $reportModelTestItem2->dateTime = '2013-02-14 23:15:00';
             $reportModelTestItem2->float = 200.5;
@@ -149,14 +150,14 @@
             $reportModelTestItem2->radioDropDown->value = $values[1];
             $reportModelTestItem2->likeContactState = $reportModelTestItem7;
             $reportModelTestItem2->owner = Yii::app()->user->userModel;
-            $saved               = $reportModelTestItem2->save();            
+            $saved               = $reportModelTestItem2->save();
             $this->assertTrue($saved);
 
             $report = new Report();
             $report->setType(Report::TYPE_SUMMATION);
             $report->setModuleClassName('ReportsTestModule');
             $report->setFiltersStructure('');
-                                                            
+
             //for date summation
             $displayAttribute1 = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
                                      Report::TYPE_SUMMATION);
@@ -304,8 +305,8 @@
             $this->assertTrue($displayAttribute20->columnAliasName == 'col19');
             $report->addDisplayAttribute($displayAttribute20);
 
-            $dataProvider       = new SummationReportDataProvider($report);            
-            $adapter            = ReportToExportAdapterFactory::createReportToExportAdapter($report, $dataProvider);              
+            $dataProvider       = new SummationReportDataProvider($report);
+            $adapter            = ReportToExportAdapterFactory::createReportToExportAdapter($report, $dataProvider);
             $compareHeaderData  = array('Date -(Max)',
                                         'Date -(Min)',
                                         'Date Time -(Max)',
@@ -338,31 +339,31 @@
                                               $reportModelTestItem1->createdDateTime,
                                               $reportModelTestItem2->modifiedDateTime,
                                               $reportModelTestItem1->modifiedDateTime,
-                                              10.5, 200.5, 211, 105.5, 
-                                              10, 1010, 1020, 510, 
+                                              10.5, 200.5, 211, 105.5,
+                                              10, 1010, 1020, 510,
                                               100, 'Mixed Currency',
-                                              100, 'Mixed Currency', 
+                                              100, 'Mixed Currency',
                                               200, 'Mixed Currency',
                                               100, 'Mixed Currency'));
-            $this->assertEquals($compareHeaderData, $adapter->getHeaderData());            
+            $this->assertEquals($compareHeaderData, $adapter->getHeaderData());
             $this->assertEquals($compareRowData, $adapter->getData());
-                                    
+
             //With drill down
             $groupBy           = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem',
                                                                 Report::TYPE_SUMMATION);
             $groupBy->attributeIndexOrDerivedType = 'firstName';
             $report->addGroupBy($groupBy);
-            
-            $drillDownDisplayAttribute1 = new DrillDownDisplayAttributeForReportForm('ReportsTestModule', 
-                                                                'ReportModelTestItem', Report::TYPE_SUMMATION);  
+
+            $drillDownDisplayAttribute1 = new DrillDownDisplayAttributeForReportForm('ReportsTestModule',
+                                                                'ReportModelTestItem', Report::TYPE_SUMMATION);
             $drillDownDisplayAttribute1->attributeIndexOrDerivedType = 'float';
             $report->addDrillDownDisplayAttribute($drillDownDisplayAttribute1);
-            $drillDownDisplayAttribute2 = new DrillDownDisplayAttributeForReportForm('ReportsTestModule', 
-                                                                'ReportModelTestItem', Report::TYPE_SUMMATION);  
+            $drillDownDisplayAttribute2 = new DrillDownDisplayAttributeForReportForm('ReportsTestModule',
+                                                                'ReportModelTestItem', Report::TYPE_SUMMATION);
             $drillDownDisplayAttribute2->attributeIndexOrDerivedType = 'integer';
             $report->addDrillDownDisplayAttribute($drillDownDisplayAttribute2);
             $dataProvider       = new SummationReportDataProvider($report);
-            $adapter            = ReportToExportAdapterFactory::createReportToExportAdapter($report, $dataProvider);                                        
+            $adapter            = ReportToExportAdapterFactory::createReportToExportAdapter($report, $dataProvider);
             $compareHeaderData  = array('Date -(Max)',
                                         'Date -(Min)',
                                         'Date Time -(Max)',
@@ -396,18 +397,18 @@
                                               $reportModelTestItem1->createdDateTime,
                                               $reportModelTestItem2->modifiedDateTime,
                                               $reportModelTestItem1->modifiedDateTime,
-                                              10.5, 200.5, 211, 105.5, 
-                                              10, 1010, 1020, 510, 
+                                              10.5, 200.5, 211, 105.5,
+                                              10, 1010, 1020, 510,
                                               100, 'Mixed Currency',
-                                              100, 'Mixed Currency', 
+                                              100, 'Mixed Currency',
                                               200, 'Mixed Currency',
                                               100, 'Mixed Currency',
                                               'xFirst'),
                                         array(null, 'Float', 'Integer'),
                                         array(null, '10.5', '10'),
                                         array(null, '200.5', '1010'));
-            $this->assertEquals($compareHeaderData, $adapter->getHeaderData());                        
-            $this->assertEquals($compareRowData, $adapter->getData());                 
-        }        
+            $this->assertEquals($compareHeaderData, $adapter->getHeaderData());
+            $this->assertEquals($compareRowData, $adapter->getData());
+        }
     }
 ?>

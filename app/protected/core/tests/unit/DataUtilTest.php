@@ -53,6 +53,14 @@
             $text = "<SCRIPT>alert('XSS')</SCRIPT>Valid text.";
             $purifiedText = DataUtil::purifyHtml($text);
             $this->assertEquals('Valid text.', $purifiedText);
+
+            $text = "|\/!'#$%&()=?«»´`~^ºª.;,<>Çéã";
+            $purifiedText = DataUtil::purifyHtml($text);
+            $this->assertEquals($text, $purifiedText);
+
+            $text = '"';
+            $purifiedText = DataUtil::purifyHtml($text);
+            $this->assertEquals($text, $purifiedText);
         }
 
         /**
@@ -117,8 +125,8 @@
                 'firstName' => 'Steve',
                 'lastName' => 'Thunder<SCRIPT>alert(\'XSS\')</SCRIPT>',
                 'boolean' => array('value' => 0),
-                'date' => '3/25/11',
-                'dateTime' => '04/05/11 5:00 AM',
+                'date' => '3/25/2011',
+                'dateTime' => '04/05/2011 5:00 AM',
                 'float' => '3.68',
                 'integer' => '10',
                 'phone' => '435655',
@@ -136,8 +144,8 @@
                 'firstName' => 'Steve',
                 'lastName' => 'Thunder',
                 'boolean' => false,
-                'date' => DateTimeUtil::resolveValueForDateDBFormatted('3/25/11'),
-                'dateTime' => DateTimeUtil::convertDateTimeLocaleFormattedDisplayToDbFormattedDateTimeWithSecondsAsZero('04/05/11 5:00 AM'),
+                'date' => DateTimeUtil::resolveValueForDateDBFormatted('3/25/2011'),
+                'dateTime' => DateTimeUtil::convertDateTimeLocaleFormattedDisplayToDbFormattedDateTimeWithSecondsAsZero('04/05/2011 5:00 AM'),
                 'float' => '3.68',
                 'integer' => '10',
                 'phone' => '435655',

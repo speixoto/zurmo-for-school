@@ -206,9 +206,9 @@
         /**
         * Get info about imap mail box
         */
-        public function getMessageBoxStats()
+        public function resolveMessageBoxStats()
         {
-            if($this->imapStream == null)
+            if ($this->imapStream == null)
             {
                 return false;
             }
@@ -306,10 +306,11 @@
         public function getMessages($searchCriteria = 'ALL', $messagesSinceTimestamp = 0)
         {
             $messages = array();
-            if($this->imapStream == null)
+            if ($this->imapStream == null)
             {
                 return $messages;
             }
+            $this->resolveMessageBoxStats();
             $messageNumbers = imap_search($this->imapStream, $searchCriteria);
             if (is_array($messageNumbers) && count($messageNumbers) > 0)
             {
@@ -330,7 +331,7 @@
          */
         public function expungeMessages()
         {
-            if($this->imapStream == null)
+            if ($this->imapStream == null)
             {
                 return false;
             }
@@ -365,7 +366,7 @@
          */
         public function deleteMessage($msgUid)
         {
-            if($this->imapStream == null)
+            if ($this->imapStream == null)
             {
                 return false;
             }
@@ -443,7 +444,7 @@
          */
         protected function getMessageUId($msgNo)
         {
-            if($this->imapStream == null)
+            if ($this->imapStream == null)
             {
                 return false;
             }
@@ -460,7 +461,7 @@
          */
         protected function mailCount($query)
         {
-            if($this->imapStream == null)
+            if ($this->imapStream == null)
             {
                 return false;
             }

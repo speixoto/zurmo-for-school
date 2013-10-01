@@ -105,6 +105,10 @@
             return $content;
         }
 
+        /**
+         * @param Notification $notification
+         * @return string
+         */
         public static function renderShortenedListViewContent(Notification $notification)
         {
             $content = strval($notification);
@@ -128,6 +132,10 @@
             return $content;
         }
 
+        /**
+         * @param Notification $notification
+         * @return string
+         */
         public static function renderListViewContent(Notification $notification)
         {
             $content = strval($notification);
@@ -204,7 +212,7 @@
             if ($notification->owner->primaryEmail->emailAddress !== null &&
                 !UserConfigurationFormAdapter::resolveAndGetValue($notification->owner, 'turnOffEmailNotifications'))
             {
-                $userToSendMessagesFrom     = BaseJobControlUserConfigUtil::getUserToRunAs();
+                $userToSendMessagesFrom     = BaseControlUserConfigUtil::getUserToRunAs();
                 $emailMessage               = new EmailMessage();
                 $emailMessage->owner        = Yii::app()->user->userModel;
                 $emailMessage->subject      = strval($notification);

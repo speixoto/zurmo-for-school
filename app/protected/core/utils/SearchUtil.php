@@ -183,7 +183,7 @@
         public static function resolveFilterByStarredFromGetArray($searchModel, $getArrayName)
         {
             $filterByStarred = static::getFilterByStarredFromGetArray($getArrayName);
-            if(isset($filterByStarred))
+            if (isset($filterByStarred))
             {
                 $searchModel->filterByStarred = $filterByStarred;
             }

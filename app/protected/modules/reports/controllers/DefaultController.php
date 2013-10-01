@@ -197,6 +197,7 @@
             ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($savedReport);
             if ($savedReport->save())
             {
+                StickyReportUtil::clearDataByKey($savedReport->id);
                 if ($explicitReadWriteModelPermissions != null)
                 {
                     ExplicitReadWriteModelPermissionsUtil::resolveExplicitReadWriteModelPermissions($savedReport,
@@ -390,23 +391,22 @@
             ControllerSecurityUtil::resolveCanCurrentUserAccessModule($savedReport->moduleClassName);
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($savedReport);
             $report                         = SavedReportToReportAdapter::makeReportBySavedReport($savedReport);
-            $dataProvider                   = $this->getDataProviderForExport($report, $report->getId(), false);            
+            $dataProvider                   = $this->getDataProviderForExport($report, $report->getId(), false);
             $totalItems                     = intval($dataProvider->calculateTotalItemCount());
-            $data                           = array();           
+            $data                           = array();
             if ($totalItems > 0)
             {
-                if ($totalItems <= ExportModule::$asynchronusThreshold)
+                if ($totalItems <= ExportModule::$asynchronousThreshold)
                 {
                     // Output csv file directly to user browser
-                    $count = count($dataProvider->getData());
                     if ($dataProvider)
-                    {                                       
-                          $reportToExportAdapter  = ReportToExportAdapterFactory::createReportToExportAdapter($report, $dataProvider);                        
-                          $headerData             = $reportToExportAdapter->getHeaderData();                          
-                          $data                   = $reportToExportAdapter->getData();                        
+                    {
+                          $reportToExportAdapter  = ReportToExportAdapterFactory::createReportToExportAdapter($report, $dataProvider);
+                          $headerData             = $reportToExportAdapter->getHeaderData();
+                          $data                   = $reportToExportAdapter->getData();
                     }
                     // Output data
-                    if ($count)
+                    if (count($data))
                     {
                         $fileName = $this->getModule()->getName() . ".csv";
                         ExportItemToCsvFileUtil::export($data, $headerData, $fileName, true);
@@ -570,11 +570,16 @@
             }
             $pageSize     = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                             'reportResultsListPageSize', get_class($this->getModule()));
-            $dataProvider = ReportDataProviderFactory::makeByReport($report, $pageSize);            
+            $dataProvider = ReportDataProviderFactory::makeByReport($report, $pageSize);
+            if (!($dataProvider instanceof MatrixReportDataProvider))
+            {
+                $totalItems = intval($dataProvider->calculateTotalItemCount());
+                $dataProvider->getPagination()->setPageSize($totalItems);
+            }
             if ($runReport)
             {
                 $dataProvider->setRunReport($runReport);
-            }            
+            }
             return $dataProvider;
         }
 

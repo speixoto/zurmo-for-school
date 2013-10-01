@@ -257,12 +257,9 @@
             {
                 $modelsImplementsStarredInterface = in_array('StarredInterface', class_implements(new $this->modelClassName()));
             }
-            if($modelsImplementsStarredInterface)
+            if ($modelsImplementsStarredInterface)
             {
-                $content .= $form->hiddenField(
-                        $model,
-                        'filterByStarred',
-                        array('class' => $form->id . '_filterByStarred'));
+                $content .= $form->hiddenField($model, 'filterByStarred', array('class' => $form->id . '_filterByStarred'));
             }
             return $content;
         }

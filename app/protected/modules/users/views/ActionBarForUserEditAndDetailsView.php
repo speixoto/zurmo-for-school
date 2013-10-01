@@ -47,6 +47,12 @@
 
         protected $activeActionElementType;
 
+        /**
+         * @param string $controllerId
+         * @param string $moduleId
+         * @param User $model
+         * @param string $activeActionElementType
+         */
         public function __construct($controllerId, $moduleId, User $model, $activeActionElementType)
         {
             assert('is_string($controllerId)');
@@ -116,7 +122,7 @@
             {
                 return false;
             }
-            if(in_array($elementInformation['type'],
+            if (in_array($elementInformation['type'],
                     array('UserEditLink', 'AuditEventsModalListLink', 'ChangePasswordLink', 'UserConfigurationLink')) &&
                 !UserAccessUtil::canCurrentUserViewALinkRequiringElevatedAccess($this->model))
             {

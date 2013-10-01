@@ -39,6 +39,10 @@
      */
     class ConversationMashableActivityRules extends MashableActivityRules
     {
+        /**
+         * @param int $relationItemId
+         * @return array
+         */
         public function resolveSearchAttributesDataByRelatedItemId($relationItemId)
         {
             assert('is_int($relationItemId)');
@@ -83,6 +87,9 @@
         /**
          * (non-PHPdoc)
          * @see MashableActivityRules::getSummaryContentTemplate()
+         * @param string $ownedByFilter
+         * @param string $viewModuleClassName
+         * @return string
          */
         public function getSummaryContentTemplate($ownedByFilter, $viewModuleClassName)
         {
@@ -95,13 +102,13 @@
                 {
                     return "<span>{modelStringContent}</span><br/>" .
                            "<span class='less-pronounced-text'>" .
-                           Zurmo::t('ConversationsModule', 'created by {ownerStringContent}') . "</span>" .
+                           Zurmo::t('ZurmoModule', 'created by {ownerStringContent}') . "</span>" .
                            "<span>{extraContent}</span><span>{relatedModelsByImportanceContent} </span>";
                 }
                 else
                 {
                     return "<span>{modelStringContent} </span><span class='less-pronounced-text'>" .
-                           Zurmo::t('ConversationsModule', 'created by {ownerStringContent}') . "</span><span>{extraContent}</span>";
+                           Zurmo::t('ZurmoModule', 'created by {ownerStringContent}') . "</span><span>{extraContent}</span>";
                 }
             }
             else
@@ -121,6 +128,8 @@
         /**
          * (non-PHPdoc)
          * @see MashableActivityRules::getLatestActivityExtraDisplayStringByModel()
+         * @param Conversation $model
+         * @return null|string
          */
         public function getLatestActivityExtraDisplayStringByModel($model)
         {

@@ -48,14 +48,14 @@
             $metadata = parent::getDefaultMetadata();
             $metadata['global']['secondToolbar'] = array(
                         'elements' => array(
-                            array('type'        => 'MarketingIntroLink',                                
+                            array('type'        => 'MarketingIntroLink',
                                   'panelId'     => 'eval:$this->introView->getPanelId()',
                                   'checked'     => 'eval:!$this->introView->isIntroViewDismissed()',
                                   'moduleName'  => 'eval:$this->introView->getModuleName()',
                                   'htmlOptions' => array('class' => 'icon-intro-change-this'), //todo: need new class name
                             ),
                         ),
-                    );               
+                    );
             return $metadata;
         }
     }

@@ -36,6 +36,9 @@
 
     class CurrencyValueRedBeanModelAttributeValueToExportValueAdapter extends RedBeanModelAttributeValueToExportValueAdapter
     {
+        /**
+         * @param array $data
+         */
         public function resolveData(& $data)
         {
             assert('$this->model->{$this->attribute} instanceof CurrencyValue');
@@ -58,8 +61,8 @@
          */
         public function resolveHeaderData(& $headerData)
         {
-            $headerData[] = $this->model->getAttributeLabel($this->attribute);
-            $headerData[] = $this->model->getAttributeLabel($this->attribute) . ' ' . Zurmo::t('ZurmoModule', 'Currency');
+            $headerData[] = $this->getLabel();
+            $headerData[] = $this->getLabel() . ' ' . Zurmo::t('ZurmoModule', 'Currency');
         }
     }
 ?>

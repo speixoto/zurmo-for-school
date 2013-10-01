@@ -45,7 +45,7 @@
 
         public function beforeAction($action)
         {
-            Yii::app()->user->userModel = BaseActionControlUserConfigUtil::getUserToRunAs();
+            Yii::app()->user->userModel = BaseControlUserConfigUtil::getUserToRunAs();
             return parent::beforeAction($action);
         }
 
@@ -137,7 +137,7 @@
             }
             else
             {
-                $members    = MarketingListMember::getByMarketingListIdContactIdAndSubscribed($marketingListId,
+                $members    = MarketingListMember::getByMarketingListIdContactIdAndUnsubscribed($marketingListId,
                                                                                                 $contact->id,
                                                                                                 $unsubscribed);
             }

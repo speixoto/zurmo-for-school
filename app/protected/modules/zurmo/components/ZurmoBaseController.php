@@ -123,7 +123,29 @@
                 GetUtil::resolveSelectedIdsFromGet(),
                 $actionBarViewClassName,
                 $activeActionElementType,
-                $introView                
+                $introView
+            );
+        }
+
+        protected function makeActionBarAndListView($listModel, $dataProvider, $actionBarViewClassName = 'ActionBarForSearchAndListView',
+                                                    $viewPrefixName = null, $activeActionElementType = null)
+        {
+            assert('is_string($actionBarViewClassName)');
+            assert('is_string($viewPrefixName) || $viewPrefixName == null');
+            assert('is_string($activeActionElementType) || $activeActionElementType == null');
+            if ($viewPrefixName == null)
+            {
+                $viewPrefixName = $this->getModule()->getPluralCamelCasedName();
+            }
+            return new ActionBarAndListView(
+                $this->getId(),
+                $this->getModule()->getId(),
+                $listModel,
+                $viewPrefixName,
+                $dataProvider,
+                GetUtil::resolveSelectedIdsFromGet(),
+                $actionBarViewClassName,
+                $activeActionElementType
             );
         }
 
@@ -746,6 +768,11 @@
             $this->redirect($urlParams);
         }
 
+        /**
+         * @param string $modelClassName
+         * @param int $id
+         * @return mixed
+         */
         protected static function getModelAndCatchNotFoundAndDisplayError($modelClassName, $id)
         {
             assert('is_string($modelClassName)');

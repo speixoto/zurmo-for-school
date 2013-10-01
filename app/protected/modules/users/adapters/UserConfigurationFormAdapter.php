@@ -86,7 +86,7 @@
             $user->hideFromSelecting   = $form->hideFromSelecting;
             $user->hideFromLeaderboard = $form->hideFromLeaderboard;
             $saved = $user->save();
-            if(!$saved)
+            if (!$saved)
             {
                 throw new FailedToSaveModelException();
             }
@@ -104,6 +104,12 @@
             Yii::app()->user->setState('subListPageSize', (int)$form->subListPageSize);
         }
 
+        /**
+         * @param User $user
+         * @param string$key
+         * @param bool $returnBoolean
+         * @return bool|configuration
+         */
         public static function resolveAndGetValue(User $user, $key, $returnBoolean = true)
         {
             assert('$user instanceOf User && $user->id > 0');
@@ -121,6 +127,10 @@
             ZurmoConfigurationUtil::setByUserAndModuleName($user, 'ZurmoModule', $key, $value);
         }
 
+        /**
+         * @param User $user
+         * @return configuration
+         */
         public static function resolveAndGetDefaultPermissionSetting(User $user)
         {
             assert('$user instanceOf User && $user->id > 0');
@@ -135,6 +145,11 @@
             }
         }
 
+        /**
+         * @param User $user
+         * @param int $value
+         * @param int $defaultPermissionSetting
+         */
         public static function setDefaultPermissionGroupSetting(User $user, $value, $defaultPermissionSetting)
         {
             assert('$value === null || is_int($value)');

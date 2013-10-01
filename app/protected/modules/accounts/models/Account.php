@@ -110,7 +110,7 @@
                     array('employees',     'type',    'type' => 'integer'),
                     array('name',          'required'),
                     array('name',          'type',    'type' => 'string'),
-                    array('name',          'length',  'min'  => 3, 'max' => 64),
+                    array('name',          'length',  'min'  => 1, 'max' => 64),
                     array('officePhone',   'type',    'type' => 'string'),
                     array('officePhone',   'length',  'min'  => 1, 'max' => 24),
                     array('officeFax',     'type',    'type' => 'string'),
@@ -194,6 +194,11 @@
                     'website'         => Zurmo::t('ZurmoModule',    'Website',  array(), null, $language),
                 )
             );
+        }
+
+        public static function hasReadPermissionsSubscriptionOptimization()
+        {
+            return true;
         }
     }
 ?>

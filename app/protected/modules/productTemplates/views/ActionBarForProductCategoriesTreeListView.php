@@ -64,7 +64,7 @@
                     ),
                     'secondToolbar' => array(
                         'elements' => array(
-                            array('type'        => 'ProductIntroLink',                                
+                            array('type'        => 'ProductIntroLink',
                                   'panelId'     => 'eval:$this->introView->getPanelId()',
                                   'checked'     => 'eval:!$this->introView->isIntroViewDismissed()',
                                   'moduleName'  => 'eval:$this->introView->getModuleName()',
@@ -82,6 +82,11 @@
             return new ProductCategory(false);
         }
 
+        /**
+         * @param ActionElement $element
+         * @param array $elementInformation
+         * @return bool
+         */
         protected function shouldRenderToolBarElement($element, $elementInformation)
         {
             assert('$element instanceof ActionElement');

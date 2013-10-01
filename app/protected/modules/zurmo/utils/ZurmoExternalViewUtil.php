@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -20,8 +20,18 @@
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU Affero General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -31,6 +41,10 @@
     {
         const EXTERNAL_SCRIPT_FILE_NAME = 'ExternalScripts.js';
 
+        /**
+         * @param View $containedView
+         * @return GridView
+         */
         public static function makeExternalViewForCurrentUser(View $containedView)
         {
             $horizontalGridView = new GridView(1, 1);
@@ -41,8 +55,14 @@
             return $verticalGridView;
         }
 
+        /**
+         * @param $rawXHtml
+         * @param bool $excludeStyles
+         * @return array
+         */
         public static function resolveHeadTag($rawXHtml, $excludeStyles = false)
         {
+            $hostInfo   = Yii::app()->getRequest()->getHostInfo();
             $dom        = new DOMDocument();
             $headBody   = array('js'    => array(),
                                 'css'   => array(),
@@ -54,15 +74,34 @@
             {
                 if ($child->nodeName == 'script' && $child->hasAttribute('src'))
                 {
-                    $headBody['js'][] = $child->getAttribute('src');
+                    if (strpos($child->getAttribute('src'), $hostInfo) === false)
+                    {
+                        $headBody['js'][] = $hostInfo . $child->getAttribute('src');
+                    }
+                    else
+                    {
+                        $headBody['js'][] = $child->getAttribute('src');
+                    }
                 }
                 elseif (!$excludeStyles && $child->nodeName == 'link' && $child->hasAttribute('rel'))
                 {
                     if ($child->getAttribute('rel') == 'stylesheet')
                     {
+                        if (strpos($child->getAttribute('href'), 'jquery-ui-timepicker-addon.css'))
+                        {
+                            $stylesheetReference = $hostInfo . $child->getAttribute('href');
+                        }
+                        elseif (strpos($child->getAttribute('href'), $hostInfo) === false)
+                        {
+                            $stylesheetReference = $hostInfo . $child->getAttribute('href');
+                        }
+                        else
+                        {
+                            $stylesheetReference = $child->getAttribute('href');
+                        }
                         $headBody['css'][] = array('rel'  => $child->getAttribute('rel'),
                                                    'type' => $child->getAttribute('type'),
-                                                   'href' => $child->getAttribute('href'));
+                                                   'href' => $stylesheetReference);
                     }
                 }
                 elseif (!$excludeStyles && $child->nodeName == 'style')
@@ -73,6 +112,10 @@
             return $headBody;
         }
 
+        /**
+         * @param $rawXHtml
+         * @return array
+         */
         public static function resolveHtmlAndScriptInBody($rawXHtml)
         {
             $dom            = new DOMDocument();
@@ -91,8 +134,13 @@
             return $htmlAndScriptTagsInBody;
         }
 
+        /**
+         * @param $bodyContent
+         * @return array
+         */
         public static function resolveScriptTagsInBody(&$bodyContent)
         {
+            $hostInfo       = Yii::app()->getRequest()->getHostInfo();
             $scriptTagNodes = $bodyContent->getElementsByTagName('script');
             $scriptTags     = array();
             foreach ($scriptTagNodes as $scriptTagNode)
@@ -101,8 +149,16 @@
                 $scriptTagDetail = array();
                 if ($scriptTagNode->hasAttribute('src'))
                 {
+                    if (strpos($scriptTagNode->getAttribute('src'), $hostInfo) === false)
+                    {
+                        $scriptSrcReference = $hostInfo . $scriptTagNode->getAttribute('src');
+                    }
+                    else
+                    {
+                        $scriptSrcReference = $scriptTagNode->getAttribute('src');
+                    }
                     $scriptTagDetail['type']    = 'file';
-                    $scriptTagDetail['src']     = $scriptTagNode->getAttribute('src');
+                    $scriptTagDetail['src']     = $scriptSrcReference;
                     $scriptTagDetail['body']    = null;
                     $scriptTags[]               = $scriptTagDetail;
                 }
@@ -117,6 +173,10 @@
             return $scriptTags;
         }
 
+        /**
+         * @param $rawXHtml
+         * @return string
+         */
         public static function resolveAndCombineScripts($rawXHtml)
         {
             $dom = new DOMDocument();
@@ -146,6 +206,10 @@
             return $rawXHtml;
         }
 
+        /**
+         * @param $path
+         * @return string
+         */
         public static function getContentsFromSource($path)
         {
             $scriptFileContents = file_get_contents($path);
@@ -156,6 +220,9 @@
             return $scriptFileContents;
         }
 
+        /**
+         * @param $dom
+         */
         public static function removeScriptTagSrcNodes(&$dom)
         {
             $scriptTags   = $dom->getElementsByTagName('script');
@@ -212,6 +279,11 @@
             $scriptPathRelativeToAssets = substr($scriptSrcPath, strpos($scriptSrcPath, 'assets') + 6);
             $scriptFullPath             = $assetsBasePath . $scriptPathRelativeToAssets;
             return $scriptFullPath;
+        }
+
+        public static function resolveExternalRequestHeader()
+        {
+            header('Access-Control-Allow-Origin: *');
         }
     }
 ?>

@@ -62,7 +62,7 @@
          * @var boolean
          */
         protected $listViewRowsAreSelectable;
-        
+
         /**
          * If set an intro view will be rendered
          * @var null|IntroView

@@ -136,7 +136,7 @@
             $pageSize       = Yii::app()->pagination->resolveActiveForCurrentUserByType('subListPageSize');
             $sortAttribute  = SearchUtil::resolveSortAttributeFromGetArray($this->modelClassName);
             $sortDescending =  SearchUtil::resolveSortDescendingFromGetArray($this->modelClassName);
-            return new RedBeanModelDataProvider( $this->modelClassName, $sortAttribute, $sortDescending,
+            return new RedBeanModelDataProvider( $this->modelClassName, $sortAttribute, (bool)$sortDescending,
                                                                 $searchAttributeData, array(
                                                                     'pagination' => array(
                                                                         'pageSize' => $pageSize,
@@ -298,6 +298,13 @@
         public static function allowMultiplePlacement()
         {
             return false;
+        }
+
+        /**
+         * Override to add a description for the view to be shown when adding a portlet
+         */
+        public static function getPortletDescription()
+        {
         }
     }
 ?>

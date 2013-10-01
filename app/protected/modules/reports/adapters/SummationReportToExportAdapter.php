@@ -38,19 +38,19 @@
      * Helper class used to convert summationReport models into arrays
      */
     class SummationReportToExportAdapter extends ReportToExportAdapter
-    {        
+    {
         protected function makeData()
-        {                        
-            if($this->rowsAreExpandable())
+        {
+            if ($this->rowsAreExpandable())
             {
                 $this->makeDataWithExpandableRows();
             }
-            else 
+            else
             {
                 parent::makeData();
             }
         }
-        
+
         protected function rowsAreExpandable()
         {
             if (count($this->dataProvider->getReport()->getDrillDownDisplayAttributes()) > 0)
@@ -59,39 +59,41 @@
             }
             return false;
         }
-        
+
         protected function makeDataWithExpandableRows()
-        {            
+        {
             foreach ($this->dataForExport as $reportResultsRowData)
-            {                
+            {
                 $data             = array();
-                $this->headerData = array();                
+                $this->headerData = array();
                 foreach ($reportResultsRowData->getDisplayAttributes() as $key => $displayAttribute)
-                {                                    
-                    $resolvedAttributeName = $displayAttribute->resolveAttributeNameForGridViewColumn($key);                    
+                {
+                    $resolvedAttributeName = $displayAttribute->resolveAttributeNameForGridViewColumn($key);
                     $className             = $this->resolveExportClassNameForReportToExportValueAdapter($displayAttribute);
                     $params                = array();
                     $this->resolveParamsForCurrencyTypes($displayAttribute, $params);
                     $adapter = new $className($reportResultsRowData, $resolvedAttributeName, $params);
                     $adapter->resolveData($data);
-                    $adapter->resolveHeaderData($this->headerData);                                            
-                }                                
-                $this->data[] = $data;                                
-                $report = clone($this->report);                    
-                $report->resolveGroupBysAsFilters($reportResultsRowData->getDataParamsForDrillDownAjaxCall());                
+                    $adapter->resolveHeaderData($this->headerData);
+                }
+                $this->data[] = $data;
+                $report = clone($this->report);
+                $report->resolveGroupBysAsFilters($reportResultsRowData->getDataParamsForDrillDownAjaxCall());
                 $this->resolveDrillDownDetailsData($report);
-            }            
+            }
         }
-        
+
         protected function resolveDrillDownDetailsData($report)
-        {            
+        {
             $pageSize               = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                                             'reportResultsSubListPageSize', $report->getModuleClassName());
             $dataProvider           = ReportDataProviderFactory::makeForSummationDrillDown($report, $pageSize);
-            $reportToExportAdapter  = ReportToExportAdapterFactory::createReportToExportAdapter($report, $dataProvider);                        
-            $drillDownHeaderData    = $reportToExportAdapter->getHeaderData();                          
-            $drillDownData          = $reportToExportAdapter->getData();       
-            $this->data[]           = array_merge(array(null), $drillDownHeaderData);            
+            $totalItems = intval($dataProvider->calculateTotalItemCount());
+            $dataProvider->getPagination()->setPageSize($totalItems);
+            $reportToExportAdapter  = ReportToExportAdapterFactory::createReportToExportAdapter($report, $dataProvider);
+            $drillDownHeaderData    = $reportToExportAdapter->getHeaderData();
+            $drillDownData          = $reportToExportAdapter->getData();
+            $this->data[]           = array_merge(array(null), $drillDownHeaderData);
             if (!empty($drillDownData))
             {
                 foreach ($drillDownData as $row)

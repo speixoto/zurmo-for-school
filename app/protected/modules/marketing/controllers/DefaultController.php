@@ -77,7 +77,7 @@
                                             $pageVar,
                                             false,
                                             'MarketingDashboardLink',
-                                            $introView);                        
+                                            $introView);
             $marketingDashboardView  = new MarketingDashboardView(
                                             $this->getId(),
                                             $this->getModule()->getId(),
@@ -86,7 +86,7 @@
             $marketingDashboardView->setCssClasses( array( 'clearfix' ) );
 
             $gridView                = new GridView(2, 1);
-            $gridView->setView($actionBarView, 0, 0);            
+            $gridView->setView($actionBarView, 0, 0);
             $gridView->setView($marketingDashboardView, 1, 0);
             $breadcrumbLinks         = static::getDashboardBreadcrumbLinks();
             $view                    = new MarketingPageView(MarketingDefaultViewUtil::

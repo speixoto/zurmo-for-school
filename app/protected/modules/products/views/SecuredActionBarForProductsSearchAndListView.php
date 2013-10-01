@@ -80,7 +80,7 @@
                     ),
                     'secondToolbar' => array(
                         'elements' => array(
-                            array('type'        => 'ProductIntroLink',                                
+                            array('type'        => 'ProductIntroLink',
                                   'panelId'     => 'eval:$this->introView->getPanelId()',
                                   'checked'     => 'eval:!$this->introView->isIntroViewDismissed()',
                                   'moduleName'  => 'eval:$this->introView->getModuleName()',

@@ -49,7 +49,7 @@
             if (is_string($value))
             {
                 return in_array($operatorType, array('startsWith', 'endsWith', 'equals', 'doesNotEqual', 'contains',
-                                                     'doesNotContains', 'doesNotStartsWith', 'doesNotEndsWith', 
+                                                     'doesNotContains', 'doesNotStartsWith', 'doesNotEndsWith',
                                                      'lessThan', 'greaterThan', 'greaterThanOrEqualTo',
                                                      'lessThanOrEqualTo'));
             }
@@ -91,16 +91,16 @@
 
                     case 'doesNotStartsWith' :
                         return 'not like';
-                        
+
                     case 'endsWith' :
                         return 'like';
-                        
+
                     case 'doesNotEndsWith' :
                         return 'not like';
 
                     case 'contains' :
                         return 'like';
-                        
+
                     case 'doesNotContains' :
                         return 'not like';
 

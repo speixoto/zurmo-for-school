@@ -59,10 +59,10 @@
             $actionBarView       = new $actionBarViewClassName($controllerId, $moduleId, $listModel,
                                                                $listView->getGridViewId(),
                                                                $dataProvider->getPagination()->pageVar,
-                                                               $listView->getRowsAreSelectable(), 
+                                                               $listView->getRowsAreSelectable(),
                                                                $activeActionElementType,
                                                                $introView);
-            
+
             parent::__construct(3, 1);
             $this->setView($actionBarView, 0, 0);
             $this->setView($searchView, 1, 0);

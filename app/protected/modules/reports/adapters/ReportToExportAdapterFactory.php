@@ -38,15 +38,15 @@
      * Helper class to make ReportToExportAdapter object
      */
     class ReportToExportAdapterFactory
-    {        
+    {
         public static function createReportToExportAdapter(
-                                    Report $report, 
+                                    Report $report,
                                     ReportDataProvider $dataProvider)
-        {            
+        {
             $dataProviderClassName = get_class($dataProvider);
             if ($dataProviderClassName == 'SummationDrillDownReportDataProvider')
             {
-                $className = 'SummationDrillDownReportToExportAdapter';                
+                $className = 'SummationDrillDownReportToExportAdapter';
             }
             else
             {

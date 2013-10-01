@@ -586,7 +586,7 @@
             $user->lastName     = 'User';
             $user->setPassword($password);
             $saved = $user->save();
-            if(!$saved)
+            if (!$saved)
             {
                 throw new FailedToSaveModelException();
             }
@@ -594,11 +594,29 @@
             $group = Group::getByName(Group::SUPER_ADMINISTRATORS_GROUP_NAME);
             $group->users->add($user);
             $saved = $group->save();
-            if(!$saved)
+            if (!$saved)
             {
                 throw new FailedToSaveModelException();
             }
             return $user;
+        }
+
+        /**
+         * creates user account to be used in backend tasks such as actions and jobs
+         * @return User
+         */
+        public static function createBaseControlUserConfigUtilUserAccount()
+        {
+            return static::createSystemUser(BaseControlUserConfigUtil::USERNAME);
+        }
+
+        /**
+         * generates a random password for system user accounts.
+         * @return string
+         */
+        public static function generateRandomPasswordForSystemUser()
+        {
+            return md5(time() . mt_rand(1, 10000));
         }
 
         /**
@@ -609,8 +627,12 @@
          * @return User
          * @throws FailedToSaveModelException
          */
-        public static function createSystemUser($username, $password)
+        public static function createSystemUser($username, $password = null)
         {
+            if (!isset($password))
+            {
+                $password = static::generateRandomPasswordForSystemUser();
+            }
             $user = new User();
             $user->username            = $username;
             $user->firstName           = 'System';
@@ -620,7 +642,7 @@
             $user->setIsSystemUser();
             $user->setPassword($password);
             $saved = $user->save();
-            if(!$saved)
+            if (!$saved)
             {
                 throw new FailedToSaveModelException();
             }
@@ -628,14 +650,14 @@
             $user->setRight('UsersModule', UsersModule::RIGHT_LOGIN_VIA_WEB,     Right::DENY);
             $user->setRight('UsersModule', UsersModule::RIGHT_LOGIN_VIA_WEB_API, Right::DENY);
             $saved = $user->save();
-            if(!$saved)
+            if (!$saved)
             {
                 throw new FailedToSaveModelException();
             }
             $group = Group::getByName(Group::SUPER_ADMINISTRATORS_GROUP_NAME);
             $group->users->add($user);
             $saved = $group->save();
-            if(!$saved)
+            if (!$saved)
             {
                 throw new FailedToSaveModelException();
             }
@@ -673,6 +695,7 @@
             RedBeanDatabaseBuilderUtil::autoBuildModels($rootModels, $messageLogger);
             ZurmoDatabaseCompatibilityUtil::createIndexes();
             StarredUtil::createStarredTables();
+            ReadPermissionsSubscriptionUtil::buildTables();
         }
 
         /**
@@ -985,6 +1008,8 @@
             $messageStreamer->add(Zurmo::t('InstallModule', 'Database schema creation complete.'));
             $messageStreamer->add(Zurmo::t('InstallModule', 'Rebuilding Permissions.'));
             ReadPermissionsOptimizationUtil::rebuild();
+            $messageStreamer->add(Zurmo::t('InstallModule', 'Rebuilding Read Permissions Subscription tables.'));
+            ReadPermissionsSubscriptionUtil::buildTables();
             $messageStreamer->add(Zurmo::t('InstallModule', 'Freezing database.'));
             InstallUtil::freezeDatabase();
             $messageStreamer->add(Zurmo::t('InstallModule', 'Writing Configuration File.'));
@@ -1007,7 +1032,7 @@
                                             $form->submitCrashToSentry);
             $messageStreamer->add(Zurmo::t('InstallModule', 'Setting up default data.'));
             DefaultDataUtil::load($messageLogger);
-            InstallUtil::createSystemUser('system', md5(time() . mt_rand(1,10000)));
+            static::createBaseControlUserConfigUtilUserAccount();
             Yii::app()->custom->runAfterInstallationDefaultDataLoad($messageLogger);
 
             // Send notification to super admin to delete test.php file in case if this

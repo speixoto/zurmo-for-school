@@ -47,6 +47,6 @@
          * Used to identify the active action for the action bar elements
          * @var mixed null or string
          */
-        protected $activeActionElementType;        
+        protected $activeActionElementType;
     }
 ?>

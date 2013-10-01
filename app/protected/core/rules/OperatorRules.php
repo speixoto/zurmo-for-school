@@ -44,15 +44,15 @@
         const TYPE_DOES_NOT_EQUAL                 = 'doesNotEqual';
 
         const TYPE_STARTS_WITH                    = 'startsWith';
-        
+
         const TYPE_DOES_NOT_STARTS_WITH           = 'doesNotStartsWith';
 
         const TYPE_ENDS_WITH                      = 'endsWith';
-        
+
         const TYPE_DOES_NOT_ENDS_WITH             = 'doesNotEndsWith';
 
         const TYPE_CONTAINS                       = 'contains';
-        
+
         const TYPE_DOES_NOT_CONTAINS              = 'doesNotContains';
 
         const TYPE_GREATER_THAN_OR_EQUAL_TO       = 'greaterThanOrEqualTo';

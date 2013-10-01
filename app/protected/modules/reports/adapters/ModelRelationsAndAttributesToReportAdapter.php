@@ -155,7 +155,7 @@
         {
             return get_class($this->model);
         }
-        
+
         /**
          * @return string
          */
