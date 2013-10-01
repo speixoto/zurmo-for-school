@@ -129,6 +129,7 @@ if(typeof window.jQQ !== 'object'){
 			requireCSS(cssFiles, 0, function(){
                 var element = document.getElementById("zurmoExternalWebForm");
                 var e = document.createElement('div');
+                var isCaptchaEnabled = false;
                 e.innerHTML = respData.body.html;
 				var bodyJs = respData.body.js;
                 while(e.firstChild)
@@ -145,7 +146,15 @@ if(typeof window.jQQ !== 'object'){
 					}
 					if (bodyJs[bodyJsIndex].type == 'codeBlock')
 					{
-						jsScriptElement.innerHTML = "jQQ.isolate (function(jQuery,$) { " + bodyJs[bodyJsIndex].body + " }); enableCaptcha();";
+                        if (isCaptchaEnabled == false && respData.body.enableCaptcha == true)
+                        {
+                            isCaptchaEnabled = true;
+                            jsScriptElement.innerHTML = "jQQ.isolate (function(jQuery,$) { " + bodyJs[bodyJsIndex].body + " }); enableCaptcha();";
+                        }
+                        else
+                        {
+                            jsScriptElement.innerHTML = "jQQ.isolate (function(jQuery,$) { " + bodyJs[bodyJsIndex].body + " });";
+                        }
 					}
 					jsScriptElement.async = false;
                     element.appendChild(jsScriptElement);

@@ -77,6 +77,7 @@
                     'submitButtonLabel' => Zurmo::t('ContactWebFormsModule', 'Submit Button Label',  array(), null, $language),
                     'defaultState'      => Zurmo::t('ContactWebFormsModule', 'Default Status',  array(), null, $language),
                     'excludeStyles'     => Zurmo::t('ContactWebFormsModule', 'Exclude Styles',  array(), null, $language),
+                    'enableCaptcha'     => Zurmo::t('ContactWebFormsModule', 'Enable Captcha',  array(), null, $language),
                     'language'          => Zurmo::t('ZurmoModule',           'Language',        array(), null, $language),
                 )
             );
@@ -129,6 +130,7 @@
                     'submitButtonLabel',
                     'serializedData',
                     'excludeStyles',
+                    'enableCaptcha',
                     'language',
                 ),
                 'relations' => array(
@@ -153,6 +155,8 @@
                     array('defaultOwner',      'required'),
                     array('excludeStyles',     'type', 'type' => 'boolean'),
                     array('excludeStyles',     'default', 'value' => 0),
+                    array('enableCaptcha',     'type', 'type' => 'boolean'),
+                    array('enableCaptcha',     'default', 'value' => 0),
                     array('language',          'type',    'type'  => 'string'),
                     array('language',          'length',  'max'   => 10),
                 ),

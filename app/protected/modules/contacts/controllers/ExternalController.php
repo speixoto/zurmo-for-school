@@ -36,6 +36,10 @@
 
     class ContactsExternalController extends ZurmoModuleController
     {
+        const CAPTCHA_PRIVATE_KEY = '6Ldjl-cSAAAAADl8S7o0UMO8eACcXK9jTb56AnB0';
+
+        const CAPTCHA_VERIFY_URL  = 'http://www.google.com/recaptcha/api/verify';
+
         public function filters()
         {
             return array();
@@ -125,6 +129,14 @@
             $combinedHtml                            = array();
             $combinedHtml['head']                    = ZurmoExternalViewUtil::resolveHeadTag($rawXHtml, $excludeStyles);
             $combinedHtml['body']                    = ZurmoExternalViewUtil::resolveHtmlAndScriptInBody($rawXHtml);
+            if (isset($contactWebForm->enableCaptcha) && $contactWebForm->enableCaptcha == true)
+            {
+                $combinedHtml['enableCaptcha']       = true;
+            }
+            else
+            {
+                $combinedHtml['enableCaptcha']       = false;
+            }
             $response = 'renderFormCallback('. CJSON::encode($combinedHtml) . ');';
             $this->renderResponse($response);
         }
@@ -133,33 +145,45 @@
         {
             if (isset($_POST['ajax']) && $_POST['ajax'] == 'edit-form')
             {
-                if (!empty($_POST['captchaHash']) && $_POST['captchaHash'] == md5('ContactWebFormModelForm' . ZURMO_TOKEN))
+                if (isset($contactWebForm->enableCaptcha) && $contactWebForm->enableCaptcha == true)
                 {
-                    $contact        = new Contact();
-                    $contact->state = $contactWebForm->defaultState;
-                    $contact->owner = $contactWebForm->defaultOwner;
-                    $customRequiredFields = ContactWebFormsUtil::getCustomRequiredFields($contactWebForm);
-                    $contactWebFormModelForm = new ContactWebFormsModelForm($contact);
-                    $contactWebFormModelForm->setCustomRequiredFields($customRequiredFields);
-                    $postVariableName = get_class($contactWebFormModelForm);
-                    $contact->setAttributes($_POST[$postVariableName]);
-                    $this->resolveContactWebFormEntry($contactWebForm, $contactWebFormModelForm);
-                    if ($contactWebFormModelForm->validate())
+                    if (!empty($_POST['captchaHash']) && $_POST['captchaHash'] == md5('ContactWebFormModelForm' . ZURMO_TOKEN))
                     {
-                        $response = CJSON::encode(array());
+                        $this->validateContact($contactWebForm);
                     }
                     else
                     {
-                        $errorData = ZurmoActiveForm::makeErrorsDataAndResolveForOwnedModelAttributes($contactWebFormModelForm);
-                        $response = CJSON::encode($errorData);
+                        throw new NotSupportedException();
                     }
-                    $this->renderResponse($response);
                 }
                 else
                 {
-                    throw new NotSupportedException();
+                    $this->validateContact($contactWebForm);
                 }
             }
+        }
+
+        protected function validateContact($contactWebForm)
+        {
+            $contact        = new Contact();
+            $contact->state = $contactWebForm->defaultState;
+            $contact->owner = $contactWebForm->defaultOwner;
+            $customRequiredFields = ContactWebFormsUtil::getCustomRequiredFields($contactWebForm);
+            $contactWebFormModelForm = new ContactWebFormsModelForm($contact);
+            $contactWebFormModelForm->setCustomRequiredFields($customRequiredFields);
+            $postVariableName = get_class($contactWebFormModelForm);
+            $contact->setAttributes($_POST[$postVariableName]);
+            $this->resolveContactWebFormEntry($contactWebForm, $contactWebFormModelForm);
+            if ($contactWebFormModelForm->validate())
+            {
+                $response = CJSON::encode(array());
+            }
+            else
+            {
+                $errorData = ZurmoActiveForm::makeErrorsDataAndResolveForOwnedModelAttributes($contactWebFormModelForm);
+                $response = CJSON::encode($errorData);
+            }
+            $this->renderResponse($response);
         }
 
         protected function resolveContactWebFormEntry($contactWebForm, $contact)
@@ -264,7 +288,7 @@
             if (isset($_POST['recaptcha_response_field']))
             {
                 $data               = array();
-                $data['privatekey'] = '6Ldjl-cSAAAAADl8S7o0UMO8eACcXK9jTb56AnB0';
+                $data['privatekey'] = static::CAPTCHA_PRIVATE_KEY;
                 $data['remoteip']   = $_SERVER['REMOTE_ADDR'];
                 $data['challenge']  = $_POST['recaptcha_challenge_field'];
                 $data['response']   = $_POST['recaptcha_response_field'];
@@ -275,7 +299,7 @@
                 }
                 rtrim($fields, '&');
                 $post     = curl_init();
-                curl_setopt($post, CURLOPT_URL, 'http://www.google.com/recaptcha/api/verify');
+                curl_setopt($post, CURLOPT_URL, static::CAPTCHA_VERIFY_URL);
                 curl_setopt($post, CURLOPT_POST, count($data));
                 curl_setopt($post, CURLOPT_POSTFIELDS, $fields);
                 curl_setopt($post, CURLOPT_RETURNTRANSFER, 1);
