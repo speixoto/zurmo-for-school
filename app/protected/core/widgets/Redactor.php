@@ -90,7 +90,6 @@
                                 source:         {$this->source},
                                 paragraphy:     {$this->paragraphy},
                                 wym:            {$this->wym},
-                                tidyHtml: false,
                             });
                         }
                     );";
