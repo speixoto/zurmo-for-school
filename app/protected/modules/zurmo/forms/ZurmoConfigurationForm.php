@@ -45,6 +45,8 @@
         public $subListPageSize;
         public $modalListPageSize;
         public $dashboardListPageSize;
+        public $defaultFromEmailAddress;
+        public $defaultTestToEmailAddress;
         public $gamificationModalNotificationsEnabled;
         public $realtimeUpdatesEnabled;
         public $logoFileData;
@@ -73,6 +75,10 @@
                 array('dashboardListPageSize',                  'required'),
                 array('dashboardListPageSize',                  'type',      'type' => 'integer'),
                 array('dashboardListPageSize',                  'numerical', 'min' => 1),
+                array('defaultFromEmailAddress',                'email'),
+                array('defaultFromEmailAddress',                'required'),
+                array('defaultTestToEmailAddress',              'email'),
+                array('defaultTestToEmailAddress',              'required'),
                 array('gamificationModalNotificationsEnabled',  'boolean'),
                 array('realtimeUpdatesEnabled',                 'boolean'),
                 array('subListPageSize',                        'type',      'type' => 'integer'),
@@ -89,6 +95,8 @@
                 'subListPageSize'                        => Zurmo::t('ZurmoModule', 'Sublist page size'),
                 'modalListPageSize'                      => Zurmo::t('ZurmoModule', 'Popup list page size'),
                 'dashboardListPageSize'                  => Zurmo::t('ZurmoModule', 'Dashboard portlet list page size'),
+                'defaultFromEmailAddress'                => Zurmo::t('ZurmoModule', 'Default From Email Address'),
+                'defaultTestToEmailAddress'              => Zurmo::t('ZurmoModule', 'Default Test To Email Address'),
                 'gamificationModalNotificationsEnabled'  => Zurmo::t('ZurmoModule', 'Enable game notification popup'),
                 'realtimeUpdatesEnabled'                 => Zurmo::t('ZurmoModule', 'Enable real-time updates'),
             );

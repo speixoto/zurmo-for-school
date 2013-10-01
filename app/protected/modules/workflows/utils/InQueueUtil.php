@@ -46,11 +46,11 @@
                 $relatedModel = self::resolveModel($model);
                 $modelContent = self::resolveModelContent($relatedModel);
             }
-            catch(AccessDeniedSecurityException $e)
+            catch (AccessDeniedSecurityException $e)
             {
                 $modelContent = Zurmo::t('ZurmoModule', 'Restricted');
             }
-            catch(NotFoundException $e)
+            catch (NotFoundException $e)
             {
                 $modelContent = Zurmo::t('ZurmoModule', 'Record no longer exists');
             }
