@@ -336,7 +336,8 @@
             $sendFromAddressId        = TextElement::resolveInputIdPrefixIntoString(
                                         array_merge($inputPrefixData, array('sendFromAddress')));
             Yii::app()->clientScript->registerScript('emailMessageSendFromTypeHelper' . $sendFromTypeSelectId, "
-                if ($('#" . $sendFromTypeSelectId . "').val() == '" . EmailMessageForWorkflowForm::SEND_FROM_TYPE_DEFAULT . "')
+                if ($('#" . $sendFromTypeSelectId . "').val() == '" . EmailMessageForWorkflowForm::SEND_FROM_TYPE_DEFAULT . "' ||
+                    $('#" . $sendFromTypeSelectId . "').val() == '" . EmailMessageForWorkflowForm::SEND_FROM_TYPE_TRIGGERED_MODEL_OWNER . "')
                 {
                     $('#" . $sendFromNameId . "').parentsUntil('tr').parent().hide();
                     $('#" . $sendFromAddressId . "').parentsUntil('tr').parent().hide();

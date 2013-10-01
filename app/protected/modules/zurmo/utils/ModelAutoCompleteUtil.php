@@ -139,7 +139,7 @@
 
         protected static function makeNoResultsFoundResultsData()
         {
-            return array('href' => '', 'label' => Zurmo::t('ZurmoModule', 'No Results Found'), 'iconClass' => '');
+            return array('href' => '', 'label' => Zurmo::t('Core', 'No Results Found'), 'iconClass' => '');
         }
 
         protected static function makeModelResultsData(RedBeanModel $model)
