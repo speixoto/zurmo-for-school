@@ -150,27 +150,44 @@
         {
             if ($attributeName == 'owner')
             {
-                $this->checkPermissionsHasAnyOf(Permission::CHANGE_OWNER);
-                $this->isSetting = true;
-                try
-                {
-                    if (!$this->isSaving)
-                    {
-                        AuditUtil::saveOriginalAttributeValue($this, $attributeName, $value);
-                    }
-                    parent::unrestrictedSet($attributeName, $value);
-                    $this->isSetting = false;
-                }
-                catch (Exception $e)
-                {
-                    $this->isSetting = false;
-                    throw $e;
-                }
+                $this->triggerPreOwnerChange($value);
+                $this->triggerOwnerChange($value);
+                $this->triggerPostOwnerChange($value);
             }
             else
             {
                 parent::__set($attributeName, $value);
             }
+        }
+
+        protected function triggerPreOwnerChange($newOwnerValue)
+        {
+
+        }
+
+        protected function triggerOwnerChange($newOwnerValue)
+        {
+            $this->checkPermissionsHasAnyOf(Permission::CHANGE_OWNER);
+            $this->isSetting = true;
+            try
+            {
+                if (!$this->isSaving)
+                {
+                    AuditUtil::saveOriginalAttributeValue($this, 'owner', $newOwnerValue);
+                }
+                parent::unrestrictedSet('owner', $newOwnerValue);
+                $this->isSetting = false;
+            }
+            catch (Exception $e)
+            {
+                $this->isSetting = false;
+                throw $e;
+            }
+        }
+
+        protected function triggerPostOwnerChange($newOwnerValue)
+        {
+
         }
 
         protected function afterSave()
