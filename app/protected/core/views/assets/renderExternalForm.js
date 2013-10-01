@@ -146,7 +146,7 @@ if(typeof window.jQQ !== 'object'){
 					}
 					if (bodyJs[bodyJsIndex].type == 'codeBlock')
 					{
-                        if (isCaptchaEnabled == false && respData.body.enableCaptcha == true)
+                        if (isCaptchaEnabled == false && respData.enableCaptcha == true)
                         {
                             isCaptchaEnabled = true;
                             jsScriptElement.innerHTML = "jQQ.isolate (function(jQuery,$) { " + bodyJs[bodyJsIndex].body + " }); enableCaptcha();";

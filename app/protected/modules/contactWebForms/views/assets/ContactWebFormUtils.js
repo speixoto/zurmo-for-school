@@ -8,7 +8,9 @@ $("[id^='ContactWebForm_serializedData_']").live('change', function()
         $(this).closest('div').remove();
         var attributeElement = '<li><div class="dynamic-row"><div>';
         attributeElement    += '<input class="webform-chosen-field" type="text" id="placedAttribute_' + attributeId + '" name="placedAttribute[' + attributeId + '][label]" value="' + attributeLabel + '" />';
-        attributeElement    += '<input type="checkbox" name="placedAttribute[' + attributeId + '][required]" value="1"/> Required?</div>';
+        attributeElement    += '<input type="checkbox" name="placedAttribute[' + attributeId + '][required]" value="1"/> Required?';
+        attributeElement    += '<input class="hiddenAttribute" id="placedAttribute_hidden_' + attributeId + '" type="checkbox" name="placedAttribute[' + attributeId + '][hidden]" value="' + attributeId + '"/> Hidden?';
+        attributeElement    += '<input type="text" style="display: none;" id="placedAttribute_hiddenValue_' + attributeId + '" name="placedAttribute[' + attributeId + '][hiddenValue]" value="" /></div>';
         attributeElement    += '<a class="remove-dynamic-row-link" id="' + elementId + '" data-value="' + attributeId + '" href="#">—</a>';
         attributeElement    += '</div></li>';
         $('ul#yw1').append(attributeElement);
@@ -24,4 +26,15 @@ $('.remove-dynamic-row-link').live('click', function(){
     attributeElement    += ' name=\'ContactWebForm[serializedData][]\'></label></label><label for=\'' + elementId + '\'>' + attributeLabel + '</label></div>';
     $('span#ContactWebForm_serializedData').append(attributeElement);
     return false;
+});
+$('.hiddenAttribute').live('change', function(){
+    var attributeId = $(this).val();
+    if ($(this).is(':checked'))
+    {
+        $('#placedAttribute_hiddenValue_' + attributeId).show();
+    }
+    else
+    {
+        $('#placedAttribute_hiddenValue_' + attributeId).hide();
+    }
 });
