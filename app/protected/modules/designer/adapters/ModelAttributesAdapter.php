@@ -82,15 +82,21 @@
                     {
                         $isAudited = false;
                     }
+
                     $customFieldName = null;
-                    foreach ($modelMetadata as $modelClassName => $modelClassMetadata)
+                    if ($this->model->isRelation($attributeName) &&
+                        $this->model->{$attributeName} instanceof BaseCustomField)
                     {
-                        if (isset($modelMetadata[$modelClassName]['customFields']) &&
-                            isset($modelMetadata[$modelClassName]['customFields'][$attributeName]))
+                        foreach ($modelMetadata as $modelClassName => $modelClassMetadata)
                         {
-                            $customFieldName = $modelMetadata[$modelClassName]['customFields'][$attributeName];
+                            if (isset($modelMetadata[$modelClassName]['customFields']) &&
+                                isset($modelMetadata[$modelClassName]['customFields'][$attributeName]))
+                            {
+                                $customFieldName = $modelMetadata[$modelClassName]['customFields'][$attributeName];
+                            }
                         }
                     }
+
                     ModelAttributeCollectionUtil::populateCollection(
                         $attributes,
                         $attributeName,

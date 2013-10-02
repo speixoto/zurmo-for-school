@@ -62,7 +62,7 @@
             assert('is_bool($isRequired)');
             assert('is_bool($isReadOnly)');
             assert('is_bool($isAudited)');
-            assert('is_string($customFieldName)  && $customFieldName != null');
+            assert('is_string($customFieldName)  || $customFieldName == null');
 
             $collection[$attributeName] = array(
                 'attributeLabel'  => $attributeLabel,
