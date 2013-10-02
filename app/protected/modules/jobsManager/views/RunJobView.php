@@ -39,13 +39,13 @@
      */
     class RunJobView extends View
     {
-        private $controllerId;
+        protected $controllerId;
 
-        private $moduleId;
+        protected $moduleId;
 
-        private $type;
+        protected $type;
 
-        private $timeLimit;
+        protected $timeLimit;
 
         /**
          * @param string $controllerId
