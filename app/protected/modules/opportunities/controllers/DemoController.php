@@ -53,7 +53,7 @@
             DesignerTestHelper::createRadioDropDownAttribute      ('radioDropDown', false, 'Opportunity');
             DesignerTestHelper::createUrlAttribute                ('url', false, 'Opportunity');
         }
-        
+
         //Load opportunity for functional testing of mass delete
         public function actionLoadOpportunitiesSampler()
         {
@@ -61,11 +61,11 @@
             {
                 throw new NotSupportedException();
             }
-            
+
             for ($i = 0; $i < 11; $i++)
             {
                 $owner                      = Yii::app()->user->userModel;
-                $name                       = 'Mass Delete '.$i;
+                $name                       = 'Mass Delete '. $i;
                 $currencies                 = Currency::getAll();
                 $currencyValue              = new CurrencyValue();
                 $currencyValue->value       = 500.54;
