@@ -302,7 +302,6 @@
                 'ZURMO_API_REQUEST_TYPE: REST',
             );
             $allAttributes      = ApiRestTestHelper::getModelAttributes(new Account());
-
             $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/accounts/account/api/listAttributes/' , 'GET', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);

@@ -68,6 +68,7 @@
                 $this->model->getAttributeLabel('id'),
                 'Text'
             );
+            $modelMetadata = $this->model->getMetadata();
             foreach ($this->model->attributeNames() as $attributeName)
             {
                 if (!$this->model->isRelation($attributeName) ||
@@ -81,6 +82,15 @@
                     {
                         $isAudited = false;
                     }
+                    $customFieldName = null;
+                    foreach ($modelMetadata as $modelClassName => $modelClassMetadata)
+                    {
+                        if (isset($modelMetadata[$modelClassName]['customFields']) &&
+                            isset($modelMetadata[$modelClassName]['customFields'][$attributeName]))
+                        {
+                            $customFieldName = $modelMetadata[$modelClassName]['customFields'][$attributeName];
+                        }
+                    }
                     ModelAttributeCollectionUtil::populateCollection(
                         $attributes,
                         $attributeName,
@@ -88,7 +98,8 @@
                         ModelAttributeToDesignerTypeUtil::getDesignerType($this->model, $attributeName),
                         $this->model->isAttributeRequired($attributeName),
                         $this->model->isAttributeReadOnly($attributeName),
-                        $isAudited
+                        $isAudited,
+                        $customFieldName
                     );
                 }
             }
