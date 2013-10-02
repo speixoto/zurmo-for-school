@@ -124,7 +124,7 @@
             $groups = ExplicitReadWriteModelPermissionsElement::getSelectableGroupsData();
             foreach ($groups as $id => $name)
             {
-                $data[$id]  = Zurmo::t('Zurmo', 'Owner and users in {groupName}', array('{groupName}' => $name));
+                $data[$id]  = Zurmo::t('ZurmoModule', 'Owner and users in {groupName}', array('{groupName}' => $name));
             }
             $data[self::TYPE_DYNAMIC_EVERYONE_GROUP]          = Zurmo::t('ZurmoModule', 'Everyone');
             return $data;
