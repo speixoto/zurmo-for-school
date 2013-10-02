@@ -367,5 +367,14 @@
         {
             return false;
         }
+
+        /**
+         * Describes if the current model supports being routed through queues.
+         * This is for the Queues feature in commercial edition.
+         */
+        public static function supportsQueueing()
+        {
+            return false;
+        }
     }
 ?>
