@@ -102,7 +102,7 @@
                 $isFirstRow = false;
                 $this->data[] = $data;
             }
-            if (!empty($grandTotalsData))
+            if (isset($this->dataForGrandTotals))
             {
                 $this->data[] = $grandTotalsData;
             }
