@@ -75,19 +75,12 @@
         {
             $imagePath = Yii::app()->themeManager->baseUrl . '/default/images/ajax-loader.gif';
             $progressBarImageContent = ZurmoHtml::image($imagePath, 'Progress Bar');
-            $runAgainUrl  = Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/runJob/',
-                            array('type' => $this->type, 'timeLimit' => $this->timeLimit));
-            $jobManagerUrl  = Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/list/',
-                            array('showRunJobLink' => true));
             $content  = '<div>';
             $content .= ZurmoHtml::tag('h1', array(), $this->getJobLabel());
             $content .= '<div class="left-column full-width">';
             $content .= '<div id="complete-table" style="display:none;">';
             $content .= ZurmoHtml::tag('h3', array(), Zurmo::t('JobsManagerModule', 'The job has completed running.'));
-            $content .= ZurmoHtml::link(ZurmoHtml::wrapLabel(Zurmo::t('JobsManagerModule', 'Run Job Again')),
-                        $runAgainUrl, array('class' => 'z-button'));
-            $content .= ZurmoHtml::link(ZurmoHtml::wrapLabel(Zurmo::t('JobsManagerModule', 'Job Manager')),
-                        $jobManagerUrl, array('class' => 'z-button'));
+            $content .= $this->renderButtonsContent();
             $content .= '</div>';
             $content .= '<div id="progress-table" class="progress-bar">';
             $content .= Zurmo::t('JobsManagerModule', 'Job is running. Please wait.');
@@ -100,6 +93,19 @@
             $content .= '</div>';
             $content .= '</div>';
             $content .= '</div>';
+            return $content;
+        }
+
+        protected function renderButtonsContent()
+        {
+            $runAgainUrl   = Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/runJob/',
+                                                   array('type' => $this->type, 'timeLimit' => $this->timeLimit));
+            $jobManagerUrl = Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/list/',
+                                                   array('showRunJobLink' => true));
+            $content  = ZurmoHtml::link(ZurmoHtml::wrapLabel(Zurmo::t('JobsManagerModule', 'Run Job Again')),
+                                        $runAgainUrl, array('class' => 'z-button'));
+            $content .= ZurmoHtml::link(ZurmoHtml::wrapLabel(Zurmo::t('JobsManagerModule', 'Job Manager')),
+                                        $jobManagerUrl, array('class' => 'z-button'));
             return $content;
         }
     }

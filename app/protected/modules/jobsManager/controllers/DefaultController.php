@@ -61,15 +61,14 @@
             $this->processListAction(null, $showRunJobLink);
         }
 
-        protected function processListAction($messageBoxContent = null, $showRunJobLink = false)
+        protected function processListAction($messageBoxContent = null)
         {
             $view = new JobsManagerTitleBarAndListView(
                             $this->getId(),
                             $this->getModule()->getId(),
                             JobsToJobsCollectionViewUtil::getMonitorJobData(),
                             JobsToJobsCollectionViewUtil::getNonMonitorJobsData(),
-                            $messageBoxContent,
-                            (bool)$showRunJobLink);
+                            $messageBoxContent);
             $view = new JobsManagerPageView(ZurmoDefaultAdminViewUtil::
                                             makeStandardViewForCurrentUser($this, $view));
             echo $view->render();
