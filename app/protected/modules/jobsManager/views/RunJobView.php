@@ -100,8 +100,7 @@
         {
             $runAgainUrl   = Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/runJob/',
                                                    array('type' => $this->type, 'timeLimit' => $this->timeLimit));
-            $jobManagerUrl = Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/list/',
-                                                   array('showRunJobLink' => true));
+            $jobManagerUrl = Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/list/');
             $content  = ZurmoHtml::link(ZurmoHtml::wrapLabel(Zurmo::t('JobsManagerModule', 'Run Job Again')),
                                         $runAgainUrl, array('class' => 'z-button'));
             $content .= ZurmoHtml::link(ZurmoHtml::wrapLabel(Zurmo::t('JobsManagerModule', 'Job Manager')),
