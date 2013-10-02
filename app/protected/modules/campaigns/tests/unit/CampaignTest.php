@@ -147,7 +147,7 @@
         /**
          * @depends testCreateAndGetCampaignListById
          */
-        public function testDeniedTagDoesNotThrowValidationError()
+        public function testDummyHtmlContentThrowsValidationErrorWhenTextContentIsEmpty()
         {
             $campaign                                  = new Campaign();
             $campaign->name                             = 'Another Test Campaign Name';
@@ -156,9 +156,17 @@
             $campaign->fromName                         = 'Another From Name';
             $campaign->fromAddress                      = 'anotherfrom@zurmo.com';
             $campaign->subject                         = 'Another Test Subject';
-            $campaign->textContent                     = 'Text Content';
-            $campaign->htmlContent                     = '<html><head><meta></head><body>Html Content</body></html>';
+            $campaign->textContent                     = '';
+            $campaign->htmlContent                     = "<html>\n<head>\n</head>\n<body>\n</body>\n</html>";
             $campaign->marketingList                   = self::$marketingList;
+            $this->assertFalse($campaign->save());
+            $errorMessages = $campaign->getErrors();
+            $this->assertEquals(1, count($errorMessages));
+            $this->assertTrue(array_key_exists('textContent', $errorMessages));
+            $this->assertEquals(1, count($errorMessages['textContent']));
+            $this->assertEquals('Please provide at least one of the contents field.', $errorMessages['textContent'][0]);
+
+            $campaign->textContent                      = 'Text Content';
             $this->assertTrue($campaign->save());
             $id                         = $campaign->id;
             unset($campaign);
@@ -169,7 +177,7 @@
             $this->assertEquals('Another From Name',            $campaign->fromName);
             $this->assertEquals('anotherfrom@zurmo.com',        $campaign->fromAddress);
             $this->assertEquals('Another Test Subject',         $campaign->subject);
-            $this->assertEquals('Html Content',                 $campaign->htmlContent);
+            $this->assertEquals(null,                           $campaign->htmlContent);
             $this->assertEquals('Text Content',                 $campaign->textContent);
             $this->assertEquals(self::$marketingList->id,       $campaign->marketingList->id);
         }

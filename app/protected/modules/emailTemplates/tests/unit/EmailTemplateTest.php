@@ -159,15 +159,23 @@
         /**
          * @depends testCreateAndGetEmailTemplateById
          */
-        public function testDeniedTagDoesNotThrowValidationError()
+        public function testDummyHtmlContentThrowsValidationErrorWhenTextContentIsEmpty()
         {
             $emailTemplate                  = new EmailTemplate();
             $emailTemplate->type            = EmailTemplate::TYPE_CONTACT;
             $emailTemplate->subject         = 'Another Test subject';
             $emailTemplate->name            = 'Another Test Email Template';
-            $emailTemplate->textContent     = 'Text Content';
-            $emailTemplate->htmlContent     = '<html><head><meta></head><body>Html Content</body></html>';
+            $emailTemplate->textContent     = '';
+            $emailTemplate->htmlContent     = "<html>\n<head>\n</head>\n<body>\n</body>\n</html>";
             $emailTemplate->modelClassName  = 'Contact';
+            $this->assertFalse($emailTemplate->save());
+            $errorMessages = $emailTemplate->getErrors();
+            $this->assertEquals(1, count($errorMessages));
+            $this->assertTrue(array_key_exists('textContent', $errorMessages));
+            $this->assertEquals(1, count($errorMessages['textContent']));
+            $this->assertEquals('Please provide at least one of the contents field.', $errorMessages['textContent'][0]);
+
+            $emailTemplate->textContent         = 'Text Content';
             $this->assertTrue($emailTemplate->save());
             $this->assertEquals(4, count(EmailTemplate::getAll()));
             $id             = $emailTemplate->id;
@@ -176,7 +184,7 @@
             $this->assertEquals(EmailTemplate::TYPE_CONTACT,    $emailTemplate->type);
             $this->assertEquals('Another Test subject',                 $emailTemplate->subject);
             $this->assertEquals('Another Test Email Template',          $emailTemplate->name);
-            $this->assertEquals('Html Content',            $emailTemplate->htmlContent);
+            $this->assertEquals(null,            $emailTemplate->htmlContent);
             $this->assertEquals('Text Content',            $emailTemplate->textContent);
         }
 

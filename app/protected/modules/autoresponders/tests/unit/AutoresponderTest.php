@@ -114,23 +114,31 @@
         /**
          * @depends testCreateAndGetAutoresponderById
          */
-        public function testDeniedTagDoesNotThrowValidationError()
+        public function testDummyHtmlContentThrowsValidationErrorWhenTextContentIsEmpty()
         {
             $autoresponder                                  = new Autoresponder();
             $autoresponder->subject                         = 'Another Test subject';
-            $autoresponder->textContent                     = 'Text Content';
-            $autoresponder->htmlContent                     = '<html><head><meta></head><body>Html Content</body></html>';
+            $autoresponder->textContent                     = '';
+            $autoresponder->htmlContent                     = "<html>\n<head>\n</head>\n<body>\n</body>\n</html>";
             $autoresponder->fromOperationDurationInterval   = '1';
             $autoresponder->fromOperationDurationType       = TimeDurationUtil::DURATION_TYPE_MONTH;
             $autoresponder->operationType                   = Autoresponder::OPERATION_UNSUBSCRIBE;
             $autoresponder->enableTracking                  = 1;
+            $this->assertFalse($autoresponder->save());
+            $errorMessages = $autoresponder->getErrors();
+            $this->assertEquals(1, count($errorMessages));
+            $this->assertTrue(array_key_exists('textContent', $errorMessages));
+            $this->assertEquals(1, count($errorMessages['textContent']));
+            $this->assertEquals('Please provide at least one of the contents field.', $errorMessages['textContent'][0]);
+
+            $autoresponder->textContent                     = 'Text Content';
             $this->assertTrue($autoresponder->save());
             $this->assertEquals(3, count(Autoresponder::getAll()));
             $id = $autoresponder->id;
             unset($autoresponder);
             $autoresponder = Autoresponder::getById($id);
             $this->assertEquals('Another Test subject',                 $autoresponder->subject);
-            $this->assertEquals('Html Content',                         $autoresponder->htmlContent);
+            $this->assertEquals(null,                                   $autoresponder->htmlContent);
             $this->assertEquals('Text Content',                         $autoresponder->textContent);
             $this->assertEquals('1',                                    $autoresponder->fromOperationDurationInterval);
             $this->assertEquals(TimeDurationUtil::DURATION_TYPE_MONTH,  $autoresponder->fromOperationDurationType);

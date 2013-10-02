@@ -59,7 +59,7 @@
 
         public $iframe          = "false";
 
-        public $minHeight       = 200;
+        public $minHeight       = 100;
 
         public $convertDivs     = "false";
 
