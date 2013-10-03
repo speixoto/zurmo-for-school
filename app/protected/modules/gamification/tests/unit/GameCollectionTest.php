@@ -180,30 +180,46 @@
 
         /**
          * @depends testRedeem
+         * @return boolean
          */
         public function testShouldReceiveCollectionItem()
         {
             Yii::app()->user->userModel      = User::getByUsername('steven');
             $bool = GameCollection::shouldReceiveCollectionItem();
-            if ($bool)
-            {
-                $this->assertTrue($bool);
-            }
-            else
-            {
-                $this->assertFalse($bool);
-            }
-            //todO;
-            //$this->fail();
+            $this->assertTrue($bool === true || $bool === false);
         }
 
         /**
-         * @depends shouldReceiveCollectionItem
+         * @depends testShouldReceiveCollectionItem
          */
         public function testProcessRandomReceivingCollectionItemByUser()
         {
-            //todO;
-            $this->fail();
+            Yii::app()->user->userModel      = User::getByUsername('super');
+            $availableTypes = GameCollection::getAvailableTypes();
+            $compareData    = array('Butterflies','Frogs');
+            $this->assertEquals($compareData, $availableTypes);
+            $randomKey      = array_rand($availableTypes, 1);
+            $this->assertTrue($randomKey === 0 || $randomKey === 1);
+
+            $collection     = GameCollection::resolveByTypeAndPerson($availableTypes[$randomKey], Yii::app()->user->userModel);
+            $itemsData      = $collection->getItemsData();
+            $randomKey      = array_rand($itemsData, 1);
+            $compareData = array('AniseSwallowtail' => 0,
+                                 'Buckeye'          => 0,
+                                 'Monarch'          => 0,
+                                 'PaintedLady'      => 0,
+                                 'Queen'            => 0);
+            if (in_array($randomKey, $compareData))
+            {            
+                $this->assertTrue($randomKey === 'AniseSwallowtail' || $randomKey === 'Buckeye' || 
+                                  $randomKey === 'Monarch' || $randomKey === 'PaintedLady' || $randomKey === 'Queen');
+
+                $compareData[$randomKey] = $compareData[$randomKey] + 1;                     
+                $itemsData[$randomKey] = $itemsData[$randomKey] + 1;
+                $collection->setItemsData($itemsData);
+                $collection->save();      
+                $this->assertEquals($compareData, $collection->getItemsData());
+            }
         }
     }
 ?>
