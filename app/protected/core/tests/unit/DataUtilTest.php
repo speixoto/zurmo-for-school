@@ -54,7 +54,7 @@
             $purifiedText = DataUtil::purifyHtml($text);
             $this->assertEquals('Valid text.', $purifiedText);
 
-            $text = "|\/!'#$%&()=?«»´`~^ºª.;,<>Çéã";
+            $text = "|\/!'#$%&()=?«»´`~^ºª.;,<>Çéã"; // Not Coding Standard
             $purifiedText = DataUtil::purifyHtml($text);
             $this->assertEquals($text, $purifiedText);
 
