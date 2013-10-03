@@ -38,11 +38,17 @@
      */
     class TasksForAccountKanbanView extends TasksForRelatedKanbanView
     {
+        /**
+         * @return string
+         */
         protected function getRelationAttributeName()
         {
             return 'Account';
         }
 
+        /**
+         * @return string
+         */
         protected function getKanbanBoardTitle()
         {
             $account = $this->params['relationModel'];

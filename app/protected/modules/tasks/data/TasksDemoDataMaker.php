@@ -41,6 +41,9 @@
     {
         protected $ratioToLoad = 3;
 
+        /**
+         * @return array
+         */
         public static function getDependencies()
         {
             return array('opportunities');
@@ -85,6 +88,10 @@
             $demoDataHelper->setRangeByModelName('Task', $tasks[0], $tasks[count($tasks)-1]);
         }
 
+        /**
+         * Populates model
+         * @param Task $model
+         */
         public function populateModel(& $model)
         {
             assert('$model instanceof Task');

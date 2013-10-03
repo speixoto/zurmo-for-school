@@ -36,28 +36,19 @@
     /**
      * Finish button in kanban view for the task
      */
-    class TaskFinishLinkActionElement extends LinkActionElement
+    class TaskFinishLinkActionElement extends TaskLinkActionElement
     {
-        public function render()
-        {
-            return ZurmoHtml::link($this->resolveLabelAndWrap(), '#', $this->resolveHtmlOptionsForRendering());
-        }
-
-        protected function getDefaultRoute()
-        {
-            return $this->params['route'];
-        }
-
-        public function getActionType()
-        {
-            return 'Edit';
-        }
-
+        /**
+         * @return string
+         */
         protected function getDefaultLabel()
         {
             return Zurmo::t('Core', 'Finish');
         }
 
+        /**
+         * @return string
+         */
         protected function resolveHtmlOptionsForRendering()
         {
             return array('class' => 'task-finish-action');

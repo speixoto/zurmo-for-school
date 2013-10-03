@@ -174,30 +174,10 @@
                                                           });
                                                       ", CClientScript::POS_END);
         }
-//        protected function renderDeleteLinkContent(Comment $comment)
-//        {
-//            $url     =   Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/deleteViaAjax',
-//                            array_merge($this->getParams, array('id' => $comment->id)));
-//            // Begin Not Coding Standard
-//            return       ZurmoHtml::ajaxLink(Zurmo::t('CommentsModule', 'Delete'), $url,
-//                         array('type'     => 'GET',
-//                               'complete' => "function(XMLHttpRequest, textStatus){
-//                                              $('#deleteCommentLink" . $comment->id . "').parent().parent().parent().remove();}"),
-//                         array('id'         => 'deleteCommentLink' . $comment->id,
-//                                'class'     => 'deleteCommentLink' . $comment->id,
-//                                'namespace' => 'delete'));
-//            // End Not Coding Standard
-//        }
-//
-//        /*TODO*/
-//        protected function renderEditLinkContent(Comment $comment)
-//        {
-//            $url     =   '';
-//            // Begin Not Coding Standard
-//            return       ZurmoHtml::ajaxLink(Zurmo::t('CommentsModule', 'Edit'), $url);
-//            // End Not Coding Standard
-//        }
 
+        /**
+         * @return bool
+         */
         public function isUniqueToAPage()
         {
             return false;

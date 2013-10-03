@@ -38,6 +38,11 @@
      */
     class TaskDeleteLinkActionElement extends DeleteLinkActionElement
     {
+        /**
+         * Resolve confirmation alert
+         * @param array $htmlOptions
+         * @return array
+         */
         protected function resolveConfirmAlertInHtmlOptions($htmlOptions)
         {
             $htmlOptions['confirm'] = Zurmo::t('TasksModule', 'Are you sure you want to delete this {modelLabel}?',

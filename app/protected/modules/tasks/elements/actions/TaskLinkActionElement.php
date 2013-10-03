@@ -33,32 +33,43 @@
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
-
-    class OpenTasksForOpportunityRelatedListView extends OpenTasksRelatedListView
+    /**
+     * Task action button in kanban view for the task
+     */
+    abstract class TaskLinkActionElement extends LinkActionElement
     {
         /**
          * @return string
          */
-        protected function getRelationAttributeName()
+        public function render()
         {
-            return 'Opportunity';
+            return ZurmoHtml::link($this->resolveLabelAndWrap(), '#', $this->resolveHtmlOptionsForRendering());
+        }
+
+        protected function getDefaultRoute()
+        {
+            return $this->params['route'];
+        }
+
+        public function getActionType()
+        {
+            return 'Edit';
         }
 
         /**
          * @return string
          */
-        public static function getDisplayDescription()
+        protected function getDefaultLabel()
         {
-            return Zurmo::t('TasksModule', 'TasksModulePluralLabel For OpportunitiesModuleSingularLabel',
-                        LabelUtil::getTranslationParamsForAllModules());
+            return null;
         }
 
         /**
-         * @return array
+         * @return string
          */
-        public static function getAllowedOnPortletViewClassNames()
+        protected function resolveHtmlOptionsForRendering()
         {
-            return array('OpportunityDetailsAndRelationsView');
+            return array();
         }
     }
 ?>

@@ -36,6 +36,9 @@
 
     abstract class OpenTasksRelatedListView extends SecuredRelatedListView
     {
+        /**
+         * @return array
+         */
         public static function getDefaultMetadata()
         {
             $metadata = array(
@@ -112,6 +115,9 @@
             return $metadata;
         }
 
+        /**
+         * @return array
+         */
         protected function makeSearchAttributeData()
         {
             $searchAttributeData = array();
@@ -137,6 +143,9 @@
             return $searchAttributeData;
         }
 
+        /**
+         * @return string
+         */
         public static function getModuleClassName()
         {
             return 'TasksModule';

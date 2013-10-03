@@ -45,7 +45,7 @@
          */
         protected function getFormattedAttributeLabel()
         {
-            return '<h3>' . Zurmo::t('ConversationsModule', 'Activity') . '</h3>';
+            return '<h3>' . Zurmo::t('TasksModule', 'Activity') . '</h3>';
         }
     }
 ?>

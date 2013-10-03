@@ -38,11 +38,17 @@
      */
     class TasksForOpportunityKanbanView extends TasksForRelatedKanbanView
     {
+        /**
+         * @return string
+         */
         protected function getRelationAttributeName()
         {
             return 'Opportunity';
         }
 
+        /**
+         * @return string
+         */
         protected function getKanbanBoardTitle()
         {
             $opportunity = $this->params['relationModel'];

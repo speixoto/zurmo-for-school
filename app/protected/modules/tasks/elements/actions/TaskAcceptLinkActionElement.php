@@ -38,26 +38,17 @@
      */
     class TaskAcceptLinkActionElement extends LinkActionElement
     {
-        public function render()
-        {
-            return ZurmoHtml::link($this->resolveLabelAndWrap(), '#', $this->resolveHtmlOptionsForRendering());
-        }
-
-        protected function getDefaultRoute()
-        {
-            return $this->params['route'];
-        }
-
-        public function getActionType()
-        {
-            return 'Edit';
-        }
-
+        /**
+         * @return string
+         */
         protected function getDefaultLabel()
         {
             return Zurmo::t('Core', 'Accept');
         }
 
+        /**
+         * @return string
+         */
         protected function resolveHtmlOptionsForRendering()
         {
             return array('class' => 'task-accept-action');

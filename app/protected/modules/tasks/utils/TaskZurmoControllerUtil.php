@@ -36,28 +36,36 @@
 
     class TaskZurmoControllerUtil extends ZurmoControllerUtil
     {
-        protected function afterSetAttributesDuringSave($model, $explicitReadWriteModelPermissions)
+        /**
+         * Sets the owner of the project as the default notification subscriber on addition of
+         * task to the project
+         * @param Task $task
+         * @param ExplicitReadWriteModelPermissions $explicitReadWriteModelPermissions
+         */
+        protected function afterSetAttributesDuringSave($task, $explicitReadWriteModelPermissions)
         {
-            assert('$model instanceof Task');
-            $possibleDerivationPaths = array(
-                                               array('SecurableItem', 'OwnedSecurableItem', 'Account'),
-                                               array('SecurableItem', 'OwnedSecurableItem', 'Person', 'Contact'),
-                                               array('SecurableItem', 'OwnedSecurableItem', 'Opportunity'),
-                                               array('SecurableItem', 'OwnedSecurableItem', 'Project')
-                                           );
-            $people = TasksUtil::resolvePeopleSubscribedForTask($model);
-            foreach($model->activityItems as $activityItem)
+            assert('$task instanceof Task');
+            $people                    = TasksUtil::resolvePeopleSubscribedForTask($task);
+            $project                   = $task->project;
+            $modelDerivationPathToItem = RuntimeUtil::getModelDerivationPathToItem('User');
+            $isSubscriberFound         = false;
+            if($project != null)
             {
-                $castedDownModel = $activityItem->castDown($possibleDerivationPaths);
-                if($castedDownModel instanceof Project)
+                $notificationSubscribers = $task->notificationSubscribers;
+                foreach($notificationSubscribers as $subscriber)
                 {
-                    if(!in_array($castedDownModel->owner, $people))
+                    $user = $subscriber->person->castDown(array($modelDerivationPathToItem));
+                    if($user->id == $project->owner->id)
                     {
-                        $notificationSubscriber = new NotificationSubscriber();
-                        $notificationSubscriber->person = $castedDownModel->owner;
-                        $notificationSubscriber->hasReadLatest = false;
-                        $model->notificationSubscribers->add($notificationSubscriber);
+                        $isSubscriberFound = true;
                     }
+                }
+                if($isSubscriberFound === false)
+                {
+                    $notificationSubscriber                = new NotificationSubscriber();
+                    $notificationSubscriber->person        = $project->owner;
+                    $notificationSubscriber->hasReadLatest = false;
+                    $task->notificationSubscribers->add($notificationSubscriber);
                 }
             }
         }

@@ -240,6 +240,9 @@
             return Zurmo::t('core', '(None)');
         }
 
+        /**
+         * @return bool
+         */
         public static function hasReadPermissionsSubscriptionOptimization()
         {
             return true;

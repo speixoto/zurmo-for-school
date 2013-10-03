@@ -39,11 +39,17 @@
      */
     class TasksMyListView extends SecuredMyListView
     {
+        /**
+         * @return string
+         */
         protected function getSortAttributeForDataProvider()
         {
             return 'dueDateTime';
         }
 
+        /**
+         * @return array
+         */
         public static function getDefaultMetadata()
         {
             $metadata = array(
@@ -97,16 +103,25 @@
             return $metadata;
         }
 
+        /**
+         * @return string
+         */
         public static function getModuleClassName()
         {
             return 'TasksModule';
         }
 
+        /**
+         * @return string
+         */
         public static function getDisplayDescription()
         {
             return Zurmo::t('TasksModule', 'My Open TasksModulePluralLabel', LabelUtil::getTranslationParamsForAllModules());
         }
 
+        /**
+         * @return TasksSearchForm
+         */
         protected function getSearchModel()
         {
             $modelClassName = $this->modelClassName;
@@ -114,6 +129,9 @@
             return new TasksSearchForm($model);
         }
 
+        /**
+         * @return string
+         */
         protected static function getConfigViewClassName()
         {
             return 'TasksMyListConfigView';

@@ -36,6 +36,9 @@
 
     class TaskEditAndDetailsView extends SecuredEditAndDetailsView
     {
+        /**
+         * @return array
+         */
         public static function getDefaultMetadata()
         {
             $metadata = array(
@@ -145,6 +148,9 @@
             return $metadata;
         }
 
+        /**
+         * @return string
+         */
         protected function getNewModelTitleLabel()
         {
             return Zurmo::t('TasksModule', 'Create TasksModuleSingularLabel',
