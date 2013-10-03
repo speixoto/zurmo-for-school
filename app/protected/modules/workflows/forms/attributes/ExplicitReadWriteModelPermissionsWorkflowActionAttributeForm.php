@@ -77,7 +77,11 @@
             }
             if ($this->type == self::TYPE_DYNAMIC_SAME_AS_TRIGGERED_MODEL)
             {
-                $explicitReadWriteModelPermissions = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($adapter->getTriggeredModel());
+                $triggeredModel = $adapter->getTriggeredModel();
+                if(null == $explicitReadWriteModelPermissions = $triggeredModel->getExplicitReadWriteModelPermissionsForWorkflow())
+                {
+                    $explicitReadWriteModelPermissions = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($adapter->getTriggeredModel());
+                }
             }
             elseif ($this->type == self::TYPE_DYNAMIC_OWNER)
             {
@@ -103,7 +107,6 @@
                     return;
                 }
             }
-
             $success = ExplicitReadWriteModelPermissionsUtil::
                        resolveExplicitReadWriteModelPermissions($adapter->getModel(), $explicitReadWriteModelPermissions);
             if (!$success)
