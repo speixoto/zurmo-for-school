@@ -107,8 +107,7 @@
                 CommentsUtil::sendNotificationOnNewComment($this->relatedModel, $model, $user, $participants);
                 //Log the event
                 $task = $this->relatedModel;
-                $project = $task->project;
-                if($project != null)
+                if($task->project->id > 0)
                 {
                     ProjectAuditEvent::logAuditEvent(ProjectAuditEvent::COMMENT_ADDED, $model->description, $project);
                 }

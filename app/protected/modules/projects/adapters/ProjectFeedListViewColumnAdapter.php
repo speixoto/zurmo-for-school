@@ -99,7 +99,7 @@
         public static function getFeedInformationForDashboard(ProjectAuditEvent $projectAuditEvent)
         {
             assert('$projectAuditEvent instanceof ProjectAuditEvent');
-            $project = Project::getById($projectAuditEvent->project->id);
+            $project = Project::getById(intval($projectAuditEvent->project->id));
             $projectName = ZurmoHtml::link($project->name, Yii::app()->createUrl('projects/default/details', array('id' => $project->id)));
             $content = null;
             $user    = User::getById($projectAuditEvent->user->id);

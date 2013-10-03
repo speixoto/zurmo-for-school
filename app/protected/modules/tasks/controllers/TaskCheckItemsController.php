@@ -44,7 +44,10 @@
             $task                       = Task::getById(intval($relatedModelId));
             $task->checkListItems->add($taskCheckListItem);
             $task->save(false);
-            ProjectsUtil::logTaskCheckItemEvent($task, $taskCheckListItem);
+            if($task->project->id > 0)
+            {
+                ProjectsUtil::logTaskCheckItemEvent($task, $taskCheckListItem);
+            }
             if($redirectUrl != null)
             {
                 $this->redirect($redirectUrl);
