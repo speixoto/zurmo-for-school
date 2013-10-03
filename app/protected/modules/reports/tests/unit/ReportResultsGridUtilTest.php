@@ -80,8 +80,6 @@
 
             $reportResultsRowData = new ReportResultsRowData(array($displayAttribute), 4);
             $reportResultsRowData->addModelAndAlias($account2, 'abc');
-
-
             $result = ReportResultsGridUtil::makeStringForLinkOrLinks('attribute0', $reportResultsRowData, true, 'account1');
             $this->assertContains('<span class="tooltip">2</span>', $result);
 
