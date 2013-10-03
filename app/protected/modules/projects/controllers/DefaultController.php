@@ -206,6 +206,10 @@
             $this->redirect(array($this->getId() . '/index'));
         }
 
+        /**
+         * Gets search form class name
+         * @return string
+         */
         protected static function getSearchFormClassName()
         {
             return 'ProjectsSearchForm';

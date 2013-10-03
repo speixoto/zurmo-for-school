@@ -27,7 +27,7 @@
     class TasksTaskCheckItemsController extends ZurmoModuleController
     {
         /**
-         * Action for saving a new comment inline edit form.
+         * Action for saving a new task check item inline edit form.
          * @param string or array $redirectUrl
          */
         public function actionInlineCreateTaskCheckItemSave($relatedModelId, $relatedModelClassName, $relatedModelRelationName, $redirectUrl = null)
@@ -113,8 +113,9 @@
         /**
          * Update status of task check item using ajax
          * @param int $id
+         * @param bool $checkListItemCompleted
          */
-        public function actionUpdateStatusViaAjax($id, $taskId, $checkListItemCompleted)
+        public function actionUpdateStatusViaAjax($id, $checkListItemCompleted)
         {
             $taskCheckListItem = TaskCheckListItem::getById(intval($id));
             $taskCheckListItem->completed = (bool)$checkListItemCompleted;

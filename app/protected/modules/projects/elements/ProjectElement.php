@@ -38,7 +38,7 @@
      * Display the project selection. This is a
      * combination of a type-ahead input text field
      * and a selection button which renders a modal list view
-     * to search on project.  Also includes a hidden input for the user
+     * to search on project.  Also includes a hidden input for the projects
      * id.
      */
     class ProjectElement extends ModelElement

@@ -55,6 +55,10 @@
             return $project->name;
         }
 
+        /**
+         * Makes search attribute data
+         * @return array
+         */
         protected function makeSearchAttributeData()
         {
             $searchAttributeData = array();

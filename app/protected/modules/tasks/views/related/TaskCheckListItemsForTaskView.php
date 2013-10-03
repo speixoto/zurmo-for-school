@@ -155,7 +155,7 @@
                                                       $('.checkListItem').change(function(){
                                                           $.ajax(
                                                                     {
-                                                                        url : '" . $url . "?id=' + $(this).val() + '&taskId=" . $this->getParams['relatedModelId'] . "',
+                                                                        url : '" . $url . "?id=' + $(this).val(),
                                                                         type : 'GET',
                                                                         data : {
                                                                                     checkListItemCompleted : $(this).is(':checked')?1:0

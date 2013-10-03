@@ -36,13 +36,6 @@
 
     /**
      * Projects Module Walkthrough.
-     * Walkthrough for a peon user.  The peon user at first will have no granted
-     * rights or permissions.  Most attempted actions will result in an ExitException
-     * and a access failure view.  After this, we elevate the user with added tab rights
-     * so that some of the actions will result in success and no exceptions being thrown.
-     * There will still be some actions they cannot get too though because of the lack of
-     * elevated permissions.  Then we will elevate permissions to allow the user to access
-     * other owner's records.
      */
     class ProjectsRegularUserWalkthroughTest extends ZurmoRegularUserWalkthroughBaseTest
     {
@@ -79,11 +72,6 @@
             $this->runControllerShouldResultInAccessFailureAndGetContent('projects/default/details');
             $this->setGetArray(array('selectedIds' => '4,5,6,7,8', 'selectAll' => ''));  // Not Coding Standard
             $this->resetPostArray();
-            //todo need to uncomment once mass edit is suggested for project
-            //$this->runControllerShouldResultInAccessFailureAndGetContent('projects/default/massEdit');
-            //$this->setGetArray(array('selectAll' => '1', 'Project_page' => 2));
-            //$this->runControllerShouldResultInAccessFailureAndGetContent('projects/default/massEditProgressSave');
-
             //actionDelete should fail.
             $this->setGetArray(array('id' => $project->id));
             $this->resetPostArray();

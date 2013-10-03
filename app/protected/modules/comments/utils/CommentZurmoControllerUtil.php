@@ -107,18 +107,10 @@
                 CommentsUtil::sendNotificationOnNewComment($this->relatedModel, $model, $user, $participants);
                 //Log the event
                 $task = $this->relatedModel;
-                foreach ($task->activityItems as $existingItem)
+                $project = $task->project;
+                if($project != null)
                 {
-                    try
-                    {
-                        $modelDerivationPathToItem = RuntimeUtil::getModelDerivationPathToItem('Project');
-                        $project = $existingItem->castDown(array($modelDerivationPathToItem));
-                        ProjectAuditEvent::logAuditEvent(ProjectAuditEvent::COMMENT_ADDED, $model->description, $project);
-                    }
-                    catch(NotFoundException $e)
-                    {
-
-                    }
+                    ProjectAuditEvent::logAuditEvent(ProjectAuditEvent::COMMENT_ADDED, $model->description, $project);
                 }
             }
         }

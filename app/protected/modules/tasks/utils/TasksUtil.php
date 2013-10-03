@@ -133,12 +133,13 @@
         /**
          * Send notification to user on task update
          * @param Task $task
-         * @param type $senderPerson
-         * @param type $peopleToSendNotification
-         * @return type
+         * @param string $message
+         * @return null
          */
         public static function sendNotificationOnTaskUpdate(Task $task, $message)
         {
+            assert('$task instanceof Task');
+            assert('is_string($message)');
             $senderPerson = Yii::app()->user->userModel;
             $peopleToSendNotification = self::resolvePeopleToSendNotificationToOnTaskUpdate($task, $senderPerson);
             if (count($peopleToSendNotification) > 0)
@@ -178,6 +179,9 @@
          */
         public static function getEmailContent(RedBeanModel $model, $message, User $user)
         {
+            assert('$model instanceof RedBeanModel');
+            assert('is_string($message)');
+            assert('$user instanceof User');
             $emailContent  = new EmailMessageContent();
             $url           = static::getUrlToEmail($model);
             $textContent   = Zurmo::t('TasksModule', "Hello, {lineBreak} {updaterName} updates to the " .
@@ -212,37 +216,38 @@
         /**
          * Gets email subject for the notification
          * @param Task $model
-         * @return type
+         * @return string
          */
         public static function getEmailSubject($model)
         {
-            if ($model instanceof Task)
-            {
-                return Zurmo::t('TasksModule', 'New update on {modelName}: {subject}',
+            assert('$model instanceof Task');
+            return Zurmo::t('TasksModule', 'New update on {modelName}: {subject}',
                                     array('{subject}'   => strval($model),
                                           '{modelName}' => $model->getModelLabelByTypeAndLanguage('SingularLowerCase')));
-            }
         }
 
         /**
          * Gets url to task detail view
-         * @param RedBeanModel $model
+         * @param Task $model
          * @return string
          */
         public static function getUrlToEmail($model)
         {
+            assert('$model instanceof Task');
             return Yii::app()->createAbsoluteUrl('tasks/default/details/', array('id' => $model->id));
         }
 
         /**
          * Given a Task and the User that created the new comment
          * return the people on the task to send new notification to
-         * @param Task $conversation
+         * @param Task $task
          * @param User $user
-         * @return Array $peopleToSendNotification
+         * @return array $peopleToSendNotification
          */
         public static function  resolvePeopleToSendNotificationToOnNewComment(Task $task, User $user)
         {
+            assert('$task instanceof Task');
+            assert('$user instanceof User');
             $peopleToSendNotification    = array();
             $peopleSubscribedForTask     = self::resolvePeopleSubscribedForTask($task);
             foreach ($peopleSubscribedForTask as $people)
@@ -259,24 +264,20 @@
          * Resolve explicit permissions of the requested by user for the task
          * @param Task $task
          * @param Permitable $origRequestedByUser
+         * @param Permitable $requestedByUser
+         * @param ExplicitReadWriteModelPermissions $explicitReadWriteModelPermissions
          */
-        public static function resolveExplicitPermissionsForRequestedByUser(Task $task, $origRequestedByUser, $requestedByUser, $explicitReadWriteModelPermissions)
+        public static function resolveExplicitPermissionsForRequestedByUser(Task $task, Permitable $origRequestedByUser, Permitable $requestedByUser, ExplicitReadWriteModelPermissions $explicitReadWriteModelPermissions)
         {
             ExplicitReadWriteModelPermissionsUtil::
                                         resolveExplicitReadWriteModelPermissions($task, $explicitReadWriteModelPermissions);
-            if ($origRequestedByUser instanceof Permitable)
+            if($origRequestedByUser->username != 'super')
             {
-                  if($origRequestedByUser->username != 'super')
-                  {
-                    $explicitReadWriteModelPermissions->addReadWritePermitableToRemove($origRequestedByUser);
-                  }
+                $explicitReadWriteModelPermissions->addReadWritePermitableToRemove($origRequestedByUser);
             }
-            if ($requestedByUser instanceof Permitable)
+            if($requestedByUser->username != 'super')
             {
-                  if($requestedByUser->username != 'super')
-                  {
-                    $explicitReadWriteModelPermissions->addReadWritePermitable($requestedByUser);
-                  }
+                $explicitReadWriteModelPermissions->addReadWritePermitable($requestedByUser);
             }
         }
 
@@ -320,6 +321,7 @@
 
         /**
          * Gets modal title for create task modal window
+         * @param string $renderType
          * @return string
          */
         public static function getModalTitleForCreateTask($renderType = "Create")
@@ -404,56 +406,66 @@
 
         /**
          * Get link for view task in modal mode
-         * @param array $data
+         * @param array $task
          * @param int $row
          * @param string $controllerId
          * @param string $moduleId
-         * @param array $params
          * @param string $moduleClassName
          * @return string
          */
-        public function getLinkForViewModal($data, $row, $controllerId, $moduleId, $moduleClassName)
+        public function getLinkForViewModal(Task $task, $row, $controllerId, $moduleId, $moduleClassName)
         {
+            assert('is_string($row) || is_int($row)');
+            assert('is_string($controllerId)');
+            assert('is_string($moduleId)');
+            assert('is_string($moduleClassName)');
             $ajaxOptions = TasksUtil::resolveViewAjaxOptionsForSelectingModel();
-            $title       = Zurmo::t('TasksModule', $data->name);
+            $title       = Zurmo::t('TasksModule', $task->name);
             $params      = array('label' => $title, 'routeModuleId' => 'tasks', 'ajaxOptions' => $ajaxOptions);
-            $viewFromRelatedModalLinkActionElement = new ViewFromRelatedModalLinkActionElement($controllerId, $moduleId, $data->id, $params);
+            $viewFromRelatedModalLinkActionElement = new ViewFromRelatedModalLinkActionElement($controllerId, $moduleId, $task->id, $params);
             $linkContent = $viewFromRelatedModalLinkActionElement->render();
-            $string      = TaskActionSecurityUtil::resolveViewLinkToModelForCurrentUser($data, $moduleClassName, $linkContent);
+            $string      = TaskActionSecurityUtil::resolveViewLinkToModelForCurrentUser($task, $moduleClassName, $linkContent);
             return $string;
         }
 
         /**
-         * Resolve status for task
-         * @param int $statusId
+         * Resolve action button for task by status
+         * @param string $statusId
+         * @param string $controllerId
+         * @param string $moduleId
+         * @param string $taskId
          * @return string
          */
-        public static function resolveActionButtonForTaskByStatus($statusId, $controllerId, $moduleId, $modelId)
+        public static function resolveActionButtonForTaskByStatus($statusId, $controllerId, $moduleId, $taskId)
         {
+            assert('is_string($statusId) || is_int($statusId)');
+            assert('is_string($controllerId)');
+            assert('is_string($moduleId)');
+            assert('is_int($taskId)');
             $type = self::resolveKanbanItemTypeForTaskStatus(intval($statusId));
             $route = Yii::app()->createUrl('tasks/default/updateStatusInKanbanView');
             switch(intval($statusId))
             {
-                case Task::TASK_STATUS_NEW :
-                     $element = new TaskStartLinkActionElement($controllerId, $moduleId, $modelId,
+                case Task::TASK_STATUS_NEW:
+                     $element = new TaskStartLinkActionElement($controllerId, $moduleId, $taskId,
                                                                                             array('route' => $route));
                     break;
-                case Task::TASK_STATUS_IN_PROGRESS :
+                case Task::TASK_STATUS_IN_PROGRESS:
 
-                     $element = new TaskFinishLinkActionElement($controllerId, $moduleId, $modelId,
+                     $element = new TaskFinishLinkActionElement($controllerId, $moduleId, $taskId,
                                                                                             array('route' => $route));
                     break;
-                case Task::TASK_STATUS_AWAITING_ACCEPTANCE :
+                case Task::TASK_STATUS_AWAITING_ACCEPTANCE:
 
-                     $acceptLinkElement = new TaskAcceptLinkActionElement($controllerId, $moduleId, $modelId,
+                     $acceptLinkElement = new TaskAcceptLinkActionElement($controllerId, $moduleId, $taskId,
                                                                                             array('route' => $route));
-                     $rejectLinkElement = new TaskRejectLinkActionElement($controllerId, $moduleId, $modelId,
+                     $rejectLinkElement = new TaskRejectLinkActionElement($controllerId, $moduleId, $taskId,
                                                                                             array('route' => $route));
                      return $acceptLinkElement->render() . $rejectLinkElement->render();
-                case Task::TASK_STATUS_COMPLETED :
+                case Task::TASK_STATUS_COMPLETED:
                      return null;
                 default:
-                     $element = new TaskStartLinkActionElement($controllerId, $moduleId, $modelId,
+                     $element = new TaskStartLinkActionElement($controllerId, $moduleId, $taskId,
                                                                                             array('route' => $route));
                     break;
             }
@@ -478,6 +490,7 @@
 
         /**
          * Resolve kanban item type for task status
+         * @param string $status
          * @return int
          */
         public static function resolveKanbanItemTypeForTaskStatus($status)
@@ -509,6 +522,7 @@
 
         /**
          * Resolves Subscribe Url
+         * @param int $taskId
          * @return string
          */
         public static function resolveSubscribeUrl($taskId)
@@ -536,26 +550,28 @@
 
         /**
          * Register subscription script
+         * @param int $taskId
          */
         public static function registerSubscriptionScript($taskId = null)
         {
             $unsubscribeLink = '<strong>' . Zurmo::t('TasksModule', 'Unsubscribe') . '</strong>';
             if($taskId == null)
             {
-                $url             = Yii::app()->createUrl('tasks/default/addKanbanSubscriber');
-                $script      = self::getKanbanSubscriptionScript($url, 'subscribe-task-link', 'unsubscribe-task-link', $unsubscribeLink);
+                $url     = Yii::app()->createUrl('tasks/default/addKanbanSubscriber');
+                $script  = self::getKanbanSubscriptionScript($url, 'subscribe-task-link', 'unsubscribe-task-link', $unsubscribeLink);
                 Yii::app()->clientScript->registerScript('kanban-subscribe-task-link-script', $script);
             }
             else
             {
-                $url             = Yii::app()->createUrl('tasks/default/addSubscriber', array('id' => $taskId));
-                $script      = self::getDetailSubscriptionScript($url, 'detail-subscribe-task-link', 'detail-unsubscribe-task-link', $unsubscribeLink, $taskId);
+                $url     = Yii::app()->createUrl('tasks/default/addSubscriber', array('id' => $taskId));
+                $script  = self::getDetailSubscriptionScript($url, 'detail-subscribe-task-link', 'detail-unsubscribe-task-link', $unsubscribeLink, $taskId);
                 Yii::app()->clientScript->registerScript('detail-subscribe-task-link-script', $script);
             }
         }
 
         /**
          * Register unsubscription script
+         * @param int $taskId
          */
         public static function registerUnsubscriptionScript($taskId = null)
         {
@@ -650,7 +666,7 @@
          * @param int $row
          * @return string
          */
-        public static function getKanbanSubscriptionLink($task, $row)
+        public static function getKanbanSubscriptionLink(Task $task, $row)
         {
             return self::resolveSubscriptionLink($task, 'subscribe-task-link', 'unsubscribe-task-link');
         }
@@ -661,7 +677,7 @@
          * @param int $row
          * @return string
          */
-        public static function getDetailSubscriptionLink($task, $row)
+        public static function getDetailSubscriptionLink(Task $task, $row)
         {
             return self::resolveSubscriptionLink($task, 'detail-subscribe-task-link', 'detail-unsubscribe-task-link');
         }
@@ -673,8 +689,10 @@
          * @param string $unsubscribeLinkClass
          * @return string
          */
-        public static function resolveSubscriptionLink($task, $subscribeLinkClass, $unsubscribeLinkClass)
+        public static function resolveSubscriptionLink(Task $task, $subscribeLinkClass, $unsubscribeLinkClass)
         {
+            assert('is_string($subscribeLinkClass)');
+            assert('is_string($unsubscribeLinkClass)');
             if(TasksUtil::isUserSubscribedForTask($task, Yii::app()->user->userModel) === false)
             {
                 $content = Zurmo::t('TasksModule', 'Subscribe');
@@ -691,6 +709,7 @@
         /**
          * Get task completion percentage
          * @param int $id
+         * @return float
          */
         public static function getTaskCompletionPercentage($id)
         {
@@ -729,6 +748,7 @@
          */
         public static function getDefaultTaskStatusForKanbanItemType($kanbanItemType)
         {
+            assert('is_int($kanbanItemType)');
             $mappingArray = self::getKanbanItemTypeToDefaultTaskStatusMappingArray();
             return $mappingArray[$kanbanItemType];
         }
@@ -737,7 +757,7 @@
          * Set default values for task
          * @param Task $task
          */
-        public static function setDefaultValuesForTask($task)
+        public static function setDefaultValuesForTask(Task $task)
         {
             $user = Yii::app()->user->userModel;
             $task->requestedByUser = $user;
@@ -751,12 +771,12 @@
          * Saves the kanban item from task
          * @param type array
          */
-        public static function createKanbanItemFromTask($data)
+        public static function createKanbanItemFromTask(Task $task)
         {
             $kanbanItem                     = new KanbanItem();
-            $kanbanItem->type               = TasksUtil::resolveKanbanItemTypeForTaskStatus($data->status);
-            $kanbanItem->task               = $data;
-            $kanbanItem->kanbanRelatedItem  = $data->activityItems->offsetGet(0);
+            $kanbanItem->type               = TasksUtil::resolveKanbanItemTypeForTaskStatus($task->status);
+            $kanbanItem->task               = $task;
+            $kanbanItem->kanbanRelatedItem  = $task->activityItems->offsetGet(0);
             $sortOrder = KanbanItem::getMaximumSortOrderByType($kanbanItem->type);
             $kanbanItem->sortOrder          = $sortOrder;
             $kanbanItem->save();
@@ -778,12 +798,12 @@
 
         /**
          * Render completion progress bar
-         * @param int $id
+         * @param Task $task
          * @return string
          */
-        public static function renderCompletionProgressBar($data)
+        public static function renderCompletionProgressBar(Task $task)
         {
-            $percentage = TasksUtil::getTaskCompletionPercentage(intval($data->id));
+            $percentage = TasksUtil::getTaskCompletionPercentage(intval($task->id));
             if($percentage == null)
             {
                 return null;
@@ -799,7 +819,7 @@
          * @param Task $task
          * @return int
          */
-        public static function getTaskCompletedCheckListItems($task)
+        public static function getTaskCompletedCheckListItems(Task $task)
         {
             $completedItemsCount = 0;
             foreach($task->checkListItems as $checkListItem)
@@ -817,6 +837,7 @@
          * @param array $data
          * @return string
          */
+        //todo: @Mayank once jason review the code remove this piece of code along with test case as well
         public static function makeSearchAttributeData($data)
         {
             $searchAttributeData['clauses'][1] =

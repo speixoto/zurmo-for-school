@@ -61,43 +61,25 @@
         {
             assert('$task instanceof Task');
             assert('$taskCheckListItem instanceof TaskCheckListItem');
-            foreach ($task->activityItems as $existingItem)
-            {
-                try
-                {
-                    $modelDerivationPathToItem = RuntimeUtil::getModelDerivationPathToItem('Project');
-                    $project = $existingItem->castDown(array($modelDerivationPathToItem));
-                    $data = $taskCheckListItem->name . Zurmo::t('TasksModule', ' in  Task ') . $task->name;
-                    ProjectAuditEvent::logAuditEvent(ProjectAuditEvent::CHECKLIST_ITEM_ADDED, $data, $project);
-                }
-                catch(NotFoundException $e)
-                {
-
-                }
-            }
+            $project = $task->project;
+            $data = $taskCheckListItem->name . ' in  Task ' . $task->name;
+            ProjectAuditEvent::logAuditEvent(ProjectAuditEvent::CHECKLIST_ITEM_ADDED, $data, $project);
         }
 
         /**
          * Logs event on changing task status
          * @param Task $task
-         * @param
+         * @param string $currentStatusLabel
+         * @param string $newStatusLabel
          */
-        public static function logTaskStatusChangeEvent(Task $task, $currentStatus, $newStatus)
+        public static function logTaskStatusChangeEvent(Task $task, $currentStatusLabel, $newStatusLabel)
         {
-            foreach ($task->activityItems as $existingItem)
-            {
-                try
-                {
-                    $modelDerivationPathToItem = RuntimeUtil::getModelDerivationPathToItem('Project');
-                    $project = $existingItem->castDown(array($modelDerivationPathToItem));
-                    $data = $currentStatus . Zurmo::t('Core', ' to ') . $newStatus;
-                    ProjectAuditEvent::logAuditEvent(ProjectAuditEvent::TASK_STATUS_CHANGED, $data, $project);
-                }
-                catch(NotFoundException $e)
-                {
-
-                }
-            }
+            assert('$task instanceof Task');
+            assert('is_string($currentStatusLabel)');
+            assert('is_string($newStatusLabel)');
+            $project = $task->project;
+            $data = $currentStatusLabel . ' to ' . $newStatusLabel;
+            ProjectAuditEvent::logAuditEvent(ProjectAuditEvent::TASK_STATUS_CHANGED, $data, $project);
         }
     }
 ?>

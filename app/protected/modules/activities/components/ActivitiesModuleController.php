@@ -66,7 +66,7 @@
             assert('is_string($relationModuleId)');
 
             $metadata = Activity::getMetadata();
-            if($relationModelClassName != 'Project')
+            if($relationModelClassName != 'project')
             {
                 if (in_array($relationModelClassName, $metadata['Activity']['activityItemsModelClassNames']))
                 {

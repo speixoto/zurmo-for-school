@@ -61,6 +61,11 @@
          */
         protected $relationModuleId;
 
+        /**
+         * @param array $viewData
+         * @param array $params
+         * @param string $uniqueLayoutId
+         */
         function __construct($viewData, $params, $uniqueLayoutId)
         {
             parent::__construct($viewData, $params, $uniqueLayoutId);

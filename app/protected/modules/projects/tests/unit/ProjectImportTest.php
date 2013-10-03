@@ -99,7 +99,6 @@
             $this->assertEquals('My first project',        $projects[0]->name);
             //todo ask Jason for it
             //$this->assertEquals('My first project Desc',   $projects[0]->description);
-
             $projects[0]->delete();
 
             $projects = Project::getByName('My second project');

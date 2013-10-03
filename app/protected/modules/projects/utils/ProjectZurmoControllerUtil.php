@@ -138,7 +138,7 @@
          * Resolves the opportunities sent via post request
          * @param Project $project
          * @param array $postData
-         * @return array containing contacts
+         * @return array containing opportunities
          */
         public static function resolveProjectManyManyOpportunitiesFromPost(
                                     Project $project, $postData)

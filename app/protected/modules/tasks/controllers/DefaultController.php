@@ -49,6 +49,11 @@
             }
         }
 
+        /**
+         * Display the details for the task
+         * @param string $id
+         * @param string $redirectUrl
+         */
         public function actionDetails($id, $redirectUrl = null)
         {
             $modelClassName    = $this->getModule()->getPrimaryModelName();
@@ -115,8 +120,9 @@
         }
 
         /**
-         * Update owner or requested by user for task
+         * Update due data time using ajas
          * @param int $id
+         * @param int $dateTime
          */
         public function actionUpdateDueDateTimeViaAjax($id, $dateTime)
         {
@@ -158,8 +164,8 @@
         }
 
         /**
-         * Update owner or requested by user for task
-         * @param int $id
+         * Add kanban subscriber
+         * @param string $id
          */
         public function actionAddKanbanSubscriber($id)
         {
@@ -168,7 +174,7 @@
 
         /**
          * Unsubscribe the user from the task
-         * @param int $id
+         * @param string $id
          */
         public function actionRemoveKanbanSubscriber($id)
         {
@@ -177,7 +183,7 @@
 
         /**
          * Update status via ajax
-         * @param int $id
+         * @param string $id
          */
         public function actionUpdateStatusViaAjax($id, $status)
         {
@@ -246,9 +252,8 @@
             }
             $task       = $this->attemptToSaveModelFromPost($task, null, false);
             //Log event for project audit
-            if($relationAttributeName == 'Project')
+            if($relationAttributeName == 'project')
             {
-               //$project = Project::getById(intval($relationModelId));
                $data = $task->name;
                ProjectAuditEvent::logAuditEvent(ProjectAuditEvent::TASK_ADDED, $data, $task->project);
             }
@@ -274,9 +279,8 @@
         }
 
         /**
-         * Clone task
-         * @param int $id
-         * @param string $redirectUrl
+         * Copy task
+         * @param string $id
          */
         public function actionModalCopyFromRelation($id)
         {
@@ -292,7 +296,7 @@
 
         /**
          * Loads modal view from related view
-         * @param int $id
+         * @param string $id
          */
         public function actionModalViewFromRelation($id)
         {
@@ -316,6 +320,7 @@
 
         /**
          * Edit task from related view
+         * @param string $id
          */
         public function actionModalEditFromRelation($id)
         {
@@ -357,7 +362,6 @@
          * @param string $id
          * @param string $attribute
          * @param string $value
-         * @throws NotSupportedException
          * @throws FailedToSaveModelException
          */
         public function actionUpdateAttributeValue($id, $attribute, $value)
@@ -374,7 +378,7 @@
         }
 
         /**
-         * Update items sort in kanban view
+         * Update status for the task when dragging in the kanban view
          */
         public function actionUpdateStatusOnDragInKanbanView()
         {
@@ -391,7 +395,7 @@
                         //if kanban type is completed
                         if($getData['type'] == KanbanItem::TYPE_COMPLETED)
                         {
-                            $this->actionUpdateStatusInKanbanView(Task::TASK_STATUS_COMPLETED, $taskId, true);
+                            $this->actionUpdateStatusInKanbanView(Task::TASK_STATUS_COMPLETED, $taskId);
                             $response['button'] = '';
                         }
                         else
@@ -425,7 +429,7 @@
          * @param int $targetStatus
          * @param int $taskId
          */
-        public function actionUpdateStatusInKanbanView($targetStatus, $taskId, $return = false)
+        public function actionUpdateStatusInKanbanView($targetStatus, $taskId)
         {
            $this->processKanbanTypeUpdate($targetStatus, $taskId);
            //Run update queries for update task staus and update type and sort order in kanban column
@@ -434,9 +438,13 @@
 
         /**
          * Process kanban type update
+         * @param string $targetStatus
+         * @param string $taskId
          */
         protected function processKanbanTypeUpdate($targetStatus, $taskId)
         {
+           assert('is_string($targetStatus)');
+           assert('is_string($taskId)');
            $targetKanbanType = TasksUtil::resolveKanbanItemTypeForTaskStatus(intval($targetStatus));
            $sourceKanbanType = TasksUtil::resolveKanbanItemTypeForTask(intval($taskId));
            if($sourceKanbanType != $targetKanbanType)
@@ -456,6 +464,7 @@
          * Process status update via ajax
          * @param int $id
          * @param int $status
+         * @param bool $showCompletionDate whether to show completion date
          */
         protected function processStatusUpdateViaAjax($id, $status, $showCompletionDate = true)
         {

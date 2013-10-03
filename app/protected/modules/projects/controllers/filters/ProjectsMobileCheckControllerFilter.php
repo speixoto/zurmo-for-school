@@ -45,6 +45,10 @@
 
         public $rightName;
 
+        /**
+         * Prefilter for mobile interface
+         * @param type $filterChain
+         */
         protected function preFilter($filterChain)
         {
             if (!Yii::app()->userInterface->isMobile())
@@ -55,11 +59,17 @@
             Yii::app()->end(0, false);
         }
 
+        /**
+         * Process to display mobile access failure screen to user
+         */
         protected static function processMobileAccessFailure()
         {
             static::renderMobileAccessFailureContent();
         }
 
+        /**
+         * Renders mobile access failure page
+         */
         protected static function renderMobileAccessFailureContent()
         {
             $messageView = new AccessFailureView(Zurmo::t('ZurmoModule', 'This page is not available in mobile mode.'));

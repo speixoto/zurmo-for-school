@@ -129,7 +129,8 @@
                                                  removeElementFromPostDataForSavingModel($readyToUseData, 'owner');
             $model->setAttributes($sanitizedDataWithoutOwner);
             $this->afterSetAttributesDuringSave($model, $explicitReadWriteModelPermissions);
-            $model->setExplicitReadWriteModelPermissionsForWorkflow($explicitReadWriteModelPermissions);
+            //todo: @Mayank Ask jason as the following line is giving error on saving comment from task
+            //$model->setExplicitReadWriteModelPermissionsForWorkflow($explicitReadWriteModelPermissions);
             $isDataValid = $model->validate();
             if($returnOnValidate)
             {
@@ -152,7 +153,8 @@
                 }
                 if ($passedOwnerValidation && $model->save(false))
                 {
-                    $model->clearExplicitReadWriteModelPermissionsForWorkflow();
+                    //todo: @Mayank Ask jason as the following line is giving error on saving comment from task
+                    //$model->clearExplicitReadWriteModelPermissionsForWorkflow();
                     if ($explicitReadWriteModelPermissions != null)
                     {
                         $success = ExplicitReadWriteModelPermissionsUtil::

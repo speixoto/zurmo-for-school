@@ -33,7 +33,9 @@
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
-
+     /**
+      * Projects activity feed portlet on dashboard
+      */
     class ProjectsActivityFeedPortletView extends ConfigurableMetadataView implements PortletViewInterface
     {
         /**

@@ -93,29 +93,29 @@
 
         /**
          * Get feed information if projects for user
-         * @param array $data
+         * @param array $projectAuditEvent
          * @return string
          */
-        public static function getFeedInformationForDashboard($data)
+        public static function getFeedInformationForDashboard(ProjectAuditEvent $projectAuditEvent)
         {
-            assert('$data instanceof ProjectAuditEvent');
-            $project = Project::getById($data->project->id);
+            assert('$projectAuditEvent instanceof ProjectAuditEvent');
+            $project = Project::getById($projectAuditEvent->project->id);
             $projectName = ZurmoHtml::link($project->name, Yii::app()->createUrl('projects/default/details', array('id' => $project->id)));
             $content = null;
-            $user    = User::getById($data->user->id);
-            $unserializedData  = unserialize($data->serializedData);
+            $user    = User::getById($projectAuditEvent->user->id);
+            $unserializedData  = unserialize($projectAuditEvent->serializedData);
 
-            if($data->eventName == ProjectAuditEvent::PROJECT_CREATED
-                                    || $data->eventName == ProjectAuditEvent::PROJECT_ARCHIVED)
+            if($projectAuditEvent->eventName == ProjectAuditEvent::PROJECT_CREATED
+                                    || $projectAuditEvent->eventName == ProjectAuditEvent::PROJECT_ARCHIVED)
             {
-                $content .= self::getLogMessageByProjectEvent($data->eventName, $projectName, $user->getFullName());
+                $content .= self::getLogMessageByProjectEvent($projectAuditEvent->eventName, $projectName, $user->getFullName());
             }
             else
             {
-                $content .= self::getLogMessageByProjectDataEvent($data->eventName, $projectName, $user->getFullName(), $unserializedData);
+                $content .= self::getLogMessageByProjectDataEvent($projectAuditEvent->eventName, $projectName, $user->getFullName(), $unserializedData);
             }
 
-            $timeDiff = DateTimeUtil::getTimeDifferenceForLogEvent('ProjectsModule', $data->dateTime);
+            $timeDiff = DateTimeUtil::getTimeDifferenceForLogEvent('ProjectsModule', $projectAuditEvent->dateTime);
             $content .=  '<small> about ' . $timeDiff . ' ago</small>';
             return Zurmo::t('ProjectsModule', $content);
         }

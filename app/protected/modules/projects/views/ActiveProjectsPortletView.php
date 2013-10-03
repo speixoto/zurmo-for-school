@@ -80,6 +80,9 @@
             $this->uniqueLayoutId = $uniqueLayoutId;
         }
 
+        /**
+         * @return array
+         */
         public static function getDefaultMetadata()
         {
             return array();

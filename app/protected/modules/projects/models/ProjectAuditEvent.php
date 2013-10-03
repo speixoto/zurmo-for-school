@@ -51,48 +51,6 @@
         public static $isTableOptimized = false;
 
         /**
-         * Gets the appropriate time difference of the event from the current time
-         * @param DateTime $dateTime in sql format
-         * @return string
-         */
-        public static function getTimeDifference($dateTime)
-        {
-            assert('DateTimeUtil::isValidDbFormattedDateTime($dateTime)');
-            $nowTimeStamp           = time();
-            $dateTimeStamp          = DateTimeUtil::convertDbFormatDateTimeToTimeStamp($dateTime);
-            $timeSinceLatestUpdate  = $nowTimeStamp - $dateTimeStamp;
-            $timeForString = array(
-                'days'  => floor($timeSinceLatestUpdate / 86400),
-                'hours' => floor($timeSinceLatestUpdate / 3600),
-                'minutes' => floor($timeSinceLatestUpdate / (60)),
-                'seconds' => floor($timeSinceLatestUpdate)
-            );
-
-            if($timeForString['days'] >= 1)
-            {
-                return $timeForString['days'] . ' day(s)';
-            }
-            else
-            {
-                if($timeForString['hours'] >= 1)
-                {
-                    return $timeForString['hours'] . ' hour(s)';
-                }
-                else
-                {
-                    if($timeForString['minutes'] >= 1)
-                    {
-                        return $timeForString['minutes'] . ' min(s)';
-                    }
-                    else
-                    {
-                        return $timeForString['seconds'] . ' sec(s)';
-                    }
-                }
-            }
-        }
-
-        /**
          * Logs audit event
          * @param string $eventName
          * @param array $data
@@ -115,15 +73,14 @@
             if (!ProjectAuditEvent::$isTableOptimized && (!AUDITING_OPTIMIZED || !RedBeanDatabase::isFrozen()))
             {
                 $tableName  = self::getTableName('ProjectAuditEvent');
-                //RedBeanColumnTypeOptimizer::optimize($tableName, strtolower('modelId'), 'id');
                 $projectAuditEvent = new ProjectAuditEvent();
                 $projectAuditEvent->dateTime       = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
                 $projectAuditEvent->eventName      = $eventName;
                 $projectAuditEvent->user           = $user;
                 $projectAuditEvent->project        = $project;
                 $projectAuditEvent->serializedData = serialize($data);
-                $saved                      = $projectAuditEvent->save();
-                AuditEvent::$isTableOptimized = true;
+                $saved                             = $projectAuditEvent->save();
+                AuditEvent::$isTableOptimized      = true;
             }
             else
             {

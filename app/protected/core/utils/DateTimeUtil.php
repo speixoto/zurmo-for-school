@@ -556,23 +556,23 @@
 
             if($timeForString['days'] >= 1)
             {
-                return Zurmo::t($category, 'day|days', $timeForString['days']);
+                return Zurmo::t($category, '{n} day|{n} days', $timeForString['days']);
             }
             else
             {
                 if($timeForString['hours'] >= 1)
                 {
-                    return Zurmo::t($category, 'hour|hours', $timeForString['hours']);
+                    return Zurmo::t($category, '{n} hour|{n} hours', $timeForString['hours']);
                 }
                 else
                 {
                     if($timeForString['minutes'] >= 1)
                     {
-                        return Zurmo::t($category, 'min|min(s)', $timeForString['minutes']);
+                        return Zurmo::t($category, '{n} min|{n} mins', $timeForString['minutes']);
                     }
                     else
                     {
-                        return Zurmo::t($category, 'sec|sec(s)', $timeForString['seconds']);
+                        return Zurmo::t($category, '{n} sec|{n} secs', $timeForString['seconds']);
                     }
                 }
             }

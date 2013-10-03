@@ -67,6 +67,9 @@
             return $content;
         }
 
+        /**
+         * Register scripts
+         */
         protected function registerScripts()
         {
             $content  = "$(this).resolveHighestAndEqualize($('.module-intro-steps'));";

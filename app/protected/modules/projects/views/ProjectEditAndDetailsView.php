@@ -33,9 +33,14 @@
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
-
+    /**
+     * Project edit and details view
+     */
     class ProjectEditAndDetailsView extends SecuredEditAndDetailsView
     {
+        /**
+         * @return array
+         */
         public static function getDefaultMetadata()
         {
             $metadata = array(
