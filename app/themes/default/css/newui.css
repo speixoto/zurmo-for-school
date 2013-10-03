@@ -20145,17 +20145,7 @@ div.special-pager .hidden.next:after {
 .mini-button .show {
   display: block;
 }
-#game-dashboard {
-  position: relative;
-  z-index: 100;
-  color: #f1f1f1;
-}
-#game-dashboard * {
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-}
-#game-dashboard #overlay {
+#game-overlay {
   width: 100%;
   height: 100%;
   position: fixed;
@@ -20165,7 +20155,17 @@ div.special-pager .hidden.next:after {
   bottom: 0;
   background: rgba(0, 0, 0, 0.65);
 }
-#game-dashboard #dashboard {
+#game-dashboard-container {
+  position: relative;
+  z-index: 100;
+  color: #f1f1f1;
+}
+#game-dashboard-container * {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+#game-dashboard-container #game-dashboard {
   width: 1200px;
   height: 600px;
   position: absolute;
@@ -20176,21 +20176,21 @@ div.special-pager .hidden.next:after {
   -o-border-radius: 5px;
   border-radius: 5px;
   overflow: hidden;
-  margin: 50px auto auto -600px;
-  background: url(../../../../../../.Trash/Zurmo-Gamification/app/themes/default/images/blue-chalkboard.png) left top repeat;
+  margin: 100px auto auto -600px;
+  background: url(../images/game-dashboard/blue-chalkboard-blurred.jpg) left top repeat;
 }
-#game-dashboard #dashboard > div {
+#game-dashboard-container #game-dashboard > div {
   padding: 10px 15px 15px 15px;
 }
-#game-dashboard #dashboard > div:hover {
+#game-dashboard-container #game-dashboard > div:hover {
   -webkit-box-shadow: inset 0 5px 0 0 rgba(32, 50, 52, 0.5), inset 0 6px 0 0 rgba(83, 112, 115, 0.4);
   -moz-box-shadow: inset 0 5px 0 0 rgba(32, 50, 52, 0.5), inset 0 6px 0 0 rgba(83, 112, 115, 0.4);
   -o-box-shadow: inset 0 5px 0 0 rgba(32, 50, 52, 0.5), inset 0 6px 0 0 rgba(83, 112, 115, 0.4);
   -ms-box-shadow: inset 0 5px 0 0 rgba(32, 50, 52, 0.5), inset 0 6px 0 0 rgba(83, 112, 115, 0.4);
   box-shadow: inset 0 5px 0 0 rgba(32, 50, 52, 0.5), inset 0 6px 0 0 rgba(83, 112, 115, 0.4);
 }
-#game-dashboard #dashboard h2,
-#game-dashboard #dashboard h3 {
+#game-dashboard-container #game-dashboard h2,
+#game-dashboard-container #game-dashboard h3 {
   -webkit-text-shadow: 0 -1px 0 #151f1f;
   -moz-text-shadow: 0 -1px 0 #151f1f;
   -o-text-shadow: 0 -1px 0 #151f1f;
@@ -20198,13 +20198,13 @@ div.special-pager .hidden.next:after {
   text-shadow: 0 -1px 0 #151f1f;
   color: #fff !important;
 }
-#game-dashboard #dashboard a {
+#game-dashboard-container #game-dashboard a {
   color: #fff;
 }
-#game-dashboard ul {
+#game-dashboard-container ul {
   list-style: none;
 }
-#game-dashboard h2 {
+#game-dashboard-container h2 {
   margin-bottom: 10px;
 }
 .div-hover {
@@ -20215,7 +20215,7 @@ div.special-pager .hidden.next:after {
   box-shadow: inset 0 5px 0 0 rgba(32, 50, 52, 0.5), inset 0 6px 0 0 rgba(83, 112, 115, 0.4);
 }
 /*User Card*/
-#user-card {
+#gd-profile-card {
   padding: 0 !important;
   height: 84%;
   width: 20%;
@@ -20224,42 +20224,47 @@ div.special-pager .hidden.next:after {
   border-bottom: 1px solid rgba(32, 50, 52, 0.5);
   text-align: center;
 }
-#user-card h3 {
+#gd-profile-card h3 {
   margin: 0 0 10px 0;
 }
-#user-card ul {
+#gd-profile-card ul {
   font-weight: bold;
 }
-#user-card ul li {
+#gd-profile-card ul li {
   line-height: 1.15;
 }
-#user-card ul i {
+#gd-profile-card ul i {
   font-style: normal;
   margin-right: 3px;
   color: #7cb830;
   font-size: 16px;
 }
-#user-card img {
+#gd-profile-card .gravatar,
+#gd-profile-card img {
   height: auto;
+  margin-bottom: 5px;
+  padding: 0;
+  border: none !important;
+  background: none;
   max-width: 100%;
 }
-#mini-stats-card {
+#gd-mini-stats-card {
   margin-top: 0px;
   zoom: 1;
 }
-#mini-stats-card:before {
+#gd-mini-stats-card:before {
   content: "";
   display: table;
 }
-#mini-stats-card:after {
+#gd-mini-stats-card:after {
   content: "";
   display: table;
   clear: both;
 }
-#mini-stats-card #chartdiv svg g:last-child > g:first-child {
+#gd-mini-stats-card #chartdiv svg g:last-child > g:first-child {
   display: none;
 }
-#mini-stats-card .level {
+#gd-mini-stats-card .gd-level {
   margin-top: -113px;
   -webkit-border-radius: 4px 4px 0 0;
   -moz-border-radius: 4px 4px 0 0;
@@ -20270,31 +20275,31 @@ div.special-pager .hidden.next:after {
   z-index: 3;
   padding: 10px;
 }
-#mini-stats-card strong {
+#gd-mini-stats-card strong {
   font-size: 36px;
   line-height: 1;
   display: block;
   color: #7cb830;
   font-weight: bold;
 }
-#mini-stats-card strong + span {
+#gd-mini-stats-card strong + span {
   display: block;
   font-size: 14px;
   font-weight: bold;
   margin: 0 0 10px 0;
 }
-#mini-stats-card .percentHolder {
+#gd-mini-stats-card .percentHolder {
   display: none;
   text-align: left;
   margin-bottom: 5px;
 }
-#mini-stats-card .percentHolder + span {
+#gd-mini-stats-card .percentHolder + span {
   font-weight: bold;
   position: relative;
   top: 10px;
 }
-#mini-stats-card .num-badges,
-#mini-stats-card .num-collections {
+#gd-mini-stats-card .gd-num-badges,
+#gd-mini-stats-card .gd-num-collections {
   position: relative;
   z-index: 1;
   text-align: center;
@@ -20304,13 +20309,13 @@ div.special-pager .hidden.next:after {
   margin: 0;
   font-weight: bold;
 }
-#mini-stats-card .num-badges strong,
-#mini-stats-card .num-collections strong {
+#gd-mini-stats-card .gd-num-badges strong,
+#gd-mini-stats-card .gd-num-collections strong {
   font-size: 24px;
   display: block;
   font-weight: bold;
 }
-#mini-stats-card .num-badges {
+#gd-mini-stats-card .gd-num-badges {
   -webkit-border-radius: 0 0 4px 0;
   -moz-border-radius: 0 0 4px 0;
   -ms-border-radius: 0 0 4px 0;
@@ -20320,7 +20325,7 @@ div.special-pager .hidden.next:after {
   margin-right: 5%;
 }
 /*Badges*/
-#achievements-list {
+#gd-badges-list {
   overflow-y: scroll;
   height: 84%;
   width: 30%;
@@ -20329,42 +20334,42 @@ div.special-pager .hidden.next:after {
   border-right: 1px solid rgba(32, 50, 52, 0.5);
   border-bottom: 1px solid rgba(32, 50, 52, 0.5);
 }
-#achievements-list li {
+#gd-badges-list li {
   zoom: 1;
 }
-#achievements-list li:before {
+#gd-badges-list li:before {
   content: "";
   display: table;
 }
-#achievements-list li:after {
+#gd-badges-list li:after {
   content: "";
   display: table;
   clear: both;
 }
-#achievements-list li + li {
+#gd-badges-list li + li {
   padding-top: 20px;
 }
-#achievements-list .badge {
+#gd-badges-list .badge {
   float: left;
   margin-right: 15px;
 }
-#achievements-list .badge-grade {
+#gd-badges-list .badge-grade {
   right: auto;
   left: -8px;
 }
-#achievements-list h3,
-#achievements-list p {
+#gd-badges-list h3,
+#gd-badges-list p {
   margin-bottom: 5px;
 }
-#achievements-list p {
+#gd-badges-list p {
   line-height: 1.4;
 }
-#achievements-list p + span {
+#gd-badges-list p + span {
   font-size: 11px;
   color: #aaa;
 }
 /*Coins*/
-#z-coins {
+#gd-z-coins {
   width: 15%;
   height: 25%;
   float: left;
@@ -20374,14 +20379,14 @@ div.special-pager .hidden.next:after {
   position: relative;
   text-align: center;
 }
-#z-coins a {
+#gd-z-coins a {
   position: absolute;
   right: 5px;
   bottom: 5px;
   font-size: 11px;
   text-decoration: underline;
 }
-#z-coin {
+#gd-z-coin {
   display: block;
   width: 85px;
   height: 85px;
@@ -20402,7 +20407,7 @@ div.special-pager .hidden.next:after {
   font-family: "zurmo_gamification_symbly_rRg";
   cursor: default;
   color: #e2b321;
-  background: url(../../../../../../.Trash/Zurmo-Gamification/app/themes/default/images/coin.png) left top no-repeat;
+  background: url(../images/game-dashboard/coin.png) left top no-repeat;
   -webkit-transition: all 1s ease-out;
   -moz-transition: all 1s ease-out;
   -o-transition: all 1s ease-out;
@@ -20410,11 +20415,11 @@ div.special-pager .hidden.next:after {
   transition: all 1s ease-out;
   -webkit-transform: rotateY(0deg);
 }
-#z-coin:hover {
+#gd-z-coin:hover {
   -webkit-animation: spinCoin 1s linear infinite;
 }
 /*Leaderboard*/
-#leaderboard {
+#gd-leaderboard {
   width: 35%;
   height: 25%;
   float: left;
@@ -20463,7 +20468,7 @@ div.special-pager .hidden.next:after {
   color: #fff;
 }
 /*Stats*/
-#stats {
+#gd-statistics {
   width: 50%;
   height: 59%;
   float: left;
@@ -20471,7 +20476,7 @@ div.special-pager .hidden.next:after {
   border-bottom: 1px solid rgba(32, 50, 52, 0.5);
   border-left: 1px solid rgba(83, 112, 115, 0.4);
 }
-#stats-wrapper {
+#gd-stats-wrapper {
   border: 1px solid #d7d7d7;
   border-bottom: none;
   overflow: scroll;
@@ -20523,7 +20528,7 @@ div.special-pager .hidden.next:after {
   float: right;
 }
 /*Collections*/
-#collections {
+#gd-collections {
   width: 100%;
   height: 16%;
   float: left;
@@ -20531,9 +20536,9 @@ div.special-pager .hidden.next:after {
   padding: 0 !important;
   position: relative;
   z-index: 100;
-  background: url(../../../../../../.Trash/Zurmo-Gamification/app/themes/default/images/blue-chalkboard.png) left top repeat;
+  background: url(../images/game-dashboard/blue-chalkboard-blurred.jpg) left top repeat;
 }
-#carousel-wrapper {
+#gd-carousel-wrapper {
   width: 1140px;
   height: 100%;
   float: left;
@@ -20542,7 +20547,7 @@ div.special-pager .hidden.next:after {
   position: relative;
   z-index: 0;
 }
-#carousel {
+#gd-carousel {
   height: 100%;
   position: relative;
 }
@@ -20569,7 +20574,7 @@ div.special-pager .hidden.next:after {
 #nav-right {
   border-left: 1px solid rgba(83, 112, 115, 0.4);
 }
-.collection-panel {
+.gd-collection-panel {
   position: relative;
   width: 285px;
   height: 100%;
@@ -20577,10 +20582,10 @@ div.special-pager .hidden.next:after {
   border-left: 1px solid rgba(83, 112, 115, 0.4);
   border-right: 1px solid rgba(83, 112, 115, 0.4);
 }
-.collection-panel h3 {
+.gd-collection-panel h3 {
   margin-top: 5px;
 }
-.collection-panel .collection-badge {
+.gd-collection-panel .gd-collection-badge {
   float: left;
   display: inline-block;
   width: 55px;
@@ -20589,10 +20594,10 @@ div.special-pager .hidden.next:after {
   margin: 0 15px 0 0;
   background-size: 100% auto;
 }
-.collection-panel .collection-badge img {
+.gd-collection-panel .gd-collection-badge img {
   max-width: 100%;
 }
-.collection-panel > div {
+.gd-collection-panel > div {
   -webkit-transition: all 0.25s ease-out;
   -moz-transition: all 0.25s ease-out;
   -o-transition: all 0.25s ease-out;
@@ -20611,8 +20616,8 @@ div.special-pager .hidden.next:after {
   -ms-box-shadow: inset 0 30px 30px 0 rgba(0, 0, 0, 0.1);
   box-shadow: inset 0 30px 30px 0 rgba(0, 0, 0, 0.1);
 }
-.collection-panel > div.open-panel,
-.collection-panel > div:hover {
+.gd-collection-panel > div.open-panel,
+.gd-collection-panel > div:hover {
   -webkit-transform: translate(0, -50%);
   width: 525px;
   z-index: 100;
@@ -20621,15 +20626,15 @@ div.special-pager .hidden.next:after {
   -o-box-shadow: inset 0 5px 0 0 rgba(32, 50, 52, 0.5), inset 0 6px 0 0 rgba(83, 112, 115, 0.4);
   -ms-box-shadow: inset 0 5px 0 0 rgba(32, 50, 52, 0.5), inset 0 6px 0 0 rgba(83, 112, 115, 0.4);
   box-shadow: inset 0 5px 0 0 rgba(32, 50, 52, 0.5), inset 0 6px 0 0 rgba(83, 112, 115, 0.4);
-  background: url(../../../../../../.Trash/Zurmo-Gamification/app/themes/default/images/blue-chalkboard.png) left top repeat;
+  background: url(../images/game-dashboard/blue-chalkboard-blurred.jpg) left top repeat;
 }
-.collection-panel .number-collected {
+.gd-collection-panel .gd-number-collected {
   visibility: hidden;
   margin: -2px 0 0 0;
   white-space: nowrap;
 }
-.collection-panel .number-collected .have-it,
-.collection-panel .number-collected .have-it-not {
+.gd-collection-panel .gd-number-collected .have-it,
+.gd-collection-panel .gd-number-collected .have-it-not {
   font-weight: normal;
   font-size: 34px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -20637,13 +20642,13 @@ div.special-pager .hidden.next:after {
   margin: 0 0 0 -2px;
   color: #7cb830;
 }
-.collection-panel .number-collected .have-it-not {
+.gd-collection-panel .gd-number-collected .have-it-not {
   filter: alpha(opacity=50);
   -khtml-opacity: 0.5;
   -moz-opacity: 0.5;
   opacity: 0.5;
 }
-.collection-panel .total-completed {
+.gd-collection-panel .gd-total-completed {
   top: -3px;
   font-size: 14px;
   font-weight: bold;
@@ -20651,11 +20656,11 @@ div.special-pager .hidden.next:after {
   text-align: center;
   line-height: 34px;
 }
-.collection-items {
+.gd-collection-items {
   margin-top: 20px;
   position: relative;
 }
-.collection-items .num-collected {
+.gd-collection-items .gd-num-collected {
   width: 20px;
   height: 20px;
   line-height: 20px;
@@ -20679,14 +20684,14 @@ div.special-pager .hidden.next:after {
   -ms-box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.3), 0 -1px 0 0 rgba(90, 142, 44, 0.9);
   box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.3), 0 -1px 0 0 rgba(90, 142, 44, 0.9);
 }
-.collection-items .missing img {
+.gd-collection-items .missing img {
   filter: alpha(opacity=50);
   -khtml-opacity: 0.5;
   -moz-opacity: 0.5;
   opacity: 0.5;
   -webkit-filter: grayscale(100%);
 }
-.collection-items .missing .num-collected {
+.gd-collection-items .missing .num-collected {
   background: #c0392b;
   -webkit-box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.3), 0 -1px 0 0 rgba(161, 45, 37, 0.9);
   -moz-box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.3), 0 -1px 0 0 rgba(161, 45, 37, 0.9);
@@ -20694,51 +20699,51 @@ div.special-pager .hidden.next:after {
   -ms-box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.3), 0 -1px 0 0 rgba(161, 45, 37, 0.9);
   box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.3), 0 -1px 0 0 rgba(161, 45, 37, 0.9);
 }
-.collection-items .collection-item {
+.gd-collection-items .gd-collection-item {
   position: relative;
   display: inline-block;
   float: left;
   margin-right: 15px;
 }
-.collection-items .collection-item img {
+.gd-collection-items .gd-collection-item img {
   max-height: 55px;
   width: auto;
 }
-.collection-items .collection-item-redeemed {
+.gd-collection-items .gd-collection-item-redeemed {
   margin-top: -15px;
   display: inline-block;
   float: right;
   text-align: center;
 }
-.collection-items .collection-item-redeemed img {
+.gd-collection-items .gd-collection-item-redeemed img {
   max-width: 100px;
   height: auto;
   text-align: center;
 }
-.collection-items .collection-item-redeemed .num-collected {
+.gd-collection-items .gd-collection-item-redeemed .num-collected {
   width: 24px;
   height: 24px;
   line-height: 24px;
   z-index: 9999;
 }
-.collection-items .collection-item-redeemed a {
+.gd-collection-items .gd-collection-item-redeemed a {
   font-size: 12px;
   display: block;
   text-align: center;
   text-decoration: underline !important;
 }
-.collection-items .collection-item-redeemed .z-button {
+.gd-collection-items .gd-collection-item-redeemed .z-button {
   position: relative;
   top: -60px;
   z-index: 1;
 }
-.collection-items .collection-item-redeemed .z-button + .num-collected {
+.gd-collection-items .gd-collection-item-redeemed .z-button + .num-collected {
   float: left;
   position: absolute;
   left: -8px;
   top: -8px;
 }
-.coin-prize {
+.gd-coin-prize {
   position: absolute;
   z-index: 999999999;
   left: 50px;
@@ -20754,10 +20759,10 @@ div.special-pager .hidden.next:after {
   text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.4);
   margin: 0;
 }
-.coin-prize > div {
+.gd-coin-prize > div {
   position: relative;
 }
-.the-coin {
+.gd-the-coin {
   position: absolute;
   top: 0;
   left: 0;
@@ -20769,15 +20774,15 @@ div.special-pager .hidden.next:after {
   font-family: "zurmo_gamification_symbly_rRg";
   cursor: default;
   color: #e2b321;
-  background: url(../../../../../../.Trash/Zurmo-Gamification/app/themes/default/images/coin.png) center bottom no-repeat;
+  background: url(../images/game-dashboard/coin.png) center bottom no-repeat;
 }
-.smoke {
+.gd-smoke {
   position: absolute;
   top: 50px;
   left: 0;
   height: 128px;
   width: 128px;
-  background-image: url(../../../../../../.Trash/Zurmo-Gamification/app/themes/default/images/smoke_1_40_128_corrected.png);
+  background-image: url(../images/game-dashboard/smoke_1_40_128_corrected.png);
   display: none;
 }
 /*********************************************************************************
