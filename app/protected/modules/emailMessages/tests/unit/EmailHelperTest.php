@@ -36,10 +36,13 @@
 
     class EmailHelperTest extends ZurmoBaseTest
     {
+        public static $emailHelperSendEmailThroughTransport;
+        
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
             SecurityTestHelper::createSuperAdmin();
+            self::$emailHelperSendEmailThroughTransport = Yii::app()->emailHelper->sendEmailThroughTransport;
             UserTestHelper::createBasicUser('billy');
             UserTestHelper::createBasicUser('jane');
             $someoneSuper = UserTestHelper::createBasicUser('someoneSuper');
@@ -50,6 +53,29 @@
             assert($saved); // Not Coding Standard
 
             $box = EmailBox::resolveAndGetByName(EmailBox::NOTIFICATIONS_NAME);
+            
+            if (EmailMessageTestHelper::isSetEmailAccountsTestConfiguration())
+            {
+                $steve = UserTestHelper::createBasicUser('steve');
+                EmailMessageTestHelper::createEmailAccount($steve);
+                
+                Yii::app()->imap->imapHost        = Yii::app()->params['emailTestAccounts']['userImapSettings']['imapHost'];
+                Yii::app()->imap->imapUsername    = Yii::app()->params['emailTestAccounts']['userImapSettings']['imapUsername'];
+                Yii::app()->imap->imapPassword    = Yii::app()->params['emailTestAccounts']['userImapSettings']['imapPassword'];
+                Yii::app()->imap->imapPort        = Yii::app()->params['emailTestAccounts']['userImapSettings']['imapPort'];
+                Yii::app()->imap->imapSSL         = Yii::app()->params['emailTestAccounts']['userImapSettings']['imapSSL'];
+                Yii::app()->imap->imapFolder      = Yii::app()->params['emailTestAccounts']['userImapSettings']['imapFolder'];
+                Yii::app()->imap->setInboundSettings();
+                Yii::app()->imap->init();
+
+                Yii::app()->emailHelper->outboundHost     = Yii::app()->params['emailTestAccounts']['smtpSettings']['outboundHost'];
+                Yii::app()->emailHelper->outboundPort     = Yii::app()->params['emailTestAccounts']['smtpSettings']['outboundPort'];
+                Yii::app()->emailHelper->outboundUsername = Yii::app()->params['emailTestAccounts']['smtpSettings']['outboundUsername'];
+                Yii::app()->emailHelper->outboundPassword = Yii::app()->params['emailTestAccounts']['smtpSettings']['outboundPassword'];
+                Yii::app()->emailHelper->outboundSecurity = Yii::app()->params['emailTestAccounts']['smtpSettings']['outboundSecurity'];
+                Yii::app()->emailHelper->setOutboundSettings();
+                Yii::app()->emailHelper->init();
+            }
         }
 
         public function testSend()
@@ -173,30 +199,6 @@
         {
             $super                      = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
-
-            Yii::app()->emailHelper->sendEmailThroughTransport = true;
-
-            Yii::app()->imap->imapHost        = Yii::app()->params['emailTestAccounts']['userImapSettings']['imapHost'];
-            Yii::app()->imap->imapUsername    = Yii::app()->params['emailTestAccounts']['userImapSettings']['imapUsername'];
-            Yii::app()->imap->imapPassword    = Yii::app()->params['emailTestAccounts']['userImapSettings']['imapPassword'];
-            Yii::app()->imap->imapPort        = Yii::app()->params['emailTestAccounts']['userImapSettings']['imapPort'];
-            Yii::app()->imap->imapSSL         = Yii::app()->params['emailTestAccounts']['userImapSettings']['imapSSL'];
-            Yii::app()->imap->imapFolder      = Yii::app()->params['emailTestAccounts']['userImapSettings']['imapFolder'];
-            Yii::app()->imap->setInboundSettings();
-            Yii::app()->imap->init();
-
-            Yii::app()->emailHelper->outboundHost     = Yii::app()->params['emailTestAccounts']['smtpSettings']['outboundHost'];
-            Yii::app()->emailHelper->outboundPort     = Yii::app()->params['emailTestAccounts']['smtpSettings']['outboundPort'];
-            Yii::app()->emailHelper->outboundUsername = Yii::app()->params['emailTestAccounts']['smtpSettings']['outboundUsername'];
-            Yii::app()->emailHelper->outboundPassword = Yii::app()->params['emailTestAccounts']['smtpSettings']['outboundPassword'];
-            Yii::app()->emailHelper->outboundSecurity = Yii::app()->params['emailTestAccounts']['smtpSettings']['outboundSecurity'];
-            Yii::app()->emailHelper->sendEmailThroughTransport = true;
-            Yii::app()->emailHelper->setOutboundSettings();
-            Yii::app()->emailHelper->init();
-
-            $steve = UserTestHelper::createBasicUser('steve');
-            EmailMessageTestHelper::createEmailAccount($steve);
-
             if (EmailMessageTestHelper::isSetEmailAccountsTestConfiguration())
             {
                 $user = User::getByUsername('steve');
@@ -230,7 +232,23 @@
                 $imapStats = Yii::app()->imap->getMessageBoxStatsDetailed();
                 $this->assertEquals(1, $imapStats->Nmsgs);
             }
-            Yii::app()->emailHelper->sendEmailThroughTransport = false;
+        }
+        
+        public static function tearDownAfterClass()
+        {
+            $imap = new ZurmoImap();
+            $imap->imapHost        = Yii::app()->params['emailTestAccounts']['userImapSettings']['imapHost'];
+            $imap->imapUsername    = Yii::app()->params['emailTestAccounts']['userImapSettings']['imapUsername'];
+            $imap->imapPassword    = Yii::app()->params['emailTestAccounts']['userImapSettings']['imapPassword'];
+            $imap->imapPort        = Yii::app()->params['emailTestAccounts']['userImapSettings']['imapPort'];
+            $imap->imapSSL         = Yii::app()->params['emailTestAccounts']['userImapSettings']['imapSSL'];
+            $imap->imapFolder      = Yii::app()->params['emailTestAccounts']['userImapSettings']['imapFolder'];
+            $imap->init();
+            $imap->connect();
+            $imap->deleteMessages(true);
+
+            Yii::app()->emailHelper->sendEmailThroughTransport = self::$emailHelperSendEmailThroughTransport;
+            parent::tearDownAfterClass();
         }
 
         /**
