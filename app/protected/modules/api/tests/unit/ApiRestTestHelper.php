@@ -49,5 +49,19 @@
             $data = array('data' => $xmlData->saveXML());
             return ApiRestHelper::createApiCall($url, $method, $headers, $data);
         }
+
+        /**
+         * Helper function to get all model attributes as an array, that we can compare with responses from API.
+         * @param OwnedSecurableItem $model
+         * @return array
+         */
+        public static function getModelAttributes(RedBeanModel $model)
+        {
+            $adapter                  = new ModelAttributesAdapter($model);
+            $customAttributes   = ArrayUtil::subValueSort($adapter->getCustomAttributes(), 'attributeLabel', 'asort');
+            $standardAttributes = ArrayUtil::subValueSort($adapter->getStandardAttributes(), 'attributeLabel', 'asort');
+            $allAttributes      = array_merge($customAttributes, $standardAttributes);
+            return $allAttributes;
+        }
     }
 ?>

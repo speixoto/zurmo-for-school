@@ -78,7 +78,7 @@
             if ($this->type == self::TYPE_DYNAMIC_SAME_AS_TRIGGERED_MODEL)
             {
                 $triggeredModel = $adapter->getTriggeredModel();
-                if(null == $explicitReadWriteModelPermissions = $triggeredModel->getExplicitReadWriteModelPermissionsForWorkflow())
+                if (null == $explicitReadWriteModelPermissions = $triggeredModel->getExplicitReadWriteModelPermissionsForWorkflow())
                 {
                     $explicitReadWriteModelPermissions = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($adapter->getTriggeredModel());
                 }

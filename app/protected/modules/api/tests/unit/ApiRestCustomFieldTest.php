@@ -51,7 +51,7 @@
         /**
         * @depends testApiServerUrl
         */
-        public function testListView()
+        public function testListCustomFieldData()
         {
             Yii::app()->user->userModel        = User::getByUsername('super');
             $authenticationData = $this->login();
@@ -120,6 +120,64 @@
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
             $this->assertEquals($compareData, $response['data']);
+        }
+
+        /**
+         * @depends testApiServerUrl
+         */
+        public function testAddValuesToCustomFieldData()
+        {
+            $authenticationData = $this->login();
+            $headers = array(
+                'Accept: application/json',
+                'ZURMO_SESSION_ID: ' . $authenticationData['sessionId'],
+                'ZURMO_TOKEN: ' . $authenticationData['token'],
+                'ZURMO_API_REQUEST_TYPE: REST',
+            );
+
+            $typeFieldData = CustomFieldData::getByName('AccountTypes');
+            $compareData    = CustomFieldDataUtil::
+                getDataIndexedByDataAndTranslatedLabelsByLanguage($typeFieldData, 'en');
+
+            $data = array(
+                'values' => array('Unknown', 'None'),
+            );
+            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/zurmo/customField/api/addValues/' . $typeFieldData->name, 'PUT', $headers, array('data' => $data));
+            $response = json_decode($response, true);
+            $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
+
+            $compareData['Unknown'] = 'Unknown';
+            $compareData['None']    = 'None';
+            $this->assertEquals($compareData, $response['data']);
+
+            // Test get custom field
+            CustomFieldData::forgetAll();
+            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/zurmo/customField/api/read/AccountTypes', 'GET', $headers);
+            $response = json_decode($response, true);
+            $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
+            $this->assertEquals($compareData, $response['data']);
+
+            // Test with user that not belong to super administrator group
+            $notAllowedUser = UserTestHelper::createBasicUser('Steven');
+            $notAllowedUser->setRight('UsersModule', UsersModule::RIGHT_LOGIN_VIA_WEB_API);
+            $this->assertTrue($notAllowedUser->save());
+
+            // Test with unprivileged user that do not belong to super administrators group
+            $authenticationData = $this->login('steven', 'steven');
+            $headers = array(
+                'Accept: application/json',
+                'ZURMO_SESSION_ID: ' . $authenticationData['sessionId'],
+                'ZURMO_TOKEN: ' . $authenticationData['token'],
+                'ZURMO_API_REQUEST_TYPE: REST',
+            );
+
+            $data = array(
+                'values' => array('Unknown2', 'None2'),
+            );
+            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/zurmo/customField/api/addValues/AccountTypes', 'PUT', $headers, array('data' => $data));
+            $response = json_decode($response, true);
+            $this->assertEquals(ApiResponse::STATUS_FAILURE, $response['status']);
+            $this->assertEquals('Only super administrators can perform this action.', $response['message']);
         }
     }
 ?>

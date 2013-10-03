@@ -303,7 +303,7 @@
             //Test clearing out the ExplicitReadWriteModelPermissionsForWorkflow
             $this->assertTrue($triggeredModel->getExplicitReadWriteModelPermissionsForWorkflow() instanceof  ExplicitReadWriteModelPermissions);
             $triggeredModel->clearExplicitReadWriteModelPermissionsForWorkflow();
-            $this->assertTrue($triggeredModel->getExplicitReadWriteModelPermissionsForWorkflow() ==null);
+            $this->assertTrue($triggeredModel->getExplicitReadWriteModelPermissionsForWorkflow() == null);
         }
 
         public function testCheckBoxResolveValueAndSetToModelUpdateAsStatic()
