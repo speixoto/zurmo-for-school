@@ -154,7 +154,7 @@
          * @depends testGetRedemptionCount
          */
         public function testRedeem()
-        {   
+        {
             Yii::app()->user->userModel      = User::getByUsername('steven');
             $collections = GameCollection::resolvePersonAndAvailableTypes(Yii::app()->user->userModel, array('Frogs'));
             $itemsData = $collections['Frogs']->getItemsData();
@@ -163,10 +163,10 @@
                                  'OrnateHorned'      => 0,
                                  'Tree'              => 0,
                                  'Wood'              => 0);
-            $this->assertEquals($compareData, $itemsData);                    
+            $this->assertEquals($compareData, $itemsData);
             $redeemData = $collections['Frogs']->redeem();
             $this->assertEquals(false, $redeemData);
-            
+
             $itemsData = array('Goliath'           => 3,
                                'NorthernLeopard'   => 5,
                                'OrnateHorned'      => 6,
@@ -181,16 +181,26 @@
         /**
          * @depends testRedeem
          */
-        public function shouldReceiveCollectionItem()
+        public function testShouldReceiveCollectionItem()
         {
+            Yii::app()->user->userModel      = User::getByUsername('steven');
+            $bool = GameCollection::shouldReceiveCollectionItem();
+            if ($bool)
+            {
+                $this->assertTrue($bool);
+            }
+            else
+            {
+                $this->assertFalse($bool);
+            }
             //todO;
-            $this->fail();
+            //$this->fail();
         }
 
         /**
          * @depends shouldReceiveCollectionItem
          */
-        public function processRandomReceivingCollectionItemByUser()
+        public function testProcessRandomReceivingCollectionItemByUser()
         {
             //todO;
             $this->fail();
