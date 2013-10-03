@@ -129,6 +129,7 @@
                                                  removeElementFromPostDataForSavingModel($readyToUseData, 'owner');
             $model->setAttributes($sanitizedDataWithoutOwner);
             $this->afterSetAttributesDuringSave($model, $explicitReadWriteModelPermissions);
+            $model->setExplicitReadWriteModelPermissionsForWorkflow($explicitReadWriteModelPermissions);
             $isDataValid = $model->validate();
             if($returnOnValidate)
             {
@@ -151,6 +152,7 @@
                 }
                 if ($passedOwnerValidation && $model->save(false))
                 {
+                    $model->clearExplicitReadWriteModelPermissionsForWorkflow();
                     if ($explicitReadWriteModelPermissions != null)
                     {
                         $success = ExplicitReadWriteModelPermissionsUtil::

@@ -62,24 +62,35 @@
 
         protected function makeDataWithExpandableRows()
         {
+            $isFirstRow     = true;
             foreach ($this->dataForExport as $reportResultsRowData)
             {
                 $data             = array();
                 $this->headerData = array();
+                $grandTotalsData  = array();
+                $isFirstColumn         = true;
                 foreach ($reportResultsRowData->getDisplayAttributes() as $key => $displayAttribute)
                 {
                     $resolvedAttributeName = $displayAttribute->resolveAttributeNameForGridViewColumn($key);
                     $className             = $this->resolveExportClassNameForReportToExportValueAdapter($displayAttribute);
                     $params                = array();
                     $this->resolveParamsForCurrencyTypes($displayAttribute, $params);
+                    $this->resolveParamsForGrandTotals($displayAttribute, $params, $isFirstRow, $isFirstColumn);
                     $adapter = new $className($reportResultsRowData, $resolvedAttributeName, $params);
                     $adapter->resolveData($data);
                     $adapter->resolveHeaderData($this->headerData);
+                    $adapter->resolveGrandTotalsData($grandTotalsData);
+                    $isFirstColumn = false;
                 }
                 $this->data[] = $data;
                 $report = clone($this->report);
                 $report->resolveGroupBysAsFilters($reportResultsRowData->getDataParamsForDrillDownAjaxCall());
                 $this->resolveDrillDownDetailsData($report);
+                $isFirstRow = false;
+            }
+            if (!empty($grandTotalsData))
+            {
+                $this->data[] = $grandTotalsData;
             }
         }
 
@@ -88,6 +99,8 @@
             $pageSize               = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                                             'reportResultsSubListPageSize', $report->getModuleClassName());
             $dataProvider           = ReportDataProviderFactory::makeForSummationDrillDown($report, $pageSize);
+            $totalItems = intval($dataProvider->calculateTotalItemCount());
+            $dataProvider->getPagination()->setPageSize($totalItems);
             $reportToExportAdapter  = ReportToExportAdapterFactory::createReportToExportAdapter($report, $dataProvider);
             $drillDownHeaderData    = $reportToExportAdapter->getHeaderData();
             $drillDownData          = $reportToExportAdapter->getData();
