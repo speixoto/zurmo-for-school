@@ -129,7 +129,10 @@
                                                  removeElementFromPostDataForSavingModel($readyToUseData, 'owner');
             $model->setAttributes($sanitizedDataWithoutOwner);
             $this->afterSetAttributesDuringSave($model, $explicitReadWriteModelPermissions);
-            $model->setExplicitReadWriteModelPermissionsForWorkflow($explicitReadWriteModelPermissions);
+            if($explicitReadWriteModelPermissions instanceof ExplicitReadWriteModelPermissions)
+            {
+                $model->setExplicitReadWriteModelPermissionsForWorkflow($explicitReadWriteModelPermissions);
+            }
             if ($model->validate())
             {
                 $modelToStringValue = strval($model);
