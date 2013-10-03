@@ -109,7 +109,7 @@
                 $task = $this->relatedModel;
                 if($task->project->id > 0)
                 {
-                    ProjectAuditEvent::logAuditEvent(ProjectAuditEvent::COMMENT_ADDED, $model->description, $project);
+                    ProjectAuditEvent::logAuditEvent(ProjectAuditEvent::COMMENT_ADDED, $model->description, $task->project);
                 }
             }
         }
