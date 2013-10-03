@@ -105,10 +105,10 @@
             }
             $customFieldData = CustomFieldData::getByName($id);
 
-            $group = Group::getByName(Group::SUPER_ADMINISTRATORS_GROUP_NAME);
-            if (!$group->users->contains(Yii::app()->user->userModel))
+            if (!RightsUtil::doesUserHaveAllowByRightName('DesignerModule', DesignerModule::getAccessRight(),
+                    Yii::app()->user->userModel))
             {
-                $message = Zurmo::t('ZurmoModule', 'Only super administrators can perform this action.');
+                $message = Zurmo::t('ZurmoModule', 'You do not have rights to perform this action.');
                 throw new ApiException($message);
             }
             else
