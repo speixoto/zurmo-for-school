@@ -69,19 +69,19 @@
         {
             $time = date("Y-m-d H:i:s", strtotime('-5 hours', time()));
             $timeDiff = DateTimeUtil::getTimeDifferenceForLogEvent('ProjectsModule', $time);
-            $this->assertEquals('5 hour(s)', $timeDiff);
+            $this->assertEquals('5 hours', $timeDiff);
 
             $time = date("Y-m-d H:i:s", strtotime('-5 days', time()));
             $timeDiff = DateTimeUtil::getTimeDifferenceForLogEvent('ProjectsModule', $time);
-            $this->assertEquals('5 day(s)', $timeDiff);
+            $this->assertEquals('5 days', $timeDiff);
 
             $time = date("Y-m-d H:i:s", strtotime('-5 minutes', time()));
             $timeDiff = DateTimeUtil::getTimeDifferenceForLogEvent('ProjectsModule', $time);
-            $this->assertEquals('5 min(s)', $timeDiff);
+            $this->assertEquals('5 mins', $timeDiff);
 
             $time = date("Y-m-d H:i:s", strtotime('-5 seconds', time()));
             $timeDiff = DateTimeUtil::getTimeDifferenceForLogEvent('ProjectsModule', $time);
-            $this->assertEquals('5 sec(s)', $timeDiff);
+            $this->assertEquals('5 secs', $timeDiff);
         }
     }
 ?>
