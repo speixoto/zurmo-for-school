@@ -66,14 +66,26 @@
             {
                 if (!$attributeData['isReadOnly'])
                 {
-                    $requiredAttribute = '';
-                    if (isset($contactWebFormAttributes[$attributeName]['label']))
+                    $requiredAttribute    = '';
+                    $hiddenAttribute      = '';
+                    $hiddenAttributeValue = '';
+                    $hiddenAttributeStyle = 'style=\'display:none;\'';
+                    if (ArrayUtil::isAssoc($contactWebFormAttributes))
                     {
                         $attributeLabel    = $contactWebFormAttributes[$attributeName]['label'];
                         $isPlacedAttribute = array_key_exists($attributeName, $contactWebFormAttributes);
                         if (isset($contactWebFormAttributes[$attributeName]['required']))
                         {
-                            $requiredAttribute = 'checked=\'checked\'';
+                            $requiredAttribute        = 'checked=\'checked\'';
+                        }
+                        if (isset($contactWebFormAttributes[$attributeName]['hidden']))
+                        {
+                            $hiddenAttribute          = 'checked=\'checked\'';
+                            $hiddenAttributeStyle     = 'style=\'display:block;\'';
+                            if (isset($contactWebFormAttributes[$attributeName]['hiddenValue']))
+                            {
+                                $hiddenAttributeValue = $contactWebFormAttributes[$attributeName]['hiddenValue'];
+                            }
                         }
                     }
                     else
@@ -84,19 +96,25 @@
 
                     if ($attributeData['isRequired'])
                     {
-                        $items[$attributeName] = array('{content}'            => $attributeLabel,
-                                                       '{checkedAndReadOnly}' => '',
-                                                       '{requiredAttribute}'  => 'checked=\'checked\'',
-                                                       '{readOnlyAttribute}'  => 'disabled=\'disabled\'');
+                        $items[$attributeName] = array('{content}'              => $attributeLabel,
+                                                       '{checkedAndReadOnly}'   => '',
+                                                       '{requiredAttribute}'    => 'checked=\'checked\'',
+                                                       '{readOnlyAttribute}'    => 'disabled=\'disabled\'',
+                                                       '{hiddenAttribute}'      => $hiddenAttribute,
+                                                       '{hiddenAttributeValue}' => $hiddenAttributeValue,
+                                                       '{hiddenAttributeStyle}' => $hiddenAttributeStyle);
                     }
                     elseif ($isPlacedAttribute)
                     {
                         $checkedAndReadOnly    = '<a class="remove-dynamic-row-link" id="ContactWebForm_serializedData_' .
                                                   $attributeName . '" data-value="' . $attributeName . '" href="#">—</a>';
-                        $items[$attributeName] = array('{content}'            => $attributeLabel,
-                                                       '{checkedAndReadOnly}' => $checkedAndReadOnly,
-                                                       '{requiredAttribute}'  => $requiredAttribute,
-                                                       '{readOnlyAttribute}'  => '');
+                        $items[$attributeName] = array('{content}'              => $attributeLabel,
+                                                       '{checkedAndReadOnly}'   => $checkedAndReadOnly,
+                                                       '{requiredAttribute}'    => $requiredAttribute,
+                                                       '{readOnlyAttribute}'    => '',
+                                                       '{hiddenAttribute}'      => $hiddenAttribute,
+                                                       '{hiddenAttributeValue}' => $hiddenAttributeValue,
+                                                       '{hiddenAttributeStyle}' => $hiddenAttributeStyle);
                     }
                 }
             }

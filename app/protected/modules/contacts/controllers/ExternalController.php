@@ -172,7 +172,8 @@
             $contactWebFormModelForm = new ContactWebFormsModelForm($contact);
             $contactWebFormModelForm->setCustomRequiredFields($customRequiredFields);
             $postVariableName = get_class($contactWebFormModelForm);
-            $contact->setAttributes($_POST[$postVariableName]);
+            $sanitizedPostData = PostUtil::sanitizePostByDesignerTypeForSavingModel($contact, $_POST[$postVariableName]);
+            $contact->setAttributes($sanitizedPostData);
             $this->resolveContactWebFormEntry($contactWebForm, $contactWebFormModelForm);
             if ($contactWebFormModelForm->validate())
             {
