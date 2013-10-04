@@ -86,8 +86,7 @@
 
         protected function renderControlNonEditable()
         {
-            $selectedType = $this->resolveSelectedType();
-
+            $selectedType    = $this->resolveSelectedType();
             $permissionTypes = $this->getPermissionTypes();
             if ($selectedType == ExplicitReadWriteModelPermissionsUtil::MIXED_TYPE_NONEVERYONE_GROUP)
             {

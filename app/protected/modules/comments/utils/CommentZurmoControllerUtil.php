@@ -106,10 +106,9 @@
                 $participants = TasksUtil::resolvePeopleToSendNotificationToOnNewComment($this->relatedModel, $user);
                 CommentsUtil::sendNotificationOnNewComment($this->relatedModel, $model, $user, $participants);
                 //Log the event
-                $task = $this->relatedModel;
-                if($task->project->id > 0)
+                if($this->relatedModel->project->id > 0)
                 {
-                    ProjectAuditEvent::logAuditEvent(ProjectAuditEvent::COMMENT_ADDED, $model->description, $task->project);
+                    ProjectAuditEvent::logAuditEvent(ProjectAuditEvent::COMMENT_ADDED, $model->description, $this->relatedModel->project);
                 }
             }
         }

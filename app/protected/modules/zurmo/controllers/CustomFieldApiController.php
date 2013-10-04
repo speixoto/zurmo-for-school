@@ -91,6 +91,53 @@
             return $result;
         }
 
+        /**
+         * Add new field to existing Custom Field Data
+         * @throws ApiException
+         */
+        public function actionAddValues($id)
+        {
+            $params = Yii::app()->apiRequest->getParams();
+            if (!isset($params['data']))
+            {
+                $message = Zurmo::t('ZurmoModule', 'Please provide data.');
+                throw new ApiException($message);
+            }
+            $customFieldData = CustomFieldData::getByName($id);
+
+            if (!RightsUtil::doesUserHaveAllowByRightName('DesignerModule', DesignerModule::getAccessRight(),
+                    Yii::app()->user->userModel))
+            {
+                $message = Zurmo::t('ZurmoModule', 'You do not have rights to perform this action.');
+                throw new ApiException($message);
+            }
+            else
+            {
+                $unserializedValues = unserialize($customFieldData->serializedData);
+
+                if (is_array($params['data']['values']))
+                {
+                    foreach($params['data']['values'] as $value)
+                    {
+                        $unserializedValues[] = $value;
+                    }
+                }
+                $customFieldData->serializedData = serialize($unserializedValues);
+
+                if($customFieldData->save())
+                {
+                    $customFieldData->forgetAll();
+                    $result    =  $this->processRead($id);
+                    Yii::app()->apiHelper->sendResponse($result);
+                }
+                else
+                {
+                    $message = Zurmo::t('ZurmoModule', 'Error saving model.');
+                    throw new ApiException($message);
+                }
+            }
+        }
+
         public function actionCreate()
         {
             throw new ApiUnsupportedException();

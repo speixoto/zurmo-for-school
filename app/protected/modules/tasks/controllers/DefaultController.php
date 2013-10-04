@@ -94,6 +94,8 @@
         /**
          * Update owner or requested by user for task
          * @param int $id
+         * @param string $attribute
+         * @param int $userId
          */
         public function actionUpdateRelatedUsersViaAjax($id, $attribute, $userId)
         {
@@ -108,12 +110,16 @@
                               break;
 
                 case 'requestedByUser':
-                              $origRequestedByUser = $task->requestedByUser;
-                              $task->requestedByUser = $user;
-                              $task->save();
-                              $user = $task->requestedByUser;
-                              $explicitReadWriteModelPermissions = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($task);
-                              TasksUtil::resolveExplicitPermissionsForRequestedByUser($task, $origRequestedByUser, $user, $explicitReadWriteModelPermissions);
+                              $originalRequestedByUser = $task->requestedByUser;
+                              if($user != $originalRequestedByUser)
+                              {
+                                  //Put up in afterSetAttributesDuringSave in TaskZurmoControllerUtil so that it is called in edit case as well.
+                                  $task->requestedByUser = $user;
+                                  $task->save();
+                                  $user = $task->requestedByUser;
+                                  $explicitReadWriteModelPermissions = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($task);
+                                  TasksUtil::resolveExplicitPermissionsForRequestedByUser($task, $originalRequestedByUser, $user, $explicitReadWriteModelPermissions);
+                              }
                               break;
             }
             echo $this->getPermissionContent($task);

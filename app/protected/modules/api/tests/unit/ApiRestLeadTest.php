@@ -309,6 +309,27 @@
             $this->assertEquals(array($compareData), $response['data']['items']);
         }
 
+        public function testListLeadAttributes()
+        {
+            RedBeanModel::forgetAll();
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
+
+            $authenticationData = $this->login();
+            $headers = array(
+                'Accept: application/json',
+                'ZURMO_SESSION_ID: ' . $authenticationData['sessionId'],
+                'ZURMO_TOKEN: ' . $authenticationData['token'],
+                'ZURMO_API_REQUEST_TYPE: REST',
+            );
+            $allAttributes      = ApiRestTestHelper::getModelAttributes(new Contact());
+
+            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/leads/contact/api/listAttributes/' , 'GET', $headers);
+            $response = json_decode($response, true);
+            $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
+            $this->assertEquals($allAttributes, $response['data']['items']);
+        }
+
         /**
          * @depends testListLead
          */

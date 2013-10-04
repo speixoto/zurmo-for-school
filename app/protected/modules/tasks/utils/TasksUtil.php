@@ -140,24 +140,24 @@
         {
             assert('$task instanceof Task');
             assert('is_string($message)');
-            $senderPerson = Yii::app()->user->userModel;
-            $peopleToSendNotification = self::resolvePeopleToSendNotificationToOnTaskUpdate($task, $senderPerson);
+            $currentUser = Yii::app()->user->userModel;
+            $peopleToSendNotification = self::resolvePeopleToSendNotificationToOnTaskUpdate($task, $currentUser);
             if (count($peopleToSendNotification) > 0)
             {
                 $emailRecipients = array();
                 foreach ($peopleToSendNotification as $people)
                 {
                     if ($people->primaryEmail->emailAddress !== null &&
-                    !UserConfigurationFormAdapter::resolveAndGetValue($people, 'turnOffEmailNotifications'))
+                        !UserConfigurationFormAdapter::resolveAndGetValue($people, 'turnOffEmailNotifications'))
                     {
                         $emailRecipients[] = $people;
                     }
                 }
                 $subject = self::getEmailSubject($task);
-                $content = self::getEmailContent($task, $message, $senderPerson);
+                $content = self::getEmailContent($task, $message, $currentUser);
                 if ($emailRecipients > 0)
                 {
-                    EmailNotificationUtil::resolveAndSendEmail($senderPerson, $emailRecipients, $subject, $content);
+                    EmailNotificationUtil::resolveAndSendEmail($currentUser, $emailRecipients, $subject, $content);
                 }
                 else
                 {
@@ -250,11 +250,11 @@
             assert('$user instanceof User');
             $peopleToSendNotification    = array();
             $peopleSubscribedForTask     = self::resolvePeopleSubscribedForTask($task);
-            foreach ($peopleSubscribedForTask as $people)
+            foreach ($peopleSubscribedForTask as $person)
             {
-                if (!$people->isSame($user))
+                if (!$person->isSame($user))
                 {
-                    $peopleToSendNotification[] = $people;
+                    $peopleToSendNotification[] = $person;
                 }
             }
             return $peopleToSendNotification;
@@ -269,16 +269,10 @@
          */
         public static function resolveExplicitPermissionsForRequestedByUser(Task $task, Permitable $origRequestedByUser, Permitable $requestedByUser, ExplicitReadWriteModelPermissions $explicitReadWriteModelPermissions)
         {
+            $explicitReadWriteModelPermissions->addReadWritePermitableToRemove($origRequestedByUser);
+            $explicitReadWriteModelPermissions->addReadWritePermitable($requestedByUser);
             ExplicitReadWriteModelPermissionsUtil::
                                         resolveExplicitReadWriteModelPermissions($task, $explicitReadWriteModelPermissions);
-            if($origRequestedByUser->username != 'super')
-            {
-                $explicitReadWriteModelPermissions->addReadWritePermitableToRemove($origRequestedByUser);
-            }
-            if($requestedByUser->username != 'super')
-            {
-                $explicitReadWriteModelPermissions->addReadWritePermitable($requestedByUser);
-            }
         }
 
         /**
