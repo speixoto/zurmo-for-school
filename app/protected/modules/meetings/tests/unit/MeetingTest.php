@@ -201,6 +201,10 @@
             $meeting->endDateTime      = DateTimeUtil::convertTimestampToDbFormatDateTime(time()  + 10000);
             $saved                     = $meeting->save();
             $this->assertTrue($saved);
+            //Now test with end date time equals '0000-00-00 00:00:00'.
+            $meeting->endDateTime      = '0000-00-00 00:00:00';
+            $saved                     = $meeting->save();
+            $this->assertTrue($saved);
         }
 
             /**
