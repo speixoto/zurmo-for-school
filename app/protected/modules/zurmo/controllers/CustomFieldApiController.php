@@ -117,14 +117,14 @@
 
                 if (is_array($params['data']['values']))
                 {
-                    foreach($params['data']['values'] as $value)
+                    foreach ($params['data']['values'] as $value)
                     {
                         $unserializedValues[] = $value;
                     }
                 }
                 $customFieldData->serializedData = serialize($unserializedValues);
 
-                if($customFieldData->save())
+                if ($customFieldData->save())
                 {
                     $customFieldData->forgetAll();
                     $result    =  $this->processRead($id);
