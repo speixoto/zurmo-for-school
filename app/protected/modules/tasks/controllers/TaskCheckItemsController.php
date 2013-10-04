@@ -30,7 +30,8 @@
          * Action for saving a new task check item inline edit form.
          * @param string or array $redirectUrl
          */
-        public function actionInlineCreateTaskCheckItemSave($relatedModelId, $relatedModelClassName, $relatedModelRelationName, $redirectUrl = null)
+        public function actionInlineCreateTaskCheckItemSave($relatedModelId, $relatedModelClassName,
+                                                            $relatedModelRelationName, $redirectUrl = null)
         {
             if (isset($_POST['ajax']) && $_POST['ajax'] === 'task-check-item-inline-edit-form')
             {
@@ -106,7 +107,8 @@
                                               'relatedModelClassName'    => $relatedModelClassName,
                                               'relatedModelRelationName' => $relatedModelRelationName);
             $relatedModel             = $relatedModelClassName::getById((int)$relatedModelId);
-            $view                     = new TaskCheckListItemsForTaskView('taskCheckItems', 'tasks', $checkItemsData, $relatedModel, null, $getParams);
+            $view                     = new TaskCheckListItemsForTaskView('taskCheckItems', 'tasks',
+                                                                            $checkItemsData, $relatedModel, null, $getParams);
             $content                  = $view->render();
             Yii::app()->getClientScript()->setToAjaxMode();
             Yii::app()->getClientScript()->render($content);

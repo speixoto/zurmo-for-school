@@ -46,11 +46,17 @@
             return ZurmoHtml::link($this->resolveLabelAndWrap(), '#', $this->resolveHtmlOptionsForRendering());
         }
 
+        /**
+         * @return string
+         */
         protected function getDefaultRoute()
         {
             return $this->params['route'];
         }
 
+        /**
+         * @return string
+         */
         public function getActionType()
         {
             return 'Edit';
@@ -65,7 +71,7 @@
         }
 
         /**
-         * @return string
+         * @return array
          */
         protected function resolveHtmlOptionsForRendering()
         {

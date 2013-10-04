@@ -103,30 +103,33 @@
         {
             $task = Task::getById(intval($id));
             $user = User::getById(intval($userId));
-            switch($attribute)
+            if($attribute == 'owner')
             {
-                case 'owner':
-                      $task->owner = $user;
-                      $task->save();
-                      TasksUtil::sendNotificationOnTaskUpdate($task, Zurmo::t('TasksModule',
-                                                              'The owner for the task #' . $task->id .
-                                                              ' is updated to ' . $user->getFullName()),
-                                                              array($user)
-                                                              );
-                      break;
+                  $task->owner = $user;
+                  $task->save();
+                  TasksUtil::sendNotificationOnTaskUpdate($task, Zurmo::t('TasksModule',
+                                                          'The owner for the task #' . $task->id .
+                                                          ' is updated to ' . $user->getFullName()),
+                                                          array($user)
+                                                          );
 
-                case 'requestedByUser':
-                      $originalRequestedByUser = $task->requestedByUser;
-                      if($user != $originalRequestedByUser)
-                      {
-                          $task->requestedByUser = $user;
-                          $task->save();
-                          $explicitReadWriteModelPermissions = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($task);
-                          TasksUtil::resolveExplicitPermissionsForRequestedByUser($task, $originalRequestedByUser,
-                                                                                   $task->requestedByUser,
-                                                                                   $explicitReadWriteModelPermissions);
-                      }
-                      break;
+            }
+            elseif($attribute == 'requestedByUser')
+            {
+                  $originalRequestedByUser = $task->requestedByUser;
+                  if($user != $originalRequestedByUser)
+                  {
+                      $task->requestedByUser = $user;
+                      $task->save();
+                      $explicitReadWriteModelPermissions = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($task);
+                      TasksUtil::resolveExplicitPermissionsForRequestedByUser($task, $originalRequestedByUser,
+                                                                               $task->requestedByUser,
+                                                                               $explicitReadWriteModelPermissions);
+                  }
+            }
+            else
+            {
+                throw new NotSupportedException();
             }
             echo $this->getPermissionContent($task);
         }
@@ -224,11 +227,11 @@
          */
         public function actionModalCreateFromRelation()
         {
-            $task             = new Task();
-            $task             = $this->resolveNewModelByRelationInformation( $task,
-                                                                                $_GET['modalTransferInformation']['relationAttributeName'],
-                                                                                (int)$_GET['modalTransferInformation']['relationModelId'],
-                                                                                $_GET['modalTransferInformation']['relationModuleId']);
+            $task  = new Task();
+            $task  = $this->resolveNewModelByRelationInformation($task,
+                                                                  $_GET['modalTransferInformation']['relationAttributeName'],
+                                                                  (int)$_GET['modalTransferInformation']['relationModelId'],
+                                                                  $_GET['modalTransferInformation']['relationModuleId']);
             $this->processTaskEdit($task);
         }
 
@@ -249,7 +252,8 @@
          * @param string $portletId
          * @param string $uniqueLayoutId
          */
-        public function actionModalSaveFromRelation($relationAttributeName, $relationModelId, $relationModuleId, $portletId, $uniqueLayoutId, $id = null)
+        public function actionModalSaveFromRelation($relationAttributeName, $relationModelId, $relationModuleId,
+                                                    $portletId, $uniqueLayoutId, $id = null)
         {
             if($id == null)
             {
@@ -315,7 +319,8 @@
         public function actionModalViewFromRelation($id)
         {
             $cs = Yii::app()->getClientScript();
-            $isScriptRegistered = $cs->isScriptFileRegistered(Yii::getPathOfAlias('application.modules.tasks.elements.assets'), CClientScript::POS_END);
+            $isScriptRegistered = $cs->isScriptFileRegistered(Yii::getPathOfAlias('application.modules.tasks.elements.assets'),
+                                                               CClientScript::POS_END);
             if(!$isScriptRegistered)
             {
                 $cs->registerScriptFile(
@@ -327,9 +332,13 @@
             }
             $task = Task::getById(intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($task);
-            AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED, array(strval($task), get_class($this->getModule())), $task);
+            AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED,
+                                       array(strval($task), get_class($this->getModule())), $task);
             TasksUtil::markUserHasReadLatest($task, Yii::app()->user->userModel);
-            echo ModalEditAndDetailsControllerUtil::setAjaxModeAndRenderModalEditAndDetailsView($this,'TaskDetailsView', $task, 'Details');
+            echo ModalEditAndDetailsControllerUtil::setAjaxModeAndRenderModalEditAndDetailsView($this,
+                                                                                                'TaskDetailsView',
+                                                                                                $task,
+                                                                                                'Details');
         }
 
         /**
@@ -366,7 +375,10 @@
                             ) . '/TaskUtils.js',
                         CClientScript::POS_END
                     );
-                    echo ModalEditAndDetailsControllerUtil::setAjaxModeAndRenderModalEditAndDetailsView($this,'TaskModalEditAndDetailsView', $task, 'Edit');
+                    echo ModalEditAndDetailsControllerUtil::setAjaxModeAndRenderModalEditAndDetailsView($this,
+                                                                                            'TaskModalEditAndDetailsView',
+                                                                                            $task,
+                                                                                            'Edit');
                 }
             }
         }
@@ -426,7 +438,10 @@
                                 $kanbanItem->type      = $getData['type'];
                                 $targetStatus = TasksUtil::getDefaultTaskStatusForKanbanItemType($getData['type']);
                                 $this->processStatusUpdateViaAjax($taskId, $targetStatus, false);
-                                $content = TasksUtil::resolveActionButtonForTaskByStatus($targetStatus, $this->getId(), $this->getModule()->getId(), $taskId);
+                                $content = TasksUtil::resolveActionButtonForTaskByStatus($targetStatus,
+                                                                                        $this->getId(),
+                                                                                        $this->getModule()->getId(),
+                                                                                        $taskId);
                                 $response['button'] = $content;
                             }
                             $kanbanItem->save();
@@ -507,7 +522,9 @@
                 $task->completed         = false;
                 $task->save();
             }
-            ProjectsUtil::logTaskStatusChangeEvent($task, Task::getStatusDisplayName(intval($currentStatus)), Task::getStatusDisplayName(intval($status)));
+            ProjectsUtil::logTaskStatusChangeEvent($task,
+                                                   Task::getStatusDisplayName(intval($currentStatus)),
+                                                   Task::getStatusDisplayName(intval($status)));
             TasksUtil::sendNotificationOnTaskUpdate($task,
                                                     Zurmo::t('TasksModule', 'The status for the task #' . $task->id .
                                                                             ' has been updated to ' .
