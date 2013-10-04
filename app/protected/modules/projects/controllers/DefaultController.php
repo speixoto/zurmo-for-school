@@ -590,16 +590,6 @@
                             $dataProvider,
                             'ProjectsFeedListView'
                         );
-            $listView            = new ProjectsFeedListView(
-                                       $this->getId(),
-                                       $this->getModule()->getId(),
-                                       get_class($listModel),
-                                       $dataProvider,
-                                       GetUtil::resolveSelectedIdsFromGet(),
-                                       null,
-                                       array(),
-                                       $searchForm->getListAttributesSelector(),
-                                       $searchForm->getKanbanBoard());
             return $mixedView;
         }
 
