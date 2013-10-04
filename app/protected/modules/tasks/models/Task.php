@@ -218,11 +218,11 @@
         public static function getStatusDropDownArray()
         {
             return array(
-                self::TASK_STATUS_NEW                      => Zurmo::t('TasksModule', 'New'),
-                self::TASK_STATUS_IN_PROGRESS              => Zurmo::t('TasksModule', 'In Progress'),
-                self::TASK_STATUS_AWAITING_ACCEPTANCE      => Zurmo::t('TasksModule', 'Awaiting Acceptance'),
-                self::TASK_STATUS_REJECTED                 => Zurmo::t('TasksModule', 'Rejected'),
-                self::TASK_STATUS_COMPLETED                => Zurmo::t('TasksModule', 'Completed'),
+                self::TASK_STATUS_NEW                 => Zurmo::t('TasksModule', 'New'),
+                self::TASK_STATUS_IN_PROGRESS         => Zurmo::t('TasksModule', 'In Progress'),
+                self::TASK_STATUS_AWAITING_ACCEPTANCE => Zurmo::t('TasksModule', 'Awaiting Acceptance'),
+                self::TASK_STATUS_REJECTED            => Zurmo::t('TasksModule', 'Rejected'),
+                self::TASK_STATUS_COMPLETED           => Zurmo::t('TasksModule', 'Completed'),
             );
         }
 
@@ -237,7 +237,7 @@
             {
                 return $statusArray[$status];
             }
-            return Zurmo::t('core', '(None)');
+            return Zurmo::t('Core', '(None)');
         }
 
         /**

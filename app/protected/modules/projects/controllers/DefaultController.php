@@ -573,13 +573,13 @@
          * Get latest activity feed list view
          * @return ListView
          */
-        public function getLatestActivityFeed()
+        public function getLatestActivityFeedView()
         {
-            $pageSize                       = Yii::app()->pagination->resolveActiveForCurrentUserByType(
+            $pageSize      = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                                               'listPageSize', get_class($this->getModule()));
-            $project                        = new Project(false);
-            $searchForm                     = new ProjectsSearchForm($project);
-            $dataProvider                   = $this->resolveSearchDataProvider(
+            $project       = new Project(false);
+            $searchForm    = new ProjectsSearchForm($project);
+            $dataProvider  = $this->resolveSearchDataProvider(
                                                     $searchForm,
                                                     $pageSize,
                                                     null,
@@ -590,6 +590,16 @@
                             $dataProvider,
                             'ProjectsFeedListView'
                         );
+            $listView            = new ProjectsFeedListView(
+                                       $this->getId(),
+                                       $this->getModule()->getId(),
+                                       get_class($listModel),
+                                       $dataProvider,
+                                       GetUtil::resolveSelectedIdsFromGet(),
+                                       null,
+                                       array(),
+                                       $searchForm->getListAttributesSelector(),
+                                       $searchForm->getKanbanBoard());
             return $mixedView;
         }
 
@@ -598,7 +608,7 @@
          */
         public function actionDashboardProjectsFeedView()
         {
-            $listView = $this->getLatestActivityFeed();
+            $listView = $this->getLatestActivityFeedView();
             echo $listView->render();
         }
     }

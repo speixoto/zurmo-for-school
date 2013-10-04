@@ -257,9 +257,9 @@
         {
             if($id == null)
             {
-                $task                  = new Task();
+                $task  = new Task();
                 TasksUtil::setDefaultValuesForTask($task);
-                $task                  = $this->resolveNewModelByRelationInformation( $task,
+                $task  = $this->resolveNewModelByRelationInformation( $task,
                                                                                         $relationAttributeName,
                                                                                         (int)$relationModelId,
                                                                                         $relationModuleId);

@@ -107,14 +107,5 @@
             }
             return PortletsSecurityUtil::resolvePortletsForCurrentUser($portlets);
         }
-
-        /**
-         * @return string content
-         */
-        protected function renderContent()
-        {
-            $this->portlets = $this->getPortlets($this->uniqueLayoutId, self::getMetadata());
-            return $this->renderPortlets($this->uniqueLayoutId);
-        }
     }
 ?>

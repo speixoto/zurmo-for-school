@@ -166,12 +166,12 @@
         }
 
         /**
-         * Renders latest activity
+         * Renders latest activity feed for the project
          * @return string
          */
         protected function renderLatestActivityFeed()
         {
-            $listView = Yii::app()->getController()->getLatestActivityFeed();
+            $listView = Yii::app()->getController()->getLatestActivityFeedView();
             return $listView->render();
         }
     }

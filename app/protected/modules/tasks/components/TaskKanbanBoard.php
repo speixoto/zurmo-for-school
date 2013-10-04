@@ -52,6 +52,8 @@
         /**
          * @param RedBeanModel $model
          * @param string $groupByAttribute
+         * @param RedBeanModel $relatedModel
+         * @param string $relatedModelClassName
          * @throws NotSupportedException
          */
         public function __construct(RedBeanModel $model, $groupByAttribute, $relatedModel, $relatedModelClassName)
