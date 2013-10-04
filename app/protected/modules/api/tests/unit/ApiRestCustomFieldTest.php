@@ -177,7 +177,7 @@
             $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/zurmo/customField/api/addValues/AccountTypes', 'PUT', $headers, array('data' => $data));
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_FAILURE, $response['status']);
-            $this->assertEquals('Only super administrators can perform this action.', $response['message']);
+            $this->assertEquals('You do not have rights to perform this action.', $response['message']);
         }
     }
 ?>
