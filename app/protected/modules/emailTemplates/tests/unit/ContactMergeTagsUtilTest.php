@@ -386,7 +386,7 @@
         public function testDateTimeMergeTag()
         {
             $content                = 'dateTime: [[DATE^TIME]]';
-            $compareContent         = 'dateTime: 2008-12-31 07:48:04';
+            $compareContent         = 'dateTime: 2008-12-31 07:48:04 GMT';
             $mergeTagsUtil          = MergeTagsUtilFactory::make(EmailTemplate::TYPE_CONTACT, null, $content);
             $this->assertTrue($mergeTagsUtil instanceof MergeTagsUtil);
             $this->assertTrue($mergeTagsUtil instanceof ContactMergeTagsUtil);

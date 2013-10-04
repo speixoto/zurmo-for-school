@@ -139,9 +139,16 @@
                 }
                 else
                 {
-                    if ($attributeName === $attributeAccessorString) // we don't have any accessor operator after the attributeName e.g. its the last in list
+                    $attributeType = ModelAttributeToMixedTypeUtil::getType($model, $attributeName);
+                    //We don't have any accessor operator after the attributeName e.g. its the last in list
+                    if ($attributeName === $attributeAccessorString)
                     {
-                        return static::getAttributeValue($model, $attributeName, $timeQualifier);
+                        $content = static::getAttributeValue($model, $attributeName, $timeQualifier);
+                        if($attributeType == 'DateTime')
+                        {
+                            $content .= ' GMT';
+                        }
+                        return $content;
                     }
                     else
                     {
