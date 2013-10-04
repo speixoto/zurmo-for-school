@@ -105,13 +105,13 @@
          */
         public static function resolvePeopleToSendNotificationToOnTaskUpdate(Task $task, User $user)
         {
-            $peopleToSendNotification = array();
+            $peopleToSendNotification    = array();
             $peopleSubscribedForTask     = self::resolvePeopleSubscribedForTask($task);
-            foreach ($peopleSubscribedForTask as $people)
+            foreach ($peopleSubscribedForTask as $person)
             {
-                if (!$people->isSame($user))
+                if ($person->id != $user->id)
                 {
-                    $peopleToSendNotification[] = $people;
+                    $peopleToSendNotification[] = $person;
                 }
             }
             return $peopleToSendNotification;
@@ -136,21 +136,21 @@
          * @param string $message
          * @return null
          */
-        public static function sendNotificationOnTaskUpdate(Task $task, $message)
+        public static function sendNotificationOnTaskUpdate(Task $task, $message, $peopleToSendNotification)
         {
             assert('$task instanceof Task');
             assert('is_string($message)');
+            assert('is_array($peopleToSendNotification)');
             $currentUser = Yii::app()->user->userModel;
-            $peopleToSendNotification = self::resolvePeopleToSendNotificationToOnTaskUpdate($task, $currentUser);
             if (count($peopleToSendNotification) > 0)
             {
                 $emailRecipients = array();
-                foreach ($peopleToSendNotification as $people)
+                foreach ($peopleToSendNotification as $person)
                 {
-                    if ($people->primaryEmail->emailAddress !== null &&
-                        !UserConfigurationFormAdapter::resolveAndGetValue($people, 'turnOffEmailNotifications'))
+                    if ($person->primaryEmail->emailAddress !== null &&
+                        !UserConfigurationFormAdapter::resolveAndGetValue($person, 'turnOffEmailNotifications'))
                     {
-                        $emailRecipients[] = $people;
+                        $emailRecipients[] = $person;
                     }
                 }
                 $subject = self::getEmailSubject($task);
@@ -290,7 +290,8 @@
             $save = false;
             foreach ($task->notificationSubscribers as $position => $subscriber)
             {
-                if ($subscriber->person->getClassId('Item') == $user->getClassId('Item') && $subscriber->hasReadLatest != $hasReadLatest)
+                if ($subscriber->person->getClassId('Item') ==
+                                            $user->getClassId('Item') && $subscriber->hasReadLatest != $hasReadLatest)
                 {
                     $task->notificationSubscribers[$position]->hasReadLatest = $hasReadLatest;
                     $save                                                    = true;
@@ -416,7 +417,8 @@
             $ajaxOptions = TasksUtil::resolveViewAjaxOptionsForSelectingModel();
             $title       = Zurmo::t('TasksModule', $task->name);
             $params      = array('label' => $title, 'routeModuleId' => 'tasks', 'ajaxOptions' => $ajaxOptions);
-            $viewFromRelatedModalLinkActionElement = new ViewFromRelatedModalLinkActionElement($controllerId, $moduleId, $task->id, $params);
+            $viewFromRelatedModalLinkActionElement = new ViewFromRelatedModalLinkActionElement(
+                                                                    $controllerId, $moduleId, $task->id, $params);
             $linkContent = $viewFromRelatedModalLinkActionElement->render();
             $string      = TaskActionSecurityUtil::resolveViewLinkToModelForCurrentUser($task, $moduleClassName, $linkContent);
             return $string;

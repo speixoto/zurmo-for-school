@@ -59,7 +59,9 @@
             $modelClassName    = $this->getModule()->getPrimaryModelName();
             $activity          = static::getModelAndCatchNotFoundAndDisplayError($modelClassName, intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($activity);
-            AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED, array(strval($activity), get_class($this->getModule())), $activity);
+            AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED,
+                                                     array(strval($activity), get_class($this->getModule())),
+                                                    $activity);
             TasksUtil::markUserHasReadLatest($activity, Yii::app()->user->userModel);
             $pageViewClassName = $this->getPageViewClassName();
             $detailsView       = new TaskDetailsView('Details', $this->getId(), $this->getModule()->getId(), $activity);
@@ -104,23 +106,27 @@
             switch($attribute)
             {
                 case 'owner':
-                              $task->owner = $user;
-                              $task->save();
-                              TasksUtil::sendNotificationOnTaskUpdate($task, Zurmo::t('TasksModule', 'The owner for the TasksModuleSingularLowerCaseLabel #' . $task->id . ' is updated to ' . $user->getFullName()));
-                              break;
+                      $task->owner = $user;
+                      $task->save();
+                      TasksUtil::sendNotificationOnTaskUpdate($task, Zurmo::t('TasksModule',
+                                                              'The owner for the task #' . $task->id .
+                                                              ' is updated to ' . $user->getFullName()),
+                                                              array($user)
+                                                              );
+                      break;
 
                 case 'requestedByUser':
-                              $originalRequestedByUser = $task->requestedByUser;
-                              if($user != $originalRequestedByUser)
-                              {
-                                  //Put up in afterSetAttributesDuringSave in TaskZurmoControllerUtil so that it is called in edit case as well.
-                                  $task->requestedByUser = $user;
-                                  $task->save();
-                                  $user = $task->requestedByUser;
-                                  $explicitReadWriteModelPermissions = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($task);
-                                  TasksUtil::resolveExplicitPermissionsForRequestedByUser($task, $originalRequestedByUser, $user, $explicitReadWriteModelPermissions);
-                              }
-                              break;
+                      $originalRequestedByUser = $task->requestedByUser;
+                      if($user != $originalRequestedByUser)
+                      {
+                          $task->requestedByUser = $user;
+                          $task->save();
+                          $explicitReadWriteModelPermissions = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($task);
+                          TasksUtil::resolveExplicitPermissionsForRequestedByUser($task, $originalRequestedByUser,
+                                                                                   $task->requestedByUser,
+                                                                                   $explicitReadWriteModelPermissions);
+                      }
+                      break;
             }
             echo $this->getPermissionContent($task);
         }
@@ -137,7 +143,9 @@
             $dueDateTime  = DateTimeUtil::convertTimestampToDbFormatDateTime($dateTime);
             $task->dueDateTime = $dueDateTime;
             $task->save();
-            TasksUtil::sendNotificationOnTaskUpdate($task, Zurmo::t('TasksModule', 'The due date for task #' . $task->id . ' is updated'));
+            TasksUtil::sendNotificationOnTaskUpdate($task, Zurmo::t('TasksModule',
+                                                                    'The due date for task #' . $task->id . ' is updated'),
+                                                                    array(Yii::app()->user->userModel));
         }
 
         /**
@@ -489,7 +497,8 @@
                 $task->save();
                 if($showCompletionDate)
                 {
-                    echo '<p>' . Zurmo::t('TasksModule', 'Completed On') . ': ' . DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay($task->completedDateTime) . '</p>';
+                    echo '<p>' . Zurmo::t('TasksModule', 'Completed On') . ': ' .
+                                 DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay($task->completedDateTime) . '</p>';
                 }
             }
             else
@@ -499,7 +508,12 @@
                 $task->save();
             }
             ProjectsUtil::logTaskStatusChangeEvent($task, Task::getStatusDisplayName(intval($currentStatus)), Task::getStatusDisplayName(intval($status)));
-            TasksUtil::sendNotificationOnTaskUpdate($task, Zurmo::t('TasksModule', 'The status for the task #' . $task->id . ' has been updated to ' . Task::getStatusDisplayName(intval($status))));
+            TasksUtil::sendNotificationOnTaskUpdate($task,
+                                                    Zurmo::t('TasksModule', 'The status for the task #' . $task->id .
+                                                                            ' has been updated to ' .
+                                                                            Task::getStatusDisplayName(intval($status))),
+                                                    array(Yii::app()->user->userModel)
+                                                    );
         }
 
         /**
@@ -515,7 +529,10 @@
             $notificationSubscriber->hasReadLatest = false;
             $task->notificationSubscribers->add($notificationSubscriber);
             $task->save();
-            TasksUtil::sendNotificationOnTaskUpdate($task, Zurmo::t('TasksModule', $user->getFullName() . ' has subscribed for the task #' . $task->id));
+            TasksUtil::sendNotificationOnTaskUpdate($task,
+                                                    Zurmo::t('TasksModule', $user->getFullName() .
+                                                    ' has subscribed for the task #' . $task->id),
+                                                    array($user));
             return $task;
         }
 
@@ -536,7 +553,10 @@
                 }
             }
             $task->save();
-            TasksUtil::sendNotificationOnTaskUpdate($task, Zurmo::t('TasksModule', $user->getFullName() . ' has unsubscribed from the task #' . $task->id));
+            TasksUtil::sendNotificationOnTaskUpdate($task,
+                                                    Zurmo::t('TasksModule', $user->getFullName() .
+                                                    ' has unsubscribed from the task #' . $task->id),
+                                                    array($user));
             return $task;
         }
 
@@ -564,6 +584,9 @@
             }
         }
 
+        /**
+         * Gets zurmo controller util for task
+         */
         protected static function getZurmoControllerUtil()
         {
             return new TaskZurmoControllerUtil();

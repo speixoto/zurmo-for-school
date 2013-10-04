@@ -267,7 +267,9 @@
             $content .= '<span id="completionDate">';
             if($this->model->status == Task::TASK_STATUS_COMPLETED)
             {
-                $content .= '<p>' . Zurmo::t('TasksModule', 'Completed On') . ': ' . DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay($this->model->completedDateTime) . '</p>';
+                $content .= '<p>' . Zurmo::t('TasksModule', 'Completed On') . ': ' .
+                                    DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay($this->model->completedDateTime)
+                                        . '</p>';
             }
             $content .= '</span>';
             $content .= '</div>';
