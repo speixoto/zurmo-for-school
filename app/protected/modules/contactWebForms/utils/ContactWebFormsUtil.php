@@ -70,7 +70,7 @@
                     $hiddenAttribute      = '';
                     $hiddenAttributeValue = '';
                     $hiddenAttributeStyle = 'style=\'display:none;\'';
-                    if (ArrayUtil::isAssoc($contactWebFormAttributes))
+                    if (isset($contactWebFormAttributes[$attributeName]['label']))
                     {
                         $attributeLabel    = $contactWebFormAttributes[$attributeName]['label'];
                         $isPlacedAttribute = array_key_exists($attributeName, $contactWebFormAttributes);
@@ -78,20 +78,20 @@
                         {
                             $requiredAttribute        = 'checked=\'checked\'';
                         }
-                        if (isset($contactWebFormAttributes[$attributeName]['hidden']))
-                        {
-                            $hiddenAttribute          = 'checked=\'checked\'';
-                            $hiddenAttributeStyle     = 'style=\'display:block;\'';
-                            if (isset($contactWebFormAttributes[$attributeName]['hiddenValue']))
-                            {
-                                $hiddenAttributeValue = $contactWebFormAttributes[$attributeName]['hiddenValue'];
-                            }
-                        }
                     }
                     else
                     {
                         $attributeLabel    = $attributeData['attributeLabel'];
                         $isPlacedAttribute = in_array($attributeName, $contactWebFormAttributes);
+                    }
+                    if (isset($contactWebFormAttributes[$attributeName]['hidden']))
+                    {
+                        $hiddenAttribute          = 'checked=\'checked\'';
+                        $hiddenAttributeStyle     = 'style=\'display:block;\'';
+                        if (isset($contactWebFormAttributes[$attributeName]['hiddenValue']))
+                        {
+                            $hiddenAttributeValue = $contactWebFormAttributes[$attributeName]['hiddenValue'];
+                        }
                     }
 
                     if ($attributeData['isRequired'])

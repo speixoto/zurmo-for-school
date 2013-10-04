@@ -125,7 +125,7 @@
                         '<input type="text" id="placedAttribute_{id}" name="placedAttribute[{id}][label]" value="{content}" />' .
                         '<input type="checkbox" name="placedAttribute[{id}][required]" value="1" {requiredAttribute} {readOnlyAttribute}/> Required?' .
                         '<input class="hiddenAttribute" id="placedAttribute_hidden_{id}" type="checkbox" name="placedAttribute[{id}][hidden]" value="1" data-value="{id}"/> Hidden?' .
-                        '<input type="text" {hiddenAttributeStyle} id="placedAttribute_hiddenValue_{id}" name="placedAttribute[{id}][hiddenValue]" value="{hiddenAttributeValue}" />' .
+                        '<input type="text" {hiddenAttributeStyle} id="placedAttribute_hiddenValue_{id}" name="placedAttribute[{id}][hiddenValue]" {hiddenAttribute} value="{hiddenAttributeValue}" />' .
                     '</div>{checkedAndReadOnly}</div></li>';
         }
 
