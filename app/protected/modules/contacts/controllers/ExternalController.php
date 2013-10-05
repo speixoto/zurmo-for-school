@@ -88,6 +88,8 @@
             $contact                                 = new Contact();
             $contact->state                          = $contactWebForm->defaultState;
             $contact->owner                          = $contactWebForm->defaultOwner;
+            $contact                                 = ContactWebFormsUtil::resolveHiddenAttributesForContactModel(
+                                                       $contact, $contactWebForm);
             $contact->googleWebTrackingId            = Yii::app()->getRequest()->getPost(
                                                        ContactExternalEditAndDetailsView::GOOGLE_WEB_TRACKING_ID_FIELD);
             $customDisplayLabels                     = ContactWebFormsUtil::getCustomDisplayLabels($contactWebForm);
@@ -97,10 +99,10 @@
             $contactWebFormModelForm->setCustomRequiredFields($customRequiredFields);
             $postVariableName                        = get_class($contactWebFormModelForm);
             $containedView                           = new ContactExternalEditAndDetailsView('Edit',
-                                                            $this->getId(),
-                                                            $this->getModule()->getId(),
-                                                            $this->attemptToSaveModelFromPost($contactWebFormModelForm, null, false),
-                                                            $metadata);
+                                                       $this->getId(),
+                                                       $this->getModule()->getId(),
+                                                       $this->attemptToSaveModelFromPost($contactWebFormModelForm, null, false),
+                                                       $metadata);
             $view = new ContactWebFormsExternalPageView(ZurmoExternalViewUtil::
                                                         makeExternalViewForCurrentUser($containedView));
             if (isset($_POST[$postVariableName]) && isset($contact->id) && intval($contact->id) > 0)
@@ -168,6 +170,7 @@
             $contact        = new Contact();
             $contact->state = $contactWebForm->defaultState;
             $contact->owner = $contactWebForm->defaultOwner;
+            $contact        = ContactWebFormsUtil::resolveHiddenAttributesForContactModel($contact, $contactWebForm);
             $customRequiredFields = ContactWebFormsUtil::getCustomRequiredFields($contactWebForm);
             $contactWebFormModelForm = new ContactWebFormsModelForm($contact);
             $contactWebFormModelForm->setCustomRequiredFields($customRequiredFields);
@@ -191,6 +194,8 @@
         {
             $postVariableName                    = get_class($contact);
             $contactFormAttributes               = $_POST[$postVariableName];
+            $contactFormAttributes               = ContactWebFormsUtil::resolveHiddenAttributesForContactWebFormEntryModel(
+                                                   $contactFormAttributes, $contactWebForm);
             $contactFormAttributes['owner']      = $contactWebForm->defaultOwner->id;
             $contactFormAttributes['state']      = $contactWebForm->defaultState->id;
             if ($contact->validate())
@@ -238,7 +243,8 @@
         {
             assert('$contactWebForm instanceof ContactWebForm');
             $contactWebFormAttributes = ContactWebFormsUtil::resolveWebFormAttributes(unserialize($contactWebForm->serializedData));
-            $contactWebFormAttributes = self::resolveWebFormWithAllRequiredAttributes($contactWebFormAttributes);
+            $contactWebFormAttributes = ContactWebFormsUtil::resolveWebFormWithAllRequiredAttributes($contactWebFormAttributes);
+            $contactWebFormAttributes = ContactWebFormsUtil::excludeHiddenAttributes($contactWebForm, $contactWebFormAttributes);
             $viewClassName            = 'ContactExternalEditAndDetailsView';
             $moduleClassName          = 'ContactsModule';
             $modelClassName           = $moduleClassName::getPrimaryModelName();
@@ -268,20 +274,6 @@
                 }
             }
             return $metadata;
-        }
-
-        public static function resolveWebFormWithAllRequiredAttributes($contactWebFormAttributes)
-        {
-            $attributes = ContactWebFormsUtil::getAllAttributes();
-            foreach ($attributes as $attributeName => $attributeData)
-            {
-                if (!$attributeData['isReadOnly'] && $attributeData['isRequired'] &&
-                    !in_array($attributeName, $contactWebFormAttributes))
-                {
-                    $contactWebFormAttributes[] = $attributeName;
-                }
-            }
-            return $contactWebFormAttributes;
         }
 
         public function actionValidateCaptcha()

@@ -204,5 +204,70 @@
             }
             return $customRequiredFields;
         }
+
+        public static function resolveWebFormWithAllRequiredAttributes($contactWebFormAttributes)
+        {
+            $attributes = static::getAllAttributes();
+            foreach ($attributes as $attributeName => $attributeData)
+            {
+                if (!$attributeData['isReadOnly'] && $attributeData['isRequired'] &&
+                    !in_array($attributeName, $contactWebFormAttributes))
+                {
+                    $contactWebFormAttributes[] = $attributeName;
+                }
+            }
+            return $contactWebFormAttributes;
+        }
+
+        public static function excludeHiddenAttributes($contactWebForm, $resolvedWebFormAttributes = array())
+        {
+            $webFormAttributes = unserialize($contactWebForm->serializedData);
+            foreach ($webFormAttributes as $attributeName => $attribute)
+            {
+                if (isset($attribute['hidden']) && isset($attribute['hiddenValue']) && !empty($attribute['hiddenValue']))
+                {
+                    if (in_array($attributeName, $resolvedWebFormAttributes))
+                    {
+                        //Remove hidden attribute from resolved attributes
+                        foreach ($resolvedWebFormAttributes as $resolvedAttributeIndex => $resolvedAttribute)
+                        {
+                            if ($resolvedAttribute == $attributeName)
+                            {
+                                unset($resolvedWebFormAttributes[$resolvedAttributeIndex]);
+                                break;
+                            }
+                        }
+                        $resolvedWebFormAttributes = array_values($resolvedWebFormAttributes);
+                    }
+                }
+            }
+            return $resolvedWebFormAttributes;
+        }
+
+        public static function resolveHiddenAttributesForContactModel($contact, $contactWebForm)
+        {
+            $ContactWebFormAttributes = unserialize($contactWebForm->serializedData);
+            foreach ($ContactWebFormAttributes as $attributeName => $attribute)
+            {
+                if (isset($attribute['hidden']) && isset($attribute['hiddenValue']) && !empty($attribute['hiddenValue']))
+                {
+                    $contact->$attributeName = $attribute['hiddenValue'];
+                }
+            }
+            return $contact;
+        }
+
+        public static function resolveHiddenAttributesForContactWebFormEntryModel($webFormEntryAttributes = array(), $contactWebForm)
+        {
+            $ContactWebFormAttributes = unserialize($contactWebForm->serializedData);
+            foreach ($ContactWebFormAttributes as $attributeName => $attribute)
+            {
+                if (isset($attribute['hidden']) && isset($attribute['hiddenValue']) && !empty($attribute['hiddenValue']))
+                {
+                    $webFormEntryAttributes[$attributeName] = $attribute['hiddenValue'];
+                }
+            }
+            return $webFormEntryAttributes;
+        }
     }
 ?>
