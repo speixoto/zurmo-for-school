@@ -152,7 +152,7 @@
             {
                 $this->onBeforeOwnerChange(new CEvent($this, array('newOwner' => $value)));
                 $this->ownerChange($value);
-                $this->onAfterOwnerChange(new CEvent($this, array('newOwner' => $value)));
+                $this->onAfterOwnerChange(new CEvent($this));
             }
             else
             {
@@ -160,7 +160,7 @@
             }
         }
 
-        public function onBeforeOwnerChange($event)
+        public function onBeforeOwnerChange(CEvent $event)
         {
             $this->raiseEvent('onBeforeOwnerChange', $event);
         }
@@ -185,7 +185,7 @@
             }
         }
 
-        public function onAfterOwnerChange($event)
+        public function onAfterOwnerChange(CEvent $event)
         {
             $this->raiseEvent('onAfterOwnerChange', $event);
         }
