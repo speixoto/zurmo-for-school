@@ -20687,49 +20687,95 @@ div.special-pager .hidden.next:after {
   -ms-box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.3), 0 -1px 0 0 rgba(161, 45, 37, 0.9);
   box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.3), 0 -1px 0 0 rgba(161, 45, 37, 0.9);
 }
-.gd-collection-items .gd-collection-item {
+.gd-collection-item {
   position: relative;
   display: inline-block;
   float: left;
   margin-right: 25px;
 }
-.gd-collection-items .gd-collection-item img {
+.gd-collection-item img {
   max-height: 55px;
   width: auto;
 }
-.gd-collection-items .gd-collection-item-redeemed {
-  margin-top: -15px;
+.gd-collection-item-redeemed {
+  margin-top: -10px;
   display: inline-block;
   float: right;
   text-align: center;
 }
-.gd-collection-items .gd-collection-item-redeemed img {
-  max-width: 100px;
+.gd-collection-item-redeemed img {
+  max-width: 70px;
   height: auto;
   text-align: center;
 }
-.gd-collection-items .gd-collection-item-redeemed .num-collected {
+.gd-collection-item-redeemed .num-collected {
   width: 24px;
   height: 24px;
   line-height: 24px;
   z-index: 9999;
 }
-.gd-collection-items .gd-collection-item-redeemed a {
-  font-size: 12px;
+.coin-button {
+  position: relative;
+  z-index: 1;
+  overflow: visible;
+  background: url(../images/game-dashboard/coin-button.png) center center no-repeat;
+  width: 90px;
+  height: 70px;
+  border: none !important;
+  -webkit-box-shadow: none !important;
+  -moz-box-shadow: none !important;
+  -o-box-shadow: none !important;
+  -ms-box-shadow: none !important;
+  box-shadow: none !important;
+}
+.coin-button .z-label {
+  text-indent: 0;
   display: block;
   text-align: center;
-  text-decoration: underline !important;
+  font-size: 14px;
+  width: 100%;
+  padding: 0;
+  margin: 22px 0 0 0;
+  color: #763d05 !important;
+  -webkit-text-shadow: 0px 1px 0 #f9bd81 !important;
+  -moz-text-shadow: 0px 1px 0 #f9bd81 !important;
+  -o-text-shadow: 0px 1px 0 #f9bd81 !important;
+  -ms-text-shadow: 0px 1px 0 #f9bd81 !important;
+  text-shadow: 0px 1px 0 #f9bd81 !important;
+  background-color: rgba(246, 146, 30, 0.8) !important;
+  background-repeat: repeat-x !important;
+  background-image: -moz-linear-gradient(top, rgba(255, 241, 0, 0.8), rgba(246, 146, 30, 0.8)) !important;
+  background-image: -ms-linear-gradient(top, rgba(255, 241, 0, 0.8), rgba(246, 146, 30, 0.8)) !important;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(255, 241, 0, 0.8)), color-stop(100%, rgba(246, 146, 30, 0.8))) !important;
+  background-image: -webkit-linear-gradient(top, rgba(255, 241, 0, 0.8), rgba(246, 146, 30, 0.8)) !important;
+  background-image: -o-linear-gradient(top, rgba(255, 241, 0, 0.8), rgba(246, 146, 30, 0.8)) !important;
+  background-image: linear-gradient(top, rgba(255, 241, 0, 0.8), rgba(246, 146, 30, 0.8)) !important;
+  border-top: 1px solid rgba(255, 241, 0, 0.3);
+  border-bottom: 1px solid rgba(255, 241, 0, 0.3);
+  border-left: 1px solid rgba(255, 241, 0, 0.5);
+  border-right: 1px solid rgba(255, 241, 0, 0.5);
+  -webkit-box-shadow: 0 0 3px 0 rgba(255, 241, 0, 0.1);
+  -moz-box-shadow: 0 0 3px 0 rgba(255, 241, 0, 0.1);
+  -o-box-shadow: 0 0 3px 0 rgba(255, 241, 0, 0.1);
+  -ms-box-shadow: 0 0 3px 0 rgba(255, 241, 0, 0.1);
+  box-shadow: 0 0 3px 0 rgba(255, 241, 0, 0.1);
 }
-.gd-collection-items .gd-collection-item-redeemed .z-button {
-  position: relative;
-  top: -60px;
-  z-index: 1;
-}
-.gd-collection-items .gd-collection-item-redeemed .z-button + .num-collected {
-  float: left;
-  position: absolute;
-  left: -8px;
-  top: -8px;
+.coin-button:hover span.z-label,
+.coin-button:active span.z-label {
+  color: #452403 !important;
+  background-color: rgba(216, 120, 9, 0.8) !important;
+  background-repeat: repeat-x !important;
+  background-image: -moz-linear-gradient(top, rgba(255, 241, 0, 0.8), rgba(216, 120, 9, 0.8)) !important;
+  background-image: -ms-linear-gradient(top, rgba(255, 241, 0, 0.8), rgba(216, 120, 9, 0.8)) !important;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(255, 241, 0, 0.8)), color-stop(100%, rgba(216, 120, 9, 0.8))) !important;
+  background-image: -webkit-linear-gradient(top, rgba(255, 241, 0, 0.8), rgba(216, 120, 9, 0.8)) !important;
+  background-image: -o-linear-gradient(top, rgba(255, 241, 0, 0.8), rgba(216, 120, 9, 0.8)) !important;
+  background-image: linear-gradient(top, rgba(255, 241, 0, 0.8), rgba(216, 120, 9, 0.8)) !important;
+  -webkit-text-shadow: 0px 1px 0 #f8b068 !important;
+  -moz-text-shadow: 0px 1px 0 #f8b068 !important;
+  -o-text-shadow: 0px 1px 0 #f8b068 !important;
+  -ms-text-shadow: 0px 1px 0 #f8b068 !important;
+  text-shadow: 0px 1px 0 #f8b068 !important;
 }
 .gd-coin-prize {
   position: absolute;

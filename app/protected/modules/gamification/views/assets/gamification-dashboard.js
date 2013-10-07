@@ -1,14 +1,10 @@
 $(window).ready(function(){
 
-    $.fn.getLocation = function(){
-
-    }
-
     var highestZIndex = 100;
 
     $('.gd-collection-panel').on({
         mouseenter: function(event) {
-            $('> div', this).css('z-index', highestZIndex++).animate({width:'575px', top:'-95%'}, 250, 'linear');
+            $('> div', this).css('z-index', highestZIndex++).animate({width:'575px', top:'-95px'}, 250, 'linear');
         },
         mouseleave: function(event) {
             $('> div', this).animate({width:'285px', top:0}, 250, 'linear', function(){

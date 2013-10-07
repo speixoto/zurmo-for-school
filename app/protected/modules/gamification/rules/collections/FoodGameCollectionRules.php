@@ -64,7 +64,7 @@
                             'DryFruit'          => Zurmo::t('GamificationModule', 'DryFruit'),
                             'Fruit'          => Zurmo::t('GamificationModule', 'Fruit'),
                             'Spices'      => Zurmo::t('GamificationModule', 'Spices'),
-                            'Vegtables'            => Zurmo::t('GamificationModule', 'Vegtables'),
+                            'Vegetables'            => Zurmo::t('GamificationModule', 'Vegetables'),
             );
         }
 
@@ -77,7 +77,7 @@
                             'DryFruit'          => 10,
                             'Fruit'          => 10,
                             'Spices'      => 3,
-                            'Vegtables'            => 6,
+                            'Vegetables'            => 6,
             );
         }
 

@@ -67,7 +67,7 @@
             $content .= ZurmoHtml::tag('h3', array(), $gameCollectionRules->getCollectionLabel() . ' ' .
                                        Zurmo::t('GamificationModule', 'Collection'));
             $content .= static::renderCollectionItemsContent($user, $collection, $gameCollectionRules);
-            $content  = ZurmoHtml::tag('div', array('class' => '_open-panel'), $content);
+            $content  = ZurmoHtml::tag('div', array(), $content);
             return ZurmoHtml::tag('div', array('id'    => static::getCollectionContainerId($collection->id),
                                                'class' => 'gd-collection-panel clearfix'), $content);
         }
@@ -290,8 +290,8 @@
                 $content .= ZurmoHtml::tag('div', array('class' => $classContent), $itemContent);
             }
             $coinImageUrl       = Yii::app()->themeManager->baseUrl . '/default/images/game-dashboard/coin.png';
-            $itemRedeemContent  = ZurmoHtml::image($coinImageUrl);
-            $itemRedeemContent .= static::renderCompleteButton($collection->id, $user->id, $canCollect);
+            //$itemRedeemContent  = ZurmoHtml::image($coinImageUrl);
+            $itemRedeemContent = static::renderCompleteButton($collection->id, $user->id, $canCollect);
             $content           .= ZurmoHtml::tag('div', array('class' => 'gd-collection-item-redeemed'), $itemRedeemContent);
             return ZurmoHtml::tag('div', array('class' => 'gd-collection-items clearfix'), $content);
         }
@@ -311,7 +311,7 @@
             $id                      = static::getCompleteCollectionLinkId($collectionId);
             $htmlOptions['id']       = $id;
             $htmlOptions['name']     = $id;
-            $htmlOptions['class']    = 'attachLoading z-button';
+            $htmlOptions['class']    = 'attachLoading z-button coin-button';
             $aContent                = ZurmoHtml::wrapLink(Zurmo::t('Core', 'Complete'));
             $containerId             = static::getCollectionContainerId($collectionId);
             return ZurmoHtml::ajaxLink($aContent, $url, array(
