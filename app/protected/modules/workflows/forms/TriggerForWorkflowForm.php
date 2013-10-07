@@ -63,6 +63,26 @@
         public $secondValue;
 
         /**
+         * If the attribute is date or date time, and the operator is
+         * MixedDateTypesTriggerForWorkflowFormAttributeMappingRules::TYPE_AT_LEAST_X_AFTER_TRIGGERED_DATE
+         * or
+         * MixedDateTypesTriggerForWorkflowFormAttributeMappingRules::TYPE_AT_LEAST_X_BEFORE_TRIGGERED_DATE
+         * then this value is used
+         * @var string
+         */
+        public $thirdValueDurationInterval;
+
+        /**
+         * If the attribute is date or date time, and the operator is
+         * MixedDateTypesTriggerForWorkflowFormAttributeMappingRules::TYPE_AT_LEAST_X_AFTER_TRIGGERED_DATE
+         * or
+         * MixedDateTypesTriggerForWorkflowFormAttributeMappingRules::TYPE_AT_LEAST_X_BEFORE_TRIGGERED_DATE
+         * then this value is used
+         * @var string
+         */
+        public $thirdValueDurationType;
+
+        /**
          * owner__User for example uses this property to define the owner's name which can then be used in the user
          * interface
          * @var string
@@ -163,6 +183,9 @@
                 array('stringifiedModelForValue',    'safe'),
                 array('valueType',                   'type', 'type' => 'string'),
                 array('valueType',                   'validateValueType'),
+                array('thirdValueDurationInterval',  'safe'),
+                array('thirdValueDurationInterval',  'validateThirdValue'),
+                array('thirdValueDurationType',      'type', 'type' => 'string'),
             ));
         }
 
@@ -247,6 +270,33 @@
             else
             {
                 throw new NotSupportedException();
+            }
+            return $passedValidation;
+        }
+
+        /**
+         * When the operator type is
+         * MixedDateTypesTriggerForWorkflowFormAttributeMappingRules::TYPE_AT_LEAST_X_AFTER_TRIGGERED_DATE
+         * or
+         * MixedDateTypesTriggerForWorkflowFormAttributeMappingRules::TYPE_AT_LEAST_X_BEFORE_TRIGGERED_DATE
+         * then the thirdValueDurationInterval and thirdValueDurationType are required
+         * @return bool
+         * @throws NotSupportedException
+         */
+        public function validateThirdValue()
+        {
+            $passedValidation = true;
+
+            if (in_array($this->valueType, self::getValueTypesWhereThirdValueIsRequired()))
+            {
+                $rules   = array();
+                $rules[] = array('thirdValueDurationInterval',  'type', 'type' => 'integer');
+                $rules[] = array('thirdValueDurationInterval',  'numerical', 'min' => 0);
+                $rules[] = array('thirdValueDurationInterval', 'required');
+                $this->resolveAndValidateValueData($rules, $passedValidation, 'thirdValueDurationInterval', false);
+                $rules   = array();
+                $rules[] = array('thirdValueDurationType', 'required');
+                $this->resolveAndValidateValueData($rules, $passedValidation, 'thirdValueDurationType', false);
             }
             return $passedValidation;
         }
@@ -428,6 +478,14 @@
         }
 
         /**
+         * @return array
+         */
+        protected static function getValueTypesWhereThirdValueIsRequired()
+        {
+            return MixedDateTypesTriggerForWorkflowFormAttributeMappingRules::getValueTypesWhereThirdValueIsRequired();
+        }
+
+        /**
          * @param array $rules
          * @return CList
          * @throws CException
@@ -458,13 +516,18 @@
          * @param array $rules
          * @param $passedValidation
          * @param $ruleAttributeName
+         * @param bool $getTriggerRulesByAttribute
          */
-        private function resolveAndValidateValueData(Array $rules, & $passedValidation, $ruleAttributeName)
+        private function resolveAndValidateValueData(Array $rules, & $passedValidation, $ruleAttributeName,
+                                                     $getTriggerRulesByAttribute = true)
         {
-            $modelToWorkflowAdapter = $this->makeResolvedAttributeModelRelationsAndAttributesToWorkflowAdapter();
-            $rules                = array_merge($rules, $modelToWorkflowAdapter->getTriggerRulesByAttribute(
-                                    $this->getResolvedAttribute(), $ruleAttributeName));
-            $validators           = $this->createValueValidatorsByRules($rules);
+            if($getTriggerRulesByAttribute)
+            {
+                $modelToWorkflowAdapter = $this->makeResolvedAttributeModelRelationsAndAttributesToWorkflowAdapter();
+                $rules                  = array_merge($rules, $modelToWorkflowAdapter->getTriggerRulesByAttribute(
+                                          $this->getResolvedAttribute(), $ruleAttributeName));
+            }
+            $validators = $this->createValueValidatorsByRules($rules);
             foreach ($validators as $validator)
             {
                 $validated = $validator->validate($this);
