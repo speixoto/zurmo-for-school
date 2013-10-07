@@ -107,7 +107,7 @@
                                                         makeExternalViewForCurrentUser($containedView));
             if (isset($_POST[$postVariableName]) && isset($contact->id) && intval($contact->id) > 0)
             {
-                $this->resolveContactWebFormEntry($contactWebForm, $contactWebFormModelForm);
+                $this->resolveContactWebFormEntry($contactWebForm, $contact, $contactWebFormModelForm);
                 $responseData                        = array();
                 $responseData['redirectUrl']         = $contactWebForm->redirectUrl;
                 $this->renderResponse(CJSON::encode($responseData));
@@ -177,7 +177,7 @@
             $postVariableName = get_class($contactWebFormModelForm);
             $sanitizedPostData = PostUtil::sanitizePostByDesignerTypeForSavingModel($contact, $_POST[$postVariableName]);
             $contact->setAttributes($sanitizedPostData);
-            $this->resolveContactWebFormEntry($contactWebForm, $contactWebFormModelForm);
+            $this->resolveContactWebFormEntry($contactWebForm, $contact, $contactWebFormModelForm);
             if ($contactWebFormModelForm->validate())
             {
                 $response = CJSON::encode(array());
@@ -190,15 +190,15 @@
             $this->renderResponse($response);
         }
 
-        protected function resolveContactWebFormEntry($contactWebForm, $contact)
+        protected function resolveContactWebFormEntry($contactWebForm, $contact, $contactWebFormModelForm)
         {
-            $postVariableName                    = get_class($contact);
+            $postVariableName                    = get_class($contactWebFormModelForm);
             $contactFormAttributes               = $_POST[$postVariableName];
             $contactFormAttributes               = ContactWebFormsUtil::resolveHiddenAttributesForContactWebFormEntryModel(
                                                    $contactFormAttributes, $contactWebForm);
             $contactFormAttributes['owner']      = $contactWebForm->defaultOwner->id;
             $contactFormAttributes['state']      = $contactWebForm->defaultState->id;
-            if ($contact->validate())
+            if ($contactWebFormModelForm->validate())
             {
                 $contactWebFormEntryStatus       = ContactWebFormEntry::STATUS_SUCCESS;
                 $contactWebFormEntryMessage      = ContactWebFormEntry::STATUS_SUCCESS_MESSAGE;
