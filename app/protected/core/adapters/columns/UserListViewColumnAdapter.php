@@ -34,6 +34,9 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
+    /**
+     * Class UserListViewColumnAdapter
+     */
     class UserListViewColumnAdapter extends TextListViewColumnAdapter
     {
     }

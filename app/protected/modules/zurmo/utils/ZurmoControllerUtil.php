@@ -129,7 +129,7 @@
                                                  removeElementFromPostDataForSavingModel($readyToUseData, 'owner');
             $model->setAttributes($sanitizedDataWithoutOwner);
             $this->afterSetAttributesDuringSave($model, $explicitReadWriteModelPermissions);
-            if($explicitReadWriteModelPermissions instanceof ExplicitReadWriteModelPermissions)
+            if ($explicitReadWriteModelPermissions instanceof ExplicitReadWriteModelPermissions)
             {
                 $model->setExplicitReadWriteModelPermissionsForWorkflow($explicitReadWriteModelPermissions);
             }
@@ -150,7 +150,10 @@
                 }
                 if ($passedOwnerValidation && $model->save(false))
                 {
-                    $model->clearExplicitReadWriteModelPermissionsForWorkflow();
+                    if($model instanceof SecurableItem)
+                    {
+                        $model->clearExplicitReadWriteModelPermissionsForWorkflow();
+                    }
                     if ($explicitReadWriteModelPermissions != null)
                     {
                         $success = ExplicitReadWriteModelPermissionsUtil::

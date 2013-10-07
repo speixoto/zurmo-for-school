@@ -288,6 +288,7 @@
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
             $this->assertEquals($allAttributes, $response['data']['items']);
         }
+
         /**
          * @depends testListOpportunities
          */

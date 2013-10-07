@@ -211,9 +211,11 @@
         protected function getPermissionTypes()
         {
             return array(
-                null                                                                 => Zurmo::t('ZurmoModule', 'Owner'),
-                ExplicitReadWriteModelPermissionsUtil::MIXED_TYPE_NONEVERYONE_GROUP  => Zurmo::t('ZurmoModule', 'Owner and users in'),
-                ExplicitReadWriteModelPermissionsUtil::MIXED_TYPE_EVERYONE_GROUP     => Zurmo::t('ZurmoModule', 'Everyone'));
+                null => Zurmo::t('ZurmoModule', 'Owner'),
+                ExplicitReadWriteModelPermissionsUtil::MIXED_TYPE_NONEVERYONE_GROUP  =>
+                    Zurmo::t('ZurmoModule', 'Owner and users in'),
+                ExplicitReadWriteModelPermissionsUtil::MIXED_TYPE_EVERYONE_GROUP =>
+                    GroupsModule::resolveEveryoneDisplayLabel());
         }
 
         protected function renderSelectableGroupsContent()

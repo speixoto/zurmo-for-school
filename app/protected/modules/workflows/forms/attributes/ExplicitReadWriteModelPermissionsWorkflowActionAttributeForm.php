@@ -129,7 +129,7 @@
             {
                 $data[$id]  = Zurmo::t('ZurmoModule', 'Owner and users in {groupName}', array('{groupName}' => $name));
             }
-            $data[self::TYPE_DYNAMIC_EVERYONE_GROUP]          = Zurmo::t('ZurmoModule', 'Everyone');
+            $data[self::TYPE_DYNAMIC_EVERYONE_GROUP] = GroupsModule::resolveEveryoneDisplayLabel();
             return $data;
         }
     }
