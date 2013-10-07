@@ -171,7 +171,7 @@
          */
         protected function renderLatestActivityFeed()
         {
-            $listView = Yii::app()->getController()->getLatestActivityFeedView();
+            $listView = ProjectZurmoControllerUtil::getProjectsLatestActivityFeedView(Yii::app()->getController());
             return $listView->render();
         }
     }

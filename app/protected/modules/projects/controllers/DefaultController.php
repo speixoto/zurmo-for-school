@@ -570,35 +570,11 @@
         }
 
         /**
-         * Get latest activity feed list view
-         * @return ListView
-         */
-        public function getLatestActivityFeedView()
-        {
-            $pageSize      = Yii::app()->pagination->resolveActiveForCurrentUserByType(
-                                              'listPageSize', get_class($this->getModule()));
-            $project       = new Project(false);
-            $searchForm    = new ProjectsSearchForm($project);
-            $dataProvider  = $this->resolveSearchDataProvider(
-                                                    $searchForm,
-                                                    $pageSize,
-                                                    null,
-                                                    'ProjectsSearchView'
-                                                );
-            $mixedView  = $this->makeListView(
-                            $searchForm,
-                            $dataProvider,
-                            'ProjectsFeedListView'
-                        );
-            return $mixedView;
-        }
-
-        /**
          * Display list view of feeds for projects on dashboard
          */
-        public function actionDashboardProjectsFeedView()
+        public function actionShowProjectsLatestActivityFeed()
         {
-            $listView = $this->getLatestActivityFeedView();
+            $listView = ProjectZurmoControllerUtil::getProjectsLatestActivityFeedView($this);
             echo $listView->render();
         }
     }

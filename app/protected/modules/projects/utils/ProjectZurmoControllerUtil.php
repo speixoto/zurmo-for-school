@@ -169,5 +169,32 @@
             }
             return $newOpportunity;
         }
+
+        /**
+         * Get latest activity feed list view
+         * @return ListView
+         */
+        public static function getProjectsLatestActivityFeedView($controller)
+        {
+            $pageSize           = Yii::app()->pagination->resolveActiveForCurrentUserByType(
+                                              'listPageSize', 'ProjectsModule');
+            $project            = new Project(false);
+            $searchForm         = new ProjectsSearchForm($project);
+            $listModelClassName = get_class($searchForm->getModel());
+            $dataCollection     = new SearchAttributesDataCollection($searchForm);
+            $dataProvider       = $controller->makeRedBeanDataProviderByDataCollection($searchForm, $pageSize,
+                                    null, $dataCollection);
+            $listView           = new ProjectsFeedListView(
+                                   $controller->id,
+                                   $controller->getModule()->getId(),
+                                   get_class($searchForm->getModel()),
+                                   $dataProvider,
+                                   GetUtil::resolveSelectedIdsFromGet(),
+                                   null,
+                                   array(),
+                                   $searchForm->getListAttributesSelector(),
+                                   $searchForm->getKanbanBoard());
+            return $listView;
+        }
     }
 ?>

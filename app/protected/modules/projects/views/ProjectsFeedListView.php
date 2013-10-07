@@ -117,7 +117,7 @@
          */
         protected function getListActionId()
         {
-            return 'dashboardProjectsFeedView';
+            return 'showProjectsLatestActivityFeed';
         }
 
         /**
