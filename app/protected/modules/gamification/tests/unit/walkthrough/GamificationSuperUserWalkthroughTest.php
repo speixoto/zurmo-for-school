@@ -146,50 +146,23 @@
             $gameCollection      = new GameCollection();
             $gameCollection->person    = $user;
             $gameCollection->type      = 'Butterflies';
-            $gameCollection->serializedData = serialize(array('something'));
+            $itemsData = array('RedemptionItem' => 0,
+                                 'Items' => array(
+                                    'AniseSwallowtail'  => 0,
+                                    'Buckeye'           => 0,
+                                    'Monarch'           => 0,
+                                    'PaintedLady'       => 0,
+                                    'Queen'             => 0));
+            $gameCollection->serializedData = serialize($itemsData);
             $this->assertTrue($gameCollection->save());
             $id = $gameCollection->id;
             unset($gameCollection);
             $gameCollection = GameCollection::getById($id);
             $this->assertEquals('Butterflies', $gameCollection->type);
             $this->assertEquals($user,         $gameCollection->person);
-            $this->assertEquals(array('something'), unserialize($gameCollection->serializedData));
-            try
-            {
-                $this->setGetArray(array('id' => $gameCollection->id));
-                $content = $this->runControllerWithNoExceptionsAndGetContent('gamification/default/redeemCollection');
-            }
-            catch (NotSupportedException $e)
-            {
-                // Do nothing
-            }
-            
-            Yii::app()->user->userModel      = User::getByUsername('steven');
-            $gameCollection                  = GameCollection::resolveByTypeAndPerson('Butterflies',  Yii::app()->user->userModel);
-            $this->assertEquals('Butterflies',                  $gameCollection->type);
-            $this->assertEquals(Yii::app()->user->userModel,    $gameCollection->person);
-            $this->assertEquals(array('something'),             unserialize($gameCollection->serializedData));
-            
-            $gameCollection = GameCollection::resolveByTypeAndPerson('Frogs',  Yii::app()->user->userModel);
-            $this->assertTrue($gameCollection->id < 0);
-            $compareData = array('RedemptionItem' => 0,
-                                 'Items' => array(
-                                    'Goliath'           => 0,
-                                    'NorthernLeopard'   => 0,
-                                    'OrnateHorned'      => 0,
-                                    'Tree'              => 0,
-                                    'Wood'              => 0));
-            $this->assertEquals($compareData, unserialize($gameCollection->serializedData));
-            
-            try
-            {
-                $this->setGetArray(array('id' => $gameCollection->id));
-                $content = $this->runControllerWithNoExceptionsAndGetContent('gamification/default/redeemCollection');
-            }
-            catch (NotSupportedException $e)
-            {
-                // Do nothing
-            }
+            $this->assertEquals($itemsData, unserialize($gameCollection->serializedData));
+            $this->setGetArray(array('id' => $gameCollection->id));
+            $content = $this->runControllerWithNoExceptionsAndGetContent('gamification/default/redeemCollection');
             $this->assertfalse(strpos($content, 'Butterflies Collection') === false);
         }
     }
