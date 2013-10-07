@@ -144,7 +144,7 @@
                     if ($attributeName === $attributeAccessorString)
                     {
                         $content = static::getAttributeValue($model, $attributeName, $timeQualifier);
-                        if($attributeType == 'DateTime')
+                        if ($attributeType == 'DateTime')
                         {
                             $content .= ' GMT';
                         }

@@ -197,7 +197,7 @@
             {
                 return GroupsModule::resolveEveryoneDisplayLabel();
             }
-            elseif($this->name == self::SUPER_ADMINISTRATORS_GROUP_NAME)
+            elseif ($this->name == self::SUPER_ADMINISTRATORS_GROUP_NAME)
             {
                 return Zurmo::t('ZurmoModule', 'Super Administrators');
             }
