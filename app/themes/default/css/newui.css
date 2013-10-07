@@ -20298,8 +20298,8 @@ div.special-pager .hidden.next:after {
   position: relative;
   top: 10px;
 }
-#gd-mini-stats-card .gd-num-badges,
-#gd-mini-stats-card .gd-num-collections {
+#gd-mini-stats-card .num-badges,
+#gd-mini-stats-card .num-collections {
   position: relative;
   z-index: 1;
   text-align: center;
@@ -20309,13 +20309,13 @@ div.special-pager .hidden.next:after {
   margin: 0;
   font-weight: bold;
 }
-#gd-mini-stats-card .gd-num-badges strong,
-#gd-mini-stats-card .gd-num-collections strong {
+#gd-mini-stats-card .num-badges strong,
+#gd-mini-stats-card .num-collections strong {
   font-size: 24px;
   display: block;
   font-weight: bold;
 }
-#gd-mini-stats-card .gd-num-badges {
+#gd-mini-stats-card .num-badges {
   -webkit-border-radius: 0 0 4px 0;
   -moz-border-radius: 0 0 4px 0;
   -ms-border-radius: 0 0 4px 0;
@@ -20536,7 +20536,6 @@ div.special-pager .hidden.next:after {
   padding: 0 !important;
   position: relative;
   z-index: 100;
-  background: url(../images/game-dashboard/blue-chalkboard-blurred.jpg) left top repeat;
 }
 #gd-carousel-wrapper {
   width: 1140px;
@@ -20550,6 +20549,7 @@ div.special-pager .hidden.next:after {
 #gd-carousel {
   height: 100%;
   position: relative;
+  z-index: 1;
 }
 .nav-button {
   width: 30px;
@@ -20567,6 +20567,8 @@ div.special-pager .hidden.next:after {
   position: relative;
   z-index: 10;
   overflow: hidden;
+  background: url(../images/game-dashboard/blue-chalkboard-blurred.jpg) left top repeat;
+  z-index: 100;
 }
 #nav-left {
   border-right: 1px solid rgba(32, 50, 52, 0.5);
@@ -20579,13 +20581,13 @@ div.special-pager .hidden.next:after {
   width: 285px;
   height: 100%;
   float: left;
-  border-left: 1px solid rgba(83, 112, 115, 0.4);
+  border-left: 1px solid rgba(32, 50, 52, 0.5);
   border-right: 1px solid rgba(83, 112, 115, 0.4);
 }
 .gd-collection-panel h3 {
   margin-top: 5px;
 }
-.gd-collection-panel .gd-collection-badge {
+.gd-collection-panel .collection-badge {
   float: left;
   display: inline-block;
   width: 55px;
@@ -20594,16 +20596,11 @@ div.special-pager .hidden.next:after {
   margin: 0 15px 0 0;
   background-size: 100% auto;
 }
-.gd-collection-panel .gd-collection-badge img {
+.gd-collection-panel .collection-badge img {
   max-width: 100%;
 }
 .gd-collection-panel > div {
-  -webkit-transition: all 0.25s ease-out;
-  -moz-transition: all 0.25s ease-out;
-  -o-transition: all 0.25s ease-out;
-  -ms-transition: all 0.25s ease-out;
-  transition: all 0.25s ease-out;
-  -webkit-transform: translate(0, 0%);
+  -webkit-transform: translate(0);
   position: absolute;
   top: 0;
   left: 0;
@@ -20615,18 +20612,15 @@ div.special-pager .hidden.next:after {
   -o-box-shadow: inset 0 30px 30px 0 rgba(0, 0, 0, 0.1);
   -ms-box-shadow: inset 0 30px 30px 0 rgba(0, 0, 0, 0.1);
   box-shadow: inset 0 30px 30px 0 rgba(0, 0, 0, 0.1);
+  background: url(../images/game-dashboard/blue-chalkboard-blurred.jpg) center top repeat;
 }
 .gd-collection-panel > div.open-panel,
 .gd-collection-panel > div:hover {
-  -webkit-transform: translate(0, -50%);
-  width: 525px;
-  z-index: 100;
   -webkit-box-shadow: inset 0 5px 0 0 rgba(32, 50, 52, 0.5), inset 0 6px 0 0 rgba(83, 112, 115, 0.4);
   -moz-box-shadow: inset 0 5px 0 0 rgba(32, 50, 52, 0.5), inset 0 6px 0 0 rgba(83, 112, 115, 0.4);
   -o-box-shadow: inset 0 5px 0 0 rgba(32, 50, 52, 0.5), inset 0 6px 0 0 rgba(83, 112, 115, 0.4);
   -ms-box-shadow: inset 0 5px 0 0 rgba(32, 50, 52, 0.5), inset 0 6px 0 0 rgba(83, 112, 115, 0.4);
   box-shadow: inset 0 5px 0 0 rgba(32, 50, 52, 0.5), inset 0 6px 0 0 rgba(83, 112, 115, 0.4);
-  background: url(../images/game-dashboard/blue-chalkboard-blurred.jpg) left top repeat;
 }
 .gd-collection-panel .gd-number-collected {
   visibility: hidden;
@@ -20657,10 +20651,11 @@ div.special-pager .hidden.next:after {
   line-height: 34px;
 }
 .gd-collection-items {
-  margin-top: 20px;
+  margin-top: 70px;
   position: relative;
+  clear: left;
 }
-.gd-collection-items .gd-num-collected {
+.gd-collection-items .num-collected {
   width: 20px;
   height: 20px;
   line-height: 20px;
@@ -20684,13 +20679,6 @@ div.special-pager .hidden.next:after {
   -ms-box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.3), 0 -1px 0 0 rgba(90, 142, 44, 0.9);
   box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.3), 0 -1px 0 0 rgba(90, 142, 44, 0.9);
 }
-.gd-collection-items .missing img {
-  filter: alpha(opacity=50);
-  -khtml-opacity: 0.5;
-  -moz-opacity: 0.5;
-  opacity: 0.5;
-  -webkit-filter: grayscale(100%);
-}
 .gd-collection-items .missing .num-collected {
   background: #c0392b;
   -webkit-box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.3), 0 -1px 0 0 rgba(161, 45, 37, 0.9);
@@ -20703,7 +20691,7 @@ div.special-pager .hidden.next:after {
   position: relative;
   display: inline-block;
   float: left;
-  margin-right: 15px;
+  margin-right: 25px;
 }
 .gd-collection-items .gd-collection-item img {
   max-height: 55px;

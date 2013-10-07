@@ -35,16 +35,16 @@
  ********************************************************************************/
 
     /**
-     * Frogs collection
+     * Traffic collection
      */
-    class FrogsGameCollectionRules extends GameCollectionRules
+    class TrafficGameCollectionRules extends GameCollectionRules
     {
         /**
          * @return string
          */
         public static function getType()
         {
-            return 'Frogs';
+            return 'Traffic';
         }
 
         /**
@@ -52,7 +52,7 @@
          */
         public static function getCollectionLabel()
         {
-            return Zurmo::t('GamificationModule', 'Frogs');
+            return Zurmo::t('GamificationModule', 'Traffic');
         }
 
         /**
@@ -60,11 +60,11 @@
          */
         public static function getItemTypesAndLabels()
         {
-            return array(   'Goliath'           => Zurmo::t('GamificationModule', 'Goliath'),
-                            'NorthernLeopard'   => Zurmo::t('GamificationModule', 'Northern Leopard'),
-                            'OrnateHorned'      => Zurmo::t('GamificationModule', 'Ornate Horned'),
-                            'Tree'              => Zurmo::t('GamificationModule', 'Tree'),
-                            'Wood'              => Zurmo::t('GamificationModule', 'Wood'),
+            return array(   'GasNozzle' => Zurmo::t('GamificationModule', 'Gas Nozzle'),
+                            'Junction'          => Zurmo::t('GamificationModule', 'Junction'),
+                            'PoliceCar'          => Zurmo::t('GamificationModule', 'Police Car'),
+                            'RoadSign'      => Zurmo::t('GamificationModule', 'Road Sign'),
+                            'SteeringWheel'            => Zurmo::t('GamificationModule', 'Steering Wheel'),
             );
         }
 
@@ -73,11 +73,11 @@
          */
         public static function getItemTypesAndFrequencies()
         {
-            return array(   'Goliath'           => 10,
-                            'NorthernLeopard'   => 10,
-                            'OrnateHorned'      => 10,
-                            'Tree'              => 3,
-                            'Wood'              => 6,
+            return array(   'GasNozzle' => 10,
+                            'Junction'          => 10,
+                            'PoliceCar'          => 10,
+                            'RoadSign'      => 3,
+                            'SteeringWheel'            => 6,
             );
         }
 
@@ -94,18 +94,18 @@
          * @see hasCollectionRedemptionItem
          * @return bool
          */
-        public static function getCollectionRedemptionItemType()
+        public static function getCollectionLogoType()
         {
-            return 'PoisonDart';
+            return 'TrafficLights';
         }
 
         /**
          * @see hasCollectionRedemptionItem
          * @return bool
          */
-        public static function getCollectionRedemptionItemLabel()
+        public static function getCollectionLogoLabel()
         {
-            return Zurmo::t('GamificationModule', 'Poison Dart');
+            return Zurmo::t('GamificationModule', 'Traffic Lights');
         }
     }
 ?>

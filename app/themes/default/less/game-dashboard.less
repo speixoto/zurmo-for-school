@@ -135,7 +135,7 @@
 			top: 10px;
 		}
 	}
-	.gd-num-badges, .gd-num-collections{
+	.num-badges, .num-collections{
 		position: relative;
 		z-index: 1;
 		text-align: center;
@@ -150,7 +150,7 @@
 			font-weight: bold;
 		}
 	}
-	.gd-num-badges{
+	.num-badges{
 		.radius(0 0 4px 0);
 		float: right;
 		margin-right: 5%;
@@ -345,7 +345,7 @@
 	padding:0 !important;
 	position: relative;
 	z-index: 100;
-	background:url(../images/game-dashboard/blue-chalkboard-blurred.jpg) left top repeat;
+	//background:url(../images/game-dashboard/blue-chalkboard-blurred.jpg) left top repeat;
 }
 
 #gd-carousel-wrapper{
@@ -361,6 +361,7 @@
 #gd-carousel{
 	height: 100%;
 	position: relative;
+	z-index: 1;
 }
 
 .nav-button{
@@ -375,6 +376,8 @@
 	position: relative;
 	z-index: 10;
 	overflow: hidden;
+	background:url(../images/game-dashboard/blue-chalkboard-blurred.jpg) left top repeat;
+	z-index: 100;
 }
 
 #nav-left{
@@ -391,13 +394,13 @@
 	height: 100%;
 	float: left;
 
-	border-left:1px solid @fff;
+	border-left:1px solid @ccc;
 	border-right:1px solid @fff;
 
 	h3{
 		margin-top: 5px;
 	}
-	.gd-collection-badge{
+	.collection-badge{
 		float: left;
 		display: inline-block;
 		width:55px;
@@ -410,8 +413,10 @@
 		}
 	}
 	> div{
-		.animateAll(.25s);
-		-webkit-transform:translate(0, 0%);
+		//.animateAll(.25s);
+		-webkit-transform:translate(0);
+		//-webkit-transform:rotateY(0deg);
+		//z-index: 0;
 		position: absolute;
 		top: 0;
 		left: 0;
@@ -419,13 +424,12 @@
 		height: 200%;
 		padding:15px 15px;
 		.b-shadow(~"inset 0 30px 30px 0 rgba(0, 0, 0, 0.1)");
+		background:url(../images/game-dashboard/blue-chalkboard-blurred.jpg) center top repeat;
 		&.open-panel,
 		&:hover{
-			-webkit-transform:translate(0, -50%);
-			width: 525px;
-			z-index: 100;
+			//-webkit-transform:translate(0, -50%);
+			//width: 575px;
 			.div-hover();
-			background:url(../images/game-dashboard/blue-chalkboard-blurred.jpg) left top repeat;
 		}
 	}
 	.gd-number-collected{
@@ -463,10 +467,10 @@
 }
 
 .gd-collection-items{
-	margin-top: 20px;
+	margin-top: 70px;
 	position: relative;
-
-	.gd-num-collected{
+	clear: left;
+	.num-collected{
 		width: 20px;
 		height: 20px;
 		line-height: 20px;
@@ -484,8 +488,8 @@
 	}
 	.missing{
 		img{
-			.opacity(50);
-			-webkit-filter: grayscale(100%);
+			//.opacity(50);
+			//-webkit-filter: grayscale(100%);
 		}
 		.num-collected{
 			background: #c0392b;
@@ -496,7 +500,7 @@
 		position: relative;
 		display: inline-block;
 		float: left;
-		margin-right: 15px;
+		margin-right: 25px;
 		img{
 			max-height: 55px;
 			width: auto;

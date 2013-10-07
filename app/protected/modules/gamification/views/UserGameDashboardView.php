@@ -60,6 +60,7 @@
             $gameCollectionRules  = GameCollectionRulesFactory::createByType($collection->type);
 
             $collectionImageUrl   = Yii::app()->themeManager->baseUrl . '/default/images/collections/' .
+                                    $gameCollectionRules::getType() . '/' .
                                     $gameCollectionRules::makeLargeCollectionImageName();
             $collectionBadgeImage = ZurmoHtml::image($collectionImageUrl);
             $content  = ZurmoHtml::tag('div', array('class' => 'collection-badge'), $collectionBadgeImage);
@@ -73,7 +74,7 @@
 
         public static function renderCoinsContent($coinValue)
         {
-            $content  = ZurmoHtml::tag('span', array('id' => 'gd-z-coin'), 'z');
+            $content  = ZurmoHtml::tag('span', array('id' => 'gd-z-coin'), '');
             $content .= ZurmoHtml::tag('h3', array(), Zurmo::t('GamificationModule', '{n} coin|{n} coins',
                 array($coinValue)));
             $content .= ZurmoHtml::link(Zurmo::t('GamificationModule', 'Redeem'), '#');
@@ -118,6 +119,14 @@
             $script = "";
             Yii::app()->clientScript->registerScript('userGameDashboardScript', $script);
 
+            $cs = Yii::app()->getClientScript();
+            $cs->registerCoreScript('gamification-dashboard');
+            $cs->registerScriptFile(
+                Yii::app()->getAssetManager()->publish(
+                    Yii::getPathOfAlias('application.modules.gamification.views.assets')
+                ) . '/gamification-dashboard.js',
+                CClientScript::POS_END
+            );
         }
 
         protected function renderDashboardContent()
@@ -252,7 +261,8 @@
             {
                 $collectionsListContent .= $this->renderCollectionContent($this->user, $collection);
             }
-            $content = ZurmoHtml::tag('div', array('id' => 'gd-carousel', 'style' => "width:2000px"), $collectionsListContent);
+            $width = count($this->collectionData) * 285; //closed panel width.
+            $content = ZurmoHtml::tag('div', array('id' => 'gd-carousel', 'style' => "width:" . $width . "px"), $collectionsListContent);
             return     ZurmoHtml::tag('div', array('id' => 'gd-carousel-wrapper'), $content);
         }
 
@@ -266,6 +276,7 @@
             {
                 $itemLabel              = $itemTypesAndLabels[$itemType];
                 $collectionItemImageUrl = Yii::app()->themeManager->baseUrl . '/default/images/collections/' .
+                                          $gameCollectionRules::getType() . '/' .
                                           $gameCollectionRules::makeMediumCollectionItemImageName($itemType);
                 $itemContent = ZurmoHtml::image($collectionItemImageUrl, $itemLabel, array('class'        => 'qtip-shadow',
                                                                                        'data-tooltip' => $itemLabel));
@@ -278,7 +289,7 @@
                 }
                 $content .= ZurmoHtml::tag('div', array('class' => $classContent), $itemContent);
             }
-            $coinImageUrl       = Yii::app()->themeManager->baseUrl . '/default/images/coin.png';
+            $coinImageUrl       = Yii::app()->themeManager->baseUrl . '/default/images/game-dashboard/coin.png';
             $itemRedeemContent  = ZurmoHtml::image($coinImageUrl);
             $itemRedeemContent .= static::renderCompleteButton($collection->id, $user->id, $canCollect);
             $content           .= ZurmoHtml::tag('div', array('class' => 'gd-collection-item-redeemed'), $itemRedeemContent);

@@ -94,7 +94,7 @@
          * @see hasCollectionRedemptionItem
          * @return bool
          */
-        public static function getCollectionRedemptionItemType()
+        public static function getCollectionLogoType()
         {
             return 'Trolly';
         }
@@ -103,7 +103,7 @@
          * @see hasCollectionRedemptionItem
          * @return bool
          */
-        public static function getCollectionRedemptionItemLabel()
+        public static function getCollectionLogoLabel()
         {
             return Zurmo::t('GamificationModule', 'Trolly');
         }

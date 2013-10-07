@@ -100,7 +100,7 @@
          * @throws NotImplementedException
          * @return bool
          */
-        public static function getCollectionRedemptionItemType()
+        public static function getCollectionLogoType()
         {
             throw new NotImplementedException();
         }
@@ -110,7 +110,7 @@
          * @throws NotImplementedException
          * @return bool
          */
-        public static function getCollectionRedemptionItemLabel()
+        public static function getCollectionLogoLabel()
         {
             throw new NotImplementedException();
         }
@@ -136,13 +136,13 @@
 
         public static function makeLargeCollectionImageName()
         {
-            return static::getType() . '-121x127.png';
+            return static::getCollectionLogoType() . '.png';
         }
 
         public static function makeMediumCollectionItemImageName($itemType)
         {
             assert('is_string($itemType)');
-            return 'Item' . $itemType. '-47x64.png';
+            return $itemType. '.png';
         }
     }
 ?>
