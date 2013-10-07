@@ -114,9 +114,11 @@
             $this->assertFalse(UserConfigurationFormAdapter::resolveAndGetValue($sally, 'hideWelcomeView'));
             $this->assertFalse(UserConfigurationFormAdapter::resolveAndGetValue($sally, 'turnOffEmailNotifications'));
             $this->assertFalse(UserConfigurationFormAdapter::resolveAndGetValue($sally, 'enableDesktopNotifications'));
-            $this->assertEquals(UserConfigurationFormAdapter::resolveAndGetDefaultPermissionSetting($billy), UserConfigurationForm::DEFAULT_PERMISSIONS_SETTING_OWNER_AND_USERS_IN_GROUP);
+            $this->assertEquals(UserConfigurationFormAdapter::resolveAndGetDefaultPermissionSetting($billy),
+                UserConfigurationForm::DEFAULT_PERMISSIONS_SETTING_OWNER_AND_USERS_IN_GROUP);
             $this->assertEquals(UserConfigurationFormAdapter::resolveAndGetValue($billy, 'defaultPermissionGroupSetting', false), 6);
-            $this->assertEquals(UserConfigurationFormAdapter::resolveAndGetDefaultPermissionSetting($sally), UserConfigurationForm::DEFAULT_PERMISSIONS_SETTING_EVERYONE);
+            $this->assertEquals(UserConfigurationFormAdapter::resolveAndGetDefaultPermissionSetting($sally),
+                UserConfigurationForm::DEFAULT_PERMISSIONS_SETTING_EVERYONE);
             $this->assertNull(UserConfigurationFormAdapter::resolveAndGetValue($sally, 'defaultPermissionGroupSetting', false));
             $this->assertTrue((bool)$billy->hideFromLeaderboard);
             $this->assertTrue((bool)$billy->hideFromSelecting);

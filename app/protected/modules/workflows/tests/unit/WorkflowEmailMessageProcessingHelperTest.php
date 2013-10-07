@@ -46,6 +46,8 @@
 
         protected static $emailTemplate;
 
+        protected static $alphaGroup;
+
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
@@ -54,6 +56,21 @@
             $super->primaryEmail = new Email();
             $super->primaryEmail->emailAddress = 'super@zurmo.com';
             assert($super->save()); // Not Coding Standard
+
+            //Create alpha group
+            $group = new Group();
+            $group->name = 'Alpha';
+            $saved = $group->save();
+            assert($saved); // Not Coding Standard
+            self::$alphaGroup = $group;
+
+            //Now set default permissions to owner and users in group Alpha
+            $form = UserConfigurationFormAdapter::makeFormFromUserConfigurationByUser($super);
+            $form->defaultPermissionSetting         = UserConfigurationForm::DEFAULT_PERMISSIONS_SETTING_OWNER_AND_USERS_IN_GROUP;
+            $form->defaultPermissionGroupSetting    = $group->id;
+            UserConfigurationFormAdapter::setConfigurationFromForm($form, $super);
+
+
             $bobby = UserTestHelper::createBasicUserWithEmailAddress('bobby');
             $sarah = UserTestHelper::createBasicUserWithEmailAddress('sarah');
             self::$superUserId = $super->id;
@@ -75,6 +92,9 @@
                 throw new FailedToSaveModelException();
             }
             self::$emailTemplate = $emailTemplate;
+
+            $everyoneGroup = Group::getByName(Group::EVERYONE_GROUP_NAME);
+            assert($everyoneGroup->save()); // Not Coding Standard
         }
 
         public function setup()
@@ -130,6 +150,15 @@
             $this->assertEquals(1,                 $emailMessages[0]->recipients->count());
             $this->assertEquals('super@zurmo.com', $emailMessages[0]->recipients[0]->toAddress);
             $this->assertEquals(self::$emailTemplate->files[0]->fileContent->content, $emailMessages[0]->files[0]->fileContent->content);
+
+            //Assert explicit permissions are correct
+            $explicitReadWriteModelPermissions = ExplicitReadWriteModelPermissionsUtil::
+                                                 makeBySecurableItem($emailMessages[0]);
+            $this->assertTrue($explicitReadWriteModelPermissions instanceof ExplicitReadWriteModelPermissions);
+            $readWritePermitables = $explicitReadWriteModelPermissions->getReadWritePermitables();
+            $this->assertEquals(1, count($readWritePermitables));
+            $this->assertEquals(self::$alphaGroup, $readWritePermitables[self::$alphaGroup->id]);
+
             $emailMessages[0]->delete();
         }
 
