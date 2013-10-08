@@ -34,11 +34,38 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class BaseJobControlUserConfigUtilTest extends BaseControlUserConfigUtilBaseTest
+    /**
+     * Inform user that owner of the message could not be determinated
+     */
+    class EmailMessageOwnerNotExistNotificationRules extends NotificationRules
     {
-        protected static function resolveConfigUtilClassName()
+        protected $critical        = false;
+
+        protected $allowDuplicates = true;
+
+        public static function getDisplayName()
         {
-            return 'BaseJobControlUserConfigUtil';
+            return Zurmo::t('EmailMessagesModule', 'Owner Of The Message Does Not Exist');
+        }
+
+        public static function getType()
+        {
+            return 'EmailMessageOwnerNotExist';
+        }
+
+        /**
+         * Any user who has access to the scheduler module is added to receive a
+         * notification.
+         */
+        protected function loadUsers()
+        {
+            foreach (User::getAll() as $user)
+            {
+                if ($user->isSuperAdministrator())
+                {
+                    $this->addUser($user);
+                }
+            }
         }
     }
 ?>

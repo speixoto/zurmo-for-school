@@ -127,6 +127,10 @@
 
         public function canModifyMemberships()
         {
+            if (!static::isUserASuperAdministrator(Yii::app()->user->userModel) && $this->isSuperAdministrators)
+            {
+                return false;
+            }
             return !$this->isEveryone;
         }
 
@@ -189,9 +193,13 @@
             {
                 return Zurmo::t('ZurmoModule', '(Unnamed)');
             }
-            if ($this->name == self::EVERYONE_GROUP_NAME || $this->name == self::SUPER_ADMINISTRATORS_GROUP_NAME)
+            if ($this->name == self::EVERYONE_GROUP_NAME)
             {
-                return Zurmo::t('ZurmoModule', $this->name);
+                return GroupsModule::resolveEveryoneDisplayLabel();
+            }
+            elseif ($this->name == self::SUPER_ADMINISTRATORS_GROUP_NAME)
+            {
+                return Zurmo::t('ZurmoModule', 'Super Administrators');
             }
             return $this->name;
         }

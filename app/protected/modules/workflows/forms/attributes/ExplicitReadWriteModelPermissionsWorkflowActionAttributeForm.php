@@ -77,7 +77,11 @@
             }
             if ($this->type == self::TYPE_DYNAMIC_SAME_AS_TRIGGERED_MODEL)
             {
-                $explicitReadWriteModelPermissions = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($adapter->getTriggeredModel());
+                $triggeredModel = $adapter->getTriggeredModel();
+                if (null == $explicitReadWriteModelPermissions = $triggeredModel->getExplicitReadWriteModelPermissionsForWorkflow())
+                {
+                    $explicitReadWriteModelPermissions = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($adapter->getTriggeredModel());
+                }
             }
             elseif ($this->type == self::TYPE_DYNAMIC_OWNER)
             {
@@ -103,7 +107,6 @@
                     return;
                 }
             }
-
             $success = ExplicitReadWriteModelPermissionsUtil::
                        resolveExplicitReadWriteModelPermissions($adapter->getModel(), $explicitReadWriteModelPermissions);
             if (!$success)
@@ -124,9 +127,9 @@
             $groups = ExplicitReadWriteModelPermissionsElement::getSelectableGroupsData();
             foreach ($groups as $id => $name)
             {
-                $data[$id]  = Zurmo::t('Zurmo', 'Owner and users in {groupName}', array('{groupName}' => $name));
+                $data[$id]  = Zurmo::t('ZurmoModule', 'Owner and users in {groupName}', array('{groupName}' => $name));
             }
-            $data[self::TYPE_DYNAMIC_EVERYONE_GROUP]          = Zurmo::t('ZurmoModule', 'Everyone');
+            $data[self::TYPE_DYNAMIC_EVERYONE_GROUP] = GroupsModule::resolveEveryoneDisplayLabel();
             return $data;
         }
     }

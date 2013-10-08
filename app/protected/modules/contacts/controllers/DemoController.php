@@ -34,11 +34,37 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class BaseActionControlUserConfigUtilTest extends BaseControlUserConfigUtilBaseTest
+    Yii::import('application.modules.contacts.controllers.DefaultController', true);
+    class ContactsDemoController extends ContactsDefaultController
     {
-        protected static function resolveConfigUtilClassName()
+        /**
+         * Special method to load contacts for marketing functional test.
+         */
+        public function actionLoadContactsSampler()
         {
-            return 'BaseActionControlUserConfigUtil';
+            if (!Group::isUserASuperAdministrator(Yii::app()->user->userModel))
+            {
+                throw new NotSupportedException();
+            }
+
+            //Load 12 contacts so there is sufficient data for marketing list pagination testing and mass delete.
+            for ($i = 1; $i <= 12; $i++)
+            {
+                $firstName           = 'Test';
+                $lastName            = 'Contact';
+                $owner               = Yii::app()->user->userModel;
+                $contact             = new Contact();
+                $contact->firstName  = $firstName;
+                $contact->lastName   = $lastName.' '. $i;
+                $contact->owner      = $owner;
+                $contact->state      = ContactsUtil::getStartingState();
+                $saved               = $contact->save();
+                assert('$saved');
+                if (!$saved)
+                {
+                    throw new NotSupportedException();
+                }
+            }
         }
     }
 ?>

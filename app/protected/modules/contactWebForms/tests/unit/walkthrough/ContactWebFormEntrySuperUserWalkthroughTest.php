@@ -34,11 +34,21 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Helper class for working with jobs
-     */
-    abstract class BaseJobControlUserConfigUtil extends BaseControlUserConfigUtil
+    class ContactWebFormEntrySuperUserWalkthroughTest extends ZurmoWalkthroughBaseTest
     {
-        const CONFIG_KEY                = 'UserIdOfUserToRunJobAs';
+        public static function setUpBeforeClass()
+        {
+            parent::setUpBeforeClass();
+            SecurityTestHelper::createSuperAdmin();
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
+        }
+
+        public function testSuperUserAllDefaultControllerActions()
+        {
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $content = $this->runControllerWithNoExceptionsAndGetContent('contactWebForms/defaultContactWebFormEntry/list');
+            $this->assertTrue(strpos($content, 'include(ContactWebFormsDefaultController.php)') === false);
+        }
     }
 ?>

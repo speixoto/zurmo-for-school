@@ -470,28 +470,28 @@
         {
             return array_merge(parent::translatedAttributeLabels($language),
                 array(
-                    'currency'          => Zurmo::t('ZurmoModule',         'Currency',          array(), null, $language),
-                    'emailAccounts'     => Zurmo::t('EmailMessagesModule', 'Email Accounts',    array(), null, $language),
-                    'emailBoxes'        => Zurmo::t('EmailMessagesModule', 'Email Boxes',       array(), null, $language),
-                    'emailSignatures'   => Zurmo::t('EmailMessagesModule', 'Email Signatures',  array(), null, $language),
-                    'fullName'          => Zurmo::t('ZurmoModule',         'Name',              array(), null, $language),
-                    'groups'            => Zurmo::t('ZurmoModule',         'Groups',            array(), null, $language),
-                    'hash'              => Zurmo::t('UsersModule',         'Hash',              array(), null, $language),
-                    'isActive'          => Zurmo::t('UsersModule',         'Is Active',         array(), null, $language),
-                    'isRootUser'        => Zurmo::t('UsersModule',         'Is Root User',      array(), null, $language),
-                    'hideFromSelecting' => Zurmo::t('UsersModule',         'Hide from selecting', array(), null, $language),
-                    'hideFromLeaderboard' => Zurmo::t('UsersModule',       'Hide from leaderboard', array(), null, $language),
-                    'isSystemUser'      => Zurmo::t('UsersModule',         'Is System User',    array(), null, $language),
-                    'language'          => Zurmo::t('ZurmoModule',         'Language',          array(), null, $language),
-                    'locale'            => Zurmo::t('ZurmoModule',         'Locale',            array(), null, $language),
-                    'manager'           => Zurmo::t('UsersModule',         'Manager',           array(), null, $language),
-                    'primaryEmail'      => Zurmo::t('ZurmoModule',         'Email',             array(), null, $language),
-                    'primaryAddress'    => Zurmo::t('ZurmoModule',         'Address',           array(), null, $language),
-                    'role'              => Zurmo::t('ZurmoModule',         'Role',              array(), null, $language),
-                    'timeZone'          => Zurmo::t('ZurmoModule',         'Time Zone',         array(), null, $language),
-                    'title'             => Zurmo::t('ZurmoModule',         'Salutation',        array(), null, $language),
-                    'username'          => Zurmo::t('UsersModule',         'Username',          array(), null, $language),
-                    'lastLoginDateTime' => Zurmo::t('UsersModule',         'Last Login',        array(), null, $language),
+                    'currency'            => Zurmo::t('UsersModule', 'Currency',                array(), null, $language),
+                    'emailAccounts'       => Zurmo::t('UsersModule', 'Email Accounts',          array(), null, $language),
+                    'emailBoxes'          => Zurmo::t('UsersModule', 'Email Boxes',             array(), null, $language),
+                    'emailSignatures'     => Zurmo::t('UsersModule', 'Email Signatures',        array(), null, $language),
+                    'fullName'            => Zurmo::t('UsersModule', 'Name',                    array(), null, $language),
+                    'groups'              => Zurmo::t('UsersModule', 'Groups',                  array(), null, $language),
+                    'hash'                => Zurmo::t('UsersModule', 'Hash',                    array(), null, $language),
+                    'isActive'            => Zurmo::t('UsersModule', 'Is Active',               array(), null, $language),
+                    'isRootUser'          => Zurmo::t('UsersModule', 'Is Root User',            array(), null, $language),
+                    'hideFromSelecting'   => Zurmo::t('UsersModule', 'Hide from selecting',     array(), null, $language),
+                    'hideFromLeaderboard' => Zurmo::t('UsersModule', 'Hide from leaderboard',   array(), null, $language),
+                    'isSystemUser'        => Zurmo::t('UsersModule', 'Is System User',          array(), null, $language),
+                    'language'            => Zurmo::t('UsersModule', 'Language',                array(), null, $language),
+                    'locale'              => Zurmo::t('UsersModule', 'Locale',                  array(), null, $language),
+                    'manager'             => Zurmo::t('UsersModule', 'Manager',                 array(), null, $language),
+                    'primaryEmail'        => Zurmo::t('UsersModule', 'Email',                   array(), null, $language),
+                    'primaryAddress'      => Zurmo::t('UsersModule', 'Address',                 array(), null, $language),
+                    'role'                => Zurmo::t('UsersModule', 'Role',                    array(), null, $language),
+                    'timeZone'            => Zurmo::t('UsersModule', 'Time Zone',               array(), null, $language),
+                    'title'               => Zurmo::t('UsersModule', 'Salutation',              array(), null, $language),
+                    'username'            => Zurmo::t('UsersModule', 'Username',                array(), null, $language),
+                    'lastLoginDateTime'   => Zurmo::t('UsersModule', 'Last Login',              array(), null, $language),
                 )
             );
         }
@@ -1039,12 +1039,11 @@
         public function isSuperAdministrator()
         {
             $superGroup = Group::getByName(Group::SUPER_ADMINISTRATORS_GROUP_NAME);
-            if($this->groups->contains($superGroup))
+            if ($this->groups->contains($superGroup))
             {
                 return true;
             }
             return false;
         }
-
     }
 ?>

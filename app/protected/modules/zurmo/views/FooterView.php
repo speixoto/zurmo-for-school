@@ -81,11 +81,11 @@
                 $desktopActive = ' active';
             }
             $content  = '<div class="ui-chooser">';
-            $content .= ZurmoHtml::link(ZurmoHtml::tag('span', array(), Zurmo::t('Zurmo', 'Show Full')),
+            $content .= ZurmoHtml::link(ZurmoHtml::tag('span', array(), Zurmo::t('ZurmoModule', 'Show Full')),
                             Yii::app()->createUrl('zurmo/default/userInterface',
                             array('userInterface' => UserInterface::DESKTOP)),
                             array('class' => 'icon-desktop' . $desktopActive));
-            $content .= ZurmoHtml::link(ZurmoHtml::tag('span', array(), Zurmo::t('Default', 'Show Mobile')),
+            $content .= ZurmoHtml::link(ZurmoHtml::tag('span', array(), Zurmo::t('ZurmoModule', 'Show Mobile')),
                             Yii::app()->createUrl('zurmo/default/userInterface',
                             array('userInterface' => UserInterface::MOBILE)),
                             array('class' => 'icon-mobile' . $mobileActive));

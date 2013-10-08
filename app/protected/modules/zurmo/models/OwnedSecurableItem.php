@@ -146,31 +146,58 @@
             }
         }
 
+        /**
+         * Used to set model's owner without all the checks and audit logs.
+         * Used in event handling code for queues.
+         * @param User $user
+         */
+        public function setOwnerUnrestricted(User $user)
+        {
+            parent::unrestrictedSet('owner', $user);
+        }
+
         public function __set($attributeName, $value)
         {
             if ($attributeName == 'owner')
             {
-                $this->checkPermissionsHasAnyOf(Permission::CHANGE_OWNER);
-                $this->isSetting = true;
-                try
-                {
-                    if (!$this->isSaving)
-                    {
-                        AuditUtil::saveOriginalAttributeValue($this, $attributeName, $value);
-                    }
-                    parent::unrestrictedSet($attributeName, $value);
-                    $this->isSetting = false;
-                }
-                catch (Exception $e)
-                {
-                    $this->isSetting = false;
-                    throw $e;
-                }
+                $this->onBeforeOwnerChange(new CEvent($this, array('newOwner' => $value)));
+                $this->ownerChange($value);
+                $this->onAfterOwnerChange(new CEvent($this));
             }
             else
             {
                 parent::__set($attributeName, $value);
             }
+        }
+
+        public function onBeforeOwnerChange(CEvent $event)
+        {
+            $this->raiseEvent('onBeforeOwnerChange', $event);
+        }
+
+        protected function ownerChange($newOwnerValue)
+        {
+            $this->checkPermissionsHasAnyOf(Permission::CHANGE_OWNER);
+            $this->isSetting = true;
+            try
+            {
+                if (!$this->isSaving)
+                {
+                    AuditUtil::saveOriginalAttributeValue($this, 'owner', $newOwnerValue);
+                }
+                parent::unrestrictedSet('owner', $newOwnerValue);
+                $this->isSetting = false;
+            }
+            catch (Exception $e)
+            {
+                $this->isSetting = false;
+                throw $e;
+            }
+        }
+
+        public function onAfterOwnerChange(CEvent $event)
+        {
+            $this->raiseEvent('onAfterOwnerChange', $event);
         }
 
         protected function afterSave()
@@ -347,6 +374,15 @@
          * @return bool
          */
         public static function hasReadPermissionsSubscriptionOptimization()
+        {
+            return false;
+        }
+
+        /**
+         * Describes if the current model supports being routed through queues.
+         * This is for the Queues feature in commercial edition.
+         */
+        public static function supportsQueueing()
         {
             return false;
         }

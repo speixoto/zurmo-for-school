@@ -72,7 +72,7 @@
          */
         protected function getModalTitleForSelectingModel()
         {
-            return Zurmo::t('ProductTemplates', 'Select a Parent Category');
+            return Zurmo::t('ProductTemplatesModule', 'Select a Parent Category');
         }
 
         /**
@@ -80,7 +80,7 @@
          */
         protected function renderLabel()
         {
-            return Zurmo::t('ProductTemplates', 'Parent Category');
+            return Zurmo::t('ProductTemplatesModule', 'Parent Category');
         }
     }
 ?>
