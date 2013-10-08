@@ -795,5 +795,12 @@
             $user = User::getByUsername('dood1');
             $this->assertFalse(Group::isUserASuperAdministrator($user));
         }
+
+        public function resolveEveryoneDisplayLabel()
+        {
+            $this->assertEquals('Everyone', GroupsModule::resolveEveryoneDisplayLabel());
+            GroupsModule::setEveryoneDisplayLabel('test');
+            $this->assertEquals('test', GroupsModule::resolveEveryoneDisplayLabel());
+        }
     }
 ?>

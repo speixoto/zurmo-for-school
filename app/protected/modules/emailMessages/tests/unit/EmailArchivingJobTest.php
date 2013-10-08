@@ -407,12 +407,11 @@ To: Steve <steve@example.com>
             $this->assertFalse($job->run());
             $this->assertTrue(strpos($job->getErrorMessage(), 'Failed to process Message id') !== false);
 
-            $this->assertEquals(1, count(EmailMessage::getAll()));
-            $emailMessages = EmailMessage::getAll();
-            $this->assertEquals("Invalid email address", $emailMessages[0]->subject);
-            $this->assertTrue(strpos($emailMessages[0]->content->textContent, 'Email address does not exist in system') !== false);
-            $this->assertTrue(strpos($emailMessages[0]->content->htmlContent, 'Email address does not exist in system') !== false);
-            $this->assertEquals($originalUserAddress, $emailMessages[0]->recipients[0]->toAddress);
+            $this->assertEquals(0, count(EmailMessage::getAll()));
+            $this->assertEquals(1, Notification::getCountByTypeAndUser('EmailMessageOwnerNotExist', $super));
+            $notifications = Notification::getByTypeAndUser('EmailMessageOwnerNotExist', $super);
+            $this->assertContains('Email address does not exist in system', $notifications[0]->notificationMessage->textContent);
+            $this->assertContains('Email address does not exist in system', $notifications[0]->notificationMessage->htmlContent);
             $this->assertEquals(1, Notification::getCountByTypeAndUser('EmailMessageArchivingEmailAddressNotMatching', $user));
         }
 

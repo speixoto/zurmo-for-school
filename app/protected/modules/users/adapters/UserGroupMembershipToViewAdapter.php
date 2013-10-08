@@ -61,7 +61,7 @@
             $data = array();
             $everyoneGroup = Group::getByName(Group::EVERYONE_GROUP_NAME);
             $data[$everyoneGroup->id] = array(
-                    'displayName'   => Group::EVERYONE_GROUP_NAME,
+                    'displayName'   => GroupsModule::resolveEveryoneDisplayLabel(),
                     'canRemoveFrom' => false,
                 );
             for ($i = 0; $i < $this->user->groups->count(); $i++)

@@ -565,7 +565,8 @@
             $dataProvider       = new SummationReportDataProvider($report);
             $adapter            = ReportToExportAdapterFactory::createReportToExportAdapter($report, $dataProvider);
             $compareHeaderData  = array('Integer -(Min)', 'Boolean');
-            $compareRowData     = array(array(9000, true));
+            $compareRowData     = array(array(9000, true),
+                                        array('Total'));
             $this->assertEquals($compareHeaderData, $adapter->getHeaderData());
             $this->assertEquals($compareRowData, $adapter->getData());
             $reportModelTestItem->delete();

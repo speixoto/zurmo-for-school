@@ -634,24 +634,35 @@
 
         /**
          * Create a system user that can be used for running jobs and workflow background processes. Block
-         * login via mobile, web, and api. Also mark user as hideFromSelecting and hideFromLeaderboard
-         * @param string $username
-         * @param string $password
+         * login via mobile, web, and api.
+         * @param $username
+         * @param null $password
+         * @param bool $hideFromSelecting
+         * @param bool $hideFromLeaderboard
          * @return User
          * @throws FailedToSaveModelException
          */
-        public static function createSystemUser($username, $password = null)
+        public static function createSystemUser($username, $password = null, $hideFromSelecting = true,
+                                                    $hideFromLeaderboard = true, $firstName = null, $lastName = null)
         {
             if (!isset($password))
             {
                 $password = static::generateRandomPasswordForSystemUser();
             }
+            if (!isset($firstName))
+            {
+                $firstName = 'System';
+            }
+            if (!isset($lastName))
+            {
+                $lastName = 'User';
+            }
             $user = new User();
             $user->username            = $username;
-            $user->firstName           = 'System';
-            $user->lastName            = 'User';
-            $user->hideFromSelecting   = true;
-            $user->hideFromLeaderboard = true;
+            $user->firstName           = $firstName;
+            $user->lastName            = $lastName;
+            $user->hideFromSelecting   = $hideFromSelecting;
+            $user->hideFromLeaderboard = $hideFromLeaderboard;
             $user->setIsSystemUser();
             $user->setPassword($password);
             $saved = $user->save();

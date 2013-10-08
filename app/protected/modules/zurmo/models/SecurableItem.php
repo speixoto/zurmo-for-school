@@ -36,6 +36,29 @@
 
     class SecurableItem extends Item
     {
+        /**
+         * Utilized by workflow engine to understand expected permissions, since this is not saved in the model
+         * until after the save action is completed. This information which could be changed via post or something else
+         * usually done via a controller, might be needed for workflow actions.
+         * @var ExplicitReadWriteModelPermissions | null
+         */
+        private $_explicitReadWriteModelPermissionsForWorkflow;
+
+        public function getExplicitReadWriteModelPermissionsForWorkflow()
+        {
+            return $this->_explicitReadWriteModelPermissionsForWorkflow;
+        }
+
+        public function setExplicitReadWriteModelPermissionsForWorkflow(ExplicitReadWriteModelPermissions $permissions)
+        {
+            $this->_explicitReadWriteModelPermissionsForWorkflow = $permissions;
+        }
+
+        public function clearExplicitReadWriteModelPermissionsForWorkflow()
+        {
+            $this->_explicitReadWriteModelPermissionsForWorkflow = null;
+        }
+
         public function getEffectivePermissions($permitable = null)
         {
             list($allowPermissions, $denyPermissions) = $this->getActualPermissions($permitable);

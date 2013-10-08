@@ -50,7 +50,7 @@
             return array_merge(parent::translatedAttributeLabels($language),
                 array(
                     'name'   => Zurmo::t('ZurmoModule', 'Name',  array(), null, $language),
-                    'order'  => Zurmo::t('CoreModule', 'Order', array(), null, $language),
+                    'order'  => Zurmo::t('Core', 'Order', array(), null, $language),
                 )
             );
         }

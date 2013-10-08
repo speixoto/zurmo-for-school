@@ -80,7 +80,7 @@
          */
         protected function renderLabel()
         {
-            return Zurmo::t('ProductTemplates', 'Parent Category');
+            return Zurmo::t('ProductTemplatesModule', 'Parent Category');
         }
     }
 ?>
