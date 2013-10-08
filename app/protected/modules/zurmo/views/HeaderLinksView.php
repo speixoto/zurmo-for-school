@@ -178,6 +178,7 @@
             ));
             $cClipWidget->endClip();
             return $cClipWidget->getController()->clips['headerMenu'];
+            
         }
 
         protected static function renderHeaderGameDashboardContent()
