@@ -360,7 +360,6 @@
                 $relationName = $data['relationName'];
                 $modelId = $data['id'];
                 $relatedId = $data['relatedId'];
-
                 $model = $modelClassName::getById(intval($modelId));
                 $relatedModelClassName = $model->getRelationModelClassName($relationName);
                 $relatedModel = $relatedModelClassName::getById(intval($relatedId));
