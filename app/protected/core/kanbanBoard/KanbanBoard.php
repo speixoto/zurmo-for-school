@@ -231,14 +231,27 @@
 
         public function getThemeColorNamesAndUnlockedAtLevel()
         {
-            $data = array(  ''                             => 1,
-                            'kanban-background-football'   => 1,
-                            'kanban-background-tennis'     => 1,
-                            'kanban-background-motor'      => 1,
-                            'kanban-background-yoga'       => 1,
-                            'kanban-background5'           => 3,
-                            'kanban-background6'           => 15,
-            );
+            return array(''                    => 1,
+                'kanban-background-football'   => 1,
+                'kanban-background-tennis'     => 1,
+                'kanban-background-motor'      => 1,
+                'kanban-background-yoga'       => 1,
+                'kanban-background-abstract-1' => 1,
+                'kanban-background-abstract-2' => 1,
+                'kanban-background-abstract-3' => 1,
+                'kanban-background-abstract-4' => 1,
+                'kanban-background-beach-1'    => 1,
+                'kanban-background-beach-2'    => 1,
+                'kanban-background-beach-3'    => 1,
+                'kanban-background-beach-4'    => 1,
+                //'kanban-background-map-1'    => 1,
+                //'kanban-background-map-2'    => 1,
+                'kanban-background-vintage-1'  => 1,
+                'kanban-background-vintage-2'  => 1,
+                'kanban-background-vintage-3'  => 1,
+                'kanban-background-van-gogh'   => 1,
+                'kanban-background-miro'       => 1,
+                'kanban-background-wave'       => 1);
             return $data;
         }
 
