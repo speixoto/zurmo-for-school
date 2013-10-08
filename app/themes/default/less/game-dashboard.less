@@ -19,40 +19,38 @@
 	*{
 		.border-box();
 	}
-
-
-	#game-dashboard{
-		width: 1200px;
-		height: 600px;
-		position: absolute;
-		left: 50%;
-		.radius(5px);
-		overflow:hidden;
-		margin:100px auto auto -600px;
-		background: url(../images/game-dashboard/blue-chalkboard-blurred.jpg) left top repeat;
-		> div{
-			padding:10px 15px 15px 15px;
-			&:hover{
-				.div-hover();
-			}
-		}
-		h2, h3{
-			.t-shadow(0 -1px 0 @black);
-			color: #fff !important;
-		}
-		a{
-			color: #fff;
-		}
-	}
-	
 	ul{
 		list-style: none;
 	}
-
 	h2{
 		margin-bottom: 10px;
 	}
 }
+
+#game-dashboard{
+	width: 1200px;
+	height: 600px;
+	position: absolute;
+	left: 50%;
+	.radius(5px);
+	overflow:hidden;
+	margin:100px auto auto -600px;
+	background: url(../images/game-dashboard/blue-chalkboard-blurred.jpg) left top repeat;
+	> div{
+		padding:10px 15px 15px 15px;
+		&:hover{
+			.div-hover();
+		}
+	}
+	h2, h3{
+		.t-shadow(0 -1px 0 @black);
+		color: #fff !important;
+	}
+	a{
+		color: #fff;
+	}
+}
+
 @black : #151f1f;
 @ccc : rgba(32, 50, 52, 0.5);
 @fff : rgba(83, 112, 115, 0.4);
@@ -138,7 +136,7 @@
 			top: 10px;
 		}
 	}
-	.num-badges, .num-collections{
+	.gd-num-badges, .gd-num-collections{
 		position: relative;
 		z-index: 1;
 		text-align: center;
@@ -153,7 +151,7 @@
 			font-weight: bold;
 		}
 	}
-	.num-badges{
+	.gd-num-badges{
 		.radius(0 0 4px 0);
 		float: right;
 		margin-right: 5%;
@@ -389,6 +387,12 @@
 
 #nav-right{
 	border-left:1px solid @fff;
+}
+
+#game-dashboard-container #game-dashboard .visible-panel-last{
+	h3{
+		color: red !important;
+	}
 }
 
 .gd-collection-panel{
