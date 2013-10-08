@@ -168,6 +168,12 @@
         public function actionEdit($id)
         {
             $campaign           = Campaign::getById(intval($id));
+            if ($campaign->status != Campaign::STATUS_ACTIVE)
+            {
+                Yii::app()->user->setFlash('notification',
+                    Zurmo::t('CampaignsModule', 'This campaign has already started, you can only edit its name, rights and permissions.')
+                );
+            }
             ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($campaign);
             $breadcrumbLinks    = static::getDetailsAndEditBreadcrumbLinks();
             $breadcrumbLinks[]  = StringUtil::getChoppedStringContent(strval($campaign), 25);
@@ -197,6 +203,16 @@
                                             $_GET['modalTransferInformation']['modalId']
             );
             echo ModalSearchListControllerUtil::setAjaxModeAndRenderModalSearchList($this, $modalListLinkProvider);
+        }
+
+        public function actionDrillDownDetails($campaignItemId)
+        {
+            $id = (int) $campaignItemId;
+            $campaignItem = CampaignItem::getById($id);
+            ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($campaignItem->campaign);
+            ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($campaignItem->contact);
+            ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($campaignItem->emailMessage);
+            echo CampaignItemSummaryListViewColumnAdapter::resolveDrillDownMetricsSummaryContent($campaignItem);
         }
 
         protected static function getSearchFormClassName()

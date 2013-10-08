@@ -34,27 +34,21 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class MarketingListMemberSelectContactOrLeadAutoCompleteElement extends MarketingListMemberSelectAutoCompleteBaseElement
+    class MassSubscribeProgressView extends MassEditProgressView
     {
-        protected function getSelectType()
+        protected function getMessagePrefix()
         {
-            return 'contact';
+            return Zurmo::t('MarketingListsModule', 'Subscribing');
         }
 
-        protected function getSource()
+        protected function getCompleteMessageSuffix()
         {
-            return Yii::app()->createUrl('/contacts/variableContactState/autoCompleteAllContacts');
+            return Zurmo::t('MarketingListsModule', 'subscribed successfully');
         }
 
-        protected function getSourceUrlForSelectLink()
+        protected function headerLabelPrefixContent()
         {
-            return '/contacts/variableContactState/modalListAllContacts';
-        }
-
-        protected function getModalTitleForSelectingModel()
-        {
-            return  Zurmo::t('MarketingListsModule', 'From ContactsModulePluralLabel/LeadsModulePluralLabel',
-                                LabelUtil::getTranslationParamsForAllModules());
+            return Zurmo::t('MarketingListsModule', 'Mass Subscribe');
         }
     }
 ?>

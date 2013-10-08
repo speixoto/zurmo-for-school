@@ -34,27 +34,15 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class MarketingListMemberSelectContactOrLeadAutoCompleteElement extends MarketingListMemberSelectAutoCompleteBaseElement
+    /**
+     * 'MassSubscribe' takes the user to a form
+     * where they can choose marketingList to subscribe many models at once. This is also known as bulk write or mass subscribe.
+     */
+    class MassSubscribeActionSecurity extends ActionSecurity
     {
-        protected function getSelectType()
+        protected function getRightToCheck()
         {
-            return 'contact';
-        }
-
-        protected function getSource()
-        {
-            return Yii::app()->createUrl('/contacts/variableContactState/autoCompleteAllContacts');
-        }
-
-        protected function getSourceUrlForSelectLink()
-        {
-            return '/contacts/variableContactState/modalListAllContacts';
-        }
-
-        protected function getModalTitleForSelectingModel()
-        {
-            return  Zurmo::t('MarketingListsModule', 'From ContactsModulePluralLabel/LeadsModulePluralLabel',
-                                LabelUtil::getTranslationParamsForAllModules());
+            return array('ZurmoModule', MarketingListsModule::RIGHT_ACCESS_MARKETING_LISTS);
         }
     }
 ?>

@@ -97,5 +97,41 @@
                                             'MarketingBreadCrumbView'));
             echo $view->render();
         }
+
+        public function actionConfigurationEdit()
+        {
+            $form               = MarketingConfigurationFormAdapter::makeFormFromMarketingConfiguration();
+            $postData           = PostUtil::getData();
+            $postVariableName   = get_class($form);
+            if (isset($postData[$postVariableName]))
+            {
+                $form->setAttributes($postData[$postVariableName]);
+                if ($form->validate())
+                {
+                    MarketingConfigurationFormAdapter::setConfigurationFromForm($form);
+                    Yii::app()->user->setFlash('notification',
+                        Zurmo::t('ZurmoModule', 'Global configuration saved successfully.')
+                    );
+                    $this->redirect(Yii::app()->createUrl('configuration/default/index'));
+                }
+            }
+            $editView = new MarketingConfigurationEditAndDetailsView(
+                'Edit',
+                $this->getId(),
+                $this->getModule()->getId(),
+                $form);
+            $editView->setCssClasses( array('AdministrativeArea') );
+            $view = new ZurmoConfigurationPageView(ZurmoDefaultAdminViewUtil::
+                makeStandardViewForCurrentUser($this, $editView));
+            echo $view->render();
+        }
+
+        public function actionPreviewFooter($isHtmlContent, $content)
+        {
+            Yii::app()->getClientScript()->setToAjaxMode();
+            $view   = new AutoresponderOrCampaignFooterTextPreviewView((bool)$isHtmlContent, $content);
+            $modalView = new ModalView($this, $view);
+            echo $modalView->render();
+        }
     }
 ?>

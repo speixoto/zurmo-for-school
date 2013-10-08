@@ -36,14 +36,14 @@
     Yii::import('zii.widgets.grid.CGridColumn');
 
     /**
-     * Column class for managing the drill down link column when viewing analysis or imported record results.
-     * The expanded drill down can show information about columns with problems or information about why a row will be
-     * or was skipped.
+     * Column class for managing the drill down link column.  This is used by summation drill down reports when rendering
+     * the each row.  There is a drill down column, that when clicked will expand the drill down results grid for that
+     * row
+     * Added &page=1 to ensure drillDown always starts at page 1.  Assumes there is at least one parameter always passed.
+     * Not perfect, but works ok for now.
      */
-    class ImportDrillDownColumn extends CGridColumn
+    class CampaignItemsDrillDownColumn extends CGridColumn
     {
-        public $expandableContentType;
-
         public function init()
         {
             // Begin Not Coding Standard
@@ -53,6 +53,19 @@ jQuery('.drillDownExpandAndLoadLink').unbind('click'); jQuery('.drillDownExpandA
     $(this).parent().find('.drillDownCollapseLink').first().show();
     $(this).parentsUntil('tr').parent().next().show();
     var loadDivId = $(this).parentsUntil('tr').parent().addClass('expanded-row').next().find('.drillDownContent').attr('id');
+    $.ajax({
+        url      : $(this).data('url') + '&page=1',
+        type     : 'GET',
+        beforeSend : function(){
+            $(this).makeLargeLoadingSpinner(true, "#"+loadDivId);
+        },
+        success  : function(data){
+            jQuery('#' + loadDivId).html(data)
+        },
+        error : function(){
+            //todo: error call
+        }
+    });
 });
 jQuery('.drillDownExpandLink').unbind('click'); jQuery('.drillDownExpandLink').live('click', function(){
     $(this).hide();
@@ -75,40 +88,27 @@ END;
          */
         protected function renderDataCellContent($row, $data)
         {
-            $expandAndLoadLinkContent = ZurmoHtml::tag('span', array('class' => 'drillDownExpandAndLoadLink drilldown-link'),
+            $dataParams               = array_merge(array('campaignItemId' => $data->id));
+            $expandAndLoadLinkContent = ZurmoHtml::tag('span', array('class' => 'drillDownExpandAndLoadLink drilldown-link',
+                                                                     'data-url' => $this->getDrillDownLoadUrl($dataParams)),
                                                                      'G');
             $expandLinkContent        = ZurmoHtml::tag('span', array('class' => 'drillDownExpandLink drilldown-link',
                                                                      'style' => "display:none;"), 'G');
             $collapseLinkContent      = ZurmoHtml::tag('span', array('class' => 'drillDownCollapseLink drilldown-link',
                                                                      'style' => "display:none;"), '&divide;');
-            if ($this->hasExpandableContent($data))
+            if (ActionSecurityUtil::canCurrentUserPerformAction('Details', $data->emailMessage))
             {
                 echo $expandAndLoadLinkContent . $expandLinkContent . $collapseLinkContent;
             }
         }
 
-        protected function hasExpandableContent($data)
+        /**
+         * @param array $dataParams
+         * @return string
+         */
+        protected function getDrillDownLoadUrl(Array $dataParams)
         {
-            $content = null;
-            if ($this->expandableContentType == ImportTempTableListView::EXPANDABLE_ANALYSIS_CONTENT_TYPE &&
-                $data->serializedAnalysisMessages != null)
-            {
-                $analysisMessages = unserialize($data->serializedAnalysisMessages);
-                if (count($analysisMessages) > 0)
-                {
-                    return true;
-                }
-            }
-            if ($this->expandableContentType == ImportTempTableListView::EXPANDABLE_IMPORT_RESULTS_CONTENT_TYPE &&
-                $data->serializedMessages != null)
-            {
-                $resultMessages = unserialize($data->serializedMessages);
-                if (count($resultMessages) > 0)
-                {
-                    return true;
-                }
-            }
-            return false;
+            return Yii::app()->createUrl('/campaigns/default/drillDownDetails/', $dataParams);
         }
     }
 ?>

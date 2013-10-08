@@ -242,7 +242,7 @@
             return ZurmoHtml::tag('div', array('class' => $this->getListContentWrapperDivClass()), $listContent);
         }
 
-        protected function makeListView()
+        public function makeListView()
         {
             $listViewClassName = $this->getListViewClassName();
             $this->getDataProvider(); // no need to save return value as we don't need it.

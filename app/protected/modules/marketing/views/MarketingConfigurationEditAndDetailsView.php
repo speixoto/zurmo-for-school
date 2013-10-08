@@ -34,32 +34,29 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class CampaignItemsRelatedListView extends RelatedListView
+    /**
+     * Edit and details view for the marketing global configuration view.
+     */
+    class MarketingConfigurationEditAndDetailsView extends EditAndDetailsView
     {
-        protected function renderContent()
+        public function getTitle()
         {
-            $content = parent::renderContent();
-            return ZurmoHtml::tag('div', array('class' => $this->getWrapperDivClass()), $content);
-        }
-
-        protected function getGridViewWidgetPath()
-        {
-            return 'application.modules.campaigns.widgets.CampaignItemsExtendedGridView';
-        }
-
-        protected function getRelationAttributeName()
-        {
-            return 'campaign';
+            return Zurmo::t('MarketingModule', 'Marketing Configuration');
         }
 
         public static function getDefaultMetadata()
         {
             $metadata = array(
-                'perUser' => array(
-                    'title' => "eval:Zurmo::t('CampaignsModule', 'Email Recipients')",
-                ),
                 'global' => array(
-                    'gridViewType' => RelatedListView::GRID_VIEW_TYPE_NORMAL,
+                    'toolbar' => array(
+                        'elements' => array(
+                            array('type' => 'ConfigurationLink',
+                                            'label' => "eval:Zurmo::t('ZurmoModule', 'Cancel')"),
+                            array('type' => 'SaveButton',    'renderType' => 'Edit'),
+                            array('type' => 'EditLink',      'renderType' => 'Details'),
+                        ),
+                    ),
+                    'panelsDisplayType' => FormLayout::PANELS_DISPLAY_TYPE_ALL,
                     'panels' => array(
                         array(
                             'rows' => array(
@@ -67,7 +64,38 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'null', 'type' => 'CampaignItemSummary'),
+                                                array('attributeName' => 'autoresponderOrCampaignBatchSize',
+                                                      'type'          => 'BatchConfigInteger'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                      array(
+                                          array(
+                                              'elements' => array(
+                                                  array('attributeName' => 'campaignItemsToCreatePageSize',
+                                                        'type'          => 'BatchConfigInteger'),
+                                              ),
+                                          ),
+                                      )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'autoresponderOrCampaignFooterPlainText',
+                                                      'type'          => 'TextAreaWithPreviewLink'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'autoresponderOrCampaignFooterRichText',
+                                                      'type'          => 'RedactorWithPreviewLink'),
                                             ),
                                         ),
                                     )
@@ -80,49 +108,9 @@
             return $metadata;
         }
 
-        public function getModelClassName()
+        protected function getNewModelTitleLabel()
         {
-            return 'CampaignItem';
-        }
-
-        public static function getModuleClassName()
-        {
-            return 'CampaignsModule';
-        }
-
-        protected function getEmptyText()
-        {
-            $content = Zurmo::t('Core', 'Email recipients will appear here once the campaign begins sending out');
-            return $content;
-        }
-
-        protected function getCGridViewLastColumn()
-        {
-            return array();
-        }
-
-        protected function getWrapperDivClass()
-        {
-            return CampaignDetailsAndRelationsView::CAMPAIGN_ITEMS_PORTLET_CLASS;
-        }
-
-        protected function getCGridViewParams()
-        {
-            return array_merge(parent::getCGridViewParams(),
-                array('hideHeader'     => true,
-                      'expandableRows' => true));
-        }
-
-        protected function getCGridViewColumns()
-        {
-            $columns = parent::getCGridViewColumns();
-            $firstColumn = array(
-                'class'                 => 'CampaignItemsDrillDownColumn',
-                'id'                    => $this->gridId . $this->gridIdSuffix . '-rowDrillDown',
-                'htmlOptions'           => array('class' => 'hasDrillDownLink')
-            );
-            array_unshift($columns, $firstColumn);
-            return $columns;
+            return null;
         }
     }
 ?>

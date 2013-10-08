@@ -34,27 +34,32 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class MarketingListMemberSelectContactOrLeadAutoCompleteElement extends MarketingListMemberSelectAutoCompleteBaseElement
+    /**
+     * Action bar view for the marketingLists search and list user interface. Provides buttons like create, and links to
+     * queues.
+     */
+    class SecuredActionBarForContactsSearchAndListView extends SecuredActionBarForSearchAndListView
     {
-        protected function getSelectType()
+        /**
+         * @return array
+         */
+        public static function getDefaultMetadata()
         {
-            return 'contact';
-        }
-
-        protected function getSource()
-        {
-            return Yii::app()->createUrl('/contacts/variableContactState/autoCompleteAllContacts');
-        }
-
-        protected function getSourceUrlForSelectLink()
-        {
-            return '/contacts/variableContactState/modalListAllContacts';
-        }
-
-        protected function getModalTitleForSelectingModel()
-        {
-            return  Zurmo::t('MarketingListsModule', 'From ContactsModulePluralLabel/LeadsModulePluralLabel',
-                                LabelUtil::getTranslationParamsForAllModules());
+            $metadata = array(
+                'global' => array(
+                    'toolbar' => array(
+                        'elements' => array(
+                            array(
+                                'type'            => 'MassSubscribeLink',
+                                'htmlOptions'     => array('class' => 'icon-subscribe'),
+                                'listViewGridId'  => 'eval:$this->listViewGridId',
+                                'pageVarName'     => 'eval:$this->pageVarName'
+                            ),
+                        ),
+                    ),
+                ),
+            );
+            return CMap::mergeArray(parent::getDefaultMetadata(), $metadata);
         }
     }
 ?>

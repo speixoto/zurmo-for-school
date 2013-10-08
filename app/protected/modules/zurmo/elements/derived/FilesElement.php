@@ -62,6 +62,10 @@
 
         protected function renderControlEditable()
         {
+            if ($this->getDisabledValue())
+            {
+                return $this->renderControlNonEditable();
+            }
             assert('$this->model instanceof Item || $this->model->getModel() instanceof Item');
             $existingFilesInformation = array();
             foreach ($this->model->files as $existingFile)

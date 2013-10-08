@@ -99,5 +99,19 @@
                 return false;
             }
         }
+
+        protected function beforeDelete()
+        {
+            $where = "filecontent_id = '" . $this->fileContent->id . "'";
+            if (count(static::getSubsetIds(null, null, null, $where)) == 1)
+            {
+                $fileContent = FileContent::getById($this->fileContent->id);
+                if (!$fileContent->delete())
+                {
+                    return false;
+                }
+            }
+            return parent::beforeDelete();
+        }
     }
 ?>

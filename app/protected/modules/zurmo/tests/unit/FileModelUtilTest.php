@@ -177,5 +177,36 @@
             $this->assertEquals($file1->type, $file2->type);
             $this->assertEquals($file1->size, $file2->size);
         }
+
+        public function testMakeByFileModelWithSharedFileContent()
+        {
+
+            $oldFileContentsCount = count(FileContent::getAll());
+            Yii::app()->user->userModel = User::getByUsername('super');
+            $file1       = ZurmoTestHelper::createFileModel();
+            $file2       = FileModelUtil::makeByFileModelWithSharedFileContent($file1);
+            $fileContent = $file1->fileContent;
+            $this->assertTrue($file2 !== false);
+            $this->assertEquals($fileContent, $file2->fileContent);
+            $this->assertEquals($file1->name, $file2->name);
+            $this->assertEquals($file1->type, $file2->type);
+            $this->assertEquals($file1->size, $file2->size);
+
+            $this->assertTrue($file1->save());
+            $this->assertTrue($file2->save());
+            $file2Id = $file2->id;
+            $fileContents = FileContent::getAll();
+            $this->assertCount($oldFileContentsCount + 1, $fileContents);
+            $file1->delete();
+            FileModel::forgetAll();
+
+            $file2 = FileModel::getById($file2Id);
+            $this->assertEquals($fileContent->content, $file2->fileContent->content);
+            $this->assertCount($oldFileContentsCount + 1, $fileContents);
+
+            $file2->delete();
+            $fileContents = FileContent::getAll();
+            $this->assertCount($oldFileContentsCount, $fileContents);
+        }
     }
 ?>

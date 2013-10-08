@@ -126,6 +126,7 @@
             $this->assertTrue($job->run());
             $campaignItems         = CampaignItem::getAll();
             $this->assertCount(1, $campaignItems);
+            $this->assertTrue($campaignItems[0]->isSkipped());
             $campaignItemsProcessed = CampaignItem::getByProcessedAndCampaignId(1, $campaign->id);
             $this->assertCount(1, $campaignItemsProcessed);
         }

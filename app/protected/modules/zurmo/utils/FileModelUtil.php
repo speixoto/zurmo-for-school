@@ -171,5 +171,17 @@
             }
             return $file;
         }
+
+        public static function makeByFileModelWithSharedFileContent($existingFileModel)
+        {
+            $file                   = new FileModel();
+            ZurmoCopyModelUtil::copy($existingFileModel, $file);
+            $file->fileContent      = $existingFileModel->fileContent;
+            if (!$file->save())
+            {
+                return false;
+            }
+            return $file;
+        }
     }
 ?>

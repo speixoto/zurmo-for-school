@@ -80,7 +80,8 @@
             }
             else
             {
-                $mixedView = $this->makeActionBarSearchAndListView($searchForm, $dataProvider);
+                $mixedView = $this->makeActionBarSearchAndListView($searchForm, $dataProvider,
+                                                                   'SecuredActionBarForContactsSearchAndListView');
                 $view = new ContactsPageView(ZurmoDefaultViewUtil::
                                          makeStandardViewForCurrentUser($this, $mixedView));
             }
@@ -375,6 +376,37 @@
         public function actionExport()
         {
             $this->export('ContactsSearchView');
+        }
+
+        public function actionMassSubscribe()
+        {
+            $this->triggerMassAction('Contact',
+                static::getSearchFormClassName(),
+                'ContactsPageView',
+                Contact::getModelLabelByTypeAndLanguage('Plural'),
+                'ContactsSearchView',
+                'ContactsStateMetadataAdapter',
+                false);
+        }
+
+        public function actionMassSubscribeProgress()
+        {
+            $this->triggerMassAction('Contact',
+                static::getSearchFormClassName(),
+                'ContactsPageView',
+                Contact::getModelLabelByTypeAndLanguage('Plural'),
+                'ContactsSearchView',
+                'ContactsStateMetadataAdapter',
+                false);
+        }
+
+        protected static function resolveMassSubscribeAlertMessage($postVariableName)
+        {   $marketingListMember = Yii::app()->request->getPost('MarketingListMember');
+            if (isset($marketingListMember) && $marketingListMember['marketingList']['id'] == 0)
+            {
+                return Zurmo::t('ContactsModule', 'You must select one MarketingListsModuleSingularLabel',
+                                                   LabelUtil::getTranslationParamsForAllModules());
+            }
         }
     }
 ?>

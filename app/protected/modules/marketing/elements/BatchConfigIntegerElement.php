@@ -34,27 +34,36 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class MarketingListMemberSelectContactOrLeadAutoCompleteElement extends MarketingListMemberSelectAutoCompleteBaseElement
+    /**
+     * Class for displaying a batch config integer used to set the batch size on the global configuration
+     * This element is editable only by the rootUser
+     */
+    class BatchConfigIntegerElement extends TextElement
     {
-        protected function getSelectType()
+        /**
+         * Renders the attribute from the model.
+         * @return The element's content.
+         */
+        protected function renderControlNonEditable()
         {
-            return 'contact';
+            if ($this->model instanceof RedBeanModel && $this->model->isAttributeFormattedAsProbability($this->attribute))
+            {
+                $resolvedValue = NumberUtil::divisionForZero($this->model->{$this->attribute}, 100);
+                return Yii::app()->numberFormatter->formatPercentage($resolvedValue);
+            }
+            else
+            {
+                return Yii::app()->numberFormatter->formatDecimal((int)$this->model->{$this->attribute});
+            }
         }
 
-        protected function getSource()
+        protected function getDisabledValue()
         {
-            return Yii::app()->createUrl('/contacts/variableContactState/autoCompleteAllContacts');
-        }
-
-        protected function getSourceUrlForSelectLink()
-        {
-            return '/contacts/variableContactState/modalListAllContacts';
-        }
-
-        protected function getModalTitleForSelectingModel()
-        {
-            return  Zurmo::t('MarketingListsModule', 'From ContactsModulePluralLabel/LeadsModulePluralLabel',
-                                LabelUtil::getTranslationParamsForAllModules());
+            if (!Yii::app()->user->userModel->isRootUser)
+            {
+                return 'disabled';
+            }
+            return parent::getDisabledValue();
         }
     }
 ?>

@@ -34,27 +34,44 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class MarketingListMemberSelectContactOrLeadAutoCompleteElement extends MarketingListMemberSelectAutoCompleteBaseElement
+    /**
+     * Class to render link to mass subscribe from a listview.
+     */
+    class MassSubscribeLinkActionElement extends MassActionLinkActionElement
     {
-        protected function getSelectType()
+        public function getActionType()
         {
-            return 'contact';
+            return 'MassSubscribe';
         }
 
-        protected function getSource()
+        protected function getSelectedMenuNameSuffix()
         {
-            return Yii::app()->createUrl('/contacts/variableContactState/autoCompleteAllContacts');
+            return '-subscribeMassActionSelected';
         }
 
-        protected function getSourceUrlForSelectLink()
+        protected function getAllMenuNameSuffix()
         {
-            return '/contacts/variableContactState/modalListAllContacts';
+            return '-subscribeMassActionAll';
         }
 
-        protected function getModalTitleForSelectingModel()
+        protected function getActionId()
         {
-            return  Zurmo::t('MarketingListsModule', 'From ContactsModulePluralLabel/LeadsModulePluralLabel',
-                                LabelUtil::getTranslationParamsForAllModules());
+            return 'massSubscribe';
+        }
+
+        protected function getScriptNameSuffixForSelectedMenu()
+        {
+            return '-listViewSubscribeMassActionSelected';
+        }
+
+        protected function getScriptNameSuffixForAllMenu()
+        {
+            return '-listViewSubscribeMassActionAll';
+        }
+
+        protected function getDefaultLabel()
+        {
+            return Zurmo::t('MarketingListsModule', 'Subscribe');
         }
     }
 ?>

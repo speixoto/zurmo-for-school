@@ -34,27 +34,38 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class MarketingListMemberSelectContactOrLeadAutoCompleteElement extends MarketingListMemberSelectAutoCompleteBaseElement
+    /**
+     * Class to adapt marketing global configuration values into a configuration form.
+     * Saves global values from a configuration form.
+     */
+    class MarketingConfigurationFormAdapter
     {
-        protected function getSelectType()
+        /**
+         * Creates a form populated with the marketing configuration global stored values.
+         * @return MarketingConfigurationForm
+         */
+        public static function makeFormFromMarketingConfiguration()
         {
-            return 'contact';
+            $form                                         = new MarketingConfigurationForm();
+            $form->autoresponderOrCampaignBatchSize       = AutoresponderOrCampaignBatchSizeConfigUtil::getBatchSize();
+            $form->campaignItemsToCreatePageSize          = CampaignItemsUtil::getCreatePageSize();
+            $form->autoresponderOrCampaignFooterPlainText = UnsubscribeAndManageSubscriptionsPlaceholderUtil::getContentByType(false);
+            $form->autoresponderOrCampaignFooterRichText  = UnsubscribeAndManageSubscriptionsPlaceholderUtil::getContentByType(true);
+            return $form;
         }
 
-        protected function getSource()
+        /**
+         * Given a MarketingConfigurationForm, save the marketing configuration global values.
+         */
+        public static function setConfigurationFromForm(MarketingConfigurationForm $form)
         {
-            return Yii::app()->createUrl('/contacts/variableContactState/autoCompleteAllContacts');
-        }
-
-        protected function getSourceUrlForSelectLink()
-        {
-            return '/contacts/variableContactState/modalListAllContacts';
-        }
-
-        protected function getModalTitleForSelectingModel()
-        {
-            return  Zurmo::t('MarketingListsModule', 'From ContactsModulePluralLabel/LeadsModulePluralLabel',
-                                LabelUtil::getTranslationParamsForAllModules());
+            if (Yii::app()->user->userModel->isRootUser)
+            {
+                AutoresponderOrCampaignBatchSizeConfigUtil::setBatchSize((int)$form->autoresponderOrCampaignBatchSize);
+                CampaignItemsUtil::setCreatePageSize((int)$form->campaignItemsToCreatePageSize);
+            }
+            UnsubscribeAndManageSubscriptionsPlaceholderUtil::setContentByType($form->autoresponderOrCampaignFooterPlainText, false);
+            UnsubscribeAndManageSubscriptionsPlaceholderUtil::setContentByType($form->autoresponderOrCampaignFooterRichText, true);
         }
     }
 ?>

@@ -34,27 +34,30 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class MarketingListMemberSelectContactOrLeadAutoCompleteElement extends MarketingListMemberSelectAutoCompleteBaseElement
+
+    /**
+     * Displays the sent date/time for the email message
+     */
+    class EmailMessageReadOnlyDateTimeElement extends ReadOnlyDateTimeElement
     {
-        protected function getSelectType()
+        protected function renderControlNonEditable()
         {
-            return 'contact';
-        }
-
-        protected function getSource()
-        {
-            return Yii::app()->createUrl('/contacts/variableContactState/autoCompleteAllContacts');
-        }
-
-        protected function getSourceUrlForSelectLink()
-        {
-            return '/contacts/variableContactState/modalListAllContacts';
-        }
-
-        protected function getModalTitleForSelectingModel()
-        {
-            return  Zurmo::t('MarketingListsModule', 'From ContactsModulePluralLabel/LeadsModulePluralLabel',
-                                LabelUtil::getTranslationParamsForAllModules());
+            assert('$this->model instanceof EmailMessage');
+            $content = parent::renderControlNonEditable();
+            if ($this->model->{$this->attribute} == null)
+            {
+                if ($this->model->hasSendError())
+                {
+                    $content  = Zurmo::t('EmailMessagesModule', 'We tried to send this message for {count} times ({error}).',
+                                        array('{count}' => $this->model->sendAttempts,
+                                              '{error}' => $this->model->error));
+                }
+                elseif ($this->model->folder->type == EmailFolder::TYPE_OUTBOX)
+                {
+                    $content  = Zurmo::t('EmailMessagesModule', 'Message is queued to be sent.');
+                }
+            }
+            return $content;
         }
     }
 ?>
