@@ -146,13 +146,23 @@
             }
         }
 
+        /**
+         * Used to set model's owner without all the checks and audit logs.
+         * Used in event handling code for queues.
+         * @param User $user
+         */
+        public function setOwnerUnrestricted(User $user)
+        {
+            parent::unrestrictedSet('owner', $user);
+        }
+
         public function __set($attributeName, $value)
         {
             if ($attributeName == 'owner')
             {
                 $this->onBeforeOwnerChange(new CEvent($this, array('newOwner' => $value)));
                 $this->ownerChange($value);
-                $this->onAfterOwnerChange(new CEvent($this, array('newOwner' => $value)));
+                $this->onAfterOwnerChange(new CEvent($this));
             }
             else
             {
@@ -160,7 +170,7 @@
             }
         }
 
-        public function onBeforeOwnerChange($event)
+        public function onBeforeOwnerChange(CEvent $event)
         {
             $this->raiseEvent('onBeforeOwnerChange', $event);
         }
@@ -185,7 +195,7 @@
             }
         }
 
-        public function onAfterOwnerChange($event)
+        public function onAfterOwnerChange(CEvent $event)
         {
             $this->raiseEvent('onAfterOwnerChange', $event);
         }
@@ -364,6 +374,15 @@
          * @return bool
          */
         public static function hasReadPermissionsSubscriptionOptimization()
+        {
+            return false;
+        }
+
+        /**
+         * Describes if the current model supports being routed through queues.
+         * This is for the Queues feature in commercial edition.
+         */
+        public static function supportsQueueing()
         {
             return false;
         }

@@ -35,38 +35,37 @@
      ********************************************************************************/
 
     /**
-     * Base view class for components that appear in the report wizard
+     * Inform user that owner of the message could not be determinated
      */
-    abstract class ComponentForReportWizardView extends ComponentForWizardModelView
+    class EmailMessageOwnerNotExistNotificationRules extends NotificationRules
     {
-        /**
-         * @return string
-         */
-        public function getTitle()
+        protected $critical        = false;
+
+        protected $allowDuplicates = true;
+
+        public static function getDisplayName()
         {
-            return static::getWizardStepTitle();
+            return Zurmo::t('EmailMessagesModule', 'Owner Of The Message Does Not Exist');
+        }
+
+        public static function getType()
+        {
+            return 'EmailMessageOwnerNotExist';
         }
 
         /**
-         * Override if the view should show a previous link.
+         * Any user who has access to the scheduler module is added to receive a
+         * notification.
          */
-        protected function renderPreviousPageLinkContent()
+        protected function loadUsers()
         {
-            return ZurmoHtml::link(ZurmoHtml::tag('span', array('class' => 'z-label'),
-                   Zurmo::t('ReportsModule', 'Previous')), '#', array('id' => static::getPreviousPageLinkId()));
-        }
-
-        /**
-         * Override if the view should show a next link.
-         */
-        protected function renderNextPageLinkContent()
-        {
-            $params                = array();
-            $params['label']       = Zurmo::t('ReportsModule', 'Next');
-            $params['htmlOptions'] = array('id' => static::getNextPageLinkId(),
-                                           'onclick' => 'js:$(this).addClass("attachLoadingTarget");');
-            $element               = new SaveButtonActionElement(null, null, null, $params);
-            return $element->render();
+            foreach (User::getAll() as $user)
+            {
+                if ($user->isSuperAdministrator())
+                {
+                    $this->addUser($user);
+                }
+            }
         }
     }
 ?>
