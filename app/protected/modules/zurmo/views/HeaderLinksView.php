@@ -161,6 +161,7 @@
             ));
             $cClipWidget->endClip();
             return $cClipWidget->getController()->clips['headerMenu'];
+            
         }
     }
 ?>
