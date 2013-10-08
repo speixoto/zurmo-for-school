@@ -252,7 +252,7 @@
         {
             $availableTypes = GameCollection::getAvailableTypes();
             $randomKey      = array_rand($availableTypes, 1);
-            $collection     = resolveByTypeAndPerson($availableTypes[$randomKey], $user);
+            $collection     = GameCollection::resolveByTypeAndPerson($availableTypes[$randomKey], $user);
             $itemsData      = $collection->getItemsData();
             $randomKey      = array_rand($itemsData, 1);
             $itemsData[$randomKey] = $itemsData[$randomKey] + 1;

@@ -155,26 +155,79 @@
          */
         public function testRedeem()
         {
-            //todO;
-            $this->fail();
+            Yii::app()->user->userModel      = User::getByUsername('steven');
+            $collections = GameCollection::resolvePersonAndAvailableTypes(Yii::app()->user->userModel, array('Frogs'));
+            $itemsData = $collections['Frogs']->getItemsData();
+            $compareData = array('Goliath'           => 0,
+                                 'NorthernLeopard'   => 0,
+                                 'OrnateHorned'      => 0,
+                                 'Tree'              => 0,
+                                 'Wood'              => 0);
+            $this->assertEquals($compareData, $itemsData);
+            $redeemData = $collections['Frogs']->redeem();
+            $this->assertEquals(false, $redeemData);
+
+            $itemsData = array('Goliath'           => 3,
+                               'NorthernLeopard'   => 5,
+                               'OrnateHorned'      => 6,
+                               'Tree'              => 8,
+                               'Wood'              => 7);
+            $collections['Frogs']->setItemsData($itemsData);
+            $this->assertEquals(0, $collections['Frogs']->getRedemptionCount());
+            $this->assertTrue($collections['Frogs']->redeem());
+            $this->assertEquals(1, $collections['Frogs']->getRedemptionCount());
         }
 
         /**
          * @depends testRedeem
+         * @return boolean
          */
-        public function shouldReceiveCollectionItem()
+        public function testShouldReceiveCollectionItem()
         {
-            //todO;
-            $this->fail();
+            Yii::app()->user->userModel      = User::getByUsername('steven');
+            $bool = GameCollection::shouldReceiveCollectionItem();
+            $this->assertTrue($bool === true || $bool === false);
         }
 
         /**
-         * @depends shouldReceiveCollectionItem
+         * @depends testShouldReceiveCollectionItem
          */
-        public function processRandomReceivingCollectionItemByUser()
+        public function testProcessRandomReceivingCollectionItemByUser()
         {
-            //todO;
-            $this->fail();
+            Yii::app()->user->userModel      = User::getByUsername('super');
+            $availableTypes = GameCollection::getAvailableTypes();
+            $compareData    = array('Butterflies','Frogs');
+            $this->assertEquals($compareData, $availableTypes);
+            $randomKey      = array_rand($availableTypes, 1);
+            $this->assertTrue($randomKey === 0 || $randomKey === 1);
+            $collection     = GameCollection::resolveByTypeAndPerson($availableTypes[$randomKey], Yii::app()->user->userModel);
+            $itemsData      = $collection->getItemsData();
+            $randomKey      = array_rand($itemsData, 1);
+            if ($randomKey == 0)
+            {
+                $compareData = array('AniseSwallowtail' => 0,
+                                     'Buckeye'          => 0,
+                                     'Monarch'          => 0,
+                                     'PaintedLady'      => 0,
+                                     'Queen'            => 0);
+                $this->assertTrue($randomKey == 'AniseSwallowtail' || $randomKey == 'Buckeye' || 
+                                  $randomKey == 'Monarch' || $randomKey == 'PaintedLady' || $randomKey == 'Queen');
+            }
+            else
+            {
+                $compareData = array('Goliath'          => 0,
+                                     'NorthernLeopard'  => 0,
+                                     'OrnateHorned'     => 0,
+                                     'Tree'             => 0,
+                                     'Wood'             => 0);
+                $this->assertTrue($randomKey == 'Goliath' || $randomKey == 'NorthernLeopard' || 
+                                  $randomKey == 'OrnateHorned' || $randomKey == 'Tree' || $randomKey == 'Wood');
+            }
+            $compareData[$randomKey] = $compareData[$randomKey] + 1;                     
+            $itemsData[$randomKey] = $itemsData[$randomKey] + 1;
+            $collection->setItemsData($itemsData);
+            $collection->save();      
+            $this->assertEquals($compareData, $collection->getItemsData());   
         }
     }
 ?>
