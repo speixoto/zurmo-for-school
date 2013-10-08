@@ -52,7 +52,7 @@
          */
         public static function getCollectionLabel()
         {
-            return Zurmo::t('GamificationModule', 'Summer Beach');
+            return Zurmo::t('GamificationModule', 'Ipanema');
         }
 
         /**
