@@ -35,55 +35,15 @@
      ********************************************************************************/
 
     /**
-     * View for showing a list of ByTimeWorkflowInQueue models
+     * View for showing a search panel to create a filtered list of WorkflowMessageInQueue models
      */
-    class ByTimeWorkflowInQueuesListView extends SecuredListView
+    class WorkflowInQueuesSearchView extends SearchView
     {
-        /**
-         * Override to remove action buttons.
-         */
-        protected function getCGridViewLastColumn()
+        protected function getExtraRenderForClearSearchLinkScript()
         {
-            return array();
-        }
-
-        /**
-         * @return array
-         */
-        public static function getDefaultMetadata()
-        {
-            $metadata = array(
-                'global' => array(
-                    'nonPlaceableAttributeNames' => array(
-                        'serializedData',
-                    ),
-                    'panels' => array(
-                        array(
-                            'rows' => array(
-                                array('cells' =>
-                                array(
-                                    array(
-                                        'elements' => array(
-                                            array('attributeName' => 'null', 'type' => 'ByTimeWorkflowInQueueSummary'),
-                                        ),
-                                    ),
-                                )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'processDateTime', 'type' => 'DateTime'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                            ),
-                        ),
-                    ),
-                ),
-            );
-            return $metadata;
+            return parent::getExtraRenderForClearSearchLinkScript() .
+            "$('.workflow-in-queues-hidden-input').val('');
+            ";
         }
     }
 ?>

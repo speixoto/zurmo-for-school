@@ -157,7 +157,10 @@
                 'defaultSortAttribute' => 'name',
                 'noAudit' => array(
                 ),
-                'nonConfigurableAttributes' => array('priceFrequency', 'type', 'productTemplate')
+                'nonConfigurableAttributes' => array('priceFrequency', 'type', 'productTemplate'),
+                'globalSearchAttributeNames' => array(
+                    'name',
+                ),
             );
             return $metadata;
         }

@@ -35,55 +35,20 @@
      ********************************************************************************/
 
     /**
-     * View for showing a list of ByTimeWorkflowInQueue models
+     * Class used to define notification when a workflow trigger action for sending email message to user,
+     * but user haven't configured his primary email address
      */
-    class ByTimeWorkflowInQueuesListView extends SecuredListView
+    class WorkflowTriggerUserPrimaryEmailAddressRequiredNotificationRules extends NotificationRules
     {
-        /**
-         * Override to remove action buttons.
-         */
-        protected function getCGridViewLastColumn()
+        public static function getDisplayName()
         {
-            return array();
+            return Zurmo::t('WorkflowsModule',
+                'Please set your primary email address in your user profile in order to receive email messages triggered by the workflow engine.');
         }
 
-        /**
-         * @return array
-         */
-        public static function getDefaultMetadata()
+        public static function getType()
         {
-            $metadata = array(
-                'global' => array(
-                    'nonPlaceableAttributeNames' => array(
-                        'serializedData',
-                    ),
-                    'panels' => array(
-                        array(
-                            'rows' => array(
-                                array('cells' =>
-                                array(
-                                    array(
-                                        'elements' => array(
-                                            array('attributeName' => 'null', 'type' => 'ByTimeWorkflowInQueueSummary'),
-                                        ),
-                                    ),
-                                )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'processDateTime', 'type' => 'DateTime'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                            ),
-                        ),
-                    ),
-                ),
-            );
-            return $metadata;
+            return 'WorkflowTriggerUserPrimaryEmailAddressRequired';
         }
     }
 ?>

@@ -35,55 +35,33 @@
      ********************************************************************************/
 
     /**
-     * View for showing a list of ByTimeWorkflowInQueue models
+     * Class used by a date or datetime Trigger that is using
+     * MixedDateTypesTriggerForWorkflowFormAttributeMappingRules::TYPE_AT_LEAST_X_AFTER_TRIGGERED_DATE
+     * or
+     * MixedDateTypesTriggerForWorkflowFormAttributeMappingRules::TYPE_AT_LEAST_X_BEFORE_TRIGGERED_DATE
      */
-    class ByTimeWorkflowInQueuesListView extends SecuredListView
+    class TriggerDateOrDateTimeDurationElement extends DurationElement
     {
-        /**
-         * Override to remove action buttons.
-         */
-        protected function getCGridViewLastColumn()
-        {
-            return array();
-        }
+        protected $intervalAttributeName = 'thirdValueDurationInterval';
 
-        /**
-         * @return array
-         */
-        public static function getDefaultMetadata()
+        protected $signAttributeName     = null;
+
+        protected $typeAttributeName     = 'thirdValueDurationType';
+
+        protected function getDurationTypeDropDownArray()
         {
-            $metadata = array(
-                'global' => array(
-                    'nonPlaceableAttributeNames' => array(
-                        'serializedData',
-                    ),
-                    'panels' => array(
-                        array(
-                            'rows' => array(
-                                array('cells' =>
-                                array(
-                                    array(
-                                        'elements' => array(
-                                            array('attributeName' => 'null', 'type' => 'ByTimeWorkflowInQueueSummary'),
-                                        ),
-                                    ),
-                                )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'processDateTime', 'type' => 'DateTime'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                            ),
-                        ),
-                    ),
-                ),
-            );
-            return $metadata;
+            if ($this->model->getValueEvaluationType() == 'Date')
+            {
+                return TimeDurationUtil::getDateOnlyValueAndLabels();
+            }
+            elseif ($this->model->getValueEvaluationType() == 'DateTime')
+            {
+                return TimeDurationUtil::getValueAndLabels();
+            }
+            else
+            {
+                throw new NotSupportedException();
+            }
         }
     }
 ?>

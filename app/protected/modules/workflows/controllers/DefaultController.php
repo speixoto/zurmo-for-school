@@ -496,6 +496,20 @@
             Yii::app()->end(0, false);
         }
 
+        public function actionInQueuesAutoComplete($term, $formClassName)
+        {
+            $scopeData           = GlobalSearchUtil::resolveGlobalSearchScopeFromGetData($_GET[$formClassName],
+                                   'anyMixedAttributesScope');
+            $pageSize            = Yii::app()->pagination->resolveActiveForCurrentUserByType(
+                                   'autoCompleteListPageSize', get_class($this->getModule()));
+            $autoCompleteResults = WorkflowInQueuesModelAutoCompleteUtil::getGlobalSearchResultsByPartialTerm(
+                                    $term,
+                                    $pageSize,
+                                    Yii::app()->user->userModel,
+                                    $scopeData);
+            echo CJSON::encode($autoCompleteResults);
+        }
+
         protected function resolveCanCurrentUserAccessWorkflows()
         {
             if (!RightsUtil::doesUserHaveAllowByRightName('WorkflowsModule',

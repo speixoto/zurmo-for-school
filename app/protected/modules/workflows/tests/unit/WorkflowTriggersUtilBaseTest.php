@@ -92,7 +92,9 @@
                                                                                  $value,
                                                                                  $moduleClassName = 'WorkflowsTestModule',
                                                                                  $modelClassName  = 'WorkflowModelTestItem',
-                                                                                 $secondValue     = null)
+                                                                                 $secondValue     = null,
+                                                                                 $thirdValueDurationInterval = null,
+                                                                                 $thirdValueDurationType     = null)
         {
             assert('is_string($attributeIndexOrDerivedType)'); // Not Coding Standard
             assert('is_string($valueType)');                   // Not Coding Standard
@@ -106,6 +108,8 @@
             $trigger->valueType                   = $valueType;
             $trigger->value                       = $value;
             $trigger->secondValue                 = $secondValue;
+            $trigger->thirdValueDurationInterval  = $thirdValueDurationInterval;
+            $trigger->thirdValueDurationType      = $thirdValueDurationType;
             $workflow->addTrigger($trigger);
             return $workflow;
         }

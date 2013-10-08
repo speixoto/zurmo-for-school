@@ -35,55 +35,34 @@
      ********************************************************************************/
 
     /**
-     * View for showing a list of ByTimeWorkflowInQueue models
+     * Rule used in workflow trigger form to define how the different date types are processed
      */
-    class ByTimeWorkflowInQueuesListView extends SecuredListView
+    class MixedDateTypesTriggerForWorkflowFormAttributeMappingRules extends MixedDateTypesSearchFormAttributeMappingRules
     {
+        const TYPE_AT_LEAST_X_AFTER_TRIGGERED_DATE  = 'At Least X After Triggered Date';
+
+        const TYPE_AT_LEAST_X_BEFORE_TRIGGERED_DATE = 'At Least X Before Triggered Date';
+
+        const TYPE_LESS_THAN_X_AFTER_TRIGGERED_DATE = 'Less Than X After Triggered Date';
+
         /**
-         * Override to remove action buttons.
+         * @return array
          */
-        protected function getCGridViewLastColumn()
+        public static function getValueTypesRequiringThirdDateInput()
         {
-            return array();
+            return array(self::TYPE_AT_LEAST_X_AFTER_TRIGGERED_DATE,
+                         self::TYPE_AT_LEAST_X_BEFORE_TRIGGERED_DATE,
+                         self::TYPE_LESS_THAN_X_AFTER_TRIGGERED_DATE);
         }
 
         /**
          * @return array
          */
-        public static function getDefaultMetadata()
+        public static function getValueTypesWhereThirdValueIsRequired()
         {
-            $metadata = array(
-                'global' => array(
-                    'nonPlaceableAttributeNames' => array(
-                        'serializedData',
-                    ),
-                    'panels' => array(
-                        array(
-                            'rows' => array(
-                                array('cells' =>
-                                array(
-                                    array(
-                                        'elements' => array(
-                                            array('attributeName' => 'null', 'type' => 'ByTimeWorkflowInQueueSummary'),
-                                        ),
-                                    ),
-                                )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'processDateTime', 'type' => 'DateTime'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                            ),
-                        ),
-                    ),
-                ),
-            );
-            return $metadata;
+            return array(MixedDateTypesTriggerForWorkflowFormAttributeMappingRules::TYPE_AT_LEAST_X_AFTER_TRIGGERED_DATE,
+                         MixedDateTypesTriggerForWorkflowFormAttributeMappingRules::TYPE_AT_LEAST_X_BEFORE_TRIGGERED_DATE,
+                         MixedDateTypesTriggerForWorkflowFormAttributeMappingRules::TYPE_LESS_THAN_X_AFTER_TRIGGERED_DATE);
         }
     }
 ?>

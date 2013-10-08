@@ -469,6 +469,23 @@
         }
 
         /**
+         * Return true if module has any global search attribute names available to search on
+         * @return bool
+         */
+        public static function hasAtLeastOneGlobalSearchAttributeName()
+        {
+            $metadata = static::getMetadata();
+            if( isset($metadata['global']['globalSearchAttributeNames']) &&
+                is_array($metadata['global']['globalSearchAttributeNames']) &&
+                count($metadata['global']['globalSearchAttributeNames']) > 0)
+            {
+                return true;
+            }
+            return false;
+        }
+
+
+        /**
          * Override and return a string of the StatemetadataAdataper class if the module's primary model supports
          * states.  An example is leads or contacts where the lead is only contacts in a certain state.
          */
