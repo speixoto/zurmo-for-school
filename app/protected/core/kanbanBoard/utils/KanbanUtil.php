@@ -35,17 +35,22 @@
      ********************************************************************************/
 
     /**
-     * Class defines rules for any model details view for a portlet.
-     * portlets.
+     * Helper class for kanban view
      */
-    class ModelDetailsPortletRules extends PortletRules
+    class KanbanUtil
     {
         /**
-         * (non-PHPdoc)
-         * @see PortletRules::allowOnDashboard()
+         * Check if the request is to display kanban view
+         * @return boolean
          */
-        public function allowOnDashboard()
+        public static function isKanbanRequest()
         {
+            $getData                 = GetUtil::getData();
+            $isKanbanBoardInRequest  = ArrayUtil::getArrayValue($getData, 'kanbanBoard');
+            if ($isKanbanBoardInRequest == 0 || $isKanbanBoardInRequest == null || Yii::app()->userInterface->isMobile() === true)
+            {
+                return false;
+            }
             return true;
         }
     }

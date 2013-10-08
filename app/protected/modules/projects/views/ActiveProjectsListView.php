@@ -120,7 +120,7 @@
          */
         protected function getListActionId()
         {
-            return 'dashboardListView';
+            return 'showActiveProjects';
         }
 
         /**

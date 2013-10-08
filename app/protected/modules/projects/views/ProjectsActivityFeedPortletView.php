@@ -82,12 +82,14 @@
             $this->uniqueLayoutId = $uniqueLayoutId;
         }
 
-        /**
-         * @return array
-         */
         public static function getDefaultMetadata()
         {
-            return array();
+            $metadata = array(
+                'perUser' => array(
+                    'title' => "eval:Zurmo::t('ProjectsModule', 'Active ProjectsModulePluralLabel Feed', LabelUtil::getTranslationParamsForAllModules())"
+                ),
+            );
+            return $metadata;
         }
 
         /**

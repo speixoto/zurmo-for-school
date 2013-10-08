@@ -94,9 +94,7 @@
             $opportunity = static::getModelAndCatchNotFoundAndDisplayError('Opportunity', intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($opportunity);
             AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED, array(strval($opportunity), 'OpportunitiesModule'), $opportunity);
-            $getData                 = GetUtil::getData();
-            $isKanbanBoardInRequest  = ArrayUtil::getArrayValue($getData, 'kanbanBoard');
-            if ($isKanbanBoardInRequest == 0 || $isKanbanBoardInRequest == null || Yii::app()->userInterface->isMobile() === true)
+            if (KanbanUtil::isKanbanRequest() === false)
             {
                 $breadCrumbView          = StickySearchUtil::resolveBreadCrumbViewForDetailsControllerAction($this, 'OpportunitiesSearchView', $opportunity);
                 $detailsAndRelationsView = $this->makeDetailsAndRelationsView($opportunity, 'OpportunitiesModule',
@@ -107,16 +105,8 @@
             }
             else
             {
-                $kanbanItem                 = new KanbanItem();
-                $kanbanBoard                = new TaskKanbanBoard($kanbanItem, 'type', $opportunity, get_class($opportunity));
-                $kanbanBoard->setIsActive();
-                $params['relationModel']    = $opportunity;
-                $params['relationModuleId'] = $this->getModule()->getId();
-                $params['redirectUrl']      = null;
-                $listView                   = new TasksForOpportunityKanbanView($this->getId(),
-                                                                                    'tasks', 'Task', null, $params, null, array(), $kanbanBoard);
-                $view                       = new OpportunitiesPageView(ZurmoDefaultViewUtil::
-                                                                                makeStandardViewForCurrentUser($this, $listView));
+                $view = TasksUtil::resolveTaskKanbanViewForRelation($opportunity, $this->getModule()->getId(), $this,
+                                                                        'TasksForOpportunityKanbanView', 'OpportunitiesPageView');
             }
             echo $view->render();
         }

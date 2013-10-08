@@ -80,12 +80,14 @@
             $this->uniqueLayoutId = $uniqueLayoutId;
         }
 
-        /**
-         * @return array
-         */
         public static function getDefaultMetadata()
         {
-            return array();
+            $metadata = array(
+                'perUser' => array(
+                    'title' => "eval:Zurmo::t('ProjectsModule', 'Active ProjectsModulePluralLabel', LabelUtil::getTranslationParamsForAllModules())"
+                ),
+            );
+            return $metadata;
         }
 
         /**
@@ -169,7 +171,7 @@
          */
         protected function renderActiveProjectsContent()
         {
-            $listView = Yii::app()->getController()->getActiveProjectsListView();
+            $listView = ProjectZurmoControllerUtil::getActiveProjectsListView(Yii::app()->getController());
             return $listView->render();
         }
     }

@@ -92,9 +92,7 @@
             $contact = static::getModelAndCatchNotFoundAndDisplayError('Contact', intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($contact);
             AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED, array(strval($contact), 'ContactsModule'), $contact);
-            $getData                 = GetUtil::getData();
-            $isKanbanBoardInRequest  = ArrayUtil::getArrayValue($getData, 'kanbanBoard');
-            if ($isKanbanBoardInRequest == 0 || $isKanbanBoardInRequest == null || Yii::app()->userInterface->isMobile() === true)
+            if (KanbanUtil::isKanbanRequest() === false)
             {
                 $breadCrumbView          = StickySearchUtil::resolveBreadCrumbViewForDetailsControllerAction($this, 'ContactsSearchView', $contact);
                 $detailsAndRelationsView = $this->makeDetailsAndRelationsView($contact, 'ContactsModule',
@@ -106,16 +104,8 @@
             }
             else
             {
-                $kanbanItem   = new KanbanItem();
-                $kanbanBoard  = new TaskKanbanBoard($kanbanItem, 'type', $contact, get_class($contact));
-                $kanbanBoard->setIsActive();
-                $params['relationModel']    = $contact;
-                $params['relationModuleId'] = $this->getModule()->getId();
-                $params['redirectUrl']      = null;
-                $listView     = new TasksForContactKanbanView($this->getId(),
-                                                                  'tasks', 'Task', null, $params, null, array(), $kanbanBoard);
-                $view         = new ContactsPageView(ZurmoDefaultViewUtil::
-                                                            makeStandardViewForCurrentUser($this, $listView));
+                $view = TasksUtil::resolveTaskKanbanViewForRelation($contact, $this->getModule()->getId(), $this,
+                                                                        'TasksForContactKanbanView', 'ContactsPageView');
             }
             echo $view->render();
         }

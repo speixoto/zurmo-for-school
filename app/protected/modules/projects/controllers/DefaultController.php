@@ -135,10 +135,7 @@
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($project);
             $breadcrumbLinks = array(StringUtil::getChoppedStringContent(strval($project), 25));
             AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED, array(strval($project), 'ProjectsModule'), $project);
-            $getData                 = GetUtil::getData();
-            $isKanbanBoardInRequest  = ArrayUtil::getArrayValue($getData, 'kanbanBoard');
-            //normal view
-            if ($isKanbanBoardInRequest == 0 || $isKanbanBoardInRequest == null || Yii::app()->userInterface->isMobile() === true)
+            if (KanbanUtil::isKanbanRequest() === false)
             {
                 $detailsView        = new ProjectEditAndDetailsView('Details', $this->getId(), $this->getModule()->getId(), $project);
                 $view               = new ProjectsPageView(ProjectDefaultViewUtil::
@@ -148,16 +145,8 @@
             //kanban view
             else
             {
-                $kanbanItem   = new KanbanItem();
-                $kanbanBoard  = new TaskKanbanBoard($kanbanItem, 'type', $project, get_class($project));
-                $kanbanBoard->setIsActive();
-                $params['relationModel']    = $project;
-                $params['relationModuleId'] = $this->getModule()->getId();
-                $params['redirectUrl']      = null;
-                $listView     = new TasksForProjectKanbanView($this->getId(),
-                                                                  'tasks', 'Task', null, $params, null, array(), $kanbanBoard);
-                $view         = new ProjectsPageView(ZurmoDefaultViewUtil::
-                                                            makeStandardViewForCurrentUser($this, $listView));
+                $view = TasksUtil::resolveTaskKanbanViewForRelation($project, $this->getModule()->getId(), $this,
+                                                                        'TasksForProjectKanbanView', 'ProjectsPageView');
             }
             echo $view->render();
         }
@@ -520,36 +509,11 @@
         }
 
         /**
-         * Get active projects list view
-         * @return ListView
-         */
-        public function getActiveProjectsListView()
-        {
-            $pageSize                       = Yii::app()->pagination->resolveActiveForCurrentUserByType(
-                                              'listPageSize', get_class($this->getModule()));
-            $project                        = new Project(false);
-            $searchForm                     = new ProjectsSearchForm($project);
-            $dataProvider                   = $this->resolveSearchDataProvider(
-                                                    $searchForm,
-                                                    $pageSize,
-                                                    null,
-                                                    'ProjectsSearchView'
-                                                );
-            $_GET['Project_sort'] = 'createdDateTime.desc';
-            $mixedView  = $this->makeListView(
-                            $searchForm,
-                            $dataProvider,
-                            'ActiveProjectsListView'
-                        );
-            return $mixedView;
-        }
-
-        /**
          * Display list view of active projects on dashboard
          */
-        public function actionDashboardListView()
+        public function actionShowActiveProjects()
         {
-            $listView = $this->getActiveProjectsListView();
+            $listView = ProjectZurmoControllerUtil::getActiveProjectsListView($this);
             echo $listView->render();
         }
 
