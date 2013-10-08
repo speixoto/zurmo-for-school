@@ -107,25 +107,25 @@
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array('type'            => 'MarketingListAddSubscriberLink',
-                                'htmlOptions'       => array('class' => 'icon-edit'),
-                                'pageVarName'       => 'eval:$this->getPageVarName()',
-                                'listViewGridId'    => 'eval:$this->getListGridId()'),
-                            array('type'            => 'MarketingListMembersSubscribeLink',
-                                'htmlOptions'       => array('class' => 'icon-edit'),
-                                'controllerId'      => 'eval:$this->getMassActionsControllerId()',
-                                'pageVarName'       => 'eval:$this->getPageVarName()',
-                                'listViewGridId'    => 'eval:$this->getListGridId()'),
-                            array('type'            => 'MarketingListMembersUnsubscribeLink',
-                                'htmlOptions'       => array('class' => 'icon-edit'),
-                                'controllerId'      => 'eval:$this->getMassActionsControllerId()',
-                                'pageVarName'       => 'eval:$this->getPageVarName()',
-                                'listViewGridId'    => 'eval:$this->getListGridId()'),
-                            array('type'            => 'MassDeleteLink',
-                                'htmlOptions'       => array('class' => 'icon-delete'),
-                                'controllerId'      => 'eval:$this->getMassActionsControllerId()',
-                                'pageVarName'       => 'eval:$this->getPageVarName()',
-                                'listViewGridId'    => 'eval:$this->getListGridId()'),
+                            array('type'            => 'MarketingListAddSubscriberMenu',
+                                  'iconClass'       => 'icon-add',
+                                  'pageVarName'     => 'eval:$this->getPageVarName()',
+                                  'listViewGridId'  => 'eval:$this->getListGridId()'),
+                            array('type'            => 'MarketingListMembersSubscribeMenu',
+                                  'iconClass'       => 'icon-edit',
+                                  'controllerId'    => 'eval:$this->getMassActionsControllerId()',
+                                  'pageVarName'     => 'eval:$this->getPageVarName()',
+                                  'listViewGridId'  => 'eval:$this->getListGridId()'),
+                            array('type'            => 'MarketingListMembersUnsubscribeMenu',
+                                  'iconClass'       => 'icon-edit',
+                                  'controllerId'    => 'eval:$this->getMassActionsControllerId()',
+                                  'pageVarName'     => 'eval:$this->getPageVarName()',
+                                  'listViewGridId'  => 'eval:$this->getListGridId()'),
+                            array('type'            => 'MassDeleteMenu',
+                                  'iconClass'       => 'icon-delete',
+                                  'controllerId'    => 'eval:$this->getMassActionsControllerId()',
+                                  'pageVarName'     => 'eval:$this->getPageVarName()',
+                                  'listViewGridId'  => 'eval:$this->getListGridId()'),
                         ),
                     ),
                 ),
@@ -154,7 +154,7 @@
             }
             elseif ($this->shouldRenderActionElementBar())
             {
-                $actionElementBar = ZurmoHtml::tag('div', array('class' => 'portlet-view-toolbar view-toolbar'),
+                $actionElementBar = ZurmoHtml::tag('nav', array('class' => 'pillbox clearfix'),
                                                                                 $this->renderActionElementBar(false));
             }
             else

@@ -67,9 +67,9 @@
 
         protected function renderContent()
         {
-            $content  = '<div class="view-toolbar-container clearfix"><div class="view-toolbar">';
+            $content  = '<div class="view-toolbar-container clearfix"><nav class="pillbox clearfix">';
             $content .= $this->renderActionElementBar(false);
-            $content .= '</div></div>';
+            $content .= '</nav></div>';
             return $content;
         }
 
@@ -84,21 +84,23 @@
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array('type' => 'UserDetailsLink',
-                                'label' => "eval:Zurmo::t('UsersModule', 'Profile')",
-                                'htmlOptions' => array( 'class' => 'icon-user-details' )
+                            array('type'      => 'UserDetailsMenu',
+                                  'iconClass' => 'icon-user-details',
+                                  'label'     => "eval:Zurmo::t('UsersModule', 'Profile')",
                             ),
-                            array('type' => 'UserEditLink',
-                                'htmlOptions' => array( 'class' => 'icon-edit' )
+                            array('type'      => 'UserEditMenu',
+                                  'iconClass' => 'icon-edit',
                             ),
-                            array('type' => 'AuditEventsModalListLink',
-                                'htmlOptions' => array( 'class' => 'icon-audit')
+                            array('type'      => 'AuditEventsModalListLink',
+                                  'iconClass' => 'icon-audit',
                             ),
-                            array('type' => 'ChangePasswordLink',
-                                'htmlOptions' => array( 'class' => 'icon-password')
+                            array('type'      => 'ChangePasswordMenu',
+                                  'iconClass' => 'icon-password',
                             ),
-                            array('type' => 'UserConfigurationLink',
-                                'htmlOptions' => array( 'class' => 'icon-user-config' ),
+                            array('type'        => 'UserConfigurationMenu',
+                                  'id'          => 'UserViewAccountConfiguration',
+                                  'iconClass'   => 'icon-user-config',
+                                  'itemOptions' => array('class' => 'icon-user-config_', 'id' => 'UserViewAccountConfiguration'),
                             ),
                         ),
                     ),

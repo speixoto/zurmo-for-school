@@ -282,7 +282,7 @@
             if (!MINIFY_SCRIPTS && Yii::app()->isApplicationInstalled())
             {
                 $specialCssContent .= '<link rel="stylesheet/less" type="text/css" id="newui" href="' .
-                                                                                $themeBaseUrl . '/less/newui.less"/>';
+                                                                                $themeBaseUrl . '/less/newui.less?version='.rand() .'"/>';
                 if (Yii::app()->userInterface->isMobile())
                 {
                     $specialCssContent .= '<link rel="stylesheet/less" type="text/css" id="mobile" href="' .

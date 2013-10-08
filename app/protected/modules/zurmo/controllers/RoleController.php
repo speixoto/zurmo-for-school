@@ -57,10 +57,12 @@
             $breadcrumbLinks = array(
                  $title,
             );
+            $introView = new SecurityIntroView('ZurmoModule');
             $actionBarAndTreeView = new RolesActionBarAndTreeListView(
                 $this->getId(),
                 $this->getModule()->getId(),
-                Role::getAll('name')
+                Role::getAll('name'),
+                $introView
             );
             $view = new RolesPageView(ZurmoDefaultAdminViewUtil::
                                          makeViewWithBreadcrumbsForCurrentUser($this, $actionBarAndTreeView, $breadcrumbLinks, 'RoleBreadCrumbView'));

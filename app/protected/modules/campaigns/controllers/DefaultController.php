@@ -67,7 +67,7 @@
                     array(
                         static::ZERO_MODELS_CHECK_FILTER_PATH . ' + list, index',
                         'controller'                    => $this,
-                        'activeActionElementType'       => 'CampaignsLink',
+                        'activeActionElementType'       => 'CampaignsMenu',
                         'breadcrumbLinks'               => static::getListBreadcrumbLinks(),
                     ),
                     array(

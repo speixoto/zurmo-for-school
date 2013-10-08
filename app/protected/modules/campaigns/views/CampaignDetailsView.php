@@ -47,11 +47,16 @@
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array('type'        => 'CampaignsDetailsLink',
-                                'model'                         => 'eval:$this->model',
-                                'htmlOptions'                   => array('class' => 'icon-details')),
-                            array('type'        => 'CampaignsOptionsLink',
-                                'htmlOptions'                   => array('class' => 'icon-edit')),
+                            array('type'        => 'CampaignsDetailsMenu',
+                                  'iconClass'   => 'icon-details',
+                                  'htmlOptions' => array('id' => 'ListViewDetailsActionMenu'),
+                                  'model'       => 'eval:$this->model',
+                                  'itemOptions' => array('class' => 'hasDetailsFlyout')
+                            ),
+                            array('type'        => 'CampaignsOptionsMenu',
+                                  'iconClass'   => 'icon-edit',
+                                  'htmlOptions' => array('id' => 'ListViewOptionsActionMenu')
+                            )
                         ),
                     ),
                 ),
@@ -70,7 +75,7 @@
             $actionElementBarContent        = $this->renderActionElementBar(false);
             $content                        = $this->renderTitleContent();
             $content                       .= ZurmoHtml::tag('div', array('class' => 'view-toolbar-container clearfix'),
-                                                ZurmoHtml::tag('div', array('class' => 'view-toolbar'),
+                                                ZurmoHtml::tag('nav', array('class' => 'pillbox clearfix'),
                                                                                     $actionElementBarContent));
             return $content;
         }

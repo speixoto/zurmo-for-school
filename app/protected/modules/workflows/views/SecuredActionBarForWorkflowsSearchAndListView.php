@@ -49,28 +49,24 @@
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array('type'  => 'WorkflowCreateLink',
-                                'htmlOptions' => array('class' => 'icon-create'),
+                            array('type'      => 'WorkflowCreateMenu',
+                                  'iconClass' => 'icon-create',
                             ),
-                            array(
-                                'type'            => 'WorkflowsLink',
-                                'htmlOptions'     => array( 'class' => 'icon-workflows' )
+                            array('type'      => 'WorkflowsMenu',
+                                  'iconClass' => 'icon-workflows',
                             ),
-                            array(
-                                'type'            => EmailTemplatesForWorkflowLinkActionElement::getType(),
-                                'htmlOptions'     => array( 'class' => 'icon-email-templates' )
+                            array('type'      => EmailTemplatesForWorkflowMenuActionElement::getType(),
+                                  'iconClass' => 'icon-email-templates',
+
                             ),
-                            array(
-                                'type'            => 'ByTimeWorkflowInQueuesLink',
-                                'htmlOptions'     => array( 'class' => 'icon-by-time-workflow-in-queues' )
+                            array('type'      => 'ByTimeWorkflowInQueuesMenu',
+                                  'iconClass' => 'icon-by-time-workflow-in-queues',
                             ),
-                            array(
-                                'type'            => 'WorkflowMessageInQueuesLink',
-                                'htmlOptions'     => array( 'class' => 'icon-by-workflow-message-in-queues' )
+                            array('type'      => 'WorkflowMessageInQueuesMenu',
+                                  'iconClass' => 'icon-by-workflow-message-in-queues',
                             ),
-                            array(
-                                'type'            => 'WorkflowManageOrderLink',
-                                'htmlOptions'     => array( 'class' => 'icon-by-workflow-manage-order' )
+                            array('type'      => 'WorkflowManageOrderMenu',
+                                  'iconClass' => 'icon-by-workflow-manage-order',
                             ),
                             array('type'          => 'MassDeleteLink',
                                 'htmlOptions'     => array( 'class' => 'icon-delete'),

@@ -1,4 +1,7 @@
 {
+DisplayStrings = (
+/slash
+);
 customParameters = (
 {
 name = glyphOrder;
@@ -5974,7 +5977,7 @@ unicode = 003B;
 },
 {
 glyphname = slash;
-lastChange = "2013-04-10 11:42:19 -0300";
+lastChange = "2013-09-11 12:00:38 -0300";
 layers = (
 {
 layerId = "2B2FE4A8-39A2-493B-A970-B9343EE81639";

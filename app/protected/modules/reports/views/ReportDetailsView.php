@@ -67,16 +67,19 @@
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                           // array('type'  => 'ReportDetailsLink',
-                           //     'htmlOptions' => array('class' => 'icon-details')),
-                            array('type'  => 'ReportOptionsLink',
-                                  'htmlOptions' => array('class' => 'icon-edit')),
-                            array('type'  => 'ReportExportLink',
-                                  'htmlOptions' => array('class' => 'icon-export')),
+                            array('type'      => 'ReportOptionsMenu',
+                                  'iconClass' => 'icon-options',
+                                  'htmlOptions'=> array('id' => 'ListViewOptionsActionMenu'),
+                            ),
+                            array('type'       => 'ReportExportMenu',
+                                  'iconClass'  => 'icon-export',
+                                  'htmlOptions'=> array('id' => 'ListViewExportActionMenu'),
+                            ),
                             array('type'  => 'ReportTogglePortletsLink',
                                   'htmlOptions' => array('class' => 'hasCheckboxes'),
                                   'hasRuntimeFilters' => 'eval:$this->model->hasRuntimeFilters()',
-                                  'hasChart'          => 'eval:$this->model->hasChart()'),
+                                  'hasChart'          => 'eval:$this->model->hasChart()'
+                            ),
                         ),
                     ),
                 ),
@@ -118,9 +121,9 @@
         protected function renderContent()
         {
             $content = $this->renderTitleContent();
-            $content .= '<div class="view-toolbar-container clearfix"><div class="view-toolbar">';
+            $content .= '<div class="view-toolbar-container clearfix"><nav class="pillbox clearfix">';
             $content .= $this->renderActionElementBar(false);
-            $content .= '</div></div>';
+            $content .= '</nav></div>';
             $this->registerScripts();
             return $content;
         }

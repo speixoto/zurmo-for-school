@@ -38,7 +38,7 @@
      * Action bar view for the marketingLists search and list user interface. Provides buttons like create, and links to
      * queues.
      */
-    class SecuredActionBarForContactsSearchAndListView extends SecuredActionBarForSearchAndListView
+    class SecuredActionBarForMarketingListsSearchAndListView extends SecuredActionBarForSearchAndListView
     {
         /**
          * @return array
@@ -50,16 +50,30 @@
                     'toolbar' => array(
                         'elements' => array(
                             array(
-                                'type'            => 'MassSubscribeLink',
-                                'htmlOptions'     => array('class' => 'icon-subscribe'),
-                                'listViewGridId'  => 'eval:$this->listViewGridId',
-                                'pageVarName'     => 'eval:$this->pageVarName'
+                                'type'      => 'MarketingCreateMenu',
+                                'iconClass' => 'icon-create'
+                            ),
+                            array(
+                                'type'      => 'MarketingDashboardMenu',
+                                'iconClass' => 'icon-marketing-dashboard'
+                            ),
+                            array(
+                                'type'      => 'MarketingListsMenu',
+                                'iconClass' => 'icon-marketing-lists'
+                            ),
+                            array(
+                                'type'      => EmailTemplatesForMarketingMenuActionElement::getType(),
+                                'iconClass' => 'icon-email-templates'
+                            ),
+                            array(
+                                'type'      => 'CampaignsMenu',
+                                'iconClass' => 'icon-marketing-campaigns'
                             ),
                         ),
                     ),
                 ),
             );
-            return CMap::mergeArray(parent::getDefaultMetadata(), $metadata);
+            return $metadata;
         }
     }
 ?>

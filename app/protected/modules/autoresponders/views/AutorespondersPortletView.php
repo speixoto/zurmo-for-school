@@ -44,12 +44,12 @@
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array('type'            => 'AutoresponderCreateLink',
-                                'htmlOptions'       => array('class' => 'icon-create'),
-                                'routeParameters'   => 'eval:$this->getAutoresponderCreateRouteParameters()',
-                                'redirectUrl'       => 'eval:$this->getNonAjaxRedirectUrl()',
-                                'pageVarName'       => 'eval:$this->getPageVarName()',
-                                'listViewGridId'    => 'eval:$this->getListGridId()'),
+                            array('type'              => 'AutoresponderCreateLink',
+                                  'iconClass'         => 'icon-create',
+                                  'routeParameters'   => 'eval:$this->getAutoresponderCreateRouteParameters()',
+                                  'redirectUrl'       => 'eval:$this->getNonAjaxRedirectUrl()',
+                                  'pageVarName'       => 'eval:$this->getPageVarName()',
+                                  'listViewGridId'    => 'eval:$this->getListGridId()'),
                         ),
                     ),
                 ),

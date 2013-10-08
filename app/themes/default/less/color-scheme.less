@@ -49,7 +49,6 @@ a:link, a:active, a:visited{
     }
     #nav-trigger:active{
         .t-shadow(0 1px 0 lighten(@themeColor, 25%));
-        //#gradient > .vertical( darken(@headerBarColor, 5%), @headerBarColor );
     }
     
     .textColor{ color: @textColor; }
@@ -131,16 +130,42 @@ a:link, a:active, a:visited{
         color: @themeColor;
     }
 
+	#MashableInboxActionBarForViews .nav > li > a:hover,
+	#MashableInboxActionBarForViews .nav > li > a:active,
+	#MashableInboxActionBarForViews a:hover .unread-count,
+	#MashableInboxActionBarForViews a:active .unread-count,
     #notifications-flyout .single-notification h4,
-    .view-toolbar a:hover,
-    .view-toolbar a:active,
-    .view-toolbar a.active,
-    .view-toolbar a.active span,
+	a:hover i[class^="icon"],
+	a:hover i[class^="icon"]:after,
+	a:active i[class^="icon"],
+	a:active i[class^="icon"]:after,
+	.button-action-trigger:hover span,
+	.button-action-trigger:active span,
+	.button-action:hover span,
+	.button-action:active span,
+	.split-button:hover span,
+	.split-button:hover i[class^="icon"],
+	.split-button:hover i[class^="icon"]:after,
+	.split-button:hover i[class^="icon"]:before,
+	.default-button:hover span,
+	.default-button:hover i[class^="icon"],
+	.default-button:hover i[class^="icon"]:after,
+	.default-button:hover i[class^="icon"]:before,
+	.view-toolbar > a:hover,
+    .view-toolbar > a:active,
+    .view-toolbar > a:hover:before,
+    .view-toolbar > a:active:before,
+    .view-toolbar > a:hover span,
+    .view-toolbar > a:active span,
+    .view-toolbar .active,
+    .view-toolbar .active > a span,
+    .view-toolbar .active > a:before,
+    .view-toolbar .nav > li > a:hover,
+    .view-toolbar .nav > li > a:active,
     .portlet-toolbar .icon-delete:before,
     .portlet-toolbar .icon-edit:before,
     .mini-pillbox a:hover,
-    .mini-pillbox a.active,
-    //.ZeroModelsYetView a span:before,
+    .mini-pillbox .active,
     #StickyListMenu  > li > a:hover > span,
     .addfileinput-button:hover span
     .pager a:hover:before,
@@ -155,7 +180,6 @@ a:link, a:active, a:visited{
     .configuration-list td:last-child a:hover,
     .configuration-list td:last-child a:hover span:before,
     .addfileinput-button:hover span,
-    //.available-portlets span,
     .mini-button:hover span,
     .hide-welcome span,
     .hide-module-intro span,
@@ -343,6 +367,12 @@ a:link, a:active, a:visited{
     .dashboard-link:active .z-label{
         .b-shadow(~"inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF") !important;
     }
+
+	.button-actions a:hover{
+		color: lighten(@themeColorBtn, 75%) !important;
+		#gradient > .vertical( @themeColorBtn, darken(@themeColorBtn, 20%) ) !important;
+		.t-shadow( 0px -1px 0 darken(@themeColorBtn, 25%) ) !important;
+	}
     
     .notifications-link:hover{
         border-left: 1px solid @borderColor;
@@ -456,7 +486,6 @@ body.blue{
 }
 
 body.brown{
-    //Brown Theme
     @themeColor        : #547980;
     @themeColor2       : #B88F30;
     @themeColorBtn     : #45ADA8;
@@ -482,7 +511,6 @@ body.brown{
 }
 
 body.lime{
-    //Green Theme
     @themeColor        : #2B434F;
     @themeColor2       : #BCC98E;
     @themeColorBtn     : #BCC98E;
@@ -508,7 +536,6 @@ body.lime{
 }
 
 body.cherry{
-    //Cherry Theme
     @themeColor        : #6C8092;
     @themeColor2       : #933140;
     @themeColorBtn     : @themeColor2;
@@ -534,7 +561,6 @@ body.cherry{
 }
 
 body.turquoise{
-    //Turqoise Theme
     @themeColor        : #447799;
     @themeColor2       : #44BBCC;
     @themeColorBtn     : @themeColor2;
@@ -560,7 +586,6 @@ body.turquoise{
 }
 
 body.violet{
-    //Violet Theme
     @themeColor        : #4A3970;
     @themeColor2       : #91A1DC;
     @themeColorBtn     : @themeColor2;
@@ -586,7 +611,6 @@ body.violet{
 }
 
 body.honey{
-    //Honey Theme
     @themeColor        : #46201C;
     @themeColor2       : #ABBC42;
     @themeColorBtn     : @themeColor2; 

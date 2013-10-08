@@ -47,18 +47,17 @@
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array('type' => 'CreateDashboardLink',
-                                'htmlOptions' => array('class' => 'icon-create')
-                                ),
-                            array('type' => 'EditDashboardLink',
-                                'htmlOptions' => array('class' => 'icon-edit')
-                                ),
+                            array('type'      => 'CreateDashboardLink',
+                                  'iconClass' => 'icon-create',
+                            ),
+                            array('type'      => 'EditDashboardLink',
+                                  'iconClass' => 'icon-edit',
+                            ),
                             array('type' => 'AddPortletAjaxLink',
-                                'uniqueLayoutId' => 'eval:$this->uniqueLayoutId',
-                                'ajaxOptions' => 'eval:static::resolveAjaxOptionsForAddPortlet()',
-                                'htmlOptions' => array('id' => 'AddPortletLink',
-                                    'class' => 'icon-add'
-                                )
+                                  'iconClass' => 'icon-add',
+                                  'uniqueLayoutId' => 'eval:$this->uniqueLayoutId',
+                                  'ajaxOptions' => 'eval:static::resolveAjaxOptionsForAddPortlet()',
+                                  'htmlOptions' => array('id' => 'AddPortletLink')
                             ),
                         ),
                     ),
