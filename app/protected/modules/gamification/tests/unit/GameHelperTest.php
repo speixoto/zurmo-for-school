@@ -350,43 +350,25 @@
         public function testResolveNewCollectionItems()
         {
             $bool = GameCollection::shouldReceiveCollectionItem();
-            if ($bool) 
-            {
-                Yii::app()->user->userModel      = User::getByUsername('super');
-                $availableTypes = GameCollection::getAvailableTypes();
-                $compareData    = array('Butterflies','Frogs');
-                $this->assertEquals($compareData, $availableTypes);
-                $randomKey      = array_rand($availableTypes, 1);
-                $this->assertTrue($randomKey === 0 || $randomKey === 1);
-                $collection     = GameCollection::resolveByTypeAndPerson($availableTypes[$randomKey], Yii::app()->user->userModel);
-                $itemsData      = $collection->getItemsData();
-                $randomKey      = array_rand($itemsData, 1);
-                if ($randomKey == 0)
-                {
-                    $compareData = array('AniseSwallowtail' => 0,
-                                         'Buckeye'          => 0,
-                                         'Monarch'          => 0,
-                                         'PaintedLady'      => 0,
-                                         'Queen'            => 0);
-                    $this->assertTrue($randomKey == 'AniseSwallowtail' || $randomKey == 'Buckeye' || 
-                                      $randomKey == 'Monarch' || $randomKey == 'PaintedLady' || $randomKey == 'Queen');
-                }
-                else
-                {
-                    $compareData = array('Goliath'          => 0,
-                                         'NorthernLeopard'  => 0,
-                                         'OrnateHorned'     => 0,
-                                         'Tree'             => 0,
-                                         'Wood'             => 0);
-                    $this->assertTrue($randomKey == 'Goliath' || $randomKey == 'NorthernLeopard' || 
-                                      $randomKey == 'OrnateHorned' || $randomKey == 'Tree' || $randomKey == 'Wood');
-                }
-                $compareData[$randomKey] = $compareData[$randomKey] + 1;                     
-                $itemsData[$randomKey] = $itemsData[$randomKey] + 1;
-                $collection->setItemsData($itemsData);
-                $collection->save();      
-                $this->assertEquals($compareData, $collection->getItemsData()); 
-            }
+            $this->assertTrue(is_bool($bool));
+            Yii::app()->user->userModel      = User::getByUsername('super');
+            $availableTypes = GameCollection::getAvailableTypes();
+            $this->assertCount(31, $availableTypes);
+            $collection     = GameCollection::resolveByTypeAndPerson($availableTypes[0], Yii::app()->user->userModel);
+            $itemsData      = $collection->getItemsData();
+            $randomItem      = array_rand($itemsData, 1);
+            $compareData = array('Gate'        => 0,
+                                 'Passport'    => 0,
+                                 'Pilot'       => 0,
+                                 'Ticket'      => 0,
+                                 'TowTruck'    => 0);
+            $this->assertTrue($randomItem == 'Gate' || $randomItem == 'Passport' ||
+                              $randomItem == 'Pilot' || $randomItem == 'Ticket' || $randomItem == 'TowTruck');
+            $compareData[$randomItem] = $compareData[$randomItem] + 1;
+            $itemsData[$randomItem] = $itemsData[$randomItem] + 1;
+            $collection->setItemsData($itemsData);
+            $collection->save();
+            $this->assertEquals($compareData, $collection->getItemsData());
         }
     }
 ?>

@@ -73,11 +73,11 @@
          */
         public static function getItemTypesAndFrequencies()
         {
-            return array(   'Basket' => 10,
-                            'Player'          => 10,
-                            'ScoreBoard'          => 10,
-                            'Uniform'      => 3,
-                            'Trophy'            => 6,
+            return array(   'Basket'     => 10,
+                            'Player'     => 10,
+                            'ScoreBoard' => 10,
+                            'Uniform'    => 3,
+                            'Trophy'     => 6,
             );
         }
 

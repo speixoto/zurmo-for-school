@@ -129,7 +129,7 @@
             $gameCoin = GameCoin::resolveByPerson($super);
             $this->assertEquals(1, $gameCoin->value);
         }
-        
+
         public function testRefreshGameDashboardCoinContainer()
         {
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
@@ -139,31 +139,31 @@
             $content = $this->runControllerWithNoExceptionsAndGetContent('gamification/default/refreshGameDashboardCoinContainer');
             $this->assertfalse(strpos($content, '1 coin') === false);
         }
-        
+
         public function testRedeemCollection()
         {
             $user = UserTestHelper::createBasicUser('Steven');
             $gameCollection      = new GameCollection();
             $gameCollection->person    = $user;
-            $gameCollection->type      = 'Butterflies';
+            $gameCollection->type      = 'Basketball';
             $itemsData = array('RedemptionItem' => 0,
                                  'Items' => array(
-                                    'AniseSwallowtail'  => 0,
-                                    'Buckeye'           => 0,
-                                    'Monarch'           => 0,
-                                    'PaintedLady'       => 0,
-                                    'Queen'             => 0));
+                                     'Basket'     => 0,
+                                     'Player'     => 0,
+                                     'ScoreBoard' => 0,
+                                     'Uniform'    => 0,
+                                     'Trophy'     => 0));
             $gameCollection->serializedData = serialize($itemsData);
             $this->assertTrue($gameCollection->save());
             $id = $gameCollection->id;
             unset($gameCollection);
             $gameCollection = GameCollection::getById($id);
-            $this->assertEquals('Butterflies', $gameCollection->type);
+            $this->assertEquals('Basketball', $gameCollection->type);
             $this->assertEquals($user,         $gameCollection->person);
             $this->assertEquals($itemsData, unserialize($gameCollection->serializedData));
             $this->setGetArray(array('id' => $gameCollection->id));
             $content = $this->runControllerWithNoExceptionsAndGetContent('gamification/default/redeemCollection');
-            $this->assertfalse(strpos($content, 'Butterflies Collection') === false);
+            $this->assertfalse(strpos($content, 'Basketball Collection') === false);
         }
     }
 ?>

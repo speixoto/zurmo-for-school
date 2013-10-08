@@ -73,11 +73,11 @@
          */
         public static function getItemTypesAndFrequencies()
         {
-            return array(   'Gate' => 10,
-                            'Passport'          => 10,
-                            'Pilot'          => 10,
-                            'Ticket'      => 3,
-                            'TowTruck'            => 6,
+            return array(   'Gate'       => 10,
+                            'Passport'   => 10,
+                            'Pilot'      => 10,
+                            'Ticket'     => 3,
+                            'TowTruck'   => 6,
             );
         }
 

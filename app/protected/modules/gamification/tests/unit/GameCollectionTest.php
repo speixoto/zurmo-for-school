@@ -53,13 +53,13 @@
             $user = UserTestHelper::createBasicUser('Steven');
             $gameCollection      = new GameCollection();
             $gameCollection->person    = $user;
-            $gameCollection->type      = 'Butterflies';
+            $gameCollection->type      = 'Basketball';
             $gameCollection->serializedData = serialize(array('something'));
             $this->assertTrue($gameCollection->save());
             $id = $gameCollection->id;
             unset($gameCollection);
             $gameCollection = GameCollection::getById($id);
-            $this->assertEquals('Butterflies', $gameCollection->type);
+            $this->assertEquals('Basketball', $gameCollection->type);
             $this->assertEquals($user,         $gameCollection->person);
             $this->assertEquals(array('something'), unserialize($gameCollection->serializedData));
         }
@@ -70,20 +70,20 @@
         public function testResolveByTypeAndPerson()
         {
             Yii::app()->user->userModel      = User::getByUsername('steven');
-            $gameCollection                  = GameCollection::resolveByTypeAndPerson('Butterflies',  Yii::app()->user->userModel);
-            $this->assertEquals('Butterflies',                  $gameCollection->type);
+            $gameCollection                  = GameCollection::resolveByTypeAndPerson('Basketball',  Yii::app()->user->userModel);
+            $this->assertEquals('Basketball',                   $gameCollection->type);
             $this->assertEquals(Yii::app()->user->userModel,    $gameCollection->person);
             $this->assertEquals(array('something'),             unserialize($gameCollection->serializedData));
 
-            $gameCollection = GameCollection::resolveByTypeAndPerson('Frogs',  Yii::app()->user->userModel);
+            $gameCollection = GameCollection::resolveByTypeAndPerson('Airport',  Yii::app()->user->userModel);
             $this->assertTrue($gameCollection->id < 0);
             $compareData = array('RedemptionItem' => 0,
                                  'Items' => array(
-                                    'Goliath'           => 0,
-                                    'NorthernLeopard'   => 0,
-                                    'OrnateHorned'      => 0,
-                                    'Tree'              => 0,
-                                    'Wood'              => 0));
+                                     'Gate'       => 0,
+                                     'Passport'   => 0,
+                                     'Pilot'      => 0,
+                                     'Ticket'     => 0,
+                                     'TowTruck'   => 0));
             $this->assertEquals($compareData, unserialize($gameCollection->serializedData));
         }
 
@@ -93,23 +93,23 @@
         public function testResolvePersonAndAvailableTypes()
         {
             Yii::app()->user->userModel      = User::getByUsername('steven');
-            $collections = GameCollection::resolvePersonAndAvailableTypes(Yii::app()->user->userModel, array('Butterflies'));
+            $collections = GameCollection::resolvePersonAndAvailableTypes(Yii::app()->user->userModel, array('Basketball'));
             $this->assertEquals(1, count($collections));
-            $this->assertEquals('Butterflies', $collections['Butterflies']->type);
-            $this->assertTrue($collections['Butterflies']->id > 0);
+            $this->assertEquals('Basketball', $collections['Basketball']->type);
+            $this->assertTrue($collections['Basketball']->id > 0);
             //Try a collection that is not created yet for the user
-            $collections = GameCollection::resolvePersonAndAvailableTypes(Yii::app()->user->userModel, array('Frogs'));
+            $collections = GameCollection::resolvePersonAndAvailableTypes(Yii::app()->user->userModel, array('Airport'));
             $this->assertEquals(1, count($collections));
-            $this->assertEquals('Frogs', $collections['Frogs']->type);
-            $this->assertTrue($collections['Frogs']->id > 0);
+            $this->assertEquals('Airport', $collections['Airport']->type);
+            $this->assertTrue($collections['Airport']->id > 0);
             $compareData = array('RedemptionItem' => 0,
                                  'Items' => array(
-                                    'Goliath'           => 0,
-                                    'NorthernLeopard'   => 0,
-                                    'OrnateHorned'      => 0,
-                                    'Tree'              => 0,
-                                    'Wood'              => 0));
-            $this->assertEquals($compareData, unserialize($collections['Frogs']->serializedData));
+                                     'Gate'       => 0,
+                                     'Passport'   => 0,
+                                     'Pilot'      => 0,
+                                     'Ticket'     => 0,
+                                     'TowTruck'   => 0));
+            $this->assertEquals($compareData, unserialize($collections['Airport']->serializedData));
         }
 
         /**
@@ -127,14 +127,14 @@
         public function testGetItemsData()
         {
             Yii::app()->user->userModel      = User::getByUsername('steven');
-            $collections = GameCollection::resolvePersonAndAvailableTypes(Yii::app()->user->userModel, array('Frogs'));
+            $collections = GameCollection::resolvePersonAndAvailableTypes(Yii::app()->user->userModel, array('Airport'));
             $this->assertEquals(1, count($collections));
-            $itemsData = $collections['Frogs']->getItemsData();
-            $compareData = array('Goliath'           => 0,
-                                 'NorthernLeopard'   => 0,
-                                 'OrnateHorned'      => 0,
-                                 'Tree'              => 0,
-                                 'Wood'              => 0);
+            $itemsData = $collections['Airport']->getItemsData();
+            $compareData = array('Gate'       => 0,
+                                 'Passport'   => 0,
+                                 'Pilot'      => 0,
+                                 'Ticket'     => 0,
+                                 'TowTruck'   => 0);
             $this->assertEquals($compareData, $itemsData);
         }
 
@@ -144,9 +144,9 @@
         public function testGetRedemptionCount()
         {
             Yii::app()->user->userModel      = User::getByUsername('steven');
-            $collections = GameCollection::resolvePersonAndAvailableTypes(Yii::app()->user->userModel, array('Frogs'));
+            $collections = GameCollection::resolvePersonAndAvailableTypes(Yii::app()->user->userModel, array('Airport'));
             $this->assertEquals(1, count($collections));
-            $redemptionCount = $collections['Frogs']->getRedemptionCount();
+            $redemptionCount = $collections['Airport']->getRedemptionCount();
             $this->assertEquals(0, $redemptionCount);
         }
 
@@ -156,26 +156,26 @@
         public function testRedeem()
         {
             Yii::app()->user->userModel      = User::getByUsername('steven');
-            $collections = GameCollection::resolvePersonAndAvailableTypes(Yii::app()->user->userModel, array('Frogs'));
-            $itemsData = $collections['Frogs']->getItemsData();
-            $compareData = array('Goliath'           => 0,
-                                 'NorthernLeopard'   => 0,
-                                 'OrnateHorned'      => 0,
-                                 'Tree'              => 0,
-                                 'Wood'              => 0);
+            $collections = GameCollection::resolvePersonAndAvailableTypes(Yii::app()->user->userModel, array('Airport'));
+            $itemsData = $collections['Airport']->getItemsData();
+            $compareData = array(   'Gate'       => 0,
+                                    'Passport'   => 0,
+                                    'Pilot'      => 0,
+                                    'Ticket'     => 0,
+                                    'TowTruck'   => 0);
             $this->assertEquals($compareData, $itemsData);
-            $redeemData = $collections['Frogs']->redeem();
+            $redeemData = $collections['Airport']->redeem();
             $this->assertEquals(false, $redeemData);
 
-            $itemsData = array('Goliath'           => 3,
-                               'NorthernLeopard'   => 5,
-                               'OrnateHorned'      => 6,
-                               'Tree'              => 8,
-                               'Wood'              => 7);
-            $collections['Frogs']->setItemsData($itemsData);
-            $this->assertEquals(0, $collections['Frogs']->getRedemptionCount());
-            $this->assertTrue($collections['Frogs']->redeem());
-            $this->assertEquals(1, $collections['Frogs']->getRedemptionCount());
+            $itemsData = array( 'Gate'       => 3,
+                                'Passport'   => 5,
+                                'Pilot'      => 6,
+                                'Ticket'     => 8,
+                                'TowTruck'   => 7);
+            $collections['Airport']->setItemsData($itemsData);
+            $this->assertEquals(0, $collections['Airport']->getRedemptionCount());
+            $this->assertTrue($collections['Airport']->redeem());
+            $this->assertEquals(1, $collections['Airport']->getRedemptionCount());
         }
 
         /**
@@ -187,47 +187,6 @@
             Yii::app()->user->userModel      = User::getByUsername('steven');
             $bool = GameCollection::shouldReceiveCollectionItem();
             $this->assertTrue($bool === true || $bool === false);
-        }
-
-        /**
-         * @depends testShouldReceiveCollectionItem
-         */
-        public function testProcessRandomReceivingCollectionItemByUser()
-        {
-            Yii::app()->user->userModel      = User::getByUsername('super');
-            $availableTypes = GameCollection::getAvailableTypes();
-            $compareData    = array('Butterflies','Frogs');
-            $this->assertEquals($compareData, $availableTypes);
-            $randomKey      = array_rand($availableTypes, 1);
-            $this->assertTrue($randomKey === 0 || $randomKey === 1);
-            $collection     = GameCollection::resolveByTypeAndPerson($availableTypes[$randomKey], Yii::app()->user->userModel);
-            $itemsData      = $collection->getItemsData();
-            $randomKey      = array_rand($itemsData, 1);
-            if ($randomKey == 0)
-            {
-                $compareData = array('AniseSwallowtail' => 0,
-                                     'Buckeye'          => 0,
-                                     'Monarch'          => 0,
-                                     'PaintedLady'      => 0,
-                                     'Queen'            => 0);
-                $this->assertTrue($randomKey == 'AniseSwallowtail' || $randomKey == 'Buckeye' || 
-                                  $randomKey == 'Monarch' || $randomKey == 'PaintedLady' || $randomKey == 'Queen');
-            }
-            else
-            {
-                $compareData = array('Goliath'          => 0,
-                                     'NorthernLeopard'  => 0,
-                                     'OrnateHorned'     => 0,
-                                     'Tree'             => 0,
-                                     'Wood'             => 0);
-                $this->assertTrue($randomKey == 'Goliath' || $randomKey == 'NorthernLeopard' || 
-                                  $randomKey == 'OrnateHorned' || $randomKey == 'Tree' || $randomKey == 'Wood');
-            }
-            $compareData[$randomKey] = $compareData[$randomKey] + 1;                     
-            $itemsData[$randomKey] = $itemsData[$randomKey] + 1;
-            $collection->setItemsData($itemsData);
-            $collection->save();      
-            $this->assertEquals($compareData, $collection->getItemsData());   
         }
     }
 ?>
