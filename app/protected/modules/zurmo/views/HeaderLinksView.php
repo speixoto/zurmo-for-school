@@ -196,8 +196,9 @@
 
         protected static function resolveAjaxOptionsForGameDashboardModel($id)
         {
-            $title = Zurmo::t('GamificationModule', 'User Game Dashboard');
-            return   ModalView::getAjaxOptionsForModalLink($title, static::getModalContainerId($id));
+            return array(
+                'beforeSend' => 'js:function(){$(this).attachLoadingOnSubmit("edit-form");}',
+                'complete'   => 'js:function(){}');
         }
 
         protected static function getModalContainerId($id)
