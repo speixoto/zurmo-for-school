@@ -368,7 +368,7 @@
             return ZurmoHtml::ajax(array(
                 'type' => 'GET',
                 'url'  =>  static::getGameCoinRefreshUrl($userId),
-                'update' => '#' . self::getGameCoinContainerId(),
+                'success' => 'function(data){$("#' . self::getGameCoinContainerId() . '").replaceWith(data)}',
             ));
         }
 
