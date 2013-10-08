@@ -119,12 +119,13 @@
         {
             $userMenuItemsWithTopLevel     = static::resolveUserMenuItemsWithTopLevelItem($userMenuItems);
             $settingsMenuItemsWithTopLevel = static::resolveSettingsMenuItemsWithTopLevelItem($settingsMenuItems);
-            $content      = static::renderHeaderMenuContent($userMenuItemsWithTopLevel, self::USER_MENU_ID);
+            $content = null;
             if (Yii::app()->userInterface->isMobile() === false)
             {
                 $content .= static::renderHeaderGameDashboardContent();
             }
             $content     .= static::renderHeaderMenuContent($settingsMenuItemsWithTopLevel, self::SETTINGS_MENU_ID);
+            $content     .= static::renderHeaderMenuContent($userMenuItemsWithTopLevel, self::USER_MENU_ID);
             return $content;
         }
 
