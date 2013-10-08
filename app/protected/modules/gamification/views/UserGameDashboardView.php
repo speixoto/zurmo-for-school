@@ -278,8 +278,8 @@
                 $collectionItemImageUrl = Yii::app()->themeManager->baseUrl . '/default/images/collections/' .
                                           $gameCollectionRules::getType() . '/' .
                                           $gameCollectionRules::makeMediumCollectionItemImageName($itemType);
-                $itemContent = ZurmoHtml::image($collectionItemImageUrl, $itemLabel, array('class'        => 'qtip-shadow',
-                                                                                       'data-tooltip' => $itemLabel));
+                $itemContent = ZurmoHtml::image($collectionItemImageUrl, $itemLabel,
+                                          array('class'=> 'qtip-shadow', 'data-tooltip' => $itemLabel));
                 $itemContent .= ZurmoHtml::tag('span', array('class' => 'num-collected'), 'x' . $quantityCollected);
                 $classContent = 'gd-collection-item';
                 if($quantityCollected == 0)

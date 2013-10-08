@@ -184,12 +184,13 @@
             $id      = static::USER_GAME_DASHBOARD_LINK_ID;
             $url     = Yii::app()->createUrl('users/default/gameDashboard/',
                                              array('id' => Yii::app()->user->userModel->id));
-            $content = ZurmoHtml::ajaxLink('TODO', $url, static::resolveAjaxOptionsForGameDashboardModel($id),
+            $content = ZurmoHtml::ajaxLink('¿', $url, static::resolveAjaxOptionsForGameDashboardModel($id),
                 array(
                     'id' => $id,
                 )
             );
-            return ZurmoHtml::tag('div', array('id' => static::USER_GAME_DASHBOARD_WRAPPER_ID), $content);
+            return ZurmoHtml::tag('div', array('id' => static::USER_GAME_DASHBOARD_WRAPPER_ID,
+                   'class' => 'user-menu-item'), $content);
         }
 
         protected static function resolveAjaxOptionsForGameDashboardModel($id)
