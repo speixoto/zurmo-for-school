@@ -93,37 +93,50 @@
          */
         protected function resolveMessageSubjectAndContentAndSendSystemMessage($messageType, $originalMessage)
         {
+            $sendNotification = false;
             switch ($messageType)
             {
                 case "OwnerNotExist":
-                    $subject = Zurmo::t('EmailMessagesModule', 'Invalid email address');
+                    $subject     = Zurmo::t('EmailMessagesModule', 'Invalid email address');
                     $textContent = Zurmo::t('EmailMessagesModule', 'Email address does not exist in system') . "\n\n" . $originalMessage->textBody;
                     $htmlContent = Zurmo::t('EmailMessagesModule', 'Email address does not exist in system') . "<br\><br\>" . $originalMessage->htmlBody;
+                    $sendNotification = true;
                     break;
                 case "SenderNotExtracted":
-                    $subject = Zurmo::t('EmailMessagesModule', "Sender info can't be extracted from email message");
+                    $subject     = Zurmo::t('EmailMessagesModule', "Sender info can't be extracted from email message");
                     $textContent = Zurmo::t('EmailMessagesModule', "Sender info can't be extracted from email message") . "\n\n" . $originalMessage->textBody;
                     $htmlContent = Zurmo::t('EmailMessagesModule', "Sender info can't be extracted from email message") . "<br\><br\>" . $originalMessage->htmlBody;
                     break;
                 case "RecipientNotExtracted":
-                    $subject = Zurmo::t('EmailMessagesModule', "Recipient info can't be extracted from email message");
+                    $subject     = Zurmo::t('EmailMessagesModule', "Recipient info can't be extracted from email message");
                     $textContent = Zurmo::t('EmailMessagesModule', "Recipient info can't be extracted from email message") . "\n\n" . $originalMessage->textBody;
                     $htmlContent = Zurmo::t('EmailMessagesModule', "Recipient info can't be extracted from email message") . "<br\><br\>" . $originalMessage->htmlBody;
                     break;
                 case "EmailMessageNotValidated":
-                    $subject = Zurmo::t('EmailMessagesModule', 'Email message could not be validated');
+                    $subject     = Zurmo::t('EmailMessagesModule', 'Email message could not be validated');
                     $textContent = Zurmo::t('EmailMessagesModule', 'Email message could not be validated') . "\n\n" . $originalMessage->textBody;
                     $htmlContent = Zurmo::t('EmailMessagesModule', 'Email message could not be validated') . "<br\><br\>" . $originalMessage->htmlBody;
                     break;
                 case "EmailMessageNotSaved":
-                    $subject = Zurmo::t('EmailMessagesModule', 'Email message could not be saved');
+                    $subject     = Zurmo::t('EmailMessagesModule', 'Email message could not be saved');
                     $textContent = Zurmo::t('EmailMessagesModule', 'Email message could not be saved') . "\n\n" . $originalMessage->textBody;
                     $htmlContent = Zurmo::t('EmailMessagesModule', 'Email message could not be saved') . "<br\><br\>" . $originalMessage->htmlBody;
                     break;
                 default:
                     throw new NotSupportedException();
             }
-            return EmailMessageHelper::sendSystemEmail($subject, array($originalMessage->fromEmail), $textContent, $htmlContent);
+            if ($sendNotification)
+            {
+                $notificationMessage                    = new NotificationMessage();
+                $notificationMessage->textContent       = $textContent;
+                $notificationMessage->htmlContent       = $htmlContent;
+                $rules                                  = new EmailMessageOwnerNotExistNotificationRules();
+                NotificationsUtil::submit($notificationMessage, $rules);
+            }
+            else
+            {
+                return EmailMessageHelper::sendSystemEmail($subject, array($originalMessage->fromEmail), $textContent, $htmlContent);
+            }
         }
 
         /**

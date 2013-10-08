@@ -423,7 +423,7 @@
         public function resolveAndGetDefaultFromAddress()
         {
             $defaultFromAddress = ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'defaultFromAddress');
-            if($defaultFromAddress == null)
+            if ($defaultFromAddress == null)
             {
                 $defaultFromAddress = static::resolveDefaultEmailAddress('notification');
                 $this->setDefaultFromAddress($defaultFromAddress);
@@ -440,7 +440,7 @@
         public function resolveAndGetDefaultTestToAddress()
         {
             $defaultTestToAddress = ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'defaultTestToAddress');
-            if($defaultTestToAddress == null)
+            if ($defaultTestToAddress == null)
             {
                 $defaultTestToAddress = static::resolveDefaultEmailAddress('testJobEmail');
                 $this->setDefaultTestToAddress($defaultTestToAddress);

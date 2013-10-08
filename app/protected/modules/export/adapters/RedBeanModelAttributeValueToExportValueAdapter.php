@@ -70,6 +70,18 @@
         }
 
         /**
+         * Resolve the data for the total row
+         * @param $grandTotalsData
+         */
+        public function resolveGrandTotalsData(& $grandTotalsData)
+        {
+            if ($this->getGrandTotal() !== null)
+            {
+                $grandTotalsData[] = $this->getGrandTotal();
+            }
+        }
+
+        /**
          * Gets the label for the header form the params if its set
          * @return string
          */
@@ -80,6 +92,14 @@
                 return $this->params['label'];
             }
             return $this->model->getAttributeLabel($this->attribute);
+        }
+
+        protected function getGrandTotal()
+        {
+            if (isset($this->params['grandTotal']))
+            {
+                return $this->params['grandTotal'];
+            }
         }
     }
 ?>
