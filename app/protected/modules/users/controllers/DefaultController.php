@@ -590,7 +590,7 @@
             $statisticsData      = GameLevelUtil::getUserStatisticsData($user);
             $collectionData      = GameCollection::resolvePersonAndAvailableTypes($user, GameCollection::getAvailableTypes());
             $dashboardView = new UserGameDashboardView($this, $user, $generalLevelData, $badgeData, $rankingData, $statisticsData, $collectionData);
-            $view = new UsersPageView($this->resolveZurmoDefaultOrAdminView($dashboardView, $breadcrumbLinks, 'UserBreadCrumbView'));
+            $view = new AjaxPageView($dashboardView);
             echo $view->render();
         }
 
