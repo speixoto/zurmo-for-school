@@ -206,13 +206,27 @@
          */
         public function getThemeNamesAndLabels()
         {
-            return array(''                           => Zurmo::t('Core', 'White'),
-                         'kanban-background-football' => Zurmo::t('Core', 'Football'),
-                         'kanban-background-tennis'   => Zurmo::t('Core', 'Tennis'),
-                         'kanban-background-motor'    => Zurmo::t('Core', 'Motor Sport'),
-                         'kanban-background-yoga'     => Zurmo::t('Core', 'Yoga'),
-                         'kanban-background5'         => 5,
-                         'kanban-background6'         => 6);
+            return array(''                    => Zurmo::t('Core', 'White'),
+                'kanban-background-football'   => Zurmo::t('Core', 'Football'),
+                'kanban-background-tennis'     => Zurmo::t('Core', 'Tennis'),
+                'kanban-background-motor'      => Zurmo::t('Core', 'Motor Sport'),
+                'kanban-background-yoga'       => Zurmo::t('Core', 'Yoga'),
+                'kanban-background-abstract-1' => Zurmo::t('Core', 'Abs 1'),
+                'kanban-background-abstract-2' => Zurmo::t('Core', 'Abs 2'),
+                'kanban-background-abstract-3' => Zurmo::t('Core', 'Abs 3'),
+                'kanban-background-abstract-4' => Zurmo::t('Core', 'Abs 4'),
+                'kanban-background-beach-1'    => Zurmo::t('Core', 'Beach 1'),
+                'kanban-background-beach-2'    => Zurmo::t('Core', 'Beach 2'),
+                'kanban-background-beach-3'    => Zurmo::t('Core', 'Beach 3'),
+                'kanban-background-beach-4'    => Zurmo::t('Core', 'Beach 4'),
+                //'kanban-background-map-1'    => Zurmo::t('Core', 'Map 1'),
+                //'kanban-background-map-2'    => Zurmo::t('Core', 'Map 2'),
+                'kanban-background-vintage-1'  => Zurmo::t('Core', 'Vintage 1'),
+                'kanban-background-vintage-2'  => Zurmo::t('Core', 'Vintage 2'),
+                'kanban-background-vintage-3'  => Zurmo::t('Core', 'Vintage 3'),
+                'kanban-background-van-gogh'   => Zurmo::t('Core', 'Van Gogh'),
+                'kanban-background-miro'       => Zurmo::t('Core', 'Miro'),
+                'kanban-background-wave'       => Zurmo::t('Core', 'Wave'));
         }
 
         public function getThemeColorNamesAndUnlockedAtLevel()

@@ -455,6 +455,205 @@ body.blue{
     .theme-color-3{ background: @themeColorHeader; }
 }
 
+body.sunrise{ //tequila sunrise
+	@themeColor        : #34495e;
+	@themeColor2       : #2c3e50;
+	@themeColorBtn     : #97c43d;
+	@themeColorBtn2    : darken(@themeColorBtn, 10%);
+	@themeColorHeader  : #c0392b;
+	@themeColorHeader2 : #d35400;
+	@borderColor       : darken(@themeColor, 10%);
+	@headerBarColor    : @themeColor;
+	.AppColors();
+}
+.color-swatch.sunrise{
+	@themeColor        : #34495e;
+	@themeColor2       : #2c3e50;
+	@themeColorBtn     : #97c43d;
+	@themeColorBtn2    : darken(@themeColorBtn, 10%);
+	@themeColorHeader  : #c0392b;
+	@themeColorHeader2 : #d35400;
+	@borderColor       : darken(@themeColor, 10%);
+	@headerBarColor    : @themeColor;
+	.theme-color-1{ background: @themeColor; }
+	.theme-color-2{ background: @themeColor2; }
+	.theme-color-3{ background: @themeColorHeader; }
+}
+
+body.marble{ //marble
+	@themeColor        : #7f7f7f;
+	@themeColor2       : #959595;
+	@themeColorBtn     : #97c43d;
+	@themeColorBtn2    : darken(@themeColorBtn, 10%);
+	@themeColorHeader  : #959595;
+	@themeColorHeader2 : #bdbdbd;
+	@borderColor       : darken(@themeColor, 10%);
+	@headerBarColor    : @themeColor;
+	.AppColors();
+}
+.color-swatch.marble{
+	@themeColor        : #7f8c8d;
+	@themeColor2       : #95a5a6;
+	@themeColorBtn     : #97c43d;
+	@themeColorBtn2    : darken(@themeColorBtn, 10%);
+	@themeColorHeader  : #95a5a6;
+	@themeColorHeader2 : #bdc3c7;
+	@borderColor       : darken(@themeColor, 10%);
+	@headerBarColor    : @themeColor;
+	.theme-color-1{ background: @themeColor; }
+	.theme-color-2{ background: @themeColor2; }
+	.theme-color-3{ background: @themeColorHeader; }
+}
+
+body.purple-haze{ //purple haze
+	@themeColor        : #713b8a;
+	@themeColor2       : #854f9e;
+	@themeColorBtn     : #97c43d;
+	@themeColorBtn2    : darken(@themeColorBtn, 10%);
+	@themeColorHeader  : #34495e;
+	@themeColorHeader2 : #2c3e50;
+	@borderColor       : darken(@themeColor, 10%);
+	@headerBarColor    : @themeColor;
+	.AppColors();
+}
+.color-swatch.purple-haze{
+	@themeColor        : #713b8a;
+	@themeColor2       : #854f9e;
+	@themeColorBtn     : #97c43d;
+	@themeColorBtn2    : darken(@themeColorBtn, 10%);
+	@themeColorHeader  : #34495e;
+	@themeColorHeader2 : #2c3e50;
+	@borderColor       : darken(@themeColor, 10%);
+	@headerBarColor    : @themeColor;
+	.theme-color-1{ background: @themeColor; }
+	.theme-color-2{ background: @themeColor2; }
+	.theme-color-3{ background: @themeColorHeader; }
+}
+
+/*shadowless square/flat theme*/
+body.flat-cement{ //flat cement
+	@themeColor        : #2c3e50;
+	@themeColor2       : #2c3e50;
+	@themeColorBtn     : #97c43d;
+	@themeColorBtn2    : darken(@themeColorBtn, 10%);
+	@themeColorHeader  : #95a5a6;
+	@themeColorHeader2 : #95a5a6;
+	@borderColor       : darken(@themeColor, 10%);
+	@headerBarColor    : @themeColor;
+	.AppColors();
+	*{
+		box-shadow: none !important;
+		//border-radius: 0 !important;
+	}
+	.AppContent, .AppNavigation, .AppContainer,
+	#MenuView, #RecentlyViewedView{
+		background: none !important;
+		border: none !important;
+	}
+	#RecentlyViewedView li em{
+		background: none;
+	}
+	.items{
+		background: #fff;
+	}
+	.juiportlet-columns .juiportlet-widget{
+		//border:none;
+		//background: #fefefe;
+	}
+	.juiportlet-columns .juiportlet-widget .juiportlet-widget-head{
+		//border:none;
+		//background: none !important;
+	}
+}
+.color-swatch.flat-cement{
+	@themeColor        : #2c3e50;
+	@themeColor2       : #2c3e50;
+	@themeColorBtn     : #97c43d;
+	@themeColorBtn2    : darken(@themeColorBtn, 10%);
+	@themeColorHeader  : #95a5a6;
+	@themeColorHeader2 : #95a5a6;
+	@borderColor       : darken(@themeColor, 10%);
+	@headerBarColor    : @themeColor;
+	.theme-color-1{ background: @themeColor; }
+	.theme-color-2{ background: @themeColor2; }
+	.theme-color-3{ background: @themeColorHeader; }
+}
+
+body.amazon{ //amazonas
+	@themeColor        : #26354A;
+	@themeColor2       : #257282;
+	@themeColorBtn     : #97c43d;
+	@themeColorBtn2    : darken(@themeColorBtn, 10%);
+	@themeColorHeader  : #2F9E66;
+	@themeColorHeader2 : #71B07B;
+	@borderColor       : darken(@themeColor, 10%);
+	@headerBarColor    : @themeColor;
+	.AppColors();
+}
+.color-swatch.amazon{
+	@themeColor        : #26354A;
+	@themeColor2       : #257282;
+	@themeColorBtn     : #97c43d;
+	@themeColorBtn2    : darken(@themeColorBtn, 10%);
+	@themeColorHeader  : #2F9E66;
+	@themeColorHeader2 : #71B07B;
+	@borderColor       : darken(@themeColor, 10%);
+	@headerBarColor    : @themeColor;
+	.theme-color-1{ background: @themeColor; }
+	.theme-color-2{ background: @themeColor2; }
+	.theme-color-3{ background: @themeColorHeader; }
+}
+
+body.sweden{ //sweden
+	@themeColor        : #034C8C;
+	@themeColor2       : #024873;
+	@themeColorBtn     : #97c43d;
+	@themeColorBtn2    : darken(@themeColorBtn, 10%);
+	@themeColorHeader  : #f2d632;//#94CEF2;
+	@themeColorHeader2 : #f2ec5c;//#cdeff5;
+	@borderColor       : darken(@themeColor, 10%);
+	@headerBarColor    : @themeColor;
+	.AppColors();
+}
+.color-swatch.sweden{
+	@themeColor        : #034C8C;
+	@themeColor2       : #024873;
+	@themeColorBtn     : #97c43d;
+	@themeColorBtn2    : darken(@themeColorBtn, 10%);
+	@themeColorHeader  : #f2d632;//#94CEF2;
+	@themeColorHeader2 : #f2ec5c;//#cdeff5;
+	@borderColor       : darken(@themeColor, 10%);
+	@headerBarColor    : @themeColor;
+	.theme-color-1{ background: @themeColor; }
+	.theme-color-2{ background: @themeColor2; }
+	.theme-color-3{ background: @themeColorHeader; }
+}
+
+body.pink{ //pink
+	@themeColor        : #323232;
+	@themeColor2       : #565656;
+	@themeColorBtn     : #97c43d;
+	@themeColorBtn2    : darken(@themeColorBtn, 10%);
+	@themeColorHeader  : #ff253d;//#94CEF2;
+	@themeColorHeader2 : #ff4f84;//#cdeff5;
+	@borderColor       : darken(@themeColor, 10%);
+	@headerBarColor    : @themeColor;
+	.AppColors();
+}
+.color-swatch.pink{
+	@themeColor        : #323232;
+	@themeColor2       : #565656;
+	@themeColorBtn     : #97c43d;
+	@themeColorBtn2    : darken(@themeColorBtn, 10%);
+	@themeColorHeader  : #ff253d;//#94CEF2;
+	@themeColorHeader2 : #ff4f84;//#cdeff5;
+	@borderColor       : darken(@themeColor, 10%);
+	@headerBarColor    : @themeColor;
+	.theme-color-1{ background: @themeColor; }
+	.theme-color-2{ background: @themeColor2; }
+	.theme-color-3{ background: @themeColorHeader; }
+}
+
 body.brown{
     //Brown Theme
     @themeColor        : #547980;
@@ -640,5 +839,95 @@ body.paper,
 body.light-toast,
 .texture-swatch.light-toast .background-texture-1{
     background: url(../patterns/light-toast/light-toast.png) left top repeat !important;
+}
+
+body.black-linen-2,
+.texture-swatch.black-linen-2 .background-texture-1{
+	background: url(../patterns/black_linen_v2/black_linen_v2.png) left top repeat !important;
+}
+
+body.bo-play,
+.texture-swatch.bo-play .background-texture-1{
+	background: url(../patterns/bo_play_pattern/bo_play_pattern.png) left top repeat !important;
+}
+
+body.carbon-fibre,
+.texture-swatch.carbon-fibre .background-texture-1{
+	background: url(../patterns/carbon_fibre/carbon_fibre.png) left top repeat !important;
+}
+
+body.carbon-fibre-big,
+.texture-swatch.carbon-fibre-big .background-texture-1{
+	background: url(../patterns/carbon_fibre_big/carbon_fibre_big.png) left top repeat !important;
+}
+
+body.cartographer,
+.texture-swatch.cartographer .background-texture-1{
+	background: url(../patterns/cartographer/cartographer.png) left top repeat !important;
+}
+
+body.circles,
+.texture-swatch.circles .background-texture-1{
+	background: url(../patterns/circles/circles.png) left top repeat !important;
+}
+
+body.concrete-wall,
+.texture-swatch.concrete-wall .background-texture-1{
+	background: url(../patterns/concrete_wall/concrete_wall.png) left top repeat !important;
+}
+
+body.dark-wood,
+.texture-swatch.dark-wood .background-texture-1{
+	background: url(../patterns/dark_wood/dark_wood.png) left top repeat !important;
+}
+
+body.dark-wood-2,
+.texture-swatch.dark-wood-2 .background-texture-1{
+	background: url(../patterns/dark_wood2/dark_wood.png) left top repeat !important;
+}
+
+body.denim,
+.texture-swatch.denim .background-texture-1{
+	background: url(../patterns/denim/denim.png) left top repeat !important;
+}
+
+body.gun-metal,
+.texture-swatch.gun-metal .background-texture-1{
+	background: url(../patterns/gun_metal/gun_metal.png) left top repeat !important;
+}
+
+body.low-contrast-linen,
+.texture-swatch.low-contrast-linen .background-texture-1{
+	background: url(../patterns/low_contrast_linen/low_contrast_linen.png) left top repeat !important;
+}
+
+body.micro-carbon,
+.texture-swatch.micro-carbon .background-texture-1{
+	background: url(../patterns/micro_carbon/micro_carbon.png) left top repeat !important;
+}
+
+body.vertical-cloth,
+.texture-swatch.vertical-cloth .background-texture-1{
+	background: url(../patterns/vertical_cloth/vertical_cloth.png) left top repeat !important;
+}
+
+body.wood,
+.texture-swatch.wood .background-texture-1{
+	background: url(../patterns/wood-pattern/wood-pattern.png) left top repeat !important;
+}
+
+body.whity,
+.texture-swatch.whity .background-texture-1{
+	background: url(../patterns/whitey/whitey.png) left top repeat !important;
+}
+
+body.fabric-plaid,
+.texture-swatch.fabric-plaid .background-texture-1{
+	background: url(../patterns/fabric_plaid/fabric_plaid.png) left top repeat !important;
+}
+
+body.cartographer-light,
+.texture-swatch.cartographer-light .background-texture-1{
+	background: url(../patterns/cartographer-light/cartographer-light.png) left top repeat !important;
 }
 /*END COLOR SCHEME/THEME*/

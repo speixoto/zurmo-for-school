@@ -71,7 +71,8 @@
         protected function getEditableHtmlOptions()
         {
             $htmlOptions             = array();
-            $htmlOptions['template'] =  '<div class="radio-input texture-swatch {value}">{input}<span class="background-texture-1">' .
+            $htmlOptions['separator'] = '';
+            $htmlOptions['template']  = '<div class="radio-input texture-swatch {value}">{input}<span class="background-texture-1">' .
                                         '</span>{label}</div>';
             return $htmlOptions;
         }

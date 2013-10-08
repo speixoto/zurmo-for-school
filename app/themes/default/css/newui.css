@@ -1421,6 +1421,3937 @@ body.blue .action-reject:hover .z-label {
 .color-swatch.blue .theme-color-3 {
   background: #464646;
 }
+body.sunrise #nav-trigger {
+  border-right: 1px solid #1e2a37;
+  -webkit-box-shadow: 1px 0 0 0 #364c61;
+  -moz-box-shadow: 1px 0 0 0 #364c61;
+  -o-box-shadow: 1px 0 0 0 #364c61;
+  -ms-box-shadow: 1px 0 0 0 #364c61;
+  box-shadow: 1px 0 0 0 #364c61;
+  color: #ffffff;
+}
+body.sunrise #nav-trigger:active {
+  -webkit-text-shadow: 0 1px 0 #6789ab;
+  -moz-text-shadow: 0 1px 0 #6789ab;
+  -o-text-shadow: 0 1px 0 #6789ab;
+  -ms-text-shadow: 0 1px 0 #6789ab;
+  text-shadow: 0 1px 0 #6789ab;
+}
+body.sunrise .textColor {
+  color: #545454;
+}
+body.sunrise .themeColor {
+  color: #34495e;
+}
+body.sunrise .themeColor2 {
+  color: #2c3e50;
+}
+body.sunrise .themeBackgroundColor {
+  background-color: #34495e;
+}
+body.sunrise .themeBackgroundColor2 {
+  background-color: #2c3e50;
+}
+body.sunrise .themeColor-important {
+  color: #34495e !important;
+}
+body.sunrise .themeColor2-important {
+  color: #2c3e50 !important;
+}
+body.sunrise .themeBackgroundColor-important {
+  background-color: #34495e !important;
+}
+body.sunrise .themeBackgroundColor2-important {
+  background-color: #2c3e50 !important;
+}
+body.sunrise .themeColor-focus {
+  -webkit-box-shadow: 0 0 1px 1px #34495e;
+  -moz-box-shadow: 0 0 1px 1px #34495e;
+  -o-box-shadow: 0 0 1px 1px #34495e;
+  -ms-box-shadow: 0 0 1px 1px #34495e;
+  box-shadow: 0 0 1px 1px #34495e;
+}
+body.sunrise .juiportlet-widget-placeholder,
+body.sunrise .drop-zone {
+  border: 2px dashed #34495e;
+}
+body.sunrise h1,
+body.sunrise h2,
+body.sunrise h3,
+body.sunrise h4,
+body.sunrise h5,
+body.sunrise h6 {
+  color: #34495e;
+  -webkit-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+  -moz-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+  -o-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+  -ms-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+body.sunrise a:hover,
+body.sunrise .xhtml-validation-info,
+body.sunrise .performance-info,
+body.sunrise tr:hover .pencil,
+body.sunrise .ui-dialog .ui-dialog-title div.wide.form a,
+body.sunrise #kanban-board-options-link,
+body.sunrise #select-list-attributes-link,
+body.sunrise #more-search-linkmodal,
+body.sunrise #more-search-link,
+body.sunrise .search-form-tools,
+body.sunrise #inline-edit-form > table td > a,
+body.sunrise .AppContent.MassEditView .ui-state-highlight p,
+body.sunrise #ModulePermissionsEditAndDetailsView table tr:first-child th,
+body.sunrise .calendar-events-1 span,
+body.sunrise .calendar-events-2 span,
+body.sunrise .calendar-events-3 span,
+body.sunrise .calendar-events-4 span,
+body.sunrise .calendar-events-5 span,
+body.sunrise .calendar-events-6 span,
+body.sunrise .sortable-panel,
+body.sunrise .cell-element,
+body.sunrise .upload-actions .icon-delete,
+body.sunrise .badge-icon,
+body.sunrise .percentComplete,
+body.sunrise .qtip,
+body.sunrise .ui-tooltip-default .ui-tooltip-titlebar,
+body.sunrise .comment .delete-comment,
+body.sunrise .comment .edit-comment,
+body.sunrise .comment .delete-comment a,
+body.sunrise .comment .edit-comment a,
+body.sunrise .unread td,
+body.sunrise .unread td a,
+body.sunrise a.user-link,
+body.sunrise .SocialItemsListView .show-create-comment,
+body.sunrise .back-to-inbox-link,
+body.sunrise #AllSocialItemsForPortletView .show-create-comment,
+body.sunrise a.remove:hover .icon:after,
+body.sunrise .juiportlet-widget-head a.edit:hover .icon:after,
+body.sunrise a.more-panels-link,
+body.sunrise a.simple-link,
+body.sunrise a.simple-link .z-label,
+body.sunrise a.simple-select,
+body.sunrise .after-form-details-content a,
+body.sunrise .ui-dialog-title,
+body.sunrise .show-file-upload-box,
+body.sunrise .z-action-link,
+body.sunrise .showAllCommentsLink,
+body.sunrise .treeview span:hover .z-action-link,
+body.sunrise .drop-zone,
+body.sunrise .missing-chart,
+body.sunrise a.active-tab,
+body.sunrise .edit-autoresponder-link {
+  color: #34495e;
+}
+body.sunrise #notifications-flyout .single-notification h4,
+body.sunrise .view-toolbar a:hover,
+body.sunrise .view-toolbar a:active,
+body.sunrise .view-toolbar a.active,
+body.sunrise .view-toolbar a.active span,
+body.sunrise .portlet-toolbar .icon-delete:before,
+body.sunrise .portlet-toolbar .icon-edit:before,
+body.sunrise .mini-pillbox a:hover,
+body.sunrise .mini-pillbox a.active,
+body.sunrise #StickyListMenu > li > a:hover > span,
+body.sunrise .addfileinput-button:hover span .pager a:hover:before,
+body.sunrise .pager a:hover:after,
+body.sunrise .ui-datepicker-header a:hover:before,
+body.sunrise .ui-datepicker-header a:hover:after,
+body.sunrise input[type="button"]:hover,
+body.sunrise input[type="button"]:hover:before,
+body.sunrise input[type="button"]:hover:after,
+body.sunrise .configuration-list li a:hover,
+body.sunrise .configuration-list li a:hover span:before,
+body.sunrise .configuration-list td:last-child a:hover,
+body.sunrise .configuration-list td:last-child a:hover span:before,
+body.sunrise .addfileinput-button:hover span,
+body.sunrise .mini-button:hover span,
+body.sunrise .hide-welcome span,
+body.sunrise .hide-module-intro span,
+body.sunrise .hide-marketing-intro span,
+body.sunrise #kanban-board-options-link:hover,
+body.sunrise #more-search-link:hover,
+body.sunrise #select-list-attributes-link:hover {
+  color: #2c3e50;
+}
+body.sunrise .dynamic-search-row .remove-extra-dynamic-search-row-link:hover,
+body.sunrise #AboutView p a,
+body.sunrise #AboutView ul a,
+body.sunrise .back-to-app-menu-item span,
+body.sunrise .breadcrumbs a,
+body.sunrise .StepsAndProgressBarForWizardView .current-step {
+  color: #34495e !important;
+}
+body.sunrise .portlet-toolbar .icon-create:hover,
+body.sunrise .portlet-toolbar a:hover,
+body.sunrise .portlet-toolbar .icon-create:before,
+body.sunrise #filter-latest-activities-link:hover,
+body.sunrise .badge-message h3 {
+  color: #2c3e50 !important;
+}
+body.sunrise #InstallAccessFailurePageView a,
+body.sunrise #ErrorPageView a,
+body.sunrise .ui-tooltip-default .ui-tooltip-icon,
+body.sunrise .zLink,
+body.sunrise .z-link,
+body.sunrise .lead-conversion-actions a,
+body.sunrise #clear-search-link,
+body.sunrise #show-filters-structure-div-link,
+body.sunrise .filters-bar .ui-state-active,
+body.sunrise .filters-bar label:hover,
+body.sunrise #clear-search-linkmodal,
+body.sunrise .StepsAndProgressBarForWizardView .progress-bar {
+  background-color: #34495e;
+}
+body.sunrise .latest-activity-toolbar label:hover,
+body.sunrise .filter-portlet-model-bar label:hover,
+body.sunrise .latest-activity-toolbar .ui-state-active,
+body.sunrise .filter-portlet-model-bar .ui-state-active,
+body.sunrise #clear-search-link,
+body.sunrise #MashableInboxForm_filteredBy_area label:hover,
+body.sunrise #MashableInboxForm_optionForModel_area label:hover,
+body.sunrise #MashableInboxForm_filteredBy_area .ui-state-active,
+body.sunrise #MashableInboxForm_optionForModel_area .ui-state-active {
+  background-color: #34495e !important;
+}
+body.sunrise #MyMissionsForPortletView .filter-portlet-model-bar label a:hover,
+body.sunrise #MyMissionsForPortletView .filter-portlet-model-bar .ui-state-active,
+body.sunrise .points,
+body.sunrise .ranking,
+body.sunrise .badge-grade,
+body.sunrise li.token-input-selected-token {
+  background-color: #2c3e50;
+}
+body.sunrise .ui-autocomplete a:hover,
+body.sunrise .ui-autocomplete a#ui-active-menuitem,
+body.sunrise .ui-autocomplete a.ui-state-hover,
+body.sunrise #StickyListMenu ul a:hover,
+body.sunrise .toolbar-mbmenu .options-menu ul a:hover,
+body.sunrise #ShortcutsMenu ul a:hover,
+body.sunrise .view-toolbar .parent > ul a:hover,
+body.sunrise .edit-row-menu ul a:hover,
+body.sunrise .edit-portlet-menu ul a:hover {
+  background-color: #2c3e50 !important;
+  color: #fff !important;
+}
+body.sunrise #HeaderView {
+  background: #222f3d;
+  -webkit-box-shadow: inset 0 10px 50px 0 #34495e;
+  -moz-box-shadow: inset 0 10px 50px 0 #34495e;
+  -o-box-shadow: inset 0 10px 50px 0 #34495e;
+  -ms-box-shadow: inset 0 10px 50px 0 #34495e;
+  box-shadow: inset 0 10px 50px 0 #34495e;
+}
+body.sunrise #HeaderLinksView + div {
+  background-color: #d35400;
+  background-repeat: repeat-x;
+  background-image: -moz-linear-gradient(top, #c0392b, #d35400);
+  background-image: -ms-linear-gradient(top, #c0392b, #d35400);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #c0392b), color-stop(100%, #d35400));
+  background-image: -webkit-linear-gradient(top, #c0392b, #d35400);
+  background-image: -o-linear-gradient(top, #c0392b, #d35400);
+  background-image: linear-gradient(top, #c0392b, #d35400);
+}
+body.sunrise #HeaderLinksView ul ul a:hover {
+  color: #fff !important;
+  background-color: #11181f;
+  background-repeat: repeat-x;
+  background-image: -moz-linear-gradient(top, #2c3e50, #11181f);
+  background-image: -ms-linear-gradient(top, #2c3e50, #11181f);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #2c3e50), color-stop(100%, #11181f));
+  background-image: -webkit-linear-gradient(top, #2c3e50, #11181f);
+  background-image: -o-linear-gradient(top, #2c3e50, #11181f);
+  background-image: linear-gradient(top, #2c3e50, #11181f);
+}
+body.sunrise #user-header-menu > li > a:hover,
+body.sunrise #settings-header-menu > li > a:hover {
+  border-left: 1px solid #222f3d;
+  border-right: 1px solid #222f3d;
+}
+body.sunrise #MenuView a > span {
+  -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
+  -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
+  -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
+  -ms-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
+  text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
+}
+body.sunrise #MenuView li.active > a > span,
+body.sunrise #MenuView a:hover > span {
+  background-color: #2c3e50;
+  -webkit-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -moz-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -o-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+}
+body.sunrise #RecentlyViewedView a > span:first-child {
+  background-color: #2c3e50;
+  -webkit-text-shadow: 0px 1px 0 #acd064;
+  -moz-text-shadow: 0px 1px 0 #acd064;
+  -o-text-shadow: 0px 1px 0 #acd064;
+  -ms-text-shadow: 0px 1px 0 #acd064;
+  text-shadow: 0px 1px 0 #acd064;
+}
+body.sunrise #RecentlyViewedView a:hover > span {
+  -webkit-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -moz-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -o-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+}
+body.sunrise #RecentlyViewedView a:hover em {
+  color: #34495e !important;
+  -webkit-text-shadow: 0px 1px 0 #acd064;
+  -moz-text-shadow: 0px 1px 0 #acd064;
+  -o-text-shadow: 0px 1px 0 #acd064;
+  -ms-text-shadow: 0px 1px 0 #acd064;
+  text-shadow: 0px 1px 0 #acd064;
+}
+body.sunrise #MenuView ul ul li a:hover {
+  background-color: #11181f;
+  background-repeat: repeat-x;
+  background-image: -moz-linear-gradient(top, #2c3e50, #11181f);
+  background-image: -ms-linear-gradient(top, #2c3e50, #11181f);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #2c3e50), color-stop(100%, #11181f));
+  background-image: -webkit-linear-gradient(top, #2c3e50, #11181f);
+  background-image: -o-linear-gradient(top, #2c3e50, #11181f);
+  background-image: linear-gradient(top, #2c3e50, #11181f);
+}
+body.sunrise .ZeroModelsYetView a .z-label,
+body.sunrise .dashboard-link .z-label,
+body.sunrise .attachLoading .z-label {
+  color: #fff;
+  background-color: #799e30;
+  background-repeat: repeat-x;
+  background-image: -moz-linear-gradient(top, #97c43d, #799e30);
+  background-image: -ms-linear-gradient(top, #97c43d, #799e30);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #799e30));
+  background-image: -webkit-linear-gradient(top, #97c43d, #799e30);
+  background-image: -o-linear-gradient(top, #97c43d, #799e30);
+  background-image: linear-gradient(top, #97c43d, #799e30);
+  -webkit-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -moz-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -o-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+}
+body.sunrise .zButton:hover .z-label,
+body.sunrise .z-button:hover .z-label,
+body.sunrise .zButton:active .z-label,
+body.sunrise .z-button:active .z-label {
+  color: #1f290c !important;
+  background-color: #5b7724;
+  background-repeat: repeat-x;
+  background-image: -moz-linear-gradient(top, #97c43d, #5b7724);
+  background-image: -ms-linear-gradient(top, #97c43d, #5b7724);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #5b7724));
+  background-image: -webkit-linear-gradient(top, #97c43d, #5b7724);
+  background-image: -o-linear-gradient(top, #97c43d, #5b7724);
+  background-image: linear-gradient(top, #97c43d, #5b7724);
+  -webkit-text-shadow: 0px 1px 0 #b6d678 !important;
+  -moz-text-shadow: 0px 1px 0 #b6d678 !important;
+  -o-text-shadow: 0px 1px 0 #b6d678 !important;
+  -ms-text-shadow: 0px 1px 0 #b6d678 !important;
+  text-shadow: 0px 1px 0 #b6d678 !important;
+}
+body.sunrise .zButton:active .z-label,
+body.sunrise .z-button:active .z-label {
+  -webkit-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
+  -moz-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
+  -o-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
+  -ms-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
+  box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
+}
+body.sunrise .ui-datepicker-current:hover .z-label,
+body.sunrise .ui-datepicker-close:hover .z-label,
+body.sunrise .ui-datepicker-current:active .z-label,
+body.sunrise .ui-datepicker-close:active .z-label,
+body.sunrise .zButton:not(.attachLoading):hover .z-label,
+body.sunrise .z-button:not(.attachLoading):hover .z-label,
+body.sunrise .zButton:not(.attachLoading):active .z-label,
+body.sunrise .z-button:not(.attachLoading):active .z-label,
+body.sunrise .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover .z-label,
+body.sunrise .portlet-toolbar a:not(.attachLoading):not(.simple-link):hover .z-label,
+body.sunrise .form-toolbar a:not(.attachLoading):not(.green-button):hover .z-label,
+body.sunrise .form-toolbar a:not(.z-button):not(.green-button):hover .z-label,
+body.sunrise .configuration-list li a:hover .z-label,
+body.sunrise .white-button:hover .z-label,
+body.sunrise .white-button:hover .z-label {
+  color: #2c3e50 !important;
+  background-color: #ededed !important;
+  background-repeat: repeat-x !important;
+  background-image: -moz-linear-gradient(top, #fefefe, #ededed) !important;
+  background-image: -ms-linear-gradient(top, #fefefe, #ededed) !important;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #fefefe), color-stop(100%, #ededed)) !important;
+  background-image: -webkit-linear-gradient(top, #fefefe, #ededed) !important;
+  background-image: -o-linear-gradient(top, #fefefe, #ededed) !important;
+  background-image: linear-gradient(top, #fefefe, #ededed) !important;
+  -webkit-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  -moz-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  -o-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  -ms-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+}
+body.sunrise a.green-button > .z-label,
+body.sunrise a.dashboard-link > .z-label {
+  color: #fff !important;
+  background-color: #799e30 !important;
+  background-repeat: repeat-x !important;
+  background-image: -moz-linear-gradient(top, #97c43d, #799e30) !important;
+  background-image: -ms-linear-gradient(top, #97c43d, #799e30) !important;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #799e30)) !important;
+  background-image: -webkit-linear-gradient(top, #97c43d, #799e30) !important;
+  background-image: -o-linear-gradient(top, #97c43d, #799e30) !important;
+  background-image: linear-gradient(top, #97c43d, #799e30) !important;
+  -webkit-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -moz-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -o-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+}
+body.sunrise #LanguagesCollectionView .green-button:hover .z-label,
+body.sunrise .green-button:not(.attachLoading):hover .z-label,
+body.sunrise .dashboard-link:not(.attachLoading):hover .z-label {
+  color: #1f290c !important;
+  background-color: #5b7724 !important;
+  background-repeat: repeat-x !important;
+  background-image: -moz-linear-gradient(top, #97c43d, #5b7724) !important;
+  background-image: -ms-linear-gradient(top, #97c43d, #5b7724) !important;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #5b7724)) !important;
+  background-image: -webkit-linear-gradient(top, #97c43d, #5b7724) !important;
+  background-image: -o-linear-gradient(top, #97c43d, #5b7724) !important;
+  background-image: linear-gradient(top, #97c43d, #5b7724) !important;
+  -webkit-text-shadow: 0px 1px 0 #b6d678 !important;
+  -moz-text-shadow: 0px 1px 0 #b6d678 !important;
+  -o-text-shadow: 0px 1px 0 #b6d678 !important;
+  -ms-text-shadow: 0px 1px 0 #b6d678 !important;
+  text-shadow: 0px 1px 0 #b6d678 !important;
+}
+body.sunrise .green-button:active .z-label,
+body.sunrise .dashboard-link:active .z-label {
+  -webkit-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF !important;
+  -moz-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF !important;
+  -o-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF !important;
+  -ms-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF !important;
+  box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF !important;
+}
+body.sunrise .notifications-link:hover {
+  border-left: 1px solid #222f3d;
+  border-right: 1px solid #222f3d;
+}
+body.sunrise #notifications-link {
+  border-left: 1px solid #222f3d;
+  border-right: 1px solid #222f3d;
+}
+body.sunrise .ui-datepicker td.ui-datepicker-today {
+  background: #b9c8d8 !important;
+}
+body.sunrise .LatestActivitiesListView .latest-activity-toolbar > div:first-child,
+body.sunrise .LatestActivitiesView .latest-activity-toolbar > div:first-child {
+  border-right: 2px solid #34495e;
+}
+body.sunrise .form input[type="checkbox"]:focus,
+body.sunrise .form input[type="text"]:focus,
+body.sunrise .form input[type="password"]:focus,
+body.sunrise .form select.multiple:focus,
+body.sunrise .form textarea:focus,
+body.sunrise .hasDropDown select:focus,
+body.sunrise .hasDropDown select:hover,
+body.sunrise .hasDropDown:hover select,
+body.sunrise ul.token-input-list:focus,
+body.sunrise #layout-container .ui-state-active,
+body.sunrise #layout-container .ui-widget-content .ui-state-active,
+body.sunrise #layout-container .ui-widget-header .ui-state-active {
+  -webkit-box-shadow: 0 0 1px 1px #34495e;
+  -moz-box-shadow: 0 0 1px 1px #34495e;
+  -o-box-shadow: 0 0 1px 1px #34495e;
+  -ms-box-shadow: 0 0 1px 1px #34495e;
+  box-shadow: 0 0 1px 1px #34495e;
+}
+body.sunrise .action-take .z-label {
+  background-color: #ffad43 !important;
+  background-repeat: repeat-x !important;
+  background-image: -moz-linear-gradient(top, #ffa660, #ffad43) !important;
+  background-image: -ms-linear-gradient(top, #ffa660, #ffad43) !important;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffa660), color-stop(100%, #ffad43)) !important;
+  background-image: -webkit-linear-gradient(top, #ffa660, #ffad43) !important;
+  background-image: -o-linear-gradient(top, #ffa660, #ffad43) !important;
+  background-image: linear-gradient(top, #ffa660, #ffad43) !important;
+}
+body.sunrise .action-take:hover .z-label {
+  color: #934100 !important;
+  background-color: #ff9710 !important;
+  background-repeat: repeat-x !important;
+  background-image: -moz-linear-gradient(top, #ffa660, #ff9710) !important;
+  background-image: -ms-linear-gradient(top, #ffa660, #ff9710) !important;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffa660), color-stop(100%, #ff9710)) !important;
+  background-image: -webkit-linear-gradient(top, #ffa660, #ff9710) !important;
+  background-image: -o-linear-gradient(top, #ffa660, #ff9710) !important;
+  background-image: linear-gradient(top, #ffa660, #ff9710) !important;
+  -webkit-text-shadow: 0px 1px 0 #ffd1ad !important;
+  -moz-text-shadow: 0px 1px 0 #ffd1ad !important;
+  -o-text-shadow: 0px 1px 0 #ffd1ad !important;
+  -ms-text-shadow: 0px 1px 0 #ffd1ad !important;
+  text-shadow: 0px 1px 0 #ffd1ad !important;
+}
+body.sunrise .action-complete .z-label {
+  background-color: #6fa82d !important;
+  background-repeat: repeat-x !important;
+  background-image: -moz-linear-gradient(top, #97c43d, #6fa82d) !important;
+  background-image: -ms-linear-gradient(top, #97c43d, #6fa82d) !important;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #6fa82d)) !important;
+  background-image: -webkit-linear-gradient(top, #97c43d, #6fa82d) !important;
+  background-image: -o-linear-gradient(top, #97c43d, #6fa82d) !important;
+  background-image: linear-gradient(top, #97c43d, #6fa82d) !important;
+}
+body.sunrise .action-complete:hover .z-label {
+  color: #1f290c !important;
+  background-color: #548022 !important;
+  background-repeat: repeat-x !important;
+  background-image: -moz-linear-gradient(top, #97c43d, #548022) !important;
+  background-image: -ms-linear-gradient(top, #97c43d, #548022) !important;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #548022)) !important;
+  background-image: -webkit-linear-gradient(top, #97c43d, #548022) !important;
+  background-image: -o-linear-gradient(top, #97c43d, #548022) !important;
+  background-image: linear-gradient(top, #97c43d, #548022) !important;
+  -webkit-text-shadow: 0px 1px 0 #b6d678 !important;
+  -moz-text-shadow: 0px 1px 0 #b6d678 !important;
+  -o-text-shadow: 0px 1px 0 #b6d678 !important;
+  -ms-text-shadow: 0px 1px 0 #b6d678 !important;
+  text-shadow: 0px 1px 0 #b6d678 !important;
+}
+body.sunrise .action-accept .z-label {
+  background-color: #6fa82d !important;
+  background-repeat: repeat-x !important;
+  background-image: -moz-linear-gradient(top, #97c43d, #6fa82d) !important;
+  background-image: -ms-linear-gradient(top, #97c43d, #6fa82d) !important;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #6fa82d)) !important;
+  background-image: -webkit-linear-gradient(top, #97c43d, #6fa82d) !important;
+  background-image: -o-linear-gradient(top, #97c43d, #6fa82d) !important;
+  background-image: linear-gradient(top, #97c43d, #6fa82d) !important;
+}
+body.sunrise .action-accept:hover .z-label {
+  color: #1f290c !important;
+  background-color: #548022 !important;
+  background-repeat: repeat-x !important;
+  background-image: -moz-linear-gradient(top, #97c43d, #548022) !important;
+  background-image: -ms-linear-gradient(top, #97c43d, #548022) !important;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #548022)) !important;
+  background-image: -webkit-linear-gradient(top, #97c43d, #548022) !important;
+  background-image: -o-linear-gradient(top, #97c43d, #548022) !important;
+  background-image: linear-gradient(top, #97c43d, #548022) !important;
+  -webkit-text-shadow: 0px 1px 0 #b6d678 !important;
+  -moz-text-shadow: 0px 1px 0 #b6d678 !important;
+  -o-text-shadow: 0px 1px 0 #b6d678 !important;
+  -ms-text-shadow: 0px 1px 0 #b6d678 !important;
+  text-shadow: 0px 1px 0 #b6d678 !important;
+}
+body.sunrise .action-reject .z-label {
+  background-color: #a82d31 !important;
+  background-repeat: repeat-x !important;
+  background-image: -moz-linear-gradient(top, #c43d53, #a82d31) !important;
+  background-image: -ms-linear-gradient(top, #c43d53, #a82d31) !important;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #c43d53), color-stop(100%, #a82d31)) !important;
+  background-image: -webkit-linear-gradient(top, #c43d53, #a82d31) !important;
+  background-image: -o-linear-gradient(top, #c43d53, #a82d31) !important;
+  background-image: linear-gradient(top, #c43d53, #a82d31) !important;
+}
+body.sunrise .action-reject:hover .z-label {
+  color: #290c11 !important;
+  background-color: #802225 !important;
+  background-repeat: repeat-x !important;
+  background-image: -moz-linear-gradient(top, #c43d53, #802225) !important;
+  background-image: -ms-linear-gradient(top, #c43d53, #802225) !important;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #c43d53), color-stop(100%, #802225)) !important;
+  background-image: -webkit-linear-gradient(top, #c43d53, #802225) !important;
+  background-image: -o-linear-gradient(top, #c43d53, #802225) !important;
+  background-image: linear-gradient(top, #c43d53, #802225) !important;
+  -webkit-text-shadow: 0px 1px 0 #d67887 !important;
+  -moz-text-shadow: 0px 1px 0 #d67887 !important;
+  -o-text-shadow: 0px 1px 0 #d67887 !important;
+  -ms-text-shadow: 0px 1px 0 #d67887 !important;
+  text-shadow: 0px 1px 0 #d67887 !important;
+}
+.color-swatch.sunrise .theme-color-1 {
+  background: #34495e;
+}
+.color-swatch.sunrise .theme-color-2 {
+  background: #2c3e50;
+}
+.color-swatch.sunrise .theme-color-3 {
+  background: #c0392b;
+}
+body.marble #nav-trigger {
+  border-right: 1px solid #606060;
+  -webkit-box-shadow: 1px 0 0 0 #828282;
+  -moz-box-shadow: 1px 0 0 0 #828282;
+  -o-box-shadow: 1px 0 0 0 #828282;
+  -ms-box-shadow: 1px 0 0 0 #828282;
+  box-shadow: 1px 0 0 0 #828282;
+  color: #ffffff;
+}
+body.marble #nav-trigger:active {
+  -webkit-text-shadow: 0 1px 0 #bfbfbf;
+  -moz-text-shadow: 0 1px 0 #bfbfbf;
+  -o-text-shadow: 0 1px 0 #bfbfbf;
+  -ms-text-shadow: 0 1px 0 #bfbfbf;
+  text-shadow: 0 1px 0 #bfbfbf;
+}
+body.marble .textColor {
+  color: #545454;
+}
+body.marble .themeColor {
+  color: #7f7f7f;
+}
+body.marble .themeColor2 {
+  color: #959595;
+}
+body.marble .themeBackgroundColor {
+  background-color: #7f7f7f;
+}
+body.marble .themeBackgroundColor2 {
+  background-color: #959595;
+}
+body.marble .themeColor-important {
+  color: #7f7f7f !important;
+}
+body.marble .themeColor2-important {
+  color: #959595 !important;
+}
+body.marble .themeBackgroundColor-important {
+  background-color: #7f7f7f !important;
+}
+body.marble .themeBackgroundColor2-important {
+  background-color: #959595 !important;
+}
+body.marble .themeColor-focus {
+  -webkit-box-shadow: 0 0 1px 1px #7f7f7f;
+  -moz-box-shadow: 0 0 1px 1px #7f7f7f;
+  -o-box-shadow: 0 0 1px 1px #7f7f7f;
+  -ms-box-shadow: 0 0 1px 1px #7f7f7f;
+  box-shadow: 0 0 1px 1px #7f7f7f;
+}
+body.marble .juiportlet-widget-placeholder,
+body.marble .drop-zone {
+  border: 2px dashed #7f7f7f;
+}
+body.marble h1,
+body.marble h2,
+body.marble h3,
+body.marble h4,
+body.marble h5,
+body.marble h6 {
+  color: #7f7f7f;
+  -webkit-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+  -moz-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+  -o-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+  -ms-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+body.marble a:hover,
+body.marble .xhtml-validation-info,
+body.marble .performance-info,
+body.marble tr:hover .pencil,
+body.marble .ui-dialog .ui-dialog-title div.wide.form a,
+body.marble #kanban-board-options-link,
+body.marble #select-list-attributes-link,
+body.marble #more-search-linkmodal,
+body.marble #more-search-link,
+body.marble .search-form-tools,
+body.marble #inline-edit-form > table td > a,
+body.marble .AppContent.MassEditView .ui-state-highlight p,
+body.marble #ModulePermissionsEditAndDetailsView table tr:first-child th,
+body.marble .calendar-events-1 span,
+body.marble .calendar-events-2 span,
+body.marble .calendar-events-3 span,
+body.marble .calendar-events-4 span,
+body.marble .calendar-events-5 span,
+body.marble .calendar-events-6 span,
+body.marble .sortable-panel,
+body.marble .cell-element,
+body.marble .upload-actions .icon-delete,
+body.marble .badge-icon,
+body.marble .percentComplete,
+body.marble .qtip,
+body.marble .ui-tooltip-default .ui-tooltip-titlebar,
+body.marble .comment .delete-comment,
+body.marble .comment .edit-comment,
+body.marble .comment .delete-comment a,
+body.marble .comment .edit-comment a,
+body.marble .unread td,
+body.marble .unread td a,
+body.marble a.user-link,
+body.marble .SocialItemsListView .show-create-comment,
+body.marble .back-to-inbox-link,
+body.marble #AllSocialItemsForPortletView .show-create-comment,
+body.marble a.remove:hover .icon:after,
+body.marble .juiportlet-widget-head a.edit:hover .icon:after,
+body.marble a.more-panels-link,
+body.marble a.simple-link,
+body.marble a.simple-link .z-label,
+body.marble a.simple-select,
+body.marble .after-form-details-content a,
+body.marble .ui-dialog-title,
+body.marble .show-file-upload-box,
+body.marble .z-action-link,
+body.marble .showAllCommentsLink,
+body.marble .treeview span:hover .z-action-link,
+body.marble .drop-zone,
+body.marble .missing-chart,
+body.marble a.active-tab,
+body.marble .edit-autoresponder-link {
+  color: #7f7f7f;
+}
+body.marble #notifications-flyout .single-notification h4,
+body.marble .view-toolbar a:hover,
+body.marble .view-toolbar a:active,
+body.marble .view-toolbar a.active,
+body.marble .view-toolbar a.active span,
+body.marble .portlet-toolbar .icon-delete:before,
+body.marble .portlet-toolbar .icon-edit:before,
+body.marble .mini-pillbox a:hover,
+body.marble .mini-pillbox a.active,
+body.marble #StickyListMenu > li > a:hover > span,
+body.marble .addfileinput-button:hover span .pager a:hover:before,
+body.marble .pager a:hover:after,
+body.marble .ui-datepicker-header a:hover:before,
+body.marble .ui-datepicker-header a:hover:after,
+body.marble input[type="button"]:hover,
+body.marble input[type="button"]:hover:before,
+body.marble input[type="button"]:hover:after,
+body.marble .configuration-list li a:hover,
+body.marble .configuration-list li a:hover span:before,
+body.marble .configuration-list td:last-child a:hover,
+body.marble .configuration-list td:last-child a:hover span:before,
+body.marble .addfileinput-button:hover span,
+body.marble .mini-button:hover span,
+body.marble .hide-welcome span,
+body.marble .hide-module-intro span,
+body.marble .hide-marketing-intro span,
+body.marble #kanban-board-options-link:hover,
+body.marble #more-search-link:hover,
+body.marble #select-list-attributes-link:hover {
+  color: #959595;
+}
+body.marble .dynamic-search-row .remove-extra-dynamic-search-row-link:hover,
+body.marble #AboutView p a,
+body.marble #AboutView ul a,
+body.marble .back-to-app-menu-item span,
+body.marble .breadcrumbs a,
+body.marble .StepsAndProgressBarForWizardView .current-step {
+  color: #7f7f7f !important;
+}
+body.marble .portlet-toolbar .icon-create:hover,
+body.marble .portlet-toolbar a:hover,
+body.marble .portlet-toolbar .icon-create:before,
+body.marble #filter-latest-activities-link:hover,
+body.marble .badge-message h3 {
+  color: #959595 !important;
+}
+body.marble #InstallAccessFailurePageView a,
+body.marble #ErrorPageView a,
+body.marble .ui-tooltip-default .ui-tooltip-icon,
+body.marble .zLink,
+body.marble .z-link,
+body.marble .lead-conversion-actions a,
+body.marble #clear-search-link,
+body.marble #show-filters-structure-div-link,
+body.marble .filters-bar .ui-state-active,
+body.marble .filters-bar label:hover,
+body.marble #clear-search-linkmodal,
+body.marble .StepsAndProgressBarForWizardView .progress-bar {
+  background-color: #7f7f7f;
+}
+body.marble .latest-activity-toolbar label:hover,
+body.marble .filter-portlet-model-bar label:hover,
+body.marble .latest-activity-toolbar .ui-state-active,
+body.marble .filter-portlet-model-bar .ui-state-active,
+body.marble #clear-search-link,
+body.marble #MashableInboxForm_filteredBy_area label:hover,
+body.marble #MashableInboxForm_optionForModel_area label:hover,
+body.marble #MashableInboxForm_filteredBy_area .ui-state-active,
+body.marble #MashableInboxForm_optionForModel_area .ui-state-active {
+  background-color: #7f7f7f !important;
+}
+body.marble #MyMissionsForPortletView .filter-portlet-model-bar label a:hover,
+body.marble #MyMissionsForPortletView .filter-portlet-model-bar .ui-state-active,
+body.marble .points,
+body.marble .ranking,
+body.marble .badge-grade,
+body.marble li.token-input-selected-token {
+  background-color: #959595;
+}
+body.marble .ui-autocomplete a:hover,
+body.marble .ui-autocomplete a#ui-active-menuitem,
+body.marble .ui-autocomplete a.ui-state-hover,
+body.marble #StickyListMenu ul a:hover,
+body.marble .toolbar-mbmenu .options-menu ul a:hover,
+body.marble #ShortcutsMenu ul a:hover,
+body.marble .view-toolbar .parent > ul a:hover,
+body.marble .edit-row-menu ul a:hover,
+body.marble .edit-portlet-menu ul a:hover {
+  background-color: #959595 !important;
+  color: #fff !important;
+}
+body.marble #HeaderView {
+  background: #666666;
+  -webkit-box-shadow: inset 0 10px 50px 0 #7f7f7f;
+  -moz-box-shadow: inset 0 10px 50px 0 #7f7f7f;
+  -o-box-shadow: inset 0 10px 50px 0 #7f7f7f;
+  -ms-box-shadow: inset 0 10px 50px 0 #7f7f7f;
+  box-shadow: inset 0 10px 50px 0 #7f7f7f;
+}
+body.marble #HeaderLinksView + div {
+  background-color: #bdbdbd;
+  background-repeat: repeat-x;
+  background-image: -moz-linear-gradient(top, #959595, #bdbdbd);
+  background-image: -ms-linear-gradient(top, #959595, #bdbdbd);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #959595), color-stop(100%, #bdbdbd));
+  background-image: -webkit-linear-gradient(top, #959595, #bdbdbd);
+  background-image: -o-linear-gradient(top, #959595, #bdbdbd);
+  background-image: linear-gradient(top, #959595, #bdbdbd);
+}
+body.marble #HeaderLinksView ul ul a:hover {
+  color: #fff !important;
+  background-color: #6f6f6f;
+  background-repeat: repeat-x;
+  background-image: -moz-linear-gradient(top, #959595, #6f6f6f);
+  background-image: -ms-linear-gradient(top, #959595, #6f6f6f);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #959595), color-stop(100%, #6f6f6f));
+  background-image: -webkit-linear-gradient(top, #959595, #6f6f6f);
+  background-image: -o-linear-gradient(top, #959595, #6f6f6f);
+  background-image: linear-gradient(top, #959595, #6f6f6f);
+}
+body.marble #user-header-menu > li > a:hover,
+body.marble #settings-header-menu > li > a:hover {
+  border-left: 1px solid #666666;
+  border-right: 1px solid #666666;
+}
+body.marble #MenuView a > span {
+  -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
+  -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
+  -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
+  -ms-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
+  text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
+}
+body.marble #MenuView li.active > a > span,
+body.marble #MenuView a:hover > span {
+  background-color: #959595;
+  -webkit-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -moz-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -o-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+}
+body.marble #RecentlyViewedView a > span:first-child {
+  background-color: #959595;
+  -webkit-text-shadow: 0px 1px 0 #acd064;
+  -moz-text-shadow: 0px 1px 0 #acd064;
+  -o-text-shadow: 0px 1px 0 #acd064;
+  -ms-text-shadow: 0px 1px 0 #acd064;
+  text-shadow: 0px 1px 0 #acd064;
+}
+body.marble #RecentlyViewedView a:hover > span {
+  -webkit-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -moz-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -o-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+}
+body.marble #RecentlyViewedView a:hover em {
+  color: #7f7f7f !important;
+  -webkit-text-shadow: 0px 1px 0 #acd064;
+  -moz-text-shadow: 0px 1px 0 #acd064;
+  -o-text-shadow: 0px 1px 0 #acd064;
+  -ms-text-shadow: 0px 1px 0 #acd064;
+  text-shadow: 0px 1px 0 #acd064;
+}
+body.marble #MenuView ul ul li a:hover {
+  background-color: #6f6f6f;
+  background-repeat: repeat-x;
+  background-image: -moz-linear-gradient(top, #959595, #6f6f6f);
+  background-image: -ms-linear-gradient(top, #959595, #6f6f6f);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #959595), color-stop(100%, #6f6f6f));
+  background-image: -webkit-linear-gradient(top, #959595, #6f6f6f);
+  background-image: -o-linear-gradient(top, #959595, #6f6f6f);
+  background-image: linear-gradient(top, #959595, #6f6f6f);
+}
+body.marble .ZeroModelsYetView a .z-label,
+body.marble .dashboard-link .z-label,
+body.marble .attachLoading .z-label {
+  color: #fff;
+  background-color: #799e30;
+  background-repeat: repeat-x;
+  background-image: -moz-linear-gradient(top, #97c43d, #799e30);
+  background-image: -ms-linear-gradient(top, #97c43d, #799e30);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #799e30));
+  background-image: -webkit-linear-gradient(top, #97c43d, #799e30);
+  background-image: -o-linear-gradient(top, #97c43d, #799e30);
+  background-image: linear-gradient(top, #97c43d, #799e30);
+  -webkit-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -moz-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -o-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+}
+body.marble .zButton:hover .z-label,
+body.marble .z-button:hover .z-label,
+body.marble .zButton:active .z-label,
+body.marble .z-button:active .z-label {
+  color: #1f290c !important;
+  background-color: #5b7724;
+  background-repeat: repeat-x;
+  background-image: -moz-linear-gradient(top, #97c43d, #5b7724);
+  background-image: -ms-linear-gradient(top, #97c43d, #5b7724);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #5b7724));
+  background-image: -webkit-linear-gradient(top, #97c43d, #5b7724);
+  background-image: -o-linear-gradient(top, #97c43d, #5b7724);
+  background-image: linear-gradient(top, #97c43d, #5b7724);
+  -webkit-text-shadow: 0px 1px 0 #b6d678 !important;
+  -moz-text-shadow: 0px 1px 0 #b6d678 !important;
+  -o-text-shadow: 0px 1px 0 #b6d678 !important;
+  -ms-text-shadow: 0px 1px 0 #b6d678 !important;
+  text-shadow: 0px 1px 0 #b6d678 !important;
+}
+body.marble .zButton:active .z-label,
+body.marble .z-button:active .z-label {
+  -webkit-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
+  -moz-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
+  -o-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
+  -ms-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
+  box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
+}
+body.marble .ui-datepicker-current:hover .z-label,
+body.marble .ui-datepicker-close:hover .z-label,
+body.marble .ui-datepicker-current:active .z-label,
+body.marble .ui-datepicker-close:active .z-label,
+body.marble .zButton:not(.attachLoading):hover .z-label,
+body.marble .z-button:not(.attachLoading):hover .z-label,
+body.marble .zButton:not(.attachLoading):active .z-label,
+body.marble .z-button:not(.attachLoading):active .z-label,
+body.marble .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover .z-label,
+body.marble .portlet-toolbar a:not(.attachLoading):not(.simple-link):hover .z-label,
+body.marble .form-toolbar a:not(.attachLoading):not(.green-button):hover .z-label,
+body.marble .form-toolbar a:not(.z-button):not(.green-button):hover .z-label,
+body.marble .configuration-list li a:hover .z-label,
+body.marble .white-button:hover .z-label,
+body.marble .white-button:hover .z-label {
+  color: #959595 !important;
+  background-color: #ededed !important;
+  background-repeat: repeat-x !important;
+  background-image: -moz-linear-gradient(top, #fefefe, #ededed) !important;
+  background-image: -ms-linear-gradient(top, #fefefe, #ededed) !important;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #fefefe), color-stop(100%, #ededed)) !important;
+  background-image: -webkit-linear-gradient(top, #fefefe, #ededed) !important;
+  background-image: -o-linear-gradient(top, #fefefe, #ededed) !important;
+  background-image: linear-gradient(top, #fefefe, #ededed) !important;
+  -webkit-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  -moz-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  -o-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  -ms-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+}
+body.marble a.green-button > .z-label,
+body.marble a.dashboard-link > .z-label {
+  color: #fff !important;
+  background-color: #799e30 !important;
+  background-repeat: repeat-x !important;
+  background-image: -moz-linear-gradient(top, #97c43d, #799e30) !important;
+  background-image: -ms-linear-gradient(top, #97c43d, #799e30) !important;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #799e30)) !important;
+  background-image: -webkit-linear-gradient(top, #97c43d, #799e30) !important;
+  background-image: -o-linear-gradient(top, #97c43d, #799e30) !important;
+  background-image: linear-gradient(top, #97c43d, #799e30) !important;
+  -webkit-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -moz-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -o-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+}
+body.marble #LanguagesCollectionView .green-button:hover .z-label,
+body.marble .green-button:not(.attachLoading):hover .z-label,
+body.marble .dashboard-link:not(.attachLoading):hover .z-label {
+  color: #1f290c !important;
+  background-color: #5b7724 !important;
+  background-repeat: repeat-x !important;
+  background-image: -moz-linear-gradient(top, #97c43d, #5b7724) !important;
+  background-image: -ms-linear-gradient(top, #97c43d, #5b7724) !important;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #5b7724)) !important;
+  background-image: -webkit-linear-gradient(top, #97c43d, #5b7724) !important;
+  background-image: -o-linear-gradient(top, #97c43d, #5b7724) !important;
+  background-image: linear-gradient(top, #97c43d, #5b7724) !important;
+  -webkit-text-shadow: 0px 1px 0 #b6d678 !important;
+  -moz-text-shadow: 0px 1px 0 #b6d678 !important;
+  -o-text-shadow: 0px 1px 0 #b6d678 !important;
+  -ms-text-shadow: 0px 1px 0 #b6d678 !important;
+  text-shadow: 0px 1px 0 #b6d678 !important;
+}
+body.marble .green-button:active .z-label,
+body.marble .dashboard-link:active .z-label {
+  -webkit-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF !important;
+  -moz-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF !important;
+  -o-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF !important;
+  -ms-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF !important;
+  box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF !important;
+}
+body.marble .notifications-link:hover {
+  border-left: 1px solid #666666;
+  border-right: 1px solid #666666;
+}
+body.marble #notifications-link {
+  border-left: 1px solid #666666;
+  border-right: 1px solid #666666;
+}
+body.marble .ui-datepicker td.ui-datepicker-today {
+  background: #ffffff !important;
+}
+body.marble .LatestActivitiesListView .latest-activity-toolbar > div:first-child,
+body.marble .LatestActivitiesView .latest-activity-toolbar > div:first-child {
+  border-right: 2px solid #7f7f7f;
+}
+body.marble .form input[type="checkbox"]:focus,
+body.marble .form input[type="text"]:focus,
+body.marble .form input[type="password"]:focus,
+body.marble .form select.multiple:focus,
+body.marble .form textarea:focus,
+body.marble .hasDropDown select:focus,
+body.marble .hasDropDown select:hover,
+body.marble .hasDropDown:hover select,
+body.marble ul.token-input-list:focus,
+body.marble #layout-container .ui-state-active,
+body.marble #layout-container .ui-widget-content .ui-state-active,
+body.marble #layout-container .ui-widget-header .ui-state-active {
+  -webkit-box-shadow: 0 0 1px 1px #7f7f7f;
+  -moz-box-shadow: 0 0 1px 1px #7f7f7f;
+  -o-box-shadow: 0 0 1px 1px #7f7f7f;
+  -ms-box-shadow: 0 0 1px 1px #7f7f7f;
+  box-shadow: 0 0 1px 1px #7f7f7f;
+}
+body.marble .action-take .z-label {
+  background-color: #ffad43 !important;
+  background-repeat: repeat-x !important;
+  background-image: -moz-linear-gradient(top, #ffa660, #ffad43) !important;
+  background-image: -ms-linear-gradient(top, #ffa660, #ffad43) !important;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffa660), color-stop(100%, #ffad43)) !important;
+  background-image: -webkit-linear-gradient(top, #ffa660, #ffad43) !important;
+  background-image: -o-linear-gradient(top, #ffa660, #ffad43) !important;
+  background-image: linear-gradient(top, #ffa660, #ffad43) !important;
+}
+body.marble .action-take:hover .z-label {
+  color: #934100 !important;
+  background-color: #ff9710 !important;
+  background-repeat: repeat-x !important;
+  background-image: -moz-linear-gradient(top, #ffa660, #ff9710) !important;
+  background-image: -ms-linear-gradient(top, #ffa660, #ff9710) !important;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffa660), color-stop(100%, #ff9710)) !important;
+  background-image: -webkit-linear-gradient(top, #ffa660, #ff9710) !important;
+  background-image: -o-linear-gradient(top, #ffa660, #ff9710) !important;
+  background-image: linear-gradient(top, #ffa660, #ff9710) !important;
+  -webkit-text-shadow: 0px 1px 0 #ffd1ad !important;
+  -moz-text-shadow: 0px 1px 0 #ffd1ad !important;
+  -o-text-shadow: 0px 1px 0 #ffd1ad !important;
+  -ms-text-shadow: 0px 1px 0 #ffd1ad !important;
+  text-shadow: 0px 1px 0 #ffd1ad !important;
+}
+body.marble .action-complete .z-label {
+  background-color: #6fa82d !important;
+  background-repeat: repeat-x !important;
+  background-image: -moz-linear-gradient(top, #97c43d, #6fa82d) !important;
+  background-image: -ms-linear-gradient(top, #97c43d, #6fa82d) !important;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #6fa82d)) !important;
+  background-image: -webkit-linear-gradient(top, #97c43d, #6fa82d) !important;
+  background-image: -o-linear-gradient(top, #97c43d, #6fa82d) !important;
+  background-image: linear-gradient(top, #97c43d, #6fa82d) !important;
+}
+body.marble .action-complete:hover .z-label {
+  color: #1f290c !important;
+  background-color: #548022 !important;
+  background-repeat: repeat-x !important;
+  background-image: -moz-linear-gradient(top, #97c43d, #548022) !important;
+  background-image: -ms-linear-gradient(top, #97c43d, #548022) !important;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #548022)) !important;
+  background-image: -webkit-linear-gradient(top, #97c43d, #548022) !important;
+  background-image: -o-linear-gradient(top, #97c43d, #548022) !important;
+  background-image: linear-gradient(top, #97c43d, #548022) !important;
+  -webkit-text-shadow: 0px 1px 0 #b6d678 !important;
+  -moz-text-shadow: 0px 1px 0 #b6d678 !important;
+  -o-text-shadow: 0px 1px 0 #b6d678 !important;
+  -ms-text-shadow: 0px 1px 0 #b6d678 !important;
+  text-shadow: 0px 1px 0 #b6d678 !important;
+}
+body.marble .action-accept .z-label {
+  background-color: #6fa82d !important;
+  background-repeat: repeat-x !important;
+  background-image: -moz-linear-gradient(top, #97c43d, #6fa82d) !important;
+  background-image: -ms-linear-gradient(top, #97c43d, #6fa82d) !important;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #6fa82d)) !important;
+  background-image: -webkit-linear-gradient(top, #97c43d, #6fa82d) !important;
+  background-image: -o-linear-gradient(top, #97c43d, #6fa82d) !important;
+  background-image: linear-gradient(top, #97c43d, #6fa82d) !important;
+}
+body.marble .action-accept:hover .z-label {
+  color: #1f290c !important;
+  background-color: #548022 !important;
+  background-repeat: repeat-x !important;
+  background-image: -moz-linear-gradient(top, #97c43d, #548022) !important;
+  background-image: -ms-linear-gradient(top, #97c43d, #548022) !important;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #548022)) !important;
+  background-image: -webkit-linear-gradient(top, #97c43d, #548022) !important;
+  background-image: -o-linear-gradient(top, #97c43d, #548022) !important;
+  background-image: linear-gradient(top, #97c43d, #548022) !important;
+  -webkit-text-shadow: 0px 1px 0 #b6d678 !important;
+  -moz-text-shadow: 0px 1px 0 #b6d678 !important;
+  -o-text-shadow: 0px 1px 0 #b6d678 !important;
+  -ms-text-shadow: 0px 1px 0 #b6d678 !important;
+  text-shadow: 0px 1px 0 #b6d678 !important;
+}
+body.marble .action-reject .z-label {
+  background-color: #a82d31 !important;
+  background-repeat: repeat-x !important;
+  background-image: -moz-linear-gradient(top, #c43d53, #a82d31) !important;
+  background-image: -ms-linear-gradient(top, #c43d53, #a82d31) !important;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #c43d53), color-stop(100%, #a82d31)) !important;
+  background-image: -webkit-linear-gradient(top, #c43d53, #a82d31) !important;
+  background-image: -o-linear-gradient(top, #c43d53, #a82d31) !important;
+  background-image: linear-gradient(top, #c43d53, #a82d31) !important;
+}
+body.marble .action-reject:hover .z-label {
+  color: #290c11 !important;
+  background-color: #802225 !important;
+  background-repeat: repeat-x !important;
+  background-image: -moz-linear-gradient(top, #c43d53, #802225) !important;
+  background-image: -ms-linear-gradient(top, #c43d53, #802225) !important;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #c43d53), color-stop(100%, #802225)) !important;
+  background-image: -webkit-linear-gradient(top, #c43d53, #802225) !important;
+  background-image: -o-linear-gradient(top, #c43d53, #802225) !important;
+  background-image: linear-gradient(top, #c43d53, #802225) !important;
+  -webkit-text-shadow: 0px 1px 0 #d67887 !important;
+  -moz-text-shadow: 0px 1px 0 #d67887 !important;
+  -o-text-shadow: 0px 1px 0 #d67887 !important;
+  -ms-text-shadow: 0px 1px 0 #d67887 !important;
+  text-shadow: 0px 1px 0 #d67887 !important;
+}
+.color-swatch.marble .theme-color-1 {
+  background: #7f8c8d;
+}
+.color-swatch.marble .theme-color-2 {
+  background: #95a5a6;
+}
+.color-swatch.marble .theme-color-3 {
+  background: #95a5a6;
+}
+body.purple-haze #nav-trigger {
+  border-right: 1px solid #4e295f;
+  -webkit-box-shadow: 1px 0 0 0 #743d8e;
+  -moz-box-shadow: 1px 0 0 0 #743d8e;
+  -o-box-shadow: 1px 0 0 0 #743d8e;
+  -ms-box-shadow: 1px 0 0 0 #743d8e;
+  box-shadow: 1px 0 0 0 #743d8e;
+  color: #ffffff;
+}
+body.purple-haze #nav-trigger:active {
+  -webkit-text-shadow: 0 1px 0 #b07dc7;
+  -moz-text-shadow: 0 1px 0 #b07dc7;
+  -o-text-shadow: 0 1px 0 #b07dc7;
+  -ms-text-shadow: 0 1px 0 #b07dc7;
+  text-shadow: 0 1px 0 #b07dc7;
+}
+body.purple-haze .textColor {
+  color: #545454;
+}
+body.purple-haze .themeColor {
+  color: #713b8a;
+}
+body.purple-haze .themeColor2 {
+  color: #854f9e;
+}
+body.purple-haze .themeBackgroundColor {
+  background-color: #713b8a;
+}
+body.purple-haze .themeBackgroundColor2 {
+  background-color: #854f9e;
+}
+body.purple-haze .themeColor-important {
+  color: #713b8a !important;
+}
+body.purple-haze .themeColor2-important {
+  color: #854f9e !important;
+}
+body.purple-haze .themeBackgroundColor-important {
+  background-color: #713b8a !important;
+}
+body.purple-haze .themeBackgroundColor2-important {
+  background-color: #854f9e !important;
+}
+body.purple-haze .themeColor-focus {
+  -webkit-box-shadow: 0 0 1px 1px #713b8a;
+  -moz-box-shadow: 0 0 1px 1px #713b8a;
+  -o-box-shadow: 0 0 1px 1px #713b8a;
+  -ms-box-shadow: 0 0 1px 1px #713b8a;
+  box-shadow: 0 0 1px 1px #713b8a;
+}
+body.purple-haze .juiportlet-widget-placeholder,
+body.purple-haze .drop-zone {
+  border: 2px dashed #713b8a;
+}
+body.purple-haze h1,
+body.purple-haze h2,
+body.purple-haze h3,
+body.purple-haze h4,
+body.purple-haze h5,
+body.purple-haze h6 {
+  color: #713b8a;
+  -webkit-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+  -moz-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+  -o-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+  -ms-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+body.purple-haze a:hover,
+body.purple-haze .xhtml-validation-info,
+body.purple-haze .performance-info,
+body.purple-haze tr:hover .pencil,
+body.purple-haze .ui-dialog .ui-dialog-title div.wide.form a,
+body.purple-haze #kanban-board-options-link,
+body.purple-haze #select-list-attributes-link,
+body.purple-haze #more-search-linkmodal,
+body.purple-haze #more-search-link,
+body.purple-haze .search-form-tools,
+body.purple-haze #inline-edit-form > table td > a,
+body.purple-haze .AppContent.MassEditView .ui-state-highlight p,
+body.purple-haze #ModulePermissionsEditAndDetailsView table tr:first-child th,
+body.purple-haze .calendar-events-1 span,
+body.purple-haze .calendar-events-2 span,
+body.purple-haze .calendar-events-3 span,
+body.purple-haze .calendar-events-4 span,
+body.purple-haze .calendar-events-5 span,
+body.purple-haze .calendar-events-6 span,
+body.purple-haze .sortable-panel,
+body.purple-haze .cell-element,
+body.purple-haze .upload-actions .icon-delete,
+body.purple-haze .badge-icon,
+body.purple-haze .percentComplete,
+body.purple-haze .qtip,
+body.purple-haze .ui-tooltip-default .ui-tooltip-titlebar,
+body.purple-haze .comment .delete-comment,
+body.purple-haze .comment .edit-comment,
+body.purple-haze .comment .delete-comment a,
+body.purple-haze .comment .edit-comment a,
+body.purple-haze .unread td,
+body.purple-haze .unread td a,
+body.purple-haze a.user-link,
+body.purple-haze .SocialItemsListView .show-create-comment,
+body.purple-haze .back-to-inbox-link,
+body.purple-haze #AllSocialItemsForPortletView .show-create-comment,
+body.purple-haze a.remove:hover .icon:after,
+body.purple-haze .juiportlet-widget-head a.edit:hover .icon:after,
+body.purple-haze a.more-panels-link,
+body.purple-haze a.simple-link,
+body.purple-haze a.simple-link .z-label,
+body.purple-haze a.simple-select,
+body.purple-haze .after-form-details-content a,
+body.purple-haze .ui-dialog-title,
+body.purple-haze .show-file-upload-box,
+body.purple-haze .z-action-link,
+body.purple-haze .showAllCommentsLink,
+body.purple-haze .treeview span:hover .z-action-link,
+body.purple-haze .drop-zone,
+body.purple-haze .missing-chart,
+body.purple-haze a.active-tab,
+body.purple-haze .edit-autoresponder-link {
+  color: #713b8a;
+}
+body.purple-haze #notifications-flyout .single-notification h4,
+body.purple-haze .view-toolbar a:hover,
+body.purple-haze .view-toolbar a:active,
+body.purple-haze .view-toolbar a.active,
+body.purple-haze .view-toolbar a.active span,
+body.purple-haze .portlet-toolbar .icon-delete:before,
+body.purple-haze .portlet-toolbar .icon-edit:before,
+body.purple-haze .mini-pillbox a:hover,
+body.purple-haze .mini-pillbox a.active,
+body.purple-haze #StickyListMenu > li > a:hover > span,
+body.purple-haze .addfileinput-button:hover span .pager a:hover:before,
+body.purple-haze .pager a:hover:after,
+body.purple-haze .ui-datepicker-header a:hover:before,
+body.purple-haze .ui-datepicker-header a:hover:after,
+body.purple-haze input[type="button"]:hover,
+body.purple-haze input[type="button"]:hover:before,
+body.purple-haze input[type="button"]:hover:after,
+body.purple-haze .configuration-list li a:hover,
+body.purple-haze .configuration-list li a:hover span:before,
+body.purple-haze .configuration-list td:last-child a:hover,
+body.purple-haze .configuration-list td:last-child a:hover span:before,
+body.purple-haze .addfileinput-button:hover span,
+body.purple-haze .mini-button:hover span,
+body.purple-haze .hide-welcome span,
+body.purple-haze .hide-module-intro span,
+body.purple-haze .hide-marketing-intro span,
+body.purple-haze #kanban-board-options-link:hover,
+body.purple-haze #more-search-link:hover,
+body.purple-haze #select-list-attributes-link:hover {
+  color: #854f9e;
+}
+body.purple-haze .dynamic-search-row .remove-extra-dynamic-search-row-link:hover,
+body.purple-haze #AboutView p a,
+body.purple-haze #AboutView ul a,
+body.purple-haze .back-to-app-menu-item span,
+body.purple-haze .breadcrumbs a,
+body.purple-haze .StepsAndProgressBarForWizardView .current-step {
+  color: #713b8a !important;
+}
+body.purple-haze .portlet-toolbar .icon-create:hover,
+body.purple-haze .portlet-toolbar a:hover,
+body.purple-haze .portlet-toolbar .icon-create:before,
+body.purple-haze #filter-latest-activities-link:hover,
+body.purple-haze .badge-message h3 {
+  color: #854f9e !important;
+}
+body.purple-haze #InstallAccessFailurePageView a,
+body.purple-haze #ErrorPageView a,
+body.purple-haze .ui-tooltip-default .ui-tooltip-icon,
+body.purple-haze .zLink,
+body.purple-haze .z-link,
+body.purple-haze .lead-conversion-actions a,
+body.purple-haze #clear-search-link,
+body.purple-haze #show-filters-structure-div-link,
+body.purple-haze .filters-bar .ui-state-active,
+body.purple-haze .filters-bar label:hover,
+body.purple-haze #clear-search-linkmodal,
+body.purple-haze .StepsAndProgressBarForWizardView .progress-bar {
+  background-color: #713b8a;
+}
+body.purple-haze .latest-activity-toolbar label:hover,
+body.purple-haze .filter-portlet-model-bar label:hover,
+body.purple-haze .latest-activity-toolbar .ui-state-active,
+body.purple-haze .filter-portlet-model-bar .ui-state-active,
+body.purple-haze #clear-search-link,
+body.purple-haze #MashableInboxForm_filteredBy_area label:hover,
+body.purple-haze #MashableInboxForm_optionForModel_area label:hover,
+body.purple-haze #MashableInboxForm_filteredBy_area .ui-state-active,
+body.purple-haze #MashableInboxForm_optionForModel_area .ui-state-active {
+  background-color: #713b8a !important;
+}
+body.purple-haze #MyMissionsForPortletView .filter-portlet-model-bar label a:hover,
+body.purple-haze #MyMissionsForPortletView .filter-portlet-model-bar .ui-state-active,
+body.purple-haze .points,
+body.purple-haze .ranking,
+body.purple-haze .badge-grade,
+body.purple-haze li.token-input-selected-token {
+  background-color: #854f9e;
+}
+body.purple-haze .ui-autocomplete a:hover,
+body.purple-haze .ui-autocomplete a#ui-active-menuitem,
+body.purple-haze .ui-autocomplete a.ui-state-hover,
+body.purple-haze #StickyListMenu ul a:hover,
+body.purple-haze .toolbar-mbmenu .options-menu ul a:hover,
+body.purple-haze #ShortcutsMenu ul a:hover,
+body.purple-haze .view-toolbar .parent > ul a:hover,
+body.purple-haze .edit-row-menu ul a:hover,
+body.purple-haze .edit-portlet-menu ul a:hover {
+  background-color: #854f9e !important;
+  color: #fff !important;
+}
+body.purple-haze #HeaderView {
+  background: #542c66;
+  -webkit-box-shadow: inset 0 10px 50px 0 #713b8a;
+  -moz-box-shadow: inset 0 10px 50px 0 #713b8a;
+  -o-box-shadow: inset 0 10px 50px 0 #713b8a;
+  -ms-box-shadow: inset 0 10px 50px 0 #713b8a;
+  box-shadow: inset 0 10px 50px 0 #713b8a;
+}
+body.purple-haze #HeaderLinksView + div {
+  background-color: #2c3e50;
+  background-repeat: repeat-x;
+  background-image: -moz-linear-gradient(top, #34495e, #2c3e50);
+  background-image: -ms-linear-gradient(top, #34495e, #2c3e50);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #34495e), color-stop(100%, #2c3e50));
+  background-image: -webkit-linear-gradient(top, #34495e, #2c3e50);
+  background-image: -o-linear-gradient(top, #34495e, #2c3e50);
+  background-image: linear-gradient(top, #34495e, #2c3e50);
+}
+body.purple-haze #HeaderLinksView ul ul a:hover {
+  color: #fff !important;
+  background-color: #5a366b;
+  background-repeat: repeat-x;
+  background-image: -moz-linear-gradient(top, #854f9e, #5a366b);
+  background-image: -ms-linear-gradient(top, #854f9e, #5a366b);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #854f9e), color-stop(100%, #5a366b));
+  background-image: -webkit-linear-gradient(top, #854f9e, #5a366b);
+  background-image: -o-linear-gradient(top, #854f9e, #5a366b);
+  background-image: linear-gradient(top, #854f9e, #5a366b);
+}
+body.purple-haze #user-header-menu > li > a:hover,
+body.purple-haze #settings-header-menu > li > a:hover {
+  border-left: 1px solid #542c66;
+  border-right: 1px solid #542c66;
+}
+body.purple-haze #MenuView a > span {
+  -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
+  -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
+  -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
+  -ms-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
+  text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
+}
+body.purple-haze #MenuView li.active > a > span,
+body.purple-haze #MenuView a:hover > span {
+  background-color: #854f9e;
+  -webkit-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -moz-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -o-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+}
+body.purple-haze #RecentlyViewedView a > span:first-child {
+  background-color: #854f9e;
+  -webkit-text-shadow: 0px 1px 0 #acd064;
+  -moz-text-shadow: 0px 1px 0 #acd064;
+  -o-text-shadow: 0px 1px 0 #acd064;
+  -ms-text-shadow: 0px 1px 0 #acd064;
+  text-shadow: 0px 1px 0 #acd064;
+}
+body.purple-haze #RecentlyViewedView a:hover > span {
+  -webkit-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -moz-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -o-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+}
+body.purple-haze #RecentlyViewedView a:hover em {
+  color: #713b8a !important;
+  -webkit-text-shadow: 0px 1px 0 #acd064;
+  -moz-text-shadow: 0px 1px 0 #acd064;
+  -o-text-shadow: 0px 1px 0 #acd064;
+  -ms-text-shadow: 0px 1px 0 #acd064;
+  text-shadow: 0px 1px 0 #acd064;
+}
+body.purple-haze #MenuView ul ul li a:hover {
+  background-color: #5a366b;
+  background-repeat: repeat-x;
+  background-image: -moz-linear-gradient(top, #854f9e, #5a366b);
+  background-image: -ms-linear-gradient(top, #854f9e, #5a366b);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #854f9e), color-stop(100%, #5a366b));
+  background-image: -webkit-linear-gradient(top, #854f9e, #5a366b);
+  background-image: -o-linear-gradient(top, #854f9e, #5a366b);
+  background-image: linear-gradient(top, #854f9e, #5a366b);
+}
+body.purple-haze .ZeroModelsYetView a .z-label,
+body.purple-haze .dashboard-link .z-label,
+body.purple-haze .attachLoading .z-label {
+  color: #fff;
+  background-color: #799e30;
+  background-repeat: repeat-x;
+  background-image: -moz-linear-gradient(top, #97c43d, #799e30);
+  background-image: -ms-linear-gradient(top, #97c43d, #799e30);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #799e30));
+  background-image: -webkit-linear-gradient(top, #97c43d, #799e30);
+  background-image: -o-linear-gradient(top, #97c43d, #799e30);
+  background-image: linear-gradient(top, #97c43d, #799e30);
+  -webkit-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -moz-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -o-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+}
+body.purple-haze .zButton:hover .z-label,
+body.purple-haze .z-button:hover .z-label,
+body.purple-haze .zButton:active .z-label,
+body.purple-haze .z-button:active .z-label {
+  color: #1f290c !important;
+  background-color: #5b7724;
+  background-repeat: repeat-x;
+  background-image: -moz-linear-gradient(top, #97c43d, #5b7724);
+  background-image: -ms-linear-gradient(top, #97c43d, #5b7724);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #5b7724));
+  background-image: -webkit-linear-gradient(top, #97c43d, #5b7724);
+  background-image: -o-linear-gradient(top, #97c43d, #5b7724);
+  background-image: linear-gradient(top, #97c43d, #5b7724);
+  -webkit-text-shadow: 0px 1px 0 #b6d678 !important;
+  -moz-text-shadow: 0px 1px 0 #b6d678 !important;
+  -o-text-shadow: 0px 1px 0 #b6d678 !important;
+  -ms-text-shadow: 0px 1px 0 #b6d678 !important;
+  text-shadow: 0px 1px 0 #b6d678 !important;
+}
+body.purple-haze .zButton:active .z-label,
+body.purple-haze .z-button:active .z-label {
+  -webkit-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
+  -moz-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
+  -o-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
+  -ms-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
+  box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
+}
+body.purple-haze .ui-datepicker-current:hover .z-label,
+body.purple-haze .ui-datepicker-close:hover .z-label,
+body.purple-haze .ui-datepicker-current:active .z-label,
+body.purple-haze .ui-datepicker-close:active .z-label,
+body.purple-haze .zButton:not(.attachLoading):hover .z-label,
+body.purple-haze .z-button:not(.attachLoading):hover .z-label,
+body.purple-haze .zButton:not(.attachLoading):active .z-label,
+body.purple-haze .z-button:not(.attachLoading):active .z-label,
+body.purple-haze .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover .z-label,
+body.purple-haze .portlet-toolbar a:not(.attachLoading):not(.simple-link):hover .z-label,
+body.purple-haze .form-toolbar a:not(.attachLoading):not(.green-button):hover .z-label,
+body.purple-haze .form-toolbar a:not(.z-button):not(.green-button):hover .z-label,
+body.purple-haze .configuration-list li a:hover .z-label,
+body.purple-haze .white-button:hover .z-label,
+body.purple-haze .white-button:hover .z-label {
+  color: #854f9e !important;
+  background-color: #ededed !important;
+  background-repeat: repeat-x !important;
+  background-image: -moz-linear-gradient(top, #fefefe, #ededed) !important;
+  background-image: -ms-linear-gradient(top, #fefefe, #ededed) !important;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #fefefe), color-stop(100%, #ededed)) !important;
+  background-image: -webkit-linear-gradient(top, #fefefe, #ededed) !important;
+  background-image: -o-linear-gradient(top, #fefefe, #ededed) !important;
+  background-image: linear-gradient(top, #fefefe, #ededed) !important;
+  -webkit-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  -moz-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  -o-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  -ms-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+}
+body.purple-haze a.green-button > .z-label,
+body.purple-haze a.dashboard-link > .z-label {
+  color: #fff !important;
+  background-color: #799e30 !important;
+  background-repeat: repeat-x !important;
+  background-image: -moz-linear-gradient(top, #97c43d, #799e30) !important;
+  background-image: -ms-linear-gradient(top, #97c43d, #799e30) !important;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #799e30)) !important;
+  background-image: -webkit-linear-gradient(top, #97c43d, #799e30) !important;
+  background-image: -o-linear-gradient(top, #97c43d, #799e30) !important;
+  background-image: linear-gradient(top, #97c43d, #799e30) !important;
+  -webkit-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -moz-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -o-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+}
+body.purple-haze #LanguagesCollectionView .green-button:hover .z-label,
+body.purple-haze .green-button:not(.attachLoading):hover .z-label,
+body.purple-haze .dashboard-link:not(.attachLoading):hover .z-label {
+  color: #1f290c !important;
+  background-color: #5b7724 !important;
+  background-repeat: repeat-x !important;
+  background-image: -moz-linear-gradient(top, #97c43d, #5b7724) !important;
+  background-image: -ms-linear-gradient(top, #97c43d, #5b7724) !important;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #5b7724)) !important;
+  background-image: -webkit-linear-gradient(top, #97c43d, #5b7724) !important;
+  background-image: -o-linear-gradient(top, #97c43d, #5b7724) !important;
+  background-image: linear-gradient(top, #97c43d, #5b7724) !important;
+  -webkit-text-shadow: 0px 1px 0 #b6d678 !important;
+  -moz-text-shadow: 0px 1px 0 #b6d678 !important;
+  -o-text-shadow: 0px 1px 0 #b6d678 !important;
+  -ms-text-shadow: 0px 1px 0 #b6d678 !important;
+  text-shadow: 0px 1px 0 #b6d678 !important;
+}
+body.purple-haze .green-button:active .z-label,
+body.purple-haze .dashboard-link:active .z-label {
+  -webkit-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF !important;
+  -moz-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF !important;
+  -o-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF !important;
+  -ms-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF !important;
+  box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF !important;
+}
+body.purple-haze .notifications-link:hover {
+  border-left: 1px solid #542c66;
+  border-right: 1px solid #542c66;
+}
+body.purple-haze #notifications-link {
+  border-left: 1px solid #542c66;
+  border-right: 1px solid #542c66;
+}
+body.purple-haze .ui-datepicker td.ui-datepicker-today {
+  background: #e6d6ee !important;
+}
+body.purple-haze .LatestActivitiesListView .latest-activity-toolbar > div:first-child,
+body.purple-haze .LatestActivitiesView .latest-activity-toolbar > div:first-child {
+  border-right: 2px solid #713b8a;
+}
+body.purple-haze .form input[type="checkbox"]:focus,
+body.purple-haze .form input[type="text"]:focus,
+body.purple-haze .form input[type="password"]:focus,
+body.purple-haze .form select.multiple:focus,
+body.purple-haze .form textarea:focus,
+body.purple-haze .hasDropDown select:focus,
+body.purple-haze .hasDropDown select:hover,
+body.purple-haze .hasDropDown:hover select,
+body.purple-haze ul.token-input-list:focus,
+body.purple-haze #layout-container .ui-state-active,
+body.purple-haze #layout-container .ui-widget-content .ui-state-active,
+body.purple-haze #layout-container .ui-widget-header .ui-state-active {
+  -webkit-box-shadow: 0 0 1px 1px #713b8a;
+  -moz-box-shadow: 0 0 1px 1px #713b8a;
+  -o-box-shadow: 0 0 1px 1px #713b8a;
+  -ms-box-shadow: 0 0 1px 1px #713b8a;
+  box-shadow: 0 0 1px 1px #713b8a;
+}
+body.purple-haze .action-take .z-label {
+  background-color: #ffad43 !important;
+  background-repeat: repeat-x !important;
+  background-image: -moz-linear-gradient(top, #ffa660, #ffad43) !important;
+  background-image: -ms-linear-gradient(top, #ffa660, #ffad43) !important;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffa660), color-stop(100%, #ffad43)) !important;
+  background-image: -webkit-linear-gradient(top, #ffa660, #ffad43) !important;
+  background-image: -o-linear-gradient(top, #ffa660, #ffad43) !important;
+  background-image: linear-gradient(top, #ffa660, #ffad43) !important;
+}
+body.purple-haze .action-take:hover .z-label {
+  color: #934100 !important;
+  background-color: #ff9710 !important;
+  background-repeat: repeat-x !important;
+  background-image: -moz-linear-gradient(top, #ffa660, #ff9710) !important;
+  background-image: -ms-linear-gradient(top, #ffa660, #ff9710) !important;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffa660), color-stop(100%, #ff9710)) !important;
+  background-image: -webkit-linear-gradient(top, #ffa660, #ff9710) !important;
+  background-image: -o-linear-gradient(top, #ffa660, #ff9710) !important;
+  background-image: linear-gradient(top, #ffa660, #ff9710) !important;
+  -webkit-text-shadow: 0px 1px 0 #ffd1ad !important;
+  -moz-text-shadow: 0px 1px 0 #ffd1ad !important;
+  -o-text-shadow: 0px 1px 0 #ffd1ad !important;
+  -ms-text-shadow: 0px 1px 0 #ffd1ad !important;
+  text-shadow: 0px 1px 0 #ffd1ad !important;
+}
+body.purple-haze .action-complete .z-label {
+  background-color: #6fa82d !important;
+  background-repeat: repeat-x !important;
+  background-image: -moz-linear-gradient(top, #97c43d, #6fa82d) !important;
+  background-image: -ms-linear-gradient(top, #97c43d, #6fa82d) !important;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #6fa82d)) !important;
+  background-image: -webkit-linear-gradient(top, #97c43d, #6fa82d) !important;
+  background-image: -o-linear-gradient(top, #97c43d, #6fa82d) !important;
+  background-image: linear-gradient(top, #97c43d, #6fa82d) !important;
+}
+body.purple-haze .action-complete:hover .z-label {
+  color: #1f290c !important;
+  background-color: #548022 !important;
+  background-repeat: repeat-x !important;
+  background-image: -moz-linear-gradient(top, #97c43d, #548022) !important;
+  background-image: -ms-linear-gradient(top, #97c43d, #548022) !important;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #548022)) !important;
+  background-image: -webkit-linear-gradient(top, #97c43d, #548022) !important;
+  background-image: -o-linear-gradient(top, #97c43d, #548022) !important;
+  background-image: linear-gradient(top, #97c43d, #548022) !important;
+  -webkit-text-shadow: 0px 1px 0 #b6d678 !important;
+  -moz-text-shadow: 0px 1px 0 #b6d678 !important;
+  -o-text-shadow: 0px 1px 0 #b6d678 !important;
+  -ms-text-shadow: 0px 1px 0 #b6d678 !important;
+  text-shadow: 0px 1px 0 #b6d678 !important;
+}
+body.purple-haze .action-accept .z-label {
+  background-color: #6fa82d !important;
+  background-repeat: repeat-x !important;
+  background-image: -moz-linear-gradient(top, #97c43d, #6fa82d) !important;
+  background-image: -ms-linear-gradient(top, #97c43d, #6fa82d) !important;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #6fa82d)) !important;
+  background-image: -webkit-linear-gradient(top, #97c43d, #6fa82d) !important;
+  background-image: -o-linear-gradient(top, #97c43d, #6fa82d) !important;
+  background-image: linear-gradient(top, #97c43d, #6fa82d) !important;
+}
+body.purple-haze .action-accept:hover .z-label {
+  color: #1f290c !important;
+  background-color: #548022 !important;
+  background-repeat: repeat-x !important;
+  background-image: -moz-linear-gradient(top, #97c43d, #548022) !important;
+  background-image: -ms-linear-gradient(top, #97c43d, #548022) !important;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #548022)) !important;
+  background-image: -webkit-linear-gradient(top, #97c43d, #548022) !important;
+  background-image: -o-linear-gradient(top, #97c43d, #548022) !important;
+  background-image: linear-gradient(top, #97c43d, #548022) !important;
+  -webkit-text-shadow: 0px 1px 0 #b6d678 !important;
+  -moz-text-shadow: 0px 1px 0 #b6d678 !important;
+  -o-text-shadow: 0px 1px 0 #b6d678 !important;
+  -ms-text-shadow: 0px 1px 0 #b6d678 !important;
+  text-shadow: 0px 1px 0 #b6d678 !important;
+}
+body.purple-haze .action-reject .z-label {
+  background-color: #a82d31 !important;
+  background-repeat: repeat-x !important;
+  background-image: -moz-linear-gradient(top, #c43d53, #a82d31) !important;
+  background-image: -ms-linear-gradient(top, #c43d53, #a82d31) !important;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #c43d53), color-stop(100%, #a82d31)) !important;
+  background-image: -webkit-linear-gradient(top, #c43d53, #a82d31) !important;
+  background-image: -o-linear-gradient(top, #c43d53, #a82d31) !important;
+  background-image: linear-gradient(top, #c43d53, #a82d31) !important;
+}
+body.purple-haze .action-reject:hover .z-label {
+  color: #290c11 !important;
+  background-color: #802225 !important;
+  background-repeat: repeat-x !important;
+  background-image: -moz-linear-gradient(top, #c43d53, #802225) !important;
+  background-image: -ms-linear-gradient(top, #c43d53, #802225) !important;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #c43d53), color-stop(100%, #802225)) !important;
+  background-image: -webkit-linear-gradient(top, #c43d53, #802225) !important;
+  background-image: -o-linear-gradient(top, #c43d53, #802225) !important;
+  background-image: linear-gradient(top, #c43d53, #802225) !important;
+  -webkit-text-shadow: 0px 1px 0 #d67887 !important;
+  -moz-text-shadow: 0px 1px 0 #d67887 !important;
+  -o-text-shadow: 0px 1px 0 #d67887 !important;
+  -ms-text-shadow: 0px 1px 0 #d67887 !important;
+  text-shadow: 0px 1px 0 #d67887 !important;
+}
+.color-swatch.purple-haze .theme-color-1 {
+  background: #713b8a;
+}
+.color-swatch.purple-haze .theme-color-2 {
+  background: #854f9e;
+}
+.color-swatch.purple-haze .theme-color-3 {
+  background: #34495e;
+}
+/*shadowless square/flat theme*/
+body.flat-cement #nav-trigger {
+  border-right: 1px solid #161f29;
+  -webkit-box-shadow: 1px 0 0 0 #2e4153;
+  -moz-box-shadow: 1px 0 0 0 #2e4153;
+  -o-box-shadow: 1px 0 0 0 #2e4153;
+  -ms-box-shadow: 1px 0 0 0 #2e4153;
+  box-shadow: 1px 0 0 0 #2e4153;
+  color: #ffffff;
+}
+body.flat-cement #nav-trigger:active {
+  -webkit-text-shadow: 0 1px 0 #597ea2;
+  -moz-text-shadow: 0 1px 0 #597ea2;
+  -o-text-shadow: 0 1px 0 #597ea2;
+  -ms-text-shadow: 0 1px 0 #597ea2;
+  text-shadow: 0 1px 0 #597ea2;
+}
+body.flat-cement .textColor {
+  color: #545454;
+}
+body.flat-cement .themeColor {
+  color: #2c3e50;
+}
+body.flat-cement .themeColor2 {
+  color: #2c3e50;
+}
+body.flat-cement .themeBackgroundColor {
+  background-color: #2c3e50;
+}
+body.flat-cement .themeBackgroundColor2 {
+  background-color: #2c3e50;
+}
+body.flat-cement .themeColor-important {
+  color: #2c3e50 !important;
+}
+body.flat-cement .themeColor2-important {
+  color: #2c3e50 !important;
+}
+body.flat-cement .themeBackgroundColor-important {
+  background-color: #2c3e50 !important;
+}
+body.flat-cement .themeBackgroundColor2-important {
+  background-color: #2c3e50 !important;
+}
+body.flat-cement .themeColor-focus {
+  -webkit-box-shadow: 0 0 1px 1px #2c3e50;
+  -moz-box-shadow: 0 0 1px 1px #2c3e50;
+  -o-box-shadow: 0 0 1px 1px #2c3e50;
+  -ms-box-shadow: 0 0 1px 1px #2c3e50;
+  box-shadow: 0 0 1px 1px #2c3e50;
+}
+body.flat-cement .juiportlet-widget-placeholder,
+body.flat-cement .drop-zone {
+  border: 2px dashed #2c3e50;
+}
+body.flat-cement h1,
+body.flat-cement h2,
+body.flat-cement h3,
+body.flat-cement h4,
+body.flat-cement h5,
+body.flat-cement h6 {
+  color: #2c3e50;
+  -webkit-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+  -moz-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+  -o-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+  -ms-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+body.flat-cement a:hover,
+body.flat-cement .xhtml-validation-info,
+body.flat-cement .performance-info,
+body.flat-cement tr:hover .pencil,
+body.flat-cement .ui-dialog .ui-dialog-title div.wide.form a,
+body.flat-cement #kanban-board-options-link,
+body.flat-cement #select-list-attributes-link,
+body.flat-cement #more-search-linkmodal,
+body.flat-cement #more-search-link,
+body.flat-cement .search-form-tools,
+body.flat-cement #inline-edit-form > table td > a,
+body.flat-cement .AppContent.MassEditView .ui-state-highlight p,
+body.flat-cement #ModulePermissionsEditAndDetailsView table tr:first-child th,
+body.flat-cement .calendar-events-1 span,
+body.flat-cement .calendar-events-2 span,
+body.flat-cement .calendar-events-3 span,
+body.flat-cement .calendar-events-4 span,
+body.flat-cement .calendar-events-5 span,
+body.flat-cement .calendar-events-6 span,
+body.flat-cement .sortable-panel,
+body.flat-cement .cell-element,
+body.flat-cement .upload-actions .icon-delete,
+body.flat-cement .badge-icon,
+body.flat-cement .percentComplete,
+body.flat-cement .qtip,
+body.flat-cement .ui-tooltip-default .ui-tooltip-titlebar,
+body.flat-cement .comment .delete-comment,
+body.flat-cement .comment .edit-comment,
+body.flat-cement .comment .delete-comment a,
+body.flat-cement .comment .edit-comment a,
+body.flat-cement .unread td,
+body.flat-cement .unread td a,
+body.flat-cement a.user-link,
+body.flat-cement .SocialItemsListView .show-create-comment,
+body.flat-cement .back-to-inbox-link,
+body.flat-cement #AllSocialItemsForPortletView .show-create-comment,
+body.flat-cement a.remove:hover .icon:after,
+body.flat-cement .juiportlet-widget-head a.edit:hover .icon:after,
+body.flat-cement a.more-panels-link,
+body.flat-cement a.simple-link,
+body.flat-cement a.simple-link .z-label,
+body.flat-cement a.simple-select,
+body.flat-cement .after-form-details-content a,
+body.flat-cement .ui-dialog-title,
+body.flat-cement .show-file-upload-box,
+body.flat-cement .z-action-link,
+body.flat-cement .showAllCommentsLink,
+body.flat-cement .treeview span:hover .z-action-link,
+body.flat-cement .drop-zone,
+body.flat-cement .missing-chart,
+body.flat-cement a.active-tab,
+body.flat-cement .edit-autoresponder-link {
+  color: #2c3e50;
+}
+body.flat-cement #notifications-flyout .single-notification h4,
+body.flat-cement .view-toolbar a:hover,
+body.flat-cement .view-toolbar a:active,
+body.flat-cement .view-toolbar a.active,
+body.flat-cement .view-toolbar a.active span,
+body.flat-cement .portlet-toolbar .icon-delete:before,
+body.flat-cement .portlet-toolbar .icon-edit:before,
+body.flat-cement .mini-pillbox a:hover,
+body.flat-cement .mini-pillbox a.active,
+body.flat-cement #StickyListMenu > li > a:hover > span,
+body.flat-cement .addfileinput-button:hover span .pager a:hover:before,
+body.flat-cement .pager a:hover:after,
+body.flat-cement .ui-datepicker-header a:hover:before,
+body.flat-cement .ui-datepicker-header a:hover:after,
+body.flat-cement input[type="button"]:hover,
+body.flat-cement input[type="button"]:hover:before,
+body.flat-cement input[type="button"]:hover:after,
+body.flat-cement .configuration-list li a:hover,
+body.flat-cement .configuration-list li a:hover span:before,
+body.flat-cement .configuration-list td:last-child a:hover,
+body.flat-cement .configuration-list td:last-child a:hover span:before,
+body.flat-cement .addfileinput-button:hover span,
+body.flat-cement .mini-button:hover span,
+body.flat-cement .hide-welcome span,
+body.flat-cement .hide-module-intro span,
+body.flat-cement .hide-marketing-intro span,
+body.flat-cement #kanban-board-options-link:hover,
+body.flat-cement #more-search-link:hover,
+body.flat-cement #select-list-attributes-link:hover {
+  color: #2c3e50;
+}
+body.flat-cement .dynamic-search-row .remove-extra-dynamic-search-row-link:hover,
+body.flat-cement #AboutView p a,
+body.flat-cement #AboutView ul a,
+body.flat-cement .back-to-app-menu-item span,
+body.flat-cement .breadcrumbs a,
+body.flat-cement .StepsAndProgressBarForWizardView .current-step {
+  color: #2c3e50 !important;
+}
+body.flat-cement .portlet-toolbar .icon-create:hover,
+body.flat-cement .portlet-toolbar a:hover,
+body.flat-cement .portlet-toolbar .icon-create:before,
+body.flat-cement #filter-latest-activities-link:hover,
+body.flat-cement .badge-message h3 {
+  color: #2c3e50 !important;
+}
+body.flat-cement #InstallAccessFailurePageView a,
+body.flat-cement #ErrorPageView a,
+body.flat-cement .ui-tooltip-default .ui-tooltip-icon,
+body.flat-cement .zLink,
+body.flat-cement .z-link,
+body.flat-cement .lead-conversion-actions a,
+body.flat-cement #clear-search-link,
+body.flat-cement #show-filters-structure-div-link,
+body.flat-cement .filters-bar .ui-state-active,
+body.flat-cement .filters-bar label:hover,
+body.flat-cement #clear-search-linkmodal,
+body.flat-cement .StepsAndProgressBarForWizardView .progress-bar {
+  background-color: #2c3e50;
+}
+body.flat-cement .latest-activity-toolbar label:hover,
+body.flat-cement .filter-portlet-model-bar label:hover,
+body.flat-cement .latest-activity-toolbar .ui-state-active,
+body.flat-cement .filter-portlet-model-bar .ui-state-active,
+body.flat-cement #clear-search-link,
+body.flat-cement #MashableInboxForm_filteredBy_area label:hover,
+body.flat-cement #MashableInboxForm_optionForModel_area label:hover,
+body.flat-cement #MashableInboxForm_filteredBy_area .ui-state-active,
+body.flat-cement #MashableInboxForm_optionForModel_area .ui-state-active {
+  background-color: #2c3e50 !important;
+}
+body.flat-cement #MyMissionsForPortletView .filter-portlet-model-bar label a:hover,
+body.flat-cement #MyMissionsForPortletView .filter-portlet-model-bar .ui-state-active,
+body.flat-cement .points,
+body.flat-cement .ranking,
+body.flat-cement .badge-grade,
+body.flat-cement li.token-input-selected-token {
+  background-color: #2c3e50;
+}
+body.flat-cement .ui-autocomplete a:hover,
+body.flat-cement .ui-autocomplete a#ui-active-menuitem,
+body.flat-cement .ui-autocomplete a.ui-state-hover,
+body.flat-cement #StickyListMenu ul a:hover,
+body.flat-cement .toolbar-mbmenu .options-menu ul a:hover,
+body.flat-cement #ShortcutsMenu ul a:hover,
+body.flat-cement .view-toolbar .parent > ul a:hover,
+body.flat-cement .edit-row-menu ul a:hover,
+body.flat-cement .edit-portlet-menu ul a:hover {
+  background-color: #2c3e50 !important;
+  color: #fff !important;
+}
+body.flat-cement #HeaderView {
+  background: #1a242f;
+  -webkit-box-shadow: inset 0 10px 50px 0 #2c3e50;
+  -moz-box-shadow: inset 0 10px 50px 0 #2c3e50;
+  -o-box-shadow: inset 0 10px 50px 0 #2c3e50;
+  -ms-box-shadow: inset 0 10px 50px 0 #2c3e50;
+  box-shadow: inset 0 10px 50px 0 #2c3e50;
+}
+body.flat-cement #HeaderLinksView + div {
+  background-color: #95a5a6;
+  background-repeat: repeat-x;
+  background-image: -moz-linear-gradient(top, #95a5a6, #95a5a6);
+  background-image: -ms-linear-gradient(top, #95a5a6, #95a5a6);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #95a5a6), color-stop(100%, #95a5a6));
+  background-image: -webkit-linear-gradient(top, #95a5a6, #95a5a6);
+  background-image: -o-linear-gradient(top, #95a5a6, #95a5a6);
+  background-image: linear-gradient(top, #95a5a6, #95a5a6);
+}
+body.flat-cement #HeaderLinksView ul ul a:hover {
+  color: #fff !important;
+  background-color: #11181f;
+  background-repeat: repeat-x;
+  background-image: -moz-linear-gradient(top, #2c3e50, #11181f);
+  background-image: -ms-linear-gradient(top, #2c3e50, #11181f);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #2c3e50), color-stop(100%, #11181f));
+  background-image: -webkit-linear-gradient(top, #2c3e50, #11181f);
+  background-image: -o-linear-gradient(top, #2c3e50, #11181f);
+  background-image: linear-gradient(top, #2c3e50, #11181f);
+}
+body.flat-cement #user-header-menu > li > a:hover,
+body.flat-cement #settings-header-menu > li > a:hover {
+  border-left: 1px solid #1a242f;
+  border-right: 1px solid #1a242f;
+}
+body.flat-cement #MenuView a > span {
+  -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
+  -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
+  -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
+  -ms-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
+  text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
+}
+body.flat-cement #MenuView li.active > a > span,
+body.flat-cement #MenuView a:hover > span {
+  background-color: #2c3e50;
+  -webkit-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -moz-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -o-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+}
+body.flat-cement #RecentlyViewedView a > span:first-child {
+  background-color: #2c3e50;
+  -webkit-text-shadow: 0px 1px 0 #acd064;
+  -moz-text-shadow: 0px 1px 0 #acd064;
+  -o-text-shadow: 0px 1px 0 #acd064;
+  -ms-text-shadow: 0px 1px 0 #acd064;
+  text-shadow: 0px 1px 0 #acd064;
+}
+body.flat-cement #RecentlyViewedView a:hover > span {
+  -webkit-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -moz-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -o-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+}
+body.flat-cement #RecentlyViewedView a:hover em {
+  color: #2c3e50 !important;
+  -webkit-text-shadow: 0px 1px 0 #acd064;
+  -moz-text-shadow: 0px 1px 0 #acd064;
+  -o-text-shadow: 0px 1px 0 #acd064;
+  -ms-text-shadow: 0px 1px 0 #acd064;
+  text-shadow: 0px 1px 0 #acd064;
+}
+body.flat-cement #MenuView ul ul li a:hover {
+  background-color: #11181f;
+  background-repeat: repeat-x;
+  background-image: -moz-linear-gradient(top, #2c3e50, #11181f);
+  background-image: -ms-linear-gradient(top, #2c3e50, #11181f);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #2c3e50), color-stop(100%, #11181f));
+  background-image: -webkit-linear-gradient(top, #2c3e50, #11181f);
+  background-image: -o-linear-gradient(top, #2c3e50, #11181f);
+  background-image: linear-gradient(top, #2c3e50, #11181f);
+}
+body.flat-cement .ZeroModelsYetView a .z-label,
+body.flat-cement .dashboard-link .z-label,
+body.flat-cement .attachLoading .z-label {
+  color: #fff;
+  background-color: #799e30;
+  background-repeat: repeat-x;
+  background-image: -moz-linear-gradient(top, #97c43d, #799e30);
+  background-image: -ms-linear-gradient(top, #97c43d, #799e30);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #799e30));
+  background-image: -webkit-linear-gradient(top, #97c43d, #799e30);
+  background-image: -o-linear-gradient(top, #97c43d, #799e30);
+  background-image: linear-gradient(top, #97c43d, #799e30);
+  -webkit-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -moz-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -o-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+}
+body.flat-cement .zButton:hover .z-label,
+body.flat-cement .z-button:hover .z-label,
+body.flat-cement .zButton:active .z-label,
+body.flat-cement .z-button:active .z-label {
+  color: #1f290c !important;
+  background-color: #5b7724;
+  background-repeat: repeat-x;
+  background-image: -moz-linear-gradient(top, #97c43d, #5b7724);
+  background-image: -ms-linear-gradient(top, #97c43d, #5b7724);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #5b7724));
+  background-image: -webkit-linear-gradient(top, #97c43d, #5b7724);
+  background-image: -o-linear-gradient(top, #97c43d, #5b7724);
+  background-image: linear-gradient(top, #97c43d, #5b7724);
+  -webkit-text-shadow: 0px 1px 0 #b6d678 !important;
+  -moz-text-shadow: 0px 1px 0 #b6d678 !important;
+  -o-text-shadow: 0px 1px 0 #b6d678 !important;
+  -ms-text-shadow: 0px 1px 0 #b6d678 !important;
+  text-shadow: 0px 1px 0 #b6d678 !important;
+}
+body.flat-cement .zButton:active .z-label,
+body.flat-cement .z-button:active .z-label {
+  -webkit-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
+  -moz-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
+  -o-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
+  -ms-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
+  box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
+}
+body.flat-cement .ui-datepicker-current:hover .z-label,
+body.flat-cement .ui-datepicker-close:hover .z-label,
+body.flat-cement .ui-datepicker-current:active .z-label,
+body.flat-cement .ui-datepicker-close:active .z-label,
+body.flat-cement .zButton:not(.attachLoading):hover .z-label,
+body.flat-cement .z-button:not(.attachLoading):hover .z-label,
+body.flat-cement .zButton:not(.attachLoading):active .z-label,
+body.flat-cement .z-button:not(.attachLoading):active .z-label,
+body.flat-cement .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover .z-label,
+body.flat-cement .portlet-toolbar a:not(.attachLoading):not(.simple-link):hover .z-label,
+body.flat-cement .form-toolbar a:not(.attachLoading):not(.green-button):hover .z-label,
+body.flat-cement .form-toolbar a:not(.z-button):not(.green-button):hover .z-label,
+body.flat-cement .configuration-list li a:hover .z-label,
+body.flat-cement .white-button:hover .z-label,
+body.flat-cement .white-button:hover .z-label {
+  color: #2c3e50 !important;
+  background-color: #ededed !important;
+  background-repeat: repeat-x !important;
+  background-image: -moz-linear-gradient(top, #fefefe, #ededed) !important;
+  background-image: -ms-linear-gradient(top, #fefefe, #ededed) !important;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #fefefe), color-stop(100%, #ededed)) !important;
+  background-image: -webkit-linear-gradient(top, #fefefe, #ededed) !important;
+  background-image: -o-linear-gradient(top, #fefefe, #ededed) !important;
+  background-image: linear-gradient(top, #fefefe, #ededed) !important;
+  -webkit-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  -moz-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  -o-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  -ms-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+}
+body.flat-cement a.green-button > .z-label,
+body.flat-cement a.dashboard-link > .z-label {
+  color: #fff !important;
+  background-color: #799e30 !important;
+  background-repeat: repeat-x !important;
+  background-image: -moz-linear-gradient(top, #97c43d, #799e30) !important;
+  background-image: -ms-linear-gradient(top, #97c43d, #799e30) !important;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #799e30)) !important;
+  background-image: -webkit-linear-gradient(top, #97c43d, #799e30) !important;
+  background-image: -o-linear-gradient(top, #97c43d, #799e30) !important;
+  background-image: linear-gradient(top, #97c43d, #799e30) !important;
+  -webkit-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -moz-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -o-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+}
+body.flat-cement #LanguagesCollectionView .green-button:hover .z-label,
+body.flat-cement .green-button:not(.attachLoading):hover .z-label,
+body.flat-cement .dashboard-link:not(.attachLoading):hover .z-label {
+  color: #1f290c !important;
+  background-color: #5b7724 !important;
+  background-repeat: repeat-x !important;
+  background-image: -moz-linear-gradient(top, #97c43d, #5b7724) !important;
+  background-image: -ms-linear-gradient(top, #97c43d, #5b7724) !important;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #5b7724)) !important;
+  background-image: -webkit-linear-gradient(top, #97c43d, #5b7724) !important;
+  background-image: -o-linear-gradient(top, #97c43d, #5b7724) !important;
+  background-image: linear-gradient(top, #97c43d, #5b7724) !important;
+  -webkit-text-shadow: 0px 1px 0 #b6d678 !important;
+  -moz-text-shadow: 0px 1px 0 #b6d678 !important;
+  -o-text-shadow: 0px 1px 0 #b6d678 !important;
+  -ms-text-shadow: 0px 1px 0 #b6d678 !important;
+  text-shadow: 0px 1px 0 #b6d678 !important;
+}
+body.flat-cement .green-button:active .z-label,
+body.flat-cement .dashboard-link:active .z-label {
+  -webkit-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF !important;
+  -moz-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF !important;
+  -o-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF !important;
+  -ms-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF !important;
+  box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF !important;
+}
+body.flat-cement .notifications-link:hover {
+  border-left: 1px solid #1a242f;
+  border-right: 1px solid #1a242f;
+}
+body.flat-cement #notifications-link {
+  border-left: 1px solid #1a242f;
+  border-right: 1px solid #1a242f;
+}
+body.flat-cement .ui-datepicker td.ui-datepicker-today {
+  background: #aabdd1 !important;
+}
+body.flat-cement .LatestActivitiesListView .latest-activity-toolbar > div:first-child,
+body.flat-cement .LatestActivitiesView .latest-activity-toolbar > div:first-child {
+  border-right: 2px solid #2c3e50;
+}
+body.flat-cement .form input[type="checkbox"]:focus,
+body.flat-cement .form input[type="text"]:focus,
+body.flat-cement .form input[type="password"]:focus,
+body.flat-cement .form select.multiple:focus,
+body.flat-cement .form textarea:focus,
+body.flat-cement .hasDropDown select:focus,
+body.flat-cement .hasDropDown select:hover,
+body.flat-cement .hasDropDown:hover select,
+body.flat-cement ul.token-input-list:focus,
+body.flat-cement #layout-container .ui-state-active,
+body.flat-cement #layout-container .ui-widget-content .ui-state-active,
+body.flat-cement #layout-container .ui-widget-header .ui-state-active {
+  -webkit-box-shadow: 0 0 1px 1px #2c3e50;
+  -moz-box-shadow: 0 0 1px 1px #2c3e50;
+  -o-box-shadow: 0 0 1px 1px #2c3e50;
+  -ms-box-shadow: 0 0 1px 1px #2c3e50;
+  box-shadow: 0 0 1px 1px #2c3e50;
+}
+body.flat-cement .action-take .z-label {
+  background-color: #ffad43 !important;
+  background-repeat: repeat-x !important;
+  background-image: -moz-linear-gradient(top, #ffa660, #ffad43) !important;
+  background-image: -ms-linear-gradient(top, #ffa660, #ffad43) !important;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffa660), color-stop(100%, #ffad43)) !important;
+  background-image: -webkit-linear-gradient(top, #ffa660, #ffad43) !important;
+  background-image: -o-linear-gradient(top, #ffa660, #ffad43) !important;
+  background-image: linear-gradient(top, #ffa660, #ffad43) !important;
+}
+body.flat-cement .action-take:hover .z-label {
+  color: #934100 !important;
+  background-color: #ff9710 !important;
+  background-repeat: repeat-x !important;
+  background-image: -moz-linear-gradient(top, #ffa660, #ff9710) !important;
+  background-image: -ms-linear-gradient(top, #ffa660, #ff9710) !important;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffa660), color-stop(100%, #ff9710)) !important;
+  background-image: -webkit-linear-gradient(top, #ffa660, #ff9710) !important;
+  background-image: -o-linear-gradient(top, #ffa660, #ff9710) !important;
+  background-image: linear-gradient(top, #ffa660, #ff9710) !important;
+  -webkit-text-shadow: 0px 1px 0 #ffd1ad !important;
+  -moz-text-shadow: 0px 1px 0 #ffd1ad !important;
+  -o-text-shadow: 0px 1px 0 #ffd1ad !important;
+  -ms-text-shadow: 0px 1px 0 #ffd1ad !important;
+  text-shadow: 0px 1px 0 #ffd1ad !important;
+}
+body.flat-cement .action-complete .z-label {
+  background-color: #6fa82d !important;
+  background-repeat: repeat-x !important;
+  background-image: -moz-linear-gradient(top, #97c43d, #6fa82d) !important;
+  background-image: -ms-linear-gradient(top, #97c43d, #6fa82d) !important;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #6fa82d)) !important;
+  background-image: -webkit-linear-gradient(top, #97c43d, #6fa82d) !important;
+  background-image: -o-linear-gradient(top, #97c43d, #6fa82d) !important;
+  background-image: linear-gradient(top, #97c43d, #6fa82d) !important;
+}
+body.flat-cement .action-complete:hover .z-label {
+  color: #1f290c !important;
+  background-color: #548022 !important;
+  background-repeat: repeat-x !important;
+  background-image: -moz-linear-gradient(top, #97c43d, #548022) !important;
+  background-image: -ms-linear-gradient(top, #97c43d, #548022) !important;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #548022)) !important;
+  background-image: -webkit-linear-gradient(top, #97c43d, #548022) !important;
+  background-image: -o-linear-gradient(top, #97c43d, #548022) !important;
+  background-image: linear-gradient(top, #97c43d, #548022) !important;
+  -webkit-text-shadow: 0px 1px 0 #b6d678 !important;
+  -moz-text-shadow: 0px 1px 0 #b6d678 !important;
+  -o-text-shadow: 0px 1px 0 #b6d678 !important;
+  -ms-text-shadow: 0px 1px 0 #b6d678 !important;
+  text-shadow: 0px 1px 0 #b6d678 !important;
+}
+body.flat-cement .action-accept .z-label {
+  background-color: #6fa82d !important;
+  background-repeat: repeat-x !important;
+  background-image: -moz-linear-gradient(top, #97c43d, #6fa82d) !important;
+  background-image: -ms-linear-gradient(top, #97c43d, #6fa82d) !important;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #6fa82d)) !important;
+  background-image: -webkit-linear-gradient(top, #97c43d, #6fa82d) !important;
+  background-image: -o-linear-gradient(top, #97c43d, #6fa82d) !important;
+  background-image: linear-gradient(top, #97c43d, #6fa82d) !important;
+}
+body.flat-cement .action-accept:hover .z-label {
+  color: #1f290c !important;
+  background-color: #548022 !important;
+  background-repeat: repeat-x !important;
+  background-image: -moz-linear-gradient(top, #97c43d, #548022) !important;
+  background-image: -ms-linear-gradient(top, #97c43d, #548022) !important;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #548022)) !important;
+  background-image: -webkit-linear-gradient(top, #97c43d, #548022) !important;
+  background-image: -o-linear-gradient(top, #97c43d, #548022) !important;
+  background-image: linear-gradient(top, #97c43d, #548022) !important;
+  -webkit-text-shadow: 0px 1px 0 #b6d678 !important;
+  -moz-text-shadow: 0px 1px 0 #b6d678 !important;
+  -o-text-shadow: 0px 1px 0 #b6d678 !important;
+  -ms-text-shadow: 0px 1px 0 #b6d678 !important;
+  text-shadow: 0px 1px 0 #b6d678 !important;
+}
+body.flat-cement .action-reject .z-label {
+  background-color: #a82d31 !important;
+  background-repeat: repeat-x !important;
+  background-image: -moz-linear-gradient(top, #c43d53, #a82d31) !important;
+  background-image: -ms-linear-gradient(top, #c43d53, #a82d31) !important;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #c43d53), color-stop(100%, #a82d31)) !important;
+  background-image: -webkit-linear-gradient(top, #c43d53, #a82d31) !important;
+  background-image: -o-linear-gradient(top, #c43d53, #a82d31) !important;
+  background-image: linear-gradient(top, #c43d53, #a82d31) !important;
+}
+body.flat-cement .action-reject:hover .z-label {
+  color: #290c11 !important;
+  background-color: #802225 !important;
+  background-repeat: repeat-x !important;
+  background-image: -moz-linear-gradient(top, #c43d53, #802225) !important;
+  background-image: -ms-linear-gradient(top, #c43d53, #802225) !important;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #c43d53), color-stop(100%, #802225)) !important;
+  background-image: -webkit-linear-gradient(top, #c43d53, #802225) !important;
+  background-image: -o-linear-gradient(top, #c43d53, #802225) !important;
+  background-image: linear-gradient(top, #c43d53, #802225) !important;
+  -webkit-text-shadow: 0px 1px 0 #d67887 !important;
+  -moz-text-shadow: 0px 1px 0 #d67887 !important;
+  -o-text-shadow: 0px 1px 0 #d67887 !important;
+  -ms-text-shadow: 0px 1px 0 #d67887 !important;
+  text-shadow: 0px 1px 0 #d67887 !important;
+}
+body.flat-cement * {
+  box-shadow: none !important;
+}
+body.flat-cement .AppContent,
+body.flat-cement .AppNavigation,
+body.flat-cement .AppContainer,
+body.flat-cement #MenuView,
+body.flat-cement #RecentlyViewedView {
+  background: none !important;
+  border: none !important;
+}
+body.flat-cement #RecentlyViewedView li em {
+  background: none;
+}
+body.flat-cement .items {
+  background: #fff;
+}
+.color-swatch.flat-cement .theme-color-1 {
+  background: #2c3e50;
+}
+.color-swatch.flat-cement .theme-color-2 {
+  background: #2c3e50;
+}
+.color-swatch.flat-cement .theme-color-3 {
+  background: #95a5a6;
+}
+body.amazon #nav-trigger {
+  border-right: 1px solid #111822;
+  -webkit-box-shadow: 1px 0 0 0 #28374d;
+  -moz-box-shadow: 1px 0 0 0 #28374d;
+  -o-box-shadow: 1px 0 0 0 #28374d;
+  -ms-box-shadow: 1px 0 0 0 #28374d;
+  box-shadow: 1px 0 0 0 #28374d;
+  color: #ffffff;
+}
+body.amazon #nav-trigger:active {
+  -webkit-text-shadow: 0 1px 0 #51719e;
+  -moz-text-shadow: 0 1px 0 #51719e;
+  -o-text-shadow: 0 1px 0 #51719e;
+  -ms-text-shadow: 0 1px 0 #51719e;
+  text-shadow: 0 1px 0 #51719e;
+}
+body.amazon .textColor {
+  color: #545454;
+}
+body.amazon .themeColor {
+  color: #26354a;
+}
+body.amazon .themeColor2 {
+  color: #257282;
+}
+body.amazon .themeBackgroundColor {
+  background-color: #26354a;
+}
+body.amazon .themeBackgroundColor2 {
+  background-color: #257282;
+}
+body.amazon .themeColor-important {
+  color: #26354a !important;
+}
+body.amazon .themeColor2-important {
+  color: #257282 !important;
+}
+body.amazon .themeBackgroundColor-important {
+  background-color: #26354a !important;
+}
+body.amazon .themeBackgroundColor2-important {
+  background-color: #257282 !important;
+}
+body.amazon .themeColor-focus {
+  -webkit-box-shadow: 0 0 1px 1px #26354a;
+  -moz-box-shadow: 0 0 1px 1px #26354a;
+  -o-box-shadow: 0 0 1px 1px #26354a;
+  -ms-box-shadow: 0 0 1px 1px #26354a;
+  box-shadow: 0 0 1px 1px #26354a;
+}
+body.amazon .juiportlet-widget-placeholder,
+body.amazon .drop-zone {
+  border: 2px dashed #26354a;
+}
+body.amazon h1,
+body.amazon h2,
+body.amazon h3,
+body.amazon h4,
+body.amazon h5,
+body.amazon h6 {
+  color: #26354a;
+  -webkit-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+  -moz-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+  -o-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+  -ms-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+body.amazon a:hover,
+body.amazon .xhtml-validation-info,
+body.amazon .performance-info,
+body.amazon tr:hover .pencil,
+body.amazon .ui-dialog .ui-dialog-title div.wide.form a,
+body.amazon #kanban-board-options-link,
+body.amazon #select-list-attributes-link,
+body.amazon #more-search-linkmodal,
+body.amazon #more-search-link,
+body.amazon .search-form-tools,
+body.amazon #inline-edit-form > table td > a,
+body.amazon .AppContent.MassEditView .ui-state-highlight p,
+body.amazon #ModulePermissionsEditAndDetailsView table tr:first-child th,
+body.amazon .calendar-events-1 span,
+body.amazon .calendar-events-2 span,
+body.amazon .calendar-events-3 span,
+body.amazon .calendar-events-4 span,
+body.amazon .calendar-events-5 span,
+body.amazon .calendar-events-6 span,
+body.amazon .sortable-panel,
+body.amazon .cell-element,
+body.amazon .upload-actions .icon-delete,
+body.amazon .badge-icon,
+body.amazon .percentComplete,
+body.amazon .qtip,
+body.amazon .ui-tooltip-default .ui-tooltip-titlebar,
+body.amazon .comment .delete-comment,
+body.amazon .comment .edit-comment,
+body.amazon .comment .delete-comment a,
+body.amazon .comment .edit-comment a,
+body.amazon .unread td,
+body.amazon .unread td a,
+body.amazon a.user-link,
+body.amazon .SocialItemsListView .show-create-comment,
+body.amazon .back-to-inbox-link,
+body.amazon #AllSocialItemsForPortletView .show-create-comment,
+body.amazon a.remove:hover .icon:after,
+body.amazon .juiportlet-widget-head a.edit:hover .icon:after,
+body.amazon a.more-panels-link,
+body.amazon a.simple-link,
+body.amazon a.simple-link .z-label,
+body.amazon a.simple-select,
+body.amazon .after-form-details-content a,
+body.amazon .ui-dialog-title,
+body.amazon .show-file-upload-box,
+body.amazon .z-action-link,
+body.amazon .showAllCommentsLink,
+body.amazon .treeview span:hover .z-action-link,
+body.amazon .drop-zone,
+body.amazon .missing-chart,
+body.amazon a.active-tab,
+body.amazon .edit-autoresponder-link {
+  color: #26354a;
+}
+body.amazon #notifications-flyout .single-notification h4,
+body.amazon .view-toolbar a:hover,
+body.amazon .view-toolbar a:active,
+body.amazon .view-toolbar a.active,
+body.amazon .view-toolbar a.active span,
+body.amazon .portlet-toolbar .icon-delete:before,
+body.amazon .portlet-toolbar .icon-edit:before,
+body.amazon .mini-pillbox a:hover,
+body.amazon .mini-pillbox a.active,
+body.amazon #StickyListMenu > li > a:hover > span,
+body.amazon .addfileinput-button:hover span .pager a:hover:before,
+body.amazon .pager a:hover:after,
+body.amazon .ui-datepicker-header a:hover:before,
+body.amazon .ui-datepicker-header a:hover:after,
+body.amazon input[type="button"]:hover,
+body.amazon input[type="button"]:hover:before,
+body.amazon input[type="button"]:hover:after,
+body.amazon .configuration-list li a:hover,
+body.amazon .configuration-list li a:hover span:before,
+body.amazon .configuration-list td:last-child a:hover,
+body.amazon .configuration-list td:last-child a:hover span:before,
+body.amazon .addfileinput-button:hover span,
+body.amazon .mini-button:hover span,
+body.amazon .hide-welcome span,
+body.amazon .hide-module-intro span,
+body.amazon .hide-marketing-intro span,
+body.amazon #kanban-board-options-link:hover,
+body.amazon #more-search-link:hover,
+body.amazon #select-list-attributes-link:hover {
+  color: #257282;
+}
+body.amazon .dynamic-search-row .remove-extra-dynamic-search-row-link:hover,
+body.amazon #AboutView p a,
+body.amazon #AboutView ul a,
+body.amazon .back-to-app-menu-item span,
+body.amazon .breadcrumbs a,
+body.amazon .StepsAndProgressBarForWizardView .current-step {
+  color: #26354a !important;
+}
+body.amazon .portlet-toolbar .icon-create:hover,
+body.amazon .portlet-toolbar a:hover,
+body.amazon .portlet-toolbar .icon-create:before,
+body.amazon #filter-latest-activities-link:hover,
+body.amazon .badge-message h3 {
+  color: #257282 !important;
+}
+body.amazon #InstallAccessFailurePageView a,
+body.amazon #ErrorPageView a,
+body.amazon .ui-tooltip-default .ui-tooltip-icon,
+body.amazon .zLink,
+body.amazon .z-link,
+body.amazon .lead-conversion-actions a,
+body.amazon #clear-search-link,
+body.amazon #show-filters-structure-div-link,
+body.amazon .filters-bar .ui-state-active,
+body.amazon .filters-bar label:hover,
+body.amazon #clear-search-linkmodal,
+body.amazon .StepsAndProgressBarForWizardView .progress-bar {
+  background-color: #26354a;
+}
+body.amazon .latest-activity-toolbar label:hover,
+body.amazon .filter-portlet-model-bar label:hover,
+body.amazon .latest-activity-toolbar .ui-state-active,
+body.amazon .filter-portlet-model-bar .ui-state-active,
+body.amazon #clear-search-link,
+body.amazon #MashableInboxForm_filteredBy_area label:hover,
+body.amazon #MashableInboxForm_optionForModel_area label:hover,
+body.amazon #MashableInboxForm_filteredBy_area .ui-state-active,
+body.amazon #MashableInboxForm_optionForModel_area .ui-state-active {
+  background-color: #26354a !important;
+}
+body.amazon #MyMissionsForPortletView .filter-portlet-model-bar label a:hover,
+body.amazon #MyMissionsForPortletView .filter-portlet-model-bar .ui-state-active,
+body.amazon .points,
+body.amazon .ranking,
+body.amazon .badge-grade,
+body.amazon li.token-input-selected-token {
+  background-color: #257282;
+}
+body.amazon .ui-autocomplete a:hover,
+body.amazon .ui-autocomplete a#ui-active-menuitem,
+body.amazon .ui-autocomplete a.ui-state-hover,
+body.amazon #StickyListMenu ul a:hover,
+body.amazon .toolbar-mbmenu .options-menu ul a:hover,
+body.amazon #ShortcutsMenu ul a:hover,
+body.amazon .view-toolbar .parent > ul a:hover,
+body.amazon .edit-row-menu ul a:hover,
+body.amazon .edit-portlet-menu ul a:hover {
+  background-color: #257282 !important;
+  color: #fff !important;
+}
+body.amazon #HeaderView {
+  background: #151d28;
+  -webkit-box-shadow: inset 0 10px 50px 0 #26354a;
+  -moz-box-shadow: inset 0 10px 50px 0 #26354a;
+  -o-box-shadow: inset 0 10px 50px 0 #26354a;
+  -ms-box-shadow: inset 0 10px 50px 0 #26354a;
+  box-shadow: inset 0 10px 50px 0 #26354a;
+}
+body.amazon #HeaderLinksView + div {
+  background-color: #71b07b;
+  background-repeat: repeat-x;
+  background-image: -moz-linear-gradient(top, #2f9e66, #71b07b);
+  background-image: -ms-linear-gradient(top, #2f9e66, #71b07b);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #2f9e66), color-stop(100%, #71b07b));
+  background-image: -webkit-linear-gradient(top, #2f9e66, #71b07b);
+  background-image: -o-linear-gradient(top, #2f9e66, #71b07b);
+  background-image: linear-gradient(top, #2f9e66, #71b07b);
+}
+body.amazon #HeaderLinksView ul ul a:hover {
+  color: #fff !important;
+  background-color: #143e46;
+  background-repeat: repeat-x;
+  background-image: -moz-linear-gradient(top, #257282, #143e46);
+  background-image: -ms-linear-gradient(top, #257282, #143e46);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #257282), color-stop(100%, #143e46));
+  background-image: -webkit-linear-gradient(top, #257282, #143e46);
+  background-image: -o-linear-gradient(top, #257282, #143e46);
+  background-image: linear-gradient(top, #257282, #143e46);
+}
+body.amazon #user-header-menu > li > a:hover,
+body.amazon #settings-header-menu > li > a:hover {
+  border-left: 1px solid #151d28;
+  border-right: 1px solid #151d28;
+}
+body.amazon #MenuView a > span {
+  -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
+  -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
+  -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
+  -ms-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
+  text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
+}
+body.amazon #MenuView li.active > a > span,
+body.amazon #MenuView a:hover > span {
+  background-color: #257282;
+  -webkit-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -moz-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -o-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+}
+body.amazon #RecentlyViewedView a > span:first-child {
+  background-color: #257282;
+  -webkit-text-shadow: 0px 1px 0 #acd064;
+  -moz-text-shadow: 0px 1px 0 #acd064;
+  -o-text-shadow: 0px 1px 0 #acd064;
+  -ms-text-shadow: 0px 1px 0 #acd064;
+  text-shadow: 0px 1px 0 #acd064;
+}
+body.amazon #RecentlyViewedView a:hover > span {
+  -webkit-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -moz-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -o-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+}
+body.amazon #RecentlyViewedView a:hover em {
+  color: #26354a !important;
+  -webkit-text-shadow: 0px 1px 0 #acd064;
+  -moz-text-shadow: 0px 1px 0 #acd064;
+  -o-text-shadow: 0px 1px 0 #acd064;
+  -ms-text-shadow: 0px 1px 0 #acd064;
+  text-shadow: 0px 1px 0 #acd064;
+}
+body.amazon #MenuView ul ul li a:hover {
+  background-color: #143e46;
+  background-repeat: repeat-x;
+  background-image: -moz-linear-gradient(top, #257282, #143e46);
+  background-image: -ms-linear-gradient(top, #257282, #143e46);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #257282), color-stop(100%, #143e46));
+  background-image: -webkit-linear-gradient(top, #257282, #143e46);
+  background-image: -o-linear-gradient(top, #257282, #143e46);
+  background-image: linear-gradient(top, #257282, #143e46);
+}
+body.amazon .ZeroModelsYetView a .z-label,
+body.amazon .dashboard-link .z-label,
+body.amazon .attachLoading .z-label {
+  color: #fff;
+  background-color: #799e30;
+  background-repeat: repeat-x;
+  background-image: -moz-linear-gradient(top, #97c43d, #799e30);
+  background-image: -ms-linear-gradient(top, #97c43d, #799e30);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #799e30));
+  background-image: -webkit-linear-gradient(top, #97c43d, #799e30);
+  background-image: -o-linear-gradient(top, #97c43d, #799e30);
+  background-image: linear-gradient(top, #97c43d, #799e30);
+  -webkit-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -moz-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -o-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+}
+body.amazon .zButton:hover .z-label,
+body.amazon .z-button:hover .z-label,
+body.amazon .zButton:active .z-label,
+body.amazon .z-button:active .z-label {
+  color: #1f290c !important;
+  background-color: #5b7724;
+  background-repeat: repeat-x;
+  background-image: -moz-linear-gradient(top, #97c43d, #5b7724);
+  background-image: -ms-linear-gradient(top, #97c43d, #5b7724);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #5b7724));
+  background-image: -webkit-linear-gradient(top, #97c43d, #5b7724);
+  background-image: -o-linear-gradient(top, #97c43d, #5b7724);
+  background-image: linear-gradient(top, #97c43d, #5b7724);
+  -webkit-text-shadow: 0px 1px 0 #b6d678 !important;
+  -moz-text-shadow: 0px 1px 0 #b6d678 !important;
+  -o-text-shadow: 0px 1px 0 #b6d678 !important;
+  -ms-text-shadow: 0px 1px 0 #b6d678 !important;
+  text-shadow: 0px 1px 0 #b6d678 !important;
+}
+body.amazon .zButton:active .z-label,
+body.amazon .z-button:active .z-label {
+  -webkit-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
+  -moz-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
+  -o-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
+  -ms-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
+  box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
+}
+body.amazon .ui-datepicker-current:hover .z-label,
+body.amazon .ui-datepicker-close:hover .z-label,
+body.amazon .ui-datepicker-current:active .z-label,
+body.amazon .ui-datepicker-close:active .z-label,
+body.amazon .zButton:not(.attachLoading):hover .z-label,
+body.amazon .z-button:not(.attachLoading):hover .z-label,
+body.amazon .zButton:not(.attachLoading):active .z-label,
+body.amazon .z-button:not(.attachLoading):active .z-label,
+body.amazon .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover .z-label,
+body.amazon .portlet-toolbar a:not(.attachLoading):not(.simple-link):hover .z-label,
+body.amazon .form-toolbar a:not(.attachLoading):not(.green-button):hover .z-label,
+body.amazon .form-toolbar a:not(.z-button):not(.green-button):hover .z-label,
+body.amazon .configuration-list li a:hover .z-label,
+body.amazon .white-button:hover .z-label,
+body.amazon .white-button:hover .z-label {
+  color: #257282 !important;
+  background-color: #ededed !important;
+  background-repeat: repeat-x !important;
+  background-image: -moz-linear-gradient(top, #fefefe, #ededed) !important;
+  background-image: -ms-linear-gradient(top, #fefefe, #ededed) !important;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #fefefe), color-stop(100%, #ededed)) !important;
+  background-image: -webkit-linear-gradient(top, #fefefe, #ededed) !important;
+  background-image: -o-linear-gradient(top, #fefefe, #ededed) !important;
+  background-image: linear-gradient(top, #fefefe, #ededed) !important;
+  -webkit-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  -moz-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  -o-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  -ms-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+}
+body.amazon a.green-button > .z-label,
+body.amazon a.dashboard-link > .z-label {
+  color: #fff !important;
+  background-color: #799e30 !important;
+  background-repeat: repeat-x !important;
+  background-image: -moz-linear-gradient(top, #97c43d, #799e30) !important;
+  background-image: -ms-linear-gradient(top, #97c43d, #799e30) !important;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #799e30)) !important;
+  background-image: -webkit-linear-gradient(top, #97c43d, #799e30) !important;
+  background-image: -o-linear-gradient(top, #97c43d, #799e30) !important;
+  background-image: linear-gradient(top, #97c43d, #799e30) !important;
+  -webkit-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -moz-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -o-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+}
+body.amazon #LanguagesCollectionView .green-button:hover .z-label,
+body.amazon .green-button:not(.attachLoading):hover .z-label,
+body.amazon .dashboard-link:not(.attachLoading):hover .z-label {
+  color: #1f290c !important;
+  background-color: #5b7724 !important;
+  background-repeat: repeat-x !important;
+  background-image: -moz-linear-gradient(top, #97c43d, #5b7724) !important;
+  background-image: -ms-linear-gradient(top, #97c43d, #5b7724) !important;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #5b7724)) !important;
+  background-image: -webkit-linear-gradient(top, #97c43d, #5b7724) !important;
+  background-image: -o-linear-gradient(top, #97c43d, #5b7724) !important;
+  background-image: linear-gradient(top, #97c43d, #5b7724) !important;
+  -webkit-text-shadow: 0px 1px 0 #b6d678 !important;
+  -moz-text-shadow: 0px 1px 0 #b6d678 !important;
+  -o-text-shadow: 0px 1px 0 #b6d678 !important;
+  -ms-text-shadow: 0px 1px 0 #b6d678 !important;
+  text-shadow: 0px 1px 0 #b6d678 !important;
+}
+body.amazon .green-button:active .z-label,
+body.amazon .dashboard-link:active .z-label {
+  -webkit-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF !important;
+  -moz-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF !important;
+  -o-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF !important;
+  -ms-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF !important;
+  box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF !important;
+}
+body.amazon .notifications-link:hover {
+  border-left: 1px solid #151d28;
+  border-right: 1px solid #151d28;
+}
+body.amazon #notifications-link {
+  border-left: 1px solid #151d28;
+  border-right: 1px solid #151d28;
+}
+body.amazon .ui-datepicker td.ui-datepicker-today {
+  background: #a1b4ce !important;
+}
+body.amazon .LatestActivitiesListView .latest-activity-toolbar > div:first-child,
+body.amazon .LatestActivitiesView .latest-activity-toolbar > div:first-child {
+  border-right: 2px solid #26354a;
+}
+body.amazon .form input[type="checkbox"]:focus,
+body.amazon .form input[type="text"]:focus,
+body.amazon .form input[type="password"]:focus,
+body.amazon .form select.multiple:focus,
+body.amazon .form textarea:focus,
+body.amazon .hasDropDown select:focus,
+body.amazon .hasDropDown select:hover,
+body.amazon .hasDropDown:hover select,
+body.amazon ul.token-input-list:focus,
+body.amazon #layout-container .ui-state-active,
+body.amazon #layout-container .ui-widget-content .ui-state-active,
+body.amazon #layout-container .ui-widget-header .ui-state-active {
+  -webkit-box-shadow: 0 0 1px 1px #26354a;
+  -moz-box-shadow: 0 0 1px 1px #26354a;
+  -o-box-shadow: 0 0 1px 1px #26354a;
+  -ms-box-shadow: 0 0 1px 1px #26354a;
+  box-shadow: 0 0 1px 1px #26354a;
+}
+body.amazon .action-take .z-label {
+  background-color: #ffad43 !important;
+  background-repeat: repeat-x !important;
+  background-image: -moz-linear-gradient(top, #ffa660, #ffad43) !important;
+  background-image: -ms-linear-gradient(top, #ffa660, #ffad43) !important;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffa660), color-stop(100%, #ffad43)) !important;
+  background-image: -webkit-linear-gradient(top, #ffa660, #ffad43) !important;
+  background-image: -o-linear-gradient(top, #ffa660, #ffad43) !important;
+  background-image: linear-gradient(top, #ffa660, #ffad43) !important;
+}
+body.amazon .action-take:hover .z-label {
+  color: #934100 !important;
+  background-color: #ff9710 !important;
+  background-repeat: repeat-x !important;
+  background-image: -moz-linear-gradient(top, #ffa660, #ff9710) !important;
+  background-image: -ms-linear-gradient(top, #ffa660, #ff9710) !important;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffa660), color-stop(100%, #ff9710)) !important;
+  background-image: -webkit-linear-gradient(top, #ffa660, #ff9710) !important;
+  background-image: -o-linear-gradient(top, #ffa660, #ff9710) !important;
+  background-image: linear-gradient(top, #ffa660, #ff9710) !important;
+  -webkit-text-shadow: 0px 1px 0 #ffd1ad !important;
+  -moz-text-shadow: 0px 1px 0 #ffd1ad !important;
+  -o-text-shadow: 0px 1px 0 #ffd1ad !important;
+  -ms-text-shadow: 0px 1px 0 #ffd1ad !important;
+  text-shadow: 0px 1px 0 #ffd1ad !important;
+}
+body.amazon .action-complete .z-label {
+  background-color: #6fa82d !important;
+  background-repeat: repeat-x !important;
+  background-image: -moz-linear-gradient(top, #97c43d, #6fa82d) !important;
+  background-image: -ms-linear-gradient(top, #97c43d, #6fa82d) !important;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #6fa82d)) !important;
+  background-image: -webkit-linear-gradient(top, #97c43d, #6fa82d) !important;
+  background-image: -o-linear-gradient(top, #97c43d, #6fa82d) !important;
+  background-image: linear-gradient(top, #97c43d, #6fa82d) !important;
+}
+body.amazon .action-complete:hover .z-label {
+  color: #1f290c !important;
+  background-color: #548022 !important;
+  background-repeat: repeat-x !important;
+  background-image: -moz-linear-gradient(top, #97c43d, #548022) !important;
+  background-image: -ms-linear-gradient(top, #97c43d, #548022) !important;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #548022)) !important;
+  background-image: -webkit-linear-gradient(top, #97c43d, #548022) !important;
+  background-image: -o-linear-gradient(top, #97c43d, #548022) !important;
+  background-image: linear-gradient(top, #97c43d, #548022) !important;
+  -webkit-text-shadow: 0px 1px 0 #b6d678 !important;
+  -moz-text-shadow: 0px 1px 0 #b6d678 !important;
+  -o-text-shadow: 0px 1px 0 #b6d678 !important;
+  -ms-text-shadow: 0px 1px 0 #b6d678 !important;
+  text-shadow: 0px 1px 0 #b6d678 !important;
+}
+body.amazon .action-accept .z-label {
+  background-color: #6fa82d !important;
+  background-repeat: repeat-x !important;
+  background-image: -moz-linear-gradient(top, #97c43d, #6fa82d) !important;
+  background-image: -ms-linear-gradient(top, #97c43d, #6fa82d) !important;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #6fa82d)) !important;
+  background-image: -webkit-linear-gradient(top, #97c43d, #6fa82d) !important;
+  background-image: -o-linear-gradient(top, #97c43d, #6fa82d) !important;
+  background-image: linear-gradient(top, #97c43d, #6fa82d) !important;
+}
+body.amazon .action-accept:hover .z-label {
+  color: #1f290c !important;
+  background-color: #548022 !important;
+  background-repeat: repeat-x !important;
+  background-image: -moz-linear-gradient(top, #97c43d, #548022) !important;
+  background-image: -ms-linear-gradient(top, #97c43d, #548022) !important;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #548022)) !important;
+  background-image: -webkit-linear-gradient(top, #97c43d, #548022) !important;
+  background-image: -o-linear-gradient(top, #97c43d, #548022) !important;
+  background-image: linear-gradient(top, #97c43d, #548022) !important;
+  -webkit-text-shadow: 0px 1px 0 #b6d678 !important;
+  -moz-text-shadow: 0px 1px 0 #b6d678 !important;
+  -o-text-shadow: 0px 1px 0 #b6d678 !important;
+  -ms-text-shadow: 0px 1px 0 #b6d678 !important;
+  text-shadow: 0px 1px 0 #b6d678 !important;
+}
+body.amazon .action-reject .z-label {
+  background-color: #a82d31 !important;
+  background-repeat: repeat-x !important;
+  background-image: -moz-linear-gradient(top, #c43d53, #a82d31) !important;
+  background-image: -ms-linear-gradient(top, #c43d53, #a82d31) !important;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #c43d53), color-stop(100%, #a82d31)) !important;
+  background-image: -webkit-linear-gradient(top, #c43d53, #a82d31) !important;
+  background-image: -o-linear-gradient(top, #c43d53, #a82d31) !important;
+  background-image: linear-gradient(top, #c43d53, #a82d31) !important;
+}
+body.amazon .action-reject:hover .z-label {
+  color: #290c11 !important;
+  background-color: #802225 !important;
+  background-repeat: repeat-x !important;
+  background-image: -moz-linear-gradient(top, #c43d53, #802225) !important;
+  background-image: -ms-linear-gradient(top, #c43d53, #802225) !important;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #c43d53), color-stop(100%, #802225)) !important;
+  background-image: -webkit-linear-gradient(top, #c43d53, #802225) !important;
+  background-image: -o-linear-gradient(top, #c43d53, #802225) !important;
+  background-image: linear-gradient(top, #c43d53, #802225) !important;
+  -webkit-text-shadow: 0px 1px 0 #d67887 !important;
+  -moz-text-shadow: 0px 1px 0 #d67887 !important;
+  -o-text-shadow: 0px 1px 0 #d67887 !important;
+  -ms-text-shadow: 0px 1px 0 #d67887 !important;
+  text-shadow: 0px 1px 0 #d67887 !important;
+}
+.color-swatch.amazon .theme-color-1 {
+  background: #26354a;
+}
+.color-swatch.amazon .theme-color-2 {
+  background: #257282;
+}
+.color-swatch.amazon .theme-color-3 {
+  background: #2f9e66;
+}
+body.sweden #nav-trigger {
+  border-right: 1px solid #022b50;
+  -webkit-box-shadow: 1px 0 0 0 #034f91;
+  -moz-box-shadow: 1px 0 0 0 #034f91;
+  -o-box-shadow: 1px 0 0 0 #034f91;
+  -ms-box-shadow: 1px 0 0 0 #034f91;
+  box-shadow: 1px 0 0 0 #034f91;
+  color: #ffffff;
+}
+body.sweden #nav-trigger:active {
+  -webkit-text-shadow: 0 1px 0 #158ffa;
+  -moz-text-shadow: 0 1px 0 #158ffa;
+  -o-text-shadow: 0 1px 0 #158ffa;
+  -ms-text-shadow: 0 1px 0 #158ffa;
+  text-shadow: 0 1px 0 #158ffa;
+}
+body.sweden .textColor {
+  color: #545454;
+}
+body.sweden .themeColor {
+  color: #034c8c;
+}
+body.sweden .themeColor2 {
+  color: #024873;
+}
+body.sweden .themeBackgroundColor {
+  background-color: #034c8c;
+}
+body.sweden .themeBackgroundColor2 {
+  background-color: #024873;
+}
+body.sweden .themeColor-important {
+  color: #034c8c !important;
+}
+body.sweden .themeColor2-important {
+  color: #024873 !important;
+}
+body.sweden .themeBackgroundColor-important {
+  background-color: #034c8c !important;
+}
+body.sweden .themeBackgroundColor2-important {
+  background-color: #024873 !important;
+}
+body.sweden .themeColor-focus {
+  -webkit-box-shadow: 0 0 1px 1px #034c8c;
+  -moz-box-shadow: 0 0 1px 1px #034c8c;
+  -o-box-shadow: 0 0 1px 1px #034c8c;
+  -ms-box-shadow: 0 0 1px 1px #034c8c;
+  box-shadow: 0 0 1px 1px #034c8c;
+}
+body.sweden .juiportlet-widget-placeholder,
+body.sweden .drop-zone {
+  border: 2px dashed #034c8c;
+}
+body.sweden h1,
+body.sweden h2,
+body.sweden h3,
+body.sweden h4,
+body.sweden h5,
+body.sweden h6 {
+  color: #034c8c;
+  -webkit-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+  -moz-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+  -o-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+  -ms-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+body.sweden a:hover,
+body.sweden .xhtml-validation-info,
+body.sweden .performance-info,
+body.sweden tr:hover .pencil,
+body.sweden .ui-dialog .ui-dialog-title div.wide.form a,
+body.sweden #kanban-board-options-link,
+body.sweden #select-list-attributes-link,
+body.sweden #more-search-linkmodal,
+body.sweden #more-search-link,
+body.sweden .search-form-tools,
+body.sweden #inline-edit-form > table td > a,
+body.sweden .AppContent.MassEditView .ui-state-highlight p,
+body.sweden #ModulePermissionsEditAndDetailsView table tr:first-child th,
+body.sweden .calendar-events-1 span,
+body.sweden .calendar-events-2 span,
+body.sweden .calendar-events-3 span,
+body.sweden .calendar-events-4 span,
+body.sweden .calendar-events-5 span,
+body.sweden .calendar-events-6 span,
+body.sweden .sortable-panel,
+body.sweden .cell-element,
+body.sweden .upload-actions .icon-delete,
+body.sweden .badge-icon,
+body.sweden .percentComplete,
+body.sweden .qtip,
+body.sweden .ui-tooltip-default .ui-tooltip-titlebar,
+body.sweden .comment .delete-comment,
+body.sweden .comment .edit-comment,
+body.sweden .comment .delete-comment a,
+body.sweden .comment .edit-comment a,
+body.sweden .unread td,
+body.sweden .unread td a,
+body.sweden a.user-link,
+body.sweden .SocialItemsListView .show-create-comment,
+body.sweden .back-to-inbox-link,
+body.sweden #AllSocialItemsForPortletView .show-create-comment,
+body.sweden a.remove:hover .icon:after,
+body.sweden .juiportlet-widget-head a.edit:hover .icon:after,
+body.sweden a.more-panels-link,
+body.sweden a.simple-link,
+body.sweden a.simple-link .z-label,
+body.sweden a.simple-select,
+body.sweden .after-form-details-content a,
+body.sweden .ui-dialog-title,
+body.sweden .show-file-upload-box,
+body.sweden .z-action-link,
+body.sweden .showAllCommentsLink,
+body.sweden .treeview span:hover .z-action-link,
+body.sweden .drop-zone,
+body.sweden .missing-chart,
+body.sweden a.active-tab,
+body.sweden .edit-autoresponder-link {
+  color: #034c8c;
+}
+body.sweden #notifications-flyout .single-notification h4,
+body.sweden .view-toolbar a:hover,
+body.sweden .view-toolbar a:active,
+body.sweden .view-toolbar a.active,
+body.sweden .view-toolbar a.active span,
+body.sweden .portlet-toolbar .icon-delete:before,
+body.sweden .portlet-toolbar .icon-edit:before,
+body.sweden .mini-pillbox a:hover,
+body.sweden .mini-pillbox a.active,
+body.sweden #StickyListMenu > li > a:hover > span,
+body.sweden .addfileinput-button:hover span .pager a:hover:before,
+body.sweden .pager a:hover:after,
+body.sweden .ui-datepicker-header a:hover:before,
+body.sweden .ui-datepicker-header a:hover:after,
+body.sweden input[type="button"]:hover,
+body.sweden input[type="button"]:hover:before,
+body.sweden input[type="button"]:hover:after,
+body.sweden .configuration-list li a:hover,
+body.sweden .configuration-list li a:hover span:before,
+body.sweden .configuration-list td:last-child a:hover,
+body.sweden .configuration-list td:last-child a:hover span:before,
+body.sweden .addfileinput-button:hover span,
+body.sweden .mini-button:hover span,
+body.sweden .hide-welcome span,
+body.sweden .hide-module-intro span,
+body.sweden .hide-marketing-intro span,
+body.sweden #kanban-board-options-link:hover,
+body.sweden #more-search-link:hover,
+body.sweden #select-list-attributes-link:hover {
+  color: #024873;
+}
+body.sweden .dynamic-search-row .remove-extra-dynamic-search-row-link:hover,
+body.sweden #AboutView p a,
+body.sweden #AboutView ul a,
+body.sweden .back-to-app-menu-item span,
+body.sweden .breadcrumbs a,
+body.sweden .StepsAndProgressBarForWizardView .current-step {
+  color: #034c8c !important;
+}
+body.sweden .portlet-toolbar .icon-create:hover,
+body.sweden .portlet-toolbar a:hover,
+body.sweden .portlet-toolbar .icon-create:before,
+body.sweden #filter-latest-activities-link:hover,
+body.sweden .badge-message h3 {
+  color: #024873 !important;
+}
+body.sweden #InstallAccessFailurePageView a,
+body.sweden #ErrorPageView a,
+body.sweden .ui-tooltip-default .ui-tooltip-icon,
+body.sweden .zLink,
+body.sweden .z-link,
+body.sweden .lead-conversion-actions a,
+body.sweden #clear-search-link,
+body.sweden #show-filters-structure-div-link,
+body.sweden .filters-bar .ui-state-active,
+body.sweden .filters-bar label:hover,
+body.sweden #clear-search-linkmodal,
+body.sweden .StepsAndProgressBarForWizardView .progress-bar {
+  background-color: #034c8c;
+}
+body.sweden .latest-activity-toolbar label:hover,
+body.sweden .filter-portlet-model-bar label:hover,
+body.sweden .latest-activity-toolbar .ui-state-active,
+body.sweden .filter-portlet-model-bar .ui-state-active,
+body.sweden #clear-search-link,
+body.sweden #MashableInboxForm_filteredBy_area label:hover,
+body.sweden #MashableInboxForm_optionForModel_area label:hover,
+body.sweden #MashableInboxForm_filteredBy_area .ui-state-active,
+body.sweden #MashableInboxForm_optionForModel_area .ui-state-active {
+  background-color: #034c8c !important;
+}
+body.sweden #MyMissionsForPortletView .filter-portlet-model-bar label a:hover,
+body.sweden #MyMissionsForPortletView .filter-portlet-model-bar .ui-state-active,
+body.sweden .points,
+body.sweden .ranking,
+body.sweden .badge-grade,
+body.sweden li.token-input-selected-token {
+  background-color: #024873;
+}
+body.sweden .ui-autocomplete a:hover,
+body.sweden .ui-autocomplete a#ui-active-menuitem,
+body.sweden .ui-autocomplete a.ui-state-hover,
+body.sweden #StickyListMenu ul a:hover,
+body.sweden .toolbar-mbmenu .options-menu ul a:hover,
+body.sweden #ShortcutsMenu ul a:hover,
+body.sweden .view-toolbar .parent > ul a:hover,
+body.sweden .edit-row-menu ul a:hover,
+body.sweden .edit-portlet-menu ul a:hover {
+  background-color: #024873 !important;
+  color: #fff !important;
+}
+body.sweden #HeaderView {
+  background: #02315a;
+  -webkit-box-shadow: inset 0 10px 50px 0 #034c8c;
+  -moz-box-shadow: inset 0 10px 50px 0 #034c8c;
+  -o-box-shadow: inset 0 10px 50px 0 #034c8c;
+  -ms-box-shadow: inset 0 10px 50px 0 #034c8c;
+  box-shadow: inset 0 10px 50px 0 #034c8c;
+}
+body.sweden #HeaderLinksView + div {
+  background-color: #f2ec5c;
+  background-repeat: repeat-x;
+  background-image: -moz-linear-gradient(top, #f2d632, #f2ec5c);
+  background-image: -ms-linear-gradient(top, #f2d632, #f2ec5c);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f2d632), color-stop(100%, #f2ec5c));
+  background-image: -webkit-linear-gradient(top, #f2d632, #f2ec5c);
+  background-image: -o-linear-gradient(top, #f2d632, #f2ec5c);
+  background-image: linear-gradient(top, #f2d632, #f2ec5c);
+}
+body.sweden #HeaderLinksView ul ul a:hover {
+  color: #fff !important;
+  background-color: #011928;
+  background-repeat: repeat-x;
+  background-image: -moz-linear-gradient(top, #024873, #011928);
+  background-image: -ms-linear-gradient(top, #024873, #011928);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #024873), color-stop(100%, #011928));
+  background-image: -webkit-linear-gradient(top, #024873, #011928);
+  background-image: -o-linear-gradient(top, #024873, #011928);
+  background-image: linear-gradient(top, #024873, #011928);
+}
+body.sweden #user-header-menu > li > a:hover,
+body.sweden #settings-header-menu > li > a:hover {
+  border-left: 1px solid #02315a;
+  border-right: 1px solid #02315a;
+}
+body.sweden #MenuView a > span {
+  -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
+  -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
+  -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
+  -ms-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
+  text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
+}
+body.sweden #MenuView li.active > a > span,
+body.sweden #MenuView a:hover > span {
+  background-color: #024873;
+  -webkit-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -moz-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -o-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+}
+body.sweden #RecentlyViewedView a > span:first-child {
+  background-color: #024873;
+  -webkit-text-shadow: 0px 1px 0 #acd064;
+  -moz-text-shadow: 0px 1px 0 #acd064;
+  -o-text-shadow: 0px 1px 0 #acd064;
+  -ms-text-shadow: 0px 1px 0 #acd064;
+  text-shadow: 0px 1px 0 #acd064;
+}
+body.sweden #RecentlyViewedView a:hover > span {
+  -webkit-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -moz-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -o-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+}
+body.sweden #RecentlyViewedView a:hover em {
+  color: #034c8c !important;
+  -webkit-text-shadow: 0px 1px 0 #acd064;
+  -moz-text-shadow: 0px 1px 0 #acd064;
+  -o-text-shadow: 0px 1px 0 #acd064;
+  -ms-text-shadow: 0px 1px 0 #acd064;
+  text-shadow: 0px 1px 0 #acd064;
+}
+body.sweden #MenuView ul ul li a:hover {
+  background-color: #011928;
+  background-repeat: repeat-x;
+  background-image: -moz-linear-gradient(top, #024873, #011928);
+  background-image: -ms-linear-gradient(top, #024873, #011928);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #024873), color-stop(100%, #011928));
+  background-image: -webkit-linear-gradient(top, #024873, #011928);
+  background-image: -o-linear-gradient(top, #024873, #011928);
+  background-image: linear-gradient(top, #024873, #011928);
+}
+body.sweden .ZeroModelsYetView a .z-label,
+body.sweden .dashboard-link .z-label,
+body.sweden .attachLoading .z-label {
+  color: #fff;
+  background-color: #799e30;
+  background-repeat: repeat-x;
+  background-image: -moz-linear-gradient(top, #97c43d, #799e30);
+  background-image: -ms-linear-gradient(top, #97c43d, #799e30);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #799e30));
+  background-image: -webkit-linear-gradient(top, #97c43d, #799e30);
+  background-image: -o-linear-gradient(top, #97c43d, #799e30);
+  background-image: linear-gradient(top, #97c43d, #799e30);
+  -webkit-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -moz-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -o-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+}
+body.sweden .zButton:hover .z-label,
+body.sweden .z-button:hover .z-label,
+body.sweden .zButton:active .z-label,
+body.sweden .z-button:active .z-label {
+  color: #1f290c !important;
+  background-color: #5b7724;
+  background-repeat: repeat-x;
+  background-image: -moz-linear-gradient(top, #97c43d, #5b7724);
+  background-image: -ms-linear-gradient(top, #97c43d, #5b7724);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #5b7724));
+  background-image: -webkit-linear-gradient(top, #97c43d, #5b7724);
+  background-image: -o-linear-gradient(top, #97c43d, #5b7724);
+  background-image: linear-gradient(top, #97c43d, #5b7724);
+  -webkit-text-shadow: 0px 1px 0 #b6d678 !important;
+  -moz-text-shadow: 0px 1px 0 #b6d678 !important;
+  -o-text-shadow: 0px 1px 0 #b6d678 !important;
+  -ms-text-shadow: 0px 1px 0 #b6d678 !important;
+  text-shadow: 0px 1px 0 #b6d678 !important;
+}
+body.sweden .zButton:active .z-label,
+body.sweden .z-button:active .z-label {
+  -webkit-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
+  -moz-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
+  -o-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
+  -ms-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
+  box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
+}
+body.sweden .ui-datepicker-current:hover .z-label,
+body.sweden .ui-datepicker-close:hover .z-label,
+body.sweden .ui-datepicker-current:active .z-label,
+body.sweden .ui-datepicker-close:active .z-label,
+body.sweden .zButton:not(.attachLoading):hover .z-label,
+body.sweden .z-button:not(.attachLoading):hover .z-label,
+body.sweden .zButton:not(.attachLoading):active .z-label,
+body.sweden .z-button:not(.attachLoading):active .z-label,
+body.sweden .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover .z-label,
+body.sweden .portlet-toolbar a:not(.attachLoading):not(.simple-link):hover .z-label,
+body.sweden .form-toolbar a:not(.attachLoading):not(.green-button):hover .z-label,
+body.sweden .form-toolbar a:not(.z-button):not(.green-button):hover .z-label,
+body.sweden .configuration-list li a:hover .z-label,
+body.sweden .white-button:hover .z-label,
+body.sweden .white-button:hover .z-label {
+  color: #024873 !important;
+  background-color: #ededed !important;
+  background-repeat: repeat-x !important;
+  background-image: -moz-linear-gradient(top, #fefefe, #ededed) !important;
+  background-image: -ms-linear-gradient(top, #fefefe, #ededed) !important;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #fefefe), color-stop(100%, #ededed)) !important;
+  background-image: -webkit-linear-gradient(top, #fefefe, #ededed) !important;
+  background-image: -o-linear-gradient(top, #fefefe, #ededed) !important;
+  background-image: linear-gradient(top, #fefefe, #ededed) !important;
+  -webkit-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  -moz-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  -o-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  -ms-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+}
+body.sweden a.green-button > .z-label,
+body.sweden a.dashboard-link > .z-label {
+  color: #fff !important;
+  background-color: #799e30 !important;
+  background-repeat: repeat-x !important;
+  background-image: -moz-linear-gradient(top, #97c43d, #799e30) !important;
+  background-image: -ms-linear-gradient(top, #97c43d, #799e30) !important;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #799e30)) !important;
+  background-image: -webkit-linear-gradient(top, #97c43d, #799e30) !important;
+  background-image: -o-linear-gradient(top, #97c43d, #799e30) !important;
+  background-image: linear-gradient(top, #97c43d, #799e30) !important;
+  -webkit-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -moz-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -o-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+}
+body.sweden #LanguagesCollectionView .green-button:hover .z-label,
+body.sweden .green-button:not(.attachLoading):hover .z-label,
+body.sweden .dashboard-link:not(.attachLoading):hover .z-label {
+  color: #1f290c !important;
+  background-color: #5b7724 !important;
+  background-repeat: repeat-x !important;
+  background-image: -moz-linear-gradient(top, #97c43d, #5b7724) !important;
+  background-image: -ms-linear-gradient(top, #97c43d, #5b7724) !important;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #5b7724)) !important;
+  background-image: -webkit-linear-gradient(top, #97c43d, #5b7724) !important;
+  background-image: -o-linear-gradient(top, #97c43d, #5b7724) !important;
+  background-image: linear-gradient(top, #97c43d, #5b7724) !important;
+  -webkit-text-shadow: 0px 1px 0 #b6d678 !important;
+  -moz-text-shadow: 0px 1px 0 #b6d678 !important;
+  -o-text-shadow: 0px 1px 0 #b6d678 !important;
+  -ms-text-shadow: 0px 1px 0 #b6d678 !important;
+  text-shadow: 0px 1px 0 #b6d678 !important;
+}
+body.sweden .green-button:active .z-label,
+body.sweden .dashboard-link:active .z-label {
+  -webkit-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF !important;
+  -moz-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF !important;
+  -o-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF !important;
+  -ms-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF !important;
+  box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF !important;
+}
+body.sweden .notifications-link:hover {
+  border-left: 1px solid #02315a;
+  border-right: 1px solid #02315a;
+}
+body.sweden #notifications-link {
+  border-left: 1px solid #02315a;
+  border-right: 1px solid #02315a;
+}
+body.sweden .ui-datepicker td.ui-datepicker-today {
+  background: #91cbfd !important;
+}
+body.sweden .LatestActivitiesListView .latest-activity-toolbar > div:first-child,
+body.sweden .LatestActivitiesView .latest-activity-toolbar > div:first-child {
+  border-right: 2px solid #034c8c;
+}
+body.sweden .form input[type="checkbox"]:focus,
+body.sweden .form input[type="text"]:focus,
+body.sweden .form input[type="password"]:focus,
+body.sweden .form select.multiple:focus,
+body.sweden .form textarea:focus,
+body.sweden .hasDropDown select:focus,
+body.sweden .hasDropDown select:hover,
+body.sweden .hasDropDown:hover select,
+body.sweden ul.token-input-list:focus,
+body.sweden #layout-container .ui-state-active,
+body.sweden #layout-container .ui-widget-content .ui-state-active,
+body.sweden #layout-container .ui-widget-header .ui-state-active {
+  -webkit-box-shadow: 0 0 1px 1px #034c8c;
+  -moz-box-shadow: 0 0 1px 1px #034c8c;
+  -o-box-shadow: 0 0 1px 1px #034c8c;
+  -ms-box-shadow: 0 0 1px 1px #034c8c;
+  box-shadow: 0 0 1px 1px #034c8c;
+}
+body.sweden .action-take .z-label {
+  background-color: #ffad43 !important;
+  background-repeat: repeat-x !important;
+  background-image: -moz-linear-gradient(top, #ffa660, #ffad43) !important;
+  background-image: -ms-linear-gradient(top, #ffa660, #ffad43) !important;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffa660), color-stop(100%, #ffad43)) !important;
+  background-image: -webkit-linear-gradient(top, #ffa660, #ffad43) !important;
+  background-image: -o-linear-gradient(top, #ffa660, #ffad43) !important;
+  background-image: linear-gradient(top, #ffa660, #ffad43) !important;
+}
+body.sweden .action-take:hover .z-label {
+  color: #934100 !important;
+  background-color: #ff9710 !important;
+  background-repeat: repeat-x !important;
+  background-image: -moz-linear-gradient(top, #ffa660, #ff9710) !important;
+  background-image: -ms-linear-gradient(top, #ffa660, #ff9710) !important;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffa660), color-stop(100%, #ff9710)) !important;
+  background-image: -webkit-linear-gradient(top, #ffa660, #ff9710) !important;
+  background-image: -o-linear-gradient(top, #ffa660, #ff9710) !important;
+  background-image: linear-gradient(top, #ffa660, #ff9710) !important;
+  -webkit-text-shadow: 0px 1px 0 #ffd1ad !important;
+  -moz-text-shadow: 0px 1px 0 #ffd1ad !important;
+  -o-text-shadow: 0px 1px 0 #ffd1ad !important;
+  -ms-text-shadow: 0px 1px 0 #ffd1ad !important;
+  text-shadow: 0px 1px 0 #ffd1ad !important;
+}
+body.sweden .action-complete .z-label {
+  background-color: #6fa82d !important;
+  background-repeat: repeat-x !important;
+  background-image: -moz-linear-gradient(top, #97c43d, #6fa82d) !important;
+  background-image: -ms-linear-gradient(top, #97c43d, #6fa82d) !important;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #6fa82d)) !important;
+  background-image: -webkit-linear-gradient(top, #97c43d, #6fa82d) !important;
+  background-image: -o-linear-gradient(top, #97c43d, #6fa82d) !important;
+  background-image: linear-gradient(top, #97c43d, #6fa82d) !important;
+}
+body.sweden .action-complete:hover .z-label {
+  color: #1f290c !important;
+  background-color: #548022 !important;
+  background-repeat: repeat-x !important;
+  background-image: -moz-linear-gradient(top, #97c43d, #548022) !important;
+  background-image: -ms-linear-gradient(top, #97c43d, #548022) !important;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #548022)) !important;
+  background-image: -webkit-linear-gradient(top, #97c43d, #548022) !important;
+  background-image: -o-linear-gradient(top, #97c43d, #548022) !important;
+  background-image: linear-gradient(top, #97c43d, #548022) !important;
+  -webkit-text-shadow: 0px 1px 0 #b6d678 !important;
+  -moz-text-shadow: 0px 1px 0 #b6d678 !important;
+  -o-text-shadow: 0px 1px 0 #b6d678 !important;
+  -ms-text-shadow: 0px 1px 0 #b6d678 !important;
+  text-shadow: 0px 1px 0 #b6d678 !important;
+}
+body.sweden .action-accept .z-label {
+  background-color: #6fa82d !important;
+  background-repeat: repeat-x !important;
+  background-image: -moz-linear-gradient(top, #97c43d, #6fa82d) !important;
+  background-image: -ms-linear-gradient(top, #97c43d, #6fa82d) !important;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #6fa82d)) !important;
+  background-image: -webkit-linear-gradient(top, #97c43d, #6fa82d) !important;
+  background-image: -o-linear-gradient(top, #97c43d, #6fa82d) !important;
+  background-image: linear-gradient(top, #97c43d, #6fa82d) !important;
+}
+body.sweden .action-accept:hover .z-label {
+  color: #1f290c !important;
+  background-color: #548022 !important;
+  background-repeat: repeat-x !important;
+  background-image: -moz-linear-gradient(top, #97c43d, #548022) !important;
+  background-image: -ms-linear-gradient(top, #97c43d, #548022) !important;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #548022)) !important;
+  background-image: -webkit-linear-gradient(top, #97c43d, #548022) !important;
+  background-image: -o-linear-gradient(top, #97c43d, #548022) !important;
+  background-image: linear-gradient(top, #97c43d, #548022) !important;
+  -webkit-text-shadow: 0px 1px 0 #b6d678 !important;
+  -moz-text-shadow: 0px 1px 0 #b6d678 !important;
+  -o-text-shadow: 0px 1px 0 #b6d678 !important;
+  -ms-text-shadow: 0px 1px 0 #b6d678 !important;
+  text-shadow: 0px 1px 0 #b6d678 !important;
+}
+body.sweden .action-reject .z-label {
+  background-color: #a82d31 !important;
+  background-repeat: repeat-x !important;
+  background-image: -moz-linear-gradient(top, #c43d53, #a82d31) !important;
+  background-image: -ms-linear-gradient(top, #c43d53, #a82d31) !important;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #c43d53), color-stop(100%, #a82d31)) !important;
+  background-image: -webkit-linear-gradient(top, #c43d53, #a82d31) !important;
+  background-image: -o-linear-gradient(top, #c43d53, #a82d31) !important;
+  background-image: linear-gradient(top, #c43d53, #a82d31) !important;
+}
+body.sweden .action-reject:hover .z-label {
+  color: #290c11 !important;
+  background-color: #802225 !important;
+  background-repeat: repeat-x !important;
+  background-image: -moz-linear-gradient(top, #c43d53, #802225) !important;
+  background-image: -ms-linear-gradient(top, #c43d53, #802225) !important;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #c43d53), color-stop(100%, #802225)) !important;
+  background-image: -webkit-linear-gradient(top, #c43d53, #802225) !important;
+  background-image: -o-linear-gradient(top, #c43d53, #802225) !important;
+  background-image: linear-gradient(top, #c43d53, #802225) !important;
+  -webkit-text-shadow: 0px 1px 0 #d67887 !important;
+  -moz-text-shadow: 0px 1px 0 #d67887 !important;
+  -o-text-shadow: 0px 1px 0 #d67887 !important;
+  -ms-text-shadow: 0px 1px 0 #d67887 !important;
+  text-shadow: 0px 1px 0 #d67887 !important;
+}
+.color-swatch.sweden .theme-color-1 {
+  background: #034c8c;
+}
+.color-swatch.sweden .theme-color-2 {
+  background: #024873;
+}
+.color-swatch.sweden .theme-color-3 {
+  background: #f2d632;
+}
+body.pink #nav-trigger {
+  border-right: 1px solid #131313;
+  -webkit-box-shadow: 1px 0 0 0 #353535;
+  -moz-box-shadow: 1px 0 0 0 #353535;
+  -o-box-shadow: 1px 0 0 0 #353535;
+  -ms-box-shadow: 1px 0 0 0 #353535;
+  box-shadow: 1px 0 0 0 #353535;
+  color: #ffffff;
+}
+body.pink #nav-trigger:active {
+  -webkit-text-shadow: 0 1px 0 #727272;
+  -moz-text-shadow: 0 1px 0 #727272;
+  -o-text-shadow: 0 1px 0 #727272;
+  -ms-text-shadow: 0 1px 0 #727272;
+  text-shadow: 0 1px 0 #727272;
+}
+body.pink .textColor {
+  color: #545454;
+}
+body.pink .themeColor {
+  color: #323232;
+}
+body.pink .themeColor2 {
+  color: #565656;
+}
+body.pink .themeBackgroundColor {
+  background-color: #323232;
+}
+body.pink .themeBackgroundColor2 {
+  background-color: #565656;
+}
+body.pink .themeColor-important {
+  color: #323232 !important;
+}
+body.pink .themeColor2-important {
+  color: #565656 !important;
+}
+body.pink .themeBackgroundColor-important {
+  background-color: #323232 !important;
+}
+body.pink .themeBackgroundColor2-important {
+  background-color: #565656 !important;
+}
+body.pink .themeColor-focus {
+  -webkit-box-shadow: 0 0 1px 1px #323232;
+  -moz-box-shadow: 0 0 1px 1px #323232;
+  -o-box-shadow: 0 0 1px 1px #323232;
+  -ms-box-shadow: 0 0 1px 1px #323232;
+  box-shadow: 0 0 1px 1px #323232;
+}
+body.pink .juiportlet-widget-placeholder,
+body.pink .drop-zone {
+  border: 2px dashed #323232;
+}
+body.pink h1,
+body.pink h2,
+body.pink h3,
+body.pink h4,
+body.pink h5,
+body.pink h6 {
+  color: #323232;
+  -webkit-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+  -moz-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+  -o-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+  -ms-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+body.pink a:hover,
+body.pink .xhtml-validation-info,
+body.pink .performance-info,
+body.pink tr:hover .pencil,
+body.pink .ui-dialog .ui-dialog-title div.wide.form a,
+body.pink #kanban-board-options-link,
+body.pink #select-list-attributes-link,
+body.pink #more-search-linkmodal,
+body.pink #more-search-link,
+body.pink .search-form-tools,
+body.pink #inline-edit-form > table td > a,
+body.pink .AppContent.MassEditView .ui-state-highlight p,
+body.pink #ModulePermissionsEditAndDetailsView table tr:first-child th,
+body.pink .calendar-events-1 span,
+body.pink .calendar-events-2 span,
+body.pink .calendar-events-3 span,
+body.pink .calendar-events-4 span,
+body.pink .calendar-events-5 span,
+body.pink .calendar-events-6 span,
+body.pink .sortable-panel,
+body.pink .cell-element,
+body.pink .upload-actions .icon-delete,
+body.pink .badge-icon,
+body.pink .percentComplete,
+body.pink .qtip,
+body.pink .ui-tooltip-default .ui-tooltip-titlebar,
+body.pink .comment .delete-comment,
+body.pink .comment .edit-comment,
+body.pink .comment .delete-comment a,
+body.pink .comment .edit-comment a,
+body.pink .unread td,
+body.pink .unread td a,
+body.pink a.user-link,
+body.pink .SocialItemsListView .show-create-comment,
+body.pink .back-to-inbox-link,
+body.pink #AllSocialItemsForPortletView .show-create-comment,
+body.pink a.remove:hover .icon:after,
+body.pink .juiportlet-widget-head a.edit:hover .icon:after,
+body.pink a.more-panels-link,
+body.pink a.simple-link,
+body.pink a.simple-link .z-label,
+body.pink a.simple-select,
+body.pink .after-form-details-content a,
+body.pink .ui-dialog-title,
+body.pink .show-file-upload-box,
+body.pink .z-action-link,
+body.pink .showAllCommentsLink,
+body.pink .treeview span:hover .z-action-link,
+body.pink .drop-zone,
+body.pink .missing-chart,
+body.pink a.active-tab,
+body.pink .edit-autoresponder-link {
+  color: #323232;
+}
+body.pink #notifications-flyout .single-notification h4,
+body.pink .view-toolbar a:hover,
+body.pink .view-toolbar a:active,
+body.pink .view-toolbar a.active,
+body.pink .view-toolbar a.active span,
+body.pink .portlet-toolbar .icon-delete:before,
+body.pink .portlet-toolbar .icon-edit:before,
+body.pink .mini-pillbox a:hover,
+body.pink .mini-pillbox a.active,
+body.pink #StickyListMenu > li > a:hover > span,
+body.pink .addfileinput-button:hover span .pager a:hover:before,
+body.pink .pager a:hover:after,
+body.pink .ui-datepicker-header a:hover:before,
+body.pink .ui-datepicker-header a:hover:after,
+body.pink input[type="button"]:hover,
+body.pink input[type="button"]:hover:before,
+body.pink input[type="button"]:hover:after,
+body.pink .configuration-list li a:hover,
+body.pink .configuration-list li a:hover span:before,
+body.pink .configuration-list td:last-child a:hover,
+body.pink .configuration-list td:last-child a:hover span:before,
+body.pink .addfileinput-button:hover span,
+body.pink .mini-button:hover span,
+body.pink .hide-welcome span,
+body.pink .hide-module-intro span,
+body.pink .hide-marketing-intro span,
+body.pink #kanban-board-options-link:hover,
+body.pink #more-search-link:hover,
+body.pink #select-list-attributes-link:hover {
+  color: #565656;
+}
+body.pink .dynamic-search-row .remove-extra-dynamic-search-row-link:hover,
+body.pink #AboutView p a,
+body.pink #AboutView ul a,
+body.pink .back-to-app-menu-item span,
+body.pink .breadcrumbs a,
+body.pink .StepsAndProgressBarForWizardView .current-step {
+  color: #323232 !important;
+}
+body.pink .portlet-toolbar .icon-create:hover,
+body.pink .portlet-toolbar a:hover,
+body.pink .portlet-toolbar .icon-create:before,
+body.pink #filter-latest-activities-link:hover,
+body.pink .badge-message h3 {
+  color: #565656 !important;
+}
+body.pink #InstallAccessFailurePageView a,
+body.pink #ErrorPageView a,
+body.pink .ui-tooltip-default .ui-tooltip-icon,
+body.pink .zLink,
+body.pink .z-link,
+body.pink .lead-conversion-actions a,
+body.pink #clear-search-link,
+body.pink #show-filters-structure-div-link,
+body.pink .filters-bar .ui-state-active,
+body.pink .filters-bar label:hover,
+body.pink #clear-search-linkmodal,
+body.pink .StepsAndProgressBarForWizardView .progress-bar {
+  background-color: #323232;
+}
+body.pink .latest-activity-toolbar label:hover,
+body.pink .filter-portlet-model-bar label:hover,
+body.pink .latest-activity-toolbar .ui-state-active,
+body.pink .filter-portlet-model-bar .ui-state-active,
+body.pink #clear-search-link,
+body.pink #MashableInboxForm_filteredBy_area label:hover,
+body.pink #MashableInboxForm_optionForModel_area label:hover,
+body.pink #MashableInboxForm_filteredBy_area .ui-state-active,
+body.pink #MashableInboxForm_optionForModel_area .ui-state-active {
+  background-color: #323232 !important;
+}
+body.pink #MyMissionsForPortletView .filter-portlet-model-bar label a:hover,
+body.pink #MyMissionsForPortletView .filter-portlet-model-bar .ui-state-active,
+body.pink .points,
+body.pink .ranking,
+body.pink .badge-grade,
+body.pink li.token-input-selected-token {
+  background-color: #565656;
+}
+body.pink .ui-autocomplete a:hover,
+body.pink .ui-autocomplete a#ui-active-menuitem,
+body.pink .ui-autocomplete a.ui-state-hover,
+body.pink #StickyListMenu ul a:hover,
+body.pink .toolbar-mbmenu .options-menu ul a:hover,
+body.pink #ShortcutsMenu ul a:hover,
+body.pink .view-toolbar .parent > ul a:hover,
+body.pink .edit-row-menu ul a:hover,
+body.pink .edit-portlet-menu ul a:hover {
+  background-color: #565656 !important;
+  color: #fff !important;
+}
+body.pink #HeaderView {
+  background: #181818;
+  -webkit-box-shadow: inset 0 10px 50px 0 #323232;
+  -moz-box-shadow: inset 0 10px 50px 0 #323232;
+  -o-box-shadow: inset 0 10px 50px 0 #323232;
+  -ms-box-shadow: inset 0 10px 50px 0 #323232;
+  box-shadow: inset 0 10px 50px 0 #323232;
+}
+body.pink #HeaderLinksView + div {
+  background-color: #ff4f84;
+  background-repeat: repeat-x;
+  background-image: -moz-linear-gradient(top, #ff253d, #ff4f84);
+  background-image: -ms-linear-gradient(top, #ff253d, #ff4f84);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ff253d), color-stop(100%, #ff4f84));
+  background-image: -webkit-linear-gradient(top, #ff253d, #ff4f84);
+  background-image: -o-linear-gradient(top, #ff253d, #ff4f84);
+  background-image: linear-gradient(top, #ff253d, #ff4f84);
+}
+body.pink #HeaderLinksView ul ul a:hover {
+  color: #fff !important;
+  background-color: #303030;
+  background-repeat: repeat-x;
+  background-image: -moz-linear-gradient(top, #565656, #303030);
+  background-image: -ms-linear-gradient(top, #565656, #303030);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #565656), color-stop(100%, #303030));
+  background-image: -webkit-linear-gradient(top, #565656, #303030);
+  background-image: -o-linear-gradient(top, #565656, #303030);
+  background-image: linear-gradient(top, #565656, #303030);
+}
+body.pink #user-header-menu > li > a:hover,
+body.pink #settings-header-menu > li > a:hover {
+  border-left: 1px solid #181818;
+  border-right: 1px solid #181818;
+}
+body.pink #MenuView a > span {
+  -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
+  -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
+  -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
+  -ms-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
+  text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
+}
+body.pink #MenuView li.active > a > span,
+body.pink #MenuView a:hover > span {
+  background-color: #565656;
+  -webkit-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -moz-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -o-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+}
+body.pink #RecentlyViewedView a > span:first-child {
+  background-color: #565656;
+  -webkit-text-shadow: 0px 1px 0 #acd064;
+  -moz-text-shadow: 0px 1px 0 #acd064;
+  -o-text-shadow: 0px 1px 0 #acd064;
+  -ms-text-shadow: 0px 1px 0 #acd064;
+  text-shadow: 0px 1px 0 #acd064;
+}
+body.pink #RecentlyViewedView a:hover > span {
+  -webkit-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -moz-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -o-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+}
+body.pink #RecentlyViewedView a:hover em {
+  color: #323232 !important;
+  -webkit-text-shadow: 0px 1px 0 #acd064;
+  -moz-text-shadow: 0px 1px 0 #acd064;
+  -o-text-shadow: 0px 1px 0 #acd064;
+  -ms-text-shadow: 0px 1px 0 #acd064;
+  text-shadow: 0px 1px 0 #acd064;
+}
+body.pink #MenuView ul ul li a:hover {
+  background-color: #303030;
+  background-repeat: repeat-x;
+  background-image: -moz-linear-gradient(top, #565656, #303030);
+  background-image: -ms-linear-gradient(top, #565656, #303030);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #565656), color-stop(100%, #303030));
+  background-image: -webkit-linear-gradient(top, #565656, #303030);
+  background-image: -o-linear-gradient(top, #565656, #303030);
+  background-image: linear-gradient(top, #565656, #303030);
+}
+body.pink .ZeroModelsYetView a .z-label,
+body.pink .dashboard-link .z-label,
+body.pink .attachLoading .z-label {
+  color: #fff;
+  background-color: #799e30;
+  background-repeat: repeat-x;
+  background-image: -moz-linear-gradient(top, #97c43d, #799e30);
+  background-image: -ms-linear-gradient(top, #97c43d, #799e30);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #799e30));
+  background-image: -webkit-linear-gradient(top, #97c43d, #799e30);
+  background-image: -o-linear-gradient(top, #97c43d, #799e30);
+  background-image: linear-gradient(top, #97c43d, #799e30);
+  -webkit-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -moz-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -o-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+}
+body.pink .zButton:hover .z-label,
+body.pink .z-button:hover .z-label,
+body.pink .zButton:active .z-label,
+body.pink .z-button:active .z-label {
+  color: #1f290c !important;
+  background-color: #5b7724;
+  background-repeat: repeat-x;
+  background-image: -moz-linear-gradient(top, #97c43d, #5b7724);
+  background-image: -ms-linear-gradient(top, #97c43d, #5b7724);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #5b7724));
+  background-image: -webkit-linear-gradient(top, #97c43d, #5b7724);
+  background-image: -o-linear-gradient(top, #97c43d, #5b7724);
+  background-image: linear-gradient(top, #97c43d, #5b7724);
+  -webkit-text-shadow: 0px 1px 0 #b6d678 !important;
+  -moz-text-shadow: 0px 1px 0 #b6d678 !important;
+  -o-text-shadow: 0px 1px 0 #b6d678 !important;
+  -ms-text-shadow: 0px 1px 0 #b6d678 !important;
+  text-shadow: 0px 1px 0 #b6d678 !important;
+}
+body.pink .zButton:active .z-label,
+body.pink .z-button:active .z-label {
+  -webkit-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
+  -moz-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
+  -o-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
+  -ms-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
+  box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
+}
+body.pink .ui-datepicker-current:hover .z-label,
+body.pink .ui-datepicker-close:hover .z-label,
+body.pink .ui-datepicker-current:active .z-label,
+body.pink .ui-datepicker-close:active .z-label,
+body.pink .zButton:not(.attachLoading):hover .z-label,
+body.pink .z-button:not(.attachLoading):hover .z-label,
+body.pink .zButton:not(.attachLoading):active .z-label,
+body.pink .z-button:not(.attachLoading):active .z-label,
+body.pink .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover .z-label,
+body.pink .portlet-toolbar a:not(.attachLoading):not(.simple-link):hover .z-label,
+body.pink .form-toolbar a:not(.attachLoading):not(.green-button):hover .z-label,
+body.pink .form-toolbar a:not(.z-button):not(.green-button):hover .z-label,
+body.pink .configuration-list li a:hover .z-label,
+body.pink .white-button:hover .z-label,
+body.pink .white-button:hover .z-label {
+  color: #565656 !important;
+  background-color: #ededed !important;
+  background-repeat: repeat-x !important;
+  background-image: -moz-linear-gradient(top, #fefefe, #ededed) !important;
+  background-image: -ms-linear-gradient(top, #fefefe, #ededed) !important;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #fefefe), color-stop(100%, #ededed)) !important;
+  background-image: -webkit-linear-gradient(top, #fefefe, #ededed) !important;
+  background-image: -o-linear-gradient(top, #fefefe, #ededed) !important;
+  background-image: linear-gradient(top, #fefefe, #ededed) !important;
+  -webkit-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  -moz-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  -o-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  -ms-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+}
+body.pink a.green-button > .z-label,
+body.pink a.dashboard-link > .z-label {
+  color: #fff !important;
+  background-color: #799e30 !important;
+  background-repeat: repeat-x !important;
+  background-image: -moz-linear-gradient(top, #97c43d, #799e30) !important;
+  background-image: -ms-linear-gradient(top, #97c43d, #799e30) !important;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #799e30)) !important;
+  background-image: -webkit-linear-gradient(top, #97c43d, #799e30) !important;
+  background-image: -o-linear-gradient(top, #97c43d, #799e30) !important;
+  background-image: linear-gradient(top, #97c43d, #799e30) !important;
+  -webkit-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -moz-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -o-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+}
+body.pink #LanguagesCollectionView .green-button:hover .z-label,
+body.pink .green-button:not(.attachLoading):hover .z-label,
+body.pink .dashboard-link:not(.attachLoading):hover .z-label {
+  color: #1f290c !important;
+  background-color: #5b7724 !important;
+  background-repeat: repeat-x !important;
+  background-image: -moz-linear-gradient(top, #97c43d, #5b7724) !important;
+  background-image: -ms-linear-gradient(top, #97c43d, #5b7724) !important;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #5b7724)) !important;
+  background-image: -webkit-linear-gradient(top, #97c43d, #5b7724) !important;
+  background-image: -o-linear-gradient(top, #97c43d, #5b7724) !important;
+  background-image: linear-gradient(top, #97c43d, #5b7724) !important;
+  -webkit-text-shadow: 0px 1px 0 #b6d678 !important;
+  -moz-text-shadow: 0px 1px 0 #b6d678 !important;
+  -o-text-shadow: 0px 1px 0 #b6d678 !important;
+  -ms-text-shadow: 0px 1px 0 #b6d678 !important;
+  text-shadow: 0px 1px 0 #b6d678 !important;
+}
+body.pink .green-button:active .z-label,
+body.pink .dashboard-link:active .z-label {
+  -webkit-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF !important;
+  -moz-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF !important;
+  -o-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF !important;
+  -ms-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF !important;
+  box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF !important;
+}
+body.pink .notifications-link:hover {
+  border-left: 1px solid #181818;
+  border-right: 1px solid #181818;
+}
+body.pink #notifications-link {
+  border-left: 1px solid #181818;
+  border-right: 1px solid #181818;
+}
+body.pink .ui-datepicker td.ui-datepicker-today {
+  background: #b2b2b2 !important;
+}
+body.pink .LatestActivitiesListView .latest-activity-toolbar > div:first-child,
+body.pink .LatestActivitiesView .latest-activity-toolbar > div:first-child {
+  border-right: 2px solid #323232;
+}
+body.pink .form input[type="checkbox"]:focus,
+body.pink .form input[type="text"]:focus,
+body.pink .form input[type="password"]:focus,
+body.pink .form select.multiple:focus,
+body.pink .form textarea:focus,
+body.pink .hasDropDown select:focus,
+body.pink .hasDropDown select:hover,
+body.pink .hasDropDown:hover select,
+body.pink ul.token-input-list:focus,
+body.pink #layout-container .ui-state-active,
+body.pink #layout-container .ui-widget-content .ui-state-active,
+body.pink #layout-container .ui-widget-header .ui-state-active {
+  -webkit-box-shadow: 0 0 1px 1px #323232;
+  -moz-box-shadow: 0 0 1px 1px #323232;
+  -o-box-shadow: 0 0 1px 1px #323232;
+  -ms-box-shadow: 0 0 1px 1px #323232;
+  box-shadow: 0 0 1px 1px #323232;
+}
+body.pink .action-take .z-label {
+  background-color: #ffad43 !important;
+  background-repeat: repeat-x !important;
+  background-image: -moz-linear-gradient(top, #ffa660, #ffad43) !important;
+  background-image: -ms-linear-gradient(top, #ffa660, #ffad43) !important;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffa660), color-stop(100%, #ffad43)) !important;
+  background-image: -webkit-linear-gradient(top, #ffa660, #ffad43) !important;
+  background-image: -o-linear-gradient(top, #ffa660, #ffad43) !important;
+  background-image: linear-gradient(top, #ffa660, #ffad43) !important;
+}
+body.pink .action-take:hover .z-label {
+  color: #934100 !important;
+  background-color: #ff9710 !important;
+  background-repeat: repeat-x !important;
+  background-image: -moz-linear-gradient(top, #ffa660, #ff9710) !important;
+  background-image: -ms-linear-gradient(top, #ffa660, #ff9710) !important;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffa660), color-stop(100%, #ff9710)) !important;
+  background-image: -webkit-linear-gradient(top, #ffa660, #ff9710) !important;
+  background-image: -o-linear-gradient(top, #ffa660, #ff9710) !important;
+  background-image: linear-gradient(top, #ffa660, #ff9710) !important;
+  -webkit-text-shadow: 0px 1px 0 #ffd1ad !important;
+  -moz-text-shadow: 0px 1px 0 #ffd1ad !important;
+  -o-text-shadow: 0px 1px 0 #ffd1ad !important;
+  -ms-text-shadow: 0px 1px 0 #ffd1ad !important;
+  text-shadow: 0px 1px 0 #ffd1ad !important;
+}
+body.pink .action-complete .z-label {
+  background-color: #6fa82d !important;
+  background-repeat: repeat-x !important;
+  background-image: -moz-linear-gradient(top, #97c43d, #6fa82d) !important;
+  background-image: -ms-linear-gradient(top, #97c43d, #6fa82d) !important;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #6fa82d)) !important;
+  background-image: -webkit-linear-gradient(top, #97c43d, #6fa82d) !important;
+  background-image: -o-linear-gradient(top, #97c43d, #6fa82d) !important;
+  background-image: linear-gradient(top, #97c43d, #6fa82d) !important;
+}
+body.pink .action-complete:hover .z-label {
+  color: #1f290c !important;
+  background-color: #548022 !important;
+  background-repeat: repeat-x !important;
+  background-image: -moz-linear-gradient(top, #97c43d, #548022) !important;
+  background-image: -ms-linear-gradient(top, #97c43d, #548022) !important;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #548022)) !important;
+  background-image: -webkit-linear-gradient(top, #97c43d, #548022) !important;
+  background-image: -o-linear-gradient(top, #97c43d, #548022) !important;
+  background-image: linear-gradient(top, #97c43d, #548022) !important;
+  -webkit-text-shadow: 0px 1px 0 #b6d678 !important;
+  -moz-text-shadow: 0px 1px 0 #b6d678 !important;
+  -o-text-shadow: 0px 1px 0 #b6d678 !important;
+  -ms-text-shadow: 0px 1px 0 #b6d678 !important;
+  text-shadow: 0px 1px 0 #b6d678 !important;
+}
+body.pink .action-accept .z-label {
+  background-color: #6fa82d !important;
+  background-repeat: repeat-x !important;
+  background-image: -moz-linear-gradient(top, #97c43d, #6fa82d) !important;
+  background-image: -ms-linear-gradient(top, #97c43d, #6fa82d) !important;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #6fa82d)) !important;
+  background-image: -webkit-linear-gradient(top, #97c43d, #6fa82d) !important;
+  background-image: -o-linear-gradient(top, #97c43d, #6fa82d) !important;
+  background-image: linear-gradient(top, #97c43d, #6fa82d) !important;
+}
+body.pink .action-accept:hover .z-label {
+  color: #1f290c !important;
+  background-color: #548022 !important;
+  background-repeat: repeat-x !important;
+  background-image: -moz-linear-gradient(top, #97c43d, #548022) !important;
+  background-image: -ms-linear-gradient(top, #97c43d, #548022) !important;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #548022)) !important;
+  background-image: -webkit-linear-gradient(top, #97c43d, #548022) !important;
+  background-image: -o-linear-gradient(top, #97c43d, #548022) !important;
+  background-image: linear-gradient(top, #97c43d, #548022) !important;
+  -webkit-text-shadow: 0px 1px 0 #b6d678 !important;
+  -moz-text-shadow: 0px 1px 0 #b6d678 !important;
+  -o-text-shadow: 0px 1px 0 #b6d678 !important;
+  -ms-text-shadow: 0px 1px 0 #b6d678 !important;
+  text-shadow: 0px 1px 0 #b6d678 !important;
+}
+body.pink .action-reject .z-label {
+  background-color: #a82d31 !important;
+  background-repeat: repeat-x !important;
+  background-image: -moz-linear-gradient(top, #c43d53, #a82d31) !important;
+  background-image: -ms-linear-gradient(top, #c43d53, #a82d31) !important;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #c43d53), color-stop(100%, #a82d31)) !important;
+  background-image: -webkit-linear-gradient(top, #c43d53, #a82d31) !important;
+  background-image: -o-linear-gradient(top, #c43d53, #a82d31) !important;
+  background-image: linear-gradient(top, #c43d53, #a82d31) !important;
+}
+body.pink .action-reject:hover .z-label {
+  color: #290c11 !important;
+  background-color: #802225 !important;
+  background-repeat: repeat-x !important;
+  background-image: -moz-linear-gradient(top, #c43d53, #802225) !important;
+  background-image: -ms-linear-gradient(top, #c43d53, #802225) !important;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #c43d53), color-stop(100%, #802225)) !important;
+  background-image: -webkit-linear-gradient(top, #c43d53, #802225) !important;
+  background-image: -o-linear-gradient(top, #c43d53, #802225) !important;
+  background-image: linear-gradient(top, #c43d53, #802225) !important;
+  -webkit-text-shadow: 0px 1px 0 #d67887 !important;
+  -moz-text-shadow: 0px 1px 0 #d67887 !important;
+  -o-text-shadow: 0px 1px 0 #d67887 !important;
+  -ms-text-shadow: 0px 1px 0 #d67887 !important;
+  text-shadow: 0px 1px 0 #d67887 !important;
+}
+.color-swatch.pink .theme-color-1 {
+  background: #323232;
+}
+.color-swatch.pink .theme-color-2 {
+  background: #565656;
+}
+.color-swatch.pink .theme-color-3 {
+  background: #ff253d;
+}
 body.brown #nav-trigger {
   border-right: 1px solid #3c565b;
   -webkit-box-shadow: 1px 0 0 0 #567c83;
@@ -4798,6 +8729,78 @@ body.paper,
 body.light-toast,
 .texture-swatch.light-toast .background-texture-1 {
   background: url(../patterns/light-toast/light-toast.png) left top repeat !important;
+}
+body.black-linen-2,
+.texture-swatch.black-linen-2 .background-texture-1 {
+  background: url(../patterns/black_linen_v2/black_linen_v2.png) left top repeat !important;
+}
+body.bo-play,
+.texture-swatch.bo-play .background-texture-1 {
+  background: url(../patterns/bo_play_pattern/bo_play_pattern.png) left top repeat !important;
+}
+body.carbon-fibre,
+.texture-swatch.carbon-fibre .background-texture-1 {
+  background: url(../patterns/carbon_fibre/carbon_fibre.png) left top repeat !important;
+}
+body.carbon-fibre-big,
+.texture-swatch.carbon-fibre-big .background-texture-1 {
+  background: url(../patterns/carbon_fibre_big/carbon_fibre_big.png) left top repeat !important;
+}
+body.cartographer,
+.texture-swatch.cartographer .background-texture-1 {
+  background: url(../patterns/cartographer/cartographer.png) left top repeat !important;
+}
+body.circles,
+.texture-swatch.circles .background-texture-1 {
+  background: url(../patterns/circles/circles.png) left top repeat !important;
+}
+body.concrete-wall,
+.texture-swatch.concrete-wall .background-texture-1 {
+  background: url(../patterns/concrete_wall/concrete_wall.png) left top repeat !important;
+}
+body.dark-wood,
+.texture-swatch.dark-wood .background-texture-1 {
+  background: url(../patterns/dark_wood/dark_wood.png) left top repeat !important;
+}
+body.dark-wood-2,
+.texture-swatch.dark-wood-2 .background-texture-1 {
+  background: url(../patterns/dark_wood2/dark_wood.png) left top repeat !important;
+}
+body.denim,
+.texture-swatch.denim .background-texture-1 {
+  background: url(../patterns/denim/denim.png) left top repeat !important;
+}
+body.gun-metal,
+.texture-swatch.gun-metal .background-texture-1 {
+  background: url(../patterns/gun_metal/gun_metal.png) left top repeat !important;
+}
+body.low-contrast-linen,
+.texture-swatch.low-contrast-linen .background-texture-1 {
+  background: url(../patterns/low_contrast_linen/low_contrast_linen.png) left top repeat !important;
+}
+body.micro-carbon,
+.texture-swatch.micro-carbon .background-texture-1 {
+  background: url(../patterns/micro_carbon/micro_carbon.png) left top repeat !important;
+}
+body.vertical-cloth,
+.texture-swatch.vertical-cloth .background-texture-1 {
+  background: url(../patterns/vertical_cloth/vertical_cloth.png) left top repeat !important;
+}
+body.wood,
+.texture-swatch.wood .background-texture-1 {
+  background: url(../patterns/wood-pattern/wood-pattern.png) left top repeat !important;
+}
+body.whity,
+.texture-swatch.whity .background-texture-1 {
+  background: url(../patterns/whitey/whitey.png) left top repeat !important;
+}
+body.fabric-plaid,
+.texture-swatch.fabric-plaid .background-texture-1 {
+  background: url(../patterns/fabric_plaid/fabric_plaid.png) left top repeat !important;
+}
+body.cartographer-light,
+.texture-swatch.cartographer-light .background-texture-1 {
+  background: url(../patterns/cartographer-light/cartographer-light.png) left top repeat !important;
 }
 /*END COLOR SCHEME/THEME*//*
 @font-face {
@@ -13057,6 +17060,10 @@ table.configuration-list td:last-child a .z-label:before {
 .color-swatch,
 .texture-swatch {
   margin-bottom: 10px;
+  width: 50%;
+  float: left;
+  display: inline-block !important;
+  clear: none;
 }
 .color-swatch span,
 .texture-swatch span {
@@ -19360,26 +23367,106 @@ a + .autoresponder-stats {
 #kanban-holder.kanban-background-football {
   background: #ffffff url(../images/kanban/football.jpg) left bottom no-repeat;
 }
-#kanban-holder.kanban-background-tennis {
-  background: #ffffff url(../images/kanban/tennis.jpg) left bottom no-repeat;
-}
-#kanban-holder.kanban-background-motor {
-  background: #ffffff url(../images/kanban/asphalt.jpg) center bottom no-repeat;
-}
-#kanban-holder.kanban-background-yoga {
-  background: #ffffff url(../images/kanban/yoga.jpg) right top no-repeat;
-}
 .kanban-background-football .background-texture-1 {
   background: #ffffff url(../images/kanban/swatch-football.jpg) left top no-repeat;
+}
+#kanban-holder.kanban-background-tennis {
+  background: #ffffff url(../images/kanban/tennis.jpg) left bottom no-repeat;
 }
 .kanban-background-tennis .background-texture-1 {
   background: #ffffff url(../images/kanban/swatch-tennis.jpg) left top no-repeat;
 }
+#kanban-holder.kanban-background-motor {
+  background: #ffffff url(../images/kanban/asphalt.jpg) center bottom no-repeat;
+}
 .kanban-background-motor .background-texture-1 {
   background: #ffffff url(../images/kanban/swatch-asphalt.jpg) left top no-repeat;
 }
+#kanban-holder.kanban-background-yoga {
+  background: #ffffff url(../images/kanban/yoga.jpg) right top no-repeat;
+}
 .kanban-background-yoga .background-texture-1 {
   background: #ffffff url(../images/kanban/swatch-yoga.jpg) left top no-repeat;
+}
+#kanban-holder.kanban-background-abstract-1,
+.kanban-background-abstract-1 .background-texture-1 {
+  background: #ffffff url(../images/kanban/abstract-1.jpg) right top no-repeat;
+  background-repeat: repeat;
+}
+#kanban-holder.kanban-background-abstract-2,
+.kanban-background-abstract-2 .background-texture-1 {
+  background: #ffffff url(../images/kanban/stock-illustration-4008181-vector-defocus-light-yellowish-blue.jpg) right top no-repeat;
+  background-size: 100%;
+}
+#kanban-holder.kanban-background-abstract-3,
+.kanban-background-abstract-3 .background-texture-1 {
+  background: #ffffff url(../images/kanban/stock-illustration-23184125-blurred-defocused-lights-on-rainy-city-road-at-night.jpg) right top no-repeat;
+  background-size: 100%;
+}
+#kanban-holder.kanban-background-abstract-4,
+.kanban-background-abstract-4 .background-texture-1 {
+  background: #ffffff url(../images/kanban/blur1.png) right top no-repeat;
+  background-size: 100%;
+}
+#kanban-holder.kanban-background-beach-1,
+.kanban-background-beach-1 .background-texture-1 {
+  background: #ffffff url(../images/kanban/stock-photo-21554296-perfect-beach.jpg) right top no-repeat;
+  background-size: 100%;
+}
+#kanban-holder.kanban-background-beach-2,
+.kanban-background-beach-2 .background-texture-1 {
+  background: #ffffff url(../images/kanban/stock-photo-21320336-beautiful-silhouette-sunset-at-tropical-sea.jpg) right top no-repeat;
+  background-size: 100%;
+}
+#kanban-holder.kanban-background-beach-3,
+.kanban-background-beach-3 .background-texture-1 {
+  background: #ffffff url(../images/kanban/stock-photo-13565146-beach-and-tropical-sea.jpg) right top no-repeat;
+  background-size: 100%;
+}
+#kanban-holder.kanban-background-beach-4,
+.kanban-background-beach-4 .background-texture-1 {
+  background: #ffffff url(../images/kanban/stock-photo-23922431-flip-flops-with-blue-decking.jpg) right top no-repeat;
+  background-size: 100%;
+}
+#kanban-holder.kanban-background-map-1,
+.kanban-background-map-1 .background-texture-1 {
+  background: #ffffff url(../images/kanban/stock-photo-15952750-compass-rose-on-old-paper.jpg) right bottom no-repeat;
+  background-size: auto 100%;
+}
+#kanban-holder.kanban-background-map-2,
+.kanban-background-map-2 .background-texture-1 {
+  background: #ffffff url(../images/kanban/stock-photo-18100313-antique-decorative-world-map-high-resolution-image.jpg) right top no-repeat;
+  background-size: 100%;
+}
+#kanban-holder.kanban-background-vintage-1,
+.kanban-background-vintage-1 .background-texture-1 {
+  background: #ffffff url(../images/kanban/tumblr_mrnp8euXEX1sfie3io1_1280.jpg) center top no-repeat;
+  background-size: 100%;
+}
+#kanban-holder.kanban-background-vintage-2,
+.kanban-background-vintage-2 .background-texture-1 {
+  background: #ffffff url(../images/kanban/tumblr_mrnoo09mgV1sfie3io1_1280.jpg) center top no-repeat;
+  background-size: 100%;
+}
+#kanban-holder.kanban-background-vintage-3,
+.kanban-background-vintage-3 .background-texture-1 {
+  background: #ffffff url(../images/kanban/tumblr_mrnp1zPNNc1sfie3io1_1280.jpg) center top no-repeat;
+  background-size: 100%;
+}
+#kanban-holder.kanban-background-van-gogh,
+.kanban-background-van-gogh .background-texture-1 {
+  background: #ffffff url(../images/kanban/van-gogh.jpg) center top no-repeat;
+  background-size: 100%;
+}
+#kanban-holder.kanban-background-miro,
+.kanban-background-miro .background-texture-1 {
+  background: #ffffff url(../images/kanban/miro.jpg) center top no-repeat;
+  background-size: 100%;
+}
+#kanban-holder.kanban-background-wave,
+.kanban-background-wave .background-texture-1 {
+  background: #ffffff url(../images/kanban/wave.jpg) center top no-repeat;
+  background-size: 100%;
 }
 #kanban-board {
   display: table;

@@ -110,21 +110,20 @@
 
         public function getThemeColorNamesAndLabels()
         {
-            $data = array('blue'       => Zurmo::t('Core', 'Blue'),
-                          'brown'      => Zurmo::t('Core', 'Brown'),
-                          'cherry'     => Zurmo::t('Core', 'Cherry'),
-                          'honey'      => Zurmo::t('Core', 'Honey'),
-                          'lime'       => Zurmo::t('Core', 'Lime'),
-                          'turquoise'  => Zurmo::t('Core', 'Turquoise'),
-                          'violet'     => Zurmo::t('Core', 'Violet'),
-                          'theme7'     => 2,
-                          'theme8'     => 3,
-                          'theme9'     => 4,
-                          'theme10'    => 7,
-                          'theme11'    => 9,
-                          'theme12'    => 12,
-                          'theme13'    => 15,
-            );
+            $data = array('blue'        => Zurmo::t('Core', 'Blue'),
+                          'brown'       => Zurmo::t('Core', 'Brown'),
+                          'cherry'      => Zurmo::t('Core', 'Cherry'),
+                          'honey'       => Zurmo::t('Core', 'Honey'),
+                          'lime'        => Zurmo::t('Core', 'Lime'),
+                          'turquoise'   => Zurmo::t('Core', 'Turquoise'),
+                          'violet'      => Zurmo::t('Core', 'Violet'),
+                          'sunrise'     => Zurmo::t('Core', 'Sunrise'),
+                          'marble'      => Zurmo::t('Core', 'Marble'),
+                          'purple-haze' => Zurmo::t('Core', 'Purple Haze'),
+                          'flat-cement' => Zurmo::t('Core', 'Flat Cement'),
+                          'amazon'      => Zurmo::t('Core', 'Amazon'),
+                          'sweden'      => Zurmo::t('Core', 'Sweden'),
+                          'pink'        => Zurmo::t('Core', 'Pink'));
             return $data;
         }
 
@@ -136,51 +135,72 @@
                           'light-toast'           => Zurmo::t('Core', 'Light Toast'),
                           'diagonal-noise'        => Zurmo::t('Core', 'Noise'),
                           'paper'                 => Zurmo::t('Core', 'Paper'),
-                          'background7'     => 2,
-                          'background8'     => 5,
-                          'background9'     => 7,
-                          'background10'    => 9,
-                          'background11'    => 11,
-                          'background12'    => 13,
-            );
+                          'circles'               => Zurmo::t('Core', 'Circle'),
+                          'whity'                 => Zurmo::t('Core', 'Whity'),
+                          'fabric-plaid'          => Zurmo::t('Core', 'Fabric Plaid'),
+                          'cartographer-light'    => Zurmo::t('Core', 'Cartographer Light'),
+                          'wood'                  => Zurmo::t('Core', 'Wood'),
+                          'black-linen-2'         => Zurmo::t('Core', 'Black Linen 2'),
+                          'bo-play'               => Zurmo::t('Core', 'Bo Play'),
+                          'carbon-fibre'          => Zurmo::t('Core', 'Carbon Fibre'),
+                          'carbon-fibre-big'      => Zurmo::t('Core', 'Carbon Fibre Big'),
+                          'cartographer'          => Zurmo::t('Core', 'Cartographer'),
+                          'concrete-wall'         => Zurmo::t('Core', 'Concrete Wall'),
+                          'dark-wood'             => Zurmo::t('Core', 'Dark Wood'),
+                          'dark-wood-2'           => Zurmo::t('Core', 'Dark Wood 2'),
+                          'denim'                 => Zurmo::t('Core', 'Denim'),
+                          'gun-metal'             => Zurmo::t('Core', 'Gun Metal'),
+                          'low-contrast-linen'    => Zurmo::t('Core', 'Low Contrast Linen'),
+                          'micro-carbon'          => Zurmo::t('Core', 'Micro Carbon'),
+                          'vertical-cloth'        => Zurmo::t('Core', 'Vertical Cloth'));
             return $data;
         }
 
         public function getThemeColorNamesAndUnlockedAtLevel()
         {
-            $data = array(  'blue'       => 1,
-                            'brown'      => 1,
-                            'cherry'     => 1,
-                            'honey'      => 1,
-                            'lime'       => 1,
-                            'turquoise'  => 1,
-                            'violet'     => 1,
-                            'theme7'     => 4,
-                            'theme8'     => 6,
-                            'theme9'     => 8,
-                            'theme10'    => 10,
-                            'theme11'    => 12,
-                            'theme12'    => 14,
-                            'theme13'    => 16,
-            );
+            $data = array('blue'        => 1,
+                          'brown'       => 1,
+                          'cherry'      => 1,
+                          'honey'       => 1,
+                          'lime'        => 1,
+                          'turquoise'   => 1,
+                          'violet'      => 1,
+                          'sunrise'     => 1,
+                          'marble'      => 1,
+                          'purple-haze' => 1,
+                          'flat-cement' => 1,
+                          'amazon'      => 1,
+                          'sweden'      => 1,
+                          'pink'        => 1);
             return $data;
         }
 
         public function getBackgroundTextureNamesAndUnlockedAtLevel()
         {
-            $data = array('exclusive-paper'      => 1,
-                          'french-stucco'        => 1,
-                          'light-noise-diagonal' => 1,
-                          'light-toast'          => 1,
-                          'diagonal-noise'       => 1,
-                          'paper'                => 1,
-                          'background7'          => 2,
-                          'background8'          => 3,
-                          'background9'          => 4,
-                          'background10'         => 7,
-                          'background11'         => 9,
-                          'background12'         => 12,
-            );
+            $data = array('exclusive-paper'       => 1,
+                          'french-stucco'         => 1,
+                          'light-noise-diagonal'  => 1,
+                          'light-toast'           => 1,
+                          'diagonal-noise'        => 1,
+                          'paper'                 => 1,
+                          'circles'               => 1,
+                          'whity'                 => 1,
+                          'fabric-plaid'          => 1,
+                          'cartographer-light'    => 1,
+                          'wood'                  => 1,
+                          'black-linen-2'         => 1,
+                          'bo-play'               => 1,
+                          'carbon-fibre'          => 1,
+                          'carbon-fibre-big'      => 1,
+                          'cartographer'          => 1,
+                          'concrete-wall'         => 1,
+                          'dark-wood'             => 1,
+                          'dark-wood-2'           => 1,
+                          'denim'                 => 1,
+                          'gun-metal'             => 1,
+                          'low-contrast-linen'    => 1,
+                          'micro-carbon'          => 1,
+                          'vertical-cloth'        => 1);
             return $data;
         }
     }

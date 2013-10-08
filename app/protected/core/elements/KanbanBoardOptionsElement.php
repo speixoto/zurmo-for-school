@@ -116,11 +116,12 @@
 
         protected function getEditableThemeHtmlOptions()
         {
-            $htmlOptions             = array();
-            $htmlOptions['id']       = $this->getEditableInputId(KanbanBoard::SELECTED_THEME);
-            $htmlOptions['template'] =  '<div class="radio-input texture-swatch {value}">{input}<span class="background-texture-1">' .
-                                        '</span>{label}</div>';
-            $htmlOptions['class']    = 'ignore-clearform';
+            $htmlOptions              = array();
+            $htmlOptions['id']        = $this->getEditableInputId(KanbanBoard::SELECTED_THEME);
+            $htmlOptions['separator'] = '';
+            $htmlOptions['template']  = '<div class="radio-input texture-swatch {value}">{input}<span class="background-texture-1">' .
+                '</span>{label}</div>';
+            $htmlOptions['class']     = 'ignore-clearform';
             return $htmlOptions;
         }
 
