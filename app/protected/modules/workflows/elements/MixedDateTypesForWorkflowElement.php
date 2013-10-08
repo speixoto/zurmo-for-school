@@ -71,6 +71,8 @@
                     TYPE_AT_LEAST_X_AFTER_TRIGGERED_DATE] = Zurmo::t('Core', 'At Least X After Triggered Date');
                 $valueTypesAndLabels[MixedDateTypesTriggerForWorkflowFormAttributeMappingRules::
                     TYPE_AT_LEAST_X_BEFORE_TRIGGERED_DATE] = Zurmo::t('Core', 'At Least X Before Triggered Date');
+                $valueTypesAndLabels[MixedDateTypesTriggerForWorkflowFormAttributeMappingRules::
+                    TYPE_LESS_THAN_X_AFTER_TRIGGERED_DATE] = Zurmo::t('Core', 'Less Than X After Triggered Date');
                 $valueTypesAndLabels[MixedDateTypesSearchFormAttributeMappingRules::TYPE_DOES_NOT_CHANGE] = Zurmo::t('Core', 'Does Not Change');
                 $valueTypesAndLabels[MixedDateTypesSearchFormAttributeMappingRules::TYPE_CHANGES]         = Zurmo::t('Core', 'Changes');
                 if ($this->model->getAttribute() != 'createdDateTime' && $this->model->getAttribute() != 'modifiedDateTime')

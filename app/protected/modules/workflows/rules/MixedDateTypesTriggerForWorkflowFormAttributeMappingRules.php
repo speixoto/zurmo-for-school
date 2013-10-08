@@ -43,12 +43,16 @@
 
         const TYPE_AT_LEAST_X_BEFORE_TRIGGERED_DATE = 'At Least X Before Triggered Date';
 
+        const TYPE_LESS_THAN_X_AFTER_TRIGGERED_DATE = 'Less Than X After Triggered Date';
+
         /**
          * @return array
          */
         public static function getValueTypesRequiringThirdDateInput()
         {
-            return array(self::TYPE_AT_LEAST_X_AFTER_TRIGGERED_DATE, self::TYPE_AT_LEAST_X_BEFORE_TRIGGERED_DATE);
+            return array(self::TYPE_AT_LEAST_X_AFTER_TRIGGERED_DATE,
+                         self::TYPE_AT_LEAST_X_BEFORE_TRIGGERED_DATE,
+                         self::TYPE_LESS_THAN_X_AFTER_TRIGGERED_DATE);
         }
 
         /**
@@ -57,7 +61,8 @@
         public static function getValueTypesWhereThirdValueIsRequired()
         {
             return array(MixedDateTypesTriggerForWorkflowFormAttributeMappingRules::TYPE_AT_LEAST_X_AFTER_TRIGGERED_DATE,
-                         MixedDateTypesTriggerForWorkflowFormAttributeMappingRules::TYPE_AT_LEAST_X_BEFORE_TRIGGERED_DATE);
+                         MixedDateTypesTriggerForWorkflowFormAttributeMappingRules::TYPE_AT_LEAST_X_BEFORE_TRIGGERED_DATE,
+                         MixedDateTypesTriggerForWorkflowFormAttributeMappingRules::TYPE_LESS_THAN_X_AFTER_TRIGGERED_DATE);
         }
     }
 ?>

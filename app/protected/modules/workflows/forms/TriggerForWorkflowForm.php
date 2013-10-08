@@ -275,7 +275,7 @@
         }
 
         /**
-         * When the operator type is
+         * When the value type is
          * MixedDateTypesTriggerForWorkflowFormAttributeMappingRules::TYPE_AT_LEAST_X_AFTER_TRIGGERED_DATE
          * or
          * MixedDateTypesTriggerForWorkflowFormAttributeMappingRules::TYPE_AT_LEAST_X_BEFORE_TRIGGERED_DATE
@@ -423,6 +423,32 @@
         public function isTrueByModel(RedBeanModel $model)
         {
             return true;
+        }
+
+        /**
+         * Resolve durationSign based on value type
+         * MixedDateTypesTriggerForWorkflowFormAttributeMappingRules::TYPE_AT_LEAST_X_AFTER_TRIGGERED_DATE
+         * or
+         * MixedDateTypesTriggerForWorkflowFormAttributeMappingRules::TYPE_AT_LEAST_X_BEFORE_TRIGGERED_DATE
+         * @param integer $initialTimeStamp
+         * @return integer timestamp based on thirdValueDurationInterval, valueType, and thirdValueDurationType
+         */
+        public function resolveNewTimeStampForThirdValueDuration($initialTimeStamp)
+        {
+            assert('is_int($initialTimeStamp)');
+            if($this->valueType ==
+                    MixedDateTypesTriggerForWorkflowFormAttributeMappingRules::TYPE_AT_LEAST_X_AFTER_TRIGGERED_DATE ||
+                $this->valueType ==
+                    MixedDateTypesTriggerForWorkflowFormAttributeMappingRules::TYPE_LESS_THAN_X_AFTER_TRIGGERED_DATE)
+            {
+                $durationSign = TimeDurationUtil::DURATION_SIGN_POSITIVE;
+            }
+            else
+            {
+                $durationSign = TimeDurationUtil::DURATION_SIGN_NEGATIVE;
+            }
+            return TimeDurationUtil::resolveNewTimeStampForDuration($initialTimeStamp, (int)$this->thirdValueDurationInterval,
+                                                                    $durationSign, $this->thirdValueDurationType);
         }
 
         /**
