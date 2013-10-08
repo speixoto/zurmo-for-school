@@ -136,7 +136,7 @@
          */
         public static function resolveEveryoneDisplayLabel()
         {
-            if(null != $displayLabel = ZurmoConfigurationUtil::getByModuleName('GroupsModule', 'EveryoneDisplayLabel'))
+            if (null != $displayLabel = ZurmoConfigurationUtil::getByModuleName('GroupsModule', 'EveryoneDisplayLabel'))
             {
                 return $displayLabel;
             }
