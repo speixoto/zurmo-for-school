@@ -104,7 +104,7 @@
             $breadcrumbLinks = array(Zurmo::t('ConversationsModule', 'Conversations') =>
                                         $conversationsMashableInboxUrl,
                                      StringUtil::getChoppedStringContent(strval($conversation), 25) =>
-                                        array('default/details',  'id' => $id), Zurmo::t('ConversationModule', 'Edit'));
+                                        array('default/details',  'id' => $id), Zurmo::t('ConversationsModule', 'Edit'));
             $conversation = Conversation::getById(intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($conversation);
             $editView = new ConversationEditView($this->getId(), $this->getModule()->getId(),

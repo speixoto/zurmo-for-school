@@ -254,6 +254,58 @@
             $this->assertTrue(isset($readWritePermitables[self::$groupTest->id]));
         }
 
+        /**
+         * Before fixing this issue: https://www.pivotaltracker.com/story/show/58051244
+         * this test fails. After fixing it, it passes.
+         */
+        public function testPermissionsResolveValueAndSetToModelUpdateWhenExplicitPermissionsNotSetImmediately()
+        {
+            //Setup a triggered model that has Sarah creating and owning it.
+            $super                      = Yii::app()->user->userModel;
+            Yii::app()->user->userModel = User::getByUsername('sarah');
+            $triggeredModel             = new WorkflowModelTestItem();
+            $triggeredModel->lastName   = 'test';
+            $triggeredModel->string     = 'test';
+            $saved                      = $triggeredModel->save();
+            $this->assertTrue($saved);
+            Yii::app()->user->userModel = $super;
+            //Now the super is who modified it
+            $triggeredModel->string     = 'test2';
+            $saved                      = $triggeredModel->save();
+            $this->assertTrue($saved);
+
+            //Test same as triggered where triggered is not owner
+            $explicitReadWriteModelPermissions = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($triggeredModel);
+            $explicitReadWriteModelPermissions->addReadWritePermitable(self::$groupTest);
+
+            $form        = new ExplicitReadWriteModelPermissionsWorkflowActionAttributeForm('WorkflowsTestModule', 'WorkflowModelTestItem');
+            $form->type  = ExplicitReadWriteModelPermissionsWorkflowActionAttributeForm::TYPE_DYNAMIC_SAME_AS_TRIGGERED_MODEL;
+            $model       = new WorkflowModelTestItem();
+            $model->lastName   = 'test';
+            $model->string     = 'test';
+            $triggeredModel->setExplicitReadWriteModelPermissionsForWorkflow($explicitReadWriteModelPermissions);
+            $this->assertTrue($triggeredModel->getExplicitReadWriteModelPermissionsForWorkflow() instanceof  ExplicitReadWriteModelPermissions);
+            $saved             = $model->save();
+            $this->assertTrue($saved);
+            $adapter     = new WorkflowActionProcessingModelAdapter($model, Yii::app()->user->userModel, $triggeredModel);
+            $form->resolveValueAndSetToModel($adapter, 'permissions');
+            //Now after setting, officially set the permissions on the model and save.
+            $success = ExplicitReadWriteModelPermissionsUtil::
+                resolveExplicitReadWriteModelPermissions($triggeredModel, $explicitReadWriteModelPermissions);
+            $this->assertTrue($success);
+
+            //Now check that the permissions match up
+            $explicitReadWriteModelPermissions = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($model);
+            $this->assertEquals(1, $explicitReadWriteModelPermissions->getReadWritePermitablesCount());
+            $readWritePermitables = $explicitReadWriteModelPermissions->getReadWritePermitables();
+            $this->assertTrue(isset($readWritePermitables[self::$groupTest->id]));
+
+            //Test clearing out the ExplicitReadWriteModelPermissionsForWorkflow
+            $this->assertTrue($triggeredModel->getExplicitReadWriteModelPermissionsForWorkflow() instanceof  ExplicitReadWriteModelPermissions);
+            $triggeredModel->clearExplicitReadWriteModelPermissionsForWorkflow();
+            $this->assertTrue($triggeredModel->getExplicitReadWriteModelPermissionsForWorkflow() == null);
+        }
+
         public function testCheckBoxResolveValueAndSetToModelUpdateAsStatic()
         {
             $form        = new CheckBoxWorkflowActionAttributeForm('WorkflowsTestModule', 'WorkflowModelTestItem');

@@ -41,9 +41,10 @@
     {
         public function __construct(ReportDataProvider $dataProvider, Report $report)
         {
-            $this->dataProvider     = $dataProvider;
-            $this->report           = $report;
-            $this->dataForExport    = $dataProvider->getData();
+            $this->dataProvider       = $dataProvider;
+            $this->report             = $report;
+            $this->dataForExport      = $dataProvider->getData();
+            $this->dataForGrandTotals = $dataProvider->runQueryAndGrandTotalsData();
             $this->makeData();
         }
 
@@ -51,6 +52,8 @@
         {
             $data                      = array();
             $this->headerData          = array();
+            $grandTotalsData           = array();
+            $isFirstRow                = true;
             foreach ($this->dataForExport as $reportResultsRowData)
             {
                 $line                      = array();
@@ -69,6 +72,10 @@
                     $params             = array();
                     $line[]             = $displayAttribute->resolveValueAsLabelForHeaderCell(
                                             $reportResultsRowData->$attributeName, true);
+                    if ($isFirstRow)
+                    {
+                        $grandTotalsData[]  = Zurmo::t('ReportsModule', 'Total');
+                    }
                 }
                 $leadingHeaders         = $this->dataProvider->makeAxisCrossingColumnCountAndLeadingHeaderRowsData(true);
                 $rows                   = count($leadingHeaders['rows']);
@@ -84,8 +91,13 @@
                             $className     = $this->resolveExportClassNameForReportToExportValueAdapter(
                                                 $displayAttribute);
                             $params        = array('label' => $displayAttribute->label);
+                            $this->resolveParamsForGrandTotals($displayAttribute, $params, $isFirstRow, $i);
                             $adapter       = new $className($reportResultsRowData, $column, $params);
                             $adapter->resolveData($line);
+                            if ($isFirstRow)
+                            {
+                                $adapter->resolveGrandTotalsData($grandTotalsData);
+                            }
                             if ($attributeKey < $matrixColumnCount)
                             {
                                 $oldHeaderCount = count($temporaryHeader);
@@ -105,10 +117,24 @@
                         }
                     }
                 }
+                //Grand totals for rows
+                foreach ($this->dataProvider->resolveDisplayAttributes() as $displayAttribute)
+                {
+                    if (!$displayAttribute->queryOnly)
+                    {
+                        $column        = MatrixReportDataProvider::resolveTotalColumnAliasName(
+                            $displayAttribute->columnAliasName);
+                        $params        = array('label' => $displayAttribute->label);
+                        $adapter       = new $className($reportResultsRowData, $column, $params);
+                        $adapter->resolveData($line);
+                        $adapter->resolveHeaderData($header);
+                    }
+                }
                 $data[]   = $line;
+                $isFirstRow = false;
             }
             $leadingHeaderData      = $this->getLeadingHeadersDataFromMatrixReportDataProvider($extraLeadingHeaderColumns);
-            $this->data = array_merge($leadingHeaderData, array_merge(array($header), $data));
+            $this->data = array_merge(array_merge($leadingHeaderData, array_merge(array($header), $data)), array($grandTotalsData));
         }
 
         protected function getLeadingHeadersDataFromMatrixReportDataProvider($extraLeadingHeaderColumns)
@@ -150,10 +176,24 @@
                         }
                     }
                 }
+                $headerRow[]                = Zurmo::t('ReportsModule', 'Total');
                 $previousGroupByValuesCount = count($leadingHeaders['rows'][$i]['groupByValues']);
-                $headerData[] = $headerRow;
+                $headerData[]               = $headerRow;
             }
             return $headerData;
+        }
+
+        protected function resolveParamsForGrandTotals(DisplayAttributeForReportForm $displayAttribute, & $params, $isFirstRow, $columnNumber)
+        {
+            $grandTotal = null;
+            if (isset($this->dataForGrandTotals[$columnNumber][$displayAttribute->columnAliasName]) && $isFirstRow)
+            {
+                $grandTotal    = $this->dataForGrandTotals[$columnNumber][$displayAttribute->columnAliasName];
+            }
+            if (isset($grandTotal))
+            {
+                $params['grandTotal'] = $grandTotal;
+            }
         }
     }
 ?>
