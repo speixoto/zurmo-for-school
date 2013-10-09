@@ -59,5 +59,19 @@
         {
             return null;
         }
+
+        protected function getMenuItems()
+        {
+            $items = array();
+            if (RightsUtil::doesUserHaveAllowByRightName('EmailTemplatesModule', EmailTemplatesModule::getCreateRight(),
+                Yii::app()->user->userModel))
+            {
+                $items[] = array('label'   => Zurmo::t('EmailTemplatesModule', 'Create Template'),
+                    'url'     => Yii::app()->createUrl('emailTemplates/default/create',
+                        array('type' => EmailTemplate::TYPE_CONTACT)));
+                return $items;
+            }
+            return null;
+        }
     }
 ?>
