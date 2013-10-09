@@ -140,7 +140,7 @@
                           'fabric-plaid'          => Zurmo::t('Core', 'Fabric Plaid'),
                           'cartographer-light'    => Zurmo::t('Core', 'Cartographer Light'),
                           'wood'                  => Zurmo::t('Core', 'Wood'),
-                          'black-linen-2'         => Zurmo::t('Core', 'Black Linen 2'),
+                          'black-linen-2'         => Zurmo::t('Core', 'Black Linen'),
                           'carbon-fibre'          => Zurmo::t('Core', 'Carbon Fibre'),
                           'cartographer'          => Zurmo::t('Core', 'Cartographer'),
                           'concrete-wall'         => Zurmo::t('Core', 'Concrete Wall'),
