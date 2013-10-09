@@ -73,7 +73,7 @@
 
         protected function renderAdvancedLinkContent()
         {
-            $content = Zurmo::t('ZurmoModule', 'If you are not overwhelmed, check out the <b><u>advanced features</u></b>');
+            $content = Zurmo::t('ZurmoModule', 'Read more on advanced security features</u></b>');
             return ZurmoHtml::tag('div', array('id' => 'security-advanced-toggle'), $content);
         }
 
