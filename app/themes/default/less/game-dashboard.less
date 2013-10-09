@@ -572,7 +572,12 @@
 }
 
 .redeemable{
-
+	h3{
+		background:url(../images/game-dashboard/redeemable-coin.png) right bottom no-repeat;
+		background-size: 14px;
+		display: inline-block;
+		padding-right: 22px;
+	}
 }
 
 
@@ -615,6 +620,16 @@
 			.t-shadow( 0px 1px 0 lighten(#f58a1f, 15%) ) !important;
 		}
 	}
+}
+.coin-button[disabled="disabled"]{
+	pointer-events:none;
+	.opacity(50);
+	-webkit-filter: grayscale(85%);
+	-moz-filter: grayscale(85%);
+	-ms-filter: grayscale(85%);
+	-o-filter: grayscale(85%);
+	filter: grayscale(85%);
+	filter: gray; /* IE 6-9 */
 }
 
 .random-game-coin{

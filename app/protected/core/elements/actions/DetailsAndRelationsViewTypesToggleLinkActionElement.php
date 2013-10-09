@@ -61,12 +61,12 @@
             $listUrl        = Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/details/',
                               array('id' => $this->modelId, 'kanbanBoard' => 0));
             $content        = null;
-            $content       .= ZurmoHtml::link('<span>Kanban</span>', $kanbanBoardUrl,
-                                              array('class' => $this->resolveKanbanBoardClass(),
-                                                    'title' => Zurmo::t('Core', 'View as Kanban Board')));
-            $content       .= ZurmoHtml::link('<span>Details And Relations</span>', $listUrl,
-                                              array('class' => $this->resolveDetailsClass(),
-                                                    'title' => Zurmo::t('Core', 'View as Details and Relations')));
+
+            $icon = ZurmoHtml::tag('i', array('class' => $this->resolveKanbanBoardClass()), '<span>Kanban</span>');
+            $content       .= ZurmoHtml::link($icon, $kanbanBoardUrl, array('title' => Zurmo::t('Core', 'View as Kanban Board')));
+
+            $icon = ZurmoHtml::tag('i', array('class' => $this->resolveDetailsClass()), '<span>Details And Relations</span>');
+            $content       .= ZurmoHtml::link($icon, $listUrl, array('title' => Zurmo::t('Core', 'View as Details and Relations')));
             return $content;
         }
 

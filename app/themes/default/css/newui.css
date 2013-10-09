@@ -12461,7 +12461,7 @@ div.wide.form label.hasCheckBox {
   z-index: 10000;
 }
 #ModalView .search-view-1 {
-  z-index: 0;
+  z-index: 10000;
   min-width: 400px;
   max-width: 75%;
   height: auto;
@@ -25405,6 +25405,12 @@ div.special-pager .hidden.next:after {
   line-height: 24px;
   z-index: 9999;
 }
+.redeemable h3 {
+  background: url(../images/game-dashboard/redeemable-coin.png) right bottom no-repeat;
+  background-size: 14px;
+  display: inline-block;
+  padding-right: 22px;
+}
 .zurmo body .coin-button {
   position: relative;
   z-index: 1;
@@ -25467,6 +25473,21 @@ div.special-pager .hidden.next:after {
   -o-text-shadow: 0px 1px 0 #f8b068 !important;
   -ms-text-shadow: 0px 1px 0 #f8b068 !important;
   text-shadow: 0px 1px 0 #f8b068 !important;
+}
+.coin-button[disabled="disabled"] {
+  pointer-events: none;
+  filter: alpha(opacity=50);
+  -khtml-opacity: 0.5;
+  -moz-opacity: 0.5;
+  opacity: 0.5;
+  -webkit-filter: grayscale(85%);
+  -moz-filter: grayscale(85%);
+  -ms-filter: grayscale(85%);
+  -o-filter: grayscale(85%);
+  filter: grayscale(85%);
+  filter: gray;
+  /* IE 6-9 */
+
 }
 .random-game-coin {
   position: fixed;
