@@ -176,7 +176,7 @@
                     }
                 }
 
-                if ($isAddressChanged && ($this->getScenario() !== 'autoBuildDatabase'))
+                if ($isAddressChanged)
                 {
                     $this->latitude     = null;
                     $this->longitude    = null;

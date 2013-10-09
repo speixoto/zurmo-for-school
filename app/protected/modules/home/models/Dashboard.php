@@ -53,7 +53,7 @@
                    ' and dashboard.ownedsecurableitem_id = ownedsecurableitem.id '.
                    ' and layoutid = ' . $layoutId                                 .
                    ' order by layoutId;';
-            $ids = R::getCol($sql);
+            $ids = ZurmoRedBean::getCol($sql);
             assert('count($ids) <= 1');
             if (count($ids) == 0)
             {
@@ -63,7 +63,7 @@
                 }
                 throw new NotFoundException();
             }
-            $bean = R::load(RedBeanModel::getTableName('Dashboard'), $ids[0]);
+            $bean = ZurmoRedBean::load(static::getTableName('Dashboard'), $ids[0]);
             assert('$bean === false || $bean instanceof RedBean_OODBBean');
             if ($bean === false)
             {
@@ -84,12 +84,12 @@
                    'where ownedsecurableitem.owner__user_id = ' . $userId            .
                    ' and dashboard.ownedsecurableitem_id = ownedsecurableitem.id '   .
                    'order by layoutId;';
-            return R::getAll($sql);
+            return ZurmoRedBean::getAll($sql);
         }
 
         public static function getNextLayoutId()
         {
-            return max(2, (int)R::getCell('select max(layoutId) + 1 from dashboard'));
+            return max(2, (int)ZurmoRedBean::getCell('select max(layoutId) + 1 from dashboard'));
         }
 
         protected static function translatedAttributeLabels($language)

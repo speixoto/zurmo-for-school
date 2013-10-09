@@ -69,10 +69,12 @@
             $breadcrumbLinks = array(
                  $title,
             );
+            $introView = new SecurityIntroView('ZurmoModule');
             $treeView = new GroupsActionBarAndTreeListView(
                 $this->getId(),
                 $this->getModule()->getId(),
-                static::getGroupsOrderedByNonDeletablesFirst()
+                static::getGroupsOrderedByNonDeletablesFirst(),
+                $introView
             );
             $view             = new GroupsPageView(ZurmoDefaultAdminViewUtil::
                                          makeViewWithBreadcrumbsForCurrentUser($this, $treeView, $breadcrumbLinks, 'GroupBreadCrumbView'));

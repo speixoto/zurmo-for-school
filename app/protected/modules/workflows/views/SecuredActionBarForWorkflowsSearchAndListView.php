@@ -49,34 +49,58 @@
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array('type'  => 'WorkflowCreateLink',
-                                'htmlOptions' => array('class' => 'icon-create'),
+                            array('type'      => 'WorkflowCreateMenu',
+                                  'iconClass' => 'icon-create',
                             ),
-                            array(
-                                'type'            => 'WorkflowsLink',
-                                'htmlOptions'     => array( 'class' => 'icon-workflows' )
+                            array('type'      => 'WorkflowsMenu',
+                                  'iconClass' => 'icon-workflows',
                             ),
-                            array(
-                                'type'            => EmailTemplatesForWorkflowLinkActionElement::getType(),
-                                'htmlOptions'     => array( 'class' => 'icon-email-templates' )
+                            array('type'      => EmailTemplatesForWorkflowMenuActionElement::getType(),
+                                  'iconClass' => 'icon-email-templates',
+
                             ),
-                            array(
-                                'type'            => 'ByTimeWorkflowInQueuesLink',
-                                'htmlOptions'     => array( 'class' => 'icon-by-time-workflow-in-queues' )
+                            array('type'      => 'ByTimeWorkflowInQueuesMenu',
+                                  'iconClass' => 'icon-by-time-workflow-in-queues',
                             ),
-                            array(
-                                'type'            => 'WorkflowMessageInQueuesLink',
-                                'htmlOptions'     => array( 'class' => 'icon-by-workflow-message-in-queues' )
+                            array('type'      => 'WorkflowMessageInQueuesMenu',
+                                  'iconClass' => 'icon-by-workflow-message-in-queues',
                             ),
-                            array(
-                                'type'            => 'WorkflowManageOrderLink',
-                                'htmlOptions'     => array( 'class' => 'icon-by-workflow-manage-order' )
+                            array('type'      => 'WorkflowManageOrderMenu',
+                                  'iconClass' => 'icon-by-workflow-manage-order',
                             ),
+                            array('type'          => 'MassDeleteLink',
+                                'htmlOptions'     => array( 'class' => 'icon-delete'),
+                                                            'listViewGridId' => 'eval:$this->listViewGridId',
+                                                            'pageVarName' => 'eval:$this->pageVarName'),
                         ),
                     ),
                 ),
             );
             return $metadata;
+        }
+
+        /**
+         * Override to only show MassDeleteLink if in the byTime or message queue views
+         * @param ActionElement $element
+         * @param array $elementInformation
+         * @return bool
+         */
+        protected function shouldRenderToolBarElement($element, $elementInformation)
+        {
+            assert('$element instanceof ActionElement');
+            assert('is_array($elementInformation)');
+            if (!parent::shouldRenderToolBarElement($element, $elementInformation))
+            {
+                return false;
+            }
+            if ($elementInformation['type'] == 'MassDeleteLink' &&
+                'ByTimeWorkflowInQueue'  != get_class($this->model) &&
+                'WorkflowMessageInQueue' != get_class($this->model))
+
+            {
+                return false;
+            }
+            return true;
         }
     }
 ?>

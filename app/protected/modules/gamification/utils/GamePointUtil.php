@@ -75,7 +75,7 @@
             assert('$offset  === null || is_integer($offset)  && $offset  >= 0');
             assert('$count   === null || is_integer($count)   && $count   >= 1');
             $sql             = static::makeUserLeaderboardSqlQuery($type, $offset, $count);
-            $rows            = R::getAll($sql);
+            $rows            = ZurmoRedBean::getAll($sql);
             $rank            = $startingRank;
             $leaderboardData = array();
             foreach ($rows as $row)
@@ -93,7 +93,7 @@
         public static function getUserLeaderboardCount($type)
         {
             $sql = self::makeUserLeaderboardCountSqlQuery($type);
-            $count = R::getCell($sql);
+            $count = ZurmoRedBean::getCell($sql);
             if ($count === null || (is_array($count) && count($count) == 0))
             {
                 $count = 0;
@@ -126,7 +126,7 @@
             $joinTablesAdapter->addFromTableAndGetAliasName('_user', 'id', 'permitable', 'permitable_id');
             $groupBy                   = "{$quote}_user{$quote}.{$quote}id{$quote}";
             $sql                       = SQLQueryUtil::makeQuery('gamepointtransaction', $selectQueryAdapter,
-                                         $joinTablesAdapter, $offset, $count, $where, $orderBy, $groupBy);
+                $joinTablesAdapter, $offset, $count, $where, $orderBy, $groupBy);
             return $sql;
         }
 

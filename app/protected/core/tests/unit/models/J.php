@@ -44,10 +44,11 @@
                     'jMember',
                 ),
                 'relations' => array(
-                    'i'  => array(RedBeanModel::HAS_ONE_BELONGS_TO, 'I'),
+                    'i'  => array(static::HAS_ONE_BELONGS_TO, 'I'),
                     ),
                     'rules' => array(
-                        array('jMember', 'safe'),
+                        array('jMember',      'type', 'type' => 'string'),
+                        array('jMember',      'length', 'max' => 255),
                 ),
             );
             return $metadata;

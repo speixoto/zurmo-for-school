@@ -144,7 +144,7 @@
                     if ($attributeName === $attributeAccessorString)
                     {
                         $content = static::getAttributeValue($model, $attributeName, $timeQualifier);
-                        if($attributeType == 'DateTime')
+                        if ($attributeType == 'DateTime')
                         {
                             $content .= ' GMT';
                         }
@@ -215,18 +215,7 @@
 
         protected static function resolveStringToAttributeAccessor($string)
         {
-            return static::resolveStringToCamelCase(str_replace(MergeTagsUtil::PROPERTY_DELIMITER, '->', strtolower($string)));
-        }
-
-        protected static function resolveStringToCamelCase($string, $capitaliseFirstCharacter = false )
-        {
-            if ($capitaliseFirstCharacter)
-            {
-                $string[0] = strtoupper($string[0]);
-            }
-            $covertToCamelCaseFunction = create_function('$character', 'return strtoupper($character[1]);');
-            return preg_replace_callback('/' . preg_quote(MergeTagsUtil::CAPITAL_DELIMITER) . '([a-z])/',
-                                                                                    $covertToCamelCaseFunction, $string);
+            return StringUtil::camelize(str_replace(MergeTagsUtil::PROPERTY_DELIMITER, '->', strtolower($string)));
         }
     }
 ?>

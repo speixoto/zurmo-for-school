@@ -113,7 +113,8 @@
             $this->assertArrayHasKey('fromAddress', $errors);
             $this->assertEquals('From Address cannot be blank.', $errors['fromAddress'][0]);
             $this->assertArrayHasKey('textContent', $errors);
-            $this->assertEquals('Please provide at least one of the contents field.', $errors['textContent'][0]);
+            $this->assertEquals("You choose not to support HTML but didn't set any text content.", $errors['textContent'][0]);
+            $this->assertEquals('Please provide at least one of the contents field.', $errors['textContent'][1]);
             $this->assertArrayHasKey('marketingList', $errors);
             $this->assertEquals('Marketing List cannot be blank.', $errors['marketingList'][0]);
 

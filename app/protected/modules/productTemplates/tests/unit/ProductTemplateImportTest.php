@@ -56,7 +56,7 @@
             $this->assertTrue($import->save());
 
             ImportTestHelper::
-            createTempTableByFileNameAndTableName('productTemplates.csv', $import->getTempTableName(),
+            createTempTableByFileNameAndTableName('productTemplates.csv', $import->getTempTableName(), true,
                                                   Yii::getPathOfAlias('application.modules.productTemplates.tests.unit.files'));
 
             $this->assertEquals(3, ImportDatabaseUtil::getCount($import->getTempTableName())); // includes header rows.
@@ -146,7 +146,7 @@
             $this->assertTrue($import->save());
 
             ImportTestHelper::
-            createTempTableByFileNameAndTableName('productTemplates.csv', $import->getTempTableName(),
+            createTempTableByFileNameAndTableName('productTemplates.csv', $import->getTempTableName(), true,
                                                   Yii::getPathOfAlias('application.modules.productTemplates.tests.unit.files'));
 
             $this->assertEquals(3, ImportDatabaseUtil::getCount($import->getTempTableName())); // includes header rows.
@@ -220,7 +220,7 @@
                 {
                     $value = $sanitizer->sanitizeValue($rowBean->column_7);
                     $this->assertEquals(2, $value);
-                    R::store($rowBean);
+                    ZurmoRedBean::store($rowBean);
                     $sanitizer->analyzeByRow($rowBean);
                     $this->assertEquals(0, count($sanitizer->getAnalysisMessages()));
                 }
@@ -228,7 +228,7 @@
                 {
                     $value = $sanitizer->sanitizeValue($rowBean->column_7);
                     $this->assertEquals(1, $value);
-                    R::store($rowBean);
+                    ZurmoRedBean::store($rowBean);
                     $sanitizer->analyzeByRow($rowBean);
                     $this->assertEquals(0, count($sanitizer->getAnalysisMessages()));
                 }
@@ -273,7 +273,7 @@
                 {
                     $value = $sanitizer->sanitizeValue($rowBean->column_9);
                     $this->assertEquals(1, $value);
-                    R::store($rowBean);
+                    ZurmoRedBean::store($rowBean);
                     $sanitizer->analyzeByRow($rowBean);
                     $this->assertEquals(0, count($sanitizer->getAnalysisMessages()));
                 }
@@ -281,7 +281,7 @@
                 {
                     $value = $sanitizer->sanitizeValue($rowBean->column_9);
                     $this->assertEquals(1, $value);
-                    R::store($rowBean);
+                    ZurmoRedBean::store($rowBean);
                     $sanitizer->analyzeByRow($rowBean);
                     $this->assertEquals(0, count($sanitizer->getAnalysisMessages()));
                 }
@@ -326,7 +326,7 @@
                 {
                     $value = $sanitizer->sanitizeValue($rowBean->column_8);
                     $this->assertEquals(3, $value);
-                    R::store($rowBean);
+                    ZurmoRedBean::store($rowBean);
                     $sanitizer->analyzeByRow($rowBean);
                     $this->assertEquals(0, count($sanitizer->getAnalysisMessages()));
                 }
@@ -334,7 +334,7 @@
                 {
                     $value = $sanitizer->sanitizeValue($rowBean->column_8);
                     $this->assertEquals(1, $value);
-                    R::store($rowBean);
+                    ZurmoRedBean::store($rowBean);
                     $sanitizer->analyzeByRow($rowBean);
                     $this->assertEquals(0, count($sanitizer->getAnalysisMessages()));
                 }
@@ -379,7 +379,7 @@
                 {
                     $value = $sanitizer->sanitizeValue($rowBean->column_2);
                     $this->assertEquals(2, $value);
-                    R::store($rowBean);
+                    ZurmoRedBean::store($rowBean);
                     $sanitizer->analyzeByRow($rowBean);
                     $this->assertEquals(0, count($sanitizer->getAnalysisMessages()));
                 }
@@ -387,7 +387,7 @@
                 {
                     $value = $sanitizer->sanitizeValue($rowBean->column_2);
                     $this->assertEquals(3, $value);
-                    R::store($rowBean);
+                    ZurmoRedBean::store($rowBean);
                     $sanitizer->analyzeByRow($rowBean);
                     $this->assertEquals(0, count($sanitizer->getAnalysisMessages()));
                 }
@@ -410,7 +410,7 @@
             $this->assertTrue($import->save());
 
             ImportTestHelper::
-            createTempTableByFileNameAndTableName('productTemplatesSanitizer.csv', $import->getTempTableName(),
+            createTempTableByFileNameAndTableName('productTemplatesSanitizer.csv', $import->getTempTableName(), true,
                                                   Yii::getPathOfAlias('application.modules.productTemplates.tests.unit.files'));
 
             $this->assertEquals(5, ImportDatabaseUtil::getCount($import->getTempTableName())); // includes header rows.

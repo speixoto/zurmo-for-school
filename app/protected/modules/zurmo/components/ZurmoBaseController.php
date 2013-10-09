@@ -679,7 +679,8 @@
 
         protected static function resolveViewIdByMassActionId($actionId, $returnProgressViewName, $moduleName = null)
         {
-            if (strpos($actionId, 'massEdit') === 0 || strpos($actionId, 'massDelete') === 0)
+            if (strpos($actionId, 'massEdit') === 0 || strpos($actionId, 'massDelete') === 0 ||
+                strpos($actionId, 'massSubscribe') === 0)
             {
                 $viewNameSuffix    = (!$returnProgressViewName)? 'View': 'ProgressView';
                 $viewNamePrefix    = static::resolveMassActionId($actionId, true);
@@ -705,6 +706,10 @@
             elseif (strpos($actionId, 'massEdit') === 0)
             {
                 return Zurmo::t('Core', 'Mass Update');
+            }
+            elseif (strpos($actionId, 'massSubscribe') === 0)
+            {
+                return Zurmo::t('Core', 'Mass Subscribe');
             }
             else
             {
@@ -1167,6 +1172,17 @@
             }
             else
             {
+                return true;
+            }
+        }
+
+        protected static function processModelForMassSubscribe(& $model)
+        {
+            $marketingListMember            = Yii::app()->request->getPost('MarketingListMember');
+            if ($marketingListMember['marketingList']['id'] > 0)
+            {
+                $marketingList = MarketingList::getById((int) $marketingListMember['marketingList']['id']);
+                $marketingList->addNewMember($model->id);
                 return true;
             }
         }

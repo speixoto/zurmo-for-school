@@ -155,7 +155,7 @@
                 }
                 if ($passedOwnerValidation && $model->save(false))
                 {
-                    if($model instanceof SecurableItem)
+                    if ($model instanceof SecurableItem)
                     {
                         $model->clearExplicitReadWriteModelPermissionsForWorkflow();
                     }

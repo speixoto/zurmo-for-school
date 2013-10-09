@@ -48,7 +48,7 @@
 
     DESCRIPTION
       This command runs an update on the database schema. It calls the
-      RedBeanDatabaseBuilderUtil::autoBuildModels.
+      InstallUtil::runAutoBuildFromUpdateSchemaCommand.
 
     PARAMETERS
      * username: username to log in as and run the import processes. Typically 'super'.
@@ -95,8 +95,6 @@ EOD;
             }
             ReadPermissionsOptimizationUtil::rebuild();
             $messageStreamer->add(Zurmo::t('Commands', 'Rebuild read permissions complete.'));
-            StarredUtil::createStarredTables();
-            $messageStreamer->add(Zurmo::t('Commands', 'Tables creating for starred models completed.'));
             $endTime = microtime(true);
             $messageStreamer->add(Zurmo::t('Commands', 'Schema update complete.'));
             $messageStreamer->add(Zurmo::t('Commands', 'Total run time: {formattedTime} seconds.',

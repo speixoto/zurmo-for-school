@@ -121,7 +121,7 @@
          */
         public function testMarkProcessedCampaignsAsCompletedWithCustomPageSize()
         {
-            $this->purgeAllCampaigns();
+            Campaign::deleteAll();
             $contact            = ContactTestHelper::createContactByNameForOwner('contact 02', $this->user);
             $marketingList      = MarketingListTestHelper::populateMarketingListByName('marketingList 02');
             $campaign01         = CampaignTestHelper::createCampaign('campaign 01',
@@ -193,15 +193,6 @@
             $campaign03 = Campaign::getById($campaign03Id);
             $this->assertNotNull($campaign03);
             $this->assertEquals(Campaign::STATUS_COMPLETED, $campaign03->status);
-        }
-
-        protected function purgeAllCampaigns()
-        {
-            $campaigns = Campaign::getAll();
-            foreach ($campaigns as $campaign)
-            {
-                $campaign->delete();
-            }
         }
     }
 ?>

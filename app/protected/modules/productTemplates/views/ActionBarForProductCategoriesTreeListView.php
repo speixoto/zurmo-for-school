@@ -45,30 +45,30 @@
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array('type'          => 'ProductCreateLink',
-                                'htmlOptions'     => array('class' => 'icon-create'),
+                            array('type'      => 'ProductCreateMenu',
+                                  'iconClass' => 'icon-create',
                             ),
                             array(
-                                'type'            => 'ProductsLink',
-                                'htmlOptions'     => array( 'class' => 'icon-products' )
+                                'type'        => 'ProductsMenu',
+                                'iconClass'   => 'icon-products',
                             ),
                             array(
-                                'type'            => 'ProductTemplatesLink',
-                                'htmlOptions'     => array( 'class' => 'icon-catalog-items' )
+                                'type'        => 'ProductTemplatesMenu',
+                                'iconClass'   => 'icon-catalog-items',
                             ),
                             array(
-                                'type'            => 'ProductCategoriesLink',
-                                'htmlOptions'     => array( 'class' => 'icon-product-categories' )
+                                'type'        => 'ProductCategoriesMenu',
+                                'iconClass'   => 'icon-product-categories',
                             ),
                         ),
                     ),
                     'secondToolbar' => array(
                         'elements' => array(
                             array('type'        => 'ProductIntroLink',
+                                  'iconClass'   => 'icon-options',
                                   'panelId'     => 'eval:$this->introView->getPanelId()',
                                   'checked'     => 'eval:!$this->introView->isIntroViewDismissed()',
                                   'moduleName'  => 'eval:$this->introView->getModuleName()',
-                                  'htmlOptions' => array('class' => 'icon-intro-change-this'), //todo: need new class name
                             ),
                         ),
                     ),

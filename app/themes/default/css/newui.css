@@ -983,15 +983,42 @@ body.blue a.active-tab,
 body.blue .edit-autoresponder-link {
   color: #282a76;
 }
+body.blue #MashableInboxActionBarForViews .nav > li > a:hover,
+body.blue #MashableInboxActionBarForViews .nav > li > a:active,
+body.blue #MashableInboxActionBarForViews a:hover .unread-count,
+body.blue #MashableInboxActionBarForViews a:active .unread-count,
 body.blue #notifications-flyout .single-notification h4,
-body.blue .view-toolbar a:hover,
-body.blue .view-toolbar a:active,
-body.blue .view-toolbar a.active,
-body.blue .view-toolbar a.active span,
+body.blue a:hover i[class^="icon"],
+body.blue a:hover i[class^="icon"]:after,
+body.blue a:active i[class^="icon"],
+body.blue a:active i[class^="icon"]:after,
+body.blue .button-action-trigger:hover span,
+body.blue .button-action-trigger:active span,
+body.blue .button-action:hover span,
+body.blue .button-action:active span,
+body.blue .split-button:hover span,
+body.blue .split-button:hover i[class^="icon"],
+body.blue .split-button:hover i[class^="icon"]:after,
+body.blue .split-button:hover i[class^="icon"]:before,
+body.blue .default-button:hover span,
+body.blue .default-button:hover i[class^="icon"],
+body.blue .default-button:hover i[class^="icon"]:after,
+body.blue .default-button:hover i[class^="icon"]:before,
+body.blue .view-toolbar > a:hover,
+body.blue .view-toolbar > a:active,
+body.blue .view-toolbar > a:hover:before,
+body.blue .view-toolbar > a:active:before,
+body.blue .view-toolbar > a:hover span,
+body.blue .view-toolbar > a:active span,
+body.blue .view-toolbar .active,
+body.blue .view-toolbar .active > a span,
+body.blue .view-toolbar .active > a:before,
+body.blue .view-toolbar .nav > li > a:hover,
+body.blue .view-toolbar .nav > li > a:active,
 body.blue .portlet-toolbar .icon-delete:before,
 body.blue .portlet-toolbar .icon-edit:before,
 body.blue .mini-pillbox a:hover,
-body.blue .mini-pillbox a.active,
+body.blue .mini-pillbox .active,
 body.blue #StickyListMenu > li > a:hover > span,
 body.blue .addfileinput-button:hover span .pager a:hover:before,
 body.blue .pager a:hover:after,
@@ -1275,6 +1302,22 @@ body.blue .dashboard-link:active .z-label {
   -ms-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF !important;
   box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF !important;
 }
+body.blue .button-actions a:hover {
+  color: #ffffff !important;
+  background-color: #5b7724 !important;
+  background-repeat: repeat-x !important;
+  background-image: -moz-linear-gradient(top, #97c43d, #5b7724) !important;
+  background-image: -ms-linear-gradient(top, #97c43d, #5b7724) !important;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #5b7724)) !important;
+  background-image: -webkit-linear-gradient(top, #97c43d, #5b7724) !important;
+  background-image: -o-linear-gradient(top, #97c43d, #5b7724) !important;
+  background-image: linear-gradient(top, #97c43d, #5b7724) !important;
+  -webkit-text-shadow: 0px -1px 0 #4c631e !important;
+  -moz-text-shadow: 0px -1px 0 #4c631e !important;
+  -o-text-shadow: 0px -1px 0 #4c631e !important;
+  -ms-text-shadow: 0px -1px 0 #4c631e !important;
+  text-shadow: 0px -1px 0 #4c631e !important;
+}
 body.blue .notifications-link:hover {
   border-left: 1px solid #1b1c50;
   border-right: 1px solid #1b1c50;
@@ -1542,15 +1585,42 @@ body.brown a.active-tab,
 body.brown .edit-autoresponder-link {
   color: #547980;
 }
+body.brown #MashableInboxActionBarForViews .nav > li > a:hover,
+body.brown #MashableInboxActionBarForViews .nav > li > a:active,
+body.brown #MashableInboxActionBarForViews a:hover .unread-count,
+body.brown #MashableInboxActionBarForViews a:active .unread-count,
 body.brown #notifications-flyout .single-notification h4,
-body.brown .view-toolbar a:hover,
-body.brown .view-toolbar a:active,
-body.brown .view-toolbar a.active,
-body.brown .view-toolbar a.active span,
+body.brown a:hover i[class^="icon"],
+body.brown a:hover i[class^="icon"]:after,
+body.brown a:active i[class^="icon"],
+body.brown a:active i[class^="icon"]:after,
+body.brown .button-action-trigger:hover span,
+body.brown .button-action-trigger:active span,
+body.brown .button-action:hover span,
+body.brown .button-action:active span,
+body.brown .split-button:hover span,
+body.brown .split-button:hover i[class^="icon"],
+body.brown .split-button:hover i[class^="icon"]:after,
+body.brown .split-button:hover i[class^="icon"]:before,
+body.brown .default-button:hover span,
+body.brown .default-button:hover i[class^="icon"],
+body.brown .default-button:hover i[class^="icon"]:after,
+body.brown .default-button:hover i[class^="icon"]:before,
+body.brown .view-toolbar > a:hover,
+body.brown .view-toolbar > a:active,
+body.brown .view-toolbar > a:hover:before,
+body.brown .view-toolbar > a:active:before,
+body.brown .view-toolbar > a:hover span,
+body.brown .view-toolbar > a:active span,
+body.brown .view-toolbar .active,
+body.brown .view-toolbar .active > a span,
+body.brown .view-toolbar .active > a:before,
+body.brown .view-toolbar .nav > li > a:hover,
+body.brown .view-toolbar .nav > li > a:active,
 body.brown .portlet-toolbar .icon-delete:before,
 body.brown .portlet-toolbar .icon-edit:before,
 body.brown .mini-pillbox a:hover,
-body.brown .mini-pillbox a.active,
+body.brown .mini-pillbox .active,
 body.brown #StickyListMenu > li > a:hover > span,
 body.brown .addfileinput-button:hover span .pager a:hover:before,
 body.brown .pager a:hover:after,
@@ -1834,6 +1904,22 @@ body.brown .dashboard-link:active .z-label {
   -ms-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF !important;
   box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF !important;
 }
+body.brown .button-actions a:hover {
+  color: #ffffff !important;
+  background-color: #286461 !important;
+  background-repeat: repeat-x !important;
+  background-image: -moz-linear-gradient(top, #45ada8, #286461) !important;
+  background-image: -ms-linear-gradient(top, #45ada8, #286461) !important;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #45ada8), color-stop(100%, #286461)) !important;
+  background-image: -webkit-linear-gradient(top, #45ada8, #286461) !important;
+  background-image: -o-linear-gradient(top, #45ada8, #286461) !important;
+  background-image: linear-gradient(top, #45ada8, #286461) !important;
+  -webkit-text-shadow: 0px -1px 0 #21524f !important;
+  -moz-text-shadow: 0px -1px 0 #21524f !important;
+  -o-text-shadow: 0px -1px 0 #21524f !important;
+  -ms-text-shadow: 0px -1px 0 #21524f !important;
+  text-shadow: 0px -1px 0 #21524f !important;
+}
 body.brown .notifications-link:hover {
   border-left: 1px solid #405c61;
   border-right: 1px solid #405c61;
@@ -2101,15 +2187,42 @@ body.lime a.active-tab,
 body.lime .edit-autoresponder-link {
   color: #2b434f;
 }
+body.lime #MashableInboxActionBarForViews .nav > li > a:hover,
+body.lime #MashableInboxActionBarForViews .nav > li > a:active,
+body.lime #MashableInboxActionBarForViews a:hover .unread-count,
+body.lime #MashableInboxActionBarForViews a:active .unread-count,
 body.lime #notifications-flyout .single-notification h4,
-body.lime .view-toolbar a:hover,
-body.lime .view-toolbar a:active,
-body.lime .view-toolbar a.active,
-body.lime .view-toolbar a.active span,
+body.lime a:hover i[class^="icon"],
+body.lime a:hover i[class^="icon"]:after,
+body.lime a:active i[class^="icon"],
+body.lime a:active i[class^="icon"]:after,
+body.lime .button-action-trigger:hover span,
+body.lime .button-action-trigger:active span,
+body.lime .button-action:hover span,
+body.lime .button-action:active span,
+body.lime .split-button:hover span,
+body.lime .split-button:hover i[class^="icon"],
+body.lime .split-button:hover i[class^="icon"]:after,
+body.lime .split-button:hover i[class^="icon"]:before,
+body.lime .default-button:hover span,
+body.lime .default-button:hover i[class^="icon"],
+body.lime .default-button:hover i[class^="icon"]:after,
+body.lime .default-button:hover i[class^="icon"]:before,
+body.lime .view-toolbar > a:hover,
+body.lime .view-toolbar > a:active,
+body.lime .view-toolbar > a:hover:before,
+body.lime .view-toolbar > a:active:before,
+body.lime .view-toolbar > a:hover span,
+body.lime .view-toolbar > a:active span,
+body.lime .view-toolbar .active,
+body.lime .view-toolbar .active > a span,
+body.lime .view-toolbar .active > a:before,
+body.lime .view-toolbar .nav > li > a:hover,
+body.lime .view-toolbar .nav > li > a:active,
 body.lime .portlet-toolbar .icon-delete:before,
 body.lime .portlet-toolbar .icon-edit:before,
 body.lime .mini-pillbox a:hover,
-body.lime .mini-pillbox a.active,
+body.lime .mini-pillbox .active,
 body.lime #StickyListMenu > li > a:hover > span,
 body.lime .addfileinput-button:hover span .pager a:hover:before,
 body.lime .pager a:hover:after,
@@ -2393,6 +2506,22 @@ body.lime .dashboard-link:active .z-label {
   -ms-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF !important;
   box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF !important;
 }
+body.lime .button-actions a:hover {
+  color: #ffffff !important;
+  background-color: #90a34e !important;
+  background-repeat: repeat-x !important;
+  background-image: -moz-linear-gradient(top, #bcc98e, #90a34e) !important;
+  background-image: -ms-linear-gradient(top, #bcc98e, #90a34e) !important;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #bcc98e), color-stop(100%, #90a34e)) !important;
+  background-image: -webkit-linear-gradient(top, #bcc98e, #90a34e) !important;
+  background-image: -o-linear-gradient(top, #bcc98e, #90a34e) !important;
+  background-image: linear-gradient(top, #bcc98e, #90a34e) !important;
+  -webkit-text-shadow: 0px -1px 0 #819246 !important;
+  -moz-text-shadow: 0px -1px 0 #819246 !important;
+  -o-text-shadow: 0px -1px 0 #819246 !important;
+  -ms-text-shadow: 0px -1px 0 #819246 !important;
+  text-shadow: 0px -1px 0 #819246 !important;
+}
 body.lime .notifications-link:hover {
   border-left: 1px solid #19272e;
   border-right: 1px solid #19272e;
@@ -2660,15 +2789,42 @@ body.cherry a.active-tab,
 body.cherry .edit-autoresponder-link {
   color: #6c8092;
 }
+body.cherry #MashableInboxActionBarForViews .nav > li > a:hover,
+body.cherry #MashableInboxActionBarForViews .nav > li > a:active,
+body.cherry #MashableInboxActionBarForViews a:hover .unread-count,
+body.cherry #MashableInboxActionBarForViews a:active .unread-count,
 body.cherry #notifications-flyout .single-notification h4,
-body.cherry .view-toolbar a:hover,
-body.cherry .view-toolbar a:active,
-body.cherry .view-toolbar a.active,
-body.cherry .view-toolbar a.active span,
+body.cherry a:hover i[class^="icon"],
+body.cherry a:hover i[class^="icon"]:after,
+body.cherry a:active i[class^="icon"],
+body.cherry a:active i[class^="icon"]:after,
+body.cherry .button-action-trigger:hover span,
+body.cherry .button-action-trigger:active span,
+body.cherry .button-action:hover span,
+body.cherry .button-action:active span,
+body.cherry .split-button:hover span,
+body.cherry .split-button:hover i[class^="icon"],
+body.cherry .split-button:hover i[class^="icon"]:after,
+body.cherry .split-button:hover i[class^="icon"]:before,
+body.cherry .default-button:hover span,
+body.cherry .default-button:hover i[class^="icon"],
+body.cherry .default-button:hover i[class^="icon"]:after,
+body.cherry .default-button:hover i[class^="icon"]:before,
+body.cherry .view-toolbar > a:hover,
+body.cherry .view-toolbar > a:active,
+body.cherry .view-toolbar > a:hover:before,
+body.cherry .view-toolbar > a:active:before,
+body.cherry .view-toolbar > a:hover span,
+body.cherry .view-toolbar > a:active span,
+body.cherry .view-toolbar .active,
+body.cherry .view-toolbar .active > a span,
+body.cherry .view-toolbar .active > a:before,
+body.cherry .view-toolbar .nav > li > a:hover,
+body.cherry .view-toolbar .nav > li > a:active,
 body.cherry .portlet-toolbar .icon-delete:before,
 body.cherry .portlet-toolbar .icon-edit:before,
 body.cherry .mini-pillbox a:hover,
-body.cherry .mini-pillbox a.active,
+body.cherry .mini-pillbox .active,
 body.cherry #StickyListMenu > li > a:hover > span,
 body.cherry .addfileinput-button:hover span .pager a:hover:before,
 body.cherry .pager a:hover:after,
@@ -2952,6 +3108,22 @@ body.cherry .dashboard-link:active .z-label {
   -ms-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF !important;
   box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF !important;
 }
+body.cherry .button-actions a:hover {
+  color: #ffffff !important;
+  background-color: #46181f !important;
+  background-repeat: repeat-x !important;
+  background-image: -moz-linear-gradient(top, #933140, #46181f) !important;
+  background-image: -ms-linear-gradient(top, #933140, #46181f) !important;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #933140), color-stop(100%, #46181f)) !important;
+  background-image: -webkit-linear-gradient(top, #933140, #46181f) !important;
+  background-image: -o-linear-gradient(top, #933140, #46181f) !important;
+  background-image: linear-gradient(top, #933140, #46181f) !important;
+  -webkit-text-shadow: 0px -1px 0 #331116 !important;
+  -moz-text-shadow: 0px -1px 0 #331116 !important;
+  -o-text-shadow: 0px -1px 0 #331116 !important;
+  -ms-text-shadow: 0px -1px 0 #331116 !important;
+  text-shadow: 0px -1px 0 #331116 !important;
+}
 body.cherry .notifications-link:hover {
   border-left: 1px solid #566675;
   border-right: 1px solid #566675;
@@ -3219,15 +3391,42 @@ body.turquoise a.active-tab,
 body.turquoise .edit-autoresponder-link {
   color: #447799;
 }
+body.turquoise #MashableInboxActionBarForViews .nav > li > a:hover,
+body.turquoise #MashableInboxActionBarForViews .nav > li > a:active,
+body.turquoise #MashableInboxActionBarForViews a:hover .unread-count,
+body.turquoise #MashableInboxActionBarForViews a:active .unread-count,
 body.turquoise #notifications-flyout .single-notification h4,
-body.turquoise .view-toolbar a:hover,
-body.turquoise .view-toolbar a:active,
-body.turquoise .view-toolbar a.active,
-body.turquoise .view-toolbar a.active span,
+body.turquoise a:hover i[class^="icon"],
+body.turquoise a:hover i[class^="icon"]:after,
+body.turquoise a:active i[class^="icon"],
+body.turquoise a:active i[class^="icon"]:after,
+body.turquoise .button-action-trigger:hover span,
+body.turquoise .button-action-trigger:active span,
+body.turquoise .button-action:hover span,
+body.turquoise .button-action:active span,
+body.turquoise .split-button:hover span,
+body.turquoise .split-button:hover i[class^="icon"],
+body.turquoise .split-button:hover i[class^="icon"]:after,
+body.turquoise .split-button:hover i[class^="icon"]:before,
+body.turquoise .default-button:hover span,
+body.turquoise .default-button:hover i[class^="icon"],
+body.turquoise .default-button:hover i[class^="icon"]:after,
+body.turquoise .default-button:hover i[class^="icon"]:before,
+body.turquoise .view-toolbar > a:hover,
+body.turquoise .view-toolbar > a:active,
+body.turquoise .view-toolbar > a:hover:before,
+body.turquoise .view-toolbar > a:active:before,
+body.turquoise .view-toolbar > a:hover span,
+body.turquoise .view-toolbar > a:active span,
+body.turquoise .view-toolbar .active,
+body.turquoise .view-toolbar .active > a span,
+body.turquoise .view-toolbar .active > a:before,
+body.turquoise .view-toolbar .nav > li > a:hover,
+body.turquoise .view-toolbar .nav > li > a:active,
 body.turquoise .portlet-toolbar .icon-delete:before,
 body.turquoise .portlet-toolbar .icon-edit:before,
 body.turquoise .mini-pillbox a:hover,
-body.turquoise .mini-pillbox a.active,
+body.turquoise .mini-pillbox .active,
 body.turquoise #StickyListMenu > li > a:hover > span,
 body.turquoise .addfileinput-button:hover span .pager a:hover:before,
 body.turquoise .pager a:hover:after,
@@ -3511,6 +3710,22 @@ body.turquoise .dashboard-link:active .z-label {
   -ms-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF !important;
   box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF !important;
 }
+body.turquoise .button-actions a:hover {
+  color: #ffffff !important;
+  background-color: #247986 !important;
+  background-repeat: repeat-x !important;
+  background-image: -moz-linear-gradient(top, #44bbcc, #247986) !important;
+  background-image: -ms-linear-gradient(top, #44bbcc, #247986) !important;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #44bbcc), color-stop(100%, #247986)) !important;
+  background-image: -webkit-linear-gradient(top, #44bbcc, #247986) !important;
+  background-image: -o-linear-gradient(top, #44bbcc, #247986) !important;
+  background-image: linear-gradient(top, #44bbcc, #247986) !important;
+  -webkit-text-shadow: 0px -1px 0 #1f6772 !important;
+  -moz-text-shadow: 0px -1px 0 #1f6772 !important;
+  -o-text-shadow: 0px -1px 0 #1f6772 !important;
+  -ms-text-shadow: 0px -1px 0 #1f6772 !important;
+  text-shadow: 0px -1px 0 #1f6772 !important;
+}
 body.turquoise .notifications-link:hover {
   border-left: 1px solid #345c76;
   border-right: 1px solid #345c76;
@@ -3778,15 +3993,42 @@ body.violet a.active-tab,
 body.violet .edit-autoresponder-link {
   color: #4a3970;
 }
+body.violet #MashableInboxActionBarForViews .nav > li > a:hover,
+body.violet #MashableInboxActionBarForViews .nav > li > a:active,
+body.violet #MashableInboxActionBarForViews a:hover .unread-count,
+body.violet #MashableInboxActionBarForViews a:active .unread-count,
 body.violet #notifications-flyout .single-notification h4,
-body.violet .view-toolbar a:hover,
-body.violet .view-toolbar a:active,
-body.violet .view-toolbar a.active,
-body.violet .view-toolbar a.active span,
+body.violet a:hover i[class^="icon"],
+body.violet a:hover i[class^="icon"]:after,
+body.violet a:active i[class^="icon"],
+body.violet a:active i[class^="icon"]:after,
+body.violet .button-action-trigger:hover span,
+body.violet .button-action-trigger:active span,
+body.violet .button-action:hover span,
+body.violet .button-action:active span,
+body.violet .split-button:hover span,
+body.violet .split-button:hover i[class^="icon"],
+body.violet .split-button:hover i[class^="icon"]:after,
+body.violet .split-button:hover i[class^="icon"]:before,
+body.violet .default-button:hover span,
+body.violet .default-button:hover i[class^="icon"],
+body.violet .default-button:hover i[class^="icon"]:after,
+body.violet .default-button:hover i[class^="icon"]:before,
+body.violet .view-toolbar > a:hover,
+body.violet .view-toolbar > a:active,
+body.violet .view-toolbar > a:hover:before,
+body.violet .view-toolbar > a:active:before,
+body.violet .view-toolbar > a:hover span,
+body.violet .view-toolbar > a:active span,
+body.violet .view-toolbar .active,
+body.violet .view-toolbar .active > a span,
+body.violet .view-toolbar .active > a:before,
+body.violet .view-toolbar .nav > li > a:hover,
+body.violet .view-toolbar .nav > li > a:active,
 body.violet .portlet-toolbar .icon-delete:before,
 body.violet .portlet-toolbar .icon-edit:before,
 body.violet .mini-pillbox a:hover,
-body.violet .mini-pillbox a.active,
+body.violet .mini-pillbox .active,
 body.violet #StickyListMenu > li > a:hover > span,
 body.violet .addfileinput-button:hover span .pager a:hover:before,
 body.violet .pager a:hover:after,
@@ -4070,6 +4312,22 @@ body.violet .dashboard-link:active .z-label {
   -ms-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF !important;
   box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF !important;
 }
+body.violet .button-actions a:hover {
+  color: #ffffff !important;
+  background-color: #445fc3 !important;
+  background-repeat: repeat-x !important;
+  background-image: -moz-linear-gradient(top, #91a1dc, #445fc3) !important;
+  background-image: -ms-linear-gradient(top, #91a1dc, #445fc3) !important;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #91a1dc), color-stop(100%, #445fc3)) !important;
+  background-image: -webkit-linear-gradient(top, #91a1dc, #445fc3) !important;
+  background-image: -o-linear-gradient(top, #91a1dc, #445fc3) !important;
+  background-image: linear-gradient(top, #91a1dc, #445fc3) !important;
+  -webkit-text-shadow: 0px -1px 0 #3954b4 !important;
+  -moz-text-shadow: 0px -1px 0 #3954b4 !important;
+  -o-text-shadow: 0px -1px 0 #3954b4 !important;
+  -ms-text-shadow: 0px -1px 0 #3954b4 !important;
+  text-shadow: 0px -1px 0 #3954b4 !important;
+}
 body.violet .notifications-link:hover {
   border-left: 1px solid #34284e;
   border-right: 1px solid #34284e;
@@ -4337,15 +4595,42 @@ body.honey a.active-tab,
 body.honey .edit-autoresponder-link {
   color: #46201c;
 }
+body.honey #MashableInboxActionBarForViews .nav > li > a:hover,
+body.honey #MashableInboxActionBarForViews .nav > li > a:active,
+body.honey #MashableInboxActionBarForViews a:hover .unread-count,
+body.honey #MashableInboxActionBarForViews a:active .unread-count,
 body.honey #notifications-flyout .single-notification h4,
-body.honey .view-toolbar a:hover,
-body.honey .view-toolbar a:active,
-body.honey .view-toolbar a.active,
-body.honey .view-toolbar a.active span,
+body.honey a:hover i[class^="icon"],
+body.honey a:hover i[class^="icon"]:after,
+body.honey a:active i[class^="icon"],
+body.honey a:active i[class^="icon"]:after,
+body.honey .button-action-trigger:hover span,
+body.honey .button-action-trigger:active span,
+body.honey .button-action:hover span,
+body.honey .button-action:active span,
+body.honey .split-button:hover span,
+body.honey .split-button:hover i[class^="icon"],
+body.honey .split-button:hover i[class^="icon"]:after,
+body.honey .split-button:hover i[class^="icon"]:before,
+body.honey .default-button:hover span,
+body.honey .default-button:hover i[class^="icon"],
+body.honey .default-button:hover i[class^="icon"]:after,
+body.honey .default-button:hover i[class^="icon"]:before,
+body.honey .view-toolbar > a:hover,
+body.honey .view-toolbar > a:active,
+body.honey .view-toolbar > a:hover:before,
+body.honey .view-toolbar > a:active:before,
+body.honey .view-toolbar > a:hover span,
+body.honey .view-toolbar > a:active span,
+body.honey .view-toolbar .active,
+body.honey .view-toolbar .active > a span,
+body.honey .view-toolbar .active > a:before,
+body.honey .view-toolbar .nav > li > a:hover,
+body.honey .view-toolbar .nav > li > a:active,
 body.honey .portlet-toolbar .icon-delete:before,
 body.honey .portlet-toolbar .icon-edit:before,
 body.honey .mini-pillbox a:hover,
-body.honey .mini-pillbox a.active,
+body.honey .mini-pillbox .active,
 body.honey #StickyListMenu > li > a:hover > span,
 body.honey .addfileinput-button:hover span .pager a:hover:before,
 body.honey .pager a:hover:after,
@@ -4628,6 +4913,22 @@ body.honey .dashboard-link:active .z-label {
   -o-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF !important;
   -ms-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF !important;
   box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF !important;
+}
+body.honey .button-actions a:hover {
+  color: #ffffff !important;
+  background-color: #667127 !important;
+  background-repeat: repeat-x !important;
+  background-image: -moz-linear-gradient(top, #abbc42, #667127) !important;
+  background-image: -ms-linear-gradient(top, #abbc42, #667127) !important;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #abbc42), color-stop(100%, #667127)) !important;
+  background-image: -webkit-linear-gradient(top, #abbc42, #667127) !important;
+  background-image: -o-linear-gradient(top, #abbc42, #667127) !important;
+  background-image: linear-gradient(top, #abbc42, #667127) !important;
+  -webkit-text-shadow: 0px -1px 0 #555e21 !important;
+  -moz-text-shadow: 0px -1px 0 #555e21 !important;
+  -o-text-shadow: 0px -1px 0 #555e21 !important;
+  -ms-text-shadow: 0px -1px 0 #555e21 !important;
+  text-shadow: 0px -1px 0 #555e21 !important;
 }
 body.honey .notifications-link:hover {
   border-left: 1px solid #220f0d;
@@ -5379,6 +5680,7 @@ section {
 }
 #user-header-menu > li > a:after {
   content: "÷";
+  font-weight: normal !important !important;
   font-weight: normal !important;
   font-size: 12px !important;
   font-family: "zurmo_gamification_symbly_rRg" !important;
@@ -5419,6 +5721,7 @@ section {
 #settings-header-menu > li > a:after {
   content: "n";
   color: #ddd;
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 26px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -5474,6 +5777,7 @@ body > .ui-autocomplete {
 }
 .autocomplete-icon-AccountsModule:before {
   content: "P";
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 20px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -5481,6 +5785,7 @@ body > .ui-autocomplete {
 }
 .autocomplete-icon-ContactsModule:before {
   content: "y";
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 22px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -5488,6 +5793,7 @@ body > .ui-autocomplete {
 }
 .autocomplete-icon-LeadsModule:before {
   content: ".";
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 20px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -5495,6 +5801,7 @@ body > .ui-autocomplete {
 }
 .autocomplete-icon-OpportunitiesModule:before {
   content: "9";
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 20px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -5502,6 +5809,7 @@ body > .ui-autocomplete {
 }
 .autocomplete-icon-TasksModule:before {
   content: "4";
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 20px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -5509,6 +5817,7 @@ body > .ui-autocomplete {
 }
 .autocomplete-icon-NotesModule:before {
   content: "3";
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 20px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -5516,12 +5825,14 @@ body > .ui-autocomplete {
 }
 .autocomplete-icon-MeetingsModule:before {
   content: "U";
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 20px;
   font-family: "zurmo_gamification_symbly_rRg";
   margin-right: 8px;
 }
 .autocomplete-icon-UsersModule:before {
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 20px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -5529,6 +5840,7 @@ body > .ui-autocomplete {
   content: "e";
 }
 .autocomplete-icon-AllResults:before {
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 20px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -5693,6 +6005,7 @@ body > .ui-autocomplete {
 }
 #ShortcutsMenu > li > a :after {
   content: "÷";
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 16px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -5714,6 +6027,7 @@ body > .ui-autocomplete {
   height: 38px;
   width: 44px;
   font-size: 24px;
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 30px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -5789,6 +6103,7 @@ body > .ui-autocomplete {
   display: block;
   float: left;
   position: relative;
+  z-index: 1;
 }
 #MenuView ul a > span {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -5982,6 +6297,7 @@ body > .ui-autocomplete {
   position: relative;
   top: 4px;
   font-style: normal;
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 24px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -6239,42 +6555,16 @@ body > .ui-autocomplete {
   float: right;
   margin-bottom: 0 !important;
 }
+#AddPortletLink i {
+  top: -2px;
+  margin-right: 5px;
+}
 .juiportlet-widget-head .view-toolbar-container {
   float: right;
   width: auto;
 }
 .juiportlet-widget-head .view-toolbar {
   margin-bottom: 0;
-}
-.unread-count {
-  display: inline-block;
-  margin-left: 8px;
-  -webkit-border-radius: 50%;
-  -moz-border-radius: 50%;
-  -ms-border-radius: 50%;
-  -o-border-radius: 50%;
-  border-radius: 50%;
-  width: 16px;
-  height: 16px;
-  line-height: 15px;
-  text-align: center;
-  color: #545454;
-  -webkit-text-shadow: none;
-  -moz-text-shadow: none;
-  -o-text-shadow: none;
-  -ms-text-shadow: none;
-  text-shadow: none;
-  font-size: 9px;
-  font-weight: bold !important;
-  background-color: #dfdfdf;
-  background-repeat: repeat-x;
-  background-image: -moz-linear-gradient(top, #ffffff, #dfdfdf);
-  background-image: -ms-linear-gradient(top, #ffffff, #dfdfdf);
-  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffffff), color-stop(100%, #dfdfdf));
-  background-image: -webkit-linear-gradient(top, #ffffff, #dfdfdf);
-  background-image: -o-linear-gradient(top, #ffffff, #dfdfdf);
-  background-image: linear-gradient(top, #ffffff, #dfdfdf);
-  border: 1px solid #dfdfdf;
 }
 form .view-toolbar-container,
 .ActionBarForSecurityTreeListView .view-toolbar-container,
@@ -6320,6 +6610,7 @@ form .view-toolbar-container,
 .view-toolbar .parent > a:after,
 .portlet-view-toolbar .parent > a:after {
   content: "÷";
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 14px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -6374,8 +6665,8 @@ form .view-toolbar-container,
 .portlet-view-toolbar .parent > a {
   color: #656565;
   font-weight: bold;
-  text-shadow: #fff 0 1px 0;
-  padding: 0 10px 0 40px;
+  text-shadow: #ffffff 0 -1px 0;
+  padding: 0 10px 0 10px;
   line-height: 30px;
   display: inline-block;
   border-left: 1px solid #bababa;
@@ -6439,756 +6730,6 @@ form .view-toolbar-container,
   padding: 10px;
   line-height: 150%;
 }
-.icon-general:before,
-.icon-edit:before {
-  font-weight: normal;
-  font-size: 24px;
-  font-family: "zurmo_gamification_symbly_rRg";
-  padding: 0 0 0 0;
-  margin: 0 6px 0 -30px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  vertical-align: middle;
-  position: relative;
-  content: "!";
-  top: -2px;
-}
-#MarketingCreateLinkActionElement .parent > a:before,
-#MarketingListAddSubscriberLinkActionElement .parent > a:before,
-#MashableInboxCreateDropdown .parent > a:before,
-.icon-create:before {
-  content: "Y";
-  font-weight: normal;
-  font-size: 24px;
-  font-family: "zurmo_gamification_symbly_rRg";
-  padding: 0 0 0 0;
-  margin: 0 6px 0 -30px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  vertical-align: middle;
-  position: relative;
-  top: -2px;
-}
-.icon-add:before {
-  content: "Y";
-  font-weight: normal;
-  font-size: 24px;
-  font-family: "zurmo_gamification_symbly_rRg";
-  padding: 0 0 0 0;
-  margin: 0 6px 0 -30px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  vertical-align: middle;
-  position: relative;
-  top: -2px;
-}
-.icon-lock {
-  padding: 0 10px !important;
-}
-.icon-lock:before {
-  content: "F";
-  font-weight: normal;
-  font-size: 24px;
-  font-family: "zurmo_gamification_symbly_rRg";
-  padding: 0 0 0 0;
-  margin: 0 6px 0 -30px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  vertical-align: middle;
-  position: relative;
-  top: -2px;
-  margin: 0;
-}
-.icon-unlock {
-  padding: 0 10px !important;
-}
-.icon-unlock:before {
-  content: "E";
-  font-weight: normal;
-  font-size: 24px;
-  font-family: "zurmo_gamification_symbly_rRg";
-  padding: 0 0 0 0;
-  margin: 0 6px 0 -30px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  vertical-align: middle;
-  position: relative;
-  top: -2px;
-  margin: 0;
-}
-.icon-marketing-dashboard:before,
-#ChangeDashboardsMenu .parent > a:before {
-  content: "/";
-  font-weight: normal;
-  font-size: 24px;
-  font-family: "zurmo_gamification_symbly_rRg";
-  padding: 0 0 0 0;
-  margin: 0 6px 0 -30px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  vertical-align: middle;
-  position: relative;
-  top: -2px;
-}
-#ExportLinkActionElement .parent > a:before,
-#ListViewExportActionMenu .parent > a:before,
-.icon-export:before {
-  content: "(";
-  font-weight: normal;
-  font-size: 24px;
-  font-family: "zurmo_gamification_symbly_rRg";
-  padding: 0 0 0 0;
-  margin: 0 6px 0 -30px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  vertical-align: middle;
-  position: relative;
-  top: -2px;
-}
-#ListViewDetailsActionMenu .parent > a:before,
-.icon-details:before {
-  content: 'T';
-  font-weight: normal;
-  font-size: 24px;
-  font-family: "zurmo_gamification_symbly_rRg";
-  padding: 0 0 0 0;
-  margin: 0 6px 0 -30px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  vertical-align: middle;
-  position: relative;
-  top: -2px;
-}
-#MashableInboxMassActionMenu .parent > a:before,
-#ListViewOptionsActionMenu .parent > a:before,
-.icon-options:before {
-  content: "n";
-  font-weight: normal;
-  font-size: 24px;
-  font-family: "zurmo_gamification_symbly_rRg";
-  padding: 0 0 0 0;
-  margin: 0 6px 0 -30px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  vertical-align: middle;
-  position: relative;
-  top: -2px;
-}
-#MassEditLinkActionElement .parent > a:before,
-#ListViewMassActionMenu .parent > a:before,
-#list-view-massAction:before {
-  content: "2";
-  font-weight: normal;
-  font-size: 24px;
-  font-family: "zurmo_gamification_symbly_rRg";
-  padding: 0 0 0 0;
-  margin: 0 6px 0 -30px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  vertical-align: middle;
-  position: relative;
-  top: -2px;
-}
-#MassDeleteLinkActionElement .parent > a:before,
-#ListViewDeleteMassActionMenu .parent > a:before {
-  content: '\2014';
-  font-weight: normal;
-  font-size: 22px;
-  font-family: "zurmo_gamification_symbly_rRg";
-  padding: 0 0 0 0;
-  margin: 0 6px 0 -30px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  vertical-align: middle;
-  position: relative;
-  top: -2px;
-}
-#MarketingListMembersSubscribeLinkActionElement .parent > a:before {
-  content: "c";
-  font-weight: normal;
-  font-size: 24px;
-  font-family: "zurmo_gamification_symbly_rRg";
-  padding: 0 0 0 0;
-  margin: 0 6px 0 -30px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  vertical-align: middle;
-  position: relative;
-  top: -2px;
-}
-#MarketingListMembersUnsubscribeLinkActionElement .parent > a:before {
-  content: "d";
-  font-weight: normal;
-  font-size: 24px;
-  font-family: "zurmo_gamification_symbly_rRg";
-  padding: 0 0 0 0;
-  margin: 0 6px 0 -30px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  vertical-align: middle;
-  position: relative;
-  top: -2px;
-}
-.icon-memberships:before {
-  content: "y";
-  font-weight: normal;
-  font-size: 24px;
-  font-family: "zurmo_gamification_symbly_rRg";
-  padding: 0 0 0 0;
-  margin: 0 6px 0 -30px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  vertical-align: middle;
-  position: relative;
-  top: -2px;
-}
-.icon-permissions:before {
-  content: "E";
-  font-weight: normal;
-  font-size: 24px;
-  font-family: "zurmo_gamification_symbly_rRg";
-  padding: 0 0 0 0;
-  margin: 0 6px 0 -30px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  vertical-align: middle;
-  position: relative;
-  top: -2px;
-}
-.icon-rights:before {
-  content: "u";
-  font-weight: normal;
-  font-size: 24px;
-  font-family: "zurmo_gamification_symbly_rRg";
-  padding: 0 0 0 0;
-  margin: 0 6px 0 -30px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  vertical-align: middle;
-  position: relative;
-  top: -2px;
-}
-.icon-policies:before {
-  content: "x";
-  font-weight: normal;
-  font-size: 24px;
-  font-family: "zurmo_gamification_symbly_rRg";
-  padding: 0 0 0 0;
-  margin: 0 6px 0 -30px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  vertical-align: middle;
-  position: relative;
-  top: -2px;
-}
-.icon-delete:before {
-  content: "—";
-  font-weight: normal;
-  font-size: 24px;
-  font-family: "zurmo_gamification_symbly_rRg";
-  padding: 0 0 0 0;
-  margin: 0 6px 0 -30px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  vertical-align: middle;
-  position: relative;
-  top: -2px;
-}
-.icon-left-arrow:before {
-  content: "8";
-  font-weight: normal;
-  font-size: 24px;
-  font-family: "zurmo_gamification_symbly_rRg";
-  padding: 0 0 0 0;
-  margin: 0 6px 0 -30px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  vertical-align: middle;
-  position: relative;
-  top: -2px;
-}
-.icon-right-arrow:before {
-  content: "7";
-  font-weight: normal;
-  font-size: 24px;
-  font-family: "zurmo_gamification_symbly_rRg";
-  padding: 0 0 0 0;
-  margin: 0 6px 0 -30px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  vertical-align: middle;
-  position: relative;
-  top: -2px;
-}
-.icon-fields:before {
-  content: "0";
-  font-weight: normal;
-  font-size: 24px;
-  font-family: "zurmo_gamification_symbly_rRg";
-  padding: 0 0 0 0;
-  margin: 0 6px 0 -30px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  vertical-align: middle;
-  position: relative;
-  top: -2px;
-}
-.icon-layout:before {
-  content: "C";
-  font-weight: normal;
-  font-size: 24px;
-  font-family: "zurmo_gamification_symbly_rRg";
-  padding: 0 0 0 0;
-  margin: 0 6px 0 -30px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  vertical-align: middle;
-  position: relative;
-  top: -2px;
-}
-.icon-user-details:before {
-  content: "e";
-  font-weight: normal;
-  font-size: 24px;
-  font-family: "zurmo_gamification_symbly_rRg";
-  padding: 0 0 0 0;
-  margin: 0 6px 0 -30px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  vertical-align: middle;
-  position: relative;
-  top: -2px;
-}
-.icon-password:before {
-  content: "J";
-  font-weight: normal;
-  font-size: 24px;
-  font-family: "zurmo_gamification_symbly_rRg";
-  padding: 0 0 0 0;
-  margin: 0 6px 0 -30px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  vertical-align: middle;
-  position: relative;
-  top: -2px;
-}
-.icon-audit:before {
-  content: "I";
-  font-weight: normal;
-  font-size: 24px;
-  font-family: "zurmo_gamification_symbly_rRg";
-  padding: 0 0 0 0;
-  margin: 0 6px 0 -30px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  vertical-align: middle;
-  position: relative;
-  top: -2px;
-}
-.icon-user-config:before {
-  content: "n";
-  font-weight: normal;
-  font-size: 24px;
-  font-family: "zurmo_gamification_symbly_rRg";
-  padding: 0 0 0 0;
-  margin: 0 6px 0 -30px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  vertical-align: middle;
-  position: relative;
-  top: -2px;
-}
-.icon-security:before {
-  content: "F";
-  font-weight: normal;
-  font-size: 24px;
-  font-family: "zurmo_gamification_symbly_rRg";
-  padding: 0 0 0 0;
-  margin: 0 6px 0 -30px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  vertical-align: middle;
-  position: relative;
-  top: -2px;
-}
-.icon-missions-created:before,
-.icon-conversations-created:before {
-  content: "w";
-  font-weight: normal;
-  font-size: 24px;
-  font-family: "zurmo_gamification_symbly_rRg";
-  padding: 0 0 0 0;
-  margin: 0 6px 0 -30px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  vertical-align: middle;
-  position: relative;
-  top: -2px;
-}
-.icon-conversations-participant:before {
-  content: "b";
-  font-weight: normal;
-  font-size: 24px;
-  font-family: "zurmo_gamification_symbly_rRg";
-  padding: 0 0 0 0;
-  margin: 0 6px 0 -30px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  vertical-align: middle;
-  position: relative;
-  top: 0;
-}
-.icon-conversation:before {
-  content: "O";
-  font-weight: normal;
-  font-size: 24px;
-  font-family: "zurmo_gamification_symbly_rRg";
-  padding: 0 0 0 0;
-  margin: 0 6px 0 -30px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  vertical-align: middle;
-  position: relative;
-  top: -1px;
-}
-.icon-conversations-closed:before {
-  content: "l";
-  font-weight: normal;
-  font-size: 24px;
-  font-family: "zurmo_gamification_symbly_rRg";
-  padding: 0 0 0 0;
-  margin: 0 6px 0 -30px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  vertical-align: middle;
-  position: relative;
-  top: -1px;
-}
-.icon-mission:before,
-.icon-missions-available:before {
-  content: "Q";
-  font-weight: normal;
-  font-size: 24px;
-  font-family: "zurmo_gamification_symbly_rRg";
-  padding: 0 0 0 0;
-  margin: 0 6px 0 -30px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  vertical-align: middle;
-  position: relative;
-  top: -2px;
-}
-.icon-missions-taken-but-not-accepted:before {
-  content: "e";
-  font-weight: normal;
-  font-size: 24px;
-  font-family: "zurmo_gamification_symbly_rRg";
-  padding: 0 0 0 0;
-  margin: 0 6px 0 -30px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  vertical-align: middle;
-  position: relative;
-  top: -2px;
-}
-.icon-notification:before {
-  content: '\00A5';
-  font-weight: normal;
-  font-size: 24px;
-  font-family: "zurmo_gamification_symbly_rRg";
-  padding: 0 0 0 0;
-  margin: 0 6px 0 -30px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  vertical-align: middle;
-  position: relative;
-  top: -2px;
-}
-.icon-combined:before {
-  content: '\00A7';
-  font-weight: normal;
-  font-size: 26px;
-  font-family: "zurmo_gamification_symbly_rRg";
-  padding: 0 0 0 0;
-  margin: 0 6px 0 -30px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  vertical-align: middle;
-  position: relative;
-  top: -2px;
-}
-.icon-workflows:before {
-  content: '\20AC';
-  font-weight: normal;
-  font-size: 24px;
-  font-family: "zurmo_gamification_symbly_rRg";
-  padding: 0 0 0 0;
-  margin: 0 6px 0 -30px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  vertical-align: middle;
-  position: relative;
-  top: -2px;
-}
-.icon-by-time-workflow-in-queues:before {
-  content: '\0071';
-  font-weight: normal;
-  font-size: 28px;
-  font-family: "zurmo_gamification_symbly_rRg";
-  padding: 0 0 0 0;
-  margin: 0 6px 0 -30px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  vertical-align: middle;
-  position: relative;
-  top: -2px;
-}
-.icon-by-workflow-message-in-queues:before {
-  content: '\00A5';
-  font-weight: normal;
-  font-size: 22px;
-  font-family: "zurmo_gamification_symbly_rRg";
-  padding: 0 0 0 0;
-  margin: 0 6px 0 -30px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  vertical-align: middle;
-  position: relative;
-  top: -2px;
-}
-.icon-by-workflow-manage-order:before {
-  content: '\2039';
-  font-weight: normal;
-  font-size: 25px;
-  font-family: "zurmo_gamification_symbly_rRg";
-  padding: 0 0 0 0;
-  margin: 0 6px 0 -30px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  vertical-align: middle;
-  position: relative;
-  top: -2px;
-}
-.icon-marketing-lists:before {
-  content: '\0022';
-  font-weight: normal;
-  font-size: 24px;
-  font-family: "zurmo_gamification_symbly_rRg";
-  padding: 0 0 0 0;
-  margin: 0 6px 0 -30px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  vertical-align: middle;
-  position: relative;
-  top: -1px;
-}
-.icon-email-templates:before {
-  content: '\00B6';
-  font-weight: normal;
-  font-size: 25px;
-  font-family: "zurmo_gamification_symbly_rRg";
-  padding: 0 0 0 0;
-  margin: 0 6px 0 -30px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  vertical-align: middle;
-  position: relative;
-  top: -1px;
-}
-.icon-products:before {
-  content: '\003E';
-  font-weight: normal;
-  font-size: 24px;
-  font-family: "zurmo_gamification_symbly_rRg";
-  padding: 0 0 0 0;
-  margin: 0 6px 0 -30px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  vertical-align: middle;
-  position: relative;
-  top: -2px;
-}
-.icon-catalog-items:before {
-  content: '\00AC';
-  font-weight: normal;
-  font-size: 27px;
-  font-family: "zurmo_gamification_symbly_rRg";
-  padding: 0 0 0 0;
-  margin: 0 6px 0 -30px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  vertical-align: middle;
-  position: relative;
-  top: -1px;
-}
-.icon-product-categories:before {
-  content: '\00D7';
-  font-weight: normal;
-  font-size: 26px;
-  font-family: "zurmo_gamification_symbly_rRg";
-  padding: 0 0 0 0;
-  margin: 0 6px 0 -30px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  vertical-align: middle;
-  position: relative;
-  top: -2px;
-}
-.icon-mobile:before {
-  content: '\2018';
-  font-weight: normal;
-  font-size: 24px;
-  font-family: "zurmo_gamification_symbly_rRg";
-  padding: 0 0 0 0;
-  margin: 0 6px 0 -30px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  vertical-align: middle;
-  position: relative;
-  top: 0;
-}
-.icon-desktop:before {
-  content: '\2019';
-  font-weight: normal;
-  font-size: 24px;
-  font-family: "zurmo_gamification_symbly_rRg";
-  padding: 0 0 0 0;
-  margin: 0 6px 0 -30px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  vertical-align: middle;
-  position: relative;
-  top: 0;
-}
-.icon-tablet:before {
-  content: '\201D';
-  font-weight: normal;
-  font-size: 24px;
-  font-family: "zurmo_gamification_symbly_rRg";
-  padding: 0 0 0 0;
-  margin: 0 6px 0 -30px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  vertical-align: middle;
-  position: relative;
-  top: 0;
-}
-.icon-kanban-board-view-type:before {
-  font-weight: normal;
-  font-size: 26px;
-  font-family: "zurmo_gamification_symbly_rRg";
-  padding: 0 0 0 0;
-  margin: 0 6px 0 -30px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  vertical-align: middle;
-  position: relative;
-  content: '\00AE';
-}
-.icon-grid-view-type:before {
-  font-weight: normal;
-  font-size: 26px;
-  font-family: "zurmo_gamification_symbly_rRg";
-  padding: 0 0 0 0;
-  margin: 0 6px 0 -30px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  vertical-align: middle;
-  position: relative;
-  content: '\00B0';
-  top: -2px;
-}
-.icon-marketing-campaigns:before {
-  font-weight: normal;
-  font-size: 28px;
-  font-family: "zurmo_gamification_symbly_rRg";
-  padding: 0 0 0 0;
-  margin: 0 6px 0 -30px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  vertical-align: middle;
-  position: relative;
-  content: '\002C';
-  top: -2px;
-}
-.icon-webforms:before {
-  font-weight: normal;
-  font-size: 24px;
-  font-family: "zurmo_gamification_symbly_rRg";
-  padding: 0 0 0 0;
-  margin: 0 6px 0 -30px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  vertical-align: middle;
-  position: relative;
-  content: '\003C';
-  top: -2px;
-}
-.icon-webforms-entries:before {
-  font-weight: normal;
-  font-size: 24px;
-  font-family: "zurmo_gamification_symbly_rRg";
-  padding: 0 0 0 0;
-  margin: 0 6px 0 -30px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  vertical-align: middle;
-  position: relative;
-  content: '\005E';
-  top: -2px;
-}
 /*=Footer*/
 #FooterView {
   margin: 20px 3% 0 3%;
@@ -7249,7 +6790,6 @@ form .view-toolbar-container,
   -ms-text-shadow: 0 0 15px #7cb830;
   text-shadow: 0 0 15px #7cb830;
 }
-/*General table style, tables still need 'cellspacing="0"' in the markup */
 table {
   border-collapse: separate;
   border-spacing: 0;
@@ -7435,6 +6975,7 @@ tr.even {
 .pencil {
   display: block;
   margin-top: -2px;
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 24px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -7446,6 +6987,7 @@ tr.even {
   padding: 0 !important;
 }
 .icon-star {
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 26px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -7507,29 +7049,31 @@ td.empty {
 }
 .icon-notice:before {
   content: "j";
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 24px;
   font-family: "zurmo_gamification_symbly_rRg";
-  padding: 0 0 0 0;
-  margin: 0 6px 0 -30px;
+  padding: 0;
+  margin: 0;
+  vertical-align: middle;
+  position: relative;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  vertical-align: middle;
-  position: relative;
 }
 .icon-empty:before {
   content: "z";
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 24px;
   font-family: "zurmo_gamification_symbly_rRg";
-  padding: 0 0 0 0;
-  margin: 0 6px 0 -30px;
+  padding: 0;
+  margin: 0;
+  vertical-align: middle;
+  position: relative;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  vertical-align: middle;
-  position: relative;
   margin: 0 !important;
 }
 .general-issue-notice {
@@ -7658,6 +7202,7 @@ td.empty {
 }
 .form .row-description:before {
   content: "T";
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 24px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -7737,48 +7282,51 @@ td.empty {
 }
 .portlet-toolbar .icon-create .z-label:before {
   content: "Y";
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 24px;
   font-family: "zurmo_gamification_symbly_rRg";
-  padding: 0 0 0 0;
-  margin: 0 6px 0 -30px;
+  padding: 0;
+  margin: 0;
+  vertical-align: middle;
+  position: relative;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  vertical-align: middle;
-  position: relative;
   font-size: 22px;
   top: -2px;
   margin: 0 5px 0 0 !important;
 }
 .portlet-toolbar .icon-delete:before {
   content: "—";
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 24px;
   font-family: "zurmo_gamification_symbly_rRg";
-  padding: 0 0 0 0;
-  margin: 0 6px 0 -30px;
+  padding: 0;
+  margin: 0;
+  vertical-align: middle;
+  position: relative;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  vertical-align: middle;
-  position: relative;
   top: -1px;
   color: #fff;
   margin-left: 0;
 }
 .portlet-toolbar .icon-edit:before {
   content: "!";
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 24px;
   font-family: "zurmo_gamification_symbly_rRg";
-  padding: 0 0 0 0;
-  margin: 0 6px 0 -30px;
+  padding: 0;
+  margin: 0;
+  vertical-align: middle;
+  position: relative;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  vertical-align: middle;
-  position: relative;
   top: -1px;
   color: #fff;
   margin-left: 0;
@@ -8183,6 +7731,7 @@ div.wide.form label.hasCheckBox {
 .zero-components-view a span:before,
 .splash-view a span:before {
   content: "Y";
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 24px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -8202,6 +7751,7 @@ div.wide.form label.hasCheckBox {
 .zero-components-view .large-icon:after,
 .splash-view .large-icon:after {
   content: 'j';
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 300px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -8210,6 +7760,7 @@ div.wide.form label.hasCheckBox {
 .zero-components-view .Contact .large-icon:after,
 .splash-view .Contact .large-icon:after {
   content: "y";
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 300px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -8218,6 +7769,7 @@ div.wide.form label.hasCheckBox {
 .zero-components-view .Account .large-icon:after,
 .splash-view .Account .large-icon:after {
   content: "P";
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 300px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -8226,6 +7778,7 @@ div.wide.form label.hasCheckBox {
 .zero-components-view .Lead .large-icon:after,
 .splash-view .Lead .large-icon:after {
   content: ".";
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 300px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -8234,6 +7787,7 @@ div.wide.form label.hasCheckBox {
 .zero-components-view .Opportunity .large-icon:after,
 .splash-view .Opportunity .large-icon:after {
   content: "9";
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 300px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -8242,6 +7796,7 @@ div.wide.form label.hasCheckBox {
 .zero-components-view .Conversation .large-icon:after,
 .splash-view .Conversation .large-icon:after {
   content: "b";
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 230px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -8250,6 +7805,7 @@ div.wide.form label.hasCheckBox {
 .zero-components-view .Mission .large-icon:after,
 .splash-view .Mission .large-icon:after {
   content: "Q";
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 230px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -8258,6 +7814,7 @@ div.wide.form label.hasCheckBox {
 .zero-components-view .EmailMessage .large-icon:after,
 .splash-view .EmailMessage .large-icon:after {
   content: "g";
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 325px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -8266,6 +7823,7 @@ div.wide.form label.hasCheckBox {
 .zero-components-view .EmailTemplate .large-icon:after,
 .splash-view .EmailTemplate .large-icon:after {
   content: '\00B6';
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 325px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -8274,6 +7832,7 @@ div.wide.form label.hasCheckBox {
 .zero-components-view .MarketingList .large-icon:after,
 .splash-view .MarketingList .large-icon:after {
   content: '\0022';
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 300px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -8282,6 +7841,7 @@ div.wide.form label.hasCheckBox {
 .zero-components-view .Campaign .large-icon:after,
 .splash-view .Campaign .large-icon:after {
   content: '\002C';
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 300px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -8290,6 +7850,7 @@ div.wide.form label.hasCheckBox {
 .zero-components-view .Product .large-icon:after,
 .splash-view .Product .large-icon:after {
   content: '\003E';
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 300px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -8298,6 +7859,7 @@ div.wide.form label.hasCheckBox {
 .zero-components-view .ProductTemplate .large-icon:after,
 .splash-view .ProductTemplate .large-icon:after {
   content: '\00AC';
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 300px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -8306,6 +7868,7 @@ div.wide.form label.hasCheckBox {
 .zero-components-view .ProductCategory .large-icon:after,
 .splash-view .ProductCategory .large-icon:after {
   content: '\00D7';
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 300px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -8314,6 +7877,7 @@ div.wide.form label.hasCheckBox {
 .zero-components-view .ContactWebForm .large-icon:after,
 .splash-view .ContactWebForm .large-icon:after {
   content: '\003C';
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 300px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -8568,6 +8132,7 @@ div.wide.form label.hasCheckBox {
 #more-search-linkmodal:after,
 #more-search-link:after {
   content: "÷";
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 14px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -8578,6 +8143,7 @@ div.wide.form label.hasCheckBox {
 #kanban-board-options-link:after,
 #select-list-attributes-link:after {
   content: "÷";
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 14px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -8726,6 +8292,7 @@ div.wide.form label.hasCheckBox {
   font-size: 11px;
 }
 #clear-search-link .icon-clear {
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 16px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -8771,6 +8338,7 @@ div.wide.form label.hasCheckBox {
   margin: 4px 0 0 -30px !important;
   position: relative;
   display: block;
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 24px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -9163,6 +8731,7 @@ div.wide.form label.hasCheckBox {
 }
 .has-model-select a .model-select-icon:before {
   content: "Y";
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 26px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -9211,6 +8780,7 @@ div.wide.form label.hasCheckBox {
 }
 .has-date-select button span:before {
   content: "U";
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 24px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -9334,6 +8904,7 @@ div.wide.form label.hasCheckBox {
 }
 .details-table .map-link:before {
   content: "K";
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 26px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -9541,6 +9112,7 @@ div.wide.form label.hasCheckBox {
 }
 .toolbar-mbmenu .options-menu > li > a:after {
   content: "÷";
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 14px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -9725,16 +9297,17 @@ div.wide.form label.hasCheckBox {
 }
 #NoteInlineEditView form input[type="submit"]:before {
   content: "Y";
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 24px;
   font-family: "zurmo_gamification_symbly_rRg";
-  padding: 0 0 0 0;
-  margin: 0 6px 0 -30px;
+  padding: 0;
+  margin: 0;
+  vertical-align: middle;
+  position: relative;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  vertical-align: middle;
-  position: relative;
   top: -1px;
   margin-left: 2px;
 }
@@ -9756,6 +9329,7 @@ div.wide.form label.hasCheckBox {
 }
 #inline-edit-form > table td > a:after {
   content: "÷";
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 14px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -9946,6 +9520,7 @@ div.radio-input .hasDropDown {
   background-image: -webkit-linear-gradient(top, #e8e8e8, #f5f5f5);
   background-image: -o-linear-gradient(top, #e8e8e8, #f5f5f5);
   background-image: linear-gradient(top, #e8e8e8, #f5f5f5);
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 14px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -10144,6 +9719,7 @@ div.hasHalfs > div input {
 .edit-portlet-menu > li > a:before,
 .edit-row-menu > li > a:before {
   content: "n";
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 24px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -10151,6 +9727,7 @@ div.hasHalfs > div input {
 .edit-portlet-menu > li > a:after,
 .edit-row-menu > li > a:after {
   content: "÷";
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 12px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -10259,6 +9836,7 @@ div.hasHalfs > div input {
 .pager .endless-list-pager .next a:after,
 .pager .endless-list-pager .hidden.next:after {
   content: "6";
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 18px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -10400,6 +9978,7 @@ div.hasHalfs > div input {
   position: relative;
   top: -3px;
   color: #666 !important;
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 42px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -10465,6 +10044,7 @@ div.hasHalfs > div input {
 .LatestActivitiesListView .latest-activity-toolbar #filter-latest-activities-link:after,
 .LatestActivitiesView .latest-activity-toolbar #filter-latest-activities-link:after {
   content: "÷";
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 14px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -10474,7 +10054,7 @@ div.hasHalfs > div input {
 }
 .LatestActivitiesListView .items,
 .LatestActivitiesView .items {
-  border-top: none !important;
+  border: none !important;
 }
 .LatestActivitiesListView td,
 .LatestActivitiesView td,
@@ -10535,6 +10115,7 @@ div.hasHalfs > div input {
   position: relative;
   top: -3px;
   color: #666 !important;
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 42px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -10546,6 +10127,7 @@ div.hasHalfs > div input {
   position: relative;
   top: -3px;
   color: #666 !important;
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 42px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -10557,6 +10139,7 @@ div.hasHalfs > div input {
   position: relative;
   top: -3px;
   color: #666 !important;
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 42px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -10568,6 +10151,7 @@ div.hasHalfs > div input {
   position: relative;
   top: -3px;
   color: #666 !important;
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 42px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -10583,6 +10167,7 @@ div.hasHalfs > div input {
   position: relative;
   top: -3px;
   color: #666 !important;
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 42px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -10594,6 +10179,7 @@ div.hasHalfs > div input {
   position: relative;
   top: -3px;
   color: #666 !important;
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 42px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -10884,8 +10470,6 @@ div.hasHalfs > div input {
 .hasDropDown select {
   z-index: 0;
   -moz-appearance: none;
-  text-indent: 0.01px;
-  text-overflow: '';
   -webkit-appearance: none;
   appearance: none;
   margin: 0;
@@ -11255,6 +10839,7 @@ div.hasHalfs > div input {
 }
 .TitleBarView.Account h1:before {
   content: "P";
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 36px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -11264,6 +10849,7 @@ div.hasHalfs > div input {
 }
 .TitleBarView.Contact h1:before {
   content: "y";
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 36px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -11273,6 +10859,7 @@ div.hasHalfs > div input {
 }
 .TitleBarView.Opportunity h1:before {
   content: "9";
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 36px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -11282,6 +10869,7 @@ div.hasHalfs > div input {
 }
 .TitleBarView.Lead h1:before {
   content: ".";
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 36px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -11308,6 +10896,7 @@ div.hasHalfs > div input {
 }
 .editable-cell:after {
   content: "!";
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 20px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -11315,6 +10904,210 @@ div.hasHalfs > div input {
   right: -10px;
   top: 1px;
   line-height: 1;
+}
+i[class^="icon"] {
+  color: #656565;
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  font-family: "zurmo_gamification_symbly_rRg";
+  vertical-align: middle;
+  padding: 0 0 0 0;
+  margin: 0 0 0 0;
+  position: relative;
+  top: -2px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.z-label i[class^="icon"] {
+  margin-right: 5px;
+}
+.icon-general:after,
+.icon-edit:after {
+  content: "!";
+}
+.icon-create:after {
+  content: "Y";
+}
+.icon-add:after {
+  content: "Y";
+}
+.icon-lock {
+  font-size: 28px !important;
+  padding: 0 !important;
+}
+.icon-lock:after {
+  content: "F";
+  margin: 0;
+}
+.icon-unlock {
+  font-size: 28px !important;
+  padding: 0 !important;
+}
+.icon-unlock:after {
+  content: "E";
+  margin: 0;
+}
+.icon-change-dashboard:after,
+.icon-marketing-dashboard:after {
+  content: "/";
+}
+.icon-export:after {
+  content: "(";
+}
+.icon-details:after {
+  content: 'T';
+}
+.icon-options:after {
+  content: "n";
+}
+#list-view-massAction:after {
+  content: "2";
+}
+#MassDeleteLinkActionElement .parent > a:after,
+#ListViewDeleteMassActionMenu .parent > a:after {
+  content: '\2014';
+  font-size: 22px;
+}
+#MarketingListMembersSubscribeLinkActionElement:after {
+  content: "c";
+}
+#MarketingListMembersUnsubscribeLinkActionElement:after {
+  content: "d";
+}
+.icon-memberships:after {
+  content: "y";
+}
+.icon-permissions:after {
+  content: "E";
+}
+.icon-rights:after {
+  content: "u";
+}
+.icon-policies:after {
+  content: "x";
+}
+.icon-delete:after {
+  content: "—";
+}
+.icon-left-arrow:after {
+  content: "8";
+}
+.icon-right-arrow:after {
+  content: "7";
+}
+.icon-fields:after {
+  content: "0";
+}
+.icon-layout:after {
+  content: "C";
+}
+.icon-user-details:after {
+  content: "e";
+}
+.icon-password:after {
+  content: "J";
+}
+.icon-audit:after {
+  content: "I";
+}
+.icon-user-config:after {
+  content: "n";
+}
+.icon-security:after {
+  content: "F";
+}
+.icon-missions-created:after,
+.icon-conversations-created:after {
+  content: "w";
+}
+.icon-conversations-participant:after {
+  content: "b";
+  top: 0;
+}
+.icon-conversation:after {
+  content: "O";
+}
+.icon-conversations-closed:after {
+  content: "l";
+}
+.icon-mission:after,
+.icon-missions-available:after {
+  content: "Q";
+}
+.icon-missions-taken-but-not-accepted:after {
+  content: "e";
+}
+.icon-notification:after {
+  content: '\00A5';
+}
+.icon-combined:after {
+  content: '\00A7';
+  font-size: 26px;
+}
+.icon-workflows:after {
+  content: '\20AC';
+}
+.icon-by-time-workflow-in-queues:after {
+  content: '\0071';
+  font-size: 28px;
+}
+.icon-by-workflow-message-in-queues:after {
+  content: '\00A5';
+  font-size: 22px;
+}
+.icon-by-workflow-manage-order:after {
+  content: '\2039';
+  font-size: 25px;
+}
+.icon-marketing-lists:after {
+  content: '\0022';
+}
+.icon-email-templates:after {
+  content: '\00B6';
+  font-size: 25px;
+}
+.icon-products:after {
+  content: '\003E';
+}
+.icon-catalog-items:after {
+  content: '\00AC';
+  font-size: 27px;
+}
+.icon-product-categories:after {
+  content: '\00D7';
+  font-size: 26px;
+}
+.icon-mobile:after {
+  content: '\2018';
+  top: 0;
+}
+.icon-desktop:after {
+  content: '\2019';
+  top: 0;
+}
+.icon-tablet:after {
+  content: '\201D';
+  top: 0;
+}
+.icon-kanban-board-view-type:after {
+  font-size: 26px;
+  content: '\00AE';
+}
+.icon-grid-view-type:after {
+  font-size: 26px;
+  content: '\00B0';
+}
+.icon-marketing-campaigns:after {
+  font-size: 28px;
+  content: '\002C';
+}
+.icon-webforms:after {
+  content: '\003C';
+}
+.icon-webforms-entries:after {
+  content: '\005E';
 }
 .juiportlet-columns .juiportlet-column {
   float: left;
@@ -11451,29 +11244,31 @@ div.hasHalfs > div input {
 }
 .type-opportunities .icon-empty:before {
   content: "9";
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 45px;
   font-family: "zurmo_gamification_symbly_rRg";
-  padding: 0 0 0 0;
-  margin: 0 6px 0 -30px;
+  padding: 0;
+  margin: 0;
+  vertical-align: middle;
+  position: relative;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  vertical-align: middle;
-  position: relative;
 }
 .type-contacts .icon-empty:before {
   content: "e";
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 45px;
   font-family: "zurmo_gamification_symbly_rRg";
-  padding: 0 0 0 0;
-  margin: 0 6px 0 -30px;
+  padding: 0;
+  margin: 0;
+  vertical-align: middle;
+  position: relative;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  vertical-align: middle;
-  position: relative;
 }
 .juiportlet-widget-head.type-contacts h3 {
   padding-left: 30px;
@@ -11481,6 +11276,7 @@ div.hasHalfs > div input {
 }
 .juiportlet-widget-head.type-contacts h3:before {
   content: "e";
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 32px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -11492,126 +11288,136 @@ div.hasHalfs > div input {
 }
 .type-tasks .icon-empty:before {
   content: "4";
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 45px;
   font-family: "zurmo_gamification_symbly_rRg";
-  padding: 0 0 0 0;
-  margin: 0 6px 0 -30px;
+  padding: 0;
+  margin: 0;
+  vertical-align: middle;
+  position: relative;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  vertical-align: middle;
-  position: relative;
 }
 .type-activities .icon-empty:before {
   content: '\00A5';
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 45px;
   font-family: "zurmo_gamification_symbly_rRg";
-  padding: 0 0 0 0;
-  margin: 0 6px 0 -30px;
+  padding: 0;
+  margin: 0;
+  vertical-align: middle;
+  position: relative;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  vertical-align: middle;
-  position: relative;
 }
 .type-products .icon-empty:before {
   content: '\003E';
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 45px;
   font-family: "zurmo_gamification_symbly_rRg";
-  padding: 0 0 0 0;
-  margin: 0 6px 0 -30px;
+  padding: 0;
+  margin: 0;
+  vertical-align: middle;
+  position: relative;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  vertical-align: middle;
-  position: relative;
 }
 .type-socialItems .icon-empty:before {
   content: 'u';
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 45px;
   font-family: "zurmo_gamification_symbly_rRg";
-  padding: 0 0 0 0;
-  margin: 0 6px 0 -30px;
+  padding: 0;
+  margin: 0;
+  vertical-align: middle;
+  position: relative;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  vertical-align: middle;
-  position: relative;
 }
 .type-missions .icon-empty:before {
   content: 'Q';
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 45px;
   font-family: "zurmo_gamification_symbly_rRg";
-  padding: 0 0 0 0;
-  margin: 0 6px 0 -30px;
+  padding: 0;
+  margin: 0;
+  vertical-align: middle;
+  position: relative;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  vertical-align: middle;
-  position: relative;
 }
 .type-leads .icon-empty:before {
   content: '.';
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 45px;
   font-family: "zurmo_gamification_symbly_rRg";
-  padding: 0 0 0 0;
-  margin: 0 6px 0 -30px;
+  padding: 0;
+  margin: 0;
+  vertical-align: middle;
+  position: relative;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  vertical-align: middle;
-  position: relative;
 }
 .type-accounts .icon-empty:before {
   content: 'P';
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 45px;
   font-family: "zurmo_gamification_symbly_rRg";
-  padding: 0 0 0 0;
-  margin: 0 6px 0 -30px;
+  padding: 0;
+  margin: 0;
+  vertical-align: middle;
+  position: relative;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  vertical-align: middle;
-  position: relative;
 }
 .type-contacts .icon-empty:before {
   content: "e";
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 45px;
   font-family: "zurmo_gamification_symbly_rRg";
-  padding: 0 0 0 0;
-  margin: 0 6px 0 -30px;
+  padding: 0;
+  margin: 0;
+  vertical-align: middle;
+  position: relative;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  vertical-align: middle;
-  position: relative;
 }
 .type-products .icon-empty:before {
   content: '\00AC';
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 45px;
   font-family: "zurmo_gamification_symbly_rRg";
-  padding: 0 0 0 0;
-  margin: 0 6px 0 -30px;
+  padding: 0;
+  margin: 0;
+  vertical-align: middle;
+  position: relative;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  vertical-align: middle;
-  position: relative;
 }
 .type-opportunities h3 {
   padding-left: 30px;
   position: relative;
 }
 .type-opportunities h3:before {
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 32px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -11623,16 +11429,17 @@ div.hasHalfs > div input {
 }
 .type-campaigns .icon-empty:before {
   content: '\002C';
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 45px;
   font-family: "zurmo_gamification_symbly_rRg";
-  padding: 0 0 0 0;
-  margin: 0 6px 0 -30px;
+  padding: 0;
+  margin: 0;
+  vertical-align: middle;
+  position: relative;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  vertical-align: middle;
-  position: relative;
 }
 #ZurmoLogo {
   background: url(../images/ZurmoLogo.png) left top no-repeat;
@@ -11820,6 +11627,7 @@ div.hasHalfs > div input {
 }
 .back-to-app-menu-item span:before {
   content: "z";
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 21px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -12051,6 +11859,7 @@ table.configuration-list td:last-child a .z-label:before {
 .multiselect-holder input[type="button"] {
   display: block !important;
   margin: 0 0 15px 0 !important;
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 22px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -12536,16 +12345,17 @@ table.configuration-list td:last-child a .z-label:before {
 /*User Profile*/
 #UserViewAccountConfiguration > a:before {
   content: "n";
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 24px;
   font-family: "zurmo_gamification_symbly_rRg";
-  padding: 0 0 0 0;
-  margin: 0 6px 0 -30px;
+  padding: 0;
+  margin: 0;
+  vertical-align: middle;
+  position: relative;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  vertical-align: middle;
-  position: relative;
   top: -2px;
 }
 /*=User Security*/
@@ -13155,6 +12965,7 @@ table.configuration-list td:last-child a .z-label:before {
 }
 .available-portlets h3 span:before {
   content: "z";
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 40px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -13301,6 +13112,7 @@ table.configuration-list td:last-child a .z-label:before {
 }
 .missing-chart:before {
   content: "j";
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 24px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -13452,6 +13264,7 @@ div.wide.form .errorMessage {
 }
 .file-upload-box .ui-icon-plusthick:after {
   content: "Y";
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 20px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -13635,6 +13448,7 @@ div.wide.form .errorMessage {
   -o-box-shadow: 0 0 2px 0 rgba(153, 153, 153, 0.15);
   -ms-box-shadow: 0 0 2px 0 rgba(153, 153, 153, 0.15);
   box-shadow: 0 0 2px 0 rgba(153, 153, 153, 0.15);
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 36px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -14185,6 +13999,7 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
 }
 .add-custom-field .configure-custom-field-button:before {
   content: "n";
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 16px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -14445,6 +14260,7 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
 }
 .ui-icon-trash:after {
   content: "_";
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 22px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -14457,6 +14273,7 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
 }
 .ui-icon-circle-minus:after {
   content: "S";
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 22px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -14469,6 +14286,7 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
 }
 .ui-icon-circle-plus:after {
   content: "Y";
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 22px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -14484,6 +14302,7 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
 }
 .ui-icon-arrow-4:after {
   content: ")";
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 22px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -14499,6 +14318,7 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
 }
 .ui-icon-wrench:after {
   content: "n";
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 22px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -14632,6 +14452,7 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
 }
 .AttributeEditView .ui-icon-info:after {
   content: "o";
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 22px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -14664,6 +14485,7 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
 }
 .AttributeEditView .sortable .remove-sortable-item-link:after {
   content: "_";
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 22px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -15276,44 +15098,47 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
 }
 .icon-leaderboard-weekly:before {
   content: "x";
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 24px;
   font-family: "zurmo_gamification_symbly_rRg";
-  padding: 0 0 0 0;
-  margin: 0 6px 0 -30px;
+  padding: 0;
+  margin: 0;
+  vertical-align: middle;
+  position: relative;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  vertical-align: middle;
-  position: relative;
   top: -2px;
 }
 .icon-leaderboard-monthly:before {
   content: ":";
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 24px;
   font-family: "zurmo_gamification_symbly_rRg";
-  padding: 0 0 0 0;
-  margin: 0 6px 0 -30px;
+  padding: 0;
+  margin: 0;
+  vertical-align: middle;
+  position: relative;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  vertical-align: middle;
-  position: relative;
   top: -2px;
 }
 .icon-leaderboard-overall:before {
   content: ";";
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 24px;
   font-family: "zurmo_gamification_symbly_rRg";
-  padding: 0 0 0 0;
-  margin: 0 6px 0 -30px;
+  padding: 0;
+  margin: 0;
+  vertical-align: middle;
+  position: relative;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  vertical-align: middle;
-  position: relative;
   top: -2px;
 }
 .points {
@@ -15430,6 +15255,7 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
 }
 .game-badge .badge-icon,
 .badge .badge-icon {
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 50px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -16295,6 +16121,7 @@ a.dashboard-link .z-label {
   font-size: 11px;
 }
 .hide-welcome span {
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 26px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -16812,6 +16639,7 @@ a.dashboard-link .z-label {
   padding-left: 15px;
 }
 .icon-attachment {
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 18px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -17194,6 +17022,7 @@ a.user-link {
   position: relative;
   color: #545454 !important;
   content: "6";
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 18px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -17207,6 +17036,7 @@ a.user-link {
   position: relative;
   color: #545454 !important;
   content: "5";
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 18px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -17528,6 +17358,7 @@ a.user-link {
   right: 10px;
   top: 10px;
   display: block;
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 24px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -17862,6 +17693,7 @@ a.user-link {
   cursor: pointer;
   display: block;
   text-align: left;
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 18px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -17907,33 +17739,6 @@ a.user-link {
 #MarketingListDetailsView .view-toolbar ul:first-child > li > a,
 #ReportDetailsView .view-toolbar ul:first-child > li > a {
   border-left: none;
-}
-.hasCheckboxes {
-  display: inline-block;
-  border-left: 1px solid #bababa;
-  text-indent: 0 !important;
-  vertical-align: middle;
-  padding: 0 0 0 15px;
-  line-height: 30px;
-}
-.hasCheckboxes:before {
-  content: "";
-  margin: 0;
-  display: none;
-}
-.hasCheckboxes .hasCheckBox {
-  display: inline-block;
-  width: auto;
-  padding-left: 20px;
-  margin-right: 0;
-  position: relative;
-  top: 3px;
-}
-.hasCheckboxes .hasCheckBox + label {
-  padding-right: 15px;
-  margin: 0 !important;
-  font-size: 11px !important;
-  font-weight: bold !important;
 }
 #reset-runtime-filters .z-label {
   color: #666 !important;
@@ -17983,6 +17788,7 @@ a.user-link {
 .missing-report:after,
 .Warning .large-icon:after {
   content: "j";
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 250px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -17990,6 +17796,7 @@ a.user-link {
 }
 .SavedReport .large-icon:after {
   content: "V";
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 320px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -17997,6 +17804,7 @@ a.user-link {
 }
 .SavedWorkflow .large-icon:after {
   content: '\20AC';
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 330px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -18005,6 +17813,7 @@ a.user-link {
 .FilterIconOrSomethingElse .large-icon:after,
 .ZeroFilters .large-icon:after {
   content: '\00A9';
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 300px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -18012,6 +17821,7 @@ a.user-link {
 }
 .ZeroGroupBys .large-icon:after {
   content: '\002A';
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 300px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -18019,6 +17829,7 @@ a.user-link {
 }
 .ZeroDisplayAttributes .large-icon:after {
   content: '\00AB';
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 300px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -18027,6 +17838,7 @@ a.user-link {
 .WorkflowRulesOrder .large-icon:after,
 .ZeroOrderBys .large-icon:after {
   content: '\2039';
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 300px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -18034,6 +17846,7 @@ a.user-link {
 }
 .ZeroDrillDownDisplayAttributes .large-icon:after {
   content: '\00BB';
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 300px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -18041,6 +17854,7 @@ a.user-link {
 }
 .ZeroTriggers .large-icon:after {
   content: '\007E';
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 300px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -18048,6 +17862,7 @@ a.user-link {
 }
 .ZeroActions .large-icon:after {
   content: '\00A3';
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 300px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -18055,6 +17870,7 @@ a.user-link {
 }
 .ZeroEmailMessages .large-icon:after {
   content: '\00A5';
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 235px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -18063,6 +17879,7 @@ a.user-link {
 .NoTimeTrigger .large-icon:after,
 .ZeroTimeTrigger .large-icon:after {
   content: 'q';
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 235px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -18119,6 +17936,7 @@ a.user-link {
   right: 0;
   top: 26px;
   display: block;
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 24px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -18271,6 +18089,7 @@ a.user-link {
 .workflow-order-container .large-icon:after,
 .no-workflows-to-order-view .large-icon:after {
   content: "j";
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 200px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -18348,6 +18167,34 @@ a.user-link {
 }
 #MashableInboxActionBarForViews #MashableInboxForm_searchTerm {
   width: 204px;
+}
+#MashableInboxActionBarForViews .nav > li:first-child:before {
+  margin: 0;
+}
+#MashableInboxActionBarForViews .nav > li:first-child > a {
+  color: #656565;
+  font-weight: bold;
+  text-shadow: #fff 0 1px 0;
+  padding: 0 10px 0 40px;
+  line-height: 30px;
+  display: inline-block;
+  position: relative;
+  vertical-align: middle;
+  border-left: 1px solid #bababa;
+}
+#MashableInboxActionBarForViews .nav > li:first-child > a:after {
+  margin-left: 6px;
+}
+#MashableInboxActionBarForViews .icon-conversation,
+#MashableInboxActionBarForViews .icon-mission {
+  position: relative;
+}
+#MashableInboxActionBarForViews .icon-conversation ul,
+#MashableInboxActionBarForViews .icon-mission ul {
+  width: 100%;
+  left: 0;
+  right: 0;
+  top: 31px;
 }
 .inbox-item {
   position: relative;
@@ -18628,6 +18475,7 @@ a.user-link {
   position: absolute;
   right: 5px;
   top: 2px;
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 18px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -18963,6 +18811,7 @@ a + .autoresponder-stats {
 }
 .hide-module-intro span,
 .hide-marketing-intro span {
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 26px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -18988,6 +18837,7 @@ a + .autoresponder-stats {
 .product-description .icon:before,
 .catalog-description .icon:before {
   content: '\00CE';
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 145px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -19178,6 +19028,7 @@ a + .autoresponder-stats {
 #ProductIntroLinkActionElement .parent > a:before,
 #MarketingIntroLinkActionElement .parent > a:before {
   content: "n";
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 24px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -19190,8 +19041,25 @@ a + .autoresponder-stats {
   top: 0;
 }
 .screen-options {
-  padding: 5px;
+  padding: 5px 10px 10px 10px;
+  text-align: left;
+  color: #EFEFEF;
+}
+.screen-options h4 {
   text-align: right;
+  color: #EFEFEF !important;
+  font-weight: bold;
+  -webkit-text-shadow: none !important;
+  -moz-text-shadow: none !important;
+  -o-text-shadow: none !important;
+  -ms-text-shadow: none !important;
+  text-shadow: none !important;
+}
+.screen-options .hasCheckBox {
+  display: inline-block;
+  margin-right: 5px;
+  position: relative;
+  top: 4px;
 }
 /*Manage Subscriptions*/
 #MarketingListsExternalActionsPageView,
@@ -19471,6 +19339,7 @@ a + .autoresponder-stats {
 }
 .kanban-card .closing-date i {
   text-align: left;
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 12px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -19518,11 +19387,7 @@ a + .autoresponder-stats {
 }
 .icon-kanban-board-view-type,
 .icon-grid-view-type {
-  padding-left: 10px !important;
-}
-.icon-kanban-board-view-type:before,
-.icon-grid-view-type:before {
-  margin: 0;
+  margin: 0 3px !important;
 }
 .icon-kanban-board-view-type span,
 .icon-grid-view-type span {
@@ -19731,6 +19596,7 @@ div.showing-panel {
 }
 .business-card .icon-office-phone:before {
   content: "W";
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 20px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -19739,6 +19605,7 @@ div.showing-panel {
 }
 .business-card .icon-mobile-phone:before {
   content: '\2018';
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 21px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -19747,6 +19614,7 @@ div.showing-panel {
 }
 .business-card .icon-email:before {
   content: "g";
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 18px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -19755,6 +19623,7 @@ div.showing-panel {
 }
 .business-card .icon-map:before {
   content: "L";
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 20px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -19828,6 +19697,7 @@ div.showing-panel {
 }
 #business-card-buttons a i {
   font-style: normal;
+  font-weight: normal !important;
   font-weight: normal;
   font-size: 22px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -20148,6 +20018,418 @@ div.special-pager .hidden.next:after {
 }
 .mini-button .show {
   display: block;
+}
+/*Temp*/
+.toolbar-mbmenu i[class^="icon"] {
+  display: none !important;
+}
+.pillbox-icon {
+  color: #656565;
+  font-weight: normal;
+  font-size: 24px;
+  font-family: "zurmo_gamification_symbly_rRg";
+  vertical-align: middle;
+  padding: 0 0 0 0;
+  margin: 0 3px 0 0;
+  position: relative;
+  top: -1px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.pillbox {
+  position: relative;
+  z-index: 9999;
+  font-size: 11px;
+  border: 1px solid #b7b7b7;
+  border-top-color: #e7e7e7;
+  border-left-color: #d7d7d7;
+  border-right-color: #d7d7d7;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  border-radius: 4px;
+  margin: 0 0 30px 0;
+  -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
+  -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
+  -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
+  -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
+  box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
+  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x;
+  display: inline-block;
+}
+.pillbox + .pillbox {
+  float: right;
+}
+.pillbox .split-button:last-child .button-trigger {
+  -webkit-border-radius: 0 4px 4px 0;
+  -moz-border-radius: 0 4px 4px 0;
+  -ms-border-radius: 0 4px 4px 0;
+  -o-border-radius: 0 4px 4px 0;
+  border-radius: 0 4px 4px 0;
+}
+.pillbox .split-button,
+.pillbox .default-button {
+  cursor: pointer;
+  position: relative;
+  padding: 0 0 0 5px;
+  display: inline-block;
+  float: left;
+}
+.pillbox .split-button + .default-button,
+.pillbox .default-button + .default-button,
+.pillbox .split-button + .split-button,
+.pillbox .default-button + .split-button {
+  border-left: 1px solid #bababa;
+}
+.pillbox .split-button i,
+.pillbox .default-button i {
+  font-style: normal;
+  line-height: 30px;
+  margin-right: 3px;
+}
+.pillbox .split-button .button-label,
+.pillbox .default-button .button-label {
+  font-weight: bold;
+  padding: 0 5px;
+  line-height: 30px;
+  display: inline-block;
+  white-space: nowrap;
+}
+.pillbox .split-button .button-label:empty,
+.pillbox .default-button .button-label:empty {
+  display: none;
+}
+.pillbox .split-button .button-action-trigger,
+.pillbox .default-button .button-action-trigger,
+.pillbox .split-button .button-trigger,
+.pillbox .default-button .button-trigger {
+  position: relative;
+  z-index: 5;
+  display: inline-block;
+  line-height: 30px;
+  margin: 0 0 0 4px;
+  padding-right: 4px;
+  text-align: center;
+  float: right;
+}
+.pillbox .split-button .button-action-trigger:hover,
+.pillbox .default-button .button-action-trigger:hover,
+.pillbox .split-button .button-trigger:hover,
+.pillbox .default-button .button-trigger:hover {
+  background-color: #ffffff ;
+  background-repeat: no-repeat ;
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), color-stop(50%, #dddddd), to(#ffffff)) ;
+  background-image: -webkit-linear-gradient(#ffffff, #dddddd 50%, #ffffff) ;
+  background-image: -moz-linear-gradient(top, #ffffff, #dddddd 50%, #ffffff) ;
+  background-image: -ms-linear-gradient(#ffffff, #dddddd 50%, #ffffff) ;
+  background-image: -o-linear-gradient(#ffffff, #dddddd 50%, #ffffff) ;
+  background-image: linear-gradient(#ffffff, #dddddd 50%, #ffffff) ;
+  border-left: 1px solid #e7e7e7;
+}
+.pillbox .split-button .button-action-trigger:hover i,
+.pillbox .default-button .button-action-trigger:hover i,
+.pillbox .split-button .button-trigger:hover i,
+.pillbox .default-button .button-trigger:hover i {
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  -o-box-shadow: none;
+  -ms-box-shadow: none;
+  box-shadow: none;
+  border-left: none;
+}
+.pillbox .split-button .button-action-trigger:hover .icon-trigger:before,
+.pillbox .default-button .button-action-trigger:hover .icon-trigger:before,
+.pillbox .split-button .button-trigger:hover .icon-trigger:before,
+.pillbox .default-button .button-trigger:hover .icon-trigger:before {
+  display: block;
+}
+.pillbox .split-button .button-action-trigger:hover + .button-actions,
+.pillbox .default-button .button-action-trigger:hover + .button-actions,
+.pillbox .split-button .button-trigger:hover + .button-actions,
+.pillbox .default-button .button-trigger:hover + .button-actions {
+  display: block;
+}
+.pillbox .split-button .button-action-trigger .icon-trigger,
+.pillbox .default-button .button-action-trigger .icon-trigger,
+.pillbox .split-button .button-trigger .icon-trigger,
+.pillbox .default-button .button-trigger .icon-trigger {
+  top: 0;
+  font-size: 14px;
+  margin: 0 0 0 0;
+  line-height: 1;
+  padding: 2px 4px 2px 5px;
+  border-left: 1px solid #e7e7e7;
+  -webkit-box-shadow: inset 1px 0 0 0 #ffffff;
+  -moz-box-shadow: inset 1px 0 0 0 #ffffff;
+  -o-box-shadow: inset 1px 0 0 0 #ffffff;
+  -ms-box-shadow: inset 1px 0 0 0 #ffffff;
+  box-shadow: inset 1px 0 0 0 #ffffff;
+  -webkit-text-shadow: 0 2px 0 #ffffff;
+  -moz-text-shadow: 0 2px 0 #ffffff;
+  -o-text-shadow: 0 2px 0 #ffffff;
+  -ms-text-shadow: 0 2px 0 #ffffff;
+  text-shadow: 0 2px 0 #ffffff;
+}
+.pillbox .split-button .button-action-trigger .icon-trigger:after,
+.pillbox .default-button .button-action-trigger .icon-trigger:after,
+.pillbox .split-button .button-trigger .icon-trigger:after,
+.pillbox .default-button .button-trigger .icon-trigger:after {
+  content: "÷";
+}
+.pillbox .split-button .button-action-trigger .icon-trigger:before,
+.pillbox .default-button .button-action-trigger .icon-trigger:before,
+.pillbox .split-button .button-trigger .icon-trigger:before,
+.pillbox .default-button .button-trigger .icon-trigger:before {
+  content: "";
+  display: none;
+  position: absolute;
+  top: 23px;
+  right: 1px;
+  width: 13px;
+  height: 8px;
+  background: url(../images/tip.png) right bottom no-repeat;
+}
+.pillbox .split-button .button-action-trigger:hover,
+.pillbox .default-button .button-action-trigger:hover {
+  background: none;
+  border-left: none;
+}
+.pillbox .split-button .button-action-trigger:hover i,
+.pillbox .default-button .button-action-trigger:hover i {
+  -webkit-text-shadow: none;
+  -moz-text-shadow: none;
+  -o-text-shadow: none;
+  -ms-text-shadow: none;
+  text-shadow: none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  -o-box-shadow: none;
+  -ms-box-shadow: none;
+  box-shadow: none;
+  border-left: none;
+}
+.pillbox .default-button {
+  padding: 0 5px 0 5px;
+}
+.pillbox .default-button:hover .icon-trigger:before {
+  display: block !important;
+}
+.pillbox i[class^="icon"] {
+  color: #656565;
+  font-weight: normal;
+  font-size: 24px;
+  font-family: "zurmo_gamification_symbly_rRg";
+  vertical-align: middle;
+  padding: 0 0 0 0;
+  margin: 0 3px 0 0;
+  position: relative;
+  top: -1px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.pillbox .button-actions {
+  color: #EFEFEF;
+  display: none;
+  list-style: none;
+  position: absolute;
+  top: 38px;
+  right: 0;
+  min-width: 100px;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  -ms-border-radius: 2px;
+  -o-border-radius: 2px;
+  border-radius: 2px;
+  white-space: nowrap;
+  border: 1px solid #444;
+  background: #252525;
+  -webkit-box-shadow: 0 0 10px 2px rgba(53, 53, 53, 0.5);
+  -moz-box-shadow: 0 0 10px 2px rgba(53, 53, 53, 0.5);
+  -o-box-shadow: 0 0 10px 2px rgba(53, 53, 53, 0.5);
+  -ms-box-shadow: 0 0 10px 2px rgba(53, 53, 53, 0.5);
+  box-shadow: 0 0 10px 2px rgba(53, 53, 53, 0.5);
+}
+.pillbox .button-actions:hover,
+.pillbox .button-actions.stayOpen {
+  display: block;
+}
+.pillbox .button-actions:before {
+  content: "";
+  display: block;
+  position: absolute;
+  top: -15px;
+  right: 9px;
+  width: 80%;
+  height: 15px;
+  background: transparent;
+}
+.pillbox .button-actions li {
+  line-height: 100%;
+}
+.pillbox .button-actions li:first-child {
+  border-top: none;
+}
+.pillbox .button-actions li:last-child {
+  border-bottom: none;
+}
+.pillbox .button-actions .divider {
+  border-top: 1px solid #181818;
+  border-bottom: 1px solid #323232;
+  margin: 5px 5px;
+}
+.pillbox .button-actions a {
+  color: #EFEFEF;
+  font-size: 11px;
+  font-weight: normal;
+  display: block;
+  padding: 6px 10px 6px 10px;
+  margin: 1px;
+  -webkit-text-shadow: none;
+  -moz-text-shadow: none;
+  -o-text-shadow: none;
+  -ms-text-shadow: none;
+  text-shadow: none;
+}
+.pillbox .button-actions label {
+  color: #EFEFEF;
+}
+.nav-open .button-actions {
+  display: block;
+}
+.button-actions.open-on-left {
+  right: auto;
+  left: 0;
+}
+.button-actions.open-on-left:before {
+  width: 80%;
+  right: auto;
+  background-position: 50% bottom;
+}
+.juiportlet-widget-content .pillbox {
+  margin: 15px 0 0 15px;
+}
+.button-action-trigger .icon-options:after {
+  margin: 0 !important;
+  color: #656565;
+  font-weight: normal;
+  font-size: 24px;
+  font-family: "zurmo_gamification_symbly_rRg";
+  vertical-align: middle;
+  padding: 0 0 0 0;
+  margin: 0 3px 0 0;
+  position: relative;
+  top: -1px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.button-action-trigger .icon-trigger {
+  border-left: none !important;
+}
+.unread-count {
+  display: inline-block;
+  margin: -2px 2px 0 0;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  -o-border-radius: 50%;
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  line-height: 15px;
+  text-align: center;
+  color: #545454;
+  -webkit-text-shadow: none;
+  -moz-text-shadow: none;
+  -o-text-shadow: none;
+  -ms-text-shadow: none;
+  text-shadow: none;
+  font-size: 9px;
+  font-weight: bold !important;
+  background-color: #dfdfdf;
+  background-repeat: repeat-x;
+  background-image: -moz-linear-gradient(top, #ffffff, #dfdfdf);
+  background-image: -ms-linear-gradient(top, #ffffff, #dfdfdf);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffffff), color-stop(100%, #dfdfdf));
+  background-image: -webkit-linear-gradient(top, #ffffff, #dfdfdf);
+  background-image: -o-linear-gradient(top, #ffffff, #dfdfdf);
+  background-image: linear-gradient(top, #ffffff, #dfdfdf);
+  border: 1px solid #dfdfdf;
+}
+.unread-count:hover {
+  color: inherit;
+}
+/*checkboxes in pills*/
+.hasCheckboxes {
+  float: left;
+  display: inline-block;
+  border-left: 1px solid #bababa;
+  text-indent: 0 !important;
+  vertical-align: middle;
+  padding: 0 0 0 15px;
+  line-height: 30px;
+}
+.hasCheckboxes:before {
+  content: "";
+  margin: 0;
+  display: none;
+}
+.hasCheckboxes .hasCheckBox {
+  display: inline-block;
+  width: auto;
+  padding-left: 20px;
+  margin-right: 0;
+  position: relative;
+  top: 3px;
+}
+.hasCheckboxes .hasCheckBox + label {
+  padding-right: 15px;
+  margin: 0 !important;
+  font-size: 11px !important;
+  font-weight: bold !important;
+}
+/*Overlay view*/
+.overlay-view {
+  text-align: left;
+  padding: 5px 5px 10px 5px;
+}
+.overlay-view div {
+  background: none !important;
+  -webkit-box-shadow: none !important;
+  -moz-box-shadow: none !important;
+  -o-box-shadow: none !important;
+  -ms-box-shadow: none !important;
+  box-shadow: none !important;
+  border: none !important;
+  border: none;
+  background: none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  -o-box-shadow: none;
+  -ms-box-shadow: none;
+  box-shadow: none;
+  padding: 0;
+  margin: 0;
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+  margin-bottom: 5px !important;
+  line-height: 1.4;
+}
+.overlay-view .after-form-details-content {
+  padding: 0px;
+  color: #efefef !important;
+  text-align: left;
+}
+.overlay-view .after-form-details-content a {
+  display: inline;
+  color: #fff !important;
+  padding: 0;
+  text-decoration: underline;
+}
+.stay-open {
+  display: block !important;
 }
 /*********************************************************************************
  * Zurmo is a customer relationship management program developed by

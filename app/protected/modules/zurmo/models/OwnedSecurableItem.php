@@ -146,6 +146,16 @@
             }
         }
 
+        /**
+         * Used to set model's owner without all the checks and audit logs.
+         * Used in event handling code for queues.
+         * @param User $user
+         */
+        public function setOwnerUnrestricted(User $user)
+        {
+            parent::unrestrictedSet('owner', $user);
+        }
+
         public function __set($attributeName, $value)
         {
             if ($attributeName == 'owner')
@@ -226,8 +236,8 @@
             $metadata = parent::getDefaultMetadata();
             $metadata[__CLASS__] = array(
                 'relations' => array(
-                    'owner' => array(RedBeanModel::HAS_ONE, 'User', RedBeanModel::NOT_OWNED,
-                                     RedBeanModel::LINK_TYPE_SPECIFIC, 'owner'),
+                    'owner' => array(static::HAS_ONE, 'User', static::NOT_OWNED,
+                                     static::LINK_TYPE_SPECIFIC, 'owner'),
                 ),
                 'rules' => array(
                     array('owner', 'required'),
@@ -311,7 +321,7 @@
                                                                $modelClassName, null);
                     $builder           = new ModelJoinBuilder($modelAttributeToDataProviderAdapter, $joinTablesAdapter);
                     $ownedTableAliasName = $builder->resolveJoins();
-                    $ownerColumnName = RedBeanModel::getForeignKeyName('OwnedSecurableItem', 'owner');
+                    $ownerColumnName = static::getForeignKeyName('OwnedSecurableItem', 'owner');
                     $mungeIds = ReadPermissionsOptimizationUtil::getMungeIdsByUser($user);
                     if ($where != null)
                     {

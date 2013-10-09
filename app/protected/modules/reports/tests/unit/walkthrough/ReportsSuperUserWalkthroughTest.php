@@ -122,6 +122,11 @@
             );
         }
 
+        public static function getDependentTestModelClassNames()
+        {
+            return array('ReportModelTestItem', 'ReportModelTestItem2');
+        }
+
         public function setUp()
         {
             parent::setUp();
@@ -193,11 +198,6 @@
          */
         public function testExportAction()
         {
-            if (RedBeanDatabase::isFrozen())
-            {
-                return;
-            }
-
             $notificationsBeforeCount        = count(Notification::getAll());
             $notificationMessagesBeforeCount = count(NotificationMessage::getAll());
 
@@ -319,10 +319,6 @@
         public function testDrillDownDetails()
         {
             $savedReport = SavedReportTestHelper::makeSummationWithDrillDownReport();
-            if (RedBeanDatabase::isFrozen())
-            {
-                return;
-            }
             $this->setGetArray(array('id'                         => $savedReport->id,
                                      'rowId'                      => 2,
                                      'runReport'                  => true,
@@ -338,10 +334,6 @@
          */
         public function testAutoComplete()
         {
-            if (RedBeanDatabase::isFrozen())
-            {
-                return;
-            }
             $this->setGetArray(array('term'            => 'a test',
                                      'moduleClassName' => 'ReportsModule',
                                      'type'            => Report::TYPE_SUMMATION));

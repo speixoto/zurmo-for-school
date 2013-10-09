@@ -62,7 +62,7 @@
             $modifiedDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time() - (60 * 60 *24 * 8));
             $sql = "Update item set modifieddatetime = '" . $modifiedDateTime . "' where id = " .
                    $emailMessage->getClassId('Item');
-            R::exec($sql);
+            ZurmoRedBean::exec($sql);
 
             $emailMessage2 = EmailMessageTestHelper::createDraftSystemEmail('My Email Message 2', $super);
             $emailMessage2->folder      = $folder;

@@ -47,6 +47,13 @@
         protected function renderControlEditable()
         {
             throw new NotImplementedException($message, $code, $previous);
+            if ($this->getDisabledValue())
+            {
+                $htmlOptions             = array();
+                $htmlOptions['id']       = $this->getEditableInputId();
+                $htmlOptions['disabled'] = 'disabled';
+                return ZurmoHtml::checkBox($this->getEditableInputName(), $this->model->{$this->attribute} ,$htmlOptions);
+            }
         }
 
         /**

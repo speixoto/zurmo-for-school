@@ -45,5 +45,16 @@
         {
             return Yii::app()->createUrl('/contacts/variableContactState/autoCompleteAllContacts');
         }
+
+        protected function getSourceUrlForSelectLink()
+        {
+            return '/contacts/variableContactState/modalListAllContacts';
+        }
+
+        protected function getModalTitleForSelectingModel()
+        {
+            return  Zurmo::t('MarketingListsModule', 'From ContactsModulePluralLabel/LeadsModulePluralLabel',
+                                LabelUtil::getTranslationParamsForAllModules());
+        }
     }
 ?>

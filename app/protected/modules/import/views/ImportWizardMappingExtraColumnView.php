@@ -111,22 +111,25 @@
                 assert('$mappingDataRow["type"] == "extraColumn"');
                 $row          = array();
                 $row['cells'] = array();
-                $row['cells'][] = $mappingFormLayoutUtil->renderAttributeAndColumnTypeContent(
+                
+                $firstCell  = $mappingFormLayoutUtil->renderAttributeAndColumnTypeContent(
                                                                        $columnName,
                                                                        $mappingDataRow['type'],
                                                                        $mappingDataRow['attributeIndexOrDerivedType'],
                                                                        $ajaxOnChangeUrl);
-                if ($firstRowIsHeaderRow)
-                {
-                    $row['cells'][] = '&#160;';
-                }
-                $row['cells'][] = '&#160;'; //Never any sample data for the extraColumn
-                $row['cells'][] = $mappingFormLayoutUtil->renderMappingRulesElements(
+                $firstCell .= $mappingFormLayoutUtil->renderMappingRulesElements(
                                       $columnName,
                                       $mappingDataRow['attributeIndexOrDerivedType'],
                                       $importRulesType,
                                       $mappingDataRow['type'],
                                       array());
+                
+                $row['cells'][] = $firstCell;
+                if ($firstRowIsHeaderRow)
+                {
+                    $row['cells'][] = '&#160;';
+                }
+                $row['cells'][] = '&#160;'; //Never any sample data for the extraColumn
                 $metadata['rows'][] = $row;
             }
             return $metadata;

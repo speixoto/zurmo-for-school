@@ -43,7 +43,7 @@
      * otherwise a new account is created with the name provided.
      *
      */
-    class RelatedModelNameOrIdValueTypeSanitizerUtil extends ExternalSystemIdSuppportedSanitizerUtil
+    class RelatedModelNameOrIdValueTypeSanitizerUtil extends IdValueTypeSanitizerUtil
     {
         protected $maxNameLength;
 
@@ -53,67 +53,67 @@
         }
 
         /**
+         * If a model id value is invalid, then continue importing the row
+         */
+        public static function shouldNotSaveModelOnSanitizingValueFailure()
+        {
+            return false;
+        }
+
+        /**
          * @param RedBean_OODBBean $rowBean
          * @throws NotSupportedException
          */
         public function analyzeByRow(RedBean_OODBBean $rowBean)
         {
-            if ($this->mappingRuleData["type"] == RelatedModelValueTypeMappingRuleForm::ZURMO_MODEL_ID)
+            if ($rowBean->{$this->columnName} == null)
+            {
+                $found = false;
+            }
+            elseif ($this->mappingRuleData["type"] == RelatedModelValueTypeMappingRuleForm::ZURMO_MODEL_ID)
             {
                 $found = $this->resolveFoundIdByValue($rowBean->{$this->columnName});
             }
             elseif ($this->mappingRuleData["type"] == RelatedModelValueTypeMappingRuleForm::ZURMO_MODEL_NAME)
             {
-                if ($rowBean->{$this->columnName} == null)
+                $found = $this->resolveFoundNameByValue($rowBean);
+                if($found === null)
                 {
-                    $found = false;
-                }
-                else
-                {
-                    $modelClassName = $this->attributeModelClassName;
-                    if (!method_exists($modelClassName, 'getByName'))
-                    {
-                        throw new NotSupportedException();
-                    }
-                    $modelsFound = $modelClassName::getByName($rowBean->{$this->columnName});
-                    if (count($modelsFound) == 0)
-                    {
-                        $found = false;
-                        if (strlen($rowBean->{$this->columnName}) > $this->maxNameLength)
-                        {
-                            $label   = Zurmo::t('ImportModule', 'Value is too long.');
-                            $this->shouldSkipRow      = true;
-                            $this->analysisMessages[] = $label;
-                            return;
-                        }
-                    }
-                    else
-                    {
-                        $found = true;
-                    }
+                    return;
                 }
             }
             else
             {
                 $found = $this->resolveFoundExternalSystemIdByValue($rowBean->{$this->columnName});
             }
-            if ($found)
+            $this->resolveFindingModelDuringAnalysis($found, $rowBean);
+            $this->resolveExternalSystemIdValueIsTooLong($rowBean);
+        }
+
+        protected function resolveFoundNameByValue(RedBean_OODBBean $rowBean)
+        {
+            $modelClassName = $this->attributeModelClassName;
+            if (!method_exists($modelClassName, 'getByName'))
             {
-                $this->resolveForFoundModel();
+                throw new NotSupportedException();
+            }
+            $modelsFound = $modelClassName::getByName($rowBean->{$this->columnName});
+            if (count($modelsFound) == 0)
+            {
+                $found = false;
+                if (strlen($rowBean->{$this->columnName}) > $this->maxNameLength)
+                {
+                    $label   = Zurmo::t('ImportModule', 'Value is too long.');
+                    $this->shouldSkipRow      = true;
+                    $this->analysisMessages[] = $label;
+                    return null;
+                }
             }
             else
             {
-                $this->resolveForUnfoundModel($rowBean);
+                $found = true;
             }
-            if ($this->mappingRuleData["type"] == IdValueTypeMappingRuleForm::EXTERNAL_SYSTEM_ID)
-            {
-                if (strlen($rowBean->{$this->columnName}) > $this->externalSystemIdMaxLength)
-                {
-                    $label = Zurmo::t('ImportModule', 'Is too long.');
-                    $this->shouldSkipRow      = true;
-                    $this->analysisMessages[] = $label;
-                }
-            }
+            return $found;
         }
 
         /**
@@ -150,7 +150,7 @@
                 }
                 catch (NotFoundException $e)
                 {
-                    throw new InvalidValueToSanitizeException(Zurmo::t('ImportModule', 'Id specified did not match any existing records.'));
+                    throw new InvalidValueToSanitizeException(Zurmo::t('ImportModule', 'ID specified did not match any existing records.'));
                 }
             }
             elseif ($this->mappingRuleData["type"] == RelatedModelValueTypeMappingRuleForm::EXTERNAL_SYSTEM_ID)
@@ -161,7 +161,7 @@
                 }
                 catch (NotFoundException $e)
                 {
-                    throw new InvalidValueToSanitizeException(Zurmo::t('ImportModule', 'Other Id specified did not match any existing records.'));
+                    throw new InvalidValueToSanitizeException(Zurmo::t('ImportModule', 'Other ID specified did not match any existing records.'));
                 }
             }
             else
@@ -183,6 +183,13 @@
                     {
                         throw new InvalidValueToSanitizeException(Zurmo::t('ImportModule',
                         'A new related model could not be created because there are unspecified required attributes on that related model.'));
+                    }
+                    else
+                    {
+                        $this->importSanitizeResultsUtil->addRelatedModelMessage(
+                                    Zurmo::t('ImportModule', '{modelLabel} saved correctly: {linkToModel}',
+                                        array('{modelLabel}'  => $newRelatedModel->getModelLabelByTypeAndLanguage('Singular'),
+                                              '{linkToModel}' => ImportUtil::resolveLinkMessageToModel($newRelatedModel))));
                     }
                     return $newRelatedModel;
                 }
@@ -214,9 +221,6 @@
         protected function init()
         {
             parent::init();
-            $modelClassName                = $this->modelClassName;
-            $model                         = new $modelClassName(false);
-            $this->attributeModelClassName = $this->resolveAttributeModelClassName($model, $this->attributeName);
             $attributeModelClassName       = $this->attributeModelClassName;
             $model                         = new $attributeModelClassName(false);
             if ($this->mappingRuleData["type"] == RelatedModelValueTypeMappingRuleForm::ZURMO_MODEL_NAME &&

@@ -58,7 +58,7 @@
         {
             assert('is_string($name)');
             assert('$name != ""');
-            $bean = R::findOne('_group', "name = :name ", array(':name' => $name));
+            $bean = ZurmoRedBean::findOne('_group', "name = :name ", array(':name' => $name));
             assert('$bean === false || $bean instanceof RedBean_OODBBean');
             if ($bean === false)
             {
@@ -197,7 +197,7 @@
             {
                 return GroupsModule::resolveEveryoneDisplayLabel();
             }
-            elseif($this->name == self::SUPER_ADMINISTRATORS_GROUP_NAME)
+            elseif ($this->name == self::SUPER_ADMINISTRATORS_GROUP_NAME)
             {
                 return Zurmo::t('ZurmoModule', 'Super Administrators');
             }
@@ -415,9 +415,9 @@
                     'name',
                 ),
                 'relations' => array(
-                    'group'  => array(RedBeanModel::HAS_MANY_BELONGS_TO, 'Group'),
-                    'groups' => array(RedBeanModel::HAS_MANY,            'Group'),
-                    'users'  => array(RedBeanModel::MANY_MANY,           'User'),
+                    'group'  => array(static::HAS_MANY_BELONGS_TO, 'Group'),
+                    'groups' => array(static::HAS_MANY,            'Group'),
+                    'users'  => array(static::MANY_MANY,           'User'),
                 ),
                 'rules' => array(
                     array('name', 'required'),

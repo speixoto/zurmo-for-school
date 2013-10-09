@@ -212,7 +212,7 @@
         protected function resolveColumnLabelsByName()
         {
             $columnLabelsByName = array();
-            $headerRow = ImportDatabaseUtil::getFirstRowByTableName($this->dataProvider->getTableName());
+            $headerRow = ZurmoRedBean::$writer->getFirstRowByTableName($this->dataProvider->getTableName());
             foreach ($headerRow as $columnName => $label)
             {
                 if (!in_array($columnName, ImportDatabaseUtil::getReservedColumnNames()) &&
@@ -249,7 +249,7 @@
                 array_push($columns, $firstColumn);
             }
             array_push($columns, $this->resolveSecondColumn());
-            $headerRow = ImportDatabaseUtil::getFirstRowByTableName($this->dataProvider->getTableName());
+            $headerRow = ZurmoRedBean::$writer->getFirstRowByTableName($this->dataProvider->getTableName());
             foreach ($headerRow as $columnName => $label)
             {
                 if (!in_array($columnName, ImportDatabaseUtil::getReservedColumnNames()) &&

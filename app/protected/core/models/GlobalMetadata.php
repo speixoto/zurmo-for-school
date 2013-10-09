@@ -47,7 +47,7 @@
         {
             assert('is_string($className)');
             assert('$className != ""');
-            $bean = R::findOne('globalmetadata', "className = '$className'");
+            $bean = ZurmoRedBean::findOne('globalmetadata', "className = '$className'");
             assert('$bean === false || $bean instanceof RedBean_OODBBean');
             if ($bean === false)
             {

@@ -61,9 +61,9 @@
                     'processDateTime',
                 ),
                 'relations' => array(
-                    'modelItem'     => array(RedBeanModel::HAS_ONE, 'Item',          RedBeanModel::NOT_OWNED,
-                                             RedBeanModel::LINK_TYPE_SPECIFIC, 'modelItem'),
-                    'savedWorkflow' => array(RedBeanModel::HAS_ONE, 'SavedWorkflow', RedBeanModel::NOT_OWNED),
+                    'modelItem'     => array(static::HAS_ONE, 'Item',          static::NOT_OWNED,
+                                             static::LINK_TYPE_SPECIFIC, 'modelItem'),
+                    'savedWorkflow' => array(static::HAS_ONE, 'SavedWorkflow', static::NOT_OWNED),
                 ),
                 'rules' => array(
                     array('modelClassName',   'required'),
@@ -88,6 +88,26 @@
         public static function isTypeDeletable()
         {
             return true;
+        }
+
+        /**
+         * Returns the display name for the model class.
+         * @param null}string $language
+         * @return dynamic label name based on module.
+         */
+        protected static function getLabel($language = null)
+        {
+            return Zurmo::t('WorkflowsModule', 'Time Queue Item', array(), null, $language);
+        }
+
+        /**
+         * Returns the display name for plural of the model class.
+         * @param null}string $language
+         * @return dynamic label name based on module.
+         */
+        protected static function getPluralLabel($language = null)
+        {
+            return Zurmo::t('WorkflowsModule', 'Time Queue Items', array(), null, $language);
         }
 
         /**

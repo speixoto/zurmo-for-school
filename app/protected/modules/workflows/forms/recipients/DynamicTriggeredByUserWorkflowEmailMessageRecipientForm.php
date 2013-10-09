@@ -64,6 +64,10 @@
                 $recipient->personOrAccount = $triggeredByUser;
                 $recipients[]               = $recipient;
             }
+            else
+            {
+                $this->createWorkflowTriggerUserPrimaryEmailAddressRequiredNotificationForUser($triggeredByUser);
+            }
             return $recipients;
         }
     }

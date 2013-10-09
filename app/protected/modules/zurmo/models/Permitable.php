@@ -324,6 +324,7 @@
                 $permitableName = 'Everyone';
                 try
                 {
+                    // not using $default to save cpu cycles, else default value would have to be computed every time.
                     return PoliciesCache::getEntry($permitableName . $moduleName . $policyName .  'ActualPolicy');
                 }
                 catch (NotFoundException $e)
@@ -368,6 +369,7 @@
                 $permitableId = $this->getClassId('Permitable');
                 try
                 {
+                    // not using $default because computing default value would involve extra cpu cycles each time.
                     return PoliciesCache::getEntry($permitableId . $moduleName . $policyName .  'ExplicitActualPolicy');
                 }
                 catch (NotFoundException $e)
@@ -473,8 +475,8 @@
             $metadata = parent::getDefaultMetadata();
             $metadata[__CLASS__] = array(
                 'relations' => array(
-                    'policies'    => array(RedBeanModel::HAS_MANY, 'Policy', RedBeanModel::OWNED),
-                    'rights'      => array(RedBeanModel::HAS_MANY, 'Right',  RedBeanModel::OWNED),
+                    'policies'    => array(static::HAS_MANY, 'Policy', static::OWNED),
+                    'rights'      => array(static::HAS_MANY, 'Right',  static::OWNED),
                 ),
                 'foreignRelations' => array(
                     'Permission',

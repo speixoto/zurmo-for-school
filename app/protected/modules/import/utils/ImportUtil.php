@@ -171,6 +171,7 @@
                     $importRowDataResultsUtil->addMessage(Zurmo::t('ImportModule', '{modelLabel} saved correctly: {linkToModel}',
                                 array('{modelLabel}'  => $model->getModelLabelByTypeAndLanguage('Singular'),
                                       '{linkToModel}' => static::resolveLinkMessageToModel($model))));
+                    $importRowDataResultsUtil->addMessages($importSanitizeResultsUtil->getRelatedModelMessages());
                     if ($makeNewModel)
                     {
                         if ($model instanceof SecurableItem)

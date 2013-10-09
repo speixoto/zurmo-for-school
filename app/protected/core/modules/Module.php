@@ -50,19 +50,29 @@
          */
         public static function getModuleObjects()
         {
-            $moduleConfig = Yii::app()->getModules();
-            $modules = array();
-            foreach ($moduleConfig as $moduleName => $info)
+            $cacheKey   = 'application.allModules';
+            try
             {
-                 $module = Yii::app()->findModule($moduleName);
-                 if (isset($info['modules']) && is_array($info['modules']))
-                 {
-                    foreach ($info['modules'] as $nestedModuleName => $nestedInfo)
-                    {
-                        $modules[$nestedModuleName] = $module->getModule($nestedModuleName);
-                    }
-                 }
-                 $modules[$moduleName] = $module;
+                // not using default value to save cpu cycles on requests that follow the first exception.
+                $modules    = GeneralCache::getEntry($cacheKey);
+            }
+            catch (NotFoundException $e)
+            {
+                $moduleConfig = Yii::app()->getModules();
+                $modules = array();
+                foreach ($moduleConfig as $moduleName => $info)
+                {
+                     $module = Yii::app()->findModule($moduleName);
+                     if (isset($info['modules']) && is_array($info['modules']))
+                     {
+                        foreach ($info['modules'] as $nestedModuleName => $nestedInfo)
+                        {
+                            $modules[$nestedModuleName] = $module->getModule($nestedModuleName);
+                        }
+                     }
+                     $modules[$moduleName] = $module;
+                }
+                GeneralCache::cacheEntry($cacheKey, $modules);
             }
             return $modules;
         }
@@ -459,6 +469,23 @@
         }
 
         /**
+         * Return true if module has any global search attribute names available to search on
+         * @return bool
+         */
+        public static function hasAtLeastOneGlobalSearchAttributeName()
+        {
+            $metadata = static::getMetadata();
+            if( isset($metadata['global']['globalSearchAttributeNames']) &&
+                is_array($metadata['global']['globalSearchAttributeNames']) &&
+                count($metadata['global']['globalSearchAttributeNames']) > 0)
+            {
+                return true;
+            }
+            return false;
+        }
+
+
+        /**
          * Override and return a string of the StatemetadataAdataper class if the module's primary model supports
          * states.  An example is leads or contacts where the lead is only contacts in a certain state.
          */
@@ -480,6 +507,7 @@
             {
                 try
                 {
+                    // not using default value to save cpu cycles on requests that follow the first exception.
                     return GeneralCache::getEntry($className . 'Metadata');
                 }
                 catch (NotFoundException $e)
@@ -545,21 +573,8 @@
             assert('is_string($folder)');
             $classNames = array();
             $className = get_called_class();
-            $pathOfAlias = Yii::getPathOfAlias(
-                    'application.modules.' . $className::getDirectoryName() . '.' .  $folder . '.*');
-            if (is_dir($pathOfAlias))
-            {
-                $directoryFiles = ZurmoFileHelper::findFiles($pathOfAlias);
-                $classNames = array();
-                foreach ($directoryFiles as $filePath)
-                {
-                    $filePathInfo = pathinfo($filePath);
-                    if ($filePathInfo['extension'] == 'php')
-                    {
-                        $classNames[] = $filePathInfo['filename'];
-                    }
-                }
-            }
+            $alias      = 'application.modules.' . $className::getDirectoryName() . '.' .  $folder;
+            $classNames = PathUtil::getAllClassNamesByPathAlias($alias);
             return $classNames;
         }
 

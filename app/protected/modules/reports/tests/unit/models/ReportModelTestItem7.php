@@ -53,7 +53,9 @@
                     'name',
                 ),
                 'relations' => array(
-                    'model5' => array(RedBeanModel::HAS_MANY, 'ReportModelTestItem5'),
+                    'model5' => array(static::HAS_MANY, 'ReportModelTestItem5'),
+                    'model' => array(static::HAS_MANY, 'ReportModelTestItem', static::OWNED,
+                                static::LINK_TYPE_SPECIFIC, 'likeContactState'),
                 ),
                 'rules' => array(
                     array('name',  'type',   'type' => 'string'),

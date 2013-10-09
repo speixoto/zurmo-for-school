@@ -40,7 +40,7 @@
         {
             assert('is_string($name)');
             assert('$name != ""');
-            $bean = R::findOne('p', "name = '$name'");
+            $bean = ZurmoRedBean::findOne('p', "name = '$name'");
             assert('$bean === false || $bean instanceof RedBean_OODBBean');
             if ($bean === false)
             {
@@ -67,19 +67,19 @@
                     array('name',          'length',  'min'  => 3, 'max' => 64),
                 ),
                 'relations' => array(
-                    'pp'                  => array(RedBeanModel::HAS_ONE,            'PP'),
-                    'pp1'                 => array(RedBeanModel::HAS_ONE,            'PP',  RedBeanModel::NOT_OWNED,
-                                                   RedBeanModel::LINK_TYPE_SPECIFIC, 'pp1Link'),
-                    'pp2'                 => array(RedBeanModel::HAS_ONE,            'PP',  RedBeanModel::NOT_OWNED,
-                                                   RedBeanModel::LINK_TYPE_SPECIFIC, 'pp2Link'),
-                    'ppp'                 => array(RedBeanModel::HAS_MANY,           'PPP'),
-                    'ppp1'                => array(RedBeanModel::HAS_MANY,           'PPP', RedBeanModel::NOT_OWNED,
-                                                   RedBeanModel::LINK_TYPE_SPECIFIC, 'ppp1Link'),
-                    'ppp2'                => array(RedBeanModel::HAS_MANY,           'PPP', RedBeanModel::NOT_OWNED,
-                                                   RedBeanModel::LINK_TYPE_SPECIFIC, 'ppp2Link'),
-                    'ppManyAssumptive'    => array(RedBeanModel::MANY_MANY,          'PP'),
-                    'ppManySpecific'      => array(RedBeanModel::MANY_MANY,          'PP', RedBeanModel::NOT_OWNED,
-                                                   RedBeanModel::LINK_TYPE_SPECIFIC, 'ppManySpecificLink'),
+                    'pp'                  => array(static::HAS_ONE,            'PP'),
+                    'pp1'                 => array(static::HAS_ONE,            'PP',  static::NOT_OWNED,
+                                                   static::LINK_TYPE_SPECIFIC, 'pp1Link'),
+                    'pp2'                 => array(static::HAS_ONE,            'PP',  static::NOT_OWNED,
+                                                   static::LINK_TYPE_SPECIFIC, 'pp2Link'),
+                    'ppp'                 => array(static::HAS_MANY,           'PPP'),
+                    'ppp1'                => array(static::HAS_MANY,           'PPP', static::NOT_OWNED,
+                                                   static::LINK_TYPE_SPECIFIC, 'ppp1Link'),
+                    'ppp2'                => array(static::HAS_MANY,           'PPP', static::NOT_OWNED,
+                                                   static::LINK_TYPE_SPECIFIC, 'ppp2Link'),
+                    'ppManyAssumptive'    => array(static::MANY_MANY,          'PP'),
+                    'ppManySpecific'      => array(static::MANY_MANY,          'PP', static::NOT_OWNED,
+                                                   static::LINK_TYPE_SPECIFIC, 'ppManySpecificLink'),
                 ),
             );
             return $metadata;
