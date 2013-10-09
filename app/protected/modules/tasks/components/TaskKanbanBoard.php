@@ -86,5 +86,5 @@
                          'relatedModelId'                 => $this->relatedModel->id,
                          'relatedModelClassName'          => $this->relatedModelClassName);
         }
-}
+    }
 ?>

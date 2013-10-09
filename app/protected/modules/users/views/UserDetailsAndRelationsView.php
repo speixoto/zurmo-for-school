@@ -60,23 +60,6 @@
                             )
                         )
                     ),
-                    'rightTopView' => array(
-                        'columns' => array(
-                            array(
-                                'rows' => array(
-                                    array(
-                                        'type' => 'UserLeaderboardRankingForPortlet'
-                                    ),
-                                    array(
-                                        'type' => 'UserGamificationStatisticsForPortlet'
-                                    ),
-                                    array(
-                                        'type' => 'UserBadgesForPortlet'
-                                    ),
-                                )
-                            )
-                        )
-                    )
                 )
             );
             return $metadata;
@@ -104,9 +87,14 @@
             $content .= $leftVerticalGridView->render();
             if ($renderRightSide)
             {
+                $this->setCssClasses(array_merge($this->getCssClasses(), array('double-column')));
                 $rightVerticalGridView  = new GridView(1, 1);
                 $rightVerticalGridView->setView($rightTopView, 0, 0);
                 $content .= $rightVerticalGridView->render();
+            }
+            else
+            {
+                $this->setCssClasses(array_merge($this->getCssClasses(), array('single-column')));
             }
             return $content;
         }

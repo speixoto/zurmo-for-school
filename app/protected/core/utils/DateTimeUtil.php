@@ -420,6 +420,20 @@
             return $date . ' 00:00:00';
         }
 
+        public static function resolveDateTimeAsDate($dateTime)
+        {
+            assert('is_string($date)');
+            if($dateTime == '0000-00-00 00:00:00')
+            {
+                return '0000-00-00';
+            }
+            elseif ($dateTime == null)
+            {
+                return null;
+            }
+            return substr($dateTime, 0, 10);
+        }
+
         /**
          * Given 2 dates in a range, return an array of all days that occur during that range
          * @param string $beginDate

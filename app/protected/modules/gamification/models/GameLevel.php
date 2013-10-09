@@ -210,6 +210,7 @@
                 'defaultSortAttribute' => 'type',
                 'noAudit' => array(
                     'type',
+                    'value',
                     'person',
                 ),
             );
