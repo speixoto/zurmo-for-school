@@ -69,8 +69,6 @@
             $form->defaultPermissionSetting         = UserConfigurationForm::DEFAULT_PERMISSIONS_SETTING_OWNER_AND_USERS_IN_GROUP;
             $form->defaultPermissionGroupSetting    = $group->id;
             UserConfigurationFormAdapter::setConfigurationFromForm($form, $super);
-
-
             $bobby = UserTestHelper::createBasicUserWithEmailAddress('bobby');
             $sarah = UserTestHelper::createBasicUserWithEmailAddress('sarah');
             self::$superUserId = $super->id;

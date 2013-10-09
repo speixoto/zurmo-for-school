@@ -146,6 +146,16 @@
             }
         }
 
+        /**
+         * Used to set model's owner without all the checks and audit logs.
+         * Used in event handling code for queues.
+         * @param User $user
+         */
+        public function setOwnerUnrestricted(User $user)
+        {
+            parent::unrestrictedSet('owner', $user);
+        }
+
         public function __set($attributeName, $value)
         {
             if ($attributeName == 'owner')
