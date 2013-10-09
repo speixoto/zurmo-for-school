@@ -101,11 +101,14 @@
                     'status'
                 ),
                 'relations' => array(
-                    'requestedByUser'           => array(static::HAS_ONE, 'User'),
+                    'requestedByUser'           => array(static::HAS_ONE, 'User', static::NOT_OWNED,
+                                                        static::LINK_TYPE_SPECIFIC, 'requestedByUser'),
                     'comments'                  => array(static::HAS_MANY, 'Comment', static::OWNED,
                                                         static::LINK_TYPE_POLYMORPHIC, 'relatedModel'),
-                    'checkListItems'            => array(static::HAS_MANY, 'TaskCheckListItem', static::OWNED),
-                    'notificationSubscribers'   => array(static::HAS_MANY, 'NotificationSubscriber', static::OWNED),
+                    'checkListItems'            => array(static::HAS_MANY, 'TaskCheckListItem', static::OWNED,
+                                                        static::LINK_TYPE_POLYMORPHIC, 'relatedModel'),
+                    'notificationSubscribers'   => array(static::HAS_MANY, 'NotificationSubscriber', static::OWNED,
+                                                        static::LINK_TYPE_POLYMORPHIC, 'relatedModel'),
                     'files'                     => array(static::HAS_MANY, 'FileModel', static::OWNED,
                                                         static::LINK_TYPE_POLYMORPHIC, 'relatedModel'),
                     'project'                   => array(static::HAS_ONE, 'Project'),

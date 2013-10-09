@@ -97,7 +97,7 @@
                                                 static::LINK_TYPE_SPECIFIC, 'source'),
                     'state'            => array(static::HAS_ONE,   'ContactState', static::NOT_OWNED,
                                                 static::LINK_TYPE_SPECIFIC, 'state'),
-                    'projects'         => array(RedBeanModel::MANY_MANY, 'Project'),
+                    'projects'         => array(static::MANY_MANY, 'Project'),
                 ),
                 'derivedRelationsViaCastedUpModel' => array(
                     'meetings' => array(static::MANY_MANY, 'Meeting', 'activityItems'),

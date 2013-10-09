@@ -95,8 +95,10 @@
                     'sortOrder'
                 ),
                 'relations' => array(
-                    'kanbanRelatedItem'         => array(RedBeanModel::HAS_ONE, 'Item', RedBeanModel::OWNED, RedBeanModel::LINK_TYPE_SPECIFIC, 'kanbanrelateditem'),
-                    'task'                      => array(RedBeanModel::HAS_ONE, 'Task')
+                    'kanbanRelatedItem'         => array(static::HAS_ONE, 'Item', static::OWNED,
+                                                    static::LINK_TYPE_SPECIFIC, 'kanbanrelateditem'),
+                    'task'                      => array(static::HAS_ONE, 'Task', static::NOT_OWNED,
+                                                        static::LINK_TYPE_SPECIFIC, 'task')
                 ),
                 'rules' => array(
                     array('type', 'type', 'type' => 'integer'),
