@@ -59,5 +59,18 @@
         {
             return null;
         }
+
+        public function getMenuItems()
+        {
+            $items = array();
+            if (RightsUtil::doesUserHaveAllowByRightName('WorkflowsModule', WorkflowsModule::getCreateRight(),
+                Yii::app()->user->userModel))
+            {
+                $items[] = array('label'   => Zurmo::t('WorkflowsModule', 'Create Workflow'),
+                    'url'     => Yii::app()->createUrl('workflows/default/create'));
+                return $items;
+            }
+            return null;
+        }
     }
 ?>

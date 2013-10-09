@@ -50,10 +50,6 @@
                     'toolbar' => array(
                         'elements' => array(
                             array(
-                                'type'      => 'MarketingCreateMenu',
-                                'iconClass' => 'icon-create'
-                            ),
-                            array(
                                 'type'      => 'MarketingDashboardMenu',
                                 'iconClass' => 'icon-marketing-dashboard'
                             ),

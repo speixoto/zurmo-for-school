@@ -49,9 +49,6 @@
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array('type'      => 'WorkflowCreateMenu',
-                                  'iconClass' => 'icon-create',
-                            ),
                             array('type'      => 'WorkflowsMenu',
                                   'iconClass' => 'icon-workflows',
                             ),

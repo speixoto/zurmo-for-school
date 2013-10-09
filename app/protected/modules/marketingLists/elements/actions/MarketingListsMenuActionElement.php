@@ -59,5 +59,18 @@
         {
             return null;
         }
+        protected function getMenuItems()
+        {
+            $items = array();
+            if (RightsUtil::doesUserHaveAllowByRightName('MarketingListsModule', MarketingListsModule::getCreateRight(),
+                Yii::app()->user->userModel))
+            {
+                $items[] = array('label'   => Zurmo::t('MarketingListsModule', 'Create List'),
+                    'url'     => Yii::app()->createUrl('marketingLists/default/create'));
+                return $items;
+            }
+            return null;
+        }
+
     }
 ?>

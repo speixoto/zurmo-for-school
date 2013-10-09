@@ -76,5 +76,24 @@
         {
             return null;
         }
+
+        /**
+         * @return null or string containing create link
+         */
+        public function getMenuItems()
+        {
+            $items = array();
+            if (RightsUtil::doesUserHaveAllowByRightName('ProductTemplatesModule', ProductTemplatesModule::getCreateRight(),
+                Yii::app()->user->userModel))
+            {
+                $items[] = array('label'   => Zurmo::t('ProductTemplatesModule', 'Create Category'),
+                    'url'     => Yii::app()->createUrl('productTemplates/category/create'));
+            }
+            if (!empty($items))
+            {
+                return $items;
+            }
+            return null;
+        }
     }
 ?>

@@ -60,5 +60,22 @@
         {
             return null;
         }
+
+        protected function getMenuItems()
+        {
+            $items = array();
+            if (RightsUtil::doesUserHaveAllowByRightName('ProductsModule', ProductsModule::getCreateRight(),
+                Yii::app()->user->userModel))
+            {
+                $items[] = array('label'    => Zurmo::t('ProductsModule', 'Create ProductsModuleSingularLabel',
+                    LabelUtil::getTranslationParamsForAllModules()),
+                    'url'     => Yii::app()->createUrl('products/default/create'));
+            }
+            if (!empty($items))
+            {
+                return $items;
+            }
+            return null;
+        }
     }
 ?>

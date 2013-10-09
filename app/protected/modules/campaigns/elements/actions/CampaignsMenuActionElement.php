@@ -59,5 +59,18 @@
         {
             return null;
         }
+
+        protected function getMenuItems()
+        {
+            $items = array();
+            if (RightsUtil::doesUserHaveAllowByRightName('CampaignsModule', CampaignsModule::getCreateRight(),
+                Yii::app()->user->userModel))
+            {
+                $items[] = array('label'   => Zurmo::t('CampaignsModule', 'Create Campaign'),
+                    'url'     => Yii::app()->createUrl('campaigns/default/create'));
+                return $items;
+            }
+            return null;
+        }
     }
 ?>
