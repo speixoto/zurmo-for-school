@@ -116,7 +116,35 @@
 
         protected function registerScripts()
         {
-            $script = "";
+            $script =
+                "jQuery('.gd-collection-item img').qtip(
+                    {
+                        position: {
+                            my: 'bottom center',
+                            at: 'top center'
+                        },
+                        content: {
+                            attr: 'data-tooltip'
+                        }
+                    }
+                );
+
+                var chart, legend;
+
+                var chartData = [ { country: 'Czech Republic', itres: 301.90},
+                                  { country: 'Ireland', itres: 201.10} ];
+
+                AmCharts.ready(function() {
+                    chart = new AmCharts.AmPieChart();
+                    chart.dataProvider = chartData;
+                    chart.titleField = 'country';
+                    chart.valueField = 'litres';
+                    chart.labelText = '';
+                    chart.innerRadius = '80%';
+                    chart.colors = ['#6C8092', '#933140'];
+                    chart.write('chartdiv');
+                });";
+
             Yii::app()->clientScript->registerScript('userGameDashboardScript', $script);
 
             $cs = Yii::app()->getClientScript();

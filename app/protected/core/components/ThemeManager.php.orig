@@ -136,12 +136,23 @@
                           'diagonal-noise'        => Zurmo::t('Core', 'Noise'),
                           'paper'                 => Zurmo::t('Core', 'Paper'),
                           'circles'               => Zurmo::t('Core', 'Circle'),
+<<<<<<< mine
                           'whitey'                => Zurmo::t('Core', 'Whitey'),
+=======
+                          'whity'                 => Zurmo::t('Core', 'Fabric Light'),
+>>>>>>> theirs
                           'fabric-plaid'          => Zurmo::t('Core', 'Fabric Plaid'),
                           'cartographer-light'    => Zurmo::t('Core', 'Cartographer Light'),
                           'wood'                  => Zurmo::t('Core', 'Wood'),
+<<<<<<< mine
                           'black-linen-2'         => Zurmo::t('Core', 'Black Linen 2'),
                           'carbon-fibre'          => Zurmo::t('Core', 'Carbon Fibre'),
+=======
+                          'black-linen-2'         => Zurmo::t('Core', 'Black Linen'),
+                          'bo-play'               => Zurmo::t('Core', 'Bo Play'),
+                          'carbon-fibre'          => Zurmo::t('Core', 'Carbon Fibre Small'),
+                          'carbon-fibre-big'      => Zurmo::t('Core', 'Carbon Fibre Big'),
+>>>>>>> theirs
                           'cartographer'          => Zurmo::t('Core', 'Cartographer'),
                           'concrete-wall'         => Zurmo::t('Core', 'Concrete Wall'),
                           'denim'                 => Zurmo::t('Core', 'Denim'),
@@ -158,13 +169,13 @@
                           'lime'        => 1,
                           'turquoise'   => 1,
                           'violet'      => 1,
-                          'sunrise'     => 1,
-                          'marble'      => 1,
-                          'purple-haze' => 1,
-                          'flat-cement' => 1,
-                          'amazon'      => 1,
-                          'sweden'      => 1,
-                          'pink'        => 1);
+                          'sunrise'     => 2,
+                          'marble'      => 3,
+                          'purple-haze' => 4,
+                          'flat-cement' => 5,
+                          'amazon'      => 6,
+                          'sweden'      => 7,
+                          'pink'        => 8);
             return $data;
         }
 
@@ -176,18 +187,39 @@
                           'light-toast'           => 1,
                           'diagonal-noise'        => 1,
                           'paper'                 => 1,
-                          'circles'               => 4,
-                          'whitey'                => 5,
-                          'fabric-plaid'          => 6,
-                          'cartographer-light'    => 7,
-                          'wood'                  => 8,
-                          'black-linen-2'         => 9,
-                          'carbon-fibre'          => 10,
-                          'carbon-fibre-big'      => 11,
-                          'cartographer'          => 12,
-                          'concrete-wall'         => 13,
-                          'denim'                 => 14,
-                          'low-contrast-linen'    => 15);
+<<<<<<< mine
+                          'circles'               => 1,
+                          'whitey'                => 1,
+                          'fabric-plaid'          => 1,
+                          'cartographer-light'    => 1,
+                          'wood'                  => 1,
+                          'black-linen-2'         => 1,
+                          'carbon-fibre'          => 1,
+                          'carbon-fibre-big'      => 1,
+                          'cartographer'          => 1,
+                          'concrete-wall'         => 1,
+                          'denim'                 => 1,
+                          'low-contrast-linen'    => 1);
+=======
+                          'circles'               => 2,
+                          'whity'                 => 2,
+                          'fabric-plaid'          => 3,
+                          'cartographer-light'    => 4,
+                          'wood'                  => 5,
+                          'black-linen-2'         => 5,
+                          'bo-play'               => 6,
+                          'carbon-fibre'          => 6,
+                          'carbon-fibre-big'      => 6,
+                          'cartographer'          => 7,
+                          'concrete-wall'         => 8,
+                          'dark-wood'             => 9,
+                          'dark-wood-2'           => 10,
+                          'denim'                 => 11,
+                          'gun-metal'             => 12,
+                          'low-contrast-linen'    => 13,
+                          'micro-carbon'          => 14,
+                          'vertical-cloth'        => 15);
+>>>>>>> theirs
             return $data;
         }
     }

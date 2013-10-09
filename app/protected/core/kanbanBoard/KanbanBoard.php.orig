@@ -228,14 +228,14 @@
                 'kanban-background-tennis'         => 1,
                 'kanban-background-motor'          => 1,
                 'kanban-background-yoga'           => 1,
-                'kanban-background-blurred-lights' => 3,
-                'kanban-background-blurred-city'   => 5,
-                'kanban-background-blurred-vera'   => 7,
-                'kanban-background-perfect-beach'  => 9,
-                'kanban-background-flip-flops'     => 10,
-                'kanban-background-blue-structure' => 11,
-                'kanban-background-sepia-sf'       => 13,
-                'kanban-background-men-on-bridge'  => 14);
+                'kanban-background-blurred-lights' => 1,
+                'kanban-background-blurred-city'   => 1,
+                'kanban-background-blurred-vera'   => 1,
+                'kanban-background-perfect-beach'  => 1,
+                'kanban-background-flip-flops'     => 1,
+                'kanban-background-blue-structure' => 1,
+                'kanban-background-sepia-sf'       => 1,
+                'kanban-background-men-on-bridge'  => 1);
         }
 
         public function setClearSticky()
