@@ -40,7 +40,8 @@
     class AdditionalModelsConfig extends CApplicationComponent
     {
         // do not change the defaults here, update configs in common.php and related files instead.
-        public $zurmoModels = array('application.core.models', 'application.core.portlets');
+        public $zurmoModels = array('application.core.models', 'application.core.portlets',
+                                    'application.core.kanbanBoard.models');
 
         public $userModels  = array();
 

@@ -93,19 +93,19 @@
             }
         }
 
-        /**
+        /*
          * @param array $postData
          * @param $model
          * @param bool $savedSuccessfully
          * @param string $modelToStringValue
          * @return OwnedSecurableItem
          */
-        public function saveModelFromPost($postData, $model, & $savedSuccessfully, & $modelToStringValue)
+        public function saveModelFromPost($postData, $model, & $savedSuccessfully, & $modelToStringValue, $returnOnValidate = false)
         {
             $dataSanitizerClassName             = $this->getDataSanitizerUtilClassName();
             $sanitizedPostData                  = $dataSanitizerClassName::sanitizePostByDesignerTypeForSavingModel(
                                                                                                     $model, $postData);
-            return $this->saveModelFromSanitizedData($sanitizedPostData, $model, $savedSuccessfully, $modelToStringValue);
+            return $this->saveModelFromSanitizedData($sanitizedPostData, $model, $savedSuccessfully, $modelToStringValue, $returnOnValidate);
         }
 
         /**
@@ -115,7 +115,7 @@
          * @param string $modelToStringValue
          * @return OwnedSecurableItem
          */
-        public function saveModelFromSanitizedData($sanitizedData, $model, & $savedSuccessfully, & $modelToStringValue)
+        public function saveModelFromSanitizedData($sanitizedData, $model, & $savedSuccessfully, & $modelToStringValue, $returnOnValidate)
         {
             //note: the logic for ExplicitReadWriteModelPermission might still need to be moved up into the
             //post method above, not sure how this is coming in from API.
@@ -133,9 +133,14 @@
             $this->afterSetAttributesDuringSave($model, $explicitReadWriteModelPermissions);
             if ($explicitReadWriteModelPermissions instanceof ExplicitReadWriteModelPermissions)
             {
-                $model->setExplicitReadWriteModelPermissionsForWorkflow($explicitReadWriteModelPermissions);
+               $model->setExplicitReadWriteModelPermissionsForWorkflow($explicitReadWriteModelPermissions);
             }
-            if ($model->validate())
+            $isDataValid = $model->validate();
+            if($returnOnValidate)
+            {
+                return $model;
+            }
+            elseif ($isDataValid)
             {
                 $modelToStringValue = strval($model);
                 if ($sanitizedOwnerData != null)
@@ -190,6 +195,26 @@
 
         protected function afterSuccessfulSave($model)
         {
+        }
+
+        /**
+         * Validates post data in the ajax call
+         * @param RedBeanModel $model
+         * @param string $postVariableName
+         */
+        public function validateAjaxFromPost($model, $postVariableName)
+        {
+            $savedSuccessfully = false;
+            $modelToStringValue = null;
+            if(isset($_POST[$postVariableName]))
+            {
+                $postData         = $_POST[$postVariableName];
+                $model            = $this->saveModelFromPost($postData, $model, $savedSuccessfully,
+                                                                             $modelToStringValue, true);
+                $errorData        = ZurmoActiveForm::makeErrorsDataAndResolveForOwnedModelAttributes($model);
+                echo CJSON::encode($errorData);
+                Yii::app()->end(0, false);
+            }
         }
 
         protected function getDataSanitizerUtilClassName()

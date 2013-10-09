@@ -92,40 +92,6 @@
             $this->resetPostArray();
             $this->runControllerWithNoExceptionsAndGetContent('tasks/default/details');
 
-            //test editing an existing task and saving. Add a second relation, to a contact.
-            //First just go to the edit view and confirm it loads ok.
-            $this->setGetArray(array('id' => $tasks[0]->id, 'redirectUrl' => 'someRedirect'));
-            $this->resetPostArray();
-            $this->runControllerWithNoExceptionsAndGetContent('tasks/default/edit');
-            //Save changes via edit action.
-            $activityItemPostData = array('Account' => array('id' => $superAccountId),
-                                          'Contact' => array('id' => $superContactId));
-            $this->setGetArray(array('id' => $tasks[0]->id, 'redirectUrl' => 'someRedirect'));
-            $this->setPostArray(array('ActivityItemForm' => $activityItemPostData, 'Task' => array('name' => 'myTaskX')));
-            $this->runControllerWithRedirectExceptionAndGetContent('tasks/default/edit');
-            //Confirm changes applied correctly.
-            $tasks = Task::getAll();
-            $this->assertEquals(1, count($tasks));
-            $this->assertEquals('myTaskX', $tasks[0]->name);
-            $this->assertEquals(2, $tasks[0]->activityItems->count());
-            $activityItem1 = $tasks[0]->activityItems->offsetGet(0);
-            $activityItem2 = $tasks[0]->activityItems->offsetGet(1);
-            $this->assertEquals($account, $activityItem1);
-            $this->assertEquals($contact, $activityItem2);
-
-            //Remove contact relation.  Switch account relation to a different account.
-            $activityItemPostData = array('Account' => array('id' => $superAccountId2));
-            $this->setGetArray(array('id' => $tasks[0]->id));
-            $this->setPostArray(array('ActivityItemForm' => $activityItemPostData, 'Task' => array('name' => 'myTaskX')));
-            $this->runControllerWithRedirectExceptionAndGetContent('tasks/default/edit');
-            //Confirm changes applied correctly.
-            $tasks = Task::getAll();
-            $this->assertEquals(1, count($tasks));
-            $this->assertEquals('myTaskX', $tasks[0]->name);
-            $this->assertEquals(1, $tasks[0]->activityItems->count());
-            $activityItem1 = $tasks[0]->activityItems->offsetGet(0);
-            $this->assertEquals($account2, $activityItem1);
-
             //test removing a task.
             $this->setGetArray(array('id' => $tasks[0]->id));
             $this->resetPostArray();
@@ -133,67 +99,6 @@
             //Confirm no more tasks exist.
             $tasks = Task::getAll();
             $this->assertEquals(0, count($tasks));
-        }
-
-        public function testSuperUserCopyAction()
-        {
-            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
-
-            $superAccountId  = self::getModelIdByModelNameAndName ('Account', 'superAccount');
-            $superContactId  = self::getModelIdByModelNameAndName ('Contact', 'superContact superContactson');
-            $account         = Account::getById($superAccountId);
-            $contact         = Contact::getById($superContactId);
-
-            $activityItemPostData = array('Account' => array('id' => $superAccountId),
-                                          'Contact' => array('id' => $superContactId));
-            $this->setGetArray(array('relationAttributeName' => 'Account',  'relationModelId' => $superAccountId,
-                                     'relationModuleId'      => 'accounts', 'redirectUrl' => 'someRedirect'));
-            $this->setPostArray(array('ActivityItemForm' => $activityItemPostData,
-                                      'Task' => array(
-                                          'name'        => 'myTask',
-                                          'description' => 'Some task description',
-                                      )));
-            $this->runControllerWithRedirectExceptionAndGetContent('tasks/default/createFromRelation');
-
-            $tasks = Task::getByName('myTask');
-            $this->assertCount(1, $tasks);
-
-            $this->setGetArray(array('id' => $tasks[0]->id));
-            $this->resetPostArray();
-            $content = $this->runControllerWithNoExceptionsAndGetContent('tasks/default/copy');
-            $this->assertContains($tasks[0]->name,          $content);
-            $this->assertContains($tasks[0]->description,   $content);
-            $this->assertContains($account->name,           $content);
-            $this->assertContains($contact->getFullName(),  $content);
-
-            $taskCopy = new Task();
-            ActivityCopyModelUtil::copy($tasks[0], $taskCopy);
-
-            $activityItemPostData = array();
-            foreach ($taskCopy->activityItems as $relatedModel)
-            {
-                $activityItemPostData[get_class($relatedModel)] = array('id' => $relatedModel->id);
-            }
-            $postArray = array(
-                'Task' => array(
-                    'name'          => $taskCopy->name,
-                    'description'   => $taskCopy->description,
-                ),
-                'ActivityItemForm' => $activityItemPostData,
-            );
-            $this->setPostArray($postArray);
-            $this->setGetArray(array('id' => $tasks[0]->id));
-            $content = $this->runControllerWithRedirectExceptionAndGetContent('tasks/default/copy');
-
-            $tasks = Task::getByName('myTask');
-            $this->assertCount(2, $tasks);
-            $this->assertEquals($tasks[0]->name,             $tasks[1]->name);
-            $this->assertEquals($tasks[0]->description,      $tasks[1]->description);
-            $this->assertEquals($tasks[0]->activityItems[0], $tasks[1]->activityItems[0]);
-            $this->assertEquals($tasks[0]->activityItems[1], $tasks[1]->activityItems[1]);
-
-            $tasks[0]->delete();
-            $tasks[1]->delete();
         }
    }
 ?>

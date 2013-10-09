@@ -80,7 +80,15 @@
                                         'portletType'    => $portletRules->getType(),
                                         )
                                     );
-                                    $title    = $metadata['perUser']['title'];
+                                    if(isset ($metadata['perUser']['title']))
+                                    {
+                                        $title = $metadata['perUser']['title'];
+                                    }
+                                    else
+                                    {
+                                        continue;
+                                    }
+
                                     MetadataUtil::resolveEvaluateSubString($title);
                                     $sortablePortlets[$title] = array('url' => $url,
                                         'title' => $title,

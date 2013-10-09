@@ -130,6 +130,7 @@
                                              static::LINK_TYPE_SPECIFIC, 'stage'),
                     'source'        => array(static::HAS_ONE,   'OwnedCustomField', static::OWNED,
                                              static::LINK_TYPE_SPECIFIC, 'source'),
+                    'projects'      => array(static::MANY_MANY, 'Project'),
                 ),
                 'derivedRelationsViaCastedUpModel' => array(
                     'meetings' => array(static::MANY_MANY, 'Meeting', 'activityItems'),

@@ -36,6 +36,9 @@
 
     abstract class OpenTasksRelatedListView extends SecuredRelatedListView
     {
+        /**
+         * @return array
+         */
         public static function getDefaultMetadata()
         {
             $metadata = array(
@@ -45,15 +48,34 @@
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array(  'type'            => 'CreateFromRelatedListLink',
+                            array(  'type'            => 'CreateFromRelatedModalLink',
+                                    'portletId'       => 'eval:$this->params["portletId"]',
                                     'routeModuleId'   => 'eval:$this->moduleId',
-                                    'routeParameters' => 'eval:$this->getCreateLinkRouteParameters()'),
+                                    'routeParameters' => 'eval:$this->getCreateLinkRouteParameters()',
+                                    'ajaxOptions'     => 'eval:TasksUtil::resolveAjaxOptionsForEditModel("Create")',
+                                    'uniqueLayoutId'  => 'eval:$this->uniqueLayoutId',
+                                    'modalContainerId'=> 'eval:TasksUtil::getModalContainerId()'
+                                 ),
                         ),
                     ),
                     'rowMenu' => array(
                         'elements' => array(
-                            array('type' => 'EditLink'),
-                            array('type' => 'CopyLink'),
+                            array(  'type'            => 'EditModalLink',
+                                    'portletId'       => 'eval:$this->params["portletId"]',
+                                    'routeModuleId'   => 'eval:$this->moduleId',
+                                    'routeParameters' => 'eval:$this->getCreateLinkRouteParameters()',
+                                    'ajaxOptions'     => 'eval:TasksUtil::resolveAjaxOptionsForEditModel("Edit")',
+                                    'uniqueLayoutId'  => 'eval:$this->uniqueLayoutId',
+                                    'modalContainerId'=> 'eval:TasksUtil::getModalContainerId()'
+                                 ),
+                            array(  'type'            => 'CopyModalLink',
+                                    'portletId'       => 'eval:$this->params["portletId"]',
+                                    'routeModuleId'   => 'eval:$this->moduleId',
+                                    'routeParameters' => 'eval:$this->getCreateLinkRouteParameters()',
+                                    'ajaxOptions'     => 'eval:TasksUtil::resolveAjaxOptionsForEditModel("Copy")',
+                                    'uniqueLayoutId'  => 'eval:$this->uniqueLayoutId',
+                                    'modalContainerId'=> 'eval:TasksUtil::getModalContainerId()'
+                                 ),
                             array('type' => 'RelatedDeleteLink'),
                         ),
                     ),
@@ -93,6 +115,9 @@
             return $metadata;
         }
 
+        /**
+         * @return array
+         */
         protected function makeSearchAttributeData()
         {
             $searchAttributeData = array();
@@ -118,9 +143,43 @@
             return $searchAttributeData;
         }
 
+        /**
+         * @return string
+         */
         public static function getModuleClassName()
         {
             return 'TasksModule';
+        }
+
+        /**
+         * @return string
+         */
+        protected function renderContent()
+        {
+            $content = parent::renderContent();
+            $content .= TasksUtil::renderViewModalContainer();
+            return $content;
+        }
+
+        /**
+         * Override to handle security/access resolution on links.
+         */
+        public function getLinkString($attributeString, $attribute)
+        {
+            return array($this, 'resolveLinkString');
+        }
+
+        /**
+         * Resolves the link string for task detail modal view
+         * @param array $data
+         * @param int $row
+         * @return string
+         */
+        public function resolveLinkString($data, $row)
+        {
+            $taskUtil    = new TasksUtil();
+            $content     = $taskUtil->getLinkForViewModal($data, $row, $this->controllerId, $this->moduleId, $this->getActionModuleClassName());
+            return $content;
         }
     }
 ?>

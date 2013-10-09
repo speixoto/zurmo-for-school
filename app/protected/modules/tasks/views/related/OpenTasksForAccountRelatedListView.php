@@ -36,17 +36,26 @@
 
     class OpenTasksForAccountRelatedListView extends OpenTasksRelatedListView
     {
+        /**
+         * @return string
+         */
         protected function getRelationAttributeName()
         {
             return 'Account';
         }
 
+        /**
+         * @return string
+         */
         public static function getDisplayDescription()
         {
             return Zurmo::t('TasksModule', 'TasksModulePluralLabel For AccountsModuleSingularLabel',
                         LabelUtil::getTranslationParamsForAllModules());
         }
 
+        /**
+         * @return array
+         */
         public static function getAllowedOnPortletViewClassNames()
         {
             return array('AccountDetailsAndRelationsView');
