@@ -117,8 +117,8 @@
                     'opportunities'    => array(RedBeanModel::MANY_MANY, 'Opportunity'),
                     'contacts'         => array(RedBeanModel::MANY_MANY, 'Contact'),
                     'accounts'         => array(RedBeanModel::MANY_MANY, 'Account'),
-                    'tasks'            => array(RedBeanModel::HAS_MANY,  'Task'),
-                    'auditEvents'      => array(RedBeanModel::HAS_MANY,  'ProjectAuditEvent'),
+                    'tasks'            => array(static::HAS_MANY,  'Task'),
+                    'auditEvents'      => array(static::HAS_MANY,  'ProjectAuditEvent'),
                 ),
                 'rules' => array(
                     array('name',           'required'),

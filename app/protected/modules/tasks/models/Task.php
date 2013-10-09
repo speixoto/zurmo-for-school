@@ -101,14 +101,14 @@
                     'status'
                 ),
                 'relations' => array(
-                    'requestedByUser'           => array(RedBeanModel::HAS_ONE, 'User'),
-                    'comments'                  => array(RedBeanModel::HAS_MANY, 'Comment', RedBeanModel::OWNED,
-                                                        RedBeanModel::LINK_TYPE_POLYMORPHIC, 'relatedModel'),
-                    'checkListItems'            => array(RedBeanModel::HAS_MANY, 'TaskCheckListItem', RedBeanModel::OWNED),
-                    'notificationSubscribers'   => array(RedBeanModel::HAS_MANY, 'NotificationSubscriber', RedBeanModel::OWNED),
-                    'files'                     => array(RedBeanModel::HAS_MANY, 'FileModel', RedBeanModel::OWNED,
-                                                        RedBeanModel::LINK_TYPE_POLYMORPHIC, 'relatedModel'),
-                    'project'                   => array(RedBeanModel::HAS_ONE, 'Project'),
+                    'requestedByUser'           => array(static::HAS_ONE, 'User'),
+                    'comments'                  => array(static::HAS_MANY, 'Comment', static::OWNED,
+                                                        static::LINK_TYPE_POLYMORPHIC, 'relatedModel'),
+                    'checkListItems'            => array(static::HAS_MANY, 'TaskCheckListItem', static::OWNED),
+                    'notificationSubscribers'   => array(static::HAS_MANY, 'NotificationSubscriber', static::OWNED),
+                    'files'                     => array(static::HAS_MANY, 'FileModel', static::OWNED,
+                                                        static::LINK_TYPE_POLYMORPHIC, 'relatedModel'),
+                    'project'                   => array(static::HAS_ONE, 'Project'),
                 ),
                 'rules' => array(
                     array('completedDateTime','type', 'type' => 'datetime'),

@@ -108,8 +108,8 @@
                     'serializedData',
                 ),
                 'relations' => array(
-                    'user'    => array(RedBeanModel::HAS_ONE,  'User'),
-                    'project' => array(RedBeanModel::HAS_ONE,  'Project'),
+                    'user'    => array(static::HAS_ONE,  'User'),
+                    'project' => array(static::HAS_ONE,  'Project'),
                 ),
                 'rules' => array(
                     array('dateTime',       'required'),

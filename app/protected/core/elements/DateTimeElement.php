@@ -64,7 +64,7 @@
             $cClipWidget->widget('application.core.widgets.ZurmoJuiDateTimePicker', array(
                 'attribute'   => $this->attribute,
                 'value'       => $value,
-                'htmlOptions' => $htmlOptions
+                'htmlOptions' => $htmlOptions,
                 'options'     => $this->resolveDatePickerOptions()
             ));
             $cClipWidget->endClip();
