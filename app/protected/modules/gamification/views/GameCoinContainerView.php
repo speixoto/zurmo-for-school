@@ -66,6 +66,15 @@
 
         protected function registerScripts()
         {
+            $cs = Yii::app()->getClientScript();
+            $cs->registerCoreScript('jquery-animate-sprite');
+            $cs->registerScriptFile(
+                Yii::app()->getAssetManager()->publish(
+                    Yii::getPathOfAlias('application.modules.gamification.views.assets')
+                ) . '/jquery.animateSprite.js',
+                CClientScript::POS_END
+            );
+
             $url    = $this->makeAjaxClickUrl();
             $script = "$('.random-game-coin').click(function(){
                             " . ZurmoHtml::ajax(array('type' => 'GET', 'url' =>  $url)) . "
@@ -76,12 +85,11 @@
                             $('.smoke').show(0).animate({top:0},500).animateSprite({
                                 columns: 8,
                                 totalFrames: 40,
-                                duration: 500,
+                                duration: 1000,
                                 loop: false,
                             });
                         });";
            Yii::app()->clientScript->registerScript('gameCoinClickScript', $script);
-
         }
 
         protected function renderCoinContainerContent()
