@@ -49,8 +49,9 @@
          * For now we should limit to process one campaign at a time until it is completely processed. This will
          * avoid potential performance problems.
          * @param null $pageSize - used to determine how many campaignItems to create per run.
-         * @param integer $campaignPageSize
+         * @param int $campaignPageSize
          * @return bool
+         * @throws FailedToSaveModelException
          */
         public static function generateCampaignItemsForDueCampaigns($pageSize = null, $campaignPageSize = 1)
         {
@@ -118,6 +119,8 @@
          */
         public static function getCreatePageSize($returnDefaultIfMissing = true, $setDefaultIfMissing = false)
         {
+            assert('is_bool($returnDefaultIfMissing)');
+            assert('is_bool($setDefaultIfMissing)');
             $size = ZurmoConfigurationUtil::getByModuleName(static::CONFIG_MODULE_NAME, static::CONFIG_KEY);
             if (empty($size) && $returnDefaultIfMissing)
             {

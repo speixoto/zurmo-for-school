@@ -63,13 +63,14 @@
         public function attributeLabels()
         {
             return array(
-                'autoresponderOrCampaignBatchSize'       => Zurmo::t('MarketingModule',
-                                                                     'AutorespondersModuleSingularLabel/CampaignsModuleSingularLabel batch size',
-                                                                     LabelUtil::getTranslationParamsForAllModules()),
-                'campaignItemsToCreatePageSize'          => Zurmo::t('MarketingModule', 'Campaign Items creation page size'),
-                'autoresponderOrCampaignFooterPlainText' => Zurmo::t('MarketingModule',
-                                                                     'AutorespondersModuleSingularLabel/CampaignsModuleSingularLabel Footer(Plain Text)',
-                                                                     LabelUtil::getTranslationParamsForAllModules()),
+                'autoresponderOrCampaignBatchSize'       =>
+                    Zurmo::t('MarketingModule', 'AutorespondersModuleSingularLabel/CampaignsModuleSingularLabel batch size',
+                             LabelUtil::getTranslationParamsForAllModules()),
+                'campaignItemsToCreatePageSize'          =>
+                             Zurmo::t('MarketingModule', 'Campaign Items creation page size'),
+                'autoresponderOrCampaignFooterPlainText' =>
+                    Zurmo::t('MarketingModule', 'AutorespondersModuleSingularLabel/CampaignsModuleSingularLabel Footer(Plain Text)',
+                             LabelUtil::getTranslationParamsForAllModules()),
                 'autoresponderOrCampaignFooterRichText'  => Zurmo::t('MarketingModule',
                                                                      'AutorespondersModuleSingularLabel/CampaignsModuleSingularLabel Footer(Rich Text)',
                                                                      LabelUtil::getTranslationParamsForAllModules())
