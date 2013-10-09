@@ -142,6 +142,10 @@
             $this->setGetArray(array('id' => $aUser->id));
             $this->resetPostArray();
             $this->runControllerWithNoExceptionsAndGetContent('users/default/details');
+            //Load game dashboard view
+            $this->setGetArray(array('id' => $aUser->id));
+            $this->resetPostArray();
+            $this->runControllerWithNoExceptionsAndGetContent('users/default/gameDashboard');
 
             //Load Model Security Detail View
             $this->setGetArray(array('id' => $aUser->id));
@@ -544,6 +548,7 @@
 
             $this->setGetArray(array('id' => $aUser->id));
             $this->runControllerWithNoExceptionsAndGetContent('users/default/details');
+            $this->runControllerWithNoExceptionsAndGetContent('users/default/gameDashboard');
         }
 
         public function testExplicitLoginPermissions()

@@ -86,5 +86,149 @@
                          'relatedModelId'                 => $this->relatedModel->id,
                          'relatedModelClassName'          => $this->relatedModelClassName);
         }
+
+        /**
+         * @return array
+         */
+        public function getGroupByAttributeVisibleValues()
+        {
+            return $this->groupByAttributeVisibleValues;
+        }
+
+        /**
+         * @param $groupByAttributeVisibleValues
+         */
+        public function setGroupByAttributeVisibleValues($groupByAttributeVisibleValues)
+        {
+            assert('$groupByAttributeVisibleValues === null || is_array($groupByAttributeVisibleValues)');
+            $this->groupByAttributeVisibleValues = $groupByAttributeVisibleValues;
+        }
+
+        /**
+         * @return array
+         */
+        public function getGroupByDataAndTranslatedLabels()
+        {
+            return $this->groupByDataAndTranslatedLabels;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getSelectedTheme()
+        {
+            return $this->selectedTheme;
+        }
+
+        /**
+         * @param $selectedTheme
+         */
+        public function setSelectedTheme($selectedTheme)
+        {
+            assert('is_string($selectedTheme) || $selectedTheme == null');
+            $this->selectedTheme = $selectedTheme;
+        }
+
+        /**
+         * @return array
+         */
+        public function getThemeNamesAndLabels()
+        {
+            return array(''                        => Zurmo::t('Core', 'White'),
+                'kanban-background-football'       => Zurmo::t('Core', 'Football'),
+                'kanban-background-tennis'         => Zurmo::t('Core', 'Tennis'),
+                'kanban-background-motor'          => Zurmo::t('Core', 'Motor Sport'),
+                'kanban-background-yoga'           => Zurmo::t('Core', 'Yoga'),
+                'kanban-background-blurred-lights' => Zurmo::t('Core', 'Blurred Lights'),
+                'kanban-background-blurred-city'   => Zurmo::t('Core', 'Blurred City'),
+                'kanban-background-blurred-vera'   => Zurmo::t('Core', 'Vera in Blur'),
+                'kanban-background-perfect-beach'  => Zurmo::t('Core', 'Perfect Beach'),
+                'kanban-background-flip-flops'     => Zurmo::t('Core', 'Flip Flops'),
+                'kanban-background-blue-structure' => Zurmo::t('Core', 'Blue Structure'),
+                'kanban-background-sepia-sf'       => Zurmo::t('Core', 'Sepia SF'),
+                'kanban-background-men-on-bridge'  => Zurmo::t('Core', 'Men on Bridge'));
+        }
+
+        public function getThemeColorNamesAndUnlockedAtLevel()
+        {
+            return array(''                        => 1,
+                'kanban-background-football'       => 1,
+                'kanban-background-tennis'         => 1,
+                'kanban-background-motor'          => 1,
+                'kanban-background-yoga'           => 1,
+                'kanban-background-blurred-lights' => 3,
+                'kanban-background-blurred-city'   => 5,
+                'kanban-background-blurred-vera'   => 7,
+                'kanban-background-perfect-beach'  => 9,
+                'kanban-background-flip-flops'     => 10,
+                'kanban-background-blue-structure' => 11,
+                'kanban-background-sepia-sf'       => 13,
+                'kanban-background-men-on-bridge'  => 14);
+        }
+
+        public function setClearSticky()
+        {
+            $this->clearSticky = true;
+        }
+
+        /**
+         * @return bool
+         */
+        public function getClearSticky()
+        {
+            return $this->clearSticky;
+        }
+
+        /**
+         * @param array $metadata
+         */
+        public function resolveVisibleValuesForAdaptedMetadata(& $metadata)
+        {
+            $clauseCount = count($metadata['clauses']);
+            $startingCount = $clauseCount + 1;
+            $structure = '';
+            $first = true;
+            //No StateIds mean the list should come up empty
+            if (count($this->groupByAttributeVisibleValues) == 0)
+            {
+                return;
+            }
+            else
+            {
+                foreach ($this->groupByAttributeVisibleValues as $value)
+                {
+                    $metadata['clauses'][$startingCount] = array(
+                        'attributeName'        => $this->groupByAttribute,
+                        'relatedAttributeName' => 'value',
+                        'operatorType'         => 'equals',
+                        'value'                => $value
+                    );
+                    if (!$first)
+                    {
+                        $structure .= ' or ';
+                    }
+                    $first = false;
+                    $structure .= $startingCount;
+                    $startingCount++;
+                }
+            }
+            if (empty($metadata['structure']))
+            {
+                $metadata['structure'] = '(' . $structure . ')';
+            }
+            else
+            {
+                $metadata['structure'] = '(' . $metadata['structure'] . ') and (' . $structure . ')';
+            }
+        }
+
+        /**
+         * @return array
+         */
+        protected function resolveGroupByDataAndTranslatedLabels()
+        {
+            $dropDownModel = $this->model->{$this->groupByAttribute};
+            return CustomFieldDataUtil::getDataIndexedByDataAndTranslatedLabelsByLanguage($dropDownModel->data, Yii::app()->language);
+        }
 }
 ?>
