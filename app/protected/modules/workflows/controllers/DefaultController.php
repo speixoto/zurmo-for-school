@@ -52,7 +52,7 @@
 
         public static function getManageOrderBreadcrumbLinks()
         {
-            $title = Zurmo::t('ZurmoModule', 'Ordering');
+            $title = Zurmo::t('WorkflowsModule', 'Ordering');
             return array($title);
         }
 

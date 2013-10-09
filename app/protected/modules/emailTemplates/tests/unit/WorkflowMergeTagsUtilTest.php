@@ -467,7 +467,7 @@
         public function testDateTimeMergeTag()
         {
             $content                = 'dateTime: Current: [[DATE^TIME]] Old: [[WAS%DATE^TIME]]';
-            $compareContent         = 'dateTime: Current: 2009-12-31 07:48:04 Old: 2008-12-31 07:48:04';
+            $compareContent         = 'dateTime: Current: 2009-12-31 07:48:04 GMT Old: 2008-12-31 07:48:04 GMT';
             $mergeTagsUtil          = MergeTagsUtilFactory::make(EmailTemplate::TYPE_WORKFLOW, null, $content);
             $this->assertTrue($mergeTagsUtil instanceof MergeTagsUtil);
             $this->assertTrue($mergeTagsUtil instanceof WorkflowMergeTagsUtil);
