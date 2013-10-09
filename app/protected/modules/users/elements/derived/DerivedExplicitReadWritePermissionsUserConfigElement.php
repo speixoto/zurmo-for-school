@@ -48,9 +48,12 @@
         protected function getPermissionTypes()
         {
             return array(
-                UserConfigurationForm::DEFAULT_PERMISSIONS_SETTING_OWNER                    => Zurmo::t('ZurmoModule', 'Owner'),
-                UserConfigurationForm::DEFAULT_PERMISSIONS_SETTING_OWNER_AND_USERS_IN_GROUP => Zurmo::t('ZurmoModule', 'Owner and users in'),
-                UserConfigurationForm::DEFAULT_PERMISSIONS_SETTING_EVERYONE                 => Zurmo::t('ZurmoModule', 'Everyone'));
+                UserConfigurationForm::DEFAULT_PERMISSIONS_SETTING_OWNER =>
+                    Zurmo::t('ZurmoModule', 'Owner'),
+                UserConfigurationForm::DEFAULT_PERMISSIONS_SETTING_OWNER_AND_USERS_IN_GROUP =>
+                    Zurmo::t('ZurmoModule', 'Owner and users in'),
+                UserConfigurationForm::DEFAULT_PERMISSIONS_SETTING_EVERYONE =>
+                    GroupsModule::resolveEveryoneDisplayLabel());
         }
 
         protected function renderControlNonEditable()

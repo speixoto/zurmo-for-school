@@ -35,46 +35,37 @@
      ********************************************************************************/
 
     /**
-     * Filter used by contactWebForm controllers to ascertain if any contactWebForm exist yet
+     * Inform user that owner of the message could not be determinated
      */
-    class ContactWebFormsZeroModelsCheckControllerFilter extends ZeroModelsCheckControllerFilter
+    class EmailMessageOwnerNotExistNotificationRules extends NotificationRules
     {
-        public $activeActionElementType;
+        protected $critical        = false;
 
-        public $breadcrumbLinks;
+        protected $allowDuplicates = true;
 
-        protected function resolveMessageControllerId()
+        public static function getDisplayName()
         {
-            return 'default';
+            return Zurmo::t('EmailMessagesModule', 'Owner Of The Message Does Not Exist');
         }
 
-        protected function resolveMessageModuleId()
+        public static function getType()
         {
-            return 'contactWebForms';
+            return 'EmailMessageOwnerNotExist';
         }
 
-        protected function getMessageViewClassName()
+        /**
+         * Any user who has access to the scheduler module is added to receive a
+         * notification.
+         */
+        protected function loadUsers()
         {
-            return $this->controller->getModule()->getPluralCamelCasedName() . 'ZeroModelsYetView';
-        }
-
-        protected function resolveAndRenderView(View $messageView)
-        {
-            $gridViewId              = 'notUsed';
-            $pageVar                 = 'notUsed';
-            $listModel               = new ContactWebForm(false);
-            $actionBarView           = new SecuredActionBarForContactWebFormsSearchAndListView(
-                                        'default',
-                                        'contactWebForms',
-                                        $listModel,
-                                        $gridViewId,
-                                        $pageVar,
-                                        false, $this->activeActionElementType);
-            $mixedView               = new ActionBarAndZeroModelsYetView($actionBarView, $messageView);
-            $view                    = new ContactWebFormsPageView(ZurmoDefaultAdminViewUtil::
-                                       makeViewWithBreadcrumbsForCurrentUser(
-                                       $this->controller, $mixedView, $this->breadcrumbLinks, 'ContactWebFormsBreadCrumbView'));
-            echo $view->render();
+            foreach (User::getAll() as $user)
+            {
+                if ($user->isSuperAdministrator())
+                {
+                    $this->addUser($user);
+                }
+            }
         }
     }
 ?>

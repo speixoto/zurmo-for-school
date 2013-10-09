@@ -52,7 +52,8 @@
             $elementType,
             $isRequired = false,
             $isReadOnly = false,
-            $isAudited  = false)
+            $isAudited  = false,
+            $customFieldName = null)
         {
             assert('is_array ($collection)');
             assert('is_string($attributeName)    && $attributeName != null');
@@ -61,13 +62,15 @@
             assert('is_bool($isRequired)');
             assert('is_bool($isReadOnly)');
             assert('is_bool($isAudited)');
+            assert('is_string($customFieldName)  || $customFieldName == null');
 
             $collection[$attributeName] = array(
-                'attributeLabel' => $attributeLabel,
-                'elementType' => $elementType,
-                'isRequired'  => $isRequired,
-                'isReadOnly'  => $isReadOnly,
-                'isAudited'   => $isAudited
+                'attributeLabel'  => $attributeLabel,
+                'elementType'     => $elementType,
+                'isRequired'      => $isRequired,
+                'isReadOnly'      => $isReadOnly,
+                'isAudited'       => $isAudited,
+                'customFieldName' => $customFieldName
             );
         }
     }

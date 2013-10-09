@@ -44,7 +44,7 @@
          */
         protected function getDefaultLabel()
         {
-            return Zurmo::t('ZurmoModule', 'Ordering');
+            return Zurmo::t('WorkflowsModule', 'Ordering');
         }
 
         /**

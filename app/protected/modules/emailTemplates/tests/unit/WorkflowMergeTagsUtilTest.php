@@ -467,7 +467,7 @@
         public function testDateTimeMergeTag()
         {
             $content                = 'dateTime: Current: [[DATE^TIME]] Old: [[WAS%DATE^TIME]]';
-            $compareContent         = 'dateTime: Current: 2009-12-31 07:48:04 Old: 2008-12-31 07:48:04';
+            $compareContent         = 'dateTime: Current: 2009-12-31 07:48:04 GMT Old: 2008-12-31 07:48:04 GMT';
             $mergeTagsUtil          = MergeTagsUtilFactory::make(EmailTemplate::TYPE_WORKFLOW, null, $content);
             $this->assertTrue($mergeTagsUtil instanceof MergeTagsUtil);
             $this->assertTrue($mergeTagsUtil instanceof WorkflowMergeTagsUtil);
@@ -872,6 +872,16 @@
             $this->assertNotEquals($resolvedContent, $content);
             $this->assertTrue(strpos($resolvedContent, 'localhost') === 0);
             $this->assertEmpty($this->invalidTags);
+        }
+
+        public function testActivityItemsMergeTag()
+        {
+            $account            = AccountTestHelper::createAccountByNameForOwner('testAccount', self::$super);
+            $task               = TaskTestHelper::createTaskWithOwnerAndRelatedAccount('testTask', self::$super, $account);
+            $content            = '[[ACCOUNT__NAME]]';
+            $mergeTagsUtil      = MergeTagsUtilFactory::make(EmailTemplate::TYPE_WORKFLOW, null, $content);
+            $resolvedContent    = $mergeTagsUtil->resolveMergeTags($task, $this->invalidTags);
+            $this->assertEquals('testAccount', $resolvedContent);
         }
     }
 ?>

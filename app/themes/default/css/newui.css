@@ -13109,6 +13109,10 @@ div.wide.form label.hasCheckBox {
 .right-side-edit-view-panel input[type="text"] {
   margin-top: 6px;
 }
+.right-side-edit-view-panel .buttons-bar {
+  margin-top: 15px;
+  text-align: center;
+}
 .has-date-select,
 .has-model-select {
   position: relative;
