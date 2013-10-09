@@ -1221,7 +1221,24 @@ table.configuration-list{
         margin-right:12px !important;
         margin-top: 2px;
     }
+	.icon-lock{
+		margin: 0;
+		padding: 0 !important;
+		font-style: normal;
+	}
+	[id*="theme-color-tooltip"] { // [class*=" db3"]
+		width: auto !important;
+		position: relative;
+		left: -25px;
+		font-size: 18px;
+		top: -4px;
+		position: absolute;
+	}
+	input[disabled="disabled"]{
+		visibility: hidden;
+	}
 }
+
 .texture-swatch{
     span{
         width: 90px;
@@ -1232,6 +1249,19 @@ table.configuration-list{
     label{
         top:-6px;
     }
+}
+
+.color-swatch{
+	span{
+		position: relative;
+		top: 3px;
+	}
+	label{
+		margin-left: 0;
+	}
+	.theme-color-3{
+		margin-right: 10px;
+	}
 }
 
 /*Menu Prefernces*/

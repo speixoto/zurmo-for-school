@@ -164,7 +164,7 @@
                           'flat-cement' => 1,
                           'amazon'      => 1,
                           'sweden'      => 1,
-                          'pink'        => 1);
+                          'pink'        => 25);
             return $data;
         }
 
