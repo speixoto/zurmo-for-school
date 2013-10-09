@@ -71,11 +71,8 @@
         protected function getEditableHtmlOptions()
         {
             $htmlOptions              = array();
-            $htmlOptions              = array();
             $htmlOptions['separator'] = '';
-             $htmlOptions['template'] = '<div class="radio-input color-swatch {value}">{input}<span class="theme-color-1">' .
-                                        '</span><span class="theme-color-2"></span>' .
-                                        '<span class="theme-color-3"></span>{label}</div>';
+            $htmlOptions['template']  = '<div class="radio-input color-swatch {value}">{input}{label}</div>';
             return $htmlOptions;
         }
 
@@ -102,12 +99,21 @@
             $data = array();
             foreach(Yii::app()->themeManager->getThemeColorNamesAndLabels() as $name => $label)
             {
-                $data[$name] = $label;
+                $label = '<span class="theme-color-1"></span><span class="theme-color-2">' .
+                         '</span><span class="theme-color-3"></span>' . $label;
                 $unlockedAtLevel = $namesAndUnlockedAtLevels[$name];
                 if($unlockedAtLevel > (int)$gameLevel->value)
                 {
-                    $data[$name] .= ' (' . Zurmo::t('GamificationModule', 'Unlocked at level {level}', array('{level}' => $unlockedAtLevel)) . ')';
+                    $title   = Zurmo::t('GamificationModule', 'Unlocked at level {level}', array('{level}' => $unlockedAtLevel));
+                    $content = '<span id="theme-color-tooltip-' . $name. '" title="' . $title . '">' . $label . '</span>';
+                    $qtip    = new ZurmoTip();
+                    $qtip->addQTip("#theme-color-tooltip-" . $name);
                 }
+                else
+                {
+                    $content = $label;
+                }
+                $data[$name] = $content;
             }
             return $data;
         }
