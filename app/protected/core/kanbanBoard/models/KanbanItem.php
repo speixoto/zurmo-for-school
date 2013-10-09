@@ -67,15 +67,6 @@
         }
 
         /**
-         * Gets module class name
-         * @return string
-         */
-        public static function getModuleClassName()
-        {
-            return 'TasksModule';
-        }
-
-        /**
          * @return bool
          */
         public static function canSaveMetadata()
@@ -137,22 +128,6 @@
         public static function isTypeDeletable()
         {
             return true;
-        }
-
-        /**
-         * @return bool
-         */
-        public static function hasReadPermissionsOptimization()
-        {
-            return true;
-        }
-
-        /**
-         * @return string
-         */
-        public static function getGamificationRulesType()
-        {
-            return null;
         }
 
         /**
@@ -240,11 +215,6 @@
             {
                 return intval($models[0]->sortOrder) + 1;
             }
-        }
-
-        public static function hasReadPermissionsSubscriptionOptimization()
-        {
-            return true;
         }
     }
 ?>
