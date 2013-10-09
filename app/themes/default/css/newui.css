@@ -3666,6 +3666,9 @@ body.flat-cement #RecentlyViewedView li em {
 body.flat-cement .items {
   background: #fff;
 }
+body.flat-cement .juiportlet-columns .juiportlet-widget .pager {
+  border-top: 1px solid #dfdfdf;
+}
 .color-swatch.flat-cement .theme-color-1 {
   background: #2c3e50;
 }
@@ -10094,11 +10097,6 @@ body > .ui-autocomplete {
 .AppContent .single-column > .GridView {
   display: block;
   width: 100% !important;
-}
-.AppContent .single-column .panel {
-  width: 70%;
-  float: left;
-  position: relative;
 }
 .AppContent .single-column .juiportlet-widget,
 .AppContent .single-column .details-table {
@@ -17053,6 +17051,25 @@ table.configuration-list td:last-child a .z-label:before {
   margin-right: 12px !important;
   margin-top: 2px;
 }
+.color-swatch .icon-lock,
+.texture-swatch .icon-lock {
+  margin: 0;
+  padding: 0 !important;
+  font-style: normal;
+}
+.color-swatch [id*="theme-color-tooltip"],
+.texture-swatch [id*="theme-color-tooltip"] {
+  width: auto !important;
+  position: relative;
+  left: -25px;
+  font-size: 18px;
+  top: -4px;
+  position: absolute;
+}
+.color-swatch input[disabled="disabled"],
+.texture-swatch input[disabled="disabled"] {
+  visibility: hidden;
+}
 .texture-swatch span {
   width: 90px;
   background: #FFF;
@@ -17061,6 +17078,16 @@ table.configuration-list td:last-child a .z-label:before {
 }
 .texture-swatch label {
   top: -6px;
+}
+.color-swatch span {
+  position: relative;
+  top: 3px;
+}
+.color-swatch label {
+  margin-left: 0;
+}
+.color-swatch .theme-color-3 {
+  margin-right: 10px;
 }
 /*Menu Prefernces*/
 .user-menu-preferences td {
@@ -20116,7 +20143,7 @@ a.close-ModalGameNotification.simple-link {
   display: none;
 }
 #UserDetailsView {
-  padding: 0 20px 20px 0;
+  padding: 0 0 20px 0;
 }
 #UserDetailsView .details-table {
   zoom: 1;
@@ -20260,7 +20287,7 @@ a.dashboard-link .z-label {
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  padding-left: 15px;
+  padding: 30px 0 0 15px;
   width: 50%;
   float: left;
   font-size: 12px;
@@ -20268,13 +20295,19 @@ a.dashboard-link .z-label {
 }
 .help-section h3 {
   font-size: 16px;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
 }
 .help-section ul {
   margin-left: 15px;
+  font-weight: bold;
+  color: #666;
 }
 .help-section li {
   margin-bottom: 10px;
+}
+.help-section a {
+  color: #666;
+  font-weight: bold;
 }
 #tip-of-day-next-page-link {
   margin-left: 16px;
@@ -20301,8 +20334,7 @@ a.dashboard-link .z-label {
 }
 #instructions {
   zoom: 1;
-  padding-bottom: 45px;
-  margin-bottom: 45px;
+  padding-bottom: 30px;
   border-bottom: 1px solid #ccc;
 }
 #instructions p {
@@ -23319,6 +23351,7 @@ a + .autoresponder-stats {
   padding: 0;
   background-size: auto 100%;
   vertical-align: top;
+  border-top: none;
 }
 #kanban-holder #kanban-board,
 #kanban-holder .kanban-column,
