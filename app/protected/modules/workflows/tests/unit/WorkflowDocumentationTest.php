@@ -345,7 +345,7 @@
             //Add action
             $action                       = new ActionForWorkflowForm('Contact', Workflow::TYPE_ON_SAVE);
             $action->type                 = ActionForWorkflowForm::TYPE_SUBSCRIBE_TO_LIST;
-            $attributes                   = array('marketingList' => array('shouldSetValue'    => '1',
+            $attributes                   = array('marketingList' => array(
                                                   'type'          => WorkflowActionAttributeForm::TYPE_STATIC,
                                                   'value'         => $marketingListId));
             $action->setAttributes(array(ActionForWorkflowForm::ACTION_ATTRIBUTES => $attributes));

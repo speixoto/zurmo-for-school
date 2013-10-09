@@ -40,6 +40,12 @@
     class MarketingListWorkflowActionAttributeForm extends WorkflowActionAttributeForm
     {
         /**
+         * Value should always be set because it is required if used
+         * @var bool
+         */
+        public $shouldSetValue = true;
+
+        /**
          * Override to make sure the value attribute is set as a string
          */
         public function rules()
