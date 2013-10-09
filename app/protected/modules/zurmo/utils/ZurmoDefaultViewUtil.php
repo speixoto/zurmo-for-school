@@ -402,5 +402,15 @@
         {
             return Yii::app()->user->getState($key);
         }
+
+        /**
+         * Render action bar links for kanban board on details view
+         * @return type
+         */
+        public static function renderActionBarLinksForKanbanBoard($controllerId, $moduleId, $modelId)
+        {
+            $detailsAndRelationsViewTypesToggleLinkActionElement = new DetailsAndRelationsViewTypesToggleLinkActionElement($controllerId, $moduleId, $modelId);
+            return $detailsAndRelationsViewTypesToggleLinkActionElement->render();
+        }
     }
 ?>

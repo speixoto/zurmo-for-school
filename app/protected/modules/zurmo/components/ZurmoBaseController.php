@@ -752,6 +752,7 @@
             assert('$redirectUrlParams == null || is_array($redirectUrlParams) || is_string($redirectUrlParams)');
             if (ControllerSecurityUtil::doesCurrentUserHavePermissionOnSecurableItem($model, Permission::READ))
             {
+                $this->beforeRedirect($model);
                 $this->redirectAfterSaveModel($model->id, $redirectUrlParams);
             }
             else
@@ -1233,6 +1234,55 @@
             {
                 return ListViewTypesToggleLinkActionElement::TYPE_GRID;
             }
+        }
+
+        /**
+         * Resolve active element type
+         * @param type $detailsAndRelationsView
+         * @return type
+         */
+        protected function resolveActiveElementTypeForKanbanBoardInDetailView($detailsAndRelationsView)
+        {
+            $detailsAndRelationsView = $this->resolveKanbanBoardIsActiveByGetForDetailsView($detailsAndRelationsView);
+
+            if ($detailsAndRelationsView->getKanbanBoard()->getIsActive())
+            {
+                return DetailsAndRelationsViewTypesToggleLinkActionElement::TYPE_KANBAN_BOARD;
+            }
+            else
+            {
+                return DetailsAndRelationsViewTypesToggleLinkActionElement::TYPE_DETAILS_AND_RELATIONS;
+            }
+        }
+
+        /**
+         * @param $detailsAndRelationsView
+         */
+        protected function resolveKanbanBoardIsActiveByGetForDetailsView($detailsAndRelationsView)
+        {
+            if (isset($_GET['kanbanBoard']) && $_GET['kanbanBoard'] && !Yii::app()->userInterface->isMobile())
+            {
+                $detailsAndRelationsView->getKanbanBoard()->setIsActive();
+            }
+            elseif (isset($_GET['kanbanBoard']) && !$_GET['kanbanBoard'])
+            {
+                $detailsAndRelationsView->getKanbanBoard()->setIsNotActive();
+                $detailsAndRelationsView->getKanbanBoard()->setClearSticky();
+            }
+            elseif (Yii::app()->userInterface->isMobile())
+            {
+                $detailsAndRelationsView->getKanbanBoard()->setIsNotActive();
+            }
+
+            return $detailsAndRelationsView;
+        }
+
+        /**
+         * Process info before redirection
+         */
+        protected function beforeRedirect($model)
+        {
+
         }
     }
 ?>

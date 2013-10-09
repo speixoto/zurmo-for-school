@@ -56,6 +56,7 @@
             $task                       = new Task();
             $task->name                 = 'My Task';
             $task->owner                = Yii::app()->user->userModel;
+            $task->requestedByUser      = Yii::app()->user->userModel;
             $task->completedDateTime    = '0000-00-00 00:00:00';
             $saved = $task->save();
             $this->assertTrue($saved);
@@ -85,9 +86,13 @@
             $task                   = new Task();
             $task->name             = 'MyTask';
             $task->owner            = $user;
-            $task->dueDateTime       = $dueStamp;
+            $task->requestedByUser  = $user;
+            $task->dueDateTime      = $dueStamp;
             $task->completedDateTime = $completedStamp;
             $task->description      = 'my test description';
+            $taskCheckListItem      = new TaskCheckListItem();
+            $taskCheckListItem->name = 'Test Check List Item';
+            $task->checkListItems->add($taskCheckListItem);
             $task->activityItems->add($accounts[0]);
             $this->assertTrue($task->save());
             $id = $task->id;
@@ -98,8 +103,10 @@
             $this->assertEquals($completedStamp,       $task->completedDateTime);
             $this->assertEquals('my test description', $task->description);
             $this->assertEquals($user,                 $task->owner);
+            $this->assertEquals($user,                 $task->requestedByUser);
             $this->assertEquals(1, $task->activityItems->count());
             $this->assertEquals($accounts[0], $task->activityItems->offsetGet(0));
+            $this->assertEquals($taskCheckListItem, $task->checkListItems->offsetGet(0));
             foreach ($task->activityItems as $existingItem)
             {
                 $castedDownModel = $existingItem->castDown(array('Account')); //this should not fail
@@ -301,8 +308,84 @@
         public function testGetModelClassNames()
         {
             $modelClassNames = TasksModule::getModelClassNames();
-            $this->assertEquals(1, count($modelClassNames));
+            $this->assertEquals(2, count($modelClassNames));
             $this->assertEquals('Task', $modelClassNames[0]);
+        }
+
+        public function testAddSubscriberToTask()
+        {
+            Yii::app()->user->userModel = User::getByUsername('super');
+
+            //Creating a new task that is not completed. LatestDateTime should default to now, and
+            //completedDateTime should be null.
+            $task = new Task();
+            $task->name = 'MyTest';
+            $nowStamp = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
+            $this->assertTrue($task->save());
+
+            $task = Task::getById($task->id);
+            $user = Yii::app()->user->userModel;
+            $notificationSubscriber = new NotificationSubscriber();
+            $notificationSubscriber->person = $user;
+            $notificationSubscriber->hasReadLatest = false;
+            $task->notificationSubscribers->add($notificationSubscriber);
+            $this->assertTrue($task->save());
+
+            $task = Task::getById($task->id);
+            $subscriber = $task->notificationSubscribers->offsetGet(0);
+            $modelDerivationPathToItem = RuntimeUtil::getModelDerivationPathToItem('User');
+            $subscribedUser = $subscriber->person->castDown(array($modelDerivationPathToItem));
+            $this->assertEquals($user, $subscribedUser);
+        }
+
+        public function testAddCheckListItemsToTask()
+        {
+            Yii::app()->user->userModel = User::getByUsername('super');
+
+            //Creating a new task that is not completed. LatestDateTime should default to now, and
+            //completedDateTime should be null.
+            $task = new Task();
+            $task->name = 'MyTest1';
+            $nowStamp = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
+            $this->assertTrue($task->save());
+
+            $taskCheckListItem            = new TaskCheckListItem();
+            $taskCheckListItem->name      = 'Test Check List Item1';
+            $taskCheckListItem->completed = true;
+            $task->checkListItems->add($taskCheckListItem);
+
+            $taskCheckListItem2       = new TaskCheckListItem();
+            $taskCheckListItem2->name = 'Test Check List Item2';
+            $task->checkListItems->add($taskCheckListItem2);
+            $this->assertTrue($task->save());
+
+            $task = Task::getById($task->id);
+            $this->assertEquals(2, $task->checkListItems->count());
+            $fetchedCheckListItem = $task->checkListItems[0];
+            $this->assertEquals('Test Check List Item1', $fetchedCheckListItem->name);
+            $this->assertTrue((bool)$fetchedCheckListItem->completed);
+        }
+
+        public function testAddCommentsToTask()
+        {
+            Yii::app()->user->userModel = User::getByUsername('super');
+
+            //Creating a new task that is not completed. LatestDateTime should default to now, and
+            //completedDateTime should be null.
+            $task = new Task();
+            $task->name = 'MyTest2';
+            $nowStamp = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
+            $this->assertTrue($task->save());
+
+            $comment                = new Comment();
+            $comment->description   = 'My Description';
+            $task->comments->add($comment);
+            $this->assertTrue($task->save());
+
+            $task = Task::getById($task->id);
+            $this->assertEquals(1, $task->comments->count());
+            $fetchedComment = $task->comments[0];
+            $this->assertEquals('My Description', $fetchedComment->description);
         }
     }
 ?>

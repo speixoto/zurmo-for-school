@@ -99,5 +99,35 @@
         {
             return PostUtil::sanitizePostByDesignerTypeForSavingModel($model, $postData);
         }
+
+        /**
+         * Resolve param from get request for modalTransferInformation
+         * @param string $param
+         * @param bool $defaultValue
+         * @return string|bool
+         */
+        public static function resolveModalTransferInformationParamFromRequest($param, $defaultValue = null)
+        {
+            if (isset($_GET['modalTransferInformation'][$param]))
+            {
+                return $_GET['modalTransferInformation'][$param];
+            }
+            return $defaultValue;
+        }
+
+        /**
+         * Resolve param from get request
+         * @param string $param
+         * @param bool $defaultValue
+         * @return string|bool
+         */
+        public static function resolveParamFromRequest($param, $defaultValue = null)
+        {
+            if (isset($_GET[$param]))
+            {
+                return $_GET[$param];
+            }
+            return $defaultValue;
+        }
     }
 ?>

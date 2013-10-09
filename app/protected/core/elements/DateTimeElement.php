@@ -47,10 +47,7 @@
         protected function renderControlEditable()
         {
             $htmlOptionsFromParams   = $this->getHtmlOptions();
-            $htmlOptions             = array();
-            $htmlOptions['id']       = $this->getEditableInputId();
-            $htmlOptions['name']     = $this->getEditableInputName();
-            $htmlOptions['disabled'] = $this->getDisabledValue();
+            $htmlOptions             = $this->resolveHtmlOptions();
             $htmlOptions             = array_merge($htmlOptionsFromParams, $htmlOptions);
             if ($this->getDisabledValue())
             {
@@ -67,7 +64,8 @@
             $cClipWidget->widget('application.core.widgets.ZurmoJuiDateTimePicker', array(
                 'attribute'   => $this->attribute,
                 'value'       => $value,
-                'htmlOptions' => $htmlOptions
+                'htmlOptions' => $htmlOptions,
+                'options'     => $this->resolveDatePickerOptions()
             ));
             $cClipWidget->endClip();
             $content = $cClipWidget->getController()->clips['EditableDateTimeElement'];
@@ -87,6 +85,28 @@
                                $this->model->{$this->attribute});
                 return ZurmoHtml::encode($content);
             }
+        }
+
+        /**
+         * Resolve html options
+         * @return array
+         */
+        protected function resolveHtmlOptions()
+        {
+            return array(
+                    'id'              => $this->getEditableInputId(),
+                    'name'            => $this->getEditableInputName(),
+                    'disabled'        => $this->getDisabledValue(),
+                );
+        }
+
+        /**
+         * Resolve datepicker options
+         * @return array
+         */
+        protected function resolveDatePickerOptions()
+        {
+            return array();
         }
     }
 ?>

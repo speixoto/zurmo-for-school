@@ -41,7 +41,7 @@
     {
         protected $productTemplateProductCategoryFormName;
 
-        protected $peopleAddedAsProductTemplateProductCategories;
+        protected $processedProductCategories;
 
         /**
          * @param string $relatedItemsRelationName
@@ -66,7 +66,7 @@
             $postData = PostUtil::getData();
             if (isset($postData[$this->productTemplateProductCategoryFormName]))
             {
-                $this->peopleAddedAsProductTemplateProductCategories = ProductTemplateProductCategoriesUtil::
+                $this->processedProductCategories = ProductTemplateProductCategoriesUtil::
                                                                resolveProductTemplateHasManyProductCategoriesFromPost($model,
                                                                $postData[$this->productTemplateProductCategoryFormName]);
             }

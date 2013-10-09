@@ -89,6 +89,7 @@
                     'Account',
                     'Contact',
                     'Opportunity',
+                    //'Project'
                 ),
             );
             return $metadata;

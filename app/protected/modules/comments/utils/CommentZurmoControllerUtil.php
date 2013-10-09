@@ -101,6 +101,16 @@
                 $participants = MissionsUtil::resolvePeopleToSendNotificationToOnNewComment($this->relatedModel, $user);
                 CommentsUtil::sendNotificationOnNewComment($this->relatedModel, $model, $user, $participants);
             }
+            elseif ($this->relatedModel instanceof Task)
+            {
+                $participants = TasksUtil::resolvePeopleToSendNotificationToOnNewComment($this->relatedModel, $user);
+                CommentsUtil::sendNotificationOnNewComment($this->relatedModel, $model, $user, $participants);
+                //Log the event
+                if($this->relatedModel->project->id > 0)
+                {
+                    ProjectAuditEvent::logAuditEvent(ProjectAuditEvent::COMMENT_ADDED, $model->description, $this->relatedModel->project);
+                }
+            }
         }
     }
 ?>
