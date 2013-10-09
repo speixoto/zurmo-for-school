@@ -117,7 +117,7 @@
         protected function registerScripts()
         {
             $script =
-                "jQuery('.gd-collection-item img').qtip(
+                "$('.gd-collection-item img').qtip(
                     {
                         position: {
                             my: 'bottom center',
