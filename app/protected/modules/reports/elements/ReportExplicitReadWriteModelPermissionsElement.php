@@ -36,7 +36,7 @@
 
     /**
      * @see ExplicitReadWriteModelPermissionsElement.
-     * Used so when creating a report the default settings can be resolver«d
+     * Used so when creating a report the default settings can be resolved
      */
     class ReportExplicitReadWriteModelPermissionsElement extends ExplicitReadWriteModelPermissionsElement
     {

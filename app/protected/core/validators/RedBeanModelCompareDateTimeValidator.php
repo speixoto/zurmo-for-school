@@ -63,7 +63,8 @@
             assert('$object instanceof RedBeanModel');
             assert('$this->type == "after" || $this->type == "before"');
             assert('is_string($this->compareAttribute)');
-            if ($object->$attribute != null && $object->{$this->compareAttribute} != null)
+            if ($object->$attribute != null && $object->{$this->compareAttribute} != null &&
+                $object->$attribute != '0000-00-00 00:00:00' && $object->{$this->compareAttribute} != '0000-00-00 00:00:00')
             {
                 $firstDateTime = DateTimeUtil::convertDbFormatDateTimeToTimestamp($object->$attribute);
                 $secondDateTime = DateTimeUtil::convertDbFormatDateTimeToTimestamp($object->{$this->compareAttribute});

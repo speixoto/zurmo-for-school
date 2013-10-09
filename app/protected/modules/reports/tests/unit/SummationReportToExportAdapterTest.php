@@ -344,7 +344,21 @@
                                               100, 'Mixed Currency',
                                               100, 'Mixed Currency',
                                               200, 'Mixed Currency',
-                                              100, 'Mixed Currency'));
+                                              100, 'Mixed Currency'),
+                                        array('Total',
+                                              '2013-02-12',
+                                              '2013-02-14 23:15:00',
+                                              '2013-02-12 10:15:00',
+                                              $reportModelTestItem2->createdDateTime,
+                                              $reportModelTestItem1->createdDateTime,
+                                              $reportModelTestItem2->modifiedDateTime,
+                                              $reportModelTestItem1->modifiedDateTime,
+                                              10.5, 200.5, 211, 105.5,
+                                              10, 1010, 1020, 510,
+                                              100, '',
+                                              100, '',
+                                              200, '',
+                                              100, ''));
             $this->assertEquals($compareHeaderData, $adapter->getHeaderData());
             $this->assertEquals($compareRowData, $adapter->getData());
 
@@ -406,7 +420,21 @@
                                               'xFirst'),
                                         array(null, 'Float', 'Integer'),
                                         array(null, '10.5', '10'),
-                                        array(null, '200.5', '1010'));
+                                        array(null, '200.5', '1010'),
+                                        array('Total',
+                                              '2013-02-12',
+                                              '2013-02-14 23:15:00',
+                                              '2013-02-12 10:15:00',
+                                              $reportModelTestItem2->createdDateTime,
+                                              $reportModelTestItem1->createdDateTime,
+                                              $reportModelTestItem2->modifiedDateTime,
+                                              $reportModelTestItem1->modifiedDateTime,
+                                              10.5, 200.5, 211, 105.5,
+                                              10, 1010, 1020, 510,
+                                              100, '',
+                                              100, '',
+                                              200, '',
+                                              100, ''));
             $this->assertEquals($compareHeaderData, $adapter->getHeaderData());
             $this->assertEquals($compareRowData, $adapter->getData());
         }

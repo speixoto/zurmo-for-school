@@ -42,7 +42,7 @@
             {
                 return $this->getFormattedAttributeLabel();
             }
-            $title      = Zurmo::t('Campaign', 'When checked, email will be sent in both text and HTML format.  Uncheck to only send text emails');
+            $title      = Zurmo::t('CampaignsModule', 'When checked, email will be sent in both text and HTML format.  Uncheck to only send text emails');
             $content    = Zurmo::t('ZurmoModule', 'Support HTML');
             $content   .= ZurmoHtml::tag('span', array('id' => 'support-rich-text-tooltip',
                                                         'class' => 'tooltip',

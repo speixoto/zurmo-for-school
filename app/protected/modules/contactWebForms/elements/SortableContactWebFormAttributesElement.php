@@ -80,9 +80,9 @@
                                               ContactWebFormsUtil::getAllNonPlacedAttributes($attributes,
                                               $contactWebFormAttributes),
             $this->getEditableHtmlOptions());
-            $title     = ZurmoHtml::tag('h3', array(), Zurmo::t('ContactWebFormModule', 'Available Fields'));
+            $title     = ZurmoHtml::tag('h3', array(), Zurmo::t('ContactWebFormsModule', 'Available Fields'));
             $content   = ZurmoHtml::tag('span', array('class' => 'row-description'),
-                         Zurmo::t('ContactWebFormModule', 'Check the fields that you like to add to your form, you can then change their order or remove them'));
+                         Zurmo::t('ContactWebFormsModule', 'Check the fields that you like to add to your form, you can then change their order or remove them'));
             $content  .= ZurmoHtml::tag('div', array('class' => 'third'), $title . $clip );
 
             $cClipWidget = new CClipWidget();
@@ -93,7 +93,7 @@
             ));
             $cClipWidget->endClip();
             $clip       = $cClipWidget->getController()->clips['attributesList'];
-            $title      = ZurmoHtml::tag('h3', array(), Zurmo::t('ContactWebFormModule', 'Chosen Fields'));
+            $title      = ZurmoHtml::tag('h3', array(), Zurmo::t('ContactWebFormsModule', 'Chosen Fields'));
             $content   .= ZurmoHtml::tag('div', array('class' => 'twoThirds'), $title . $clip );
             $this->registerScript();
             return $content;
@@ -136,7 +136,7 @@
          */
         protected function renderLabel()
         {
-            return Zurmo::t('ContactWebFormModule', 'Form Layout');
+            return Zurmo::t('ContactWebFormsModule', 'Form Layout');
         }
     }
 ?>

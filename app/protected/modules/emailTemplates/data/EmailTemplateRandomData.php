@@ -54,7 +54,7 @@
             'Sales decrease',
             'Missions alert',
             'Inbox Update',
-            'Introducing Zurmo',
+            'Introducing a New Application',
         ),
         'subject'               => array(
             'Happy Birthday',
@@ -63,7 +63,7 @@
             'Q4 Sales decrease',
             'Upcoming Missions',
             'New Inbox Module is live',
-            'Lets explore Zurmo',
+            'Lets explore the app',
         ),
         'language'              => array(
             'en',
@@ -82,7 +82,7 @@
                 'yet very simple to use.',
         ),
         'htmlContent'           => array(
-            '<img src="http://zurmo.com/img/logo.png" alt="zurmo" />\'s source code is hosted on bitbucket while we use ' .
+            'Zurmo\'s source code is hosted on bitbucket while we use ' .
                 '<img src="http://www.selenic.com/hg-logo/droplets-50.png" alt="mercurial" /> for version control.',
             '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
                 <html>
