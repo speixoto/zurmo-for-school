@@ -354,5 +354,18 @@
             $this->setRedemptionCount($redemptionCount + 1);
             return $this->save();
         }
+
+        public function canRedeem()
+        {
+            $items = $this->getItemsData();
+            foreach($items as $quantity)
+            {
+                if($quantity <= 0) //Just in case it is negative, as a safety
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
     }
 ?>

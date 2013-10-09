@@ -68,8 +68,16 @@
                                        Zurmo::t('GamificationModule', 'Collection'));
             $content .= static::renderCollectionItemsContent($user, $collection, $gameCollectionRules);
             $content  = ZurmoHtml::tag('div', array(), $content);
+            if($collection->canRedeem())
+            {
+                $extraClass = ' redeemable';
+            }
+            else
+            {
+                $extraClass = null;
+            }
             return ZurmoHtml::tag('div', array('id'    => static::getCollectionContainerId($collection->id),
-                                               'class' => 'gd-collection-panel clearfix'), $content);
+                                               'class' => 'gd-collection-panel clearfix'. $extraClass), $content);
         }
 
         public static function renderCoinsContent($coinValue)
