@@ -72,8 +72,7 @@
         {
             $htmlOptions             = array();
             $htmlOptions['separator'] = '';
-            $htmlOptions['template']  = '<div class="radio-input texture-swatch {value}">{input}<span class="background-texture-1">' .
-                                        '</span>{label}</div>';
+            $htmlOptions['template']  = '<div class="radio-input texture-swatch {value}">{input}{label}</div>';
             return $htmlOptions;
         }
 
@@ -106,12 +105,21 @@
             $data = array();
             foreach(Yii::app()->themeManager->getBackgroundTextureNamesAndLabels() as $name => $label)
             {
-                $data[$name] = $label;
+                $label = '<span class="background-texture-1"></span>' . $label;
                 $unlockedAtLevel = $namesAndUnlockedAtLevels[$name];
                 if($unlockedAtLevel > (int)$gameLevel->value)
                 {
-                    $data[$name] .= ' (' . Zurmo::t('GamificationModule', 'Unlocked at level {level}', array('{level}' => $unlockedAtLevel)) . ')';
+                    $title   = Zurmo::t('GamificationModule', 'Unlocked at level {level}', array('{level}' => $unlockedAtLevel));
+                    $content = '<span id="background-texture-tooltip-' . $name. '" title="' . $title . '"><i class="icon-lock"></i></span>' . $label;
+                    $qtip    = new ZurmoTip();
+                    $qtip->addQTip("#background-texture-tooltip-" . $name);
+
                 }
+                else
+                {
+                    $content = $label;
+                }
+                $data[$name] = $content;
             }
             return $data;
         }

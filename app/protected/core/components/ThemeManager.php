@@ -136,7 +136,7 @@
                           'diagonal-noise'        => Zurmo::t('Core', 'Noise'),
                           'paper'                 => Zurmo::t('Core', 'Paper'),
                           'circles'               => Zurmo::t('Core', 'Circle'),
-                          'whitey'                => Zurmo::t('Core', 'Whitey'),
+                          'whitey'                => Zurmo::t('Core', 'White Fabric'),
                           'fabric-plaid'          => Zurmo::t('Core', 'Fabric Plaid'),
                           'cartographer-light'    => Zurmo::t('Core', 'Cartographer Light'),
                           'wood'                  => Zurmo::t('Core', 'Wood'),
@@ -158,13 +158,13 @@
                           'lime'        => 1,
                           'turquoise'   => 1,
                           'violet'      => 1,
-                          'sunrise'     => 1,
-                          'marble'      => 1,
-                          'purple-haze' => 1,
-                          'flat-cement' => 1,
-                          'amazon'      => 1,
-                          'sweden'      => 1,
-                          'pink'        => 25);
+                          'sunrise'     => 2,
+                          'marble'      => 3,
+                          'purple-haze' => 4,
+                          'flat-cement' => 5,
+                          'amazon'      => 6,
+                          'sweden'      => 7,
+                          'pink'        => 8);
             return $data;
         }
 

@@ -215,7 +215,7 @@
                 'kanban-background-blurred-city'   => Zurmo::t('Core', 'Blurred City'),
                 'kanban-background-blurred-vera'   => Zurmo::t('Core', 'Vera in Blur'),
                 'kanban-background-perfect-beach'  => Zurmo::t('Core', 'Perfect Beach'),
-                'kanban-background-flip-flops'     => Zurmo::t('Core', 'FLip Flops'),
+                'kanban-background-flip-flops'     => Zurmo::t('Core', 'Flip Flops'),
                 'kanban-background-blue-structure' => Zurmo::t('Core', 'Blue Structure'),
                 'kanban-background-sepia-sf'       => Zurmo::t('Core', 'Sepia SF'),
                 'kanban-background-men-on-bridge'  => Zurmo::t('Core', 'Men on Bridge'));
