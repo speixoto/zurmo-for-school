@@ -51,7 +51,7 @@
                         'elements' => array(
                             array(
                                 'type'            => 'MassSubscribeMenu',
-                                'iconClass'       => 'icon-subscribe'
+                                'iconClass'       => 'icon-subscribe',
                                 'listViewGridId'  => 'eval:$this->listViewGridId',
                                 'pageVarName'     => 'eval:$this->pageVarName'
                             ),
