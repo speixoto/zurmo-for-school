@@ -50,8 +50,8 @@
                     'toolbar' => array(
                         'elements' => array(
                             array(
-                                'type'            => 'MassSubscribeLink',
-                                'htmlOptions'     => array('class' => 'icon-subscribe'),
+                                'type'            => 'MassSubscribeMenu',
+                                'iconClass'       => 'icon-subscribe'
                                 'listViewGridId'  => 'eval:$this->listViewGridId',
                                 'pageVarName'     => 'eval:$this->pageVarName'
                             ),

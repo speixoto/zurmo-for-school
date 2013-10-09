@@ -37,7 +37,7 @@
     /**
      * Class to render link to mass subscribe from a listview.
      */
-    class MassSubscribeLinkActionElement extends MassActionLinkActionElement
+    class MassSubscribeMenuActionElement extends MassActionMenuActionElement
     {
         public function getActionType()
         {
