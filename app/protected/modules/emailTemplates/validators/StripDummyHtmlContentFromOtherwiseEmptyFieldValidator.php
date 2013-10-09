@@ -34,7 +34,27 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class AutoresponderZurmoControllerUtil extends EmailTemplateZurmoControllerUtil
+    class StripDummyHtmlContentFromOtherwiseEmptyFieldValidator extends CValidator
     {
+        /**
+         * Validates the attribute of the model.
+         * Removes if attribute only contains a html skeleton.
+         * @param RedBeanModel $object the model being validated
+         * @param string $attribute the attribute being validated
+         * @return boolean true if validation passes
+         */
+        protected function validateAttribute($object, $attribute)
+        {
+            $content        = $object->$attribute;
+            if (!empty($content))
+            {
+                $content        = trim(str_replace(array("\r\n", "\r", "\n"), '', $content));
+                if (strlen($content) == 0 || $content == '<html><head></head><body></body></html>')
+                {
+                    $object->$attribute = null;
+                }
+            }
+            return true;
+        }
     }
 ?>

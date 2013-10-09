@@ -141,6 +141,7 @@
                     array('language',                   'setToUserDefaultLanguage'),
                     array('htmlContent',                'type',    'type' => 'string'),
                     array('textContent',                'type',    'type' => 'string'),
+                    array('htmlContent',                'StripDummyHtmlContentFromOtherwiseEmptyFieldValidator'),
                     array('htmlContent',                'AtLeastOneContentAreaRequiredValidator'),
                     array('textContent',                'AtLeastOneContentAreaRequiredValidator'),
                     array('htmlContent',                'EmailTemplateMergeTagsValidator'),
