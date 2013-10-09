@@ -35,10 +35,10 @@
      ********************************************************************************/
 
     /**
-     * Action bar view for the marketingLists search and list user interface. Provides buttons like create, and links to
+     * Action bar view for the contacts search and list user interface. Adds button to subscribe contacts to marketingList
      * queues.
      */
-    class SecuredActionBarForMarketingListsSearchAndListView extends SecuredActionBarForSearchAndListView
+    class SecuredActionBarForContactsSearchAndListView extends SecuredActionBarForSearchAndListView
     {
         /**
          * @return array
@@ -50,30 +50,16 @@
                     'toolbar' => array(
                         'elements' => array(
                             array(
-                                'type'      => 'MarketingCreateMenu',
-                                'iconClass' => 'icon-create'
-                            ),
-                            array(
-                                'type'      => 'MarketingDashboardMenu',
-                                'iconClass' => 'icon-marketing-dashboard'
-                            ),
-                            array(
-                                'type'      => 'MarketingListsMenu',
-                                'iconClass' => 'icon-marketing-lists'
-                            ),
-                            array(
-                                'type'      => EmailTemplatesForMarketingMenuActionElement::getType(),
-                                'iconClass' => 'icon-email-templates'
-                            ),
-                            array(
-                                'type'      => 'CampaignsMenu',
-                                'iconClass' => 'icon-marketing-campaigns'
+                                'type'            => 'MassSubscribeLink',
+                                'htmlOptions'     => array('class' => 'icon-subscribe'),
+                                'listViewGridId'  => 'eval:$this->listViewGridId',
+                                'pageVarName'     => 'eval:$this->pageVarName'
                             ),
                         ),
                     ),
                 ),
             );
-            return $metadata;
+            return CMap::mergeArray(parent::getDefaultMetadata(), $metadata);
         }
     }
 ?>
