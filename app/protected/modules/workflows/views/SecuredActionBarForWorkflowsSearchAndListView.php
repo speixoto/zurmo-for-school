@@ -90,7 +90,7 @@
             {
                 return false;
             }
-            if ($elementInformation['type'] == 'MassDeleteLink' &&
+            if ($elementInformation['type'] == 'MassDeleteMenu' &&
                 'ByTimeWorkflowInQueue'  != get_class($this->model) &&
                 'WorkflowMessageInQueue' != get_class($this->model))
 
