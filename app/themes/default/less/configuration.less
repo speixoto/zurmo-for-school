@@ -1216,6 +1216,7 @@ table.configuration-list{
     label{
         float: none !important;
         top: -3px;
+	    margin-left: 0;
     }
     input{
         margin-right:12px !important;
@@ -1226,13 +1227,15 @@ table.configuration-list{
 		padding: 0 !important;
 		font-style: normal;
 	}
-	[id*="theme-color-tooltip"] { // [class*=" db3"]
+	[id*="theme-color-tooltip"],
+	[id*="background-texture-tooltip"] { // [class*=" db3"]
 		width: auto !important;
 		position: relative;
 		left: -25px;
 		font-size: 18px;
-		top: -4px;
+		top: -5px;
 		position: absolute;
+		border: none;
 	}
 	input[disabled="disabled"]{
 		visibility: hidden;
@@ -1244,11 +1247,23 @@ table.configuration-list{
         width: 90px;
         background:#FFF;
         border: 3px solid #DDDEDE;
-        margin-top: -3px;
     }
-    label{
-        top:-6px;
-    }
+	input{
+		position: relative;
+		top:9px;
+	}
+	.background-texture-1{
+		margin-right: 10px;
+		margin-top: 0;
+		position: relative;
+		top: 7px;
+	}
+	[id*="background-texture-tooltip"]{
+		top:-3px;
+	}
+	label{
+		top: 0;
+	}
 }
 
 .color-swatch{
@@ -1257,7 +1272,7 @@ table.configuration-list{
 		top: 3px;
 	}
 	label{
-		margin-left: 0;
+
 	}
 	.theme-color-3{
 		margin-right: 10px;

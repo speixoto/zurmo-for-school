@@ -2003,25 +2003,25 @@ body.marble .themeColor {
   color: #7f7f7f;
 }
 body.marble .themeColor2 {
-  color: #959595;
+  color: #333333;
 }
 body.marble .themeBackgroundColor {
   background-color: #7f7f7f;
 }
 body.marble .themeBackgroundColor2 {
-  background-color: #959595;
+  background-color: #333333;
 }
 body.marble .themeColor-important {
   color: #7f7f7f !important;
 }
 body.marble .themeColor2-important {
-  color: #959595 !important;
+  color: #333333 !important;
 }
 body.marble .themeBackgroundColor-important {
   background-color: #7f7f7f !important;
 }
 body.marble .themeBackgroundColor2-important {
-  background-color: #959595 !important;
+  background-color: #333333 !important;
 }
 body.marble .themeColor-focus {
   -webkit-box-shadow: 0 0 1px 1px #7f7f7f;
@@ -2130,7 +2130,7 @@ body.marble .hide-marketing-intro span,
 body.marble #kanban-board-options-link:hover,
 body.marble #more-search-link:hover,
 body.marble #select-list-attributes-link:hover {
-  color: #959595;
+  color: #333333;
 }
 body.marble .dynamic-search-row .remove-extra-dynamic-search-row-link:hover,
 body.marble #AboutView p a,
@@ -2145,7 +2145,7 @@ body.marble .portlet-toolbar a:hover,
 body.marble .portlet-toolbar .icon-create:before,
 body.marble #filter-latest-activities-link:hover,
 body.marble .badge-message h3 {
-  color: #959595 !important;
+  color: #333333 !important;
 }
 body.marble #InstallAccessFailurePageView a,
 body.marble #ErrorPageView a,
@@ -2178,7 +2178,7 @@ body.marble .points,
 body.marble .ranking,
 body.marble .badge-grade,
 body.marble li.token-input-selected-token {
-  background-color: #959595;
+  background-color: #333333;
 }
 body.marble .ui-autocomplete a:hover,
 body.marble .ui-autocomplete a#ui-active-menuitem,
@@ -2189,7 +2189,7 @@ body.marble #ShortcutsMenu ul a:hover,
 body.marble .view-toolbar .parent > ul a:hover,
 body.marble .edit-row-menu ul a:hover,
 body.marble .edit-portlet-menu ul a:hover {
-  background-color: #959595 !important;
+  background-color: #333333 !important;
   color: #fff !important;
 }
 body.marble #HeaderView {
@@ -2201,25 +2201,25 @@ body.marble #HeaderView {
   box-shadow: inset 0 10px 50px 0 #7f7f7f;
 }
 body.marble #HeaderLinksView + div {
-  background-color: #bdbdbd;
+  background-color: #323232;
   background-repeat: repeat-x;
-  background-image: -moz-linear-gradient(top, #959595, #bdbdbd);
-  background-image: -ms-linear-gradient(top, #959595, #bdbdbd);
-  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #959595), color-stop(100%, #bdbdbd));
-  background-image: -webkit-linear-gradient(top, #959595, #bdbdbd);
-  background-image: -o-linear-gradient(top, #959595, #bdbdbd);
-  background-image: linear-gradient(top, #959595, #bdbdbd);
+  background-image: -moz-linear-gradient(top, #545454, #323232);
+  background-image: -ms-linear-gradient(top, #545454, #323232);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #545454), color-stop(100%, #323232));
+  background-image: -webkit-linear-gradient(top, #545454, #323232);
+  background-image: -o-linear-gradient(top, #545454, #323232);
+  background-image: linear-gradient(top, #545454, #323232);
 }
 body.marble #HeaderLinksView ul ul a:hover {
   color: #fff !important;
-  background-color: #6f6f6f;
+  background-color: #0d0d0d;
   background-repeat: repeat-x;
-  background-image: -moz-linear-gradient(top, #959595, #6f6f6f);
-  background-image: -ms-linear-gradient(top, #959595, #6f6f6f);
-  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #959595), color-stop(100%, #6f6f6f));
-  background-image: -webkit-linear-gradient(top, #959595, #6f6f6f);
-  background-image: -o-linear-gradient(top, #959595, #6f6f6f);
-  background-image: linear-gradient(top, #959595, #6f6f6f);
+  background-image: -moz-linear-gradient(top, #333333, #0d0d0d);
+  background-image: -ms-linear-gradient(top, #333333, #0d0d0d);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #333333), color-stop(100%, #0d0d0d));
+  background-image: -webkit-linear-gradient(top, #333333, #0d0d0d);
+  background-image: -o-linear-gradient(top, #333333, #0d0d0d);
+  background-image: linear-gradient(top, #333333, #0d0d0d);
 }
 body.marble #user-header-menu > li > a:hover,
 body.marble #settings-header-menu > li > a:hover {
@@ -2235,7 +2235,7 @@ body.marble #MenuView a > span {
 }
 body.marble #MenuView li.active > a > span,
 body.marble #MenuView a:hover > span {
-  background-color: #959595;
+  background-color: #333333;
   -webkit-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
   -moz-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
   -o-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
@@ -2243,7 +2243,7 @@ body.marble #MenuView a:hover > span {
   text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
 }
 body.marble #RecentlyViewedView a > span:first-child {
-  background-color: #959595;
+  background-color: #333333;
   -webkit-text-shadow: 0px 1px 0 #acd064;
   -moz-text-shadow: 0px 1px 0 #acd064;
   -o-text-shadow: 0px 1px 0 #acd064;
@@ -2266,14 +2266,14 @@ body.marble #RecentlyViewedView a:hover em {
   text-shadow: 0px 1px 0 #acd064;
 }
 body.marble #MenuView ul ul li a:hover {
-  background-color: #6f6f6f;
+  background-color: #0d0d0d;
   background-repeat: repeat-x;
-  background-image: -moz-linear-gradient(top, #959595, #6f6f6f);
-  background-image: -ms-linear-gradient(top, #959595, #6f6f6f);
-  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #959595), color-stop(100%, #6f6f6f));
-  background-image: -webkit-linear-gradient(top, #959595, #6f6f6f);
-  background-image: -o-linear-gradient(top, #959595, #6f6f6f);
-  background-image: linear-gradient(top, #959595, #6f6f6f);
+  background-image: -moz-linear-gradient(top, #333333, #0d0d0d);
+  background-image: -ms-linear-gradient(top, #333333, #0d0d0d);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #333333), color-stop(100%, #0d0d0d));
+  background-image: -webkit-linear-gradient(top, #333333, #0d0d0d);
+  background-image: -o-linear-gradient(top, #333333, #0d0d0d);
+  background-image: linear-gradient(top, #333333, #0d0d0d);
 }
 body.marble .ZeroModelsYetView a .z-label,
 body.marble .dashboard-link .z-label,
@@ -2335,7 +2335,7 @@ body.marble .form-toolbar a:not(.z-button):not(.green-button):hover .z-label,
 body.marble .configuration-list li a:hover .z-label,
 body.marble .white-button:hover .z-label,
 body.marble .white-button:hover .z-label {
-  color: #959595 !important;
+  color: #333333 !important;
   background-color: #ededed !important;
   background-repeat: repeat-x !important;
   background-image: -moz-linear-gradient(top, #fefefe, #ededed) !important;
@@ -2534,10 +2534,10 @@ body.marble .action-reject:hover .z-label {
   background: #7f8c8d;
 }
 .color-swatch.marble .theme-color-2 {
-  background: #95a5a6;
+  background: #333333;
 }
 .color-swatch.marble .theme-color-3 {
-  background: #95a5a6;
+  background: #545454;
 }
 body.purple-haze #nav-trigger {
   border-right: 1px solid #4e295f;
@@ -8722,7 +8722,7 @@ body.exclusive-paper,
   background: url(../patterns/exclusive-paper/exclusive-paper.png) left top repeat !important;
 }
 body.diagonal-noise,
-.texture-swatch.iagonal-noise .background-texture-1 {
+.texture-swatch.diagonal-noise .background-texture-1 {
   background: url(../patterns/diagonal-noise/diagonal-noise.png) left top repeat !important;
 }
 body.paper,
@@ -8766,7 +8766,7 @@ body.wood,
   background: url(../patterns/wood-pattern/wood-pattern.png) left top repeat !important;
 }
 body.whitey,
-.texture-swatch.whiety .background-texture-1 {
+.texture-swatch.whitey .background-texture-1 {
   background: url(../patterns/whitey/whitey.png) left top repeat !important;
 }
 body.fabric-plaid,
@@ -17045,6 +17045,7 @@ table.configuration-list td:last-child a .z-label:before {
 .texture-swatch label {
   float: none !important;
   top: -3px;
+  margin-left: 0;
 }
 .color-swatch input,
 .texture-swatch input {
@@ -17058,13 +17059,16 @@ table.configuration-list td:last-child a .z-label:before {
   font-style: normal;
 }
 .color-swatch [id*="theme-color-tooltip"],
-.texture-swatch [id*="theme-color-tooltip"] {
+.texture-swatch [id*="theme-color-tooltip"],
+.color-swatch [id*="background-texture-tooltip"],
+.texture-swatch [id*="background-texture-tooltip"] {
   width: auto !important;
   position: relative;
   left: -25px;
   font-size: 18px;
-  top: -4px;
+  top: -5px;
   position: absolute;
+  border: none;
 }
 .color-swatch input[disabled="disabled"],
 .texture-swatch input[disabled="disabled"] {
@@ -17074,17 +17078,26 @@ table.configuration-list td:last-child a .z-label:before {
   width: 90px;
   background: #FFF;
   border: 3px solid #DDDEDE;
-  margin-top: -3px;
+}
+.texture-swatch input {
+  position: relative;
+  top: 9px;
+}
+.texture-swatch .background-texture-1 {
+  margin-right: 10px;
+  margin-top: 0;
+  position: relative;
+  top: 7px;
+}
+.texture-swatch [id*="background-texture-tooltip"] {
+  top: -3px;
 }
 .texture-swatch label {
-  top: -6px;
+  top: 0;
 }
 .color-swatch span {
   position: relative;
   top: 3px;
-}
-.color-swatch label {
-  margin-left: 0;
 }
 .color-swatch .theme-color-3 {
   margin-right: 10px;
