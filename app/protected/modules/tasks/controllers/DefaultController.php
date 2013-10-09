@@ -589,15 +589,20 @@
             $model   = Task::getById(intval($descriptionFieldArray[1]));
             ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($model);
             $model->description = $getData['update_value'];
-            $saved = $model->save();
-            assert('$saved');
-            if($model->description != '')
+            if($model->save())
             {
-                echo $model->description;
+                if($model->description != '')
+                {
+                    echo $model->description;
+                }
+                else
+                {
+                    echo Zurmo::t('TasksModule', 'Click here to enter description');
+                }
             }
             else
             {
-                echo Zurmo::t('TasksModule', 'Click here to enter description');
+                throw new FailedToSaveModelException();
             }
         }
 

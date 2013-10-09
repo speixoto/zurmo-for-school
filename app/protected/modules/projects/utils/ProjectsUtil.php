@@ -62,8 +62,8 @@
             assert('$task instanceof Task');
             assert('$taskCheckListItem instanceof TaskCheckListItem');
             $project = $task->project;
-            $data = $taskCheckListItem->name . ' in  Task ' . $task->name;
-            ProjectAuditEvent::logAuditEvent(ProjectAuditEvent::CHECKLIST_ITEM_ADDED, $data, $project);
+            $message = $taskCheckListItem->name . ' in  Task ' . $task->name;
+            ProjectAuditEvent::logAuditEvent(ProjectAuditEvent::CHECKLIST_ITEM_ADDED, $message, $project);
         }
 
         /**

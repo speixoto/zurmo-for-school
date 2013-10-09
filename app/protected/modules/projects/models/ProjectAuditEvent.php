@@ -70,33 +70,14 @@
                 }
             }
 
-            if (!ProjectAuditEvent::$isTableOptimized && (!AUDITING_OPTIMIZED || !RedBeanDatabase::isFrozen()))
-            {
-                $tableName  = self::getTableName('ProjectAuditEvent');
-                $projectAuditEvent = new ProjectAuditEvent();
-                $projectAuditEvent->dateTime       = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
-                $projectAuditEvent->eventName      = $eventName;
-                $projectAuditEvent->user           = $user;
-                $projectAuditEvent->project        = $project;
-                $projectAuditEvent->serializedData = serialize($data);
-                $saved                             = $projectAuditEvent->save();
-                AuditEvent::$isTableOptimized      = true;
-            }
-            else
-            {
-                $sql = "insert into projectauditevent (datetime,
-                                                eventname,
-                                                _user_id,
-                                                project_id,
-                                                serializeddata)
-                        values ('" . DateTimeUtil::convertTimestampToDbFormatDateTime(time()) . "',
-                                '$eventName',
-                                {$user->id},
-                                {$project->id},
-                                :data)";
-                R::exec($sql, array('data' => serialize($data))) !== null;
-                $saved = true;
-            }
+            $tableName  = self::getTableName('ProjectAuditEvent');
+            $projectAuditEvent = new ProjectAuditEvent();
+            $projectAuditEvent->dateTime       = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
+            $projectAuditEvent->eventName      = $eventName;
+            $projectAuditEvent->user           = $user;
+            $projectAuditEvent->project        = $project;
+            $projectAuditEvent->serializedData = serialize($data);
+            $saved                             = $projectAuditEvent->save();
             return $saved;
         }
 
