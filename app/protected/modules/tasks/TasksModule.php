@@ -94,7 +94,10 @@
                         'right'  => self::RIGHT_CREATE_TASKS,
                         'mobile' => true,
                     ),
-                )
+                ),
+                'globalSearchAttributeNames' => array(
+                    'name',
+                ),
             );
             return $metadata;
         }

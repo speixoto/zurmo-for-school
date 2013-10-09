@@ -34,7 +34,7 @@
  * "Copyright Zurmo Inc. 2013. All rights reserved".
  ********************************************************************************/
 
-    class WorkflownQueuesSearchFormTest extends BaseTest
+    class WorkflowInQueuesSearchFormTest extends BaseTest
     {
         public static function setUpBeforeClass()
         {

@@ -99,7 +99,7 @@
         }
 
         /**
-         * @depends testPassingPrecedingRelationThatHasAssumptiveLinkIsProperlyHandled
+         * @depends testGetHasManyBelongsToRelations
          */
         public function testGetAllWorkflowableRelations()
         {
