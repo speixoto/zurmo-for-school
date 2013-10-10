@@ -102,10 +102,11 @@
             $toolbarContent = '';
             if (Yii::app()->userInterface->isMobile() === false)
             {
-                if($isKanbanActive === true)
+                if($isKanbanActive)
                 {
-                    $link    = ZurmoDefaultViewUtil::renderActionBarLinksForKanbanBoard($this->controllerId, $this->moduleId, $this->modelId);
-                    $content = parent::renderActionElementBar($renderedInForm) . $link;
+                    $kanbanToggleLink    = ZurmoDefaultViewUtil::renderActionBarLinksForKanbanBoard(
+                                           $this->controllerId, $this->moduleId, $this->modelId);
+                    $content = parent::renderActionElementBar($renderedInForm) . $kanbanToggleLink;
                 }
                 else
                 {
@@ -115,17 +116,17 @@
                     $kanbanBoardLinks = ZurmoDefaultViewUtil::renderActionBarLinksForKanbanBoard($this->controllerId, $this->moduleId, $this->modelId);
                     if ($isViewLocked === false)
                     {
-                        $url = $this->resolveLockPortletUrl((int)$getData['id'], '1');
+                        $url  = $this->resolveLockPortletUrl((int)$getData['id'], '1');
                         $icon = ZurmoHtml::tag('i', array('class' => 'icon-unlock'), '<!--' . Zurmo::t('Core', 'Lock') . '-->');
-                        $link = $kanbanBoardLinks . ZurmoHtml::link($icon, $url, array('title' => $unlockTitle));
-                        $content = parent::renderActionElementBar($renderedInForm) . $link;
+                        $link = ZurmoHtml::link($icon, $url, array('title' => $unlockTitle));
+                        $content = $kanbanBoardLinks. parent::renderActionElementBar($renderedInForm) . $link;
                     }
                     else
                     {
                         $url = $this->resolveLockPortletUrl((int)$getData['id'], '0');
                         $icon = ZurmoHtml::tag('i', array('class' => 'icon-lock'), '<!--' . Zurmo::t('Core', 'Unlock') . '-->');
                         $link = ZurmoHtml::link($icon, $url, array('title' => $lockTitle));
-                        $content = $link;
+                        $content = $kanbanBoardLinks . $link;
                     }
                 }
 

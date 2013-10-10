@@ -146,7 +146,7 @@
             $metadata['Account']['members'][] = 'string128';
             $rules = array('string128', 'type', 'type' => 'string');
             $metadata['Account']['rules'][] = $rules;
-            $rules = array('string128', 'length', 'min' => 3, 'max' => 128);
+            $rules = array('string128', 'length', 'min' => 1, 'max' => 128);
             $metadata['Account']['rules'][] = $rules;
 
             $metadata['Account']['members'][] = 'string555';

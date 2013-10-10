@@ -114,9 +114,9 @@
                     'status'
                 ),
                 'relations' => array(
-                    'opportunities'    => array(RedBeanModel::MANY_MANY, 'Opportunity'),
-                    'contacts'         => array(RedBeanModel::MANY_MANY, 'Contact'),
-                    'accounts'         => array(RedBeanModel::MANY_MANY, 'Account'),
+                    'opportunities'    => array(static::MANY_MANY, 'Opportunity'),
+                    'contacts'         => array(static::MANY_MANY, 'Contact'),
+                    'accounts'         => array(static::MANY_MANY, 'Account'),
                     'tasks'            => array(static::HAS_MANY,  'Task'),
                     'auditEvents'      => array(static::HAS_MANY,  'ProjectAuditEvent'),
                 ),

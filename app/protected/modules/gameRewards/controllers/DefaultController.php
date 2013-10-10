@@ -73,7 +73,7 @@
             else
             {
                 $mixedView = $this->makeActionBarSearchAndListView($searchForm, $dataProvider);
-                $view = new GameRewardsPageView(ZurmoDefaultViewUtil::
+                $view = new GameRewardsPageView(ZurmoDefaultAdminViewUtil::
                                          makeStandardViewForCurrentUser($this, $mixedView));
             }
             echo $view->render();
@@ -89,7 +89,7 @@
                                                                           'GameRewardDetailsAndRelationsView',
                                                                           Yii::app()->request->getRequestUri(),
                                                                           $breadCrumbView);
-            $view = new GameRewardsPageView(ZurmoDefaultViewUtil::
+            $view = new GameRewardsPageView(ZurmoDefaultAdminViewUtil::
                                          makeStandardViewForCurrentUser($this, $detailsAndRelationsView));
             echo $view->render();
         }
@@ -175,7 +175,7 @@
                 $selectedRecordCount,
                 GameRewardsModule::getModuleLabelByTypeAndLanguage('Plural')
             );
-            $view = new GameRewardsPageView(ZurmoDefaultViewUtil::
+            $view = new GameRewardsPageView(ZurmoDefaultAdminViewUtil::
                                          makeStandardViewForCurrentUser($this, $massEditView));
             echo $view->render();
         }
@@ -250,7 +250,7 @@
                 $selectedRecordCount,
                 GameRewardsModule::getModuleLabelByTypeAndLanguage('Plural')
             );
-            $view = new GameRewardsPageView(ZurmoDefaultViewUtil::
+            $view = new GameRewardsPageView(ZurmoDefaultAdminViewUtil::
                                          makeStandardViewForCurrentUser($this, $massDeleteView));
             echo $view->render();
         }
