@@ -141,7 +141,7 @@
 
                 var chartData = [ { country: 'Czech Republic', itres: 301.90},
                                   { country: 'Ireland', itres: 201.10} ];
-
+/**
                 AmCharts.ready(function() {
                     chart = new AmCharts.AmPieChart();
                     chart.dataProvider = chartData;
@@ -151,7 +151,10 @@
                     chart.innerRadius = '80%';
                     chart.colors = ['#6C8092', '#933140'];
                     chart.write('chartdiv');
-                });";
+                });
+                **/
+                ";
+
 
             Yii::app()->clientScript->registerScript('userGameDashboardScript', $script);
 
@@ -355,7 +358,7 @@
                 'beforeSend' => 'function ( xhr ) {$(this).makeSmallLoadingSpinner(true, "#' . $id . '");}',
                 'success' => 'js:function(data)
                     {
-                        $("#' . $containerId . '").html(data);
+                        $("#' . $containerId . '").replaceWith(data);
                         ' . self::renderGameCoinRefreshAjax($userId) . '
                     }'
             ), $htmlOptions);
