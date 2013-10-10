@@ -45,7 +45,7 @@
                             array('type'  => 'CancelLink',                  'renderType' => 'Edit'),
                             array('type'  => 'SaveButton',                  'renderType' => 'Edit'),
                             array('type'  => 'EditLink',                    'renderType' => 'Details'),
-                            array('type'  => 'ProductCatalogDeleteLink',    'renderType' => 'Details'),
+                            array('type'  => 'ProductTemplateDeleteLink',    'renderType' => 'Details'),
                             array('type'  => 'CopyLink',                    'renderType' => 'Details'),
                         ),
                     ),
