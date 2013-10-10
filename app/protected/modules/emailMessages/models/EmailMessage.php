@@ -111,7 +111,7 @@
                 'rules' => array(
                     array('subject',         'required'),
                     array('subject',         'type',    'type' => 'string'),
-                    array('subject',         'length',  'min'  => 3, 'max' => 255),
+                    array('subject',         'length',  'min'  => 1, 'max' => 255),
                     array('folder',          'required'),
                     array('sender',          'required'),
                     array('sendAttempts',    'type',    'type' => 'integer'),

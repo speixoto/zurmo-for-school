@@ -124,7 +124,7 @@
                 'rules' => array(
                     array('name',             'required'),
                     array('name',             'type',    'type' => 'string'),
-                    array('name',             'length',  'min'  => 3, 'max' => 255),
+                    array('name',             'length',  'min'  => 1, 'max' => 255),
                     array('description',      'type',    'type' => 'string'),
                     array('status',           'required'),
                     array('type',             'required'),

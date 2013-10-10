@@ -111,10 +111,10 @@
                 'rules' => array(
                     array('moduleName', 'required'),
                     array('moduleName', 'type',   'type' => 'string'),
-                    array('moduleName', 'length', 'min'  => 3, 'max' => 64),
+                    array('moduleName', 'length', 'min'  => 1, 'max' => 64),
                     array('name',       'required'),
                     array('name',       'type',   'type' => 'string'),
-                    array('name',       'length', 'min'  => 3, 'max' => 64),
+                    array('name',       'length', 'min'  => 1, 'max' => 64),
                     array('value',      'type',   'type' => 'string'),
                     array('value',      'length', 'max'  => 64),
                 ),

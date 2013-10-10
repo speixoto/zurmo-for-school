@@ -111,7 +111,7 @@
                     array('startDateTime',  'type', 'type' => 'datetime'),
                     array('type',           'required'),
                     array('type',           'type',   'type' => 'string'),
-                    array('type',           'length', 'min'  => 3, 'max' => 64),
+                    array('type',           'length', 'min'  => 1, 'max' => 64),
                 ),
                 'defaultSortAttribute' => 'type',
                 'elements' => array(
