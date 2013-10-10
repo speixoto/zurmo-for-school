@@ -873,5 +873,15 @@
             $this->assertTrue(strpos($resolvedContent, 'localhost') === 0);
             $this->assertEmpty($this->invalidTags);
         }
+
+        public function testActivityItemsMergeTag()
+        {
+            $account            = AccountTestHelper::createAccountByNameForOwner('testAccount', self::$super);
+            $task               = TaskTestHelper::createTaskWithOwnerAndRelatedAccount('testTask', self::$super, $account);
+            $content            = '[[ACCOUNT__NAME]]';
+            $mergeTagsUtil      = MergeTagsUtilFactory::make(EmailTemplate::TYPE_WORKFLOW, null, $content);
+            $resolvedContent    = $mergeTagsUtil->resolveMergeTags($task, $this->invalidTags);
+            $this->assertEquals('testAccount', $resolvedContent);
+        }
     }
 ?>

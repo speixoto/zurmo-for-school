@@ -53,7 +53,7 @@
             {
                 $attributeAccessorString    = static::resolveStringToAttributeAccessor($mergeTag);
                 $timeQualifier              = static::stripTimeDelimiterAndReturnQualifier($attributeAccessorString);
-                $resolvedValue              =  static::resolveMergeTagToStandardOrRelatedAttribute($attributeAccessorString, $model, $language, $timeQualifier);
+                $resolvedValue              = static::resolveMergeTagToStandardOrRelatedAttribute($attributeAccessorString, $model, $language, $timeQualifier);
                 if ($resolvedValue === static::PROPERTY_NOT_FOUND)
                 {
                     if ($errorOnFirstMissing)
@@ -100,6 +100,30 @@
             {
                 if (!$model->isAttribute($attributeName))
                 {
+                    if ($model instanceof Activity)
+                    {
+                        $metadata = $model::getMetadata();
+                        $activityItemsModelClassNamesData = $metadata['Activity']['activityItemsModelClassNames'];
+                        foreach ($activityItemsModelClassNamesData as $index => $relationModelClassName)
+                        {
+                            if (ucfirst($attributeName) == $relationModelClassName)
+                            {
+                                foreach ($model->activityItems as $activityItem)
+                                {
+                                    if (ucfirst($attributeName) == get_class($activityItem))
+                                    {
+                                        $attributeAccessorString = str_replace($attributeName . '->', '', $attributeAccessorString);
+                                        return static::resolveMergeTagToStandardOrRelatedAttribute(
+                                            $attributeAccessorString,
+                                            $activityItem,
+                                            $language,
+                                            $timeQualifier);
+                                    }
+                                }
+                                return true;
+                            }
+                        }
+                    }
                     return static::PROPERTY_NOT_FOUND;
                 }
                 elseif ($model->$attributeName instanceof CustomField)
@@ -144,7 +168,7 @@
                     if ($attributeName === $attributeAccessorString)
                     {
                         $content = static::getAttributeValue($model, $attributeName, $timeQualifier);
-                        if($attributeType == 'DateTime')
+                        if ($attributeType == 'DateTime')
                         {
                             $content .= ' GMT';
                         }
