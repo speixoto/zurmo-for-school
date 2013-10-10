@@ -139,7 +139,7 @@
                     array('owner',                  'required'),
                     array('type',                   'required'),
                     array('type',                   'type',    'type' => 'string'),
-                    array('type',                   'length',  'min'  => 3, 'max' => 64),
+                    array('type',                   'length',  'min'  => 1, 'max' => 64),
                     array('ownerHasReadLatest',     'boolean'),
                 ),
                 'elements' => array(

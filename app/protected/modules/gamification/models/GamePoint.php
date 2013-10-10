@@ -189,7 +189,7 @@
                 'rules' => array(
                     array('type',          'required'),
                     array('type',          'type',    'type' => 'string'),
-                    array('type',          'length',  'min'  => 3, 'max' => 64),
+                    array('type',          'length',  'min'  => 1, 'max' => 64),
                     array('value',         'type',    'type' => 'integer'),
                     array('value',         'numerical', 'min' => 1),
                     array('value',         'required'),

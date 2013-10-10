@@ -105,10 +105,10 @@
                 'rules' => array(
                     array('name',               'required'),
                     array('name',               'type',    'type' => 'string'),
-                    array('name',               'length',  'min'  => 3, 'max' => 64),
+                    array('name',               'length',  'min'  => 1, 'max' => 64),
                     array('description',        'type',    'type' => 'string'),
                     array('fromName',           'type', 'type' => 'string'),
-                    array('fromName',           'length',  'min'  => 3, 'max' => 64),
+                    array('fromName',           'length',  'min'  => 1, 'max' => 64),
                     array('fromAddress',        'type', 'type' => 'string'),
                     array('fromAddress',        'length',  'min'  => 6, 'max' => 64),
                     array('fromAddress',        'email'),
