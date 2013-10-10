@@ -80,7 +80,8 @@
             }
             else
             {
-                $mixedView = $this->makeActionBarSearchAndListView($searchForm, $dataProvider);
+                $mixedView = $this->makeActionBarSearchAndListView($searchForm, $dataProvider,
+                                                                   'SecuredActionBarForContactsSearchAndListView');
                 $view = new ContactsPageView(ZurmoDefaultViewUtil::
                                          makeStandardViewForCurrentUser($this, $mixedView));
             }
@@ -92,13 +93,21 @@
             $contact = static::getModelAndCatchNotFoundAndDisplayError('Contact', intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($contact);
             AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED, array(strval($contact), 'ContactsModule'), $contact);
-            $breadCrumbView          = StickySearchUtil::resolveBreadCrumbViewForDetailsControllerAction($this, 'ContactsSearchView', $contact);
-            $detailsAndRelationsView = $this->makeDetailsAndRelationsView($contact, 'ContactsModule',
-                                                                          'ContactDetailsAndRelationsView',
-                                                                          Yii::app()->request->getRequestUri(),
-                                                                          $breadCrumbView);
-            $view = new ContactsPageView(ZurmoDefaultViewUtil::
-                                         makeStandardViewForCurrentUser($this, $detailsAndRelationsView));
+            if (KanbanUtil::isKanbanRequest() === false)
+            {
+                $breadCrumbView          = StickySearchUtil::resolveBreadCrumbViewForDetailsControllerAction($this, 'ContactsSearchView', $contact);
+                $detailsAndRelationsView = $this->makeDetailsAndRelationsView($contact, 'ContactsModule',
+                                                                              'ContactDetailsAndRelationsView',
+                                                                              Yii::app()->request->getRequestUri(),
+                                                                              $breadCrumbView);
+                $view                    = new ContactsPageView(ZurmoDefaultViewUtil::
+                                                                        makeStandardViewForCurrentUser($this, $detailsAndRelationsView));
+            }
+            else
+            {
+                $view = TasksUtil::resolveTaskKanbanViewForRelation($contact, $this->getModule()->getId(), $this,
+                                                                        'TasksForContactKanbanView', 'ContactsPageView');
+            }
             echo $view->render();
         }
 
@@ -375,6 +384,37 @@
         public function actionExport()
         {
             $this->export('ContactsSearchView');
+        }
+
+        public function actionMassSubscribe()
+        {
+            $this->triggerMassAction('Contact',
+                static::getSearchFormClassName(),
+                'ContactsPageView',
+                Contact::getModelLabelByTypeAndLanguage('Plural'),
+                'ContactsSearchView',
+                'ContactsStateMetadataAdapter',
+                false);
+        }
+
+        public function actionMassSubscribeProgress()
+        {
+            $this->triggerMassAction('Contact',
+                static::getSearchFormClassName(),
+                'ContactsPageView',
+                Contact::getModelLabelByTypeAndLanguage('Plural'),
+                'ContactsSearchView',
+                'ContactsStateMetadataAdapter',
+                false);
+        }
+
+        protected static function resolveMassSubscribeAlertMessage($postVariableName)
+        {   $marketingListMember = Yii::app()->request->getPost('MarketingListMember');
+            if (isset($marketingListMember) && $marketingListMember['marketingList']['id'] == 0)
+            {
+                return Zurmo::t('ContactsModule', 'You must select a MarketingListsModuleSingularLabel',
+                                                   LabelUtil::getTranslationParamsForAllModules());
+            }
         }
     }
 ?>

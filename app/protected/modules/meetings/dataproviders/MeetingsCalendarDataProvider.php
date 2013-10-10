@@ -48,7 +48,7 @@
         public function getData()
         {
             $sql        = $this->makeSqlQuery();
-            $rows       = R::getAll($sql);
+            $rows       = ZurmoRedBean::getAll($sql);
             $data       = array();
             foreach ($rows as $row)
             {

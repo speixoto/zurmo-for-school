@@ -53,7 +53,7 @@
         {
             assert('is_string($name)');
             assert('$name != ""');
-            $bean = R::findOne(EmailBox::getTableName('EmailBox'), "name = :name ", array(':name' => $name));
+            $bean = ZurmoRedBean::findOne(EmailBox::getTableName('EmailBox'), "name = :name ", array(':name' => $name));
             assert('$bean === false || $bean instanceof RedBean_OODBBean');
             if ($bean === false)
             {
@@ -189,8 +189,8 @@
                     'name',
                 ),
                 'relations' => array(
-                    'folders' => array(RedBeanModel::HAS_MANY, 'EmailFolder'),
-                    'user'    => array(RedBeanModel::HAS_MANY_BELONGS_TO, 'User'),
+                    'folders' => array(static::HAS_MANY, 'EmailFolder'),
+                    'user'    => array(static::HAS_MANY_BELONGS_TO, 'User'),
                 ),
                 'rules' => array(
                     array('name',          'required'),

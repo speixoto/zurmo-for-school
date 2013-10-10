@@ -39,14 +39,19 @@
      */
     abstract class CampaignItemsUtil extends AutoresponderAndCampaignItemsUtil
     {
+        const CONFIG_KEY             = 'CampaignItemsToCreatePageSize';
+
+        const CONFIG_MODULE_NAME     = 'CampaignsModule';
+
         const DEFAULT_CAMPAIGNITEMS_TO_CREATE_PAGE_SIZE = 200;
 
         /**
          * For now we should limit to process one campaign at a time until it is completely processed. This will
          * avoid potential performance problems.
          * @param null $pageSize - used to determine how many campaignItems to create per run.
-         * @param integer $campaignPageSize
+         * @param int $campaignPageSize
          * @return bool
+         * @throws FailedToSaveModelException
          */
         public static function generateCampaignItemsForDueCampaigns($pageSize = null, $campaignPageSize = 1)
         {
@@ -71,21 +76,21 @@
         {
             if ($pageSize == null)
             {
-                $pageSize = self::DEFAULT_CAMPAIGNITEMS_TO_CREATE_PAGE_SIZE;
+                $pageSize = self::getCreatePageSize();
             }
             $contacts = array();
             $quote    = DatabaseCompatibilityUtil::getQuote();
             $marketingListMemberTableName  = RedBeanModel::getTableName('MarketingListMember');
             $campaignItemTableName = RedBeanModel::getTableName('CampaignItem');
-            $sql  = "select {$quote}{$marketingListMemberTableName}{$quote}.{$quote}contact_id{$quote} from {$quote}{$marketingListMemberTableName}{$quote}"; // Not Coding Standard
+            $sql  = "select {$quote}{$marketingListMemberTableName}{$quote}.{$quote}contact_id{$quote} ";
+            $sql  .= "from {$quote}{$marketingListMemberTableName}{$quote} ";
             $sql .= "left join {$quote}{$campaignItemTableName}{$quote} on ";
             $sql .= "{$quote}{$campaignItemTableName}{$quote}.{$quote}contact_id{$quote} ";
             $sql .= "= {$quote}{$marketingListMemberTableName}{$quote}.{$quote}contact_id{$quote}";
             $sql .= "AND {$quote}{$campaignItemTableName}{$quote}.{$quote}campaign_id{$quote} = " . $campaign->id . " " ;
             $sql .= "where {$quote}{$marketingListMemberTableName}{$quote}.{$quote}marketinglist_id{$quote} = " . $campaign->marketingList->id ;
             $sql .= " and {$quote}{$campaignItemTableName}{$quote}.{$quote}id{$quote} is null limit " . $pageSize;
-            $ids = R::getCol($sql);
-
+            $ids = ZurmoRedBean::getCol($sql);
             foreach ($ids as $contactId)
             {
                 $contacts[] = Contact::getById((int)$contactId);
@@ -104,6 +109,38 @@
                 return true;
             }
             return false;
+        }
+
+        /**
+         * Return the page size used in the creation of campaign items
+         * @param bool $returnDefaultIfMissing
+         * @param bool $setDefaultIfMissing
+         * @return int
+         */
+        public static function getCreatePageSize($returnDefaultIfMissing = true, $setDefaultIfMissing = false)
+        {
+            assert('is_bool($returnDefaultIfMissing)');
+            assert('is_bool($setDefaultIfMissing)');
+            $size = ZurmoConfigurationUtil::getByModuleName(static::CONFIG_MODULE_NAME, static::CONFIG_KEY);
+            if (empty($size) && $returnDefaultIfMissing)
+            {
+                $size = static::DEFAULT_CAMPAIGNITEMS_TO_CREATE_PAGE_SIZE;
+                if ($setDefaultIfMissing)
+                {
+                    static::setBatchSize($size);
+                }
+            }
+            return $size;
+        }
+
+        /**
+         * Stores the campaign items create page size as a global configuration value
+         * @param int $size
+         */
+        public static function setCreatePageSize($size)
+        {
+            assert('is_int($size) || $size === null');
+            ZurmoConfigurationUtil::setByModuleName(static::CONFIG_MODULE_NAME, static::CONFIG_KEY, $size);
         }
     }
 ?>

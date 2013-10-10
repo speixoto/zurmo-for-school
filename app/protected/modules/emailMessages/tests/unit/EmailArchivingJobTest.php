@@ -130,11 +130,7 @@
             Yii::app()->imap->connect();
             $this->assertEquals(0, Notification::getCountByTypeAndUser('EmailMessageArchivingEmailAddressNotMatching', Yii::app()->user->userModel));
 
-            $messages = EmailMessage::getAll();
-            foreach ($messages as $message)
-            {
-                $message->delete();
-            }
+            EmailMessage::deleteAll();
             Yii::app()->imap->deleteMessages(true);
 
             // Check if there are no emails in dropbox
@@ -212,11 +208,7 @@
             //There is one notification from testRunCaseOne
             $this->assertEquals(1, Notification::getCountByTypeAndUser('EmailMessageArchivingEmailAddressNotMatching', $user));
 
-            $messages = EmailMessage::getAll();
-            foreach ($messages as $message)
-            {
-                $message->delete();
-            }
+            EmailMessage::deleteAll();
             Yii::app()->imap->deleteMessages(true);
 
             // Check if there are no emails in dropbox
@@ -293,11 +285,7 @@
             $user = User::getByUsername('steve');
             Yii::app()->imap->connect();
 
-            $messages = EmailMessage::getAll();
-            foreach ($messages as $message)
-            {
-                $message->delete();
-            }
+            EmailMessage::deleteAll();
             Yii::app()->imap->deleteMessages(true);
 
             // Check if there are no emails in dropbox
@@ -388,11 +376,7 @@ To: Steve <steve@example.com>
             $user = User::getByUsername('steve');
             Yii::app()->imap->connect();
 
-            $messages = EmailMessage::getAll();
-            foreach ($messages as $message)
-            {
-                $message->delete();
-            }
+            EmailMessage::deleteAll();
             Yii::app()->imap->deleteMessages(true);
 
             // Check if there are no emails in dropbox
@@ -451,11 +435,7 @@ To: Steve <steve@example.com>
             $john->primaryEmail->emailAddress = Yii::app()->params['emailTestAccounts']['testEmailAddress'];
             $this->assertTrue($john->save());
 
-            $messages = EmailMessage::getAll();
-            foreach ($messages as $message)
-            {
-                $message->delete();
-            }
+            EmailMessage::deleteAll();
             Yii::app()->imap->deleteMessages(true);
 
             // Check if there are no emails in dropbox

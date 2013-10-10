@@ -49,7 +49,7 @@
                 'rules' => array(
                     array('emailAddress',   'type', 'type' => 'string'),
                     array('emailAddress',   'length',  'min'  => 6, 'max' => 64),
-                    array('emailAddress',   'email', 'except' => 'autoBuildDatabase'),
+                    array('emailAddress',   'email'),
                 ),
             );
             return $metadata;

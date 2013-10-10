@@ -151,7 +151,7 @@
                 $sql .= 'where ' . $where . ' ';
             }
             $sql .= 'group by ' . $groupbyColumnName;
-            return R::getAll($sql);
+            return ZurmoRedBean::getAll($sql);
         }
 
         protected function resolveWhereClause(& $where)

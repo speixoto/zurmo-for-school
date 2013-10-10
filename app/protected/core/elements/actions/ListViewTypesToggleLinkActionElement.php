@@ -56,17 +56,33 @@
          */
         public function render()
         {
+            $kanban         = Zurmo::t('Core', 'Kanban');
+            $labelForKanban = ZurmoHtml::tag('i', array('class' => $this->resolveKanbanBoardClass()), "<span>{$kanban}</span>");
             $kanbanBoardUrl = Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/list/',
                               array('kanbanBoard' => true));
+            $grid           = Zurmo::t('Core', 'Grid');
+            $labelForList   = ZurmoHtml::tag('i', array('class' => $this->resolveGridClass()), "<span>{$grid}</span>");
             $listUrl        = Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/list/',
                               array('kanbanBoard' => false));
-            $content        = null;
-            $content       .= ZurmoHtml::link('<span>Kanban</span>', $kanbanBoardUrl,
-                                              array('class' => $this->resolveKanbanBoardClass(),
-                                                    'title' => Zurmo::t('Core', 'View as Kanban Board')));
-            $content       .= ZurmoHtml::link('<span>Grid</span>', $listUrl,
-                                              array('class' => $this->resolveGridClass(),
-                                                    'title' => Zurmo::t('Core', 'View as Grid')));
+            $kanbanBoardClass = 'default-button';
+            if ($this->getActive() == static::TYPE_KANBAN_BOARD)
+            {
+                $kanbanBoardClass .= ' active';
+            }
+            $content        = ZurmoHtml::openTag('div', array('class' => $kanbanBoardClass));
+
+            $content       .= ZurmoHtml::link($labelForKanban, $kanbanBoardUrl,
+                                              array('title' => Zurmo::t('Core', 'View as Kanban Board')));
+            $content       .= ZurmoHtml::closeTag('div');
+            $gridClass      = 'default-button';
+            if ($this->getActive() == static::TYPE_GRID)
+            {
+                $gridClass .= ' active';
+            }
+            $content       .= ZurmoHtml::openTag('div', array('class' => $gridClass));
+            $content       .= ZurmoHtml::link($labelForList, $listUrl,
+                                              array('title' => Zurmo::t('Core', 'View as Grid')));
+            $content       .= ZurmoHtml::closeTag('div');
             return $content;
         }
 
@@ -86,10 +102,6 @@
         protected function resolveKanbanBoardClass()
         {
             $kanbanBoardClass = 'icon-kanban-board-view-type';
-            if ($this->getActive() == static::TYPE_KANBAN_BOARD)
-            {
-                $kanbanBoardClass .= ' active';
-            }
             return $kanbanBoardClass;
         }
 
@@ -99,10 +111,6 @@
         protected function resolveGridClass()
         {
             $gridClass = 'icon-grid-view-type';
-            if ($this->getActive() == static::TYPE_GRID)
-            {
-                $gridClass .= ' active';
-            }
             return $gridClass;
         }
 

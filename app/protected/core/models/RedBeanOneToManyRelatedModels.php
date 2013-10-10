@@ -99,7 +99,7 @@
             $tableName = RedBeanModel::getTableName($modelClassName);
             if (is_string($sqlOrBean))
             {
-                $this->relatedBeansAndModels = array_values($beans = R::find($tableName, $sqlOrBean));
+                $this->relatedBeansAndModels = array_values($beans = ZurmoRedBean::find($tableName, $sqlOrBean));
             }
             else
             {
@@ -115,7 +115,7 @@
                             $values['id']    = $this->bean->id;
                             $values['type']  = $this->bean->getMeta('type');
 
-                            $this->relatedBeansAndModels = array_values(R::find( $tableName,
+                            $this->relatedBeansAndModels = array_values(ZurmoRedBean::find( $tableName,
                                                                     strtolower($this->linkName) . '_id = :id AND ' .
                                                                     strtolower($this->linkName) . '_type = :type',
                                                                     $values));
@@ -124,7 +124,7 @@
                         {
                             $relatedIds                  = ZurmoRedBeanLinkManager::getKeys($this->bean, $tableName,
                                                                                             $this->resolveLinkNameForCasing());
-                            $this->relatedBeansAndModels = array_values(R::batch($tableName, $relatedIds));
+                            $this->relatedBeansAndModels = array_values(ZurmoRedBean::batch($tableName, $relatedIds));
                         }
                     }
                     else
@@ -157,31 +157,18 @@
                 {
                     if ($this->bean->id == null)
                     {
-                        R::store($this->bean);
+                        ZurmoRedBean::store($this->bean);
                     }
                     $polyIdFieldName          = strtolower($this->linkName) . '_id';
                     $polyTypeFieldName        = strtolower($this->linkName) . '_type';
                     $bean->$polyTypeFieldName = $this->bean->getMeta('type');
                     $bean->$polyIdFieldName   = $this->bean->id;
-                    if (!RedBeanDatabase::isFrozen())
-                    {
-                        $tableName  = RedBeanModel::getTableName($this->modelClassName);
-                        RedBeanColumnTypeOptimizer::optimize($tableName, $polyIdFieldName, 'id');
-                    }
                 }
                 else
                 {
                     ZurmoRedBeanLinkManager::link($bean, $this->bean, $this->resolveLinkNameForCasing());
-                    if (!RedBeanDatabase::isFrozen())
-                    {
-                        $tableName        = RedBeanModel::getTableName($this->modelClassName);
-                        $columnName       = RedBeanModel::getTableName($this->relatedModelClassName) . '_id';
-                        $columnName       = ZurmoRedBeanLinkManager::
-                                            resolveColumnPrefix($this->resolveLinkNameForCasing()) . $columnName;
-                        RedBeanColumnTypeOptimizer::optimize($tableName, $columnName, 'id');
-                    }
                 }
-                R::store($bean);
+                ZurmoRedBean::store($bean);
             }
             $this->deferredRelateBeans = array();
             $tableName = RedBeanModel::getTableName($this->relatedModelClassName);
@@ -189,12 +176,17 @@
             {
                 if (!$this->owns)
                 {
+                    if ($this->linkType == RedBeanModel::LINK_TYPE_POLYMORPHIC)
+                    {
+                        // TODO: @Shoaibi/@Jason: Critical: We should probably fine a better place to put this
+                        throw new NotSupportedException("Polymorphic relations can not be NOT_OWNED");
+                    }
                     ZurmoRedBeanLinkManager::breakLink($bean, $tableName, $this->resolveLinkNameForCasing());
-                    R::store($bean);
+                    ZurmoRedBean::store($bean);
                 }
                 else
                 {
-                    R::trash($bean);
+                    ZurmoRedBean::trash($bean);
                 }
             }
             $this->deferredUnrelateBeans = array();

@@ -64,7 +64,7 @@
         {
             $selectQueryAdapter     = new RedBeanModelSelectQueryAdapter();
             $sql                    = $this->makeSqlQueryForFetchingTotalItemCount($selectQueryAdapter);
-            $rows                   = R::getAll($sql);
+            $rows                   = ZurmoRedBean::getAll($sql);
             $count                  = count($rows);
             return $count;
         }

@@ -90,27 +90,45 @@
          */
         protected function renderActionElementBar($renderedInForm)
         {
-            $getData = GetUtil::getData();
+            $getData        = GetUtil::getData();
+            if(isset($getData['kanbanBoard']) && $getData['kanbanBoard'] == 1)
+            {
+                $isKanbanActive = true;
+            }
+            else
+            {
+                $isKanbanActive = false;
+            }
             $toolbarContent = '';
             if (Yii::app()->userInterface->isMobile() === false)
             {
-                $isViewLocked     = ZurmoDefaultViewUtil::getLockKeyForDetailsAndRelationsView('lockPortletsForDetailsAndRelationsView');
-                $lockTitle        = Zurmo::t('Core', 'Unlock to edit this screen\'s layout');
-                $unlockTitle      = Zurmo::t('Core', 'Lock and prevent layout changes to this screen');
-                if ($isViewLocked === false)
+                if($isKanbanActive === true)
                 {
-                    $url = $this->resolveLockPortletUrl((int)$getData['id'], '1');
-                    $link = ZurmoHtml::link('<!--' . Zurmo::t('Core', 'Lock') . '-->', $url, array('class' => 'icon-unlock',
-                                                                                                    'title' => $unlockTitle));
+                    $link    = ZurmoDefaultViewUtil::renderActionBarLinksForKanbanBoard($this->controllerId, $this->moduleId, $this->modelId);
                     $content = parent::renderActionElementBar($renderedInForm) . $link;
                 }
                 else
                 {
-                    $url = $this->resolveLockPortletUrl((int)$getData['id'], '0');
-                    $link = ZurmoHtml::link('<!--' . Zurmo::t('Core', 'Unlock') . '-->', $url, array('class' => 'icon-lock',
-                                                                                                      'title' => $lockTitle));
-                    $content = $link;
+                    $isViewLocked     = ZurmoDefaultViewUtil::getLockKeyForDetailsAndRelationsView('lockPortletsForDetailsAndRelationsView');
+                    $lockTitle        = Zurmo::t('Core', 'Unlock to edit this screen\'s layout');
+                    $unlockTitle      = Zurmo::t('Core', 'Lock and prevent layout changes to this screen');
+                    $kanbanBoardLinks = ZurmoDefaultViewUtil::renderActionBarLinksForKanbanBoard($this->controllerId, $this->moduleId, $this->modelId);
+                    if ($isViewLocked === false)
+                    {
+                        $url = $this->resolveLockPortletUrl((int)$getData['id'], '1');
+                        $icon = ZurmoHtml::tag('i', array('class' => 'icon-unlock'), '<!--' . Zurmo::t('Core', 'Lock') . '-->');
+                        $link = $kanbanBoardLinks . ZurmoHtml::link($icon, $url, array('title' => $unlockTitle));
+                        $content = parent::renderActionElementBar($renderedInForm) . $link;
+                    }
+                    else
+                    {
+                        $url = $this->resolveLockPortletUrl((int)$getData['id'], '0');
+                        $icon = ZurmoHtml::tag('i', array('class' => 'icon-lock'), '<!--' . Zurmo::t('Core', 'Unlock') . '-->');
+                        $link = ZurmoHtml::link($icon, $url, array('title' => $lockTitle));
+                        $content = $link;
+                    }
                 }
+
                 $toolbarContent = ZurmoHtml::tag('div', array('class' => 'view-toolbar'), $content);
             }
             $toolbarContent = ZurmoHtml::tag('div', array('class' => 'view-toolbar-container widgets-lock clearfix '), $toolbarContent);
@@ -146,7 +164,7 @@
          * @param boolean $portletsAreMovable
          * @param boolean $portletsAreRemovable
          */
-        private function resolvePortletConfigurableParams(& $portletsAreMovable, & $portletsAreRemovable)
+        protected function resolvePortletConfigurableParams(& $portletsAreMovable, & $portletsAreRemovable)
         {
             assert('is_bool($portletsAreMovable)');
             assert('is_bool($portletsAreRemovable)');

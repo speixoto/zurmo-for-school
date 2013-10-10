@@ -83,7 +83,7 @@
             // with the models that are specific to itself.
             return array('ActiveLanguage', 'AuditEvent', 'NamedSecurableItem', 'GlobalMetadata', 'PerUserMetadata', 'Portlet',
                          'CustomFieldData', 'CalculatedDerivedAttributeMetadata', 'DropDownDependencyDerivedAttributeMetadata',
-                         'SavedSearch', 'MessageSource', 'MessageTranslation');
+                         'SavedSearch', 'MessageSource', 'MessageTranslation', 'KanbanItem');
         }
 
         public static function getDefaultMetadata()
@@ -183,6 +183,7 @@
                     'contacts',
                     'opportunities',
                     'marketing',
+                    'projects',
                     'reports',
                     'products',
                 )

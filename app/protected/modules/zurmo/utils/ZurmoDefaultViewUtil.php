@@ -161,12 +161,13 @@
             $horizontalGridView->setView($containedView, 0, 1);
             $horizontalGridView->setView(static::makeFlashMessageView($controller),   0, 2); //TODO needs to move into $cotainedView
 
-            $verticalGridView   = new GridView(5, 1);
+            $verticalGridView   = new GridView(6, 1);
             $verticalGridView->setView(static::makeHeaderView($controller),                 0, 0);
             $verticalGridView->setView($horizontalGridView,                                 1, 0);
             $verticalGridView->setView(static::makeModalContainerView(),                    2, 0);
             $verticalGridView->setView(static::makeModalGameNotificationContainerView(),    3, 0);
-            $verticalGridView->setView(static::makeFooterView(),                            4, 0);
+            $verticalGridView->setView(static::makeGameCoinContainerView($controller),      4, 0);
+            $verticalGridView->setView(static::makeFooterView(),                            5, 0);
 
             return $verticalGridView;
         }
@@ -305,6 +306,11 @@
             return new ModalGameNotificationContainerView(GameNotification::getAllByUser(Yii::app()->user->userModel));
         }
 
+        protected static function makeGameCoinContainerView(CController $controller)
+        {
+            return new GameCoinContainerView($controller);
+        }
+
         protected static function makeFooterView()
         {
             return new FooterView();
@@ -401,6 +407,16 @@
         public static function getLockKeyForDetailsAndRelationsView($key)
         {
             return Yii::app()->user->getState($key);
+        }
+
+        /**
+         * Render action bar links for kanban board on details view
+         * @return type
+         */
+        public static function renderActionBarLinksForKanbanBoard($controllerId, $moduleId, $modelId)
+        {
+            $detailsAndRelationsViewTypesToggleLinkActionElement = new DetailsAndRelationsViewTypesToggleLinkActionElement($controllerId, $moduleId, $modelId);
+            return $detailsAndRelationsViewTypesToggleLinkActionElement->render();
         }
     }
 ?>

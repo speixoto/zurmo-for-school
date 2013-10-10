@@ -48,6 +48,33 @@
 	#MashableInboxForm_searchTerm{
 		width: 204px;
 	}
+	.nav > li:first-child:before{
+		margin: 0;
+	}
+	.nav > li:first-child > a{
+		color: #656565;
+		font-weight: bold;
+		text-shadow: #fff 0 1px 0;
+		padding: 0 10px 0 40px;
+		line-height: 30px;
+		display: inline-block;
+		position: relative;
+		vertical-align: middle;
+		border-left: 1px solid #bababa;
+		&:after{
+			margin-left: 6px;
+		}
+	}
+	.icon-conversation,
+	.icon-mission{
+		position: relative;
+		ul{
+			width: 100%;
+			left: 0;
+			right: 0;
+			top: 31px;
+		}
+	}
 }
 
 .inbox-item{

@@ -95,10 +95,11 @@
                     array('subject',                'length',  'min'  => 3, 'max' => 64),
                     array('htmlContent',            'type',    'type' => 'string'),
                     array('textContent',            'type',    'type' => 'string'),
+                    array('htmlContent',            'StripDummyHtmlContentFromOtherwiseEmptyFieldValidator'),
                     array('htmlContent',            'AtLeastOneContentAreaRequiredValidator'),
                     array('textContent',            'AtLeastOneContentAreaRequiredValidator'),
-                    array('htmlContent',            'AutoresponderMergeTagsValidator', 'except' => 'autoBuildDatabase'),
-                    array('textContent',            'AutoresponderMergeTagsValidator', 'except' => 'autoBuildDatabase'),
+                    array('htmlContent',            'AutoresponderMergeTagsValidator'),
+                    array('textContent',            'AutoresponderMergeTagsValidator'),
                     array('fromOperationDurationInterval', 'type', 'type' => 'integer'),
                     array('fromOperationDurationInterval', 'numerical', 'min' => 0),
                     array('fromOperationDurationInterval', 'required'),
@@ -112,10 +113,10 @@
 
                 ),
                 'relations' => array(
-                    'autoresponderItems'    => array(RedBeanModel::HAS_MANY, 'AutoresponderItem'),
-                    'marketingList'         => array(RedBeanModel::HAS_ONE, 'MarketingList', RedBeanModel::NOT_OWNED),
-                    'files'                 => array(RedBeanModel::HAS_MANY,  'FileModel', RedBeanModel::OWNED,
-                                                    RedBeanModel::LINK_TYPE_POLYMORPHIC, 'relatedModel'),
+                    'autoresponderItems'    => array(static::HAS_MANY, 'AutoresponderItem'),
+                    'marketingList'         => array(static::HAS_ONE, 'MarketingList', static::NOT_OWNED),
+                    'files'                 => array(static::HAS_MANY,  'FileModel', static::OWNED,
+                                                        static::LINK_TYPE_POLYMORPHIC, 'relatedModel'),
                 ),
                 'elements' => array(
                     'htmlContent'                   => 'TextArea',

@@ -51,7 +51,10 @@
                 throw new FailedToSaveModelException();
             }
             MarketingListTestHelper::createMarketingListByName('testMarketingList');
-            $campaign                   = CampaignTestHelper::createCampaign('testCampaign', 'testSubject', 'testContent');
+            $campaign                   = CampaignTestHelper::createCampaign('testCampaign',
+                                                                             'testSubject',
+                                                                             'testContent',
+                                                                             'testHtmlContent');
             $contact                    = ContactTestHelper::createContactByNameForOwner('test', $super);
             $emailMessage               = EmailMessageTestHelper::createArchivedUnmatchedSentMessage($super);
             $campaignItem               = new CampaignItem();

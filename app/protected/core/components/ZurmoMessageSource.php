@@ -78,6 +78,7 @@
             assert('is_string($languageCode)');
             try
             {
+                // not using default value to save cpu cycles on requests that follow the first exception.
                 $messages = GeneralCache::getEntry(self::getMessageSourceCacheIdentifier($category, $languageCode));
             }
             catch (NotFoundException $e)

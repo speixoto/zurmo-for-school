@@ -56,7 +56,7 @@
         protected function renderContent()
         {
             $this->portlets = $this->getPortlets($this->uniqueLayoutId, self::getMetadata());
-            $this->renderPortlets($this->uniqueLayoutId);
+            return $this->renderPortlets($this->uniqueLayoutId);
         }
 
         protected function getPortlets($uniqueLayoutId, $metadata)

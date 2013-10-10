@@ -65,14 +65,14 @@
                     array(
                         static::ZERO_MODELS_FOR_CONTACT_CHECK_FILTER_PATH . ' + listForMarketing, index',
                         'controller'                    => $this,
-                        'activeActionElementType'       => EmailTemplatesForMarketingLinkActionElement::getType(),
+                        'activeActionElementType'       => EmailTemplatesForMarketingMenuActionElement::getType(),
                         'breadcrumbLinks'               => static::getListBreadcrumbLinks(),
                         'stateMetadataAdapterClassName' => 'EmailTemplatesForMarketingStateMetadataAdapter'
                     ),
                     array(
                         static::ZERO_MODELS_FOR_WORKFLOW_CHECK_FILTER_PATH . ' + listForWorkflow',
                         'controller'                    => $this,
-                        'activeActionElementType'       => EmailTemplatesForWorkflowLinkActionElement::getType(),
+                        'activeActionElementType'       => EmailTemplatesForWorkflowMenuActionElement::getType(),
                         'breadcrumbLinks'               => static::getListBreadcrumbLinks(),
                         'stateMetadataAdapterClassName' => 'EmailTemplatesForWorkflowStateMetadataAdapter'
                     ),
@@ -89,7 +89,7 @@
         {
             $pageSize                       = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                                                             'listPageSize', get_class($this->getModule()));
-            $activeActionElementType        = EmailTemplatesForMarketingLinkActionElement::getType();
+            $activeActionElementType        = EmailTemplatesForMarketingMenuActionElement::getType();
             $emailTemplate                  = new EmailTemplate(false);
             $searchForm                     = new EmailTemplatesSearchForm($emailTemplate);
             $dataProvider                   = $this->resolveSearchDataProvider($searchForm, $pageSize,
@@ -115,7 +115,7 @@
         {
             $pageSize                       = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                                               'listPageSize', get_class($this->getModule()));
-            $activeActionElementType        = EmailTemplatesForWorkflowLinkActionElement::getType();
+            $activeActionElementType        = EmailTemplatesForWorkflowMenuActionElement::getType();
             $emailTemplate                  = new EmailTemplate(false);
             $searchForm                     = new EmailTemplatesSearchForm($emailTemplate);
             $dataProvider                   = $this->resolveSearchDataProvider($searchForm, $pageSize,

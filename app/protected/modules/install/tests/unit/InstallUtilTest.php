@@ -61,15 +61,14 @@
 
         public static function tearDownAfterClass()
         {
-            RedBeanColumnTypeOptimizer::$optimizedTableColumns = array();
             Yii::app()->gameHelper->unmuteScoringModelsOnSave();
             parent::tearDownAfterClass();
         }
 
         public function setup()
         {
+            parent::setUp();
             RedBeanDatabase::close();
-            RedBeanColumnTypeOptimizer::$optimizedTableColumns = array();
         }
 
         public function tearDown()
@@ -138,7 +137,8 @@
         public function testCheckPhpTimezoneSetting()
         {
             $oldValue = ini_get('date.timezone');
-            ini_set('date.timezone', '');
+            // PHP issues warning that its not safe to rely on system's timezone settings and hence the "@" below.
+            @ini_set('date.timezone', '');
             $this->assertFalse(InstallUtil::checkPhpTimezoneSetting());
             ini_set('date.timezone', 'EST');
             $this->assertTrue (InstallUtil::checkPhpTimezoneSetting());
@@ -239,48 +239,48 @@
         }
 
         /**
-      * Simple test to confirm the check doesnt break.
-      */
+         * Simple test to confirm the check doesnt break.
+         */
         public function testCheckSoap()
         {
             $this->assertNotNull(InstallUtil::checkSoap());
         }
 
         /**
-      * Simple test to confirm the check doesnt break.
-      */
+         * Simple test to confirm the check doesnt break.
+         */
         public function testCheckSPL()
         {
             $this->assertNotNull(InstallUtil::checkSPL());
         }
 
         /**
-      * Simple test to confirm the check doesnt break.
-      */
+         * Simple test to confirm the check doesnt break.
+         */
         public function testCheckCtype()
         {
             $this->assertNotNull(InstallUtil::checkCtype());
         }
 
         /**
-      * Simple test to confirm the check doesnt break.
-      */
+         * Simple test to confirm the check doesnt break.
+         */
         public function testCheckPCRE()
         {
             $this->assertNotNull(InstallUtil::checkPCRE());
         }
 
         /**
-      * Simple test to confirm the check doesnt break.
-      */
+         * Simple test to confirm the check doesnt break.
+         */
         public function testCheckImap()
         {
             $this->assertNotNull(InstallUtil::checkImap());
         }
 
         /**
-      * Simple test to confirm the check doesnt break.
-      */
+         * Simple test to confirm the check doesnt break.
+         */
         public function testCheckZip()
         {
             $this->assertNotNull(InstallUtil::checkZip());
@@ -325,8 +325,8 @@
         }
 
         /**
-       * Setting the upload_max_filesize doesn't seem to do anything.
-       */
+         * Setting the upload_max_filesize doesn't seem to do anything.
+         */
         public function testCheckPhpUploadSizeSetting()
         {
             $this->assertFalse(InstallUtil::checkPhpUploadSizeSetting(1024 * 1024 * 1024, $actualUploadLimitBytes));
@@ -334,8 +334,8 @@
         }
 
         /**
-       * Setting the post_max_size doesn't seem to do anything.
-       */
+         * Setting the post_max_size doesn't seem to do anything.
+         */
         public function testCheckPhpPostSizeSetting()
         {
             $this->assertFalse (InstallUtil::checkPhpPostSizeSetting(1024 * 1024 * 1024, $actualPostLimitBytes));
@@ -343,8 +343,8 @@
         }
 
         /**
-       * Simple test to confirm the check doesnt break.
-       */
+         * Simple test to confirm the check doesnt break.
+         */
         public function testCheckDatabaseMaxAllowedPacketsSize()
         {
             $minimumRequireBytes = 1;
@@ -359,8 +359,8 @@
         }
 
         /**
-      * Simple test to confirm the check doesnt break.
-      */
+         * Simple test to confirm the check doesnt break.
+         */
         public function testCheckDatabaseMaxSpRecursionDepth()
         {
             $minimumRequiredMaxSpRecursionDepth = 20;
@@ -375,8 +375,8 @@
         }
 
         /**
-      * Simple test to confirm the check doesnt break.
-      */
+         * Simple test to confirm the check doesnt break.
+         */
         public function testCheckThreadStackValue()
         {
             $minimumRequiredThreadStackValue = 524288;
@@ -391,8 +391,8 @@
         }
 
         /**
-      * Simple test to confirm the check doesnt break.
-      */
+         * Simple test to confirm the check doesnt break.
+         */
         public function testCheckDatabaseOptimizerSearchDepthValue()
         {
             $threadStackValue                = null;
@@ -405,8 +405,8 @@
         }
 
         /**
-      * Simple test to confirm the check doesnt break.
-      */
+         * Simple test to confirm the check doesnt break.
+         */
         public function testCheckDatabaseDefaultCollation()
         {
             $notAllowedDatabaseCollations = array('utf8_general_ci');
@@ -422,8 +422,8 @@
         }
 
         /**
-      * Simple test to confirm the check doesnt break.
-      */
+         * Simple test to confirm the check doesnt break.
+         */
         public function testIsDatabaseStrictMode()
         {
             $this->assertNotNull(DatabaseCompatibilityUtil::isDatabaseStrictMode('mysql',
@@ -434,8 +434,8 @@
         }
 
         /**
-      * Simple test to confirm the check doesnt break.
-      */
+         * Simple test to confirm the check doesnt break.
+         */
         public function testCheckDatabaseLogBinValue()
         {
             $logBinValue     = null;
@@ -449,8 +449,20 @@
         }
 
         /**
-      * Simple test to confirm the check doesnt break.
-      */
+         * Simple test to confirm the check doesnt break.
+         */
+        public function testCheckDatabaseLoadLocalInFile()
+        {
+            $this->assertNotNull(InstallUtil::checkDatabaseLoadLocalInFile('mysql',
+                                                                            $this->temporaryDatabaseHostname,
+                                                                            $this->temporaryDatabaseUsername,
+                                                                            $this->temporaryDatabasePassword,
+                                                                            $this->temporaryDatabasePort));
+        }
+
+        /**
+         * Simple test to confirm the check doesnt break.
+         */
         public function testCheckDatabaseLogBinTrustFunctionCreatorsValue()
         {
             $logBinTrustFunctionCreatorsValue     = null;
@@ -482,87 +494,149 @@
                                 10060 == $results[0]);
         }
 
-        public function testConnectToDatabaseCreateSuperUserBuildDatabaseAndFreeze()
+        public function testConnectToDatabaseCreateSuperUserBuildDatabase()
         {
-            // This test cannot run as saltdev. It is therefore skipped on the server.
-            if ($this->temporaryDatabaseUsername == 'root')
+            InstallUtil::connectToDatabase('mysql',
+                                            $this->temporaryDatabaseHostname,
+                                            $this->temporaryDatabaseName,
+                                            $this->temporaryDatabaseUsername,
+                                            $this->temporaryDatabasePassword,
+                                            $this->temporaryDatabasePort);
+            $messageLogger = new MessageLogger();
+            InstallUtil::autoBuildDatabase($messageLogger, true);
+            $this->assertFalse($messageLogger->isErrorMessagePresent());
+            ReadPermissionsOptimizationUtil::rebuild();
+            $tableNames = ZurmoRedBean::$writer->getTables();
+            $expectedTables = array(
+                                    '_group',
+                                    '_group__user',
+                                    '_right',
+                                    '_user',
+                                    'account',
+                                    'account_read',
+                                    'account_read_subscription',
+                                    'accountstarred',
+                                    'activelanguage',
+                                    'activity',
+                                    'activity_item',
+                                    'address',
+                                    'auditevent',
+                                    'autoresponder',
+                                    'autoresponderitem',
+                                    'autoresponderitemactivity',
+                                    'basecustomfield',
+                                    'bytimeworkflowinqueue',
+                                    'calculatedderivedattributemetadata',
+                                    'campaign',
+                                    'campaign_read',
+                                    'campaignitem',
+                                    'campaignitemactivity',
+                                    'comment',
+                                    'contact',
+                                    'contact_opportunity',
+                                    'contact_read',
+                                    'contact_read_subscription',
+                                    'contactstarred',
+                                    'contactstate',
+                                    'contactwebform',
+                                    'contactwebform_read',
+                                    'contactwebformentry',
+                                    'conversation',
+                                    'conversation_item',
+                                    'conversation_read',
+                                    'conversationstarred',
+                                    'conversationparticipant',
+                                    'currency',
+                                    'currencyvalue',
+                                    'customfield',
+                                    'customfielddata',
+                                    'customfieldvalue',
+                                    'dashboard',
+                                    'derivedattributemetadata',
+                                    'dropdowndependencyderivedattributemetadata',
+                                    'email',
+                                    'emailaccount',
+                                    'emailbox',
+                                    'emailfolder',
+                                    'emailmessage',
+                                    'emailmessage_read',
+                                    'emailmessageactivity',
+                                    'emailmessagecontent',
+                                    'emailmessagerecipient',
+                                    'emailmessagesender',
+                                    'emailmessagesenderror',
+                                    'emailmessageurl',
+                                    'emailsignature',
+                                    'emailtemplate',
+                                    'emailtemplate_read',
+                                    'exportfilemodel',
+                                    'exportitem',
+                                    'filecontent',
+                                    'filemodel',
+                                    'gamebadge',
+                                    'gamelevel',
+                                    'gamenotification',
+                                    'gamepoint',
+                                    'gamepointtransaction',
+                                    'gamescore',
+                                    'globalmetadata',
+                                    'import',
+                                    'item',
+                                    'jobinprocess',
+                                    'joblog',
+                                    'marketinglist',
+                                    'marketinglist_read',
+                                    'marketinglistmember',
+                                    'meeting',
+                                    'meeting_read',
+                                    'meeting_read_subscription',
+                                    'messagesource',
+                                    'messagetranslation',
+                                    'mission',
+                                    'mission_read',
+                                    'modelcreationapisync',
+                                    'multiplevaluescustomfield',
+                                    'namedsecurableitem',
+                                    'note',
+                                    'note_read',
+                                    'notification',
+                                    'notificationmessage',
+                                    'opportunity',
+                                    'opportunity_read',
+                                    'opportunitystarred',
+                                    'ownedsecurableitem',
+                                    'permission',
+                                    'permitable',
+                                    'person',
+                                    'personwhohavenotreadlatest',
+                                    'perusermetadata',
+                                    'policy',
+                                    'portlet',
+                                    'product',
+                                    'product_productcategory',
+                                    'product_read',
+                                    'productcatalog',
+                                    'productcatalog_productcategory',
+                                    'productcategory',
+                                    'productcategory_producttemplate',
+                                    'producttemplate',
+                                    'role',
+                                    'savedreport',
+                                    'savedreport_read',
+                                    'savedsearch',
+                                    'savedworkflow',
+                                    'securableitem',
+                                    'sellpriceformula',
+                                    'socialitem',
+                                    'socialitem_read',
+                                    'task',
+                                    'task_read',
+                                    'task_read_subscription',
+                                    'workflowmessageinqueue',
+                                );
+            foreach ($expectedTables as $expectedTable)
             {
-                $this->assertTrue(DatabaseCompatibilityUtil::createDatabase ('mysql',
-                                                                            $this->temporaryDatabaseHostname,
-                                                                            $this->temporaryDatabaseUsername,
-                                                                            $this->temporaryDatabasePassword,
-                                                                            $this->temporaryDatabasePort,
-                                                                            $this->temporaryDatabaseName));
-                $this->assertTrue(DatabaseCompatibilityUtil::createDatabaseUser('mysql',
-                                                                                $this->temporaryDatabaseHostname,
-                                                                                $this->temporaryDatabaseUsername,
-                                                                                $this->temporaryDatabasePassword,
-                                                                                $this->temporaryDatabasePort,
-                                                                                $this->temporaryDatabaseName,
-                                                                                'wacko',
-                                                                                'wacked'));
-                InstallUtil::connectToDatabase('mysql',
-                                                $this->temporaryDatabaseHostname,
-                                                'wacky',
-                                                $this->temporaryDatabaseUsername,
-                                                $this->temporaryDatabasePassword,
-                                                $this->temporaryDatabasePort);
-                Yii::app()->user->userModel = InstallUtil::createSuperUser('super', 'super');
-                $messageLogger = new MessageLogger();
-                InstallUtil::autoBuildDatabase($messageLogger);
-                $this->assertFalse($messageLogger->isErrorMessagePresent());
-                ReadPermissionsOptimizationUtil::rebuild();
-                InstallUtil::freezeDatabase();
-                $tableNames = R::getCol('show tables');
-                $this->assertEquals(array(
-                                        '_group',
-                                        '_group__user',
-                                        '_right',
-                                        '_user',
-                                        'account',
-                                        'account_read',
-                                        'activity',
-                                        'activity_item',
-                                        'actual_permissions_cache',
-                                        'address',
-                                        'auditevent',
-                                        'contact',
-                                        'contact_opportunity',
-                                        'contact_read',
-                                        'contactstate',
-                                        'currency',
-                                        'currencyvalue',
-                                        'customfield',
-                                        'customfielddata',
-                                        'dashboard',
-                                        'email',
-                                        'filecontent',
-                                        'filemodel',
-                                        'globalmetadata',
-                                        'item',
-                                        'log',
-                                        'mashableactivity',
-                                        'meeting',
-                                        'meeting_read',
-                                        'namedsecurableitem',
-                                        'note',
-                                        'note_read',
-                                        'opportunity',
-                                        'opportunity_read',
-                                        'ownedcustomfield',
-                                        'ownedsecurableitem',
-                                        'permission',
-                                        'permitable',
-                                        'person',
-                                        'perusermetadata',
-                                        'policy',
-                                        'portlet',
-                                        'role',
-                                        'securableitem',
-                                        'task',
-                                        'task_read',
-                                    ),
-                                    $tableNames);
+                $this->assertTrue(in_array($expectedTable, $tableNames));
             }
         }
 
@@ -583,8 +657,6 @@
             $debugConfiguration = file_get_contents($debugConfigFile);
 
             $this->assertRegExp('/\$debugOn = false;/', $debugConfiguration);
-            $this->assertRegExp('/\$forceNoFreeze = true;/', $debugConfiguration);
-
             try
             {
                 InstallUtil::writeConfiguration($instanceRoot,
@@ -596,8 +668,6 @@
                 $debugConfiguration       = file_get_contents($debugConfigFile);
                 $perInstanceConfiguration = file_get_contents($perInstanceConfigFile);
                 $this->assertRegExp('/\$debugOn = false;/',
-                                       $debugConfiguration);
-                $this->assertRegExp('/\$forceNoFreeze = false;/',
                                        $debugConfiguration);
                 $this->assertRegExp('/\$language         = \'es\';/',
                                        $perInstanceConfiguration);
@@ -643,8 +713,8 @@
         }
 
         /**
-      * @depends testRunInstallation
-      */
+         * @depends testRunInstallation
+         */
         public function testRunAutoBuildFromUpdateSchemaCommand()
         {
             $this->runInstallation(true);

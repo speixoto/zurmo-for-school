@@ -132,12 +132,12 @@
                     'language',
                 ),
                 'relations' => array(
-                    'defaultState'     => array(RedBeanModel::HAS_ONE,   'ContactState', RedBeanModel::NOT_OWNED,
-                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'defaultState'),
-                    'entries'          => array(RedBeanModel::HAS_MANY, 'ContactWebFormEntry', RedBeanModel::OWNED,
-                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'entries'),
-                    'defaultOwner'     => array(RedBeanModel::HAS_ONE,  'User', RedBeanModel::NOT_OWNED,
-                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'defaultOwner'),
+                    'defaultState'     => array(static::HAS_ONE,   'ContactState', static::NOT_OWNED,
+                                                static::LINK_TYPE_SPECIFIC, 'defaultState'),
+                    'entries'          => array(static::HAS_MANY, 'ContactWebFormEntry', static::OWNED,
+                                                static::LINK_TYPE_SPECIFIC, 'entries'),
+                    'defaultOwner'     => array(static::HAS_ONE,  'User', static::NOT_OWNED,
+                                                static::LINK_TYPE_SPECIFIC, 'defaultOwner'),
                 ),
                 'rules' => array(
                     array('name',              'required'),

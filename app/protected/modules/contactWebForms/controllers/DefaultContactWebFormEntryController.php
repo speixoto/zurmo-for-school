@@ -76,7 +76,7 @@
         {
             $pageSize                       = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                                               'listPageSize', get_class($this->getModule()));
-            $activeActionElementType        = 'ContactWebFormEntriesListLink';
+            $activeActionElementType        = 'ContactWebFormEntriesListMenu';
             $model                          = new ContactWebFormEntry(false);
             $searchForm                     = new ContactWebFormEntrySearchForm($model);
             $dataProvider                   = $this->resolveSearchDataProvider($searchForm, $pageSize, null,

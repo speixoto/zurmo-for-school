@@ -41,7 +41,13 @@
      */
     class AnyMixedAttributesSearchElement extends TextElement
     {
-        private $selectedValue = array('All');
+        protected $selectedValue = array('All');
+
+        /**
+         * Set to true if after typing into the input text, it should bind and force a search.
+         * @var bool
+         */
+        protected $bindBasicSearchHandlerToKeyUp = true;
 
         /**
          * Override to ensure the attributeName is anyMixedAttributes
@@ -116,20 +122,20 @@
             $script  .= " basicSearchOldValue = '';";
             $script  .= "   var basicSearchHandler = function(event)
                             {
-                                if ($(this).val() != '')
+                                if (basicSearchOldValue != $(this).val())
                                 {
-                                    if (basicSearchOldValue != $(this).val())
-                                    {
-                                        basicSearchOldValue = $(this).val();
-                                        basicSearchQueued = basicSearchQueued  + 1;
-                                        setTimeout('basicSearchQueued = basicSearchQueued - 1', 900);
-                                        setTimeout('$(this).searchByQueuedSearch(\"" . $inputId . "\")', 1000);
-                                    }
+                                    basicSearchOldValue = $(this).val();
+                                    basicSearchQueued = basicSearchQueued  + 1;
+                                    setTimeout('basicSearchQueued = basicSearchQueued - 1', 900);
+                                    setTimeout('$(this).searchByQueuedSearch(\"" . $inputId . "\")', 1000);
                                 }
-                            }
-                            $('#" . $inputId . "').unbind('input.ajax propertychange.ajax keyup.ajax');
-                            $('#" . $inputId . "').bind('input.ajax propertychange.ajax keyup.ajax', basicSearchHandler);
+                            };";
+            if($this->bindBasicSearchHandlerToKeyUp)
+            {
+                $script  .= "   $('#" . $inputId . "').unbind('input.ajax propertychange.ajax keyup.ajax');
+                                $('#" . $inputId . "').bind('input.ajax propertychange.ajax keyup.ajax', basicSearchHandler);
                             ";
+            }
             Yii::app()->clientScript->registerScript('basicSearchAjaxSubmit', $script);
         }
 

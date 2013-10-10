@@ -52,8 +52,9 @@
             $filters = array();
             $filters[] = array(
                     ZurmoBaseController::RIGHTS_FILTER_PATH .
-                    ' - modalList, autoComplete, details, profile, edit, auditEventsModalList, changePassword, configurationEdit, emailConfiguration, securityDetails, ' .
-                        'autoCompleteForMultiSelectAutoComplete, confirmTimeZone, changeAvatar',
+                    ' - modalList, autoComplete, details, profile, edit, auditEventsModalList, changePassword, ' .
+                    'configurationEdit, emailConfiguration, securityDetails, ' .
+                    'autoCompleteForMultiSelectAutoComplete, confirmTimeZone, changeAvatar, gameDashboard',
                     'moduleClassName' => 'UsersModule',
                     'rightName' => UsersModule::getAccessRight(),
             );
@@ -577,6 +578,22 @@
             echo CJSON::encode($autoCompleteResults);
         }
 
+        public function actionGameDashboard($id)
+        {
+            $user = User::getById(intval($id));
+            UserAccessUtil::resolveAccessingASystemUser($user);
+            $title               = Zurmo::t('HomeModule', 'Dashboard');
+            $breadcrumbLinks     = array(strval($user) => array('default/gameDashboard',  'id' => $id), $title);
+            $badgeData           = GameBadge::getAllByPersonIndexedByType($user);
+            $generalLevelData    = GameLevelUtil::getStatisticsDataForAGivenLevelType($user, GameLevel::TYPE_GENERAL);
+            $rankingData         = GamePointUtil::getUserRankingData($user);
+            $statisticsData      = GameLevelUtil::getUserStatisticsData($user);
+            $collectionData      = GameCollection::resolvePersonAndAvailableTypes($user, GameCollection::getAvailableTypes());
+            $dashboardView = new UserGameDashboardView($this, $user, $generalLevelData, $badgeData, $rankingData, $statisticsData, $collectionData);
+            $view = new AjaxPageView($dashboardView);
+            echo $view->render();
+        }
+
         /**
          * Depending on the user interface, the user views should utilize the admin or regular view.  This especially
          * important for mobile, since for mobile there are no admin views available yet.
@@ -637,6 +654,20 @@
         protected function resolveStateMetadataAdapterClassNameForExport()
         {
             return 'NonSystemUsersStateMetadataAdapter';
+        }
+        /**
+         * Displays the modal list for selecting owner for the task
+         */
+        public function actionOwnerModalListForTask()
+        {
+            $modalListLinkProvider = new TaskSelectFromRelatedListModalListLinkProvider(
+                                            $_GET['modalTransferInformation']['sourceIdFieldId'],
+                                            $_GET['modalTransferInformation']['sourceNameFieldId'],
+                                            $_GET['modalTransferInformation']['attribute'],
+                                            $_GET['modalTransferInformation']['sourceModelId'],
+                                            $_GET['modalTransferInformation']['modalId']
+            );
+            echo ModalSearchListControllerUtil::setAjaxModeAndRenderModalSearchList($this, $modalListLinkProvider);
         }
     }
 ?>

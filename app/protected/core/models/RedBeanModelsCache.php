@@ -56,13 +56,13 @@
         {
             assert('is_string($modelIdentifier)');
             assert('$modelIdentifier != ""');
-            if (PHP_CACHING_ON && isset(self::$modelIdentifiersToModels[$modelIdentifier]))
+            if (static::supportsAndAllowsPhpCaching() && isset(static::$modelIdentifiersToModels[$modelIdentifier]))
             {
-                return self::$modelIdentifiersToModels[$modelIdentifier];
+                return static::$modelIdentifiersToModels[$modelIdentifier];
             }
-            if (MEMCACHE_ON && Yii::app()->cache !== null)
+            if (static::supportsAndAllowsMemcache())
             {
-                $prefix = self::getCachePrefix($modelIdentifier, self::$cacheType);
+                $prefix = static::getCachePrefix($modelIdentifier, static::$cacheType);
                 $cachedData = Yii::app()->cache->get($prefix . $modelIdentifier);
                 if ($cachedData === false)
                 {
@@ -89,7 +89,7 @@
                     }
                 }
                 assert('$model instanceof RedBeanModel');
-                self::$modelIdentifiersToModels[$modelIdentifier] = $model;
+                static::$modelIdentifiersToModels[$modelIdentifier] = $model;
                 return $model;
             }
             throw new NotFoundException();
@@ -102,19 +102,19 @@
         public static function cacheModel(RedBeanModel $model)
         {
             $modelIdentifier = $model->getModelIdentifier();
-            if (PHP_CACHING_ON)
+            if (static::supportsAndAllowsPhpCaching())
             {
-                self::$modelIdentifiersToModels[$modelIdentifier] = $model;
-                if (count(self::$modelIdentifiersToModels) > self::MAX_MODELS_CACHED_IN_MEMORY)
+                static::$modelIdentifiersToModels[$modelIdentifier] = $model;
+                if (count(static::$modelIdentifiersToModels) > static::MAX_MODELS_CACHED_IN_MEMORY)
                 {
-                    self::$modelIdentifiersToModels = array_slice(self::$modelIdentifiersToModels,
-                                                                  count(self::$modelIdentifiersToModels) -
-                                                                    self::MAX_MODELS_CACHED_IN_MEMORY);
+                    static::$modelIdentifiersToModels = array_slice(static::$modelIdentifiersToModels,
+                                                                  count(static::$modelIdentifiersToModels) -
+                                                                    static::MAX_MODELS_CACHED_IN_MEMORY);
                 }
             }
-            if (MEMCACHE_ON && Yii::app()->cache !== null)
+            if (static::supportsAndAllowsMemcache())
             {
-                $prefix = self::getCachePrefix($modelIdentifier, self::$cacheType);
+                $prefix = static::getCachePrefix($modelIdentifier, static::$cacheType);
 
                 $serializedModel = serialize($model);
                 $checksum  = YII_DEBUG ? crc32($serializedModel) : 0;
@@ -129,18 +129,18 @@
         public static function forgetModel(RedBeanModel $model)
         {
             $modelIdentifier = $model->getModelIdentifier();
-            self::forgetModelByIdentifier($modelIdentifier);
+            static::forgetModelByIdentifier($modelIdentifier);
         }
 
         public static function forgetModelByIdentifier($modelIdentifier)
         {
-            if (PHP_CACHING_ON)
+            if (static::supportsAndAllowsPhpCaching())
             {
-                unset(self::$modelIdentifiersToModels[$modelIdentifier]);
+                unset(static::$modelIdentifiersToModels[$modelIdentifier]);
             }
-            if (MEMCACHE_ON && Yii::app()->cache !== null)
+            if (static::supportsAndAllowsMemcache())
             {
-                $prefix = self::getCachePrefix($modelIdentifier, self::$cacheType);
+                $prefix = static::getCachePrefix($modelIdentifier, static::$cacheType);
                 Yii::app()->cache->delete($prefix . $modelIdentifier);
             }
         }
@@ -153,13 +153,13 @@
          */
         public static function forgetAll($onlyForgetPhpCache = false)
         {
-            if (PHP_CACHING_ON)
+            if (static::supportsAndAllowsPhpCaching())
             {
-                self::$modelIdentifiersToModels = array();
+                static::$modelIdentifiersToModels = array();
             }
-            if (!$onlyForgetPhpCache && MEMCACHE_ON && Yii::app()->cache !== null)
+            if (!$onlyForgetPhpCache &&  static::supportsAndAllowsMemcache())
             {
-                self::incrementCacheIncrementValue(static::$cacheType);
+                static::incrementCacheIncrementValue(static::$cacheType);
                 //@Yii::app()->cache->flush();
             }
         }
@@ -171,7 +171,7 @@
         public static function forgetAllByModelType($modelClassName)
         {
             assert('is_string($modelClassName)');
-            self::forgetAll();
+            static::forgetAll();
         }
 
         /**
@@ -179,7 +179,7 @@
          */
         public static function forgetAllModelIdentifiersToModels()
         {
-            self::$modelIdentifiersToModels = array();
+            static::$modelIdentifiersToModels = array();
         }
     }
 ?>

@@ -48,5 +48,21 @@
                                 'type'          => Report::TYPE_ROWS_AND_COLUMNS,
                             ));
         }
+
+        protected function getSourceUrlForSelectLink()
+        {
+            return '/reports/default/modalList';
+        }
+
+        protected function getSelectLinkUrlParams()
+        {
+            return CMap::mergeArray(parent::getSelectLinkUrlParams(), array('stateMetadataAdapterClassName' => 'ContactsAndLeadsMarketingListsStateMetadataAdapter'));
+        }
+
+        protected function getModalTitleForSelectingModel()
+        {
+            return Zurmo::t('MarketingListsModule', 'From ReportsModuleSingularLabel',
+                                LabelUtil::getTranslationParamsForAllModules());
+        }
     }
 ?>

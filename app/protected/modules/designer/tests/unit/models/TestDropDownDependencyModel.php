@@ -41,16 +41,16 @@
             $metadata = parent::getDefaultMetadata();
             $metadata[__CLASS__] = array(
                 'relations' => array(
-                    'something1'         => array(RedBeanModel::HAS_ONE, 'OwnedCustomField', RedBeanModel::OWNED,
-                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'something1'),
-                    'something2'         => array(RedBeanModel::HAS_ONE, 'OwnedCustomField', RedBeanModel::OWNED,
-                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'something2'),
-                    'something3'         => array(RedBeanModel::HAS_ONE, 'OwnedCustomField', RedBeanModel::OWNED,
-                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'something3'),
-                    'something4'         => array(RedBeanModel::HAS_ONE, 'OwnedCustomField', RedBeanModel::OWNED,
-                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'something4'),
-                    'multipleIndustries' => array(RedBeanModel::HAS_ONE, 'MultipleValuesCustomField', RedBeanModel::NOT_OWNED,
-                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'multipleIndustries'),
+                    'something1'         => array(static::HAS_ONE, 'OwnedCustomField', static::OWNED,
+                                                static::LINK_TYPE_SPECIFIC, 'something1'),
+                    'something2'         => array(static::HAS_ONE, 'OwnedCustomField', static::OWNED,
+                                                static::LINK_TYPE_SPECIFIC, 'something2'),
+                    'something3'         => array(static::HAS_ONE, 'OwnedCustomField', static::OWNED,
+                                                static::LINK_TYPE_SPECIFIC, 'something3'),
+                    'something4'         => array(static::HAS_ONE, 'OwnedCustomField', static::OWNED,
+                                                static::LINK_TYPE_SPECIFIC, 'something4'),
+                    'multipleIndustries' => array(static::HAS_ONE, 'MultipleValuesCustomField', static::NOT_OWNED,
+                                                static::LINK_TYPE_SPECIFIC, 'multipleIndustries'),
                 ),
                 'customFields' => array(
                     'something1'           => 'Something1',

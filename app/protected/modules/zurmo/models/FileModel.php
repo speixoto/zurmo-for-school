@@ -46,7 +46,7 @@
                     'type',
                 ),
                 'relations' => array(
-                    'fileContent' => array(RedBeanModel::HAS_ONE,  'FileContent', RedBeanModel::OWNED),
+                    'fileContent' => array(static::HAS_ONE,  'FileContent', static::OWNED),
                 ),
                 'rules' => array(
                     array('fileContent', 'required'),
@@ -98,6 +98,20 @@
             {
                 return false;
             }
+        }
+
+        protected function beforeDelete()
+        {
+            $where = "filecontent_id = '" . $this->fileContent->id . "'";
+            if (count(static::getSubsetIds(null, null, null, $where)) == 1)
+            {
+                $fileContent = FileContent::getById($this->fileContent->id);
+                if (!$fileContent->delete())
+                {
+                    return false;
+                }
+            }
+            return parent::beforeDelete();
         }
     }
 ?>

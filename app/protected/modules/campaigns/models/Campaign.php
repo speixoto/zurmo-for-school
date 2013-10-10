@@ -188,25 +188,26 @@
                     array('fromAddress',            'required'),
                     array('fromAddress',            'type', 'type' => 'string'),
                     array('fromAddress',            'length',  'min'  => 6, 'max' => 64),
-                    array('fromAddress',            'email', 'except' => 'autoBuildDatabase'),
+                    array('fromAddress',            'email'),
                     array('subject',                'required'),
                     array('subject',                'type',    'type' => 'string'),
                     array('subject',                'length',  'min'  => 3, 'max' => 64),
                     array('htmlContent',            'type',    'type' => 'string'),
                     array('textContent',            'type',    'type' => 'string'),
+                    array('htmlContent',            'StripDummyHtmlContentFromOtherwiseEmptyFieldValidator'),
                     array('htmlContent',            'AtLeastOneContentAreaRequiredValidator'),
                     array('textContent',            'AtLeastOneContentAreaRequiredValidator'),
-                    array('htmlContent',            'CampaignMergeTagsValidator', 'except' => 'autoBuildDatabase'),
-                    array('textContent',            'CampaignMergeTagsValidator', 'except' => 'autoBuildDatabase'),
+                    array('htmlContent',            'CampaignMergeTagsValidator'),
+                    array('textContent',            'CampaignMergeTagsValidator'),
                     array('enableTracking',         'boolean'),
                     array('enableTracking',         'default', 'value' => false),
                     array('marketingList',          'required'),
                 ),
                 'relations' => array(
-                    'campaignItems'     => array(RedBeanModel::HAS_MANY, 'CampaignItem'),
-                    'marketingList'     => array(RedBeanModel::HAS_ONE, 'MarketingList', RedBeanModel::NOT_OWNED),
-                    'files'             => array(RedBeanModel::HAS_MANY,  'FileModel', RedBeanModel::OWNED,
-                                                RedBeanModel::LINK_TYPE_POLYMORPHIC, 'relatedModel'),
+                    'campaignItems'     => array(static::HAS_MANY, 'CampaignItem'),
+                    'marketingList'     => array(static::HAS_ONE, 'MarketingList', static::NOT_OWNED),
+                    'files'             => array(static::HAS_MANY,  'FileModel', static::OWNED,
+                                                static::LINK_TYPE_POLYMORPHIC, 'relatedModel'),
                 ),
                 'elements' => array(
                     'marketingList'    => 'MarketingList',
@@ -253,6 +254,31 @@
         {
             // TODO: @Shoaibi/@Jason: Medium: We should have overriden getErrors' original code but this was easier.
             return $this->attributeNameToErrors;
+        }
+
+        public function beforeValidate()
+        {
+            $this->validateHtmlOnly();
+            return parent::beforeValidate();
+        }
+
+        protected function validateHtmlOnly()
+        {
+            if ($this->supportsRichText && empty($this->htmlContent))
+            {
+                $errorMessage = Zurmo::t('CampaignsModule', 'You choose to support HTML but didn\'t set any HTML content.');
+                $this->addError('htmlContent',
+                    Zurmo::t('CampaignsModule', $errorMessage));
+                return false;
+            }
+            if (!$this->supportsRichText && empty($this->textContent))
+            {
+                $errorMessage = Zurmo::t('CampaignsModule', 'You choose not to support HTML but didn\'t set any text content.');
+                $this->addError('textContent',
+                    Zurmo::t('CampaignsModule', $errorMessage));
+                return false;
+            }
+            return true;
         }
     }
 ?>

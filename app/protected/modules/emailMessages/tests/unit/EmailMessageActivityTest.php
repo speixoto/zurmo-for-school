@@ -59,6 +59,16 @@
             $emailMessageActivity = EmailMessageActivity::getById($id);
             $this->assertEquals(EmailMessageActivity::TYPE_OPEN     ,   $emailMessageActivity->type);
             $this->assertEquals(10                                  ,   $emailMessageActivity->quantity);
+
+            //Skip activities
+            $emailMessageActivity           = new EmailMessageActivity();
+            $emailMessageActivity->type     = EmailMessageActivity::TYPE_SKIP;
+            $emailMessageActivity->quantity = 1;
+            $this->assertTrue($emailMessageActivity->save());
+            $emailMessageActivity           = new EmailMessageActivity();
+            $emailMessageActivity->type     = EmailMessageActivity::TYPE_SKIP_NO_EMAIL_MESSAGE;
+            $emailMessageActivity->quantity = 1;
+            $this->assertTrue($emailMessageActivity->save());
         }
 
         /**
@@ -99,10 +109,24 @@
             $this->assertCount(1, $emailMessageActivities);
             $emailMessageActivities = EmailMessageActivity::getByType(EmailMessageActivity::TYPE_CLICK);
             $this->assertCount(1, $emailMessageActivities);
+            $emailMessageActivities = EmailMessageActivity::getByType(EmailMessageActivity::TYPE_SKIP);
+            $this->assertCount(2, $emailMessageActivities);
+            $emailMessageActivities = EmailMessageActivity::getByType(EmailMessageActivity::TYPE_SKIP_NO_EMAIL_MESSAGE);
+            $this->assertCount(1, $emailMessageActivities);
         }
 
         /**
          * @depends testCreateAndGetEmailMessageActivityById
+         */
+        public function testGetSkippedDescription()
+        {
+            $emailMessageActivities = EmailMessageActivity::getByType(EmailMessageActivity::TYPE_SKIP_NO_EMAIL_MESSAGE);
+            $this->assertEquals('Message activity was skipped because there were no recipients for the message.',
+                                $emailMessageActivities[0]->getSkippedDescription());
+        }
+
+        /**
+         * @depends testGetSkippedDescription
          */
         public function testGetLabel()
         {
@@ -118,10 +142,10 @@
         public function testDeleteEmailMessageActivity()
         {
             $emailMessageActivities = EmailMessageActivity::getAll();
-            $this->assertCount(2, $emailMessageActivities);
+            $this->assertCount(4, $emailMessageActivities);
             $emailMessageActivities[0]->delete();
             $emailMessageActivities = EmailMessageActivity::getAll();
-            $this->assertEquals(1, count($emailMessageActivities));
+            $this->assertEquals(3, count($emailMessageActivities));
         }
 
         /**
@@ -130,7 +154,7 @@
         public function testEmailMessageActivityStringValue()
         {
             $emailMessageActivities = EmailMessageActivity::getAll();
-            $this->assertCount(1, $emailMessageActivities);
+            $this->assertCount(3, $emailMessageActivities);
             $types  = EmailMessageActivity::getTypesArray();
             $type   = $types[$emailMessageActivities[0]->type];
             $expectedStringValue = $emailMessageActivities[0]->latestDateTime . ': ' .

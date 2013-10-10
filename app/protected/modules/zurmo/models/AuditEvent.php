@@ -47,13 +47,13 @@
         public static function getSinceDate($date)
         {
             assert('DateTimeUtil::isValidDbFormattedDate($date)');
-            return self::makeModels($beans = R::find('auditevent', "datetime >= '$date 00-00-00'"));
+            return self::makeModels($beans = ZurmoRedBean::find('auditevent', "datetime >= '$date 00-00-00'"));
         }
 
         public static function getSinceDateTime($dateTime)
         {
             assert('DateTimeUtil::isValidDbFormattedDateTime($dateTime)');
-            return self::makeModels($beans = R::find('auditevent', "datetime >= '$dateTime'"));
+            return self::makeModels($beans = ZurmoRedBean::find('auditevent', "datetime >= '$dateTime'"));
         }
 
         public static function getTailEvents($count)
@@ -66,8 +66,8 @@
                          order by id desc
                          limit    $count) as temp
                     order by id";
-            $ids   = R::getCol($sql);
-            $beans = R::batch ('auditevent', $ids);
+            $ids   = ZurmoRedBean::getCol($sql);
+            $beans = ZurmoRedBean::batch ('auditevent', $ids);
             return self::makeModels($beans, __CLASS__);
         }
 
@@ -79,8 +79,8 @@
                     from ( select id, modelclassname, modelid, datetime from auditevent where _user_id = {$user->id}
                     AND eventname = '{$eventName}' order by id desc ) auditevent
                     group by concat(modelclassname, modelid) order by datetime desc limit $count";
-            $ids   = R::getCol($sql);
-            $beans = R::batch ('auditevent', $ids);
+            $ids   = ZurmoRedBean::getCol($sql);
+            $beans = ZurmoRedBean::batch ('auditevent', $ids);
             return self::makeModels($beans, __CLASS__);
         }
 
@@ -110,10 +110,8 @@
                         deleteModelFromRecentlyViewed($modelClassName::getModuleClassName(),
                                                       $model);
             }
-            if (!AuditEvent::$isTableOptimized && (!AUDITING_OPTIMIZED || !RedBeanDatabase::isFrozen()))
+            if (!AuditEvent::$isTableOptimized && !AUDITING_OPTIMIZED)
             {
-                $tableName  = self::getTableName('AuditEvent');
-                RedBeanColumnTypeOptimizer::optimize($tableName, strtolower('modelId'), 'id');
                 $auditEvent = new AuditEvent();
                 $auditEvent->dateTime       = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
                 $auditEvent->moduleName     = $moduleName;
@@ -141,7 +139,7 @@
                                 ($model !== null ? "'" . get_class($model) . "', " : 'null, ') .
                                 ($model !== null ? "{$model->id}, "                 : 'null, ') .
                                 ":data)";
-                R::exec($sql, array('data' => serialize($data))) !== null;
+                ZurmoRedBean::exec($sql, array('data' => serialize($data))) !== null;
                 $saved = true;
             }
             return $saved;
@@ -184,7 +182,7 @@
                     'serializedData',
                 ),
                 'relations' => array(
-                    'user' => array(RedBeanModel::HAS_ONE,  'User'),
+                    'user' => array(static::HAS_ONE,  'User'),
                 ),
                 'rules' => array(
                     array('dateTime',       'required'),

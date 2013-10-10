@@ -83,5 +83,16 @@
             }
             return $eventHandlerName;
         }
+
+        public function render()
+        {
+            $content  = ZurmoHtml::openTag('div', array('class' => 'default-button'));
+            $label    = ZurmoHtml::tag('i', array('class' => $this->params['iconClass']), null);
+            $label   .= ZurmoHtml::tag('span', array('class' => 'button-label'), $this->getLabel());
+            $content .= ZurmoHtml::ajaxlink($label, $this->route, $this->getAjaxOptions(), $this->getHtmlOptions());
+            $content .= ZurmoHtml::closeTag('div');
+            return $content;
+
+        }
     }
 ?>

@@ -119,18 +119,16 @@
             $content .= $this->renderRequiredAttributesLabelsDataContent();
             $content .= '<table>';
             $content .= '<colgroup>';
-            if (count($headerColumns) == 4)
+            if (count($headerColumns) == 3)
             {
-                $content .= '<col style="width:20%" />';
-                $content .= '<col style="width:20%" />';
+                $content .= '<col style="width:50%" />';
                 $content .= '<col style="width:25%" />';
-                $content .= '<col style="width:35%" />';
+                $content .= '<col style="width:25%" />';
             }
             else
             {
-                $content .= '<col style="width:20%" />';
-                $content .= '<col style="width:25%" />';
-                $content .= '<col style="width:55%" />';
+                $content .= '<col style="width:80%" />';
+                $content .= '<col style="width:20%" />';                
             }
             $content .= '</colgroup>';
             $content .= '<tbody>';
@@ -178,7 +176,6 @@
             }
             $headerColumns[] = '<div id="' . MappingFormLayoutUtil::getSampleColumnHeaderId() . '">' .
                                $this->sampleColumnPagerContent . '</div>';
-            $headerColumns[] = Zurmo::t('ImportModule', 'Rules');
             return $headerColumns;
         }
 
@@ -203,11 +200,20 @@
                 assert('$mappingDataRow["type"] == "importColumn" || $mappingDataRow["type"] == "extraColumn"');
                 $row          = array();
                 $row['cells'] = array();
-                $row['cells'][] = $mappingFormLayoutUtil->renderAttributeAndColumnTypeContent(
+                $firstCell    = $mappingFormLayoutUtil->renderAttributeAndColumnTypeContent(
                                                                        $columnName,
                                                                        $mappingDataRow['type'],
                                                                        $mappingDataRow['attributeIndexOrDerivedType'],
                                                                        $ajaxOnChangeUrl);
+                
+                $firstCell   .= $mappingFormLayoutUtil->renderMappingRulesElements(
+                                      $columnName,
+                                      $mappingDataRow['attributeIndexOrDerivedType'],
+                                      $importRulesType,
+                                      $mappingDataRow['type'],
+                                      $this->resolveMappingRuleFormsAndElementTypesByColumn($columnName));
+                $row['cells'][] = $firstCell;
+                        
                 if ($firstRowIsHeaderRow)
                 {
                     assert('$mappingDataRow["headerValue"] == null || is_string($mappingDataRow["headerValue"])');
@@ -215,13 +221,7 @@
                                                                                     $mappingDataRow['headerValue']);
                 }
                 $row['cells'][] = $mappingFormLayoutUtil->renderImportColumnContent ($columnName,
-                                                                                 $mappingDataRow['sampleValue']);
-                $row['cells'][] = $mappingFormLayoutUtil->renderMappingRulesElements(
-                                      $columnName,
-                                      $mappingDataRow['attributeIndexOrDerivedType'],
-                                      $importRulesType,
-                                      $mappingDataRow['type'],
-                                      $this->resolveMappingRuleFormsAndElementTypesByColumn($columnName));
+                                                                                 $mappingDataRow['sampleValue']);                
                 $metadata['rows'][] = $row;
             }
             return $metadata;

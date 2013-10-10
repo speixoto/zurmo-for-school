@@ -107,13 +107,31 @@
             else
             {
                 AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED, array(strval($contact), 'LeadsModule'), $contact);
-                $breadCrumbView          = StickySearchUtil::resolveBreadCrumbViewForDetailsControllerAction($this, 'LeadsSearchView', $contact);
-                $detailsAndRelationsView = $this->makeDetailsAndRelationsView($contact, 'LeadsModule',
-                                                                              'LeadDetailsAndRelationsView',
-                                                                              Yii::app()->request->getRequestUri(),
-                                                                              $breadCrumbView);
-                $view = new LeadsPageView(ZurmoDefaultViewUtil::
-                                         makeStandardViewForCurrentUser($this, $detailsAndRelationsView));
+                $getData                 = GetUtil::getData();
+                $isKanbanBoardInRequest  = ArrayUtil::getArrayValue($getData, 'kanbanBoard');
+                if ($isKanbanBoardInRequest == 0 || $isKanbanBoardInRequest == null || Yii::app()->userInterface->isMobile() === true)
+                {
+                    $breadCrumbView          = StickySearchUtil::resolveBreadCrumbViewForDetailsControllerAction($this, 'LeadsSearchView', $contact);
+                    $detailsAndRelationsView = $this->makeDetailsAndRelationsView($contact, 'LeadsModule',
+                                                                                  'LeadDetailsAndRelationsView',
+                                                                                  Yii::app()->request->getRequestUri(),
+                                                                                  $breadCrumbView);
+                    $view = new LeadsPageView(ZurmoDefaultViewUtil::
+                                             makeStandardViewForCurrentUser($this, $detailsAndRelationsView));
+                }
+                else
+                {
+                    $kanbanItem   = new KanbanItem();
+                    $kanbanBoard  = new TaskKanbanBoard($kanbanItem, 'type', $contact, get_class($contact));
+                    $kanbanBoard->setIsActive();
+                    $params['relationModel']    = $contact;
+                    $params['relationModuleId'] = $this->getModule()->getId();
+                    $params['redirectUrl']      = null;
+                    $listView     = new TasksForLeadKanbanView($this->getId(),
+                                                                      'tasks', 'Task', null, $params, null, array(), $kanbanBoard);
+                    $view         = new LeadsPageView(ZurmoDefaultViewUtil::
+                                                                makeStandardViewForCurrentUser($this, $listView));
+                }
                 echo $view->render();
             }
         }

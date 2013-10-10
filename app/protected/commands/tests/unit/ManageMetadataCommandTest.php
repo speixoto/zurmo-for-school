@@ -48,7 +48,7 @@
             Yii::app()->user->userModel = $super;
             $this->assertTrue(ContactsModule::loadStartingData());
             $messageLogger              = new MessageLogger();
-            InstallUtil::autoBuildDatabase($messageLogger);
+            InstallUtil::autoBuildDatabase($messageLogger, true);
 
             chdir(COMMON_ROOT . DIRECTORY_SEPARATOR . 'protected' . DIRECTORY_SEPARATOR . 'commands');
             $command = "php zurmocTest.php manageMetadata super saveAllMetadata";
@@ -60,17 +60,17 @@
             exec($command, $output);
 
             // Check if data are saved for some specific View
-            $moduleMetadata = R::getRow("SELECT * FROM globalmetadata WHERE classname='NotesModule'");
+            $moduleMetadata = ZurmoRedBean::getRow("SELECT * FROM globalmetadata WHERE classname='NotesModule'");
             $this->assertTrue($moduleMetadata['id'] > 0);
             $this->assertTrue(strlen($moduleMetadata['serializedmetadata']) > 0);
 
             // Check if data are saved for some specific View
-            $modelMetadata = R::getRow("SELECT * FROM globalmetadata WHERE classname='Note'");
+            $modelMetadata = ZurmoRedBean::getRow("SELECT * FROM globalmetadata WHERE classname='Note'");
             $this->assertTrue($modelMetadata['id']> 0);
             $this->assertTrue(strlen($modelMetadata['serializedmetadata']) > 0);
 
             // Check if data are saved for some specific View
-            $viewMetadata = R::getRow("SELECT * FROM globalmetadata WHERE classname='ContactsListView'");
+            $viewMetadata = ZurmoRedBean::getRow("SELECT * FROM globalmetadata WHERE classname='ContactsListView'");
             $this->assertTrue($viewMetadata['id'] > 0);
             $this->assertTrue(strlen($viewMetadata['serializedmetadata']) > 0);
         }

@@ -73,7 +73,7 @@
                     'value',
                 ),
                 'relations' => array(
-                    'currency' => array(RedBeanModel::HAS_ONE, 'Currency'),
+                    'currency' => array(static::HAS_ONE, 'Currency'),
                 ),
                 'rules' => array(
                     array('currency',    'required'),
@@ -102,7 +102,7 @@
         public static function isCurrencyInUseById($currencyId)
         {
             assert('is_int($currencyId)');
-            $columnName = RedBeanModel::getForeignKeyName('CurrencyValue', 'currency');
+            $columnName = static::getForeignKeyName('CurrencyValue', 'currency');
             $quote      = DatabaseCompatibilityUtil::getQuote();
             $where      = "{$quote}{$columnName}{$quote} = '{$currencyId}'";
             $count      = CurrencyValue::getCount(null, $where);
