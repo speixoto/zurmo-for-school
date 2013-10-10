@@ -108,7 +108,7 @@
                 //Log the event
                 if($this->relatedModel->project->id > 0)
                 {
-                    ProjectAuditEvent::logAuditEvent(ProjectAuditEvent::COMMENT_ADDED, $model->description, $this->relatedModel->project);
+                    ProjectsUtil::logAddCommentEvent($this->relatedModel, $model->description);
                 }
             }
         }

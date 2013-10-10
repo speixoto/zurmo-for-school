@@ -78,7 +78,14 @@
             $projectAuditEvent->project        = $project;
             $projectAuditEvent->serializedData = serialize($data);
             $saved                             = $projectAuditEvent->save();
-            return $saved;
+            if($saved)
+            {
+                return true;
+            }
+            else
+            {
+                throw new FailedToSaveModelException();
+            }
         }
 
         /**

@@ -46,10 +46,10 @@
         {
             $projectNameTemplate       = '<strong><i>{projectname}</i></strong>';
             $userNameTemplate          = '<strong>{username}</strong>';
-            $taskNameTemplate          = '<strong>{data}</strong>';
-            $commentTemplate           = '<strong>{data}</strong>';
-            $statusTemplate            = '<strong>{data}</strong>';
-            $taskCheckListItemTemplate = '<strong>{data}</strong>';
+            $taskNameTemplate          = '<strong>added task "{taskname}"</strong>';
+            $commentTemplate           = '<strong>added comment "{comment}"</strong>';
+            $statusTemplate            = '<strong>changed status from "{fromstatus} to {tostatus}"</strong>';
+            $taskCheckListItemTemplate = '<strong>added checklist item "{taskcheckitemname} in Task {taskname}"</strong>';
             $logMessageTemplates = array(
                 ProjectAuditEvent::PROJECT_CREATED         => $projectNameTemplate  . ' ' .
                                                                 'is added by user ' .
@@ -59,20 +59,16 @@
                                                                 $userNameTemplate,
                 ProjectAuditEvent::TASK_STATUS_CHANGED     => $projectNameTemplate  . ' ' .
                                                                 $userNameTemplate  . ' ' .
-                                                                'changed status from "' .
-                                                                $statusTemplate . '"',
+                                                                $statusTemplate,
                 ProjectAuditEvent::TASK_ADDED              => $projectNameTemplate  . ' ' .
                                                                 $userNameTemplate  . ' ' .
-                                                                'added task "' .
-                                                                $taskNameTemplate . '"',
+                                                                $taskNameTemplate,
                 ProjectAuditEvent::COMMENT_ADDED           => $projectNameTemplate  . ' ' .
                                                                 $userNameTemplate  . ' ' .
-                                                                'added comment "' .
                                                                 $commentTemplate . '"',
                 ProjectAuditEvent::CHECKLIST_ITEM_ADDED    => $projectNameTemplate  . ' ' .
                                                                 $userNameTemplate  . ' ' .
-                                                                'added checklist item "' .
-                                                                $taskCheckListItemTemplate . '"'
+                                                                $taskCheckListItemTemplate
 
             );
             return $logMessageTemplates;
@@ -99,25 +95,25 @@
         public static function getFeedInformationForDashboard(ProjectAuditEvent $projectAuditEvent)
         {
             assert('$projectAuditEvent instanceof ProjectAuditEvent');
-            $project = Project::getById(intval($projectAuditEvent->project->id));
-            $projectName = ZurmoHtml::link($project->name, Yii::app()->createUrl('projects/default/details', array('id' => $project->id)));
-            $content = null;
-            $user    = User::getById($projectAuditEvent->user->id);
+            $project        = Project::getById(intval($projectAuditEvent->project->id));
+            $projectName    = ZurmoHtml::link($project->name, Yii::app()->createUrl('projects/default/details', array('id' => $project->id)));
+            $user           = User::getById($projectAuditEvent->user->id);
             $unserializedData  = unserialize($projectAuditEvent->serializedData);
 
             if($projectAuditEvent->eventName == ProjectAuditEvent::PROJECT_CREATED
                                     || $projectAuditEvent->eventName == ProjectAuditEvent::PROJECT_ARCHIVED)
             {
-                $content .= self::getLogMessageByProjectEvent($projectAuditEvent->eventName, $projectName, $user->getFullName());
+                $messageData = self::getLogMessageByProjectEvent($projectAuditEvent->eventName, $projectName, $user->getFullName());
             }
             else
             {
-                $content .= self::getLogMessageByProjectDataEvent($projectAuditEvent->eventName, $projectName, $user->getFullName(), $unserializedData);
+                $messageData = self::getLogMessageByProjectDataEvent($projectAuditEvent->eventName, $projectName, $user->getFullName(), $unserializedData);
             }
 
-            $timeDiff = DateTimeUtil::getTimeDifferenceForLogEvent('ProjectsModule', $projectAuditEvent->dateTime);
-            $content .=  '<small> about ' . $timeDiff . ' ago</small>';
-            return Zurmo::t('ProjectsModule', $content);
+            $timeDiff     = DateTimeUtil::getTimeDifferenceForLogEvent('ProjectsModule', $projectAuditEvent->dateTime);
+            $message      =  $messageData['message'] . '<small> about {time} ago</small>';
+            $messageData['data']['{time}'] = $timeDiff;
+            return Zurmo::t('ProjectsModule', $message, $messageData['data']);
         }
 
         /**
@@ -144,9 +140,9 @@
             assert('is_string($event)');
             assert('is_string($projectName)');
             assert('is_string($userFullName)');
-            return str_replace(array('{projectname}', '{username}'),
-                                            array($projectName, $userFullName),
-                                            $messageTemplates[$event]);
+            $message    = $messageTemplates[$event];
+            $data = array('{projectname}' => $projectName, '{username}' => $userFullName);
+            return array('message' => $message, 'data' => $data);
         }
 
         /**
@@ -164,9 +160,9 @@
             assert('is_string($event)');
             assert('is_string($projectName)');
             assert('is_string($userFullName)');
-            return str_replace(array('{projectname}', '{data}', '{username}'),
-                                            array($projectName, $data, $userFullName),
-                                            $messageTemplates[$event]);
+            $message    = $messageTemplates[$event];
+            $data = array_merge(array('{projectname}' => $projectName, '{username}' => $userFullName), $data);
+            return array('message' => $message, 'data' => $data);
         }
     }
 ?>
