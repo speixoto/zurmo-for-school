@@ -166,9 +166,6 @@
             $this->assertEquals('smtp', $emailHelper->outboundType);
             $this->assertEquals(25, $emailHelper->outboundPort);
             $this->assertEquals('xxx', $emailHelper->outboundHost);
-            //$this->assertNull($emailHelper->outboundUsername);
-            //$this->assertNull($emailHelper->outboundPassword);
-            //$this->assertNull($emailHelper->outboundSecurity);
             $this->assertEquals($emailHelper->defaultTestToAddress, $emailHelper->fromAddress);
             $this->assertEquals(strval($billy), $emailHelper->fromName);
 
@@ -215,7 +212,19 @@
                     'Raw content', ',b>html content</b>end.', // Not Coding Standard
                     'Zurmo', Yii::app()->emailHelper->outboundUsername,
                     'Ivica', Yii::app()->params['emailTestAccounts']['userImapSettings']['imapUsername']);
-
+                
+                $filesIds = array();
+                $fileTxt = ZurmoTestHelper::createFileModel('testNote.txt', 'FileModel');
+                $filesIds[] = $fileTxt->id;
+                $filePng = ZurmoTestHelper::createFileModel('testImage.png', 'FileModel');
+                $filesIds[] = $filePng->id;
+                $fileZip = ZurmoTestHelper::createFileModel('testZip.zip', 'FileModel');
+                $filesIds[] = $fileZip->id;
+                $filePdf = ZurmoTestHelper::createFileModel('testPDF.pdf', 'FileModel');
+                $filesIds[] = $filePdf->id;
+                EmailMessageUtil::attachFilesToMessage($filesIds, $emailMessage);
+                $this->assertEquals('4', count($emailMessage->files));
+                
                 Yii::app()->imap->connect();
                 $imapStats = Yii::app()->imap->getMessageBoxStatsDetailed();
                 $this->assertEquals(0, $imapStats->Nmsgs);
