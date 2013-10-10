@@ -161,7 +161,10 @@
                     $userCanAccessContacts,
                     $userCanAccessLeads,
                     $userCanAccessAccounts);
-            $sender->personOrAccount = $personOrAccount;
+            if ($personOrAccount !== null)
+            {
+                $sender->personOrAccount->add($personOrAccount);
+            }
             return $sender;
         }
 
@@ -186,7 +189,10 @@
                     $userCanAccessContacts,
                     $userCanAccessLeads,
                     $userCanAccessAccounts);
-            $recipient->personOrAccount = $personOrAccount;
+            if ($personOrAccount !== null)
+            {
+                $recipient->personOrAccount->add($personOrAccount);
+            }
             return $recipient;
         }
 
@@ -253,7 +259,7 @@
                 $sender = $this->createEmailMessageSender($senderInfo, $userCanAccessContacts,
                               $userCanAccessLeads, $userCanAccessAccounts);
 
-                if (empty($sender->personOrAccount) || $sender->personOrAccount->id <= 0)
+                if ($sender->personOrAccount->count() == 0)
                 {
                     $emailSenderOrRecipientEmailNotFoundInSystem = true;
                 }
@@ -285,7 +291,7 @@
                 // Check if at least one recipient email can't be found in Contacts, Leads, Account and User emails
                 // so we will save email message in EmailFolder::TYPE_ARCHIVED_UNMATCHED folder, and user will
                 // be able to match emails with items(Contacts, Accounts...) emails in systems
-                if (!(empty($recipient->personOrAccount) || $recipient->personOrAccount->id <= 0))
+                if ($recipient->personOrAccount->count() > 0)
                 {
                     $emailRecipientNotFoundInSystem = false;
                 }

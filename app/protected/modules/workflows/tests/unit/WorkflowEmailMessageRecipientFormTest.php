@@ -150,7 +150,7 @@
             $this->assertEquals(1, count($recipients));
             $this->assertEquals('someName'         , $recipients[0]->toName);
             $this->assertEquals('someone@zurmo.com', $recipients[0]->toAddress);
-            $this->assertTrue  ($recipients[0]->personOrAccount->id < 0);
+            $this->assertTrue  ($recipients[0]->personOrAccount->count() == 0);
         }
 
         public function testMakeRecipientsForStaticUser()
@@ -162,7 +162,7 @@
             $this->assertEquals(1, count($recipients));
             $this->assertEquals('bobby bobbyson' ,   $recipients[0]->toName);
             $this->assertEquals('bobby@zurmo.com',   $recipients[0]->toAddress);
-            $this->assertEquals(self::$bobbyUserId,  $recipients[0]->personOrAccount->id);
+            $this->assertEquals(self::$bobbyUserId,  $recipients[0]->personOrAccount[0]->id);
         }
 
         public function testMakeRecipientsForStaticRole()
@@ -180,10 +180,10 @@
             $this->assertEquals(2, count($recipients));
             $this->assertEquals('sarah sarahson' ,   $recipients[0]->toName);
             $this->assertEquals('sarah@zurmo.com',   $recipients[0]->toAddress);
-            $this->assertEquals(self::$sarahUserId,  $recipients[0]->personOrAccount->id);
+            $this->assertEquals(self::$sarahUserId,  $recipients[0]->personOrAccount[0]->id);
             $this->assertEquals('bobby bobbyson' ,   $recipients[1]->toName);
             $this->assertEquals('bobby@zurmo.com',   $recipients[1]->toAddress);
-            $this->assertEquals(self::$bobbyUserId,  $recipients[1]->personOrAccount->id);
+            $this->assertEquals(self::$bobbyUserId,  $recipients[1]->personOrAccount[0]->id);
         }
 
         public function testMakeRecipientsForStaticGroup()
@@ -201,10 +201,10 @@
             $this->assertEquals(2, count($recipients));
             $this->assertEquals('sarah sarahson' ,   $recipients[0]->toName);
             $this->assertEquals('sarah@zurmo.com',   $recipients[0]->toAddress);
-            $this->assertEquals(self::$sarahUserId,  $recipients[0]->personOrAccount->id);
+            $this->assertEquals(self::$sarahUserId,  $recipients[0]->personOrAccount[0]->id);
             $this->assertEquals('bobby bobbyson' ,   $recipients[1]->toName);
             $this->assertEquals('bobby@zurmo.com',   $recipients[1]->toAddress);
-            $this->assertEquals(self::$bobbyUserId,  $recipients[1]->personOrAccount->id);
+            $this->assertEquals(self::$bobbyUserId,  $recipients[1]->personOrAccount[0]->id);
         }
 
         public function testMakeRecipientsForDynamicTriggeredUser()
@@ -215,7 +215,7 @@
             $this->assertEquals(1, count($recipients));
             $this->assertEquals('bobby bobbyson' ,   $recipients[0]->toName);
             $this->assertEquals('bobby@zurmo.com',   $recipients[0]->toAddress);
-            $this->assertEquals(self::$bobbyUserId,  $recipients[0]->personOrAccount->id);
+            $this->assertEquals(self::$bobbyUserId,  $recipients[0]->personOrAccount[0]->id);
         }
 
         public function testMakeRecipientsForDynamicTriggeredModelUserCreatedByUser()
@@ -236,7 +236,7 @@
             $this->assertEquals(1, count($recipients));
             $this->assertEquals('bobby bobbyson' ,   $recipients[0]->toName);
             $this->assertEquals('bobby@zurmo.com',   $recipients[0]->toAddress);
-            $this->assertEquals(self::$bobbyUserId,  $recipients[0]->personOrAccount->id);
+            $this->assertEquals(self::$bobbyUserId,  $recipients[0]->personOrAccount[0]->id);
         }
 
         public function testMakeRecipientsForDynamicTriggeredModelUserManagerOfCreatedByUser()
@@ -257,7 +257,7 @@
             $this->assertEquals(1, count($recipients));
             $this->assertEquals('bobbyBoss bobbyBossson', $recipients[0]->toName);
             $this->assertEquals('bobbyBoss@zurmo.com',   $recipients[0]->toAddress);
-            $this->assertEquals(self::$bobbyBossUserId,   $recipients[0]->personOrAccount->id);
+            $this->assertEquals(self::$bobbyBossUserId,   $recipients[0]->personOrAccount[0]->id);
         }
 
         public function testMakeRecipientsForDynamicTriggeredModelUserModifiedByUser()
@@ -278,7 +278,7 @@
             $this->assertEquals(1, count($recipients));
             $this->assertEquals('sarah sarahson' ,  $recipients[0]->toName);
             $this->assertEquals('sarah@zurmo.com',  $recipients[0]->toAddress);
-            $this->assertEquals(self::$sarahUserId, $recipients[0]->personOrAccount->id);
+            $this->assertEquals(self::$sarahUserId, $recipients[0]->personOrAccount[0]->id);
         }
 
         public function testMakeRecipientsForDynamicTriggeredModelUserManagerOfModifiedByUser()
@@ -299,7 +299,7 @@
             $this->assertEquals(1, count($recipients));
             $this->assertEquals('sarahBoss sarahBossson', $recipients[0]->toName);
             $this->assertEquals('sarahBoss@zurmo.com',   $recipients[0]->toAddress);
-            $this->assertEquals(self::$sarahBossUserId,   $recipients[0]->personOrAccount->id);
+            $this->assertEquals(self::$sarahBossUserId,   $recipients[0]->personOrAccount[0]->id);
         }
 
         public function testMakeRecipientsForDynamicTriggeredModelUserOwner()
@@ -320,7 +320,7 @@
             $this->assertEquals(1, count($recipients));
             $this->assertEquals('Clark Kent' ,                   $recipients[0]->toName);
             $this->assertEquals('super@zurmo.com',               $recipients[0]->toAddress);
-            $this->assertEquals(Yii::app()->user->userModel->id, $recipients[0]->personOrAccount->id);
+            $this->assertEquals(Yii::app()->user->userModel->id, $recipients[0]->personOrAccount[0]->id);
         }
 
         public function testMakeRecipientsForDynamicTriggeredModelUserManagerOfOwner()
@@ -341,7 +341,7 @@
             $this->assertEquals(1, count($recipients));
             $this->assertEquals('superBoss superBossson' , $recipients[0]->toName);
             $this->assertEquals('superBoss@zurmo.com',    $recipients[0]->toAddress);
-            $this->assertEquals(self::$superBossUserId,    $recipients[0]->personOrAccount->id);
+            $this->assertEquals(self::$superBossUserId,    $recipients[0]->personOrAccount[0]->id);
         }
 
         public function testMakeRecipientsForDynamicTriggeredModel()
@@ -357,7 +357,7 @@
             $this->assertEquals(1, count($recipients));
             $this->assertEquals('Jason Blue' ,           $recipients[0]->toName);
             $this->assertEquals('jason@something.com',   $recipients[0]->toAddress);
-            $this->assertEquals($model->id,              $recipients[0]->personOrAccount->id);
+            $this->assertEquals($model->id,              $recipients[0]->personOrAccount[0]->id);
         }
 
         public function testMakeRecipientsForDynamicTriggeredModelRelation()
@@ -385,10 +385,10 @@
             $this->assertEquals(2, count($recipients));
             $this->assertEquals('Jason Blue' ,           $recipients[0]->toName);
             $this->assertEquals('jason@something.com',   $recipients[0]->toAddress);
-            $this->assertEquals($contact->id,            $recipients[0]->personOrAccount->id);
+            $this->assertEquals($contact->id,            $recipients[0]->personOrAccount[0]->id);
             $this->assertEquals('Laura Blue' ,           $recipients[1]->toName);
             $this->assertEquals('laura@something.com',   $recipients[1]->toAddress);
-            $this->assertEquals($contact2->id,           $recipients[1]->personOrAccount->id);
+            $this->assertEquals($contact2->id,           $recipients[1]->personOrAccount[0]->id);
         }
     }
 ?>

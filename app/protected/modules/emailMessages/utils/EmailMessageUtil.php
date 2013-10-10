@@ -89,7 +89,7 @@
             $sender                                 = new EmailMessageSender();
             $sender->fromName                       = $emailAccount->fromName;
             $sender->fromAddress                    = $emailAccount->fromAddress;
-            $sender->personOrAccount                = $userToSendMessagesFrom;
+            $sender->personOrAccount->add($userToSendMessagesFrom);
             $emailMessageForm->sender               = $sender;
             $emailMessageForm->account              = $emailAccount;
             $emailMessageForm->content->textContent = EmailMessageUtil::resolveTextContent(
@@ -112,13 +112,16 @@
         {
             assert('is_int($type)');
             $existingPersonsOrAccounts = array();
-            if ($emailMessage->recipients->count() >0)
+            if ($emailMessage->recipients->count() > 0)
             {
                 foreach ($emailMessage->recipients as $recipient)
                 {
-                    if ($recipient->personOrAccount != null && $recipient->personOrAccount->id > 0)
+                    foreach ($recipient->personOrAccount as $personOrAccount)
                     {
-                        $existingPersonsOrAccounts[] = $recipient->personOrAccount->getClassId('Item');
+                        if ($personOrAccount != null && $personOrAccount->id > 0)
+                        {
+                            $existingPersonsOrAccounts[] = $personOrAccount->getClassId('Item');
+                        }
                     }
                 }
             }
@@ -142,7 +145,7 @@
                                 if ($personOrAccount != null)
                                 {
                                     $messageRecipient->toName           = strval($personOrAccount);
-                                    $messageRecipient->personOrAccount  = $personOrAccount;
+                                    $messageRecipient->personOrAccount->add($personOrAccount);
                                     $existingPersonsOrAccounts[] = $personOrAccount->getClassId('Item');
                                 }
                                 $emailMessage->recipients->add($messageRecipient);
@@ -200,7 +203,7 @@
                 $messageRecipient->toName           = strval($personOrAccount);
                 $messageRecipient->toAddress        = $toAddress;
                 $messageRecipient->type             = EmailMessageRecipient::TYPE_TO;
-                $messageRecipient->personOrAccount  = $personOrAccount;
+                $messageRecipient->personOrAccount->add($personOrAccount);
                 $emailMessage->recipients->add($messageRecipient);
             }
         }

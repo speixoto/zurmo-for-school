@@ -76,16 +76,15 @@
                     'type',
                 ),
                 'relations' => array(
-                    'personOrAccount'      => array(RedBeanModel::HAS_ONE, 'Item',    RedBeanModel::NOT_OWNED,
-                                                    RedBeanModel::LINK_TYPE_SPECIFIC, 'personOrAccount')
+                    'personOrAccount' => array(RedBeanModel::MANY_MANY, 'Item', RedBeanModel::NOT_OWNED)
                 ),
                 'rules' => array(
                     array('toAddress', 'required'),
                     array('toAddress', 'email'),
                     array('toName',    'type',    'type' => 'string'),
                     array('toName',    'length',  'max' => 64),
-                    array('type',    'required'),
-                    array('type',    'type',    'type' => 'integer'),
+                    array('type',      'required'),
+                    array('type',      'type',    'type' => 'integer'),
                 )
             );
             return $metadata;

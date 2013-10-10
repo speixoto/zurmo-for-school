@@ -88,6 +88,7 @@
             $this->assertNull($contact->secondaryEmail->emailAddress);
 
             //Test placing in secondary address from recipient
+            $message1                            = EmailMessageTestHelper::createArchivedUnmatchedReceivedMessage($super);
             $contact                             = new Contact();
             $contact->primaryEmail->emailAddress = 'someaddress@test.com';
             $this->assertNull($contact->secondaryEmail->emailAddress);
@@ -113,6 +114,7 @@
             $this->assertNull($contact->secondaryEmail->emailAddress);
 
             //Test placing in secondary address from recipient
+            $message1                            = EmailMessageTestHelper::createArchivedUnmatchedSentMessage($super);
             $contact                             = new Contact();
             $contact->primaryEmail->emailAddress = 'someaddress@test.com';
             $this->assertNull($contact->secondaryEmail->emailAddress);
@@ -131,20 +133,20 @@
             Yii::app()->user->userModel = $super;
             $message1                   = EmailMessageTestHelper::createArchivedUnmatchedReceivedMessage($super);
             $contact                    = new Contact();
-            $this->assertTrue($message1->sender->personOrAccount->id < 0);
+            $this->assertCount(0, $message1->sender->personOrAccount);
             ArchivedEmailMatchingUtil::resolveContactToSenderOrRecipient($message1, $contact);
             $this->assertTrue($message1->recipients->count() == 1);
-            $this->assertTrue($message1->recipients->offsetGet(0)->personOrAccount->isSame($super));
-            $this->assertTrue($message1->sender->personOrAccount->isSame($contact));
+            $this->assertTrue($message1->recipients->offsetGet(0)->personOrAccount[0]->isSame($super));
+            $this->assertTrue($message1->sender->personOrAccount[0]->isSame($contact));
 
             $message1                   = EmailMessageTestHelper::createArchivedUnmatchedSentMessage($super);
             $contact                    = new Contact();
             $this->assertTrue($message1->recipients->count() == 1);
-            $this->assertTrue($message1->recipients->offsetGet(0)->personOrAccount->id < 0);
+            $this->assertCount(0, $message1->recipients->offsetGet(0)->personOrAccount);
             ArchivedEmailMatchingUtil::resolveContactToSenderOrRecipient($message1, $contact);
-            $this->assertTrue($message1->sender->personOrAccount->isSame($super));
+            $this->assertTrue($message1->sender->personOrAccount[0]->isSame($super));
             $this->assertTrue($message1->recipients->count() == 1);
-            $this->assertTrue($message1->recipients->offsetGet(0)->personOrAccount->isSame($contact));
+            $this->assertTrue($message1->recipients->offsetGet(0)->personOrAccount[0]->isSame($contact));
         }
     }
 ?>
