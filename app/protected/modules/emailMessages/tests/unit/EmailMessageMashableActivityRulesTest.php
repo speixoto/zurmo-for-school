@@ -174,7 +174,6 @@
 
         public function testGetSenderContent()
         {
-            //TODO: @sergio: Add demo data with more than one personOrAccout
             //Test without personOrAccount
             $emailMessageSender              = new EmailMessageSender();
             $emailMessageSender->fromName    = 'test name';
@@ -204,7 +203,6 @@
 
         public function testGetRecipientsContent()
         {
-            //TODO: @sergio: Add demo data with more than one personOrAccout
             //Test without personOrAccount
             $emailMessageRecipient1            = new EmailMessageRecipient();
             $emailMessageRecipient1->type      = EmailMessageRecipient::TYPE_TO;
