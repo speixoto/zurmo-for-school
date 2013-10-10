@@ -60,8 +60,7 @@
                     'completed',
                 ),
                 'relations' => array(
-                    'task'    => array(static::HAS_ONE, 'Task', static::NOT_OWNED,
-                                        static::LINK_TYPE_SPECIFIC, 'task'),
+                    'task'    => array(static::HAS_ONE, 'Task', static::NOT_OWNED),
                 ),
                 'rules' => array(
                     array('name',       'required'),

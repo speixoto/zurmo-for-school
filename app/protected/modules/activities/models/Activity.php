@@ -88,8 +88,7 @@
                 'activityItemsModelClassNames' => array(
                     'Account',
                     'Contact',
-                    'Opportunity',
-                    //'Project'
+                    'Opportunity'
                 ),
             );
             return $metadata;
