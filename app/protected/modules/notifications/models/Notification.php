@@ -104,6 +104,71 @@
             return $models;
         }
 
+        /**
+         * Get all notifications based on notificationMessage id
+         * @param $notificationMessageId
+         * @return Array of models
+         */
+        public static function getByNotificationMessageId($notificationMessageId)
+        {
+            assert('is_int($notificationMessageId)');
+            $searchAttributeData = array();
+            $searchAttributeData['clauses'] = array(
+                1 => array(
+                    'attributeName'        => 'notificationMessage',
+                    'relatedAttributeName' => 'id',
+                    'operatorType'         => 'equals',
+                    'value'                => $notificationMessageId,
+                ),
+            );
+            $searchAttributeData['structure'] = '1';
+            $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('Notification');
+            $where = RedBeanModelDataProvider::makeWhere('Notification', $searchAttributeData, $joinTablesAdapter);
+            $models = self::getSubset($joinTablesAdapter, null, null, $where, null);
+            return $models;
+        }
+
+        /**
+         * Delete all notifications and related NotificationMessages by type and user
+         * @param $type
+         * @param User $user
+         */
+        public static function deleteByTypeAndUser($type, User $user)
+        {
+            $notifications = static::getByTypeAndUser($type, $user);
+            if (!empty($notifications))
+            {
+                foreach ($notifications as $notification)
+                {
+                    static::deleteNotificationAndRelatedNotificationMessage($notification);
+                }
+            }
+        }
+
+        /**
+         * Delete notification and related notificationMessage, if there are no relations from other notifications to
+         * this notificationMessage
+         * @param Notification $notification
+         */
+        public static function deleteNotificationAndRelatedNotificationMessage(Notification $notification)
+        {
+            try
+            {
+                if (isset($notification->notificationMessage) && $notification->notificationMessage instanceOf NotificationMessage)
+                {
+                    $notificationMessageNotifications = Notification::getByNotificationMessageId($notification->notificationMessage->id);
+                    if (count($notificationMessageNotifications) == 1)
+                    {
+                        $notification->notificationMessage->delete();
+                    }
+                }
+            }
+            catch (NotFoundException $e)
+            {
+            }
+            $notification->delete();
+        }
+
         public static function getCountByUser(User $user)
         {
             assert('$user->id > 0');
