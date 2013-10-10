@@ -69,9 +69,7 @@
                     'fromName',
                 ),
                 'relations' => array(
-                    'personOrAccount'      => array(static::HAS_ONE, 'Item',    static::NOT_OWNED,
-                                                    static::LINK_TYPE_SPECIFIC, 'personOrAccount')
-                    'personOrAccount' => array(RedBeanModel::MANY_MANY, 'Item', RedBeanModel::NOT_OWNED),
+                    'personOrAccount' => array(static::MANY_MANY, 'Item', static::NOT_OWNED)
                 ),
                 'rules' => array(
                     array('fromAddress', 'required'),
