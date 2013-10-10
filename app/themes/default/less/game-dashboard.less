@@ -31,9 +31,14 @@
 // feasible for technical reasons, the Appropriate Legal Notices must display the words
 // "Copyright Zurmo Inc. 2013. All rights reserved".
 
+.gd-dashboard-active{
+	overflow: hidden;
+}
+
 #UserGameDashboardView{
 	z-index: 100;
 }
+
 #game-overlay{
 	width: 100%;
 	height: 100%;
@@ -253,16 +258,23 @@
 	line-height: 85px;
 	.t-shadow(~"0 -1px 0 rgba(0, 0, 0, 0.4)");
 	.radius(50%);
-	margin:0 auto 7px auto;
+	margin:5px auto;
 	.symbly(72px);
 	cursor: default;
 	color: #e2b321;
 	background:url(../images/game-dashboard/coin.png) left top no-repeat;
 	.animateAll(1s);
 	-webkit-transform:rotateY(0deg);
+	-moz-transform:rotateY(0deg);
+	-o-transform:rotateY(0deg);
+	-ms-transform:rotateY(0deg);
+	transform:rotateY(0deg);
 	&:hover{
 		-webkit-animation: spinCoin 1s linear infinite;
-		//-webkit-transform:rotateY(360deg);
+		-moz-animation: spinCoin 1s linear infinite;
+		-o-animation: spinCoin 1s linear infinite;
+		-ms-animation: spinCoin 1s linear infinite;
+		animation: spinCoin 1s linear infinite;
 	}
 }
 
@@ -312,9 +324,6 @@
 	border-top:1px solid @fff;
 	border-bottom:1px solid @ccc;
 	border-left:1px solid @fff;
-	&:hover{
-		//border-top:1px solid #7cb830;
-	}
 }
 
 #gd-stats-wrapper{
@@ -379,7 +388,6 @@
 	padding:0 !important;
 	position: relative;
 	z-index: 100;
-	//background:url(../images/game-dashboard/blue-chalkboard-blurred.jpg) left top repeat;
 }
 
 #gd-carousel-wrapper{
@@ -422,41 +430,30 @@
 	border-left:1px solid @fff;
 }
 
-#game-dashboard-container #game-dashboard .visible-panel-last{
-	h3{
-		//color: red !important;
-	}
-}
-
 .gd-collection-panel{
 	position: relative;
 	width: 285px;
 	height: 100%;
 	float: left;
-
 	border-left:1px solid @ccc;
 	border-right:1px solid @fff;
-
 	h3{
 		margin-top: 5px;
 	}
 	.collection-badge{
 		float: left;
 		display: inline-block;
-		width:55px;
 		height:70px;
 		margin: 0;
 		margin:0 15px 0 0;
 		background-size: 100% auto;
-		img{
-			max-width: 100%;
-		}
 	}
 	> div{
-		//.animateAll(.25s);
 		-webkit-transform:translate(0);
-		//-webkit-transform:rotateY(0deg);
-		//z-index: 0;
+		-moz-transform:translate(0);
+		-o-transform:translate(0);
+		-ms-transform:translate(0);
+		transform:translate(0);
 		position: absolute;
 		top: 0;
 		left: 0;
@@ -467,8 +464,6 @@
 		background:url(../images/game-dashboard/blue-chalkboard-blurred.jpg) center top repeat;
 		&.open-panel,
 		&:hover{
-			//-webkit-transform:translate(0, -50%);
-			//width: 575px;
 			.div-hover();
 		}
 	}
@@ -496,13 +491,6 @@
 		position: relative;
 		text-align: center;
 		line-height: 34px;
-	}
-}
-//to show an open panel
-.gd-collection-panel + .gd-collection-panel{
-	> div{
-		//top: auto;
-		//bottom: 0;
 	}
 }
 
@@ -542,6 +530,7 @@
 		}
 	}
 }
+
 .gd-collection-item{
 	position: relative;
 	display: inline-block;
@@ -573,13 +562,11 @@
 
 .redeemable{
 	h3{
-		background:url(../images/game-dashboard/redeemable-coin.png) right bottom no-repeat;
-		background-size: 14px;
-		display: inline-block;
-		padding-right: 22px;
+		background:url(../images/game-dashboard/redeemable-coin-2.png) right 2px no-repeat;
+		//display: inline-block;
+		//padding-right: 22px;
 	}
 }
-
 
 .zurmo body .coin-button{
 	position: relative;
@@ -590,7 +577,6 @@
 	height: 70px;
 	border: none !important;
 	.b-shadow(none) !important;
-
 	.z-label{
 		text-indent: 0;
 		display: block;
@@ -601,15 +587,11 @@
 		margin: 22px 0 0 0;
 		color: darken(#f58a1f, 30%) !important;
 		.t-shadow( 0px 1px 0 lighten(#f58a1f, 20%) ) !important;
-		//#gradient > .vertical( #fff100, #f6921e );
 		#gradient > .vertical( rgba(255, 241, 0, 0.8), rgba(246, 146, 30, 0.8) ) !important;
-
 		border-top:1px solid    rgba(255, 241, 0, 0.3);
 		border-bottom:1px solid rgba(255, 241, 0, 0.3);
-
 		border-left: 1px solid  rgba(255, 241, 0, 0.5);
 		border-right:1px solid  rgba(255, 241, 0, 0.5);
-
 		.b-shadow(0 0 3px 0 rgba(255, 241, 0, 0.1));
 	}
 	&:hover,
@@ -621,6 +603,7 @@
 		}
 	}
 }
+
 .coin-button[disabled="disabled"]{
 	pointer-events:none;
 	.opacity(50);

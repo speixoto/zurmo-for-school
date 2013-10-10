@@ -60,11 +60,11 @@
          */
         public static function getItemTypesAndLabels()
         {
-            return array(   'GasNozzle' => Zurmo::t('GamificationModule', 'Gas Nozzle'),
-                            'Junction'          => Zurmo::t('GamificationModule', 'Junction'),
-                            'PoliceCar'          => Zurmo::t('GamificationModule', 'Police Car'),
+            return array(   'GasNozzle'     => Zurmo::t('GamificationModule', 'Gas Nozzle'),
+                            'Cone'          => Zurmo::t('GamificationModule', 'Cone'),
+                            'PoliceCar'     => Zurmo::t('GamificationModule', 'Police Car'),
                             'RoadSign'      => Zurmo::t('GamificationModule', 'Road Sign'),
-                            'SteeringWheel'            => Zurmo::t('GamificationModule', 'Steering Wheel'),
+                            'SteeringWheel' => Zurmo::t('GamificationModule', 'Steering Wheel'),
             );
         }
 
@@ -73,11 +73,11 @@
          */
         public static function getItemTypesAndFrequencies()
         {
-            return array(   'GasNozzle' => 10,
-                            'Junction'          => 10,
-                            'PoliceCar'          => 10,
+            return array(   'GasNozzle'     => 10,
+                            'Cone'          => 10,
+                            'PoliceCar'     => 10,
                             'RoadSign'      => 3,
-                            'SteeringWheel'            => 6,
+                            'SteeringWheel' => 6,
             );
         }
 

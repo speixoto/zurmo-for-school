@@ -60,10 +60,10 @@
          */
         public static function getItemTypesAndLabels()
         {
-            return array(   'Karavan' => Zurmo::t('GamificationModule', 'Karavan'),
+            return array(   'Caravan' => Zurmo::t('GamificationModule', 'Karavan'),
                             'Plane'          => Zurmo::t('GamificationModule', 'Plane'),
                             'SailBoat'          => Zurmo::t('GamificationModule', 'Sail Boat'),
-                            'Tanker'      => Zurmo::t('GamificationModule', 'Tanker'),
+                            'Truck'      => Zurmo::t('GamificationModule', 'Truck'),
                             'Taxi'            => Zurmo::t('GamificationModule', 'Taxi'),
             );
         }
@@ -73,10 +73,10 @@
          */
         public static function getItemTypesAndFrequencies()
         {
-            return array(   'Karavan' => 10,
+            return array(   'Caravan' => 10,
                             'Plane'          => 10,
                             'SailBoat'          => 10,
-                            'Tanker'      => 3,
+                            'Truck'      => 3,
                             'Taxi'            => 6,
             );
         }
@@ -96,7 +96,7 @@
          */
         public static function getCollectionLogoType()
         {
-            return 'Truck';
+            return 'Tanker';
         }
 
         /**
@@ -105,7 +105,7 @@
          */
         public static function getCollectionLogoLabel()
         {
-            return Zurmo::t('GamificationModule', 'Truck');
+            return Zurmo::t('GamificationModule', 'Tanker');
         }
     }
 ?>

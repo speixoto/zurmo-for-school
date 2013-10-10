@@ -24817,6 +24817,9 @@ div.special-pager .hidden.next:after {
 .stay-open {
   display: block !important;
 }
+.gd-dashboard-active {
+  overflow: hidden;
+}
 #UserGameDashboardView {
   z-index: 100;
 }
@@ -25076,7 +25079,7 @@ div.special-pager .hidden.next:after {
   -ms-border-radius: 50%;
   -o-border-radius: 50%;
   border-radius: 50%;
-  margin: 0 auto 7px auto;
+  margin: 5px auto;
   font-weight: normal !important;
   font-weight: normal;
   font-size: 72px;
@@ -25090,9 +25093,17 @@ div.special-pager .hidden.next:after {
   -ms-transition: all 1s ease-out;
   transition: all 1s ease-out;
   -webkit-transform: rotateY(0deg);
+  -moz-transform: rotateY(0deg);
+  -o-transform: rotateY(0deg);
+  -ms-transform: rotateY(0deg);
+  transform: rotateY(0deg);
 }
 #gd-z-coin:hover {
   -webkit-animation: spinCoin 1s linear infinite;
+  -moz-animation: spinCoin 1s linear infinite;
+  -o-animation: spinCoin 1s linear infinite;
+  -ms-animation: spinCoin 1s linear infinite;
+  animation: spinCoin 1s linear infinite;
 }
 /*Leaderboard*/
 #gd-leaderboard {
@@ -25266,17 +25277,17 @@ div.special-pager .hidden.next:after {
 .gd-collection-panel .collection-badge {
   float: left;
   display: inline-block;
-  width: 55px;
   height: 70px;
   margin: 0;
   margin: 0 15px 0 0;
   background-size: 100% auto;
 }
-.gd-collection-panel .collection-badge img {
-  max-width: 100%;
-}
 .gd-collection-panel > div {
   -webkit-transform: translate(0);
+  -moz-transform: translate(0);
+  -o-transform: translate(0);
+  -ms-transform: translate(0);
+  transform: translate(0);
   position: absolute;
   top: 0;
   left: 0;
@@ -25406,10 +25417,7 @@ div.special-pager .hidden.next:after {
   z-index: 9999;
 }
 .redeemable h3 {
-  background: url(../images/game-dashboard/redeemable-coin.png) right bottom no-repeat;
-  background-size: 14px;
-  display: inline-block;
-  padding-right: 22px;
+  background: url(../images/game-dashboard/redeemable-coin-2.png) right 2px no-repeat;
 }
 .zurmo body .coin-button {
   position: relative;

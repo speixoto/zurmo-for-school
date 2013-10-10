@@ -60,11 +60,11 @@
          */
         public static function getItemTypesAndLabels()
         {
-            return array(   'Calendar' => Zurmo::t('GamificationModule', 'Calendar'),
-                            'Camera'          => Zurmo::t('GamificationModule', 'Camera'),
-                            'Hotel'          => Zurmo::t('GamificationModule', 'Hotel'),
-                            'Landscape'      => Zurmo::t('GamificationModule', 'Landscape'),
-                            'WiFi'            => Zurmo::t('GamificationModule', 'Wi-Fi'),
+            return array(   'Suitcase'  => Zurmo::t('GamificationModule', 'Suitcase'),
+                            'Camera'    => Zurmo::t('GamificationModule', 'Camera'),
+                            'Hotel'     => Zurmo::t('GamificationModule', 'Hotel'),
+                            'Landscape' => Zurmo::t('GamificationModule', 'Landscape'),
+                            'Map'       => Zurmo::t('GamificationModule', 'Map'),
             );
         }
 
@@ -73,11 +73,11 @@
          */
         public static function getItemTypesAndFrequencies()
         {
-            return array(   'Calendar' => 10,
-                            'Camera'          => 10,
-                            'Hotel'          => 10,
-                            'Landscape'      => 3,
-                            'WiFi'            => 6,
+            return array(   'Calendar'  => 10,
+                            'Camera'    => 10,
+                            'Hotel'     => 10,
+                            'Landscape' => 3,
+                            'Map'       => 6,
             );
         }
 
@@ -96,7 +96,7 @@
          */
         public static function getCollectionLogoType()
         {
-            return 'Suitcase';
+            return 'Calendar';
         }
 
         /**
@@ -105,7 +105,7 @@
          */
         public static function getCollectionLogoLabel()
         {
-            return Zurmo::t('GamificationModule', 'Suitcase');
+            return Zurmo::t('GamificationModule', 'Calendar');
         }
     }
 ?>
