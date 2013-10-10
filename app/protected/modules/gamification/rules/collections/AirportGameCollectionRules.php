@@ -63,7 +63,7 @@
             return array(   'Gate' => Zurmo::t('GamificationModule', 'Gate Sign'),
                             'Passport'     => Zurmo::t('GamificationModule', 'Passport'),
                             'Pilot'          => Zurmo::t('GamificationModule', 'Pilot'),
-                            'Ticket'      => Zurmo::t('GamificationModule', 'Flying Ticket'),
+                            'Trolley'      => Zurmo::t('GamificationModule', 'Trolley'),
                             'TowTruck'            => Zurmo::t('GamificationModule', 'Tow Truck'),
             );
         }
@@ -76,7 +76,7 @@
             return array(   'Gate'       => 10,
                             'Passport'   => 10,
                             'Pilot'      => 10,
-                            'Ticket'     => 3,
+                            'Trolley'     => 3,
                             'TowTruck'   => 6,
             );
         }
@@ -96,7 +96,7 @@
          */
         public static function getCollectionLogoType()
         {
-            return 'Trolly';
+            return 'Ticket';
         }
 
         /**
@@ -105,7 +105,7 @@
          */
         public static function getCollectionLogoLabel()
         {
-            return Zurmo::t('GamificationModule', 'Trolly');
+            return Zurmo::t('GamificationModule', 'Flying Ticket');
         }
     }
 ?>

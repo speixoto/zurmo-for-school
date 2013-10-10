@@ -62,7 +62,7 @@
         {
             return array(   'Banana' => Zurmo::t('GamificationModule', 'Banana'),
                             'BathingSuit'          => Zurmo::t('GamificationModule', 'Bathing Suit'),
-                            'JetSki'          => Zurmo::t('GamificationModule', 'JetSki'),
+                            'Snorkel'          => Zurmo::t('GamificationModule', 'Snorkel'),
                             'Wheel'      => Zurmo::t('GamificationModule', 'Wheel'),
                             'Zodiac'            => Zurmo::t('GamificationModule', 'Zodiac'),
             );
@@ -75,7 +75,7 @@
         {
             return array(   'Banana'      => 10,
                             'BathingSuit' => 10,
-                            'JetSki'      => 10,
+                            'Snorkel'      => 10,
                             'Wheel'       => 3,
                             'Zodiac'      => 6,
             );
@@ -96,7 +96,7 @@
          */
         public static function getCollectionLogoType()
         {
-            return 'Snorkle';
+            return 'JetSki';
         }
 
         /**
@@ -105,7 +105,7 @@
          */
         public static function getCollectionLogoLabel()
         {
-            return Zurmo::t('GamificationModule', 'Snorkle');
+            return Zurmo::t('GamificationModule', 'Jet Ski');
         }
     }
 ?>

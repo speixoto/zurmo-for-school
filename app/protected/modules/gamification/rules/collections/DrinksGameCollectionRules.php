@@ -60,11 +60,11 @@
          */
         public static function getItemTypesAndLabels()
         {
-            return array(   'Beer' => Zurmo::t('GamificationModule', 'Beer'),
-                            'Ice'          => Zurmo::t('GamificationModule', 'Ice Bucket'),
-                            'IceCream'          => Zurmo::t('GamificationModule', 'IceCream'),
-                            'Martini'      => Zurmo::t('GamificationModule', 'Martini'),
-                            'Water'            => Zurmo::t('GamificationModule', 'Water'),
+            return array(   'Beer'      => Zurmo::t('GamificationModule', 'Beer'),
+                            'Ice'       => Zurmo::t('GamificationModule', 'Ice Bucket'),
+                            'Champagne' => Zurmo::t('GamificationModule', 'Champagne'),
+                            'Martini'   => Zurmo::t('GamificationModule', 'Martini'),
+                            'Water'     => Zurmo::t('GamificationModule', 'Water'),
             );
         }
 
@@ -73,11 +73,11 @@
          */
         public static function getItemTypesAndFrequencies()
         {
-            return array(   'Beer' => 10,
-                            'Ice'          => 10,
-                            'IceCream'          => 10,
-                            'Martini'      => 3,
-                            'Water'            => 6,
+            return array(   'Beer'      => 10,
+                            'Ice'       => 10,
+                            'Champagne' => 10,
+                            'Martini'   => 3,
+                            'Water'     => 6,
             );
         }
 

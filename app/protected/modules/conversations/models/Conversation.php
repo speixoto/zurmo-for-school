@@ -180,7 +180,7 @@
                     array('latestDateTime',     'type', 'type' => 'datetime'),
                     array('subject',            'required'),
                     array('subject',            'type',    'type' => 'string'),
-                    array('subject',            'length',  'min'  => 3, 'max' => 255),
+                    array('subject',            'length',  'min'  => 1, 'max' => 255),
                     array('ownerHasReadLatest', 'boolean'),
                     array('isClosed',           'boolean'),
                 ),

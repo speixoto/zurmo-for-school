@@ -112,7 +112,7 @@
                                                             'message' => 'You must have at least one pick list item.'),
                 array('customFieldDataData',                'validateCustomFieldDataData'),
                 array('defaultValueOrder',                  'safe'),
-                array('attributeName',                      'length', 'min'  => 3, 'max' => 64),
+                array('attributeName',                      'length', 'min'  => 1, 'max' => 64),
                 array('customFieldDataLabels',              'safe'),
                 ));
         }

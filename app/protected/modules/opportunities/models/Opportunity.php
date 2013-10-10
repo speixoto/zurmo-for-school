@@ -144,7 +144,7 @@
                     array('description',   'type',      'type' => 'string'),
                     array('name',          'required'),
                     array('name',          'type',      'type' => 'string'),
-                    array('name',          'length',    'min'  => 3, 'max' => 64),
+                    array('name',          'length',    'min'  => 1, 'max' => 64),
                     array('probability',   'type',      'type' => 'integer'),
                     array('probability',   'numerical', 'min' => 0, 'max' => 100),
                     array('probability',   'required'),

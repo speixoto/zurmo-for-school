@@ -96,7 +96,7 @@
             $rules = ModelAttributeRulesToDefaultValueMappingRuleUtil::
                      getApplicableRulesByModelClassNameAndAttributeName('ImportModelTestItem', 'string', 'defaultValue');
             $compareData = array(array('defaultValue',  'type', 'type' => 'string'),
-                                 array('defaultValue',  'length',  'min'  => 3, 'max' => 64));
+                                 array('defaultValue',  'length',  'min'  => 1, 'max' => 64));
             $this->assertEquals($compareData, $rules);
 
             $rules = ModelAttributeRulesToDefaultValueMappingRuleUtil::
@@ -126,7 +126,7 @@
                      getApplicableRulesByModelClassNameAndAttributeName('ImportModelTestItem', 'string', 'defaultValue', true);
             $compareData = array(array('defaultValue',  'required'),
                                  array('defaultValue',  'type', 'type' => 'string'),
-                                 array('defaultValue',  'length',  'min'  => 3, 'max' => 64));
+                                 array('defaultValue',  'length',  'min'  => 1, 'max' => 64));
             $this->assertEquals($compareData, $rules);
 
             $rules = ModelAttributeRulesToDefaultValueMappingRuleUtil::

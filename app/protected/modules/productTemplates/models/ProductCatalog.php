@@ -169,7 +169,7 @@
                 'rules' => array(
                     array('name',  'required'),
                     array('name',  'type',    'type' => 'string'),
-                    array('name',  'length',  'min'  => 3,  'max' => 64),
+                    array('name',  'length',  'min'  => 1,  'max' => 64),
                 ),
                 'elements' => array(
                 ),

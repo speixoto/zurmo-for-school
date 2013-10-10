@@ -129,7 +129,7 @@
                 ),
                 'rules' => array(
                     array('department',     'type',   'type' => 'string'),
-                    array('department',     'length', 'min'  => 3, 'max' => 64),
+                    array('department',     'length', 'min'  => 1, 'max' => 64),
                     array('firstName',      'type',   'type' => 'string'),
                     array('firstName',      'length', 'min'  => 1, 'max' => 32),
                     array('jobTitle',       'type',   'type' => 'string'),
