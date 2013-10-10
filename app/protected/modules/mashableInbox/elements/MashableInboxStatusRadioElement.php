@@ -44,7 +44,7 @@
                 $this->getArray(),
                 $this->getEditableHtmlOptions()
             );
-            return ZurmoHtml::tag('strong', array(), Zurmo::t('MashableInboxModule', 'Status') . ':' ) . $content;
+            return ZurmoHtml::tag('strong', array(), Zurmo::t('ZurmoModule', 'Status') . ':' ) . $content;
         }
 
         protected function renderControlNonEditable()

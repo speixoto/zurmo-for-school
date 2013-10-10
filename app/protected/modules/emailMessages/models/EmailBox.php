@@ -166,7 +166,7 @@
         {
             if (trim($this->name) == '')
             {
-                return Zurmo::t('EmailMessagesModule', '(Unnamed)');
+                return Zurmo::t('Core', '(Unnamed)');
             }
             return $this->name;
         }

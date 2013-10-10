@@ -72,7 +72,7 @@
             {
                 if (trim($this->name) == '')
                 {
-                    return Zurmo::t('OpportunitiesModule', '(Unnamed)');
+                    return Zurmo::t('Core', '(Unnamed)');
                 }
                 return $this->name;
             }

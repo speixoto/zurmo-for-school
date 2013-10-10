@@ -56,7 +56,7 @@
                     'secondaryAddress' => Zurmo::t('ContactsModule', 'Secondary Address',  array(), null, $language),
                     'secondaryEmail'   => Zurmo::t('ContactsModule', 'Secondary Email',  array(), null, $language),
                     'source'           => Zurmo::t('ContactsModule', 'Source', $params, null, $language),
-                    'state'            => Zurmo::t('ContactsModule', 'Status', $params, null, $language),
+                    'state'            => Zurmo::t('ZurmoModule', 'Status', $params, null, $language),
                     'tasks'            => Zurmo::t('ContactsModule', 'Tasks',  array(), null, $language),
                     'website'          => Zurmo::t('ContactsModule', 'Website',  array(), null, $language),
                 )

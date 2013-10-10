@@ -59,7 +59,7 @@
         {
             if (trim($this->name) == '')
             {
-                return Zurmo::t('ContactsModule', '(Unnamed)');
+                return Zurmo::t('Core', '(Unnamed)');
             }
             return $this->name;
         }

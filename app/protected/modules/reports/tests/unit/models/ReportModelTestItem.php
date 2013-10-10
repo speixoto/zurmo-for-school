@@ -43,7 +43,7 @@
                 $fullName = $this->getFullName();
                 if ($fullName == '')
                 {
-                    return Zurmo::t('ReportsModule', '(Unnamed)');
+                    return Zurmo::t('Core', '(Unnamed)');
                 }
                 return $fullName;
             }

@@ -43,7 +43,7 @@
         {
             if ($this->value == null)
             {
-                return Zurmo::t('GamificationModule', '(Unnamed)');
+                return Zurmo::t('Core', '(Unnamed)');
             }
             return Zurmo::t('GamificationModule', '{n} coin|{n} coins', array($this->value));
         }

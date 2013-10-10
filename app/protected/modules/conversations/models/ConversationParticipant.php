@@ -61,7 +61,7 @@
             catch (NotFoundException $e)
             {
             }
-            return Zurmo::t('ConversationsModule', '(Unnamed)');
+            return Zurmo::t('Core', '(Unnamed)');
         }
 
         public static function getModuleClassName()

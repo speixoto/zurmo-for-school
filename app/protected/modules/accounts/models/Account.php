@@ -47,7 +47,7 @@
             {
                 if (trim($this->name) == '')
                 {
-                    return Zurmo::t('AccountsModule', '(Unnamed)');
+                    return Zurmo::t('Core', '(Unnamed)');
                 }
                 return $this->name;
             }

@@ -52,7 +52,7 @@
             {
                 if (trim($this->name) == '')
                 {
-                    return Zurmo::t('Default', '(Unnamed)');
+                    return Zurmo::t('Core', '(Unnamed)');
                 }
                 return $this->name;
             }

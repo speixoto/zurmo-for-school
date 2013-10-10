@@ -74,7 +74,7 @@
         {
             if (trim($this->type) == '')
             {
-                return Zurmo::t('GamificationModule', '(Unnamed)');
+                return Zurmo::t('Core', '(Unnamed)');
             }
             return $this->type;
         }

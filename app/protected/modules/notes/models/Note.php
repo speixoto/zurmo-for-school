@@ -48,7 +48,7 @@
                 $description  = trim($this->description);
                 if ($description == '')
                 {
-                    $description = Zurmo::t('NotesModule', '(Unnamed)');
+                    $description = Zurmo::t('Core', '(Unnamed)');
                 }
                 return $description;
             }

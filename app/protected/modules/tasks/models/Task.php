@@ -58,7 +58,7 @@
             {
                 if (trim($this->name) == '')
                 {
-                    return Zurmo::t('TasksModule', '(Unnamed)');
+                    return Zurmo::t('Core', '(Unnamed)');
                 }
                 return $this->name;
             }
@@ -151,7 +151,7 @@
                     'description'       => Zurmo::t('ZurmoModule', 'Description',  array(), null, $language),
                     'dueDateTime'       => Zurmo::t('TasksModule', 'Due On',       array(), null, $language),
                     'name'              => Zurmo::t('TasksModule', 'Name',  array(), null, $language),
-                    'status'            => Zurmo::t('TasksModule', 'Status',  array(), null, $language),
+                    'status'            => Zurmo::t('ZurmoModule', 'Status',  array(), null, $language),
                     'requestedByUser'   => Zurmo::t('TasksModule', 'Requested By User',  array(), null, $language),
                     'files'             => Zurmo::t('ZurmoModule', 'Files',  array(), null, $language),
                 )

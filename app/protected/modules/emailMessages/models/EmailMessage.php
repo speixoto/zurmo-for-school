@@ -66,7 +66,7 @@
         {
             if (trim($this->subject) == '')
             {
-                return Zurmo::t('EmailMessagesModule', '(Unnamed)');
+                return Zurmo::t('Core', '(Unnamed)');
             }
             return $this->subject;
         }

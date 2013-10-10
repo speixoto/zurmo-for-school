@@ -58,7 +58,7 @@
             assert('$this->name === null || is_string($this->name)');
             if ($this->name === null)
             {
-                return Zurmo::t('ZurmoModule', '(Unnamed)');
+                return Zurmo::t('Core', '(Unnamed)');
             }
             return $this->name;
         }

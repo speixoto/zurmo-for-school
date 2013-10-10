@@ -61,7 +61,7 @@
             {
                 if (trim($this->name) == '')
                 {
-                    return Zurmo::t('ProjectsModule', '(Unnamed)');
+                    return Zurmo::t('Core', '(Unnamed)');
                 }
                 return $this->name;
             }
@@ -96,7 +96,7 @@
             $params = LabelUtil::getTranslationParamsForAllModules();
             return array_merge(parent::translatedAttributeLabels($language),
                 array(
-                       'status' => Zurmo::t('ProjectsModule', 'Status',  array(), null, $language),
+                       'status' => Zurmo::t('ZurmoModule', 'Status',  array(), null, $language),
                     )
                 );
         }
