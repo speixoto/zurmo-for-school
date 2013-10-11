@@ -39,46 +39,6 @@
     class ProjectFeedListViewColumnAdapter extends TextListViewColumnAdapter
     {
         /**
-         * Get message templates
-         * @return array
-         */
-        public static function getMessageTemplates()
-        {
-            $projectNameTemplate       = '<strong><i>{projectname}</i></strong>';
-            $userNameTemplate          = '<strong>{username}</strong>';
-            $taskNameTemplate          = '<strong>{data}</strong>';
-            $commentTemplate           = '<strong>{data}</strong>';
-            $statusTemplate            = '<strong>{data}</strong>';
-            $taskCheckListItemTemplate = '<strong>{data}</strong>';
-            $logMessageTemplates = array(
-                ProjectAuditEvent::PROJECT_CREATED         => $projectNameTemplate  . ' ' .
-                                                                'is added by user ' .
-                                                                $userNameTemplate,
-                ProjectAuditEvent::PROJECT_ARCHIVED        =>  $projectNameTemplate  . ' ' .
-                                                                'is archived by user ' .
-                                                                $userNameTemplate,
-                ProjectAuditEvent::TASK_STATUS_CHANGED     => $projectNameTemplate  . ' ' .
-                                                                $userNameTemplate  . ' ' .
-                                                                'changed status from "' .
-                                                                $statusTemplate . '"',
-                ProjectAuditEvent::TASK_ADDED              => $projectNameTemplate  . ' ' .
-                                                                $userNameTemplate  . ' ' .
-                                                                'added task "' .
-                                                                $taskNameTemplate . '"',
-                ProjectAuditEvent::COMMENT_ADDED           => $projectNameTemplate  . ' ' .
-                                                                $userNameTemplate  . ' ' .
-                                                                'added comment "' .
-                                                                $commentTemplate . '"',
-                ProjectAuditEvent::CHECKLIST_ITEM_ADDED    => $projectNameTemplate  . ' ' .
-                                                                $userNameTemplate  . ' ' .
-                                                                'added checklist item "' .
-                                                                $taskCheckListItemTemplate . '"'
-
-            );
-            return $logMessageTemplates;
-        }
-
-        /**
          * Renders grid view data
          * @return array
          */
@@ -99,25 +59,20 @@
         public static function getFeedInformationForDashboard(ProjectAuditEvent $projectAuditEvent)
         {
             assert('$projectAuditEvent instanceof ProjectAuditEvent');
-            $project = Project::getById(intval($projectAuditEvent->project->id));
-            $projectName = ZurmoHtml::link($project->name, Yii::app()->createUrl('projects/default/details', array('id' => $project->id)));
-            $content = null;
-            $user    = User::getById($projectAuditEvent->user->id);
+            $project           = Project::getById(intval($projectAuditEvent->project->id));
+            $projectName       = ZurmoHtml::link($project->name,
+                                                    Yii::app()->createUrl('projects/default/details',
+                                                                          array('id' => $project->id)));
+            $user              = User::getById($projectAuditEvent->user->id);
             $unserializedData  = unserialize($projectAuditEvent->serializedData);
-
-            if($projectAuditEvent->eventName == ProjectAuditEvent::PROJECT_CREATED
-                                    || $projectAuditEvent->eventName == ProjectAuditEvent::PROJECT_ARCHIVED)
+            $dateTime          = DateTimeUtil::getTimeSinceDisplayContent($projectAuditEvent->dateTime);
+            $data              = array('{projectname}' => $projectName, '{username}' => $user->getFullName(),
+                                       '{timeSpanLabel}' => $dateTime);
+            if(is_array($unserializedData))
             {
-                $content .= self::getLogMessageByProjectEvent($projectAuditEvent->eventName, $projectName, $user->getFullName());
+                $data = array_merge($unserializedData, $data);
             }
-            else
-            {
-                $content .= self::getLogMessageByProjectDataEvent($projectAuditEvent->eventName, $projectName, $user->getFullName(), $unserializedData);
-            }
-
-            $timeDiff = DateTimeUtil::getTimeDifferenceForLogEvent('ProjectsModule', $projectAuditEvent->dateTime);
-            $content .=  '<small> about ' . $timeDiff . ' ago</small>';
-            return Zurmo::t('ProjectsModule', $content);
+            return static::getMessageContentByEventAndData($projectAuditEvent->eventName, $data);
         }
 
         /**
@@ -132,41 +87,51 @@
         }
 
         /**
-         * Get log messages for project related event
+         * Get message content by event and data
          * @param string $event
-         * @param string $projectName
-         * @param string $userFullName
+         * @param array $data
          * @return string
          */
-        private static function getLogMessageByProjectEvent($event, $projectName, $userFullName)
+        public static function getMessageContentByEventAndData($event, $data)
         {
-            $messageTemplates  = self::getMessageTemplates();
             assert('is_string($event)');
-            assert('is_string($projectName)');
-            assert('is_string($userFullName)');
-            return str_replace(array('{projectname}', '{username}'),
-                                            array($projectName, $userFullName),
-                                            $messageTemplates[$event]);
-        }
-
-        /**
-         * Get log message on task update, task addition or comment addition
-         * @param string $event
-         * @param string $data
-         * @param string $projectName
-         * @param string $userFullName
-         * @return string
-         */
-        private static function getLogMessageByProjectDataEvent($event, $projectName, $userFullName, $data)
-        {
-            $messageTemplates  = self::getMessageTemplates();
-            assert('is_string($data)');
-            assert('is_string($event)');
-            assert('is_string($projectName)');
-            assert('is_string($userFullName)');
-            return str_replace(array('{projectname}', '{data}', '{username}'),
-                                            array($projectName, $data, $userFullName),
-                                            $messageTemplates[$event]);
+            assert('is_array($data)');
+            if($event == ProjectAuditEvent::PROJECT_CREATED)
+            {
+                return Zurmo::t('ProjectsModule', '<strong><i>{projectname}</i></strong> is added by user
+                                                   <strong>{username}</strong>
+                                                   <small>about {timeSpanLabel} ago</small>', $data);
+            }
+            elseif($event == ProjectAuditEvent::PROJECT_ARCHIVED)
+            {
+                return Zurmo::t('ProjectsModule', '<strong><i>{projectname}</i></strong> is archived by user
+                                                   <strong>{username}</strong>
+                                                   <small>about {timeSpanLabel} ago</small>', $data);
+            }
+            elseif($event == ProjectAuditEvent::TASK_STATUS_CHANGED)
+            {
+                return Zurmo::t('ProjectsModule', '<strong><i>{projectname}</i> {username} changed status
+                                                  from "{fromstatus} to {tostatus}"</strong>
+                                                  <small>about {timeSpanLabel} ago</small>', $data);
+            }
+            elseif($event == ProjectAuditEvent::TASK_ADDED)
+            {
+                return Zurmo::t('ProjectsModule', '<strong><i>{projectname}</i> {username}
+                                                    added task "{taskname}"</strong>
+                                                    <small>about {timeSpanLabel} ago</small>', $data);
+            }
+            elseif($event == ProjectAuditEvent::COMMENT_ADDED)
+            {
+                return Zurmo::t('ProjectsModule', '<strong><i>{projectname}</i> {username}
+                                                    added comment "{comment}"</strong>
+                                                    <small>about {timeSpanLabel} ago</small>', $data);
+            }
+            elseif($event == ProjectAuditEvent::CHECKLIST_ITEM_ADDED)
+            {
+                return Zurmo::t('ProjectsModule', '<strong><i>{projectname}</i> {username}
+                                                  added checklist item "{taskcheckitemname} in Task {taskname}"
+                                                  </strong> <small>about {timeSpanLabel} ago</small>', $data);
+            }
         }
     }
 ?>

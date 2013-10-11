@@ -2,6 +2,16 @@ $(window).ready(function(){
 
     var highestZIndex = 100;
     var leftAnimation = 0;
+    var animationTime = 425;
+    var easingType = 'easeOutQuint';
+    var carouselWidth = $('#gd-carousel').outerWidth();
+    var viewfinderWidth = 1140;
+    var maxLeft = viewfinderWidth - carouselWidth;
+    var maxRight = 0;
+    var myLeft;
+    var fixedStep = 285;
+    var carouselPosition = 0;
+    var firstVisible = 1;
 
     $('#gd-carousel').on('mouseenter', '.gd-collection-panel', function() {
         if ($(this).hasClass('visible-panel-last') === true){
@@ -11,34 +21,28 @@ $(window).ready(function(){
         }
         $('> div', this).css('z-index', highestZIndex++).stop( true, true ).animate({
             width:'570px', top:'-95px', left: leftAnimation
-        }, 250, 'linear');
+        }, animationTime, easingType);
     });
 
     $('#gd-carousel').on('mouseleave', '.gd-collection-panel', function() {
-            $('> div', this).stop( true, true ).animate({width:'285px', top:0, left: 0}, 250, 'linear', function(){
+        $('> div', this).stop( true, true ).animate({width:'285px', top:0, left: 0}, animationTime, easingType,
+            function(){
                 $(this).css('z-index', 0);
             });
         }
     );
-
-    var carouselWidth = jQuery('#gd-carousel').outerWidth();
-    var viewfinderWidth = 1140;
-    var maxLeft = viewfinderWidth - carouselWidth;
-    var maxRight = 0;
-    var myLeft;
-    var fixedStep = 285;
-    var animationTime = 425;
-    var easingType = 'easeOutQuint';
 
     $('#nav-right').click(function(){
         var step = fixedStep;
         myLeft = parseInt($('#gd-carousel').css('margin-left'));
         if((myLeft - step) <= maxLeft){
             step = maxLeft;
+            currentLeftMargin = maxLeft;
         } else {
             step = '-=' + fixedStep.toString();
         }
-        $('#gd-carousel').stop( true, true ).animate({ marginLeft : step.toString() }, animationTime, easingType, getCurrentVisibleCollections);
+        $('#gd-carousel').stop( true, true ).animate({ marginLeft : step.toString() }, animationTime, easingType);
+        getCurrentVisibleCollections('forward');
         return false;
     });
 
@@ -47,30 +51,30 @@ $(window).ready(function(){
         myLeft = parseInt($('#gd-carousel').css('margin-left'));
         if( (myLeft + step) > maxRight){
             step = 0;
+            currentLeftMargin = 0;
         } else {
             step = '+=' + fixedStep.toString();
         }
-        $('#gd-carousel').stop( true, true ).animate({ marginLeft : step.toString() }, animationTime, easingType, getCurrentVisibleCollections);
+        $('#gd-carousel').stop( true, true ).animate({ marginLeft : step.toString() }, animationTime, easingType);
+        getCurrentVisibleCollections('back');
         return false;
     });
 
-    var carouselPosition = 0;
-
-    function getCurrentVisibleCollections(){
+    function getCurrentVisibleCollections(direction){
         $('.gd-collection-panel').removeClass('visible-panel');
         $('.gd-collection-panel').removeClass('visible-panel-last');
-
         carouselPosition = parseInt($('#gd-carousel').css('margin-left'));
-
-        var firstVisible = Math.abs(carouselPosition / fixedStep) + 1;
         var i;
+        if(direction === 'forward'){
+            firstVisible++;
+        }
+        if(direction === 'back'){
+            firstVisible--;
+        }
         for (i = firstVisible; i < firstVisible + 4; i++){
             $( '#gd-carousel > .gd-collection-panel:nth-child(' + i + ')').addClass('visible-panel');
         }
-
         $( '#gd-carousel > .gd-collection-panel:nth-child(' + (i-1) + ')').addClass('visible-panel-last');
     }
-
     getCurrentVisibleCollections();
-
 });

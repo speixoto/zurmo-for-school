@@ -196,13 +196,18 @@
 
         protected static function resolveAjaxOptionsForGameDashboardModel($id)
         {
+            $id      = static::USER_GAME_DASHBOARD_LINK_ID;
             return array(
                 'beforeSend' => 'js:function(){
                     if($("#UserGameDashboardView").length)
                     {
                         $("#UserGameDashboardView").remove();
+                        $("body").removeClass("gd-dashboard-active");
+                        $("#' . $id . '").html("¿");
                         return false;
                     }
+                    $("body").addClass("gd-dashboard-active");
+                    $("#' . $id . '").html("Z");
                 }',
                 'success'    => 'js:function(data){$("body").append(data);}');
         }
