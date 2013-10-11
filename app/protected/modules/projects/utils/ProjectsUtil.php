@@ -62,8 +62,8 @@
             assert('$task instanceof Task');
             assert('$taskCheckListItem instanceof TaskCheckListItem');
             $project = $task->project;
-            $message = $taskCheckListItem->name . ' in  Task ' . $task->name;
-            ProjectAuditEvent::logAuditEvent(ProjectAuditEvent::CHECKLIST_ITEM_ADDED, $message, $project);
+            $data    = array('{taskname}' => $task->name, '{taskcheckitemname}' => $taskCheckListItem->name);
+            ProjectAuditEvent::logAuditEvent(ProjectAuditEvent::CHECKLIST_ITEM_ADDED, $data, $project);
         }
 
         /**
@@ -78,8 +78,34 @@
             assert('is_string($currentStatusLabel)');
             assert('is_string($newStatusLabel)');
             $project = $task->project;
-            $data = $currentStatusLabel . ' to ' . $newStatusLabel;
+            $data    = array('{fromstatus}' => $currentStatusLabel, '{tostatus}' => $newStatusLabel);
             ProjectAuditEvent::logAuditEvent(ProjectAuditEvent::TASK_STATUS_CHANGED, $data, $project);
+        }
+
+        /**
+         * Logs event on adding task to the project
+         * @param Task $task
+         */
+        public static function logAddTaskEvent(Task $task)
+        {
+            assert('$task instanceof Task');
+            $project = $task->project;
+            $data    = array('{taskname}' => $task->name);
+            ProjectAuditEvent::logAuditEvent(ProjectAuditEvent::TASK_ADDED, $data, $project);
+        }
+
+        /**
+         * Logs event on adding comment to the task
+         * @param Task $task
+         * @param string $comment
+         */
+        public static function logAddCommentEvent(Task $task, $comment)
+        {
+            assert('$task instanceof Task');
+            assert('is_string($comment)');
+            $project = $task->project;
+            $data    = array('{comment}' => $comment);
+            ProjectAuditEvent::logAuditEvent(ProjectAuditEvent::COMMENT_ADDED, $data, $project);
         }
     }
 ?>

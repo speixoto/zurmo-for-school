@@ -57,33 +57,39 @@
          */
         public static function getTimeSinceDisplayContent($dateTime)
         {
+            assert('DateTimeUtil::isValidDbFormattedDateTime($dateTime)');
             $nowTimeStamp           = time();
             $dateTimeStamp          = DateTimeUtil::convertDbFormatDateTimeToTimeStamp($dateTime);
             $timeSinceLatestUpdate  = $nowTimeStamp - $dateTimeStamp;
             $timeForString = array(
                 'days'  => floor($timeSinceLatestUpdate / 86400),
                 'hours' => floor($timeSinceLatestUpdate / 3600),
+                'minutes' => floor($timeSinceLatestUpdate / (60)),
+                'seconds' => floor($timeSinceLatestUpdate)
             );
-            if ($timeForString['days'] == 0)
+
+            if($timeForString['days'] >= 1)
             {
-                if ($timeForString['hours'] == 1)
-                {
-                    $string = Zurmo::t('MashableInboxModule', '{hours} hour ago', array('{hours}' => $timeForString['hours']));
-                }
-                else
-                {
-                    $string = Zurmo::t('MashableInboxModule', '{hours} hours ago', array('{hours}' => $timeForString['hours']));
-                }
-            }
-            elseif (($timeForString['days'] == 1))
-            {
-                $string = Zurmo::t('MashableInboxModule', '{days} day ago', array('{days}' => $timeForString['days']));
+                return Zurmo::t('Core', '{n} day|{n} days', $timeForString['days']);
             }
             else
             {
-                $string = Zurmo::t('MashableInboxModule', '{days} days ago', array('{days}' => $timeForString['days']));
+                if($timeForString['hours'] >= 1)
+                {
+                    return Zurmo::t('Core', '{n} hour|{n} hours', $timeForString['hours']);
+                }
+                else
+                {
+                    if($timeForString['minutes'] >= 1)
+                    {
+                        return Zurmo::t('Core', '{n} min|{n} mins', $timeForString['minutes']);
+                    }
+                    else
+                    {
+                        return Zurmo::t('Core', '{n} sec|{n} secs', $timeForString['seconds']);
+                    }
+                }
             }
-            return $string;
         }
 
         /**
@@ -547,49 +553,6 @@
                 $monthsData[$beginDateOfMonth] = $endDateOfMonth;
             }
             return $monthsData;
-        }
-
-        /**
-         * Gets the appropriate time difference of the event from the current time
-         * @param string $category
-         * @param DateTime $dateTime in sql format
-         * @return string
-         */
-        public static function getTimeDifferenceForLogEvent($category, $dateTime)
-        {
-            assert('DateTimeUtil::isValidDbFormattedDateTime($dateTime)');
-            $nowTimeStamp           = time();
-            $dateTimeStamp          = DateTimeUtil::convertDbFormatDateTimeToTimeStamp($dateTime);
-            $timeSinceLatestUpdate  = $nowTimeStamp - $dateTimeStamp;
-            $timeForString = array(
-                'days'  => floor($timeSinceLatestUpdate / 86400),
-                'hours' => floor($timeSinceLatestUpdate / 3600),
-                'minutes' => floor($timeSinceLatestUpdate / (60)),
-                'seconds' => floor($timeSinceLatestUpdate)
-            );
-
-            if($timeForString['days'] >= 1)
-            {
-                return Zurmo::t($category, '{n} day|{n} days', $timeForString['days']);
-            }
-            else
-            {
-                if($timeForString['hours'] >= 1)
-                {
-                    return Zurmo::t($category, '{n} hour|{n} hours', $timeForString['hours']);
-                }
-                else
-                {
-                    if($timeForString['minutes'] >= 1)
-                    {
-                        return Zurmo::t($category, '{n} min|{n} mins', $timeForString['minutes']);
-                    }
-                    else
-                    {
-                        return Zurmo::t($category, '{n} sec|{n} secs', $timeForString['seconds']);
-                    }
-                }
-            }
         }
     }
 ?>
