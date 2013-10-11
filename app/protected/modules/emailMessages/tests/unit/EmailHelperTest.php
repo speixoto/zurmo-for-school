@@ -37,7 +37,7 @@
     class EmailHelperTest extends ZurmoBaseTest
     {
         public static $emailHelperSendEmailThroughTransport;
-        
+
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
@@ -53,12 +53,12 @@
             assert($saved); // Not Coding Standard
 
             $box = EmailBox::resolveAndGetByName(EmailBox::NOTIFICATIONS_NAME);
-            
+
             if (EmailMessageTestHelper::isSetEmailAccountsTestConfiguration())
             {
                 $steve = UserTestHelper::createBasicUser('steve');
                 EmailMessageTestHelper::createEmailAccount($steve);
-                
+
                 Yii::app()->imap->imapHost        = Yii::app()->params['emailTestAccounts']['userImapSettings']['imapHost'];
                 Yii::app()->imap->imapUsername    = Yii::app()->params['emailTestAccounts']['userImapSettings']['imapUsername'];
                 Yii::app()->imap->imapPassword    = Yii::app()->params['emailTestAccounts']['userImapSettings']['imapPassword'];
@@ -212,7 +212,7 @@
                     'Raw content', ',b>html content</b>end.', // Not Coding Standard
                     'Zurmo', Yii::app()->emailHelper->outboundUsername,
                     'Ivica', Yii::app()->params['emailTestAccounts']['userImapSettings']['imapUsername']);
-                
+
                 $filesIds = array();
                 $fileTxt = ZurmoTestHelper::createFileModel('testNote.txt', 'FileModel');
                 $filesIds[] = $fileTxt->id;
@@ -224,7 +224,7 @@
                 $filesIds[] = $filePdf->id;
                 EmailMessageUtil::attachFilesToMessage($filesIds, $emailMessage);
                 $this->assertEquals('4', count($emailMessage->files));
-                
+
                 Yii::app()->imap->connect();
                 $imapStats = Yii::app()->imap->getMessageBoxStatsDetailed();
                 $this->assertEquals(0, $imapStats->Nmsgs);
@@ -243,7 +243,7 @@
                 $this->assertEquals(1, $imapStats->Nmsgs);
             }
         }
-        
+
         public static function tearDownAfterClass()
         {
             $imap = new ZurmoImap();
@@ -290,7 +290,7 @@
                 $this->markTestSkipped();
             }
         }
-        
+
         public function testResolveAndGetDefaultFromAddress()
         {
             $super                      = User::getByUsername('super');
@@ -298,7 +298,7 @@
             $content = Yii::app()->emailHelper->resolveAndGetDefaultFromAddress();
             $this->assertEquals('notification@zurmoalerts.com', $content);
         }
-        
+
         public function testSetDefaultFromAddress()
         {
             $super                      = User::getByUsername('super');
@@ -309,7 +309,7 @@
             $metadata = ZurmoModule::getMetadata();
             $this->assertEquals('notification@zurmoalerts.com', $metadata['global']['defaultFromAddress']);
         }
-        
+
         public function testResolveAndGetDefaultTestToAddress()
         {
             $super                      = User::getByUsername('super');
@@ -317,7 +317,7 @@
             $content = Yii::app()->emailHelper->resolveAndGetDefaultTestToAddress();
             $this->assertEquals('testJobEmail@zurmoalerts.com', $content);
         }
-        
+
         public function testSetDefaultTestToAddress()
         {
             $super                      = User::getByUsername('super');

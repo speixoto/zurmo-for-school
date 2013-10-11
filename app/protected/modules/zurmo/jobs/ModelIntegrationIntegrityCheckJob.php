@@ -152,7 +152,6 @@
                     {
                         if ($rule[1] == 'required')
                         {
-
                             if ($onlyWithoutSetDefaultValue)
                             {
                                 $haveDefaultValue = false;
