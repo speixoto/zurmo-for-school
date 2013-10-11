@@ -35,65 +35,88 @@
      ********************************************************************************/
 
     /**
-     * Base class for showing in the user interface when there are no models yet visible for a particular user
-     * in a given module.
+     * Class for showing a message and create link when there are no tasks visible to the logged
+     * in user for a project when going to the project detail view
      */
-    abstract class ZeroModelsYetView extends SplashView
+    class ZeroTasksForRelatedModelYetView extends ZeroModelsYetView
     {
-        protected $controllerId;
-
-        protected $moduleId;
-
-        protected $actionId;
-
-        abstract protected function getCreateLinkDisplayLabel();
+        protected $relatedModelClassName;
 
         /**
          * @param string $controllerId
          * @param string $moduleId
          * @param string $modelClassName
+         * @param string $relatedModelClassName
          */
-        public function __construct($controllerId, $moduleId, $modelClassName)
+        public function __construct($controllerId, $moduleId, $modelClassName, $relatedModelClassName)
         {
             assert('is_string($controllerId)');
             assert('is_string($moduleId)');
             assert('is_string($modelClassName)');
+            assert('is_string($relatedModelClassName)');
             $this->controllerId   = $controllerId;
             $this->moduleId       = $moduleId;
             $this->modelClassName = $modelClassName;
+            $this->relatedModelClassName = $relatedModelClassName;
         }
 
         /**
-         * Render Zero Model View Content
+         * Gets create link display label
          * @return string
+         */
+        protected function getCreateLinkDisplayLabel()
+        {
+            return null;
+        }
+
+        /**
+         * Gets message content
+         * @return string
+         */
+        protected function getMessageContent()
+        {
+            $params = LabelUtil::getTranslationParamsForAllModules();
+            if($this->relatedModelClassName == 'Project')
+            {
+                return Zurmo::t('TasksModule', '<h2>"Task Zero Model Title for Project"</h2>' .
+                    '<i>- John Kenneth Galbraith</i>' .
+                    '<div class="large-icon"></div><p>' .
+                    'Task for zero model content for Project</p>', $params);
+            }
+            elseif($this->relatedModelClassName == 'Account')
+            {
+                return Zurmo::t('TasksModule', '<h2>"Task Zero Model Title for Account"</h2>' .
+                    '<i>- John Kenneth Galbraith</i>' .
+                    '<div class="large-icon"></div><p>' .
+                    'Task for zero model content for Account</p>', $params);
+            }
+            elseif($this->relatedModelClassName == 'Contact')
+            {
+                return Zurmo::t('TasksModule', '<h2>"Task Zero Model Title for Contact"</h2>' .
+                    '<i>- John Kenneth Galbraith</i>' .
+                    '<div class="large-icon"></div><p>' .
+                    'Task for zero model content for Contact</p>', $params);
+            }
+            elseif($this->relatedModelClassName == 'Opportunity')
+            {
+                return Zurmo::t('TasksModule', '<h2>"Task Zero Model Title for Opportunity"</h2>' .
+                    '<i>- John Kenneth Galbraith</i>' .
+                    '<div class="large-icon"></div><p>' .
+                    'Task for zero model content for Opportunity</p>', $params);
+            }
+        }
+
+        /**
+         * Renders content for zero model view
+         * @return string 
          */
         protected function renderContent()
         {
             $params             = $this->getCreateLinkParams();
-            $createLinkElement  = new CreateLinkActionElement($this->controllerId, $this->moduleId, null, $params);
             $content = '<div class="' . $this->getIconName() . '">';
             $content .= $this->getMessageContent();
-            $content .= $createLinkElement->render();
             $content .= '</div>';
             return $content;
-        }
-
-        /**
-         * Get create link params
-         * @return array
-         */
-        protected function getCreateLinkParams()
-        {
-            $label              = $this->getCreateLinkDisplayLabel();
-            return array('htmlOptions' => array('class' => 'z-button green-button'), 'label' => $label);
-        }
-
-        /**
-         * @return string
-         */
-        protected function getIconName()
-        {
-            return $this->modelClassName;
         }
     }
 ?>
