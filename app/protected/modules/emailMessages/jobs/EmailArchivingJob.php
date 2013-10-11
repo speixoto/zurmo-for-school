@@ -156,14 +156,17 @@
             {
                 $sender->fromName          = $senderInfo['name'];
             }
-            $personOrAccount = EmailArchivingUtil::resolvePersonOrAccountByEmailAddress(
+            $personOrAccounts = EmailArchivingUtil::getPersonsAndAccountsByEmailAddress(
                     $senderInfo['email'],
                     $userCanAccessContacts,
                     $userCanAccessLeads,
                     $userCanAccessAccounts);
-            if ($personOrAccount !== null)
+            if (!empty($personOrAccounts))
             {
-                $sender->personOrAccount->add($personOrAccount);
+                foreach ($personOrAccounts as $personOrAccount)
+                {
+                    $sender->personOrAccount->add($personOrAccount);
+                }
             }
             return $sender;
         }
@@ -184,14 +187,17 @@
             $recipient->toName         = $recipientInfo['name'];
             $recipient->type           = $recipientInfo['type'];
 
-            $personOrAccount = EmailArchivingUtil::resolvePersonOrAccountByEmailAddress(
+            $personOrAccounts = EmailArchivingUtil::getPersonsAndAccountsByEmailAddress(
                     $recipientInfo['email'],
                     $userCanAccessContacts,
                     $userCanAccessLeads,
                     $userCanAccessAccounts);
-            if ($personOrAccount !== null)
+            if (!empty($personOrAccounts))
             {
-                $recipient->personOrAccount->add($personOrAccount);
+                foreach ($personOrAccounts as $personOrAccount)
+                {
+                    $recipient->personOrAccount->add($personOrAccount);
+                }
             }
             return $recipient;
         }
