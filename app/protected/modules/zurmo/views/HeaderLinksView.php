@@ -75,6 +75,7 @@
 
         protected function renderContent()
         {
+            $this->registerScripts();
             $homeUrl   = Yii::app()->createUrl('home/default');
             $content   = '<div class="clearfix">';
             $content  .= '<a href="#" id="nav-trigger" title="Toggle Navigation">&rsaquo;</a>';
@@ -190,6 +191,20 @@
                     'id' => $id,
                 )
             );
+
+            $dashboardLinkId = 'go-to-dashboard-link';
+            $dashboardLink = ZurmoHtml::ajaxLink(Zurmo::t('GamificationModule', 'Go to dashboard'), $url,
+                static::resolveAjaxOptionsForGameDashboardModel($dashboardLinkId), array('id' => $dashboardLinkId));
+            $itemImageUrl       = Yii::app()->themeManager->baseUrl . '/default/images/Collections/Airport/Pilot.png';
+            $content  .= '<div id="game-notification">
+                            <h5>Congratz!</h5>
+                            <p>
+                                <img src="'.$itemImageUrl.'" />
+                                You won this great {PLACE_HOLDER}!!<br/>
+                                ' . $dashboardLink . ' or <a href="#" id="close-game-notification-link">Close</a>
+                            </p>
+                        </div>';
+
             return ZurmoHtml::tag('div', array('id' => static::USER_GAME_DASHBOARD_WRAPPER_ID,
                    'class' => 'user-menu-item'), $content);
         }
@@ -215,6 +230,17 @@
         protected static function getModalContainerId($id)
         {
             return self::MODAL_CONTAINER_PREFIX . '-' . $id;
+        }
+
+        protected function registerScripts()
+        {
+            $script = "$('#go-to-dashboard-link, #close-game-notification-link').click(function(event){
+                           event.preventDefault();
+                           $('#game-notification').fadeOut(300, function(){
+                               $('#game-notification').remove();
+                           });
+                       })";
+            Yii::app()->clientScript->registerScript('gameNotificationScript', $script);
         }
     }
 ?>

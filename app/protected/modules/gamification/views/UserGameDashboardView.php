@@ -213,8 +213,7 @@
         protected function renderBadgesContent()
         {
             $content  = ZurmoHtml::tag('h2', array(), Zurmo::t('GamificationModule', 'Badges Achieved'));
-
-            if(false || empty($this->badgeData))
+            if(empty($this->badgeData))
             {
                 $content .= $this->renderEmptyBadgeContent();
             }
@@ -222,22 +221,14 @@
             {
                 $content .= $this->renderPopulatedBadgeContent();
             }
-            return      ZurmoHtml::tag('div', array('id' => 'gd-badges-list'), $content);
+            return ZurmoHtml::tag('div', array('id' => 'gd-badges-list'), $content);
         }
 
         protected function renderEmptyBadgeContent()
         {
-            //$content  = ZurmoHtml::tag('tag', array('class' => 'icon-empty'), '');
-            //$content .= Zurmo::t('GamificationModule', 'No Achievements Found');
-            //return ZurmoHtml::tag('span', array('class' => 'empty'), $content);
-
-
-            $badgeContent      = null;
-            $badgeIconContent  = ZurmoHtml::tag('div',   array('class' => 'gloss'), '');
-            $badgeIconContent .= ZurmoHtml::tag('strong',   array('class' => 'badge-icon empty',
-                'title' => 'something'), '');
-            $badgeContent .= ZurmoHtml::tag('div',   array('class' => 'badge '), $badgeIconContent);
-            return $badgeContent;
+            $content  = ZurmoHtml::tag('span', array('class' => 'icon-empty'), '');
+            $content .= Zurmo::t('GamificationModule', 'No Achievements Found');
+            return ZurmoHtml::tag('span', array('class' => 'empty type-achievements'), $content);
         }
 
         protected function renderPopulatedBadgeContent()
@@ -322,7 +313,7 @@
             foreach($collection->getItemsData() as $itemType => $quantityCollected)
             {
                 $itemLabel              = $itemTypesAndLabels[$itemType];
-                $collectionItemImageUrl = Yii::app()->themeManager->baseUrl . '/default/images/collections/' .
+                $collectionItemImageUrl = Yii::app()->themeManager->baseUrl . '/default/images/Collections/' .
                                           $gameCollectionRules::getType() . '/' .
                                           $gameCollectionRules::makeMediumCollectionItemImageName($itemType);
                 $itemContent = ZurmoHtml::image($collectionItemImageUrl, $itemLabel,
