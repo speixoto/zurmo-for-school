@@ -214,7 +214,7 @@
         {
             $content  = ZurmoHtml::tag('h2', array(), Zurmo::t('GamificationModule', 'Badges Achieved'));
 
-            if(empty($this->badgeData))
+            if(false || empty($this->badgeData))
             {
                 $content .= $this->renderEmptyBadgeContent();
             }
@@ -227,9 +227,17 @@
 
         protected function renderEmptyBadgeContent()
         {
-            $content  = ZurmoHtml::tag('tag', array('class' => 'icon-empty'), '');
-            $content .= Zurmo::t('GamificationModule', 'No Achievements Found');
-            return ZurmoHtml::tag('span', array('class' => 'empty'), $content);
+            //$content  = ZurmoHtml::tag('tag', array('class' => 'icon-empty'), '');
+            //$content .= Zurmo::t('GamificationModule', 'No Achievements Found');
+            //return ZurmoHtml::tag('span', array('class' => 'empty'), $content);
+
+
+            $badgeContent      = null;
+            $badgeIconContent  = ZurmoHtml::tag('div',   array('class' => 'gloss'), '');
+            $badgeIconContent .= ZurmoHtml::tag('strong',   array('class' => 'badge-icon empty',
+                'title' => 'something'), '');
+            $badgeContent .= ZurmoHtml::tag('div',   array('class' => 'badge '), $badgeIconContent);
+            return $badgeContent;
         }
 
         protected function renderPopulatedBadgeContent()
@@ -245,7 +253,7 @@
                 $badgeIconContent .= ZurmoHtml::tag('strong',   array('class' => 'badge-icon',
                     'title' => $badgeDisplayLabel), '');
                 $badgeIconContent .= ZurmoHtml::tag('span',   array('class' => 'badge-grade'), (int)$badge->grade);
-                $badgeContent .= ZurmoHtml::tag('h3',   array('class' => 'badge ' . $badge->type), $badgeIconContent);
+                $badgeContent .= ZurmoHtml::tag('div',   array('class' => 'badge ' . $badge->type), $badgeIconContent);
                 $badgeContent .= ZurmoHtml::tag('h3',   array(), $badgeDisplayLabel);
                 $badgeContent .= ZurmoHtml::tag('span', array(),
                     DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay(
