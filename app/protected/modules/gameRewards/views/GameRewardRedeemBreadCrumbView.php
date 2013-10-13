@@ -34,25 +34,19 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class SecuredActionBarForGameRewardsSearchAndListView extends SecuredActionBarForSearchAndListView
+    /**
+     * View that renders gameRewards module breadcrumb content for redeeming rewards by a user
+     */
+    class GameRewardRedeemBreadCrumbView extends BreadCrumbView
     {
-        public static function getDefaultMetadata()
+        protected function getHomeLinkLabel()
         {
-            $metadata = array(
-                'global' => array(
-                    'secondToolbar' => array(
-                        'elements' => array(
-                            array('type'        => 'GameRewardsRedemptionIntroLink',
-                                'panelId'     => 'eval:$this->introView->getPanelId()',
-                                'checked'     => 'eval:!$this->introView->isIntroViewDismissed()',
-                                'moduleName'  => 'eval:$this->introView->getModuleName()',
-                                'iconClass'   => 'icon-options',
-                            ),
-                        ),
-                    ),
-                ),
-            );
-            return $metadata;
+            return strval(Yii::app()->user->userModel);
+        }
+
+        protected function getHomeUrl()
+        {
+            return Yii::app()->createUrl('users/default/profile', array('id' => Yii::app()->user->userModel));
         }
     }
 ?>

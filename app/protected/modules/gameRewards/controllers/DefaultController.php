@@ -352,8 +352,6 @@
                                               'listPageSize', get_class($this->getModule()));
             $gameReward                     = new GameReward(false);
             $searchForm                     = new GameRewardsSearchForm($gameReward);
-            //$listAttributesSelector         = new ListAttributesSelector('GameRewardsListView', get_class($this->getModule()));
-            //$searchForm->setListAttributesSelector($listAttributesSelector);
             //todo: kill all action bars... since we shouldn't have it here.
             $dataProvider = $this->resolveSearchDataProvider(
                 $searchForm,
@@ -361,9 +359,9 @@
                 null,
                 'GameRewardsRedeemSearchView'
             );
-            $title           = Zurmo::t('GameRewardsModule', 'My Profile TODO'); //todo: fix this
+            $title           = Zurmo::t('GameRewardsModule', 'Redeem Rewards'); //todo: fix this
             $breadcrumbLinks = array(
-                $title,
+                Zurmo::t('GameRewardsModule', 'Redeem Rewards'),
             );
             if (isset($_GET['ajax']) && $_GET['ajax'] == 'list-view')
             {
@@ -376,12 +374,13 @@
             }
             else
             {
+                $introView = new GameRewardsRedemptionIntroView(get_class($this->getModule()));
                 $mixedView = $this->makeActionBarSearchAndListView($searchForm, $dataProvider,
                                                                    'SecuredActionBarForGameRewardsSearchAndListView',
-                                                                   'GameRewardsRedeem');
+                                                                   'GameRewardsRedeem', null, $introView);
                 $view = new GameRewardsPageView(ZurmoDefaultAdminViewUtil::
                             makeViewWithBreadcrumbsForCurrentUser($this, $mixedView,
-                                                                  $breadcrumbLinks, 'GameRewardBreadCrumbView'));
+                                                                  $breadcrumbLinks, 'GameRewardRedeemBreadCrumbView'));
             }
             echo $view->render();
         }

@@ -34,25 +34,11 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class SecuredActionBarForGameRewardsSearchAndListView extends SecuredActionBarForSearchAndListView
+    class GameRewardsRedemptionIntroLinkActionElement extends IntroLinkActionElement
     {
-        public static function getDefaultMetadata()
+        protected function shouldRender()
         {
-            $metadata = array(
-                'global' => array(
-                    'secondToolbar' => array(
-                        'elements' => array(
-                            array('type'        => 'GameRewardsRedemptionIntroLink',
-                                'panelId'     => 'eval:$this->introView->getPanelId()',
-                                'checked'     => 'eval:!$this->introView->isIntroViewDismissed()',
-                                'moduleName'  => 'eval:$this->introView->getModuleName()',
-                                'iconClass'   => 'icon-options',
-                            ),
-                        ),
-                    ),
-                ),
-            );
-            return $metadata;
+            return true;
         }
     }
 ?>

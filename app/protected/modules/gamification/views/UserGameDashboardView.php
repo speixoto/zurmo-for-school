@@ -82,11 +82,11 @@
 
         public static function renderCoinsContent($coinValue)
         {
+            $url  = Yii::app()->createUrl('gameRewards/default/redeemList/');
             $content  = ZurmoHtml::tag('span', array('id' => 'gd-z-coin'), '');
             $content .= ZurmoHtml::tag('h3', array(), Zurmo::t('GamificationModule', '{n} coin|{n} coins',
                 array($coinValue)));
-            $content .= ZurmoHtml::link(Zurmo::t('GamificationModule', 'Redeem'), '#');
-            //todo: where does this link to? coonvert to story? take to redemption listview of rewards
+            $content .= ZurmoHtml::link(Zurmo::t('GamificationModule', 'Redeem'), $url);
             return      ZurmoHtml::tag('div', array('id' => self::getGameCoinContainerId()), $content);
         }
 

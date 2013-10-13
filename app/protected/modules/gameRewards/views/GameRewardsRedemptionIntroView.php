@@ -34,25 +34,36 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class SecuredActionBarForGameRewardsSearchAndListView extends SecuredActionBarForSearchAndListView
+    /**
+     * View when a user comes to redeem a reward.
+     */
+    class GameRewardsRedemptionIntroView extends IntroView
     {
-        public static function getDefaultMetadata()
+        protected function renderIntroContent()
         {
-            $metadata = array(
-                'global' => array(
-                    'secondToolbar' => array(
-                        'elements' => array(
-                            array('type'        => 'GameRewardsRedemptionIntroLink',
-                                'panelId'     => 'eval:$this->introView->getPanelId()',
-                                'checked'     => 'eval:!$this->introView->isIntroViewDismissed()',
-                                'moduleName'  => 'eval:$this->introView->getModuleName()',
-                                'iconClass'   => 'icon-options',
-                            ),
-                        ),
-                    ),
-                ),
-            );
-            return $metadata;
+            $content  = '<h1>' . Zurmo::t('GameRewardsModule', 'How do Game Rewards work in Zurmo?',
+                         LabelUtil::getTranslationParamsForAllModules()). '</h1>';
+            $content .= '<div id="game-rewards-redemption-intro-steps" class="module-intro-steps clearfix">';
+            $content .= '<div class="third"><h3>' . Zurmo::t('Core', 'Step') . '<strong>1<span>➜</span></strong></h3>';
+            $content .= '<p><strong>' . Zurmo::t('GameRewardsModule', 'Earn') . '</strong>';
+            $content .= Zurmo::t('GameRewardsModule', 'Collect coins as you level up, earn badges, ' .
+                                 'and complete collections. You will also find coins as you use the application');
+            $content .= '</p>';
+            $content .= '</div>';
+            $content .= '<div class="third"><h3>' . Zurmo::t('Core', 'Step') . '<strong>2<span>➜</span></strong></h3>';
+            $content .= '<p><strong>' . Zurmo::t('GameRewardsModule', 'Redeem') . '</strong>';
+            $content .= Zurmo::t('GameRewardsModule', 'Use coins to redeem rewards added by your manager and HR department');
+            $content .= '</p>';
+            $content .= '</div>';
+            $content .= '<div class="third"><h3>' . Zurmo::t('Core', 'Step') . '<strong>3<span>➜</span></strong></h3>';
+            $content .= '<p><strong>' . Zurmo::t('GameRewardsModule', 'Enjoy') . '</strong>';
+            $content .= Zurmo::t('GameRewardsModule', 'You work hard so you should enjoy your reward. ' .
+                                 'Then keep using the application to redeem more rewards');
+            $content .= '</p>';
+            $content .= '</div>';
+            $content .= '</div>';
+            $this->registerScripts();
+            return $content;
         }
     }
 ?>
