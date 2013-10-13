@@ -60,7 +60,7 @@
         {
             $this->emailMessageForm  = $emailMessageForm;
             $this->triggeredModel    = $triggeredModel;
-            $this->triggeredByUser     = $triggeredByUser;
+            $this->triggeredByUser   = $triggeredByUser;
         }
 
         /**

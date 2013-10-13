@@ -882,6 +882,12 @@
             $mergeTagsUtil      = MergeTagsUtilFactory::make(EmailTemplate::TYPE_WORKFLOW, null, $content);
             $resolvedContent    = $mergeTagsUtil->resolveMergeTags($task, $this->invalidTags);
             $this->assertEquals('testAccount', $resolvedContent);
+
+            $content            = '[[CONTACT__NAME]]';
+            $mergeTagsUtil      = MergeTagsUtilFactory::make(EmailTemplate::TYPE_WORKFLOW, null, $content);
+            $resolvedContent    = $mergeTagsUtil->resolveMergeTags($task, $this->invalidTags);
+            $this->assertFalse($resolvedContent);
+            $this->assertContains('CONTACT__NAME', $this->invalidTags);
         }
     }
 ?>

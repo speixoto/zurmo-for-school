@@ -104,23 +104,52 @@
                     {
                         $metadata = $model::getMetadata();
                         $activityItemsModelClassNamesData = $metadata['Activity']['activityItemsModelClassNames'];
-                        foreach ($activityItemsModelClassNamesData as $index => $relationModelClassName)
+                        foreach ($model->activityItems as $activityItem)
                         {
-                            if (ucfirst($attributeName) == $relationModelClassName)
+                            if (ucfirst($attributeName) == get_class($activityItem))
                             {
-                                foreach ($model->activityItems as $activityItem)
+                                $attributeAccessorString = str_replace($attributeName . '->', '', $attributeAccessorString);
+                                return static::resolveMergeTagToStandardOrRelatedAttribute(
+                                    $attributeAccessorString,
+                                    $activityItem,
+                                    $language,
+                                    $timeQualifier);
+                            }
+                            if (get_class($activityItem) == 'Item' && array_search(ucfirst($attributeName), $activityItemsModelClassNamesData) !== false)
+                            {
+                                try
                                 {
-                                    if (ucfirst($attributeName) == get_class($activityItem))
+                                    $modelDerivationPathToItem = RuntimeUtil::getModelDerivationPathToItem(ucfirst($attributeName));
+                                    $castedDownModel           = $activityItem->castDown(array($modelDerivationPathToItem));
+                                    if (ucfirst($attributeName) == get_class($castedDownModel))
                                     {
                                         $attributeAccessorString = str_replace($attributeName . '->', '', $attributeAccessorString);
+                                        $attributeAccessorString;
                                         return static::resolveMergeTagToStandardOrRelatedAttribute(
                                             $attributeAccessorString,
-                                            $activityItem,
+                                            $castedDownModel,
                                             $language,
                                             $timeQualifier);
                                     }
                                 }
-                                return true;
+                                catch (NotFoundException $e)
+                                {
+                                    //Do nothing
+                                }
+                            }
+                            unset($activityItemsModelClassNamesData[get_class($activityItem)]);
+                        }
+                        foreach ($activityItemsModelClassNamesData as $relationModelClassName)
+                        {
+                            if (ucfirst($attributeName) == $relationModelClassName)
+                            {
+                                $model = new $relationModelClassName();
+                                $attributeAccessorString = str_replace($attributeName . '->', '', $attributeAccessorString);
+                                return static::resolveMergeTagToStandardOrRelatedAttribute(
+                                    $attributeAccessorString,
+                                    $model,
+                                    $language,
+                                    $timeQualifier);
                             }
                         }
                     }
