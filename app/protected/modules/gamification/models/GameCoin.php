@@ -110,7 +110,7 @@
                 'rules' => array(
                     array('value',         'type',    'type' => 'integer'),
                     array('value',         'default', 'value' => 1),
-                    array('value',         'numerical', 'min' => 1),
+                    array('value',         'numerical', 'min' => 0),
                     array('value',         'required'),
                     array('person',        'required'),
                 ),
@@ -160,6 +160,16 @@
         {
             assert('is_int($value)');
             $this->value = $this->value + $value;
+        }
+
+        /**
+         * Remove a specified value. Typically used during game reward redemption
+         * @param $value
+         */
+        public function removeValue($value)
+        {
+            assert('is_int($value)');
+            $this->value = $this->value - $value;
         }
 
         /**
