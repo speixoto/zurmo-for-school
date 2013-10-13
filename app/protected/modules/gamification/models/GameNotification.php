@@ -116,7 +116,7 @@
         public function setLevelChangeByNextLevelValue($nextLevelValue, $coinsValue)
         {
             assert('is_int($nextLevelValue)');
-            assert('is_int($coinsValue');
+            assert('is_int($coinsValue)');
             $data = array('type' => self::TYPE_LEVEL_CHANGE, 'levelValue' => $nextLevelValue);
             if($coinsValue > 0)
             {
