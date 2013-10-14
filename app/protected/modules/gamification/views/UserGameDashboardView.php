@@ -339,20 +339,31 @@
             assert('is_bool($canCollect)');
             $url  = Yii::app()->createUrl('gamification/default/redeemCollection/',
                                           array('id' => $collectionId));
-            $htmlOptions = array();
+            $htmlOptions   = array();
+            $disabledClass = null;
+            $disabled      = false;
             if(!$canCollect)
             {
-                $htmlOptions['disabled'] = 'disabled';
+                $disabledClass = ' disabled';
+                $disabled      = true;
             }
             $id                      = static::getCompleteCollectionLinkId($collectionId);
             $htmlOptions['id']       = $id;
             $htmlOptions['name']     = $id;
-            $htmlOptions['class']    = 'attachLoading z-button coin-button';
+            $htmlOptions['class']    = 'attachLoading z-button coin-button' . $disabledClass;
             $aContent                = ZurmoHtml::wrapLink(Zurmo::t('Core', 'Complete'));
             $containerId             = static::getCollectionContainerId($collectionId);
+            if($disabled)
+            {
+                $beforeSend =  'function ( xhr ) {return false;}';
+            }
+            else
+            {
+                $beforeSend =  'function ( xhr ) {$(this).makeSmallLoadingSpinner(true, "#' . $id . '");}';
+            }
             return ZurmoHtml::ajaxLink($aContent, $url, array(
                 'type' => 'GET',
-                'beforeSend' => 'function ( xhr ) {$(this).makeSmallLoadingSpinner(true, "#' . $id . '");}',
+                'beforeSend' => $beforeSend,
                 'success' => 'js:function(data)
                     {
                         $("#' . $containerId . '").replaceWith(data);
