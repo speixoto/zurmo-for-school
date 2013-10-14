@@ -67,12 +67,15 @@
         }
 
         /**
-         * @param string $type
-         * @param null|int $pageSize
+         * @param $type
+         * @param null $pageSize
+         * @param null $orderBy
+         * @return An
          */
-        public static function getByType($type, $pageSize = null)
+        public static function getByType($type, $pageSize = null, $orderBy = null)
         {
             assert('is_string($type)');
+            assert('is_string($orderBy) || $orderBy == null');
             $searchAttributeData = array();
             $searchAttributeData['clauses'] = array(
                 1 => array(
@@ -84,7 +87,7 @@
             $searchAttributeData['structure'] = '1';
             $joinTablesAdapter                = new RedBeanModelJoinTablesQueryAdapter(get_called_class());
             $where = RedBeanModelDataProvider::makeWhere(get_called_class(), $searchAttributeData, $joinTablesAdapter);
-            return self::getSubset($joinTablesAdapter, null, $pageSize, $where, null);
+            return self::getSubset($joinTablesAdapter, null, $pageSize, $where, $orderBy);
         }
 
         public static function getDefaultMetadata()

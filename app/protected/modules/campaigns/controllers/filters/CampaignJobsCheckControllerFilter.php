@@ -45,19 +45,44 @@
             {
                 return true;
             }
-
+            if($this->outboundEmailSettingsAreNotCorrect())
+            {
+                Yii::app()->user->setFlash('notification',
+                    Zurmo::t('CampaignsModule', 'Outbound email settings are not working correctly. Contact your administrator.')
+                );
+                return true;
+            }
             $generateJobLogs = JobLog::getByType('CampaignGenerateDueCampaignItems', 1);
             $markJobLogs     = JobLog::getByType('CampaignMarkCompleted', 1);
             $queueJobLogs    = JobLog::getByType('CampaignQueueMessagesInOutbox', 1);
             $processJobLogs  = JobLog::getByType('ProcessOutboundEmail', 1);
-
-            if (count($generateJobLogs) == 0 || count($markJobLogs) == 0 || count($queueJobLogs) == 0 || count($processJobLogs) == 0)
+            if (count($generateJobLogs) == 0 ||
+                count($markJobLogs) == 0 ||
+                count($queueJobLogs) == 0 ||
+                count($processJobLogs) == 0)
             {
                 Yii::app()->user->setFlash('notification',
                     Zurmo::t('CampaignsModule', 'Campaigns will not run properly until scheduled jobs are set up. Contact your administrator.')
                 );
             }
             return true;
+        }
+
+        /**
+         * Attempts to detect if outbound email settings are setup correctly.
+         */
+        protected function outboundEmailSettingsAreNotCorrect()
+        {
+            $testOutboundEmailJobLogs  = JobLog::getByType('TestOutboundEmail', 1, 'startdatetime desc');
+            if(count($testOutboundEmailJobLogs) == 0)
+            {
+                return false;
+            }
+            if($testOutboundEmailJobLogs[0]->status == JobLog::STATUS_COMPLETE_WITH_ERROR)
+            {
+                return true;
+            }
+            return false;
         }
     }
 ?>
