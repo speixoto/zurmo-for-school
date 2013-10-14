@@ -298,7 +298,7 @@
                     $campaignItem->contact->id,
                     true) != false)
             {
-                $content = Zurmo::t('MarketingModule', 'The contact is not subscribed to the MarketingListsModuleSingularLabel list',
+                $content = Zurmo::t('MarketingModule', 'The contact is not subscribed to the MarketingListsModuleSingularLabel',
                     LabelUtil::getTranslationParamsForAllModules());
             }
             elseif ($campaignItem->contact->primaryEmail->optOut)
