@@ -45,14 +45,7 @@
         protected function renderContent()
         {
             $this->setRowsAreSelectable(false);
-            $cClipWidget = new CClipWidget();
-            $cClipWidget->beginClip("ListView");
-            $cClipWidget->widget($this->getGridViewWidgetPath(), $this->getCGridViewParams());
-            $cClipWidget->endClip();
-            $content     = null;
-            $content .= $cClipWidget->getController()->clips['ListView'] . "\n";
-            $content .= $this->renderScripts();
-            return $content;
+            return parent::renderContent();
         }
 
         /**
@@ -138,6 +131,22 @@
         public function getGridViewId()
         {
             return 'active-projects-list-view';
+        }
+
+        protected function getCGridViewParams()
+        {
+            return array_merge(parent::getCGridViewParams(),
+                        array('hideHeader'            => true,
+                              'itemsCssClass'         => 'items stacked-list',
+                              'renderSpanOnEmptyText' => false));
+        }
+
+        protected function getEmptyText()
+        {
+            $content  = '<div class="general-issue-notice no-projects-found"><span class="icon-notice"></span><p>';
+            $content .= Zurmo::t('ProjectsModule', 'No Projects created');
+            $content .= '</p></div>';
+            return $content;
         }
     }
 ?>
