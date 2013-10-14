@@ -10689,6 +10689,10 @@ body > .ui-autocomplete {
   content: '\002C';
   font-size: 26px;
 }
+#RecentlyViewedView li.type-GameRewardsModule em:before {
+  content: '\2205';
+  font-size: 30px;
+}
 /*=Content*/
 .AppContent {
   -webkit-border-radius: 0 0 5px 5px;
@@ -20436,6 +20440,10 @@ a.close-ModalGameNotification.simple-link {
   margin-top: 4px;
   margin-left: 10px;
 }
+#GameRewardsRedeemListView .pager.horizontal {
+  border: 1px solid #DFDFDF;
+  border-top: none;
+}
 #WelcomeView {
   padding-right: 20px !important;
 }
@@ -22081,6 +22089,9 @@ a.user-link {
   padding-top: 5px !important;
   padding-bottom: 5px !important;
 }
+.drillDownContent > h5 {
+  padding: 5px 5px 0 5px;
+}
 .hasDrillDownLink {
   padding: 10px 0 !important;
   width: 20px !important;
@@ -22096,6 +22107,7 @@ a.user-link {
   font-family: "zurmo_gamification_symbly_rRg";
   position: relative;
   left: 5px;
+  top: -2px;
 }
 .refreshPortletLink {
   position: absolute;
@@ -24503,6 +24515,9 @@ div.special-pager .hidden.next:after {
 }
 .pillbox + .pillbox {
   float: right;
+}
+.pillbox.empty {
+  visibility: hidden;
 }
 .pillbox .split-button:last-child .button-trigger {
   -webkit-border-radius: 0 4px 4px 0;
