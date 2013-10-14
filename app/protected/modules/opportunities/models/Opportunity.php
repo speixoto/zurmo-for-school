@@ -54,7 +54,8 @@
         {
             if (parent::beforeSave())
             {
-                if (!isset($this->originalAttributeValues['probability']))
+                $automaticMappingDisabled = OpportunitiesModule::isAutomaticProbabilityMappingDisabled();
+                if (!isset($this->originalAttributeValues['probability']) && $automaticMappingDisabled === false)
                 {
                     $this->resolveStageToProbability();
                 }
