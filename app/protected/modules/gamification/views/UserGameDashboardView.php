@@ -136,8 +136,7 @@
                         }
                     }
                 );";
-            //Yii::app()->clientScript->registerScript('userGameDashboardScript', $script);
-
+            Yii::app()->clientScript->registerScript('userGameDashboardScript', $script);
             $cs = Yii::app()->getClientScript();
             $cs->registerCoreScript('gamification-dashboard');
             $cs->registerScriptFile(
@@ -331,8 +330,6 @@
                 }
                 $content .= ZurmoHtml::tag('div', array('class' => $classContent), $itemContent);
             }
-            $coinImageUrl       = Yii::app()->themeManager->baseUrl . '/default/images/game-dashboard/coin.png';
-            //$itemRedeemContent  = ZurmoHtml::image($coinImageUrl);
             $itemRedeemContent = static::renderCompleteButton($collection->id, $user->id, $canCollect);
             $content           .= ZurmoHtml::tag('div', array('class' => 'gd-collection-item-redeemed'), $itemRedeemContent);
             return ZurmoHtml::tag('div', array('class' => 'gd-collection-items clearfix'), $content);
@@ -340,11 +337,10 @@
 
         protected static function renderCompleteButton($collectionId, $userId, $canCollect = true)
         {
-//            assert('is_int($collectionid)');
-//            assert('is_int($userId)');
-//            assert('is_bool($canCollect)');
-            $url  = Yii::app()->createUrl('gamification/default/redeemCollection/',
-                                          array('id' => $collectionId));
+            assert('is_int($collectionid)');
+            assert('is_int($userId)');
+            assert('is_bool($canCollect)');
+            $url           = Yii::app()->createUrl('gamification/default/redeemCollection/', array('id' => $collectionId));
             $htmlOptions   = array();
             $disabledClass = null;
             $disabled      = false;
