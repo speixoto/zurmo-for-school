@@ -51,7 +51,12 @@
 
     $common_config['components']['lessCompiler'] = array(
         'class'        => 'application.extensions.lessphp.LessCompiler',
-        'formatterName'    => 'lessjs', // - lessjs / compressed / classic , see http://leafo.net/lessphp/docs/#output_formatting for details
+        'formatterName'    => 'lessjs',
+        'lessFilesToCompile'    => array(
+            'ie.less',
+            'mobile.less',
+            'newui.less'
+        ),
     );
 
     //Turn off gamification

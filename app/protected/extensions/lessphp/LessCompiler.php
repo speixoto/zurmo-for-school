@@ -1,200 +1,144 @@
 <?php
-require_once(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'lib' . DIRECTORY_SEPARATOR . 'lessc.inc.php');
+    /*********************************************************************************
+     * Zurmo is a customer relationship management program developed by
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     *
+     * Zurmo is free software; you can redistribute it and/or modify it under
+     * the terms of the GNU Affero General Public License version 3 as published by the
+     * Free Software Foundation with the addition of the following permission added
+     * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
+     * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
+     * OF NON INFRINGEMENT OF THIRD PARTY RIGHTS.
+     *
+     * Zurmo is distributed in the hope that it will be useful, but WITHOUT
+     * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+     * details.
+     *
+     * You should have received a copy of the GNU Affero General Public License along with
+     * this program; if not, see http://www.gnu.org/licenses or write to the Free
+     * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+     * 02110-1301 USA.
+     *
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU Affero General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     ********************************************************************************/
 
-class LessCompiler extends CApplicationComponent
-{
-    public $formatterName = 'compressed';
+    require_once(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'lib' . DIRECTORY_SEPARATOR . 'lessc.inc.php');
 
-    protected $compiledCssPath;
-
-    protected $lessFilesPath;
-
-    protected $lessCompiler;
-
-    protected $filesToCompile = array(
-        'ie.less',
-        'mobile.less',
-        'newui.less'
-    );
-
-    public function init()
+    class LessCompiler extends CApplicationComponent
     {
-        parent::init();
-        $this->setLessCompiler($this->formatterName);
-        $this->setCompiledCssPath();
-        $this->setLessFilesPath();
-    }
+        public $formatterName = 'lessjs';
 
-    public function setCompiledCssPath()
-    {
-        $themePath = Yii::app()->themeManager->getBasePath() . DIRECTORY_SEPARATOR . Yii::app()->theme->name;
-        $this->compiledCssPath = $themePath . DIRECTORY_SEPARATOR . 'css';
-    }
+        public $lessFilesToCompile;
 
-    public function getCompiledCssPath()
-    {
-        if (isset($this->compiledCssPath) && !empty($this->compiledCssPath))
+        protected $compiledCssPath;
+
+        protected $lessFilesPath;
+
+        protected $lessCompiler;
+
+        /**
+         * Initialize component
+         */
+        public function init()
         {
-            return $this->compiledCssPath;
+            parent::init();
+            $this->setCompiledCssPath();
+            $this->setLessFilesPath();
         }
-        else
-        {
-            return null;
-        }
-    }
 
-    public function setLessFilesPath()
-    {
-        $themePath = Yii::app()->themeManager->getBasePath() . DIRECTORY_SEPARATOR . Yii::app()->theme->name;
-        $this->lessFilesPath = $themePath . DIRECTORY_SEPARATOR . 'less';
-    }
-
-    public function getLessFilesPath()
-    {
-        if (isset($this->lessFilesPath) && !empty($this->lessFilesPath))
+        /**
+         * Set path where compiled css files will be saved
+         */
+        protected function setCompiledCssPath()
         {
-            return $this->lessFilesPath;
+            $themePath = Yii::app()->themeManager->getBasePath() . DIRECTORY_SEPARATOR . Yii::app()->theme->name;
+            $this->compiledCssPath = $themePath . DIRECTORY_SEPARATOR . 'css';
         }
-        else
-        {
-            return null;
-        }
-    }
 
-    public function setLessCompiler($formatterName)
-    {
-        $this->lessCompiler = new lessc;
-        $this->lessCompiler->setPreserveComments(true);
-        $this->lessCompiler->setFormatter($this->formatterName);
-    }
-
-    public function getLessCompiler()
-    {
-        if ($this->lessCompiler instanceOf lessc)
+        /**
+         * Get path where css files will be saved
+         * @return null || string
+         */
+        protected function getCompiledCssPath()
         {
-            return $this->lessCompiler;
-        }
-        else
-        {
-            throw new NotSupportedException();
-        }
-    }
-
-    public function compile()
-    {
-        if (is_array($this->filesToCompile) && !empty($this->filesToCompile))
-        {
-            foreach ($this->filesToCompile as $lessFile)
+            if (isset($this->compiledCssPath) && !empty($this->compiledCssPath))
             {
-                $lessFilePath = $this->getLessFilesPath() . DIRECTORY_SEPARATOR . $lessFile;
-                $cssFileName = str_replace('less', 'css', $lessFile);
-                $cssFilePath = $this->getCompiledCssPath() . DIRECTORY_SEPARATOR . $cssFileName;
-                $this->getLessCompiler()->compileFile($lessFilePath, $cssFilePath);
+                return $this->compiledCssPath;
+            }
+            else
+            {
+                return null;
             }
         }
-    }
 
-
-    /*
-    // path to store compiled css files
-    // defaults to 'application.assets.css'
-    public $compiledPath=null;
-
-    // compiled output formatter
-    // accepted values: 'lessjs' , 'compressed' , 'classic'
-    // defaults to 'lessjs'
-    // read http://leafo.net/lessphp/docs/#output_formatting for details
-    public $formatter='lessjs';
-
-    // passing in true will cause the input to always be recompiled
-    public $forceCompile=false;
-
-    // if set to true, compileFile method will compile .less to .css ONLY if output .css file not found
-    // otherwise compileFile method will only return path and filename of existing .css file
-    // this mode is for production
-    public $disabled=false;
-
-    private $lessc=null;
-
-    public function init()
-    {
-        if (!$this->compiledPath)
+        /**
+         * Set path for less files
+         */
+        protected function setLessFilesPath()
         {
-            $this->compiledPath='application.assets.css';
+            $themePath = Yii::app()->themeManager->getBasePath() . DIRECTORY_SEPARATOR . Yii::app()->theme->name;
+            $this->lessFilesPath = $themePath . DIRECTORY_SEPARATOR . 'less';
         }
 
-        $alias=YiiBase::getPathOfAlias($this->compiledPath);
-        if ($alias)
+        /**
+         * Get path of less files
+         * @return null || string
+         */
+        protected function getLessFilesPath()
         {
-            $this->compiledPath=$alias;
-        }
-        elseif (!is_dir($this->compiledPath))
-        {
-            $this->compiledPath=Yii::app()->basePath.'/assets/css';
-        }
-
-        if ($this->formatter!='lessjs'&&$this->formatter!='compressed'&&$this->formatter!='classic')
-        {
-            $this->formatter='lessjs';
-        }
-
-        $this->lessc=new lessc;
-        $this->lessc->setFormatter($this->formatter);
-    }
-
-    public function compileFile($file,$fileOut='',$useCompiledPath=true)
-    {
-        if (!$fileOut)
-        {
-            $fileOut=basename($file,'.less').'.css';
-        }
-        if ($useCompiledPath)
-        {
-            $fileOut=$this->compiledPath.'/'.$fileOut;
-        }
-
-        $compile=false;
-
-        if (!$this->forceCompile&&!$this->disabled)
-        {
-            $files=Yii::app()->cache->get('less-compiler-'.$file.'-updated');
-            if ($files&&is_array($files))
+            if (isset($this->lessFilesPath) && !empty($this->lessFilesPath))
             {
-                foreach ($files as $_file=>$_time)
+                return $this->lessFilesPath;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        /**
+         * Initialize less compiler
+         * @param $formatterName
+         * @return lessc
+         */
+        protected function initializeLessCompiler($formatterName)
+        {
+            $lessCompiler = new lessc;
+            $lessCompiler->setPreserveComments(true);
+            $lessCompiler->setFormatter($this->formatterName);
+            $lessCompiler->setImportDir($this->getLessFilesPath());
+            return $lessCompiler;
+        }
+
+        /**
+         * Compile all less files
+         */
+        public function compile()
+        {
+            if (is_array($this->lessFilesToCompile) && !empty($this->lessFilesToCompile))
+            {
+                foreach ($this->lessFilesToCompile as $lessFile)
                 {
-                    if (filemtime($_file)!=$_time)
-                    {
-                        $compile=true;
-                        break;
-                    }
+                     // We need to construct new less compiler for each file, otherwise compliler doesn't work as expected
+                    $lessCompiler = $this->initializeLessCompiler($this->formatterName);
+                    $lessFilePath = $this->getLessFilesPath() . DIRECTORY_SEPARATOR . $lessFile;
+                    $cssFileName = str_replace('less', 'css', $lessFile);
+                    $cssFilePath = $this->getCompiledCssPath() . DIRECTORY_SEPARATOR . $cssFileName;
+                    $lessCompiler->compileFile($lessFilePath, $cssFilePath);
                 }
             }
-            unset($files);
-        }
-
-        if (!file_exists($fileOut)||$compile||$this->forceCompile)
-        {
-            $cache=$this->lessc->cachedCompile($file);
-            file_put_contents($fileOut,$cache['compiled']);
-            Yii::app()->cache->set('less-compiler-'.$file.'-updated',$cache['files']);
-        }
-
-        return $fileOut;
-    }
-
-    public function compile($css)
-    {
-        if (is_file($css))
-        {
-            return $this->lessc->compileFile($css);
-        }
-        else
-        {
-            return $this->lessc->compile($css);
         }
     }
-    */
-
-}
-
 ?>
