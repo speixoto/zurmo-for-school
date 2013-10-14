@@ -353,19 +353,19 @@
             $htmlOptions['id']       = $id;
             $htmlOptions['name']     = $id;
             $htmlOptions['class']    = 'attachLoading z-button coin-button' . $disabledClass;
-            $aContent                = ZurmoHtml::wrapLink(Zurmo::t('Core', 'Complete'));
-            $containerId             = static::getCollectionContainerId($collectionId);
             if($disabled)
             {
-                $beforeSend =  'function ( xhr ) {return false;}';
+                $htmlOptions['onclick']   = 'js:return false;';
             }
             else
             {
-                $beforeSend =  'function ( xhr ) {$(this).makeOrRemoveLoadingSpinner(true, "#' . $id . '", "#763d05");}';
+                $htmlOptions['onclick']   = 'js:$(this).addClass("loading").addClass("loading-ajax-submit");
+                                                        $(this).makeOrRemoveLoadingSpinner(true, "#" + $(this).attr("id"), "#763d05");';
             }
+            $aContent                = ZurmoHtml::wrapLink(Zurmo::t('Core', 'Complete'));
+            $containerId             = static::getCollectionContainerId($collectionId);
             return ZurmoHtml::ajaxLink($aContent, $url, array(
-                'type' => 'GET',
-                'beforeSend' => $beforeSend,
+                'type'    => 'GET',
                 'success' => 'js:function(data)
                     {
                         $("#' . $containerId . '").replaceWith(data);
