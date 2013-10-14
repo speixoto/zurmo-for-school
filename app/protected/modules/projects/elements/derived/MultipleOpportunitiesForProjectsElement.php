@@ -39,117 +39,54 @@
      * specifically for the 'opportunities' relation. This is utilized by the Project model.
      *
      */
-    class MultipleOpportunitiesForProjectsElement extends Element implements DerivedElementInterface
+    class MultipleOpportunitiesForProjectsElement extends MultiSelectRelatedModelsAutoCompleteElement
     {
-        /**
-         * @return string
-         */
-        protected function renderControlNonEditable()
+        protected function getFormName()
         {
-            $content  = null;
-            $projectOpportunities = $this->getExistingOpportunitiesRelationsIdsAndLabels();
-            foreach ($projectOpportunities as $projectOpportunity)
-            {
-                if ($content != null)
-                {
-                    $content .= ', ';
-                }
-                $content .= $projectOpportunity['name'];
-            }
-            return $content;
+            return 'ProjectOpportunitiesForm';
         }
 
-        /**
-         * @return string
-         */
-        protected function renderControlEditable()
+        protected function getUnqualifiedNameForIdField()
+        {
+            return '[opportunityIds]';
+        }
+
+        protected function getUnqualifiedIdForIdField()
+        {
+            return '_Opportunity_ids';
+        }
+
+        protected function assertModuleType()
         {
             assert('$this->model instanceof Project');
-            $cClipWidget = new CClipWidget();
-            $cClipWidget->beginClip("OpportunityForProjectModelElement");
-            $cClipWidget->widget('application.core.widgets.MultiSelectAutoComplete', array(
-                                'name'              => $this->getNameForIdField(),
-                                'id'                => $this->getIdForIdField(),
-                                'jsonEncodedIdsAndLabels'   => CJSON::encode($this->getExistingOpportunitiesRelationsIdsAndLabels()),
-                                'sourceUrl'         => Yii::app()->createUrl('projects/default/autoCompleteAllOpportunitiesForMultiSelectAutoComplete'),
-                                'htmlOptions'       => array(
-                                                                'disabled' => $this->getDisabledValue(),
-                                                                ),
-                                'hintText' => Zurmo::t('ProjectsModule', 'Type a ' . LabelUtil::getUncapitalizedModelLabelByCountAndModelClassName(1, 'Opportunity'),
-                                LabelUtil::getTranslationParamsForAllModules())
-            ));
-            $cClipWidget->endClip();
-            $content = $cClipWidget->getController()->clips['OpportunityForProjectModelElement'];
-            return $content;
         }
 
-        protected function renderError()
+        protected function getWidgetSourceUrl()
         {
+            return Yii::app()->createUrl('projects/default/autoCompleteAllOpportunitiesForMultiSelectAutoComplete');
         }
 
-        /**
-         * @return string
-         */
-        protected function renderLabel()
+        protected function getWidgetHintText()
         {
-            return $this->resolveNonActiveFormFormattedLabel($this->getFormattedAttributeLabel());
+            return Zurmo::t('ProjectsModule', 'Type a ' .
+                                                LabelUtil::getUncapitalizedModelLabelByCountAndModelClassName(1, 'Opportunity'),
+                                            LabelUtil::getTranslationParamsForAllModules());
         }
 
-        /**
-         * @return string
-         */
+        protected function relationName()
+        {
+            return 'opportunities';
+        }
+
         protected function getFormattedAttributeLabel()
         {
             return Yii::app()->format->text(Zurmo::t('ProjectsModule', 'Opportunities'));
         }
 
-        /**
-         * @return string
-         */
         public static function getDisplayName()
         {
             return Zurmo::t('OpportunitiesModule', 'Related OpportunitiesModulePluralLabel',
-                       LabelUtil::getTranslationParamsForAllModules());
-        }
-
-        /**
-         * Get the attributeNames of attributes used in
-         * the derived element. For this element, there are no attributes from the model.
-         * @return array - empty
-         */
-        public static function getModelAttributeNames()
-        {
-            return array();
-        }
-
-        /**
-         * @return string
-         */
-        protected function getNameForIdField()
-        {
-            return 'ProjectOpportunitiesForm[opportunityIds]';
-        }
-
-        /**
-         * @return string
-         */
-        protected function getIdForIdField()
-        {
-            return 'ProjectOpportunitiesForm_Opportunity_ids';
-        }
-
-        /**
-         * @return array
-         */
-        protected function getExistingOpportunitiesRelationsIdsAndLabels()
-        {
-            $existingProjectOpportunities = array();
-            for ($i = 0; $i < count($this->model->opportunities); $i++)
-            {
-                $existingProjectOpportunities[] = array('id' => $this->model->opportunities[$i]->id,
-                                                     'name' => $this->model->opportunities[$i]->name);
-            }
-            return $existingProjectOpportunities;
+                                                    LabelUtil::getTranslationParamsForAllModules());
         }
     }
 ?>

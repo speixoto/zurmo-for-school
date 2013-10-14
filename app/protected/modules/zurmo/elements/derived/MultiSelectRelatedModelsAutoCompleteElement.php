@@ -270,8 +270,18 @@
         {
             return array(
                 'id'    => $model->id,
-                $this->getWidgetPropertyToSearch()  => strval($model),
+                $this->getWidgetPropertyToSearch()  => $this->resolveModelNameForRendering($model),
             );
+        }
+
+        /**
+         * Resolves model's name for rendering.
+         * @param RedBeanModel $model
+         * @return string
+         */
+        protected function resolveModelNameForRendering(RedBeanModel $model)
+        {
+            return strval($model);
         }
 
         /**

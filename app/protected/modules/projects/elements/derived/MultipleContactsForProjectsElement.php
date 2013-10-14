@@ -39,124 +39,59 @@
      * specifically for the 'contacts' relation. This is utilized by the Project model.
      *
      */
-    class MultipleContactsForProjectsElement extends Element implements DerivedElementInterface
+    class MultipleContactsForProjectsElement extends MultiSelectRelatedModelsAutoCompleteElement
     {
-        /**
-         * @return string
-         */
-        protected function renderControlNonEditable()
+        protected function getFormName()
         {
-            $content  = null;
-            $projectContacts = $this->getExistingContactRelationsIdsAndLabels();
-            foreach ($projectContacts as $projectContact)
-            {
-                if ($content != null)
-                {
-                    $content .= ', ';
-                }
-                $content .= $projectContact['name'];
-            }
-            return $content;
+            return 'ProjectContactsForm';
         }
 
-        /**
-         * @return string
-         */
-        protected function renderControlEditable()
+        protected function getUnqualifiedNameForIdField()
+        {
+            return '[contactIds]';
+        }
+
+        protected function getUnqualifiedIdForIdField()
+        {
+            return '_Contact_ids';
+        }
+
+        protected function assertModuleType()
         {
             assert('$this->model instanceof Project');
-            $cClipWidget = new CClipWidget();
-            $cClipWidget->beginClip("ContactForProjectModelElement");
-            $cClipWidget->widget('application.core.widgets.MultiSelectAutoComplete', array(
-                                'name'              => $this->getNameForIdField(),
-                                'id'                => $this->getIdForIdField(),
-                                'jsonEncodedIdsAndLabels'   => CJSON::encode($this->getExistingContactRelationsIdsAndLabels()),
-                                'sourceUrl'         => Yii::app()->createUrl('contacts/variableContactState/autoCompleteAllContactsForMultiSelectAutoComplete'),
-                                'htmlOptions'       => array(
-                                                                'disabled' => $this->getDisabledValue(),
-                                                                ),
-                                'hintText' => Zurmo::t('ProjectsModule', 'Type a ' . LabelUtil::getUncapitalizedModelLabelByCountAndModelClassName(1, 'Contact'),
-                                LabelUtil::getTranslationParamsForAllModules())
-            ));
-            $cClipWidget->endClip();
-            $content = $cClipWidget->getController()->clips['ContactForProjectModelElement'];
-            return $content;
         }
 
-        protected function renderError()
+        protected function getWidgetSourceUrl()
         {
+            return Yii::app()->createUrl('contacts/variableContactState/autoCompleteAllContactsForMultiSelectAutoComplete');
         }
 
-        /**
-         * @return string
-         */
-        protected function renderLabel()
+        protected function getWidgetHintText()
         {
-            return $this->resolveNonActiveFormFormattedLabel($this->getFormattedAttributeLabel());
+            return Zurmo::t('ProjectsModule', 'Type a ' .
+                                                LabelUtil::getUncapitalizedModelLabelByCountAndModelClassName(1, 'Contact'),
+                                            LabelUtil::getTranslationParamsForAllModules());
         }
 
-        /**
-         * @return string
-         */
+        protected function relationName()
+        {
+            return 'contacts';
+        }
+
         protected function getFormattedAttributeLabel()
         {
             return Yii::app()->format->text(Zurmo::t('ProjectsModule', 'Contacts'));
         }
 
-        /**
-         * @return string
-         */
         public static function getDisplayName()
         {
             return Zurmo::t('ContactsModule', 'Related ContactsModulePluralLabel',
-                       LabelUtil::getTranslationParamsForAllModules());
+                                            LabelUtil::getTranslationParamsForAllModules());
         }
 
-        /**
-         * Get the attributeNames of attributes used in
-         * the derived element. For this element, there are no attributes from the model.
-         * @return array - empty
-         */
-        public static function getModelAttributeNames()
+        protected function resolveModelNameForRendering(RedBeanModel $model)
         {
-            return array();
-        }
-
-        /**
-         * @return string
-         */
-        protected function getNameForIdField()
-        {
-            return 'ProjectContactsForm[contactIds]';
-        }
-
-        /**
-         * @return string
-         */
-        protected function getIdForIdField()
-        {
-            return 'ProjectContactsForm_Contact_ids';
-        }
-
-        /**
-         * @return array
-         */
-        protected function getExistingContactRelationsIdsAndLabels()
-        {
-            $existingContacts = array();
-            foreach ($this->model->contacts as $contact)
-            {
-                try
-                {
-                    $existingContacts[] = array('id' => $contact->id,
-                                                'name' => ContactsUtil::renderHtmlContentLabelFromContactAndKeyword($contact, null));
-                }
-                catch (NotFoundException $e)
-                {
-                    //do nothing
-                }
-            }
-            return $existingContacts;
+            return ContactsUtil::renderHtmlContentLabelFromContactAndKeyword($model, null);
         }
     }
 ?>
