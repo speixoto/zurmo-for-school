@@ -291,5 +291,91 @@
             $this->assertEquals(self::$emailTemplate->files[0]->fileContent->content, $emailMessages[0]->files[0]->fileContent->content);
             $emailMessages[0]->delete();
         }
+
+        public function testProcessForActivityItems()
+        {
+            $account            = AccountTestHelper::createAccountByNameForOwner('testAccount', Yii::app()->user->userModel);
+            $task               = TaskTestHelper::createTaskWithOwnerAndRelatedAccount('testTask', Yii::app()->user->userModel, $account);
+            $meeting            = MeetingTestHelper::createMeetingWithOwnerAndRelatedAccount('testMeetig', Yii::app()->user->userModel, $account);
+            $contact            = ContactTestHelper::createContactByNameForOwner('testContact', Yii::app()->user->userModel);
+            $opportunity        = OpportunityTestHelper::createOpportunityByNameForOwner('testOpportunity', Yii::app()->user->userModel);
+            $task->activityItems->add($contact);
+            $task->activityItems->add($opportunity);
+            $meeting->activityItems->add($contact);
+            $meeting->activityItems->add($opportunity);
+            $this->assertTrue($task->save());
+            $this->assertTrue($meeting->save());
+
+            $emailTemplate                 = new EmailTemplate();
+            $emailTemplate->modelClassName = 'Task';
+            $emailTemplate->type           = 1;
+            $emailTemplate->name           = 'some template';
+            $emailTemplate->subject        = 'some subject [[NAME]]';
+            $emailTemplate->htmlContent    = 'Account: [[ACCOUNT__NAME]] Contact: [[CONTACT__FIRST^NAME]] Opportunity: [[OPPORTUNITY__NAME]]';
+            $emailTemplate->textContent    = 'Account: [[ACCOUNT__NAME]] Contact: [[CONTACT__FIRST^NAME]] Opportunity: [[OPPORTUNITY__NAME]]';
+            $this->assertTrue($emailTemplate->save());
+            $message               = new EmailMessageForWorkflowForm('Task', Workflow::TYPE_ON_SAVE);
+
+            $recipients = array(array('type'             => WorkflowEmailMessageRecipientForm::TYPE_DYNAMIC_TRIGGERED_MODEL_USER,
+                                      'audienceType'     => EmailMessageRecipient::TYPE_TO,
+                                      'dynamicUserType'  => DynamicTriggeredModelUserWorkflowEmailMessageRecipientForm::
+                                                                DYNAMIC_USER_TYPE_CREATED_BY_USER));
+            $message->emailTemplateId = $emailTemplate->id;
+            $message->sendFromType    = EmailMessageForWorkflowForm::SEND_FROM_TYPE_CUSTOM;
+            $message->sendFromAddress = 'someone@zurmo.com';
+            $message->sendFromName    = 'Jason';
+            $message->setAttributes(array(EmailMessageForWorkflowForm::EMAIL_MESSAGE_RECIPIENTS => $recipients));
+
+            $helper = new WorkflowEmailMessageProcessingHelper($message, $task, Yii::app()->user->userModel);
+            $this->assertEquals(0, Yii::app()->emailHelper->getQueuedCount());
+            $this->assertEquals(0, Yii::app()->emailHelper->getSentCount());
+            $helper->process();
+            $this->assertEquals(1, Yii::app()->emailHelper->getQueuedCount());
+            $this->assertEquals(0, Yii::app()->emailHelper->getSentCount());
+            $emailMessages = EmailMessage::getAllByFolderType(EmailFolder::TYPE_OUTBOX);
+            $this->assertEquals('some subject testTask',   $emailMessages[0]->subject);
+            $this->assertEquals('Account: testAccount Contact: testContact Opportunity: testOpportunity',
+                                $emailMessages[0]->content->textContent);
+            $this->assertEquals('Account: testAccount Contact: testContact Opportunity: testOpportunity',
+                                $emailMessages[0]->content->htmlContent);
+            $this->assertEquals('Jason',             $emailMessages[0]->sender->fromName);
+            $this->assertEquals('someone@zurmo.com', $emailMessages[0]->sender->fromAddress);
+            $this->assertEquals(1,                   $emailMessages[0]->recipients->count());
+            $this->assertEquals('super@zurmo.com',   $emailMessages[0]->recipients[0]->toAddress);
+
+            $taskId = $task->id;
+            $task->forgetAll();
+            $task = Task::getById($taskId);
+            $message               = new EmailMessageForWorkflowForm('Task', Workflow::TYPE_ON_SAVE);
+
+            $recipients = array(array('type'             => WorkflowEmailMessageRecipientForm::TYPE_DYNAMIC_TRIGGERED_MODEL_USER,
+                'audienceType'     => EmailMessageRecipient::TYPE_TO,
+                'dynamicUserType'  => DynamicTriggeredModelUserWorkflowEmailMessageRecipientForm::
+                DYNAMIC_USER_TYPE_CREATED_BY_USER));
+            $message->emailTemplateId = $emailTemplate->id;
+            $message->sendFromType    = EmailMessageForWorkflowForm::SEND_FROM_TYPE_CUSTOM;
+            $message->sendFromAddress = 'someone@zurmo.com';
+            $message->sendFromName    = 'Jason';
+            $message->setAttributes(array(EmailMessageForWorkflowForm::EMAIL_MESSAGE_RECIPIENTS => $recipients));
+
+            $helper = new WorkflowEmailMessageProcessingHelper($message, $task, Yii::app()->user->userModel);
+            $this->assertEquals(1, Yii::app()->emailHelper->getQueuedCount());
+            $this->assertEquals(0, Yii::app()->emailHelper->getSentCount());
+            $helper->process();
+            $this->assertEquals(2, Yii::app()->emailHelper->getQueuedCount());
+            $this->assertEquals(0, Yii::app()->emailHelper->getSentCount());
+            $emailMessages = EmailMessage::getAllByFolderType(EmailFolder::TYPE_OUTBOX);
+            $this->assertEquals('some subject testTask',   $emailMessages[0]->subject);
+            $this->assertEquals('Account: testAccount Contact: testContact Opportunity: testOpportunity',
+                $emailMessages[1]->content->textContent);
+            $this->assertEquals('Account: testAccount Contact: testContact Opportunity: testOpportunity',
+                $emailMessages[1]->content->htmlContent);
+            $this->assertEquals('Jason',             $emailMessages[1]->sender->fromName);
+            $this->assertEquals('someone@zurmo.com', $emailMessages[1]->sender->fromAddress);
+            $this->assertEquals(1,                   $emailMessages[1]->recipients->count());
+            $this->assertEquals('super@zurmo.com',   $emailMessages[1]->recipients[0]->toAddress);
+
+            $emailMessages[0]->delete();
+        }
     }
 ?>
