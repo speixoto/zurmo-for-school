@@ -202,12 +202,14 @@
             $amChart->id   =  'miniChart';
             $amChart->type = ChartRules::TYPE_DONUT_PROGRESSION;
             $amChart->addSerialGraph('value', 'column');
+            $amChart->addSerialGraph('value', 'column');
             $javascript = $amChart->javascriptChart();
             Yii::app()->getClientScript()->registerScript(__CLASS__ . '-mini-chart', $javascript);
             $cClipWidget = new CClipWidget();
             $cClipWidget->beginClip("Chart");
             $cClipWidget->widget('application.core.widgets.AmChart', array(
                 'id'        => 'miniChart',
+                'height'    => '150px',
             ));
             $cClipWidget->endClip();
             return $cClipWidget->getController()->clips['Chart'];
