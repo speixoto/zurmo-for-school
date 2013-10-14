@@ -36,7 +36,10 @@
 
     abstract class MultiSelectRelatedModelsAutoCompleteElement extends Element implements DerivedElementInterface
     {
-        const FORM_NAME = null;
+        /**
+         * @return string
+         */
+        abstract protected function getFormName();
 
         /**
          * @return string
@@ -83,12 +86,12 @@
 
         protected function getEditableInputId($attributeName = null, $relationAttributeName = null)
         {
-            return static::FORM_NAME . $this->getUnqualifiedIdForIdField();
+            return $this->getFormName() . $this->getUnqualifiedIdForIdField();
         }
 
         protected function getEditableInputName($attributeName = null, $relationAttributeName = null)
         {
-            return static::FORM_NAME . $this->getUnqualifiedNameForIdField();
+            return $this->getFormName() . $this->getUnqualifiedNameForIdField();
         }
 
         /**
@@ -286,7 +289,11 @@
             }
             foreach ($this->model->$relation as $relatedRecord)
             {
-                $existingRecords[]  = $this->resolveIdAndNameByModel($relatedRecord);
+                $existingRecord = $this->resolveIdAndNameByModel($relatedRecord);
+                if (!empty($existingRecord))
+                {
+                    $existingRecords[]  = $existingRecord;
+                }
             }
             return $existingRecords;
         }
