@@ -1,4 +1,4 @@
-<?php
+    <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
      * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
@@ -34,41 +34,35 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    // This is the configuration for zurmoc console application.
-    // Any writable CConsoleApplication properties can be configured here.
-    $common_config = CMap::mergeArray(
-        require('main.php'),
-        array(
-            'basePath' => dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
-            'name' => 'Zurmo Console Application',
-        )
-    );
-    $common_config['import'][] = 'application.core.utils.UpgradeUtil.php';
-    //Utilize a custom begin request behavior class.
-    $common_config['behaviors']['onBeginRequest'] = array(
-        'class' => 'application.modules.zurmo.components.CommandBeginRequestBehavior'
-    );
-
-    $common_config['components']['lessCompiler'] = array(
-        'class'        => 'application.extensions.lessphp.LessCompiler',
-        'formatterName'    => 'lessjs', // - lessjs / compressed / classic , see http://leafo.net/lessphp/docs/#output_formatting for details
-    );
-
-    //Turn off gamification
-    $common_config['components']['gamificationObserver']['enabled'] = false;
-    //Not applicable for console applications.
-    unset($common_config['defaultController']);
-    //Not applicable for console applications.
-    unset($common_config['controllerMap']);
-    //Not applicable for console applications.
-    unset($common_config['userInterface']);
-    if (file_exists(COMMON_ROOT . '/protected/config/commercialConsole.php'))
+    /**
+     * UpdateSchemaCommand allows the schema to be updated.  This is useful if you are developing
+     * and make changes to metadata that affects the database schema.
+     */
+    class LessCompilerCommand extends CConsoleCommand
     {
-        $common_config = CMap::mergeArray($common_config, require(COMMON_ROOT . '/protected/config/commercialConsole.php'));
+        public function getHelp()
+        {
+            return <<<EOD
+    USAGE
+      zurmoc lessCompiler
+
+    DESCRIPTION
+      This command create css files based on less files. This job should probably be done as cronjob, maybe once per day.
+
+    PARAMETERS
+     * no params
+EOD;
     }
-    if (is_file(INSTANCE_ROOT . '/protected/config/customConsole.php'))
-    {
-        $common_config = CMap::mergeArray($common_config, require(COMMON_ROOT . '/protected/config/customConsole.php'));
+
+        /**
+         * Execute the action.
+         * @param array $args
+         * @return int|void
+         */
+        public function run($args)
+        {
+            set_time_limit('900');
+            Yii::app()->lessCompiler->compile();
+        }
     }
-    return $common_config
 ?>
