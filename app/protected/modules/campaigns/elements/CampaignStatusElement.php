@@ -38,58 +38,16 @@
      * Class CampaignStatusElement should be renamed to CampaignStatusDropDownElement along with all references.
      * But first considerations must be made for upgrade and existing usage like in the listview.
      */
-    class CampaignStatusElement extends StaticDropDownElement
+    class CampaignStatusElement extends ConstantBasedStaticDropDownFormElement
     {
-        /**
-         * Called from outside to render status value as label. @see CampaignStatusListViewColumnAdapter
-         * Called from outside to render status value as label. @see CampaignStatusListViewColumnAdapter
-         * @param int $status
-         * @return string, translated status if available otherwise just return status value
-         */
-        public static function renderNonEditableStringContent($status)
-        {
-            assert('is_int($status)');
-            $data = Campaign::getStatusDropDownArray();
-            if (isset($data[$status]))
-            {
-                return $data[$status];
-            }
-            return $status;
-        }
+        protected static $attributeName = 'status';
 
         /**
-         * @param $model
-         * @param $attribute
-         * @return null
-         * @throws NotImplementedException
+         * @return array
          */
-        public static function renderDisplayAttributeForReport($model, $attribute)
+        protected static function resolveDropDownArray()
         {
-            assert('$model instanceof ReportResultsRowData');
-            if (null === $displayAttributeKey = $model::resolveKeyByAttributeName($attribute))
-            {
-                return $model->{$attribute};
-            }
-            $displayAttributes = $model->getDisplayAttributes();
-            $displayAttribute  = $displayAttributes[$displayAttributeKey];
-            $realAttributeName = $displayAttribute->getResolvedAttribute();
-            if($realAttributeName == 'status')
-            {
-                $dataArray = Campaign::getStatusDropDownArray();
-            }
-            else
-            {
-                throw new NotImplementedException();
-            }
-            $value = $model->{$attribute};
-            if (isset($dataArray[$value]))
-            {
-                return $dataArray[$value];
-            }
-            else
-            {
-                return null;
-            }
+            return Campaign::getStatusDropDownArray();
         }
 
         /**

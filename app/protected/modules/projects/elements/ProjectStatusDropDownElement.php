@@ -36,64 +36,14 @@
     /**
      * Status dropdown element for project
      */
-    class ProjectStatusDropDownElement extends StaticDropDownFormElement
+    class ProjectStatusDropDownElement extends ConstantBasedStaticDropDownFormElement
     {
-        /**
-         * Called from outside to render status value as label. @see ProjectStatusDropDownListViewColumnAdapter
-         * Called from outside to render status value as label. @see ProjectStatusDropDownListViewColumnAdapter
-         * @param int $status
-         * @return string, translated status if available otherwise just return status value
-         */
-        public static function renderNonEditableStringContent($status)
-        {
-            assert('is_int($status)');
-            $data = Project::getStatusDropDownArray();
-            if (isset($data[$status]))
-            {
-                return $data[$status];
-            }
-            return $status;
-        }
-
-        /**
-         * @param $model
-         * @param $attribute
-         * @return null
-         * @throws NotImplementedException
-         */
-        public static function renderDisplayAttributeForReport($model, $attribute)
-        {
-            assert('$model instanceof ReportResultsRowData');
-            if (null === $displayAttributeKey = $model::resolveKeyByAttributeName($attribute))
-            {
-                return $model->{$attribute};
-            }
-            $displayAttributes = $model->getDisplayAttributes();
-            $displayAttribute  = $displayAttributes[$displayAttributeKey];
-            $realAttributeName = $displayAttribute->getResolvedAttribute();
-            if($realAttributeName == 'status')
-            {
-                $dataArray = Project::getStatusDropDownArray();
-            }
-            else
-            {
-                throw new NotImplementedException();
-            }
-            $value = $model->{$attribute};
-            if (isset($dataArray[$value]))
-            {
-                return $dataArray[$value];
-            }
-            else
-            {
-                return null;
-            }
-        }
+        protected static $attributeName = 'status';
 
         /**
          * @return array
          */
-        protected function getDropDownArray()
+        protected static function resolveDropDownArray()
         {
             return Project::getStatusDropDownArray();
         }

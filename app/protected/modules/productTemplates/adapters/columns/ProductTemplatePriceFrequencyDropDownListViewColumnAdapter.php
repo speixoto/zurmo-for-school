@@ -42,7 +42,7 @@
         {
             return array(
                 'name'  => $this->attribute,
-                'value' => array('ProductTemplateElementUtil', 'getProductTemplatePriceFrequencyDisplayedGridValue'),
+                'value' => 'ProductTemplatePriceFrequencyDropDownElement::renderNonEditableStringContent((int)$data->priceFrequency)',
                 'type'  => 'raw',
             );
         }
