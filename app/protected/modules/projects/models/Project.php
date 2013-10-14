@@ -164,7 +164,7 @@
          */
         public static function getGamificationRulesType()
         {
-            return null;
+            return 'ProjectGamification';
         }
 
         /**
