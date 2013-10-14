@@ -49,10 +49,12 @@
                 throw new NotSupportedException();
             }
             $box                  = EmailBoxUtil::getDefaultEmailBoxByUser(Yii::app()->user->userModel);
-            $account = AccountTestHelper::
+            $account  = AccountTestHelper::
                             createAccountByNameForOwner('Email Messages Test Account', Yii::app()->user->userModel);
-            $contact = ContactTestHelper::
-                            createContactWithAccountByNameForOwner('BobMessage', Yii::app()->user->userModel, $account);
+            $contact1 = ContactTestHelper::
+                            createContactWithAccountByNameForOwner('BobMessage',  Yii::app()->user->userModel, $account);
+            $contact2 = ContactTestHelper::
+                            createContactWithAccountByNameForOwner('Bob2Message', Yii::app()->user->userModel, $account);
 
             //#1 Create Archived - Sent
             $emailMessage              = new EmailMessage();
@@ -66,14 +68,14 @@
             $sender                    = new EmailMessageSender();
             $sender->fromAddress       = 'super@zurmotest.com';
             $sender->fromName          = 'Super User';
-            $sender->personOrAccount   = Yii::app()->user->userModel;
+            $sender->personOrAccount->add(Yii::app()->user->userModel);
             $emailMessage->sender      = $sender;
             //Recipient is BobMessage
             $recipient                  = new EmailMessageRecipient();
             $recipient->toAddress       = 'bob.message@zurmotest.com';
-            $recipient->toName          = strval($contact);
+            $recipient->toName          = strval($contact1);
             $recipient->type            = EmailMessageRecipient::TYPE_TO;
-            $recipient->personOrAccount = $contact;
+            $recipient->personOrAccount->add($contact1);
             $emailMessage->recipients->add($recipient);
             $emailMessage->folder       = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_ARCHIVED);
             $emailMessage->sentDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
@@ -91,18 +93,19 @@
             $emailContent->textContent = 'My Second Message';
             $emailContent->htmlContent = 'Some fake HTML content';
             $emailMessage->content     = $emailContent;
-            //Sending is current user (super)
+            //Sending from address bob.message@zurmotest.com (two contacts)
             $sender                    = new EmailMessageSender();
             $sender->fromAddress       = 'bob.message@zurmotest.com';
-            $sender->fromName          = strval($contact);
-            $sender->personOrAccount   = $contact;
+            $sender->fromName          = strval($contact1);
+            $sender->personOrAccount->add($contact1);
+            $sender->personOrAccount->add($contact2);
             $emailMessage->sender      = $sender;
-            //Recipient is BobMessage
+            //Recipient is current user (super)
             $recipient                  = new EmailMessageRecipient();
             $recipient->toAddress       = 'super@zurmotest.com';
             $recipient->toName          = 'Super User';
             $recipient->type            = EmailMessageRecipient::TYPE_TO;
-            $recipient->personOrAccount = Yii::app()->user->userModel;
+            $recipient->personOrAccount->add(Yii::app()->user->userModel);
             $emailMessage->recipients->add($recipient);
             $emailMessage->folder       = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_ARCHIVED);
             $emailMessage->sentDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
@@ -124,14 +127,14 @@
             $sender                    = new EmailMessageSender();
             $sender->fromAddress       = 'super@zurmotest.com';
             $sender->fromName          = 'Super User';
-            $sender->personOrAccount   = Yii::app()->user->userModel;
+            $sender->personOrAccount->add(Yii::app()->user->userModel);
             $emailMessage->sender      = $sender;
             //Recipient is BobMessage
             $recipient                  = new EmailMessageRecipient();
             $recipient->toAddress       = 'bob.message@zurmotest.com';
-            $recipient->toName          = strval($contact);
+            $recipient->toName          = strval($contact1);
             $recipient->type            = EmailMessageRecipient::TYPE_TO;
-            $recipient->personOrAccount = $contact;
+            $recipient->personOrAccount->add($contact1);
             $emailMessage->recipients->add($recipient);
             $emailMessage->folder       = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_SENT);
             $emailMessage->sentDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
@@ -152,15 +155,15 @@
             //Sending is current user (super)
             $sender                    = new EmailMessageSender();
             $sender->fromAddress       = 'bob.message@zurmotest.com';
-            $sender->fromName          = strval($contact);
-            $sender->personOrAccount   = $contact;
+            $sender->fromName          = strval($contact1);
+            $sender->personOrAccount->add($contact1);
             $emailMessage->sender      = $sender;
             //Recipient is BobMessage
             $recipient                  = new EmailMessageRecipient();
             $recipient->toAddress       = 'super@zurmotest.com';
             $recipient->toName          = 'Super User';
             $recipient->type            = EmailMessageRecipient::TYPE_TO;
-            $recipient->personOrAccount = Yii::app()->user->userModel;
+            $recipient->personOrAccount->add(Yii::app()->user->userModel);
             $emailMessage->recipients->add($recipient);
             $emailMessage->folder       = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_INBOX);
             $saved = $emailMessage->save();
@@ -181,7 +184,7 @@
             }
             $box                  = EmailBoxUtil::getDefaultEmailBoxByUser(Yii::app()->user->userModel);
 
-                    //#1 Create Archived - Sent
+            //#1 Create Archived - Sent
             $emailMessage              = new EmailMessage();
             $emailMessage->owner       = Yii::app()->user->userModel;
             $emailMessage->subject     = 'A test unmatched archived sent email';
@@ -193,7 +196,7 @@
             $sender                    = new EmailMessageSender();
             $sender->fromAddress       = 'super@zurmotest.com';
             $sender->fromName          = 'Super User';
-            $sender->personOrAccount   = Yii::app()->user->userModel;
+            $sender->personOrAccount->add(Yii::app()->user->userModel);
             $emailMessage->sender      = $sender;
             //Recipient is BobMessage
             $recipient                  = new EmailMessageRecipient();
@@ -227,7 +230,7 @@
             $recipient->toAddress       = 'super@zurmotest.com';
             $recipient->toName          = 'Super User';
             $recipient->type            = EmailMessageRecipient::TYPE_TO;
-            $recipient->personOrAccount = Yii::app()->user->userModel;
+            $recipient->personOrAccount->add(Yii::app()->user->userModel);
             $emailMessage->recipients->add($recipient);
             $emailMessage->folder       = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_ARCHIVED_UNMATCHED);
             $emailMessage->sentDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
