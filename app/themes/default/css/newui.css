@@ -10024,11 +10024,20 @@ section {
 #header-game-dashboard-link-wrapper a {
   font-weight: normal !important;
   font-weight: normal;
-  font-size: 22px;
+  font-size: 24px;
   font-family: "zurmo_gamification_symbly_rRg";
   color: #ddd;
-  line-height: 41px;
+  padding: 0 10px;
+  line-height: 38px;
   display: block;
+}
+#header-game-dashboard-link-wrapper .highlighted {
+  color: #fff;
+  -webkit-text-shadow: 0 0 5px #ff0000;
+  -moz-text-shadow: 0 0 5px #ff0000;
+  -o-text-shadow: 0 0 5px #ff0000;
+  -ms-text-shadow: 0 0 5px #ff0000;
+  text-shadow: 0 0 5px #ff0000;
 }
 #GlobalSearchAndShortcutsCreateMenuView {
   height: 40px;
@@ -12169,6 +12178,15 @@ div.wide.form label.hasCheckBox {
 .zero-components-view .ContactWebForm .large-icon:after,
 .splash-view .ContactWebForm .large-icon:after {
   content: '\003C';
+  font-weight: normal !important;
+  font-weight: normal;
+  font-size: 300px;
+  font-family: "zurmo_gamification_symbly_rRg";
+  line-height: 52%;
+}
+.zero-components-view .GameReward .large-icon:after,
+.splash-view .GameReward .large-icon:after {
+  content: '\2205';
   font-weight: normal !important;
   font-weight: normal;
   font-size: 300px;
@@ -15427,13 +15445,16 @@ i[class^="icon"] {
 .juiportlet-column-no-split {
   width: 100%;
 }
+.juiportlet-column-no-split .juiportlet-widget {
+  margin-right: 0;
+}
 .juiportlet-column-split-left-75 {
   width: 65%;
 }
 .juiportlet-column-split-right-25 {
   width: 35%;
 }
-.juiportlet-columns .juiportlet-widget {
+.juiportlet-widget {
   min-width: 265px;
   margin: 0px 20px 20px 0px;
   padding: 0;
@@ -15459,7 +15480,7 @@ i[class^="icon"] {
   /*999*/
 
 }
-.juiportlet-columns .juiportlet-widget .juiportlet-widget-head {
+.juiportlet-widget-head {
   width: 100%;
   height: 40px;
   line-height: 40px;
@@ -15480,13 +15501,10 @@ i[class^="icon"] {
   border-bottom: 1px solid #CCC;
   z-index: 999;
 }
-.juiportlet-columns .juiportlet-widget .juiportlet-widget-head h3 {
+.juiportlet-widget-head h3 {
   float: left;
   position: relative;
   margin-left: 15px;
-}
-.collapse ~ h3 {
-  margin-left: 0;
 }
 .juiportlet-widget-head a.collapse {
   float: left;
@@ -15499,6 +15517,9 @@ i[class^="icon"] {
   text-indent: -9999em;
   margin: 0 8px;
   outline: none;
+}
+.collapse ~ h3 {
+  margin-left: 0;
 }
 .juiportlet-widget-placeholder {
   margin: 0 20px 20px 2px;
@@ -15735,6 +15756,20 @@ i[class^="icon"] {
 }
 .type-achievements .icon-empty:before {
   content: ';';
+  font-weight: normal !important;
+  font-weight: normal;
+  font-size: 45px;
+  font-family: "zurmo_gamification_symbly_rRg";
+  padding: 0;
+  margin: 0;
+  vertical-align: middle;
+  position: relative;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.type-gameRewards .icon-empty:before {
+  content: '\2205';
   font-weight: normal !important;
   font-weight: normal;
   font-size: 45px;
@@ -24953,7 +24988,7 @@ div.special-pager .hidden.next:after {
   display: table;
   clear: both;
 }
-#gd-mini-stats-card #chartdiv svg g:last-child > g:first-child {
+#gd-mini-stats-card #chartContainerminiChart svg g:last-child > g:first-child {
   display: none;
 }
 #gd-mini-stats-card .gd-level {

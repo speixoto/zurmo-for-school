@@ -607,10 +607,17 @@ footer, header, hgroup, menu, nav, section {
 
 #header-game-dashboard-link-wrapper{
 	a{
-		.symbly(22px);
+		.symbly(24px);
 		color: #ddd;
-		line-height: 41px;
+		padding:0 10px;
+		line-height: 38px;
 		display: block;
+	}
+	.highlighted{
+		@topColor: #c43d53;
+		@bottomColor: #a82d31;
+		color:#fff;
+		.t-shadow(0 0 5px #ff0000);
 	}
 }
 
@@ -2507,6 +2514,11 @@ div.wide.form{
 	}
 	.ContactWebForm .large-icon:after{
 		content: '\003C';
+		.symbly(300px);
+		line-height: 52%;
+	}
+	.GameReward .large-icon:after{
+		content:'\2205';// '\2248'; //2205
 		.symbly(300px);
 		line-height: 52%;
 	}
