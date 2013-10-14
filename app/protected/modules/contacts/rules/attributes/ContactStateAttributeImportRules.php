@@ -46,7 +46,7 @@
 
         public function getDisplayLabel()
         {
-            return Zurmo::t('ContactsModule', 'Status');
+            return Zurmo::t('ZurmoModule', 'Status');
         }
 
         /**

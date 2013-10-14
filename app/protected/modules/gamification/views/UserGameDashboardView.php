@@ -82,11 +82,11 @@
 
         public static function renderCoinsContent($coinValue)
         {
+            $url  = Yii::app()->createUrl('gameRewards/default/redeemList/');
             $content  = ZurmoHtml::tag('span', array('id' => 'gd-z-coin'), '');
             $content .= ZurmoHtml::tag('h3', array(), Zurmo::t('GamificationModule', '{n} coin|{n} coins',
                 array($coinValue)));
-            $content .= ZurmoHtml::link(Zurmo::t('GamificationModule', 'Redeem'), '#');
-            //todo: where does this link to? coonvert to story? take to redemption listview of rewards
+            $content .= ZurmoHtml::link(Zurmo::t('GamificationModule', 'Redeem'), $url);
             return      ZurmoHtml::tag('div', array('id' => self::getGameCoinContainerId()), $content);
         }
 
@@ -213,7 +213,6 @@
         protected function renderBadgesContent()
         {
             $content  = ZurmoHtml::tag('h2', array(), Zurmo::t('GamificationModule', 'Badges Achieved'));
-
             if(empty($this->badgeData))
             {
                 $content .= $this->renderEmptyBadgeContent();
@@ -222,14 +221,14 @@
             {
                 $content .= $this->renderPopulatedBadgeContent();
             }
-            return      ZurmoHtml::tag('div', array('id' => 'gd-badges-list'), $content);
+            return ZurmoHtml::tag('div', array('id' => 'gd-badges-list'), $content);
         }
 
         protected function renderEmptyBadgeContent()
         {
-            $content  = ZurmoHtml::tag('tag', array('class' => 'icon-empty'), '');
+            $content  = ZurmoHtml::tag('span', array('class' => 'icon-empty'), '');
             $content .= Zurmo::t('GamificationModule', 'No Achievements Found');
-            return ZurmoHtml::tag('span', array('class' => 'empty'), $content);
+            return ZurmoHtml::tag('span', array('class' => 'empty type-achievements'), $content);
         }
 
         protected function renderPopulatedBadgeContent()
@@ -245,7 +244,7 @@
                 $badgeIconContent .= ZurmoHtml::tag('strong',   array('class' => 'badge-icon',
                     'title' => $badgeDisplayLabel), '');
                 $badgeIconContent .= ZurmoHtml::tag('span',   array('class' => 'badge-grade'), (int)$badge->grade);
-                $badgeContent .= ZurmoHtml::tag('h3',   array('class' => 'badge ' . $badge->type), $badgeIconContent);
+                $badgeContent .= ZurmoHtml::tag('div',   array('class' => 'badge ' . $badge->type), $badgeIconContent);
                 $badgeContent .= ZurmoHtml::tag('h3',   array(), $badgeDisplayLabel);
                 $badgeContent .= ZurmoHtml::tag('span', array(),
                     DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay(
@@ -313,11 +312,9 @@
             $canCollect = true;
             foreach($collection->getItemsData() as $itemType => $quantityCollected)
             {
-                $itemLabel              = $itemTypesAndLabels[$itemType];
-                $collectionItemImageUrl = Yii::app()->themeManager->baseUrl . '/default/images/collections/' .
-                                          $gameCollectionRules::getType() . '/' .
-                                          $gameCollectionRules::makeMediumCollectionItemImageName($itemType);
-                $itemContent = ZurmoHtml::image($collectionItemImageUrl, $itemLabel,
+                $itemLabel               = $itemTypesAndLabels[$itemType];
+                $collectionItemImagePath = $gameCollectionRules::makeMediumCOllectionItemImagePath($itemType);
+                $itemContent = ZurmoHtml::image($collectionItemImagePath, $itemLabel,
                                           array('class'=> 'qtip-shadow', 'data-tooltip' => $itemLabel));
                 $itemContent .= ZurmoHtml::tag('span', array('class' => 'num-collected'), 'x' . $quantityCollected);
                 $classContent = 'gd-collection-item';

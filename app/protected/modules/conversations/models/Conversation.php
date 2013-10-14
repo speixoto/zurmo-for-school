@@ -78,7 +78,7 @@
             {
                 if (trim($this->subject) == '')
                 {
-                    return Zurmo::t('ConversationsModule', '(Unnamed)');
+                    return Zurmo::t('Core', '(Unnamed)');
                 }
                 return $this->subject;
             }

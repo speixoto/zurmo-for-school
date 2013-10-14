@@ -116,21 +116,21 @@
                     break;
                 case MixedDateTypesTriggerForWorkflowFormAttributeMappingRules::TYPE_AT_LEAST_X_AFTER_TRIGGERED_DATE:
                     if (!DateTimeUtil::isDateValueNull($model, $attribute) &&
-                         static::sanitize($model->$attribute) >= static::sanitizeAndResolveThirdValue())
+                         static::sanitize($model->$attribute, true) >= static::sanitizeAndResolveThirdValue())
                     {
                         return true;
                     }
                     break;
                 case MixedDateTypesTriggerForWorkflowFormAttributeMappingRules::TYPE_AT_LEAST_X_BEFORE_TRIGGERED_DATE:
                     if (!DateTimeUtil::isDateValueNull($model, $attribute) &&
-                        static::sanitize($model->$attribute) <= static::sanitizeAndResolveThirdValue())
+                        static::sanitize($model->$attribute, true) <= static::sanitizeAndResolveThirdValue())
                     {
                         return true;
                     }
                     break;
                 case MixedDateTypesTriggerForWorkflowFormAttributeMappingRules::TYPE_LESS_THAN_X_AFTER_TRIGGERED_DATE:
                     if (!DateTimeUtil::isDateValueNull($model, $attribute) &&
-                        static::sanitize($model->$attribute) < static::sanitizeAndResolveThirdValue())
+                        static::sanitize($model->$attribute, true) < static::sanitizeAndResolveThirdValue())
                     {
                         return true;
                     }
@@ -163,11 +163,22 @@
 
         /**
          * @param $value
+         * @param bool $adjustForTimezone
          * @return int|mixed
          */
-        protected function sanitize($value)
+        protected function sanitize($value, $adjustForTimezone = false)
         {
-            return strtotime($value);
+            if($adjustForTimezone)
+            {
+                $timeZone = date_default_timezone_get();
+                date_default_timezone_set('GMT');
+            }
+            $timeStamp = strtotime($value);
+            if($adjustForTimezone)
+            {
+                date_default_timezone_set($timeZone);
+            }
+            return $timeStamp;
         }
 
         /**
@@ -199,17 +210,16 @@
             }
             elseif($this->trigger->valueEvaluationType == 'DateTime')
             {
-                return $this->trigger->resolveNewTimeStampForThirdValueDuration(time());
+                $timeZone = date_default_timezone_get();
+                date_default_timezone_set('GMT');
+                $timeStamp = $this->trigger->resolveNewTimeStampForThirdValueDuration(time());
+                date_default_timezone_set($timeZone);
+                return $timeStamp;
             }
             else
             {
                 throw new NotSupportedException();
             }
-
-
-
-
-
         }
     }
 ?>

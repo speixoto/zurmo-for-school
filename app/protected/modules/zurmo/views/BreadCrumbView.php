@@ -48,6 +48,12 @@
             $this->controllerId    = $controllerId;
             $this->moduleId        = $moduleId;
             $this->breadcrumbLinks = $breadcrumbLinks;
+            $this->init();
+        }
+
+        protected function init()
+        {
+
         }
 
         public function isUniqueToAPage()

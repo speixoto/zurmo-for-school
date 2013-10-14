@@ -43,7 +43,7 @@
         {
             if (trim($this->type) == '')
             {
-                return Zurmo::t('GamificationModule', '(Unnamed)');
+                return Zurmo::t('Core', '(Unnamed)');
             }
             return $this->type;
         }
@@ -247,6 +247,7 @@
          * Process receiving a collection item
          * @param User $user
          * @throws FailedToSaveModelException
+         * @return string $randomKey representing CollectionItem type
          */
         public static function processRandomReceivingCollectionItemByUser(User $user)
         {
@@ -262,6 +263,7 @@
             {
                 throw new FailedToSaveModelException();
             }
+            return array($collection, $randomKey);
         }
 
         /**

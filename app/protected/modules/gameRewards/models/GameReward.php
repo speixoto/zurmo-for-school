@@ -44,7 +44,7 @@
             {
                 if (trim($this->name) == '')
                 {
-                    return Zurmo::t('GameRewardsModule', '(Unnamed)');
+                    return Zurmo::t('Core', '(Unnamed)');
                 }
                 return $this->name;
             }

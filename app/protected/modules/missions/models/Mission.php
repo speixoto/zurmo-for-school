@@ -70,7 +70,7 @@
             {
                 if (trim($this->description) == '')
                 {
-                    return Zurmo::t('MissionsModule', '(Unnamed)');
+                    return Zurmo::t('Core', '(Unnamed)');
                 }
                 return $this->description;
             }
@@ -158,7 +158,7 @@
                     'latestDateTime'  => Zurmo::t('ActivitiesModule', 'Latest Date Time', array(), null, $language),
                     'personsWhoHaveNotReadLatest' => Zurmo::t('MissionsModule', 'Persons Who Have Not Read Latest', array(), null, $language),
                     'reward'          => Zurmo::t('MissionsModule', 'Reward', array(), null, $language),
-                    'status'          => Zurmo::t('MissionsModule', 'Status', array(), null, $language),
+                    'status'          => Zurmo::t('ZurmoModule', 'Status', array(), null, $language),
                     'takenByUser'     => Zurmo::t('MissionsModule', 'Taken By User', array(), null, $language),
                 )
             );

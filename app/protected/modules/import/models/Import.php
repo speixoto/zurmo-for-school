@@ -40,7 +40,7 @@
 
         public function __toString()
         {
-            return Zurmo::t('ImportModule', '(Unnamed)');
+            return Zurmo::t('Core', '(Unnamed)');
         }
 
         public static function getModuleClassName()

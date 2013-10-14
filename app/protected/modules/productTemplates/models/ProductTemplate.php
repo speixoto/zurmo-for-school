@@ -70,7 +70,7 @@
             {
                 if (trim($this->name) == '')
                 {
-                    return Zurmo::t('ProductTemplatesModule', '(Unnamed)');
+                    return Zurmo::t('Core', '(Unnamed)');
                 }
                 return $this->name;
             }
@@ -208,7 +208,7 @@
                     'listPrice'             => Zurmo::t('ProductTemplatesModule', 'List Price',  array(), null, $language),
                     'sellPrice'             => Zurmo::t('ProductTemplatesModule', 'Sell Price',  array(), null, $language),
                     'type'                  => Zurmo::t('ProductTemplatesModule', 'Type',  array(), null, $language),
-                    'status'                => Zurmo::t('ProductTemplatesModule', 'Status',  array(), null, $language),
+                    'status'                => Zurmo::t('ZurmoModule', 'Status',  array(), null, $language),
                 )
             );
         }

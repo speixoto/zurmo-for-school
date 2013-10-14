@@ -84,7 +84,7 @@
             $attributeLabel = ModelFormAttributeLabelsUtil::getTranslatedAttributeLabelByLabels($this->attributeLabels);
             if ($attributeLabel == null)
             {
-                return Zurmo::t('DesignerModule', '(Unnamed)');
+                return Zurmo::t('Core', '(Unnamed)');
             }
             return $attributeLabel;
         }

@@ -72,7 +72,7 @@
             {
                 if (trim($this->name) == '')
                 {
-                    return Zurmo::t('OpportunitiesModule', '(Unnamed)');
+                    return Zurmo::t('Core', '(Unnamed)');
                 }
                 return $this->name;
             }
@@ -96,13 +96,13 @@
                 'closeDate'   => Zurmo::t('OpportunitiesModule', 'Close Date',  array(), null, $language),
                 'contacts'    => Zurmo::t('ContactsModule',      'ContactsModulePluralLabel',   $params, null, $language),
                 'description' => Zurmo::t('ZurmoModule',         'Description',  array(), null, $language),
-                'meetings'    => Zurmo::t('MeetingsModule',      'Meetings',  array(), null, $language),
+                'meetings'    => Zurmo::t('MeetingsModule',      'MeetingsModulePluralLabel', $params, null, $language),
                 'name'        => Zurmo::t('ZurmoModule',         'Name',  array(), null, $language),
-                'notes'       => Zurmo::t('NotesModule',         'Notes',  array(), null, $language),
+                'notes'       => Zurmo::t('NotesModule',         'NotesModulePluralLabel', $params, null, $language),
                 'probability' => Zurmo::t('OpportunitiesModule', 'Probability',  array(), null, $language),
                 'source'      => Zurmo::t('ContactsModule',      'Source',   array(), null, $language),
                 'stage'       => Zurmo::t('OpportunitiesModule', 'Stage',  array(), null, $language),
-                'tasks'       => Zurmo::t('TasksModule',         'Tasks',  array(), null, $language)));
+                'tasks'       => Zurmo::t('TasksModule',         'TasksModulePluralLabel', $params, null, $language)));
         }
 
         public static function canSaveMetadata()

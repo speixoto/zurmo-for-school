@@ -39,9 +39,35 @@
      */
     class UserBreadCrumbView extends BreadCrumbView
     {
-            protected function getHomeLinkLabel()
+        protected $currentUserCanAccessUsers = false;
+
+        protected function init()
         {
-            return Zurmo::t('UsersModule', 'Users Home');
+            if(RightsUtil::doesUserHaveAllowByRightName('UsersModule', UsersModule::getAccessRight(),
+               Yii::app()->user->userModel))
+            {
+                $this->currentUserCanAccessUsers = true;
+            }
+        }
+
+        protected function getHomeLinkLabel()
+        {
+            if($this->currentUserCanAccessUsers)
+            {
+                return Zurmo::t('UsersModule', 'Users Home');
+            }
+            else
+            {
+                return Zurmo::t('UsersModule', 'Users');
+            }
+        }
+
+        protected function getHomeUrl()
+        {
+            if($this->currentUserCanAccessUsers)
+            {
+                return Yii::app()->createUrl($this->resolveModuleId() . '/' . $this->resolveControllerId() . '/index');
+            }
         }
     }
 ?>

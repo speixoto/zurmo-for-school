@@ -116,7 +116,6 @@
                 Yii::app()->gameHelper->processDeferredPoints();
                 Yii::app()->gameHelper->resolveNewBadges();
                 Yii::app()->gameHelper->resolveLevelChange();
-                Yii::app()->gameHelper->resolveNewCollectionItems();
             }
         }
     }

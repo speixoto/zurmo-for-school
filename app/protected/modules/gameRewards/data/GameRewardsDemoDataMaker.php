@@ -66,12 +66,10 @@
                     $gameRewardTransaction->quantity = mt_rand(1,3);
                     $gameReward->transactions->add($gameRewardTransaction);
                 }
+                $gameReward->addPermissions(Group::getByName(Group::EVERYONE_GROUP_NAME), Permission::READ_WRITE_CHANGE_PERMISSIONS_CHANGE_OWNER);
                 $saved = $gameReward->save();
                 if(!$saved)
                 {
-                    echo "<pre>";
-                    print_r($gameReward->getErrors());
-                    echo "</pre>";
                     throw new FailedToSaveModelException();
                 }
                 $gameReward = GameReward::getById($gameReward->id);

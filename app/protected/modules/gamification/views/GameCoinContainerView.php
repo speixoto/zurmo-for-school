@@ -110,8 +110,12 @@
         {
             $publishedAssetsPath = Yii::app()->assetManager->publish(
                                         Yii::getPathOfAlias("application.modules.gamification.views.assets.audio"));
-            $audioFilePath = $publishedAssetsPath . '/chime.mp3';
-            $content = ZurmoHtml::tag('source', array('src' => $audioFilePath), '');
+            $MP3AudioFilePath = $publishedAssetsPath . '/cash-register.mp3';
+            $OGGAudioFilePath = $publishedAssetsPath . '/cash-register.ogg';
+            $WAVAudioFilePath = $publishedAssetsPath . '/cash-register.wav';
+            $content  = ZurmoHtml::tag('source', array('src' => $MP3AudioFilePath, 'type' => 'audio/mpeg'), '');
+            $content .= ZurmoHtml::tag('source', array('src' => $OGGAudioFilePath, 'type' => 'audio/ogg'), '');
+            $content .= ZurmoHtml::tag('source', array('src' => $WAVAudioFilePath, 'type' => 'audio/wav'), '');
             return ZurmoHtml::tag('audio', array('id' => 'game-coin-chime'), $content);
         }
 
