@@ -171,7 +171,10 @@
 
         protected function renderMiniStatisticsContent()
         {
-            $percentageToNextLabel = Zurmo::t('GamificationModule', '44% to Level 5', array());
+            $percentageToNextLabel = Zurmo::t('GamificationModule',
+                                              '{percentage}% to Level {level}',
+                                              array('{percentage}' => (int)$this->generalLevelData['nextLevelPercentageComplete'],
+                                                    '{level}'      => (int)$this->generalLevelData['level'] + 1));
 
             $levelContent  = ZurmoHtml::tag('strong', array(), $this->generalLevelData['level']);
             $levelContent .= ZurmoHtml::tag('span', array(), Zurmo::t('GamificationModule', 'Level'));
@@ -339,9 +342,9 @@
 
         protected static function renderCompleteButton($collectionId, $userId, $canCollect = true)
         {
-            assert('is_int($collectionid)');
-            assert('is_int($userId)');
-            assert('is_bool($canCollect)');
+//            assert('is_int($collectionid)');
+//            assert('is_int($userId)');
+//            assert('is_bool($canCollect)');
             $url  = Yii::app()->createUrl('gamification/default/redeemCollection/',
                                           array('id' => $collectionId));
             $htmlOptions   = array();
