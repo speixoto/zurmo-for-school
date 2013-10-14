@@ -431,6 +431,8 @@
          */
         public static function renderHtmlContentLabelFromProductCategoryAndKeyword($productCategory, $keyword)
         {
+            // TODO: @Mayank: Critical: Replcia of MultipleProductCategoriesForProductTemplateElement:112
+            // TODO: @Mayank: Critical: Unused second argument
             assert('$productCategory instanceof ProductCategory && $productCategory->id > 0');
             assert('$keyword == null || is_string($keyword)');
 
