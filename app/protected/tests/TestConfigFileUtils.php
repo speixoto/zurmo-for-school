@@ -97,8 +97,9 @@ EOD;
         require_once INSTANCE_ROOT . '/protected/config/perInstanceTestConfig.php';
     }
 EOD;
-                $contents = preg_replace('/define\(\'ZURMO_TOKEN\'/',
-                    "\n" . $perInstanceTestConfigContent . "\n\n" . '    define(\'ZURMO_TOKEN\'',
+                $searchPattern = "define('ZURMO_TOKEN'";
+                $contents = preg_replace('/' . preg_quote($searchPattern) . '/',
+                    "\n" . $perInstanceTestConfigContent . "\n\n" . '    ' . $searchPattern,
                     $contents);
                 file_put_contents(INSTANCE_ROOT . '/protected/config/perInstanceTest.php', $contents);
             }
