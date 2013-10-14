@@ -15507,19 +15507,16 @@ i[class^="icon"] {
   margin-left: 15px;
 }
 .juiportlet-widget-head a.collapse {
-  float: left;
+  visibility: hidden;
   display: none;
   /*inline;*/
 
-  background: url(../images/portlet-minimize.png) 14px 50% no-repeat;
+  float: left;
   width: 14px;
   height: 40px;
   text-indent: -9999em;
   margin: 0 8px;
   outline: none;
-}
-.collapse ~ h3 {
-  margin-left: 0;
 }
 .juiportlet-widget-placeholder {
   margin: 0 20px 20px 2px;
@@ -22860,6 +22857,9 @@ a.user-link {
 .MarketingListMembersListView {
   margin-bottom: 0;
 }
+.MarketingListMembersListView .items {
+  background: #fff;
+}
 #marketing-list-member-select-contact-or-report-form {
   padding: 15px;
   position: relative;
@@ -24988,7 +24988,7 @@ div.special-pager .hidden.next:after {
   display: table;
   clear: both;
 }
-#gd-mini-stats-card #chartContainerminiChart svg g:last-child > g:first-child {
+#gd-mini-stats-card #gd-mini-stats-chart-div svg g:last-child > g:first-child {
   display: none;
 }
 #gd-mini-stats-card .gd-level {
@@ -25001,6 +25001,12 @@ div.special-pager .hidden.next:after {
   position: relative;
   z-index: 3;
   padding: 10px;
+}
+#gd-mini-stats-card .gd-level span:last-child {
+  display: none;
+  font-weight: bold;
+  position: relative;
+  top: 10px;
 }
 #gd-mini-stats-card strong {
   font-size: 36px;
@@ -25015,16 +25021,6 @@ div.special-pager .hidden.next:after {
   font-weight: bold;
   margin: 0 0 10px 0;
 }
-#gd-mini-stats-card .percentHolder {
-  display: none;
-  text-align: left;
-  margin-bottom: 5px;
-}
-#gd-mini-stats-card .percentHolder + span {
-  font-weight: bold;
-  position: relative;
-  top: 10px;
-}
 #gd-mini-stats-card .gd-num-badges,
 #gd-mini-stats-card .gd-num-collections {
   position: relative;
@@ -25033,7 +25029,7 @@ div.special-pager .hidden.next:after {
   padding: 5px;
   float: right;
   width: 45%;
-  margin: 0;
+  margin: 15px 0 0 0;
   font-weight: bold;
 }
 #gd-mini-stats-card .gd-num-badges strong,
@@ -25501,7 +25497,7 @@ div.special-pager .hidden.next:after {
   text-indent: 0;
   display: block;
   text-align: center;
-  font-size: 14px;
+  font-size: 13px;
   width: 100%;
   padding: 0;
   margin: 22px 0 0 0;
@@ -25546,7 +25542,15 @@ div.special-pager .hidden.next:after {
   -ms-text-shadow: 0px 1px 0 #f8b068 !important;
   text-shadow: 0px 1px 0 #f8b068 !important;
 }
-.coin-button[disabled="disabled"] {
+.zurmo body .coin-button.loading .z-label {
+  text-indent: 20px;
+}
+.zurmo body .coin-button .z-spinner {
+  display: block !important;
+  top: 24px;
+  left: 2px;
+}
+.coin-button.disabled {
   pointer-events: none;
   filter: alpha(opacity=50);
   -khtml-opacity: 0.5;

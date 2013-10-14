@@ -491,12 +491,17 @@ $.fn.attachLoadingSpinnerForLanguageActivation = function( id, state, color ){
  */
 
 $.fn.makeOrRemoveLoadingSpinner = function(state, context, shade){
+    if(typeof shade === 'undefined'){
+        shade = '#fff';
+    } else if(shade === 'dark'){
+        shade = '#999';
+    }
     var style = {
         lines : 9,
         length : 2.3,
         width : 1.7,
         radius : 3,
-        color : ( shade === 'dark' ) ? '#999' : '#fff',
+        color : shade,
         speed : 2.5,
         trail : 37,
         top : 4,

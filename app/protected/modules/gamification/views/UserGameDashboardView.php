@@ -178,11 +178,9 @@
 
             $levelContent  = ZurmoHtml::tag('strong', array(), $this->generalLevelData['level']);
             $levelContent .= ZurmoHtml::tag('span', array(), Zurmo::t('GamificationModule', 'Level'));
-            $levelContent .= $this->renderPercentHolderContent((int)$this->generalLevelData['nextLevelPercentageComplete']);
             $levelContent .= ZurmoHtml::tag('span', array(), $percentageToNextLabel);
 
-            $content  = ZurmoHtml::tag('div', array('id'    => 'gd-mini-stats-chart-div',
-                                                    'style' => "width: 100%; height: 150px;"), $this->renderMiniStatisticsChart());
+            $content  = ZurmoHtml::tag('div', array('id'    => 'gd-mini-stats-chart-div'), $this->renderMiniStatisticsChart());
             $content .= ZurmoHtml::tag('div', array('class' => 'gd-level'), $levelContent);
             $badgeLabelContent = Zurmo::t('GamificationModule', '<strong>{n}</strong> Badge|<strong>{n}</strong> Badges',
                                           array(count($this->badgeData)));
@@ -367,7 +365,7 @@
             }
             else
             {
-                $beforeSend =  'function ( xhr ) {$(this).makeSmallLoadingSpinner(true, "#' . $id . '");}';
+                $beforeSend =  'function ( xhr ) {$(this).makeOrRemoveLoadingSpinner(true, "#' . $id . '", "#763d05");}';
             }
             return ZurmoHtml::ajaxLink($aContent, $url, array(
                 'type' => 'GET',
