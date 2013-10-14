@@ -77,6 +77,42 @@
         public $onDelete;
 
         /**
+         * Property to search in the response, defaults to name
+         * @var string
+         */
+        public $propertyToSearch = 'name';
+
+        /**
+         * Parameter to populate the outgoing query with
+         * @var string
+         */
+        public $queryParam = 'term';
+
+        /**
+         * The delay, in milliseconds, between the user finishing typing and the search being performed.
+         * @var int
+         */
+        public $searchDelay = 300;
+
+        /**
+         * The minimum number of characters the user must enter before a search is performed.
+         * @var int
+         */
+        public $minChars = 1;
+
+        /**
+         * The maximum number of results shown in the drop down. Use null to show all the matching results.
+         * @var string
+         */
+        public $resultsLimit = 'null';
+
+        /**
+         * Prevent user from selecting duplicate values by setting this to true.
+         * @var string
+         */
+        public $preventDuplicates = 'true';
+
+        /**
          * Prepopulate the tokeninput with existing data. Set to an array of JSON objects,
          * eg: [{id: 3, name: "John Smith", id: 5, name: "Jill Smith"}] to pre-fill the input. default: null
          */
@@ -97,7 +133,7 @@
             echo ZurmoHtml::textField($this->name, null, $this->htmlOptions);
             $javaScript  = "$(document).ready(function () { ";
             $javaScript .= "$('#$id').tokenInput('{$this->sourceUrl}', { ";
-            $javaScript .= "queryParam: 'term',"; // Not Coding Standard
+            $javaScript .= "queryParam: '" . $this->queryParam . "',"; // Not Coding Standard
             if ($this->hintText != null)
             {
                 $javaScript .= "hintText: '" . Yii::app()->format->text($this->hintText) . "',"; // Not Coding Standard
@@ -114,7 +150,12 @@
             {
                 $javaScript .= "prePopulate: " . $this->jsonEncodedIdsAndLabels . ","; // Not Coding Standard
             }
-            $javaScript .= "preventDuplicates: 'true', classes: {tokenList: 'token-input-list" . $tokenListClassSuffix . "'}";
+            $javaScript .= "propertyToSearch: '" . $this->propertyToSearch . "',";
+            $javaScript .= "searchDelay: " . $this->searchDelay . ",";
+            $javaScript .= "minChars: " . $this->minChars . ",";
+            $javaScript .= "preventDuplicates: '" . $this->preventDuplicates . "',";
+            $javaScript .= "resultsLimit: '" . $this->resultsLimit . "',";
+            $javaScript .= "classes: {tokenList: 'token-input-list" . $tokenListClassSuffix . "'}";
             $javaScript .= "});";
             $javaScript .= "});";
             Yii::app()->getClientScript()->registerScript(__CLASS__ . '#' . $id, $javaScript);
