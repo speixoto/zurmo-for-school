@@ -34,41 +34,45 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class OpportunitiesModuleFormTest extends ZurmoBaseTest
+    /**
+     * Class to help manage the automatic probability mapping disabling for opportunities. This is used by designer.
+     */
+    class AutomaticProbabilityMappingDisabledElement extends TextElement
     {
-        public static function setUpBeforeClass()
+        /**
+         * Render a checkbox (with a default value if not checked)
+         * @return The element's content as a string.
+         */
+        protected function renderControlEditable()
         {
-            parent::setUpBeforeClass();
-            SecurityTestHelper::createSuperAdmin();
-        }
-
-        public function testValidateStageToProbabilityMapping()
-        {
-            $form      = new OpportunitiesModuleForm();
-            $form->stageToProbabilityMapping = array('a' => 'a');
-            $validated = $form->validateStageToProbabilityMapping();
-            $this->assertFalse($validated);
-            $compareErrors = array('stageToProbabilityMapping' => array('Mapped Probabilities must be integers'));
-            $this->assertEquals($compareErrors, $form->getErrors());
-
-            $form->stageToProbabilityMapping = array('a' => '55', 'b' => 65, 'c' => 0);
-            $form->clearErrors();
-            $validated = $form->validateStageToProbabilityMapping();
-            $this->assertTrue($validated);
-            $this->assertEquals(0, count($form->getErrors()));
-        }
-        
-        public function testAutomaticProbabilityMappingDisabledIsBoolean()
-        {
-            $form      = new OpportunitiesModuleForm();
-            $form->automaticProbabilityMappingDisabled = "Some string..";
-            $validated = $form->validate(array('automaticProbabilityMappingDisabled'));
-            $this->assertFalse($validated);
+            $content = null;
             
-            $form->automaticProbabilityMappingDisabled = true;
-            $form->clearErrors();
-            $validated = $form->validate(array('automaticProbabilityMappingDisabled'));
-            $this->assertTrue($validated);
+            $htmlOptions['uncheckValue'] = 0;
+            if($this->model->automaticProbabilityMappingDisabled === true)
+            {
+                $htmlOptions['checked'] = 'checked';
+            }
+            $element = $this->form->checkBox($this->model, 
+                                            'automaticProbabilityMappingDisabled', 
+                                            $htmlOptions
+                        );
+            $content .= $element;
+            return $content;
+        }
+
+        protected function renderControlNonEditable()
+        {
+            throw new NotSupportedException();
+        }
+
+        protected function getIdForInputField($suffix)
+        {
+            return $this->resolveInputIdPrefix() . '_' . $this->attribute . '_'. $suffix;
+        }
+
+        protected function getNameForInputField($suffix)
+        {
+            return $this->resolveInputNamePrefix() . '[' . $this->attribute . '][' . $suffix . ']';
         }
     }
 ?>

@@ -37,11 +37,13 @@
     class OpportunitiesModuleForm extends GlobalSearchEnabledModuleForm
     {
         public $stageToProbabilityMapping;
+        public $automaticProbabilityMappingDisabled;
 
         public function rules()
         {
             return array_merge(parent::rules(), array(
                 array('stageToProbabilityMapping', 'validateStageToProbabilityMapping'),
+                array('automaticProbabilityMappingDisabled', 'boolean'),
             ));
         }
 
@@ -49,6 +51,7 @@
         {
             return array_merge(parent::attributeLabels(), array(
                 'stageToProbabilityMapping' => Zurmo::t('OpportunitiesModule', 'Probability Mapping'),
+                'automaticProbabilityMappingDisabled' => Zurmo::t('OpportunitiesModule', 'Disable Automatic Probability Mapping'),
             ));
         }
 
@@ -73,6 +76,15 @@
                 }
             }
             return $valid;
+        }
+        
+        /**
+         * Override to casting automaticProbabilityMappingDisabled to integer
+         */
+        public function setAttributes($values,$safeOnly=true)
+        {
+            parent::setAttributes($values,$safeOnly);
+            $this->automaticProbabilityMappingDisabled = (int) $this->automaticProbabilityMappingDisabled;
         }
     }
 ?>
