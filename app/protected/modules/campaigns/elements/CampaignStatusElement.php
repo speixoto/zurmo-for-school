@@ -34,6 +34,10 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
+    /**
+     * Class CampaignStatusElement should be renamed to CampaignStatusDropDownElement along with all references.
+     * But first considerations must be made for upgrade and existing usage like in the listview.
+     */
     class CampaignStatusElement extends StaticDropDownElement
     {
         /**
@@ -51,6 +55,41 @@
                 return $data[$status];
             }
             return $status;
+        }
+
+        /**
+         * @param $model
+         * @param $attribute
+         * @return null
+         * @throws NotImplementedException
+         */
+        public static function renderDisplayAttributeForReport($model, $attribute)
+        {
+            assert('$model instanceof ReportResultsRowData');
+            if (null === $displayAttributeKey = $model::resolveKeyByAttributeName($attribute))
+            {
+                return $model->{$attribute};
+            }
+            $displayAttributes = $model->getDisplayAttributes();
+            $displayAttribute  = $displayAttributes[$displayAttributeKey];
+            $realAttributeName = $displayAttribute->getResolvedAttribute();
+            if($realAttributeName == 'status')
+            {
+                $dataArray = Campaign::getStatusDropDownArray();
+            }
+            else
+            {
+                throw new NotImplementedException();
+            }
+            $value = $model->{$attribute};
+            if (isset($dataArray[$value]))
+            {
+                return $dataArray[$value];
+            }
+            else
+            {
+                return null;
+            }
         }
 
         /**

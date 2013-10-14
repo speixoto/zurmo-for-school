@@ -35,17 +35,26 @@
      ********************************************************************************/
 
     /**
-     * Column adapter for status dropdown in reports for Campaigns
+     * Report rules to be used with the Products module.
      */
-    class CampaignStatusForReportListViewColumnAdapter extends TextListViewColumnAdapter
+    class ProjectsReportRules extends SecuredReportRules
     {
-        public function renderGridViewData()
+        /**
+         * @return array
+         */
+        public static function getDefaultMetadata()
         {
-                return array(
-                    'name'  => $this->attribute,
-                    'value' => 'CampaignStatusElement::renderDisplayAttributeForReport($data, "' . $this->attribute . '")',
-                    'type'  => 'raw',
-                );
+            $metadata = array(
+                'Project' => array(
+                    'nonReportable' =>
+                        array('auditEvents'),
+                    'availableOperatorsTypes' =>
+                        array('status' => ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_DROPDOWN),
+                    'filterValueElementTypes' =>
+                        array('status' => 'ProjectStatusStaticDropDownForWizardModel'),
+                )
+            );
+            return array_merge(parent::getDefaultMetadata(), $metadata);
         }
     }
 ?>

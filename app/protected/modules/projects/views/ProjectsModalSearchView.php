@@ -90,7 +90,7 @@
          */
         public static function getModelForMetadataClassName()
         {
-            return 'ProductsSearchForm';
+            return 'ProjectsSearchForm';
         }
     }
 ?>

@@ -35,17 +35,21 @@
      ********************************************************************************/
 
     /**
-     * Column adapter for status dropdown in reports for Campaigns
+     * Class for working the task status
      */
-    class CampaignStatusForReportListViewColumnAdapter extends TextListViewColumnAdapter
+    class TaskStatusDropDownListViewColumnAdapter extends ListViewColumnAdapter
     {
+        /**
+         * @return array
+         */
         public function renderGridViewData()
         {
-                return array(
-                    'name'  => $this->attribute,
-                    'value' => 'CampaignStatusElement::renderDisplayAttributeForReport($data, "' . $this->attribute . '")',
-                    'type'  => 'raw',
-                );
+            return array(
+                'name'   => 'moduleClassName',
+                'header' => Task::getAnAttributeLabel('status'),
+                'type'   => 'raw',
+                'value'  => 'TaskStatusDropDownElement::renderNonEditableStringContent((int)$data->status)'
+            );
         }
     }
 ?>

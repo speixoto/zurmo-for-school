@@ -35,17 +35,21 @@
      ********************************************************************************/
 
     /**
-     * Column adapter for status dropdown in reports for Campaigns
+     * Class for working the project status
      */
-    class CampaignStatusForReportListViewColumnAdapter extends TextListViewColumnAdapter
+    class ProjectStatusDropDownListViewColumnAdapter extends ListViewColumnAdapter
     {
+        /**
+         * @return array
+         */
         public function renderGridViewData()
         {
-                return array(
-                    'name'  => $this->attribute,
-                    'value' => 'CampaignStatusElement::renderDisplayAttributeForReport($data, "' . $this->attribute . '")',
-                    'type'  => 'raw',
-                );
+            return array(
+                'name'   => 'moduleClassName',
+                'header' => Project::getAnAttributeLabel('status'),
+                'type'   => 'raw',
+                'value'  => 'ProjectStatusDropDownElement::renderNonEditableStringContent((int)$data->status)'
+            );
         }
     }
 ?>

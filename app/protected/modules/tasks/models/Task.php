@@ -129,7 +129,8 @@
                     'comment'           => 'Comment',
                     'checkListItem'     => 'TaskCheckListItem',
                     'files'             => 'Files',
-                    'project'           => 'Project'
+                    'project'           => 'Project',
+                    'status'            => 'TaskStatusDropDown'
                 ),
                 'defaultSortAttribute' => 'name',
                 'noAudit' => array(

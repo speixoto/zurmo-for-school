@@ -41,7 +41,7 @@
          */
         public static function getListViewClassName()
         {
-            return 'ProductsModalListView';
+            return 'ProjectsModalListView';
         }
 
         /**
@@ -49,7 +49,7 @@
          */
         public static function getSearchViewClassName()
         {
-            return 'ProductsModalSearchView';
+            return 'ProjectsModalSearchView';
         }
     }
 ?>

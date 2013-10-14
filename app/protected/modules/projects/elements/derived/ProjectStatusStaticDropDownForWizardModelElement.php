@@ -34,18 +34,11 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Column adapter for status dropdown in reports for Campaigns
-     */
-    class CampaignStatusForReportListViewColumnAdapter extends TextListViewColumnAdapter
+    class ProjectStatusStaticDropDownForWizardModelElement extends StaticDropDownForWizardElement
     {
-        public function renderGridViewData()
+        public function getDropDownArray()
         {
-                return array(
-                    'name'  => $this->attribute,
-                    'value' => 'CampaignStatusElement::renderDisplayAttributeForReport($data, "' . $this->attribute . '")',
-                    'type'  => 'raw',
-                );
+            return Project::getStatusDropDownArray();
         }
     }
 ?>

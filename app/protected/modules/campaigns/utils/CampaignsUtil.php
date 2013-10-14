@@ -60,40 +60,6 @@
             return true;
         }
 
-        /**
-         * @param $model
-         * @param $attribute
-         * @return null
-         */
-        public static function renderCampaignListViewAttributeForReports($model, $attribute)
-        {
-            assert('$model instanceof ReportResultsRowData');
-            if (null === $displayAttributeKey = $model::resolveKeyByAttributeName($attribute))
-            {
-                return $model->{$attribute};
-            }
-            $displayAttributes = $model->getDisplayAttributes();
-            $displayAttribute  = $displayAttributes[$displayAttributeKey];
-            $realAttributeName = $displayAttribute->getResolvedAttribute();
-            switch($realAttributeName)
-            {
-                case 'status'        :
-                    $dataArray = Campaign::getStatusDropDownArray();
-                    break;
-                default              :
-                    throw new NotImplementedException();
-            }
-            $value = $model->{$attribute};
-            if (isset($dataArray[$value]))
-            {
-                return $dataArray[$value];
-            }
-            else
-            {
-                return null;
-            }
-        }
-
         protected static function areAllCampaignItemsProcessed($campaignId)
         {
             $unprocessedCampaignItems = CampaignItem::getByProcessedAndCampaignId(0, $campaignId);
