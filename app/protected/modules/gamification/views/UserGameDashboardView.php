@@ -312,11 +312,9 @@
             $canCollect = true;
             foreach($collection->getItemsData() as $itemType => $quantityCollected)
             {
-                $itemLabel              = $itemTypesAndLabels[$itemType];
-                $collectionItemImageUrl = Yii::app()->themeManager->baseUrl . '/default/images/Collections/' .
-                                          $gameCollectionRules::getType() . '/' .
-                                          $gameCollectionRules::makeMediumCollectionItemImageName($itemType);
-                $itemContent = ZurmoHtml::image($collectionItemImageUrl, $itemLabel,
+                $itemLabel               = $itemTypesAndLabels[$itemType];
+                $collectionItemImagePath = $gameCollectionRules::makeMediumCOllectionItemImagePath($itemType);
+                $itemContent = ZurmoHtml::image($collectionItemImagePath, $itemLabel,
                                           array('class'=> 'qtip-shadow', 'data-tooltip' => $itemLabel));
                 $itemContent .= ZurmoHtml::tag('span', array('class' => 'num-collected'), 'x' . $quantityCollected);
                 $classContent = 'gd-collection-item';

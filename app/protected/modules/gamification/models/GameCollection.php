@@ -247,6 +247,7 @@
          * Process receiving a collection item
          * @param User $user
          * @throws FailedToSaveModelException
+         * @return string $randomKey representing CollectionItem type
          */
         public static function processRandomReceivingCollectionItemByUser(User $user)
         {
@@ -262,6 +263,7 @@
             {
                 throw new FailedToSaveModelException();
             }
+            return array($collection, $randomKey);
         }
 
         /**

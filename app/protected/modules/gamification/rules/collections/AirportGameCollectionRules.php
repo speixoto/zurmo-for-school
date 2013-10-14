@@ -60,11 +60,11 @@
          */
         public static function getItemTypesAndLabels()
         {
-            return array(   'Gate' => Zurmo::t('GamificationModule', 'Gate Sign'),
-                            'Passport'     => Zurmo::t('GamificationModule', 'Passport'),
-                            'Pilot'          => Zurmo::t('GamificationModule', 'Pilot'),
-                            'Trolley'      => Zurmo::t('GamificationModule', 'Trolley'),
-                            'TowTruck'            => Zurmo::t('GamificationModule', 'Tow Truck'),
+            return array(   'Gate'      => Zurmo::t('GamificationModule', 'Gate Sign'),
+                            'Passport'  => Zurmo::t('GamificationModule', 'Passport'),
+                            'Pilot'     => Zurmo::t('GamificationModule', 'Pilot'),
+                            'Trolley'   => Zurmo::t('GamificationModule', 'Trolley'),
+                            'TowTruck'  => Zurmo::t('GamificationModule', 'Tow Truck'),
             );
         }
 
