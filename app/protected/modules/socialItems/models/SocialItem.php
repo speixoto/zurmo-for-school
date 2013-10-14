@@ -52,7 +52,7 @@
         {
             if (trim($this->description) == '')
             {
-                return Zurmo::t('SocialItemsModule', '(Unnamed)');
+                return Zurmo::t('Core', '(Unnamed)');
             }
             return $this->description;
         }

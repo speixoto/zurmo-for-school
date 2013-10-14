@@ -70,7 +70,7 @@
             {
                 if (trim($this->name) == '')
                 {
-                    return Yii::t('Default', '(Unnamed)');
+                    return Yii::t('Core', '(Unnamed)');
                 }
                 return $this->name;
             }
@@ -228,7 +228,7 @@
             return array_merge(parent::translatedAttributeLabels($language),
                 array(
                     'name'                  => Zurmo::t('ZurmoModule', 'Name', null,  null, $language),
-                    'status'                => Zurmo::t('CampaignsModule', 'Status', null,  null, $language),
+                    'status'                => Zurmo::t('ZurmoModule', 'Status', null,  null, $language),
                     'sendOnDateTime'       => Zurmo::t('CampaignsModule', 'Send On', null,  null, $language),
                     'supportsRichText'      => Zurmo::t('CampaignsModule', 'Supports HTML', null,  null, $language),
                     'fromName'              => Zurmo::t('CampaignsModule', 'From Name', null,  null, $language),

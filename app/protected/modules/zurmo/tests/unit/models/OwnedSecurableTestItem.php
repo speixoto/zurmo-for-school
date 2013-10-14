@@ -40,7 +40,7 @@
         {
             if (trim($this->member) == '')
             {
-                return Zurmo::t('ZurmoModule', '(Unnamed)');
+                return Zurmo::t('Core', '(Unnamed)');
             }
             return $this->member;
         }

@@ -45,7 +45,7 @@
         {
             if (trim($this->fromAddress) == '')
             {
-                return Zurmo::t('EmailMessagesModule', '(Unnamed)');
+                return Zurmo::t('Core', '(Unnamed)');
             }
             return $this->fromAddress;
         }

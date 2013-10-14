@@ -272,8 +272,7 @@
             //Log event for project audit
             if($relationAttributeName == 'project')
             {
-               $data = $task->name;
-               ProjectAuditEvent::logAuditEvent(ProjectAuditEvent::TASK_ADDED, $data, $task->project);
+                ProjectsUtil::logAddTaskEvent($task);
             }
             $this->actionModalViewFromRelation($task->id);
         }

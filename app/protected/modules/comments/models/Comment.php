@@ -62,7 +62,7 @@
         {
             if (trim($this->description) == '')
             {
-                return Zurmo::t('CommentsModule', '(Unnamed)');
+                return Zurmo::t('Core', '(Unnamed)');
             }
             return $this->description;
         }

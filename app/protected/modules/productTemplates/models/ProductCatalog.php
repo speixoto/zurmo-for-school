@@ -109,7 +109,7 @@
             {
                 if (trim($this->name) == '')
                 {
-                    return Zurmo::t('ProductTemplatesModule', '(Unnamed)');
+                    return Zurmo::t('Core', '(Unnamed)');
                 }
                 return $this->name;
             }

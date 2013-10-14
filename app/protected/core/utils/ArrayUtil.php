@@ -191,5 +191,29 @@
             $array  = array_slice($array, $size);
             return $chop;
         }
+
+        public static function encodeAutoCompleteOptionsArray(array $options)
+        {
+            return base64_encode(serialize($options));
+        }
+
+        public static function decodeAutoCompleteOptionsArray($options)
+        {
+            if (!isset($options))
+            {
+                return array();
+            }
+            $decodedSerializedOptions = base64_decode($options);
+            if ($decodedSerializedOptions === false)
+            {
+                return array();
+            }
+            $decodedUnserializedOptions = unserialize($decodedSerializedOptions);
+            if ($decodedUnserializedOptions === false)
+            {
+                return array();
+            }
+            return $decodedUnserializedOptions;
+        }
     }
 ?>

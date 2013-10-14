@@ -191,7 +191,7 @@
             assert('$this->name === null || is_string($this->name)');
             if ($this->name === null)
             {
-                return Zurmo::t('ZurmoModule', '(Unnamed)');
+                return Zurmo::t('Core', '(Unnamed)');
             }
             if ($this->name == self::EVERYONE_GROUP_NAME)
             {

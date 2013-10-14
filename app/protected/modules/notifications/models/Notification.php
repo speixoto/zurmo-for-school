@@ -57,7 +57,7 @@
             }
             else
             {
-                return Zurmo::t('NotificationsModule', '(Unnamed)');
+                return Zurmo::t('Core', '(Unnamed)');
             }
         }
 

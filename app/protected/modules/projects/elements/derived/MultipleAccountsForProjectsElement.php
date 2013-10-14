@@ -39,117 +39,54 @@
      * specifically for the 'accounts' relation. This is utilized by the Project model.
      *
      */
-    class MultipleAccountsForProjectsElement extends Element implements DerivedElementInterface
+    class MultipleAccountsForProjectsElement extends MultiSelectRelatedModelsAutoCompleteElement
     {
-        /**
-         * @return string
-         */
-        protected function renderControlNonEditable()
+        protected function getFormName()
         {
-            $content  = null;
-            $projectAccounts = $this->getExistingAccountsRelationsIdsAndLabels();
-            foreach ($projectAccounts as $projectAccount)
-            {
-                if ($content != null)
-                {
-                    $content .= ', ';
-                }
-                $content .= $projectAccount['name'];
-            }
-            return $content;
+            return 'ProjectAccountsForm';
         }
 
-        /**
-         * @return string
-         */
-        protected function renderControlEditable()
+        protected function getUnqualifiedNameForIdField()
+        {
+            return '[accountIds]';
+        }
+
+        protected function getUnqualifiedIdForIdField()
+        {
+            return '_Account_ids';
+        }
+
+        protected function assertModuleType()
         {
             assert('$this->model instanceof Project');
-            $cClipWidget = new CClipWidget();
-            $cClipWidget->beginClip("AccountForProjectModelElement");
-            $cClipWidget->widget('application.core.widgets.MultiSelectAutoComplete', array(
-                                'name'              => $this->getNameForIdField(),
-                                'id'                => $this->getIdForIdField(),
-                                'jsonEncodedIdsAndLabels'   => CJSON::encode($this->getExistingAccountsRelationsIdsAndLabels()),
-                                'sourceUrl'         => Yii::app()->createUrl('projects/default/autoCompleteAllAccountsForMultiSelectAutoComplete'),
-                                'htmlOptions'       => array(
-                                                                'disabled' => $this->getDisabledValue(),
-                                                                ),
-                                'hintText' => Zurmo::t('ProjectsModule', 'Type a ' . LabelUtil::getUncapitalizedModelLabelByCountAndModelClassName(1, 'Account'),
-                                LabelUtil::getTranslationParamsForAllModules())
-            ));
-            $cClipWidget->endClip();
-            $content = $cClipWidget->getController()->clips['AccountForProjectModelElement'];
-            return $content;
         }
 
-        protected function renderError()
-        {
-        }
-
-        /**
-         * @return string
-         */
-        protected function renderLabel()
-        {
-            return $this->resolveNonActiveFormFormattedLabel($this->getFormattedAttributeLabel());
-        }
-
-        /**
-         * @return string
-         */
         protected function getFormattedAttributeLabel()
         {
             return Yii::app()->format->text(Zurmo::t('ProjectsModule', 'Accounts'));
         }
 
-        /**
-         * @return string
-         */
         public static function getDisplayName()
         {
             return Zurmo::t('AccountsModule', 'Related AccountsModulePluralLabel',
-                       LabelUtil::getTranslationParamsForAllModules());
+                                                LabelUtil::getTranslationParamsForAllModules());
         }
 
-        /**
-         * Get the attributeNames of attributes used in
-         * the derived element. For this element, there are no attributes from the model.
-         * @return array - empty
-         */
-        public static function getModelAttributeNames()
+        protected function getWidgetSourceUrl()
         {
-            return array();
+            return Yii::app()->createUrl('projects/default/autoCompleteAllAccountsForMultiSelectAutoComplete');
         }
 
-        /**
-         * @return string
-         */
-        protected function getNameForIdField()
+        protected function getWidgetHintText()
         {
-            return 'ProjectAccountsForm[accountIds]';
+            return Zurmo::t('ProjectsModule', 'Type a ' .
+                                                LabelUtil::getUncapitalizedModelLabelByCountAndModelClassName(1, 'Account'),
+                                            LabelUtil::getTranslationParamsForAllModules());
         }
 
-        /**
-         * @return string
-         */
-        protected function getIdForIdField()
+        protected function relationName()
         {
-            return 'ProjectAccountsForm_Account_ids';
-        }
-
-        /**
-         * @return array
-         */
-        protected function getExistingAccountsRelationsIdsAndLabels()
-        {
-            $existingProjectAccounts = array();
-            for ($i = 0; $i < count($this->model->accounts); $i++)
-            {
-                $existingProjectAccounts[] = array('id' => $this->model->accounts[$i]->id,
-                                                     'name' => $this->model->accounts[$i]->name);
-            }
-            return $existingProjectAccounts;
+            return 'accounts';
         }
     }
 ?>

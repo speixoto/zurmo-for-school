@@ -15733,6 +15733,20 @@ i[class^="icon"] {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
+.type-achievements .icon-empty:before {
+  content: ';';
+  font-weight: normal !important;
+  font-weight: normal;
+  font-size: 45px;
+  font-family: "zurmo_gamification_symbly_rRg";
+  padding: 0;
+  margin: 0;
+  vertical-align: middle;
+  position: relative;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
 #ZurmoLogo {
   background: url(../images/ZurmoLogo.png) left top no-repeat;
   width: 170px;
@@ -25004,7 +25018,7 @@ div.special-pager .hidden.next:after {
 }
 /*Badges*/
 #gd-badges-list {
-  overflow-y: scroll;
+  overflow-y: auto;
   height: 84%;
   width: 30%;
   float: left;
@@ -25045,6 +25059,22 @@ div.special-pager .hidden.next:after {
 #gd-badges-list p + span {
   font-size: 11px;
   color: #aaa;
+}
+#gd-badges-list .type-achievements {
+  -webkit-text-shadow: 0 -1px 0 #151f1f;
+  -moz-text-shadow: 0 -1px 0 #151f1f;
+  -o-text-shadow: 0 -1px 0 #151f1f;
+  -ms-text-shadow: 0 -1px 0 #151f1f;
+  text-shadow: 0 -1px 0 #151f1f;
+  margin-top: 150px;
+  font-size: 14px;
+}
+#gd-badges-list .type-achievements .icon-empty {
+  position: relative;
+  top: 10px;
+}
+#gd-badges-list .type-achievements .icon-empty:before {
+  font-size: 64px;
 }
 /*Coins*/
 #gd-z-coins {
@@ -25166,7 +25196,6 @@ div.special-pager .hidden.next:after {
 #gd-stats-wrapper {
   border: 1px solid #d7d7d7;
   border-bottom: none;
-  overflow: scroll;
   max-height: 320px;
 }
 .stat-row {
@@ -25535,6 +25564,61 @@ div.special-pager .hidden.next:after {
   width: 128px;
   background-image: url(../images/game-dashboard/smoke_1_40_128_corrected.png);
   display: none;
+}
+/*Notification*/
+#header-game-dashboard-link-wrapper {
+  position: relative;
+  overflow: visible;
+}
+#game-notification {
+  position: absolute;
+  min-width: 250px;
+  padding: 15px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  border-radius: 4px;
+  color: #EFEFEF;
+  top: 38px;
+  right: 0;
+  border: 1px solid #444;
+  background: #252525;
+  -webkit-box-shadow: 0 0 10px 2px rgba(53, 53, 53, 0.5);
+  -moz-box-shadow: 0 0 10px 2px rgba(53, 53, 53, 0.5);
+  -o-box-shadow: 0 0 10px 2px rgba(53, 53, 53, 0.5);
+  -ms-box-shadow: 0 0 10px 2px rgba(53, 53, 53, 0.5);
+  box-shadow: 0 0 10px 2px rgba(53, 53, 53, 0.5);
+}
+#game-notification h5 {
+  color: #EFEFEF;
+  -webkit-text-shadow: none;
+  -moz-text-shadow: none;
+  -o-text-shadow: none;
+  -ms-text-shadow: none;
+  text-shadow: none;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+#game-notification img {
+  float: left;
+  margin-right: 15px;
+  padding-bottom: 15px;
+}
+#game-notification .notification-wrapper {
+  float: left;
+}
+#game-notification p {
+  line-height: 1.5;
+}
+#game-notification a {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 12px;
+  line-height: 1;
+  display: inline;
+  margin: 0;
+  padding: 0;
+  text-decoration: underline;
 }
 /*********************************************************************************
  * Zurmo is a customer relationship management program developed by

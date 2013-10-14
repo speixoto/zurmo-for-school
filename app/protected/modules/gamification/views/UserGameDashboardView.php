@@ -82,11 +82,11 @@
 
         public static function renderCoinsContent($coinValue)
         {
+            $url  = Yii::app()->createUrl('gameRewards/default/redeemList/');
             $content  = ZurmoHtml::tag('span', array('id' => 'gd-z-coin'), '');
             $content .= ZurmoHtml::tag('h3', array(), Zurmo::t('GamificationModule', '{n} coin|{n} coins',
                 array($coinValue)));
-            $content .= ZurmoHtml::link(Zurmo::t('GamificationModule', 'Redeem'), '#');
-            //todo: where does this link to? coonvert to story? take to redemption listview of rewards
+            $content .= ZurmoHtml::link(Zurmo::t('GamificationModule', 'Redeem'), $url);
             return      ZurmoHtml::tag('div', array('id' => self::getGameCoinContainerId()), $content);
         }
 
@@ -213,8 +213,7 @@
         protected function renderBadgesContent()
         {
             $content  = ZurmoHtml::tag('h2', array(), Zurmo::t('GamificationModule', 'Badges Achieved'));
-
-            if(false || empty($this->badgeData))
+            if(empty($this->badgeData))
             {
                 $content .= $this->renderEmptyBadgeContent();
             }
@@ -222,22 +221,14 @@
             {
                 $content .= $this->renderPopulatedBadgeContent();
             }
-            return      ZurmoHtml::tag('div', array('id' => 'gd-badges-list'), $content);
+            return ZurmoHtml::tag('div', array('id' => 'gd-badges-list'), $content);
         }
 
         protected function renderEmptyBadgeContent()
         {
-            //$content  = ZurmoHtml::tag('tag', array('class' => 'icon-empty'), '');
-            //$content .= Zurmo::t('GamificationModule', 'No Achievements Found');
-            //return ZurmoHtml::tag('span', array('class' => 'empty'), $content);
-
-
-            $badgeContent      = null;
-            $badgeIconContent  = ZurmoHtml::tag('div',   array('class' => 'gloss'), '');
-            $badgeIconContent .= ZurmoHtml::tag('strong',   array('class' => 'badge-icon empty',
-                'title' => 'something'), '');
-            $badgeContent .= ZurmoHtml::tag('div',   array('class' => 'badge '), $badgeIconContent);
-            return $badgeContent;
+            $content  = ZurmoHtml::tag('span', array('class' => 'icon-empty'), '');
+            $content .= Zurmo::t('GamificationModule', 'No Achievements Found');
+            return ZurmoHtml::tag('span', array('class' => 'empty type-achievements'), $content);
         }
 
         protected function renderPopulatedBadgeContent()
@@ -321,11 +312,9 @@
             $canCollect = true;
             foreach($collection->getItemsData() as $itemType => $quantityCollected)
             {
-                $itemLabel              = $itemTypesAndLabels[$itemType];
-                $collectionItemImageUrl = Yii::app()->themeManager->baseUrl . '/default/images/collections/' .
-                                          $gameCollectionRules::getType() . '/' .
-                                          $gameCollectionRules::makeMediumCollectionItemImageName($itemType);
-                $itemContent = ZurmoHtml::image($collectionItemImageUrl, $itemLabel,
+                $itemLabel               = $itemTypesAndLabels[$itemType];
+                $collectionItemImagePath = $gameCollectionRules::makeMediumCOllectionItemImagePath($itemType);
+                $itemContent = ZurmoHtml::image($collectionItemImagePath, $itemLabel,
                                           array('class'=> 'qtip-shadow', 'data-tooltip' => $itemLabel));
                 $itemContent .= ZurmoHtml::tag('span', array('class' => 'num-collected'), 'x' . $quantityCollected);
                 $classContent = 'gd-collection-item';
@@ -350,20 +339,31 @@
             assert('is_bool($canCollect)');
             $url  = Yii::app()->createUrl('gamification/default/redeemCollection/',
                                           array('id' => $collectionId));
-            $htmlOptions = array();
+            $htmlOptions   = array();
+            $disabledClass = null;
+            $disabled      = false;
             if(!$canCollect)
             {
-                $htmlOptions['disabled'] = 'disabled';
+                $disabledClass = ' disabled';
+                $disabled      = true;
             }
             $id                      = static::getCompleteCollectionLinkId($collectionId);
             $htmlOptions['id']       = $id;
             $htmlOptions['name']     = $id;
-            $htmlOptions['class']    = 'attachLoading z-button coin-button';
+            $htmlOptions['class']    = 'attachLoading z-button coin-button' . $disabledClass;
             $aContent                = ZurmoHtml::wrapLink(Zurmo::t('Core', 'Complete'));
             $containerId             = static::getCollectionContainerId($collectionId);
+            if($disabled)
+            {
+                $beforeSend =  'function ( xhr ) {return false;}';
+            }
+            else
+            {
+                $beforeSend =  'function ( xhr ) {$(this).makeSmallLoadingSpinner(true, "#' . $id . '");}';
+            }
             return ZurmoHtml::ajaxLink($aContent, $url, array(
                 'type' => 'GET',
-                'beforeSend' => 'function ( xhr ) {$(this).makeSmallLoadingSpinner(true, "#' . $id . '");}',
+                'beforeSend' => $beforeSend,
                 'success' => 'js:function(data)
                     {
                         $("#' . $containerId . '").replaceWith(data);

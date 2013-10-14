@@ -144,5 +144,12 @@
             assert('is_string($itemType)');
             return $itemType. '.png';
         }
+
+        public static function makeMediumCOllectionItemImagePath($itemType)
+        {
+            assert('is_string($itemType)');
+            return Yii::app()->themeManager->baseUrl . '/default/images/Collections/' .
+                   static::getType() . '/' . static::makeMediumCollectionItemImageName($itemType);
+        }
     }
 ?>

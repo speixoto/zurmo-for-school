@@ -421,5 +421,11 @@
             Yii::app()->getClientScript()->setToAjaxMode();
             echo UsersByModelModalListControllerUtil::renderList($this, $dataProvider, 'usersInGroupModalList');
         }
+
+        public function actionAutoComplete($term)
+        {
+            $modelClassName = 'Group';
+            echo $this->renderAutoCompleteResults($modelClassName, $term);
+        }
     }
 ?>

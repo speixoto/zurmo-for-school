@@ -40,7 +40,7 @@
         {
             if (trim($this->name) == '')
             {
-                return Zurmo::t('WorkflowsModule', '(Unnamed)');
+                return Zurmo::t('Core', '(Unnamed)');
             }
             return $this->name;
         }
