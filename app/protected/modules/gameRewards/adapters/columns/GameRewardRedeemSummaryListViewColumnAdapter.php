@@ -58,9 +58,13 @@
         {
             assert('is_int($availableCoins)');
             $content  = strval($gameReward);
-            $content .= Zurmo::t('GameRewardsModule', 'Cost in Coins') . $gameReward->cost;
-            $content .= Zurmo::t('ZurmoModule', 'Quantity Available') . $gameReward->quantity;
+            $content .= '<br>';
+            $content .= Zurmo::t('GameRewardsModule', 'Cost in Coins') . ' ' . $gameReward->cost;
+            $content .= '<br>';
+            $content .= Zurmo::t('ZurmoModule', 'Quantity Available') . ' ' .$gameReward->quantity;
+            $content .= '<br>';
             $content .= static::renderExpirationDateTimeContent($gameReward);
+            $content .= '<br>';
             $content .= static::renderRedeemLink($gameReward, $availableCoins);
             return $content;
         }
