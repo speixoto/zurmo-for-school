@@ -92,7 +92,17 @@
         protected function renderContent()
         {
             $content  = '<div class="view-toolbar-container clearfix">';
-            $content .= '<nav class="pillbox clearfix">' . $this->renderActionElementBar(false) . '</nav>';
+            $firstActionElementBarContent = $this->renderActionElementBar(false);
+            if($firstActionElementBarContent == null)
+            {
+                $extraClass = ' empty';
+            }
+            else
+            {
+                $extraClass = null;
+            }
+
+            $content .= '<nav class="pillbox clearfix' . $extraClass. '">' . $firstActionElementBarContent . '</nav>';
             if (!Yii::app()->userInterface->isMobile() &&
                 null != $secondActionElementBarContent = $this->renderSecondActionElementBar(false))
             {

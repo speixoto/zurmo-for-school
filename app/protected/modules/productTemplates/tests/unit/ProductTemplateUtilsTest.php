@@ -54,7 +54,7 @@
             $productTemplate->forget();
             unset($productTemplate);
             $productTemplate          = ProductTemplate::getById($id);
-            $sellPrice = ProductTemplateTypeDropDownElement::renderNonEditableStringContent($productTemplate);
+            $sellPrice = ProductTemplateTypeDropDownElement::renderNonEditableStringContent($productTemplate->type);
             $this->assertEquals($sellPrice, "Product");
         }
 
@@ -67,7 +67,7 @@
             $productTemplate->forget();
             unset($productTemplate);
             $productTemplate          = ProductTemplate::getById($id);
-            $status = ProductTemplatestatusDropDownElement::renderNonEditableStringContent($productTemplate);
+            $status = ProductTemplateStatusDropDownElement::renderNonEditableStringContent($productTemplate->status);
             $this->assertEquals($status, "Active");
         }
 
@@ -79,8 +79,9 @@
             $id                       = $productTemplate->id;
             $productTemplate->forget();
             unset($productTemplate);
-            $productTemplate          = ProductTemplate::getById($id);
-            $priceFrequency = ProductTemplatePriceFrequencyDropDownElement::renderNonEditableStringContent($productTemplate);
+            $productTemplate = ProductTemplate::getById($id);
+            $priceFrequency  = ProductTemplatePriceFrequencyDropDownElement::renderNonEditableStringContent(
+                               $productTemplate->priceFrequency);
             $this->assertEquals($priceFrequency, "Monthly");
         }
 
