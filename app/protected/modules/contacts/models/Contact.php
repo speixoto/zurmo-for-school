@@ -50,14 +50,14 @@
                     'companyName'      => Zurmo::t('ContactsModule', 'Company Name',  array(), null, $language),
                     'description'      => Zurmo::t('ContactsModule', 'Description',  array(), null, $language),
                     'industry'         => Zurmo::t('ContactsModule', 'Industry',  array(), null, $language),
-                    'meetings'         => Zurmo::t('ContactsModule', 'Meetings',  array(), null, $language),
-                    'notes'            => Zurmo::t('ContactsModule', 'Notes',  array(), null, $language),
+                    'meetings'         => Zurmo::t('ContactsModule', 'MeetingsModulePluralLabel', $params, null, $language),
+                    'notes'            => Zurmo::t('ContactsModule', 'NotesModulePluralLabel', $params, null, $language),
                     'opportunities'    => Zurmo::t('ContactsModule', 'OpportunitiesModulePluralLabel', $params, null, $language),
                     'secondaryAddress' => Zurmo::t('ContactsModule', 'Secondary Address',  array(), null, $language),
                     'secondaryEmail'   => Zurmo::t('ContactsModule', 'Secondary Email',  array(), null, $language),
                     'source'           => Zurmo::t('ContactsModule', 'Source', $params, null, $language),
                     'state'            => Zurmo::t('ZurmoModule', 'Status', $params, null, $language),
-                    'tasks'            => Zurmo::t('ContactsModule', 'Tasks',  array(), null, $language),
+                    'tasks'            => Zurmo::t('ContactsModule', 'TasksModulePluralLabel', $params, null, $language),
                     'website'          => Zurmo::t('ContactsModule', 'Website',  array(), null, $language),
                 )
             );

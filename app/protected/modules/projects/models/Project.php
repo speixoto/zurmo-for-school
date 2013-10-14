@@ -97,6 +97,7 @@
             return array_merge(parent::translatedAttributeLabels($language),
                 array(
                        'status' => Zurmo::t('ZurmoModule', 'Status',  array(), null, $language),
+                       'tasks'  => Zurmo::t('TasksModule', 'TasksModulePluralLabel', $params, null, $language)
                     )
                 );
         }
