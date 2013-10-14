@@ -52,14 +52,14 @@
          * @throws NotImplementedException
          * @throws NotSupportedException
          */
-        public static function getByPartialName($modelClassName, $partialName, $pageSize)
+        public static function getByPartialName($modelClassName, $partialName, $pageSize, $autoCompleteOptions = array())
         {
             assert('is_string($modelClassName)');
             assert('is_string($partialName)');
             assert('is_int($pageSize)');
             if ($modelClassName == 'User')
             {
-                return ModelAutoCompleteUtil::getUserResults($partialName, $pageSize);
+                return ModelAutoCompleteUtil::getUserResults($partialName, $pageSize, $autoCompleteOptions);
             }
             elseif ($modelClassName == 'Contact')
             {
@@ -71,7 +71,7 @@
             }
             else
             {
-                return ModelAutoCompleteUtil::getGenericResults($modelClassName, $partialName, $pageSize);
+                return ModelAutoCompleteUtil::getGenericResults($modelClassName, $partialName, $pageSize, $autoCompleteOptions);
             }
         }
 
@@ -194,8 +194,11 @@
             return $modelClassNamesAndSearchAttributeData;
         }
 
-        protected static function getGenericResults($modelClassName, $partialName, $pageSize)
+        protected static function getGenericResults($modelClassName, $partialName, $pageSize, $autoCompleteOptions)
         {
+            // so far we haven't had a case where we would need to use autoCompleteOptions
+            // it just exists for compatibility. In future a class may extend this class
+            // and decide to use autoCompleteOptions.
             $autoCompleteResults = array();
             $models = $modelClassName::getSubset(null, null, $pageSize, "name like lower('{$partialName}%')", 'name');
             foreach ($models as $model)
@@ -209,10 +212,10 @@
             return $autoCompleteResults;
         }
 
-        protected static function getUserResults($partialName, $pageSize)
+        protected static function getUserResults($partialName, $pageSize, $autoCompleteOptions = array())
         {
             $autoCompleteResults  = array();
-            $users                = UserSearch::getUsersByPartialFullName($partialName, $pageSize);
+            $users                = UserSearch::getUsersByPartialFullName($partialName, $pageSize, $autoCompleteOptions);
             foreach ($users as $user)
             {
                 $autoCompleteResults[] = array(

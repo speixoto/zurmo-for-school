@@ -99,19 +99,28 @@
         protected static function resolveHtmlOptionsForRedeemLink(GameReward $gameReward, $availableCoins)
         {
             assert('is_int($availableCoins)');
-            $htmlOptions = array();
+            $htmlOptions   = array();
+            $disabledClass = null;
+            $disabled      = false;
             if($gameReward->cost > $availableCoins)
             {
-                $htmlOptions['disabled'] = 'disabled';
+                $disabledClass = ' disabled';
+                $disabled      = true;
             }
             $id                       = static::getRedeemRewardLinkId($gameReward->id);
             $htmlOptions['id']        = $id;
             $htmlOptions['name']      = $id;
-            $htmlOptions['class']     = 'attachLoading z-button';
+            $htmlOptions['class']     = 'attachLoading z-button' . $disabledClass;
             $htmlOptions['namespace'] = 'redeem';
-            $htmlOptions['onclick']   = 'js:$(this).addClass("loading").addClass("loading-ajax-submit");
+            if($disabled)
+            {
+                $htmlOptions['onclick']   = 'js:return false;';
+            }
+            else
+            {
+                $htmlOptions['onclick']   = 'js:$(this).addClass("loading").addClass("loading-ajax-submit");
                                                         $(this).makeOrRemoveLoadingSpinner(true, "#" + $(this).attr("id"));';
-
+            }
             return $htmlOptions;
         }
 

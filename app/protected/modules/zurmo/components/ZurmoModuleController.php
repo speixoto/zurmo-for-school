@@ -115,17 +115,18 @@
                  setAjaxModeAndRenderModalSearchList($this, $modalListLinkProvider, $stateMetadataAdapterClassName);
         }
 
-        public function actionAutoComplete($term)
+        public function actionAutoComplete($term, $autoCompleteOptions = null)
         {
             $modelClassName = $this->getModule()->getPrimaryModelName();
-            echo $this->renderAutoCompleteResults($modelClassName, $term);
+            $autoCompleteOptions = ArrayUtil::decodeAutoCompleteOptionsArray($autoCompleteOptions);
+            echo $this->renderAutoCompleteResults($modelClassName, $term, $autoCompleteOptions);
         }
 
-        protected function renderAutoCompleteResults($modelClassName, $term)
+        protected function renderAutoCompleteResults($modelClassName, $term, $autoCompleteOptions = array())
         {
             $pageSize            = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                                    'autoCompleteListPageSize', get_class($this->getModule()));
-            $autoCompleteResults = ModelAutoCompleteUtil::getByPartialName($modelClassName, $term, $pageSize);
+            $autoCompleteResults = ModelAutoCompleteUtil::getByPartialName($modelClassName, $term, $pageSize, $autoCompleteOptions);
             if (empty($autoCompleteResults))
             {
                 $autoCompleteResults = array(array('id'    => null,

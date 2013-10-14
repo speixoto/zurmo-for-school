@@ -34,59 +34,16 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * User interface element for managing related model relations for projects. This class supports a MANY_MANY
-     * specifically for the 'opportunities' relation. This is utilized by the Project model.
-     *
-     */
-    class MultipleOpportunitiesForProjectsElement extends MultiSelectRelatedModelsAutoCompleteElement
+    abstract class MultipleRelatedItemModelsAutoCompleteElement extends MultiSelectRelatedModelsAutoCompleteElement
     {
-        protected function getFormName()
+        protected function getUnqualifiedIdForIdField()
         {
-            return 'ProjectOpportunitiesForm';
+            return '_item_ids';
         }
 
         protected function getUnqualifiedNameForIdField()
         {
-            return '[opportunityIds]';
-        }
-
-        protected function getUnqualifiedIdForIdField()
-        {
-            return '_Opportunity_ids';
-        }
-
-        protected function assertModuleType()
-        {
-            assert('$this->model instanceof Project');
-        }
-
-        protected function getWidgetSourceUrl()
-        {
-            return Yii::app()->createUrl('projects/default/autoCompleteAllOpportunitiesForMultiSelectAutoComplete');
-        }
-
-        protected function getWidgetHintText()
-        {
-            return Zurmo::t('ProjectsModule', 'Type a ' .
-                                                LabelUtil::getUncapitalizedModelLabelByCountAndModelClassName(1, 'Opportunity'),
-                                            LabelUtil::getTranslationParamsForAllModules());
-        }
-
-        protected function relationName()
-        {
-            return 'opportunities';
-        }
-
-        protected function getFormattedAttributeLabel()
-        {
-            return Yii::app()->format->text(Zurmo::t('ProjectsModule', 'Opportunities'));
-        }
-
-        public static function getDisplayName()
-        {
-            return Zurmo::t('OpportunitiesModule', 'Related OpportunitiesModulePluralLabel',
-                                                    LabelUtil::getTranslationParamsForAllModules());
+            return '[itemIds]';
         }
     }
 ?>
