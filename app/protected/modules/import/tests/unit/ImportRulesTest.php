@@ -120,6 +120,7 @@
                 'Opportunities' => 'Opportunities',
                 'Products'         => 'Products',
                 'ProductTemplates' => 'Catalog Items',
+                'Projects'      => 'Projects',
                 'Tasks'         => 'Tasks',
                 'Users'         => 'Users',
             );
@@ -136,20 +137,13 @@
             Yii::app()->user->userModel   = User::getByUsername('super');
             $requiredAttributesCollection = ImportModelTestItemImportRules::
                                             getRequiredAttributesCollectionNotIncludingReadOnly();
-            $this->assertEquals(3, count($requiredAttributesCollection));
+            $this->assertEquals(2, count($requiredAttributesCollection));
             $compareData = array(
                 'lastName' => array(
                         'attributeLabel'           => 'Last Name',
                         'attributeName'            => 'lastName',
                         'relationAttributeName'    => null,
                         'attributeImportRulesType' => 'Text',
-                        'isRequired'               => true
-                ),
-                'owner' => array(
-                        'attributeLabel'           => 'Owner',
-                        'attributeName'            => 'owner',
-                        'relationAttributeName'    => null,
-                        'attributeImportRulesType' => 'User',
                         'isRequired'               => true
                 ),
                 'string' => array(

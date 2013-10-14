@@ -275,7 +275,7 @@
          *
          * For this set of import rules, get only the required attributes indexed by attribute index in an attribute
          * collection array. This will filter out any required attributes that are read only on their respective
-         * models.
+         * models.  Owner is not marked as required because it will default to the person importing.
          * @return array
          */
         public static function getRequiredAttributesCollectionNotIncludingReadOnly()
@@ -286,7 +286,8 @@
             $requireAttributesCollection           = array();
             foreach ($attributesCollection as $attributeIndex => $attributeData)
             {
-                if (!in_array($attributeData['attributeName'], static::getNonImportableAttributeNames()) &&
+                if ($attributeData['attributeName'] != 'owner' &&
+                    !in_array($attributeData['attributeName'], static::getNonImportableAttributeNames()) &&
                     !in_array($attributeData['attributeImportRulesType'], static::getNonImportableAttributeImportRulesTypes()) &&
                     $attributeData['isRequired'] &&
                     !$model->isAttributeReadOnly($attributeData['attributeName']))

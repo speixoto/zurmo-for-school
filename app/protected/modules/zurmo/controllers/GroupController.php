@@ -422,7 +422,7 @@
             echo UsersByModelModalListControllerUtil::renderList($this, $dataProvider, 'usersInGroupModalList');
         }
 
-        public function actionAutoComplete($term)
+        public function actionAutoComplete($term, $autoCompleteOptions = null)
         {
             $modelClassName = 'Group';
             echo $this->renderAutoCompleteResults($modelClassName, $term);

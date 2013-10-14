@@ -157,7 +157,7 @@
             $this->redirect(array($this->getId() . '/index'));
         }
 
-        public function actionAutoComplete($term)
+        public function actionAutoComplete($term, $autoCompleteOptions = null)
         {
             $modelClassName = RolesModule::getPrimaryModelName();
             echo $this->renderAutoCompleteResults($modelClassName, $term);
