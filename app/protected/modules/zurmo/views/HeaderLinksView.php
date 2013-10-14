@@ -200,7 +200,7 @@
 
         protected static function resolveNewCollectionItemAndNotification($gameBoardUrl)
         {
-            assert('is_strig($gameBoardUrl)');
+            assert('is_string($gameBoardUrl)');
             $collectionAndItemKey = Yii::app()->gameHelper->resolveNewCollectionItems();
             if(null != $collectionAndItemKey)
             {
