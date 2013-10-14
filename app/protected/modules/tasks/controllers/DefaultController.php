@@ -36,6 +36,10 @@
 
     class TasksDefaultController extends ActivityModelsDefaultController
     {
+        /**
+         * Close task
+         * @param string $id
+         */
         public function actionCloseTask($id)
         {
             $task                    = Task::getById(intval($id));
