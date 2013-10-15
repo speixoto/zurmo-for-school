@@ -184,8 +184,8 @@
                     'opportunities',
                     'marketing',
                     'projects',
-                    'reports',
                     'products',
+                    'reports',
                 )
             );
             return $metadata;
