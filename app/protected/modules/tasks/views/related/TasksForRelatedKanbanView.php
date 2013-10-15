@@ -53,6 +53,13 @@
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
+                            array('type'            => 'CreateTaskFromRelatedKanbanModalLink',
+                                  'routeModuleId'   => 'eval:$this->moduleId',
+                                  'routeParameters' => 'eval:$this->getCreateLinkRouteParameters()',
+                                  'ajaxOptions'     => 'eval:TasksUtil::resolveAjaxOptionsForEditModel("Create")',
+                                  'uniqueLayoutId'  => 'eval:$this->uniqueLayoutId',
+                                  'modalContainerId'=> 'eval:TasksUtil::getModalContainerId()'
+                            ),
                             array('type'        => 'RelatedKanbanViewDetailsMenu',
                                   'iconClass'   => 'icon-details',
                                   'id'          => 'RelatedKanbanViewActionMenu',
@@ -61,17 +68,6 @@
                             ),
                         ),
                     ),
-                    'secondToolbar' => array(
-                        'elements' => array(
-                            array(  'type'            => 'CreateFromRelatedModalLink',
-                                    'routeModuleId'   => 'eval:$this->moduleId',
-                                    'routeParameters' => 'eval:$this->getCreateLinkRouteParameters()',
-                                    'ajaxOptions'     => 'eval:TasksUtil::resolveAjaxOptionsForEditModel("Create")',
-                                    'uniqueLayoutId'  => 'eval:$this->uniqueLayoutId',
-                                    'modalContainerId'=> 'eval:TasksUtil::getModalContainerId()'
-                           ),
-                        )
-                    )
                 ),
             );
             return $metadata;
