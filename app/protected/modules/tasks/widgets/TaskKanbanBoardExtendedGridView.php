@@ -287,8 +287,8 @@
         protected function createTaskItemForKanbanColumn($data, $row)
         {
             return ZurmoHtml::tag('li', array('class' => $this->getRowClassForTaskKanbanColumn($data),
-                                                'id' => 'items_' . $data->id),
-                                                      ZurmoHtml::tag('div', array(), $this->wrapCardDetailsContent($row)));
+                                              'id' => 'items_' . $data->id),
+                                              ZurmoHtml::tag('div', array(), $this->renderCardDetailsContent($row)));
         }
 
         /**
@@ -397,6 +397,14 @@
 
         protected function renderCardDetailsContent($row)
         {
+          /*  return array('name'                 => array('value'  => $this->getLinkString('$data->name', 'name'), 'class' => 'task-name'),
+                'requestedByUser'      => array('value'  => $this->getRelatedLinkString('$data->requestedByUser', 'requestedByUser', 'users'), 'class'  => 'requestedByUser-name'),
+                'status'               => array('value' => 'TasksUtil::resolveActionButtonForTaskByStatus(intval($data->status), "' . $controllerId . '", "' . $moduleId . '", $data->id)', 'class' => 'task-status'),
+                'subscribe'            => array('value' => array('TasksUtil', 'getKanbanSubscriptionLink'), 'class' => 'task-subscription'),
+                'completed'            => array('value' => 'TasksUtil::renderCompletionProgressBar($data)', 'class' => 'task-completion')
+            );
+
+*/
             return 'test';
 
         }

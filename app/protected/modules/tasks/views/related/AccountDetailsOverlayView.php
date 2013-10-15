@@ -38,8 +38,6 @@
     {
         protected $cssClasses = array('overlay-view');
 
-        const DESCRIPTION_CLASS          = 'marketing-list-description';
-
         /**
          * Render content
          * @return string
@@ -52,23 +50,22 @@
         }
 
         /**
-         * Renders description
-         * @return string
-         */
-        protected function renderDescriptionContent()
-        {
-            $content = ZurmoHtml::tag('div', array('class' => static::DESCRIPTION_CLASS),
-                                                    StringUtil::getChoppedStringContent($this->model->description, 50));
-            return $content;
-        }
-
-        /**
          * Renders name
          * @return string
          */
         protected function renderNameContent()
         {
-            $content = ZurmoHtml::tag('div', array('class' => static::DESCRIPTION_CLASS), $this->model->name);
+            $content = ZurmoHtml::tag('h3', array(), $this->model->name);
+            return $content;
+        }
+
+        /**
+         * Renders description
+         * @return string
+         */
+        protected function renderDescriptionContent()
+        {
+            $content = ZurmoHtml::tag('p', array('class' => 'details-description'), StringUtil::getChoppedStringContent($this->model->description, 50));
             return $content;
         }
     }

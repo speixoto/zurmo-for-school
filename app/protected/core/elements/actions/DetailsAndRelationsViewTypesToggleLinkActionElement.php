@@ -62,11 +62,13 @@
                               array('id' => $this->modelId, 'kanbanBoard' => 0));
             $content        = null;
 
-            $icon = ZurmoHtml::tag('i', array('class' => $this->resolveKanbanBoardClass()), '<span>Kanban</span>');
-            $content       .= ZurmoHtml::link($icon, $kanbanBoardUrl, array('title' => Zurmo::t('Core', 'View as Kanban Board')));
+            $icon     = ZurmoHtml::tag('i', array('class' => $this->resolveKanbanBoardClass()), '<span>Kanban</span>');
+            $link     = ZurmoHtml::link($icon, $kanbanBoardUrl, array('title' => Zurmo::t('Core', 'View as Kanban Board')));
+            $content .= ZurmoHtml::tag('div', array('class' => 'default-button'), $link);
 
-            $icon = ZurmoHtml::tag('i', array('class' => $this->resolveDetailsClass()), '<span>Details And Relations</span>');
-            $content       .= ZurmoHtml::link($icon, $listUrl, array('title' => Zurmo::t('Core', 'View as Details and Relations')));
+            $icon     = ZurmoHtml::tag('i', array('class' => $this->resolveDetailsClass()), '<span>Details And Relations</span>');
+            $link     = ZurmoHtml::link($icon, $listUrl, array('title' => Zurmo::t('Core', 'View as Details and Relations')));
+            $content .= ZurmoHtml::tag('div', array('class' => 'default-button'), $link);
             return $content;
         }
 
