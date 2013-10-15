@@ -81,30 +81,30 @@
             }
             try
             {
-                if (strtolower($value) == strtolower(Task::TASK_STATUS_NEW) ||
+                if (strtolower($value) == strtolower(Task::STATUS_NEW) ||
                     strtolower($value) == strtolower('New'))
                 {
-                    return Task::TASK_STATUS_NEW;
+                    return Task::STATUS_NEW;
                 }
-                elseif (strtolower($value) == strtolower(Task::TASK_STATUS_IN_PROGRESS) ||
+                elseif (strtolower($value) == strtolower(Task::STATUS_IN_PROGRESS) ||
                         strtolower($value) == strtolower('In Progress'))
                 {
-                    return Task::TASK_STATUS_IN_PROGRESS;
+                    return Task::STATUS_IN_PROGRESS;
                 }
-                elseif (strtolower($value) == strtolower(Task::TASK_STATUS_AWAITING_ACCEPTANCE) ||
+                elseif (strtolower($value) == strtolower(Task::STATUS_AWAITING_ACCEPTANCE) ||
                         strtolower($value) == strtolower('Awaiting Acceptance'))
                 {
-                    return Task::TASK_STATUS_AWAITING_ACCEPTANCE;
+                    return Task::STATUS_AWAITING_ACCEPTANCE;
                 }
-                elseif (strtolower($value) == strtolower(Task::TASK_STATUS_REJECTED) ||
+                elseif (strtolower($value) == strtolower(Task::STATUS_REJECTED) ||
                         strtolower($value) == strtolower('Rejected'))
                 {
-                    return Task::TASK_STATUS_REJECTED;
+                    return Task::STATUS_REJECTED;
                 }
-                elseif (strtolower($value) == strtolower(Task::TASK_STATUS_COMPLETED) ||
+                elseif (strtolower($value) == strtolower(Task::STATUS_COMPLETED) ||
                         strtolower($value) == strtolower('Completed'))
                 {
-                    return Task::TASK_STATUS_COMPLETED;
+                    return Task::STATUS_COMPLETED;
                 }
                 else
                 {
@@ -119,11 +119,11 @@
 
         protected static function getAcceptableValues()
         {
-            return array(Task::TASK_STATUS_NEW,
-                         Task::TASK_STATUS_IN_PROGRESS,
-                         Task::TASK_STATUS_AWAITING_ACCEPTANCE,
-                         Task::TASK_STATUS_REJECTED,
-                         Task::TASK_STATUS_COMPLETED,
+            return array(Task::STATUS_NEW,
+                         Task::STATUS_IN_PROGRESS,
+                         Task::STATUS_AWAITING_ACCEPTANCE,
+                         Task::STATUS_REJECTED,
+                         Task::STATUS_COMPLETED,
                          'New',
                          'In Progress',
                          'Awaiting Acceptance',

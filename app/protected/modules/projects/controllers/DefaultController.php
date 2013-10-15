@@ -517,7 +517,7 @@
             {
                 ProjectAuditEvent::logAuditEvent(ProjectAuditEvent::PROJECT_CREATED, $model->name, $model);
             }
-            if($this->getAction()->id == 'edit' && $model->status == Project::PROJECT_STATUS_ARCHIVED)
+            if($this->getAction()->id == 'edit' && $model->status == Project::STATUS_ARCHIVED)
             {
                 ProjectAuditEvent::logAuditEvent(ProjectAuditEvent::PROJECT_ARCHIVED, $model->name, $model);
             }

@@ -121,8 +121,8 @@
             $super                  = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
             $opportunities          = Opportunity::getByName('superOpp');
 
-            $task = TaskTestHelper::createTaskWithOwnerAndRelatedItem('MyTask', $super, $opportunities[0], Task::TASK_STATUS_IN_PROGRESS);
-            $taskNew = TaskTestHelper::createTaskWithOwnerAndRelatedItem('MyTask New', $super, $opportunities[0], Task::TASK_STATUS_NEW);
+            $task = TaskTestHelper::createTaskWithOwnerAndRelatedItem('MyTask', $super, $opportunities[0], Task::STATUS_IN_PROGRESS);
+            $taskNew = TaskTestHelper::createTaskWithOwnerAndRelatedItem('MyTask New', $super, $opportunities[0], Task::STATUS_NEW);
             $this->setGetArray(array('id' => $task->id, 'kanbanBoard' => '1'));
             $content = $this->runControllerWithNoExceptionsAndGetContent('opportunities/default/details');
             $matcher= array(

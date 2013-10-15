@@ -67,15 +67,15 @@
                 $task->completed = false;
                 if($i%2 == 0)
                 {
-                    $task->status = Task::TASK_STATUS_NEW;
+                    $task->status = Task::STATUS_NEW;
                 }
                 elseif($i%3 == 0)
                 {
-                    $task->status = Task::TASK_STATUS_IN_PROGRESS;
+                    $task->status = Task::STATUS_IN_PROGRESS;
                 }
                 elseif($i%5 == 0)
                 {
-                    $task->status = Task::TASK_STATUS_COMPLETED;
+                    $task->status = Task::STATUS_COMPLETED;
                 }
                 $task->activityItems->add($opportunity);
                 $task->activityItems->add($opportunity->contacts[0]);
@@ -99,7 +99,7 @@
             $taskRandomData    = ZurmoRandomDataUtil::
                                  getRandomDataByModuleAndModelClassNames('TasksModule', 'Task');
             $name              = RandomDataUtil::getRandomValueFromArray($taskRandomData['names']);
-            if (intval($model->status) == Task::TASK_STATUS_COMPLETED)
+            if (intval($model->status) == Task::STATUS_COMPLETED)
             {
                 $dueTimeStamp             = time() - (mt_rand(1, 50) * 60 * 60 * 24);
                 $completedDateTime        = DateTimeUtil::convertTimestampToDbFormatDateTime(

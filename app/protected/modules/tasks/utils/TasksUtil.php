@@ -442,23 +442,23 @@
             $route = Yii::app()->createUrl('tasks/default/updateStatusInKanbanView');
             switch(intval($statusId))
             {
-                case Task::TASK_STATUS_NEW:
+                case Task::STATUS_NEW:
                      $element = new TaskStartLinkActionElement($controllerId, $moduleId, $taskId,
                                                                                             array('route' => $route));
                     break;
-                case Task::TASK_STATUS_IN_PROGRESS:
+                case Task::STATUS_IN_PROGRESS:
 
                      $element = new TaskFinishLinkActionElement($controllerId, $moduleId, $taskId,
                                                                                             array('route' => $route));
                     break;
-                case Task::TASK_STATUS_AWAITING_ACCEPTANCE:
+                case Task::STATUS_AWAITING_ACCEPTANCE:
 
                      $acceptLinkElement = new TaskAcceptLinkActionElement($controllerId, $moduleId, $taskId,
                                                                                             array('route' => $route));
                      $rejectLinkElement = new TaskRejectLinkActionElement($controllerId, $moduleId, $taskId,
                                                                                             array('route' => $route));
                      return $acceptLinkElement->render() . $rejectLinkElement->render();
-                case Task::TASK_STATUS_COMPLETED:
+                case Task::STATUS_COMPLETED:
                      return null;
                 default:
                      $element = new TaskStartLinkActionElement($controllerId, $moduleId, $taskId,
@@ -476,11 +476,11 @@
         public static function getTaskStatusMappingToKanbanItemTypeArray()
         {
             return array(
-                            Task::TASK_STATUS_NEW                   => KanbanItem::TYPE_TODO,
-                            Task::TASK_STATUS_IN_PROGRESS           => KanbanItem::TYPE_IN_PROGRESS,
-                            Task::TASK_STATUS_AWAITING_ACCEPTANCE   => KanbanItem::TYPE_IN_PROGRESS,
-                            Task::TASK_STATUS_REJECTED              => KanbanItem::TYPE_TODO,
-                            Task::TASK_STATUS_COMPLETED             => KanbanItem::TYPE_COMPLETED
+                            Task::STATUS_NEW                   => KanbanItem::TYPE_TODO,
+                            Task::STATUS_IN_PROGRESS           => KanbanItem::TYPE_IN_PROGRESS,
+                            Task::STATUS_AWAITING_ACCEPTANCE   => KanbanItem::TYPE_IN_PROGRESS,
+                            Task::STATUS_REJECTED              => KanbanItem::TYPE_TODO,
+                            Task::STATUS_COMPLETED             => KanbanItem::TYPE_COMPLETED
                         );
         }
 
@@ -731,10 +731,10 @@
         public static function getKanbanItemTypeToDefaultTaskStatusMappingArray()
         {
             return array(
-                            KanbanItem::TYPE_TODO                   => Task::TASK_STATUS_NEW,
-                            KanbanItem::TYPE_SOMEDAY                => Task::TASK_STATUS_NEW,
-                            KanbanItem::TYPE_IN_PROGRESS            => Task::TASK_STATUS_IN_PROGRESS,
-                            KanbanItem::TYPE_COMPLETED              => Task::TASK_STATUS_COMPLETED
+                            KanbanItem::TYPE_TODO                   => Task::STATUS_NEW,
+                            KanbanItem::TYPE_SOMEDAY                => Task::STATUS_NEW,
+                            KanbanItem::TYPE_IN_PROGRESS            => Task::STATUS_IN_PROGRESS,
+                            KanbanItem::TYPE_COMPLETED              => Task::STATUS_COMPLETED
                         );
         }
 
@@ -813,25 +813,6 @@
                     }
             }
             return $completedItemsCount;
-        }
-
-        /**
-         * Make search attribute data
-         * @param array $data
-         * @return string
-         */
-        //todo: @Mayank once jason review the code remove this piece of code along with test case as well
-        public static function makeSearchAttributeData($data)
-        {
-            $searchAttributeData['clauses'][1] =
-            array(
-                'attributeName'        => 'activityItems',
-                'relatedAttributeName' => 'id',
-                'operatorType'         => 'equals',
-                'value'                => (int)$data->getClassId('Item')
-            );
-            $searchAttributeData['structure'] = '(1)';
-            return $searchAttributeData;
         }
 
         /**

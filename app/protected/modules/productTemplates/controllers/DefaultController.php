@@ -381,7 +381,8 @@
             {
                 $autoCompleteResults[] = array(
                     'id'   => $productCategory->id,
-                    'name' => self::renderHtmlContentLabelFromProductCategoryAndKeyword($productCategory, $term)
+                    'name' => MultipleProductCategoriesForProductTemplateElement::
+                                        renderHtmlContentLabelFromProductCategoryAndKeyword($productCategory)
                 );
             }
             echo CJSON::encode($autoCompleteResults);
@@ -422,28 +423,6 @@
         {
             assert('is_string($partialName)');
             return "   (productcategory.name  like '$partialName%') ";
-        }
-
-        /**
-         * @param ProductCategory $productCategory
-         * @param string $keyword
-         * @return string
-         */
-        public static function renderHtmlContentLabelFromProductCategoryAndKeyword($productCategory, $keyword)
-        {
-            // TODO: @Mayank: Critical: Replcia of MultipleProductCategoriesForProductTemplateElement:112
-            // TODO: @Mayank: Critical: Unused second argument
-            assert('$productCategory instanceof ProductCategory && $productCategory->id > 0');
-            assert('$keyword == null || is_string($keyword)');
-
-            if ($productCategory->name != null)
-            {
-                return strval($productCategory) . '&#160&#160<b>'. '</b>';
-            }
-            else
-            {
-                return strval($productCategory);
-            }
         }
 
         /**
