@@ -630,16 +630,24 @@
          * @throws FailedToSaveModelException
          */
         public static function createSystemUser($username, $password = null, $hideFromSelecting = true,
-                                                                            $hideFromLeaderboard = true)
+                                                    $hideFromLeaderboard = true, $firstName = null, $lastName = null)
         {
             if (!isset($password))
             {
                 $password = static::generateRandomPasswordForSystemUser();
             }
+            if (!isset($firstName))
+            {
+                $firstName = 'System';
+            }
+            if (!isset($lastName))
+            {
+                $lastName = 'User';
+            }
             $user = new User();
             $user->username            = $username;
-            $user->firstName           = 'System';
-            $user->lastName            = 'User';
+            $user->firstName           = $firstName;
+            $user->lastName            = $lastName;
             $user->hideFromSelecting   = $hideFromSelecting;
             $user->hideFromLeaderboard = $hideFromLeaderboard;
             $user->setIsSystemUser();

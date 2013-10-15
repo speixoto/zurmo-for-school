@@ -44,7 +44,7 @@
             return array(Zurmo::t('Core', 'Module'),
                          Zurmo::t('ReportsModule', 'Filters'),
                          Zurmo::t('ReportsModule', 'Columns'),
-                         Zurmo::t('ZurmoModule', 'Ordering'),
+                         Zurmo::t('ReportsModule', 'Ordering'),
                          Zurmo::t('ReportsModule', 'General'));
         }
     }

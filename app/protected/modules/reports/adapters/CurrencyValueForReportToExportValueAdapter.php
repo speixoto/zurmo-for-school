@@ -76,5 +76,11 @@
             $headerData[] = $this->getLabel();
             $headerData[] = $this->getLabel() . ' ' . Zurmo::t('ZurmoModule', 'Currency');
         }
+
+        public function resolveGrandTotalsData(& $grandTotalsData)
+        {
+            $grandTotalsData[] = $this->getGrandTotal();
+            $grandTotalsData[] = '';
+        }
     }
 ?>

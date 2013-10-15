@@ -89,6 +89,21 @@ EOD;
 
             $contents = file_get_contents(INSTANCE_ROOT . '/protected/config/perInstanceTest.php');
 
+            if (!strpos($contents, 'perInstanceTestConfig.php'))
+            {
+                $perInstanceTestConfigContent = <<<EOD
+    if (is_file(INSTANCE_ROOT . '/protected/config/perInstanceTestConfig.php'))
+    {
+        require_once INSTANCE_ROOT . '/protected/config/perInstanceTestConfig.php';
+    }
+EOD;
+                $searchPattern = "define('ZURMO_TOKEN'";
+                $contents = preg_replace('/' . preg_quote($searchPattern) . '/',
+                    "\n" . $perInstanceTestConfigContent . "\n\n" . '    ' . $searchPattern,
+                    $contents);
+                file_put_contents(INSTANCE_ROOT . '/protected/config/perInstanceTest.php', $contents);
+            }
+
             if (!strpos($contents, '$testApiUrl'))
             {
                 $testApiUrlSettings = <<<EOD

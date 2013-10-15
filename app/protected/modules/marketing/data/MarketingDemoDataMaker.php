@@ -41,7 +41,7 @@
     {
         protected $files = array('testDocument.docx',
                                     'testImage.png',
-                                    'testLogo.png',
+                                    'testLogo.jpg',
                                     'testNote.txt',
                                     'testPDF.pdf',
                                     'testZip.zip');

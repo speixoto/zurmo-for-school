@@ -85,7 +85,7 @@
                 ),
                 'tabMenuItems' => array(
                     array(
-                        'label'  => "eval:Zurmo::t('ReportsModule', 'Reports')",
+                        'label'  => "eval:Zurmo::t('ReportsModule', 'ReportsModulePluralLabel', \$translationParams)",
                         'url'    => array('/reports/default'),
                         'right'  => self::RIGHT_ACCESS_REPORTS,
                         'mobile' => false,
@@ -93,7 +93,7 @@
                 ),
                 'shortcutsCreateMenuItems' => array(
                     array(
-                        'label'  => 'Report',
+                        'label'  => "eval:Zurmo::t('ReportsModule', 'ReportsModuleSingularLabel', \$translationParams)",
                         'url'    => array('/reports/default/selectType'),
                         'right'  => self::RIGHT_CREATE_REPORTS,
                         'mobile' => false,
