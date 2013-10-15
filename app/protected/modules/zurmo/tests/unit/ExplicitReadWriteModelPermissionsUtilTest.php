@@ -188,6 +188,21 @@
             $this->assertEquals(0, count($readOnlyPermitables));
             $this->assertEquals($group2, $readWritePermitables[$group2->id]);
             $this->assertEquals($group4, $readWritePermitables[$group4->id]);
+
+            //Test adding group4 again. The _read count should be the same
+            $account = Account::getById($accountId);
+            $sanitizedData= array();
+            $sanitizedData['explicitReadWriteModelPermissions'] =
+                            array('type' => ExplicitReadWriteModelPermissionsUtil::MIXED_TYPE_NONEVERYONE_GROUP,
+                                  'nonEveryoneGroup' => $group4->id);
+            $explicitReadWriteModelPermissions = ExplicitReadWriteModelPermissionsUtil::
+                                                 resolveByPostDataAndModelThenMake($sanitizedData, $account);
+            ExplicitReadWriteModelPermissionsUtil::resolveExplicitReadWriteModelPermissions($account,
+                                                   $explicitReadWriteModelPermissions);
+            $this->assertEquals(array(
+                    array('G' . $group4->id, 1),
+                ),
+            AccountReadPermissionsOptimizationBaseTest::getAccountMungeRows($account));
         }
 
         public function testRemoveIfExistsFromPostData()

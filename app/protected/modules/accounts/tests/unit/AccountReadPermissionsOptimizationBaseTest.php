@@ -209,7 +209,7 @@
             return $beforeRows == $afterRows;
         }
 
-        protected static function getAccountMungeRows(SecurableItem $securableItem = null)
+        public static function getAccountMungeRows(SecurableItem $securableItem = null)
         {
             if ($securableItem === null)
             {
