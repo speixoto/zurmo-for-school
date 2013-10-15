@@ -124,19 +124,6 @@
 
         protected function registerScripts()
         {
-            $script =
-                "$('.gd-collection-item img').qtip(
-                    {
-                        position: {
-                            my: 'bottom center',
-                            at: 'top center'
-                        },
-                        content: {
-                            attr: 'data-tooltip'
-                        }
-                    }
-                );";
-            Yii::app()->clientScript->registerScript('userGameDashboardScript', $script);
             $cs = Yii::app()->getClientScript();
             $cs->registerCoreScript('gamification-dashboard');
             $cs->registerScriptFile(
@@ -321,6 +308,9 @@
                 $collectionItemImagePath = $gameCollectionRules::makeMediumCOllectionItemImagePath($itemType);
                 $itemContent = ZurmoHtml::image($collectionItemImagePath, $itemLabel,
                                           array('class'=> 'qtip-shadow', 'data-tooltip' => $itemLabel));
+                $qtip = new ZurmoTip(array('options' => array('position' => array('my' => 'bottom center', 'at' => 'top center'),
+                                                          'content'  => array('attr' => 'data-tooltip'))));
+                $qtip->addQTip(".gd-collection-item img");
                 $itemContent .= ZurmoHtml::tag('span', array('class' => 'num-collected'), 'x' . $quantityCollected);
                 $classContent = 'gd-collection-item';
                 if($quantityCollected == 0)
