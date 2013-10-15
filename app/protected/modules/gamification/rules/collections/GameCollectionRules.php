@@ -148,7 +148,7 @@
         public static function makeMediumCOllectionItemImagePath($itemType)
         {
             assert('is_string($itemType)');
-            return Yii::app()->themeManager->baseUrl . '/default/images/Collections/' .
+            return Yii::app()->themeManager->baseUrl . '/default/images/collections/' .
                    static::getType() . '/' . static::makeMediumCollectionItemImageName($itemType);
         }
     }
