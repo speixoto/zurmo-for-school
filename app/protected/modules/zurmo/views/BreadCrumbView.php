@@ -41,13 +41,13 @@
     {
         protected $controllerId;
         protected $moduleId;
-        protected $breadcrumbLinks;
+        protected $breadCrumbLinks;
 
-        public function __construct($controllerId, $moduleId, $breadcrumbLinks)
+        public function __construct($controllerId, $moduleId, $breadCrumbLinks)
         {
             $this->controllerId    = $controllerId;
             $this->moduleId        = $moduleId;
-            $this->breadcrumbLinks = $breadcrumbLinks;
+            $this->breadCrumbLinks = $breadCrumbLinks;
             $this->init();
         }
 
@@ -67,12 +67,17 @@
             $cClipWidget->beginClip("Breadcrumbs");
             $cClipWidget->widget('zii.widgets.CBreadcrumbs', array(
                 'homeLink'  => ZurmoHtml::link($this->getHomeLinkLabel(), $this->getHomeUrl()),
-                'links'     => $this->breadcrumbLinks,
+                'links'     => $this->resolveBreadCrumbLinks(),
                 'separator' => ' &#47; ',
             ));
             $cClipWidget->endClip();
             $content = $cClipWidget->getController()->clips['Breadcrumbs'];
             return $content;
+        }
+
+        protected function resolveBreadCrumbLinks()
+        {
+            return $this->breadCrumbLinks;
         }
 
         protected function getHomeLinkLabel()

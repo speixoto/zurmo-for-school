@@ -106,7 +106,7 @@
                                                     null,
                                                     'ProjectsSearchView'
                                                 );
-            $breadcrumbLinks                = static::getListBreadcrumbLinks();
+            $breadCrumbLinks                = static::getListBreadcrumbLinks();
             if (isset($_GET['ajax']) && $_GET['ajax'] == 'list-view')
             {
                 $mixedView  = $this->makeListView(
@@ -120,7 +120,7 @@
                 $mixedView        = $this->makeActionBarSearchAndListView($searchForm, $dataProvider, 'SecuredActionBarForProjectsSearchAndListView');
                 $view             = new ProjectsPageView(ProjectDefaultViewUtil::
                                                     makeViewWithBreadcrumbsForCurrentUser(
-                                                        $this, $mixedView, $breadcrumbLinks, 'ProjectBreadCrumbView'));
+                                                        $this, $mixedView, $breadCrumbLinks, 'ProjectBreadCrumbView'));
             }
             echo $view->render();
         }
@@ -133,14 +133,14 @@
         {
             $project            = static::getModelAndCatchNotFoundAndDisplayError('Project', intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($project);
-            $breadcrumbLinks = array(StringUtil::getChoppedStringContent(strval($project), 25));
+            $breadCrumbLinks = array(StringUtil::getChoppedStringContent(strval($project), 25));
             AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED, array(strval($project), 'ProjectsModule'), $project);
             if (KanbanUtil::isKanbanRequest() === false)
             {
                 $detailsView        = new ProjectEditAndDetailsView('Details', $this->getId(), $this->getModule()->getId(), $project);
                 $view               = new ProjectsPageView(ProjectDefaultViewUtil::
                                                              makeViewWithBreadcrumbsForCurrentUser(
-                                                                $this, $detailsView, $breadcrumbLinks, 'ProjectBreadCrumbView'));
+                                                                $this, $detailsView, $breadCrumbLinks, 'ProjectBreadCrumbView'));
             }
             //kanban view
             else
@@ -158,12 +158,12 @@
         {
             $params                 = LabelUtil::getTranslationParamsForAllModules();
             $title                  = Zurmo::t('ProjectsModule', 'Create ProjectsModuleSingularLabel', $params);
-            $breadcrumbLinks        = array($title);
+            $breadCrumbLinks        = array($title);
             $editAndDetailsView     = $this->makeEditAndDetailsView(
                                             $this->attemptToSaveModelFromPost(new Project()), 'Edit');
             $view                   = new ProjectsPageView(ProjectDefaultViewUtil::
                                                 makeViewWithBreadcrumbsForCurrentUser(
-                                                    $this, $editAndDetailsView, $breadcrumbLinks, 'ProjectBreadCrumbView'));
+                                                    $this, $editAndDetailsView, $breadCrumbLinks, 'ProjectBreadCrumbView'));
             echo $view->render();
         }
 
@@ -174,12 +174,12 @@
         {
             $project         = Project::getById(intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($project);
-            $breadcrumbLinks = array(StringUtil::getChoppedStringContent(strval($project), 25));
+            $breadCrumbLinks = array(StringUtil::getChoppedStringContent(strval($project), 25));
             $view            = new ProjectsPageView(ProjectDefaultViewUtil::
                                                         makeViewWithBreadcrumbsForCurrentUser($this,
                                                             $this->makeEditAndDetailsView(
                                                                 $this->attemptToSaveModelFromPost(
-                                                                    $project, $redirectUrl), 'Edit'), $breadcrumbLinks, 'ProjectBreadCrumbView'                                                   ));
+                                                                    $project, $redirectUrl), 'Edit'), $breadCrumbLinks, 'ProjectBreadCrumbView'                                                   ));
             echo $view->render();
         }
 
@@ -498,12 +498,12 @@
             $gridView                = new GridView(2, 1);
             $gridView->setView($actionBarView, 0, 0);
             $gridView->setView($projectsDashboardView, 1, 0);
-            $breadcrumbLinks         = static::getDashboardBreadcrumbLinks();
+            $breadCrumbLinks         = static::getDashboardBreadcrumbLinks();
             $view                    = new ProjectsPageView(ProjectDefaultViewUtil::
                                                                        makeViewWithBreadcrumbsForCurrentUser(
                                                                             $this,
                                                                             $gridView,
-                                                                            $breadcrumbLinks,
+                                                                            $breadCrumbLinks,
                                                                             'ProjectBreadCrumbView'));
             echo $view->render();
         }

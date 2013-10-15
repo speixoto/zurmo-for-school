@@ -66,7 +66,7 @@
         public function actionList()
         {
             $title           = Zurmo::t('ZurmoModule', 'Groups');
-            $breadcrumbLinks = array(
+            $breadCrumbLinks = array(
                  $title,
             );
             $introView = new SecurityIntroView('ZurmoModule');
@@ -77,7 +77,7 @@
                 $introView
             );
             $view             = new GroupsPageView(ZurmoDefaultAdminViewUtil::
-                                         makeViewWithBreadcrumbsForCurrentUser($this, $treeView, $breadcrumbLinks, 'GroupBreadCrumbView'));
+                                         makeViewWithBreadcrumbsForCurrentUser($this, $treeView, $breadCrumbLinks, 'GroupBreadCrumbView'));
             echo $view->render();
         }
 
@@ -98,11 +98,11 @@
         public function actionCreate()
         {
             $title           = Zurmo::t('ZurmoModule', 'Create Group');
-            $breadcrumbLinks = array($title);
+            $breadCrumbLinks = array($title);
             $titleBarAndCreateView = new GroupActionBarAndEditView($this->getId(), $this->getModule()->getId(),
                                                                    $this->attemptToSaveModelFromPost(new Group()));
             $view                  = new GroupsPageView(ZurmoDefaultAdminViewUtil::
-                                         makeViewWithBreadcrumbsForCurrentUser($this, $titleBarAndCreateView, $breadcrumbLinks, 'GroupBreadCrumbView'));
+                                         makeViewWithBreadcrumbsForCurrentUser($this, $titleBarAndCreateView, $breadCrumbLinks, 'GroupBreadCrumbView'));
             echo $view->render();
         }
 
@@ -110,13 +110,13 @@
         {
             $group               = Group::getById(intval($id));
             $title           = Zurmo::t('ZurmoModule', 'Edit');
-            $breadcrumbLinks = array(strval($group) => array('group/' . static::resolveBreadCrumbActionByGroup($group),  'id' => $id), $title);
+            $breadCrumbLinks = array(strval($group) => array('group/' . static::resolveBreadCrumbActionByGroup($group),  'id' => $id), $title);
             $this->resolveCanGroupBeEdited($group);
             $titleBarAndEditView = new GroupActionBarAndEditView($this->getId(),
                                                                  $this->getModule()->getId(),
                                                                  $this->attemptToSaveModelFromPost($group));
             $view                = new GroupsPageView(ZurmoDefaultAdminViewUtil::
-                                       makeViewWithBreadcrumbsForCurrentUser($this, $titleBarAndEditView, $breadcrumbLinks, 'GroupBreadCrumbView'));
+                                       makeViewWithBreadcrumbsForCurrentUser($this, $titleBarAndEditView, $breadCrumbLinks, 'GroupBreadCrumbView'));
             echo $view->render();
         }
 
@@ -152,7 +152,7 @@
         {
             $group              = Group::getById(intval($id));
             $title              = Zurmo::t('ZurmoModule', 'User Membership');
-            $breadcrumbLinks    = array(strval($group) => array('group/' . static::resolveBreadCrumbActionByGroup($group),  'id' => $id), $title);
+            $breadCrumbLinks    = array(strval($group) => array('group/' . static::resolveBreadCrumbActionByGroup($group),  'id' => $id), $title);
             $membershipForm     = GroupUserMembershipFormUtil::makeFormFromGroup($group);
             $postVariableName   = get_class($membershipForm);
             if (isset($_POST[$postVariableName]))
@@ -185,7 +185,7 @@
                                             $group,
                                             $this->getModule()->getPluralCamelCasedName());
             $view                = new GroupsPageView(ZurmoDefaultAdminViewUtil::
-                                         makeViewWithBreadcrumbsForCurrentUser($this, $titleBarAndEditView, $breadcrumbLinks, 'GroupBreadCrumbView'));
+                                         makeViewWithBreadcrumbsForCurrentUser($this, $titleBarAndEditView, $breadCrumbLinks, 'GroupBreadCrumbView'));
             echo $view->render();
         }
 
@@ -193,7 +193,7 @@
         {
             $group            = Group::getById(intval($id));
             $title           = Zurmo::t('ZurmoModule', 'Record Permissions');
-            $breadcrumbLinks = array(strval($group) => array('group/' . static::resolveBreadCrumbActionByGroup($group),  'id' => $id), $title);
+            $breadCrumbLinks = array(strval($group) => array('group/' . static::resolveBreadCrumbActionByGroup($group),  'id' => $id), $title);
             $data             =  PermissionsUtil::getAllModulePermissionsDataByPermitable($group);
             $permissionsForm  = ModulePermissionsFormUtil::makeFormFromPermissionsData($data);
             $postVariableName = get_class($permissionsForm);
@@ -228,7 +228,7 @@
                                             'ModulePermissionsEditAndDetailsView',
                                             'GroupModulePermissionsEditLink');
             $view                = new GroupsPageView(ZurmoDefaultAdminViewUtil::
-                                         makeViewWithBreadcrumbsForCurrentUser($this, $titleBarAndEditView, $breadcrumbLinks, 'GroupBreadCrumbView'));
+                                         makeViewWithBreadcrumbsForCurrentUser($this, $titleBarAndEditView, $breadCrumbLinks, 'GroupBreadCrumbView'));
             echo $view->render();
         }
 
@@ -236,7 +236,7 @@
         {
             $group              = Group::getById(intval($id));
             $title           = Zurmo::t('ZurmoModule', 'Rights');
-            $breadcrumbLinks = array(strval($group) => array('group/' . static::resolveBreadCrumbActionByGroup($group),  'id' => $id), $title);
+            $breadCrumbLinks = array(strval($group) => array('group/' . static::resolveBreadCrumbActionByGroup($group),  'id' => $id), $title);
             $rightsData         = RightsUtil::getAllModuleRightsDataByPermitable($group);
             $rightsForm         = RightsFormUtil::makeFormFromRightsData($rightsData);
             $postVariableName   = get_class($rightsForm);
@@ -267,7 +267,7 @@
                                             'RightsEditAndDetailsView',
                                             'GroupRightsEditLink');
             $view                = new GroupsPageView(ZurmoDefaultAdminViewUtil::
-                                         makeViewWithBreadcrumbsForCurrentUser($this, $titleBarAndEditView, $breadcrumbLinks, 'GroupBreadCrumbView'));
+                                         makeViewWithBreadcrumbsForCurrentUser($this, $titleBarAndEditView, $breadCrumbLinks, 'GroupBreadCrumbView'));
             echo $view->render();
         }
 
@@ -275,7 +275,7 @@
         {
             $group              = Group::getById(intval($id));
             $title           = Zurmo::t('ZurmoModule', 'Policies');
-            $breadcrumbLinks = array(strval($group) => array('group/' . static::resolveBreadCrumbActionByGroup($group),  'id' => $id), $title);
+            $breadCrumbLinks = array(strval($group) => array('group/' . static::resolveBreadCrumbActionByGroup($group),  'id' => $id), $title);
             $data               = PoliciesUtil::getAllModulePoliciesDataByPermitable($group);
             $policiesForm       = PoliciesFormUtil::makeFormFromPoliciesData($data);
             $postVariableName   = get_class($policiesForm);
@@ -310,7 +310,7 @@
                                         'PoliciesEditAndDetailsView',
                                         'GroupPoliciesEditLink');
             $view                = new GroupsPageView(ZurmoDefaultAdminViewUtil::
-                                         makeViewWithBreadcrumbsForCurrentUser($this, $titleBarAndEditView, $breadcrumbLinks, 'GroupBreadCrumbView'));
+                                         makeViewWithBreadcrumbsForCurrentUser($this, $titleBarAndEditView, $breadCrumbLinks, 'GroupBreadCrumbView'));
             echo $view->render();
         }
 

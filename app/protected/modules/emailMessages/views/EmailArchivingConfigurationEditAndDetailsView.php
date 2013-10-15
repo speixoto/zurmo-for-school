@@ -39,7 +39,7 @@
      */
     class EmailArchivingConfigurationEditAndDetailsView extends ImapConfigurationEditAndDetailsView
     {
-        protected static function getPanelTitle()
+        public function getTitle()
         {
             return Zurmo::t('EmailMessagesModule', 'Email Archiving Configuration (IMAP)');
         }

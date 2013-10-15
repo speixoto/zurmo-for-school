@@ -53,23 +53,23 @@
          * used by the designer page view.
          * @param CController $controller
          * @param View $containedView
-         * @param array $breadcrumbLinks
+         * @param array $breadCrumbLinks
          * @param $breadcrumbViewClassName
          * @param array $cssClasses
          * @return GridView
          */
         public static function makeViewWithBreadcrumbsForCurrentUser(CController $controller,
                                                                      View $containedView,
-                                                                     $breadcrumbLinks,
+                                                                     $breadCrumbLinks,
                                                                      $breadcrumbViewClassName,
                                                                      $cssClasses = array())
         {
-            assert('is_array($breadcrumbLinks)');
+            assert('is_array($breadCrumbLinks)');
             $gridView    = new GridView(2, 1);
             $gridView->setCssClasses($cssClasses);
             $gridView->setView(new $breadcrumbViewClassName($controller->getId(),
                                                             $controller->getModule()->getId(),
-                                                            $breadcrumbLinks), 0, 0);
+                                                            $breadCrumbLinks), 0, 0);
             $gridView->setView($containedView, 1, 0);
             return static::makeStandardViewForCurrentUser($controller, $gridView);
         }
@@ -78,7 +78,7 @@
 
          * @param CController $controller
          * @param View $containedView
-         * @param array $breadcrumbLinks
+         * @param array $breadCrumbLinks
          * @param $breadcrumbViewClassName
          * @param array $cssClasses
          * @return GridView
@@ -91,7 +91,7 @@
          * @param CController $controller
          * @param View $containedView
          * @param View $secondContainedView
-         * @param array $breadcrumbLinks
+         * @param array $breadCrumbLinks
          * @param $breadcrumbViewClassName
          * @param array $cssClasses
          * @return GridView
@@ -99,16 +99,16 @@
         public static function makeTwoViewsWithBreadcrumbsForCurrentUser(CController $controller,
                                                                          View $containedView,
                                                                          View $secondContainedView,
-                                                                         $breadcrumbLinks,
+                                                                         $breadCrumbLinks,
                                                                          $breadcrumbViewClassName,
                                                                          $cssClasses = array())
         {
-            assert('is_array($breadcrumbLinks)');
+            assert('is_array($breadCrumbLinks)');
             $gridView    = new GridView(3, 1);
             $gridView->setCssClasses($cssClasses);
             $gridView->setView(new $breadcrumbViewClassName($controller->getId(),
                                                             $controller->getModule()->getId(),
-                                                            $breadcrumbLinks), 0, 0);
+                                                            $breadCrumbLinks), 0, 0);
             $gridView->setView($containedView, 1, 0);
             $gridView->setView($secondContainedView, 2, 0);
             return static::makeStandardViewForCurrentUser($controller, $gridView);

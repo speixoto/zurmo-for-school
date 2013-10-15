@@ -67,7 +67,7 @@
                         'pageViewClassName'          => $pageViewClassName,
                         'defaultViewUtilClassName'   => 'ProductDefaultViewUtil',
                         'activeActionElementType'    => 'ProductsMenu',
-                        'breadcrumbLinks'            => static::getListBreadcrumbLinks()
+                        'breadCrumbLinks'            => static::getListBreadcrumbLinks()
                    ),
                )
             );
@@ -88,7 +88,7 @@
                                                     null,
                                                     'ProductsSearchView'
                                                 );
-            $breadcrumbLinks                = static::getListBreadcrumbLinks();
+            $breadCrumbLinks                = static::getListBreadcrumbLinks();
             if (isset($_GET['ajax']) && $_GET['ajax'] == 'list-view')
             {
                 $mixedView  = $this->makeListView(
@@ -105,7 +105,7 @@
                                     null, $activeActionElementType, $introView);
                 $view       = new ProductsPageView(ZurmoDefaultViewUtil::
                                                     makeViewWithBreadcrumbsForCurrentUser(
-                                                        $this, $mixedView, $breadcrumbLinks, 'ProductBreadCrumbView'));
+                                                        $this, $mixedView, $breadCrumbLinks, 'ProductBreadCrumbView'));
             }
             echo $view->render();
         }
@@ -114,12 +114,12 @@
         {
             $product            = static::getModelAndCatchNotFoundAndDisplayError('Product', intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($product);
-            $breadcrumbLinks = array(StringUtil::getChoppedStringContent(strval($product), 25));
+            $breadCrumbLinks = array(StringUtil::getChoppedStringContent(strval($product), 25));
             AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED, array(strval($product), 'ProductsModule'), $product);
             $detailsView        = new ProductEditAndDetailsView('Details', $this->getId(), $this->getModule()->getId(), $product);
             $view               = new ProductsPageView(ProductDefaultViewUtil::
                                                          makeViewWithBreadcrumbsForCurrentUser(
-                                                            $this, $detailsView, $breadcrumbLinks, 'ProductBreadCrumbView'));
+                                                            $this, $detailsView, $breadCrumbLinks, 'ProductBreadCrumbView'));
             echo $view->render();
         }
 
@@ -127,12 +127,12 @@
         {
             $params                 = LabelUtil::getTranslationParamsForAllModules();
             $title                  = Zurmo::t('ProductsModule', 'Create ProductsModuleSingularLabel', $params);
-            $breadcrumbLinks        = array($title);
+            $breadCrumbLinks        = array($title);
             $editAndDetailsView     = $this->makeEditAndDetailsView(
                                             $this->attemptToSaveModelFromPost(new Product()), 'Edit');
             $view                   = new ProductsPageView(ProductDefaultViewUtil::
                                                 makeViewWithBreadcrumbsForCurrentUser(
-                                                    $this, $editAndDetailsView, $breadcrumbLinks, 'ProductBreadCrumbView'));
+                                                    $this, $editAndDetailsView, $breadCrumbLinks, 'ProductBreadCrumbView'));
             echo $view->render();
         }
 
@@ -140,12 +140,12 @@
         {
             $product         = Product::getById(intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($product);
-            $breadcrumbLinks = array(StringUtil::getChoppedStringContent(strval($product), 25));
+            $breadCrumbLinks = array(StringUtil::getChoppedStringContent(strval($product), 25));
             $view            = new ProductsPageView(ProductDefaultViewUtil::
                                                         makeViewWithBreadcrumbsForCurrentUser($this,
                                                             $this->makeEditAndDetailsView(
                                                                 $this->attemptToSaveModelFromPost(
-                                                                    $product, $redirectUrl), 'Edit'), $breadcrumbLinks, 'ProductBreadCrumbView'                                                   ));
+                                                                    $product, $redirectUrl), 'Edit'), $breadCrumbLinks, 'ProductBreadCrumbView'                                                   ));
             echo $view->render();
         }
 
@@ -245,7 +245,7 @@
         {
             $params          = LabelUtil::getTranslationParamsForAllModules();
             $title           = Zurmo::t('ProductsModule', 'Mass Delete ProductsModulePluralLabel', $params);
-            $breadcrumbLinks = array(
+            $breadCrumbLinks = array(
                  $title,
             );
             $pageSize           = Yii::app()->pagination->resolveActiveForCurrentUserByType('massDeleteProgressPageSize');
@@ -275,7 +275,7 @@
                                                              ProductsModule::getModuleLabelByTypeAndLanguage('Plural')
                                                             );
             $view               = new ProductsPageView(ZurmoDefaultViewUtil::
-                                                            makeViewWithBreadcrumbsForCurrentUser($this, $massDeleteView, $breadcrumbLinks, 'ProductBreadCrumbView'));
+                                                            makeViewWithBreadcrumbsForCurrentUser($this, $massDeleteView, $breadCrumbLinks, 'ProductBreadCrumbView'));
             echo $view->render();
         }
 
