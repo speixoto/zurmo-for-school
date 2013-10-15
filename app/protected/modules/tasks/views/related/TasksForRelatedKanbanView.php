@@ -59,24 +59,19 @@
                                   'itemOptions' => array('class' => 'hasDetailsFlyout'),
                                   'model'       => 'eval:$this->params["relationModel"]',
                             ),
-                            array('type'        => 'RelatedKanbanViewOptionsMenu',
-                                  'iconClass'   => 'icon-edit',
-                                  'id'          => 'RelatedKanbanViewOptionsMenu',
-                                  'routeModuleId'   => 'eval:$this->moduleId',
-                                   'routeParameters' => 'eval:$this->getCreateLinkRouteParameters()',
+                        ),
+                    ),
+                    'secondToolbar' => array(
+                        'elements' => array(
+                            array(  'type'            => 'CreateFromRelatedModalLink',
+                                    'routeModuleId'   => 'eval:$this->moduleId',
+                                    'routeParameters' => 'eval:$this->getCreateLinkRouteParameters()',
                                     'ajaxOptions'     => 'eval:TasksUtil::resolveAjaxOptionsForEditModel("Create")',
                                     'uniqueLayoutId'  => 'eval:$this->uniqueLayoutId',
                                     'modalContainerId'=> 'eval:TasksUtil::getModalContainerId()'
-                            ),
-//                            array(  'type'            => 'CreateFromRelatedModalLink',
-//                                    'routeModuleId'   => 'eval:$this->moduleId',
-//                                    'routeParameters' => 'eval:$this->getCreateLinkRouteParameters()',
-//                                    'ajaxOptions'     => 'eval:TasksUtil::resolveAjaxOptionsForEditModel("Create")',
-//                                    'uniqueLayoutId'  => 'eval:$this->uniqueLayoutId',
-//                                    'modalContainerId'=> 'eval:TasksUtil::getModalContainerId()'
-//                                 ),
-                        ),
-                    ),
+                           ),
+                        )
+                    )
                 ),
             );
             return $metadata;
@@ -131,12 +126,10 @@
             $cClipWidget->widget($this->getGridViewWidgetPath(), $this->getCGridViewParams());
             $cClipWidget->endClip();
             $relatedModel = $this->params['relationModel'];
-            $content     = $this->renderKanbanViewTitleActionBar();
-            //$content     = $this->renderTitleContent();
-            //$content    .= $this->renderActionElementBar(false);
+            $content     = $this->renderKanbanViewTitleWithActionBars();
             $content    .= TasksUtil::renderViewModalContainer();
             //Check for zero count
-            if(count($relatedModel->tasks) > 0)
+            if($this->getDataProvider()->getTotalItemCount() > 0)
             {
                 $content    .= $cClipWidget->getController()->clips['ListView'] . "\n";
                 if ($this->getRowsAreSelectable())
@@ -297,35 +290,10 @@
                 }
             }
 
-            $toolbarContent = null;
-            $content        = null;
             if($kanbanActive)
             {
-               $link = null;
-//               $link = ZurmoDefaultViewUtil::renderActionBarLinksForKanbanBoard($this->controllerId,
-//                                                                                $this->params['relationModuleId'],
-//                                                                                (int)$this->params['relationModel']->id);
-//               if($this->params['relationModuleId'] != 'projects')
-//               {
-//                  $content = parent::renderActionElementBar($renderedInForm) . $link;
-//               }
-//               else
-//               {
-                  $content = parent::renderActionElementBar($renderedInForm);
-               //}
+               $content = parent::renderActionElementBar($renderedInForm);
             }
-            //$toolbarContent = ZurmoHtml::tag('div', array('class' => 'view-toolbar'), $content);
-            //return $toolbarContent;
-            return $content;
-        }
-
-        protected function renderKanbanViewTitleActionBar()
-        {
-            $content                 = $this->renderTitleContent();
-            $actionElementBarContent = $this->renderActionElementBar(false);
-            $content                 .= ZurmoHtml::tag('div', array('class' => 'view-toolbar-container clearfix'),
-                                                ZurmoHtml::tag('nav', array('class' => 'pillbox clearfix'),
-                                                                                    $actionElementBarContent));
             return $content;
         }
 
@@ -364,6 +332,35 @@
         {
             return array_merge( array('sourceId' => $this->getGridViewId()),
                                 parent::getCreateLinkRouteParameters());
+        }
+
+        /**
+         * Renders kanban view with action bars
+         * @return string
+         */
+        protected function renderKanbanViewTitleWithActionBars()
+        {
+            $content                 = $this->renderTitleContent();
+            $actionElementBarContent = $this->renderActionElementBar(false);
+            $firstActionBarContent   = ZurmoHtml::tag('nav', array('class' => 'pillbox clearfix'),
+                                                                                    $actionElementBarContent);
+            if (!Yii::app()->userInterface->isMobile() &&
+                null != $secondActionElementBarContent = $this->renderSecondActionElementBar(false))
+            {
+                $secondActionElementBarContent = ZurmoHtml::tag('nav', array('class' => 'pillbox clearfix'),
+                                                   $secondActionElementBarContent);
+                if($this->params['relationModuleId'] != 'projects')
+                {
+                   $links = ZurmoDefaultViewUtil::renderActionBarLinksForKanbanBoard($this->controllerId,
+                                                                                    $this->params['relationModuleId'],
+                                                                                    (int)$this->params['relationModel']->id);
+                   $secondActionElementBarContent .= ZurmoHtml::tag('nav', array('class' => 'pillbox clearfix'), $links);
+                }
+                $firstActionBarContent .= $secondActionElementBarContent;
+            }
+            $content                 .= ZurmoHtml::tag('div', array('class' => 'view-toolbar-container clearfix'),
+                                                $firstActionBarContent);
+            return $content;
         }
     }
 ?>

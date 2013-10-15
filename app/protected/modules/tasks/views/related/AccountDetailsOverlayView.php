@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class ProjectDetailsOverlayView extends TaskRelatedDetailsOverlayView
+    class AccountDetailsOverlayView extends TaskRelatedDetailsOverlayView
     {
         protected $cssClasses = array('overlay-view');
 

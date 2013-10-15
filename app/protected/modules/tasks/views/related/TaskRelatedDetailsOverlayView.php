@@ -38,14 +38,31 @@
     {
         protected $cssClasses = array('overlay-view');
 
+        /**
+         * Renders content for the overlay view
+         * @return string
+         */
         protected function renderContent()
         {
             $modelClass = get_class($this->model);
+            $content = null;
             if($modelClass == 'Project')
             {
                 $overlayView = new ProjectDetailsOverlayView($this->controllerId, $this->moduleId, $this->model);
-                $content     = $overlayView->render();
             }
+            elseif($modelClass == 'Account')
+            {
+                $overlayView = new AccountDetailsOverlayView($this->controllerId, $this->moduleId, $this->model);
+            }
+            elseif($modelClass == 'Contact')
+            {
+                $overlayView = new ContactDetailsOverlayView($this->controllerId, $this->moduleId, $this->model);
+            }
+            elseif($modelClass == 'Opportunity')
+            {
+                $overlayView = new OpportunityDetailsOverlayView($this->controllerId, $this->moduleId, $this->model);
+            }
+            $content     = $overlayView->render();
             return $content;
         }
     }

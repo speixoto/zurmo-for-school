@@ -48,9 +48,9 @@
          */
         public static function getChoppedStringContent($string, $length, $ellipsis = '...')
         {
-            assert('is_string($string)');
+            assert('is_string($string) || is_null($string)');
             assert('is_int($length)');
-            if (strlen($string) > $length)
+            if ($string != null && strlen($string) > $length)
             {
                 return substr($string, 0, ($length - 3)) . $ellipsis;
             }
