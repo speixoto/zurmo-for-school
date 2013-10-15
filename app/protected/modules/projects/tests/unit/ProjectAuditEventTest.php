@@ -68,19 +68,19 @@
         public function testTimeDifference()
         {
             $time = date("Y-m-d H:i:s", strtotime('-5 hours', time()));
-            $timeDiff = DateTimeUtil::getTimeSinceDisplayContent('ProjectsModule', $time);
+            $timeDiff = DateTimeUtil::getTimeSinceDisplayContent($time);
             $this->assertEquals('5 hours', $timeDiff);
 
             $time = date("Y-m-d H:i:s", strtotime('-5 days', time()));
-            $timeDiff = DateTimeUtil::getTimeSinceDisplayContent('ProjectsModule', $time);
+            $timeDiff = DateTimeUtil::getTimeSinceDisplayContent($time);
             $this->assertEquals('5 days', $timeDiff);
 
             $time = date("Y-m-d H:i:s", strtotime('-5 minutes', time()));
-            $timeDiff = DateTimeUtil::getTimeSinceDisplayContent('ProjectsModule', $time);
+            $timeDiff = DateTimeUtil::getTimeSinceDisplayContent($time);
             $this->assertEquals('5 mins', $timeDiff);
 
             $time = date("Y-m-d H:i:s", strtotime('-5 seconds', time()));
-            $timeDiff = DateTimeUtil::getTimeSinceDisplayContent('ProjectsModule', $time);
+            $timeDiff = DateTimeUtil::getTimeSinceDisplayContent($time);
             $this->assertEquals('5 secs', $timeDiff);
         }
     }
