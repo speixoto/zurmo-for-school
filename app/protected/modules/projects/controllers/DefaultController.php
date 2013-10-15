@@ -135,19 +135,8 @@
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($project);
             $breadCrumbLinks = array(StringUtil::getChoppedStringContent(strval($project), 25));
             AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED, array(strval($project), 'ProjectsModule'), $project);
-            if (KanbanUtil::isKanbanRequest() === false)
-            {
-                $detailsView        = new ProjectEditAndDetailsView('Details', $this->getId(), $this->getModule()->getId(), $project);
-                $view               = new ProjectsPageView(ProjectDefaultViewUtil::
-                                                             makeViewWithBreadcrumbsForCurrentUser(
-                                                                $this, $detailsView, $breadCrumbLinks, 'ProjectBreadCrumbView'));
-            }
-            //kanban view
-            else
-            {
-                $view = TasksUtil::resolveTaskKanbanViewForRelation($project, $this->getModule()->getId(), $this,
+            $view = TasksUtil::resolveTaskKanbanViewForRelation($project, $this->getModule()->getId(), $this,
                                                                         'TasksForProjectKanbanView', 'ProjectsPageView');
-            }
             echo $view->render();
         }
 
