@@ -92,6 +92,16 @@
         }
 
         /**
+         * Get array or models and send response
+         */
+        public function actionListAttributes()
+        {
+            $params = Yii::app()->apiRequest->getParams();
+            $result    =  $this->processListAttributes($params);
+            Yii::app()->apiHelper->sendResponse($result);
+        }
+
+        /**
          * Create new model, and send response
          * @throws ApiException
          */
@@ -332,6 +342,34 @@
                 {
                     $result = new ApiResult(ApiResponse::STATUS_SUCCESS, $data, null, null);
                 }
+            }
+            catch (Exception $e)
+            {
+                $message = $e->getMessage();
+                throw new ApiException($message);
+            }
+            return $result;
+        }
+
+        /**
+         * List all model attributes
+         * @param $params
+         * @return ApiResult
+         * @throws ApiException
+         */
+        protected function processListAttributes($params)
+        {
+            $data = array();
+            try
+            {
+                $modelClassName           = $this->getModelName();
+                $model                    = new $modelClassName();
+                $adapter                  = new ModelAttributesAdapter($model);
+                $customAttributes   = ArrayUtil::subValueSort($adapter->getCustomAttributes(), 'attributeLabel', 'asort');
+                $standardAttributes = ArrayUtil::subValueSort($adapter->getStandardAttributes(), 'attributeLabel', 'asort');
+                $allAttributes      = array_merge($customAttributes, $standardAttributes);
+                $data['items'] = $allAttributes;
+                $result = new ApiResult(ApiResponse::STATUS_SUCCESS, $data, null, null);
             }
             catch (Exception $e)
             {

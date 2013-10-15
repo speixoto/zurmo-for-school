@@ -60,7 +60,7 @@
         {
             $this->emailMessageForm  = $emailMessageForm;
             $this->triggeredModel    = $triggeredModel;
-            $this->triggeredByUser     = $triggeredByUser;
+            $this->triggeredByUser   = $triggeredByUser;
         }
 
         /**
@@ -86,6 +86,7 @@
             $box                        = EmailBox::resolveAndGetByName(EmailBox::NOTIFICATIONS_NAME);
             $emailMessage->folder       = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_DRAFT);
             Yii::app()->emailHelper->send($emailMessage);
+            ZurmoControllerUtil::updatePermissionsWithDefaultForModelByUser($emailMessage, $this->triggeredByUser);
         }
 
         /**
