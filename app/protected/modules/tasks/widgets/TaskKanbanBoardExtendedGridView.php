@@ -110,22 +110,6 @@
         }
 
         /**
-         * @param array $row
-         * @return string
-         */
-        protected function renderCardDetailsContentForTask($data, $row)
-        {
-            $cardDetails = null;
-            foreach ($this->cardColumns as $cardData)
-            {
-                $offset       = $this->getOffset() + $row;
-                $content      = $this->evaluateExpression($cardData['value'], array('data' => $data, 'offset' => $offset));
-                $cardDetails .= ZurmoHtml::tag('span', array('class' => $cardData['class']), $content);
-            }
-            return $cardDetails;
-        }
-
-        /**
          * Creates ul tag for kanban column
          * @param array $listItems
          * @param string $attributeValue
@@ -304,7 +288,7 @@
         {
             return ZurmoHtml::tag('li', array('class' => $this->getRowClassForTaskKanbanColumn($data),
                                                 'id' => 'items_' . $data->id),
-                                                      ZurmoHtml::tag('div', array(), $this->renderCardDetailsContentForTask($data, $row)));
+                                                      ZurmoHtml::tag('div', array(), $this->wrapCardDetailsContent($row)));
         }
 
         /**
@@ -409,6 +393,12 @@
         protected function wrapCardDetailsContent($row)
         {
             return ZurmoHtml::tag('div', array('style' => 'height:90px'), $this->renderCardDetailsContent($row));
+        }
+
+        protected function renderCardDetailsContent($row)
+        {
+            return 'test';
+
         }
     }
 ?>
