@@ -352,7 +352,7 @@
         /**
          * Override to always add contact state filter on search results.
          */
-        public function actionAutoComplete($term)
+        public function actionAutoComplete($term, $autoCompleteOptions = null)
         {
             $pageSize = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                             'autoCompleteListPageSize', get_class($this->getModule()));

@@ -47,7 +47,7 @@
             $metadata = array(
                 'Task' => array(
                     'cannotTrigger' =>
-                        array('files', 'notificationSubscribers')
+                        array('files', 'notificationSubscribers', 'checkListItems', 'comments')
                     ),
             );
             return array_merge(parent::getDefaultMetadata(), $metadata);

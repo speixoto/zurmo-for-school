@@ -88,5 +88,10 @@
                 'route'            => 'default/redeemList',
             );
         }
+
+        protected function getCGridViewLastColumn()
+        {
+            return array();
+        }
     }
 ?>

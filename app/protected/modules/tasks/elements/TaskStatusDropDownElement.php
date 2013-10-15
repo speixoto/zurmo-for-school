@@ -36,12 +36,14 @@
     /**
      * Status dropdown element for task
      */
-    class TaskStatusDropDownElement extends StaticDropDownFormElement
+    class TaskStatusDropDownElement extends ConstantBasedStaticDropDownFormElement
     {
+        protected static $attributeName = 'status';
+
         /**
          * @return array
          */
-        protected function getDropDownArray()
+        protected static function resolveDropDownArray()
         {
             return Task::getStatusDropDownArray();
         }

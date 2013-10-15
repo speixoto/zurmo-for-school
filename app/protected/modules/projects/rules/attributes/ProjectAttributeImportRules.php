@@ -35,25 +35,9 @@
      ********************************************************************************/
 
     /**
-     * View used to render message content as a result of sending a test email.  This is rendered in a modal window.
+     * Import rules for an attribute that is a project model.
      */
-    class TestImapConnectionMessageView extends View
+    class ProjectAttributeImportRules extends ModelAttributeImportRules
     {
-        protected $message;
-
-        /**
-         * @param string $message
-         */
-        public function __construct($message)
-        {
-            assert('is_string($message)');
-            $this->message = $message;
-        }
-
-        protected function renderContent()
-        {
-            $this->setCssClasses(array_merge($this->getCssClasses(), array('connection-test-message')));
-            return nl2br($this->message);
-        }
     }
 ?>

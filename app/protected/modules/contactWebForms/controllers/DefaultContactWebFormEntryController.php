@@ -61,7 +61,7 @@
                         ContactWebFormsDefaultController::ZERO_MODELS_CHECK_FILTER_PATH . ' + list, index',
                         'controller' => $this,
                         'activeActionElementType' => 'ContactWebFormEntriesListLink',
-                        'breadcrumbLinks'         => static::getListBreadcrumbLinks(),
+                        'breadCrumbLinks'         => static::getListBreadcrumbLinks(),
                     ),
                 )
             );
@@ -81,7 +81,7 @@
             $searchForm                     = new ContactWebFormEntrySearchForm($model);
             $dataProvider                   = $this->resolveSearchDataProvider($searchForm, $pageSize, null,
                                               'ContactWebFormEntrySearchView');
-            $breadcrumbLinks                = static::getListBreadcrumbLinks();
+            $breadCrumbLinks                = static::getListBreadcrumbLinks();
             if (isset($_GET['ajax']) && $_GET['ajax'] == 'list-view')
             {
                 $mixedView = $this->makeListView(
@@ -98,7 +98,7 @@
                              $activeActionElementType);
                 $view = new ContactWebFormsPageView(ZurmoDefaultAdminViewUtil::
                                               makeViewWithBreadcrumbsForCurrentUser(
-                                              $this, $mixedView, $breadcrumbLinks, 'ContactWebFormsBreadCrumbView'));
+                                              $this, $mixedView, $breadCrumbLinks, 'ContactWebFormsBreadCrumbView'));
             }
             echo $view->render();
         }

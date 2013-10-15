@@ -139,7 +139,7 @@
 	> div{
 
 	}
-	#chartdiv{
+	#gd-mini-stats-chart-div{
 		svg g:last-child > g:first-child{
 			display: none;
 		}
@@ -150,6 +150,12 @@
 		position: relative;
 		z-index: 3;
 		padding: 10px;
+		span:last-child{
+			display: none;
+			font-weight: bold;
+			position: relative;
+			top: 10px;
+		}
 	}
 	strong{
 		font-size:36px;
@@ -164,16 +170,6 @@
 		font-weight: bold;
 		margin:0 0 10px 0;
 	}
-	.percentHolder{
-		display: none;
-		text-align: left;
-		margin-bottom: 5px;
-		+ span{
-			font-weight: bold;
-			position: relative;
-			top: 10px;
-		}
-	}
 	.gd-num-badges, .gd-num-collections{
 		position: relative;
 		z-index: 1;
@@ -181,7 +177,7 @@
 		padding: 5px;
 		float: right;
 		width: 45%;
-		margin:0;
+		margin:15px 0 0 0;
 		font-weight: bold;
 		strong{
 			font-size: 24px;
@@ -592,7 +588,7 @@
 		text-indent: 0;
 		display: block;
 		text-align: center;
-		font-size: 14px;
+		font-size: 13px;
 		width: 100%;
 		padding: 0;
 		margin: 22px 0 0 0;
@@ -613,9 +609,19 @@
 			.t-shadow( 0px 1px 0 lighten(#f58a1f, 15%) ) !important;
 		}
 	}
+	&.loading{
+		.z-label{
+			text-indent: 20px;
+		}
+	}
+	.z-spinner{
+		display: block !important;
+		top:24px;
+		left: 2px;
+	}
 }
 
-.coin-button[disabled="disabled"]{
+.coin-button.disabled{
 	pointer-events:none;
 	.opacity(50);
 	-webkit-filter: grayscale(85%);

@@ -148,12 +148,12 @@
                 echo Zurmo::t('JobsManagerModule', 'Only super administrators can run jobs from the browser');
                 Yii::app()->end(0, false);
             }
-            $breadcrumbLinks = array(
+            $breadCrumbLinks = array(
                 Zurmo::t('JobsManagerModule', 'Run Job'),
             );
             $runJobView = new RunJobView($this->getId(), $this->getModule()->getId(), $type, (int)$timeLimit);
             $view = new JobsManagerPageView(ZurmoDefaultAdminViewUtil::
-                        makeViewWithBreadcrumbsForCurrentUser($this, $runJobView, $breadcrumbLinks, 'JobsManagerBreadCrumbView'));
+                        makeViewWithBreadcrumbsForCurrentUser($this, $runJobView, $breadCrumbLinks, 'JobsManagerBreadCrumbView'));
             echo $view->render();
             $template = ZurmoHtml::script("$('#logging-table ol').append('<li>{message}</li>');");
             JobsManagerUtil::runFromJobManagerCommandOrBrowser($type, (int)$timeLimit, $messageLoggerClassName, $template);

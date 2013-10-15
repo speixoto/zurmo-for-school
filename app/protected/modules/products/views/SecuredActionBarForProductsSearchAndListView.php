@@ -50,6 +50,10 @@
                     'toolbar' => array(
                         'elements' => array(
                             array(
+                                'type'        => 'ProductsMenu',
+                                'iconClass'   => 'icon-products',
+                            ),
+                            array(
                                 'type'        => 'ProductTemplatesMenu',
                                 'iconClass'   => 'icon-catalog-items',
                             ),

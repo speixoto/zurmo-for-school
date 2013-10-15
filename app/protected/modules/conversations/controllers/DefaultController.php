@@ -70,11 +70,11 @@
             $detailsView                    = new ConversationDetailsView($this->getId(), $this->getModule()->getId(), $conversation);
             $conversationsMashableInboxUrl  = Yii::app()->createUrl('mashableInbox/default/list',
                                                                     array('modelClassName' => 'Conversation'));
-            $breadcrumbLinks          = array(Zurmo::t('ConversationsModule', 'Conversations') =>
+            $breadCrumbLinks          = array(Zurmo::t('ConversationsModule', 'Conversations') =>
                                                 $conversationsMashableInboxUrl,
                                               StringUtil::getChoppedStringContent(strval($conversation), 25));
             $view     = new ConversationsPageView(ZurmoDefaultViewUtil::
-                                                  makeViewWithBreadcrumbsForCurrentUser($this, $detailsView, $breadcrumbLinks,
+                                                  makeViewWithBreadcrumbsForCurrentUser($this, $detailsView, $breadCrumbLinks,
                                                                                         'ConversationBreadCrumbView'));
 
             echo $view->render();
@@ -84,14 +84,14 @@
         {
             $conversationsMashableInboxUrl  = Yii::app()->createUrl('mashableInbox/default/list',
                                                                     array('modelClassName' => 'Conversation'));
-            $breadcrumbLinks                = array(Zurmo::t('ConversationsModule', 'Conversations') =>
+            $breadCrumbLinks                = array(Zurmo::t('ConversationsModule', 'Conversations') =>
                                                         $conversationsMashableInboxUrl,
                                                     Zurmo::t('ConversationsModule', 'Create'));
             $editView = new ConversationEditView($this->getId(), $this->getModule()->getId(),
                                                  $this->attemptToSaveModelFromPost(new Conversation()),
                                                  Zurmo::t('ConversationsModule', 'Create Conversation'));
             $view     = new ConversationsPageView(ZurmoDefaultViewUtil::
-                                                  makeViewWithBreadcrumbsForCurrentUser($this, $editView, $breadcrumbLinks,
+                                                  makeViewWithBreadcrumbsForCurrentUser($this, $editView, $breadCrumbLinks,
                                                                                         'ConversationBreadCrumbView'));
             echo $view->render();
         }
@@ -101,7 +101,7 @@
             $conversation  = Conversation::getById(intval($id));
             $conversationsMashableInboxUrl  = Yii::app()->createUrl('mashableInbox/default/list',
                                                                     array('modelClassName' => 'Conversation'));
-            $breadcrumbLinks = array(Zurmo::t('ConversationsModule', 'Conversations') =>
+            $breadCrumbLinks = array(Zurmo::t('ConversationsModule', 'Conversations') =>
                                         $conversationsMashableInboxUrl,
                                      StringUtil::getChoppedStringContent(strval($conversation), 25) =>
                                         array('default/details',  'id' => $id), Zurmo::t('ConversationsModule', 'Edit'));
@@ -111,7 +111,7 @@
                                                  $this->attemptToSaveModelFromPost($conversation),
                                                  strval($conversation));
             $view     = new ConversationsPageView(ZurmoDefaultViewUtil::
-                                                  makeViewWithBreadcrumbsForCurrentUser($this, $editView, $breadcrumbLinks,
+                                                  makeViewWithBreadcrumbsForCurrentUser($this, $editView, $breadCrumbLinks,
                                                                                         'ConversationBreadCrumbView'));
             echo $view->render();
         }

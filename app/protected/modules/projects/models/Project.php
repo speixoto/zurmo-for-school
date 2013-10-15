@@ -128,10 +128,8 @@
                     array('description',    'type',    'type' => 'string'),
                     array('status',         'type',    'type' => 'integer')
                 ),
-                'derivedRelationsViaCastedUpModel' => array(
-                    //'tasks'    => array(RedBeanModel::MANY_MANY, 'Task',  'activityItems'),
-                ),
                 'elements' => array(
+                    'status' => 'ProjectStatusDropDown',
                 ),
                 'customFields' => array(
                 ),
@@ -164,7 +162,7 @@
          */
         public static function getGamificationRulesType()
         {
-            return null;
+            return 'ProjectGamification';
         }
 
         /**

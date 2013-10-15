@@ -55,7 +55,6 @@
                     'panelsDisplayType' => FormLayout::PANELS_DISPLAY_TYPE_ALL,
                     'panels' => array(
                         array(
-                            'title' => static::getPanelTitle(),
                             'rows' => array(
                                 array('cells' =>
                                     array(
@@ -127,11 +126,6 @@
                 ),
             );
             return $metadata;
-        }
-
-        protected static function getPanelTitle()
-        {
-            throw new NotSupportedException();
         }
 
         /**

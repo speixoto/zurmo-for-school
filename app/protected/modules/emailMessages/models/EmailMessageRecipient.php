@@ -76,17 +76,16 @@
                     'type',
                 ),
                 'relations' => array(
-                    'personOrAccount'      => array(static::HAS_ONE, 'Item',    static::NOT_OWNED,
-                                                    static::LINK_TYPE_SPECIFIC, 'personOrAccount'),
-                    'emailMessage'         => array(static::HAS_ONE,  'EmailMessage',    static::NOT_OWNED),
+                    'personOrAccount' => array(static::MANY_MANY, 'Item',           static::NOT_OWNED),
+                    'emailMessage'    => array(static::HAS_ONE,   'EmailMessage',   static::NOT_OWNED),
                 ),
                 'rules' => array(
                     array('toAddress', 'required'),
                     array('toAddress', 'email'),
                     array('toName',    'type',    'type' => 'string'),
                     array('toName',    'length',  'max' => 64),
-                    array('type',    'required'),
-                    array('type',    'type',    'type' => 'integer'),
+                    array('type',      'required'),
+                    array('type',      'type',    'type' => 'integer'),
                 ),
                 'indexes' => array(
                     'remailmessage' => array(

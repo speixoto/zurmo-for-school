@@ -135,29 +135,8 @@
                             attr: 'data-tooltip'
                         }
                     }
-                );
-
-                var chart, legend;
-
-                var chartData = [ { country: 'Czech Republic', itres: 301.90},
-                                  { country: 'Ireland', itres: 201.10} ];
-/**
-                AmCharts.ready(function() {
-                    chart = new AmCharts.AmPieChart();
-                    chart.dataProvider = chartData;
-                    chart.titleField = 'country';
-                    chart.valueField = 'litres';
-                    chart.labelText = '';
-                    chart.innerRadius = '80%';
-                    chart.colors = ['#6C8092', '#933140'];
-                    chart.write('chartdiv');
-                });
-                **/
-                ";
-
-
+                );";
             Yii::app()->clientScript->registerScript('userGameDashboardScript', $script);
-
             $cs = Yii::app()->getClientScript();
             $cs->registerCoreScript('gamification-dashboard');
             $cs->registerScriptFile(
@@ -191,15 +170,16 @@
 
         protected function renderMiniStatisticsContent()
         {
-            $percentageToNextLabel = Zurmo::t('GamificationModule', '44% to Level 5', array());
+            $percentageToNextLabel = Zurmo::t('GamificationModule',
+                                              '{percentage}% to Level {level}',
+                                              array('{percentage}' => (int)$this->generalLevelData['nextLevelPercentageComplete'],
+                                                    '{level}'      => (int)$this->generalLevelData['level'] + 1));
 
             $levelContent  = ZurmoHtml::tag('strong', array(), $this->generalLevelData['level']);
             $levelContent .= ZurmoHtml::tag('span', array(), Zurmo::t('GamificationModule', 'Level'));
-            $levelContent .= $this->renderPercentHolderContent((int)$this->generalLevelData['nextLevelPercentageComplete']);
             $levelContent .= ZurmoHtml::tag('span', array(), $percentageToNextLabel);
 
-            $content  = ZurmoHtml::tag('div', array('id'    => 'gd-mini-stats-chart-div',
-                                                    'style' => "width: 100%; height: 150px;"), '');
+            $content  = ZurmoHtml::tag('div', array('id'    => 'gd-mini-stats-chart-div'), $this->renderMiniStatisticsChart());
             $content .= ZurmoHtml::tag('div', array('class' => 'gd-level'), $levelContent);
             $badgeLabelContent = Zurmo::t('GamificationModule', '<strong>{n}</strong> Badge|<strong>{n}</strong> Badges',
                                           array(count($this->badgeData)));
@@ -208,6 +188,31 @@
                                                array($this->getCompletedCollectionCount()));
             $content .= ZurmoHtml::tag('div', array('class' => 'gd-num-collections'), $collectionLabelContent);
             return      ZurmoHtml::tag('div',  array('id'    => 'gd-mini-stats-card'), $content);
+        }
+
+        protected function renderMiniStatisticsChart()
+        {
+            $chartData = array(array('column' => 'level-undone',
+                                     'value'  => 100 - (int)$this->generalLevelData['nextLevelPercentageComplete']),
+                               array('column' => 'level-done',
+                                     'value'  => (int)$this->generalLevelData['nextLevelPercentageComplete']));
+            Yii::import('ext.amcharts.AmChartMaker');
+            $amChart = new AmChartMaker();
+            $amChart->data = $chartData;
+            $amChart->id   =  'miniChart';
+            $amChart->type = ChartRules::TYPE_DONUT_PROGRESSION;
+            $amChart->addSerialGraph('value', 'column');
+            $amChart->addSerialGraph('value', 'column');
+            $javascript = $amChart->javascriptChart();
+            Yii::app()->getClientScript()->registerScript(__CLASS__ . '-mini-chart', $javascript);
+            $cClipWidget = new CClipWidget();
+            $cClipWidget->beginClip("Chart");
+            $cClipWidget->widget('application.core.widgets.AmChart', array(
+                'id'        => 'miniChart',
+                'height'    => '150px',
+            ));
+            $cClipWidget->endClip();
+            return $cClipWidget->getController()->clips['Chart'];
         }
 
         protected function renderBadgesContent()
@@ -325,8 +330,6 @@
                 }
                 $content .= ZurmoHtml::tag('div', array('class' => $classContent), $itemContent);
             }
-            $coinImageUrl       = Yii::app()->themeManager->baseUrl . '/default/images/game-dashboard/coin.png';
-            //$itemRedeemContent  = ZurmoHtml::image($coinImageUrl);
             $itemRedeemContent = static::renderCompleteButton($collection->id, $user->id, $canCollect);
             $content           .= ZurmoHtml::tag('div', array('class' => 'gd-collection-item-redeemed'), $itemRedeemContent);
             return ZurmoHtml::tag('div', array('class' => 'gd-collection-items clearfix'), $content);
@@ -337,22 +340,32 @@
             assert('is_int($collectionid)');
             assert('is_int($userId)');
             assert('is_bool($canCollect)');
-            $url  = Yii::app()->createUrl('gamification/default/redeemCollection/',
-                                          array('id' => $collectionId));
-            $htmlOptions = array();
+            $url           = Yii::app()->createUrl('gamification/default/redeemCollection/', array('id' => $collectionId));
+            $htmlOptions   = array();
+            $disabledClass = null;
+            $disabled      = false;
             if(!$canCollect)
             {
-                $htmlOptions['disabled'] = 'disabled';
+                $disabledClass = ' disabled';
+                $disabled      = true;
             }
             $id                      = static::getCompleteCollectionLinkId($collectionId);
             $htmlOptions['id']       = $id;
             $htmlOptions['name']     = $id;
-            $htmlOptions['class']    = 'attachLoading z-button coin-button';
+            $htmlOptions['class']    = 'attachLoading z-button coin-button' . $disabledClass;
+            if($disabled)
+            {
+                $htmlOptions['onclick']   = 'js:return false;';
+            }
+            else
+            {
+                $htmlOptions['onclick']   = 'js:$(this).addClass("loading").addClass("loading-ajax-submit");
+                                                        $(this).makeOrRemoveLoadingSpinner(true, "#" + $(this).attr("id"), "#763d05");';
+            }
             $aContent                = ZurmoHtml::wrapLink(Zurmo::t('Core', 'Complete'));
             $containerId             = static::getCollectionContainerId($collectionId);
             return ZurmoHtml::ajaxLink($aContent, $url, array(
-                'type' => 'GET',
-                'beforeSend' => 'function ( xhr ) {$(this).makeSmallLoadingSpinner(true, "#' . $id . '");}',
+                'type'    => 'GET',
                 'success' => 'js:function(data)
                     {
                         $("#' . $containerId . '").replaceWith(data);

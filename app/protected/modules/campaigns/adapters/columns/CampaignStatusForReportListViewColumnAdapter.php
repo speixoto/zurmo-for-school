@@ -35,7 +35,7 @@
      ********************************************************************************/
 
     /**
-     * Column adapter for status dropdown in reports for Product Templates
+     * Column adapter for status dropdown in reports for Campaigns
      */
     class CampaignStatusForReportListViewColumnAdapter extends TextListViewColumnAdapter
     {
@@ -43,7 +43,7 @@
         {
                 return array(
                     'name'  => $this->attribute,
-                    'value' => 'CampaignsUtil::renderCampaignListViewAttributeForReports($data, "' . $this->attribute . '")',
+                    'value' => 'CampaignStatusElement::renderDisplayAttributeForReport($data, "' . $this->attribute . '")',
                     'type'  => 'raw',
                 );
         }

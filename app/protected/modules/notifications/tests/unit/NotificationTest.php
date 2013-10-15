@@ -279,7 +279,6 @@
             }
             catch (NotFoundException $e)
             {
-
             }
             $message->forget();
             $notification2->forget();
@@ -292,7 +291,6 @@
             }
             catch (NotFoundException $e)
             {
-
             }
             try
             {
@@ -301,7 +299,6 @@
             }
             catch (NotFoundException $e)
             {
-
             }
         }
     }

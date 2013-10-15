@@ -55,7 +55,7 @@
                         static::ZERO_MODELS_CHECK_FILTER_PATH . ' + list, index',
                         'controller' => $this,
                         'activeActionElementType' => 'ByTimeWorkflowInQueuesMenu',
-                        'breadcrumbLinks'         => static::getListBreadcrumbLinks(),
+                        'breadCrumbLinks'         => static::getListBreadcrumbLinks(),
                     ),
                 )
             );
@@ -75,7 +75,7 @@
             $searchForm                     = new ByTimeWorkflowInQueuesSearchForm($model);
             $dataProvider                   = $this->resolveSearchDataProvider($searchForm, $pageSize, null,
                                               'ByTimeWorkflowInQueuesSearchView');
-            $breadcrumbLinks                = static::getListBreadcrumbLinks();
+            $breadCrumbLinks                = static::getListBreadcrumbLinks();
             if (isset($_GET['ajax']) && $_GET['ajax'] == 'list-view')
             {
                 $mixedView = $this->makeListView(
@@ -91,7 +91,7 @@
                              'SecuredActionBarForWorkflowsSearchAndListView', 'ByTimeWorkflowInQueues', $activeActionElementType);
                 $view = new WorkflowsPageView(ZurmoDefaultAdminViewUtil::
                                               makeViewWithBreadcrumbsForCurrentUser(
-                                              $this, $mixedView, $breadcrumbLinks, 'WorkflowBreadCrumbView'));
+                                              $this, $mixedView, $breadCrumbLinks, 'WorkflowBreadCrumbView'));
             }
             echo $view->render();
         }

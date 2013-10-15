@@ -607,10 +607,17 @@ footer, header, hgroup, menu, nav, section {
 
 #header-game-dashboard-link-wrapper{
 	a{
-		.symbly(22px);
+		.symbly(24px);
 		color: #ddd;
-		line-height: 41px;
+		padding:0 10px;
+		line-height: 38px;
 		display: block;
+	}
+	.highlighted{
+		@topColor: #c43d53;
+		@bottomColor: #a82d31;
+		color:#fff;
+		.t-shadow(0 0 5px #ff0000);
 	}
 }
 
@@ -1222,6 +1229,12 @@ body > .ui-autocomplete{
 			font-size: 26px;
 		}
 	}
+	li.type-GameRewardsModule{
+		em:before{
+			content: '\2205';
+			font-size: 30px;
+		}
+	}
 }
 
 /*=Content*/
@@ -1562,17 +1575,22 @@ form,
 	}
 	a{
 		display: inline-block;
-		margin-left: 10px;
 		width: 22px;
 		height: 22px;
 		text-align: center;
 		cursor: pointer;
 		.opacity(50);
-		&:before{
-			margin: 0;
-			cursor: pointer;
-			font-weight: bold;
-		}
+		margin: 0 0 0 5px;
+		cursor: pointer;
+		font-weight: bold;
+		color: #656565;
+		font-style: normal;
+		font-size:24px;
+		font-family: "zurmo_gamification_symbly_rRg";
+		vertical-align:middle;
+		padding:0 0 0 0;//3px;
+		position: relative;
+		.box-sizing();
 	}
 	.active{
 		color:#7CB830;
@@ -2507,6 +2525,11 @@ div.wide.form{
 	}
 	.ContactWebForm .large-icon:after{
 		content: '\003C';
+		.symbly(300px);
+		line-height: 52%;
+	}
+	.GameReward .large-icon:after{
+		content:'\2205';// '\2248'; //2205
 		.symbly(300px);
 		line-height: 52%;
 	}

@@ -35,25 +35,26 @@
      ********************************************************************************/
 
     /**
-     * View used to render message content as a result of sending a test email.  This is rendered in a modal window.
+     * Report rules to be used with the Products module.
      */
-    class TestEmailMessageView extends View
+    class ProjectsReportRules extends SecuredReportRules
     {
-        protected $message;
-
         /**
-         * @param string $message
+         * @return array
          */
-        public function __construct($message)
+        public static function getDefaultMetadata()
         {
-            assert('is_string($message)');
-            $this->message = $message;
-        }
-
-        protected function renderContent()
-        {
-            $this->setCssClasses(array_merge($this->getCssClasses(), array('connection-test-message')));
-            return nl2br($this->message);
+            $metadata = array(
+                'Project' => array(
+                    'nonReportable' =>
+                        array('auditEvents'),
+                    'availableOperatorsTypes' =>
+                        array('status' => ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_DROPDOWN),
+                    'filterValueElementTypes' =>
+                        array('status' => 'ProjectStatusStaticDropDownForWizardModel'),
+                )
+            );
+            return array_merge(parent::getDefaultMetadata(), $metadata);
         }
     }
 ?>

@@ -99,13 +99,20 @@
 
         public function actionConfigurationEdit()
         {
-            $view = new ConfigurationPageView(ZurmoDefaultAdminViewUtil::
-                                                  makeStandardViewForCurrentUser($this, new EmailConfigurationListView()));
+            $breadCrumbLinks = array(
+                Zurmo::t('EmailMessagesModule', 'Email Configuration'),
+            );
+            $view = new ConfigurationPageView(ZurmoDefaultAdminViewUtil::makeViewWithBreadcrumbsForCurrentUser(
+                        $this, new EmailConfigurationListView(), $breadCrumbLinks, 'SettingsBreadCrumbView'));
             echo $view->render();
         }
 
         public function actionConfigurationEditOutbound()
         {
+            $breadCrumbLinks = array(
+                Zurmo::t('EmailMessagesModule', 'Email Configuration') => array('/emailMessages/default/configurationEdit'),
+                Zurmo::t('EmailMessagesModule', 'Outbound Email Configuration (SMTP)')
+            );
             $configurationForm = EmailSmtpConfigurationFormAdapter::makeFormFromGlobalConfiguration();
             $postVariableName   = get_class($configurationForm);
             if (isset($_POST[$postVariableName]))
@@ -126,8 +133,8 @@
                                     $this->getModule()->getId(),
                                     $configurationForm);
             $editView->setCssClasses( array('AdministrativeArea') );
-            $view = new ZurmoConfigurationPageView(ZurmoDefaultAdminViewUtil::
-                                         makeStandardViewForCurrentUser($this, $editView));
+            $view = new ZurmoConfigurationPageView(ZurmoDefaultAdminViewUtil::makeViewWithBreadcrumbsForCurrentUser(
+                    $this, $editView, $breadCrumbLinks, 'SettingsBreadCrumbView'));
             echo $view->render();
         }
 
@@ -141,11 +148,18 @@
             $adapterClassName   = 'EmailArchivingConfigurationFormAdapter';
             $editViewClassName  = 'EmailArchivingConfigurationEditAndDetailsView';
             $successMessage     = Zurmo::t('EmailMessagesModule', 'Email archiving configuration saved successfully.');
+            $breadCrumbLinks = array(Zurmo::t('EmailMessagesModule', 'Email Configuration')
+                                     => array('/emailMessages/default/configurationEdit'));
             if ($type == 2)
             {
                 $adapterClassName   = 'BounceConfigurationFormAdapter';
                 $editViewClassName  = 'BounceConfigurationEditAndDetailsView';
                 $successMessage     = Zurmo::t('EmailMessagesModule', 'Bounce configuration saved successfully.');
+                $breadCrumbLinks[]  = Zurmo::t('EmailMessagesModule', 'Bounce Configuration (IMAP)');
+            }
+            else
+            {
+                $breadCrumbLinks[] = Zurmo::t('EmailMessagesModule', 'Email Archiving Configuration (IMAP)');
             }
             $configurationForm = $adapterClassName::makeFormFromGlobalConfiguration();
             $postVariableName   = get_class($configurationForm);
@@ -165,8 +179,8 @@
                                     $this->getModule()->getId(),
                                     $configurationForm);
             $editView->setCssClasses( array('AdministrativeArea') );
-            $view = new ZurmoConfigurationPageView(ZurmoDefaultAdminViewUtil::
-                                         makeStandardViewForCurrentUser($this, $editView));
+            $view = new ZurmoConfigurationPageView(ZurmoDefaultAdminViewUtil::makeViewWithBreadcrumbsForCurrentUser(
+                        $this, $editView, $breadCrumbLinks, 'SettingsBreadCrumbView'));
             echo $view->render();
         }
 
@@ -251,7 +265,7 @@
                     $messageContent = Zurmo::t('EmailMessagesModule', 'A test email address must be entered before you can send a test email.') . "\n";
                 }
                 Yii::app()->getClientScript()->setToAjaxMode();
-                $messageView = new TestEmailMessageView($messageContent);
+                $messageView = new TestConnectionView($messageContent);
                 $view = new ModalView($this, $messageView);
                 echo $view->render();
             }
@@ -308,7 +322,7 @@
                     $messageContent = Zurmo::t('EmailMessagesModule', 'Could not connect to IMAP server.') . "\n";
                 }
                 Yii::app()->getClientScript()->setToAjaxMode();
-                $messageView = new TestImapConnectionMessageView($messageContent);
+                $messageView = new TestConnectionView($messageContent);
                 $view = new ModalView($this,
                                       $messageView,
                                       'modalContainer',

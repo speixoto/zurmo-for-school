@@ -35,9 +35,6 @@
      ********************************************************************************/
 
     Yii::import('application.modules.campaigns.controllers.DefaultController', true);
-    //TODO: @sergio: Remove the import that are not needed
-//    Yii::import('application.modules.emailMessages.controllers.DefaultController', true);
-//    Yii::import('application.modules.accounts.tests.unit.AccountTestHelper', true);
     class CampaignsDemoController extends CampaignsDefaultController
     {
         /**

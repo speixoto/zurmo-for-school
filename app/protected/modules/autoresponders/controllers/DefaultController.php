@@ -74,11 +74,11 @@
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($autoresponder->marketingList);
             $model                          = $this->attemptToSaveModelFromPost($autoresponder, $redirectUrl);
             $editAndDetailsView             = $this->makeEditAndDetailsView($model, 'Edit');
-            $breadcrumbLinks                = static::getDetailsAndEditBreadcrumbLinks($autoresponder->marketingList);
-            $breadcrumbLinks[]              = Zurmo::t('AutorespondersModule', 'Create');
+            $breadCrumbLinks                = static::getDetailsAndEditBreadcrumbLinks($autoresponder->marketingList);
+            $breadCrumbLinks[]              = Zurmo::t('AutorespondersModule', 'Create');
             $view                           = new AutorespondersPageView(MarketingDefaultViewUtil::
                                                         makeViewWithBreadcrumbsForCurrentUser($this, $editAndDetailsView,
-                                                        $breadcrumbLinks, 'MarketingBreadCrumbView'));
+                                                        $breadCrumbLinks, 'MarketingBreadCrumbView'));
             echo $view->render();
         }
 
@@ -86,13 +86,13 @@
         {
             $autoresponder      = static::getModelAndCatchNotFoundAndDisplayError('Autoresponder', intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($autoresponder->marketingList);
-            $breadcrumbLinks    = static::getDetailsAndEditBreadcrumbLinks($autoresponder->marketingList);
-            $breadcrumbLinks[]  = StringUtil::getChoppedStringContent(strval($autoresponder), 25);
+            $breadCrumbLinks    = static::getDetailsAndEditBreadcrumbLinks($autoresponder->marketingList);
+            $breadCrumbLinks[]  = StringUtil::getChoppedStringContent(strval($autoresponder), 25);
             $detailsView        = new AutoresponderEditAndDetailsView('Details', $this->getId(),
                                                                         $this->getModule()->getId(), $autoresponder);
             $view               = new AutorespondersPageView(MarketingDefaultViewUtil::
                                                             makeViewWithBreadcrumbsForCurrentUser($this, $detailsView,
-                                                            $breadcrumbLinks, 'MarketingBreadCrumbView'));
+                                                            $breadCrumbLinks, 'MarketingBreadCrumbView'));
             echo $view->render();
         }
 
@@ -102,11 +102,11 @@
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($autoresponder->marketingList);
             $model              = $this->attemptToSaveModelFromPost($autoresponder, $redirectUrl);
             $editAndDetailsView = $this->makeEditAndDetailsView($model, 'Edit');
-            $breadcrumbLinks    = static::getDetailsAndEditBreadcrumbLinks($autoresponder->marketingList);
-            $breadcrumbLinks[]  = StringUtil::getChoppedStringContent(strval($autoresponder), 25);
+            $breadCrumbLinks    = static::getDetailsAndEditBreadcrumbLinks($autoresponder->marketingList);
+            $breadCrumbLinks[]  = StringUtil::getChoppedStringContent(strval($autoresponder), 25);
             $view               = new AutorespondersPageView(MarketingDefaultViewUtil::
                                                     makeViewWithBreadcrumbsForCurrentUser($this, $editAndDetailsView,
-                                                    $breadcrumbLinks, 'MarketingBreadCrumbView'));
+                                                    $breadCrumbLinks, 'MarketingBreadCrumbView'));
             echo $view->render();
         }
 

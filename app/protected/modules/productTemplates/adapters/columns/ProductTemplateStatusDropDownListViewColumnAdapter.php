@@ -42,7 +42,7 @@
         {
             return array(
                     'name'  => $this->attribute,
-                    'value' => array('ProductTemplateElementUtil', 'getProductTemplateStatusDisplayedGridValue'),
+                    'value' => 'ProductTemplateStatusDropDownElement::renderNonEditableStringContent((int)$data->status)',
                     'type'  => 'raw',
             );
         }

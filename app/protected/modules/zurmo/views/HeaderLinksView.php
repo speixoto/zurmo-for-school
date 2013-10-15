@@ -188,7 +188,7 @@
             $id      = static::USER_GAME_DASHBOARD_LINK_ID;
             $url     = Yii::app()->createUrl('users/default/gameDashboard/',
                        array('id' => Yii::app()->user->userModel->id));
-            $content = ZurmoHtml::ajaxLink('¿', $url, static::resolveAjaxOptionsForGameDashboardModel($id),
+            $content = ZurmoHtml::ajaxLink('∂', $url, static::resolveAjaxOptionsForGameDashboardModel($id),
                 array(
                     'id' => $id,
                 )
@@ -234,11 +234,11 @@
                     {
                         $("#UserGameDashboardView").remove();
                         $("body").removeClass("gd-dashboard-active");
-                        $("#' . $id . '").html("¿");
+                        $("#' . $id . '").html("∂").toggleClass("highlighted");
                         return false;
                     }
                     $("body").addClass("gd-dashboard-active");
-                    $("#' . $id . '").html("Z");
+                    $("#' . $id . '").html("‰").toggleClass("highlighted");
                 }',
                 'success'    => 'js:function(data){$("body").append(data);}');
         }
@@ -250,13 +250,22 @@
 
         protected function registerScripts()
         {
+            $id     = static::USER_GAME_DASHBOARD_LINK_ID;
             $script = "$('#go-to-dashboard-link, #close-game-notification-link').click(function(event){
                            event.preventDefault();
                            $('#game-notification').fadeOut(300, function(){
                                $('#game-notification').remove();
                            });
-                       })";
-            Yii::app()->clientScript->registerScript('gameNotificationScript', $script);
+                       });
+                       $('.gd-dashboard-active').on('click', function(){
+                           if($('#UserGameDashboardView').length){
+                               $('#UserGameDashboardView').remove();
+                               $('body').removeClass('gd-dashboard-active');
+                               $('#" . $id . "').html('∂').toggleClass('highlighted');
+                               return false;
+                           }
+                       });";
+            Yii::app()->clientScript->registerScript('gameficationScripts', $script);
         }
     }
 ?>

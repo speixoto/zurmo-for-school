@@ -45,9 +45,6 @@
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array('type'      => 'ProductCreateMenu',
-                                  'iconClass' => 'icon-create',
-                            ),
                             array(
                                 'type'        => 'ProductsMenu',
                                 'iconClass'   => 'icon-products',

@@ -77,7 +77,7 @@
                 'GameRewardsSearchView'
             );
             $title           = Zurmo::t('GameRewardsModule', 'Game Rewards');
-            $breadcrumbLinks = array(
+            $breadCrumbLinks = array(
                 $title,
             );
             if (isset($_GET['ajax']) && $_GET['ajax'] == 'list-view')
@@ -93,7 +93,7 @@
                 $mixedView = $this->makeActionBarSearchAndListView($searchForm, $dataProvider);
                 $view = new GameRewardsPageView(ZurmoDefaultAdminViewUtil::
                             makeViewWithBreadcrumbsForCurrentUser($this, $mixedView,
-                                                                  $breadcrumbLinks, 'GameRewardBreadCrumbView'));
+                                                                  $breadCrumbLinks, 'GameRewardBreadCrumbView'));
             }
             echo $view->render();
         }
@@ -116,12 +116,12 @@
         public function actionCreate()
         {
             $title           = Zurmo::t('GameRewardsModule', 'Create Game Reward');
-            $breadcrumbLinks = array($title);
+            $breadCrumbLinks = array($title);
             $editAndDetailsView = $this->makeEditAndDetailsView(
                                             $this->attemptToSaveModelFromPost(new GameReward()), 'Edit');
             $view = new GameRewardsPageView(ZurmoDefaultViewUtil::
                                             makeViewWithBreadcrumbsForCurrentUser($this, $editAndDetailsView,
-                                            $breadcrumbLinks, 'GameRewardBreadCrumbView'));
+                                            $breadCrumbLinks, 'GameRewardBreadCrumbView'));
             echo $view->render();
         }
 
@@ -155,12 +155,12 @@
             {
                 $title = Zurmo::t('Core', 'Copy Game Reward');
             }
-            $breadcrumbLinks = array(strval($gameReward) => array('default/details',  'id' => $gameReward->id), $title);
+            $breadCrumbLinks = array(strval($gameReward) => array('default/details',  'id' => $gameReward->id), $title);
             $view = new GameRewardsPageView(ZurmoDefaultViewUtil::
                             makeViewWithBreadcrumbsForCurrentUser($this,
                             $this->makeEditAndDetailsView(
                                 $this->attemptToSaveModelFromPost($gameReward, $redirectUrl), 'Edit'),
-                            $breadcrumbLinks, 'GameRewardBreadCrumbView'));
+                            $breadCrumbLinks, 'GameRewardBreadCrumbView'));
             echo $view->render();
         }
 
@@ -360,7 +360,7 @@
                 'GameRewardsRedeemSearchView'
             );
             $title           = Zurmo::t('GameRewardsModule', 'Redeem Rewards'); //todo: fix this
-            $breadcrumbLinks = array(
+            $breadCrumbLinks = array(
                 Zurmo::t('GameRewardsModule', 'Redeem Rewards'),
             );
             if (isset($_GET['ajax']) && $_GET['ajax'] == 'list-view')
@@ -380,7 +380,7 @@
                                                                    'GameRewardsRedeem', null, $introView);
                 $view = new GameRewardsPageView(ZurmoDefaultAdminViewUtil::
                             makeViewWithBreadcrumbsForCurrentUser($this, $mixedView,
-                                                                  $breadcrumbLinks, 'GameRewardRedeemBreadCrumbView'));
+                                                                  $breadCrumbLinks, 'GameRewardRedeemBreadCrumbView'));
             }
             echo $view->render();
         }

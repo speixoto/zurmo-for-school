@@ -213,13 +213,13 @@
                 $sender                     = new EmailMessageSender();
                 $sender->fromAddress        = Yii::app()->emailHelper->resolveFromAddressByUser($userToSendMessagesFrom);
                 $sender->fromName           = strval($userToSendMessagesFrom);
-                $sender->personOrAccount    = $userToSendMessagesFrom;
+                $sender->personOrAccount->add($userToSendMessagesFrom);
                 $emailMessage->sender       = $sender;
                 $recipient                  = new EmailMessageRecipient();
                 $recipient->toAddress       = $person->primaryEmail->emailAddress;
                 $recipient->toName          = strval($person);
                 $recipient->type            = EmailMessageRecipient::TYPE_TO;
-                $recipient->personOrAccount = $person;
+                $recipient->personOrAccount->add($person);
                 $emailMessage->recipients->add($recipient);
                 $box                        = EmailBox::resolveAndGetByName(EmailBox::NOTIFICATIONS_NAME);
                 $emailMessage->folder       = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_DRAFT);

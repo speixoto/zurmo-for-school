@@ -43,7 +43,8 @@
         public function actionConfigurationEdit()
         {
             $view = new ConfigurationPageView(ZurmoDefaultAdminViewUtil::
-                                                  makeStandardViewForCurrentUser($this, new PluginsConfigurationListView()));
+                        makeViewWithBreadcrumbsForCurrentUser($this, new PluginsConfigurationListView(),
+                        array(Zurmo::t('ZurmoModule', 'Plugins')), 'SettingsBreadCrumbView'));
             echo $view->render();
         }
     }

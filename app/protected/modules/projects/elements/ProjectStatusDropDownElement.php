@@ -36,12 +36,14 @@
     /**
      * Status dropdown element for project
      */
-    class ProjectStatusDropDownElement extends StaticDropDownFormElement
+    class ProjectStatusDropDownElement extends ConstantBasedStaticDropDownFormElement
     {
+        protected static $attributeName = 'status';
+
         /**
          * @return array
          */
-        protected function getDropDownArray()
+        protected static function resolveDropDownArray()
         {
             return Project::getStatusDropDownArray();
         }

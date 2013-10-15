@@ -118,16 +118,6 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'autoresponderOrCampaignBatchSize',
-                                                                                                'type' => 'Integer'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
                                                 array('attributeName' => 'defaultFromEmailAddress', 'type' => 'Text'),
                                             ),
                                         ),
@@ -157,26 +147,6 @@
                                         array(
                                             'elements' => array(
                                                 array('attributeName' => 'realtimeUpdatesEnabled', 'type' => 'CheckBox'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'autoresponderOrCampaignFooterPlainText',
-                                                                                    'type' => 'TextAreaWithPreviewLink'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'autoresponderOrCampaignFooterRichText',
-                                                                                    'type' => 'RedactorWithPreviewLink'),
                                             ),
                                         ),
                                     )

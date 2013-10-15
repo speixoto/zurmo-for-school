@@ -35,25 +35,24 @@
      ********************************************************************************/
 
     /**
-     * View used to render message content as a result of test connection for Ldap server.  This is rendered in a modal window.
+     * Display a drop down of status specifically for mapping rules during the import process.
      */
-    class TestLdapConnectionView extends View
+    class ImportMappingRuleProjectStatusDropDownElement extends ImportMappingRuleStaticDropDownFormElement
     {
-        protected $message;
-
-        /**
-         * @param string $message
-         */
-        public function __construct($message)
+        public function __construct($model, $attribute, $form = null, array $params = array())
         {
-            assert('is_string($message)');
-            $this->message = $message;
+            assert('$model instanceof DefaultValueModelAttributeMappingRuleForm');
+            parent::__construct($model, $attribute, $form, $params);
         }
 
-        protected function renderContent()
+        protected function getAddBlank()
         {
-            $this->setCssClasses(array_merge($this->getCssClasses(), array('connection-test-message')));
-            return nl2br($this->message);
+            return true;
+        }
+
+        protected function getDropDownArray()
+        {
+            return Project::getStatusDropdownArray();
         }
     }
 ?>

@@ -65,7 +65,7 @@
                         static::ZERO_MODELS_CHECK_FILTER_PATH . ' + list, index',
                         'controller'                    => $this,
                         'activeActionElementType'       => 'MarketingListsMenu',
-                        'breadcrumbLinks'               => static::getListBreadcrumbLinks(),
+                        'breadCrumbLinks'               => static::getListBreadcrumbLinks(),
                     ),
                 )
             );
@@ -103,9 +103,9 @@
             {
                 $mixedView = $this->makeActionBarSearchAndListView($searchForm, $dataProvider,
                              'SecuredActionBarForMarketingListsSearchAndListView', null, 'MarketingListsLink');
-                $breadcrumbLinks = static::getListBreadcrumbLinks();
+                $breadCrumbLinks = static::getListBreadcrumbLinks();
                 $view      = new MarketingListsPageView(MarketingDefaultViewUtil::
-                                 makeViewWithBreadcrumbsForCurrentUser($this, $mixedView, $breadcrumbLinks,
+                                 makeViewWithBreadcrumbsForCurrentUser($this, $mixedView, $breadCrumbLinks,
                                  'MarketingBreadCrumbView'));
             }
             echo $view->render();
@@ -113,14 +113,14 @@
 
         public function actionCreate()
         {
-           $breadcrumbLinks    = static::getDetailsAndEditBreadcrumbLinks();
-           $breadcrumbLinks[]  = Zurmo::t('MarketingListsModule', 'Create');
+           $breadCrumbLinks    = static::getDetailsAndEditBreadcrumbLinks();
+           $breadCrumbLinks[]  = Zurmo::t('MarketingListsModule', 'Create');
            $editView = new MarketingListEditView($this->getId(), $this->getModule()->getId(),
                                                  $this->attemptToSaveModelFromPost(new MarketingList()),
                                                  Zurmo::t('Default', 'Create Marketing List'));
             $view               = new MarketingListsPageView(MarketingDefaultViewUtil::
                                   makeViewWithBreadcrumbsForCurrentUser($this, $editView,
-                                  $breadcrumbLinks, 'MarketingBreadCrumbView'));
+                                  $breadCrumbLinks, 'MarketingBreadCrumbView'));
             echo $view->render();
         }
 
@@ -146,14 +146,14 @@
         {
             $marketingList = MarketingList::getById(intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($marketingList);
-            $breadcrumbLinks    = static::getDetailsAndEditBreadcrumbLinks();
-            $breadcrumbLinks[]  = StringUtil::getChoppedStringContent(strval($marketingList), 25);
+            $breadCrumbLinks    = static::getDetailsAndEditBreadcrumbLinks();
+            $breadCrumbLinks[]  = StringUtil::getChoppedStringContent(strval($marketingList), 25);
             $editView = new MarketingListEditView($this->getId(), $this->getModule()->getId(),
                                                  $this->attemptToSaveModelFromPost($marketingList),
                                                  strval($marketingList));
             $view               = new MarketingListsPageView(MarketingDefaultViewUtil::
                                   makeViewWithBreadcrumbsForCurrentUser($this, $editView,
-                                  $breadcrumbLinks, 'MarketingBreadCrumbView'));
+                                  $breadCrumbLinks, 'MarketingBreadCrumbView'));
             echo $view->render();
         }
 
