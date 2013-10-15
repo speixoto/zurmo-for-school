@@ -133,7 +133,8 @@
         {
             $project            = static::getModelAndCatchNotFoundAndDisplayError('Project', intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($project);
-            $breadCrumbLinks = array(StringUtil::getChoppedStringContent(strval($project), 25));
+            //TODO: Need to check with Jason
+            //$breadCrumbLinks = array(StringUtil::getChoppedStringContent(strval($project), 25));
             AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED, array(strval($project), 'ProjectsModule'), $project);
             $view = TasksUtil::resolveTaskKanbanViewForRelation($project, $this->getModule()->getId(), $this,
                                                                         'TasksForProjectKanbanView', 'ProjectsPageView');
