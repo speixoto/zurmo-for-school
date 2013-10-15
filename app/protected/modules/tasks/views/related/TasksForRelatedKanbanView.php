@@ -53,13 +53,28 @@
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array(  'type'            => 'CreateFromRelatedModalLink',
-                                    'routeModuleId'   => 'eval:$this->moduleId',
-                                    'routeParameters' => 'eval:$this->getCreateLinkRouteParameters()',
+                            array('type'        => 'RelatedKanbanViewDetailsMenu',
+                                  'iconClass'   => 'icon-details',
+                                  'id'          => 'RelatedKanbanViewActionMenu',
+                                  'itemOptions' => array('class' => 'hasDetailsFlyout'),
+                                  'model'       => 'eval:$this->params["relationModel"]',
+                            ),
+                            array('type'        => 'RelatedKanbanViewOptionsMenu',
+                                  'iconClass'   => 'icon-edit',
+                                  'id'          => 'RelatedKanbanViewOptionsMenu',
+                                  'routeModuleId'   => 'eval:$this->moduleId',
+                                   'routeParameters' => 'eval:$this->getCreateLinkRouteParameters()',
                                     'ajaxOptions'     => 'eval:TasksUtil::resolveAjaxOptionsForEditModel("Create")',
                                     'uniqueLayoutId'  => 'eval:$this->uniqueLayoutId',
                                     'modalContainerId'=> 'eval:TasksUtil::getModalContainerId()'
-                                 ),
+                            ),
+//                            array(  'type'            => 'CreateFromRelatedModalLink',
+//                                    'routeModuleId'   => 'eval:$this->moduleId',
+//                                    'routeParameters' => 'eval:$this->getCreateLinkRouteParameters()',
+//                                    'ajaxOptions'     => 'eval:TasksUtil::resolveAjaxOptionsForEditModel("Create")',
+//                                    'uniqueLayoutId'  => 'eval:$this->uniqueLayoutId',
+//                                    'modalContainerId'=> 'eval:TasksUtil::getModalContainerId()'
+//                                 ),
                         ),
                     ),
                 ),
@@ -116,8 +131,9 @@
             $cClipWidget->widget($this->getGridViewWidgetPath(), $this->getCGridViewParams());
             $cClipWidget->endClip();
             $relatedModel = $this->params['relationModel'];
-            $content     = $this->renderTitleContent();
-            $content    .= $this->renderViewToolBar();
+            $content     = $this->renderKanbanViewTitleActionBar();
+            //$content     = $this->renderTitleContent();
+            //$content    .= $this->renderActionElementBar(false);
             $content    .= TasksUtil::renderViewModalContainer();
             //Check for zero count
             if(count($relatedModel->tasks) > 0)
@@ -285,20 +301,32 @@
             $content        = null;
             if($kanbanActive)
             {
-               $link = ZurmoDefaultViewUtil::renderActionBarLinksForKanbanBoard($this->controllerId,
-                                                                                $this->params['relationModuleId'],
-                                                                                (int)$this->params['relationModel']->id);
-               if($this->params['relationModuleId'] != 'projects')
-               {
-                  $content = parent::renderActionElementBar($renderedInForm) . $link;
-               }
-               else
-               {
+               $link = null;
+//               $link = ZurmoDefaultViewUtil::renderActionBarLinksForKanbanBoard($this->controllerId,
+//                                                                                $this->params['relationModuleId'],
+//                                                                                (int)$this->params['relationModel']->id);
+//               if($this->params['relationModuleId'] != 'projects')
+//               {
+//                  $content = parent::renderActionElementBar($renderedInForm) . $link;
+//               }
+//               else
+//               {
                   $content = parent::renderActionElementBar($renderedInForm);
-               }
+               //}
             }
-            $toolbarContent = ZurmoHtml::tag('div', array('class' => 'view-toolbar'), $content);
-            return $toolbarContent;
+            //$toolbarContent = ZurmoHtml::tag('div', array('class' => 'view-toolbar'), $content);
+            //return $toolbarContent;
+            return $content;
+        }
+
+        protected function renderKanbanViewTitleActionBar()
+        {
+            $content                 = $this->renderTitleContent();
+            $actionElementBarContent = $this->renderActionElementBar(false);
+            $content                 .= ZurmoHtml::tag('div', array('class' => 'view-toolbar-container clearfix'),
+                                                ZurmoHtml::tag('nav', array('class' => 'pillbox clearfix'),
+                                                                                    $actionElementBarContent));
+            return $content;
         }
 
         /**
