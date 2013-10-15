@@ -257,7 +257,7 @@
          * @param string $uniqueLayoutId
          */
         public function actionModalSaveFromRelation($relationAttributeName, $relationModelId, $relationModuleId,
-                                                    $portletId, $uniqueLayoutId, $id = null)
+                                                    $portletId, $uniqueLayoutId, $sourceId, $id = null)
         {
             if($id == null)
             {
@@ -278,7 +278,7 @@
             {
                 ProjectsUtil::logAddTaskEvent($task);
             }
-            $this->actionModalViewFromRelation($task->id);
+            //$this->actionModalViewFromRelation($task->id);
         }
 
         /**

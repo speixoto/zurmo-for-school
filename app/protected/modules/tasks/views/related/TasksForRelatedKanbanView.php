@@ -98,7 +98,7 @@
             $this->dataProvider           = $dataProvider;
             $this->gridIdSuffix           = $gridIdSuffix;
             $this->gridViewPagerParams    = $gridViewPagerParams;
-            $this->gridId                 = 'kanban-view';
+            $this->gridId                 = $this->getGridId();
             $this->kanbanBoard            = $kanbanBoard;
             $this->params                 = $params;
         }
@@ -317,6 +317,25 @@
             $params = parent::getCGridViewParams();
             $params = array_merge($params, $this->kanbanBoard->getGridViewParams());
             return array_merge($params, $this->resolveExtraParamsForKanbanBoard());
+        }
+
+        /**
+         * Get grid id
+         * @return string
+         */
+        protected function getGridId()
+        {
+            return $this->getRelationAttributeName() . '-tasks-kanban-view';
+        }
+
+        /**
+         * Override to pass the sourceId
+         * @return type
+         */
+        protected function getCreateLinkRouteParameters()
+        {
+            return array_merge( array('sourceId' => $this->getGridViewId()),
+                                parent::getCreateLinkRouteParameters());
         }
     }
 ?>
