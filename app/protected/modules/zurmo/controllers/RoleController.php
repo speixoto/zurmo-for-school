@@ -160,7 +160,7 @@
         public function actionAutoComplete($term, $autoCompleteOptions = null)
         {
             $modelClassName = RolesModule::getPrimaryModelName();
-            echo $this->renderAutoCompleteResults($modelClassName, $term);
+            echo $this->renderAutoCompleteResults($modelClassName, $term, $autoCompleteOptions);
         }
 
         /**

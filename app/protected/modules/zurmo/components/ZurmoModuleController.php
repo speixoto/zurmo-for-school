@@ -118,12 +118,12 @@
         public function actionAutoComplete($term, $autoCompleteOptions = null)
         {
             $modelClassName = $this->getModule()->getPrimaryModelName();
-            $autoCompleteOptions = ArrayUtil::decodeAutoCompleteOptionsArray($autoCompleteOptions);
             echo $this->renderAutoCompleteResults($modelClassName, $term, $autoCompleteOptions);
         }
 
-        protected function renderAutoCompleteResults($modelClassName, $term, $autoCompleteOptions = array())
+        protected function renderAutoCompleteResults($modelClassName, $term, $autoCompleteOptions = null)
         {
+            $autoCompleteOptions = ArrayUtil::decodeAutoCompleteOptionsArray($autoCompleteOptions);
             $pageSize            = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                                    'autoCompleteListPageSize', get_class($this->getModule()));
             $autoCompleteResults = ModelAutoCompleteUtil::getByPartialName($modelClassName, $term, $pageSize, $autoCompleteOptions);
