@@ -251,7 +251,7 @@
                     $messageContent = Zurmo::t('EmailMessagesModule', 'A test email address must be entered before you can send a test email.') . "\n";
                 }
                 Yii::app()->getClientScript()->setToAjaxMode();
-                $messageView = new TestEmailMessageView($messageContent);
+                $messageView = new TestConnectionView($messageContent);
                 $view = new ModalView($this, $messageView);
                 echo $view->render();
             }
@@ -308,7 +308,7 @@
                     $messageContent = Zurmo::t('EmailMessagesModule', 'Could not connect to IMAP server.') . "\n";
                 }
                 Yii::app()->getClientScript()->setToAjaxMode();
-                $messageView = new TestImapConnectionMessageView($messageContent);
+                $messageView = new TestConnectionView($messageContent);
                 $view = new ModalView($this,
                                       $messageView,
                                       'modalContainer',

@@ -37,7 +37,7 @@
     /**
      * View used to render message content as a result of sending a test email.  This is rendered in a modal window.
      */
-    class TestEmailMessageView extends View
+    class TestConnectionView extends View
     {
         protected $message;
 
@@ -52,7 +52,7 @@
 
         protected function renderContent()
         {
-            $this->setCssClasses(array_merge($this->getCssClasses(), array('connection-test-message')));
+            $this->setCssClasses(array_merge($this->getCssClasses(), array('connection-test')));
             return nl2br($this->message);
         }
     }
