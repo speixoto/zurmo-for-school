@@ -33,19 +33,29 @@
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
+
     /**
-     * Status dropdown element for project
+     * Form to work with dropDown attributes
      */
-    class ProjectStatusDropDownElement extends ConstantBasedStaticDropDownFormElement
+    class ProjectStatusDropDownWorkflowActionAttributeForm extends WorkflowActionAttributeForm
     {
-        protected static $attributeName = 'status';
+        public function getValueElementType()
+        {
+            return 'ProjectStatusDropDown';
+        }
 
         /**
+         * @param bool $isCreatingNewModel
+         * @param bool $isRequired
          * @return array
          */
-        protected static function resolveDropDownArray()
+        protected function makeTypeValuesAndLabels($isCreatingNewModel, $isRequired)
         {
-            return Project::getStatusDropDownArray();
+            assert('is_bool($isCreatingNewModel)');
+            assert('is_bool($isRequired)');
+            $data                           = array();
+            $data[static::TYPE_STATIC]      = Zurmo::t('WorkflowsModule', 'As');
+            return $data;
         }
     }
 ?>

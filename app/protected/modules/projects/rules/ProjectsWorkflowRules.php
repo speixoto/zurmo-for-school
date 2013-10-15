@@ -33,19 +33,28 @@
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
-    /**
-     * Status dropdown element for project
-     */
-    class ProjectStatusDropDownElement extends ConstantBasedStaticDropDownFormElement
-    {
-        protected static $attributeName = 'status';
 
+    /**
+     * Workflow rules to be used with the Projects module.
+     */
+    class ProjectsWorkflowRules extends SecuredWorkflowRules
+    {
         /**
          * @return array
          */
-        protected static function resolveDropDownArray()
+        public static function getDefaultMetadata()
         {
-            return Project::getStatusDropDownArray();
+            $metadata = array(
+                'Project' => array(
+                    'cannotTrigger' =>
+                        array('auditEvents'),
+                    'availableOperatorsTypes' =>
+                        array('status' => ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_DROPDOWN),
+                    'triggerValueElementTypes' =>
+                        array('status' => 'ProjectStatusStaticDropDownForWizardModel'),
+                )
+            );
+            return array_merge(parent::getDefaultMetadata(), $metadata);
         }
     }
 ?>

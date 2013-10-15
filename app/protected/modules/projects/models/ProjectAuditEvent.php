@@ -69,8 +69,6 @@
                     throw new NoCurrentUserSecurityException();
                 }
             }
-
-            $tableName  = self::getTableName('ProjectAuditEvent');
             $projectAuditEvent = new ProjectAuditEvent();
             $projectAuditEvent->dateTime       = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
             $projectAuditEvent->eventName      = $eventName;

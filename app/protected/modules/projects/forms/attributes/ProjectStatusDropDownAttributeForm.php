@@ -33,19 +33,33 @@
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
-    /**
-     * Status dropdown element for project
-     */
-    class ProjectStatusDropDownElement extends ConstantBasedStaticDropDownFormElement
+
+    class ProjectStatusDropDownAttributeForm extends AttributeForm
     {
-        protected static $attributeName = 'status';
+        /**
+         * @return string
+         */
+        public static function getAttributeTypeDisplayName()
+        {
+            $params = LabelUtil::getTranslationParamsForAllModules();
+            return Zurmo::t('ProjectsModule', 'ProjectsModuleSingularLabel Status Dropdown', $params);
+        }
 
         /**
-         * @return array
+         * @return string
          */
-        protected static function resolveDropDownArray()
+        public static function getAttributeTypeDisplayDescription()
         {
-            return Project::getStatusDropDownArray();
+            $params = LabelUtil::getTranslationParamsForAllModules();
+            return Zurmo::t('ProjectsModule', 'ProjectsModuleSingularLabel Status Dropdown Values', $params);
+        }
+
+        /**
+         * @return string
+         */
+        public function getAttributeTypeName()
+        {
+            return 'ProjectsStatusDropDown';
         }
     }
 ?>
