@@ -34,33 +34,42 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Kanban view Options link.
-     */
-    class RelatedKanbanViewOptionsMenuActionElement extends MenuActionElement
+    class ContactDetailsOverlayView extends TaskRelatedDetailsOverlayView
     {
-        public function getActionType()
+        protected $cssClasses = array('overlay-view');
+
+        const DESCRIPTION_CLASS          = 'marketing-list-description';
+
+        /**
+         * Render content
+         * @return string
+         */
+        protected function renderContent()
         {
-            return 'Delete';
+            $content = $this->renderCompanyNameContent();
+            $content .= $this->renderDescriptionContent();
+            return $content;
         }
 
-        protected function getDefaultLabel()
+        /**
+         * Renders description
+         * @return string
+         */
+        protected function renderDescriptionContent()
         {
-            return Zurmo::t('Core', 'Options');
+            $content = ZurmoHtml::tag('div', array('class' => static::DESCRIPTION_CLASS),
+                                                    StringUtil::getChoppedStringContent($this->model->description, 50));
+            return $content;
         }
 
-        protected function getDefaultRoute()
+        /**
+         * Renders name
+         * @return string
+         */
+        protected function renderCompanyNameContent()
         {
-            return null;
-        }
-
-        protected function getMenuItems()
-        {
-            $createElement          = new CreateFromRelatedModalLinkActionElement($this->controllerId,
-                                        $this->moduleId, $this->modelId, $this->params);
-            $createElementContent   = $createElement->render();
-            $menuItems              = array(array('label' => $createElementContent));
-            return $menuItems;
+            $content = ZurmoHtml::tag('div', array('class' => static::DESCRIPTION_CLASS), $this->model->companyName);
+            return $content;
         }
     }
 ?>

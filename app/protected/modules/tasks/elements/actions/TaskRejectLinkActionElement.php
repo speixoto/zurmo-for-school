@@ -36,7 +36,7 @@
     /**
      * Reject button in kanban view for the task
      */
-    class TaskRejectLinkActionElement extends LinkActionElement
+    class TaskRejectLinkActionElement extends TaskLinkActionElement
     {
         /**
          * @return string

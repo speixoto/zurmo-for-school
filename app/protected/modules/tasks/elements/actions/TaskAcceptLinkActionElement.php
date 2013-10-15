@@ -36,7 +36,7 @@
     /**
      * Accept button in kanban view for the task
      */
-    class TaskAcceptLinkActionElement extends LinkActionElement
+    class TaskAcceptLinkActionElement extends TaskLinkActionElement
     {
         /**
          * @return string
