@@ -133,21 +133,11 @@
         {
             $project            = static::getModelAndCatchNotFoundAndDisplayError('Project', intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($project);
-            $breadCrumbLinks = array(StringUtil::getChoppedStringContent(strval($project), 25));
+            //TODO: Need to check with Jason
+            //$breadCrumbLinks = array(StringUtil::getChoppedStringContent(strval($project), 25));
             AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED, array(strval($project), 'ProjectsModule'), $project);
-            if (KanbanUtil::isKanbanRequest() === false)
-            {
-                $detailsView        = new ProjectEditAndDetailsView('Details', $this->getId(), $this->getModule()->getId(), $project);
-                $view               = new ProjectsPageView(ProjectDefaultViewUtil::
-                                                             makeViewWithBreadcrumbsForCurrentUser(
-                                                                $this, $detailsView, $breadCrumbLinks, 'ProjectBreadCrumbView'));
-            }
-            //kanban view
-            else
-            {
-                $view = TasksUtil::resolveTaskKanbanViewForRelation($project, $this->getModule()->getId(), $this,
+            $view = TasksUtil::resolveTaskKanbanViewForRelation($project, $this->getModule()->getId(), $this,
                                                                         'TasksForProjectKanbanView', 'ProjectsPageView');
-            }
             echo $view->render();
         }
 
@@ -527,7 +517,7 @@
             {
                 ProjectAuditEvent::logAuditEvent(ProjectAuditEvent::PROJECT_CREATED, $model->name, $model);
             }
-            if($this->getAction()->id == 'edit' && $model->status == Project::PROJECT_STATUS_ARCHIVED)
+            if($this->getAction()->id == 'edit' && $model->status == Project::STATUS_ARCHIVED)
             {
                 ProjectAuditEvent::logAuditEvent(ProjectAuditEvent::PROJECT_ARCHIVED, $model->name, $model);
             }

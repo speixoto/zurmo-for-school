@@ -415,8 +415,9 @@
          */
         public static function renderActionBarLinksForKanbanBoard($controllerId, $moduleId, $modelId)
         {
-            $detailsAndRelationsViewTypesToggleLinkActionElement = new DetailsAndRelationsViewTypesToggleLinkActionElement($controllerId, $moduleId, $modelId);
-            return $detailsAndRelationsViewTypesToggleLinkActionElement->render();
+            $toggleLinkActionElement = new DetailsAndRelationsViewTypesToggleLinkActionElement(
+                                                                            $controllerId, $moduleId, $modelId);
+            return $toggleLinkActionElement->render();
         }
     }
 ?>

@@ -223,10 +223,10 @@
 
         public function testResolveKanbanItemTypeForTaskStatus()
         {
-            $kanbanItemType = TasksUtil::resolveKanbanItemTypeForTaskStatus(Task::TASK_STATUS_AWAITING_ACCEPTANCE);
+            $kanbanItemType = TasksUtil::resolveKanbanItemTypeForTaskStatus(Task::STATUS_AWAITING_ACCEPTANCE);
             $this->assertEquals(KanbanItem::TYPE_IN_PROGRESS,$kanbanItemType);
 
-            $kanbanItemType = TasksUtil::resolveKanbanItemTypeForTaskStatus(Task::TASK_STATUS_NEW);
+            $kanbanItemType = TasksUtil::resolveKanbanItemTypeForTaskStatus(Task::STATUS_NEW);
             $this->assertEquals(KanbanItem::TYPE_TODO,$kanbanItemType);
         }
 
@@ -237,7 +237,7 @@
             $kanbanItemType = TasksUtil::resolveKanbanItemTypeForTask($task->id);
             $this->assertEquals(KanbanItem::TYPE_TODO,$kanbanItemType);
 
-            $task->status = Task::TASK_STATUS_AWAITING_ACCEPTANCE;
+            $task->status = Task::STATUS_AWAITING_ACCEPTANCE;
             $this->assertTrue($task->save());
             $kanbanItemType = TasksUtil::resolveKanbanItemTypeForTask($task->id);
             $this->assertEquals(KanbanItem::TYPE_IN_PROGRESS,$kanbanItemType);
@@ -291,7 +291,7 @@
         public function testGetDefaultTaskStatusForKanbanItemType()
         {
             $status = TasksUtil::getDefaultTaskStatusForKanbanItemType(KanbanItem::TYPE_SOMEDAY);
-            $this->assertEquals(Task::TASK_STATUS_NEW, $status);
+            $this->assertEquals(Task::STATUS_NEW, $status);
         }
 
         public function testSetDefaultValuesForTask()
@@ -306,7 +306,7 @@
         {
             $task = TaskTestHelper::createTaskByNameForOwner('My Kanban Task', Yii::app()->user->userModel);
             TasksUtil::setDefaultValuesForTask($task);
-            $task->status = Task::TASK_STATUS_IN_PROGRESS;
+            $task->status = Task::STATUS_IN_PROGRESS;
             $this->assertTrue($task->save());
             $kanbanItem = TasksUtil::createKanbanItemFromTask($task);
             $this->assertEquals($kanbanItem->type, KanbanItem::TYPE_IN_PROGRESS);

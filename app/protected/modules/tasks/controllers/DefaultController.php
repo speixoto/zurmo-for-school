@@ -36,6 +36,10 @@
 
     class TasksDefaultController extends ActivityModelsDefaultController
     {
+        /**
+         * Close task
+         * @param string $id
+         */
         public function actionCloseTask($id)
         {
             $task                    = Task::getById(intval($id));
@@ -253,7 +257,7 @@
          * @param string $uniqueLayoutId
          */
         public function actionModalSaveFromRelation($relationAttributeName, $relationModelId, $relationModuleId,
-                                                    $portletId, $uniqueLayoutId, $id = null)
+                                                    $portletId, $uniqueLayoutId, $sourceId, $id = null)
         {
             if($id == null)
             {
@@ -274,7 +278,7 @@
             {
                 ProjectsUtil::logAddTaskEvent($task);
             }
-            $this->actionModalViewFromRelation($task->id);
+            //$this->actionModalViewFromRelation($task->id);
         }
 
         /**
@@ -420,7 +424,7 @@
                         //if kanban type is completed
                         if($getData['type'] == KanbanItem::TYPE_COMPLETED)
                         {
-                            $this->actionUpdateStatusInKanbanView(Task::TASK_STATUS_COMPLETED, $taskId);
+                            $this->actionUpdateStatusInKanbanView(Task::STATUS_COMPLETED, $taskId);
                             $response['button'] = '';
                         }
                         else
@@ -499,7 +503,7 @@
             $task          = Task::getById(intval($id));
             $currentStatus = $task->status;
             $task->status = intval($status);
-            if(intval($status) == Task::TASK_STATUS_COMPLETED)
+            if(intval($status) == Task::STATUS_COMPLETED)
             {
                 foreach ($task->checkListItems as $checkItem)
                 {

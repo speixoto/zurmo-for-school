@@ -39,20 +39,6 @@
     class ProjectsUtil
     {
         /**
-         * Get tasks by project
-         * @param Project $project
-         */
-        //todo: @Mayank once jason review the code remove this piece of code along with test case as well
-        public static function getTasksByProject(Project $project)
-        {
-            assert('$project instanceof Project');
-            $searchAttributeData = TasksUtil::makeSearchAttributeData($project);
-            $joinTablesAdapter   = new RedBeanModelJoinTablesQueryAdapter('Task');
-            $where  = RedBeanModelDataProvider::makeWhere('Task', $searchAttributeData, $joinTablesAdapter);
-            return Task::getSubset($joinTablesAdapter, null, null, $where, null);
-        }
-
-        /**
          * Logs event on adding task check item for the task
          * @param Task $task
          * @param TaskCheckListItem

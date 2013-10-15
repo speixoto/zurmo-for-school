@@ -53,13 +53,28 @@
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array(  'type'            => 'CreateFromRelatedModalLink',
-                                    'routeModuleId'   => 'eval:$this->moduleId',
-                                    'routeParameters' => 'eval:$this->getCreateLinkRouteParameters()',
+                            array('type'        => 'RelatedKanbanViewDetailsMenu',
+                                  'iconClass'   => 'icon-details',
+                                  'id'          => 'RelatedKanbanViewActionMenu',
+                                  'itemOptions' => array('class' => 'hasDetailsFlyout'),
+                                  'model'       => 'eval:$this->params["relationModel"]',
+                            ),
+                            array('type'        => 'RelatedKanbanViewOptionsMenu',
+                                  'iconClass'   => 'icon-edit',
+                                  'id'          => 'RelatedKanbanViewOptionsMenu',
+                                  'routeModuleId'   => 'eval:$this->moduleId',
+                                   'routeParameters' => 'eval:$this->getCreateLinkRouteParameters()',
                                     'ajaxOptions'     => 'eval:TasksUtil::resolveAjaxOptionsForEditModel("Create")',
                                     'uniqueLayoutId'  => 'eval:$this->uniqueLayoutId',
                                     'modalContainerId'=> 'eval:TasksUtil::getModalContainerId()'
-                                 ),
+                            ),
+//                            array(  'type'            => 'CreateFromRelatedModalLink',
+//                                    'routeModuleId'   => 'eval:$this->moduleId',
+//                                    'routeParameters' => 'eval:$this->getCreateLinkRouteParameters()',
+//                                    'ajaxOptions'     => 'eval:TasksUtil::resolveAjaxOptionsForEditModel("Create")',
+//                                    'uniqueLayoutId'  => 'eval:$this->uniqueLayoutId',
+//                                    'modalContainerId'=> 'eval:TasksUtil::getModalContainerId()'
+//                                 ),
                         ),
                     ),
                 ),
@@ -98,7 +113,7 @@
             $this->dataProvider           = $dataProvider;
             $this->gridIdSuffix           = $gridIdSuffix;
             $this->gridViewPagerParams    = $gridViewPagerParams;
-            $this->gridId                 = 'kanban-view';
+            $this->gridId                 = $this->getGridId();
             $this->kanbanBoard            = $kanbanBoard;
             $this->params                 = $params;
         }
@@ -115,14 +130,27 @@
             $cClipWidget->beginClip("ListView");
             $cClipWidget->widget($this->getGridViewWidgetPath(), $this->getCGridViewParams());
             $cClipWidget->endClip();
-            $content     = $this->renderTitleContent();
-            $content    .= $this->renderViewToolBar();
+            $relatedModel = $this->params['relationModel'];
+            $content     = $this->renderKanbanViewTitleActionBar();
+            //$content     = $this->renderTitleContent();
+            //$content    .= $this->renderActionElementBar(false);
             $content    .= TasksUtil::renderViewModalContainer();
-
-            $content    .= $cClipWidget->getController()->clips['ListView'] . "\n";
-            if ($this->getRowsAreSelectable())
+            //Check for zero count
+            if(count($relatedModel->tasks) > 0)
             {
-                $content .= ZurmoHtml::hiddenField($this->gridId . $this->gridIdSuffix . '-selectedIds', implode(",", $this->selectedIds)) . "\n"; // Not Coding Standard
+                $content    .= $cClipWidget->getController()->clips['ListView'] . "\n";
+                if ($this->getRowsAreSelectable())
+                {
+                    $content .= ZurmoHtml::hiddenField($this->gridId . $this->gridIdSuffix .
+                                                        '-selectedIds', implode(",", $this->selectedIds)) . "\n"; // Not Coding Standard
+                }
+            }
+            else
+            {
+                $zeroModelView = new ZeroTasksForRelatedModelYetView($this->controllerId,
+                                                                     $this->moduleId, 'Task',
+                                                                     get_class($this->params['relationModel']));
+                $content .= $zeroModelView->render();
             }
             $content .= $this->renderScripts();
             return $content;
@@ -215,7 +243,8 @@
         public function resolveLinkString($data, $row)
         {
             $taskUtil    = new TasksUtil();
-            $content     = $taskUtil->getLinkForViewModal($data, $row, $this->controllerId, $this->moduleId, $this->getActionModuleClassName());
+            $content     = $taskUtil->getLinkForViewModal($data, $row, $this->controllerId,
+                                                          $this->moduleId, $this->getActionModuleClassName());
             return $content;
         }
 
@@ -254,21 +283,53 @@
          */
         protected function renderActionElementBar($renderedInForm)
         {
-            $getData        = GetUtil::getData();
-            $isKanbanActive = $getData['kanbanBoard'];
+            $kanbanActive = false;
+            if($this->params['relationModuleId'] == 'projects')
+            {
+                $kanbanActive = true;
+            }
+            else
+            {
+                $getData = GetUtil::getData();
+                if(isset($getData['kanbanBoard']) && $getData['kanbanBoard'] == 1)
+                {
+                   $kanbanActive = true;
+                }
+            }
+
             $toolbarContent = null;
             $content        = null;
-            if(isset($getData['kanbanBoard']) && $getData['kanbanBoard'] == 1)
+            if($kanbanActive)
             {
-               $link = ZurmoDefaultViewUtil::renderActionBarLinksForKanbanBoard($this->controllerId, $this->params['relationModuleId'], (int)$this->params['relationModel']->id);
-               $content = parent::renderActionElementBar($renderedInForm) . $link;
+               $link = null;
+//               $link = ZurmoDefaultViewUtil::renderActionBarLinksForKanbanBoard($this->controllerId,
+//                                                                                $this->params['relationModuleId'],
+//                                                                                (int)$this->params['relationModel']->id);
+//               if($this->params['relationModuleId'] != 'projects')
+//               {
+//                  $content = parent::renderActionElementBar($renderedInForm) . $link;
+//               }
+//               else
+//               {
+                  $content = parent::renderActionElementBar($renderedInForm);
+               //}
             }
-            $toolbarContent = ZurmoHtml::tag('div', array('class' => 'view-toolbar'), $content);
-            return $toolbarContent;
+            //$toolbarContent = ZurmoHtml::tag('div', array('class' => 'view-toolbar'), $content);
+            //return $toolbarContent;
+            return $content;
+        }
+
+        protected function renderKanbanViewTitleActionBar()
+        {
+            $content                 = $this->renderTitleContent();
+            $actionElementBarContent = $this->renderActionElementBar(false);
+            $content                 .= ZurmoHtml::tag('div', array('class' => 'view-toolbar-container clearfix'),
+                                                ZurmoHtml::tag('nav', array('class' => 'pillbox clearfix'),
+                                                                                    $actionElementBarContent));
+            return $content;
         }
 
         /**
-         * Need to override it as in list view the class of kanbanboard is coming as ListView //todo ask Jason
          * @return string
          */
         protected function getGridViewWidgetPath()
@@ -277,7 +338,6 @@
         }
 
         /**
-         * Need to override it as in list view the class of kanbanboard is coming as ListView //todo ask Jason
          * @return string
          */
         protected function getCGridViewParams()
@@ -285,6 +345,25 @@
             $params = parent::getCGridViewParams();
             $params = array_merge($params, $this->kanbanBoard->getGridViewParams());
             return array_merge($params, $this->resolveExtraParamsForKanbanBoard());
+        }
+
+        /**
+         * Get grid id
+         * @return string
+         */
+        protected function getGridId()
+        {
+            return $this->getRelationAttributeName() . '-tasks-kanban-view';
+        }
+
+        /**
+         * Override to pass the sourceId
+         * @return type
+         */
+        protected function getCreateLinkRouteParameters()
+        {
+            return array_merge( array('sourceId' => $this->getGridViewId()),
+                                parent::getCreateLinkRouteParameters());
         }
     }
 ?>

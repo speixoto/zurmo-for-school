@@ -61,7 +61,7 @@
             }
             else
             {
-                return $this->form->hiddenField($this->model, $this->attribute, array('value' => Project::PROJECT_STATUS_ACTIVE));
+                return $this->form->hiddenField($this->model, $this->attribute, array('value' => Project::STATUS_ACTIVE));
             }
         }
 

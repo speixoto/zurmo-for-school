@@ -93,6 +93,7 @@
                 $modalId                 = GetUtil::resolveModalTransferInformationParamFromRequest('modalId', null);
                 $portletId               = GetUtil::resolveModalTransferInformationParamFromRequest('portletId', null);
                 $uniqueLayoutId          = GetUtil::resolveModalTransferInformationParamFromRequest('uniqueLayoutId', null);
+                $sourceId                = GetUtil::resolveModalTransferInformationParamFromRequest('sourceId', null);
 
                 $action                  = Yii::app()->request->getParam('action', null);
                 if($action == null)
@@ -108,7 +109,8 @@
                                                                                           'relationModelId'       => $relationModelId,
                                                                                           'relationModuleId'      => $relationModuleId,
                                                                                           'portletId'             => $portletId,
-                                                                                          'uniqueLayoutId'        => $uniqueLayoutId
+                                                                                          'uniqueLayoutId'        => $uniqueLayoutId,
+                                                                                          'sourceId'              => $sourceId
                                                                                           ), $params
                                                                                         ));
             }
@@ -128,7 +130,10 @@
                                                         }
                                                         else
                                                         {
-                                                            js:saveTaskFromRelation("' . $url . '", "'. $errorInProcess . '","' . TasksUtil::getModalTitleForViewTask() . '");
+                                                            js:saveTaskFromRelation("' . $url . '",
+                                                                                    "'. $errorInProcess . '",
+                                                                                    "'. $sourceId . '",
+                                                                                    "' . TasksUtil::getModalTitleForViewTask() . '");
                                                         }
                                                         return false;
                                                     }',

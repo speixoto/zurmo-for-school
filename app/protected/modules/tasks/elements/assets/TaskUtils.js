@@ -65,7 +65,8 @@ function updateTaskStatus(status, url, errorInProcess)
 /**
  * Save task for a relation
  */
-function saveTaskFromRelation(url, errorInProcess, viewTitle)
+//TODO: @Mayank viewTitle needs to be removed if user is not navigated to view screen
+function saveTaskFromRelation(url, errorInProcess, sourceId, viewTitle)
 {
     $.ajax(
         {
@@ -78,8 +79,10 @@ function saveTaskFromRelation(url, errorInProcess, viewTitle)
                          form = $("#task-modal-edit-form");
                          form.find(".attachLoading:first").removeClass("loading");
                          form.find(".attachLoading:first").removeClass("loading-ajax-submit");
-                         $("#ModalView").html(data);
-                         $(".ui-dialog-title").html(viewTitle);
+                         //$("#ModalView").html(data);
+                         //$(".ui-dialog-title").html(viewTitle);
+                         $("#ModalView").parent().dialog("close");
+                         $.fn.yiiGridView.update(sourceId);
                      },
             error:  function()
                     {

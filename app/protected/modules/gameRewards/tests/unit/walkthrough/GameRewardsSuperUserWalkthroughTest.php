@@ -469,8 +469,8 @@
             $super                  = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
             $accounts               = Account::getByName('superAccount');
 
-            $task = TaskTestHelper::createTaskWithOwnerAndRelatedAccount('MyTask', $super, $accounts[0], Task::TASK_STATUS_IN_PROGRESS);
-            $taskNew = TaskTestHelper::createTaskWithOwnerAndRelatedAccount('MyTask New', $super, $accounts[0], Task::TASK_STATUS_NEW);
+            $task = TaskTestHelper::createTaskWithOwnerAndRelatedAccount('MyTask', $super, $accounts[0], Task::STATUS_IN_PROGRESS);
+            $taskNew = TaskTestHelper::createTaskWithOwnerAndRelatedAccount('MyTask New', $super, $accounts[0], Task::STATUS_NEW);
             $this->setGetArray(array('id' => $task->id, 'kanbanBoard' => '1'));
             $content = $this->runControllerWithNoExceptionsAndGetContent('accounts/default/details');
             $matcher= array(

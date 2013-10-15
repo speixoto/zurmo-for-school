@@ -34,23 +34,19 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Display the active project with tasks status in different kanban types.
-     */
-    class ActiveProjectElement extends Element
+    class TaskRelatedDetailsOverlayView extends SecuredDetailsView
     {
-        protected static $moduleId = 'projects';
+        protected $cssClasses = array('overlay-view');
 
-        /**
-         * Render a hidden input, a text input with an auto-complete
-         * event, and a select button. These three items together
-         * form the Project Editable Element
-         * @return The element's content as a string.
-         */
-        protected function renderControlNonEditable()
+        protected function renderContent()
         {
-            assert('$this->model->{$this->attribute} instanceof Project');
-            return parent::renderControlEditable();
+            $modelClass = get_class($this->model);
+            if($modelClass == 'Project')
+            {
+                $overlayView = new ProjectDetailsOverlayView($this->controllerId, $this->moduleId, $this->model);
+                $content     = $overlayView->render();
+            }
+            return $content;
         }
     }
 ?>

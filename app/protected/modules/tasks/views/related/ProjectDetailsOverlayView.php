@@ -34,57 +34,30 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Helper class to work with TaskKanbanBoard views
-     */
-    class TaskKanbanBoard extends KanbanBoard
+    class ProjectDetailsOverlayView extends TaskRelatedDetailsOverlayView
     {
-        /**
-         * @var RedbeanModel
-         */
-        protected $relatedModel;
+        protected $cssClasses = array('overlay-view');
 
-        /**
-         * @var string
-         */
-        protected $relatedModelClassName;
+        const DESCRIPTION_CLASS          = 'marketing-list-description';
 
-        /**
-         * @param RedBeanModel $model
-         * @param string $groupByAttribute
-         * @param RedBeanModel $relatedModel
-         * @param string $relatedModelClassName
-         * @throws NotSupportedException
-         */
-        public function __construct(RedBeanModel $model, $groupByAttribute, $relatedModel, $relatedModelClassName)
+        protected function renderContent()
         {
-            $this->model            = $model;
-            $this->groupByAttribute = $groupByAttribute;
-            $this->groupByDataAndTranslatedLabels = KanbanItem::getTypeDropDownArray();
-            $this->groupByAttributeVisibleValues  = array_keys($this->groupByDataAndTranslatedLabels);
-            $this->relatedModel                   = $relatedModel;
-            $this->relatedModelClassName          = $relatedModelClassName;
+            $content = $this->renderNameContent();
+            $content .= $this->renderDescriptionContent();
+            return $content;
         }
 
-        /**
-         * @return string
-         */
-        public static function getGridViewWidgetPath()
+        protected function renderDescriptionContent()
         {
-            return 'application.modules.tasks.widgets.TaskKanbanBoardExtendedGridView';
+            $content = ZurmoHtml::tag('div', array('class' => static::DESCRIPTION_CLASS),
+                                                    StringUtil::getChoppedStringContent($this->model->description, 50));
+            return $content;
         }
 
-        /**
-         * @return array
-         */
-        public function getGridViewParams()
+        protected function renderNameContent()
         {
-            return array('groupByAttribute'               => $this->groupByAttribute,
-                         'groupByAttributeVisibleValues'  => $this->groupByAttributeVisibleValues,
-                         'groupByDataAndTranslatedLabels' => $this->groupByDataAndTranslatedLabels,
-                         'selectedTheme'                  => $this->getSelectedTheme(),
-                         'relatedModelId'                 => $this->relatedModel->id,
-                         'relatedModelClassName'          => $this->relatedModelClassName);
+            $content = ZurmoHtml::tag('div', array('class' => static::DESCRIPTION_CLASS), $this->model->name);
+            return $content;
         }
     }
 ?>

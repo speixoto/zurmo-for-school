@@ -174,10 +174,10 @@
 
             Yii::app()->clientScript->registerScript('task-sortable-data', $taskSortableScript);
             $url = Yii::app()->createUrl('tasks/default/updateStatusInKanbanView', array());
-            $this->registerKanbanColumnStartActionScript(Zurmo::t('TasksModule', 'Finish'), Task::TASK_STATUS_IN_PROGRESS, $url);
-            $this->registerKanbanColumnFinishActionScript(Zurmo::t('TasksModule', 'Accept'), Zurmo::t('TasksModule', 'Reject'), Task::TASK_STATUS_AWAITING_ACCEPTANCE, $url);
-            $this->registerKanbanColumnAcceptActionScript('', Task::TASK_STATUS_COMPLETED, $url);
-            $this->registerKanbanColumnRejectActionScript(Zurmo::t('TasksModule', 'Start'), Task::TASK_STATUS_NEW, $url);
+            $this->registerKanbanColumnStartActionScript(Zurmo::t('TasksModule', 'Finish'), Task::STATUS_IN_PROGRESS, $url);
+            $this->registerKanbanColumnFinishActionScript(Zurmo::t('TasksModule', 'Accept'), Zurmo::t('TasksModule', 'Reject'), Task::STATUS_AWAITING_ACCEPTANCE, $url);
+            $this->registerKanbanColumnAcceptActionScript('', Task::STATUS_COMPLETED, $url);
+            $this->registerKanbanColumnRejectActionScript(Zurmo::t('TasksModule', 'Start'), Task::STATUS_NEW, $url);
             TasksUtil::registerSubscriptionScript();
             TasksUtil::registerUnsubscriptionScript();
         }
@@ -269,7 +269,7 @@
                                                         $.ajax(
                                                             {
                                                                 type : 'GET',
-                                                                data : {'targetStatus':" . Task::TASK_STATUS_AWAITING_ACCEPTANCE . ", 'taskId':taskId},
+                                                                data : {'targetStatus':" . Task::STATUS_AWAITING_ACCEPTANCE . ", 'taskId':taskId},
                                                                 url  : '" . $url . "'
                                                             }
                                                         );
@@ -350,7 +350,7 @@
                                                         $('#task-sortable-rows-" . $targetKanbanItemType . "').append(element);
                                                         $('#task-sortable-rows-' + columnType).remove('#' + id);
 
-                                                        if(" . $targetStatus . " != " . Task::TASK_STATUS_COMPLETED . ")
+                                                        if(" . $targetStatus . " != " . Task::STATUS_COMPLETED . ")
                                                         {
                                                             var linkTag = $('#task-sortable-rows-" . $targetKanbanItemType . " #' + id + ' ." . $buttonClass . "');
                                                             $(linkTag).find('.z-label').html('" . $label . "');

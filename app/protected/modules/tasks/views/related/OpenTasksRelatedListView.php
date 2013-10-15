@@ -181,5 +181,15 @@
             $content     = $taskUtil->getLinkForViewModal($data, $row, $this->controllerId, $this->moduleId, $this->getActionModuleClassName());
             return $content;
         }
+
+        /**
+         * Override to pass the sourceId
+         * @return type
+         */
+        protected function getCreateLinkRouteParameters()
+        {
+            return array_merge( array('sourceId' => $this->getGridViewId()),
+                                parent::getCreateLinkRouteParameters());
+        }
     }
 ?>

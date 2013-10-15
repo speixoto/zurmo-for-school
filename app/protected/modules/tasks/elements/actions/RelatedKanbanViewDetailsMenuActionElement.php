@@ -35,56 +35,39 @@
      ********************************************************************************/
 
     /**
-     * Helper class to work with TaskKanbanBoard views
+     * Display the details of related model
      */
-    class TaskKanbanBoard extends KanbanBoard
+    class RelatedKanbanViewDetailsMenuActionElement extends MenuActionElement
     {
-        /**
-         * @var RedbeanModel
-         */
-        protected $relatedModel;
-
-        /**
-         * @var string
-         */
-        protected $relatedModelClassName;
-
-        /**
-         * @param RedBeanModel $model
-         * @param string $groupByAttribute
-         * @param RedBeanModel $relatedModel
-         * @param string $relatedModelClassName
-         * @throws NotSupportedException
-         */
-        public function __construct(RedBeanModel $model, $groupByAttribute, $relatedModel, $relatedModelClassName)
+        public function getActionType()
         {
-            $this->model            = $model;
-            $this->groupByAttribute = $groupByAttribute;
-            $this->groupByDataAndTranslatedLabels = KanbanItem::getTypeDropDownArray();
-            $this->groupByAttributeVisibleValues  = array_keys($this->groupByDataAndTranslatedLabels);
-            $this->relatedModel                   = $relatedModel;
-            $this->relatedModelClassName          = $relatedModelClassName;
+            return 'Details';
         }
 
-        /**
-         * @return string
-         */
-        public static function getGridViewWidgetPath()
+        protected function getDefaultLabel()
         {
-            return 'application.modules.tasks.widgets.TaskKanbanBoardExtendedGridView';
+            return Zurmo::t('TasksModule', 'Details');
         }
 
-        /**
-         * @return array
-         */
-        public function getGridViewParams()
+        protected function getDefaultRoute()
         {
-            return array('groupByAttribute'               => $this->groupByAttribute,
-                         'groupByAttributeVisibleValues'  => $this->groupByAttributeVisibleValues,
-                         'groupByDataAndTranslatedLabels' => $this->groupByDataAndTranslatedLabels,
-                         'selectedTheme'                  => $this->getSelectedTheme(),
-                         'relatedModelId'                 => $this->relatedModel->id,
-                         'relatedModelClassName'          => $this->relatedModelClassName);
+            return null;
+        }
+
+        protected function getDynamicContent()
+        {
+            $detailsOverlayView = new TaskRelatedDetailsOverlayView($this->controllerId,
+                $this->moduleId,
+                $this->params['model']
+            );
+            return $detailsOverlayView->render();
+        }
+
+        public function renderMenuItem()
+        {
+            $menuItem = parent::renderMenuItem();
+            $menuItem['submenuOptions'] = array('class' => 'button-actions open-on-left');
+            return $menuItem;
         }
     }
 ?>
