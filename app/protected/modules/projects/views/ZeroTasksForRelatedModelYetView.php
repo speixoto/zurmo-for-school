@@ -76,39 +76,17 @@
         protected function getMessageContent()
         {
             $params = LabelUtil::getTranslationParamsForAllModules();
-            if($this->relatedModelClassName == 'Project')
-            {
-                return Zurmo::t('TasksModule', '<h2>"Task Zero Model Title for Project"</h2>' .
-                    '<i>- John Kenneth Galbraith</i>' .
-                    '<div class="large-icon"></div><p>' .
-                    'Task for zero model content for Project</p>', $params);
-            }
-            elseif($this->relatedModelClassName == 'Account')
-            {
-                return Zurmo::t('TasksModule', '<h2>"Task Zero Model Title for Account"</h2>' .
-                    '<i>- John Kenneth Galbraith</i>' .
-                    '<div class="large-icon"></div><p>' .
-                    'Task for zero model content for Account</p>', $params);
-            }
-            elseif($this->relatedModelClassName == 'Contact')
-            {
-                return Zurmo::t('TasksModule', '<h2>"Task Zero Model Title for Contact"</h2>' .
-                    '<i>- John Kenneth Galbraith</i>' .
-                    '<div class="large-icon"></div><p>' .
-                    'Task for zero model content for Contact</p>', $params);
-            }
-            elseif($this->relatedModelClassName == 'Opportunity')
-            {
-                return Zurmo::t('TasksModule', '<h2>"Task Zero Model Title for Opportunity"</h2>' .
-                    '<i>- John Kenneth Galbraith</i>' .
-                    '<div class="large-icon"></div><p>' .
-                    'Task for zero model content for Opportunity</p>', $params);
-            }
+            return Zurmo::t('TasksModule',
+                            '<h2>"Nothing is so fatiguing as the eternal hanging on of an uncompleted task."</h2>' .
+                            '<i>- William James</i>' .
+                            '<div class="large-icon"></div><p>' .
+                            'Don\'t be fatigued by your uncompleted tasks. <br/>
+                                Create a task record and keep track of it until you complete it.</p>', $params);
         }
 
         /**
          * Renders content for zero model view
-         * @return string 
+         * @return string
          */
         protected function renderContent()
         {
