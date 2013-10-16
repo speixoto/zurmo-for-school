@@ -13424,7 +13424,7 @@ div.wide.form label.hasCheckBox {
   position: relative;
 }
 .toolbar-mbmenu {
-  margin: 0 10px 0 0;
+  margin: 0 10px 0 0 !important;
   float: right;
   width: auto;
 }
