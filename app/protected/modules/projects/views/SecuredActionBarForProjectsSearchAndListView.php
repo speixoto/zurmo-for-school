@@ -45,10 +45,9 @@
         public static function getDefaultMetadata()
         {
             $metadata = parent::getDefaultMetadata();
-            $metadata['global']['toolbar']['elements'][] = array(
-                                                                    'type'  => 'ProjectsDashboardLink',
-                                                                    'htmlOptions'  => array( 'class' => 'icon-marketing-dashboard' )
-                                                                );
+            $metadata['global']['toolbar']['elements'][] =
+                array('type'  => 'ProjectsDashboardLink',
+                      'htmlOptions'  => array('class' => 'icon-marketing-dashboard'));
             return $metadata;
         }
     }

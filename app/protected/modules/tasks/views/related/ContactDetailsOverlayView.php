@@ -33,12 +33,12 @@
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
-
+    /**
+     * Contact details overlay view in contact task kanban view
+     */
     class ContactDetailsOverlayView extends TaskRelatedDetailsOverlayView
     {
         protected $cssClasses = array('overlay-view');
-
-        const DESCRIPTION_CLASS          = 'marketing-list-description';
 
         /**
          * Render content
@@ -46,19 +46,23 @@
          */
         protected function renderContent()
         {
-            $content = $this->renderCompanyNameContent();
-            $content .= $this->renderDescriptionContent();
+            $content = $this->renderFullNameContent();
+            $content .= $this->renderAccountNameContent();
+            $content .= $this->renderStateContent();
             return $content;
         }
 
         /**
-         * Renders description
+         * Renders account name
          * @return string
          */
-        protected function renderDescriptionContent()
+        protected function renderAccountNameContent()
         {
+            $params = LabelUtil::getTranslationParamsForAllModules();
             $content = ZurmoHtml::tag('div', array('class' => static::DESCRIPTION_CLASS),
-                                                    StringUtil::getChoppedStringContent($this->model->description, 50));
+                                      Zurmo::t('AccountsModule', 'AccountsModuleSingularLabel', $params) .
+                                      $this->overlayKeyValueSeparator .
+                                      $this->model->account->name);
             return $content;
         }
 
@@ -66,9 +70,23 @@
          * Renders name
          * @return string
          */
-        protected function renderCompanyNameContent()
+        protected function renderFullNameContent()
         {
-            $content = ZurmoHtml::tag('div', array('class' => static::DESCRIPTION_CLASS), $this->model->companyName);
+            $content = ZurmoHtml::tag('div', array('class' => static::DESCRIPTION_CLASS),
+                                      Zurmo::t('ContactsModule', 'Full Name') . $this->overlayKeyValueSeparator .
+                                      strval($this->model));
+            return $content;
+        }
+
+        /**
+         * Renders state
+         * @return string
+         */
+        protected function renderStateContent()
+        {
+            $content = ZurmoHtml::tag('div', array('class' => static::DESCRIPTION_CLASS),
+                                      Zurmo::t('ContactsModule', 'State') . $this->overlayKeyValueSeparator .
+                                      $this->model->state->resolveTranslatedNameByLanguage(Yii::app()->language));
             return $content;
         }
     }
