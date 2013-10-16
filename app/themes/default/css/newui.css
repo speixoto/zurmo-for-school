@@ -1097,7 +1097,8 @@ body.blue #show-filters-structure-div-link,
 body.blue .filters-bar .ui-state-active,
 body.blue .filters-bar label:hover,
 body.blue #clear-search-linkmodal,
-body.blue .StepsAndProgressBarForWizardView .progress-bar {
+body.blue .StepsAndProgressBarForWizardView .progress-bar,
+body.blue .task-owner .gravatar {
   background-color: #282a76;
 }
 body.blue .latest-activity-toolbar label:hover,
@@ -1699,7 +1700,8 @@ body.sunrise #show-filters-structure-div-link,
 body.sunrise .filters-bar .ui-state-active,
 body.sunrise .filters-bar label:hover,
 body.sunrise #clear-search-linkmodal,
-body.sunrise .StepsAndProgressBarForWizardView .progress-bar {
+body.sunrise .StepsAndProgressBarForWizardView .progress-bar,
+body.sunrise .task-owner .gravatar {
   background-color: #34495e;
 }
 body.sunrise .latest-activity-toolbar label:hover,
@@ -2301,7 +2303,8 @@ body.marble #show-filters-structure-div-link,
 body.marble .filters-bar .ui-state-active,
 body.marble .filters-bar label:hover,
 body.marble #clear-search-linkmodal,
-body.marble .StepsAndProgressBarForWizardView .progress-bar {
+body.marble .StepsAndProgressBarForWizardView .progress-bar,
+body.marble .task-owner .gravatar {
   background-color: #7f7f7f;
 }
 body.marble .latest-activity-toolbar label:hover,
@@ -2903,7 +2906,8 @@ body.purple-haze #show-filters-structure-div-link,
 body.purple-haze .filters-bar .ui-state-active,
 body.purple-haze .filters-bar label:hover,
 body.purple-haze #clear-search-linkmodal,
-body.purple-haze .StepsAndProgressBarForWizardView .progress-bar {
+body.purple-haze .StepsAndProgressBarForWizardView .progress-bar,
+body.purple-haze .task-owner .gravatar {
   background-color: #713b8a;
 }
 body.purple-haze .latest-activity-toolbar label:hover,
@@ -3506,7 +3510,8 @@ body.flat-cement #show-filters-structure-div-link,
 body.flat-cement .filters-bar .ui-state-active,
 body.flat-cement .filters-bar label:hover,
 body.flat-cement #clear-search-linkmodal,
-body.flat-cement .StepsAndProgressBarForWizardView .progress-bar {
+body.flat-cement .StepsAndProgressBarForWizardView .progress-bar,
+body.flat-cement .task-owner .gravatar {
   background-color: #2c3e50;
 }
 body.flat-cement .latest-activity-toolbar label:hover,
@@ -4128,7 +4133,8 @@ body.amazon #show-filters-structure-div-link,
 body.amazon .filters-bar .ui-state-active,
 body.amazon .filters-bar label:hover,
 body.amazon #clear-search-linkmodal,
-body.amazon .StepsAndProgressBarForWizardView .progress-bar {
+body.amazon .StepsAndProgressBarForWizardView .progress-bar,
+body.amazon .task-owner .gravatar {
   background-color: #26354a;
 }
 body.amazon .latest-activity-toolbar label:hover,
@@ -4730,7 +4736,8 @@ body.sweden #show-filters-structure-div-link,
 body.sweden .filters-bar .ui-state-active,
 body.sweden .filters-bar label:hover,
 body.sweden #clear-search-linkmodal,
-body.sweden .StepsAndProgressBarForWizardView .progress-bar {
+body.sweden .StepsAndProgressBarForWizardView .progress-bar,
+body.sweden .task-owner .gravatar {
   background-color: #034c8c;
 }
 body.sweden .latest-activity-toolbar label:hover,
@@ -5332,7 +5339,8 @@ body.pink #show-filters-structure-div-link,
 body.pink .filters-bar .ui-state-active,
 body.pink .filters-bar label:hover,
 body.pink #clear-search-linkmodal,
-body.pink .StepsAndProgressBarForWizardView .progress-bar {
+body.pink .StepsAndProgressBarForWizardView .progress-bar,
+body.pink .task-owner .gravatar {
   background-color: #323232;
 }
 body.pink .latest-activity-toolbar label:hover,
@@ -5934,7 +5942,8 @@ body.brown #show-filters-structure-div-link,
 body.brown .filters-bar .ui-state-active,
 body.brown .filters-bar label:hover,
 body.brown #clear-search-linkmodal,
-body.brown .StepsAndProgressBarForWizardView .progress-bar {
+body.brown .StepsAndProgressBarForWizardView .progress-bar,
+body.brown .task-owner .gravatar {
   background-color: #547980;
 }
 body.brown .latest-activity-toolbar label:hover,
@@ -6536,7 +6545,8 @@ body.lime #show-filters-structure-div-link,
 body.lime .filters-bar .ui-state-active,
 body.lime .filters-bar label:hover,
 body.lime #clear-search-linkmodal,
-body.lime .StepsAndProgressBarForWizardView .progress-bar {
+body.lime .StepsAndProgressBarForWizardView .progress-bar,
+body.lime .task-owner .gravatar {
   background-color: #2b434f;
 }
 body.lime .latest-activity-toolbar label:hover,
@@ -7138,7 +7148,8 @@ body.cherry #show-filters-structure-div-link,
 body.cherry .filters-bar .ui-state-active,
 body.cherry .filters-bar label:hover,
 body.cherry #clear-search-linkmodal,
-body.cherry .StepsAndProgressBarForWizardView .progress-bar {
+body.cherry .StepsAndProgressBarForWizardView .progress-bar,
+body.cherry .task-owner .gravatar {
   background-color: #6c8092;
 }
 body.cherry .latest-activity-toolbar label:hover,
@@ -7740,7 +7751,8 @@ body.turquoise #show-filters-structure-div-link,
 body.turquoise .filters-bar .ui-state-active,
 body.turquoise .filters-bar label:hover,
 body.turquoise #clear-search-linkmodal,
-body.turquoise .StepsAndProgressBarForWizardView .progress-bar {
+body.turquoise .StepsAndProgressBarForWizardView .progress-bar,
+body.turquoise .task-owner .gravatar {
   background-color: #447799;
 }
 body.turquoise .latest-activity-toolbar label:hover,
@@ -8342,7 +8354,8 @@ body.violet #show-filters-structure-div-link,
 body.violet .filters-bar .ui-state-active,
 body.violet .filters-bar label:hover,
 body.violet #clear-search-linkmodal,
-body.violet .StepsAndProgressBarForWizardView .progress-bar {
+body.violet .StepsAndProgressBarForWizardView .progress-bar,
+body.violet .task-owner .gravatar {
   background-color: #4a3970;
 }
 body.violet .latest-activity-toolbar label:hover,
@@ -8944,7 +8957,8 @@ body.honey #show-filters-structure-div-link,
 body.honey .filters-bar .ui-state-active,
 body.honey .filters-bar label:hover,
 body.honey #clear-search-linkmodal,
-body.honey .StepsAndProgressBarForWizardView .progress-bar {
+body.honey .StepsAndProgressBarForWizardView .progress-bar,
+body.honey .task-owner .gravatar {
   background-color: #46201c;
 }
 body.honey .latest-activity-toolbar label:hover,
@@ -10879,6 +10893,9 @@ body > .ui-autocomplete {
   width: 100%;
   position: relative;
   z-index: 100;
+}
+h1 + .view-toolbar-container {
+  margin-top: 15px;
 }
 .widgets-lock {
   position: relative;
@@ -22169,11 +22186,6 @@ a.user-link {
 #series-and-range-areas .buffer {
   padding-left: 22px;
 }
-#CampaignDetailsView h1,
-#MarketingListDetailsView h1,
-#ReportDetailsView h1 {
-  margin-bottom: 15px;
-}
 #CampaignDetailsView .view-toolbar ul:first-child > li > a,
 #MarketingListDetailsView .view-toolbar ul:first-child > li > a,
 #ReportDetailsView .view-toolbar ul:first-child > li > a {
@@ -23077,6 +23089,9 @@ a.user-link {
   clear: left;
   margin: 15px 0 0 0;
 }
+.marketing-list-autoresponders-list .items {
+  background: #ffffff;
+}
 .edit-autoresponder-link {
   font-size: 14px;
   font-weight: bold;
@@ -23784,7 +23799,7 @@ a + .autoresponder-stats {
   -ms-border-radius: 3px;
   -o-border-radius: 3px;
   border-radius: 3px;
-  padding: 5px 5px 15px 10px;
+  padding: 5px;
   -webkit-box-shadow: inset 0 0 0 1px rgba(204, 204, 204, 0.3) , 1px 1px 1px 0px rgba(153, 153, 153, 0.15);
   -moz-box-shadow: inset 0 0 0 1px rgba(204, 204, 204, 0.3) , 1px 1px 1px 0px rgba(153, 153, 153, 0.15);
   -o-box-shadow: inset 0 0 0 1px rgba(204, 204, 204, 0.3) , 1px 1px 1px 0px rgba(153, 153, 153, 0.15);
@@ -23792,19 +23807,31 @@ a + .autoresponder-stats {
   box-shadow: inset 0 0 0 1px rgba(204, 204, 204, 0.3) , 1px 1px 1px 0px rgba(153, 153, 153, 0.15);
 }
 .kanban-card span {
-  display: block;
+  display: inline-block;
   margin-bottom: 3px;
 }
-.kanban-card .opportunity-name {
+.kanban-card .hidden-content > a {
+  font-size: 11px;
+  position: relative;
+  top: 5px;
+}
+.kanban-card .hidden-content > div {
+  display: none;
+  padding: 10px 0 5px 0;
+}
+.kanban-card .gravatar {
+  border: none !important;
+}
+.opportunity-name {
   font-size: 12px;
   font-weight: normal;
 }
-.kanban-card .account-name {
+.account-name {
   font-size: 14px;
   font-weight: bold;
   color: #666;
 }
-.kanban-card .opportunity-amount {
+.opportunity-amount {
   font-size: 20px;
   font-weight: bold;
   text-align: right;
@@ -23817,21 +23844,21 @@ a + .autoresponder-stats {
   line-height: 1;
   margin-bottom: 5px;
 }
-.kanban-card .closing-date {
+.closing-date {
   font-size: 11px;
   text-align: right;
 }
-.kanban-card .closing-date i {
+.closing-date i {
   text-align: left;
   font-weight: normal !important;
   font-weight: normal;
   font-size: 12px;
   font-family: "zurmo_gamification_symbly_rRg";
 }
-.kanban-card .closing-date i:after {
+.closing-date i:after {
   content: "z";
 }
-.kanban-card .opportunity-owner {
+.opportunity-owner {
   position: absolute;
   right: 5px;
   bottom: 5px;
@@ -23839,24 +23866,21 @@ a + .autoresponder-stats {
   display: block;
   line-height: 1;
 }
-.kanban-card .opportunity-owner span {
+.opportunity-owner span {
   display: inline-block;
   top: -7px;
   position: relative;
   margin: 0 5px;
 }
-.kanban-card .opportunity-owner img {
+.opportunity-owner img {
   background: #DFDFDF;
   padding: 1px;
 }
-.kanban-card .hidden-content > a {
-  font-size: 11px;
-  position: relative;
-  top: 5px;
+#OpportunitiesListView .kanban-card > div {
+  padding: 5px 5px 15px 10px;
 }
-.kanban-card .hidden-content > div {
-  display: none;
-  padding: 10px 0 5px 0;
+#OpportunitiesListView .kanban-card span {
+  display: block;
 }
 .kanban-card.clone {
   position: absolute;
@@ -23876,6 +23900,64 @@ a + .autoresponder-stats {
 .icon-kanban-board-view-type span,
 .icon-grid-view-type span {
   display: none;
+}
+.task-details {
+  display: block;
+  width: 100%;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #dfdfdf;
+}
+.STATUS-HERE-TOO {
+  font-size: 11px;
+}
+.task-status {
+  font-size: 11px;
+  float: left;
+}
+.task-date {
+  float: right;
+}
+.task-content {
+  padding: 10px 0 0 0;
+  border-top: 1px solid #fff;
+}
+.task-subscribers {
+  margin-top: 10px;
+  padding-top: 7px;
+  border-top: 1px solid #dfdfdf;
+  -webkit-box-shadow: inset 0 1px 0 #ffffff;
+  -moz-box-shadow: inset 0 1px 0 #ffffff;
+  -o-box-shadow: inset 0 1px 0 #ffffff;
+  -ms-box-shadow: inset 0 1px 0 #ffffff;
+  box-shadow: inset 0 1px 0 #ffffff;
+}
+.task-subscribers img {
+  margin-right: 5px;
+}
+.task-subscribers .z-link {
+  position: relative;
+  top: 3px;
+}
+.task-action-toolbar {
+  overflow: hidden;
+  float: right;
+  margin: 0 0 10px 2px !important;
+}
+.task-action-toolbar .button-label {
+  font-size: 11px;
+  padding: 0 3px !important;
+  line-height: 20px !important;
+  /*&:after{
+			content:'';
+			position: absolute;
+			top:0;
+			right:0;
+			bottom: 0;
+			left: 0;
+			background: rgba(255, 0, 0, 0.4);
+			z-index: 0;
+		}*/
+
 }
 .webform-embed-code {
   padding: 0;
@@ -24903,6 +24985,7 @@ div.special-pager .hidden.next:after {
   filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
   margin-bottom: 5px !important;
   line-height: 1.4;
+  font-size: 12px;
 }
 .overlay-view .after-form-details-content {
   padding: 0px;
@@ -24914,6 +24997,21 @@ div.special-pager .hidden.next:after {
   color: #fff !important;
   padding: 0;
   text-decoration: underline;
+}
+.overlay-view h3 {
+  font-weight: bold;
+  font-size: 13px;
+  color: #EFEFEF !important;
+  -webkit-text-shadow: none !important;
+  -moz-text-shadow: none !important;
+  -o-text-shadow: none !important;
+  -ms-text-shadow: none !important;
+  text-shadow: none !important;
+}
+.overlay-view .details-description {
+  margin-bottom: 5px !important;
+  line-height: 1.4;
+  font-size: 12px;
 }
 .stay-open {
   display: block !important;
