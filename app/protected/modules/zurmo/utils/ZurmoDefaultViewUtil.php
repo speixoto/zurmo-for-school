@@ -421,7 +421,7 @@
         {
             assert('is_string($controllerId)');
             assert('is_string($moduleId)');
-            assert('is_string($modelId)');
+            assert('is_int($modelId)');
             assert('is_bool($kanbanIsActive)');
             if($kanbanIsActive)
             {
