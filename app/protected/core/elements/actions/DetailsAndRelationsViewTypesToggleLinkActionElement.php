@@ -37,112 +37,30 @@
     /**
      * Used to render multiple listview options such as grid, kanban or cards.
      */
-    class DetailsAndRelationsViewTypesToggleLinkActionElement extends LinkActionElement
+    class DetailsAndRelationsViewTypesToggleLinkActionElement extends ViewTypesToggleLinkActionElement
     {
-        const TYPE_KANBAN_BOARD = 'KanbanBoard';
-
-        const TYPE_DETAILS_AND_RELATIONS   = 'Details And Relations';
-
-        /**
-         * @return null
-         */
-        public function getActionType()
+        protected function resolveLabelForNonKanbanBoard()
         {
-            return null;
+            return ZurmoHtml::tag('i', array('class' => $this->resolveNonKanbanBoardClass()),
+                                             "<span>" . Zurmo::t('Core', 'Details') . "</span>");
         }
 
-        /**
-         * @return string
-         */
-        public function render()
+        protected function getKanbanBoardUrl()
         {
-            $kanbanBoardUrl = Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/details/',
-                              array('id' => $this->modelId, 'kanbanBoard' => 1));
-            $listUrl        = Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/details/',
-                              array('id' => $this->modelId, 'kanbanBoard' => 0));
-            $content        = null;
-
-            $icon = ZurmoHtml::tag('i', array('class' => $this->resolveKanbanBoardClass()), '<span>Kanban</span>');
-            $kanbanBoardClass = 'default-button';
-            if ($this->getActive() == static::TYPE_KANBAN_BOARD)
-            {
-                $kanbanBoardClass .= ' active';
-            }
-            $content        = ZurmoHtml::openTag('div', array('class' => $kanbanBoardClass));
-            $content       .= ZurmoHtml::link($icon, $kanbanBoardUrl, array('title' => Zurmo::t('Core', 'View as Kanban Board')));
-            $content       .= ZurmoHtml::closeTag('div');
-
-            $icon = ZurmoHtml::tag('i', array('class' => $this->resolveDetailsClass()), '<span>Details And Relations</span>');
-            $gridClass      = 'default-button';
-            if ($this->getActive() == static::TYPE_DETAILS_AND_RELATIONS)
-            {
-                $gridClass .= ' active';
-            }
-            $content       .= ZurmoHtml::openTag('div', array('class' => $gridClass));
-            $content       .= ZurmoHtml::link($icon, $listUrl, array('title' => Zurmo::t('Core', 'View as Details and Relations')));
-            $content       .= ZurmoHtml::closeTag('div');
-            return $content;
+            return Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/details/',
+                                         array('id' => $this->modelId, 'kanbanBoard' => true));
         }
 
-        /**
-         * Selecting a different type of list view is not supported right now in mobile.
-         * @return array|void
-         * @throws NotSupportedException
-         */
-        public function renderMenuItem()
+
+        protected function getNonKanbanBoardUrl()
         {
-            throw new NotSupportedException();
+            return Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/details/',
+                                         array('id' => $this->modelId, 'kanbanBoard' => false));
         }
 
-        /**
-         * @return string
-         */
-        protected function resolveKanbanBoardClass()
+        protected function getViewLabelForNonKanbanBoard()
         {
-            $kanbanBoardClass = 'icon-kanban-board-view-type';
-            if ($this->getActive() == static::TYPE_KANBAN_BOARD)
-            {
-                $kanbanBoardClass .= ' active';
-            }
-            return $kanbanBoardClass;
-        }
-
-        /**
-         * @return string
-         */
-        protected function resolveDetailsClass()
-        {
-            $gridClass = 'icon-grid-view-type';
-            if ($this->getActive() == static::TYPE_DETAILS_AND_RELATIONS)
-            {
-                $gridClass .= ' active';
-            }
-            return $gridClass;
-        }
-
-        /**
-         * @return string
-         */
-        protected function getDefaultLabel()
-        {
-            return Zurmo::t('ReportsModule', 'Toggle Results');
-        }
-
-        /**
-         * @return null
-         */
-        protected function getDefaultRoute()
-        {
-            return null;
-        }
-
-        protected function getActive()
-        {
-            if (!isset($this->params['active']))
-            {
-                return static::TYPE_DETAILS_AND_RELATIONS;
-            }
-            return $this->params['active'];
+            return Zurmo::t('Core', 'View as Details');
         }
     }
 ?>

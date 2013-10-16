@@ -429,7 +429,7 @@
             }
             else
             {
-                $active = DetailsAndRelationsViewTypesToggleLinkActionElement::TYPE_DETAILS_AND_RELATIONS;
+                $active = DetailsAndRelationsViewTypesToggleLinkActionElement::TYPE_NON_KANBAN_BOARD;
             }
             $toggleLinkActionElement = new DetailsAndRelationsViewTypesToggleLinkActionElement(
                                        $controllerId, $moduleId, $modelId, array('active' => $active));
