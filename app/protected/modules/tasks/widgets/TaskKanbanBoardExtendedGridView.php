@@ -288,7 +288,7 @@
         {
             return ZurmoHtml::tag('li', array('class' => $this->getRowClassForTaskKanbanColumn($data),
                                               'id' => 'items_' . $data->id),
-                                              ZurmoHtml::tag('div', array('class' => 'clearfix'), $this->renderCardDetailsContent($row)));
+                                              $this->wrapCardDetailsContent($row));
         }
 
         /**
@@ -392,7 +392,7 @@
          */
         protected function wrapCardDetailsContent($row)
         {
-            return ZurmoHtml::tag('div', array('style' => 'height:90px'), $this->renderCardDetailsContent($row));
+            return ZurmoHtml::tag('div', array('class' => 'clearfix'), $this->renderCardDetailsContent($row));
         }
 
         protected function renderCardDetailsContent($row)
