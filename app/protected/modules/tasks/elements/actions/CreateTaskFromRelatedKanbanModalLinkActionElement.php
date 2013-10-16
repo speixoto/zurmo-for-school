@@ -50,9 +50,28 @@
         public function render()
         {
             $content  = ZurmoHtml::openTag('div', array('class' => 'default-button'));
+            $content .= ZurmoHtml::tag('i', array('class' => 'icon-create'), '');
             $content .= parent::render();
             $content .= ZurmoHtml::closeTag('div');
             return $content;
         }
+
+        protected function getHtmlOptions()
+        {
+            return array('class' => 'button-action');
+        }
     }
+
+    /*Correct Structure:
+
+    <div class="default-button">
+        <a class="button-action" href="#" id="yt1">
+            <i class="icon-create"></i>                         <---- This <i> should live INSIDE the <a>
+            <span class="z-label">                              <---- should be BUTTON-LABEL, not Z-LABEL
+                Create Task
+            </span>
+        </a>
+    </div>
+
+    */
 ?>

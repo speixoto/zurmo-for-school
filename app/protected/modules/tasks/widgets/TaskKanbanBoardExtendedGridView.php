@@ -413,22 +413,22 @@
                         <h4><a href="">title of task <span>(Jason)</span></a></h4>
                         <p>this is a really short description and may or may not necessarily appear here or there..</p>
                         <div class="task-subscribers">
-                            <a class="task-owner" href="">
+                            <a class="task-owner" href="" title="ADD-USERNAME-HERE">
                                 <img class="gravatar" width="20" height="20"
                                      src="http://www.gravatar.com/avatar/9fada82dfb92525dea1686f026d6a471?s=20&amp;d=identicon&amp;r=g"
                                      alt="Katie Smith">
                             </a>
-                            <a href="">
+                            <a href="" title="ADD-USERNAME-HERE">
                                 <img class="gravatar" width="20" height="20"
                                      src="http://www.gravatar.com/avatar/9fada82dfb92525dea1686f026d6a471?s=20&amp;d=identicon&amp;r=g"
                                      alt="Katie Smith">
                             </a>
-                            <a href="">
+                            <a href="" title="ADD-USERNAME-HERE">
                                 <img class="gravatar" width="20" height="20"
                                      src="http://www.gravatar.com/avatar/9fada82dfb92525dea1686f026d6a471?s=20&amp;d=identicon&amp;r=g"
                                      alt="Katie Smith">
                             </a>
-                            <a href="#" class="z-link IS-SUBSCRIBED-TRUE-FALSE"><i class="icon-subscribe"></i>Subscribe</a>
+                            <a href="#" class="z-link IS-SUBSCRIBED-TRUE-FALSE" title="subscribe"><i class="icon-subscribe"></i>Subscribe</a>
                         </div>
                     </div>';
         }
