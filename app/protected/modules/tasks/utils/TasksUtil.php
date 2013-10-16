@@ -429,9 +429,9 @@
             $label       = $task->name . ZurmoHtml::tag('span', array(), '(' . strval($task->owner) . ')');
             $params      = array('label' => $label, 'routeModuleId' => 'tasks', 'ajaxOptions' => $ajaxOptions,
                                  'wrapLabel' => false);
-            $viewFromRelatedModalLinkActionElement = new ViewFromRelatedModalLinkActionElement(
+            $goToDetailsFromRelatedModalLinkActionElement = new GoToDetailsFromRelatedModalLinkActionElement(
                                                                     $controllerId, $moduleId, $task->id, $params);
-            $linkContent = $viewFromRelatedModalLinkActionElement->render();
+            $linkContent = $goToDetailsFromRelatedModalLinkActionElement->render();
             $string      = TaskActionSecurityUtil::resolveViewLinkToModelForCurrentUser($task, $moduleClassName, $linkContent);
             return $string;
         }

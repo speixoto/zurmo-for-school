@@ -221,8 +221,8 @@
          */
         protected function registerKanbanColumnStartActionScript($label, $targetStatus, $url)
         {
-            $script = $this->registerButtonActionScript('action-type-start', KanbanItem::TYPE_IN_PROGRESS,
-                                                        $label, 'action-type-finish', $url, $targetStatus);
+            $script = $this->registerButtonActionScript('task-start-action', KanbanItem::TYPE_IN_PROGRESS,
+                                                        $label, 'task-finish-action', $url, $targetStatus);
             Yii::app()->clientScript->registerScript('start-action-script', $script);
         }
 
@@ -234,7 +234,7 @@
          */
         protected function registerKanbanColumnFinishActionScript($labelAccept, $labelReject, $targetStatus, $url)
         {
-            $script = "$(document).on('click','.action-type-finish',function()
+            $script = "$(document).on('click','.task-finish-action',function()
                             {
                                 var element = $(this).parent().parent().parent();
                                 var ulelement = $(element).parent();
@@ -244,10 +244,10 @@
                                 var rejectLinkElement = $(this).clone();
                                 var parent = $(this).parent();
                                 $(this).find('.z-label').html('" . $labelAccept . "');
-                                $(this).removeClass('action-type-finish').addClass('action-type-accept');
+                                $(this).removeClass('task-finish-action').addClass('task-accept-action');
                                 $(rejectLinkElement).appendTo($(parent));
                                 $(rejectLinkElement).find('.z-label').html('" . $labelReject . "');
-                                $(rejectLinkElement).removeClass('action-type-finish').addClass('action-type-reject');
+                                $(rejectLinkElement).removeClass('task-finish-action').addClass('task-reject-action');
                                 $.ajax(
                                     {
                                         type : 'GET',
@@ -285,8 +285,12 @@
         {
             return ZurmoHtml::tag('li', array('class' => $this->getRowClassForTaskKanbanColumn($data),
                                               'id' => 'items_' . $data->id),
+<<<<<<< local
                                               ZurmoHtml::tag('div', array('class' => 'clearfix'),
                                                   $this->renderTaskCardDetailsContent($data, $row)));
+=======
+                                              $this->wrapCardDetailsContent($row));
+>>>>>>> other
         }
 
         /**
@@ -338,9 +342,9 @@
                                 var linkTag = $('#task-sortable-rows-" . $targetKanbanItemType . " #' + id + ' ." . $buttonClass . "');
                                 $(linkTag).find('.z-label').html('" . $label . "');
                                 $(linkTag).removeClass('" . $buttonClass . "').addClass('" . $targetButtonClass . "');
-                                if('" . $buttonClass . "' == 'action-type-reject')
+                                if('" . $buttonClass . "' == 'task-reject-action')
                                 {
-                                    $('#task-sortable-rows-" . $targetKanbanItemType . " #' + id + ' .action-type-accept').remove();
+                                    $('#task-sortable-rows-" . $targetKanbanItemType . " #' + id + ' .task-accept-action').remove();
                                 }
                             }
                             else
@@ -368,7 +372,7 @@
          */
         protected function registerKanbanColumnAcceptActionScript($label, $targetStatus, $url)
         {
-            $script = $this->registerButtonActionScript('action-type-accept', KanbanItem::TYPE_COMPLETED,
+            $script = $this->registerButtonActionScript('task-accept-action', KanbanItem::TYPE_COMPLETED,
                       $label, 'task-complete-action ui-state-disabled', $url,$targetStatus);
             Yii::app()->clientScript->registerScript('accept-action-script', $script);
         }
@@ -381,8 +385,8 @@
          */
         protected function registerKanbanColumnRejectActionScript($label, $targetStatus, $url)
         {
-            $script = $this->registerButtonActionScript('action-type-reject', KanbanItem::TYPE_TODO,
-                      $label, 'action-type-start', $url, $targetStatus);
+            $script = $this->registerButtonActionScript('task-reject-action', KanbanItem::TYPE_TODO,
+                      $label, 'task-start-action', $url, $targetStatus);
             Yii::app()->clientScript->registerScript('reject-action-script', $script);
         }
 
@@ -393,6 +397,7 @@
          */
         protected function renderTaskCardDetailsContent(Task $task, $row)
         {
+<<<<<<< local
             $statusClass = 'status-' . $task->status;
             $content  = ZurmoHtml::openTag('div', array('class' => 'task-details clearfix ' . $statusClass));
             $content .= ZurmoHtml::tag('span', array('class' => 'task-status'), Task::getStatusDisplayName($task->status));
@@ -414,6 +419,9 @@
             $content .= $this->renderCardDataContent($this->cardColumns['completionBar'], $task, $row);
             $content .= ZurmoHtml::closeTag('div');
             return $content;
+=======
+            return ZurmoHtml::tag('div', array('class' => 'clearfix'), $this->renderCardDetailsContent($row));
+>>>>>>> other
         }
 
         protected function resolveAndRenderTaskCardDetailsDueDateContent(Task $task)
@@ -460,3 +468,4 @@
         }
     }
 ?>
+

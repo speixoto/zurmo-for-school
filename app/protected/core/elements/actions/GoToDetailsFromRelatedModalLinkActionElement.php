@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class ViewFromRelatedModalLinkActionElement extends RelatedModalLinkActionElement
+    class GoToDetailsFromRelatedModalLinkActionElement extends RelatedModalLinkActionElement
     {
 
         protected function getDefaultLabel()

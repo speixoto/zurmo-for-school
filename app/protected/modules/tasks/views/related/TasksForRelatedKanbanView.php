@@ -345,7 +345,10 @@
                                                       $actionElementBarContent);
             $secondActionBarContent  = $this->renderSecondActionElementBar(false);
             $secondActionBarContent .= $this->resolveShouldRenderActionBarLinksForKanbanBoard();
-            $actionBarContent .= ZurmoHtml::tag('nav', array('class' => 'pillbox clearfix'), $secondActionBarContent);
+            if($secondActionBarContent != null)
+            {
+                $actionBarContent .= ZurmoHtml::tag('nav', array('class' => 'pillbox clearfix'), $secondActionBarContent);
+            }
             $content .= ZurmoHtml::tag('div', array('class' => 'view-toolbar-container clearfix'), $actionBarContent);
             return $content;
         }
