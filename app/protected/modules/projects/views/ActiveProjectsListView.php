@@ -133,6 +133,10 @@
             return 'active-projects-list-view';
         }
 
+        /**
+         * Get grid params
+         * @return array
+         */
         protected function getCGridViewParams()
         {
             return array_merge(parent::getCGridViewParams(),
@@ -141,6 +145,10 @@
                               'renderSpanOnEmptyText' => false));
         }
 
+        /**
+         * Get text in case there are no projects
+         * @return string
+         */
         protected function getEmptyText()
         {
             $content  = '<div class="general-issue-notice no-projects-found"><span class="icon-notice"></span><p>';
