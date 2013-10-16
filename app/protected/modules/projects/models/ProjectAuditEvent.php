@@ -69,7 +69,7 @@
                     throw new NoCurrentUserSecurityException();
                 }
             }
-            $projectAuditEvent = new ProjectAuditEvent();
+            $projectAuditEvent                 = new ProjectAuditEvent();
             $projectAuditEvent->dateTime       = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
             $projectAuditEvent->eventName      = $eventName;
             $projectAuditEvent->user           = $user;

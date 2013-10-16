@@ -38,6 +38,10 @@
     {
         protected $cssClasses = array('overlay-view');
 
+        protected $overlayKeyValueSeparator = ' : ';
+
+        const DESCRIPTION_CLASS          = 'kanban-view-description';
+
         /**
          * Renders content for the overlay view
          * @return string

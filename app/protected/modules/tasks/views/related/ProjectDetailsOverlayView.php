@@ -33,7 +33,9 @@
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
-
+    /**
+     * Project details overlay view in project task kanban view
+     */
     class ProjectDetailsOverlayView extends TaskRelatedDetailsOverlayView
     {
         protected $cssClasses = array('overlay-view');
@@ -58,7 +60,8 @@
         protected function renderDescriptionContent()
         {
             $content = ZurmoHtml::tag('div', array('class' => static::DESCRIPTION_CLASS),
-                                                    StringUtil::getChoppedStringContent($this->model->description, 50));
+                                      Zurmo::t('ZurmoModule', 'Description') . $this->overlayKeyValueSeparator .
+                                      StringUtil::getChoppedStringContent($this->model->description, 50));
             return $content;
         }
 
@@ -68,7 +71,9 @@
          */
         protected function renderNameContent()
         {
-            $content = ZurmoHtml::tag('div', array('class' => static::DESCRIPTION_CLASS), $this->model->name);
+            $content = ZurmoHtml::tag('p', array('class' => static::DESCRIPTION_CLASS),
+                                      Zurmo::t('ZurmoModule', 'Name') .
+                                      $this->overlayKeyValueSeparator . $this->model->name);
             return $content;
         }
     }
