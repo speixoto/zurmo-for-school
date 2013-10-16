@@ -71,13 +71,24 @@
             $modelDerivationPathToItem = RuntimeUtil::getModelDerivationPathToItem('User');
             foreach ($task->notificationSubscribers as $subscriber)
             {
-                $user           = $subscriber->person->castDown(array($modelDerivationPathToItem));
-                $userUrl        = Yii::app()->createUrl('/users/default/details', array('id' => $user->id));
-                $stringContent  = ZurmoHtml::link($user->getAvatarImage(36), $userUrl);
-                $content        .= '<p>' . $stringContent . '</p>';
+                $user     = $subscriber->person->castDown(array($modelDerivationPathToItem));
+                $content .= ZurmoHtml::tag('p', array(), static::renderSubscriberImageAndLinkContent($user));
             }
 
             return $content;
+        }
+
+        public static function renderSubscriberImageAndLinkContent(User $user, $imageSize = 36, $class = null)
+        {
+            assert('is_int($imageSize)');
+            assert('is_string($class) || $class === null');
+            $htmlOptions = array('title' => strval($user));
+            if($class != null)
+            {
+                $htmlOptions['class'] = $class;
+            }
+            $userUrl     = Yii::app()->createUrl('/users/default/details', array('id' => $user->id));
+            return ZurmoHtml::link($user->getAvatarImage($imageSize), $userUrl, $htmlOptions);
         }
 
         /**
@@ -400,13 +411,13 @@
         }
 
         /**
-         * Get link for view task in modal mode
-         * @param array $task
-         * @param int $row
-         * @param string $controllerId
-         * @param string $moduleId
-         * @param string $moduleClassName
-         * @return string
+         * Get link for going to the task modal detail view
+         * @param Task $task
+         * @param $row
+         * @param $controllerId
+         * @param $moduleId
+         * @param $moduleClassName
+         * @return null|string
          */
         public function getLinkForViewModal(Task $task, $row, $controllerId, $moduleId, $moduleClassName)
         {
@@ -415,8 +426,9 @@
             assert('is_string($moduleId)');
             assert('is_string($moduleClassName)');
             $ajaxOptions = TasksUtil::resolveViewAjaxOptionsForSelectingModel();
-            $title       = Zurmo::t('TasksModule', $task->name);
-            $params      = array('label' => $title, 'routeModuleId' => 'tasks', 'ajaxOptions' => $ajaxOptions);
+            $label       = $task->name . ZurmoHtml::tag('span', array(), '(' . strval($task->owner) . ')');
+            $params      = array('label' => $label, 'routeModuleId' => 'tasks', 'ajaxOptions' => $ajaxOptions,
+                                 'wrapLabel' => false);
             $viewFromRelatedModalLinkActionElement = new ViewFromRelatedModalLinkActionElement(
                                                                     $controllerId, $moduleId, $task->id, $params);
             $linkContent = $viewFromRelatedModalLinkActionElement->render();
@@ -664,7 +676,7 @@
          */
         public static function getKanbanSubscriptionLink(Task $task, $row)
         {
-            return self::resolveSubscriptionLink($task, 'subscribe-task-link', 'unsubscribe-task-link');
+            return self::resolveSubscriptionLink($task, 'z-link subscribe-task-link', 'z-link unsubscribe-task-link');
         }
 
         /**
@@ -691,15 +703,17 @@
             assert('is_string($unsubscribeLinkClass)');
             if(TasksUtil::isUserSubscribedForTask($task, Yii::app()->user->userModel) === false)
             {
-                $content = Zurmo::t('TasksModule', 'Subscribe');
-                $class   = $subscribeLinkClass;
+                $label       = Zurmo::t('TasksModule', 'Subscribe');
+                $class       = $subscribeLinkClass;
+                $iconContent = ZurmoHtml::tag('i', array('class' => 'icon-subscribe'), '');
             }
             else
             {
-                $content = Zurmo::t('TasksModule', 'Unsubscribe');
-                $class   = $unsubscribeLinkClass;
+                $label       = Zurmo::t('TasksModule', 'Unsubscribe');
+                $class       = $unsubscribeLinkClass;
+                $iconContent = ZurmoHtml::tag('i', array('class' => 'icon-subscribe'), '');
             }
-            return ZurmoHtml::link('<strong>' . $content . '</strong>', '#', array('class' => $class)) ;
+            return ZurmoHtml::link($iconContent . $label, '#', array('class' => $class, 'title' => $label)) ;
         }
 
         /**
@@ -707,20 +721,18 @@
          * @param int $id
          * @return float
          */
-        public static function getTaskCompletionPercentage($id)
+        public static function getTaskCompletionPercentage(Task $task)
         {
-            $task = Task::getById($id);
             $checkListItemsCount = count($task->checkListItems);
-            $completedItemsCount = 0;
             if($checkListItemsCount == 0)
             {
-                return null;
+                return 0;
             }
             else
             {
                 $completedItemsCount = self::getTaskCompletedCheckListItems($task);
             }
-            $completionPercent = ($completedItemsCount/$checkListItemsCount)*100;
+            $completionPercent = ($completedItemsCount/$checkListItemsCount) * 100;
             return $completionPercent;
         }
 
@@ -786,15 +798,14 @@
          */
         public static function renderCompletionProgressBar(Task $task)
         {
-            $percentage = TasksUtil::getTaskCompletionPercentage(intval($task->id));
-            if($percentage == null)
+            $checkListItemsCount = count($task->checkListItems);
+            if( $checkListItemsCount == 0)
             {
                 return null;
             }
-            else
-            {
-                return Zurmo::t('TasksModule', '% Complete - ' . $percentage);
-            }
+            $percentageComplete = static::getTaskCompletionPercentage($task);
+            return ZurmoHtml::tag('div', array('class' => 'completion-percentage-bar'), 'todo' . $percentageComplete);
+            $percentage = TasksUtil::getTaskCompletionPercentage(intval($task->id));
         }
 
         /**

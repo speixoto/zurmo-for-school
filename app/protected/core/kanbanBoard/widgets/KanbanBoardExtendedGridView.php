@@ -260,14 +260,21 @@
             $cardDetails = null;
             foreach ($this->cardColumns as $cardData)
             {
-                $content      = $this->evaluateExpression($cardData['value'], array('data' => $this->dataProvider->data[$row],
-                                                                                    'offset' => ($this->getOffset() + $row)));
+
+                $content      = $this->renderCardDataContent($cardData, $this->dataProvider->data[$row], $row);
                 $cardDetails .= ZurmoHtml::tag('span', array('class' => $cardData['class']), $content);
             }
             $userUrl      = Yii::app()->createUrl('/users/default/details', array('id' => $this->dataProvider->data[$row]->owner->id));
             $cardDetails .= ZurmoHtml::link($this->dataProvider->data[$row]->owner->getAvatarImage(20), $userUrl,
                                             array('class' => 'opportunity-owner'));
             return $cardDetails;
+        }
+
+        protected function renderCardDataContent(array $cardData, RedBeanModel $model, $row)
+        {
+            assert('is_int($row)');
+            return $this->evaluateExpression($cardData['value'], array('data' => $model,
+                                             'offset' => ($this->getOffset() + $row)));
         }
 
         /**
