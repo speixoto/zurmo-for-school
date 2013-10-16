@@ -111,7 +111,6 @@
                     $content = $kanbanToggleLink. $this->resolveAndRenderLockingLink($renderedInForm);
                 }
                 $toolbarContent = ZurmoHtml::tag('nav', array('class' => 'pillbox clearfix'), $content);
-                $toolbarContent = ZurmoHtml::tag('div', array('class' => 'view-toolbar'), $toolbarContent);
             }
             $toolbarContent = ZurmoHtml::tag('div', array('class' => 'view-toolbar-container widgets-lock clearfix '), $toolbarContent);
             return $toolbarContent;
