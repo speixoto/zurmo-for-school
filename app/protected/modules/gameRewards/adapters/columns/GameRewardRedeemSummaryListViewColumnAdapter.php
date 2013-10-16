@@ -57,14 +57,13 @@
         public static function resolveSummary(GameReward $gameReward, $availableCoins)
         {
             assert('is_int($availableCoins)');
-            $content  = strval($gameReward);
-            $content .= '<br>';
-            $content .= Zurmo::t('GameRewardsModule', 'Cost in Coins') . ' ' . $gameReward->cost;
-            $content .= '<br>';
-            $content .= Zurmo::t('ZurmoModule', 'Quantity Available') . ' ' .$gameReward->quantity;
-            $content .= '<br>';
-            $content .= static::renderExpirationDateTimeContent($gameReward);
-            $content .= '<br>';
+            $content  = ZurmoHtml::tag('h4', array('class' => 'reward-name'),
+                        strval($gameReward));
+            $content .= '<br />';
+            $content .= ZurmoHtml::tag('span', array('class' => 'reward-cost'), $gameReward->cost . ' x ');
+            $content .= ZurmoHtml::tag('span', array(),
+                        ', ' . $gameReward->quantity . ' ' . Zurmo::t('ZurmoModule', 'Available') .
+                        ' ' . static::renderExpirationDateTimeContent($gameReward));
             $content .= static::renderRedeemLink($gameReward, $availableCoins);
             return $content;
         }
@@ -73,7 +72,7 @@
         {
             if ($gameReward->expirationDateTime != null)
             {
-                $content = Zurmo::t('ZurmoModule', 'Expiration Date Time');
+                $content = Zurmo::t('ZurmoModule', 'Until');
                 return $content . DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay($gameReward->expirationDateTime);
             }
         }
@@ -81,10 +80,10 @@
         protected static function renderRedeemLink(GameReward $gameReward, $availableCoins)
         {
             assert('is_int($availableCoins)');
-            $url      =   Yii::app()->createUrl('gameRewards/default/redeemReward', array('id' => $gameReward->id));
+            $url      = Yii::app()->createUrl('gameRewards/default/redeemReward', array('id' => $gameReward->id));
             $label    = Zurmo::t('GameRewardsModule', 'Redeem');
             $aContent = ZurmoHtml::wrapLink($label);
-            return       ZurmoHtml::ajaxLink($aContent, $url,
+            return      ZurmoHtml::ajaxLink($aContent, $url,
                 array('type'       => 'GET',
                       'dataType'     => 'json',
                       'success'    => 'function(data){
@@ -114,7 +113,7 @@
             $id                       = static::getRedeemRewardLinkId($gameReward->id);
             $htmlOptions['id']        = $id;
             $htmlOptions['name']      = $id;
-            $htmlOptions['class']     = 'attachLoading z-button' . $disabledClass;
+            $htmlOptions['class']     = 'attachLoading z-button reward-redeem-link' . $disabledClass;
             $htmlOptions['namespace'] = 'redeem';
             if($disabled)
             {
