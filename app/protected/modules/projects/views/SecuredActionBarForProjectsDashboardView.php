@@ -56,7 +56,6 @@
                                 'type'      => 'ProjectsListMenu',
                                 'iconClass' => 'icon-projects-list'
                             ),
-
                         ),
                     ),
                     'secondToolBar' => array(
