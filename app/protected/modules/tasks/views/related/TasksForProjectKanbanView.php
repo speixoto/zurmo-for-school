@@ -39,6 +39,39 @@
     class TasksForProjectKanbanView extends TasksForRelatedKanbanView
     {
         /**
+         * @return array
+         */
+        public static function getDefaultMetadata()
+        {
+            $metadata = array(
+                'global' => array(
+                    'toolbar' => array(
+                        'elements' => array(
+                            array('type'      => 'RelatedKanbanViewDetailsMenu',
+                                'iconClass'   => 'icon-details',
+                                'id'          => 'RelatedKanbanViewActionMenu',
+                                'itemOptions' => array('class' => 'hasDetailsFlyout'),
+                                'model'       => 'eval:$this->params["relationModel"]',
+                            ),
+                            array('type'      => 'ProjectsOptionsMenu',
+                                'id'          => 'ListViewOptionsActionMenu',
+                                'iconClass'   => 'icon-edit',
+                            ),
+                            array('type'            => 'CreateTaskFromRelatedKanbanModalLink',
+                                'routeModuleId'   => 'eval:$this->moduleId',
+                                'routeParameters' => 'eval:$this->getCreateLinkRouteParameters()',
+                                'ajaxOptions'     => 'eval:TasksUtil::resolveAjaxOptionsForEditModel("Create")',
+                                'uniqueLayoutId'  => 'eval:$this->uniqueLayoutId',
+                                'modalContainerId'=> 'eval:TasksUtil::getModalContainerId()'
+                            ),
+                        ),
+                    ),
+                ),
+            );
+            return $metadata;
+        }
+
+        /**
          * @return string
          */
         protected function getRelationAttributeName()
@@ -72,6 +105,11 @@
             );
             $searchAttributeData['structure'] = '1';
             return $searchAttributeData;
+        }
+
+        protected function shouldRenderActionBarLinksForKanbanBoard()
+        {
+            return false;
         }
     }
 ?>

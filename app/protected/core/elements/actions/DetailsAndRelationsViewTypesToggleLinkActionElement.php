@@ -63,10 +63,24 @@
             $content        = null;
 
             $icon = ZurmoHtml::tag('i', array('class' => $this->resolveKanbanBoardClass()), '<span>Kanban</span>');
+            $kanbanBoardClass = 'default-button';
+            if ($this->getActive() == static::TYPE_KANBAN_BOARD)
+            {
+                $kanbanBoardClass .= ' active';
+            }
+            $content        = ZurmoHtml::openTag('div', array('class' => $kanbanBoardClass));
             $content       .= ZurmoHtml::link($icon, $kanbanBoardUrl, array('title' => Zurmo::t('Core', 'View as Kanban Board')));
+            $content       .= ZurmoHtml::closeTag('div');
 
             $icon = ZurmoHtml::tag('i', array('class' => $this->resolveDetailsClass()), '<span>Details And Relations</span>');
+            $gridClass      = 'default-button';
+            if ($this->getActive() == static::TYPE_DETAILS_AND_RELATIONS)
+            {
+                $gridClass .= ' active';
+            }
+            $content       .= ZurmoHtml::openTag('div', array('class' => $gridClass));
             $content       .= ZurmoHtml::link($icon, $listUrl, array('title' => Zurmo::t('Core', 'View as Details and Relations')));
+            $content       .= ZurmoHtml::closeTag('div');
             return $content;
         }
 

@@ -53,6 +53,12 @@
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
+                            array('type'        => 'RelatedKanbanViewDetailsMenu',
+                                  'iconClass'   => 'icon-details',
+                                  'id'          => 'RelatedKanbanViewActionMenu',
+                                  'itemOptions' => array('class' => 'hasDetailsFlyout'),
+                                  'model'       => 'eval:$this->params["relationModel"]',
+                            ),
                             array('type'            => 'CreateTaskFromRelatedKanbanModalLink',
                                   'routeModuleId'   => 'eval:$this->moduleId',
                                   'routeParameters' => 'eval:$this->getCreateLinkRouteParameters()',
@@ -60,12 +66,7 @@
                                   'uniqueLayoutId'  => 'eval:$this->uniqueLayoutId',
                                   'modalContainerId'=> 'eval:TasksUtil::getModalContainerId()'
                             ),
-                            array('type'        => 'RelatedKanbanViewDetailsMenu',
-                                  'iconClass'   => 'icon-details',
-                                  'id'          => 'RelatedKanbanViewActionMenu',
-                                  'itemOptions' => array('class' => 'hasDetailsFlyout'),
-                                  'model'       => 'eval:$this->params["relationModel"]',
-                            ),
+
                         ),
                     ),
                 ),
@@ -105,8 +106,9 @@
             $this->gridIdSuffix           = $gridIdSuffix;
             $this->gridViewPagerParams    = $gridViewPagerParams;
             $this->gridId                 = $this->getGridId();
-            $this->kanbanBoard            = $kanbanBoard;
+            $this->setKanbanBoard($kanbanBoard);
             $this->params                 = $params;
+            $this->modelId                = $params["relationModel"]->id;
         }
 
         /**
@@ -121,7 +123,6 @@
             $cClipWidget->beginClip("ListView");
             $cClipWidget->widget($this->getGridViewWidgetPath(), $this->getCGridViewParams());
             $cClipWidget->endClip();
-            $relatedModel = $this->params['relationModel'];
             $content     = $this->renderKanbanViewTitleWithActionBars();
             $content    .= TasksUtil::renderViewModalContainer();
             //Check for zero count
@@ -159,6 +160,7 @@
          */
         protected function getCardColumns()
         {
+            //todo: return array(), not using this anymore
             $controllerId = $this->controllerId;
             $moduleId     = $this->moduleId;
             return array('name'                 => array('value'  => $this->getLinkString('$data->name', 'name'), 'class' => 'task-name'),
@@ -298,7 +300,7 @@
          */
         protected function getGridViewWidgetPath()
         {
-            return $this->kanbanBoard->getGridViewWidgetPath();
+            return $this->getKanbanBoard()->getGridViewWidgetPath();
         }
 
         /**
@@ -307,7 +309,7 @@
         protected function getCGridViewParams()
         {
             $params = parent::getCGridViewParams();
-            $params = array_merge($params, $this->kanbanBoard->getGridViewParams());
+            $params = array_merge($params, $this->getKanbanBoard()->getGridViewParams());
             return array_merge($params, $this->resolveExtraParamsForKanbanBoard());
         }
 
@@ -338,25 +340,29 @@
         {
             $content                 = $this->renderTitleContent();
             $actionElementBarContent = $this->renderActionElementBar(false);
-            $firstActionBarContent   = ZurmoHtml::tag('nav', array('class' => 'pillbox clearfix'),
-                                                                                    $actionElementBarContent);
-            if (!Yii::app()->userInterface->isMobile() &&
-                null != $secondActionElementBarContent = $this->renderSecondActionElementBar(false))
-            {
-                $secondActionElementBarContent = ZurmoHtml::tag('nav', array('class' => 'pillbox clearfix'),
-                                                   $secondActionElementBarContent);
-                if($this->params['relationModuleId'] != 'projects')
-                {
-                   $links = ZurmoDefaultViewUtil::renderActionBarLinksForKanbanBoard($this->controllerId,
-                                                                                    $this->params['relationModuleId'],
-                                                                                    (int)$this->params['relationModel']->id);
-                   $secondActionElementBarContent .= ZurmoHtml::tag('nav', array('class' => 'pillbox clearfix'), $links);
-                }
-                $firstActionBarContent .= $secondActionElementBarContent;
-            }
-            $content                 .= ZurmoHtml::tag('div', array('class' => 'view-toolbar-container clearfix'),
-                                                $firstActionBarContent);
+            $actionBarContent        = ZurmoHtml::tag('nav', array('class' => 'pillbox clearfix'),
+                                                      $actionElementBarContent);
+            $secondActionBarContent  = $this->renderSecondActionElementBar(false);
+            $secondActionBarContent .= $this->resolveShouldRenderActionBarLinksForKanbanBoard();
+            $actionBarContent .= ZurmoHtml::tag('nav', array('class' => 'pillbox clearfix'), $secondActionBarContent);
+            $content .= ZurmoHtml::tag('div', array('class' => 'view-toolbar-container clearfix'), $actionBarContent);
             return $content;
+        }
+
+        protected function resolveShouldRenderActionBarLinksForKanbanBoard()
+        {
+            if($this->shouldRenderActionBarLinksForKanbanBoard())
+            {
+                return ZurmoDefaultViewUtil::renderActionBarLinksForKanbanBoard($this->controllerId,
+                    $this->params['relationModuleId'],
+                    (int)$this->params['relationModel']->id,
+                    true);
+            }
+        }
+
+        protected function shouldRenderActionBarLinksForKanbanBoard()
+        {
+            return true;
         }
     }
 ?>

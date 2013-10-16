@@ -235,8 +235,8 @@
          */
         public static function shouldReceiveCollectionItem()
         {
-            $value = mt_rand(1, 25);
-            if($value == 7)
+            $value = mt_rand(1, 30);
+            if($value === 2)
             {
                 return true;
             }

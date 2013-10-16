@@ -34,64 +34,35 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class AddPortletAjaxLinkActionElement extends DropdownSupportedAjaxLinkActionElement
+    /**
+     * Projects Options link.
+     */
+    class ProjectsOptionsMenuActionElement extends MenuActionElement
     {
         public function getActionType()
         {
-            return 'AddPortlet';
+            return 'Delete';
         }
 
         protected function getDefaultLabel()
         {
-            return Zurmo::t('HomeModule', 'Add Portlet');
+            return Zurmo::t('Core', 'Options');
         }
 
         protected function getDefaultRoute()
         {
-            return Yii::app()->createUrl($this->moduleId . '/defaultPortlet/AddList/',
-                    array(
-                    'uniqueLayoutId' => $this->getUniqueLayoutId(),
-                    'dashboardId' => $this->modelId,
-                    )
-            );
+            return null;
         }
 
-        protected function getUniqueLayoutId()
+        protected function getMenuItems()
         {
-            if (isset($this->params['uniqueLayoutId']))
-            {
-                return $this->params['uniqueLayoutId'];
-            }
-        }
-
-        public function getElementValue()
-        {
-            $eventHandlerName = 'addPortletAjaxLinkActionElementHandler';
-            $ajaxOptions      = CMap::mergeArray($this->getAjaxOptions(), array('url' => $this->route));
-            if (Yii::app()->clientScript->isScriptRegistered($eventHandlerName))
-            {
-                return;
-            }
-            else
-            {
-                Yii::app()->clientScript->registerScript($eventHandlerName, "
-                    function ". $eventHandlerName ."()
-                    {
-                        " . ZurmoHtml::ajax($ajaxOptions)."
-                    }
-                ", CClientScript::POS_HEAD); // POS_HEAD so its available when registerDropdownScripts() checks for it.
-            }
-            return $eventHandlerName;
-        }
-
-        public function render()
-        {
-            $content  = ZurmoHtml::openTag('div', array('class' => 'default-button'));
-            $label    = ZurmoHtml::tag('i', array('class' => $this->params['iconClass']), null);
-            $label   .= ZurmoHtml::tag('span', array('class' => 'button-label'), $this->getLabel());
-            $content .= ZurmoHtml::ajaxlink($label, $this->route, $this->getAjaxOptions(), $this->getHtmlOptions());
-            $content .= ZurmoHtml::closeTag('div');
-            return $content;
+            $deleteElement          = new ProjectDeleteLinkActionElement($this->controllerId, $this->moduleId, $this->modelId);
+            $deleteElementContent   = $deleteElement->renderMenuItem();
+            $editElement            = new EditLinkActionElement($this->controllerId, $this->moduleId, $this->modelId);
+            $editElementContent     = $editElement->renderMenuItem();
+            // TODO: @Shoaibi/@Jason: Low: securable on these items from the outside coming in?
+            $menuItems              = array( $editElementContent, $deleteElementContent);
+            return $menuItems;
         }
     }
 ?>
