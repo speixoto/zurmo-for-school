@@ -467,8 +467,8 @@
         public function testKanbanViewForAccountDetails()
         {
             $super                  = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            AccountTestHelper::createAccountByNameForOwner('superAccount', $super);
             $accounts               = Account::getByName('superAccount');
-
             $task = TaskTestHelper::createTaskWithOwnerAndRelatedAccount('MyTask', $super, $accounts[0], Task::TASK_STATUS_IN_PROGRESS);
             $taskNew = TaskTestHelper::createTaskWithOwnerAndRelatedAccount('MyTask New', $super, $accounts[0], Task::TASK_STATUS_NEW);
             $this->setGetArray(array('id' => $task->id, 'kanbanBoard' => '1'));
@@ -490,6 +490,38 @@
                 'content' => 'MyTask New'
             );
             $this->assertTag($matcher, $content);
+        }
+        
+        public function testRedeemList()
+        {
+            $super      = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $content    = $this->runControllerWithNoExceptionsAndGetContent('gameRewards/default/redeemList');
+            $this->assertFalse(strpos($content, '<td>(Unnamed)<br>Cost in Coins 5<br>Quantity Available 5<br><br><a id="redeem-reward-link-1" name="redeem-reward-link-1" class="attachLoading z-button disabled" onclick="js:return false;" href="#"><span class="z-spinner"></span><span class="z-icon"></span><span class="z-label">Redeem</span></a></td>') === false);
+        }
+        
+        public function testRedeemReward()
+        {
+            $super          = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $gameRewards = GameReward::getByName('myNewGameReward');
+            $postArray = array(
+               'GameReward' => array(
+                    'quantity'  => 23,
+                    'cost'      => 2,
+                )
+            );
+            $this->updateModelValuesFromPostArray($gameRewards[0], $postArray);
+            $this->assertModelHasValuesFromPostArray($gameRewards[0], $postArray);
+            /*
+            $gameCoin = GameCoin::resolveByPerson(Yii::app()->user->userModel);
+            if($gameCoin->value < $gameRewards[0]->cost)
+            {
+                $message = Zurmo::t('GameRewardsModule', 'You do not have enough coins to redeem this reward');
+                echo CJSON::encode(array('message' => $message));
+            }
+            $this->assertFalse(strpos($message, 'You do not have enough coins to redeem this reward') === false);
+            */
+            $this->setGetArray(array('id' => $gameRewards[0]->id));
+            $content    = $this->runControllerWithNoExceptionsAndGetContent('gameRewards/default/redeemReward');
         }
     }
 ?>
