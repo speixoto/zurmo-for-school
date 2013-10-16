@@ -17912,6 +17912,10 @@ div.wide.form .errorMessage {
   cursor: pointer;
   line-height: 16px;
   margin-top: -2px;
+  font-weight: normal !important;
+  font-weight: normal;
+  font-size: 22px;
+  font-family: "zurmo_gamification_symbly_rRg";
 }
 .upload-actions .icon-delete span {
   display: none;
