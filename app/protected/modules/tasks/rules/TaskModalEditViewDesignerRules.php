@@ -34,74 +34,42 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class GoToDetailsFromRelatedModalLinkActionElement extends RelatedModalLinkActionElement
+    class TaskModalEditViewDesignerRules extends EditViewDesignerRules
     {
-
-        protected function getDefaultLabel()
+        public function allowEditInLayoutTool()
         {
-            $params = LabelUtil::getTranslationParamsForAllModules();
-            $title = Zurmo::t('Core', 'View', $params);
-            return $title;
+            return true;
         }
 
-        protected function getDefaultRoute()
+        public function getDisplayName()
         {
-            $params = array_merge(array('id' => $this->modelId), $this->getViewLinkUrlParams());
-            return Yii::app()->createUrl($this->getRouteModuleId() . '/' .
-                        $this->controllerId . '/modalDetailsFromRelation', $params);
+            return Zurmo::t('TasksModule', 'Modal Edit View');
         }
 
-        protected function getRouteModuleId()
+        public function maxCellsPerRow()
         {
-            if (!isset($this->params['routeModuleId']))
-            {
-                return array();
-            }
-            return $this->params['routeModuleId'];
+            return 1;
         }
 
-        public function getActionType()
+        public function canConfigureLayoutPanelsType()
         {
-            return 'View';
+            return true;
         }
 
-        protected function getViewLinkUrlParams()
+        public function getSavableMetadataRules()
+        {
+            return array();
+        }
+
+        public function getNonPlaceableLayoutAttributeNames()
         {
             return array(
-                'modalTransferInformation' => $this->getModalTransferInformation(),
+                'createdDateTime',
+                'modifiedDateTime',
+                'createdByUser',
+                'modifiedByUser',
+                'id'
             );
-        }
-
-        protected function getModalTransferInformation()
-        {
-            return array_merge(array(
-                    'modalId'           => $this->getModalContainerId(),
-                    'portletId'         => $this->getPortletId(),
-                    'uniqueLayoutId'    => $this->getUniqueLayoutId()
-            ), $this->getRouteParameters());
-        }
-
-        protected function getModalContainerId()
-        {
-            return ModalLinkActionElement::RELATED_MODAL_CONTAINER_PREFIX . '-view-task';
-        }
-
-        protected function getPortletId()
-        {
-            if (!isset($this->params['portletId']))
-            {
-                return array();
-            }
-            return $this->params['portletId'];
-        }
-
-        protected function getUniqueLayoutId()
-        {
-            if (!isset($this->params['uniqueLayoutId']))
-            {
-                return array();
-            }
-            return $this->params['uniqueLayoutId'];
         }
     }
 ?>

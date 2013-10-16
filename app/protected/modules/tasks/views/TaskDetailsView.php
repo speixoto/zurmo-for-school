@@ -37,7 +37,7 @@
     /**
      * Details view for the task
      */
-    class TaskDetailsView extends SecuredEditAndDetailsView
+    class TaskDetailsView extends SecuredDetailsView
     {
         public static function getDefaultMetadata()
         {
@@ -45,7 +45,9 @@
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array('type'  => 'EditLink',  'renderType' => 'Details'),
+                            array('type'  => 'EditLink'),
+                            array('type'  => 'AuditEventsModalListLink'),
+                            array('type'  => 'TaskDeleteLink'),
                         ),
                     ),
                 ),
@@ -325,6 +327,11 @@
                                                     });';
             Yii::app()->getClientScript()->registerScript('editableScript', $script, ClientScript::POS_END);
             Yii::app()->getClientScript()->registerScript('editableTextAreaScript', $scriptTextArea, ClientScript::POS_END);
+        }
+
+        protected function renderModalContainer()
+        {
+            return ZurmoHtml::tag('div', array('id' => ModelElement::MODAL_CONTAINER_PREFIX . '-' . $this->getFormId()), '');
         }
     }
 ?>

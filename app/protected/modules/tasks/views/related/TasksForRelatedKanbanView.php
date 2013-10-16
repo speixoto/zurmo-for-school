@@ -379,5 +379,10 @@
             $items     = '<div class="items-wrapper">{items}</div>';
             return "{summary}" . $items . "{pager}" . $preloader;
         }
+
+        public static function getDesignerRulesType()
+        {
+            return null;
+        }
     }
 ?>
