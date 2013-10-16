@@ -364,5 +364,16 @@
         {
             return true;
         }
+
+        /**
+         * Modify the grid template for kanban view
+         * @return string
+         */
+        protected static function getGridTemplate()
+        {
+            $preloader = '<div class="list-preloader"><span class="z-spinner"></span></div>';
+            $items     = '<div class="items-wrapper">{items}</div>';
+            return "{summary}" . $items . "{pager}" . $preloader;
+        }
     }
 ?>
