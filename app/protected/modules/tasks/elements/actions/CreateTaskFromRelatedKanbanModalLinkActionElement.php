@@ -33,34 +33,26 @@
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
-
     /**
-     * Helper class to dynamically generate
-     * view metadata based on rightsData array.
+     * Action element which renders create link on clicking of which opens a modal window
      */
-    class RightsEditViewUtil extends RightsDetailsViewUtil
+    class CreateTaskFromRelatedKanbanModalLinkActionElement extends CreateFromRelatedModalLinkActionElement
     {
-        protected static function getElementInformation($moduleName, $right, $rightInformation)
+        /**
+         * Gets default label
+         * @return string
+         */
+        protected function getDefaultLabel()
         {
-            if ($rightInformation['inherited'] == Right::DENY)
-            {
-                $type = 'RightInheritedDenyText';
-            }
-            elseif ($rightInformation['inherited'] == Right::ALLOW)
-            {
-                $type = 'RightInheritedAllowStaticDropDown';
-            }
-            else
-            {
-                $type = 'RightStaticDropDown';
-            }
-            $element = array(
-                        'attributeName' => FormModelUtil::getDerivedAttributeNameFromTwoStrings(
-                                           $moduleName,
-                                           $right),
-                        'type'          => $type,
-                    );
-            return $element;
+            return Zurmo::t('TasksModule', 'Create Task');
+        }
+
+        public function render()
+        {
+            $content  = ZurmoHtml::openTag('div', array('class' => 'default-button'));
+            $content .= parent::render();
+            $content .= ZurmoHtml::closeTag('div');
+            return $content;
         }
     }
 ?>

@@ -35,32 +35,27 @@
      ********************************************************************************/
 
     /**
-     * Helper class to dynamically generate
-     * view metadata based on rightsData array.
+     * Form to work with dropDown attributes
      */
-    class RightsEditViewUtil extends RightsDetailsViewUtil
+    class ProjectStatusDropDownWorkflowActionAttributeForm extends WorkflowActionAttributeForm
     {
-        protected static function getElementInformation($moduleName, $right, $rightInformation)
+        public function getValueElementType()
         {
-            if ($rightInformation['inherited'] == Right::DENY)
-            {
-                $type = 'RightInheritedDenyText';
-            }
-            elseif ($rightInformation['inherited'] == Right::ALLOW)
-            {
-                $type = 'RightInheritedAllowStaticDropDown';
-            }
-            else
-            {
-                $type = 'RightStaticDropDown';
-            }
-            $element = array(
-                        'attributeName' => FormModelUtil::getDerivedAttributeNameFromTwoStrings(
-                                           $moduleName,
-                                           $right),
-                        'type'          => $type,
-                    );
-            return $element;
+            return 'ProjectStatusDropDown';
+        }
+
+        /**
+         * @param bool $isCreatingNewModel
+         * @param bool $isRequired
+         * @return array
+         */
+        protected function makeTypeValuesAndLabels($isCreatingNewModel, $isRequired)
+        {
+            assert('is_bool($isCreatingNewModel)');
+            assert('is_bool($isRequired)');
+            $data                           = array();
+            $data[static::TYPE_STATIC]      = Zurmo::t('WorkflowsModule', 'As');
+            return $data;
         }
     }
 ?>

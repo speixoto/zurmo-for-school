@@ -110,22 +110,6 @@
         }
 
         /**
-         * @param array $row
-         * @return string
-         */
-        protected function renderCardDetailsContentForTask($data, $row)
-        {
-            $cardDetails = null;
-            foreach ($this->cardColumns as $cardData)
-            {
-                $offset       = $this->getOffset() + $row;
-                $content      = $this->evaluateExpression($cardData['value'], array('data' => $data, 'offset' => $offset));
-                $cardDetails .= ZurmoHtml::tag('span', array('class' => $cardData['class']), $content);
-            }
-            return $cardDetails;
-        }
-
-        /**
          * Creates ul tag for kanban column
          * @param array $listItems
          * @param string $attributeValue
@@ -303,8 +287,8 @@
         protected function createTaskItemForKanbanColumn($data, $row)
         {
             return ZurmoHtml::tag('li', array('class' => $this->getRowClassForTaskKanbanColumn($data),
-                                                'id' => 'items_' . $data->id),
-                                                      ZurmoHtml::tag('div', array(), $this->renderCardDetailsContentForTask($data, $row)));
+                                              'id' => 'items_' . $data->id),
+                                              ZurmoHtml::tag('div', array('class' => 'clearfix'), $this->renderCardDetailsContent($row)));
         }
 
         /**
@@ -410,5 +394,44 @@
         {
             return ZurmoHtml::tag('div', array('style' => 'height:90px'), $this->renderCardDetailsContent($row));
         }
+
+        protected function renderCardDetailsContent($row)
+        {
+            return '<div class="task-details clearfix STATUS-HERE-TOO">
+                        <span class="task-status">Started</span>
+                        <span class="task-date">14/08/2013</span>
+                    </div>
+                    <div class="task-content">
+                        <div class="task-action-toolbar pillbox">
+                            <div class="default-button ACTION-TYPE:START/ACCEPT/REJECT/ETC">
+                                <a class="button-action" href="#"><span class="button-label">Start</span></a>
+                            </div>
+                            <div class="default-button">
+                                <a class="button-action" href="#"><span class="button-label">Reject</span></a>
+                            </div>
+                        </div>
+                        <h4><a href="">title of task <span>(Jason)</span></a></h4>
+                        <p>this is a really short description and may or may not necessarily appear here or there..</p>
+                        <div class="task-subscribers">
+                            <a class="task-owner" href="">
+                                <img class="gravatar" width="20" height="20"
+                                     src="http://www.gravatar.com/avatar/9fada82dfb92525dea1686f026d6a471?s=20&amp;d=identicon&amp;r=g"
+                                     alt="Katie Smith">
+                            </a>
+                            <a href="">
+                                <img class="gravatar" width="20" height="20"
+                                     src="http://www.gravatar.com/avatar/9fada82dfb92525dea1686f026d6a471?s=20&amp;d=identicon&amp;r=g"
+                                     alt="Katie Smith">
+                            </a>
+                            <a href="">
+                                <img class="gravatar" width="20" height="20"
+                                     src="http://www.gravatar.com/avatar/9fada82dfb92525dea1686f026d6a471?s=20&amp;d=identicon&amp;r=g"
+                                     alt="Katie Smith">
+                            </a>
+                            <a href="#" class="z-link IS-SUBSCRIBED-TRUE-FALSE"><i class="icon-subscribe"></i>Subscribe</a>
+                        </div>
+                    </div>';
+        }
     }
 ?>
+

@@ -92,7 +92,6 @@
             $content .= ZurmoHtml::ajaxlink($label, $this->route, $this->getAjaxOptions(), $this->getHtmlOptions());
             $content .= ZurmoHtml::closeTag('div');
             return $content;
-
         }
     }
 ?>

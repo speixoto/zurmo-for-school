@@ -53,7 +53,7 @@
 
         /**
          * Get feed information if projects for user
-         * @param array $projectAuditEvent
+         * @param ProjectAuditEvent $projectAuditEvent
          * @return string
          */
         public static function getFeedInformationForDashboard(ProjectAuditEvent $projectAuditEvent)

@@ -211,60 +211,13 @@
 		margin:0 0 5px 0 !important;
 		background: #f0f0f0;
 		.radius(3px);
-		padding:5px 5px 15px 10px;
+		padding:5px;
 		++.border-box;
 		.b-shadow(~'inset 0 0 0 1px rgba(204, 204, 204, 0.3) , 1px 1px 1px 0px rgba(153, 153, 153, 0.15)');
 	}
 	span{
-		display: block;
+		display: inline-block;
 		margin-bottom: 3px;
-	}
-	.opportunity-name{
-		font-size: 12px;
-		font-weight: normal;
-	}
-	.account-name{
-		font-size: 14px;
-		font-weight: bold;
-		color: #666;
-	}
-	.opportunity-amount{
-		font-size: 20px;
-		font-weight: bold;
-		text-align: right;
-		color: darken(#282A76, 5%);
-		.t-shadow(0 1px 0 rgba(255, 255, 255, 0.9));
-		line-height: 1;
-		margin-bottom:5px;
-	}
-	.closing-date{
-		.smaller();
-		text-align: right;
-		i{
-			text-align: left;
-			.symbly(12px);
-			&:after{
-				content: "z";
-			}
-		}
-	}
-	.opportunity-owner{
-		position: absolute;
-		right: 5px;
-		bottom: 5px;
-		text-align: right;
-		display: block;
-		line-height: 1;
-		span{
-			display: inline-block;
-			top: -7px;
-			position: relative;
-			margin: 0 5px;
-		}
-		img{
-			background: #DFDFDF;
-			padding: 1px;
-		}
 	}
 	.hidden-content{
 		> a{
@@ -276,6 +229,66 @@
 			display: none;
 			padding: 10px 0 5px 0;
 		}
+	}
+	.gravatar{
+		border:none !important;
+	}
+}
+
+.opportunity-name{
+	font-size: 12px;
+	font-weight: normal;
+}
+.account-name{
+	font-size: 14px;
+	font-weight: bold;
+	color: #666;
+}
+.opportunity-amount{
+	font-size: 20px;
+	font-weight: bold;
+	text-align: right;
+	color: darken(#282A76, 5%);
+	.t-shadow(0 1px 0 rgba(255, 255, 255, 0.9));
+	line-height: 1;
+	margin-bottom:5px;
+}
+.closing-date{
+	.smaller();
+	text-align: right;
+	i{
+		text-align: left;
+		.symbly(12px);
+		&:after{
+			content: "z";
+		}
+	}
+}
+.opportunity-owner{
+	position: absolute;
+	right: 5px;
+	bottom: 5px;
+	text-align: right;
+	display: block;
+	line-height: 1;
+	span{
+		display: inline-block;
+		top: -7px;
+		position: relative;
+		margin: 0 5px;
+	}
+	img{
+		background: #DFDFDF;
+		padding: 1px;
+	}
+}
+
+#OpportunitiesListView{
+	.kanban-card > div{
+		padding:5px 5px 15px 10px;
+	}
+	.kanban-card span{
+		display: block;
 	}
 }
 
@@ -298,4 +311,85 @@
 	span{
 		display: none;
 	}
+}
+
+//Tasks in Kanban
+.task-details{
+	display: block;
+	width: 100%;
+	padding-bottom: 5px;
+	border-bottom:1px solid #dfdfdf;
+}
+
+.STATUS-HERE-TOO{
+	.smaller();
+}
+
+.task-status{
+	.smaller();
+	float: left;
+}
+
+.task-date{
+	float: right;
+}
+
+.task-content{
+	padding: 10px 0 0 0;
+	border-top:1px solid #fff;
+	h4{
+		span{
+
+		}
+	}
+	p{
+
+	}
+}
+
+.task-subscribers{
+	margin-top: 10px;
+	padding-top: 7px;
+	border-top:1px solid #dfdfdf;
+	.b-shadow(inset 0 1px 0 #fff);
+	a{
+
+	}
+	img{
+		margin-right: 5px;
+	}
+	.z-link{
+		position: relative;
+		top:3px;
+	}
+}
+
+.task-owner{
+
+}
+
+.task-action-toolbar{
+	overflow: hidden;
+	float: right;
+	margin:0 0 10px 2px !important;
+	.button-label {
+		.smaller();
+		padding: 0 3px !important;
+		line-height: 20px !important;
+		/*&:after{
+			content:'';
+			position: absolute;
+			top:0;
+			right:0;
+			bottom: 0;
+			left: 0;
+			background: rgba(255, 0, 0, 0.4);
+			z-index: 0;
+		}*/
+	}
+
+}
+
+.IS-SUBSCRIBED-TRUE-FALSE{
+
 }

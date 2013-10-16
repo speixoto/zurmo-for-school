@@ -35,32 +35,34 @@
      ********************************************************************************/
 
     /**
-     * Helper class to dynamically generate
-     * view metadata based on rightsData array.
+     * Projects Options link.
      */
-    class RightsEditViewUtil extends RightsDetailsViewUtil
+    class ProjectsOptionsMenuActionElement extends MenuActionElement
     {
-        protected static function getElementInformation($moduleName, $right, $rightInformation)
+        public function getActionType()
         {
-            if ($rightInformation['inherited'] == Right::DENY)
-            {
-                $type = 'RightInheritedDenyText';
-            }
-            elseif ($rightInformation['inherited'] == Right::ALLOW)
-            {
-                $type = 'RightInheritedAllowStaticDropDown';
-            }
-            else
-            {
-                $type = 'RightStaticDropDown';
-            }
-            $element = array(
-                        'attributeName' => FormModelUtil::getDerivedAttributeNameFromTwoStrings(
-                                           $moduleName,
-                                           $right),
-                        'type'          => $type,
-                    );
-            return $element;
+            return 'Delete';
+        }
+
+        protected function getDefaultLabel()
+        {
+            return Zurmo::t('Core', 'Options');
+        }
+
+        protected function getDefaultRoute()
+        {
+            return null;
+        }
+
+        protected function getMenuItems()
+        {
+            $deleteElement          = new ProjectDeleteLinkActionElement($this->controllerId, $this->moduleId, $this->modelId);
+            $deleteElementContent   = $deleteElement->renderMenuItem();
+            $editElement            = new EditLinkActionElement($this->controllerId, $this->moduleId, $this->modelId);
+            $editElementContent     = $editElement->renderMenuItem();
+            // TODO: @Shoaibi/@Jason: Low: securable on these items from the outside coming in?
+            $menuItems              = array( $editElementContent, $deleteElementContent);
+            return $menuItems;
         }
     }
 ?>

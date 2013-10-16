@@ -34,33 +34,32 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Helper class to dynamically generate
-     * view metadata based on rightsData array.
-     */
-    class RightsEditViewUtil extends RightsDetailsViewUtil
+    class ProjectStatusDropDownAttributeForm extends AttributeForm
     {
-        protected static function getElementInformation($moduleName, $right, $rightInformation)
+        /**
+         * @return string
+         */
+        public static function getAttributeTypeDisplayName()
         {
-            if ($rightInformation['inherited'] == Right::DENY)
-            {
-                $type = 'RightInheritedDenyText';
-            }
-            elseif ($rightInformation['inherited'] == Right::ALLOW)
-            {
-                $type = 'RightInheritedAllowStaticDropDown';
-            }
-            else
-            {
-                $type = 'RightStaticDropDown';
-            }
-            $element = array(
-                        'attributeName' => FormModelUtil::getDerivedAttributeNameFromTwoStrings(
-                                           $moduleName,
-                                           $right),
-                        'type'          => $type,
-                    );
-            return $element;
+            $params = LabelUtil::getTranslationParamsForAllModules();
+            return Zurmo::t('ProjectsModule', 'ProjectsModuleSingularLabel Status Dropdown', $params);
+        }
+
+        /**
+         * @return string
+         */
+        public static function getAttributeTypeDisplayDescription()
+        {
+            $params = LabelUtil::getTranslationParamsForAllModules();
+            return Zurmo::t('ProjectsModule', 'ProjectsModuleSingularLabel Status Dropdown Values', $params);
+        }
+
+        /**
+         * @return string
+         */
+        public function getAttributeTypeName()
+        {
+            return 'ProjectsStatusDropDown';
         }
     }
 ?>

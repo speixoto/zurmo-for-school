@@ -55,7 +55,7 @@
 
         protected function renderContent()
         {
-            $content = $this->renderMemberStatisticsContent();
+            $content  = $this->renderMemberStatisticsContent();
             $content .= $this->renderDescriptionContent();
             $content .= $this->renderAfterFormLayoutForDetailsContent();
             return $content;

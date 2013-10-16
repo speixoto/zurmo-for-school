@@ -35,32 +35,26 @@
      ********************************************************************************/
 
     /**
-     * Helper class to dynamically generate
-     * view metadata based on rightsData array.
+     * Workflow rules to be used with the Projects module.
      */
-    class RightsEditViewUtil extends RightsDetailsViewUtil
+    class ProjectsWorkflowRules extends SecuredWorkflowRules
     {
-        protected static function getElementInformation($moduleName, $right, $rightInformation)
+        /**
+         * @return array
+         */
+        public static function getDefaultMetadata()
         {
-            if ($rightInformation['inherited'] == Right::DENY)
-            {
-                $type = 'RightInheritedDenyText';
-            }
-            elseif ($rightInformation['inherited'] == Right::ALLOW)
-            {
-                $type = 'RightInheritedAllowStaticDropDown';
-            }
-            else
-            {
-                $type = 'RightStaticDropDown';
-            }
-            $element = array(
-                        'attributeName' => FormModelUtil::getDerivedAttributeNameFromTwoStrings(
-                                           $moduleName,
-                                           $right),
-                        'type'          => $type,
-                    );
-            return $element;
+            $metadata = array(
+                'Project' => array(
+                    'cannotTrigger' =>
+                        array('auditEvents'),
+                    'availableOperatorsTypes' =>
+                        array('status' => ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_DROPDOWN),
+                    'triggerValueElementTypes' =>
+                        array('status' => 'ProjectStatusStaticDropDownForWizardModel'),
+                )
+            );
+            return array_merge(parent::getDefaultMetadata(), $metadata);
         }
     }
 ?>

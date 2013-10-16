@@ -411,12 +411,28 @@
 
         /**
          * Render action bar links for kanban board on details view
-         * @return type
+         * @param $controllerId
+         * @param $moduleId
+         * @param $modelId
+         * @param bool $kanbanIsActive
+         * @return string
          */
-        public static function renderActionBarLinksForKanbanBoard($controllerId, $moduleId, $modelId)
+        public static function renderActionBarLinksForKanbanBoard($controllerId, $moduleId, $modelId, $kanbanIsActive)
         {
+            assert('is_string($controllerId)');
+            assert('is_string($moduleId)');
+            assert('is_string($modelId)');
+            assert('is_bool($kanbanIsActive)');
+            if($kanbanIsActive)
+            {
+                $active = DetailsAndRelationsViewTypesToggleLinkActionElement::TYPE_KANBAN_BOARD;
+            }
+            else
+            {
+                $active = DetailsAndRelationsViewTypesToggleLinkActionElement::TYPE_NON_KANBAN_BOARD;
+            }
             $toggleLinkActionElement = new DetailsAndRelationsViewTypesToggleLinkActionElement(
-                                                                            $controllerId, $moduleId, $modelId);
+                                       $controllerId, $moduleId, $modelId, array('active' => $active));
             return $toggleLinkActionElement->render();
         }
     }
