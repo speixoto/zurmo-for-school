@@ -158,7 +158,7 @@
             $sender                     = new EmailMessageSender();
             $sender->fromAddress        = Yii::app()->emailHelper->resolveFromAddressByUser($userToSendMessagesFrom);
             $sender->fromName           = strval($userToSendMessagesFrom);
-            $sender->personOrAccount    = $userToSendMessagesFrom;
+            $sender->personOrAccount->add($userToSendMessagesFrom);
             $emailMessage->sender       = $sender;
             foreach ($recipients as $recipientPerson)
             {
@@ -166,7 +166,7 @@
                 $recipient->toAddress       = $recipientPerson->primaryEmail->emailAddress;
                 $recipient->toName          = strval($recipientPerson);
                 $recipient->type            = EmailMessageRecipient::TYPE_TO;
-                $recipient->personOrAccount = $recipientPerson;
+                $recipient->personOrAccount->add($recipientPerson);
                 $emailMessage->recipients->add($recipient);
             }
             $box                        = EmailBox::resolveAndGetByName(EmailBox::NOTIFICATIONS_NAME);

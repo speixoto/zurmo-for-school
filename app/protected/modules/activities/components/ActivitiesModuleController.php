@@ -66,14 +66,22 @@
             assert('is_string($relationModuleId)');
 
             $metadata = Activity::getMetadata();
-            if (in_array($relationModelClassName, $metadata['Activity']['activityItemsModelClassNames']))
+            if($relationModelClassName != 'project')
             {
-                $relatedModel = $relationModelClassName::getById((int)$relationModelId);
-                $model->activityItems->add($relatedModel);
+                if (in_array($relationModelClassName, $metadata['Activity']['activityItemsModelClassNames']))
+                {
+                    $relatedModel = $relationModelClassName::getById((int)$relationModelId);
+                    $model->activityItems->add($relatedModel);
+                }
+                else
+                {
+                    throw new NotSupportedException();
+                }
             }
             else
             {
-                throw new NotSupportedException();
+                $project = Project::getById((int)$relationModelId);
+                $model->project = $project;
             }
             return $model;
         }

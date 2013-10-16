@@ -51,7 +51,9 @@
                     array('somethingOn3',  'length', 'max' => 32),
                 ),
                 'relations' => array(
-                    'hasMany1' => array(RedBeanModel::MANY_MANY, 'WorkflowModelTestItem'),
+                    'hasMany1' => array(static::MANY_MANY, 'WorkflowModelTestItem'),
+                    'hasOne' => array(static::HAS_ONE, 'WorkflowModelTestItem', static::NOT_OWNED,
+                                        static::LINK_TYPE_SPECIFIC, 'hasMany'),
                 )
             );
             return $metadata;

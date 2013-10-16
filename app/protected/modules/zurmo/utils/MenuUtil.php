@@ -57,6 +57,7 @@
             assert('$user instanceof User && $user != null');
             try
             {
+                // not using default value to save cpu cycles on requests that follow the first exception.
                 $items = GeneralCache::getEntry(self::getMenuViewItemsCacheIdentifier());
             }
             catch (NotFoundException $e)
@@ -83,6 +84,7 @@
             assert('$user instanceof User && $user != null');
             try
             {
+                // not using default value to save cpu cycles on requests that follow the first exception.
                 $items = GeneralCache::getEntry(self::getAdminMenuViewItemsCacheIdentifier());
             }
             catch (NotFoundException $e)
@@ -613,7 +615,8 @@
          */
         protected static function resolveMenuItemsForLanguageLocalization(   $menuItems,
                                                                     $moduleClassName,
-                                                                    $labelElements = array('label'))
+                                                                    $labelElements = array('label'),
+                                                                    $ajaxLinkOptionsElements = array('ajaxLinkOptions'))
         {
             assert('is_array($menuItems)');
             assert('is_string($moduleClassName)');
@@ -629,6 +632,19 @@
                     $menuItems[$itemKey]['items'] = self::resolveMenuItemsForLanguageLocalization($item['items'],
                                                                                                   $moduleClassName,
                                                                                                   $labelElements);
+                }
+                foreach ($ajaxLinkOptionsElements as $ajaxLinkOptionsElement)
+                {
+                    if(isset($menuItems[$itemKey][$ajaxLinkOptionsElement]))
+                    {
+                        $substring = $menuItems[$itemKey][$ajaxLinkOptionsElement];
+                        if(is_string($substring))
+                        {
+                            $options = array();
+                            eval("\$options = $substring;");
+                            $menuItems[$itemKey][$ajaxLinkOptionsElement] = $options;
+                        }
+                    }
                 }
             }
             return $menuItems;

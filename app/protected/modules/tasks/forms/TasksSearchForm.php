@@ -33,9 +33,14 @@
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
-
+     /**
+      * Task search form
+      */
     class TasksSearchForm extends OwnedSearchForm
     {
+        /**
+         * @return string
+         */
         protected static function getRedBeanModelClassName()
         {
             return 'Task';

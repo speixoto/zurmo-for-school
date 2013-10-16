@@ -60,6 +60,9 @@
          */
         public function actionConfigurationView()
         {
+            $breadCrumbLinks = array(
+                Zurmo::t('MapsModule', 'Maps Configuration'),
+            );
             $configurationForm          = new MapsConfigurationForm();
             $configurationForm->apiKey  = Yii::app()->mappingHelper->getGeoCodeApiKey();
 
@@ -83,7 +86,7 @@
                                     $configurationForm);
             $editView->setCssClasses( array('AdministrativeArea') );
             $view = new ZurmoConfigurationPageView(ZurmoDefaultAdminViewUtil::
-                                         makeStandardViewForCurrentUser($this, $editView));
+                        makeViewWithBreadcrumbsForCurrentUser($this, $editView, $breadCrumbLinks, 'PluginsBreadCrumbView'));
             echo $view->render();
         }
 

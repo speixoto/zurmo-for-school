@@ -44,55 +44,13 @@
          */
         public static function buildTables()
         {
-            foreach (self::getReadSubscriptionModelClassNames() as $modelClassName)
+            $readSubscriptionModelClassNames = PathUtil::getAllReadSubscriptionModelClassNames();
+            foreach ($readSubscriptionModelClassNames as $modelClassName)
             {
-                $readPermissionsSubscriptionTableName  = self::getSubscriptionTableName($modelClassName);
-                self::recreateTable($readPermissionsSubscriptionTableName);
+                $readPermissionsSubscriptionTableName  = static::getSubscriptionTableName($modelClassName);
+                static::recreateTable($readPermissionsSubscriptionTableName);
             }
             ModelCreationApiSyncUtil::buildTable();
-        }
-
-        /**
-         * Get all read subscription model class names
-         * @return array|mixed
-         */
-        public static function getReadSubscriptionModelClassNames()
-        {
-            try
-            {
-                return GeneralCache::getEntry('readPermissionsSubscriptionModelClassNames');
-            }
-            catch (NotFoundException $e)
-            {
-                $readPermissionsSubscriptionModelClassNames = self::findReadSubscriptionModelClassNames();
-                GeneralCache::cacheEntry('readPermissionsSubscriptionModelClassNames',
-                    $readPermissionsSubscriptionModelClassNames);
-                return $readPermissionsSubscriptionModelClassNames;
-            }
-        }
-
-        /**
-         * Get all Read Permissions Subscription Model ClassNames
-         * @return array
-         */
-        //public for testing only.
-        public static function findReadSubscriptionModelClassNames()
-        {
-            $readPermissionsSubscriptionModelClassNames = array();
-            $modules = Module::getModuleObjects();
-            foreach ($modules as $module)
-            {
-                $modelClassNames = $module::getModelClassNames();
-                foreach ($modelClassNames as $modelClassName)
-                {
-                    if (is_subclass_of($modelClassName, 'OwnedSecurableItem') &&
-                        $modelClassName::hasReadPermissionsSubscriptionOptimization())
-                    {
-                        $readPermissionsSubscriptionModelClassNames[] = $modelClassName;
-                    }
-                }
-            }
-            return $readPermissionsSubscriptionModelClassNames;
         }
 
         /**
@@ -101,20 +59,55 @@
          */
         public static function recreateTable($modelSubscriptionTableName)
         {
-            assert('is_string($modelSubscriptionTableName) && $modelSubscriptionTableName  != ""');
-            $result = R::getAll("SHOW TABLES LIKE '{$modelSubscriptionTableName}'");
-            $tableExists = count($result);
+            $schema = static::getReadSubscriptionTableSchemaByName($modelSubscriptionTableName);
+            CreateOrUpdateExistingTableFromSchemaDefinitionArrayUtil::generateOrUpdateTableBySchemaDefinition(
+                $schema, new MessageLogger());
+        }
 
-            if (!$tableExists)
-            {
-                R::exec("create table $modelSubscriptionTableName (
-                                               id int(11)         unsigned not null PRIMARY KEY AUTO_INCREMENT ,
-                                               userid int(11)     unsigned not null,
-                                               modelid int(11)    unsigned not null,
-                                               modifieddatetime   datetime DEFAULT null,
-                                               subscriptiontype   tinyint(4) DEFAULT null
-                                        )");
-            }
+        protected static function getReadSubscriptionTableSchemaByName($tableName)
+        {
+            assert('is_string($tableName) && $tableName  != ""');
+            return array($tableName =>  array('columns' => array(
+                                                            array(
+                                                                'name' => 'userid',
+                                                                'type' => 'INT(11)',
+                                                                'unsigned' => 'UNSIGNED',
+                                                                'notNull' => 'NOT NULL',
+                                                                'collation' => null,
+                                                                'default' => null,
+                                                            ),
+                                                            array(
+                                                                'name' => 'modelid',
+                                                                'type' => 'INT(11)',
+                                                                'unsigned' => 'UNSIGNED',
+                                                                'notNull' => 'NOT NULL',
+                                                                'collation' => null,
+                                                                'default' => null,
+                                                            ),
+                                                            array(
+                                                                'name' => 'modifieddatetime',
+                                                                'type' => 'DATETIME',
+                                                                'unsigned' => null,
+                                                                'notNull' => 'NULL',
+                                                                'collation' => null,
+                                                                'default' => 'NULL',
+                                                            ),
+                                                            array(
+                                                                'name' => 'subscriptiontype',
+                                                                'type' => 'TINYINT(4)',
+                                                                'unsigned' => null,
+                                                                'notNull' => 'NULL',
+                                                                'collation' => null,
+                                                                'default' => 'NULL',
+                                                            ),
+                                                        ),
+                                                'indexes' => array('userid_modelid' => array(
+                                                                        'columns' => array('userid', 'modelid'),
+                                                                        'unique' => true,
+                                                                    ),
+                                                    ),
+                                                )
+                                            );
         }
 
         protected static function getModelTableName($modelClassName)
@@ -126,7 +119,7 @@
         public static function getSubscriptionTableName($modelClassName)
         {
             assert('is_string($modelClassName) && $modelClassName != ""');
-            return self::getModelTableName($modelClassName) . '_read_subscription';
+            return static::getModelTableName($modelClassName) . '_read_subscription';
         }
 
         /**
@@ -140,19 +133,19 @@
             foreach ($users as $user)
             {
                 Yii::app()->user->userModel = $user;
-                $modelClassNames = ReadPermissionsSubscriptionUtil::getReadSubscriptionModelClassNames();
+                $modelClassNames = PathUtil::getAllReadSubscriptionModelClassNames();
                 if (!empty($modelClassNames) && is_array($modelClassNames))
                 {
                     foreach ($modelClassNames as $modelClassName)
                     {
                         if ($modelClassName != 'Account')
                         {
-                            self::updateReadSubscriptionTableByModelClassNameAndUser($modelClassName,
+                            static::updateReadSubscriptionTableByModelClassNameAndUser($modelClassName,
                                 Yii::app()->user->userModel, $partialBuild, true);
                         }
                         else
                         {
-                            self::updateReadSubscriptionTableByModelClassNameAndUser($modelClassName,
+                            static::updateReadSubscriptionTableByModelClassNameAndUser($modelClassName,
                                 Yii::app()->user->userModel, $partialBuild, false);
                         }
                     }
@@ -173,7 +166,7 @@
         {
             assert('$modelClassName === null || is_string($modelClassName) && $modelClassName != ""');
             $metadata = array();
-            $lastReadPermissionUpdateTimestamp = self::getLastReadPermissionUpdateTimestamp();
+            $lastReadPermissionUpdateTimestamp = static::getLastReadPermissionUpdateTimestamp();
             $dateTime = DateTimeUtil::convertTimestampToDbFormatDateTime($lastReadPermissionUpdateTimestamp);
             $nowDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
 
@@ -208,11 +201,11 @@
             $userModelIds = $modelClassName::getSubsetIds($joinTablesAdapter, null, null, $where, 'createdDateTime asc');
 
             // Get models from subscription table
-            $tableName = self::getSubscriptionTableName($modelClassName);
+            $tableName = static::getSubscriptionTableName($modelClassName);
             $sql = "SELECT modelid FROM $tableName WHERE userid = " . $user->id .
-                " AND subscriptiontype = " . self::TYPE_ADD;
+                " AND subscriptiontype = " . static::TYPE_ADD;
 
-            $permissionTableRows = R::getAll($sql);
+            $permissionTableRows = ZurmoRedBean::getAll($sql);
             $permissionTableIds = array();
             if (is_array($permissionTableRows) && !empty($permissionTableRows))
             {
@@ -231,11 +224,11 @@
                                                 userid = '" . $user->id . "'
                                                 AND modelid = '{$modelId}'
                                                 AND subscriptiontype='" . self::TYPE_DELETE . "';";
-                    R::exec($sql);
+                    ZurmoRedBean::exec($sql);
 
                     $sql = "INSERT INTO $tableName VALUES
                                                 (null, '" . $user->id . "', '{$modelId}', '{$nowDateTime}', '" . self::TYPE_ADD . "');";
-                    R::exec($sql);
+                    ZurmoRedBean::exec($sql);
                 }
             }
 
@@ -247,15 +240,15 @@
                                                 userid = '" . $user->id . "'
                                                 AND modelid = '{$modelId}'
                                                 AND subscriptiontype='" . self::TYPE_ADD . "';";
-                    R::exec($sql);
+                    ZurmoRedBean::exec($sql);
 
                     $sql = "INSERT INTO $tableName VALUES
                                                 (null, '" . $user->id . "', '{$modelId}', '{$nowDateTime}', '" . self::TYPE_DELETE . "');";
-                    R::exec($sql);
+                    ZurmoRedBean::exec($sql);
                 }
             }
 
-            self::setTimeReadPermissionUpdateTimestamp($lastReadPermissionUpdateTimestamp);
+            static::setTimeReadPermissionUpdateTimestamp($lastReadPermissionUpdateTimestamp);
         }
 
         /**
@@ -271,7 +264,7 @@
                                                                                 $lastUpdateTimestamp, $type, $user)
         {
             assert('$user instanceof User');
-            $tableName = self::getSubscriptionTableName($modelClassName);
+            $tableName = static::getSubscriptionTableName($modelClassName);
             $dateTime = DateTimeUtil::convertTimestampToDbFormatDateTime($lastUpdateTimestamp);
             if ($type == ReadPermissionsSubscriptionUtil::TYPE_DELETE)
             {
@@ -294,7 +287,7 @@
                     " AND isct.modelid is null" .
                     " order by {$tableName}.modifieddatetime ASC, {$tableName}.modelid  ASC";
             }
-            $modelIdsRows = R::getAll($sql);
+            $modelIdsRows = ZurmoRedBean::getAll($sql);
             $modelIds = array();
             if (is_array($modelIdsRows) && !empty($modelIdsRows))
             {
@@ -334,7 +327,7 @@
                 " AND {$tableName}.modifieddatetime >= '" . $dateTime . "'" .
                 " AND isct.modelid is null" .
                 " order by {$tableName}.modifieddatetime ASC, {$tableName}.modelid  ASC";
-            $modelIdsRows = R::getAll($sql);
+            $modelIdsRows = ZurmoRedBean::getAll($sql);
             $modelIds = array();
             if (is_array($modelIdsRows) && !empty($modelIdsRows))
             {
@@ -373,7 +366,7 @@
          */
         public static function getLastReadPermissionUpdateTimestamp()
         {
-            $readSubscriptionUpdateDetails = self::getReadSubscriptionUpdateDetails();
+            $readSubscriptionUpdateDetails = static::getReadSubscriptionUpdateDetails();
             if (isset($readSubscriptionUpdateDetails['lastReadPermissionUpdateTimestamp']))
             {
                 return $readSubscriptionUpdateDetails['lastReadPermissionUpdateTimestamp'];
@@ -390,9 +383,9 @@
          */
         public static function setTimeReadPermissionUpdateTimestamp($lastReadPermissionUpdateTimestamp)
         {
-            $readSubscriptionUpdateDetails = self::getReadSubscriptionUpdateDetails();
+            $readSubscriptionUpdateDetails = static::getReadSubscriptionUpdateDetails();
             $readSubscriptionUpdateDetails['lastReadPermissionUpdateTimestamp'] = $lastReadPermissionUpdateTimestamp;
-            self::setReadSubscriptionUpdateDetails($readSubscriptionUpdateDetails);
+            static::setReadSubscriptionUpdateDetails($readSubscriptionUpdateDetails);
         }
     }
 ?>

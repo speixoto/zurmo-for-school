@@ -33,9 +33,16 @@
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
-
+    /**
+     * Delete link for the task
+     */
     class TaskDeleteLinkActionElement extends DeleteLinkActionElement
     {
+        /**
+         * Resolve confirmation alert
+         * @param array $htmlOptions
+         * @return array
+         */
         protected function resolveConfirmAlertInHtmlOptions($htmlOptions)
         {
             $htmlOptions['confirm'] = Zurmo::t('TasksModule', 'Are you sure you want to delete this {modelLabel}?',

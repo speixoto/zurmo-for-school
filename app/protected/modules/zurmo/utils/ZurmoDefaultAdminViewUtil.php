@@ -44,20 +44,20 @@
         /**
          * @param CController $controller
          * @param View $containedView
-         * @param array $breadcrumbLinks
+         * @param array $breadCrumbLinks
          * @param $breadcrumbViewClassName
          * @param array $cssClasses
          * @return GridView
          */
         public static function makeViewWithBreadcrumbsForCurrentUser(CController $controller,
                                                                      View $containedView,
-                                                                     $breadcrumbLinks,
+                                                                     $breadCrumbLinks,
                                                                      $breadcrumbViewClassName,
                                                                      $cssClasses = array('AdministrativeArea'))
         {
             return parent::makeViewWithBreadcrumbsForCurrentUser($controller,
                                                                  $containedView,
-                                                                 $breadcrumbLinks,
+                                                                 $breadCrumbLinks,
                                                                  $breadcrumbViewClassName,
                                                                  $cssClasses);
         }

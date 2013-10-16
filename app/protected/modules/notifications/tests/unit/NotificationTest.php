@@ -205,13 +205,13 @@
             //At this point the message should have 2 notifications associated with it
             $messageId = $message->id;
             $message->forget();
-            $mesage = NotificationMessage::getById($messageId);
+            $message = NotificationMessage::getById($messageId);
 
             $this->assertEquals(2, $message->notifications->count());
             $this->assertTrue($message->notifications[0]->type == 'SimpleYTest' ||
-                              $message->notifications[0]->type == 'SimpleZTest');
+                $message->notifications[0]->type == 'SimpleZTest');
             $this->assertTrue($message->notifications[1]->type == 'SimpleYTest' ||
-                              $message->notifications[1]->type == 'SimpleZTest');
+                $message->notifications[1]->type == 'SimpleZTest');
 
             /** - Add back in if it is possible to get the NotificationMessages to Notifications as RedBeanModel::OWNED
              * //Currently it is not working and cause $this->assertEquals(2, $message->notifications->count());
@@ -221,7 +221,85 @@
             $this->assertEquals(8, count(Notification::getAll()));
             $message->delete();
             $this->assertEquals(3, count(Notification::getAll()));
-            **/
+             **/
+            $notifications = Notification::getByNotificationMessageId($messageId);
+            $this->assertEquals(2, count($notifications));
+        }
+
+        /**
+         * @depends testRelationsBetweenNotificationAndNotificationMessage
+         */
+        public function testDeleteByTypeAndUser()
+        {
+            Yii::app()->user->userModel = User::getByUsername('super');
+            $joe = UserTestHelper::createBasicUser('joe');
+            $sally = UserTestHelper::createBasicUser('sally');
+
+            //Make sure the relations between Notification and NotificationMessage is working.
+            $message              = new NotificationMessage();
+            $message->textContent = 'text content3';
+            $message->htmlContent = 'html content3';
+            $this->assertTrue($message->save());
+
+            $notification1 = new Notification();
+            $notification1->type                = 'SimpleDTest';
+            $notification1->owner               = $joe;
+            $notification1->notificationMessage = $message;
+            $this->assertTrue($notification1->save());
+
+            //And Billy can create a notification for super
+            $notification2 = new Notification();
+            $notification2->type                = 'SimpleDTest';
+            $notification2->owner               = $sally;
+            $notification2->notificationMessage = $message;
+            $this->assertTrue($notification2->save());
+
+            $this->assertEquals(2, $message->notifications->count());
+            $messageId = $message->id;
+            $notification1Id = $notification1->id;
+            $notification2Id = $notification2->id;
+            $message->forget();
+            $notification1->forget();
+            $notification2->forget();
+
+            Notification::deleteByTypeAndUser('SimpleDTest', $joe);
+            // Notification message should exist, because there is still notification point to it
+            $message  = NotificationMessage::getById($messageId);
+            $this->assertTrue($message instanceOf NotificationMessage);
+            $notification2 = Notification::getById($notification2Id);
+            $this->assertTrue($notification2 instanceOf Notification);
+            $notifications = Notification::getByNotificationMessageId($messageId);
+            $this->assertEquals(1, count($notifications));
+            $this->assertEquals($notification2Id, $notifications[0]->id);
+
+            try
+            {
+                Notification::getById($notification1Id);
+                $this->fail();
+            }
+            catch (NotFoundException $e)
+            {
+            }
+            $message->forget();
+            $notification2->forget();
+            // Now delete second notification, this time notification message should be deleted too
+            Notification::deleteByTypeAndUser('SimpleDTest', $sally);
+            try
+            {
+                NotificationMessage::getById($messageId);
+                $this->fail();
+            }
+            catch (NotFoundException $e)
+            {
+            }
+            try
+            {
+                Notification::getById($notification2Id);
+                $this->fail();
+            }
+            catch (NotFoundException $e)
+            {
+            }
         }
     }
 ?>

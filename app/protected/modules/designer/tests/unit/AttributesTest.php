@@ -472,7 +472,8 @@
                 $this->fail();
             }
 
-            $attributeForm->precisionLength  = 3;
+            $attributeForm->precisionLength     = 3;
+            $attributeForm->attributeName       = $attributeName . 'Cstm';
             try
             {
                 $adapter->setAttributeMetadataFromForm($attributeForm);
@@ -657,6 +658,7 @@
                 $attributeForm->defaultValue  = 50;
             }
 
+            $attributeForm->attributeName   = $attributeName . 'Cstm';
             try
             {
                 $adapter->setAttributeMetadataFromForm($attributeForm);
@@ -725,6 +727,7 @@
                 $this->fail();
             }
 
+            $attributeForm->attributeName   = $attributeName . 'Cstm';
             try
             {
                 $adapter->setAttributeMetadataFromForm($attributeForm);
@@ -1569,7 +1572,8 @@
                 $this->fail();
             }
 
-            $attributeForm->maxLength     = 20;
+            $attributeForm->maxLength       = 20;
+            $attributeForm->attributeName   = $attributeName . 'Cstm';
             try
             {
                 $adapter->setAttributeMetadataFromForm($attributeForm);
@@ -1739,8 +1743,8 @@
          */
         public function testSetAndGetTextAreaAttribute()
         {
-            $this->setAndGetTextAreaAttribute('testTextArea2', true);
-            $this->setAndGetTextAreaAttribute('testTextArea3', false);
+            $this->setAndGetTextAreaAttribute('testTextArea30', true);
+            $this->setAndGetTextAreaAttribute('testTextArea31', false);
         }
 
         protected function setAndGetTextAreaAttribute($attributeName, $withDefaultData)
@@ -1934,6 +1938,7 @@
             $account->testText3Cstm                         = 'some test stuff 3';
             $account->testTextArea2Cstm                     = 'some test text area stuff';
             $account->testTextArea3Cstm                     = 'some test text area stuff 3';
+            $account->testTextArea31Cstm                    = 'some test text area stuff 31';
             $account->testUrl2Cstm                          = 'https://www.zurmo.com';
             $account->testUrl3Cstm                          = 'www.zurmo.org';
             $account->playMyFavoriteSongCstm->value         = 'song2'; // song 3
@@ -2166,7 +2171,7 @@
                 'it' => 'sameattribute it',
             );
             $attributeForm = new TextAreaAttributeForm();
-            $attributeForm->attributeName       = 'same';
+            $attributeForm->attributeName       = 'same2';
             $attributeForm->attributeLabels     = $compareAttributeLabels;
 
             $modelAttributesAdapterClassName    = $attributeForm::getModelAttributeAdapterNameForSavingAttributeFormData();
@@ -2174,7 +2179,7 @@
             $adapter->setAttributeMetadataFromForm($attributeForm);
 
             $attributeForm = new TextAreaAttributeForm();
-            $attributeForm->attributeName       = 'same';
+            $attributeForm->attributeName       = 'same2';
             $attributeForm->attributeLabels     = $compareAttributeLabels;
             $attributeForm->modelClassName      = 'Contact';
             $attributeForm->setScenario('createAttribute');

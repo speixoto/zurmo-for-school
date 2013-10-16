@@ -56,7 +56,7 @@
 
         public function actionCountMembers($marketingListId)
         {
-            $marketingList  = MarketingList::getById($marketingListId);
+            $marketingList  = MarketingList::getById((int) $marketingListId);
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($marketingList);
             $countArray = array(
                             'subscriberCount' => MarketingListMember::getCountByMarketingListIdAndUnsubscribed($marketingListId, false),
@@ -67,13 +67,12 @@
 
         public function actionSubscribeContacts($marketingListId, $id, $type, $page = 1, $subscribedCount = 0, $skippedCount = 0)
         {
-            assert('is_int($id)');
             assert('$type === "contact" || $type === "report"');
             if (!in_array($type, array('contact', 'report')))
             {
                 throw new NotSupportedException();
             }
-            $contactIds = array($id);
+            $contactIds = array((int) $id);
             if  ($type === 'report')
             {
                 $attributeName      = null;
@@ -126,7 +125,7 @@
         protected function addNewSubscribers($marketingListId, $contactIds)
         {
             $subscriberInformation = array('subscribedCount' => 0, 'skippedCount' => 0);
-            $marketingList         = MarketingList::getById($marketingListId);
+            $marketingList         = MarketingList::getById((int) $marketingListId);
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($marketingList);
             foreach ($contactIds as $contactId)
             {

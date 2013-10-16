@@ -39,13 +39,16 @@
         /**
          * For a give User name, run a partial search by
          * full name and retrieve user models.
-         * @param string $partialName
-         * @param int $pageSize
+         * @param $partialName
+         * @param $pageSize
+         * @param array $autoCompleteOptions
+         * @return Array
          */
-        public static function getUsersByPartialFullName($partialName, $pageSize)
+        public static function getUsersByPartialFullName($partialName, $pageSize, $autoCompleteOptions = array())
         {
             assert('is_string($partialName)');
             assert('is_int($pageSize)');
+            assert('is_array($autoCompleteOptions)');
             $personTableName   = RedBeanModel::getTableName('Person');
             $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('User');
             $joinTablesAdapter->addFromTableAndGetAliasName($personTableName, "{$personTableName}_id");
@@ -56,6 +59,10 @@
              $where .= "      (person.firstname      like lower('$partialName%') or "    .
                        "       person.lastname       like lower('$partialName%') or "    .
                        "       $fullNameSql like lower('$partialName%')) ";
+            if (!empty($autoCompleteOptions))
+            {
+                static::handleAutoCompleteOptions($joinTablesAdapter, $where, $autoCompleteOptions);
+            }
             return User::getSubset($joinTablesAdapter, null, $pageSize,
                                             $where, "person.firstname, person.lastname");
         }
@@ -64,7 +71,7 @@
          * @param string $emailAddress
          * @param null|string $operatorType
          * @param bool $filterOutHideFromSelecting
-         * @return An
+         * @return Array
          */
         public static function getUsersByEmailAddress($emailAddress, $operatorType = null, $filterOutHideFromSelecting = false)
         {
@@ -104,6 +111,25 @@
             $where  = RedBeanModelDataProvider::makeWhere('User', $metadata, $joinTablesAdapter);
             $users = User::getSubset($joinTablesAdapter, null, null, $where);
             return $users;
+        }
+
+        /**
+         * Applied autocompleteOptions
+         * @param RedBeanModelJoinTablesQueryAdapter $joinTablesAdapter
+         * @param $where
+         * @param $autoCompleteOptions
+         */
+        protected static function handleAutoCompleteOptions(RedBeanModelJoinTablesQueryAdapter & $joinTablesAdapter,
+                                                                & $where, $autoCompleteOptions)
+        {
+            foreach ($autoCompleteOptions as $optionName => $optionValue)
+            {
+                if (!method_exists(get_called_class(), $optionName))
+                {
+                    throw new NotSupportedException("No such autoCompleteOption as: $optionName");
+                }
+                static::${optionName}($optionValue, $joinTablesAdapter, $where);
+            }
         }
     }
 ?>

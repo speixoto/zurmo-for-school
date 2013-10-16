@@ -195,7 +195,7 @@
         {
             if (trim($this->name) == '')
             {
-                return Yii::t('Default', '(Unnamed)');
+                return Yii::t('Core', '(Unnamed)');
             }
             return $this->name;
         }

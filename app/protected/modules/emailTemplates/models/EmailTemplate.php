@@ -89,7 +89,7 @@
             {
                 if (trim($this->name) == '')
                 {
-                    return Zurmo::t('Default', '(Unnamed)');
+                    return Zurmo::t('Core', '(Unnamed)');
                 }
                 return $this->name;
             }
@@ -129,30 +129,31 @@
                     array('modelClassName',             'required'),
                     array('modelClassName',             'type',   'type' => 'string'),
                     array('modelClassName',             'length', 'max' => 64),
-                    array('modelClassName',             'validateModelExists', 'except' => 'autoBuildDatabase'),
+                    array('modelClassName',             'validateModelExists'),
                     array('name',                       'required'),
                     array('name',                       'type',    'type' => 'string'),
-                    array('name',                       'length',  'min'  => 3, 'max' => 64),
+                    array('name',                       'length',  'min'  => 1, 'max' => 64),
                     array('subject',                    'required'),
                     array('subject',                    'type',    'type' => 'string'),
-                    array('subject',                    'length',  'min'  => 3, 'max' => 64),
+                    array('subject',                    'length',  'min'  => 1, 'max' => 64),
                     array('language',                   'type',    'type' => 'string'),
                     array('language',                   'length',  'min' => 2, 'max' => 2),
                     array('language',                   'setToUserDefaultLanguage'),
                     array('htmlContent',                'type',    'type' => 'string'),
                     array('textContent',                'type',    'type' => 'string'),
+                    array('htmlContent',                'StripDummyHtmlContentFromOtherwiseEmptyFieldValidator'),
                     array('htmlContent',                'AtLeastOneContentAreaRequiredValidator'),
                     array('textContent',                'AtLeastOneContentAreaRequiredValidator'),
-                    array('htmlContent',                'EmailTemplateMergeTagsValidator', 'except' => 'autoBuildDatabase'),
-                    array('textContent',                'EmailTemplateMergeTagsValidator', 'except' => 'autoBuildDatabase'),
+                    array('htmlContent',                'EmailTemplateMergeTagsValidator'),
+                    array('textContent',                'EmailTemplateMergeTagsValidator'),
                 ),
                 'elements' => array(
                     'htmlContent'                   => 'TextArea',
                     'textContent'                   => 'TextArea',
                 ),
                 'relations' => array(
-                    'files'                         => array(RedBeanModel::HAS_MANY,  'FileModel', RedBeanModel::OWNED,
-                                                            RedBeanModel::LINK_TYPE_POLYMORPHIC, 'relatedModel'),
+                    'files'                         => array(static::HAS_MANY,  'FileModel', static::OWNED,
+                                                            static::LINK_TYPE_POLYMORPHIC, 'relatedModel'),
                 ),
             );
             return $metadata;

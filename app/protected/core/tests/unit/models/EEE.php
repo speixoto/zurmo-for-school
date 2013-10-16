@@ -46,13 +46,15 @@
                 ),
                 'rules' => array(
                     array('eeeMember', 'type', 'type' => 'string'),
+                    array('eeeMember', 'length', 'max' => 255),
                     array('eeeMember2', 'type', 'type' => 'string'),
+                    array('eeeMember2', 'length', 'max' => 255),
                 ),
                 'relations' => array(
-                    'industry'           => array(RedBeanModel::HAS_ONE, 'CustomField', RedBeanModel::NOT_OWNED,
-                                           RedBeanModel::LINK_TYPE_SPECIFIC, 'industry'),
-                    'multipleIndustries' => array(RedBeanModel::HAS_ONE, 'MultipleValuesCustomField', RedBeanModel::NOT_OWNED,
-                                           RedBeanModel::LINK_TYPE_SPECIFIC, 'multipleIndustries'),
+                    'industry'           => array(static::HAS_ONE, 'CustomField', static::NOT_OWNED,
+                                           static::LINK_TYPE_SPECIFIC, 'industry'),
+                    'multipleIndustries' => array(static::HAS_ONE, 'MultipleValuesCustomField', static::NOT_OWNED,
+                                           static::LINK_TYPE_SPECIFIC, 'multipleIndustries'),
                 ),
                 'customFields' => array(
                     'industry'           => 'Industries',

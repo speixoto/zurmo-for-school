@@ -36,23 +36,30 @@
 
     class ExportItemToCsvFileUtil extends ExportItemToOutputUtil
     {
+        const DEFAULT_DELIMITER = ',';
+
+        const DEFAULT_ENCLOSURE = '"';
+
         /**
          * Export data array into csv format and send generated file to web browser
          * or return csv string, depending on $download parameter.
          * @param array $data
          * @param array $headerData
          * @param string $exportFileName
-         * @param boolean $download. Should send generated csv string to output or not.
-         * @return string output
+         * @param bool $download Should send generated csv string to output or not.
+         * @param bool $allowHeaderOnlyConversion
+         * @return string|void
          */
-        public static function export($data, $headerData = array(), $exportFileName = 'exports.csv', $download = false)
+        public static function export($data, $headerData = array(), $exportFileName = 'exports.csv',
+                                                $download = false, $allowHeaderOnlyConversion = false)
         {
             assert('is_array($headerData)');
             assert('is_string($exportFileName)');
             assert('is_bool($download)');
             $output = '';
 
-            if (count($data) > 0)
+            // $allowHeaderOnlyConversion is only supplied by ImportDatabaseUtil, we need it for few import tests
+            if ((count($data) > 0) || ((count($headerData) > 0) && $allowHeaderOnlyConversion))
             {
                 if (count($headerData) > 0)
                 {
@@ -82,8 +89,17 @@
          * @param string $enclosure
          * @return string
          */
-        protected static function arrayToCsv($row, $isHeaderRow = false, $delimiter = ',', $enclosure = '"') // Not Coding Standard
+        protected static function arrayToCsv($row, $isHeaderRow = false, $delimiter = null, $enclosure = null) // Not Coding Standard
         {
+            if (!isset($delimiter))
+            {
+                $delimiter = static::DEFAULT_DELIMITER;
+            }
+            if (!isset($enclosure))
+            {
+                $enclosure = static::DEFAULT_ENCLOSURE;
+            }
+
             $fp = fopen('php://temp', 'r+'); // Not Coding Standard
 
             if (fputcsv($fp, $row, $delimiter, $enclosure) === false)

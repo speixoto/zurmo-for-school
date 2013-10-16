@@ -74,7 +74,7 @@
                     'latestDateTime',
                 ),
                 'relations' => array(
-                    'activityItems' => array(RedBeanModel::MANY_MANY, 'Item'),
+                    'activityItems' => array(static::MANY_MANY, 'Item'),
                 ),
                 'rules' => array(
                     array('latestDateTime', 'required'),
@@ -88,7 +88,7 @@
                 'activityItemsModelClassNames' => array(
                     'Account',
                     'Contact',
-                    'Opportunity',
+                    'Opportunity'
                 ),
             );
             return $metadata;

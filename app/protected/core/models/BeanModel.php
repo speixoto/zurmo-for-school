@@ -462,7 +462,7 @@
         /**
          * @return array
          */
-        protected static function getMixedInModelClassNames()
+        public static function getMixedInModelClassNames()
         {
             return array();
         }
@@ -552,6 +552,7 @@
         {
             try
             {
+                // not using default value to save cpu cycles on requests that follow the first exception.
                 $cachedData = BeanModelCache::getEntry(self::CACHE_IDENTIFIER . get_called_class());
                 self::$attributeNamesToClassNames[get_called_class()]                              =
                     $cachedData['attributeNamesToClassNames'][get_called_class()];
@@ -660,7 +661,8 @@
                     {
                         //When a relation is the same as the relatedModelClassName and it is a specific link, this is not
                         //supportive. Either use assumptive or change the relation name.
-                        throw new NotSupportedException();
+                        // TODO: @Shoaibi/@Jason: Critical: Commented this to allow link type specific for has_one
+                        // throw new NotSupportedException();
                     }
                     assert('in_array($relationType, array(self::HAS_ONE_BELONGS_TO, self::HAS_MANY_BELONGS_TO, ' .
                         'self::HAS_ONE, self::HAS_MANY, self::MANY_MANY))');

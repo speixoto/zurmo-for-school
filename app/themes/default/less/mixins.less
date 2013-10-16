@@ -32,7 +32,7 @@
 // "Copyright Zurmo Inc. 2013. All rights reserved".
 
 .symbly( @size : 32px ) {
-    font-weight:normal;
+    font-weight:normal !important;
     font-size:@size;
     font-family: "zurmo_gamification_symbly_rRg";
 }
@@ -106,6 +106,8 @@
         -ms-transition: all @time ease-out;
             transition: all @time ease-out;
 }
+
+
 
 .cf:before,
 .cf:after{
@@ -195,6 +197,17 @@ a.z-button,
     .zButton() !important;
 }
 
+.z-button.disabled{
+	pointer-events:none;
+	.opacity(50);
+	-webkit-filter: grayscale(85%);
+	-moz-filter: grayscale(85%);
+	-ms-filter: grayscale(85%);
+	-o-filter: grayscale(85%);
+	filter: grayscale(85%);
+	filter: gray; /* IE 6-9 */
+}
+
 /*
 .zButton:not(.attacheLoading),
 .z-button:not(.attachLoading){
@@ -274,7 +287,6 @@ a.z-button,
 .z-action-link-active{
     .opacity(100);    
 }
-
 
 // Gradients
 #gradient {

@@ -39,6 +39,11 @@
      */
     class BounceConfigurationEditAndDetailsView extends ImapConfigurationEditAndDetailsView
     {
+        public function getTitle()
+        {
+            return Zurmo::t('EmailMessagesModule', 'Bounce Configuration (IMAP)');
+        }
+
         public static function getDefaultMetadata()
         {
             $parentMetadata = parent::getDefaultMetadata();
@@ -62,11 +67,6 @@
                 ),
             );
             return CMap::mergeArray($parentMetadata, $metadata);
-        }
-
-        protected static function getPanelTitle()
-        {
-            return Zurmo::t('EmailMessagesModule', 'Bounce Configuration (IMAP)');
         }
     }
 ?>

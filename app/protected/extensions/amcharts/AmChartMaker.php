@@ -90,7 +90,8 @@
                                    "#ABBC42", "#C70151", "#8C1C03", "#A67417", "#BDBF7E", "#FFAA07",
                                    "#274F73", "#D92949", "#29A649", "#46201C", "#D92525", "#7AA61B",
                                    "#F28B0C", "#8F6181", "#605F53", "#65818C", "#E96151", "#366774",
-                                   "#70995C", "#592519", "#33664D", "#142933", "#F2E530", "#D94625"]'
+                                   "#70995C", "#592519", "#33664D", "#142933", "#F2E530", "#D94625"]',
+                            7 => '["#ffffff", "#933140"]'
                 );
             $this->addChartProperties('fontFamily',                 '"Arial"');
             $this->addChartProperties('color',                      "'#545454'");
@@ -317,6 +318,16 @@
                 $this->addChartProperties('depth3D',                40);
                 $this->addChartProperties('angle',                  30);
                 $this->chartIs3d = true;
+            }
+            elseif ($this->type == ChartRules::TYPE_DONUT_PROGRESSION)
+            {
+                $this->addChartProperties('innerRadius',            "'80%'");
+                $this->addChartProperties('labelsEnabled',          "false");
+                $this->addChartProperties('startDuration',          "'0'");
+                $this->addChartProperties('balloonText',            "''");
+                $this->addChartProperties('pullOutRadius',          "'0%'");
+                $this->chartIsPie = true;
+                $this->addChartProperties('colors', $colorTheme[7]);
             }
             else
             {

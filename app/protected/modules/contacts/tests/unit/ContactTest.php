@@ -716,10 +716,11 @@
         public function testGetModelClassNames()
         {
             $modelClassNames = ContactsModule::getModelClassNames();
-            $this->assertEquals(3, count($modelClassNames));
+            $this->assertEquals(4, count($modelClassNames));
             $this->assertEquals('Contact', $modelClassNames[0]);
             $this->assertEquals('ContactSearch', $modelClassNames[1]);
-            $this->assertEquals('ContactState', $modelClassNames[2]);
+            $this->assertEquals('ContactStarred', $modelClassNames[2]);
+            $this->assertEquals('ContactState', $modelClassNames[3]);
         }
 
         public function testChangingContactWithoutChangingRelatedAccountShouldNotAuditAccountChangeWhenDoneViaPost()

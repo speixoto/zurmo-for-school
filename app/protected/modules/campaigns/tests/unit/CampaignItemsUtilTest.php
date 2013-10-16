@@ -43,12 +43,6 @@
         {
             parent::setUpBeforeClass();
             SecurityTestHelper::createSuperAdmin();
-            if (!RedBeanDatabase::isFrozen())
-            {
-                // TODO: @Shoaibi: High: get rid of this for God's sake.
-                $campaignItem = CampaignItemTestHelper::createCampaignItem(0);
-                $campaignItem->delete();
-            }
         }
 
         public function setUp()
@@ -56,7 +50,7 @@
             parent::setUp();
             $this->user                 = User::getByUsername('super');
             Yii::app()->user->userModel = $this->user;
-            $this->purgeAllCampaigns();
+            Campaign::deleteAll();
         }
 
         /**
@@ -167,6 +161,23 @@
                                                                                 0,
                                                                                 $marketingList);
             $processed                  = 0;
+            $campaignItem               = CampaignItemTestHelper::createCampaignItem($processed, $campaign, $contact);
+            CampaignItemsUtil::processDueItem($campaignItem);
+            $this->assertEquals(1, $campaignItem->processed);
+            $emailMessage               = $campaignItem->emailMessage;
+            $this->assertEquals($marketingList->owner, $emailMessage->owner);
+            $marketingListPermissions   = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($marketingList);
+            $emailMessagePermissions    = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($emailMessage);
+            $this->assertEquals($marketingListPermissions, $emailMessagePermissions);
+            $this->assertNull($emailMessage->subject);
+            $this->assertNull($emailMessage->content->textContent);
+            $this->assertNull($emailMessage->content->htmlContent);
+            $this->assertNull($emailMessage->sender->fromAddress);
+            $this->assertNull($emailMessage->sender->fromName);
+            $this->assertEquals(0, $emailMessage->recipients->count());
+
+            //Test with empty primary email address
+            $contact->primaryEmail->emailAddress = '';
             $campaignItem               = CampaignItemTestHelper::createCampaignItem($processed, $campaign, $contact);
             CampaignItemsUtil::processDueItem($campaignItem);
             $this->assertEquals(1, $campaignItem->processed);
@@ -416,12 +427,13 @@
             $this->assertEquals($contact, $recipients[0]->personOrAccount);
             $this->assertNotEmpty($emailMessage->files);
             $this->assertCount(count($files), $emailMessage->files);
-            foreach ($files as $index => $file)
+            foreach ($campaign->files as $index => $file)
             {
-                $this->assertEquals($files[$index]['name'], $emailMessage->files[$index]->name);
-                $this->assertEquals($files[$index]['type'], $emailMessage->files[$index]->type);
-                $this->assertEquals($files[$index]['size'], $emailMessage->files[$index]->size);
-                $this->assertEquals($files[$index]['contents'], $emailMessage->files[$index]->fileContent->content);
+                $this->assertEquals($file->name, $emailMessage->files[$index]->name);
+                $this->assertEquals($file->type, $emailMessage->files[$index]->type);
+                $this->assertEquals($file->size, $emailMessage->files[$index]->size);
+                //CampaingItem should share the Attachments content from Campaign
+                $this->assertEquals($file->fileContent, $emailMessage->files[$index]->fileContent);
             }
             $headersArray               = array('zurmoItemId' => $campaignItem->id,
                                                 'zurmoItemClass' => get_class($campaignItem),
@@ -702,7 +714,7 @@
                                                                              null,
                                                                              null,
                                                                              null,
-                                                                             null,
+                                                                             false,
                                                                              null,
                                                                              null,
                                                                              null,
@@ -1074,15 +1086,6 @@
                                                                                 $personId);
             $this->assertNotEmpty($activities);
             $this->assertCount(1, $activities);
-        }
-
-        protected function purgeAllCampaigns()
-        {
-            $campaigns = Campaign::getAll();
-            foreach ($campaigns as $campaign)
-            {
-                $campaign->delete();
-            }
         }
     }
 ?>

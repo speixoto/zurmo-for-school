@@ -245,63 +245,6 @@
         }
 
         /**
-         * Get the value of type displayed in grid view for product template
-         * @param RedBeanModel $data
-         * @param int $row
-         * @return null or string
-         */
-        public static function getProductTemplateTypeDisplayedGridValue($data, $row)
-        {
-            $typeDropdownData = self::getProductTemplateTypeDropdownArray();
-            if (isset($typeDropdownData[$data->type]))
-            {
-                return $typeDropdownData[$data->type];
-            }
-            else
-            {
-                return null;
-            }
-        }
-
-        /**
-         * Get the value of status displayed in grid view for product template
-         * @param RedBeanModel $data
-         * @param int $row
-         * @return null or string
-         */
-        public static function getProductTemplateStatusDisplayedGridValue($data, $row)
-        {
-            $statusDropdownData = self::getProductTemplateStatusDropdownArray();
-            if (isset($statusDropdownData[$data->status]))
-            {
-                return $statusDropdownData[$data->status];
-            }
-            else
-            {
-                return null;
-            }
-        }
-
-        /**
-         * Get the value of price frequency displayed in grid view for product template
-         * @param RedBeanModel $data
-         * @param int $row
-         * @return null or string
-         */
-        public static function getProductTemplatePriceFrequencyDisplayedGridValue($data, $row)
-        {
-            $frequencyDropdownData = self::getProductTemplatePriceFrequencyDropdownArray();
-            if (isset($frequencyDropdownData[$data->priceFrequency]))
-            {
-                return $frequencyDropdownData[$data->priceFrequency];
-            }
-            else
-            {
-                return null;
-            }
-        }
-
-        /**
          * Get the value of sell price formula displayed in grid view for product template
          * @param RedBeanModel $data
          * @param int $row
@@ -325,49 +268,6 @@
             }
 
             return $content;
-        }
-
-        /**
-         * Get the attribute value for the report grid view based on the input
-         * dropdown attribute
-         * @param object $data
-         * @param int $row
-         * @param string $inputAttribute
-         * @param array $dataArray
-         * @return string or null value
-         */
-        public static function renderProductTemplateListViewAttributeForReports($model, $attribute)
-        {
-            assert('$model instanceof ReportResultsRowData');
-            if (null === $displayAttributeKey = $model::resolveKeyByAttributeName($attribute))
-            {
-                return $model->{$attribute};
-            }
-            $displayAttributes = $model->getDisplayAttributes();
-            $displayAttribute  = $displayAttributes[$displayAttributeKey];
-            $realAttributeName = $displayAttribute->getResolvedAttribute();
-            switch($realAttributeName)
-            {
-                case 'priceFrequency':
-                    $dataArray = self::getProductTemplatePriceFrequencyDropdownArray();
-                    break;
-                case 'status'        :
-                    $dataArray = self::getProductTemplateStatusDropdownArray();
-                    break;
-                case 'type'          :
-                    $dataArray = self::getProductTemplateTypeDropdownArray();
-                    break;
-                default              :   break;
-            }
-            $value = $model->{$attribute};
-            if (isset($dataArray[$value]))
-            {
-                return $dataArray[$value];
-            }
-            else
-            {
-                return null;
-            }
         }
     }
 ?>

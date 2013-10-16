@@ -57,7 +57,7 @@
             }
             else
             {
-                return Zurmo::t('NotificationsModule', '(Unnamed)');
+                return Zurmo::t('Core', '(Unnamed)');
             }
         }
 
@@ -104,6 +104,71 @@
             return $models;
         }
 
+        /**
+         * Get all notifications based on notificationMessage id
+         * @param $notificationMessageId
+         * @return Array of models
+         */
+        public static function getByNotificationMessageId($notificationMessageId)
+        {
+            assert('is_int($notificationMessageId)');
+            $searchAttributeData = array();
+            $searchAttributeData['clauses'] = array(
+                1 => array(
+                    'attributeName'        => 'notificationMessage',
+                    'relatedAttributeName' => 'id',
+                    'operatorType'         => 'equals',
+                    'value'                => $notificationMessageId,
+                ),
+            );
+            $searchAttributeData['structure'] = '1';
+            $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('Notification');
+            $where = RedBeanModelDataProvider::makeWhere('Notification', $searchAttributeData, $joinTablesAdapter);
+            $models = self::getSubset($joinTablesAdapter, null, null, $where, null);
+            return $models;
+        }
+
+        /**
+         * Delete all notifications and related NotificationMessages by type and user
+         * @param $type
+         * @param User $user
+         */
+        public static function deleteByTypeAndUser($type, User $user)
+        {
+            $notifications = static::getByTypeAndUser($type, $user);
+            if (!empty($notifications))
+            {
+                foreach ($notifications as $notification)
+                {
+                    static::deleteNotificationAndRelatedNotificationMessage($notification);
+                }
+            }
+        }
+
+        /**
+         * Delete notification and related notificationMessage, if there are no relations from other notifications to
+         * this notificationMessage
+         * @param Notification $notification
+         */
+        public static function deleteNotificationAndRelatedNotificationMessage(Notification $notification)
+        {
+            try
+            {
+                if (isset($notification->notificationMessage) && $notification->notificationMessage instanceOf NotificationMessage)
+                {
+                    $notificationMessageNotifications = Notification::getByNotificationMessageId($notification->notificationMessage->id);
+                    if (count($notificationMessageNotifications) == 1)
+                    {
+                        $notification->notificationMessage->delete();
+                    }
+                }
+            }
+            catch (NotFoundException $e)
+            {
+            }
+            $notification->delete();
+        }
+
         public static function getCountByUser(User $user)
         {
             assert('$user->id > 0');
@@ -131,15 +196,15 @@
                     'ownerHasReadLatest',
                 ),
                 'relations' => array(
-                    'notificationMessage' => array(RedBeanModel::HAS_ONE,  'NotificationMessage', RedBeanModel::NOT_OWNED),
-                    'owner' =>               array(RedBeanModel::HAS_ONE, 'User', RedBeanModel::NOT_OWNED,
-                                                   RedBeanModel::LINK_TYPE_SPECIFIC, 'owner'),
+                    'notificationMessage' => array(static::HAS_ONE,  'NotificationMessage', static::NOT_OWNED),
+                    'owner' =>               array(static::HAS_ONE, 'User', static::NOT_OWNED,
+                                                   static::LINK_TYPE_SPECIFIC, 'owner'),
                 ),
                 'rules' => array(
                     array('owner',                  'required'),
                     array('type',                   'required'),
                     array('type',                   'type',    'type' => 'string'),
-                    array('type',                   'length',  'min'  => 3, 'max' => 64),
+                    array('type',                   'length',  'min'  => 1, 'max' => 64),
                     array('ownerHasReadLatest',     'boolean'),
                 ),
                 'elements' => array(

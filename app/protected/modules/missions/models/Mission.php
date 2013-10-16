@@ -70,7 +70,7 @@
             {
                 if (trim($this->description) == '')
                 {
-                    return Zurmo::t('MissionsModule', '(Unnamed)');
+                    return Zurmo::t('Core', '(Unnamed)');
                 }
                 return $this->description;
             }
@@ -108,14 +108,14 @@
                     'status',
                 ),
                 'relations' => array(
-                    'comments'                    => array(RedBeanModel::HAS_MANY,  'Comment', RedBeanModel::OWNED,
-                                                        RedBeanModel::LINK_TYPE_POLYMORPHIC, 'relatedModel'),
-                    'files'                       => array(RedBeanModel::HAS_MANY,  'FileModel', RedBeanModel::OWNED,
-                                                        RedBeanModel::LINK_TYPE_POLYMORPHIC, 'relatedModel'),
-                    'takenByUser'                 => array(RedBeanModel::HAS_ONE,   'User', RedBeanModel::NOT_OWNED,
-                                                        RedBeanModel::LINK_TYPE_SPECIFIC, 'takenByUser'),
-                    'personsWhoHaveNotReadLatest' => array(RedBeanModel::HAS_MANY,  'PersonWhoHaveNotReadLatest',
-                                                        RedBeanModel::OWNED),
+                    'comments'                    => array(static::HAS_MANY,  'Comment', static::OWNED,
+                                                        static::LINK_TYPE_POLYMORPHIC, 'relatedModel'),
+                    'files'                       => array(static::HAS_MANY,  'FileModel', static::OWNED,
+                                                        static::LINK_TYPE_POLYMORPHIC, 'relatedModel'),
+                    'takenByUser'                 => array(static::HAS_ONE,   'User', static::NOT_OWNED,
+                                                        static::LINK_TYPE_SPECIFIC, 'takenByUser'),
+                    'personsWhoHaveNotReadLatest' => array(static::HAS_MANY,  'PersonWhoHaveNotReadLatest',
+                                                        static::OWNED),
                 ),
                 'rules' => array(
                     array('description',              'required'),
@@ -158,7 +158,7 @@
                     'latestDateTime'  => Zurmo::t('ActivitiesModule', 'Latest Date Time', array(), null, $language),
                     'personsWhoHaveNotReadLatest' => Zurmo::t('MissionsModule', 'Persons Who Have Not Read Latest', array(), null, $language),
                     'reward'          => Zurmo::t('MissionsModule', 'Reward', array(), null, $language),
-                    'status'          => Zurmo::t('MissionsModule', 'Status', array(), null, $language),
+                    'status'          => Zurmo::t('ZurmoModule', 'Status', array(), null, $language),
                     'takenByUser'     => Zurmo::t('MissionsModule', 'Taken By User', array(), null, $language),
                 )
             );
@@ -251,8 +251,7 @@
          */
         protected function afterSave()
         {
-            if ($this->isNewModel && $this->getScenario() != 'autoBuildDatabase' &&
-                $this->getScenario() != 'importModel')
+            if ($this->isNewModel && $this->getScenario() != 'importModel')
             {
                 MissionsUtil::makeAndSubmitNewMissionNotificationMessage($this);
             }

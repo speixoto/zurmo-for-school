@@ -679,7 +679,8 @@
 
         protected static function resolveViewIdByMassActionId($actionId, $returnProgressViewName, $moduleName = null)
         {
-            if (strpos($actionId, 'massEdit') === 0 || strpos($actionId, 'massDelete') === 0)
+            if (strpos($actionId, 'massEdit') === 0 || strpos($actionId, 'massDelete') === 0 ||
+                strpos($actionId, 'massSubscribe') === 0)
             {
                 $viewNameSuffix    = (!$returnProgressViewName)? 'View': 'ProgressView';
                 $viewNamePrefix    = static::resolveMassActionId($actionId, true);
@@ -705,6 +706,10 @@
             elseif (strpos($actionId, 'massEdit') === 0)
             {
                 return Zurmo::t('Core', 'Mass Update');
+            }
+            elseif (strpos($actionId, 'massSubscribe') === 0)
+            {
+                return Zurmo::t('Core', 'Mass Subscribe');
             }
             else
             {
@@ -747,6 +752,7 @@
             assert('$redirectUrlParams == null || is_array($redirectUrlParams) || is_string($redirectUrlParams)');
             if (ControllerSecurityUtil::doesCurrentUserHavePermissionOnSecurableItem($model, Permission::READ))
             {
+                $this->beforeRedirect($model);
                 $this->redirectAfterSaveModel($model->id, $redirectUrlParams);
             }
             else
@@ -1170,6 +1176,17 @@
             }
         }
 
+        protected static function processModelForMassSubscribe(& $model)
+        {
+            $marketingListMember            = Yii::app()->request->getPost('MarketingListMember');
+            if ($marketingListMember['marketingList']['id'] > 0)
+            {
+                $marketingList = MarketingList::getById((int) $marketingListMember['marketingList']['id']);
+                $marketingList->addNewMember($model->id);
+                return true;
+            }
+        }
+
         protected static function resolveInsufficientPermissionSkipSavingUtilByMassActionId($actionId)
         {
             // TODO: @Shoaibi/@Jason: Low: Candidate for MassActionController
@@ -1215,8 +1232,57 @@
             }
             else
             {
-                return ListViewTypesToggleLinkActionElement::TYPE_GRID;
+                return ListViewTypesToggleLinkActionElement::TYPE_NON_KANBAN_BOARD;
             }
+        }
+
+        /**
+         * Resolve active element type
+         * @param type $detailsAndRelationsView
+         * @return type
+         */
+        protected function resolveActiveElementTypeForKanbanBoardInDetailView($detailsAndRelationsView)
+        {
+            $detailsAndRelationsView = $this->resolveKanbanBoardIsActiveByGetForDetailsView($detailsAndRelationsView);
+
+            if ($detailsAndRelationsView->getKanbanBoard()->getIsActive())
+            {
+                return DetailsAndRelationsViewTypesToggleLinkActionElement::TYPE_KANBAN_BOARD;
+            }
+            else
+            {
+                return DetailsAndRelationsViewTypesToggleLinkActionElement::TYPE_NON_KANBAN_BOARD;
+            }
+        }
+
+        /**
+         * @param $detailsAndRelationsView
+         */
+        protected function resolveKanbanBoardIsActiveByGetForDetailsView($detailsAndRelationsView)
+        {
+            if (isset($_GET['kanbanBoard']) && $_GET['kanbanBoard'] && !Yii::app()->userInterface->isMobile())
+            {
+                $detailsAndRelationsView->getKanbanBoard()->setIsActive();
+            }
+            elseif (isset($_GET['kanbanBoard']) && !$_GET['kanbanBoard'])
+            {
+                $detailsAndRelationsView->getKanbanBoard()->setIsNotActive();
+                $detailsAndRelationsView->getKanbanBoard()->setClearSticky();
+            }
+            elseif (Yii::app()->userInterface->isMobile())
+            {
+                $detailsAndRelationsView->getKanbanBoard()->setIsNotActive();
+            }
+
+            return $detailsAndRelationsView;
+        }
+
+        /**
+         * Process info before redirection
+         */
+        protected function beforeRedirect($model)
+        {
+
         }
     }
 ?>

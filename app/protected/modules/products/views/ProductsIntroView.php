@@ -65,21 +65,5 @@
             $this->registerScripts();
             return $content;
         }
-
-        protected function resolveSectionName()
-        {
-            $sectionName = str_replace('link', '', strtolower($this->activeActionElementType));
-            return $sectionName;
-        }
-
-        protected function registerScripts()
-        {
-            $content  = "$(this).resolveHighestAndEqualize($('.module-intro-steps'));";
-            $content .= "$(window).resize(function()
-                         {
-                             $(this).resolveHighestAndEqualize($('.module-intro-steps'));
-                         });";
-            Yii::app()->clientScript->registerScript($this->moduleName, $content);
-        }
     }
 ?>

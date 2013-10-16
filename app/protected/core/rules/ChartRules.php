@@ -67,6 +67,8 @@
 
         const TYPE_LINE                  = 'Line';
 
+        const TYPE_DONUT_PROGRESSION     = 'DonutProgression';
+
         /**
          * @return array of chart types that require a second series and range to render.
          */
@@ -116,6 +118,7 @@
                          ChartRules::TYPE_STACKED_COLUMN_2D  => Zurmo::t('Core', 'Stacked Column 2D'),
                          ChartRules::TYPE_STACKED_COLUMN_3D  => Zurmo::t('Core', 'Stacked Column 3D'),
                          ChartRules::TYPE_STACKED_AREA       => Zurmo::t('Core', 'Stacked Area'),
+                         ChartRules::TYPE_STACKED_AREA       => Zurmo::t('Core', 'Donut Progression'),
             );
         }
 

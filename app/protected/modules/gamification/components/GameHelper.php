@@ -270,6 +270,14 @@
             }
         }
 
+        public function resolveNewCollectionItems()
+        {
+            if(GameCollection::shouldReceiveCollectionItem())
+            {
+                return GameCollection::processRandomReceivingCollectionItemByUser(Yii::app()->user->userModel);
+            }
+        }
+
         /**
          * @param string $levelType
          * @param GameLevel $currentGameLevel
@@ -344,10 +352,18 @@
         protected static function processLevelChangeGameNotification($nextLevelValue)
         {
             assert('is_int($nextLevelValue)');
+            $coinsValue = GameCoinRules::getCoinsByLevel((int)$nextLevelValue);
             $gameNotification           = new GameNotification();
             $gameNotification->user     = Yii::app()->user->userModel;
-            $gameNotification->setLevelChangeByNextLevelValue($nextLevelValue);
+            $gameNotification->setLevelChangeByNextLevelValue($nextLevelValue, $coinsValue);
             $saved = $gameNotification->save();
+            if (!$saved)
+            {
+                throw new FailedToSaveModelException();
+            }
+            $gameCoin = GameCoin::resolveByPerson(Yii::app()->user->userModel);
+            $gameCoin->addValue($coinsValue);
+            $saved = $gameCoin->save();
             if (!$saved)
             {
                 throw new FailedToSaveModelException();

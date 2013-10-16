@@ -49,7 +49,7 @@
          */
         public static function getDisplayName()
         {
-            return Zurmo::t('ContactsModule', 'Status');
+            return Zurmo::t('ZurmoModule', 'Status');
         }
 
         /**

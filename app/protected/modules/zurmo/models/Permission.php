@@ -72,14 +72,14 @@
         public static function removeForPermitable(Permitable $permitable)
         {
             PermissionsCache::forgetAll();
-            R::exec("delete from permission where permitable_id = :id;",
+            ZurmoRedBean::exec("delete from permission where permitable_id = :id;",
                     array('id' => $permitable->getClassId('Permitable')));
         }
 
         public static function removeAll()
         {
             PermissionsCache::forgetAll();
-            R::exec("delete from permission;");
+            ZurmoRedBean::exec("delete from permission;");
         }
 
         public static function permissionsToString($permissions)
@@ -224,8 +224,8 @@
                     'type',
                 ),
                 'relations' => array(
-                    'permitable'     => array(RedBeanModel::HAS_ONE,             'Permitable'),
-                    'securableItem'  => array(RedBeanModel::HAS_MANY_BELONGS_TO, 'SecurableItem'),
+                    'permitable'     => array(static::HAS_ONE,             'Permitable'),
+                    'securableItem'  => array(static::HAS_MANY_BELONGS_TO, 'SecurableItem'),
                 ),
                 'rules' => array(
                     array('permissions', 'required'),

@@ -346,5 +346,29 @@
             $this->assertTrue($gameLevel->id > 0);
             $this->assertEquals(3, $gameLevel->value);
         }
+
+        public function testResolveNewCollectionItems()
+        {
+            $bool = GameCollection::shouldReceiveCollectionItem();
+            $this->assertTrue(is_bool($bool));
+            Yii::app()->user->userModel      = User::getByUsername('super');
+            $availableTypes = GameCollection::getAvailableTypes();
+            $this->assertCount(31, $availableTypes);
+            $collection     = GameCollection::resolveByTypeAndPerson($availableTypes[0], Yii::app()->user->userModel);
+            $itemsData      = $collection->getItemsData();
+            $randomItem      = array_rand($itemsData, 1);
+            $compareData = array('Gate'        => 0,
+                                 'Passport'    => 0,
+                                 'Pilot'       => 0,
+                                 'Ticket'      => 0,
+                                 'TowTruck'    => 0);
+            $this->assertTrue($randomItem == 'Gate' || $randomItem == 'Passport' ||
+                              $randomItem == 'Pilot' || $randomItem == 'Ticket' || $randomItem == 'TowTruck');
+            $compareData[$randomItem] = $compareData[$randomItem] + 1;
+            $itemsData[$randomItem] = $itemsData[$randomItem] + 1;
+            $collection->setItemsData($itemsData);
+            $collection->save();
+            $this->assertEquals($compareData, $collection->getItemsData());
+        }
     }
 ?>

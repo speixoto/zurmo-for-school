@@ -70,7 +70,7 @@
             {
                 if (trim($this->name) == '')
                 {
-                    return Yii::t('Default', '(Unnamed)');
+                    return Yii::t('Core', '(Unnamed)');
                 }
                 return $this->name;
             }
@@ -173,7 +173,7 @@
                 'rules' => array(
                     array('name',                   'required'),
                     array('name',                   'type',    'type' => 'string'),
-                    array('name',                   'length',  'min'  => 3, 'max' => 64),
+                    array('name',                   'length',  'min'  => 1, 'max' => 64),
                     array('status',                 'required'),
                     array('status',                 'type',    'type' => 'integer'),
                     array('status',                 'default', 'value' => static::STATUS_ACTIVE),
@@ -184,29 +184,30 @@
                     array('sendOnDateTime',         'dateTimeDefault', 'value' => DateTimeCalculatorUtil::NOW),
                     array('fromName',                'required'),
                     array('fromName',               'type',    'type' => 'string'),
-                    array('fromName',               'length',  'min'  => 3, 'max' => 64),
+                    array('fromName',               'length',  'min'  => 1, 'max' => 64),
                     array('fromAddress',            'required'),
                     array('fromAddress',            'type', 'type' => 'string'),
                     array('fromAddress',            'length',  'min'  => 6, 'max' => 64),
-                    array('fromAddress',            'email', 'except' => 'autoBuildDatabase'),
+                    array('fromAddress',            'email'),
                     array('subject',                'required'),
                     array('subject',                'type',    'type' => 'string'),
-                    array('subject',                'length',  'min'  => 3, 'max' => 64),
+                    array('subject',                'length',  'min'  => 1, 'max' => 64),
                     array('htmlContent',            'type',    'type' => 'string'),
                     array('textContent',            'type',    'type' => 'string'),
+                    array('htmlContent',            'StripDummyHtmlContentFromOtherwiseEmptyFieldValidator'),
                     array('htmlContent',            'AtLeastOneContentAreaRequiredValidator'),
                     array('textContent',            'AtLeastOneContentAreaRequiredValidator'),
-                    array('htmlContent',            'CampaignMergeTagsValidator', 'except' => 'autoBuildDatabase'),
-                    array('textContent',            'CampaignMergeTagsValidator', 'except' => 'autoBuildDatabase'),
+                    array('htmlContent',            'CampaignMergeTagsValidator'),
+                    array('textContent',            'CampaignMergeTagsValidator'),
                     array('enableTracking',         'boolean'),
                     array('enableTracking',         'default', 'value' => false),
                     array('marketingList',          'required'),
                 ),
                 'relations' => array(
-                    'campaignItems'     => array(RedBeanModel::HAS_MANY, 'CampaignItem'),
-                    'marketingList'     => array(RedBeanModel::HAS_ONE, 'MarketingList', RedBeanModel::NOT_OWNED),
-                    'files'             => array(RedBeanModel::HAS_MANY,  'FileModel', RedBeanModel::OWNED,
-                                                RedBeanModel::LINK_TYPE_POLYMORPHIC, 'relatedModel'),
+                    'campaignItems'     => array(static::HAS_MANY, 'CampaignItem'),
+                    'marketingList'     => array(static::HAS_ONE, 'MarketingList', static::NOT_OWNED),
+                    'files'             => array(static::HAS_MANY,  'FileModel', static::OWNED,
+                                                static::LINK_TYPE_POLYMORPHIC, 'relatedModel'),
                 ),
                 'elements' => array(
                     'marketingList'    => 'MarketingList',
@@ -227,7 +228,7 @@
             return array_merge(parent::translatedAttributeLabels($language),
                 array(
                     'name'                  => Zurmo::t('ZurmoModule', 'Name', null,  null, $language),
-                    'status'                => Zurmo::t('CampaignsModule', 'Status', null,  null, $language),
+                    'status'                => Zurmo::t('ZurmoModule', 'Status', null,  null, $language),
                     'sendOnDateTime'       => Zurmo::t('CampaignsModule', 'Send On', null,  null, $language),
                     'supportsRichText'      => Zurmo::t('CampaignsModule', 'Supports HTML', null,  null, $language),
                     'fromName'              => Zurmo::t('CampaignsModule', 'From Name', null,  null, $language),
@@ -253,6 +254,31 @@
         {
             // TODO: @Shoaibi/@Jason: Medium: We should have overriden getErrors' original code but this was easier.
             return $this->attributeNameToErrors;
+        }
+
+        public function beforeValidate()
+        {
+            $this->validateHtmlOnly();
+            return parent::beforeValidate();
+        }
+
+        protected function validateHtmlOnly()
+        {
+            if ($this->supportsRichText && empty($this->htmlContent))
+            {
+                $errorMessage = Zurmo::t('CampaignsModule', 'You choose to support HTML but didn\'t set any HTML content.');
+                $this->addError('htmlContent',
+                    Zurmo::t('CampaignsModule', $errorMessage));
+                return false;
+            }
+            if (!$this->supportsRichText && empty($this->textContent))
+            {
+                $errorMessage = Zurmo::t('CampaignsModule', 'You choose not to support HTML but didn\'t set any text content.');
+                $this->addError('textContent',
+                    Zurmo::t('CampaignsModule', $errorMessage));
+                return false;
+            }
+            return true;
         }
     }
 ?>

@@ -81,6 +81,9 @@
 
 .MarketingListMembersListView{
 	margin-bottom: 0;
+	.items{
+		background:#fff;
+	}
 }
 
 #marketing-list-member-select-contact-or-report-form{
@@ -231,6 +234,12 @@
 .graph-container{
 	clear:left;
 	margin: 15px 0 0 0;
+}
+
+.marketing-list-autoresponders-list{
+	.items{
+		background: #ffffff;
+	}
 }
 
 .edit-autoresponder-link{
@@ -599,8 +608,21 @@ a + .autoresponder-stats{
 }
 
 .screen-options{
-	padding: 5px;
-	text-align: right;
+	padding: 5px 10px 10px 10px;
+	text-align: left;
+	color:#EFEFEF;
+	h4{
+		text-align: right;
+		color: #EFEFEF !important;
+		font-weight: bold;
+		.t-shadow(none) !important;
+	}
+	.hasCheckBox{
+		display: inline-block;
+		margin-right: 5px;
+		position: relative;
+		top: 4px;
+	}
 }
 
 /*Manage Subscriptions*/

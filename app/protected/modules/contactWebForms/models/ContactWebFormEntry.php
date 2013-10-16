@@ -112,8 +112,9 @@
                     'hashIndex'
                 ),
                 'relations' => array(
-                    'contact'            => array(RedBeanModel::HAS_ONE, 'Contact'),
-                    'contactWebForm'     => array(RedBeanModel::HAS_ONE, 'ContactWebForm'),
+                    'contact'            => array(static::HAS_ONE, 'Contact'),
+                    'contactWebForm'     => array(static::HAS_ONE, 'ContactWebForm', static::NOT_OWNED,
+                                                                    static::LINK_TYPE_SPECIFIC, 'entries'),
                 ),
                 'rules' => array(
                     array('serializedData',    'type', 'type' => 'string'),
@@ -162,7 +163,7 @@
             $modelClassName = get_called_class();
             $tableName      = self::getTableName($modelClassName);
             $columnName     = self::getColumnNameByAttribute('hashIndex');
-            $beans          = R::find($tableName, "$columnName = '$hashIndex'");
+            $beans          = ZurmoRedBean::find($tableName, "$columnName = '$hashIndex'");
             assert('count($beans) <= 1');
             if (count($beans) == 0)
             {
@@ -170,7 +171,7 @@
             }
             else
             {
-                return RedBeanModel::makeModel(end($beans), $modelClassName);
+                return static::makeModel(end($beans), $modelClassName);
             }
         }
     }

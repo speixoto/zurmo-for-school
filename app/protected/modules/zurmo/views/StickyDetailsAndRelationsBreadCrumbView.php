@@ -43,11 +43,11 @@
 
         protected $stickyLoadUrl;
 
-        public function __construct($controllerId, $moduleId, $breadcrumbLinks, $homeLinkLabel, $stickyLoadUrl = null)
+        public function __construct($controllerId, $moduleId, $breadCrumbLinks, $homeLinkLabel, $stickyLoadUrl = null)
         {
             assert('is_string($homeLinkLabel)');
             assert('is_string($stickyLoadUrl) || $stickyLoadUrl == null');
-            parent::__construct($controllerId, $moduleId, $breadcrumbLinks);
+            parent::__construct($controllerId, $moduleId, $breadCrumbLinks);
             $this->homeLinkLabel = $homeLinkLabel;
             $this->stickyLoadUrl = $stickyLoadUrl;
         }

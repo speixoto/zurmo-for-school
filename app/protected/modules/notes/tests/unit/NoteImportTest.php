@@ -57,7 +57,7 @@
             $this->assertTrue($import->save());
 
             ImportTestHelper::
-            createTempTableByFileNameAndTableName('simpleImportTest.csv', $import->getTempTableName(),
+            createTempTableByFileNameAndTableName('simpleImportTest.csv', $import->getTempTableName(), true,
                                                   Yii::getPathOfAlias('application.modules.notes.tests.unit.files'));
 
             $this->assertEquals(4, ImportDatabaseUtil::getCount($import->getTempTableName())); // includes header rows.

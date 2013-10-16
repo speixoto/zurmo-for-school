@@ -55,6 +55,11 @@
             13 => 300
         );
 
+        /**
+         * Get passive display label
+         * @param int $value
+         * @return string
+         */
         public static function getPassiveDisplayLabel($value)
         {
             return Zurmo::t('TasksModule', '{n} TasksModuleSingularLabel created|{n} TasksModulePluralLabel created',

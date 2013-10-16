@@ -34,21 +34,14 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    $basePath = realpath(dirname(__FILE__) . '/../../../');
+    $cwd = getcwd();
+    require_once('../common/PhpUnitServiceUtil.php');
+    require_once('../common/testRoots.php');
+    require_once('../common/TestConfigFileUtils.php');
+    TestConfigFileUtils::configureConfigFiles();
 
-    require_once('../PhpUnitServiceUtil.php');
     require_once 'File/Iterator.php';
     require_once('File/Iterator/Factory.php');
-
-    if (is_file($basePath . '/protected/config/debugTest.php'))
-    {
-        require_once($basePath . '/protected/config/debugTest.php');
-    }
-    else
-    {
-        copy($basePath . '/protected/config/debugDIST.php', $basePath . '/protected/config/debugTest.php');
-        die('Please configure functional tests in config file ' . $basePath . '/protected/config/debugTest.php');
-    }
 
     define('SELENIUM_SERVER_PATH', $seleniumServerPath);
     define('TEST_BASE_URL', $seleniumTestBaseUrl);
@@ -66,29 +59,27 @@
         {
             global $argv, $argc;
 
-            $usage = "\n"                                                                                                   .
-                     "  Usage: php [options] TestSuite.php <All|Misc|moduleName|TestClassName> [options]\n"                 .
-                     "\n"                                                                                                   .
-                     "    All               Run all tests.\n"                                                               .
-                     "    Framework         Run all tests in framework/tests/functional.\n"                                 .
-                     "    Misc              Run the test suites in app/protected/tests/functional.\n"                       .
-                     "    moduleName        Run the test suites in app/protected/modules/moduleName/tests/functional.\n"    .
-                     "    TestClassName     Run the tests in TestClassName.html, wherever that happens to be.\n"            .
-                     "    options\n"                                                                                        .
-                     "    -p                port Example: -p4044\n"                                                         .
-                     "    -h                host Example: -hhttp://www.sitetotest/app/\n"                                   .
-                     "    -b                browser <*firefox|*iexplore> if not specified, will run all in browsers \n"     .
-                     "    -c                test server control url Example: -chttp://www.sitetotest/controlUrl.php\n"      .
-                     "                      Example: -b*firefox \n"                                                         .
-                     "    -userExtensions   Example: -userExtensions pathToTheUserExtensionJS \n"                           .
-                     "\n"                                                                                                   .
-                     "  Examples:\n"                                                                                        .
-                     "\n"                                                                                                   .
-                     "    php TestSuiteSelenium.php accounts (Run the tests in the Accounts module.)\n"                     .
-                     "    php TestSuiteSelenium.php RedBeanModelTest   (Run the test suite RedBeanModelTest.html.)\n"       .
-                     "\n"                                                                                                   .
-                     "  Note:\n"                                                                                            .
-                     "\n"                                                                                                   ;
+            $usage = PHP_EOL .
+                     "  Usage: php [options] TestSuite.php <All|Misc|moduleName|TestClassName> [options]" . PHP_EOL .
+                     PHP_EOL .
+                     "    All               Run all tests." . PHP_EOL .
+                     "    Framework         Run all tests in framework/tests/functional." . PHP_EOL .
+                     "    Misc              Run the test suites in app/protected/tests/functional." . PHP_EOL .
+                     "    moduleName        Run the test suites in app/protected/modules/moduleName/tests/functional." . PHP_EOL .
+                     "    TestClassName     Run the tests in TestClassName.html, wherever that happens to be." . PHP_EOL .
+                     "    options" . PHP_EOL .
+                     "    -p                port Example: -p4044" . PHP_EOL .
+                     "    -h                host Example: -hhttp://www.sitetotest/app/" . PHP_EOL .
+                     "    -b                browser <*firefox|*iexplore> if not specified, will run all in browsers " . PHP_EOL .
+                     "    -c                test server control url Example: -chttp://www.sitetotest/controlUrl.php" . PHP_EOL .
+                     "                      Example: -b*firefox " . PHP_EOL .
+                     "    -userExtensions   Example: -userExtensions pathToTheUserExtensionJS " . PHP_EOL .
+                     PHP_EOL .
+                     "  Examples:" . PHP_EOL .
+                     PHP_EOL .
+                     "    php TestSuiteSelenium.php accounts (Run the tests in the Accounts module.)" . PHP_EOL .
+                     "    php TestSuiteSelenium.php RedBeanModelTest   (Run the test suite RedBeanModelTest.html.)" . PHP_EOL .
+                     PHP_EOL                                                                                                   .
 
             PhpUnitServiceUtil::checkVersion();
             if ($argv[0] != 'TestSuite.php')
@@ -158,22 +149,22 @@
             if (count($htmlTestSuiteFiles) == 0)
             {
                 echo $usage;
-                echo "  No tests found for '$whatToTest'.\n\n";
+                echo "  No tests found for '$whatToTest'.\n" . PHP_EOL;
                 exit;
             }
-            echo 'Suites to run:' . "\n";
+            echo 'Suites to run:' . PHP_EOL;
             foreach ($htmlTestSuiteFiles as $pathToSuite)
             {
                 if (in_array(basename($pathToSuite), $suiteNames))
                 {
-                    echo 'Cannot run tests because there are 2 test suites with the same name.' . "\n";
-                    echo 'The duplicate found is here: ' . $pathToSuite . "\n";
+                    echo 'Cannot run tests because there are 2 test suites with the same name.' . PHP_EOL;
+                    echo 'The duplicate found is here: ' . $pathToSuite . PHP_EOL;
                     exit;
                 }
                 $suiteNames[] = basename($pathToSuite);
-                echo $pathToSuite . "\n";
+                echo $pathToSuite . PHP_EOL;
             }
-            echo 'Running Test Suites using Selenium RC v2:' . "\n";
+            echo 'Running Test Suites using Selenium RC v2:' . PHP_EOL;
             $browsersToRun = self::resolveBrowserFromParameter();
 
             foreach ($browsersToRun as $browserId => $browserDisplayName)
@@ -184,28 +175,28 @@
                 {
                     if (!self::isInstallationTest($pathToSuite))
                     {
-                        echo "Restoring test db\n";
+                        echo "Restoring test db" . PHP_EOL;
                         self::remoteAction(self::resolveServerControlUrlFromParameterAndConstant(), array('action' => 'restore'));
-                        echo "Restored test db\n";
+                        echo "Restored test db" . PHP_EOL;
                         if (!self::isInstallationTest($pathToSuite))
                         {
-                            echo "Set user default time zone.\n";
+                            echo "Set user default time zone." . PHP_EOL;
                             self::remoteAction(self::resolveServerControlUrlFromParameterAndConstant(), array('action' => 'setUserDefaultTimezone'));
-                            echo "User default time zone set.\n";
+                            echo "User default time zone set." . PHP_EOL;
                         }
-                        echo "Clear cache on remote server\n";
+                        echo "Clear cache on remote server" . PHP_EOL;
                         self::remoteAction(self::resolveHostFromParameterAndConstant(), array('clearCache'         => '1',
                                                                 'ignoreBrowserCheck' => '1'));
                     }
                     else
                     {
-                        echo "Uninstall zurmo\n";
+                        echo "Uninstall zurmo" . PHP_EOL;
                         self::remoteAction(self::resolveServerControlUrlFromParameterAndConstant(), array('action' => 'backupRemovePerInstance'));
                     }
-                    echo "Cache cleared\n";
+                    echo "Cache cleared" . PHP_EOL;
 
                     echo 'Running test suite: ';
-                    echo $pathToSuite . "\n";
+                    echo $pathToSuite . PHP_EOL;
 
                     $host = self::resolveHostFromParameterAndConstant();
 
@@ -225,7 +216,7 @@
                     $finalCommand .= ' -htmlSuite ' . $browserId . ' ';
                     $finalCommand .= $host . ' ' . realPath($pathToSuite) . ' ' . $finalTestResultsPath;
                     $finalCommand .= ' -userExtensions ' . self::resolveUserExtensionsJsFromParameterAndConstant();
-                    echo $finalCommand . "\n";
+                    echo $finalCommand . PHP_EOL;
                     exec($finalCommand);
                     echo 'Restoring test db';
                     self::remoteAction(self::resolveServerControlUrlFromParameterAndConstant(), array('action' => 'restore'));
@@ -235,7 +226,7 @@
                     }
                 }
             }
-            echo 'Functional Run Complete.' . "\n";
+            echo 'Functional Run Complete.' . PHP_EOL;
             self::updateTestResultsSummaryAndDetailsFiles();
         }
 
@@ -382,8 +373,8 @@
                     if (!in_array($browsersToRun,
                         array('*iexplore', '*firefox', '*googlechrome')))
                     {
-                        echo 'Invalid Browser specified.' . "\n";
-                        echo 'Specified Browser: ' . $browsersToRun . "\n";
+                        echo 'Invalid Browser specified.' . PHP_EOL;
+                        echo 'Specified Browser: ' . $browsersToRun . PHP_EOL;
                         exit;
                     }
                     foreach ($browserData as $id => $name)
@@ -516,14 +507,14 @@
         {
             $fileName = TEST_RESULTS_PATH . 'Details.html';
             $content = '<html>';
-            $content .= '<table border="1" width="100%">'                               . "\n";
-            $content .= '<tr>'                                                          . "\n";
-            $content .= '<td>Status</td>'                                               . "\n";
-            $content .= '<td>Server</td>'                                              . "\n";
-            $content .= '<td>Browser</td>'                                              . "\n";
-            $content .= '<td>Date</td>'                                                 . "\n";
-            $content .= '<td>File</td>'                                                 . "\n";
-            $content .= '</tr>'                                                         . "\n";
+            $content .= '<table border="1" width="100%">'                               . PHP_EOL;
+            $content .= '<tr>'                                                          . PHP_EOL;
+            $content .= '<td>Status</td>'                                               . PHP_EOL;
+            $content .= '<td>Server</td>'                                              . PHP_EOL;
+            $content .= '<td>Browser</td>'                                              . PHP_EOL;
+            $content .= '<td>Date</td>'                                                 . PHP_EOL;
+            $content .= '<td>File</td>'                                                 . PHP_EOL;
+            $content .= '</tr>'                                                         . PHP_EOL;
             foreach ($data as $info)
             {
                 $link = '<a href="' . TEST_RESULTS_URL . $info['fileName'] . '">' . $info['fileName'] . '</a>';
@@ -532,16 +523,16 @@
                 {
                     $statusColor = 'bgcolor="green"';
                 }
-                $content .= '<tr>'                                                      . "\n";
-                $content .= '<td ' . $statusColor . '>' . $info['status']   . '</td>'   . "\n";
-                $content .= '<td>' . $info['server']                       . '</td>'   . "\n";
-                $content .= '<td>' . $info['browser']                       . '</td>'   . "\n";
-                $content .= '<td>' . $info['modifiedDate']                  . '</td>'   . "\n";
-                $content .= '<td>' . $link                                  . '</td>'   . "\n";
-                $content .= '</tr>'                                                     . "\n";
+                $content .= '<tr>'                                                      . PHP_EOL;
+                $content .= '<td ' . $statusColor . '>' . $info['status']   . '</td>'   . PHP_EOL;
+                $content .= '<td>' . $info['server']                       . '</td>'   . PHP_EOL;
+                $content .= '<td>' . $info['browser']                       . '</td>'   . PHP_EOL;
+                $content .= '<td>' . $info['modifiedDate']                  . '</td>'   . PHP_EOL;
+                $content .= '<td>' . $link                                  . '</td>'   . PHP_EOL;
+                $content .= '</tr>'                                                     . PHP_EOL;
             }
-            $content .= '</table>'                                                      . "\n";
-            $content .= '</html>'                                                       . "\n";
+            $content .= '</table>'                                                      . PHP_EOL;
+            $content .= '</html>'                                                       . PHP_EOL;
 
             if (is_writable(TEST_RESULTS_PATH))
             {
@@ -568,16 +559,16 @@
         protected static function makeResultsSummaryFile($data)
         {
             $content = '<html>';
-            $content .= '<table border="1" width="100%">'                               . "\n";
-            $content .= '<tr>'                                                          . "\n";
-            $content .= '<td>Status</td>'                                               . "\n";
-            $content .= '<td>Server</td>'                                               . "\n";
-            $content .= '<td>Browser</td>'                                              . "\n";
-            $content .= '<td>Date</td>'                                                 . "\n";
-            $content .= '<td>Test Passed</td>'                                          . "\n";
-            $content .= '<td>Tests Failed</td>'                                         . "\n";
-            $content .= '<td>Details</td>'                                              . "\n";
-            $content .= '</tr>'                                                         . "\n";
+            $content .= '<table border="1" width="100%">'                               . PHP_EOL;
+            $content .= '<tr>'                                                          . PHP_EOL;
+            $content .= '<td>Status</td>'                                               . PHP_EOL;
+            $content .= '<td>Server</td>'                                               . PHP_EOL;
+            $content .= '<td>Browser</td>'                                              . PHP_EOL;
+            $content .= '<td>Date</td>'                                                 . PHP_EOL;
+            $content .= '<td>Test Passed</td>'                                          . PHP_EOL;
+            $content .= '<td>Tests Failed</td>'                                         . PHP_EOL;
+            $content .= '<td>Details</td>'                                              . PHP_EOL;
+            $content .= '</tr>'                                                         . PHP_EOL;
 
             $link = '<a href="' . TEST_RESULTS_URL . 'Details.html">Details</a>';
 
@@ -628,19 +619,19 @@
                         $statusColor = 'bgcolor="green"';
                     }
 
-                    $content .= '<tr>'                                              . "\n";
-                    $content .= '<td ' . $statusColor . '>' . $status   . '</td>'   . "\n";
-                    $content .= '<td>' . $server                        . '</td>'   . "\n";
-                    $content .= '<td>' . $browser                       . '</td>'   . "\n";
-                    $content .= '<td>' . $browserStats['modifiedDate']  . '</td>'   . "\n";
-                    $content .= '<td>' . $browserStats['testsPassed']   . '</td>'   . "\n";
-                    $content .= '<td>' . $browserStats['testsFailed']   . '</td>'   . "\n";
-                    $content .= '<td>' . $link                          . '</td>'   . "\n";
-                    $content .= '</tr>'                                             . "\n";
+                    $content .= '<tr>'                                              . PHP_EOL;
+                    $content .= '<td ' . $statusColor . '>' . $status   . '</td>'   . PHP_EOL;
+                    $content .= '<td>' . $server                        . '</td>'   . PHP_EOL;
+                    $content .= '<td>' . $browser                       . '</td>'   . PHP_EOL;
+                    $content .= '<td>' . $browserStats['modifiedDate']  . '</td>'   . PHP_EOL;
+                    $content .= '<td>' . $browserStats['testsPassed']   . '</td>'   . PHP_EOL;
+                    $content .= '<td>' . $browserStats['testsFailed']   . '</td>'   . PHP_EOL;
+                    $content .= '<td>' . $link                          . '</td>'   . PHP_EOL;
+                    $content .= '</tr>'                                             . PHP_EOL;
                 }
             }
-                $content .= '</table>'                                          . "\n";
-                $content .= '</html>'                                           . "\n";
+                $content .= '</table>'                                          . PHP_EOL;
+                $content .= '</html>'                                           . PHP_EOL;
 
                 $fileName = TEST_RESULTS_PATH . 'Summary.html';
                 if (is_writable(TEST_RESULTS_PATH))

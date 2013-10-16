@@ -59,7 +59,7 @@
 
         public static function renderStatusChangeArea(Conversation $conversation)
         {
-            $content  = ZurmoHtml::tag('span', array(), Zurmo::t('ConversationsModule', 'Status'));
+            $content  = ZurmoHtml::tag('span', array(), Zurmo::t('ZurmoModule', 'Status'));
             $content .= self::renderStatusButtonsContent($conversation);
             return ZurmoHtml::tag('div', array('id' => self::getStatusChangeDivId($conversation->id),
                                                'class' => 'conversationStatusChangeArea clearfix'),
@@ -111,7 +111,7 @@
 
         public static function getDisplayName()
         {
-            return Zurmo::t('ConversationsModule', 'Status');
+            return Zurmo::t('ZurmoModule', 'Status');
         }
 
         /**

@@ -57,33 +57,39 @@
          */
         public static function getTimeSinceDisplayContent($dateTime)
         {
+            assert('DateTimeUtil::isValidDbFormattedDateTime($dateTime)');
             $nowTimeStamp           = time();
             $dateTimeStamp          = DateTimeUtil::convertDbFormatDateTimeToTimeStamp($dateTime);
             $timeSinceLatestUpdate  = $nowTimeStamp - $dateTimeStamp;
             $timeForString = array(
                 'days'  => floor($timeSinceLatestUpdate / 86400),
                 'hours' => floor($timeSinceLatestUpdate / 3600),
+                'minutes' => floor($timeSinceLatestUpdate / (60)),
+                'seconds' => floor($timeSinceLatestUpdate)
             );
-            if ($timeForString['days'] == 0)
+
+            if($timeForString['days'] >= 1)
             {
-                if ($timeForString['hours'] == 1)
-                {
-                    $string = Zurmo::t('MashableInboxModule', '{hours} hour ago', array('{hours}' => $timeForString['hours']));
-                }
-                else
-                {
-                    $string = Zurmo::t('MashableInboxModule', '{hours} hours ago', array('{hours}' => $timeForString['hours']));
-                }
-            }
-            elseif (($timeForString['days'] == 1))
-            {
-                $string = Zurmo::t('MashableInboxModule', '{days} day ago', array('{days}' => $timeForString['days']));
+                return Zurmo::t('Core', '{n} day|{n} days', $timeForString['days']);
             }
             else
             {
-                $string = Zurmo::t('MashableInboxModule', '{days} days ago', array('{days}' => $timeForString['days']));
+                if($timeForString['hours'] >= 1)
+                {
+                    return Zurmo::t('Core', '{n} hour|{n} hours', $timeForString['hours']);
+                }
+                else
+                {
+                    if($timeForString['minutes'] >= 1)
+                    {
+                        return Zurmo::t('Core', '{n} min|{n} mins', $timeForString['minutes']);
+                    }
+                    else
+                    {
+                        return Zurmo::t('Core', '{n} sec|{n} secs', $timeForString['seconds']);
+                    }
+                }
             }
-            return $string;
         }
 
         /**
@@ -418,6 +424,20 @@
         {
             assert('is_string($date)');
             return $date . ' 00:00:00';
+        }
+
+        public static function resolveDateTimeAsDate($dateTime)
+        {
+            assert('is_string($date)');
+            if($dateTime == '0000-00-00 00:00:00')
+            {
+                return '0000-00-00';
+            }
+            elseif ($dateTime == null)
+            {
+                return null;
+            }
+            return substr($dateTime, 0, 10);
         }
 
         /**

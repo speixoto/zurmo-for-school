@@ -80,9 +80,9 @@
             $actionElementContent = $this->renderActionElementBar(false);
             if ($actionElementContent != null)
             {
-                $content  = '<div class="view-toolbar-container clearfix"><div class="view-toolbar">';
+                $content  = '<div class="view-toolbar-container clearfix"><nav class="pillbox clearfix">';
                 $content .= $actionElementContent;
-                $content .= '</div></div>';
+                $content .= '</nav></div>';
             }
             $this->portlets = $this->getPortlets($this->uniqueLayoutId, self::getMetadata());
             $content .= $this->renderPortlets($this->uniqueLayoutId);
@@ -99,12 +99,12 @@
         {
             $content = parent::renderActionElementBar($renderedInForm);
 
-            $deleteDashboardLinkActionElement  = new DeleteDashboardLinkActionElement(
+            $deleteDashboardLinkActionElement  = new DeleteDashboardMenuActionElement(
                 $this->controllerId,
                 $this->moduleId,
                 $this->modelId,
-                array('htmlOptions' => array('class'   => 'icon-delete',
-                                             'confirm' => Zurmo::t('HomeModule', 'Are you sure want to delete this dashboard?')))
+                array('htmlOptions' => array('confirm' => Zurmo::t('HomeModule', 'Are you sure want to delete this dashboard?')),
+                      'iconClass'   => 'icon-delete')
             );
             if (!ActionSecurityUtil::canCurrentUserPerformAction($deleteDashboardLinkActionElement->getActionType(), $this->model))
             {
@@ -114,11 +114,11 @@
             {
                 $content .= $deleteDashboardLinkActionElement->render();
             }
-            $content .= $this->renderChangeDashboardLinkActionContent();
+            $content .= $this->renderChangeDashboardMenuActionContent();
             return $content;
         }
 
-        protected function renderChangeDashboardLinkActionContent()
+        protected function renderChangeDashboardMenuActionContent()
         {
             $dashboardsData = Dashboard::getRowsByUserId(Yii::app()->user->userModel->id);
             if (count($dashboardsData) > 1)
@@ -130,12 +130,14 @@
                         unset($dashboardsData[$key]);
                     }
                 }
-                $changeDashboardLinkActionElement  = new ChangeDashboardLinkActionElement(
+                $changeDashboardMenuActionElement  = new ChangeDashboardMenuActionElement(
                     $this->controllerId,
                     $this->moduleId,
                     $this->modelId,
-                    array('dashboardsData' => $dashboardsData));
-                return $changeDashboardLinkActionElement->render();
+                    array('htmlOptions' => array('id' => 'ChangeDashboardsMenu'),
+                          'iconClass'   => 'icon-change-dashboard',
+                          'dashboardsData' => $dashboardsData));
+                return $changeDashboardMenuActionElement->render();
             }
         }
     }

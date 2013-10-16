@@ -44,7 +44,16 @@
          */
         public static function getDefaultMetadata()
         {
-            $metadata = array();
+            $metadata = array(
+                'Task' => array(
+                    'nonReportable' =>
+                        array('notificationSubscribers', 'files', 'checkListItems', 'comments'),
+                    'availableOperatorsTypes' =>
+                        array('status' => ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_DROPDOWN),
+                    'filterValueElementTypes' =>
+                        array('status' => 'TaskStatusStaticDropDownForWizardModel'),
+                )
+            );
             return array_merge(parent::getDefaultMetadata(), $metadata);
         }
     }

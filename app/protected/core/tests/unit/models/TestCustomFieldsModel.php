@@ -41,16 +41,16 @@
             $metadata = parent::getDefaultMetadata();
             $metadata[__CLASS__] = array(
                 'relations' => array(
-                    'industry'           => array(RedBeanModel::HAS_ONE, 'CustomField', RedBeanModel::NOT_OWNED,
-                                            RedBeanModel::LINK_TYPE_SPECIFIC, 'industry'),
-                    'market'             => array(RedBeanModel::HAS_ONE, 'CustomField', RedBeanModel::NOT_OWNED,
-                                            RedBeanModel::LINK_TYPE_SPECIFIC, 'market'),
-                    'multipleIndustries' => array(RedBeanModel::HAS_ONE, 'MultipleValuesCustomField', RedBeanModel::NOT_OWNED,
-                                            RedBeanModel::LINK_TYPE_SPECIFIC, 'multipleIndustries'),
-                    'multipleSomethings' => array(RedBeanModel::HAS_ONE, 'MultipleValuesCustomField', RedBeanModel::NOT_OWNED,
-                                            RedBeanModel::LINK_TYPE_SPECIFIC, 'multipleSomethings'),
-                    'tagCloud'           => array(RedBeanModel::HAS_ONE, 'MultipleValuesCustomField', RedBeanModel::NOT_OWNED,
-                                            RedBeanModel::LINK_TYPE_SPECIFIC, 'tagCloud'),
+                    'industry'           => array(static::HAS_ONE, 'CustomField', static::NOT_OWNED,
+                                            static::LINK_TYPE_SPECIFIC, 'industry'),
+                    'market'             => array(static::HAS_ONE, 'CustomField', static::NOT_OWNED,
+                                            static::LINK_TYPE_SPECIFIC, 'market'),
+                    'multipleIndustries' => array(static::HAS_ONE, 'MultipleValuesCustomField', static::NOT_OWNED,
+                                            static::LINK_TYPE_SPECIFIC, 'multipleIndustries'),
+                    'multipleSomethings' => array(static::HAS_ONE, 'MultipleValuesCustomField', static::NOT_OWNED,
+                                            static::LINK_TYPE_SPECIFIC, 'multipleSomethings'),
+                    'tagCloud'           => array(static::HAS_ONE, 'MultipleValuesCustomField', static::NOT_OWNED,
+                                            static::LINK_TYPE_SPECIFIC, 'tagCloud'),
                 ),
                 'elements' => array(
                     'tagCloud'     => 'TagCloud',

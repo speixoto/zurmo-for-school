@@ -567,7 +567,7 @@ body > div {
 }
 .mobile-view-toolbar-container .hasDropDown span.select-arrow:before {
   content: "n";
-  font-weight: normal;
+  font-weight: normal !important;
   font-size: 30px;
   font-family: "zurmo_gamification_symbly_rRg";
   line-height: 26px;
@@ -726,7 +726,7 @@ body > div {
   -ms-border-radius: 4px;
   -o-border-radius: 4px;
   border-radius: 4px;
-  font-weight: normal;
+  font-weight: normal !important;
   font-size: 24px;
   font-family: "zurmo_gamification_symbly_rRg";
   -webkit-text-shadow: none !important;
@@ -1042,7 +1042,7 @@ div:not(#MashableInboxActionBarForViews) .toolbar-mbmenu .options-menu > li > a 
 div:not(#LeaderboardView) .toolbar-mbmenu .options-menu > li > a:after,
 div:not(#MashableInboxActionBarForViews) .toolbar-mbmenu .options-menu > li > a:after {
   content: "{";
-  font-weight: normal;
+  font-weight: normal !important;
   font-size: 24px;
   font-family: "zurmo_gamification_symbly_rRg";
   left: -5px;

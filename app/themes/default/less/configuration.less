@@ -778,7 +778,7 @@ table.configuration-list{
     margin:0;
 }
 
-.connection-test-message{
+.connection-test{
     min-height:60px;
     padding:15px;
     line-height:150%;
@@ -1202,6 +1202,10 @@ table.configuration-list{
 .color-swatch,
 .texture-swatch{
     margin-bottom: 10px;
+	width: 50%;
+	float: left;
+	display: inline-block !important;
+	clear: none;
     span{
         display: inline-block;
         width:32px;
@@ -1212,22 +1216,66 @@ table.configuration-list{
     label{
         float: none !important;
         top: -3px;
+	    margin-left: 0;
     }
     input{
         margin-right:12px !important;
         margin-top: 2px;
     }
+	.icon-lock{
+		margin: 0;
+		padding: 0 !important;
+		font-style: normal;
+	}
+	[id*="theme-color-tooltip"],
+	[id*="background-texture-tooltip"] { // [class*=" db3"]
+		width: auto !important;
+		position: relative;
+		left: -25px;
+		font-size: 18px;
+		top: -5px;
+		position: absolute;
+		border: none;
+	}
+	input[disabled="disabled"]{
+		visibility: hidden;
+	}
 }
+
 .texture-swatch{
     span{
         width: 90px;
-        background:#FFF;
         border: 3px solid #DDDEDE;
-        margin-top: -3px;
     }
-    label{
-        top:-6px;
-    }
+	input{
+		position: relative;
+		top:9px;
+	}
+	.background-texture-1{
+		margin-right: 10px;
+		margin-top: 0;
+		position: relative;
+		top: 7px;
+	}
+	[id*="background-texture-tooltip"]{
+		top:-3px;
+	}
+	label{
+		top: 0;
+	}
+}
+
+.color-swatch{
+	span{
+		position: relative;
+		top: 3px;
+	}
+	label{
+
+	}
+	.theme-color-3{
+		margin-right: 10px;
+	}
 }
 
 /*Menu Prefernces*/

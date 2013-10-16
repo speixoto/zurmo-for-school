@@ -156,7 +156,7 @@
                     assert('$permitableId > 0');
                     $className       = get_class($this);
                     $moduleName      = static::getModuleClassName();
-                    $cachingOn  = DB_CACHING_ON ? 1 : 0;
+                    $cachingOn  = PermissionsCache::supportsAndAllowsDatabaseCaching() ? 1 : 0;
                     $combinedPermissions = intval(ZurmoDatabaseCompatibilityUtil::
                                                     callFunction("get_securableitem_actual_permissions_for_permitable($securableItemId, $permitableId, '$className', '$moduleName', $cachingOn)"));
                     PermissionsCache::cacheCombinedPermissions($this, $permitable, $combinedPermissions);
@@ -317,6 +317,8 @@
          * @param Permitable $permitable
          * @param int $permissions
          * @param array $type
+         * @return bool true/false if permissions was added. if false, the the permission already
+         * existed
          */
         public function addPermissions(Permitable $permitable, $permissions, $type = Permission::ALLOW)
         {
@@ -351,6 +353,11 @@
                 $permission->type        = $type;
                 $permission->permissions = $permissions;
                 $this->permissions->add($permission);
+                return true;
+            }
+            else
+            {
+               return false;
             }
         }
 
@@ -460,7 +467,7 @@
             $metadata = parent::getDefaultMetadata();
             $metadata[__CLASS__] = array(
                 'relations' => array(
-                    'permissions' => array(RedBeanModel::HAS_MANY, 'Permission', RedBeanModel::OWNED),
+                    'permissions' => array(static::HAS_MANY, 'Permission', static::OWNED),
                 ),
             );
             return $metadata;

@@ -90,7 +90,7 @@
         public static function getAll($userId)
         {
             assert('$userId != null && is_int($userId)');
-            $beans = R::find(UserConfiguration::getTableName(), "userId = $userId");
+            $beans = ZurmoRedBean::find(UserConfiguration::getTableName(), "userId = $userId");
             $entries = array();
             foreach ($beans as $bean)
             {
@@ -113,7 +113,7 @@
         {
             assert('$userId != null && is_int($userId)');
             assert('$moduleName != ""');
-            $beans = R::find(UserConfiguration::getTableName(), "userId = $userId and moduleName = '$moduleName'");
+            $beans = ZurmoRedBean::find(UserConfiguration::getTableName(), "userId = $userId and moduleName = '$moduleName'");
             $moduleEntries = array();
             foreach ($beans as $bean)
             {
@@ -147,13 +147,13 @@
             }
             catch (NotFoundException $e)
             {
-                $bean = R::dispense(UserConfiguration::getTableName());
+                $bean = ZurmoRedBean::dispense(UserConfiguration::getTableName());
                 $bean->userId     = $userId;
                 $bean->moduleName = $moduleName;
                 $bean->key        = $key;
             }
             $bean->value  = $value;
-            R::store($bean);
+            ZurmoRedBean::store($bean);
         }
 
         /**
@@ -173,7 +173,7 @@
             $bean = UserConfiguration::getBean($userId, $moduleName, $key);
             if (isset($bean))
             {
-                R::trash($bean);
+                ZurmoRedBean::trash($bean);
                 unset($bean);
             }
         }
@@ -201,7 +201,7 @@
             assert('is_string($key)');
             assert('$moduleName != ""');
             assert('$key        != ""');
-            $bean = R::findOne(UserConfiguration::getTableName(),
+            $bean = ZurmoRedBean::findOne(UserConfiguration::getTableName(),
                                'userId = ? and moduleName = ? and ' .
                                DatabaseCompatibilityUtil::quoteString('key') . ' = ?',
                                array($userId, $moduleName, $key));

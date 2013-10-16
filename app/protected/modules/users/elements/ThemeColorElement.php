@@ -45,12 +45,15 @@
          */
         protected function renderControlEditable()
         {
+            $gameLevel = GameLevel::resolveByTypeAndPerson(GameLevel::TYPE_GENERAL, Yii::app()->user->userModel);
             $content = null;
             $content .= $this->form->radioButtonList(
                 $this->model,
                 $this->attribute,
-                Yii::app()->themeManager->getThemeColorNamesAndLabels(),
-                $this->getEditableHtmlOptions()
+                $this->resolveThemeColorNamesAndLabelsForLocking($gameLevel),
+                $this->getEditableHtmlOptions(),
+                array(),
+                $this->resolveDataHtmlOptions($gameLevel)
             );
             $this->registerScript();
             return $content;
@@ -67,10 +70,9 @@
          */
         protected function getEditableHtmlOptions()
         {
-            $htmlOptions             = array();
-            $htmlOptions['template'] =  '<div class="radio-input color-swatch {value}">{input}<span class="theme-color-1">' .
-                                        '</span><span class="theme-color-2"></span>' .
-                                        '<span class="theme-color-3"></span>{label}</div>';
+            $htmlOptions              = array();
+            $htmlOptions['separator'] = '';
+            $htmlOptions['template']  = '<div class="radio-input color-swatch {value}">{input}{label}</div>';
             return $htmlOptions;
         }
 
@@ -89,6 +91,46 @@
                       ";
             // End Not Coding Standard
             Yii::app()->clientScript->registerScript('changeThemeColor', $script);
+        }
+
+        protected function resolveThemeColorNamesAndLabelsForLocking(GameLevel $gameLevel)
+        {
+            $namesAndUnlockedAtLevels = Yii::app()->themeManager->getThemeColorNamesAndUnlockedAtLevel();
+            $data = array();
+            foreach(Yii::app()->themeManager->getThemeColorNamesAndLabels() as $name => $label)
+            {
+                $label = '<span class="theme-color-1"></span><span class="theme-color-2">' .
+                         '</span><span class="theme-color-3"></span>' . $label;
+                $unlockedAtLevel = $namesAndUnlockedAtLevels[$name];
+                if($unlockedAtLevel > (int)$gameLevel->value)
+                {
+                    $title   = Zurmo::t('GamificationModule', 'Unlocked at level {level}', array('{level}' => $unlockedAtLevel));
+                    $content = '<span id="theme-color-tooltip-' . $name. '" title="' . $title . '"><i class="icon-lock"></i></span>' . $label;
+                    $qtip    = new ZurmoTip();
+                    $qtip->addQTip("#theme-color-tooltip-" . $name);
+                }
+                else
+                {
+                    $content = $label;
+                }
+                $data[$name] = $content;
+            }
+            return $data;
+        }
+
+        protected function resolveDataHtmlOptions(GameLevel $gameLevel)
+        {
+            $dataHtmlOptions = array();
+            foreach(Yii::app()->themeManager->getThemeColorNamesAndUnlockedAtLevel() as $name => $unlockedAtLevel)
+            {
+                $dataHtmlOptions[$name] = array();
+                if($unlockedAtLevel > (int)$gameLevel->value)
+                {
+                    $dataHtmlOptions[$name]['class']    = 'locked';
+                    $dataHtmlOptions[$name]['disabled'] = 'disabled';
+                }
+            }
+            return $dataHtmlOptions;
         }
     }
 ?>

@@ -36,17 +36,38 @@
 
     class E extends RedBeanModel
     {
+        public static function deleteAll()
+        {
+            if (ZurmoRedBean::$writer->doesTableExist(static::getTableName(get_called_class())))
+            {
+                parent::deleteAll();
+            }
+        }
+
         public static function getByE($e)
         {
             assert('is_string($e)');
             assert('$e != ""');
-            $bean = R::findOne('e', "e = '$e'");
+            $bean = ZurmoRedBean::findOne('e', "e = '$e'");
             assert('$bean === false || $bean instanceof RedBean_OODBBean');
             if ($bean === false)
             {
-                throw new NotFoundException();
+                // we need this because C uses dynamic default values from it and we need this table to be available.
+                RedBeanModelsToTablesAdapter::generateTablesFromModelClassNames(array('E'), new MessageLogger());
+                $model = new E();
+                $model->e = $e;
+                $saved = $model->save();
+                if (!$saved)
+                {
+                    throw new FailedToSaveModelException();
+                }
+                return $model;
             }
-            return self::makeModel($bean);
+            else
+            {
+                $model = static::makeModel($bean);
+            }
+            return $model;
         }
 
         public static function getDefaultMetadata()
@@ -57,7 +78,7 @@
                     'e',
                 ),
                 'relations' => array(
-                    'g' => array(RedBeanModel::HAS_ONE, 'G'),
+                    'g' => array(static::HAS_ONE, 'G'),
                 ),
                 'rules' => array(
                     array('e', 'length', 'min' => 1, 'max' => 16),

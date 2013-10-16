@@ -61,7 +61,7 @@
             catch (NotFoundException $e)
             {
             }
-            return Zurmo::t('ConversationsModule', '(Unnamed)');
+            return Zurmo::t('Core', '(Unnamed)');
         }
 
         public static function getModuleClassName()
@@ -82,8 +82,9 @@
                     'hasReadLatest',
                 ),
                 'relations' => array(
-                    'person'      => array(RedBeanModel::HAS_ONE, 'Item', RedBeanModel::NOT_OWNED,
-                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'person'),
+                    'person'      => array(static::HAS_ONE, 'Item', static::NOT_OWNED,
+                                                static::LINK_TYPE_SPECIFIC, 'person'),
+                    'conversation' => array(static::HAS_ONE,  'Conversation', static::NOT_OWNED),
                 ),
                 'rules' => array(
                     array('hasReadLatest', 'boolean'),

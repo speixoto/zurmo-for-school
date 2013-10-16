@@ -57,13 +57,14 @@
             }
             try
             {
+                // not using default value to save cpu cycles on requests that follow the first exception.
                 return GeneralCache::getEntry('CustomFieldData' . $name);
             }
             catch (NotFoundException $e)
             {
                 assert('is_string($name)');
                 assert('$name != ""');
-                $bean = R::findOne('customfielddata', "name = :name ", array(':name' => $name));
+                $bean = ZurmoRedBean::findOne('customfielddata', "name = :name ", array(':name' => $name));
                 assert('$bean === false || $bean instanceof RedBean_OODBBean');
                 if ($bean === false)
                 {
@@ -105,7 +106,7 @@
                     array('name',             'required'),
                     array('name',             'unique'),
                     array('name',             'type',   'type' => 'string'),
-                    array('name',             'length', 'min'  => 3, 'max' => 64),
+                    array('name',             'length', 'min'  => 1, 'max' => 64),
                     array('name',             'match',  'pattern' => '/[A-Z]([a-zA-Z]*[a-z]|[a-z]?)/',
                                                       'message' => 'Name must be PascalCase.'),
                     array('defaultValue',     'type',   'type' => 'string'),

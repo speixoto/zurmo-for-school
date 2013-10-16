@@ -78,7 +78,8 @@
         /**
          * Given a user, return level information including total points, what level the user is at for each level type,
          * and how many points until the user reaches the next of each level type.
-         * @param unknown_type $user
+         * @param User $user
+         * @return array
          */
         public static function getUserStatisticsData(User $user)
         {
@@ -92,7 +93,12 @@
             return $statisticsData;
         }
 
-        protected static function getStatisticsDataForAGivenLevelType(User $user, $levelType)
+        /**
+         * @param User $user
+         * @param $levelType
+         * @return array
+         */
+        public static function getStatisticsDataForAGivenLevelType(User $user, $levelType)
         {
             assert('is_string($levelType) && $levelType != null');
             $rulesClassName      = $levelType . 'GameLevelRules';

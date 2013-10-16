@@ -89,17 +89,25 @@
             echo $view->render();
         }
 
-        public function actionDetails($id)
+        public function actionDetails($id, $kanbanBoard = false)
         {
             $opportunity = static::getModelAndCatchNotFoundAndDisplayError('Opportunity', intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($opportunity);
             AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED, array(strval($opportunity), 'OpportunitiesModule'), $opportunity);
-            $breadCrumbView          = StickySearchUtil::resolveBreadCrumbViewForDetailsControllerAction($this, 'OpportunitiesSearchView', $opportunity);
-            $detailsAndRelationsView = $this->makeDetailsAndRelationsView($opportunity, 'OpportunitiesModule',
+            if (KanbanUtil::isKanbanRequest() === false)
+            {
+                $breadCrumbView          = StickySearchUtil::resolveBreadCrumbViewForDetailsControllerAction($this, 'OpportunitiesSearchView', $opportunity);
+                $detailsAndRelationsView = $this->makeDetailsAndRelationsView($opportunity, 'OpportunitiesModule',
                                                                           'OpportunityDetailsAndRelationsView',
                                                                           Yii::app()->request->getRequestUri(), $breadCrumbView);
-            $view = new OpportunitiesPageView(ZurmoDefaultViewUtil::
-                                         makeStandardViewForCurrentUser($this, $detailsAndRelationsView));
+                $view = new OpportunitiesPageView(ZurmoDefaultViewUtil::
+                                             makeStandardViewForCurrentUser($this, $detailsAndRelationsView));
+            }
+            else
+            {
+                $view = TasksUtil::resolveTaskKanbanViewForRelation($opportunity, $this->getModule()->getId(), $this,
+                                                                        'TasksForOpportunityKanbanView', 'OpportunitiesPageView');
+            }
             echo $view->render();
         }
 
