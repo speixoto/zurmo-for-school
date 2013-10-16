@@ -824,22 +824,27 @@
          * @param ZurmoDefaultPageView $pageView
          * @return ZurmoDefaultPageView
          */
-        public static function resolveTaskKanbanViewForRelation($model, $moduleId, $controller, $kanbanView, $pageView)
+        public static function resolveTaskKanbanViewForRelation($model,
+                                                                $moduleId, $controller,
+                                                                $kanbanView, $pageView)
         {
             assert('$model instanceof RedBeanModel');
             assert('is_string($moduleId)');
             assert('$controller instanceof ZurmoModuleController');
             assert('is_string($kanbanView)');
             assert('is_string($pageView)');
+            $breadCrumbLinks = array(StringUtil::getChoppedStringContent(strval($model), 25));
             $kanbanItem                 = new KanbanItem();
             $kanbanBoard                = new TaskKanbanBoard($kanbanItem, 'type', $model, get_class($model));
             $kanbanBoard->setIsActive();
             $params['relationModel']    = $model;
             $params['relationModuleId'] = $moduleId;
             $params['redirectUrl']      = null;
-            $listView                   = new $kanbanView($controller->getId(), 'tasks', 'Task', null, $params, null, array(), $kanbanBoard);
+            $listView                   = new $kanbanView($controller->getId(), 'tasks', 'Task', null,
+                                                            $params, null, array(), $kanbanBoard);
             $view                       = new $pageView(ZurmoDefaultViewUtil::
-                                                                            makeStandardViewForCurrentUser($controller, $listView));
+                                                             makeViewWithBreadcrumbsForCurrentUser(
+                                                                    $controller,$listView, $breadCrumbLinks, 'KanbanBoardBreadCrumbView'));
             return $view;
         }
     }

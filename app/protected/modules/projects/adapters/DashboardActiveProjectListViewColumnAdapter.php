@@ -45,7 +45,8 @@
         {
             return array(
                     'name'  => $this->attribute,
-                    'value' => 'DashboardActiveProjectListViewColumnAdapter::getActiveProjectInformationForDashboard($data)',
+                    'value' => 'DashboardActiveProjectListViewColumnAdapter
+                                            ::getActiveProjectInformationForDashboard($data)',
                     'type'  => 'raw'
                 );
         }
@@ -123,7 +124,7 @@
             {
                 $completionPercent = 0;
             }
-            return $completionPercent;
+            return round($completionPercent, 2);
         }
 
         /**
