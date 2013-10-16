@@ -167,7 +167,7 @@
                                   'class' => 'task-status'),
                 'subscribe' => array('value' => array('TasksUtil', 'getKanbanSubscriptionLink'),
                                      'class' => 'task-subscription'),
-                'completionBar' => array('value' => 'TasksUtil::renderCompletionProgressBar($data)',
+                'completionBar' => array('value' => 'TasksUtil::renderCompletionProgressBarContent($data)',
                                          'class' => 'task-completion')
             );
         }

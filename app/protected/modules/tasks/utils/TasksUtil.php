@@ -796,7 +796,7 @@
          * @param Task $task
          * @return string
          */
-        public static function renderCompletionProgressBar(Task $task)
+        public static function renderCompletionProgressBarContent(Task $task)
         {
             $checkListItemsCount = count($task->checkListItems);
             if( $checkListItemsCount == 0)
