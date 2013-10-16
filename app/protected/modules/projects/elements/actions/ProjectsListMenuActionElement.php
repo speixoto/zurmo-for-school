@@ -35,43 +35,48 @@
      ********************************************************************************/
 
     /**
-     * Action bar view for the projects dashboard
+     * Link element to take you to a list of projects list models
      */
-    class SecuredActionBarForProjectsDashboardView extends SecuredActionBarForSearchAndListView
+    class ProjectsListMenuActionElement extends MenuActionElement
     {
+        /**
+         * @return string
+         */
+        protected function getDefaultLabel()
+        {
+            return Zurmo::t('ProjectsModule', 'Lists');
+        }
+
+        /**
+         * @return string
+         */
+        protected function getDefaultRoute()
+        {
+            return Yii::app()->createUrl('projects/default/list/');
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getActionType()
+        {
+            return null;
+        }
+
         /**
          * @return array
          */
-        public static function getDefaultMetadata()
+        protected function getMenuItems()
         {
-            $metadata = array(
-                'global' => array(
-                    'toolbar' => array(
-                        'elements' => array(
-                            array(
-                                'type'      => 'ProjectsDashboardMenu',
-                                'iconClass' => 'icon-project-dashboard',
-                            ),
-                            array(
-                                'type'      => 'ProjectsListMenu',
-                                'iconClass' => 'icon-projects-list'
-                            ),
-
-                        ),
-                    ),
-                    'secondToolBar' => array(
-                        'elements' => array(
-                            array('type'        => 'ProjectsIntroLink',
-                                  'panelId'     => 'eval:$this->introView->getPanelId()',
-                                  'checked'     => 'eval:!$this->introView->isIntroViewDismissed()',
-                                  'moduleName'  => 'eval:$this->introView->getModuleName()',
-                                  'iconClass'   => 'icon-options',
-                            ),
-                        ),
-                    )
-                ),
-            );
-            return $metadata;
+            $items = array();
+            if (RightsUtil::doesUserHaveAllowByRightName('ProjectsModule', ProjectsModule::getCreateRight(),
+                Yii::app()->user->userModel))
+            {
+                $items[] = array('label'   => Zurmo::t('ProjectsModule', 'Create Project'),
+                                 'url'     => Yii::app()->createUrl('projects/default/create'));
+                return $items;
+            }
+            return null;
         }
     }
 ?>

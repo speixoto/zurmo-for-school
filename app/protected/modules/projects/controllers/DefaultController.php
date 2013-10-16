@@ -472,7 +472,7 @@
             $actionBarView           = new SecuredActionBarForProjectsDashboardView(
                                             'default',
                                             'projects',
-                                            new Project(), //Just to fill in a marketing model
+                                            new Project(), //Just to fill in a model
                                             $gridViewId,
                                             $pageVar,
                                             false,

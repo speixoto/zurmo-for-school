@@ -57,7 +57,7 @@
                                 'id'          => 'ListViewOptionsActionMenu',
                                 'iconClass'   => 'icon-edit',
                             ),
-                            array('type'            => 'CreateTaskFromRelatedKanbanModalLink',
+                            array('type'          => 'CreateTaskFromRelatedKanbanModalLink',
                                 'routeModuleId'   => 'eval:$this->moduleId',
                                 'routeParameters' => 'eval:$this->getCreateLinkRouteParameters()',
                                 'ajaxOptions'     => 'eval:TasksUtil::resolveAjaxOptionsForEditModel("Create")',
