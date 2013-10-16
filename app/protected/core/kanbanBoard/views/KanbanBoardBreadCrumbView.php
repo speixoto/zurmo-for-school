@@ -35,43 +35,39 @@
      ********************************************************************************/
 
     /**
-     * Action bar view for the projects dashboard
+     * View that renders kanban board breadcrumb content
      */
-    class SecuredActionBarForProjectsDashboardView extends SecuredActionBarForSearchAndListView
+    class KanbanBoardBreadCrumbView extends BreadCrumbView
     {
         /**
-         * @return array
+         * @return string
          */
-        public static function getDefaultMetadata()
+        protected function getHomeLinkLabel()
         {
-            $metadata = array(
-                'global' => array(
-                    'toolbar' => array(
-                        'elements' => array(
-                            array(
-                                'type'      => 'ProjectsDashboardMenu',
-                                'iconClass' => 'icon-project-dashboard',
-                            ),
-                            array(
-                                'type'      => 'ProjectsListMenu',
-                                'iconClass' => 'icon-projects-list'
-                            ),
+            if($this->moduleId == 'projects')
+            {
+                return Zurmo::t('ProjectsModule', 'ProjectsModulePluralLabel', LabelUtil::getTranslationParamsForAllModules());
+            }
+            elseif($this->moduleId == 'accounts')
+            {
+                return Zurmo::t('AccountsModule', 'AccountsModulePluralLabel', LabelUtil::getTranslationParamsForAllModules());
+            }
+            elseif($this->moduleId == 'contacts')
+            {
+                return Zurmo::t('ContactsModule', 'ContactsModulePluralLabel', LabelUtil::getTranslationParamsForAllModules());
+            }
+            elseif($this->moduleId == 'opportunities')
+            {
+                return Zurmo::t('OpportunitiesModule', 'OpportunitiesModulePluralLabel', LabelUtil::getTranslationParamsForAllModules());
+            }
+        }
 
-                        ),
-                    ),
-                    'secondToolBar' => array(
-                        'elements' => array(
-                            array('type'        => 'ProjectsIntroLink',
-                                  'panelId'     => 'eval:$this->introView->getPanelId()',
-                                  'checked'     => 'eval:!$this->introView->isIntroViewDismissed()',
-                                  'moduleName'  => 'eval:$this->introView->getModuleName()',
-                                  'iconClass'   => 'icon-options',
-                            ),
-                        ),
-                    )
-                ),
-            );
-            return $metadata;
+        /**
+         * @return string
+         */
+        protected function getHomeUrl()
+        {
+            return Yii::app()->createUrl($this->resolveModuleId() . '/' . $this->resolveControllerId() . '/list');
         }
     }
 ?>

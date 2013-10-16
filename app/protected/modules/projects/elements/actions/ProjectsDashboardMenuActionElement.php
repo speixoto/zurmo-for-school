@@ -35,43 +35,29 @@
      ********************************************************************************/
 
     /**
-     * Action bar view for the projects dashboard
+     * Projects dashboard link.
      */
-    class SecuredActionBarForProjectsDashboardView extends SecuredActionBarForSearchAndListView
+    class ProjectsDashboardMenuActionElement extends MenuActionElement
     {
         /**
-         * @return array
+         * @return string
          */
-        public static function getDefaultMetadata()
+        protected function getDefaultLabel()
         {
-            $metadata = array(
-                'global' => array(
-                    'toolbar' => array(
-                        'elements' => array(
-                            array(
-                                'type'      => 'ProjectsDashboardMenu',
-                                'iconClass' => 'icon-project-dashboard',
-                            ),
-                            array(
-                                'type'      => 'ProjectsListMenu',
-                                'iconClass' => 'icon-projects-list'
-                            ),
+            return Zurmo::t('HomeModule', 'Dashboard');
+        }
 
-                        ),
-                    ),
-                    'secondToolBar' => array(
-                        'elements' => array(
-                            array('type'        => 'ProjectsIntroLink',
-                                  'panelId'     => 'eval:$this->introView->getPanelId()',
-                                  'checked'     => 'eval:!$this->introView->isIntroViewDismissed()',
-                                  'moduleName'  => 'eval:$this->introView->getModuleName()',
-                                  'iconClass'   => 'icon-options',
-                            ),
-                        ),
-                    )
-                ),
-            );
-            return $metadata;
+        /**
+         * @return string
+         */
+        protected function getDefaultRoute()
+        {
+            return Yii::app()->createUrl('projects/default');
+        }
+
+        public function getActionType()
+        {
+            return null;
         }
     }
 ?>
