@@ -1039,6 +1039,11 @@ body.blue .pillbox .active span,
 body.blue .pillbox .active i[class^="icon"],
 body.blue .pillbox .active i[class^="icon"]:after,
 body.blue .pillbox .active i[class^="icon"]:before,
+body.blue .pillbox .nav-open a,
+body.blue .pillbox .nav-open span,
+body.blue .pillbox .nav-open i[class^="icon"],
+body.blue .pillbox .nav-open i[class^="icon"]:after,
+body.blue .pillbox .nav-open i[class^="icon"]:before,
 body.blue .view-toolbar > a:hover,
 body.blue .view-toolbar > a:active,
 body.blue .view-toolbar > a:hover:before,
@@ -1647,6 +1652,11 @@ body.sunrise .pillbox .active span,
 body.sunrise .pillbox .active i[class^="icon"],
 body.sunrise .pillbox .active i[class^="icon"]:after,
 body.sunrise .pillbox .active i[class^="icon"]:before,
+body.sunrise .pillbox .nav-open a,
+body.sunrise .pillbox .nav-open span,
+body.sunrise .pillbox .nav-open i[class^="icon"],
+body.sunrise .pillbox .nav-open i[class^="icon"]:after,
+body.sunrise .pillbox .nav-open i[class^="icon"]:before,
 body.sunrise .view-toolbar > a:hover,
 body.sunrise .view-toolbar > a:active,
 body.sunrise .view-toolbar > a:hover:before,
@@ -2255,6 +2265,11 @@ body.marble .pillbox .active span,
 body.marble .pillbox .active i[class^="icon"],
 body.marble .pillbox .active i[class^="icon"]:after,
 body.marble .pillbox .active i[class^="icon"]:before,
+body.marble .pillbox .nav-open a,
+body.marble .pillbox .nav-open span,
+body.marble .pillbox .nav-open i[class^="icon"],
+body.marble .pillbox .nav-open i[class^="icon"]:after,
+body.marble .pillbox .nav-open i[class^="icon"]:before,
 body.marble .view-toolbar > a:hover,
 body.marble .view-toolbar > a:active,
 body.marble .view-toolbar > a:hover:before,
@@ -2863,6 +2878,11 @@ body.purple-haze .pillbox .active span,
 body.purple-haze .pillbox .active i[class^="icon"],
 body.purple-haze .pillbox .active i[class^="icon"]:after,
 body.purple-haze .pillbox .active i[class^="icon"]:before,
+body.purple-haze .pillbox .nav-open a,
+body.purple-haze .pillbox .nav-open span,
+body.purple-haze .pillbox .nav-open i[class^="icon"],
+body.purple-haze .pillbox .nav-open i[class^="icon"]:after,
+body.purple-haze .pillbox .nav-open i[class^="icon"]:before,
 body.purple-haze .view-toolbar > a:hover,
 body.purple-haze .view-toolbar > a:active,
 body.purple-haze .view-toolbar > a:hover:before,
@@ -3472,6 +3492,11 @@ body.flat-cement .pillbox .active span,
 body.flat-cement .pillbox .active i[class^="icon"],
 body.flat-cement .pillbox .active i[class^="icon"]:after,
 body.flat-cement .pillbox .active i[class^="icon"]:before,
+body.flat-cement .pillbox .nav-open a,
+body.flat-cement .pillbox .nav-open span,
+body.flat-cement .pillbox .nav-open i[class^="icon"],
+body.flat-cement .pillbox .nav-open i[class^="icon"]:after,
+body.flat-cement .pillbox .nav-open i[class^="icon"]:before,
 body.flat-cement .view-toolbar > a:hover,
 body.flat-cement .view-toolbar > a:active,
 body.flat-cement .view-toolbar > a:hover:before,
@@ -4100,6 +4125,11 @@ body.amazon .pillbox .active span,
 body.amazon .pillbox .active i[class^="icon"],
 body.amazon .pillbox .active i[class^="icon"]:after,
 body.amazon .pillbox .active i[class^="icon"]:before,
+body.amazon .pillbox .nav-open a,
+body.amazon .pillbox .nav-open span,
+body.amazon .pillbox .nav-open i[class^="icon"],
+body.amazon .pillbox .nav-open i[class^="icon"]:after,
+body.amazon .pillbox .nav-open i[class^="icon"]:before,
 body.amazon .view-toolbar > a:hover,
 body.amazon .view-toolbar > a:active,
 body.amazon .view-toolbar > a:hover:before,
@@ -4708,6 +4738,11 @@ body.sweden .pillbox .active span,
 body.sweden .pillbox .active i[class^="icon"],
 body.sweden .pillbox .active i[class^="icon"]:after,
 body.sweden .pillbox .active i[class^="icon"]:before,
+body.sweden .pillbox .nav-open a,
+body.sweden .pillbox .nav-open span,
+body.sweden .pillbox .nav-open i[class^="icon"],
+body.sweden .pillbox .nav-open i[class^="icon"]:after,
+body.sweden .pillbox .nav-open i[class^="icon"]:before,
 body.sweden .view-toolbar > a:hover,
 body.sweden .view-toolbar > a:active,
 body.sweden .view-toolbar > a:hover:before,
@@ -5316,6 +5351,11 @@ body.pink .pillbox .active span,
 body.pink .pillbox .active i[class^="icon"],
 body.pink .pillbox .active i[class^="icon"]:after,
 body.pink .pillbox .active i[class^="icon"]:before,
+body.pink .pillbox .nav-open a,
+body.pink .pillbox .nav-open span,
+body.pink .pillbox .nav-open i[class^="icon"],
+body.pink .pillbox .nav-open i[class^="icon"]:after,
+body.pink .pillbox .nav-open i[class^="icon"]:before,
 body.pink .view-toolbar > a:hover,
 body.pink .view-toolbar > a:active,
 body.pink .view-toolbar > a:hover:before,
@@ -5924,6 +5964,11 @@ body.brown .pillbox .active span,
 body.brown .pillbox .active i[class^="icon"],
 body.brown .pillbox .active i[class^="icon"]:after,
 body.brown .pillbox .active i[class^="icon"]:before,
+body.brown .pillbox .nav-open a,
+body.brown .pillbox .nav-open span,
+body.brown .pillbox .nav-open i[class^="icon"],
+body.brown .pillbox .nav-open i[class^="icon"]:after,
+body.brown .pillbox .nav-open i[class^="icon"]:before,
 body.brown .view-toolbar > a:hover,
 body.brown .view-toolbar > a:active,
 body.brown .view-toolbar > a:hover:before,
@@ -6532,6 +6577,11 @@ body.lime .pillbox .active span,
 body.lime .pillbox .active i[class^="icon"],
 body.lime .pillbox .active i[class^="icon"]:after,
 body.lime .pillbox .active i[class^="icon"]:before,
+body.lime .pillbox .nav-open a,
+body.lime .pillbox .nav-open span,
+body.lime .pillbox .nav-open i[class^="icon"],
+body.lime .pillbox .nav-open i[class^="icon"]:after,
+body.lime .pillbox .nav-open i[class^="icon"]:before,
 body.lime .view-toolbar > a:hover,
 body.lime .view-toolbar > a:active,
 body.lime .view-toolbar > a:hover:before,
@@ -7140,6 +7190,11 @@ body.cherry .pillbox .active span,
 body.cherry .pillbox .active i[class^="icon"],
 body.cherry .pillbox .active i[class^="icon"]:after,
 body.cherry .pillbox .active i[class^="icon"]:before,
+body.cherry .pillbox .nav-open a,
+body.cherry .pillbox .nav-open span,
+body.cherry .pillbox .nav-open i[class^="icon"],
+body.cherry .pillbox .nav-open i[class^="icon"]:after,
+body.cherry .pillbox .nav-open i[class^="icon"]:before,
 body.cherry .view-toolbar > a:hover,
 body.cherry .view-toolbar > a:active,
 body.cherry .view-toolbar > a:hover:before,
@@ -7748,6 +7803,11 @@ body.turquoise .pillbox .active span,
 body.turquoise .pillbox .active i[class^="icon"],
 body.turquoise .pillbox .active i[class^="icon"]:after,
 body.turquoise .pillbox .active i[class^="icon"]:before,
+body.turquoise .pillbox .nav-open a,
+body.turquoise .pillbox .nav-open span,
+body.turquoise .pillbox .nav-open i[class^="icon"],
+body.turquoise .pillbox .nav-open i[class^="icon"]:after,
+body.turquoise .pillbox .nav-open i[class^="icon"]:before,
 body.turquoise .view-toolbar > a:hover,
 body.turquoise .view-toolbar > a:active,
 body.turquoise .view-toolbar > a:hover:before,
@@ -8356,6 +8416,11 @@ body.violet .pillbox .active span,
 body.violet .pillbox .active i[class^="icon"],
 body.violet .pillbox .active i[class^="icon"]:after,
 body.violet .pillbox .active i[class^="icon"]:before,
+body.violet .pillbox .nav-open a,
+body.violet .pillbox .nav-open span,
+body.violet .pillbox .nav-open i[class^="icon"],
+body.violet .pillbox .nav-open i[class^="icon"]:after,
+body.violet .pillbox .nav-open i[class^="icon"]:before,
 body.violet .view-toolbar > a:hover,
 body.violet .view-toolbar > a:active,
 body.violet .view-toolbar > a:hover:before,
@@ -8964,6 +9029,11 @@ body.honey .pillbox .active span,
 body.honey .pillbox .active i[class^="icon"],
 body.honey .pillbox .active i[class^="icon"]:after,
 body.honey .pillbox .active i[class^="icon"]:before,
+body.honey .pillbox .nav-open a,
+body.honey .pillbox .nav-open span,
+body.honey .pillbox .nav-open i[class^="icon"],
+body.honey .pillbox .nav-open i[class^="icon"]:after,
+body.honey .pillbox .nav-open i[class^="icon"]:before,
 body.honey .view-toolbar > a:hover,
 body.honey .view-toolbar > a:active,
 body.honey .view-toolbar > a:hover:before,
@@ -15388,7 +15458,8 @@ i[class^="icon"] {
   margin: 0;
 }
 .icon-change-dashboard:after,
-.icon-marketing-dashboard:after {
+.icon-marketing-dashboard:after,
+.icon-project-dashboard:after {
   content: "/";
 }
 .icon-export:after {
@@ -17525,6 +17596,10 @@ table.configuration-list td:last-child a .z-label:before {
 .available-portlets .icon-products:before {
   content: '\003E';
 }
+.available-portlets .icon-products:after {
+  content: '';
+  display: none;
+}
 .available-portlets .icon-rssReader:before {
   content: "z";
 }
@@ -17552,6 +17627,10 @@ table.configuration-list td:last-child a .z-label:before {
 }
 .available-portlets .icon-maps:before {
   content: 'L';
+  font-size: 46px;
+}
+.available-portlets .icon-google-analytics:before {
+  content: '\00DA';
   font-size: 46px;
 }
 /*Edit Portlet*/
@@ -23018,8 +23097,8 @@ a.user-link {
 }
 #marketing-list-member-select-contact-or-report-form .close-flyout {
   position: absolute;
-  right: 5px;
-  top: 2px;
+  right: 3px;
+  top: 3px;
   font-weight: normal !important;
   font-weight: normal;
   font-size: 18px;
@@ -23034,6 +23113,11 @@ a.user-link {
   border: 1px solid #d5d4d4;
   position: relative;
   background: url(../images/search-bar-loopa.png) left top no-repeat;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+  border-radius: 3px;
 }
 #marketing-list-member-select-contact-or-report-form .search-without-scope .z-spinner {
   top: 2px;
@@ -23047,21 +23131,11 @@ a.user-link {
   box-sizing: border-box;
   width: 300px;
   margin: 0 0 0 23px;
-  -webkit-border-radius: 0;
-  -moz-border-radius: 0;
-  -ms-border-radius: 0;
-  -o-border-radius: 0;
-  border-radius: 0;
-  -webkit-box-shadow: none;
-  -moz-box-shadow: none;
-  -o-box-shadow: none;
-  -ms-box-shadow: none;
-  box-shadow: none;
   font-style: italic;
   color: #999;
   text-indent: 5px;
-  line-height: 23px;
-  height: 23px !important;
+  line-height: 22px;
+  height: 22px !important;
   border: none;
   background: url(../images/search-bar-gradient.png) left top repeat-x;
 }
@@ -24737,11 +24811,6 @@ div.special-pager .hidden.next:after {
   padding: 0 0 0 5px;
   display: inline-block;
   float: left;
-  -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  -ms-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
 }
 .pillbox .split-button + .default-button,
 .pillbox .default-button + .default-button,
@@ -24779,6 +24848,11 @@ div.special-pager .hidden.next:after {
   padding-right: 4px;
   text-align: center;
   float: right;
+  -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
+  -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
+  -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
+  -ms-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
+  text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
 }
 .pillbox .split-button .button-action-trigger:hover,
 .pillbox .default-button .button-action-trigger:hover,
@@ -24897,6 +24971,7 @@ div.special-pager .hidden.next:after {
   box-sizing: border-box;
 }
 .pillbox .button-actions {
+  z-index: 999;
   color: #EFEFEF;
   display: none;
   list-style: none;
@@ -24919,7 +24994,8 @@ div.special-pager .hidden.next:after {
   box-shadow: 0 0 10px 2px rgba(53, 53, 53, 0.5);
 }
 .pillbox .button-actions:hover,
-.pillbox .button-actions.stayOpen {
+.pillbox .button-actions.stayOpen,
+.pillbox .button-actions.nav-open {
   display: block;
 }
 .pillbox .button-actions:before {
@@ -24946,7 +25022,7 @@ div.special-pager .hidden.next:after {
   border-bottom: 1px solid #323232;
   margin: 5px 5px;
 }
-.pillbox .button-actions a {
+.pillbox .button-actions li > a {
   color: #EFEFEF;
   font-size: 11px;
   font-weight: normal;
@@ -24962,8 +25038,28 @@ div.special-pager .hidden.next:after {
 .pillbox .button-actions label {
   color: #EFEFEF;
 }
+.pillbox .button-actions .has-model-select {
+  -webkit-border-radius: 0 3px 3px 0;
+  -moz-border-radius: 0 3px 3px 0;
+  -ms-border-radius: 0 3px 3px 0;
+  -o-border-radius: 0 3px 3px 0;
+  border-radius: 0 3px 3px 0;
+}
+.pillbox .button-actions .has-model-select a {
+  right: -1px;
+  bottom: -1px;
+}
+.pillbox .button-actions .has-model-select a:hover {
+  background: url(../images/dropdown-general.png) left top no-repeat !important;
+}
 .nav-open .button-actions {
   display: block;
+}
+.nav-open .icon-trigger:before {
+  display: block !important;
+}
+.nav-open .close-flyout {
+  color: #ffffff !important;
 }
 .button-actions.open-on-left {
   right: auto;
