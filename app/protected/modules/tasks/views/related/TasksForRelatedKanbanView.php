@@ -161,14 +161,14 @@
         protected function getCardColumns()
         {
             return array(
-                'name'   => array('value'  => $this->getLinkString('$data->name', 'name'), 'class' => 'task-name'),
-                'status' => array('value' => 'TasksUtil::resolveActionButtonForTaskByStatus(intval($data->status), "' .
-                                           $this->controllerId . '", "' . $this->moduleId . '", $data->id)',
-                                  'class' => 'task-status'),
+                'name'   => array('value'   => $this->getLinkString('$data->name', 'name'), 'class' => 'task-name'),
+                'status' => array('value'   => 'TasksUtil::resolveActionButtonForTaskByStatus(intval($data->status), "' .
+                                               $this->controllerId . '", "' . $this->moduleId . '", $data->id)',
+                                               'class' => 'task-status'),
                 'subscribe' => array('value' => array('TasksUtil', 'getKanbanSubscriptionLink'),
-                                     'class' => 'task-subscription'),
+                                                'class' => 'task-subscription'),
                 'completionBar' => array('value' => 'TasksUtil::renderCompletionProgressBarContent($data)',
-                                         'class' => 'task-completion')
+                                                    'class' => 'task-completion')
             );
         }
 

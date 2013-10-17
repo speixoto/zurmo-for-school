@@ -135,9 +135,9 @@
          */
         protected function renderContent()
         {
-            $content      = '<div class="details-table">'; //todo: we should probably call this something else?
+            $content      = $this->resolveAndRenderActionElementMenu();
+            $content     .= '<div class="details-table clearfix">'; //todo: we should probably call this something else?
 //          $content     .= $this->renderTitleContent(); //todo: remove
-            $content     .= $this->resolveAndRenderActionElementMenu();
             $content     .= $this->renderLeftSideContent();
             $content     .= $this->renderRightSideContent();
             $content     .= '</div>';
@@ -252,7 +252,7 @@
          */
         protected function renderOwnerContent($form)
         {
-            $content  = '<div id="owner-box">';
+            $content  = '<div class="owner-box">';
             $element  = new TaskUserElement($this->getModel(), 'owner', $form);
             $element->editableTemplate = '{label}{content}{error}';
             $content .= $element->render().'</div>';
@@ -266,7 +266,7 @@
          */
         protected function renderRequestedByUserContent($form)
         {
-            $content  = '<div id="owner-box">';
+            $content  = '<div class="owner-box">';
             $element  = new TaskUserElement($this->getModel(), 'requestedByUser', $form);
             $element->editableTemplate = '{label}{content}{error}';
             $content .= $element->render().'</div>';
