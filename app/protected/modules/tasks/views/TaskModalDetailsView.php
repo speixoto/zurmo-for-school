@@ -136,6 +136,7 @@
         protected function renderContent()
         {
             $content      = '<div class="details-table">'; //todo: we should probably call this something else?
+//          $content     .= $this->renderTitleContent(); //todo: remove
             $content     .= $this->resolveAndRenderActionElementMenu();
             $content     .= $this->renderLeftSideContent();
             $content     .= $this->renderRightSideContent();
@@ -359,6 +360,38 @@
             $content .= '</span>';
             $content .= '</div>';
             return $content;
+        }
+
+        /**
+         * Registers edit in place script
+         */
+        protected function registerEditInPlaceScript() //todo: maybe remove this if we don't use it
+        {
+            /**
+            $taskCheckItemUrl     = Yii::app()->createUrl('tasks/taskCheckItems/updateNameViaAjax');
+            $updateDesctiptionUrl = Yii::app()->createUrl('tasks/default/updateDescriptionViaAjax');
+            Yii::app()->clientScript->registerScriptFile(
+                            Yii::app()->getAssetManager()->publish(
+                                     Yii::getPathOfAlias('application.modules.tasks.views.assets')) . '/jquery.editinplace.js');
+            $script = '$(".editable").editInPlace({
+                                                    url: "' . $taskCheckItemUrl . '",
+                                                    element_id : "id",
+                                                    show_buttons: true,
+                                                    value_required : true
+                                                    });';
+
+            $scriptTextArea = '$(".editableTextarea").editInPlace({
+                                                    url: "' . $updateDesctiptionUrl . '",
+                                                    element_id : "id",
+                                                    show_buttons: false,
+                                                    field_type: "textarea",
+                                                    textarea_rows: "15",
+                                                    textarea_cols: "35",
+                                                    default_text: "' . Zurmo::t('TasksModule', 'Click here to enter description') . '"
+                                                    });';
+            Yii::app()->getClientScript()->registerScript('editableScript', $script, ClientScript::POS_END);
+            Yii::app()->getClientScript()->registerScript('editableTextAreaScript', $scriptTextArea, ClientScript::POS_END);
+             * **/
         }
 
         public static function getDesignerRulesType()
