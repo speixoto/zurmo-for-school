@@ -26120,6 +26120,9 @@ div.special-pager .hidden.next:after {
 .task-dialog .attributesContainer {
   padding-bottom: 0;
 }
+.task-dialog .float-bar {
+  margin-bottom: 0;
+}
 #task-left-column-form-data label {
   margin-top: 15px;
   float: none;
@@ -26152,6 +26155,61 @@ div.special-pager .hidden.next:after {
   position: relative;
   top: -5px;
   margin-right: 3px;
+}
+#task-check-item-inline-edit-form {
+  margin-top: 10px;
+  padding: 8px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+  border-radius: 3px;
+  background: #EBEBEB;
+  display: table;
+  width: 100%;
+}
+#task-check-item-inline-edit-form input {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-font-smoothing: antialiased;
+  -o-font-smoothing: antialiased;
+  font-smoothing: antialiased;
+  display: inline-block;
+  border: 1px solid #ccc;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+  border-radius: 3px;
+  font-size: 12px;
+  color: #666 !important;
+  text-indent: 6px;
+  line-height: 24px;
+  height: 26px;
+  -webkit-box-shadow: 0 0 1px 1px rgba(153, 153, 153, 0.3);
+  -moz-box-shadow: 0 0 1px 1px rgba(153, 153, 153, 0.3);
+  -o-box-shadow: 0 0 1px 1px rgba(153, 153, 153, 0.3);
+  -ms-box-shadow: 0 0 1px 1px rgba(153, 153, 153, 0.3);
+  box-shadow: 0 0 1px 1px rgba(153, 153, 153, 0.3);
+  /* http://www.useragentman.com/blog/2011/08/24/how-to-simulate-css3-box-shadow-in-ie7-8-without-javascript/ */
+
+  zoom: 1;
+  filter: progid:DXImageTransform.Microsoft.Shadow(Color=#bfbfbf, Strength=1, Direction=0), progid:DXImageTransform.Microsoft.Shadow(Color=#bfbfbf, Strength=1, Direction=90), progid:DXImageTransform.Microsoft.Shadow(Color=#bfbfbf, Strength=1, Direction=180), progid:DXImageTransform.Microsoft.Shadow(Color=#bfbfbf, Strength=1, Direction=270);
+  width: 100%;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+#task-check-item-inline-edit-form .task-input {
+  padding-right: 10px;
+  display: table-cell;
+  vertical-align: middle;
+  width: 99%;
+}
+#task-check-item-inline-edit-form .task-add-button {
+  display: table-cell;
+  width: 1%;
+  vertical-align: middle;
 }
 /*********************************************************************************
  * Zurmo is a customer relationship management program developed by
