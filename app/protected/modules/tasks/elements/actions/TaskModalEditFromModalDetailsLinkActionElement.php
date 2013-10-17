@@ -80,9 +80,7 @@
                 'type'   => 'GET',
                 'update' => '#' . $containerId,
                 'complete' => "function(XMLHttpRequest, textStatus){
-                        console.log('xxx" . $containerId . "');
-                        $('#" . $containerId .  "').dialog('option', 'title', '" . $title . "');
-                        console.log('yyy" . $containerId . "');}"
+                        $('#" . $containerId .  "').dialog('option', 'title', '" . $title . "');}"
             );
             return $options;
         }

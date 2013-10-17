@@ -260,7 +260,6 @@
                 'url'  =>  $url,
                 'update' => '#' . $modalId,
                 'complete' => "function(XMLHttpRequest, textStatus){
-                console.log('" . $modalId . "');
                                     $('#" . $modalId .  "').dialog('option', 'title', '" . $title . "');
                                     " . $kanbanRefreshScript . "}"
             );

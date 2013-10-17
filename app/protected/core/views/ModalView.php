@@ -65,7 +65,8 @@
             return $this->view->render();
         }
 
-        public static function getAjaxOptionsForModalLink($title, $containerId = 'modalContainer', $height = 'auto', $width = 600, $position = 'center top+25', $class = "''") // Not Coding Standard
+        public static function getAjaxOptionsForModalLink($title, $containerId = 'modalContainer', $height = 'auto',
+                                                          $width = 600, $position = 'center top+25', $class = "''") // Not Coding Standard
         {
             assert('is_string($containerId)');
             assert('is_string($title)');
@@ -74,11 +75,18 @@
             assert('is_string($position) || is_array($position)');
             assert('is_string($class) || $class == null');
             return array(
-                    'beforeSend' => static::getAjaxBeforeSendOptionForModalLinkContent($title, $containerId, $height, $width, $position, $class),
+                    'beforeSend' => static::getAjaxBeforeSendOptionForModalLinkContent($title, $containerId,
+                                                                                       $height, $width, $position,
+                                                                                       $class),
                     'update'     => '#' . $containerId);
         }
 
-        public static function getAjaxBeforeSendOptionForModalLinkContent($title, $containerId = 'modalContainer', $height = 'auto', $width = 600, $position = 'center top+25', $class = "''") // Not Coding Standard
+        public static function getAjaxBeforeSendOptionForModalLinkContent($title,
+                                                                          $containerId = 'modalContainer',
+                                                                          $height = 'auto',
+                                                                          $width = 600,
+                                                                          $position = 'center top+25',
+                                                                          $class = "''") // Not Coding Standard
         {
             assert('is_string($containerId)');
             assert('is_string($title)');
@@ -117,7 +125,8 @@
                     'dialogClass' : {$class},
                     'height' : {$heightContent},
                     'open': function( event, ui )  { jQuery('#{$containerId}').parent().addClass('openingModal'); },
-                    'close': function( event, ui ) { jQuery('#{$containerId}').parent().removeClass('openingModal'); $('#{$containerId}').dialog('destroy'); }
+                    'close': function( event, ui ) { jQuery('#{$containerId}').parent().removeClass('openingModal');
+                                                     $('#{$containerId}').dialog('destroy'); }
                 });
                 return true;
             }";

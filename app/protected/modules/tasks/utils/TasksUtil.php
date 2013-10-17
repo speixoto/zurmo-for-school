@@ -351,6 +351,10 @@
             {
                 $title = Zurmo::t('TasksModule', 'Copy TasksModuleSingularLabel', $params);
             }
+            elseif($renderType == "Details")
+            {
+                $title = static::getModalDetailsTitle();
+            }
             else
             {
                 $title = Zurmo::t('TasksModule', 'Edit TasksModuleSingularLabel', $params);
@@ -377,22 +381,12 @@
         }
 
         /**
-         * Resolves view ajax options for selecting model
-         * @return array
-         */
-        public static function resolveViewAjaxOptionsForSelectingModel()
-        {
-            $title = self::getModalDetailsTitle();
-            return   ModalView::getAjaxOptionsForModalLink($title, self::getModalContainerId(), 'auto', 600,
-                     'center top+25', $class = "'task-dialog'");
-        }
-
-        /**
          * @param $renderType
          * @return array
          */
-        public static function resolveAjaxOptionsForEditModel($renderType)
+        public static function resolveAjaxOptionsForModalView($renderType)
         {
+            assert('is_string($renderType)');
             $title = self::getModalTitleForCreateTask($renderType);
             return   ModalView::getAjaxOptionsForModalLink($title, self::getModalContainerId(), 'auto', 600,
                      'center top+25', $class = "'task-dialog'");
@@ -413,7 +407,7 @@
             assert('is_string($moduleId)');
             assert('is_string($moduleClassName)');
             assert('is_string($sourceKanbanBoardId) || $sourceKanbanBoardId == null');
-            $ajaxOptions = TasksUtil::resolveViewAjaxOptionsForSelectingModel();
+            $ajaxOptions = TasksUtil::resolveAjaxOptionsForModalView('Details');
             $label       = $task->name . ZurmoHtml::tag('span', array(), '(' . strval($task->owner) . ')');
             $params      = array('label' => $label, 'routeModuleId' => 'tasks',
                                  'ajaxOptions' => $ajaxOptions,

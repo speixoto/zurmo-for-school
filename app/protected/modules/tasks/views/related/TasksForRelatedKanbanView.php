@@ -62,7 +62,7 @@
                             array('type'            => 'CreateTaskFromRelatedKanbanModalLink',
                                   'routeModuleId'   => 'eval:$this->moduleId',
                                   'routeParameters' => 'eval:$this->getCreateLinkRouteParameters()',
-                                  'ajaxOptions'     => 'eval:TasksUtil::resolveAjaxOptionsForEditModel("Create")',
+                                  'ajaxOptions'     => 'eval:TasksUtil::resolveAjaxOptionsForModalView("Create")',
                                   'sourceKanbanBoardId' => 'eval:$this->getGridViewId()',
                                   'modalContainerId'=> 'eval:TasksUtil::getModalContainerId()'
                             ),

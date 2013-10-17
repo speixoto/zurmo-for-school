@@ -351,7 +351,7 @@
             $element  = new TaskStatusDropDownElement($this->getModel(), 'status', $form);
             $content .= $element->render();
             $content .= '<span id="completionDate">';
-            if($this->model->status == Task::STATUS_COMPLETED) //todO: deal with showing completedDateTime etc.
+            if($this->model->status == Task::STATUS_COMPLETED)
             {
                 $content .= '<p>' . Zurmo::t('TasksModule', 'Completed On') . ': ' .
                             DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay(
