@@ -197,5 +197,20 @@
             }
             return false;
         }
+
+        /**
+         * Handle audit of projects after save
+         */
+        protected function afterSave()
+        {
+            if($this->getIsNewModel())
+            {
+                ProjectAuditEvent::logAuditEvent(ProjectAuditEvent::PROJECT_CREATED, $this, $this->name);
+            }
+            if($this->getIsNewModel() === false && $this->status == Project::STATUS_ARCHIVED)
+            {
+                ProjectAuditEvent::logAuditEvent(ProjectAuditEvent::PROJECT_ARCHIVED, $this, $this->name);
+            }
+        }
     }
 ?>

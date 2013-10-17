@@ -210,29 +210,19 @@
          */
         protected function resolveActiveFormAjaxValidationOptions()
         {
-
             $id = Yii::app()->request->getParam('id', null);
-            //$id             = $this->model->id; //todo: just use this instead of id.
             $getData        = GetUtil::getData();
             $sourceId       = null;
             if(GetUtil::resolveParamFromRequest('modalTransferInformation') != null)
             {
-                $relationAttributeName   = GetUtil::resolveModalTransferInformationParamFromRequest('relationAttributeName', null);
-                $relationModelId         = GetUtil::resolveModalTransferInformationParamFromRequest('relationModelId', null);
-                $relationModuleId        = GetUtil::resolveModalTransferInformationParamFromRequest('relationModuleId', null);
-                $portletId               = GetUtil::resolveModalTransferInformationParamFromRequest('portletId', null);
-                $uniqueLayoutId          = GetUtil::resolveModalTransferInformationParamFromRequest('uniqueLayoutId', null);
-                $sourceId                = GetUtil::resolveModalTransferInformationParamFromRequest('sourceId', null);
+                $relationAttributeName   = GetUtil::resolveModalTransferInformationParamFromRequest('relationAttributeName');
+                $relationModelId         = GetUtil::resolveModalTransferInformationParamFromRequest('relationModelId');
+                $relationModuleId        = GetUtil::resolveModalTransferInformationParamFromRequest('relationModuleId');
+                $portletId               = GetUtil::resolveModalTransferInformationParamFromRequest('portletId');
+                $uniqueLayoutId          = GetUtil::resolveModalTransferInformationParamFromRequest('uniqueLayoutId');
+                $sourceId                = GetUtil::resolveModalTransferInformationParamFromRequest('sourceId');
                 $action                  = Yii::app()->request->getParam('action', null);
-                //todo: why are you checking action?
-                if($action == null)
-                {
-                    $params = array('id' => $id);
-                }
-                else
-                {
-                    $params = array('id' => null);
-                }
+                $params = array('id' => $id);
                 $url = Yii::app()->createUrl('tasks/default/modalSaveFromRelation',
                             array_merge(array('relationAttributeName' => $relationAttributeName,
                                               'relationModelId'       => $relationModelId,

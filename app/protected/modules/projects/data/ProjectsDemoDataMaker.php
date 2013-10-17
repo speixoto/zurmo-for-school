@@ -63,7 +63,7 @@
                 $this->populateModel($project);
                 $saved = $project->save();
                 assert('$saved');
-                ProjectAuditEvent::logAuditEvent(ProjectAuditEvent::PROJECT_CREATED, $project->name, $project);
+                ProjectAuditEvent::logAuditEvent(ProjectAuditEvent::PROJECT_CREATED, $project, $project->name);
                 self::addDemoTasks($project, 3, $demoDataHelper);
                 $projects[] = $project->id;
             }
@@ -100,6 +100,10 @@
                 $task->completedDateTime    = '0000-00-00 00:00:00';
                 $task->project              = $project;
                 $task->status               = Task::STATUS_NEW;
+                $notificationSubscriber     = new NotificationSubscriber();
+                $notificationSubscriber->person        = $task->owner;
+                $notificationSubscriber->hasReadLatest = false;
+                $task->notificationSubscribers->add($notificationSubscriber);
                 $task->save();
                 $currentStatus              = $task->status;
                 ProjectsUtil::logAddTaskEvent($task);
