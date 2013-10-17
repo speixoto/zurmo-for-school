@@ -134,13 +134,9 @@
                 {
                     $checked = true;
                 }
-
-                $content .= ZurmoHtml::checkBox('TaskCheckListItem_' . $checkListItem->id, $checked,
-                                                    array('class' => 'checkListItem',
-                                                          'value' => $checkListItem->id
-                                                        )
-                                                ) . '<span class="editable" id="checkListItem_' . $checkListItem->id . '">' . $checkListItem->name . '</span>';
-
+                $checkBox = ZurmoHtml::checkBox('TaskCheckListItem_' . $checkListItem->id, $checked, array('class' => 'checkListItem', 'value' => $checkListItem->id));
+                $content .= ZurmoHtml::tag('div', array('class' => 'check-list-item clearfix'),
+                            '<span class="editable" id="checkListItem_' . $checkListItem->id . '">' . $checkBox . $checkListItem->name . '</span>');
             }
             return $content;
         }
