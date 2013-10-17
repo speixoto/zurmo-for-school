@@ -50,7 +50,6 @@
         public function render()
         {
             $content  = ZurmoHtml::openTag('div', array('class' => 'default-button'));
-
             $content .= parent::render();
             $content .= ZurmoHtml::closeTag('div');
             return $content;
