@@ -381,7 +381,8 @@
         public static function resolveViewAjaxOptionsForSelectingModel()
         {
             $title = self::getModalTitleForViewTask();
-            return   ModalView::getAjaxOptionsForModalLink($title, self::getViewModalContainerId());
+            return   ModalView::getAjaxOptionsForModalLink($title, self::getViewModalContainerId(), 'auto', 600,
+                     'center top+25', $class = "'task-dialog'");
         }
 
         /**
