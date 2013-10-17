@@ -508,22 +508,6 @@
         }
 
         /**
-         * Handle audit of projects before redirection
-         * @param Project $model
-         */
-        protected function beforeRedirect($model)
-        {
-            if($this->getAction()->id == 'create')
-            {
-                ProjectAuditEvent::logAuditEvent(ProjectAuditEvent::PROJECT_CREATED, $model->name, $model);
-            }
-            if($this->getAction()->id == 'edit' && $model->status == Project::STATUS_ARCHIVED)
-            {
-                ProjectAuditEvent::logAuditEvent(ProjectAuditEvent::PROJECT_ARCHIVED, $model->name, $model);
-            }
-        }
-
-        /**
          * Display list view of feeds for projects on dashboard
          */
         public function actionShowProjectsLatestActivityFeed()

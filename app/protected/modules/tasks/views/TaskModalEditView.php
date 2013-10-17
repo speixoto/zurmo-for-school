@@ -210,18 +210,18 @@
          */
         protected function resolveActiveFormAjaxValidationOptions()
         {
-
             $id       = Yii::app()->request->getParam('id');
             $sourceId = null;
             if(GetUtil::resolveParamFromRequest('modalTransferInformation') != null)
             {
-                $relationAttributeName  = GetUtil::resolveModalTransferInformationParamFromRequest('relationAttributeName');
-                $relationModelId        = GetUtil::resolveModalTransferInformationParamFromRequest('relationModelId');
-                $relationModuleId       = GetUtil::resolveModalTransferInformationParamFromRequest('relationModuleId');
-                $portletId              = GetUtil::resolveModalTransferInformationParamFromRequest('portletId');
-                $uniqueLayoutId         = GetUtil::resolveModalTransferInformationParamFromRequest('uniqueLayoutId');
-                $sourceId               = GetUtil::resolveModalTransferInformationParamFromRequest('sourceId');
-                $params                 = array('id' => $id);
+                $relationAttributeName   = GetUtil::resolveModalTransferInformationParamFromRequest('relationAttributeName');
+                $relationModelId         = GetUtil::resolveModalTransferInformationParamFromRequest('relationModelId');
+                $relationModuleId        = GetUtil::resolveModalTransferInformationParamFromRequest('relationModuleId');
+                $portletId               = GetUtil::resolveModalTransferInformationParamFromRequest('portletId');
+                $uniqueLayoutId          = GetUtil::resolveModalTransferInformationParamFromRequest('uniqueLayoutId');
+                $sourceId                = GetUtil::resolveModalTransferInformationParamFromRequest('sourceId');
+                $action                  = Yii::app()->request->getParam('action', null);
+                $params = array('id' => $id);
                 $url = Yii::app()->createUrl('tasks/default/modalSaveFromRelation',
                             array_merge(array('relationAttributeName' => $relationAttributeName,
                                               'relationModelId'       => $relationModelId,
