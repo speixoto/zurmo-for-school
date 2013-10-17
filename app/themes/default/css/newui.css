@@ -150,6 +150,7 @@ a.EmailTestingButton,
 .AppContent.ImportWizardView #addExtraColumnButton .EmailTestingButton,
 .AppContent.ImportWizardView #addExtraColumnButton a.EmailTestingButton,
 .AppContent.ImportWizardView #addExtraColumnButton,
+.mapping-rules label,
 .import-summary li,
 .file-upload-box .ui-icon-plusthick,
 a.file-upload-box .ui-icon-plusthick,
@@ -317,7 +318,7 @@ a.ModalGameNotification a,
 .ComponentForWorkflowWizardView .action-type-selector-container:after,
 .workflow-order-module-selector-container:before,
 .workflow-order-module-selector-container:after {
-  content: "";
+  content: " ";
   display: table;
 }
 .cf:after,
@@ -344,25 +345,14 @@ a.ModalGameNotification a,
 .ComponentForWorkflowWizardView .add-email-message-button-container,
 .ComponentForWorkflowWizardView .action-type-selector-container,
 .workflow-order-module-selector-container {
-  zoom: 1;
+  *zoom: 1;
 }
-.cf,
 .clearfix,
 #modal-edit-form,
 #edit-form,
 #delete-form,
 .right-side-edit-view-panel,
 .pager ul,
-.recipient,
-#NoUserEmailConfigurationYetView,
-.dynamic-row,
-.dynamic-row > div,
-.dynamic-sub-row,
-.zero-components-view.TimeTrigger,
-#time-trigger-container,
-.ComponentForWorkflowWizardView .add-email-message-button-container,
-.ComponentForWorkflowWizardView .action-type-selector-container,
-.workflow-order-module-selector-container,
 #MarketingListsExternalActionsPageView > .GridView,
 #MarketingListsManageSubscriptionsPageView > .GridView,
 #MarketingListsExternalActionsPageView .Warning,
@@ -371,46 +361,24 @@ a.ModalGameNotification a,
 #ContactWebFormEditAndDetailsView .ui-sortable {
   *zoom: 1;
 }
-.cf:before,
 .clearfix:before,
 #modal-edit-form:before,
 #edit-form:before,
 #delete-form:before,
 .right-side-edit-view-panel:before,
 .pager ul:before,
-.recipient:before,
-#NoUserEmailConfigurationYetView:before,
-.dynamic-row:before,
-.dynamic-row > div:before,
-.dynamic-sub-row:before,
-.zero-components-view.TimeTrigger:before,
-#time-trigger-container:before,
-.ComponentForWorkflowWizardView .add-email-message-button-container:before,
-.ComponentForWorkflowWizardView .action-type-selector-container:before,
-.workflow-order-module-selector-container:before,
 #MarketingListsExternalActionsPageView > .GridView:before,
 #MarketingListsManageSubscriptionsPageView > .GridView:before,
 #MarketingListsExternalActionsPageView .Warning:before,
 #MarketingListsManageSubscriptionsPageView .Warning:before,
 #kanban-board:before,
 #ContactWebFormEditAndDetailsView .ui-sortable:before,
-.cf:after,
 .clearfix:after,
 #modal-edit-form:after,
 #edit-form:after,
 #delete-form:after,
 .right-side-edit-view-panel:after,
 .pager ul:after,
-.recipient:after,
-#NoUserEmailConfigurationYetView:after,
-.dynamic-row:after,
-.dynamic-row > div:after,
-.dynamic-sub-row:after,
-.zero-components-view.TimeTrigger:after,
-#time-trigger-container:after,
-.ComponentForWorkflowWizardView .add-email-message-button-container:after,
-.ComponentForWorkflowWizardView .action-type-selector-container:after,
-.workflow-order-module-selector-container:after,
 #MarketingListsExternalActionsPageView > .GridView:after,
 #MarketingListsManageSubscriptionsPageView > .GridView:after,
 #MarketingListsExternalActionsPageView .Warning:after,
@@ -420,23 +388,12 @@ a.ModalGameNotification a,
   content: " ";
   display: table;
 }
-.cf:after,
 .clearfix:after,
 #modal-edit-form:after,
 #edit-form:after,
 #delete-form:after,
 .right-side-edit-view-panel:after,
 .pager ul:after,
-.recipient:after,
-#NoUserEmailConfigurationYetView:after,
-.dynamic-row:after,
-.dynamic-row > div:after,
-.dynamic-sub-row:after,
-.zero-components-view.TimeTrigger:after,
-#time-trigger-container:after,
-.ComponentForWorkflowWizardView .add-email-message-button-container:after,
-.ComponentForWorkflowWizardView .action-type-selector-container:after,
-.workflow-order-module-selector-container:after,
 #MarketingListsExternalActionsPageView > .GridView:after,
 #MarketingListsManageSubscriptionsPageView > .GridView:after,
 #MarketingListsExternalActionsPageView .Warning:after,
@@ -915,7 +872,7 @@ table.configuration-list td:last-child a.loading .z-icon,
 }
 .zLink,
 .z-link,
-#ImportWizardMappingView #sample-column-header a,
+#sample-column-header a,
 .remove-extra-column-link,
 #show-triggers-structure-div-link,
 #show-filters-structure-div-link {
@@ -930,7 +887,7 @@ table.configuration-list td:last-child a.loading .z-icon,
 }
 .zLink:hover,
 .z-link:hover,
-#ImportWizardMappingView #sample-column-header a:hover,
+#sample-column-header a:hover,
 .remove-extra-column-link:hover,
 #show-triggers-structure-div-link:hover,
 #show-filters-structure-div-link:hover {
@@ -17174,31 +17131,30 @@ table.configuration-list td:last-child a .z-label:before {
 #ImportWizardMappingView tr td:last-child {
   padding-right: 15px;
 }
-#ImportWizardMappingView .mapping-rules table {
-  border: none;
+.mapping-rules h4 {
+  padding: 10px 0 5px 0;
 }
-#ImportWizardMappingView .mapping-rules table,
-#ImportWizardMappingView .mapping-rules td,
-#ImportWizardMappingView .mapping-rules th,
-#ImportWizardMappingView .mapping-rules input,
-#ImportWizardMappingView .mapping-rules label {
-  margin: 0;
-}
-#ImportWizardMappingView .mapping-rules td,
-#ImportWizardMappingView .mapping-rules th {
-  padding: 0 !important;
-  background: none !important;
-  border: none !important;
-}
-#ImportWizardMappingView .mapping-rules th {
-  height: auto !important;
-  line-height: 100% !important;
-}
-#ImportWizardMappingView .mapping-rules label {
+.mapping-rules label {
   line-height: 26px;
+  padding-right: 10px;
+  width: 22%;
 }
-#ImportWizardMappingView .mapping-rules th:first-child {
-  padding-left: 0 !important;
+.mapping-rules > div {
+  width: 49%;
+  display: inline-block;
+}
+.mapping-rules > div > .has-model-select,
+.mapping-rules > div > .hasDropDown,
+.mapping-rules > div > input {
+  width: 78% !important;
+  display: inline-block;
+}
+.mapping-rules > div:last-child {
+  width: 100%;
+}
+.mapping-rules > div + div:last-child {
+  width: 49%;
+  margin-left: 2%;
 }
 .mapping-rules.multiple table {
   width: 49% !important;
@@ -17208,11 +17164,11 @@ table.configuration-list td:last-child a .z-label:before {
   float: right !important;
 }
 .remove-extra-column-link {
+  float: right;
   display: inline-block;
   position: relative;
   top: -21px;
-  left: 100%;
-  margin-left: 15px;
+  right: -90px;
   z-index: 99999;
 }
 /*=Step 5, process details*/
