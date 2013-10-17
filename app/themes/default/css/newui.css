@@ -12071,8 +12071,7 @@ a.simple-link:before {
   background: transparent url(../images/widget-close-btn.png) left top no-repeat;
 }
 .big-spinner {
-  margin-left: 270px;
-  margin-top: 30px;
+  margin: 15px 50%;
   display: block;
 }
 .ui-resizable-handle {
