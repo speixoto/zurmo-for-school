@@ -160,15 +160,16 @@
          */
         protected function getCardColumns()
         {
-            //todo: return array(), not using this anymore
-            $controllerId = $this->controllerId;
-            $moduleId     = $this->moduleId;
-            return array('name'                 => array('value'  => $this->getLinkString('$data->name', 'name'), 'class' => 'task-name'),
-                         'requestedByUser'      => array('value'  => $this->getRelatedLinkString('$data->requestedByUser', 'requestedByUser', 'users'), 'class'  => 'requestedByUser-name'),
-                         'status'               => array('value' => 'TasksUtil::resolveActionButtonForTaskByStatus(intval($data->status), "' . $controllerId . '", "' . $moduleId . '", $data->id)', 'class' => 'task-status'),
-                         'subscribe'            => array('value' => array('TasksUtil', 'getKanbanSubscriptionLink'), 'class' => 'task-subscription'),
-                         'completed'            => array('value' => 'TasksUtil::renderCompletionProgressBar($data)', 'class' => 'task-completion')
-                        );
+            return array(
+                'name'   => array('value'  => $this->getLinkString('$data->name', 'name'), 'class' => 'task-name'),
+                'status' => array('value' => 'TasksUtil::resolveActionButtonForTaskByStatus(intval($data->status), "' .
+                                           $this->controllerId . '", "' . $this->moduleId . '", $data->id)',
+                                  'class' => 'task-status'),
+                'subscribe' => array('value' => array('TasksUtil', 'getKanbanSubscriptionLink'),
+                                     'class' => 'task-subscription'),
+                'completionBar' => array('value' => 'TasksUtil::renderCompletionProgressBarContent($data)',
+                                         'class' => 'task-completion')
+            );
         }
 
         /**
@@ -344,7 +345,10 @@
                                                       $actionElementBarContent);
             $secondActionBarContent  = $this->renderSecondActionElementBar(false);
             $secondActionBarContent .= $this->resolveShouldRenderActionBarLinksForKanbanBoard();
-            $actionBarContent .= ZurmoHtml::tag('nav', array('class' => 'pillbox clearfix'), $secondActionBarContent);
+            if($secondActionBarContent != null)
+            {
+                $actionBarContent .= ZurmoHtml::tag('nav', array('class' => 'pillbox clearfix'), $secondActionBarContent);
+            }
             $content .= ZurmoHtml::tag('div', array('class' => 'view-toolbar-container clearfix'), $actionBarContent);
             return $content;
         }
@@ -374,6 +378,11 @@
             $preloader = '<div class="list-preloader"><span class="z-spinner"></span></div>';
             $items     = '<div class="items-wrapper">{items}</div>';
             return "{summary}" . $items . "{pager}" . $preloader;
+        }
+
+        public static function getDesignerRulesType()
+        {
+            return null;
         }
     }
 ?>

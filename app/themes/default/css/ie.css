@@ -249,6 +249,21 @@ a.z-button:not(.attachLoading):not(.green-button) .z-label,
 .default-btn:not(.attachLoading):not(.green-button) .z-label {
   background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
 }
+.z-button.disabled {
+  pointer-events: none;
+  filter: alpha(opacity=50);
+  -khtml-opacity: 0.5;
+  -moz-opacity: 0.5;
+  opacity: 0.5;
+  -webkit-filter: grayscale(85%);
+  -moz-filter: grayscale(85%);
+  -ms-filter: grayscale(85%);
+  -o-filter: grayscale(85%);
+  filter: grayscale(85%);
+  filter: gray;
+  /* IE 6-9 */
+
+}
 /*
 .zButton:not(.attacheLoading),
 .z-button:not(.attachLoading){

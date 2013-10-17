@@ -51,7 +51,7 @@
          */
         protected function resolveHtmlOptionsForRendering()
         {
-            return array('class' => 'task-accept-action');
+            return array('class' => 'default-button action-type-accept');
         }
     }
 ?>

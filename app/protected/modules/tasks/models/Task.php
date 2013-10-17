@@ -141,6 +141,33 @@
         }
 
         /**
+         * @param RedBean_OODBBean $bean
+         * @param bool $setDefaults
+         * @throws NoCurrentUserSecurityException
+         */
+        protected function constructDerived($bean, $setDefaults)
+        {
+            assert('$bean === null || $bean instanceof RedBean_OODBBean');
+            assert('is_bool($setDefaults)');
+            parent::constructDerived($bean, $setDefaults);
+            // Even though setting the requestedByUser is not technically
+            // a default in the sense of a Yii default rule,
+            // if true the requestedByUser is not set because blank models
+            // are used for searching mass updating.
+            if ($bean ===  null && $setDefaults)
+            {
+                $currentUser = Yii::app()->user->userModel;
+                if (!$currentUser instanceof User)
+                {
+                    throw new NoCurrentUserSecurityException();
+                }
+                AuditUtil::saveOriginalAttributeValue($this, 'requestedByUser', $currentUser);
+                $this->unrestrictedSet('requestedByUser', $currentUser);
+            }
+        }
+
+        /**
+         * @param $language
          * @return array
          */
         protected static function translatedAttributeLabels($language)

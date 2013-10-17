@@ -37,7 +37,7 @@
     /**
      * Details view for the task
      */
-    class TaskDetailsView extends SecuredEditAndDetailsView
+    class TaskDetailsView extends SecuredDetailsView
     {
         public static function getDefaultMetadata()
         {
@@ -45,7 +45,41 @@
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array('type'  => 'EditLink',  'renderType' => 'Details'),
+                            array('type'  => 'EditLink'),
+                            array('type'  => 'AuditEventsModalListLink'),
+                            array('type'  => 'TaskDeleteLink'),
+                        ),
+                    ),
+                    'derivedAttributeTypes' => array(
+                        'ActivityItems',
+                        'DerivedExplicitReadWriteModelPermissions',
+                        //todO: more to add here and in nonplacbles
+                    ),
+                    'nonPlaceableAttributeNames' => array(
+                        'latestDateTime'
+                    ),
+                    'panelsDisplayType' => FormLayout::PANELS_DISPLAY_TYPE_FIRST, //todo: non changable in designer
+                    'panels' => array(
+                        array(
+                            'rows' => array(
+                            ),
+                        ),
+                        array(
+                            'rows' => array(
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'null',
+                                                    'type' => 'DerivedExplicitReadWriteModelPermissions'),
+                                                //todo: no real reason to show this or project. by default show nothing?
+                                                //todo: i guess show activity item if NOT related to project. we could filter out? hmm
+                                                //todo: do we need 2 different versions of TaskDetailsView children?
+                                            ),
+                                        ),
+                                    )
+                                ),
+                            ),
                         ),
                     ),
                 ),
@@ -78,63 +112,51 @@
          */
         protected function renderContent()
         {
-            $content      = '<div class="details-table">';
-            $content     .= $this->renderTitleContent();
+            $content      = '<div class="details-table">'; //todo: we should probably call this something else?
+//          $content     .= $this->renderTitleContent(); //todo: remove
             $content     .= $this->resolveAndRenderActionElementMenu();
-            $leftContent  = $this->renderBeforeFormLayoutForDetailsContent();
-            $leftContent .= $this->renderFormLayout();
-            $content     .= ZurmoHtml::tag('div', array('class' => 'left-column'), $leftContent);
+            $content     .= $this->renderLeftSideContent();
             $content     .= $this->renderRightSideContent();
-            $content     .= $this->renderAfterRightSideContent();
             $content     .= '</div>';
             $content     .= $this->renderAfterDetailsTable();
             $this->registerEditInPlaceScript();
             return $content;
         }
 
-        /**
-         * Renders form layout
-         * @param string $form
-         * @return string
-         */
-        protected function renderFormLayout($form = null)
+        protected function renderLeftSideContent()
         {
-            $content  = $this->renderTaskCheckListItemsList($form);
-            $content .= $this->renderTaskComments($form);
-            return $content;
+            $content  = $this->renderLeftSideTopContent();
+            $content .= $this->renderLeftSideBottomContent();
+            return ZurmoHtml::tag('div', array('class' => 'left-column'), $content);
         }
 
-        /**
-         * Renders check items list
-         * @param type $form
-         * @return string
-         */
-        protected function renderTaskCheckListItemsList($form)
+        protected function renderLeftSideTopContent()
         {
-            $checkItemsListElement = new TaskCheckListItemsListElement($this->getModel(), 'null', $form, array());
-            $content = $checkItemsListElement->render();
-            return $content;
+            $content    = null;
+            $content   .= '<div class="wide form">';
+            $clipWidget = new ClipWidget();
+            list($form, $formStart) = $clipWidget->renderBeginWidget('ZurmoActiveForm',
+                //todo: if i set this to submit on field change it should worK? i dont need special elements then?
+                array_merge
+                (
+                    array('id' => 'task-left-column-form-data')
+                ));
+            $content .= $formStart;
+            $nameElement = new TextElement($this->getModel(), 'name', $form);
+            $nameElement->editableTemplate = '{content}{error}';
+            $content .= $nameElement->render();
+            $descriptionElement = new TextAreaElement($this->getModel(), 'description', $form);
+            $content .= $descriptionElement->render();
+            $formEnd  = $clipWidget->renderEndWidget();
+            $content .= $formEnd;
+            $content .= '</div>';
+            return ZurmoHtml::tag('div', array('class' => 'left-side-edit-view-panel'), $content);
         }
 
-        /**
-         * Renders task comments
-         * @param type $form
-         * @return string
-         */
-        protected function renderTaskComments($form)
+        protected function renderLeftSideBottomContent()
         {
-            $commentsElement = new TaskCommentsElement($this->getModel(), 'null', $form, array('moduleId' => 'tasks'));
-            $content = $commentsElement->render();
-            return $content;
-        }
-
-        /**
-         * Render content before form layout
-         */
-        protected function renderBeforeFormLayoutForDetailsContent()
-        {
-            $leftContent = '<p class="editableTextarea" id="description_' . $this->model->id . '">' . $this->model->description . '</p>';
-            $content     = ZurmoHtml::tag('div', array('class' => 'left-column'), $leftContent);
+            $content  = $this->renderTaskCheckListItemsListContent();
+            $content .= $this->renderTaskCommentsContent();
             return $content;
         }
 
@@ -145,31 +167,59 @@
          */
         protected function renderRightSideContent($form = null)
         {
-            $content    = null;
-            $content    .= '<div class="wide form">';
-            $clipWidget = new ClipWidget();
-            list($form, $formStart) = $clipWidget->renderBeginWidget(
-                                                'ZurmoActiveForm',
-                                                array_merge
-                                                (
-                                                    array('id' => 'task-right-column-form-data')
-                                                ));
-            $content .= $formStart;
-            if ($this->getModel() instanceof OwnedSecurableItem)
-            {
-                $content .= $this->renderTaskStatus($form);
-                $content .= $this->renderOwnerBox($form);
-                $content .= $this->renderRequestedByUserBox($form);
-                $content .= $this->renderDueDateTime($form);
-                $content .= $this->renderNotificationSubscribers($form);
-            }
-            $formEnd  = $clipWidget->renderEndWidget();
-            $content .= $formEnd;
-            $content .= $this->renderModalContainer();
-            $content .= '</div>';
-            $content  = ZurmoHtml::tag('div', array('class' => 'right-side-edit-view-panel thread-info'), $content);
+            $content  = $this->renderRightSideTopContent();
+            $content .= $this->renderRightBottomSideContent();
             $content  = ZurmoHtml::tag('div', array('class' => 'right-column'), $content);
             return $content;
+        }
+
+        protected function renderRightSideTopContent()
+        {
+            $content    = null;
+            $content   .= '<div class="wide form">';
+            $clipWidget = new ClipWidget();
+            list($form, $formStart) = $clipWidget->renderBeginWidget('ZurmoActiveForm',
+                //todo: if i set this to submit on field change it should worK? i dont need special elements then?
+                //todo: i think i still need 2 forms
+                                        array_merge
+                                        (
+                                            array('id' => 'task-right-column-form-data')
+                                        ));
+            $content .= $formStart;
+            $content .= $this->renderStatusContent($form);
+            $content .= $this->renderOwnerContent($form);
+            $content .= $this->renderRequestedByUserContent($form);
+            $content .= $this->renderDueDateTimeContent($form);
+            $content .= $this->renderNotificationSubscribersContent();
+            $formEnd  = $clipWidget->renderEndWidget();
+            $content .= $formEnd;
+            $content .= '</div>';
+            return ZurmoHtml::tag('div', array('class' => 'right-side-edit-view-panel'), $content);
+        }
+
+        protected function renderRightBottomSideContent()
+        {
+            return ZurmoHtml::tag('div', array('class' => 'right-side-details-view-panel'), $this->renderFormLayout());
+        }
+
+        /**
+         * Renders check items list
+         * @return string
+         */
+        protected function renderTaskCheckListItemsListContent()
+        {
+            $checkItemsListElement = new TaskCheckListItemsListElement($this->getModel(), 'null');
+            return $checkItemsListElement->render();
+        }
+
+        /**
+         * Renders task comments
+         * @return string
+         */
+        protected function renderTaskCommentsContent()
+        {
+            $commentsElement = new TaskCommentsElement($this->getModel(), 'null', null, array('moduleId' => 'tasks'));
+            return $commentsElement->render();
         }
 
         /**
@@ -177,7 +227,7 @@
          * @param string $form
          * @return string
          */
-        protected function renderOwnerBox($form)
+        protected function renderOwnerContent($form)
         {
             $content  = '<div id="owner-box">';
             $element  = new TaskUserElement($this->getModel(), 'owner', $form);
@@ -191,7 +241,7 @@
          * @param string $form
          * @return string
          */
-        protected function renderRequestedByUserBox($form)
+        protected function renderRequestedByUserContent($form)
         {
             $content  = '<div id="owner-box">';
             $element  = new TaskUserElement($this->getModel(), 'requestedByUser', $form);
@@ -205,7 +255,7 @@
          * @param string $form
          * @return string
          */
-        protected function renderDueDateTime($form)
+        protected function renderDueDateTimeContent($form)
         {
             $content  = '';
             $element  = new TaskAjaxDateTimeElement($this->getModel(), 'dueDateTime', $form);
@@ -215,23 +265,13 @@
         }
 
         /**
-         * Renders the detail after right side content is displayed
-         * @return string
-         */
-        protected function renderAfterRightSideContent()
-        {
-            return '<div id="permissionContent">' . $this->renderAfterFormLayoutForDetailsContent() . '</div>';
-        }
-
-        /**
          * Renders notification subscribers
          * @param string $form
          * @return string
          */
-        protected function renderNotificationSubscribers($form)
+        protected function renderNotificationSubscribersContent()
         {
             $task = Task::getById($this->model->id);
-            $notificationSubscribers = $task->notificationSubscribers;
             $content = '<div id="task-subscriber-box">';
             $content .= Zurmo::t('TasksModule', 'Who is receiving notifications');
             $content .= TasksUtil::getDetailSubscriptionLink($task, 0);
@@ -282,15 +322,17 @@
          * @param string $form
          * @return string
          */
-        protected function renderTaskStatus($form)
+        protected function renderStatusContent($form)
         {
             $content  = '<div id="status-box">';
             $element  = new TaskStatusDropDownElement($this->getModel(), 'status', $form);
             $content .= $element->render();
             $content .= '<span id="completionDate">';
-            if($this->model->status == Task::STATUS_COMPLETED)
+            if($this->model->status == Task::STATUS_COMPLETED) //todO: deal with showing completedDateTime etc.
             {
-                $content .= '<p>' . Zurmo::t('TasksModule', 'Completed On') . ': ' . DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay($this->model->completedDateTime) . '</p>';
+                $content .= '<p>' . Zurmo::t('TasksModule', 'Completed On') . ': ' .
+                            DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay(
+                            $this->model->completedDateTime) . '</p>';
             }
             $content .= '</span>';
             $content .= '</div>';
@@ -300,7 +342,7 @@
         /**
          * Registers edit in place script
          */
-        protected function registerEditInPlaceScript()
+        protected function registerEditInPlaceScript() //todo: maybe remove this if we don't use it
         {
             $taskCheckItemUrl     = Yii::app()->createUrl('tasks/taskCheckItems/updateNameViaAjax');
             $updateDesctiptionUrl = Yii::app()->createUrl('tasks/default/updateDescriptionViaAjax');

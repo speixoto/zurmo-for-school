@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class ViewFromRelatedModalLinkActionElement extends RelatedModalLinkActionElement
+    class GoToDetailsFromRelatedModalLinkActionElement extends RelatedModalLinkActionElement
     {
 
         protected function getDefaultLabel()
@@ -48,7 +48,7 @@
         {
             $params = array_merge(array('id' => $this->modelId), $this->getViewLinkUrlParams());
             return Yii::app()->createUrl($this->getRouteModuleId() . '/' .
-                        $this->controllerId . '/modalViewFromRelation', $params);
+                        $this->controllerId . '/modalDetailsFromRelation', $params);
         }
 
         protected function getRouteModuleId()

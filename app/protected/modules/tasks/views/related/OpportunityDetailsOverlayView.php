@@ -33,12 +33,12 @@
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
-
+    /**
+     * Opportunity details overlay view in opportunity task kanban view
+     */
     class OpportunityDetailsOverlayView extends TaskRelatedDetailsOverlayView
     {
         protected $cssClasses = array('overlay-view');
-
-        const DESCRIPTION_CLASS          = 'marketing-list-description';
 
         /**
          * Render content
@@ -47,18 +47,22 @@
         protected function renderContent()
         {
             $content = $this->renderNameContent();
-            $content .= $this->renderDescriptionContent();
+            $content .= $this->renderAccountNameContent();
+            $content .= $this->renderAmountContent();
             return $content;
         }
 
         /**
-         * Renders description
+         * Renders account name
          * @return string
          */
-        protected function renderDescriptionContent()
+        protected function renderAccountNameContent()
         {
+            $params = LabelUtil::getTranslationParamsForAllModules();
             $content = ZurmoHtml::tag('div', array('class' => static::DESCRIPTION_CLASS),
-                                                    StringUtil::getChoppedStringContent($this->model->description, 50));
+                                      Zurmo::t('AccountsModule', 'AccountsModuleSingularLabel', $params) .
+                                      $this->overlayKeyValueSeparator .
+                                      $this->model->account->name);
             return $content;
         }
 
@@ -68,7 +72,24 @@
          */
         protected function renderNameContent()
         {
-            $content = ZurmoHtml::tag('div', array('class' => static::DESCRIPTION_CLASS), $this->model->name);
+            $content = ZurmoHtml::tag('p', array('class' => static::DESCRIPTION_CLASS),
+                                      Zurmo::t('ZurmoModule', 'Name') .
+                                      $this->overlayKeyValueSeparator . $this->model->name);
+            return $content;
+        }
+
+        /**
+         * Renders amount
+         * @return string
+         */
+        protected function renderAmountContent()
+        {
+            $model = $this->model;
+            $amount = Yii::app()->numberFormatter->formatCurrency((float)$model->amount->value,
+                                                                    $model->amount->currency->code);
+            $content = ZurmoHtml::tag('p', array('class' => static::DESCRIPTION_CLASS),
+                                      Zurmo::t('OpportunitiesModule', 'Amount') .
+                                      $this->overlayKeyValueSeparator . $amount);
             return $content;
         }
     }

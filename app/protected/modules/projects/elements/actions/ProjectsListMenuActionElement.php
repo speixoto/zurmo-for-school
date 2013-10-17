@@ -44,7 +44,7 @@
          */
         protected function getDefaultLabel()
         {
-            return Zurmo::t('ProjectsModule', 'Lists');
+            return Zurmo::t('ProjectsModule', 'Projects');
         }
 
         /**

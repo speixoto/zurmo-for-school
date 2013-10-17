@@ -52,7 +52,7 @@
          */
         protected function getDefaultRoute()
         {
-            return Yii::app()->createUrl('projects/default');
+            return Yii::app()->createUrl('projects/default/dashboardDetails');
         }
 
         public function getActionType()

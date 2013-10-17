@@ -284,7 +284,7 @@
             $task->save(false);
 
             $this->assertEquals(2, count($task->checkListItems));
-            $percent = TasksUtil::getTaskCompletionPercentage($task->id);
+            $percent = TasksUtil::getTaskCompletionPercentage($task);
             $this->assertEquals(50, $percent);
         }
 

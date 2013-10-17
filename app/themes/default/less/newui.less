@@ -1361,10 +1361,10 @@ h1 + .view-toolbar-container{
 
 .widgets-lock{
 	position: relative;
-	margin-top: -37px;
+	margin-top: -36px;
 	margin-bottom: 15px;
 	float: right;
-	.view-toolbar{
+	.pillbox{
 		float: right;
 		margin-bottom: 0 !important;
 	}
@@ -1863,6 +1863,7 @@ h1,
 
 td.empty{
 	display:table-cell !important;
+	border-top:none !important;
 }
 
 .view-toolbar-icons(@size: 24px){
@@ -3551,7 +3552,7 @@ div.wide.form{
 }
 
 .toolbar-mbmenu{
-	margin:0 10px 0 0;
+	margin:0 10px 0 0 !important;
 	float:right;
 	width:auto;
 	.view-toolbar{
@@ -5119,4 +5120,5 @@ div.hasHalfs{
 @import 'business-card.less';
 @import 'pillbox.less';
 @import 'game-dashboard.less';
+@import 'projects.less';
 @import 'media-queries.less';

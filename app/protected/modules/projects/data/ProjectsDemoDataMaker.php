@@ -63,6 +63,8 @@
                 $this->populateModel($project);
                 $saved = $project->save();
                 assert('$saved');
+                ProjectAuditEvent::logAuditEvent(ProjectAuditEvent::PROJECT_CREATED, $project->name, $project);
+                self::addDemoTasks($project, 3, $demoDataHelper);
                 $projects[] = $project->id;
             }
             $demoDataHelper->setRangeByModelName('Project', $projects[0], $projects[count($projects)-1]);
@@ -81,6 +83,57 @@
             $name               = RandomDataUtil::getRandomValueFromArray($projectRandomData['names']);
             $model->name        = $name;
             $model->description = $name . ' Description';
+        }
+
+        /**
+         * Add demo tasks for the project
+         * @param type $project
+         */
+        protected static function addDemoTasks($project, $taskInputCount = 1, & $demoDataHelper)
+        {
+            for($i = 0; $i < $taskInputCount; $i++)
+            {
+                $task                       = new Task();
+                $task->name = RandomDataUtil::getRandomValueFromArray(self::getRandomTasks());
+                $task->owner                = $demoDataHelper->getRandomByModelName('User');
+                $task->requestedByUser      = $demoDataHelper->getRandomByModelName('User');
+                $task->completedDateTime    = '0000-00-00 00:00:00';
+                $task->project              = $project;
+                $task->status               = Task::STATUS_NEW;
+                $task->save();
+                $currentStatus              = $task->status;
+                ProjectsUtil::logAddTaskEvent($task);
+                $task->status = RandomDataUtil::getRandomValueFromArray(self::getTaskStatusOptions());
+                $task->save();
+                ProjectsUtil::logTaskStatusChangeEvent($task,
+                                                       Task::getStatusDisplayName($currentStatus),
+                                                       Task::getStatusDisplayName(intval($task->status)));
+            }
+        }
+
+        /**
+         * Gets the list of random task
+         * @return array
+         */
+        protected static function getRandomTasks()
+        {
+            return array(
+                'Create Demo Proposal',
+                'Come up with a contacts list for the client',
+                'Prepare telephone directory for the company',
+                'Get an accounting software',
+                'Usage of google analytics on company website'
+            );
+        }
+
+        /**
+         * Get random task status options
+         * @return array
+         */
+        protected static function getTaskStatusOptions()
+        {
+            $data = Task::getStatusDropDownArray();
+            return array_keys($data);
         }
     }
 ?>

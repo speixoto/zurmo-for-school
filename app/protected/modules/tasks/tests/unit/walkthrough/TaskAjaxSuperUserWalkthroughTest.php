@@ -191,7 +191,7 @@
                                                                       )
                                     )
                               );
-            $content = $this->runControllerWithNoExceptionsAndGetContent('tasks/default/modalViewFromRelation');
+            $content = $this->runControllerWithNoExceptionsAndGetContent('tasks/default/modalDetailsFromRelation');
             $this->assertTrue(strpos($content, 'Task for test cases') > 0);
 
             $this->setGetArray(array(

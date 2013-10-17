@@ -63,9 +63,12 @@
             assert('$task instanceof Task');
             assert('is_string($currentStatusLabel)');
             assert('is_string($newStatusLabel)');
-            $project = $task->project;
-            $data    = array('{fromstatus}' => $currentStatusLabel, '{tostatus}' => $newStatusLabel);
-            ProjectAuditEvent::logAuditEvent(ProjectAuditEvent::TASK_STATUS_CHANGED, $data, $project);
+            if($currentStatusLabel != $newStatusLabel)
+            {
+                $project = $task->project;
+                $data    = array('{fromstatus}' => $currentStatusLabel, '{tostatus}' => $newStatusLabel);
+                ProjectAuditEvent::logAuditEvent(ProjectAuditEvent::TASK_STATUS_CHANGED, $data, $project);
+            }
         }
 
         /**

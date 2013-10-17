@@ -33,48 +33,43 @@
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
-    /**
-     * Project details overlay view in project task kanban view
-     */
-    class ProjectDetailsOverlayView extends TaskRelatedDetailsOverlayView
+
+    class TaskModalEditViewDesignerRules extends EditViewDesignerRules
     {
-        protected $cssClasses = array('overlay-view');
-
-        const DESCRIPTION_CLASS          = 'marketing-list-description';
-
-        /**
-         * Render content
-         * @return string
-         */
-        protected function renderContent()
+        public function allowEditInLayoutTool()
         {
-            $content = $this->renderNameContent();
-            $content .= $this->renderDescriptionContent();
-            return $content;
+            return true;
         }
 
-        /**
-         * Renders description
-         * @return string
-         */
-        protected function renderDescriptionContent()
+        public function getDisplayName()
         {
-            $content = ZurmoHtml::tag('div', array('class' => static::DESCRIPTION_CLASS),
-                                      Zurmo::t('ZurmoModule', 'Description') . $this->overlayKeyValueSeparator .
-                                      StringUtil::getChoppedStringContent($this->model->description, 50));
-            return $content;
+            return Zurmo::t('TasksModule', 'Modal Edit View');
         }
 
-        /**
-         * Renders name
-         * @return string
-         */
-        protected function renderNameContent()
+        public function maxCellsPerRow()
         {
-            $content = ZurmoHtml::tag('p', array('class' => static::DESCRIPTION_CLASS),
-                                      Zurmo::t('ZurmoModule', 'Name') .
-                                      $this->overlayKeyValueSeparator . $this->model->name);
-            return $content;
+            return 1;
+        }
+
+        public function canConfigureLayoutPanelsType()
+        {
+            return true;
+        }
+
+        public function getSavableMetadataRules()
+        {
+            return array();
+        }
+
+        public function getNonPlaceableLayoutAttributeNames()
+        {
+            return array(
+                'createdDateTime',
+                'modifiedDateTime',
+                'createdByUser',
+                'modifiedByUser',
+                'id'
+            );
         }
     }
 ?>
