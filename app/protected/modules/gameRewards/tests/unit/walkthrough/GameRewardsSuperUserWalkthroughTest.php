@@ -501,27 +501,38 @@
         
         public function testRedeemReward()
         {
-            $super          = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $super                      = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            Yii::app()->user->userModel = $super;
             $gameRewards = GameReward::getByName('myNewGameReward');
-            $postArray = array(
-               'GameReward' => array(
-                    'quantity'  => 23,
-                    'cost'      => 2,
-                )
-            );
-            $this->updateModelValuesFromPostArray($gameRewards[0], $postArray);
-            $this->assertModelHasValuesFromPostArray($gameRewards[0], $postArray);
-            /*
-            $gameCoin = GameCoin::resolveByPerson(Yii::app()->user->userModel);
-            if($gameCoin->value < $gameRewards[0]->cost)
-            {
-                $message = Zurmo::t('GameRewardsModule', 'You do not have enough coins to redeem this reward');
-                echo CJSON::encode(array('message' => $message));
-            }
-            $this->assertFalse(strpos($message, 'You do not have enough coins to redeem this reward') === false);
-            */
+            
+            //not enough conins
             $this->setGetArray(array('id' => $gameRewards[0]->id));
-            $content    = $this->runControllerWithNoExceptionsAndGetContent('gameRewards/default/redeemReward');
+            $content    = $this->runControllerWithExitExceptionAndGetContent('gameRewards/default/redeemReward');
+            $this->assertFalse(strpos($content, 'You do not have enough coins to redeem this reward') === false);
+            
+            //enough coins
+            $gameCoin             = new GameCoin();
+            $gameCoin->person     = $super;
+            $gameCoin->value      = 100;
+            $this->assertTrue($gameCoin->save());
+            $notifications              = Notification::getAll();
+            
+            //check for no notification
+            $this->assertEquals(0, count($notifications));
+            $this->setGetArray(array('id' => $gameRewards[0]->id));
+            $content    = $this->runControllerWithExitExceptionAndGetContent('gameRewards/default/redeemReward');
+            $this->assertFalse(strpos($content, 'myNewGameReward has been redeemed.') === false);
+            
+            //check for notification
+            $notifications              = Notification::getAll();
+            $this->assertEquals(1, count($notifications));
+            
+            //email content
+            $this->assertContains('myNewGameReward was redeemed by Clark Kent.', $notifications[0]->notificationMessage->htmlContent);
+            
+            //check url 
+            $this->assertContains('<a href="localhostC:\xampp\php\phpunit/gameRewards/default/details?id=13">Click Here</a>', 
+                                   $notifications[0]->notificationMessage->htmlContent);
         }
     }
 ?>
