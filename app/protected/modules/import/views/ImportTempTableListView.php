@@ -267,7 +267,13 @@
                     $this->columnLabelsByName[$columnName] = $column['header'];
                     if (!isset($column['class']))
                     {
-                        $column['class'] = 'DataColumn';
+                        $column['class']     = 'phaZurmoEditColumn';
+                        $column['actionUrl'] = Yii::app()->createUrl('import/default/update',
+                                                                     array('id'        => $this->importId,
+                                                                           'attribute' => $column['name']
+                                                                     )
+                        );
+                        $column['htmlEditDecorationOptions'] = array('class' => 'editable-cell');
                     }
                     array_push($columns, $column);
                 }

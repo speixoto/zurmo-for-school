@@ -383,7 +383,7 @@
             }
             catch (RedBean_Exception_SQL $e)
             {
-                if (strpos($e->getMessage(), ' 1148 ') === 0)
+                if (strpos($e->getMessage(), ' 1148 ') !== false)
                 {
                     $e = new NotSupportedException("Please enable LOCAL INFILE in mysql config. Add local-infile=1 to [mysqld] and [mysql] sections.");
                 }

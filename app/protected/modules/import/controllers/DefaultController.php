@@ -683,5 +683,26 @@
             $config = array('pagination' => array('pageSize' => 1));
             return    new ImportDataProvider($import->getTempTableName(), $firstRowIsHeaderRow, $config);
         }
+
+        public function actionUpdate($id, $attribute = null)
+        {
+//            $itemId     = Yii::app()->request->getParam('item');
+//            $value      = Yii::app()->request->getParam('value');
+//            assert('$id != null && $id != ""');
+//            assert('$value != null && $value != ""');
+//            $id         = intval($id);
+//            $product    = Product::getById($id);
+//            ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($product);
+//            switch($attribute)
+//            {
+//                case 'quantity'     :   $value      = intval($value);
+//                    $product->quantity     = $value;
+//                    break;
+//                case 'sellPrice'    :   $value      = floatval($value);
+//                    $product->sellPrice->value = $value;
+//                    break;
+//            }
+//            $product->save();
+        }
     }
 ?>
