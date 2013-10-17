@@ -59,11 +59,11 @@
         public function renderFormLayout($form = null){
             $nameElement = new TextElement($this->getModel(), 'name', $form);
             $nameElement->editableTemplate = '{content}{error}';
-
+            $taskInput = ZurmoHtml::tag('div', array('class' => 'task-input'), $nameElement->render());
             $params = array('label' => Zurmo::t('TasksModule', 'Add'));
             $element  = new SaveButtonActionElement($this->controllerId, $this->moduleId, $this->modelId, $params);
-
-            return $nameElement->render() . $element->render();
+            $addButton = ZurmoHtml::tag('div', array('class' => 'task-add-button'), $element->render());
+            return $taskInput . $addButton;
         }
 
         /**
@@ -150,6 +150,21 @@
         public static function getDesignerRulesType()
         {
             return null;
+        }
+
+        protected function renderContentStartFormDiv()
+        {
+            return null;
+        }
+
+        protected function renderContentEndFormDiv()
+        {
+            return null;
+        }
+
+        protected function wrapFormLayoutContent($content)
+        {
+            return $content;
         }
     }
 ?>

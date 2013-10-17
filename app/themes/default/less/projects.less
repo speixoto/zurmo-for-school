@@ -74,6 +74,9 @@
 	.attributesContainer{
 		padding-bottom: 0;
 	}
+	.float-bar{
+		margin-bottom: 0;
+	}
 }
 
 #task-left-column-form-data{
@@ -115,5 +118,29 @@
 		position: relative;
 		top:-5px;
 		margin-right: 3px;
+	}
+}
+
+#task-check-item-inline-edit-form{
+	margin-top: 10px;
+	padding: 8px;
+	.radius(3px);
+	background: #EBEBEB;
+	//++.cf;
+	display:table;
+	width: 100%;
+	input{
+		.text-input();
+	}
+	.task-input{
+		padding-right: 10px;
+		display: table-cell;
+		vertical-align: middle;
+		width: 99%;
+	}
+	.task-add-button{
+		display: table-cell;
+		width: 1%;
+		vertical-align: middle;
 	}
 }
