@@ -152,16 +152,6 @@
         }
 
         /**
-         * @return string
-         */
-        protected function renderContent()
-        {
-            $content = parent::renderContent();
-            $content .= TasksUtil::renderViewModalContainer();
-            return $content;
-        }
-
-        /**
          * Override to handle security/access resolution on links.
          */
         public function getLinkString($attributeString, $attribute)
@@ -177,8 +167,8 @@
          */
         public function resolveLinkString($data, $row)
         {
-            $taskUtil    = new TasksUtil();
-            $content     = $taskUtil->getLinkForViewModal($data, $row, $this->controllerId, $this->moduleId, $this->getActionModuleClassName());
+            $content = TasksUtil::getModalDetailsLink($data, $this->controllerId,
+                                                      $this->moduleId, $this->getActionModuleClassName());
             return $content;
         }
 

@@ -203,9 +203,9 @@
             $this->assertEquals($explicitReadWriteModelPermissions->getReadWritePermitablesToRemoveCount(), 1);
         }
 
-        public function testGetModalTitleForViewTask()
+        public function testGetModalDetailsTitle()
         {
-            $title = TasksUtil::getModalTitleForViewTask();
+            $title = TasksUtil::getModalDetailsTitle();
             $this->assertEquals('View Task',$title);
         }
 

@@ -34,69 +34,17 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class AuditEventsModalListLinkActionElement extends ModalListLinkActionElement
+    /**
+     * Override to only show noneditable if the project is connected on the task
+     */
+    class ProjectForTaskElement extends ModelElement
     {
-        public static function shouldRenderAsDropDownWhenRequired()
+        protected function renderNonEditable()
         {
-            return true;
-        }
-
-        public function render()
-        {
-            $content  = ZurmoHtml::openTag('div', array('class' => 'default-button'));
-            $label    = ZurmoHtml::tag('i', array('class' => $this->params['iconClass']), null);
-            $label   .= ZurmoHtml::tag('span', array('class' => 'button-label'), $this->getLabel());
-            $content .= $ajaxLink = ZurmoHtml::ajaxLink($label, $this->getDefaultRoute(),
-                $this->getAjaxLinkOptions(),
-                $this->getHtmlOptions()
-            );
-            $content .= ZurmoHtml::closeTag('div');
-            return $content;
-        }
-
-        protected function getDefaultLabel()
-        {
-            return Zurmo::t('ZurmoModule', 'Audit Trail');
-        }
-
-        protected function getAjaxLinkTitle()
-        {
-            return $this->getLabel();
-        }
-
-        protected function getRouteAction()
-        {
-            return '/auditEventsModalList/';
-        }
-
-        public function getElementValue()
-        {
-            $eventHandlerName = 'auditEventsModalListLinkActionElementHandler';
-            $ajaxOptions      = CMap::mergeArray($this->getAjaxOptions(), array('url' => $this->route));
-            if (Yii::app()->clientScript->isScriptRegistered($eventHandlerName))
+            if($this->model->project->id > 0)
             {
-                return;
+                return parent::renderNonEditable();
             }
-            else
-            {
-                Yii::app()->clientScript->registerScript($eventHandlerName, "
-                    function ". $eventHandlerName ."()
-                    {
-                        " . ZurmoHtml::ajax($ajaxOptions)."
-                    }
-                ", CClientScript::POS_HEAD);
-            }
-            return $eventHandlerName;
-        }
-
-        /**
-         * Utilized when auditEventsModalLink is used during mobile select option render
-         * @return array
-         */
-        protected function getAjaxOptions()
-        {
-            $title = Zurmo::t('ZurmoModule', 'Audit Trail');
-            return ModalView::getAjaxOptionsForModalLink($title);
         }
     }
 ?>

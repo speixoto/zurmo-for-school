@@ -18,3 +18,102 @@
 		background: #fff;
 	}
 }
+
+.type-tasks{
+	.items-wrapper{
+		border: 1px solid #dfdfdf;
+	}
+}
+
+.task-dialog{
+	min-width: 1000px;
+	border: none;
+	background: #f0f0f0;
+	.radius(3px);
+	//0 0 15px 0 rgba(51, 51, 51, 0.25)
+	.b-shadow(~'inset 0 0 0 1px rgba(204, 204, 204, 0.3) , 1px 1px 1px 0px rgba(153, 153, 153, 0.15)');
+	.ui-dialog-titlebar{
+		//display: none;
+	}
+	.ui-dialog-title{
+		padding:0 !important;
+		margin:0 !important;
+		font-size:15px;
+		font-weight:bold;
+		.t-shadow( rgba( 255, 255, 255, 0.8 ) 0 1px 0 );
+		width: 100%;
+		height: 40px;
+		line-height: 40px;
+		background: none;
+		.b-shadow(none);
+		border-bottom:none;
+		text-indent:15px;
+		width: 100%;
+		height: 100%;
+		display: block;
+	}
+	.toolbar-mbmenu{
+		position: absolute;
+		right: 0;
+		top: 12px;
+	}
+	.wrapper,
+	.details-table{
+		margin: 0;
+		padding: 0;
+		border: none !important;
+		.b-shadow(none) !important;
+		background: none !important;
+	}
+	table{
+		border: none;
+	}
+	td{
+		padding-bottom: 15px;
+	}
+	.attributesContainer{
+		padding-bottom: 0;
+	}
+}
+
+#task-left-column-form-data{
+	label{
+		margin-top: 15px;
+		float: none;
+		display: block;
+	}
+}
+
+#task-right-column-form-data{
+	label{
+		float: none;
+	}
+	#status-box{
+		margin-bottom: 15px;
+	}
+	.owner-box{
+		position: relative;
+		margin-bottom: 15px;
+	}
+}
+
+#task-subscriber-box{
+	margin-top: 15px;
+}
+
+.check-list{
+	margin-top: 15px;
+	h3{
+		margin-bottom: 10px;
+	}
+}
+
+.check-list-item{
+	margin-top: 3px;
+	.hasCheckBox{
+		float: left;
+		position: relative;
+		top:-5px;
+		margin-right: 3px;
+	}
+}

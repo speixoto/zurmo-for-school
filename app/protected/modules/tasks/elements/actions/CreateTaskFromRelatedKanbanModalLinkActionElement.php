@@ -50,7 +50,6 @@
         public function render()
         {
             $content  = ZurmoHtml::openTag('div', array('class' => 'default-button'));
-
             $content .= parent::render();
             $content .= ZurmoHtml::closeTag('div');
             return $content;
@@ -69,6 +68,27 @@
                 return $content . ZurmoHtml::wrapLabel($this->getLabel(), 'button-label');
             }
             return $this->getLabel();
+        }
+
+        /**
+         * @return array
+         */
+        protected function getCreateLinkUrlParams()
+        {
+            return array_merge(array('modalId'             => $this->getModalContainerId(),
+                                     'sourceKanbanBoardId' => $this->getSourceKanbanBoardId()), $this->getRouteParameters());
+        }
+
+        /**
+         * @return string
+         */
+        protected function getSourceKanbanBoardId()
+        {
+            if (!isset($this->params['sourceKanbanBoardId']))
+            {
+                return array();
+            }
+            return $this->params['sourceKanbanBoardId'];
         }
     }
 ?>

@@ -46,9 +46,9 @@
 
         protected function getDefaultRoute()
         {
-            $params = array_merge(array('id' => $this->modelId), $this->getViewLinkUrlParams());
+            $params = array_merge(GetUtil::getData(), $this->getViewLinkUrlParams());
             return Yii::app()->createUrl($this->getRouteModuleId() . '/' .
-                        $this->controllerId . '/modalDetailsFromRelation', $params);
+                   $this->controllerId . '/modalDetailsFromRelation', $params);
         }
 
         protected function getRouteModuleId()
@@ -67,23 +67,11 @@
 
         protected function getViewLinkUrlParams()
         {
-            return array(
-                'modalTransferInformation' => $this->getModalTransferInformation(),
-            );
-        }
-
-        protected function getModalTransferInformation()
-        {
             return array_merge(array(
-                    'modalId'           => $this->getModalContainerId(),
-                    'portletId'         => $this->getPortletId(),
-                    'uniqueLayoutId'    => $this->getUniqueLayoutId()
-            ), $this->getRouteParameters());
-        }
-
-        protected function getModalContainerId()
-        {
-            return ModalLinkActionElement::RELATED_MODAL_CONTAINER_PREFIX . '-view-task';
+                'id'                => $this->modelId,
+                'modalId'           => TasksUtil::getModalContainerId(),
+                'portletId'         => $this->getPortletId(),
+                'uniqueLayoutId'    => $this->getUniqueLayoutId()), $this->getRouteParameters());
         }
 
         protected function getPortletId()
@@ -102,6 +90,15 @@
                 return array();
             }
             return $this->params['uniqueLayoutId'];
+        }
+
+        /**
+         * todo: potentially can push this farther back to give everylink a namespace. this would force off on ajax refreshes
+         * @return array
+         */
+        protected function getHtmlOptions()
+        {
+            return array_merge(array('namespace' => 'modalLink'), parent::getHtmlOptions());
         }
     }
 ?>

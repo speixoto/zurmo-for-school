@@ -48,7 +48,6 @@
                     'toolbar' => array(
                         'elements' => array(
                             array('type'        => 'SaveButton'),
-                            array('type'        => 'TaskDeleteLink'),
                             array('type'        => 'ModalCancelLink',
                                   'htmlOptions' => 'eval:static::resolveHtmlOptionsForCancel()'
                             )
@@ -210,58 +209,32 @@
          */
         protected function resolveActiveFormAjaxValidationOptions()
         {
-
-            $id = Yii::app()->request->getParam('id', null);
-            //$id             = $this->model->id; //todo: just use this instead of id.
-            $getData        = GetUtil::getData();
-            $sourceId       = null;
-            if(GetUtil::resolveParamFromRequest('modalTransferInformation') != null)
+            $sourceKanbanBoardId = Yii::app()->request->getParam('sourceKanbanBoardId');
+            $modalId             = Yii::app()->request->getParam('modalId');
+            $relationModelId     = Yii::app()->request->getParam('relationModelId');
+            if($relationModelId != null)
             {
-                $relationAttributeName   = GetUtil::resolveModalTransferInformationParamFromRequest('relationAttributeName', null);
-                $relationModelId         = GetUtil::resolveModalTransferInformationParamFromRequest('relationModelId', null);
-                $relationModuleId        = GetUtil::resolveModalTransferInformationParamFromRequest('relationModuleId', null);
-                $portletId               = GetUtil::resolveModalTransferInformationParamFromRequest('portletId', null);
-                $uniqueLayoutId          = GetUtil::resolveModalTransferInformationParamFromRequest('uniqueLayoutId', null);
-                $sourceId                = GetUtil::resolveModalTransferInformationParamFromRequest('sourceId', null);
-                $action                  = Yii::app()->request->getParam('action', null);
-                //todo: why are you checking action?
-                if($action == null)
-                {
-                    $params = array('id' => $id);
-                }
-                else
-                {
-                    $params = array('id' => null);
-                }
-                $url = Yii::app()->createUrl('tasks/default/modalSaveFromRelation',
-                            array_merge(array('relationAttributeName' => $relationAttributeName,
-                                              'relationModelId'       => $relationModelId,
-                                              'relationModuleId'      => $relationModuleId,
-                                              'portletId'             => $portletId,
-                                              'uniqueLayoutId'        => $uniqueLayoutId,
-                                              'sourceId'              => $sourceId
-                                              ), $params
-                                            ));
+                $url = Yii::app()->createUrl('tasks/default/modalSaveFromRelation', GetUtil::getData());
             }
             else
             {
-                $url = Yii::app()->createUrl('tasks/default/modalSave', array('id' => $id));
+                $url = Yii::app()->createUrl('tasks/default/modalSave', GetUtil::getData());
             }
             return array('enableAjaxValidation' => true,
                         'clientOptions' => array(
                             'beforeValidate'    => 'js:$(this).beforeValidateAction',
                             'afterValidate'     => 'js:function(form, data, hasError){
-                                                        if(hasError)
-                                                        {
-                                                            form.find(".attachLoading:first").removeClass("loading");
-                                                            form.find(".attachLoading:first").removeClass("loading-ajax-submit");
-                                                        }
-                                                        else
-                                                        {
-                                                        ' . $this->renderConfigSaveAjax($this->getFormId(), $url, $sourceId) . '
-                                                        }
-                                                        return false;
-                                                    }',
+                                if(hasError)
+                                {
+                                    form.find(".attachLoading:first").removeClass("loading");
+                                    form.find(".attachLoading:first").removeClass("loading-ajax-submit");
+                                }
+                                else
+                                {
+                                ' . $this->renderConfigSaveAjax($this->getFormId(), $url, $sourceKanbanBoardId, $modalId) . '
+                                }
+                                return false;
+                            }',
                             'validateOnSubmit'  => true,
                             'validateOnChange'  => false,
                             'inputContainer'    => 'td'
@@ -269,23 +242,28 @@
             );
         }
 
-        protected function renderConfigSaveAjax($formId, $url, $sourceId)
+        protected function renderConfigSaveAjax($formId, $url, $sourceKanbanBoardId, $modalId)
         {
             // Begin Not Coding Standard
+            if($sourceKanbanBoardId != null)
+            {
+                $kanbanRefreshScript = "$.fn.yiiGridView.update('" . $sourceKanbanBoardId. "');";
+            }
+            else
+            {
+                $kanbanRefreshScript = null;
+            }
+            $title   = TasksUtil::getModalDetailsTitle();
             $options = array(
                 'type' => 'POST',
                 'data' => 'js:$("#' . $formId . '").serialize()',
                 'url'  =>  $url,
-                'update' => '#ModalView',
+                'update' => '#' . $modalId,
+                'complete' => "function(XMLHttpRequest, textStatus){
+                console.log('" . $modalId . "');
+                                    $('#" . $modalId .  "').dialog('option', 'title', '" . $title . "');
+                                    " . $kanbanRefreshScript . "}"
             );
-            if($sourceId != null)
-            {
-                $options['complete'] = "function(XMLHttpRequest, textStatus){
-                                        //Refresh underlying KanbanBoard
-                                        $.fn.yiiGridView.update('" . $sourceId. "');
-                                        }";
-            }
-            // End Not Coding Standard
             return ZurmoHtml::ajax($options);
         }
 

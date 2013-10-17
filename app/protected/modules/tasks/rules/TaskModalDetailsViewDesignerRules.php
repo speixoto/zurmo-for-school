@@ -34,69 +34,55 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class AuditEventsModalListLinkActionElement extends ModalListLinkActionElement
+    class TaskModalDetailsViewDesignerRules extends EditViewDesignerRules
     {
-        public static function shouldRenderAsDropDownWhenRequired()
+        public function allowEditInLayoutTool()
         {
             return true;
         }
 
-        public function render()
+        public function getDisplayName()
         {
-            $content  = ZurmoHtml::openTag('div', array('class' => 'default-button'));
-            $label    = ZurmoHtml::tag('i', array('class' => $this->params['iconClass']), null);
-            $label   .= ZurmoHtml::tag('span', array('class' => 'button-label'), $this->getLabel());
-            $content .= $ajaxLink = ZurmoHtml::ajaxLink($label, $this->getDefaultRoute(),
-                $this->getAjaxLinkOptions(),
-                $this->getHtmlOptions()
+            return Zurmo::t('TasksModule', 'Modal Details View');
+        }
+
+        public function maxCellsPerRow()
+        {
+            return 1;
+        }
+
+        public function canConfigureLayoutPanelsType()
+        {
+            return false;
+        }
+
+        public function getSavableMetadataRules()
+        {
+            return array(
+                'ProjectAsProjectTask'
             );
-            $content .= ZurmoHtml::closeTag('div');
-            return $content;
         }
 
-        protected function getDefaultLabel()
+        public function getNonPlaceableLayoutAttributeNames()
         {
-            return Zurmo::t('ZurmoModule', 'Audit Trail');
+            return array(
+                'id'
+            );
         }
 
-        protected function getAjaxLinkTitle()
+        public function canAddPanels()
         {
-            return $this->getLabel();
+            return false;
         }
 
-        protected function getRouteAction()
+        public function canMovePanels()
         {
-            return '/auditEventsModalList/';
+            return false;
         }
 
-        public function getElementValue()
+        public function canRemovePanels()
         {
-            $eventHandlerName = 'auditEventsModalListLinkActionElementHandler';
-            $ajaxOptions      = CMap::mergeArray($this->getAjaxOptions(), array('url' => $this->route));
-            if (Yii::app()->clientScript->isScriptRegistered($eventHandlerName))
-            {
-                return;
-            }
-            else
-            {
-                Yii::app()->clientScript->registerScript($eventHandlerName, "
-                    function ". $eventHandlerName ."()
-                    {
-                        " . ZurmoHtml::ajax($ajaxOptions)."
-                    }
-                ", CClientScript::POS_HEAD);
-            }
-            return $eventHandlerName;
-        }
-
-        /**
-         * Utilized when auditEventsModalLink is used during mobile select option render
-         * @return array
-         */
-        protected function getAjaxOptions()
-        {
-            $title = Zurmo::t('ZurmoModule', 'Audit Trail');
-            return ModalView::getAjaxOptionsForModalLink($title);
+            return false;
         }
     }
 ?>

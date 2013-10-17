@@ -229,7 +229,7 @@
                                                            $attributeIndexOrDerivedType,
                                                            $columnType);
                 }
-                $content .= '<table><thead><th colspan="2">' . Zurmo::t('ImportModule', 'Rules') . '</th></thead><tbody>';
+                $content .= ZurmoHtml::tag('h4', array(), Zurmo::t('ImportModule', 'Rules'));
                 foreach ($mappingRuleFormsAndElementTypes as $notUsed => $ruleFormAndElementType)
                 {
                     $mappingRuleForm        = $ruleFormAndElementType['mappingRuleForm'];
@@ -251,11 +251,9 @@
                                                   $attributeName,
                                                   $this->form,
                                                   $params);
-                    $content .= '<tr>';
+                    $element->editableTemplate = '<div>{label}{content}{error}</div>';
                     $content .= $element->render();
-                    $content .= '</tr>';
                 }
-                $content .= '</tbody></table>';
             }
 
             $content = ZurmoHtml::tag('div', array('id' => self::getMappingRulesDivIdByColumnName($columnName),

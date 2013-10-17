@@ -61,7 +61,7 @@
                                 'routeModuleId'   => 'eval:$this->moduleId',
                                 'routeParameters' => 'eval:$this->getCreateLinkRouteParameters()',
                                 'ajaxOptions'     => 'eval:TasksUtil::resolveAjaxOptionsForEditModel("Create")',
-                                'uniqueLayoutId'  => 'eval:$this->uniqueLayoutId',
+                                'sourceKanbanBoardId'  => 'eval:$this->getGridViewId()',
                                 'modalContainerId'=> 'eval:TasksUtil::getModalContainerId()'
                             ),
                         ),

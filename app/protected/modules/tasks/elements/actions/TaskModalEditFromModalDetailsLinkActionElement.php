@@ -34,69 +34,73 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class AuditEventsModalListLinkActionElement extends ModalListLinkActionElement
+    class TaskModalEditFromModalDetailsLinkActionElement extends DropdownSupportedAjaxLinkActionElement
     {
-        public static function shouldRenderAsDropDownWhenRequired()
-        {
-            return true;
-        }
-
-        public function render()
-        {
-            $content  = ZurmoHtml::openTag('div', array('class' => 'default-button'));
-            $label    = ZurmoHtml::tag('i', array('class' => $this->params['iconClass']), null);
-            $label   .= ZurmoHtml::tag('span', array('class' => 'button-label'), $this->getLabel());
-            $content .= $ajaxLink = ZurmoHtml::ajaxLink($label, $this->getDefaultRoute(),
-                $this->getAjaxLinkOptions(),
-                $this->getHtmlOptions()
-            );
-            $content .= ZurmoHtml::closeTag('div');
-            return $content;
-        }
-
         protected function getDefaultLabel()
         {
-            return Zurmo::t('ZurmoModule', 'Audit Trail');
-        }
-
-        protected function getAjaxLinkTitle()
-        {
-            return $this->getLabel();
-        }
-
-        protected function getRouteAction()
-        {
-            return '/auditEventsModalList/';
+            return Zurmo::t('ZurmoModule', 'Edit');
         }
 
         public function getElementValue()
         {
-            $eventHandlerName = 'auditEventsModalListLinkActionElementHandler';
-            $ajaxOptions      = CMap::mergeArray($this->getAjaxOptions(), array('url' => $this->route));
-            if (Yii::app()->clientScript->isScriptRegistered($eventHandlerName))
-            {
-                return;
-            }
-            else
-            {
-                Yii::app()->clientScript->registerScript($eventHandlerName, "
-                    function ". $eventHandlerName ."()
-                    {
-                        " . ZurmoHtml::ajax($ajaxOptions)."
-                    }
-                ", CClientScript::POS_HEAD);
-            }
-            return $eventHandlerName;
+            return null;
         }
 
-        /**
-         * Utilized when auditEventsModalLink is used during mobile select option render
-         * @return array
-         */
-        protected function getAjaxOptions()
+        public function getActionType()
         {
-            $title = Zurmo::t('ZurmoModule', 'Audit Trail');
-            return ModalView::getAjaxOptionsForModalLink($title);
+            return 'Edit';
+        }
+
+        public function render()
+        {
+            return ZurmoHtml::ajaxLink($this->getLabel(), $this->getDefaultRoute(),
+                $this->getAjaxLinkOptions(),
+                $this->getHtmlOptions()
+            );
+        }
+
+        public function renderMenuItem()
+        {
+            if (!empty($this->modelId) && $this->modelId > 0)
+            {
+                return array('label'  => $this->getLabel(),
+                    'url'             => $this->getDefaultRoute(),
+                    'linkOptions'     => array_merge(array('namespace'   => 'modalLink'), $this->getHtmlOptions()),
+                    'itemOptions'     => array('id' => get_class($this)),
+                    'ajaxLinkOptions' => $this->getAjaxLinkOptions()
+                );
+            }
+        }
+
+        protected function getAjaxLinkOptions()
+        {
+            $containerId = TasksUtil::getModalContainerId();
+            $title       = TasksUtil::getModalEditTitle();
+            $options = array(
+                'type'   => 'GET',
+                'update' => '#' . $containerId,
+                'complete' => "function(XMLHttpRequest, textStatus){
+                        console.log('xxx" . $containerId . "');
+                        $('#" . $containerId .  "').dialog('option', 'title', '" . $title . "');
+                        console.log('yyy" . $containerId . "');}"
+            );
+            return $options;
+        }
+
+        protected function getDefaultRoute()
+        {
+            return Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . $this->getRouteAction(),
+                   $this->resolveRouteParameters());
+        }
+
+        protected function resolveRouteParameters()
+        {
+            return array_merge(GetUtil::getData(), array('id' => $this->modelId));
+        }
+
+        protected function getRouteAction()
+        {
+            return '/modalEditFromRelation/';
         }
     }
 ?>

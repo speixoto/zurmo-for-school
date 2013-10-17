@@ -34,18 +34,16 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class ModalContainerView extends View
+    class ProjectAsProjectTaskViewMetadataRules
     {
-        const ID = 'modalContainer';
-
-        protected function renderContent()
+        public static function resolveElementMetadata($elementInformation, & $elementMetadata)
         {
-            return "<div id=\"" . self::ID . "\"></div>";
-        }
-
-        public function isUniqueToAPage()
-        {
-            return true;
+            $elementclassname = $elementInformation['type'] . 'Element';
+            if ($elementclassname == 'ProjectElement' ||
+                is_subclass_of($elementclassname, 'ProjectElement'))
+            {
+                $elementMetadata['type']     = 'ProjectForTask';
+            }
         }
     }
 ?>
