@@ -346,49 +346,103 @@ a.ModalGameNotification a,
 .workflow-order-module-selector-container {
   zoom: 1;
 }
+.cf,
 .clearfix,
 #modal-edit-form,
 #edit-form,
 #delete-form,
 .right-side-edit-view-panel,
 .pager ul,
+.recipient,
+#NoUserEmailConfigurationYetView,
+.dynamic-row,
+.dynamic-row > div,
+.dynamic-sub-row,
+.zero-components-view.TimeTrigger,
+#time-trigger-container,
+.ComponentForWorkflowWizardView .add-email-message-button-container,
+.ComponentForWorkflowWizardView .action-type-selector-container,
+.workflow-order-module-selector-container,
 #MarketingListsExternalActionsPageView > .GridView,
 #MarketingListsManageSubscriptionsPageView > .GridView,
 #MarketingListsExternalActionsPageView .Warning,
 #MarketingListsManageSubscriptionsPageView .Warning,
 #kanban-board,
 #ContactWebFormEditAndDetailsView .ui-sortable {
-  zoom: 1;
+  *zoom: 1;
 }
+.cf:before,
 .clearfix:before,
 #modal-edit-form:before,
 #edit-form:before,
 #delete-form:before,
 .right-side-edit-view-panel:before,
 .pager ul:before,
+.recipient:before,
+#NoUserEmailConfigurationYetView:before,
+.dynamic-row:before,
+.dynamic-row > div:before,
+.dynamic-sub-row:before,
+.zero-components-view.TimeTrigger:before,
+#time-trigger-container:before,
+.ComponentForWorkflowWizardView .add-email-message-button-container:before,
+.ComponentForWorkflowWizardView .action-type-selector-container:before,
+.workflow-order-module-selector-container:before,
 #MarketingListsExternalActionsPageView > .GridView:before,
 #MarketingListsManageSubscriptionsPageView > .GridView:before,
 #MarketingListsExternalActionsPageView .Warning:before,
 #MarketingListsManageSubscriptionsPageView .Warning:before,
 #kanban-board:before,
-#ContactWebFormEditAndDetailsView .ui-sortable:before {
-  content: "";
-  display: table;
-}
+#ContactWebFormEditAndDetailsView .ui-sortable:before,
+.cf:after,
 .clearfix:after,
 #modal-edit-form:after,
 #edit-form:after,
 #delete-form:after,
 .right-side-edit-view-panel:after,
 .pager ul:after,
+.recipient:after,
+#NoUserEmailConfigurationYetView:after,
+.dynamic-row:after,
+.dynamic-row > div:after,
+.dynamic-sub-row:after,
+.zero-components-view.TimeTrigger:after,
+#time-trigger-container:after,
+.ComponentForWorkflowWizardView .add-email-message-button-container:after,
+.ComponentForWorkflowWizardView .action-type-selector-container:after,
+.workflow-order-module-selector-container:after,
 #MarketingListsExternalActionsPageView > .GridView:after,
 #MarketingListsManageSubscriptionsPageView > .GridView:after,
 #MarketingListsExternalActionsPageView .Warning:after,
 #MarketingListsManageSubscriptionsPageView .Warning:after,
 #kanban-board:after,
 #ContactWebFormEditAndDetailsView .ui-sortable:after {
-  content: "";
+  content: " ";
   display: table;
+}
+.cf:after,
+.clearfix:after,
+#modal-edit-form:after,
+#edit-form:after,
+#delete-form:after,
+.right-side-edit-view-panel:after,
+.pager ul:after,
+.recipient:after,
+#NoUserEmailConfigurationYetView:after,
+.dynamic-row:after,
+.dynamic-row > div:after,
+.dynamic-sub-row:after,
+.zero-components-view.TimeTrigger:after,
+#time-trigger-container:after,
+.ComponentForWorkflowWizardView .add-email-message-button-container:after,
+.ComponentForWorkflowWizardView .action-type-selector-container:after,
+.workflow-order-module-selector-container:after,
+#MarketingListsExternalActionsPageView > .GridView:after,
+#MarketingListsManageSubscriptionsPageView > .GridView:after,
+#MarketingListsExternalActionsPageView .Warning:after,
+#MarketingListsManageSubscriptionsPageView .Warning:after,
+#kanban-board:after,
+#ContactWebFormEditAndDetailsView .ui-sortable:after {
   clear: both;
 }
 .flyout,
@@ -479,7 +533,7 @@ a.ModalGameNotification a {
   cursor: pointer;
   text-indent: 0;
   display: inline-block;
-  zoom: 1;
+  *zoom: 1;
 }
 .modal-view-toolbar a:before,
 .modal-view-toolbar input[type="submit"]:before,
@@ -521,8 +575,49 @@ a.designer-toolbar input[type="submit"]:before,
 a#contactStatesData_AddInputButton:before,
 a#customFieldDataData_AddInputButton:before,
 .ModalGameNotification a:before,
-a.ModalGameNotification a:before {
-  content: "";
+a.ModalGameNotification a:before,
+.modal-view-toolbar a:after,
+.modal-view-toolbar input[type="submit"]:after,
+.modal-view-toolbar input[type="button"]:after,
+.form-toolbar a:after,
+.form-toolbar input[type="submit"]:after,
+.form-toolbar input[type="button"]:after,
+.zButton:after,
+.z-button:after,
+a.zButton:after,
+a.z-button:after,
+.white-button:after,
+.search-form-tools input[type="submit"]:after,
+a.search-form-tools input[type="submit"]:after,
+#progressBar-links a:after,
+a#progressBar-links a:after,
+#InstallPageView .AppContainer a:after,
+a#InstallPageView .AppContainer a:after,
+#InstallPageView #install-form input[type="submit"]:after,
+a#InstallPageView #install-form input[type="submit"]:after,
+.configuration-list li a:after,
+a.configuration-list li a:after,
+table.configuration-list td:last-child a:after,
+atable.configuration-list td:last-child a:after,
+.multiselect-holder input[type="button"]:after,
+a.multiselect-holder input[type="button"]:after,
+.EmailTestingButton:after,
+a.EmailTestingButton:after,
+.file-upload-box .ui-icon-plusthick:after,
+a.file-upload-box .ui-icon-plusthick:after,
+.ui-datepicker .ui-datepicker-current:after,
+a.ui-datepicker .ui-datepicker-current:after,
+.ui-datepicker .ui-datepicker-close:after,
+a.ui-datepicker .ui-datepicker-close:after,
+.designer-toolbar input[type="submit"]:after,
+a.designer-toolbar input[type="submit"]:after,
+#contactStatesData_AddInputButton:after,
+#customFieldDataData_AddInputButton:after,
+a#contactStatesData_AddInputButton:after,
+a#customFieldDataData_AddInputButton:after,
+.ModalGameNotification a:after,
+a.ModalGameNotification a:after {
+  content: " ";
   display: table;
 }
 .modal-view-toolbar a:after,
@@ -566,8 +661,6 @@ a#contactStatesData_AddInputButton:after,
 a#customFieldDataData_AddInputButton:after,
 .ModalGameNotification a:after,
 a.ModalGameNotification a:after {
-  content: "";
-  display: table;
   clear: both;
 }
 .modal-view-toolbar a.attachLoading.z-button,
@@ -694,15 +787,14 @@ a.ModalGameNotification a:not(.attachLoading):not(.green-button) .z-label {
   cursor: pointer;
   text-indent: 0;
   display: inline-block;
-  zoom: 1;
+  *zoom: 1;
 }
-.default-btn:before {
-  content: "";
+.default-btn:before,
+.default-btn:after {
+  content: " ";
   display: table;
 }
 .default-btn:after {
-  content: "";
-  display: table;
   clear: both;
 }
 .default-btn.attachLoading.z-button {
@@ -10576,15 +10668,14 @@ body > .ui-autocomplete {
 }
 /*#MenuView .parent > a*/
 #MenuView .nav li {
-  zoom: 1;
+  *zoom: 1;
 }
-#MenuView .nav li:before {
-  content: "";
+#MenuView .nav li:before,
+#MenuView .nav li:after {
+  content: " ";
   display: table;
 }
 #MenuView .nav li:after {
-  content: "";
-  display: table;
   clear: both;
 }
 #MenuView ul a {
@@ -10895,15 +10986,14 @@ body > .ui-autocomplete {
   background-image: -ms-linear-gradient(#f6f6f6, #ffffff 100px, #ffffff) ;
   background-image: -o-linear-gradient(#f6f6f6, #ffffff 100px, #ffffff) ;
   background-image: linear-gradient(#f6f6f6, #ffffff 100px, #ffffff) ;
-  zoom: 1;
+  *zoom: 1;
 }
-.AppContent:before {
-  content: "";
+.AppContent:before,
+.AppContent:after {
+  content: " ";
   display: table;
 }
 .AppContent:after {
-  content: "";
-  display: table;
   clear: both;
 }
 .AppContent .single-column {
@@ -10916,17 +11006,17 @@ body > .ui-autocomplete {
 .AppContent .single-column .juiportlet-widget,
 .AppContent .single-column .details-table {
   margin-right: 0 !important;
-  zoom: 1;
+  *zoom: 1;
 }
 .AppContent .single-column .juiportlet-widget:before,
-.AppContent .single-column .details-table:before {
-  content: "";
+.AppContent .single-column .details-table:before,
+.AppContent .single-column .juiportlet-widget:after,
+.AppContent .single-column .details-table:after {
+  content: " ";
   display: table;
 }
 .AppContent .single-column .juiportlet-widget:after,
 .AppContent .single-column .details-table:after {
-  content: "";
-  display: table;
   clear: both;
 }
 .AppContent .single-column .right-side-edit-view-panel {
@@ -12430,15 +12520,14 @@ div.wide.form label.hasCheckBox {
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  zoom: 1;
+  *zoom: 1;
 }
-#search-form:before {
-  content: "";
+#search-form:before,
+#search-form:after {
+  content: " ";
   display: table;
 }
 #search-form:after {
-  content: "";
-  display: table;
   clear: both;
 }
 #search-form .form-toolbar,
@@ -12998,15 +13087,14 @@ div.wide.form label.hasCheckBox {
 }
 .attributesContainer {
   padding-bottom: 15px;
-  zoom: 1;
+  *zoom: 1;
 }
-.attributesContainer:before {
-  content: "";
+.attributesContainer:before,
+.attributesContainer:after {
+  content: " ";
   display: table;
 }
 .attributesContainer:after {
-  content: "";
-  display: table;
   clear: both;
 }
 .left-column {
@@ -13659,17 +13747,17 @@ div.wide.form label.hasCheckBox {
 }
 .DetailsAndRelationsView,
 #AccountDetailsAndRelationsView {
-  zoom: 1;
+  *zoom: 1;
 }
 .DetailsAndRelationsView:before,
-#AccountDetailsAndRelationsView:before {
-  content: "";
+#AccountDetailsAndRelationsView:before,
+.DetailsAndRelationsView:after,
+#AccountDetailsAndRelationsView:after {
+  content: " ";
   display: table;
 }
 .DetailsAndRelationsView:after,
 #AccountDetailsAndRelationsView:after {
-  content: "";
-  display: table;
   clear: both;
 }
 .DetailsAndRelationsView .GridView,
@@ -13690,15 +13778,14 @@ div.wide.form label.hasCheckBox {
   margin-right: 20px;
 }
 #UserDetailsAndRelationsView {
-  zoom: 1;
+  *zoom: 1;
 }
-#UserDetailsAndRelationsView:before {
-  content: "";
+#UserDetailsAndRelationsView:before,
+#UserDetailsAndRelationsView:after {
+  content: " ";
   display: table;
 }
 #UserDetailsAndRelationsView:after {
-  content: "";
-  display: table;
   clear: both;
 }
 #UserDetailsAndRelationsView .GridView {
@@ -13882,15 +13969,14 @@ div.wide.form label.hasCheckBox {
 }
 #inline-edit-form .permissions-box {
   margin-left: 0 !important;
-  zoom: 1;
+  *zoom: 1;
 }
-#inline-edit-form .permissions-box:before {
-  content: "";
+#inline-edit-form .permissions-box:before,
+#inline-edit-form .permissions-box:after {
+  content: " ";
   display: table;
 }
 #inline-edit-form .permissions-box:after {
-  content: "";
-  display: table;
   clear: both;
 }
 #inline-edit-form .permissions-box > label {
@@ -14071,15 +14157,14 @@ div.radio-input .hasDropDown {
 div.overlay-label-field {
   position: relative;
   padding-bottom: 15px;
-  zoom: 1;
+  *zoom: 1;
 }
-div.overlay-label-field:before {
-  content: "";
+div.overlay-label-field:before,
+div.overlay-label-field:after {
+  content: " ";
   display: table;
 }
 div.overlay-label-field:after {
-  content: "";
-  display: table;
   clear: both;
 }
 .overlay-label-field label {
@@ -14097,17 +14182,17 @@ div.overlay-label-field:after {
 }
 div.hasParallelFields,
 div.hasHalfs {
-  zoom: 1;
+  *zoom: 1;
 }
 div.hasParallelFields:before,
-div.hasHalfs:before {
-  content: "";
+div.hasHalfs:before,
+div.hasParallelFields:after,
+div.hasHalfs:after {
+  content: " ";
   display: table;
 }
 div.hasParallelFields:after,
 div.hasHalfs:after {
-  content: "";
-  display: table;
   clear: both;
 }
 div.hasParallelFields div:first-child,
@@ -14824,15 +14909,14 @@ div.hasHalfs > div input {
   -o-box-shadow: inset 0 1px 0 0 #ffffff;
   -ms-box-shadow: inset 0 1px 0 0 #ffffff;
   box-shadow: inset 0 1px 0 0 #ffffff;
-  zoom: 1;
+  *zoom: 1;
 }
-#search-formmodal:before {
-  content: "";
+#search-formmodal:before,
+#search-formmodal:after {
+  content: " ";
   display: table;
 }
 #search-formmodal:after {
-  content: "";
-  display: table;
   clear: both;
 }
 #search-formmodal table {
@@ -16290,15 +16374,14 @@ i[class^="icon"] {
   content: "Y" !important;
 }
 table.configuration-list {
-  zoom: 1;
+  *zoom: 1;
 }
-table.configuration-list:before {
-  content: "";
+table.configuration-list:before,
+table.configuration-list:after {
+  content: " ";
   display: table;
 }
 table.configuration-list:after {
-  content: "";
-  display: table;
   clear: both;
 }
 table.configuration-list h4 {
@@ -16370,15 +16453,14 @@ table.configuration-list td:last-child a .z-label:before {
   width: 75%;
   max-width: 675px;
   margin: 0 auto;
-  zoom: 1;
+  *zoom: 1;
 }
-.multiselect-holder:before {
-  content: "";
+.multiselect-holder:before,
+.multiselect-holder:after {
+  content: " ";
   display: table;
 }
 .multiselect-holder:after {
-  content: "";
-  display: table;
   clear: both;
 }
 .multiselect-holder label {
@@ -16786,18 +16868,17 @@ table.configuration-list td:last-child a .z-label:before {
   text-align: left;
 }
 .multi-select-checkbox-input {
-  zoom: 1;
+  *zoom: 1;
   width: 100%;
   display: block;
   margin-top: 4px;
 }
-.multi-select-checkbox-input:before {
-  content: "";
+.multi-select-checkbox-input:before,
+.multi-select-checkbox-input:after {
+  content: " ";
   display: table;
 }
 .multi-select-checkbox-input:after {
-  content: "";
-  display: table;
   clear: both;
 }
 .multi-select-checkbox-input .hasCheckBox {
@@ -17021,16 +17102,15 @@ table.configuration-list td:last-child a .z-label:before {
   cursor: pointer;
   text-indent: 0;
   display: inline-block;
-  zoom: 1;
+  *zoom: 1;
   margin: 0;
 }
-.AppContent.ImportWizardView #addExtraColumnButton:before {
-  content: "";
+.AppContent.ImportWizardView #addExtraColumnButton:before,
+.AppContent.ImportWizardView #addExtraColumnButton:after {
+  content: " ";
   display: table;
 }
 .AppContent.ImportWizardView #addExtraColumnButton:after {
-  content: "";
-  display: table;
   clear: both;
 }
 .AppContent.ImportWizardView #addExtraColumnButton.attachLoading.z-button {
@@ -17232,15 +17312,14 @@ table.configuration-list td:last-child a .z-label:before {
   position: relative;
 }
 #ImportSequentialProcessContainerView .process-container-view {
-  zoom: 1;
+  *zoom: 1;
 }
-#ImportSequentialProcessContainerView .process-container-view:before {
-  content: "";
+#ImportSequentialProcessContainerView .process-container-view:before,
+#ImportSequentialProcessContainerView .process-container-view:after {
+  content: " ";
   display: table;
 }
 #ImportSequentialProcessContainerView .process-container-view:after {
-  content: "";
-  display: table;
   clear: both;
 }
 #ImportSequentialProcessContainerView .process-container-view:after {
@@ -17509,7 +17588,7 @@ table.configuration-list td:last-child a .z-label:before {
 .available-portlets {
   padding: 15px 15px 0 15px;
   list-style: none;
-  zoom: 1;
+  *zoom: 1;
   max-height: 400px;
   overflow-y: scroll;
   /*
@@ -17525,13 +17604,12 @@ table.configuration-list td:last-child a .z-label:before {
 	*/
 
 }
-.available-portlets:before {
-  content: "";
+.available-portlets:before,
+.available-portlets:after {
+  content: " ";
   display: table;
 }
 .available-portlets:after {
-  content: "";
-  display: table;
   clear: both;
 }
 .available-portlets li {
@@ -18036,7 +18114,7 @@ div.wide.form .errorMessage {
   cursor: pointer;
   text-indent: 0;
   display: inline-block;
-  zoom: 1;
+  *zoom: 1;
   -webkit-box-shadow: 0 0 2px 0 rgba(153, 153, 153, 0.15);
   -moz-box-shadow: 0 0 2px 0 rgba(153, 153, 153, 0.15);
   -o-box-shadow: 0 0 2px 0 rgba(153, 153, 153, 0.15);
@@ -18053,13 +18131,12 @@ div.wide.form .errorMessage {
   top: 2px;
   background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
 }
-.addfileinput-button span:before {
-  content: "";
+.addfileinput-button span:before,
+.addfileinput-button span:after {
+  content: " ";
   display: table;
 }
 .addfileinput-button span:after {
-  content: "";
-  display: table;
   clear: both;
 }
 .addfileinput-button span.attachLoading.z-button {
@@ -18270,15 +18347,14 @@ div.wide.form .errorMessage {
   width: 100%;
   border-top: 1px solid #fff;
   padding: 5px 0;
-  zoom: 1;
+  *zoom: 1;
 }
-.ui-datepicker .ui-datepicker-buttonpane:before {
-  content: "";
+.ui-datepicker .ui-datepicker-buttonpane:before,
+.ui-datepicker .ui-datepicker-buttonpane:after {
+  content: " ";
   display: table;
 }
 .ui-datepicker .ui-datepicker-buttonpane:after {
-  content: "";
-  display: table;
   clear: both;
 }
 .ui-datepicker .ui-datepicker-current {
@@ -20548,16 +20624,15 @@ a.close-ModalGameNotification.simple-link {
   padding: 0 0 20px 0;
 }
 #UserDetailsView .details-table {
-  zoom: 1;
+  *zoom: 1;
   position: relative !important;
 }
-#UserDetailsView .details-table:before {
-  content: "";
+#UserDetailsView .details-table:before,
+#UserDetailsView .details-table:after {
+  content: " ";
   display: table;
 }
 #UserDetailsView .details-table:after {
-  content: "";
-  display: table;
   clear: both;
 }
 .gravatar-container a {
@@ -20588,15 +20663,14 @@ a.close-ModalGameNotification.simple-link {
   clear: right;
 }
 #UserChangeAvatarView {
-  zoom: 1;
+  *zoom: 1;
 }
-#UserChangeAvatarView:before {
-  content: "";
+#UserChangeAvatarView:before,
+#UserChangeAvatarView:after {
+  content: " ";
   display: table;
 }
 #UserChangeAvatarView:after {
-  content: "";
-  display: table;
   clear: both;
 }
 #UserChangeAvatarView .col-0 {
@@ -20697,15 +20771,14 @@ a.dashboard-link .z-label {
   display: block;
   float: left;
   width: 100%;
-  zoom: 1;
+  *zoom: 1;
 }
-#welcome-content:before {
-  content: "";
+#welcome-content:before,
+#welcome-content:after {
+  content: " ";
   display: table;
 }
 #welcome-content:after {
-  content: "";
-  display: table;
   clear: both;
 }
 .help-section {
@@ -20762,7 +20835,7 @@ a.dashboard-link .z-label {
   content: "•";
 }
 #instructions {
-  zoom: 1;
+  *zoom: 1;
   padding-bottom: 30px;
   border-bottom: 1px solid #ccc;
 }
@@ -20772,13 +20845,12 @@ a.dashboard-link .z-label {
   padding-right: 100px;
   padding-top: 15px;
 }
-#instructions:before {
-  content: "";
+#instructions:before,
+#instructions:after {
+  content: " ";
   display: table;
 }
 #instructions:after {
-  content: "";
-  display: table;
   clear: both;
 }
 #welcome-gallery {
@@ -20890,21 +20962,23 @@ a.dashboard-link .z-label {
   background-image: -ms-linear-gradient(#ffffff, #f5f5f5 80%, #f5f5f5)  !important;
   background-image: -o-linear-gradient(#ffffff, #f5f5f5 80%, #f5f5f5)  !important;
   background-image: linear-gradient(#ffffff, #f5f5f5 80%, #f5f5f5)  !important;
-  zoom: 1;
+  *zoom: 1;
 }
 .single-coloumn-details-view .details-table:before,
 #MissionDetailsView .details-table:before,
 #ConversationDetailsView .details-table:before,
-#ConversationDetailsAndRelationsView .details-table:before {
-  content: "";
+#ConversationDetailsAndRelationsView .details-table:before,
+.single-coloumn-details-view .details-table:after,
+#MissionDetailsView .details-table:after,
+#ConversationDetailsView .details-table:after,
+#ConversationDetailsAndRelationsView .details-table:after {
+  content: " ";
   display: table;
 }
 .single-coloumn-details-view .details-table:after,
 #MissionDetailsView .details-table:after,
 #ConversationDetailsView .details-table:after,
 #ConversationDetailsAndRelationsView .details-table:after {
-  content: "";
-  display: table;
   clear: both;
 }
 .single-coloumn-details-view .toolbar-mbmenu,
@@ -21287,18 +21361,18 @@ a.dashboard-link .z-label {
 }
 #ConversationDetailsView .details-table,
 #MissionDetailsView .details-table {
-  zoom: 1;
+  *zoom: 1;
   margin-right: 0 !important;
 }
 #ConversationDetailsView .details-table:before,
-#MissionDetailsView .details-table:before {
-  content: "";
+#MissionDetailsView .details-table:before,
+#ConversationDetailsView .details-table:after,
+#MissionDetailsView .details-table:after {
+  content: " ";
   display: table;
 }
 #ConversationDetailsView .details-table:after,
 #MissionDetailsView .details-table:after {
-  content: "";
-  display: table;
   clear: both;
 }
 #ConversationDetailsView .panel > table,
@@ -23042,15 +23116,14 @@ a.user-link {
   -o-box-shadow: none;
   -ms-box-shadow: none;
   box-shadow: none;
-  zoom: 1;
+  *zoom: 1;
 }
-#marketing-list-member-configuration-form:before {
-  content: "";
+#marketing-list-member-configuration-form:before,
+#marketing-list-member-configuration-form:after {
+  content: " ";
   display: table;
 }
 #marketing-list-member-configuration-form:after {
-  content: "";
-  display: table;
   clear: both;
 }
 #marketing-list-member-configuration-form input[type="text"] {
@@ -23333,9 +23406,11 @@ a + .autoresponder-stats {
   line-height: 175%;
 }
 .module-intro-steps {
-  float: left;
   width: 100%;
   margin: 30px 0 15px 0;
+}
+.module-intro-steps:after {
+  clear: none;
 }
 .module-intro-steps > div {
   float: left;
@@ -23424,14 +23499,6 @@ a + .autoresponder-stats {
 }
 .hide-module-intro,
 .hide-marketing-intro {
-  display: block;
-  clear: both;
-  position: relative;
-  top: 30px;
-  font-size: 11px;
-  clear: none;
-  position: static;
-  top: 0;
   margin-bottom: 30px;
   width: 100%;
   text-align: right;
@@ -25324,15 +25391,14 @@ div.special-pager .hidden.next:after {
 }
 #gd-mini-stats-card {
   margin-top: 0px;
-  zoom: 1;
+  *zoom: 1;
 }
-#gd-mini-stats-card:before {
-  content: "";
+#gd-mini-stats-card:before,
+#gd-mini-stats-card:after {
+  content: " ";
   display: table;
 }
 #gd-mini-stats-card:after {
-  content: "";
-  display: table;
   clear: both;
 }
 #gd-mini-stats-card #gd-mini-stats-chart-div svg g:last-child > g:first-child {
@@ -25405,15 +25471,14 @@ div.special-pager .hidden.next:after {
   border-bottom: 1px solid rgba(32, 50, 52, 0.5);
 }
 #gd-badges-list li {
-  zoom: 1;
+  *zoom: 1;
 }
-#gd-badges-list li:before {
-  content: "";
+#gd-badges-list li:before,
+#gd-badges-list li:after {
+  content: " ";
   display: table;
 }
 #gd-badges-list li:after {
-  content: "";
-  display: table;
   clear: both;
 }
 #gd-badges-list li + li {

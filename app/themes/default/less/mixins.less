@@ -107,31 +107,28 @@
             transition: all @time ease-out;
 }
 
-
-
 .cf:before,
 .cf:after{
-    content:"";
+    content:" ";
     display:table;
 }
 .cf:after{
     clear:both;
 }
 .cf{
-    zoom:1;
+    *zoom:1;
 }
 
 .clearfix{
-    &:before{
-        content:"";
+    &:before,
+    &:after{
+        content:" ";
         display:table;
     }
-    &:after{
-        content:"";
-        display:table;
+	&:after{
         clear:both;
     }
-    zoom:1;
+    *zoom:1;
 }
 
 .debug(){
