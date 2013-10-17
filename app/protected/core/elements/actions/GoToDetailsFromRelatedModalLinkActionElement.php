@@ -69,14 +69,9 @@
         {
             return array_merge(array(
                 'id'                => $this->modelId,
-                'modalId'           => $this->getModalContainerId(),
+                'modalId'           => TasksUtil::getModalContainerId(),
                 'portletId'         => $this->getPortletId(),
                 'uniqueLayoutId'    => $this->getUniqueLayoutId()), $this->getRouteParameters());
-        }
-
-        protected function getModalContainerId()
-        {
-            return ModalLinkActionElement::RELATED_MODAL_CONTAINER_PREFIX . '-view-task';
         }
 
         protected function getPortletId()
@@ -95,6 +90,15 @@
                 return array();
             }
             return $this->params['uniqueLayoutId'];
+        }
+
+        /**
+         * todo: potentially can push this farther back to give everylink a namespace. this would force off on ajax refreshes
+         * @return array
+         */
+        protected function getHtmlOptions()
+        {
+            return array_merge(array('namespace' => 'modalLink'), parent::getHtmlOptions());
         }
     }
 ?>

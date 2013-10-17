@@ -38,7 +38,7 @@
     {
         protected function getDefaultLabel()
         {
-            return Zurmo::t('ZurmoModule', 'Edit TODO');
+            return Zurmo::t('ZurmoModule', 'Edit');
         }
 
         public function getElementValue()
@@ -65,7 +65,7 @@
             {
                 return array('label'  => $this->getLabel(),
                     'url'             => $this->getDefaultRoute(),
-                    'linkOptions'     => $this->getHtmlOptions(),
+                    'linkOptions'     => array_merge(array('namespace'   => 'modalLink'), $this->getHtmlOptions()),
                     'itemOptions'     => array('id' => get_class($this)),
                     'ajaxLinkOptions' => $this->getAjaxLinkOptions()
                 );
@@ -75,18 +75,27 @@
         protected function getAjaxLinkOptions()
         {
             $containerId = TasksUtil::getModalContainerId();
-            $title       = 'need to fix this TODO'; //TasksUtil::getModalDetailsTitle(); //todo: change this
+            $title       = TasksUtil::getModalEditTitle();
             $options = array(
                 'type'   => 'GET',
                 'update' => '#' . $containerId,
-                //todO: add complete in here to update title
+                'complete' => "function(XMLHttpRequest, textStatus){
+                        console.log('xxx" . $containerId . "');
+                        $('#" . $containerId .  "').dialog('option', 'title', '" . $title . "');
+                        console.log('yyy" . $containerId . "');}"
             );
             return $options;
         }
 
         protected function getDefaultRoute()
         {
-            return Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . $this->getRouteAction(), GetUtil::getData());
+            return Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . $this->getRouteAction(),
+                   $this->resolveRouteParameters());
+        }
+
+        protected function resolveRouteParameters()
+        {
+            return array_merge(GetUtil::getData(), array('id' => $this->modelId));
         }
 
         protected function getRouteAction()

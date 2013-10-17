@@ -160,7 +160,7 @@
                                       'relationAttributeName'   => 'Account',
                                       'relationModelId'         => $accountId,
                                       'relationModuleId'        => 'accounts',
-                                      'modalId'                 => 'relatedModalContainer-open-tasks',
+                                      'modalId'                 => 'relatedModalContainer-tasks',
                                       'portletId'               => '12',
                                       'uniqueLayoutId'          => 'AccountDetailsAndRelationsView_12'
                                     )));
@@ -186,9 +186,7 @@
 
             $this->setGetArray(array(
                                     'id'                       => $tasks[1]->id,
-                                    'modalTransferInformation' =>array(
-                                                                            'modalId'                 => 'relatedModalContainer-open-tasks'
-                                                                      )
+                                    'modalTransferInformation' =>array('modalId' => 'relatedModalContainer-tasks')
                                     )
                               );
             $content = $this->runControllerWithNoExceptionsAndGetContent('tasks/default/modalDetailsFromRelation');

@@ -48,7 +48,6 @@
                     'toolbar' => array(
                         'elements' => array(
                             array('type'        => 'SaveButton'),
-                            array('type'        => 'TaskDeleteLink'),
                             array('type'        => 'ModalCancelLink',
                                   'htmlOptions' => 'eval:static::resolveHtmlOptionsForCancel()'
                             )
@@ -261,6 +260,7 @@
                 'url'  =>  $url,
                 'update' => '#' . $modalId,
                 'complete' => "function(XMLHttpRequest, textStatus){
+                console.log('" . $modalId . "');
                                     $('#" . $modalId .  "').dialog('option', 'title', '" . $title . "');
                                     " . $kanbanRefreshScript . "}"
             );

@@ -70,8 +70,6 @@
             return $this->getLabel();
         }
 
-
-//todo: since we are removing modalTransferInformation we should consider changing what element this element exteds
         /**
          * @return array
          */

@@ -321,7 +321,17 @@
         public static function getModalDetailsTitle()
         {
             $params = LabelUtil::getTranslationParamsForAllModules();
-            $title = Zurmo::t('TasksModule', 'Collaborate On TasksModuleSingularLabel', $params);
+            $title = Zurmo::t('TasksModule', 'Collaborate On This TasksModuleSingularLabel', $params);
+            return $title;
+        }
+
+        /**
+         * @return string
+         */
+        public static function getModalEditTitle()
+        {
+            $params = LabelUtil::getTranslationParamsForAllModules();
+            $title = Zurmo::t('TasksModule', 'Edit TasksModuleSingularLabel', $params);
             return $title;
         }
 
@@ -363,15 +373,7 @@
          */
         public static function getModalContainerId()
         {
-            return ModalLinkActionElement::RELATED_MODAL_CONTAINER_PREFIX . '-open-tasks';
-        }
-
-        /**
-         * @return string
-         */
-        public static function getViewModalContainerId()
-        {
-            return ModalLinkActionElement::RELATED_MODAL_CONTAINER_PREFIX . '-view-task';
+            return ModalContainerView::ID;
         }
 
         /**
@@ -381,27 +383,10 @@
         public static function resolveViewAjaxOptionsForSelectingModel()
         {
             $title = self::getModalDetailsTitle();
-            return   ModalView::getAjaxOptionsForModalLink($title, self::getViewModalContainerId(), 'auto', 600,
+            return   ModalView::getAjaxOptionsForModalLink($title, self::getModalContainerId(), 'auto', 600,
                      'center top+25', $class = "'task-dialog'");
         }
 
-        /**
-         * Utilized by shortcut menu
-         * @return string
-         */
-        public static function renderModalContainer()
-        {
-            return ZurmoHtml::tag('div', array('id' => self::getModalContainerId()), '');
-        }
-
-        /**
-         * Utilized by home page task portlet and related task portlets
-         * @return string
-         */
-        public static function renderViewModalContainer()
-        {
-            return ZurmoHtml::tag('div', array('id' => self::getViewModalContainerId()), '');
-        }
         /**
          * @param $renderType
          * @return array

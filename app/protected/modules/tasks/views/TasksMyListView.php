@@ -159,16 +159,6 @@
         }
 
         /**
-         * @return string
-         */
-        protected function renderContent()
-        {
-            $content = parent::renderContent();
-            $content .= TasksUtil::renderViewModalContainer();
-            return $content;
-        }
-
-        /**
          * Override to handle security/access resolution on links.
          */
         protected function getCGridViewLastColumn()

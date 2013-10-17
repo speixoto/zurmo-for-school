@@ -124,7 +124,6 @@
             $cClipWidget->widget($this->getGridViewWidgetPath(), $this->getCGridViewParams());
             $cClipWidget->endClip();
             $content     = $this->renderKanbanViewTitleWithActionBars();
-            $content    .= TasksUtil::renderViewModalContainer();
             //Check for zero count
             if($this->getDataProvider()->getTotalItemCount() > 0)
             {
