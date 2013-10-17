@@ -382,14 +382,25 @@
 
         /**
          * @param $renderType
+         * @param string|null $sourceKanbanBoardId
          * @return array
          */
-        public static function resolveAjaxOptionsForModalView($renderType)
+        public static function resolveAjaxOptionsForModalView($renderType, $sourceKanbanBoardId = null)
         {
             assert('is_string($renderType)');
             $title = self::getModalTitleForCreateTask($renderType);
             return   ModalView::getAjaxOptionsForModalLink($title, self::getModalContainerId(), 'auto', 600,
-                     'center top+25', $class = "'task-dialog'");
+                     'center top+25', $class = "'task-dialog'",
+                     static::resolveExtraCloseScriptForModalAjaxOptions($sourceKanbanBoardId));
+        }
+
+        public static function resolveExtraCloseScriptForModalAjaxOptions($sourceKanbanBoardId = null)
+        {
+            assert('is_string($sourceKanbanBoardId) || $sourceKanbanBoardId == null');
+            if($sourceKanbanBoardId != null)
+            {
+                return "$.fn.yiiGridView.update('" . $sourceKanbanBoardId. "');";
+            }
         }
 
         /**
@@ -407,7 +418,7 @@
             assert('is_string($moduleId)');
             assert('is_string($moduleClassName)');
             assert('is_string($sourceKanbanBoardId) || $sourceKanbanBoardId == null');
-            $ajaxOptions = TasksUtil::resolveAjaxOptionsForModalView('Details');
+            $ajaxOptions = TasksUtil::resolveAjaxOptionsForModalView('Details', $sourceKanbanBoardId);
             $label       = $task->name . ZurmoHtml::tag('span', array(), '(' . strval($task->owner) . ')');
             $params      = array('label' => $label, 'routeModuleId' => 'tasks',
                                  'ajaxOptions' => $ajaxOptions,
