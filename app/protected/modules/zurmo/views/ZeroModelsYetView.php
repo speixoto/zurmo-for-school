@@ -63,6 +63,10 @@
             $this->modelClassName = $modelClassName;
         }
 
+        /**
+         * Render Zero Model View Content
+         * @return string
+         */
         protected function renderContent()
         {
             $params             = $this->getCreateLinkParams();
@@ -74,12 +78,19 @@
             return $content;
         }
 
+        /**
+         * Get create link params
+         * @return array
+         */
         protected function getCreateLinkParams()
         {
             $label              = $this->getCreateLinkDisplayLabel();
             return array('htmlOptions' => array('class' => 'z-button green-button'), 'label' => $label);
         }
 
+        /**
+         * @return string
+         */
         protected function getIconName()
         {
             return $this->modelClassName;

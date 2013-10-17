@@ -87,12 +87,19 @@
         public function render()
         {
             $content  = ZurmoHtml::openTag('div', array('class' => 'default-button'));
-            $label    = ZurmoHtml::tag('i', array('class' => $this->params['iconClass']), null);
-            $label   .= ZurmoHtml::tag('span', array('class' => 'button-label'), $this->getLabel());
-            $content .= ZurmoHtml::ajaxlink($label, $this->route, $this->getAjaxOptions(), $this->getHtmlOptions());
+            $content .= parent::render();
             $content .= ZurmoHtml::closeTag('div');
             return $content;
+        }
 
+        protected function resolveLabelAndWrap()
+        {
+            if ($this->wrapLabel())
+            {
+                $content = ZurmoHtml::tag('i', array('class' => 'icon-add'), '');
+                return $content . ZurmoHtml::wrapLabel($this->getLabel(), 'button-label');
+            }
+            return $this->getLabel();
         }
     }
 ?>

@@ -81,15 +81,15 @@
             }
             try
             {
-                if (strtolower($value) == strtolower(Project::PROJECT_STATUS_ACTIVE) ||
+                if (strtolower($value) == strtolower(Project::STATUS_ACTIVE) ||
                     strtolower($value) == strtolower('Active'))
                 {
-                    return Project::PROJECT_STATUS_ACTIVE;
+                    return Project::STATUS_ACTIVE;
                 }
-                elseif (strtolower($value) == strtolower(Project::PROJECT_STATUS_ARCHIVED) ||
+                elseif (strtolower($value) == strtolower(Project::STATUS_ARCHIVED) ||
                         strtolower($value) == strtolower('Archived'))
                 {
-                    return Project::PROJECT_STATUS_ARCHIVED;
+                    return Project::STATUS_ARCHIVED;
                 }
                 else
                 {
@@ -104,8 +104,8 @@
 
         protected static function getAcceptableValues()
         {
-            return array(Project::PROJECT_STATUS_ACTIVE,
-                         Project::PROJECT_STATUS_ARCHIVED,
+            return array(Project::STATUS_ACTIVE,
+                         Project::STATUS_ARCHIVED,
                          'Active',
                          'Archived');
         }

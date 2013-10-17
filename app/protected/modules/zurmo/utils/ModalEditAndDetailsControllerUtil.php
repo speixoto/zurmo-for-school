@@ -45,8 +45,24 @@
             return static::renderModalEditAndDetailsView($controller, $modalEditAndDetailsView, $model, $renderType);
         }
 
+        public static function setAjaxModeAndRenderModalEditView($controller, $modalEditAndDetailsView, $model)
+        {
+            Yii::app()->getClientScript()->setToAjaxMode();
+            return static::renderModalEditView($controller, $modalEditAndDetailsView, $model);
+        }
+
+        public static function setAjaxModeAndRenderModalDetailsView($controller, $modalEditAndDetailsView, $model)
+        {
+            Yii::app()->getClientScript()->setToAjaxMode();
+            return static::renderModalDetailsView($controller, $modalEditAndDetailsView, $model);
+        }
+
         /**
-         * @return rendered content from view as string.
+         * @param $controller
+         * @param $modalEditAndDetailsView
+         * @param $model
+         * @param $renderType
+         * @return string
          */
         protected static function renderModalEditAndDetailsView($controller, $modalEditAndDetailsView, $model, $renderType)
         {
@@ -54,8 +70,37 @@
                                                     $renderType,
                                                     $controller->getId(),
                                                     $controller->getModule()->getId(),
-                                                    $model
-                                                );
+                                                    $model);
+            $view                = new ModalView($controller, $editAndDetailsView);
+            return $view->render();
+        }
+
+        /**
+         * @param $controller
+         * @param $modalEditView
+         * @param $model
+         * @return string
+         */
+        protected static function renderModalEditView($controller, $modalEditView, $model)
+        {
+            $editAndDetailsView  = new $modalEditView($controller->getId(),
+                                                    $controller->getModule()->getId(),
+                                                    $model);
+            $view                = new ModalView($controller, $editAndDetailsView);
+            return $view->render();
+        }
+
+        /**
+         * @param $controller
+         * @param $modalEditView
+         * @param $model
+         * @return string
+         */
+        protected static function renderModalDetailsView($controller, $modalEditView, $model)
+        {
+            $editAndDetailsView  = new $modalEditView($controller->getId(),
+                                       $controller->getModule()->getId(),
+                                       $model);
             $view                = new ModalView($controller, $editAndDetailsView);
             return $view->render();
         }

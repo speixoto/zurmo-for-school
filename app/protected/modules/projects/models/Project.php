@@ -39,9 +39,9 @@
         /*
          * Constants for project status
          */
-        const PROJECT_STATUS_ACTIVE     = 1;
+        const STATUS_ACTIVE     = 1;
 
-        const PROJECT_STATUS_ARCHIVED   = 0;
+        const STATUS_ARCHIVED   = 0;
 
         /**
          * @param string $name
@@ -126,7 +126,8 @@
                     array('name',           'type',    'type' => 'string'),
                     array('name',           'length',  'min'  => 3, 'max' => 64),
                     array('description',    'type',    'type' => 'string'),
-                    array('status',         'type',    'type' => 'integer')
+                    array('status',         'type',    'type' => 'integer'),
+                    array('status',         'default', 'value' => Project::STATUS_ACTIVE)
                 ),
                 'elements' => array(
                     'status' => 'ProjectStatusDropDown',
@@ -171,8 +172,8 @@
         public static function getStatusDropDownArray()
         {
             return array(
-                self::PROJECT_STATUS_ACTIVE    => Zurmo::t('ProjectsModule', 'Active'),
-                self::PROJECT_STATUS_ARCHIVED  => Zurmo::t('ProjectsModule', 'Archived'),
+                self::STATUS_ACTIVE    => Zurmo::t('ProjectsModule', 'Active'),
+                self::STATUS_ARCHIVED  => Zurmo::t('ProjectsModule', 'Archived'),
             );
         }
 

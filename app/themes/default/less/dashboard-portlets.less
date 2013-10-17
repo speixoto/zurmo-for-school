@@ -99,8 +99,14 @@
 	.icon-reports:before{
 		content: '\V';
 	}
-	.icon-products:before{
-		content: '\003E';
+	.icon-products{
+		&:before{
+			content: '\003E';
+		}
+		&:after{
+			content: '';
+			display: none;
+		}
 	}
 	.icon-rssReader:before{
 		content: "z";
@@ -129,6 +135,10 @@
 	}
 	.icon-maps:before{
 		content: 'L';
+		font-size: 46px;
+	}
+	.icon-google-analytics:before{
+		content: '\00DA';
 		font-size: 46px;
 	}
 

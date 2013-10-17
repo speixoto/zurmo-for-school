@@ -64,7 +64,7 @@
             $taskCheckListItem->name = 'Test Check List Item';
             $task->checkListItems->add($taskCheckListItem);
             $task->activityItems->add($accounts[0]);
-            $task->status           = Task::TASK_STATUS_IN_PROGRESS;
+            $task->status           = Task::STATUS_IN_PROGRESS;
             $this->assertTrue($task->save());
             $id = $task->id;
             unset($task);

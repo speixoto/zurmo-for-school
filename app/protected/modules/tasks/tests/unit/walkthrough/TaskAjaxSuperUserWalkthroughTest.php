@@ -138,13 +138,13 @@
             $task   = $tasks[0];
             $taskId = $task->id;
 
-            $this->setGetArray(array('id' => $task->id, 'status' => Task::TASK_STATUS_COMPLETED));
+            $this->setGetArray(array('id' => $task->id, 'status' => Task::STATUS_COMPLETED));
             $content = $this->runControllerWithNoExceptionsAndGetContent('tasks/default/updateStatusViaAjax');
             $this->assertTrue(strpos($content, 'Completed On') > 0);
             $task   = Task::getById($taskId);
             $this->assertTrue((bool)$task->completed);
 
-            $this->setGetArray(array('id' => $task->id, 'status' => Task::TASK_STATUS_IN_PROGRESS));
+            $this->setGetArray(array('id' => $task->id, 'status' => Task::STATUS_IN_PROGRESS));
             $content = $this->runControllerWithNoExceptionsAndGetContent('tasks/default/updateStatusViaAjax', true);
             $this->assertFalse(strpos($content, 'Completed On') > 0);
             $task   = Task::getById($taskId);
@@ -191,7 +191,7 @@
                                                                       )
                                     )
                               );
-            $content = $this->runControllerWithNoExceptionsAndGetContent('tasks/default/modalViewFromRelation');
+            $content = $this->runControllerWithNoExceptionsAndGetContent('tasks/default/modalDetailsFromRelation');
             $this->assertTrue(strpos($content, 'Task for test cases') > 0);
 
             $this->setGetArray(array(
@@ -242,13 +242,13 @@
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
             $task = TaskTestHelper::createTaskByNameForOwner('My Kanban Task', Yii::app()->user->userModel);
             TasksUtil::setDefaultValuesForTask($task);
-            $task->status = Task::TASK_STATUS_IN_PROGRESS;
+            $task->status = Task::STATUS_IN_PROGRESS;
             $taskId = $task->id;
             $this->assertTrue($task->save());
 
             $task1 = TaskTestHelper::createTaskByNameForOwner('My Kanban Task 1', Yii::app()->user->userModel);
             TasksUtil::setDefaultValuesForTask($task1);
-            $task1->status = Task::TASK_STATUS_NEW;
+            $task1->status = Task::STATUS_NEW;
             $this->assertTrue($task1->save());
             $task1Id = $task1->id;
             $taskArray = array($task, $task1);
@@ -272,7 +272,7 @@
             $contentArray = CJSON::decode($content);
             $this->assertTrue(strpos($contentArray['button'], 'Finish') > 0);
             $task1 = Task::getById($task1Id);
-            $this->assertEquals(Task::TASK_STATUS_IN_PROGRESS, $task1->status);
+            $this->assertEquals(Task::STATUS_IN_PROGRESS, $task1->status);
             $kanbanItem = KanbanItem::getByTask($task1Id);
             $this->assertEquals(KanbanItem::TYPE_IN_PROGRESS, $kanbanItem->type);
 
@@ -289,10 +289,10 @@
             $tasks = Task::getByName('My Kanban Task');
             $task  = $tasks[0];
             $taskId = $task->id;
-            $this->setGetArray(array('targetStatus' => Task::TASK_STATUS_AWAITING_ACCEPTANCE, 'taskId' => $task->id));
+            $this->setGetArray(array('targetStatus' => Task::STATUS_AWAITING_ACCEPTANCE, 'taskId' => $task->id));
             $this->runControllerWithNoExceptionsAndGetContent('tasks/default/updateStatusInKanbanView', true);
             $task = Task::getById($taskId);
-            $this->assertEquals(Task::TASK_STATUS_AWAITING_ACCEPTANCE, $task->status);
+            $this->assertEquals(Task::STATUS_AWAITING_ACCEPTANCE, $task->status);
         }
    }
 ?>

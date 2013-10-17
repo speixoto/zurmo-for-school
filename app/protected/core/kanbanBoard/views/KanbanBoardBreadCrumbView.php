@@ -34,74 +34,40 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class ViewFromRelatedModalLinkActionElement extends RelatedModalLinkActionElement
+    /**
+     * View that renders kanban board breadcrumb content
+     */
+    class KanbanBoardBreadCrumbView extends BreadCrumbView
     {
-
-        protected function getDefaultLabel()
+        /**
+         * @return string
+         */
+        protected function getHomeLinkLabel()
         {
-            $params = LabelUtil::getTranslationParamsForAllModules();
-            $title = Zurmo::t('Core', 'View', $params);
-            return $title;
-        }
-
-        protected function getDefaultRoute()
-        {
-            $params = array_merge(array('id' => $this->modelId), $this->getViewLinkUrlParams());
-            return Yii::app()->createUrl($this->getRouteModuleId() . '/' .
-                        $this->controllerId . '/modalViewFromRelation', $params);
-        }
-
-        protected function getRouteModuleId()
-        {
-            if (!isset($this->params['routeModuleId']))
+            if($this->moduleId == 'projects')
             {
-                return array();
+                return Zurmo::t('ProjectsModule', 'ProjectsModulePluralLabel', LabelUtil::getTranslationParamsForAllModules());
             }
-            return $this->params['routeModuleId'];
-        }
-
-        public function getActionType()
-        {
-            return 'View';
-        }
-
-        protected function getViewLinkUrlParams()
-        {
-            return array(
-                'modalTransferInformation' => $this->getModalTransferInformation(),
-            );
-        }
-
-        protected function getModalTransferInformation()
-        {
-            return array_merge(array(
-                    'modalId'           => $this->getModalContainerId(),
-                    'portletId'         => $this->getPortletId(),
-                    'uniqueLayoutId'    => $this->getUniqueLayoutId()
-            ), $this->getRouteParameters());
-        }
-
-        protected function getModalContainerId()
-        {
-            return ModalLinkActionElement::RELATED_MODAL_CONTAINER_PREFIX . '-view-task';
-        }
-
-        protected function getPortletId()
-        {
-            if (!isset($this->params['portletId']))
+            elseif($this->moduleId == 'accounts')
             {
-                return array();
+                return Zurmo::t('AccountsModule', 'AccountsModulePluralLabel', LabelUtil::getTranslationParamsForAllModules());
             }
-            return $this->params['portletId'];
+            elseif($this->moduleId == 'contacts')
+            {
+                return Zurmo::t('ContactsModule', 'ContactsModulePluralLabel', LabelUtil::getTranslationParamsForAllModules());
+            }
+            elseif($this->moduleId == 'opportunities')
+            {
+                return Zurmo::t('OpportunitiesModule', 'OpportunitiesModulePluralLabel', LabelUtil::getTranslationParamsForAllModules());
+            }
         }
 
-        protected function getUniqueLayoutId()
+        /**
+         * @return string
+         */
+        protected function getHomeUrl()
         {
-            if (!isset($this->params['uniqueLayoutId']))
-            {
-                return array();
-            }
-            return $this->params['uniqueLayoutId'];
+            return Yii::app()->createUrl($this->resolveModuleId() . '/' . $this->resolveControllerId() . '/list');
         }
     }
 ?>

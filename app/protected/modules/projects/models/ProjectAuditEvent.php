@@ -58,7 +58,7 @@
          * @param User $user
          * @return boolean
          */
-        public static function logAuditEvent($eventName, $data = null, Project $project = null, User $user = null)
+        public static function logAuditEvent($eventName, $data = null, Project $project, User $user = null)
         {
             assert('is_string($eventName)  && $eventName  != ""');
             if ($user === null)
@@ -69,9 +69,7 @@
                     throw new NoCurrentUserSecurityException();
                 }
             }
-
-            $tableName  = self::getTableName('ProjectAuditEvent');
-            $projectAuditEvent = new ProjectAuditEvent();
+            $projectAuditEvent                 = new ProjectAuditEvent();
             $projectAuditEvent->dateTime       = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
             $projectAuditEvent->eventName      = $eventName;
             $projectAuditEvent->user           = $user;
@@ -120,6 +118,7 @@
                 ),
                 'rules' => array(
                     array('dateTime',       'required'),
+                    array('user'    ,       'required'),
                     array('dateTime',       'type', 'type' => 'datetime'),
                     array('eventName',      'required'),
                     array('eventName',      'type',   'type' => 'string'),

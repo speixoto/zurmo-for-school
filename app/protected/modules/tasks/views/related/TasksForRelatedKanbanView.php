@@ -53,13 +53,20 @@
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array(  'type'            => 'CreateFromRelatedModalLink',
-                                    'routeModuleId'   => 'eval:$this->moduleId',
-                                    'routeParameters' => 'eval:$this->getCreateLinkRouteParameters()',
-                                    'ajaxOptions'     => 'eval:TasksUtil::resolveAjaxOptionsForEditModel("Create")',
-                                    'uniqueLayoutId'  => 'eval:$this->uniqueLayoutId',
-                                    'modalContainerId'=> 'eval:TasksUtil::getModalContainerId()'
-                                 ),
+                            array('type'        => 'RelatedKanbanViewDetailsMenu',
+                                  'iconClass'   => 'icon-details',
+                                  'id'          => 'RelatedKanbanViewActionMenu',
+                                  'itemOptions' => array('class' => 'hasDetailsFlyout'),
+                                  'model'       => 'eval:$this->params["relationModel"]',
+                            ),
+                            array('type'            => 'CreateTaskFromRelatedKanbanModalLink',
+                                  'routeModuleId'   => 'eval:$this->moduleId',
+                                  'routeParameters' => 'eval:$this->getCreateLinkRouteParameters()',
+                                  'ajaxOptions'     => 'eval:TasksUtil::resolveAjaxOptionsForEditModel("Create")',
+                                  'uniqueLayoutId'  => 'eval:$this->uniqueLayoutId',
+                                  'modalContainerId'=> 'eval:TasksUtil::getModalContainerId()'
+                            ),
+
                         ),
                     ),
                 ),
@@ -98,9 +105,10 @@
             $this->dataProvider           = $dataProvider;
             $this->gridIdSuffix           = $gridIdSuffix;
             $this->gridViewPagerParams    = $gridViewPagerParams;
-            $this->gridId                 = 'kanban-view';
-            $this->kanbanBoard            = $kanbanBoard;
+            $this->gridId                 = $this->getGridId();
+            $this->setKanbanBoard($kanbanBoard);
             $this->params                 = $params;
+            $this->modelId                = $params["relationModel"]->id;
         }
 
         /**
@@ -115,14 +123,24 @@
             $cClipWidget->beginClip("ListView");
             $cClipWidget->widget($this->getGridViewWidgetPath(), $this->getCGridViewParams());
             $cClipWidget->endClip();
-            $content     = $this->renderTitleContent();
-            $content    .= $this->renderViewToolBar();
+            $content     = $this->renderKanbanViewTitleWithActionBars();
             $content    .= TasksUtil::renderViewModalContainer();
-
-            $content    .= $cClipWidget->getController()->clips['ListView'] . "\n";
-            if ($this->getRowsAreSelectable())
+            //Check for zero count
+            if($this->getDataProvider()->getTotalItemCount() > 0)
             {
-                $content .= ZurmoHtml::hiddenField($this->gridId . $this->gridIdSuffix . '-selectedIds', implode(",", $this->selectedIds)) . "\n"; // Not Coding Standard
+                $content    .= $cClipWidget->getController()->clips['ListView'] . "\n";
+                if ($this->getRowsAreSelectable())
+                {
+                    $content .= ZurmoHtml::hiddenField($this->gridId . $this->gridIdSuffix .
+                                                        '-selectedIds', implode(",", $this->selectedIds)) . "\n"; // Not Coding Standard
+                }
+            }
+            else
+            {
+                $zeroModelView = new ZeroTasksForRelatedModelYetView($this->controllerId,
+                                                                     $this->moduleId, 'Task',
+                                                                     get_class($this->params['relationModel']));
+                $content .= $zeroModelView->render();
             }
             $content .= $this->renderScripts();
             return $content;
@@ -142,14 +160,16 @@
          */
         protected function getCardColumns()
         {
-            $controllerId = $this->controllerId;
-            $moduleId     = $this->moduleId;
-            return array('name'                 => array('value'  => $this->getLinkString('$data->name', 'name'), 'class' => 'task-name'),
-                         'requestedByUser'      => array('value'  => $this->getRelatedLinkString('$data->requestedByUser', 'requestedByUser', 'users'), 'class'  => 'requestedByUser-name'),
-                         'status'               => array('value' => 'TasksUtil::resolveActionButtonForTaskByStatus(intval($data->status), "' . $controllerId . '", "' . $moduleId . '", $data->id)', 'class' => 'task-status'),
-                         'subscribe'            => array('value' => array('TasksUtil', 'getKanbanSubscriptionLink'), 'class' => 'task-subscription'),
-                         'completed'            => array('value' => 'TasksUtil::renderCompletionProgressBar($data)', 'class' => 'task-completion')
-                        );
+            return array(
+                'name'   => array('value'  => $this->getLinkString('$data->name', 'name'), 'class' => 'task-name'),
+                'status' => array('value' => 'TasksUtil::resolveActionButtonForTaskByStatus(intval($data->status), "' .
+                                           $this->controllerId . '", "' . $this->moduleId . '", $data->id)',
+                                  'class' => 'task-status'),
+                'subscribe' => array('value' => array('TasksUtil', 'getKanbanSubscriptionLink'),
+                                     'class' => 'task-subscription'),
+                'completionBar' => array('value' => 'TasksUtil::renderCompletionProgressBarContent($data)',
+                                         'class' => 'task-completion')
+            );
         }
 
         /**
@@ -215,7 +235,8 @@
         public function resolveLinkString($data, $row)
         {
             $taskUtil    = new TasksUtil();
-            $content     = $taskUtil->getLinkForViewModal($data, $row, $this->controllerId, $this->moduleId, $this->getActionModuleClassName());
+            $content     = $taskUtil->getLinkForViewModal($data, $row, $this->controllerId,
+                                                          $this->moduleId, $this->getActionModuleClassName());
             return $content;
         }
 
@@ -254,37 +275,114 @@
          */
         protected function renderActionElementBar($renderedInForm)
         {
-            $getData        = GetUtil::getData();
-            $isKanbanActive = $getData['kanbanBoard'];
-            $toolbarContent = null;
-            $content        = null;
-            if(isset($getData['kanbanBoard']) && $getData['kanbanBoard'] == 1)
+            $kanbanActive = false;
+            if($this->params['relationModuleId'] == 'projects')
             {
-               $link = ZurmoDefaultViewUtil::renderActionBarLinksForKanbanBoard($this->controllerId, $this->params['relationModuleId'], (int)$this->params['relationModel']->id);
-               $content = parent::renderActionElementBar($renderedInForm) . $link;
+                $kanbanActive = true;
             }
-            $toolbarContent = ZurmoHtml::tag('div', array('class' => 'view-toolbar'), $content);
-            return $toolbarContent;
+            else
+            {
+                $getData = GetUtil::getData();
+                if(isset($getData['kanbanBoard']) && $getData['kanbanBoard'] == 1)
+                {
+                   $kanbanActive = true;
+                }
+            }
+
+            if($kanbanActive)
+            {
+               $content = parent::renderActionElementBar($renderedInForm);
+            }
+            return $content;
         }
 
         /**
-         * Need to override it as in list view the class of kanbanboard is coming as ListView //todo ask Jason
          * @return string
          */
         protected function getGridViewWidgetPath()
         {
-            return $this->kanbanBoard->getGridViewWidgetPath();
+            return $this->getKanbanBoard()->getGridViewWidgetPath();
         }
 
         /**
-         * Need to override it as in list view the class of kanbanboard is coming as ListView //todo ask Jason
          * @return string
          */
         protected function getCGridViewParams()
         {
             $params = parent::getCGridViewParams();
-            $params = array_merge($params, $this->kanbanBoard->getGridViewParams());
+            $params = array_merge($params, $this->getKanbanBoard()->getGridViewParams());
             return array_merge($params, $this->resolveExtraParamsForKanbanBoard());
+        }
+
+        /**
+         * Get grid id
+         * @return string
+         */
+        protected function getGridId()
+        {
+            return $this->getRelationAttributeName() . '-tasks-kanban-view';
+        }
+
+        /**
+         * Override to pass the sourceId
+         * @return type
+         */
+        protected function getCreateLinkRouteParameters()
+        {
+            return array_merge( array('sourceId' => $this->getGridViewId()),
+                                parent::getCreateLinkRouteParameters());
+        }
+
+        /**
+         * Renders kanban view with action bars
+         * @return string
+         */
+        protected function renderKanbanViewTitleWithActionBars()
+        {
+            $content                 = $this->renderTitleContent();
+            $actionElementBarContent = $this->renderActionElementBar(false);
+            $actionBarContent        = ZurmoHtml::tag('nav', array('class' => 'pillbox clearfix'),
+                                                      $actionElementBarContent);
+            $secondActionBarContent  = $this->renderSecondActionElementBar(false);
+            $secondActionBarContent .= $this->resolveShouldRenderActionBarLinksForKanbanBoard();
+            if($secondActionBarContent != null)
+            {
+                $actionBarContent .= ZurmoHtml::tag('nav', array('class' => 'pillbox clearfix'), $secondActionBarContent);
+            }
+            $content .= ZurmoHtml::tag('div', array('class' => 'view-toolbar-container clearfix'), $actionBarContent);
+            return $content;
+        }
+
+        protected function resolveShouldRenderActionBarLinksForKanbanBoard()
+        {
+            if($this->shouldRenderActionBarLinksForKanbanBoard())
+            {
+                return ZurmoDefaultViewUtil::renderActionBarLinksForKanbanBoard($this->controllerId,
+                    $this->params['relationModuleId'],
+                    (int)$this->params['relationModel']->id,
+                    true);
+            }
+        }
+
+        protected function shouldRenderActionBarLinksForKanbanBoard()
+        {
+            return true;
+        }
+
+        /**
+         * Modify the grid template for kanban view
+         * @return string
+         */
+        protected static function getGridTemplate()
+        {
+            $preloader = '<div class="list-preloader"><span class="z-spinner"></span></div>';
+            $items     = '<div class="items-wrapper">{items}</div>';
+            return "{summary}" . $items . "{pager}" . $preloader;
+        }
+
+        public static function getDesignerRulesType()
+        {
+            return null;
         }
     }
 ?>

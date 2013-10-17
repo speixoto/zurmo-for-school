@@ -36,6 +36,10 @@
 
     class TasksDefaultController extends ActivityModelsDefaultController
     {
+        /**
+         * Close task
+         * @param string $id
+         */
         public function actionCloseTask($id)
         {
             $task                    = Task::getById(intval($id));
@@ -253,7 +257,7 @@
          * @param string $uniqueLayoutId
          */
         public function actionModalSaveFromRelation($relationAttributeName, $relationModelId, $relationModuleId,
-                                                    $portletId, $uniqueLayoutId, $id = null)
+                                                    $portletId, $uniqueLayoutId, $sourceId, $id = null)
         {
             if($id == null)
             {
@@ -274,7 +278,7 @@
             {
                 ProjectsUtil::logAddTaskEvent($task);
             }
-            $this->actionModalViewFromRelation($task->id);
+            $this->actionModalDetailsFromRelation($task->id);
         }
 
         /**
@@ -292,7 +296,7 @@
                 $task = Task::getById(intval($id));
             }
             $task     = $this->attemptToSaveModelFromPost($task, null, false);
-            $this->actionModalViewFromRelation($task->id);
+            $this->actionModalDetailsFromRelation($task->id);
         }
 
         /**
@@ -315,7 +319,7 @@
          * Loads modal view from related view
          * @param string $id
          */
-        public function actionModalViewFromRelation($id)
+        public function actionModalDetailsFromRelation($id)
         {
             $cs = Yii::app()->getClientScript();
             $isScriptRegistered = $cs->isScriptFileRegistered(Yii::getPathOfAlias('application.modules.tasks.elements.assets'),
@@ -334,8 +338,7 @@
             AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED,
                                        array(strval($task), get_class($this->getModule())), $task);
             TasksUtil::markUserHasReadLatest($task, Yii::app()->user->userModel);
-            echo ModalEditAndDetailsControllerUtil::setAjaxModeAndRenderModalEditAndDetailsView($this,
-                                                                                                'TaskDetailsView',
+            echo ModalEditAndDetailsControllerUtil::setAjaxModeAndRenderModalDetailsView($this, 'TaskDetailsView',
                                                                                                 $task,
                                                                                                 'Details');
         }
@@ -374,10 +377,9 @@
                             ) . '/TaskUtils.js',
                         CClientScript::POS_END
                     );
-                    echo ModalEditAndDetailsControllerUtil::setAjaxModeAndRenderModalEditAndDetailsView($this,
-                                                                                            'TaskModalEditAndDetailsView',
-                                                                                            $task,
-                                                                                            'Edit');
+                    echo ModalEditAndDetailsControllerUtil::setAjaxModeAndRenderModalEditView($this,
+                                                                                            'TaskModalEditView',
+                                                                                            $task);
                 }
             }
         }
@@ -420,7 +422,7 @@
                         //if kanban type is completed
                         if($getData['type'] == KanbanItem::TYPE_COMPLETED)
                         {
-                            $this->actionUpdateStatusInKanbanView(Task::TASK_STATUS_COMPLETED, $taskId);
+                            $this->actionUpdateStatusInKanbanView(Task::STATUS_COMPLETED, $taskId);
                             $response['button'] = '';
                         }
                         else
@@ -499,7 +501,7 @@
             $task          = Task::getById(intval($id));
             $currentStatus = $task->status;
             $task->status = intval($status);
-            if(intval($status) == Task::TASK_STATUS_COMPLETED)
+            if(intval($status) == Task::STATUS_COMPLETED)
             {
                 foreach ($task->checkListItems as $checkItem)
                 {

@@ -45,77 +45,113 @@
         {
             return array(
                     'name'  => $this->attribute,
-                    'value' => 'DashboardActiveProjectListViewColumnAdapter::getActiveProjectInformationForDashboard($data)',
+                    'value' => 'DashboardActiveProjectListViewColumnAdapter
+                                            ::getActiveProjectInformationForDashboard($data)',
                     'type'  => 'raw'
                 );
         }
 
         /**
-         * Get active project information for dashboard
-         * @param array $data
+         * Resolve project link
+         * @param string $projectName
+         * @param int $id
          * @return string
          */
-        public static function getActiveProjectInformationForDashboard($data)
+        protected static function resolveProjectLinkWithRedirectURl($projectName, $id)
         {
-            $content = '<h4>' . ZurmoHtml::link($data->name, Yii::app()->createUrl('/projects/default/details', array('id' => $data->id))) . '</h4>' . '<table>';
-            $models = ProjectsUtil::getTasksByProject($data);
+            $url = Yii::app()->createUrl('/projects/default/details', array('id' => $id));
+            return ZurmoHtml::link($projectName, $url, array('class' => 'edit-autoresponder-link'));
+        }
 
-            if(count($models) > 0)
+        /**
+         * Group tasks by kanban type and get stats
+         * @param Project $project
+         * @return array
+         */
+        protected static function groupTasksByKanbanTypeAndGetStats(Project $project)
+        {
+            $tasks = $project->tasks;
+            $kanbanItemsArray = array();
+            $totalToDosCount = 0;
+            $completedTodosCount = 0;
+            foreach ($tasks as $task)
             {
-                $kanbanItemsArray = array();
-                $kanbanItemsCountArray = array();
-                $totalToDosCount = 0;
-                $completedTodosCount = 0;
-                foreach ($models as $data)
+                $totalToDosCount += count($task->checkListItems);
+                if(count($task->checkListItems) != 0)
                 {
-                    $totalToDosCount += count($data->checkListItems);
-                    if(count($data->checkListItems) != 0)
-                    {
-                        $completedTodosCount += TasksUtil::getTaskCompletedCheckListItems($data);
-                    }
-                    $kanbanItem  = KanbanItem::getByTask($data->id);
-                    if($kanbanItem == null)
-                    {
-                        //Create KanbanItem here
-                        $kanbanItem = TasksUtil::createKanbanItemFromTask($data);
-                    }
-
-                    $kanbanItemsArray[$kanbanItem->type] = $kanbanItem->id;
+                    $completedTodosCount += TasksUtil::getTaskCompletedCheckListItems($task);
                 }
-                if($totalToDosCount != 0)
+                $kanbanItem  = KanbanItem::getByTask($task->id);
+                if($kanbanItem == null)
                 {
-                    $completionPercent = ($completedTodosCount/$totalToDosCount)*100;
+                    //Create KanbanItem here
+                    $kanbanItem = TasksUtil::createKanbanItemFromTask($task);
+                }
+
+                $kanbanItemsArray[$kanbanItem->type][] = $kanbanItem->id;
+            }
+
+            $stats = array();
+            $kanbanTypeDropDownData = KanbanItem::getTypeDropDownArray();
+            foreach($kanbanTypeDropDownData as $type => $label)
+            {
+                if(isset($kanbanItemsArray[$type]))
+                {
+                    $stats[$type] = count($kanbanItemsArray[$type]);
                 }
                 else
                 {
-                    $completionPercent = 0;
+                    $stats[$type] = 0;
                 }
-                $kanbanTypeDropDownData = KanbanItem::getTypeDropDownArray();
-                //todo:@Mayank The following content creation would change based on amit's design
-                $content .= '<tr>';
-                foreach($kanbanTypeDropDownData as $type => $label)
-                {
-                    $content .= '<th>' . $label . '</th>';
-                }
-                $content .= '<th>' . Zurmo::t('ProjectsModule', '% Complete') . '</th>';
-                $content .= '</tr><tr>';
-                foreach($kanbanTypeDropDownData as $type => $label)
-                {
-                    if(isset($kanbanItemsArray[$type]))
-                    {
-                        $content .= '<td>' . count($kanbanItemsArray[$type]) . '</td>';
-                    }
-                    else
-                    {
-                        $content .= '<td>0</td>';
-                    }
-                }
-                $content .= '<td>' . $completionPercent . '</td>';
-                $content .= '</tr></table>';
+            }
+            $stats['completionPercent'] = static::resolveCompletionPercentage($completedTodosCount, $totalToDosCount);
+            return $stats;
+        }
+
+        /**
+         * Resolve completion percentags
+         * @param int $completedTodosCount
+         * @param int $totalToDosCount
+         * @return int
+         */
+        protected static function resolveCompletionPercentage($completedTodosCount, $totalToDosCount)
+        {
+            if($totalToDosCount != 0)
+            {
+                $completionPercent = ($completedTodosCount/$totalToDosCount)*100;
             }
             else
             {
-                $content .= '<tr><td colspan="5">' . Zurmo::t('ProjectsModule','(No Tasks)') . '</td></tr></table>';
+                $completionPercent = 0;
+            }
+            return round($completionPercent, 2);
+        }
+
+        /**
+         * Get active project information for dashboard
+         * @param array $project
+         * @return string
+         */
+        public static function getActiveProjectInformationForDashboard(Project $project)
+        {
+            $content = static::resolveProjectLinkWithRedirectURl($project->name, $project->id);
+            $stats = static::groupTasksByKanbanTypeAndGetStats($project);
+            $kanbanTypes = KanbanItem::getTypeDropDownArray();
+            foreach($stats as $key => $value)
+            {
+                if($key != 'completionPercent')
+                {
+                    $content .= ZurmoHtml::tag('div', array('class' => 'autoresponder-stats'),
+                                            ZurmoHtml::tag('strong', array(), $value) .
+                                            ZurmoHtml::tag('span', array(), $kanbanTypes[$key]));
+                }
+                else
+                {
+                    $label = '%' . Zurmo::t('ProjectsModule', 'Complete');
+                    $content .= ZurmoHtml::tag('div', array('class' => 'autoresponder-stats'),
+                                            ZurmoHtml::tag('strong', array(), $value) .
+                                            ZurmoHtml::tag('span', array(), $label));
+                }
             }
             return $content;
         }

@@ -51,7 +51,7 @@
             return $task;
         }
 
-        public static function createTaskWithOwnerAndRelatedAccount($name, $owner, $account, $status = Task::TASK_STATUS_IN_PROGRESS)
+        public static function createTaskWithOwnerAndRelatedAccount($name, $owner, $account, $status = Task::STATUS_IN_PROGRESS)
         {
             $dueStamp       = DateTimeUtil::convertTimestampToDbFormatDateTime(time() + 10000);
             $completedStamp = DateTimeUtil::convertTimestampToDbFormatDateTime(time() + 9000);
@@ -69,7 +69,7 @@
             return $task;
         }
 
-        public static function createTaskWithOwnerAndRelatedItem($name, $owner, $item, $status = Task::TASK_STATUS_IN_PROGRESS)
+        public static function createTaskWithOwnerAndRelatedItem($name, $owner, $item, $status = Task::STATUS_IN_PROGRESS)
         {
             $dueStamp       = DateTimeUtil::convertTimestampToDbFormatDateTime(time() + 10000);
             $completedStamp = DateTimeUtil::convertTimestampToDbFormatDateTime(time() + 9000);

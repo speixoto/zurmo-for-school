@@ -60,7 +60,7 @@
         {
             $this->model            = $model;
             $this->groupByAttribute = $groupByAttribute;
-            $this->groupByDataAndTranslatedLabels = TasksUtil::getGroupByDataAndTranslatedLabels();
+            $this->groupByDataAndTranslatedLabels = KanbanItem::getTypeDropDownArray();
             $this->groupByAttributeVisibleValues  = array_keys($this->groupByDataAndTranslatedLabels);
             $this->relatedModel                   = $relatedModel;
             $this->relatedModelClassName          = $relatedModelClassName;

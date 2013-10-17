@@ -50,11 +50,9 @@
          */
         protected function resolveDataIntoKanbanColumns()
         {
-            $columnsData = $this->makeColumnsDataAndStructure();
-
+            $this->makeColumnsDataAndStructure();
             $kanbanItemsArray = array();
-
-            foreach ($this->dataProvider->data as $row => $data)
+            foreach ($this->dataProvider->data as $notUsed => $data)
             {
                 $kanbanItem  = KanbanItem::getByTask($data->id);
                 if($kanbanItem == null)
@@ -65,7 +63,6 @@
 
                 $kanbanItemsArray[$kanbanItem->type][intval($kanbanItem->sortOrder)] = $kanbanItem->task;
             }
-
             foreach($kanbanItemsArray as $type => $kanbanData)
             {
                 ksort($kanbanData, SORT_NUMERIC);
@@ -110,22 +107,6 @@
         }
 
         /**
-         * @param array $row
-         * @return string
-         */
-        protected function renderCardDetailsContentForTask($data, $row)
-        {
-            $cardDetails = null;
-            foreach ($this->cardColumns as $cardData)
-            {
-                $offset       = $this->getOffset() + $row;
-                $content      = $this->evaluateExpression($cardData['value'], array('data' => $data, 'offset' => $offset));
-                $cardDetails .= ZurmoHtml::tag('span', array('class' => $cardData['class']), $content);
-            }
-            return $cardDetails;
-        }
-
-        /**
          * Creates ul tag for kanban column
          * @param array $listItems
          * @param string $attributeValue
@@ -133,7 +114,8 @@
          */
         protected function renderUlTagForKanbanColumn($listItems, $attributeValue = null)
         {
-            return ZurmoHtml::tag('ul id="task-sortable-rows-' . $attributeValue . '" class="connectedSortable"' , array(), $listItems);
+            return ZurmoHtml::tag('ul id="task-sortable-rows-' . $attributeValue . '" class="connectedSortable"' ,
+                                  array(), $listItems);
         }
 
         /**
@@ -171,13 +153,13 @@
                      $taskSortableScript .= $this->registerKanbanColumnSortableScript($count + 1, $type);
                  }
             }
-
             Yii::app()->clientScript->registerScript('task-sortable-data', $taskSortableScript);
             $url = Yii::app()->createUrl('tasks/default/updateStatusInKanbanView', array());
-            $this->registerKanbanColumnStartActionScript(Zurmo::t('TasksModule', 'Finish'), Task::TASK_STATUS_IN_PROGRESS, $url);
-            $this->registerKanbanColumnFinishActionScript(Zurmo::t('TasksModule', 'Accept'), Zurmo::t('TasksModule', 'Reject'), Task::TASK_STATUS_AWAITING_ACCEPTANCE, $url);
-            $this->registerKanbanColumnAcceptActionScript('', Task::TASK_STATUS_COMPLETED, $url);
-            $this->registerKanbanColumnRejectActionScript(Zurmo::t('TasksModule', 'Start'), Task::TASK_STATUS_NEW, $url);
+            $this->registerKanbanColumnStartActionScript(Zurmo::t('TasksModule', 'Finish'), Task::STATUS_IN_PROGRESS, $url);
+            $this->registerKanbanColumnFinishActionScript(Zurmo::t('TasksModule', 'Accept'),
+                        Zurmo::t('TasksModule', 'Reject'), Task::STATUS_AWAITING_ACCEPTANCE, $url);
+            $this->registerKanbanColumnAcceptActionScript('', Task::STATUS_COMPLETED, $url);
+            $this->registerKanbanColumnRejectActionScript(Zurmo::t('TasksModule', 'Start'), Task::STATUS_NEW, $url);
             TasksUtil::registerSubscriptionScript();
             TasksUtil::registerUnsubscriptionScript();
         }
@@ -191,44 +173,44 @@
         protected function registerKanbanColumnSortableScript($count, $type)
         {
             return "$('#task-sortable-rows-" . $count . "').sortable({
-                                                forcePlaceholderSize: true,
-                                                forceHelperSize: true,
-                                                items: 'li:not(.ui-state-disabled)',
-                                                connectWith: '.connectedSortable',
-                                                update : function (event, ui) {
-                                                    var id = $(ui.item).attr('id');
-                                                    var idParts = id.split('_');
-                                                    var taskId = parseInt(idParts[1]);
-                                                    serial = $('#task-sortable-rows-" . $count . "').sortable('serialize', {key: 'items[]', attribute: 'id'});
-                                                    //serial = serial + '&taskId=' + taskId;
-                                                    console.log(serial);
-                                                    $.ajax({
-                                                        'url': '" . Yii::app()->createUrl('tasks/default/updateStatusOnDragInKanbanView', array('type'=> $type)) . "',
-                                                        'type': 'get',
-                                                        'data': serial,
-                                                        'dataType' : 'json',
-                                                        'success': function(data){
-                                                            if(data.hasOwnProperty('button'))
-                                                            {
-                                                                if(data.button != '')
-                                                                {
-                                                                    $(ui.item).find('.task-status').html(data.button);
-                                                                }
-                                                                else
-                                                                {
-                                                                    console.log($(ui.item).find('.task-status'));
-                                                                    $(ui.item).find('.task-status').remove();
-                                                                }
-                                                            }
-                                                        },
-                                                        'error': function(request, status, error){
-                                                            alert('We are unable to set the sort order at this time.  Please try again in a few minutes.');
-                                                        }
-                                                    });
-                                                },
-                                                helper: fixHelper
-                                            }).disableSelection();
-                                        ";
+                        forcePlaceholderSize: true,
+                        forceHelperSize: true,
+                        items: 'li:not(.ui-state-disabled)',
+                        connectWith: '.connectedSortable',
+                        update : function (event, ui) {
+                            var id = $(ui.item).attr('id');
+                            var idParts = id.split('_');
+                            var taskId = parseInt(idParts[1]);
+                            serial = $('#task-sortable-rows-" . $count . "').sortable('serialize', {key: 'items[]', attribute: 'id'});
+                            //serial = serial + '&taskId=' + taskId;
+                            console.log(serial);
+                            $.ajax({
+                                'url': '" . Yii::app()->createUrl('tasks/default/updateStatusOnDragInKanbanView', array('type'=> $type)) . "',
+                                'type': 'get',
+                                'data': serial,
+                                'dataType' : 'json',
+                                'success': function(data){
+                                    if(data.hasOwnProperty('button'))
+                                    {
+                                        if(data.button != '')
+                                        {
+                                            $(ui.item).find('.task-status').html(data.button);
+                                        }
+                                        else
+                                        {
+                                            console.log($(ui.item).find('.task-status'));
+                                            $(ui.item).find('.task-status').remove();
+                                        }
+                                    }
+                                },
+                                'error': function(request, status, error){
+                                    alert('We are unable to set the sort order at this time.  Please try again in a few minutes.');
+                                }
+                            });
+                        },
+                        helper: fixHelper
+                    }).disableSelection();
+                ";
         }
 
         /**
@@ -239,8 +221,8 @@
          */
         protected function registerKanbanColumnStartActionScript($label, $targetStatus, $url)
         {
-            $script = $this->registerButtonActionScript('task-start-action', KanbanItem::TYPE_IN_PROGRESS, $label, 'task-finish-action', $url, $targetStatus);
-
+            $script = $this->registerButtonActionScript('action-type-start', KanbanItem::TYPE_IN_PROGRESS,
+                                                        $label, 'action-type-finish', $url, $targetStatus);
             Yii::app()->clientScript->registerScript('start-action-script', $script);
         }
 
@@ -252,30 +234,29 @@
          */
         protected function registerKanbanColumnFinishActionScript($labelAccept, $labelReject, $targetStatus, $url)
         {
-            $script = "$(document).on('click','.task-finish-action',function()
-                                                    {
-                                                        var element = $(this).parent().parent().parent();
-                                                        var ulelement = $(element).parent();
-                                                        var id = $(element).attr('id');
-                                                        var idParts = id.split('_');
-                                                        var taskId = parseInt(idParts[1]);
-                                                        var rejectLinkElement = $(this).clone();
-                                                        var parent = $(this).parent();
-                                                        $(this).find('.z-label').html('" . $labelAccept . "');
-                                                        $(this).removeClass('task-finish-action').addClass('task-accept-action');
-                                                        $(rejectLinkElement).appendTo($(parent));
-                                                        $(rejectLinkElement).find('.z-label').html('" . $labelReject . "');
-                                                        $(rejectLinkElement).removeClass('task-finish-action').addClass('task-reject-action');
-                                                        $.ajax(
-                                                            {
-                                                                type : 'GET',
-                                                                data : {'targetStatus':" . Task::TASK_STATUS_AWAITING_ACCEPTANCE . ", 'taskId':taskId},
-                                                                url  : '" . $url . "'
-                                                            }
-                                                        );
-                                                    }
-                                                );";
-
+            $script = "$(document).on('click','.action-type-finish',function()
+                            {
+                                var element = $(this).parent().parent().parent();
+                                var ulelement = $(element).parent();
+                                var id = $(element).attr('id');
+                                var idParts = id.split('_');
+                                var taskId = parseInt(idParts[1]);
+                                var rejectLinkElement = $(this).clone();
+                                var parent = $(this).parent();
+                                $(this).find('.z-label').html('" . $labelAccept . "');
+                                $(this).removeClass('action-type-finish').addClass('action-type-accept');
+                                $(rejectLinkElement).appendTo($(parent));
+                                $(rejectLinkElement).find('.z-label').html('" . $labelReject . "');
+                                $(rejectLinkElement).removeClass('action-type-finish').addClass('action-type-reject');
+                                $.ajax(
+                                    {
+                                        type : 'GET',
+                                        data : {'targetStatus':" . Task::STATUS_AWAITING_ACCEPTANCE . ", 'taskId':taskId},
+                                        url  : '" . $url . "'
+                                    }
+                                );
+                            }
+                        );";
             Yii::app()->clientScript->registerScript('finish-action-script', $script);
         }
 
@@ -303,8 +284,9 @@
         protected function createTaskItemForKanbanColumn($data, $row)
         {
             return ZurmoHtml::tag('li', array('class' => $this->getRowClassForTaskKanbanColumn($data),
-                                                'id' => 'items_' . $data->id),
-                                                      ZurmoHtml::tag('div', array(), $this->renderCardDetailsContentForTask($data, $row)));
+                                              'id' => 'items_' . $data->id),
+                                              ZurmoHtml::tag('div', array('class' => 'clearfix'),
+                                                  $this->renderTaskCardDetailsContent($data, $row)));
         }
 
         /**
@@ -333,48 +315,49 @@
          * @param int $targetStatus
          * @return string
          */
-        protected function registerButtonActionScript($buttonClass, $targetKanbanItemType, $label, $targetButtonClass, $url, $targetStatus)
+        protected function registerButtonActionScript($buttonClass, $targetKanbanItemType, $label,
+                                                      $targetButtonClass, $url, $targetStatus)
         {
             $completionText = Zurmo::t('TasksModule', '% Complete - 100');
             return "$(document).on('click','." . $buttonClass . "',
-                                                    function()
-                                                    {
-                                                        var element = $(this).parent().parent().parent();
-                                                        var ulelement = $(element).parent();
-                                                        var id = $(element).attr('id');
-                                                        var ulid = $(ulelement).attr('id');
-                                                        var ulidParts = ulid.split('-');
-                                                        var idParts = id.split('_');
-                                                        var taskId = parseInt(idParts[1]);
-                                                        var columnType = parseInt(ulidParts[3]);
-                                                        $('#task-sortable-rows-" . $targetKanbanItemType . "').append(element);
-                                                        $('#task-sortable-rows-' + columnType).remove('#' + id);
+                        function()
+                        {
+                            var element = $(this).parent().parent().parent();
+                            var ulelement = $(element).parent();
+                            var id = $(element).attr('id');
+                            var ulid = $(ulelement).attr('id');
+                            var ulidParts = ulid.split('-');
+                            var idParts = id.split('_');
+                            var taskId = parseInt(idParts[1]);
+                            var columnType = parseInt(ulidParts[3]);
+                            $('#task-sortable-rows-" . $targetKanbanItemType . "').append(element);
+                            $('#task-sortable-rows-' + columnType).remove('#' + id);
 
-                                                        if(" . $targetStatus . " != " . Task::TASK_STATUS_COMPLETED . ")
-                                                        {
-                                                            var linkTag = $('#task-sortable-rows-" . $targetKanbanItemType . " #' + id + ' ." . $buttonClass . "');
-                                                            $(linkTag).find('.z-label').html('" . $label . "');
-                                                            $(linkTag).removeClass('" . $buttonClass . "').addClass('" . $targetButtonClass . "');
-                                                            if('" . $buttonClass . "' == 'task-reject-action')
-                                                            {
-                                                                $('#task-sortable-rows-" . $targetKanbanItemType . " #' + id + ' .task-accept-action').remove();
-                                                            }
-                                                        }
-                                                        else
-                                                        {
-                                                            $('#task-sortable-rows-" . $targetKanbanItemType . " #' + id + ' .task-status').remove();
-                                                            $('#task-sortable-rows-" . $targetKanbanItemType . " #' + id).addClass('ui-state-disabled');
-                                                            $('#task-sortable-rows-" . $targetKanbanItemType . " #' + id + ' .task-completion').html('" . $completionText . "');
-                                                        }
-                                                        $.ajax(
-                                                        {
-                                                            type : 'GET',
-                                                            data : {'targetStatus':" . $targetStatus . ", 'taskId':taskId},
-                                                            url  : '" . $url . "'
-                                                        }
-                                                        );
-                                                    }
-                                                );";
+                            if(" . $targetStatus . " != " . Task::STATUS_COMPLETED . ")
+                            {
+                                var linkTag = $('#task-sortable-rows-" . $targetKanbanItemType . " #' + id + ' ." . $buttonClass . "');
+                                $(linkTag).find('.z-label').html('" . $label . "');
+                                $(linkTag).removeClass('" . $buttonClass . "').addClass('" . $targetButtonClass . "');
+                                if('" . $buttonClass . "' == 'action-type-reject')
+                                {
+                                    $('#task-sortable-rows-" . $targetKanbanItemType . " #' + id + ' .action-type-accept').remove();
+                                }
+                            }
+                            else
+                            {
+                                $('#task-sortable-rows-" . $targetKanbanItemType . " #' + id + ' .task-status').remove();
+                                $('#task-sortable-rows-" . $targetKanbanItemType . " #' + id).addClass('ui-state-disabled');
+                                $('#task-sortable-rows-" . $targetKanbanItemType . " #' + id + ' .task-completion').html('" . $completionText . "');
+                            }
+                            $.ajax(
+                            {
+                                type : 'GET',
+                                data : {'targetStatus':" . $targetStatus . ", 'taskId':taskId},
+                                url  : '" . $url . "'
+                            }
+                            );
+                        }
+                    );";
         }
 
         /**
@@ -385,7 +368,8 @@
          */
         protected function registerKanbanColumnAcceptActionScript($label, $targetStatus, $url)
         {
-            $script = $this->registerButtonActionScript('task-accept-action', KanbanItem::TYPE_COMPLETED, $label, 'task-complete-action ui-state-disabled', $url,$targetStatus);
+            $script = $this->registerButtonActionScript('action-type-accept', KanbanItem::TYPE_COMPLETED,
+                      $label, 'task-complete-action ui-state-disabled', $url,$targetStatus);
             Yii::app()->clientScript->registerScript('accept-action-script', $script);
         }
 
@@ -397,18 +381,82 @@
          */
         protected function registerKanbanColumnRejectActionScript($label, $targetStatus, $url)
         {
-            $script = $this->registerButtonActionScript('task-reject-action', KanbanItem::TYPE_TODO, $label, 'task-start-action', $url, $targetStatus);
+            $script = $this->registerButtonActionScript('action-type-reject', KanbanItem::TYPE_TODO,
+                      $label, 'action-type-start', $url, $targetStatus);
             Yii::app()->clientScript->registerScript('reject-action-script', $script);
         }
 
         /**
-         * Wraps card details content
-         * @param int $row
+         * @param Task $task
+         * @param $row
          * @return string
          */
-        protected function wrapCardDetailsContent($row)
+        protected function renderTaskCardDetailsContent(Task $task, $row)
         {
-            return ZurmoHtml::tag('div', array('style' => 'height:90px'), $this->renderCardDetailsContent($row));
+            $statusClass = 'status-' . $task->status;
+            $content  = ZurmoHtml::openTag('div', array('class' => 'task-details clearfix ' . $statusClass));
+            $content .= ZurmoHtml::tag('span', array('class' => 'task-status'), Task::getStatusDisplayName($task->status));
+            $content .= $this->resolveAndRenderTaskCardDetailsDueDateContent($task);
+            $content .= ZurmoHtml::closeTag('div');
+            $content .= ZurmoHtml::openTag('div', array('class' => 'task-content'));
+            $content .= $this->resolveAndRenderTaskCardDetailsStatusContent($task, $row);
+            $content .= ZurmoHtml::openTag('h4');
+            $content .= $this->renderCardDataContent($this->cardColumns['name'], $task, $row);
+            $content .= ZurmoHtml::closeTag('h4');
+            if($task->description != null)
+            {
+                $content .= ZurmoHtml::tag('p', array(), $task->description);
+            }
+            $content .= ZurmoHtml::openTag('div', array('class' => 'task-subscribers'));
+            $content .= $this->resolveAndRenderTaskCardDetailsSubscribersContent($task);
+            $content .= $this->renderCardDataContent($this->cardColumns['subscribe'], $task, $row);
+            $content .= ZurmoHtml::closeTag('div');
+            $content .= $this->renderCardDataContent($this->cardColumns['completionBar'], $task, $row);
+            $content .= ZurmoHtml::closeTag('div');
+            return $content;
+        }
+
+        protected function resolveAndRenderTaskCardDetailsDueDateContent(Task $task)
+        {
+            if($task->dueDateTime != null)
+            {
+                $content = DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay(
+                           $task->dueDateTime, DateTimeUtil::DATETIME_FORMAT_DATE_WIDTH, null);
+                return ZurmoHtml::tag('span', array('class' => 'task-due-date'), $content);
+            }
+        }
+
+        protected function resolveAndRenderTaskCardDetailsStatusContent(Task $task, $row)
+        {
+            $statusContent = $this->renderCardDataContent($this->cardColumns['status'], $task, $row);
+            if($statusContent != null)
+            {
+                $content  = ZurmoHtml::openTag('div', array('class' => 'task-action-toolbar pillbox'));
+                $content .= $this->renderCardDataContent($this->cardColumns['status'], $task, $row);
+                $content .= ZurmoHtml::closeTag('div');
+                return $content;
+            }
+        }
+
+        protected function resolveAndRenderTaskCardDetailsSubscribersContent(Task $task)
+        {
+            $content         = null;
+            $subscribedUsers = TasksUtil::getTaskSubscribers($task);
+            foreach($subscribedUsers as $user)
+            {
+                if($user->isSame($task->owner))
+                {
+                    $content .= TasksUtil::renderSubscriberImageAndLinkContent($user, 20, 'task-owner');
+                }
+            }
+            foreach($subscribedUsers as $user)
+            {
+                if(!$user->isSame($task->owner))
+                {
+                    $content .= TasksUtil::renderSubscriberImageAndLinkContent($user, 20);
+                }
+            }
+            return $content;
         }
     }
 ?>

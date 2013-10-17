@@ -206,7 +206,7 @@
             {
                 $gameCollectionRules = GameCollectionRulesFactory::createByType($collectionAndItemKey[0]->type);
                 $collectionItemTypesAndLabels = $gameCollectionRules::getItemTypesAndLabels();
-                $dashboardLink   = ZurmoHtml::ajaxLink(Zurmo::t('GamificationModule', 'Go to dashboard'), $gameBoardUrl,
+                $dashboardLink   = ZurmoHtml::ajaxLink(Zurmo::t('GamificationModule', 'Go to game dashboard'), $gameBoardUrl,
                                    static::resolveAjaxOptionsForGameDashboardModel(static::GO_TO_GAME_DASHBOARD_LINK),
                                    array('id' => static::GO_TO_GAME_DASHBOARD_LINK));
                 $closeLink       = ZurmoHtml::link(Zurmo::t('Core', 'Close'), '#', array('id' => 'close-game-notification-link'));

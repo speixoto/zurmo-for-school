@@ -33,24 +33,48 @@
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
-
     /**
-     * Display the active project with tasks status in different kanban types.
+     * Project details overlay view in project task kanban view
      */
-    class ActiveProjectElement extends Element
+    class ProjectDetailsOverlayView extends TaskRelatedDetailsOverlayView
     {
-        protected static $moduleId = 'projects';
+        protected $cssClasses = array('overlay-view');
+
+        const DESCRIPTION_CLASS          = 'marketing-list-description';
 
         /**
-         * Render a hidden input, a text input with an auto-complete
-         * event, and a select button. These three items together
-         * form the Project Editable Element
-         * @return The element's content as a string.
+         * Render content
+         * @return string
          */
-        protected function renderControlNonEditable()
+        protected function renderContent()
         {
-            assert('$this->model->{$this->attribute} instanceof Project');
-            return parent::renderControlEditable();
+            $content = $this->renderNameContent();
+            $content .= $this->renderDescriptionContent();
+            return $content;
+        }
+
+        /**
+         * Renders description
+         * @return string
+         */
+        protected function renderDescriptionContent()
+        {
+            $content = ZurmoHtml::tag('div', array('class' => static::DESCRIPTION_CLASS),
+                                      Zurmo::t('ZurmoModule', 'Description') . $this->overlayKeyValueSeparator .
+                                      StringUtil::getChoppedStringContent($this->model->description, 50));
+            return $content;
+        }
+
+        /**
+         * Renders name
+         * @return string
+         */
+        protected function renderNameContent()
+        {
+            $content = ZurmoHtml::tag('p', array('class' => static::DESCRIPTION_CLASS),
+                                      Zurmo::t('ZurmoModule', 'Name') .
+                                      $this->overlayKeyValueSeparator . $this->model->name);
+            return $content;
         }
     }
 ?>
