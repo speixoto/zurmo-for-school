@@ -68,7 +68,7 @@
                                                     $activity);
             TasksUtil::markUserHasReadLatest($activity, Yii::app()->user->userModel);
             $pageViewClassName = $this->getPageViewClassName();
-            $detailsView       = new TaskDetailsView('Details', $this->getId(), $this->getModule()->getId(), $activity);
+            $detailsView       = new TaskModalDetailsView('Details', $this->getId(), $this->getModule()->getId(), $activity);
             $view              = new $pageViewClassName(ZurmoDefaultViewUtil::
                                          makeStandardViewForCurrentUser($this,$detailsView));
             echo $view->render();
@@ -338,7 +338,7 @@
             AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED,
                                        array(strval($task), get_class($this->getModule())), $task);
             TasksUtil::markUserHasReadLatest($task, Yii::app()->user->userModel);
-            echo ModalEditAndDetailsControllerUtil::setAjaxModeAndRenderModalDetailsView($this, 'TaskDetailsView',
+            echo ModalEditAndDetailsControllerUtil::setAjaxModeAndRenderModalDetailsView($this, 'TaskModalDetailsView',
                                                                                                 $task,
                                                                                                 'Details');
         }
