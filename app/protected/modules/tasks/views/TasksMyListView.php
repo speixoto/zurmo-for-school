@@ -153,8 +153,8 @@
          */
         public function resolveLinkString($data, $row)
         {
-            $taskUtil    = new TasksUtil();
-            $content     = $taskUtil->getLinkForViewModal($data, $row, $this->controllerId, $this->moduleId, $this->getActionModuleClassName());
+            $content = TasksUtil::getModalDetailsLink($data, $this->controllerId,
+                       $this->moduleId, $this->getActionModuleClassName());
             return $content;
         }
 

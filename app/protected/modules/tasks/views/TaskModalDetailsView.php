@@ -45,7 +45,7 @@
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array('type'  => 'EditLink'),
+                            array('type'  => 'TaskModalEditFromModalDetailsLink'),
                             array('type'  => 'AuditEventsModalListLink'),
                             array('type'  => 'TaskDeleteLink'),
                         ),
@@ -137,7 +137,7 @@
         {
             $content      = $this->resolveAndRenderActionElementMenu();
             $content     .= '<div class="details-table clearfix">'; //todo: we should probably call this something else?
-//          $content     .= $this->renderTitleContent(); //todo: remove
+            //$content     .= $this->renderTitleContent();
             $content     .= $this->renderLeftSideContent();
             $content     .= $this->renderRightSideContent();
             $content     .= '</div>';

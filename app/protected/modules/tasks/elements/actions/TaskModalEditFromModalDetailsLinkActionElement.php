@@ -33,64 +33,65 @@
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
-    /**
-     * Action element which renders create link on clicking of which opens a modal window
-     */
-    class CreateTaskFromRelatedKanbanModalLinkActionElement extends CreateFromRelatedModalLinkActionElement
+
+    class TaskModalEditFromModalDetailsLinkActionElement extends DropdownSupportedAjaxLinkActionElement
     {
-        /**
-         * Gets default label
-         * @return string
-         */
         protected function getDefaultLabel()
         {
-            return Zurmo::t('TasksModule', 'Create Task');
+            return Zurmo::t('ZurmoModule', 'Edit TODO');
+        }
+
+        public function getElementValue()
+        {
+            return null;
+        }
+
+        public function getActionType()
+        {
+            return 'Edit';
         }
 
         public function render()
         {
-            $content  = ZurmoHtml::openTag('div', array('class' => 'default-button'));
-            $content .= parent::render();
-            $content .= ZurmoHtml::closeTag('div');
-            return $content;
+            return ZurmoHtml::ajaxLink($this->getLabel(), $this->getDefaultRoute(),
+                $this->getAjaxLinkOptions(),
+                $this->getHtmlOptions()
+            );
         }
 
-        protected function getHtmlOptions()
+        public function renderMenuItem()
         {
-            return array('class' => 'button-action');
-        }
-
-        protected function resolveLabelAndWrap()
-        {
-            if ($this->wrapLabel())
+            if (!empty($this->modelId) && $this->modelId > 0)
             {
-                $content = ZurmoHtml::tag('i', array('class' => 'icon-create'), '');
-                return $content . ZurmoHtml::wrapLabel($this->getLabel(), 'button-label');
+                return array('label'  => $this->getLabel(),
+                    'url'             => $this->getDefaultRoute(),
+                    'linkOptions'     => $this->getHtmlOptions(),
+                    'itemOptions'     => array('id' => get_class($this)),
+                    'ajaxLinkOptions' => $this->getAjaxLinkOptions()
+                );
             }
-            return $this->getLabel();
         }
 
-
-//todo: since we are removing modalTransferInformation we should consider changing what element this element exteds
-        /**
-         * @return array
-         */
-        protected function getCreateLinkUrlParams()
+        protected function getAjaxLinkOptions()
         {
-            return array_merge(array('modalId'             => $this->getModalContainerId(),
-                                     'sourceKanbanBoardId' => $this->getSourceKanbanBoardId()), $this->getRouteParameters());
+            $containerId = TasksUtil::getModalContainerId();
+            $title       = 'need to fix this TODO'; //TasksUtil::getModalDetailsTitle(); //todo: change this
+            $options = array(
+                'type'   => 'GET',
+                'update' => '#' . $containerId,
+                //todO: add complete in here to update title
+            );
+            return $options;
         }
 
-        /**
-         * @return string
-         */
-        protected function getSourceKanbanBoardId()
+        protected function getDefaultRoute()
         {
-            if (!isset($this->params['sourceKanbanBoardId']))
-            {
-                return array();
-            }
-            return $this->params['sourceKanbanBoardId'];
+            return Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . $this->getRouteAction(), GetUtil::getData());
+        }
+
+        protected function getRouteAction()
+        {
+            return '/modalEditFromRelation/';
         }
     }
 ?>

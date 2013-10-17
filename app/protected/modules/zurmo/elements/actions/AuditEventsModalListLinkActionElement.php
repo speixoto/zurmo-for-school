@@ -36,7 +36,7 @@
 
     class AuditEventsModalListLinkActionElement extends ModalListLinkActionElement
     {
-        public static function  shouldRenderAsDropDownWhenRequired()
+        public static function shouldRenderAsDropDownWhenRequired()
         {
             return true;
         }

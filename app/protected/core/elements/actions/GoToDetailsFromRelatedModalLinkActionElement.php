@@ -46,9 +46,9 @@
 
         protected function getDefaultRoute()
         {
-            $params = array_merge(array('id' => $this->modelId), $this->getViewLinkUrlParams());
+            $params = array_merge(GetUtil::getData(), $this->getViewLinkUrlParams());
             return Yii::app()->createUrl($this->getRouteModuleId() . '/' .
-                        $this->controllerId . '/modalDetailsFromRelation', $params);
+                   $this->controllerId . '/modalDetailsFromRelation', $params);
         }
 
         protected function getRouteModuleId()
@@ -67,18 +67,11 @@
 
         protected function getViewLinkUrlParams()
         {
-            return array(
-                'modalTransferInformation' => $this->getModalTransferInformation(),
-            );
-        }
-
-        protected function getModalTransferInformation()
-        {
             return array_merge(array(
-                    'modalId'           => $this->getModalContainerId(),
-                    'portletId'         => $this->getPortletId(),
-                    'uniqueLayoutId'    => $this->getUniqueLayoutId()
-            ), $this->getRouteParameters());
+                'id'                => $this->modelId,
+                'modalId'           => $this->getModalContainerId(),
+                'portletId'         => $this->getPortletId(),
+                'uniqueLayoutId'    => $this->getUniqueLayoutId()), $this->getRouteParameters());
         }
 
         protected function getModalContainerId()

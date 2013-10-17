@@ -318,10 +318,10 @@
         /**
          * @return string
          */
-        public static function getModalTitleForViewTask()
+        public static function getModalDetailsTitle()
         {
             $params = LabelUtil::getTranslationParamsForAllModules();
-            $title = Zurmo::t('TasksModule', 'View TasksModuleSingularLabel', $params);
+            $title = Zurmo::t('TasksModule', 'Collaborate On TasksModuleSingularLabel', $params);
             return $title;
         }
 
@@ -380,7 +380,7 @@
          */
         public static function resolveViewAjaxOptionsForSelectingModel()
         {
-            $title = self::getModalTitleForViewTask();
+            $title = self::getModalDetailsTitle();
             return   ModalView::getAjaxOptionsForModalLink($title, self::getViewModalContainerId(), 'auto', 600,
                      'center top+25', $class = "'task-dialog'");
         }
@@ -416,22 +416,24 @@
         /**
          * Get link for going to the task modal detail view
          * @param Task $task
-         * @param $row
          * @param $controllerId
          * @param $moduleId
          * @param $moduleClassName
+         * @param null $sourceKanbanBoardId
          * @return null|string
          */
-        public function getLinkForViewModal(Task $task, $row, $controllerId, $moduleId, $moduleClassName)
+        public static function getModalDetailsLink(Task $task, $controllerId, $moduleId, $moduleClassName, $sourceKanbanBoardId = null)
         {
-            assert('is_string($row) || is_int($row)');
             assert('is_string($controllerId)');
             assert('is_string($moduleId)');
             assert('is_string($moduleClassName)');
+            assert('is_string($sourceKanbanBoardId) || $sourceKanbanBoardId == null');
             $ajaxOptions = TasksUtil::resolveViewAjaxOptionsForSelectingModel();
             $label       = $task->name . ZurmoHtml::tag('span', array(), '(' . strval($task->owner) . ')');
-            $params      = array('label' => $label, 'routeModuleId' => 'tasks', 'ajaxOptions' => $ajaxOptions,
-                                 'wrapLabel' => false);
+            $params      = array('label' => $label, 'routeModuleId' => 'tasks',
+                                 'ajaxOptions' => $ajaxOptions,
+                                 'wrapLabel' => false,
+                                 'routeParameters' => array('sourceKanbanBoardId' => $sourceKanbanBoardId));
             $goToDetailsFromRelatedModalLinkActionElement = new GoToDetailsFromRelatedModalLinkActionElement(
                                                                     $controllerId, $moduleId, $task->id, $params);
             $linkContent = $goToDetailsFromRelatedModalLinkActionElement->render();

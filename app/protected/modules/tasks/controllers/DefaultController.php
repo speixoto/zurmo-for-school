@@ -228,14 +228,16 @@
 
         /**
          * Create task from related view
+         * @param null $relationAttributeName
+         * @param null $relationModelId
+         * @param null $relationModuleId
          */
-        public function actionModalCreateFromRelation()
+        public function actionModalCreateFromRelation($relationAttributeName = null, $relationModelId = null,
+                                                      $relationModuleId = null)
         {
             $task  = new Task();
-            $task  = $this->resolveNewModelByRelationInformation($task,
-                                                                  $_GET['modalTransferInformation']['relationAttributeName'],
-                                                                  (int)$_GET['modalTransferInformation']['relationModelId'],
-                                                                  $_GET['modalTransferInformation']['relationModuleId']);
+            $task  = $this->resolveNewModelByRelationInformation($task, $relationAttributeName,
+                     (int)$relationModelId, $relationModuleId);
             $this->processTaskEdit($task);
         }
 
@@ -256,8 +258,7 @@
          * @param string $portletId
          * @param string $uniqueLayoutId
          */
-        public function actionModalSaveFromRelation($relationAttributeName, $relationModelId, $relationModuleId,
-                                                    $portletId, $uniqueLayoutId, $sourceId, $id = null)
+        public function actionModalSaveFromRelation($relationAttributeName, $relationModelId, $relationModuleId, $id = null)
         {
             if($id == null)
             {
@@ -284,7 +285,7 @@
         /**
          * Saves task in the modal view
          */
-        public function actionModalSave($id)
+        public function actionModalSave($id = null)
         {
             if($id == null)
             {

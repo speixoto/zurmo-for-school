@@ -63,7 +63,7 @@
                                   'routeModuleId'   => 'eval:$this->moduleId',
                                   'routeParameters' => 'eval:$this->getCreateLinkRouteParameters()',
                                   'ajaxOptions'     => 'eval:TasksUtil::resolveAjaxOptionsForEditModel("Create")',
-                                  'uniqueLayoutId'  => 'eval:$this->uniqueLayoutId',
+                                  'sourceKanbanBoardId' => 'eval:$this->getGridViewId()',
                                   'modalContainerId'=> 'eval:TasksUtil::getModalContainerId()'
                             ),
 
@@ -234,9 +234,11 @@
          */
         public function resolveLinkString($data, $row)
         {
-            $taskUtil    = new TasksUtil();
-            $content     = $taskUtil->getLinkForViewModal($data, $row, $this->controllerId,
-                                                          $this->moduleId, $this->getActionModuleClassName());
+            $content     = TasksUtil::getModalDetailsLink($data,
+                                                          $this->controllerId,
+                                                          $this->moduleId,
+                                                          $this->getActionModuleClassName(),
+                                                          $this->getGridViewId());
             return $content;
         }
 
@@ -321,16 +323,6 @@
         protected function getGridId()
         {
             return $this->getRelationAttributeName() . '-tasks-kanban-view';
-        }
-
-        /**
-         * Override to pass the sourceId
-         * @return type
-         */
-        protected function getCreateLinkRouteParameters()
-        {
-            return array_merge( array('sourceId' => $this->getGridViewId()),
-                                parent::getCreateLinkRouteParameters());
         }
 
         /**
