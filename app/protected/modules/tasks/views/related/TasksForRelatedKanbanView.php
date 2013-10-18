@@ -124,23 +124,12 @@
             $cClipWidget->widget($this->getGridViewWidgetPath(), $this->getCGridViewParams());
             $cClipWidget->endClip();
             $content     = $this->renderKanbanViewTitleWithActionBars();
-            //Check for zero count
-//            if($this->getDataProvider()->getTotalItemCount() > 0)
-//            {
-                $content    .= $cClipWidget->getController()->clips['ListView'] . "\n";
-                if ($this->getRowsAreSelectable())
-                {
-                    $content .= ZurmoHtml::hiddenField($this->gridId . $this->gridIdSuffix .
-                                                        '-selectedIds', implode(",", $this->selectedIds)) . "\n"; // Not Coding Standard
-                }
-//            }
-//            else
-//            {
-//                $zeroModelView = new ZeroTasksForRelatedModelYetView($this->controllerId,
-//                                                                     $this->moduleId, 'Task',
-//                                                                     get_class($this->params['relationModel']));
-//                $content .= $zeroModelView->render();
-//            }
+            $content    .= $cClipWidget->getController()->clips['ListView'] . "\n";
+            if ($this->getRowsAreSelectable())
+            {
+                $content .= ZurmoHtml::hiddenField($this->gridId . $this->gridIdSuffix .
+                                                    '-selectedIds', implode(",", $this->selectedIds)) . "\n"; // Not Coding Standard
+            }
             $content .= $this->renderScripts();
             return $content;
         }

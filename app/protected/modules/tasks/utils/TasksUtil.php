@@ -764,6 +764,7 @@
         {
             $user = Yii::app()->user->userModel;
             $task->requestedByUser = $user;
+            $task->status = Task::STATUS_NEW;
             $notificationSubscriber = new NotificationSubscriber();
             $notificationSubscriber->person = $user;
             $notificationSubscriber->hasReadLatest = false;
