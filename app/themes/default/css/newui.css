@@ -24102,15 +24102,39 @@ a + .autoresponder-stats {
   padding-bottom: 5px;
   border-bottom: 1px solid #dfdfdf;
 }
-.STATUS-HERE-TOO {
-  font-size: 11px;
+.completion-percentage-bar {
+  position: relative;
+  top: -5px;
+  text-indent: -9999px;
+  height: 3px;
+  width: 0;
+  -webkit-transition: all 0.5s ease-out;
+  -moz-transition: all 0.5s ease-out;
+  -o-transition: all 0.5s ease-out;
+  -ms-transition: all 0.5s ease-out;
+  transition: all 0.5s ease-out;
+  background-color: #97c43d;
+  background-repeat: repeat-x;
+  background-image: -moz-linear-gradient(left, #6fa82d, #97c43d);
+  background-image: -ms-linear-gradient(left, #6fa82d, #97c43d);
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(0%, #6fa82d), color-stop(100%, #97c43d));
+  background-image: -webkit-linear-gradient(left, #6fa82d, #97c43d);
+  background-image: -o-linear-gradient(left, #6fa82d, #97c43d);
+  background-image: linear-gradient(left, #6fa82d, #97c43d);
 }
 .task-status {
-  font-size: 11px;
+  font-weight: bold;
+  font-size: 10px;
   float: left;
+}
+.status-4 .task-status {
+  color: #a82d31;
 }
 .task-due-date {
   float: right;
+  font-weight: bold;
+  font-size: 10px;
+  color: #323232;
 }
 .task-content {
   padding: 10px 0 0 0;
@@ -24119,6 +24143,7 @@ a + .autoresponder-stats {
 .task-content h4 span {
   font-weight: normal;
   margin-left: 5px;
+  font-size: 11px;
 }
 .task-subscribers {
   margin-top: 10px;
@@ -24146,17 +24171,150 @@ a + .autoresponder-stats {
   font-size: 11px;
   padding: 0 3px !important;
   line-height: 20px !important;
-  /*&:after{
-			content:'';
-			position: absolute;
-			top:0;
-			right:0;
-			bottom: 0;
-			left: 0;
-			background: rgba(255, 0, 0, 0.4);
-			z-index: 0;
-		}*/
-
+  z-index: 10;
+}
+.task-action-toolbar .button-label:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: -1;
+}
+.action-type-accept .button-label {
+  color: #ffffff;
+}
+.action-type-accept .button-label:before {
+  background-color: #6fa82d;
+  background-repeat: repeat-x;
+  background-image: -moz-linear-gradient(top, #97c43d, #6fa82d);
+  background-image: -ms-linear-gradient(top, #97c43d, #6fa82d);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #6fa82d));
+  background-image: -webkit-linear-gradient(top, #97c43d, #6fa82d);
+  background-image: -o-linear-gradient(top, #97c43d, #6fa82d);
+  background-image: linear-gradient(top, #97c43d, #6fa82d);
+}
+.action-type-accept .button-action:hover .button-label {
+  color: #344415;
+  -webkit-text-shadow: 0px 1px 0 #a1ca51;
+  -moz-text-shadow: 0px 1px 0 #a1ca51;
+  -o-text-shadow: 0px 1px 0 #a1ca51;
+  -ms-text-shadow: 0px 1px 0 #a1ca51;
+  text-shadow: 0px 1px 0 #a1ca51;
+}
+.action-type-accept .button-action:hover .button-label:before {
+  background-color: #548022;
+  background-repeat: repeat-x;
+  background-image: -moz-linear-gradient(top, #97c43d, #548022);
+  background-image: -ms-linear-gradient(top, #97c43d, #548022);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #548022));
+  background-image: -webkit-linear-gradient(top, #97c43d, #548022);
+  background-image: -o-linear-gradient(top, #97c43d, #548022);
+  background-image: linear-gradient(top, #97c43d, #548022);
+}
+.action-type-reject .button-label {
+  color: #ffffff;
+}
+.action-type-reject .button-label:before {
+  background-color: #a82d31;
+  background-repeat: repeat-x;
+  background-image: -moz-linear-gradient(top, #c43d53, #a82d31);
+  background-image: -ms-linear-gradient(top, #c43d53, #a82d31);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #c43d53), color-stop(100%, #a82d31));
+  background-image: -webkit-linear-gradient(top, #c43d53, #a82d31);
+  background-image: -o-linear-gradient(top, #c43d53, #a82d31);
+  background-image: linear-gradient(top, #c43d53, #a82d31);
+}
+.action-type-reject .button-action:hover .button-label {
+  color: #44151c;
+  -webkit-text-shadow: 0px 1px 0 #ca5164;
+  -moz-text-shadow: 0px 1px 0 #ca5164;
+  -o-text-shadow: 0px 1px 0 #ca5164;
+  -ms-text-shadow: 0px 1px 0 #ca5164;
+  text-shadow: 0px 1px 0 #ca5164;
+}
+.action-type-reject .button-action:hover .button-label:before {
+  background-color: #802225;
+  background-repeat: repeat-x;
+  background-image: -moz-linear-gradient(top, #c43d53, #802225);
+  background-image: -ms-linear-gradient(top, #c43d53, #802225);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #c43d53), color-stop(100%, #802225));
+  background-image: -webkit-linear-gradient(top, #c43d53, #802225);
+  background-image: -o-linear-gradient(top, #c43d53, #802225);
+  background-image: linear-gradient(top, #c43d53, #802225);
+}
+.action-type-finish .button-label {
+  color: #ffffff;
+}
+.action-type-finish .button-label:before {
+  background-color: #e4b600;
+  background-repeat: repeat-x;
+  background-image: -moz-linear-gradient(top, #ffcc00, #e4b600);
+  background-image: -ms-linear-gradient(top, #ffcc00, #e4b600);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffcc00), color-stop(100%, #e4b600));
+  background-image: -webkit-linear-gradient(top, #ffcc00, #e4b600);
+  background-image: -o-linear-gradient(top, #ffcc00, #e4b600);
+  background-image: linear-gradient(top, #ffcc00, #e4b600);
+}
+.action-type-finish .button-action:hover .button-label {
+  color: #574500;
+  -webkit-text-shadow: 0px 1px 0 #ffd11a;
+  -moz-text-shadow: 0px 1px 0 #ffd11a;
+  -o-text-shadow: 0px 1px 0 #ffd11a;
+  -ms-text-shadow: 0px 1px 0 #ffd11a;
+  text-shadow: 0px 1px 0 #ffd11a;
+}
+.action-type-finish .button-action:hover .button-label:before {
+  background-color: #b18d00;
+  background-repeat: repeat-x;
+  background-image: -moz-linear-gradient(top, #ffcc00, #b18d00);
+  background-image: -ms-linear-gradient(top, #ffcc00, #b18d00);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffcc00), color-stop(100%, #b18d00));
+  background-image: -webkit-linear-gradient(top, #ffcc00, #b18d00);
+  background-image: -o-linear-gradient(top, #ffcc00, #b18d00);
+  background-image: linear-gradient(top, #ffcc00, #b18d00);
+}
+.subscribe-task-link {
+  background: #DFDFDF;
+  padding: 2px;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+}
+.subscribe-task-link .icon-subscribe {
+  position: relative;
+  top: -3px;
+  display: block;
+  text-align: center;
+}
+.subscribe-task-link .icon-subscribe:after {
+  color: #ffffff;
+  content: "Y";
+  font-size: 29px;
+}
+.detail-subscribe-task-link {
+  background: #DFDFDF;
+  padding: 2px;
+  display: inline-block;
+  width: 36px;
+  height: 36px;
+}
+.detail-subscribe-task-link .icon-subscribe {
+  position: relative;
+  top: -2px;
+  display: block;
+  text-align: center;
+}
+.detail-subscribe-task-link .icon-subscribe:after {
+  color: #ffffff;
+  content: "Y";
+  font-size: 44px;
+}
+.detail-unsubscribe-task-link,
+.unsubscribe-task-link {
+  float: right;
+  margin: 0 0 0 0;
 }
 .webform-embed-code {
   padding: 0;
@@ -26056,6 +26214,7 @@ div.special-pager .hidden.next:after {
   border: 1px solid #dfdfdf;
 }
 .task-dialog {
+  *zoom: 1;
   min-width: 1000px;
   border: none;
   background: #f0f0f0;
@@ -26064,11 +26223,19 @@ div.special-pager .hidden.next:after {
   -ms-border-radius: 3px;
   -o-border-radius: 3px;
   border-radius: 3px;
-  -webkit-box-shadow: inset 0 0 0 1px rgba(204, 204, 204, 0.3) , 1px 1px 1px 0px rgba(153, 153, 153, 0.15);
-  -moz-box-shadow: inset 0 0 0 1px rgba(204, 204, 204, 0.3) , 1px 1px 1px 0px rgba(153, 153, 153, 0.15);
-  -o-box-shadow: inset 0 0 0 1px rgba(204, 204, 204, 0.3) , 1px 1px 1px 0px rgba(153, 153, 153, 0.15);
-  -ms-box-shadow: inset 0 0 0 1px rgba(204, 204, 204, 0.3) , 1px 1px 1px 0px rgba(153, 153, 153, 0.15);
-  box-shadow: inset 0 0 0 1px rgba(204, 204, 204, 0.3) , 1px 1px 1px 0px rgba(153, 153, 153, 0.15);
+  -webkit-box-shadow: inset 0 0 0 1px rgba(204, 204, 204, 0.3) ,0 0 15px 0 rgba(51, 51, 51, 0.25);
+  -moz-box-shadow: inset 0 0 0 1px rgba(204, 204, 204, 0.3) ,0 0 15px 0 rgba(51, 51, 51, 0.25);
+  -o-box-shadow: inset 0 0 0 1px rgba(204, 204, 204, 0.3) ,0 0 15px 0 rgba(51, 51, 51, 0.25);
+  -ms-box-shadow: inset 0 0 0 1px rgba(204, 204, 204, 0.3) ,0 0 15px 0 rgba(51, 51, 51, 0.25);
+  box-shadow: inset 0 0 0 1px rgba(204, 204, 204, 0.3) ,0 0 15px 0 rgba(51, 51, 51, 0.25);
+}
+.task-dialog:before,
+.task-dialog:after {
+  content: " ";
+  display: table;
+}
+.task-dialog:after {
+  clear: both;
 }
 .task-dialog .ui-dialog-title {
   padding: 0 !important;
@@ -26124,7 +26291,7 @@ div.special-pager .hidden.next:after {
   margin-bottom: 0;
 }
 .task-dialog .right-side-edit-view-panel {
-  background: rgba(0, 0, 0, 0.05);
+  background: rgba(236, 240, 241, 0.25) url(../images/stripes.png) left top repeat;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   -ms-border-radius: 3px;
@@ -26149,6 +26316,9 @@ div.special-pager .hidden.next:after {
 #task-subscriber-box {
   margin-top: 15px;
 }
+#task-subscriber-box h4 {
+  margin-bottom: 4px;
+}
 .check-list {
   margin-top: 30px;
 }
@@ -26172,7 +26342,7 @@ div.special-pager .hidden.next:after {
   -ms-border-radius: 3px;
   -o-border-radius: 3px;
   border-radius: 3px;
-  background: #ebebeb;
+  background: rgba(236, 240, 241, 0.25) url(../images/stripes.png) left top repeat;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
@@ -26234,17 +26404,35 @@ div.special-pager .hidden.next:after {
 .task-activity #CommentInlineEditForModelView {
   width: 100%;
   max-width: 100%;
-  margin: 0;
-  padding: 0;
+  margin: 10px 0 0 0;
+  padding: 8px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+  border-radius: 3px;
+  background: rgba(236, 240, 241, 0.25) url(../images/stripes.png) left top repeat;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
 }
 .task-activity #CommentList {
   margin: 0 0 0 0;
 }
 .task-activity #comment-inline-edit-form {
-  margin-top: 15px;
+  margin: 0;
+}
+.task-activity #comment-inline-edit-form .form-toolbar {
+  padding-right: 0;
 }
 .task-activity .comment {
   margin-top: 10px;
+}
+.task-activity .left-column {
+  padding-right: 0;
+}
+.task-activity .show-file-upload-box {
+  z-index: 9999;
 }
 /*********************************************************************************
  * Zurmo is a customer relationship management program developed by
