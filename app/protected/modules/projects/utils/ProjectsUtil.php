@@ -49,7 +49,7 @@
             assert('$taskCheckListItem instanceof TaskCheckListItem');
             $project = $task->project;
             $data    = array('{taskname}' => $task->name, '{taskcheckitemname}' => $taskCheckListItem->name);
-            ProjectAuditEvent::logAuditEvent(ProjectAuditEvent::CHECKLIST_ITEM_ADDED, $data, $project);
+            ProjectAuditEvent::logAuditEvent(ProjectAuditEvent::CHECKLIST_ITEM_ADDED, $project, $data);
         }
 
         /**
@@ -67,7 +67,7 @@
             {
                 $project = $task->project;
                 $data    = array('{fromstatus}' => $currentStatusLabel, '{tostatus}' => $newStatusLabel);
-                ProjectAuditEvent::logAuditEvent(ProjectAuditEvent::TASK_STATUS_CHANGED, $data, $project);
+                ProjectAuditEvent::logAuditEvent(ProjectAuditEvent::TASK_STATUS_CHANGED, $project, $data);
             }
         }
 
@@ -80,7 +80,7 @@
             assert('$task instanceof Task');
             $project = $task->project;
             $data    = array('{taskname}' => $task->name);
-            ProjectAuditEvent::logAuditEvent(ProjectAuditEvent::TASK_ADDED, $data, $project);
+            ProjectAuditEvent::logAuditEvent(ProjectAuditEvent::TASK_ADDED, $project, $data);
         }
 
         /**
@@ -94,7 +94,7 @@
             assert('is_string($comment)');
             $project = $task->project;
             $data    = array('{comment}' => $comment);
-            ProjectAuditEvent::logAuditEvent(ProjectAuditEvent::COMMENT_ADDED, $data, $project);
+            ProjectAuditEvent::logAuditEvent(ProjectAuditEvent::COMMENT_ADDED, $project, $data);
         }
     }
 ?>

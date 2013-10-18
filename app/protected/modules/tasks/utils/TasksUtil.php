@@ -351,6 +351,10 @@
             {
                 $title = Zurmo::t('TasksModule', 'Copy TasksModuleSingularLabel', $params);
             }
+            elseif($renderType == "Details")
+            {
+                $title = static::getModalDetailsTitle();
+            }
             else
             {
                 $title = Zurmo::t('TasksModule', 'Edit TasksModuleSingularLabel', $params);
@@ -377,25 +381,26 @@
         }
 
         /**
-         * Resolves view ajax options for selecting model
-         * @return array
-         */
-        public static function resolveViewAjaxOptionsForSelectingModel()
-        {
-            $title = self::getModalDetailsTitle();
-            return   ModalView::getAjaxOptionsForModalLink($title, self::getModalContainerId(), 'auto', 600,
-                     'center top+25', $class = "'task-dialog'");
-        }
-
-        /**
          * @param $renderType
+         * @param string|null $sourceKanbanBoardId
          * @return array
          */
-        public static function resolveAjaxOptionsForEditModel($renderType)
+        public static function resolveAjaxOptionsForModalView($renderType, $sourceKanbanBoardId = null)
         {
+            assert('is_string($renderType)');
             $title = self::getModalTitleForCreateTask($renderType);
             return   ModalView::getAjaxOptionsForModalLink($title, self::getModalContainerId(), 'auto', 600,
-                     'center top+25', $class = "'task-dialog'");
+                     'center top+25', $class = "'task-dialog'",
+                     static::resolveExtraCloseScriptForModalAjaxOptions($sourceKanbanBoardId));
+        }
+
+        public static function resolveExtraCloseScriptForModalAjaxOptions($sourceKanbanBoardId = null)
+        {
+            assert('is_string($sourceKanbanBoardId) || $sourceKanbanBoardId == null');
+            if($sourceKanbanBoardId != null)
+            {
+                return "$.fn.yiiGridView.update('" . $sourceKanbanBoardId. "');";
+            }
         }
 
         /**
@@ -413,7 +418,7 @@
             assert('is_string($moduleId)');
             assert('is_string($moduleClassName)');
             assert('is_string($sourceKanbanBoardId) || $sourceKanbanBoardId == null');
-            $ajaxOptions = TasksUtil::resolveViewAjaxOptionsForSelectingModel();
+            $ajaxOptions = TasksUtil::resolveAjaxOptionsForModalView('Details', $sourceKanbanBoardId);
             $label       = $task->name . ZurmoHtml::tag('span', array(), '(' . strval($task->owner) . ')');
             $params      = array('label' => $label, 'routeModuleId' => 'tasks',
                                  'ajaxOptions' => $ajaxOptions,
@@ -478,7 +483,7 @@
         public static function getTaskStatusMappingToKanbanItemTypeArray()
         {
             return array(
-                            Task::STATUS_NEW                   => KanbanItem::TYPE_TODO,
+                            Task::STATUS_NEW                   => KanbanItem::TYPE_SOMEDAY,
                             Task::STATUS_IN_PROGRESS           => KanbanItem::TYPE_IN_PROGRESS,
                             Task::STATUS_AWAITING_ACCEPTANCE   => KanbanItem::TYPE_IN_PROGRESS,
                             Task::STATUS_REJECTED              => KanbanItem::TYPE_TODO,
@@ -495,7 +500,7 @@
         {
             if($status == null)
             {
-                return KanbanItem::TYPE_TODO;
+                return KanbanItem::TYPE_SOMEDAY;
             }
             $data = self::getTaskStatusMappingToKanbanItemTypeArray();
             return $data[intval($status)];
@@ -666,7 +671,7 @@
          */
         public static function getKanbanSubscriptionLink(Task $task, $row)
         {
-            return self::resolveSubscriptionLink($task, 'z-link subscribe-task-link', 'z-link unsubscribe-task-link');
+            return self::resolveSubscriptionLink($task, 'subscribe-task-link', 'simple-link unsubscribe-task-link');
         }
 
         /**
@@ -677,7 +682,7 @@
          */
         public static function getDetailSubscriptionLink(Task $task, $row)
         {
-            return self::resolveSubscriptionLink($task, 'detail-subscribe-task-link', 'detail-unsubscribe-task-link');
+            return self::resolveSubscriptionLink($task, 'detail-subscribe-task-link', 'simple-link detail-unsubscribe-task-link');
         }
 
         /**
@@ -693,7 +698,7 @@
             assert('is_string($unsubscribeLinkClass)');
             if(TasksUtil::isUserSubscribedForTask($task, Yii::app()->user->userModel) === false)
             {
-                $label       = Zurmo::t('TasksModule', 'Subscribe');
+                $label       = '';//Zurmo::t('TasksModule', 'Subscribe');
                 $class       = $subscribeLinkClass;
                 $iconContent = ZurmoHtml::tag('i', array('class' => 'icon-subscribe'), '');
             }
@@ -759,6 +764,7 @@
         {
             $user = Yii::app()->user->userModel;
             $task->requestedByUser = $user;
+            $task->status = Task::STATUS_NEW;
             $notificationSubscriber = new NotificationSubscriber();
             $notificationSubscriber->person = $user;
             $notificationSubscriber->hasReadLatest = false;
@@ -793,8 +799,9 @@
             {
                 return null;
             }
-            $percentageComplete = static::getTaskCompletionPercentage($task);
-            return ZurmoHtml::tag('div', array('class' => 'completion-percentage-bar'), 'todo' . $percentageComplete);
+            $percentageComplete = ceil(static::getTaskCompletionPercentage($task));
+            return ZurmoHtml::tag('div', array('class' => 'completion-percentage-bar', 'style' => 'width:' . $percentageComplete . '%'),
+                                  $percentageComplete . '%');
             $percentage = TasksUtil::getTaskCompletionPercentage(intval($task->id));
         }
 

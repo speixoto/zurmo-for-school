@@ -58,7 +58,7 @@
          * @param User $user
          * @return boolean
          */
-        public static function logAuditEvent($eventName, $data = null, Project $project, User $user = null)
+        public static function logAuditEvent($eventName, Project $project, $data = null, User $user = null)
         {
             assert('is_string($eventName)  && $eventName  != ""');
             if ($user === null)
@@ -118,7 +118,7 @@
                 ),
                 'rules' => array(
                     array('dateTime',       'required'),
-                    array('user'    ,       'required'),
+                    array('project',        'required'),
                     array('dateTime',       'type', 'type' => 'datetime'),
                     array('eventName',      'required'),
                     array('eventName',      'type',   'type' => 'string'),

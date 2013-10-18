@@ -52,7 +52,7 @@
                                     'portletId'       => 'eval:$this->params["portletId"]',
                                     'routeModuleId'   => 'eval:$this->moduleId',
                                     'routeParameters' => 'eval:$this->getCreateLinkRouteParameters()',
-                                    'ajaxOptions'     => 'eval:TasksUtil::resolveAjaxOptionsForEditModel("Create")',
+                                    'ajaxOptions'     => 'eval:TasksUtil::resolveAjaxOptionsForModalView("Create")',
                                     'uniqueLayoutId'  => 'eval:$this->uniqueLayoutId',
                                     'modalContainerId'=> 'eval:TasksUtil::getModalContainerId()'
                                  ),
@@ -64,7 +64,7 @@
                                     'portletId'       => 'eval:$this->params["portletId"]',
                                     'routeModuleId'   => 'eval:$this->moduleId',
                                     'routeParameters' => 'eval:$this->getCreateLinkRouteParameters()',
-                                    'ajaxOptions'     => 'eval:TasksUtil::resolveAjaxOptionsForEditModel("Edit")',
+                                    'ajaxOptions'     => 'eval:TasksUtil::resolveAjaxOptionsForModalView("Edit")',
                                     'uniqueLayoutId'  => 'eval:$this->uniqueLayoutId',
                                     'modalContainerId'=> 'eval:TasksUtil::getModalContainerId()'
                                  ),
@@ -72,7 +72,7 @@
                                     'portletId'       => 'eval:$this->params["portletId"]',
                                     'routeModuleId'   => 'eval:$this->moduleId',
                                     'routeParameters' => 'eval:$this->getCreateLinkRouteParameters()',
-                                    'ajaxOptions'     => 'eval:TasksUtil::resolveAjaxOptionsForEditModel("Copy")',
+                                    'ajaxOptions'     => 'eval:TasksUtil::resolveAjaxOptionsForModalView("Copy")',
                                     'uniqueLayoutId'  => 'eval:$this->uniqueLayoutId',
                                     'modalContainerId'=> 'eval:TasksUtil::getModalContainerId()'
                                  ),

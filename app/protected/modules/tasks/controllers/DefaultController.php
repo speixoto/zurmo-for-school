@@ -418,12 +418,14 @@
                 {
                     if($taskId != '')
                     {
+                        $task               = Task::getById(intval($taskId));
                         $kanbanItem         = KanbanItem::getByTask(intval($taskId));
                         //if kanban type is completed
                         if($getData['type'] == KanbanItem::TYPE_COMPLETED)
                         {
                             $this->actionUpdateStatusInKanbanView(Task::STATUS_COMPLETED, $taskId);
                             $response['button'] = '';
+                            $response['status'] = Task::getStatusDisplayName($task->status);
                         }
                         else
                         {
@@ -444,6 +446,7 @@
                                                                                         $this->getModule()->getId(),
                                                                                         $taskId);
                                 $response['button'] = $content;
+                                $response['status'] = Task::getStatusDisplayName($task->status);
                             }
                             $kanbanItem->save();
                             $counter++;
@@ -508,6 +511,7 @@
                     $checkItem->completed = true;
                     $checkItem->unrestrictedSave();
                 }
+                $task->status            = Task::STATUS_COMPLETED;
                 $task->completedDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
                 $task->completed         = true;
                 $task->save();
@@ -613,6 +617,20 @@
         protected static function getZurmoControllerUtil()
         {
             return new TaskZurmoControllerUtil();
+        }
+
+        /**
+         * @param $id
+         * @param null $redirectUrl
+         */
+        public function actionDelete($id, $redirectUrl = null)
+        {
+            $task              = Task::getById(intval($id));
+            ControllerSecurityUtil::resolveAccessCanCurrentUserDeleteModel($task);
+            if(!$task->delete())
+            {
+                throw new FailedToDeleteModelException();
+            }
         }
     }
 ?>

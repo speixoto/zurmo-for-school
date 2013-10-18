@@ -1908,6 +1908,27 @@ td.empty{
 }
 
 /*forms*/
+.text-input(){
+	font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;
+	-webkit-font-smoothing: antialiased;
+	-moz-font-smoothing: antialiased;
+	-o-font-smoothing: antialiased;
+	font-smoothing: antialiased;
+	display:inline-block;
+	border:1px solid #ccc;
+	.radius(3px);
+	font-size:12px;
+	color:#666 !important;
+	text-indent:6px;
+	line-height: 24px;
+	height:26px;
+	.b-shadow(0 0 1px 1px rgba(153, 153, 153, 0.3));
+	.ie-shadow(#999999, 1, 15);
+	width:100%;
+	.box-sizing();
+}
+
+
 .form{
 	input[type="checkbox"]{
 		margin:0 0 10px 0 !important;
@@ -1917,23 +1938,7 @@ td.empty{
 	input[type="password"],
 	select.multiple,
 	textarea{
-		font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;
-		-webkit-font-smoothing: antialiased;
-		-moz-font-smoothing: antialiased;
-		-o-font-smoothing: antialiased;
-		font-smoothing: antialiased;
-		display:inline-block;
-		border:1px solid #ccc;
-		.radius(3px);
-		font-size:12px;
-		color:#666 !important;
-		text-indent:6px;
-		line-height: 24px;
-		height:26px;
-		.b-shadow(0 0 1px 1px rgba(153, 153, 153, 0.3));
-		.ie-shadow(#999999, 1, 15);
-		width:100%;
-		.box-sizing();
+		.text-input();
 	}
 	textarea, select.multiple {
 		height:auto;
@@ -2229,8 +2234,7 @@ a.simple-link{
 }
 
 .big-spinner{
-	margin-left:270px;
-	margin-top:30px;
+	margin:15px 50%;
 	display:block;
 }
 

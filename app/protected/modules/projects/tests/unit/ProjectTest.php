@@ -89,7 +89,7 @@
             $this->assertEquals(1, $project->accounts->count());
             $this->assertEquals(1, $project->contacts->count());
             $this->assertEquals(1, $project->opportunities->count());
-            $saved = ProjectAuditEvent::logAuditEvent(ProjectAuditEvent::PROJECT_CREATED, $project->name, $project, $user);
+            $saved = ProjectAuditEvent::logAuditEvent(ProjectAuditEvent::PROJECT_CREATED, $project, $project->name, $user);
             $this->assertTrue($saved);
             $this->assertEquals(1, count($project->auditEvents));
             //used in delete

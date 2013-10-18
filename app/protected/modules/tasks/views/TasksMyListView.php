@@ -174,7 +174,7 @@
                         'visible'         => 'ActionSecurityUtil::canCurrentUserPerformAction("Edit", $data)',
                         'options'         => array('class' => 'pencil', 'title' => 'Update'),
                         'label'           => '!',
-                        'ajaxOptions'     => TasksUtil::resolveAjaxOptionsForEditModel("Edit")
+                        'ajaxOptions'     => TasksUtil::resolveAjaxOptionsForModalView('Edit')
                     ),
                 ),
             );

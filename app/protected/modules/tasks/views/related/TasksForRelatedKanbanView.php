@@ -62,7 +62,7 @@
                             array('type'            => 'CreateTaskFromRelatedKanbanModalLink',
                                   'routeModuleId'   => 'eval:$this->moduleId',
                                   'routeParameters' => 'eval:$this->getCreateLinkRouteParameters()',
-                                  'ajaxOptions'     => 'eval:TasksUtil::resolveAjaxOptionsForEditModel("Create")',
+                                  'ajaxOptions'     => 'eval:TasksUtil::resolveAjaxOptionsForModalView("Create", $this->getGridViewId())',
                                   'sourceKanbanBoardId' => 'eval:$this->getGridViewId()',
                                   'modalContainerId'=> 'eval:TasksUtil::getModalContainerId()'
                             ),
@@ -124,22 +124,11 @@
             $cClipWidget->widget($this->getGridViewWidgetPath(), $this->getCGridViewParams());
             $cClipWidget->endClip();
             $content     = $this->renderKanbanViewTitleWithActionBars();
-            //Check for zero count
-            if($this->getDataProvider()->getTotalItemCount() > 0)
+            $content    .= $cClipWidget->getController()->clips['ListView'] . "\n";
+            if ($this->getRowsAreSelectable())
             {
-                $content    .= $cClipWidget->getController()->clips['ListView'] . "\n";
-                if ($this->getRowsAreSelectable())
-                {
-                    $content .= ZurmoHtml::hiddenField($this->gridId . $this->gridIdSuffix .
-                                                        '-selectedIds', implode(",", $this->selectedIds)) . "\n"; // Not Coding Standard
-                }
-            }
-            else
-            {
-                $zeroModelView = new ZeroTasksForRelatedModelYetView($this->controllerId,
-                                                                     $this->moduleId, 'Task',
-                                                                     get_class($this->params['relationModel']));
-                $content .= $zeroModelView->render();
+                $content .= ZurmoHtml::hiddenField($this->gridId . $this->gridIdSuffix .
+                                                    '-selectedIds', implode(",", $this->selectedIds)) . "\n"; // Not Coding Standard
             }
             $content .= $this->renderScripts();
             return $content;
@@ -374,6 +363,17 @@
         public static function getDesignerRulesType()
         {
             return null;
+        }
+
+        /**
+         * Renders the zero model view when there is no data.
+         */
+        public function getEmptyText()
+        {
+            $zeroModelView = new ZeroTasksForRelatedModelYetView($this->controllerId,
+                                                                     $this->moduleId, 'Task',
+                                                                     get_class($this->params['relationModel']));
+            return $zeroModelView->render();
         }
     }
 ?>

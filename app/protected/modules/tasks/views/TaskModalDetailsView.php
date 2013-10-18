@@ -41,13 +41,15 @@
     {
         public static function getDefaultMetadata()
         {
+            $getData = GetUtil::getData();
             $metadata = array(
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
                             array('type'  => 'TaskModalEditFromModalDetailsLink'),
                             array('type'  => 'AuditEventsModalListLink'),
-                            array('type'  => 'TaskDeleteLink'),
+                            array('type'  => 'TaskDeleteLink',
+                                  'sourceViewId' => $getData['sourceKanbanBoardId']),
                         ),
                     ),
                     'derivedAttributeTypes' => array(
@@ -296,18 +298,15 @@
         {
             $task = Task::getById($this->model->id);
             $content = '<div id="task-subscriber-box">';
-            $content .= Zurmo::t('TasksModule', 'Who is receiving notifications');
-            $content .= TasksUtil::getDetailSubscriptionLink($task, 0);
+            $content .= ZurmoHtml::tag('h4', array(), Zurmo::t('TasksModule', 'Who is receiving notifications'));
             $content .= '<div id="subscriberList">';
-
             if ($task->notificationSubscribers->count() > 0)
             {
                 $content .= TasksUtil::getTaskSubscriberData($task);
             }
-
+            $content .= TasksUtil::getDetailSubscriptionLink($task, 0);
             $content .= '</div>';
             $content .= '</div>';
-
             TasksUtil::registerSubscriptionScript($this->model->id);
             TasksUtil::registerUnsubscriptionScript($this->model->id);
             return $content;
@@ -351,7 +350,7 @@
             $element  = new TaskStatusDropDownElement($this->getModel(), 'status', $form);
             $content .= $element->render();
             $content .= '<span id="completionDate">';
-            if($this->model->status == Task::STATUS_COMPLETED) //todO: deal with showing completedDateTime etc.
+            if($this->model->status == Task::STATUS_COMPLETED)
             {
                 $content .= '<p>' . Zurmo::t('TasksModule', 'Completed On') . ': ' .
                             DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay(

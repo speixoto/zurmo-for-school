@@ -245,14 +245,7 @@
         protected function renderConfigSaveAjax($formId, $url, $sourceKanbanBoardId, $modalId)
         {
             // Begin Not Coding Standard
-            if($sourceKanbanBoardId != null)
-            {
-                $kanbanRefreshScript = "$.fn.yiiGridView.update('" . $sourceKanbanBoardId. "');";
-            }
-            else
-            {
-                $kanbanRefreshScript = null;
-            }
+            $kanbanRefreshScript = TasksUtil::resolveExtraCloseScriptForModalAjaxOptions($sourceKanbanBoardId);
             $title   = TasksUtil::getModalDetailsTitle();
             $options = array(
                 'type' => 'POST',
@@ -260,7 +253,6 @@
                 'url'  =>  $url,
                 'update' => '#' . $modalId,
                 'complete' => "function(XMLHttpRequest, textStatus){
-                console.log('" . $modalId . "');
                                     $('#" . $modalId .  "').dialog('option', 'title', '" . $title . "');
                                     " . $kanbanRefreshScript . "}"
             );
