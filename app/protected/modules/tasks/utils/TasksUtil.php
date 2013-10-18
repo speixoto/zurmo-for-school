@@ -72,7 +72,7 @@
             foreach ($task->notificationSubscribers as $subscriber)
             {
                 $user     = $subscriber->person->castDown(array($modelDerivationPathToItem));
-                $content .= ZurmoHtml::tag('p', array(), static::renderSubscriberImageAndLinkContent($user));
+                $content .= static::renderSubscriberImageAndLinkContent($user);
             }
 
             return $content;

@@ -28,13 +28,19 @@
 .task-dialog{
 	.clearfix();
 	min-width: 1000px;
+	max-width: 1000px;
 	border: none;
 	background: #f0f0f0;
 	.radius(3px);
 	//0 0 15px 0 rgba(51, 51, 51, 0.25)
 	// 1px 1px 1px 0px rgba(153, 153, 153, 0.15)
 	.b-shadow(~'inset 0 0 0 1px rgba(204, 204, 204, 0.3) ,0 0 15px 0 rgba(51, 51, 51, 0.25)');
-
+	.col-0{
+		width: 15%;
+	}
+	.col-1{
+		width: 85%;
+	}
 	.ui-dialog-title{
 		padding:0 !important;
 		margin:0 !important;
@@ -108,6 +114,9 @@
 	margin-top: 15px;
 	h4{
 		margin-bottom: 4px;
+	}
+	img{
+		margin-right:5px;
 	}
 }
 
