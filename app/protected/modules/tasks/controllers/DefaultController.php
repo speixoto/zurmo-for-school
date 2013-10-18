@@ -614,5 +614,19 @@
         {
             return new TaskZurmoControllerUtil();
         }
+
+        /**
+         * @param $id
+         * @param null $redirectUrl
+         */
+        public function actionDelete($id, $redirectUrl = null)
+        {
+            $task              = Task::getById(intval($id));
+            ControllerSecurityUtil::resolveAccessCanCurrentUserDeleteModel($task);
+            if(!$task->delete())
+            {
+                throw new FailedToDeleteModelException();
+            }
+        }
     }
 ?>

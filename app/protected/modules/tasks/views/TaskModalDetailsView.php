@@ -41,13 +41,15 @@
     {
         public static function getDefaultMetadata()
         {
+            $getData = GetUtil::getData();
             $metadata = array(
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
                             array('type'  => 'TaskModalEditFromModalDetailsLink'),
                             array('type'  => 'AuditEventsModalListLink'),
-                            array('type'  => 'TaskDeleteLink'),
+                            array('type'  => 'TaskDeleteLink',
+                                  'sourceId' => $getData['sourceKanbanBoardId']),
                         ),
                     ),
                     'derivedAttributeTypes' => array(

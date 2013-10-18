@@ -47,7 +47,60 @@
         {
             $htmlOptions['confirm'] = Zurmo::t('TasksModule', 'Are you sure you want to delete this {modelLabel}?',
                                       array('{modelLabel}' => TasksModule::getModuleLabelByTypeAndLanguage('SingularLowerCase')));
+            $this->registerDeleteActionScript($htmlOptions);
             return $htmlOptions;
+        }
+
+        /**
+         * @return string
+         */
+        protected function getRoute()
+        {
+            return '#';
+        }
+
+        /**
+         * Register delete action event handler
+         */
+        protected function registerDeleteActionScript($htmlOptions)
+        {
+            $url                = Yii::app()->createUrl('/tasks/default/delete', array('id' => $this->modelId));
+            $modalContainerId   = TasksUtil::getModalContainerId();
+            $sourceViewId       = $this->getSourceId();
+            $confirmation       = "if(!confirm(".CJavaScript::encode($htmlOptions['confirm']).")) return false;";
+            Yii::app()->clientScript->registerScript('deleteTaskAction',"
+                                                      $('#" . $htmlOptions['id'] . "').click(function(){
+                                                          $confirmation
+                                                          $.ajax(
+                                                                    {
+                                                                        url : '{$url}',
+                                                                        type : 'GET',
+                                                                        success : function(data)
+                                                                        {
+                                                                            $('#{$modalContainerId}').dialog('close');
+                                                                            $.fn.yiiGridView.update('" . $sourceViewId . "');
+                                                                        },
+                                                                        error : function()
+                                                                        {
+
+                                                                        }
+                                                                    }
+                                                                 );
+                                                             return false;
+                                                          });
+                                                      ", CClientScript::POS_END);
+        }
+
+        /**
+         * @return string
+         */
+        protected function getSourceId()
+        {
+            if (!isset($this->params['sourceId']))
+            {
+                return null; //TODO Need to ask jason
+            }
+            return $this->params['sourceId'];
         }
     }
 ?>
