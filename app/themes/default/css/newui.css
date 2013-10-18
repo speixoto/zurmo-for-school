@@ -14897,7 +14897,7 @@ div.hasHalfs > div input {
   padding-top: 2px;
   padding-bottom: 2px;
   text-align: left;
-  z-index: 9999999;
+  z-index: 9999999 !important;
   position: absolute;
 }
 .ui-autocomplete li {
@@ -24165,7 +24165,7 @@ a + .autoresponder-stats {
 .task-action-toolbar {
   overflow: hidden;
   float: right;
-  margin: 0 0 10px 2px !important;
+  margin: 0 0 10px 5px !important;
 }
 .task-action-toolbar .button-label {
   font-size: 11px;
@@ -26216,6 +26216,7 @@ div.special-pager .hidden.next:after {
 .task-dialog {
   *zoom: 1;
   min-width: 1000px;
+  max-width: 1000px;
   border: none;
   background: #f0f0f0;
   -webkit-border-radius: 3px;
@@ -26236,6 +26237,12 @@ div.special-pager .hidden.next:after {
 }
 .task-dialog:after {
   clear: both;
+}
+.task-dialog .col-0 {
+  width: 15%;
+}
+.task-dialog .col-1 {
+  width: 85%;
 }
 .task-dialog .ui-dialog-title {
   padding: 0 !important;
@@ -26318,6 +26325,9 @@ div.special-pager .hidden.next:after {
 }
 #task-subscriber-box h4 {
   margin-bottom: 4px;
+}
+#task-subscriber-box img {
+  margin-right: 5px;
 }
 .check-list {
   margin-top: 30px;

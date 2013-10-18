@@ -47,34 +47,5 @@
         {
             return Task::getStatusDropDownArray();
         }
-
-        /**
-         * Renders the editable dropdown content.
-         * @return A string containing the element's content.
-         */
-        protected function renderControlEditable()
-        {
-            $dropDownArray = $this->getDropDownArray();
-            $htmlOptions   = $this->getTaskStatusEditableHtmlOptions();
-            return $this->form->dropDownList($this->model, $this->attribute, $dropDownArray, $htmlOptions);
-        }
-
-        /**
-         * Get html options for task status dropdown
-         * @return array
-         */
-        protected function getTaskStatusEditableHtmlOptions()
-        {
-            $htmlOptions             = $this->getEditableHtmlOptions();
-            $errorInProcess          = Zurmo::t('Core', 'There is error in processing your request');
-            if($this->model->id > 0)
-            {
-                $url                     = Yii::app()->createUrl('tasks/default/updateStatusViaAjax',
-                                                                array('id' => $this->model->id));
-                $htmlOptions['onChange'] = 'javascript:updateTaskStatus($(this).val(),\'' .
-                                                                        $url . '\', \'' . $errorInProcess . '\')';
-            }
-            return $htmlOptions;
-        }
     }
 ?>

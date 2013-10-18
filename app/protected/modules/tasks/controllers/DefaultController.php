@@ -203,17 +203,6 @@
         }
 
         /**
-         * Update status via ajax
-         * @param string $id
-         */
-        public function actionUpdateStatusViaAjax($id, $status)
-        {
-            $this->processKanbanTypeUpdate($status, $id);
-            //Run update queries for update task staus and update type and sort order in kanban column
-            $this->processStatusUpdateViaAjax($id, $status, true);
-        }
-
-        /**
          * Gets the permission content
          * @param RedBeanModel $model
          * @return string
@@ -295,8 +284,9 @@
             {
                 $task = Task::getById(intval($id));
             }
-            $task     = $this->attemptToSaveModelFromPost($task, null, false);
-            $this->actionModalDetailsFromRelation($task->id);
+            $this->attemptToValidateAndSaveFromModalDetails($task);
+            $task = $this->attemptToSaveModelFromPost($task, null, false);
+            $this->processModalDetails($task);
         }
 
         /**
@@ -321,26 +311,20 @@
          */
         public function actionModalDetailsFromRelation($id)
         {
-            $cs = Yii::app()->getClientScript();
-            $isScriptRegistered = $cs->isScriptFileRegistered(Yii::getPathOfAlias('application.modules.tasks.elements.assets'),
-                                                               CClientScript::POS_END);
-            if(!$isScriptRegistered)
-            {
-                $cs->registerScriptFile(
-                    Yii::app()->getAssetManager()->publish(
-                        Yii::getPathOfAlias('application.modules.tasks.elements.assets')
-                        ) . '/TaskUtils.js',
-                    CClientScript::POS_END
-                );
-            }
             $task = Task::getById(intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($task);
+            $this->attemptToValidateAndSaveFromModalDetails($task);
             AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED,
                                        array(strval($task), get_class($this->getModule())), $task);
+            $this->processModalDetails($task);
+        }
+
+        protected function processModalDetails(Task $task)
+        {
             TasksUtil::markUserHasReadLatest($task, Yii::app()->user->userModel);
             echo ModalEditAndDetailsControllerUtil::setAjaxModeAndRenderModalDetailsView($this, 'TaskModalDetailsView',
-                                                                                                $task,
-                                                                                                'Details');
+                $task,
+                'Details');
         }
 
         /**
@@ -366,17 +350,10 @@
                     $controllerUtil   = static::getZurmoControllerUtil();
                     $controllerUtil->validateAjaxFromPost($task, 'Task');
                     Yii::app()->getClientScript()->setToAjaxMode();
-                    Yii::app()->end(0, true);
+                    Yii::app()->end(0, false);
                 }
                 else
                 {
-                    $cs = Yii::app()->getClientScript();
-                    $cs->registerScriptFile(
-                        Yii::app()->getAssetManager()->publish(
-                            Yii::getPathOfAlias('application.modules.tasks.elements.assets')
-                            ) . '/TaskUtils.js',
-                        CClientScript::POS_END
-                    );
                     echo ModalEditAndDetailsControllerUtil::setAjaxModeAndRenderModalEditView($this,
                                                                                             'TaskModalEditView',
                                                                                             $task);
@@ -458,10 +435,10 @@
         }
 
         /**
-         * Update task status in kanban view
-         * @param int $targetStatus
-         * @param int $taskId
-         */
+        * Update task status in kanban view
+        * @param int $targetStatus
+        * @param int $taskId
+        */
         public function actionUpdateStatusInKanbanView($targetStatus, $taskId)
         {
            $this->processKanbanTypeUpdate($targetStatus, $taskId);
@@ -622,6 +599,7 @@
         /**
          * @param $id
          * @param null $redirectUrl
+         * @throws FailedToDeleteModelException
          */
         public function actionDelete($id, $redirectUrl = null)
         {
@@ -630,6 +608,18 @@
             if(!$task->delete())
             {
                 throw new FailedToDeleteModelException();
+            }
+        }
+
+        protected function attemptToValidateAndSaveFromModalDetails(Task $task)
+        {
+            if (isset($_POST['ajax']) &&
+                ($_POST['ajax'] == 'task-left-column-form-data' || $_POST['ajax'] == 'task-right-column-form-data'))
+            {
+                $this->attemptToSaveModelFromPost($task, null, false);
+                $errorData        = ZurmoActiveForm::makeErrorsDataAndResolveForOwnedModelAttributes($task);
+                echo CJSON::encode($errorData);
+                Yii::app()->end(0, false);
             }
         }
     }

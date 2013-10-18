@@ -79,7 +79,8 @@
             $errorInProcess = CJavaScript::quote(Zurmo::t('Core', 'There was an error processing your request'));
             $string  = 'ZurmoHtml::link(';
             $string .= $attributeString . ', ';
-            $string .= '"javascript:transferUserModalValues(\"#'. $this->modalId . '\", " . CJavaScript::encode(array(\'' . $this->sourceIdFieldId . '\' => $data->id, \'' . $this->sourceNameFieldId . '\' => strval(' . $attributeString . ')))';
+            $string .= '"javascript:transferUserModalValues(\"#'. $this->modalId . '\", " . CJavaScript::encode(array(\'' .
+                       $this->sourceIdFieldId . '\' => $data->id, \'' . $this->sourceNameFieldId . '\' => strval(' . $attributeString . ')))';
             $string .= '. ",\'' . $url . '\',\'' . $this->attribute . '\', \'' . $errorInProcess . '\');"';
             $string .= ')';
             return $string;

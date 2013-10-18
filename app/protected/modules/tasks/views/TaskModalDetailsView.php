@@ -49,7 +49,7 @@
                             array('type'  => 'TaskModalEditFromModalDetailsLink'),
                             array('type'  => 'AuditEventsModalListLink'),
                             array('type'  => 'TaskDeleteLink',
-                                  'sourceViewId' => $getData['sourceKanbanBoardId']),
+                                  'sourceViewId' => 'eval:$this->getSourceViewId()'),
                         ),
                     ),
                     'derivedAttributeTypes' => array(
@@ -113,12 +113,21 @@
         }
 
         /**
-         * Gets form id
+         * Gets form id for the right side form
          * @return string
          */
-        protected static function getFormId()
+        protected static function getRightSideFormId()
         {
             return 'task-right-column-form-data';
+        }
+
+        /**
+         * Gets form id for the left side form
+         * @return string
+         */
+        protected static function getLeftSideFormId()
+        {
+            return 'task-left-column-form-data';
         }
 
         /**
@@ -139,12 +148,10 @@
         {
             $content      = $this->resolveAndRenderActionElementMenu();
             $content     .= '<div class="details-table clearfix">'; //todo: we should probably call this something else?
-            //$content     .= $this->renderTitleContent();
             $content     .= $this->renderLeftSideContent();
             $content     .= $this->renderRightSideContent();
             $content     .= '</div>';
             $content     .= $this->renderAfterDetailsTable();
-            $this->registerEditInPlaceScript();
             return $content;
         }
 
@@ -160,22 +167,32 @@
             $content    = null;
             $content   .= '<div class="wide form">';
             $clipWidget = new ClipWidget();
-            list($form, $formStart) = $clipWidget->renderBeginWidget('ZurmoActiveForm',
-                //todo: if i set this to submit on field change it should worK? i dont need special elements then?
-                array_merge
-                (
-                    array('id' => 'task-left-column-form-data')
-                ));
+            list($form, $formStart) = $clipWidget->renderBeginWidget(
+                'ZurmoActiveForm',
+                array_merge(
+                    array('id' => static::getLeftSideFormId()),
+                    $this->resolveActiveFormAjaxValidationOptions()
+                )
+            );
             $content .= $formStart;
             $nameElement = new TextElement($this->getModel(), 'name', $form);
             $nameElement->editableTemplate = '{content}{error}';
             $content .= $nameElement->render();
-            $descriptionElement = new TextAreaElement($this->getModel(), 'description', $form);
+            $descriptionElement = new TextAreaElement($this->getModel(), 'description', $form, array('rows' => 2));
             $content .= $descriptionElement->render();
             $formEnd  = $clipWidget->renderEndWidget();
             $content .= $formEnd;
+            $content .= $this->renderModalContainer();
             $content .= '</div>';
             return ZurmoHtml::tag('div', array('class' => 'left-side-edit-view-panel'), $content);
+        }
+
+        protected function resolveActiveFormAjaxValidationOptions()
+        {
+            return array('enableAjaxValidation' => true,
+                'clientOptions' => array(
+                    'validateOnChange'  => true,
+                ),);
         }
 
         protected function renderLeftSideBottomContent()
@@ -203,13 +220,13 @@
             $content    = null;
             $content   .= '<div class="wide form">';
             $clipWidget = new ClipWidget();
-            list($form, $formStart) = $clipWidget->renderBeginWidget('ZurmoActiveForm',
-                //todo: if i set this to submit on field change it should worK? i dont need special elements then?
-                //todo: i think i still need 2 forms
-                                        array_merge
-                                        (
-                                            array('id' => 'task-right-column-form-data')
-                                        ));
+            list($form, $formStart) = $clipWidget->renderBeginWidget(
+                'ZurmoActiveForm',
+                array_merge(
+                    array('id' => static::getRightSideFormId()),
+                    $this->resolveActiveFormAjaxValidationOptions()
+                )
+            );
             $content .= $formStart;
             $content .= $this->renderStatusContent($form);
             $content .= $this->renderOwnerContent($form);
@@ -254,11 +271,9 @@
          */
         protected function renderOwnerContent($form)
         {
-            $content  = '<div class="owner-box">';
-            $element  = new TaskUserElement($this->getModel(), 'owner', $form);
-            $element->editableTemplate = '{label}{content}{error}';
-            $content .= $element->render().'</div>';
-            return $content;
+            $element  = new UserElement($this->getModel(), 'owner', $form);
+            $element->editableTemplate = '<div class="owner-box">{label}{content}{error}</div>';
+            return $element->render();
         }
 
         /**
@@ -268,11 +283,9 @@
          */
         protected function renderRequestedByUserContent($form)
         {
-            $content  = '<div class="owner-box">';
-            $element  = new TaskUserElement($this->getModel(), 'requestedByUser', $form);
-            $element->editableTemplate = '{label}{content}{error}';
-            $content .= $element->render().'</div>';
-            return $content;
+            $element  = new UserElement($this->getModel(), 'requestedByUser', $form);
+            $element->editableTemplate = '<div class="owner-box">{label}{content}{error}</div>';
+            return $element->render();
         }
 
         /**
@@ -282,11 +295,9 @@
          */
         protected function renderDueDateTimeContent($form)
         {
-            $content  = '';
-            $element  = new TaskAjaxDateTimeElement($this->getModel(), 'dueDateTime', $form);
+            $element  = new DateTimeElement($this->getModel(), 'dueDateTime', $form);
             $element->editableTemplate = '{label}{content}{error}';
-            $content .= $element->render();
-            return $content;
+            return $element->render();
         }
 
         /**
@@ -361,41 +372,23 @@
             return $content;
         }
 
-        /**
-         * Registers edit in place script
-         */
-        protected function registerEditInPlaceScript() //todo: maybe remove this if we don't use it
-        {
-            /**
-            $taskCheckItemUrl     = Yii::app()->createUrl('tasks/taskCheckItems/updateNameViaAjax');
-            $updateDesctiptionUrl = Yii::app()->createUrl('tasks/default/updateDescriptionViaAjax');
-            Yii::app()->clientScript->registerScriptFile(
-                            Yii::app()->getAssetManager()->publish(
-                                     Yii::getPathOfAlias('application.modules.tasks.views.assets')) . '/jquery.editinplace.js');
-            $script = '$(".editable").editInPlace({
-                                                    url: "' . $taskCheckItemUrl . '",
-                                                    element_id : "id",
-                                                    show_buttons: true,
-                                                    value_required : true
-                                                    });';
-
-            $scriptTextArea = '$(".editableTextarea").editInPlace({
-                                                    url: "' . $updateDesctiptionUrl . '",
-                                                    element_id : "id",
-                                                    show_buttons: false,
-                                                    field_type: "textarea",
-                                                    textarea_rows: "15",
-                                                    textarea_cols: "35",
-                                                    default_text: "' . Zurmo::t('TasksModule', 'Click here to enter description') . '"
-                                                    });';
-            Yii::app()->getClientScript()->registerScript('editableScript', $script, ClientScript::POS_END);
-            Yii::app()->getClientScript()->registerScript('editableTextAreaScript', $scriptTextArea, ClientScript::POS_END);
-             * **/
-        }
-
         public static function getDesignerRulesType()
         {
             return 'TaskModalDetailsView';
         }
+
+        protected function getSourceViewId()
+        {
+            $getData = GetUtil::getData();
+            return ArrayUtil::getArrayValue($getData, 'sourceKanbanBoardId');
+        }
+
+        protected function renderModalContainer()
+        {
+            return ZurmoHtml::tag('div', array(
+                'id' => ModelElement::MODAL_CONTAINER_PREFIX . '-' . $this->getRightSideFormId()
+            ), '');
+        }
+
     }
 ?>

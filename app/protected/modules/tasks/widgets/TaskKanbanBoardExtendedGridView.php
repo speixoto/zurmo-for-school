@@ -130,8 +130,15 @@
                             });
                             return ui;
                         };";
-
             Yii::app()->clientScript->registerScript('task-sortable-data-helper', $taskSortableScript);
+
+            /*@TODO Mayank: we need to integrate the drag/drop actions from KanbanUtils.js into your code, this is for the visual feedabck, see opps kanban when u drag/drop
+            Yii::app()->clientScript->registerScriptFile(
+                Yii::app()->getAssetManager()->publish(
+                Yii::getPathOfAlias('application.core.kanbanBoard.widgets.assets')) . '/KanbanUtils.js');
+            $script = 'setupKanbanDragDrop();';
+            Yii::app()->getClientScript()->registerScript('KanbanDragDropScript', $script);
+            */
         }
 
         /**
