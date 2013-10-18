@@ -483,7 +483,7 @@
         public static function getTaskStatusMappingToKanbanItemTypeArray()
         {
             return array(
-                            Task::STATUS_NEW                   => KanbanItem::TYPE_TODO,
+                            Task::STATUS_NEW                   => KanbanItem::TYPE_SOMEDAY,
                             Task::STATUS_IN_PROGRESS           => KanbanItem::TYPE_IN_PROGRESS,
                             Task::STATUS_AWAITING_ACCEPTANCE   => KanbanItem::TYPE_IN_PROGRESS,
                             Task::STATUS_REJECTED              => KanbanItem::TYPE_TODO,
@@ -500,7 +500,7 @@
         {
             if($status == null)
             {
-                return KanbanItem::TYPE_TODO;
+                return KanbanItem::TYPE_SOMEDAY;
             }
             $data = self::getTaskStatusMappingToKanbanItemTypeArray();
             return $data[intval($status)];
