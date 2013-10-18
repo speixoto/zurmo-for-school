@@ -81,12 +81,11 @@
         }
 
         /**
-         * Render A standard text input.
-         * @return The element's content as a string.
+         * @throws NotImplementedException
          */
         protected function renderControlEditable()
         {
-            throw new NotImplementedException($message, $code, $previous);
+            throw new NotImplementedException();
         }
 
         /**

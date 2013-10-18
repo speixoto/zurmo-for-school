@@ -268,5 +268,17 @@
         {
             return 'TaskModalEditView';
         }
+
+        /**
+         * Override to disabling probability attribute.
+         */
+        protected function resolveElementInformationDuringFormLayoutRender(& $elementInformation)
+        {
+            parent::resolveElementInformationDuringFormLayoutRender($elementInformation);
+            if ($elementInformation['attributeName'] == 'description')
+            {
+                $elementInformation['rows'] = 2;
+            }
+        }
     }
 ?>
