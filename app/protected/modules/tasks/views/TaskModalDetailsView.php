@@ -49,7 +49,7 @@
                             array('type'  => 'TaskModalEditFromModalDetailsLink'),
                             array('type'  => 'AuditEventsModalListLink'),
                             array('type'  => 'TaskDeleteLink',
-                                  'sourceId' => $getData['sourceKanbanBoardId']),
+                                  'sourceViewId' => $getData['sourceKanbanBoardId']),
                         ),
                     ),
                     'derivedAttributeTypes' => array(

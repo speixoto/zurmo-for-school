@@ -66,7 +66,7 @@
         {
             $url                = Yii::app()->createUrl('/tasks/default/delete', array('id' => $this->modelId));
             $modalContainerId   = TasksUtil::getModalContainerId();
-            $sourceViewId       = $this->getSourceId();
+            $sourceViewId       = $this->getSourceViewId();
             $confirmation       = "if(!confirm(".CJavaScript::encode($htmlOptions['confirm']).")) return false;";
             Yii::app()->clientScript->registerScript('deleteTaskAction',"
                                                       $('#" . $htmlOptions['id'] . "').click(function(){
@@ -77,6 +77,7 @@
                                                                         type : 'GET',
                                                                         success : function(data)
                                                                         {
+                                                                            console.log($('#{$modalContainerId}').parent().parent());
                                                                             $('#{$modalContainerId}').dialog('close');
                                                                             $.fn.yiiGridView.update('" . $sourceViewId . "');
                                                                         },
@@ -94,13 +95,13 @@
         /**
          * @return string
          */
-        protected function getSourceId()
+        protected function getSourceViewId()
         {
-            if (!isset($this->params['sourceId']))
+            if (!isset($this->params['sourceViewId']))
             {
                 return null; //TODO Need to ask jason
             }
-            return $this->params['sourceId'];
+            return $this->params['sourceViewId'];
         }
     }
 ?>
