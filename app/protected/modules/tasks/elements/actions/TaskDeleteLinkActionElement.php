@@ -77,7 +77,6 @@
                                                                         type : 'GET',
                                                                         success : function(data)
                                                                         {
-                                                                            console.log($('#{$modalContainerId}').parent().parent());
                                                                             $('#{$modalContainerId}').dialog('close');
                                                                             $.fn.yiiGridView.update('" . $sourceViewId . "');
                                                                         },
