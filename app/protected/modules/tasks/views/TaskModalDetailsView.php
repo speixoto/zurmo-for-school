@@ -309,18 +309,15 @@
         {
             $task = Task::getById($this->model->id);
             $content = '<div id="task-subscriber-box">';
-            $content .= Zurmo::t('TasksModule', 'Who is receiving notifications');
-            $content .= TasksUtil::getDetailSubscriptionLink($task, 0);
+            $content .= ZurmoHtml::tag('h4', array(), Zurmo::t('TasksModule', 'Who is receiving notifications'));
             $content .= '<div id="subscriberList">';
-
             if ($task->notificationSubscribers->count() > 0)
             {
                 $content .= TasksUtil::getTaskSubscriberData($task);
             }
-
+            $content .= TasksUtil::getDetailSubscriptionLink($task, 0);
             $content .= '</div>';
             $content .= '</div>';
-
             TasksUtil::registerSubscriptionScript($this->model->id);
             TasksUtil::registerUnsubscriptionScript($this->model->id);
             return $content;

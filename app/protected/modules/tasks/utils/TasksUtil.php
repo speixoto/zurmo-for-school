@@ -671,7 +671,7 @@
          */
         public static function getKanbanSubscriptionLink(Task $task, $row)
         {
-            return self::resolveSubscriptionLink($task, 'z-link subscribe-task-link', 'z-link unsubscribe-task-link');
+            return self::resolveSubscriptionLink($task, 'subscribe-task-link', 'simple-link unsubscribe-task-link');
         }
 
         /**
@@ -682,7 +682,7 @@
          */
         public static function getDetailSubscriptionLink(Task $task, $row)
         {
-            return self::resolveSubscriptionLink($task, 'detail-subscribe-task-link', 'detail-unsubscribe-task-link');
+            return self::resolveSubscriptionLink($task, 'detail-subscribe-task-link', 'simple-link detail-unsubscribe-task-link');
         }
 
         /**
@@ -698,7 +698,7 @@
             assert('is_string($unsubscribeLinkClass)');
             if(TasksUtil::isUserSubscribedForTask($task, Yii::app()->user->userModel) === false)
             {
-                $label       = Zurmo::t('TasksModule', 'Subscribe');
+                $label       = '';//Zurmo::t('TasksModule', 'Subscribe');
                 $class       = $subscribeLinkClass;
                 $iconContent = ZurmoHtml::tag('i', array('class' => 'icon-subscribe'), '');
             }
@@ -799,8 +799,9 @@
             {
                 return null;
             }
-            $percentageComplete = static::getTaskCompletionPercentage($task);
-            return ZurmoHtml::tag('div', array('class' => 'completion-percentage-bar'), 'todo' . $percentageComplete);
+            $percentageComplete = ceil(static::getTaskCompletionPercentage($task));
+            return ZurmoHtml::tag('div', array('class' => 'completion-percentage-bar', 'style' => 'width:' . $percentageComplete . '%'),
+                                  $percentageComplete . '%');
             $percentage = TasksUtil::getTaskCompletionPercentage(intval($task->id));
         }
 

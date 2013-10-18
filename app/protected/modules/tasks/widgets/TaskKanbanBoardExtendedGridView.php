@@ -400,11 +400,14 @@
         protected function renderTaskCardDetailsContent(Task $task, $row)
         {
             $statusClass = 'status-' . $task->status;
-            $content  = ZurmoHtml::openTag('div', array('class' => 'task-details clearfix ' . $statusClass));
+
+            $content  = $this->renderCardDataContent($this->cardColumns['completionBar'], $task, $row);
+            $content .= ZurmoHtml::openTag('div', array('class' => 'task-details clearfix ' . $statusClass));
             $content .= ZurmoHtml::tag('span', array('class' => 'task-status'), Task::getStatusDisplayName($task->status));
             $content .= $this->resolveAndRenderTaskCardDetailsDueDateContent($task);
             $content .= ZurmoHtml::closeTag('div');
-            $content .= ZurmoHtml::openTag('div', array('class' => 'task-content'));
+
+            $content .= ZurmoHtml::openTag('div', array('class' => 'task-content clearfix'));
             $content .= $this->resolveAndRenderTaskCardDetailsStatusContent($task, $row);
             $content .= ZurmoHtml::openTag('h4');
             $content .= $this->renderCardDataContent($this->cardColumns['name'], $task, $row);
@@ -413,12 +416,13 @@
             {
                 $content .= ZurmoHtml::tag('p', array(), $task->description);
             }
+            $content .= ZurmoHtml::closeTag('div');
+
             $content .= ZurmoHtml::openTag('div', array('class' => 'task-subscribers'));
             $content .= $this->resolveAndRenderTaskCardDetailsSubscribersContent($task);
             $content .= $this->renderCardDataContent($this->cardColumns['subscribe'], $task, $row);
             $content .= ZurmoHtml::closeTag('div');
-            $content .= $this->renderCardDataContent($this->cardColumns['completionBar'], $task, $row);
-            $content .= ZurmoHtml::closeTag('div');
+
             return $content;
         }
 
