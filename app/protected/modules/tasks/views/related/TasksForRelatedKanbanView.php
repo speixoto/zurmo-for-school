@@ -125,22 +125,22 @@
             $cClipWidget->endClip();
             $content     = $this->renderKanbanViewTitleWithActionBars();
             //Check for zero count
-            if($this->getDataProvider()->getTotalItemCount() > 0)
-            {
+//            if($this->getDataProvider()->getTotalItemCount() > 0)
+//            {
                 $content    .= $cClipWidget->getController()->clips['ListView'] . "\n";
                 if ($this->getRowsAreSelectable())
                 {
                     $content .= ZurmoHtml::hiddenField($this->gridId . $this->gridIdSuffix .
                                                         '-selectedIds', implode(",", $this->selectedIds)) . "\n"; // Not Coding Standard
                 }
-            }
-            else
-            {
-                $zeroModelView = new ZeroTasksForRelatedModelYetView($this->controllerId,
-                                                                     $this->moduleId, 'Task',
-                                                                     get_class($this->params['relationModel']));
-                $content .= $zeroModelView->render();
-            }
+//            }
+//            else
+//            {
+//                $zeroModelView = new ZeroTasksForRelatedModelYetView($this->controllerId,
+//                                                                     $this->moduleId, 'Task',
+//                                                                     get_class($this->params['relationModel']));
+//                $content .= $zeroModelView->render();
+//            }
             $content .= $this->renderScripts();
             return $content;
         }
@@ -374,6 +374,17 @@
         public static function getDesignerRulesType()
         {
             return null;
+        }
+
+        /**
+         * Renders the zero model view when there is no data.
+         */
+        public function getEmptyText()
+        {
+            $zeroModelView = new ZeroTasksForRelatedModelYetView($this->controllerId,
+                                                                     $this->moduleId, 'Task',
+                                                                     get_class($this->params['relationModel']));
+            return $zeroModelView->render();
         }
     }
 ?>

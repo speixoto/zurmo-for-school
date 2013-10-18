@@ -90,7 +90,7 @@
          */
         protected function renderContent()
         {
-            $params             = $this->getCreateLinkParams();
+            $params  = $this->getCreateLinkParams();
             $content = '<div class="' . $this->getIconName() . '">';
             $content .= $this->getMessageContent();
             $content .= '</div>';
