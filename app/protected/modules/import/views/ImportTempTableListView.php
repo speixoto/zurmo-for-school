@@ -270,7 +270,7 @@
                         $column['class']     = 'phaZurmoEditColumn';
                         $column['actionUrl'] = Yii::app()->createUrl('import/default/update',
                                                                      array('id'        => $this->importId,
-                                                                           'attribute' => $column['name']
+                                                                           'attribute' => $columnName
                                                                      )
                         );
                         $column['htmlEditDecorationOptions'] = array('class' => 'editable-cell');

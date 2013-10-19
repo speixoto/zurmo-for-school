@@ -522,6 +522,35 @@
         }
 
         /**
+         * Update the row value in the table with a new value
+         * @param string        $tableName
+         * @param integer       $id
+         * @param string        $attribute
+         * @param string|null   $newValue
+         * @throws NotFoundException
+         * @throws FailedToSaveModelException
+         */
+        public static function updateRowValue($tableName, $id, $attribute, $newValue)
+        {
+            assert('is_string($tableName)');
+            assert('is_int($id)');
+            assert('is_string($attribute)');
+            assert('is_string($newValue) || $newValue == null');
+
+            $bean = ZurmoRedBean::findOne($tableName, "id = :id", array('id' => $id));
+            if ($bean == null)
+            {
+                throw new NotFoundException();
+            }
+            $bean->$attribute         = $newValue;
+            $storedId = ZurmoRedBean::store($bean);
+            if ($storedId != $id)
+            {
+                throw new FailedToSaveModelException("Id of updated record does not match the id used in finding it.");
+            }
+        }
+
+        /**
          * For the temporary import tables, some of the columns are reserved and not used by any of the import data
          * coming from a csv.
          * @return array of column names.

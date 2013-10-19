@@ -72,74 +72,85 @@
             echo CHtml::closeTag('div');
         }
 
-        /**
-         * Override to fix grid-view class
-         */
         public function init() {
+
             parent::init();
 
             $cs=Yii::app()->getClientScript();
 
             $liveClick ='
-        phaACActionUrls["'.$this->grid->id.'"]="' . $this->buildActionUrl() . '";
-        jQuery(".'. $this->getViewDivClass() . '").live("click", function(e){
-            phaACOpenEditField(this, "' . $this->id . '");
-            return false;
-        });';
+            phaACActionUrls["'.$this->id.'"]="' . $this->buildActionUrl() . '";
+            jQuery(".'. $this->getViewDivClass() . '").live("click", function(e){
+                phaACOpenEditField(this, "' . $this->id . '");
+                return false;
+            });';
 
             $script ='
-        var phaACOpenEditItem = 0;
-        var phaACOpenEditGrid = "";
-        var phaACActionUrls = [];
-        function phaACOpenEditField(itemValue, gridUID, grid ) {
-            phaACHideEditField( phaACOpenEditItem, phaACOpenEditGrid );
-            var id   = $(itemValue).attr("valueid");
+            var phaACOpenEditItem = 0;
+            var phaACOpenEditGrid = "";
+            var phaACActionUrls = [];
+            function phaACOpenEditField(itemValue, gridUID, grid ) {
+                phaACHideEditField( phaACOpenEditItem, phaACOpenEditGrid );
+                var id   = $(itemValue).attr("valueid");
+                phaACOpenEditItem = id;
+                $("#viewValue-" + gridUID + "-"+id).hide();
+                var inputValue = $("#field-" + gridUID + "-" + phaACOpenEditItem+" input").val();
+                var modifiedInputValue = inputValue.replace(/,/g,"");
+                inputValue = modifiedInputValue;
 
-            $("#viewValue-" + gridUID + "-"+id).hide();
-            $("#field-" + gridUID + "-" + id).show();
-            $("#field-" + gridUID + "-" + id+" input")
-                .focus()
-                .keydown(function(event) {
-                    switch (event.keyCode) {
-                       case 27:
-                          phaACHideEditField( phaACOpenEditItem, gridUID );
-                       break;
-                       case 13:
-                          phaACEditFieldSend( itemValue );
-                       break;
-                       default: break;
-                    }
-                });
+                $("#field-" + gridUID + "-" + phaACOpenEditItem+" input").val(inputValue);
+                $("#field-" + gridUID + "-" + id).show();
+                $("#field-" + gridUID + "-" + id+" input")
+                    .focus()
+                    .keydown(function(event) {
+                        switch (event.keyCode) {
+                           case 27:
+                           case 9:
+                              //phaACHideEditField(phaACOpenEditItem, gridUID);
+                              phaACEditFieldSend(itemValue, gridUID);
+                              break;
+                           case 13:
+                              phaACEditFieldSend(itemValue, gridUID);
+                              break;
+                           default: break;
+                        }
+                    })
+                    .blur(function(){
+                        //phaACHideEditField(phaACOpenEditItem, gridUID);
+                        phaACEditFieldSend(itemValue, gridUID);
+                    });
 
-            phaACOpenEditItem = id;
-            phaACOpenEditGrid = gridUID;
-        }
-        function phaACHideEditField( itemId, gridUID ) {
-            var clearVal = $("#viewValue-" + gridUID + "-"+itemId).text();
-            $("#field-" + gridUID + "-" + itemId+" input").val( clearVal );
-            $("#field-" + gridUID + "-" + itemId).hide();
-            $("#field-" + gridUID + "-" + itemId+" input").unbind("keydown");
-            $("#viewValue-" + gridUID + "-" + itemId).show();
-            phaACOpenEditItem=0;
-            phaACOpenEditGrid = "";
-        }
-        function phaACEditFieldSend( itemValue ) {
-            var id = $(itemValue).parents(".cgrid-view").attr("id");
-            $.ajax({
-                type: "POST",
-                dataType: "json",
-                cache: false,
-                url: phaACActionUrls[id],
-                data: {
-                    item: phaACOpenEditItem,
-                    value: $("#field-"+phaACOpenEditGrid+"-"+phaACOpenEditItem+" input").val()
-                },
-                success: function(data){
-                  $("#"+id).yiiGridView.update( id );
-                }
-            });
-        }
-        ';
+
+                phaACOpenEditGrid = gridUID;
+            }
+            function phaACHideEditField( itemId, gridUID ) {
+                var clearVal = $("#viewValue-" + gridUID + "-"+itemId).text();
+                $("#field-" + gridUID + "-" + itemId+" input").val( clearVal );
+                $("#field-" + gridUID + "-" + itemId).hide();
+                $("#field-" + gridUID + "-" + itemId+" input").unbind("keydown");
+                $("#viewValue-" + gridUID + "-" + itemId).show();
+                phaACOpenEditItem=0;
+                phaACOpenEditGrid = "";
+            }
+            function phaACEditFieldSend( itemValue, gridUID ) {
+                var passedValue = $("#field-"+phaACOpenEditGrid+"-"+phaACOpenEditItem+" input").val();
+                $("#viewValue-" + gridUID + "-"+phaACOpenEditItem).html(passedValue);
+                $("#field-" + gridUID + "-" + phaACOpenEditItem).hide();
+                $("#field-" + gridUID + "-" + phaACOpenEditItem+" input").unbind("keydown");
+                $("#viewValue-" + gridUID + "-" + phaACOpenEditItem).show();
+                var id = $(itemValue).parents(".cgrid-view").attr("id");
+                $.ajax({
+                        type: "GET",
+                        dataType: "json",
+                        url: phaACActionUrls[gridUID],
+                        cache: false,
+                        data: {
+                            item: phaACOpenEditItem,
+                            value: passedValue
+                        },
+                    });
+            }
+            ';
 
             $cs->registerScript(__CLASS__.'#active_column-edit', $script);
             $cs->registerScript(__CLASS__.$this->grid->id.'#active_column_click-'.$this->id, $liveClick);

@@ -122,7 +122,6 @@
                 var modifiedInputValue = inputValue.replace(/,/g,"");
                 inputValue = modifiedInputValue;
 
-                console.log(inputValue);
                 var matches;
                 if(!$.isNumeric(inputValue.charAt(0)))
                 {
