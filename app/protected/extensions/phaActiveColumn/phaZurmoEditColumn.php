@@ -104,22 +104,15 @@
                     .focus()
                     .keydown(function(event) {
                         switch (event.keyCode) {
-                           case 27:
-                           case 9:
-                              //phaACHideEditField(phaACOpenEditItem, gridUID);
-                              phaACEditFieldSend(itemValue, gridUID);
-                              break;
-                           case 13:
-                              phaACEditFieldSend(itemValue, gridUID);
-                              break;
-                           default: break;
+                            case 27:
+                               phaACEditFieldSend(itemValue, gridUID);
+                               break;
+                            case 13:
+                               phaACEditFieldSend(itemValue, gridUID);
+                               break;
+                            default: break;
                         }
-                    })
-                    .blur(function(){
-                        //phaACHideEditField(phaACOpenEditItem, gridUID);
-                        phaACEditFieldSend(itemValue, gridUID);
                     });
-
 
                 phaACOpenEditGrid = gridUID;
             }

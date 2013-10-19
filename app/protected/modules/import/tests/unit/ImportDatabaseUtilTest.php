@@ -285,9 +285,9 @@
          */
         public function testUpdateRowValue()
         {
-            ImportDatabaseUtil::updateRowValue('testimporttable', 2, 'column_0', 'new name');
+            ImportDatabaseUtil::updateRowValue('testimporttable', 2, 'column_0', 'new');
             $bean = ZurmoRedBean::findOne('testimporttable', "id = :id", array('id' => 2));
-            $this->assertEquals('new name', $bean->column_0);
+            $this->assertEquals('new', $bean->column_0);
         }
 
        /**
