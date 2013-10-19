@@ -211,6 +211,7 @@
         {
             $content  = $this->renderRightSideTopContent();
             $content .= $this->renderRightBottomSideContent();
+            $content  = ZurmoHtml::tag('div', array('class' => 'right-side-edit-view-panel'), $content);
             $content  = ZurmoHtml::tag('div', array('class' => 'right-column'), $content);
             return $content;
         }
@@ -218,7 +219,7 @@
         protected function renderRightSideTopContent()
         {
             $content    = null;
-            $content   .= '<div class="wide form">';
+            $content   .= ZurmoHtml::openTag('div', array('class' => 'wide form'));
             $clipWidget = new ClipWidget();
             list($form, $formStart) = $clipWidget->renderBeginWidget(
                 'ZurmoActiveForm',
@@ -235,8 +236,8 @@
             $content .= $this->renderNotificationSubscribersContent();
             $formEnd  = $clipWidget->renderEndWidget();
             $content .= $formEnd;
-            $content .= '</div>';
-            return ZurmoHtml::tag('div', array('class' => 'right-side-edit-view-panel'), $content);
+            $content .= ZurmoHtml::closeTag('div');
+            return $content;
         }
 
         protected function renderRightBottomSideContent()
@@ -390,5 +391,21 @@
             ), '');
         }
 
+        /**
+         * Override to change the nonEdditableTemplate to place the label above the input.
+         * @see DetailsView::resolveElementDuringFormLayoutRender()
+         */
+        protected function resolveElementDuringFormLayoutRender(& $element)
+        {
+             $element->nonEditableTemplate = '<td colspan="{colspan}">{label}<br/>{content}</td>';
+        }
+
+        /**
+         * @return bool|true
+         */
+        protected function doesLabelHaveOwnCell()
+        {
+            return false;
+        }
     }
 ?>
