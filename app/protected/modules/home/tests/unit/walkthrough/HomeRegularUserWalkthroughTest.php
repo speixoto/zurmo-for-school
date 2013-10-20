@@ -63,5 +63,21 @@
 
             //Now test peon with elevated permissions to models.
         }
+
+        public function testNobodyUserHomePageView()
+        {
+            $nobody     = $this->logoutCurrentUserLoginNewUserAndGetByUsername('nobody');
+
+            $content    = $this->runControllerWithNoExceptionsAndGetContent('home/default/welcome');
+            $this->assertContains('Welcome to Zurmo', $content);
+
+            //When hideWelcomeView is on nobody should see HomeView
+            $form                    = UserConfigurationFormAdapter::makeFormFromUserConfigurationByUser($nobody);
+            $form->hideWelcomeView   = true;
+            UserConfigurationFormAdapter::setConfigurationFromFormForCurrentUser($form);
+
+            $content    = $this->runControllerWithNoExceptionsAndGetContent('home/default/welcome');
+            $this->assertContains('HomeView', $content);
+       }
     }
 ?>

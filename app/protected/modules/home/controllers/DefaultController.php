@@ -78,9 +78,10 @@
         {
             $hasDashboardAccess = true;
             if (!RightsUtil::doesUserHaveAllowByRightName(
-            'HomeModule',
-            HomeModule::RIGHT_ACCESS_DASHBOARDS,
-            Yii::app()->user->userModel))
+                                'HomeModule',
+                                HomeModule::RIGHT_ACCESS_DASHBOARDS,
+                                Yii::app()->user->userModel)
+            )
             {
                 $hasDashboardAccess = false;
             }
