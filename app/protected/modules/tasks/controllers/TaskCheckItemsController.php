@@ -129,7 +129,6 @@
 
         /**
          * Update checklist item name
-         * @param int $id
          */
         public function actionUpdateNameViaAjax()
         {
@@ -140,6 +139,26 @@
             $taskCheckListItem->name = $checkListItemName;
             $taskCheckListItem->unrestrictedSave();
             echo $checkListItemName;
+        }
+
+        /**
+         * Delete checklist item
+         */
+        public function actionDeleteCheckListItem()
+        {
+            $getData = GetUtil::getData();
+            $id      = $getData['id'];
+            $taskCheckListItem = TaskCheckListItem::getById(intval($id));
+            $task = $taskCheckListItem->task;
+            $task->checkListItems->remove($taskCheckListItem);
+            $task->save();
+            $getParams                = array('uniquePageId'             => null,
+                                              'relatedModelId'           => $task->id,
+                                              'relatedModelClassName'    => 'Task',
+                                              'relatedModelRelationName' => 'task');
+            $url     =   Yii::app()->createUrl('tasks/taskCheckItems/ajaxCheckItemListForRelatedTaskModel',
+                            $getParams);
+            $this->redirect($url);
         }
     }
 ?>

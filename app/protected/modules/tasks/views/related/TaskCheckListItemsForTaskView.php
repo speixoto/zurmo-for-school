@@ -101,7 +101,7 @@
         }
 
         /**
-         * Renders hidden link which refresh the list on entering new comment
+         * Renders hidden link which refresh the list on entering new check list item
          * @return string
          */
         protected function renderHiddenRefreshLinkContent()
@@ -139,101 +139,93 @@
                 {
                     $checked = true;
                 }
-                $checkBox = ZurmoHtml::checkBox('TaskCheckListItem_' . $checkListItem->id, $checked,
-                                                array('class' => 'checkListItem', 'value' => $checkListItem->id));
-                $itemContent = ZurmoHtml::tag('span', array('class' => 'editable',
-                                                            'id' => 'checkListItem_' . $checkListItem->id),
+                $checkBox     = ZurmoHtml::checkBox('TaskCheckListItem_' . $checkListItem->id,
+                                                    $checked,
+                                                    array('class' => 'checkListItem',
+                                                            'value' => $checkListItem->id));
+                $itemContent  = ZurmoHtml::tag('span', array('class' => 'editable'),
                                                             $checkBox . '<p>' . $checkListItem->name . '</p>');
                 $itemContent .= $this->renderHiddenEditableTextField($checkListItem->id, $checkListItem->name);
-                $content .= ZurmoHtml::tag('li', array('class' => 'check-list-item clearfix',
-                                                       'id' => 'checkListItemContainer_' . $checkListItem->id
-                                                       ),
+                $itemContent .= $this->attachActionsToCheckListItem();
+                $content     .= ZurmoHtml::tag('li', array('class' => 'check-list-item clearfix'),
                                                        $itemContent);
             }
-            $this->registerCheckItemClickScript($checkListItem->id);
-            //$this->registerUpdateCheckListItemScript();
+            $this->registerCheckListItemsScript($checkListItem->id);
             return $content;
         }
 
-        private function registerCheckItemClickScript()
+        /**
+         * Actions attached to the check list item
+         * @return string
+         */
+        //todo: @Amit has to style this
+        private function attachActionsToCheckListItem()
+        {
+            $content = ZurmoHtml::link('edit', '#', array('class' => 'taskcheckitemedit'));
+            $content .= ' | ' . ZurmoHtml::link('delete', '#', array('class' => 'taskcheckitemdelete'));
+            $content  = ZurmoHtml::tag('span', array('class' => 'taskcheckitemactions'), $content);
+            return $content;
+        }
+
+        /**
+         * Registers the script required for check list items
+         */
+        private function registerCheckListItemsScript()
         {
             $url = Yii::app()->createUrl('/tasks/taskCheckItems/updateNameViaAjax');
+            $deleteUrl = Yii::app()->createUrl('/tasks/taskCheckItems/deleteCheckListItem');
             $errorMessage = Yii::t('Core', 'Name can not be blank');
-            Yii::app()->getClientScript()->registerScript('checklistitemclick', "
-                                                                $('li.check-list-item').click(function()
+            Yii::app()->getClientScript()->registerScript('checklistitemscript', "
+                                                                $('.taskcheckitemedit').click(function()
                                                                     {
-                                                                        $(this).find('.task-input').show();
-                                                                        $(this).find('.task-input').find('input').focus();
-                                                                        $(this).find('.editable').hide();
+                                                                        litag = $(this).parent().parent();
+                                                                        $(litag).find('.editable-task-input').show();
+                                                                        $(litag).find('.editable-task-input').find('input').focus();
+                                                                        $(litag).find('.editable').hide();
+                                                                        $(litag).find('.taskcheckitemactions').hide();
                                                                    });
-                                                                var inputElement = $(this).find('.task-input');
 
-                                                                $('div.task-input').find('input')
+                                                                $('.taskcheckitemdelete').click(function()
+                                                                    {
+                                                                        deleteCheckListItem($(this), '{$deleteUrl}');
+                                                                   });
+
+                                                                $('div.editable-task-input').find('input')
                                                                 .keydown(function(event)
                                                                 {
-                                                                    id = $(this).attr('id');
-                                                                    idParts = id.split('_');
                                                                     switch (event.keyCode)
                                                                     {
                                                                        case 27:
                                                                        //case 9:
                                                                        case 13:
-                                                                                updateCheckListItem(idParts[2], '{$url}', '{$errorMessage}');
+                                                                                updateCheckListItem($(this), '{$url}', '{$errorMessage}');
                                                                                 break;
                                                                        default: break;
                                                                     }
                                                                 })
                                                                 .blur(function()
                                                                 {
-                                                                    updateCheckListItem(idParts[2], '{$url}', '{$errorMessage}');
+                                                                    updateCheckListItem($(this), '{$url}', '{$errorMessage}');
                                                                 })
                                                                 ;
                                                             ");
         }
 
+        /**
+         * Render hidden editable field
+         * @param string $id
+         * @param string $name
+         * @return string
+         */
         private function renderHiddenEditableTextField($id, $name)
         {
+            assert('is_int($id)');
+            assert('is_string($name)');
             $errorMessage = Yii::t('Core', 'Name can not be blank');
-            $content = "<div class='task-input' id='checkItemEditableDiv_{$id}' style='display:none'>
-                            <input id='TaskCheckListItem_name_{$id}' name='TaskCheckListItem[name][{$id}]' type='text' value='{$name}'>
-                            <div class='errorMessage' id='TaskCheckListItem_name_{$id}_em_' style='display:none'>
-                            {$errorMessage}
-                            </div>
-                    </div>";
-            //$this->registerCheckListEditableItemScript($id);
+            $editableField = "<input name='TaskCheckListItem[name][{$id}]' id='TaskCheckListItem_name_{$id}'
+                            type='text' value='{$name}'>";
+            $content = ZurmoHtml::tag('div', array('class' => 'editable-task-input', 'style' => 'display:none'), $editableField);
             return $content;
-        }
-
-        private function registerUpdateCheckListItemScript()
-        {
-            $url = Yii::app()->createUrl('/tasks/taskCheckItems/updateNameViaAjax');
-            $errorMessage = Yii::t('Core', 'Name can not be blank');
-            Yii::app()->getClientScript()->registerScript('checklistupdateitem', "
-                                                                function updateCheckListItem(id)
-                                                                {
-                                                                    var passedValue = $('#TaskCheckListItem_name_' + id).val();
-                                                                    if(passedValue == '')
-                                                                    {
-                                                                        alert('$errorMessage');
-                                                                    }
-                                                                    $('#TaskCheckListItem_name_'+ id + '_em_').hide();
-                                                                    $.ajax({
-                                                                            type: 'GET',
-                                                                            url: '{$url}',
-                                                                            dataType: 'html',
-                                                                            cache: false,
-                                                                            data: {
-                                                                                id  :id,
-                                                                                name:passedValue
-                                                                            },
-                                                                            success: function(data){
-                                                                              $('#checkListItem_' + id).find('p').html(data);
-                                                                              $('#checkListItem_' + id).show();
-                                                                              $('#checkItemEditableDiv_' + id).hide();
-                                                                            }
-                                                                        });
-                                                                }
-                                                            ");
         }
 
         /**
@@ -279,11 +271,11 @@
          */
         protected function registerSortableScript()
         {
-            $url     =   Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/updateStatusViaAjax');
             Yii::app()->clientScript->registerScript('checklistitemsSortablescript',"
-                                                                $('.taskcheckitemslist').sortable({
+                                                           $('.taskcheckitemslist').sortable
+                                                           ({
                                                                  items: 'li'
-                                                          });
+                                                           });
                                                       ");
         }
     }
