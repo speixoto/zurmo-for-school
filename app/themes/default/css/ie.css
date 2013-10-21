@@ -63,25 +63,24 @@ a.z-button,
 }
 .cf:before,
 .cf:after {
-  content: "";
+  content: " ";
   display: table;
 }
 .cf:after {
   clear: both;
 }
 .cf {
-  zoom: 1;
+  *zoom: 1;
 }
 .clearfix {
-  zoom: 1;
+  *zoom: 1;
 }
-.clearfix:before {
-  content: "";
+.clearfix:before,
+.clearfix:after {
+  content: " ";
   display: table;
 }
 .clearfix:after {
-  content: "";
-  display: table;
   clear: both;
 }
 .flyout {
@@ -137,7 +136,7 @@ a.z-button,
   cursor: pointer;
   text-indent: 0;
   display: inline-block;
-  zoom: 1;
+  *zoom: 1;
 }
 .modal-view-toolbar a:before,
 .modal-view-toolbar input[type="submit"]:before,
@@ -149,8 +148,19 @@ a.z-button,
 .z-button:before,
 a.zButton:before,
 a.z-button:before,
-.white-button:before {
-  content: "";
+.white-button:before,
+.modal-view-toolbar a:after,
+.modal-view-toolbar input[type="submit"]:after,
+.modal-view-toolbar input[type="button"]:after,
+.form-toolbar a:after,
+.form-toolbar input[type="submit"]:after,
+.form-toolbar input[type="button"]:after,
+.zButton:after,
+.z-button:after,
+a.zButton:after,
+a.z-button:after,
+.white-button:after {
+  content: " ";
   display: table;
 }
 .modal-view-toolbar a:after,
@@ -164,8 +174,6 @@ a.z-button:before,
 a.zButton:after,
 a.z-button:after,
 .white-button:after {
-  content: "";
-  display: table;
   clear: both;
 }
 .modal-view-toolbar a.attachLoading.z-button,
@@ -232,15 +240,14 @@ a.z-button:not(.attachLoading):not(.green-button) .z-label,
   cursor: pointer;
   text-indent: 0;
   display: inline-block;
-  zoom: 1;
+  *zoom: 1;
 }
-.default-btn:before {
-  content: "";
+.default-btn:before,
+.default-btn:after {
+  content: " ";
   display: table;
 }
 .default-btn:after {
-  content: "";
-  display: table;
   clear: both;
 }
 .default-btn.attachLoading.z-button {
