@@ -397,7 +397,14 @@
          */
         protected function resolveElementDuringFormLayoutRender(& $element)
         {
-             $element->nonEditableTemplate = '<td colspan="{colspan}">{label}<br/>{content}</td>';
+            if(get_class($element) == 'NullElement')
+            {
+                $element->nonEditableTemplate = null;
+            }
+            else
+            {
+                $element->nonEditableTemplate = '<td colspan="{colspan}">{label}<br/>{content}</td>';
+            }
         }
 
         /**
