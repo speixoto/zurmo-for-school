@@ -196,6 +196,19 @@
 			display: block !important;
 		}
 	}
+	.icon-options:after{
+		margin: 0 !important;
+		.pillbox-icon();
+	}
+	.icon-trigger{
+		border-left:none !important;
+		&:before{
+			right:0px;
+		}
+		&:after{
+			padding: 0 3px;
+		}
+	}
 }
 
 .button-actions{
@@ -290,16 +303,6 @@
 
 .juiportlet-widget-content .pillbox{
 	margin: 15px 0 0 15px;
-}
-
-.button-action-trigger{
-	.icon-options:after{
-		margin: 0 !important;
-		.pillbox-icon();
-	}
-	.icon-trigger{
-		border-left:none !important;
-	}
 }
 
 .unread-count{

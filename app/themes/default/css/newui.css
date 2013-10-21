@@ -25189,6 +25189,30 @@ div.special-pager .hidden.next:after {
 .button-action-trigger:hover .icon-trigger:before {
   display: block !important;
 }
+.button-action-trigger .icon-options:after {
+  margin: 0 !important;
+  color: #656565;
+  font-weight: normal;
+  font-size: 24px;
+  font-family: "zurmo_gamification_symbly_rRg";
+  vertical-align: middle;
+  padding: 0 0 0 0;
+  margin: 0 0 0 0;
+  position: relative;
+  top: -1px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.button-action-trigger .icon-trigger {
+  border-left: none !important;
+}
+.button-action-trigger .icon-trigger:before {
+  right: 0px;
+}
+.button-action-trigger .icon-trigger:after {
+  padding: 0 3px;
+}
 .button-actions {
   z-index: 999;
   color: #EFEFEF;
@@ -25291,24 +25315,6 @@ div.special-pager .hidden.next:after {
 }
 .juiportlet-widget-content .pillbox {
   margin: 15px 0 0 15px;
-}
-.button-action-trigger .icon-options:after {
-  margin: 0 !important;
-  color: #656565;
-  font-weight: normal;
-  font-size: 24px;
-  font-family: "zurmo_gamification_symbly_rRg";
-  vertical-align: middle;
-  padding: 0 0 0 0;
-  margin: 0 0 0 0;
-  position: relative;
-  top: -1px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-}
-.button-action-trigger .icon-trigger {
-  border-left: none !important;
 }
 .unread-count {
   display: inline-block;
