@@ -61,3 +61,28 @@ function updateTaskStatus(status, url, errorInProcess)
         }
     );
 }
+
+function updateCheckListItem(id, url, errorMessage)
+{
+    var passedValue = $('#TaskCheckListItem_name_' + id).val();
+    if(passedValue == '')
+    {
+        alert(errorMessage);
+    }
+    $('#TaskCheckListItem_name_'+ id + '_em_').hide();
+    $.ajax({
+            type: 'GET',
+            url: url,
+            dataType: 'html',
+            cache: false,
+            data: {
+                id  :id,
+                name:passedValue
+            },
+            success: function(data){
+              $('#checkListItem_' + id).find('p').html(data);
+              $('#checkListItem_' + id).show();
+              $('#checkItemEditableDiv_' + id).hide();
+            }
+        });
+}
