@@ -137,17 +137,15 @@
                         switch (event.keyCode) {
                            case 27:
                            case 9:
-                              //phaACHideEditField(phaACOpenEditItem, gridUID);
-                              phaACEditFieldSend(itemValue, gridUID);
+                              phaACEditFieldSend(itemValue, inputValue, gridUID);
                               break;
                            case 13:
-                              phaACEditFieldSend(itemValue, gridUID);
+                              phaACEditFieldSend(itemValue, inputValue, gridUID);
                               break;
                            default: break;
                         }
                     })
                     .blur(function(){
-                        //phaACHideEditField(phaACOpenEditItem, gridUID);
                         phaACEditFieldSend(itemValue, gridUID);
                     });
 
@@ -159,30 +157,35 @@
                 $("#field-" + gridUID + "-" + itemId+" input").val( clearVal );
                 $("#field-" + gridUID + "-" + itemId).hide();
                 $("#field-" + gridUID + "-" + itemId+" input").unbind("keydown");
+                $("#field-" + gridUID + "-" + itemId+" input").unbind("blur");
                 $("#viewValue-" + gridUID + "-" + itemId).show();
                 phaACOpenEditItem=0;
                 phaACOpenEditGrid = "";
             }
-            function phaACEditFieldSend( itemValue, gridUID ) {
+            function phaACEditFieldSend( itemValue, inputValue, gridUID ) {
                 var passedValue = $("#field-"+phaACOpenEditGrid+"-"+phaACOpenEditItem+" input").val();
-                $("#viewValue-" + gridUID + "-"+phaACOpenEditItem).html(passedValue);
-                $("#field-" + gridUID + "-" + phaACOpenEditItem).hide();
-                $("#field-" + gridUID + "-" + phaACOpenEditItem+" input").unbind("keydown");
-                $("#viewValue-" + gridUID + "-" + phaACOpenEditItem).show();
-                var id = $(itemValue).parents(".cgrid-view").attr("id");
-                $.ajax({
-                        type: "GET",
-                        dataType: "json",
-                        url: phaACActionUrls[gridUID],
-                        cache: false,
-                        data: {
-                            item: phaACOpenEditItem,
-                            value: passedValue
-                        },
-                        success: function(data){
-                          $("#"+id).yiiGridView.update( id );
-                        }
-                    });
+                if (passedValue != inputValue)
+                {
+                    $("#viewValue-" + gridUID + "-"+phaACOpenEditItem).html(passedValue);
+                    $("#field-" + gridUID + "-" + phaACOpenEditItem).hide();
+                    $("#field-" + gridUID + "-" + phaACOpenEditItem+" input").unbind("keydown");
+                    $("#field-" + gridUID + "-" + phaACOpenEditItem+" input").unbind("blur");
+                    $("#viewValue-" + gridUID + "-" + phaACOpenEditItem).show();
+                    var id = $(itemValue).parents(".cgrid-view").attr("id");
+                    $.ajax({
+                            type: "GET",
+                            dataType: "json",
+                            url: phaACActionUrls[gridUID],
+                            cache: false,
+                            data: {
+                                item: phaACOpenEditItem,
+                                value: passedValue
+                            },
+                            success: function(data){
+                              $("#"+id).yiiGridView.update( id );
+                            }
+                        });
+                }
             }
             ';
 

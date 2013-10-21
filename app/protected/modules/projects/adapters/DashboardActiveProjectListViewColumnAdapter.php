@@ -60,7 +60,7 @@
         protected static function resolveProjectLinkWithRedirectURl($projectName, $id)
         {
             $url = Yii::app()->createUrl('/projects/default/details', array('id' => $id));
-            return ZurmoHtml::link($projectName, $url, array('class' => 'edit-autoresponder-link'));
+            return ZurmoHtml::link($projectName, $url, array('class' => 'edit-project-link'));
         }
 
         /**
@@ -141,14 +141,15 @@
             {
                 if($key != 'completionPercent')
                 {
-                    $content .= ZurmoHtml::tag('div', array('class' => 'autoresponder-stats'),
+                    $content .= ZurmoHtml::tag('div', array('class' => 'project-stats'),
                                             ZurmoHtml::tag('strong', array(), $value) .
                                             ZurmoHtml::tag('span', array(), $kanbanTypes[$key]));
                 }
                 else
                 {
-                    $label = '%' . Zurmo::t('ProjectsModule', 'Complete');
-                    $content .= ZurmoHtml::tag('div', array('class' => 'autoresponder-stats'),
+                    $label = '% ' . Zurmo::t('ProjectsModule', 'Complete');
+                    $color = (int) $value > 0 ? 'percent-green' : 'percent-yellow';
+                    $content .= ZurmoHtml::tag('div', array('class' => 'project-stats percent-complete ' . $color),
                                             ZurmoHtml::tag('strong', array(), $value) .
                                             ZurmoHtml::tag('span', array(), $label));
                 }

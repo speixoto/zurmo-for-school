@@ -65,6 +65,7 @@
             $content  = '<div class="wrapper">';
             $content .= ZurmoHtml::tag('h1', array(), $this->renderTitleContent() . 'Workflow Order');
             $content .= '<div class="wide form">';
+            $content .= '<div class="left-column full-width clearfix">';
             $clipWidget = new ClipWidget();
             list($form, $formStart) = $clipWidget->renderBeginWidget('ZurmoActiveForm',
                                                                         array(
@@ -78,7 +79,7 @@
             $content .= $this->renderWorkflowOrderContentAndWrapper();
             $formEnd  = $clipWidget->renderEndWidget();
             $content .= $formEnd;
-            $content .= '</div></div>';
+            $content .= '</div></div></div>';
             return $content;
         }
 

@@ -291,7 +291,8 @@ a.ModalGameNotification a,
 #business-card-buttons > div,
 #business-card-buttons a,
 #sliding-panel-toggle,
-.mini-button {
+.mini-button,
+.project-stats {
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
@@ -1059,7 +1060,8 @@ body.blue .treeview span:hover .z-action-link,
 body.blue .drop-zone,
 body.blue .missing-chart,
 body.blue a.active-tab,
-body.blue .edit-autoresponder-link {
+body.blue .edit-autoresponder-link,
+body.blue .edit-project-link {
   color: #282a76;
 }
 body.blue #MashableInboxActionBarForViews .nav > li > a:hover,
@@ -1672,7 +1674,8 @@ body.sunrise .treeview span:hover .z-action-link,
 body.sunrise .drop-zone,
 body.sunrise .missing-chart,
 body.sunrise a.active-tab,
-body.sunrise .edit-autoresponder-link {
+body.sunrise .edit-autoresponder-link,
+body.sunrise .edit-project-link {
   color: #34495e;
 }
 body.sunrise #MashableInboxActionBarForViews .nav > li > a:hover,
@@ -2285,7 +2288,8 @@ body.marble .treeview span:hover .z-action-link,
 body.marble .drop-zone,
 body.marble .missing-chart,
 body.marble a.active-tab,
-body.marble .edit-autoresponder-link {
+body.marble .edit-autoresponder-link,
+body.marble .edit-project-link {
   color: #7f7f7f;
 }
 body.marble #MashableInboxActionBarForViews .nav > li > a:hover,
@@ -2898,7 +2902,8 @@ body.purple-haze .treeview span:hover .z-action-link,
 body.purple-haze .drop-zone,
 body.purple-haze .missing-chart,
 body.purple-haze a.active-tab,
-body.purple-haze .edit-autoresponder-link {
+body.purple-haze .edit-autoresponder-link,
+body.purple-haze .edit-project-link {
   color: #713b8a;
 }
 body.purple-haze #MashableInboxActionBarForViews .nav > li > a:hover,
@@ -3512,7 +3517,8 @@ body.flat-cement .treeview span:hover .z-action-link,
 body.flat-cement .drop-zone,
 body.flat-cement .missing-chart,
 body.flat-cement a.active-tab,
-body.flat-cement .edit-autoresponder-link {
+body.flat-cement .edit-autoresponder-link,
+body.flat-cement .edit-project-link {
   color: #2c3e50;
 }
 body.flat-cement #MashableInboxActionBarForViews .nav > li > a:hover,
@@ -4145,7 +4151,8 @@ body.amazon .treeview span:hover .z-action-link,
 body.amazon .drop-zone,
 body.amazon .missing-chart,
 body.amazon a.active-tab,
-body.amazon .edit-autoresponder-link {
+body.amazon .edit-autoresponder-link,
+body.amazon .edit-project-link {
   color: #26354a;
 }
 body.amazon #MashableInboxActionBarForViews .nav > li > a:hover,
@@ -4758,7 +4765,8 @@ body.sweden .treeview span:hover .z-action-link,
 body.sweden .drop-zone,
 body.sweden .missing-chart,
 body.sweden a.active-tab,
-body.sweden .edit-autoresponder-link {
+body.sweden .edit-autoresponder-link,
+body.sweden .edit-project-link {
   color: #034c8c;
 }
 body.sweden #MashableInboxActionBarForViews .nav > li > a:hover,
@@ -5371,7 +5379,8 @@ body.pink .treeview span:hover .z-action-link,
 body.pink .drop-zone,
 body.pink .missing-chart,
 body.pink a.active-tab,
-body.pink .edit-autoresponder-link {
+body.pink .edit-autoresponder-link,
+body.pink .edit-project-link {
   color: #323232;
 }
 body.pink #MashableInboxActionBarForViews .nav > li > a:hover,
@@ -5984,7 +5993,8 @@ body.brown .treeview span:hover .z-action-link,
 body.brown .drop-zone,
 body.brown .missing-chart,
 body.brown a.active-tab,
-body.brown .edit-autoresponder-link {
+body.brown .edit-autoresponder-link,
+body.brown .edit-project-link {
   color: #547980;
 }
 body.brown #MashableInboxActionBarForViews .nav > li > a:hover,
@@ -6597,7 +6607,8 @@ body.lime .treeview span:hover .z-action-link,
 body.lime .drop-zone,
 body.lime .missing-chart,
 body.lime a.active-tab,
-body.lime .edit-autoresponder-link {
+body.lime .edit-autoresponder-link,
+body.lime .edit-project-link {
   color: #2b434f;
 }
 body.lime #MashableInboxActionBarForViews .nav > li > a:hover,
@@ -7210,7 +7221,8 @@ body.cherry .treeview span:hover .z-action-link,
 body.cherry .drop-zone,
 body.cherry .missing-chart,
 body.cherry a.active-tab,
-body.cherry .edit-autoresponder-link {
+body.cherry .edit-autoresponder-link,
+body.cherry .edit-project-link {
   color: #6c8092;
 }
 body.cherry #MashableInboxActionBarForViews .nav > li > a:hover,
@@ -7823,7 +7835,8 @@ body.turquoise .treeview span:hover .z-action-link,
 body.turquoise .drop-zone,
 body.turquoise .missing-chart,
 body.turquoise a.active-tab,
-body.turquoise .edit-autoresponder-link {
+body.turquoise .edit-autoresponder-link,
+body.turquoise .edit-project-link {
   color: #447799;
 }
 body.turquoise #MashableInboxActionBarForViews .nav > li > a:hover,
@@ -8436,7 +8449,8 @@ body.violet .treeview span:hover .z-action-link,
 body.violet .drop-zone,
 body.violet .missing-chart,
 body.violet a.active-tab,
-body.violet .edit-autoresponder-link {
+body.violet .edit-autoresponder-link,
+body.violet .edit-project-link {
   color: #4a3970;
 }
 body.violet #MashableInboxActionBarForViews .nav > li > a:hover,
@@ -9049,7 +9063,8 @@ body.honey .treeview span:hover .z-action-link,
 body.honey .drop-zone,
 body.honey .missing-chart,
 body.honey a.active-tab,
-body.honey .edit-autoresponder-link {
+body.honey .edit-autoresponder-link,
+body.honey .edit-project-link {
   color: #46201c;
 }
 body.honey #MashableInboxActionBarForViews .nav > li > a:hover,
@@ -11631,16 +11646,10 @@ td.empty {
 .general-issue-notice .icon-notice {
   display: block;
   line-height: 1;
-  margin-bottom: 10px;
 }
 .general-issue-notice .icon-notice:before {
   margin: 0;
-  font-size: 100px;
-  line-height: 60px !important;
-}
-.general-issue-notice p {
-  font-size: 14px;
-  line-height: 21px;
+  font-size: 40px;
 }
 /*forms*/
 .form input[type="checkbox"] {
@@ -22342,6 +22351,7 @@ a.user-link {
   padding-top: 5px !important;
   padding-bottom: 5px !important;
 }
+.drillDownContent > h4,
 .drillDownContent > h5 {
   padding: 5px 5px 0 5px;
 }
@@ -23526,11 +23536,38 @@ a + .autoresponder-stats {
   color: #fff !important;
 }
 /*Continuum*/
+.campaign-items-container .hasDrillDownContent {
+  padding: 5px !important;
+}
+.campaign-items-container .hasDrillDownContent table {
+  border-bottom: 1px solid #DFDFDF;
+  margin: 5px 0 0 0;
+  width: 100%;
+}
+.campaign-items-container .hasDrillDownContent td,
+.campaign-items-container .hasDrillDownContent th {
+  border: 1px solid #DFDFDF;
+  border-right: none;
+  vertical-align: middle;
+  padding: 5px;
+  word-wrap: break-word;
+  text-align: left;
+}
+.campaign-items-container .hasDrillDownContent th {
+  font-weight: bold !important;
+  height: 25px;
+  line-height: 25px;
+  background: url(../images/table-items-header.png) left top repeat-x;
+  padding: 0 5px;
+}
+.campaign-items-container .error {
+  color: #c43d53;
+}
 .email-recipient-name {
   float: left;
   width: 15%;
   display: block;
-  line-height: 20px;
+  line-height: 23px;
 }
 .continuum {
   float: left;
@@ -26443,6 +26480,42 @@ div.special-pager .hidden.next:after {
 }
 .task-activity .show-file-upload-box {
   z-index: 9999;
+}
+.ProjectsActivityFeedPortletView tr:first-child td {
+  border-top: none;
+}
+.edit-project-link {
+  font-size: 14px;
+  font-weight: bold;
+  font-style: normal;
+  display: block;
+  text-align: left;
+  margin-bottom: 5px;
+}
+.project-extra-info {
+  margin-bottom: 10px;
+  font-style: italic;
+}
+.project-stats {
+  padding-right: 5px;
+  width: 20%;
+  float: left;
+  text-align: left;
+  font-size: 12px;
+}
+.project-stats strong {
+  font-size: 26px;
+  font-weight: bold;
+  display: block;
+}
+a + .project-stats {
+  margin-left: 0;
+}
+.percent-complete.percent-green strong {
+  color: #6fa82d;
+}
+.percent-complete.percent-yellow strong {
+  color: #ffcc00;
 }
 /*********************************************************************************
  * Zurmo is a customer relationship management program developed by
