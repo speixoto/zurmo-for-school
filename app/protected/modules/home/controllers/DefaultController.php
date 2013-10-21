@@ -78,12 +78,14 @@
         {
             $hasDashboardAccess = true;
             if (!RightsUtil::doesUserHaveAllowByRightName(
-            'HomeModule',
-            HomeModule::RIGHT_ACCESS_DASHBOARDS,
-            Yii::app()->user->userModel))
+                                'HomeModule',
+                                HomeModule::RIGHT_ACCESS_DASHBOARDS,
+                                Yii::app()->user->userModel)
+            )
             {
                 $hasDashboardAccess = false;
             }
+            $welcomeView = new HomeView();
             if ($this->hideWelcomeViewGlobally() || UserConfigurationFormAdapter::resolveAndGetValue(Yii::app()->user->userModel, 'hideWelcomeView'))
             {
                 //If you can see dashboards, then go there, otherwise stay here since the user has limited access.
