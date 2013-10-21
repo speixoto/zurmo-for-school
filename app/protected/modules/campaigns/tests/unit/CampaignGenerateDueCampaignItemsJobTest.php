@@ -41,12 +41,6 @@
         {
             parent::setUpBeforeClass();
             SecurityTestHelper::createSuperAdmin();
-            if (!RedBeanDatabase::isFrozen())
-            {
-                // TODO: @Shoaibi: High: get rid of this for God's sake.
-                $campaignItem = CampaignItemTestHelper::createCampaignItem(0);
-                $campaignItem->delete();
-            }
         }
 
         public function setUp()
@@ -225,7 +219,7 @@
          */
         public function testRunWithDueActiveCampaignsWithCustomBatchSize()
         {
-            $this->purgeAllCampaigns();
+            Campaign::deleteAll();
             $contactIds         = array();
             $marketingListIds   = array();
             $campaignIds        = array();
@@ -323,15 +317,6 @@
                 }
             }
             // TODO: @Shoaibi: Medium: Add tests for the other campaign type.
-        }
-
-        protected function purgeAllCampaigns()
-        {
-            $campaigns = Campaign::getAll();
-            foreach ($campaigns as $campaign)
-            {
-                $campaign->delete();
-            }
         }
     }
 ?>

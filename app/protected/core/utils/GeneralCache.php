@@ -38,102 +38,92 @@
      * This is a general cache helper that utilizes both php caching and memcaching if available. Utilized for
      * caching requirements that are simple in/out of a serialized array or string of information.
      */
-    class GeneralCache extends ZurmoCache
+    abstract class GeneralCache extends ZurmoCache
     {
-        private static $cachedEntries = array();
+        protected static $cachedEntries = array();
 
         public static $cacheType = 'G:';
 
-        /**
-         * Get entry from php cache and/or memcache
-         * @param string $identifier
-         * @return mixed
-         * @throws NotFoundException
-         */
-        public static function getEntry($identifier)
+        public static function getEntry($identifier, $default = 'NOT_FOUND_EXCEPTION', $cacheDefaultValue = false)
         {
             assert('is_string($identifier)');
-            if (PHP_CACHING_ON)
+            if (static::supportsAndAllowsPhpCaching())
             {
-                if (isset(self::$cachedEntries[$identifier]))
+                if (isset(static::$cachedEntries[$identifier]))
                 {
-                    return self::$cachedEntries[$identifier];
+                    return static::$cachedEntries[$identifier];
                 }
             }
-            if (MEMCACHE_ON && Yii::app()->cache !== null)
+            if (static::supportsAndAllowsMemcache())
             {
-                $prefix = self::getCachePrefix($identifier, static::$cacheType);
+                $prefix = static::getCachePrefix($identifier, static::$cacheType);
 
                 @$serializedData = Yii::app()->cache->get($prefix . $identifier);
                 //echo "GET:" . $prefix . $identifier . "\n";
                 if ($serializedData !== false)
                 {
                     $unserializedData = unserialize($serializedData);
-                    if (PHP_CACHING_ON)
+                    if (static::supportsAndAllowsPhpCaching())
                     {
-                        self::$cachedEntries[$identifier] = $unserializedData;
+                        static::$cachedEntries[$identifier] = $unserializedData;
                     }
                     return $unserializedData;
                 }
             }
-            throw new NotFoundException();
+            if ($default === 'NOT_FOUND_EXCEPTION')
+            {
+                throw new NotFoundException();
+            }
+            else
+            {
+                if ($cacheDefaultValue)
+                {
+                    static::cacheEntry($identifier, $default);
+                }
+                return $default;
+            }
         }
 
-        /**
-         * Add entry to php cache and/or memcache
-         * @param string $identifier
-         * @param mixed $entry
-         */
         public static function cacheEntry($identifier, $entry)
         {
             assert('is_string($identifier)');
             assert('is_string($entry) || is_bool($entry) || is_array($entry) || is_numeric($entry) || is_object($entry) || $entry == null');
-            if (PHP_CACHING_ON)
+            if (static::supportsAndAllowsPhpCaching())
             {
-                self::$cachedEntries[$identifier] = $entry;
+                static::$cachedEntries[$identifier] = $entry;
             }
-            if (MEMCACHE_ON && Yii::app()->cache !== null)
+            if (static::supportsAndAllowsMemcache())
             {
-                $prefix = self::getCachePrefix($identifier, static::$cacheType);
+                $prefix = static::getCachePrefix($identifier, static::$cacheType);
                 @Yii::app()->cache->set($prefix . $identifier, serialize($entry));
             }
         }
 
-        /**
-         * Remove entry from php cache and/or memcache
-         * @param string $identifier
-         */
         public static function forgetEntry($identifier)
         {
-            if (PHP_CACHING_ON)
+            if (static::supportsAndAllowsPhpCaching())
             {
-                if (isset(self::$cachedEntries[$identifier]))
+                if (isset(static::$cachedEntries[$identifier]))
                 {
-                    unset(self::$cachedEntries[$identifier]);
+                    unset(static::$cachedEntries[$identifier]);
                 }
             }
-            if (MEMCACHE_ON && Yii::app()->cache !== null)
+            if (static::supportsAndAllowsMemcache())
             {
-                $prefix = self::getCachePrefix($identifier, static::$cacheType);
+                $prefix = static::getCachePrefix($identifier, static::$cacheType);
                 @Yii::app()->cache->delete($prefix . $identifier);
             }
         }
 
-        /**
-         * Remove all GeneralCache data from php cache and/or memcache
-         * Please note that we are not using $Yii::app()->cache->forget function, because
-         * this function remove all data from memcache, so it would remove memcache data
-         * that are added by other application on same server(if there is only one instance of memcache on server)
-         */
         public static function forgetAll()
         {
-            if (PHP_CACHING_ON)
+            if (static::supportsAndAllowsPhpCaching())
             {
-                self::$cachedEntries = array();
+                static::$cachedEntries = array();
             }
-            if (MEMCACHE_ON && Yii::app()->cache !== null)
+            if (static::supportsAndAllowsMemcache())
             {
-                self::incrementCacheIncrementValue(static::$cacheType);
+                static::incrementCacheIncrementValue(static::$cacheType);
             }
         }
     }

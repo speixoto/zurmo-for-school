@@ -175,5 +175,45 @@
             }
             return $result;
         }
+
+        public static function isValidArrayIndex($index, $array) {
+            return (isset($array[$index]) || array_key_exists($index, $array));
+        }
+
+        public static function isArrayNotUnique($a)
+        {
+            return (count($a) === count(static::arrayUniqueRecursive($a)));
+        }
+
+        public static function chopArray(array & $array, $size)
+        {
+            $chop   = array_slice($array, 0, $size);
+            $array  = array_slice($array, $size);
+            return $chop;
+        }
+
+        public static function encodeAutoCompleteOptionsArray(array $options)
+        {
+            return base64_encode(serialize($options));
+        }
+
+        public static function decodeAutoCompleteOptionsArray($options)
+        {
+            if (!isset($options))
+            {
+                return array();
+            }
+            $decodedSerializedOptions = base64_decode($options);
+            if ($decodedSerializedOptions === false)
+            {
+                return array();
+            }
+            $decodedUnserializedOptions = unserialize($decodedSerializedOptions);
+            if ($decodedUnserializedOptions === false)
+            {
+                return array();
+            }
+            return $decodedUnserializedOptions;
+        }
     }
 ?>

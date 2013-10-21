@@ -45,7 +45,7 @@
         {
             if (trim($this->fromAddress) == '')
             {
-                return Zurmo::t('EmailMessagesModule', '(Unnamed)');
+                return Zurmo::t('Core', '(Unnamed)');
             }
             return $this->fromAddress;
         }
@@ -69,8 +69,7 @@
                     'fromName',
                 ),
                 'relations' => array(
-                    'personOrAccount'      => array(RedBeanModel::HAS_ONE, 'Item',    RedBeanModel::NOT_OWNED,
-                                                    RedBeanModel::LINK_TYPE_SPECIFIC, 'personOrAccount')
+                    'personOrAccount' => array(static::MANY_MANY, 'Item', static::NOT_OWNED)
                 ),
                 'rules' => array(
                     array('fromAddress', 'required'),

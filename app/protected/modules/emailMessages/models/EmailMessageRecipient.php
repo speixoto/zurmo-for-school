@@ -51,7 +51,7 @@
         {
             if (trim($this->toAddress) == '')
             {
-                return Zurmo::t('EmailMessagesModule', '(Unnamed)');
+                return Zurmo::t('Core', '(Unnamed)');
             }
             return $this->toAddress;
         }
@@ -76,17 +76,23 @@
                     'type',
                 ),
                 'relations' => array(
-                    'personOrAccount'      => array(RedBeanModel::HAS_ONE, 'Item',    RedBeanModel::NOT_OWNED,
-                                                    RedBeanModel::LINK_TYPE_SPECIFIC, 'personOrAccount')
+                    'personOrAccount' => array(static::MANY_MANY, 'Item',           static::NOT_OWNED),
+                    'emailMessage'    => array(static::HAS_ONE,   'EmailMessage',   static::NOT_OWNED),
                 ),
                 'rules' => array(
                     array('toAddress', 'required'),
                     array('toAddress', 'email'),
                     array('toName',    'type',    'type' => 'string'),
                     array('toName',    'length',  'max' => 64),
-                    array('type',    'required'),
-                    array('type',    'type',    'type' => 'integer'),
-                )
+                    array('type',      'required'),
+                    array('type',      'type',    'type' => 'integer'),
+                ),
+                'indexes' => array(
+                    'remailmessage' => array(
+                        'members'   => array('emailmessage_id'),
+                        'unique'    => false,
+                    ),
+                ),
             );
             return $metadata;
         }

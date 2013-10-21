@@ -36,8 +36,6 @@
 
     class WorkflowActionAttributeFormResolveValueTest extends WorkflowBaseTest
     {
-        public $freeze = false;
-
         protected static $baseCurrencyId;
 
         protected static $eurCurrencyId;
@@ -139,25 +137,9 @@
             assert($saved); // Not Coding Standard
         }
 
-        public function setup()
+        public static function getDependentTestModelClassNames()
         {
-            parent::setUp();
-            $freeze = false;
-            if (RedBeanDatabase::isFrozen())
-            {
-                RedBeanDatabase::unfreeze();
-                $freeze = true;
-            }
-            $this->freeze = $freeze;
-        }
-
-        public function teardown()
-        {
-            if ($this->freeze)
-            {
-                RedBeanDatabase::freeze();
-            }
-            parent::teardown();
+            return array('WorkflowModelTestItem');
         }
 
         public function testPermissionsResolveValueAndSetToModelUpdateAsDynamicCreatedByUser()

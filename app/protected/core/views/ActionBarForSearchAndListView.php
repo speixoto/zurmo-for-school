@@ -92,11 +92,21 @@
         protected function renderContent()
         {
             $content  = '<div class="view-toolbar-container clearfix">';
-            $content .= '<div class="view-toolbar">' . $this->renderActionElementBar(false) . '</div>';
+            $firstActionElementBarContent = $this->renderActionElementBar(false);
+            if($firstActionElementBarContent == null)
+            {
+                $extraClass = ' empty';
+            }
+            else
+            {
+                $extraClass = null;
+            }
+
+            $content .= '<nav class="pillbox clearfix' . $extraClass. '">' . $firstActionElementBarContent . '</nav>';
             if (!Yii::app()->userInterface->isMobile() &&
                 null != $secondActionElementBarContent = $this->renderSecondActionElementBar(false))
             {
-                $content .= '<div class="view-toolbar">' . $secondActionElementBarContent . '</div>';
+                $content .= '<nav class="pillbox clearfix">' . $secondActionElementBarContent . '</nav>';
             }
             $content .= '</div>';
             if (isset($this->introView))
@@ -112,21 +122,20 @@
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array('type'  => 'CreateLink',
-                                'htmlOptions' => array('class' => 'icon-create'),
-                            ),
-                            array('type'  => 'MassEditLink',
-                                  'htmlOptions' => array('class' => 'icon-edit'),
+                            array('type'  => 'CreateMenu',
+                                  'iconClass' => 'icon-create'),
+                            array('type'  => 'MassEditMenu',
                                   'listViewGridId' => 'eval:$this->listViewGridId',
-                                  'pageVarName' => 'eval:$this->pageVarName'),
-                            array('type'  => 'ExportLink',
-                                  'htmlOptions' => array('class' => 'icon-export'),
+                                  'pageVarName' => 'eval:$this->pageVarName',
+                                  'iconClass'   => 'icon-edit'),
+                            array('type'  => 'ExportMenu',
                                   'listViewGridId' => 'eval:$this->listViewGridId',
-                                  'pageVarName' => 'eval:$this->pageVarName'),
-                            array('type'  => 'MassDeleteLink',
-                                  'htmlOptions' => array('class' => 'icon-delete'),
+                                  'pageVarName' => 'eval:$this->pageVarName',
+                                  'iconClass'   => 'icon-export'),
+                            array('type'  => 'MassDeleteMenu',
                                   'listViewGridId' => 'eval:$this->listViewGridId',
-                                  'pageVarName' => 'eval:$this->pageVarName'),
+                                  'pageVarName' => 'eval:$this->pageVarName',
+                                  'iconClass'   => 'icon-delete'),
                         ),
                     ),
                 ),
@@ -147,13 +156,13 @@
                 return false;
             }
             if ($this->activeActionElementType == ListViewTypesToggleLinkActionElement::TYPE_KANBAN_BOARD &&
-                ($elementInformation['type'] == 'MassEditLink' ||
-                $elementInformation['type'] == 'MassDeleteLink' ||
-                $elementInformation['type'] == 'ExportLink'))
+                ($elementInformation['type'] == 'MassEditMenu' ||
+                $elementInformation['type'] == 'MassDeleteMenu' ||
+                $elementInformation['type'] == 'ExportMenu'))
             {
                 return false;
             }
-            if ($elementInformation['type'] == 'MassEditLink' && !$this->listViewRowsAreSelectable)
+            if ($elementInformation['type'] == 'MassEditMenu' && !$this->listViewRowsAreSelectable)
             {
                 return false;
             }
@@ -165,7 +174,14 @@
             parent::resolveActionElementInformationDuringRender($elementInformation);
             if ($elementInformation['type'] == $this->activeActionElementType)
             {
-                $elementInformation['htmlOptions']['class'] .= ' active';
+                if (isset($elementInformation['htmlOptions']['class']))
+                {
+                    $elementInformation['htmlOptions']['class'] .= ' active';
+                }
+                else
+                {
+                    $elementInformation['htmlOptions']['class'] = 'active';
+                }
             }
         }
     }

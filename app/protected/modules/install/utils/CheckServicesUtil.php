@@ -121,7 +121,8 @@
                          'DatabaseThreadStack',
                          'DatabaseDefaultCollation',
                          'DatabaseLogBin',
-                         'DatabaseOptimizerSearchDepth'
+                         'DatabaseOptimizerSearchDepth',
+                         'DatabaseCheckLoadLocalInFile',
             );
         }
 

@@ -120,6 +120,9 @@
 
         public function actionConfigurationEdit()
         {
+            $breadCrumbLinks = array(
+                Zurmo::t('ZurmoModule', 'Global Configuration'),
+            );
             $configurationForm = ZurmoConfigurationFormAdapter::makeFormFromGlobalConfiguration();
             $postVariableName   = get_class($configurationForm);
             if (isset($_POST[$postVariableName]))
@@ -140,8 +143,8 @@
                                     $this->getModule()->getId(),
                                     $configurationForm);
             $editView->setCssClasses( array('AdministrativeArea') );
-            $view = new ZurmoConfigurationPageView(ZurmoDefaultAdminViewUtil::
-                                         makeStandardViewForCurrentUser($this, $editView));
+            $view = new ZurmoConfigurationPageView(ZurmoDefaultAdminViewUtil::makeViewWithBreadcrumbsForCurrentUser(
+                        $this, $editView, $breadCrumbLinks, 'SettingsBreadCrumbView'));
             echo $view->render();
         }
 
@@ -447,14 +450,6 @@
         {
             header("Content-Type:   ZurmoFileHelper::getMimeType($filePath)");
             echo file_get_contents($filePath);
-        }
-
-        public function actionPreviewFooter($isHtmlContent, $content)
-        {
-            Yii::app()->getClientScript()->setToAjaxMode();
-            $view   = new AutoresponderOrCampaignFooterTextPreviewView((bool)$isHtmlContent, $content);
-            $modalView = new ModalView($this, $view);
-            echo $modalView->render();
         }
 
         public function actionAjaxUpdateSlidingPanelShowingByDefault($portletId, $shouldSlideToSecondPanel)

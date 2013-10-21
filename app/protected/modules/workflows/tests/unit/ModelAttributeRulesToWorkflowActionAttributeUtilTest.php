@@ -70,7 +70,7 @@
 
             $rules = ModelAttributeRulesToWorkflowActionAttributeUtil::
                      getApplicableRulesByModelClassNameAndAttributeName('WorkflowModelTestItem', 'string', 'value');
-            $compareData = array(array('value',  'length',  'min'  => 3, 'max' => 64));
+            $compareData = array(array('value',  'length',  'min'  => 1, 'max' => 64));
             $this->assertEquals($compareData, $rules);
 
             $rules = ModelAttributeRulesToWorkflowActionAttributeUtil::
@@ -96,7 +96,7 @@
             //Now test lastName and string with required as applicable.
             $rules = ModelAttributeRulesToWorkflowActionAttributeUtil::
                      getApplicableRulesByModelClassNameAndAttributeName('WorkflowModelTestItem', 'string', 'value', true);
-            $compareData = array(array('value',  'length',  'min'  => 3, 'max' => 64));
+            $compareData = array(array('value',  'length',  'min'  => 1, 'max' => 64));
             $this->assertEquals($compareData, $rules);
 
             //Variations of dropdowns should return array() because they will be always the same and already defined

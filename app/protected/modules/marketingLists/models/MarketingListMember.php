@@ -66,8 +66,8 @@
                     'unsubscribed',
                 ),
                 'relations' => array(
-                    'contact'               => array(RedBeanModel::HAS_ONE, 'Contact', RedBeanModel::NOT_OWNED),
-                    'marketingList'         => array(RedBeanModel::HAS_ONE, 'MarketingList' , RedBeanModel::NOT_OWNED),
+                    'contact'               => array(static::HAS_ONE, 'Contact', static::NOT_OWNED),
+                    'marketingList'         => array(static::HAS_ONE, 'MarketingList' , static::NOT_OWNED),
                 ),
                 'rules' => array(
                     array('createdDateTime',       'required'),

@@ -154,7 +154,7 @@
             $content .= '<tbody>';
             $content .= '<tr><th>' . $jobLabelHeaderContent . '</th>';
             $content .= '<th>' . Zurmo::t('JobsManagerModule', 'Last Completed Run') . '</th>';
-            $content .= '<th>' . Zurmo::t('JobsManagerModule', 'Status') . '</th>';
+            $content .= '<th>' . Zurmo::t('ZurmoModule', 'Status') . '</th>';
             $content .= '<th>&#160;</th>';
             if ($this->showRunJobLink)
             {

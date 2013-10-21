@@ -85,7 +85,10 @@
                 }
                 catch (MissingRecipientsForEmailMessageException $e)
                 {
-                    // TODO: @Shoaibi/@Jason: Medium: Do something about it.
+                    $activityClass  = $itemClass . 'Activity';
+                    $personId       = $contact->getClassId('Person');
+                    $type           = $activityClass::TYPE_SKIP;
+                    $activityClass::createNewActivity($type, $itemId, $personId);
                 }
             }
             static::markItemAsProcessed($item);
@@ -212,7 +215,7 @@
                 $recipient->toAddress       = $contact->primaryEmail->emailAddress;
                 $recipient->toName          = strval($contact);
                 $recipient->type            = EmailMessageRecipient::TYPE_TO;
-                $recipient->personOrAccount = $contact;
+                $recipient->personOrAccount->add($contact);
                 $emailMessage->recipients->add($recipient);
             }
         }
@@ -223,7 +226,7 @@
             {
                 foreach ($itemOwnerModel->files as $file)
                 {
-                    $emailMessageFile   = FileModelUtil::makeByFileModel($file);
+                    $emailMessageFile   = FileModelUtil::makeByFileModelWithSharedFileContent($file);
                     $emailMessage->files->add($emailMessageFile);
                 }
             }

@@ -36,6 +36,10 @@
 
     class ByTimeWorkflowInQueueTest extends WorkflowBaseTest
     {
+        public static function getDependentTestModelClassNames()
+        {
+            return array('WorkflowModelTestItem');
+        }
         public function testSetAndGet()
         {
             $model = new WorkflowModelTestItem();

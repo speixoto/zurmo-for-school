@@ -255,6 +255,21 @@ a.z-button:not(.attachLoading):not(.green-button) .z-label,
 .default-btn:not(.attachLoading):not(.green-button) .z-label {
   background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
 }
+.z-button.disabled {
+  pointer-events: none;
+  filter: alpha(opacity=50);
+  -khtml-opacity: 0.5;
+  -moz-opacity: 0.5;
+  opacity: 0.5;
+  -webkit-filter: grayscale(85%);
+  -moz-filter: grayscale(85%);
+  -ms-filter: grayscale(85%);
+  -o-filter: grayscale(85%);
+  filter: grayscale(85%);
+  filter: gray;
+  /* IE 6-9 */
+
+}
 /*
 .zButton:not(.attacheLoading),
 .z-button:not(.attachLoading){
@@ -567,7 +582,7 @@ body > div {
 }
 .mobile-view-toolbar-container .hasDropDown span.select-arrow:before {
   content: "n";
-  font-weight: normal;
+  font-weight: normal !important;
   font-size: 30px;
   font-family: "zurmo_gamification_symbly_rRg";
   line-height: 26px;
@@ -726,7 +741,7 @@ body > div {
   -ms-border-radius: 4px;
   -o-border-radius: 4px;
   border-radius: 4px;
-  font-weight: normal;
+  font-weight: normal !important;
   font-size: 24px;
   font-family: "zurmo_gamification_symbly_rRg";
   -webkit-text-shadow: none !important;
@@ -1042,7 +1057,7 @@ div:not(#MashableInboxActionBarForViews) .toolbar-mbmenu .options-menu > li > a 
 div:not(#LeaderboardView) .toolbar-mbmenu .options-menu > li > a:after,
 div:not(#MashableInboxActionBarForViews) .toolbar-mbmenu .options-menu > li > a:after {
   content: "{";
-  font-weight: normal;
+  font-weight: normal !important;
   font-size: 24px;
   font-family: "zurmo_gamification_symbly_rRg";
   left: -5px;

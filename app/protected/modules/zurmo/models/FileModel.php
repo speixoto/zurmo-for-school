@@ -46,18 +46,18 @@
                     'type',
                 ),
                 'relations' => array(
-                    'fileContent' => array(RedBeanModel::HAS_ONE,  'FileContent', RedBeanModel::OWNED),
+                    'fileContent' => array(static::HAS_ONE,  'FileContent', static::OWNED),
                 ),
                 'rules' => array(
                     array('fileContent', 'required'),
                     array('name',        'required'),
                     array('name', 'type', 'type' => 'string'),
-                    array('name', 'length',  'min'  => 3, 'max' => 100),
+                    array('name', 'length',  'min'  => 1, 'max' => 100),
                     array('size',        'required'),
                     array('size', 'type', 'type' => 'integer'),
                     array('type',        'required'),
                     array('type', 'type', 'type' => 'string'),
-                    array('type', 'length',  'min'  => 3, 'max' => 128),
+                    array('type', 'length',  'min'  => 1, 'max' => 128),
 
                 ),
                 'defaultSortAttribute' => 'name',
@@ -98,6 +98,20 @@
             {
                 return false;
             }
+        }
+
+        protected function beforeDelete()
+        {
+            $where = "filecontent_id = '" . $this->fileContent->id . "'";
+            if (count(static::getSubsetIds(null, null, null, $where)) == 1)
+            {
+                $fileContent = FileContent::getById($this->fileContent->id);
+                if (!$fileContent->delete())
+                {
+                    return false;
+                }
+            }
+            return parent::beforeDelete();
         }
     }
 ?>

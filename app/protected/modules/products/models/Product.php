@@ -56,7 +56,7 @@
             {
                 if (trim($this->name) == '')
                 {
-                    return Zurmo::t('ProductsModule', '(Unnamed)');
+                    return Zurmo::t('Core', '(Unnamed)');
                 }
                 return $this->name;
             }
@@ -116,20 +116,20 @@
                     'type'
                 ),
                 'relations' => array(
-                    'account'           => array(RedBeanModel::HAS_ONE, 'Account'),
-                    'contact'           => array(RedBeanModel::HAS_ONE, 'Contact'),
-                    'opportunity'       => array(RedBeanModel::HAS_ONE, 'Opportunity'),
-                    'productTemplate'   => array(RedBeanModel::HAS_ONE, 'ProductTemplate'),
-                    'stage'             => array(RedBeanModel::HAS_ONE, 'OwnedCustomField', RedBeanModel::OWNED,
-                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'stage'),
-                    'productCategories' => array(RedBeanModel::MANY_MANY, 'ProductCategory'),
-                    'sellPrice'         => array(RedBeanModel::HAS_ONE,   'CurrencyValue',    RedBeanModel::OWNED,
-                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'sellPrice'),
+                    'account'           => array(static::HAS_ONE, 'Account'),
+                    'contact'           => array(static::HAS_ONE, 'Contact'),
+                    'opportunity'       => array(static::HAS_ONE, 'Opportunity'),
+                    'productTemplate'   => array(static::HAS_ONE, 'ProductTemplate'),
+                    'stage'             => array(static::HAS_ONE, 'OwnedCustomField', static::OWNED,
+                                                static::LINK_TYPE_SPECIFIC, 'stage'),
+                    'productCategories' => array(static::MANY_MANY, 'ProductCategory'),
+                    'sellPrice'         => array(static::HAS_ONE,   'CurrencyValue',    static::OWNED,
+                                                static::LINK_TYPE_SPECIFIC, 'sellPrice'),
                 ),
                 'rules' => array(
                     array('name',           'required'),
                     array('name',           'type',    'type' => 'string'),
-                    array('name',           'length',  'min'  => 3, 'max' => 64),
+                    array('name',           'length',  'min'  => 1, 'max' => 64),
                     array('description',    'type',    'type' => 'string'),
                     array('quantity',       'numerical',  'min' => 1),
                     array('quantity',       'type',    'type' => 'integer'),
@@ -157,7 +157,10 @@
                 'defaultSortAttribute' => 'name',
                 'noAudit' => array(
                 ),
-                'nonConfigurableAttributes' => array('priceFrequency', 'type', 'productTemplate')
+                'nonConfigurableAttributes' => array('priceFrequency', 'type', 'productTemplate'),
+                'globalSearchAttributeNames' => array(
+                    'name',
+                ),
             );
             return $metadata;
         }

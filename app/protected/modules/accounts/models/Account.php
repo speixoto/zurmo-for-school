@@ -47,7 +47,7 @@
             {
                 if (trim($this->name) == '')
                 {
-                    return Zurmo::t('AccountsModule', '(Unnamed)');
+                    return Zurmo::t('Core', '(Unnamed)');
                 }
                 return $this->name;
             }
@@ -81,28 +81,29 @@
                     'website',
                 ),
                 'relations' => array(
-                    'account'          => array(RedBeanModel::HAS_MANY_BELONGS_TO,  'Account'),
-                    'accounts'         => array(RedBeanModel::HAS_MANY,             'Account'),
-                    'billingAddress'   => array(RedBeanModel::HAS_ONE,              'Address',          RedBeanModel::OWNED,
-                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'billingAddress'),
-                    'products'         => array(RedBeanModel::HAS_MANY,             'Product'),
-                    'contacts'         => array(RedBeanModel::HAS_MANY,             'Contact'),
-                    'industry'         => array(RedBeanModel::HAS_ONE,              'OwnedCustomField', RedBeanModel::OWNED,
-                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'industry'),
-                    'opportunities'    => array(RedBeanModel::HAS_MANY,             'Opportunity'),
-                    'primaryEmail'     => array(RedBeanModel::HAS_ONE,              'Email',            RedBeanModel::OWNED,
-                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'primaryEmail'),
-                    'secondaryEmail'   => array(RedBeanModel::HAS_ONE,              'Email',            RedBeanModel::OWNED,
-                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'secondaryEmail'),
-                    'shippingAddress'  => array(RedBeanModel::HAS_ONE,              'Address',          RedBeanModel::OWNED,
-                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'shippingAddress'),
-                    'type'             => array(RedBeanModel::HAS_ONE,              'OwnedCustomField', RedBeanModel::OWNED,
-                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'type'),
+                    'account'          => array(static::HAS_MANY_BELONGS_TO,  'Account'),
+                    'accounts'         => array(static::HAS_MANY,             'Account'),
+                    'billingAddress'   => array(static::HAS_ONE,              'Address',          static::OWNED,
+                                                static::LINK_TYPE_SPECIFIC, 'billingAddress'),
+                    'products'         => array(static::HAS_MANY,             'Product'),
+                    'contacts'         => array(static::HAS_MANY,             'Contact'),
+                    'industry'         => array(static::HAS_ONE,              'OwnedCustomField', static::OWNED,
+                                                static::LINK_TYPE_SPECIFIC, 'industry'),
+                    'opportunities'    => array(static::HAS_MANY,             'Opportunity'),
+                    'primaryEmail'     => array(static::HAS_ONE,              'Email',            static::OWNED,
+                                                static::LINK_TYPE_SPECIFIC, 'primaryEmail'),
+                    'secondaryEmail'   => array(static::HAS_ONE,              'Email',            static::OWNED,
+                                                static::LINK_TYPE_SPECIFIC, 'secondaryEmail'),
+                    'shippingAddress'  => array(static::HAS_ONE,              'Address',          static::OWNED,
+                                                static::LINK_TYPE_SPECIFIC, 'shippingAddress'),
+                    'type'             => array(static::HAS_ONE,              'OwnedCustomField', static::OWNED,
+                                                static::LINK_TYPE_SPECIFIC, 'type'),
+                    'projects'         => array(RedBeanModel::MANY_MANY, 'Project'),
                 ),
                 'derivedRelationsViaCastedUpModel' => array(
-                    'meetings' => array(RedBeanModel::MANY_MANY, 'Meeting', 'activityItems'),
-                    'notes'    => array(RedBeanModel::MANY_MANY, 'Note',    'activityItems'),
-                    'tasks'    => array(RedBeanModel::MANY_MANY, 'Task',    'activityItems'),
+                    'meetings' => array(static::MANY_MANY, 'Meeting', 'activityItems'),
+                    'notes'    => array(static::MANY_MANY, 'Note',    'activityItems'),
+                    'tasks'    => array(static::MANY_MANY, 'Task',    'activityItems'),
                 ),
                 'rules' => array(
                     array('annualRevenue', 'type',    'type' => 'float'),
@@ -180,16 +181,16 @@
                     'description'     => Zurmo::t('ZurmoModule',    'Description', array(), null, $language),
                     'employees'       => Zurmo::t('AccountsModule', 'Employees',  array(), null, $language),
                     'industry'        => Zurmo::t('ZurmoModule',    'Industry',  array(), null, $language),
-                    'meetings'        => Zurmo::t('MeetingsModule', 'Meetings',  array(), null, $language),
+                    'meetings'        => Zurmo::t('MeetingsModule', 'MeetingsModulePluralLabel', $params, null, $language),
                     'name'            => Zurmo::t('ZurmoModule',    'Name',  array(), null, $language),
-                    'notes'           => Zurmo::t('NotesModule',    'Notes',  array(), null, $language),
+                    'notes'           => Zurmo::t('NotesModule',    'NotesModulePluralLabel', $params, null, $language),
                     'officePhone'     => Zurmo::t('AccountsModule', 'Office Phone',  array(), null, $language),
                     'officeFax'       => Zurmo::t('AccountsModule', 'Office Fax',  array(), null, $language),
                     'opportunities'   => Zurmo::t('OpportunitiesModule', 'OpportunitiesModulePluralLabel', $params, null, $language),
                     'primaryEmail'    => Zurmo::t('ZurmoModule',    'Primary Email',  array(), null, $language),
                     'secondaryEmail'  => Zurmo::t('ZurmoModule',    'Secondary Email',  array(), null, $language),
                     'shippingAddress' => Zurmo::t('AccountsModule', 'Shipping Address',  array(), null, $language),
-                    'tasks'           => Zurmo::t('TasksModule',    'Tasks',  array(), null, $language),
+                    'tasks'           => Zurmo::t('TasksModule',    'TasksModulePluralLabel', $params, null, $language),
                     'type'            => Zurmo::t('AccountsModule', 'Type',  array(), null, $language),
                     'website'         => Zurmo::t('ZurmoModule',    'Website',  array(), null, $language),
                 )

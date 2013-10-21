@@ -36,6 +36,11 @@
 
     class RedBeanModelsCacheTest extends BaseTest
     {
+        public static function getDependentTestModelClassNames()
+        {
+            return array('A');
+        }
+
         public function testCaching()
         {
             $a = new A();

@@ -42,7 +42,7 @@
         public static function getByName($name)
         {
             assert('is_string($name) && $name != ""');
-            return self::makeModels(R::find('contactstate', "name = :name ", array(':name' => $name)));
+            return self::makeModels(ZurmoRedBean::find('contactstate', "name = :name ", array(':name' => $name)));
         }
 
         protected static function translatedAttributeLabels($language)
@@ -59,7 +59,7 @@
         {
             if (trim($this->name) == '')
             {
-                return Zurmo::t('ContactsModule', '(Unnamed)');
+                return Zurmo::t('Core', '(Unnamed)');
             }
             return $this->name;
         }
@@ -78,7 +78,7 @@
                 'rules' => array(
                     array('name',             'required'),
                     array('name',             'type',   'type' => 'string'),
-                    array('name',             'length', 'min'  => 3, 'max' => 64),
+                    array('name',             'length', 'min'  => 1, 'max' => 64),
                     array('order',            'required'),
                     array('order',            'type',    'type' => 'integer'),
                     array('order',            'numerical', 'min' => 0),

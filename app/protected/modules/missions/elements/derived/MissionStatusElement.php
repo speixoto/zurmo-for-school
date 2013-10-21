@@ -191,12 +191,12 @@
 
         protected function renderLabel()
         {
-            return Zurmo::t('MissionsModule', 'Status');
+            return Zurmo::t('ZurmoModule', 'Status');
         }
 
         public static function getDisplayName()
         {
-            return Zurmo::t('MissionsModule', 'Status');
+            return Zurmo::t('ZurmoModule', 'Status');
         }
 
         /**

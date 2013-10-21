@@ -41,6 +41,98 @@
      */
     class WorkflowTriggersUtilForDateTest extends WorkflowTriggersUtilBaseTest
     {
+        public function testTriggerBeforeSaveAtLeastXAfterTriggeredDate()
+        {
+            $workflow = self::makeOnSaveWorkflowAndTriggerForDateOrDateTime('date',
+                        'At Least X After Triggered Date', null, 'WorkflowsTestModule', 'WorkflowModelTestItem',
+                        null, 5, TimeDurationUtil::DURATION_TYPE_DAY);
+            $model           = new WorkflowModelTestItem();
+            $model->lastName = 'someLastName';
+            $model->string   = 'something';
+            //At this point the date value is null, so it should not trigger
+            $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            //Set the dateTime to some time in the future, way in the future. it should trigger
+            $model->date     = '2020-07-01';
+            $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            $model         = self::saveAndReloadModel($model);
+            //Even though it changed, it changed to null, so it should not fire
+            $model->date     = null;
+            $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            $model         = self::saveAndReloadModel($model);
+            //This date is in the past, so it should definitely not fire
+            $model->date     = '2007-07-03';
+            $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            //This date is in the future, but only 1 day from now, so it should not fire
+            $model->date     = DateTimeUtil::convertTimestampToDbFormatDate(time() + 86400);
+            $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+        }
+
+        /**
+         * @depends testTriggerBeforeSaveAtLeastXAfterTriggeredDate
+         */
+        public function testTriggerBeforeSaveAtLeastXBeforeTriggeredDate()
+        {
+            $workflow = self::makeOnSaveWorkflowAndTriggerForDateOrDateTime('date',
+                        'At Least X Before Triggered Date', null, 'WorkflowsTestModule', 'WorkflowModelTestItem',
+                        null, 5, TimeDurationUtil::DURATION_TYPE_DAY);
+            $model           = new WorkflowModelTestItem();
+            $model->lastName = 'someLastName';
+            $model->string   = 'something';
+            //At this point the date value is null, so it should not trigger
+            $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            //Set the date to some time in the past, way in the future. it should trigger
+            $model->date     = '2010-07-01';
+            $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            $model           = self::saveAndReloadModel($model);
+            //Even though it changed, it changed to null, so it should not fire
+            $model->date     = null;
+            $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            $model         = self::saveAndReloadModel($model);
+            //This date is in the future, so it should definitely not fire
+            $model->date     = '2020-07-03';
+            $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            //This date is in the past, but only 1 day ago, so it should not fire
+            $model->date     = DateTimeUtil::convertTimestampToDbFormatDate(time() - 86400);
+            $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+        }
+
+        /**
+         * @depends testTriggerBeforeSaveAtLeastXBeforeTriggeredDate
+         */
+        public function testTriggerBeforeSaveLessThanXAfterTriggeredDate()
+        {
+            $workflow = self::makeOnSaveWorkflowAndTriggerForDateOrDateTime('date',
+                        'Less Than X After Triggered Date', null, 'WorkflowsTestModule', 'WorkflowModelTestItem',
+                        null, 5, TimeDurationUtil::DURATION_TYPE_DAY);
+            $model           = new WorkflowModelTestItem();
+            $model->lastName = 'someLastName';
+            $model->string   = 'something';
+            //At this point the date value is null, so it should not trigger
+            $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            //Set the date to some time within the last day. it should pass
+            $model->date     = DateTimeUtil::convertTimestampToDbFormatDate(time() - 86400);
+            $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            $model->date     = DateTimeUtil::convertTimestampToDbFormatDate(time() + 86400);
+            $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            $model         = self::saveAndReloadModel($model);
+            //Even though it changed, it changed to null, so it should not fire
+            $model->date     = null;
+            $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            $model         = self::saveAndReloadModel($model);
+            //This date is way in the future, so it should definitely not fire
+            $model->date     = '2020-07-03';
+            $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            //The date is 6 days in the future, it should not fire
+            $model->date     = DateTimeUtil::convertTimestampToDbFormatDate(time() + (86400 * 6));
+            $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            //This date is 5 days in the future, it should not fire
+            $model->date     = DateTimeUtil::convertTimestampToDbFormatDate(time() + (86400 * 5));
+            $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+        }
+
+        /**
+         * @depends testTriggerBeforeSaveLessThanXAfterTriggeredDate
+         */
         public function testTimeTriggerBeforeSaveEquals()
         {
             $workflow = self::makeOnSaveWorkflowAndTimeTriggerForDateOrDateTime('date', 'Is Time For', null, 1);

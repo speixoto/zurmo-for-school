@@ -240,16 +240,8 @@
         public function testExportWithSelectAllForMoreThan10Records()
         {
             $super    = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
-            $accounts = Account::getAll();
-            foreach ($accounts as $account)
-            {
-                $account->delete();
-            }
-            $exportItems = ExportItem::getAll();
-            foreach ($exportItems as $exportItem)
-            {
-                $exportItem->delete();
-            }
+            Account::deleteAll();
+            ExportItem::deleteAll();
             $numberOfRecords    = rand (12, 100);
             ExportModule::$asynchronousThreshold = $numberOfRecords - 1;
             for ($i = 1; $i <= $numberOfRecords; $i++)

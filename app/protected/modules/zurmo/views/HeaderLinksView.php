@@ -50,7 +50,15 @@
 
         const MERGED_MENU_ID                            = 'settings-header-menu';
 
+        const USER_GAME_DASHBOARD_WRAPPER_ID            = 'header-game-dashboard-link-wrapper';
+
+        const USER_GAME_DASHBOARD_LINK_ID               = 'header-game-dashboard-link';
+
+        const MODAL_CONTAINER_PREFIX                    = 'modalContainer';
+
         const MERGE_USER_AND_SETTINGS_MENU_IF_MOBILE    = true;
+
+        const GO_TO_GAME_DASHBOARD_LINK                 = 'go-to-dashboard-link';
 
         /**
          * @param array $settingsMenuItems
@@ -69,6 +77,7 @@
 
         protected function renderContent()
         {
+            $this->registerScripts();
             $homeUrl   = Yii::app()->createUrl('home/default');
             $content   = '<div class="clearfix">';
             $content  .= '<a href="#" id="nav-trigger" title="Toggle Navigation">&rsaquo;</a>';
@@ -111,10 +120,16 @@
 
         protected static function renderHeaderMenus($userMenuItems, $settingsMenuItems)
         {
-            $userMenuItemsWithTopLevel = static::resolveUserMenuItemsWithTopLevelItem($userMenuItems);
+            $userMenuItemsWithTopLevel     = static::resolveUserMenuItemsWithTopLevelItem($userMenuItems);
             $settingsMenuItemsWithTopLevel = static::resolveSettingsMenuItemsWithTopLevelItem($settingsMenuItems);
-            return static::renderHeaderMenuContent($userMenuItemsWithTopLevel, self::USER_MENU_ID) .
-                static::renderHeaderMenuContent($settingsMenuItemsWithTopLevel, self::SETTINGS_MENU_ID);
+            $content = null;
+            if (Yii::app()->userInterface->isMobile() === false)
+            {
+                $content .= static::renderHeaderGameDashboardContent();
+            }
+            $content     .= static::renderHeaderMenuContent($userMenuItemsWithTopLevel, self::USER_MENU_ID);
+            $content     .= static::renderHeaderMenuContent($settingsMenuItemsWithTopLevel, self::SETTINGS_MENU_ID);
+            return $content;
         }
 
         protected static function resolveUserMenuItemsWithTopLevelItem($menuItems)
@@ -166,6 +181,91 @@
             ));
             $cClipWidget->endClip();
             return $cClipWidget->getController()->clips['headerMenu'];
+        }
+
+        protected static function renderHeaderGameDashboardContent()
+        {
+            $id      = static::USER_GAME_DASHBOARD_LINK_ID;
+            $url     = Yii::app()->createUrl('users/default/gameDashboard/',
+                       array('id' => Yii::app()->user->userModel->id));
+            $content = ZurmoHtml::ajaxLink('∂', $url, static::resolveAjaxOptionsForGameDashboardModel($id),
+                array(
+                    'id' => $id,
+                )
+            );
+            $content .= static::resolveNewCollectionItemAndNotification($url);
+            return ZurmoHtml::tag('div', array('id' => static::USER_GAME_DASHBOARD_WRAPPER_ID,
+                   'class' => 'user-menu-item'), $content);
+        }
+
+        protected static function resolveNewCollectionItemAndNotification($gameBoardUrl)
+        {
+            assert('is_string($gameBoardUrl)');
+            $collectionAndItemKey = Yii::app()->gameHelper->resolveNewCollectionItems();
+            if(null != $collectionAndItemKey)
+            {
+                $gameCollectionRules = GameCollectionRulesFactory::createByType($collectionAndItemKey[0]->type);
+                $collectionItemTypesAndLabels = $gameCollectionRules::getItemTypesAndLabels();
+                $dashboardLink   = ZurmoHtml::ajaxLink(Zurmo::t('GamificationModule', 'Go to game dashboard'), $gameBoardUrl,
+                                   static::resolveAjaxOptionsForGameDashboardModel(static::GO_TO_GAME_DASHBOARD_LINK),
+                                   array('id' => static::GO_TO_GAME_DASHBOARD_LINK));
+                $closeLink       = ZurmoHtml::link(Zurmo::t('Core', 'Close'), '#', array('id' => 'close-game-notification-link'));
+                $collectionItemImagePath = $gameCollectionRules::makeMediumCOllectionItemImagePath($collectionAndItemKey[1]);
+                $outerContent  = ZurmoHtml::tag('h5', array(), Zurmo::t('Core', 'Congratulations!'));
+                $content  = ZurmoHtml::image($collectionItemImagePath);
+                $content .= Zurmo::t('GamificationModule', 'You discovered the {name}',
+                                     array('{name}' => $collectionItemTypesAndLabels[$collectionAndItemKey[1]]));
+                $content .= '<br/>';
+                $content .= Zurmo::t('GamificationModule', '{dashboardLink} or {closeLink}',
+                                     array('{dashboardLink}' => $dashboardLink,
+                                           '{closeLink}' => $closeLink));
+                $content = $outerContent . ZurmoHtml::tag('p', array(), $content);
+                $content =  ZurmoHtml::tag('div', array('id'=> 'game-notification'), $content);
+                return $content;
+            }
+        }
+
+        protected static function resolveAjaxOptionsForGameDashboardModel($id)
+        {
+            $id      = static::USER_GAME_DASHBOARD_LINK_ID;
+            return array(
+                'beforeSend' => 'js:function(){
+                    if($("#UserGameDashboardView").length)
+                    {
+                        $("#UserGameDashboardView").remove();
+                        $("body").removeClass("gd-dashboard-active");
+                        $("#' . $id . '").html("∂").toggleClass("highlighted");
+                        return false;
+                    }
+                    $("body").addClass("gd-dashboard-active");
+                    $("#' . $id . '").html("‰").toggleClass("highlighted");
+                }',
+                'success'    => 'js:function(data){$("body").append(data);}');
+        }
+
+        protected static function getModalContainerId($id)
+        {
+            return self::MODAL_CONTAINER_PREFIX . '-' . $id;
+        }
+
+        protected function registerScripts()
+        {
+            $id     = static::USER_GAME_DASHBOARD_LINK_ID;
+            $script = "$('#go-to-dashboard-link, #close-game-notification-link').click(function(event){
+                           event.preventDefault();
+                           $('#game-notification').fadeOut(300, function(){
+                               $('#game-notification').remove();
+                           });
+                       });
+                       $('.gd-dashboard-active').on('click', function(){
+                           if($('#UserGameDashboardView').length){
+                               $('#UserGameDashboardView').remove();
+                               $('body').removeClass('gd-dashboard-active');
+                               $('#" . $id . "').html('∂').toggleClass('highlighted');
+                               return false;
+                           }
+                       });";
+            Yii::app()->clientScript->registerScript('gameficationScripts', $script);
         }
     }
 ?>

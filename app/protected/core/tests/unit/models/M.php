@@ -40,7 +40,7 @@
         {
             assert('is_string($name)');
             assert('$name != ""');
-            $bean = R::findOne('a', "name = :name ", array(':name' => $name));
+            $bean = ZurmoRedBean::findOne('a', "name = :name ", array(':name' => $name));
             assert('$bean === false || $bean instanceof RedBean_OODBBean');
             if ($bean === false)
             {
@@ -64,6 +64,7 @@
                 'rules' => array(
                     array('m', 'required'),
                     array('m', 'type', 'type' => 'string'),
+                    array('m', 'length', 'max' => 255),
                 ),
             );
             return $metadata;

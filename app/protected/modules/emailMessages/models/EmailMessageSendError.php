@@ -61,7 +61,7 @@
             }
             else
             {
-                return Zurmo::t('EmailMessagesModule', '(Unnamed)');
+                return Zurmo::t('Core', '(Unnamed)');
             }
         }
 

@@ -59,6 +59,8 @@
 
         protected $mappingRuleData   = array();
 
+        protected $importSanitizeResultsUtil;
+
         /**
          * Sanitize a value, returning a sanitized value either as the same cast or different cast. This is the final
          * step for importing a row, this method is called as the value from the import column for a row is ready to
@@ -136,8 +138,10 @@
          * @param $attributeName
          * @param $columnName
          * @param array $columnMappingData
+         * @param ImportSanitizeResultsUtil $importSanitizeResultsUtil
          */
-        public function __construct($modelClassName, $attributeName, $columnName, array $columnMappingData)
+        public function __construct($modelClassName, $attributeName, $columnName, array $columnMappingData,
+                                    ImportSanitizeResultsUtil $importSanitizeResultsUtil = null)
         {
             assert('is_string($modelClassName)');
             assert('is_string($attributeName) || $attributeName == null');
@@ -147,6 +151,7 @@
             $this->columnName        = $columnName;
             $this->columnMappingData = $columnMappingData;
             $this->mappingRuleData   = static::resolveMappingRuleData($this->columnMappingData);
+            $this->importSanitizeResultsUtil = $importSanitizeResultsUtil;
             $this->assertMappingRuleDataIsValid();
             $this->init();
         }

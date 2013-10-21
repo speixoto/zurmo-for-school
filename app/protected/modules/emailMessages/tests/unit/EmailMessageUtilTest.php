@@ -104,12 +104,12 @@
             $this->assertEquals('', $recipients[4]->toName);
             $this->assertEquals('', $recipients[5]->toName);
             //Recipients are not personOrAccount
-            $this->assertLessThan(0, $recipients[0]->personOrAccount->id);
-            $this->assertLessThan(0, $recipients[1]->personOrAccount->id);
-            $this->assertLessThan(0, $recipients[2]->personOrAccount->id);
-            $this->assertLessThan(0, $recipients[3]->personOrAccount->id);
-            $this->assertLessThan(0, $recipients[4]->personOrAccount->id);
-            $this->assertLessThan(0, $recipients[5]->personOrAccount->id);
+            $this->assertCount(0, $recipients[0]->personOrAccount);
+            $this->assertCount(0, $recipients[1]->personOrAccount);
+            $this->assertCount(0, $recipients[2]->personOrAccount);
+            $this->assertCount(0, $recipients[3]->personOrAccount);
+            $this->assertCount(0, $recipients[4]->personOrAccount);
+            $this->assertCount(0, $recipients[5]->personOrAccount);
             //The message should go to billy's box
             $this->assertEquals(EmailBox::USER_DEFAULT_NAME, $emailMessageForm->folder->emailBox->name);
             //The message should go to the default outbox folder
@@ -150,7 +150,7 @@
             $this->assertEquals(EmailMessageRecipient::TYPE_TO, $emailMessageForm->getModel()->recipients[0]->type);
             $this->assertEquals('sally@zurmoland.com', $emailMessageForm->getModel()->recipients[0]->toAddress);
             $contacts = Contact::getByName('sally sallyson');
-            $this->assertEquals($emailMessageForm->getModel()->recipients[0]->personOrAccount->getClassId('Item'), $contacts[0]->getClassId('Item'));
+            $this->assertTrue($emailMessageForm->getModel()->recipients[0]->personOrAccount[0]->isSame($contacts[0]));
 
             //Test with attachments
             $email = new Email();
@@ -199,10 +199,10 @@
             $emailMessage = new EmailMessage();
             //Attach non personOrAccount recipient
             EmailMessageUtil::attachRecipientsToMessage(array('a@zurmo.com', 'b@zurmo.com', 'c@zurmo.com'), $emailMessage, EmailMessageRecipient::TYPE_TO);
-            $this->assertEquals('3', count($emailMessage->recipients));
-            $this->assertLessThan(0, $emailMessage->recipients[0]->personOrAccount->id);
-            $this->assertLessThan(0, $emailMessage->recipients[1]->personOrAccount->id);
-            $this->assertLessThan(0, $emailMessage->recipients[2]->personOrAccount->id);
+            $this->assertCount(3, $emailMessage->recipients);
+            $this->assertCount(0, $emailMessage->recipients[0]->personOrAccount);
+            $this->assertCount(0, $emailMessage->recipients[1]->personOrAccount);
+            $this->assertCount(0, $emailMessage->recipients[2]->personOrAccount);
             $this->assertEquals(EmailMessageRecipient::TYPE_TO, $emailMessage->recipients[0]->type);
             $this->assertEquals(EmailMessageRecipient::TYPE_TO, $emailMessage->recipients[1]->type);
             $this->assertEquals(EmailMessageRecipient::TYPE_TO, $emailMessage->recipients[2]->type);
@@ -211,14 +211,14 @@
             EmailMessageUtil::attachRecipientsToMessage(array('sally@zurmoland.com', 'molly@zurmoland.com'), $emailMessage, EmailMessageRecipient::TYPE_BCC);
             $this->assertEquals('5', count($emailMessage->recipients));
             $contacts = Contact::getByName('sally sallyson');
-            $this->assertEquals($emailMessage->recipients[3]->personOrAccount->id, $contacts[0]->id);
+            $this->assertTrue($emailMessage->recipients[3]->personOrAccount[0]->isSame($contacts[0]));
             $this->assertEquals(EmailMessageRecipient::TYPE_BCC, $emailMessage->recipients[3]->type);
             //User billy dont have permision to molly contact
             Yii::app()->user->userModel = User::getByUsername('super');
             $contacts = Contact::getByName('molly mollyson');
-            $this->assertNotEquals($emailMessage->recipients[4]->personOrAccount->id, $contacts[0]->id);
-            $this->assertEquals   ($emailMessage->recipients[4]->toAddress, $contacts[0]->primaryEmail->emailAddress);
-            $this->assertEquals   (EmailMessageRecipient::TYPE_BCC, $emailMessage->recipients[4]->type);
+            $this->assertCount(0, $emailMessage->recipients[4]->personOrAccount);
+            $this->assertEquals($emailMessage->recipients[4]->toAddress, $contacts[0]->primaryEmail->emailAddress);
+            $this->assertEquals(EmailMessageRecipient::TYPE_BCC, $emailMessage->recipients[4]->type);
             //Attach an empty email
             EmailMessageUtil::attachRecipientsToMessage(array(''), $emailMessage, EmailMessageRecipient::TYPE_CC);
             $this->assertEquals('5', count($emailMessage->recipients));

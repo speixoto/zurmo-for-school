@@ -36,8 +36,8 @@
 
     /**
      * The purpose of this class is to drill through Modules,
-     * build the database for freezing, and provide the other
-     * function required to complete an install.
+     * build the database, and provide the other function
+     * required to complete an install.
      */
     class InstallUtil
     {
@@ -68,7 +68,7 @@
                     $actualVersion = $matches[2];
                     if (array_key_exists($serverName, $minimumRequiredVersions))
                     {
-                        return self::checkVersion($minimumRequiredVersions[$serverName], $actualVersion);
+                        return static::checkVersion($minimumRequiredVersions[$serverName], $actualVersion);
                     }
                 }
             }
@@ -80,7 +80,7 @@
                     $actualVersion = $matches[2];
                     if (array_key_exists($serverName, $minimumRequiredVersions))
                     {
-                        return self::checkVersion($minimumRequiredVersions[$serverName], $actualVersion);
+                        return static::checkVersion($minimumRequiredVersions[$serverName], $actualVersion);
                     }
                 }
             }
@@ -100,7 +100,7 @@
         public static function checkPhp($minimumRequiredVersion, /* out */ &$actualVersion)
         {
             $actualVersion = PHP_VERSION;
-            return self::checkVersion($minimumRequiredVersion, $actualVersion);
+            return static::checkVersion($minimumRequiredVersion, $actualVersion);
         }
 
         /**
@@ -143,7 +143,7 @@
         public static function checkPhpMaxMemorySetting($minimumMemoryRequireBytes, /* out */ & $actualMemoryLimitBytes)
         {
             $memoryLimit            = ini_get('memory_limit');
-            $actualMemoryLimitBytes = self::getBytes($memoryLimit);
+            $actualMemoryLimitBytes = static::getBytes($memoryLimit);
             return $minimumMemoryRequireBytes <= $actualMemoryLimitBytes;
         }
 
@@ -153,7 +153,7 @@
         public static function checkPhpUploadSizeSetting($minimumUploadRequireBytes, /* out */ & $actualUploadLimitBytes)
         {
             $maxFileSize            = ini_get('upload_max_filesize');
-            $actualUploadLimitBytes = self::getBytes($maxFileSize);
+            $actualUploadLimitBytes = static::getBytes($maxFileSize);
             return $minimumUploadRequireBytes <= $actualUploadLimitBytes;
         }
 
@@ -163,7 +163,7 @@
         public static function checkPhpPostSizeSetting($minimumPostRequireBytes, /* out */ & $actualPostLimitBytes)
         {
             $maxPostSize            = ini_get('post_max_size');
-            $actualPostLimitBytes = self::getBytes($maxPostSize);
+            $actualPostLimitBytes = static::getBytes($maxPostSize);
             return $minimumPostRequireBytes <= $actualPostLimitBytes;
         }
 
@@ -221,7 +221,7 @@
                                                                            $databaseUsername,
                                                                            $databasePassword,
                                                                            $databasePort);
-            return self::checkVersion($minimumRequiredVersion, $actualVersion);
+            return static::checkVersion($minimumRequiredVersion, $actualVersion);
         }
 
         /**
@@ -232,7 +232,7 @@
             $actualVersion = phpversion('apc');
             if ($actualVersion !== false && $actualVersion !== null)
             {
-                return self::checkVersion($minimumRequiredVersion, $actualVersion);
+                return static::checkVersion($minimumRequiredVersion, $actualVersion);
             }
             return false;
         }
@@ -331,7 +331,7 @@
             $actualVersion = phpversion('memcache');
             if ($actualVersion != false && extension_loaded('memcache'))
             {
-                return self::checkVersion($minimumRequiredVersion, $actualVersion);
+                return static::checkVersion($minimumRequiredVersion, $actualVersion);
             }
             return false;
         }
@@ -349,7 +349,7 @@
             $actualVersion = $versionInfo['version'];
             if ($actualVersion !== null)
             {
-                return self::checkVersion($minimumRequiredVersion, $actualVersion);
+                return static::checkVersion($minimumRequiredVersion, $actualVersion);
             }
             return false;
         }
@@ -359,17 +359,17 @@
             $actualVersion = Yii::getVersion();
             if ($actualVersion !== null)
             {
-                return self::checkVersion($minimumRequiredVersion, $actualVersion);
+                return static::checkVersion($minimumRequiredVersion, $actualVersion);
             }
             return false;
         }
 
         public static function checkRedBean($minimumRequiredVersion, /* out */ &$actualVersion)
         {
-            $actualVersion = R::getVersion();
+            $actualVersion = ZurmoRedBean::getVersion();
             if ($actualVersion !== null)
             {
-                return self::checkVersion($minimumRequiredVersion, $actualVersion);
+                return static::checkVersion($minimumRequiredVersion, $actualVersion);
             }
             return false;
         }
@@ -404,7 +404,7 @@
                                                                 $minimumRequireBytes,
                                                                 /* out */ & $actualBytes)
         {
-            assert('in_array($databaseType, self::getSupportedDatabaseTypes())');
+            assert('in_array($databaseType, static::getSupportedDatabaseTypes())');
             $actualBytes = DatabaseCompatibilityUtil::getDatabaseMaxAllowedPacketsSize($databaseType,
                                                                                        $databaseHostname,
                                                                                        $databaseUsername,
@@ -424,7 +424,7 @@
                                                               $minimumRequiredMaxSpRecursionDepth,
                                                               /* out */ & $maxSpRecursionDepth)
         {
-            assert('in_array($databaseType, self::getSupportedDatabaseTypes())');
+            assert('in_array($databaseType, static::getSupportedDatabaseTypes())');
             $maxSpRecursionDepth = DatabaseCompatibilityUtil::getDatabaseMaxSpRecursionDepth($databaseType,
                                                                                              $databaseHostname,
                                                                                              $databaseUsername,
@@ -444,7 +444,7 @@
                                                              $minimumRequiredThreadStackValue,
                                                              /* out */ & $threadStackValue)
         {
-            assert('in_array($databaseType, self::getSupportedDatabaseTypes())');
+            assert('in_array($databaseType, static::getSupportedDatabaseTypes())');
             $threadStackValue = DatabaseCompatibilityUtil::getDatabaseThreadStackValue($databaseType,
                                                                                        $databaseHostname,
                                                                                        $databaseUsername,
@@ -463,7 +463,7 @@
                                                                       $databasePort,
                                                                       /* out */ & $optimizerSearchDepth)
         {
-            assert('in_array($databaseType, self::getSupportedDatabaseTypes())');
+            assert('in_array($databaseType, static::getSupportedDatabaseTypes())');
             $optimizerSearchDepth = DatabaseCompatibilityUtil::getDatabaseOptimizerSearchDepthValue($databaseType,
                                                                                                     $databaseHostname,
                                                                                                     $databaseUsername,
@@ -484,7 +484,7 @@
                                                              $notAllowedDatabaseCollations,
                                                              /* out */ & $databaseDefaultCollation)
         {
-            assert('in_array($databaseType, self::getSupportedDatabaseTypes())');
+            assert('in_array($databaseType, static::getSupportedDatabaseTypes())');
             assert('is_array($notAllowedDatabaseCollations)');
             $databaseDefaultCollation = DatabaseCompatibilityUtil::getDatabaseDefaultCollation($databaseType,
                                                                                                $databaseHostname,
@@ -493,6 +493,31 @@
                                                                                                $databasePassword,
                                                                                                $databasePort);
             return !in_array($databaseDefaultCollation, $notAllowedDatabaseCollations);
+        }
+
+        /**
+         * Check if load local in enabled.
+         */
+        public static function checkDatabaseLoadLocalInFile($databaseType,
+                                                            $databaseHostname,
+                                                            $databaseUsername,
+                                                            $databasePassword,
+                                                            $databasePort)
+        {
+            assert('in_array($databaseType, static::getSupportedDatabaseTypes())');
+            $loadLocalInFileValue = DatabaseCompatibilityUtil::getDatabaseSupportsLoadLocalInFile($databaseType,
+                                                                                                    $databaseHostname,
+                                                                                                    $databaseUsername,
+                                                                                                    $databasePassword,
+                                                                                                    $databasePort);
+            if (strtolower($loadLocalInFileValue) == 'on' || $loadLocalInFileValue == '1')
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         /**
@@ -505,7 +530,7 @@
                                                         $databasePort,
                                                         /* out */ & $logBinValue)
         {
-            assert('in_array($databaseType, self::getSupportedDatabaseTypes())');
+            assert('in_array($databaseType, static::getSupportedDatabaseTypes())');
             $logBinValue = DatabaseCompatibilityUtil::getDatabaseLogBinValue($databaseType,
                                                                              $databaseHostname,
                                                                              $databaseUsername,
@@ -532,7 +557,7 @@
                                                                              $databasePort,
                                                                              /* out */ & $logBinTrustFunctionCreatorsValue)
         {
-            assert('in_array($databaseType, self::getSupportedDatabaseTypes())');
+            assert('in_array($databaseType, static::getSupportedDatabaseTypes())');
             $logBinTrustFunctionCreatorsValue = DatabaseCompatibilityUtil::getDatabaseLogBinTrustFunctionCreatorsValue(
                                                                             $databaseType,
                                                                             $databaseHostname,
@@ -554,25 +579,13 @@
          */
         public static function connectToDatabase($databaseType, $host, $databaseName, $username, $password, $port)
         {
-            assert('in_array($databaseType, self::getSupportedDatabaseTypes())');
+            assert('in_array($databaseType, static::getSupportedDatabaseTypes())');
             assert('is_string($host)         && $host         != ""');
             assert('is_string($databaseName) && $databaseName != ""');
             assert('is_string($username)     && $username     != ""');
             assert('is_string($password)');
             $connectionString = "$databaseType:host=$host;port=$port;dbname=$databaseName"; // Not Coding Standard
-            self::connectToDatabaseWithConnectionString($connectionString, $username, $password);
-        }
-
-        /**
-         * Connects to the database with a connection string.
-         */
-        public static function connectToDatabaseWithConnectionString($connectionString, $username, $password)
-        {
-            assert('is_string($connectionString) && $connectionString != ""');
-            assert('is_string($username)         && $username         != ""');
-            assert('is_string($password)');
             RedBeanDatabase::setup($connectionString, $username, $password);
-            assert('RedBeanDatabase::isSetup()');
         }
 
         /**
@@ -675,54 +688,19 @@
             return $user;
         }
 
-        /**
-         * Drops all the tables in the database.
-         */
-        public static function dropAllTables()
+        public static function autoBuildDatabase(& $messageLogger, $autoBuildTestModels = false)
         {
-            $tableNames = R::getCol('show tables');
-            foreach ($tableNames as $tableName)
-            {
-                R::exec("drop table $tableName");
-            }
-            assert('count(R::getCol("show tables")) == 0');
-        }
-
-        /**
-         * Auto builds the database.  Must manually set AuditEvent first to avoid issues building the AuditEvent
-         * table. This is because AuditEvent is specially optimized during this build process to reduce how
-         * long this takes to do.
-         */
-        public static function autoBuildDatabase(& $messageLogger)
-        {
-            $rootModels   = array();
-            $rootModels[] = 'AuditEvent';
-            foreach (Module::getModuleObjects() as $module)
-            {
-                $moduleAndDependenciesRootModelNames = $module->getRootModelNamesIncludingDependencies();
-                $rootModels = array_merge($rootModels, array_diff($moduleAndDependenciesRootModelNames, $rootModels));
-            }
             ZurmoDatabaseCompatibilityUtil::createStoredFunctionsAndProcedures();
-            RedBeanDatabaseBuilderUtil::autoBuildModels($rootModels, $messageLogger);
-            ZurmoDatabaseCompatibilityUtil::createIndexes();
-            StarredUtil::createStarredTables();
+            $messageLogger->addInfoMessage(Zurmo::t('InstallModule','Searching for models'));
+            $rootModels = PathUtil::getAllCanHaveBeanModelClassNames();
+            $messageLogger->addInfoMessage(Zurmo::t('InstallModule', 'Models catalog built.'));
+            RedBeanModelsToTablesAdapter::generateTablesFromModelClassNames($rootModels, $messageLogger);
+            // TODO: @Shoaibi/@Jason: Critical: What are these for? May be refactor these too.
             ReadPermissionsSubscriptionUtil::buildTables();
-        }
-
-        /**
-         * Freezes the database.
-         */
-        public static function freezeDatabase()
-        {
-            RedBeanDatabase::freeze();
-        }
-
-        /**
-         * Closes the database.
-         */
-        public static function close()
-        {
-            RedBeanDatabase::close();
+            if ($autoBuildTestModels)
+            {
+                TestSuite::buildDependentTestModels($messageLogger);
+            }
         }
 
         /**
@@ -737,7 +715,7 @@
                                                   $submitCrashToSentry = true)
         {
             assert('is_dir($instanceRoot)');
-            assert('in_array($databaseType, self::getSupportedDatabaseTypes())');
+            assert('in_array($databaseType, static::getSupportedDatabaseTypes())');
             assert('is_string($databaseHost) && $databaseHost != ""');
             assert('is_string($databaseName) && $databaseName != ""');
             assert('is_string($username)     && $username     != ""');
@@ -764,9 +742,6 @@
             $contents = file_get_contents($debugConfigFile);
             $contents = preg_replace('/\$debugOn\s*=\s*true;/',
                                      '$debugOn = false;',
-                                     $contents);
-            $contents = preg_replace('/\$forceNoFreeze\s*=\s*true;/',
-                                     '$forceNoFreeze = false;',
                                      $contents);
             if (!$submitCrashToSentry)
             {
@@ -939,8 +914,8 @@
 
         protected static function checkVersion($minimumRequiredVersion, $actualVersion)
         {
-            assert('self::isVersion($minimumRequiredVersion)');
-            if (!self::isVersion($actualVersion))
+            assert('static::isVersion($minimumRequiredVersion)');
+            if (!static::isVersion($actualVersion))
             {
                 return false;
             }
@@ -966,12 +941,13 @@
 
         /**
          * Given an installSettingsForm, run the install including the schema creation and default data load. This is
-         * used by the interactice install and the command line install.
+         * used by the interactive install and the command line install.
          * @param object $form
          * @param object $messageStreamer
          */
         public static function runInstallation($form, & $messageStreamer)
         {
+            Yii::app()->params['isFreshInstall']    = true;
             assert('$form instanceof InstallSettingsForm');
             assert('$messageStreamer instanceof MessageStreamer');
 
@@ -988,18 +964,17 @@
             }
 
             $messageStreamer->add(Zurmo::t('InstallModule', 'Connecting to Database.'));
-            InstallUtil::connectToDatabase( $form->databaseType,
-                                            $form->databaseHostname,
-                                            $form->databaseName,
-                                            $form->databaseUsername,
-                                            $form->databasePassword,
-                                            $form->databasePort);
+            static::connectToDatabase($form->databaseType,
+                                        $form->databaseHostname,
+                                        $form->databaseName,
+                                        $form->databaseUsername,
+                                        $form->databasePassword,
+                                        $form->databasePort);
             ForgetAllCacheUtil::forgetAllCaches();
             $messageStreamer->add(Zurmo::t('InstallModule', 'Dropping existing tables.'));
-            InstallUtil::dropAllTables();
+            ZurmoRedBean::$writer->wipeAll();
             $messageStreamer->add(Zurmo::t('InstallModule', 'Creating super user.'));
-            InstallUtil::createSuperUser(   'super',
-                                            $form->superUserPassword);
+
             $messageLogger = new MessageLogger($messageStreamer);
             Yii::app()->custom->runBeforeInstallationAutoBuildDatabase($messageLogger);
             $messageStreamer->add(Zurmo::t('InstallModule', 'Starting database schema creation.'));
@@ -1007,10 +982,10 @@
             $messageStreamer->add('debugOn:' . BooleanUtil::boolToString(YII_DEBUG));
             $messageStreamer->add('phpLevelCaching:' . BooleanUtil::boolToString(PHP_CACHING_ON));
             $messageStreamer->add('memcacheLevelCaching:' . BooleanUtil::boolToString(MEMCACHE_ON));
-            InstallUtil::autoBuildDatabase($messageLogger);
+            static::autoBuildDatabase($messageLogger, false);
             $endTime = microtime(true);
             $messageStreamer->add(Zurmo::t('InstallModule', 'Total autobuild time: {formattedTime} seconds.',
-                                  array('{formattedTime}' => number_format(($endTime - $startTime), 3))));
+                array('{formattedTime}' => number_format(($endTime - $startTime), 3))));
             if (SHOW_QUERY_DATA)
             {
                 $messageStreamer->add(PageView::getTotalAndDuplicateQueryCountContent());
@@ -1021,26 +996,27 @@
             ReadPermissionsOptimizationUtil::rebuild();
             $messageStreamer->add(Zurmo::t('InstallModule', 'Rebuilding Read Permissions Subscription tables.'));
             ReadPermissionsSubscriptionUtil::buildTables();
-            $messageStreamer->add(Zurmo::t('InstallModule', 'Freezing database.'));
-            InstallUtil::freezeDatabase();
             $messageStreamer->add(Zurmo::t('InstallModule', 'Writing Configuration File.'));
 
-            InstallUtil::writeConfiguration(INSTANCE_ROOT,
-                                            $form->databaseType,
-                                            $form->databaseHostname,
-                                            $form->databaseName,
-                                            $form->databaseUsername,
-                                            $form->databasePassword,
-                                            $form->databasePort,
-                                            $form->memcacheHostname,
-                                            (int)$form->memcachePortNumber,
-                                            true,
-                                            Yii::app()->language,
-                                            $perInstanceFilename,
-                                            $debugFilename,
-                                            $form->hostInfo,
-                                            $form->scriptUrl,
-                                            $form->submitCrashToSentry);
+            static::writeConfiguration(INSTANCE_ROOT,
+                                        $form->databaseType,
+                                        $form->databaseHostname,
+                                        $form->databaseName,
+                                        $form->databaseUsername,
+                                        $form->databasePassword,
+                                        $form->databasePort,
+                                        $form->memcacheHostname,
+                                        (int)$form->memcachePortNumber,
+                                        true,
+                                        Yii::app()->language,
+                                        $perInstanceFilename,
+                                        $debugFilename,
+                                        $form->hostInfo,
+                                        $form->scriptUrl,
+                                        $form->submitCrashToSentry);
+            static::setZurmoTokenAndWriteToPerInstanceFile(INSTANCE_ROOT);
+            ZurmoPasswordSecurityUtil::setPasswordSaltAndWriteToPerInstanceFile(INSTANCE_ROOT);
+            static::createSuperUser('super', $form->superUserPassword);
             $messageStreamer->add(Zurmo::t('InstallModule', 'Setting up default data.'));
             DefaultDataUtil::load($messageLogger);
             static::createBaseControlUserConfigUtilUserAccount();
@@ -1062,10 +1038,8 @@
                 $rules                      = new EnableMinifyNotificationRules();
                 NotificationsUtil::submit($message, $rules);
             }
-
-            InstallUtil::setZurmoTokenAndWriteToPerInstanceFile(INSTANCE_ROOT);
-            ZurmoPasswordSecurityUtil::setPasswordSaltAndWriteToPerInstanceFile(INSTANCE_ROOT);
             $messageStreamer->add(Zurmo::t('InstallModule', 'Installation Complete.'));
+            Yii::app()->params['isFreshInstall']    = false;
         }
 
         /**
@@ -1076,9 +1050,9 @@
         {
             //todo: cache this information.
             $actualPostLimitBytes   = null;
-            InstallUtil::checkPhpPostSizeSetting(1, $actualPostLimitBytes);
+            static::checkPhpPostSizeSetting(1, $actualPostLimitBytes);
             $actualUploadLimitBytes = null;
-            InstallUtil::checkPhpUploadSizeSetting(1, $actualUploadLimitBytes);
+            static::checkPhpUploadSizeSetting(1, $actualUploadLimitBytes);
             $actualMaxAllowedBytes = DatabaseCompatibilityUtil::getDatabaseMaxAllowedPacketsSizeRb();
             return min($actualPostLimitBytes, $actualUploadLimitBytes, $actualMaxAllowedBytes);
         }
@@ -1134,7 +1108,7 @@
 
             if (!$formHasErrors)
             {
-                InstallUtil::runInstallation($form, $messageStreamer);
+                static::runInstallation($form, $messageStreamer);
                 if (isset($args[8]))
                 {
                     $messageStreamer->add(Zurmo::t('InstallModule', 'Starting to load demo data.'));
@@ -1171,7 +1145,7 @@
                 }
 
                 $messageStreamer->add(Zurmo::t('InstallModule', 'Locking Installation.'));
-                InstallUtil::writeInstallComplete(INSTANCE_ROOT);
+                static::writeInstallComplete(INSTANCE_ROOT);
                 $messageStreamer->add(Zurmo::t('InstallModule', 'Installation Complete.'));
             }
         }
@@ -1184,20 +1158,7 @@
         {
             assert('$messageLogger instanceof MessageLogger');
             ForgetAllCacheUtil::forgetAllCaches();
-            $freezeWhenDone     = false;
-            if (RedBeanDatabase::isFrozen())
-            {
-                RedBeanDatabase::unfreeze();
-                $freezeWhenDone = true;
-            }
-
-            self::autoBuildDatabase($messageLogger);
-
-            if ($freezeWhenDone)
-            {
-                RedBeanDatabase::freeze();
-            }
-
+            static::autoBuildDatabase($messageLogger);
             // Send notification to super admin to clean assets folder(optional).
             $message                    = new NotificationMessage();
             $message->textContent       = Zurmo::t('InstallModule', 'Please delete all files from assets folder on server.');

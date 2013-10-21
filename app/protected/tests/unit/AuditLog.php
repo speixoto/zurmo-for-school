@@ -35,7 +35,7 @@
      ********************************************************************************/
 
     require_once('../../config/debug.php');
-    require_once('../bootstrap.php');
+    require_once('../common/bootstrap.php');
 
     if (!($argc == 1 || $argc == 3 && $argv[1] == '-n' && is_numeric($argv[2])))
     {

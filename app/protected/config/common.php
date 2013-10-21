@@ -51,6 +51,10 @@
         ),
 
         'components' => array(
+            'additionalModelsConfig' => array(
+                'class'         => 'application.core.components.AdditionalModelsConfig',
+                'zurmoModels'   => array('application.core.models', 'application.core.portlets', 'application.core.kanbanBoard.models'),
+            ),
             'apiRequest' => array(
                 'class' => 'application.modules.api.components.ApiRequest',
             ),
@@ -354,6 +358,7 @@
             'emailMessages',
             'emailTemplates',
             'export',
+            'gameRewards',
             'gamification',
             'home',
             'import',
@@ -385,6 +390,7 @@
             'users',
             'maps',
             'contactWebForms',
+            'projects'
         ),
 
         'params' => array(

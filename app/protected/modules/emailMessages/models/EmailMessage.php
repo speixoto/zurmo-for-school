@@ -66,7 +66,7 @@
         {
             if (trim($this->subject) == '')
             {
-                return Zurmo::t('EmailMessagesModule', '(Unnamed)');
+                return Zurmo::t('Core', '(Unnamed)');
             }
             return $this->subject;
         }
@@ -87,30 +87,31 @@
             $metadata[__CLASS__] = array(
                 'members' => array(
                     'subject',
-                    'type',
+                    //'type',
                     'sendAttempts',
                     'sentDateTime',
                     'sendOnDateTime',
                     'headers',
                 ),
                 'relations' => array(
-                    'folder'        => array(RedBeanModel::HAS_ONE,  'EmailFolder', RedBeanModel::NOT_OWNED,
-                                             RedBeanModel::LINK_TYPE_SPECIFIC, 'folder'),
-                    'content'       => array(RedBeanModel::HAS_ONE,  'EmailMessageContent',    RedBeanModel::OWNED,
-                                             RedBeanModel::LINK_TYPE_SPECIFIC, 'content'),
-                    'files'         => array(RedBeanModel::HAS_MANY, 'FileModel',              RedBeanModel::OWNED,
-                                            RedBeanModel::LINK_TYPE_POLYMORPHIC, 'relatedModel'),
-                    'sender'        => array(RedBeanModel::HAS_ONE,  'EmailMessageSender',     RedBeanModel::OWNED,
-                                             RedBeanModel::LINK_TYPE_SPECIFIC, 'sender'),
-                    'recipients'    => array(RedBeanModel::HAS_MANY, 'EmailMessageRecipient',  RedBeanModel::OWNED),
-                    'error'         => array(RedBeanModel::HAS_ONE,  'EmailMessageSendError' , RedBeanModel::OWNED,
-                                             RedBeanModel::LINK_TYPE_SPECIFIC, 'error'),
-                    'account'       => array(RedBeanModel::HAS_ONE,  'EmailAccount')
+                    'folder'        => array(static::HAS_ONE,  'EmailFolder', static::NOT_OWNED,
+                                                static::LINK_TYPE_SPECIFIC, 'folder'),
+                    'content'       => array(static::HAS_ONE,  'EmailMessageContent',    static::OWNED,
+                                                static::LINK_TYPE_SPECIFIC, 'content'),
+                    'files'         => array(static::HAS_MANY, 'FileModel',              static::OWNED,
+                                                static::LINK_TYPE_POLYMORPHIC, 'relatedModel'),
+                    'sender'        => array(static::HAS_ONE,  'EmailMessageSender',     static::OWNED,
+                                                static::LINK_TYPE_SPECIFIC, 'sender'),
+                    'recipients'    => array(static::HAS_MANY, 'EmailMessageRecipient',  static::OWNED),
+                    'error'         => array(static::HAS_ONE,  'EmailMessageSendError' , static::OWNED,
+                                                static::LINK_TYPE_SPECIFIC, 'error'),
+                    'account'       => array(static::HAS_ONE,  'EmailAccount', static::NOT_OWNED,
+                                                static::LINK_TYPE_SPECIFIC, 'account'),
                 ),
                 'rules' => array(
                     array('subject',         'required'),
                     array('subject',         'type',    'type' => 'string'),
-                    array('subject',         'length',  'min'  => 3, 'max' => 255),
+                    array('subject',         'length',  'min'  => 1, 'max' => 255),
                     array('folder',          'required'),
                     array('sender',          'required'),
                     array('sendAttempts',    'type',    'type' => 'integer'),
@@ -156,7 +157,7 @@
                     'sendAttempts' => Zurmo::t('EmailMessagesModule', 'Send Attempts',  array(), null, $language),
                     'sentDateTime' => Zurmo::t('EmailMessagesModule', 'Sent Date Time',  array(), null, $language),
                     'subject'      => Zurmo::t('EmailMessagesModule', 'Subject',  array(), null, $language),
-                    'type'         => Zurmo::t('Core',                'Type',  array(), null, $language),
+                    //'type'         => Zurmo::t('Core',                'Type',  array(), null, $language),
                 )
             );
         }

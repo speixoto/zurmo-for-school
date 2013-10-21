@@ -66,8 +66,8 @@
                     array('url',                    'url'),
                 ),
                 'relations' => array(
-                    'emailMessageActivity'          => array(RedBeanModel::HAS_ONE, 'EmailMessageActivity',
-                                                                                            RedBeanModel::NOT_OWNED),
+                    'emailMessageActivity'          => array(static::HAS_ONE, 'EmailMessageActivity',
+                                                                                            static::NOT_OWNED),
                 ),
                 'defaultSortAttribute' => 'url',
             );

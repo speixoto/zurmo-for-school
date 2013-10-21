@@ -46,25 +46,20 @@
         {
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
-            $accounts = Account::getAll();
-            foreach ($accounts as $account)
-            {
-                $account->delete();
-            }
+            Account::deleteAll();
             parent::teardown();
         }
 
         public function testGetStarredTableName()
         {
-            $starredTableName = StarredUtil::getStarredTableName('Account');
-            $this->assertEquals('account_starred', $starredTableName);
+            $starredTableName = RedBeanModel::getTableName('AccountStarred');
+            $this->assertEquals('accountstarred', $starredTableName);
         }
 
         public function testCreateStarredTables()
         {
-            StarredUtil::createStarredTables();
-            $sql = "SHOW TABLES LIKE '%_starred'";
-            $allStarredTableRows = R::getAll($sql);
+            $sql = "SHOW TABLES LIKE '%starred'";
+            $allStarredTableRows = ZurmoRedBean::getAll($sql);
             $this->assertCount(4, $allStarredTableRows);
         }
 
@@ -82,14 +77,8 @@
             $account->officePhone = '1234567890';
             $this->assertTrue($account->save());
             StarredUtil::markModelAsStarred($account);
-            $tableName            = StarredUtil::getStarredTableName('Account');
-            $sql                  = "SELECT id FROM {$tableName} WHERE user_id = :userId AND model_id = :modelId;";
-            $rows                 = R::getAll($sql,
-                                              $values = array(
-                                                ':userId'    => $super->id,
-                                                ':modelId'   => $account->id,
-                                              ));
-            $this->assertCount(1, $rows);
+            $starredRecords       = AccountStarred::getCountByUserIdAndModelId($super->id, $account->id);
+            $this->assertEquals(1, $starredRecords);
         }
 
         /**
@@ -107,14 +96,8 @@
             $this->assertTrue($account->save());
             StarredUtil::markModelAsStarred($account);
             StarredUtil::unmarkModelAsStarred($account);
-            $tableName            = StarredUtil::getStarredTableName('Account');
-            $sql                  = "SELECT id FROM {$tableName} WHERE user_id = :userId AND model_id = :modelId;";
-            $rows                 = R::getAll($sql,
-                                              $values = array(
-                                                ':userId'    => $super->id,
-                                                ':modelId'   => $account->id,
-                                              ));
-            $this->assertCount(0, $rows);
+            $starredRecords       = AccountStarred::getCountByUserIdAndModelId($super->id, $account->id);
+            $this->assertEquals(0, $starredRecords);
         }
 
         /**
@@ -124,34 +107,24 @@
         {
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
-
             $steven = UserTestHelper::createBasicUser('Steven');
 
             $account              = new Account();
             $account->owner       = $super;
             $account->name        = 'Test Account';
             $account->officePhone = '1234567890';
+            $account->addPermissions($steven, Permission::READ);
             $this->assertTrue($account->save());
             StarredUtil::markModelAsStarred($account);
 
             Yii::app()->user->userModel = $steven;
             StarredUtil::markModelAsStarred($account);
-
-            $tableName            = StarredUtil::getStarredTableName('Account');
-            $sql                  = "SELECT id FROM {$tableName} WHERE model_id = :modelId;";
-            $rows                 = R::getAll($sql,
-                                              $values = array(
-                                                ':modelId'   => $account->id,
-                                              ));
-            $this->assertCount(2, $rows);
+            $starredRecords = AccountStarred::getCountByUserIdAndModelId(null, $account->id);
+            $this->assertEquals(2, $starredRecords);
 
             StarredUtil::unmarkModelAsStarredForAllUsers($account);
-            $sql                  = "SELECT id FROM {$tableName} WHERE model_id = :modelId;";
-            $rows                 = R::getAll($sql,
-                                              $values = array(
-                                                ':modelId'   => $account->id,
-                                              ));
-            $this->assertCount(0, $rows);
+            $starredRecords = AccountStarred::getCountByUserIdAndModelId(null, $account->id);
+            $this->assertEquals(0, $starredRecords);
         }
 
         /**

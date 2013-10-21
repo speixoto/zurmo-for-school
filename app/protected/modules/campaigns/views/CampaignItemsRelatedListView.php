@@ -42,6 +42,11 @@
             return ZurmoHtml::tag('div', array('class' => $this->getWrapperDivClass()), $content);
         }
 
+        protected function getGridViewWidgetPath()
+        {
+            return 'application.modules.campaigns.widgets.CampaignItemsExtendedGridView';
+        }
+
         protected function getRelationAttributeName()
         {
             return 'campaign';
@@ -104,7 +109,20 @@
         protected function getCGridViewParams()
         {
             return array_merge(parent::getCGridViewParams(),
-                array('hideHeader'     => true));
+                array('hideHeader'     => true,
+                      'expandableRows' => true));
+        }
+
+        protected function getCGridViewColumns()
+        {
+            $columns = parent::getCGridViewColumns();
+            $firstColumn = array(
+                'class'                 => 'CampaignItemsDrillDownColumn',
+                'id'                    => $this->gridId . $this->gridIdSuffix . '-rowDrillDown',
+                'htmlOptions'           => array('class' => 'hasDrillDownLink')
+            );
+            array_unshift($columns, $firstColumn);
+            return $columns;
         }
     }
 ?>

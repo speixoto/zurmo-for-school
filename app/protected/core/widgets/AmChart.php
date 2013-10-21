@@ -45,9 +45,13 @@
 
         public $id;
 
+        public $width = '100%';
+
+        public $height = '400px';
+
         public function run()
         {
-            echo "<div id='chartContainer{$this->id}' style='width: 100%; height: 400px;'></div>";
+            echo "<div id='chartContainer{$this->id}' style='width: {$this->width}; height: {$this->height};'></div>";
         }
     }
 ?>

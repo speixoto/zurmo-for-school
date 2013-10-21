@@ -43,8 +43,6 @@
 
         protected static $content;
 
-        public static $freeze = false;
-
         protected $invalidTags;
 
         protected $mergeTagsUtil;
@@ -52,13 +50,6 @@
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
-            // We need to unfreeze here as we are working with custom field values
-            self::$freeze                                         = false;
-            if (RedBeanDatabase::isFrozen())
-            {
-                RedBeanDatabase::unfreeze();
-                self::$freeze                                     = true;
-            }
             SecurityTestHelper::createSuperAdmin();
             SecurityTestHelper::createUsers();
             self::$super = User::getByUsername('super');
@@ -129,8 +120,9 @@
             $attributeForm                                  = new TextAttributeForm();
             $attributeForm->attributeName                   = 'custom';
             $attributeForm->attributeLabels                 = array('en' => 'test label en');
+
             $modelAttributesAdapterClassName                = $attributeForm::
-                getModelAttributeAdapterNameForSavingAttributeFormData();
+                                                                getModelAttributeAdapterNameForSavingAttributeFormData();
             $adapter = new $modelAttributesAdapterClassName(new EmailTemplateModelTestItem());
             $adapter->setAttributeMetadataFromForm($attributeForm);
 
@@ -248,13 +240,9 @@
                 'Jackson 1122334455';
         }
 
-        public static function tearDownAfterClass()
+        public static function getDependentTestModelClassNames()
         {
-            if (self::$freeze)
-            {
-                RedBeanDatabase::freeze();
-            }
-            parent::tearDownAfterClass();
+            return array('EmailTemplateModelTestItem');
         }
 
         public function setUp()
@@ -872,6 +860,22 @@
             $this->assertNotEquals($resolvedContent, $content);
             $this->assertTrue(strpos($resolvedContent, 'localhost') === 0);
             $this->assertEmpty($this->invalidTags);
+        }
+
+        public function testActivityItemsMergeTag()
+        {
+            $account            = AccountTestHelper::createAccountByNameForOwner('testAccount', self::$super);
+            $task               = TaskTestHelper::createTaskWithOwnerAndRelatedAccount('testTask', self::$super, $account);
+            $content            = '[[ACCOUNT__NAME]]';
+            $mergeTagsUtil      = MergeTagsUtilFactory::make(EmailTemplate::TYPE_WORKFLOW, null, $content);
+            $resolvedContent    = $mergeTagsUtil->resolveMergeTags($task, $this->invalidTags);
+            $this->assertEquals('testAccount', $resolvedContent);
+
+            $content            = '[[CONTACT__NAME]]';
+            $mergeTagsUtil      = MergeTagsUtilFactory::make(EmailTemplate::TYPE_WORKFLOW, null, $content);
+            $resolvedContent    = $mergeTagsUtil->resolveMergeTags($task, $this->invalidTags);
+            $this->assertFalse($resolvedContent);
+            $this->assertContains('CONTACT__NAME', $this->invalidTags);
         }
     }
 ?>

@@ -114,7 +114,7 @@
             }
             $element                      = new MissionStatusElement($this->model, 'status');
             $element->nonEditableTemplate = '<div class="comment-content">' .
-                                            Zurmo::t('MissionsModule', 'Status') . ': {content}</div>';
+                                            Zurmo::t('ZurmoModule', 'Status') . ': {content}</div>';
             $content                     .= $element->render();
             $content .= '</div>';
             return ZurmoHtml::tag('div', array('id' => 'ModelDetailsSummaryView'), $content);

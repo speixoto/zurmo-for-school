@@ -70,7 +70,7 @@
             {
                 if (trim($this->name) == '')
                 {
-                    return Zurmo::t('ProductTemplatesModule', '(Unnamed)');
+                    return Zurmo::t('Core', '(Unnamed)');
                 }
                 return $this->name;
             }
@@ -111,20 +111,20 @@
                     'type'
                 ),
                 'relations' => array(
-                    'products'                  => array(RedBeanModel::HAS_MANY, 'Product'),
-                    'sellPriceFormula'          => array(RedBeanModel::HAS_ONE,   'SellPriceFormula', RedBeanModel::OWNED),
-                    'productCategories'         => array(RedBeanModel::MANY_MANY, 'ProductCategory'),
-                    'cost'                      => array(RedBeanModel::HAS_ONE,   'CurrencyValue',    RedBeanModel::OWNED,
-                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'cost'),
-                    'listPrice'                 => array(RedBeanModel::HAS_ONE,   'CurrencyValue',    RedBeanModel::OWNED,
-                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'listPrice'),
-                    'sellPrice'                 => array(RedBeanModel::HAS_ONE,   'CurrencyValue',    RedBeanModel::OWNED,
-                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'sellPrice'),
+                    'products'                  => array(static::HAS_MANY, 'Product'),
+                    'sellPriceFormula'          => array(static::HAS_ONE,   'SellPriceFormula', static::OWNED),
+                    'productCategories'         => array(static::MANY_MANY, 'ProductCategory'),
+                    'cost'                      => array(static::HAS_ONE,   'CurrencyValue',    static::OWNED,
+                                                static::LINK_TYPE_SPECIFIC, 'cost'),
+                    'listPrice'                 => array(static::HAS_ONE,   'CurrencyValue',    static::OWNED,
+                                                static::LINK_TYPE_SPECIFIC, 'listPrice'),
+                    'sellPrice'                 => array(static::HAS_ONE,   'CurrencyValue',    static::OWNED,
+                                                static::LINK_TYPE_SPECIFIC, 'sellPrice'),
                 ),
                 'rules' => array(
                     array('name',             'required'),
                     array('name',             'type',    'type' => 'string'),
-                    array('name',             'length',  'min'  => 3, 'max' => 255),
+                    array('name',             'length',  'min'  => 1, 'max' => 255),
                     array('description',      'type',    'type' => 'string'),
                     array('status',           'required'),
                     array('type',             'required'),
@@ -188,22 +188,8 @@
          */
         protected function beforeDelete()
         {
-            if ($this->getScenario() != 'autoBuildDatabase')
-            {
-                parent::beforeDelete();
-                if (count($this->products) == 0 )
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            else
-            {
-                return parent::beforeDelete();
-            }
+            parent::beforeDelete();
+            return (count($this->products) == 0);
         }
 
         /**
@@ -222,7 +208,7 @@
                     'listPrice'             => Zurmo::t('ProductTemplatesModule', 'List Price',  array(), null, $language),
                     'sellPrice'             => Zurmo::t('ProductTemplatesModule', 'Sell Price',  array(), null, $language),
                     'type'                  => Zurmo::t('ProductTemplatesModule', 'Type',  array(), null, $language),
-                    'status'                => Zurmo::t('ProductTemplatesModule', 'Status',  array(), null, $language),
+                    'status'                => Zurmo::t('ZurmoModule', 'Status',  array(), null, $language),
                 )
             );
         }

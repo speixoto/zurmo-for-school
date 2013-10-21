@@ -39,7 +39,6 @@
         protected function resolveHtmlOptionsForRendering()
         {
             $htmlOptions          = parent::resolveHtmlOptionsForRendering();
-            $htmlOptions['class'] = 'icon-create';
             return $htmlOptions;
         }
 

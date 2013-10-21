@@ -67,21 +67,21 @@
             $securableItemModelIdentifer = $securableItem->getModelIdentifier();
             $permitableModelIdentifier   = $permitable   ->getModelIdentifier();
 
-            if (PHP_CACHING_ON)
+            if (static::supportsAndAllowsPhpCaching())
             {
-                if (isset(self::$securableItemToPermitableToCombinedPermissions
+                if (isset(static::$securableItemToPermitableToCombinedPermissions
                                         [$securableItemModelIdentifer]
                                         [$permitableModelIdentifier]))
                 {
-                    return self::$securableItemToPermitableToCombinedPermissions
+                    return static::$securableItemToPermitableToCombinedPermissions
                                         [$securableItemModelIdentifer]
                                         [$permitableModelIdentifier];
                 }
             }
 
-            if (MEMCACHE_ON && Yii::app()->cache !== null)
+            if (static::supportsAndAllowsMemcache())
             {
-                $prefix = self::getCachePrefix($securableItemModelIdentifer, self::$cacheType);
+                $prefix = static::getCachePrefix($securableItemModelIdentifer, static::$cacheType);
                 $serializedData = Yii::app()->cache->get($prefix . $securableItemModelIdentifer);
                 if ($serializedData !== false)
                 {
@@ -90,9 +90,9 @@
                     if (isset($permitablesCombinedPermissions[$permitableModelIdentifier]))
                     {
                         $combinedPermissions = $permitablesCombinedPermissions[$permitableModelIdentifier];
-                        if (PHP_CACHING_ON)
+                        if (static::supportsAndAllowsPhpCaching())
                         {
-                            self::$securableItemToPermitableToCombinedPermissions
+                            static::$securableItemToPermitableToCombinedPermissions
                                             [$securableItemModelIdentifer]
                                             [$permitableModelIdentifier] = $combinedPermissions;
                         }
@@ -127,16 +127,16 @@
             $securableItemModelIdentifer = $securableItem->getModelIdentifier();
             $permitableModelIdentifier   = $permitable   ->getModelIdentifier();
 
-            if (PHP_CACHING_ON)
+            if (static::supportsAndAllowsPhpCaching())
             {
-                self::$securableItemToPermitableToCombinedPermissions
+                static::$securableItemToPermitableToCombinedPermissions
                                         [$securableItemModelIdentifer]
                                         [$permitableModelIdentifier] = $combinedPermissions;
             }
 
-            if (MEMCACHE_ON && Yii::app()->cache !== null)
+            if (static::supportsAndAllowsMemcache())
             {
-                $prefix = self::getCachePrefix($securableItemModelIdentifer, self::$cacheType);
+                $prefix = static::getCachePrefix($securableItemModelIdentifer, static::$cacheType);
                 $permitablesCombinedPermissions = Yii::app()->cache->get($prefix . $securableItemModelIdentifer);
                 if ($permitablesCombinedPermissions === false)
                 {
@@ -171,13 +171,13 @@
             assert('$permitable instanceof Permitable');
             assert('is_array($actualPermissions)');
             $cacheKeyName = $namedSecurableItemName . get_class($permitable) . $permitable->id . 'ActualPermissions';
-            if (PHP_CACHING_ON)
+            if (static::supportsAndAllowsPhpCaching())
             {
-                self::$namedSecurableItemActualPermissions[$cacheKeyName] = $actualPermissions;
+                static::$namedSecurableItemActualPermissions[$cacheKeyName] = $actualPermissions;
             }
-            if (MEMCACHE_ON && Yii::app()->cache !== null)
+            if (static::supportsAndAllowsMemcache())
             {
-                $prefix = self::getCachePrefix($cacheKeyName, self::$cacheType);
+                $prefix = static::getCachePrefix($cacheKeyName, static::$cacheType);
                 Yii::app()->cache->set($prefix . $cacheKeyName, serialize($actualPermissions));
             }
         }
@@ -193,16 +193,16 @@
             assert('is_string($namedSecurableItemName)');
             assert('$permitable instanceof Permitable');
             $cacheKeyName = $namedSecurableItemName . get_class($permitable) . $permitable->id . 'ActualPermissions';
-            if (PHP_CACHING_ON)
+            if (static::supportsAndAllowsPhpCaching())
             {
-                if (isset(self::$namedSecurableItemActualPermissions[$cacheKeyName]))
+                if (isset(static::$namedSecurableItemActualPermissions[$cacheKeyName]))
                 {
-                    return self::$namedSecurableItemActualPermissions[$cacheKeyName];
+                    return static::$namedSecurableItemActualPermissions[$cacheKeyName];
                 }
             }
-            if (MEMCACHE_ON && Yii::app()->cache !== null)
+            if (static::supportsAndAllowsMemcache())
             {
-                $prefix = self::getCachePrefix($cacheKeyName, self::$cacheType);
+                $prefix = static::getCachePrefix($cacheKeyName, static::$cacheType);
                 $serializedData = Yii::app()->cache->get($prefix . $cacheKeyName);
                 if ($serializedData !== false)
                 {
@@ -224,18 +224,18 @@
 
             $securableItemModelIdentifer = $securableItem->getModelIdentifier();
 
-            if (PHP_CACHING_ON)
+            if (static::supportsAndAllowsPhpCaching())
             {
-                self::$securableItemToPermitableToCombinedPermissions[$securableItemModelIdentifer] = array();
+                static::$securableItemToPermitableToCombinedPermissions[$securableItemModelIdentifer] = array();
             }
 
-            if (MEMCACHE_ON && Yii::app()->cache !== null)
+            if (static::supportsAndAllowsMemcache())
             {
-                $prefix = self::getCachePrefix($securableItemModelIdentifer, self::$cacheType);
+                $prefix = static::getCachePrefix($securableItemModelIdentifer, static::$cacheType);
                 Yii::app()->cache->delete($prefix . $securableItemModelIdentifer);
             }
 
-            if (SECURITY_OPTIMIZED && DB_CACHING_ON && $forgetDbLevelCache)
+            if (SECURITY_OPTIMIZED && static::supportsAndAllowsDatabaseCaching() && $forgetDbLevelCache)
             {
                 $securableItemId = $securableItem->getClassID('SecurableItem');
                 ZurmoDatabaseCompatibilityUtil::callProcedureWithoutOuts("clear_cache_securableitem_actual_permissions($securableItemId)");
@@ -245,20 +245,20 @@
         // The $forgetDbLevel cache is for testing.
         public static function forgetAll($forgetDbLevelCache = true)
         {
-            if (PHP_CACHING_ON)
+            if (static::supportsAndAllowsPhpCaching())
             {
-                self::$securableItemToPermitableToCombinedPermissions = array();
-                self::$namedSecurableItemActualPermissions = array();
+                static::$securableItemToPermitableToCombinedPermissions = array();
+                static::$namedSecurableItemActualPermissions = array();
             }
 
-            if (SECURITY_OPTIMIZED && DB_CACHING_ON && $forgetDbLevelCache)
+            if (SECURITY_OPTIMIZED && static::supportsAndAllowsDatabaseCaching() && $forgetDbLevelCache)
             {
                 ZurmoDatabaseCompatibilityUtil::callProcedureWithoutOuts("clear_cache_all_actual_permissions()");
             }
 
-            if (MEMCACHE_ON && Yii::app()->cache !== null)
+            if (static::supportsAndAllowsMemcache())
             {
-                self::incrementCacheIncrementValue(static::$cacheType);
+                static::incrementCacheIncrementValue(static::$cacheType);
             }
         }
     }

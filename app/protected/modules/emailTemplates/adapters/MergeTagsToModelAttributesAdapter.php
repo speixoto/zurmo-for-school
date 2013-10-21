@@ -53,7 +53,7 @@
             {
                 $attributeAccessorString    = static::resolveStringToAttributeAccessor($mergeTag);
                 $timeQualifier              = static::stripTimeDelimiterAndReturnQualifier($attributeAccessorString);
-                $resolvedValue              =  static::resolveMergeTagToStandardOrRelatedAttribute($attributeAccessorString, $model, $language, $timeQualifier);
+                $resolvedValue              = static::resolveMergeTagToStandardOrRelatedAttribute($attributeAccessorString, $model, $language, $timeQualifier);
                 if ($resolvedValue === static::PROPERTY_NOT_FOUND)
                 {
                     if ($errorOnFirstMissing)
@@ -100,6 +100,59 @@
             {
                 if (!$model->isAttribute($attributeName))
                 {
+                    if ($model instanceof Activity)
+                    {
+                        $metadata = $model::getMetadata();
+                        $activityItemsModelClassNamesData = $metadata['Activity']['activityItemsModelClassNames'];
+                        foreach ($model->activityItems as $activityItem)
+                        {
+                            if (ucfirst($attributeName) == get_class($activityItem))
+                            {
+                                $attributeAccessorString = str_replace($attributeName . '->', '', $attributeAccessorString);
+                                return static::resolveMergeTagToStandardOrRelatedAttribute(
+                                    $attributeAccessorString,
+                                    $activityItem,
+                                    $language,
+                                    $timeQualifier);
+                            }
+                            if (get_class($activityItem) == 'Item' && array_search(ucfirst($attributeName), $activityItemsModelClassNamesData) !== false)
+                            {
+                                try
+                                {
+                                    $modelDerivationPathToItem = RuntimeUtil::getModelDerivationPathToItem(ucfirst($attributeName));
+                                    $castedDownModel           = $activityItem->castDown(array($modelDerivationPathToItem));
+                                    if (ucfirst($attributeName) == get_class($castedDownModel))
+                                    {
+                                        $attributeAccessorString = str_replace($attributeName . '->', '', $attributeAccessorString);
+                                        $attributeAccessorString;
+                                        return static::resolveMergeTagToStandardOrRelatedAttribute(
+                                            $attributeAccessorString,
+                                            $castedDownModel,
+                                            $language,
+                                            $timeQualifier);
+                                    }
+                                }
+                                catch (NotFoundException $e)
+                                {
+                                    //Do nothing
+                                }
+                            }
+                            unset($activityItemsModelClassNamesData[get_class($activityItem)]);
+                        }
+                        foreach ($activityItemsModelClassNamesData as $relationModelClassName)
+                        {
+                            if (ucfirst($attributeName) == $relationModelClassName)
+                            {
+                                $model = new $relationModelClassName();
+                                $attributeAccessorString = str_replace($attributeName . '->', '', $attributeAccessorString);
+                                return static::resolveMergeTagToStandardOrRelatedAttribute(
+                                    $attributeAccessorString,
+                                    $model,
+                                    $language,
+                                    $timeQualifier);
+                            }
+                        }
+                    }
                     return static::PROPERTY_NOT_FOUND;
                 }
                 elseif ($model->$attributeName instanceof CustomField)
@@ -215,18 +268,7 @@
 
         protected static function resolveStringToAttributeAccessor($string)
         {
-            return static::resolveStringToCamelCase(str_replace(MergeTagsUtil::PROPERTY_DELIMITER, '->', strtolower($string)));
-        }
-
-        protected static function resolveStringToCamelCase($string, $capitaliseFirstCharacter = false )
-        {
-            if ($capitaliseFirstCharacter)
-            {
-                $string[0] = strtoupper($string[0]);
-            }
-            $covertToCamelCaseFunction = create_function('$character', 'return strtoupper($character[1]);');
-            return preg_replace_callback('/' . preg_quote(MergeTagsUtil::CAPITAL_DELIMITER) . '([a-z])/',
-                                                                                    $covertToCamelCaseFunction, $string);
+            return StringUtil::camelize(str_replace(MergeTagsUtil::PROPERTY_DELIMITER, '->', strtolower($string)));
         }
     }
 ?>

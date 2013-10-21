@@ -36,13 +36,29 @@
 
     class Task extends MashableActivity
     {
+        /*
+         * Constants for task status
+         */
+        const STATUS_NEW                   = 1;
+
+        const STATUS_IN_PROGRESS           = 2;
+
+        const STATUS_AWAITING_ACCEPTANCE   = 3;
+
+        const STATUS_REJECTED              = 4;
+
+        const STATUS_COMPLETED             = 5;
+
+        /**
+         * @return string
+         */
         public function __toString()
         {
             try
             {
                 if (trim($this->name) == '')
                 {
-                    return Zurmo::t('TasksModule', '(Unnamed)');
+                    return Zurmo::t('Core', '(Unnamed)');
                 }
                 return $this->name;
             }
@@ -52,16 +68,26 @@
             }
         }
 
+        /**
+         * Gets module class name
+         * @return string
+         */
         public static function getModuleClassName()
         {
             return 'TasksModule';
         }
 
+        /**
+         * @return bool
+         */
         public static function canSaveMetadata()
         {
             return true;
         }
 
+        /**
+         * @return array
+         */
         public static function getDefaultMetadata()
         {
             $metadata = parent::getDefaultMetadata();
@@ -72,19 +98,39 @@
                     'description',
                     'dueDateTime',
                     'name',
+                    'status'
+                ),
+                'relations' => array(
+                    'requestedByUser'           => array(static::HAS_ONE, 'User', static::NOT_OWNED,
+                                                        static::LINK_TYPE_SPECIFIC, 'requestedByUser'),
+                    'comments'                  => array(static::HAS_MANY, 'Comment', static::OWNED,
+                                                        static::LINK_TYPE_POLYMORPHIC, 'relatedModel'),
+                    'checkListItems'            => array(static::HAS_MANY, 'TaskCheckListItem'),
+                    'notificationSubscribers'   => array(static::HAS_MANY, 'NotificationSubscriber', static::OWNED,
+                                                        static::LINK_TYPE_POLYMORPHIC, 'relatedModel'),
+                    'files'                     => array(static::HAS_MANY, 'FileModel', static::OWNED,
+                                                        static::LINK_TYPE_POLYMORPHIC, 'relatedModel'),
+                    'project'                   => array(static::HAS_ONE, 'Project'),
                 ),
                 'rules' => array(
-                    array('completedDateTime', 'type', 'type' => 'datetime'),
+                    array('completedDateTime','type', 'type' => 'datetime'),
                     array('completed',        'boolean'),
-                    array('dueDateTime',       'type', 'type' => 'datetime'),
+                    array('dueDateTime',      'type', 'type' => 'datetime'),
                     array('description',      'type',    'type' => 'string'),
                     array('name',             'required'),
                     array('name',             'type',    'type' => 'string'),
                     array('name',             'length',  'min'  => 1, 'max' => 64),
+                    array('status',           'type', 'type' => 'integer'),
                 ),
                 'elements' => array(
                     'completedDateTime' => 'DateTime',
                     'dueDateTime'       => 'DateTime',
+                    'requestedByUser'   => 'User',
+                    'comment'           => 'Comment',
+                    'checkListItem'     => 'TaskCheckListItem',
+                    'files'             => 'Files',
+                    'project'           => 'Project',
+                    'status'            => 'TaskStatusDropDown'
                 ),
                 'defaultSortAttribute' => 'name',
                 'noAudit' => array(
@@ -94,6 +140,36 @@
             return $metadata;
         }
 
+        /**
+         * @param RedBean_OODBBean $bean
+         * @param bool $setDefaults
+         * @throws NoCurrentUserSecurityException
+         */
+        protected function constructDerived($bean, $setDefaults)
+        {
+            assert('$bean === null || $bean instanceof RedBean_OODBBean');
+            assert('is_bool($setDefaults)');
+            parent::constructDerived($bean, $setDefaults);
+            // Even though setting the requestedByUser is not technically
+            // a default in the sense of a Yii default rule,
+            // if true the requestedByUser is not set because blank models
+            // are used for searching mass updating.
+            if ($bean ===  null && $setDefaults)
+            {
+                $currentUser = Yii::app()->user->userModel;
+                if (!$currentUser instanceof User)
+                {
+                    throw new NoCurrentUserSecurityException();
+                }
+                AuditUtil::saveOriginalAttributeValue($this, 'requestedByUser', $currentUser);
+                $this->unrestrictedSet('requestedByUser', $currentUser);
+            }
+        }
+
+        /**
+         * @param $language
+         * @return array
+         */
         protected static function translatedAttributeLabels($language)
         {
             return array_merge(parent::translatedAttributeLabels($language),
@@ -103,20 +179,32 @@
                     'description'       => Zurmo::t('ZurmoModule', 'Description',  array(), null, $language),
                     'dueDateTime'       => Zurmo::t('TasksModule', 'Due On',       array(), null, $language),
                     'name'              => Zurmo::t('TasksModule', 'Name',  array(), null, $language),
+                    'status'            => Zurmo::t('ZurmoModule', 'Status',  array(), null, $language),
+                    'requestedByUser'   => Zurmo::t('TasksModule', 'Requested By User',  array(), null, $language),
+                    'files'             => Zurmo::t('ZurmoModule', 'Files',  array(), null, $language),
                 )
             );
         }
 
+        /**
+         * @return bool
+         */
         public static function isTypeDeletable()
         {
             return true;
         }
 
+        /**
+         * @return string
+         */
         public static function getMashableActivityRulesType()
         {
             return 'Task';
         }
 
+        /**
+         * @return bool
+         */
         protected function beforeSave()
         {
             if (parent::beforeSave())
@@ -138,16 +226,53 @@
             }
         }
 
+        /**
+         * @return bool
+         */
         public static function hasReadPermissionsOptimization()
         {
             return true;
         }
 
+        /**
+         * @return string
+         */
         public static function getGamificationRulesType()
         {
             return 'TaskGamification';
         }
 
+        /**
+         * @return array of status values and labels
+         */
+        public static function getStatusDropDownArray()
+        {
+            return array(
+                self::STATUS_NEW                 => Zurmo::t('TasksModule', 'New'),
+                self::STATUS_IN_PROGRESS         => Zurmo::t('TasksModule', 'In Progress'),
+                self::STATUS_AWAITING_ACCEPTANCE => Zurmo::t('TasksModule', 'Awaiting Acceptance'),
+                self::STATUS_REJECTED            => Zurmo::t('TasksModule', 'Rejected'),
+                self::STATUS_COMPLETED           => Zurmo::t('TasksModule', 'Completed'),
+            );
+        }
+
+        /**
+         * Gets the display name for the status
+         * @param int $status
+         */
+        public static function getStatusDisplayName($status)
+        {
+            $statusArray = self::getStatusDropDownArray();
+            if(array_key_exists($status, $statusArray))
+            {
+                return $statusArray[$status];
+            }
+            return Zurmo::t('Core', '(None)');
+        }
+
+        /**
+         * @return bool
+         */
         public static function hasReadPermissionsSubscriptionOptimization()
         {
             return true;

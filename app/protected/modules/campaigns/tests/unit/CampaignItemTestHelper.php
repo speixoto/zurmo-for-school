@@ -46,7 +46,8 @@
 
         public static function populateCampaignItem($processed, $campaign = null, $contact = null)
         {
-            assert('is_bool($processed)');
+            assert('is_bool($processed) || is_int($processed)');
+            assert('$processed == 0 || $processed == 1');
             assert('is_object($campaign) || $campaign === null');
             assert('is_object($contact) || $contact === null');
             if (empty($campaign))

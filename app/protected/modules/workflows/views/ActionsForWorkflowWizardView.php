@@ -114,10 +114,9 @@
         /**
          * @return array
          */
-        protected static function resolveTypeDataAndLabels()
+        protected function resolveTypeDataAndLabels()
         {
-            $data = array();
-            return array_merge($data, ActionForWorkflowForm::getTypeDataAndLabels());
+            return ActionForWorkflowForm::getTypeDataAndLabels();
         }
 
         /**
@@ -135,6 +134,19 @@
             $this->registerRowEditScript();
         }
 
+        public static function renderScriptContentForModuleClassNameChange()
+        {
+            return "
+            $('#" . ActionsForWorkflowWizardView::ACTION_TYPE_NAME .
+                        " option[value=\"" . ActionForWorkflowForm::TYPE_SUBSCRIBE_TO_LIST . "\"]').remove();
+            if($(this).val() == 'ContactsModule')
+            {
+                $('#" . ActionsForWorkflowWizardView::ACTION_TYPE_NAME . "').
+                    append(\"<option value='" . ActionForWorkflowForm::TYPE_SUBSCRIBE_TO_LIST . "'>" .
+                        ActionForWorkflowForm::getLabelForSubscribeToList() . "</option>\");
+            }
+            ";
+        }
         /**
          * @return bool
          */
@@ -180,7 +192,7 @@
             $htmlOptions                   = array();
             $htmlOptions['empty']          = Zurmo::t('WorkflowsModule', 'Select Action');
             $actionTypeContent             = ZurmoHtml::dropDownList(self::ACTION_TYPE_NAME, null,
-                                             static::resolveTypeDataAndLabels(), $htmlOptions);
+                                             $this->resolveTypeDataAndLabels(), $htmlOptions);
             $content  = '';
             $content .= $actionTypeContent;
             $content .= ZurmoHtml::tag('div', array('id'    => self::ACTION_TYPE_RELATION_DIV_ID,
@@ -280,6 +292,10 @@
                     //do nothing
                 }
                 else if ($('#" . $id . "').val() == '" . ActionForWorkflowForm::TYPE_UPDATE_SELF . "')
+                {
+                    loadWorkflowAction();
+                }
+                else if ($('#" . $id . "').val() == '" . ActionForWorkflowForm::TYPE_SUBSCRIBE_TO_LIST . "')
                 {
                     loadWorkflowAction();
                 }

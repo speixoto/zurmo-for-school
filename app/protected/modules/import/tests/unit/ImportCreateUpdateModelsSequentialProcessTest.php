@@ -43,18 +43,14 @@
             Yii::app()->user->userModel = $super;
         }
 
+        public static function getDependentTestModelClassNames()
+        {
+            return array('ImportModelTestItem');
+        }
+
         public function testSequentialProcessViewFactory()
         {
             Yii::app()->user->userModel        = User::getByUsername('super');
-
-            $freezeWhenComplete = false;
-            //Unfreeze since the test model is not part of the standard schema.
-            if (RedBeanDatabase::isFrozen())
-            {
-                RedBeanDatabase::unfreeze();
-                $freezeWhenComplete = true;
-            }
-
             $testModels                        = ImportModelTestItem::getAll();
             $this->assertEquals(0, count($testModels));
 
@@ -74,7 +70,7 @@
             $serializedData['firstRowIsHeaderRow'] = true;
             $import->serializedData                = serialize($serializedData);
             $this->assertTrue($import->save());
-            ImportTestHelper::createTempTableByFileNameAndTableName('importAnalyzerTest.csv', $import->getTempTableName());
+            ImportTestHelper::createTempTableByFileNameAndTableName('importAnalyzerTest.csv', $import->getTempTableName(), true);
             $config            = array('pagination' => array('pageSize' => 2));
             $dataProvider      = new ImportDataProvider($import->getTempTableName(), true, $config);
             $sequentialProcess = new ImportCreateUpdateModelsSequentialProcess($import, $dataProvider);
@@ -99,12 +95,6 @@
             //Confirm 2 models were successfully added.
             $testModels = ImportModelTestItem::getAll();
             $this->assertEquals(2, count($testModels));
-
-            //Re-freeze if needed.
-            if ($freezeWhenComplete)
-            {
-                RedBeanDatabase::freeze();
-            }
         }
     }
 ?>
