@@ -59,6 +59,7 @@
         {
             $metadata = array(
                 'global' => array(
+                    'gridViewType' => RelatedListView::GRID_VIEW_TYPE_STACKED,
                     'panels' => array(
                         array(
                             'rows' => array(
@@ -75,7 +76,6 @@
                         ),
                     ),
                 ),
-
             );
             return $metadata;
         }
