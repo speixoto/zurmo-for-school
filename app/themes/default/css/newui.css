@@ -22351,6 +22351,7 @@ a.user-link {
   padding-top: 5px !important;
   padding-bottom: 5px !important;
 }
+.drillDownContent > h4,
 .drillDownContent > h5 {
   padding: 5px 5px 0 5px;
 }
@@ -23535,11 +23536,38 @@ a + .autoresponder-stats {
   color: #fff !important;
 }
 /*Continuum*/
+.campaign-items-container .hasDrillDownContent {
+  padding: 5px !important;
+}
+.campaign-items-container .hasDrillDownContent table {
+  border-bottom: 1px solid #DFDFDF;
+  margin: 5px 0 0 0;
+  width: 100%;
+}
+.campaign-items-container .hasDrillDownContent td,
+.campaign-items-container .hasDrillDownContent th {
+  border: 1px solid #DFDFDF;
+  border-right: none;
+  vertical-align: middle;
+  padding: 5px;
+  word-wrap: break-word;
+  text-align: left;
+}
+.campaign-items-container .hasDrillDownContent th {
+  font-weight: bold !important;
+  height: 25px;
+  line-height: 25px;
+  background: url(../images/table-items-header.png) left top repeat-x;
+  padding: 0 5px;
+}
+.campaign-items-container .error {
+  color: #c43d53;
+}
 .email-recipient-name {
   float: left;
   width: 15%;
   display: block;
-  line-height: 20px;
+  line-height: 23px;
 }
 .continuum {
   float: left;
