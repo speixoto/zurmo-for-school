@@ -152,7 +152,7 @@
         {
             $route = Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/step5/',
                 array('id' => $this->model->id));
-            return ZurmoHtml::link(ZurmoHtml::wrapLabel(Zurmo::t('ImportModule', 'Reanalyse data')), $route);
+            return ZurmoHtml::link(ZurmoHtml::wrapLabel(Zurmo::t('ImportModule', 'Analyze Data')), $route);
         }
 
         protected function renderPreviousPageLinkContent()
