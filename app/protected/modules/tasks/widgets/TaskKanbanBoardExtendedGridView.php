@@ -144,14 +144,7 @@
             for($count=0; $count < count($this->columnsData); $count++)
             {
                  $type = $columnDataKeys[$count];
-                 if($type != KanbanItem::TYPE_COMPLETED)
-                 {
-                     $taskSortableScript .= $this->registerKanbanColumnSortableScript($count + 1, $type);
-                 }
-                 else
-                 {
-                     $taskSortableScript .= $this->registerKanbanColumnSortableScript($count + 1, $type);
-                 }
+                 $taskSortableScript .= $this->registerKanbanColumnSortableScript($count + 1, $type);
             }
             Yii::app()->clientScript->registerScript('task-sortable-data', $taskSortableScript);
             $url = Yii::app()->createUrl('tasks/default/updateStatusInKanbanView', array());
