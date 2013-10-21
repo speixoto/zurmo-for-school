@@ -61,3 +61,52 @@ function updateTaskStatus(status, url, errorInProcess)
         }
     );
 }
+
+function updateCheckListItem(element, url, errorMessage)
+{
+    var passedValue = $(element).val();
+    if(passedValue == '')
+    {
+        alert(errorMessage);
+    }
+    id = $(element).attr('id');
+    id = $(this).attr('id');
+    idParts = id.split('_');
+    litag = $(element).parent().parent();
+    $.ajax({
+            type: 'GET',
+            url: url,
+            dataType: 'html',
+            cache: false,
+            data: {
+                id  :idParts[2],
+                name:passedValue
+            },
+            success: function(data){
+              $(litag).find('p').html(data);
+              $(litag).find('.editable').show();
+              $(litag).find('.taskcheckitemactions').show();
+              $(litag).find('.editable-task-input').hide();
+            }
+        });
+}
+
+function deleteCheckListItem(element, url)
+{
+    litag = $(element).parent().parent();
+    id    = $(litag).find('input').attr('id');
+    console.log(id);
+    idParts = id.split('_');
+    $.ajax({
+            type: 'GET',
+            url: url,
+            dataType: 'html',
+            cache: false,
+            data: {
+                id  :idParts[1]
+            },
+            success: function(data){
+              $("#TaskCheckListItemsForTaskView").replaceWith(data);
+            }
+        });
+}

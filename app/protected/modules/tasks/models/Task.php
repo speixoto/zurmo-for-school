@@ -105,7 +105,7 @@
                                                         static::LINK_TYPE_SPECIFIC, 'requestedByUser'),
                     'comments'                  => array(static::HAS_MANY, 'Comment', static::OWNED,
                                                         static::LINK_TYPE_POLYMORPHIC, 'relatedModel'),
-                    'checkListItems'            => array(static::HAS_MANY, 'TaskCheckListItem'),
+                    'checkListItems'            => array(static::HAS_MANY, 'TaskCheckListItem', static::OWNED),
                     'notificationSubscribers'   => array(static::HAS_MANY, 'NotificationSubscriber', static::OWNED,
                                                         static::LINK_TYPE_POLYMORPHIC, 'relatedModel'),
                     'files'                     => array(static::HAS_MANY, 'FileModel', static::OWNED,

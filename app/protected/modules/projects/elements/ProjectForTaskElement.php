@@ -39,6 +39,8 @@
      */
     class ProjectForTaskElement extends ModelElement
     {
+        protected static $moduleId = 'projects';
+
         protected function renderNonEditable()
         {
             if($this->model->project->id > 0)

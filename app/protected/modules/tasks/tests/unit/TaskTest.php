@@ -364,6 +364,10 @@
             $fetchedCheckListItem = $task->checkListItems[0];
             $this->assertEquals('Test Check List Item1', $fetchedCheckListItem->name);
             $this->assertTrue((bool)$fetchedCheckListItem->completed);
+            $task->checkListItems->remove($taskCheckListItem2);
+            $this->assertTrue($task->save());
+            $task = Task::getById($task->id);
+            $this->assertEquals(1, $task->checkListItems->count());
         }
 
         public function testAddCommentsToTask()
