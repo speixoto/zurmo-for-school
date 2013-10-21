@@ -77,4 +77,16 @@ $(window).ready(function(){
         $( '#gd-carousel > .gd-collection-panel:nth-child(' + (i-1) + ')').addClass('visible-panel-last');
     }
     getCurrentVisibleCollections();
+
+    $(document).on('mouseover', '.gd-collection-item img', function(event) {
+        $(this).qtip({
+            overwrite: false,
+            content: {'attr':'data-tooltip'},
+            position: {my: 'bottom center', at: 'top center'},
+            show: {
+                event: event.type,
+                ready: true
+            }
+        }, event);
+    })
 });

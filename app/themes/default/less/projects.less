@@ -26,14 +26,20 @@
 }
 
 .task-dialog{
+	.clearfix();
 	min-width: 1000px;
+	max-width: 1000px;
 	border: none;
 	background: #f0f0f0;
 	.radius(3px);
 	//0 0 15px 0 rgba(51, 51, 51, 0.25)
-	.b-shadow(~'inset 0 0 0 1px rgba(204, 204, 204, 0.3) , 1px 1px 1px 0px rgba(153, 153, 153, 0.15)');
-	.ui-dialog-titlebar{
-		//display: none;
+	// 1px 1px 1px 0px rgba(153, 153, 153, 0.15)
+	.b-shadow(~'inset 0 0 0 1px rgba(204, 204, 204, 0.3) ,0 0 15px 0 rgba(51, 51, 51, 0.25)');
+	.col-0{
+		width: 15%;
+	}
+	.col-1{
+		width: 85%;
 	}
 	.ui-dialog-title{
 		padding:0 !important;
@@ -77,6 +83,10 @@
 	.float-bar{
 		margin-bottom: 0;
 	}
+	.right-side-edit-view-panel{
+		background: rgba(236, 240, 241, 0.25) url(../images/stripes.png) left top repeat;
+		.radius(3px);
+	}
 }
 
 #task-left-column-form-data{
@@ -102,10 +112,16 @@
 
 #task-subscriber-box{
 	margin-top: 15px;
+	h4{
+		margin-bottom: 4px;
+	}
+	img{
+		margin-right:5px;
+	}
 }
 
 .check-list{
-	margin-top: 15px;
+	margin-top: 30px;
 	h3{
 		margin-bottom: 10px;
 	}
@@ -117,7 +133,7 @@
 		float: left;
 		position: relative;
 		top:-5px;
-		margin-right: 3px;
+		margin-right: 5px;
 	}
 }
 
@@ -125,8 +141,8 @@
 	margin-top: 10px;
 	padding: 8px;
 	.radius(3px);
-	background: #EBEBEB;
-	//++.cf;
+	background: rgba(236, 240, 241, 0.25) url(../images/stripes.png) left top repeat;
+	.box-sizing();
 	display:table;
 	width: 100%;
 	input{
@@ -142,5 +158,42 @@
 		display: table-cell;
 		width: 1%;
 		vertical-align: middle;
+	}
+}
+
+.task-activity{
+	margin-top: 30px;
+	#CommentsForRelatedModelView{
+		width: 100%;
+		max-width: 100%;
+		margin: 0;
+		padding: 0;
+	}
+	#CommentInlineEditForModelView{
+		width: 100%;
+		max-width: 100%;
+		margin: 10px 0 0 0;
+		padding: 8px;
+		.radius(3px);
+		background: rgba(236, 240, 241, 0.25) url(../images/stripes.png) left top repeat;
+		.box-sizing();
+	}
+	#CommentList{
+		margin: 0 0 0 0;
+	}
+	#comment-inline-edit-form{
+		margin:0;
+		.form-toolbar{
+			padding-right: 0;
+		}
+	}
+	.comment{
+		margin-top: 10px;
+	}
+	.left-column{
+		padding-right: 0;
+	}
+	.show-file-upload-box{
+		z-index: 9999;
 	}
 }

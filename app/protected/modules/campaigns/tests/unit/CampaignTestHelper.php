@@ -72,6 +72,10 @@
             if ($supportsRichText === null)
             {
                 $supportsRichText   = 1;
+                if ($htmlContent === null)
+                {
+                    $htmlContent = 'test html content';
+                }
             }
             if ($sendOnDateTime === null)
             {

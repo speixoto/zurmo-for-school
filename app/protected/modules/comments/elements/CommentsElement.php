@@ -81,12 +81,11 @@
         }
 
         /**
-         * Render A standard text input.
-         * @return The element's content as a string.
+         * @throws NotImplementedException
          */
         protected function renderControlEditable()
         {
-            throw new NotImplementedException($message, $code, $previous);
+            throw new NotImplementedException();
         }
 
         /**
@@ -98,7 +97,7 @@
             $content  = $this->getFormattedAttributeLabel();
             $content .= $this->renderRelatedModelCommentsContent();
             $content .= $this->renderRelatedModelCreateCommentContent();
-            $content  = ZurmoHtml::tag('div', array('class' => 'left-column', 'style' => 'margin-top:15px'), $content);
+            $content  = ZurmoHtml::tag('div', array('class' => 'task-activity'), $content);
             return $content;
         }
 
@@ -143,7 +142,7 @@
          */
         protected function renderRelatedModelCreateCommentContent()
         {
-            $content       = ZurmoHtml::tag('h2', array(), Zurmo::t('ConversationsModule', 'Add Comment'));
+            $content       = '';//ZurmoHtml::tag('h2', array(), Zurmo::t('ConversationsModule', 'Add Comment'));
             $comment       = new Comment();
             $uniquePageId  = 'CommentInlineEditForModelView';
             $redirectUrl   = Yii::app()->createUrl('/' . $this->moduleId . '/default/inlineCreateCommentFromAjax',
