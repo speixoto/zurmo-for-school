@@ -11646,16 +11646,10 @@ td.empty {
 .general-issue-notice .icon-notice {
   display: block;
   line-height: 1;
-  margin-bottom: 10px;
 }
 .general-issue-notice .icon-notice:before {
   margin: 0;
-  font-size: 100px;
-  line-height: 60px !important;
-}
-.general-issue-notice p {
-  font-size: 14px;
-  line-height: 21px;
+  font-size: 40px;
 }
 /*forms*/
 .form input[type="checkbox"] {
