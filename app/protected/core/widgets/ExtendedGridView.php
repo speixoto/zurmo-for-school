@@ -197,7 +197,7 @@
         {
             if ($this->emptyText === null)
             {
-                $emptyText = Zurmo::t('Core', 'No results found.');
+                $emptyText = Zurmo::t('Core', 'No results found');
             }
             else
             {

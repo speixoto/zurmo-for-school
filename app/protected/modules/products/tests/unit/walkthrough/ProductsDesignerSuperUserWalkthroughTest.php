@@ -603,7 +603,7 @@
             $content = $this->runControllerWithNoExceptionsAndGetContent('products/default');
 
             //Assert that the edit Product does not exits after the search.
-            $this->assertTrue(strpos($content, "No results found.") > 0);
+            $this->assertTrue(strpos($content, "No results found") > 0);
         }
 
         /**
