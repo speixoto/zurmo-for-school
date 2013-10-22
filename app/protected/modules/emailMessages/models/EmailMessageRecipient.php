@@ -56,6 +56,25 @@
             return $this->toAddress;
         }
 
+        public static function getRecipientTypesArray()
+        {
+            return array(
+                static::TYPE_TO  => Zurmo::t('EmailMessagesModule', 'To'),
+                static::TYPE_CC  => Zurmo::t('EmailMessagesModule', 'Cc'),
+                static::TYPE_BCC => Zurmo::t('EmailMessagesModule', 'Bcc'),
+            );
+        }
+
+        public static function renderNonEditableRecipientTypeStringContent($type)
+        {
+            assert('is_int($type) || $type == null');
+            $dropDownArray = self::getRecipientTypesArray();
+            if (!empty($dropDownArray[$type]))
+            {
+                return Yii::app()->format->text($dropDownArray[$type]);
+            }
+        }
+
         public static function getModuleClassName()
         {
             return 'EmailMessagesModule';
