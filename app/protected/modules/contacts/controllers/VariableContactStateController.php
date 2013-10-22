@@ -62,7 +62,7 @@
                 echo $view->render();
                 Yii::app()->end(0, false);
             }
-            $autoCompleteResults = ContactModelAutoCompleteUtil::getByPartialName($term, $pageSize, $adapterName);
+            $autoCompleteResults = ContactAutoCompleteUtil::getByPartialName($term, $pageSize, $adapterName);
             echo CJSON::encode($autoCompleteResults);
         }
 

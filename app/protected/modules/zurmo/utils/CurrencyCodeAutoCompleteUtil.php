@@ -38,7 +38,7 @@
      * Helper class to take a string and search that string against the known currency codes.  Perpares the resulting
      * data in an array that is auto-complete ready. @see ModelAutoCompleteUtil.  @see CJuiAutoComplete
      */
-    class CurrencyCodeModelAutoCompleteUtil extends BaseModelAutoCompleteUtil
+    class CurrencyCodeAutoCompleteUtil extends BaseModelAutoCompleteUtil
     {
         /**
          * @return array - Jui AutoComplete ready array

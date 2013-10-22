@@ -356,7 +356,7 @@
         {
             $pageSize = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                             'autoCompleteListPageSize', get_class($this->getModule()));
-            $autoCompleteResults = ContactModelAutoCompleteUtil::getByPartialName($term, $pageSize,
+            $autoCompleteResults = ContactAutoCompleteUtil::getByPartialName($term, $pageSize,
                                                                 'ContactsStateMetadataAdapter', $autoCompleteOptions);
             echo CJSON::encode($autoCompleteResults);
         }

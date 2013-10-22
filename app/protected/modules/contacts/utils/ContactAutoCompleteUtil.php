@@ -38,7 +38,7 @@
      * Helper class to convert a contact search into
      * an Jui AutoComplete ready array.
      */
-    class ContactModelAutoCompleteUtil extends BaseModelAutoCompleteUtil
+    class ContactAutoCompleteUtil extends BaseModelAutoCompleteUtil
     {
         /**
          * @return array - Jui AutoComplete ready array

@@ -46,7 +46,7 @@
         public function testGetByPartialName()
         {
             //Search by code expecting multiple results
-            $data = CurrencyCodeModelAutoCompleteUtil::getByPartialCodeOrName('EU');
+            $data = CurrencyCodeAutoCompleteUtil::getByPartialCodeOrName('EU');
             $compareData = array(
                 array(
                     'value' => 'EUR',
@@ -64,11 +64,11 @@
             $this->assertEquals($compareData, $data);
 
             //Search by code expecting multiple results, but lowercase. Should produce same results.
-            $data = CurrencyCodeModelAutoCompleteUtil::getByPartialCodeOrName('eu');
+            $data = CurrencyCodeAutoCompleteUtil::getByPartialCodeOrName('eu');
             $this->assertEquals($compareData, $data);
 
             //Search by invalid code or name.
-            $data = CurrencyCodeModelAutoCompleteUtil::getByPartialCodeOrName('exsur');
+            $data = CurrencyCodeAutoCompleteUtil::getByPartialCodeOrName('exsur');
             $this->assertEquals(array(), $data);
 
             //Search by valid partial name.
@@ -78,7 +78,7 @@
                     'label' => 'FKP Falkland Islands (Malvinas) Pound',
                 ),
             );
-            $data = CurrencyCodeModelAutoCompleteUtil::getByPartialCodeOrName('falk');
+            $data = CurrencyCodeAutoCompleteUtil::getByPartialCodeOrName('falk');
             $this->assertEquals($compareData, $data);
         }
     }

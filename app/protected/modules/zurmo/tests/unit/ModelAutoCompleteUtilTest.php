@@ -150,7 +150,7 @@
                 ),
             );
             $this->assertEquals($compareData, $data);
-            $data = ContactModelAutoCompleteUtil::getByPartialName('sa', 5);
+            $data = ContactAutoCompleteUtil::getByPartialName('sa', 5);
             $compareData = array(
                 array(
                     'id'    => $data[0]['id'],
@@ -169,10 +169,10 @@
                 ),
             );
             $this->assertEquals($compareData, $data);
-            $data = ContactModelAutoCompleteUtil::getByPartialName('xa', 5);
+            $data = ContactAutoCompleteUtil::getByPartialName('xa', 5);
             $compareData = array();
             $this->assertEquals($compareData, $data);
-            $data = ContactModelAutoCompleteUtil::getByPartialName('s', 1);
+            $data = ContactAutoCompleteUtil::getByPartialName('s', 1);
             $compareData = array(
                 array(
                     'id'    => $data[0]['id'],
