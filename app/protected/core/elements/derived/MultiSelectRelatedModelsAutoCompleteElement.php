@@ -285,19 +285,30 @@
         }
 
         /**
+         * Computes Related records for current model using relationName, returns an array
+         * @return array
+         */
+        protected function getRelatedRecords()
+        {
+            $relation           = $this->getRelationName();
+            $relatedRecords     = $this->model->$relation;
+            return $relatedRecords;
+        }
+
+        /**
          * Returns an array with the Ids and Labels of records already bound to the model attached to element
          * @return array
          */
         protected function getExistingIdsAndLabels()
         {
-            $relation           = $this->getRelationName();
+            $relatedRecords     = $this->getRelatedRecords();
             $existingRecords    = array();
             $default            = $this->getDefaultExistingIdsAndLabel();
             if (!empty($default))
             {
                 $existingRecords[]  = $default;
             }
-            foreach ($this->model->$relation as $relatedRecord)
+            foreach ($relatedRecords as $relatedRecord)
             {
                 $existingRecord = $this->resolveIdAndNameByModel($relatedRecord);
                 if (!empty($existingRecord))
