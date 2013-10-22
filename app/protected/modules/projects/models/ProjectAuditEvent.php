@@ -61,6 +61,7 @@
         public static function logAuditEvent($eventName, Project $project, $data = null, User $user = null)
         {
             assert('is_string($eventName)  && $eventName  != ""');
+            assert('$project->id > 0');
             if ($user === null)
             {
                 $user = Yii::app()->user->userModel;

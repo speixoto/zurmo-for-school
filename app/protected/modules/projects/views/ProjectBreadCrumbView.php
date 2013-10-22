@@ -44,7 +44,7 @@
          */
         protected function getHomeLinkLabel()
         {
-            return Zurmo::t('ProjectsModule', 'ProjectsModulePluralLabel', LabelUtil::getTranslationParamsForAllModules());
+            return Zurmo::t('HomeModule', 'Dashboard');
         }
 
         /**
@@ -52,7 +52,7 @@
          */
         protected function getHomeUrl()
         {
-            return Yii::app()->createUrl('projects/default/list');
+            return Yii::app()->createUrl('projects/default/dashboardDetails');
         }
     }
 ?>

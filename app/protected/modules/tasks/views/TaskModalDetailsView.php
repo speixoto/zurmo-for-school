@@ -41,7 +41,6 @@
     {
         public static function getDefaultMetadata()
         {
-            $getData = GetUtil::getData();
             $metadata = array(
                 'global' => array(
                     'toolbar' => array(
@@ -192,7 +191,9 @@
             return array('enableAjaxValidation' => true,
                 'clientOptions' => array(
                     'validateOnChange'  => true,
-                ),);
+                    //'validationUrl' => Yii::app()->createUrl('tasks/default/performAjaxValidation', array('id' => $this->getModel()->id)),
+                ),
+                );
         }
 
         protected function renderLeftSideBottomContent()
@@ -238,6 +239,16 @@
             $content .= $formEnd;
             $content .= ZurmoHtml::closeTag('div');
             return $content;
+        }
+
+        protected function resolveRightSideActiveFormAjaxValidationOptions()
+        {
+            return array(//'enableAjaxValidation' => true,
+                'enableClientValidation' => true,
+                'clientOptions' => array(
+                    'validateOnChange'  => true,
+                ),
+                );
         }
 
         protected function renderRightBottomSideContent()
