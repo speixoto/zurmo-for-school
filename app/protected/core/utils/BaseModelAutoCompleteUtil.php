@@ -38,12 +38,11 @@
     {
         /**
          * Applies autocompleteOptions
-         * @param RedBeanModelJoinTablesQueryAdapter $joinTablesAdapter
+         * @param $joinTablesAdapter
          * @param $where
          * @param $autoCompleteOptions
          */
-        protected static function handleAutoCompleteOptions(RedBeanModelJoinTablesQueryAdapter & $joinTablesAdapter,
-                                                                & $where, $autoCompleteOptions = null)
+        protected static function handleAutoCompleteOptions(& $joinTablesAdapter, & $where, $autoCompleteOptions = null)
         {
             assert('is_string($autoCompleteOptions) || is_null($autoCompleteOptions)');
             $autoCompleteOptions = ArrayUtil::decodeAutoCompleteOptionsArray($autoCompleteOptions);
