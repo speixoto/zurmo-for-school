@@ -182,6 +182,7 @@
             $formEnd  = $clipWidget->renderEndWidget();
             $content .= $formEnd;
             $content .= $this->renderModalContainer();
+            $content .= $this->renderAuditTrailModalContainer();
             $content .= '</div>';
             return ZurmoHtml::tag('div', array('class' => 'left-side-edit-view-panel'), $content);
         }
@@ -417,6 +418,14 @@
         protected function doesLabelHaveOwnCell()
         {
             return false;
+        }
+
+        /**
+         * @return string
+         */
+        protected function renderAuditTrailModalContainer()
+        {
+            return ZurmoHtml::tag('div', array('id' => 'AuditEventsModalContainer'), '');
         }
     }
 ?>

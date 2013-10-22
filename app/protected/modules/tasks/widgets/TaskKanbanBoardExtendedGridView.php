@@ -150,7 +150,7 @@
             Yii::app()->clientScript->registerScriptFile(
                 Yii::app()->getAssetManager()->publish(
                 Yii::getPathOfAlias('application.core.kanbanBoard.widgets.assets')) . '/KanbanUtils.js');
-            
+
             $columnDataKeys = array_keys($this->columnsData);
             Yii::app()->clientScript->registerScript('task-sortable-data', $this->registerKanbanColumnSortableScript());
             $url = Yii::app()->createUrl('tasks/default/updateStatusInKanbanView', array());
@@ -313,6 +313,7 @@
                             else
                             {
                                 $(element).find('.button-label').remove();
+                                $(element).find('.task-action-toolbar').remove();
                                 $(element).addClass('ui-state-disabled');
                                 $(element).find('.task-status').html('{$completedStatusLabel}');
                                 //$('#task-sortable-rows-" . $targetKanbanItemType . " #' + id + ' .task-completion').html('" . $completionText . "');

@@ -622,10 +622,5 @@
                 Yii::app()->end(0, false);
             }
         }
-
-        public function actionPerformAjaxValidation($id)
-        {
-            
-        }
     }
 ?>

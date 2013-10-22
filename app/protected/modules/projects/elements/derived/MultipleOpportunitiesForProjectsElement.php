@@ -41,31 +41,49 @@
      */
     class MultipleOpportunitiesForProjectsElement extends MultiSelectRelatedModelsAutoCompleteElement
     {
+        /**
+         * @return string
+         */
         protected function getFormName()
         {
             return 'ProjectOpportunitiesForm';
         }
 
+        /**
+         * @return string
+         */
         protected function getUnqualifiedNameForIdField()
         {
             return '[opportunityIds]';
         }
 
+        /**
+         * @return string
+         */
         protected function getUnqualifiedIdForIdField()
         {
             return '_Opportunity_ids';
         }
 
+        /**
+         * @return string
+         */
         protected function assertModuleType()
         {
             assert('$this->model instanceof Project');
         }
 
+        /**
+         * @return string
+         */
         protected function getWidgetSourceUrl()
         {
             return Yii::app()->createUrl('projects/default/autoCompleteAllOpportunitiesForMultiSelectAutoComplete');
         }
 
+        /**
+         * @return string
+         */
         protected function getWidgetHintText()
         {
             return Zurmo::t('ProjectsModule', 'Type a ' .
@@ -73,16 +91,25 @@
                                             LabelUtil::getTranslationParamsForAllModules());
         }
 
+        /**
+         * @return string
+         */
         protected function relationName()
         {
             return 'opportunities';
         }
 
+        /**
+         * @return string
+         */
         protected function getFormattedAttributeLabel()
         {
-            return Yii::app()->format->text(Zurmo::t('ProjectsModule', 'Opportunities'));
+            return Yii::app()->format->text($this->model->getAttributeLabel('opportunities'));
         }
 
+        /**
+         * @return string
+         */
         public static function getDisplayName()
         {
             return Zurmo::t('OpportunitiesModule', 'Related OpportunitiesModulePluralLabel',

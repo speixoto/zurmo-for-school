@@ -400,10 +400,7 @@
             $url = Yii::app()->createUrl('tasks/default/updateStatusOnDragInKanbanView');
             if($sourceKanbanBoardId != null)
             {
-                return "
-                    $.fn.yiiGridView.update('{$sourceKanbanBoardId}');
-                    setUpTaskKanbanSortable('{$url}');
-                    ";
+                return "$.fn.yiiGridView.update('{$sourceKanbanBoardId}');";
             }
         }
 
