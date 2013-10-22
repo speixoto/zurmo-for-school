@@ -197,7 +197,7 @@
                     'secondaryEmail'  => Zurmo::t('ZurmoModule',    'Secondary Email',  array(), null, $language),
                     'shippingAddress' => Zurmo::t('AccountsModule', 'Shipping Address',  array(), null, $language),
                     'tasks'           => Zurmo::t('TasksModule',    'TasksModulePluralLabel', $params, null, $language),
-                    'type'            => Zurmo::t('AccountsModule', 'Type',  array(), null, $language),
+                    'type'            => Zurmo::t('Core', 'Type',  array(), null, $language),
                     'website'         => Zurmo::t('ZurmoModule',    'Website',  array(), null, $language),
                 )
             );

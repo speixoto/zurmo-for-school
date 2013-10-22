@@ -97,7 +97,7 @@
                 'productTemplate'   => Zurmo::t('ProductTemplatesModule', 'ProductTemplatesModuleSingularLabel', $params, null, $language),
                 'productCategories' => Zurmo::t('ProductTemplatesModule', 'Product Categories', array(), null, $language),
                 'sellPrice'         => Zurmo::t('ProductTemplatesModule', 'Sell Price', array(), null, $language),
-                'stage'             => Zurmo::t('ProductsModule', 'Stage', array(), null, $language)
+                'stage'             => Zurmo::t('ZurmoModule', 'Stage', array(), null, $language)
                 ));
         }
 

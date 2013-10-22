@@ -38,17 +38,17 @@
     {
         protected function getMessagePrefix()
         {
-            return Zurmo::t('MarketingListsModule', 'Subscribing');
+            return Zurmo::t('Core', 'Subscribing');
         }
 
         protected function getCompleteMessageSuffix()
         {
-            return Zurmo::t('MarketingListsModule', 'subscribed successfully');
+            return Zurmo::t('Core', 'subscribed successfully');
         }
 
         protected function headerLabelPrefixContent()
         {
-            return Zurmo::t('MarketingListsModule', 'Mass Subscribe');
+            return Zurmo::t('Core', 'Mass Subscribe');
         }
     }
 ?>

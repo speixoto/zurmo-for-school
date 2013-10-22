@@ -207,7 +207,7 @@
                     'cost'                  => Zurmo::t('ProductTemplatesModule', 'Cost',  array(), null, $language),
                     'listPrice'             => Zurmo::t('ProductTemplatesModule', 'List Price',  array(), null, $language),
                     'sellPrice'             => Zurmo::t('ProductTemplatesModule', 'Sell Price',  array(), null, $language),
-                    'type'                  => Zurmo::t('ProductTemplatesModule', 'Type',  array(), null, $language),
+                    'type'                  => Zurmo::t('Core', 'Type',  array(), null, $language),
                     'status'                => Zurmo::t('ZurmoModule', 'Status',  array(), null, $language),
                 )
             );

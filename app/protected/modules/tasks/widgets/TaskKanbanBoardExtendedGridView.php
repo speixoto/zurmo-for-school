@@ -155,11 +155,11 @@
             }
             Yii::app()->clientScript->registerScript('task-sortable-data', $taskSortableScript);
             $url = Yii::app()->createUrl('tasks/default/updateStatusInKanbanView', array());
-            $this->registerKanbanColumnStartActionScript(Zurmo::t('TasksModule', 'Finish'), Task::STATUS_IN_PROGRESS, $url);
-            $this->registerKanbanColumnFinishActionScript(Zurmo::t('TasksModule', 'Accept'),
-                        Zurmo::t('TasksModule', 'Reject'), Task::STATUS_AWAITING_ACCEPTANCE, $url);
+            $this->registerKanbanColumnStartActionScript(Zurmo::t('Core', 'Finish'), Task::STATUS_IN_PROGRESS, $url);
+            $this->registerKanbanColumnFinishActionScript(Zurmo::t('Core', 'Accept'),
+                        Zurmo::t('Core', 'Reject'), Task::STATUS_AWAITING_ACCEPTANCE, $url);
             $this->registerKanbanColumnAcceptActionScript('', Task::STATUS_COMPLETED, $url);
-            $this->registerKanbanColumnRejectActionScript(Zurmo::t('TasksModule', 'Start'), Task::STATUS_NEW, $url);
+            $this->registerKanbanColumnRejectActionScript(Zurmo::t('Core', 'Start'), Task::STATUS_NEW, $url);
             TasksUtil::registerSubscriptionScript();
             TasksUtil::registerUnsubscriptionScript();
         }
