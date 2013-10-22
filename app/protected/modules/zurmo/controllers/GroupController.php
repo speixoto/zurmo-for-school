@@ -424,8 +424,7 @@
 
         public function actionAutoComplete($term, $autoCompleteOptions = null)
         {
-            $modelClassName = 'Group';
-            echo $this->renderAutoCompleteResults($modelClassName, $term, $autoCompleteOptions);
+            echo $this->renderAutoCompleteResults('Group', $term, $autoCompleteOptions);
         }
     }
 ?>
