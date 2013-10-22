@@ -62,7 +62,7 @@
                 echo $view->render();
                 Yii::app()->end(0, false);
             }
-            $autoCompleteResults = ContactAutoCompleteUtil::getByPartialName($term, $pageSize, $adapterName);
+            $autoCompleteResults = ContactModelAutoCompleteUtil::getByPartialName($term, $pageSize, $adapterName);
             echo CJSON::encode($autoCompleteResults);
         }
 
@@ -72,7 +72,7 @@
          * user does not have access to the Leads or Contacts module.
          * JSON encode the resulting array of contacts.
          */
-        public function actionAutoCompleteAllContactsForMultiSelectAutoComplete($term)
+        public function actionAutoCompleteAllContactsForMultiSelectAutoComplete($term, $autoCompleteOptions = null)
         {
             $pageSize = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                             'autoCompleteListPageSize', get_class($this->getModule()));
@@ -86,7 +86,8 @@
                 echo $view->render();
                 Yii::app()->end(0, false);
             }
-            $contacts = ContactSearch::getContactsByPartialFullNameOrAnyEmailAddress($term, $pageSize, $adapterName);
+            $contacts = ContactSearch::getContactsByPartialFullNameOrAnyEmailAddress($term, $pageSize, $adapterName,
+                                                                                    null, $autoCompleteOptions);
             $autoCompleteResults  = array();
             foreach ($contacts as $contact)
             {

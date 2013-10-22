@@ -38,14 +38,15 @@
      * Helper class to take a string and search that string against the known currency codes.  Perpares the resulting
      * data in an array that is auto-complete ready. @see ModelAutoCompleteUtil.  @see CJuiAutoComplete
      */
-    class CurrencyCodeAutoCompleteUtil
+    class CurrencyCodeModelAutoCompleteUtil extends BaseModelAutoCompleteUtil
     {
         /**
          * @return array - Jui AutoComplete ready array
          *  containing value and label elements.
          */
-        public static function getByPartialCodeOrName($partialCodeOrName)
+        public static function getByPartialCodeOrName($partialCodeOrName, $autoCompleteOptions = null)
         {
+            // autoCompleteOptions is not used but here for future uses.
             $autoCompleteResults = array();
             $codesAndNames       = ZurmoCurrencyCodes::getByPartialCodeOrName($partialCodeOrName);
             foreach ($codesAndNames as $code => $name)

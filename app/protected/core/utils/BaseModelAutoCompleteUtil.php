@@ -34,37 +34,26 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Helper class to convert a report search into
-     * an Jui AutoComplete ready array.
-     */
-    class ReportAutoCompleteUtil
+    class BaseModelAutoCompleteUtil
     {
         /**
-         * @param string $partialName
-         * @param int $pageSize
-         * @param null|string $moduleClassName
-         * @param null|string $type
+         * Applies autocompleteOptions
+         * @param RedBeanModelJoinTablesQueryAdapter $joinTablesAdapter
+         * @param $where
          * @param $autoCompleteOptions
-         * @return array Jui AutoComplete ready array containing id, value, and label elements.
          */
-        public static function getByPartialName($partialName, $pageSize, $moduleClassName = null,
-                                                    $type = null, $autoCompleteOptions = null)
+        protected static function handleAutoCompleteOptions(RedBeanModelJoinTablesQueryAdapter & $joinTablesAdapter,
+                                                                & $where, $autoCompleteOptions = null)
         {
-            // autoCompleteOptions is not used but here for future uses.
-            assert('is_string($partialName)');
-            assert('is_int($pageSize)');
-            $autoCompleteResults  = array();
-            $reports                = ReportSearch::getReportsByPartialName($partialName, $pageSize, $moduleClassName, $type);
-            foreach ($reports as $report)
+            $autoCompleteOptions = ArrayUtil::decodeAutoCompleteOptionsArray($autoCompleteOptions);
+            foreach ($autoCompleteOptions as $optionName => $optionValue)
             {
-                $autoCompleteResults[] = array(
-                    'id'    => $report->id,
-                    'value' => strval($report),
-                    'label' => strval($report),
-                );
+                if (!method_exists(get_called_class(), $optionName))
+                {
+                    throw new NotSupportedException("No such autoCompleteOption as: $optionName");
+                }
+                static::${optionName}($optionValue, $joinTablesAdapter, $where);
             }
-            return $autoCompleteResults;
         }
     }
 ?>

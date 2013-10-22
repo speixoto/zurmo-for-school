@@ -588,13 +588,13 @@
          * Given a partial name or e-mail address, search for all Users, Leads or Contacts
          * JSON encode the resulting array of contacts.
          */
-        public function actionAutoCompleteForMultiSelectAutoComplete($term)
+        public function actionAutoCompleteForMultiSelectAutoComplete($term, $autoCompleteOptions = null)
         {
             $pageSize               = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                                                 'autoCompleteListPageSize', get_class($this->getModule()));
-            $usersByFullName        = UserSearch::getUsersByPartialFullName($term, $pageSize);
-            $usersByEmailAddress    = UserSearch::getUsersByEmailAddress($term, 'contains', true);
-            $contacts               = ContactSearch::getContactsByPartialFullNameOrAnyEmailAddress($term, $pageSize, null, 'contains');
+            $usersByFullName        = UserSearch::getUsersByPartialFullName($term, $pageSize, $autoCompleteOptions);
+            $usersByEmailAddress    = UserSearch::getUsersByEmailAddress($term, 'contains', true, $autoCompleteOptions);
+            $contacts               = ContactSearch::getContactsByPartialFullNameOrAnyEmailAddress($term, $pageSize, null, 'contains', $autoCompleteOptions);
             $autoCompleteResults    = array();
             foreach ($usersByEmailAddress as $user)
             {
