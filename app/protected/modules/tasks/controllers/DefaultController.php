@@ -585,7 +585,7 @@
          */
         protected static function getZurmoControllerUtil()
         {
-            return new TaskZurmoControllerUtil();
+            return new TaskZurmoControllerUtil('activityItems', 'ActivityItemForm');
         }
 
         /**

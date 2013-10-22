@@ -34,39 +34,21 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class TaskZurmoControllerUtil extends ModelHasRelatedItemsZurmoControllerUtil
+    class ProjectAttributeForm extends HasOneModelAttributeForm
     {
-        /**
-         * Sets the owner of the project as the default notification subscriber on addition of
-         * task to the project
-         * @param Task $task
-         * @param ExplicitReadWriteModelPermissions $explicitReadWriteModelPermissions
-         */
-        protected function afterSetAttributesDuringSave($task, $explicitReadWriteModelPermissions)
+        public static function getAttributeTypeDisplayName()
         {
-            assert('$task instanceof Task');
-            parent::afterSetAttributesDuringSave($task, $explicitReadWriteModelPermissions);
-            $modelDerivationPathToItem = RuntimeUtil::getModelDerivationPathToItem('User');
-            $isSubscriberFound         = false;
-            if($task->project != null)
-            {
-                $notificationSubscribers = $task->notificationSubscribers;
-                foreach($notificationSubscribers as $subscriber)
-                {
-                    $user = $subscriber->person->castDown(array($modelDerivationPathToItem));
-                    if($user->id == $task->project->owner->id)
-                    {
-                        $isSubscriberFound = true;
-                    }
-                }
-                if($isSubscriberFound === false)
-                {
-                    $notificationSubscriber                = new NotificationSubscriber();
-                    $notificationSubscriber->person        = $task->project->owner;
-                    $notificationSubscriber->hasReadLatest = false;
-                    $task->notificationSubscribers->add($notificationSubscriber);
-                }
-            }
+            return Zurmo::t('ProjectsModule', 'Project');
+        }
+
+        public static function getAttributeTypeDisplayDescription()
+        {
+            return Zurmo::t('ProjectsModule', 'A project field');
+        }
+
+        public function getAttributeTypeName()
+        {
+            return 'Project';
         }
     }
 ?>

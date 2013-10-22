@@ -69,7 +69,6 @@
 
         public function testSuperUserTaskDefaultControllerActions()
         {
-            $this->markTestSkipped("Need to be handled after design integration");
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
 
             //Load AttributesList for Task module.
@@ -122,7 +121,7 @@
                                      'viewClassName'   => 'OpenTasksForOpportunityRelatedListView'));
             $this->runControllerWithNoExceptionsAndGetContent('designer/default/LayoutEdit');
             $this->setGetArray(array('moduleClassName' => 'TasksModule',
-                                     'viewClassName'   => 'TaskEditAndDetailsView'));
+                                     'viewClassName'   => 'TaskModalEditView'));
             $this->runControllerWithNoExceptionsAndGetContent('designer/default/LayoutEdit');
         }
 
@@ -131,7 +130,6 @@
          */
         public function testSuperUserCustomFieldsWalkthroughForTasksModule()
         {
-            $this->markTestSkipped("Need to be handled after design integration");
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
 
             //Test create field list.
@@ -164,12 +162,11 @@
          */
         public function testSuperUserAddCustomFieldsToLayoutsForTasksModule()
         {
-            $this->markTestSkipped("Need to be handled after design integration");
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
 
-            //Add custom fields to TaskEditAndDetailsView.
+            //Add custom fields to TaskModalEditView.
             $this->setGetArray(array('moduleClassName' => 'TasksModule',
-                                     'viewClassName'   => 'TaskEditAndDetailsView'));
+                                     'viewClassName'   => 'TaskModalEditView'));
             $layout = TasksDesignerWalkthroughHelperUtil::getTaskEditAndDetailsViewLayoutWithAllCustomFieldsPlaced();
             $this->setPostArray(array('save'  => 'Save', 'layout' => $layout,
                                       'LayoutPanelsTypeForm' => array('type' => FormLayout::PANELS_DISPLAY_TYPE_ALL)));
@@ -204,13 +201,12 @@
          */
         public function testLayoutsLoadOkAfterCustomFieldsPlacedForTasksModule()
         {
-            $this->markTestSkipped("Need to be handled after design integration");
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
             $superAccountId = self::getModelIdByModelNameAndName ('Account', 'superAccount');
             $superTaskId = self::getModelIdByModelNameAndName ('Task', 'superTask');
             //Load create, edit, and details views.
             $this->setGetArray(array('id' => $superTaskId));
-            $this->runControllerWithNoExceptionsAndGetContent('tasks/default/edit');
+            $this->runControllerWithNoExceptionsAndGetContent('tasks/default/modalEdit');
             $this->setGetArray(array('id' => $superAccountId));
             $this->resetPostArray();
             $this->runControllerWithNoExceptionsAndGetContent('accounts/default/details');
@@ -219,7 +215,7 @@
                                         'relationModuleId'       => 'account',
                                         'redirectUrl'            => 'someRedirection'));
             $this->resetPostArray();
-            $this->runControllerWithNoExceptionsAndGetContent('tasks/default/createFromRelation');
+            $this->runControllerWithNoExceptionsAndGetContent('tasks/default/modalCreateFromRelation');
             //todo: more permutations from different relations.
         }
 
@@ -228,7 +224,6 @@
          */
         public function testCreateAnTaskAfterTheCustomFieldsArePlacedForTasksModule()
         {
-            $this->markTestSkipped("Need to be handled after design integration");
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
 
             //Set the date and datetime variable values here.
@@ -281,7 +276,7 @@
                                             'Account'     => array('id'  => $superAccount[0]->id),
                                             'Contact'     => array('id'  => $superContactId),
                                             'Opportunity' => array('id'  => $superOpportunityId))));
-            $this->runControllerWithRedirectExceptionAndGetUrl('tasks/default/createFromRelation');
+            $this->runControllerWithNoExceptionsAndGetContent('tasks/default/modalSaveFromRelation');
 
             //Check the details if they are saved properly for the custom fields.
             $task = Task::getByName('myNewTask');
@@ -332,7 +327,6 @@
          */
         public function testEditOfTheTaskForTheTagCloudFieldAfterRemovingAllTagsPlacedForTasksModule()
         {
-            $this->markTestSkipped("Need to be handled after design integration");
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
 
             //Retrieve the task Id.
@@ -437,7 +431,6 @@
          */
         public function testEditOfTheTaskForTheCustomFieldsPlacedForTasksModule()
         {
-            $this->markTestSkipped("Need to be handled after design integration");
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
 
             //Retrieve the task Id.
@@ -542,7 +535,6 @@
          */
         public function testDeleteOfTheTaskForTheCustomFieldsPlacedForTasksModule()
         {
-            $this->markTestSkipped("Need to be handled after design integration");
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
 
             //Retrieve the task Id.
@@ -550,7 +542,7 @@
 
             //Set the task id so as to delete the task.
             $this->setGetArray(array('id' => $task[0]->id));
-            $this->runControllerWithRedirectExceptionAndGetUrl('tasks/default/delete');
+            $this->runControllerWithNoExceptionsAndGetContent('tasks/default/delete', true);
 
             //Check to confirm that the task is deleted.
             $task = Task::getByName('myEditTask');
@@ -562,7 +554,6 @@
          */
         public function testTypeAheadWorksForTheTagCloudFieldPlacedForTasksModule()
         {
-            $this->markTestSkipped("Need to be handled after design integration");
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
 
             //Search a list item by typing in tag cloud attribute.
@@ -580,7 +571,6 @@
          */
         public function testLabelLocalizationForTheTagCloudFieldPlacedForTasksModule()
         {
-            $this->markTestSkipped("Need to be handled after design integration");
             Yii::app()->user->userModel =  User::getByUsername('super');
             $languageHelper = new ZurmoLanguageHelper();
             $languageHelper->load();

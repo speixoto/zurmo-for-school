@@ -206,7 +206,7 @@
         public function testGetModalDetailsTitle()
         {
             $title = TasksUtil::getModalDetailsTitle();
-            $this->assertEquals('View Task',$title);
+            $this->assertEquals('Collaborate On This Task',$title);
         }
 
         public function testGetModalTitleForCreateTask()
@@ -224,10 +224,10 @@
         public function testResolveKanbanItemTypeForTaskStatus()
         {
             $kanbanItemType = TasksUtil::resolveKanbanItemTypeForTaskStatus(Task::STATUS_AWAITING_ACCEPTANCE);
-            $this->assertEquals(KanbanItem::TYPE_IN_PROGRESS,$kanbanItemType);
+            $this->assertEquals(KanbanItem::TYPE_IN_PROGRESS, $kanbanItemType);
 
             $kanbanItemType = TasksUtil::resolveKanbanItemTypeForTaskStatus(Task::STATUS_NEW);
-            $this->assertEquals(KanbanItem::TYPE_TODO,$kanbanItemType);
+            $this->assertEquals(KanbanItem::TYPE_SOMEDAY, $kanbanItemType);
         }
 
         public function testResolveKanbanItemTypeForTask()
@@ -252,7 +252,7 @@
             $task->notificationSubscribers->add($notificationSubscriber);
             $task->save();
             $link = TasksUtil::getKanbanSubscriptionLink($task,0);
-            $this->assertTrue(strpos($link, 'Unsubscribe') > 0);
+            $this->assertTrue(strpos($link, 'unsubscribe-task-link') > 0);
 
             foreach($task->notificationSubscribers as $notificationSubscriber)
             {
@@ -263,7 +263,7 @@
             }
             $task->save();
             $link = TasksUtil::getKanbanSubscriptionLink($task,0);
-            $this->assertTrue(strpos($link, 'Subscribe') > 0);
+            $this->assertTrue(strpos($link, 'subscribe-task-link') > 0);
         }
 
         public function testTaskCompletionPercentage()
