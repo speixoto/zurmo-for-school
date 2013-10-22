@@ -311,7 +311,7 @@
             $task = Task::getById($this->model->id);
             $content = '<div id="task-subscriber-box">';
             $content .= ZurmoHtml::tag('h4', array(), Zurmo::t('TasksModule', 'Who is receiving notifications'));
-            $content .= '<div id="subscriberList">';
+            $content .= '<div id="subscriberList" class="clearfix">';
             if ($task->notificationSubscribers->count() > 0)
             {
                 $content .= TasksUtil::getTaskSubscriberData($task);
@@ -403,7 +403,7 @@
             }
             else
             {
-                $element->nonEditableTemplate = '<td colspan="{colspan}">{label}<br/>{content}</td>';
+                $element->nonEditableTemplate = '<td colspan="{colspan}">{label}<strong>{content}</strong></td>';
             }
         }
 

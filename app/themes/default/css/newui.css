@@ -13155,7 +13155,7 @@ div.wide.form label.hasCheckBox {
 .more-panels-link {
   font-size: 11px;
   position: relative;
-  left: -15px;
+  left: 0;
 }
 .ui-overlay-block {
   z-index: 250000;
@@ -15463,6 +15463,10 @@ div.hasHalfs > div input {
   right: -10px;
   top: 1px;
   line-height: 1;
+  cursor: pointer !important;
+}
+.editable-cell:after:hover {
+  cursor: pointer;
 }
 i[class^="icon"] {
   color: #656565;
@@ -17673,8 +17677,12 @@ table.configuration-list td:last-child a .z-label:before {
   content: 'L';
   font-size: 46px;
 }
-.available-portlets .icon-google-analytics:before {
+.available-portlets .icon-googleWebTracking:before {
   content: '\00DA';
+  font-size: 46px;
+}
+.available-portlets .icon-marketingLists:before {
+  content: '\0022';
   font-size: 46px;
 }
 /*Edit Portlet*/
@@ -26479,6 +26487,19 @@ div.special-pager .hidden.next:after {
 }
 .task-activity .show-file-upload-box {
   z-index: 9999;
+}
+.right-side-details-view-panel {
+  margin-top: 15px;
+}
+.right-side-details-view-panel .col-0 {
+  width: 100%;
+}
+.right-side-details-view-panel td {
+  padding: 0 0 5px 0;
+  font-weight: normal;
+}
+.right-side-details-view-panel td strong {
+  display: block;
 }
 .ProjectsActivityFeedPortletView tr:first-child td {
   border-top: none;
