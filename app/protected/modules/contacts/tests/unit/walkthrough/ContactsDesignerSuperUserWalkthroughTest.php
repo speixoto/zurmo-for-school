@@ -951,7 +951,7 @@
             $content = $this->runControllerWithNoExceptionsAndGetContent('contacts/default');
 
             //Assert that the edit contact does not exits after the search.
-            $this->assertTrue(strpos($content, "No results found.") > 0);
+            $this->assertTrue(strpos($content, "No results found") > 0);
             $this->assertFalse(strpos($content, "26378 South Arlington Ave") > 0);
         }
 

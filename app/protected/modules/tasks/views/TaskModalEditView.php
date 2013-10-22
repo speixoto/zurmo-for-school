@@ -33,8 +33,10 @@
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
-
-    class TaskEditAndDetailsView extends SecuredEditAndDetailsView
+    /**
+     * Modal window for creating and editing a task
+     */
+    class TaskModalEditView extends SecuredEditView
     {
         /**
          * @return array
@@ -45,20 +47,18 @@
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array('type' => 'SaveButton', 'renderType' => 'Edit'),
-                            array('type' => 'CancelLink', 'renderType' => 'Edit'),
-                            array('type' => 'TaskDeleteLink'),
-                            array('type' => 'EditLink', 'renderType' => 'Details'),
-                            array('type' => 'CopyLink', 'renderType' => 'Details'),
-                            array('type' => 'AuditEventsModalListLink', 'renderType' => 'Details'),
+                            array('type'        => 'SaveButton'),
+                            array('type'        => 'ModalCancelLink',
+                                  'htmlOptions' => 'eval:static::resolveHtmlOptionsForCancel()'
+                            )
                         ),
                     ),
                     'derivedAttributeTypes' => array(
                         'ActivityItems',
+                        'DerivedExplicitReadWriteModelPermissions',
                     ),
                     'nonPlaceableAttributeNames' => array(
-                        'latestDateTime',
-                        'owner'
+                        'latestDateTime'
                     ),
                     'panelsDisplayType' => FormLayout::PANELS_DISPLAY_TYPE_FIRST,
                     'panels' => array(
@@ -82,6 +82,10 @@
                                         ),
                                     )
                                 ),
+                            ),
+                        ),
+                        array(
+                            'rows' => array(
                                 array('cells' =>
                                     array(
                                         array(
@@ -95,15 +99,29 @@
                                     array(
                                         array(
                                             'elements' => array(
+                                                array('attributeName' => 'requestedByUser', 'type' => 'User'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'owner', 'type' => 'User'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
                                                 array('attributeName' => 'dueDateTime', 'type' => 'DateTime'),
                                             ),
                                         ),
                                     )
                                 ),
-                             ),
-                       ),
-                       array(
-                            'rows' => array(
                                 array('cells' =>
                                     array(
                                         array(
@@ -140,21 +158,127 @@
                                         ),
                                     )
                                 ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'null',
+                                                      'type' => 'DerivedExplicitReadWriteModelPermissions'),
+                                            ),
+                                        ),
+                                    )
+                                ),
                             ),
-                         ),
+                        ),
                     ),
                 ),
             );
             return $metadata;
         }
 
+         /**
+          * @return string
+          */
+         protected function getNewModelTitleLabel()
+         {
+             return null;
+         }
+
         /**
          * @return string
          */
-        protected function getNewModelTitleLabel()
+        protected static function getFormId()
         {
-            return Zurmo::t('TasksModule', 'Create TasksModuleSingularLabel',
-                                     LabelUtil::getTranslationParamsForAllModules());
+            return 'task-modal-edit-form';
+        }
+
+        /**
+         * @return array
+         */
+        protected static function resolveHtmlOptionsForCancel()
+        {
+            return array(
+                'onclick' => '$("#ModalView").parent().dialog("close");'
+            );
+
+        }
+
+        /**
+         * Resolves ajax validation option for save button
+         * @return array
+         */
+        protected function resolveActiveFormAjaxValidationOptions()
+        {
+            $sourceKanbanBoardId = Yii::app()->request->getParam('sourceKanbanBoardId');
+            $modalId             = Yii::app()->request->getParam('modalId');
+            $relationModelId     = Yii::app()->request->getParam('relationModelId');
+            if($relationModelId != null)
+            {
+                $url = Yii::app()->createUrl('tasks/default/modalSaveFromRelation', GetUtil::getData());
+            }
+            else
+            {
+                $url = Yii::app()->createUrl('tasks/default/modalSave', GetUtil::getData());
+            }
+            return array('enableAjaxValidation' => true,
+                        'clientOptions' => array(
+                            'beforeValidate'    => 'js:$(this).beforeValidateAction',
+                            'afterValidate'     => 'js:function(form, data, hasError){
+                                if(hasError)
+                                {
+                                    form.find(".attachLoading:first").removeClass("loading");
+                                    form.find(".attachLoading:first").removeClass("loading-ajax-submit");
+                                }
+                                else
+                                {
+                                ' . $this->renderConfigSaveAjax($this->getFormId(), $url, $sourceKanbanBoardId, $modalId) . '
+                                }
+                                return false;
+                            }',
+                            'validateOnSubmit'  => true,
+                            'validateOnChange'  => false,
+                            'inputContainer'    => 'td'
+                        )
+            );
+        }
+
+        protected function renderConfigSaveAjax($formId, $url, $sourceKanbanBoardId, $modalId)
+        {
+            // Begin Not Coding Standard
+            $kanbanRefreshScript = TasksUtil::resolveExtraCloseScriptForModalAjaxOptions($sourceKanbanBoardId);
+            $title   = TasksUtil::getModalDetailsTitle();
+            $options = array(
+                'type' => 'POST',
+                'data' => 'js:$("#' . $formId . '").serialize()',
+                'url'  =>  $url,
+                'update' => '#' . $modalId,
+                'complete' => "function(XMLHttpRequest, textStatus){
+                                    $('#" . $modalId .  "').dialog('option', 'title', '" . $title . "');
+                                    " . $kanbanRefreshScript . "}"
+            );
+            return ZurmoHtml::ajax($options);
+        }
+
+        protected function renderRightSideFormLayoutForEdit($form)
+        {
+            return null;
+        }
+
+        public static function getDesignerRulesType()
+        {
+            return 'TaskModalEditView';
+        }
+
+        /**
+         * Override to disabling probability attribute.
+         */
+        protected function resolveElementInformationDuringFormLayoutRender(& $elementInformation)
+        {
+            parent::resolveElementInformationDuringFormLayoutRender($elementInformation);
+            if ($elementInformation['attributeName'] == 'description')
+            {
+                $elementInformation['rows'] = 2;
+            }
         }
     }
 ?>

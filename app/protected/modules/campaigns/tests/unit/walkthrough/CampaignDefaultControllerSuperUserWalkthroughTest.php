@@ -185,7 +185,7 @@
                 ) ,
             ));
             $content    = $this->runControllerWithNoExceptionsAndGetContent('campaigns/default/list');
-            $this->assertTrue(strpos($content, 'No results found.') !== false);
+            $this->assertTrue(strpos($content, 'No results found') !== false);
 
             StickyReportUtil::clearDataByKey('CampaignsSearchForm');
             $this->setGetArray(array(

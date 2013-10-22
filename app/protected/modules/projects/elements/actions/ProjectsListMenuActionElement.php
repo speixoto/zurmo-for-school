@@ -35,22 +35,48 @@
      ********************************************************************************/
 
     /**
-     * Display the active project with tasks status in different kanban types.
+     * Link element to take you to a list of projects list models
      */
-    class ActiveProjectElement extends Element
+    class ProjectsListMenuActionElement extends MenuActionElement
     {
-        protected static $moduleId = 'projects';
+        /**
+         * @return string
+         */
+        protected function getDefaultLabel()
+        {
+            return Zurmo::t('ProjectsModule', 'Projects');
+        }
 
         /**
-         * Render a hidden input, a text input with an auto-complete
-         * event, and a select button. These three items together
-         * form the Project Editable Element
-         * @return The element's content as a string.
+         * @return string
          */
-        protected function renderControlNonEditable()
+        protected function getDefaultRoute()
         {
-            assert('$this->model->{$this->attribute} instanceof Project');
-            return parent::renderControlEditable();
+            return Yii::app()->createUrl('projects/default/list/');
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getActionType()
+        {
+            return null;
+        }
+
+        /**
+         * @return array
+         */
+        protected function getMenuItems()
+        {
+            $items = array();
+            if (RightsUtil::doesUserHaveAllowByRightName('ProjectsModule', ProjectsModule::getCreateRight(),
+                Yii::app()->user->userModel))
+            {
+                $items[] = array('label'   => Zurmo::t('ProjectsModule', 'Create Project'),
+                                 'url'     => Yii::app()->createUrl('projects/default/create'));
+                return $items;
+            }
+            return null;
         }
     }
 ?>

@@ -51,7 +51,7 @@
          */
         protected function resolveHtmlOptionsForRendering()
         {
-            return array('class' => 'task-finish-action');
+            return array('class' => 'default-button action-type-finish');
         }
     }
 ?>

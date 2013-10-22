@@ -39,20 +39,6 @@
     class ProjectsUtil
     {
         /**
-         * Get tasks by project
-         * @param Project $project
-         */
-        //todo: @Mayank once jason review the code remove this piece of code along with test case as well
-        public static function getTasksByProject(Project $project)
-        {
-            assert('$project instanceof Project');
-            $searchAttributeData = TasksUtil::makeSearchAttributeData($project);
-            $joinTablesAdapter   = new RedBeanModelJoinTablesQueryAdapter('Task');
-            $where  = RedBeanModelDataProvider::makeWhere('Task', $searchAttributeData, $joinTablesAdapter);
-            return Task::getSubset($joinTablesAdapter, null, null, $where, null);
-        }
-
-        /**
          * Logs event on adding task check item for the task
          * @param Task $task
          * @param TaskCheckListItem
@@ -63,7 +49,7 @@
             assert('$taskCheckListItem instanceof TaskCheckListItem');
             $project = $task->project;
             $data    = array('{taskname}' => $task->name, '{taskcheckitemname}' => $taskCheckListItem->name);
-            ProjectAuditEvent::logAuditEvent(ProjectAuditEvent::CHECKLIST_ITEM_ADDED, $data, $project);
+            ProjectAuditEvent::logAuditEvent(ProjectAuditEvent::CHECKLIST_ITEM_ADDED, $project, $data);
         }
 
         /**
@@ -77,9 +63,12 @@
             assert('$task instanceof Task');
             assert('is_string($currentStatusLabel)');
             assert('is_string($newStatusLabel)');
-            $project = $task->project;
-            $data    = array('{fromstatus}' => $currentStatusLabel, '{tostatus}' => $newStatusLabel);
-            ProjectAuditEvent::logAuditEvent(ProjectAuditEvent::TASK_STATUS_CHANGED, $data, $project);
+            if($currentStatusLabel != $newStatusLabel)
+            {
+                $project = $task->project;
+                $data    = array('{fromstatus}' => $currentStatusLabel, '{tostatus}' => $newStatusLabel);
+                ProjectAuditEvent::logAuditEvent(ProjectAuditEvent::TASK_STATUS_CHANGED, $project, $data);
+            }
         }
 
         /**
@@ -91,7 +80,7 @@
             assert('$task instanceof Task');
             $project = $task->project;
             $data    = array('{taskname}' => $task->name);
-            ProjectAuditEvent::logAuditEvent(ProjectAuditEvent::TASK_ADDED, $data, $project);
+            ProjectAuditEvent::logAuditEvent(ProjectAuditEvent::TASK_ADDED, $project, $data);
         }
 
         /**
@@ -105,7 +94,7 @@
             assert('is_string($comment)');
             $project = $task->project;
             $data    = array('{comment}' => $comment);
-            ProjectAuditEvent::logAuditEvent(ProjectAuditEvent::COMMENT_ADDED, $data, $project);
+            ProjectAuditEvent::logAuditEvent(ProjectAuditEvent::COMMENT_ADDED, $project, $data);
         }
     }
 ?>

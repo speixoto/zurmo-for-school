@@ -258,7 +258,7 @@
                                 array('{jobName}'  => ProcessOutboundEmailJob::getDisplayName(),
                                       '{dateTime}' => $monitorJobData[ProcessOutboundEmailJob::getType()]['lastCompletedRunEncodedContent']));
             }
-            return '<h5>' . $content . '</h5>';
+            return ZurmoHtml::tag('h4', array(), $content);
         }
 
         protected static function getSkippedContent()
@@ -314,7 +314,7 @@
                 }
             }
 
-            return '<h5>' . $content . '</h5>';
+            return ZurmoHtml::tag('h4', array(), $content);
         }
 
         protected static function getSentContent()
@@ -328,7 +328,7 @@
             $content = Zurmo::t('MarketingModule',
                                 'Email message was sent on {sentDateTime}',
                                 array('{sentDateTime}' => $emailMessage->sentDateTime));
-            return '<h5>' . $content . '</h5>';
+            return ZurmoHtml::tag('h4', array(), $content);
         }
 
         protected static function getSendFailedContent()
@@ -347,7 +347,7 @@
                                          array('{count}' => $emailMessage->sendAttempts,
                                                '{error}' => strval($emailMessage->error)));
             }
-            return '<h5>' . $errorContent . '</h5>';
+            return ZurmoHtml::tag('h4', array('class' => 'error'), $errorContent);
         }
 
         protected static function getOpenedContent()
@@ -445,7 +445,7 @@
                                 'The last completed run date of the {jobName} job was on {dateTime}. The email message has not yet been created.',
                                 array('{jobName}'  => CampaignQueueMessagesInOutboxJob::getDisplayName(),
                                       '{dateTime}' => $monitorJobData[CampaignQueueMessagesInOutboxJob::getType()]['lastCompletedRunEncodedContent']));
-            return '<h5>' . $content . '</h5>';
+            return ZurmoHtml::tag('h4', array(), $content);
         }
 
         protected static function getWrapperTable($tableRows)
@@ -453,10 +453,11 @@
             if (empty($tableRows))
             {
                 return null;
+
             }
             $tableContent  = '<table>';
             $tableContent .= '<thead><tr>';
-            $tableContent .= '<th></th>';
+            $tableContent .= '<th>' . Zurmo::t('MarketingModule', 'Event') . '</th>';
             $tableContent .= '<th>' . Zurmo::t('MarketingModule', 'Latest Date Time') . '</th>';
             $tableContent .= '<th>' . Zurmo::t('MarketingModule', 'Quantity') . '</th>';
             $tableContent .= '<th>' . Zurmo::t('MarketingModule', 'Latest source IP') . '</th>';

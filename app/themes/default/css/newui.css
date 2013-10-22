@@ -150,6 +150,7 @@ a.EmailTestingButton,
 .AppContent.ImportWizardView #addExtraColumnButton .EmailTestingButton,
 .AppContent.ImportWizardView #addExtraColumnButton a.EmailTestingButton,
 .AppContent.ImportWizardView #addExtraColumnButton,
+.mapping-rules label,
 .import-summary li,
 .file-upload-box .ui-icon-plusthick,
 a.file-upload-box .ui-icon-plusthick,
@@ -290,7 +291,8 @@ a.ModalGameNotification a,
 #business-card-buttons > div,
 #business-card-buttons a,
 #sliding-panel-toggle,
-.mini-button {
+.mini-button,
+.project-stats {
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
@@ -317,7 +319,7 @@ a.ModalGameNotification a,
 .ComponentForWorkflowWizardView .action-type-selector-container:after,
 .workflow-order-module-selector-container:before,
 .workflow-order-module-selector-container:after {
-  content: "";
+  content: " ";
   display: table;
 }
 .cf:after,
@@ -344,7 +346,7 @@ a.ModalGameNotification a,
 .ComponentForWorkflowWizardView .add-email-message-button-container,
 .ComponentForWorkflowWizardView .action-type-selector-container,
 .workflow-order-module-selector-container {
-  zoom: 1;
+  *zoom: 1;
 }
 .clearfix,
 #modal-edit-form,
@@ -358,7 +360,7 @@ a.ModalGameNotification a,
 #MarketingListsManageSubscriptionsPageView .Warning,
 #kanban-board,
 #ContactWebFormEditAndDetailsView .ui-sortable {
-  zoom: 1;
+  *zoom: 1;
 }
 .clearfix:before,
 #modal-edit-form:before,
@@ -371,8 +373,20 @@ a.ModalGameNotification a,
 #MarketingListsExternalActionsPageView .Warning:before,
 #MarketingListsManageSubscriptionsPageView .Warning:before,
 #kanban-board:before,
-#ContactWebFormEditAndDetailsView .ui-sortable:before {
-  content: "";
+#ContactWebFormEditAndDetailsView .ui-sortable:before,
+.clearfix:after,
+#modal-edit-form:after,
+#edit-form:after,
+#delete-form:after,
+.right-side-edit-view-panel:after,
+.pager ul:after,
+#MarketingListsExternalActionsPageView > .GridView:after,
+#MarketingListsManageSubscriptionsPageView > .GridView:after,
+#MarketingListsExternalActionsPageView .Warning:after,
+#MarketingListsManageSubscriptionsPageView .Warning:after,
+#kanban-board:after,
+#ContactWebFormEditAndDetailsView .ui-sortable:after {
+  content: " ";
   display: table;
 }
 .clearfix:after,
@@ -387,8 +401,6 @@ a.ModalGameNotification a,
 #MarketingListsManageSubscriptionsPageView .Warning:after,
 #kanban-board:after,
 #ContactWebFormEditAndDetailsView .ui-sortable:after {
-  content: "";
-  display: table;
   clear: both;
 }
 .flyout,
@@ -479,7 +491,7 @@ a.ModalGameNotification a {
   cursor: pointer;
   text-indent: 0;
   display: inline-block;
-  zoom: 1;
+  *zoom: 1;
 }
 .modal-view-toolbar a:before,
 .modal-view-toolbar input[type="submit"]:before,
@@ -521,8 +533,49 @@ a.designer-toolbar input[type="submit"]:before,
 a#contactStatesData_AddInputButton:before,
 a#customFieldDataData_AddInputButton:before,
 .ModalGameNotification a:before,
-a.ModalGameNotification a:before {
-  content: "";
+a.ModalGameNotification a:before,
+.modal-view-toolbar a:after,
+.modal-view-toolbar input[type="submit"]:after,
+.modal-view-toolbar input[type="button"]:after,
+.form-toolbar a:after,
+.form-toolbar input[type="submit"]:after,
+.form-toolbar input[type="button"]:after,
+.zButton:after,
+.z-button:after,
+a.zButton:after,
+a.z-button:after,
+.white-button:after,
+.search-form-tools input[type="submit"]:after,
+a.search-form-tools input[type="submit"]:after,
+#progressBar-links a:after,
+a#progressBar-links a:after,
+#InstallPageView .AppContainer a:after,
+a#InstallPageView .AppContainer a:after,
+#InstallPageView #install-form input[type="submit"]:after,
+a#InstallPageView #install-form input[type="submit"]:after,
+.configuration-list li a:after,
+a.configuration-list li a:after,
+table.configuration-list td:last-child a:after,
+atable.configuration-list td:last-child a:after,
+.multiselect-holder input[type="button"]:after,
+a.multiselect-holder input[type="button"]:after,
+.EmailTestingButton:after,
+a.EmailTestingButton:after,
+.file-upload-box .ui-icon-plusthick:after,
+a.file-upload-box .ui-icon-plusthick:after,
+.ui-datepicker .ui-datepicker-current:after,
+a.ui-datepicker .ui-datepicker-current:after,
+.ui-datepicker .ui-datepicker-close:after,
+a.ui-datepicker .ui-datepicker-close:after,
+.designer-toolbar input[type="submit"]:after,
+a.designer-toolbar input[type="submit"]:after,
+#contactStatesData_AddInputButton:after,
+#customFieldDataData_AddInputButton:after,
+a#contactStatesData_AddInputButton:after,
+a#customFieldDataData_AddInputButton:after,
+.ModalGameNotification a:after,
+a.ModalGameNotification a:after {
+  content: " ";
   display: table;
 }
 .modal-view-toolbar a:after,
@@ -566,8 +619,6 @@ a#contactStatesData_AddInputButton:after,
 a#customFieldDataData_AddInputButton:after,
 .ModalGameNotification a:after,
 a.ModalGameNotification a:after {
-  content: "";
-  display: table;
   clear: both;
 }
 .modal-view-toolbar a.attachLoading.z-button,
@@ -694,15 +745,14 @@ a.ModalGameNotification a:not(.attachLoading):not(.green-button) .z-label {
   cursor: pointer;
   text-indent: 0;
   display: inline-block;
-  zoom: 1;
+  *zoom: 1;
 }
-.default-btn:before {
-  content: "";
+.default-btn:before,
+.default-btn:after {
+  content: " ";
   display: table;
 }
 .default-btn:after {
-  content: "";
-  display: table;
   clear: both;
 }
 .default-btn.attachLoading.z-button {
@@ -710,6 +760,36 @@ a.ModalGameNotification a:not(.attachLoading):not(.green-button) .z-label {
 }
 .default-btn:not(.attachLoading):not(.green-button) .z-label {
   background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
+}
+.z-button.disabled,
+.search-form-tools input[type="submit"].disabled,
+#progressBar-links a.disabled,
+#InstallPageView .AppContainer a.disabled,
+#InstallPageView #install-form input[type="submit"].disabled,
+.configuration-list li a.disabled,
+table.configuration-list td:last-child a.disabled,
+.multiselect-holder input[type="button"].disabled,
+.EmailTestingButton.disabled,
+.file-upload-box .ui-icon-plusthick.disabled,
+.ui-datepicker .ui-datepicker-current.disabled,
+.ui-datepicker .ui-datepicker-close.disabled,
+.designer-toolbar input[type="submit"].disabled,
+#contactStatesData_AddInputButton.disabled,
+#customFieldDataData_AddInputButton.disabled,
+.ModalGameNotification a.disabled {
+  pointer-events: none;
+  filter: alpha(opacity=50);
+  -khtml-opacity: 0.5;
+  -moz-opacity: 0.5;
+  opacity: 0.5;
+  -webkit-filter: grayscale(85%);
+  -moz-filter: grayscale(85%);
+  -ms-filter: grayscale(85%);
+  -o-filter: grayscale(85%);
+  filter: grayscale(85%);
+  filter: gray;
+  /* IE 6-9 */
+
 }
 /*
 .zButton:not(.attacheLoading),
@@ -793,7 +873,7 @@ table.configuration-list td:last-child a.loading .z-icon,
 }
 .zLink,
 .z-link,
-#ImportWizardMappingView #sample-column-header a,
+#sample-column-header a,
 .remove-extra-column-link,
 #show-triggers-structure-div-link,
 #show-filters-structure-div-link {
@@ -808,7 +888,7 @@ table.configuration-list td:last-child a.loading .z-icon,
 }
 .zLink:hover,
 .z-link:hover,
-#ImportWizardMappingView #sample-column-header a:hover,
+#sample-column-header a:hover,
 .remove-extra-column-link:hover,
 #show-triggers-structure-div-link:hover,
 #show-filters-structure-div-link:hover {
@@ -980,7 +1060,8 @@ body.blue .treeview span:hover .z-action-link,
 body.blue .drop-zone,
 body.blue .missing-chart,
 body.blue a.active-tab,
-body.blue .edit-autoresponder-link {
+body.blue .edit-autoresponder-link,
+body.blue .edit-project-link {
   color: #282a76;
 }
 body.blue #MashableInboxActionBarForViews .nav > li > a:hover,
@@ -992,18 +1073,28 @@ body.blue a:hover i[class^="icon"],
 body.blue a:hover i[class^="icon"]:after,
 body.blue a:active i[class^="icon"],
 body.blue a:active i[class^="icon"]:after,
-body.blue .button-action-trigger:hover span,
-body.blue .button-action-trigger:active span,
-body.blue .button-action:hover span,
-body.blue .button-action:active span,
-body.blue .split-button:hover span,
-body.blue .split-button:hover i[class^="icon"],
-body.blue .split-button:hover i[class^="icon"]:after,
-body.blue .split-button:hover i[class^="icon"]:before,
 body.blue .default-button:hover span,
 body.blue .default-button:hover i[class^="icon"],
 body.blue .default-button:hover i[class^="icon"]:after,
 body.blue .default-button:hover i[class^="icon"]:before,
+body.blue .button-action:hover span,
+body.blue .button-action:hover i[class^="icon"],
+body.blue .button-action:hover i[class^="icon"]:after,
+body.blue .button-action:hover i[class^="icon"]:before,
+body.blue .button-action-trigger:hover span,
+body.blue .button-action-trigger:hover i[class^="icon"],
+body.blue .button-action-trigger:hover i[class^="icon"]:after,
+body.blue .button-action-trigger:hover i[class^="icon"]:before,
+body.blue .pillbox .active a,
+body.blue .pillbox .active span,
+body.blue .pillbox .active i[class^="icon"],
+body.blue .pillbox .active i[class^="icon"]:after,
+body.blue .pillbox .active i[class^="icon"]:before,
+body.blue .pillbox .nav-open a,
+body.blue .pillbox .nav-open span,
+body.blue .pillbox .nav-open i[class^="icon"],
+body.blue .pillbox .nav-open i[class^="icon"]:after,
+body.blue .pillbox .nav-open i[class^="icon"]:before,
 body.blue .view-toolbar > a:hover,
 body.blue .view-toolbar > a:active,
 body.blue .view-toolbar > a:hover:before,
@@ -1067,7 +1158,8 @@ body.blue #show-filters-structure-div-link,
 body.blue .filters-bar .ui-state-active,
 body.blue .filters-bar label:hover,
 body.blue #clear-search-linkmodal,
-body.blue .StepsAndProgressBarForWizardView .progress-bar {
+body.blue .StepsAndProgressBarForWizardView .progress-bar,
+body.blue .task-owner .gravatar {
   background-color: #282a76;
 }
 body.blue .latest-activity-toolbar label:hover,
@@ -1582,7 +1674,8 @@ body.sunrise .treeview span:hover .z-action-link,
 body.sunrise .drop-zone,
 body.sunrise .missing-chart,
 body.sunrise a.active-tab,
-body.sunrise .edit-autoresponder-link {
+body.sunrise .edit-autoresponder-link,
+body.sunrise .edit-project-link {
   color: #34495e;
 }
 body.sunrise #MashableInboxActionBarForViews .nav > li > a:hover,
@@ -1594,18 +1687,28 @@ body.sunrise a:hover i[class^="icon"],
 body.sunrise a:hover i[class^="icon"]:after,
 body.sunrise a:active i[class^="icon"],
 body.sunrise a:active i[class^="icon"]:after,
-body.sunrise .button-action-trigger:hover span,
-body.sunrise .button-action-trigger:active span,
-body.sunrise .button-action:hover span,
-body.sunrise .button-action:active span,
-body.sunrise .split-button:hover span,
-body.sunrise .split-button:hover i[class^="icon"],
-body.sunrise .split-button:hover i[class^="icon"]:after,
-body.sunrise .split-button:hover i[class^="icon"]:before,
 body.sunrise .default-button:hover span,
 body.sunrise .default-button:hover i[class^="icon"],
 body.sunrise .default-button:hover i[class^="icon"]:after,
 body.sunrise .default-button:hover i[class^="icon"]:before,
+body.sunrise .button-action:hover span,
+body.sunrise .button-action:hover i[class^="icon"],
+body.sunrise .button-action:hover i[class^="icon"]:after,
+body.sunrise .button-action:hover i[class^="icon"]:before,
+body.sunrise .button-action-trigger:hover span,
+body.sunrise .button-action-trigger:hover i[class^="icon"],
+body.sunrise .button-action-trigger:hover i[class^="icon"]:after,
+body.sunrise .button-action-trigger:hover i[class^="icon"]:before,
+body.sunrise .pillbox .active a,
+body.sunrise .pillbox .active span,
+body.sunrise .pillbox .active i[class^="icon"],
+body.sunrise .pillbox .active i[class^="icon"]:after,
+body.sunrise .pillbox .active i[class^="icon"]:before,
+body.sunrise .pillbox .nav-open a,
+body.sunrise .pillbox .nav-open span,
+body.sunrise .pillbox .nav-open i[class^="icon"],
+body.sunrise .pillbox .nav-open i[class^="icon"]:after,
+body.sunrise .pillbox .nav-open i[class^="icon"]:before,
 body.sunrise .view-toolbar > a:hover,
 body.sunrise .view-toolbar > a:active,
 body.sunrise .view-toolbar > a:hover:before,
@@ -1669,7 +1772,8 @@ body.sunrise #show-filters-structure-div-link,
 body.sunrise .filters-bar .ui-state-active,
 body.sunrise .filters-bar label:hover,
 body.sunrise #clear-search-linkmodal,
-body.sunrise .StepsAndProgressBarForWizardView .progress-bar {
+body.sunrise .StepsAndProgressBarForWizardView .progress-bar,
+body.sunrise .task-owner .gravatar {
   background-color: #34495e;
 }
 body.sunrise .latest-activity-toolbar label:hover,
@@ -2184,7 +2288,8 @@ body.marble .treeview span:hover .z-action-link,
 body.marble .drop-zone,
 body.marble .missing-chart,
 body.marble a.active-tab,
-body.marble .edit-autoresponder-link {
+body.marble .edit-autoresponder-link,
+body.marble .edit-project-link {
   color: #7f7f7f;
 }
 body.marble #MashableInboxActionBarForViews .nav > li > a:hover,
@@ -2196,18 +2301,28 @@ body.marble a:hover i[class^="icon"],
 body.marble a:hover i[class^="icon"]:after,
 body.marble a:active i[class^="icon"],
 body.marble a:active i[class^="icon"]:after,
-body.marble .button-action-trigger:hover span,
-body.marble .button-action-trigger:active span,
-body.marble .button-action:hover span,
-body.marble .button-action:active span,
-body.marble .split-button:hover span,
-body.marble .split-button:hover i[class^="icon"],
-body.marble .split-button:hover i[class^="icon"]:after,
-body.marble .split-button:hover i[class^="icon"]:before,
 body.marble .default-button:hover span,
 body.marble .default-button:hover i[class^="icon"],
 body.marble .default-button:hover i[class^="icon"]:after,
 body.marble .default-button:hover i[class^="icon"]:before,
+body.marble .button-action:hover span,
+body.marble .button-action:hover i[class^="icon"],
+body.marble .button-action:hover i[class^="icon"]:after,
+body.marble .button-action:hover i[class^="icon"]:before,
+body.marble .button-action-trigger:hover span,
+body.marble .button-action-trigger:hover i[class^="icon"],
+body.marble .button-action-trigger:hover i[class^="icon"]:after,
+body.marble .button-action-trigger:hover i[class^="icon"]:before,
+body.marble .pillbox .active a,
+body.marble .pillbox .active span,
+body.marble .pillbox .active i[class^="icon"],
+body.marble .pillbox .active i[class^="icon"]:after,
+body.marble .pillbox .active i[class^="icon"]:before,
+body.marble .pillbox .nav-open a,
+body.marble .pillbox .nav-open span,
+body.marble .pillbox .nav-open i[class^="icon"],
+body.marble .pillbox .nav-open i[class^="icon"]:after,
+body.marble .pillbox .nav-open i[class^="icon"]:before,
 body.marble .view-toolbar > a:hover,
 body.marble .view-toolbar > a:active,
 body.marble .view-toolbar > a:hover:before,
@@ -2271,7 +2386,8 @@ body.marble #show-filters-structure-div-link,
 body.marble .filters-bar .ui-state-active,
 body.marble .filters-bar label:hover,
 body.marble #clear-search-linkmodal,
-body.marble .StepsAndProgressBarForWizardView .progress-bar {
+body.marble .StepsAndProgressBarForWizardView .progress-bar,
+body.marble .task-owner .gravatar {
   background-color: #7f7f7f;
 }
 body.marble .latest-activity-toolbar label:hover,
@@ -2786,7 +2902,8 @@ body.purple-haze .treeview span:hover .z-action-link,
 body.purple-haze .drop-zone,
 body.purple-haze .missing-chart,
 body.purple-haze a.active-tab,
-body.purple-haze .edit-autoresponder-link {
+body.purple-haze .edit-autoresponder-link,
+body.purple-haze .edit-project-link {
   color: #713b8a;
 }
 body.purple-haze #MashableInboxActionBarForViews .nav > li > a:hover,
@@ -2798,18 +2915,28 @@ body.purple-haze a:hover i[class^="icon"],
 body.purple-haze a:hover i[class^="icon"]:after,
 body.purple-haze a:active i[class^="icon"],
 body.purple-haze a:active i[class^="icon"]:after,
-body.purple-haze .button-action-trigger:hover span,
-body.purple-haze .button-action-trigger:active span,
-body.purple-haze .button-action:hover span,
-body.purple-haze .button-action:active span,
-body.purple-haze .split-button:hover span,
-body.purple-haze .split-button:hover i[class^="icon"],
-body.purple-haze .split-button:hover i[class^="icon"]:after,
-body.purple-haze .split-button:hover i[class^="icon"]:before,
 body.purple-haze .default-button:hover span,
 body.purple-haze .default-button:hover i[class^="icon"],
 body.purple-haze .default-button:hover i[class^="icon"]:after,
 body.purple-haze .default-button:hover i[class^="icon"]:before,
+body.purple-haze .button-action:hover span,
+body.purple-haze .button-action:hover i[class^="icon"],
+body.purple-haze .button-action:hover i[class^="icon"]:after,
+body.purple-haze .button-action:hover i[class^="icon"]:before,
+body.purple-haze .button-action-trigger:hover span,
+body.purple-haze .button-action-trigger:hover i[class^="icon"],
+body.purple-haze .button-action-trigger:hover i[class^="icon"]:after,
+body.purple-haze .button-action-trigger:hover i[class^="icon"]:before,
+body.purple-haze .pillbox .active a,
+body.purple-haze .pillbox .active span,
+body.purple-haze .pillbox .active i[class^="icon"],
+body.purple-haze .pillbox .active i[class^="icon"]:after,
+body.purple-haze .pillbox .active i[class^="icon"]:before,
+body.purple-haze .pillbox .nav-open a,
+body.purple-haze .pillbox .nav-open span,
+body.purple-haze .pillbox .nav-open i[class^="icon"],
+body.purple-haze .pillbox .nav-open i[class^="icon"]:after,
+body.purple-haze .pillbox .nav-open i[class^="icon"]:before,
 body.purple-haze .view-toolbar > a:hover,
 body.purple-haze .view-toolbar > a:active,
 body.purple-haze .view-toolbar > a:hover:before,
@@ -2873,7 +3000,8 @@ body.purple-haze #show-filters-structure-div-link,
 body.purple-haze .filters-bar .ui-state-active,
 body.purple-haze .filters-bar label:hover,
 body.purple-haze #clear-search-linkmodal,
-body.purple-haze .StepsAndProgressBarForWizardView .progress-bar {
+body.purple-haze .StepsAndProgressBarForWizardView .progress-bar,
+body.purple-haze .task-owner .gravatar {
   background-color: #713b8a;
 }
 body.purple-haze .latest-activity-toolbar label:hover,
@@ -3389,7 +3517,8 @@ body.flat-cement .treeview span:hover .z-action-link,
 body.flat-cement .drop-zone,
 body.flat-cement .missing-chart,
 body.flat-cement a.active-tab,
-body.flat-cement .edit-autoresponder-link {
+body.flat-cement .edit-autoresponder-link,
+body.flat-cement .edit-project-link {
   color: #2c3e50;
 }
 body.flat-cement #MashableInboxActionBarForViews .nav > li > a:hover,
@@ -3401,18 +3530,28 @@ body.flat-cement a:hover i[class^="icon"],
 body.flat-cement a:hover i[class^="icon"]:after,
 body.flat-cement a:active i[class^="icon"],
 body.flat-cement a:active i[class^="icon"]:after,
-body.flat-cement .button-action-trigger:hover span,
-body.flat-cement .button-action-trigger:active span,
-body.flat-cement .button-action:hover span,
-body.flat-cement .button-action:active span,
-body.flat-cement .split-button:hover span,
-body.flat-cement .split-button:hover i[class^="icon"],
-body.flat-cement .split-button:hover i[class^="icon"]:after,
-body.flat-cement .split-button:hover i[class^="icon"]:before,
 body.flat-cement .default-button:hover span,
 body.flat-cement .default-button:hover i[class^="icon"],
 body.flat-cement .default-button:hover i[class^="icon"]:after,
 body.flat-cement .default-button:hover i[class^="icon"]:before,
+body.flat-cement .button-action:hover span,
+body.flat-cement .button-action:hover i[class^="icon"],
+body.flat-cement .button-action:hover i[class^="icon"]:after,
+body.flat-cement .button-action:hover i[class^="icon"]:before,
+body.flat-cement .button-action-trigger:hover span,
+body.flat-cement .button-action-trigger:hover i[class^="icon"],
+body.flat-cement .button-action-trigger:hover i[class^="icon"]:after,
+body.flat-cement .button-action-trigger:hover i[class^="icon"]:before,
+body.flat-cement .pillbox .active a,
+body.flat-cement .pillbox .active span,
+body.flat-cement .pillbox .active i[class^="icon"],
+body.flat-cement .pillbox .active i[class^="icon"]:after,
+body.flat-cement .pillbox .active i[class^="icon"]:before,
+body.flat-cement .pillbox .nav-open a,
+body.flat-cement .pillbox .nav-open span,
+body.flat-cement .pillbox .nav-open i[class^="icon"],
+body.flat-cement .pillbox .nav-open i[class^="icon"]:after,
+body.flat-cement .pillbox .nav-open i[class^="icon"]:before,
 body.flat-cement .view-toolbar > a:hover,
 body.flat-cement .view-toolbar > a:active,
 body.flat-cement .view-toolbar > a:hover:before,
@@ -3476,7 +3615,8 @@ body.flat-cement #show-filters-structure-div-link,
 body.flat-cement .filters-bar .ui-state-active,
 body.flat-cement .filters-bar label:hover,
 body.flat-cement #clear-search-linkmodal,
-body.flat-cement .StepsAndProgressBarForWizardView .progress-bar {
+body.flat-cement .StepsAndProgressBarForWizardView .progress-bar,
+body.flat-cement .task-owner .gravatar {
   background-color: #2c3e50;
 }
 body.flat-cement .latest-activity-toolbar label:hover,
@@ -4011,7 +4151,8 @@ body.amazon .treeview span:hover .z-action-link,
 body.amazon .drop-zone,
 body.amazon .missing-chart,
 body.amazon a.active-tab,
-body.amazon .edit-autoresponder-link {
+body.amazon .edit-autoresponder-link,
+body.amazon .edit-project-link {
   color: #26354a;
 }
 body.amazon #MashableInboxActionBarForViews .nav > li > a:hover,
@@ -4023,18 +4164,28 @@ body.amazon a:hover i[class^="icon"],
 body.amazon a:hover i[class^="icon"]:after,
 body.amazon a:active i[class^="icon"],
 body.amazon a:active i[class^="icon"]:after,
-body.amazon .button-action-trigger:hover span,
-body.amazon .button-action-trigger:active span,
-body.amazon .button-action:hover span,
-body.amazon .button-action:active span,
-body.amazon .split-button:hover span,
-body.amazon .split-button:hover i[class^="icon"],
-body.amazon .split-button:hover i[class^="icon"]:after,
-body.amazon .split-button:hover i[class^="icon"]:before,
 body.amazon .default-button:hover span,
 body.amazon .default-button:hover i[class^="icon"],
 body.amazon .default-button:hover i[class^="icon"]:after,
 body.amazon .default-button:hover i[class^="icon"]:before,
+body.amazon .button-action:hover span,
+body.amazon .button-action:hover i[class^="icon"],
+body.amazon .button-action:hover i[class^="icon"]:after,
+body.amazon .button-action:hover i[class^="icon"]:before,
+body.amazon .button-action-trigger:hover span,
+body.amazon .button-action-trigger:hover i[class^="icon"],
+body.amazon .button-action-trigger:hover i[class^="icon"]:after,
+body.amazon .button-action-trigger:hover i[class^="icon"]:before,
+body.amazon .pillbox .active a,
+body.amazon .pillbox .active span,
+body.amazon .pillbox .active i[class^="icon"],
+body.amazon .pillbox .active i[class^="icon"]:after,
+body.amazon .pillbox .active i[class^="icon"]:before,
+body.amazon .pillbox .nav-open a,
+body.amazon .pillbox .nav-open span,
+body.amazon .pillbox .nav-open i[class^="icon"],
+body.amazon .pillbox .nav-open i[class^="icon"]:after,
+body.amazon .pillbox .nav-open i[class^="icon"]:before,
 body.amazon .view-toolbar > a:hover,
 body.amazon .view-toolbar > a:active,
 body.amazon .view-toolbar > a:hover:before,
@@ -4098,7 +4249,8 @@ body.amazon #show-filters-structure-div-link,
 body.amazon .filters-bar .ui-state-active,
 body.amazon .filters-bar label:hover,
 body.amazon #clear-search-linkmodal,
-body.amazon .StepsAndProgressBarForWizardView .progress-bar {
+body.amazon .StepsAndProgressBarForWizardView .progress-bar,
+body.amazon .task-owner .gravatar {
   background-color: #26354a;
 }
 body.amazon .latest-activity-toolbar label:hover,
@@ -4613,7 +4765,8 @@ body.sweden .treeview span:hover .z-action-link,
 body.sweden .drop-zone,
 body.sweden .missing-chart,
 body.sweden a.active-tab,
-body.sweden .edit-autoresponder-link {
+body.sweden .edit-autoresponder-link,
+body.sweden .edit-project-link {
   color: #034c8c;
 }
 body.sweden #MashableInboxActionBarForViews .nav > li > a:hover,
@@ -4625,18 +4778,28 @@ body.sweden a:hover i[class^="icon"],
 body.sweden a:hover i[class^="icon"]:after,
 body.sweden a:active i[class^="icon"],
 body.sweden a:active i[class^="icon"]:after,
-body.sweden .button-action-trigger:hover span,
-body.sweden .button-action-trigger:active span,
-body.sweden .button-action:hover span,
-body.sweden .button-action:active span,
-body.sweden .split-button:hover span,
-body.sweden .split-button:hover i[class^="icon"],
-body.sweden .split-button:hover i[class^="icon"]:after,
-body.sweden .split-button:hover i[class^="icon"]:before,
 body.sweden .default-button:hover span,
 body.sweden .default-button:hover i[class^="icon"],
 body.sweden .default-button:hover i[class^="icon"]:after,
 body.sweden .default-button:hover i[class^="icon"]:before,
+body.sweden .button-action:hover span,
+body.sweden .button-action:hover i[class^="icon"],
+body.sweden .button-action:hover i[class^="icon"]:after,
+body.sweden .button-action:hover i[class^="icon"]:before,
+body.sweden .button-action-trigger:hover span,
+body.sweden .button-action-trigger:hover i[class^="icon"],
+body.sweden .button-action-trigger:hover i[class^="icon"]:after,
+body.sweden .button-action-trigger:hover i[class^="icon"]:before,
+body.sweden .pillbox .active a,
+body.sweden .pillbox .active span,
+body.sweden .pillbox .active i[class^="icon"],
+body.sweden .pillbox .active i[class^="icon"]:after,
+body.sweden .pillbox .active i[class^="icon"]:before,
+body.sweden .pillbox .nav-open a,
+body.sweden .pillbox .nav-open span,
+body.sweden .pillbox .nav-open i[class^="icon"],
+body.sweden .pillbox .nav-open i[class^="icon"]:after,
+body.sweden .pillbox .nav-open i[class^="icon"]:before,
 body.sweden .view-toolbar > a:hover,
 body.sweden .view-toolbar > a:active,
 body.sweden .view-toolbar > a:hover:before,
@@ -4700,7 +4863,8 @@ body.sweden #show-filters-structure-div-link,
 body.sweden .filters-bar .ui-state-active,
 body.sweden .filters-bar label:hover,
 body.sweden #clear-search-linkmodal,
-body.sweden .StepsAndProgressBarForWizardView .progress-bar {
+body.sweden .StepsAndProgressBarForWizardView .progress-bar,
+body.sweden .task-owner .gravatar {
   background-color: #034c8c;
 }
 body.sweden .latest-activity-toolbar label:hover,
@@ -5215,7 +5379,8 @@ body.pink .treeview span:hover .z-action-link,
 body.pink .drop-zone,
 body.pink .missing-chart,
 body.pink a.active-tab,
-body.pink .edit-autoresponder-link {
+body.pink .edit-autoresponder-link,
+body.pink .edit-project-link {
   color: #323232;
 }
 body.pink #MashableInboxActionBarForViews .nav > li > a:hover,
@@ -5227,18 +5392,28 @@ body.pink a:hover i[class^="icon"],
 body.pink a:hover i[class^="icon"]:after,
 body.pink a:active i[class^="icon"],
 body.pink a:active i[class^="icon"]:after,
-body.pink .button-action-trigger:hover span,
-body.pink .button-action-trigger:active span,
-body.pink .button-action:hover span,
-body.pink .button-action:active span,
-body.pink .split-button:hover span,
-body.pink .split-button:hover i[class^="icon"],
-body.pink .split-button:hover i[class^="icon"]:after,
-body.pink .split-button:hover i[class^="icon"]:before,
 body.pink .default-button:hover span,
 body.pink .default-button:hover i[class^="icon"],
 body.pink .default-button:hover i[class^="icon"]:after,
 body.pink .default-button:hover i[class^="icon"]:before,
+body.pink .button-action:hover span,
+body.pink .button-action:hover i[class^="icon"],
+body.pink .button-action:hover i[class^="icon"]:after,
+body.pink .button-action:hover i[class^="icon"]:before,
+body.pink .button-action-trigger:hover span,
+body.pink .button-action-trigger:hover i[class^="icon"],
+body.pink .button-action-trigger:hover i[class^="icon"]:after,
+body.pink .button-action-trigger:hover i[class^="icon"]:before,
+body.pink .pillbox .active a,
+body.pink .pillbox .active span,
+body.pink .pillbox .active i[class^="icon"],
+body.pink .pillbox .active i[class^="icon"]:after,
+body.pink .pillbox .active i[class^="icon"]:before,
+body.pink .pillbox .nav-open a,
+body.pink .pillbox .nav-open span,
+body.pink .pillbox .nav-open i[class^="icon"],
+body.pink .pillbox .nav-open i[class^="icon"]:after,
+body.pink .pillbox .nav-open i[class^="icon"]:before,
 body.pink .view-toolbar > a:hover,
 body.pink .view-toolbar > a:active,
 body.pink .view-toolbar > a:hover:before,
@@ -5302,7 +5477,8 @@ body.pink #show-filters-structure-div-link,
 body.pink .filters-bar .ui-state-active,
 body.pink .filters-bar label:hover,
 body.pink #clear-search-linkmodal,
-body.pink .StepsAndProgressBarForWizardView .progress-bar {
+body.pink .StepsAndProgressBarForWizardView .progress-bar,
+body.pink .task-owner .gravatar {
   background-color: #323232;
 }
 body.pink .latest-activity-toolbar label:hover,
@@ -5817,7 +5993,8 @@ body.brown .treeview span:hover .z-action-link,
 body.brown .drop-zone,
 body.brown .missing-chart,
 body.brown a.active-tab,
-body.brown .edit-autoresponder-link {
+body.brown .edit-autoresponder-link,
+body.brown .edit-project-link {
   color: #547980;
 }
 body.brown #MashableInboxActionBarForViews .nav > li > a:hover,
@@ -5829,18 +6006,28 @@ body.brown a:hover i[class^="icon"],
 body.brown a:hover i[class^="icon"]:after,
 body.brown a:active i[class^="icon"],
 body.brown a:active i[class^="icon"]:after,
-body.brown .button-action-trigger:hover span,
-body.brown .button-action-trigger:active span,
-body.brown .button-action:hover span,
-body.brown .button-action:active span,
-body.brown .split-button:hover span,
-body.brown .split-button:hover i[class^="icon"],
-body.brown .split-button:hover i[class^="icon"]:after,
-body.brown .split-button:hover i[class^="icon"]:before,
 body.brown .default-button:hover span,
 body.brown .default-button:hover i[class^="icon"],
 body.brown .default-button:hover i[class^="icon"]:after,
 body.brown .default-button:hover i[class^="icon"]:before,
+body.brown .button-action:hover span,
+body.brown .button-action:hover i[class^="icon"],
+body.brown .button-action:hover i[class^="icon"]:after,
+body.brown .button-action:hover i[class^="icon"]:before,
+body.brown .button-action-trigger:hover span,
+body.brown .button-action-trigger:hover i[class^="icon"],
+body.brown .button-action-trigger:hover i[class^="icon"]:after,
+body.brown .button-action-trigger:hover i[class^="icon"]:before,
+body.brown .pillbox .active a,
+body.brown .pillbox .active span,
+body.brown .pillbox .active i[class^="icon"],
+body.brown .pillbox .active i[class^="icon"]:after,
+body.brown .pillbox .active i[class^="icon"]:before,
+body.brown .pillbox .nav-open a,
+body.brown .pillbox .nav-open span,
+body.brown .pillbox .nav-open i[class^="icon"],
+body.brown .pillbox .nav-open i[class^="icon"]:after,
+body.brown .pillbox .nav-open i[class^="icon"]:before,
 body.brown .view-toolbar > a:hover,
 body.brown .view-toolbar > a:active,
 body.brown .view-toolbar > a:hover:before,
@@ -5904,7 +6091,8 @@ body.brown #show-filters-structure-div-link,
 body.brown .filters-bar .ui-state-active,
 body.brown .filters-bar label:hover,
 body.brown #clear-search-linkmodal,
-body.brown .StepsAndProgressBarForWizardView .progress-bar {
+body.brown .StepsAndProgressBarForWizardView .progress-bar,
+body.brown .task-owner .gravatar {
   background-color: #547980;
 }
 body.brown .latest-activity-toolbar label:hover,
@@ -6419,7 +6607,8 @@ body.lime .treeview span:hover .z-action-link,
 body.lime .drop-zone,
 body.lime .missing-chart,
 body.lime a.active-tab,
-body.lime .edit-autoresponder-link {
+body.lime .edit-autoresponder-link,
+body.lime .edit-project-link {
   color: #2b434f;
 }
 body.lime #MashableInboxActionBarForViews .nav > li > a:hover,
@@ -6431,18 +6620,28 @@ body.lime a:hover i[class^="icon"],
 body.lime a:hover i[class^="icon"]:after,
 body.lime a:active i[class^="icon"],
 body.lime a:active i[class^="icon"]:after,
-body.lime .button-action-trigger:hover span,
-body.lime .button-action-trigger:active span,
-body.lime .button-action:hover span,
-body.lime .button-action:active span,
-body.lime .split-button:hover span,
-body.lime .split-button:hover i[class^="icon"],
-body.lime .split-button:hover i[class^="icon"]:after,
-body.lime .split-button:hover i[class^="icon"]:before,
 body.lime .default-button:hover span,
 body.lime .default-button:hover i[class^="icon"],
 body.lime .default-button:hover i[class^="icon"]:after,
 body.lime .default-button:hover i[class^="icon"]:before,
+body.lime .button-action:hover span,
+body.lime .button-action:hover i[class^="icon"],
+body.lime .button-action:hover i[class^="icon"]:after,
+body.lime .button-action:hover i[class^="icon"]:before,
+body.lime .button-action-trigger:hover span,
+body.lime .button-action-trigger:hover i[class^="icon"],
+body.lime .button-action-trigger:hover i[class^="icon"]:after,
+body.lime .button-action-trigger:hover i[class^="icon"]:before,
+body.lime .pillbox .active a,
+body.lime .pillbox .active span,
+body.lime .pillbox .active i[class^="icon"],
+body.lime .pillbox .active i[class^="icon"]:after,
+body.lime .pillbox .active i[class^="icon"]:before,
+body.lime .pillbox .nav-open a,
+body.lime .pillbox .nav-open span,
+body.lime .pillbox .nav-open i[class^="icon"],
+body.lime .pillbox .nav-open i[class^="icon"]:after,
+body.lime .pillbox .nav-open i[class^="icon"]:before,
 body.lime .view-toolbar > a:hover,
 body.lime .view-toolbar > a:active,
 body.lime .view-toolbar > a:hover:before,
@@ -6506,7 +6705,8 @@ body.lime #show-filters-structure-div-link,
 body.lime .filters-bar .ui-state-active,
 body.lime .filters-bar label:hover,
 body.lime #clear-search-linkmodal,
-body.lime .StepsAndProgressBarForWizardView .progress-bar {
+body.lime .StepsAndProgressBarForWizardView .progress-bar,
+body.lime .task-owner .gravatar {
   background-color: #2b434f;
 }
 body.lime .latest-activity-toolbar label:hover,
@@ -7021,7 +7221,8 @@ body.cherry .treeview span:hover .z-action-link,
 body.cherry .drop-zone,
 body.cherry .missing-chart,
 body.cherry a.active-tab,
-body.cherry .edit-autoresponder-link {
+body.cherry .edit-autoresponder-link,
+body.cherry .edit-project-link {
   color: #6c8092;
 }
 body.cherry #MashableInboxActionBarForViews .nav > li > a:hover,
@@ -7033,18 +7234,28 @@ body.cherry a:hover i[class^="icon"],
 body.cherry a:hover i[class^="icon"]:after,
 body.cherry a:active i[class^="icon"],
 body.cherry a:active i[class^="icon"]:after,
-body.cherry .button-action-trigger:hover span,
-body.cherry .button-action-trigger:active span,
-body.cherry .button-action:hover span,
-body.cherry .button-action:active span,
-body.cherry .split-button:hover span,
-body.cherry .split-button:hover i[class^="icon"],
-body.cherry .split-button:hover i[class^="icon"]:after,
-body.cherry .split-button:hover i[class^="icon"]:before,
 body.cherry .default-button:hover span,
 body.cherry .default-button:hover i[class^="icon"],
 body.cherry .default-button:hover i[class^="icon"]:after,
 body.cherry .default-button:hover i[class^="icon"]:before,
+body.cherry .button-action:hover span,
+body.cherry .button-action:hover i[class^="icon"],
+body.cherry .button-action:hover i[class^="icon"]:after,
+body.cherry .button-action:hover i[class^="icon"]:before,
+body.cherry .button-action-trigger:hover span,
+body.cherry .button-action-trigger:hover i[class^="icon"],
+body.cherry .button-action-trigger:hover i[class^="icon"]:after,
+body.cherry .button-action-trigger:hover i[class^="icon"]:before,
+body.cherry .pillbox .active a,
+body.cherry .pillbox .active span,
+body.cherry .pillbox .active i[class^="icon"],
+body.cherry .pillbox .active i[class^="icon"]:after,
+body.cherry .pillbox .active i[class^="icon"]:before,
+body.cherry .pillbox .nav-open a,
+body.cherry .pillbox .nav-open span,
+body.cherry .pillbox .nav-open i[class^="icon"],
+body.cherry .pillbox .nav-open i[class^="icon"]:after,
+body.cherry .pillbox .nav-open i[class^="icon"]:before,
 body.cherry .view-toolbar > a:hover,
 body.cherry .view-toolbar > a:active,
 body.cherry .view-toolbar > a:hover:before,
@@ -7108,7 +7319,8 @@ body.cherry #show-filters-structure-div-link,
 body.cherry .filters-bar .ui-state-active,
 body.cherry .filters-bar label:hover,
 body.cherry #clear-search-linkmodal,
-body.cherry .StepsAndProgressBarForWizardView .progress-bar {
+body.cherry .StepsAndProgressBarForWizardView .progress-bar,
+body.cherry .task-owner .gravatar {
   background-color: #6c8092;
 }
 body.cherry .latest-activity-toolbar label:hover,
@@ -7623,7 +7835,8 @@ body.turquoise .treeview span:hover .z-action-link,
 body.turquoise .drop-zone,
 body.turquoise .missing-chart,
 body.turquoise a.active-tab,
-body.turquoise .edit-autoresponder-link {
+body.turquoise .edit-autoresponder-link,
+body.turquoise .edit-project-link {
   color: #447799;
 }
 body.turquoise #MashableInboxActionBarForViews .nav > li > a:hover,
@@ -7635,18 +7848,28 @@ body.turquoise a:hover i[class^="icon"],
 body.turquoise a:hover i[class^="icon"]:after,
 body.turquoise a:active i[class^="icon"],
 body.turquoise a:active i[class^="icon"]:after,
-body.turquoise .button-action-trigger:hover span,
-body.turquoise .button-action-trigger:active span,
-body.turquoise .button-action:hover span,
-body.turquoise .button-action:active span,
-body.turquoise .split-button:hover span,
-body.turquoise .split-button:hover i[class^="icon"],
-body.turquoise .split-button:hover i[class^="icon"]:after,
-body.turquoise .split-button:hover i[class^="icon"]:before,
 body.turquoise .default-button:hover span,
 body.turquoise .default-button:hover i[class^="icon"],
 body.turquoise .default-button:hover i[class^="icon"]:after,
 body.turquoise .default-button:hover i[class^="icon"]:before,
+body.turquoise .button-action:hover span,
+body.turquoise .button-action:hover i[class^="icon"],
+body.turquoise .button-action:hover i[class^="icon"]:after,
+body.turquoise .button-action:hover i[class^="icon"]:before,
+body.turquoise .button-action-trigger:hover span,
+body.turquoise .button-action-trigger:hover i[class^="icon"],
+body.turquoise .button-action-trigger:hover i[class^="icon"]:after,
+body.turquoise .button-action-trigger:hover i[class^="icon"]:before,
+body.turquoise .pillbox .active a,
+body.turquoise .pillbox .active span,
+body.turquoise .pillbox .active i[class^="icon"],
+body.turquoise .pillbox .active i[class^="icon"]:after,
+body.turquoise .pillbox .active i[class^="icon"]:before,
+body.turquoise .pillbox .nav-open a,
+body.turquoise .pillbox .nav-open span,
+body.turquoise .pillbox .nav-open i[class^="icon"],
+body.turquoise .pillbox .nav-open i[class^="icon"]:after,
+body.turquoise .pillbox .nav-open i[class^="icon"]:before,
 body.turquoise .view-toolbar > a:hover,
 body.turquoise .view-toolbar > a:active,
 body.turquoise .view-toolbar > a:hover:before,
@@ -7710,7 +7933,8 @@ body.turquoise #show-filters-structure-div-link,
 body.turquoise .filters-bar .ui-state-active,
 body.turquoise .filters-bar label:hover,
 body.turquoise #clear-search-linkmodal,
-body.turquoise .StepsAndProgressBarForWizardView .progress-bar {
+body.turquoise .StepsAndProgressBarForWizardView .progress-bar,
+body.turquoise .task-owner .gravatar {
   background-color: #447799;
 }
 body.turquoise .latest-activity-toolbar label:hover,
@@ -8225,7 +8449,8 @@ body.violet .treeview span:hover .z-action-link,
 body.violet .drop-zone,
 body.violet .missing-chart,
 body.violet a.active-tab,
-body.violet .edit-autoresponder-link {
+body.violet .edit-autoresponder-link,
+body.violet .edit-project-link {
   color: #4a3970;
 }
 body.violet #MashableInboxActionBarForViews .nav > li > a:hover,
@@ -8237,18 +8462,28 @@ body.violet a:hover i[class^="icon"],
 body.violet a:hover i[class^="icon"]:after,
 body.violet a:active i[class^="icon"],
 body.violet a:active i[class^="icon"]:after,
-body.violet .button-action-trigger:hover span,
-body.violet .button-action-trigger:active span,
-body.violet .button-action:hover span,
-body.violet .button-action:active span,
-body.violet .split-button:hover span,
-body.violet .split-button:hover i[class^="icon"],
-body.violet .split-button:hover i[class^="icon"]:after,
-body.violet .split-button:hover i[class^="icon"]:before,
 body.violet .default-button:hover span,
 body.violet .default-button:hover i[class^="icon"],
 body.violet .default-button:hover i[class^="icon"]:after,
 body.violet .default-button:hover i[class^="icon"]:before,
+body.violet .button-action:hover span,
+body.violet .button-action:hover i[class^="icon"],
+body.violet .button-action:hover i[class^="icon"]:after,
+body.violet .button-action:hover i[class^="icon"]:before,
+body.violet .button-action-trigger:hover span,
+body.violet .button-action-trigger:hover i[class^="icon"],
+body.violet .button-action-trigger:hover i[class^="icon"]:after,
+body.violet .button-action-trigger:hover i[class^="icon"]:before,
+body.violet .pillbox .active a,
+body.violet .pillbox .active span,
+body.violet .pillbox .active i[class^="icon"],
+body.violet .pillbox .active i[class^="icon"]:after,
+body.violet .pillbox .active i[class^="icon"]:before,
+body.violet .pillbox .nav-open a,
+body.violet .pillbox .nav-open span,
+body.violet .pillbox .nav-open i[class^="icon"],
+body.violet .pillbox .nav-open i[class^="icon"]:after,
+body.violet .pillbox .nav-open i[class^="icon"]:before,
 body.violet .view-toolbar > a:hover,
 body.violet .view-toolbar > a:active,
 body.violet .view-toolbar > a:hover:before,
@@ -8312,7 +8547,8 @@ body.violet #show-filters-structure-div-link,
 body.violet .filters-bar .ui-state-active,
 body.violet .filters-bar label:hover,
 body.violet #clear-search-linkmodal,
-body.violet .StepsAndProgressBarForWizardView .progress-bar {
+body.violet .StepsAndProgressBarForWizardView .progress-bar,
+body.violet .task-owner .gravatar {
   background-color: #4a3970;
 }
 body.violet .latest-activity-toolbar label:hover,
@@ -8827,7 +9063,8 @@ body.honey .treeview span:hover .z-action-link,
 body.honey .drop-zone,
 body.honey .missing-chart,
 body.honey a.active-tab,
-body.honey .edit-autoresponder-link {
+body.honey .edit-autoresponder-link,
+body.honey .edit-project-link {
   color: #46201c;
 }
 body.honey #MashableInboxActionBarForViews .nav > li > a:hover,
@@ -8839,18 +9076,28 @@ body.honey a:hover i[class^="icon"],
 body.honey a:hover i[class^="icon"]:after,
 body.honey a:active i[class^="icon"],
 body.honey a:active i[class^="icon"]:after,
-body.honey .button-action-trigger:hover span,
-body.honey .button-action-trigger:active span,
-body.honey .button-action:hover span,
-body.honey .button-action:active span,
-body.honey .split-button:hover span,
-body.honey .split-button:hover i[class^="icon"],
-body.honey .split-button:hover i[class^="icon"]:after,
-body.honey .split-button:hover i[class^="icon"]:before,
 body.honey .default-button:hover span,
 body.honey .default-button:hover i[class^="icon"],
 body.honey .default-button:hover i[class^="icon"]:after,
 body.honey .default-button:hover i[class^="icon"]:before,
+body.honey .button-action:hover span,
+body.honey .button-action:hover i[class^="icon"],
+body.honey .button-action:hover i[class^="icon"]:after,
+body.honey .button-action:hover i[class^="icon"]:before,
+body.honey .button-action-trigger:hover span,
+body.honey .button-action-trigger:hover i[class^="icon"],
+body.honey .button-action-trigger:hover i[class^="icon"]:after,
+body.honey .button-action-trigger:hover i[class^="icon"]:before,
+body.honey .pillbox .active a,
+body.honey .pillbox .active span,
+body.honey .pillbox .active i[class^="icon"],
+body.honey .pillbox .active i[class^="icon"]:after,
+body.honey .pillbox .active i[class^="icon"]:before,
+body.honey .pillbox .nav-open a,
+body.honey .pillbox .nav-open span,
+body.honey .pillbox .nav-open i[class^="icon"],
+body.honey .pillbox .nav-open i[class^="icon"]:after,
+body.honey .pillbox .nav-open i[class^="icon"]:before,
 body.honey .view-toolbar > a:hover,
 body.honey .view-toolbar > a:active,
 body.honey .view-toolbar > a:hover:before,
@@ -8914,7 +9161,8 @@ body.honey #show-filters-structure-div-link,
 body.honey .filters-bar .ui-state-active,
 body.honey .filters-bar label:hover,
 body.honey #clear-search-linkmodal,
-body.honey .StepsAndProgressBarForWizardView .progress-bar {
+body.honey .StepsAndProgressBarForWizardView .progress-bar,
+body.honey .task-owner .gravatar {
   background-color: #46201c;
 }
 body.honey .latest-activity-toolbar label:hover,
@@ -10392,15 +10640,14 @@ body > .ui-autocomplete {
 }
 /*#MenuView .parent > a*/
 #MenuView .nav li {
-  zoom: 1;
+  *zoom: 1;
 }
-#MenuView .nav li:before {
-  content: "";
+#MenuView .nav li:before,
+#MenuView .nav li:after {
+  content: " ";
   display: table;
 }
 #MenuView .nav li:after {
-  content: "";
-  display: table;
   clear: both;
 }
 #MenuView ul a {
@@ -10711,15 +10958,14 @@ body > .ui-autocomplete {
   background-image: -ms-linear-gradient(#f6f6f6, #ffffff 100px, #ffffff) ;
   background-image: -o-linear-gradient(#f6f6f6, #ffffff 100px, #ffffff) ;
   background-image: linear-gradient(#f6f6f6, #ffffff 100px, #ffffff) ;
-  zoom: 1;
+  *zoom: 1;
 }
-.AppContent:before {
-  content: "";
+.AppContent:before,
+.AppContent:after {
+  content: " ";
   display: table;
 }
 .AppContent:after {
-  content: "";
-  display: table;
   clear: both;
 }
 .AppContent .single-column {
@@ -10732,17 +10978,17 @@ body > .ui-autocomplete {
 .AppContent .single-column .juiportlet-widget,
 .AppContent .single-column .details-table {
   margin-right: 0 !important;
-  zoom: 1;
+  *zoom: 1;
 }
 .AppContent .single-column .juiportlet-widget:before,
-.AppContent .single-column .details-table:before {
-  content: "";
+.AppContent .single-column .details-table:before,
+.AppContent .single-column .juiportlet-widget:after,
+.AppContent .single-column .details-table:after {
+  content: " ";
   display: table;
 }
 .AppContent .single-column .juiportlet-widget:after,
 .AppContent .single-column .details-table:after {
-  content: "";
-  display: table;
   clear: both;
 }
 .AppContent .single-column .right-side-edit-view-panel {
@@ -10850,13 +11096,16 @@ body > .ui-autocomplete {
   position: relative;
   z-index: 100;
 }
+h1 + .view-toolbar-container {
+  margin-top: 15px;
+}
 .widgets-lock {
   position: relative;
-  margin-top: -37px;
+  margin-top: -36px;
   margin-bottom: 15px;
   float: right;
 }
-.widgets-lock .view-toolbar {
+.widgets-lock .pillbox {
   float: right;
   margin-bottom: 0 !important;
 }
@@ -11357,6 +11606,7 @@ h1 .icon-star,
 }
 td.empty {
   display: table-cell !important;
+  border-top: none !important;
 }
 .icon-notice:before {
   content: "j";
@@ -11396,16 +11646,10 @@ td.empty {
 .general-issue-notice .icon-notice {
   display: block;
   line-height: 1;
-  margin-bottom: 10px;
 }
 .general-issue-notice .icon-notice:before {
   margin: 0;
-  font-size: 100px;
-  line-height: 60px !important;
-}
-.general-issue-notice p {
-  font-size: 14px;
-  line-height: 21px;
+  font-size: 40px;
 }
 /*forms*/
 .form input[type="checkbox"] {
@@ -11737,11 +11981,11 @@ a.simple-link:before {
   margin: 0 !important;
   border: 1px solid #CCCCCC;
   background: #fff;
-  -webkit-box-shadow: 0 0 11px 5px rgba(51, 51, 51, 0.4);
-  -moz-box-shadow: 0 0 11px 5px rgba(51, 51, 51, 0.4);
-  -o-box-shadow: 0 0 11px 5px rgba(51, 51, 51, 0.4);
-  -ms-box-shadow: 0 0 11px 5px rgba(51, 51, 51, 0.4);
-  box-shadow: 0 0 11px 5px rgba(51, 51, 51, 0.4);
+  -webkit-box-shadow: 0 0 15px 0 rgba(51, 51, 51, 0.25);
+  -moz-box-shadow: 0 0 15px 0 rgba(51, 51, 51, 0.25);
+  -o-box-shadow: 0 0 15px 0 rgba(51, 51, 51, 0.25);
+  -ms-box-shadow: 0 0 15px 0 rgba(51, 51, 51, 0.25);
+  box-shadow: 0 0 15px 0 rgba(51, 51, 51, 0.25);
   /*33*/
 
 }
@@ -11836,8 +12080,7 @@ a.simple-link:before {
   background: transparent url(../images/widget-close-btn.png) left top no-repeat;
 }
 .big-spinner {
-  margin-left: 270px;
-  margin-top: 30px;
+  margin: 15px 50%;
   display: block;
 }
 .ui-resizable-handle {
@@ -12242,15 +12485,14 @@ div.wide.form label.hasCheckBox {
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  zoom: 1;
+  *zoom: 1;
 }
-#search-form:before {
-  content: "";
+#search-form:before,
+#search-form:after {
+  content: " ";
   display: table;
 }
 #search-form:after {
-  content: "";
-  display: table;
   clear: both;
 }
 #search-form .form-toolbar,
@@ -12810,15 +13052,14 @@ div.wide.form label.hasCheckBox {
 }
 .attributesContainer {
   padding-bottom: 15px;
-  zoom: 1;
+  *zoom: 1;
 }
-.attributesContainer:before {
-  content: "";
+.attributesContainer:before,
+.attributesContainer:after {
+  content: " ";
   display: table;
 }
 .attributesContainer:after {
-  content: "";
-  display: table;
   clear: both;
 }
 .left-column {
@@ -12913,6 +13154,8 @@ div.wide.form label.hasCheckBox {
 }
 .more-panels-link {
   font-size: 11px;
+  position: relative;
+  left: -15px;
 }
 .ui-overlay-block {
   z-index: 250000;
@@ -13377,7 +13620,7 @@ div.wide.form label.hasCheckBox {
   position: relative;
 }
 .toolbar-mbmenu {
-  margin: 0 10px 0 0;
+  margin: 0 10px 0 0 !important;
   float: right;
   width: auto;
 }
@@ -13471,17 +13714,17 @@ div.wide.form label.hasCheckBox {
 }
 .DetailsAndRelationsView,
 #AccountDetailsAndRelationsView {
-  zoom: 1;
+  *zoom: 1;
 }
 .DetailsAndRelationsView:before,
-#AccountDetailsAndRelationsView:before {
-  content: "";
+#AccountDetailsAndRelationsView:before,
+.DetailsAndRelationsView:after,
+#AccountDetailsAndRelationsView:after {
+  content: " ";
   display: table;
 }
 .DetailsAndRelationsView:after,
 #AccountDetailsAndRelationsView:after {
-  content: "";
-  display: table;
   clear: both;
 }
 .DetailsAndRelationsView .GridView,
@@ -13502,15 +13745,14 @@ div.wide.form label.hasCheckBox {
   margin-right: 20px;
 }
 #UserDetailsAndRelationsView {
-  zoom: 1;
+  *zoom: 1;
 }
-#UserDetailsAndRelationsView:before {
-  content: "";
+#UserDetailsAndRelationsView:before,
+#UserDetailsAndRelationsView:after {
+  content: " ";
   display: table;
 }
 #UserDetailsAndRelationsView:after {
-  content: "";
-  display: table;
   clear: both;
 }
 #UserDetailsAndRelationsView .GridView {
@@ -13694,15 +13936,14 @@ div.wide.form label.hasCheckBox {
 }
 #inline-edit-form .permissions-box {
   margin-left: 0 !important;
-  zoom: 1;
+  *zoom: 1;
 }
-#inline-edit-form .permissions-box:before {
-  content: "";
+#inline-edit-form .permissions-box:before,
+#inline-edit-form .permissions-box:after {
+  content: " ";
   display: table;
 }
 #inline-edit-form .permissions-box:after {
-  content: "";
-  display: table;
   clear: both;
 }
 #inline-edit-form .permissions-box > label {
@@ -13883,15 +14124,14 @@ div.radio-input .hasDropDown {
 div.overlay-label-field {
   position: relative;
   padding-bottom: 15px;
-  zoom: 1;
+  *zoom: 1;
 }
-div.overlay-label-field:before {
-  content: "";
+div.overlay-label-field:before,
+div.overlay-label-field:after {
+  content: " ";
   display: table;
 }
 div.overlay-label-field:after {
-  content: "";
-  display: table;
   clear: both;
 }
 .overlay-label-field label {
@@ -13909,17 +14149,17 @@ div.overlay-label-field:after {
 }
 div.hasParallelFields,
 div.hasHalfs {
-  zoom: 1;
+  *zoom: 1;
 }
 div.hasParallelFields:before,
-div.hasHalfs:before {
-  content: "";
+div.hasHalfs:before,
+div.hasParallelFields:after,
+div.hasHalfs:after {
+  content: " ";
   display: table;
 }
 div.hasParallelFields:after,
 div.hasHalfs:after {
-  content: "";
-  display: table;
   clear: both;
 }
 div.hasParallelFields div:first-child,
@@ -14636,15 +14876,14 @@ div.hasHalfs > div input {
   -o-box-shadow: inset 0 1px 0 0 #ffffff;
   -ms-box-shadow: inset 0 1px 0 0 #ffffff;
   box-shadow: inset 0 1px 0 0 #ffffff;
-  zoom: 1;
+  *zoom: 1;
 }
-#search-formmodal:before {
-  content: "";
+#search-formmodal:before,
+#search-formmodal:after {
+  content: " ";
   display: table;
 }
 #search-formmodal:after {
-  content: "";
-  display: table;
   clear: both;
 }
 #search-formmodal table {
@@ -14667,7 +14906,7 @@ div.hasHalfs > div input {
   padding-top: 2px;
   padding-bottom: 2px;
   text-align: left;
-  z-index: 9999999;
+  z-index: 9999999 !important;
   position: absolute;
 }
 .ui-autocomplete li {
@@ -15270,7 +15509,8 @@ i[class^="icon"] {
   margin: 0;
 }
 .icon-change-dashboard:after,
-.icon-marketing-dashboard:after {
+.icon-marketing-dashboard:after,
+.icon-project-dashboard:after {
   content: "/";
 }
 .icon-export:after {
@@ -16101,15 +16341,14 @@ i[class^="icon"] {
   content: "Y" !important;
 }
 table.configuration-list {
-  zoom: 1;
+  *zoom: 1;
 }
-table.configuration-list:before {
-  content: "";
+table.configuration-list:before,
+table.configuration-list:after {
+  content: " ";
   display: table;
 }
 table.configuration-list:after {
-  content: "";
-  display: table;
   clear: both;
 }
 table.configuration-list h4 {
@@ -16181,15 +16420,14 @@ table.configuration-list td:last-child a .z-label:before {
   width: 75%;
   max-width: 675px;
   margin: 0 auto;
-  zoom: 1;
+  *zoom: 1;
 }
-.multiselect-holder:before {
-  content: "";
+.multiselect-holder:before,
+.multiselect-holder:after {
+  content: " ";
   display: table;
 }
 .multiselect-holder:after {
-  content: "";
-  display: table;
   clear: both;
 }
 .multiselect-holder label {
@@ -16597,18 +16835,17 @@ table.configuration-list td:last-child a .z-label:before {
   text-align: left;
 }
 .multi-select-checkbox-input {
-  zoom: 1;
+  *zoom: 1;
   width: 100%;
   display: block;
   margin-top: 4px;
 }
-.multi-select-checkbox-input:before {
-  content: "";
+.multi-select-checkbox-input:before,
+.multi-select-checkbox-input:after {
+  content: " ";
   display: table;
 }
 .multi-select-checkbox-input:after {
-  content: "";
-  display: table;
   clear: both;
 }
 .multi-select-checkbox-input .hasCheckBox {
@@ -16832,16 +17069,15 @@ table.configuration-list td:last-child a .z-label:before {
   cursor: pointer;
   text-indent: 0;
   display: inline-block;
-  zoom: 1;
+  *zoom: 1;
   margin: 0;
 }
-.AppContent.ImportWizardView #addExtraColumnButton:before {
-  content: "";
+.AppContent.ImportWizardView #addExtraColumnButton:before,
+.AppContent.ImportWizardView #addExtraColumnButton:after {
+  content: " ";
   display: table;
 }
 .AppContent.ImportWizardView #addExtraColumnButton:after {
-  content: "";
-  display: table;
   clear: both;
 }
 .AppContent.ImportWizardView #addExtraColumnButton.attachLoading.z-button {
@@ -16905,31 +17141,30 @@ table.configuration-list td:last-child a .z-label:before {
 #ImportWizardMappingView tr td:last-child {
   padding-right: 15px;
 }
-#ImportWizardMappingView .mapping-rules table {
-  border: none;
+.mapping-rules h4 {
+  padding: 10px 0 5px 0;
 }
-#ImportWizardMappingView .mapping-rules table,
-#ImportWizardMappingView .mapping-rules td,
-#ImportWizardMappingView .mapping-rules th,
-#ImportWizardMappingView .mapping-rules input,
-#ImportWizardMappingView .mapping-rules label {
-  margin: 0;
-}
-#ImportWizardMappingView .mapping-rules td,
-#ImportWizardMappingView .mapping-rules th {
-  padding: 0 !important;
-  background: none !important;
-  border: none !important;
-}
-#ImportWizardMappingView .mapping-rules th {
-  height: auto !important;
-  line-height: 100% !important;
-}
-#ImportWizardMappingView .mapping-rules label {
+.mapping-rules label {
   line-height: 26px;
+  padding-right: 10px;
+  width: 22%;
 }
-#ImportWizardMappingView .mapping-rules th:first-child {
-  padding-left: 0 !important;
+.mapping-rules > div {
+  width: 49%;
+  display: inline-block;
+}
+.mapping-rules > div > .has-model-select,
+.mapping-rules > div > .hasDropDown,
+.mapping-rules > div > input {
+  width: 78% !important;
+  display: inline-block;
+}
+.mapping-rules > div:last-child {
+  width: 100%;
+}
+.mapping-rules > div + div:last-child {
+  width: 49%;
+  margin-left: 2%;
 }
 .mapping-rules.multiple table {
   width: 49% !important;
@@ -16939,11 +17174,11 @@ table.configuration-list td:last-child a .z-label:before {
   float: right !important;
 }
 .remove-extra-column-link {
+  float: right;
   display: inline-block;
   position: relative;
   top: -21px;
-  left: 100%;
-  margin-left: 15px;
+  right: -90px;
   z-index: 99999;
 }
 /*=Step 5, process details*/
@@ -17043,15 +17278,14 @@ table.configuration-list td:last-child a .z-label:before {
   position: relative;
 }
 #ImportSequentialProcessContainerView .process-container-view {
-  zoom: 1;
+  *zoom: 1;
 }
-#ImportSequentialProcessContainerView .process-container-view:before {
-  content: "";
+#ImportSequentialProcessContainerView .process-container-view:before,
+#ImportSequentialProcessContainerView .process-container-view:after {
+  content: " ";
   display: table;
 }
 #ImportSequentialProcessContainerView .process-container-view:after {
-  content: "";
-  display: table;
   clear: both;
 }
 #ImportSequentialProcessContainerView .process-container-view:after {
@@ -17320,7 +17554,7 @@ table.configuration-list td:last-child a .z-label:before {
 .available-portlets {
   padding: 15px 15px 0 15px;
   list-style: none;
-  zoom: 1;
+  *zoom: 1;
   max-height: 400px;
   overflow-y: scroll;
   /*
@@ -17336,13 +17570,12 @@ table.configuration-list td:last-child a .z-label:before {
 	*/
 
 }
-.available-portlets:before {
-  content: "";
+.available-portlets:before,
+.available-portlets:after {
+  content: " ";
   display: table;
 }
 .available-portlets:after {
-  content: "";
-  display: table;
   clear: both;
 }
 .available-portlets li {
@@ -17407,6 +17640,10 @@ table.configuration-list td:last-child a .z-label:before {
 .available-portlets .icon-products:before {
   content: '\003E';
 }
+.available-portlets .icon-products:after {
+  content: '';
+  display: none;
+}
 .available-portlets .icon-rssReader:before {
   content: "z";
 }
@@ -17434,6 +17671,10 @@ table.configuration-list td:last-child a .z-label:before {
 }
 .available-portlets .icon-maps:before {
   content: 'L';
+  font-size: 46px;
+}
+.available-portlets .icon-google-analytics:before {
+  content: '\00DA';
   font-size: 46px;
 }
 /*Edit Portlet*/
@@ -17715,6 +17956,10 @@ div.wide.form .errorMessage {
   cursor: pointer;
   line-height: 16px;
   margin-top: -2px;
+  font-weight: normal !important;
+  font-weight: normal;
+  font-size: 22px;
+  font-family: "zurmo_gamification_symbly_rRg";
 }
 .upload-actions .icon-delete span {
   display: none;
@@ -17835,7 +18080,7 @@ div.wide.form .errorMessage {
   cursor: pointer;
   text-indent: 0;
   display: inline-block;
-  zoom: 1;
+  *zoom: 1;
   -webkit-box-shadow: 0 0 2px 0 rgba(153, 153, 153, 0.15);
   -moz-box-shadow: 0 0 2px 0 rgba(153, 153, 153, 0.15);
   -o-box-shadow: 0 0 2px 0 rgba(153, 153, 153, 0.15);
@@ -17852,13 +18097,12 @@ div.wide.form .errorMessage {
   top: 2px;
   background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
 }
-.addfileinput-button span:before {
-  content: "";
+.addfileinput-button span:before,
+.addfileinput-button span:after {
+  content: " ";
   display: table;
 }
 .addfileinput-button span:after {
-  content: "";
-  display: table;
   clear: both;
 }
 .addfileinput-button span.attachLoading.z-button {
@@ -18069,15 +18313,14 @@ div.wide.form .errorMessage {
   width: 100%;
   border-top: 1px solid #fff;
   padding: 5px 0;
-  zoom: 1;
+  *zoom: 1;
 }
-.ui-datepicker .ui-datepicker-buttonpane:before {
-  content: "";
+.ui-datepicker .ui-datepicker-buttonpane:before,
+.ui-datepicker .ui-datepicker-buttonpane:after {
+  content: " ";
   display: table;
 }
 .ui-datepicker .ui-datepicker-buttonpane:after {
-  content: "";
-  display: table;
   clear: both;
 }
 .ui-datepicker .ui-datepicker-current {
@@ -20347,16 +20590,15 @@ a.close-ModalGameNotification.simple-link {
   padding: 0 0 20px 0;
 }
 #UserDetailsView .details-table {
-  zoom: 1;
+  *zoom: 1;
   position: relative !important;
 }
-#UserDetailsView .details-table:before {
-  content: "";
+#UserDetailsView .details-table:before,
+#UserDetailsView .details-table:after {
+  content: " ";
   display: table;
 }
 #UserDetailsView .details-table:after {
-  content: "";
-  display: table;
   clear: both;
 }
 .gravatar-container a {
@@ -20387,15 +20629,14 @@ a.close-ModalGameNotification.simple-link {
   clear: right;
 }
 #UserChangeAvatarView {
-  zoom: 1;
+  *zoom: 1;
 }
-#UserChangeAvatarView:before {
-  content: "";
+#UserChangeAvatarView:before,
+#UserChangeAvatarView:after {
+  content: " ";
   display: table;
 }
 #UserChangeAvatarView:after {
-  content: "";
-  display: table;
   clear: both;
 }
 #UserChangeAvatarView .col-0 {
@@ -20444,6 +20685,26 @@ a.close-ModalGameNotification.simple-link {
   border: 1px solid #DFDFDF;
   border-top: none;
 }
+.reward-name {
+  margin-bottom: 5px;
+  display: inline-block;
+}
+.reward-name span {
+  font-weight: normal;
+  font-size: 11px;
+  color: #545454;
+}
+.reward-cost {
+  display: inline-block;
+  line-height: 16px;
+  font-weight: bold;
+  padding-right: 20px;
+  background: url(../images/game-dashboard/z-coin-small.png) right top no-repeat;
+}
+.reward-redeem-link {
+  float: right;
+  margin: -15px 10px 0 0;
+}
 #WelcomeView {
   padding-right: 20px !important;
 }
@@ -20476,15 +20737,14 @@ a.dashboard-link .z-label {
   display: block;
   float: left;
   width: 100%;
-  zoom: 1;
+  *zoom: 1;
 }
-#welcome-content:before {
-  content: "";
+#welcome-content:before,
+#welcome-content:after {
+  content: " ";
   display: table;
 }
 #welcome-content:after {
-  content: "";
-  display: table;
   clear: both;
 }
 .help-section {
@@ -20541,7 +20801,7 @@ a.dashboard-link .z-label {
   content: "•";
 }
 #instructions {
-  zoom: 1;
+  *zoom: 1;
   padding-bottom: 30px;
   border-bottom: 1px solid #ccc;
 }
@@ -20551,13 +20811,12 @@ a.dashboard-link .z-label {
   padding-right: 100px;
   padding-top: 15px;
 }
-#instructions:before {
-  content: "";
+#instructions:before,
+#instructions:after {
+  content: " ";
   display: table;
 }
 #instructions:after {
-  content: "";
-  display: table;
   clear: both;
 }
 #welcome-gallery {
@@ -20669,21 +20928,23 @@ a.dashboard-link .z-label {
   background-image: -ms-linear-gradient(#ffffff, #f5f5f5 80%, #f5f5f5)  !important;
   background-image: -o-linear-gradient(#ffffff, #f5f5f5 80%, #f5f5f5)  !important;
   background-image: linear-gradient(#ffffff, #f5f5f5 80%, #f5f5f5)  !important;
-  zoom: 1;
+  *zoom: 1;
 }
 .single-coloumn-details-view .details-table:before,
 #MissionDetailsView .details-table:before,
 #ConversationDetailsView .details-table:before,
-#ConversationDetailsAndRelationsView .details-table:before {
-  content: "";
+#ConversationDetailsAndRelationsView .details-table:before,
+.single-coloumn-details-view .details-table:after,
+#MissionDetailsView .details-table:after,
+#ConversationDetailsView .details-table:after,
+#ConversationDetailsAndRelationsView .details-table:after {
+  content: " ";
   display: table;
 }
 .single-coloumn-details-view .details-table:after,
 #MissionDetailsView .details-table:after,
 #ConversationDetailsView .details-table:after,
 #ConversationDetailsAndRelationsView .details-table:after {
-  content: "";
-  display: table;
   clear: both;
 }
 .single-coloumn-details-view .toolbar-mbmenu,
@@ -20891,7 +21152,6 @@ a.dashboard-link .z-label {
 }
 /*End sidebar*/
 #ModelDetailsSummaryView h2,
-#CommentList h2,
 .CommentList h2 {
   margin-bottom: 15px;
 }
@@ -20903,20 +21163,26 @@ a.dashboard-link .z-label {
   color: #999;
   font-weight: normal !important;
 }
-#CommentList,
 .CommentList {
   margin-left: 115px;
 }
-#CommentList .comment,
 .CommentList .comment {
   margin-top: 15px;
 }
-#CommentList:last-child,
 .CommentList:last-child {
   margin-bottom: 25px;
 }
 .comment {
+  *zoom: 1;
   line-height: 140%;
+}
+.comment:before,
+.comment:after {
+  content: " ";
+  display: table;
+}
+.comment:after {
+  clear: both;
 }
 .comment .gravatar {
   margin-top: 1px;
@@ -20945,10 +21211,6 @@ a.dashboard-link .z-label {
   -khtml-opacity: 1;
   -moz-opacity: 1;
   opacity: 1;
-}
-.comment-content,
-.comment-details {
-  margin: 0 0 2px 0;
 }
 .model-details-summary {
   font-size: 12px !important;
@@ -21066,18 +21328,18 @@ a.dashboard-link .z-label {
 }
 #ConversationDetailsView .details-table,
 #MissionDetailsView .details-table {
-  zoom: 1;
+  *zoom: 1;
   margin-right: 0 !important;
 }
 #ConversationDetailsView .details-table:before,
-#MissionDetailsView .details-table:before {
-  content: "";
+#MissionDetailsView .details-table:before,
+#ConversationDetailsView .details-table:after,
+#MissionDetailsView .details-table:after {
+  content: " ";
   display: table;
 }
 #ConversationDetailsView .details-table:after,
 #MissionDetailsView .details-table:after {
-  content: "";
-  display: table;
   clear: both;
 }
 #ConversationDetailsView .panel > table,
@@ -22089,6 +22351,7 @@ a.user-link {
   padding-top: 5px !important;
   padding-bottom: 5px !important;
 }
+.drillDownContent > h4,
 .drillDownContent > h5 {
   padding: 5px 5px 0 5px;
 }
@@ -22138,11 +22401,6 @@ a.user-link {
 }
 #series-and-range-areas .buffer {
   padding-left: 22px;
-}
-#CampaignDetailsView h1,
-#MarketingListDetailsView h1,
-#ReportDetailsView h1 {
-  margin-bottom: 15px;
 }
 #CampaignDetailsView .view-toolbar ul:first-child > li > a,
 #MarketingListDetailsView .view-toolbar ul:first-child > li > a,
@@ -22826,15 +23084,14 @@ a.user-link {
   -o-box-shadow: none;
   -ms-box-shadow: none;
   box-shadow: none;
-  zoom: 1;
+  *zoom: 1;
 }
-#marketing-list-member-configuration-form:before {
-  content: "";
+#marketing-list-member-configuration-form:before,
+#marketing-list-member-configuration-form:after {
+  content: " ";
   display: table;
 }
 #marketing-list-member-configuration-form:after {
-  content: "";
-  display: table;
   clear: both;
 }
 #marketing-list-member-configuration-form input[type="text"] {
@@ -22885,8 +23142,8 @@ a.user-link {
 }
 #marketing-list-member-select-contact-or-report-form .close-flyout {
   position: absolute;
-  right: 5px;
-  top: 2px;
+  right: 3px;
+  top: 3px;
   font-weight: normal !important;
   font-weight: normal;
   font-size: 18px;
@@ -22901,6 +23158,11 @@ a.user-link {
   border: 1px solid #d5d4d4;
   position: relative;
   background: url(../images/search-bar-loopa.png) left top no-repeat;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+  border-radius: 3px;
 }
 #marketing-list-member-select-contact-or-report-form .search-without-scope .z-spinner {
   top: 2px;
@@ -22914,21 +23176,11 @@ a.user-link {
   box-sizing: border-box;
   width: 300px;
   margin: 0 0 0 23px;
-  -webkit-border-radius: 0;
-  -moz-border-radius: 0;
-  -ms-border-radius: 0;
-  -o-border-radius: 0;
-  border-radius: 0;
-  -webkit-box-shadow: none;
-  -moz-box-shadow: none;
-  -o-box-shadow: none;
-  -ms-box-shadow: none;
-  box-shadow: none;
   font-style: italic;
   color: #999;
   text-indent: 5px;
-  line-height: 23px;
-  height: 23px !important;
+  line-height: 22px;
+  height: 22px !important;
   border: none;
   background: url(../images/search-bar-gradient.png) left top repeat-x;
 }
@@ -23047,6 +23299,9 @@ a.user-link {
   clear: left;
   margin: 15px 0 0 0;
 }
+.marketing-list-autoresponders-list .items {
+  background: #ffffff;
+}
 .edit-autoresponder-link {
   font-size: 14px;
   font-weight: bold;
@@ -23119,9 +23374,11 @@ a + .autoresponder-stats {
   line-height: 175%;
 }
 .module-intro-steps {
-  float: left;
   width: 100%;
   margin: 30px 0 15px 0;
+}
+.module-intro-steps:after {
+  clear: none;
 }
 .module-intro-steps > div {
   float: left;
@@ -23210,16 +23467,9 @@ a + .autoresponder-stats {
 }
 .hide-module-intro,
 .hide-marketing-intro {
-  display: block;
-  clear: both;
-  position: relative;
-  top: 30px;
-  font-size: 11px;
-  clear: none;
-  position: static;
-  top: 0;
-  float: right;
   margin-bottom: 30px;
+  width: 100%;
+  text-align: right;
 }
 .hide-module-intro span,
 .hide-marketing-intro span {
@@ -23286,11 +23536,38 @@ a + .autoresponder-stats {
   color: #fff !important;
 }
 /*Continuum*/
+.campaign-items-container .hasDrillDownContent {
+  padding: 5px !important;
+}
+.campaign-items-container .hasDrillDownContent table {
+  border-bottom: 1px solid #DFDFDF;
+  margin: 5px 0 0 0;
+  width: 100%;
+}
+.campaign-items-container .hasDrillDownContent td,
+.campaign-items-container .hasDrillDownContent th {
+  border: 1px solid #DFDFDF;
+  border-right: none;
+  vertical-align: middle;
+  padding: 5px;
+  word-wrap: break-word;
+  text-align: left;
+}
+.campaign-items-container .hasDrillDownContent th {
+  font-weight: bold !important;
+  height: 25px;
+  line-height: 25px;
+  background: url(../images/table-items-header.png) left top repeat-x;
+  padding: 0 5px;
+}
+.campaign-items-container .error {
+  color: #c43d53;
+}
 .email-recipient-name {
   float: left;
   width: 15%;
   display: block;
-  line-height: 20px;
+  line-height: 23px;
 }
 .continuum {
   float: left;
@@ -23754,7 +24031,7 @@ a + .autoresponder-stats {
   -ms-border-radius: 3px;
   -o-border-radius: 3px;
   border-radius: 3px;
-  padding: 5px 5px 15px 10px;
+  padding: 5px;
   -webkit-box-shadow: inset 0 0 0 1px rgba(204, 204, 204, 0.3) , 1px 1px 1px 0px rgba(153, 153, 153, 0.15);
   -moz-box-shadow: inset 0 0 0 1px rgba(204, 204, 204, 0.3) , 1px 1px 1px 0px rgba(153, 153, 153, 0.15);
   -o-box-shadow: inset 0 0 0 1px rgba(204, 204, 204, 0.3) , 1px 1px 1px 0px rgba(153, 153, 153, 0.15);
@@ -23762,19 +24039,31 @@ a + .autoresponder-stats {
   box-shadow: inset 0 0 0 1px rgba(204, 204, 204, 0.3) , 1px 1px 1px 0px rgba(153, 153, 153, 0.15);
 }
 .kanban-card span {
-  display: block;
+  display: inline-block;
   margin-bottom: 3px;
 }
-.kanban-card .opportunity-name {
+.kanban-card .hidden-content > a {
+  font-size: 11px;
+  position: relative;
+  top: 5px;
+}
+.kanban-card .hidden-content > div {
+  display: none;
+  padding: 10px 0 5px 0;
+}
+.kanban-card .gravatar {
+  border: none !important;
+}
+.opportunity-name {
   font-size: 12px;
   font-weight: normal;
 }
-.kanban-card .account-name {
+.account-name {
   font-size: 14px;
   font-weight: bold;
   color: #666;
 }
-.kanban-card .opportunity-amount {
+.opportunity-amount {
   font-size: 20px;
   font-weight: bold;
   text-align: right;
@@ -23787,21 +24076,21 @@ a + .autoresponder-stats {
   line-height: 1;
   margin-bottom: 5px;
 }
-.kanban-card .closing-date {
+.closing-date {
   font-size: 11px;
   text-align: right;
 }
-.kanban-card .closing-date i {
+.closing-date i {
   text-align: left;
   font-weight: normal !important;
   font-weight: normal;
   font-size: 12px;
   font-family: "zurmo_gamification_symbly_rRg";
 }
-.kanban-card .closing-date i:after {
+.closing-date i:after {
   content: "z";
 }
-.kanban-card .opportunity-owner {
+.opportunity-owner {
   position: absolute;
   right: 5px;
   bottom: 5px;
@@ -23809,24 +24098,21 @@ a + .autoresponder-stats {
   display: block;
   line-height: 1;
 }
-.kanban-card .opportunity-owner span {
+.opportunity-owner span {
   display: inline-block;
   top: -7px;
   position: relative;
   margin: 0 5px;
 }
-.kanban-card .opportunity-owner img {
+.opportunity-owner img {
   background: #DFDFDF;
   padding: 1px;
 }
-.kanban-card .hidden-content > a {
-  font-size: 11px;
-  position: relative;
-  top: 5px;
+#OpportunitiesListView .kanban-card > div {
+  padding: 5px 5px 15px 10px;
 }
-.kanban-card .hidden-content > div {
-  display: none;
-  padding: 10px 0 5px 0;
+#OpportunitiesListView .kanban-card span {
+  display: block;
 }
 .kanban-card.clone {
   position: absolute;
@@ -23846,6 +24132,226 @@ a + .autoresponder-stats {
 .icon-kanban-board-view-type span,
 .icon-grid-view-type span {
   display: none;
+}
+.task-details {
+  display: block;
+  width: 100%;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #dfdfdf;
+}
+.completion-percentage-bar {
+  position: relative;
+  top: -5px;
+  text-indent: -9999px;
+  height: 3px;
+  width: 0;
+  -webkit-transition: all 0.5s ease-out;
+  -moz-transition: all 0.5s ease-out;
+  -o-transition: all 0.5s ease-out;
+  -ms-transition: all 0.5s ease-out;
+  transition: all 0.5s ease-out;
+  background-color: #97c43d;
+  background-repeat: repeat-x;
+  background-image: -moz-linear-gradient(left, #6fa82d, #97c43d);
+  background-image: -ms-linear-gradient(left, #6fa82d, #97c43d);
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(0%, #6fa82d), color-stop(100%, #97c43d));
+  background-image: -webkit-linear-gradient(left, #6fa82d, #97c43d);
+  background-image: -o-linear-gradient(left, #6fa82d, #97c43d);
+  background-image: linear-gradient(left, #6fa82d, #97c43d);
+}
+.task-status {
+  font-weight: bold;
+  font-size: 10px;
+  float: left;
+}
+.status-4 .task-status {
+  color: #a82d31;
+}
+.task-due-date {
+  float: right;
+  font-weight: bold;
+  font-size: 10px;
+  color: #323232;
+}
+.task-content {
+  padding: 10px 0 0 0;
+  border-top: 1px solid #fff;
+}
+.task-content h4 span {
+  font-weight: normal;
+  margin-left: 5px;
+  font-size: 11px;
+}
+.task-subscribers {
+  margin-top: 10px;
+  padding-top: 7px;
+  border-top: 1px solid #dfdfdf;
+  -webkit-box-shadow: inset 0 1px 0 #ffffff;
+  -moz-box-shadow: inset 0 1px 0 #ffffff;
+  -o-box-shadow: inset 0 1px 0 #ffffff;
+  -ms-box-shadow: inset 0 1px 0 #ffffff;
+  box-shadow: inset 0 1px 0 #ffffff;
+}
+.task-subscribers img {
+  margin-right: 5px;
+}
+.task-subscribers .z-link {
+  position: relative;
+  top: 3px;
+}
+.task-action-toolbar {
+  overflow: hidden;
+  float: right;
+  margin: 0 0 10px 5px !important;
+}
+.task-action-toolbar .button-label {
+  font-size: 11px;
+  padding: 0 3px !important;
+  line-height: 20px !important;
+  z-index: 10;
+}
+.task-action-toolbar .button-label:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: -1;
+}
+.action-type-accept .button-label {
+  color: #ffffff;
+}
+.action-type-accept .button-label:before {
+  background-color: #6fa82d;
+  background-repeat: repeat-x;
+  background-image: -moz-linear-gradient(top, #97c43d, #6fa82d);
+  background-image: -ms-linear-gradient(top, #97c43d, #6fa82d);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #6fa82d));
+  background-image: -webkit-linear-gradient(top, #97c43d, #6fa82d);
+  background-image: -o-linear-gradient(top, #97c43d, #6fa82d);
+  background-image: linear-gradient(top, #97c43d, #6fa82d);
+}
+.action-type-accept .button-action:hover .button-label {
+  color: #344415;
+  -webkit-text-shadow: 0px 1px 0 #a1ca51;
+  -moz-text-shadow: 0px 1px 0 #a1ca51;
+  -o-text-shadow: 0px 1px 0 #a1ca51;
+  -ms-text-shadow: 0px 1px 0 #a1ca51;
+  text-shadow: 0px 1px 0 #a1ca51;
+}
+.action-type-accept .button-action:hover .button-label:before {
+  background-color: #548022;
+  background-repeat: repeat-x;
+  background-image: -moz-linear-gradient(top, #97c43d, #548022);
+  background-image: -ms-linear-gradient(top, #97c43d, #548022);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #548022));
+  background-image: -webkit-linear-gradient(top, #97c43d, #548022);
+  background-image: -o-linear-gradient(top, #97c43d, #548022);
+  background-image: linear-gradient(top, #97c43d, #548022);
+}
+.action-type-reject .button-label {
+  color: #ffffff;
+}
+.action-type-reject .button-label:before {
+  background-color: #a82d31;
+  background-repeat: repeat-x;
+  background-image: -moz-linear-gradient(top, #c43d53, #a82d31);
+  background-image: -ms-linear-gradient(top, #c43d53, #a82d31);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #c43d53), color-stop(100%, #a82d31));
+  background-image: -webkit-linear-gradient(top, #c43d53, #a82d31);
+  background-image: -o-linear-gradient(top, #c43d53, #a82d31);
+  background-image: linear-gradient(top, #c43d53, #a82d31);
+}
+.action-type-reject .button-action:hover .button-label {
+  color: #44151c;
+  -webkit-text-shadow: 0px 1px 0 #ca5164;
+  -moz-text-shadow: 0px 1px 0 #ca5164;
+  -o-text-shadow: 0px 1px 0 #ca5164;
+  -ms-text-shadow: 0px 1px 0 #ca5164;
+  text-shadow: 0px 1px 0 #ca5164;
+}
+.action-type-reject .button-action:hover .button-label:before {
+  background-color: #802225;
+  background-repeat: repeat-x;
+  background-image: -moz-linear-gradient(top, #c43d53, #802225);
+  background-image: -ms-linear-gradient(top, #c43d53, #802225);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #c43d53), color-stop(100%, #802225));
+  background-image: -webkit-linear-gradient(top, #c43d53, #802225);
+  background-image: -o-linear-gradient(top, #c43d53, #802225);
+  background-image: linear-gradient(top, #c43d53, #802225);
+}
+.action-type-finish .button-label {
+  color: #ffffff;
+}
+.action-type-finish .button-label:before {
+  background-color: #e4b600;
+  background-repeat: repeat-x;
+  background-image: -moz-linear-gradient(top, #ffcc00, #e4b600);
+  background-image: -ms-linear-gradient(top, #ffcc00, #e4b600);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffcc00), color-stop(100%, #e4b600));
+  background-image: -webkit-linear-gradient(top, #ffcc00, #e4b600);
+  background-image: -o-linear-gradient(top, #ffcc00, #e4b600);
+  background-image: linear-gradient(top, #ffcc00, #e4b600);
+}
+.action-type-finish .button-action:hover .button-label {
+  color: #574500;
+  -webkit-text-shadow: 0px 1px 0 #ffd11a;
+  -moz-text-shadow: 0px 1px 0 #ffd11a;
+  -o-text-shadow: 0px 1px 0 #ffd11a;
+  -ms-text-shadow: 0px 1px 0 #ffd11a;
+  text-shadow: 0px 1px 0 #ffd11a;
+}
+.action-type-finish .button-action:hover .button-label:before {
+  background-color: #b18d00;
+  background-repeat: repeat-x;
+  background-image: -moz-linear-gradient(top, #ffcc00, #b18d00);
+  background-image: -ms-linear-gradient(top, #ffcc00, #b18d00);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffcc00), color-stop(100%, #b18d00));
+  background-image: -webkit-linear-gradient(top, #ffcc00, #b18d00);
+  background-image: -o-linear-gradient(top, #ffcc00, #b18d00);
+  background-image: linear-gradient(top, #ffcc00, #b18d00);
+}
+.subscribe-task-link {
+  background: #DFDFDF;
+  padding: 2px;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+}
+.subscribe-task-link .icon-subscribe {
+  position: relative;
+  top: -3px;
+  display: block;
+  text-align: center;
+}
+.subscribe-task-link .icon-subscribe:after {
+  color: #ffffff;
+  content: "Y";
+  font-size: 29px;
+}
+.detail-subscribe-task-link {
+  background: #DFDFDF;
+  padding: 2px;
+  display: inline-block;
+  width: 36px;
+  height: 36px;
+}
+.detail-subscribe-task-link .icon-subscribe {
+  position: relative;
+  top: -2px;
+  display: block;
+  text-align: center;
+}
+.detail-subscribe-task-link .icon-subscribe:after {
+  color: #ffffff;
+  content: "Y";
+  font-size: 44px;
+}
+.detail-unsubscribe-task-link,
+.unsubscribe-task-link {
+  float: right;
+  margin: 0 0 0 0;
 }
 .webform-embed-code {
   padding: 0;
@@ -24473,7 +24979,6 @@ div.special-pager .hidden.next:after {
 .mini-button .show {
   display: block;
 }
-/*Temp*/
 .toolbar-mbmenu i[class^="icon"] {
   display: none !important;
 }
@@ -24484,7 +24989,7 @@ div.special-pager .hidden.next:after {
   font-family: "zurmo_gamification_symbly_rRg";
   vertical-align: middle;
   padding: 0 0 0 0;
-  margin: 0 3px 0 0;
+  margin: 0 0 0 0;
   position: relative;
   top: -1px;
   -moz-box-sizing: border-box;
@@ -24519,62 +25024,86 @@ div.special-pager .hidden.next:after {
 .pillbox.empty {
   visibility: hidden;
 }
-.pillbox .split-button:last-child .button-trigger {
+.pillbox i[class^="icon"] {
+  color: #656565;
+  font-weight: normal;
+  font-size: 24px;
+  font-family: "zurmo_gamification_symbly_rRg";
+  vertical-align: middle;
+  padding: 0 0 0 0;
+  margin: 0 0 0 0;
+  position: relative;
+  top: -1px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.split-button,
+.default-button {
+  cursor: pointer;
+  position: relative;
+  display: inline-block;
+  float: left;
+}
+.split-button + .default-button,
+.default-button + .default-button,
+.split-button + .split-button,
+.default-button + .split-button {
+  border-left: 1px solid #bababa;
+}
+.split-button > a,
+.default-button > a {
+  padding: 0 5px 0 5px;
+}
+.split-button i,
+.default-button i {
+  font-style: normal;
+  line-height: 30px;
+  margin-right: 3px;
+}
+.split-button:last-child .button-trigger {
   -webkit-border-radius: 0 4px 4px 0;
   -moz-border-radius: 0 4px 4px 0;
   -ms-border-radius: 0 4px 4px 0;
   -o-border-radius: 0 4px 4px 0;
   border-radius: 0 4px 4px 0;
 }
-.pillbox .split-button,
-.pillbox .default-button {
-  cursor: pointer;
-  position: relative;
-  padding: 0 0 0 5px;
-  display: inline-block;
-  float: left;
+.split-button .icon-trigger:before {
+  display: block;
 }
-.pillbox .split-button + .default-button,
-.pillbox .default-button + .default-button,
-.pillbox .split-button + .split-button,
-.pillbox .default-button + .split-button {
-  border-left: 1px solid #bababa;
+.split-button .button-actions:before {
+  right: 4px;
+  background: url(../images/tip.png) right bottom no-repeat;
 }
-.pillbox .split-button i,
-.pillbox .default-button i {
-  font-style: normal;
-  line-height: 30px;
-  margin-right: 3px;
+.default-button:hover .icon-trigger:before {
+  display: block !important;
 }
-.pillbox .split-button .button-label,
-.pillbox .default-button .button-label {
+.button-label {
   font-weight: bold;
   padding: 0 5px;
   line-height: 30px;
   display: inline-block;
   white-space: nowrap;
 }
-.pillbox .split-button .button-label:empty,
-.pillbox .default-button .button-label:empty {
+.button-label:empty {
   display: none;
 }
-.pillbox .split-button .button-action-trigger,
-.pillbox .default-button .button-action-trigger,
-.pillbox .split-button .button-trigger,
-.pillbox .default-button .button-trigger {
+.button-action-trigger,
+.button-trigger {
   position: relative;
-  z-index: 5;
+  z-index: 99999;
   display: inline-block;
   line-height: 30px;
-  margin: 0 0 0 4px;
-  padding-right: 4px;
   text-align: center;
   float: right;
+  -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
+  -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
+  -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
+  -ms-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
+  text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
 }
-.pillbox .split-button .button-action-trigger:hover,
-.pillbox .default-button .button-action-trigger:hover,
-.pillbox .split-button .button-trigger:hover,
-.pillbox .default-button .button-trigger:hover {
+.button-action-trigger:hover,
+.button-trigger:hover {
   background-color: #ffffff ;
   background-repeat: no-repeat ;
   background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), color-stop(50%, #dddddd), to(#ffffff)) ;
@@ -24585,10 +25114,8 @@ div.special-pager .hidden.next:after {
   background-image: linear-gradient(#ffffff, #dddddd 50%, #ffffff) ;
   border-left: 1px solid #e7e7e7;
 }
-.pillbox .split-button .button-action-trigger:hover i,
-.pillbox .default-button .button-action-trigger:hover i,
-.pillbox .split-button .button-trigger:hover i,
-.pillbox .default-button .button-trigger:hover i {
+.button-action-trigger:hover i,
+.button-trigger:hover i {
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
   -o-box-shadow: none;
@@ -24596,28 +25123,18 @@ div.special-pager .hidden.next:after {
   box-shadow: none;
   border-left: none;
 }
-.pillbox .split-button .button-action-trigger:hover .icon-trigger:before,
-.pillbox .default-button .button-action-trigger:hover .icon-trigger:before,
-.pillbox .split-button .button-trigger:hover .icon-trigger:before,
-.pillbox .default-button .button-trigger:hover .icon-trigger:before {
+.button-action-trigger:hover .icon-trigger:before,
+.button-trigger:hover .icon-trigger:before {
   display: block;
 }
-.pillbox .split-button .button-action-trigger:hover + .button-actions,
-.pillbox .default-button .button-action-trigger:hover + .button-actions,
-.pillbox .split-button .button-trigger:hover + .button-actions,
-.pillbox .default-button .button-trigger:hover + .button-actions {
+.button-action-trigger:hover + .button-actions,
+.button-trigger:hover + .button-actions {
   display: block;
 }
-.pillbox .split-button .button-action-trigger .icon-trigger,
-.pillbox .default-button .button-action-trigger .icon-trigger,
-.pillbox .split-button .button-trigger .icon-trigger,
-.pillbox .default-button .button-trigger .icon-trigger {
-  top: 0;
-  font-size: 14px;
-  margin: 0 0 0 0;
-  line-height: 1;
-  padding: 2px 4px 2px 5px;
-  border-left: 1px solid #e7e7e7;
+.button-action-trigger .icon-trigger,
+.button-trigger .icon-trigger {
+  font-size: 14px !important;
+  line-height: 1 !important;
   -webkit-box-shadow: inset 1px 0 0 0 #ffffff;
   -moz-box-shadow: inset 1px 0 0 0 #ffffff;
   -o-box-shadow: inset 1px 0 0 0 #ffffff;
@@ -24628,33 +25145,35 @@ div.special-pager .hidden.next:after {
   -o-text-shadow: 0 2px 0 #ffffff;
   -ms-text-shadow: 0 2px 0 #ffffff;
   text-shadow: 0 2px 0 #ffffff;
+  top: 0;
+  margin: 0;
+  padding: 0;
+  border-left: 1px solid #e7e7e7;
 }
-.pillbox .split-button .button-action-trigger .icon-trigger:after,
-.pillbox .default-button .button-action-trigger .icon-trigger:after,
-.pillbox .split-button .button-trigger .icon-trigger:after,
-.pillbox .default-button .button-trigger .icon-trigger:after {
+.button-action-trigger .icon-trigger:after,
+.button-trigger .icon-trigger:after {
   content: "÷";
+  padding: 0 0 0 6px;
 }
-.pillbox .split-button .button-action-trigger .icon-trigger:before,
-.pillbox .default-button .button-action-trigger .icon-trigger:before,
-.pillbox .split-button .button-trigger .icon-trigger:before,
-.pillbox .default-button .button-trigger .icon-trigger:before {
+.button-action-trigger .icon-trigger:before,
+.button-trigger .icon-trigger:before {
   content: "";
   display: none;
   position: absolute;
-  top: 23px;
-  right: 1px;
+  top: 24px;
+  right: -2px;
   width: 13px;
   height: 8px;
   background: url(../images/tip.png) right bottom no-repeat;
 }
-.pillbox .split-button .button-action-trigger:hover,
-.pillbox .default-button .button-action-trigger:hover {
+.button-trigger {
+  padding: 0 8px 0 0 !important;
+}
+.button-action-trigger:hover {
   background: none;
   border-left: none;
 }
-.pillbox .split-button .button-action-trigger:hover i,
-.pillbox .default-button .button-action-trigger:hover i {
+.button-action-trigger:hover i {
   -webkit-text-shadow: none;
   -moz-text-shadow: none;
   -o-text-shadow: none;
@@ -24667,32 +25186,40 @@ div.special-pager .hidden.next:after {
   box-shadow: none;
   border-left: none;
 }
-.pillbox .default-button {
-  padding: 0 5px 0 5px;
-}
-.pillbox .default-button:hover .icon-trigger:before {
+.button-action-trigger:hover .icon-trigger:before {
   display: block !important;
 }
-.pillbox i[class^="icon"] {
+.button-action-trigger .icon-options:after {
+  margin: 0 !important;
   color: #656565;
   font-weight: normal;
   font-size: 24px;
   font-family: "zurmo_gamification_symbly_rRg";
   vertical-align: middle;
   padding: 0 0 0 0;
-  margin: 0 3px 0 0;
+  margin: 0 0 0 0;
   position: relative;
   top: -1px;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
-.pillbox .button-actions {
+.button-action-trigger .icon-trigger {
+  border-left: none !important;
+}
+.button-action-trigger .icon-trigger:before {
+  right: 0px;
+}
+.button-action-trigger .icon-trigger:after {
+  padding: 0 3px;
+}
+.button-actions {
+  z-index: 999;
   color: #EFEFEF;
   display: none;
   list-style: none;
   position: absolute;
-  top: 38px;
+  top: 40px;
   right: 0;
   min-width: 100px;
   -webkit-border-radius: 2px;
@@ -24709,35 +25236,36 @@ div.special-pager .hidden.next:after {
   -ms-box-shadow: 0 0 10px 2px rgba(53, 53, 53, 0.5);
   box-shadow: 0 0 10px 2px rgba(53, 53, 53, 0.5);
 }
-.pillbox .button-actions:hover,
-.pillbox .button-actions.stayOpen {
+.button-actions:hover,
+.button-actions.stayOpen,
+.button-actions.nav-open {
   display: block;
 }
-.pillbox .button-actions:before {
+.button-actions:before {
   content: "";
   display: block;
   position: absolute;
   top: -15px;
-  right: 9px;
-  width: 80%;
+  right: 0;
+  width: 100%;
   height: 15px;
   background: transparent;
 }
-.pillbox .button-actions li {
+.button-actions li {
   line-height: 100%;
 }
-.pillbox .button-actions li:first-child {
+.button-actions li:first-child {
   border-top: none;
 }
-.pillbox .button-actions li:last-child {
+.button-actions li:last-child {
   border-bottom: none;
 }
-.pillbox .button-actions .divider {
+.button-actions .divider {
   border-top: 1px solid #181818;
   border-bottom: 1px solid #323232;
   margin: 5px 5px;
 }
-.pillbox .button-actions a {
+.button-actions li > a {
   color: #EFEFEF;
   font-size: 11px;
   font-weight: normal;
@@ -24750,11 +25278,31 @@ div.special-pager .hidden.next:after {
   -ms-text-shadow: none;
   text-shadow: none;
 }
-.pillbox .button-actions label {
+.button-actions label {
   color: #EFEFEF;
+}
+.button-actions .has-model-select {
+  -webkit-border-radius: 0 3px 3px 0;
+  -moz-border-radius: 0 3px 3px 0;
+  -ms-border-radius: 0 3px 3px 0;
+  -o-border-radius: 0 3px 3px 0;
+  border-radius: 0 3px 3px 0;
+}
+.button-actions .has-model-select a {
+  right: -1px;
+  bottom: -1px;
+}
+.button-actions .has-model-select a:hover {
+  background: url(../images/dropdown-general.png) left top no-repeat !important;
 }
 .nav-open .button-actions {
   display: block;
+}
+.nav-open .icon-trigger:before {
+  display: block !important;
+}
+.nav-open .close-flyout {
+  color: #ffffff !important;
 }
 .button-actions.open-on-left {
   right: auto;
@@ -24768,27 +25316,11 @@ div.special-pager .hidden.next:after {
 .juiportlet-widget-content .pillbox {
   margin: 15px 0 0 15px;
 }
-.button-action-trigger .icon-options:after {
-  margin: 0 !important;
-  color: #656565;
-  font-weight: normal;
-  font-size: 24px;
-  font-family: "zurmo_gamification_symbly_rRg";
-  vertical-align: middle;
-  padding: 0 0 0 0;
-  margin: 0 3px 0 0;
-  position: relative;
-  top: -1px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-}
-.button-action-trigger .icon-trigger {
-  border-left: none !important;
-}
 .unread-count {
   display: inline-block;
-  margin: -2px 2px 0 0;
+  position: relative;
+  top: -1px;
+  margin: 0;
   -webkit-border-radius: 50%;
   -moz-border-radius: 50%;
   -ms-border-radius: 50%;
@@ -24873,6 +25405,7 @@ div.special-pager .hidden.next:after {
   filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
   margin-bottom: 5px !important;
   line-height: 1.4;
+  font-size: 12px;
 }
 .overlay-view .after-form-details-content {
   padding: 0px;
@@ -24884,6 +25417,21 @@ div.special-pager .hidden.next:after {
   color: #fff !important;
   padding: 0;
   text-decoration: underline;
+}
+.overlay-view h3 {
+  font-weight: bold;
+  font-size: 13px;
+  color: #EFEFEF !important;
+  -webkit-text-shadow: none !important;
+  -moz-text-shadow: none !important;
+  -o-text-shadow: none !important;
+  -ms-text-shadow: none !important;
+  text-shadow: none !important;
+}
+.overlay-view .details-description {
+  margin-bottom: 5px !important;
+  line-height: 1.4;
+  font-size: 12px;
 }
 .stay-open {
   display: block !important;
@@ -24999,15 +25547,14 @@ div.special-pager .hidden.next:after {
 }
 #gd-mini-stats-card {
   margin-top: 0px;
-  zoom: 1;
+  *zoom: 1;
 }
-#gd-mini-stats-card:before {
-  content: "";
+#gd-mini-stats-card:before,
+#gd-mini-stats-card:after {
+  content: " ";
   display: table;
 }
 #gd-mini-stats-card:after {
-  content: "";
-  display: table;
   clear: both;
 }
 #gd-mini-stats-card #gd-mini-stats-chart-div svg g:last-child > g:first-child {
@@ -25080,15 +25627,14 @@ div.special-pager .hidden.next:after {
   border-bottom: 1px solid rgba(32, 50, 52, 0.5);
 }
 #gd-badges-list li {
-  zoom: 1;
+  *zoom: 1;
 }
-#gd-badges-list li:before {
-  content: "";
+#gd-badges-list li:before,
+#gd-badges-list li:after {
+  content: " ";
   display: table;
 }
 #gd-badges-list li:after {
-  content: "";
-  display: table;
   clear: both;
 }
 #gd-badges-list li + li {
@@ -25680,6 +26226,295 @@ div.special-pager .hidden.next:after {
   margin: 0;
   padding: 0;
   text-decoration: underline;
+}
+#ActiveProjectsListView {
+  float: none;
+  margin-bottom: 0;
+}
+#ActiveProjectsListView .items {
+  background: #fff;
+}
+#ActiveProjectsListView .edit-autoresponder-link {
+  display: block;
+  text-align: left;
+  margin-bottom: 5px;
+}
+#ProjectsFeedListView {
+  float: none;
+  margin-bottom: 0;
+}
+#ProjectsFeedListView .items {
+  background: #fff;
+}
+.type-tasks .items-wrapper {
+  border: 1px solid #dfdfdf;
+}
+.task-dialog {
+  *zoom: 1;
+  min-width: 1000px;
+  max-width: 1000px;
+  border: none;
+  background: #f0f0f0;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+  border-radius: 3px;
+  -webkit-box-shadow: inset 0 0 0 1px rgba(204, 204, 204, 0.3) ,0 0 15px 0 rgba(51, 51, 51, 0.25);
+  -moz-box-shadow: inset 0 0 0 1px rgba(204, 204, 204, 0.3) ,0 0 15px 0 rgba(51, 51, 51, 0.25);
+  -o-box-shadow: inset 0 0 0 1px rgba(204, 204, 204, 0.3) ,0 0 15px 0 rgba(51, 51, 51, 0.25);
+  -ms-box-shadow: inset 0 0 0 1px rgba(204, 204, 204, 0.3) ,0 0 15px 0 rgba(51, 51, 51, 0.25);
+  box-shadow: inset 0 0 0 1px rgba(204, 204, 204, 0.3) ,0 0 15px 0 rgba(51, 51, 51, 0.25);
+}
+.task-dialog:before,
+.task-dialog:after {
+  content: " ";
+  display: table;
+}
+.task-dialog:after {
+  clear: both;
+}
+.task-dialog .col-0 {
+  width: 15%;
+}
+.task-dialog .col-1 {
+  width: 85%;
+}
+.task-dialog .ui-dialog-title {
+  padding: 0 !important;
+  margin: 0 !important;
+  font-size: 15px;
+  font-weight: bold;
+  -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0 1px 0;
+  -moz-text-shadow: rgba(255, 255, 255, 0.8) 0 1px 0;
+  -o-text-shadow: rgba(255, 255, 255, 0.8) 0 1px 0;
+  -ms-text-shadow: rgba(255, 255, 255, 0.8) 0 1px 0;
+  text-shadow: rgba(255, 255, 255, 0.8) 0 1px 0;
+  height: 40px;
+  line-height: 40px;
+  background: none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  -o-box-shadow: none;
+  -ms-box-shadow: none;
+  box-shadow: none;
+  border-bottom: none;
+  text-indent: 15px;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.task-dialog .toolbar-mbmenu {
+  position: absolute;
+  right: 0;
+  top: 12px;
+}
+.task-dialog .wrapper,
+.task-dialog .details-table {
+  margin: 0;
+  padding: 0;
+  border: none !important;
+  -webkit-box-shadow: none !important;
+  -moz-box-shadow: none !important;
+  -o-box-shadow: none !important;
+  -ms-box-shadow: none !important;
+  box-shadow: none !important;
+  background: none !important;
+}
+.task-dialog table {
+  border: none;
+}
+.task-dialog td {
+  padding-bottom: 15px;
+}
+.task-dialog .attributesContainer {
+  padding-bottom: 0;
+}
+.task-dialog .float-bar {
+  margin-bottom: 0;
+}
+.task-dialog .right-side-edit-view-panel {
+  background: rgba(236, 240, 241, 0.25) url(../images/stripes.png) left top repeat;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+  border-radius: 3px;
+}
+#task-left-column-form-data label {
+  margin-top: 15px;
+  float: none;
+  display: block;
+}
+#task-right-column-form-data label {
+  float: none;
+}
+#task-right-column-form-data #status-box {
+  margin-bottom: 15px;
+}
+#task-right-column-form-data .owner-box {
+  position: relative;
+  margin-bottom: 15px;
+}
+#task-subscriber-box {
+  margin-top: 15px;
+}
+#task-subscriber-box h4 {
+  margin-bottom: 4px;
+}
+#task-subscriber-box img {
+  margin-right: 5px;
+}
+.check-list {
+  margin-top: 30px;
+}
+.check-list h3 {
+  margin-bottom: 10px;
+}
+.check-list-item {
+  margin-top: 3px;
+}
+.check-list-item .hasCheckBox {
+  float: left;
+  position: relative;
+  top: -5px;
+  margin-right: 5px;
+}
+#task-check-item-inline-edit-form {
+  margin-top: 10px;
+  padding: 8px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+  border-radius: 3px;
+  background: rgba(236, 240, 241, 0.25) url(../images/stripes.png) left top repeat;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  display: table;
+  width: 100%;
+}
+#task-check-item-inline-edit-form input {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-font-smoothing: antialiased;
+  -o-font-smoothing: antialiased;
+  font-smoothing: antialiased;
+  display: inline-block;
+  border: 1px solid #ccc;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+  border-radius: 3px;
+  font-size: 12px;
+  color: #666 !important;
+  text-indent: 6px;
+  line-height: 24px;
+  height: 26px;
+  -webkit-box-shadow: 0 0 1px 1px rgba(153, 153, 153, 0.3);
+  -moz-box-shadow: 0 0 1px 1px rgba(153, 153, 153, 0.3);
+  -o-box-shadow: 0 0 1px 1px rgba(153, 153, 153, 0.3);
+  -ms-box-shadow: 0 0 1px 1px rgba(153, 153, 153, 0.3);
+  box-shadow: 0 0 1px 1px rgba(153, 153, 153, 0.3);
+  /* http://www.useragentman.com/blog/2011/08/24/how-to-simulate-css3-box-shadow-in-ie7-8-without-javascript/ */
+
+  zoom: 1;
+  filter: progid:DXImageTransform.Microsoft.Shadow(Color=#bfbfbf, Strength=1, Direction=0), progid:DXImageTransform.Microsoft.Shadow(Color=#bfbfbf, Strength=1, Direction=90), progid:DXImageTransform.Microsoft.Shadow(Color=#bfbfbf, Strength=1, Direction=180), progid:DXImageTransform.Microsoft.Shadow(Color=#bfbfbf, Strength=1, Direction=270);
+  width: 100%;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+#task-check-item-inline-edit-form .task-input {
+  padding-right: 10px;
+  display: table-cell;
+  vertical-align: middle;
+  width: 99%;
+}
+#task-check-item-inline-edit-form .task-add-button {
+  display: table-cell;
+  width: 1%;
+  vertical-align: middle;
+}
+.task-activity {
+  margin-top: 30px;
+}
+.task-activity #CommentsForRelatedModelView {
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+}
+.task-activity #CommentInlineEditForModelView {
+  width: 100%;
+  max-width: 100%;
+  margin: 10px 0 0 0;
+  padding: 8px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+  border-radius: 3px;
+  background: rgba(236, 240, 241, 0.25) url(../images/stripes.png) left top repeat;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.task-activity #CommentList {
+  margin: 0 0 0 0;
+}
+.task-activity #comment-inline-edit-form {
+  margin: 0;
+}
+.task-activity #comment-inline-edit-form .form-toolbar {
+  padding-right: 0;
+}
+.task-activity .comment {
+  margin-top: 10px;
+}
+.task-activity .left-column {
+  padding-right: 0;
+}
+.task-activity .show-file-upload-box {
+  z-index: 9999;
+}
+.ProjectsActivityFeedPortletView tr:first-child td {
+  border-top: none;
+}
+.edit-project-link {
+  font-size: 14px;
+  font-weight: bold;
+  font-style: normal;
+  display: block;
+  text-align: left;
+  margin-bottom: 5px;
+}
+.project-extra-info {
+  margin-bottom: 10px;
+  font-style: italic;
+}
+.project-stats {
+  padding-right: 5px;
+  width: 20%;
+  float: left;
+  text-align: left;
+  font-size: 12px;
+}
+.project-stats strong {
+  font-size: 26px;
+  font-weight: bold;
+  display: block;
+}
+a + .project-stats {
+  margin-left: 0;
+}
+.percent-complete.percent-green strong {
+  color: #6fa82d;
+}
+.percent-complete.percent-yellow strong {
+  color: #ffcc00;
 }
 /*********************************************************************************
  * Zurmo is a customer relationship management program developed by

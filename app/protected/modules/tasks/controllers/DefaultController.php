@@ -36,6 +36,10 @@
 
     class TasksDefaultController extends ActivityModelsDefaultController
     {
+        /**
+         * Close task
+         * @param string $id
+         */
         public function actionCloseTask($id)
         {
             $task                    = Task::getById(intval($id));
@@ -64,7 +68,7 @@
                                                     $activity);
             TasksUtil::markUserHasReadLatest($activity, Yii::app()->user->userModel);
             $pageViewClassName = $this->getPageViewClassName();
-            $detailsView       = new TaskDetailsView('Details', $this->getId(), $this->getModule()->getId(), $activity);
+            $detailsView       = new TaskModalDetailsView('Details', $this->getId(), $this->getModule()->getId(), $activity);
             $view              = new $pageViewClassName(ZurmoDefaultViewUtil::
                                          makeStandardViewForCurrentUser($this,$detailsView));
             echo $view->render();
@@ -199,17 +203,6 @@
         }
 
         /**
-         * Update status via ajax
-         * @param string $id
-         */
-        public function actionUpdateStatusViaAjax($id, $status)
-        {
-            $this->processKanbanTypeUpdate($status, $id);
-            //Run update queries for update task staus and update type and sort order in kanban column
-            $this->processStatusUpdateViaAjax($id, $status, true);
-        }
-
-        /**
          * Gets the permission content
          * @param RedBeanModel $model
          * @return string
@@ -224,14 +217,16 @@
 
         /**
          * Create task from related view
+         * @param null $relationAttributeName
+         * @param null $relationModelId
+         * @param null $relationModuleId
          */
-        public function actionModalCreateFromRelation()
+        public function actionModalCreateFromRelation($relationAttributeName = null, $relationModelId = null,
+                                                      $relationModuleId = null)
         {
             $task  = new Task();
-            $task  = $this->resolveNewModelByRelationInformation($task,
-                                                                  $_GET['modalTransferInformation']['relationAttributeName'],
-                                                                  (int)$_GET['modalTransferInformation']['relationModelId'],
-                                                                  $_GET['modalTransferInformation']['relationModuleId']);
+            $task  = $this->resolveNewModelByRelationInformation($task, $relationAttributeName,
+                     (int)$relationModelId, $relationModuleId);
             $this->processTaskEdit($task);
         }
 
@@ -252,17 +247,15 @@
          * @param string $portletId
          * @param string $uniqueLayoutId
          */
-        public function actionModalSaveFromRelation($relationAttributeName, $relationModelId, $relationModuleId,
-                                                    $portletId, $uniqueLayoutId, $id = null)
+        public function actionModalSaveFromRelation($relationAttributeName, $relationModelId, $relationModuleId, $id = null)
         {
             if($id == null)
             {
                 $task  = new Task();
                 TasksUtil::setDefaultValuesForTask($task);
-                $task  = $this->resolveNewModelByRelationInformation( $task,
-                                                                                        $relationAttributeName,
-                                                                                        (int)$relationModelId,
-                                                                                        $relationModuleId);
+                $task  = $this->resolveNewModelByRelationInformation( $task, $relationAttributeName,
+                                                                             (int)$relationModelId,
+                                                                             $relationModuleId);
             }
             else
             {
@@ -274,13 +267,13 @@
             {
                 ProjectsUtil::logAddTaskEvent($task);
             }
-            $this->actionModalViewFromRelation($task->id);
+            $this->actionModalDetailsFromRelation($task->id);
         }
 
         /**
          * Saves task in the modal view
          */
-        public function actionModalSave($id)
+        public function actionModalSave($id = null)
         {
             if($id == null)
             {
@@ -291,8 +284,9 @@
             {
                 $task = Task::getById(intval($id));
             }
-            $task     = $this->attemptToSaveModelFromPost($task, null, false);
-            $this->actionModalViewFromRelation($task->id);
+            $this->attemptToValidateAndSaveFromModalDetails($task);
+            $task = $this->attemptToSaveModelFromPost($task, null, false);
+            $this->processModalDetails($task);
         }
 
         /**
@@ -315,29 +309,22 @@
          * Loads modal view from related view
          * @param string $id
          */
-        public function actionModalViewFromRelation($id)
+        public function actionModalDetailsFromRelation($id)
         {
-            $cs = Yii::app()->getClientScript();
-            $isScriptRegistered = $cs->isScriptFileRegistered(Yii::getPathOfAlias('application.modules.tasks.elements.assets'),
-                                                               CClientScript::POS_END);
-            if(!$isScriptRegistered)
-            {
-                $cs->registerScriptFile(
-                    Yii::app()->getAssetManager()->publish(
-                        Yii::getPathOfAlias('application.modules.tasks.elements.assets')
-                        ) . '/TaskUtils.js',
-                    CClientScript::POS_END
-                );
-            }
             $task = Task::getById(intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($task);
+            $this->attemptToValidateAndSaveFromModalDetails($task);
             AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED,
                                        array(strval($task), get_class($this->getModule())), $task);
+            $this->processModalDetails($task);
+        }
+
+        protected function processModalDetails(Task $task)
+        {
             TasksUtil::markUserHasReadLatest($task, Yii::app()->user->userModel);
-            echo ModalEditAndDetailsControllerUtil::setAjaxModeAndRenderModalEditAndDetailsView($this,
-                                                                                                'TaskDetailsView',
-                                                                                                $task,
-                                                                                                'Details');
+            echo ModalEditAndDetailsControllerUtil::setAjaxModeAndRenderModalDetailsView($this, 'TaskModalDetailsView',
+                $task,
+                'Details');
         }
 
         /**
@@ -363,21 +350,13 @@
                     $controllerUtil   = static::getZurmoControllerUtil();
                     $controllerUtil->validateAjaxFromPost($task, 'Task');
                     Yii::app()->getClientScript()->setToAjaxMode();
-                    Yii::app()->end(0, true);
+                    Yii::app()->end(0, false);
                 }
                 else
                 {
-                    $cs = Yii::app()->getClientScript();
-                    $cs->registerScriptFile(
-                        Yii::app()->getAssetManager()->publish(
-                            Yii::getPathOfAlias('application.modules.tasks.elements.assets')
-                            ) . '/TaskUtils.js',
-                        CClientScript::POS_END
-                    );
-                    echo ModalEditAndDetailsControllerUtil::setAjaxModeAndRenderModalEditAndDetailsView($this,
-                                                                                            'TaskModalEditAndDetailsView',
-                                                                                            $task,
-                                                                                            'Edit');
+                    echo ModalEditAndDetailsControllerUtil::setAjaxModeAndRenderModalEditView($this,
+                                                                                            'TaskModalEditView',
+                                                                                            $task);
                 }
             }
         }
@@ -416,12 +395,14 @@
                 {
                     if($taskId != '')
                     {
+                        $task               = Task::getById(intval($taskId));
                         $kanbanItem         = KanbanItem::getByTask(intval($taskId));
                         //if kanban type is completed
                         if($getData['type'] == KanbanItem::TYPE_COMPLETED)
                         {
-                            $this->actionUpdateStatusInKanbanView(Task::TASK_STATUS_COMPLETED, $taskId);
+                            $this->actionUpdateStatusInKanbanView(Task::STATUS_COMPLETED, $taskId);
                             $response['button'] = '';
+                            $response['status'] = Task::getStatusDisplayName($task->status);
                         }
                         else
                         {
@@ -442,6 +423,7 @@
                                                                                         $this->getModule()->getId(),
                                                                                         $taskId);
                                 $response['button'] = $content;
+                                $response['status'] = Task::getStatusDisplayName($task->status);
                             }
                             $kanbanItem->save();
                             $counter++;
@@ -453,10 +435,10 @@
         }
 
         /**
-         * Update task status in kanban view
-         * @param int $targetStatus
-         * @param int $taskId
-         */
+        * Update task status in kanban view
+        * @param int $targetStatus
+        * @param int $taskId
+        */
         public function actionUpdateStatusInKanbanView($targetStatus, $taskId)
         {
            $this->processKanbanTypeUpdate($targetStatus, $taskId);
@@ -499,13 +481,14 @@
             $task          = Task::getById(intval($id));
             $currentStatus = $task->status;
             $task->status = intval($status);
-            if(intval($status) == Task::TASK_STATUS_COMPLETED)
+            if(intval($status) == Task::STATUS_COMPLETED)
             {
                 foreach ($task->checkListItems as $checkItem)
                 {
                     $checkItem->completed = true;
                     $checkItem->unrestrictedSave();
                 }
+                $task->status            = Task::STATUS_COMPLETED;
                 $task->completedDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
                 $task->completed         = true;
                 $task->save();
@@ -611,6 +594,33 @@
         protected static function getZurmoControllerUtil()
         {
             return new TaskZurmoControllerUtil();
+        }
+
+        /**
+         * @param $id
+         * @param null $redirectUrl
+         * @throws FailedToDeleteModelException
+         */
+        public function actionDelete($id, $redirectUrl = null)
+        {
+            $task              = Task::getById(intval($id));
+            ControllerSecurityUtil::resolveAccessCanCurrentUserDeleteModel($task);
+            if(!$task->delete())
+            {
+                throw new FailedToDeleteModelException();
+            }
+        }
+
+        protected function attemptToValidateAndSaveFromModalDetails(Task $task)
+        {
+            if (isset($_POST['ajax']) &&
+                ($_POST['ajax'] == 'task-left-column-form-data' || $_POST['ajax'] == 'task-right-column-form-data'))
+            {
+                $this->attemptToSaveModelFromPost($task, null, false);
+                $errorData        = ZurmoActiveForm::makeErrorsDataAndResolveForOwnedModelAttributes($task);
+                echo CJSON::encode($errorData);
+                Yii::app()->end(0, false);
+            }
         }
     }
 ?>

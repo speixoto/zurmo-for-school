@@ -39,15 +39,15 @@
         /*
          * Constants for task status
          */
-        const TASK_STATUS_NEW                   = 1;
+        const STATUS_NEW                   = 1;
 
-        const TASK_STATUS_IN_PROGRESS           = 2;
+        const STATUS_IN_PROGRESS           = 2;
 
-        const TASK_STATUS_AWAITING_ACCEPTANCE   = 3;
+        const STATUS_AWAITING_ACCEPTANCE   = 3;
 
-        const TASK_STATUS_REJECTED              = 4;
+        const STATUS_REJECTED              = 4;
 
-        const TASK_STATUS_COMPLETED             = 5;
+        const STATUS_COMPLETED             = 5;
 
         /**
          * @return string
@@ -105,7 +105,7 @@
                                                         static::LINK_TYPE_SPECIFIC, 'requestedByUser'),
                     'comments'                  => array(static::HAS_MANY, 'Comment', static::OWNED,
                                                         static::LINK_TYPE_POLYMORPHIC, 'relatedModel'),
-                    'checkListItems'            => array(static::HAS_MANY, 'TaskCheckListItem'),
+                    'checkListItems'            => array(static::HAS_MANY, 'TaskCheckListItem', static::OWNED),
                     'notificationSubscribers'   => array(static::HAS_MANY, 'NotificationSubscriber', static::OWNED,
                                                         static::LINK_TYPE_POLYMORPHIC, 'relatedModel'),
                     'files'                     => array(static::HAS_MANY, 'FileModel', static::OWNED,
@@ -141,6 +141,33 @@
         }
 
         /**
+         * @param RedBean_OODBBean $bean
+         * @param bool $setDefaults
+         * @throws NoCurrentUserSecurityException
+         */
+        protected function constructDerived($bean, $setDefaults)
+        {
+            assert('$bean === null || $bean instanceof RedBean_OODBBean');
+            assert('is_bool($setDefaults)');
+            parent::constructDerived($bean, $setDefaults);
+            // Even though setting the requestedByUser is not technically
+            // a default in the sense of a Yii default rule,
+            // if true the requestedByUser is not set because blank models
+            // are used for searching mass updating.
+            if ($bean ===  null && $setDefaults)
+            {
+                $currentUser = Yii::app()->user->userModel;
+                if (!$currentUser instanceof User)
+                {
+                    throw new NoCurrentUserSecurityException();
+                }
+                AuditUtil::saveOriginalAttributeValue($this, 'requestedByUser', $currentUser);
+                $this->unrestrictedSet('requestedByUser', $currentUser);
+            }
+        }
+
+        /**
+         * @param $language
          * @return array
          */
         protected static function translatedAttributeLabels($language)
@@ -221,11 +248,11 @@
         public static function getStatusDropDownArray()
         {
             return array(
-                self::TASK_STATUS_NEW                 => Zurmo::t('TasksModule', 'New'),
-                self::TASK_STATUS_IN_PROGRESS         => Zurmo::t('TasksModule', 'In Progress'),
-                self::TASK_STATUS_AWAITING_ACCEPTANCE => Zurmo::t('TasksModule', 'Awaiting Acceptance'),
-                self::TASK_STATUS_REJECTED            => Zurmo::t('TasksModule', 'Rejected'),
-                self::TASK_STATUS_COMPLETED           => Zurmo::t('TasksModule', 'Completed'),
+                self::STATUS_NEW                 => Zurmo::t('Core', 'New'),
+                self::STATUS_IN_PROGRESS         => Zurmo::t('Core', 'In Progress'),
+                self::STATUS_AWAITING_ACCEPTANCE => Zurmo::t('Core', 'Awaiting Acceptance'),
+                self::STATUS_REJECTED            => Zurmo::t('Core', 'Rejected'),
+                self::STATUS_COMPLETED           => Zurmo::t('Core', 'Completed'),
             );
         }
 

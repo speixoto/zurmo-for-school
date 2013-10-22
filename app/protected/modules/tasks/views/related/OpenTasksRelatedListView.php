@@ -52,7 +52,7 @@
                                     'portletId'       => 'eval:$this->params["portletId"]',
                                     'routeModuleId'   => 'eval:$this->moduleId',
                                     'routeParameters' => 'eval:$this->getCreateLinkRouteParameters()',
-                                    'ajaxOptions'     => 'eval:TasksUtil::resolveAjaxOptionsForEditModel("Create")',
+                                    'ajaxOptions'     => 'eval:TasksUtil::resolveAjaxOptionsForModalView("Create")',
                                     'uniqueLayoutId'  => 'eval:$this->uniqueLayoutId',
                                     'modalContainerId'=> 'eval:TasksUtil::getModalContainerId()'
                                  ),
@@ -64,7 +64,7 @@
                                     'portletId'       => 'eval:$this->params["portletId"]',
                                     'routeModuleId'   => 'eval:$this->moduleId',
                                     'routeParameters' => 'eval:$this->getCreateLinkRouteParameters()',
-                                    'ajaxOptions'     => 'eval:TasksUtil::resolveAjaxOptionsForEditModel("Edit")',
+                                    'ajaxOptions'     => 'eval:TasksUtil::resolveAjaxOptionsForModalView("Edit")',
                                     'uniqueLayoutId'  => 'eval:$this->uniqueLayoutId',
                                     'modalContainerId'=> 'eval:TasksUtil::getModalContainerId()'
                                  ),
@@ -72,7 +72,7 @@
                                     'portletId'       => 'eval:$this->params["portletId"]',
                                     'routeModuleId'   => 'eval:$this->moduleId',
                                     'routeParameters' => 'eval:$this->getCreateLinkRouteParameters()',
-                                    'ajaxOptions'     => 'eval:TasksUtil::resolveAjaxOptionsForEditModel("Copy")',
+                                    'ajaxOptions'     => 'eval:TasksUtil::resolveAjaxOptionsForModalView("Copy")',
                                     'uniqueLayoutId'  => 'eval:$this->uniqueLayoutId',
                                     'modalContainerId'=> 'eval:TasksUtil::getModalContainerId()'
                                  ),
@@ -152,16 +152,6 @@
         }
 
         /**
-         * @return string
-         */
-        protected function renderContent()
-        {
-            $content = parent::renderContent();
-            $content .= TasksUtil::renderViewModalContainer();
-            return $content;
-        }
-
-        /**
          * Override to handle security/access resolution on links.
          */
         public function getLinkString($attributeString, $attribute)
@@ -177,9 +167,19 @@
          */
         public function resolveLinkString($data, $row)
         {
-            $taskUtil    = new TasksUtil();
-            $content     = $taskUtil->getLinkForViewModal($data, $row, $this->controllerId, $this->moduleId, $this->getActionModuleClassName());
+            $content = TasksUtil::getModalDetailsLink($data, $this->controllerId,
+                                                      $this->moduleId, $this->getActionModuleClassName());
             return $content;
+        }
+
+        /**
+         * Override to pass the sourceId
+         * @return type
+         */
+        protected function getCreateLinkRouteParameters()
+        {
+            return array_merge( array('sourceId' => $this->getGridViewId()),
+                                parent::getCreateLinkRouteParameters());
         }
     }
 ?>

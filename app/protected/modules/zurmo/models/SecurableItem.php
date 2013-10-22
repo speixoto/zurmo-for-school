@@ -317,6 +317,8 @@
          * @param Permitable $permitable
          * @param int $permissions
          * @param array $type
+         * @return bool true/false if permissions was added. if false, the the permission already
+         * existed
          */
         public function addPermissions(Permitable $permitable, $permissions, $type = Permission::ALLOW)
         {
@@ -351,6 +353,11 @@
                 $permission->type        = $type;
                 $permission->permissions = $permissions;
                 $this->permissions->add($permission);
+                return true;
+            }
+            else
+            {
+               return false;
             }
         }
 

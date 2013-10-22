@@ -43,7 +43,10 @@
          */
         public function render()
         {
-            return ZurmoHtml::link($this->resolveLabelAndWrap(), '#', $this->resolveHtmlOptionsForRendering());
+            $content  = ZurmoHtml::openTag('div', $this->resolveHtmlOptionsForRendering());
+            $content .= ZurmoHtml::link($this->resolveLabelAndWrap(), '#', array('class' => 'button-action'));
+            $content .= ZurmoHtml::closeTag('div');
+            return $content;
         }
 
         /**
@@ -76,6 +79,15 @@
         protected function resolveHtmlOptionsForRendering()
         {
             return array();
+        }
+
+        protected function resolveLabelAndWrap()
+        {
+            if ($this->wrapLabel())
+            {
+                return ZurmoHtml::wrapLabel($this->getLabel(), 'button-label');
+            }
+            return $this->getLabel();
         }
     }
 ?>

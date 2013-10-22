@@ -129,17 +129,36 @@
 
         /**
          * Update checklist item name
-         * @param int $id
          */
         public function actionUpdateNameViaAjax()
         {
             $getData = GetUtil::getData();
-            $checkListItemFieldId = $getData['id'];
-            $checkListItemFieldArray = explode('_', $checkListItemFieldId);
-            $taskCheckListItem = TaskCheckListItem::getById(intval($checkListItemFieldArray[1]));
-            $taskCheckListItem->name = $getData['update_value'];
+            $checkListItemId = $getData['id'];
+            $checkListItemName = $getData['name'];
+            $taskCheckListItem = TaskCheckListItem::getById(intval($checkListItemId));
+            $taskCheckListItem->name = $checkListItemName;
             $taskCheckListItem->unrestrictedSave();
-            echo $getData['update_value'];
+            echo $checkListItemName;
+        }
+
+        /**
+         * Delete checklist item
+         */
+        public function actionDeleteCheckListItem()
+        {
+            $getData = GetUtil::getData();
+            $id      = $getData['id'];
+            $taskCheckListItem = TaskCheckListItem::getById(intval($id));
+            $task = $taskCheckListItem->task;
+            $task->checkListItems->remove($taskCheckListItem);
+            $task->save();
+            $getParams                = array('uniquePageId'             => null,
+                                              'relatedModelId'           => $task->id,
+                                              'relatedModelClassName'    => 'Task',
+                                              'relatedModelRelationName' => 'task');
+            $url     =   Yii::app()->createUrl('tasks/taskCheckItems/ajaxCheckItemListForRelatedTaskModel',
+                            $getParams);
+            $this->redirect($url);
         }
     }
 ?>

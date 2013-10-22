@@ -62,29 +62,51 @@ function updateTaskStatus(status, url, errorInProcess)
     );
 }
 
-/**
- * Save task for a relation
- */
-function saveTaskFromRelation(url, errorInProcess, viewTitle)
+function updateCheckListItem(element, url, errorMessage)
 {
-    $.ajax(
-        {
-            type: 'POST',
+    var passedValue = $(element).val();
+    if(passedValue == '')
+    {
+        alert(errorMessage);
+    }
+    id = $(element).attr('id');
+    id = $(this).attr('id');
+    idParts = id.split('_');
+    litag = $(element).parent().parent();
+    $.ajax({
+            type: 'GET',
             url: url,
-            data: $("#task-modal-edit-form").serialize(),
             dataType: 'html',
-            success: function(data)
-                     {
-                         form = $("#task-modal-edit-form");
-                         form.find(".attachLoading:first").removeClass("loading");
-                         form.find(".attachLoading:first").removeClass("loading-ajax-submit");
-                         $("#ModalView").html(data);
-                         $(".ui-dialog-title").html(viewTitle);
-                     },
-            error:  function()
-                    {
-                        alert(errorInProcess);
-                    }
-        }
-    );
+            cache: false,
+            data: {
+                id  :idParts[2],
+                name:passedValue
+            },
+            success: function(data){
+              $(litag).find('p').html(data);
+              $(litag).find('.editable').show();
+              $(litag).find('.taskcheckitemactions').show();
+              $(litag).find('.editable-task-input').hide();
+            }
+        });
+}
+
+function deleteCheckListItem(element, url)
+{
+    litag = $(element).parent().parent();
+    id    = $(litag).find('input').attr('id');
+    console.log(id);
+    idParts = id.split('_');
+    $.ajax({
+            type: 'GET',
+            url: url,
+            dataType: 'html',
+            cache: false,
+            data: {
+                id  :idParts[1]
+            },
+            success: function(data){
+              $("#TaskCheckListItemsForTaskView").replaceWith(data);
+            }
+        });
 }

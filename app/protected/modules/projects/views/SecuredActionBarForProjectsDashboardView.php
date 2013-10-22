@@ -48,16 +48,13 @@
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array('type'  => 'CreateLink',
-                                'htmlOptions' => array('class' => 'icon-create'),
+                            array(
+                                'type'      => 'ProjectsDashboardMenu',
+                                'iconClass' => 'icon-project-dashboard',
                             ),
                             array(
-                                'type'            => 'ProjectsDashboardLink',
-                                'htmlOptions'     => array( 'class' => 'icon-marketing-dashboard' )
-                            ),
-                            array(
-                                'type'            => 'ProjectsListLink',
-                                'htmlOptions'     => array( 'class' => 'icon-marketing-lists' )
+                                'type'      => 'ProjectsListMenu',
+                                'iconClass' => 'icon-projects-list'
                             ),
                         ),
                     ),

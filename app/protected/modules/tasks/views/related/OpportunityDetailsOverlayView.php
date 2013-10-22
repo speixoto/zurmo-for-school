@@ -33,62 +33,64 @@
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
-
     /**
-     * Display the user selection. This is a
-     * combination of a type-ahead input text field
-     * and a selection button which renders a modal list view
-     * to search on user.  Also includes a hidden input for the user
-     * id. On selection of user, task is updated
+     * Opportunity details overlay view in opportunity task kanban view
      */
-    class TaskUserElement extends UserElement
+    class OpportunityDetailsOverlayView extends TaskRelatedDetailsOverlayView
     {
-        protected static $modalActionId = 'ownerModalListForTask';
+        protected $cssClasses = array('overlay-view');
 
         /**
-         * Gets modal javascript file base path
-         */
-        protected static function getModalJavascriptFileBasePath()
-        {
-            return 'application.modules.tasks.elements.assets';
-        }
-
-        /**
-         * Resolve input text box with select link content
+         * Render content
          * @return string
          */
-        protected function resolveInputTextBoxWithSelectLinkContent()
+        protected function renderContent()
         {
-            $inputContent  = $this->renderTextField($this->getIdForHiddenField());
-            $inputContent .= $this->renderSelectLink();
-            return $inputContent;
+            $content = $this->renderNameContent();
+            $content .= $this->renderAccountNameContent();
+            $content .= $this->renderAmountContent();
+            return $content;
         }
 
         /**
-         * @return array
+         * Renders account name
+         * @return string
          */
-        protected function getModalTransferInformation()
+        protected function renderAccountNameContent()
         {
-            return array_merge(array(
-                    'sourceIdFieldId'   => $this->getIdForHiddenField(),
-                    'sourceNameFieldId' => $this->getIdForTextField(),
-                    'modalId'           => $this->getModalContainerId(),
-                    'attribute'         => $this->attribute
-            ), $this->resolveSourceModelIdForModalTransferInformation());
+            $params = LabelUtil::getTranslationParamsForAllModules();
+            $content = ZurmoHtml::tag('div', array('class' => static::DESCRIPTION_CLASS),
+                                      Zurmo::t('AccountsModule', 'AccountsModuleSingularLabel', $params) .
+                                      $this->overlayKeyValueSeparator .
+                                      $this->model->account->name);
+            return $content;
         }
 
         /**
-         * Register script file for handling link on items in modal window
+         * Renders name
+         * @return string
          */
-        protected static function registerModalScriptFile()
+        protected function renderNameContent()
         {
-            $cs = Yii::app()->getClientScript();
-            $cs->registerScriptFile(
-                Yii::app()->getAssetManager()->publish(
-                    Yii::getPathOfAlias(static::getModalJavascriptFileBasePath())
-                    ) . '/TaskUtils.js',
-                CClientScript::POS_END
-            );
+            $content = ZurmoHtml::tag('p', array('class' => static::DESCRIPTION_CLASS),
+                                      Zurmo::t('ZurmoModule', 'Name') .
+                                      $this->overlayKeyValueSeparator . $this->model->name);
+            return $content;
+        }
+
+        /**
+         * Renders amount
+         * @return string
+         */
+        protected function renderAmountContent()
+        {
+            $model = $this->model;
+            $amount = Yii::app()->numberFormatter->formatCurrency((float)$model->amount->value,
+                                                                    $model->amount->currency->code);
+            $content = ZurmoHtml::tag('p', array('class' => static::DESCRIPTION_CLASS),
+                                      Zurmo::t('OpportunitiesModule', 'Amount') .
+                                      $this->overlayKeyValueSeparator . $amount);
+            return $content;
         }
     }
 ?>

@@ -56,8 +56,8 @@
             $superLeadId    = self::getModelIdByModelNameAndName('Contact', 'superLead superLeadson');
             $lead           = Contact::getById($superLeadId);
 
-            $task = TaskTestHelper::createTaskWithOwnerAndRelatedItem('MyTask', $super, $lead, Task::TASK_STATUS_IN_PROGRESS);
-            $taskNew = TaskTestHelper::createTaskWithOwnerAndRelatedItem('MyTask New', $super, $lead, Task::TASK_STATUS_NEW);
+            $task = TaskTestHelper::createTaskWithOwnerAndRelatedItem('MyTask', $super, $lead, Task::STATUS_IN_PROGRESS);
+            $taskNew = TaskTestHelper::createTaskWithOwnerAndRelatedItem('MyTask New', $super, $lead, Task::STATUS_NEW);
             $this->setGetArray(array('id' => $task->id, 'kanbanBoard' => '1'));
             $content = $this->runControllerWithNoExceptionsAndGetContent('leads/default/details');
             $matcher= array(

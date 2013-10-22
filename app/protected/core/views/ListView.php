@@ -122,6 +122,17 @@
             $this->kanbanBoard            = $kanbanBoard;
         }
 
+        protected function getKanbanBoard()
+        {
+            return $this->kanbanBoard;
+        }
+
+        protected function setKanbanBoard($kanbanBoard)
+        {
+            assert('$kanbanBoard === null || $kanbanBoard instanceof $kanbanBoard');
+            $this->kanbanBoard = $kanbanBoard;
+        }
+
         /**
          * Renders content for a list view. Utilizes a CActiveDataprovider
          * and a CGridView widget.

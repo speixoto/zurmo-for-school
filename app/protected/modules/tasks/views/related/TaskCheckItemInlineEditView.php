@@ -56,44 +56,22 @@
             return "task-check-item-inline-edit-form";
         }
 
+        public function renderFormLayout($form = null){
+            $nameElement = new TextElement($this->getModel(), 'name', $form);
+            $nameElement->editableTemplate = '{content}{error}';
+            $taskInput = ZurmoHtml::tag('div', array('class' => 'task-input'), $nameElement->render());
+            $params = array('label' => Zurmo::t('TasksModule', 'Add'));
+            $element  = new SaveButtonActionElement($this->controllerId, $this->moduleId, $this->modelId, $params);
+            $addButton = ZurmoHtml::tag('div', array('class' => 'task-add-button'), $element->render());
+            return $taskInput . $addButton;
+        }
+
         /**
          * @return array
          */
         public static function getDefaultMetadata()
         {
-            $metadata = array(
-                'global' => array(
-                    'toolbar' => array(
-                        'elements' => array(
-                            array('type' => 'SaveButton',
-                                  'label' => "eval:Zurmo::t('TasksModule', 'Add')"
-                                ),
-                        ),
-                    ),
-                    'derivedAttributeTypes' => array(
-
-                    ),
-                    'nonPlaceableAttributeNames' => array(
-
-                    ),
-                    'panelsDisplayType' => FormLayout::PANELS_DISPLAY_TYPE_ALL,
-                    'panels' => array(
-                        array(
-                            'rows' => array(
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'name', 'type' => 'Text'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                            ),
-                        ),
-                    ),
-                ),
-            );
+            $metadata = array();
             return $metadata;
         }
 
@@ -167,6 +145,26 @@
         protected function renderModalContainer()
         {
             return null;
+        }
+
+        public static function getDesignerRulesType()
+        {
+            return null;
+        }
+
+        protected function renderContentStartFormDiv()
+        {
+            return null;
+        }
+
+        protected function renderContentEndFormDiv()
+        {
+            return null;
+        }
+
+        protected function wrapFormLayoutContent($content)
+        {
+            return $content;
         }
     }
 ?>

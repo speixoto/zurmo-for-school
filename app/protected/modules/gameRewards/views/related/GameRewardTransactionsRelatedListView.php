@@ -94,11 +94,10 @@
 
         protected function getEmptyText()
         {
-            $moduleLabel     = Zurmo::t('GameRewardsModule', 'Transactions');
-            return Zurmo::t('Core', 'No {moduleLabelPluralLowerCase} found', array('{moduleLabelPluralLowerCase}' => $moduleLabel));
+            return Zurmo::t('GameRewardsModule', 'No Transactions found');
         }
-        
-        
+
+
         protected function getCGridViewLastColumn()
         {
             return array();

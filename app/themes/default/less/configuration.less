@@ -902,33 +902,40 @@ table.configuration-list{
 	.view-toolbar-container{
 		//padding-bottom:15px;
 	}
-	.mapping-rules{
-		table{
-			border: none;
-		}
-		table, td, th, input, label{
-			margin:0;
-		}
-		td, th{
-			padding:0 !important;
-			background:none !important;
-			border:none !important;
-		}
-		th{
-			height:auto !important;
-			line-height: 100% !important;
-		}
-		label{
-			line-height: 26px;
-		}
-		th:first-child{
-			padding-left: 0 !important;
+}
+
+#sample-column-header{
+	a{
+		++.z-link;
+	}
+}
+
+.mapping-rules{
+	h4{
+		padding:10px 0 5px 0;
+	}
+	label{
+		line-height: 26px;
+		padding-right: 10px;
+		width: 22%;
+		++.border-box;
+	}
+	> div{
+		width: 49%;
+		display: inline-block;
+		> .has-model-select,
+		> .hasDropDown,
+		> input{
+			width: 78% !important;
+			display: inline-block;
 		}
 	}
-	#sample-column-header{
-		a{
-			++.z-link;
-		}
+	> div:last-child{
+		width: 100%;
+	}
+	> div + div:last-child{
+		width: 49%;
+		margin-left: 2%;
 	}
 }
 
@@ -943,11 +950,11 @@ table.configuration-list{
 }
 
 .remove-extra-column-link{
+	float: right;
     display: inline-block;
     position:relative;
     top: -21px;
-    left: 100%;
-    margin-left: 15px;
+    right: -90px;
     z-index: 99999;
     ++.z-link;
 }

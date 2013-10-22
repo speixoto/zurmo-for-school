@@ -142,30 +142,5 @@
             $content = parent::renderRightSideFormLayoutForEdit($form);
             return $content;
         }
-
-        /**
-         * Override to take care of kanban view
-         * @param string $title
-         * @return string
-         */
-        protected function renderActionElementMenu($title = null)
-        {
-            $content = parent::renderActionElementMenu($title);
-            $getData = GetUtil::getData();
-            if(isset($getData['kanbanBoard']) && $getData['kanbanBoard'] == 1)
-            {
-                $isKanbanActive = true;
-            }
-            else
-            {
-                $isKanbanActive = false;
-            }
-            $kanbanBoardLinks    = ZurmoDefaultViewUtil::renderActionBarLinksForKanbanBoard($this->controllerId, $this->moduleId, $this->modelId);
-            if (Yii::app()->userInterface->isMobile() === false)
-            {
-                    $content = $kanbanBoardLinks . $content;
-            }
-            return $content;
-        }
     }
 ?>

@@ -36,7 +36,7 @@
     /**
      * Accept button in kanban view for the task
      */
-    class TaskAcceptLinkActionElement extends LinkActionElement
+    class TaskAcceptLinkActionElement extends TaskLinkActionElement
     {
         /**
          * @return string
@@ -51,7 +51,7 @@
          */
         protected function resolveHtmlOptionsForRendering()
         {
-            return array('class' => 'task-accept-action');
+            return array('class' => 'default-button action-type-accept');
         }
     }
 ?>

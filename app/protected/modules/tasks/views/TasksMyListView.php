@@ -153,18 +153,8 @@
          */
         public function resolveLinkString($data, $row)
         {
-            $taskUtil    = new TasksUtil();
-            $content     = $taskUtil->getLinkForViewModal($data, $row, $this->controllerId, $this->moduleId, $this->getActionModuleClassName());
-            return $content;
-        }
-
-        /**
-         * @return string
-         */
-        protected function renderContent()
-        {
-            $content = parent::renderContent();
-            $content .= TasksUtil::renderViewModalContainer();
+            $content = TasksUtil::getModalDetailsLink($data, $this->controllerId,
+                       $this->moduleId, $this->getActionModuleClassName());
             return $content;
         }
 
@@ -184,7 +174,7 @@
                         'visible'         => 'ActionSecurityUtil::canCurrentUserPerformAction("Edit", $data)',
                         'options'         => array('class' => 'pencil', 'title' => 'Update'),
                         'label'           => '!',
-                        'ajaxOptions'     => TasksUtil::resolveAjaxOptionsForEditModel("Edit")
+                        'ajaxOptions'     => TasksUtil::resolveAjaxOptionsForModalView('Edit')
                     ),
                 ),
             );

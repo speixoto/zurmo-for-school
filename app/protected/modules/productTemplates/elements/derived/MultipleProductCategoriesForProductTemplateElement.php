@@ -107,13 +107,9 @@
          * @param string $keyword
          * @return string
          */
-        public static function renderHtmlContentLabelFromProductCategoryAndKeyword($productCategory, $keyword)
+        public static function renderHtmlContentLabelFromProductCategoryAndKeyword($productCategory)
         {
-            // TODO: @Mayank: Critical: This is never used.
-            // TODO: @Mayank: Critical: Unused second argument
             assert('$productCategory instanceof ProductCategory && $productCategory->id > 0');
-            assert('$keyword == null || is_string($keyword)');
-
             if ($productCategory->name != null)
             {
                 return strval($productCategory) . '&#160&#160<b>'. '</b>';

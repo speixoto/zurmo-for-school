@@ -243,8 +243,12 @@
             {
                 $operator = ' or ';
             }
+            $callback = function($match) use ($firstMetadataClausesCount)
+            {
+                return (($match[0] + $firstMetadataClausesCount));
+            };
             $firstMetadata['structure'] = '(' . $firstMetadata['structure'] . ')' . $operator .
-                                          '(' . preg_replace("/([0-9])/e", "$1 + " . $firstMetadataClausesCount, $secondMetadata['structure']) . ')';
+                '(' . preg_replace_callback("/(\\d+)/", $callback, $secondMetadata['structure']) . ')';
             return $firstMetadata;
         }
 

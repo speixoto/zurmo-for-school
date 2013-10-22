@@ -44,11 +44,30 @@
          */
         public static function getDefaultMetadata()
         {
-            $metadata = parent::getDefaultMetadata();
-            $metadata['global']['toolbar']['elements'][] = array(
-                                                                    'type'  => 'ProjectsDashboardLink',
-                                                                    'htmlOptions'  => array( 'class' => 'icon-marketing-dashboard' )
-                                                                );
+            $metadata = array(
+                'global' => array(
+                    'toolbar' => array(
+                        'elements' => array(
+                            array(
+                                'type'      => 'ProjectsDashboardMenu',
+                                'iconClass' => 'icon-project-dashboard',
+                            ),
+                            array(
+                                'type'      => 'ProjectsListMenu',
+                                'iconClass' => 'icon-projects-list'
+                            ),
+                            array('type'  => 'MassEditMenu',
+                                'listViewGridId' => 'eval:$this->listViewGridId',
+                                'pageVarName' => 'eval:$this->pageVarName',
+                                'iconClass'   => 'icon-edit'),
+                            array('type'  => 'ExportMenu',
+                                'listViewGridId' => 'eval:$this->listViewGridId',
+                                'pageVarName' => 'eval:$this->pageVarName',
+                                'iconClass'   => 'icon-export'),
+                        ),
+                    ),
+                ),
+            );
             return $metadata;
         }
     }

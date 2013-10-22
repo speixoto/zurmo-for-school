@@ -65,7 +65,7 @@
             $content  = $this->getFormattedAttributeLabel();
             $content .= $this->renderTaskCheckListItems();
             $content .= $this->renderTaskCreateCheckItem();
-            $content  = ZurmoHtml::tag('div', array('class' => 'left-column', 'style' => 'margin-top:15px;'), $content);
+            $content  = ZurmoHtml::tag('div', array('class' => 'check-list'), $content);
             return $content;
         }
 
@@ -115,7 +115,7 @@
 
             $inlineView         = new TaskCheckItemInlineEditView($taskCheckListItem, 'taskCheckItems', 'tasks', 'inlineCreateTaskCheckItemSave', $urlParameters, $uniquePageId);
             $content            .= $inlineView->render();
-            $htmlOptions = array('id' => 'TaskCheckItemInlineEditForModelView');
+            $htmlOptions = array('id' => 'TaskCheckItemInlineEditForModelView', 'class' => 'add-task-input');
             return ZurmoHtml::tag('div', $htmlOptions, $content);
         }
 

@@ -38,8 +38,7 @@
     {
         protected function renderContent()
         {
-            # Temporary.
-            return 'Home';
+            return null;
         }
     }
 ?>

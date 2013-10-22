@@ -47,35 +47,5 @@
         {
             return Project::getStatusDropDownArray();
         }
-
-        /**
-         * Renders the editable dropdown content.
-         * @return A string containing the element's content.
-         */
-        protected function renderControlEditable()
-        {
-            $dropDownArray = $this->getDropDownArray();
-            if(Yii::app()->controller->action->id == 'edit')
-            {
-                return $this->form->dropDownList($this->model, $this->attribute, $dropDownArray, array());
-            }
-            else
-            {
-                return $this->form->hiddenField($this->model, $this->attribute, array('value' => Project::PROJECT_STATUS_ACTIVE));
-            }
-        }
-
-        /**
-         * Renders label
-         * @return string
-         */
-        protected function renderLabel()
-        {
-            if(Yii::app()->controller->action->id == 'create')
-            {
-                return null;
-            }
-            return parent::renderLabel();
-        }
     }
 ?>

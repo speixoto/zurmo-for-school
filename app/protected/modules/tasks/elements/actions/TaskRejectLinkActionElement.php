@@ -36,7 +36,7 @@
     /**
      * Reject button in kanban view for the task
      */
-    class TaskRejectLinkActionElement extends LinkActionElement
+    class TaskRejectLinkActionElement extends TaskLinkActionElement
     {
         /**
          * @return string
@@ -51,7 +51,7 @@
          */
         protected function resolveHtmlOptionsForRendering()
         {
-            return array('class' => 'task-reject-action');
+            return array('class' => 'default-button action-type-reject');
         }
     }
 ?>

@@ -71,13 +71,24 @@
             $modelDerivationPathToItem = RuntimeUtil::getModelDerivationPathToItem('User');
             foreach ($task->notificationSubscribers as $subscriber)
             {
-                $user           = $subscriber->person->castDown(array($modelDerivationPathToItem));
-                $userUrl        = Yii::app()->createUrl('/users/default/details', array('id' => $user->id));
-                $stringContent  = ZurmoHtml::link($user->getAvatarImage(36), $userUrl);
-                $content        .= '<p>' . $stringContent . '</p>';
+                $user     = $subscriber->person->castDown(array($modelDerivationPathToItem));
+                $content .= static::renderSubscriberImageAndLinkContent($user);
             }
 
             return $content;
+        }
+
+        public static function renderSubscriberImageAndLinkContent(User $user, $imageSize = 36, $class = null)
+        {
+            assert('is_int($imageSize)');
+            assert('is_string($class) || $class === null');
+            $htmlOptions = array('title' => strval($user));
+            if($class != null)
+            {
+                $htmlOptions['class'] = $class;
+            }
+            $userUrl     = Yii::app()->createUrl('/users/default/details', array('id' => $user->id));
+            return ZurmoHtml::link($user->getAvatarImage($imageSize), $userUrl, $htmlOptions);
         }
 
         /**
@@ -307,10 +318,20 @@
         /**
          * @return string
          */
-        public static function getModalTitleForViewTask()
+        public static function getModalDetailsTitle()
         {
             $params = LabelUtil::getTranslationParamsForAllModules();
-            $title = Zurmo::t('TasksModule', 'View TasksModuleSingularLabel', $params);
+            $title = Zurmo::t('TasksModule', 'Collaborate On This TasksModuleSingularLabel', $params);
+            return $title;
+        }
+
+        /**
+         * @return string
+         */
+        public static function getModalEditTitle()
+        {
+            $params = LabelUtil::getTranslationParamsForAllModules();
+            $title = Zurmo::t('TasksModule', 'Edit TasksModuleSingularLabel', $params);
             return $title;
         }
 
@@ -329,6 +350,10 @@
             elseif($renderType == "Copy")
             {
                 $title = Zurmo::t('TasksModule', 'Copy TasksModuleSingularLabel', $params);
+            }
+            elseif($renderType == "Details")
+            {
+                $title = static::getModalDetailsTitle();
             }
             else
             {
@@ -352,74 +377,56 @@
          */
         public static function getModalContainerId()
         {
-            return ModalLinkActionElement::RELATED_MODAL_CONTAINER_PREFIX . '-open-tasks';
+            return ModalContainerView::ID;
         }
 
         /**
-         * @return string
-         */
-        public static function getViewModalContainerId()
-        {
-            return ModalLinkActionElement::RELATED_MODAL_CONTAINER_PREFIX . '-view-task';
-        }
-
-        /**
-         * Resolves view ajax options for selecting model
+         * @param $renderType
+         * @param string|null $sourceKanbanBoardId
          * @return array
          */
-        public static function resolveViewAjaxOptionsForSelectingModel()
+        public static function resolveAjaxOptionsForModalView($renderType, $sourceKanbanBoardId = null)
         {
-            $title = self::getModalTitleForViewTask();
-            return   ModalView::getAjaxOptionsForModalLink($title, self::getViewModalContainerId());
-        }
-
-        /**
-         * @return string
-         */
-        public static function renderModalContainer()
-        {
-            return ZurmoHtml::tag('div', array('id' => self::getModalContainerId()), '');
-        }
-
-        /**
-         * @return string
-         */
-        public static function renderViewModalContainer()
-        {
-            return ZurmoHtml::tag('div', array('id' => self::getViewModalContainerId()), '');
-        }
-
-        /**
-         * Resolves ajax options for selecting model
-         * @return array
-         */
-        public static function resolveAjaxOptionsForEditModel($renderType)
-        {
+            assert('is_string($renderType)');
             $title = self::getModalTitleForCreateTask($renderType);
-            return   ModalView::getAjaxOptionsForModalLink($title, self::getModalContainerId());
+            return   ModalView::getAjaxOptionsForModalLink($title, self::getModalContainerId(), 'auto', 600,
+                     'center top+25', $class = "'task-dialog'",
+                     static::resolveExtraCloseScriptForModalAjaxOptions($sourceKanbanBoardId));
+        }
+
+        public static function resolveExtraCloseScriptForModalAjaxOptions($sourceKanbanBoardId = null)
+        {
+            assert('is_string($sourceKanbanBoardId) || $sourceKanbanBoardId == null');
+            if($sourceKanbanBoardId != null)
+            {
+                return "$.fn.yiiGridView.update('" . $sourceKanbanBoardId. "');";
+            }
         }
 
         /**
-         * Get link for view task in modal mode
-         * @param array $task
-         * @param int $row
-         * @param string $controllerId
-         * @param string $moduleId
-         * @param string $moduleClassName
-         * @return string
+         * Get link for going to the task modal detail view
+         * @param Task $task
+         * @param $controllerId
+         * @param $moduleId
+         * @param $moduleClassName
+         * @param null $sourceKanbanBoardId
+         * @return null|string
          */
-        public function getLinkForViewModal(Task $task, $row, $controllerId, $moduleId, $moduleClassName)
+        public static function getModalDetailsLink(Task $task, $controllerId, $moduleId, $moduleClassName, $sourceKanbanBoardId = null)
         {
-            assert('is_string($row) || is_int($row)');
             assert('is_string($controllerId)');
             assert('is_string($moduleId)');
             assert('is_string($moduleClassName)');
-            $ajaxOptions = TasksUtil::resolveViewAjaxOptionsForSelectingModel();
-            $title       = Zurmo::t('TasksModule', $task->name);
-            $params      = array('label' => $title, 'routeModuleId' => 'tasks', 'ajaxOptions' => $ajaxOptions);
-            $viewFromRelatedModalLinkActionElement = new ViewFromRelatedModalLinkActionElement(
+            assert('is_string($sourceKanbanBoardId) || $sourceKanbanBoardId == null');
+            $ajaxOptions = TasksUtil::resolveAjaxOptionsForModalView('Details', $sourceKanbanBoardId);
+            $label       = $task->name . ZurmoHtml::tag('span', array(), '(' . strval($task->owner) . ')');
+            $params      = array('label' => $label, 'routeModuleId' => 'tasks',
+                                 'ajaxOptions' => $ajaxOptions,
+                                 'wrapLabel' => false,
+                                 'routeParameters' => array('sourceKanbanBoardId' => $sourceKanbanBoardId));
+            $goToDetailsFromRelatedModalLinkActionElement = new GoToDetailsFromRelatedModalLinkActionElement(
                                                                     $controllerId, $moduleId, $task->id, $params);
-            $linkContent = $viewFromRelatedModalLinkActionElement->render();
+            $linkContent = $goToDetailsFromRelatedModalLinkActionElement->render();
             $string      = TaskActionSecurityUtil::resolveViewLinkToModelForCurrentUser($task, $moduleClassName, $linkContent);
             return $string;
         }
@@ -442,23 +449,23 @@
             $route = Yii::app()->createUrl('tasks/default/updateStatusInKanbanView');
             switch(intval($statusId))
             {
-                case Task::TASK_STATUS_NEW:
+                case Task::STATUS_NEW:
                      $element = new TaskStartLinkActionElement($controllerId, $moduleId, $taskId,
                                                                                             array('route' => $route));
                     break;
-                case Task::TASK_STATUS_IN_PROGRESS:
+                case Task::STATUS_IN_PROGRESS:
 
                      $element = new TaskFinishLinkActionElement($controllerId, $moduleId, $taskId,
                                                                                             array('route' => $route));
                     break;
-                case Task::TASK_STATUS_AWAITING_ACCEPTANCE:
+                case Task::STATUS_AWAITING_ACCEPTANCE:
 
                      $acceptLinkElement = new TaskAcceptLinkActionElement($controllerId, $moduleId, $taskId,
                                                                                             array('route' => $route));
                      $rejectLinkElement = new TaskRejectLinkActionElement($controllerId, $moduleId, $taskId,
                                                                                             array('route' => $route));
                      return $acceptLinkElement->render() . $rejectLinkElement->render();
-                case Task::TASK_STATUS_COMPLETED:
+                case Task::STATUS_COMPLETED:
                      return null;
                 default:
                      $element = new TaskStartLinkActionElement($controllerId, $moduleId, $taskId,
@@ -476,11 +483,11 @@
         public static function getTaskStatusMappingToKanbanItemTypeArray()
         {
             return array(
-                            Task::TASK_STATUS_NEW                   => KanbanItem::TYPE_TODO,
-                            Task::TASK_STATUS_IN_PROGRESS           => KanbanItem::TYPE_IN_PROGRESS,
-                            Task::TASK_STATUS_AWAITING_ACCEPTANCE   => KanbanItem::TYPE_IN_PROGRESS,
-                            Task::TASK_STATUS_REJECTED              => KanbanItem::TYPE_TODO,
-                            Task::TASK_STATUS_COMPLETED             => KanbanItem::TYPE_COMPLETED
+                            Task::STATUS_NEW                   => KanbanItem::TYPE_SOMEDAY,
+                            Task::STATUS_IN_PROGRESS           => KanbanItem::TYPE_IN_PROGRESS,
+                            Task::STATUS_AWAITING_ACCEPTANCE   => KanbanItem::TYPE_IN_PROGRESS,
+                            Task::STATUS_REJECTED              => KanbanItem::TYPE_TODO,
+                            Task::STATUS_COMPLETED             => KanbanItem::TYPE_COMPLETED
                         );
         }
 
@@ -493,7 +500,7 @@
         {
             if($status == null)
             {
-                return KanbanItem::TYPE_TODO;
+                return KanbanItem::TYPE_SOMEDAY;
             }
             $data = self::getTaskStatusMappingToKanbanItemTypeArray();
             return $data[intval($status)];
@@ -571,7 +578,7 @@
          */
         public static function registerUnsubscriptionScript($taskId = null)
         {
-            $subscribeLink = '<strong>' . Zurmo::t('TasksModule', 'Subscribe') . '</strong>';
+            $subscribeLink = '<strong>' . Zurmo::t('Core', 'Subscribe') . '</strong>';
             if($taskId == null)
             {
                 $url           = Yii::app()->createUrl('tasks/default/removeKanbanSubscriber');
@@ -664,7 +671,7 @@
          */
         public static function getKanbanSubscriptionLink(Task $task, $row)
         {
-            return self::resolveSubscriptionLink($task, 'subscribe-task-link', 'unsubscribe-task-link');
+            return self::resolveSubscriptionLink($task, 'subscribe-task-link', 'simple-link unsubscribe-task-link');
         }
 
         /**
@@ -675,7 +682,7 @@
          */
         public static function getDetailSubscriptionLink(Task $task, $row)
         {
-            return self::resolveSubscriptionLink($task, 'detail-subscribe-task-link', 'detail-unsubscribe-task-link');
+            return self::resolveSubscriptionLink($task, 'detail-subscribe-task-link', 'simple-link detail-unsubscribe-task-link');
         }
 
         /**
@@ -691,15 +698,17 @@
             assert('is_string($unsubscribeLinkClass)');
             if(TasksUtil::isUserSubscribedForTask($task, Yii::app()->user->userModel) === false)
             {
-                $content = Zurmo::t('TasksModule', 'Subscribe');
-                $class   = $subscribeLinkClass;
+                $label       = '';//Zurmo::t('Core', 'Subscribe');
+                $class       = $subscribeLinkClass;
+                $iconContent = ZurmoHtml::tag('i', array('class' => 'icon-subscribe'), '');
             }
             else
             {
-                $content = Zurmo::t('TasksModule', 'Unsubscribe');
-                $class   = $unsubscribeLinkClass;
+                $label       = Zurmo::t('TasksModule', 'Unsubscribe');
+                $class       = $unsubscribeLinkClass;
+                $iconContent = ZurmoHtml::tag('i', array('class' => 'icon-subscribe'), '');
             }
-            return ZurmoHtml::link('<strong>' . $content . '</strong>', '#', array('class' => $class)) ;
+            return ZurmoHtml::link($iconContent . $label, '#', array('class' => $class, 'title' => $label)) ;
         }
 
         /**
@@ -707,20 +716,18 @@
          * @param int $id
          * @return float
          */
-        public static function getTaskCompletionPercentage($id)
+        public static function getTaskCompletionPercentage(Task $task)
         {
-            $task = Task::getById($id);
             $checkListItemsCount = count($task->checkListItems);
-            $completedItemsCount = 0;
             if($checkListItemsCount == 0)
             {
-                return null;
+                return 0;
             }
             else
             {
                 $completedItemsCount = self::getTaskCompletedCheckListItems($task);
             }
-            $completionPercent = ($completedItemsCount/$checkListItemsCount)*100;
+            $completionPercent = ($completedItemsCount/$checkListItemsCount) * 100;
             return $completionPercent;
         }
 
@@ -731,10 +738,10 @@
         public static function getKanbanItemTypeToDefaultTaskStatusMappingArray()
         {
             return array(
-                            KanbanItem::TYPE_TODO                   => Task::TASK_STATUS_NEW,
-                            KanbanItem::TYPE_SOMEDAY                => Task::TASK_STATUS_NEW,
-                            KanbanItem::TYPE_IN_PROGRESS            => Task::TASK_STATUS_IN_PROGRESS,
-                            KanbanItem::TYPE_COMPLETED              => Task::TASK_STATUS_COMPLETED
+                            KanbanItem::TYPE_TODO                   => Task::STATUS_NEW,
+                            KanbanItem::TYPE_SOMEDAY                => Task::STATUS_NEW,
+                            KanbanItem::TYPE_IN_PROGRESS            => Task::STATUS_IN_PROGRESS,
+                            KanbanItem::TYPE_COMPLETED              => Task::STATUS_COMPLETED
                         );
         }
 
@@ -757,6 +764,7 @@
         {
             $user = Yii::app()->user->userModel;
             $task->requestedByUser = $user;
+            $task->status = Task::STATUS_NEW;
             $notificationSubscriber = new NotificationSubscriber();
             $notificationSubscriber->person = $user;
             $notificationSubscriber->hasReadLatest = false;
@@ -780,34 +788,21 @@
         }
 
         /**
-         * @return array
-         */
-        public static function getGroupByDataAndTranslatedLabels()
-        {
-            $data = array(KanbanItem::TYPE_SOMEDAY      => Zurmo::t('ProductsModule', 'Someday'),
-                          KanbanItem::TYPE_TODO         => Zurmo::t('ProductsModule', 'To Do'),
-                          KanbanItem::TYPE_IN_PROGRESS  => Zurmo::t('ProductsModule', 'In Progress'),
-                          KanbanItem::TYPE_COMPLETED    => Zurmo::t('ProductsModule', 'Completed'));
-
-            return $data;
-        }
-
-        /**
          * Render completion progress bar
          * @param Task $task
          * @return string
          */
-        public static function renderCompletionProgressBar(Task $task)
+        public static function renderCompletionProgressBarContent(Task $task)
         {
-            $percentage = TasksUtil::getTaskCompletionPercentage(intval($task->id));
-            if($percentage == null)
+            $checkListItemsCount = count($task->checkListItems);
+            if( $checkListItemsCount == 0)
             {
                 return null;
             }
-            else
-            {
-                return Zurmo::t('TasksModule', '% Complete - ' . $percentage);
-            }
+            $percentageComplete = ceil(static::getTaskCompletionPercentage($task));
+            return ZurmoHtml::tag('div', array('class' => 'completion-percentage-bar', 'style' => 'width:' . $percentageComplete . '%'),
+                                  $percentageComplete . '%');
+            $percentage = TasksUtil::getTaskCompletionPercentage(intval($task->id));
         }
 
         /**
@@ -829,25 +824,6 @@
         }
 
         /**
-         * Make search attribute data
-         * @param array $data
-         * @return string
-         */
-        //todo: @Mayank once jason review the code remove this piece of code along with test case as well
-        public static function makeSearchAttributeData($data)
-        {
-            $searchAttributeData['clauses'][1] =
-            array(
-                'attributeName'        => 'activityItems',
-                'relatedAttributeName' => 'id',
-                'operatorType'         => 'equals',
-                'value'                => (int)$data->getClassId('Item')
-            );
-            $searchAttributeData['structure'] = '(1)';
-            return $searchAttributeData;
-        }
-
-        /**
          * Resolve task kanban view for relation
          * @param RedBeanModel $model
          * @param string $moduleId
@@ -856,22 +832,27 @@
          * @param ZurmoDefaultPageView $pageView
          * @return ZurmoDefaultPageView
          */
-        public static function resolveTaskKanbanViewForRelation($model, $moduleId, $controller, $kanbanView, $pageView)
+        public static function resolveTaskKanbanViewForRelation($model,
+                                                                $moduleId, $controller,
+                                                                $kanbanView, $pageView)
         {
             assert('$model instanceof RedBeanModel');
             assert('is_string($moduleId)');
             assert('$controller instanceof ZurmoModuleController');
             assert('is_string($kanbanView)');
             assert('is_string($pageView)');
+            $breadCrumbLinks = array(StringUtil::getChoppedStringContent(strval($model), 25));
             $kanbanItem                 = new KanbanItem();
             $kanbanBoard                = new TaskKanbanBoard($kanbanItem, 'type', $model, get_class($model));
             $kanbanBoard->setIsActive();
             $params['relationModel']    = $model;
             $params['relationModuleId'] = $moduleId;
             $params['redirectUrl']      = null;
-            $listView                   = new $kanbanView($controller->getId(), 'tasks', 'Task', null, $params, null, array(), $kanbanBoard);
+            $listView                   = new $kanbanView($controller->getId(), 'tasks', 'Task', null,
+                                                            $params, null, array(), $kanbanBoard);
             $view                       = new $pageView(ZurmoDefaultViewUtil::
-                                                                            makeStandardViewForCurrentUser($controller, $listView));
+                                                             makeViewWithBreadcrumbsForCurrentUser(
+                                                                    $controller,$listView, $breadCrumbLinks, 'KanbanBoardBreadCrumbView'));
             return $view;
         }
     }

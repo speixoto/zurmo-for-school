@@ -33,43 +33,48 @@
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
-
     /**
-     * Displays a date/time localized
-     * display.
+     * Project details overlay view in project task kanban view
      */
-    class TaskAjaxDateTimeElement extends DateTimeElement
+    class ProjectDetailsOverlayView extends TaskRelatedDetailsOverlayView
     {
-        /**
-         * Resolve datepicker options
-         * @return array
-         */
-        protected function resolveDatePickerOptions()
-        {
-            return array(
-                'onClose' => 'js:function (dateText)
-                              {
-                                    $.ajax({
-                                                type: "GET",
-                                                url: "' . $this->resolveUpdateTimeStampUrl() . '",
-                                                data: {
-                                                    dateTime: dateText
-                                                },
-                                                success: function(data){
+        protected $cssClasses = array('overlay-view');
 
-                                                }
-                                              });
-                              }'
-            );
+        const DESCRIPTION_CLASS          = 'marketing-list-description';
+
+        /**
+         * Render content
+         * @return string
+         */
+        protected function renderContent()
+        {
+            $content = $this->renderNameContent();
+            $content .= $this->renderDescriptionContent();
+            return $content;
         }
 
         /**
-         * Resolves url to update timestamp
+         * Renders description
          * @return string
          */
-        protected function resolveUpdateTimeStampUrl()
+        protected function renderDescriptionContent()
         {
-            return Yii::app()->createUrl('tasks/default/updateDueDateTimeViaAjax', array('id' => $this->model->id));
+            $content = ZurmoHtml::tag('div', array('class' => static::DESCRIPTION_CLASS),
+                                      Zurmo::t('ZurmoModule', 'Description') . $this->overlayKeyValueSeparator .
+                                      StringUtil::getChoppedStringContent($this->model->description, 50));
+            return $content;
+        }
+
+        /**
+         * Renders name
+         * @return string
+         */
+        protected function renderNameContent()
+        {
+            $content = ZurmoHtml::tag('p', array('class' => static::DESCRIPTION_CLASS),
+                                      Zurmo::t('ZurmoModule', 'Name') .
+                                      $this->overlayKeyValueSeparator . $this->model->name);
+            return $content;
         }
     }
 ?>

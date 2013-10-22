@@ -467,10 +467,10 @@
         public function testKanbanViewForAccountDetails()
         {
             $super                  = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            AccountTestHelper::createAccountByNameForOwner('superAccount', $super);
             $accounts               = Account::getByName('superAccount');
-
-            $task = TaskTestHelper::createTaskWithOwnerAndRelatedAccount('MyTask', $super, $accounts[0], Task::TASK_STATUS_IN_PROGRESS);
-            $taskNew = TaskTestHelper::createTaskWithOwnerAndRelatedAccount('MyTask New', $super, $accounts[0], Task::TASK_STATUS_NEW);
+            $task = TaskTestHelper::createTaskWithOwnerAndRelatedAccount('MyTask', $super, $accounts[0], Task::STATUS_IN_PROGRESS);
+            $taskNew = TaskTestHelper::createTaskWithOwnerAndRelatedAccount('MyTask New', $super, $accounts[0], Task::STATUS_NEW);
             $this->setGetArray(array('id' => $task->id, 'kanbanBoard' => '1'));
             $content = $this->runControllerWithNoExceptionsAndGetContent('accounts/default/details');
             $matcher= array(
@@ -490,6 +490,54 @@
                 'content' => 'MyTask New'
             );
             $this->assertTag($matcher, $content);
+        }
+        
+        public function testRedeemList()
+        {
+            $super      = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $content    = $this->runControllerWithNoExceptionsAndGetContent('gameRewards/default/redeemList');
+            $this->assertFalse(strpos($content, '<h4 class="reward-name">myClonedGameReward</h4>') === false);
+            //Test the search or paging of the listview.
+            Yii::app()->clientScript->reset(); //to make sure old js doesn't make it to the UI
+            $this->setGetArray(array('ajax' => 'list-view'));
+            $content    = $this->runControllerWithNoExceptionsAndGetContent('gameRewards/default/redeemList');
+            $this->assertTrue(strpos($content, 'anyMixedAttributes') === false);
+            $this->resetGetArray();
+        }
+        
+        public function testRedeemReward()
+        {
+            $super                      = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            Yii::app()->user->userModel = $super;
+            $gameRewards                = GameReward::getByName('myNewGameReward');
+            
+            //not enough coins
+            $this->setGetArray(array('id' => $gameRewards[0]->id));
+            $content = $this->runControllerWithExitExceptionAndGetContent('gameRewards/default/redeemReward');
+            $this->assertFalse(strpos($content, 'You do not have enough coins to redeem this reward') === false);
+            
+            //enough coins
+            $gameCoin           = new GameCoin();
+            $gameCoin->person   = $super;
+            $gameCoin->value    = 100;
+            $this->assertTrue($gameCoin->save());
+            $notifications      = Notification::getAll();
+            
+            //check for no notification
+            $this->assertEquals(0, count($notifications));
+            $this->setGetArray(array('id' => $gameRewards[0]->id));
+            $content = $this->runControllerWithExitExceptionAndGetContent('gameRewards/default/redeemReward');
+            $this->assertFalse(strpos($content, 'myNewGameReward has been redeemed.') === false);
+            
+            //check for notification
+            $notifications              = Notification::getAll();
+            $this->assertEquals(1, count($notifications));
+            
+            //email content
+            $this->assertContains('myNewGameReward was redeemed by Clark Kent.', $notifications[0]->notificationMessage->htmlContent);
+            
+            //check url 
+            $this->assertFalse(strpos($notifications[0]->notificationMessage->htmlContent, '/gameRewards/default/details?id=13') === false);
         }
     }
 ?>

@@ -76,7 +76,7 @@
         public function attributeLabels()
         {
             return array(
-                'avatarType'               => Zurmo::t('UsersModule', 'Type'),
+                'avatarType'               => Zurmo::t('Core', 'Type'),
                 'customAvatarEmailAddress' => Zurmo::t('ZurmoModule', 'Email Address'),
             );
         }

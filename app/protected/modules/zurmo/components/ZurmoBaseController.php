@@ -1232,7 +1232,7 @@
             }
             else
             {
-                return ListViewTypesToggleLinkActionElement::TYPE_GRID;
+                return ListViewTypesToggleLinkActionElement::TYPE_NON_KANBAN_BOARD;
             }
         }
 
@@ -1251,7 +1251,7 @@
             }
             else
             {
-                return DetailsAndRelationsViewTypesToggleLinkActionElement::TYPE_DETAILS_AND_RELATIONS;
+                return DetailsAndRelationsViewTypesToggleLinkActionElement::TYPE_NON_KANBAN_BOARD;
             }
         }
 

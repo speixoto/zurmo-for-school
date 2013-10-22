@@ -1355,13 +1355,16 @@ body > .ui-autocomplete{
 	z-index: 100;
 }
 
+h1 + .view-toolbar-container{
+	margin-top: 15px;
+}
 
 .widgets-lock{
 	position: relative;
-	margin-top: -37px;
+	margin-top: -36px;
 	margin-bottom: 15px;
 	float: right;
-	.view-toolbar{
+	.pillbox{
 		float: right;
 		margin-bottom: 0 !important;
 	}
@@ -1860,6 +1863,7 @@ h1,
 
 td.empty{
 	display:table-cell !important;
+	border-top:none !important;
 }
 
 .view-toolbar-icons(@size: 24px){
@@ -1890,20 +1894,41 @@ td.empty{
 	.icon-notice{
 		display: block;
 		line-height: 1;
-		margin-bottom: 10px;
+		//margin-bottom: 10px;
 	}
 	.icon-notice:before{
 		margin: 0;
-		font-size:100px;
-		line-height: 60px !important;
+		font-size:40px;
+		//line-height: 60px !important;
 	}
 	p{
-		font-size: 14px;
-		line-height: 21px;
+		//font-size: 14px;
+		//line-height: 21px;
 	}
 }
 
 /*forms*/
+.text-input(){
+	font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;
+	-webkit-font-smoothing: antialiased;
+	-moz-font-smoothing: antialiased;
+	-o-font-smoothing: antialiased;
+	font-smoothing: antialiased;
+	display:inline-block;
+	border:1px solid #ccc;
+	.radius(3px);
+	font-size:12px;
+	color:#666 !important;
+	text-indent:6px;
+	line-height: 24px;
+	height:26px;
+	.b-shadow(0 0 1px 1px rgba(153, 153, 153, 0.3));
+	.ie-shadow(#999999, 1, 15);
+	width:100%;
+	.box-sizing();
+}
+
+
 .form{
 	input[type="checkbox"]{
 		margin:0 0 10px 0 !important;
@@ -1913,23 +1938,7 @@ td.empty{
 	input[type="password"],
 	select.multiple,
 	textarea{
-		font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;
-		-webkit-font-smoothing: antialiased;
-		-moz-font-smoothing: antialiased;
-		-o-font-smoothing: antialiased;
-		font-smoothing: antialiased;
-		display:inline-block;
-		border:1px solid #ccc;
-		.radius(3px);
-		font-size:12px;
-		color:#666 !important;
-		text-indent:6px;
-		line-height: 24px;
-		height:26px;
-		.b-shadow(0 0 1px 1px rgba(153, 153, 153, 0.3));
-		.ie-shadow(#999999, 1, 15);
-		width:100%;
-		.box-sizing();
+		.text-input();
 	}
 	textarea, select.multiple {
 		height:auto;
@@ -2155,7 +2164,7 @@ a.simple-link{
 	margin:0 !important;
 	border:1px solid #CCCCCC;
 	background:#fff;
-	.b-shadow(0 0 11px 5px rgba(51, 51, 51, 0.40)); /*33*/
+	.b-shadow(0 0 15px 0 rgba(51, 51, 51, 0.25)); /*33*/
 	.wide.form{
 		padding:0;
 		margin:0;
@@ -2225,8 +2234,7 @@ a.simple-link{
 }
 
 .big-spinner{
-	margin-left:270px;
-	margin-top:30px;
+	margin:15px 50%;
 	display:block;
 }
 
@@ -3127,6 +3135,8 @@ div.wide.form{
 
 .more-panels-link{
 	.smaller();
+	position: relative;
+	left: -15px;
 }
 
 .ui-overlay-block{
@@ -3548,7 +3558,7 @@ div.wide.form{
 }
 
 .toolbar-mbmenu{
-	margin:0 10px 0 0;
+	margin:0 10px 0 0 !important;
 	float:right;
 	width:auto;
 	.view-toolbar{
@@ -4568,7 +4578,7 @@ div.hasHalfs{
 	padding-top:2px;
 	padding-bottom:2px;
 	text-align:left;
-	z-index:9999999;
+	z-index:9999999 !important;
 	position:absolute;
 	li{
 		list-style:none;
@@ -5116,4 +5126,5 @@ div.hasHalfs{
 @import 'business-card.less';
 @import 'pillbox.less';
 @import 'game-dashboard.less';
+@import 'projects.less';
 @import 'media-queries.less';
