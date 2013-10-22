@@ -119,7 +119,8 @@
          */
         public function testGetUsersByPartialFullNameWithInexistentAutoCompleteOption()
         {
-            UserSearch::getUsersByPartialFullName('A', 5, array('anOptionsThatdoesNotExist' => true));
+            $autoCompleteOptions    = ArrayUtil::encodeAutoCompleteOptionsArray(array('anOptionsThatdoesNotExist' => true));
+            UserSearch::getUsersByPartialFullName('A', 5, $autoCompleteOptions);
         }
     }
 ?>
