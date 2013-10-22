@@ -405,7 +405,6 @@
                     $selectForm->setAttributes($_POST[get_class($selectForm)][$id]);
                     $contact = Contact::getById((int)$selectForm->contactId);
                     ArchivedEmailMatchingUtil::resolveContactToSenderOrRecipient($emailMessage, $contact);
-                    ArchivedEmailMatchingUtil::resolveEmailAddressToContactIfEmailRelationAvailable($emailMessage, $contact);
                     $emailMessage->folder = EmailFolder::getByBoxAndType($emailMessage->folder->emailBox,
                                                                          EmailFolder::TYPE_ARCHIVED);
                     if (!$emailMessage->save())
