@@ -87,11 +87,7 @@
                 {
                     if ($child->getAttribute('rel') == 'stylesheet')
                     {
-                        if (strpos($child->getAttribute('href'), 'jquery-ui-timepicker-addon.css'))
-                        {
-                            $stylesheetReference = $hostInfo . $child->getAttribute('href');
-                        }
-                        elseif (strpos($child->getAttribute('href'), $hostInfo) === false)
+                        if (strpos($child->getAttribute('href'), $hostInfo) === false)
                         {
                             $stylesheetReference = $hostInfo . $child->getAttribute('href');
                         }

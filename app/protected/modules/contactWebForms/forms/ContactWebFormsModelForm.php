@@ -34,42 +34,64 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class ContactWebFormTestHelper
+    /**
+     * Use this form when creating a new contact from web forms
+     */
+    class ContactWebFormsModelForm extends ModelForm
     {
-        public static function createContactWebFormByName($name, $owner = null)
+        protected $customDisplayLabels = array();
+
+        protected $customRequiredFields = array();
+
+        protected static function getRedBeanModelClassName()
         {
-            if ($owner === null)
-            {
-                $owner = Yii::app()->user->userModel;
-            }
-            $placedAttributes                   = array('firstName', 'lastName', 'companyName', 'jobTitle');
-            ContactsModule::loadStartingData();
-            $contactStates                      = ContactState::getByName('New');
-            $contactWebForm                     = new ContactWebForm();
-            $contactWebForm->name               = $name;
-            $contactWebForm->redirectUrl        = 'http://www.zurmo.com/';
-            $contactWebForm->submitButtonLabel  = 'Save';
-            $contactWebForm->defaultState       = $contactStates[0];
-            $contactWebForm->serializedData     = serialize($placedAttributes);
-            $contactWebForm->defaultOwner       = $owner;
-            $saved                              = $contactWebForm->save();
-            assert('$saved');
-            return $contactWebForm;
+            return 'Contact';
         }
 
-        public static function getContactWebFormAttributes()
+        public function __construct(Contact $model)
         {
-            $placedAttributes                   = array('firstName', 'lastName', 'companyName', 'jobTitle');
-            return $placedAttributes;
+            $this->model = $model;
         }
 
-        public static function deleteAllContactWebForms()
+        public function setCustomDisplayLabels($customDisplayLabels)
         {
-            $contactWebForms = ContactWebForm::getAll();
-            foreach ($contactWebForms as $webForm)
+            $this->customDisplayLabels = $customDisplayLabels;
+        }
+
+        public function setCustomRequiredFields($customRequiredFields)
+        {
+            $this->customRequiredFields = $customRequiredFields;
+        }
+
+        public function attributeLabels()
+        {
+            return array_merge($this->model->attributeLabels(), $this->customDisplayLabels);
+        }
+
+        public function rules()
+        {
+            return array_merge(parent::rules(), $this->customRequiredFields);
+        }
+
+        public function isAttributeRequired($attribute)
+        {
+            if ($this->isCustomRequiredAttribute($attribute))
             {
-                $webForm->delete();
+                return true;
             }
+            return parent::isAttributeRequired($attribute);
+        }
+
+        public function isCustomRequiredAttribute($attribute)
+        {
+            foreach ($this->customRequiredFields as $customRequiredValidator)
+            {
+                if ($customRequiredValidator[0] == $attribute && $customRequiredValidator[1] == 'required')
+                {
+                    return true;
+                }
+            }
+            return false;
         }
     }
 ?>

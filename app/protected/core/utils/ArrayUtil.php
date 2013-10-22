@@ -215,5 +215,15 @@
             }
             return $decodedUnserializedOptions;
         }
+
+        /**
+         * @param array $array
+         * @return bool
+         * Checks if provided array is associative or indexed. If there exists one string key, it will return true.
+         */
+        public static function isAssoc(array $array)
+        {
+            return (bool)count(array_filter(array_keys($array), 'is_string'));
+        }
     }
 ?>

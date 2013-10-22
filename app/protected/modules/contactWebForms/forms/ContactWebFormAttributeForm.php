@@ -34,42 +34,47 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class ContactWebFormTestHelper
+    /**
+     * Use this form for associating placed attributes on web form
+     */
+    class ContactWebFormAttributeForm extends AttributeForm
     {
-        public static function createContactWebFormByName($name, $owner = null)
+        public $label;
+
+        public $required;
+
+        public $hidden;
+
+        public $hiddenValue;
+
+        public $attribute;
+
+        public function rules()
         {
-            if ($owner === null)
-            {
-                $owner = Yii::app()->user->userModel;
-            }
-            $placedAttributes                   = array('firstName', 'lastName', 'companyName', 'jobTitle');
-            ContactsModule::loadStartingData();
-            $contactStates                      = ContactState::getByName('New');
-            $contactWebForm                     = new ContactWebForm();
-            $contactWebForm->name               = $name;
-            $contactWebForm->redirectUrl        = 'http://www.zurmo.com/';
-            $contactWebForm->submitButtonLabel  = 'Save';
-            $contactWebForm->defaultState       = $contactStates[0];
-            $contactWebForm->serializedData     = serialize($placedAttributes);
-            $contactWebForm->defaultOwner       = $owner;
-            $saved                              = $contactWebForm->save();
-            assert('$saved');
-            return $contactWebForm;
+            return array_merge(parent::rules(), array(
+                array('label',       'type',    'type' => 'string'),
+                array('required',    'type',    'type' => 'boolean'),
+                array('hidden',      'type',    'type' => 'boolean'),
+                array('hiddenValue', 'type',    'type' => 'string'),
+            ));
         }
 
-        public static function getContactWebFormAttributes()
+        public function attributeLabels()
         {
-            $placedAttributes                   = array('firstName', 'lastName', 'companyName', 'jobTitle');
-            return $placedAttributes;
+            return array_merge(parent::attributeLabels(), array(
+                'required'      => Zurmo::t('ContactWebFormsModule', 'Required?'),
+                'hidden'        => Zurmo::t('ContactWebFormsModule', 'Hidden?'),
+            ));
         }
 
-        public static function deleteAllContactWebForms()
+        public function getAttributeName()
         {
-            $contactWebForms = ContactWebForm::getAll();
-            foreach ($contactWebForms as $webForm)
-            {
-                $webForm->delete();
-            }
+            return $this->attribute;
+        }
+
+        public function getAttributeTypeName()
+        {
+            return null;
         }
     }
 ?>
