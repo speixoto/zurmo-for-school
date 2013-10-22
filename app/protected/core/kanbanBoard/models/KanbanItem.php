@@ -113,7 +113,7 @@
         {
             return array_merge(parent::translatedAttributeLabels($language),
                 array(
-                    'type'          => Zurmo::t('TasksModule', 'Type', array(), null, $language),
+                    'type'          => Zurmo::t('Core', 'Type', array(), null, $language),
                     'sortOrder'     => Zurmo::t('TasksModule', 'Order',  array(), null, $language),
                     'kanbanItem'    => Zurmo::t('TasksModule', 'Kanban Item',  array(), null, $language),
                     'task'          => Zurmo::t('TasksModule', 'Task', array(), null, $language)

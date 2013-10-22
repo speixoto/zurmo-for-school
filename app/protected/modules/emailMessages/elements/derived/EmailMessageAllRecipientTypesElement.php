@@ -35,10 +35,32 @@
      ********************************************************************************/
 
     /**
-     * Display email message to to, cc, and bcc repicients
+     * Display email message to to, cc, and bcc recipients
      */
     class EmailMessageAllRecipientTypesElement extends Element implements DerivedElementInterface
     {
+        const CC_BCC_FIELD_ID   = 'cc-bcc-fields';
+
+        protected $toElement;
+
+        protected $ccElement;
+
+        protected $bccElement;
+
+        public function __construct($model, $attribute, $form = null, array $params = array())
+        {
+            parent::__construct($model, $attribute, $form, $params);
+            // setup toElement
+            $toParams = CMap::mergeArray($params, array('recipientType' => EmailMessageRecipient::TYPE_TO));
+            $this->toElement = new OutgoingEmailMessageRecipientBaseElement($model, $attribute, $form, $toParams);
+            // setup ccElement
+            $ccParams = CMap::mergeArray($params, array('recipientType' => EmailMessageRecipient::TYPE_CC));
+            $this->ccElement = new OutgoingEmailMessageRecipientBaseElement($model, $attribute, $form, $ccParams);
+            // setup bccElement
+            $bccParams = CMap::mergeArray($params, array('recipientType' => EmailMessageRecipient::TYPE_BCC));
+            $this->bccElement = new OutgoingEmailMessageRecipientBaseElement($model, $attribute, $form, $bccParams);
+        }
+
         protected function renderControlNonEditable()
         {
             throw new NotSupportedException();
@@ -47,62 +69,37 @@
         protected function renderControlEditable()
         {
             assert('$this->model instanceof CreateEmailMessageForm');
-            $toContent  = CHtml::tag('div', array('class' => 'recipient'), $this->renderTokenInput('to'));
-            $ccContent  = CHtml::tag('div', array('class' => 'recipient'), $this->renderTokenInput('cc'));
-            $bccContent = CHtml::tag('div', array('class' => 'recipient'), $this->renderTokenInput('bcc'));
-            $showCCBCCLink = ZurmoHtml::link('Cc/Bcc', '#',
-                                              array('onclick' => "js:$('#cc-bcc-fields').show(); $('#cc-bcc-fields-link').hide(); return false;",
-                                                    'id' => 'cc-bcc-fields-link',
-                                                    'class' => 'more-panels-link'));
-            return $toContent . CHtml::tag('div',
-                                           array('id' => 'cc-bcc-fields',
-                                                 'style'   => 'display: none;'
-                                               ),
-                                           $ccContent . $bccContent) . $showCCBCCLink;
-        }
-
-        protected function renderTokenInput($prefix)
-        {
-            $inputId   = $this->getEditableInputId($this->attribute, $prefix);
-            $inputName = $this->getEditableInputName($this->attribute, $prefix);
-            $content   = $this->form->labelEx($this->model,
-                                            $this->attribute,
-                                            array('for' => $inputId,
-                                                  'label' => ucfirst($prefix)));
-            $content  .= '<div>';
-            $cClipWidget = new CClipWidget();
-            $cClipWidget->beginClip("ModelElement");
-            $cClipWidget->widget('application.core.widgets.MultiSelectAutoComplete', array(
-                'name'        => $inputName,
-                'id'          => $inputId,
-                'jsonEncodedIdsAndLabels'   => CJSON::encode($this->getExistingPeopleRelationsIdsAndLabels($prefix)),
-                'sourceUrl'   => Yii::app()->createUrl('emailMessages/default/autoCompleteForMultiSelectAutoComplete'),
-                'htmlOptions' => array(
-                    'disabled' => $this->getDisabledValue(),
-                    ),
-                'hintText' => Zurmo::t('EmailMessagesModule', 'Type name or email'),
-                'onAdd'    => $this->getOnAddContent(),
-                'onDelete' => $this->getOnDeleteContent(),
-            ));
-            $cClipWidget->endClip();
-            $content  .= $cClipWidget->getController()->clips['ModelElement'];
-            $content  .= '</div>';
+            $toContent      = $this->toElement->render();
+            $ccBccContent   = $this->renderCcBccFieldsWithLink();
+            $content        = $toContent . $ccBccContent;
             return $content;
         }
 
-        /**
-         * Generate the error content. Used by editable content
-         * @return error content
-         */
+        protected function renderShowCcBccLink()
+        {
+            $showCcBccLink = ZurmoHtml::link('Cc/Bcc', '#',
+                array('onclick' => "js:$('#" . static::CC_BCC_FIELD_ID . "').show();" .
+                                    "$('#cc-bcc-fields-link').hide(); return false;",
+                        'id' => 'cc-bcc-fields-link',
+                        'class' => 'more-panels-link'));
+            return $showCcBccLink;
+        }
+
+        protected function renderCcBccFieldsWithLink()
+        {
+            $showCcBccLink      = $this->renderShowCcBccLink();
+            $ccContent          = $this->ccElement->render();
+            $bccContent         = $this->bccElement->render();
+            $ccBccFieldsContent = ZurmoHtml::tag('div', array('id' => static::CC_BCC_FIELD_ID,
+                                                                'style'   => 'display: none;'),
+                                                        $ccContent . $bccContent);
+            $content            = $ccBccFieldsContent . $showCcBccLink;
+            return $content;
+        }
+
         protected function renderError()
         {
-            $content = $this->form->error( $this->model, $this->attribute . '_to',
-                                           array('inputID' => $this->getEditableInputId($this->attribute, 'to')));
-            $content .= $this->form->error($this->model, $this->attribute . '_cc',
-                                           array('inputID' => $this->getEditableInputId($this->attribute, 'cc')));
-            $content .= $this->form->error($this->model, $this->attribute . '_bcc',
-                                           array('inputID' => $this->getEditableInputId($this->attribute, 'bcc')));
-            return $content;
+            return null; // we handle errors for recipient fields in themselves
         }
 
         protected function renderLabel()
@@ -128,28 +125,6 @@
         public static function getModelAttributeNames()
         {
             return array();
-        }
-
-        protected function getOnAddContent()
-        {
-        }
-
-        protected function getOnDeleteContent()
-        {
-        }
-
-        protected function getExistingPeopleRelationsIdsAndLabels($prefix)
-        {
-            $existingPeople = array();
-            foreach ($this->model->recipients as $recipient)
-            {
-                if ($recipient->type == constant('EmailMessageRecipient::TYPE_' . strtoupper($prefix)))
-                {
-                    $existingPeople[] = array('id'   => $recipient->toAddress,
-                                              'name' => $recipient->toName . ' (' . $recipient->toAddress . ')');
-                }
-            }
-            return $existingPeople;
         }
     }
 ?>

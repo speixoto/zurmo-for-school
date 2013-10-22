@@ -828,7 +828,7 @@
             $content = $this->runControllerWithNoExceptionsAndGetContent('leads/default');
 
             //Assert that the edit lead does not exits after the search.
-            $this->assertTrue(strpos($content, "No results found.") > 0);
+            $this->assertTrue(strpos($content, "No results found") > 0);
             $this->assertFalse(strpos($content, "26378 South Arlington Ave") > 0);
         }
 

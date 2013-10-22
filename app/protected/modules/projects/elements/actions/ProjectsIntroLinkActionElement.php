@@ -116,7 +116,7 @@
             $htmlOptions = array('id'   => $this->getPanelId() . '-checkbox-id',
                                  'ajax' => $ajaxOptions);
             $checkBox    = ZurmoHtml::checkBox($name, $this->getChecked(), $htmlOptions);
-            return '<div class="screen-options"><h4>Screen Options</h4>' . $checkBox . Zurmo::t('MarketingModule', 'Show intro message') . '</div>';
+            return '<div class="screen-options"><h4>Screen Options</h4>' . $checkBox . Zurmo::t('ZurmoModule', 'Show intro message') . '</div>';
         }
 
         protected function getPanelId()

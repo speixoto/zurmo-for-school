@@ -38,7 +38,7 @@
      * Helper class to convert a contact search into
      * an Jui AutoComplete ready array.
      */
-    class ContactAutoCompleteUtil
+    class ContactAutoCompleteUtil extends BaseModelAutoCompleteUtil
     {
         /**
          * @return array - Jui AutoComplete ready array
@@ -46,16 +46,18 @@
          * @param string $partialName
          * @param int $pageSize
          * @param null|string $stateMetadataAdapterClassName
+         * @param $autoCompleteOptions
          * @return array
          */
-        public static function getByPartialName($partialName, $pageSize, $stateMetadataAdapterClassName = null)
+        public static function getByPartialName($partialName, $pageSize, $stateMetadataAdapterClassName = null,
+                                                                            $autoCompleteOptions = null)
         {
             assert('is_string($partialName)');
             assert('is_int($pageSize)');
             assert('$stateMetadataAdapterClassName == null || is_string($stateMetadataAdapterClassName)');
             $autoCompleteResults  = array();
             $contacts                = ContactSearch::getContactsByPartialFullName($partialName, $pageSize,
-                                                            $stateMetadataAdapterClassName);
+                                                            $stateMetadataAdapterClassName, $autoCompleteOptions);
             foreach ($contacts as $contact)
             {
                 $autoCompleteResults[] = array(

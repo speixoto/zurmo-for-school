@@ -139,7 +139,7 @@
 
         public static function getLabelForSubscribeToList()
         {
-            return Zurmo::t('WorkflowsModule', 'Subscribe To List');
+            return Zurmo::t('Core', 'Subscribe To List');
         }
 
         /**

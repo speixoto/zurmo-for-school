@@ -42,24 +42,67 @@
             SecurityTestHelper::createSuperAdmin();
         }
 
-        public function testRun()
+        public function setUp()
         {
+            parent::setUp();
             $this->assertTrue(ContactsModule::loadStartingData());
+        }
+
+        public function tearDown()
+        {
+            parent::tearDown();
+            ContactState::deleteAll();
+        }
+
+        public function testRunWithoutAnyValueForOverwriteExistingReadTables()
+        {
+
+            $output = array();
+            $this->runUpdateSchema($output);
+            $this->assertTrue(array_search('Info - Schema generation completed', $output) !== false);
+            $this->assertTrue(array_search('Skipping existing read Tables.', $output) !== false);
+            $this->assertTrue(array_search('Schema update complete.', $output) !== false);
+        }
+
+        /**
+         * @depends testRunWithoutAnyValueForOverwriteExistingReadTables
+         */
+        public function testRunWithOverwriteExistingReadTablesSetToZero()
+        {
+            $output = array();
+            $this->runUpdateSchema($output, 0);
+            $this->assertTrue(array_search('Info - Schema generation completed', $output) !== false);
+            $this->assertTrue(array_search('Skipping existing read Tables.', $output) !== false);
+            $this->assertTrue(array_search('Schema update complete.', $output) !== false);
+        }
+
+        /**
+         * @depends testRunWithOverwriteExistingReadTablesSetToZero
+         */
+        public function testRunWithOverwriteExistingReadTablesSetToOne()
+        {
+            $output = array();
+            $this->runUpdateSchema($output, 1);
+            $this->assertTrue(array_search('Info - Schema generation completed', $output) !== false);
+            $this->assertTrue(array_search('Overwriting any existing read Tables.', $output) !== false);
+            $this->assertTrue(array_search('Schema update complete.', $output) !== false);
+        }
+
+        protected function runUpdateSchema(& $output, $overwriteExistingReadTables = null)
+        {
             $messageLogger              = new MessageLogger();
             InstallUtil::autoBuildDatabase($messageLogger, true);
 
             chdir(COMMON_ROOT . DIRECTORY_SEPARATOR . 'protected' . DIRECTORY_SEPARATOR . 'commands');
 
-            $command = "php zurmocTest.php updateSchema super";
+            $command = "php zurmocTest.php updateSchema super " . $overwriteExistingReadTables;
+            //echo PHP_EOL . "Executing : $command" . PHP_EOL;
 
             if (!IS_WINNT)
             {
                 $command .= ' 2>&1';
             }
-
             exec($command, $output);
-            $this->assertTrue(array_search('Info - Schema generation completed', $output) !== false);
-            $this->assertTrue(array_search('Schema update complete.', $output) !== false);
         }
     }
 ?>

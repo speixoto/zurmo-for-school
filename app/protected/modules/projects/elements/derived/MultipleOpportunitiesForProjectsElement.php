@@ -68,7 +68,7 @@
         /**
          * @return string
          */
-        protected function assertModuleType()
+        protected function assertModelType()
         {
             assert('$this->model instanceof Project');
         }
@@ -94,7 +94,7 @@
         /**
          * @return string
          */
-        protected function relationName()
+        protected function getRelationName()
         {
             return 'opportunities';
         }

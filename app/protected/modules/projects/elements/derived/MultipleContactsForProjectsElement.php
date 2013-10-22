@@ -56,7 +56,7 @@
             return '_Contact_ids';
         }
 
-        protected function assertModuleType()
+        protected function assertModelType()
         {
             assert('$this->model instanceof Project');
         }
@@ -73,7 +73,7 @@
                                             LabelUtil::getTranslationParamsForAllModules());
         }
 
-        protected function relationName()
+        protected function getRelationName()
         {
             return 'contacts';
         }

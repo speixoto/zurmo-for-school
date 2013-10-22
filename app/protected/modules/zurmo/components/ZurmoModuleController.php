@@ -123,9 +123,8 @@
 
         protected function renderAutoCompleteResults($modelClassName, $term, $autoCompleteOptions = null)
         {
-            $autoCompleteOptions = ArrayUtil::decodeAutoCompleteOptionsArray($autoCompleteOptions);
-            $pageSize            = Yii::app()->pagination->resolveActiveForCurrentUserByType(
-                                   'autoCompleteListPageSize', get_class($this->getModule()));
+            $pageSize            = Yii::app()->pagination->resolveActiveForCurrentUserByType('autoCompleteListPageSize',
+                                                                                        get_class($this->getModule()));
             $autoCompleteResults = ModelAutoCompleteUtil::getByPartialName($modelClassName, $term, $pageSize, $autoCompleteOptions);
             if (empty($autoCompleteResults))
             {

@@ -54,7 +54,7 @@
         /**
          * Asserts that element is attached to a form with a model type that we are indeed expecting
          */
-        abstract protected function assertModuleType();
+        abstract protected function assertModelType();
 
         /**
          * Returns the source url widget should hit to request data for autocomplete
@@ -66,7 +66,7 @@
          * Returns the relation name we would query when generated existing Ids and Labels
          * @return string
          */
-        abstract protected function relationName();
+        abstract protected function getRelationName();
 
         /**
          * Returns the hint text display in widget
@@ -193,7 +193,7 @@
          */
         protected function renderControlEditable()
         {
-            $this->assertModuleType();
+            $this->assertModelType();
             $cClipWidget = new CClipWidget();
             $clipName   = $this->getClipName();
             $widgetPath = $this->getWidgetPathAlias();
@@ -285,19 +285,30 @@
         }
 
         /**
+         * Computes Related records for current model using relationName, returns an array
+         * @return array
+         */
+        protected function getRelatedRecords()
+        {
+            $relation           = $this->getRelationName();
+            $relatedRecords     = $this->model->$relation;
+            return $relatedRecords;
+        }
+
+        /**
          * Returns an array with the Ids and Labels of records already bound to the model attached to element
          * @return array
          */
         protected function getExistingIdsAndLabels()
         {
-            $relation           = $this->relationName();
+            $relatedRecords     = $this->getRelatedRecords();
             $existingRecords    = array();
             $default            = $this->getDefaultExistingIdsAndLabel();
             if (!empty($default))
             {
                 $existingRecords[]  = $default;
             }
-            foreach ($this->model->$relation as $relatedRecord)
+            foreach ($relatedRecords as $relatedRecord)
             {
                 $existingRecord = $this->resolveIdAndNameByModel($relatedRecord);
                 if (!empty($existingRecord))

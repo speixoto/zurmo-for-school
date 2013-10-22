@@ -457,7 +457,7 @@
                 echo "\n";
 
                 $startTime = microtime(true);
-                ReadPermissionsOptimizationUtil::rebuild(true);
+                ReadPermissionsOptimizationUtil::rebuild(true, true);
                 $endTime = microtime(true);
                 if ($this->isDebug())
                 {

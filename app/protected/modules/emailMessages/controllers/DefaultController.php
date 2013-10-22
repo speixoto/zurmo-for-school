@@ -405,7 +405,6 @@
                     $selectForm->setAttributes($_POST[get_class($selectForm)][$id]);
                     $contact = Contact::getById((int)$selectForm->contactId);
                     ArchivedEmailMatchingUtil::resolveContactToSenderOrRecipient($emailMessage, $contact);
-                    ArchivedEmailMatchingUtil::resolveEmailAddressToContactIfEmailRelationAvailable($emailMessage, $contact);
                     $emailMessage->folder = EmailFolder::getByBoxAndType($emailMessage->folder->emailBox,
                                                                          EmailFolder::TYPE_ARCHIVED);
                     if (!$emailMessage->save())
@@ -589,13 +588,13 @@
          * Given a partial name or e-mail address, search for all Users, Leads or Contacts
          * JSON encode the resulting array of contacts.
          */
-        public function actionAutoCompleteForMultiSelectAutoComplete($term)
+        public function actionAutoCompleteForMultiSelectAutoComplete($term, $autoCompleteOptions = null)
         {
             $pageSize               = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                                                 'autoCompleteListPageSize', get_class($this->getModule()));
-            $usersByFullName        = UserSearch::getUsersByPartialFullName($term, $pageSize);
-            $usersByEmailAddress    = UserSearch::getUsersByEmailAddress($term, 'contains', true);
-            $contacts               = ContactSearch::getContactsByPartialFullNameOrAnyEmailAddress($term, $pageSize, null, 'contains');
+            $usersByFullName        = UserSearch::getUsersByPartialFullName($term, $pageSize, $autoCompleteOptions);
+            $usersByEmailAddress    = UserSearch::getUsersByEmailAddress($term, 'contains', true, $autoCompleteOptions);
+            $contacts               = ContactSearch::getContactsByPartialFullNameOrAnyEmailAddress($term, $pageSize, null, 'contains', $autoCompleteOptions);
             $autoCompleteResults    = array();
             foreach ($usersByEmailAddress as $user)
             {

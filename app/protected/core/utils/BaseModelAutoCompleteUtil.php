@@ -34,60 +34,27 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * A job for removing old import models after the imports are complete.
-     */
-    class ImportCleanupJob extends BaseJob
+    class BaseModelAutoCompleteUtil
     {
-        protected static $pageSize = 200;
-
         /**
-         * @returns Translated label that describes this job type.
+         * Applies autocompleteOptions
+         * @param $joinTablesAdapter
+         * @param $where
+         * @param $autoCompleteOptions
          */
-        public static function getDisplayName()
+        protected static function handleAutoCompleteOptions(& $joinTablesAdapter, & $where, $autoCompleteOptions = null)
         {
-           return Zurmo::t('ImportModule', 'Import Cleanup Job');
-        }
-
-        /**
-         * @return The type of the NotificationRules
-         */
-        public static function getType()
-        {
-            return 'ImportCleanup';
-        }
-
-        public static function getRecommendedRunFrequencyContent()
-        {
-            return Zurmo::t('JobsManagerModule', 'Once a week, early in the morning.');
-        }
-
-        /**
-         * Get all imports where the modifiedDateTime was more than 1 week ago.  Then
-         * delete the imports.
-         * (non-PHPdoc)
-         * @see BaseJob::run()
-         */
-        public function run()
-        {
-            $oneWeekAgoTimeStamp = DateTimeUtil::convertTimestampToDbFormatDateTime(time() - 60 * 60 *24 * 7);
-            $searchAttributeData = array();
-            $searchAttributeData['clauses'] = array(
-                1 => array(
-                    'attributeName'        => 'modifiedDateTime',
-                    'operatorType'         => 'lessThan',
-                    'value'                => $oneWeekAgoTimeStamp,
-                ),
-            );
-            $searchAttributeData['structure'] = '1';
-            $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('Import');
-            $where = RedBeanModelDataProvider::makeWhere('Import', $searchAttributeData, $joinTablesAdapter);
-            $importModels = Import::getSubset($joinTablesAdapter, null, self::$pageSize, $where, null);
-            foreach ($importModels as $import)
+            assert('is_string($autoCompleteOptions) || is_null($autoCompleteOptions)');
+            $autoCompleteOptions = ArrayUtil::decodeAutoCompleteOptionsArray($autoCompleteOptions);
+            assert('is_array($autoCompleteOptions)');
+            foreach ($autoCompleteOptions as $optionName => $optionValue)
             {
-                $import->delete();
+                if (!method_exists(get_called_class(), $optionName))
+                {
+                    throw new NotSupportedException("No such autoCompleteOption as: $optionName");
+                }
+                static::${optionName}($optionValue, $joinTablesAdapter, $where);
             }
-            return true;
         }
     }
 ?>

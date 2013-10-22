@@ -222,7 +222,7 @@
         protected function getEmptyText()
         {
             $content  = '<div class="general-issue-notice no-autoresponders-found"><span class="icon-notice"></span><p>';
-            $content .= Zurmo::t('CampaignsModule', 'No Autoresponders created');
+            $content .= Zurmo::t('CampaignsModule', 'No autoresponders created');
             $content .= '</p></div>';
             return $content;
         }

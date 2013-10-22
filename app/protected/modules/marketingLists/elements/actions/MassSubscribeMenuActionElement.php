@@ -71,7 +71,7 @@
 
         protected function getDefaultLabel()
         {
-            return Zurmo::t('MarketingListsModule', 'Subscribe');
+            return Zurmo::t('Core', 'Subscribe');
         }
     }
 ?>

@@ -79,7 +79,7 @@
                                                         LabelUtil::getTranslationParamsForAllModules());
         }
 
-        protected function assertModuleType()
+        protected function assertModelType()
         {
             assert('$this->model instanceof ProductTemplate || $this->model instanceof Product');
         }
@@ -97,7 +97,7 @@
             return Yii::app()->createUrl('productTemplates/default/autoCompleteAllProductCategoriesForMultiSelectAutoComplete');
         }
 
-        protected function relationName()
+        protected function getRelationName()
         {
             return 'productCategories';
         }

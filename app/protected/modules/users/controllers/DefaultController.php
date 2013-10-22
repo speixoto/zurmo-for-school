@@ -562,11 +562,11 @@
          * user does not have access to the Leads or Contacts module.
          * JSON encode the resulting array of contacts.
          */
-        public function actionAutoCompleteForMultiSelectAutoComplete($term)
+        public function actionAutoCompleteForMultiSelectAutoComplete($term, $autoCompleteOptions = null)
         {
             $pageSize = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                             'autoCompleteListPageSize', get_class($this->getModule()));
-            $users    = UserSearch::getUsersByPartialFullName($term, $pageSize);
+            $users    = UserSearch::getUsersByPartialFullName($term, $pageSize, $autoCompleteOptions);
             $autoCompleteResults  = array();
             foreach ($users as $user)
             {

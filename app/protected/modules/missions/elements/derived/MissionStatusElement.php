@@ -84,23 +84,23 @@
         {
             if ($mission->status == Mission::STATUS_AVAILABLE)
             {
-                return ZurmoHtml::wrapLabel(Zurmo::t('MissionsModule', 'Available'), 'mission-status');
+                return ZurmoHtml::wrapLabel(Zurmo::t('Core', 'Available'), 'mission-status');
             }
             elseif ($mission->status == Mission::STATUS_TAKEN)
             {
-                return ZurmoHtml::wrapLabel(Zurmo::t('MissionsModule', 'In Progress'), 'mission-status');
+                return ZurmoHtml::wrapLabel(Zurmo::t('Core', 'In Progress'), 'mission-status');
             }
             elseif ($mission->status == Mission::STATUS_COMPLETED)
             {
-                return ZurmoHtml::wrapLabel(Zurmo::t('MissionsModule', 'Awaiting Acceptance'), 'mission-status');
+                return ZurmoHtml::wrapLabel(Zurmo::t('Core', 'Awaiting Acceptance'), 'mission-status');
             }
             elseif ($mission->status == Mission::STATUS_REJECTED)
             {
-                return ZurmoHtml::wrapLabel(Zurmo::t('MissionsModule', 'Rejected'), 'mission-status');
+                return ZurmoHtml::wrapLabel(Zurmo::t('Core', 'Rejected'), 'mission-status');
             }
             elseif ($mission->status == Mission::STATUS_ACCEPTED)
             {
-                return ZurmoHtml::wrapLabel(Zurmo::t('MissionsModule', 'Accepted'), 'mission-status');
+                return ZurmoHtml::wrapLabel(Zurmo::t('Core', 'Accepted'), 'mission-status');
             }
             else
             {
@@ -115,28 +115,28 @@
                !$mission->owner->isSame(Yii::app()->user->userModel))
             {
                 return self::renderAjaxStatusActionChangeLink(Mission::STATUS_TAKEN, $mission->id,
-                                                              Zurmo::t('MissionsModule', 'Start'), $updateDivId);
+                                                              Zurmo::t('Core', 'Start'), $updateDivId);
             }
             elseif ($mission->status == Mission::STATUS_TAKEN &&
                    $mission->takenByUser->isSame(Yii::app()->user->userModel))
             {
                 return self::renderAjaxStatusActionChangeLink(Mission::STATUS_COMPLETED, $mission->id,
-                                                              Zurmo::t('MissionsModule', 'Complete'), $updateDivId);
+                                                              Zurmo::t('Core', 'Complete'), $updateDivId);
             }
             elseif ($mission->status == Mission::STATUS_COMPLETED &&
                    $mission->owner->isSame(Yii::app()->user->userModel))
             {
                 $content  = self::renderAjaxStatusActionChangeLink(      Mission::STATUS_ACCEPTED, $mission->id,
-                                                                         Zurmo::t('MissionsModule', 'Accept'), $updateDivId);
+                                                                         Zurmo::t('Core', 'Accept'), $updateDivId);
                 $content .= ' ' . self::renderAjaxStatusActionChangeLink(Mission::STATUS_REJECTED, $mission->id,
-                                                                         Zurmo::t('MissionsModule', 'Reject'), $updateDivId);
+                                                                         Zurmo::t('Core', 'Reject'), $updateDivId);
                 return $content;
             }
             elseif ($mission->status == Mission::STATUS_REJECTED &&
                    $mission->takenByUser->isSame(Yii::app()->user->userModel))
             {
                 return self::renderAjaxStatusActionChangeLink(Mission::STATUS_COMPLETED, $mission->id,
-                                                              Zurmo::t('MissionsModule', 'Complete'), $updateDivId);
+                                                              Zurmo::t('Core', 'Complete'), $updateDivId);
             }
         }
 

@@ -291,7 +291,8 @@ a.ModalGameNotification a,
 #business-card-buttons > div,
 #business-card-buttons a,
 #sliding-panel-toggle,
-.mini-button {
+.mini-button,
+.project-stats {
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
@@ -1059,7 +1060,8 @@ body.blue .treeview span:hover .z-action-link,
 body.blue .drop-zone,
 body.blue .missing-chart,
 body.blue a.active-tab,
-body.blue .edit-autoresponder-link {
+body.blue .edit-autoresponder-link,
+body.blue .edit-project-link {
   color: #282a76;
 }
 body.blue #MashableInboxActionBarForViews .nav > li > a:hover,
@@ -1071,18 +1073,18 @@ body.blue a:hover i[class^="icon"],
 body.blue a:hover i[class^="icon"]:after,
 body.blue a:active i[class^="icon"],
 body.blue a:active i[class^="icon"]:after,
-body.blue .button-action-trigger:hover span,
-body.blue .button-action-trigger:active span,
-body.blue .button-action:hover span,
-body.blue .button-action:active span,
-body.blue .split-button:hover span,
-body.blue .split-button:hover i[class^="icon"],
-body.blue .split-button:hover i[class^="icon"]:after,
-body.blue .split-button:hover i[class^="icon"]:before,
 body.blue .default-button:hover span,
 body.blue .default-button:hover i[class^="icon"],
 body.blue .default-button:hover i[class^="icon"]:after,
 body.blue .default-button:hover i[class^="icon"]:before,
+body.blue .button-action:hover span,
+body.blue .button-action:hover i[class^="icon"],
+body.blue .button-action:hover i[class^="icon"]:after,
+body.blue .button-action:hover i[class^="icon"]:before,
+body.blue .button-action-trigger:hover span,
+body.blue .button-action-trigger:hover i[class^="icon"],
+body.blue .button-action-trigger:hover i[class^="icon"]:after,
+body.blue .button-action-trigger:hover i[class^="icon"]:before,
 body.blue .pillbox .active a,
 body.blue .pillbox .active span,
 body.blue .pillbox .active i[class^="icon"],
@@ -1672,7 +1674,8 @@ body.sunrise .treeview span:hover .z-action-link,
 body.sunrise .drop-zone,
 body.sunrise .missing-chart,
 body.sunrise a.active-tab,
-body.sunrise .edit-autoresponder-link {
+body.sunrise .edit-autoresponder-link,
+body.sunrise .edit-project-link {
   color: #34495e;
 }
 body.sunrise #MashableInboxActionBarForViews .nav > li > a:hover,
@@ -1684,18 +1687,18 @@ body.sunrise a:hover i[class^="icon"],
 body.sunrise a:hover i[class^="icon"]:after,
 body.sunrise a:active i[class^="icon"],
 body.sunrise a:active i[class^="icon"]:after,
-body.sunrise .button-action-trigger:hover span,
-body.sunrise .button-action-trigger:active span,
-body.sunrise .button-action:hover span,
-body.sunrise .button-action:active span,
-body.sunrise .split-button:hover span,
-body.sunrise .split-button:hover i[class^="icon"],
-body.sunrise .split-button:hover i[class^="icon"]:after,
-body.sunrise .split-button:hover i[class^="icon"]:before,
 body.sunrise .default-button:hover span,
 body.sunrise .default-button:hover i[class^="icon"],
 body.sunrise .default-button:hover i[class^="icon"]:after,
 body.sunrise .default-button:hover i[class^="icon"]:before,
+body.sunrise .button-action:hover span,
+body.sunrise .button-action:hover i[class^="icon"],
+body.sunrise .button-action:hover i[class^="icon"]:after,
+body.sunrise .button-action:hover i[class^="icon"]:before,
+body.sunrise .button-action-trigger:hover span,
+body.sunrise .button-action-trigger:hover i[class^="icon"],
+body.sunrise .button-action-trigger:hover i[class^="icon"]:after,
+body.sunrise .button-action-trigger:hover i[class^="icon"]:before,
 body.sunrise .pillbox .active a,
 body.sunrise .pillbox .active span,
 body.sunrise .pillbox .active i[class^="icon"],
@@ -2285,7 +2288,8 @@ body.marble .treeview span:hover .z-action-link,
 body.marble .drop-zone,
 body.marble .missing-chart,
 body.marble a.active-tab,
-body.marble .edit-autoresponder-link {
+body.marble .edit-autoresponder-link,
+body.marble .edit-project-link {
   color: #7f7f7f;
 }
 body.marble #MashableInboxActionBarForViews .nav > li > a:hover,
@@ -2297,18 +2301,18 @@ body.marble a:hover i[class^="icon"],
 body.marble a:hover i[class^="icon"]:after,
 body.marble a:active i[class^="icon"],
 body.marble a:active i[class^="icon"]:after,
-body.marble .button-action-trigger:hover span,
-body.marble .button-action-trigger:active span,
-body.marble .button-action:hover span,
-body.marble .button-action:active span,
-body.marble .split-button:hover span,
-body.marble .split-button:hover i[class^="icon"],
-body.marble .split-button:hover i[class^="icon"]:after,
-body.marble .split-button:hover i[class^="icon"]:before,
 body.marble .default-button:hover span,
 body.marble .default-button:hover i[class^="icon"],
 body.marble .default-button:hover i[class^="icon"]:after,
 body.marble .default-button:hover i[class^="icon"]:before,
+body.marble .button-action:hover span,
+body.marble .button-action:hover i[class^="icon"],
+body.marble .button-action:hover i[class^="icon"]:after,
+body.marble .button-action:hover i[class^="icon"]:before,
+body.marble .button-action-trigger:hover span,
+body.marble .button-action-trigger:hover i[class^="icon"],
+body.marble .button-action-trigger:hover i[class^="icon"]:after,
+body.marble .button-action-trigger:hover i[class^="icon"]:before,
 body.marble .pillbox .active a,
 body.marble .pillbox .active span,
 body.marble .pillbox .active i[class^="icon"],
@@ -2898,7 +2902,8 @@ body.purple-haze .treeview span:hover .z-action-link,
 body.purple-haze .drop-zone,
 body.purple-haze .missing-chart,
 body.purple-haze a.active-tab,
-body.purple-haze .edit-autoresponder-link {
+body.purple-haze .edit-autoresponder-link,
+body.purple-haze .edit-project-link {
   color: #713b8a;
 }
 body.purple-haze #MashableInboxActionBarForViews .nav > li > a:hover,
@@ -2910,18 +2915,18 @@ body.purple-haze a:hover i[class^="icon"],
 body.purple-haze a:hover i[class^="icon"]:after,
 body.purple-haze a:active i[class^="icon"],
 body.purple-haze a:active i[class^="icon"]:after,
-body.purple-haze .button-action-trigger:hover span,
-body.purple-haze .button-action-trigger:active span,
-body.purple-haze .button-action:hover span,
-body.purple-haze .button-action:active span,
-body.purple-haze .split-button:hover span,
-body.purple-haze .split-button:hover i[class^="icon"],
-body.purple-haze .split-button:hover i[class^="icon"]:after,
-body.purple-haze .split-button:hover i[class^="icon"]:before,
 body.purple-haze .default-button:hover span,
 body.purple-haze .default-button:hover i[class^="icon"],
 body.purple-haze .default-button:hover i[class^="icon"]:after,
 body.purple-haze .default-button:hover i[class^="icon"]:before,
+body.purple-haze .button-action:hover span,
+body.purple-haze .button-action:hover i[class^="icon"],
+body.purple-haze .button-action:hover i[class^="icon"]:after,
+body.purple-haze .button-action:hover i[class^="icon"]:before,
+body.purple-haze .button-action-trigger:hover span,
+body.purple-haze .button-action-trigger:hover i[class^="icon"],
+body.purple-haze .button-action-trigger:hover i[class^="icon"]:after,
+body.purple-haze .button-action-trigger:hover i[class^="icon"]:before,
 body.purple-haze .pillbox .active a,
 body.purple-haze .pillbox .active span,
 body.purple-haze .pillbox .active i[class^="icon"],
@@ -3512,7 +3517,8 @@ body.flat-cement .treeview span:hover .z-action-link,
 body.flat-cement .drop-zone,
 body.flat-cement .missing-chart,
 body.flat-cement a.active-tab,
-body.flat-cement .edit-autoresponder-link {
+body.flat-cement .edit-autoresponder-link,
+body.flat-cement .edit-project-link {
   color: #2c3e50;
 }
 body.flat-cement #MashableInboxActionBarForViews .nav > li > a:hover,
@@ -3524,18 +3530,18 @@ body.flat-cement a:hover i[class^="icon"],
 body.flat-cement a:hover i[class^="icon"]:after,
 body.flat-cement a:active i[class^="icon"],
 body.flat-cement a:active i[class^="icon"]:after,
-body.flat-cement .button-action-trigger:hover span,
-body.flat-cement .button-action-trigger:active span,
-body.flat-cement .button-action:hover span,
-body.flat-cement .button-action:active span,
-body.flat-cement .split-button:hover span,
-body.flat-cement .split-button:hover i[class^="icon"],
-body.flat-cement .split-button:hover i[class^="icon"]:after,
-body.flat-cement .split-button:hover i[class^="icon"]:before,
 body.flat-cement .default-button:hover span,
 body.flat-cement .default-button:hover i[class^="icon"],
 body.flat-cement .default-button:hover i[class^="icon"]:after,
 body.flat-cement .default-button:hover i[class^="icon"]:before,
+body.flat-cement .button-action:hover span,
+body.flat-cement .button-action:hover i[class^="icon"],
+body.flat-cement .button-action:hover i[class^="icon"]:after,
+body.flat-cement .button-action:hover i[class^="icon"]:before,
+body.flat-cement .button-action-trigger:hover span,
+body.flat-cement .button-action-trigger:hover i[class^="icon"],
+body.flat-cement .button-action-trigger:hover i[class^="icon"]:after,
+body.flat-cement .button-action-trigger:hover i[class^="icon"]:before,
 body.flat-cement .pillbox .active a,
 body.flat-cement .pillbox .active span,
 body.flat-cement .pillbox .active i[class^="icon"],
@@ -4145,7 +4151,8 @@ body.amazon .treeview span:hover .z-action-link,
 body.amazon .drop-zone,
 body.amazon .missing-chart,
 body.amazon a.active-tab,
-body.amazon .edit-autoresponder-link {
+body.amazon .edit-autoresponder-link,
+body.amazon .edit-project-link {
   color: #26354a;
 }
 body.amazon #MashableInboxActionBarForViews .nav > li > a:hover,
@@ -4157,18 +4164,18 @@ body.amazon a:hover i[class^="icon"],
 body.amazon a:hover i[class^="icon"]:after,
 body.amazon a:active i[class^="icon"],
 body.amazon a:active i[class^="icon"]:after,
-body.amazon .button-action-trigger:hover span,
-body.amazon .button-action-trigger:active span,
-body.amazon .button-action:hover span,
-body.amazon .button-action:active span,
-body.amazon .split-button:hover span,
-body.amazon .split-button:hover i[class^="icon"],
-body.amazon .split-button:hover i[class^="icon"]:after,
-body.amazon .split-button:hover i[class^="icon"]:before,
 body.amazon .default-button:hover span,
 body.amazon .default-button:hover i[class^="icon"],
 body.amazon .default-button:hover i[class^="icon"]:after,
 body.amazon .default-button:hover i[class^="icon"]:before,
+body.amazon .button-action:hover span,
+body.amazon .button-action:hover i[class^="icon"],
+body.amazon .button-action:hover i[class^="icon"]:after,
+body.amazon .button-action:hover i[class^="icon"]:before,
+body.amazon .button-action-trigger:hover span,
+body.amazon .button-action-trigger:hover i[class^="icon"],
+body.amazon .button-action-trigger:hover i[class^="icon"]:after,
+body.amazon .button-action-trigger:hover i[class^="icon"]:before,
 body.amazon .pillbox .active a,
 body.amazon .pillbox .active span,
 body.amazon .pillbox .active i[class^="icon"],
@@ -4758,7 +4765,8 @@ body.sweden .treeview span:hover .z-action-link,
 body.sweden .drop-zone,
 body.sweden .missing-chart,
 body.sweden a.active-tab,
-body.sweden .edit-autoresponder-link {
+body.sweden .edit-autoresponder-link,
+body.sweden .edit-project-link {
   color: #034c8c;
 }
 body.sweden #MashableInboxActionBarForViews .nav > li > a:hover,
@@ -4770,18 +4778,18 @@ body.sweden a:hover i[class^="icon"],
 body.sweden a:hover i[class^="icon"]:after,
 body.sweden a:active i[class^="icon"],
 body.sweden a:active i[class^="icon"]:after,
-body.sweden .button-action-trigger:hover span,
-body.sweden .button-action-trigger:active span,
-body.sweden .button-action:hover span,
-body.sweden .button-action:active span,
-body.sweden .split-button:hover span,
-body.sweden .split-button:hover i[class^="icon"],
-body.sweden .split-button:hover i[class^="icon"]:after,
-body.sweden .split-button:hover i[class^="icon"]:before,
 body.sweden .default-button:hover span,
 body.sweden .default-button:hover i[class^="icon"],
 body.sweden .default-button:hover i[class^="icon"]:after,
 body.sweden .default-button:hover i[class^="icon"]:before,
+body.sweden .button-action:hover span,
+body.sweden .button-action:hover i[class^="icon"],
+body.sweden .button-action:hover i[class^="icon"]:after,
+body.sweden .button-action:hover i[class^="icon"]:before,
+body.sweden .button-action-trigger:hover span,
+body.sweden .button-action-trigger:hover i[class^="icon"],
+body.sweden .button-action-trigger:hover i[class^="icon"]:after,
+body.sweden .button-action-trigger:hover i[class^="icon"]:before,
 body.sweden .pillbox .active a,
 body.sweden .pillbox .active span,
 body.sweden .pillbox .active i[class^="icon"],
@@ -5371,7 +5379,8 @@ body.pink .treeview span:hover .z-action-link,
 body.pink .drop-zone,
 body.pink .missing-chart,
 body.pink a.active-tab,
-body.pink .edit-autoresponder-link {
+body.pink .edit-autoresponder-link,
+body.pink .edit-project-link {
   color: #323232;
 }
 body.pink #MashableInboxActionBarForViews .nav > li > a:hover,
@@ -5383,18 +5392,18 @@ body.pink a:hover i[class^="icon"],
 body.pink a:hover i[class^="icon"]:after,
 body.pink a:active i[class^="icon"],
 body.pink a:active i[class^="icon"]:after,
-body.pink .button-action-trigger:hover span,
-body.pink .button-action-trigger:active span,
-body.pink .button-action:hover span,
-body.pink .button-action:active span,
-body.pink .split-button:hover span,
-body.pink .split-button:hover i[class^="icon"],
-body.pink .split-button:hover i[class^="icon"]:after,
-body.pink .split-button:hover i[class^="icon"]:before,
 body.pink .default-button:hover span,
 body.pink .default-button:hover i[class^="icon"],
 body.pink .default-button:hover i[class^="icon"]:after,
 body.pink .default-button:hover i[class^="icon"]:before,
+body.pink .button-action:hover span,
+body.pink .button-action:hover i[class^="icon"],
+body.pink .button-action:hover i[class^="icon"]:after,
+body.pink .button-action:hover i[class^="icon"]:before,
+body.pink .button-action-trigger:hover span,
+body.pink .button-action-trigger:hover i[class^="icon"],
+body.pink .button-action-trigger:hover i[class^="icon"]:after,
+body.pink .button-action-trigger:hover i[class^="icon"]:before,
 body.pink .pillbox .active a,
 body.pink .pillbox .active span,
 body.pink .pillbox .active i[class^="icon"],
@@ -5984,7 +5993,8 @@ body.brown .treeview span:hover .z-action-link,
 body.brown .drop-zone,
 body.brown .missing-chart,
 body.brown a.active-tab,
-body.brown .edit-autoresponder-link {
+body.brown .edit-autoresponder-link,
+body.brown .edit-project-link {
   color: #547980;
 }
 body.brown #MashableInboxActionBarForViews .nav > li > a:hover,
@@ -5996,18 +6006,18 @@ body.brown a:hover i[class^="icon"],
 body.brown a:hover i[class^="icon"]:after,
 body.brown a:active i[class^="icon"],
 body.brown a:active i[class^="icon"]:after,
-body.brown .button-action-trigger:hover span,
-body.brown .button-action-trigger:active span,
-body.brown .button-action:hover span,
-body.brown .button-action:active span,
-body.brown .split-button:hover span,
-body.brown .split-button:hover i[class^="icon"],
-body.brown .split-button:hover i[class^="icon"]:after,
-body.brown .split-button:hover i[class^="icon"]:before,
 body.brown .default-button:hover span,
 body.brown .default-button:hover i[class^="icon"],
 body.brown .default-button:hover i[class^="icon"]:after,
 body.brown .default-button:hover i[class^="icon"]:before,
+body.brown .button-action:hover span,
+body.brown .button-action:hover i[class^="icon"],
+body.brown .button-action:hover i[class^="icon"]:after,
+body.brown .button-action:hover i[class^="icon"]:before,
+body.brown .button-action-trigger:hover span,
+body.brown .button-action-trigger:hover i[class^="icon"],
+body.brown .button-action-trigger:hover i[class^="icon"]:after,
+body.brown .button-action-trigger:hover i[class^="icon"]:before,
 body.brown .pillbox .active a,
 body.brown .pillbox .active span,
 body.brown .pillbox .active i[class^="icon"],
@@ -6597,7 +6607,8 @@ body.lime .treeview span:hover .z-action-link,
 body.lime .drop-zone,
 body.lime .missing-chart,
 body.lime a.active-tab,
-body.lime .edit-autoresponder-link {
+body.lime .edit-autoresponder-link,
+body.lime .edit-project-link {
   color: #2b434f;
 }
 body.lime #MashableInboxActionBarForViews .nav > li > a:hover,
@@ -6609,18 +6620,18 @@ body.lime a:hover i[class^="icon"],
 body.lime a:hover i[class^="icon"]:after,
 body.lime a:active i[class^="icon"],
 body.lime a:active i[class^="icon"]:after,
-body.lime .button-action-trigger:hover span,
-body.lime .button-action-trigger:active span,
-body.lime .button-action:hover span,
-body.lime .button-action:active span,
-body.lime .split-button:hover span,
-body.lime .split-button:hover i[class^="icon"],
-body.lime .split-button:hover i[class^="icon"]:after,
-body.lime .split-button:hover i[class^="icon"]:before,
 body.lime .default-button:hover span,
 body.lime .default-button:hover i[class^="icon"],
 body.lime .default-button:hover i[class^="icon"]:after,
 body.lime .default-button:hover i[class^="icon"]:before,
+body.lime .button-action:hover span,
+body.lime .button-action:hover i[class^="icon"],
+body.lime .button-action:hover i[class^="icon"]:after,
+body.lime .button-action:hover i[class^="icon"]:before,
+body.lime .button-action-trigger:hover span,
+body.lime .button-action-trigger:hover i[class^="icon"],
+body.lime .button-action-trigger:hover i[class^="icon"]:after,
+body.lime .button-action-trigger:hover i[class^="icon"]:before,
 body.lime .pillbox .active a,
 body.lime .pillbox .active span,
 body.lime .pillbox .active i[class^="icon"],
@@ -7210,7 +7221,8 @@ body.cherry .treeview span:hover .z-action-link,
 body.cherry .drop-zone,
 body.cherry .missing-chart,
 body.cherry a.active-tab,
-body.cherry .edit-autoresponder-link {
+body.cherry .edit-autoresponder-link,
+body.cherry .edit-project-link {
   color: #6c8092;
 }
 body.cherry #MashableInboxActionBarForViews .nav > li > a:hover,
@@ -7222,18 +7234,18 @@ body.cherry a:hover i[class^="icon"],
 body.cherry a:hover i[class^="icon"]:after,
 body.cherry a:active i[class^="icon"],
 body.cherry a:active i[class^="icon"]:after,
-body.cherry .button-action-trigger:hover span,
-body.cherry .button-action-trigger:active span,
-body.cherry .button-action:hover span,
-body.cherry .button-action:active span,
-body.cherry .split-button:hover span,
-body.cherry .split-button:hover i[class^="icon"],
-body.cherry .split-button:hover i[class^="icon"]:after,
-body.cherry .split-button:hover i[class^="icon"]:before,
 body.cherry .default-button:hover span,
 body.cherry .default-button:hover i[class^="icon"],
 body.cherry .default-button:hover i[class^="icon"]:after,
 body.cherry .default-button:hover i[class^="icon"]:before,
+body.cherry .button-action:hover span,
+body.cherry .button-action:hover i[class^="icon"],
+body.cherry .button-action:hover i[class^="icon"]:after,
+body.cherry .button-action:hover i[class^="icon"]:before,
+body.cherry .button-action-trigger:hover span,
+body.cherry .button-action-trigger:hover i[class^="icon"],
+body.cherry .button-action-trigger:hover i[class^="icon"]:after,
+body.cherry .button-action-trigger:hover i[class^="icon"]:before,
 body.cherry .pillbox .active a,
 body.cherry .pillbox .active span,
 body.cherry .pillbox .active i[class^="icon"],
@@ -7823,7 +7835,8 @@ body.turquoise .treeview span:hover .z-action-link,
 body.turquoise .drop-zone,
 body.turquoise .missing-chart,
 body.turquoise a.active-tab,
-body.turquoise .edit-autoresponder-link {
+body.turquoise .edit-autoresponder-link,
+body.turquoise .edit-project-link {
   color: #447799;
 }
 body.turquoise #MashableInboxActionBarForViews .nav > li > a:hover,
@@ -7835,18 +7848,18 @@ body.turquoise a:hover i[class^="icon"],
 body.turquoise a:hover i[class^="icon"]:after,
 body.turquoise a:active i[class^="icon"],
 body.turquoise a:active i[class^="icon"]:after,
-body.turquoise .button-action-trigger:hover span,
-body.turquoise .button-action-trigger:active span,
-body.turquoise .button-action:hover span,
-body.turquoise .button-action:active span,
-body.turquoise .split-button:hover span,
-body.turquoise .split-button:hover i[class^="icon"],
-body.turquoise .split-button:hover i[class^="icon"]:after,
-body.turquoise .split-button:hover i[class^="icon"]:before,
 body.turquoise .default-button:hover span,
 body.turquoise .default-button:hover i[class^="icon"],
 body.turquoise .default-button:hover i[class^="icon"]:after,
 body.turquoise .default-button:hover i[class^="icon"]:before,
+body.turquoise .button-action:hover span,
+body.turquoise .button-action:hover i[class^="icon"],
+body.turquoise .button-action:hover i[class^="icon"]:after,
+body.turquoise .button-action:hover i[class^="icon"]:before,
+body.turquoise .button-action-trigger:hover span,
+body.turquoise .button-action-trigger:hover i[class^="icon"],
+body.turquoise .button-action-trigger:hover i[class^="icon"]:after,
+body.turquoise .button-action-trigger:hover i[class^="icon"]:before,
 body.turquoise .pillbox .active a,
 body.turquoise .pillbox .active span,
 body.turquoise .pillbox .active i[class^="icon"],
@@ -8436,7 +8449,8 @@ body.violet .treeview span:hover .z-action-link,
 body.violet .drop-zone,
 body.violet .missing-chart,
 body.violet a.active-tab,
-body.violet .edit-autoresponder-link {
+body.violet .edit-autoresponder-link,
+body.violet .edit-project-link {
   color: #4a3970;
 }
 body.violet #MashableInboxActionBarForViews .nav > li > a:hover,
@@ -8448,18 +8462,18 @@ body.violet a:hover i[class^="icon"],
 body.violet a:hover i[class^="icon"]:after,
 body.violet a:active i[class^="icon"],
 body.violet a:active i[class^="icon"]:after,
-body.violet .button-action-trigger:hover span,
-body.violet .button-action-trigger:active span,
-body.violet .button-action:hover span,
-body.violet .button-action:active span,
-body.violet .split-button:hover span,
-body.violet .split-button:hover i[class^="icon"],
-body.violet .split-button:hover i[class^="icon"]:after,
-body.violet .split-button:hover i[class^="icon"]:before,
 body.violet .default-button:hover span,
 body.violet .default-button:hover i[class^="icon"],
 body.violet .default-button:hover i[class^="icon"]:after,
 body.violet .default-button:hover i[class^="icon"]:before,
+body.violet .button-action:hover span,
+body.violet .button-action:hover i[class^="icon"],
+body.violet .button-action:hover i[class^="icon"]:after,
+body.violet .button-action:hover i[class^="icon"]:before,
+body.violet .button-action-trigger:hover span,
+body.violet .button-action-trigger:hover i[class^="icon"],
+body.violet .button-action-trigger:hover i[class^="icon"]:after,
+body.violet .button-action-trigger:hover i[class^="icon"]:before,
 body.violet .pillbox .active a,
 body.violet .pillbox .active span,
 body.violet .pillbox .active i[class^="icon"],
@@ -9049,7 +9063,8 @@ body.honey .treeview span:hover .z-action-link,
 body.honey .drop-zone,
 body.honey .missing-chart,
 body.honey a.active-tab,
-body.honey .edit-autoresponder-link {
+body.honey .edit-autoresponder-link,
+body.honey .edit-project-link {
   color: #46201c;
 }
 body.honey #MashableInboxActionBarForViews .nav > li > a:hover,
@@ -9061,18 +9076,18 @@ body.honey a:hover i[class^="icon"],
 body.honey a:hover i[class^="icon"]:after,
 body.honey a:active i[class^="icon"],
 body.honey a:active i[class^="icon"]:after,
-body.honey .button-action-trigger:hover span,
-body.honey .button-action-trigger:active span,
-body.honey .button-action:hover span,
-body.honey .button-action:active span,
-body.honey .split-button:hover span,
-body.honey .split-button:hover i[class^="icon"],
-body.honey .split-button:hover i[class^="icon"]:after,
-body.honey .split-button:hover i[class^="icon"]:before,
 body.honey .default-button:hover span,
 body.honey .default-button:hover i[class^="icon"],
 body.honey .default-button:hover i[class^="icon"]:after,
 body.honey .default-button:hover i[class^="icon"]:before,
+body.honey .button-action:hover span,
+body.honey .button-action:hover i[class^="icon"],
+body.honey .button-action:hover i[class^="icon"]:after,
+body.honey .button-action:hover i[class^="icon"]:before,
+body.honey .button-action-trigger:hover span,
+body.honey .button-action-trigger:hover i[class^="icon"],
+body.honey .button-action-trigger:hover i[class^="icon"]:after,
+body.honey .button-action-trigger:hover i[class^="icon"]:before,
 body.honey .pillbox .active a,
 body.honey .pillbox .active span,
 body.honey .pillbox .active i[class^="icon"],
@@ -11631,16 +11646,10 @@ td.empty {
 .general-issue-notice .icon-notice {
   display: block;
   line-height: 1;
-  margin-bottom: 10px;
 }
 .general-issue-notice .icon-notice:before {
   margin: 0;
-  font-size: 100px;
-  line-height: 60px !important;
-}
-.general-issue-notice p {
-  font-size: 14px;
-  line-height: 21px;
+  font-size: 40px;
 }
 /*forms*/
 .form input[type="checkbox"] {
@@ -13146,7 +13155,7 @@ div.wide.form label.hasCheckBox {
 .more-panels-link {
   font-size: 11px;
   position: relative;
-  left: -15px;
+  left: 0;
 }
 .ui-overlay-block {
   z-index: 250000;
@@ -15454,6 +15463,10 @@ div.hasHalfs > div input {
   right: -10px;
   top: 1px;
   line-height: 1;
+  cursor: pointer !important;
+}
+.editable-cell:after:hover {
+  cursor: pointer;
 }
 i[class^="icon"] {
   color: #656565;
@@ -17664,8 +17677,12 @@ table.configuration-list td:last-child a .z-label:before {
   content: 'L';
   font-size: 46px;
 }
-.available-portlets .icon-google-analytics:before {
+.available-portlets .icon-googleWebTracking:before {
   content: '\00DA';
+  font-size: 46px;
+}
+.available-portlets .icon-marketingLists:before {
+  content: '\0022';
   font-size: 46px;
 }
 /*Edit Portlet*/
@@ -22342,6 +22359,7 @@ a.user-link {
   padding-top: 5px !important;
   padding-bottom: 5px !important;
 }
+.drillDownContent > h4,
 .drillDownContent > h5 {
   padding: 5px 5px 0 5px;
 }
@@ -23526,11 +23544,38 @@ a + .autoresponder-stats {
   color: #fff !important;
 }
 /*Continuum*/
+.campaign-items-container .hasDrillDownContent {
+  padding: 5px !important;
+}
+.campaign-items-container .hasDrillDownContent table {
+  border-bottom: 1px solid #DFDFDF;
+  margin: 5px 0 0 0;
+  width: 100%;
+}
+.campaign-items-container .hasDrillDownContent td,
+.campaign-items-container .hasDrillDownContent th {
+  border: 1px solid #DFDFDF;
+  border-right: none;
+  vertical-align: middle;
+  padding: 5px;
+  word-wrap: break-word;
+  text-align: left;
+}
+.campaign-items-container .hasDrillDownContent th {
+  font-weight: bold !important;
+  height: 25px;
+  line-height: 25px;
+  background: url(../images/table-items-header.png) left top repeat-x;
+  padding: 0 5px;
+}
+.campaign-items-container .error {
+  color: #c43d53;
+}
 .email-recipient-name {
   float: left;
   width: 15%;
   display: block;
-  line-height: 20px;
+  line-height: 23px;
 }
 .continuum {
   float: left;
@@ -24942,7 +24987,6 @@ div.special-pager .hidden.next:after {
 .mini-button .show {
   display: block;
 }
-/*Temp*/
 .toolbar-mbmenu i[class^="icon"] {
   display: none !important;
 }
@@ -24953,7 +24997,7 @@ div.special-pager .hidden.next:after {
   font-family: "zurmo_gamification_symbly_rRg";
   vertical-align: middle;
   padding: 0 0 0 0;
-  margin: 0 3px 0 0;
+  margin: 0 0 0 0;
   position: relative;
   top: -1px;
   -moz-box-sizing: border-box;
@@ -24988,55 +25032,76 @@ div.special-pager .hidden.next:after {
 .pillbox.empty {
   visibility: hidden;
 }
-.pillbox .split-button:last-child .button-trigger {
+.pillbox i[class^="icon"] {
+  color: #656565;
+  font-weight: normal;
+  font-size: 24px;
+  font-family: "zurmo_gamification_symbly_rRg";
+  vertical-align: middle;
+  padding: 0 0 0 0;
+  margin: 0 0 0 0;
+  position: relative;
+  top: -1px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.split-button,
+.default-button {
+  cursor: pointer;
+  position: relative;
+  display: inline-block;
+  float: left;
+}
+.split-button + .default-button,
+.default-button + .default-button,
+.split-button + .split-button,
+.default-button + .split-button {
+  border-left: 1px solid #bababa;
+}
+.split-button > a,
+.default-button > a {
+  padding: 0 5px 0 5px;
+}
+.split-button i,
+.default-button i {
+  font-style: normal;
+  line-height: 30px;
+  margin-right: 3px;
+}
+.split-button:last-child .button-trigger {
   -webkit-border-radius: 0 4px 4px 0;
   -moz-border-radius: 0 4px 4px 0;
   -ms-border-radius: 0 4px 4px 0;
   -o-border-radius: 0 4px 4px 0;
   border-radius: 0 4px 4px 0;
 }
-.pillbox .split-button,
-.pillbox .default-button {
-  cursor: pointer;
-  position: relative;
-  padding: 0 0 0 5px;
-  display: inline-block;
-  float: left;
+.split-button .icon-trigger:before {
+  display: block;
 }
-.pillbox .split-button + .default-button,
-.pillbox .default-button + .default-button,
-.pillbox .split-button + .split-button,
-.pillbox .default-button + .split-button {
-  border-left: 1px solid #bababa;
+.split-button .button-actions:before {
+  right: 4px;
+  background: url(../images/tip.png) right bottom no-repeat;
 }
-.pillbox .split-button i,
-.pillbox .default-button i {
-  font-style: normal;
-  line-height: 30px;
-  margin-right: 3px;
+.default-button:hover .icon-trigger:before {
+  display: block !important;
 }
-.pillbox .split-button .button-label,
-.pillbox .default-button .button-label {
+.button-label {
   font-weight: bold;
   padding: 0 5px;
   line-height: 30px;
   display: inline-block;
   white-space: nowrap;
 }
-.pillbox .split-button .button-label:empty,
-.pillbox .default-button .button-label:empty {
+.button-label:empty {
   display: none;
 }
-.pillbox .split-button .button-action-trigger,
-.pillbox .default-button .button-action-trigger,
-.pillbox .split-button .button-trigger,
-.pillbox .default-button .button-trigger {
+.button-action-trigger,
+.button-trigger {
   position: relative;
-  z-index: 5;
+  z-index: 99999;
   display: inline-block;
   line-height: 30px;
-  margin: 0 0 0 4px;
-  padding-right: 4px;
   text-align: center;
   float: right;
   -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
@@ -25045,10 +25110,8 @@ div.special-pager .hidden.next:after {
   -ms-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
 }
-.pillbox .split-button .button-action-trigger:hover,
-.pillbox .default-button .button-action-trigger:hover,
-.pillbox .split-button .button-trigger:hover,
-.pillbox .default-button .button-trigger:hover {
+.button-action-trigger:hover,
+.button-trigger:hover {
   background-color: #ffffff ;
   background-repeat: no-repeat ;
   background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), color-stop(50%, #dddddd), to(#ffffff)) ;
@@ -25059,10 +25122,8 @@ div.special-pager .hidden.next:after {
   background-image: linear-gradient(#ffffff, #dddddd 50%, #ffffff) ;
   border-left: 1px solid #e7e7e7;
 }
-.pillbox .split-button .button-action-trigger:hover i,
-.pillbox .default-button .button-action-trigger:hover i,
-.pillbox .split-button .button-trigger:hover i,
-.pillbox .default-button .button-trigger:hover i {
+.button-action-trigger:hover i,
+.button-trigger:hover i {
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
   -o-box-shadow: none;
@@ -25070,28 +25131,18 @@ div.special-pager .hidden.next:after {
   box-shadow: none;
   border-left: none;
 }
-.pillbox .split-button .button-action-trigger:hover .icon-trigger:before,
-.pillbox .default-button .button-action-trigger:hover .icon-trigger:before,
-.pillbox .split-button .button-trigger:hover .icon-trigger:before,
-.pillbox .default-button .button-trigger:hover .icon-trigger:before {
+.button-action-trigger:hover .icon-trigger:before,
+.button-trigger:hover .icon-trigger:before {
   display: block;
 }
-.pillbox .split-button .button-action-trigger:hover + .button-actions,
-.pillbox .default-button .button-action-trigger:hover + .button-actions,
-.pillbox .split-button .button-trigger:hover + .button-actions,
-.pillbox .default-button .button-trigger:hover + .button-actions {
+.button-action-trigger:hover + .button-actions,
+.button-trigger:hover + .button-actions {
   display: block;
 }
-.pillbox .split-button .button-action-trigger .icon-trigger,
-.pillbox .default-button .button-action-trigger .icon-trigger,
-.pillbox .split-button .button-trigger .icon-trigger,
-.pillbox .default-button .button-trigger .icon-trigger {
-  top: 0;
-  font-size: 14px;
-  margin: 0 0 0 0;
-  line-height: 1;
-  padding: 2px 4px 2px 5px;
-  border-left: 1px solid #e7e7e7;
+.button-action-trigger .icon-trigger,
+.button-trigger .icon-trigger {
+  font-size: 14px !important;
+  line-height: 1 !important;
   -webkit-box-shadow: inset 1px 0 0 0 #ffffff;
   -moz-box-shadow: inset 1px 0 0 0 #ffffff;
   -o-box-shadow: inset 1px 0 0 0 #ffffff;
@@ -25102,33 +25153,35 @@ div.special-pager .hidden.next:after {
   -o-text-shadow: 0 2px 0 #ffffff;
   -ms-text-shadow: 0 2px 0 #ffffff;
   text-shadow: 0 2px 0 #ffffff;
+  top: 0;
+  margin: 0;
+  padding: 0;
+  border-left: 1px solid #e7e7e7;
 }
-.pillbox .split-button .button-action-trigger .icon-trigger:after,
-.pillbox .default-button .button-action-trigger .icon-trigger:after,
-.pillbox .split-button .button-trigger .icon-trigger:after,
-.pillbox .default-button .button-trigger .icon-trigger:after {
+.button-action-trigger .icon-trigger:after,
+.button-trigger .icon-trigger:after {
   content: "÷";
+  padding: 0 0 0 6px;
 }
-.pillbox .split-button .button-action-trigger .icon-trigger:before,
-.pillbox .default-button .button-action-trigger .icon-trigger:before,
-.pillbox .split-button .button-trigger .icon-trigger:before,
-.pillbox .default-button .button-trigger .icon-trigger:before {
+.button-action-trigger .icon-trigger:before,
+.button-trigger .icon-trigger:before {
   content: "";
   display: none;
   position: absolute;
-  top: 23px;
-  right: 1px;
+  top: 24px;
+  right: -2px;
   width: 13px;
   height: 8px;
   background: url(../images/tip.png) right bottom no-repeat;
 }
-.pillbox .split-button .button-action-trigger:hover,
-.pillbox .default-button .button-action-trigger:hover {
+.button-trigger {
+  padding: 0 8px 0 0 !important;
+}
+.button-action-trigger:hover {
   background: none;
   border-left: none;
 }
-.pillbox .split-button .button-action-trigger:hover i,
-.pillbox .default-button .button-action-trigger:hover i {
+.button-action-trigger:hover i {
   -webkit-text-shadow: none;
   -moz-text-shadow: none;
   -o-text-shadow: none;
@@ -25141,33 +25194,40 @@ div.special-pager .hidden.next:after {
   box-shadow: none;
   border-left: none;
 }
-.pillbox .default-button {
-  padding: 0 5px 0 5px;
-}
-.pillbox .default-button:hover .icon-trigger:before {
+.button-action-trigger:hover .icon-trigger:before {
   display: block !important;
 }
-.pillbox i[class^="icon"] {
+.button-action-trigger .icon-options:after {
+  margin: 0 !important;
   color: #656565;
   font-weight: normal;
   font-size: 24px;
   font-family: "zurmo_gamification_symbly_rRg";
   vertical-align: middle;
   padding: 0 0 0 0;
-  margin: 0 3px 0 0;
+  margin: 0 0 0 0;
   position: relative;
   top: -1px;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
-.pillbox .button-actions {
+.button-action-trigger .icon-trigger {
+  border-left: none !important;
+}
+.button-action-trigger .icon-trigger:before {
+  right: 0px;
+}
+.button-action-trigger .icon-trigger:after {
+  padding: 0 3px;
+}
+.button-actions {
   z-index: 999;
   color: #EFEFEF;
   display: none;
   list-style: none;
   position: absolute;
-  top: 38px;
+  top: 40px;
   right: 0;
   min-width: 100px;
   -webkit-border-radius: 2px;
@@ -25184,36 +25244,36 @@ div.special-pager .hidden.next:after {
   -ms-box-shadow: 0 0 10px 2px rgba(53, 53, 53, 0.5);
   box-shadow: 0 0 10px 2px rgba(53, 53, 53, 0.5);
 }
-.pillbox .button-actions:hover,
-.pillbox .button-actions.stayOpen,
-.pillbox .button-actions.nav-open {
+.button-actions:hover,
+.button-actions.stayOpen,
+.button-actions.nav-open {
   display: block;
 }
-.pillbox .button-actions:before {
+.button-actions:before {
   content: "";
   display: block;
   position: absolute;
   top: -15px;
-  right: 9px;
-  width: 80%;
+  right: 0;
+  width: 100%;
   height: 15px;
   background: transparent;
 }
-.pillbox .button-actions li {
+.button-actions li {
   line-height: 100%;
 }
-.pillbox .button-actions li:first-child {
+.button-actions li:first-child {
   border-top: none;
 }
-.pillbox .button-actions li:last-child {
+.button-actions li:last-child {
   border-bottom: none;
 }
-.pillbox .button-actions .divider {
+.button-actions .divider {
   border-top: 1px solid #181818;
   border-bottom: 1px solid #323232;
   margin: 5px 5px;
 }
-.pillbox .button-actions li > a {
+.button-actions li > a {
   color: #EFEFEF;
   font-size: 11px;
   font-weight: normal;
@@ -25226,21 +25286,21 @@ div.special-pager .hidden.next:after {
   -ms-text-shadow: none;
   text-shadow: none;
 }
-.pillbox .button-actions label {
+.button-actions label {
   color: #EFEFEF;
 }
-.pillbox .button-actions .has-model-select {
+.button-actions .has-model-select {
   -webkit-border-radius: 0 3px 3px 0;
   -moz-border-radius: 0 3px 3px 0;
   -ms-border-radius: 0 3px 3px 0;
   -o-border-radius: 0 3px 3px 0;
   border-radius: 0 3px 3px 0;
 }
-.pillbox .button-actions .has-model-select a {
+.button-actions .has-model-select a {
   right: -1px;
   bottom: -1px;
 }
-.pillbox .button-actions .has-model-select a:hover {
+.button-actions .has-model-select a:hover {
   background: url(../images/dropdown-general.png) left top no-repeat !important;
 }
 .nav-open .button-actions {
@@ -25264,27 +25324,11 @@ div.special-pager .hidden.next:after {
 .juiportlet-widget-content .pillbox {
   margin: 15px 0 0 15px;
 }
-.button-action-trigger .icon-options:after {
-  margin: 0 !important;
-  color: #656565;
-  font-weight: normal;
-  font-size: 24px;
-  font-family: "zurmo_gamification_symbly_rRg";
-  vertical-align: middle;
-  padding: 0 0 0 0;
-  margin: 0 3px 0 0;
-  position: relative;
-  top: -1px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-}
-.button-action-trigger .icon-trigger {
-  border-left: none !important;
-}
 .unread-count {
   display: inline-block;
-  margin: -2px 2px 0 0;
+  position: relative;
+  top: -1px;
+  margin: 0;
   -webkit-border-radius: 50%;
   -moz-border-radius: 50%;
   -ms-border-radius: 50%;
@@ -26443,6 +26487,55 @@ div.special-pager .hidden.next:after {
 }
 .task-activity .show-file-upload-box {
   z-index: 9999;
+}
+.right-side-details-view-panel {
+  margin-top: 15px;
+}
+.right-side-details-view-panel .col-0 {
+  width: 100%;
+}
+.right-side-details-view-panel td {
+  padding: 0 0 5px 0;
+  font-weight: normal;
+}
+.right-side-details-view-panel td strong {
+  display: block;
+}
+.ProjectsActivityFeedPortletView tr:first-child td {
+  border-top: none;
+}
+.edit-project-link {
+  font-size: 14px;
+  font-weight: bold;
+  font-style: normal;
+  display: block;
+  text-align: left;
+  margin-bottom: 5px;
+}
+.project-extra-info {
+  margin-bottom: 10px;
+  font-style: italic;
+}
+.project-stats {
+  padding-right: 5px;
+  width: 20%;
+  float: left;
+  text-align: left;
+  font-size: 12px;
+}
+.project-stats strong {
+  font-size: 26px;
+  font-weight: bold;
+  display: block;
+}
+a + .project-stats {
+  margin-left: 0;
+}
+.percent-complete.percent-green strong {
+  color: #6fa82d;
+}
+.percent-complete.percent-yellow strong {
+  color: #ffcc00;
 }
 /*********************************************************************************
  * Zurmo is a customer relationship management program developed by
