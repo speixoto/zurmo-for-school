@@ -91,9 +91,7 @@
         protected function renderContent()
         {
             $params  = $this->getCreateLinkParams();
-            $content = '<div class="' . $this->getIconName() . '">';
-            $content .= $this->getMessageContent();
-            $content .= '</div>';
+            $content = ZurmoHtml::tag('div', array('class' => $this->getIconName()), $this->getMessageContent());
             return $content;
         }
     }
