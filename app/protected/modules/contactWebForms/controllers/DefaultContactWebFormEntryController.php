@@ -134,14 +134,11 @@
         }
 
         protected function makeMassDeleteView($model, $activeAttributes, $selectedRecordCount, $title,
-                                              $massDeleteViewClassName = 'MassDeleteView')
+                                              $massDeleteViewClassName = 'MassDeleteView',
+                                              $useModuleClassNameForItemLabel = true)
         {
-            $moduleName          = $this->getModule()->getPluralCamelCasedName();
-            $moduleClassName     = $moduleName . 'Module';
-            $title               = Zurmo::t('Core', 'Mass Delete') . ': ' . $title;
-            $view                = new $massDeleteViewClassName($this->getId(), $this->getModule()->getId(),
-                                   $model, $activeAttributes, $selectedRecordCount, $title, null, $moduleClassName, false);
-            return $view;
+            return parent::makeMassDeleteView($model, $activeAttributes, $selectedRecordCount, $title,
+                                              $massDeleteViewClassName = 'MassDeleteView', false);
         }
     }
 ?>
