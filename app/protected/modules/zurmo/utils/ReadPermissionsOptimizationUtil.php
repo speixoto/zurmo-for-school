@@ -40,15 +40,25 @@
          * At some point if performance is a problem with rebuilding activity models, then the stored procedure
          * needs to be refactored to somehow support more joins dynamically.
          * @see https://www.pivotaltracker.com/story/show/38804909
+         * @param boolean $overwriteExistingTables
          * @param boolean $forcePhp
          */
-        public static function rebuild($forcePhp = false)
+        public static function rebuild($overwriteExistingTables = true, $forcePhp = false)
         {
             //Forcing php way until we can fix failing tests here: AccountReadPermissionsOptimizationScenariosTest
             $forcePhp = true;
+            assert('is_bool($overwriteExistingTables)');
             assert('is_bool($forcePhp)');
             foreach (self::getMungableModelClassNames() as $modelClassName)
             {
+                $mungeTableName     = self::getMungeTableName($modelClassName);
+                $readTableExists    = ZurmoRedBean::$writer->doesTableExist($mungeTableName);
+                if (!$overwriteExistingTables && $readTableExists)
+                {
+                    // skip if we don't want to overwrite existing tables and table already exists
+                    continue;
+                }
+
                 if (!SECURITY_OPTIMIZED || $forcePhp)
                 {
                     self::rebuildViaSlowWay($modelClassName);
@@ -64,8 +74,7 @@
                     }
                     else
                     {
-                        $modelTableName = RedBeanModel::getTableName($modelClassName);
-                        $mungeTableName = self::getMungeTableName($modelClassName);
+                        $modelTableName     = RedBeanModel::getTableName($modelClassName);
                         if (!is_subclass_of($modelClassName, 'OwnedSecurableItem'))
                         {
                             throw new NotImplementedException($message, $code, $previous);

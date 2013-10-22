@@ -44,7 +44,7 @@
         {
             return <<<EOD
     USAGE
-      zurmoc updateSchema <username>
+      zurmoc updateSchema <username> <overwriteExistingReadTables>
 
     DESCRIPTION
       This command runs an update on the database schema. It calls the
@@ -53,6 +53,9 @@
     PARAMETERS
      * username: username to log in as and run the import processes. Typically 'super'.
                   This user must be a super administrator.
+     * overwriteExistingReadTables: If set to 1 all read tables would be regenerated, which could be a time consuming process.
+                                    If not set, or set to 0, any existing read tables would be skipped.
+                                    Defaults to 0.
 EOD;
     }
 
@@ -81,6 +84,14 @@ EOD;
                 $this->usageError('The specified user is not a super administrator.');
             }
 
+            $overwriteExistingReadTables = false;
+            $overwriteReadTablesMessage = Zurmo::t('Commands', 'Skipping existing read Tables.');
+            if (isset($args[1]) && $args[1] == 1)
+            {
+                $overwriteExistingReadTables = true;
+                $overwriteReadTablesMessage = Zurmo::t('Commands', 'Overwriting any existing read Tables.');
+            }
+
             $startTime = microtime(true);
             $template        = "{message}\n";
             $messageStreamer = new MessageStreamer($template);
@@ -93,7 +104,8 @@ EOD;
             {
                 $messageStreamer->add(PageView::getTotalAndDuplicateQueryCountContent());
             }
-            ReadPermissionsOptimizationUtil::rebuild();
+            $messageStreamer->add($overwriteReadTablesMessage);
+            ReadPermissionsOptimizationUtil::rebuild($overwriteExistingReadTables);
             $messageStreamer->add(Zurmo::t('Commands', 'Rebuild read permissions complete.'));
             $endTime = microtime(true);
             $messageStreamer->add(Zurmo::t('Commands', 'Schema update complete.'));
