@@ -55,7 +55,7 @@
             return 'ConversationParticipantsForm';
         }
 
-        protected function assertModuleType()
+        protected function assertModelType()
         {
             assert('$this->model instanceof Conversation');
         }
@@ -75,7 +75,7 @@
             return Zurmo::t('ConversationsModule', 'Type a User\'s name');
         }
 
-        protected function relationName()
+        protected function getRelationName()
         {
             return 'conversationParticipants';
         }

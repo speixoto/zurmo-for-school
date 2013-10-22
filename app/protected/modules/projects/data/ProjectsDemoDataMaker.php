@@ -100,10 +100,38 @@
                 $task->completedDateTime    = '0000-00-00 00:00:00';
                 $task->project              = $project;
                 $task->status               = Task::STATUS_NEW;
+                $task->save();
+                //Notification subscriber
                 $notificationSubscriber     = new NotificationSubscriber();
                 $notificationSubscriber->person        = $task->owner;
                 $notificationSubscriber->hasReadLatest = false;
+                //Task check list items
                 $task->notificationSubscribers->add($notificationSubscriber);
+                $taskCheckListItemsData = self::getTaskCheckListItems();
+                $taskCheckListItems = $taskCheckListItemsData[$task->name];
+                foreach($taskCheckListItems as $name)
+                {
+                    $taskCheckListItem = new TaskCheckListItem();
+                    $taskCheckListItem->name = $name;
+                    $task->checkListItems->add($taskCheckListItem);
+                    ProjectsUtil::logTaskCheckItemEvent($task, $taskCheckListItem);
+                }
+                //Comments
+                $commentsData = self::getTaskComments();
+                $commentItems  = $commentsData[$task->name];
+                foreach($commentItems as $description)
+                {
+                    $comment = new Comment();
+                    $comment->description = $description;
+                    $comment->setScenario('importModel');
+                    $comment->createdByUser = $demoDataHelper->getRandomByModelName('User');
+                    $task->comments->add($comment);
+                    ProjectsUtil::logAddCommentEvent($task, $comment);
+                }
+                //Add Super user
+                $comment                = new Comment();
+                $comment->description   = 'Versatile idea regarding the task';
+                $task->comments->add($comment);
                 $task->save();
                 $currentStatus              = $task->status;
                 ProjectsUtil::logAddTaskEvent($task);
@@ -127,6 +155,47 @@
                 'Prepare telephone directory for the company',
                 'Get an accounting software',
                 'Usage of google analytics on company website'
+            );
+        }
+
+        /**
+         * Gets the list of task check items
+         * @return array
+         */
+        protected static function getTaskCheckListItems()
+        {
+            return array(
+                'Create Demo Proposal'                        => array('Get the requirements',
+                                                                        'Analysis of requirements'),
+                'Come up with a contacts list for the client' => array('Call the contacts',
+                                                                        'Enter the data into excel'),
+                'Prepare telephone directory for the company' => array('Gather the list of employees with there contact details',
+                                                                        'Enter the data into excel'),
+                'Get an accounting software'                  => array('Research the available softwares',
+                                                                        'Discuss with the team'),
+                'Usage of google analytics on company website'=> array('Explore the usage',
+                                                                        'Implement into the website'),
+            );
+        }
+
+        /**
+         * Gets the list of task check items
+         * @return array
+         */
+        protected static function getTaskComments()
+        {
+            return array(
+                'Create Demo Proposal'                        => array('Quite useful moving forward',
+                                                                       'Would be helful for other people'),
+                'Come up with a contacts list for the client' => array('Very beneficial for the company',
+                                                                        'Helpful for the sales team'),
+                'Prepare telephone directory for the company' => array('Very helpful for the employees',
+                                                                        'Can easily track people'),
+                'Get an accounting software'                  => array('Helpful for finance department',
+                                                                        'Reduced work load',
+                                                                        'Less number of people required'),
+                'Usage of google analytics on company website'=> array('Aids in site analysis',
+                                                                        'Would be helpful from SEO perspective'),
             );
         }
 

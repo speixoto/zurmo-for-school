@@ -50,6 +50,7 @@
                     'companyName'      => Zurmo::t('ContactsModule', 'Company Name',  array(), null, $language),
                     'description'      => Zurmo::t('ContactsModule', 'Description',  array(), null, $language),
                     'industry'         => Zurmo::t('ContactsModule', 'Industry',  array(), null, $language),
+                    'latestActivityDateTime' => Zurmo::t('ZurmoModule', 'Latest Activity Date Time', array(), null, $language),
                     'meetings'         => Zurmo::t('ContactsModule', 'MeetingsModulePluralLabel', $params, null, $language),
                     'notes'            => Zurmo::t('ContactsModule', 'NotesModulePluralLabel', $params, null, $language),
                     'opportunities'    => Zurmo::t('ContactsModule', 'OpportunitiesModulePluralLabel', $params, null, $language),
@@ -80,6 +81,7 @@
                 'members' => array(
                     'companyName',
                     'description',
+                    'latestActivityDateTime',
                     'website',
                     'googleWebTrackingId',
                 ),
@@ -108,6 +110,8 @@
                     array('companyName',            'type',    'type' => 'string'),
                     array('companyName',            'length',  'min'  => 1, 'max' => 64),
                     array('description',            'type',    'type' => 'string'),
+                    array('latestActivityDateTime', 'readOnly'),
+                    array('latestActivityDateTime', 'type', 'type' => 'datetime'),
                     array('state',                  'required'),
                     array('website',                'url',     'defaultScheme' => 'http'),
                     array('googleWebTrackingId',    'type',    'type' => 'string'),
@@ -115,6 +119,7 @@
                 'elements' => array(
                     'account'          => 'Account',
                     'description'      => 'TextArea',
+                    'latestActivityDateTime'  => 'DateTime',
                     'secondaryEmail'   => 'EmailAddressInformation',
                     'secondaryAddress' => 'Address',
                     'state'            => 'ContactState',
@@ -129,6 +134,7 @@
                 ),
                 'noAudit' => array(
                     'description',
+                    'latestActivityDateTime',
                     'website'
                 ),
             );

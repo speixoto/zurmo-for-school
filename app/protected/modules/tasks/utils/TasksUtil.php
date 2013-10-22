@@ -397,9 +397,10 @@
         public static function resolveExtraCloseScriptForModalAjaxOptions($sourceKanbanBoardId = null)
         {
             assert('is_string($sourceKanbanBoardId) || $sourceKanbanBoardId == null');
+            $url = Yii::app()->createUrl('tasks/default/updateStatusOnDragInKanbanView');
             if($sourceKanbanBoardId != null)
             {
-                return "$.fn.yiiGridView.update('" . $sourceKanbanBoardId. "');";
+                return "$.fn.yiiGridView.update('{$sourceKanbanBoardId}');";
             }
         }
 
@@ -578,7 +579,7 @@
          */
         public static function registerUnsubscriptionScript($taskId = null)
         {
-            $subscribeLink = '<strong>' . Zurmo::t('TasksModule', 'Subscribe') . '</strong>';
+            $subscribeLink = '<strong>' . Zurmo::t('Core', 'Subscribe') . '</strong>';
             if($taskId == null)
             {
                 $url           = Yii::app()->createUrl('tasks/default/removeKanbanSubscriber');
@@ -698,7 +699,7 @@
             assert('is_string($unsubscribeLinkClass)');
             if(TasksUtil::isUserSubscribedForTask($task, Yii::app()->user->userModel) === false)
             {
-                $label       = '';//Zurmo::t('TasksModule', 'Subscribe');
+                $label       = '';//Zurmo::t('Core', 'Subscribe');
                 $class       = $subscribeLinkClass;
                 $iconContent = ZurmoHtml::tag('i', array('class' => 'icon-subscribe'), '');
             }

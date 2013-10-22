@@ -34,60 +34,66 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * A job for removing old import models after the imports are complete.
-     */
-    class ImportCleanupJob extends BaseJob
+    class TagCloudElement extends MultiSelectRelatedModelsAutoCompleteElement
     {
-        protected static $pageSize = 200;
+        protected $dataAndLabels = null;
 
-        /**
-         * @returns Translated label that describes this job type.
-         */
-        public static function getDisplayName()
+        protected function getFormName()
         {
-           return Zurmo::t('ImportModule', 'Import Cleanup Job');
+            return get_class($this->model);
         }
 
-        /**
-         * @return The type of the NotificationRules
-         */
-        public static function getType()
+        protected function assertModelType()
         {
-            return 'ImportCleanup';
+            assert('$this->model->{$this->attribute} instanceof MultipleValuesCustomField');
         }
 
-        public static function getRecommendedRunFrequencyContent()
+        protected function getWidgetSourceUrl()
         {
-            return Zurmo::t('JobsManagerModule', 'Once a week, early in the morning.');
+            return Yii::app()->createUrl('zurmo/default/autoCompleteCustomFieldData/',
+                                            array('name' => $this->model->{$this->attribute}->data->name));
         }
 
-        /**
-         * Get all imports where the modifiedDateTime was more than 1 week ago.  Then
-         * delete the imports.
-         * (non-PHPdoc)
-         * @see BaseJob::run()
-         */
-        public function run()
+        protected function getUnqualifiedIdForIdField()
         {
-            $oneWeekAgoTimeStamp = DateTimeUtil::convertTimestampToDbFormatDateTime(time() - 60 * 60 *24 * 7);
-            $searchAttributeData = array();
-            $searchAttributeData['clauses'] = array(
-                1 => array(
-                    'attributeName'        => 'modifiedDateTime',
-                    'operatorType'         => 'lessThan',
-                    'value'                => $oneWeekAgoTimeStamp,
-                ),
-            );
-            $searchAttributeData['structure'] = '1';
-            $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('Import');
-            $where = RedBeanModelDataProvider::makeWhere('Import', $searchAttributeData, $joinTablesAdapter);
-            $importModels = Import::getSubset($joinTablesAdapter, null, self::$pageSize, $where, null);
-            foreach ($importModels as $import)
+            return '_' . $this->attribute . '_values';
+        }
+
+        protected function getUnqualifiedNameForIdField()
+        {
+            return '[' . $this->attribute . '][values]';
+        }
+
+        protected function getWidgetHintText()
+        {
+            return Zurmo::t('Core', 'Type to find a tag');
+        }
+
+        protected function getRelationName()
+        {
+            return null; // we override getRelatedRecords instead.
+        }
+
+        protected function getRelatedRecords()
+        {
+            $multipleValuesCustomField = $this->model->{$this->attribute};
+            $relatedRecords     = $multipleValuesCustomField->values;
+            return $relatedRecords;
+        }
+
+        protected function resolveIdAndNameByModel(RedBeanModel $customFieldValue)
+        {
+            if (!isset($this->dataAndLabels))
             {
-                $import->delete();
+                $multipleValuesCustomField  = $this->model->{$this->attribute};
+                $this->dataAndLabels        = CustomFieldDataUtil::getDataIndexedByDataAndTranslatedLabelsByLanguage(
+                                                                $multipleValuesCustomField->data, Yii::app()->language);
             }
-            return true;
+            if ($customFieldValue->value != null)
+            {
+                return array('id' => $customFieldValue->value,
+                                  'name' => $this->dataAndLabels[$customFieldValue->value]);
+            }
         }
     }
 ?>

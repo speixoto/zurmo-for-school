@@ -102,7 +102,7 @@
                 'notes'       => Zurmo::t('NotesModule',         'NotesModulePluralLabel', $params, null, $language),
                 'probability' => Zurmo::t('OpportunitiesModule', 'Probability',  array(), null, $language),
                 'source'      => Zurmo::t('ContactsModule',      'Source',   array(), null, $language),
-                'stage'       => Zurmo::t('OpportunitiesModule', 'Stage',  array(), null, $language),
+                'stage'       => Zurmo::t('ZurmoModule',         'Stage',  array(), null, $language),
                 'tasks'       => Zurmo::t('TasksModule',         'TasksModulePluralLabel', $params, null, $language)));
         }
 

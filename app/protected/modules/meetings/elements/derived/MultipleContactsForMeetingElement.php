@@ -58,7 +58,7 @@
             return '_Contact_ids';
         }
 
-        protected function assertModuleType()
+        protected function assertModelType()
         {
             assert('$this->model instanceof Activity');
         }
@@ -86,7 +86,7 @@
                                             LabelUtil::getTranslationParamsForAllModules());
         }
 
-        protected function relationName()
+        protected function getRelationName()
         {
             return 'activityItems';
         }

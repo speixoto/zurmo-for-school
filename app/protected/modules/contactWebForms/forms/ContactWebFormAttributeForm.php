@@ -35,59 +35,46 @@
      ********************************************************************************/
 
     /**
-     * A job for removing old import models after the imports are complete.
+     * Use this form for associating placed attributes on web form
      */
-    class ImportCleanupJob extends BaseJob
+    class ContactWebFormAttributeForm extends AttributeForm
     {
-        protected static $pageSize = 200;
+        public $label;
 
-        /**
-         * @returns Translated label that describes this job type.
-         */
-        public static function getDisplayName()
+        public $required;
+
+        public $hidden;
+
+        public $hiddenValue;
+
+        public $attribute;
+
+        public function rules()
         {
-           return Zurmo::t('ImportModule', 'Import Cleanup Job');
+            return array_merge(parent::rules(), array(
+                array('label',       'type',    'type' => 'string'),
+                array('required',    'type',    'type' => 'boolean'),
+                array('hidden',      'type',    'type' => 'boolean'),
+                array('hiddenValue', 'type',    'type' => 'string'),
+            ));
         }
 
-        /**
-         * @return The type of the NotificationRules
-         */
-        public static function getType()
+        public function attributeLabels()
         {
-            return 'ImportCleanup';
+            return array_merge(parent::attributeLabels(), array(
+                'required'      => Zurmo::t('ContactWebFormsModule', 'Required?'),
+                'hidden'        => Zurmo::t('ContactWebFormsModule', 'Hidden?'),
+            ));
         }
 
-        public static function getRecommendedRunFrequencyContent()
+        public function getAttributeName()
         {
-            return Zurmo::t('JobsManagerModule', 'Once a week, early in the morning.');
+            return $this->attribute;
         }
 
-        /**
-         * Get all imports where the modifiedDateTime was more than 1 week ago.  Then
-         * delete the imports.
-         * (non-PHPdoc)
-         * @see BaseJob::run()
-         */
-        public function run()
+        public function getAttributeTypeName()
         {
-            $oneWeekAgoTimeStamp = DateTimeUtil::convertTimestampToDbFormatDateTime(time() - 60 * 60 *24 * 7);
-            $searchAttributeData = array();
-            $searchAttributeData['clauses'] = array(
-                1 => array(
-                    'attributeName'        => 'modifiedDateTime',
-                    'operatorType'         => 'lessThan',
-                    'value'                => $oneWeekAgoTimeStamp,
-                ),
-            );
-            $searchAttributeData['structure'] = '1';
-            $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('Import');
-            $where = RedBeanModelDataProvider::makeWhere('Import', $searchAttributeData, $joinTablesAdapter);
-            $importModels = Import::getSubset($joinTablesAdapter, null, self::$pageSize, $where, null);
-            foreach ($importModels as $import)
-            {
-                $import->delete();
-            }
-            return true;
+            return null;
         }
     }
 ?>

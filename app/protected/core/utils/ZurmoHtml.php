@@ -436,26 +436,36 @@
                 }
             }
 
+            if (isset($htmlOptions['selector']))
+            {
+                $selector = $htmlOptions['selector'];
+                unset($htmlOptions['selector']);
+            }
+            else
+            {
+                $selector = '#' . $id;
+            }
+
             if ($live)
             {
                 if ($namespace)
                 {
-                   $cs->registerScript('Yii.CHtml.#' . $id, "$('body').off('$event', '#$id'); $('body').on('$event', '#$id', function(){{$handler}});");
+                    $cs->registerScript('Yii.CHtml.' . $selector, "$('body').off('$event', '$selector'); $('body').on('$event', '$selector', function(){{$handler}});");
                 }
                 else
                 {
-                    $cs->registerScript('Yii.CHtml.#' . $id, "$('body').on('$event', '#$id', function(){{$handler}});");
+                    $cs->registerScript('Yii.CHtml.' . $selector, "$('body').on('$event', '$selector', function(){{$handler}});");
                 }
             }
             else
             {
                 if ($namespace)
                 {
-                    $cs->registerScript('Yii.CHtml.#' . $id, "$('#$id').off('$event'); $('#$id').on('$event', function(){{$handler}});");
+                    $cs->registerScript('Yii.CHtml.' . $selector, "$('$selector').off('$event'); $('$selector').on('$event', function(){{$handler}});");
                 }
                 else
                 {
-                    $cs->registerScript('Yii.CHtml.#' . $id, "$('#$id').on('$event', function(){{$handler}});");
+                    $cs->registerScript('Yii.CHtml.' . $selector, "$('$selector').on('$event', function(){{$handler}});");
                 }
             }
             unset($htmlOptions['params'],

@@ -70,7 +70,7 @@
         protected function renderTypeContent()
         {
             $content = ZurmoHtml::tag('p', array('class' => static::DESCRIPTION_CLASS),
-                                       Zurmo::t('AccountsModule', 'Type') .
+                                       Zurmo::t('Core', 'Type') .
                                         $this->overlayKeyValueSeparator . $this->model->type);
             return $content;
         }

@@ -488,7 +488,10 @@
             {
                 foreach(static::getAll() as $model)
                 {
-                    $model->delete();
+                    if (!$model->delete())
+                    {
+                        throw new NotSupportedException("Unable to delete id# " . $model->id);
+                    }
                 }
                 // we could have used ZurmoRedBean::$writer->wipe() but that won't fire events related to delete.
             }

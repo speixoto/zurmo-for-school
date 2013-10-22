@@ -103,7 +103,7 @@
                 ) ,
             ));
             $content    = $this->runControllerWithNoExceptionsAndGetContent('marketingLists/default/list');
-            $this->assertTrue(strpos($content, 'No results found.') !== false);
+            $this->assertTrue(strpos($content, 'No results found') !== false);
 
             StickyReportUtil::clearDataByKey('MarketingListsSearchForm');
             $this->setGetArray(array(

@@ -459,11 +459,12 @@
                     setAjaxModeAndRenderModalSearchList($this, $modalListLinkProvider, $stateMetadataAdapterClassName);
         }
 
-        public function actionAutoComplete($term, $moduleClassName = null, $type = null)
+        public function actionAutoComplete($term, $moduleClassName = null, $type = null, $autoCompleteOptions = null)
         {
             $pageSize = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                         'autoCompleteListPageSize', get_class($this->getModule()));
-            $autoCompleteResults = ReportAutoCompleteUtil::getByPartialName($term, $pageSize, $moduleClassName, $type);
+            $autoCompleteResults = ReportAutoCompleteUtil::getByPartialName($term, $pageSize, $moduleClassName,
+                                                                            $type, $autoCompleteOptions);
             echo CJSON::encode($autoCompleteResults);
         }
 

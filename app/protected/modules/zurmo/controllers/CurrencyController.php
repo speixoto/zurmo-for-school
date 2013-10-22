@@ -178,7 +178,7 @@
 
         public function actionAutoComplete($term, $autoCompleteOptions = null)
         {
-            $autoCompleteResults = CurrencyCodeAutoCompleteUtil::getByPartialCodeOrName($term);
+            $autoCompleteResults = CurrencyCodeAutoCompleteUtil::getByPartialCodeOrName($term, $autoCompleteOptions);
             echo CJSON::encode($autoCompleteResults);
         }
     }

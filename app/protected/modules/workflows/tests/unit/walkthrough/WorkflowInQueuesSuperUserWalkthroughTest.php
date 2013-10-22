@@ -126,13 +126,13 @@
         public function testSuperUserListAction()
         {
             $content = $this->runControllerWithNoExceptionsAndGetContent('workflows/defaultTimeQueue/list');
-            $this->assertContains('No results found.', $content);
+            $this->assertContains('No results found', $content);
             WorkflowTestHelper::createExpiredByTimeWorkflowInQueue($this->model, $this->savedWorkflow);
             $content = $this->runControllerWithNoExceptionsAndGetContent('workflows/defaultTimeQueue/list');
             $this->assertContains('1 result(s)', $content);
 
             $content = $this->runControllerWithNoExceptionsAndGetContent('workflows/defaultMessageQueue/list');
-            $this->assertContains('No results found.', $content);
+            $this->assertContains('No results found', $content);
             WorkflowTestHelper::createExpiredWorkflowMessageInQueue($this->model, $this->savedWorkflow);
             $content = $this->runControllerWithNoExceptionsAndGetContent('workflows/defaultMessageQueue/list');
             $this->assertContains('1 result(s)', $content);

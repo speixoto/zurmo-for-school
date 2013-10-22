@@ -35,59 +35,63 @@
      ********************************************************************************/
 
     /**
-     * A job for removing old import models after the imports are complete.
+     * Use this form when creating a new contact from web forms
      */
-    class ImportCleanupJob extends BaseJob
+    class ContactWebFormsModelForm extends ModelForm
     {
-        protected static $pageSize = 200;
+        protected $customDisplayLabels = array();
 
-        /**
-         * @returns Translated label that describes this job type.
-         */
-        public static function getDisplayName()
+        protected $customRequiredFields = array();
+
+        protected static function getRedBeanModelClassName()
         {
-           return Zurmo::t('ImportModule', 'Import Cleanup Job');
+            return 'Contact';
         }
 
-        /**
-         * @return The type of the NotificationRules
-         */
-        public static function getType()
+        public function __construct(Contact $model)
         {
-            return 'ImportCleanup';
+            $this->model = $model;
         }
 
-        public static function getRecommendedRunFrequencyContent()
+        public function setCustomDisplayLabels($customDisplayLabels)
         {
-            return Zurmo::t('JobsManagerModule', 'Once a week, early in the morning.');
+            $this->customDisplayLabels = $customDisplayLabels;
         }
 
-        /**
-         * Get all imports where the modifiedDateTime was more than 1 week ago.  Then
-         * delete the imports.
-         * (non-PHPdoc)
-         * @see BaseJob::run()
-         */
-        public function run()
+        public function setCustomRequiredFields($customRequiredFields)
         {
-            $oneWeekAgoTimeStamp = DateTimeUtil::convertTimestampToDbFormatDateTime(time() - 60 * 60 *24 * 7);
-            $searchAttributeData = array();
-            $searchAttributeData['clauses'] = array(
-                1 => array(
-                    'attributeName'        => 'modifiedDateTime',
-                    'operatorType'         => 'lessThan',
-                    'value'                => $oneWeekAgoTimeStamp,
-                ),
-            );
-            $searchAttributeData['structure'] = '1';
-            $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('Import');
-            $where = RedBeanModelDataProvider::makeWhere('Import', $searchAttributeData, $joinTablesAdapter);
-            $importModels = Import::getSubset($joinTablesAdapter, null, self::$pageSize, $where, null);
-            foreach ($importModels as $import)
+            $this->customRequiredFields = $customRequiredFields;
+        }
+
+        public function attributeLabels()
+        {
+            return array_merge($this->model->attributeLabels(), $this->customDisplayLabels);
+        }
+
+        public function rules()
+        {
+            return array_merge(parent::rules(), $this->customRequiredFields);
+        }
+
+        public function isAttributeRequired($attribute)
+        {
+            if ($this->isCustomRequiredAttribute($attribute))
             {
-                $import->delete();
+                return true;
             }
-            return true;
+            return parent::isAttributeRequired($attribute);
+        }
+
+        public function isCustomRequiredAttribute($attribute)
+        {
+            foreach ($this->customRequiredFields as $customRequiredValidator)
+            {
+                if ($customRequiredValidator[0] == $attribute && $customRequiredValidator[1] == 'required')
+                {
+                    return true;
+                }
+            }
+            return false;
         }
     }
 ?>

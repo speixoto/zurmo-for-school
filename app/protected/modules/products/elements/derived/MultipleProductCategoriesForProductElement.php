@@ -41,7 +41,7 @@
      */
     class MultipleProductCategoriesForProductElement extends  MultipleProductCategoriesForProductTemplateElement
     {
-        protected function assertModuleType()
+        protected function assertModelType()
         {
             assert('$this->model instanceof Product');
         }
