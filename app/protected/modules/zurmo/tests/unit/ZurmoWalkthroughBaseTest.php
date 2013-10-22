@@ -642,38 +642,37 @@
 
         /**
          * Uses postArray to check response field values.
-         *
-         * @param OwnedSecurableItem $model     Model to get values from
-         * @param array              $postArray Array of post values
-         * @return boolean
+         * @param $model
+         * @param $postArray
+         * @param null $linkClass
+         * @return bool
          */
-        protected function checkCopyActionResponseAttributeValuesFromPostArray($model, $postArray, $linkClass = null)
+        protected function checkCopyActionResponseAttributeValuesFromPostArray($model, $postArray, $linkClass = null,
+                                                                               $controllerId = null)
         {
             return $this->checkCopyActionResponseAttributeValues(
                 $model,
                 $this->buildAttributesArrayFromPostArray($postArray),
-                $linkClass
+                $linkClass,
+                $controllerId
             );
         }
 
         /**
-         * Test if form fields have values from record.
+         *  Test if form fields have values from record.
          * It supports selects, plain text fields and textareas.
          * @param $model
          * @param $testAttributes
          * @param null $linkClass
+         * @param null $controllerId
          * @return bool
          */
-        protected function checkCopyActionResponseAttributeValues($model, $testAttributes, $linkClass = null)
+        protected function checkCopyActionResponseAttributeValues($model, $testAttributes, $linkClass = null, $controllerId = null)
         {
             $moduleClassName = $model::getModuleClassName();
-            if (empty($linkClass))
+            if ($controllerId == null)
             {
                 $controllerId = $moduleClassName::getDirectoryName();
-            }
-            else
-            {
-                $realm = strtolower($linkClass);
             }
             $this->setGetArray(array('id' => $model->id));
             $this->resetPostArray();

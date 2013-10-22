@@ -70,14 +70,14 @@
             //Test just going to the create from relation view.
             $this->setGetArray(array(   'relationAttributeName' => 'Account', 'relationModelId' => $superAccountId,
                                         'relationModuleId'      => 'accounts', 'redirectUrl' => 'someRedirect'));
-            $this->runControllerWithNoExceptionsAndGetContent('tasks/default/createFromRelation');
+            $this->runControllerWithNoExceptionsAndGetContent('tasks/default/modalCreateFromRelation');
 
             //add related task for account using createFromRelation action
             $activityItemPostData = array('Account' => array('id' => $superAccountId));
             $this->setGetArray(array('relationAttributeName' => 'Account', 'relationModelId' => $superAccountId,
                                      'relationModuleId'      => 'accounts', 'redirectUrl' => 'someRedirect'));
             $this->setPostArray(array('ActivityItemForm' => $activityItemPostData, 'Task' => array('name' => 'myTask')));
-            $this->runControllerWithRedirectExceptionAndGetContent('tasks/default/createFromRelation');
+            $this->runControllerWithNoExceptionsAndGetContent('tasks/default/modalSaveFromRelation');
 
             //now test that the new task exists, and is related to the account.
             $tasks = Task::getAll();
@@ -90,12 +90,12 @@
             //test viewing the existing task in a details view
             $this->setGetArray(array('id' => $tasks[0]->id));
             $this->resetPostArray();
-            $this->runControllerWithNoExceptionsAndGetContent('tasks/default/details');
+            $this->runControllerWithNoExceptionsAndGetContent('tasks/default/modalDetails');
 
             //test removing a task.
             $this->setGetArray(array('id' => $tasks[0]->id));
             $this->resetPostArray();
-            $this->runControllerWithRedirectExceptionAndGetContent('tasks/default/delete');
+            $this->runControllerWithNoExceptionsAndGetContent('tasks/default/delete', true);
             //Confirm no more tasks exist.
             $tasks = Task::getAll();
             $this->assertEquals(0, count($tasks));

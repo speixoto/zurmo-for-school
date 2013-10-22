@@ -57,7 +57,7 @@
             $this->assertTrue($project->save());
 
             $projectAuditEvent = new ProjectAuditEvent();
-            $saved = $projectAuditEvent->logAuditEvent(ProjectAuditEvent::PROJECT_CREATED, $project->name, $project, $user);
+            $saved = $projectAuditEvent->logAuditEvent(ProjectAuditEvent::PROJECT_CREATED, $project,  $project->name, $user);
             $this->assertTrue($saved);
             $events = ProjectAuditEvent::getAll('dateTime', true);
             $this->assertEquals(ProjectAuditEvent::PROJECT_CREATED, $events[0]->eventName);
