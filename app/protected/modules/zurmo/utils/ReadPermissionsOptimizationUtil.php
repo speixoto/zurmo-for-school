@@ -77,7 +77,7 @@
                         $modelTableName     = RedBeanModel::getTableName($modelClassName);
                         if (!is_subclass_of($modelClassName, 'OwnedSecurableItem'))
                         {
-                            throw new NotImplementedException($message, $code, $previous);
+                            throw new NotImplementedException();
                         }
                         if (is_subclass_of($modelClassName, 'Person'))
                         {
