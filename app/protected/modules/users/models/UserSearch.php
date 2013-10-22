@@ -48,7 +48,6 @@
         {
             assert('is_string($partialName)');
             assert('is_int($pageSize)');
-            assert('is_array($autoCompleteOptions)');
             $personTableName   = RedBeanModel::getTableName('Person');
             $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('User');
             $joinTablesAdapter->addFromTableAndGetAliasName($personTableName, "{$personTableName}_id");

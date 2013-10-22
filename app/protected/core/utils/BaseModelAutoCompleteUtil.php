@@ -45,6 +45,7 @@
         protected static function handleAutoCompleteOptions(RedBeanModelJoinTablesQueryAdapter & $joinTablesAdapter,
                                                                 & $where, $autoCompleteOptions = null)
         {
+            assert('is_array($autoCompleteOptions) || is_null($autoCompleteOptions)');
             $autoCompleteOptions = ArrayUtil::decodeAutoCompleteOptionsArray($autoCompleteOptions);
             foreach ($autoCompleteOptions as $optionName => $optionValue)
             {
