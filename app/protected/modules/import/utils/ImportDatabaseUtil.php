@@ -537,6 +537,15 @@
             assert('is_string($attribute)');
             assert('is_string($newValue) || $newValue == null');
 
+            $columnData = static::geColumnData($tableName, $attribute);
+            $columnLength = $columnData['character_maximum_length'];
+            $columnType = $columnData['data_type'];
+            if ($columnType == 'varchar' && strlen($newValue) > $columnLength)
+            {
+                $sql = 'alter table :table modify :column varchar(:length)';
+                //TODO: @sergio: This is causing an error
+                ZurmoRedBean::exec($sql, array(':table' => $tableName, ':column' => $attribute, ':length' => strlen($newValue)));
+            }
             $bean = ZurmoRedBean::findOne($tableName, "id = :id", array('id' => $id));
             if ($bean == null)
             {
@@ -549,6 +558,14 @@
                 throw new FailedToSaveModelException("Id of updated record does not match the id used in finding it.");
             }
         }
+
+        protected static function geColumnData($tableName, $column)
+        {
+            $sql = 'select  data_type, character_maximum_length from information_schema.columns where table_name = :table and column_name = :column';
+            $row = ZurmoRedBean::getRow($sql, array(':table' => $tableName, ':column' => $column));
+            return $row;
+        }
+
 
         /**
          * For the temporary import tables, some of the columns are reserved and not used by any of the import data
