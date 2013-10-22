@@ -50,11 +50,11 @@
 
         public function testCreateAndGetContactWebFormEntryById()
         {
-            $allAttributes                      = ContactWebFormsUtil::getAllAttributes();
             $placedAttributes                   = array('firstName', 'lastName', 'companyName', 'jobTitle');
-            $contactFormAttributes              = ContactWebFormsUtil::getAllPlacedAttributes($allAttributes,
-                                                                                              $placedAttributes);
-            $attributes                         = array_keys($contactFormAttributes);
+            $contactFormAttributes              = array('firstName'   => '',
+                                                        'lastName'    => '',
+                                                        'companyName' => '',
+                                                        'jobTitle'    => '');
             $this->assertTrue(ContactsModule::loadStartingData());
             $contactStates                      = ContactState::getByName('New');
             $contactWebForm                     = new ContactWebForm();
@@ -63,7 +63,7 @@
             $contactWebForm->submitButtonLabel  = 'Save';
             $contactWebForm->defaultState       = $contactStates[0];
             $contactWebForm->defaultOwner       = Yii::app()->user->userModel;
-            $contactWebForm->serializedData     = serialize($attributes);
+            $contactWebForm->serializedData     = serialize($placedAttributes);
             $contactWebForm->save();
 
             $contact                = new Contact();

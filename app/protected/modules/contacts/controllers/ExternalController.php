@@ -242,8 +242,7 @@
         public static function getMetadataByWebForm(ContactWebForm $contactWebForm)
         {
             assert('$contactWebForm instanceof ContactWebForm');
-            $contactWebFormAttributes = ContactWebFormsUtil::resolveWebFormAttributes(unserialize($contactWebForm->serializedData));
-            $contactWebFormAttributes = ContactWebFormsUtil::resolveWebFormWithAllRequiredAttributes($contactWebFormAttributes);
+            $contactWebFormAttributes = array_keys(ContactWebFormsUtil::getPlacedAttributes($contactWebForm));
             $contactWebFormAttributes = ContactWebFormsUtil::excludeHiddenAttributes($contactWebForm, $contactWebFormAttributes);
             $viewClassName            = 'ContactExternalEditAndDetailsView';
             $moduleClassName          = 'ContactsModule';

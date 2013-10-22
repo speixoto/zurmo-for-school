@@ -51,11 +51,7 @@
         public function testCreateAndGetContactWebFormById()
         {
             ContactWebFormTestHelper::deleteAllContactWebForms();
-            $allAttributes                      = ContactWebFormsUtil::getAllAttributes();
             $placedAttributes                   = array('firstName', 'lastName', 'companyName', 'jobTitle');
-            $contactFormAttributes              = ContactWebFormsUtil::getAllPlacedAttributes($allAttributes,
-                                                                                              $placedAttributes);
-            $attributes                         = array_keys($contactFormAttributes);
             $this->assertTrue(ContactsModule::loadStartingData());
             $contactStates                      = ContactState::getByName('New');
             $contactWebForm                     = new ContactWebForm();
@@ -63,7 +59,7 @@
             $contactWebForm->redirectUrl        = 'http://zurmo.com';
             $contactWebForm->submitButtonLabel  = 'Save';
             $contactWebForm->defaultState       = $contactStates[0];
-            $contactWebForm->serializedData     = serialize($attributes);
+            $contactWebForm->serializedData     = serialize($placedAttributes);
             $contactWebForm->defaultOwner       = Yii::app()->user->userModel;
             $this->assertTrue($contactWebForm->save());
             $id                                 = $contactWebForm->id;
@@ -73,7 +69,7 @@
             $this->assertEquals('http://zurmo.com'  , $contactWebForm->redirectUrl);
             $this->assertEquals('Save'              , $contactWebForm->submitButtonLabel);
             $this->assertEquals('New'               , $contactWebForm->defaultState->name);
-            $this->assertEquals($attributes         , unserialize($contactWebForm->serializedData));
+            $this->assertEquals($placedAttributes   , unserialize($contactWebForm->serializedData));
             $contactWebForm->name                   = 'New Test Form';
             $contactWebForm->redirectUrl            = 'http://zurmo.org';
             $contactWebForm->submitButtonLabel      = 'Save and Redirect';

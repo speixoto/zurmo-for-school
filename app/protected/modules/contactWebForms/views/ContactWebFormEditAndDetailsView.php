@@ -188,5 +188,12 @@
             $title = ZurmoHtml::tag('h3', array(), Zurmo::t('ContactWebFormsModule', 'Copy/Paste this code to your web page..'));
             return '<div class="webform-embed-code">' . $title . '<textarea onclick="this.focus();this.select()" readonly="readonly">' . htmlspecialchars($embedScript) . '</textarea></div>';
         }
+
+        protected function renderAfterFormLayout($form)
+        {
+            $content = ZurmoHtml::hiddenField('getPlacedAttributeAction',
+                       Yii::app()->createUrl('contactWebForms/default/getPlacedAttributeByName'));
+            return $content;
+        }
     }
 ?>

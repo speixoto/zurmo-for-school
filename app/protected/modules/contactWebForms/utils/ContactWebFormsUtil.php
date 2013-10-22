@@ -35,115 +35,168 @@
      ********************************************************************************/
 
     /**
-     * Helper class with functions
-     * to assist in working with ContactWebForms module
-     * information
+     * Helper class with functions to assist in working with ContactWebForms module
      */
     class ContactWebFormsUtil
     {
+        public static $restrictHiddenControlAttributes = array('Address',
+                                                               'EmailAddressInformation',
+                                                               'MultiSelectDropDown',
+                                                               'CurrencyValue',
+                                                               'DropDownDependency',
+                                                               'CalculatedNumber',
+                                                               'TagCloud');
+
         /**
-         * Get list of all index and derived attributes
+         * Get list of all index and derived attributes that can be placed on any web form
          * @return array of all attributes
          */
         public static function getAllAttributes()
         {
-            $contact     = new Contact();
-            $adapter     = new ContactWebFormModelAttributesAdapter($contact);
-            $attributes  = $adapter->getAttributes();
-            $attributes  = ArrayUtil::subValueSort($attributes, 'attributeLabel', 'asort');
-            return $attributes;
-        }
-
-        /**
-         * @param $attributes
-         * @param array $contactWebFormAttributes
-         * @return array of attributes placed on web form, default to required fields
-         */
-        public static function getAllPlacedAttributes($attributes, $contactWebFormAttributes = array())
-        {
-            $items = array();
+            $contact             = new Contact();
+            $adapter             = new ContactWebFormModelAttributesAdapter($contact);
+            $attributes          = $adapter->getAttributes();
+            $placeAbleAttributes = array();
             foreach ($attributes as $attributeName => $attributeData)
             {
-                if (!$attributeData['isReadOnly'])
-                {
-                    $requiredAttribute    = '';
-                    $hiddenAttribute      = '';
-                    $hiddenAttributeValue = '';
-                    $hiddenAttributeStyle = 'style=\'display:none;\'';
-                    if (isset($contactWebFormAttributes[$attributeName]['label']))
-                    {
-                        $attributeLabel    = $contactWebFormAttributes[$attributeName]['label'];
-                        $isPlacedAttribute = array_key_exists($attributeName, $contactWebFormAttributes);
-                        if (isset($contactWebFormAttributes[$attributeName]['required']))
-                        {
-                            $requiredAttribute        = 'checked=\'checked\'';
-                        }
-                    }
-                    else
-                    {
-                        $attributeLabel    = $attributeData['attributeLabel'];
-                        $isPlacedAttribute = in_array($attributeName, $contactWebFormAttributes);
-                    }
-                    if (isset($contactWebFormAttributes[$attributeName]['hidden']))
-                    {
-                        $hiddenAttribute          = 'checked=\'checked\'';
-                        $hiddenAttributeStyle     = 'style=\'display:block;\'';
-                        if (isset($contactWebFormAttributes[$attributeName]['hiddenValue']))
-                        {
-                            $hiddenAttributeValue = $contactWebFormAttributes[$attributeName]['hiddenValue'];
-                        }
-                    }
-
-                    if ($attributeData['isRequired'])
-                    {
-                        $items[$attributeName] = array('{content}'              => $attributeLabel,
-                                                       '{checkedAndReadOnly}'   => '',
-                                                       '{requiredAttribute}'    => 'checked=\'checked\'',
-                                                       '{readOnlyAttribute}'    => 'disabled=\'disabled\'',
-                                                       '{hiddenAttribute}'      => $hiddenAttribute,
-                                                       '{hiddenAttributeValue}' => $hiddenAttributeValue,
-                                                       '{hiddenAttributeStyle}' => $hiddenAttributeStyle);
-                    }
-                    elseif ($isPlacedAttribute)
-                    {
-                        $checkedAndReadOnly    = '<a class="remove-dynamic-row-link" id="ContactWebForm_serializedData_' .
-                                                  $attributeName . '" data-value="' . $attributeName . '" href="#">—</a>';
-                        $items[$attributeName] = array('{content}'              => $attributeLabel,
-                                                       '{checkedAndReadOnly}'   => $checkedAndReadOnly,
-                                                       '{requiredAttribute}'    => $requiredAttribute,
-                                                       '{readOnlyAttribute}'    => '',
-                                                       '{hiddenAttribute}'      => $hiddenAttribute,
-                                                       '{hiddenAttributeValue}' => $hiddenAttributeValue,
-                                                       '{hiddenAttributeStyle}' => $hiddenAttributeStyle);
-                    }
-                }
-            }
-            return $items;
-        }
-
-        /**
-         * @param $attributes
-         * @param array $contactWebFormAttributes
-         * @return array of attributes not placed on web form, but can be placed
-         */
-        public static function getAllNonPlacedAttributes($attributes, $contactWebFormAttributes = array())
-        {
-            $items = array();
-            foreach ($attributes as $attributeName => $attributeData)
-            {
-                //TODO: Figure out, how to hide attributes like googleWebTrackingId
                 if (!$attributeData['isReadOnly'] && $attributeName != 'googleWebTrackingId')
                 {
-                    if (!$attributeData['isRequired'])
-                    {
-                        if (!in_array($attributeName, $contactWebFormAttributes))
-                        {
-                            $items[$attributeName] = $attributeData['attributeLabel'];
-                        }
-                    }
+                    $placeAbleAttributes[$attributeName] = $attributeData;
                 }
             }
-            return $items;
+            $placeAbleAttributes  = ArrayUtil::subValueSort($placeAbleAttributes, 'attributeLabel', 'asort');
+            return $placeAbleAttributes;
+        }
+
+        public static function getPlacedAttributes(ContactWebForm $contactWebForm)
+        {
+            assert('$contactWebForm instanceof ContactWebForm');
+            if (empty($contactWebForm->serializedData))
+            {
+                $contactWebForm->serializedData = serialize(array());
+            }
+            $allAttributes            = static::getAllAttributes();
+            $contactWebFormAttributes = unserialize($contactWebForm->serializedData);
+            $contactWebFormAttributes = static::resolveWebFormAttributes($contactWebFormAttributes);
+            $contactWebFormAttributes = static::resolveWebFormWithAllRequiredAttributes($contactWebFormAttributes, $allAttributes);
+            $placedAttributes         = array();
+            foreach ($allAttributes as $attributeName => $attributeData)
+            {
+                if (in_array($attributeName, $contactWebFormAttributes))
+                {
+                    $placedAttributes[$attributeName] = $attributeData;
+                }
+            }
+            return $placedAttributes;
+        }
+
+        public static function getNonPlacedAttributes(ContactWebForm $contactWebForm)
+        {
+            assert('$contactWebForm instanceof ContactWebForm');
+            $allAttributes = static::getAllAttributes();
+            $placedAttributes = static::getPlacedAttributes($contactWebForm);
+            $nonPlacedAttributes = array();
+            foreach ($allAttributes as $attributeName => $attributeData)
+            {
+                if (!array_key_exists($attributeName, $placedAttributes))
+                {
+                    $nonPlacedAttributes[$attributeName] = $attributeData['attributeLabel'];
+                }
+            }
+            return $nonPlacedAttributes;
+        }
+
+        public static function resolvePlacedAttributesForWebFormAttributesElement(ContactWebForm $contactWebForm, $model)
+        {
+            $resolvedPlacedAttributes = array();
+            $placedAttributes = static::getPlacedAttributes($contactWebForm);
+            if (empty($contactWebForm->serializedData))
+            {
+                $contactWebForm->serializedData = serialize(array());
+            }
+            $contactWebFormAttributes = unserialize($contactWebForm->serializedData);
+            foreach ($placedAttributes as $attributeName => $attributeData)
+            {
+                $webFormAttributeForm = new ContactWebFormAttributeForm();
+                if (isset($contactWebFormAttributes[$attributeName]))
+                {
+                    $webFormAttributeForm->setAttributes($contactWebFormAttributes[$attributeName]);
+                }
+                else
+                {
+                    $webFormAttributeForm->label = $attributeData['attributeLabel'];
+                }
+                $resolvedPlacedAttributes[$attributeName] = static::resolvePlacedAttributeByName($webFormAttributeForm,
+                                                            $model, $attributeName, $attributeData);
+            }
+            return $resolvedPlacedAttributes;
+        }
+
+        public static function resolvePlacedAttributeByName($webFormAttributeForm, $model, $attributeName, $attributeData)
+        {
+            $webFormAttributeForm->attribute = $attributeName;
+            $params = array('inputPrefix' => array(get_class($webFormAttributeForm), $attributeName));
+            if ($attributeData['isRequired'])
+            {
+                $webFormAttributeForm->required = 1;
+                $isRequiredChecked              = 'checked';
+                $isRequiredDisabled             = 'disabled';
+                $removePlacedAttributeLink      = '';
+            }
+            else
+            {
+                if (isset($webFormAttributeForm->required) && $webFormAttributeForm->required == 1)
+                {
+                    $isRequiredChecked  = 'checked';
+                    $isRequiredDisabled = '';
+                }
+                else
+                {
+                    $isRequiredChecked  = 'checked';
+                    $isRequiredDisabled = '';
+                }
+                $removePlacedAttributeLink = '<a class="remove-dynamic-row-link" id="ContactWebForm_serializedData_' .
+                                              $attributeName . '" data-value="' . $attributeName . '" href="#">—</a>';
+            }
+            if (isset($webFormAttributeForm->hidden) && $webFormAttributeForm->hidden == 1)
+            {
+                $isHiddenChecked = 'checked';
+                $hideHiddenAttributeElementStyle  = 'display:block;';
+            }
+            else
+            {
+                $isHiddenChecked = '';
+                $hideHiddenAttributeElementStyle  = 'display:none;';
+            }
+            $attributeLabelElement = new TextElement($webFormAttributeForm, 'label', $model, $params);
+            $isRequiredElement     = new CheckBoxElement($webFormAttributeForm, 'required', $model,
+                                     array_merge($params, array('checked'  => $isRequiredChecked,
+                                                                'disabled' => $isRequiredDisabled)));
+            if (!in_array($attributeData['elementType'], static::$restrictHiddenControlAttributes))
+            {
+                $isHiddenElement       = new DerivedCheckBoxElement($webFormAttributeForm, 'hidden', $model,
+                                         array_merge($params, array('checked'     => $isHiddenChecked),
+                                                              array('htmlOptions' => array('class' => 'hiddenAttribute',
+                                                                                           'data-value' => $attributeName))));
+                $isHiddenElement->editableTemplate       = '{content}{label}{error}';
+                $renderHiddenAttributeElement = static::renderHiddenAttributeElement($webFormAttributeForm, 'hiddenValue',
+                                                $model, $attributeData['elementType'], $params);
+                $isHiddenElementContent       = $isHiddenElement->render();
+            }
+            else
+            {
+                $isHiddenElementContent       = '';
+                $renderHiddenAttributeElement = '';
+            }
+            $attributeLabelElement->editableTemplate = '{content}{error}';
+            $isRequiredElement->editableTemplate     = '{content}{label}{error}';
+
+            return array('{attributeLabelElement}'           => $attributeLabelElement->render(),
+                         '{isRequiredElement}'               => $isRequiredElement->render(),
+                         '{isHiddenElement}'                 => $isHiddenElementContent,
+                         '{renderHiddenAttributeElement}'    => $renderHiddenAttributeElement,
+                         '{removePlacedAttributeLink}'       => $removePlacedAttributeLink,
+                         '{hideHiddenAttributeElementStyle}' => $hideHiddenAttributeElementStyle);
         }
 
         /**
@@ -205,13 +258,15 @@
             return $customRequiredFields;
         }
 
-        public static function resolveWebFormWithAllRequiredAttributes($contactWebFormAttributes)
+        public static function resolveWebFormWithAllRequiredAttributes($contactWebFormAttributes, $allAttributes = array())
         {
-            $attributes = static::getAllAttributes();
-            foreach ($attributes as $attributeName => $attributeData)
+            if (count($allAttributes) == 0)
             {
-                if (!$attributeData['isReadOnly'] && $attributeData['isRequired'] &&
-                    !in_array($attributeName, $contactWebFormAttributes))
+                $allAttributes = static::getAllAttributes();
+            }
+            foreach ($allAttributes as $attributeName => $attributeData)
+            {
+                if ($attributeData['isRequired'] && !in_array($attributeName, $contactWebFormAttributes))
                 {
                     $contactWebFormAttributes[] = $attributeName;
                 }
@@ -268,6 +323,55 @@
                 }
             }
             return $webFormEntryAttributes;
+        }
+
+        public static function renderHiddenAttributeElement($model, $attributeName, $form, $elementType, $params)
+        {
+            switch ($elementType)
+            {
+                case 'Text':
+                    $element = new TextElement($model, $attributeName, $form, $params);
+                    break;
+                case 'Date':
+                    $element = new DateElement($model, $attributeName, $form, $params);
+                    break;
+                case 'DateTime':
+                    $element = new DateTimeElement($model, $attributeName, $form, $params);
+                    break;
+                case 'TextArea':
+                    $element = new TextAreaElement($model, $attributeName, $form, $params);
+                    break;
+                case 'DropDown':
+                    $element = new ContactWebFormAttributeFormStaticDropDownFormElement($model, $attributeName, $form, $params);
+                    break;
+                case 'Phone':
+                    $element = new PhoneElement($model, $attributeName, $form, $params);
+                    break;
+                case 'Address':
+                    $element = new AddressElement($model, $attributeName, $form, $params);
+                    break;
+                case 'EmailAddressInformation':
+                    $element = new EmailAddressInformationElement($model, $attributeName, $form, $params);
+                    break;
+                case 'Url':
+                    $element = new UrlElement($model, $attributeName, $form, $params);
+                    break;
+                case 'Address':
+                    $element = new AddressElement($model, $attributeName, $form, $params);
+                    break;
+                case 'RadioDropDown':
+                    $element = new ContactWebFormAttributeFormStaticDropDownFormElement($model, $attributeName, $form, $params);
+                    break;
+                case 'CheckBox':
+                    $element = new BooleanStaticDropDownElement($model, $attributeName, $form, $params);
+                    break;
+                default:
+                    $element = new TextElement($model, $attributeName, $form, $params);
+                    break;
+            }
+            $element->editableTemplate = '{content}{error}';
+            $content = $element->render();
+            return $content;
         }
     }
 ?>

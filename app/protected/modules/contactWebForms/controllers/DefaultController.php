@@ -100,7 +100,7 @@
             if (isset($_POST[$modelClassName]))
             {
                 unset($_POST[$modelClassName]['serializedData']);
-                $contactWebForm->serializedData = serialize($_POST['placedAttribute']);
+                $contactWebForm->serializedData = serialize($_POST['ContactWebFormAttributeForm']);
             }
             $contactWebForm->defaultOwner = Yii::app()->user->userModel;
             $contactWebForm->language     = Yii::app()->language;
@@ -126,7 +126,7 @@
             if (isset($_POST[$modelClassName]))
             {
                 unset($_POST[$modelClassName]['serializedData']);
-                $contactWebForm->serializedData = serialize($_POST['placedAttribute']);
+                $contactWebForm->serializedData = serialize($_POST['ContactWebFormAttributeForm']);
             }
             $titleBarAndEditView                = $this->makeEditAndDetailsView(
                                                   $this->attemptToSaveModelFromPost($contactWebForm), 'Edit');
@@ -155,6 +155,26 @@
             ControllerSecurityUtil::resolveAccessCanCurrentUserDeleteModel($contactWebForm);
             $contactWebForm->delete();
             $this->redirect(array($this->getId() . '/index'));
+        }
+
+        public function actionGetPlacedAttributeByName($attributeName, $attributeLabel)
+        {
+            $model                       = new ZurmoActiveForm(false);
+            $webFormAttributeForm        = new ContactWebFormAttributeForm();
+            $webFormAttributeForm->label = $attributeLabel;
+            $allAttributes               = ContactWebFormsUtil::getAllAttributes();
+            $attributeData               = $allAttributes[$attributeName];
+            $resolvedPlacedAttribute     = ContactWebFormsUtil::resolvePlacedAttributeByName($webFormAttributeForm,
+                                           $model, $attributeName, $attributeData);
+            $content = '<li><div class="dynamic-row webform-chosen-field"><div>' .
+                        $resolvedPlacedAttribute['{attributeLabelElement}'] .
+                        $resolvedPlacedAttribute['{isRequiredElement}'] .
+                        $resolvedPlacedAttribute['{isHiddenElement}'] .
+            '<div id="hiddenAttributeElement_' . $attributeName . '"' .
+                'style="' . $resolvedPlacedAttribute['{hideHiddenAttributeElementStyle}'] . '">' .
+                 $resolvedPlacedAttribute['{renderHiddenAttributeElement}'] . '</div>' .
+            '</div>' . $resolvedPlacedAttribute['{removePlacedAttributeLink}'] . '</div></li>';
+            echo $content;
         }
     }
 ?>
