@@ -12116,6 +12116,9 @@ a.simple-link:before {
   height: 100%;
   background: rgba(255, 255, 255, 0.5);
 }
+.ui-sortable {
+  list-style: none;
+}
 .ui-sortable > .ui-state-highlight {
   min-height: 45px;
   background: #efefef;
@@ -14365,6 +14368,7 @@ div.hasHalfs > div input {
   white-space: nowrap;
 }
 .edit-row-menu ul {
+  min-width: 0;
   line-height: 1;
   white-space: nowrap;
   left: auto;
@@ -26426,6 +26430,24 @@ div.special-pager .hidden.next:after {
   -ms-border-radius: 3px;
   -o-border-radius: 3px;
   border-radius: 3px;
+}
+.task-modal-details-options-menu .parent > a {
+  padding: 0;
+}
+.task-modal-details-options-menu .parent > a span {
+  display: none;
+}
+.task-modal-details-options-menu .parent > a:before {
+  content: 'n';
+  font-weight: normal !important;
+  font-weight: normal;
+  font-size: 26px;
+  font-family: "zurmo_gamification_symbly_rRg";
+}
+.task-modal-details-options-menu .parent > a:after {
+  margin-left: 2px;
+  position: relative;
+  top: -2px;
 }
 #task-left-column-form-data label {
   margin-top: 15px;
