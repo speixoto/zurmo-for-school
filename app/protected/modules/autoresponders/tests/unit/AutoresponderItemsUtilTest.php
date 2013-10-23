@@ -506,9 +506,9 @@
             $contact->state             = ContactsUtil::getStartingState();
             $this->assertTrue($contact->save());
             $marketingList              = MarketingListTestHelper::createMarketingListByName('marketingList 09',
-                                                                                                'description',
-                                                                                                'CustomFromName',
-                                                                                                'custom@from.com');
+                                                                                             'description',
+                                                                                             'CustomFromName',
+                                                                                             'custom@from.com');
             $autoresponder              = AutoresponderTestHelper::createAutoresponder('subject 09',
                                                                             'Url: [[MODEL^URL]]',
                                                                             'Click <a href="[[MODEL^URL]]">here</a>',
