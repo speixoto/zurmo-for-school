@@ -59,7 +59,7 @@
          */
         public function getAttributeTypeName()
         {
-            return 'ProjectsStatusDropDown';
+            return 'ProjectStatusDropDown';
         }
     }
 ?>
