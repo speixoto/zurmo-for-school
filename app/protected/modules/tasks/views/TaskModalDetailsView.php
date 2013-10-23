@@ -63,6 +63,19 @@
                         array(
                             'rows' => array(
                                 array('cells' =>
+                                array(
+                                    array(
+                                        'elements' => array(
+                                            array('attributeName' => null, 'type' => 'Null'),
+                                        ),
+                                    ),
+                                )
+                                ),
+                            ),
+                        ),
+                        array(
+                            'rows' => array(
+                                array('cells' =>
                                     array(
                                         array(
                                             'elements' => array(
