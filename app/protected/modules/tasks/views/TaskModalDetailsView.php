@@ -52,7 +52,7 @@
                         ),
                     ),
                     'derivedAttributeTypes' => array(
-                        'ActivityItems',
+                        'TasksForModalActivityItems',
                         'DerivedExplicitReadWriteModelPermissions',
                     ),
                     'nonPlaceableAttributeNames' => array(
@@ -79,7 +79,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'null', 'type' => 'ActivityItems'),
+                                                array('attributeName' => 'null', 'type' => 'TasksForModalActivityItems'),
                                             ),
                                         ),
                                     )
