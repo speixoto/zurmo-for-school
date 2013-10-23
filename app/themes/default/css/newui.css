@@ -24434,18 +24434,14 @@ a + .autoresponder-stats {
 #ContactWebFormEditAndDetailsView label + label {
   margin-left: 0;
 }
-#ContactWebFormEditAndDetailsView .third,
-#ContactWebFormEditAndDetailsView .twoThirds {
-  float: left;
-}
-#ContactWebFormEditAndDetailsView .twoThirds {
-  margin-left: 2%;
-}
 #ContactWebFormEditAndDetailsView .dynamic-row .remove-dynamic-row-link {
-  top: 5px;
+  top: 13px;
 }
-#ContactWebFormEditAndDetailsView .row-description {
-  margin-bottom: 5px;
+#ContactWebFormEditAndDetailsView h4 {
+  margin-bottom: 15px;
+}
+#ContactWebFormEditAndDetailsView h3 {
+  margin-left: 15px;
 }
 #zurmoExternalWebForm {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -24531,7 +24527,10 @@ a + .autoresponder-stats {
 }
 .webform-chosen-field input[type="text"] {
   width: 70%;
-  margin-right: 10px;
+}
+.webform-chosen-field span {
+  width: 15%;
+  display: inline-block;
 }
 .sliding-panel {
   display: none;
