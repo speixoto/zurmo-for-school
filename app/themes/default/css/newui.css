@@ -10296,7 +10296,12 @@ section {
   -o-box-shadow: 0 0 2px 1px rgba(255, 255, 255, 0.9);
   -ms-box-shadow: 0 0 2px 1px rgba(255, 255, 255, 0.9);
   box-shadow: 0 0 2px 1px rgba(255, 255, 255, 0.9);
-  background: #a82d31;
+}
+#header-game-dashboard-link-wrapper a {
+  color: #ddd;
+}
+#header-game-dashboard-link-wrapper a:hover {
+  color: #fff;
 }
 #GlobalSearchAndShortcutsCreateMenuView {
   height: 40px;
