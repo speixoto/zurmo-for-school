@@ -268,7 +268,7 @@
             return self::resolveStringValueModelsDataToStringContent($existingModels);
         }
 
-        protected static function castDownItem(Item $item)
+        public static function castDownItem(Item $item)
         {
             foreach (array('Contact', 'User', 'Account') as $modelClassName)
             {

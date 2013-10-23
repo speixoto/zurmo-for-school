@@ -36,6 +36,8 @@
 
     class ArchivedEmailMatchingUtilTest extends ZurmoBaseTest
     {
+        protected static $message1;
+
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
@@ -45,6 +47,10 @@
             {
                 throw new NotSupportedException();
             }
+            ContactsModule::loadStartingData();
+            self::$message1 = EmailMessageTestHelper::createArchivedUnmatchedReceivedMessage($super);
+            $super->forget(); //ensures the there is no emailBox caching going on that is not needed
+
         }
 
         public function testResolveEmailAddressAndNameToContact()
@@ -147,6 +153,34 @@
             $this->assertTrue($message1->sender->personOrAccount[0]->isSame($super));
             $this->assertTrue($message1->recipients->count() == 1);
             $this->assertTrue($message1->recipients->offsetGet(0)->personOrAccount[0]->isSame($contact));
+        }
+
+        public function testResolveContactToSenderOrRecipientForReceivedEmail()
+        {
+            $super                      = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
+            $message1                   = self::$message1;
+            $contact                    = new Contact();
+            $contact->firstName         = 'Jason';
+            $contact->lastName          = 'Green';
+            $contact->state             = ContactsUtil::getStartingState();
+            $saved = $contact->save();
+            $this->assertTrue($saved);
+            $contactId = $contact->id;
+            $contact->forget();
+            $contact = Contact::getById($contactId);
+            $this->assertNull($contact->primaryEmail->emailAddress);
+            ArchivedEmailMatchingUtil::resolveContactToSenderOrRecipient($message1, $contact);
+            $saved = $message1->save();
+            $this->assertTrue($saved);
+
+            $messageId = $message1->id;
+            $message1->forget();
+            $message1 = EmailMessage::getById($messageId);
+            $this->assertEquals(1, $message1->sender->personOrAccount->count());
+            $castedDownModel = EmailMessageMashableActivityRules::castDownItem($message1->sender->personOrAccount[0]);
+            $this->assertEquals('Contact', get_class($castedDownModel));
+            $this->assertEquals($contact->id, $castedDownModel->id);
         }
     }
 ?>
