@@ -1,3 +1,4 @@
+var onClickAction = '';
 if(typeof window.jQQ !== 'object'){
 (function() {
     var callbacks = [],jq;
@@ -118,7 +119,6 @@ if(typeof window.jQQ !== 'object'){
 		script.src = url;
 		document.getElementsByTagName("head")[0].appendChild(script);
 	};
-    var onClickAction = '';
 	function renderFormCallback(respData)
 	{
 		var jsScriptFiles = respData.head.js;
