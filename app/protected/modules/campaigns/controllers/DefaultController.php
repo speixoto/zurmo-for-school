@@ -168,13 +168,13 @@
         public function actionEdit($id)
         {
             $campaign           = Campaign::getById(intval($id));
+            ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($campaign);
             if ($campaign->status != Campaign::STATUS_ACTIVE)
             {
                 Yii::app()->user->setFlash('notification',
                     Zurmo::t('CampaignsModule', 'This campaign has already started, you can only edit its name, rights and permissions.')
                 );
             }
-            ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($campaign);
             $breadCrumbLinks    = static::getDetailsAndEditBreadcrumbLinks();
             $breadCrumbLinks[]  = StringUtil::getChoppedStringContent(strval($campaign), 25);
             //todo: wizard

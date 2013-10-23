@@ -36,6 +36,8 @@
 
     class ArchivedEmailMatchingUtilTest extends ZurmoBaseTest
     {
+        protected static $message1;
+
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
@@ -45,8 +47,49 @@
             {
                 throw new NotSupportedException();
             }
+            ContactsModule::loadStartingData();
+            self::$message1 = EmailMessageTestHelper::createArchivedUnmatchedReceivedMessage($super);
+            $super->forget(); //ensures the there is no emailBox caching going on that is not needed
+
         }
 
+        public function testResolveContactToSenderOrRecipientForReceivedEmail()
+        {
+            $super                      = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
+            $message1                   = self::$message1;
+            $contact                    = new Contact();
+            $contact->firstName         = 'Jason';
+            $contact->lastName          = 'Green';
+            $contact->state             = ContactsUtil::getStartingState();
+            $saved = $contact->save();
+            $this->assertTrue($saved);
+            $contactId = $contact->id;
+            $contact->forget();
+            $contact = Contact::getById($contactId);
+            $this->assertNull($contact->primaryEmail->emailAddress);
+            ArchivedEmailMatchingUtil::resolveContactToSenderOrRecipient($message1, $contact);
+            $saved = $message1->save();
+            $this->assertTrue($saved);
+
+            $messageId = $message1->id;
+            $message1->forget();
+            $contact->forget();
+            RedBeanModel::forgetAll(); //simulates crossing page requests
+            $message1 = EmailMessage::getById($messageId);
+            $contact  = Contact::getById($contactId);
+            $this->assertEquals(1, $message1->sender->personOrAccount->count());
+            echo ' sender id ' . $message1->sender->id . "\n";
+            $castedDownModel = EmailMessageMashableActivityRules::castDownItem($message1->sender->personOrAccount[0]);
+            $this->assertEquals('Contact', get_class($castedDownModel));
+            $this->assertEquals($contact->id, $castedDownModel->id);
+            echo 'my id' . $contact->getClassId("Item");
+            echo 'test ' . $message1->sender->personOrAccount[0]->getClassId("Item");
+        }
+
+        /**
+         * @depends testResolveContactToSenderOrRecipientForReceivedEmail
+         */
         public function testResolveEmailAddressAndNameToContact()
         {
             $super                      = User::getByUsername('super');

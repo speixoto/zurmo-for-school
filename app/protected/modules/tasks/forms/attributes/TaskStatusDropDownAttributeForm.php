@@ -34,43 +34,32 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Extended class to support saving social items
-     */
-    class SocialItemZurmoControllerUtil extends FileZurmoControllerUtil
+    class TaskStatusDropDownAttributeForm extends AttributeForm
     {
-        protected $relatedUser;
-
         /**
-         * @param User $relatedUser
+         * @return string
          */
-        public function __construct($relatedUser)
+        public static function getAttributeTypeDisplayName()
         {
-            assert('$relatedUser == null || ($relatedUser instanceof User && $relatedUser->id > 0)');
-            $this->relatedUser = $relatedUser;
+            $params = LabelUtil::getTranslationParamsForAllModules();
+            return Zurmo::t('TasksModule', 'TasksModuleSingularLabel Status Dropdown', $params);
         }
 
         /**
-         * Handles when a user posts to another user's profile social feed.  Sets the toUser in that case.
-         * (non-PHPdoc)
-         * @see ZurmoControllerUtil::saveModelFromPost()
-         * @param $postData
-         * @param $model
-         * @param $savedSucessfully
-         * @param $modelToStringValue
-         * @param bool $returnOnValidate
-         * @return OwnedSecurableItem
+         * @return string
          */
-        public function saveModelFromPost($postData, $model, & $savedSucessfully, & $modelToStringValue, $returnOnValidate = false)
+        public static function getAttributeTypeDisplayDescription()
         {
-            $sanitizedPostData                 = PostUtil::sanitizePostByDesignerTypeForSavingModel(
-                                                 $model, $postData);
-            if ($this->relatedUser != null && !Yii::app()->user->userModel->isSame($this->relatedUser))
-            {
-                $model->toUser = $this->relatedUser;
-            }
-            return $this->saveModelFromSanitizedData($sanitizedPostData, $model, $savedSucessfully,
-                                                     $modelToStringValue, $returnOnValidate);
+            $params = LabelUtil::getTranslationParamsForAllModules();
+            return Zurmo::t('TasksModule', 'TasksModuleSingularLabel Status Dropdown Values', $params);
+        }
+
+        /**
+         * @return string
+         */
+        public function getAttributeTypeName()
+        {
+            return 'TaskStatusDropDown';
         }
     }
 ?>

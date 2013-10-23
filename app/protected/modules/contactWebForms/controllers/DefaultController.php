@@ -166,14 +166,7 @@
             $attributeData               = $allAttributes[$attributeName];
             $resolvedPlacedAttribute     = ContactWebFormsUtil::resolvePlacedAttributeByName($webFormAttributeForm,
                                            $model, $attributeName, $attributeData);
-            $content = '<li><div class="dynamic-row webform-chosen-field"><div>' .
-                        $resolvedPlacedAttribute['{attributeLabelElement}'] .
-                        $resolvedPlacedAttribute['{isRequiredElement}'] .
-                        $resolvedPlacedAttribute['{isHiddenElement}'] .
-            '<div id="hiddenAttributeElement_' . $attributeName . '"' .
-                'style="' . $resolvedPlacedAttribute['{hideHiddenAttributeElementStyle}'] . '">' .
-                 $resolvedPlacedAttribute['{renderHiddenAttributeElement}'] . '</div>' .
-            '</div>' . $resolvedPlacedAttribute['{removePlacedAttributeLink}'] . '</div></li>';
+            $content                     = ContactWebFormsUtil::getPlacedAttributeContent($resolvedPlacedAttribute);
             echo $content;
         }
     }

@@ -70,23 +70,23 @@
 
             if($timeForString['days'] >= 1)
             {
-                return Zurmo::t('Core', '{n} day|{n} days', $timeForString['days']);
+                return Zurmo::t('Core', '{n} day ago|{n} days ago', $timeForString['days']);
             }
             else
             {
                 if($timeForString['hours'] >= 1)
                 {
-                    return Zurmo::t('Core', '{n} hour|{n} hours', $timeForString['hours']);
+                    return Zurmo::t('Core', '{n} hour ago|{n} hours ago', $timeForString['hours']);
                 }
                 else
                 {
                     if($timeForString['minutes'] >= 1)
                     {
-                        return Zurmo::t('Core', '{n} min|{n} mins', $timeForString['minutes']);
+                        return Zurmo::t('Core', '{n} minute ago|{n} minutes ago', $timeForString['minutes']);
                     }
                     else
                     {
-                        return Zurmo::t('Core', '{n} sec|{n} secs', $timeForString['seconds']);
+                        return Zurmo::t('Core', '{n} second ago|{n} seconds ago', $timeForString['seconds']);
                     }
                 }
             }

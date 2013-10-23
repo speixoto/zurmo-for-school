@@ -453,11 +453,14 @@
          */
         public function testCheckDatabaseLoadLocalInFile()
         {
-            $this->assertNotNull(InstallUtil::checkDatabaseLoadLocalInFile('mysql',
+            $isLoadLocalInFileEnabled   = InstallUtil::checkDatabaseLoadLocalInFile('mysql',
                                                                             $this->temporaryDatabaseHostname,
                                                                             $this->temporaryDatabaseUsername,
                                                                             $this->temporaryDatabasePassword,
-                                                                            $this->temporaryDatabasePort));
+                                                                            $this->temporaryDatabasePort);
+            $this->assertNotNull($isLoadLocalInFileEnabled);
+            // TODO: @Shoaibi: Critical: @see: https://www.pivotaltracker.com/s/projects/380027/stories/59409504
+            $this->assertFalse($isLoadLocalInFileEnabled);
         }
 
         /**

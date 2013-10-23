@@ -130,7 +130,14 @@
                                                 'kanban-background-tennis'      => 'Tennis',
                                                 'kanban-background-motor'       => 'Motor Sport',
                                                 'kanban-background-yoga'        => 'Yoga',
-                                                );
+                                                'kanban-background-blurred-lights' => 'Blurred Lights',
+                                                'kanban-background-blurred-city' => 'Blurred City',
+                                                'kanban-background-blurred-vera' => 'Vera in Blur',
+                                                'kanban-background-perfect-beach' => 'Perfect Beach',
+                                                'kanban-background-flip-flops' => 'Flip Flops',
+                                                'kanban-background-blue-structure' => 'Blue Structure',
+                                                'kanban-background-sepia-sf' => 'Sepia SF',
+                                                'kanban-background-men-on-bridge' => 'Men on Bridge');
             $this->assertEquals($themeNamesAndLabelsCompare, $kanbanBoard->getThemeNamesAndLabels());
         }
 

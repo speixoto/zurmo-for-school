@@ -181,5 +181,14 @@
             return array_merge( array('sourceId' => $this->getGridViewId()),
                                 parent::getCreateLinkRouteParameters());
         }
+
+        /**
+         * Register the additional script for task detail modal
+         */
+        protected function renderScripts()
+        {
+            parent::renderScripts();
+            TasksUtil::registerTaskModalDetailScript($this->getGridViewId());
+        }
     }
 ?>

@@ -124,13 +124,17 @@
             $cClipWidget->widget($this->getGridViewWidgetPath(), $this->getCGridViewParams());
             $cClipWidget->endClip();
             $content     = $this->renderKanbanViewTitleWithActionBars();
+            $this->registerKanbanGridScript();
             $content    .= $cClipWidget->getController()->clips['ListView'] . "\n";
-            if ($this->getRowsAreSelectable())
-            {
-                $content .= ZurmoHtml::hiddenField($this->gridId . $this->gridIdSuffix .
-                                                    '-selectedIds', implode(",", $this->selectedIds)) . "\n"; // Not Coding Standard
-            }
             $content .= $this->renderScripts();
+
+            if($this->dataProvider->getTotalItemCount() == 0)
+            {
+                $zeroModelView = new ZeroTasksForRelatedModelYetView($this->controllerId,
+                                                                     $this->moduleId, 'Task',
+                                                                     get_class($this->params['relationModel']));
+                $content .= $zeroModelView->render();
+            }
             return $content;
         }
 
@@ -366,14 +370,21 @@
         }
 
         /**
-         * Renders the zero model view when there is no data.
+         * Register kanban grid script
          */
-        public function getEmptyText()
+        protected function registerKanbanGridScript()
         {
-            $zeroModelView = new ZeroTasksForRelatedModelYetView($this->controllerId,
-                                                                     $this->moduleId, 'Task',
-                                                                     get_class($this->params['relationModel']));
-            return $zeroModelView->render();
+            TasksUtil::registerTaskModalDetailScript($this->getGridId());
+            //This would be used in case of zero model view
+            if($this->dataProvider->getTotalItemCount() == 0)
+            {
+                $script = "$('.cgrid-view').hide();";
+            }
+            else
+            {
+                $script = "$('.cgrid-view').show();";
+            }
+            Yii::app()->clientScript->registerScript('taskKanbanDetailScript',$script);
         }
     }
 ?>

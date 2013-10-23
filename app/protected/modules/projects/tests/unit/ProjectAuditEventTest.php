@@ -57,7 +57,7 @@
             $this->assertTrue($project->save());
 
             $projectAuditEvent = new ProjectAuditEvent();
-            $saved = $projectAuditEvent->logAuditEvent(ProjectAuditEvent::PROJECT_CREATED, $project->name, $project, $user);
+            $saved = $projectAuditEvent->logAuditEvent(ProjectAuditEvent::PROJECT_CREATED, $project,  $project->name, $user);
             $this->assertTrue($saved);
             $events = ProjectAuditEvent::getAll('dateTime', true);
             $this->assertEquals(ProjectAuditEvent::PROJECT_CREATED, $events[0]->eventName);
@@ -69,19 +69,19 @@
         {
             $time = date("Y-m-d H:i:s", strtotime('-5 hours', time()));
             $timeDiff = DateTimeUtil::getTimeSinceDisplayContent($time);
-            $this->assertEquals('5 hours', $timeDiff);
+            $this->assertEquals('5 hours ago', $timeDiff);
 
             $time = date("Y-m-d H:i:s", strtotime('-5 days', time()));
             $timeDiff = DateTimeUtil::getTimeSinceDisplayContent($time);
-            $this->assertEquals('5 days', $timeDiff);
+            $this->assertEquals('5 days ago', $timeDiff);
 
             $time = date("Y-m-d H:i:s", strtotime('-5 minutes', time()));
             $timeDiff = DateTimeUtil::getTimeSinceDisplayContent($time);
-            $this->assertEquals('5 mins', $timeDiff);
+            $this->assertEquals('5 minutes ago', $timeDiff);
 
             $time = date("Y-m-d H:i:s", strtotime('-5 seconds', time()));
             $timeDiff = DateTimeUtil::getTimeSinceDisplayContent($time);
-            $this->assertEquals('5 secs', $timeDiff);
+            $this->assertEquals('5 seconds ago', $timeDiff);
         }
     }
 ?>

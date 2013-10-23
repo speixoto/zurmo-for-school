@@ -10940,6 +10940,10 @@ body > .ui-autocomplete {
   content: '\2205';
   font-size: 30px;
 }
+#RecentlyViewedView li.type-ProjectsModule em:before {
+  content: '\02C7';
+  font-size: 22px;
+}
 /*=Content*/
 .AppContent {
   -webkit-border-radius: 0 0 5px 5px;
@@ -12445,6 +12449,24 @@ div.wide.form label.hasCheckBox {
   font-size: 300px;
   font-family: "zurmo_gamification_symbly_rRg";
   line-height: 52%;
+}
+.zero-components-view .Task .large-icon:after,
+.splash-view .Task .large-icon:after {
+  content: '4';
+  font-weight: normal !important;
+  font-weight: normal;
+  font-size: 300px;
+  font-family: "zurmo_gamification_symbly_rRg";
+  line-height: 62%;
+}
+.zero-components-view .Project .large-icon:after,
+.splash-view .Project .large-icon:after {
+  content: '\02C7';
+  font-weight: normal !important;
+  font-weight: normal;
+  font-size: 300px;
+  font-family: "zurmo_gamification_symbly_rRg";
+  line-height: 65%;
 }
 #NoUserEmailConfigurationYetView .z-label {
   z-index: auto;
@@ -15672,6 +15694,13 @@ i[class^="icon"] {
 }
 .icon-webforms-entries:after {
   content: '\005E';
+}
+.icon-projects-list:after {
+  content: '\02C7';
+}
+.pillbox .icon-projects-list {
+  font-size: 22px;
+  top: -2px !important;
 }
 .juiportlet-columns .juiportlet-column {
   float: left;
@@ -24405,18 +24434,14 @@ a + .autoresponder-stats {
 #ContactWebFormEditAndDetailsView label + label {
   margin-left: 0;
 }
-#ContactWebFormEditAndDetailsView .third,
-#ContactWebFormEditAndDetailsView .twoThirds {
-  float: left;
-}
-#ContactWebFormEditAndDetailsView .twoThirds {
-  margin-left: 2%;
-}
 #ContactWebFormEditAndDetailsView .dynamic-row .remove-dynamic-row-link {
-  top: 5px;
+  top: 13px;
 }
-#ContactWebFormEditAndDetailsView .row-description {
-  margin-bottom: 5px;
+#ContactWebFormEditAndDetailsView h4 {
+  margin-bottom: 15px;
+}
+#ContactWebFormEditAndDetailsView h3 {
+  margin-left: 15px;
 }
 #zurmoExternalWebForm {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -24502,7 +24527,10 @@ a + .autoresponder-stats {
 }
 .webform-chosen-field input[type="text"] {
   width: 70%;
-  margin-right: 10px;
+}
+.webform-chosen-field span {
+  width: 15%;
+  display: inline-block;
 }
 .sliding-panel {
   display: none;

@@ -34,43 +34,21 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Extended class to support saving social items
-     */
-    class SocialItemZurmoControllerUtil extends FileZurmoControllerUtil
+    class ProjectAttributeForm extends HasOneModelAttributeForm
     {
-        protected $relatedUser;
-
-        /**
-         * @param User $relatedUser
-         */
-        public function __construct($relatedUser)
+        public static function getAttributeTypeDisplayName()
         {
-            assert('$relatedUser == null || ($relatedUser instanceof User && $relatedUser->id > 0)');
-            $this->relatedUser = $relatedUser;
+            return Zurmo::t('ProjectsModule', 'Project');
         }
 
-        /**
-         * Handles when a user posts to another user's profile social feed.  Sets the toUser in that case.
-         * (non-PHPdoc)
-         * @see ZurmoControllerUtil::saveModelFromPost()
-         * @param $postData
-         * @param $model
-         * @param $savedSucessfully
-         * @param $modelToStringValue
-         * @param bool $returnOnValidate
-         * @return OwnedSecurableItem
-         */
-        public function saveModelFromPost($postData, $model, & $savedSucessfully, & $modelToStringValue, $returnOnValidate = false)
+        public static function getAttributeTypeDisplayDescription()
         {
-            $sanitizedPostData                 = PostUtil::sanitizePostByDesignerTypeForSavingModel(
-                                                 $model, $postData);
-            if ($this->relatedUser != null && !Yii::app()->user->userModel->isSame($this->relatedUser))
-            {
-                $model->toUser = $this->relatedUser;
-            }
-            return $this->saveModelFromSanitizedData($sanitizedPostData, $model, $savedSucessfully,
-                                                     $modelToStringValue, $returnOnValidate);
+            return Zurmo::t('ProjectsModule', 'A project field');
+        }
+
+        public function getAttributeTypeName()
+        {
+            return 'Project';
         }
     }
 ?>

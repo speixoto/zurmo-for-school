@@ -327,7 +327,7 @@
 
         protected static function renderCompleteButton($collectionId, $userId, $canCollect = true)
         {
-            assert('is_int($collectionid)');
+            assert('is_int($collectionId)');
             assert('is_int($userId)');
             assert('is_bool($canCollect)');
             $url           = Yii::app()->createUrl('gamification/default/redeemCollection/', array('id' => $collectionId));
