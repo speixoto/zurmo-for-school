@@ -348,14 +348,20 @@
 
         public static function getPlacedAttributeContent($attributeData)
         {
-            $content = '<li><div class="dynamic-row webform-chosen-field"><div>' .
-                $attributeData['{attributeLabelElement}'] .
-                $attributeData['{isRequiredElement}'] .
-                $attributeData['{isHiddenElement}'] .
-                '<div id="hiddenAttributeElement_' . $attributeData['{attributeName}'] . '"' .
-                'style="' . $attributeData['{hideHiddenAttributeElementStyle}'] . '">' .
-                $attributeData['{renderHiddenAttributeElement}'] . '</div>' .
-                '</div>' . $attributeData['{removePlacedAttributeLink}'] . '</div></li>';
+            $content  = ZurmoHtml::openTag('li');
+            $content .= ZurmoHtml::openTag('div', array('class' => 'dynamic-row webform-chosen-field'));
+            $content .= ZurmoHtml::openTag('div');
+            $content .= $attributeData['{attributeLabelElement}'];
+            $content .= $attributeData['{isRequiredElement}'];
+            $content .= $attributeData['{isHiddenElement}'];
+            $content .= ZurmoHtml::openTag('div', array('id'    => "hiddenAttributeElement_" . $attributeData['{attributeName}'],
+                                                        'style' => $attributeData['{hideHiddenAttributeElementStyle}']));
+            $content .= $attributeData['{renderHiddenAttributeElement}'];
+            $content .= ZurmoHtml::closeTag('div');
+            $content .= ZurmoHtml::closeTag('div');
+            $content .= $attributeData['{removePlacedAttributeLink}'];
+            $content .= ZurmoHtml::closeTag('div');
+            $content .= ZurmoHtml::closeTag('li');
             return $content;
         }
     }
