@@ -212,7 +212,7 @@
             //Would be used from kanban board
             $sourceKanbanBoardId = Yii::app()->request->getParam('sourceKanbanBoardId');
 
-            //Would be used from kanban board
+            //Would be used from other source
             $sourceId = Yii::app()->request->getParam('sourceId');
 
             $modalId             = Yii::app()->request->getParam('modalId');
