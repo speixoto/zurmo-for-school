@@ -41,7 +41,6 @@
     {
         public static function getDefaultMetadata()
         {
-            $getData = GetUtil::getData();
             $metadata = array(
                 'global' => array(
                     'toolbar' => array(
@@ -183,6 +182,7 @@
             $formEnd  = $clipWidget->renderEndWidget();
             $content .= $formEnd;
             $content .= $this->renderModalContainer();
+            $content .= $this->renderAuditTrailModalContainer();
             $content .= '</div>';
             return ZurmoHtml::tag('div', array('class' => 'left-side-edit-view-panel'), $content);
         }
@@ -192,7 +192,9 @@
             return array('enableAjaxValidation' => true,
                 'clientOptions' => array(
                     'validateOnChange'  => true,
-                ),);
+                    //'validationUrl' => Yii::app()->createUrl('tasks/default/performAjaxValidation', array('id' => $this->getModel()->id)),
+                ),
+                );
         }
 
         protected function renderLeftSideBottomContent()
@@ -238,6 +240,16 @@
             $content .= $formEnd;
             $content .= ZurmoHtml::closeTag('div');
             return $content;
+        }
+
+        protected function resolveRightSideActiveFormAjaxValidationOptions()
+        {
+            return array(//'enableAjaxValidation' => true,
+                'enableClientValidation' => true,
+                'clientOptions' => array(
+                    'validateOnChange'  => true,
+                ),
+                );
         }
 
         protected function renderRightBottomSideContent()
@@ -311,7 +323,7 @@
             $task = Task::getById($this->model->id);
             $content = '<div id="task-subscriber-box">';
             $content .= ZurmoHtml::tag('h4', array(), Zurmo::t('TasksModule', 'Who is receiving notifications'));
-            $content .= '<div id="subscriberList">';
+            $content .= '<div id="subscriberList" class="clearfix">';
             if ($task->notificationSubscribers->count() > 0)
             {
                 $content .= TasksUtil::getTaskSubscriberData($task);
@@ -403,7 +415,7 @@
             }
             else
             {
-                $element->nonEditableTemplate = '<td colspan="{colspan}">{label}<br/>{content}</td>';
+                $element->nonEditableTemplate = '<td colspan="{colspan}">{label}<strong>{content}</strong></td>';
             }
         }
 
@@ -413,6 +425,24 @@
         protected function doesLabelHaveOwnCell()
         {
             return false;
+        }
+
+        /**
+         * @return string
+         */
+        protected function renderAuditTrailModalContainer()
+        {
+            return ZurmoHtml::tag('div', array('id' => 'AuditEventsModalContainer'), '');
+        }
+
+        /**
+         * Gets the options menu class
+         * @return string
+         */
+        //TODO:@Amit need to style it similar to settings-header-menu in header for gear
+        protected static function getOptionsMenuCssClass()
+        {
+            return 'task-modal-details-options-menu';
         }
     }
 ?>

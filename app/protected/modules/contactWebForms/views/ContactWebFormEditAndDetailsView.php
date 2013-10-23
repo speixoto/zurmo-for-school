@@ -122,6 +122,15 @@
                                         ),
                                     )
                                 ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'enableCaptcha', 'type' => 'CheckBox'),
+                                            ),
+                                        ),
+                                    )
+                                ),
                             ),
                         ),
                     ),
@@ -152,10 +161,13 @@
             return '<div class="webform-embed-code">' . $title . '<textarea onclick="this.focus();this.select()" readonly="readonly">' . htmlspecialchars($embedScript) . '</textarea></div>';
         }
 
-        public function renderAfterFormLayout($form)
+        protected function renderAfterFormLayout($form)
         {
-            $element = new SortableContactWebFormAttributesElement($this->model, 'serializedData', $form);
-            return $element->render();
+            $element  = new SortableContactWebFormAttributesElement($this->model, 'serializedData', $form);
+            $content  = $element->render();
+            $content .= ZurmoHtml::hiddenField('getPlacedAttributeAction',
+                        Yii::app()->createUrl('contactWebForms/default/getPlacedAttributeByName'));
+            return $content;
         }
     }
 ?>

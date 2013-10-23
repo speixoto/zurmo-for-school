@@ -629,11 +629,12 @@
         public function testKanbanViewForAccountDetails()
         {
             $super                  = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            AccountTestHelper::createAccountByNameForOwner('superAccount', $super);
             $accounts               = Account::getByName('superAccount');
 
             $task = TaskTestHelper::createTaskWithOwnerAndRelatedAccount('MyTask', $super, $accounts[0], Task::STATUS_IN_PROGRESS);
             $taskNew = TaskTestHelper::createTaskWithOwnerAndRelatedAccount('MyTask New', $super, $accounts[0], Task::STATUS_NEW);
-            $this->setGetArray(array('id' => $task->id, 'kanbanBoard' => '1'));
+            $this->setGetArray(array('id' => $accounts[0]->id, 'kanbanBoard' => '1'));
             $content = $this->runControllerWithNoExceptionsAndGetContent('accounts/default/details');
             $matcher= array(
                 'tag' => 'span',
@@ -643,7 +644,6 @@
                 'content' => 'MyTask'
             );
             $this->assertTag($matcher, $content);
-
             $matcher= array(
                 'tag' => 'span',
                 'attributes' => array('class' => 'z-label'),

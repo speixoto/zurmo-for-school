@@ -77,3 +77,53 @@ function setupKanbanDragDrop(){
         });
     });
 }
+
+function setUpTaskKanbanSortable(inputurl)
+{
+    $('.connectedSortable').sortable({
+                    forcePlaceholderSize: true,
+                    forceHelperSize: true,
+                    items: 'li:not(.ui-state-disabled)',
+                    connectWith: '.connectedSortable',
+                    cursor: 'move',
+                    placeholder: 'kanban-card clone',
+                    stop: function(event, ui){
+                        document.body.style.cursor = 'auto';
+                    },
+                    update : function (event, ui) {
+                        var id = $(ui.item).attr('id');
+                        var idParts = id.split('_');
+                        var taskId = parseInt(idParts[1]);
+                        serial = $(this).sortable('serialize', {key: 'items[]', attribute: 'id'});
+                        var ulid = $(this).attr('id');
+                        var ulidParts = ulid.split('-');
+                        var type = parseInt(ulidParts[3]);
+                        var url = inputurl + '?' + serial + '&type=' + type;
+                        $.ajax({
+                            url: url,
+                            type: 'get',
+                            data: serial,
+                            dataType : 'json',
+                            success: function(data){
+                                if(data.hasOwnProperty('button'))
+                                {
+                                    if(data.button != '')
+                                    {
+                                        $(ui.item).find('.task-action-toolbar').html(data.button);
+                                    }
+                                    else
+                                    {
+                                        //console.log($(ui.item).find('.task-action-toolbar'));
+                                        $(ui.item).find('.task-action-toolbar').remove();
+                                    }
+                                    $(ui.item).find('.task-status').html(data.status);
+                                }
+                            },
+                            error: function(request, status, error){
+                                alert('We are unable to set the sort order at this time.  Please try again in a few minutes.');
+                            }
+                        });
+                    },
+                    helper: 'clone'
+  }).disableSelection();
+}

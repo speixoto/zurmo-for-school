@@ -54,27 +54,6 @@
         }
 
         /**
-         * Display the details for the task
-         * @param string $id
-         * @param string $redirectUrl
-         */
-        public function actionDetails($id, $redirectUrl = null)
-        {
-            $modelClassName    = $this->getModule()->getPrimaryModelName();
-            $activity          = static::getModelAndCatchNotFoundAndDisplayError($modelClassName, intval($id));
-            ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($activity);
-            AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED,
-                                                     array(strval($activity), get_class($this->getModule())),
-                                                    $activity);
-            TasksUtil::markUserHasReadLatest($activity, Yii::app()->user->userModel);
-            $pageViewClassName = $this->getPageViewClassName();
-            $detailsView       = new TaskModalDetailsView('Details', $this->getId(), $this->getModule()->getId(), $activity);
-            $view              = new $pageViewClassName(ZurmoDefaultViewUtil::
-                                         makeStandardViewForCurrentUser($this,$detailsView));
-            echo $view->render();
-        }
-
-        /**
          * Create comment via ajax for task
          * @param type $id
          * @param string $uniquePageId
@@ -305,6 +284,12 @@
             $this->processTaskEdit($copyToTask);
         }
 
+        public function actionModalDetails($id)
+        {
+            //todo: eventually get rid of actionModalDetailsFromRelation
+            $this->actionModalDetailsFromRelation($id);
+        }
+
         /**
          * Loads modal view from related view
          * @param string $id
@@ -327,6 +312,12 @@
                 'Details');
         }
 
+        public function actionModalEdit($id)
+        {
+            //todo: eventually get rid of actionModalEditFromRelation
+            $this->actionModalEditFromRelation($id);
+        }
+
         /**
          * Edit task from related view
          * @param string $id
@@ -334,6 +325,7 @@
         public function actionModalEditFromRelation($id)
         {
             $task = Task::getById(intval($id));
+            ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($task);
             $this->processTaskEdit($task);
         }
 
@@ -593,7 +585,7 @@
          */
         protected static function getZurmoControllerUtil()
         {
-            return new TaskZurmoControllerUtil();
+            return new TaskZurmoControllerUtil('activityItems', 'ActivityItemForm');
         }
 
         /**

@@ -119,6 +119,7 @@
             // Begin Not Coding Standard
             return "js:function(){
                 jQuery('#{$containerId}').html('');
+                console.log('{$containerId}');
                 $(this).makeLargeLoadingSpinner(true, '#{$containerId}');
                 window.scrollTo(0, 0);
                 jQuery('#{$containerId}').dialog({

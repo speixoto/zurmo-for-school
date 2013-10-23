@@ -172,7 +172,7 @@
             $this->assertTrue(strpos($content, '>EmailTemplate 04</option>') !== false);
             $this->assertTrue(strpos($content, '<a href="#tab1">Text Content</a>') !== false);
             $this->assertTrue(strpos($content, '<a class="active-tab" href="#tab2">Html Content</a>') !== false);
-            $this->assertTrue(strpos($content, '<a id="mergetag-guide" class="simple-link" ' .
+            $this->assertTrue(strpos($content, 'class="simple-link" ' .
                                                 'href="#">MergeTag Guide</a>') !== false);
             $this->assertTrue(strpos($content, '<textarea id="Autoresponder_textContent" ' .
                                                 'name="Autoresponder[textContent]" rows="6" cols="50"') !== false);
@@ -371,7 +371,7 @@
             $this->assertTrue(strpos($content, '>EmailTemplate 04</option>') !== false);
             $this->assertTrue(strpos($content, '<a class="active-tab" href="#tab1">Text Content</a>') !== false);
             $this->assertTrue(strpos($content, '<a href="#tab2">Html Content</a>') !== false);
-            $this->assertTrue(strpos($content, '<a id="mergetag-guide" class="simple-link" ' .
+            $this->assertTrue(strpos($content, 'class="simple-link" ' .
                                                 'href="#">MergeTag Guide</a>') !== false);
             $this->assertTrue(strpos($content, '<textarea id="Autoresponder_textContent" ' .
                                                 'name="Autoresponder[textContent]" rows="6" cols="50"') !== false);

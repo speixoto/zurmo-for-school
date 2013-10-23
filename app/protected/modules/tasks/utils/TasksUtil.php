@@ -397,9 +397,10 @@
         public static function resolveExtraCloseScriptForModalAjaxOptions($sourceKanbanBoardId = null)
         {
             assert('is_string($sourceKanbanBoardId) || $sourceKanbanBoardId == null');
+            $url = Yii::app()->createUrl('tasks/default/updateStatusOnDragInKanbanView');
             if($sourceKanbanBoardId != null)
             {
-                return "$.fn.yiiGridView.update('" . $sourceKanbanBoardId. "');";
+                return "$.fn.yiiGridView.update('{$sourceKanbanBoardId}');";
             }
         }
 

@@ -77,7 +77,6 @@
             {
                 curl_close($ch);
             }
-
             $doc = simplexml_load_string($xml);
             $doc->registerXPathNamespace('m', 'http://www.w3.org/2005/10/markup-validator');
             $nodes = $doc->xpath('//m:markupvalidationresponse/m:validity');

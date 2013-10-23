@@ -10940,6 +10940,10 @@ body > .ui-autocomplete {
   content: '\2205';
   font-size: 30px;
 }
+#RecentlyViewedView li.type-ProjectsModule em:before {
+  content: '\02C7';
+  font-size: 22px;
+}
 /*=Content*/
 .AppContent {
   -webkit-border-radius: 0 0 5px 5px;
@@ -12446,6 +12450,24 @@ div.wide.form label.hasCheckBox {
   font-family: "zurmo_gamification_symbly_rRg";
   line-height: 52%;
 }
+.zero-components-view .Task .large-icon:after,
+.splash-view .Task .large-icon:after {
+  content: '4';
+  font-weight: normal !important;
+  font-weight: normal;
+  font-size: 300px;
+  font-family: "zurmo_gamification_symbly_rRg";
+  line-height: 62%;
+}
+.zero-components-view .Project .large-icon:after,
+.splash-view .Project .large-icon:after {
+  content: '\02C7';
+  font-weight: normal !important;
+  font-weight: normal;
+  font-size: 300px;
+  font-family: "zurmo_gamification_symbly_rRg";
+  line-height: 65%;
+}
 #NoUserEmailConfigurationYetView .z-label {
   z-index: auto;
 }
@@ -13155,7 +13177,7 @@ div.wide.form label.hasCheckBox {
 .more-panels-link {
   font-size: 11px;
   position: relative;
-  left: -15px;
+  left: 0;
 }
 .ui-overlay-block {
   z-index: 250000;
@@ -15463,6 +15485,10 @@ div.hasHalfs > div input {
   right: -10px;
   top: 1px;
   line-height: 1;
+  cursor: pointer !important;
+}
+.editable-cell:after:hover {
+  cursor: pointer;
 }
 i[class^="icon"] {
   color: #656565;
@@ -15668,6 +15694,13 @@ i[class^="icon"] {
 }
 .icon-webforms-entries:after {
   content: '\005E';
+}
+.icon-projects-list:after {
+  content: '\02C7';
+}
+.pillbox .icon-projects-list {
+  font-size: 22px;
+  top: -2px !important;
 }
 .juiportlet-columns .juiportlet-column {
   float: left;
@@ -17673,8 +17706,12 @@ table.configuration-list td:last-child a .z-label:before {
   content: 'L';
   font-size: 46px;
 }
-.available-portlets .icon-google-analytics:before {
+.available-portlets .icon-googleWebTracking:before {
   content: '\00DA';
+  font-size: 46px;
+}
+.available-portlets .icon-marketingLists:before {
+  content: '\0022';
   font-size: 46px;
 }
 /*Edit Portlet*/
@@ -24492,6 +24529,10 @@ a + .autoresponder-stats {
   -ms-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
   box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
 }
+.webform-chosen-field input[type="text"] {
+  width: 70%;
+  margin-right: 10px;
+}
 .sliding-panel {
   display: none;
   width: 100%;
@@ -26479,6 +26520,19 @@ div.special-pager .hidden.next:after {
 }
 .task-activity .show-file-upload-box {
   z-index: 9999;
+}
+.right-side-details-view-panel {
+  margin-top: 15px;
+}
+.right-side-details-view-panel .col-0 {
+  width: 100%;
+}
+.right-side-details-view-panel td {
+  padding: 0 0 5px 0;
+  font-weight: normal;
+}
+.right-side-details-view-panel td strong {
+  display: block;
 }
 .ProjectsActivityFeedPortletView tr:first-child td {
   border-top: none;

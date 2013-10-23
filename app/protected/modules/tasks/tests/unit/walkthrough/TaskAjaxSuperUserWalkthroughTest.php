@@ -131,39 +131,19 @@
         /**
          * @depends testInlineCreateCommentFromAjax
          */
-        public function testUpdateStatusViaAjax()
-        {
-            $super  = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
-            $tasks  = Task::getByName('aTest');
-            $task   = $tasks[0];
-            $taskId = $task->id;
-
-            $this->setGetArray(array('id' => $task->id, 'status' => Task::STATUS_COMPLETED));
-            $content = $this->runControllerWithNoExceptionsAndGetContent('tasks/default/updateStatusViaAjax');
-            $this->assertTrue(strpos($content, 'Completed On') > 0);
-            $task   = Task::getById($taskId);
-            $this->assertTrue((bool)$task->completed);
-
-            $this->setGetArray(array('id' => $task->id, 'status' => Task::STATUS_IN_PROGRESS));
-            $content = $this->runControllerWithNoExceptionsAndGetContent('tasks/default/updateStatusViaAjax', true);
-            $this->assertFalse(strpos($content, 'Completed On') > 0);
-            $task   = Task::getById($taskId);
-            $this->assertFalse((bool)$task->completed);
-        }
-
         public function testSuperUserModalAllDefaultFromRelationAction()
         {
             $super              = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
 
             $accountId          = self::getModelIdByModelNameAndName('Account', 'superAccount');
-            $this->setGetArray(array('modalTransferInformation' => array(
+            $this->setGetArray(array(
                                       'relationAttributeName'   => 'Account',
                                       'relationModelId'         => $accountId,
                                       'relationModuleId'        => 'accounts',
                                       'modalId'                 => 'relatedModalContainer-tasks',
                                       'portletId'               => '12',
                                       'uniqueLayoutId'          => 'AccountDetailsAndRelationsView_12'
-                                    )));
+                                    ));
             $this->runControllerWithNoExceptionsAndGetContent('tasks/default/modalCreateFromRelation');
             $tasks              = Task::getAll();
             $this->assertEquals(1, count($tasks));
@@ -175,12 +155,12 @@
                                       'uniqueLayoutId'          => 'AccountDetailsAndRelationsView_12'
                                     ));
             $this->setPostArray(array(
-                                       'Task'   => array('name'       => 'Task for test cases'),
+                                       'Task'   => array('name'              => 'Task for test cases'),
                                        'ActivityItemForm' => array('Account' => array('id' => $accountId))
             ));
 
             $content = $this->runControllerWithNoExceptionsAndGetContent('tasks/default/modalSaveFromRelation');
-            $this->assertTrue(strpos($content, 'View Task') > 0);
+            $this->assertTrue(strpos($content, 'Task for test cases') > 0);
             $tasks              = Task::getAll();
             $this->assertEquals(2, count($tasks));
 
@@ -238,13 +218,16 @@
         public function testUpdateStatusOnDragInKanbanView()
         {
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $project = ProjectTestHelper::createProjectByNameForOwner('a new project', $super);
             $task = TaskTestHelper::createTaskByNameForOwner('My Kanban Task', Yii::app()->user->userModel);
+            $task->project = $project;
             TasksUtil::setDefaultValuesForTask($task);
             $task->status = Task::STATUS_IN_PROGRESS;
             $taskId = $task->id;
             $this->assertTrue($task->save());
 
             $task1 = TaskTestHelper::createTaskByNameForOwner('My Kanban Task 1', Yii::app()->user->userModel);
+            $task1->project = $project;
             TasksUtil::setDefaultValuesForTask($task1);
             $task1->status = Task::STATUS_NEW;
             $this->assertTrue($task1->save());
@@ -261,7 +244,7 @@
                 }
                 $kanbanItemsArray[] = $kanbanItem;
             }
-            $this->assertEquals(KanbanItem::TYPE_TODO, $kanbanItemsArray[1]->type);
+            $this->assertEquals(KanbanItem::TYPE_SOMEDAY, $kanbanItemsArray[1]->type);
             $this->assertEquals(1, $kanbanItemsArray[1]->sortOrder);
             $this->assertEquals(1, $kanbanItemsArray[0]->sortOrder);
 

@@ -243,12 +243,15 @@
                                                                  'relatedModelClassName' => get_class($model),
                                                                  'redirectUrl'           =>  Yii::app()->request->getRequestUri()));
                 $modalAjaxOptions  = ModalView::getAjaxOptionsForModalLink(
-                                     Zurmo::t('EmailMessagesModule', 'Compose Email'), 'modalContainer', 'auto', 800,
-                                                                    array(
-                                                                        'my' => 'top',
-                                                                        'at' => 'bottom',
-                                                                        'of' => '#HeaderView'));
-                $content           = ZurmoHtml::ajaxLink($emailAddress, $url, $modalAjaxOptions);
+                        Zurmo::t('EmailMessagesModule', 'Compose Email'), 'modalContainer', 'auto', 800,
+                        array('my' => 'top',
+                              'at' => 'bottom',
+                              'of' => '#HeaderView'));
+                $content           = ZurmoHtml::ajaxLink($emailAddress, 'js:$(this).attr("href")', $modalAjaxOptions, array('id'        => 'composeEmailLink-' . $model->id,
+                                                                                                                            'class'     => 'composeEmailLink',
+                                                                                                                            'selector'  => '.composeEmailLink',
+                                                                                                                            'href'      => $url,
+                                                                                                                            'return'    => false));
             }
             else
             {

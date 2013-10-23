@@ -155,12 +155,12 @@
             //30 minutes ago
             $timeStampLatestUpdate  = DateTimeUtil::convertTimestampToDbFormatDateTime(time() - (30 * 60));
             $timeSinceLastestUpdate = DateTimeUtil::getTimeSinceDisplayContent($timeStampLatestUpdate);
-            $this->assertEquals($timeSinceLastestUpdate, '0 hours ago');
+            $this->assertEquals('30 minutes ago', $timeSinceLastestUpdate);
 
             //58 minutes ago
             $timeStampLatestUpdate  = DateTimeUtil::convertTimestampToDbFormatDateTime(time() - (58 * 60));
             $timeSinceLastestUpdate = DateTimeUtil::getTimeSinceDisplayContent($timeStampLatestUpdate);
-            $this->assertEquals($timeSinceLastestUpdate, '0 hours ago');
+            $this->assertEquals($timeSinceLastestUpdate, '58 minutes ago');
 
             //61 minutes ago
             $timeStampLatestUpdate  = DateTimeUtil::convertTimestampToDbFormatDateTime(time() - (61 * 60));

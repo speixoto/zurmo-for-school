@@ -135,7 +135,7 @@
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
             $gameCoin = GameCoin::resolveByPerson($super);
             $this->assertEquals(1, $gameCoin->value);
-            $this->setGetArray(array('id' => $gameCoin->id));
+            $this->setGetArray(array('id' => $super->id));
             $content = $this->runControllerWithNoExceptionsAndGetContent('gamification/default/refreshGameDashboardCoinContainer');
             $this->assertfalse(strpos($content, '1 coin') === false);
         }

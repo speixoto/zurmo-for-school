@@ -199,6 +199,7 @@
          */
         public function testProcessDueCampaignItemDoesNotThrowExceptionWhenContactHasPrimaryEmail()
         {
+            $this->fail();
             $email                      = new Email();
             $email->emailAddress        = 'demo@zurmo.com';
             $contact                    = ContactTestHelper::createContactByNameForOwner('contact 03', $this->user);
@@ -253,6 +254,7 @@
          */
         public function testProcessDueCampaignItemWithCustomFromAddressAndFromName()
         {
+            $this->fail();
             $email                      = new Email();
             $email->emailAddress        = 'demo@zurmo.com';
             $contact                    = ContactTestHelper::createContactByNameForOwner('contact 04', $this->user);
