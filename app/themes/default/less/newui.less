@@ -605,19 +605,26 @@ footer, header, hgroup, menu, nav, section {
 	}
 }
 
-#header-game-dashboard-link-wrapper{
-	a{
-		.symbly(24px);
-		color: #ddd;
-		padding:0 10px;
-		line-height: 38px;
-		display: block;
-	}
-	.highlighted{
-		@topColor: #c43d53;
-		@bottomColor: #a82d31;
+#header-game-dashboard-link{
+	.symbly(28px);
+	text-align: center;
+	color: #ddd;
+	line-height: 18px;
+	display: block;
+	height: 20px;
+	width: 20px;
+	.radius(50%);
+	background: transparent;
+	position: relative;
+	top: 10px;
+	&.highlighted{
+		//@topColor: #c43d53;
+		//@bottomColor: #a82d31;
+		//@topColor: #97c43d;
+		//@bottomColor: #6fa82d;
 		color:#fff;
-		.t-shadow(0 0 5px #ff0000);
+		.b-shadow(0 0 2px 1px rgba(255, 255, 255, 0.9));
+		background: #a82d31;
 	}
 }
 
