@@ -537,14 +537,17 @@
             assert('is_string($attribute)');
             assert('is_string($newValue) || $newValue == null');
 
-            $columnData = static::geColumnData($tableName, $attribute);
-            $columnLength = $columnData['character_maximum_length'];
-            $columnType = $columnData['data_type'];
+            //TODO: @sergio: What if type is not varchar
+            $columnData     = static::geColumnData($tableName, $attribute);
+            $columnLength   = $columnData['length'];
+            $columnType     = $columnData['type'];
             if ($columnType == 'varchar' && strlen($newValue) > $columnLength)
             {
-                $sql = 'alter table :table modify :column varchar(:length)';
-                //TODO: @sergio: This is causing an error
-                ZurmoRedBean::exec($sql, array(':table' => $tableName, ':column' => $attribute, ':length' => strlen($newValue)));
+                $quotedTableName = DatabaseCompatibilityUtil::quoteString($tableName);
+                $quotedColumn    = DatabaseCompatibilityUtil::quoteString($attribute);
+                $length          = strlen($newValue);
+                $sql = "alter table {$quotedTableName} modify {$quotedColumn} varchar({$length})";
+                ZurmoRedBean::exec($sql);
             }
             $bean = ZurmoRedBean::findOne($tableName, "id = :id", array('id' => $id));
             if ($bean == null)
@@ -561,9 +564,12 @@
 
         protected static function geColumnData($tableName, $column)
         {
-            $sql = 'select  data_type, character_maximum_length from information_schema.columns where table_name = :table and column_name = :column';
-            $row = ZurmoRedBean::getRow($sql, array(':table' => $tableName, ':column' => $column));
-            return $row;
+            $columnsWithDetails = ZurmoRedBean::$writer->getColumnsWithDetails($tableName);
+            $columnDetails      = $columnsWithDetails[$column];
+            preg_match('/([a-z]*)(\(\d*\))?/', $columnDetails['Type'], $results);
+            $type   = $results[1];
+            $length = isset($results[2]) ? trim($results[2], '()') : null;
+            return array('type' => $type, 'length' => $length);
         }
 
 
