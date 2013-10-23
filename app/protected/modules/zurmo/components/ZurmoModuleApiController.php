@@ -739,8 +739,8 @@
             if (isset($data))
             {
                 $controllerUtil   = new ZurmoControllerUtil();
-                $model            = $controllerUtil->saveModelFromSanitizedData($data, $model,
-                                                                                $savedSucessfully, $modelToStringValue);
+                $model            = $controllerUtil->saveModelFromSanitizedData($data, $model, $savedSucessfully,
+                    $modelToStringValue, false);
             }
             if ($savedSucessfully && $redirect)
             {
