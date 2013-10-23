@@ -47,5 +47,19 @@
             );
             return $metadata;
         }
+
+        protected function beforeDelete()
+        {
+            if ($this->hasEventHandler('onBeforeDelete'))
+            {
+                $event = new CModelEvent($this);
+                $this->onBeforeDelete($event);
+                return $event->isValid;
+            }
+            else
+            {
+                return true;
+            }
+        }
   }
 ?>
