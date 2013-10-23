@@ -230,11 +230,8 @@
             $id      = static::USER_GAME_DASHBOARD_LINK_ID;
             return array(
                 'beforeSend' => 'js:function(){
-                    if($("#UserGameDashboardView").length)
-                    {
-                        $("#UserGameDashboardView").remove();
-                        $("body").removeClass("gd-dashboard-active");
-                        $("#' . $id . '").html("∂").toggleClass("highlighted");
+                    if($("#UserGameDashboardView").length){
+                        closeGamificationDashboard();
                         return false;
                     }
                     $("body").addClass("gd-dashboard-active");
@@ -259,13 +256,22 @@
                        });
                        $('.gd-dashboard-active').on('click', function(){
                            if($('#UserGameDashboardView').length){
-                               $('#UserGameDashboardView').remove();
-                               $('body').removeClass('gd-dashboard-active');
-                               $('#" . $id . "').html('∂').toggleClass('highlighted');
-                               return false;
+                               closeGamificationDashboard();
                            }
+                           return false;
                        });";
             Yii::app()->clientScript->registerScript('gameficationScripts', $script);
+
+            $script = "function closeGamificationDashboard(){
+                           $('#UserGameDashboardView').remove();
+                           $('body').removeClass('gd-dashboard-active');
+                           $('#" . $id . "').html('∂').toggleClass('highlighted');
+                       }";
+            Yii::app()->clientScript->registerScript(
+                'closeGamificationScript',
+                $script,
+                CClientScript::POS_END
+            );
         }
     }
 ?>
