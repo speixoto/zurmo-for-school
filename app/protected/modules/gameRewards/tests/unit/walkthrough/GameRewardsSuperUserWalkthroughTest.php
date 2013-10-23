@@ -464,34 +464,6 @@
             $this->assertEquals(10, count($gameRewards));
         }
 
-        public function testKanbanViewForAccountDetails()
-        {
-            $super                  = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
-            AccountTestHelper::createAccountByNameForOwner('superAccount', $super);
-            $accounts               = Account::getByName('superAccount');
-            $task = TaskTestHelper::createTaskWithOwnerAndRelatedAccount('MyTask', $super, $accounts[0], Task::STATUS_IN_PROGRESS);
-            $taskNew = TaskTestHelper::createTaskWithOwnerAndRelatedAccount('MyTask New', $super, $accounts[0], Task::STATUS_NEW);
-            $this->setGetArray(array('id' => $task->id, 'kanbanBoard' => '1'));
-            $content = $this->runControllerWithNoExceptionsAndGetContent('accounts/default/details');
-            $matcher= array(
-                'tag' => 'span',
-                'attributes' => array('class' => 'z-label'),
-                //Multiple ancestors
-                'ancestor' => array('tag' => 'li', 'id' => 'items_' . $task->id, 'tag' => 'ul', 'id' => 'task-sortable-rows-3'),
-                'content' => 'MyTask'
-            );
-            $this->assertTag($matcher, $content);
-
-            $matcher= array(
-                'tag' => 'span',
-                'attributes' => array('class' => 'z-label'),
-                //Multiple ancestors
-                'ancestor' => array('tag' => 'li', 'id' => 'items_' . $taskNew->id, 'tag' => 'ul', 'id' => 'task-sortable-rows-2'),
-                'content' => 'MyTask New'
-            );
-            $this->assertTag($matcher, $content);
-        }
-        
         public function testRedeemList()
         {
             $super      = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
@@ -504,39 +476,39 @@
             $this->assertTrue(strpos($content, 'anyMixedAttributes') === false);
             $this->resetGetArray();
         }
-        
+
         public function testRedeemReward()
         {
             $super                      = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
             Yii::app()->user->userModel = $super;
             $gameRewards                = GameReward::getByName('myNewGameReward');
-            
+
             //not enough coins
             $this->setGetArray(array('id' => $gameRewards[0]->id));
             $content = $this->runControllerWithExitExceptionAndGetContent('gameRewards/default/redeemReward');
             $this->assertFalse(strpos($content, 'You do not have enough coins to redeem this reward') === false);
-            
+
             //enough coins
             $gameCoin           = new GameCoin();
             $gameCoin->person   = $super;
             $gameCoin->value    = 100;
             $this->assertTrue($gameCoin->save());
             $notifications      = Notification::getAll();
-            
+
             //check for no notification
             $this->assertEquals(0, count($notifications));
             $this->setGetArray(array('id' => $gameRewards[0]->id));
             $content = $this->runControllerWithExitExceptionAndGetContent('gameRewards/default/redeemReward');
             $this->assertFalse(strpos($content, 'myNewGameReward has been redeemed.') === false);
-            
+
             //check for notification
             $notifications              = Notification::getAll();
             $this->assertEquals(1, count($notifications));
-            
+
             //email content
             $this->assertContains('myNewGameReward was redeemed by Clark Kent.', $notifications[0]->notificationMessage->htmlContent);
-            
-            //check url 
+
+            //check url
             $this->assertFalse(strpos($notifications[0]->notificationMessage->htmlContent, '/gameRewards/default/details?id=13') === false);
         }
     }

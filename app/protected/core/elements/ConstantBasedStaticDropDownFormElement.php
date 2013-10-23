@@ -48,7 +48,7 @@
          */
         public static function renderNonEditableStringContent($attribute)
         {
-            assert('is_int($attribute)');
+            assert('is_string($attribute)');
             $data = static::resolveDropDownArray();
             if (isset($data[$attribute]))
             {
