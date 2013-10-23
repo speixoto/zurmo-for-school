@@ -439,7 +439,6 @@
          * Gets the options menu class
          * @return string
          */
-        //TODO:@Amit need to style it similar to settings-header-menu in header for gear
         protected static function getOptionsMenuCssClass()
         {
             return 'task-modal-details-options-menu';
