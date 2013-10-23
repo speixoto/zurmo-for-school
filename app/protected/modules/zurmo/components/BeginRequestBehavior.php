@@ -46,7 +46,7 @@
 
         public function attach($owner)
         {
-            if (ApiRequest::isApiRequest())
+            if ($this->resolveIsApiRequest())
             {
                 $this->attachApiRequestBehaviors($owner);
                 if (Yii::app()->isApplicationInstalled())
@@ -68,6 +68,11 @@
             }
         }
 
+        protected function resolveIsApiRequest()
+        {
+            return ApiRequest::isApiRequest();
+        }
+
         protected function attachApiRequestBehaviors(CComponent $owner)
         {
             $owner->attachEventHandler('onBeginRequest', array($this, 'handleSentryLogs'));
@@ -76,10 +81,15 @@
             $owner->attachEventHandler('onBeginRequest', array($this, 'handleImports'));
             $owner->attachEventHandler('onBeginRequest', array($this, 'handleSetupDatabaseConnection'));
             $owner->attachEventHandler('onBeginRequest', array($this, 'handleDisableGamification'));
-            $owner->attachEventHandler('onBeginRequest', array($this, 'handleInitApiRequest'));
-            $owner->attachEventHandler('onBeginRequest', array($this, 'handleBeginApiRequest'));
+            $this->resolveBeginApiRequest($owner);
             $owner->attachEventHandler('onBeginRequest', array($this, 'handleLibraryCompatibilityCheck'));
             $owner->attachEventHandler('onBeginRequest', array($this, 'handleStartPerformanceClock'));
+        }
+
+        protected function resolveBeginApiRequest(CComponent $owner)
+        {
+            $owner->attachEventHandler('onBeginRequest', array($this, 'handleInitApiRequest'));
+            $owner->attachEventHandler('onBeginRequest', array($this, 'handleBeginApiRequest'));
         }
 
         protected function attachApiRequestBehaviorsForInstalledApplication(CComponent $owner)

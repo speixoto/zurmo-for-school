@@ -89,6 +89,40 @@
 	}
 }
 
+.close-dashboard-button{
+	width: 1200px;
+	height: 31px;
+	position: absolute;
+	left: 50%;
+	margin: 15px auto auto -600px;
+	a{
+		margin-right: -15px;
+		float: right;
+		width:30px !important;
+		height: 31px !important;
+		.opacity(100);
+		display:block;
+		z-index:11000;
+		&:hover{
+			border:none;
+			background:none;
+		}
+	}
+	.ui-icon-closethick{
+		background: transparent url(../images/widget-close-btn.png) left top no-repeat;
+		padding: 0 !important;
+		margin:0 !important;
+		width:30px !important;
+		height: 31px !important;
+		text-indent: -9999px;
+		display: block;
+		&:hover{
+			background: transparent url(../images/widget-close-btn.png) left top no-repeat;
+		}
+	}
+}
+
+
 @black : #151f1f;
 @ccc : rgba(32, 50, 52, 0.5);
 @fff : rgba(83, 112, 115, 0.4);

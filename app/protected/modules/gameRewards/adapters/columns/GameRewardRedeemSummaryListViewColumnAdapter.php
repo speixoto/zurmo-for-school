@@ -62,7 +62,7 @@
             $content .= '<br />';
             $content .= ZurmoHtml::tag('span', array('class' => 'reward-cost'), $gameReward->cost . ' x ');
             $content .= ZurmoHtml::tag('span', array(),
-                        ' - MultiSelectRelatedModelsAutoCompleteElement' . $gameReward->quantity . ' ' . Zurmo::t('ZurmoModule', 'Available') .
+                        ' - ' . $gameReward->quantity . ' ' . Zurmo::t('ZurmoModule', 'Available') .
                         ' ' . static::renderExpirationDateTimeContent($gameReward));
             $content .= static::renderRedeemLink($gameReward, $availableCoins);
             return $content;

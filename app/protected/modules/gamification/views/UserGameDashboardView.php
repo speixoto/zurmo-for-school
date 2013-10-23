@@ -132,6 +132,14 @@
                 ) . '/gamification-dashboard.js',
                 CClientScript::POS_END
             );
+
+            $script = "$('.close-dashboard-button a').on('click', function(){
+                           if($('#UserGameDashboardView').length){
+                               closeGamificationDashboard();
+                               return false;
+                           }
+                       });";
+            Yii::app()->clientScript->registerScript('closeGameficationDashboardScript', $script);
         }
 
         protected function renderDashboardContent()
@@ -143,6 +151,7 @@
             $content .= $this->renderStatisticsContent();
             $content .= $this->renderCollectionsContent();
             $content  = ZurmoHtml::tag('div', array('id' => 'game-dashboard', 'class' => 'clearfix'), $content);
+            $content .= $this->renderDashboardCloseButton();
             $content  = ZurmoHtml::tag('div', array('id' => 'game-overlay'), $content);
             return      ZurmoHtml::tag('div', array('id' => 'game-dashboard-container'), $content);
         }
@@ -420,6 +429,11 @@
         protected static function getGameCoinContainerId()
         {
             return 'gd-z-coins';
+        }
+
+        protected static function renderDashboardCloseButton()
+        {
+            return '<div class="close-dashboard-button"><a href="#"><span class="ui-icon ui-icon-closethick">close</span></a></div>';
         }
     }
 ?>

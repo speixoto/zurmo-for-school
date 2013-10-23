@@ -672,22 +672,10 @@ $(window).ready(function(){
         }
     );
 
-    $('.clickable-dividedmenu').find('a.button-trigger, a.button-action-trigger').click(
+    $('.clickable-dividedmenu').find('a.button-trigger, a.button-action-trigger, .close-flyout').click(
         function(){
-            if ( $(this).parent().hasClass('nav-open') === false ){
-                $(this).parent().addClass('nav-open');
-            } else {
-                $(this).parent().removeClass('nav-open');
-            }
+            $(this).closest('.clickable-dividedmenu').toggleClass('nav-open');
             return false;
-        }
-    );
-
-    $('.clickable-dividedmenu').find('a.button-trigger, a.button-action-trigger').hover(
-        function(){
-            if ( $(this).parent().hasClass('nav-open') === false ){
-                $(this).parent().addClass('nav-open');
-            }
         }
     );
 
