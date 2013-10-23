@@ -299,8 +299,6 @@
             $task = Task::getById(intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($task);
             $this->attemptToValidateAndSaveFromModalDetails($task);
-            AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED,
-                                       array(strval($task), get_class($this->getModule())), $task);
             $this->processModalDetails($task);
         }
 

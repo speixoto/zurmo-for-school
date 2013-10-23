@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class GoToDetailsFromRelatedModalLinkActionElement extends RelatedModalLinkActionElement
+    class GoToDetailsFromRelatedModalLinkActionElement extends LinkActionElement
     {
 
         protected function getDefaultLabel()
@@ -46,9 +46,7 @@
 
         protected function getDefaultRoute()
         {
-            $params = array_merge(GetUtil::getData(), $this->getViewLinkUrlParams());
-            return Yii::app()->createUrl($this->getRouteModuleId() . '/' .
-                   $this->controllerId . '/modalDetailsFromRelation', $params);
+            return '#';
         }
 
         protected function getRouteModuleId()
@@ -98,7 +96,7 @@
          */
         protected function getHtmlOptions()
         {
-            return array_merge(array('namespace' => 'modalLink'), parent::getHtmlOptions());
+            return array_merge(array('namespace' => 'modalLink', 'class' => 'task-kanban-detail-link'), parent::getHtmlOptions());
         }
     }
 ?>

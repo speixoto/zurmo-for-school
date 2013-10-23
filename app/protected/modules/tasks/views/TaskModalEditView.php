@@ -209,7 +209,12 @@
          */
         protected function resolveActiveFormAjaxValidationOptions()
         {
+            //Would be used from kanban board
             $sourceKanbanBoardId = Yii::app()->request->getParam('sourceKanbanBoardId');
+
+            //Would be used from other source
+            $sourceId = Yii::app()->request->getParam('sourceId');
+
             $modalId             = Yii::app()->request->getParam('modalId');
             $relationModelId     = Yii::app()->request->getParam('relationModelId');
             if($relationModelId != null)
@@ -231,7 +236,7 @@
                                 }
                                 else
                                 {
-                                ' . $this->renderConfigSaveAjax($this->getFormId(), $url, $sourceKanbanBoardId, $modalId) . '
+                                ' . $this->renderConfigSaveAjax($this->getFormId(), $url, $sourceKanbanBoardId, $modalId, $sourceId) . '
                                 }
                                 return false;
                             }',
@@ -242,10 +247,17 @@
             );
         }
 
-        protected function renderConfigSaveAjax($formId, $url, $sourceKanbanBoardId, $modalId)
+        protected function renderConfigSaveAjax($formId, $url, $sourceKanbanBoardId, $modalId, $sourceId)
         {
             // Begin Not Coding Standard
-            $kanbanRefreshScript = TasksUtil::resolveExtraCloseScriptForModalAjaxOptions($sourceKanbanBoardId);
+            if($sourceId == null)
+            {
+                $kanbanRefreshScript = TasksUtil::resolveExtraCloseScriptForModalAjaxOptions($sourceKanbanBoardId);
+            }
+            else
+            {
+                $kanbanRefreshScript = TasksUtil::resolveExtraCloseScriptForModalAjaxOptions($sourceId);
+            }
             $title   = TasksUtil::getModalDetailsTitle();
             $options = array(
                 'type' => 'POST',
