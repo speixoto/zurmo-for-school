@@ -131,6 +131,16 @@
                                         ),
                                     )
                                 ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'detailViewOnly' => 1,
+                                            'elements' => array(
+                                                array('attributeName' => 'serializedData', 'type' => 'SortableContactWebFormAttributes'),
+                                            ),
+                                        ),
+                                    )
+                                ),
                             ),
                         ),
                     ),
