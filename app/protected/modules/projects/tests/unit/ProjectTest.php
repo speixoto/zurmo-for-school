@@ -77,6 +77,7 @@
             $opportunity = OpportunityTestHelper::createOpportunityByNameForOwner('Jerry Opp', $user);
             //$project->opportunities->add($opportunity);
             $this->assertTrue($project->save());
+            $this->assertEquals(1, count($project->auditEvents));
             $id                       = $project->id;
             $project->forget();
             unset($project);
@@ -89,15 +90,13 @@
             $this->assertEquals(1, $project->accounts->count());
             $this->assertEquals(1, $project->contacts->count());
             $this->assertEquals(1, $project->opportunities->count());
-            $saved = ProjectAuditEvent::logAuditEvent(ProjectAuditEvent::PROJECT_CREATED, $project, $project->name, $user);
-            $this->assertTrue($saved);
-            $this->assertEquals(1, count($project->auditEvents));
-            //used in delete
+            //Try saving a second project
             $project                  = new Project();
             $project->name            = 'Project 2';
             $project->owner           = $user;
             $project->description     = 'Description';
             $this->assertTrue($project->save());
+            $this->assertEquals(1, count($project->auditEvents));
         }
 
         /**
