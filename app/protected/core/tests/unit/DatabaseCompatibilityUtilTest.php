@@ -513,6 +513,8 @@
                                                                                     $this->temporaryDatabasePort);
             $this->assertTrue(is_string($loadLocalInFile));
             $this->assertTrue(in_array($loadLocalInFile, array('ON', 1, 'OFF', 0)));
+            // TODO: @Shoaibi: Critical: @see: https://www.pivotaltracker.com/s/projects/380027/stories/59409504
+            $this->assertEquals($loadLocalInFile, 0);
         }
 
         public function testDatabaseConnection_mysql()

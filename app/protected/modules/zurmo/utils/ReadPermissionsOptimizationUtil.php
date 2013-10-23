@@ -43,7 +43,7 @@
          * @param boolean $overwriteExistingTables
          * @param boolean $forcePhp
          */
-        public static function rebuild($overwriteExistingTables = true, $forcePhp = false)
+        public static function rebuild($overwriteExistingTables = true, $forcePhp = false, $messageStreamer = null)
         {
             //Forcing php way until we can fix failing tests here: AccountReadPermissionsOptimizationScenariosTest
             $forcePhp = true;
@@ -55,8 +55,18 @@
                 $readTableExists    = ZurmoRedBean::$writer->doesTableExist($mungeTableName);
                 if (!$overwriteExistingTables && $readTableExists)
                 {
+                    if (isset($messageStreamer))
+                    {
+                        $messageStreamer->add(Zurmo::t('ZurmoModule', "Skipping {{tableName}}",
+                                                array('{{tableName}}' => $mungeTableName)));
+                    }
                     // skip if we don't want to overwrite existing tables and table already exists
                     continue;
+                }
+                if (isset($messageStreamer))
+                {
+                    $messageStreamer->add(Zurmo::t('ZurmoModule', "Building {{tableName}}",
+                                                    array('{{tableName}}' => $mungeTableName)));
                 }
 
                 if (!SECURITY_OPTIMIZED || $forcePhp)
