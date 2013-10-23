@@ -191,7 +191,8 @@
             $attributeLabelElement->editableTemplate = '{content}{error}';
             $isRequiredElement->editableTemplate     = '{content}{label}{error}';
 
-            return array('{attributeLabelElement}'           => $attributeLabelElement->render(),
+            return array('{attributeName}'                   => $attributeName,
+                         '{attributeLabelElement}'           => $attributeLabelElement->render(),
                          '{isRequiredElement}'               => $isRequiredElement->render(),
                          '{isHiddenElement}'                 => $isHiddenElementContent,
                          '{renderHiddenAttributeElement}'    => $renderHiddenAttributeElement,
@@ -327,50 +328,34 @@
 
         public static function renderHiddenAttributeElement($model, $attributeName, $form, $elementType, $params)
         {
-            switch ($elementType)
+            if ($elementType === 'CheckBox')
             {
-                case 'Text':
-                    $element = new TextElement($model, $attributeName, $form, $params);
-                    break;
-                case 'Date':
-                    $element = new DateElement($model, $attributeName, $form, $params);
-                    break;
-                case 'DateTime':
-                    $element = new DateTimeElement($model, $attributeName, $form, $params);
-                    break;
-                case 'TextArea':
-                    $element = new TextAreaElement($model, $attributeName, $form, $params);
-                    break;
-                case 'DropDown':
-                    $element = new ContactWebFormAttributeFormStaticDropDownFormElement($model, $attributeName, $form, $params);
-                    break;
-                case 'Phone':
-                    $element = new PhoneElement($model, $attributeName, $form, $params);
-                    break;
-                case 'Address':
-                    $element = new AddressElement($model, $attributeName, $form, $params);
-                    break;
-                case 'EmailAddressInformation':
-                    $element = new EmailAddressInformationElement($model, $attributeName, $form, $params);
-                    break;
-                case 'Url':
-                    $element = new UrlElement($model, $attributeName, $form, $params);
-                    break;
-                case 'Address':
-                    $element = new AddressElement($model, $attributeName, $form, $params);
-                    break;
-                case 'RadioDropDown':
-                    $element = new ContactWebFormAttributeFormStaticDropDownFormElement($model, $attributeName, $form, $params);
-                    break;
-                case 'CheckBox':
-                    $element = new BooleanStaticDropDownElement($model, $attributeName, $form, $params);
-                    break;
-                default:
-                    $element = new TextElement($model, $attributeName, $form, $params);
-                    break;
+                $className = 'BooleanStaticDropDownElement';
             }
+            elseif ($elementType === 'RadioDropDown' || $elementType === 'DropDown')
+            {
+                $className = 'ContactWebFormAttributeFormStaticDropDownFormElement';
+            }
+            else
+            {
+                $className = $elementType . 'Element';
+            }
+            $element = new $className($model, $attributeName, $form, $params);
             $element->editableTemplate = '{content}{error}';
             $content = $element->render();
+            return $content;
+        }
+
+        public static function getPlacedAttributeContent($attributeData)
+        {
+            $content = '<li><div class="dynamic-row webform-chosen-field"><div>' .
+                $attributeData['{attributeLabelElement}'] .
+                $attributeData['{isRequiredElement}'] .
+                $attributeData['{isHiddenElement}'] .
+                '<div id="hiddenAttributeElement_' . $attributeData['{attributeName}'] . '"' .
+                'style="' . $attributeData['{hideHiddenAttributeElementStyle}'] . '">' .
+                $attributeData['{renderHiddenAttributeElement}'] . '</div>' .
+                '</div>' . $attributeData['{removePlacedAttributeLink}'] . '</div></li>';
             return $content;
         }
     }
