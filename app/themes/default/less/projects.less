@@ -1,3 +1,41 @@
+.project-create,
+.project-collaborate,
+.project-track{
+	.icon{
+		position: relative;
+		margin: 0px 15px 0 0;
+		display: inline-block;
+		height: 100%;
+	}
+	.icon:before{
+		content: '\02DB';
+		.symbly(145px);
+		line-height: 60px;
+		position: absolute;
+		top:10px;
+		.t-shadow(0 -1px 0 #000);
+	}
+}
+
+.project-collaborate{
+	p{
+		margin-left: 110px;
+	}
+	.icon:before{
+		left: 10px;
+		content: '\00AF';
+	}
+}
+.project-track{
+	p{
+		margin-left: 110px;
+	}
+	.icon:before{
+		left: 10px;
+		content: '\02DA';
+	}
+}
+
 #ActiveProjectsListView{
 	float: none;
 	margin-bottom: 0;

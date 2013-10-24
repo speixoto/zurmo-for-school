@@ -875,8 +875,8 @@
                                 'beforeSend' : {$ajaxOptions['beforeSend']},
                                 'update'     : '{$ajaxOptions['update']}',
                                 'success': function(html){
-jQuery('#{$modalId}').html(html)
-}
+                                    jQuery('#{$modalId}').html(html)
+                                }
                             });
                           }
                         );";

@@ -17726,6 +17726,15 @@ table.configuration-list td:last-child a .z-label:before {
   content: '\0022';
   font-size: 46px;
 }
+.available-portlets .icon-projects:before {
+  content: '\02C7';
+}
+.available-portlets .icon-notes:before {
+  content: '3';
+}
+.available-portlets .icon-meetings:before {
+  content: 'U';
+}
 /*Edit Portlet*/
 #modal-edit-form th {
   line-height: 24px;
@@ -26357,6 +26366,45 @@ div.special-pager .hidden.next:after {
   margin: 0;
   padding: 0;
   text-decoration: underline;
+}
+.project-create .icon,
+.project-collaborate .icon,
+.project-track .icon {
+  position: relative;
+  margin: 0px 15px 0 0;
+  display: inline-block;
+  height: 100%;
+}
+.project-create .icon:before,
+.project-collaborate .icon:before,
+.project-track .icon:before {
+  content: '\02DB';
+  font-weight: normal !important;
+  font-weight: normal;
+  font-size: 145px;
+  font-family: "zurmo_gamification_symbly_rRg";
+  line-height: 60px;
+  position: absolute;
+  top: 10px;
+  -webkit-text-shadow: 0 -1px 0 #000000;
+  -moz-text-shadow: 0 -1px 0 #000000;
+  -o-text-shadow: 0 -1px 0 #000000;
+  -ms-text-shadow: 0 -1px 0 #000000;
+  text-shadow: 0 -1px 0 #000000;
+}
+.project-collaborate p {
+  margin-left: 110px;
+}
+.project-collaborate .icon:before {
+  left: 10px;
+  content: '\00AF';
+}
+.project-track p {
+  margin-left: 110px;
+}
+.project-track .icon:before {
+  left: 10px;
+  content: '\02DA';
 }
 #ActiveProjectsListView {
   float: none;
