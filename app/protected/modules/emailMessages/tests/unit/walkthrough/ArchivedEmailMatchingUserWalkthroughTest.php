@@ -112,7 +112,7 @@
                                             'contactId'   => $contact->id,
                                             'contactName' => 'Some Name'))));
             $this->runControllerWithNoExceptionsAndGetContent('emailMessages/default/completeMatch', true);
-            $this->assertEquals('bob.message@zurmotest.com', $contact->primaryEmail->emailAddress);
+            $this->assertNull($contact->primaryEmail->emailAddress);
             $this->assertCount(1, $message1->sender->personOrAccount);
             $this->assertTrue($message1->sender->personOrAccount[0]->isSame($contact));
             $this->assertEquals('Archived', $message1->folder);

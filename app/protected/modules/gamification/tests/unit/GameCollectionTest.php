@@ -82,7 +82,7 @@
                                      'Gate'       => 0,
                                      'Passport'   => 0,
                                      'Pilot'      => 0,
-                                     'Ticket'     => 0,
+                                     'Trolley'    => 0,
                                      'TowTruck'   => 0));
             $this->assertEquals($compareData, unserialize($gameCollection->serializedData));
         }
@@ -107,7 +107,7 @@
                                      'Gate'       => 0,
                                      'Passport'   => 0,
                                      'Pilot'      => 0,
-                                     'Ticket'     => 0,
+                                     'Trolley'     => 0,
                                      'TowTruck'   => 0));
             $this->assertEquals($compareData, unserialize($collections['Airport']->serializedData));
         }
@@ -133,7 +133,7 @@
             $compareData = array('Gate'       => 0,
                                  'Passport'   => 0,
                                  'Pilot'      => 0,
-                                 'Ticket'     => 0,
+                                 'Trolley'     => 0,
                                  'TowTruck'   => 0);
             $this->assertEquals($compareData, $itemsData);
         }
@@ -161,7 +161,7 @@
             $compareData = array(   'Gate'       => 0,
                                     'Passport'   => 0,
                                     'Pilot'      => 0,
-                                    'Ticket'     => 0,
+                                    'Trolley'     => 0,
                                     'TowTruck'   => 0);
             $this->assertEquals($compareData, $itemsData);
             $redeemData = $collections['Airport']->redeem();
@@ -170,7 +170,7 @@
             $itemsData = array( 'Gate'       => 3,
                                 'Passport'   => 5,
                                 'Pilot'      => 6,
-                                'Ticket'     => 8,
+                                'Trolley'     => 8,
                                 'TowTruck'   => 7);
             $collections['Airport']->setItemsData($itemsData);
             $this->assertEquals(0, $collections['Airport']->getRedemptionCount());

@@ -79,12 +79,9 @@
             $message1 = EmailMessage::getById($messageId);
             $contact  = Contact::getById($contactId);
             $this->assertEquals(1, $message1->sender->personOrAccount->count());
-            echo ' sender id ' . $message1->sender->id . "\n";
             $castedDownModel = EmailMessageMashableActivityRules::castDownItem($message1->sender->personOrAccount[0]);
             $this->assertEquals('Contact', get_class($castedDownModel));
             $this->assertEquals($contact->id, $castedDownModel->id);
-            echo 'my id' . $contact->getClassId("Item");
-            echo 'test ' . $message1->sender->personOrAccount[0]->getClassId("Item");
         }
 
         /**
