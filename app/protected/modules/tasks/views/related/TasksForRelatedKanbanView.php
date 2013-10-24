@@ -127,14 +127,10 @@
             $this->registerKanbanGridScript();
             $content    .= $cClipWidget->getController()->clips['ListView'] . "\n";
             $content .= $this->renderScripts();
-
-            if($this->dataProvider->getTotalItemCount() == 0)
-            {
-                $zeroModelView = new ZeroTasksForRelatedModelYetView($this->controllerId,
-                                                                     $this->moduleId, 'Task',
-                                                                     get_class($this->params['relationModel']));
-                $content .= $zeroModelView->render();
-            }
+            $zeroModelView = new ZeroTasksForRelatedModelYetView($this->controllerId,
+                                                                 $this->moduleId, 'Task',
+                                                                 get_class($this->params['relationModel']));
+            $content .= $zeroModelView->render();
             return $content;
         }
 
@@ -377,13 +373,35 @@
             //This would be used in case of zero model view
             if($this->dataProvider->getTotalItemCount() == 0)
             {
-                $script = "$('.cgrid-view').hide();";
+                $script  = "$('#" . $this->getGridId() . "').hide();";
+                $script .= "$('#ZeroTasksForRelatedModelYetView').show();";
             }
             else
             {
-                $script = "$('.cgrid-view').show();";
+                $script  = "$('#" . $this->getGridId() . "').show();";
+                $script .= "$('#ZeroTasksForRelatedModelYetView').hide();";
+
             }
             Yii::app()->clientScript->registerScript('taskKanbanDetailScript',$script);
+        }
+
+        protected function getCGridViewAfterAjaxUpdate()
+        {
+            // Begin Not Coding Standard
+            return 'js:function(id, data) {
+                        processAjaxSuccessError(id, data);
+                        if($("#" + id).find(".kanban-card").length > 0)
+                        {
+                            $("#' . $this->getGridId() . '").show();
+                            $("#ZeroTasksForRelatedModelYetView").hide();
+                        }
+                        else
+                        {
+                            $("#' . $this->getGridId() . '").hide();
+                            $("#ZeroTasksForRelatedModelYetView").show();
+                        }
+                    }';
+            // End Not Coding Standard
         }
     }
 ?>
