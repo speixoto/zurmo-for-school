@@ -250,7 +250,7 @@
             {
                 foreach ($contactWebFormAttributes as $attributeId => $attributeData)
                 {
-                    if (isset($attributeData['required']))
+                    if (isset($attributeData['required']) && $attributeData['required'] == 1)
                     {
                         $customRequiredFields[] = array($attributeId, 'required');
                     }
@@ -280,7 +280,7 @@
             $webFormAttributes = unserialize($contactWebForm->serializedData);
             foreach ($webFormAttributes as $attributeName => $attribute)
             {
-                if (isset($attribute['hidden']) && isset($attribute['hiddenValue']) && !empty($attribute['hiddenValue']))
+                if (isset($attribute['hidden']) && $attribute['hidden'] == 1 && isset($attribute['hiddenValue']) && !empty($attribute['hiddenValue']))
                 {
                     if (in_array($attributeName, $resolvedWebFormAttributes))
                     {
@@ -300,17 +300,16 @@
             return $resolvedWebFormAttributes;
         }
 
-        public static function resolveHiddenAttributesForContactModel($contact, $contactWebForm)
+        public static function resolveHiddenAttributesForContactModel($postVariableName, $contactWebForm)
         {
             $ContactWebFormAttributes = unserialize($contactWebForm->serializedData);
             foreach ($ContactWebFormAttributes as $attributeName => $attribute)
             {
-                if (isset($attribute['hidden']) && isset($attribute['hiddenValue']) && !empty($attribute['hiddenValue']))
+                if (isset($attribute['hidden']) && $attribute['hidden'] == 1 && isset($attribute['hiddenValue']) && !empty($attribute['hiddenValue']))
                 {
-                    $contact->$attributeName = $attribute['hiddenValue'];
+                    $_POST[$postVariableName][$attributeName] = $attribute['hiddenValue'];
                 }
             }
-            return $contact;
         }
 
         public static function resolveHiddenAttributesForContactWebFormEntryModel($webFormEntryAttributes = array(), $contactWebForm)
@@ -318,7 +317,7 @@
             $ContactWebFormAttributes = unserialize($contactWebForm->serializedData);
             foreach ($ContactWebFormAttributes as $attributeName => $attribute)
             {
-                if (isset($attribute['hidden']) && isset($attribute['hiddenValue']) && !empty($attribute['hiddenValue']))
+                if (isset($attribute['hidden']) && $attribute['hidden'] == 1 && isset($attribute['hiddenValue']) && !empty($attribute['hiddenValue']))
                 {
                     $webFormEntryAttributes[$attributeName] = $attribute['hiddenValue'];
                 }

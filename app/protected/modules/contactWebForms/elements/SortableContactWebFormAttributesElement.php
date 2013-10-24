@@ -111,12 +111,16 @@
          */
         protected function renderItemTemplate()
         {
-            return '<li><div class="dynamic-row webform-chosen-field"><div>' .
-                        '<span>{isRequiredElement}</span>' .
-                        '<span>{isHiddenElement}</span>' .
-                        '{attributeLabelElement}' .
-                        '<div id="hiddenAttributeElement_{id}" style="{hideHiddenAttributeElementStyle}">{renderHiddenAttributeElement}</div>' .
-                    '</div>{removePlacedAttributeLink}</div></li>';
+            $attributeData = array();
+            $attributeData['{attributeName}']                   = '{id}';
+            $attributeData['{isRequiredElement}']               = '{isRequiredElement}';
+            $attributeData['{isHiddenElement}']                 = '{isHiddenElement}';
+            $attributeData['{attributeLabelElement}']           = '{attributeLabelElement}';
+            $attributeData['{hideHiddenAttributeElementStyle}'] = '{hideHiddenAttributeElementStyle}';
+            $attributeData['{renderHiddenAttributeElement}']    = '{renderHiddenAttributeElement}';
+            $attributeData['{removePlacedAttributeLink}']       = '{removePlacedAttributeLink}';
+            $content                                            = ContactWebFormsUtil::getPlacedAttributeContent($attributeData);
+            return $content;
         }
 
         protected function renderError()
