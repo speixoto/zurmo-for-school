@@ -385,6 +385,11 @@
             Yii::app()->clientScript->registerScript('taskKanbanDetailScript',$script);
         }
 
+        /**
+         * Calling TaskKanbanBoardExtendedGridView::registerKanbanColumnSortableScript in order to reinitialize
+         * the sorting for the card columns after the board is refreshed
+         * @return string
+         */
         protected function getCGridViewAfterAjaxUpdate()
         {
             // Begin Not Coding Standard
@@ -400,6 +405,7 @@
                             $("#' . $this->getGridId() . '").hide();
                             $("#ZeroTasksForRelatedModelYetView").show();
                         }
+                        ' . TaskKanbanBoardExtendedGridView::registerKanbanColumnSortableScript() . '
                     }';
             // End Not Coding Standard
         }
