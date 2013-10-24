@@ -63,8 +63,8 @@
             return array(   'Gate'      => Zurmo::t('GamificationModule', 'Gate Sign'),
                             'Passport'  => Zurmo::t('GamificationModule', 'Passport'),
                             'Pilot'     => Zurmo::t('GamificationModule', 'Pilot'),
-                            'Trolley'   => Zurmo::t('GamificationModule', 'Trolley'),
-                            'TowTruck'  => Zurmo::t('GamificationModule', 'Tow Truck'),
+                            'Luggage'   => Zurmo::t('GamificationModule', 'Luggage'),
+                            'TowTruck'  => Zurmo::t('GamificationModule', 'Airport Tug'),
             );
         }
 
@@ -76,7 +76,7 @@
             return array(   'Gate'       => 10,
                             'Passport'   => 10,
                             'Pilot'      => 10,
-                            'Trolley'     => 3,
+                            'Luggage'    => 3,
                             'TowTruck'   => 6,
             );
         }

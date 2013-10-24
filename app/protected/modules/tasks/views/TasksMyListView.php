@@ -163,7 +163,7 @@
          */
         protected function getCGridViewLastColumn()
         {
-            $url  = 'Yii::app()->createUrl("tasks/default/modalEditFromRelation", array("id" => $data->id))';
+            $url  = 'Yii::app()->createUrl("tasks/default/modalEdit", array("id" => $data->id))';
             return array(
                 'class'           => 'TaskModalButtonColumn',
                 'template'        => '{update}',
@@ -186,7 +186,7 @@
         protected function renderScripts()
         {
             parent::renderScripts();
-            TasksUtil::registerTaskModalDetailScript($this->getGridViewId());
+            TasksUtil::registerTaskModalDetailsScript($this->getGridViewId());
         }
     }
 ?>

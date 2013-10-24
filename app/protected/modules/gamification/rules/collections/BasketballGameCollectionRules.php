@@ -60,7 +60,7 @@
          */
         public static function getItemTypesAndLabels()
         {
-            return array(   'Basket'     => Zurmo::t('GamificationModule', 'Basket'),
+            return array(   'Backboard'  => Zurmo::t('GamificationModule', 'Backboard'),
                             'Player'     => Zurmo::t('GamificationModule', 'Player'),
                             'ScoreBoard' => Zurmo::t('GamificationModule', 'Score Board'),
                             'Uniform'    => Zurmo::t('GamificationModule', 'Uniform'),
@@ -73,7 +73,7 @@
          */
         public static function getItemTypesAndFrequencies()
         {
-            return array(   'Basket'     => 10,
+            return array(   'Backboard'  => 10,
                             'Player'     => 10,
                             'ScoreBoard' => 10,
                             'Uniform'    => 3,

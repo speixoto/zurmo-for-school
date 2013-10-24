@@ -60,11 +60,11 @@
          */
         public static function getItemTypesAndLabels()
         {
-            return array(   'ArmyKnife' => Zurmo::t('GamificationModule', 'Army Knife'),
-                            'FlashLight'          => Zurmo::t('GamificationModule', 'Flash Light'),
-                            'Gas'          => Zurmo::t('GamificationModule', 'Gas'),
+            return array(   'ArmyKnife'     => Zurmo::t('GamificationModule', 'Army Knife'),
+                            'FlashLight'    => Zurmo::t('GamificationModule', 'Flashlight'),
+                            'Gas'           => Zurmo::t('GamificationModule', 'Gas'),
                             'GasLight'      => Zurmo::t('GamificationModule', 'Gas Light'),
-                            'Zippo'            => Zurmo::t('GamificationModule', 'Zippo Lighter'),
+                            'Lighter'       => Zurmo::t('GamificationModule', 'Lighter'),
             );
         }
 
@@ -73,11 +73,11 @@
          */
         public static function getItemTypesAndFrequencies()
         {
-            return array(   'ArmyKnife' => 10,
-                            'FlashLight'          => 10,
+            return array(   'ArmyKnife'    => 10,
+                            'FlashLight'   => 10,
                             'Gas'          => 10,
-                            'GasLight'      => 3,
-                            'Zippo'            => 6,
+                            'GasLight'     => 3,
+                            'Lighter'      => 6,
             );
         }
 

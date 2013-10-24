@@ -47,17 +47,17 @@
         {
             $content  = '<h1>' . Zurmo::t('ProjectsModule', 'How do Projects work in Zurmo?', LabelUtil::getTranslationParamsForAllModules()). '</h1>';
             $content .= '<div id="projects-intro-steps" class="module-intro-steps clearfix">';
-            $content .= '<div class="third"><h3>' . Zurmo::t('Core', 'Step') . '<strong>1<span>➜</span></strong></h3>';
+            $content .= '<div class="third project-create"><span class="icon"></span>';
             $content .= '<p><strong>' . Zurmo::t('Core', 'Create') . '</strong>';
             $content .= Zurmo::t('ProjectsModule', 'Create projects, add tasks and work using an agile methodology');
             $content .= '</p>';
             $content .= '</div>';
-            $content .= '<div class="third"><h3>' . Zurmo::t('Core', 'Step') . '<strong>2<span>➜</span></strong></h3>';
-            $content .= '<p><strong>' . Zurmo::t('Core', 'Colloborate') . '</strong>';
-            $content .= Zurmo::t('ProjectsModule', 'Colloborate with users on tasks to get things done');
+            $content .= '<div class="third project-collaborate"><span class="icon"></span>';
+            $content .= '<p><strong>' . Zurmo::t('Core', 'Collaborate') . '</strong>';
+            $content .= Zurmo::t('ProjectsModule', 'Collaborate with users on tasks to get things done');
             $content .= '</p>';
             $content .= '</div>';
-            $content .= '<div class="third"><h3>' . Zurmo::t('Core', 'Step') . '<strong>3<span>➜</span></strong></h3>';
+            $content .= '<div class="third project-track"><span class="icon"></span>';
             $content .= '<p><strong>' . Zurmo::t('Core', 'Track') . '</strong>';
             $content .= Zurmo::t('ProjectsModule', 'Subscribe to notifications and track progress against milestones');
             $content .= '</p>';

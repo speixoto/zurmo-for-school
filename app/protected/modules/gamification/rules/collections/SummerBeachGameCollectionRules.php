@@ -60,11 +60,11 @@
          */
         public static function getItemTypesAndLabels()
         {
-            return array(   'Sun' => Zurmo::t('GamificationModule', 'Sun'),
-                            'SunCream'          => Zurmo::t('GamificationModule', 'Sun Cream'),
-                            'SunGlasses'          => Zurmo::t('GamificationModule', 'Sun Glasses'),
-                            'SunShade'      => Zurmo::t('GamificationModule', 'Sun Shade'),
-                            'SurfBoards'            => Zurmo::t('GamificationModule', 'Surf Boards'),
+            return array(   'Sunshine'      => Zurmo::t('GamificationModule', 'Sunshine'),
+                            'Sunscreen'     => Zurmo::t('GamificationModule', 'Sunscreen'),
+                            'SunGlasses'    => Zurmo::t('GamificationModule', 'Sunglasses'),
+                            'BeachUmbrella' => Zurmo::t('GamificationModule', 'Beach Umbrella'),
+                            'SurfBoards'    => Zurmo::t('GamificationModule', 'Surfboards'),
             );
         }
 
@@ -73,11 +73,11 @@
          */
         public static function getItemTypesAndFrequencies()
         {
-            return array(   'Sun' => 10,
-                            'SunCream'          => 10,
-                            'SunGlasses'          => 10,
-                            'SunShade'      => 3,
-                            'SurfBoards'            => 6,
+            return array(   'Sunshine'      => 10,
+                            'Sunscreen'     => 10,
+                            'SunGlasses'    => 10,
+                            'BeachUmbrella' => 3,
+                            'SurfBoards'    => 6,
             );
         }
 

@@ -85,7 +85,7 @@ function updateCheckListItem(element, url, errorMessage)
             success: function(data){
               $(litag).find('p').html(data);
               $(litag).find('.editable').show();
-              $(litag).find('.taskcheckitemactions').show();
+              $(litag).find('.task-check-item-actions').show();
               $(litag).find('.editable-task-input').hide();
             }
         });

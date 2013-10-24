@@ -230,7 +230,7 @@
             $formEnd  = $clipWidget->renderEndWidget();
             $content .= $formEnd;
             $this->registerConfigurationFormLayoutScripts($form);
-            TasksUtil::registerTaskModalDetailScript($this->getGridViewId());
+            TasksUtil::registerTaskModalDetailsScript($this->getGridViewId());
             return $content;
         }
 

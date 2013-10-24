@@ -143,10 +143,15 @@
             return MashableUtil::resolveContentTemplate($template, $data);
         }
 
-        public static function getActivityItemsModelClassNamesDataExcludingContacts()
+        public static function getActivityItemsModelClassNames()
         {
             $metadata = Activity::getMetadata();
-            $activityItemsModelClassNamesData = $metadata['Activity']['activityItemsModelClassNames'];
+            return $metadata['Activity']['activityItemsModelClassNames'];
+        }
+
+        public static function getActivityItemsModelClassNamesDataExcludingContacts()
+        {
+            $activityItemsModelClassNamesData = static::getActivityItemsModelClassNames();
             foreach ($activityItemsModelClassNamesData as $index => $relationModelClassName)
             {
                 if ($relationModelClassName == 'Contact')

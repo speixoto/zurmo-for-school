@@ -125,16 +125,13 @@
             $cClipWidget->endClip();
             $content     = $this->renderKanbanViewTitleWithActionBars();
             $this->registerKanbanGridScript();
+            $this->resolveShouldOpenToTask();
             $content    .= $cClipWidget->getController()->clips['ListView'] . "\n";
             $content .= $this->renderScripts();
-
-            if($this->dataProvider->getTotalItemCount() == 0)
-            {
-                $zeroModelView = new ZeroTasksForRelatedModelYetView($this->controllerId,
-                                                                     $this->moduleId, 'Task',
-                                                                     get_class($this->params['relationModel']));
-                $content .= $zeroModelView->render();
-            }
+            $zeroModelView = new ZeroTasksForRelatedModelYetView($this->controllerId,
+                                                                 $this->moduleId, 'Task',
+                                                                 get_class($this->params['relationModel']));
+            $content .= $zeroModelView->render();
             return $content;
         }
 
@@ -373,17 +370,53 @@
          */
         protected function registerKanbanGridScript()
         {
-            TasksUtil::registerTaskModalDetailScript($this->getGridId());
-            //This would be used in case of zero model view
+            TasksUtil::registerTaskModalDetailsScript($this->getGridId());
             if($this->dataProvider->getTotalItemCount() == 0)
             {
-                $script = "$('.cgrid-view').hide();";
+                $script  = "$('#" . $this->getGridId() . "').hide();";
+                $script .= "$('#ZeroTasksForRelatedModelYetView').show();";
             }
             else
             {
-                $script = "$('.cgrid-view').show();";
+                $script  = "$('#" . $this->getGridId() . "').show();";
+                $script .= "$('#ZeroTasksForRelatedModelYetView').hide();";
+
             }
             Yii::app()->clientScript->registerScript('taskKanbanDetailScript',$script);
+        }
+
+        protected function resolveShouldOpenToTask()
+        {
+            $getData = GetUtil::getData();
+            if(null != $taskId = ArrayUtil::getArrayValue($getData, 'openToTaskId'))
+            {
+                TasksUtil::registerOpenToTaskModalDetailsScript((int)$taskId, $this->getGridId());
+            }
+        }
+
+        /**
+         * Calling TaskKanbanBoardExtendedGridView::registerKanbanColumnSortableScript in order to reinitialize
+         * the sorting for the card columns after the board is refreshed
+         * @return string
+         */
+        protected function getCGridViewAfterAjaxUpdate()
+        {
+            // Begin Not Coding Standard
+            return 'js:function(id, data) {
+                        processAjaxSuccessError(id, data);
+                        if($("#" + id).find(".kanban-card").length > 0)
+                        {
+                            $("#' . $this->getGridId() . '").show();
+                            $("#ZeroTasksForRelatedModelYetView").hide();
+                        }
+                        else
+                        {
+                            $("#' . $this->getGridId() . '").hide();
+                            $("#ZeroTasksForRelatedModelYetView").show();
+                        }
+                        ' . TaskKanbanBoardExtendedGridView::registerKanbanColumnSortableScript() . '
+                    }';
+            // End Not Coding Standard
         }
     }
 ?>

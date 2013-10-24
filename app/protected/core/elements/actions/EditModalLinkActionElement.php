@@ -54,7 +54,7 @@
         protected function getDefaultRoute()
         {
             return Yii::app()->createUrl($this->getRouteModuleId() . '/' .
-                        $this->controllerId . '/modalEditFromRelation', array_merge(array('id' => $this->modelId),
+                        $this->controllerId . '/modalEdit', array_merge(array('id' => $this->modelId),
                                                                                        $this->getCreateLinkUrlParams()));
         }
 

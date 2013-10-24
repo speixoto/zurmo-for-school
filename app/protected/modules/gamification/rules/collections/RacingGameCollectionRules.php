@@ -62,7 +62,7 @@
         {
             return array(   'Champagne' => Zurmo::t('GamificationModule', 'Champagne'),
                             'Helmet'    => Zurmo::t('GamificationModule', 'Helmet'),
-                            'Lights'    => Zurmo::t('GamificationModule', 'Lights'),
+                            'Dashboard' => Zurmo::t('GamificationModule', 'Dashboard'),
                             'StopWatch' => Zurmo::t('GamificationModule', 'Stop Watch'),
                             'Track'     => Zurmo::t('GamificationModule', 'Track'),
             );
@@ -75,7 +75,7 @@
         {
             return array(   'Champagne' => 10,
                             'Helmet'    => 10,
-                            'Lights'    => 10,
+                            'Dashboard' => 10,
                             'StopWatch' => 3,
                             'Track'     => 6,
             );

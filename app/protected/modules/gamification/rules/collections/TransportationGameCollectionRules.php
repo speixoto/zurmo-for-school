@@ -60,11 +60,11 @@
          */
         public static function getItemTypesAndLabels()
         {
-            return array(   'Caravan' => Zurmo::t('GamificationModule', 'Karavan'),
-                            'Plane'          => Zurmo::t('GamificationModule', 'Plane'),
-                            'SailBoat'          => Zurmo::t('GamificationModule', 'Sail Boat'),
-                            'Truck'      => Zurmo::t('GamificationModule', 'Truck'),
-                            'Taxi'            => Zurmo::t('GamificationModule', 'Taxi'),
+            return array(   'Caravan'  => Zurmo::t('GamificationModule', 'Caravan'),
+                            'Plane'    => Zurmo::t('GamificationModule', 'Plane'),
+                            'SailBoat' => Zurmo::t('GamificationModule', 'Sail Boat'),
+                            'Truck'    => Zurmo::t('GamificationModule', 'Truck'),
+                            'Taxi'     => Zurmo::t('GamificationModule', 'Taxi'),
             );
         }
 
@@ -73,11 +73,11 @@
          */
         public static function getItemTypesAndFrequencies()
         {
-            return array(   'Caravan' => 10,
-                            'Plane'          => 10,
-                            'SailBoat'          => 10,
+            return array(   'Caravan'    => 10,
+                            'Plane'      => 10,
+                            'SailBoat'   => 10,
                             'Truck'      => 3,
-                            'Taxi'            => 6,
+                            'Taxi'       => 6,
             );
         }
 

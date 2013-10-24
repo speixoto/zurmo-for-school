@@ -188,7 +188,7 @@
         protected function renderScripts()
         {
             parent::renderScripts();
-            TasksUtil::registerTaskModalDetailScript($this->getGridViewId());
+            TasksUtil::registerTaskModalDetailsScript($this->getGridViewId());
         }
     }
 ?>
