@@ -244,8 +244,7 @@
 
         protected function resolveRightSideActiveFormAjaxValidationOptions()
         {
-            return array(//'enableAjaxValidation' => true,
-                'enableClientValidation' => true,
+            return array('enableAjaxValidation' => true,
                 'clientOptions' => array(
                     'validateOnChange'  => true,
                 ),
@@ -284,7 +283,7 @@
          */
         protected function renderOwnerContent($form)
         {
-            $element  = new UserElement($this->getModel(), 'owner', $form);
+            $element  = new TaskModalUserElement($this->getModel(), 'owner', $form);
             $element->editableTemplate = '<div class="owner-box">{label}{content}{error}</div>';
             return $element->render();
         }
@@ -296,7 +295,7 @@
          */
         protected function renderRequestedByUserContent($form)
         {
-            $element  = new UserElement($this->getModel(), 'requestedByUser', $form);
+            $element  = new TaskModalUserElement($this->getModel(), 'requestedByUser', $form);
             $element->editableTemplate = '<div class="owner-box">{label}{content}{error}</div>';
             return $element->render();
         }

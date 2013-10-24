@@ -33,21 +33,12 @@
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
+
     /**
-     * Status dropdown element for task
+     * Displays the comments list for task along with input text area
      */
-    class TaskStatusDropDownElement extends ConstantBasedStaticDropDownFormElement
+    class TaskModalUserElement extends UserElement
     {
-        protected static $attributeName = 'status';
-
-        /**
-         * @return array
-         */
-        protected static function resolveDropDownArray()
-        {
-            return Task::getStatusDropDownArray();
-        }
-
         /**
          * Generate the error content. Used by editable content
          * @return error content
@@ -55,7 +46,7 @@
         protected function renderError()
         {
             return $this->form->error($this->model, $this->attribute,
-                                      array('inputID' => $this->getEditableInputId($this->attribute, 'value')));
+                                      array('inputID' => $this->getEditableInputId($this->attribute, 'id')));
         }
     }
 ?>
