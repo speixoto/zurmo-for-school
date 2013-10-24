@@ -35,33 +35,29 @@
      ********************************************************************************/
 
     /**
-     * Projects Options link.
+     * Loaded by application as Yii::app()->phoneHelper
      */
-    class ProjectsOptionsMenuActionElement extends MenuActionElement
+    class PhoneHelper extends CApplicationComponent
     {
-        public function getActionType()
+        
+        public function resolvePhoneNumberContentForDialing($content, $inputId, $model)
         {
-            return 'Delete';
+            return $content;
         }
-
-        protected function getDefaultLabel()
+        
+        public function resolvePersonCardViewOfficePhoneNumberContent($content, $model)
         {
-            return Zurmo::t('Core', 'Options');
+            return ZurmoHtml::tag('span', array('class' => 'icon-office-phone'), $content);
         }
-
-        protected function getDefaultRoute()
+        
+        public function resolvePersonCardViewMobilePhoneNumberContent($content, $model)
         {
-            return null;
+            return ZurmoHtml::tag('span', array('class' => 'icon-mobile-phone'), $content);
         }
-
-        protected function getMenuItems()
+        
+        public function resolvePhoneListViewColumnValue($content, $inputId, $model)
         {
-            $deleteElement          = new ProjectDeleteLinkActionElement($this->controllerId, $this->params["relationModuleId"], $this->modelId);
-            $deleteElementContent   = $deleteElement->renderMenuItem();
-            $editElement            = new EditLinkActionElement($this->controllerId, $this->params["relationModuleId"], $this->modelId);
-            $editElementContent     = $editElement->renderMenuItem();
-            $menuItems              = array( $editElementContent, $deleteElementContent);
-            return $menuItems;
+            return $content;
         }
     }
 ?>

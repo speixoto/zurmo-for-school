@@ -409,22 +409,18 @@
          * @param $controllerId
          * @param $moduleId
          * @param $moduleClassName
-         * @param null $sourceKanbanBoardId
          * @return null|string
          */
-        public static function getModalDetailsLink(Task $task, $controllerId, $moduleId, $moduleClassName, $sourceKanbanBoardId = null)
+        public static function getModalDetailsLink(Task $task, $controllerId, $moduleId, $moduleClassName)
         {
-            assert('is_string($controllerId)');
-            assert('is_string($moduleId)');
+            assert('is_string($controllerId) || is_null($controllerId)');
+            assert('is_string($moduleId)  || is_null($moduleId)');
             assert('is_string($moduleClassName)');
-            assert('is_string($sourceKanbanBoardId) || $sourceKanbanBoardId == null');
-            $ajaxOptions = TasksUtil::resolveAjaxOptionsForModalView('Details', $sourceKanbanBoardId);
             $label       = $task->name . ZurmoHtml::tag('span', array(), '(' . strval($task->owner) . ')');
             $params      = array('label' => $label, 'routeModuleId' => 'tasks',
-                                 'ajaxOptions' => $ajaxOptions,
                                  'wrapLabel' => false,
-                                 'htmlOptions' => array('id' => 'task-' . $task->id),
-                                 'routeParameters' => array('sourceKanbanBoardId' => $sourceKanbanBoardId));
+                                 'htmlOptions' => array('id' => 'task-' . $task->id)
+                                );
             $goToDetailsFromRelatedModalLinkActionElement = new GoToDetailsFromRelatedModalLinkActionElement(
                                                                     $controllerId, $moduleId, $task->id, $params);
             $linkContent = $goToDetailsFromRelatedModalLinkActionElement->render();
@@ -867,7 +863,7 @@
             $url = Yii::app()->createUrl('tasks/default/modalDetailsFromRelation');
             $ajaxOptions = TasksUtil::resolveAjaxOptionsForModalView('Details', $sourceId);
             $ajaxOptions['beforeSend'] = new CJavaScriptExpression($ajaxOptions['beforeSend']);
-            $script = "$(document).on('click', '.task-kanban-detail-link', function()
+            $script = "$(document).on('click', '#{$sourceId} .task-kanban-detail-link', function()
                           {
                             var id = $(this).attr('id');
                             var idParts = id.split('-');
@@ -884,7 +880,7 @@ jQuery('#{$modalId}').html(html)
                             });
                           }
                         );";
-             Yii::app()->clientScript->registerScript('taskModalDetailScript',$script);
+             Yii::app()->clientScript->registerScript('taskModalDetailScript' . $sourceId, $script);
         }
     }
 ?>

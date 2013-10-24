@@ -51,6 +51,9 @@
             {
                 return array(
                     'name'  => $this->attribute,
+                    'value' => 'Yii::app()->phoneHelper->resolvePhoneListViewColumnValue($data->' . $this->attribute . 
+                                ', "' . $this->attribute . '_".$data->id, $data)',
+                    'type'  => 'raw',
                     'htmlOptions' => array( 'class' => 'phone')
                 );
             }

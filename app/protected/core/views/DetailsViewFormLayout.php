@@ -129,9 +129,9 @@
             assert('is_array($panel)');
             if (static::getMaximumColumnCountForSpecificPanels($panel) == 2)
             {
-                return '<table class="double-column">';
+                return '<table class="form-fields double-column">';
             }
-            return '<table>';
+            return '<table class="form-fields">';
         }
 
         /**

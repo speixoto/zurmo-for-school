@@ -377,7 +377,12 @@
             $content .= ZurmoHtml::closeTag('h4');
             if($task->description != null)
             {
-                $content .= ZurmoHtml::tag('p', array(), $task->description);
+                $description = $task->description;
+                if (strlen($description) > TaskKanbanBoard::TASK_DESCRIPTION_LENGTH)
+                {
+                    $description = substr($description, 0, TaskKanbanBoard::TASK_DESCRIPTION_LENGTH) . '...';
+                }
+                $content .= ZurmoHtml::tag('p', array(), $description);
             }
             $content .= ZurmoHtml::closeTag('div');
 

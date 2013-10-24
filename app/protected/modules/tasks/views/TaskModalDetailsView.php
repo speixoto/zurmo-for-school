@@ -63,9 +63,9 @@
                         array(
                             'rows' => array(
                                 array('cells' =>
-                                array(
                                     array(
-                                        'elements' => array(
+                                        array(
+                                            'elements' => array(
                                             array('attributeName' => null, 'type' => 'Null'),
                                         ),
                                     ),
@@ -411,7 +411,7 @@
         {
             if(get_class($element) == 'NullElement')
             {
-                $element->nonEditableTemplate = null;
+                $element->nonEditableTemplate = '';
             }
             else
             {
