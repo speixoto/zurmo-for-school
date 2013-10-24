@@ -39,7 +39,6 @@
      */
     class EmailMessageActivityUtil
     {
-        // TODO: @Shoaibi: Critical: Refactor this class into multiple sub-classes
         const IMAGE_PATH            =   '/default/images/1x1-pixel.png';
 
         const VALID_HASH_PATTERN    = '~^[A-Z0-9\+=/ ]+~i'; // Not Coding Standard
