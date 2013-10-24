@@ -11742,7 +11742,6 @@ td.empty {
   vertical-align: text-top;
 }
 .form table {
-  table-layout: fixed;
   width: 100%;
   border-bottom: 1px solid #CCCCCC;
 }
@@ -13141,31 +13140,6 @@ div.wide.form label.hasCheckBox {
 #delete-form h3 {
   margin: 0 0 15px 0;
 }
-#modal-edit-form table,
-#edit-form table,
-#delete-form table {
-  border-bottom: none;
-}
-#modal-edit-form th,
-#edit-form th,
-#delete-form th {
-  vertical-align: text-top;
-}
-#modal-edit-form td,
-#edit-form td,
-#delete-form td {
-  vertical-align: top;
-}
-#modal-edit-form td table,
-#edit-form td table,
-#delete-form td table {
-  width: 100%;
-}
-#modal-edit-form td,
-#edit-form td,
-#delete-form td {
-  padding-bottom: 15px;
-}
 #modal-edit-form .panelTitle,
 #edit-form .panelTitle,
 #delete-form .panelTitle {
@@ -13189,6 +13163,23 @@ div.wide.form label.hasCheckBox {
 #edit-form .hasCheckBox input[type="checkbox"],
 #delete-form .hasCheckBox input[type="checkbox"] {
   margin-bottom: 0 !important;
+}
+.form-fields {
+  border-bottom: none;
+  table-layout: fixed;
+}
+.form-fields th {
+  vertical-align: text-top;
+}
+.form-fields td {
+  vertical-align: top;
+  position: relative;
+}
+.form-fields td table {
+  width: 100%;
+}
+.form-fields td {
+  padding-bottom: 15px;
 }
 #modal-edit-form {
   padding: 15px 15px 12px 15px;
@@ -17867,9 +17858,6 @@ div.form .errorSummary {
   -o-box-shadow: 0 0 20px 5px rgba(153, 153, 153, 0.5);
   -ms-box-shadow: 0 0 20px 5px rgba(153, 153, 153, 0.5);
   box-shadow: 0 0 20px 5px rgba(153, 153, 153, 0.5);
-}
-#edit-form td {
-  position: relative;
 }
 div.form .errorMessage {
   color: #CC0000;
