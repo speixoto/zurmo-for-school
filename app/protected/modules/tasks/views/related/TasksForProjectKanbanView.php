@@ -56,6 +56,7 @@
                             array('type'      => 'ProjectsOptionsMenu',
                                 'id'          => 'ListViewOptionsActionMenu',
                                 'iconClass'   => 'icon-edit',
+                                'relationModuleId' => 'eval:$this->params["relationModuleId"]'
                             ),
                             array('type'          => 'CreateTaskFromRelatedKanbanModalLink',
                                 'routeModuleId'   => 'eval:$this->moduleId',
