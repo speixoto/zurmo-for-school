@@ -61,7 +61,7 @@
         public static function getItemTypesAndLabels()
         {
             return array(   'GasNozzle'     => Zurmo::t('GamificationModule', 'Gas Nozzle'),
-                            'Cone'          => Zurmo::t('GamificationModule', 'Cone'),
+                            'TrafficCone'   => Zurmo::t('GamificationModule', 'TrafficCone'),
                             'PoliceCar'     => Zurmo::t('GamificationModule', 'Police Car'),
                             'RoadSign'      => Zurmo::t('GamificationModule', 'Road Sign'),
                             'SteeringWheel' => Zurmo::t('GamificationModule', 'Steering Wheel'),
@@ -74,7 +74,7 @@
         public static function getItemTypesAndFrequencies()
         {
             return array(   'GasNozzle'     => 10,
-                            'Cone'          => 10,
+                            'TrafficCone'   => 10,
                             'PoliceCar'     => 10,
                             'RoadSign'      => 3,
                             'SteeringWheel' => 6,

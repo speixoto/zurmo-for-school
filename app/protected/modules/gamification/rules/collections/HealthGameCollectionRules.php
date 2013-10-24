@@ -60,11 +60,11 @@
          */
         public static function getItemTypesAndLabels()
         {
-            return array(   'DoctorBriefcase' => Zurmo::t('GamificationModule', 'DoctorBriefcase'),
-                            'Muscles'          => Zurmo::t('GamificationModule', 'Muscles'),
-                            'Nurse'          => Zurmo::t('GamificationModule', 'Nurse'),
-                            'Shield'      => Zurmo::t('GamificationModule', 'Shield'),
-                            'Vitamins'            => Zurmo::t('GamificationModule', 'Vitamins'),
+            return array(   'FirstAidKit'  => Zurmo::t('GamificationModule', 'First Aid Kit'),
+                            'Muscles'      => Zurmo::t('GamificationModule', 'Muscles'),
+                            'Nurse'        => Zurmo::t('GamificationModule', 'Nurse'),
+                            'Vaccine'      => Zurmo::t('GamificationModule', 'Vaccine'),
+                            'Vitamins'     => Zurmo::t('GamificationModule', 'Vitamins'),
             );
         }
 
@@ -73,11 +73,11 @@
          */
         public static function getItemTypesAndFrequencies()
         {
-            return array(   'DoctorBriefcase' => 10,
-                            'Muscles'          => 10,
-                            'Nurse'          => 10,
-                            'Shield'      => 3,
-                            'Vitamins'            => 6,
+            return array(   'FirstAidKit'  => 10,
+                            'Muscles'      => 10,
+                            'Nurse'        => 10,
+                            'Vaccine'      => 3,
+                            'Vitamins'     => 6,
             );
         }
 

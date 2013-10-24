@@ -60,11 +60,11 @@
          */
         public static function getItemTypesAndLabels()
         {
-            return array(   'Bread' => Zurmo::t('GamificationModule', 'Bread Basket'),
-                            'Jam'          => Zurmo::t('GamificationModule', 'Raspberry Jam'),
-                            'Omlete'          => Zurmo::t('GamificationModule', 'Sunny Side Up Omlete'),
-                            'OrangeJuice'      => Zurmo::t('GamificationModule', 'Orange Juice'),
-                            'Toaster'            => Zurmo::t('GamificationModule', 'Toaster'),
+            return array(   'Bread'         => Zurmo::t('GamificationModule', 'Bread Basket'),
+                            'Jam'           => Zurmo::t('GamificationModule', 'Raspberry Jam'),
+                            'Eggs'          => Zurmo::t('GamificationModule', 'Sunny Side Up Eggs'),
+                            'OrangeJuice'   => Zurmo::t('GamificationModule', 'Orange Juice'),
+                            'Toaster'       => Zurmo::t('GamificationModule', 'Toaster'),
             );
         }
 
@@ -73,11 +73,11 @@
          */
         public static function getItemTypesAndFrequencies()
         {
-            return array(   'Bread' => 10,
+            return array(   'Bread'        => 10,
                             'Jam'          => 10,
-                            'Omlete'          => 10,
-                            'OrangeJuice'      => 3,
-                            'Toaster'            => 6,
+                            'Eggs'         => 10,
+                            'OrangeJuice'  => 3,
+                            'Toaster'      => 6,
             );
         }
 

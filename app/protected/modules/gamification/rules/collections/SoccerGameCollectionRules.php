@@ -60,11 +60,11 @@
          */
         public static function getItemTypesAndLabels()
         {
-            return array(   'WorldCup' => Zurmo::t('GamificationModule', 'World Cup'),
-                            'Cards'      => Zurmo::t('GamificationModule', 'Cards'),
-                            'Goal'       => Zurmo::t('GamificationModule', 'Goal'),
-                            'ScoreBoard' => Zurmo::t('GamificationModule', 'Score Board'),
-                            'SoccerBall' => Zurmo::t('GamificationModule', 'Soccer Ball'),
+            return array(   'WorldCup'      => Zurmo::t('GamificationModule', 'World Cup'),
+                            'PenaltyCards'  => Zurmo::t('GamificationModule', 'Penalty Cards'),
+                            'Goal'          => Zurmo::t('GamificationModule', 'Goal'),
+                            'ScoreBoard'    => Zurmo::t('GamificationModule', 'Scoreboard'),
+                            'SoccerBall'    => Zurmo::t('GamificationModule', 'Soccer Ball'),
             );
         }
 
@@ -73,11 +73,11 @@
          */
         public static function getItemTypesAndFrequencies()
         {
-            return array(   'WorldCup' => 10,
-                            'Cards'          => 10,
+            return array(   'WorldCup'      => 10,
+                            'PenaltyCards'  => 10,
                             'Goal'          => 10,
-                            'ScoreBoard'      => 3,
-                            'SoccerBall'      => 6,
+                            'ScoreBoard'    => 3,
+                            'SoccerBall'    => 6,
             );
         }
 

@@ -60,11 +60,11 @@
          */
         public static function getItemTypesAndLabels()
         {
-            return array(   'Calendar' => Zurmo::t('GamificationModule', 'Calendar'),
-                            'CorrectionFluid'          => Zurmo::t('GamificationModule', 'Correction Fluid'),
-                            'Plant'          => Zurmo::t('GamificationModule', 'Plant'),
-                            'Shreder'      => Zurmo::t('GamificationModule', 'Shreder'),
-                            'Zerox'            => Zurmo::t('GamificationModule', 'Zeroxw'),
+            return array(   'Calendar'        => Zurmo::t('GamificationModule', 'Calendar'),
+                            'CorrectionFluid' => Zurmo::t('GamificationModule', 'Correction Fluid'),
+                            'DeskPlant'       => Zurmo::t('GamificationModule', 'Desk Plant'),
+                            'Shredder'        => Zurmo::t('GamificationModule', 'Shredder'),
+                            'CopyMachine'  => Zurmo::t('GamificationModule', 'Copy machine'),
             );
         }
 
@@ -73,11 +73,11 @@
          */
         public static function getItemTypesAndFrequencies()
         {
-            return array(   'Calendar' => 10,
-                            'CorrectionFluid'          => 10,
-                            'Plant'          => 10,
-                            'Shreder'      => 3,
-                            'Zerox'            => 6,
+            return array(   'Calendar'          => 10,
+                            'CorrectionFluid'   => 10,
+                            'DeskPlant'         => 10,
+                            'Shredder'          => 3,
+                            'CopyMachine'    => 6,
             );
         }
 

@@ -60,11 +60,11 @@
          */
         public static function getItemTypesAndLabels()
         {
-            return array(   'Bank' => Zurmo::t('GamificationModule', 'Bank'),
-                            'Calculator'          => Zurmo::t('GamificationModule', 'Calculator'),
-                            'Cheque'          => Zurmo::t('GamificationModule', 'Cheque'),
-                            'Safe'      => Zurmo::t('GamificationModule', 'Safe'),
-                            'Scale'            => Zurmo::t('GamificationModule', 'Scale'),
+            return array(   'Bank'          => Zurmo::t('GamificationModule', 'Bank'),
+                            'Abacus'        => Zurmo::t('GamificationModule', 'Abacus'),
+                            'Check'         => Zurmo::t('GamificationModule', 'Check'),
+                            'Safe'          => Zurmo::t('GamificationModule', 'Safe'),
+                            'Scale'         => Zurmo::t('GamificationModule', 'Scale'),
             );
         }
 
@@ -74,8 +74,8 @@
         public static function getItemTypesAndFrequencies()
         {
             return array(   'Bank'       => 10,
-                            'Calculator' => 10,
-                            'Cheque'     => 10,
+                            'Abacus'     => 10,
+                            'Check'      => 10,
                             'Safe'       => 3,
                             'Scale'      => 6,
             );

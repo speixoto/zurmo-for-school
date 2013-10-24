@@ -60,11 +60,11 @@
          */
         public static function getItemTypesAndLabels()
         {
-            return array(   'Breaks' => Zurmo::t('GamificationModule', 'Breaks'),
-                            'Chair'          => Zurmo::t('GamificationModule', 'Chair'),
-                            'Gauge'          => Zurmo::t('GamificationModule', 'Gauge'),
-                            'Gear'      => Zurmo::t('GamificationModule', 'Gear'),
-                            'Suspension'            => Zurmo::t('GamificationModule', 'Suspension'),
+            return array(   'Breaks'      => Zurmo::t('GamificationModule', 'Breaks'),
+                            'Seat'        => Zurmo::t('GamificationModule', 'Seat'),
+                            'Gauge'       => Zurmo::t('GamificationModule', 'Gauge'),
+                            'Gear'        => Zurmo::t('GamificationModule', 'Gear'),
+                            'Suspension'  => Zurmo::t('GamificationModule', 'Suspension'),
             );
         }
 
@@ -73,11 +73,11 @@
          */
         public static function getItemTypesAndFrequencies()
         {
-            return array(   'Breaks' => 10,
-                            'Chair'          => 10,
-                            'Gauge'          => 10,
-                            'Gear'      => 3,
-                            'Suspension'            => 6,
+            return array(   'Breaks'     => 10,
+                            'Seat'       => 10,
+                            'Gauge'      => 10,
+                            'Gear'       => 3,
+                            'Suspension' => 6,
             );
         }
 
