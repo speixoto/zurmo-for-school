@@ -115,9 +115,6 @@
             $contactWebFormEntry->contactWebForm = $contactWebForm;
             $contactWebFormEntry->contact        = $contact;
             $this->assertTrue($contactWebFormEntry->save());
-            $contactWebFormEntryId               = $contactWebFormEntry->id;
-            $contactWebForm->entries->add($contactWebFormEntry);
-            $this->assertTrue($contactWebForm->save());
             unset($contactWebFormEntry);
             $this->assertEquals(1, count($contactWebForm->entries));
             $contactWebFormEntry = new ContactWebFormEntry();

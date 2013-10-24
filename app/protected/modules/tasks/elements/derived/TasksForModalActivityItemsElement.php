@@ -34,23 +34,18 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class ContactImportRulesTest extends ImportBaseTest
+    /**
+     * Override to change how cells show up for the noneditable render
+     */
+    class TasksForModalActivityItemsElement extends ActivityItemsElement
     {
-        public static function setUpBeforeClass()
+        protected function getRelatedItemNonEditableTemplate()
         {
-            parent::setUpBeforeClass();
-            SecurityTestHelper::createSuperAdmin();
-        }
-
-        public function testImportSwitchingOwnerButShouldStillCreate()
-        {
-            $super = User::getByUsername('super');
-            Yii::app()->user->userModel = $super;
-
-            $requiredAttributesCollection = ContactsImportRules::getRequiredAttributesCollectionNotIncludingReadOnly();
-            $this->assertCount(2, $requiredAttributesCollection);
-            $this->assertContains('lastName',   array_keys($requiredAttributesCollection));
-            $this->assertContains('state',      array_keys($requiredAttributesCollection));
+            $template  = "<tr>\n";
+            $template .= "<td colspan=\"" . $this->getColumnSpan() . "\">\n";
+            $template .= '{label}{content}';
+            $template .= "</td></tr>\n";
+            return $template;
         }
     }
 ?>

@@ -230,7 +230,7 @@
             $user = $this->logoutCurrentUserLoginNewUserAndGetByUsername('Dood1');
             //Check Create button not present in group
             $content = $this->runControllerWithNoExceptionsAndGetContent('zurmo/group/list');
-            $find = 'Create';
+            $find = 'icon-create';
             $this->assertEquals(0, preg_match('~\b' . $find . '\b~i', $content));
             //Check Delete button not present in group
             $this->setGetArray(array('id' => $group->id));
@@ -239,7 +239,7 @@
             $this->assertEquals(0, preg_match('~\b' . $find . '\b~i', $content));
             //Check Create button not present in role
             $content = $this->runControllerWithNoExceptionsAndGetContent('zurmo/role/list');
-            $find = 'Create';
+            $find = 'icon-create';
             $this->assertEquals(0, preg_match('~\b' . $find . '\b~i', $content));
             //Check Delete button not present in role
             $this->setGetArray(array('id' => $role->id));

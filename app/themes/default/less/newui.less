@@ -605,22 +605,32 @@ footer, header, hgroup, menu, nav, section {
 	}
 }
 
-#header-game-dashboard-link-wrapper{
-	a{
-		.symbly(24px);
-		color: #ddd;
-		padding:0 10px;
-		line-height: 38px;
-		display: block;
-	}
-	.highlighted{
-		@topColor: #c43d53;
-		@bottomColor: #a82d31;
+#header-game-dashboard-link{
+	.symbly(28px);
+	text-align: center;
+	color: #ddd;
+	line-height: 18px;
+	display: block;
+	height: 20px;
+	width: 20px;
+	.radius(50%);
+	background: transparent;
+	position: relative;
+	top: 10px;
+	&.highlighted{
 		color:#fff;
-		.t-shadow(0 0 5px #ff0000);
+		.b-shadow(0 0 2px 1px rgba(255, 255, 255, 0.9));
 	}
 }
 
+#header-game-dashboard-link-wrapper{
+	a{
+		color: #ddd;
+		&:hover{
+			color: #fff;
+		}
+	}
+}
 
 #GlobalSearchAndShortcutsCreateMenuView{
 	height:40px;
@@ -2267,6 +2277,7 @@ a.simple-link{
 }
 
 .ui-sortable{
+	list-style: none;
 	> .ui-state-highlight{
 		min-height: 45px;
 		background: #efefef;
@@ -4160,6 +4171,7 @@ div.hasHalfs{
 		white-space: nowrap;
 	}
 	ul{
+		min-width: 0;
 		line-height: 1;
 		white-space: nowrap;
 		left: auto;

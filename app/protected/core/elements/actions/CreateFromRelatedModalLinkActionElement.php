@@ -83,9 +83,7 @@
          */
         protected function getCreateLinkUrlParams()
         {
-            return array(
-                'modalTransferInformation' => $this->getModalTransferInformation(),
-            );
+            return $this->getModalTransferInformation();
         }
 
         /**

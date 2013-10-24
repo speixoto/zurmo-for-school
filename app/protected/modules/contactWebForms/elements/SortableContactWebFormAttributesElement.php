@@ -66,15 +66,6 @@
          */
         protected function renderControlEditable()
         {
-            $clip = $this->form->checkBoxList($this->model,
-                                              $this->attribute,
-                                              ContactWebFormsUtil::getNonPlacedAttributes($this->model),
-                                              $this->getEditableHtmlOptions());
-            $title     = ZurmoHtml::tag('h3', array(), Zurmo::t('ContactWebFormsModule', 'Available Fields'));
-            $content   = ZurmoHtml::tag('span', array('class' => 'row-description'),
-                         Zurmo::t('ContactWebFormsModule', 'Check the fields that you like to add to your form, you can then change their order or remove them'));
-            $content  .= ZurmoHtml::tag('div', array('class' => 'third'), $title . $clip );
-
             $cClipWidget = new CClipWidget();
             $cClipWidget->beginClip("attributesList");
             $cClipWidget->widget('application.core.widgets.JuiSortable', array(
@@ -83,9 +74,18 @@
             ));
             $cClipWidget->endClip();
             $clip       = $cClipWidget->getController()->clips['attributesList'];
-            $title      = ZurmoHtml::tag('h3', array(), Zurmo::t('ContactWebFormsModule', 'Chosen Fields'));
-            $content   .= ZurmoHtml::tag('div', array('class' => 'twoThirds'), $title . $clip );
+            $title      = ZurmoHtml::tag('h4', array(), Zurmo::t('ContactWebFormsModule', 'Chosen Fields'));
+            $content    = ZurmoHtml::tag('div', array('class' => 'left-column'), $title . $clip );
             $this->registerScript();
+
+            $clip = $this->form->checkBoxList($this->model,
+                                              $this->attribute,
+                                              ContactWebFormsUtil::getNonPlacedAttributes($this->model),
+                                              $this->getEditableHtmlOptions());
+            $title       = ZurmoHtml::tag('h4', array(), Zurmo::t('ContactWebFormsModule', 'Available Fields'));
+            $description = ZurmoHtml::tag('span', array('class' => 'row-description'),
+                           Zurmo::t('ContactWebFormsModule', 'Check the fields that you like to add to your form, you can then change their order or remove them'));
+            $content    .= ZurmoHtml::tag('div', array('class' => 'right-column'), $title . $description . $clip );
             return $content;
         }
 
@@ -112,9 +112,9 @@
         protected function renderItemTemplate()
         {
             return '<li><div class="dynamic-row webform-chosen-field"><div>' .
+                        '<span>{isRequiredElement}</span>' .
+                        '<span>{isHiddenElement}</span>' .
                         '{attributeLabelElement}' .
-                        '{isRequiredElement}' .
-                        '{isHiddenElement}' .
                         '<div id="hiddenAttributeElement_{id}" style="{hideHiddenAttributeElementStyle}">{renderHiddenAttributeElement}</div>' .
                     '</div>{removePlacedAttributeLink}</div></li>';
         }
@@ -128,7 +128,7 @@
          */
         protected function renderLabel()
         {
-            return Zurmo::t('ContactWebFormsModule', 'Form Layout');
+            return ZurmoHtml::tag('h3', array(), Zurmo::t('ContactWebFormsModule', 'Form Layout'));
         }
     }
 ?>

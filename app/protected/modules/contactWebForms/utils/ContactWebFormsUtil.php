@@ -191,7 +191,8 @@
             $attributeLabelElement->editableTemplate = '{content}{error}';
             $isRequiredElement->editableTemplate     = '{content}{label}{error}';
 
-            return array('{attributeLabelElement}'           => $attributeLabelElement->render(),
+            return array('{attributeName}'                   => $attributeName,
+                         '{attributeLabelElement}'           => $attributeLabelElement->render(),
                          '{isRequiredElement}'               => $isRequiredElement->render(),
                          '{isHiddenElement}'                 => $isHiddenElementContent,
                          '{renderHiddenAttributeElement}'    => $renderHiddenAttributeElement,
@@ -327,50 +328,40 @@
 
         public static function renderHiddenAttributeElement($model, $attributeName, $form, $elementType, $params)
         {
-            switch ($elementType)
+            if ($elementType === 'CheckBox')
             {
-                case 'Text':
-                    $element = new TextElement($model, $attributeName, $form, $params);
-                    break;
-                case 'Date':
-                    $element = new DateElement($model, $attributeName, $form, $params);
-                    break;
-                case 'DateTime':
-                    $element = new DateTimeElement($model, $attributeName, $form, $params);
-                    break;
-                case 'TextArea':
-                    $element = new TextAreaElement($model, $attributeName, $form, $params);
-                    break;
-                case 'DropDown':
-                    $element = new ContactWebFormAttributeFormStaticDropDownFormElement($model, $attributeName, $form, $params);
-                    break;
-                case 'Phone':
-                    $element = new PhoneElement($model, $attributeName, $form, $params);
-                    break;
-                case 'Address':
-                    $element = new AddressElement($model, $attributeName, $form, $params);
-                    break;
-                case 'EmailAddressInformation':
-                    $element = new EmailAddressInformationElement($model, $attributeName, $form, $params);
-                    break;
-                case 'Url':
-                    $element = new UrlElement($model, $attributeName, $form, $params);
-                    break;
-                case 'Address':
-                    $element = new AddressElement($model, $attributeName, $form, $params);
-                    break;
-                case 'RadioDropDown':
-                    $element = new ContactWebFormAttributeFormStaticDropDownFormElement($model, $attributeName, $form, $params);
-                    break;
-                case 'CheckBox':
-                    $element = new BooleanStaticDropDownElement($model, $attributeName, $form, $params);
-                    break;
-                default:
-                    $element = new TextElement($model, $attributeName, $form, $params);
-                    break;
+                $className = 'BooleanStaticDropDownElement';
             }
+            elseif ($elementType === 'RadioDropDown' || $elementType === 'DropDown')
+            {
+                $className = 'ContactWebFormAttributeFormStaticDropDownFormElement';
+            }
+            else
+            {
+                $className = $elementType . 'Element';
+            }
+            $element = new $className($model, $attributeName, $form, $params);
             $element->editableTemplate = '{content}{error}';
             $content = $element->render();
+            return $content;
+        }
+
+        public static function getPlacedAttributeContent($attributeData)
+        {
+            $content  = ZurmoHtml::openTag('li');
+            $content .= ZurmoHtml::openTag('div', array('class' => 'dynamic-row webform-chosen-field'));
+            $content .= ZurmoHtml::openTag('div');
+            $content .= ZurmoHtml::tag('span', array(), $attributeData['{isRequiredElement}']);
+            $content .= ZurmoHtml::tag('span', array(), $attributeData['{isHiddenElement}']);
+            $content .= $attributeData['{attributeLabelElement}'];
+            $content .= ZurmoHtml::openTag('div', array('id'    => "hiddenAttributeElement_" . $attributeData['{attributeName}'],
+                                                        'style' => $attributeData['{hideHiddenAttributeElementStyle}']));
+            $content .= $attributeData['{renderHiddenAttributeElement}'];
+            $content .= ZurmoHtml::closeTag('div');
+            $content .= ZurmoHtml::closeTag('div');
+            $content .= $attributeData['{removePlacedAttributeLink}'];
+            $content .= ZurmoHtml::closeTag('div');
+            $content .= ZurmoHtml::closeTag('li');
             return $content;
         }
     }

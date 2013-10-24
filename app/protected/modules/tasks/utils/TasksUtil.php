@@ -394,13 +394,12 @@
                      static::resolveExtraCloseScriptForModalAjaxOptions($sourceKanbanBoardId));
         }
 
-        public static function resolveExtraCloseScriptForModalAjaxOptions($sourceKanbanBoardId = null)
+        public static function resolveExtraCloseScriptForModalAjaxOptions($sourceId = null)
         {
-            assert('is_string($sourceKanbanBoardId) || $sourceKanbanBoardId == null');
-            $url = Yii::app()->createUrl('tasks/default/updateStatusOnDragInKanbanView');
-            if($sourceKanbanBoardId != null)
+            assert('is_string($sourceId) || $sourceId == null');
+            if($sourceId != null)
             {
-                return "$.fn.yiiGridView.update('{$sourceKanbanBoardId}');";
+                return "$.fn.yiiGridView.update('{$sourceId}');";
             }
         }
 
@@ -424,6 +423,7 @@
             $params      = array('label' => $label, 'routeModuleId' => 'tasks',
                                  'ajaxOptions' => $ajaxOptions,
                                  'wrapLabel' => false,
+                                 'htmlOptions' => array('id' => 'task-' . $task->id),
                                  'routeParameters' => array('sourceKanbanBoardId' => $sourceKanbanBoardId));
             $goToDetailsFromRelatedModalLinkActionElement = new GoToDetailsFromRelatedModalLinkActionElement(
                                                                     $controllerId, $moduleId, $task->id, $params);
@@ -855,6 +855,36 @@
                                                              makeViewWithBreadcrumbsForCurrentUser(
                                                                     $controller,$listView, $breadCrumbLinks, 'KanbanBoardBreadCrumbView'));
             return $view;
+        }
+
+        /**
+         * Register script for task detail link. This would be called from both kanban and open task portlet
+         * @param string $sourceId
+         */
+        public static function registerTaskModalDetailScript($sourceId)
+        {
+            $modalId = TasksUtil::getModalContainerId();
+            $url = Yii::app()->createUrl('tasks/default/modalDetailsFromRelation');
+            $ajaxOptions = TasksUtil::resolveAjaxOptionsForModalView('Details', $sourceId);
+            $ajaxOptions['beforeSend'] = new CJavaScriptExpression($ajaxOptions['beforeSend']);
+            $script = "$(document).on('click', '.task-kanban-detail-link', function()
+                          {
+                            var id = $(this).attr('id');
+                            var idParts = id.split('-');
+                            var taskId = parseInt(idParts[1]);
+                            $.ajax(
+                            {
+                                'type' : 'GET',
+                                'url'  : '{$url}' + '?id=' + taskId,
+                                'beforeSend' : {$ajaxOptions['beforeSend']},
+                                'update'     : '{$ajaxOptions['update']}',
+                                'success': function(html){
+jQuery('#{$modalId}').html(html)
+}
+                            });
+                          }
+                        );";
+             Yii::app()->clientScript->registerScript('taskModalDetailScript',$script);
         }
     }
 ?>

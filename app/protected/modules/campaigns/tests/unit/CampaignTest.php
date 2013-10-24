@@ -151,11 +151,11 @@
         public function testDummyHtmlContentThrowsValidationErrorWhenTextContentIsEmpty()
         {
             $campaign                                  = new Campaign();
-            $campaign->name                             = 'Another Test Campaign Name';
-            $campaign->supportsRichText                 = 0;
-            $campaign->status                           = Campaign::STATUS_ACTIVE;
-            $campaign->fromName                         = 'Another From Name';
-            $campaign->fromAddress                      = 'anotherfrom@zurmo.com';
+            $campaign->name                            = 'Another Test Campaign Name';
+            $campaign->supportsRichText                = 1;
+            $campaign->status                          = Campaign::STATUS_ACTIVE;
+            $campaign->fromName                        = 'Another From Name';
+            $campaign->fromAddress                     = 'anotherfrom@zurmo.com';
             $campaign->subject                         = 'Another Test Subject';
             $campaign->textContent                     = '';
             $campaign->htmlContent                     = "<html>\n<head>\n</head>\n<body>\n</body>\n</html>";
@@ -167,19 +167,19 @@
             $this->assertEquals(1, count($errorMessages['textContent']));
             $this->assertEquals('Please provide at least one of the contents field.', $errorMessages['textContent'][0]);
 
-            $campaign->textContent                      = 'Text Content';
+            $campaign->htmlContent                     = 'Text Content';
             $this->assertTrue($campaign->save());
             $id                         = $campaign->id;
             unset($campaign);
             $campaign                   = Campaign::getById($id);
             $this->assertEquals('Another Test Campaign Name',   $campaign->name);
-            $this->assertEquals(0,                              $campaign->supportsRichText);
+            $this->assertEquals(1,                              $campaign->supportsRichText);
             $this->assertEquals(Campaign::STATUS_ACTIVE,        $campaign->status);
             $this->assertEquals('Another From Name',            $campaign->fromName);
             $this->assertEquals('anotherfrom@zurmo.com',        $campaign->fromAddress);
             $this->assertEquals('Another Test Subject',         $campaign->subject);
-            $this->assertEquals(null,                           $campaign->htmlContent);
-            $this->assertEquals('Text Content',                 $campaign->textContent);
+            $this->assertEquals(null,                           $campaign->textContent);
+            $this->assertEquals('Text Content',                 $campaign->htmlContent);
             $this->assertEquals(self::$marketingList->id,       $campaign->marketingList->id);
         }
 

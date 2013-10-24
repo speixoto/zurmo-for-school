@@ -61,6 +61,24 @@
             $this->runUpdateSchema($output);
             $this->assertTrue(array_search('Info - Schema generation completed', $output) !== false);
             $this->assertTrue(array_search('Skipping existing read Tables.', $output) !== false);
+            $this->assertTrue(array_search('Skipping account_read', $output) !== false);
+            $this->assertTrue(array_search('Skipping campaign_read', $output) !== false);
+            $this->assertTrue(array_search('Skipping contact_read', $output) !== false);
+            $this->assertTrue(array_search('Skipping conversation_read', $output) !== false);
+            $this->assertTrue(array_search('Skipping emailmessage_read', $output) !== false);
+            $this->assertTrue(array_search('Skipping emailtemplate_read', $output) !== false);
+            $this->assertTrue(array_search('Skipping gamereward_read', $output) !== false);
+            $this->assertTrue(array_search('Skipping marketinglist_read', $output) !== false);
+            $this->assertTrue(array_search('Skipping meeting_read', $output) !== false);
+            $this->assertTrue(array_search('Skipping mission_read', $output) !== false);
+            $this->assertTrue(array_search('Skipping note_read', $output) !== false);
+            $this->assertTrue(array_search('Skipping opportunity_read', $output) !== false);
+            $this->assertTrue(array_search('Skipping savedreport_read', $output) !== false);
+            $this->assertTrue(array_search('Skipping product_read', $output) !== false);
+            $this->assertTrue(array_search('Skipping socialitem_read', $output) !== false);
+            $this->assertTrue(array_search('Skipping task_read', $output) !== false);
+            $this->assertTrue(array_search('Skipping contactwebform_read', $output) !== false);
+            $this->assertTrue(array_search('Skipping project_read', $output) !== false);
             $this->assertTrue(array_search('Schema update complete.', $output) !== false);
         }
 
@@ -73,6 +91,24 @@
             $this->runUpdateSchema($output, 0);
             $this->assertTrue(array_search('Info - Schema generation completed', $output) !== false);
             $this->assertTrue(array_search('Skipping existing read Tables.', $output) !== false);
+            $this->assertTrue(array_search('Skipping account_read', $output) !== false);
+            $this->assertTrue(array_search('Skipping campaign_read', $output) !== false);
+            $this->assertTrue(array_search('Skipping contact_read', $output) !== false);
+            $this->assertTrue(array_search('Skipping conversation_read', $output) !== false);
+            $this->assertTrue(array_search('Skipping emailmessage_read', $output) !== false);
+            $this->assertTrue(array_search('Skipping emailtemplate_read', $output) !== false);
+            $this->assertTrue(array_search('Skipping gamereward_read', $output) !== false);
+            $this->assertTrue(array_search('Skipping marketinglist_read', $output) !== false);
+            $this->assertTrue(array_search('Skipping meeting_read', $output) !== false);
+            $this->assertTrue(array_search('Skipping mission_read', $output) !== false);
+            $this->assertTrue(array_search('Skipping note_read', $output) !== false);
+            $this->assertTrue(array_search('Skipping opportunity_read', $output) !== false);
+            $this->assertTrue(array_search('Skipping savedreport_read', $output) !== false);
+            $this->assertTrue(array_search('Skipping product_read', $output) !== false);
+            $this->assertTrue(array_search('Skipping socialitem_read', $output) !== false);
+            $this->assertTrue(array_search('Skipping task_read', $output) !== false);
+            $this->assertTrue(array_search('Skipping contactwebform_read', $output) !== false);
+            $this->assertTrue(array_search('Skipping project_read', $output) !== false);
             $this->assertTrue(array_search('Schema update complete.', $output) !== false);
         }
 
@@ -85,7 +121,26 @@
             $this->runUpdateSchema($output, 1);
             $this->assertTrue(array_search('Info - Schema generation completed', $output) !== false);
             $this->assertTrue(array_search('Overwriting any existing read Tables.', $output) !== false);
+            $this->assertTrue(array_search('Building account_read', $output) !== false);
+            $this->assertTrue(array_search('Building campaign_read', $output) !== false);
+            $this->assertTrue(array_search('Building contact_read', $output) !== false);
+            $this->assertTrue(array_search('Building conversation_read', $output) !== false);
+            $this->assertTrue(array_search('Building emailmessage_read', $output) !== false);
+            $this->assertTrue(array_search('Building emailtemplate_read', $output) !== false);
+            $this->assertTrue(array_search('Building gamereward_read', $output) !== false);
+            $this->assertTrue(array_search('Building marketinglist_read', $output) !== false);
+            $this->assertTrue(array_search('Building meeting_read', $output) !== false);
+            $this->assertTrue(array_search('Building mission_read', $output) !== false);
+            $this->assertTrue(array_search('Building note_read', $output) !== false);
+            $this->assertTrue(array_search('Building opportunity_read', $output) !== false);
+            $this->assertTrue(array_search('Building savedreport_read', $output) !== false);
+            $this->assertTrue(array_search('Building product_read', $output) !== false);
+            $this->assertTrue(array_search('Building socialitem_read', $output) !== false);
+            $this->assertTrue(array_search('Building task_read', $output) !== false);
+            $this->assertTrue(array_search('Building contactwebform_read', $output) !== false);
+            $this->assertTrue(array_search('Building project_read', $output) !== false);
             $this->assertTrue(array_search('Schema update complete.', $output) !== false);
+
         }
 
         protected function runUpdateSchema(& $output, $overwriteExistingReadTables = null)

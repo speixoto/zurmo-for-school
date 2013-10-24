@@ -42,13 +42,12 @@
 
         /**
          * Called from outside to render attribute value as label. @see XXXDropDownListViewColumnAdapter
-         * Called from outside to render attribute value as label. @see XXXDropDownListViewColumnAdapter
-         * @param int $attribute
+         * @param int|string $attribute
          * @return string, translated attribute if available otherwise just return attribute value
          */
         public static function renderNonEditableStringContent($attribute)
         {
-            assert('is_string($attribute)');
+            assert('is_int($attribute) || is_string($attribute)');
             $data = static::resolveDropDownArray();
             if (isset($data[$attribute]))
             {
