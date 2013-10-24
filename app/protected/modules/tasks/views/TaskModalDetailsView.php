@@ -66,6 +66,19 @@
                                     array(
                                         array(
                                             'elements' => array(
+                                            array('attributeName' => null, 'type' => 'Null'),
+                                        ),
+                                    ),
+                                )
+                                ),
+                            ),
+                        ),
+                        array(
+                            'rows' => array(
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
                                                 array('attributeName' => 'null', 'type' => 'TasksForModalActivityItems'),
                                             ),
                                         ),
@@ -398,7 +411,7 @@
         {
             if(get_class($element) == 'NullElement')
             {
-                $element->nonEditableTemplate = null;
+                $element->nonEditableTemplate = '';
             }
             else
             {

@@ -409,22 +409,17 @@
          * @param $controllerId
          * @param $moduleId
          * @param $moduleClassName
-         * @param null $sourceKanbanBoardId
          * @return null|string
          */
-        public static function getModalDetailsLink(Task $task, $controllerId, $moduleId, $moduleClassName, $sourceKanbanBoardId = null)
+        public static function getModalDetailsLink(Task $task, $controllerId, $moduleId, $moduleClassName)
         {
             assert('is_string($controllerId) || is_null($controllerId)');
             assert('is_string($moduleId)  || is_null($moduleId)');
             assert('is_string($moduleClassName)');
-            assert('is_string($sourceKanbanBoardId) || $sourceKanbanBoardId == null');
-            //$ajaxOptions = TasksUtil::resolveAjaxOptionsForModalView('Details', $sourceKanbanBoardId);
             $label       = $task->name . ZurmoHtml::tag('span', array(), '(' . strval($task->owner) . ')');
             $params      = array('label' => $label, 'routeModuleId' => 'tasks',
-                                 //'ajaxOptions' => $ajaxOptions,
                                  'wrapLabel' => false,
-                                 'htmlOptions' => array('id' => 'task-' . $task->id),
-                                 //'routeParameters' => array('sourceKanbanBoardId' => $sourceKanbanBoardId)
+                                 'htmlOptions' => array('id' => 'task-' . $task->id)
                                 );
             $goToDetailsFromRelatedModalLinkActionElement = new GoToDetailsFromRelatedModalLinkActionElement(
                                                                     $controllerId, $moduleId, $task->id, $params);

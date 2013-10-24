@@ -229,8 +229,7 @@
             $content     = TasksUtil::getModalDetailsLink($data,
                                                           $this->controllerId,
                                                           $this->moduleId,
-                                                          $this->getActionModuleClassName(),
-                                                          $this->getGridViewId());
+                                                          $this->getActionModuleClassName());
             return $content;
         }
 
