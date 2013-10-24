@@ -181,7 +181,7 @@
                 Yii::app()->clientScript->registerScript($scriptName, "
                         $('#" . $dropDownId . "').unbind('change.action').bind('change.action', function()
                         {
-                            // TODO: @Shoaibi/@Jason: High: Heavy dependence on DOM?
+                            // Heavy dependence on DOM...
                             selectedOption      = $(this).find(':selected');
                             selectedOptionId    = selectedOption.attr('id');
                             if (selectedOptionId)

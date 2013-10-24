@@ -486,7 +486,7 @@
             $campaignItems      = CampaignItem::getByProcessedAndCampaignId(0, $campaignId);
             $this->assertNotEmpty($campaignItems);
             $this->assertCount(5, $campaignItems);
-            // TODO: @Shoaibi: Medium: Add tests for the other campaign type.
+            // TODO: @Shoaibi: Low: Add tests for the other campaign type.
         }
 
         /**
@@ -592,7 +592,7 @@
                     $this->assertEquals(Campaign::STATUS_ACTIVE, $campaign->status);
                 }
             }
-            // TODO: @Shoaibi: Medium: Add tests for the other campaign type.
+            // TODO: @Shoaibi: Low: Add tests for the other campaign type.
         }
 
         /**

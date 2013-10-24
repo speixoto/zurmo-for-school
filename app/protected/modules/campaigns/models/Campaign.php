@@ -252,7 +252,10 @@
 
         public function getErrors($attributeNameOrNames = null)
         {
-            // TODO: @Shoaibi/@Jason: Medium: We should have overriden getErrors' original code but this was easier.
+            // TODO: @Shoaibi/@Jason: Low: We should have overridden getErrors' original code but this was easier.
+            // this was done because marketingList is required but we didn't used to get an error with the right
+            // form with parent's getErrors. We had something like "Name cannot be blank." for MarketingList too
+            // with this we have: "Marketing List cannot be blank."
             return $this->attributeNameToErrors;
         }
 

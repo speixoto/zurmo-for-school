@@ -841,7 +841,6 @@ $.extend({
     }
 });
 
-// TODO: @Shoaibi: Medium: Ask Nabeel/Sergio on extending buttonset widget to add this functionality before _create
 $.fn.createButtonSetIfNotAlreadyExist = function(qualifier, classFlag) {
     classFlag = typeof classFlag !== 'undefined' ? classFlag : 'ui-buttonset';
     if ($(qualifier).hasClass(classFlag)) {

@@ -46,6 +46,22 @@
 
     class TestSuite
     {
+        // these constants serve no purpose for PHPUnit
+        // we return these when exiting inside this class under special circumstances
+        // these are useful for chained invocations of TestSuite, say
+        // like: phpunit TestSuite.php FirstTest && phpunit TestSuite.php SecondTest
+        // if FirstTest can't be run due to any reason, say inexisting test or tempdir not writable, SecondTest
+        // would never be run, which makes great sense considering "&&".
+        // this would be super useful in a CI system, we could just look at return code
+        //  instead of reading long strings
+        const ERROR_INVOCATION_WITHOUT_TESTSUITE        = -1;
+
+        const ERROR_WALKTHROUGH_AND_BENCHMARK_SELECTED  = -2;
+
+        const ERROR_TEST_NOT_FOUND                      = -3;
+
+        const ERROR_TEMP_DIR_NOT_WRITABLE               = -4;
+
         protected static $dependentTestModelClassNames = array();
 
         public static function suite()
@@ -89,14 +105,14 @@
             if ($argv[count($argv) - 2] != 'TestSuite.php')
             {
                 echo $usage;
-                exit;
+                exit(static::ERROR_INVOCATION_WITHOUT_TESTSUITE);
             }
 
             if ($onlyWalkthroughs && $onlyBenchmarks)
             {
                 echo $usage;
                 echo "It doesn't have sense to select both \"--only-walkthroughs\" and \"--only-benchmarks\" options. " . PHP_EOL . PHP_EOL;
-                exit;
+                exit(static::ERROR_WALKTHROUGH_AND_BENCHMARK_SELECTED);
             }
 
             $whatToTest           = $argv[count($argv) - 1];
@@ -132,7 +148,7 @@
             {
                 echo $usage;
                 echo "  No tests found for '$whatToTest'." . PHP_EOL . PHP_EOL;
-                exit;
+                exit(static::ERROR_TEST_NOT_FOUND);
             }
             echo "Testing with database: '"  . Yii::app()->db->connectionString . '\', ' .
                                                 'username: \'' . Yii::app()->db->username         . "'." . PHP_EOL;
@@ -148,7 +164,7 @@
                 {
                     echo PHP_EOL .PHP_EOL . "Temp directory must be writable to store reusable schema" . PHP_EOL; // Not Coding Standard
                     echo "Temp directory: " . sys_get_temp_dir() .  PHP_EOL . PHP_EOL; // Not Coding Standard
-                    exit;
+                    exit(static::ERROR_TEMP_DIR_NOT_WRITABLE);
                 }
                 echo "Auto building database schema..." . PHP_EOL;
                 ZurmoRedBean::$writer->wipeAll();

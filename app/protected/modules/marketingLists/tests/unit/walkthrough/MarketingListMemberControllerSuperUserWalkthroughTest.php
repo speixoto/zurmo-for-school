@@ -683,7 +683,6 @@
             $list           = MarketingList::getById($listId);
             $this->assertNotEmpty($list);
             $members        = $list->marketingListMembers;
-            // TODO: @Shoaibi/@Jason: Medium: This should be 2. Bug in $dataprovider->getData() for page 3, also happens on UI, just for MLM::massDelete
             $this->assertEquals(5, count($members));
 
             $this->setGetArray(

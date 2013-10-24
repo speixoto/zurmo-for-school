@@ -189,7 +189,6 @@
          */
         public function testSuperUserCreateAction()
         {
-            // TODO: @Shoaibi: Low: Add test with different permissions
             $content = $this->runControllerWithNoExceptionsAndGetContent('marketingLists/default/create');
             $this->assertTrue(strpos($content, 'Create Marketing List') !== false);
             $this->assertTrue(strpos($content, '<label for="MarketingList_name" class="required">Name ' .
