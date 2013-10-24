@@ -40,34 +40,24 @@
     class PhoneHelper extends CApplicationComponent
     {
         
-        public function resolvePhoneNumberContentForDialing($content, $inputId, $targetObject)
+        public function resolvePhoneNumberContentForDialing($content, $inputId, $model)
         {
             return $content;
         }
         
-        public function resolvePersonCardViewOfficePhoneNumberContent($content, $targetObject)
+        public function resolvePersonCardViewOfficePhoneNumberContent($content, $model)
         {
             return ZurmoHtml::tag('span', array('class' => 'icon-office-phone'), $content);
         }
         
-        public function resolvePersonCardViewMobilePhoneNumberContent($content, $targetObject)
+        public function resolvePersonCardViewMobilePhoneNumberContent($content, $model)
         {
             return ZurmoHtml::tag('span', array('class' => 'icon-mobile-phone'), $content);
         }
         
-        public function resolvePhoneListViewColumnValue($content, $inputId, $targetObject)
+        public function resolvePhoneListViewColumnValue($content, $inputId, $model)
         {
             return $content;
-        }
-        
-        public function getOnSipPerUserSettingData($settingName)
-        {
-            return null;
-        }
-        
-        public function getOnSipGlobalSettingData($settingName)
-        {
-            return null;
         }
     }
 ?>
