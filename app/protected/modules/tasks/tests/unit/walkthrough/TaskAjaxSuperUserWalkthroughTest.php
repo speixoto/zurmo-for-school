@@ -169,19 +169,19 @@
                                     'modalTransferInformation' =>array('modalId' => 'relatedModalContainer-tasks')
                                     )
                               );
-            $content = $this->runControllerWithNoExceptionsAndGetContent('tasks/default/modalDetailsFromRelation');
+            $content = $this->runControllerWithNoExceptionsAndGetContent('tasks/default/modalDetails');
             $this->assertTrue(strpos($content, 'Task for test cases') > 0);
 
             $this->setGetArray(array(
                                     'id'  => $tasks[1]->id
                               ));
-            $content = $this->runControllerWithNoExceptionsAndGetContent('tasks/default/modalEditFromRelation');
+            $content = $this->runControllerWithNoExceptionsAndGetContent('tasks/default/modalEdit');
 
             $this->setGetArray(array(
                                     'id'  => $tasks[1]->id
                               ));
             unset($_POST['Task']);
-            $content = $this->runControllerWithNoExceptionsAndGetContent('tasks/default/modalCopyFromRelation');
+            $content = $this->runControllerWithNoExceptionsAndGetContent('tasks/default/modalCopy');
             $this->assertTrue(strpos($content, 'Task for test cases') > 0);
         }
 

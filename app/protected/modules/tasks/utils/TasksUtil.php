@@ -857,10 +857,10 @@
          * Register script for task detail link. This would be called from both kanban and open task portlet
          * @param string $sourceId
          */
-        public static function registerTaskModalDetailScript($sourceId)
+        public static function registerTaskModalDetailsScript($sourceId)
         {
             $modalId = TasksUtil::getModalContainerId();
-            $url = Yii::app()->createUrl('tasks/default/modalDetailsFromRelation');
+            $url = Yii::app()->createUrl('tasks/default/modalDetails');
             $ajaxOptions = TasksUtil::resolveAjaxOptionsForModalView('Details', $sourceId);
             $ajaxOptions['beforeSend'] = new CJavaScriptExpression($ajaxOptions['beforeSend']);
             $script = "$(document).on('click', '#{$sourceId} .task-kanban-detail-link', function()
@@ -874,13 +874,49 @@
                                 'url'  : '{$url}' + '?id=' + taskId,
                                 'beforeSend' : {$ajaxOptions['beforeSend']},
                                 'update'     : '{$ajaxOptions['update']}',
-                                'success': function(html){
-jQuery('#{$modalId}').html(html)
-}
+                                'success': function(html){jQuery('#{$modalId}').html(html)}
                             });
                           }
                         );";
-             Yii::app()->clientScript->registerScript('taskModalDetailScript' . $sourceId, $script);
+             Yii::app()->clientScript->registerScript('taskModalDetailsScript' . $sourceId, $script);
+        }
+
+        /**
+         * Register script for special task detail link. This is from a redirect of something like
+         * tasks/default/details and it should open up the task immediately.
+         * @param int $taskId
+         * @param string $sourceId
+         */
+        public static function registerOpenToTaskModalDetailsScript($taskId, $sourceId)
+        {
+            assert('is_int($taskId)');
+            assert('is_string($sourceId)');
+            $modalId = TasksUtil::getModalContainerId();
+            $url     = Yii::app()->createUrl('tasks/default/modalDetails', array('id' => $taskId));
+            $ajaxOptions = TasksUtil::resolveAjaxOptionsForModalView('Details', $sourceId);
+            $options = array('type'       => 'GET',
+                             'url'        => $url,
+                             'beforeSend' => $ajaxOptions['beforeSend'],
+                             'update'     => $ajaxOptions['update'],
+                             'success'    => "function(html){jQuery('#{$modalId}').html(html)}");
+            $script  = ZurmoHtml::ajax($options);
+            Yii::app()->clientScript->registerScript('openToTaskModalDetailsScript' . $sourceId, $script);
+        }
+
+        public static function castDownActivityItem(Item $activityItem)
+        {
+            $relationModelClassNames = ActivitiesUtil::getActivityItemsModelClassNames();
+            foreach ($relationModelClassNames as $relationModelClassName)
+            {
+                try
+                {
+                    $modelDerivationPathToItem = RuntimeUtil::getModelDerivationPathToItem($relationModelClassName);
+                    return $activityItem->castDown(array($modelDerivationPathToItem));
+                }
+                catch (NotFoundException $e)
+                {
+                }
+            }
         }
     }
 ?>
