@@ -24545,12 +24545,37 @@ a + .autoresponder-stats {
   -ms-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
   box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
 }
-.webform-chosen-field input[type="text"] {
-  width: 70%;
-}
-.webform-chosen-field span {
-  width: 15%;
+.field-label,
+.hidden-field-label {
+  float: left;
   display: inline-block;
+  width: 80%;
+}
+.field-label input[type="text"],
+.hidden-field-label input[type="text"],
+.field-label textarea,
+.hidden-field-label textarea {
+  width: 80%;
+}
+.field-label .hasDropDown,
+.hidden-field-label .hasDropDown {
+  width: 80% !important;
+  float: left;
+}
+.field-label label,
+.hidden-field-label label {
+  width: 20%;
+  line-height: 26px;
+}
+.is-required-checkbox,
+.is-hidden-checkbox {
+  float: left;
+  display: inline-block;
+  width: 20%;
+}
+.hidden-field-label,
+.is-hidden-checkbox {
+  margin-top: 10px;
 }
 .sliding-panel {
   display: none;

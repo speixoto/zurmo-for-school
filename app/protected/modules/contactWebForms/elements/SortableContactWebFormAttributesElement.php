@@ -111,16 +111,17 @@
          */
         protected function renderItemTemplate()
         {
-            $attributeData = array();
-            $attributeData['{attributeName}']                   = '{id}';
-            $attributeData['{isRequiredElement}']               = '{isRequiredElement}';
-            $attributeData['{isHiddenElement}']                 = '{isHiddenElement}';
-            $attributeData['{attributeLabelElement}']           = '{attributeLabelElement}';
-            $attributeData['{hideHiddenAttributeElementStyle}'] = '{hideHiddenAttributeElementStyle}';
-            $attributeData['{renderHiddenAttributeElement}']    = '{renderHiddenAttributeElement}';
-            $attributeData['{removePlacedAttributeLink}']       = '{removePlacedAttributeLink}';
-            $content                                            = ContactWebFormsUtil::getPlacedAttributeContent($attributeData);
-            return $content;
+            $label = ZurmoHtml::tag('label', array(), Zurmo::t('ContactWebFormsModule', 'Label'));
+            $value = ZurmoHtml::tag('label', array(), Zurmo::t('ContactWebFormsModule', 'Value'));
+            return '<li><div class="dynamic-row webform-chosen-field clearfix">' .
+                            '<span class="is-required-checkbox">{isRequiredElement}</span>' .
+                            '<span class="field-label">' . $label . '{attributeLabelElement}</span>' .
+                            '<span class="is-hidden-checkbox">{isHiddenElement}</span>' .
+                            '<span id="hiddenAttributeElement_{id}" class="hidden-field-label" style="{hideHiddenAttributeElementStyle}">
+                                ' . $value . '{renderHiddenAttributeElement}
+                            </span>' .
+                            '{removePlacedAttributeLink}
+                        </div></li>';
         }
 
         protected function renderError()

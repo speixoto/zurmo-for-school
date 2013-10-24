@@ -347,19 +347,25 @@
 
         public static function getPlacedAttributeContent($attributeData)
         {
+
+            $label = ZurmoHtml::tag('label', array(), Zurmo::t('ContactWebFormsModule', 'Label'));
+            $value = ZurmoHtml::tag('label', array(), Zurmo::t('ContactWebFormsModule', 'Value'));
+
             $content  = ZurmoHtml::openTag('li');
-            $content .= ZurmoHtml::openTag('div', array('class' => 'dynamic-row webform-chosen-field'));
-            $content .= ZurmoHtml::openTag('div');
-            $content .= ZurmoHtml::tag('span', array(), $attributeData['{isRequiredElement}']);
-            $content .= ZurmoHtml::tag('span', array(), $attributeData['{isHiddenElement}']);
-            $content .= $attributeData['{attributeLabelElement}'];
-            $content .= ZurmoHtml::openTag('div', array('id'    => "hiddenAttributeElement_" . $attributeData['{attributeName}'],
-                                                        'style' => $attributeData['{hideHiddenAttributeElementStyle}']));
-            $content .= $attributeData['{renderHiddenAttributeElement}'];
-            $content .= ZurmoHtml::closeTag('div');
-            $content .= ZurmoHtml::closeTag('div');
+            $content .= ZurmoHtml::openTag('div', array('class' => 'dynamic-row webform-chosen-field clearfix'));
+
+            $content .= ZurmoHtml::tag('span', array('class' => 'is-required-checkbox'), $attributeData['{isRequiredElement}']);
+            $content .= ZurmoHtml::tag('span', array('class' => 'field-label'), $label . $attributeData['{attributeLabelElement}']);
+            $content .= ZurmoHtml::tag('span', array('class' => 'is-hidden-checkbox'), $attributeData['{isHiddenElement}']);
+
+            $content .= ZurmoHtml::openTag('span', array('id'    => 'hiddenAttributeElement_' . $attributeData['{attributeName}'],
+                                                         'class' => 'hidden-field-label',
+                                                         'style' => $attributeData['{hideHiddenAttributeElementStyle}']));
+            $content .= $value . $attributeData['{renderHiddenAttributeElement}'];
+            $content .= ZurmoHtml::closeTag('span');
+
             $content .= $attributeData['{removePlacedAttributeLink}'];
-            $content .= ZurmoHtml::closeTag('div');
+
             $content .= ZurmoHtml::closeTag('li');
             return $content;
         }
