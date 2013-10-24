@@ -184,13 +184,13 @@
                         break;
                     case 'RedBeanModelDefaultValueValidator':
                     case 'CDefaultValueValidator':
-                        // TODO: @Shoaibi/@Jason: Medium: Left here for future use if we want to set defaults on db level too.
+                        // Left here for future use if we want to set defaults on db level too.
                         //$default              = 'DEFAULT ' . $validator->value;
                         break;
                     case 'RedBeanModelRequiredValidator':
                     case 'CRequiredValidator':
                         //$notNull = 'NOT NULL';
-                        // TODO: @Shoaibi/@Jason: Medium: Left here for future use if we want to set required on db level too.
+                        // Left here for future use if we want to set required on db level too.
                         break;
                     case 'RedBeanModelUniqueValidator':
                     case 'CUniqueValidator':

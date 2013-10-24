@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    require_once('FileModelController.php'); // TODO: @Shoaibi/@Jason: High: Yii::import doesn't work, and why do we need this?
+    Yii::import('application.modules.zurmo.controllers.FileModelController', true);
     class ZurmoFileTestModelController extends ZurmoFileModelController
     {
         const FILE_MODEL_CLASS_NAME = 'FileTestModel';

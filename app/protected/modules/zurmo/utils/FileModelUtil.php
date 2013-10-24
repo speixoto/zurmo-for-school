@@ -160,7 +160,6 @@
         public static function makeByFileModel($existingFileModel, $fileModelClassName = 'FileModel')
         {
             $file                   = new $fileModelClassName();
-            // TODO: @Shoaibi/@Jason: High: Following should also clone FileContent as its HAS_ONE.
             ZurmoCopyModelUtil::copy($existingFileModel, $file);
             $fileContent            = new FileContent();
             $fileContent->content   = $existingFileModel->fileContent->content;

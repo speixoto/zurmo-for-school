@@ -1982,7 +1982,7 @@ td.empty{
 		vertical-align: text-top;
 	}
 	table{
-		table-layout:fixed;
+		//table-layout:fixed;
 		width:100%;
 		border-bottom:1px solid #CCCCCC;
 	}
@@ -3123,21 +3123,6 @@ div.wide.form{
 	h3{
 		margin:0 0 15px 0;
 	}
-	table{
-		border-bottom:none;
-	}
-	th{
-		vertical-align: text-top;
-	}
-	td{
-		vertical-align: top;
-	}
-	td table{
-		width:100%;
-	}
-	td{
-		padding-bottom: 15px;
-	}
 	.panelTitle{
 		margin:0 0 10px 0;
 		padding:0;
@@ -3155,6 +3140,25 @@ div.wide.form{
 		}
 	}
 }
+
+.form-fields{
+	border-bottom:none;
+	table-layout: fixed;
+	th{
+		vertical-align: text-top;
+	}
+	td{
+		vertical-align: top;
+		position: relative;
+	}
+	td table{
+		width:100%;
+	}
+	td{
+		padding-bottom: 15px;
+	}
+}
+
 
 #modal-edit-form{
 	padding: 15px 15px 12px 15px;
