@@ -667,7 +667,7 @@
          */
         public static function getKanbanSubscriptionLink(Task $task, $row)
         {
-            return self::resolveSubscriptionLink($task, 'subscribe-task-link', 'simple-link unsubscribe-task-link');
+            return self::resolveSubscriptionLink($task, 'subscribe-task-link', 'unsubscribe-task-link');
         }
 
         /**
@@ -678,7 +678,7 @@
          */
         public static function getDetailSubscriptionLink(Task $task, $row)
         {
-            return self::resolveSubscriptionLink($task, 'detail-subscribe-task-link', 'simple-link detail-unsubscribe-task-link');
+            return self::resolveSubscriptionLink($task, 'detail-subscribe-task-link', 'detail-unsubscribe-task-link');
         }
 
         /**
@@ -702,9 +702,9 @@
             {
                 $label       = Zurmo::t('TasksModule', 'Unsubscribe');
                 $class       = $unsubscribeLinkClass;
-                $iconContent = ZurmoHtml::tag('i', array('class' => 'icon-subscribe'), '');
+                $iconContent = ZurmoHtml::tag('i', array('class' => 'icon-unsubscribe'), '');
             }
-            return ZurmoHtml::link($iconContent . $label, '#', array('class' => $class, 'title' => $label)) ;
+            return ZurmoHtml::link($iconContent, '#', array('class' => $class, 'title' => $label)) ;
         }
 
         /**

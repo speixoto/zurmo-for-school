@@ -112,9 +112,9 @@
                          array('type' => 'GET',
                                'success' => 'function(data){$("#TaskCheckListItemsForTaskView' . $this->uniquePageId . '").replaceWith(data)}'),
                          array('id'         => 'hiddenCheckListItemRefresh'. $this->uniquePageId,
-                                'class'     => 'hiddenCheckListItemRefresh',
-                                'namespace' => 'refresh',
-                                'style'     => 'display:none;'));
+                               'class'     => 'hiddenCheckListItemRefresh',
+                               'namespace' => 'refresh',
+                               'style'     => 'display:none;'));
         }
 
         /**
@@ -141,14 +141,12 @@
                 }
                 $checkBox     = ZurmoHtml::checkBox('TaskCheckListItem_' . $checkListItem->id,
                                                     $checked,
-                                                    array('class' => 'checkListItem',
-                                                            'value' => $checkListItem->id));
-                $itemContent  = ZurmoHtml::tag('span', array('class' => 'editable'),
-                                                            $checkBox . '<p>' . $checkListItem->name . '</p>');
+                                                    array('class' => 'checkListItem', 'value' => $checkListItem->id));
+                $itemContent  = ZurmoHtml::tag('div', array('class' => 'editable'),
+                                               $checkBox . '<p>' . $checkListItem->name . '</p>');
                 $itemContent .= $this->renderHiddenEditableTextField($checkListItem->id, $checkListItem->name);
                 $itemContent .= $this->attachActionsToCheckListItem();
-                $content     .= ZurmoHtml::tag('li', array('class' => 'check-list-item clearfix'),
-                                                       $itemContent);
+                $content     .= ZurmoHtml::tag('li', array('class' => 'check-list-item clearfix'), $itemContent);
             }
             $this->registerCheckListItemsScript($checkListItem->id);
             return $content;
@@ -161,9 +159,9 @@
         //todo: @Amit has to style this
         private function attachActionsToCheckListItem()
         {
-            $content = ZurmoHtml::link('edit', '#', array('class' => 'taskcheckitemedit'));
-            $content .= ' | ' . ZurmoHtml::link('delete', '#', array('class' => 'taskcheckitemdelete'));
-            $content  = ZurmoHtml::tag('span', array('class' => 'taskcheckitemactions'), $content);
+            $content  = ZurmoHtml::link('<i class="icon-edit"></i>', '#', array('class' => 'task-check-item-edit'));
+            $content .= ZurmoHtml::link('<i class="icon-delete"></i>', '#', array('class' => 'task-check-item-delete'));
+            $content  = ZurmoHtml::tag('span', array('class' => 'task-check-item-actions'), $content);
             return $content;
         }
 
@@ -176,30 +174,32 @@
             $deleteUrl = Yii::app()->createUrl('/tasks/taskCheckItems/deleteCheckListItem');
             $errorMessage = Yii::t('Core', 'Name can not be blank');
             Yii::app()->getClientScript()->registerScript('checklistitemscript', "
-                                                                $('.taskcheckitemedit').click(function()
+                                                                var litag;
+                                                                $('.task-check-item-edit').click(function()
                                                                     {
                                                                         litag = $(this).parent().parent();
                                                                         $(litag).find('.editable-task-input').show();
                                                                         $(litag).find('.editable-task-input').find('input').focus();
                                                                         $(litag).find('.editable').hide();
-                                                                        $(litag).find('.taskcheckitemactions').hide();
+                                                                        $(litag).find('.task-check-item-actions').hide();
+                                                                        return false;
                                                                    });
 
-                                                                $('.taskcheckitemdelete').click(function()
+                                                                $('.task-check-item-delete').click(function()
                                                                     {
                                                                         deleteCheckListItem($(this), '{$deleteUrl}');
+                                                                        return false;
                                                                    });
 
-                                                                $('div.editable-task-input').find('input')
-                                                                .keydown(function(event)
+                                                                $('div.editable-task-input').find('input').keydown(function(event)
                                                                 {
                                                                     switch (event.keyCode)
                                                                     {
                                                                        case 27:
                                                                        //case 9:
                                                                        case 13:
-                                                                                updateCheckListItem($(this), '{$url}', '{$errorMessage}');
-                                                                                break;
+                                                                           updateCheckListItem($(this), '{$url}', '{$errorMessage}');
+                                                                           break;
                                                                        default: break;
                                                                     }
                                                                 })
