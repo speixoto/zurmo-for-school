@@ -53,7 +53,7 @@
                 {
                     throw new NotSupportedException("No such autoCompleteOption as: $optionName");
                 }
-                static::${optionName}($optionValue, $joinTablesAdapter, $where);
+                static::$optionName($optionValue, $joinTablesAdapter, $where);
             }
         }
     }
