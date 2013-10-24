@@ -106,7 +106,7 @@
 
         protected static function resolveContentForMergeTags(& $textContent, & $htmlContent, Contact $contact)
         {
-            // TODO: @Shoaibi/@Jason: High: we might add support for language
+            // TODO: @Shoaibi/@Jason: Low: we might add support for language
             $language               = null;
             $errorOnFirstMissing    = true;
             $templateType           = EmailTemplate::TYPE_CONTACT;
