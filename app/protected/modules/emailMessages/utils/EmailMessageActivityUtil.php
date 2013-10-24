@@ -345,8 +345,9 @@ PTN;
         protected static function getPlainLinkRegex($isHtmlContent)
         {
             $baseLinkRegex  = static::getBaseLinkRegex();
-            // TODO: @Shoaibi: High: Change this so it matches to any link not surrounded by quotes(single or double)
-            $plainLinkRegex = '(\n|\r|\s)' . $baseLinkRegex;
+            // plain links would either be on new line or have a space before them.
+            // we don't care about "here is a linkhttp://www.yahoo.com" for now.
+            $plainLinkRegex = '(\n|\r|\r\n|\s)' . $baseLinkRegex;
             if ($isHtmlContent)
             {
                 $plainLinkRegex = substr($plainLinkRegex, 0, -1) . '(?!(?>[^<]*(?:<(?!/?a\b)[^<]*)*)</a>))';
