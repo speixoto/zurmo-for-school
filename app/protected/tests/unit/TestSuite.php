@@ -138,6 +138,10 @@
                                                 'username: \'' . Yii::app()->db->username         . "'." . PHP_EOL;
 
             static::setupDatabaseConnection();
+            $template        = "{message}\n";
+            $messageStreamer = new MessageStreamer($template);
+            $messageStreamer->setExtraRenderBytes(0);
+            $messageLogger = new MessageLogger($messageStreamer);
             if (!$reuse)
             {
                 if (!is_writable(sys_get_temp_dir()))
@@ -148,10 +152,10 @@
                 }
                 echo "Auto building database schema..." . PHP_EOL;
                 ZurmoRedBean::$writer->wipeAll();
-                $messageLogger = new MessageLogger();
                 InstallUtil::autoBuildDatabase($messageLogger, true);
                 $messageLogger->printMessages();
-                ReadPermissionsOptimizationUtil::rebuild();
+                // recreate all tables, we know there aren't existing because we just did a wipeAll();
+                static::rebuildReadPermissionsTables(true, true, $messageStreamer);
                 assert('RedBeanDatabase::isSetup()');
                 Yii::app()->user->userModel = InstallUtil::createSuperUser('super', 'super');
 
@@ -173,12 +177,21 @@
             else
             {
                 echo PHP_EOL;
-                $messageLogger  = new MessageLogger();
                 static::buildDependentTestModels($messageLogger);
                 $messageLogger->printMessages();
+                // recreate any missing read tables.
+                static::rebuildReadPermissionsTables(false, true, $messageStreamer);
             }
+            echo PHP_EOL;
             static::closeDatabaseConnection();
             return $suite;
+        }
+
+        protected static function rebuildReadPermissionsTables($forceOverwrite, $forcePhp, $messageStreamer)
+        {
+            echo 'Rebuilding read permissions' . PHP_EOL;
+            ReadPermissionsOptimizationUtil::rebuild($forceOverwrite, $forcePhp, $messageStreamer);
+            echo 'Read permissions rebuild complete.' . PHP_EOL;
         }
 
         public static function customOptionSet($customOption, &$argv)
@@ -245,20 +258,8 @@
 
         public static function buildDependentTestModels($messageLogger)
         {
-            if (!empty(static::$dependentTestModelClassNames))
-            {
-                RedBeanModelsToTablesAdapter::generateTablesFromModelClassNames(static::$dependentTestModelClassNames,
-                                                                                                    $messageLogger);
-                // TODO: @Shoaibi/@Jason: Critical: Shouldn't ::rebuild take care of this.
-                foreach (static::$dependentTestModelClassNames as $modelClassName)
-                {
-                    if (is_subclass_of($modelClassName, 'SecurableItem') && $modelClassName::hasReadPermissionsOptimization())
-                    {
-                        ReadPermissionsOptimizationUtil::recreateTable(
-                            ReadPermissionsOptimizationUtil::getMungeTableName($modelClassName));
-                    }
-                }
-            }
+            RedBeanModelsToTablesAdapter::generateTablesFromModelClassNames(static::$dependentTestModelClassNames,
+                                                                                                $messageLogger);
         }
 
         protected static function resolveDependentTestModelClassNamesForClass($className)
