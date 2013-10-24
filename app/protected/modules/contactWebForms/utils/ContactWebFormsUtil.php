@@ -145,7 +145,7 @@
             }
             else
             {
-                if (isset($webFormAttributeForm->required) && $webFormAttributeForm->required == 1)
+                if (isset($webFormAttributeForm->required) && $webFormAttributeForm->required == true)
                 {
                     $isRequiredChecked  = 'checked';
                     $isRequiredDisabled = '';
@@ -158,7 +158,7 @@
                 $removePlacedAttributeLink = '<a class="remove-dynamic-row-link" id="ContactWebForm_serializedData_' .
                                               $attributeName . '" data-value="' . $attributeName . '" href="#">—</a>';
             }
-            if (isset($webFormAttributeForm->hidden) && $webFormAttributeForm->hidden == 1)
+            if (isset($webFormAttributeForm->hidden) && $webFormAttributeForm->hidden == true)
             {
                 $isHiddenChecked = 'checked';
                 $hideHiddenAttributeElementStyle  = 'display:block;';
@@ -250,7 +250,7 @@
             {
                 foreach ($contactWebFormAttributes as $attributeId => $attributeData)
                 {
-                    if (isset($attributeData['required']) && $attributeData['required'] == 1)
+                    if (isset($attributeData['required']) && $attributeData['required'] == true)
                     {
                         $customRequiredFields[] = array($attributeId, 'required');
                     }
@@ -280,7 +280,7 @@
             $webFormAttributes = unserialize($contactWebForm->serializedData);
             foreach ($webFormAttributes as $attributeName => $attribute)
             {
-                if (isset($attribute['hidden']) && $attribute['hidden'] == 1 && isset($attribute['hiddenValue']) && !empty($attribute['hiddenValue']))
+                if (isset($attribute['hidden']) && $attribute['hidden'] == true && isset($attribute['hiddenValue']) && !empty($attribute['hiddenValue']))
                 {
                     if (in_array($attributeName, $resolvedWebFormAttributes))
                     {
@@ -305,9 +305,19 @@
             $ContactWebFormAttributes = unserialize($contactWebForm->serializedData);
             foreach ($ContactWebFormAttributes as $attributeName => $attribute)
             {
-                if (isset($attribute['hidden']) && $attribute['hidden'] == 1 && isset($attribute['hiddenValue']) && !empty($attribute['hiddenValue']))
+                if (isset($attribute['hidden']) && $attribute['hidden'] == true && isset($attribute['hiddenValue']) && !empty($attribute['hiddenValue']))
                 {
-                    $_POST[$postVariableName][$attributeName] = $attribute['hiddenValue'];
+                    $dropDownAttributeTypes = array('CheckBox', 'RadioDropDown', 'DropDown');
+                    $allAttributes = ContactWebFormsUtil::getAllAttributes();
+                    $attributeData = $allAttributes[$attributeName];
+                    if (in_array($attributeData['elementType'], $dropDownAttributeTypes))
+                    {
+                        $_POST[$postVariableName][$attributeName]['value'] = $attribute['hiddenValue'];
+                    }
+                    else
+                    {
+                        $_POST[$postVariableName][$attributeName] = $attribute['hiddenValue'];
+                    }
                 }
             }
         }
@@ -317,7 +327,7 @@
             $ContactWebFormAttributes = unserialize($contactWebForm->serializedData);
             foreach ($ContactWebFormAttributes as $attributeName => $attribute)
             {
-                if (isset($attribute['hidden']) && $attribute['hidden'] == 1 && isset($attribute['hiddenValue']) && !empty($attribute['hiddenValue']))
+                if (isset($attribute['hidden']) && $attribute['hidden'] == true && isset($attribute['hiddenValue']) && !empty($attribute['hiddenValue']))
                 {
                     $webFormEntryAttributes[$attributeName] = $attribute['hiddenValue'];
                 }
