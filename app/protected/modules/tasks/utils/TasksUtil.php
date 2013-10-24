@@ -368,8 +368,7 @@
          */
         public static function resolveAjaxOptionsForCreateMenuItem()
         {
-            $title = self::getModalTitleForCreateTask("Create");
-            return   ModalView::getAjaxOptionsForModalLink($title, self::getModalContainerId());
+            return static::resolveAjaxOptionsForModalView('Create');
         }
 
         /**
