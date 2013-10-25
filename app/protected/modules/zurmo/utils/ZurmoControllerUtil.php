@@ -221,5 +221,25 @@
         {
             return 'PostUtil';
         }
+
+        public static function setContactModelPermissionsByContactWebForm(SecurableItem $model, ContactWebForm $contactWebForm)
+        {
+            if ($model instanceof SecurableItem && count($model->permissions) === 0)
+            {
+                $defaultPermission  = ContactWebFormAdapter::resolveAndGetDefaultPermissionSetting($contactWebForm);
+                $nonEveryoneGroup   = $contactWebForm->defaultPermissionGroupSetting;
+                $type               = static::resolveDefaultPermissionToExplicitReadWriteModelPermissionsUtilType(
+                                      $defaultPermission);
+                $postData           =  array('explicitReadWriteModelPermissions' =>
+                                             compact('type', 'nonEveryoneGroup'));
+                $explicitReadWritePermissions = self::resolveAndMakeExplicitReadWriteModelPermissions($postData, $model);
+                $updated    = ExplicitReadWriteModelPermissionsUtil::resolveExplicitReadWriteModelPermissions($model,
+                                                                     $explicitReadWritePermissions);
+                if (!$updated)
+                {
+                    throw new NotSupportedException();
+                }
+            }
+        }
     }
 ?>

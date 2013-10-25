@@ -110,6 +110,7 @@
             if (isset($_POST[$postVariableName]) && isset($contact->id) && intval($contact->id) > 0)
             {
                 $this->resolveContactWebFormEntry($contactWebForm, $contact, $contactWebFormModelForm);
+                ZurmoControllerUtil::setContactModelPermissionsByContactWebForm($contact, $contactWebForm);
                 $responseData                        = array();
                 $responseData['redirectUrl']         = $contactWebForm->redirectUrl;
                 $this->renderResponse(CJSON::encode($responseData));
