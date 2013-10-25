@@ -41,7 +41,7 @@
         public function renderGridViewData()
         {
             return array(
-                        'class' => 'phaEditColumn',
+                        'class' => 'phaNumberOrCurrencyEditColumn',
                         'name'  => $this->attribute,
                         'value' => array('ProductElementUtil', 'getProductPortletSellPrice'),
                         'actionUrl' => Yii::app()->createUrl('products/default/update', array('attribute' => 'sellPrice')),

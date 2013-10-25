@@ -178,9 +178,18 @@
 
         protected static function getZurmoVersionDisplayContent()
         {
-            $zurmoVersion = VERSION;
-            // Remove REPO_ID from Zurmo version
-            $zurmoVersion =  substr($zurmoVersion, 0, strpos($zurmoVersion, '(') - 1);
+            if(defined('COMMERCIAL_VERSION'))
+            {
+                $zurmoVersion = COMMERCIAL_VERSION;
+                // Remove REPO_ID from Zurmo version
+                $zurmoVersion =  'pro.' . substr($zurmoVersion, 0, strpos($zurmoVersion, '(') - 1);
+            }
+            else
+            {
+                $zurmoVersion = VERSION;
+                // Remove REPO_ID from Zurmo version
+                $zurmoVersion =  substr($zurmoVersion, 0, strpos($zurmoVersion, '(') - 1);
+            }
             return $zurmoVersion;
         }
 

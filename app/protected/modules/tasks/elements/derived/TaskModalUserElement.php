@@ -34,36 +34,19 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class ConfigurationModule extends SecurableModule
+    /**
+     * Displays the comments list for task along with input text area
+     */
+    class TaskModalUserElement extends UserElement
     {
-        public function getDependencies()
+        /**
+         * Generate the error content. Used by editable content
+         * @return error content
+         */
+        protected function renderError()
         {
-           return array('zurmo');
-        }
-
-        protected static function getSingularModuleLabel($language)
-        {
-            return Zurmo::t('ConfigurationModule', 'Configuration', array(), null, $language);
-        }
-
-        protected static function getPluralModuleLabel($language)
-        {
-            return Zurmo::t('ConfigurationModule', 'Configurations', array(), null, $language);
-        }
-
-        public static function getDefaultMetadata()
-        {
-            $metadata = array();
-            $metadata['global'] = array(
-                'adminTabMenuItems' => array(
-                    array(
-                        'label' => "eval:Zurmo::t('ConfigurationModule', 'Administration')",
-                        'url'   => array('/configuration/default'),
-                        'right' => ZurmoModule::RIGHT_ACCESS_ADMINISTRATION
-                    ),
-                ),
-            );
-            return $metadata;
+            return $this->form->error($this->model, $this->attribute,
+                                      array('inputID' => $this->getEditableInputId($this->attribute, 'id')));
         }
     }
 ?>
