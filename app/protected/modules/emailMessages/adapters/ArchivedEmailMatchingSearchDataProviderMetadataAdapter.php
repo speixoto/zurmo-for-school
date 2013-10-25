@@ -37,7 +37,7 @@
     /**
      * Adapter class to handle special metadata needs of archived email matching listview.  When showing possible email
      * messages that require matching, the email message must be in the EmailFolder::TYPE_ARCHIVED and also must not
-     * have a personOrAccount relation on both the recipient and the sender
+     * have a personOrAccounts relation on both the recipient and the sender
      */
     class ArchivedEmailMatchingSearchDataProviderMetadataAdapter extends SearchDataProviderMetadataAdapter
     {

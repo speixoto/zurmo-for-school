@@ -181,7 +181,7 @@
             $this->assertEquals(1, count($queuedEmailMessages[0]->recipients));
             $this->assertEquals('Jason Blue' ,           $queuedEmailMessages[0]->recipients[0]->toName);
             $this->assertEquals('jason@something.com',   $queuedEmailMessages[0]->recipients[0]->toAddress);
-            $this->assertEquals($model->id,              $queuedEmailMessages[0]->recipients[0]->personOrAccount[0]->id);
+            $this->assertEquals($model->id,              $queuedEmailMessages[0]->recipients[0]->personOrAccounts[0]->id);
         }
 
         public function testProcessAfterSaveWhenSendIsImmediateAndToAContactThatIsRelatedToTheTriggeredModel()
@@ -241,10 +241,10 @@
             $this->assertEquals(2, count($queuedEmailMessages[0]->recipients));
             $this->assertEquals('Jason Blue' ,           $queuedEmailMessages[0]->recipients[0]->toName);
             $this->assertEquals('jason@something.com',   $queuedEmailMessages[0]->recipients[0]->toAddress);
-            $this->assertEquals($contact->id,            $queuedEmailMessages[0]->recipients[0]->personOrAccount[0]->id);
+            $this->assertEquals($contact->id,            $queuedEmailMessages[0]->recipients[0]->personOrAccounts[0]->id);
             $this->assertEquals('Laura Blue' ,           $queuedEmailMessages[0]->recipients[1]->toName);
             $this->assertEquals('laura@something.com',   $queuedEmailMessages[0]->recipients[1]->toAddress);
-            $this->assertEquals($contact2->id,           $queuedEmailMessages[0]->recipients[1]->personOrAccount[0]->id);
+            $this->assertEquals($contact2->id,           $queuedEmailMessages[0]->recipients[1]->personOrAccounts[0]->id);
         }
 
         public function testMakeEmailMessageForWorkflowFormByQueueModelAndWorkflow()

@@ -495,43 +495,43 @@ Cc: 'John Wein' <john@example.com>, Peter Smith <peter@example.com>
 
             //Test with defaults
             $emailAddress    = 'useremail@zurmoland.com';
-            $personOrAccount = EmailArchivingUtil::getPersonsAndAccountsByEmailAddress($emailAddress);
-            $this->assertEmpty($personOrAccount);
+            $personOrAccounts = EmailArchivingUtil::getPersonsAndAccountsByEmailAddress($emailAddress);
+            $this->assertEmpty($personOrAccounts);
             $emailAddress    = 'leademail@zurmoland.com';
-            $personOrAccount = EmailArchivingUtil::getPersonsAndAccountsByEmailAddress($emailAddress);
-            $this->assertEmpty($personOrAccount);
+            $personOrAccounts = EmailArchivingUtil::getPersonsAndAccountsByEmailAddress($emailAddress);
+            $this->assertEmpty($personOrAccounts);
             $emailAddress    = 'accountemail@zurmoland.com';
-            $personOrAccount = EmailArchivingUtil::getPersonsAndAccountsByEmailAddress($emailAddress);
-            $this->assertEmpty($personOrAccount);
+            $personOrAccounts = EmailArchivingUtil::getPersonsAndAccountsByEmailAddress($emailAddress);
+            $this->assertEmpty($personOrAccounts);
             $emailAddress    = 'contactemail@zurmoland.com';
-            $personOrAccount = EmailArchivingUtil::getPersonsAndAccountsByEmailAddress($emailAddress);
-            $this->assertEmpty($personOrAccount);
+            $personOrAccounts = EmailArchivingUtil::getPersonsAndAccountsByEmailAddress($emailAddress);
+            $this->assertEmpty($personOrAccounts);
 
             //Test user can access contacts
             $emailAddress    = 'contactemail@zurmoland.com';
-            $personOrAccount = EmailArchivingUtil::getPersonsAndAccountsByEmailAddress($emailAddress, true);
-            $this->assertNotEmpty($personOrAccount);
-            $this->assertEquals($personOrAccount[0], $contact);
+            $personOrAccounts = EmailArchivingUtil::getPersonsAndAccountsByEmailAddress($emailAddress, true);
+            $this->assertNotEmpty($personOrAccounts);
+            $this->assertEquals($personOrAccounts[0], $contact);
 
             //Test user can access leads
             $emailAddress    = 'leademail@zurmoland.com';
-            $personOrAccount = EmailArchivingUtil::getPersonsAndAccountsByEmailAddress($emailAddress, false, true);
-            $this->assertNotEmpty($personOrAccount);
-            $this->assertEquals($personOrAccount[0], $lead);
+            $personOrAccounts = EmailArchivingUtil::getPersonsAndAccountsByEmailAddress($emailAddress, false, true);
+            $this->assertNotEmpty($personOrAccounts);
+            $this->assertEquals($personOrAccounts[0], $lead);
 
             //Test user can access accounts
             $emailAddress    = 'accountemail@zurmoland.com';
-            $personOrAccount = EmailArchivingUtil::getPersonsAndAccountsByEmailAddress($emailAddress, false, false, true);
-            $this->assertNotEmpty($personOrAccount);
-            $this->assertEquals($personOrAccount[0], $account);
+            $personOrAccounts = EmailArchivingUtil::getPersonsAndAccountsByEmailAddress($emailAddress, false, false, true);
+            $this->assertNotEmpty($personOrAccounts);
+            $this->assertEquals($personOrAccounts[0], $account);
 
             //Test user can access users
             $user->primaryEmail->emailAddress      = 'useremail@zurmoland.com';
             $this->assertTrue($user->save());
             $emailAddress    = 'useremail@zurmoland.com';
-            $personOrAccount = EmailArchivingUtil::getPersonsAndAccountsByEmailAddress($emailAddress, false, false, false);
-            $this->assertNotEmpty($personOrAccount);
-            $this->assertEquals($personOrAccount[0], $user);
+            $personOrAccounts = EmailArchivingUtil::getPersonsAndAccountsByEmailAddress($emailAddress, false, false, false);
+            $this->assertNotEmpty($personOrAccounts);
+            $this->assertEquals($personOrAccounts[0], $user);
         }
 
         /**
@@ -541,18 +541,18 @@ Cc: 'John Wein' <john@example.com>, Peter Smith <peter@example.com>
         {
             $user = User::getByUsername('newUser');
             $emailAddress    = 'leademail@zurmoland.com';
-            $personOrAccount = EmailArchivingUtil::getPersonsAndAccountsByEmailAddressForUser($emailAddress, $user);
-            $this->assertEmpty($personOrAccount);
+            $personOrAccounts = EmailArchivingUtil::getPersonsAndAccountsByEmailAddressForUser($emailAddress, $user);
+            $this->assertEmpty($personOrAccounts);
             $emailAddress    = 'accountemail@zurmoland.com';
-            $personOrAccount = EmailArchivingUtil::getPersonsAndAccountsByEmailAddressForUser($emailAddress, $user);
-            $this->assertEmpty($personOrAccount);
+            $personOrAccounts = EmailArchivingUtil::getPersonsAndAccountsByEmailAddressForUser($emailAddress, $user);
+            $this->assertEmpty($personOrAccounts);
             $emailAddress    = 'contactemail@zurmoland.com';
-            $personOrAccount = EmailArchivingUtil::getPersonsAndAccountsByEmailAddressForUser($emailAddress, $user);
-            $this->assertEmpty($personOrAccount);
+            $personOrAccounts = EmailArchivingUtil::getPersonsAndAccountsByEmailAddressForUser($emailAddress, $user);
+            $this->assertEmpty($personOrAccounts);
             $emailAddress    = 'useremail@zurmoland.com';
-            $personOrAccount = EmailArchivingUtil::getPersonsAndAccountsByEmailAddressForUser($emailAddress, $user);
-            $this->assertEquals(1, count($personOrAccount));
-            $this->assertTrue($personOrAccount[0] instanceof User);
+            $personOrAccounts = EmailArchivingUtil::getPersonsAndAccountsByEmailAddressForUser($emailAddress, $user);
+            $this->assertEquals(1, count($personOrAccounts));
+            $this->assertTrue($personOrAccounts[0] instanceof User);
         }
 
         /**
