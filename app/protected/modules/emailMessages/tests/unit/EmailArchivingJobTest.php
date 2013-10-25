@@ -488,7 +488,7 @@ To: Steve <steve@example.com>
 
             $this->assertEquals(1, count($emailMessage->recipients));
             $recipient = $emailMessage->recipients[0];
-            $this->assertCount(3, $recipient->personOrAccount);
+            $this->assertCount(3, $recipient->personOrAccounts);
             $this->assertEquals($recipient->toAddress, Yii::app()->params['emailTestAccounts']['testEmailAddress']);
             $this->assertEquals(EmailMessageRecipient::TYPE_TO, $recipient->type);
             $this->assertEquals(EmailFolder::TYPE_ARCHIVED, $emailMessage->folder->type);

@@ -166,7 +166,7 @@
             $recipient->toAddress       = $user->primaryEmail->emailAddress;
             $recipient->toName          = strval($user);
             $recipient->type            = EmailMessageRecipient::TYPE_TO;
-            $recipient->personOrAccount->add($user);
+            $recipient->personOrAccounts->add($user);
             $emailMessage->recipients->add($recipient);
             $emailMessage->folder       = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_ARCHIVED_UNMATCHED);
             $saved = $emailMessage->save();
@@ -195,7 +195,7 @@
             $sender                    = new EmailMessageSender();
             $sender->fromAddress       = $user->primaryEmail->emailAddress;
             $sender->fromName          = strval($user);
-            $sender->personOrAccount->add(Yii::app()->user->userModel);
+            $sender->personOrAccounts->add(Yii::app()->user->userModel);
             $emailMessage->sender      = $sender;
             //Recipient is BobMessage
             $recipient                  = new EmailMessageRecipient();
