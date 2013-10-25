@@ -683,5 +683,17 @@
             $config = array('pagination' => array('pageSize' => 1));
             return    new ImportDataProvider($import->getTempTableName(), $firstRowIsHeaderRow, $config);
         }
+
+        public function actionUpdate($id, $attribute, $item, $value)
+        {
+            assert('$id != null && $id != ""');
+            assert('$attribute != null && $attribute != ""');
+            assert('$item != null && $item != ""');
+            $id     = intval($id);
+            $item   = intval($item);
+            $import = Import::getById($id);
+            ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($import);
+            ImportDatabaseUtil::updateRowValue($import->getTempTableName(), $item, $attribute, $value);
+        }
     }
 ?>

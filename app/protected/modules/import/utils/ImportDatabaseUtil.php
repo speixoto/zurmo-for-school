@@ -383,7 +383,7 @@
             }
             catch (RedBean_Exception_SQL $e)
             {
-                if (strpos($e->getMessage(), ' 1148 ') === 0)
+                if (strpos($e->getMessage(), ' 1148 ') !== false)
                 {
                     $e = new NotSupportedException("Please enable LOCAL INFILE in mysql config. Add local-infile=1 to [mysqld] and [mysql] sections.");
                 }
@@ -520,6 +520,58 @@
                 throw new FailedToSaveModelException("Id of updated record does not match the id used in finding it.");
             }
         }
+
+        /**
+         * Update the row value in the table with a new value
+         * @param string        $tableName
+         * @param integer       $id
+         * @param string        $attribute
+         * @param string|null   $newValue
+         * @throws NotFoundException
+         * @throws FailedToSaveModelException
+         */
+        public static function updateRowValue($tableName, $id, $attribute, $newValue)
+        {
+            assert('is_string($tableName)');
+            assert('is_int($id)');
+            assert('is_string($attribute)');
+            assert('is_string($newValue) || $newValue == null');
+
+            //TODO: @sergio: What if type is not varchar
+            $columnData     = static::geColumnData($tableName, $attribute);
+            $columnLength   = $columnData['length'];
+            $columnType     = $columnData['type'];
+            if ($columnType == 'varchar' && strlen($newValue) > $columnLength)
+            {
+                $quotedTableName = DatabaseCompatibilityUtil::quoteString($tableName);
+                $quotedColumn    = DatabaseCompatibilityUtil::quoteString($attribute);
+                $length          = strlen($newValue);
+                $sql = "alter table {$quotedTableName} modify {$quotedColumn} varchar({$length})";
+                ZurmoRedBean::exec($sql);
+            }
+            $bean = ZurmoRedBean::findOne($tableName, "id = :id", array('id' => $id));
+            if ($bean == null)
+            {
+                throw new NotFoundException();
+            }
+            $bean->$attribute         = $newValue;
+            $storedId = ZurmoRedBean::store($bean);
+            if ($storedId != $id)
+            {
+                throw new FailedToSaveModelException("Id of updated record does not match the id used in finding it.");
+            }
+        }
+
+        protected static function geColumnData($tableName, $column)
+        {
+            $columnsWithDetails = ZurmoRedBean::$writer->getColumnsWithDetails($tableName);
+            $columnDetails      = $columnsWithDetails[$column];
+            preg_match('/([a-z]*)(\(\d*\))?/', $columnDetails['Type'], $results);
+            $type   = $results[1];
+            $length = isset($results[2]) ? trim($results[2], '()') : null;
+            return array('type' => $type, 'length' => $length);
+        }
+
 
         /**
          * For the temporary import tables, some of the columns are reserved and not used by any of the import data

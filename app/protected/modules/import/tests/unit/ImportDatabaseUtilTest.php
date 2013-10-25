@@ -280,6 +280,16 @@
             $this->assertEquals(null, $bean->serializedMessages);
         }
 
+        /**
+         * @depends testUpdateRowAfterProcessing
+         */
+        public function testUpdateRowValue()
+        {
+            ImportDatabaseUtil::updateRowValue('testimporttable', 2, 'column_0', 'new');
+            $bean = ZurmoRedBean::findOne('testimporttable', "id = :id", array('id' => 2));
+            $this->assertEquals('new', $bean->column_0);
+        }
+
        /**
         *
         * Test if import from file with Windows line-endings works file
