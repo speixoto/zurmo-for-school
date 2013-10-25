@@ -113,7 +113,7 @@
                 {
                     $taskCheckListItem = new TaskCheckListItem();
                     $taskCheckListItem->name = $name;
-                    if($itemKey % 2 == 0)
+                    if(($itemKey * $i) % 2 == 0)
                     {
                         $taskCheckListItem->completed = true;
                     }
