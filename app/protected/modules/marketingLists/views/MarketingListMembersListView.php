@@ -352,7 +352,7 @@
                                                     updateMemberStats(data.unsubscriberCount, unsubscriberHtml, unsubscriberCountClass);
                                                 },
                                     error:      function(request, status, error) {
-                                                    // TODO: @Shoaibi/@Jason: Medium: What should we do here?
+                                                    // TODO: @Shoaibi/@Jason: Low: What should we do here?
                                                 },
                                 }
                             );

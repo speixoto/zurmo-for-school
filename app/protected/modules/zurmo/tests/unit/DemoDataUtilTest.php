@@ -34,7 +34,6 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    // TODO: @Shoaibi: High: Move this test into core
     /**
      * This test is in the application instead of the framework so it can be tested when the database is frozen or
      * unfrozen.

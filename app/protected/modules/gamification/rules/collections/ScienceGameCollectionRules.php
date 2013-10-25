@@ -60,11 +60,11 @@
          */
         public static function getItemTypesAndLabels()
         {
-            return array(   'Alien' => Zurmo::t('GamificationModule', 'Alien'),
-                            'Shuttle'          => Zurmo::t('GamificationModule', 'Shuttle'),
-                            'EarthCore'          => Zurmo::t('GamificationModule', 'Earth Core'),
-                            'Lab'      => Zurmo::t('GamificationModule', 'Lab'),
-                            'Professor'            => Zurmo::t('GamificationModule', 'Professor'),
+            return array(   'Alien'      => Zurmo::t('GamificationModule', 'Alien'),
+                            'Shuttle'    => Zurmo::t('GamificationModule', 'Shuttle'),
+                            'EarthsCore' => Zurmo::t('GamificationModule', "Earth's Core"),
+                            'Chemistry'  => Zurmo::t('GamificationModule', 'Chemistry'),
+                            'Professor'  => Zurmo::t('GamificationModule', 'Professor'),
             );
         }
 
@@ -73,11 +73,11 @@
          */
         public static function getItemTypesAndFrequencies()
         {
-            return array(   'AniseSwallowtail' => 10,
-                            'Buckeye'          => 10,
-                            'Monarch'          => 10,
-                            'PaintedLady'      => 3,
-                            'Queen'            => 6,
+            return array(   'Alien'       => 10,
+                            'Shuttle'     => 10,
+                            'EarthsCore'  => 10,
+                            'Chemistry'   => 3,
+                            'Professor'   => 6,
             );
         }
 

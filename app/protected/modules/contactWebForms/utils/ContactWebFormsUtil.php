@@ -145,7 +145,7 @@
             }
             else
             {
-                if (isset($webFormAttributeForm->required) && $webFormAttributeForm->required == 1)
+                if (isset($webFormAttributeForm->required) && $webFormAttributeForm->required == true)
                 {
                     $isRequiredChecked  = 'checked';
                     $isRequiredDisabled = '';
@@ -158,7 +158,7 @@
                 $removePlacedAttributeLink = '<a class="remove-dynamic-row-link" id="ContactWebForm_serializedData_' .
                                               $attributeName . '" data-value="' . $attributeName . '" href="#">—</a>';
             }
-            if (isset($webFormAttributeForm->hidden) && $webFormAttributeForm->hidden == 1)
+            if (isset($webFormAttributeForm->hidden) && $webFormAttributeForm->hidden == true)
             {
                 $isHiddenChecked = 'checked';
                 $hideHiddenAttributeElementStyle  = 'display:block;';
@@ -250,7 +250,7 @@
             {
                 foreach ($contactWebFormAttributes as $attributeId => $attributeData)
                 {
-                    if (isset($attributeData['required']))
+                    if (isset($attributeData['required']) && $attributeData['required'] == true)
                     {
                         $customRequiredFields[] = array($attributeId, 'required');
                     }
@@ -280,7 +280,7 @@
             $webFormAttributes = unserialize($contactWebForm->serializedData);
             foreach ($webFormAttributes as $attributeName => $attribute)
             {
-                if (isset($attribute['hidden']) && isset($attribute['hiddenValue']) && !empty($attribute['hiddenValue']))
+                if (isset($attribute['hidden']) && $attribute['hidden'] == true && isset($attribute['hiddenValue']) && !empty($attribute['hiddenValue']))
                 {
                     if (in_array($attributeName, $resolvedWebFormAttributes))
                     {
@@ -300,17 +300,26 @@
             return $resolvedWebFormAttributes;
         }
 
-        public static function resolveHiddenAttributesForContactModel($contact, $contactWebForm)
+        public static function resolveHiddenAttributesForContactModel($postVariableName, $contactWebForm)
         {
             $ContactWebFormAttributes = unserialize($contactWebForm->serializedData);
             foreach ($ContactWebFormAttributes as $attributeName => $attribute)
             {
-                if (isset($attribute['hidden']) && isset($attribute['hiddenValue']) && !empty($attribute['hiddenValue']))
+                if (isset($attribute['hidden']) && $attribute['hidden'] == true && isset($attribute['hiddenValue']) && !empty($attribute['hiddenValue']))
                 {
-                    $contact->$attributeName = $attribute['hiddenValue'];
+                    $dropDownAttributeTypes = array('CheckBox', 'RadioDropDown', 'DropDown');
+                    $allAttributes = ContactWebFormsUtil::getAllAttributes();
+                    $attributeData = $allAttributes[$attributeName];
+                    if (in_array($attributeData['elementType'], $dropDownAttributeTypes))
+                    {
+                        $_POST[$postVariableName][$attributeName]['value'] = $attribute['hiddenValue'];
+                    }
+                    else
+                    {
+                        $_POST[$postVariableName][$attributeName] = $attribute['hiddenValue'];
+                    }
                 }
             }
-            return $contact;
         }
 
         public static function resolveHiddenAttributesForContactWebFormEntryModel($webFormEntryAttributes = array(), $contactWebForm)
@@ -318,7 +327,7 @@
             $ContactWebFormAttributes = unserialize($contactWebForm->serializedData);
             foreach ($ContactWebFormAttributes as $attributeName => $attribute)
             {
-                if (isset($attribute['hidden']) && isset($attribute['hiddenValue']) && !empty($attribute['hiddenValue']))
+                if (isset($attribute['hidden']) && $attribute['hidden'] == true && isset($attribute['hiddenValue']) && !empty($attribute['hiddenValue']))
                 {
                     $webFormEntryAttributes[$attributeName] = $attribute['hiddenValue'];
                 }
@@ -348,19 +357,25 @@
 
         public static function getPlacedAttributeContent($attributeData)
         {
+
+            $label = ZurmoHtml::tag('label', array(), Zurmo::t('ContactWebFormsModule', 'Label'));
+            $value = ZurmoHtml::tag('label', array(), Zurmo::t('ContactWebFormsModule', 'Value'));
+
             $content  = ZurmoHtml::openTag('li');
-            $content .= ZurmoHtml::openTag('div', array('class' => 'dynamic-row webform-chosen-field'));
-            $content .= ZurmoHtml::openTag('div');
-            $content .= ZurmoHtml::tag('span', array(), $attributeData['{isRequiredElement}']);
-            $content .= ZurmoHtml::tag('span', array(), $attributeData['{isHiddenElement}']);
-            $content .= $attributeData['{attributeLabelElement}'];
-            $content .= ZurmoHtml::openTag('div', array('id'    => "hiddenAttributeElement_" . $attributeData['{attributeName}'],
-                                                        'style' => $attributeData['{hideHiddenAttributeElementStyle}']));
-            $content .= $attributeData['{renderHiddenAttributeElement}'];
-            $content .= ZurmoHtml::closeTag('div');
-            $content .= ZurmoHtml::closeTag('div');
+            $content .= ZurmoHtml::openTag('div', array('class' => 'dynamic-row webform-chosen-field clearfix'));
+
+            $content .= ZurmoHtml::tag('span', array('class' => 'is-required-checkbox'), $attributeData['{isRequiredElement}']);
+            $content .= ZurmoHtml::tag('span', array('class' => 'field-label'), $label . $attributeData['{attributeLabelElement}']);
+            $content .= ZurmoHtml::tag('span', array('class' => 'is-hidden-checkbox'), $attributeData['{isHiddenElement}']);
+
+            $content .= ZurmoHtml::openTag('span', array('id'    => 'hiddenAttributeElement_' . $attributeData['{attributeName}'],
+                                                         'class' => 'hidden-field-label',
+                                                         'style' => $attributeData['{hideHiddenAttributeElementStyle}']));
+            $content .= $value . $attributeData['{renderHiddenAttributeElement}'];
+            $content .= ZurmoHtml::closeTag('span');
+
             $content .= $attributeData['{removePlacedAttributeLink}'];
-            $content .= ZurmoHtml::closeTag('div');
+
             $content .= ZurmoHtml::closeTag('li');
             return $content;
         }

@@ -2103,8 +2103,7 @@
                         $relationAndOwns       = static::getRelationNameToRelationTypeModelClassNameAndOwnsForModel();
                         if (!in_array($relationAndOwns[$relationName][0],
                                       array(self::HAS_ONE_BELONGS_TO,
-                                            self::HAS_MANY_BELONGS_TO,
-                                            self::MANY_MANY)))
+                                            self::HAS_MANY_BELONGS_TO)))
                         {
                             if ($this->$relationName->isModified() ||
                                 $this->isAttributeRequired($relationName) &&

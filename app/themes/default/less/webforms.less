@@ -98,13 +98,45 @@
 	}
 }
 
-.webform-chosen-field{
-	input[type="text"]{
-		width: 70%;
+.field-label,
+.hidden-field-label{
+	float: left;
+	display: inline-block;
+	width: 80%;
+	input[type="text"],
+	textarea{
+		width: 80%;
 	}
-	span{
-		width: 15%;
-		display: inline-block;
+	.hasDropDown{
+		width: 80% !important;
+		float: left;
+	}
+	label{
+		width: 20%;
+		line-height: 26px;
 	}
 }
 
+.is-required-checkbox,
+.is-hidden-checkbox{
+	float: left;
+	display: inline-block;
+	width:20%;
+}
+
+.hidden-field-label,
+.is-hidden-checkbox{
+	margin-top: 10px;
+}
+
+#reCaptcha{
+	padding-left: 30%;
+	padding-bottom: 15px;
+}
+
+#captchaError{
+	font-weight: bold;
+	display: inline-block;
+	width: 318px;
+	text-align: center;
+}

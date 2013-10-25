@@ -130,5 +130,17 @@
         {
             return $model::getModuleClassName();
         }
+
+        public static function resolveModuleClassNameByModel(RedBeanModel $model)
+
+        {
+            $moduleClassName   = $model::getModuleClassName();
+            $stateMetadataAdapterClassName = $moduleClassName::getStateMetadataAdapterClassName();
+            if ($stateMetadataAdapterClassName != null)
+            {
+                $moduleClassName = $stateMetadataAdapterClassName::getModuleClassNameByModel($model);
+            }
+            return $moduleClassName;
+        }
     }
 ?>

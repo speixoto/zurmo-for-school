@@ -43,7 +43,6 @@
          */
         protected static $lastClassInBeanHeirarchy = 'CustomFieldsModel';
 
-        // TODO: @Shoaibi/@Jason: Medium: as discussed
         private static $canHaveBean = false;
 
         /**

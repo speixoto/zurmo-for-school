@@ -530,15 +530,17 @@
             $account = new Account();
             $adapter = new ModelAttributesAdapter($account);
             $attributes = $adapter->getStandardAttributes();
-            $this->assertEquals(19, count($attributes));
+            $this->assertEquals(20, count($attributes));
 
-            $this->assertEquals('Name',     $attributes['name']    ['attributeLabel']);
-            $this->assertEquals('Industry', $attributes['industry']['attributeLabel']);
-            $this->assertEquals('Type',     $attributes['type']    ['attributeLabel']);
+            $this->assertEquals('Name',                      $attributes['name']                  ['attributeLabel']);
+            $this->assertEquals('Industry',                  $attributes['industry']              ['attributeLabel']);
+            $this->assertEquals('Type',                      $attributes['type']                  ['attributeLabel']);
+            $this->assertEquals('Latest Activity Date Time', $attributes['latestActivityDateTime']['attributeLabel']);
 
-            $this->assertEquals('Text',     $attributes['name']    ['elementType']);
-            $this->assertEquals('DropDown', $attributes['industry']['elementType']);
-            $this->assertEquals('DropDown', $attributes['type']    ['elementType']);
+            $this->assertEquals('Text',     $attributes['name']                  ['elementType']);
+            $this->assertEquals('DropDown', $attributes['industry']              ['elementType']);
+            $this->assertEquals('DropDown', $attributes['type']                  ['elementType']);
+            $this->assertEquals('DateTime', $attributes['latestActivityDateTime']['elementType']);
 
             $this->assertTrue(!isset($attributes['notes']));
         }

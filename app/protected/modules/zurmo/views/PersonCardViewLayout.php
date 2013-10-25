@@ -175,11 +175,13 @@
             $content = null;
             if ($this->model->officePhone != null)
             {
-                $content .= ZurmoHtml::tag('span', array('class' => 'icon-office-phone'), $this->model->officePhone);
+                $content .= Yii::app()->phoneHelper->resolvePersonCardViewOfficePhoneNumberContent($this->model->officePhone,
+                                                                                                    $this->model);
             }
             if ($this->model->mobilePhone != null)
             {
-                $content .= ZurmoHtml::tag('span', array('class' => 'icon-mobile-phone'), $this->model->mobilePhone);
+                $content .= Yii::app()->phoneHelper->resolvePersonCardViewMobilePhoneNumberContent($this->model->mobilePhone,
+                                                                                                    $this->model);
             }
             if ($this->model->primaryEmail->emailAddress != null)
             {

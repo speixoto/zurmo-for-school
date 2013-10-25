@@ -111,12 +111,17 @@
          */
         protected function renderItemTemplate()
         {
-            return '<li><div class="dynamic-row webform-chosen-field"><div>' .
-                        '<span>{isRequiredElement}</span>' .
-                        '<span>{isHiddenElement}</span>' .
-                        '{attributeLabelElement}' .
-                        '<div id="hiddenAttributeElement_{id}" style="{hideHiddenAttributeElementStyle}">{renderHiddenAttributeElement}</div>' .
-                    '</div>{removePlacedAttributeLink}</div></li>';
+            $label = ZurmoHtml::tag('label', array(), Zurmo::t('ContactWebFormsModule', 'Label'));
+            $value = ZurmoHtml::tag('label', array(), Zurmo::t('ContactWebFormsModule', 'Value'));
+            return '<li><div class="dynamic-row webform-chosen-field clearfix">' .
+                            '<span class="is-required-checkbox">{isRequiredElement}</span>' .
+                            '<span class="field-label">' . $label . '{attributeLabelElement}</span>' .
+                            '<span class="is-hidden-checkbox">{isHiddenElement}</span>' .
+                            '<span id="hiddenAttributeElement_{id}" class="hidden-field-label" style="{hideHiddenAttributeElementStyle}">
+                                ' . $value . '{renderHiddenAttributeElement}
+                            </span>' .
+                            '{removePlacedAttributeLink}
+                        </div></li>';
         }
 
         protected function renderError()

@@ -258,7 +258,6 @@
             RedBeanModel::forgetAll();
             $modifiedAccount = Account::getById($account->id);
 
-            // TODO: @Shoaibi/@Jason: Critical: Data truncated, why shouldn't it be?
             $this->assertNotEquals($randomString, $modifiedAccount->string128);
             $this->assertEquals(64, strlen($modifiedAccount->string128));
 

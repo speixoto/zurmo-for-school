@@ -10409,6 +10409,30 @@ body > .ui-autocomplete {
   margin-right: 8px;
   content: "e";
 }
+.autocomplete-icon-ProjectsModule:before {
+  font-weight: normal !important;
+  font-weight: normal;
+  font-size: 20px;
+  font-family: "zurmo_gamification_symbly_rRg";
+  margin-right: 8px;
+  content: '\02C7';
+}
+.autocomplete-icon-ProductsModule:before {
+  font-weight: normal !important;
+  font-weight: normal;
+  font-size: 20px;
+  font-family: "zurmo_gamification_symbly_rRg";
+  margin-right: 8px;
+  content: '\003E';
+}
+.autocomplete-icon-WorkflowsModule:before {
+  font-weight: normal !important;
+  font-weight: normal;
+  font-size: 20px;
+  font-family: "zurmo_gamification_symbly_rRg";
+  margin-right: 8px;
+  content: '\20AC';
+}
 .autocomplete-icon-AllResults:before {
   font-weight: normal !important;
   font-weight: normal;
@@ -11742,7 +11766,6 @@ td.empty {
   vertical-align: text-top;
 }
 .form table {
-  table-layout: fixed;
   width: 100%;
   border-bottom: 1px solid #CCCCCC;
 }
@@ -12212,6 +12235,7 @@ div.wide.form label.hasCheckBox {
   margin: 0;
 }
 .list-preloader {
+  z-index: 1000;
   display: none;
   background: rgba(0, 0, 0, 0.5);
   -webkit-box-shadow: 0 0 30px 0 rgba(100, 100, 100, 0.7);
@@ -13141,31 +13165,6 @@ div.wide.form label.hasCheckBox {
 #delete-form h3 {
   margin: 0 0 15px 0;
 }
-#modal-edit-form table,
-#edit-form table,
-#delete-form table {
-  border-bottom: none;
-}
-#modal-edit-form th,
-#edit-form th,
-#delete-form th {
-  vertical-align: text-top;
-}
-#modal-edit-form td,
-#edit-form td,
-#delete-form td {
-  vertical-align: top;
-}
-#modal-edit-form td table,
-#edit-form td table,
-#delete-form td table {
-  width: 100%;
-}
-#modal-edit-form td,
-#edit-form td,
-#delete-form td {
-  padding-bottom: 15px;
-}
 #modal-edit-form .panelTitle,
 #edit-form .panelTitle,
 #delete-form .panelTitle {
@@ -13189,6 +13188,23 @@ div.wide.form label.hasCheckBox {
 #edit-form .hasCheckBox input[type="checkbox"],
 #delete-form .hasCheckBox input[type="checkbox"] {
   margin-bottom: 0 !important;
+}
+.form-fields {
+  border-bottom: none;
+  table-layout: fixed;
+}
+.form-fields th {
+  vertical-align: text-top;
+}
+.form-fields td {
+  vertical-align: top;
+  position: relative;
+}
+.form-fields td table {
+  width: 100%;
+}
+.form-fields td {
+  padding-bottom: 15px;
 }
 #modal-edit-form {
   padding: 15px 15px 12px 15px;
@@ -17604,6 +17620,12 @@ table.configuration-list td:last-child a .z-label:before {
   display: block;
   text-align: center;
 }
+/*Queue*/
+#queue-search-element .z-spinner {
+  display: block !important;
+  left: 198px;
+  top: 4px;
+}
 .available-portlets {
   padding: 15px 15px 0 15px;
   list-style: none;
@@ -17733,6 +17755,15 @@ table.configuration-list td:last-child a .z-label:before {
 .available-portlets .icon-marketingLists:before {
   content: '\0022';
   font-size: 46px;
+}
+.available-portlets .icon-projects:before {
+  content: '\02C7';
+}
+.available-portlets .icon-notes:before {
+  content: '3';
+}
+.available-portlets .icon-meetings:before {
+  content: 'U';
 }
 /*Edit Portlet*/
 #modal-edit-form th {
@@ -17867,9 +17898,6 @@ div.form .errorSummary {
   -o-box-shadow: 0 0 20px 5px rgba(153, 153, 153, 0.5);
   -ms-box-shadow: 0 0 20px 5px rgba(153, 153, 153, 0.5);
   box-shadow: 0 0 20px 5px rgba(153, 153, 153, 0.5);
-}
-#edit-form td {
-  position: relative;
 }
 div.form .errorMessage {
   color: #CC0000;
@@ -24369,46 +24397,58 @@ a + .autoresponder-stats {
   background-image: -o-linear-gradient(top, #ffcc00, #b18d00);
   background-image: linear-gradient(top, #ffcc00, #b18d00);
 }
-.subscribe-task-link {
+.subscribe-task-link,
+.unsubscribe-task-link {
   background: #DFDFDF;
   padding: 2px;
   display: inline-block;
   width: 20px;
   height: 20px;
 }
-.subscribe-task-link .icon-subscribe {
+.subscribe-task-link .icon-subscribe,
+.unsubscribe-task-link .icon-subscribe,
+.subscribe-task-link .icon-unsubscribe,
+.unsubscribe-task-link .icon-unsubscribe {
   position: relative;
   top: -3px;
   display: block;
   text-align: center;
 }
-.subscribe-task-link .icon-subscribe:after {
-  color: #ffffff;
-  content: "Y";
+.subscribe-task-link .icon-subscribe:after,
+.unsubscribe-task-link .icon-subscribe:after,
+.subscribe-task-link .icon-unsubscribe:after,
+.unsubscribe-task-link .icon-unsubscribe:after {
+  color: #545454;
+  content: '\25CA';
   font-size: 29px;
 }
-.detail-subscribe-task-link {
+.detail-subscribe-task-link,
+.detail-unsubscribe-task-link {
   background: #DFDFDF;
   padding: 2px;
   display: inline-block;
   width: 36px;
   height: 36px;
 }
-.detail-subscribe-task-link .icon-subscribe {
+.detail-subscribe-task-link .icon-subscribe,
+.detail-unsubscribe-task-link .icon-subscribe,
+.detail-subscribe-task-link .icon-unsubscribe,
+.detail-unsubscribe-task-link .icon-unsubscribe {
   position: relative;
   top: -2px;
   display: block;
   text-align: center;
 }
-.detail-subscribe-task-link .icon-subscribe:after {
-  color: #ffffff;
-  content: "Y";
+.detail-subscribe-task-link .icon-subscribe:after,
+.detail-unsubscribe-task-link .icon-subscribe:after,
+.detail-subscribe-task-link .icon-unsubscribe:after,
+.detail-unsubscribe-task-link .icon-unsubscribe:after {
+  color: #545454;
+  content: '\25CA';
   font-size: 44px;
 }
-.detail-unsubscribe-task-link,
-.unsubscribe-task-link {
-  float: right;
-  margin: 0 0 0 0;
+.icon-unsubscribe:after {
+  content: '\2122' !important;
 }
 .webform-embed-code {
   padding: 0;
@@ -24545,12 +24585,47 @@ a + .autoresponder-stats {
   -ms-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
   box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
 }
-.webform-chosen-field input[type="text"] {
-  width: 70%;
-}
-.webform-chosen-field span {
-  width: 15%;
+.field-label,
+.hidden-field-label {
+  float: left;
   display: inline-block;
+  width: 80%;
+}
+.field-label input[type="text"],
+.hidden-field-label input[type="text"],
+.field-label textarea,
+.hidden-field-label textarea {
+  width: 80%;
+}
+.field-label .hasDropDown,
+.hidden-field-label .hasDropDown {
+  width: 80% !important;
+  float: left;
+}
+.field-label label,
+.hidden-field-label label {
+  width: 20%;
+  line-height: 26px;
+}
+.is-required-checkbox,
+.is-hidden-checkbox {
+  float: left;
+  display: inline-block;
+  width: 20%;
+}
+.hidden-field-label,
+.is-hidden-checkbox {
+  margin-top: 10px;
+}
+#reCaptcha {
+  padding-left: 30%;
+  padding-bottom: 15px;
+}
+#captchaError {
+  font-weight: bold;
+  display: inline-block;
+  width: 318px;
+  text-align: center;
 }
 .sliding-panel {
   display: none;
@@ -26322,6 +26397,45 @@ div.special-pager .hidden.next:after {
   padding: 0;
   text-decoration: underline;
 }
+.project-create .icon,
+.project-collaborate .icon,
+.project-track .icon {
+  position: relative;
+  margin: 0px 15px 0 0;
+  display: inline-block;
+  height: 100%;
+}
+.project-create .icon:before,
+.project-collaborate .icon:before,
+.project-track .icon:before {
+  content: '\02DB';
+  font-weight: normal !important;
+  font-weight: normal;
+  font-size: 145px;
+  font-family: "zurmo_gamification_symbly_rRg";
+  line-height: 60px;
+  position: absolute;
+  top: 10px;
+  -webkit-text-shadow: 0 -1px 0 #000000;
+  -moz-text-shadow: 0 -1px 0 #000000;
+  -o-text-shadow: 0 -1px 0 #000000;
+  -ms-text-shadow: 0 -1px 0 #000000;
+  text-shadow: 0 -1px 0 #000000;
+}
+.project-collaborate p {
+  margin-left: 110px;
+}
+.project-collaborate .icon:before {
+  left: 10px;
+  content: '\00AF';
+}
+.project-track p {
+  margin-left: 110px;
+}
+.project-track .icon:before {
+  left: 10px;
+  content: '\02DA';
+}
 #ActiveProjectsListView {
   float: none;
   margin-bottom: 0;
@@ -26486,12 +26600,92 @@ div.special-pager .hidden.next:after {
 }
 .check-list-item {
   margin-top: 3px;
+  position: relative;
 }
 .check-list-item .hasCheckBox {
   float: left;
   position: relative;
   top: -5px;
   margin-right: 5px;
+}
+.check-list-item.ui-sortable-helper {
+  height: auto !important;
+  padding: 8px 8px 4px 8px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+  border-radius: 3px;
+  background: #f5f5f5;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.check-list-item.ui-sortable-helper .task-check-item-actions {
+  visibility: hidden !important;
+}
+.check-list-item:hover .task-check-item-actions {
+  visibility: visible;
+}
+.check-list-item p {
+  line-height: 1.4;
+  padding-left: 22px;
+}
+.task-check-item-actions {
+  visibility: hidden;
+  position: absolute;
+  right: 0;
+  top: 0;
+  background: #f0f0f0;
+  -webkit-box-shadow: -10px 0 15px 5px #f0f0f0;
+  -moz-box-shadow: -10px 0 15px 5px #f0f0f0;
+  -o-box-shadow: -10px 0 15px 5px #f0f0f0;
+  -ms-box-shadow: -10px 0 15px 5px #f0f0f0;
+  box-shadow: -10px 0 15px 5px #f0f0f0;
+}
+.task-check-item-actions a {
+  margin-left: 5px;
+}
+.task-check-item-actions i {
+  color: #a7a7a7;
+}
+.editable-task-input {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  padding-left: 22px;
+}
+.editable-task-input input {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-font-smoothing: antialiased;
+  -o-font-smoothing: antialiased;
+  font-smoothing: antialiased;
+  display: inline-block;
+  border: 1px solid #ccc;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+  border-radius: 3px;
+  font-size: 12px;
+  color: #666 !important;
+  text-indent: 6px;
+  line-height: 24px;
+  height: 26px;
+  -webkit-box-shadow: 0 0 1px 1px rgba(153, 153, 153, 0.3);
+  -moz-box-shadow: 0 0 1px 1px rgba(153, 153, 153, 0.3);
+  -o-box-shadow: 0 0 1px 1px rgba(153, 153, 153, 0.3);
+  -ms-box-shadow: 0 0 1px 1px rgba(153, 153, 153, 0.3);
+  box-shadow: 0 0 1px 1px rgba(153, 153, 153, 0.3);
+  /* http://www.useragentman.com/blog/2011/08/24/how-to-simulate-css3-box-shadow-in-ie7-8-without-javascript/ */
+
+  zoom: 1;
+  filter: progid:DXImageTransform.Microsoft.Shadow(Color=#bfbfbf, Strength=1, Direction=0), progid:DXImageTransform.Microsoft.Shadow(Color=#bfbfbf, Strength=1, Direction=90), progid:DXImageTransform.Microsoft.Shadow(Color=#bfbfbf, Strength=1, Direction=180), progid:DXImageTransform.Microsoft.Shadow(Color=#bfbfbf, Strength=1, Direction=270);
+  width: 100%;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
 }
 #task-check-item-inline-edit-form {
   margin-top: 10px;

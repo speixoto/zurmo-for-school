@@ -96,7 +96,6 @@
                 ),
                 'elements' => array(
                     'latestDateTime'                => 'DateTime',
-                    // TODO: @Shoaibi: High: What other elements shall we define here?
                 ),
                 'defaultSortAttribute' => 'latestDateTime',
             );

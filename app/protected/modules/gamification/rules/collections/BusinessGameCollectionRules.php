@@ -60,11 +60,11 @@
          */
         public static function getItemTypesAndLabels()
         {
-            return array(   'Chart' => Zurmo::t('GamificationModule', 'Pie Chart'),
-                            'Desktop'          => Zurmo::t('GamificationModule', 'Desktop Computer'),
-                            'Fax'          => Zurmo::t('GamificationModule', 'Fax'),
-                            'LightBulb'      => Zurmo::t('GamificationModule', 'Light Bulb'),
-                            'News'            => Zurmo::t('GamificationModule', 'Newspaper'),
+            return array(   'Chart'        => Zurmo::t('GamificationModule', 'Pie Chart'),
+                            'Desktop'      => Zurmo::t('GamificationModule', 'Desktop Computer'),
+                            'Fax'          => Zurmo::t('GamificationModule', 'Fax Machine'),
+                            'LightBulb'    => Zurmo::t('GamificationModule', 'Light Bulb'),
+                            'News'         => Zurmo::t('GamificationModule', 'Newspaper'),
             );
         }
 

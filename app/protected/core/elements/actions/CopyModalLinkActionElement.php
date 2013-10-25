@@ -54,7 +54,7 @@
         protected function getDefaultRoute()
         {
             return Yii::app()->createUrl($this->getRouteModuleId() . '/' .
-                        $this->controllerId . '/modalCopyFromRelation', array_merge(array('id' => $this->modelId, 'action' => 'copy'),
+                        $this->controllerId . '/modalCopy', array_merge(array('id' => $this->modelId, 'action' => 'copy'),
                                                                                        $this->getCreateLinkUrlParams()));
         }
 

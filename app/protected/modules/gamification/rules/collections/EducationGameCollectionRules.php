@@ -60,11 +60,11 @@
          */
         public static function getItemTypesAndLabels()
         {
-            return array(   'Books' => Zurmo::t('GamificationModule', 'Books'),
-                            'Emc'          => Zurmo::t('GamificationModule', 'E = mc(square)'),
-                            'Exam'          => Zurmo::t('GamificationModule', 'Exam'),
+            return array(   'Textbooks'  => Zurmo::t('GamificationModule', 'Textbooks'),
+                            'Blackboard' => Zurmo::t('GamificationModule', 'Blackboard'),
+                            'Exam'       => Zurmo::t('GamificationModule', 'Exam'),
                             'Globe'      => Zurmo::t('GamificationModule', 'Globe'),
-                            'Pencil'            => Zurmo::t('GamificationModule', 'Pencil'),
+                            'Ruler'      => Zurmo::t('GamificationModule', 'Ruler'),
             );
         }
 
@@ -73,11 +73,11 @@
          */
         public static function getItemTypesAndFrequencies()
         {
-            return array(   'Books' => 10,
-                            'Emc'          => 10,
-                            'Exam'          => 10,
+            return array(   'Textbooks'  => 10,
+                            'Blackboard' => 10,
+                            'Exam'       => 10,
                             'Globe'      => 3,
-                            'Pencil'            => 6,
+                            'Ruler'      => 6,
             );
         }
 

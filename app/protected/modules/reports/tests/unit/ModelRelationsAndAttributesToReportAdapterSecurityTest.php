@@ -61,7 +61,7 @@
             $adapter            = new ModelRelationsAndAttributesToReportAdapter($model, $rules, $report->getType());
             $relations = $adapter->getSelectableRelationsData();
             $relations = $adapter->getSelectableRelationsDataResolvedForUserAccess(Yii::app()->user->userModel, $relations);
-            $this->assertEquals(13, count($relations));
+            $this->assertEquals(14, count($relations));
             $compareData        = array('label' => 'Billing Address');
             $this->assertEquals($compareData, $relations['billingAddress']);
             $compareData        = array('label' => 'Contacts');
@@ -78,6 +78,8 @@
             $this->assertEquals($compareData, $relations['opportunities']);
             $compareData        = array('label' => 'Products');
             $this->assertEquals($compareData, $relations['products']);
+            $compareData        = array('label' => 'Projects');
+            $this->assertEquals($compareData, $relations['projects']);
             $compareData        = array('label' => 'Owner');
             $this->assertEquals($compareData, $relations['owner']);
             $compareData        = array('label' => 'Primary Email');

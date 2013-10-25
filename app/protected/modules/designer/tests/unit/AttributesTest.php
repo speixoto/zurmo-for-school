@@ -579,7 +579,7 @@
             //Test that validation on completely new picklists works correctly and is inline with the rules from
             //the CustomFieldData model.
             $attributeForm = new DropDownAttributeForm();
-            $attributeForm->attributeName       = 's';    //name to short. test that this fails.
+            $attributeForm->attributeName       = '';    //name to short. test that this fails.
             $attributeForm->attributeLabels  = array(
                 'de' => 'Test Airplane 3 de',
                 'en' => 'Test Airplane 3 en',
@@ -699,7 +699,7 @@
         /**
          * @depends testSetAndGetIntegerAttribute
          */
-        public function testsetAndGetIntegerAttributeWithNoMinOrMax()
+        public function testSetAndGetIntegerAttributeWithNoMinOrMax()
         {
             $attributeName = 'integernominmax';
             $attributeForm = new IntegerAttributeForm();
@@ -758,7 +758,7 @@
         }
 
         /**
-         * @depends testsetAndGetIntegerAttributeWithNoMinOrMax
+         * @depends testSetAndGetIntegerAttributeWithNoMinOrMax
          */
         public function testSetAndGetMultiSelectDropDownAttribute()
         {
@@ -853,7 +853,7 @@
             //Test that validation on completely new multi select picklists works correctly and is inline with the rules
             //from the CustomFieldData model.
             $attributeForm = new MultiSelectDropDownAttributeForm();
-            $attributeForm->attributeName    = 's';    //name to short. test that this fails.
+            $attributeForm->attributeName    = '';    //name to short. test that this fails.
             $attributeForm->attributeLabels  = array(
                 'de' => 'Test Hobbies 3 de',
                 'en' => 'Test Hobbies 3 en',
@@ -984,7 +984,7 @@
             //Test that validation on completely new multi select picklists works correctly and is inline with the rules
             //from the CustomFieldData model.
             $attributeForm = new TagCloudAttributeForm();
-            $attributeForm->attributeName    = 's';    //name to short. test that this fails.
+            $attributeForm->attributeName    = '';    //name to short. test that this fails.
             $attributeForm->attributeLabels  = array(
                 'de' => 'Test Languages 3 de',
                 'en' => 'Test Languages 3 en',

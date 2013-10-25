@@ -34,28 +34,29 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    // TODO: @Shoaibi/@Jason: High: Not Used.
     /**
-     * When processing tracking, the user that processes them must be a super administrator to ensure the
-     * tracking requests can be properly processed.
+     * Loaded by application as Yii::app()->phoneHelper
      */
-    class UserToRunTrackingAsElement extends SuperAdministratorToUseElement
+    class PhoneHelper extends CApplicationComponent
     {
-        /**
-         * @return string
-         */
-        protected static function renderTooltipContent()
+        
+        public function resolvePhoneNumberContentForDialing($content, $inputId, $model)
         {
+            return $content;
         }
-
-        protected function renderLabel()
+        
+        public function resolvePersonCardViewOfficePhoneNumberContent($content, $model)
         {
-            $title       = Zurmo::t('TrackingModule', 'Tracking requests must be processed as a super administrator user.');
-            $content     = parent::renderLabel();
-            $content    .= ZurmoHtml::tag('span', array('id' => 'run-tracking-from-user-tooltip',
-                                                        'class' => 'tooltip', 'title' => $title), '?');
-            $qtip = new ZurmoTip(array('options' => array('position' => array('my' => 'bottom right', 'at' => 'top left'))));
-            $qtip->addQTip("#run-tracking-from-user-tooltip");
+            return ZurmoHtml::tag('span', array('class' => 'icon-office-phone'), $content);
+        }
+        
+        public function resolvePersonCardViewMobilePhoneNumberContent($content, $model)
+        {
+            return ZurmoHtml::tag('span', array('class' => 'icon-mobile-phone'), $content);
+        }
+        
+        public function resolvePhoneListViewColumnValue($content, $inputId, $model)
+        {
             return $content;
         }
     }

@@ -96,6 +96,7 @@
          */
         protected function renderTextField()
         {
+
             $this->registerScriptForAutoCompleteTextField();
             $cClipWidget = new CClipWidget();
             $cClipWidget->beginClip("ModelElement");
@@ -106,7 +107,8 @@
                 'source'  => $this->makeSourceUrl(),
                 'options' => array(
                     'select'   => $this->getOnSelectOptionForAutoComplete(), // Not Coding Standard
-                    'appendTo' => 'js:$("#' . $this->getIdForTextField() . '").parent().parent()',
+                    'appendTo' => 'js:$("#' . $this->getIdForTextField() . '").parent()',
+                    'position' => 'js:{my: "left-40px top"}',
                     'search'   => 'js: function(event, ui)
                                   {
                                        var context = $("#' . $this->getIdForTextField() . '").parent();
@@ -140,7 +142,23 @@
                 )
             ));
             $cClipWidget->endClip();
-            return ZurmoHtml::tag('div', array(), $cClipWidget->getController()->clips['ModelElement']);
+
+            // Begin Not Coding Standard
+            $script = '$("#' . $this->getIdForTextField() . '").data( "autocomplete" )._renderItem = function( ul, item ) {
+                            return $( "<li></li>" ).data( "item.autocomplete", item )
+                                    .append( "<a><span class=" + item.iconClass + "></span><span>" + item.label + "</span></a>" )
+                                    .appendTo( ul );
+                        };
+                        $("#' . $this->getIdForTextField() . '").data( "autocomplete" )._resizeMenu = function(){
+                            return this.menu.element.outerWidth( 219 );
+                        };';
+            /// End Not Coding Standard
+            Yii::app()->clientScript->registerScript('QueueSearchElementPosition', $script);
+
+            $spinner = ZurmoHtml::tag('span', array('class' => 'z-spinner'), '');
+
+            return ZurmoHtml::tag('div', array('class' => 'clearfix', 'id' => 'queue-search-element'),
+                   $cClipWidget->getController()->clips['ModelElement'] . $spinner);
         }
 
         protected function makeSourceUrl()

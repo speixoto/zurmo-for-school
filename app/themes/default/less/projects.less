@@ -1,3 +1,42 @@
+.project-create,
+.project-collaborate,
+.project-track{
+	.icon{
+		position: relative;
+		margin: 0px 15px 0 0;
+		display: inline-block;
+		height: 100%;
+	}
+	.icon:before{
+		content: '\02DB';
+		.symbly(145px);
+		line-height: 60px;
+		position: absolute;
+		top:10px;
+		.t-shadow(0 -1px 0 #000);
+	}
+}
+
+.project-collaborate{
+	p{
+		margin-left: 110px;
+	}
+	.icon:before{
+		left: 10px;
+		content: '\00AF';
+	}
+}
+
+.project-track{
+	p{
+		margin-left: 110px;
+	}
+	.icon:before{
+		left: 10px;
+		content: '\02DA';
+	}
+}
+
 #ActiveProjectsListView{
 	float: none;
 	margin-bottom: 0;
@@ -147,11 +186,56 @@
 
 .check-list-item{
 	margin-top: 3px;
+	position: relative;
 	.hasCheckBox{
 		float: left;
 		position: relative;
 		top:-5px;
 		margin-right: 5px;
+	}
+	&.ui-sortable-helper{
+		height: auto !important;
+		padding: 8px 8px 4px 8px;
+		.radius(3px);
+		background: #f5f5f5;
+		.box-sizing();
+		.task-check-item-actions{
+			visibility: hidden !important;
+		}
+	}
+	&:hover{
+		.task-check-item-actions{
+			visibility: visible;
+		}
+	}
+	p{
+		line-height: 1.4;
+		padding-left: 22px;
+	}
+}
+
+.task-check-item-actions{
+	visibility: hidden;
+	position: absolute;
+	right: 0;
+	top: 0;
+	background: #f0f0f0;
+	//#gradient > .horizontal(~"rgba(240, 240, 240, 0.1)", ~"rgba(240, 240, 240, 0.9)");
+	.b-shadow(-10px 0 15px 5px #f0f0f0);
+	a{
+		margin-left: 5px;
+	}
+	i{
+		color: #a7a7a7;
+	}
+}
+
+.editable-task-input{
+	.box-sizing();
+	padding-left: 22px;
+	input{
+		width: 100%;
+		.text-input();
 	}
 }
 

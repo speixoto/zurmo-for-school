@@ -187,7 +187,7 @@
             $contact->lastName = 'name1';
             $emailMessageSender->personOrAccount->add($contact);
             $content = EmailMessageMashableActivityRules::getSenderContent($emailMessageSender);
-            $this->assertContains('a href=', $content);
+            $this->assertContains('href=', $content);
             $this->assertContains('name1',   $content);
 
             //Test with more than one personOrAccount
@@ -196,7 +196,7 @@
             $emailMessageSender->personOrAccount->add($contact);
             $content = EmailMessageMashableActivityRules::getSenderContent($emailMessageSender);
             $this->assertContains('test@zurmo.com', $content);
-            $this->assertContains('a href=',        $content);
+            $this->assertContains('href=',        $content);
             $this->assertContains('name',           $content);
             $this->assertContains('name2',          $content);
         }
@@ -232,7 +232,7 @@
             $emailMessageRecipient2->personOrAccount->add($contact2);
 
             $content = EmailMessageMashableActivityRules::getRecipientsContent($emailMessage->recipients);
-            $this->assertContains   ('a href=',         $content);
+            $this->assertContains   ('href=',         $content);
             $this->assertNotContains('test1@zurmo.com', $content);
             $this->assertContains   ('test2@zurmo.com', $content);
             $this->assertContains   ('contact1',        $content);

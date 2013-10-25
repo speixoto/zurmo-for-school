@@ -56,7 +56,6 @@
         // changes can be written to the audit log.
         public $originalAttributeValues = array();
 
-        // TODO: @Shoaibi/@Jason: Medium: as discussed
         private static $canHaveBean = false;
 
         /**
