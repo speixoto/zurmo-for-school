@@ -34,18 +34,23 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class GroupModulePermissionsEditLinkActionElement extends EditLinkActionElement
+    class GroupUserMembershipEditMenuActionElement extends MenuActionElement
     {
         protected function getDefaultLabel()
         {
-            return Zurmo::t('ZurmoModule', 'Record Permissions');
+            return Zurmo::t('ZurmoModule', 'User Membership');
         }
 
         protected function getDefaultRoute()
         {
             return Yii::app()->createUrl(
-                $this->moduleId . '/' . $this->controllerId . '/editModulePermissions/',
+                $this->moduleId . '/' . $this->controllerId . '/editUserMembership/',
                 array('id' => $this->modelId));
+        }
+
+        public function getActionType()
+        {
+            return null;
         }
     }
 ?>

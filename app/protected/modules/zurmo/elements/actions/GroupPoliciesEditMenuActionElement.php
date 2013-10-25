@@ -34,20 +34,23 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class GroupActionBarAndUserMembershipEditView extends GridView
+    class GroupPoliciesEditMenuActionElement extends MenuActionElement
     {
-        protected $cssClasses =  array( 'AdministrativeArea' );
-
-        public function __construct(
-            $controllerId,
-            $moduleId,
-            GroupUserMembershipForm $form,
-            Group $model,
-            $moduleName)
+        protected function getDefaultLabel()
         {
-            parent::__construct(2, 1);
-            $this->setView(new ActionBarForGroupEditAndDetailsView ($controllerId, $moduleId, $model, 'GroupUserMembershipEditMenu'), 0, 0);
-            $this->setView(new GroupUserMembershipEditView($controllerId, $moduleId, $form, $model->id, strval($model)), 1, 0);
+            return Zurmo::t('ZurmoModule', 'Policies');
+        }
+
+        protected function getDefaultRoute()
+        {
+            return Yii::app()->createUrl(
+                $this->moduleId . '/' . $this->controllerId . '/editPolicies/',
+                array('id' => $this->modelId));
+        }
+
+        public function getActionType()
+        {
+            return null;
         }
     }
 ?>

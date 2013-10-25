@@ -34,18 +34,23 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class GroupPoliciesEditLinkActionElement extends EditLinkActionElement
+    class GroupRightsEditMenuActionElement extends MenuActionElement
     {
         protected function getDefaultLabel()
         {
-            return Zurmo::t('ZurmoModule', 'Policies');
+            return Zurmo::t('ZurmoModule', 'Module Rights');
         }
 
         protected function getDefaultRoute()
         {
             return Yii::app()->createUrl(
-                $this->moduleId . '/' . $this->controllerId . '/editPolicies/',
+                $this->moduleId . '/' . $this->controllerId . '/editRights/',
                 array('id' => $this->modelId));
+        }
+
+        public function getActionType()
+        {
+            return null;
         }
     }
 ?>
