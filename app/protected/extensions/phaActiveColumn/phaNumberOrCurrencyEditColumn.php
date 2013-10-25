@@ -164,13 +164,13 @@
             }
             function phaACEditFieldSend( itemValue, inputValue, gridUID ) {
                 var passedValue = $("#field-"+phaACOpenEditGrid+"-"+phaACOpenEditItem+" input").val();
+                $("#field-" + gridUID + "-" + phaACOpenEditItem).hide();
+                $("#field-" + gridUID + "-" + phaACOpenEditItem+" input").unbind("keydown");
+                    $("#field-" + gridUID + "-" + phaACOpenEditItem+" input").unbind("blur");
+                $("#viewValue-" + gridUID + "-" + phaACOpenEditItem).show();
                 if (passedValue != inputValue)
                 {
                     $("#viewValue-" + gridUID + "-"+phaACOpenEditItem).html(passedValue);
-                    $("#field-" + gridUID + "-" + phaACOpenEditItem).hide();
-                    $("#field-" + gridUID + "-" + phaACOpenEditItem+" input").unbind("keydown");
-                    $("#field-" + gridUID + "-" + phaACOpenEditItem+" input").unbind("blur");
-                    $("#viewValue-" + gridUID + "-" + phaACOpenEditItem).show();
                     var id = $(itemValue).parents(".cgrid-view").attr("id");
                     $.ajax({
                             type: "GET",
