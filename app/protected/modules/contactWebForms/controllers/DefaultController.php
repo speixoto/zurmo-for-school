@@ -199,6 +199,8 @@
             $resolvedPlacedAttribute     = ContactWebFormsUtil::resolvePlacedAttributeByName($webFormAttributeForm,
                                            $model, $attributeName, $attributeData);
             $content                     = ContactWebFormsUtil::getPlacedAttributeContent($resolvedPlacedAttribute);
+            Yii::app()->getClientScript()->setToAjaxMode();
+            Yii::app()->getClientScript()->render($content);
             echo $content;
         }
     }
