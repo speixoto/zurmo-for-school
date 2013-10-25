@@ -80,12 +80,9 @@
             $contactWebFormAttributes = static::resolveWebFormAttributes($contactWebFormAttributes);
             $contactWebFormAttributes = static::resolveWebFormWithAllRequiredAttributes($contactWebFormAttributes, $allAttributes);
             $placedAttributes         = array();
-            foreach ($allAttributes as $attributeName => $attributeData)
+            foreach ($contactWebFormAttributes as $attributeName)
             {
-                if (in_array($attributeName, $contactWebFormAttributes))
-                {
-                    $placedAttributes[$attributeName] = $attributeData;
-                }
+                $placedAttributes[$attributeName] = $allAttributes[$attributeName];
             }
             return $placedAttributes;
         }
@@ -138,7 +135,7 @@
             $params = array('inputPrefix' => array(get_class($webFormAttributeForm), $attributeName));
             if ($attributeData['isRequired'])
             {
-                $webFormAttributeForm->required = 1;
+                $webFormAttributeForm->required = true;
                 $isRequiredChecked              = 'checked';
                 $isRequiredDisabled             = 'disabled';
                 $removePlacedAttributeLink      = '';
@@ -378,6 +375,21 @@
 
             $content .= ZurmoHtml::closeTag('li');
             return $content;
+        }
+
+        public static function sanitizeHiddenAttributeValue($attributeName, $value)
+        {
+            $designerType = ModelAttributeToDesignerTypeUtil::getDesignerType(new Contact(false), $attributeName);
+            $sanitizedAttributeValue = $value;
+            if ($designerType == 'Date' && !empty($value))
+            {
+                $sanitizedAttributeValue = DateTimeUtil::resolveValueForDateDBFormatted($value);
+            }
+            if ($designerType == 'DateTime' && !empty($value))
+            {
+                $sanitizedAttributeValue = DateTimeUtil::convertDateTimeLocaleFormattedDisplayToDbFormattedDateTimeWithSecondsAsZero($value);
+            }
+            return DataUtil::purifyHtml($sanitizedAttributeValue);
         }
     }
 ?>
