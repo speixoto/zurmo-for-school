@@ -1347,3 +1347,46 @@ table.configuration-list{
 		top:4px;
 	}
 }
+
+/*Groups and Roles*/
+
+
+.security-rights,
+.security-permissions,
+.security-roles,
+.security-groups,
+.security-nested-groups,
+.security-adhoc-sharing{
+	p{ margin-left: 100px !important; }
+	.icon{
+		position: relative;
+		margin: 0px 15px 0 0;
+		display: inline-block;
+		height: 100%;
+	}
+	.icon:before{
+		content: '\00D4';
+		.symbly(145px);
+		line-height: 60px;
+		position: absolute;
+		top:15px;
+		left:10px;
+		.t-shadow(0 -1px 0 #000);
+	}
+}
+
+.security-permissions{
+	.icon:before{ content: '\00CA'; }
+}
+.security-roles{
+	.icon:before{ content: '\00C9'; }
+}
+.security-groups{
+	.icon:before{ content: '\00DB'; }
+}
+.security-nested-groups{
+	.icon:before{ content: '\00EA'; }
+}
+.security-adhoc-sharing{
+	.icon:before{ content: '\00EB'; }
+}

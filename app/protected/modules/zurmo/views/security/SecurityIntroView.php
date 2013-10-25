@@ -52,17 +52,17 @@
         {
             $content  = '<h1>' . Zurmo::t('ZurmoModule', 'How does security work in Zurmo?'). '</h1>';
             $content .= '<div id="security-basic-intro" class="module-intro-steps clearfix">';
-            $content .= '<div class="third catalog-description"><span class="icon"></span>';
+            $content .= '<div class="third security-rights"><span class="icon"></span>';
             $content .= '<p><strong>' . Zurmo::t('ZurmoModule', 'Rights') . '</strong>';
             $content .= Zurmo::t('ZurmoModule', 'Rights control who can access modules, create records, and delete records in a module.');
             $content .= '</p>';
             $content .= '</div>';
-            $content .= '<div class="third catalog-item-description"><span class="icon"></span>';
+            $content .= '<div class="third security-permissions"><span class="icon"></span>';
             $content .= '<p><strong>' . Zurmo::t('ZurmoModule', 'Permissions') . '</strong>';
             $content .= Zurmo::t('ZurmoModule', 'Permissions control who can read, write, and delete specific records.');
             $content .= '</p>';
             $content .= '</div>';
-            $content .= '<div class="third product-description"><span class="icon"></span>';
+            $content .= '<div class="third security-roles"><span class="icon"></span>';
             $content .= '<p><strong>' . Zurmo::t('ZurmoModule', 'Roles') . '</strong>';
             $content .= Zurmo::t('ZurmoModule', 'Roles expand visibility allowing managers to read/write their employees\' records.');
             $content .= '</p>';
@@ -74,23 +74,23 @@
         protected function renderAdvancedLinkContent()
         {
             $content = Zurmo::t('ZurmoModule', 'Read more on advanced security features</u></b>');
-            return ZurmoHtml::tag('div', array('id' => 'security-advanced-toggle'), $content);
+            return ZurmoHtml::tag('a', array('id' => 'security-advanced-toggle', 'class' => 'simple-link', 'href' => '#'), $content);
         }
 
         protected function renderAdvancedIntroContent()
         {
             $content  = '<div id="security-advanced-intro" class="module-intro-steps clearfix" style="display:none;">';
-            $content .= '<div class="third catalog-description"><span class="icon"></span>';
+            $content .= '<div class="third security-groups"><span class="icon"></span>';
             $content .= '<p><strong>' . Zurmo::t('ZurmoModule', 'Groups') . '</strong>';
             $content .= Zurmo::t('ZurmoModule', 'Groups are used to restrict rights and permissions for specific users.');
             $content .= '</p>';
             $content .= '</div>';
-            $content .= '<div class="third catalog-item-description"><span class="icon"></span>';
+            $content .= '<div class="third security-nested-groups"><span class="icon"></span>';
             $content .= '<p><strong>' . Zurmo::t('ZurmoModule', 'Nested Groups') . '</strong>';
             $content .= Zurmo::t('ZurmoModule', 'Nested groups or \'children\' groups allow additional flexibility in controlling what rights and permissions are restricted for users.');
             $content .= '</p>';
             $content .= '</div>';
-            $content .= '<div class="third product-description"><span class="icon"></span>';
+            $content .= '<div class="third security-adhoc-sharing"><span class="icon"></span>';
             $content .= '<p><strong>' . Zurmo::t('ZurmoModule', 'Ad-hoc Sharing') . '</strong>';
             $content .= Zurmo::t('ZurmoModule', 'Groups and nested groups can also be used to share records ad-hoc.');
             $content .= '</p>';
@@ -105,6 +105,7 @@
             $content = "$('#security-advanced-toggle').click(function()
                          {
                              $('#security-advanced-intro').toggle();
+                             return false;
                          });";
             Yii::app()->clientScript->registerScript('SecurityIntroAdvancedToggle', $content);
         }
