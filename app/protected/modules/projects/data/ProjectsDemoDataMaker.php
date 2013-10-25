@@ -91,10 +91,11 @@
          */
         protected static function addDemoTasks($project, $taskInputCount = 1, & $demoDataHelper)
         {
-            for($i = 0; $i < $taskInputCount; $i++)
+            $randomTasks = self::getRandomTasks();
+            for($i = 0; $i < count($randomTasks); $i++)
             {
                 $task                       = new Task();
-                $task->name = RandomDataUtil::getRandomValueFromArray(self::getRandomTasks());
+                $task->name                 = $randomTasks[$i]['name'];
                 $task->owner                = $demoDataHelper->getRandomByModelName('User');
                 $task->requestedByUser      = $demoDataHelper->getRandomByModelName('User');
                 $task->completedDateTime    = '0000-00-00 00:00:00';
@@ -102,23 +103,25 @@
                 $task->status               = Task::STATUS_NEW;
                 $task->save();
                 //Notification subscriber
-                $notificationSubscriber     = new NotificationSubscriber();
-                $notificationSubscriber->person        = $task->owner;
+                $notificationSubscriber             = new NotificationSubscriber();
+                $notificationSubscriber->person     = $demoDataHelper->getRandomByModelName('User');
                 $notificationSubscriber->hasReadLatest = false;
                 //Task check list items
                 $task->notificationSubscribers->add($notificationSubscriber);
-                $taskCheckListItemsData = self::getTaskCheckListItems();
-                $taskCheckListItems = $taskCheckListItemsData[$task->name];
-                foreach($taskCheckListItems as $name)
+                $taskCheckListItems = $randomTasks[$i]['checkListItems'];
+                foreach($taskCheckListItems as $itemKey => $name)
                 {
                     $taskCheckListItem = new TaskCheckListItem();
                     $taskCheckListItem->name = $name;
+                    if(($itemKey * $i) % 2 == 0)
+                    {
+                        $taskCheckListItem->completed = true;
+                    }
                     $task->checkListItems->add($taskCheckListItem);
                     ProjectsUtil::logTaskCheckItemEvent($task, $taskCheckListItem);
                 }
                 //Comments
-                $commentsData = self::getTaskComments();
-                $commentItems  = $commentsData[$task->name];
+                $commentItems  = $randomTasks[$i]['comments'];
                 foreach($commentItems as $description)
                 {
                     $comment = new Comment();
@@ -149,22 +152,35 @@
          */
         protected static function getRandomTasks()
         {
-            return array(
+            $tasksList = array(
                 'Create Demo Proposal',
                 'Come up with a contacts list for the client',
                 'Prepare telephone directory for the company',
                 'Get an accounting software',
-                'Usage of google analytics on company website'
+                'Usage of google analytics on company website',
+                'Buy new laptops for the company',
+                'Arrange a good chef for the cafeteria'
             );
+            $multipliedTasksList = array();
+            for($i = 1; $i <= 2; $i++)
+            {
+               foreach($tasksList as $task)
+               {
+                   $multipliedTasksList[] = array('name' => $task . ' v' . $i,
+                                                  'checkListItems' => self::getTaskCheckListItems($task),
+                                                  'comments' => self::getTaskComments($task));
+               }
+            }
+            return $multipliedTasksList;
         }
 
         /**
          * Gets the list of task check items
          * @return array
          */
-        protected static function getTaskCheckListItems()
+        protected static function getTaskCheckListItems($key)
         {
-            return array(
+            $checklistItemsArray =  array(
                 'Create Demo Proposal'                        => array('Get the requirements',
                                                                         'Analysis of requirements'),
                 'Come up with a contacts list for the client' => array('Call the contacts',
@@ -175,16 +191,24 @@
                                                                         'Discuss with the team'),
                 'Usage of google analytics on company website'=> array('Explore the usage',
                                                                         'Implement into the website'),
+                'Buy new laptops for the company'             => array('Gather the information',
+                                                                        'Do research',
+                                                                        'Submit the analysis for the review'),
+                'Arrange a good chef for the cafeteria'       => array('List down the chefs available',
+                                                                        'Ask them for a sample',
+                                                                        'Get an approval on the same'),
             );
+
+            return $checklistItemsArray[$key];
         }
 
         /**
          * Gets the list of task check items
          * @return array
          */
-        protected static function getTaskComments()
+        protected static function getTaskComments($key)
         {
-            return array(
+            $comments = array(
                 'Create Demo Proposal'                        => array('Quite useful moving forward',
                                                                        'Would be helful for other people'),
                 'Come up with a contacts list for the client' => array('Very beneficial for the company',
@@ -196,7 +220,12 @@
                                                                         'Less number of people required'),
                 'Usage of google analytics on company website'=> array('Aids in site analysis',
                                                                         'Would be helpful from SEO perspective'),
+                'Buy new laptops for the company'             => array('Sony vaio would be good',
+                                                                        'No no mac would be more better'),
+                'Arrange a good chef for the cafeteria'       => array('I want to taste every sample',
+                                                                        'Please arrange the same for me'),
             );
+            return $comments[$key];
         }
 
         /**

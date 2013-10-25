@@ -39,29 +39,6 @@ function transferUserModalValues(dialogId, data, url, attribute, errorInProcess)
     $(dialogId).dialog("close");
 }
 
-/**
- * Update task status
- */
-function updateTaskStatus(status, url, errorInProcess)
-{
-    url = url + "&status=" + status;
-    $.ajax(
-        {
-            type: 'GET',
-            url: url,
-            dataType: 'html',
-            success: function(data)
-                     {
-                         $('#completionDate').html(data);
-                     },
-            error:function()
-                  {
-                      alert(errorInProcess);
-                  }
-        }
-    );
-}
-
 function updateCheckListItem(element, url, errorMessage)
 {
     var passedValue = $(element).val();

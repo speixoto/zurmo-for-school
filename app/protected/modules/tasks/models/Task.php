@@ -277,5 +277,29 @@
         {
             return true;
         }
+
+        /**
+         * Updates kanban item after saving task
+         */
+        protected function afterSave()
+        {
+            parent::afterSave();
+            $targetKanbanType = TasksUtil::resolveKanbanItemTypeForTaskStatus(intval($this->status));
+            $kanbanItem       = KanbanItem::getByTask($this->id);
+            if($kanbanItem != null)
+            {
+                $sourceKanbanType = $kanbanItem->type;
+                if($sourceKanbanType != $targetKanbanType)
+                {
+                  $sortOrder             = KanbanItem::getMaximumSortOrderByType($targetKanbanType);
+                  $kanbanItem->sortOrder = $sortOrder;
+                  $kanbanItem->type      = $targetKanbanType;
+                  if(!$kanbanItem->save())
+                  {
+                      throw new FailedToSaveModelException();
+                  }
+                }
+            }
+        }
     }
 ?>

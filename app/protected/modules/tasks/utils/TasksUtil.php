@@ -504,23 +504,6 @@
         }
 
         /**
-         * Resolve kanban item type for task
-         * @param int $taskId
-         * @return int
-         */
-        public static function resolveKanbanItemTypeForTask($taskId)
-        {
-            $task = Task::getById($taskId);
-            $status = $task->status;
-            if($status == null)
-            {
-                return KanbanItem::TYPE_TODO;
-            }
-            $data = self::getTaskStatusMappingToKanbanItemTypeArray();
-            return $data[intval($status)];
-        }
-
-        /**
          * Resolves Subscribe Url
          * @param int $taskId
          * @return string
