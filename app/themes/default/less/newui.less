@@ -718,11 +718,27 @@ body > .ui-autocomplete{
 	margin-right:8px;
 	content: "e";
 }
+.autocomplete-icon-ProjectsModule:before{
+	.symbly(20px);
+	margin-right:8px;
+	content: '\02C7';
+}
+.autocomplete-icon-ProductsModule:before{
+	.symbly(20px);
+	margin-right:8px;
+	content:'\003E';
+}
+.autocomplete-icon-WorkflowsModule:before{
+	.symbly(20px);
+	margin-right:8px;
+	content:'\20AC';
+}
 .autocomplete-icon-AllResults:before{
 	.symbly(20px);
 	margin-right:8px;
 	content: "k";
 }
+
 
 .global-search-loopa{
 	padding:0;
@@ -1982,7 +1998,7 @@ td.empty{
 		vertical-align: text-top;
 	}
 	table{
-		table-layout:fixed;
+		//table-layout:fixed;
 		width:100%;
 		border-bottom:1px solid #CCCCCC;
 	}
@@ -2374,6 +2390,7 @@ div.wide.form{
 }
 
 .list-preloader{
+	z-index: 1000;
 	display:none;
 	background: rgba(0, 0, 0, 0.5);
 	.b-shadow(  0 0 30px 0 rgba(100, 100, 100, 0.7) );
@@ -3123,21 +3140,6 @@ div.wide.form{
 	h3{
 		margin:0 0 15px 0;
 	}
-	table{
-		border-bottom:none;
-	}
-	th{
-		vertical-align: text-top;
-	}
-	td{
-		vertical-align: top;
-	}
-	td table{
-		width:100%;
-	}
-	td{
-		padding-bottom: 15px;
-	}
 	.panelTitle{
 		margin:0 0 10px 0;
 		padding:0;
@@ -3155,6 +3157,25 @@ div.wide.form{
 		}
 	}
 }
+
+.form-fields{
+	border-bottom:none;
+	table-layout: fixed;
+	th{
+		vertical-align: text-top;
+	}
+	td{
+		vertical-align: top;
+		position: relative;
+	}
+	td table{
+		width:100%;
+	}
+	td{
+		padding-bottom: 15px;
+	}
+}
+
 
 #modal-edit-form{
 	padding: 15px 15px 12px 15px;

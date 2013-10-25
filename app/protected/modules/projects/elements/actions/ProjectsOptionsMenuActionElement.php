@@ -56,11 +56,10 @@
 
         protected function getMenuItems()
         {
-            $deleteElement          = new ProjectDeleteLinkActionElement($this->controllerId, $this->moduleId, $this->modelId);
+            $deleteElement          = new ProjectDeleteLinkActionElement($this->controllerId, $this->params["relationModuleId"], $this->modelId);
             $deleteElementContent   = $deleteElement->renderMenuItem();
-            $editElement            = new EditLinkActionElement($this->controllerId, $this->moduleId, $this->modelId);
+            $editElement            = new EditLinkActionElement($this->controllerId, $this->params["relationModuleId"], $this->modelId);
             $editElementContent     = $editElement->renderMenuItem();
-            // TODO: @Shoaibi/@Jason: Low: securable on these items from the outside coming in?
             $menuItems              = array( $editElementContent, $deleteElementContent);
             return $menuItems;
         }

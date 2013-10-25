@@ -39,29 +39,6 @@ function transferUserModalValues(dialogId, data, url, attribute, errorInProcess)
     $(dialogId).dialog("close");
 }
 
-/**
- * Update task status
- */
-function updateTaskStatus(status, url, errorInProcess)
-{
-    url = url + "&status=" + status;
-    $.ajax(
-        {
-            type: 'GET',
-            url: url,
-            dataType: 'html',
-            success: function(data)
-                     {
-                         $('#completionDate').html(data);
-                     },
-            error:function()
-                  {
-                      alert(errorInProcess);
-                  }
-        }
-    );
-}
-
 function updateCheckListItem(element, url, errorMessage)
 {
     var passedValue = $(element).val();
@@ -85,7 +62,7 @@ function updateCheckListItem(element, url, errorMessage)
             success: function(data){
               $(litag).find('p').html(data);
               $(litag).find('.editable').show();
-              $(litag).find('.taskcheckitemactions').show();
+              $(litag).find('.task-check-item-actions').show();
               $(litag).find('.editable-task-input').hide();
             }
         });

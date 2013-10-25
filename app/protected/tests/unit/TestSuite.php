@@ -46,6 +46,22 @@
 
     class TestSuite
     {
+        // these constants serve no purpose for PHPUnit
+        // we return these when exiting inside this class under special circumstances
+        // these are useful for chained invocations of TestSuite, say
+        // like: phpunit TestSuite.php FirstTest && phpunit TestSuite.php SecondTest
+        // if FirstTest can't be run due to any reason, say inexisting test or tempdir not writable, SecondTest
+        // would never be run, which makes great sense considering "&&".
+        // this would be super useful in a CI system, we could just look at return code
+        //  instead of reading long strings
+        const ERROR_INVOCATION_WITHOUT_TESTSUITE        = -1;
+
+        const ERROR_WALKTHROUGH_AND_BENCHMARK_SELECTED  = -2;
+
+        const ERROR_TEST_NOT_FOUND                      = -3;
+
+        const ERROR_TEMP_DIR_NOT_WRITABLE               = -4;
+
         protected static $dependentTestModelClassNames = array();
 
         public static function suite()
@@ -89,14 +105,14 @@
             if ($argv[count($argv) - 2] != 'TestSuite.php')
             {
                 echo $usage;
-                exit;
+                exit(static::ERROR_INVOCATION_WITHOUT_TESTSUITE);
             }
 
             if ($onlyWalkthroughs && $onlyBenchmarks)
             {
                 echo $usage;
                 echo "It doesn't have sense to select both \"--only-walkthroughs\" and \"--only-benchmarks\" options. " . PHP_EOL . PHP_EOL;
-                exit;
+                exit(static::ERROR_WALKTHROUGH_AND_BENCHMARK_SELECTED);
             }
 
             $whatToTest           = $argv[count($argv) - 1];
@@ -132,26 +148,30 @@
             {
                 echo $usage;
                 echo "  No tests found for '$whatToTest'." . PHP_EOL . PHP_EOL;
-                exit;
+                exit(static::ERROR_TEST_NOT_FOUND);
             }
             echo "Testing with database: '"  . Yii::app()->db->connectionString . '\', ' .
                                                 'username: \'' . Yii::app()->db->username         . "'." . PHP_EOL;
 
             static::setupDatabaseConnection();
+            $template        = "{message}\n";
+            $messageStreamer = new MessageStreamer($template);
+            $messageStreamer->setExtraRenderBytes(0);
+            $messageLogger = new MessageLogger($messageStreamer);
             if (!$reuse)
             {
                 if (!is_writable(sys_get_temp_dir()))
                 {
                     echo PHP_EOL .PHP_EOL . "Temp directory must be writable to store reusable schema" . PHP_EOL; // Not Coding Standard
                     echo "Temp directory: " . sys_get_temp_dir() .  PHP_EOL . PHP_EOL; // Not Coding Standard
-                    exit;
+                    exit(static::ERROR_TEMP_DIR_NOT_WRITABLE);
                 }
                 echo "Auto building database schema..." . PHP_EOL;
                 ZurmoRedBean::$writer->wipeAll();
-                $messageLogger = new MessageLogger();
                 InstallUtil::autoBuildDatabase($messageLogger, true);
                 $messageLogger->printMessages();
-                ReadPermissionsOptimizationUtil::rebuild();
+                // recreate all tables, we know there aren't existing because we just did a wipeAll();
+                static::rebuildReadPermissionsTables(true, true, $messageStreamer);
                 assert('RedBeanDatabase::isSetup()');
                 Yii::app()->user->userModel = InstallUtil::createSuperUser('super', 'super');
 
@@ -173,12 +193,21 @@
             else
             {
                 echo PHP_EOL;
-                $messageLogger  = new MessageLogger();
                 static::buildDependentTestModels($messageLogger);
                 $messageLogger->printMessages();
+                // recreate any missing read tables.
+                static::rebuildReadPermissionsTables(false, true, $messageStreamer);
             }
+            echo PHP_EOL;
             static::closeDatabaseConnection();
             return $suite;
+        }
+
+        protected static function rebuildReadPermissionsTables($forceOverwrite, $forcePhp, $messageStreamer)
+        {
+            echo 'Rebuilding read permissions' . PHP_EOL;
+            ReadPermissionsOptimizationUtil::rebuild($forceOverwrite, $forcePhp, $messageStreamer);
+            echo 'Read permissions rebuild complete.' . PHP_EOL;
         }
 
         public static function customOptionSet($customOption, &$argv)
@@ -245,20 +274,8 @@
 
         public static function buildDependentTestModels($messageLogger)
         {
-            if (!empty(static::$dependentTestModelClassNames))
-            {
-                RedBeanModelsToTablesAdapter::generateTablesFromModelClassNames(static::$dependentTestModelClassNames,
-                                                                                                    $messageLogger);
-                // TODO: @Shoaibi/@Jason: Critical: Shouldn't ::rebuild take care of this.
-                foreach (static::$dependentTestModelClassNames as $modelClassName)
-                {
-                    if (is_subclass_of($modelClassName, 'SecurableItem') && $modelClassName::hasReadPermissionsOptimization())
-                    {
-                        ReadPermissionsOptimizationUtil::recreateTable(
-                            ReadPermissionsOptimizationUtil::getMungeTableName($modelClassName));
-                    }
-                }
-            }
+            RedBeanModelsToTablesAdapter::generateTablesFromModelClassNames(static::$dependentTestModelClassNames,
+                                                                                                $messageLogger);
         }
 
         protected static function resolveDependentTestModelClassNamesForClass($className)

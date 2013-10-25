@@ -47,7 +47,12 @@
         public static function generateTablesFromModelClassNames(array $modelClassNames, & $messageLogger)
         {
             $tables = array();
-            $messageLogger->addInfoMessage(Zurmo::t('Core', 'Building Table Schema for Models'));
+            if (empty($modelClassNames))
+            {
+                return;
+            }
+            $messageLogger->addInfoMessage(Zurmo::t('Core', 'Building Table Schema for {{count}} Models',
+                                                            array('{{count}}' => count($modelClassNames))));
             foreach ($modelClassNames as $modelClassName)
             {
                 $table = RedBeanModelToTableSchemaAdapter::resolve($modelClassName, $messageLogger);

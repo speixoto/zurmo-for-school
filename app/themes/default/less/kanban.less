@@ -474,48 +474,57 @@
 	}
 }
 
-.subscribe-task-link{
+.subscribe-task-link,
+.unsubscribe-task-link{
 	background: #DFDFDF;
 	//background: rgba(236, 240, 241, 0.75) url(../images/stripes.png) left top repeat;
 	padding: 2px;
 	display: inline-block;
 	width: 20px;
 	height: 20px;
-	.icon-subscribe{
+	.icon-subscribe,
+	.icon-unsubscribe{
 		position: relative;
 		top: -3px;
 		display: block;
 		text-align: center;
 		&:after{
-			color: rgba(255, 255, 255, 1);
-			content: "Y";
+			color: rgb(84, 84, 84);
+			content: '\25CA';//2260
 			font-size: 29px;
 		}
 	}
 }
 
-.detail-subscribe-task-link{
+.detail-subscribe-task-link,
+.detail-unsubscribe-task-link{
 	background: #DFDFDF;
 	//background: rgba(236, 240, 241, 0.75) url(../images/stripes.png) left top repeat;
 	padding: 2px;
 	display: inline-block;
 	width: 36px;
 	height: 36px;
-	.icon-subscribe{
+	.icon-subscribe,
+	.icon-unsubscribe{
 		position: relative;
 		top: -2px;
 		display: block;
 		text-align: center;
 		&:after{
-			color: rgba(255, 255, 255, 1);
-			content: "Y";
+			color: rgb(84, 84, 84);
+			content: '\25CA';
 			font-size: 44px;
 		}
 	}
 }
 
+.icon-unsubscribe:after{
+	content:'\2122' !important;
+}
+
+
 .detail-unsubscribe-task-link,
 .unsubscribe-task-link{
-	float: right;
-	margin: 0 0 0 0;
+	//float: right;
+	//margin: 0 0 0 0;
 }

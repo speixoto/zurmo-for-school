@@ -152,7 +152,7 @@
                 Yii::getPathOfAlias('application.core.kanbanBoard.widgets.assets')) . '/KanbanUtils.js');
 
             $columnDataKeys = array_keys($this->columnsData);
-            Yii::app()->clientScript->registerScript('task-sortable-data', $this->registerKanbanColumnSortableScript());
+            Yii::app()->clientScript->registerScript('task-sortable-data', static::registerKanbanColumnSortableScript());
             $url = Yii::app()->createUrl('tasks/default/updateStatusInKanbanView', array());
             $this->registerKanbanColumnStartActionScript(Zurmo::t('Core', 'Finish'), Task::STATUS_IN_PROGRESS, $url);
             $this->registerKanbanColumnFinishActionScript(Zurmo::t('Core', 'Accept'),
@@ -169,10 +169,15 @@
          * @param int $type
          * @return string
          */
-        protected function registerKanbanColumnSortableScript()
+
+        /**
+         * Registers kanban column sortable script. Also called to use on refresh of kanban board
+         * @return string
+         */
+        public static function registerKanbanColumnSortableScript()
         {
             $url = Yii::app()->createUrl('tasks/default/updateStatusOnDragInKanbanView');
-            return "setUpTaskKanbanSortable('{$url}')";
+            return "setUpTaskKanbanSortable('{$url}');";
         }
 
         /**
@@ -377,7 +382,12 @@
             $content .= ZurmoHtml::closeTag('h4');
             if($task->description != null)
             {
-                $content .= ZurmoHtml::tag('p', array(), $task->description);
+                $description = $task->description;
+                if (strlen($description) > TaskKanbanBoard::TASK_DESCRIPTION_LENGTH)
+                {
+                    $description = substr($description, 0, TaskKanbanBoard::TASK_DESCRIPTION_LENGTH) . '...';
+                }
+                $content .= ZurmoHtml::tag('p', array(), $description);
             }
             $content .= ZurmoHtml::closeTag('div');
 

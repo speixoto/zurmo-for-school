@@ -88,8 +88,6 @@
             $contact                                 = new Contact();
             $contact->state                          = $contactWebForm->defaultState;
             $contact->owner                          = $contactWebForm->defaultOwner;
-            $contact                                 = ContactWebFormsUtil::resolveHiddenAttributesForContactModel(
-                                                       $contact, $contactWebForm);
             $contact->googleWebTrackingId            = Yii::app()->getRequest()->getPost(
                                                        ContactExternalEditAndDetailsView::GOOGLE_WEB_TRACKING_ID_FIELD);
             $customDisplayLabels                     = ContactWebFormsUtil::getCustomDisplayLabels($contactWebForm);
@@ -98,6 +96,10 @@
             $contactWebFormModelForm->setCustomDisplayLabels($customDisplayLabels);
             $contactWebFormModelForm->setCustomRequiredFields($customRequiredFields);
             $postVariableName                        = get_class($contactWebFormModelForm);
+            if (isset($_POST[$postVariableName]))
+            {
+                ContactWebFormsUtil::resolveHiddenAttributesForContactModel($postVariableName, $contactWebForm);
+            }
             $containedView                           = new ContactExternalEditAndDetailsView('Edit',
                                                        $this->getId(),
                                                        $this->getModule()->getId(),
@@ -170,11 +172,11 @@
             $contact        = new Contact();
             $contact->state = $contactWebForm->defaultState;
             $contact->owner = $contactWebForm->defaultOwner;
-            $contact        = ContactWebFormsUtil::resolveHiddenAttributesForContactModel($contact, $contactWebForm);
             $customRequiredFields = ContactWebFormsUtil::getCustomRequiredFields($contactWebForm);
             $contactWebFormModelForm = new ContactWebFormsModelForm($contact);
             $contactWebFormModelForm->setCustomRequiredFields($customRequiredFields);
             $postVariableName = get_class($contactWebFormModelForm);
+            ContactWebFormsUtil::resolveHiddenAttributesForContactModel($postVariableName, $contactWebForm);
             $sanitizedPostData = PostUtil::sanitizePostByDesignerTypeForSavingModel($contact, $_POST[$postVariableName]);
             $contact->setAttributes($sanitizedPostData);
             $this->resolveContactWebFormEntry($contactWebForm, $contact, $contactWebFormModelForm);

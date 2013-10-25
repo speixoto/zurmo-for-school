@@ -98,15 +98,15 @@
             $columnName                 = 'SampleColumn';
             $content                    = $mappingFormLayoutUtil->renderMappingRulesElements($columnName, null, 'Accounts', 'importColumn', array());
             $this->assertTrue(stripos($content, $columnName) !== false);
-            $this->assertTrue(stripos($content, '<tbody><tr>') === false);
+            $this->assertTrue(stripos($content, '<h4>Rules</h4>') === false);
             $this->assertTrue(stripos($content, $columnName . '-mapping-rules') !== false);
             $content                    = $mappingFormLayoutUtil->renderMappingRulesElements($columnName, 'officePhone', 'Accounts', 'importColumn', array());
-            $this->assertTrue(stripos($content, '<tbody><tr>') !== false);
+            $this->assertTrue(stripos($content, '<h4>Rules</h4>') !== false);
 
             $mappingFormLayoutUtil->renderMappingRulesElements($columnName, 'DummyAttribute', 'Accounts', 'importColumn', array());
             //Test Decimal/Float attribute
             $content = $mappingFormLayoutUtil->renderMappingRulesElements($columnName, 'annualRevenue', 'Accounts', 'importColumn', array());
-            $this->assertTrue(stripos($content, '<tbody><tr>') !== false);
+            $this->assertTrue(stripos($content, '<h4>Rules</h4>') !== false);
         }
 
         public function testRenderMappingRulesElementForDecimalAttributeWithPrecision()
@@ -121,7 +121,7 @@
             $columnName                 = 'SampleColumn';
             //Test Decimal/Float attribute that has precision
             $content = $mappingFormLayoutUtil->renderMappingRulesElements($columnName, 'decimalCstm', 'Accounts', 'importColumn', array());
-            $this->assertTrue(stripos($content, '<tbody><tr>') !== false);
+            $this->assertTrue(stripos($content, '<h4>Rules</h4>') !== false);
         }
 
         public function testRenderMappingDataMetadataWithRenderedElements()

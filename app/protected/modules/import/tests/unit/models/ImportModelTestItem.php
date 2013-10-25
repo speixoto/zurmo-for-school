@@ -106,7 +106,7 @@
                     array('phone',     'length',  'min'  => 1, 'max' => 14),
                     array('string',    'required'),
                     array('string',    'type',  'type' => 'string'),
-                    array('string',    'length',  'min'  => 1, 'max' => 64),
+                    array('string',    'length',  'min'  => 3, 'max' => 64),
                     array('textArea',  'type',    'type' => 'string'),
                     array('url',       'url'),
                 ),

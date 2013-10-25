@@ -36,9 +36,72 @@
 
     class TasksDefaultController extends ActivityModelsDefaultController
     {
+        public function actionDetails($id, $redirectUrl = null)
+        {
+            $task = static::getModelAndCatchNotFoundAndDisplayError('Task', intval($id));
+            ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($task);
+            if($task->project->id > 0)
+            {
+                $this->redirect(Yii::app()->createUrl('projects/default/details',
+                                                      array('id' => $task->project->id, 'openToTaskId' => $task->id)));
+            }
+            elseif($task->activityItems->count() > 0)
+            {
+                try
+                {
+                    $castedDownModel = TasksUtil::castDownActivityItem($task->activityItems[0]);
+                    $moduleClassName = StateMetadataAdapter::resolveModuleClassNameByModel($castedDownModel);
+                    $this->redirect(Yii::app()->createUrl($moduleClassName::getDirectoryName() . '/default/details',
+                        array('id' => $castedDownModel->id, 'kanbanBoard' => true, 'openToTaskId' => $task->id)));
+                }
+                catch (NotFoundException $e)
+                {
+                    //Something is missing or deleted. Fallback to home page
+                    $this->redirect(Yii::app()->createUrl('home/default/index'));
+                }
+            }
+            else
+            {
+                //todo: redirect to task list view, and open modal details, once we have a task details view
+                $this->redirect(Yii::app()->createUrl('home/default/index'));
+            }
+        }
+
+        public function actionEdit($id, $redirectUrl = null)
+        {
+            $task = Task::getById(intval($id));
+            ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($task);
+            if($task->project->id > 0)
+            {
+                $this->redirect(Yii::app()->createUrl('projects/default/details',
+                                                      array('id' => $task->project->id, 'openToTaskId' => $task->id)));
+            }
+            elseif($task->activityItems->count() > 0)
+            {
+                try
+                {
+                    $castedDownModel = TasksUtil::castDownActivityItem($task->activityItems[0]);
+                    $moduleClassName = StateMetadataAdapter::resolveModuleClassNameByModel($castedDownModel);
+                    $this->redirect(Yii::app()->createUrl($moduleClassName::getDirectoryName() . '/default/details',
+                        array('id' => $castedDownModel->id, 'kanbanBoard' => true, 'openToTaskId' => $task->id)));
+                }
+                catch (NotFoundException $e)
+                {
+                    //Something is missing or deleted. Fallback to home page
+                    $this->redirect(Yii::app()->createUrl('home/default/index'));
+                }
+            }
+            else
+            {
+                //todo: redirect to task list view, and open modal details, once we have a task details view
+                $this->redirect(Yii::app()->createUrl('home/default/index'));
+            }
+        }
+
         /**
          * Close task
-         * @param string $id
+         * @param $id
+         * @throws NotSupportedException
          */
         public function actionCloseTask($id)
         {
@@ -246,7 +309,7 @@
             {
                 ProjectsUtil::logAddTaskEvent($task);
             }
-            $this->actionModalDetailsFromRelation($task->id);
+            $this->actionModalDetails($task->id);
         }
 
         /**
@@ -272,7 +335,7 @@
          * Copy task
          * @param string $id
          */
-        public function actionModalCopyFromRelation($id)
+        public function actionModalCopy($id)
         {
             $copyToTask   = new Task();
             if (!isset($_POST['Task']))
@@ -284,17 +347,11 @@
             $this->processTaskEdit($copyToTask);
         }
 
-        public function actionModalDetails($id)
-        {
-            //todo: eventually get rid of actionModalDetailsFromRelation
-            $this->actionModalDetailsFromRelation($id);
-        }
-
         /**
          * Loads modal view from related view
          * @param string $id
          */
-        public function actionModalDetailsFromRelation($id)
+        public function actionModalDetails($id)
         {
             $task = Task::getById(intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($task);
@@ -310,17 +367,11 @@
                 'Details');
         }
 
-        public function actionModalEdit($id)
-        {
-            //todo: eventually get rid of actionModalEditFromRelation
-            $this->actionModalEditFromRelation($id);
-        }
-
         /**
          * Edit task from related view
          * @param string $id
          */
-        public function actionModalEditFromRelation($id)
+        public function actionModalEdit($id)
         {
             $task = Task::getById(intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($task);
@@ -390,7 +441,7 @@
                         //if kanban type is completed
                         if($getData['type'] == KanbanItem::TYPE_COMPLETED)
                         {
-                            $this->actionUpdateStatusInKanbanView(Task::STATUS_COMPLETED, $taskId);
+                            $this->actionUpdateStatusInKanbanView(Task::STATUS_COMPLETED, intval($taskId));
                             $response['button'] = '';
                             $response['status'] = Task::getStatusDisplayName($task->status);
                         }
@@ -405,13 +456,13 @@
                             {
                                 //This would be the one which is dragged across column
                                 $kanbanItem->sortOrder = $counter;
-                                $kanbanItem->type      = $getData['type'];
-                                $targetStatus = TasksUtil::getDefaultTaskStatusForKanbanItemType($getData['type']);
-                                $this->processStatusUpdateViaAjax($taskId, $targetStatus, false);
+                                $kanbanItem->type      = intval($getData['type']);
+                                $targetStatus = TasksUtil::getDefaultTaskStatusForKanbanItemType(intval($getData['type']));
+                                $this->processStatusUpdateViaAjax(intval($taskId), $targetStatus, false);
                                 $content = TasksUtil::resolveActionButtonForTaskByStatus($targetStatus,
                                                                                         $this->getId(),
                                                                                         $this->getModule()->getId(),
-                                                                                        $taskId);
+                                                                                        intval($taskId));
                                 $response['button'] = $content;
                                 $response['status'] = Task::getStatusDisplayName($task->status);
                             }
@@ -431,33 +482,8 @@
         */
         public function actionUpdateStatusInKanbanView($targetStatus, $taskId)
         {
-           $this->processKanbanTypeUpdate($targetStatus, $taskId);
            //Run update queries for update task staus and update type and sort order in kanban column
            $this->processStatusUpdateViaAjax($taskId, $targetStatus, false);
-        }
-
-        /**
-         * Process kanban type update
-         * @param string $targetStatus
-         * @param string $taskId
-         */
-        protected function processKanbanTypeUpdate($targetStatus, $taskId)
-        {
-           assert('is_string($targetStatus)');
-           assert('is_string($taskId)');
-           $targetKanbanType = TasksUtil::resolveKanbanItemTypeForTaskStatus(intval($targetStatus));
-           $sourceKanbanType = TasksUtil::resolveKanbanItemTypeForTask(intval($taskId));
-           if($sourceKanbanType != $targetKanbanType)
-           {
-              $sortOrder             = KanbanItem::getMaximumSortOrderByType($targetKanbanType);
-              $kanbanItem            = KanbanItem::getByTask(intval($taskId));
-              if($kanbanItem != null)
-              {
-                  $kanbanItem->sortOrder = $sortOrder;
-                  $kanbanItem->type      = $targetKanbanType;
-                  $kanbanItem->save();
-              }
-           }
         }
 
         /**

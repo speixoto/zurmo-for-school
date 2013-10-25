@@ -52,7 +52,7 @@
          */
         public static function getCollectionLabel()
         {
-            return Zurmo::t('GamificationModule', 'At The Beach');
+            return Zurmo::t('GamificationModule', 'Beach');
         }
 
         /**
@@ -60,11 +60,11 @@
          */
         public static function getItemTypesAndLabels()
         {
-            return array(   'BeachVolley' => Zurmo::t('GamificationModule', 'Beach Volley'),
-                            'Bikini'          => Zurmo::t('GamificationModule', 'Bikini'),
-                            'Castle'          => Zurmo::t('GamificationModule', 'Castle'),
-                            'Chair'      => Zurmo::t('GamificationModule', 'Chair'),
-                            'Star'            => Zurmo::t('GamificationModule', 'Star'),
+            return array(   'Volleyball' => Zurmo::t('GamificationModule', 'Volleyball'),
+                            'Bikini'     => Zurmo::t('GamificationModule', 'Bikini'),
+                            'SandCastle' => Zurmo::t('GamificationModule', 'Sand Castle'),
+                            'BeachChair'      => Zurmo::t('GamificationModule', 'Beach Chair'),
+                            'Starfish'       => Zurmo::t('GamificationModule', 'Starfish'),
             );
         }
 
@@ -73,11 +73,11 @@
          */
         public static function getItemTypesAndFrequencies()
         {
-            return array(   'BeachVolley' => 10,
-                            'Bikini'          => 10,
-                            'Castle'          => 10,
-                            'Chair'      => 3,
-                            'Star'            => 6,
+            return array(   'Volleyball'  => 10,
+                            'Bikini'      => 10,
+                            'SandCastle'  => 10,
+                            'BeachChair'  => 3,
+                            'Starfish'    => 6,
             );
         }
 

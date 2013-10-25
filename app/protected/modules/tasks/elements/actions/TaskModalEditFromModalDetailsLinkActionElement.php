@@ -98,7 +98,7 @@
 
         protected function getRouteAction()
         {
-            return '/modalEditFromRelation/';
+            return '/modalEdit/';
         }
     }
 ?>

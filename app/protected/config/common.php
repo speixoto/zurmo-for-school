@@ -228,6 +228,9 @@
             'performance' => array(
                 'class'          => 'application.core.components.PerformanceMeasurement',
             ),
+            'phoneHelper' => array(
+                'class'          => 'application.core.components.PhoneHelper',
+            ),
             'sanitizer' => array(
                 'class'          => 'application.extensions.esanitizer.ESanitizer',
                 'sanitizeGet'    => false, //off for now

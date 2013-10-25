@@ -87,12 +87,31 @@
             if (get_class($model) == 'Task')
             {
                 $modelDisplayString = '<span style="text-decoration:line-through;">' . $modelDisplayString . '</span>';
+                $controller = Yii::app()->getController();
+                return TasksUtil::getModalDetailsLink($model, null,
+                                                            null, 'TasksModule');
             }
-            $params          = array('label' => $modelDisplayString, 'redirectUrl' => $redirectUrl, 'wrapLabel' => false);
-            $moduleClassName = $model->getModuleClassName();
-            $moduleId        = $moduleClassName::getDirectoryName();
-            $element  = new DetailsLinkActionElement('default', $moduleId, $model->id, $params);
-            return $element->render();
+            else
+            {
+                $params          = array('label' => $modelDisplayString, 'redirectUrl' => $redirectUrl, 'wrapLabel' => false);
+                $moduleClassName = $model->getModuleClassName();
+                $moduleId        = $moduleClassName::getDirectoryName();
+                $element  = new DetailsLinkActionElement('default', $moduleId, $model->id, $params);
+                return $element->render();
+            }
+        }
+
+        /**
+         * Resolves the link string for task detail modal view
+         * @param array $data
+         * @param int $row
+         * @return string
+         */
+        protected function resolveTaskLink($data, $row)
+        {
+            $content = TasksUtil::getModalDetailsLink($data, $this->controllerId,
+                                                      $this->moduleId, $this->getActionModuleClassName());
+            return $content;
         }
 
         protected static function renderOwnerStringContent($model)
@@ -124,10 +143,15 @@
             return MashableUtil::resolveContentTemplate($template, $data);
         }
 
-        public static function getActivityItemsModelClassNamesDataExcludingContacts()
+        public static function getActivityItemsModelClassNames()
         {
             $metadata = Activity::getMetadata();
-            $activityItemsModelClassNamesData = $metadata['Activity']['activityItemsModelClassNames'];
+            return $metadata['Activity']['activityItemsModelClassNames'];
+        }
+
+        public static function getActivityItemsModelClassNamesDataExcludingContacts()
+        {
+            $activityItemsModelClassNamesData = static::getActivityItemsModelClassNames();
             foreach ($activityItemsModelClassNamesData as $index => $relationModelClassName)
             {
                 if ($relationModelClassName == 'Contact')

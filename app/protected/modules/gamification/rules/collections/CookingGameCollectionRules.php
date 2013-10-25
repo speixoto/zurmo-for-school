@@ -60,11 +60,11 @@
          */
         public static function getItemTypesAndLabels()
         {
-            return array(   'Cookies' => Zurmo::t('GamificationModule', 'Cookies'),
-                            'Glove'          => Zurmo::t('GamificationModule', 'Glove'),
-                            'Oven'          => Zurmo::t('GamificationModule', 'Oven'),
-                            'Waitress'      => Zurmo::t('GamificationModule', 'Waitress'),
-                            'Wok'            => Zurmo::t('GamificationModule', 'Wok'),
+            return array(   'Cookies'     => Zurmo::t('GamificationModule', 'Cookies'),
+                            'Glove'       => Zurmo::t('GamificationModule', 'Oven Mitt'),
+                            'Oven'        => Zurmo::t('GamificationModule', 'Oven'),
+                            'Server'      => Zurmo::t('GamificationModule', 'Server'),
+                            'Grill'       => Zurmo::t('GamificationModule', 'Grill'),
             );
         }
 
@@ -73,11 +73,11 @@
          */
         public static function getItemTypesAndFrequencies()
         {
-            return array(   'Cookies' => 10,
-                            'Glove'          => 10,
-                            'Oven'          => 10,
-                            'Waitress'      => 3,
-                            'Wok'            => 6,
+            return array(   'Cookies'     => 10,
+                            'Glove'       => 10,
+                            'Oven'        => 10,
+                            'Server'      => 3,
+                            'Grill'       => 6,
             );
         }
 

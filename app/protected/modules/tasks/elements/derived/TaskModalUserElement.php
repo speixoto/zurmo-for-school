@@ -34,15 +34,19 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    $basePath  =  Yii::app()->getBasePath();
-    require_once("$basePath/../../redbean/rb.php");
-
-    // TODO: @Shoaibi/@Jason: Critical: Not used anywhere?
-
     /**
-     * A criteria for use with RedbeanModelDataProvider.
+     * Displays the comments list for task along with input text area
      */
-    class RedBeanModelDbCriteria extends CDbCriteria
+    class TaskModalUserElement extends UserElement
     {
+        /**
+         * Generate the error content. Used by editable content
+         * @return error content
+         */
+        protected function renderError()
+        {
+            return $this->form->error($this->model, $this->attribute,
+                                      array('inputID' => $this->getEditableInputId($this->attribute, 'id')));
+        }
     }
 ?>

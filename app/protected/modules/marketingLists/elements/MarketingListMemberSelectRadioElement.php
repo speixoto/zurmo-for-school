@@ -75,14 +75,12 @@
             $selectContactBoxId    = $this->getSelectContactOrLeadSearchBoxId();
             $selectReportBoxId     = $this->getSelectReportSearchBoxId();
             Yii::app()->clientScript->registerScript($this->getListViewGridId() . '-toggleSelectContactOrReportSearchBoxVisibility', '
-                // TODO: @Shoaibi/@Jason: Medium: Get rid of global js variable from here
-                function toggleSelectContactOrReportByRadioButtonId()
+                function toggleSelectContactOrReportByRadioButtonId(radioButtonIdSuffix)
                 {
                     var selectContactBoxId  = "#' . $selectContactBoxId . '";
                     var selectReportBoxId   = "#' . $selectReportBoxId . '";
                     var hideBoxId           = selectReportBoxId;
                     var showBoxId           = selectContactBoxId;
-                    var radioButtonIdSuffix = window.selectContactOrReportRadioButtonSuffix;
                     if (radioButtonIdSuffix === undefined)
                     {
                         var radioButtonIdSuffix = 0;
@@ -108,8 +106,8 @@
                 $(".' . $this->attribute . '").unbind("change.action").bind("change.action", function(event)
                     {
                         radioButtonId       = ($(this)).attr("id");
-                        window.selectContactOrReportRadioButtonSuffix = radioButtonId.charAt(radioButtonId.length - 1);
-                        toggleSelectContactOrReportByRadioButtonId();
+                        selectContactOrReportRadioButtonSuffix = radioButtonId.charAt(radioButtonId.length - 1);
+                        toggleSelectContactOrReportByRadioButtonId(selectContactOrReportRadioButtonSuffix);
                     }
                 );
             ');

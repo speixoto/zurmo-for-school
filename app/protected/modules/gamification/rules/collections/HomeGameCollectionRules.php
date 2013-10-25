@@ -35,16 +35,16 @@
  ********************************************************************************/
 
     /**
-     * Decoration collection
+     * Home collection
      */
-    class DecorationGameCollectionRules extends GameCollectionRules
+    class HomeGameCollectionRules extends GameCollectionRules
     {
         /**
          * @return string
          */
         public static function getType()
         {
-            return 'Decoration';
+            return 'Home';
         }
 
         /**
@@ -52,7 +52,7 @@
          */
         public static function getCollectionLabel()
         {
-            return Zurmo::t('GamificationModule', 'Decoration');
+            return Zurmo::t('GamificationModule', 'Home');
         }
 
         /**
@@ -61,9 +61,9 @@
         public static function getItemTypesAndLabels()
         {
             return array(   'Bed'        => Zurmo::t('GamificationModule', 'Bed'),
-                            'BookShelve' => Zurmo::t('GamificationModule', 'BookShelve'),
+                            'Bookshelf ' => Zurmo::t('GamificationModule', 'Bookshelf'),
                             'Flowers'    => Zurmo::t('GamificationModule', 'Flowers'),
-                            'Lamp'       => Zurmo::t('GamificationModule', 'Lamp'),
+                            'Lights'     => Zurmo::t('GamificationModule', 'Lights'),
                             'Sofa'       => Zurmo::t('GamificationModule', 'Sofa'),
             );
         }
@@ -74,9 +74,9 @@
         public static function getItemTypesAndFrequencies()
         {
             return array(   'Bed'        => 10,
-                            'BookShelve' => 10,
+                            'Bookshelf'  => 10,
                             'Flowers'    => 10,
-                            'Lamp'       => 3,
+                            'Lights'     => 3,
                             'Sofa'       => 6,
             );
         }

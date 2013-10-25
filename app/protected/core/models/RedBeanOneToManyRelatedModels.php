@@ -178,7 +178,6 @@
                 {
                     if ($this->linkType == RedBeanModel::LINK_TYPE_POLYMORPHIC)
                     {
-                        // TODO: @Shoaibi/@Jason: Critical: We should probably fine a better place to put this
                         throw new NotSupportedException("Polymorphic relations can not be NOT_OWNED");
                     }
                     ZurmoRedBeanLinkManager::breakLink($bean, $tableName, $this->resolveLinkNameForCasing());

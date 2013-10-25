@@ -60,11 +60,11 @@
          */
         public static function getItemTypesAndLabels()
         {
-            return array(   'CoffeeMug' => Zurmo::t('GamificationModule', 'Coffee Mug'),
-                            'DoNotDisturb'          => Zurmo::t('GamificationModule', 'Do Not Disturb'),
-                            'RoomCard'          => Zurmo::t('GamificationModule', 'Room Card'),
+            return array(   'CoffeeMug'        => Zurmo::t('GamificationModule', 'Coffee Mug'),
+                            'DoNotDisturb'     => Zurmo::t('GamificationModule', 'Do Not Disturb'),
+                            'RoomKeyCard'      => Zurmo::t('GamificationModule', 'Room Key Card'),
                             'RoomService'      => Zurmo::t('GamificationModule', 'Room Service'),
-                            'Towels'            => Zurmo::t('GamificationModule', 'Towels'),
+                            'Towels'           => Zurmo::t('GamificationModule', 'Towels'),
             );
         }
 
@@ -73,11 +73,11 @@
          */
         public static function getItemTypesAndFrequencies()
         {
-            return array(   'CoffeeMug' => 10,
-                            'DonNotDisturb'          => 10,
-                            'RoomCard'          => 10,
+            return array(   'CoffeeMug'        => 10,
+                            'DonNotDisturb'    => 10,
+                            'RoomKeyCard'      => 10,
                             'RoomService'      => 3,
-                            'Towels'            => 6,
+                            'Towels'           => 6,
             );
         }
 

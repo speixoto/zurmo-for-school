@@ -100,6 +100,14 @@
             if (isset($_POST[$modelClassName]))
             {
                 unset($_POST[$modelClassName]['serializedData']);
+                foreach ($_POST['ContactWebFormAttributeForm'] as $attributeName => $attributeData)
+                {
+                    if (isset($attributeData['hiddenValue']) && !empty($attributeData['hiddenValue']))
+                    {
+                        $_POST['ContactWebFormAttributeForm'][$attributeName]['hiddenValue'] =
+                        ContactWebFormsUtil::sanitizeHiddenAttributeValue($attributeName, $attributeData['hiddenValue']);
+                    }
+                }
                 $contactWebForm->serializedData = serialize($_POST['ContactWebFormAttributeForm']);
             }
             $contactWebForm->defaultOwner = Yii::app()->user->userModel;
@@ -126,6 +134,14 @@
             if (isset($_POST[$modelClassName]))
             {
                 unset($_POST[$modelClassName]['serializedData']);
+                foreach ($_POST['ContactWebFormAttributeForm'] as $attributeName => $attributeData)
+                {
+                    if (isset($attributeData['hiddenValue']) && !empty($attributeData['hiddenValue']))
+                    {
+                        $_POST['ContactWebFormAttributeForm'][$attributeName]['hiddenValue'] =
+                        ContactWebFormsUtil::sanitizeHiddenAttributeValue($attributeName, $attributeData['hiddenValue']);
+                    }
+                }
                 $contactWebForm->serializedData = serialize($_POST['ContactWebFormAttributeForm']);
             }
             $titleBarAndEditView                = $this->makeEditAndDetailsView(

@@ -39,6 +39,7 @@
      */
     class TaskKanbanBoard extends KanbanBoard
     {
+        const TASK_DESCRIPTION_LENGTH = 60;
         /**
          * @var RedbeanModel
          */
