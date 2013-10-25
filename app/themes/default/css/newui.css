@@ -10409,6 +10409,30 @@ body > .ui-autocomplete {
   margin-right: 8px;
   content: "e";
 }
+.autocomplete-icon-ProjectsModule:before {
+  font-weight: normal !important;
+  font-weight: normal;
+  font-size: 20px;
+  font-family: "zurmo_gamification_symbly_rRg";
+  margin-right: 8px;
+  content: '\02C7';
+}
+.autocomplete-icon-ProductsModule:before {
+  font-weight: normal !important;
+  font-weight: normal;
+  font-size: 20px;
+  font-family: "zurmo_gamification_symbly_rRg";
+  margin-right: 8px;
+  content: '\003E';
+}
+.autocomplete-icon-WorkflowsModule:before {
+  font-weight: normal !important;
+  font-weight: normal;
+  font-size: 20px;
+  font-family: "zurmo_gamification_symbly_rRg";
+  margin-right: 8px;
+  content: '\20AC';
+}
 .autocomplete-icon-AllResults:before {
   font-weight: normal !important;
   font-weight: normal;
@@ -17595,6 +17619,12 @@ table.configuration-list td:last-child a .z-label:before {
 #DiagnosticCheckServicesView .pass {
   display: block;
   text-align: center;
+}
+/*Queue*/
+#queue-search-element .z-spinner {
+  display: block !important;
+  left: 198px;
+  top: 4px;
 }
 .available-portlets {
   padding: 15px 15px 0 15px;
