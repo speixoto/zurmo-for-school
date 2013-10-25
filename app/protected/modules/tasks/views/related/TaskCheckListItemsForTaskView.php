@@ -145,6 +145,9 @@
                 $itemContent .= $this->attachActionsToCheckListItem();
                 $content     .= ZurmoHtml::tag('li', array('class' => 'check-list-item clearfix'), $itemContent);
             }
+            Yii::app()->clientScript->registerScriptFile(Yii::app()->getAssetManager()->publish(
+                    Yii::getPathOfAlias('application.modules.tasks.elements.assets')) . '/TaskUtils.js',
+                                            CClientScript::POS_END);
             $this->registerCheckListItemsScript($checkListItem->id);
             return $content;
         }
