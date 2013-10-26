@@ -63,7 +63,7 @@
             return array(   'Email'         => Zurmo::t('GamificationModule', 'Email'),
                             'Photos'        => Zurmo::t('GamificationModule', 'Photos'),
                             'Smartphone'    => Zurmo::t('GamificationModule', 'Smartphone'),
-                            'LapTop'        => Zurmo::t('GamificationModule', 'Social Network'),
+                            'Blog'          => Zurmo::t('GamificationModule', 'Social Network'),
                             'TV'            => Zurmo::t('GamificationModule', 'Online Videos'),
             );
         }
@@ -76,7 +76,7 @@
             return array(   'Email'      => 10,
                             'Photos'     => 10,
                             'Smartphone' => 10,
-                            'LapTop'     => 3,
+                            'Blog'       => 3,
                             'TV'         => 6,
             );
         }
