@@ -149,11 +149,12 @@
         {
             Yii::app()->clientScript->registerScript('task-sortable-data', static::registerKanbanColumnSortableScript());
             $url = Yii::app()->createUrl('tasks/default/updateStatusInKanbanView', array());
-            $this->registerKanbanColumnStartActionScript(Zurmo::t('Core', 'Finish'), Task::STATUS_IN_PROGRESS, $url);
+            $this->registerKanbanColumnStartActionScript('action-type-start' ,Zurmo::t('Core', 'Finish'), Task::STATUS_IN_PROGRESS, $url);
+            $this->registerKanbanColumnStartActionScript('action-type-restart' ,Zurmo::t('Core', 'Finish'), Task::STATUS_IN_PROGRESS, $url);
             $this->registerKanbanColumnFinishActionScript(Zurmo::t('Core', 'Accept'),
                         Zurmo::t('Core', 'Reject'), Task::STATUS_AWAITING_ACCEPTANCE, $url);
             $this->registerKanbanColumnAcceptActionScript('', Task::STATUS_COMPLETED, $url);
-            $this->registerKanbanColumnRejectActionScript(Zurmo::t('Core', 'Start'), Task::STATUS_NEW, $url);
+            $this->registerKanbanColumnRejectActionScript(Zurmo::t('Core', 'Restart'), Task::STATUS_REJECTED, $url);
             TasksUtil::registerSubscriptionScript();
             TasksUtil::registerUnsubscriptionScript();
         }
@@ -181,11 +182,11 @@
          * @param int $targetStatus
          * @param string $url
          */
-        protected function registerKanbanColumnStartActionScript($label, $targetStatus, $url)
+        protected function registerKanbanColumnStartActionScript($sourceButtonClass, $label, $targetStatus, $url)
         {
-            $script = $this->registerButtonActionScript('action-type-start', KanbanItem::TYPE_IN_PROGRESS,
+            $script = $this->registerButtonActionScript($sourceButtonClass, KanbanItem::TYPE_IN_PROGRESS,
                                                         $label, 'action-type-finish', $url, $targetStatus);
-            Yii::app()->clientScript->registerScript('start-action-script', $script);
+            Yii::app()->clientScript->registerScript($sourceButtonClass . '-action-script', $script);
         }
 
         /**
@@ -350,8 +351,8 @@
          */
         protected function registerKanbanColumnRejectActionScript($label, $targetStatus, $url)
         {
-            $script = $this->registerButtonActionScript('action-type-reject', KanbanItem::TYPE_SOMEDAY,
-                      $label, 'action-type-start', $url, $targetStatus);
+            $script = $this->registerButtonActionScript('action-type-reject', KanbanItem::TYPE_IN_PROGRESS,
+                      $label, 'action-type-restart', $url, $targetStatus);
             Yii::app()->clientScript->registerScript('reject-action-script', $script);
         }
 
