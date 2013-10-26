@@ -136,9 +136,9 @@
             $this->assertNotEmpty($result);
             $this->assertCount(2, $result);
             $this->assertArrayHasKey('redirect',        $result);
-            $this->assertArrayHasKey('imagePath',       $result);
+            $this->assertArrayHasKey('imageUrl',       $result);
             $this->assertEquals(false,                  $result['redirect']);
-            $this->assertEquals(Yii::app()->themeManager->basePath . $className::IMAGE_PATH, $result['imagePath']);
+            $this->assertEquals(PlaceholderImageUtil::resolveOneByOnePixelImageUrl(), $result['imageUrl']);
 
             // check activity object count to confirm we got a new activity
             $existingActivities                 = $modelClassName::getByType($type);
@@ -156,9 +156,9 @@
             $this->assertNotEmpty($result);
             $this->assertCount(2, $result);
             $this->assertArrayHasKey('redirect',        $result);
-            $this->assertArrayHasKey('imagePath',       $result);
+            $this->assertArrayHasKey('imageUrl',       $result);
             $this->assertEquals(false,                  $result['redirect']);
-            $this->assertEquals(Yii::app()->themeManager->basePath . $className::IMAGE_PATH, $result['imagePath']);
+            $this->assertEquals(PlaceholderImageUtil::resolveOneByOnePixelImageUrl(), $result['imageUrl']);
 
             // check activity object count to confirm we got a new activity
             $existingActivities                 = $modelClassName::getByType($type);

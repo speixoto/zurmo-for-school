@@ -102,8 +102,21 @@
 
         protected function beforeDelete()
         {
-            $where = "filecontent_id = '" . $this->fileContent->id . "'";
-            if (count(static::getSubsetIds(null, null, null, $where)) == 1)
+            $searchAttributeData = array();
+            $searchAttributeData['clauses'] = array(
+                1 => array(
+                    'attributeName'    => 'fileContent',
+                    'relatedModelData' => array(
+                        'attributeName' => 'id',
+                        'operatorType'  => 'equals',
+                        'value'         => $this->fileContent->id,
+                    )
+                ),
+            );
+            $searchAttributeData['structure'] = '1';
+            $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('FileModel');
+            $where             = RedBeanModelDataProvider::makeWhere('FileModel', $searchAttributeData, $joinTablesAdapter);
+            if (count(static::getSubsetIds($joinTablesAdapter, null, null, $where)) == 1)
             {
                 $fileContent = FileContent::getById($this->fileContent->id);
                 if (!$fileContent->delete())

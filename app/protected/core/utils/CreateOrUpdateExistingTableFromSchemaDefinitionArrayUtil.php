@@ -63,20 +63,24 @@
          * Provide a schema definition array queries to create/update database schema are executed.
          * @param array $schemaDefinition
          * @param $messageLogger
+         * @param $validate
          * @throws CException
          * @throws Exception|RedBean_Exception_SQL
          */
-        public static function generateOrUpdateTableBySchemaDefinition(array $schemaDefinition, & $messageLogger)
+        public static function generateOrUpdateTableBySchemaDefinition(array $schemaDefinition, & $messageLogger, $validate = true)
         {
-            $schemaValidation  = static::validateSchemaDefinition($schemaDefinition);
             $tableName          = strtolower(key($schemaDefinition));
-            if (!$schemaValidation['isValid'])
+            if ($validate)
             {
-                $errorMessage   = Zurmo::t('Core', 'Invalid Schema definition received for {{tableName}}.',
-                                            array('{{tableName}}' => $tableName));
-                $errorMessage   .= ' ' . $schemaValidation['message'];
-                $messageLogger->addErrorMessage($errorMessage);
-                throw new CException($errorMessage);
+                $schemaValidation  = static::validateSchemaDefinition($schemaDefinition);
+                if (!$schemaValidation['isValid'])
+                {
+                    $errorMessage   = Zurmo::t('Core', 'Invalid Schema definition received for {{tableName}}.',
+                                                array('{{tableName}}' => $tableName));
+                    $errorMessage   .= ' ' . $schemaValidation['message'];
+                    $messageLogger->addErrorMessage($errorMessage);
+                    throw new CException($errorMessage);
+                }
             }
 
             $columnsAndIndexes  = reset($schemaDefinition);

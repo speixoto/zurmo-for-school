@@ -96,7 +96,7 @@
          */
         public static function resolveEmailAddressAndNameToContact(EmailMessage $emailMessage, $contact)
         {
-            if ($emailMessage->sender->id > 0 && $emailMessage->sender->personOrAccount->count() == 0)
+            if ($emailMessage->sender->id > 0 && $emailMessage->sender->personOrAccounts->count() == 0)
             {
                  $contact->primaryEmail->emailAddress   = $emailMessage->sender->fromAddress;
                  self::resolveFullNameToFirstAndLastName($emailMessage->sender->fromName, $contact);
@@ -105,7 +105,7 @@
             {
                 foreach ($emailMessage->recipients as $recipient)
                 {
-                    if ($recipient->personOrAccount->count() == 0)
+                    if ($recipient->personOrAccounts->count() == 0)
                     {
                         $contact->primaryEmail->emailAddress = $recipient->toAddress;
                         self::resolveFullNameToFirstAndLastName($recipient->toName, $contact);
@@ -121,10 +121,10 @@
          */
         public static function resolveEmailAddressToContactIfEmailRelationAvailable(EmailMessage $emailMessage, $contact)
         {
-            if ($emailMessage->sender->id > 0 && $emailMessage->sender->personOrAccount->count() > 0 &&
-                $emailMessage->sender->personOrAccount[0]->isSame($contact))
+            if ($emailMessage->sender->id > 0 && $emailMessage->sender->personOrAccounts->count() > 0 &&
+                $emailMessage->sender->personOrAccounts[0]->isSame($contact))
             {
-                foreach ($emailMessage->sender->personOrAccount as $personOrAccount)
+                foreach ($emailMessage->sender->personOrAccounts as $personOrAccount)
                 {
                     if ($personOrAccount->isSame($contact))
                     {
@@ -143,7 +143,7 @@
             {
                 foreach ($emailMessage->recipients as $recipient)
                 {
-                    foreach ($recipient->personOrAccount as $personOrAccount)
+                    foreach ($recipient->personOrAccounts as $personOrAccount)
                     {
                         if ($personOrAccount->isSame($contact))
                         {
@@ -168,18 +168,18 @@
          */
         public static function resolveContactToSenderOrRecipient(EmailMessage $emailMessage, $contact)
         {
-            if ($emailMessage->sender->id > 0 && $emailMessage->sender->personOrAccount->count() == 0)
+            if ($emailMessage->sender->id > 0 && $emailMessage->sender->personOrAccounts->count() == 0)
             {
-                 $emailMessage->sender->personOrAccount->add($contact);
+                 $emailMessage->sender->personOrAccounts->add($contact);
                  return;
             }
             elseif ($emailMessage->recipients->count() > 0)
             {
                 foreach ($emailMessage->recipients as $key => $recipient)
                 {
-                    if ($recipient->personOrAccount->count() == 0)
+                    if ($recipient->personOrAccounts->count() == 0)
                     {
-                        $emailMessage->recipients->offsetGet($key)->personOrAccount->add($contact);
+                        $emailMessage->recipients->offsetGet($key)->personOrAccounts->add($contact);
                         return;
                     }
                 }

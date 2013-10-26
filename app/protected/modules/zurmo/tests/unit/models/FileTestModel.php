@@ -42,7 +42,7 @@
             $metadata[__CLASS__] = array(
                 'relations' => array(
                     'modelWithAttachmentTestItem' => array(static::HAS_ONE, 'ModelWithAttachmentTestItem',
-                                                            static::NOT_OWNED),
+                                                           static::NOT_OWNED),
                 ),
             );
             return $metadata;
@@ -50,6 +50,28 @@
 
         protected function beforeDelete()
         {
+            $searchAttributeData = array();
+            $searchAttributeData['clauses'] = array(
+                1 => array(
+                    'attributeName'    => 'fileContent',
+                    'relatedModelData' => array(
+                        'attributeName' => 'id',
+                        'operatorType'  => 'equals',
+                        'value'         => $this->fileContent->id,
+                    )
+                ),
+            );
+            $searchAttributeData['structure'] = '1';
+            $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('FileTestModel');
+            $where             = RedBeanModelDataProvider::makeWhere('FileTestModel', $searchAttributeData, $joinTablesAdapter);
+            if (count(static::getSubsetIds($joinTablesAdapter, null, null, $where)) == 1)
+            {
+                $fileContent = FileContent::getById($this->fileContent->id);
+                if (!$fileContent->delete())
+                {
+                    return false;
+                }
+            }
             if ($this->hasEventHandler('onBeforeDelete'))
             {
                 $event = new CModelEvent($this);

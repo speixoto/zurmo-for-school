@@ -95,7 +95,7 @@
                     'type',
                 ),
                 'relations' => array(
-                    'personOrAccount' => array(static::MANY_MANY, 'Item',           static::NOT_OWNED),
+                    'personOrAccounts' => array(static::MANY_MANY, 'Item',           static::NOT_OWNED),
                     'emailMessage'    => array(static::HAS_ONE,   'EmailMessage',   static::NOT_OWNED),
                 ),
                 'rules' => array(
@@ -146,10 +146,10 @@
             $params = LabelUtil::getTranslationParamsForAllModules();
             return array_merge(parent::translatedAttributeLabels($language),
                 array(
-                    'personOrAccount' => Zurmo::t('ZurmoModule',         'Person Or AccountsModuleSingularLabel',  $params, null, $language),
-                    'toAddress'       => Zurmo::t('EmailMessagesModule', 'To Address',  array(), null, $language),
-                    'toName'          => Zurmo::t('EmailMessagesModule', 'To Name',  array(), null, $language),
-                    'type'            => Zurmo::t('Core', 'Type',  array(), null, $language),
+                    'personOrAccounts' => Zurmo::t('ZurmoModule',         'Person Or AccountsModulePluralLabel',  $params, null, $language),
+                    'toAddress'        => Zurmo::t('EmailMessagesModule', 'To Address',  array(), null, $language),
+                    'toName'           => Zurmo::t('EmailMessagesModule', 'To Name',  array(), null, $language),
+                    'type'             => Zurmo::t('Core', 'Type',  array(), null, $language),
                 )
             );
         }

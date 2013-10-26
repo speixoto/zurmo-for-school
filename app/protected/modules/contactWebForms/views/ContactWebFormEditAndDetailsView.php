@@ -117,6 +117,15 @@
                                     array(
                                         array(
                                             'elements' => array(
+                                                array('attributeName' => 'null', 'type' => 'DerivedExplicitReadWritePermissionsContactWebForm'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
                                                 array('attributeName' => 'excludeStyles', 'type' => 'CheckBox'),
                                             ),
                                         ),

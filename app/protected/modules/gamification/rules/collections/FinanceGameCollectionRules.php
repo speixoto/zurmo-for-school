@@ -64,7 +64,7 @@
                             'Abacus'        => Zurmo::t('GamificationModule', 'Abacus'),
                             'Check'         => Zurmo::t('GamificationModule', 'Check'),
                             'Safe'          => Zurmo::t('GamificationModule', 'Safe'),
-                            'Scale'         => Zurmo::t('GamificationModule', 'Scale'),
+                            'ATM'           => Zurmo::t('GamificationModule', 'ATM'),
             );
         }
 
@@ -77,7 +77,7 @@
                             'Abacus'     => 10,
                             'Check'      => 10,
                             'Safe'       => 3,
-                            'Scale'      => 6,
+                            'ATM'        => 6,
             );
         }
 

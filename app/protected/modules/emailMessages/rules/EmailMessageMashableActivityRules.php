@@ -46,7 +46,7 @@
                 1 => array(
                     'attributeName'        => 'sender',
                     'relatedModelData' => array(
-                        'attributeName'        => 'personOrAccount',
+                        'attributeName'        => 'personOrAccounts',
                         'relatedAttributeName' => 'id',
                         'operatorType'         => 'equals',
                         'value'                => $relationItemId,
@@ -55,7 +55,7 @@
                 2 => array(
                     'attributeName'        => 'recipients',
                     'relatedModelData' => array(
-                        'attributeName'        => 'personOrAccount',
+                        'attributeName'        => 'personOrAccounts',
                         'relatedAttributeName' => 'id',
                         'operatorType'         => 'equals',
                         'value'                => $relationItemId,
@@ -78,7 +78,7 @@
                 1 => array(
                     'attributeName'        => 'sender',
                     'relatedModelData' => array(
-                        'attributeName'        => 'personOrAccount',
+                        'attributeName'        => 'personOrAccounts',
                         'relatedAttributeName' => 'id',
                         'operatorType'         => 'oneOf',
                         'value'                => $relationItemIds,
@@ -87,7 +87,7 @@
                 2 => array(
                     'attributeName'        => 'recipients',
                     'relatedModelData' => array(
-                        'attributeName'        => 'personOrAccount',
+                        'attributeName'        => 'personOrAccounts',
                         'relatedAttributeName' => 'id',
                         'operatorType'         => 'oneOf',
                         'value'                => $relationItemIds,
@@ -172,13 +172,13 @@
         public static function getSenderContent(EmailMessageSender $emailMessageSender)
         {
             $existingModels  = array();
-            if ($emailMessageSender->personOrAccount->count() == 0)
+            if ($emailMessageSender->personOrAccounts->count() == 0)
             {
                 $existingModels[] = $emailMessageSender->fromAddress . ' ' . $emailMessageSender->fromName;
             }
             else
             {
-                foreach ($emailMessageSender->personOrAccount as $personOrAccount)
+                foreach ($emailMessageSender->personOrAccounts as $personOrAccount)
                 {
                     $castedDownModel = self::castDownItem($personOrAccount);
                     try
@@ -221,13 +221,13 @@
                 if ($type == null || $recipient->type == $type)
                 {
                     $existingPersonOrAccounts = array();
-                    if ($recipient->personOrAccount->count() == 0)
+                    if ($recipient->personOrAccounts->count() == 0)
                     {
                         $existingPersonOrAccounts[] = $recipient->toAddress . ' ' . $recipient->toName;
                     }
                     else
                     {
-                        foreach ($recipient->personOrAccount as $personOrAccount)
+                        foreach ($recipient->personOrAccounts as $personOrAccount)
                         {
 
                             try

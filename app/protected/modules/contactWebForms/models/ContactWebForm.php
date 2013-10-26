@@ -132,6 +132,8 @@
                     'excludeStyles',
                     'enableCaptcha',
                     'language',
+                    'defaultPermissionSetting',
+                    'defaultPermissionGroupSetting'
                 ),
                 'relations' => array(
                     'defaultState'     => array(static::HAS_ONE,   'ContactState', static::NOT_OWNED,
@@ -159,6 +161,9 @@
                     array('enableCaptcha',     'default', 'value' => 0),
                     array('language',          'type',    'type'  => 'string'),
                     array('language',          'length',  'max'   => 10),
+                    array('defaultPermissionSetting', 'numerical', 'min' => UserConfigurationForm::DEFAULT_PERMISSIONS_SETTING_OWNER,
+                                                                   'max' => UserConfigurationForm::DEFAULT_PERMISSIONS_SETTING_EVERYONE),
+                    array('defaultPermissionGroupSetting', 'numerical', 'min' => 1),
                 ),
                 'elements' => array(
                     'name'              => 'Text',

@@ -226,7 +226,7 @@
                                             $this->getModule()->getPluralCamelCasedName(),
                                             $metadata,
                                             'ModulePermissionsEditAndDetailsView',
-                                            'GroupModulePermissionsEditLink');
+                                            'GroupModulePermissionsEditMenu');
             $view                = new GroupsPageView(ZurmoDefaultAdminViewUtil::
                                          makeViewWithBreadcrumbsForCurrentUser($this, $titleBarAndEditView, $breadCrumbLinks, 'GroupBreadCrumbView'));
             echo $view->render();
@@ -265,7 +265,7 @@
                                             $this->getModule()->getPluralCamelCasedName(),
                                             $metadata,
                                             'RightsEditAndDetailsView',
-                                            'GroupRightsEditLink');
+                                            'GroupRightsEditMenu');
             $view                = new GroupsPageView(ZurmoDefaultAdminViewUtil::
                                          makeViewWithBreadcrumbsForCurrentUser($this, $titleBarAndEditView, $breadCrumbLinks, 'GroupBreadCrumbView'));
             echo $view->render();
@@ -308,7 +308,7 @@
                                         $this->getModule()->getPluralCamelCasedName(),
                                         $metadata,
                                         'PoliciesEditAndDetailsView',
-                                        'GroupPoliciesEditLink');
+                                        'GroupPoliciesEditMenu');
             $view                = new GroupsPageView(ZurmoDefaultAdminViewUtil::
                                          makeViewWithBreadcrumbsForCurrentUser($this, $titleBarAndEditView, $breadCrumbLinks, 'GroupBreadCrumbView'));
             echo $view->render();

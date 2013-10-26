@@ -64,7 +64,7 @@
                             'StationaryBike' => Zurmo::t('GamificationModule', 'Stationary Bike'),
                             'Scale '         => Zurmo::t('GamificationModule', 'Scale'),
                             'Weights'        => Zurmo::t('GamificationModule', 'Weights'),
-                            'Yoga'           => Zurmo::t('GamificationModule', 'Yoga'),
+                            'Muscles'           => Zurmo::t('GamificationModule', 'Muscles'),
             );
         }
 
@@ -77,7 +77,7 @@
                             'StationaryBike' => 10,
                             'Scale'          => 10,
                             'Weights'        => 3,
-                            'Yoga'           => 6,
+                            'Muscles'           => 6,
             );
         }
 

@@ -80,7 +80,7 @@
             $resolvedRecipients = array();
             foreach ($existingRecipients as $recipient)
             {
-                foreach ($recipient->personOrAccount as $personOrAccount)
+                foreach ($recipient->personOrAccounts as $personOrAccount)
                 {
                     if ($personOrAccount->id > 0)
                     {
@@ -98,7 +98,7 @@
             }
             foreach ($newRecipients as $recipient)
             {
-                foreach ($recipient->personOrAccount as $personOrAccount)
+                foreach ($recipient->personOrAccounts as $personOrAccount)
                 {
                     if (!in_array($personOrAccount->getClassId('Item'), $existingItemIds))
                     {

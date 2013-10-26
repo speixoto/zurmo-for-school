@@ -161,7 +161,7 @@
 
         protected static function getSettingsMenuTopLevel()
         {
-            return array(array('label' => Zurmo::t('ZurmoModule', 'Settings'), 'url' => null));
+            return array(array('label' => Zurmo::t('ZurmoModule', 'Administration'), 'url' => null));
         }
 
         protected static function renderHeaderMenuContent($menuItems, $menuId)

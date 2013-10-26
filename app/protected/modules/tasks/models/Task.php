@@ -284,10 +284,10 @@
         protected function afterSave()
         {
             parent::afterSave();
-            $targetKanbanType = TasksUtil::resolveKanbanItemTypeForTaskStatus(intval($this->status));
             $kanbanItem       = KanbanItem::getByTask($this->id);
             if($kanbanItem != null)
             {
+                $targetKanbanType = TasksUtil::resolveKanbanItemTypeForTaskStatus(intval($this->status));
                 $sourceKanbanType = $kanbanItem->type;
                 if($sourceKanbanType != $targetKanbanType)
                 {

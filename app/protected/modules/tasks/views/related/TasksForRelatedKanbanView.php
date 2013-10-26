@@ -370,6 +370,9 @@
          */
         protected function registerKanbanGridScript()
         {
+            Yii::app()->clientScript->registerScriptFile(
+                Yii::app()->getAssetManager()->publish(
+                    Yii::getPathOfAlias('application.core.kanbanBoard.widgets.assets')) . '/KanbanUtils.js');
             TasksUtil::registerTaskModalDetailsScript($this->getGridId());
             if($this->dataProvider->getTotalItemCount() == 0)
             {

@@ -232,7 +232,7 @@
                 $recipient->toAddress       = $notification->owner->primaryEmail->emailAddress;
                 $recipient->toName          = strval($notification->owner);
                 $recipient->type            = EmailMessageRecipient::TYPE_TO;
-                $recipient->personOrAccount->add($notification->owner);
+                $recipient->personOrAccounts->add($notification->owner);
                 $emailMessage->recipients->add($recipient);
                 $box                        = EmailBox::resolveAndGetByName(EmailBox::NOTIFICATIONS_NAME);
                 $emailMessage->folder       = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_DRAFT);
