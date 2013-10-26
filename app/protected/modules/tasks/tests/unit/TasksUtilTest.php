@@ -235,7 +235,7 @@
             $tasks  = Task::getByName('MyTest');
             $task   = $tasks[0];
             $kanbanItemType = TasksUtil::resolveKanbanItemTypeForTaskStatus($task->status);
-            $this->assertEquals(KanbanItem::TYPE_TODO,$kanbanItemType);
+            $this->assertEquals(KanbanItem::TYPE_SOMEDAY,$kanbanItemType);
 
             $task->status = Task::STATUS_AWAITING_ACCEPTANCE;
             $this->assertTrue($task->save());
