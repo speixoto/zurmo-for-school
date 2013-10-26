@@ -64,7 +64,6 @@
             $searchAttributeData['structure'] = '1';
             $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('FileTestModel');
             $where             = RedBeanModelDataProvider::makeWhere('FileTestModel', $searchAttributeData, $joinTablesAdapter);
-            print_R(static::getSubsetIds($joinTablesAdapter, null, null, $where));
             if (count(static::getSubsetIds($joinTablesAdapter, null, null, $where)) == 1)
             {
                 $fileContent = FileContent::getById($this->fileContent->id);
