@@ -80,7 +80,7 @@
                         'label'  => "eval:Zurmo::t('ImportModule', 'Import')",
                         'url'    => array('/import/default'),
                         'right'  => self::RIGHT_ACCESS_IMPORT,
-                        'order'  => 2,
+                        'order'  => 3,
                         'mobile' => false,
                     ),
                 ),
