@@ -360,10 +360,10 @@
             $compareData = array('Gate'        => 0,
                                  'Passport'    => 0,
                                  'Pilot'       => 0,
-                                 'Ticket'      => 0,
+                                 'Luggage'     => 0,
                                  'TowTruck'    => 0);
             $this->assertTrue($randomItem == 'Gate' || $randomItem == 'Passport' ||
-                              $randomItem == 'Pilot' || $randomItem == 'Ticket' || $randomItem == 'TowTruck');
+                              $randomItem == 'Pilot' || $randomItem == 'Luggage' || $randomItem == 'TowTruck');
             $compareData[$randomItem] = $compareData[$randomItem] + 1;
             $itemsData[$randomItem] = $itemsData[$randomItem] + 1;
             $collection->setItemsData($itemsData);

@@ -154,6 +154,9 @@
             );
             AccountsModule::setMetadata($metadata);
             $menuItems = MenuUtil::getAccessibleShortcutsCreateMenuByCurrentUser();
+            $taskMenu  = $menuItems['items'][7];
+            $this->assertEquals('Task', $taskMenu['label']);
+            unset($menuItems['items'][7]);
             $compareData = array(
                 'label' => 'Create',
                 'url'   => null,
