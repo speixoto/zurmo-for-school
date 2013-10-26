@@ -34,20 +34,48 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class GroupActionBarAndUserMembershipEditView extends GridView
+    /**
+     * Derived version of @see ExplicitReadWriteModelPermissionsElement.
+     */
+    class DerivedExplicitReadWritePermissionsContactWebFormElement extends DerivedExplicitReadWritePermissionsUserConfigElement
     {
-        protected $cssClasses =  array( 'AdministrativeArea' );
-
-        public function __construct(
-            $controllerId,
-            $moduleId,
-            GroupUserMembershipForm $form,
-            Group $model,
-            $moduleName)
+        protected function assertModelIsValid()
         {
-            parent::__construct(2, 1);
-            $this->setView(new ActionBarForGroupEditAndDetailsView ($controllerId, $moduleId, $model, 'GroupUserMembershipEditMenu'), 0, 0);
-            $this->setView(new GroupUserMembershipEditView($controllerId, $moduleId, $form, $model->id, strval($model)), 1, 0);
+            assert('$this->model instanceof ContactWebForm');
+        }
+
+        protected function renderControlNonEditable()
+        {
+            return ExplicitReadWriteModelPermissionsElement::renderControlNonEditable();
+        }
+
+        /**
+         * Based on the model's attribute value being a explicitReadWriteModelPermissions object,
+         * resolves the selected group value if available.
+         * @return string
+         */
+        protected function resolveSelectedGroup()
+        {
+            return $this->model->defaultPermissionGroupSetting;
+        }
+
+        /**
+         * Based on the model's attribute value being a explicitReadWriteModelPermissions object,
+         * resolves the selected type value.
+         * @return string
+         */
+        protected function resolveSelectedType()
+        {
+            return ContactWebFormAdapter::resolveAndGetDefaultPermissionSetting($this->model);
+        }
+
+        protected function renderLabel()
+        {
+            if ($this->model === null)
+            {
+                throw new NotImplementedException();
+            }
+            return Zurmo::t('ZurmoModule', 'Default - Who can read and write');
         }
     }
 ?>

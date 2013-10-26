@@ -520,9 +520,12 @@
                 $task->completed         = false;
                 $task->save();
             }
-            ProjectsUtil::logTaskStatusChangeEvent($task,
-                                                   Task::getStatusDisplayName(intval($currentStatus)),
-                                                   Task::getStatusDisplayName(intval($status)));
+            if($task->project->id > 0)
+            {
+                ProjectsUtil::logTaskStatusChangeEvent($task,
+                                                       Task::getStatusDisplayName(intval($currentStatus)),
+                                                       Task::getStatusDisplayName(intval($status)));
+            }
             TasksUtil::sendNotificationOnTaskUpdate($task,
                                                     Zurmo::t('TasksModule', 'The status for the task #' . $task->id .
                                                                             ' has been updated to ' .

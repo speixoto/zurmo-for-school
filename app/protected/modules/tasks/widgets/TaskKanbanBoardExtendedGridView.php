@@ -147,11 +147,6 @@
          */
         protected function registerKanbanColumnScripts()
         {
-            Yii::app()->clientScript->registerScriptFile(
-                Yii::app()->getAssetManager()->publish(
-                Yii::getPathOfAlias('application.core.kanbanBoard.widgets.assets')) . '/KanbanUtils.js');
-
-            $columnDataKeys = array_keys($this->columnsData);
             Yii::app()->clientScript->registerScript('task-sortable-data', static::registerKanbanColumnSortableScript());
             $url = Yii::app()->createUrl('tasks/default/updateStatusInKanbanView', array());
             $this->registerKanbanColumnStartActionScript(Zurmo::t('Core', 'Finish'), Task::STATUS_IN_PROGRESS, $url);

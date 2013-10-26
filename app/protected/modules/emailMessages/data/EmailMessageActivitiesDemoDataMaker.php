@@ -77,13 +77,13 @@
             $sender                    = new EmailMessageSender();
             $sender->fromAddress       = 'super@zurmotest.com';
             $sender->fromName          = 'Super User';
-            $sender->personOrAccount->add(Yii::app()->user->userModel);
+            $sender->personOrAccounts->add(Yii::app()->user->userModel);
             $emailMessage->sender      = $sender;
             //Recipient is BobMessage
             $recipient                  = new EmailMessageRecipient();
             $recipient->toAddress       = 'bob.message@zurmotest.com';
             $recipient->toName          = strval($contact);
-            $recipient->personOrAccount->add($contact);
+            $recipient->personOrAccounts->add($contact);
             $recipient->type            = EmailMessageRecipient::TYPE_TO;
             $emailMessage->recipients->add($recipient);
             $emailMessage->folder       = EmailFolder::getByBoxAndType($this->emailBox, EmailFolder::TYPE_SENT);

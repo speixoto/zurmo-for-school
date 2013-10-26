@@ -537,17 +537,36 @@
             assert('is_string($attribute)');
             assert('is_string($newValue) || $newValue == null');
 
-            //TODO: @sergio: What if type is not varchar
-            $columnData     = static::geColumnData($tableName, $attribute);
-            $columnLength   = $columnData['length'];
-            $columnType     = $columnData['type'];
-            if ($columnType == 'varchar' && strlen($newValue) > $columnLength)
+            extract(static::geColumnData($tableName, $attribute));
+            $newDbType      = null;
+            $newDbLength    = null;
+            RedBeanModelMemberRulesToColumnAdapter::resolveStringTypeAndLengthByMaxLength($newDbType, $newDbLength, strlen($newValue));
+            $update = false;
+            if ($newDbType == 'string')
             {
-                $quotedTableName = DatabaseCompatibilityUtil::quoteString($tableName);
-                $quotedColumn    = DatabaseCompatibilityUtil::quoteString($attribute);
-                $length          = strlen($newValue);
-                $sql = "alter table {$quotedTableName} modify {$quotedColumn} varchar({$length})";
-                ZurmoRedBean::exec($sql);
+                if ($columnType == 'varchar' && $newDbLength > $columnLength)
+                {
+                    $update = true;
+                }
+            }
+            elseif ($newDbType != $columnType)
+            {
+                if ($newDbType == 'longtext')
+                {
+                    $update = true;
+                }
+                elseif ($newDbType == 'text' && $columnType == 'varchar')
+                {
+                    $update = true;
+                }
+
+            }
+            if ($update)
+            {
+                $column         = RedBeanModelMemberToColumnUtil::resolveColumnMetadataByHintType($attribute, $newDbType, $newDbLength);
+                $schema         = CreateOrUpdateExistingTableFromSchemaDefinitionArrayUtil::getTableSchema($tableName, array($column));
+                $messageLogger  = new ImportMessageLogger();
+                CreateOrUpdateExistingTableFromSchemaDefinitionArrayUtil::generateOrUpdateTableBySchemaDefinition($schema, $messageLogger, false);
             }
             $bean = ZurmoRedBean::findOne($tableName, "id = :id", array('id' => $id));
             if ($bean == null)
@@ -567,9 +586,9 @@
             $columnsWithDetails = ZurmoRedBean::$writer->getColumnsWithDetails($tableName);
             $columnDetails      = $columnsWithDetails[$column];
             preg_match('/([a-z]*)(\(\d*\))?/', $columnDetails['Type'], $results);
-            $type   = $results[1];
-            $length = isset($results[2]) ? trim($results[2], '()') : null;
-            return array('type' => $type, 'length' => $length);
+            $columnType   = strtolower($results[1]);
+            $columnLength = isset($results[2]) ? trim($results[2], '()') : null;
+            return compact('columnType', 'columnLength');
         }
 
 

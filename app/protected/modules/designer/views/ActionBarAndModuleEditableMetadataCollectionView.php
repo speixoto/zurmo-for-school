@@ -48,7 +48,7 @@
         )
         {
             parent::__construct(2, 1);
-            $this->setView(new ActionBarForDesignerModuleView($controllerId, $moduleId, $module, 'DesignerLayoutsLink'), 0, 0);
+            $this->setView(new ActionBarForDesignerModuleView($controllerId, $moduleId, $module, 'DesignerLayoutsMenu'), 0, 0);
             $this->setView(new ModuleEditableMetadataCollectionView(
                 $controllerId,
                 $moduleId,

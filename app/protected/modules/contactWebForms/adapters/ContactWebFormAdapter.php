@@ -34,18 +34,34 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class GroupModulePermissionsEditLinkActionElement extends EditLinkActionElement
+    class ContactWebFormAdapter
     {
-        protected function getDefaultLabel()
+        public static function resolveAndGetDefaultPermissionSetting(ContactWebForm $contactWebForm)
         {
-            return Zurmo::t('ZurmoModule', 'Record Permissions');
+            if (!is_null($defaultPermission = $contactWebForm->defaultPermissionSetting))
+            {
+                return $defaultPermission;
+            }
+            else
+            {
+                return UserConfigurationForm::DEFAULT_PERMISSIONS_SETTING_OWNER;
+            }
         }
 
-        protected function getDefaultRoute()
+        public static function setDefaultPermissionGroupSetting(ContactWebForm $contactWebForm, $defaultPermissionSetting,
+                                                                $defaultPermissionGroupSettingValue)
         {
-            return Yii::app()->createUrl(
-                $this->moduleId . '/' . $this->controllerId . '/editModulePermissions/',
-                array('id' => $this->modelId));
+            assert('$defaultPermissionGroupSettingValue === null || is_int($defaultPermissionGroupSettingValue)');
+            assert('$defaultPermissionSetting === null || is_int($defaultPermissionSetting)');
+            if ($defaultPermissionSetting == UserConfigurationForm::DEFAULT_PERMISSIONS_SETTING_OWNER_AND_USERS_IN_GROUP)
+            {
+                $contactWebForm->defaultPermissionGroupSetting = $defaultPermissionGroupSettingValue;
+            }
+            else
+            {
+                $contactWebForm->defaultPermissionGroupSetting = null;
+            }
+            return $contactWebForm;
         }
     }
 ?>

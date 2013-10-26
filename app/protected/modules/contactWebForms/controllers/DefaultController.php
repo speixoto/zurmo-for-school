@@ -97,6 +97,7 @@
             $modelClassName  = $this->getModule()->getPrimaryModelName();
             $breadCrumbTitle = Zurmo::t('ContactWebFormsModule', 'Create Web Form');
             $breadCrumbLinks = array($breadCrumbTitle);
+            $contactWebForm->defaultPermissionSetting = ContactWebFormAdapter::resolveAndGetDefaultPermissionSetting($contactWebForm);
             if (isset($_POST[$modelClassName]))
             {
                 unset($_POST[$modelClassName]['serializedData']);
@@ -109,6 +110,13 @@
                     }
                 }
                 $contactWebForm->serializedData = serialize($_POST['ContactWebFormAttributeForm']);
+                if (isset($_POST[$modelClassName]['defaultPermissionGroupSetting']))
+                {
+                    $contactWebForm = ContactWebFormAdapter::setDefaultPermissionGroupSetting($contactWebForm,
+                                                             (int)$_POST[$modelClassName]['defaultPermissionSetting'],
+                                                             (int)$_POST[$modelClassName]['defaultPermissionGroupSetting']);
+                    unset($_POST[$modelClassName]['defaultPermissionGroupSetting']);
+                }
             }
             $contactWebForm->defaultOwner = Yii::app()->user->userModel;
             $contactWebForm->language     = Yii::app()->language;
@@ -127,6 +135,7 @@
             $modelClassName  = $this->getModule()->getPrimaryModelName();
             $breadCrumbTitle = Zurmo::t('ContactWebFormsModule', 'Edit Web Form');
             $breadCrumbLinks = array($breadCrumbTitle);
+            $contactWebForm->defaultPermissionSetting = ContactWebFormAdapter::resolveAndGetDefaultPermissionSetting($contactWebForm);
             if ($contactWebForm->language === null)
             {
                 $contactWebForm->language = Yii::app()->language;
@@ -143,6 +152,13 @@
                     }
                 }
                 $contactWebForm->serializedData = serialize($_POST['ContactWebFormAttributeForm']);
+                if (isset($_POST[$modelClassName]['defaultPermissionGroupSetting']))
+                {
+                    $contactWebForm = ContactWebFormAdapter::setDefaultPermissionGroupSetting($contactWebForm,
+                                                             (int)$_POST[$modelClassName]['defaultPermissionSetting'],
+                                                             (int)$_POST[$modelClassName]['defaultPermissionGroupSetting']);
+                    unset($_POST[$modelClassName]['defaultPermissionGroupSetting']);
+                }
             }
             $titleBarAndEditView                = $this->makeEditAndDetailsView(
                                                   $this->attemptToSaveModelFromPost($contactWebForm), 'Edit');
@@ -183,6 +199,8 @@
             $resolvedPlacedAttribute     = ContactWebFormsUtil::resolvePlacedAttributeByName($webFormAttributeForm,
                                            $model, $attributeName, $attributeData);
             $content                     = ContactWebFormsUtil::getPlacedAttributeContent($resolvedPlacedAttribute);
+            Yii::app()->getClientScript()->setToAjaxMode();
+            Yii::app()->getClientScript()->render($content);
             echo $content;
         }
     }

@@ -89,7 +89,7 @@
             $sender                                 = new EmailMessageSender();
             $sender->fromName                       = $emailAccount->fromName;
             $sender->fromAddress                    = $emailAccount->fromAddress;
-            $sender->personOrAccount->add($userToSendMessagesFrom);
+            $sender->personOrAccounts->add($userToSendMessagesFrom);
             $emailMessageForm->sender               = $sender;
             $emailMessageForm->account              = $emailAccount;
             $emailMessageForm->content->textContent = EmailMessageUtil::resolveTextContent(
@@ -116,7 +116,7 @@
             {
                 foreach ($emailMessage->recipients as $recipient)
                 {
-                    foreach ($recipient->personOrAccount as $personOrAccount)
+                    foreach ($recipient->personOrAccounts as $personOrAccount)
                     {
                         if ($personOrAccount != null && $personOrAccount->id > 0)
                         {
@@ -145,7 +145,7 @@
                                 if ($personOrAccount != null)
                                 {
                                     $messageRecipient->toName           = strval($personOrAccount);
-                                    $messageRecipient->personOrAccount->add($personOrAccount);
+                                    $messageRecipient->personOrAccounts->add($personOrAccount);
                                     $existingPersonsOrAccounts[] = $personOrAccount->getClassId('Item');
                                 }
                                 $emailMessage->recipients->add($messageRecipient);
@@ -203,7 +203,7 @@
                 $messageRecipient->toName           = strval($personOrAccount);
                 $messageRecipient->toAddress        = $toAddress;
                 $messageRecipient->type             = EmailMessageRecipient::TYPE_TO;
-                $messageRecipient->personOrAccount->add($personOrAccount);
+                $messageRecipient->personOrAccounts->add($personOrAccount);
                 $emailMessage->recipients->add($messageRecipient);
             }
         }

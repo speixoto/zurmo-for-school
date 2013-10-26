@@ -78,8 +78,8 @@
             RedBeanModel::forgetAll(); //simulates crossing page requests
             $message1 = EmailMessage::getById($messageId);
             $contact  = Contact::getById($contactId);
-            $this->assertEquals(1, $message1->sender->personOrAccount->count());
-            $castedDownModel = EmailMessageMashableActivityRules::castDownItem($message1->sender->personOrAccount[0]);
+            $this->assertEquals(1, $message1->sender->personOrAccounts->count());
+            $castedDownModel = EmailMessageMashableActivityRules::castDownItem($message1->sender->personOrAccounts[0]);
             $this->assertEquals('Contact', get_class($castedDownModel));
             $this->assertEquals($contact->id, $castedDownModel->id);
         }
@@ -173,20 +173,20 @@
             Yii::app()->user->userModel = $super;
             $message1                   = EmailMessageTestHelper::createArchivedUnmatchedReceivedMessage($super);
             $contact                    = new Contact();
-            $this->assertCount(0, $message1->sender->personOrAccount);
+            $this->assertCount(0, $message1->sender->personOrAccounts);
             ArchivedEmailMatchingUtil::resolveContactToSenderOrRecipient($message1, $contact);
             $this->assertTrue($message1->recipients->count() == 1);
-            $this->assertTrue($message1->recipients->offsetGet(0)->personOrAccount[0]->isSame($super));
-            $this->assertTrue($message1->sender->personOrAccount[0]->isSame($contact));
+            $this->assertTrue($message1->recipients->offsetGet(0)->personOrAccounts[0]->isSame($super));
+            $this->assertTrue($message1->sender->personOrAccounts[0]->isSame($contact));
 
             $message1                   = EmailMessageTestHelper::createArchivedUnmatchedSentMessage($super);
             $contact                    = new Contact();
             $this->assertTrue($message1->recipients->count() == 1);
-            $this->assertCount(0, $message1->recipients->offsetGet(0)->personOrAccount);
+            $this->assertCount(0, $message1->recipients->offsetGet(0)->personOrAccounts);
             ArchivedEmailMatchingUtil::resolveContactToSenderOrRecipient($message1, $contact);
-            $this->assertTrue($message1->sender->personOrAccount[0]->isSame($super));
+            $this->assertTrue($message1->sender->personOrAccounts[0]->isSame($super));
             $this->assertTrue($message1->recipients->count() == 1);
-            $this->assertTrue($message1->recipients->offsetGet(0)->personOrAccount[0]->isSame($contact));
+            $this->assertTrue($message1->recipients->offsetGet(0)->personOrAccounts[0]->isSame($contact));
         }
     }
 ?>

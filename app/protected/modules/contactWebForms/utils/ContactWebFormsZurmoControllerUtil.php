@@ -34,20 +34,26 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class GroupActionBarAndUserMembershipEditView extends GridView
+    class ContactWebFormsZurmoControllerUtil extends ZurmoControllerUtil
     {
-        protected $cssClasses =  array( 'AdministrativeArea' );
-
-        public function __construct(
-            $controllerId,
-            $moduleId,
-            GroupUserMembershipForm $form,
-            Group $model,
-            $moduleName)
+        public static function setContactModelPermissionsByContactWebForm(SecurableItem $model, ContactWebForm $contactWebForm)
         {
-            parent::__construct(2, 1);
-            $this->setView(new ActionBarForGroupEditAndDetailsView ($controllerId, $moduleId, $model, 'GroupUserMembershipEditMenu'), 0, 0);
-            $this->setView(new GroupUserMembershipEditView($controllerId, $moduleId, $form, $model->id, strval($model)), 1, 0);
+            if ($model instanceof SecurableItem && count($model->permissions) === 0)
+            {
+                $defaultPermission  = ContactWebFormAdapter::resolveAndGetDefaultPermissionSetting($contactWebForm);
+                $nonEveryoneGroup   = $contactWebForm->defaultPermissionGroupSetting;
+                $type               = static::resolveDefaultPermissionToExplicitReadWriteModelPermissionsUtilType(
+                                              $defaultPermission);
+                $postData           =  array('explicitReadWriteModelPermissions' =>
+                                             compact('type', 'nonEveryoneGroup'));
+                $explicitReadWritePermissions = self::resolveAndMakeExplicitReadWriteModelPermissions($postData, $model);
+                $updated = ExplicitReadWriteModelPermissionsUtil::resolveExplicitReadWriteModelPermissions($model,
+                                                                  $explicitReadWritePermissions);
+                if (!$updated)
+                {
+                    throw new NotSupportedException();
+                }
+            }
         }
     }
 ?>

@@ -61,7 +61,7 @@
                 $recipient->toAddress       = $triggeredByUser->primaryEmail->emailAddress;
                 $recipient->toName          = strval($triggeredByUser);
                 $recipient->type            = $this->audienceType;
-                $recipient->personOrAccount->add($triggeredByUser);
+                $recipient->personOrAccounts->add($triggeredByUser);
                 $recipients[]               = $recipient;
             }
             else

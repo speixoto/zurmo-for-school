@@ -53,7 +53,7 @@
             parent::__construct($rows, 1);
             if ($group->id > 0)
             {
-                $this->setView(new ActionBarForGroupEditAndDetailsView ($controllerId, $moduleId, $group, 'EditLink'), 0, 0);
+                $this->setView(new ActionBarForGroupEditAndDetailsView ($controllerId, $moduleId, $group, 'EditMenu'), 0, 0);
                 $this->setView(new GroupEditAndDetailsView ('Edit', $controllerId, $moduleId, $group), 1, 0);
             }
             else
