@@ -234,26 +234,26 @@
             $displayValue = DateTimeUtil::resolveTimeStampForDateTimeLocaleFormattedDisplay($value);
             $this->assertEquals('6/3/80 12:00 AM', $displayValue);
             //For input
-            $value = strtotime("3 June 1080");
+            $value = strtotime("3 June 1920");
             $displayValue = DateTimeUtil::resolveTimeStampForDateTimeLocaleFormattedDisplay(
                 $value,
                 DateTimeUtil::DATETIME_FORMAT_DATE_WIDTH,
                 DateTimeUtil::DATETIME_FORMAT_TIME_WIDTH,
                 true);
-            $this->assertEquals('6/3/1080 12:00 AM', $displayValue);
+            $this->assertEquals('6/3/1920 12:00 AM', $displayValue);
             //other locales
             Yii::app()->setLanguage('de');
             $value = strtotime("3 June 1980");
             $displayValue = DateTimeUtil::resolveTimeStampForDateTimeLocaleFormattedDisplay($value);
             $this->assertEquals('03.06.80 00:00', $displayValue);
             //For input
-            $value = strtotime("3 June 1080");
+            $value = strtotime("3 June 1920");
             $displayValue = DateTimeUtil::resolveTimeStampForDateTimeLocaleFormattedDisplay(
                 $value,
                 DateTimeUtil::DATETIME_FORMAT_DATE_WIDTH,
                 DateTimeUtil::DATETIME_FORMAT_TIME_WIDTH,
                 true);
-            $this->assertEquals('03.06.1080 00:00', $displayValue);
+            $this->assertEquals('03.06.1920 00:00', $displayValue);
         }
 
         public function testResolveValueForDateLocaleFormattedDisplay()
