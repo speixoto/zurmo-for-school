@@ -34,48 +34,35 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class TrackingDefaultController extends ZurmoModuleController
+    /**
+     * Helper class for working with placeholder images
+     */
+    class PlaceholderImageUtil
     {
-        public function filters()
+        const ONE_BY_ONE_PIXEL_IMAGE_PATH            =   '/default/images/1x1-pixel.png';
+
+        public static function resolveOneByOnePixelImageUrl($absolute = true)
         {
-            return array();
+            return static::resolveUrlForThemeFile(static::ONE_BY_ONE_PIXEL_IMAGE_PATH, $absolute);
         }
 
-        public function actionTrack()
+        protected static function resolveUrlForThemeFile($filePath, $absolute = true)
         {
-            try
+            if (strpos($filePath, '/') !== 0)
             {
-                Yii::app()->user->userModel = BaseControlUserConfigUtil::getUserToRunAs();
-                $response                   = EmailMessageActivityUtil::resolveQueryStringFromUrlAndCreateOrUpdateActivity();
-                if ($response['redirect'])
-                {
-                    $this->redirect($response['url']);
-                }
-                elseif (isset($response['imageUrl']))
-                {
-                    $mime               = ZurmoFileHelper::getMimeType($response['imageUrl']);
-                    $size               = filesize($response['imageUrl']);
-                    $name               = pathinfo($response['imageUrl'], PATHINFO_FILENAME);
-                    header('Content-Type: '     .   $mime);
-                    header('Content-Length: '   .   $size);
-                    header('Content-Name: '     .   $name);
-                    readfile($response['imageUrl']);
-                    Yii::app()->end(0, false);
-                }
+                $filePath = '/' . $filePath;
             }
-            catch (NotFoundException $e)
+            $themeFilePath = Yii::app()->themeManager->baseUrl . $filePath;
+            if (!$absolute)
             {
+                return $themeFilePath;
             }
-            catch (NotSupportedException $e)
-            {
-            }
-            catch (FailedToSaveModelException $e)
-            {
-            }
-            catch (MissingASuperAdministratorException $e)
-            {
-            }
-            // we do not catch all exceptions because we need Exit and Redirect Exception for unit tests
+            return static::resolveAbsoluteUrlForFile($themeFilePath);
+        }
+
+        protected static function resolveAbsoluteUrlForFile($filePath)
+        {
+            return Yii::app()->request->getHostInfo() . $filePath;
         }
     }
 ?>
