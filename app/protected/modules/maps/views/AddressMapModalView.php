@@ -62,8 +62,17 @@
             $mapCanvasContainerId = $this->getMapCanvasContainerId();
             $cClipWidget          = new CClipWidget();
             $cClipWidget->beginClip("Map");
-            echo "<div id='" . $mapCanvasContainerId . "' class=\"mapcanvas\"></div>";
-            Yii::app()->mappingHelper->renderMapContentForView($this->geoCodeQueryData, $mapCanvasContainerId);
+            try
+            {
+                Yii::app()->mappingHelper->renderMapContentForView($this->geoCodeQueryData, $mapCanvasContainerId);
+                echo "<div id='" . $mapCanvasContainerId . "' class=\"mapcanvas\"></div>";
+            }
+            catch(GeoCode_Exception $e)
+            {
+                $emptyLabel = Zurmo::t('ZurmoModule', 'No address found');
+                echo          ZurmoHtml::tag('span', array('class' => 'empty'),
+                              ZurmoHtml::tag('span', array('class' => 'icon-empty'), '') . $emptyLabel);
+            }
             $cClipWidget->endClip();
             return $cClipWidget->getController()->clips['Map'];
         }
