@@ -13,7 +13,9 @@ before_script:
   - if [[ "$DB" == "mysql" ]]; then mysql -e "create database IF NOT EXISTS zurmo_test;" -uroot; fi
 
 #script: phpunit --configuration phpunit_$DB.xml --coverage-text
-script: phpunit --coverage-text app/protected/test/unit/TestSuite.php All
+script:
+  - app/protected/commands/zurmoc install localhost zurmo_test zurmo zurmo  super
+  - phpunit --coverage-text app/protected/test/unit/TestSuite.php All
 
 #notifications:
 #  irc: "irc.freenode.org#travis"
