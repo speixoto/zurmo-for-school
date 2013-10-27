@@ -64,7 +64,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'sentDateTime', 'type' => 'ReadOnlyDateTime'),
+                                                array('attributeName' => 'sentDateTime', 'type' => 'EmailMessageReadOnlyDateTime'),
                                             ),
                                         ),
                                     )

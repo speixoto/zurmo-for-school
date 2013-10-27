@@ -51,15 +51,15 @@
                 {
                     $this->redirect($response['url']);
                 }
-                elseif (isset($response['imagePath']))
+                elseif (isset($response['imageUrl']))
                 {
-                    $mime               = ZurmoFileHelper::getMimeType($response['imagePath']);
-                    $size               = filesize($response['imagePath']);
-                    $name               = pathinfo($response['imagePath'], PATHINFO_FILENAME);
+                    $mime               = ZurmoFileHelper::getMimeType($response['imageUrl']);
+                    $size               = filesize($response['imageUrl']);
+                    $name               = pathinfo($response['imageUrl'], PATHINFO_FILENAME);
                     header('Content-Type: '     .   $mime);
                     header('Content-Length: '   .   $size);
                     header('Content-Name: '     .   $name);
-                    readfile($response['imagePath']);
+                    readfile($response['imageUrl']);
                     Yii::app()->end(0, false);
                 }
             }

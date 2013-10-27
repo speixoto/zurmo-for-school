@@ -36,6 +36,12 @@
 
     class CloseTaskCheckBoxListViewColumnAdapter extends CheckBoxListViewColumnAdapter
     {
+        /**
+         * @param string $checkboxId
+         * @param RedBeanModel $modelId
+         * @param bool $completedValue
+         * @return string
+         */
         public static function renderCloseCheckBox($checkboxId, $modelId, $completedValue)
         {
             $htmlOptions = array('class'    => 'close-task-checkbox',
@@ -51,6 +57,10 @@
             return ZurmoHtml::checkBox($checkboxId, $completedValue, $htmlOptions);
         }
 
+        /**
+         * Returns grid view data array
+         * @return array
+         */
         public function renderGridViewData()
         {
             return array(
@@ -62,6 +72,12 @@
             );
         }
 
+        /**
+         * @param string $modelClassName
+         * @param int $modelId
+         * @param bool $completedValue
+         * @return string
+         */
         protected function resolveToRenderCheckBox($modelClassName, $modelId, $completedValue)
         {
             if (!ActionSecurityUtil::canCurrentUserPerformAction( 'Edit', new $modelClassName(false)))

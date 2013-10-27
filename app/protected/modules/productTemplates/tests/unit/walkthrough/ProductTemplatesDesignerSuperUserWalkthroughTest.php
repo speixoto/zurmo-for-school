@@ -548,7 +548,7 @@
             $content = $this->runControllerWithNoExceptionsAndGetContent('productTemplates/default');
 
             //Assert that the edit ProductTemplate does not exits after the search.
-            $this->assertTrue(strpos($content, "No results found.") > 0);
+            $this->assertTrue(strpos($content, "No results found") > 0);
         }
 
         /**

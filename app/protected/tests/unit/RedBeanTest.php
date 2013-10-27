@@ -36,75 +36,80 @@
     // This is for testing details of how RedBean works.
     class RedBeanTest extends BaseTest
     {
+        public static function getDependentTestModelClassNames()
+        {
+            return array('Thing', 'Wukka');
+        }
+
         public function testZeros()
         {
-            $thing = R::dispense('thing');
+            $thing = ZurmoRedBean::dispense('thing');
             $thing->zero = 0;
-            R::store($thing);
+            ZurmoRedBean::store($thing);
             $id = $thing->id;
             unset($thing);
-            $thing = R::load('thing', $id);
+            $thing = ZurmoRedBean::load('thing', $id);
             $this->assertEquals(0, $thing->zero);
 
             //Try saving a second thing.
-            $thing = R::dispense('thing');
+            $thing = ZurmoRedBean::dispense('thing');
             $thing->zero = 2;
-            R::store($thing);
+            ZurmoRedBean::store($thing);
             $id = $thing->id;
             unset($thing);
-            $thing = R::load('thing', $id);
+            $thing = ZurmoRedBean::load('thing', $id);
             $this->assertEquals(2, $thing->zero);
         }
 
         public function testNulls()
         {
-            $thing = R::dispense('thing');
+            $thing = ZurmoRedBean::dispense('thing');
             $thing->zero = null;
-            R::store($thing);
+            ZurmoRedBean::store($thing);
             $id = $thing->id;
             unset($thing);
-            $thing = R::load('thing', $id);
+            $thing = ZurmoRedBean::load('thing', $id);
             $this->assertEquals(null, $thing->zero);
         }
 
-        public function testGetAllTableReturnsNullOn5_2()
+        /**
+         * @expectedException RedBean_Exception_SQL
+         */
+        public function testGetAllTableFromInexistantTableThrowsException()
         {
             $sql = 'select id from atableneverhere';
-            $rows = R::getAll($sql);
-            if (version_compare(PHP_VERSION, '5.3.0', '>'))
-            {
-                $this->assertTrue(is_array($rows));
-            }
-            else
-            {
-                $this->assertTrue($rows === null);
-            }
+            $rows = ZurmoRedBean::getAll($sql);
         }
 
         public function testStringContainingOnlyNumbers()
         {
-            $thing = R::dispense('thing');
+            $thing = ZurmoRedBean::dispense('thing');
             $thing->phoneNumberNumber  = 5551234;
             $thing->phoneNumberString1 = '555-1234';
             $thing->phoneNumberString2 = '5551234';
-            R::store($thing);
-            $databaseType = R::$toolbox->getDatabaseAdapter()->getDatabase()->getDatabaseType();
+            ZurmoRedBean::store($thing);
+            $databaseType = ZurmoRedBean::$toolbox->getDatabaseAdapter()->getDatabase()->getDatabaseType();
             switch ($databaseType)
             {
                 case 'mysql':
+                    $unsigned = null;
+                    if (!RedBeanModelMemberRulesToColumnAdapter::ASSUME_SIGNED)
+                    {
+                        $unsigned = ' unsigned';
+                    }
                     $sql = 'desc thing;';
-                    $rows = R::getAll($sql);
-                    $this->assertEquals('phoneNumberNumber',   $rows[2]['Field']);
-                    $this->assertEquals('int(11) unsigned',    $rows[2]['Type']);
-                    $this->assertEquals('phoneNumberString1',  $rows[3]['Field']);
-                    $this->assertEquals('varchar(255)',        $rows[3]['Type']);
-                    $this->assertEquals('phoneNumberString2',  $rows[4]['Field']);
-                    $this->assertEquals('int(11) unsigned',    $rows[4]['Type']);
+                    $rows = ZurmoRedBean::getAll($sql);
+                    $this->assertEquals('phonenumbernumber',        $rows[2]['Field']);
+                    $this->assertEquals('int(11)' . $unsigned,      $rows[2]['Type']);
+                    $this->assertEquals('phonenumberstring1',       $rows[3]['Field']);
+                    $this->assertEquals('varchar(255)',             $rows[3]['Type']);
+                    $this->assertEquals('phonenumberstring2',       $rows[4]['Field']);
+                    $this->assertEquals('varchar(255)',             $rows[4]['Type']);
                     break;
 
                 case 'sqlite':
                     $sql  = 'pragma table_info(\'thing\');';
-                    $rows = R::getAll($sql);
+                    $rows = ZurmoRedBean::getAll($sql);
                     $this->assertEquals('phoneNumberNumber',   $rows[2]['name']);
                     $this->assertEquals('INTEGER',             $rows[2]['type']);
                     $this->assertEquals('phoneNumberString1',  $rows[3]['name']);
@@ -115,7 +120,7 @@
 
                 case 'pgsql':
                     $sql = 'select column_name, data_type from information_schema.columns where table_name = \'thing\' and column_name like \'phone%\' order by column_name;';
-                    $rows = R::getAll($sql);
+                    $rows = ZurmoRedBean::getAll($sql);
                     $this->assertEquals('phonenumbernumber',   $rows[0]['column_name']);
                     $this->assertEquals('integer',             $rows[0]['data_type']);
                     $this->assertEquals('phonenumberstring1',  $rows[1]['column_name']);
@@ -131,30 +136,35 @@
 
         public function testRedBeanTypesShowingPDODodginess()
         {
-            $wukka = R::dispense('wukka');
+            $wukka = ZurmoRedBean::dispense('wukka');
             $wukka->integer = 69;
             $wukka->string  = 'xxx';
-            R::store($wukka);
+            ZurmoRedBean::store($wukka);
             $this->assertEquals('integer', gettype($wukka->integer));
             $this->assertEquals('string',  gettype($wukka->string));
             $this->assertTrue  ($wukka->integer !== $wukka->string);
             $id = $wukka->id;
             unset($wukka);
 
-            $databaseType = R::$toolbox->getDatabaseAdapter()->getDatabase()->getDatabaseType();
+            $databaseType = ZurmoRedBean::$toolbox->getDatabaseAdapter()->getDatabase()->getDatabaseType();
             switch ($databaseType)
             {
                 case 'mysql':
+                    $unsigned = null;
+                    if (!RedBeanModelMemberRulesToColumnAdapter::ASSUME_SIGNED)
+                    {
+                        $unsigned = ' unsigned';
+                    }
                     $sql = 'desc wukka;';
-                    $rows = R::getAll($sql);
-                    $this->assertEquals('integer',             $rows[1]['Field']);
-                    $this->assertEquals('tinyint(3) unsigned', $rows[1]['Type']);
-                    $this->assertEquals('string',              $rows[2]['Field']);
-                    $this->assertEquals('varchar(255)',        $rows[2]['Type']);
+                    $rows = ZurmoRedBean::getAll($sql);
+                    $this->assertEquals('integer',                  $rows[1]['Field']);
+                    $this->assertEquals('smallint(11)' . $unsigned, $rows[1]['Type']);
+                    $this->assertEquals('string',                   $rows[2]['Field']);
+                    $this->assertEquals('varchar(255)',             $rows[2]['Type']);
                     break;
             }
 
-            $wukka = R::load('wukka', $id);
+            $wukka = ZurmoRedBean::load('wukka', $id);
             $this->assertEquals('string', gettype($wukka->integer)); // Dodgy.
             $this->assertEquals('string', gettype($wukka->string));
             $this->assertTrue  ($wukka->integer !== $wukka->string);
@@ -162,26 +172,27 @@
 
         public function testGetBeanWhenThereIsNoneToGet()
         {
-            $bean = R::dispense('a');
-            $bean2 = R::relatedOne($bean, 'b');
+            $bean = ZurmoRedBean::dispense('a');
+            $bean2 = ZurmoRedBean::relatedOne($bean, 'b');
 
             $this->assertTrue($bean2 === null);
         }
 
         public function testUniqueMeta()
         {
-            $bean = R::dispense('hombre');
-            $bean->setMeta("buildcommand.unique", array(array("nombre")));
+            $this->markTestSkipped("Test does not apply any more due to new autobuild scheme, no longer using setMeta");
+            $bean = ZurmoRedBean::dispense('wukka');
+            $bean->setMeta("buildcommand.unique", array(array("string")));
 
-            $bean->nombre = 'Pablo';
-            R::store($bean);
+            $bean->string = 'Pablo';
+            ZurmoRedBean::store($bean);
 
-            $bean2 = R::dispense('hombre');
-            $bean2->nombre = 'Pablo';
+            $bean2 = ZurmoRedBean::dispense('wukka');
+            $bean2->string = 'Pablo';
 
             try
             {
-                R::store($bean2);
+                ZurmoRedBean::store($bean2);
                 $this->fail('Expected a RedBean_Exception_SQL: Integrity constraint violation');
             }
             catch (RedBean_Exception_SQL $e)
@@ -193,18 +204,18 @@
 
         public function testExampleStoredProcedure()
         {
-            $wukka = R::dispense('wukka');
+            $wukka = ZurmoRedBean::dispense('wukka');
             $wukka->integer = 666;
             $wukka->string  = 'yyy';
-            R::store($wukka);
+            ZurmoRedBean::store($wukka);
             try
             {
-                R::exec("drop procedure get_wukka_integer");
+                ZurmoRedBean::exec("drop procedure get_wukka_integer");
             }
             catch (Exception $e)
             {
             }
-            R::exec("
+            ZurmoRedBean::exec("
                 create procedure get_wukka_integer(in the_string varchar(255), out the_integer int(11))
                 begin
                     select wukka.integer
@@ -213,8 +224,8 @@
                     where wukka.string = the_string;
                 end
             ");
-            R::exec("call get_wukka_integer('yyy', @the_integer)");
-            $this->assertEquals(666, R::getCell("select @the_integer"));
+            ZurmoRedBean::exec("call get_wukka_integer('yyy', @the_integer)");
+            $this->assertEquals(666, ZurmoRedBean::getCell("select @the_integer"));
         }
 
         /**
@@ -224,12 +235,12 @@
         {
             try
             {
-                R::exec("drop function get_wukka_integer2");
+                ZurmoRedBean::exec("drop function get_wukka_integer2");
             }
             catch (Exception $e)
             {
             }
-            R::exec("
+            ZurmoRedBean::exec("
                 create function get_wukka_integer2(the_string varchar(255))
                 returns int(11)
                 begin
@@ -241,35 +252,35 @@
                     return the_integer;
                 end
             ");
-            $this->assertEquals(666, R::getCell("select get_wukka_integer2('yyy')"));
+            $this->assertEquals(666, ZurmoRedBean::getCell("select get_wukka_integer2('yyy')"));
         }
 
         public function testCascadedDeleteDoesNotWorkForLinkedBeans()
         {
-            $person = R::dispense('person');
-            $person->name = 'bill';
-            R::store($person);
+            $member = ZurmoRedBean::dispense('marketinglistmember');
+            $member->unsubscribed = true;
+            ZurmoRedBean::store($member);
 
-            $phone  = R::dispense('phone');
-            $phone->number = '555-1234';
-            R::store($phone);
+            $list = ZurmoRedBean::dispense('marketinglist');
+            $list->name = 'dummy';
+            ZurmoRedBean::store($list);
 
-            ZurmoRedBeanLinkManager::link($phone, $person);
-            R::store($phone);
+            ZurmoRedBeanLinkManager::link($member, $list);
+            ZurmoRedBean::store($member);
 
-            $id = $phone->id;
-            unset($phone);
+            $id = $list->id;
+            unset($list);
 
-            R::trash($person);
-            unset($person);
+            ZurmoRedBean::trash($member);
+            unset($member);
 
-            $phone = R::load('phone', $id);
-            $this->assertNotNull($phone); // The phone is not deleted.
+            $list = ZurmoRedBean::load('marketinglist', $id);
+            $this->assertNotNull($list); // The list is not deleted.
         }
 
         public function testDateTimeFields()
         {
-            $toolbox = RedBean_Setup::kickstart(Yii::app()->db->connectionString,
+            $toolbox = ZurmoRedBeanSetup::kickstart(Yii::app()->db->connectionString,
                                                 Yii::app()->db->username,
                                                 Yii::app()->db->password);
 
@@ -280,7 +291,7 @@
 
             for ($i = 1; $i < 10; $i++)
             {
-                $person = R::dispense("person");
+                $person = ZurmoRedBean::dispense("person");
                 $person->name = "bill$i";
                 $person->date1 = time();
                 $person->date2 = date('Y-m-d H:i:s');
@@ -291,19 +302,14 @@
 
         public function testDateTimeHinting()
         {
-            $toolbox = RedBean_Setup::kickstart(Yii::app()->db->connectionString,
-                                                Yii::app()->db->username,
-                                                Yii::app()->db->password);
-
-            R::exec("drop table if exists bean");                   // Not Coding Standard
-            $bean = R::dispense("bean");                            // Not Coding Standard
+            $bean = ZurmoRedBean::dispense("wukka");                            // Not Coding Standard
             $bean->setMeta("hint",array("prop"=>"datetime"));           // Not Coding Standard
             $bean->prop = "2010-01-01 10:00:00";                    // Not Coding Standard
-            R::store($bean);                                        // Not Coding Standard
+            ZurmoRedBean::store($bean);                                        // Not Coding Standard
 
-            $rows = R::getAll('desc bean');
-            $this->assertEquals('prop',     $rows[1]['Field']);
-            $this->assertEquals('datetime', $rows[1]['Type']);
+            $rows = ZurmoRedBean::getAll('desc wukka');
+            $this->assertEquals('prop',     $rows[3]['Field']);
+            $this->assertEquals('datetime', $rows[3]['Type']);
         }
     }
 ?>

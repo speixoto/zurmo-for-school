@@ -38,10 +38,10 @@
     {
         public static function tearDownAfterClass()
         {
-            R::exec('drop table if exists testimporttable');
-            R::exec('drop table if exists testimporttable2');
-            R::exec('drop table if exists testimporttable3');
-            R::exec('drop table if exists testimporttable4');
+            ZurmoRedBean::$writer->dropTableByTableName('testimporttable');
+            ZurmoRedBean::$writer->dropTableByTableName('testimporttable2');
+            ZurmoRedBean::$writer->dropTableByTableName('testimporttable3');
+            ZurmoRedBean::$writer->dropTableByTableName('testimporttable4');
             parent::tearDownAfterClass();
         }
 

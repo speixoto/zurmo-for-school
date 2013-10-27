@@ -43,6 +43,8 @@
         {
             parent::setUpBeforeClass();
             SecurityTestHelper::createSuperAdmin();
+            $loaded = ContactsModule::loadStartingData();
+            assert($loaded); // Not Coding Standard
         }
 
         public function setUp()
@@ -104,9 +106,30 @@
             $processed                  = 0;
             $processDateTime            = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
             $autoresponderItem          = AutoresponderItemTestHelper::createAutoresponderItem($processed,
-                                                                                                $processDateTime,
-                                                                                                $autoresponder,
-                                                                                                $contact);
+                                                                                               $processDateTime,
+                                                                                               $autoresponder,
+                                                                                               $contact);
+            AutoresponderItemsUtil::processDueItem($autoresponderItem);
+            $this->assertEquals(1, $autoresponderItem->processed);
+            $emailMessage               = $autoresponderItem->emailMessage;
+            $this->assertEquals($marketingList->owner, $emailMessage->owner);
+            $marketingListPermissions   = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($marketingList);
+            $emailMessagePermissions    = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($emailMessage);
+            $this->assertEquals($marketingListPermissions, $emailMessagePermissions);
+            $this->assertNull($emailMessage->subject);
+            $this->assertNull($emailMessage->content->textContent);
+            $this->assertNull($emailMessage->content->htmlContent);
+            $this->assertNull($emailMessage->sender->fromAddress);
+            $this->assertNull($emailMessage->sender->fromName);
+            $this->assertEquals(0, $emailMessage->recipients->count());
+
+            //Test with empty primary email address
+            $contact->primaryEmail->emailAddress = '';
+            $processDateTime            = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
+            $autoresponderItem          = AutoresponderItemTestHelper::createAutoresponderItem($processed,
+                                                                                               $processDateTime,
+                                                                                               $autoresponder,
+                                                                                               $contact);
             AutoresponderItemsUtil::processDueItem($autoresponderItem);
             $this->assertEquals(1, $autoresponderItem->processed);
             $emailMessage               = $autoresponderItem->emailMessage;
@@ -170,7 +193,7 @@
             $this->assertEquals(strval($contact), $recipients[0]->toName);
             $this->assertEquals($email->emailAddress, $recipients[0]->toAddress);
             $this->assertEquals(EmailMessageRecipient::TYPE_TO, $recipients[0]->type);
-            $this->assertEquals($contact, $recipients[0]->personOrAccount);
+            $this->assertTrue($contact->isSame($recipients[0]->personOrAccounts[0]));
             $headersArray               = array('zurmoItemId' => $autoresponderItem->id,
                                                 'zurmoItemClass' => get_class($autoresponderItem),
                                                 'zurmoPersonId' => $contact->getClassId('Person'));
@@ -226,7 +249,7 @@
             $this->assertEquals(strval($contact), $recipients[0]->toName);
             $this->assertEquals($email->emailAddress, $recipients[0]->toAddress);
             $this->assertEquals(EmailMessageRecipient::TYPE_TO, $recipients[0]->type);
-            $this->assertEquals($contact, $recipients[0]->personOrAccount);
+            $this->assertTrue($contact->isSame($recipients[0]->personOrAccounts[0]));
             $headersArray               = array('zurmoItemId' => $autoresponderItem->id,
                                                 'zurmoItemClass' => get_class($autoresponderItem),
                                                 'zurmoPersonId' => $contact->getClassId('Person'));
@@ -284,7 +307,7 @@
             $this->assertEquals(strval($contact), $recipients[0]->toName);
             $this->assertEquals($email->emailAddress, $recipients[0]->toAddress);
             $this->assertEquals(EmailMessageRecipient::TYPE_TO, $recipients[0]->type);
-            $this->assertEquals($contact, $recipients[0]->personOrAccount);
+            $this->assertTrue($contact->isSame($recipients[0]->personOrAccounts[0]));
             $headersArray               = array('zurmoItemId' => $autoresponderItem->id,
                                                     'zurmoItemClass' => get_class($autoresponderItem),
                                                     'zurmoPersonId' => $contact->getClassId('Person'));
@@ -354,15 +377,16 @@
             $this->assertEquals(strval($contact), $recipients[0]->toName);
             $this->assertEquals($email->emailAddress, $recipients[0]->toAddress);
             $this->assertEquals(EmailMessageRecipient::TYPE_TO, $recipients[0]->type);
-            $this->assertEquals($contact, $recipients[0]->personOrAccount);
+            $this->assertTrue($contact->isSame($recipients[0]->personOrAccounts[0]));
             $this->assertNotEmpty($emailMessage->files);
             $this->assertCount(count($files), $emailMessage->files);
-            foreach ($files as $index => $file)
+            foreach ($autoresponder->files as $index => $file)
             {
-                $this->assertEquals($files[$index]['name'], $emailMessage->files[$index]->name);
-                $this->assertEquals($files[$index]['type'], $emailMessage->files[$index]->type);
-                $this->assertEquals($files[$index]['size'], $emailMessage->files[$index]->size);
-                $this->assertEquals($files[$index]['contents'], $emailMessage->files[$index]->fileContent->content);
+                $this->assertEquals($file->name, $emailMessage->files[$index]->name);
+                $this->assertEquals($file->type, $emailMessage->files[$index]->type);
+                $this->assertEquals($file->size, $emailMessage->files[$index]->size);
+                //AutoresponderItem should share the Attachments content from Autoresponder
+                $this->assertEquals($file->fileContent, $emailMessage->files[$index]->fileContent);
             }
             $headersArray               = array('zurmoItemId' => $autoresponderItem->id,
                                                 'zurmoItemClass' => get_class($autoresponderItem),
@@ -461,7 +485,7 @@
             $this->assertEquals(strval($contact), $recipients[0]->toName);
             $this->assertEquals($email->emailAddress, $recipients[0]->toAddress);
             $this->assertEquals(EmailMessageRecipient::TYPE_TO, $recipients[0]->type);
-            $this->assertEquals($contact, $recipients[0]->personOrAccount);
+            $this->assertTrue($contact->isSame($recipients[0]->personOrAccounts[0]));
             $headersArray               = array('zurmoItemId' => $autoresponderItem->id,
                                                     'zurmoItemClass' => get_class($autoresponderItem),
                                                     'zurmoPersonId' => $contact->getClassId('Person'),
@@ -479,11 +503,12 @@
             $email->emailAddress        = 'demo@zurmo.com';
             $contact                    = ContactTestHelper::createContactByNameForOwner('contact 09', $this->user);
             $contact->primaryEmail      = $email;
+            $contact->state             = ContactsUtil::getStartingState();
             $this->assertTrue($contact->save());
             $marketingList              = MarketingListTestHelper::createMarketingListByName('marketingList 09',
-                                                                                                'description',
-                                                                                                'CustomFromName',
-                                                                                                'custom@from.com');
+                                                                                             'description',
+                                                                                             'CustomFromName',
+                                                                                             'custom@from.com');
             $autoresponder              = AutoresponderTestHelper::createAutoresponder('subject 09',
                                                                             'Url: [[MODEL^URL]]',
                                                                             'Click <a href="[[MODEL^URL]]">here</a>',

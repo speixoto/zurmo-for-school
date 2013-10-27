@@ -229,10 +229,7 @@
                                                            $attributeIndexOrDerivedType,
                                                            $columnType);
                 }
-                if (count($mappingRuleFormsAndElementTypes) > 1)
-                {
-                    $multipleMappingRulesCssClass = ' multiple';
-                }
+                $content .= ZurmoHtml::tag('h4', array(), Zurmo::t('ImportModule', 'Rules'));
                 foreach ($mappingRuleFormsAndElementTypes as $notUsed => $ruleFormAndElementType)
                 {
                     $mappingRuleForm        = $ruleFormAndElementType['mappingRuleForm'];
@@ -254,14 +251,13 @@
                                                   $attributeName,
                                                   $this->form,
                                                   $params);
-                    $content .= '<table><tbody><tr>';
+                    $element->editableTemplate = '<div>{label}{content}{error}</div>';
                     $content .= $element->render();
-                    $content .= '</tr></tbody></table>';
                 }
             }
 
             $content = ZurmoHtml::tag('div', array('id' => self::getMappingRulesDivIdByColumnName($columnName),
-                                                   'class' => 'mapping-rules' . $multipleMappingRulesCssClass), $content);
+                                                   'class' => 'mapping-rules'), $content);
             return $content;
         }
 

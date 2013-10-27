@@ -206,6 +206,7 @@
             unset($response['data']['shippingAddress']['latitude']);
             unset($response['data']['shippingAddress']['invalid']);
             unset($response['data']['industry']['id']);
+            unset($response['data']['latestActivityDateTime']);
             unset($response['data']['type']['id']);
             unset($response['data']['id']);
 

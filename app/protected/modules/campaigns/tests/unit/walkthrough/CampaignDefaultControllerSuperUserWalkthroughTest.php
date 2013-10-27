@@ -185,7 +185,7 @@
                 ) ,
             ));
             $content    = $this->runControllerWithNoExceptionsAndGetContent('campaigns/default/list');
-            $this->assertTrue(strpos($content, 'No results found.') !== false);
+            $this->assertTrue(strpos($content, 'No results found') !== false);
 
             StickyReportUtil::clearDataByKey('CampaignsSearchForm');
             $this->setGetArray(array(
@@ -365,8 +365,7 @@
             $this->assertTrue(strpos($content, '<div class="email-template-content"><div class="tabs-nav">') !== false);
             $this->assertTrue(strpos($content, '<a href="#tab1">Text Content</a>') !== false);
             $this->assertTrue(strpos($content, '<a class="active-tab" href="#tab2">Html Content</a>') !== false);
-            $this->assertTrue(strpos($content, '<a id="mergetag-guide" class="simple-link" href="#">' .
-                                                'MergeTag Guide</a></div>') !== false);
+            $this->assertTrue(strpos($content, 'class="simple-link" href="#">MergeTag Guide</a></div>') !== false);
             $this->assertTrue(strpos($content, '<div id="tab1" class=" tab email-template-textContent">') !== false);
             $this->assertTrue(strpos($content, '<th><label for="Campaign_textContent">Text Content</label></th>') !== false);
             $this->assertTrue(strpos($content, '<td colspan="1"><textarea id="Campaign_textContent" ' .
@@ -489,10 +488,8 @@
                                                 'ModelView ConfigurableMetadataView MetadataView">') !== false);
             $this->assertTrue(strpos($content, '<h1><span class="truncated-title"><span class="ellipsis-content">New '.
                                                 'Campaign using Create - Campaign</span></span></h1>') !== false);
-            $this->assertTrue(strpos($content, '<div class="view-toolbar-container clearfix"><div class="view-toolbar">' .
-                                                '<ul id="ListViewDetailsActionMenu" class="nav">') !== false);
-            $this->assertTrue(strpos($content, '<li class="hasDetailsFlyout parent last"><a href="javascript:void(0);' .
-                                                '"><span>Details</span></a>') !== false);
+            $this->assertTrue(strpos($content, '<div class="view-toolbar-container clearfix"><nav class="pillbox clearfix">' .
+                                                '<div id="ListViewDetailsActionMenu" class="default-button">') !== false);
             $this->assertTrue(strpos($content, '<div id="CampaignDetailsOverlayView" class="SecuredDetailsView '.
                                                 'DetailsView ModelView ConfigurableMetadataView '.
                                                 'MetadataView">') !== false);
@@ -500,11 +497,8 @@
                                                 '10:54 AM</BR>') !== false);
             $this->assertTrue(strpos($content, '<b>Subject:</b> New Campaign using Create Subject</div>') !== false);
             $this->assertTrue(strpos($content, '<p class="after-form-details-content">') !== false);
-            $this->assertTrue(strpos($content, 'ul id="ListViewOptionsActionMenu" class="nav">') !== false);
-            $this->assertTrue(strpos($content, '<li class="parent last"><a href="javascript:void(0);"><span>' .
-                                                'Options</span></a>') !== false);
-            $this->assertTrue(strpos($content, '<span>Edit</span></a></li>') !== false);
-            $this->assertTrue(strpos($content, '<span>Delete</span></a></li>') !== false);
+            $this->assertTrue(strpos($content, 'EditLinkActionElement') !== false);
+            $this->assertTrue(strpos($content, 'CampaignDeleteLinkActionElement') !== false);
             $this->assertTrue(strpos($content, '<div class="ModelRelationsSecuredPortletFrameView SecuredPortlet' .
                                                 'FrameView PortletFrameView MetadataView">') !== false);
             $this->assertTrue(strpos($content, '<div class="juiportlet-columns"> ') !== false);
@@ -662,8 +656,6 @@
             $this->assertTrue(strpos($content, '<div class="email-template-content"><div class="tabs-nav">') !== false);
             $this->assertTrue(strpos($content, '<a class="active-tab" href="#tab1">Text Content</a>') !== false);
             $this->assertTrue(strpos($content, '<a href="#tab2">Html Content</a>') !== false);
-            $this->assertTrue(strpos($content, '<a id="mergetag-guide" class="simple-link" href="#">' .
-                                                'MergeTag Guide</a></div>') !== false);
             $this->assertTrue(strpos($content, '<div id="tab1" class="active-tab tab email-template-' .
                                                 'textContent"><th>') !== false);
             $this->assertTrue(strpos($content, '<label for="Campaign_textContent">Text Content</label></th>') !== false);
@@ -755,7 +747,7 @@
         {
             $campaigns = Campaign::getAll();
             $this->assertEquals(3, count($campaigns));
-            $this->setGetArray(array('id' => $campaigns[0]->id));
+            $this->setGetArray(array('id' => $campaigns[1]->id));
             $this->resetPostArray();
             $redirectUrl = $this->runControllerWithRedirectExceptionAndGetUrl('campaigns/default/delete');
             $compareRedirectUrl = Yii::app()->createUrl('campaigns/default/index');
@@ -797,6 +789,18 @@
             $this->assertTrue($campaigns[0]->marketingList->id == $marketingList->id);
             $campaigns = Campaign::getAll();
             $this->assertEquals(3, count($campaigns));
+        }
+
+        /**
+         * @depends testSuperUserCreateFromRelationAction
+         */
+        public function testDrillDownDetailsAction()
+        {
+            $campaign     = Campaign::getByName('campaign01');
+            $campaignItem = CampaignItemTestHelper::createCampaignItem(true, $campaign[0]);
+            $this->setGetArray(array('campaignItemId' => $campaignItem->id));
+            $content      = $this->runControllerWithNoExceptionsAndGetContent('campaigns/default/drillDownDetails');
+            $this->assertNotNull($content);
         }
     }
 ?>

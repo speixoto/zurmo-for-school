@@ -59,7 +59,7 @@
                    'from portlet '                                        .
                    "where layoutid = '$layoutId' and _user_id = $userId " .
                    "order by {$quote}column$quote, position;";
-            $rows = R::getAll($sql);
+            $rows = ZurmoRedBean::getAll($sql);
             if (!empty($rows))
             {
                 foreach ($rows as $row)
@@ -81,7 +81,7 @@
                    'from portlet '                                       .
                    "where layoutid = '$layoutId' and _user_id = $userId " .
                    'order by id;';
-            foreach (R::getAll($sql) as $row)
+            foreach (ZurmoRedBean::getAll($sql) as $row)
             {
                 $portlet = Portlet::getById(intval($row['id']));
                 $portletCollection[$row['id']] = $portlet;
@@ -174,7 +174,7 @@
                     'collapsed',
                 ),
                 'relations' => array(
-                    'user' => array(RedBeanModel::HAS_ONE, 'User'),
+                    'user' => array(static::HAS_ONE, 'User'),
                 ),
                 'rules' => array(
                     array('column',             'required'),
@@ -272,7 +272,7 @@
             $sql = "select count(*) as count "          .
                    'from portlet '                                       .
                    "where layoutid = '$uniqueLayoutId' and viewtype = '$viewType' and _user_id = $userId";
-            $row = R::getRow($sql);
+            $row = ZurmoRedBean::getRow($sql);
             if ($row['count'] > 0)
             {
                 return true;

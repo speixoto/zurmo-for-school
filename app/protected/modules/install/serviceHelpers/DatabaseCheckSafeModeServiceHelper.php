@@ -37,19 +37,8 @@
     /**
      * Check if database is not in strict mode.
      */
-    class DatabaseCheckSafeModeServiceHelper extends ServiceHelper
+    class DatabaseCheckSafeModeServiceHelper extends DatabaseBaseServiceHelper
     {
-        protected $form;
-
-        /**
-         * @param InstallSettingsForm $form
-         */
-        public function __construct($form)
-        {
-            assert('$form instanceof InstallSettingsForm');
-            $this->form = $form;
-        }
-
         protected function checkService()
         {
             $passed = true;

@@ -50,7 +50,7 @@
         {
             assert('is_string($username)');
             assert('$username != ""');
-            $bean = R::findOne('_user', "username = :username ", array(':username' => $username));
+            $bean = ZurmoRedBean::findOne('_user', "username = :username ", array(':username' => $username));
             assert('$bean === false || $bean instanceof RedBean_OODBBean');
             if ($bean === false)
             {
@@ -129,7 +129,7 @@
             $tableName = self::getTableName($modelClassName);
             if ($bean === null)
             {
-                $personBean = R::dispense($tableName);
+                $personBean = ZurmoRedBean::dispense($tableName);
             }
             else
             {
@@ -153,19 +153,7 @@
             return parent::unrestrictedDelete();
         }
 
-        /**
-         * Override to handle Person mixin.  When the Person is the baseModelClassName, we should ignore trying to
-         * resolve the column.  Otherwise a phantom person_id is created on CustomFieldsModel.
-         */
-        protected static function resolveMixinsOnSaveForEnsuringColumnsAreCorrectlyFormed($baseModelClassName, $modelClassName)
-        {
-            if ($baseModelClassName != 'Person')
-            {
-                parent::resolveMixinsOnSaveForEnsuringColumnsAreCorrectlyFormed($baseModelClassName, $modelClassName);
-            }
-        }
-
-        protected static function getMixedInModelClassNames()
+        public static function getMixedInModelClassNames()
         {
             return array('Person');
         }
@@ -186,23 +174,12 @@
                 if ($baseBean !== null)
                 {
                     ZurmoRedBeanLinkManager::link($bean, $baseBean);
-                    if (!RedBeanDatabase::isFrozen())
-                    {
-                        $tableName  = self::getTableName(get_class($this));
-                        $columnName = 'person_id';
-                        RedBeanColumnTypeOptimizer::optimize($tableName, $columnName, 'id');
-                    }
                 }
                 $baseBean = $bean;
             }
             $userBean   = $this->modelClassNameToBean['User'];
             $personBean = $this->modelClassNameToBean['Person'];
             ZurmoRedBeanLinkManager::link($userBean, $personBean);
-            if (!RedBeanDatabase::isFrozen())
-            {
-                $tableName  = self::getTableName(get_class($this));
-                RedBeanColumnTypeOptimizer::optimize($tableName, 'person_id', 'id');
-            }
         }
 
         // Because no functionality is mixed in, because this is
@@ -213,7 +190,7 @@
             $fullName = $this->getFullName();
             if ($fullName == '')
             {
-                return Zurmo::t('UsersModule', '(Unnamed)');
+                return Zurmo::t('Core', '(Unnamed)');
             }
             return $fullName;
         }
@@ -334,6 +311,7 @@
             $className = get_called_class();
             try
             {
+                // not using default value to save cpu cycles on requests that follow the first exception.
                 return GeneralCache::getEntry($className . 'Metadata');
             }
             catch (NotFoundException $e)
@@ -475,7 +453,7 @@
                     'emailBoxes'          => Zurmo::t('UsersModule', 'Email Boxes',             array(), null, $language),
                     'emailSignatures'     => Zurmo::t('UsersModule', 'Email Signatures',        array(), null, $language),
                     'fullName'            => Zurmo::t('UsersModule', 'Name',                    array(), null, $language),
-                    'groups'              => Zurmo::t('UsersModule', 'Groups',                  array(), null, $language),
+                    'groups'              => Zurmo::t('ZurmoModule', 'Groups',                  array(), null, $language),
                     'hash'                => Zurmo::t('UsersModule', 'Hash',                    array(), null, $language),
                     'isActive'            => Zurmo::t('UsersModule', 'Is Active',               array(), null, $language),
                     'isRootUser'          => Zurmo::t('UsersModule', 'Is Root User',            array(), null, $language),
@@ -487,9 +465,9 @@
                     'manager'             => Zurmo::t('UsersModule', 'Manager',                 array(), null, $language),
                     'primaryEmail'        => Zurmo::t('UsersModule', 'Email',                   array(), null, $language),
                     'primaryAddress'      => Zurmo::t('UsersModule', 'Address',                 array(), null, $language),
-                    'role'                => Zurmo::t('UsersModule', 'Role',                    array(), null, $language),
-                    'timeZone'            => Zurmo::t('UsersModule', 'Time Zone',               array(), null, $language),
-                    'title'               => Zurmo::t('UsersModule', 'Salutation',              array(), null, $language),
+                    'role'                => Zurmo::t('ZurmoModule', 'Role',                    array(), null, $language),
+                    'timeZone'            => Zurmo::t('ZurmoModule', 'Time Zone',               array(), null, $language),
+                    'title'               => Zurmo::t('ZurmoModule', 'Salutation',              array(), null, $language),
                     'username'            => Zurmo::t('UsersModule', 'Username',                array(), null, $language),
                     'lastLoginDateTime'   => Zurmo::t('UsersModule', 'Last Login',              array(), null, $language),
                 )
@@ -509,6 +487,7 @@
                     // for what the optimized way is doing.
                     try
                     {
+                        // not using default value to save cpu cycles on requests that follow the first exception.
                         return RightsCache::getEntry($identifier);
                     }
                     catch (NotFoundException $e)
@@ -528,6 +507,7 @@
                 {
                     try
                     {
+                        // not using default value to save cpu cycles on requests that follow the first exception.
                         return RightsCache::getEntry($identifier);
                     }
                     catch (NotFoundException $e)
@@ -728,15 +708,15 @@
                     'hideFromLeaderboard'
                 ),
                 'relations' => array(
-                    'currency'          => array(RedBeanModel::HAS_ONE,             'Currency'),
-                    'groups'            => array(RedBeanModel::MANY_MANY,           'Group'),
-                    'manager'           => array(RedBeanModel::HAS_ONE,             'User',
-                                                    RedBeanModel::NOT_OWNED,            RedBeanModel::LINK_TYPE_SPECIFIC,  'manager'),
-                    'role'              => array(RedBeanModel::HAS_MANY_BELONGS_TO, 'Role'),
-                    'emailBoxes'        => array(RedBeanModel::HAS_MANY,            'EmailBox'),
-                    'emailAccounts'     => array(RedBeanModel::HAS_MANY,            'EmailAccount'),
-                    'emailSignatures'   => array(RedBeanModel::HAS_MANY,            'EmailSignature',
-                                                    RedBeanModel::OWNED),
+                    'currency'          => array(static::HAS_ONE,             'Currency'),
+                    'groups'            => array(static::MANY_MANY,           'Group'),
+                    'manager'           => array(static::HAS_ONE,             'User',
+                                                    static::NOT_OWNED,            static::LINK_TYPE_SPECIFIC,  'manager'),
+                    'role'              => array(static::HAS_MANY_BELONGS_TO, 'Role'),
+                    'emailBoxes'        => array(static::HAS_MANY,            'EmailBox'),
+                    'emailAccounts'     => array(static::HAS_MANY,            'EmailAccount'),
+                    'emailSignatures'   => array(static::HAS_MANY,            'EmailSignature',
+                                                    static::OWNED),
                 ),
                 'foreignRelations' => array(
                     'Dashboard',

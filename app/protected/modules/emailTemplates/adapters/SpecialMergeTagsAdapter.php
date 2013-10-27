@@ -64,6 +64,11 @@
             $modelClassName     = get_class($model);
             $moduleClassName    = $modelClassName::getModuleClassName();
             $moduleId           = $moduleClassName::getDirectoryName();
+            if(null != $stateAdapterClassName = $moduleClassName::getStateMetadataAdapterClassName())
+            {
+                $resolvedModuleClassName = $stateAdapterClassName::getModuleClassNameByModel($model);
+                $moduleId                = $resolvedModuleClassName::getDirectoryName();
+            }
             return Yii::app()->createAbsoluteUrl('/' . $moduleId . '/default/details/', array('id' => $model->id));
         }
 

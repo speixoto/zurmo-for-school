@@ -625,5 +625,31 @@
             $accounts = Account::getAll();
             $this->assertEquals(0, count($accounts));
         }
+
+        public function testKanbanViewForAccountDetails()
+        {
+            $super                  = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            AccountTestHelper::createAccountByNameForOwner('superAccount', $super);
+            $accounts               = Account::getByName('superAccount');
+
+            $task = TaskTestHelper::createTaskWithOwnerAndRelatedAccount('MyTask', $super, $accounts[0], Task::STATUS_IN_PROGRESS);
+            $taskNew = TaskTestHelper::createTaskWithOwnerAndRelatedAccount('MyTask New', $super, $accounts[0], Task::STATUS_NEW);
+            $this->setGetArray(array('id' => $accounts[0]->id, 'kanbanBoard' => '1'));
+            $content = $this->runControllerWithNoExceptionsAndGetContent('accounts/default/details');
+            $matcher= array(
+                'tag' => 'a',
+                //Multiple ancestors
+                'ancestor' => array('tag' => 'li', 'id' => 'items_' . $task->id, 'tag' => 'ul', 'id' => 'task-sortable-rows-3'),
+                'content' => 'MyTask'
+            );
+            $this->assertTag($matcher, $content);
+            $matcher= array(
+                'tag' => 'a',
+                //Multiple ancestors
+                'ancestor' => array('tag' => 'li', 'id' => 'items_' . $taskNew->id, 'tag' => 'ul', 'id' => 'task-sortable-rows-1'),
+                'content' => 'MyTask New'
+            );
+            $this->assertTag($matcher, $content);
+        }
     }
 ?>

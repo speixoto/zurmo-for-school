@@ -56,9 +56,6 @@
             $form->defaultTestToEmailAddress              = Yii::app()->emailHelper->resolveAndGetDefaultTestToAddress();
             $form->gamificationModalNotificationsEnabled  = Yii::app()->gameHelper->modalNotificationsEnabled;
             $form->realtimeUpdatesEnabled                 = static::getRealtimeUpdatesEnabled();
-            $form->autoresponderOrCampaignBatchSize       = AutoresponderOrCampaignBatchSizeConfigUtil::getBatchSize();
-            $form->autoresponderOrCampaignFooterPlainText = UnsubscribeAndManageSubscriptionsPlaceholderUtil::getContentByType(false);
-            $form->autoresponderOrCampaignFooterRichText  = UnsubscribeAndManageSubscriptionsPlaceholderUtil::getContentByType(true);
             self::getLogoAttributes($form);
             return $form;
         }
@@ -82,9 +79,6 @@
             ZurmoConfigurationUtil::setByModuleName('ZurmoModule',
                                                     'realtimeUpdatesEnabled',
                                                     (boolean) $form->realtimeUpdatesEnabled);
-            AutoresponderOrCampaignBatchSizeConfigUtil::setBatchSize((int)$form->autoresponderOrCampaignBatchSize);
-            UnsubscribeAndManageSubscriptionsPlaceholderUtil::setContentByType($form->autoresponderOrCampaignFooterPlainText, false);
-            UnsubscribeAndManageSubscriptionsPlaceholderUtil::setContentByType($form->autoresponderOrCampaignFooterRichText, true);
             self::setLogoAttributes($form);
         }
 

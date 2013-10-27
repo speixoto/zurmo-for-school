@@ -40,15 +40,35 @@
          * At some point if performance is a problem with rebuilding activity models, then the stored procedure
          * needs to be refactored to somehow support more joins dynamically.
          * @see https://www.pivotaltracker.com/story/show/38804909
+         * @param boolean $overwriteExistingTables
          * @param boolean $forcePhp
          */
-        public static function rebuild($forcePhp = false)
+        public static function rebuild($overwriteExistingTables = true, $forcePhp = false, $messageStreamer = null)
         {
             //Forcing php way until we can fix failing tests here: AccountReadPermissionsOptimizationScenariosTest
             $forcePhp = true;
+            assert('is_bool($overwriteExistingTables)');
             assert('is_bool($forcePhp)');
             foreach (self::getMungableModelClassNames() as $modelClassName)
             {
+                $mungeTableName     = self::getMungeTableName($modelClassName);
+                $readTableExists    = ZurmoRedBean::$writer->doesTableExist($mungeTableName);
+                if (!$overwriteExistingTables && $readTableExists)
+                {
+                    if (isset($messageStreamer))
+                    {
+                        $messageStreamer->add(Zurmo::t('ZurmoModule', "Skipping {{tableName}}",
+                                                array('{{tableName}}' => $mungeTableName)));
+                    }
+                    // skip if we don't want to overwrite existing tables and table already exists
+                    continue;
+                }
+                if (isset($messageStreamer))
+                {
+                    $messageStreamer->add(Zurmo::t('ZurmoModule', "Building {{tableName}}",
+                                                    array('{{tableName}}' => $mungeTableName)));
+                }
+
                 if (!SECURITY_OPTIMIZED || $forcePhp)
                 {
                     self::rebuildViaSlowWay($modelClassName);
@@ -64,11 +84,10 @@
                     }
                     else
                     {
-                        $modelTableName = RedBeanModel::getTableName($modelClassName);
-                        $mungeTableName = self::getMungeTableName($modelClassName);
+                        $modelTableName     = RedBeanModel::getTableName($modelClassName);
                         if (!is_subclass_of($modelClassName, 'OwnedSecurableItem'))
                         {
-                            throw new NotImplementedException($message, $code, $previous);
+                            throw new NotImplementedException();
                         }
                         if (is_subclass_of($modelClassName, 'Person'))
                         {
@@ -234,7 +253,7 @@
             {
                 $count++;
             }
-            if ($group->group->id > 0 && !(!RedBeanDatabase::isFrozen() && $group->group->isSame($group))) // Prevent cycles in database auto build.
+            if ($group->group->id > 0 && !$group->group->isSame($group)) // Prevent cycles in database auto build.
             {
                 $count += self::getGroupMungeCount($securableItem, $group->group);
             }
@@ -277,7 +296,7 @@
             assert('$modelClassName != "OwnedSecurableItem"');
             $mungeTableName = self::getMungeTableName($modelClassName);
             $securableItemId = $securableItem->getClassId('SecurableItem');
-            R::exec("delete from $mungeTableName
+            ZurmoRedBean::exec("delete from $mungeTableName
                      where       securableitem_id = $securableItemId");
         }
 
@@ -380,7 +399,7 @@
                     self::garbageCollect($mungeTableName);
                 }
                 $userId = $user->id;
-                R::exec("delete from $mungeTableName
+                ZurmoRedBean::exec("delete from $mungeTableName
                          where       munge_id = 'U$userId'");
             }
         }
@@ -400,7 +419,7 @@
                 $sql = "select securableitem_id
                         from   $mungeTableName
                         where  munge_id = concat('G', $groupId)";
-                $securableItemIds = R::getCol($sql);
+                $securableItemIds = ZurmoRedBean::getCol($sql);
                 self::bulkIncrementParentRolesCounts($mungeTableName, $securableItemIds, $user->role);
                 /*
                  * This extra step is not needed. See slide 21.  This is similar to userBeingRemovedFromRole in that
@@ -423,7 +442,7 @@
                 $sql = "select securableitem_id
                         from   $mungeTableName
                         where  munge_id = concat('G', $groupId)";
-                $securableItemIds = R::getCol($sql);
+                $securableItemIds = ZurmoRedBean::getCol($sql);
                 self::bulkDecrementParentRolesCounts($mungeTableName, $securableItemIds, $user->role);
                 /*
                  * This extra step is not needed. See slide 22. This is similar to userBeingRemovedFromRole or
@@ -455,13 +474,13 @@
          */
         public static function groupBeingDeleted($group) // Call being methods before the destructive operation.
         {
-            if ($group->group->id > 0 && !(!RedBeanDatabase::isFrozen() && $group->group->isSame($group))) // Prevent cycles in database auto build.
+            if ($group->group->id > 0 && !$group->group->isSame($group)) // Prevent cycles in database auto build.
             {
                 self::groupBeingRemovedFromGroup($group);
             }
             foreach ($group->groups as $childGroup)
             {
-                if (!RedBeanDatabase::isFrozen() && $group->isSame($childGroup)) // Prevent cycles in database auto build.
+                if ($group->isSame($childGroup)) // Prevent cycles in database auto build.
                 {
                     continue;
                 }
@@ -475,7 +494,7 @@
             {
                 $groupId = $group->id;
                 $mungeTableName = self::getMungeTableName($modelClassName);
-                R::exec("delete from $mungeTableName
+                ZurmoRedBean::exec("delete from $mungeTableName
                      where       munge_id = 'G$groupId'");
             }
         }
@@ -483,7 +502,7 @@
         protected static function groupAddedOrRemovedFromGroup($isAdd, Group $group)
         {
             assert('is_bool($isAdd)');
-            if (!RedBeanDatabase::isFrozen() && $group->group->isSame($group)) // Prevent cycles in database auto build.
+            if ($group->group->isSame($group)) // Prevent cycles in database auto build.
             {
                 return;
             }
@@ -508,7 +527,7 @@
                 $sql = 'select securableitem_id
                         from   permission
                         where  permitable_id in (' . join(', ', $parentGroupPermitableIds) . ')';
-                $securableItemIds = R::getCol($sql);
+                $securableItemIds = ZurmoRedBean::getCol($sql);
                 foreach (self::getMungableModelClassNames() as $modelClassName)
                 {
                     $mungeTableName = self::getMungeTableName($modelClassName);
@@ -541,7 +560,7 @@
             }
             foreach ($group->groups as $childGroup)
             {
-                if (!RedBeanDatabase::isFrozen() && $group->isSame($childGroup)) // Prevent cycles in database auto build.
+                if ($group->isSame($childGroup)) // Prevent cycles in database auto build.
                 {
                     continue;
                 }
@@ -554,7 +573,7 @@
         {
             $parentGroups = array();
             $parentGroup = $group->group;
-            while ($parentGroup->id > 0 && !(!RedBeanDatabase::isFrozen() && $parentGroup->isSame($parentGroup->group))) // Prevent cycles in database auto build.
+            while ($parentGroup->id > 0 && !$parentGroup->isSame($parentGroup->group)) // Prevent cycles in database auto build.
             {
                 $parentGroups[] = $parentGroup;
                 $parentGroup = $parentGroup->group;
@@ -604,14 +623,14 @@
                 $roleId = $role->id;
                 $sql = "delete from $mungeTableName
                         where       munge_id = 'R$roleId'";
-                R::exec($sql);
+                ZurmoRedBean::exec($sql);
             }
         }
 
         protected static function roleParentSetOrRemoved($isSet, Role $role)
         {
             assert('is_bool($isSet)');
-            if (!RedBeanDatabase::isFrozen() && $role->role->isSame($role)) // Prevent cycles in database auto build.
+            if ($role->role->isSame($role)) // Prevent cycles in database auto build.
             {
                 return;
             }
@@ -643,7 +662,7 @@
                             select securableitem_id
                             from   permission
                             where  permitable_id in (' . join(', ', $permitableIds) . ')';
-                    $securableItemIds = R::getCol($sql);
+                    $securableItemIds = ZurmoRedBean::getCol($sql);
                     self::$countMethod($mungeTableName, $securableItemIds, $role->role);
                 }
 
@@ -666,7 +685,7 @@
                             select securableitem_id
                             from   permission
                             where  permitable_id in (' . join(', ', $permitableIds) . ')';
-                    $securableItemIds = R::getCol($sql);
+                    $securableItemIds = ZurmoRedBean::getCol($sql);
                     self::$countMethod($mungeTableName, $securableItemIds, $role);
                 }
 
@@ -687,7 +706,7 @@
                     $sql = 'select securableitem_id
                             from   permission
                             where  permitable_id in (' . join(', ', $permitableIds) . ')';
-                    $securableItemIds = R::getCol($sql);
+                    $securableItemIds = ZurmoRedBean::getCol($sql);
                     self::$countMethod($mungeTableName, $securableItemIds, $role->role);
                 }
 
@@ -710,7 +729,7 @@
                         $sql = 'select securableitem_id
                                 from   permission
                                 where  permitable_id in (' . join(', ', $permitableIds) . ')';
-                        $securableItemIds = R::getCol($sql);
+                        $securableItemIds = ZurmoRedBean::getCol($sql);
                     }
                     else
                     {
@@ -730,7 +749,7 @@
             $users = array();
             foreach ($role->roles as $childRole)
             {
-                if (!RedBeanDatabase::isFrozen() && $role->isSame($childRole)) // Prevent cycles in database auto build.
+                if ($role->isSame($childRole)) // Prevent cycles in database auto build.
                 {
                     continue;
                 }
@@ -756,7 +775,7 @@
                 $sql = "select securableitem_id
                         from   ownedsecurableitem
                         where  owner__user_id = $userId";
-                $securableItemIds = R::getCol($sql);
+                $securableItemIds = ZurmoRedBean::getCol($sql);
                 //Increment the parent roles for securableItems that the user is the owner on.
                 self::bulkIncrementParentRolesCounts($mungeTableName, $securableItemIds, $user->role);
 
@@ -774,7 +793,7 @@
                     $sql = "select distinct $mungeTableName.securableitem_id
                             from   $mungeTableName
                             where  $mungeTableName.munge_id $inSqlPart";
-                    $securableItemIds = R::getCol($sql);
+                    $securableItemIds = ZurmoRedBean::getCol($sql);
                     self::bulkIncrementParentRolesCounts($mungeTableName, $securableItemIds, $user->role);
                 }
             }
@@ -793,14 +812,14 @@
                 $sql = "select securableitem_id
                         from   ownedsecurableitem
                         where  owner__user_id = $userId";
-                $securableItemIds = R::getCol($sql);
+                $securableItemIds = ZurmoRedBean::getCol($sql);
                 self::bulkDecrementParentRolesCounts($mungeTableName, $securableItemIds, $role);
 
                 $sql = "select $mungeTableName.securableitem_id
                         from   $mungeTableName, _group__user
                         where  $mungeTableName.munge_id = concat('G', _group__user._group_id) and
                                _group__user._user_id = $userId";
-                $securableItemIds = R::getCol($sql);
+                $securableItemIds = ZurmoRedBean::getCol($sql);
                 self::bulkDecrementParentRolesCounts($mungeTableName, $securableItemIds, $role);
                 /*
                  * This additional step I don't think is needed because the sql query above actually traps
@@ -826,7 +845,7 @@
             if ($group->group->id > 0 )
             {
                 $groupMungeIds[] = 'G' . $group->group->id;
-                if (!RedBeanDatabase::isFrozen() && $group->isSame($group->group))
+                if ($group->isSame($group->group))
                 {
                     //Do Nothing. Prevent cycles in database auto build.
                 }
@@ -890,15 +909,51 @@
         public static function recreateTable($mungeTableName)
         {
             assert('is_string($mungeTableName) && $mungeTableName  != ""');
-            R::exec("drop table if exists $mungeTableName");
-            R::exec("create table $mungeTableName (
-                        securableitem_id int(11)     unsigned not null,
-                        munge_id         varchar(12)          not null,
-                        count            int(8)      unsigned not null,
-                        primary key (securableitem_id, munge_id)
-                     )");
-            R::exec("create index index_${mungeTableName}_securable_item_id
-                     on $mungeTableName (securableitem_id);");
+            ZurmoRedBean::$writer->dropTableByTableName($mungeTableName);
+            $schema = static::getMungeTableSchemaByName($mungeTableName);
+            CreateOrUpdateExistingTableFromSchemaDefinitionArrayUtil::generateOrUpdateTableBySchemaDefinition(
+                                                                                        $schema, new MessageLogger());
+        }
+
+        protected static function getMungeTableSchemaByName($tableName)
+        {
+            return array($tableName =>  array('columns' => array(
+                                                    array(
+                                                        'name' => 'securableitem_id',
+                                                        'type' => 'INT(11)',
+                                                        'unsigned' => 'UNSIGNED',
+                                                        'notNull' => 'NOT NULL',
+                                                        'collation' => null,
+                                                        'default' => null,
+                                                    ),
+                                                    array(
+                                                        'name' => 'munge_id',
+                                                        'type' => 'VARCHAR(12)',
+                                                        'unsigned' => null,
+                                                        'notNull' => 'NOT NULL',
+                                                        'collation' => 'COLLATE utf8_unicode_ci',
+                                                        'default' => null,
+                                                    ),
+                                                    array(
+                                                        'name' => 'count',
+                                                        'type' => 'INT(8)',
+                                                        'unsigned' => 'UNSIGNED',
+                                                        'notNull' => 'NOT NULL',
+                                                        'collation' => null,
+                                                        'default' => null,
+                                                    ),
+                                                ),
+                                            'indexes' => array('securableitem_id_munge_id' => array(
+                                                                'columns' => array('securableitem_id', 'munge_id'),
+                                                                'unique' => true,
+                                                            ),
+                                                            $tableName . '_securableitem_id' => array(
+                                                                'columns' => array('securableitem_id'),
+                                                                'unique' => false,
+                                                            ),
+                                                    ),
+                                            )
+                                        );
         }
 
         protected static function incrementCount($mungeTableName, $securableItemId, $item)
@@ -909,11 +964,11 @@
             $itemId  = $item->id;
             $type    = self::getMungeType($item);
             $mungeId = "$type$itemId";
-            R::exec("insert into $mungeTableName
+            ZurmoRedBean::exec("insert into $mungeTableName
                                  (securableitem_id, munge_id, count)
-                     values ($securableItemId, '$mungeId', 1)
-                     on duplicate key
-                     update count = count + 1");
+                                 values ($securableItemId, '$mungeId', 1)
+                                 on duplicate key
+                                 update count = count + 1");
         }
 
         protected static function setCount($mungeTableName, $securableItemId, $item, $count)
@@ -924,11 +979,11 @@
             $itemId  = $item->id;
             $type    = self::getMungeType($item);
             $mungeId = "$type$itemId";
-            R::exec("insert into $mungeTableName
+            ZurmoRedBean::exec("insert into $mungeTableName
                                  (securableitem_id, munge_id, count)
-                     values ($securableItemId, '$mungeId', $count)
-                     on duplicate key
-                     update count = $count");
+                                 values ($securableItemId, '$mungeId', $count)
+                                 on duplicate key
+                                 update count = $count");
         }
 
         protected static function decrementCount($mungeTableName, $securableItemId, $item)
@@ -939,10 +994,10 @@
             $itemId  = $item->id;
             $type    = self::getMungeType($item);
             $mungeId = "$type$itemId";
-            R::exec("update $mungeTableName
-                     set count = count - 1
-                     where securableitem_id = $securableItemId and
-                           munge_id         = '$mungeId'");
+            ZurmoRedBean::exec("update $mungeTableName
+                                 set count = count - 1
+                                 where securableitem_id = $securableItemId and
+                                 munge_id         = '$mungeId'");
         }
 
         protected static function decrementCountForAllSecurableItems($mungeTableName, $item)
@@ -952,9 +1007,9 @@
             $itemId  = $item->id;
             $type    = self::getMungeType($item);
             $mungeId = "$type$itemId";
-            R::exec("update $mungeTableName
-                     set count = count - 1
-                     where munge_id = '$mungeId'");
+            ZurmoRedBean::exec("update $mungeTableName
+                                 set count = count - 1
+                                 where munge_id = '$mungeId'");
         }
 
         protected static function bulkIncrementCount($mungeTableName, $securableItemIds, $item)
@@ -981,7 +1036,7 @@
         {
             assert('is_string($mungeTableName) && $mungeTableName != ""');
             assert('is_int($securableItemId) && $securableItemId > 0');
-            if (!RedBeanDatabase::isFrozen() && $role->role->isSame($role)) // Prevent cycles in database auto build.
+            if ($role->role->isSame($role)) // Prevent cycles in database auto build.
             {
                 return;
             }
@@ -996,7 +1051,7 @@
         {
             assert('is_string($mungeTableName) && $mungeTableName != ""');
             assert('is_int($securableItemId) && $securableItemId > 0');
-            if (!RedBeanDatabase::isFrozen() && $role->role->isSame($role)) // Prevent cycles in database auto build.
+            if ($role->role->isSame($role)) // Prevent cycles in database auto build.
             {
                 return;
             }
@@ -1010,7 +1065,7 @@
         protected static function decrementParentRolesCountsForAllSecurableItems($mungeTableName, Role $role)
         {
             assert('is_string($mungeTableName) && $mungeTableName != ""');
-            if (!RedBeanDatabase::isFrozen() && $role->role->isSame($role)) // Prevent cycles in database auto build.
+            if ($role->role->isSame($role)) // Prevent cycles in database auto build.
             {
                 return;
             }
@@ -1043,12 +1098,12 @@
         // than is necessary.
         protected static function garbageCollect($mungeTableName)
         {
-            assert("(int)R::getCell('select count(*)
+            assert("(int)ZurmoRedBean::getCell('select count(*)
                                 from   $mungeTableName
                                 where  count < 0') == 0");
-            R::exec("delete from $mungeTableName
+            ZurmoRedBean::exec("delete from $mungeTableName
                      where       count = 0");
-            assert("(int)R::getCell('select count(*)
+            assert("(int)ZurmoRedBean::getCell('select count(*)
                                 from   $mungeTableName
                                 where  count < 1') == 0");
         }
@@ -1064,6 +1119,7 @@
         {
             try
             {
+                // not using default value to save cpu cycles on requests that follow the first exception.
                 return GeneralCache::getEntry('mungableModelClassNames');
             }
             catch (NotFoundException $e)

@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class CreateDashboardLinkActionElement extends LinkActionElement
+    class CreateDashboardLinkActionElement extends MenuActionElement
     {
         public function getActionType()
         {

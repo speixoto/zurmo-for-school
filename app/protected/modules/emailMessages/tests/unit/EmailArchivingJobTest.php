@@ -52,10 +52,14 @@
                 UserTestHelper::createBasicUser('bbb');
                 UserTestHelper::createBasicUser('ccc');
                 UserTestHelper::createBasicUser('ddr');
-                UserTestHelper::createBasicUser('steve');
+                $steve = UserTestHelper::createBasicUser('steve');
                 UserTestHelper::createBasicUser('eeer');
                 UserTestHelper::createBasicUser('ffrr');
                 UserTestHelper::createBasicUser('john');
+
+                ContactsModule::loadStartingData();
+                $steve->setRight('ContactsModule',  ContactsModule::RIGHT_ACCESS_CONTACTS);
+                $steve->setRight('AccountsModule',  AccountsModule::RIGHT_ACCESS_ACCOUNTS);
 
                 Yii::app()->imap->imapHost        = Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapHost'];
                 Yii::app()->imap->imapUsername    = Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapUsername'];
@@ -115,9 +119,9 @@
         }
 
         /**
-        * Test case when user send email to somebody, and cc to dropbox
-        * This shouldn't happen in reality, because recipient will see that message is sent to dropbox folder too
-        */
+         * Test case when user send email to somebody, and cc to dropbox
+         * This shouldn't happen in reality, because recipient will see that message is sent to dropbox folder too
+         */
         public function testRunCaseOne()
         {
             if (!EmailMessageTestHelper::isSetEmailAccountsTestConfiguration())
@@ -130,11 +134,7 @@
             Yii::app()->imap->connect();
             $this->assertEquals(0, Notification::getCountByTypeAndUser('EmailMessageArchivingEmailAddressNotMatching', Yii::app()->user->userModel));
 
-            $messages = EmailMessage::getAll();
-            foreach ($messages as $message)
-            {
-                $message->delete();
-            }
+            EmailMessage::deleteAll();
             Yii::app()->imap->deleteMessages(true);
 
             // Check if there are no emails in dropbox
@@ -176,11 +176,9 @@
             $this->assertEquals($user->primaryEmail->emailAddress, $emailMessage->sender->fromAddress);
 
             $this->assertEquals(1, count($emailMessage->recipients));
-            foreach ($emailMessage->recipients as $recipient)
-            {
-                $this->assertEquals($recipient->toAddress, Yii::app()->params['emailTestAccounts']['testEmailAddress']);
-                $this->assertEquals(EmailMessageRecipient::TYPE_TO, $recipient->type);
-            }
+            $recipient = $emailMessage->recipients[0];
+            $this->assertEquals($recipient->toAddress, Yii::app()->params['emailTestAccounts']['testEmailAddress']);
+            $this->assertEquals(EmailMessageRecipient::TYPE_TO, $recipient->type);
 
             $this->assertEquals(3, count($emailMessage->files));
             foreach ($emailMessage->files as $attachment)
@@ -193,12 +191,12 @@
         }
 
         /**
-        * Test case when user send email to somebody, and bcc to dropbox
-        * This is best practice to be used in reality, because other recipients will not see that user
-        * bcc-ed email to dropbox.
-        *
-        * @depends testRunCaseOne
-        */
+         * Test case when user send email to somebody, and bcc to dropbox
+         * This is best practice to be used in reality, because other recipients will not see that user
+         * bcc-ed email to dropbox.
+         *
+         * @depends testRunCaseOne
+         */
         public function testRunCaseTwo()
         {
             if (!EmailMessageTestHelper::isSetEmailAccountsTestConfiguration())
@@ -212,11 +210,7 @@
             //There is one notification from testRunCaseOne
             $this->assertEquals(1, Notification::getCountByTypeAndUser('EmailMessageArchivingEmailAddressNotMatching', $user));
 
-            $messages = EmailMessage::getAll();
-            foreach ($messages as $message)
-            {
-                $message->delete();
-            }
+            EmailMessage::deleteAll();
             Yii::app()->imap->deleteMessages(true);
 
             // Check if there are no emails in dropbox
@@ -260,11 +254,9 @@
             $this->assertEquals($user->primaryEmail->emailAddress, $emailMessage->sender->fromAddress);
 
             $this->assertEquals(1, count($emailMessage->recipients));
-            foreach ($emailMessage->recipients as $recipient)
-            {
-                $this->assertEquals($recipient->toAddress, Yii::app()->params['emailTestAccounts']['testEmailAddress']);
-                $this->assertEquals(EmailMessageRecipient::TYPE_TO, $recipient->type);
-            }
+            $recipient = $emailMessage->recipients[0];
+            $this->assertEquals($recipient->toAddress, Yii::app()->params['emailTestAccounts']['testEmailAddress']);
+            $this->assertEquals(EmailMessageRecipient::TYPE_TO, $recipient->type);
 
             $this->assertEquals(3, count($emailMessage->files));
             foreach ($emailMessage->files as $attachment)
@@ -278,10 +270,10 @@
         }
 
         /**
-        * Test case when somebody send email to Zurmo user, and user forward it to dropbox
-        *
-        * @depends testRunCaseTwo
-        */
+         * Test case when somebody send email to Zurmo user, and user forward it to dropbox
+         *
+         * @depends testRunCaseTwo
+         */
         public function testRunCaseThree()
         {
             if (!EmailMessageTestHelper::isSetEmailAccountsTestConfiguration())
@@ -293,11 +285,7 @@
             $user = User::getByUsername('steve');
             Yii::app()->imap->connect();
 
-            $messages = EmailMessage::getAll();
-            foreach ($messages as $message)
-            {
-                $message->delete();
-            }
+            EmailMessage::deleteAll();
             Yii::app()->imap->deleteMessages(true);
 
             // Check if there are no emails in dropbox
@@ -372,11 +360,11 @@ To: Steve <steve@example.com>
         }
 
         /**
-        * Test case when sender email is not user primary email.
-        * In this case system should send email to user.
-        *
-        * @depends testRunCaseThree
-        */
+         * Test case when sender email is not user primary email.
+         * In this case system should send notification to superadmin.
+         *
+         * @depends testRunCaseThree
+         */
         public function testRunCaseFour()
         {
             if (!EmailMessageTestHelper::isSetEmailAccountsTestConfiguration())
@@ -388,11 +376,7 @@ To: Steve <steve@example.com>
             $user = User::getByUsername('steve');
             Yii::app()->imap->connect();
 
-            $messages = EmailMessage::getAll();
-            foreach ($messages as $message)
-            {
-                $message->delete();
-            }
+            EmailMessage::deleteAll();
             Yii::app()->imap->deleteMessages(true);
 
             // Check if there are no emails in dropbox
@@ -432,11 +416,11 @@ To: Steve <steve@example.com>
         }
 
         /**
-        * Check if only new messages are pulled from dropdown
-        * Also check case if message will be matched with user primary email
-        *
-        * @depends testRunCaseFour
-        */
+         * Check if only new messages are pulled from dropdown
+         * Also check case if message will be matched with user/contact/account primary email
+         *
+         * @depends testRunCaseFour
+         */
         public function testRunCaseFive()
         {
             if (!EmailMessageTestHelper::isSetEmailAccountsTestConfiguration())
@@ -447,15 +431,22 @@ To: Steve <steve@example.com>
             Yii::app()->user->userModel = $super;
             $user = User::getByUsername('steve');
             Yii::app()->imap->connect();
+
+            ContactTestHelper::createContactByNameForOwner('contact', $user);
+            $contacts = Contact::getByName('contact contactson');
+            $contacts[0]->primaryEmail->emailAddress = Yii::app()->params['emailTestAccounts']['testEmailAddress'];
+            $this->assertTrue($contacts[0]->save());
+
+            AccountTestHelper::createAccountByNameForOwner('account', $user);
+            $accounts = Account::getByName('account');
+            $accounts[0]->primaryEmail->emailAddress = Yii::app()->params['emailTestAccounts']['testEmailAddress'];
+            $this->assertTrue($accounts[0]->save());
+
             $john = User::getByUsername('john');
             $john->primaryEmail->emailAddress = Yii::app()->params['emailTestAccounts']['testEmailAddress'];
             $this->assertTrue($john->save());
 
-            $messages = EmailMessage::getAll();
-            foreach ($messages as $message)
-            {
-                $message->delete();
-            }
+            EmailMessage::deleteAll();
             Yii::app()->imap->deleteMessages(true);
 
             // Check if there are no emails in dropbox
@@ -496,11 +487,10 @@ To: Steve <steve@example.com>
             $this->assertEquals($user->primaryEmail->emailAddress, $emailMessage->sender->fromAddress);
 
             $this->assertEquals(1, count($emailMessage->recipients));
-            foreach ($emailMessage->recipients as $recipient)
-            {
-                $this->assertEquals($recipient->toAddress, Yii::app()->params['emailTestAccounts']['testEmailAddress']);
-                $this->assertEquals(EmailMessageRecipient::TYPE_TO, $recipient->type);
-            }
+            $recipient = $emailMessage->recipients[0];
+            $this->assertCount(3, $recipient->personOrAccounts);
+            $this->assertEquals($recipient->toAddress, Yii::app()->params['emailTestAccounts']['testEmailAddress']);
+            $this->assertEquals(EmailMessageRecipient::TYPE_TO, $recipient->type);
             $this->assertEquals(EmailFolder::TYPE_ARCHIVED, $emailMessage->folder->type);
 
             $job = new EmailArchivingJob();

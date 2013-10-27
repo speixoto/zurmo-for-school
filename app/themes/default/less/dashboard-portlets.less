@@ -99,8 +99,14 @@
 	.icon-reports:before{
 		content: '\V';
 	}
-	.icon-products:before{
-		content: '\003E';
+	.icon-products{
+		&:before{
+			content: '\003E';
+		}
+		&:after{
+			content: '';
+			display: none;
+		}
 	}
 	.icon-rssReader:before{
 		content: "z";
@@ -130,6 +136,23 @@
 	.icon-maps:before{
 		content: 'L';
 		font-size: 46px;
+	}
+	.icon-googleWebTracking:before{
+		content: '\00DA';
+		font-size: 46px;
+	}
+	.icon-marketingLists:before{
+		content: '\0022';
+		font-size: 46px;
+	}
+	.icon-projects:before{
+		content: '\02C7';
+	}
+	.icon-notes:before{
+		content: '3';
+	}
+	.icon-meetings:before{
+		content: 'U';
 	}
 
 	/*

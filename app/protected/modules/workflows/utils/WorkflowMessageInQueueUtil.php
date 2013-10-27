@@ -49,7 +49,35 @@
             $moduleClassName = $model->getModuleClassName();
             $moduleId        = $moduleClassName::getDirectoryName();
             $element         = new DetailsLinkActionElement('default', $moduleId, $model->savedWorkflow->id, $params);
-            return $element->render() . static::resolveModelAndContent($model);
+            $content         = $element->render() . static::resolveModelAndContent($model);
+            $content        .= static::resolveEmailTemplateContent($model);
+            return $content;
+        }
+
+        protected static function resolveEmailTemplateContent(WorkflowMessageInQueue $model)
+        {
+            $unserializedData = unserialize($model->serializedData);
+            try
+            {
+                if(isset($unserializedData[0]) && isset($unserializedData[0]['emailTemplateId']))
+                {
+                    $emailTemplate = EmailTemplate::getById((int)$unserializedData[0]['emailTemplateId']);
+                    $modelContent = strval($emailTemplate);
+                }
+                else
+                {
+                    throw new NotFoundException();
+                }
+            }
+            catch (AccessDeniedSecurityException $e)
+            {
+                $modelContent = Zurmo::t('ZurmoModule', 'Restricted');
+            }
+            catch (NotFoundException $e)
+            {
+                $modelContent = Zurmo::t('ZurmoModule', 'Record no longer exists');
+            }
+            return ' &mdash; <span class="less-pronounced-text">' . $modelContent . '</span>';
         }
     }
 ?>

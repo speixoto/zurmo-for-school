@@ -86,5 +86,10 @@
                 'id'
             );
         }
+
+        public function canMergeAndSplitCells()
+        {
+            return false;
+        }
     }
 ?>

@@ -39,7 +39,7 @@
      */
     class PortletPersistentConfigUtil
     {
-        // TODO: @Shoaibi: Low: Write unit tests
+        // TODO: @Shoaibi: High: Write unit tests
         /**
          * Set a persistent config value for current user against portletId and keyName.
          * @param $portletId integer Id of the portlet or string representation of the unique id of the portlet to set value against

@@ -51,9 +51,28 @@
         {
             if (trim($this->toAddress) == '')
             {
-                return Zurmo::t('EmailMessagesModule', '(Unnamed)');
+                return Zurmo::t('Core', '(Unnamed)');
             }
             return $this->toAddress;
+        }
+
+        public static function getRecipientTypesArray()
+        {
+            return array(
+                static::TYPE_TO  => Zurmo::t('EmailMessagesModule', 'To'),
+                static::TYPE_CC  => Zurmo::t('EmailMessagesModule', 'Cc'),
+                static::TYPE_BCC => Zurmo::t('EmailMessagesModule', 'Bcc'),
+            );
+        }
+
+        public static function renderNonEditableRecipientTypeStringContent($type)
+        {
+            assert('is_int($type) || $type == null');
+            $dropDownArray = self::getRecipientTypesArray();
+            if (!empty($dropDownArray[$type]))
+            {
+                return Yii::app()->format->text($dropDownArray[$type]);
+            }
         }
 
         public static function getModuleClassName()
@@ -76,17 +95,23 @@
                     'type',
                 ),
                 'relations' => array(
-                    'personOrAccount'      => array(RedBeanModel::HAS_ONE, 'Item',    RedBeanModel::NOT_OWNED,
-                                                    RedBeanModel::LINK_TYPE_SPECIFIC, 'personOrAccount')
+                    'personOrAccounts' => array(static::MANY_MANY, 'Item',           static::NOT_OWNED),
+                    'emailMessage'    => array(static::HAS_ONE,   'EmailMessage',   static::NOT_OWNED),
                 ),
                 'rules' => array(
                     array('toAddress', 'required'),
                     array('toAddress', 'email'),
                     array('toName',    'type',    'type' => 'string'),
                     array('toName',    'length',  'max' => 64),
-                    array('type',    'required'),
-                    array('type',    'type',    'type' => 'integer'),
-                )
+                    array('type',      'required'),
+                    array('type',      'type',    'type' => 'integer'),
+                ),
+                'indexes' => array(
+                    'remailmessage' => array(
+                        'members'   => array('emailmessage_id'),
+                        'unique'    => false,
+                    ),
+                ),
             );
             return $metadata;
         }
@@ -121,10 +146,10 @@
             $params = LabelUtil::getTranslationParamsForAllModules();
             return array_merge(parent::translatedAttributeLabels($language),
                 array(
-                    'personOrAccount' => Zurmo::t('ZurmoModule',         'Person Or AccountsModuleSingularLabel',  $params, null, $language),
-                    'toAddress'       => Zurmo::t('EmailMessagesModule', 'To Address',  array(), null, $language),
-                    'toName'          => Zurmo::t('EmailMessagesModule', 'To Name',  array(), null, $language),
-                    'type'            => Zurmo::t('Core', 'Type',  array(), null, $language),
+                    'personOrAccounts' => Zurmo::t('ZurmoModule',         'Person Or AccountsModulePluralLabel',  $params, null, $language),
+                    'toAddress'        => Zurmo::t('EmailMessagesModule', 'To Address',  array(), null, $language),
+                    'toName'           => Zurmo::t('EmailMessagesModule', 'To Name',  array(), null, $language),
+                    'type'             => Zurmo::t('Core', 'Type',  array(), null, $language),
                 )
             );
         }

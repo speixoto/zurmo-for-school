@@ -162,7 +162,7 @@ EOD;
         $sender                    = new EmailMessageSender();
         $sender->fromAddress       = Yii::app()->emailHelper->resolveFromAddressByUser(Yii::app()->user->userModel);
         $sender->fromName          = strval(Yii::app()->user->userModel);
-        $sender->personOrAccount   = Yii::app()->user->userModel;
+        $sender->personOrAccounts->add(Yii::app()->user->userModel);
         $emailMessage->sender      = $sender;
         $recipient                 = new EmailMessageRecipient();
         $recipient->toAddress      = $toAddress;

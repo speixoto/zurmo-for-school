@@ -83,7 +83,7 @@
             // with the models that are specific to itself.
             return array('ActiveLanguage', 'AuditEvent', 'NamedSecurableItem', 'GlobalMetadata', 'PerUserMetadata', 'Portlet',
                          'CustomFieldData', 'CalculatedDerivedAttributeMetadata', 'DropDownDependencyDerivedAttributeMetadata',
-                         'SavedSearch', 'MessageSource', 'MessageTranslation');
+                         'SavedSearch', 'MessageSource', 'MessageTranslation', 'KanbanItem');
         }
 
         public static function getDefaultMetadata()
@@ -136,10 +136,10 @@
                 ),
                 'headerMenuItems' => array(
                     array(
-                        'label'  => "eval:Zurmo::t('ZurmoModule', 'Settings')",
+                        'label'  => "eval:Zurmo::t('ZurmoModule', 'Administration')",
                         'url'    => array('/configuration'),
                         'right'  => self::RIGHT_ACCESS_ADMINISTRATION,
-                        'order'  => 6,
+                        'order'  => 1,
                         'mobile' => false,
                     ),
                     array(
@@ -183,8 +183,9 @@
                     'contacts',
                     'opportunities',
                     'marketing',
-                    'reports',
+                    'projects',
                     'products',
+                    'reports',
                 )
             );
             return $metadata;

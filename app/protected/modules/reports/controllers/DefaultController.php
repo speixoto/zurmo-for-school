@@ -81,7 +81,7 @@
                 'ReportsSearchView'
             );
             $title           = Zurmo::t('ReportsModule', 'Reports');
-            $breadcrumbLinks = array(
+            $breadCrumbLinks = array(
                  $title,
             );
             if (isset($_GET['ajax']) && $_GET['ajax'] == 'list-view')
@@ -98,7 +98,7 @@
                              'SecuredActionBarForReportsSearchAndListView');
                 $view = new ReportsPageView(ZurmoDefaultViewUtil::
                                             makeViewWithBreadcrumbsForCurrentUser(
-                                            $this, $mixedView, $breadcrumbLinks, 'ReportBreadCrumbView'));
+                                            $this, $mixedView, $breadCrumbLinks, 'ReportBreadCrumbView'));
             }
             echo $view->render();
         }
@@ -109,8 +109,8 @@
             ControllerSecurityUtil::resolveCanCurrentUserAccessModule($savedReport->moduleClassName);
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($savedReport);
             AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED, array(strval($savedReport), 'ReportsModule'), $savedReport);
-            $breadcrumbLinks         = array(strval($savedReport));
-            $breadCrumbView          = new ReportBreadCrumbView($this->getId(), $this->getModule()->getId(), $breadcrumbLinks);
+            $breadCrumbLinks         = array(strval($savedReport));
+            $breadCrumbView          = new ReportBreadCrumbView($this->getId(), $this->getModule()->getId(), $breadCrumbLinks);
             $detailsAndRelationsView = $this->makeReportDetailsAndRelationsView($savedReport, Yii::app()->request->getRequestUri(),
                                                                                 $breadCrumbView);
             $view = new ReportsPageView(ZurmoDefaultViewUtil::
@@ -120,12 +120,12 @@
 
         public function actionSelectType()
         {
-            $breadcrumbLinks  = array(Zurmo::t('ReportsModule', 'Select Report Type'));
+            $breadCrumbLinks  = array(Zurmo::t('ReportsModule', 'Select Report Type'));
             $view             = new ReportsPageView(ZurmoDefaultViewUtil::
                                                     makeViewWithBreadcrumbsForCurrentUser(
                                                     $this,
                                                     new ReportWizardTypesGridView(),
-                                                    $breadcrumbLinks,
+                                                    $breadCrumbLinks,
                                                     'ReportBreadCrumbView'));
             echo $view->render();
         }
@@ -137,7 +137,7 @@
                 $this->actionSelectType();
                 Yii::app()->end(0, false);
             }
-            $breadcrumbLinks         = array(Zurmo::t('ReportsModule', 'Create'));
+            $breadCrumbLinks         = array(Zurmo::t('ReportsModule', 'Create'));
             assert('is_string($type)');
             $report           = new Report();
             $report->setType($type);
@@ -148,7 +148,7 @@
                                                     $this,
                                                     $progressBarAndStepsView,
                                                     $reportWizardView,
-                                                    $breadcrumbLinks,
+                                                    $breadCrumbLinks,
                                                     'ReportBreadCrumbView'));
             echo $view->render();
         }
@@ -161,7 +161,7 @@
             {
                 ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($savedReport);
             }
-            $breadcrumbLinks  = array(strval($savedReport));
+            $breadCrumbLinks  = array(strval($savedReport));
             $report           = SavedReportToReportAdapter::makeReportBySavedReport($savedReport);
             $progressBarAndStepsView = ReportWizardViewFactory::makeStepsAndProgressBarViewFromReport($report);
             $reportWizardView = ReportWizardViewFactory::makeViewFromReport($report, (bool)$isBeingCopied);
@@ -170,7 +170,7 @@
                                                     $this,
                                                     $progressBarAndStepsView,
                                                     $reportWizardView,
-                                                    $breadcrumbLinks,
+                                                    $breadCrumbLinks,
                                                     'ReportBreadCrumbView'));
             echo $view->render();
         }
@@ -459,11 +459,12 @@
                     setAjaxModeAndRenderModalSearchList($this, $modalListLinkProvider, $stateMetadataAdapterClassName);
         }
 
-        public function actionAutoComplete($term, $moduleClassName = null, $type = null)
+        public function actionAutoComplete($term, $moduleClassName = null, $type = null, $autoCompleteOptions = null)
         {
             $pageSize = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                         'autoCompleteListPageSize', get_class($this->getModule()));
-            $autoCompleteResults = ReportAutoCompleteUtil::getByPartialName($term, $pageSize, $moduleClassName, $type);
+            $autoCompleteResults = ReportAutoCompleteUtil::getByPartialName($term, $pageSize, $moduleClassName,
+                                                                            $type, $autoCompleteOptions);
             echo CJSON::encode($autoCompleteResults);
         }
 

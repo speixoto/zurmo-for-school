@@ -103,7 +103,7 @@
                 ) ,
             ));
             $content    = $this->runControllerWithNoExceptionsAndGetContent('marketingLists/default/list');
-            $this->assertTrue(strpos($content, 'No results found.') !== false);
+            $this->assertTrue(strpos($content, 'No results found') !== false);
 
             StickyReportUtil::clearDataByKey('MarketingListsSearchForm');
             $this->setGetArray(array(
@@ -189,7 +189,6 @@
          */
         public function testSuperUserCreateAction()
         {
-            // TODO: @Shoaibi: Low: Add test with different permissions
             $content = $this->runControllerWithNoExceptionsAndGetContent('marketingLists/default/create');
             $this->assertTrue(strpos($content, 'Create Marketing List') !== false);
             $this->assertTrue(strpos($content, '<label for="MarketingList_name" class="required">Name ' .

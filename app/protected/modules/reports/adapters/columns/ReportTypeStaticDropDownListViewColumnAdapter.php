@@ -46,7 +46,7 @@
         {
             return array(
                 'name' => 'type',
-                'header' => Zurmo::t('ReportsModule', 'Type'),
+                'header' => Zurmo::t('Core', 'Type'),
                 'type'   => 'raw',
                 'value'  => 'ReportUtil::renderNonEditableTypeStringContent($data->type)'
             );

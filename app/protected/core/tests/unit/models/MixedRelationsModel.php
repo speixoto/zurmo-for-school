@@ -40,7 +40,7 @@
         {
             assert('is_string($name)');
             assert('$name != ""');
-            $bean = R::findOne('a', "name = :name ", array(':name' => $name));
+            $bean = ZurmoRedBean::findOne('a', "name = :name ", array(':name' => $name));
             assert('$bean === false || $bean instanceof RedBean_OODBBean');
             if ($bean === false)
             {
@@ -78,11 +78,11 @@
                     array('dateTime2', 'type', 'type' => 'datetime'),
                 ),
                 'relations' => array(
-                    'primaryA'     => array(RedBeanModel::HAS_ONE, 'A', RedBeanModel::OWNED,
-                                           RedBeanModel::LINK_TYPE_SPECIFIC, 'primaryA'),
-                    'secondaryA'   => array(RedBeanModel::HAS_ONE, 'A', RedBeanModel::OWNED,
-                                           RedBeanModel::LINK_TYPE_SPECIFIC, 'secondaryA'),
-                    'manyMany'     => array(RedBeanModel::MANY_MANY, 'DateDateTime', RedBeanModel::OWNED),
+                    'primaryA'     => array(static::HAS_ONE, 'A', static::OWNED,
+                                           static::LINK_TYPE_SPECIFIC, 'primaryA'),
+                    'secondaryA'   => array(static::HAS_ONE, 'A', static::OWNED,
+                                           static::LINK_TYPE_SPECIFIC, 'secondaryA'),
+                    'manyMany'     => array(static::MANY_MANY, 'DateDateTime', static::OWNED),
                 ),
             );
             return $metadata;

@@ -206,11 +206,36 @@
          */
         public function getThemeNamesAndLabels()
         {
-            return array(''                           => Zurmo::t('Core', 'White'),
-                         'kanban-background-football' => Zurmo::t('Core', 'Football'),
-                         'kanban-background-tennis'   => Zurmo::t('Core', 'Tennis'),
-                         'kanban-background-motor'    => Zurmo::t('Core', 'Motor Sport'),
-                         'kanban-background-yoga'     => Zurmo::t('Core', 'Yoga'));
+            return array(''                        => Zurmo::t('Core', 'White'),
+                'kanban-background-football'       => Zurmo::t('Core', 'Football'),
+                'kanban-background-tennis'         => Zurmo::t('Core', 'Tennis'),
+                'kanban-background-motor'          => Zurmo::t('Core', 'Motor Sport'),
+                'kanban-background-yoga'           => Zurmo::t('Core', 'Yoga'),
+                'kanban-background-blurred-lights' => Zurmo::t('Core', 'Blurred Lights'),
+                'kanban-background-blurred-city'   => Zurmo::t('Core', 'Blurred City'),
+                'kanban-background-blurred-vera'   => Zurmo::t('Core', 'Vera in Blur'),
+                'kanban-background-perfect-beach'  => Zurmo::t('Core', 'Perfect Beach'),
+                'kanban-background-flip-flops'     => Zurmo::t('Core', 'Flip Flops'),
+                'kanban-background-blue-structure' => Zurmo::t('Core', 'Blue Structure'),
+                'kanban-background-sepia-sf'       => Zurmo::t('Core', 'Sepia SF'),
+                'kanban-background-men-on-bridge'  => Zurmo::t('Core', 'Men on Bridge'));
+        }
+
+        public function getThemeColorNamesAndUnlockedAtLevel()
+        {
+            return array(''                        => 1,
+                'kanban-background-football'       => 1,
+                'kanban-background-tennis'         => 1,
+                'kanban-background-motor'          => 1,
+                'kanban-background-yoga'           => 1,
+                'kanban-background-blurred-lights' => 3,
+                'kanban-background-blurred-city'   => 5,
+                'kanban-background-blurred-vera'   => 7,
+                'kanban-background-perfect-beach'  => 9,
+                'kanban-background-flip-flops'     => 10,
+                'kanban-background-blue-structure' => 11,
+                'kanban-background-sepia-sf'       => 13,
+                'kanban-background-men-on-bridge'  => 14);
         }
 
         public function setClearSticky()

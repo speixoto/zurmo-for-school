@@ -32,12 +32,12 @@
 // "Copyright Zurmo Inc. 2013. All rights reserved".
 
 #kanban-holder{
-	background: #fff;// url(../images/kanban/yoga1.jpg) left bottom no-repeat;
+	background: #fff;
 	margin: 0;
 	padding: 0;
-	background-size: 100% 100%;
-	//height: 600px;
+	background-size: auto 100%;
 	vertical-align: top;
+	border-top:none;
 	#kanban-board,
 	.kanban-column,
 	.kanban-column > div{
@@ -60,32 +60,81 @@
 	background: #fff url(../images/kanban/football.jpg) left bottom no-repeat;
 }
 
-#kanban-holder.kanban-background-tennis{
-	background: #fff url(../images/kanban/tennis.jpg) left bottom no-repeat;
-}
-
-#kanban-holder.kanban-background-motor{
-	background:#fff url(../images/kanban/asphalt.jpg) center bottom no-repeat;
-}
-
-#kanban-holder.kanban-background-yoga{
-	background:#fff url(../images/kanban/yoga.jpg) right top no-repeat;
-}
-
 .kanban-background-football .background-texture-1{
 	background: #fff url(../images/kanban/swatch-football.jpg) left top no-repeat;
+}
+
+#kanban-holder.kanban-background-tennis{
+	background: #fff url(../images/kanban/tennis.jpg) left bottom no-repeat;
 }
 
 .kanban-background-tennis .background-texture-1{
 	background: #fff url(../images/kanban/swatch-tennis.jpg) left top no-repeat;
 }
 
+#kanban-holder.kanban-background-motor{
+	background:#fff url(../images/kanban/asphalt.jpg) center bottom no-repeat;
+}
+
 .kanban-background-motor .background-texture-1{
 	background:#fff url(../images/kanban/swatch-asphalt.jpg) left top no-repeat;
 }
 
+#kanban-holder.kanban-background-yoga{
+	background:#fff url(../images/kanban/yoga.jpg) right top no-repeat;
+}
+
 .kanban-background-yoga .background-texture-1{
 	background:#fff url(../images/kanban/swatch-yoga.jpg) left top no-repeat;
+}
+
+#kanban-holder.kanban-background-blurred-lights,
+.kanban-background-blurred-lights .background-texture-1{
+	background:#fff url(../images/kanban/defocus-light-yellowish-blue.jpg) center center no-repeat;
+	background-size: 100% 100% !important;
+}
+
+#kanban-holder.kanban-background-blurred-city,
+.kanban-background-blurred-city .background-texture-1{
+	background:#fff url(../images/kanban/blurred-defocused-lights-on-rainy-city-road-at-night.jpg) center center no-repeat;
+	background-size: 100% 100% !important;
+}
+
+#kanban-holder.kanban-background-blurred-vera,
+.kanban-background-blurred-vera .background-texture-1{
+	background:#fff url(../images/kanban/blurred-vera.png) center top no-repeat;
+	background-size: 100% 100% !important;
+}
+
+#kanban-holder.kanban-background-perfect-beach,
+.kanban-background-perfect-beach .background-texture-1{
+	background:#fff url(../images/kanban/perfect-beach.jpg) center center no-repeat;
+	background-size: 100% 100% !important;
+}
+
+#kanban-holder.kanban-background-flip-flops,
+.kanban-background-flip-flops .background-texture-1{
+	background:#fff url(../images/kanban/flip-flops-with-blue-decking.jpg) center bottom no-repeat;
+}
+
+//http://nos.twnsnd.co/
+#kanban-holder.kanban-background-blue-structure,
+.kanban-background-blue-structure .background-texture-1{
+	background:#fff url(../images/kanban/blue-structure.jpg) center bottom no-repeat;
+}
+
+#kanban-holder.kanban-background-sepia-sf,
+.kanban-background-sepia-sf .background-texture-1{
+	background:#fff url(../images/kanban/sepia-sf.jpg) center bottom no-repeat;
+}
+
+#kanban-holder.kanban-background-men-on-bridge,
+.kanban-background-men-on-bridge .background-texture-1{
+	background:#fff url(../images/kanban/men-on-bridge.jpg) center bottom no-repeat;
+}
+
+.background-texture-1{
+	background-size: 100%;
 }
 
 
@@ -162,60 +211,13 @@
 		margin:0 0 5px 0 !important;
 		background: #f0f0f0;
 		.radius(3px);
-		padding:5px 5px 15px 10px;
+		padding:5px;
 		++.border-box;
 		.b-shadow(~'inset 0 0 0 1px rgba(204, 204, 204, 0.3) , 1px 1px 1px 0px rgba(153, 153, 153, 0.15)');
 	}
 	span{
-		display: block;
+		display: inline-block;
 		margin-bottom: 3px;
-	}
-	.opportunity-name{
-		font-size: 12px;
-		font-weight: normal;
-	}
-	.account-name{
-		font-size: 14px;
-		font-weight: bold;
-		color: #666;
-	}
-	.opportunity-amount{
-		font-size: 20px;
-		font-weight: bold;
-		text-align: right;
-		color: darken(#282A76, 5%);
-		.t-shadow(0 1px 0 rgba(255, 255, 255, 0.9));
-		line-height: 1;
-		margin-bottom:5px;
-	}
-	.closing-date{
-		.smaller();
-		text-align: right;
-		i{
-			text-align: left;
-			.symbly(12px);
-			&:after{
-				content: "z";
-			}
-		}
-	}
-	.opportunity-owner{
-		position: absolute;
-		right: 5px;
-		bottom: 5px;
-		text-align: right;
-		display: block;
-		line-height: 1;
-		span{
-			display: inline-block;
-			top: -7px;
-			position: relative;
-			margin: 0 5px;
-		}
-		img{
-			background: #DFDFDF;
-			padding: 1px;
-		}
 	}
 	.hidden-content{
 		> a{
@@ -227,6 +229,70 @@
 			display: none;
 			padding: 10px 0 5px 0;
 		}
+	}
+	.gravatar{
+		border:none !important;
+	}
+}
+
+.opportunity-name{
+	font-size: 12px;
+	font-weight: normal;
+}
+
+.account-name{
+	font-size: 14px;
+	font-weight: bold;
+	color: #666;
+}
+
+.opportunity-amount{
+	font-size: 20px;
+	font-weight: bold;
+	text-align: right;
+	color: darken(#282A76, 5%);
+	.t-shadow(0 1px 0 rgba(255, 255, 255, 0.9));
+	line-height: 1;
+	margin-bottom:5px;
+}
+
+.closing-date{
+	.smaller();
+	text-align: right;
+	i{
+		text-align: left;
+		.symbly(12px);
+		&:after{
+			content: "z";
+		}
+	}
+}
+
+.opportunity-owner{
+	position: absolute;
+	right: 5px;
+	bottom: 5px;
+	text-align: right;
+	display: block;
+	line-height: 1;
+	span{
+		display: inline-block;
+		top: -7px;
+		position: relative;
+		margin: 0 5px;
+	}
+	img{
+		background: #DFDFDF;
+		padding: 1px;
+	}
+}
+
+#OpportunitiesListView{
+	.kanban-card > div{
+		padding:5px 5px 15px 10px;
+	}
+	.kanban-card span{
+		display: block;
 	}
 }
 
@@ -245,11 +311,220 @@
 
 .icon-kanban-board-view-type,
 .icon-grid-view-type{
-	padding-left: 10px !important;
-	&:before{
-		margin:0;
-	}
+	margin:0 3px !important;
 	span{
 		display: none;
 	}
+}
+
+//Tasks in Kanban
+.task-details{
+	display: block;
+	width: 100%;
+	padding-bottom: 5px;
+	border-bottom:1px solid #dfdfdf;
+}
+
+.completion-percentage-bar{
+	position: relative;
+	top:-5px;
+	text-indent: -9999px;
+	//clear: left;
+	height: 3px;
+	width: 0;
+	.animateAll();
+	@topColor: #97c43d;
+	@bottomColor: #6fa82d;
+	#gradient > .horizontal(@bottomColor, @topColor);
+}
+
+.task-status{
+	font-weight: bold;
+	font-size: 10px;
+	float: left;
+}
+
+//.status-1 .task-status{ color: #545454; }
+//.status-2 .task-status{ color: #6fa82d; }
+//.status-3 .task-status{ color: #ffb63b; }
+.status-4 .task-status{ color: #a82d31; }
+//.status-5 .task-status{ color: #6fa82d; }
+
+.task-due-date{
+	float: right;
+	font-weight: bold;
+	font-size: 10px;
+	color: #323232;
+}
+
+.task-content{
+	padding: 10px 0 0 0;
+	border-top:1px solid #fff;
+	h4{
+		span{
+			font-weight: normal;
+			margin-left: 5px;
+			.smaller();
+		}
+	}
+	p{
+
+	}
+}
+
+.task-subscribers{
+	margin-top: 10px;
+	padding-top: 7px;
+	border-top:1px solid #dfdfdf;
+	.b-shadow(inset 0 1px 0 #fff);
+	a{
+
+	}
+	img{
+		margin-right: 5px;
+	}
+	.z-link{
+		position: relative;
+		top:3px;
+	}
+}
+
+.task-owner{
+
+}
+
+.task-action-toolbar{
+	overflow: hidden;
+	float: right;
+	margin:0 0 10px 5px !important;
+	.button-label {
+		.smaller();
+		padding: 0 3px !important;
+		line-height: 20px !important;
+		z-index: 10;
+		&:before{
+			content:'';
+			position: absolute;
+			top:0;
+			right:0;
+			bottom: 0;
+			left: 0;
+			z-index: -1;
+		}
+	}
+}
+
+.action-type-accept{
+	@topColor: #97c43d;
+	@bottomColor: #6fa82d;
+	.button-label{
+		color: lighten(@topColor, 80%);
+		&:before{
+			#gradient > .vertical(@topColor, @bottomColor );
+		}
+	}
+	.button-action:hover{
+		.button-label{
+			color: darken(@topColor, 33%);
+			.t-shadow(0px 1px 0 lighten(@topColor, 5%));
+			&:before{
+				#gradient > .vertical(@topColor, darken(@bottomColor, 10%));
+			}
+		}
+	}
+}
+
+.action-type-reject{
+	@topColor: #c43d53;
+	@bottomColor: #a82d31;
+	.button-label{
+		color: lighten(@topColor, 80%);
+		&:before{
+			#gradient > .vertical(@topColor, @bottomColor );
+		}
+	}
+	.button-action:hover{
+		.button-label{
+			color: darken(@topColor, 33%);
+			.t-shadow(0px 1px 0 lighten(@topColor, 5%));
+			&:before{
+				#gradient > .vertical(@topColor, darken(@bottomColor, 10%));
+			}
+		}
+	}
+}
+
+.action-type-finish{
+	@topColor: #ffcc00;
+	@bottomColor: #e4b600;
+	.button-label{
+		color: lighten(@topColor, 80%);
+		&:before{
+			#gradient > .vertical(@topColor, @bottomColor );
+		}
+	}
+	.button-action:hover{
+		.button-label{
+			color: darken(@topColor, 33%);
+			.t-shadow(0px 1px 0 lighten(@topColor, 5%));
+			&:before{
+				#gradient > .vertical(@topColor, darken(@bottomColor, 10%));
+			}
+		}
+	}
+}
+
+.subscribe-task-link,
+.unsubscribe-task-link{
+	background: #DFDFDF;
+	//background: rgba(236, 240, 241, 0.75) url(../images/stripes.png) left top repeat;
+	padding: 2px;
+	display: inline-block;
+	width: 20px;
+	height: 20px;
+	.icon-subscribe,
+	.icon-unsubscribe{
+		position: relative;
+		top: -3px;
+		display: block;
+		text-align: center;
+		&:after{
+			color: rgb(84, 84, 84);
+			content: '\25CA';//2260
+			font-size: 29px;
+		}
+	}
+}
+
+.detail-subscribe-task-link,
+.detail-unsubscribe-task-link{
+	background: #DFDFDF;
+	//background: rgba(236, 240, 241, 0.75) url(../images/stripes.png) left top repeat;
+	padding: 2px;
+	display: inline-block;
+	width: 36px;
+	height: 36px;
+	.icon-subscribe,
+	.icon-unsubscribe{
+		position: relative;
+		top: -2px;
+		display: block;
+		text-align: center;
+		&:after{
+			color: rgb(84, 84, 84);
+			content: '\25CA';
+			font-size: 44px;
+		}
+	}
+}
+
+.icon-unsubscribe:after{
+	content:'\2122' !important;
+}
+
+
+.detail-unsubscribe-task-link,
+.unsubscribe-task-link{
+	//float: right;
+	//margin: 0 0 0 0;
 }

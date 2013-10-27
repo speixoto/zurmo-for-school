@@ -36,8 +36,6 @@
 
     class DynamicTriggeredModelRelationUserWorkflowEmailMessageRecipientFormTest extends WorkflowBaseTest
     {
-        public $freeze = false;
-
         protected static $super;
 
         protected static $bobby;
@@ -49,27 +47,6 @@
         protected static $jimmy2;
 
         protected static $jimmy3;
-
-        public function setup()
-        {
-            parent::setUp();
-            $freeze = false;
-            if (RedBeanDatabase::isFrozen())
-            {
-                RedBeanDatabase::unfreeze();
-                $freeze = true;
-            }
-            $this->freeze = $freeze;
-        }
-
-        public function teardown()
-        {
-            if ($this->freeze)
-            {
-                RedBeanDatabase::freeze();
-            }
-            parent::teardown();
-        }
 
         public static function setUpBeforeClass()
         {
@@ -91,18 +68,27 @@
             self::$jimmy3 = $jimmy3;
         }
 
+        public static function getDependentTestModelClassNames()
+        {
+            return array('WorkflowModelTestItem',
+                            'WorkflowModelTestItem2',
+                            'WorkflowModelTestItem3',
+                            'WorkflowModelTestItem5'
+                        );
+        }
+
         /**
          * @expectedException NotSupportedException
          */
         public function testResolveRecipientsAsUniquePeopleInvalid()
         {
             $existingRecipient = new EmailMessageRecipient();
-            $existingRecipient->personOrAccount  = self::$sarah;
+            $existingRecipient->personOrAccounts->add(self::$sarah);
             $existingRecipient2 = new EmailMessageRecipient();
-            $existingRecipient2->personOrAccount = self::$sarah;
+            $existingRecipient2->personOrAccounts->add(self::$sarah);
             $existingRecipients = array($existingRecipient, $existingRecipient2);
             $newRecipient = new EmailMessageRecipient();
-            $newRecipient->personOrAccount = self::$bobby;
+            $newRecipient->personOrAccounts->add(self::$bobby);
             $newRecipients = array($newRecipient);
             DynamicTriggeredModelRelationUserWorkflowEmailMessageRecipientForm::
                 resolveRecipientsAsUniquePeople($existingRecipients, $newRecipients);
@@ -114,40 +100,40 @@
         public function testResolveRecipientsAsUniquePeople()
         {
             $existingRecipient = new EmailMessageRecipient();
-            $existingRecipient->personOrAccount  = self::$sarah;
+            $existingRecipient->personOrAccounts->add(self::$sarah);
             $existingRecipient2 = new EmailMessageRecipient();
-            $existingRecipient2->personOrAccount = self::$jimmy;
+            $existingRecipient2->personOrAccounts->add(self::$jimmy);
             $existingRecipients = array($existingRecipient, $existingRecipient2);
             $newRecipient = new EmailMessageRecipient();
-            $newRecipient->personOrAccount = self::$bobby;
+            $newRecipient->personOrAccounts->add(self::$bobby);
             $newRecipient2 = new EmailMessageRecipient();
-            $newRecipient2->personOrAccount = self::$jimmy2;
+            $newRecipient2->personOrAccounts->add(self::$jimmy2);
             $newRecipients = array($newRecipient, $newRecipient2);
             $recipients    = DynamicTriggeredModelRelationUserWorkflowEmailMessageRecipientForm::
                              resolveRecipientsAsUniquePeople($existingRecipients, $newRecipients);
             $this->assertEquals(4, count($recipients));
-            $this->assertEquals(self::$sarah->id,  $recipients[0]->personOrAccount->id);
-            $this->assertEquals(self::$jimmy->id,  $recipients[1]->personOrAccount->id);
-            $this->assertEquals(self::$bobby->id,  $recipients[2]->personOrAccount->id);
-            $this->assertEquals(self::$jimmy2->id, $recipients[3]->personOrAccount->id);
+            $this->assertEquals(self::$sarah->id,  $recipients[0]->personOrAccounts[0]->id);
+            $this->assertEquals(self::$jimmy->id,  $recipients[1]->personOrAccounts[0]->id);
+            $this->assertEquals(self::$bobby->id,  $recipients[2]->personOrAccounts[0]->id);
+            $this->assertEquals(self::$jimmy2->id, $recipients[3]->personOrAccounts[0]->id);
 
             //Now see when there is one duplicate, sarah
             $existingRecipient = new EmailMessageRecipient();
-            $existingRecipient->personOrAccount  = self::$sarah;
+            $existingRecipient->personOrAccounts->add(self::$sarah);
             $existingRecipient2 = new EmailMessageRecipient();
-            $existingRecipient2->personOrAccount = self::$jimmy;
+            $existingRecipient2->personOrAccounts->add(self::$jimmy);
             $existingRecipients = array($existingRecipient, $existingRecipient2);
             $newRecipient = new EmailMessageRecipient();
-            $newRecipient->personOrAccount = self::$bobby;
+            $newRecipient->personOrAccounts->add(self::$bobby);
             $newRecipient2 = new EmailMessageRecipient();
-            $newRecipient2->personOrAccount = self::$sarah;
+            $newRecipient2->personOrAccounts->add(self::$sarah);
             $newRecipients = array($newRecipient, $newRecipient2);
             $recipients    = DynamicTriggeredModelRelationUserWorkflowEmailMessageRecipientForm::
                              resolveRecipientsAsUniquePeople($existingRecipients, $newRecipients);
             $this->assertEquals(3, count($recipients));
-            $this->assertEquals(self::$sarah->id,  $recipients[0]->personOrAccount->id);
-            $this->assertEquals(self::$jimmy->id,  $recipients[1]->personOrAccount->id);
-            $this->assertEquals(self::$bobby->id,  $recipients[2]->personOrAccount->id);
+            $this->assertEquals(self::$sarah->id,  $recipients[0]->personOrAccounts[0]->id);
+            $this->assertEquals(self::$jimmy->id,  $recipients[1]->personOrAccounts[0]->id);
+            $this->assertEquals(self::$bobby->id,  $recipients[2]->personOrAccounts[0]->id);
         }
 
         /**
@@ -188,7 +174,7 @@
             $this->assertTrue($model5->id > 0);
             $recipients = $form->makeRecipients($model, self::$sarah);
             $this->assertEquals(1, count($recipients));
-            $this->assertTrue($recipients[0]->personOrAccount->isSame(self::$sarah));
+            $this->assertTrue($recipients[0]->personOrAccounts[0]->isSame(self::$sarah));
         }
 
         /**
@@ -219,7 +205,7 @@
             $this->assertTrue($model5->id > 0);
             $recipients = $form->makeRecipients($model5, self::$sarah);
             $this->assertEquals(1, count($recipients));
-            $this->assertTrue($recipients[0]->personOrAccount->isSame(self::$super));
+            $this->assertTrue($recipients[0]->personOrAccounts[0]->isSame(self::$super));
         }
 
         /**
@@ -250,7 +236,7 @@
             $this->assertTrue($model->save());
             $recipients = $form->makeRecipients($model, self::$bobby);
             $this->assertEquals(1, count($recipients));
-            $this->assertTrue($recipients[0]->personOrAccount->isSame(self::$bobby));
+            $this->assertTrue($recipients[0]->personOrAccounts[0]->isSame(self::$bobby));
         }
 
         /**
@@ -282,7 +268,7 @@
             $this->assertTrue($model->hasOne->id > 0);
             $recipients = $form->makeRecipients($model, self::$sarah);
             $this->assertEquals(1, count($recipients));
-            $this->assertTrue($recipients[0]->personOrAccount->isSame(self::$super));
+            $this->assertTrue($recipients[0]->personOrAccounts[0]->isSame(self::$super));
         }
 
         /**

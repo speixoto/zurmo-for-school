@@ -39,7 +39,7 @@
         public function actionIndex()
         {
             $title           = Zurmo::t('DesignerModule', 'Available Modules');
-            $breadcrumbLinks = array(
+            $breadCrumbLinks = array(
                  $title,
             );
             $canvasView = new TitleBarAndDesignerPageMenuView(
@@ -48,7 +48,7 @@
                         $title
             );
             $view = new DesignerPageView(ZurmoDefaultAdminViewUtil::
-                            makeViewWithBreadcrumbsForCurrentUser($this, $canvasView, $breadcrumbLinks, 'DesignerBreadCrumbView'));
+                            makeViewWithBreadcrumbsForCurrentUser($this, $canvasView, $breadCrumbLinks, 'DesignerBreadCrumbView'));
             echo $view->render();
         }
 
@@ -83,7 +83,7 @@
             $module          = new $_GET['moduleClassName'](null, null);
             $title           = $moduleClassName::getModuleLabelByTypeAndLanguage('Plural') .
                                ': ' . Zurmo::t('DesignerModule', 'Fields');
-            $breadcrumbLinks = array($title);
+            $breadCrumbLinks = array($title);
             $overrideClassName = $moduleClassName . 'AttributesListView';
             $overrideClassFile = Yii::app()->getBasePath() . DIRECTORY_SEPARATOR . 'modules' . DIRECTORY_SEPARATOR .
                                  $moduleClassName::getDirectoryName() .
@@ -114,7 +114,7 @@
                 );
             }
             $view = new DesignerPageView(ZurmoDefaultAdminViewUtil::
-                            makeViewWithBreadcrumbsForCurrentUser($this, $canvasView, $breadcrumbLinks, 'DesignerBreadCrumbView'));
+                            makeViewWithBreadcrumbsForCurrentUser($this, $canvasView, $breadCrumbLinks, 'DesignerBreadCrumbView'));
             echo $view->render();
         }
 
@@ -147,7 +147,7 @@
                 $this->actionAttributeSave($attributeForm, $model);
             }
             $title           = static::resolveAttributeEditTitle($attributeForm);
-            $breadcrumbLinks = array(
+            $breadCrumbLinks = array(
                     $moduleClassName::getModuleLabelByTypeAndLanguage('Plural') . ': ' . Zurmo::t('DesignerModule', 'Fields') =>
                     array('default/attributesList',  'moduleClassName' => $_GET['moduleClassName']),
                 $title,
@@ -162,7 +162,7 @@
                         $title
             );
             $view = new DesignerPageView(ZurmoDefaultAdminViewUtil::
-                            makeViewWithBreadcrumbsForCurrentUser($this, $canvasView, $breadcrumbLinks, 'DesignerBreadCrumbView'));
+                            makeViewWithBreadcrumbsForCurrentUser($this, $canvasView, $breadCrumbLinks, 'DesignerBreadCrumbView'));
             echo $view->render();
         }
 
@@ -240,7 +240,7 @@
             $editableViewsCollection = ArrayUtil::subValueSort($editableViewsCollection, 'titleLabel', 'asort');
             $title           = $moduleClassName::getModuleLabelByTypeAndLanguage('Plural') .
                                ': ' . Zurmo::t('DesignerModule', 'Layouts');
-            $breadcrumbLinks = array($title);
+            $breadCrumbLinks = array($title);
             $canvasView = new ActionBarAndModuleEditableMetadataCollectionView(
                         $this->getId(),
                         $this->getModule()->getId(),
@@ -250,7 +250,7 @@
                         $title
             );
             $view = new DesignerPageView(ZurmoDefaultAdminViewUtil::
-                            makeViewWithBreadcrumbsForCurrentUser($this, $canvasView, $breadcrumbLinks, 'DesignerBreadCrumbView'));
+                            makeViewWithBreadcrumbsForCurrentUser($this, $canvasView, $breadCrumbLinks, 'DesignerBreadCrumbView'));
             echo $view->render();
         }
 
@@ -307,7 +307,7 @@
                 Yii::app()->end(0, false);
             }
             $title           = Zurmo::t('DesignerModule', 'Edit Layout') . ': ' . $designerRules->resolveDisplayNameByView($_GET['viewClassName']);
-            $breadcrumbLinks = array(
+            $breadCrumbLinks = array(
                     $moduleClassName::getModuleLabelByTypeAndLanguage('Plural') . ': ' . Zurmo::t('DesignerModule', 'Layouts') =>
                     array('default/moduleLayoutsList',  'moduleClassName' => $_GET['moduleClassName']),
                 $title,
@@ -325,7 +325,7 @@
 
             );
             $view = new DesignerPageView(ZurmoDefaultAdminViewUtil::
-                            makeViewWithBreadcrumbsForCurrentUser($this, $canvasView, $breadcrumbLinks, 'DesignerBreadCrumbView'));
+                            makeViewWithBreadcrumbsForCurrentUser($this, $canvasView, $breadCrumbLinks, 'DesignerBreadCrumbView'));
             echo $view->render();
         }
 
@@ -347,7 +347,7 @@
             }
             $title           = $moduleClassName::getModuleLabelByTypeAndLanguage('Plural') .
                                ': ' . Zurmo::t('DesignerModule', 'General');
-            $breadcrumbLinks = array($title);
+            $breadCrumbLinks = array($title);
             $canvasView = new ActionBarAndModuleEditView(
                         $this->getId(),
                         $this->getModule()->getId(),
@@ -356,7 +356,7 @@
                         $title
             );
             $view = new DesignerPageView(ZurmoDefaultAdminViewUtil::
-                            makeViewWithBreadcrumbsForCurrentUser($this, $canvasView, $breadcrumbLinks, 'DesignerBreadCrumbView'));
+                            makeViewWithBreadcrumbsForCurrentUser($this, $canvasView, $breadCrumbLinks, 'DesignerBreadCrumbView'));
             echo $view->render();
         }
 

@@ -40,7 +40,7 @@
         {
             assert('is_string($name)');
             assert('$name != ""');
-            $bean = R::findOne('testselfrelatingmodel', "name = :name ", array(':name' => $name));
+            $bean = ZurmoRedBean::findOne('testselfrelatingmodel', "name = :name ", array(':name' => $name));
             assert('$bean === false || $bean instanceof RedBean_OODBBean');
             if ($bean === false)
             {
@@ -67,6 +67,11 @@
                 ),
                 'relations' => array(
                     'bunch' => array(self::HAS_MANY, 'TestSelfRelatingModel'),
+                    'testSelfRelatingModel' => array(static::HAS_ONE, 'TestSelfRelatingModel'),
+                ),
+                'rules' => array(
+                    array('name', 'type', 'type' => 'string'),
+                    array('name', 'length', 'max' => 255),
                 ),
             );
             return $metadata;

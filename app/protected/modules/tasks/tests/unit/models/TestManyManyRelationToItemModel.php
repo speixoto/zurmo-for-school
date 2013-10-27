@@ -41,7 +41,7 @@
             $metadata = parent::getDefaultMetadata();
             $metadata[__CLASS__] = array(
                 'relations' => array(
-                    'items' => array(RedBeanModel::MANY_MANY, 'Item'),
+                    'items' => array(static::MANY_MANY, 'Item'),
                 ),
             );
             return $metadata;

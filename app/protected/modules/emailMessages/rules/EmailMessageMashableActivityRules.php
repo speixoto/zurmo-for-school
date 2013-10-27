@@ -45,16 +45,22 @@
             $searchAttributeData['clauses'] = array(
                 1 => array(
                     'attributeName'        => 'sender',
-                    'relatedAttributeName' => 'personOrAccount',
-                    'operatorType'         => 'equals',
-                    'value'                => $relationItemId,
+                    'relatedModelData' => array(
+                        'attributeName'        => 'personOrAccounts',
+                        'relatedAttributeName' => 'id',
+                        'operatorType'         => 'equals',
+                        'value'                => $relationItemId,
+                    )
                 ),
                 2 => array(
                     'attributeName'        => 'recipients',
-                    'relatedAttributeName' => 'personOrAccount',
-                    'operatorType'         => 'equals',
-                    'value'                => $relationItemId,
-                    'resolveAsSubquery'    => true,
+                    'relatedModelData' => array(
+                        'attributeName'        => 'personOrAccounts',
+                        'relatedAttributeName' => 'id',
+                        'operatorType'         => 'equals',
+                        'value'                => $relationItemId,
+                        'resolveAsSubquery'    => true,
+                    )
                 )
             );
             $searchAttributeData['structure'] = '(1 or 2)';
@@ -71,16 +77,22 @@
             $searchAttributeData['clauses'] = array(
                 1 => array(
                     'attributeName'        => 'sender',
-                    'relatedAttributeName' => 'personOrAccount',
-                    'operatorType'         => 'oneOf',
-                    'value'                => $relationItemIds,
+                    'relatedModelData' => array(
+                        'attributeName'        => 'personOrAccounts',
+                        'relatedAttributeName' => 'id',
+                        'operatorType'         => 'oneOf',
+                        'value'                => $relationItemIds,
+                    )
                 ),
                 2 => array(
                     'attributeName'        => 'recipients',
-                    'relatedAttributeName' => 'personOrAccount',
-                    'operatorType'         => 'oneOf',
-                    'value'                => $relationItemIds,
-                    'resolveAsSubquery'    => true,
+                    'relatedModelData' => array(
+                        'attributeName'        => 'personOrAccounts',
+                        'relatedAttributeName' => 'id',
+                        'operatorType'         => 'oneOf',
+                        'value'                => $relationItemIds,
+                        'resolveAsSubquery'    => true,
+                    )
                 )
             );
             $searchAttributeData['structure'] = '(1 or 2)';
@@ -160,28 +172,39 @@
         public static function getSenderContent(EmailMessageSender $emailMessageSender)
         {
             $existingModels  = array();
-            if ($emailMessageSender->personOrAccount->id < 0)
+            if ($emailMessageSender->personOrAccounts->count() == 0)
             {
-                return $emailMessageSender->fromAddress . ' ' . $emailMessageSender->fromName;
+                $existingModels[] = $emailMessageSender->fromAddress . ' ' . $emailMessageSender->fromName;
             }
-            $castedDownModel = self::castDownItem($emailMessageSender->personOrAccount);
-            try
+            else
             {
-                if (strval($castedDownModel) != null)
-                            {
-                                $params          = array('label' => strval($castedDownModel), 'wrapLabel' => false);
-                                $moduleClassName = $castedDownModel->getModuleClassName();
-                                $moduleId        = $moduleClassName::getDirectoryName();
-                                $element         = new DetailsLinkActionElement('default', $moduleId,
-                                                                                $castedDownModel->id, $params);
-                                $existingModels[] = $element->render();
-                            }
-                return self::resolveStringValueModelsDataToStringContent($existingModels);
+                foreach ($emailMessageSender->personOrAccounts as $personOrAccount)
+                {
+                    $castedDownModel = self::castDownItem($personOrAccount);
+                    try
+                    {
+                        if (strval($castedDownModel) != null)
+                        {
+                            $params          = array('label' => strval($castedDownModel), 'wrapLabel' => false);
+                            $moduleClassName = $castedDownModel->getModuleClassName();
+                            $moduleId        = $moduleClassName::getDirectoryName();
+                            $element         = new DetailsLinkActionElement('default', $moduleId,
+                                $castedDownModel->id, $params);
+                            $existingModels[] = $element->render();
+                        }
+                    }
+                    catch (AccessDeniedSecurityException $e)
+                    {
+                        $existingModels[] = $emailMessageSender->fromAddress;
+                    }
+                }
             }
-            catch (AccessDeniedSecurityException $e)
+            $senderString = self::resolveStringValueModelsDataToStringContent($existingModels);
+            if (count($existingModels) > 1)
             {
-                return $emailMessageSender->fromAddress;
+                return $emailMessageSender->fromAddress . '(' . $senderString . ')';
             }
+            return $senderString;
         }
 
         public static function getRecipientsContent(RedBeanOneToManyRelatedModels $recipients, $type = null)
@@ -197,41 +220,55 @@
             {
                 if ($type == null || $recipient->type == $type)
                 {
-                    if ($recipient->personOrAccount->id < 0)
+                    $existingPersonOrAccounts = array();
+                    if ($recipient->personOrAccounts->count() == 0)
                     {
-                        $existingModels[] = $recipient->toAddress . ' ' . $recipient->toName;
+                        $existingPersonOrAccounts[] = $recipient->toAddress . ' ' . $recipient->toName;
                     }
                     else
                     {
-                        try
+                        foreach ($recipient->personOrAccounts as $personOrAccount)
                         {
-                            $castedDownModel = self::castDownItem($recipient->personOrAccount);
-                            if (strval($castedDownModel) != null)
-                                        {
-                                            $params          = array('label' => strval($castedDownModel), 'wrapLabel' => false);
-                                            $moduleClassName = $castedDownModel->getModuleClassName();
-                                            $moduleId        = $moduleClassName::getDirectoryName();
-                                            $element         = new DetailsLinkActionElement('default', $moduleId,
-                                                                                            $castedDownModel->id, $params);
-                                            $existingModels[] = $element->render();
-                                        }
+
+                            try
+                            {
+                                $castedDownModel = self::castDownItem($personOrAccount);
+                                if (strval($castedDownModel) != null)
+                                            {
+                                                $params          = array('label' => strval($castedDownModel), 'wrapLabel' => false);
+                                                $moduleClassName = $castedDownModel->getModuleClassName();
+                                                $moduleId        = $moduleClassName::getDirectoryName();
+                                                $element         = new DetailsLinkActionElement('default', $moduleId,
+                                                                                                $castedDownModel->id, $params);
+                                                $existingPersonOrAccounts[] = $element->render();
+                                            }
+                            }
+                            catch (AccessDeniedSecurityException $e)
+                            {
+                                $existingPersonOrAccounts[] = $recipient->toAddress . ' ' . $recipient->toName;
+                            }
+                            catch (NotSupportedException $e)
+                            {
+                                //If the personOrAccount no longer exists or something else isn't right with the model
+                                $existingPersonOrAccounts[] = $recipient->toAddress . ' ' . $recipient->toName;
+                            }
                         }
-                        catch (AccessDeniedSecurityException $e)
-                        {
-                            $existingModels[] = $recipient->toAddress . ' ' . $recipient->toName;
-                        }
-                        catch (NotSupportedException $e)
-                        {
-                            //If the personOrAccount no longer exists or something else isn't right with the model
-                            $existingModels[] = $recipient->toAddress . ' ' . $recipient->toName;
-                        }
+                    }
+                    $recipientString = self::resolveStringValueModelsDataToStringContent($existingPersonOrAccounts);
+                    if (count($existingPersonOrAccounts) > 1)
+                    {
+                        $existingModels[] = $recipient->toAddress . '(' . $recipientString . ')';
+                    }
+                    else
+                    {
+                        $existingModels[] = $recipientString;
                     }
                 }
             }
             return self::resolveStringValueModelsDataToStringContent($existingModels);
         }
 
-        protected static function castDownItem(Item $item)
+        public static function castDownItem(Item $item)
         {
             foreach (array('Contact', 'User', 'Account') as $modelClassName)
             {

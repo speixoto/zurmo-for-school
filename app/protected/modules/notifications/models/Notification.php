@@ -57,7 +57,7 @@
             }
             else
             {
-                return Zurmo::t('NotificationsModule', '(Unnamed)');
+                return Zurmo::t('Core', '(Unnamed)');
             }
         }
 
@@ -196,15 +196,15 @@
                     'ownerHasReadLatest',
                 ),
                 'relations' => array(
-                    'notificationMessage' => array(RedBeanModel::HAS_ONE,  'NotificationMessage', RedBeanModel::NOT_OWNED),
-                    'owner' =>               array(RedBeanModel::HAS_ONE, 'User', RedBeanModel::NOT_OWNED,
-                                                   RedBeanModel::LINK_TYPE_SPECIFIC, 'owner'),
+                    'notificationMessage' => array(static::HAS_ONE,  'NotificationMessage', static::NOT_OWNED),
+                    'owner' =>               array(static::HAS_ONE, 'User', static::NOT_OWNED,
+                                                   static::LINK_TYPE_SPECIFIC, 'owner'),
                 ),
                 'rules' => array(
                     array('owner',                  'required'),
                     array('type',                   'required'),
                     array('type',                   'type',    'type' => 'string'),
-                    array('type',                   'length',  'min'  => 3, 'max' => 64),
+                    array('type',                   'length',  'min'  => 1, 'max' => 64),
                     array('ownerHasReadLatest',     'boolean'),
                 ),
                 'elements' => array(

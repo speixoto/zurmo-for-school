@@ -50,7 +50,7 @@
         {
             assert('is_string($className)');
             assert('$className != ""');
-            $bean = R::findOne('perusermetadata', "className = '$className' and _user_id = {$user->id}");
+            $bean = ZurmoRedBean::findOne('perusermetadata', "className = '$className' and _user_id = {$user->id}");
             assert('$bean === false || $bean instanceof RedBean_OODBBean');
             if ($bean === false)
             {
@@ -68,7 +68,7 @@
                     'serializedMetadata',
                 ),
                 'relations' => array(
-                    'user' => array(RedBeanModel::HAS_ONE, 'User'),
+                    'user' => array(static::HAS_ONE, 'User'),
                 ),
                 'rules' => array(
                     array('className',           'required'),

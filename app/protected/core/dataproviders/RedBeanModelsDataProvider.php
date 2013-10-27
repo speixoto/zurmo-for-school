@@ -172,13 +172,13 @@
         {
             assert('is_string($sql)');
             $models                  = array();
-            $idsAndModelClassNames   = R::getAll($sql);
+            $idsAndModelClassNames   = ZurmoRedBean::getAll($sql);
 
             foreach ($idsAndModelClassNames as $data)
             {
                 $modelClassName = $data['modelClassName'];
                 $tableName = $modelClassName::getTableName($modelClassName);
-                $bean      = R::load($tableName, $data['id']);
+                $bean      = ZurmoRedBean::load($tableName, $data['id']);
                 $models[]  = $modelClassName::makeModel($bean, $modelClassName);
             }
             return $models;

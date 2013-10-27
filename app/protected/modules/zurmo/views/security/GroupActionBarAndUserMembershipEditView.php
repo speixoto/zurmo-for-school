@@ -46,7 +46,7 @@
             $moduleName)
         {
             parent::__construct(2, 1);
-            $this->setView(new ActionBarForGroupEditAndDetailsView ($controllerId, $moduleId, $model, 'GroupUserMembershipEditLink'), 0, 0);
+            $this->setView(new ActionBarForGroupEditAndDetailsView ($controllerId, $moduleId, $model, 'GroupUserMembershipEditMenu'), 0, 0);
             $this->setView(new GroupUserMembershipEditView($controllerId, $moduleId, $form, $model->id, strval($model)), 1, 0);
         }
     }

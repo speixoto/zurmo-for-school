@@ -44,11 +44,12 @@
                     'dddMember',
                 ),
                 'relations' => array(
-                    'bbb'                => array(RedBeanModel::MANY_MANY,           'BBB'),
-                    'eee'                => array(RedBeanModel::HAS_ONE,            'EEE'),
+                    'bbb'                => array(static::MANY_MANY,           'BBB'),
+                    'eee'                => array(static::HAS_ONE,            'EEE'),
                 ),
                 'rules' => array(
                     array('dddMember', 'type', 'type' => 'string'),
+                    array('dddMember', 'length', 'max' => 255),
                 ),
             );
             return $metadata;

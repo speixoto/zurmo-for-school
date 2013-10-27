@@ -63,7 +63,7 @@
                 $recipient->toAddress       = $model->primaryEmail->emailAddress;
                 $recipient->toName          = strval($model);
                 $recipient->type            = $this->audienceType;
-                $recipient->personOrAccount = $model;
+                $recipient->personOrAccounts->add($model);
                 $recipients[]               = $recipient;
             }
             return $recipients;

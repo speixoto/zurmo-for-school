@@ -48,8 +48,7 @@
             Yii::app()->user->userModel = $super;
 
             $requiredAttributesCollection = ContactsImportRules::getRequiredAttributesCollectionNotIncludingReadOnly();
-            $this->assertCount(3, $requiredAttributesCollection);
-            $this->assertContains('owner',      array_keys($requiredAttributesCollection));
+            $this->assertCount(2, $requiredAttributesCollection);
             $this->assertContains('lastName',   array_keys($requiredAttributesCollection));
             $this->assertContains('state',      array_keys($requiredAttributesCollection));
         }

@@ -75,9 +75,10 @@
 
         protected function renderContent()
         {
+            $this->registerScripts();
             $formName = $this->getFormName();
             $afterValidateAjax = $this->renderConfigSaveAjax($formName);
-            $content = '<div class="wide form">';
+            $content = $this->renderContentStartFormDiv();
             $clipWidget = new ClipWidget();
             list($form, $formStart) = $clipWidget->renderBeginWidget(
                 'ZurmoActiveForm',
@@ -94,17 +95,9 @@
                     ),
                 )
             );
-
-            $cs = Yii::app()->getClientScript();
-            $cs->registerScriptFile(
-                Yii::app()->getAssetManager()->publish(
-                    Yii::getPathOfAlias('application.core.elements.assets')
-                    ) . '/Modal.js',
-                CClientScript::POS_END
-            );
-            $content .= $formStart;
-            $content .= ZurmoHtml::tag('div', array('class' => 'left-column full-width'), $this->renderFormLayout($form) .
-                                                                               $this->renderAfterFormLayout($form));
+            $content     .= $formStart;
+            $formContent = $this->renderFormLayout($form) . $this->renderAfterFormLayout($form);
+            $content    .= $this->wrapFormLayoutContent($formContent);
             $actionElementContent = $this->renderActionElementBar(true);
             if ($actionElementContent != null)
             {
@@ -115,8 +108,34 @@
             $formEnd = $clipWidget->renderEndWidget();
             $content .= $formEnd;
             $content .= $this->renderModalContainer();
-            $content .= '</div>';
+            $content .= $this->renderContentEndFormDiv();
             return $content;
+        }
+
+        protected function renderContentStartFormDiv()
+        {
+            return ZurmoHtml::openTag('div', array('class' => 'wide form'));
+        }
+
+        protected function renderContentEndFormDiv()
+        {
+            return ZurmoHtml::closeTag('div');
+        }
+
+        protected function registerScripts()
+        {
+            $cs = Yii::app()->getClientScript();
+            $cs->registerScriptFile(
+                Yii::app()->getAssetManager()->publish(
+                    Yii::getPathOfAlias('application.core.elements.assets')
+                ) . '/Modal.js',
+                CClientScript::POS_END
+            );
+        }
+
+        protected function wrapFormLayoutContent($content)
+        {
+            return ZurmoHtml::tag('div', array('class' => 'left-column full-width'), $content);
         }
 
         public function getFormName()

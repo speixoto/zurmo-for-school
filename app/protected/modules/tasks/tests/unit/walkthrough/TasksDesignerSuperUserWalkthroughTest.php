@@ -121,7 +121,7 @@
                                      'viewClassName'   => 'OpenTasksForOpportunityRelatedListView'));
             $this->runControllerWithNoExceptionsAndGetContent('designer/default/LayoutEdit');
             $this->setGetArray(array('moduleClassName' => 'TasksModule',
-                                     'viewClassName'   => 'TaskEditAndDetailsView'));
+                                     'viewClassName'   => 'TaskModalEditView'));
             $this->runControllerWithNoExceptionsAndGetContent('designer/default/LayoutEdit');
         }
 
@@ -164,9 +164,9 @@
         {
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
 
-            //Add custom fields to TaskEditAndDetailsView.
+            //Add custom fields to TaskModalEditView.
             $this->setGetArray(array('moduleClassName' => 'TasksModule',
-                                     'viewClassName'   => 'TaskEditAndDetailsView'));
+                                     'viewClassName'   => 'TaskModalEditView'));
             $layout = TasksDesignerWalkthroughHelperUtil::getTaskEditAndDetailsViewLayoutWithAllCustomFieldsPlaced();
             $this->setPostArray(array('save'  => 'Save', 'layout' => $layout,
                                       'LayoutPanelsTypeForm' => array('type' => FormLayout::PANELS_DISPLAY_TYPE_ALL)));
@@ -206,7 +206,7 @@
             $superTaskId = self::getModelIdByModelNameAndName ('Task', 'superTask');
             //Load create, edit, and details views.
             $this->setGetArray(array('id' => $superTaskId));
-            $this->runControllerWithNoExceptionsAndGetContent('tasks/default/edit');
+            $this->runControllerWithNoExceptionsAndGetContent('tasks/default/modalEdit');
             $this->setGetArray(array('id' => $superAccountId));
             $this->resetPostArray();
             $this->runControllerWithNoExceptionsAndGetContent('accounts/default/details');
@@ -215,7 +215,7 @@
                                         'relationModuleId'       => 'account',
                                         'redirectUrl'            => 'someRedirection'));
             $this->resetPostArray();
-            $this->runControllerWithNoExceptionsAndGetContent('tasks/default/createFromRelation');
+            $this->runControllerWithNoExceptionsAndGetContent('tasks/default/modalCreateFromRelation');
             //todo: more permutations from different relations.
         }
 
@@ -276,7 +276,7 @@
                                             'Account'     => array('id'  => $superAccount[0]->id),
                                             'Contact'     => array('id'  => $superContactId),
                                             'Opportunity' => array('id'  => $superOpportunityId))));
-            $this->runControllerWithRedirectExceptionAndGetUrl('tasks/default/createFromRelation');
+            $this->runControllerWithNoExceptionsAndGetContent('tasks/default/modalSaveFromRelation');
 
             //Check the details if they are saved properly for the custom fields.
             $task = Task::getByName('myNewTask');
@@ -542,7 +542,7 @@
 
             //Set the task id so as to delete the task.
             $this->setGetArray(array('id' => $task[0]->id));
-            $this->runControllerWithRedirectExceptionAndGetUrl('tasks/default/delete');
+            $this->runControllerWithNoExceptionsAndGetContent('tasks/default/delete', true);
 
             //Check to confirm that the task is deleted.
             $task = Task::getByName('myEditTask');

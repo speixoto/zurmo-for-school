@@ -49,7 +49,7 @@
         )
         {
             parent::__construct(3, 1);
-            $this->setView(new ActionBarForDesignerModuleView($controllerId, $moduleId, $module, 'DesignerFieldsLink'), 0, 0);
+            $this->setView(new ActionBarForDesignerModuleView($controllerId, $moduleId, $module, 'DesignerFieldsMenu'), 0, 0);
             $title = $moduleDisplayName . ': ' .  Zurmo::t('DesignerModule', 'Custom Fields');
             $this->setView(new CustomAttributesCollectionView(
                 $controllerId,

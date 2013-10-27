@@ -254,7 +254,7 @@
 /*End sidebar*/
 
 #ModelDetailsSummaryView,
-#CommentList,
+//#CommentList,
 .CommentList{
     h2{
         margin-bottom:15px;
@@ -270,7 +270,7 @@
     }
 }
 
-#CommentList,
+//#CommentList,
 .CommentList{
     margin-left: 115px;
     .comment{
@@ -282,6 +282,7 @@
 }
 
 .comment{
+	.clearfix();
     line-height: 140%;
     .gravatar{
         margin-top:1px;
@@ -304,8 +305,9 @@
     }
 }
 
-.comment-content, .comment-details{
-    margin: 0 0 2px 0;
+.comment-content,
+.comment-details{
+    //margin: 0 0 2px 0;
 }
 
 .model-details-summary{

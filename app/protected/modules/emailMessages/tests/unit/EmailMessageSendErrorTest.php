@@ -73,7 +73,7 @@
             $recipient->toAddress       = 'billy@fakeemail.com';
             $recipient->toName          = 'Billy James';
             $recipient->type            = EmailMessageRecipient::TYPE_TO;
-            $recipient->personOrAccount = $billy;
+            $recipient->personOrAccounts->add($billy);
             $emailMessage->recipients->add($recipient);
 
             //At this point the message is in no folder

@@ -80,25 +80,31 @@
             $resolvedRecipients = array();
             foreach ($existingRecipients as $recipient)
             {
-                if ($recipient->personOrAccount->id > 0)
+                foreach ($recipient->personOrAccounts as $personOrAccount)
                 {
-                    if (!in_array($recipient->personOrAccount->getClassId('Item'), $existingItemIds))
+                    if ($personOrAccount->id > 0)
                     {
-                        $existingItemIds[]    = $recipient->personOrAccount->getClassId('Item');
-                        $resolvedRecipients[] = $recipient;
-                    }
-                    else
-                    {
-                        throw new NotSupportedException();
+                        if (!in_array($personOrAccount->getClassId('Item'), $existingItemIds))
+                        {
+                            $existingItemIds[]    = $personOrAccount->getClassId('Item');
+                            $resolvedRecipients[] = $recipient;
+                        }
+                        else
+                        {
+                            throw new NotSupportedException();
+                        }
                     }
                 }
             }
             foreach ($newRecipients as $recipient)
             {
-                if (!in_array($recipient->personOrAccount->getClassId('Item'), $existingItemIds))
+                foreach ($recipient->personOrAccounts as $personOrAccount)
                 {
-                    $existingItemIds[]    = $recipient->personOrAccount->getClassId('Item');
-                    $resolvedRecipients[] = $recipient;
+                    if (!in_array($personOrAccount->getClassId('Item'), $existingItemIds))
+                    {
+                        $existingItemIds[]    = $personOrAccount->getClassId('Item');
+                        $resolvedRecipients[] = $recipient;
+                    }
                 }
             }
             return $resolvedRecipients;
@@ -210,7 +216,7 @@
                 $recipient->toAddress       = $model->primaryEmail->emailAddress;
                 $recipient->toName          = strval($model);
                 $recipient->type            = $this->audienceType;
-                $recipient->personOrAccount = $model;
+                $recipient->personOrAccounts->add($model);
                 $recipients[]               = $recipient;
             }
             return $recipients;

@@ -372,7 +372,7 @@
                 $data = array();
                 $data['code']                          = $e->getCode();
                 $data['message']                       = $e->getMessage();
-                $data['trace']                         = $e->getPrevious();
+                //$data['trace']                         = $e->getPrevious();
                 $emailMessageSendError->serializedData = serialize($data);
                 $emailMessage->folder   = EmailFolder::getByBoxAndType($emailMessage->folder->emailBox, EmailFolder::TYPE_OUTBOX_ERROR);
                 $emailMessage->error    = $emailMessageSendError;

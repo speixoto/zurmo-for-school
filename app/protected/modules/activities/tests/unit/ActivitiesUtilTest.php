@@ -70,7 +70,7 @@
             $sender                    = new EmailMessageSender();
             $sender->fromAddress       = 'system@somewhere.com';
             $sender->fromName          = 'Zurmo System';
-            $sender->personOrAccount   = $super;
+            $sender->personOrAccounts->add($super);
             $emailMessage->sender      = $sender;
 
             //Recipient is billy.
@@ -78,7 +78,7 @@
             $recipient->toAddress       = 'billy@fakeemail.com';
             $recipient->toName          = 'Billy James';
             $recipient->type            = EmailMessageRecipient::TYPE_TO;
-            $recipient->personOrAccount = $billy;
+            $recipient->personOrAccounts->add($billy);
             $emailMessage->recipients->add($recipient);
             $box                       = EmailBox::resolveAndGetByName(EmailBox::NOTIFICATIONS_NAME);
             $emailMessage->folder      = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_DRAFT);

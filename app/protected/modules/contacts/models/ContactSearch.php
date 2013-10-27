@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class ContactSearch
+    class ContactSearch extends BaseModelAutoCompleteUtil
     {
         /**
          * For a give Contact name, run a partial search by
@@ -42,8 +42,10 @@
          * @param string $partialName
          * @param int $pageSize
          * @param null|string $stateMetadataAdapterClassName
+         * @param $autoCompleteOptions
          */
-        public static function getContactsByPartialFullName($partialName, $pageSize, $stateMetadataAdapterClassName = null)
+        public static function getContactsByPartialFullName($partialName, $pageSize,
+                                                    $stateMetadataAdapterClassName = null, $autoCompleteOptions = null)
         {
             assert('is_string($partialName)');
             assert('is_int($pageSize)');
@@ -67,6 +69,7 @@
                 $where .= 'and';
             }
             $where .= self::getWherePartForPartialNameSearchByPartialName($partialName);
+            static::handleAutoCompleteOptions($joinTablesAdapter, $where, $autoCompleteOptions);
             return Contact::getSubset($joinTablesAdapter, null, $pageSize, $where, "person.firstname, person.lastname");
         }
 
@@ -77,9 +80,12 @@
          * @param int $pageSize
          * @param null|string $stateMetadataAdapterClassName
          * @param null|string $operatorType
+         * @param $autoCompleteOptions
          */
         public static function getContactsByPartialFullNameOrAnyEmailAddress($partialNameOrEmailAddress, $pageSize,
-                                                                             $stateMetadataAdapterClassName = null, $operatorType = null)
+                                                                             $stateMetadataAdapterClassName = null,
+                                                                             $operatorType = null,
+                                                                             $autoCompleteOptions = null)
         {
             assert('is_string($partialNameOrEmailAddress)');
             assert('is_int($pageSize)');
@@ -114,6 +120,7 @@
             $where  = RedBeanModelDataProvider::makeWhere('Contact', $metadata, $joinTablesAdapter);
             $partialNameWherePart = self::getWherePartForPartialNameSearchByPartialName($partialNameOrEmailAddress);
             $where  = strtr(strtolower($where), array('partialnamesearch' => $partialNameWherePart));
+            static::handleAutoCompleteOptions($joinTablesAdapter, $where, $autoCompleteOptions);
             return Contact::getSubset($joinTablesAdapter, null, $pageSize, $where, "person.firstname, person.lastname");
         }
 
@@ -133,8 +140,10 @@
          * @param string $emailAddress
          * @param null|int $pageSize
          * @param null|sting $stateMetadataAdapterClassName
+         * @param $autoCompleteOptions
          */
-        public static function getContactsByAnyEmailAddress($emailAddress, $pageSize = null, $stateMetadataAdapterClassName = null)
+        public static function getContactsByAnyEmailAddress($emailAddress, $pageSize = null,
+                                                $stateMetadataAdapterClassName = null, $autoCompleteOptions = null)
         {
             assert('is_string($emailAddress)');
             $metadata = array();
@@ -160,6 +169,7 @@
                 $metadata = $stateMetadataAdapter->getAdaptedDataProviderMetadata();
             }
             $where  = RedBeanModelDataProvider::makeWhere('Contact', $metadata, $joinTablesAdapter);
+            static::handleAutoCompleteOptions($joinTablesAdapter, $where, $autoCompleteOptions);
             return Contact::getSubset($joinTablesAdapter, null, $pageSize, $where);
         }
     }

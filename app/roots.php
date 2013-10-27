@@ -44,5 +44,5 @@
     assert(IS_LINUX || IS_WINNT || IS_OSX || IS_FREEBSD); // Not Coding Standard
 
     define('COMMON_ROOT',   dirname(__FILE__));
-    define('INSTANCE_ROOT', getcwd());
+    defined('INSTANCE_ROOT') or  define('INSTANCE_ROOT', getcwd());
 ?>

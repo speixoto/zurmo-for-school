@@ -147,6 +147,7 @@
             unset($response['data']['modifiedDateTime']);
             unset($response['data']['latestDateTime']);
             unset($response['data']['id']);
+
             //$data['latestDateTime'] = $dueStamp;
 
             ksort($data);

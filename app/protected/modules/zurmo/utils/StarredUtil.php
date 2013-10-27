@@ -39,63 +39,20 @@
      */
     class StarredUtil
     {
-        public static function modelHasStarredInterface($modelClassName)
+        public static function modelHasStarredInterface($modelClassName, $reflectionClass = null)
         {
-            $refelectionClass = new ReflectionClass($modelClassName);
-            return in_array('StarredInterface', $refelectionClass->getInterfaceNames());
-        }
-
-        public static function createStarredTables()
-        {
-            $modelClassNames = static::getStarredModels('StarredInterface');
-            foreach ($modelClassNames as $modelClassName)
+            if (!isset($reflectionClass))
             {
-                $modelStarredTableName = static::getStarredTableName($modelClassName);
-                static::createTable($modelStarredTableName);
+                $reflectionClass = new ReflectionClass($modelClassName);
             }
+            return $reflectionClass->implementsInterface('StarredInterface');
         }
 
-        protected static function getStarredModels($interfaceClassName)
+        public static function modelHasStarredInterfaceAndNotAbstract($modelClassName)
         {
-            assert('is_string($interfaceClassName)');
-            $interfaceModelClassNames = array();
-            $modules = Module::getModuleObjects();
-            foreach ($modules as $module)
-            {
-                $modelClassNames = $module::getModelClassNames();
-                foreach ($modelClassNames as $modelClassName)
-                {
-                    $classToEvaluate     = new ReflectionClass($modelClassName);
-                    if ($classToEvaluate->implementsInterface($interfaceClassName) &&
-                    !$classToEvaluate->isAbstract())
-                    {
-                        $interfaceModelClassNames[] = $modelClassName;
-                    }
-                }
-            }
-            return $interfaceModelClassNames;
-        }
-
-        protected static function createTable($modelStarredTableName)
-        {
-            assert('is_string($modelStarredTableName) && $modelStarredTableName  != ""');
-            R::exec("create table if not exists {$modelStarredTableName} (
-                        id int(11)         unsigned not null PRIMARY KEY AUTO_INCREMENT ,
-                        user_id int(11)     unsigned not null,
-                        model_id int(11)    unsigned not null
-                     )");
-        }
-
-        protected static function getMainTableName($modelClassName)
-        {
-            assert('is_string($modelClassName) && $modelClassName != ""');
-            return RedBeanModel::getTableName($modelClassName);
-        }
-
-        public static function getStarredTableName($modelClassName)
-        {
-            assert('is_string($modelClassName) && $modelClassName != ""');
-            return self::getMainTableName($modelClassName) . '_starred';
+            $reflectionClass = new ReflectionClass($modelClassName);
+            return (static::modelHasStarredInterface($modelClassName, $reflectionClass) &&
+                        !$reflectionClass->isAbstract());
         }
 
         public static function markModelAsStarred(RedBeanModel $model)
@@ -107,20 +64,13 @@
 
         protected static function markModelAsStarredForUser($modelClassName, $userId, $modelId)
         {
-            if (!static::modelHasStarredInterface($modelClassName))
-            {
-                throw new NotSupportedException();
-            }
+            static::ensureModelClassNameImplementsStarredInterface($modelClassName);
             if (static::isModelStarredForUser($modelClassName, $userId, $modelId))
             {
                 return;
             }
-            $tableName = static::getStarredTableName($modelClassName);
-            $sql       = "INSERT INTO {$tableName} VALUES (null, :userId, :modelId);";
-            R::exec($sql, array(
-                ':userId'  => $userId,
-                ':modelId' => $modelId,
-            ));
+            $starredModelClassName = static::getStarredModelClassName($modelClassName);
+            $starredModelClassName::markModelAsStarredByUserIdAndModelId($userId, $modelId);
         }
 
         public static function unmarkModelAsStarred(RedBeanModel $model)
@@ -132,20 +82,13 @@
 
         protected static function unmarkModelAsStarredForUser($modelClassName, $userId, $modelId)
         {
-            if (!static::modelHasStarredInterface($modelClassName))
-            {
-                throw new NotSupportedException();
-            }
+            static::ensureModelClassNameImplementsStarredInterface($modelClassName);
             if (!static::isModelStarredForUser($modelClassName, $userId, $modelId))
             {
                 return;
             }
-            $tableName = static::getStarredTableName($modelClassName);
-            $sql       = "DELETE FROM {$tableName} WHERE user_id = :userId AND model_id = :modelId;";
-            R::exec($sql, array(
-                ':userId'  => $userId,
-                ':modelId' => $modelId,
-            ));
+            $starredModelClassName = static::getStarredModelClassName($modelClassName);
+            $starredModelClassName::unmarkModelAsStarredByUserIdAndModelId($userId, $modelId);
         }
 
         public static function isModelStarred(RedBeanModel $model)
@@ -157,36 +100,18 @@
 
         protected static function isModelStarredForUser($modelClassName, $userId, $modelId)
         {
-            if (!static::modelHasStarredInterface($modelClassName))
-            {
-                throw new NotSupportedException();
-            }
-            $tableName = static::getStarredTableName($modelClassName);
-            $sql       = "SELECT id FROM {$tableName} WHERE user_id = :userId AND model_id = :modelId;";
-            $rows      = R::getAll($sql,
-                                   $values = array(
-                                    ':userId'    => $userId,
-                                    ':modelId'   => $modelId,
-                                   ));
-            if (count($rows) == 0)
-            {
-                return false;
-            }
-            return true;
+            static::ensureModelClassNameImplementsStarredInterface($modelClassName);
+            $starredModelClassName = static::getStarredModelClassName($modelClassName);
+            return (bool)$starredModelClassName::getCountByUserIdAndModelId($userId, $modelId);
         }
 
         public static function unmarkModelAsStarredForAllUsers(RedBeanModel $model)
         {
             $modelClassName = get_class($model);
-            if (!static::modelHasStarredInterface($modelClassName))
-            {
-                throw new NotSupportedException();
-            }
-            $tableName = static::getStarredTableName($modelClassName);
-            $sql       = "DELETE FROM {$tableName} WHERE model_id = :modelId;";
-            R::exec($sql, array(
-                ':modelId' => $model->id,
-            ));
+            static::ensureModelClassNameImplementsStarredInterface($modelClassName);
+            $modelId        = $model->id;
+            $starredModelClassName = static::getStarredModelClassName($modelClassName);
+            $starredModelClassName::unmarkModelAsStarredByUserIdAndModelId(null, $modelId);
         }
 
         public static function toggleModelStarStatus($modelClassName, $modelId)
@@ -232,6 +157,23 @@
         public static function renderToggleStarStatusLink($data, $row)
         {
             echo static::getToggleStarStatusLink($data, $row);
+        }
+
+        public static function getStarredModelClassName($modelClassName)
+        {
+            if (!StringUtil::endsWith($modelClassName, 'Starred'))
+            {
+                $modelClassName .= 'Starred';
+            }
+            return $modelClassName;
+        }
+
+        protected static function ensureModelClassNameImplementsStarredInterface($modelClassName)
+        {
+            if (!static::modelHasStarredInterface($modelClassName))
+            {
+                throw new NotSupportedException($modelClassName . " does not implement StarredInterface");
+            }
         }
     }
 ?>

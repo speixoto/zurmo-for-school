@@ -34,6 +34,6 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    define('COMMON_ROOT',   realpath(dirname(__FILE__) . '/../..'));
     define('INSTANCE_ROOT', realpath(getcwd() . '/../..'));
+    require_once(realpath(dirname(__FILE__) . '/../../roots.php'));
 ?>

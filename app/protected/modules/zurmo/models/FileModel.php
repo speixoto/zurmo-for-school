@@ -46,18 +46,18 @@
                     'type',
                 ),
                 'relations' => array(
-                    'fileContent' => array(RedBeanModel::HAS_ONE,  'FileContent', RedBeanModel::OWNED),
+                    'fileContent' => array(static::HAS_ONE,  'FileContent', static::NOT_OWNED),
                 ),
                 'rules' => array(
                     array('fileContent', 'required'),
                     array('name',        'required'),
-                    array('name', 'type', 'type' => 'string'),
-                    array('name', 'length',  'min'  => 3, 'max' => 100),
+                    array('name',        'type',    'type' => 'string'),
+                    array('name',        'length',  'min'  => 1, 'max' => 100),
                     array('size',        'required'),
-                    array('size', 'type', 'type' => 'integer'),
+                    array('size',        'type',    'type' => 'integer'),
                     array('type',        'required'),
-                    array('type', 'type', 'type' => 'string'),
-                    array('type', 'length',  'min'  => 3, 'max' => 128),
+                    array('type',        'type',    'type' => 'string'),
+                    array('type',        'length',  'min'  => 1, 'max' => 128),
 
                 ),
                 'defaultSortAttribute' => 'name',
@@ -77,7 +77,7 @@
         {
             return array_merge(parent::translatedAttributeLabels($language),
                 array(
-                    'name' => Zurmo::t('Core', 'Owner', array(), null, $language),
+                    'name' => Zurmo::t('ZurmoModule', 'Owner', array(), null, $language),
                     'size' => Zurmo::t('Core', 'Size',  array(), null, $language),
                     'type' => Zurmo::t('Core', 'Type',  array(), null, $language),
                 )
@@ -98,6 +98,33 @@
             {
                 return false;
             }
+        }
+
+        protected function beforeDelete()
+        {
+            $searchAttributeData = array();
+            $searchAttributeData['clauses'] = array(
+                1 => array(
+                    'attributeName'    => 'fileContent',
+                    'relatedModelData' => array(
+                        'attributeName' => 'id',
+                        'operatorType'  => 'equals',
+                        'value'         => $this->fileContent->id,
+                    )
+                ),
+            );
+            $searchAttributeData['structure'] = '1';
+            $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('FileModel');
+            $where             = RedBeanModelDataProvider::makeWhere('FileModel', $searchAttributeData, $joinTablesAdapter);
+            if (count(static::getSubsetIds($joinTablesAdapter, null, null, $where)) == 1)
+            {
+                $fileContent = FileContent::getById($this->fileContent->id);
+                if (!$fileContent->delete())
+                {
+                    return false;
+                }
+            }
+            return parent::beforeDelete();
         }
     }
 ?>

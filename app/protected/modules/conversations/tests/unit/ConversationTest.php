@@ -270,14 +270,14 @@
             $this->assertEquals(4, count($comments));
 
             //check count of conversation_items
-            $count   = R::getRow('select count(*) count from conversation_item');
+            $count   = ZurmoRedBean::getRow('select count(*) count from conversation_item');
             $this->assertEquals(2, $count['count']);
 
             //remove the account, tests tthat ConversationObserver is correctly removing data from conversation_item
             $accounts                  = Account::getByName('anAccount2');
             $this->assertTrue($accounts[0]->delete());
 
-            $count   = R::getRow('select count(*) count from conversation_item');
+            $count   = ZurmoRedBean::getRow('select count(*) count from conversation_item');
             $this->assertEquals(1, $count['count']);
 
             foreach ($conversations as $conversation)
@@ -290,7 +290,7 @@
             }
 
             //Count of conversation items should be 0 since the ConversationsObserver should make sure it gets removed correctly.
-            $count   = R::getRow('select count(*) count from conversation_item');
+            $count   = ZurmoRedBean::getRow('select count(*) count from conversation_item');
             $this->assertEquals(0, $count['count']);
 
             //check that all comments are removed, since they are owned.

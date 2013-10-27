@@ -61,11 +61,11 @@
             {
                 Yii::app()->user->setFlash('notification', Zurmo::t('ZurmoModule', 'Custom data updated successfully.'));
             }
-            $breadcrumbLinks = array(
+            $breadCrumbLinks = array(
                 Zurmo::t('ZurmoModule', 'Developer Tools'),
             );
             $view = new ConfigurationPageView(ZurmoDefaultAdminViewUtil::
-                            makeViewWithBreadcrumbsForCurrentUser($this, new DevelopmentListView(), $breadcrumbLinks, 'SettingsBreadCrumbView'));
+                            makeViewWithBreadcrumbsForCurrentUser($this, new DevelopmentListView(), $breadCrumbLinks, 'SettingsBreadCrumbView'));
             echo $view->render();
         }
 

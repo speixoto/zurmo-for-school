@@ -41,7 +41,7 @@
     {
         public $activeActionElementType;
 
-        public $breadcrumbLinks;
+        public $breadCrumbLinks;
 
         protected function getMessageViewClassName()
         {
@@ -63,7 +63,7 @@
             $mixedView               = new ActionBarAndZeroModelsYetView($actionBarView, $messageView);
             $view                    = new MarketingListsPageView(MarketingDefaultViewUtil::
                                        makeViewWithBreadcrumbsForCurrentUser(
-                                       $this->controller, $mixedView, $this->breadcrumbLinks, 'MarketingBreadCrumbView'));
+                                       $this->controller, $mixedView, $this->breadCrumbLinks, 'MarketingBreadCrumbView'));
             echo $view->render();
         }
     }

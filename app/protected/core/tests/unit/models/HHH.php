@@ -44,11 +44,12 @@
                     'aaaMember',
                 ),
                 'relations' => array(
-                    'aaa'                => array(RedBeanModel::HAS_ONE_BELONGS_TO, 'AAA'),
-                    'eee'                => array(RedBeanModel::HAS_ONE,            'EEE'),
+                    'aaa'                => array(static::HAS_ONE_BELONGS_TO, 'AAA'),
+                    'eee'                => array(static::HAS_ONE,            'EEE'),
                 ),
                 'rules' => array(
                     array('aaaMember', 'type', 'type' => 'string'),
+                    array('aaaMember', 'length', 'max' => 255),
                 ),
             );
             return $metadata;

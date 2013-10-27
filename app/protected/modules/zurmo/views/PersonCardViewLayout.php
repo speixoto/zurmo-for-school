@@ -85,22 +85,16 @@
         {
             $element                       = new DropDownElement($this->model, 'title', null);
             $element->nonEditableTemplate  = '{content}';
+            $starLink = null;
+            $spanContent = null;
             if (StarredUtil::modelHasStarredInterface($this->model))
             {
                 $starLink = StarredUtil::getToggleStarStatusLink($this->model, null);
-            }
-            else
-            {
-                $starLink = null;
             }
             $salutation                    = $element->render();
             if ($salutation != null)
             {
                 $spanContent = ZurmoHtml::tag('span', array('class' => 'salutation'), $element->render());
-            }
-            else
-            {
-                $spanContent = null;
             }
             return ZurmoHtml::tag('h2', array(), $spanContent . strval($this->model) . $starLink);
         }
@@ -181,11 +175,13 @@
             $content = null;
             if ($this->model->officePhone != null)
             {
-                $content .= ZurmoHtml::tag('span', array('class' => 'icon-office-phone'), $this->model->officePhone);
+                $content .= Yii::app()->phoneHelper->resolvePersonCardViewOfficePhoneNumberContent($this->model->officePhone,
+                                                                                                    $this->model);
             }
             if ($this->model->mobilePhone != null)
             {
-                $content .= ZurmoHtml::tag('span', array('class' => 'icon-mobile-phone'), $this->model->mobilePhone);
+                $content .= Yii::app()->phoneHelper->resolvePersonCardViewMobilePhoneNumberContent($this->model->mobilePhone,
+                                                                                                    $this->model);
             }
             if ($this->model->primaryEmail->emailAddress != null)
             {

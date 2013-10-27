@@ -42,7 +42,7 @@
             $yiiVersion     = YiiBase::getVersion();
             if (method_exists('R', 'getVersion'))
             {
-                $redBeanVersion =  R::getVersion();
+                $redBeanVersion =  ZurmoRedBean::getVersion();
             }
             else
             {
@@ -77,9 +77,14 @@
                                     <li>Laura Engel</li>
                                     <li>Jason Green</li>
                                     <li>Stafford McKay</li>
+                                    <li>Sushil Meher</li>
+                                    <li>Nabeel Mushtaq</li>
                                     <li>Ivica Nedeljkovic</li>
                                     <li>Nilesh Patkar</li>
                                     <li>Ross Peetoom</li>
+                                    <li>Sérgio Peixoto</li>
+                                    <li>Muhammad Shoaib</li>
+                                    <li>Mayank Singhai</li>
                                     <li>Ray Stoeckicht</li>
                                 </ul>
                             </div>
@@ -90,7 +95,6 @@
                                     <li>Nev Delap        - Infrastructure</li>
                                     <li>Sergey Fayngold  - Language Infrastructure</li>
                                     <li>Theresa Neil     - User Interface Design</li>
-                                    <li>Sérgio Peixoto   - Portuguese Translation and Development</li>
                                     <li>Mandy Robinson   - Icons</li>
                                     <li>Sacha Telgenhof  - Language Infrastructure</li>
                                     <li>Subtle Patterns  - Background Textures</li>
@@ -174,9 +178,18 @@
 
         protected static function getZurmoVersionDisplayContent()
         {
-            $zurmoVersion = VERSION;
-            // Remove REPO_ID from Zurmo version
-            $zurmoVersion =  substr($zurmoVersion, 0, strpos($zurmoVersion, '(') - 1);
+            if(defined('COMMERCIAL_VERSION'))
+            {
+                $zurmoVersion = COMMERCIAL_VERSION;
+                // Remove REPO_ID from Zurmo version
+                $zurmoVersion =  'pro.' . substr($zurmoVersion, 0, strpos($zurmoVersion, '(') - 1);
+            }
+            else
+            {
+                $zurmoVersion = VERSION;
+                // Remove REPO_ID from Zurmo version
+                $zurmoVersion =  substr($zurmoVersion, 0, strpos($zurmoVersion, '(') - 1);
+            }
             return $zurmoVersion;
         }
 

@@ -41,7 +41,7 @@
     {
         public $activeActionElementType;
 
-        public $breadcrumbLinks;
+        public $breadCrumbLinks;
 
         protected function resolveMessageControllerId()
         {
@@ -73,7 +73,7 @@
             $mixedView               = new ActionBarAndZeroModelsYetView($actionBarView, $messageView);
             $view                    = new ContactWebFormsPageView(ZurmoDefaultAdminViewUtil::
                                        makeViewWithBreadcrumbsForCurrentUser(
-                                       $this->controller, $mixedView, $this->breadcrumbLinks, 'ContactWebFormsBreadCrumbView'));
+                                       $this->controller, $mixedView, $this->breadCrumbLinks, 'ContactWebFormsBreadCrumbView'));
             echo $view->render();
         }
     }

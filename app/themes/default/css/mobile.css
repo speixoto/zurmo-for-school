@@ -65,28 +65,28 @@ a.z-button,
 }
 .cf:before,
 .cf:after {
-  content: "";
+  content: " ";
   display: table;
 }
 .cf:after {
   clear: both;
 }
 .cf {
-  zoom: 1;
+  *zoom: 1;
 }
 .clearfix,
 .filter-portlet-model-bar {
-  zoom: 1;
+  *zoom: 1;
 }
 .clearfix:before,
-.filter-portlet-model-bar:before {
-  content: "";
+.filter-portlet-model-bar:before,
+.clearfix:after,
+.filter-portlet-model-bar:after {
+  content: " ";
   display: table;
 }
 .clearfix:after,
 .filter-portlet-model-bar:after {
-  content: "";
-  display: table;
   clear: both;
 }
 .flyout,
@@ -143,7 +143,7 @@ a.z-button,
   cursor: pointer;
   text-indent: 0;
   display: inline-block;
-  zoom: 1;
+  *zoom: 1;
 }
 .modal-view-toolbar a:before,
 .modal-view-toolbar input[type="submit"]:before,
@@ -155,8 +155,19 @@ a.z-button,
 .z-button:before,
 a.zButton:before,
 a.z-button:before,
-.white-button:before {
-  content: "";
+.white-button:before,
+.modal-view-toolbar a:after,
+.modal-view-toolbar input[type="submit"]:after,
+.modal-view-toolbar input[type="button"]:after,
+.form-toolbar a:after,
+.form-toolbar input[type="submit"]:after,
+.form-toolbar input[type="button"]:after,
+.zButton:after,
+.z-button:after,
+a.zButton:after,
+a.z-button:after,
+.white-button:after {
+  content: " ";
   display: table;
 }
 .modal-view-toolbar a:after,
@@ -170,8 +181,6 @@ a.z-button:before,
 a.zButton:after,
 a.z-button:after,
 .white-button:after {
-  content: "";
-  display: table;
   clear: both;
 }
 .modal-view-toolbar a.attachLoading.z-button,
@@ -238,15 +247,14 @@ a.z-button:not(.attachLoading):not(.green-button) .z-label,
   cursor: pointer;
   text-indent: 0;
   display: inline-block;
-  zoom: 1;
+  *zoom: 1;
 }
-.default-btn:before {
-  content: "";
+.default-btn:before,
+.default-btn:after {
+  content: " ";
   display: table;
 }
 .default-btn:after {
-  content: "";
-  display: table;
   clear: both;
 }
 .default-btn.attachLoading.z-button {
@@ -254,6 +262,21 @@ a.z-button:not(.attachLoading):not(.green-button) .z-label,
 }
 .default-btn:not(.attachLoading):not(.green-button) .z-label {
   background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
+}
+.z-button.disabled {
+  pointer-events: none;
+  filter: alpha(opacity=50);
+  -khtml-opacity: 0.5;
+  -moz-opacity: 0.5;
+  opacity: 0.5;
+  -webkit-filter: grayscale(85%);
+  -moz-filter: grayscale(85%);
+  -ms-filter: grayscale(85%);
+  -o-filter: grayscale(85%);
+  filter: grayscale(85%);
+  filter: gray;
+  /* IE 6-9 */
+
 }
 /*
 .zButton:not(.attacheLoading),
@@ -567,7 +590,7 @@ body > div {
 }
 .mobile-view-toolbar-container .hasDropDown span.select-arrow:before {
   content: "n";
-  font-weight: normal;
+  font-weight: normal !important;
   font-size: 30px;
   font-family: "zurmo_gamification_symbly_rRg";
   line-height: 26px;
@@ -696,15 +719,14 @@ body > div {
   border-radius: 0 0 0 5px;
 }
 #MenuView > ul > li {
-  zoom: 1;
+  *zoom: 1;
 }
-#MenuView > ul > li:before {
-  content: "";
+#MenuView > ul > li:before,
+#MenuView > ul > li:after {
+  content: " ";
   display: table;
 }
 #MenuView > ul > li:after {
-  content: "";
-  display: table;
   clear: both;
 }
 #MenuView > ul > li > a em {
@@ -726,7 +748,7 @@ body > div {
   -ms-border-radius: 4px;
   -o-border-radius: 4px;
   border-radius: 4px;
-  font-weight: normal;
+  font-weight: normal !important;
   font-size: 24px;
   font-family: "zurmo_gamification_symbly_rRg";
   -webkit-text-shadow: none !important;
@@ -1042,7 +1064,7 @@ div:not(#MashableInboxActionBarForViews) .toolbar-mbmenu .options-menu > li > a 
 div:not(#LeaderboardView) .toolbar-mbmenu .options-menu > li > a:after,
 div:not(#MashableInboxActionBarForViews) .toolbar-mbmenu .options-menu > li > a:after {
   content: "{";
-  font-weight: normal;
+  font-weight: normal !important;
   font-size: 24px;
   font-family: "zurmo_gamification_symbly_rRg";
   left: -5px;

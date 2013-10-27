@@ -51,7 +51,7 @@
             catch (NotFoundException $e)
             {
             }
-            return Zurmo::t('MashableInboxModule', '(Unnamed)');
+            return Zurmo::t('Core', '(Unnamed)');
         }
 
         public static function getModuleClassName()
@@ -69,8 +69,9 @@
             $metadata = parent::getDefaultMetadata();
             $metadata[__CLASS__] = array(
                 'relations' => array(
-                    'person'      => array(RedBeanModel::HAS_ONE, 'Item', RedBeanModel::NOT_OWNED,
-                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'person'),
+                    'person'      => array(static::HAS_ONE, 'Item', static::NOT_OWNED,
+                                                static::LINK_TYPE_SPECIFIC, 'person'),
+                    'mission' => array(static::HAS_ONE,  'Mission', static::NOT_OWNED),
                 ),
             );
             return $metadata;
