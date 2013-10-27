@@ -104,5 +104,20 @@
                                                             )
                                                         );
         }
+
+        /**
+         * Delete item from modelcreationapisync table
+         * @param $serviceName
+         * @param $modelId
+         * @param $modelClassName
+         */
+        public static function deleteItem($serviceName, $modelId, $modelClassName)
+        {
+            $sql = "DELETE FROM " . self::TABLE_NAME .
+                " where servicename = '{$serviceName}'" .
+                " AND modelid = '{$modelId}'" .
+                " AND modelclassname = '{$modelClassName}'";
+            R::exec($sql);
+        }
     }
 ?>
