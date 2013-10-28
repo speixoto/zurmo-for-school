@@ -40,13 +40,18 @@
          * Based on the current theme, retrieve the email notification template for html content and replace the
          * content tags with the appropriate strings
          * @param string $bodyContent
+         * @param User|null $user
          * @return string
          */
-        public static function resolveNotificationHtmlTemplate($bodyContent)
+        public static function resolveNotificationHtmlTemplate($bodyContent, User $user = null)
         {
             assert('is_string($bodyContent)');
+            if ($user === null)
+            {
+                $user = Yii::app()->user->userModel->id;
+            }
             $url                                = Yii::app()->createAbsoluteUrl('users/default/configurationEdit',
-                                                  array('id' => Yii::app()->user->userModel->id));
+                                                  array('id' => $user));
             $htmlTemplate                       = self::getNotificationHtmlTemplate();
             $htmlContent                        = array();
             $htmlContent['{bodyContent}']       = $bodyContent;
@@ -89,13 +94,18 @@
          * Based on the current theme, retrieve the email notification template for text content and replace the
          * content tags with the appropriate strings
          * @param string $bodyContent
+         * @param User $user
          * @return string
          */
-        public static function resolveNotificationTextTemplate($bodyContent)
+        public static function resolveNotificationTextTemplate($bodyContent, User $user = null)
         {
             assert('is_string($bodyContent)');
+            if ($user === null)
+            {
+                $user = Yii::app()->user->userModel->id;
+            }
             $url                                = Yii::app()->createAbsoluteUrl('users/default/configurationEdit',
-                                                  array('id' => Yii::app()->user->userModel->id));
+                                                  array('id' => $user));
             $htmlTemplate                       = self::getNotificationTextTemplate();
             $htmlContent                        = array();
             $htmlContent['{bodyContent}']       = $bodyContent;
