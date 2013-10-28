@@ -330,7 +330,7 @@ Cc: 'John Wein' <john@example.com>, Peter Smith <peter@example.com>
 
             // There are no users in system with the email.
             Yii::app()->user->userModel = $user;
-            $personOrAccount = EmailArchivingUtil::resolvePersonsOrAccountByEmailAddress($emailAddress,
+            $personOrAccount = EmailArchivingUtil::resolvePersonOrAccountByEmailAddress($emailAddress,
                                                                                         false,
                                                                                         false,
                                                                                         false);
@@ -341,7 +341,7 @@ Cc: 'John Wein' <john@example.com>, Peter Smith <peter@example.com>
             $anotherUser->primaryEmail->emailAddress = $emailAddress;
             $this->assertTrue($anotherUser->save());
 
-            $personOrAccount = EmailArchivingUtil::resolvePersonsOrAccountByEmailAddress($emailAddress,
+            $personOrAccount = EmailArchivingUtil::resolvePersonOrAccountByEmailAddress($emailAddress,
                                                                                         false,
                                                                                         false,
                                                                                         false);
@@ -353,7 +353,7 @@ Cc: 'John Wein' <john@example.com>, Peter Smith <peter@example.com>
             $anotherUser->primaryEmail->emailAddress = 'sample45@example.com';
             $this->assertTrue($anotherUser->save());
             Yii::app()->user->userModel = $user;
-            $personOrAccount = EmailArchivingUtil::resolvePersonsOrAccountByEmailAddress($emailAddress,
+            $personOrAccount = EmailArchivingUtil::resolvePersonOrAccountByEmailAddress($emailAddress,
                                                                                         false,
                                                                                         false,
                                                                                         true);
@@ -365,7 +365,7 @@ Cc: 'John Wein' <john@example.com>, Peter Smith <peter@example.com>
             $anotherUser->primaryEmail->emailAddress = $emailAddress;
             $this->assertTrue($anotherUser->save());
             Yii::app()->user->userModel = $user;
-            $personOrAccount = EmailArchivingUtil::resolvePersonsOrAccountByEmailAddress($emailAddress,
+            $personOrAccount = EmailArchivingUtil::resolvePersonOrAccountByEmailAddress($emailAddress,
                                                                                         false,
                                                                                         false,
                                                                                         true);
@@ -391,7 +391,7 @@ Cc: 'John Wein' <john@example.com>, Peter Smith <peter@example.com>
 
             $this->assertTrue($account->save());
             Yii::app()->user->userModel = $user;
-            $personOrAccount = EmailArchivingUtil::resolvePersonsOrAccountByEmailAddress($emailAddress,
+            $personOrAccount = EmailArchivingUtil::resolvePersonOrAccountByEmailAddress($emailAddress,
                                                                                         false,
                                                                                         false,
                                                                                         true);
@@ -400,7 +400,7 @@ Cc: 'John Wein' <john@example.com>, Peter Smith <peter@example.com>
             $account->owner       = $user;
             $this->assertTrue($account->save());
             Yii::app()->user->userModel = $user;
-            $personOrAccount = EmailArchivingUtil::resolvePersonsOrAccountByEmailAddress($emailAddress,
+            $personOrAccount = EmailArchivingUtil::resolvePersonOrAccountByEmailAddress($emailAddress,
                                                                                         false,
                                                                                         false,
                                                                                         true);
@@ -411,7 +411,7 @@ Cc: 'John Wein' <john@example.com>, Peter Smith <peter@example.com>
             // Now test with contacts/leads. Please note that we are not removing email address
             // from users and accounts, so if contact or lead exist with this email, they should be returned
             Yii::app()->user->userModel = $user;
-            $personOrAccount = EmailArchivingUtil::resolvePersonsOrAccountByEmailAddress($emailAddress,
+            $personOrAccount = EmailArchivingUtil::resolvePersonOrAccountByEmailAddress($emailAddress,
                                                                                         true,
                                                                                         true,
                                                                                         false);
@@ -423,7 +423,7 @@ Cc: 'John Wein' <john@example.com>, Peter Smith <peter@example.com>
             $anotherUser->primaryEmail->emailAddress = $emailAddress;
             $this->assertTrue($anotherUser->save());
             Yii::app()->user->userModel = $user;
-            $personOrAccount = EmailArchivingUtil::resolvePersonsOrAccountByEmailAddress($emailAddress,
+            $personOrAccount = EmailArchivingUtil::resolvePersonOrAccountByEmailAddress($emailAddress,
                                                                                         false,
                                                                                         false,
                                                                                         true);
@@ -453,7 +453,7 @@ Cc: 'John Wein' <john@example.com>, Peter Smith <peter@example.com>
             $this->assertTrue($anotherUser->save());
 
             Yii::app()->user->userModel = $user;
-            $personOrAccount = EmailArchivingUtil::resolvePersonsOrAccountByEmailAddress($emailAddress,
+            $personOrAccount = EmailArchivingUtil::resolvePersonOrAccountByEmailAddress($emailAddress,
                                                                                         true,
                                                                                         true,
                                                                                         false);
@@ -467,7 +467,7 @@ Cc: 'John Wein' <john@example.com>, Peter Smith <peter@example.com>
             $this->assertTrue($anotherUser->save());
 
             Yii::app()->user->userModel = $user;
-            $personOrAccount = EmailArchivingUtil::resolvePersonsOrAccountByEmailAddress($emailAddress,
+            $personOrAccount = EmailArchivingUtil::resolvePersonOrAccountByEmailAddress($emailAddress,
                                                                                         true,
                                                                                         true,
                                                                                         true);
