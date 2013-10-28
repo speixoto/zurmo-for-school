@@ -148,7 +148,8 @@
                 else
                 {
                     $label = '% ' . Zurmo::t('ProjectsModule', 'Complete');
-                    $color = (int) $value > 0 ? 'percent-green' : 'percent-yellow';
+                    $color = (int) $value > 0 ? 'percent-yellow' : 'percent-red';
+                    $color = (int) $value == 100 ? 'percent-green' : $color;
                     $content .= ZurmoHtml::tag('div', array('class' => 'project-stats percent-complete ' . $color),
                                             ZurmoHtml::tag('strong', array(), $value) .
                                             ZurmoHtml::tag('span', array(), $label));
