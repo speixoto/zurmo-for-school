@@ -62,7 +62,7 @@
 
         const ERROR_TEMP_DIR_NOT_WRITABLE               = -4;
 
-        protected static $dependentTestModelClassNames = array();
+        protected static $dependentTestModelClassNames  = array();
 
         public static function suite()
         {
@@ -120,6 +120,7 @@
             $includeWalkthroughs  = !$excludeWalkthroughs && !$onlyBenchmarks;
             $includeBenchmarks    = !$excludeBenchmarks && !$onlyWalkthroughs;
 
+            $userModels             = Yii::app()->additionalModelsConfig->userModels;
             $suite = new PHPUnit_Framework_TestSuite();
             $suite->setName("$whatToTest Tests");
             self::buildAndAddSuiteFromDirectory($suite, 'Framework', COMMON_ROOT . '/protected/core/tests/unit', $whatToTest, true, false, $includeBenchmarks);
@@ -200,6 +201,8 @@
             }
             echo PHP_EOL;
             static::closeDatabaseConnection();
+            // restore userModels after read permissions have been handled
+            Yii::app()->additionalModelsConfig->userModels = $userModels;
             return $suite;
         }
 
@@ -259,7 +262,7 @@
                                 if (@class_exists($className, false))
                                 {
                                     $suite->addTestSuite(new PHPUnit_Framework_TestSuite($className));
-                                    static::resolveDependentTestModelClassNamesForClass($className);
+                                    static::resolveDependentTestModelClassNamesForClass($className, $directoryName);
                                 }
                             }
                         }
@@ -278,15 +281,34 @@
                                                                                                 $messageLogger);
         }
 
-        protected static function resolveDependentTestModelClassNamesForClass($className)
+        protected static function resolveDependentTestModelClassNamesForClass($className, $directoryName)
         {
             $dependentTestModelClassNames = $className::getDependentTestModelClassNames();
             if (!empty($dependentTestModelClassNames))
             {
                 $dependentTestModelClassNames = CMap::mergeArray(static::$dependentTestModelClassNames,
-                    $dependentTestModelClassNames);
+                                                                    $dependentTestModelClassNames);
                 static::$dependentTestModelClassNames = array_unique($dependentTestModelClassNames);
+                static::registerPathAliasForAdditionalModelsConfig($directoryName);
             }
+        }
+
+        protected static function registerPathAliasForAdditionalModelsConfig($directoryName)
+        {
+            $pathAlias = static::generatePathAliasToTestModelsByUnitTestDirectoryName($directoryName);
+            if (!in_array($pathAlias, Yii::app()->additionalModelsConfig->userModels))
+            {
+                Yii::app()->additionalModelsConfig->userModels[] = $pathAlias;
+            }
+        }
+
+        protected static function generatePathAliasToTestModelsByUnitTestDirectoryName($directoryName)
+        {
+            $path = substr($directoryName, strpos($directoryName, '/protected') + 10);
+            $path = substr($path, 0, strpos($path, '/unit') + 5);
+            $path = "application${path}/models";
+            $path = str_replace('/', '.', $path);
+            return $path;
         }
 
         protected static function setupDatabaseConnection($force = false)
