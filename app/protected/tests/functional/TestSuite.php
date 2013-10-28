@@ -39,6 +39,7 @@
     require_once('../common/testRoots.php');
     require_once('../common/TestConfigFileUtils.php');
     TestConfigFileUtils::configureConfigFiles();
+    require_once(INSTANCE_ROOT . '/protected/config/debugTest.php');
 
     require_once 'File/Iterator.php';
     require_once('File/Iterator/Factory.php');
