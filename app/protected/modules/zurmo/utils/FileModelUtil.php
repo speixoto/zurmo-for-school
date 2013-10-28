@@ -169,10 +169,6 @@
                 $fileContent->content   = $existingFileModel->fileContent->content;
                 $file->fileContent      = $fileContent;
             }
-            else
-            {
-                $file->fileContent      = $existingFileModel->fileContent;
-            }
             if (!$file->save())
             {
                 return false;
