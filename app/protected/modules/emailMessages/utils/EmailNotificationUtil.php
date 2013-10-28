@@ -48,10 +48,10 @@
             assert('is_string($bodyContent)');
             if ($user === null)
             {
-                $user = Yii::app()->user->userModel->id;
+                $user = Yii::app()->user->userModel;
             }
             $url                                = Yii::app()->createAbsoluteUrl('users/default/configurationEdit',
-                                                  array('id' => $user));
+                                                  array('id' => $user->id));
             $htmlTemplate                       = self::getNotificationHtmlTemplate();
             $htmlContent                        = array();
             $htmlContent['{bodyContent}']       = $bodyContent;
@@ -102,10 +102,10 @@
             assert('is_string($bodyContent)');
             if ($user === null)
             {
-                $user = Yii::app()->user->userModel->id;
+                $user = Yii::app()->user->userModel;
             }
             $url                                = Yii::app()->createAbsoluteUrl('users/default/configurationEdit',
-                                                  array('id' => $user));
+                                                  array('id' => $user->id));
             $htmlTemplate                       = self::getNotificationTextTemplate();
             $htmlContent                        = array();
             $htmlContent['{bodyContent}']       = $bodyContent;
