@@ -39,7 +39,11 @@
      */
     class ProjectsDemoDataMaker extends DemoDataMaker
     {
-        protected $ratioToLoad = 3;
+        /**
+         * Limit projects to 5
+         * @var int
+         */
+        protected $loadMagnitude = 5;
 
         public static function getDependencies()
         {
@@ -158,8 +162,6 @@
                 'Prepare telephone directory for the company',
                 'Get an accounting software',
                 'Usage of google analytics on company website',
-                'Buy new laptops for the company',
-                'Arrange a good chef for the cafeteria'
             );
             $multipliedTasksList = array();
             for($i = 1; $i <= 2; $i++)
@@ -191,12 +193,6 @@
                                                                         'Discuss with the team'),
                 'Usage of google analytics on company website'=> array('Explore the usage',
                                                                         'Implement into the website'),
-                'Buy new laptops for the company'             => array('Gather the information',
-                                                                        'Do research',
-                                                                        'Submit the analysis for the review'),
-                'Arrange a good chef for the cafeteria'       => array('List down the chefs available',
-                                                                        'Ask them for a sample',
-                                                                        'Get an approval on the same'),
             );
 
             return $checklistItemsArray[$key];
@@ -220,10 +216,6 @@
                                                                         'Less number of people required'),
                 'Usage of google analytics on company website'=> array('Aids in site analysis',
                                                                         'Would be helpful from SEO perspective'),
-                'Buy new laptops for the company'             => array('Sony vaio would be good',
-                                                                        'No no mac would be more better'),
-                'Arrange a good chef for the cafeteria'       => array('I want to taste every sample',
-                                                                        'Please arrange the same for me'),
             );
             return $comments[$key];
         }
