@@ -120,7 +120,6 @@
             $includeWalkthroughs  = !$excludeWalkthroughs && !$onlyBenchmarks;
             $includeBenchmarks    = !$excludeBenchmarks && !$onlyWalkthroughs;
 
-            $userModels             = Yii::app()->additionalModelsConfig->userModels;
             $suite = new PHPUnit_Framework_TestSuite();
             $suite->setName("$whatToTest Tests");
             self::buildAndAddSuiteFromDirectory($suite, 'Framework', COMMON_ROOT . '/protected/core/tests/unit', $whatToTest, true, false, $includeBenchmarks);
@@ -196,13 +195,9 @@
                 echo PHP_EOL;
                 static::buildDependentTestModels($messageLogger);
                 $messageLogger->printMessages();
-                // recreate any missing read tables.
-                static::rebuildReadPermissionsTables(false, true, $messageStreamer);
             }
             echo PHP_EOL;
             static::closeDatabaseConnection();
-            // restore userModels after read permissions have been handled
-            Yii::app()->additionalModelsConfig->userModels = $userModels;
             return $suite;
         }
 
@@ -279,6 +274,7 @@
         {
             RedBeanModelsToTablesAdapter::generateTablesFromModelClassNames(static::$dependentTestModelClassNames,
                                                                                                 $messageLogger);
+            static::buildReadPermissionsOptimizationTableForTestModels();
         }
 
         protected static function resolveDependentTestModelClassNamesForClass($className, $directoryName)
@@ -289,27 +285,21 @@
                 $dependentTestModelClassNames = CMap::mergeArray(static::$dependentTestModelClassNames,
                                                                     $dependentTestModelClassNames);
                 static::$dependentTestModelClassNames = array_unique($dependentTestModelClassNames);
-                static::registerPathAliasForAdditionalModelsConfig($directoryName);
             }
         }
 
-        protected static function registerPathAliasForAdditionalModelsConfig($directoryName)
+        protected static function buildReadPermissionsOptimizationTableForTestModels()
         {
-            $pathAlias = static::generatePathAliasToTestModelsByUnitTestDirectoryName($directoryName);
-            if (!in_array($pathAlias, Yii::app()->additionalModelsConfig->userModels))
+            foreach (static::$dependentTestModelClassNames as $modelClassName)
             {
-                Yii::app()->additionalModelsConfig->userModels[] = $pathAlias;
+                if (is_subclass_of($modelClassName, 'SecurableItem') && $modelClassName::hasReadPermissionsOptimization())
+                {
+                    ReadPermissionsOptimizationUtil::recreateTable(ReadPermissionsOptimizationUtil::getMungeTableName(
+                                                                                                    $modelClassName));
+                }
             }
         }
 
-        protected static function generatePathAliasToTestModelsByUnitTestDirectoryName($directoryName)
-        {
-            $path = substr($directoryName, strpos($directoryName, '/protected') + 10);
-            $path = substr($path, 0, strpos($path, '/unit') + 5);
-            $path = "application${path}/models";
-            $path = str_replace('/', '.', $path);
-            return $path;
-        }
 
         protected static function setupDatabaseConnection($force = false)
         {

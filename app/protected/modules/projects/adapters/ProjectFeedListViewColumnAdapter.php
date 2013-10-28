@@ -100,37 +100,37 @@
             {
                 return Zurmo::t('ProjectsModule', '<strong><i>{projectname}</i></strong> is added by user
                                                    <strong>{username}</strong>
-                                                   <small>about {timeSpanLabel} ago</small>', $data);
+                                                   <small>about {timeSpanLabel}</small>', $data);
             }
             elseif($event == ProjectAuditEvent::PROJECT_ARCHIVED)
             {
                 return Zurmo::t('ProjectsModule', '<strong><i>{projectname}</i></strong> is archived by user
                                                    <strong>{username}</strong>
-                                                   <small>about {timeSpanLabel} ago</small>', $data);
+                                                   <small>about {timeSpanLabel}</small>', $data);
             }
             elseif($event == ProjectAuditEvent::TASK_STATUS_CHANGED)
             {
                 return Zurmo::t('ProjectsModule', '<strong><i>{projectname}</i> {username} changed status
                                                   from "{fromstatus} to {tostatus}"</strong>
-                                                  <small>about {timeSpanLabel} ago</small>', $data);
+                                                  <small>about {timeSpanLabel}</small>', $data);
             }
             elseif($event == ProjectAuditEvent::TASK_ADDED)
             {
                 return Zurmo::t('ProjectsModule', '<strong><i>{projectname}</i> {username}
                                                     added task "{taskname}"</strong>
-                                                    <small>about {timeSpanLabel} ago</small>', $data);
+                                                    <small>about {timeSpanLabel}</small>', $data);
             }
             elseif($event == ProjectAuditEvent::COMMENT_ADDED)
             {
                 return Zurmo::t('ProjectsModule', '<strong><i>{projectname}</i> {username}
                                                     added comment "{comment}"</strong>
-                                                    <small>about {timeSpanLabel} ago</small>', $data);
+                                                    <small>about {timeSpanLabel}</small>', $data);
             }
             elseif($event == ProjectAuditEvent::CHECKLIST_ITEM_ADDED)
             {
                 return Zurmo::t('ProjectsModule', '<strong><i>{projectname}</i> {username}
                                                   added checklist item "{taskcheckitemname} in Task {taskname}"
-                                                  </strong> <small>about {timeSpanLabel} ago</small>', $data);
+                                                  </strong> <small>about {timeSpanLabel}</small>', $data);
             }
         }
     }
