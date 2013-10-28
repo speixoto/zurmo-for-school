@@ -49,7 +49,7 @@
             $forcePhp = true;
             assert('is_bool($overwriteExistingTables)');
             assert('is_bool($forcePhp)');
-            foreach (self::getMungableModelClassNames() as $modelClassName)
+            foreach (PathUtil::getAllMungableModelClassNames() as $modelClassName)
             {
                 $mungeTableName     = self::getMungeTableName($modelClassName);
                 $readTableExists    = ZurmoRedBean::$writer->doesTableExist($mungeTableName);
@@ -390,7 +390,7 @@
          */
         public static function userBeingDeleted($user) // Call being methods before the destructive operation.
         {
-            foreach (self::getMungableModelClassNames() as $modelClassName)
+            foreach (PathUtil::getAllMungableModelClassNames() as $modelClassName)
             {
                 $mungeTableName = self::getMungeTableName($modelClassName);
                 if ($user->role->id > 0)
@@ -412,7 +412,7 @@
          */
         public static function userAddedToGroup(Group $group, User $user)
         {
-            foreach (self::getMungableModelClassNames() as $modelClassName)
+            foreach (PathUtil::getAllMungableModelClassNames() as $modelClassName)
             {
                 $mungeTableName = self::getMungeTableName($modelClassName);
                 $groupId = $group->id;
@@ -435,7 +435,7 @@
          */
         public static function userRemovedFromGroup(Group $group, User $user)
         {
-            foreach (self::getMungableModelClassNames() as $modelClassName)
+            foreach (PathUtil::getAllMungableModelClassNames() as $modelClassName)
             {
                 $mungeTableName = self::getMungeTableName($modelClassName);
                 $groupId = $group->id;
@@ -490,7 +490,7 @@
             {
                 self::userRemovedFromGroup($group, $user);
             }
-            foreach (self::getMungableModelClassNames() as $modelClassName)
+            foreach (PathUtil::getAllMungableModelClassNames() as $modelClassName)
             {
                 $groupId = $group->id;
                 $mungeTableName = self::getMungeTableName($modelClassName);
@@ -528,7 +528,7 @@
                         from   permission
                         where  permitable_id in (' . join(', ', $parentGroupPermitableIds) . ')';
                 $securableItemIds = ZurmoRedBean::getCol($sql);
-                foreach (self::getMungableModelClassNames() as $modelClassName)
+                foreach (PathUtil::getAllMungableModelClassNames() as $modelClassName)
                 {
                     $mungeTableName = self::getMungeTableName($modelClassName);
                     self::$countMethod1($mungeTableName, $securableItemIds, $group);
@@ -543,7 +543,7 @@
             }
             if (!$isAdd)
             {
-                foreach (self::getMungableModelClassNames() as $modelClassName)
+                foreach (PathUtil::getAllMungableModelClassNames() as $modelClassName)
                 {
                     $mungeTableName = self::getMungeTableName($modelClassName);
                     self::garbageCollect($mungeTableName);
@@ -606,7 +606,7 @@
          */
         public static function roleBeingDeleted(Role $role) // Call being methods before the destructive operation.
         {
-            foreach (self::getMungableModelClassNames() as $modelClassName)
+            foreach (PathUtil::getAllMungableModelClassNames() as $modelClassName)
             {
                 if ($role->role->id > 0)
                 {
@@ -637,7 +637,7 @@
 
             $countMethod = $isSet ? 'bulkIncrementParentRolesCounts' : 'bulkDecrementParentRolesCounts';
 
-            foreach (self::getMungableModelClassNames() as $modelClassName)
+            foreach (PathUtil::getAllMungableModelClassNames() as $modelClassName)
             {
                 $mungeTableName = self::getMungeTableName($modelClassName);
 
@@ -768,7 +768,7 @@
         public static function userAddedToRole(User $user)
         {
             assert('$user->role->id > 0');
-            foreach (self::getMungableModelClassNames() as $modelClassName)
+            foreach (PathUtil::getAllMungableModelClassNames() as $modelClassName)
             {
                 $mungeTableName = self::getMungeTableName($modelClassName);
                 $userId = $user->id;
@@ -805,7 +805,7 @@
          */
         public static function userBeingRemovedFromRole(User $user, Role $role)
         {
-            foreach (self::getMungableModelClassNames() as $modelClassName)
+            foreach (PathUtil::getAllMungableModelClassNames() as $modelClassName)
             {
                 $mungeTableName = self::getMungeTableName($modelClassName);
                 $userId = $user->id;
@@ -1112,42 +1112,6 @@
         {
             assert('$item instanceof User || $item instanceof Group || $item instanceof Role');
             return substr(get_class($item), 0, 1);
-        }
-
-        //public for testing only
-        public static function getMungableModelClassNames()
-        {
-            try
-            {
-                // not using default value to save cpu cycles on requests that follow the first exception.
-                return GeneralCache::getEntry('mungableModelClassNames');
-            }
-            catch (NotFoundException $e)
-            {
-                $mungableClassNames = self::findMungableModelClassNames();
-                GeneralCache::cacheEntry('mungableModelClassNames', $mungableClassNames);
-                return $mungableClassNames;
-            }
-        }
-
-        //public for testing only.
-        public static function findMungableModelClassNames()
-        {
-            $mungableModelClassNames = array();
-            $modules = Module::getModuleObjects();
-            foreach ($modules as $module)
-            {
-                $modelClassNames = $module::getModelClassNames();
-                foreach ($modelClassNames as $modelClassName)
-                {
-                    if (is_subclass_of($modelClassName, 'SecurableItem') &&
-                        $modelClassName::hasReadPermissionsOptimization())
-                    {
-                        $mungableModelClassNames[] = $modelClassName;
-                    }
-                }
-            }
-            return $mungableModelClassNames;
         }
 
         protected static function getMainTableName($modelClassName)

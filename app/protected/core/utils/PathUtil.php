@@ -124,7 +124,7 @@
             {
                 $allModelClasses = array_filter($allModelClasses, $filter);
             }
-            $allModelClasses = array_unique($allModelClasses);
+            $allModelClasses = array_unique(array_values($allModelClasses));
             return $allModelClasses;
         }
 
@@ -138,6 +138,12 @@
         {
             return static::getAllModelClassNamesWithFilterFromCache('readPermissionsSubscriptionModelClassNames',
                                                                     'static::filterReadSubscriptionModels');
+        }
+
+        public static function getAllMungableModelClassNames()
+        {
+            return static::getAllModelClassNamesWithFilterFromCache('mungableModelClassNames',
+                                                                    'static::filterMungableModels');
         }
 
         protected static function getAllModelClassNamesWithFilterFromCache($identifier, $filter)
@@ -165,6 +171,14 @@
         protected static function filterReadSubscriptionModels($model)
         {
             if (is_subclass_of($model, 'OwnedSecurableItem') && $model::hasReadPermissionsSubscriptionOptimization())
+            {
+                return $model;
+            }
+        }
+
+        protected static function filterMungableModels($model)
+        {
+            if (is_subclass_of($model, 'SecurableItem') && $model::hasReadPermissionsOptimization())
             {
                 return $model;
             }
