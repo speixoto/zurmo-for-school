@@ -46,6 +46,11 @@
             return static::resolveUrlForThemeFile(static::ONE_BY_ONE_PIXEL_IMAGE_PATH, $absolute);
         }
 
+        public static function resolveOneByOnePixelImagePath()
+        {
+            return Yii::app()->themeManager->basePath . static::ONE_BY_ONE_PIXEL_IMAGE_PATH;
+        }
+
         protected static function resolveUrlForThemeFile($filePath, $absolute = true)
         {
             if (strpos($filePath, '/') !== 0)

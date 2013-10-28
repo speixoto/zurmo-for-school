@@ -146,7 +146,7 @@
             }
             else
             {
-                return array('redirect' => false, 'imageUrl' => PlaceholderImageUtil::resolveOneByOnePixelImageUrl());
+                return array('redirect' => false, 'imagePath' => PlaceholderImageUtil::resolveOneByOnePixelImagePath());
             }
         }
 
