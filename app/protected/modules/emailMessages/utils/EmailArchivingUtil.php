@@ -289,7 +289,7 @@
          * @param boolean $userCanAccessAccounts
          * @return Contact || Account || User || NULL
          */
-        public static function resolvePersonOrAccountByEmailAddress($emailAddress,
+        public static function resolvePersonsOrAccountByEmailAddress($emailAddress,
                                                                     $userCanAccessContacts = false,
                                                                     $userCanAccessLeads    = false,
                                                                     $userCanAccessAccounts = false)

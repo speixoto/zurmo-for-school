@@ -113,8 +113,8 @@
                                             'contactName' => 'Some Name'))));
             $this->runControllerWithNoExceptionsAndGetContent('emailMessages/default/completeMatch', true);
             $this->assertNull($contact->primaryEmail->emailAddress);
-            $this->assertCount(1, $message1->sender->personOrAccounts);
-            $this->assertTrue($message1->sender->personOrAccounts[0]->isSame($contact));
+            $this->assertCount(1, $message1->sender->personsOrAccounts);
+            $this->assertTrue($message1->sender->personsOrAccounts[0]->isSame($contact));
             $this->assertEquals('Archived', $message1->folder);
 
             //assert subject of the email going to edit.
@@ -167,8 +167,8 @@
             $this->assertEquals(2, Contact::getCount());
             $contacts = Contact::getByName('George Patton');
             $contact  = $contacts[0];
-            $this->assertCount(1, $message2->sender->personOrAccounts);
-            $this->assertTrue($message2->sender->personOrAccounts[0]->isSame($contact));
+            $this->assertCount(1, $message2->sender->personsOrAccounts);
+            $this->assertTrue($message2->sender->personsOrAccounts[0]->isSame($contact));
             $this->assertEquals('Archived', $message2->folder);
 
             //Test the default permission was setted
@@ -189,8 +189,8 @@
             $this->assertEquals(3, Contact::getCount());
             $contacts = Contact::getByName('Billy Kid');
             $contact  = $contacts[0];
-            $this->assertCount(1, $message3->sender->personOrAccounts);
-            $this->assertTrue($message3->sender->personOrAccounts[0]->isSame($contact));
+            $this->assertCount(1, $message3->sender->personsOrAccounts);
+            $this->assertTrue($message3->sender->personsOrAccounts[0]->isSame($contact));
             $this->assertEquals('Archived', $message3->folder);
 
             //Test the default permission was setted

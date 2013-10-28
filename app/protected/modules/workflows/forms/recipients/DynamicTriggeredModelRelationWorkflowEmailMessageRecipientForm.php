@@ -80,7 +80,7 @@
             $resolvedRecipients = array();
             foreach ($existingRecipients as $recipient)
             {
-                foreach ($recipient->personOrAccounts as $personOrAccount)
+                foreach ($recipient->personsOrAccounts as $personOrAccount)
                 {
                     if ($personOrAccount->id > 0)
                     {
@@ -98,7 +98,7 @@
             }
             foreach ($newRecipients as $recipient)
             {
-                foreach ($recipient->personOrAccounts as $personOrAccount)
+                foreach ($recipient->personsOrAccounts as $personOrAccount)
                 {
                     if (!in_array($personOrAccount->getClassId('Item'), $existingItemIds))
                     {
@@ -216,7 +216,7 @@
                 $recipient->toAddress       = $model->primaryEmail->emailAddress;
                 $recipient->toName          = strval($model);
                 $recipient->type            = $this->audienceType;
-                $recipient->personOrAccounts->add($model);
+                $recipient->personsOrAccounts->add($model);
                 $recipients[]               = $recipient;
             }
             return $recipients;

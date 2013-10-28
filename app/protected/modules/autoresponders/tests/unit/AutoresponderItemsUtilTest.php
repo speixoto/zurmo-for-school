@@ -193,7 +193,7 @@
             $this->assertEquals(strval($contact), $recipients[0]->toName);
             $this->assertEquals($email->emailAddress, $recipients[0]->toAddress);
             $this->assertEquals(EmailMessageRecipient::TYPE_TO, $recipients[0]->type);
-            $this->assertTrue($contact->isSame($recipients[0]->personOrAccounts[0]));
+            $this->assertTrue($contact->isSame($recipients[0]->personsOrAccounts[0]));
             $headersArray               = array('zurmoItemId' => $autoresponderItem->id,
                                                 'zurmoItemClass' => get_class($autoresponderItem),
                                                 'zurmoPersonId' => $contact->getClassId('Person'));
@@ -249,7 +249,7 @@
             $this->assertEquals(strval($contact), $recipients[0]->toName);
             $this->assertEquals($email->emailAddress, $recipients[0]->toAddress);
             $this->assertEquals(EmailMessageRecipient::TYPE_TO, $recipients[0]->type);
-            $this->assertTrue($contact->isSame($recipients[0]->personOrAccounts[0]));
+            $this->assertTrue($contact->isSame($recipients[0]->personsOrAccounts[0]));
             $headersArray               = array('zurmoItemId' => $autoresponderItem->id,
                                                 'zurmoItemClass' => get_class($autoresponderItem),
                                                 'zurmoPersonId' => $contact->getClassId('Person'));
@@ -307,7 +307,7 @@
             $this->assertEquals(strval($contact), $recipients[0]->toName);
             $this->assertEquals($email->emailAddress, $recipients[0]->toAddress);
             $this->assertEquals(EmailMessageRecipient::TYPE_TO, $recipients[0]->type);
-            $this->assertTrue($contact->isSame($recipients[0]->personOrAccounts[0]));
+            $this->assertTrue($contact->isSame($recipients[0]->personsOrAccounts[0]));
             $headersArray               = array('zurmoItemId' => $autoresponderItem->id,
                                                     'zurmoItemClass' => get_class($autoresponderItem),
                                                     'zurmoPersonId' => $contact->getClassId('Person'));
@@ -377,7 +377,7 @@
             $this->assertEquals(strval($contact), $recipients[0]->toName);
             $this->assertEquals($email->emailAddress, $recipients[0]->toAddress);
             $this->assertEquals(EmailMessageRecipient::TYPE_TO, $recipients[0]->type);
-            $this->assertTrue($contact->isSame($recipients[0]->personOrAccounts[0]));
+            $this->assertTrue($contact->isSame($recipients[0]->personsOrAccounts[0]));
             $this->assertNotEmpty($emailMessage->files);
             $this->assertCount(count($files), $emailMessage->files);
             foreach ($autoresponder->files as $index => $file)
@@ -485,7 +485,7 @@
             $this->assertEquals(strval($contact), $recipients[0]->toName);
             $this->assertEquals($email->emailAddress, $recipients[0]->toAddress);
             $this->assertEquals(EmailMessageRecipient::TYPE_TO, $recipients[0]->type);
-            $this->assertTrue($contact->isSame($recipients[0]->personOrAccounts[0]));
+            $this->assertTrue($contact->isSame($recipients[0]->personsOrAccounts[0]));
             $headersArray               = array('zurmoItemId' => $autoresponderItem->id,
                                                     'zurmoItemClass' => get_class($autoresponderItem),
                                                     'zurmoPersonId' => $contact->getClassId('Person'),

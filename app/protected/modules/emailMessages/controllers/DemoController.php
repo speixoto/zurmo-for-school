@@ -68,14 +68,14 @@
             $sender                    = new EmailMessageSender();
             $sender->fromAddress       = 'super@zurmotest.com';
             $sender->fromName          = 'Super User';
-            $sender->personOrAccounts->add(Yii::app()->user->userModel);
+            $sender->personsOrAccounts->add(Yii::app()->user->userModel);
             $emailMessage->sender      = $sender;
             //Recipient is BobMessage
             $recipient                  = new EmailMessageRecipient();
             $recipient->toAddress       = 'bob.message@zurmotest.com';
             $recipient->toName          = strval($contact1);
             $recipient->type            = EmailMessageRecipient::TYPE_TO;
-            $recipient->personOrAccounts->add($contact1);
+            $recipient->personsOrAccounts->add($contact1);
             $emailMessage->recipients->add($recipient);
             $emailMessage->folder       = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_ARCHIVED);
             $emailMessage->sentDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
@@ -97,15 +97,15 @@
             $sender                    = new EmailMessageSender();
             $sender->fromAddress       = 'bob.message@zurmotest.com';
             $sender->fromName          = strval($contact1);
-            $sender->personOrAccounts->add($contact1);
-            $sender->personOrAccounts->add($contact2);
+            $sender->personsOrAccounts->add($contact1);
+            $sender->personsOrAccounts->add($contact2);
             $emailMessage->sender      = $sender;
             //Recipient is current user (super)
             $recipient                  = new EmailMessageRecipient();
             $recipient->toAddress       = 'super@zurmotest.com';
             $recipient->toName          = 'Super User';
             $recipient->type            = EmailMessageRecipient::TYPE_TO;
-            $recipient->personOrAccounts->add(Yii::app()->user->userModel);
+            $recipient->personsOrAccounts->add(Yii::app()->user->userModel);
             $emailMessage->recipients->add($recipient);
             $emailMessage->folder       = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_ARCHIVED);
             $emailMessage->sentDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
@@ -127,14 +127,14 @@
             $sender                    = new EmailMessageSender();
             $sender->fromAddress       = 'super@zurmotest.com';
             $sender->fromName          = 'Super User';
-            $sender->personOrAccounts->add(Yii::app()->user->userModel);
+            $sender->personsOrAccounts->add(Yii::app()->user->userModel);
             $emailMessage->sender      = $sender;
             //Recipient is BobMessage
             $recipient                  = new EmailMessageRecipient();
             $recipient->toAddress       = 'bob.message@zurmotest.com';
             $recipient->toName          = strval($contact1);
             $recipient->type            = EmailMessageRecipient::TYPE_TO;
-            $recipient->personOrAccounts->add($contact1);
+            $recipient->personsOrAccounts->add($contact1);
             $emailMessage->recipients->add($recipient);
             $emailMessage->folder       = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_SENT);
             $emailMessage->sentDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
@@ -156,14 +156,14 @@
             $sender                    = new EmailMessageSender();
             $sender->fromAddress       = 'bob.message@zurmotest.com';
             $sender->fromName          = strval($contact1);
-            $sender->personOrAccounts->add($contact1);
+            $sender->personsOrAccounts->add($contact1);
             $emailMessage->sender      = $sender;
             //Recipient is BobMessage
             $recipient                  = new EmailMessageRecipient();
             $recipient->toAddress       = 'super@zurmotest.com';
             $recipient->toName          = 'Super User';
             $recipient->type            = EmailMessageRecipient::TYPE_TO;
-            $recipient->personOrAccounts->add(Yii::app()->user->userModel);
+            $recipient->personsOrAccounts->add(Yii::app()->user->userModel);
             $emailMessage->recipients->add($recipient);
             $emailMessage->folder       = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_INBOX);
             $saved = $emailMessage->save();
@@ -196,7 +196,7 @@
             $sender                    = new EmailMessageSender();
             $sender->fromAddress       = 'super@zurmotest.com';
             $sender->fromName          = 'Super User';
-            $sender->personOrAccounts->add(Yii::app()->user->userModel);
+            $sender->personsOrAccounts->add(Yii::app()->user->userModel);
             $emailMessage->sender      = $sender;
             //Recipient is BobMessage
             $recipient                  = new EmailMessageRecipient();
@@ -230,7 +230,7 @@
             $recipient->toAddress       = 'super@zurmotest.com';
             $recipient->toName          = 'Super User';
             $recipient->type            = EmailMessageRecipient::TYPE_TO;
-            $recipient->personOrAccounts->add(Yii::app()->user->userModel);
+            $recipient->personsOrAccounts->add(Yii::app()->user->userModel);
             $emailMessage->recipients->add($recipient);
             $emailMessage->folder       = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_ARCHIVED_UNMATCHED);
             $emailMessage->sentDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
