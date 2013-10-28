@@ -381,7 +381,7 @@
                                 'Contact'     => array('id'  => $superContactId),
                                 'Opportunity' => array('id'  => $superOpportunityId)),
                                 'save' => 'Save'));
-            $this->runControllerWithRedirectExceptionAndGetUrl('tasks/default/edit');
+            $this->runControllerWithNoExceptionsAndGetContent('tasks/default/modalSave');
 
              //Check the details if they are saved properly for the custom fields.
             $task = Task::getByName('myEditTask');
@@ -484,7 +484,7 @@
                                 'Contact'     => array('id'  => $superContactId),
                                 'Opportunity' => array('id'  => $superOpportunityId)),
                                 'save' => 'Save'));
-            $this->runControllerWithRedirectExceptionAndGetUrl('tasks/default/edit');
+            $this->runControllerWithNoExceptionsAndGetContent('tasks/default/modalSave');
 
              //Check the details if they are saved properly for the custom fields.
             $task = Task::getByName('myEditTask');

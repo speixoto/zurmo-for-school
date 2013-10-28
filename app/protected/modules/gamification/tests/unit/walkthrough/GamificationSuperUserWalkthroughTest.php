@@ -148,7 +148,7 @@
             $gameCollection->type      = 'Basketball';
             $itemsData = array('RedemptionItem' => 0,
                                  'Items' => array(
-                                     'Basket'     => 0,
+                                     'Backboard'  => 0,
                                      'Player'     => 0,
                                      'ScoreBoard' => 0,
                                      'Uniform'    => 0,
