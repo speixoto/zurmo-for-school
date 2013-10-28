@@ -550,6 +550,71 @@ body > div {
 #AboutView #leftCol > div {
   float: none;
 }
+.pillbox {
+  width: 100%;
+}
+.split-button,
+.default-button {
+  float: none;
+  display: block;
+}
+.split-button + .default-button,
+.default-button + .default-button,
+.split-button + .split-button,
+.default-button + .split-button {
+  border-left: none;
+  border-top: 1px solid #DFDFDF;
+  -webkit-box-shadow: inset 0 2px 0 0 #ffffff;
+  -moz-box-shadow: inset 0 2px 0 0 #ffffff;
+  -o-box-shadow: inset 0 2px 0 0 #ffffff;
+  -ms-box-shadow: inset 0 2px 0 0 #ffffff;
+  box-shadow: inset 0 2px 0 0 #ffffff;
+}
+.split-button .button-action-trigger,
+.default-button .button-action-trigger,
+.split-button .button-trigger,
+.default-button .button-trigger {
+  text-align: left;
+  float: none;
+  width: 100%;
+}
+.split-button:hover .button-action-trigger .icon-trigger:before,
+.default-button:hover .button-action-trigger .icon-trigger:before,
+.split-button:hover .button-trigger .icon-trigger:before,
+.default-button:hover .button-trigger .icon-trigger:before {
+  display: none !important;
+  background: red !important;
+}
+.button-actions {
+  position: relative;
+  top: 2px;
+  left: 0;
+  clear: left;
+}
+.button-actions:before {
+  right: 4px;
+  background: url(../images/tip.png) right bottom no-repeat;
+}
+.split-button {
+  *zoom: 1;
+}
+.split-button:before,
+.split-button:after {
+  content: " ";
+  display: table;
+}
+.split-button:after {
+  clear: both;
+}
+.split-button .button-action {
+  float: left;
+  width: 80%;
+}
+.split-button .button-trigger {
+  text-align: left;
+  float: right;
+  width: auto;
+}
 .view-toolbar {
   border: none;
   -webkit-border-radius: none;
@@ -954,6 +1019,14 @@ body > div {
 .latest-activity-toolbar > div:first-child {
   margin-bottom: 10px;
 }
+/*.filters-bar{
+		float: none;
+		margin-left: 0;
+		padding-left: 0;
+		> div{
+
+		}
+	}*/
 #filter-latest-activities-link {
   margin-left: 5px !important;
 }
@@ -982,6 +1055,9 @@ body > div {
 .search-form-tools {
   left: auto;
   right: 10px;
+}
+#list-view .items-wrapper {
+  border-top: none;
 }
 #modal-edit-form .panel,
 #edit-form .panel,

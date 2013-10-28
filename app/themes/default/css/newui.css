@@ -12556,6 +12556,7 @@ div.wide.form label.hasCheckBox {
 }
 #search-form table {
   border-bottom: none;
+  width: 100%;
 }
 #search-form .filters-bar {
   width: auto;
@@ -14556,7 +14557,6 @@ div.hasHalfs > div input {
 }
 #days-meetings-list-view h3 {
   color: #545454;
-  font-size: 11px;
   margin-bottom: 4px;
 }
 #days-meetings-list-view h3 span {
@@ -17817,9 +17817,6 @@ table.configuration-list td:last-child a .z-label:before {
 }
 .available-portlets .icon-socialItems:before {
   content: "u";
-}
-.available-portlets .icon-activities:before {
-  content: 'u';
 }
 .available-portlets .icon-iframe:before {
   content: '\2211';
@@ -21339,16 +21336,7 @@ a.dashboard-link .z-label {
   margin-bottom: 25px;
 }
 .comment {
-  *zoom: 1;
   line-height: 140%;
-}
-.comment:before,
-.comment:after {
-  content: " ";
-  display: table;
-}
-.comment:after {
-  clear: both;
 }
 .comment .gravatar {
   margin-top: 1px;
@@ -23321,14 +23309,8 @@ a.user-link {
 }
 #marketing-list-member-select-contact-or-report-form .search-without-scope {
   margin-top: 10px;
-  border: 1px solid #d5d4d4;
   position: relative;
   background: url(../images/search-bar-loopa.png) left top no-repeat;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  -ms-border-radius: 3px;
-  -o-border-radius: 3px;
-  border-radius: 3px;
 }
 #marketing-list-member-select-contact-or-report-form .search-without-scope .z-spinner {
   top: 2px;
@@ -23345,10 +23327,18 @@ a.user-link {
   font-style: italic;
   color: #999;
   text-indent: 5px;
-  line-height: 22px;
-  height: 22px !important;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  -o-box-shadow: none;
+  -ms-box-shadow: none;
+  box-shadow: none;
   border: none;
   background: url(../images/search-bar-gradient.png) left top repeat-x;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  -ms-border-radius: 0;
+  -o-border-radius: 0;
+  border-radius: 0;
 }
 #marketing-list-member-select-contact-or-report-form input[type="text"]:focus {
   outline: none !important;
@@ -25544,10 +25534,30 @@ div.special-pager .hidden.next:after {
 }
 .button-actions .has-model-select a {
   right: -1px;
-  bottom: -1px;
+  bottom: 3px;
+  height: 23px;
+  -webkit-border-radius: inherit;
+  -moz-border-radius: inherit;
+  -ms-border-radius: inherit;
+  -o-border-radius: inherit;
+  border-radius: inherit;
 }
 .button-actions .has-model-select a:hover {
   background: url(../images/dropdown-general.png) left top no-repeat !important;
+}
+.flyout-action {
+  border: 1px solid #DCDCDC;
+  background-color: #d2d2d2;
+  background-repeat: repeat-x;
+  background-image: -moz-linear-gradient(top, #e8e8e8, #d2d2d2);
+  background-image: -ms-linear-gradient(top, #e8e8e8, #d2d2d2);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #e8e8e8), color-stop(100%, #d2d2d2));
+  background-image: -webkit-linear-gradient(top, #e8e8e8, #d2d2d2);
+  background-image: -o-linear-gradient(top, #e8e8e8, #d2d2d2);
+  background-image: linear-gradient(top, #e8e8e8, #d2d2d2);
+}
+.flyout-action label {
+  color: #545454 !important;
 }
 .nav-open .button-actions {
   display: block;
@@ -25557,6 +25567,9 @@ div.special-pager .hidden.next:after {
 }
 .nav-open .close-flyout {
   color: #ffffff !important;
+}
+.nav-open .flyout-action .close-flyout {
+  color: #333333 !important;
 }
 .button-actions.open-on-left {
   right: auto;
@@ -26954,6 +26967,9 @@ a + .project-stats {
 }
 .percent-complete.percent-yellow strong {
   color: #ffcc00;
+}
+.percent-complete.percent-red strong {
+  color: #a82d31;
 }
 /*********************************************************************************
  * Zurmo is a customer relationship management program developed by
