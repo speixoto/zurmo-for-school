@@ -182,6 +182,7 @@
         {
             parent::renderScripts();
             $this->registerScriptsForDynamicMemberCountUpdate();
+            $this->registerScriptForRefreshingGridView();
         }
 
         protected function getCGridViewLastColumn()
@@ -359,6 +360,23 @@
                         });
                     ');
                 // End Not Coding Standard
+            }
+        }
+
+        protected function registerScriptForRefreshingGridView()
+        {
+            $scriptName = $this->uniquePageId.'_refreshMembersListGridView';
+            if (Yii::app()->clientScript->isScriptRegistered($scriptName))
+            {
+                return;
+            }
+            else
+            {
+                Yii::app()->clientScript->registerScript($scriptName, '
+                function refreshMembersListGridView()
+                {
+                    $("#list-viewMarketingListMembersPortletView .pager .refresh a").click();
+                }');
             }
         }
 

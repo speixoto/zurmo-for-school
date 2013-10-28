@@ -103,7 +103,7 @@
                             refreshGrid = false;
                             if (linkId.indexOf("delete") !== -1 && !$(this).onAjaxSubmitRelatedListAction("' . $unlinkConfirmMessage . '", "' . $this->getGridId() . '"))
                             {
-                                refreshMemberListGrid(linkId)
+                                refreshMembersListGridView();
                             }
                             else
                             {
@@ -114,7 +114,7 @@
                                                     },
                                     "success"   : function()
                                                     {
-                                                        refreshMemberListGrid(linkId)
+                                                        refreshMembersListGridView();
                                                     },
                                     "url"       : linkUrl,
                                     "cache"	    : false
@@ -124,10 +124,6 @@
                             return false;
                         }
                     );
-                function refreshMemberListGrid(linkId)
-                {
-                    $("#" + linkId).closest(".items").parent().parent().find(".pager").find(".refresh").find("a").click();
-                }
                 ');
                 // End Not Coding Standard
             }

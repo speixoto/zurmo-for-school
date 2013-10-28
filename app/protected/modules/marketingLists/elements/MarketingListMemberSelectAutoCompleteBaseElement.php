@@ -103,7 +103,6 @@
             return 'js: function(event, ui)
                     {
                         subscribeContactsToMarketingList' . $this->getSelectType() . ' ($(this), event, ui.item.id, 1, 0, 0)
-                        console.log(event);
                     }';
             // End Not Coding Standard
         }
@@ -139,7 +138,6 @@
             // Begin Not Coding Standard
             $script = 'function subscribeContactsToMarketingList' . $this->getSelectType() . ' (object, event, itemId, page, subscribedCount, skippedCount) {
                             var searchBox           = object;
-                            var listGridViewId      = "' . $this->getListViewGridId() .'";
                             var notificationBarId   = "' . static::NOTIFICATION_BAR_ID . '";
                             var radioButtonClass    = "' . $this->getRadioButtonClass() . '";
                             var url                 = "' . $this->getSubscribeUrl() . '";
@@ -166,8 +164,6 @@
                                                 },
                                     beforeSend: function(request, settings)
                                                 {
-                                                    $(searchBox).makeSmallLoadingSpinner(listGridViewId);
-                                                    $("#" + listGridViewId).addClass("loading");
                                                     if (disableTextBox == true)
                                                     {
                                                         $(searchBox).attr("disabled", "disabled");
@@ -179,7 +175,7 @@
                                                 },
                                     success:    function(data, status, request)
                                                 {
-                                                    $("#" + listGridViewId).find(".pager").find(".refresh").find("a").click();
+                                                    refreshMembersListGridView();
                                                     updateFlashBar(data, notificationBarId);
                                                     //todo: this is only a check if reporting.
                                                     if (data.nextPage)
@@ -203,7 +199,6 @@
                                                     $(searchBox).removeAttr("disabled");
                                                     $(searchBox).val("");
                                                     $("." + radioButtonClass).removeAttr("disabled");
-                                                    $("#" + listGridViewId).removeClass("loading");
                                                     event.preventDefault();
                                                     return false;
                                                 }
