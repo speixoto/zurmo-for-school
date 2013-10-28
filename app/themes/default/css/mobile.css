@@ -1020,13 +1020,13 @@ body > div {
   margin-bottom: 10px;
 }
 /*.filters-bar{
-		float: none;
-		margin-left: 0;
-		padding-left: 0;
-		> div{
+	float: none;
+	margin-left: 0;
+	padding-left: 0;
+	> div{
 
-		}
-	}*/
+	}
+}*/
 #filter-latest-activities-link {
   margin-left: 5px !important;
 }
@@ -1072,21 +1072,21 @@ body > div {
   top: 6px;
 }
 /*
-	.right-side-edit-view-panel{
-		float:none;
-		width:100%;
-		position:relative;
-		right:0;
-		top:0;
-		.buffer{
-			padding-left:0;
-			> div{
-				padding:0;
-				background: none;
-			}
+.right-side-edit-view-panel{
+	float:none;
+	width:100%;
+	position:relative;
+	right:0;
+	top:0;
+	.buffer{
+		padding-left:0;
+		> div{
+			padding:0;
+			background: none;
 		}
 	}
-	*/
+}
+*/
 .hasParallelFields > div {
   width: 100% !important;
   display: block;
@@ -1102,8 +1102,8 @@ body > div {
 }
 #ConversationDetailsView {
   /*.right-side-edit-view-panel{
-			display:none;
-		}*/
+		display:none;
+	}*/
 
 }
 .model-details-summary {
@@ -1298,4 +1298,77 @@ div#LeaderboardView > .view-toolbar-container > .view-toolbar .z-label {
   width: 100%;
   top: 50px;
   right: 0;
+}
+.gd-dashboard-active {
+  overflow: visible;
+}
+#UserGameDashboardView {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  display: block;
+}
+#game-overlay {
+  top: 38px;
+  position: static;
+}
+#game-dashboard {
+  width: 100%;
+  height: auto;
+  position: relative;
+  left: 0;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+  overflow: hidden;
+  margin: 0;
+}
+#game-dashboard > div {
+  width: 50%;
+  height: auto;
+  /*float: none;
+		border: none;
+		@black : #151f1f;
+		@ccc : rgba(32, 50, 52, 0.5);
+		@fff : rgba(83, 112, 115, 0.4);
+		border-top:1px solid fff;
+		border-bottom:1px solid @ccc;*/
+
+}
+#gd-profile-card,
+#gd-leaderboard {
+  border-bottom: none;
+}
+#gd-profile-card .gravatar,
+#gd-profile-card img {
+  width: 100%;
+}
+#gd-statistics {
+  clear: left;
+  width: 100% !important;
+  border-top: 1px solid rgba(32, 50, 52, 0.5);
+  float: none;
+  height: auto;
+}
+#gd-collections {
+  width: 100% !important;
+  float: none !important;
+  height: 250px !important;
+}
+#gd-collections .nav-button {
+  display: none;
+}
+#gd-carousel-wrapper {
+  width: 100%;
+  float: none;
+}
+#gd-carousel-wrapper .nav-button {
+  display: none;
+}
+.gd-collection-item img {
+  max-height: 35px;
 }
