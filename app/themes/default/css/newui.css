@@ -16103,6 +16103,21 @@ i[class^="icon"] {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
+.type-queues .icon-empty:before {
+  content: 'GG';
+  font-weight: normal !important;
+  font-weight: normal;
+  font-size: 38px;
+  font-family: "zurmo_gamification_symbly_rRg";
+  padding: 0;
+  margin: 0;
+  vertical-align: middle;
+  position: relative;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  letter-spacing: -40px;
+}
 #ZurmoLogo {
   background: url(../images/ZurmoLogo.png) left top no-repeat;
   width: 170px;
@@ -17624,7 +17639,13 @@ table.configuration-list td:last-child a .z-label:before {
   display: block;
   text-align: center;
 }
-/*Queue*/
+/*Queues*/
+#QueuesListView {
+  float: left;
+  width: 100%;
+  margin-bottom: 20px;
+  position: relative;
+}
 #queue-search-element .z-spinner {
   display: block !important;
   left: 198px;
@@ -24026,7 +24047,14 @@ a + .autoresponder-stats {
   margin-right: 15px;
 }
 #kanban-holder {
-  background: #fff;
+  background-color: #f0f0f0;
+  background-repeat: repeat-x;
+  background-image: -moz-linear-gradient(top, #fafafa, #f0f0f0);
+  background-image: -ms-linear-gradient(top, #fafafa, #f0f0f0);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #fafafa), color-stop(100%, #f0f0f0));
+  background-image: -webkit-linear-gradient(top, #fafafa, #f0f0f0);
+  background-image: -o-linear-gradient(top, #fafafa, #f0f0f0);
+  background-image: linear-gradient(top, #fafafa, #f0f0f0);
   margin: 0;
   padding: 0;
   background-size: auto 100%;
@@ -24456,6 +24484,37 @@ a + .autoresponder-stats {
   background-image: -webkit-linear-gradient(top, #ffcc00, #b18d00);
   background-image: -o-linear-gradient(top, #ffcc00, #b18d00);
   background-image: linear-gradient(top, #ffcc00, #b18d00);
+}
+.action-type-restart .button-label {
+  color: #ffffff;
+}
+.action-type-restart .button-label:before {
+  background-color: #4d6c87;
+  background-repeat: repeat-x;
+  background-image: -moz-linear-gradient(top, #4e6d87, #4d6c87);
+  background-image: -ms-linear-gradient(top, #4e6d87, #4d6c87);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #4e6d87), color-stop(100%, #4d6c87));
+  background-image: -webkit-linear-gradient(top, #4e6d87, #4d6c87);
+  background-image: -o-linear-gradient(top, #4e6d87, #4d6c87);
+  background-image: linear-gradient(top, #4e6d87, #4d6c87);
+}
+.action-type-restart .button-action:hover .button-label {
+  color: #10171c;
+  -webkit-text-shadow: 0px 1px 0 #577a97;
+  -moz-text-shadow: 0px 1px 0 #577a97;
+  -o-text-shadow: 0px 1px 0 #577a97;
+  -ms-text-shadow: 0px 1px 0 #577a97;
+  text-shadow: 0px 1px 0 #577a97;
+}
+.action-type-restart .button-action:hover .button-label:before {
+  background-color: #3a5267;
+  background-repeat: repeat-x;
+  background-image: -moz-linear-gradient(top, #4e6d87, #3a5267);
+  background-image: -ms-linear-gradient(top, #4e6d87, #3a5267);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #4e6d87), color-stop(100%, #3a5267));
+  background-image: -webkit-linear-gradient(top, #4e6d87, #3a5267);
+  background-image: -o-linear-gradient(top, #4e6d87, #3a5267);
+  background-image: linear-gradient(top, #4e6d87, #3a5267);
 }
 .subscribe-task-link,
 .unsubscribe-task-link {
