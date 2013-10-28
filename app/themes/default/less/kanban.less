@@ -32,7 +32,7 @@
 // "Copyright Zurmo Inc. 2013. All rights reserved".
 
 #kanban-holder{
-	background: #fff;
+	#gradient > .vertical(#fafafa, #f0f0f0);
 	margin: 0;
 	padding: 0;
 	background-size: auto 100%;
@@ -457,6 +457,26 @@
 .action-type-finish{
 	@topColor: #ffcc00;
 	@bottomColor: #e4b600;
+	.button-label{
+		color: lighten(@topColor, 80%);
+		&:before{
+			#gradient > .vertical(@topColor, @bottomColor );
+		}
+	}
+	.button-action:hover{
+		.button-label{
+			color: darken(@topColor, 33%);
+			.t-shadow(0px 1px 0 lighten(@topColor, 5%));
+			&:before{
+				#gradient > .vertical(@topColor, darken(@bottomColor, 10%));
+			}
+		}
+	}
+}
+
+.action-type-restart{
+	@topColor: #4e6d87;
+	@bottomColor: #4d6c87;
 	.button-label{
 		color: lighten(@topColor, 80%);
 		&:before{
