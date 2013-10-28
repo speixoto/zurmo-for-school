@@ -94,7 +94,7 @@
             $newFileModelsData      = array(); //needs id, name, size at least, preferably type too.
             foreach ($existingFileModelIds as $existingFileModelId)
             {
-                $newFileModel           = FileModelUtil::makeByExistingFileModelId($existingFileModelId,
+                $newFileModel           = FileModelUtil::makeByExistingFileModelId($existingFileModelId, true,
                                                                                     static::FILE_MODEL_CLASS_NAME);
                 if ($newFileModel === false)
                 {

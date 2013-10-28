@@ -53,10 +53,14 @@
             return array('ModelWithAttachmentTestItem', 'FileTestModel');
         }
 
+        public function setUp()
+        {
+            parent::setUp();
+            Yii::app()->user->userModel = User::getByUsername('super');
+        }
+
         public function testResolveModelsHasManyFilesFromPost()
         {
-            Yii::app()->user->userModel = User::getByUsername('super');
-
             $fileCount = count(FileTestModel::getAll());
             $this->assertEquals(0, $fileCount);
             $file1 = ZurmoTestHelper::createFileModel('testNote.txt', 'FileTestModel');
@@ -109,7 +113,6 @@
 
         public function testDifferentMimeTypes()
         {
-            Yii::app()->user->userModel = User::getByUsername('super');
             $pathToFiles = Yii::getPathOfAlias('application.modules.zurmo.tests.unit.files');
             $contents1    = file_get_contents($pathToFiles . DIRECTORY_SEPARATOR . 'testNote.txt');
             $contents2    = file_get_contents($pathToFiles . DIRECTORY_SEPARATOR . 'testDocument.docx');
@@ -168,45 +171,45 @@
 
         public function testMakeByExistingFileModelId()
         {
-            Yii::app()->user->userModel = User::getByUsername('super');
-            $file1  = ZurmoTestHelper::createFileModel('testNote.txt', 'FileTestModel');
-            $file2  = FileModelUtil::makeByExistingFileModelId($file1->id);
+            $oldFileContentsCount = FileContent::getCount();
+            $file1          = ZurmoTestHelper::createFileModel('testNote.txt', 'FileTestModel');
+            $file2          = FileModelUtil::makeByExistingFileModelId($file1->id, true, 'FileTestModel');
+            $file1Content   = $file1->fileContent;
+            $file2Id        = $file2->id;
             $this->assertTrue($file2 !== false);
-            $this->assertEquals($file1->fileContent->content, $file2->fileContent->content);
             $this->assertEquals($file1->name, $file2->name);
             $this->assertEquals($file1->type, $file2->type);
             $this->assertEquals($file1->size, $file2->size);
-        }
+            $this->assertEquals($file1Content->content, $file2->fileContent->content);
+            // because fileContent was not replicated but referenced in file2.
+            $this->assertEquals($file1Content->id, $file2->fileContent->id);
+            $this->assertEquals($oldFileContentsCount + 1, FileContent::getCount());
 
-        public function testMakeByFileModelWithSharedFileContent()
-        {
-
-            $oldFileContentsCount = count(FileContent::getAll());
-            Yii::app()->user->userModel = User::getByUsername('super');
-            $file1       = ZurmoTestHelper::createFileModel();
-            $file2       = FileModelUtil::makeByFileModelWithSharedFileContent($file1);
-            $fileContent = $file1->fileContent;
-            $this->assertTrue($file2 !== false);
-            $this->assertEquals($fileContent, $file2->fileContent);
-            $this->assertEquals($file1->name, $file2->name);
-            $this->assertEquals($file1->type, $file2->type);
-            $this->assertEquals($file1->size, $file2->size);
-
-            $this->assertTrue($file1->save());
-            $this->assertTrue($file2->save());
-            $file2Id = $file2->id;
-            $fileContents = FileContent::getAll();
-            $this->assertCount($oldFileContentsCount + 1, $fileContents);
             $file1->delete();
             FileModel::forgetAll();
-
             $file2 = FileModel::getById($file2Id);
-            $this->assertEquals($fileContent->content, $file2->fileContent->content);
-            $this->assertCount($oldFileContentsCount + 1, $fileContents);
+            $this->assertEquals($file1Content->content, $file2->fileContent->content);
+            // deleting file1 should still preserve its content as its being used by file2.
+            $this->assertEquals($oldFileContentsCount + 1, FileContent::getCount());
 
             $file2->delete();
-            $fileContents = FileContent::getAll();
-            $this->assertCount($oldFileContentsCount, $fileContents);
+            // deleting fil2 should get rid of the fileContent too.
+            $this->assertEquals($oldFileContentsCount, FileContent::getCount());
+        }
+
+        public function testMakeByExistingFileModelIdWithoutSharedContent()
+        {
+            $oldFileContentsCount = FileContent::getCount();
+            $file1  = ZurmoTestHelper::createFileModel('testNote.txt', 'FileTestModel');
+            $file2  = FileModelUtil::makeByExistingFileModelId($file1->id, false, 'FileTestModel');
+            $this->assertTrue($file2 !== false);
+            $this->assertEquals($file1->name, $file2->name);
+            $this->assertEquals($file1->type, $file2->type);
+            $this->assertEquals($file1->size, $file2->size);
+            $this->assertEquals($file1->fileContent->content, $file2->fileContent->content);
+            // fileContent should be replicated as we explicitly passed false to sharedContent
+            $this->assertNotEquals($file1->fileContent->id, $file2->fileContent->id);
+            $this->assertEquals($oldFileContentsCount + 2, FileContent::getCount());
         }
     }
 ?>
