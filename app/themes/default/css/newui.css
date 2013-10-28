@@ -1331,8 +1331,7 @@ body.blue .zButton:not(.attachLoading):active .z-label,
 body.blue .z-button:not(.attachLoading):active .z-label,
 body.blue .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover .z-label,
 body.blue .portlet-toolbar a:not(.attachLoading):not(.simple-link):hover .z-label,
-body.blue .form-toolbar a:not(.attachLoading):not(.green-button):hover .z-label,
-body.blue .form-toolbar a:not(.z-button):not(.green-button):hover .z-label,
+body.blue .form-toolbar a:not(.attachLoading):not(.z-button):not(.green-button):not(.simple-link):hover .z-label,
 body.blue .configuration-list li a:hover .z-label,
 body.blue .white-button:hover .z-label,
 body.blue .white-button:hover .z-label {
@@ -1945,8 +1944,7 @@ body.sunrise .zButton:not(.attachLoading):active .z-label,
 body.sunrise .z-button:not(.attachLoading):active .z-label,
 body.sunrise .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover .z-label,
 body.sunrise .portlet-toolbar a:not(.attachLoading):not(.simple-link):hover .z-label,
-body.sunrise .form-toolbar a:not(.attachLoading):not(.green-button):hover .z-label,
-body.sunrise .form-toolbar a:not(.z-button):not(.green-button):hover .z-label,
+body.sunrise .form-toolbar a:not(.attachLoading):not(.z-button):not(.green-button):not(.simple-link):hover .z-label,
 body.sunrise .configuration-list li a:hover .z-label,
 body.sunrise .white-button:hover .z-label,
 body.sunrise .white-button:hover .z-label {
@@ -2559,8 +2557,7 @@ body.marble .zButton:not(.attachLoading):active .z-label,
 body.marble .z-button:not(.attachLoading):active .z-label,
 body.marble .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover .z-label,
 body.marble .portlet-toolbar a:not(.attachLoading):not(.simple-link):hover .z-label,
-body.marble .form-toolbar a:not(.attachLoading):not(.green-button):hover .z-label,
-body.marble .form-toolbar a:not(.z-button):not(.green-button):hover .z-label,
+body.marble .form-toolbar a:not(.attachLoading):not(.z-button):not(.green-button):not(.simple-link):hover .z-label,
 body.marble .configuration-list li a:hover .z-label,
 body.marble .white-button:hover .z-label,
 body.marble .white-button:hover .z-label {
@@ -3173,8 +3170,7 @@ body.purple-haze .zButton:not(.attachLoading):active .z-label,
 body.purple-haze .z-button:not(.attachLoading):active .z-label,
 body.purple-haze .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover .z-label,
 body.purple-haze .portlet-toolbar a:not(.attachLoading):not(.simple-link):hover .z-label,
-body.purple-haze .form-toolbar a:not(.attachLoading):not(.green-button):hover .z-label,
-body.purple-haze .form-toolbar a:not(.z-button):not(.green-button):hover .z-label,
+body.purple-haze .form-toolbar a:not(.attachLoading):not(.z-button):not(.green-button):not(.simple-link):hover .z-label,
 body.purple-haze .configuration-list li a:hover .z-label,
 body.purple-haze .white-button:hover .z-label,
 body.purple-haze .white-button:hover .z-label {
@@ -3788,8 +3784,7 @@ body.flat-cement .zButton:not(.attachLoading):active .z-label,
 body.flat-cement .z-button:not(.attachLoading):active .z-label,
 body.flat-cement .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover .z-label,
 body.flat-cement .portlet-toolbar a:not(.attachLoading):not(.simple-link):hover .z-label,
-body.flat-cement .form-toolbar a:not(.attachLoading):not(.green-button):hover .z-label,
-body.flat-cement .form-toolbar a:not(.z-button):not(.green-button):hover .z-label,
+body.flat-cement .form-toolbar a:not(.attachLoading):not(.z-button):not(.green-button):not(.simple-link):hover .z-label,
 body.flat-cement .configuration-list li a:hover .z-label,
 body.flat-cement .white-button:hover .z-label,
 body.flat-cement .white-button:hover .z-label {
@@ -4422,8 +4417,7 @@ body.amazon .zButton:not(.attachLoading):active .z-label,
 body.amazon .z-button:not(.attachLoading):active .z-label,
 body.amazon .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover .z-label,
 body.amazon .portlet-toolbar a:not(.attachLoading):not(.simple-link):hover .z-label,
-body.amazon .form-toolbar a:not(.attachLoading):not(.green-button):hover .z-label,
-body.amazon .form-toolbar a:not(.z-button):not(.green-button):hover .z-label,
+body.amazon .form-toolbar a:not(.attachLoading):not(.z-button):not(.green-button):not(.simple-link):hover .z-label,
 body.amazon .configuration-list li a:hover .z-label,
 body.amazon .white-button:hover .z-label,
 body.amazon .white-button:hover .z-label {
@@ -5036,8 +5030,7 @@ body.sweden .zButton:not(.attachLoading):active .z-label,
 body.sweden .z-button:not(.attachLoading):active .z-label,
 body.sweden .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover .z-label,
 body.sweden .portlet-toolbar a:not(.attachLoading):not(.simple-link):hover .z-label,
-body.sweden .form-toolbar a:not(.attachLoading):not(.green-button):hover .z-label,
-body.sweden .form-toolbar a:not(.z-button):not(.green-button):hover .z-label,
+body.sweden .form-toolbar a:not(.attachLoading):not(.z-button):not(.green-button):not(.simple-link):hover .z-label,
 body.sweden .configuration-list li a:hover .z-label,
 body.sweden .white-button:hover .z-label,
 body.sweden .white-button:hover .z-label {
@@ -5650,8 +5643,7 @@ body.pink .zButton:not(.attachLoading):active .z-label,
 body.pink .z-button:not(.attachLoading):active .z-label,
 body.pink .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover .z-label,
 body.pink .portlet-toolbar a:not(.attachLoading):not(.simple-link):hover .z-label,
-body.pink .form-toolbar a:not(.attachLoading):not(.green-button):hover .z-label,
-body.pink .form-toolbar a:not(.z-button):not(.green-button):hover .z-label,
+body.pink .form-toolbar a:not(.attachLoading):not(.z-button):not(.green-button):not(.simple-link):hover .z-label,
 body.pink .configuration-list li a:hover .z-label,
 body.pink .white-button:hover .z-label,
 body.pink .white-button:hover .z-label {
@@ -6264,8 +6256,7 @@ body.brown .zButton:not(.attachLoading):active .z-label,
 body.brown .z-button:not(.attachLoading):active .z-label,
 body.brown .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover .z-label,
 body.brown .portlet-toolbar a:not(.attachLoading):not(.simple-link):hover .z-label,
-body.brown .form-toolbar a:not(.attachLoading):not(.green-button):hover .z-label,
-body.brown .form-toolbar a:not(.z-button):not(.green-button):hover .z-label,
+body.brown .form-toolbar a:not(.attachLoading):not(.z-button):not(.green-button):not(.simple-link):hover .z-label,
 body.brown .configuration-list li a:hover .z-label,
 body.brown .white-button:hover .z-label,
 body.brown .white-button:hover .z-label {
@@ -6878,8 +6869,7 @@ body.lime .zButton:not(.attachLoading):active .z-label,
 body.lime .z-button:not(.attachLoading):active .z-label,
 body.lime .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover .z-label,
 body.lime .portlet-toolbar a:not(.attachLoading):not(.simple-link):hover .z-label,
-body.lime .form-toolbar a:not(.attachLoading):not(.green-button):hover .z-label,
-body.lime .form-toolbar a:not(.z-button):not(.green-button):hover .z-label,
+body.lime .form-toolbar a:not(.attachLoading):not(.z-button):not(.green-button):not(.simple-link):hover .z-label,
 body.lime .configuration-list li a:hover .z-label,
 body.lime .white-button:hover .z-label,
 body.lime .white-button:hover .z-label {
@@ -7492,8 +7482,7 @@ body.cherry .zButton:not(.attachLoading):active .z-label,
 body.cherry .z-button:not(.attachLoading):active .z-label,
 body.cherry .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover .z-label,
 body.cherry .portlet-toolbar a:not(.attachLoading):not(.simple-link):hover .z-label,
-body.cherry .form-toolbar a:not(.attachLoading):not(.green-button):hover .z-label,
-body.cherry .form-toolbar a:not(.z-button):not(.green-button):hover .z-label,
+body.cherry .form-toolbar a:not(.attachLoading):not(.z-button):not(.green-button):not(.simple-link):hover .z-label,
 body.cherry .configuration-list li a:hover .z-label,
 body.cherry .white-button:hover .z-label,
 body.cherry .white-button:hover .z-label {
@@ -8106,8 +8095,7 @@ body.turquoise .zButton:not(.attachLoading):active .z-label,
 body.turquoise .z-button:not(.attachLoading):active .z-label,
 body.turquoise .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover .z-label,
 body.turquoise .portlet-toolbar a:not(.attachLoading):not(.simple-link):hover .z-label,
-body.turquoise .form-toolbar a:not(.attachLoading):not(.green-button):hover .z-label,
-body.turquoise .form-toolbar a:not(.z-button):not(.green-button):hover .z-label,
+body.turquoise .form-toolbar a:not(.attachLoading):not(.z-button):not(.green-button):not(.simple-link):hover .z-label,
 body.turquoise .configuration-list li a:hover .z-label,
 body.turquoise .white-button:hover .z-label,
 body.turquoise .white-button:hover .z-label {
@@ -8720,8 +8708,7 @@ body.violet .zButton:not(.attachLoading):active .z-label,
 body.violet .z-button:not(.attachLoading):active .z-label,
 body.violet .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover .z-label,
 body.violet .portlet-toolbar a:not(.attachLoading):not(.simple-link):hover .z-label,
-body.violet .form-toolbar a:not(.attachLoading):not(.green-button):hover .z-label,
-body.violet .form-toolbar a:not(.z-button):not(.green-button):hover .z-label,
+body.violet .form-toolbar a:not(.attachLoading):not(.z-button):not(.green-button):not(.simple-link):hover .z-label,
 body.violet .configuration-list li a:hover .z-label,
 body.violet .white-button:hover .z-label,
 body.violet .white-button:hover .z-label {
@@ -9334,8 +9321,7 @@ body.honey .zButton:not(.attachLoading):active .z-label,
 body.honey .z-button:not(.attachLoading):active .z-label,
 body.honey .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover .z-label,
 body.honey .portlet-toolbar a:not(.attachLoading):not(.simple-link):hover .z-label,
-body.honey .form-toolbar a:not(.attachLoading):not(.green-button):hover .z-label,
-body.honey .form-toolbar a:not(.z-button):not(.green-button):hover .z-label,
+body.honey .form-toolbar a:not(.attachLoading):not(.z-button):not(.green-button):not(.simple-link):hover .z-label,
 body.honey .configuration-list li a:hover .z-label,
 body.honey .white-button:hover .z-label,
 body.honey .white-button:hover .z-label {
@@ -10329,16 +10315,27 @@ body > .ui-autocomplete {
 }
 #globalSearchInput {
   font-style: italic;
-  color: #999;
+  color: #999 !important;
   height: 23px;
-  text-indent: 10px;
-  line-height: 23px;
+  text-indent: 10px !important;
+  line-height: 26px !important;
+  height: 25px;
   width: 300px;
   border: 1px solid #d5d4d4;
   border-left: none;
   margin: 7px 0 0 -3px;
   float: left;
   background: url(../images/search-bar-gradient.png) left top repeat-x;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  -ms-border-radius: 0;
+  -o-border-radius: 0;
+  border-radius: 0;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  -o-box-shadow: none;
+  -ms-box-shadow: none;
+  box-shadow: none;
 }
 #globalSearchInput:focus {
   outline: 0;
@@ -11696,18 +11693,10 @@ td.empty {
   font-size: 40px;
 }
 /*forms*/
-.form input[type="checkbox"] {
-  margin: 0 0 10px 0 !important;
-  -webkit-box-shadow: 0 0 1px 1px rgba(153, 153, 153, 0.3);
-  -moz-box-shadow: 0 0 1px 1px rgba(153, 153, 153, 0.3);
-  -o-box-shadow: 0 0 1px 1px rgba(153, 153, 153, 0.3);
-  -ms-box-shadow: 0 0 1px 1px rgba(153, 153, 153, 0.3);
-  box-shadow: 0 0 1px 1px rgba(153, 153, 153, 0.3);
-}
-.form input[type="text"],
-.form input[type="password"],
-.form select.multiple,
-.form textarea {
+input[type="text"],
+input[type="password"],
+select.multiple,
+textarea {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-font-smoothing: antialiased;
@@ -11739,39 +11728,36 @@ td.empty {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
-.form textarea,
-.form select.multiple {
+textarea,
+select.multiple {
   height: auto;
 }
-.form textarea {
+textarea {
   line-height: 135%;
   text-indent: 0;
   padding: 4px;
   word-break: normal;
   min-height: 60px;
 }
-.form select.multiple {
+select.multiple {
   padding: 4px 4px 4px 6px;
 }
-.form select.multiple option {
+select.multiple option {
   margin-bottom: 2px;
 }
-.form select[disabled="disabled"],
-.form input[type="text"][disabled],
-.form input[type="password"][disabled],
-.form textarea[disabled] {
+select[disabled="disabled"],
+input[type="text"][disabled],
+input[type="password"][disabled],
+textarea[disabled] {
   background: #EFEFEF;
 }
-.form th {
-  vertical-align: text-top;
-}
-.form table {
-  width: 100%;
-  border-bottom: 1px solid #CCCCCC;
-}
-.form form thead tr th:first-child,
-.form form tbody tr td:first-child {
-  padding-left: 15px;
+.form input[type="checkbox"] {
+  margin: 0 0 10px 0 !important;
+  -webkit-box-shadow: 0 0 1px 1px rgba(153, 153, 153, 0.3);
+  -moz-box-shadow: 0 0 1px 1px rgba(153, 153, 153, 0.3);
+  -o-box-shadow: 0 0 1px 1px rgba(153, 153, 153, 0.3);
+  -ms-box-shadow: 0 0 1px 1px rgba(153, 153, 153, 0.3);
+  box-shadow: 0 0 1px 1px rgba(153, 153, 153, 0.3);
 }
 .form form {
   border: 1px solid #CCC;
@@ -11792,13 +11778,17 @@ td.empty {
   background-image: -o-linear-gradient(top, #ffffff, #f5f5f5);
   background-image: linear-gradient(top, #ffffff, #f5f5f5);
 }
-.form .row-description {
+.form form thead tr th:first-child,
+.form form tbody tr td:first-child {
+  padding-left: 15px;
+}
+.row-description {
   display: inline-block;
   font-style: italic;
   font-size: 11px;
   padding: 0 0 5px 0;
 }
-.form .row-description:before {
+.row-description:before {
   content: "T";
   font-weight: normal !important;
   font-weight: normal;
@@ -13190,6 +13180,7 @@ div.wide.form label.hasCheckBox {
   margin-bottom: 0 !important;
 }
 .form-fields {
+  width: 100%;
   border-bottom: none;
   table-layout: fixed;
 }
@@ -15734,8 +15725,22 @@ i[class^="icon"] {
 .icon-projects-list:after {
   content: '\02C7';
 }
+.icon-permissions:after {
+  content: '\00CB';
+}
+.icon-rights:after {
+  content: '\00C8';
+}
+.icon-policies:after {
+  content: '\007D';
+}
 .pillbox .icon-projects-list {
   font-size: 22px;
+  top: -2px !important;
+}
+.pillbox .icon-permissions,
+.pillbox .icon-rights,
+.pillbox .icon-policies {
   top: -2px !important;
 }
 .juiportlet-columns .juiportlet-column {
@@ -16477,9 +16482,14 @@ table.configuration-list td:last-child a .z-label:before {
   padding-bottom: 10px;
   font-weight: bold !important;
 }
+#ModulePermissionsEditAndDetailsView th {
+  text-align: right;
+  padding-bottom: 15px;
+}
 #ModulePermissionsEditAndDetailsView td {
   text-align: left;
   padding-left: 15px;
+  padding-bottom: 15px;
 }
 #GroupUserMembershipEditView td {
   padding-left: 0;
@@ -17013,12 +17023,6 @@ table.configuration-list td:last-child a .z-label:before {
   top: -2px;
 }
 /*=User Security*/
-.UserGroupMembershipView,
-#PoliciesEditAndDetailsView,
-#ModulePermissionsEditAndDetailsView,
-#RightsEditAndDetailsView {
-  margin-top: 15px;
-}
 .UserGroupMembershipView .details-table,
 #PoliciesEditAndDetailsView .details-table,
 #ModulePermissionsEditAndDetailsView .details-table,
@@ -17625,6 +17629,62 @@ table.configuration-list td:last-child a .z-label:before {
   display: block !important;
   left: 198px;
   top: 4px;
+}
+/*Groups and Roles*/
+.security-rights p,
+.security-permissions p,
+.security-roles p,
+.security-groups p,
+.security-nested-groups p,
+.security-adhoc-sharing p {
+  margin-left: 100px !important;
+}
+.security-rights .icon,
+.security-permissions .icon,
+.security-roles .icon,
+.security-groups .icon,
+.security-nested-groups .icon,
+.security-adhoc-sharing .icon {
+  position: relative;
+  margin: 0px 15px 0 0;
+  display: inline-block;
+  height: 100%;
+}
+.security-rights .icon:before,
+.security-permissions .icon:before,
+.security-roles .icon:before,
+.security-groups .icon:before,
+.security-nested-groups .icon:before,
+.security-adhoc-sharing .icon:before {
+  content: '\00D4';
+  font-weight: normal !important;
+  font-weight: normal;
+  font-size: 145px;
+  font-family: "zurmo_gamification_symbly_rRg";
+  line-height: 60px;
+  position: absolute;
+  top: 15px;
+  left: 10px;
+  -webkit-text-shadow: 0 -1px 0 #000000;
+  -moz-text-shadow: 0 -1px 0 #000000;
+  -o-text-shadow: 0 -1px 0 #000000;
+  -ms-text-shadow: 0 -1px 0 #000000;
+  text-shadow: 0 -1px 0 #000000;
+}
+.security-permissions .icon:before {
+  content: '\00CA';
+}
+.security-roles .icon:before {
+  content: '\00C9';
+}
+.security-groups .icon:before {
+  content: '\00DB';
+}
+.security-nested-groups .icon:before {
+  content: '\00EA';
+}
+.security-adhoc-sharing .icon:before {
+  content: '\00EB';
 }
 .available-portlets {
   padding: 15px 15px 0 15px;

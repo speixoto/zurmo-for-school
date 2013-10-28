@@ -34,6 +34,10 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
+    // manually import the class
+    // on non-ajax requests we load MbMenu and that loads it but for ajax requests this isn't imported
+    Yii::import('zii.widgets.CMenu');
+
     class DividedMenu extends CMenu
     {
         public $submenuHtmlOptions = array('class' => 'button-actions');

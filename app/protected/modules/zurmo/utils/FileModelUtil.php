@@ -141,41 +141,34 @@
         /**
          *
          * @param integer $fileModelId
+         * @param bool $sharedContent
          * @param string $fileModelClassName
          * @return $fileModel or false on failure
          */
-        public static function makeByExistingFileModelId($fileModelId, $fileModelClassName = 'FileModel')
+        public static function makeByExistingFileModelId($fileModelId, $sharedContent = true, $fileModelClassName = 'FileModel')
         {
             assert('is_int($fileModelId) || (is_string($fileModelId) && !empty($fileModelId))');
             $existingFileModel      = $fileModelClassName::getById($fileModelId);
-            return static::makeByFileModel($existingFileModel, $fileModelClassName);
+            return static::makeByFileModel($existingFileModel, $sharedContent, $fileModelClassName);
         }
 
         /**
          *
          * @param FileModel $existingFileModel
+         * @param bool $sharedContent
          * @param string $fileModelClassName
          * @return $fileModel or false on failure
          */
-        public static function makeByFileModel($existingFileModel, $fileModelClassName = 'FileModel')
+        public static function makeByFileModel($existingFileModel, $sharedContent = true, $fileModelClassName = 'FileModel')
         {
             $file                   = new $fileModelClassName();
             ZurmoCopyModelUtil::copy($existingFileModel, $file);
-            $fileContent            = new FileContent();
-            $fileContent->content   = $existingFileModel->fileContent->content;
-            $file->fileContent      = $fileContent;
-            if (!$file->save())
+            if (!$sharedContent)
             {
-                return false;
+                $fileContent            = new FileContent();
+                $fileContent->content   = $existingFileModel->fileContent->content;
+                $file->fileContent      = $fileContent;
             }
-            return $file;
-        }
-
-        public static function makeByFileModelWithSharedFileContent($existingFileModel)
-        {
-            $file                   = new FileModel();
-            ZurmoCopyModelUtil::copy($existingFileModel, $file);
-            $file->fileContent      = $existingFileModel->fileContent;
             if (!$file->save())
             {
                 return false;
