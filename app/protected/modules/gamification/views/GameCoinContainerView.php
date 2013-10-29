@@ -78,7 +78,6 @@
             $url    = $this->makeAjaxClickUrl();
             $script = "$('.random-game-coin').click(function(){
                             " . ZurmoHtml::ajax(array('type' => 'GET', 'url' =>  $url)) . "
-                            //$(this).animate( { left:1200, top:300 }, 35, 'easeOutQuart' );
                             var audio = document.getElementById('game-coin-chime');
                             audio.play();
                             $('.game-coin').animate({top:15},75).hide(0);
@@ -87,6 +86,9 @@
                                 totalFrames: 40,
                                 duration: 1000,
                                 loop: false,
+                                complete: function(){
+                                    $('.random-game-coin').remove();
+                                }
                             });
                         });";
            Yii::app()->clientScript->registerScript('gameCoinClickScript', $script);
