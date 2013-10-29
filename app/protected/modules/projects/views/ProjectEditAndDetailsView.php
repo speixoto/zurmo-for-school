@@ -57,6 +57,11 @@
                     'nonPlaceableAttributeNames' => array(
                         'owner',
                     ),
+                    'derivedAttributeTypes' => array(
+                        'MultipleAccountsForProjects',
+                        'MultipleContactsForProjects',
+                        'MultipleOpportunitiesForProjects',
+                    ),
                     'panelsDisplayType' => FormLayout::PANELS_DISPLAY_TYPE_ALL,
                     'panels' => array(
                         array(
