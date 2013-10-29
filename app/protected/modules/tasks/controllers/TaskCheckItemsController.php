@@ -37,14 +37,17 @@
             {
                 $this->actionInlineEditValidate(new TaskCheckListItem());
             }
-
             $taskCheckListItem          = new TaskCheckListItem();
             $postData                   = PostUtil::getData();
             $postFormData               = ArrayUtil::getArrayValue($postData, get_class($taskCheckListItem));
             $taskCheckListItem->name    = $postFormData['name'];
             $task                       = Task::getById(intval($relatedModelId));
             $task->checkListItems->add($taskCheckListItem);
-            $task->save(false);
+            $saved = $task->save();
+            if(!$saved)
+            {
+                throw new FailedToSaveModelException();
+            }
             if($task->project->id > 0)
             {
                 ProjectsUtil::logTaskCheckItemEvent($task, $taskCheckListItem);
