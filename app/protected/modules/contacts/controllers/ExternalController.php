@@ -36,8 +36,6 @@
 
     class ContactsExternalController extends ZurmoModuleController
     {
-        const CAPTCHA_PRIVATE_KEY = '6Ldjl-cSAAAAADl8S7o0UMO8eACcXK9jTb56AnB0';
-
         const CAPTCHA_VERIFY_URL  = 'http://www.google.com/recaptcha/api/verify';
 
         public function filters()
@@ -284,7 +282,7 @@
             if (isset($_POST['recaptcha_response_field']))
             {
                 $data               = array();
-                $data['privatekey'] = static::CAPTCHA_PRIVATE_KEY;
+                $data['privatekey'] = ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'reCaptchaPrivateKey');
                 $data['remoteip']   = $_SERVER['REMOTE_ADDR'];
                 $data['challenge']  = $_POST['recaptcha_challenge_field'];
                 $data['response']   = $_POST['recaptcha_response_field'];

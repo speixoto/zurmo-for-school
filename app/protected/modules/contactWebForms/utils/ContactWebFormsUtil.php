@@ -138,19 +138,19 @@
                 $webFormAttributeForm->required = true;
                 $isRequiredChecked              = 'checked';
                 $isRequiredDisabled             = 'disabled';
-                $removePlacedAttributeLink      = '';
+                $removePlacedAttributeLink      = null;
             }
             else
             {
                 if (isset($webFormAttributeForm->required) && $webFormAttributeForm->required == true)
                 {
                     $isRequiredChecked  = 'checked';
-                    $isRequiredDisabled = '';
+                    $isRequiredDisabled = null;
                 }
                 else
                 {
                     $isRequiredChecked  = 'checked';
-                    $isRequiredDisabled = '';
+                    $isRequiredDisabled = null;
                 }
                 $removePlacedAttributeLink = '<a class="remove-dynamic-row-link" id="ContactWebForm_serializedData_' .
                                               $attributeName . '" data-value="' . $attributeName . '" href="#">—</a>';
@@ -174,7 +174,7 @@
                 $isHiddenElement       = new DerivedCheckBoxElement($webFormAttributeForm, 'hidden', $model,
                                          array_merge($params, array('checked'     => $isHiddenChecked),
                                                               array('htmlOptions' => array('class' => 'hiddenAttribute',
-                                                                                           'data-value' => $attributeName))));
+                                                                                     'data-value' => $attributeName))));
                 $isHiddenElement->editableTemplate       = '{content}{label}{error}';
                 $renderHiddenAttributeElement = static::renderHiddenAttributeElement($webFormAttributeForm, 'hiddenValue',
                                                 $model, $attributeData['elementType'], $params);
@@ -182,8 +182,8 @@
             }
             else
             {
-                $isHiddenElementContent       = '';
-                $renderHiddenAttributeElement = '';
+                $isHiddenElementContent       = null;
+                $renderHiddenAttributeElement = null;
             }
             $attributeLabelElement->editableTemplate = '{content}{error}';
             $isRequiredElement->editableTemplate     = '{content}{label}{error}';
@@ -302,7 +302,8 @@
             $ContactWebFormAttributes = unserialize($contactWebForm->serializedData);
             foreach ($ContactWebFormAttributes as $attributeName => $attribute)
             {
-                if (isset($attribute['hidden']) && $attribute['hidden'] == true && isset($attribute['hiddenValue']) && !empty($attribute['hiddenValue']))
+                if (isset($attribute['hidden']) && $attribute['hidden'] == true && isset($attribute['hiddenValue']) &&
+                    !empty($attribute['hiddenValue']))
                 {
                     $dropDownAttributeTypes = array('CheckBox', 'RadioDropDown', 'DropDown');
                     $allAttributes = ContactWebFormsUtil::getAllAttributes();
@@ -324,7 +325,8 @@
             $ContactWebFormAttributes = unserialize($contactWebForm->serializedData);
             foreach ($ContactWebFormAttributes as $attributeName => $attribute)
             {
-                if (isset($attribute['hidden']) && $attribute['hidden'] == true && isset($attribute['hiddenValue']) && !empty($attribute['hiddenValue']))
+                if (isset($attribute['hidden']) && $attribute['hidden'] == true && isset($attribute['hiddenValue']) &&
+                    !empty($attribute['hiddenValue']))
                 {
                     $webFormEntryAttributes[$attributeName] = $attribute['hiddenValue'];
                 }
@@ -352,27 +354,25 @@
             return $content;
         }
 
+        /**
+         * @param $attributeData
+         * @return string
+         */
         public static function getPlacedAttributeContent($attributeData)
         {
-
             $label = ZurmoHtml::tag('label', array(), Zurmo::t('ContactWebFormsModule', 'Label'));
             $value = ZurmoHtml::tag('label', array(), Zurmo::t('ContactWebFormsModule', 'Value'));
-
             $content  = ZurmoHtml::openTag('li');
             $content .= ZurmoHtml::openTag('div', array('class' => 'dynamic-row webform-chosen-field clearfix'));
-
             $content .= ZurmoHtml::tag('span', array('class' => 'is-required-checkbox'), $attributeData['{isRequiredElement}']);
             $content .= ZurmoHtml::tag('span', array('class' => 'field-label'), $label . $attributeData['{attributeLabelElement}']);
             $content .= ZurmoHtml::tag('span', array('class' => 'is-hidden-checkbox'), $attributeData['{isHiddenElement}']);
-
             $content .= ZurmoHtml::openTag('span', array('id'    => 'hiddenAttributeElement_' . $attributeData['{attributeName}'],
                                                          'class' => 'hidden-field-label',
                                                          'style' => $attributeData['{hideHiddenAttributeElementStyle}']));
             $content .= $value . $attributeData['{renderHiddenAttributeElement}'];
             $content .= ZurmoHtml::closeTag('span');
-
             $content .= $attributeData['{removePlacedAttributeLink}'];
-
             $content .= ZurmoHtml::closeTag('li');
             return $content;
         }

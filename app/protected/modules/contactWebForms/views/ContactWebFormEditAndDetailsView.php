@@ -135,7 +135,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'enableCaptcha', 'type' => 'CheckBox'),
+                                                array('attributeName' => 'enableCaptcha', 'type' => 'ContactWebFormsEnableCaptchaCheckBox'),
                                             ),
                                         ),
                                     )

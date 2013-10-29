@@ -136,6 +136,24 @@
                                     array(
                                         array(
                                             'elements' => array(
+                                                array('attributeName' => 'reCaptchaPrivateKey', 'type' => 'Text'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'reCaptchaPublicKey', 'type' => 'Text'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
                                                 array('attributeName' => 'gamificationModalNotificationsEnabled',
                                                                                                 'type' => 'CheckBox'),
                                             ),
