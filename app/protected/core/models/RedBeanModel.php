@@ -2235,6 +2235,7 @@
                         {
                             if ($this->$relationName->id > 0)
                             {
+                                // we can't change these to delete() because its Owned, it can't be deleted from outside
                                 $this->$relationName->unrestrictedDelete();
                             }
                         }
@@ -2242,6 +2243,7 @@
                         {
                             foreach ($this->$relationName as $model)
                             {
+                                // we can't change this to delete() because its Owned, it can't be deleted from outside
                                 $model->unrestrictedDelete();
                             }
                         }

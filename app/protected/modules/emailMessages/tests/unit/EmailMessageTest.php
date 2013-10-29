@@ -215,7 +215,7 @@
             $emailMessage = new EmailMessage();
             $emailMessage->owner   = $jane;
             $emailMessage->subject = 'My Email with an Attachment';
-            $fileModel        = ZurmoTestHelper::createFileModel('testNote.txt', 'FileModel');
+            $fileModel        = ZurmoTestHelper::createFileModel('testNote.txt');
             $emailMessage->files->add($fileModel);
 
             //Attempt to save without setting required information

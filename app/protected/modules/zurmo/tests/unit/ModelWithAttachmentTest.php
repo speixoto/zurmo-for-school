@@ -54,13 +54,17 @@
 
         public static function getDependentTestModelClassNames()
         {
-            return array('FileTestModel', 'ModelWithAttachmentTestItem');
+            return array('ModelWithAttachmentTestItem');
+        }
+
+        public function setUp()
+        {
+            Yii::app()->user->userModel = User::getByUsername('super');
         }
 
         public function testFileSetAndGet()
         {
-            Yii::app()->user->userModel = User::getByUsername('super');
-            $fileCount = count(FileTestModel::getAll());
+            $fileCount = count(FileModel::getAll());
             $this->assertEquals(0, $fileCount);
 
             $pathToFiles = Yii::getPathOfAlias('application.modules.zurmo.tests.unit.files');
@@ -69,7 +73,7 @@
             $this->assertEquals(6495, strlen($contents));
             $fileContent          = new FileContent();
             $fileContent->content = $contents;
-            $file          = new FileTestModel();
+            $file          = new FileModel();
             $file->fileContent = $fileContent;
             $file->name    = 'testNote.txt';
             $file->type    = ZurmoFileHelper::getMimeType($pathToFiles . DIRECTORY_SEPARATOR . 'testNote.txt');
@@ -80,41 +84,40 @@
             $file->forget();
 
             //Now retrieve the file and make sure the content matches.
-            $file = FileTestModel::getById($fileId);
+            $file = FileModel::getById($fileId);
             $this->assertEquals($contents, $file->fileContent->content);
             $this->assertEquals('testNote.txt', $file->name);
             $this->assertEquals('text/plain', $file->type);
             $this->assertEquals(6495, $file->size);
 
             //Remove the fileModel. The related fileContent should also be removed because it is OWNED by the fileModel.
-            $this->assertEquals(1, count(FileTestModel::getAll()));
+            $this->assertEquals(1, count(FileModel::getAll()));
             $this->assertEquals(1, count(FileContent::getAll()));
             $file->delete();
-            $this->assertEquals(0, count(FileTestModel::getAll()));
+            $this->assertEquals(0, count(FileModel::getAll()));
             $this->assertEquals(0, count(FileContent::getAll()));
         }
 
         public function testMakeFileViaUpload()
         {
-            Yii::app()->user->userModel = User::getByUsername('super');
             $pathToFiles = Yii::getPathOfAlias('application.modules.zurmo.tests.unit.files');
             $contents    = file_get_contents($pathToFiles . DIRECTORY_SEPARATOR . 'testNote.txt');
             $filePath    = $pathToFiles . DIRECTORY_SEPARATOR . 'testNote.txt';
             self::resetAndPopulateFilesArrayByFilePathAndName('test', $filePath, 'testNote.txt');
             $uploadedFile = CUploadedFile::getInstanceByName('test');
-            $fileModel     = FileModelUtil::makeByUploadedFile($uploadedFile, 'FileTestModel');
-            $this->assertTrue($fileModel instanceof FileTestModel);
+            $fileModel     = FileModelUtil::makeByUploadedFile($uploadedFile);
+            $this->assertTrue($fileModel instanceof FileModel);
             $fileModelId = $fileModel->id;
             $fileModel->forget();
 
             //Now retrieve the file and make sure the content matches.
-            $file = FileTestModel::getById($fileModelId);
+            $file = FileModel::getById($fileModelId);
             $this->assertEquals($contents, $file->fileContent->content);
             $this->assertEquals('testNote.txt', $file->name);
             $this->assertEquals('text/plain', $file->type);
             $this->assertEquals(6495, $file->size);
             $fileModel->delete();
-            $this->assertEquals(0, count(FileTestModel::getAll()));
+            $this->assertEquals(0, count(FileModel::getAll()));
             $this->assertEquals(0, count(FileContent::getAll()));
         }
 
@@ -123,13 +126,12 @@
          */
         public function testMakeFileViaUploadWhereFileIsAnEmptyFile()
         {
-            Yii::app()->user->userModel = User::getByUsername('super');
             $pathToFiles = Yii::getPathOfAlias('application.modules.zurmo.tests.unit.files');
             $contents    = file_get_contents($pathToFiles . DIRECTORY_SEPARATOR . 'testEmptyNote.txt');
             $filePath    = $pathToFiles . DIRECTORY_SEPARATOR . 'testEmptyNote.txt';
             self::resetAndPopulateFilesArrayByFilePathAndName('test', $filePath, 'testEmptyNote.txt');
             $uploadedFile = CUploadedFile::getInstanceByName('test');
-            $fileModel     = FileModelUtil::makeByUploadedFile($uploadedFile, 'FileTestModel');
+            $fileModel     = FileModelUtil::makeByUploadedFile($uploadedFile);
         }
 
         /**
@@ -137,24 +139,39 @@
         */
         public function testMakeFileViaUploadWhereFileNotExist()
         {
-            Yii::app()->user->userModel = User::getByUsername('super');
             $pathToFiles = Yii::getPathOfAlias('application.modules.zurmo.tests.unit.files');
             $filePath    = $pathToFiles . DIRECTORY_SEPARATOR . 'testMissingFile.txt';
             $uploadedFile = CUploadedFile::getInstanceByName('test');
-            $fileModel     = FileModelUtil::makeByUploadedFile($uploadedFile, 'FileTestModel');
+            $fileModel     = FileModelUtil::makeByUploadedFile($uploadedFile);
         }
 
         public function testModelWithAttachmentTestItem()
         {
-            Yii::app()->user->userModel = User::getByUsername('super');
-            $pathToFiles = Yii::getPathOfAlias('application.modules.zurmo.tests.unit.files');
-            $filePath    = $pathToFiles . DIRECTORY_SEPARATOR . 'testNote.txt';
+            $pathToFiles    = Yii::getPathOfAlias('application.modules.zurmo.tests.unit.files');
+            $filePath       = $pathToFiles . DIRECTORY_SEPARATOR . 'testNote.txt';
+
+            // create 2 extra file model which should persist when $model is delete, their content should also persist.
+            $pdfFile        = FileModelUtil::makeByFilePathAndName($filePath, 'testPDF.pdf');
+            $pdfFileId      = $pdfFile->id;
+            $pdfFileName    = $pdfFile->name;
+            $pdfFileContent = $pdfFile->fileContent->content;
+            $pdfFileType    = $pdfFile->type;
+            $pdfFileSize    = $pdfFile->size;
+            $pdfFile->forgetAll();
+            unset($pdfFile);
+            $zipFile        = FileModelUtil::makeByFilePathAndName($filePath, 'testZip.zip');
+            $zipFileId      = $zipFile->id;
+            $zipFileName    = $zipFile->name;
+            $zipFileContent = $zipFile->fileContent->content;
+            $zipFileType    = $zipFile->type;
+            $zipFileSize    = $zipFile->size;
+            $zipFile->forgetAll();
+            unset($zipFile);
 
             $model = new ModelWithAttachmentTestItem();
-
-            $fileModel     = FileModelUtil::makeByFilePathAndName($filePath, 'testNote.txt', 'FileTestModel');
+            $fileModel     = FileModelUtil::makeByFilePathAndName($filePath, 'testNote.txt');
             $firstFileModelId = $fileModel->id;
-            $this->assertTrue($fileModel instanceof FileTestModel);
+            $this->assertTrue($fileModel instanceof FileModel);
             $this->assertEquals(6495, strlen($fileModel->fileContent->content));
             $theContent    = $fileModel->fileContent->content;
             $model->files->add($fileModel);
@@ -174,8 +191,8 @@
             self::resetAndPopulateFilesArrayByFilePathAndName('aTest', $filePath, 'testNote.txt');
             $uploadedFile = CUploadedFile::getInstanceByName('aTest');
             $this->assertTrue($uploadedFile instanceof CUploadedFile);
-            $fileModel     = FileModelUtil::makeByUploadedFile($uploadedFile, 'FileTestModel');
-            $this->assertTrue($fileModel instanceof FileTestModel);
+            $fileModel     = FileModelUtil::makeByUploadedFile($uploadedFile);
+            $this->assertTrue($fileModel instanceof FileModel);
             $this->assertTrue($fileModel->id != $firstFileModelId);
             $this->assertTrue($fileModel->id > 0);
             $model = ModelWithAttachmentTestItem::getById($modelId);
@@ -184,26 +201,37 @@
             $this->assertTrue($saved);
             $modelId = $model->id;
             $model->forget();
+            RedBeanModel::forgetAll();
 
             $model = ModelWithAttachmentTestItem::getById($modelId);
             $this->assertEquals(2, $model->files->count());
 
             //Delete the model and confirm the related models are removed
-            $this->assertEquals(1, count(ModelWithAttachmentTestitem::getAll()));
-            $this->assertEquals(2, count(FileTestModel::getAll()));
-            $this->assertEquals(2, count(FileContent::getAll()));
-            $model->delete();
-            $this->assertEquals(0, count(ModelWithAttachmentTestitem::getAll()));
-            $this->assertEquals(0, count(FileTestModel::getAll()));
-            $this->assertEquals(0, count(FileContent::getAll()));
+            $this->assertEquals(1, ModelWithAttachmentTestitem::getCount());
+            $this->assertEquals(4, FileModel::getCount());
+            $this->assertEquals(4, FileContent::getCount());
+            $this->assertTrue($model->delete());
+            $this->assertEquals(0, ModelWithAttachmentTestitem::getCount());
+            $this->assertEquals(2, FileModel::getCount());
+            $this->assertEquals(2, FileContent::getCount());
+
+            $pdfFile    = FileModel::getById($pdfFileId);
+            $this->assertEquals($pdfFileContent,    $pdfFile->fileContent->content);
+            $this->assertEquals($pdfFileName,       $pdfFile->name);
+            $this->assertEquals($pdfFileType,       $pdfFile->type);
+            $this->assertEquals($pdfFileSize,       $pdfFile->size);
+            $zipFile    = FileModel::getById($zipFileId);
+            $this->assertEquals($zipFileContent,    $zipFile->fileContent->content);
+            $this->assertEquals($zipFileName,       $zipFile->name);
+            $this->assertEquals($zipFileType,       $zipFile->type);
+            $this->assertEquals($zipFileSize,       $zipFile->size);
         }
 
         public function testSavingFileContentWhenNotModified()
         {
-            Yii::app()->user->userModel = User::getByUsername('super');
             $fileContent = new FileContent();
             $fileContent-> content = 'testContent';
-            $file          = new FileTestModel();
+            $file          = new FileModel();
             $file->fileContent = $fileContent;
             $file->name    = 'aTestName';
             $file->type    = 'aTestType';
@@ -214,10 +242,10 @@
             $file->forget();
 
             //Now retrieve the file and make sure the content matches.
-            $fileModel = FileTestModel::getById($fileId);
+            $fileModel = FileModel::getById($fileId);
             $this->assertTrue($fileModel->save());
             $file->forget();
-            $fileModel = FileTestModel::getById($fileId);
+            $fileModel = FileModel::getById($fileId);
             $this->assertEquals('testContent', $file->fileContent->content);
         }
     }
