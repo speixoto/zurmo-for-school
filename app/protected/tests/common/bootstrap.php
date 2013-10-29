@@ -39,6 +39,10 @@
 
     TestConfigFileUtils::configureConfigFiles();
     require_once(COMMON_ROOT   . '/version.php');
+    if (is_file(COMMON_ROOT   . '/commercialVersion.php'))
+    {
+        require_once(COMMON_ROOT   . '/commercialVersion.php');
+    }
     require_once(COMMON_ROOT   . '/protected/modules/install/utils/InstallUtil.php');
     require_once(COMMON_ROOT   . '/protected/core/utils/ZurmoPasswordSecurityUtil.php');
     InstallUtil::setZurmoTokenAndWriteToPerInstanceFile(INSTANCE_ROOT, 'perInstanceTest.php');
