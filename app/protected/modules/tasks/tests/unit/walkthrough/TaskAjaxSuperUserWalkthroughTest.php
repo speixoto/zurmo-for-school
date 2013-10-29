@@ -244,7 +244,7 @@
                 }
                 $kanbanItemsArray[] = $kanbanItem;
             }
-            $this->assertEquals(KanbanItem::TYPE_SOMEDAY, $kanbanItemsArray[1]->type);
+            $this->assertEquals(KanbanItem::TYPE_TODO, $kanbanItemsArray[1]->type);
             $this->assertEquals(1, $kanbanItemsArray[1]->sortOrder);
             $this->assertEquals(1, $kanbanItemsArray[0]->sortOrder);
 

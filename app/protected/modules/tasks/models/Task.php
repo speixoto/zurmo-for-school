@@ -209,6 +209,14 @@
         {
             if (parent::beforeSave())
             {
+                if($this->status != Task::STATUS_COMPLETED)
+                {
+                    $this->completed = false;
+                }
+                else
+                {
+                    $this->completed = true;
+                }
                 if (array_key_exists('completed', $this->originalAttributeValues) &&
                     $this->completed == true)
                 {
