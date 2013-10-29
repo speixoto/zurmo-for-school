@@ -139,7 +139,7 @@
                     $comment->setScenario('importModel');
                     $comment->createdByUser = $demoDataHelper->getRandomByModelName('User');
                     $task->comments->add($comment);
-                    ProjectsUtil::logAddCommentEvent($task, $comment);
+                    ProjectsUtil::logAddCommentEvent($task, strval($comment));
                 }
                 //Add Super user
                 $comment                = new Comment();
