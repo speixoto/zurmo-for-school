@@ -36,6 +36,25 @@
 
     class TasksDefaultController extends ActivityModelsDefaultController
     {
+        public function filters()
+        {
+            return array_merge(parent::filters(),
+                array(
+                    array(
+                        ZurmoBaseController::REQUIRED_ATTRIBUTES_FILTER_PATH . ' + modalCreateFromRelation,
+                                            ModalEdit',
+                        'moduleClassName' => get_class($this->getModule()),
+                        'viewClassName'   => 'TaskModalEditView',
+                   ),
+                    array(
+                        ZurmoBaseController::REQUIRED_ATTRIBUTES_FILTER_PATH . ' + modalDetails',
+                        'moduleClassName' => get_class($this->getModule()),
+                        'viewClassName'   => 'TaskModalDetailsView',
+                   ),
+               )
+            );
+        }
+
         public function actionDetails($id, $redirectUrl = null)
         {
             $task = static::getModelAndCatchNotFoundAndDisplayError('Task', intval($id));
@@ -267,8 +286,16 @@
                                                       $relationModuleId = null)
         {
             $task  = new Task();
-            $task  = $this->resolveNewModelByRelationInformation($task, $relationAttributeName,
-                     (int)$relationModelId, $relationModuleId);
+            if($relationAttributeName == 'project' && $relationModelId != null)
+            {
+                $project = Project::getById((int)$relationModelId);
+                $task->project = $project;
+            }
+            else
+            {
+                $task  = $this->resolveNewModelByRelationInformation($task, $relationAttributeName,
+                        (int)$relationModelId, $relationModuleId);
+            }
             $this->processTaskEdit($task);
         }
 
@@ -277,7 +304,7 @@
          */
         public function actionModalCreate()
         {
-            $task             = new Task();
+            $task = new Task();
             $this->processTaskEdit($task);
         }
 
@@ -295,9 +322,17 @@
             {
                 $task  = new Task();
                 TasksUtil::setDefaultValuesForTask($task);
-                $task  = $this->resolveNewModelByRelationInformation( $task, $relationAttributeName,
-                                                                             (int)$relationModelId,
-                                                                             $relationModuleId);
+                if($relationAttributeName == 'project' && $relationModelId != null)
+                {
+                    $project = Project::getById((int)$relationModelId);
+                    $task->project = $project;
+                }
+                else
+                {
+                    $task  = $this->resolveNewModelByRelationInformation( $task, $relationAttributeName,
+                                                                                 (int)$relationModelId,
+                                                                                 $relationModuleId);
+                }
             }
             else
             {
@@ -510,8 +545,7 @@
                 $task->save();
                 if($showCompletionDate)
                 {
-                    echo '<p>' . Zurmo::t('TasksModule', 'Completed On') . ': ' .
-                                 DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay($task->completedDateTime) . '</p>';
+                    echo TasksUtil::renderCompletionDateTime($task);
                 }
             }
             else
@@ -635,8 +669,13 @@
             if (isset($_POST['ajax']) &&
                 ($_POST['ajax'] == 'task-left-column-form-data' || $_POST['ajax'] == 'task-right-column-form-data'))
             {
+                $taskBeforeSaveStatus = $task->status;
                 $this->attemptToSaveModelFromPost($task, null, false);
-                $errorData        = ZurmoActiveForm::makeErrorsDataAndResolveForOwnedModelAttributes($task);
+                $errorData = ZurmoActiveForm::makeErrorsDataAndResolveForOwnedModelAttributes($task);
+                if($task->status != $taskBeforeSaveStatus && $task->status == Task::STATUS_COMPLETED)
+                {
+                    $errorData['completedDateTime'] = TasksUtil::renderCompletionDateTime($task);
+                }
                 echo CJSON::encode($errorData);
                 Yii::app()->end(0, false);
             }

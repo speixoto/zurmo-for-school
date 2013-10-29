@@ -78,6 +78,13 @@
             return $content;
         }
 
+        /**
+         * Renders subscriber image and link content
+         * @param User $user
+         * @param int $imageSize
+         * @param string $class
+         * @return string
+         */
         public static function renderSubscriberImageAndLinkContent(User $user, $imageSize = 36, $class = null)
         {
             assert('is_int($imageSize)');
@@ -786,7 +793,6 @@
             $percentageComplete = ceil(static::getTaskCompletionPercentage($task));
             return ZurmoHtml::tag('div', array('class' => 'completion-percentage-bar', 'style' => 'width:' . $percentageComplete . '%'),
                                   $percentageComplete . '%');
-            $percentage = TasksUtil::getTaskCompletionPercentage(intval($task->id));
         }
 
         /**
@@ -846,6 +852,7 @@
          */
         public static function registerTaskModalDetailsScript($sourceId)
         {
+            assert('is_string($sourceId)');
             $modalId = TasksUtil::getModalContainerId();
             $url = Yii::app()->createUrl('tasks/default/modalDetails');
             $ajaxOptions = TasksUtil::resolveAjaxOptionsForModalView('Details', $sourceId);
@@ -904,6 +911,21 @@
                 {
                 }
             }
+        }
+
+        /**
+         * Renders completion date time content for the task
+         * @param Task $task
+         * @return string
+         */
+        public static function renderCompletionDateTime(Task $task)
+        {
+            if($task->completedDateTime == null)
+            {
+                $task->completedDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
+            }
+            return '<p>' . Zurmo::t('TasksModule', 'Completed On') . ': ' .
+                                 DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay($task->completedDateTime) . '</p>';
         }
     }
 ?>

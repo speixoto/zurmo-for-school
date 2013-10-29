@@ -69,21 +69,8 @@
             $id = $task->id;
             unset($task);
             $task = Task::getById($id);
-
-            //Create KanbanItem here
-            $kanbanItem                     = new KanbanItem();
-            $kanbanItem->type               = TasksUtil::resolveKanbanItemTypeForTaskStatus($task->status);
-            $kanbanItem->task               = $task;
-            $kanbanItem->kanbanRelatedItem  = $task->activityItems->offsetGet(0);
-            $sortOrder = KanbanItem::getMaximumSortOrderByType($kanbanItem->type);
-            $kanbanItem->sortOrder          = $sortOrder;
-            $saved = $kanbanItem->save();
-            $kanbanItemId = $kanbanItem->id;
-            $this->assertTrue($saved);
-
-            $kanbanItem                     = KanbanItem::getById($kanbanItemId);
+            $kanbanItem = KanbanItem::getByTask($task->id);
             $this->assertEquals(KanbanItem::TYPE_IN_PROGRESS, $kanbanItem->type);
-
             $this->assertEquals(1, count(KanbanItem::getAll()));
         }
 

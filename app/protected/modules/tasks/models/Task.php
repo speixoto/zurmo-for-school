@@ -212,19 +212,12 @@
                 if($this->status != Task::STATUS_COMPLETED)
                 {
                     $this->completed = false;
+                    $this->completedDateTime = null;
                 }
                 else
                 {
                     $this->completed = true;
-                }
-                if (array_key_exists('completed', $this->originalAttributeValues) &&
-                    $this->completed == true)
-                {
-                    if ($this->completedDateTime == null)
-                    {
-                        $this->completedDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
-                    }
-                    $this->unrestrictedSet('latestDateTime', $this->completedDateTime);
+                    $this->completedDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
                 }
                 return true;
             }
