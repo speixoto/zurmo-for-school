@@ -76,19 +76,22 @@
             $completedTodosCount = 0;
             foreach ($tasks as $task)
             {
-                $totalToDosCount += count($task->checkListItems);
-                if(count($task->checkListItems) != 0)
+                if(ControllerSecurityUtil::doesCurrentUserHavePermissionOnSecurableItem($task, Permission::READ))
                 {
-                    $completedTodosCount += TasksUtil::getTaskCompletedCheckListItems($task);
-                }
-                $kanbanItem  = KanbanItem::getByTask($task->id);
-                if($kanbanItem == null)
-                {
-                    //Create KanbanItem here
-                    $kanbanItem = TasksUtil::createKanbanItemFromTask($task);
-                }
+                    $totalToDosCount += count($task->checkListItems);
+                    if(count($task->checkListItems) != 0)
+                    {
+                        $completedTodosCount += TasksUtil::getTaskCompletedCheckListItems($task);
+                    }
+                    $kanbanItem  = KanbanItem::getByTask($task->id);
+                    if($kanbanItem == null)
+                    {
+                        //Create KanbanItem here
+                        $kanbanItem = TasksUtil::createKanbanItemFromTask($task);
+                    }
 
-                $kanbanItemsArray[$kanbanItem->type][] = $kanbanItem->id;
+                    $kanbanItemsArray[$kanbanItem->type][] = $kanbanItem->id;
+                }
             }
 
             $stats = array();

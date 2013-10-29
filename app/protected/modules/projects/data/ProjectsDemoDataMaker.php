@@ -65,7 +65,13 @@
                 $account            = $demoDataHelper->getRandomByModelName('Account');
                 $project->accounts->add($account);
                 $this->populateModel($project);
+                $project->addPermissions(Group::getByName(Group::EVERYONE_GROUP_NAME), Permission::READ_WRITE_CHANGE_PERMISSIONS_CHANGE_OWNER);
                 $saved = $project->save();
+                assert('$saved');
+                $project = Project::getById($project->id);
+                ReadPermissionsOptimizationUtil::
+                    securableItemGivenPermissionsForGroup($project, Group::getByName(Group::EVERYONE_GROUP_NAME));
+                $project->save();
                 assert('$saved');
                 ProjectAuditEvent::logAuditEvent(ProjectAuditEvent::PROJECT_CREATED, $project, $project->name);
                 self::addDemoTasks($project, 3, $demoDataHelper);
@@ -139,10 +145,15 @@
                 $comment                = new Comment();
                 $comment->description   = 'Versatile idea regarding the task';
                 $task->comments->add($comment);
+                $task->addPermissions(Group::getByName(Group::EVERYONE_GROUP_NAME), Permission::READ_WRITE_CHANGE_PERMISSIONS_CHANGE_OWNER);
                 $task->save();
                 $currentStatus              = $task->status;
                 ProjectsUtil::logAddTaskEvent($task);
+                $task = Task::getById($task->id);
                 $task->status = RandomDataUtil::getRandomValueFromArray(self::getTaskStatusOptions());
+                $task->save();
+                ReadPermissionsOptimizationUtil::
+                    securableItemGivenPermissionsForGroup($task, Group::getByName(Group::EVERYONE_GROUP_NAME));
                 $task->save();
                 ProjectsUtil::logTaskStatusChangeEvent($task,
                                                        Task::getStatusDisplayName($currentStatus),

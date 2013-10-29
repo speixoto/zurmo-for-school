@@ -156,5 +156,10 @@
             $content .= '</p></div>';
             return $content;
         }
+
+        public static function getDesignerRulesType()
+        {
+            return null;
+        }
     }
 ?>
