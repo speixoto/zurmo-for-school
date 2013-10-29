@@ -35,10 +35,17 @@
      ********************************************************************************/
 
     /**
-     * Class defines rules for any model details view for a portlet.
-     * portlets.
+     * Class defines rules for any project related model details view for a portlet.
      */
-    class ModelDetailsPortletRules extends PortletRules
+    class ProjectsModelDetailsPortletRules extends ModelDetailsPortletRules
     {
+        /**
+         * (non-PHPdoc)
+         * @see PortletRules::allowOnDashboard()
+         */
+        public function allowOnDashboard()
+        {
+            return true;
+        }
     }
 ?>

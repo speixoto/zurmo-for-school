@@ -112,7 +112,7 @@
          */
         public static function getPortletRulesType()
         {
-            return 'ModelDetails';
+            return 'ProjectsModelDetails';
         }
 
         /**
