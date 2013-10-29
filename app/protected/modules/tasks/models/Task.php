@@ -218,6 +218,7 @@
                 {
                     $this->completed = true;
                     $this->completedDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
+                    $this->unrestrictedSet('latestDateTime', $this->completedDateTime);
                 }
                 return true;
             }
@@ -300,6 +301,10 @@
                       throw new FailedToSaveModelException();
                   }
                 }
+            }
+            if ($this->isNewModel)
+            {
+                TasksNotificationUtil::makeAndSubmitNewTaskNotificationMessage($this);
             }
         }
     }

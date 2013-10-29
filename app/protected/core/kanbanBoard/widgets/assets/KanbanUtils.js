@@ -120,7 +120,6 @@ function setUpTaskKanbanSortable(inputurl)
                                 }
                             },
                             error: function(request, status, error){
-                                console.log(error);
                                 alert('We are unable to set the sort order at this time.  Please try again in a few minutes.');
                             }
                         });
