@@ -114,7 +114,7 @@
 
         protected static function resolveTitleByMassActionId($actionId)
         {
-            if (strpos($actionId, 'massSubscribe') === 0 || strpos($actionId, 'massUnsubscribe') === 0)
+            if (static::isMassSubscribeOrUnsubscribeLikeAction($actionId))
             {
                 $term = 'Mass '. ucfirst(str_replace('mass', '', $actionId));
                 return Zurmo::t('MarketingListsModule', $term);
@@ -146,7 +146,7 @@
 
         protected static function resolveViewIdByMassActionId($actionId, $returnProgressViewName, $moduleName = null)
         {
-            if (strpos($actionId, 'massSubscribe') === 0 || strpos($actionId, 'massUnsubscribe') === 0)
+            if (static::isMassSubscribeOrUnsubscribeLikeAction($actionId))
             {
                 $viewNameSuffix    = 'View';
                 if ($returnProgressViewName)
@@ -161,6 +161,21 @@
             {
                 return parent::resolveViewIdByMassActionId($actionId, $returnProgressViewName);
             }
+        }
+
+        protected static function isMassSubscribeOrUnsubscribeLikeAction($actionId)
+        {
+            return (static::isMassSubscribeLikeAction($actionId) || static::isMassUnsubscribeLikeAction($actionId));
+        }
+
+        protected static function isMassSubscribeLikeAction($actionId)
+        {
+            return (strpos($actionId, 'massSubscribe') === 0);
+        }
+
+        protected static function isMassUnsubscribeLikeAction($actionId)
+        {
+            return (strpos($actionId, 'massUnsubscribe') === 0);
         }
 
         protected function resolveMetadataBeforeMakingDataProvider(& $metadata)

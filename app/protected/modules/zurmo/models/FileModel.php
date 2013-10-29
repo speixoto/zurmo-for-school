@@ -63,7 +63,7 @@
                 'defaultSortAttribute' => 'name',
                 'noAudit' => array(
                     'fileContent',
-                )
+                ),
             );
             return $metadata;
         }
@@ -100,7 +100,7 @@
             }
         }
 
-        protected function beforeDelete()
+        protected function deleteRelatedFileContentIfNotRelatedToAnyOtherFileModel()
         {
             $searchAttributeData = array();
             $searchAttributeData['clauses'] = array(
@@ -114,17 +114,39 @@
                 ),
             );
             $searchAttributeData['structure'] = '1';
-            $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('FileModel');
-            $where             = RedBeanModelDataProvider::makeWhere('FileModel', $searchAttributeData, $joinTablesAdapter);
-            if (count(static::getSubsetIds($joinTablesAdapter, null, null, $where)) == 1)
+            $class = get_class($this);
+            $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter($class);
+            $where             = RedBeanModelDataProvider::makeWhere($class, $searchAttributeData, $joinTablesAdapter);
+            if (static::getCount($joinTablesAdapter, $where, $class) == 1)
             {
-                $fileContent = FileContent::getById($this->fileContent->id);
-                if (!$fileContent->delete())
+                return $this->fileContent->delete();
+            }
+            return true;
+        }
+
+        protected function deleteOwnedRelatedModels($modelClassName)
+        {
+            // THIS IS A HACK. We want to save space by not duplicating fileContent's blob so we have to live with this.
+
+            // This is to fix the dangling FileContent that remain there when deleting a model that owns files
+            // Example: ModelWithAttachmentTest.testModelWithAttachmentTestItem
+
+            // we use $this->deleteOwnedRelatedModels so when deleting FileModel directly this gets
+            // invoked anyway under unrestrictedDelete, no need to call same function in beforeDelete of FileModel
+
+            // When deleting a model that owns Files, this gets invoked as a result of RedbeanModel.2245
+            // We can't change RedBeanModel.2238 and RedBeanModel.2245 to delete() because that would
+            // throw exception, by that point we are deleting an OwnedModel instance which can't be deleted
+            // from outside and hence this fix.
+            if (get_class($this) == $modelClassName)
+            {
+                // get rid of fileContent that belong only to this model before going ahead and trashing it.
+                if (!$this->deleteRelatedFileContentIfNotRelatedToAnyOtherFileModel())
                 {
-                    return false;
+                    throw new FailedToDeleteModelException("Unable to delete related FileContent");
                 }
             }
-            return parent::beforeDelete();
+            parent::deleteOwnedRelatedModels($modelClassName);
         }
     }
 ?>

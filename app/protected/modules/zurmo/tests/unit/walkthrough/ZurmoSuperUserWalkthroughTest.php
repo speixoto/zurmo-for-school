@@ -52,7 +52,7 @@
 
         public static function getDependentTestModelClassNames()
         {
-            return array('ModelWithAttachmentTestItem', 'FileTestModel');
+            return array('ModelWithAttachmentTestItem');
         }
 
         public function testSuperUserAllDefaultControllerActions()
@@ -169,7 +169,7 @@
         public function testFileControllerActions()
         {
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
-            $this->assertEquals(0, count(FileTestModel::getAll()));
+            $this->assertEquals(0, count(FileModel::getAll()));
             $pathToFiles = Yii::getPathOfAlias('application.modules.zurmo.tests.unit.files');
             $filePath    = $pathToFiles . DIRECTORY_SEPARATOR . 'testNote.txt';
             $contents    = file_get_contents($pathToFiles . DIRECTORY_SEPARATOR . 'testNote.txt');
@@ -179,13 +179,13 @@
             self::resetAndPopulateFilesArrayByFilePathAndName('aTest', $filePath, 'testNote.txt');
             $this->resetPostArray();
             $this->SetGetArray(array('filesVariableName' => 'aTest'));
-            $content = $this->runControllerWithExitExceptionAndGetContent('zurmo/fileTestModel/upload');
+            $content = $this->runControllerWithExitExceptionAndGetContent('zurmo/fileModel/upload');
             //Confirm the file has actually been uploaded
-            $files = FileTestModel::getAll();
+            $files = FileModel::getAll();
             $compareJsonString = '[{"name":"testNote.txt","type":"text\/plain","size":"6.34KB","id":' . // Not Coding Standard
                                     $files[0]->id . '}]';
             $this->assertEquals($compareJsonString, $content);
-            $fileModels = FileTestModel::getAll();
+            $fileModels = FileModel::getAll();
             $this->assertEquals(1, count($fileModels));
             $this->assertEquals($contents, $fileModels[0]->fileContent->content);
             //add fileModel to a model.
@@ -200,20 +200,20 @@
             $this->setGetArray(array('id' => $fileModels[0]->id, 'modelId' => $modelId,
                                      'modelClassName' => 'ModelWithAttachmentTestItem'));
             $this->resetPostArray();
-            $content = $this->runControllerWithExitExceptionAndGetContent('zurmo/fileTestModel/download');
+            $content = $this->runControllerWithExitExceptionAndGetContent('zurmo/fileModel/download');
             $compareContent = 'Testing download.';
             $this->assertEquals($compareContent, $content);
             //todo: test all file errors.
 
             //Test deleting a file.
-            $this->assertEquals(1, count(FileTestModel::getAll()));
+            $this->assertEquals(1, count(FileModel::getAll()));
             $this->assertEquals(1, count(FileContent::getAll()));
             $this->setGetArray(array('id' => $fileModels[0]->id));
             $this->resetPostArray();
-            $this->runControllerWithNoExceptionsAndGetContent('zurmo/fileTestModel/delete', true);
+            $this->runControllerWithNoExceptionsAndGetContent('zurmo/fileModel/delete', true);
 
             //Now confirm that there are no file models or content in the system.
-            $this->assertEquals(0, count(FileTestModel::getAll()));
+            $this->assertEquals(0, count(FileModel::getAll()));
             $this->assertEquals(0, count(FileContent::getAll()));
 
             //Test GlobalSearchAutoComplete

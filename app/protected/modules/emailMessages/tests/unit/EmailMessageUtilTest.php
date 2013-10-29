@@ -155,9 +155,9 @@
             //Test with attachments
             $email = new Email();
             $filesIds = array();
-            $fileDocx = ZurmoTestHelper::createFileModel('testNote.txt', 'FileModel');
+            $fileDocx = ZurmoTestHelper::createFileModel('testNote.txt');
             $filesIds[] = $fileDocx->id;
-            $fileTxt = ZurmoTestHelper::createFileModel('testImage.png', 'FileModel');
+            $fileTxt = ZurmoTestHelper::createFileModel('testImage.png');
             $filesIds[] = $fileTxt->id;
             $emailMessage     = new EmailMessage();
             $emailMessageForm = new CreateEmailMessageForm($emailMessage);
@@ -179,13 +179,13 @@
             $billy = User::getByUsername('billy');
             Yii::app()->user->userModel = $billy;
             $filesIds = array();
-            $fileTxt = ZurmoTestHelper::createFileModel('testNote.txt', 'FileModel');
+            $fileTxt = ZurmoTestHelper::createFileModel('testNote.txt');
             $filesIds[] = $fileTxt->id;
-            $filePng = ZurmoTestHelper::createFileModel('testImage.png', 'FileModel');
+            $filePng = ZurmoTestHelper::createFileModel('testImage.png');
             $filesIds[] = $filePng->id;
-            $fileZip = ZurmoTestHelper::createFileModel('testZip.zip', 'FileModel');
+            $fileZip = ZurmoTestHelper::createFileModel('testZip.zip');
             $filesIds[] = $fileZip->id;
-            $filePdf = ZurmoTestHelper::createFileModel('testPDF.pdf', 'FileModel');
+            $filePdf = ZurmoTestHelper::createFileModel('testPDF.pdf');
             $filesIds[] = $filePdf->id;
             $emailMessage = new EmailMessage();
             EmailMessageUtil::attachFilesToMessage($filesIds, $emailMessage);
