@@ -114,6 +114,7 @@ function setUpTaskKanbanSortable(inputurl)
                                     else
                                     {
                                         //console.log($(ui.item).find('.task-action-toolbar'));
+                                        $(ui.item).addClass('ui-state-disabled');
                                         $(ui.item).find('.task-action-toolbar').remove();
                                     }
                                     $(ui.item).find('.task-status').html(data.status);
