@@ -227,7 +227,7 @@
             $this->assertEquals(KanbanItem::TYPE_IN_PROGRESS, $kanbanItemType);
 
             $kanbanItemType = TasksUtil::resolveKanbanItemTypeForTaskStatus(Task::STATUS_NEW);
-            $this->assertEquals(KanbanItem::TYPE_SOMEDAY, $kanbanItemType);
+            $this->assertEquals(KanbanItem::TYPE_TODO, $kanbanItemType);
         }
 
         public function testResolveKanbanItemTypeForTask()
