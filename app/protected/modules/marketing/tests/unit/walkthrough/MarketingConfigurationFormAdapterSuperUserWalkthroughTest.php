@@ -35,9 +35,9 @@
      ********************************************************************************/
 
     /**
-     * Contacts Module Walkthrough spefically testing the kanban board list for task in detail view
+     * Walkthrough for the super user of marketing configuration
      */
-    class ContactsSuperUserKanbanBoardWalkthroughTest extends ZurmoWalkthroughBaseTest
+    class MarketingConfigurationFormAdapterSuperUserWalkthroughTest extends ZurmoWalkthroughBaseTest
     {
         public static function setUpBeforeClass()
         {
@@ -45,39 +45,40 @@
             SecurityTestHelper::createSuperAdmin();
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
-
-            //Setup test data owned by the super user.
-            $account = AccountTestHelper::createAccountByNameForOwner('superAccount', $super);
-
-            //Setup test data owned by the super user.
-            ContactTestHelper::createContactWithAccountByNameForOwner('superContact', $super, $account);
         }
 
-        public function testKanbanViewForContactDetails()
+        public function testSuperUserEditConfigurationForm()
         {
-            $super          = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
-            $superContactId = self::getModelIdByModelNameAndName ('Contact', 'superContact superContactson');
-            $contact        = Contact::getById($superContactId);
-
-            $task = TaskTestHelper::createTaskWithOwnerAndRelatedItem('MyTask', $super, $contact, Task::STATUS_IN_PROGRESS);
-            $taskNew = TaskTestHelper::createTaskWithOwnerAndRelatedItem('MyTask New', $super, $contact, Task::STATUS_NEW);
-            $this->setGetArray(array('id' => $task->id, 'kanbanBoard' => '1'));
-            $content = $this->runControllerWithNoExceptionsAndGetContent('contacts/default/details');
-            $matcher= array(
-                'tag' => 'h4',
-                //Multiple ancestors
-                'ancestor' => array('tag' => 'li', 'id' => 'items_' . $task->id, 'tag' => 'ul', 'id' => 'task-sortable-rows-3'),
-                'content' => 'MyTask'
+            //checking with blank values for required fields
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $this->setPostArray(array('save'                    => 'Save',
+                    'MarketingConfigurationForm'  => array(
+                        'autoresponderOrCampaignBatchSize'              => '',
+                        'campaignItemsToCreatePageSize'                 => '',
+                        'autoresponderOrCampaignFooterPlainText'        => '',
+                        'autoresponderOrCampaignFooterRichText'         => '',
+                    )
+                )
             );
-            $this->assertTag($matcher, $content);
+            $content = $this->runControllerWithNoExceptionsAndGetContent('marketing/default/configurationEdit');
+            $this->assertFalse(strpos($content, 'Autoresponder/Campaign batch size cannot be blank.') === false);
+            $this->assertFalse(strpos($content, 'Campaign Items creation page size cannot be blank.') === false);
+            $this->assertFalse(strpos($content, 'Autoresponder/Campaign Footer(Plain Text) cannot be blank.') === false);
+            $this->assertFalse(strpos($content, 'Autoresponder/Campaign Footer(Rich Text) cannot be blank.') === false);
 
-            $matcher= array(
-                'tag' => 'h4',
-                //Multiple ancestors
-                'ancestor' => array('tag' => 'li', 'id' => 'items_' . $taskNew->id, 'tag' => 'ul', 'id' => 'task-sortable-rows-2'),
-                'content' => 'MyTask New'
+            //checking with proper values for required fields
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $this->setPostArray(array('save'                    => 'Save',
+                    'MarketingConfigurationForm'  => array(
+                        'autoresponderOrCampaignBatchSize'          => '100',
+                        'campaignItemsToCreatePageSize'             => '200',
+                        'autoresponderOrCampaignFooterPlainText'    => 'abc',
+                        'autoresponderOrCampaignFooterRichText'     => 'def',
+                    )
+                )
             );
-            $this->assertTag($matcher, $content);
+            $this->runControllerWithRedirectExceptionAndGetContent('marketing/default/configurationEdit');
+            $this->assertEquals('Global configuration saved successfully.', Yii::app()->user->getFlash('notification'));
         }
     }
 ?>

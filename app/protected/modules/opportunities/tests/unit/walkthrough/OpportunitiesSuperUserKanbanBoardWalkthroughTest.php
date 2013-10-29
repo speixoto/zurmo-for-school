@@ -126,8 +126,7 @@
             $this->setGetArray(array('id' => $task->id, 'kanbanBoard' => '1'));
             $content = $this->runControllerWithNoExceptionsAndGetContent('opportunities/default/details');
             $matcher= array(
-                'tag' => 'span',
-                'attributes' => array('class' => 'z-label'),
+                'tag' => 'h4',
                 //Multiple ancestors
                 'ancestor' => array('tag' => 'li', 'id' => 'items_' . $task->id, 'tag' => 'ul', 'id' => 'task-sortable-rows-3'),
                 'content' => 'MyTask'
@@ -135,8 +134,7 @@
             $this->assertTag($matcher, $content);
 
             $matcher= array(
-                'tag' => 'span',
-                'attributes' => array('class' => 'z-label'),
+                'tag' => 'h4',
                 //Multiple ancestors
                 'ancestor' => array('tag' => 'li', 'id' => 'items_' . $taskNew->id, 'tag' => 'ul', 'id' => 'task-sortable-rows-2'),
                 'content' => 'MyTask New'
