@@ -1144,7 +1144,8 @@ body.blue .portlet-toolbar .icon-create:hover,
 body.blue .portlet-toolbar a:hover,
 body.blue .portlet-toolbar .icon-create:before,
 body.blue #filter-latest-activities-link:hover,
-body.blue .badge-message h3 {
+body.blue .badge-message h3,
+body.blue .mini-button:not(.hangup):hover {
   color: #7cb830 !important;
 }
 body.blue #InstallAccessFailurePageView a,
@@ -1757,7 +1758,8 @@ body.sunrise .portlet-toolbar .icon-create:hover,
 body.sunrise .portlet-toolbar a:hover,
 body.sunrise .portlet-toolbar .icon-create:before,
 body.sunrise #filter-latest-activities-link:hover,
-body.sunrise .badge-message h3 {
+body.sunrise .badge-message h3,
+body.sunrise .mini-button:not(.hangup):hover {
   color: #2c3e50 !important;
 }
 body.sunrise #InstallAccessFailurePageView a,
@@ -2370,7 +2372,8 @@ body.marble .portlet-toolbar .icon-create:hover,
 body.marble .portlet-toolbar a:hover,
 body.marble .portlet-toolbar .icon-create:before,
 body.marble #filter-latest-activities-link:hover,
-body.marble .badge-message h3 {
+body.marble .badge-message h3,
+body.marble .mini-button:not(.hangup):hover {
   color: #333333 !important;
 }
 body.marble #InstallAccessFailurePageView a,
@@ -2983,7 +2986,8 @@ body.purple-haze .portlet-toolbar .icon-create:hover,
 body.purple-haze .portlet-toolbar a:hover,
 body.purple-haze .portlet-toolbar .icon-create:before,
 body.purple-haze #filter-latest-activities-link:hover,
-body.purple-haze .badge-message h3 {
+body.purple-haze .badge-message h3,
+body.purple-haze .mini-button:not(.hangup):hover {
   color: #854f9e !important;
 }
 body.purple-haze #InstallAccessFailurePageView a,
@@ -3597,7 +3601,8 @@ body.flat-cement .portlet-toolbar .icon-create:hover,
 body.flat-cement .portlet-toolbar a:hover,
 body.flat-cement .portlet-toolbar .icon-create:before,
 body.flat-cement #filter-latest-activities-link:hover,
-body.flat-cement .badge-message h3 {
+body.flat-cement .badge-message h3,
+body.flat-cement .mini-button:not(.hangup):hover {
   color: #2c3e50 !important;
 }
 body.flat-cement #InstallAccessFailurePageView a,
@@ -4230,7 +4235,8 @@ body.amazon .portlet-toolbar .icon-create:hover,
 body.amazon .portlet-toolbar a:hover,
 body.amazon .portlet-toolbar .icon-create:before,
 body.amazon #filter-latest-activities-link:hover,
-body.amazon .badge-message h3 {
+body.amazon .badge-message h3,
+body.amazon .mini-button:not(.hangup):hover {
   color: #257282 !important;
 }
 body.amazon #InstallAccessFailurePageView a,
@@ -4843,7 +4849,8 @@ body.sweden .portlet-toolbar .icon-create:hover,
 body.sweden .portlet-toolbar a:hover,
 body.sweden .portlet-toolbar .icon-create:before,
 body.sweden #filter-latest-activities-link:hover,
-body.sweden .badge-message h3 {
+body.sweden .badge-message h3,
+body.sweden .mini-button:not(.hangup):hover {
   color: #024873 !important;
 }
 body.sweden #InstallAccessFailurePageView a,
@@ -5456,7 +5463,8 @@ body.pink .portlet-toolbar .icon-create:hover,
 body.pink .portlet-toolbar a:hover,
 body.pink .portlet-toolbar .icon-create:before,
 body.pink #filter-latest-activities-link:hover,
-body.pink .badge-message h3 {
+body.pink .badge-message h3,
+body.pink .mini-button:not(.hangup):hover {
   color: #565656 !important;
 }
 body.pink #InstallAccessFailurePageView a,
@@ -6069,7 +6077,8 @@ body.brown .portlet-toolbar .icon-create:hover,
 body.brown .portlet-toolbar a:hover,
 body.brown .portlet-toolbar .icon-create:before,
 body.brown #filter-latest-activities-link:hover,
-body.brown .badge-message h3 {
+body.brown .badge-message h3,
+body.brown .mini-button:not(.hangup):hover {
   color: #b88f30 !important;
 }
 body.brown #InstallAccessFailurePageView a,
@@ -6682,7 +6691,8 @@ body.lime .portlet-toolbar .icon-create:hover,
 body.lime .portlet-toolbar a:hover,
 body.lime .portlet-toolbar .icon-create:before,
 body.lime #filter-latest-activities-link:hover,
-body.lime .badge-message h3 {
+body.lime .badge-message h3,
+body.lime .mini-button:not(.hangup):hover {
   color: #bcc98e !important;
 }
 body.lime #InstallAccessFailurePageView a,
@@ -7295,7 +7305,8 @@ body.cherry .portlet-toolbar .icon-create:hover,
 body.cherry .portlet-toolbar a:hover,
 body.cherry .portlet-toolbar .icon-create:before,
 body.cherry #filter-latest-activities-link:hover,
-body.cherry .badge-message h3 {
+body.cherry .badge-message h3,
+body.cherry .mini-button:not(.hangup):hover {
   color: #933140 !important;
 }
 body.cherry #InstallAccessFailurePageView a,
@@ -7908,7 +7919,8 @@ body.turquoise .portlet-toolbar .icon-create:hover,
 body.turquoise .portlet-toolbar a:hover,
 body.turquoise .portlet-toolbar .icon-create:before,
 body.turquoise #filter-latest-activities-link:hover,
-body.turquoise .badge-message h3 {
+body.turquoise .badge-message h3,
+body.turquoise .mini-button:not(.hangup):hover {
   color: #44bbcc !important;
 }
 body.turquoise #InstallAccessFailurePageView a,
@@ -8521,7 +8533,8 @@ body.violet .portlet-toolbar .icon-create:hover,
 body.violet .portlet-toolbar a:hover,
 body.violet .portlet-toolbar .icon-create:before,
 body.violet #filter-latest-activities-link:hover,
-body.violet .badge-message h3 {
+body.violet .badge-message h3,
+body.violet .mini-button:not(.hangup):hover {
   color: #91a1dc !important;
 }
 body.violet #InstallAccessFailurePageView a,
@@ -9134,7 +9147,8 @@ body.honey .portlet-toolbar .icon-create:hover,
 body.honey .portlet-toolbar a:hover,
 body.honey .portlet-toolbar .icon-create:before,
 body.honey #filter-latest-activities-link:hover,
-body.honey .badge-message h3 {
+body.honey .badge-message h3,
+body.honey .mini-button:not(.hangup):hover {
   color: #abbc42 !important;
 }
 body.honey #InstallAccessFailurePageView a,
@@ -12282,7 +12296,7 @@ div.wide.form label.hasCheckBox {
   font-family: "Times New Roman", Times, serif;
   font-style: italic;
   font-size: 48px;
-  line-height: 60px;
+  line-height: 1;
   font-weight: normal;
   padding: 15px 50px 15px 30px;
 }
@@ -12500,6 +12514,15 @@ div.wide.form label.hasCheckBox {
   font-size: 300px;
   font-family: "zurmo_gamification_symbly_rRg";
   line-height: 65%;
+}
+.zero-components-view .QueueModel .large-icon:after,
+.splash-view .QueueModel .large-icon:after {
+  content: '\00EF';
+  font-weight: normal !important;
+  font-weight: normal;
+  font-size: 300px;
+  font-family: "zurmo_gamification_symbly_rRg";
+  line-height: 52%;
 }
 #NoUserEmailConfigurationYetView .z-label {
   z-index: auto;
@@ -13466,6 +13489,9 @@ div.wide.form label.hasCheckBox {
 .details-table {
   position: relative;
   margin: 0px !important;
+}
+.details-table .col-0 {
+  width: 30%;
 }
 .details-table table {
   margin: 0 0 10px 0;
@@ -24763,7 +24789,7 @@ div.showing-panel {
 }
 .business-card h2 {
   line-height: 100%;
-  padding-bottom: 15px;
+  margin-right: 10px;
   display: inline-block;
 }
 .business-card h2 .salutation {
@@ -24780,6 +24806,7 @@ div.showing-panel {
   margin-left: 5px;
 }
 .business-card h3.position {
+  margin-top: 10px;
   line-height: 140%;
   font-weight: normal;
   color: #545454 !important;
@@ -24816,6 +24843,7 @@ div.showing-panel {
   font-family: "zurmo_gamification_symbly_rRg";
   padding-right: 3px;
   color: #111;
+  line-height: 1;
 }
 .business-card .icon-mobile-phone:before {
   content: '\2018';
@@ -24825,6 +24853,7 @@ div.showing-panel {
   font-family: "zurmo_gamification_symbly_rRg";
   padding-right: 3px;
   color: #111;
+  line-height: 1;
 }
 .business-card .icon-email:before {
   content: "g";
@@ -24834,6 +24863,7 @@ div.showing-panel {
   font-family: "zurmo_gamification_symbly_rRg";
   padding-right: 5px;
   color: #111;
+  line-height: 1;
 }
 .business-card .icon-map:before {
   content: "L";
@@ -24843,6 +24873,7 @@ div.showing-panel {
   font-family: "zurmo_gamification_symbly_rRg";
   padding-right: 3px;
   color: #111;
+  line-height: 1;
 }
 .business-card .demographic-details {
   position: absolute;
@@ -24866,12 +24897,29 @@ div.showing-panel {
   background: url(../images/people.png) right bottom no-repeat;
 }
 .business-card .demographic-details span {
-  margin-top: 13px;
+  margin-top: 8px;
   font-weight: bold;
   display: block;
   float: right;
   line-height: 150%;
 }
+/*
+.icon-demographic{
+
+}
+
+.icon-household{
+
+}
+
+.icon-interest{
+
+}
+
+.icon-purchase{
+
+}
+*/
 #business-card-buttons {
   display: none !important;
   display: inline-block;
@@ -25195,6 +25243,7 @@ div.special-pager .hidden.next:after {
   font-size: 11px;
 }
 .mini-button {
+  cursor: pointer;
   display: inline-block;
   border: 1px solid #b7b7b7;
   border-top-color: #e7e7e7;
@@ -25208,10 +25257,14 @@ div.special-pager .hidden.next:after {
   -ms-box-shadow: inset 0 0 1px 1px #efefef;
   box-shadow: inset 0 0 1px 1px #efefef;
   color: #545454;
-  text-shadow: #fff 0 1px 0;
-  position: relative;
-  margin-left: 10px;
-  top: -2px;
+  -webkit-text-shadow: #ffffff 0 1px 0;
+  -moz-text-shadow: #ffffff 0 1px 0;
+  -o-text-shadow: #ffffff 0 1px 0;
+  -ms-text-shadow: #ffffff 0 1px 0;
+  text-shadow: #ffffff 0 1px 0;
+  line-height: 22px;
+  height: 22px;
+  padding: 0 6px;
 }
 .mini-button span {
   font-size: 11px;
@@ -25222,16 +25275,123 @@ div.special-pager .hidden.next:after {
   -ms-text-shadow: 0 1px 0 #ffffff;
   text-shadow: 0 1px 0 #ffffff;
   color: #545454;
-  display: none;
   line-height: 22px;
+}
+.toggle-back-of-card-link {
+  margin-top: 5px;
+}
+.toggle-back-of-card-link span {
+  display: none;
   padding: 0 6px 0 28px;
   background: url(../images/rapleaf.png) 4px center no-repeat;
 }
-.mini-button span + span {
+.toggle-back-of-card-link span + span {
   line-height: 22px;
 }
-.mini-button .show {
+.toggle-back-of-card-link .show {
   display: block;
+}
+.callable-item {
+  position: relative;
+  z-index: 100;
+}
+.callable-item em {
+  margin-right: 4px;
+  font-style: normal;
+}
+.callable-item:hover .icon-onsip {
+  display: block;
+}
+.callable-item .icon-onsip {
+  animation-name: shake;
+  animation-duration: 200ms;
+  animation-iteration-count: 2;
+  animation-timing-function: linear;
+  -moz-animation-name: shake;
+  -moz-animation-duration: 200ms;
+  -moz-animation-iteration-count: 2;
+  -moz-animation-timing-function: linear;
+  -webkit-animation-name: shake;
+  -webkit-animation-duration: 200ms;
+  -webkit-animation-iteration-count: 2;
+  -webkit-animation-timing-function: linear;
+  font-size: 28px;
+  font-weight: normal !important;
+  -webkit-text-shadow: none !important;
+  -moz-text-shadow: none !important;
+  -o-text-shadow: none !important;
+  -ms-text-shadow: none !important;
+  text-shadow: none !important;
+  display: none;
+  color: #fff;
+  position: absolute;
+  left: -32px;
+  top: -2px;
+  background: #545454;
+  width: 24px;
+  height: 24px;
+  line-height: 21px;
+  text-align: center;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  -o-border-radius: 50%;
+  border-radius: 50%;
+}
+.callable-item .icon-onsip:before {
+  position: absolute;
+  right: -10px;
+  top: 6px;
+  content: '';
+  display: block;
+  border: 6px solid #545454;
+  border-top-color: transparent;
+  border-bottom-color: transparent;
+  border-right-color: transparent;
+}
+.hangup {
+  position: relative;
+  z-index: 0;
+  padding-left: 12px;
+  margin-left: -25px;
+  font-size: 11px;
+  border: 1px solid #c43d53;
+  -webkit-box-shadow: inset 0 0 1px 1px #a82d31;
+  -moz-box-shadow: inset 0 0 1px 1px #a82d31;
+  -o-box-shadow: inset 0 0 1px 1px #a82d31;
+  -ms-box-shadow: inset 0 0 1px 1px #a82d31;
+  box-shadow: inset 0 0 1px 1px #a82d31;
+  -webkit-text-shadow: #a82d31 0 1px 0;
+  -moz-text-shadow: #a82d31 0 1px 0;
+  -o-text-shadow: #a82d31 0 1px 0;
+  -ms-text-shadow: #a82d31 0 1px 0;
+  text-shadow: #a82d31 0 1px 0;
+  line-height: 20px;
+  color: #ffffff;
+  background-color: #a82d31;
+  background-repeat: repeat-x;
+  background-image: -moz-linear-gradient(top, #c43d53, #a82d31);
+  background-image: -ms-linear-gradient(top, #c43d53, #a82d31);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #c43d53), color-stop(100%, #a82d31));
+  background-image: -webkit-linear-gradient(top, #c43d53, #a82d31);
+  background-image: -o-linear-gradient(top, #c43d53, #a82d31);
+  background-image: linear-gradient(top, #c43d53, #a82d31);
+}
+.hangup:hover {
+  color: #000000 !important;
+  -webkit-text-shadow: 0px 1px 0 #ca5164;
+  -moz-text-shadow: 0px 1px 0 #ca5164;
+  -o-text-shadow: 0px 1px 0 #ca5164;
+  -ms-text-shadow: 0px 1px 0 #ca5164;
+  text-shadow: 0px 1px 0 #ca5164;
+  background-color: #802225;
+  background-repeat: repeat-x;
+  background-image: -moz-linear-gradient(top, #c43d53, #802225);
+  background-image: -ms-linear-gradient(top, #c43d53, #802225);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #c43d53), color-stop(100%, #802225));
+  background-image: -webkit-linear-gradient(top, #c43d53, #802225);
+  background-image: -o-linear-gradient(top, #c43d53, #802225);
+  background-image: linear-gradient(top, #c43d53, #802225);
 }
 .toolbar-mbmenu i[class^="icon"] {
   display: none !important;
@@ -25555,20 +25715,20 @@ div.special-pager .hidden.next:after {
 .button-actions .has-model-select a:hover {
   background: url(../images/dropdown-general.png) left top no-repeat !important;
 }
-.flyout-action {
-  border: 1px solid #DCDCDC;
-  background-color: #d2d2d2;
-  background-repeat: repeat-x;
-  background-image: -moz-linear-gradient(top, #e8e8e8, #d2d2d2);
-  background-image: -ms-linear-gradient(top, #e8e8e8, #d2d2d2);
-  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #e8e8e8), color-stop(100%, #d2d2d2));
-  background-image: -webkit-linear-gradient(top, #e8e8e8, #d2d2d2);
-  background-image: -o-linear-gradient(top, #e8e8e8, #d2d2d2);
-  background-image: linear-gradient(top, #e8e8e8, #d2d2d2);
+/*
+.flyout-action{
+	border:1px solid #DCDCDC;
+	//color:#333333 !important;
+	//font-weight:bold;
+	//.t-shadow(rgba( 255, 255, 255, 0.8 ) 0 1px 0);
+	//background:#CCCCCC;
+	#gradient > .vertical(#e8e8e8, #d2d2d2);
+	//.b-shadow(~"inset 0 1px 0 0 rgba(255, 255, 255, 0.1), 0px 1px 0 0 rgba(0,0,0,0.08)");
+	label{
+		color:#545454 !important;
+	}
 }
-.flyout-action label {
-  color: #545454 !important;
-}
+*/
 .nav-open .button-actions {
   display: block;
 }
@@ -25713,13 +25873,16 @@ div.special-pager .hidden.next:after {
 .stay-open {
   display: block !important;
 }
-.gd-dashboard-active {
-  overflow: hidden;
+.gd-dashboard-active #HeaderView {
+  position: fixed;
+  width: 100%;
+}
+.gd-dashboard-active .AppContainer {
+  padding-top: 78px;
 }
 #UserGameDashboardView {
   z-index: 100;
-}
-#game-overlay {
+  overflow: scroll;
   width: 100%;
   height: 100%;
   position: fixed;
@@ -25729,7 +25892,20 @@ div.special-pager .hidden.next:after {
   bottom: 0;
   background: rgba(0, 0, 0, 0.65);
 }
+#game-overlay {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.65);
+}
 #game-dashboard-container {
+  width: 100%;
+  height: 100%;
+  display: block;
   position: relative;
   z-index: 100;
   color: #f1f1f1;
@@ -25782,6 +25958,7 @@ div.special-pager .hidden.next:after {
   color: #fff;
 }
 .close-dashboard-button {
+  z-index: 999;
   width: 1200px;
   height: 31px;
   position: absolute;

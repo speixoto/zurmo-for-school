@@ -186,7 +186,7 @@ SPT;
             $content .= $this->renderStatisticsContent();
             $content .= $this->renderCollectionsContent();
             $content  = ZurmoHtml::tag('div', array('id' => 'game-dashboard', 'class' => 'clearfix'), $content);
-            $content .= $this->renderDashboardCloseButton();
+            $content  = $this->renderDashboardCloseButton() . $content;
             $content  = ZurmoHtml::tag('div', array('id' => 'game-overlay'), $content);
             return      ZurmoHtml::tag('div', array('id' => 'game-dashboard-container'), $content);
         }
