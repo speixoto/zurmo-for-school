@@ -672,11 +672,19 @@
                 $taskBeforeSaveStatus = $task->status;
                 $this->attemptToSaveModelFromPost($task, null, false);
                 $errorData = ZurmoActiveForm::makeErrorsDataAndResolveForOwnedModelAttributes($task);
-                if($task->status != $taskBeforeSaveStatus && $task->status == Task::STATUS_COMPLETED)
+                if(empty($errorData))
                 {
-                    $errorData['completedDateTime'] = TasksUtil::renderCompletionDateTime($task);
+                    $data = array();
+                    if($task->status != $taskBeforeSaveStatus && $task->status == Task::STATUS_COMPLETED)
+                    {
+                        $$data['completedDateTime'] = TasksUtil::renderCompletionDateTime($task);
+                    }
+                    echo CJSON::encode($data);
                 }
-                echo CJSON::encode($errorData);
+                else
+                {
+                    echo CJSON::encode($errorData);
+                }
                 Yii::app()->end(0, false);
             }
         }
