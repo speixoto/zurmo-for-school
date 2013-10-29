@@ -138,6 +138,7 @@
             // Begin Not Coding Standard
             $script = 'function subscribeContactsToMarketingList' . $this->getSelectType() . ' (object, event, itemId, page, subscribedCount, skippedCount) {
                             var searchBox           = object;
+                            var listGridViewId      = "' . $this->getListViewGridId() .'";
                             var notificationBarId   = "' . static::NOTIFICATION_BAR_ID . '";
                             var radioButtonClass    = "' . $this->getRadioButtonClass() . '";
                             var url                 = "' . $this->getSubscribeUrl() . '";
@@ -164,6 +165,8 @@
                                                 },
                                     beforeSend: function(request, settings)
                                                 {
+                                                    $(searchBox).makeSmallLoadingSpinner(listGridViewId);
+-                                                   $("#" + listGridViewId).addClass("loading");
                                                     if (disableTextBox == true)
                                                     {
                                                         $(searchBox).attr("disabled", "disabled");
@@ -199,6 +202,7 @@
                                                     $(searchBox).removeAttr("disabled");
                                                     $(searchBox).val("");
                                                     $("." + radioButtonClass).removeAttr("disabled");
+                                                    $("#" + listGridViewId).removeClass("loading");
                                                     event.preventDefault();
                                                     return false;
                                                 }

@@ -362,7 +362,8 @@
 
         protected function getSelectListAttributesLinkContent()
         {
-            if ($this->model->getListAttributesSelector() != null)
+            if ($this->model->getListAttributesSelector() != null &&
+               ($this->model->getKanbanBoard() == null || !$this->model->getKanbanBoard()->getIsActive()))
             {
                 return ZurmoHtml::link(Zurmo::t('Core', 'Columns'), '#', array('id' => 'select-list-attributes-link' . $this->gridIdSuffix));
             }

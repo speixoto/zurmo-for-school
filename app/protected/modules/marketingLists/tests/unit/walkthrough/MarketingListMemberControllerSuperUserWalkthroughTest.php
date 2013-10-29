@@ -683,7 +683,7 @@
             $list           = MarketingList::getById($listId);
             $this->assertNotEmpty($list);
             $members        = $list->marketingListMembers;
-            $this->assertEquals(5, count($members));
+            $this->assertEquals(2, count($members));
 
             $this->setGetArray(
                             array(

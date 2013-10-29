@@ -66,7 +66,8 @@
                 HomeModule::RIGHT_ACCESS_DASHBOARDS,
                 Yii::app()->user->userModel))
             {
-                $this->actionDashboardDetails(-1);
+                $id = Yii::app()->request->getQuery('id', -1);
+                $this->actionDashboardDetails($id);
             }
             else
             {

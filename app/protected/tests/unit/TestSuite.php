@@ -150,10 +150,17 @@
                 echo "  No tests found for '$whatToTest'." . PHP_EOL . PHP_EOL;
                 exit(static::ERROR_TEST_NOT_FOUND);
             }
+
             echo "Testing with database: '"  . Yii::app()->db->connectionString . '\', ' .
                                                 'username: \'' . Yii::app()->db->username         . "'." . PHP_EOL;
 
             static::setupDatabaseConnection();
+
+            // get rid of any caches from last execution, this ensure we rebuild any required tables
+            // without this some of many_many tables have issues as we use cache to determine
+            // if we need to rebuild those.
+            ForgetAllCacheUtil::forgetAllCaches();
+
             $template        = "{message}\n";
             $messageStreamer = new MessageStreamer($template);
             $messageStreamer->setExtraRenderBytes(0);
