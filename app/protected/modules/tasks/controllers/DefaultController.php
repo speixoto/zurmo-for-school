@@ -460,7 +460,7 @@
         /**
          * Update status for the task when dragging in the kanban view
          */
-        public function actionUpdateStatusOnDragInKanbanView()
+        public function actionUpdateStatusOnDragInKanbanView($type)
         {
             $getData = GetUtil::getData();
             $counter = 1;
@@ -472,36 +472,36 @@
                     if($taskId != '')
                     {
                         $task               = Task::getById(intval($taskId));
-                        $kanbanItem         = KanbanItem::getByTask(intval($taskId));
                         //if kanban type is completed
-                        if($getData['type'] == KanbanItem::TYPE_COMPLETED)
+                        if($type == KanbanItem::TYPE_COMPLETED)
                         {
-                            $this->actionUpdateStatusInKanbanView(Task::STATUS_COMPLETED, intval($taskId));
+                            $this->processStatusUpdateViaAjax(Task::STATUS_COMPLETED, intval($taskId), false);
                             $response['button'] = '';
                             $response['status'] = Task::getStatusDisplayName($task->status);
                         }
                         else
                         {
+                            $kanbanItem  = KanbanItem::getByTask(intval($taskId));
                             //When in the same column
-                            if($getData['type'] == $kanbanItem->type)
+                            if($type == $kanbanItem->type)
                             {
                                 $kanbanItem->sortOrder = $counter;
+                                $kanbanItem->save();
                             }
                             else
                             {
-                                //This would be the one which is dragged across column
-                                $kanbanItem->sortOrder = $counter;
-                                $kanbanItem->type      = intval($getData['type']);
-                                $targetStatus = TasksUtil::getDefaultTaskStatusForKanbanItemType(intval($getData['type']));
+                                $targetStatus = TasksUtil::getDefaultTaskStatusForKanbanItemType(intval($type));
                                 $this->processStatusUpdateViaAjax(intval($taskId), $targetStatus, false);
                                 $content = TasksUtil::resolveActionButtonForTaskByStatus($targetStatus,
                                                                                         $this->getId(),
                                                                                         $this->getModule()->getId(),
                                                                                         intval($taskId));
+                                //This would be the one which is dragged across column
+                                $kanbanItem->type = intval($type);
+                                $kanbanItem->save();
                                 $response['button'] = $content;
                                 $response['status'] = Task::getStatusDisplayName($task->status);
                             }
-                            $kanbanItem->save();
                             $counter++;
                         }
                     }

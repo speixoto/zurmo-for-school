@@ -491,7 +491,7 @@
         public static function getTaskStatusMappingToKanbanItemTypeArray()
         {
             return array(
-                            Task::STATUS_NEW                   => KanbanItem::TYPE_TODO,
+                            Task::STATUS_NEW                   => KanbanItem::TYPE_SOMEDAY,
                             Task::STATUS_IN_PROGRESS           => KanbanItem::TYPE_IN_PROGRESS,
                             Task::STATUS_AWAITING_ACCEPTANCE   => KanbanItem::TYPE_IN_PROGRESS,
                             Task::STATUS_REJECTED              => KanbanItem::TYPE_IN_PROGRESS,
