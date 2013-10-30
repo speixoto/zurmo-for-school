@@ -314,8 +314,7 @@
         }
 
         /**
-         * Process notifications on modal details screen
-         * @param Task $this
+         *  Process notifications on modal details screen
          */
         private function processNotificationsToBeSent()
         {
@@ -324,16 +323,13 @@
                 TasksNotificationUtil::submitTaskNotificationMessage($this,
                                                          TasksNotificationUtil::CLOSE_TASK_NOTIFY_ACTION);
             }
-            if(array_key_exists('owner', $this->originalAttributeValues))
+            if(array_key_exists('owner', $this->originalAttributeValues) &&
+                intval($this->originalAttributeValues['owner'][1]) > 0)
             {
-                //TODO @Mayank Ask jason as when creating a task, it is coming as -ve
-                if(intval($this->originalAttributeValues['owner'][1]) > 0)
-                {
-                    $previousOwner = User::getById(intval($this->originalAttributeValues['owner'][1]));
-                    TasksNotificationUtil::submitTaskNotificationMessage($this,
-                                                             TasksNotificationUtil::CHANGE_TASK_OWNER_NOTIFY_ACTION,
-                                                             $previousOwner);
-                }
+                $previousOwner = User::getById(intval($this->originalAttributeValues['owner'][1]));
+                TasksNotificationUtil::submitTaskNotificationMessage($this,
+                                                         TasksNotificationUtil::CHANGE_TASK_OWNER_NOTIFY_ACTION,
+                                                         $previousOwner);
             }
             if(array_key_exists('dueDateTime', $this->originalAttributeValues))
             {
