@@ -326,10 +326,14 @@
             }
             if(array_key_exists('owner', $this->originalAttributeValues))
             {
-                $previousOwner = User::getById($this->originalAttributeValues['owner'][1]);
-                TasksNotificationUtil::submitTaskNotificationMessage($this,
-                                                         TasksNotificationUtil::CHANGE_TASK_OWNER_NOTIFY_ACTION,
-                                                         $previousOwner);
+                //TODO @Mayank Ask jason as when creating a task, it is coming as -ve
+                if(intval($this->originalAttributeValues['owner'][1]) > 0)
+                {
+                    $previousOwner = User::getById(intval($this->originalAttributeValues['owner'][1]));
+                    TasksNotificationUtil::submitTaskNotificationMessage($this,
+                                                             TasksNotificationUtil::CHANGE_TASK_OWNER_NOTIFY_ACTION,
+                                                             $previousOwner);
+                }
             }
             if(array_key_exists('dueDateTime', $this->originalAttributeValues))
             {
