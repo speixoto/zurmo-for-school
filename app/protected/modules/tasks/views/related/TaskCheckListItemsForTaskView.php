@@ -61,7 +61,7 @@
             assert('is_string($controllerId)');
             assert('is_string($moduleId)');
             assert('is_array($checkListItemsData)');
-            assert('$relatedModel->id > 0');
+            assert('$task->id > 0');
             assert('is_string($form) || $form == null');
             assert('is_array($getParams)');
             assert('is_string($uniquePageId) || $uniquePageId == null');
