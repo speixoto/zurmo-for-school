@@ -160,27 +160,27 @@
             //58 minutes ago
             $timeStampLatestUpdate  = DateTimeUtil::convertTimestampToDbFormatDateTime(time() - (58 * 60));
             $timeSinceLastestUpdate = DateTimeUtil::getTimeSinceDisplayContent($timeStampLatestUpdate);
-            $this->assertEquals($timeSinceLastestUpdate, '58 minutes ago');
+            $this->assertEquals('58 minutes ago', $timeSinceLastestUpdate);
 
             //61 minutes ago
             $timeStampLatestUpdate  = DateTimeUtil::convertTimestampToDbFormatDateTime(time() - (61 * 60));
             $timeSinceLastestUpdate = DateTimeUtil::getTimeSinceDisplayContent($timeStampLatestUpdate);
-            $this->assertEquals($timeSinceLastestUpdate, '1 hour ago');
+            $this->assertEquals('1 hour ago', $timeSinceLastestUpdate);
 
             //3 hours ago
             $timeStampLatestUpdate  = DateTimeUtil::convertTimestampToDbFormatDateTime(time() - (3 * 60 * 60));
             $timeSinceLastestUpdate = DateTimeUtil::getTimeSinceDisplayContent($timeStampLatestUpdate);
-            $this->assertEquals($timeSinceLastestUpdate, '3 hours ago');
+            $this->assertEquals('3 hours ago', $timeSinceLastestUpdate);
 
             //27 hours ago
             $timeStampLatestUpdate  = DateTimeUtil::convertTimestampToDbFormatDateTime(time() - (27 * 60 * 60));
             $timeSinceLastestUpdate = DateTimeUtil::getTimeSinceDisplayContent($timeStampLatestUpdate);
-            $this->assertEquals($timeSinceLastestUpdate, '1 day ago');
+            $this->assertEquals('1 day ago', $timeSinceLastestUpdate);
 
             //10 days ago
             $timeStampLatestUpdate  = DateTimeUtil::convertTimestampToDbFormatDateTime(time() - (10 * 24 * 60 * 60));
             $timeSinceLastestUpdate = DateTimeUtil::getTimeSinceDisplayContent($timeStampLatestUpdate);
-            $this->assertEquals($timeSinceLastestUpdate, '10 days ago');
+            $this->assertEquals('10 days ago', $timeSinceLastestUpdate);
         }
 
         public function testConvertTimestampToDbFormatDateTimeAndBackToTimeStamp()

@@ -217,6 +217,7 @@
                 {
                     $this->completed = true;
                 }
+
                 if (array_key_exists('completed', $this->originalAttributeValues) &&
                     $this->completed == true)
                 {
@@ -291,13 +292,15 @@
          */
         protected function afterSave()
         {
+            $this->processNotificationsToBeSent();
             parent::afterSave();
             $kanbanItem       = KanbanItem::getByTask($this->id);
             if($kanbanItem != null)
             {
                 $targetKanbanType = TasksUtil::resolveKanbanItemTypeForTaskStatus(intval($this->status));
                 $sourceKanbanType = $kanbanItem->type;
-                if($sourceKanbanType != $targetKanbanType)
+                $taskStatusByKanbanItem = TasksUtil::getDefaultTaskStatusForKanbanItemType($kanbanItem->type);
+                if($taskStatusByKanbanItem != intval($this->status))
                 {
                   $sortOrder             = KanbanItem::getMaximumSortOrderByType($targetKanbanType);
                   $kanbanItem->sortOrder = $sortOrder;
@@ -307,6 +310,35 @@
                       throw new FailedToSaveModelException();
                   }
                 }
+            }
+        }
+
+        /**
+         * Process notifications on modal details screen
+         * @param Task $this
+         */
+        private function processNotificationsToBeSent()
+        {
+            if($this->status == Task::STATUS_COMPLETED && (array_key_exists('status', $this->originalAttributeValues)))
+            {
+                TasksNotificationUtil::submitTaskNotificationMessage($this,
+                                                         TasksNotificationUtil::CLOSE_TASK_NOTIFY_ACTION);
+            }
+            if(array_key_exists('owner', $this->originalAttributeValues))
+            {
+                //TODO @Mayank Ask jason as when creating a task, it is coming as -ve
+                if(intval($this->originalAttributeValues['owner'][1]) > 0)
+                {
+                    $previousOwner = User::getById(intval($this->originalAttributeValues['owner'][1]));
+                    TasksNotificationUtil::submitTaskNotificationMessage($this,
+                                                             TasksNotificationUtil::CHANGE_TASK_OWNER_NOTIFY_ACTION,
+                                                             $previousOwner);
+                }
+            }
+            if(array_key_exists('dueDateTime', $this->originalAttributeValues))
+            {
+                TasksNotificationUtil::submitTaskNotificationMessage($this,
+                                                         TasksNotificationUtil::CHANGE_TASK_DUE_DATE_NOTIFY_ACTION);
             }
         }
     }

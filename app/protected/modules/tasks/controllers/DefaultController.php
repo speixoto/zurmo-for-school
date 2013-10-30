@@ -36,6 +36,25 @@
 
     class TasksDefaultController extends ActivityModelsDefaultController
     {
+        public function filters()
+        {
+            return array_merge(parent::filters(),
+                array(
+                    array(
+                        ZurmoBaseController::REQUIRED_ATTRIBUTES_FILTER_PATH . ' + modalCreateFromRelation,
+                                            ModalEdit',
+                        'moduleClassName' => get_class($this->getModule()),
+                        'viewClassName'   => 'TaskModalEditView',
+                   ),
+                    array(
+                        ZurmoBaseController::REQUIRED_ATTRIBUTES_FILTER_PATH . ' + modalDetails',
+                        'moduleClassName' => get_class($this->getModule()),
+                        'viewClassName'   => 'TaskModalDetailsView',
+                   ),
+               )
+            );
+        }
+
         public function actionDetails($id, $redirectUrl = null)
         {
             $task = static::getModelAndCatchNotFoundAndDisplayError('Task', intval($id));
@@ -114,6 +133,8 @@
             {
                 throw new NotSupportedException();
             }
+            TasksNotificationUtil::submitTaskNotificationMessage($task,
+                                                                 TasksNotificationUtil::CLOSE_TASK_NOTIFY_ACTION);
         }
 
         /**
@@ -140,47 +161,6 @@
         }
 
         /**
-         * Update owner or requested by user for task
-         * @param int $id
-         * @param string $attribute
-         * @param int $userId
-         */
-        public function actionUpdateRelatedUsersViaAjax($id, $attribute, $userId)
-        {
-            $task = Task::getById(intval($id));
-            $user = User::getById(intval($userId));
-            if($attribute == 'owner')
-            {
-                  $task->owner = $user;
-                  $task->save();
-                  TasksUtil::sendNotificationOnTaskUpdate($task, Zurmo::t('TasksModule',
-                                                          'The owner for the task #' . $task->id .
-                                                          ' is updated to ' . $user->getFullName()),
-                                                          array($user)
-                                                          );
-
-            }
-            elseif($attribute == 'requestedByUser')
-            {
-                  $originalRequestedByUser = $task->requestedByUser;
-                  if($user != $originalRequestedByUser)
-                  {
-                      $task->requestedByUser = $user;
-                      $task->save();
-                      $explicitReadWriteModelPermissions = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($task);
-                      TasksUtil::resolveExplicitPermissionsForRequestedByUser($task, $originalRequestedByUser,
-                                                                               $task->requestedByUser,
-                                                                               $explicitReadWriteModelPermissions);
-                  }
-            }
-            else
-            {
-                throw new NotSupportedException();
-            }
-            echo $this->getPermissionContent($task);
-        }
-
-        /**
          * Update due data time using ajas
          * @param int $id
          * @param int $dateTime
@@ -192,9 +172,8 @@
             $dueDateTime  = DateTimeUtil::convertTimestampToDbFormatDateTime($dateTime);
             $task->dueDateTime = $dueDateTime;
             $task->save();
-            TasksUtil::sendNotificationOnTaskUpdate($task, Zurmo::t('TasksModule',
-                                                                    'The due date for task #' . $task->id . ' is updated'),
-                                                                    array(Yii::app()->user->userModel));
+            TasksNotificationUtil::submitTaskNotificationMessage($task,
+                                                                 TasksNotificationUtil::CHANGE_TASK_DUE_DATE_NOTIFY_ACTION);
         }
 
         /**
@@ -245,19 +224,6 @@
         }
 
         /**
-         * Gets the permission content
-         * @param RedBeanModel $model
-         * @return string
-         */
-        protected function getPermissionContent($model)
-        {
-            $ownedSecurableItemDetailsContent   = OwnedSecurableItemDetailsViewUtil::renderAfterFormLayoutForDetailsContent(
-                                                                                                        $model,
-                                                                                                        null);
-            return $ownedSecurableItemDetailsContent;
-        }
-
-        /**
          * Create task from related view
          * @param null $relationAttributeName
          * @param null $relationModelId
@@ -267,8 +233,16 @@
                                                       $relationModuleId = null)
         {
             $task  = new Task();
-            $task  = $this->resolveNewModelByRelationInformation($task, $relationAttributeName,
-                     (int)$relationModelId, $relationModuleId);
+            if($relationAttributeName == 'project' && $relationModelId != null)
+            {
+                $project = Project::getById((int)$relationModelId);
+                $task->project = $project;
+            }
+            else
+            {
+                $task  = $this->resolveNewModelByRelationInformation($task, $relationAttributeName,
+                        (int)$relationModelId, $relationModuleId);
+            }
             $this->processTaskEdit($task);
         }
 
@@ -277,7 +251,7 @@
          */
         public function actionModalCreate()
         {
-            $task             = new Task();
+            $task = new Task();
             $this->processTaskEdit($task);
         }
 
@@ -295,9 +269,17 @@
             {
                 $task  = new Task();
                 TasksUtil::setDefaultValuesForTask($task);
-                $task  = $this->resolveNewModelByRelationInformation( $task, $relationAttributeName,
-                                                                             (int)$relationModelId,
-                                                                             $relationModuleId);
+                if($relationAttributeName == 'project' && $relationModelId != null)
+                {
+                    $project = Project::getById((int)$relationModelId);
+                    $task->project = $project;
+                }
+                else
+                {
+                    $task  = $this->resolveNewModelByRelationInformation( $task, $relationAttributeName,
+                                                                                 (int)$relationModelId,
+                                                                                 $relationModuleId);
+                }
             }
             else
             {
@@ -384,12 +366,17 @@
          */
         protected function processTaskEdit(Task $task)
         {
+            $isNewModel = $task->isNewModel;
             if (RightsUtil::canUserAccessModule('TasksModule', Yii::app()->user->userModel))
             {
                 if (isset($_POST['ajax']) && $_POST['ajax'] == 'task-modal-edit-form')
                 {
                     $controllerUtil   = static::getZurmoControllerUtil();
                     $controllerUtil->validateAjaxFromPost($task, 'Task');
+                    if($isNewModel)
+                    {
+                        TasksNotificationUtil::makeAndSubmitNewTaskNotificationMessage($task);
+                    }
                     Yii::app()->getClientScript()->setToAjaxMode();
                     Yii::app()->end(0, false);
                 }
@@ -425,7 +412,7 @@
         /**
          * Update status for the task when dragging in the kanban view
          */
-        public function actionUpdateStatusOnDragInKanbanView()
+        public function actionUpdateStatusOnDragInKanbanView($type)
         {
             $getData = GetUtil::getData();
             $counter = 1;
@@ -437,36 +424,36 @@
                     if($taskId != '')
                     {
                         $task               = Task::getById(intval($taskId));
-                        $kanbanItem         = KanbanItem::getByTask(intval($taskId));
                         //if kanban type is completed
-                        if($getData['type'] == KanbanItem::TYPE_COMPLETED)
+                        if($type == KanbanItem::TYPE_COMPLETED)
                         {
-                            $this->actionUpdateStatusInKanbanView(Task::STATUS_COMPLETED, intval($taskId));
+                            $this->processStatusUpdateViaAjax(Task::STATUS_COMPLETED, intval($taskId), false);
                             $response['button'] = '';
                             $response['status'] = Task::getStatusDisplayName($task->status);
                         }
                         else
                         {
+                            $kanbanItem  = KanbanItem::getByTask(intval($taskId));
                             //When in the same column
-                            if($getData['type'] == $kanbanItem->type)
+                            if($type == $kanbanItem->type)
                             {
                                 $kanbanItem->sortOrder = $counter;
+                                $kanbanItem->save();
                             }
                             else
                             {
-                                //This would be the one which is dragged across column
-                                $kanbanItem->sortOrder = $counter;
-                                $kanbanItem->type      = intval($getData['type']);
-                                $targetStatus = TasksUtil::getDefaultTaskStatusForKanbanItemType(intval($getData['type']));
+                                $targetStatus = TasksUtil::getDefaultTaskStatusForKanbanItemType(intval($type));
                                 $this->processStatusUpdateViaAjax(intval($taskId), $targetStatus, false);
                                 $content = TasksUtil::resolveActionButtonForTaskByStatus($targetStatus,
                                                                                         $this->getId(),
                                                                                         $this->getModule()->getId(),
                                                                                         intval($taskId));
+                                //This would be the one which is dragged across column
+                                $kanbanItem->type = intval($type);
+                                $kanbanItem->save();
                                 $response['button'] = $content;
                                 $response['status'] = Task::getStatusDisplayName($task->status);
                             }
-                            $kanbanItem->save();
                             $counter++;
                         }
                     }
@@ -508,10 +495,11 @@
                 $task->completedDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
                 $task->completed         = true;
                 $task->save();
+                TasksNotificationUtil::submitTaskNotificationMessage($task,
+                                                                 TasksNotificationUtil::CLOSE_TASK_NOTIFY_ACTION);
                 if($showCompletionDate)
                 {
-                    echo '<p>' . Zurmo::t('TasksModule', 'Completed On') . ': ' .
-                                 DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay($task->completedDateTime) . '</p>';
+                    echo TasksUtil::renderCompletionDateTime($task);
                 }
             }
             else
@@ -526,12 +514,6 @@
                                                        Task::getStatusDisplayName(intval($currentStatus)),
                                                        Task::getStatusDisplayName(intval($status)));
             }
-            TasksUtil::sendNotificationOnTaskUpdate($task,
-                                                    Zurmo::t('TasksModule', 'The status for the task #' . $task->id .
-                                                                            ' has been updated to ' .
-                                                                            Task::getStatusDisplayName(intval($status))),
-                                                    array(Yii::app()->user->userModel)
-                                                    );
         }
 
         /**
@@ -547,10 +529,6 @@
             $notificationSubscriber->hasReadLatest = false;
             $task->notificationSubscribers->add($notificationSubscriber);
             $task->save();
-            TasksUtil::sendNotificationOnTaskUpdate($task,
-                                                    Zurmo::t('TasksModule', $user->getFullName() .
-                                                    ' has subscribed for the task #' . $task->id),
-                                                    array($user));
             return $task;
         }
 
@@ -571,10 +549,6 @@
                 }
             }
             $task->save();
-            TasksUtil::sendNotificationOnTaskUpdate($task,
-                                                    Zurmo::t('TasksModule', $user->getFullName() .
-                                                    ' has unsubscribed from the task #' . $task->id),
-                                                    array($user));
             return $task;
         }
 
@@ -630,14 +604,21 @@
             }
         }
 
+        /**
+         * Validates and save from modal details
+         * @param Task $task
+         */
         protected function attemptToValidateAndSaveFromModalDetails(Task $task)
         {
             if (isset($_POST['ajax']) &&
                 ($_POST['ajax'] == 'task-left-column-form-data' || $_POST['ajax'] == 'task-right-column-form-data'))
             {
-                $this->attemptToSaveModelFromPost($task, null, false);
-                $errorData        = ZurmoActiveForm::makeErrorsDataAndResolveForOwnedModelAttributes($task);
-                echo CJSON::encode($errorData);
+                $task = $this->attemptToSaveModelFromPost($task, null, false);
+                $errorData = ZurmoActiveForm::makeErrorsDataAndResolveForOwnedModelAttributes($task);
+                if(!empty($errorData))
+                {
+                    echo CJSON::encode($errorData);
+                }
                 Yii::app()->end(0, false);
             }
         }

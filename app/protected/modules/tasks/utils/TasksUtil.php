@@ -78,6 +78,13 @@
             return $content;
         }
 
+        /**
+         * Renders subscriber image and link content
+         * @param User $user
+         * @param int $imageSize
+         * @param string $class
+         * @return string
+         */
         public static function renderSubscriberImageAndLinkContent(User $user, $imageSize = 36, $class = null)
         {
             assert('is_int($imageSize)');
@@ -108,27 +115,6 @@
         }
 
         /**
-         * Given a Task and the User that updates the task
-         * return the people on the task to send new notification to
-         * @param Task $task
-         * @param User $user
-         * @return Array $peopleToSendNotification
-         */
-        public static function resolvePeopleToSendNotificationToOnTaskUpdate(Task $task, User $user)
-        {
-            $peopleToSendNotification    = array();
-            $peopleSubscribedForTask     = self::resolvePeopleSubscribedForTask($task);
-            foreach ($peopleSubscribedForTask as $person)
-            {
-                if ($person->id != $user->id)
-                {
-                    $peopleToSendNotification[] = $person;
-                }
-            }
-            return $peopleToSendNotification;
-        }
-
-        /**
          * Resolve people on task
          * @param Task $task
          * @return array
@@ -142,102 +128,6 @@
         }
 
         /**
-         * Send notification to user on task update
-         * @param Task $task
-         * @param string $message
-         * @return null
-         */
-        public static function sendNotificationOnTaskUpdate(Task $task, $message, $peopleToSendNotification)
-        {
-            assert('$task instanceof Task');
-            assert('is_string($message)');
-            assert('is_array($peopleToSendNotification)');
-            $currentUser = Yii::app()->user->userModel;
-            if (count($peopleToSendNotification) > 0)
-            {
-                $emailRecipients = array();
-                foreach ($peopleToSendNotification as $person)
-                {
-                    if ($person->primaryEmail->emailAddress !== null &&
-                        !UserConfigurationFormAdapter::resolveAndGetValue($person, 'turnOffEmailNotifications'))
-                    {
-                        $emailRecipients[] = $person;
-                    }
-                }
-                $subject = self::getEmailSubject($task);
-                $content = self::getEmailContent($task, $message, $currentUser);
-                if ($emailRecipients > 0)
-                {
-                    EmailNotificationUtil::resolveAndSendEmail($currentUser, $emailRecipients, $subject, $content);
-                }
-                else
-                {
-                    return;
-                }
-            }
-            else
-            {
-                return;
-            }
-        }
-
-        /**
-         * Get email content
-         * @param RedBeanModel $model
-         * @param string $message
-         * @param User $user
-         * @return EmailMessageContent
-         */
-        public static function getEmailContent(RedBeanModel $model, $message, User $user)
-        {
-            assert('$model instanceof RedBeanModel');
-            assert('is_string($message)');
-            assert('$user instanceof User');
-            $emailContent  = new EmailMessageContent();
-            $url           = static::getUrlToEmail($model);
-            $textContent   = Zurmo::t('TasksModule', "Hello, {lineBreak} {updaterName} updates to the " .
-                                             "{strongStartTag}{modelName}{strongEndTag}: {lineBreak}" .
-                                             "\"{message}.\" {lineBreak}{lineBreak} {url} ",
-                                    array('{lineBreak}'           => "\n",
-                                          '{strongStartTag}'      => null,
-                                          '{strongEndTag}'        => null,
-                                          '{updaterName}'         => strval($user),
-                                          '{modelName}'           => $model->getModelLabelByTypeAndLanguage(
-                                                                     'SingularLowerCase'),
-                                          '{message}'             => strval($message),
-                                          '{url}'                 => ZurmoHtml::link($url, $url)
-                                        ));
-            $emailContent->textContent  = EmailNotificationUtil::
-                                                resolveNotificationTextTemplate($textContent);
-            $htmlContent = Zurmo::t('TasksModule', "Hello, {lineBreak} {updaterName} updates to the " .
-                                             "{strongStartTag}{url}{strongEndTag}: {lineBreak}" .
-                                             "\"{message}.\"",
-                               array('{lineBreak}'           => "<br/>",
-                                     '{strongStartTag}'      => '<strong>',
-                                     '{strongEndTag}'        => '</strong>',
-                                     '{updaterName}'         => strval($user),
-                                     '{message}'             => strval($message),
-                                     '{url}'                 => ZurmoHtml::link($model->getModelLabelByTypeAndLanguage(
-                                                                'SingularLowerCase'), $url)
-                                   ));
-            $emailContent->htmlContent  = EmailNotificationUtil::resolveNotificationHtmlTemplate($htmlContent);
-            return $emailContent;
-        }
-
-        /**
-         * Gets email subject for the notification
-         * @param Task $model
-         * @return string
-         */
-        public static function getEmailSubject($model)
-        {
-            assert('$model instanceof Task');
-            return Zurmo::t('TasksModule', 'New update on {modelName}: {subject}',
-                                    array('{subject}'   => strval($model),
-                                          '{modelName}' => $model->getModelLabelByTypeAndLanguage('SingularLowerCase')));
-        }
-
-        /**
          * Gets url to task detail view
          * @param Task $model
          * @return string
@@ -246,29 +136,6 @@
         {
             assert('$model instanceof Task');
             return Yii::app()->createAbsoluteUrl('tasks/default/details/', array('id' => $model->id));
-        }
-
-        /**
-         * Given a Task and the User that created the new comment
-         * return the people on the task to send new notification to
-         * @param Task $task
-         * @param User $user
-         * @return array $peopleToSendNotification
-         */
-        public static function  resolvePeopleToSendNotificationToOnNewComment(Task $task, User $user)
-        {
-            assert('$task instanceof Task');
-            assert('$user instanceof User');
-            $peopleToSendNotification    = array();
-            $peopleSubscribedForTask     = self::resolvePeopleSubscribedForTask($task);
-            foreach ($peopleSubscribedForTask as $person)
-            {
-                if (!$person->isSame($user))
-                {
-                    $peopleToSendNotification[] = $person;
-                }
-            }
-            return $peopleToSendNotification;
         }
 
         /**
@@ -484,7 +351,7 @@
         public static function getTaskStatusMappingToKanbanItemTypeArray()
         {
             return array(
-                            Task::STATUS_NEW                   => KanbanItem::TYPE_TODO,
+                            Task::STATUS_NEW                   => KanbanItem::TYPE_SOMEDAY,
                             Task::STATUS_IN_PROGRESS           => KanbanItem::TYPE_IN_PROGRESS,
                             Task::STATUS_AWAITING_ACCEPTANCE   => KanbanItem::TYPE_IN_PROGRESS,
                             Task::STATUS_REJECTED              => KanbanItem::TYPE_IN_PROGRESS,
@@ -739,9 +606,9 @@
          */
         public static function getDefaultTaskStatusForKanbanItemType($kanbanItemType)
         {
-            assert('is_int($kanbanItemType)');
+            assert('is_int(intval($kanbanItemType))');
             $mappingArray = self::getKanbanItemTypeToDefaultTaskStatusMappingArray();
-            return $mappingArray[$kanbanItemType];
+            return $mappingArray[intval($kanbanItemType)];
         }
 
         /**
@@ -790,7 +657,6 @@
             $percentageComplete = ceil(static::getTaskCompletionPercentage($task));
             return ZurmoHtml::tag('div', array('class' => 'completion-percentage-bar', 'style' => 'width:' . $percentageComplete . '%'),
                                   $percentageComplete . '%');
-            $percentage = TasksUtil::getTaskCompletionPercentage(intval($task->id));
         }
 
         /**
@@ -850,6 +716,7 @@
          */
         public static function registerTaskModalDetailsScript($sourceId)
         {
+            assert('is_string($sourceId)');
             $modalId = TasksUtil::getModalContainerId();
             $url = Yii::app()->createUrl('tasks/default/modalDetails');
             $ajaxOptions = TasksUtil::resolveAjaxOptionsForModalView('Details', $sourceId);
@@ -908,6 +775,21 @@
                 {
                 }
             }
+        }
+
+        /**
+         * Renders completion date time content for the task
+         * @param Task $task
+         * @return string
+         */
+        public static function renderCompletionDateTime(Task $task)
+        {
+            if($task->completedDateTime == null)
+            {
+                $task->completedDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
+            }
+            return '<p>' . Zurmo::t('TasksModule', 'Completed On') . ': ' .
+                                 DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay($task->completedDateTime) . '</p>';
         }
     }
 ?>

@@ -655,19 +655,5 @@
         {
             return 'NonSystemUsersStateMetadataAdapter';
         }
-        /**
-         * Displays the modal list for selecting owner for the task
-         */
-        public function actionOwnerModalListForTask()
-        {
-            $modalListLinkProvider = new TaskSelectFromRelatedListModalListLinkProvider(
-                                            $_GET['modalTransferInformation']['sourceIdFieldId'],
-                                            $_GET['modalTransferInformation']['sourceNameFieldId'],
-                                            $_GET['modalTransferInformation']['attribute'],
-                                            $_GET['modalTransferInformation']['sourceModelId'],
-                                            $_GET['modalTransferInformation']['modalId']
-            );
-            echo ModalSearchListControllerUtil::setAjaxModeAndRenderModalSearchList($this, $modalListLinkProvider);
-        }
     }
 ?>

@@ -242,15 +242,6 @@
             return $content;
         }
 
-        protected function resolveRightSideActiveFormAjaxValidationOptions()
-        {
-            return array('enableAjaxValidation' => true,
-                'clientOptions' => array(
-                    'validateOnChange'  => true,
-                ),
-                );
-        }
-
         protected function renderRightBottomSideContent()
         {
             return ZurmoHtml::tag('div', array('class' => 'right-side-details-view-panel'), $this->renderFormLayout());
@@ -375,9 +366,7 @@
             $content .= '<span id="completionDate">';
             if($this->model->status == Task::STATUS_COMPLETED)
             {
-                $content .= '<p>' . Zurmo::t('TasksModule', 'Completed On') . ': ' .
-                            DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay(
-                            $this->model->completedDateTime) . '</p>';
+                $content .= TasksUtil::renderCompletionDateTime($this->model);;
             }
             $content .= '</span>';
             $content .= '</div>';

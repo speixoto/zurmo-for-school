@@ -35,55 +35,36 @@
      ********************************************************************************/
 
     /**
-     * Class utilized by 'select' modal popup of user in the task detail view
+     * A  NotificationRules to manage when a new task is created
      */
-    class TaskSelectFromRelatedListModalListLinkProvider extends SelectFromRelatedEditModalListLinkProvider
+    class TaskNotificationRules extends NotificationRules
     {
-        /**
-         * Attribute to be updated
-         * @var string
-         */
-        protected $attribute;
+        protected $model;
 
-        /**
-         * Source model id
-         * @var string
-         */
-        protected $sourceModelId;
-
-        /**
-         * sourceIdFieldName and sourceNameFieldId are needed to know
-         * which fields in the parent form to populate data with
-         * upon selecting a row in the listview
-         *
-         */
-        public function __construct($sourceIdFieldId, $sourceNameFieldId, $attribute, $modelId, $modalId = ModelElement::MODAL_CONTAINER_PREFIX)
+        public function getModel()
         {
-            assert('is_string($sourceIdFieldId)');
-            assert('is_string($sourceNameFieldId)');
-            assert('is_string($attribute)');
-            $this->sourceIdFieldId   = $sourceIdFieldId;
-            $this->sourceNameFieldId = $sourceNameFieldId;
-            $this->modalId           = $modalId;
-            $this->attribute         = $attribute;
-            $this->sourceModelId     = $modelId;
+            return $this->model;
+        }
+
+        public function setModel($model)
+        {
+            $this->model = $model;
         }
 
         /**
-         * @param string $attributeString
-         * @return string
+         * @returns Translated label that describes this rule type.
          */
-        public function getLinkString($attributeString)
+        public static function getDisplayName()
         {
-            $url     = Yii::app()->createUrl('tasks/default/updateRelatedUsersViaAjax', array('id' => $this->sourceModelId));
-            $errorInProcess = CJavaScript::quote(Zurmo::t('Core', 'There was an error processing your request'));
-            $string  = 'ZurmoHtml::link(';
-            $string .= $attributeString . ', ';
-            $string .= '"javascript:transferUserModalValues(\"#'. $this->modalId . '\", " . CJavaScript::encode(array(\'' .
-                       $this->sourceIdFieldId . '\' => $data->id, \'' . $this->sourceNameFieldId . '\' => strval(' . $attributeString . ')))';
-            $string .= '. ",\'' . $url . '\',\'' . $this->attribute . '\', \'' . $errorInProcess . '\');"';
-            $string .= ')';
-            return $string;
+            return 'task';
+        }
+
+        /**
+         * @return The type of the NotificationRules
+         */
+        public static function getType()
+        {
+            return 'Task';
         }
     }
 ?>
