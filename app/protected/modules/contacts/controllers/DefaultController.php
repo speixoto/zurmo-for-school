@@ -409,6 +409,31 @@
                 false);
         }
 
+        protected static function resolveTitleByMassActionId($actionId)
+        {
+            if (MassActionUtil::isMassSubscribeLikeAction($actionId))
+            {
+                return Zurmo::t('Marketing List', 'Mass Subscribe');
+            }
+            return parent::resolveTitleByMassActionId($actionId);
+        }
+
+        protected static function applyGenericViewIdGenerationRules($actionId)
+        {
+            return (MassActionUtil::isMassSubscribeLikeAction($actionId) || parent::applyGenericViewIdGenerationRules($actionId));
+        }
+
+        protected static function processModelForMassSubscribe(& $model)
+        {
+            $marketingListMember            = Yii::app()->request->getPost('MarketingListMember');
+            if ($marketingListMember['marketingList']['id'] > 0)
+            {
+                $marketingList = MarketingList::getById((int) $marketingListMember['marketingList']['id']);
+                $marketingList->addNewMember($model->id);
+                return true;
+            }
+        }
+
         protected static function resolveMassSubscribeAlertMessage($postVariableName)
         {   $marketingListMember = Yii::app()->request->getPost('MarketingListMember');
             if (isset($marketingListMember) && $marketingListMember['marketingList']['id'] == 0)
