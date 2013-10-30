@@ -1388,7 +1388,11 @@ body > .ui-autocomplete{
 	display:inline-block;
 	width: 100%;
 	position: relative;
-	z-index: 100;
+	z-index: 9999;
+	+ div{
+		position: relative;
+		z-index: 1;
+	}
 }
 
 h1 + .view-toolbar-container{
@@ -3527,6 +3531,12 @@ div.wide.form{
 		.parent > ul{
 			top: 27px;
 		}
+	}
+}
+
+.DetailsView{
+	.col-0{
+		width: 15%;
 	}
 }
 

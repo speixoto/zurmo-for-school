@@ -11149,7 +11149,11 @@ body > .ui-autocomplete {
   display: inline-block;
   width: 100%;
   position: relative;
-  z-index: 100;
+  z-index: 9999;
+}
+.view-toolbar-container + div {
+  position: relative;
+  z-index: 1;
 }
 h1 + .view-toolbar-container {
   margin-top: 15px;
@@ -13562,6 +13566,9 @@ div.wide.form label.hasCheckBox {
 }
 .details-table h1 + .toolbar-mbmenu .parent > ul {
   top: 27px;
+}
+.DetailsView .col-0 {
+  width: 15%;
 }
 .after-form-details-content {
   color: #545454 !important;
@@ -16144,6 +16151,20 @@ i[class^="icon"] {
   box-sizing: border-box;
   letter-spacing: -40px;
 }
+.type-projects .icon-empty:before {
+  content: '\02C7';
+  font-weight: normal !important;
+  font-weight: normal;
+  font-size: 45px;
+  font-family: "zurmo_gamification_symbly_rRg";
+  padding: 0;
+  margin: 0;
+  vertical-align: middle;
+  position: relative;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
 #ZurmoLogo {
   background: url(../images/ZurmoLogo.png) left top no-repeat;
   width: 170px;
@@ -16775,9 +16796,6 @@ table.configuration-list td:last-child a .z-label:before {
   background: url(../images/table-items-header.png) left top repeat-x;
   padding: 0 0 0 10px !important;
 }
-#JobsCollectionView a {
-  margin-right: 5px;
-}
 #JobsCollectionView table {
   table-layout: auto;
   border-top: 1px solid #DFDFDF;
@@ -16787,6 +16805,15 @@ table.configuration-list td:last-child a .z-label:before {
 }
 #JobsCollectionView #jobs-collection-form > div + table {
   border-top: none;
+}
+.job-log-link {
+  display: table-cell;
+  white-space: nowrap;
+  float: left;
+}
+.job-name {
+  display: table-cell;
+  padding-left: 10px;
 }
 .reset-job-link {
   margin: 0 !important;
@@ -20362,6 +20389,10 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
 .CreateProductCategory .badge-icon:before {
   content: '\00D7';
 }
+.game-badge-SearchProjects .badge-icon:before,
+.SearchProjects .badge-icon:before {
+  content: '\02C7';
+}
 /*Big Icons for popup badges*/
 .game-level-change .badge-icon:before {
   content: ";";
@@ -21758,6 +21789,12 @@ a.user-link {
 #ArchivedEmailMatchingListView .items td {
   padding-right: 10px;
 }
+#ArchivedEmailMatchingListView .view-toolbar-container {
+  border-top: 1px solid #CCCCCC;
+}
+#ArchivedEmailMatchingListView table {
+  width: 100%;
+}
 .email-archive-item {
   border: none !important;
   background: none !important;
@@ -21804,7 +21841,7 @@ a.user-link {
 .email-archive-item th {
   height: auto !important;
   line-height: 1 !important;
-  padding: 0 !important;
+  padding: 0 0 15px 0 !important;
 }
 .email-archive-item td {
   padding-bottom: 15px;

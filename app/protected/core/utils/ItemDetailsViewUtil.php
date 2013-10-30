@@ -35,13 +35,13 @@
      ********************************************************************************/
 
     /**
-     * Helper functionality for rendering renderAfterFormLayoutForDetailsContent() for ownedsecurableitems
+     * Helper functionality for rendering renderAfterFormLayoutForDetailsContent() for items
      */
-    class OwnedSecurableItemDetailsViewUtil extends ItemDetailsViewUtil
+    class ItemDetailsViewUtil
     {
         protected static function shouldRenderDetailsContent($model)
         {
-            if ($model instanceof OwnedSecurableItem) {
+            if ($model instanceof Item) {
                 return true;
             }
             return false;
@@ -49,14 +49,46 @@
 
         protected static function getElements($model)
         {
-            $elements = parent::getElements($model);
-            $elements[] = array('className'  => 'UserElement',
-                                'parameters' => array($model, 'owner'),
-            );
-            $elements[] = array('className'  => 'DerivedExplicitReadWriteModelPermissionsElement',
-                                'parameters' => array($model, 'null'),
+            $elements = array(
+                array('className' => 'DateTimeModifiedUserElement',
+                    'parameters' => array($model, 'null'),
+                ),
+                array('className' => 'DateTimeCreatedUserElement',
+                    'parameters' => array($model, 'null'),
+                ),
             );
             return $elements;
+        }
+
+        public static function renderAfterFormLayoutForDetailsContent($model, $content = null)
+        {
+            $detailsContent = null;
+            if (static::shouldRenderDetailsContent($model)) {
+                if ($content != null) {
+                    $detailsContent .= ZurmoHtml::tag('br');
+                }
+                $detailsContent .= static::renderElementsContent(static::getElements($model));
+            }
+            $content .= ZurmoHtml::tag('p', array('class' => 'after-form-details-content'), $detailsContent);
+            return $content;
+        }
+
+        protected static function renderElementsContent($elements)
+        {
+            $content = null;
+            $elementsCount = count($elements);
+            foreach ($elements as $index => $elementDetails) {
+                $elementClassName = $elementDetails['className'];
+                $elementParams = $elementDetails['parameters'];
+                $element = new $elementClassName($elementParams[0], $elementParams[1]);
+                $element->nonEditableTemplate = '{label} {content}';
+                $content .= $element->render();
+                $isLast = (($index + 1) == $elementsCount);
+                if (!$isLast) {
+                    $content .= '&#160;|&#160;';
+                }
+            }
+            return $content;
         }
     }
 ?>

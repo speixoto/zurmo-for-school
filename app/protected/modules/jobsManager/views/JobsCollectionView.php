@@ -165,7 +165,7 @@
             {
                 $content .= '<tr>';
                 $content .= '<td>' . $this->renderViewJobLogLinkContent($type);
-                $content .=          '&#160;' . ZurmoHtml::encode($jobData['label']) . '</td>';
+                $content .= '<span class="job-name">'.ZurmoHtml::encode($jobData['label']) . ZurmoHtml::encode($jobData['label']) . ZurmoHtml::encode($jobData['label']) . '</span></td>';
                 $content .= '<td>' . $jobData['lastCompletedRunEncodedContent'] . '</td>';
                 $content .= '<td>' . ZurmoHtml::encode($jobData['statusContent']) . '</td>';
                 $content .= '<td class="button-column-right">' . $this->resolveActionContentByStatus($type, $jobData['status']) . '</td>';
@@ -228,7 +228,7 @@
                                            array('type' => $type));
             $label = Zurmo::t('JobsManagerModule', 'Job Log');
             return ZurmoHtml::ajaxLink($label, $route, static::resolveAjaxOptionsForJobLogLink($type),
-                                       array('class' => 'z-link'));
+                                       array('class' => 'z-link job-log-link'));
         }
 
         protected static function resolveAjaxOptionsForJobLogLink($type)

@@ -84,7 +84,7 @@
 
         public function actionList()
         {
-            $activeActionElementType        = 'ProductCategoriesLink';
+            $activeActionElementType        = 'ProductCategoriesMenu';
             $breadCrumbLinks                = static::getListBreadcrumbLinks();
             $introView                      = new ProductsIntroView('ProductsModule');
             $actionBarAndTreeView           = new ProductCategoriesActionBarAndTreeListView(
