@@ -73,7 +73,8 @@
                                         'relatedModelClassName'    => 'Task',
                                         'relatedModelRelationName' => 'checkListItems',
                                         'redirectUrl'              => $redirectUrl); //After save, the url to go to.
-            $inlineView         = new TaskCheckItemInlineEditView($taskCheckListItem, 'taskCheckItems', 'tasks', 'inlineCreateTaskCheckItemSave', $urlParameters, $uniquePageId);
+            $inlineView         = new TaskCheckItemInlineEditView($taskCheckListItem, 'taskCheckItems',
+                                                                  'tasks', 'inlineCreateTaskCheckItemSave', $urlParameters, $uniquePageId);
             $view               = new AjaxPageView($inlineView);
             echo $view->render();
         }
@@ -101,17 +102,15 @@
         public function actionAjaxCheckItemListForRelatedTaskModel($uniquePageId = null)
         {
             $getData                  = GetUtil::getData();
-            $relatedModelId           = ArrayUtil::getArrayValue($getData, 'relatedModelId');
-            $relatedModelClassName    = ArrayUtil::getArrayValue($getData, 'relatedModelClassName');
-            $relatedModelRelationName = ArrayUtil::getArrayValue($getData, 'relatedModelRelationName');
-            $taskCheckListItem        = TaskCheckListItem::getByTask((int)$relatedModelId);
+            $taskId                   = ArrayUtil::getArrayValue($getData, 'relatedModelId');
+            $taskCheckListItem        = TaskCheckListItem::getByTask((int)$taskId);
             $getParams                = array('uniquePageId'             => $uniquePageId,
-                                              'relatedModelId'           => $relatedModelId,
-                                              'relatedModelClassName'    => $relatedModelClassName,
-                                              'relatedModelRelationName' => $relatedModelRelationName);
-            $relatedModel             = $relatedModelClassName::getById((int)$relatedModelId);
+                                              'relatedModelId'           => $taskId,
+                                              'relatedModelClassName'    => 'Task',
+                                              'relatedModelRelationName' => 'checkListItems');
+            $task                     = Task::getById((int)$taskId);
             $view                     = new TaskCheckListItemsForTaskView('taskCheckItems', 'tasks',
-                                                                          $taskCheckListItem, $relatedModel,
+                                                                          $taskCheckListItem, $task,
                                                                           null, $getParams);
             $content                  = $view->render();
             Yii::app()->getClientScript()->setToAjaxMode();
@@ -158,7 +157,7 @@
             $getParams                = array('uniquePageId'             => null,
                                               'relatedModelId'           => $task->id,
                                               'relatedModelClassName'    => 'Task',
-                                              'relatedModelRelationName' => 'task');
+                                              'relatedModelRelationName' => 'checkListItems');
             $url = Yii::app()->createUrl('tasks/taskCheckItems/ajaxCheckItemListForRelatedTaskModel', $getParams);
             $this->redirect($url);
         }

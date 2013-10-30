@@ -92,6 +92,11 @@
             $this->resetPostArray();
             $this->runControllerWithNoExceptionsAndGetContent('tasks/default/modalDetails');
 
+            //test submitting the task on chage
+            $this->setGetArray(array('id' => $tasks[0]->id));
+            $this->setPostArray(array('Task' => array('name' => 'myTask', 'status' => Task::STATUS_IN_PROGRESS)));
+            $this->runControllerWithNoExceptionsAndGetContent('tasks/default/modalDetails');
+
             //test removing a task.
             $this->setGetArray(array('id' => $tasks[0]->id));
             $this->resetPostArray();

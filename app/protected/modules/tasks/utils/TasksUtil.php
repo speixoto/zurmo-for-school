@@ -602,9 +602,9 @@
          */
         public static function getDefaultTaskStatusForKanbanItemType($kanbanItemType)
         {
-            assert('is_int($kanbanItemType)');
+            assert('is_int(intval($kanbanItemType))');
             $mappingArray = self::getKanbanItemTypeToDefaultTaskStatusMappingArray();
-            return $mappingArray[$kanbanItemType];
+            return $mappingArray[intval($kanbanItemType)];
         }
 
         /**

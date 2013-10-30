@@ -46,7 +46,7 @@
 
         protected $checkListItemsData;
 
-        protected $relatedModel;
+        protected $task;
 
         protected $pageSize;
 
@@ -61,14 +61,13 @@
             assert('is_string($controllerId)');
             assert('is_string($moduleId)');
             assert('is_array($checkListItemsData)');
-            assert('$relatedModel->id > 0');
             assert('is_string($form) || $form == null');
             assert('is_array($getParams)');
             assert('is_string($uniquePageId) || $uniquePageId == null');
             $this->controllerId           = $controllerId;
             $this->moduleId               = $moduleId;
             $this->checkListItemsData     = $checkListItemsData;
-            $this->relatedModel           = $task; //todo: change relatedModel to task.
+            $this->task                   = $task;
             $this->getParams              = $getParams;
             $this->uniquePageId           = $uniquePageId;
         }
@@ -171,7 +170,7 @@
         private function registerCheckListItemsScript()
         {
             $url = Yii::app()->createUrl('/tasks/taskCheckItems/updateNameViaAjax');
-            $deleteUrl = Yii::app()->createUrl('/tasks/taskCheckItems/deleteCheckListItem', array('taskId' => $this->relatedModel->id));
+            $deleteUrl = Yii::app()->createUrl('/tasks/taskCheckItems/deleteCheckListItem', array('taskId' => $this->task->id));
             $errorMessage = Yii::t('Core', 'Name can not be blank');
             Yii::app()->getClientScript()->registerScript('checklistitemscript', "
                                                                 var litag;
