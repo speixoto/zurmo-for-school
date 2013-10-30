@@ -76,7 +76,7 @@
                                             $gridViewId,
                                             $pageVar,
                                             false,
-                                            'MarketingDashboardLink',
+                                            'MarketingDashboardMenu',
                                             $introView);
             $marketingDashboardView  = new MarketingDashboardView(
                                             $this->getId(),

@@ -102,7 +102,7 @@
             else
             {
                 $mixedView = $this->makeActionBarSearchAndListView($searchForm, $dataProvider,
-                             'SecuredActionBarForMarketingListsSearchAndListView', null, 'MarketingListsLink');
+                             'SecuredActionBarForMarketingListsSearchAndListView', null, 'MarketingListsMenu');
                 $breadCrumbLinks = static::getListBreadcrumbLinks();
                 $view      = new MarketingListsPageView(MarketingDefaultViewUtil::
                                  makeViewWithBreadcrumbsForCurrentUser($this, $mixedView, $breadCrumbLinks,

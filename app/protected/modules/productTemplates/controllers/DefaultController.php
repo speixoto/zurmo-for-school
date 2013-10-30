@@ -92,7 +92,7 @@
         {
             $pageSize                       = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                                               'listPageSize', get_class($this->getModule()));
-            $activeActionElementType        = 'ProductTemplatesLink';
+            $activeActionElementType        = 'ProductTemplatesMenu';
             $productTemplate                = new ProductTemplate(false);
             $searchForm                     = new ProductTemplatesSearchForm($productTemplate);
             $listAttributesSelector         = new ListAttributesSelector('ProductTemplatesListView', get_class($this->getModule()));
