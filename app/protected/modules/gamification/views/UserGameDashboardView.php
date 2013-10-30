@@ -402,7 +402,9 @@ SPT;
                 'success' => 'js:function(data)
                     {
                         $("#' . $containerId . '").replaceWith(data);
+                        $("#' . $containerId . '").addClass("visible-panel");
                         ' . self::renderGameCoinRefreshAjax($userId) . '
+                        updateGamificationImagesSrcForLazyLoading();
                     }'
             ), $htmlOptions);
         }
