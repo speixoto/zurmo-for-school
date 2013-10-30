@@ -39,15 +39,15 @@
      */
     class TasksNotificationUtil extends NotificationsUtil
     {
-        const NEW_TASK_NOTIFY_ACTION = 'CreateTask';
+        const NEW_TASK_NOTIFY_ACTION                = 'CreateTask';
 
-        const CLOSE_TASK_NOTIFY_ACTION = 'CloseTask';
+        const CLOSE_TASK_NOTIFY_ACTION              = 'CloseTask';
 
-        const CHANGE_TASK_OWNER_NOTIFY_ACTION = 'TaskOwnerChange';
+        const CHANGE_TASK_OWNER_NOTIFY_ACTION       = 'TaskOwnerChange';
 
-        const CHANGE_TASK_DUE_DATE_NOTIFY_ACTION = 'TaskDueDateChange';
+        const CHANGE_TASK_DUE_DATE_NOTIFY_ACTION    = 'TaskDueDateChange';
 
-        const TASK_ADD_COMMENT_NOTIFY_ACTION = 'TaskCommentAddition';
+        const TASK_ADD_COMMENT_NOTIFY_ACTION        = 'TaskCommentAddition';
 
         /**
          * Submit task notification message
