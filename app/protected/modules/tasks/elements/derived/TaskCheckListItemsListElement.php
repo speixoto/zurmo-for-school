@@ -46,7 +46,6 @@
          */
         protected function renderControlEditable()
         {
-            throw new NotImplementedException($message, $code, $previous);
             if ($this->getDisabledValue())
             {
                 $htmlOptions             = array();
@@ -113,7 +112,8 @@
                                         'relatedModelRelationName' => 'checkListItems',
                                         'redirectUrl'              => $redirectUrl); //After save, the url to go to.
 
-            $inlineView         = new TaskCheckItemInlineEditView($taskCheckListItem, 'taskCheckItems', 'tasks', 'inlineCreateTaskCheckItemSave', $urlParameters, $uniquePageId);
+            $inlineView         = new TaskCheckItemInlineEditView($taskCheckListItem, 'taskCheckItems', 'tasks',
+                                      'inlineCreateTaskCheckItemSave', $urlParameters, $uniquePageId);
             $content            .= $inlineView->render();
             $htmlOptions = array('id' => 'TaskCheckItemInlineEditForModelView', 'class' => 'add-task-input');
             return ZurmoHtml::tag('div', $htmlOptions, $content);
@@ -128,9 +128,10 @@
             $getParams      = array('relatedModelId'         => $this->model->id,
                                   'relatedModelClassName'    => get_class($this->model),
                                   'relatedModelRelationName' => 'checkListItems');
-            $checkItemsData = TaskCheckListItem::getByTask($this->model->id);
-            $view           = new TaskCheckListItemsForTaskView('taskCheckItems', 'tasks', $checkItemsData, $this->model, $this->form, $getParams);
-            $content        = $view->render();
+            $taskCheckListItem = TaskCheckListItem::getByTask($this->model->id);
+            $view              = new TaskCheckListItemsForTaskView('taskCheckItems', 'tasks', $taskCheckListItem,
+                                 $this->model, $this->form, $getParams);
+            $content           = $view->render();
             return $content;
         }
     }

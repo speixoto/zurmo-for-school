@@ -32,17 +32,21 @@
 // "Copyright Zurmo Inc. 2013. All rights reserved".
 
 .gd-dashboard-active{
-	overflow: hidden;
+	#HeaderView{
+		position: fixed;
+		width: 100%;
+	}
+	.AppContainer{
+		padding-top: 78px;
+	}
 }
 
 #UserGameDashboardView{
 	z-index: 100;
-}
-
-#game-overlay{
+	overflow: scroll;
 	width: 100%;
 	height: 100%;
-	position: fixed;
+	position: fixed;//fixed;
 	top:78px;
 	left: 0;
 	right: 0;
@@ -50,7 +54,21 @@
 	background: rgba(0, 0, 0, 0.65);
 }
 
+#game-overlay{
+	width: 100%;
+	height: 100%;
+	position: absolute;//fixed;
+	top:0;
+	left: 0;
+	right: 0;
+	bottom:0;
+	background: rgba(0, 0, 0, 0.65);
+}
+
 #game-dashboard-container{
+	width: 100%;
+	height: 100%;
+	display: block;
 	position: relative;
 	z-index: 100;
 	color:#f1f1f1;
@@ -90,6 +108,7 @@
 }
 
 .close-dashboard-button{
+	z-index: 999;
 	width: 1200px;
 	height: 31px;
 	position: absolute;

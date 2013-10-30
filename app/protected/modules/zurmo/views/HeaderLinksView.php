@@ -237,7 +237,7 @@
                     $("body").addClass("gd-dashboard-active");
                     $("#' . $id . '").html("‰").toggleClass("highlighted");
                 }',
-                'success'    => 'js:function(data){$("body").append(data);}');
+                'success'    => 'js:function(data){$("#FooterView").after(data);}');
         }
 
         protected static function getModalContainerId($id)

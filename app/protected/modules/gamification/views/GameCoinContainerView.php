@@ -76,7 +76,8 @@
             );
 
             $url    = $this->makeAjaxClickUrl();
-            $script = "$('.random-game-coin').click(function(){
+            $script = "$('.random-game-coin').click(function(e){
+                            $(this).unbind('click');
                             " . ZurmoHtml::ajax(array('type' => 'GET', 'url' =>  $url)) . "
                             var audio = document.getElementById('game-coin-chime');
                             audio.play();
