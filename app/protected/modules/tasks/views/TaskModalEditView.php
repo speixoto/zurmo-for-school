@@ -203,6 +203,16 @@
 
         }
 
+        protected function resolveModalIdFromGet()
+        {
+            $modalId             = Yii::app()->request->getParam('modalId');
+            if($modalId == null)
+            {
+                $modalId = TasksUtil::getModalContainerId();
+            }
+            return $modalId;
+        }
+
         /**
          * Resolves ajax validation option for save button
          * @return array
@@ -213,9 +223,8 @@
             $sourceKanbanBoardId = Yii::app()->request->getParam('sourceKanbanBoardId');
 
             //Would be used from other source
-            $sourceId = Yii::app()->request->getParam('sourceId');
-
-            $modalId             = Yii::app()->request->getParam('modalId');
+            $sourceId            = Yii::app()->request->getParam('sourceId');
+            $modalId             = $this->resolveModalIdFromGet();
             $relationModelId     = Yii::app()->request->getParam('relationModelId');
             if($relationModelId != null)
             {
