@@ -128,9 +128,10 @@
             $getParams      = array('relatedModelId'         => $this->model->id,
                                   'relatedModelClassName'    => get_class($this->model),
                                   'relatedModelRelationName' => 'checkListItems');
-            $checkItemsData = TaskCheckListItem::getByTask($this->model->id);
-            $view           = new TaskCheckListItemsForTaskView('taskCheckItems', 'tasks', $checkItemsData, $this->model, $this->form, $getParams);
-            $content        = $view->render();
+            $taskCheckListItem = TaskCheckListItem::getByTask($this->model->id);
+            $view              = new TaskCheckListItemsForTaskView('taskCheckItems', 'tasks', $taskCheckListItem,
+                                 $this->model, $this->form, $getParams);
+            $content           = $view->render();
             return $content;
         }
     }
