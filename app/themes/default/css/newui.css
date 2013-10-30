@@ -25887,56 +25887,32 @@ div.special-pager .hidden.next:after {
   z-index: 100;
   overflow: scroll;
   width: 100%;
-  height: 100%;
-  position: fixed;
+  position: absolute;
   top: 78px;
   left: 0;
   right: 0;
   bottom: 0;
   background: rgba(0, 0, 0, 0.65);
 }
-#game-overlay {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.65);
-}
-#game-dashboard-container {
-  width: 100%;
-  height: 100%;
-  display: block;
-  position: relative;
-  z-index: 100;
-  color: #f1f1f1;
-}
-#game-dashboard-container * {
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-}
-#game-dashboard-container ul {
-  list-style: none;
-}
-#game-dashboard-container h2 {
-  margin-bottom: 15px;
-}
 #game-dashboard {
   width: 1200px;
   height: 600px;
   position: absolute;
   left: 50%;
+  margin: 30px auto auto -600px;
+  overflow: hidden;
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   -ms-border-radius: 5px;
   -o-border-radius: 5px;
   border-radius: 5px;
-  overflow: hidden;
-  margin: 30px auto auto -600px;
+  color: #f1f1f1;
   background: url(../images/game-dashboard/blue-chalkboard-blurred.jpg) left top repeat;
+}
+#game-dashboard * {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
 }
 #game-dashboard > div {
   padding: 10px 15px 15px 15px;
@@ -25956,6 +25932,12 @@ div.special-pager .hidden.next:after {
   -ms-text-shadow: 0 -1px 0 #151f1f;
   text-shadow: 0 -1px 0 #151f1f;
   color: #fff !important;
+}
+#game-dashboard ul {
+  list-style: none;
+}
+#game-dashboard h2 {
+  margin-bottom: 15px;
 }
 #game-dashboard a {
   color: #fff;
@@ -26376,6 +26358,10 @@ div.special-pager .hidden.next:after {
   overflow: hidden;
   background: url(../images/game-dashboard/blue-chalkboard-blurred.jpg) left top repeat;
   z-index: 100;
+  font-weight: normal !important;
+  font-weight: normal;
+  font-size: 42px;
+  font-family: "zurmo_gamification_symbly_rRg";
 }
 #nav-left {
   border-right: 1px solid rgba(32, 50, 52, 0.5);
