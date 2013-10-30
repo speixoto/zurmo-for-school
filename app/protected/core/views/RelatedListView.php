@@ -133,15 +133,10 @@
         protected function makeDataProviderBySearchAttributeData($searchAttributeData)
         {
             assert('is_array($searchAttributeData)');
-            $pageSize       = Yii::app()->pagination->resolveActiveForCurrentUserByType('subListPageSize');
             $sortAttribute  = SearchUtil::resolveSortAttributeFromGetArray($this->modelClassName);
             $sortDescending =  SearchUtil::resolveSortDescendingFromGetArray($this->modelClassName);
             return new RedBeanModelDataProvider( $this->modelClassName, $sortAttribute, (bool)$sortDescending,
-                                                                $searchAttributeData, array(
-                                                                    'pagination' => array(
-                                                                        'pageSize' => $pageSize,
-                                                                    )
-                                                                ));
+                                                                $searchAttributeData, $this->resolveConfigForDataProvider());
         }
 
         public function renderPortletHeadContent()
@@ -314,6 +309,20 @@
             return array_merge(GetUtil::getData(),
                                             array('portletId'   => $this->params['portletId'],
                                                   'redirectUrl' => $this->params['redirectUrl']));
+        }
+
+        /**
+         * Resolve configuration for data provider
+         * @return array
+         */
+        protected function resolveConfigForDataProvider()
+        {
+            $pageSize = Yii::app()->pagination->resolveActiveForCurrentUserByType('subListPageSize');
+            return array(
+                            'pagination' => array(
+                                'pageSize' => $pageSize,
+                        )
+                    );
         }
     }
 ?>
