@@ -39,7 +39,7 @@
         protected function renderControlEditable()
         {
             $content                 = parent::renderControlEditable();
-            $selector                = $this->params['selector'];
+            $selector                = ArrayUtil::getArrayValue($this->params, 'selector');
             $previewElementParams    = array('isHtmlContent' => 1,
                                                 'inputId' => $this->getEditableInputId(),
                                                 'selector' => $selector);
