@@ -24564,7 +24564,7 @@ a + .autoresponder-stats {
 .subscribe-task-link .icon-unsubscribe:after,
 .unsubscribe-task-link .icon-unsubscribe:after {
   color: #545454;
-  content: '\25CA';
+  content: '\2260';
   font-size: 29px;
 }
 .detail-subscribe-task-link,
@@ -24589,7 +24589,7 @@ a + .autoresponder-stats {
 .detail-subscribe-task-link .icon-unsubscribe:after,
 .detail-unsubscribe-task-link .icon-unsubscribe:after {
   color: #545454;
-  content: '\25CA';
+  content: '\2260';
   font-size: 44px;
 }
 .icon-unsubscribe:after {
@@ -25893,6 +25893,7 @@ div.special-pager .hidden.next:after {
   right: 0;
   bottom: 0;
   background: rgba(0, 0, 0, 0.65);
+  overflow: hidden;
 }
 #game-dashboard {
   width: 1200px;

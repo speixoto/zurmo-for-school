@@ -183,22 +183,22 @@
             elseif($action == self::CLOSE_TASK_NOTIFY_ACTION)
             {
                 return Zurmo::t('TasksModule', 'COMPLETED TASK {task}',
-                                    array('{task}'   => $model->name));
+                                    array('{task}'  => $model->name));
             }
             elseif($action == self::CHANGE_TASK_OWNER_NOTIFY_ACTION)
             {
                 return Zurmo::t('TasksModule', 'NEW OWNER {task}',
-                                    array('{task}'   => $model->name));
+                                    array('{task}'  => $model->name));
             }
             elseif($action == self::CHANGE_TASK_DUE_DATE_NOTIFY_ACTION)
             {
                 return Zurmo::t('TasksModule', 'NEW DUE DATE {task}',
-                                    array('{task}'   => $model->name));
+                                    array('{task}'  => $model->name));
             }
             elseif($action == self::TASK_ADD_COMMENT_NOTIFY_ACTION)
             {
                 return Zurmo::t('TasksModule', 'NEW COMMENT {task}',
-                                    array('{task}'   => $model->name));
+                                    array('{task}' => $model->name));
             }
         }
 
