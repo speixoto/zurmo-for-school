@@ -283,8 +283,9 @@
         protected function registerButtonActionScript($buttonClass, $targetKanbanItemType, $label,
                                                       $targetButtonClass, $url, $targetStatus)
         {
-            $completionText = Zurmo::t('TasksModule', '% Complete - 100');
-            $newStatusLabel = Task::getStatusDisplayName(Task::STATUS_NEW);
+            $completionText       = Zurmo::t('TasksModule', '% Complete - 100');
+            $rejectStatusLabel    = Task::getStatusDisplayName(Task::STATUS_REJECTED);
+            $inProgressStatusLabel = Task::getStatusDisplayName(Task::STATUS_IN_PROGRESS);
             $completedStatusLabel = Task::getStatusDisplayName(Task::STATUS_COMPLETED);
             return "$(document).on('click','." . $buttonClass . "',
                         function()
@@ -308,7 +309,11 @@
                                 if('" . $buttonClass . "' == 'action-type-reject')
                                 {
                                     $('#task-sortable-rows-" . $targetKanbanItemType . " #' + id + ' .action-type-accept').remove();
-                                    $(element).find('.task-status').html('{$newStatusLabel}');
+                                    $(element).find('.task-status').html('{$rejectStatusLabel}');
+                                }
+                                if('" . $buttonClass . "' == 'action-type-restart')
+                                {
+                                    $(element).find('.task-status').html('{$inProgressStatusLabel}');
                                 }
                             }
                             else
