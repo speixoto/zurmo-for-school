@@ -213,6 +213,7 @@
                                         $(this).parent().parent().parent().find('.AnyContactSelectForEmailMatchingView').show();
                                         $(this).parent().parent().parent().find('.ContactInlineCreateForArchivedEmailCreateView').hide();
                                         $(this).parent().parent().parent().find('.LeadInlineCreateForArchivedEmailCreateView').hide();
+                                        return false;
                                    })
                                    $('.contact-create-link').live('click', function ()
                                    {
@@ -222,6 +223,7 @@
                                         $(this).parent().parent().parent().find('.AnyContactSelectForEmailMatchingView').hide();
                                         $(this).parent().parent().parent().find('.ContactInlineCreateForArchivedEmailCreateView').show();
                                         $(this).parent().parent().parent().find('.LeadInlineCreateForArchivedEmailCreateView').hide();
+                                        return false;
                                    })
                                    $('.lead-create-link').live('click', function ()
                                    {
@@ -231,6 +233,7 @@
                                         $(this).parent().parent().parent().find('.AnyContactSelectForEmailMatchingView').hide();
                                         $(this).parent().parent().parent().find('.ContactInlineCreateForArchivedEmailCreateView').hide();
                                         $(this).parent().parent().parent().find('.LeadInlineCreateForArchivedEmailCreateView').show();
+                                        return false;
                                    })
             ");
         }
