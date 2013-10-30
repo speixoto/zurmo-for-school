@@ -59,6 +59,9 @@
                     'name',
                     'completed',
                 ),
+                'relations' => array(
+                    'task' => array(static::HAS_ONE, 'Task', static::NOT_OWNED),
+                ),
                 'rules' => array(
                     array('name',       'required'),
                     array('name',       'type', 'type' => 'string'),
