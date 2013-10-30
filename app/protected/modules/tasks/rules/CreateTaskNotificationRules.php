@@ -37,7 +37,7 @@
     /**
      * A  NotificationRules to manage when a new task is created
      */
-    class CreateTaskNotificationRules extends NotificationRules
+    class CreateTaskNotificationRules extends TaskNotificationRules
     {
         public static function getDisplayName()
         {

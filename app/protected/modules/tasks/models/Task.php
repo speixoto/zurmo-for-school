@@ -302,10 +302,6 @@
                   }
                 }
             }
-            if ($this->isNewModel)
-            {
-                TasksNotificationUtil::makeAndSubmitNewTaskNotificationMessage($this);
-            }
         }
     }
 ?>

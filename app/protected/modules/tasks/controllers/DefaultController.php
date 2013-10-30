@@ -133,6 +133,8 @@
             {
                 throw new NotSupportedException();
             }
+            TasksNotificationUtil::submitTaskNotificationMessage($task,
+                                                                 TasksNotificationUtil::CLOSE_TASK_NOTIFY_ACTION);
         }
 
         /**
@@ -159,47 +161,6 @@
         }
 
         /**
-         * Update owner or requested by user for task
-         * @param int $id
-         * @param string $attribute
-         * @param int $userId
-         */
-        public function actionUpdateRelatedUsersViaAjax($id, $attribute, $userId)
-        {
-            $task = Task::getById(intval($id));
-            $user = User::getById(intval($userId));
-            if($attribute == 'owner')
-            {
-                  $task->owner = $user;
-                  $task->save();
-                  TasksUtil::sendNotificationOnTaskUpdate($task, Zurmo::t('TasksModule',
-                                                          'The owner for the task #' . $task->id .
-                                                          ' is updated to ' . $user->getFullName()),
-                                                          array($user)
-                                                          );
-
-            }
-            elseif($attribute == 'requestedByUser')
-            {
-                  $originalRequestedByUser = $task->requestedByUser;
-                  if($user != $originalRequestedByUser)
-                  {
-                      $task->requestedByUser = $user;
-                      $task->save();
-                      $explicitReadWriteModelPermissions = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($task);
-                      TasksUtil::resolveExplicitPermissionsForRequestedByUser($task, $originalRequestedByUser,
-                                                                               $task->requestedByUser,
-                                                                               $explicitReadWriteModelPermissions);
-                  }
-            }
-            else
-            {
-                throw new NotSupportedException();
-            }
-            echo $this->getPermissionContent($task);
-        }
-
-        /**
          * Update due data time using ajas
          * @param int $id
          * @param int $dateTime
@@ -211,9 +172,8 @@
             $dueDateTime  = DateTimeUtil::convertTimestampToDbFormatDateTime($dateTime);
             $task->dueDateTime = $dueDateTime;
             $task->save();
-            TasksUtil::sendNotificationOnTaskUpdate($task, Zurmo::t('TasksModule',
-                                                                    'The due date for task #' . $task->id . ' is updated'),
-                                                                    array(Yii::app()->user->userModel));
+            TasksNotificationUtil::submitTaskNotificationMessage($task,
+                                                                 TasksNotificationUtil::CHANGE_TASK_DUE_DATE_NOTIFY_ACTION);
         }
 
         /**
@@ -261,19 +221,6 @@
         public function actionRemoveKanbanSubscriber($id)
         {
             $this->processUnsubscriptionRequest($id);
-        }
-
-        /**
-         * Gets the permission content
-         * @param RedBeanModel $model
-         * @return string
-         */
-        protected function getPermissionContent($model)
-        {
-            $ownedSecurableItemDetailsContent   = OwnedSecurableItemDetailsViewUtil::renderAfterFormLayoutForDetailsContent(
-                                                                                                        $model,
-                                                                                                        null);
-            return $ownedSecurableItemDetailsContent;
         }
 
         /**
@@ -419,12 +366,17 @@
          */
         protected function processTaskEdit(Task $task)
         {
+            $isNewModel = $task->isNewModel;
             if (RightsUtil::canUserAccessModule('TasksModule', Yii::app()->user->userModel))
             {
                 if (isset($_POST['ajax']) && $_POST['ajax'] == 'task-modal-edit-form')
                 {
                     $controllerUtil   = static::getZurmoControllerUtil();
                     $controllerUtil->validateAjaxFromPost($task, 'Task');
+                    if($isNewModel)
+                    {
+                        TasksNotificationUtil::makeAndSubmitNewTaskNotificationMessage($task);
+                    }
                     Yii::app()->getClientScript()->setToAjaxMode();
                     Yii::app()->end(0, false);
                 }
@@ -543,6 +495,8 @@
                 $task->completedDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
                 $task->completed         = true;
                 $task->save();
+                TasksNotificationUtil::submitTaskNotificationMessage($task,
+                                                                 TasksNotificationUtil::CLOSE_TASK_NOTIFY_ACTION);
                 if($showCompletionDate)
                 {
                     echo TasksUtil::renderCompletionDateTime($task);
@@ -560,12 +514,6 @@
                                                        Task::getStatusDisplayName(intval($currentStatus)),
                                                        Task::getStatusDisplayName(intval($status)));
             }
-            TasksUtil::sendNotificationOnTaskUpdate($task,
-                                                    Zurmo::t('TasksModule', 'The status for the task #' . $task->id .
-                                                                            ' has been updated to ' .
-                                                                            Task::getStatusDisplayName(intval($status))),
-                                                    array(Yii::app()->user->userModel)
-                                                    );
         }
 
         /**
@@ -581,10 +529,6 @@
             $notificationSubscriber->hasReadLatest = false;
             $task->notificationSubscribers->add($notificationSubscriber);
             $task->save();
-            TasksUtil::sendNotificationOnTaskUpdate($task,
-                                                    Zurmo::t('TasksModule', $user->getFullName() .
-                                                    ' has subscribed for the task #' . $task->id),
-                                                    array($user));
             return $task;
         }
 
@@ -605,10 +549,6 @@
                 }
             }
             $task->save();
-            TasksUtil::sendNotificationOnTaskUpdate($task,
-                                                    Zurmo::t('TasksModule', $user->getFullName() .
-                                                    ' has unsubscribed from the task #' . $task->id),
-                                                    array($user));
             return $task;
         }
 
@@ -664,21 +604,27 @@
             }
         }
 
+        /**
+         * Validates and save from modal details
+         * @param Task $task
+         */
         protected function attemptToValidateAndSaveFromModalDetails(Task $task)
         {
             if (isset($_POST['ajax']) &&
                 ($_POST['ajax'] == 'task-left-column-form-data' || $_POST['ajax'] == 'task-right-column-form-data'))
             {
-                $taskBeforeSaveStatus = $task->status;
-                $this->attemptToSaveModelFromPost($task, null, false);
+                $taskBeforeSave = new Task();
+                ActivityCopyModelUtil::copy($task, $taskBeforeSave);
+                $task = $this->attemptToSaveModelFromPost($task, null, false);
                 $errorData = ZurmoActiveForm::makeErrorsDataAndResolveForOwnedModelAttributes($task);
                 if(empty($errorData))
                 {
                     $data = array();
-                    if($task->status != $taskBeforeSaveStatus && $task->status == Task::STATUS_COMPLETED)
+                    if($task->status != $taskBeforeSave->status && $task->status == Task::STATUS_COMPLETED)
                     {
-                        $$data['completedDateTime'] = TasksUtil::renderCompletionDateTime($task);
+                        $data['completedDateTime'] = TasksUtil::renderCompletionDateTime($task);
                     }
+                    $this->processNotificationsOnModalDetails($task, $taskBeforeSave);
                     echo CJSON::encode($data);
                 }
                 else
@@ -686,6 +632,31 @@
                     echo CJSON::encode($errorData);
                 }
                 Yii::app()->end(0, false);
+            }
+        }
+
+        /**
+         * Process notifications on modal details screen
+         * @param Task $task
+         * @param Task $taskBeforeSave
+         */
+        protected function processNotificationsOnModalDetails(Task $task, Task $taskBeforeSave)
+        {
+            if($task->status != $taskBeforeSave->status && $task->status == Task::STATUS_COMPLETED)
+            {
+                TasksNotificationUtil::submitTaskNotificationMessage($task,
+                                                         TasksNotificationUtil::CLOSE_TASK_NOTIFY_ACTION);
+            }
+            if($task->owner->id != $taskBeforeSave->owner->id)
+            {
+                TasksNotificationUtil::submitTaskNotificationMessage($task,
+                                                         TasksNotificationUtil::CHANGE_TASK_OWNER_NOTIFY_ACTION,
+                                                         $taskBeforeSave->owner);
+            }
+            if($task->dueDateTime != $taskBeforeSave->dueDateTime)
+            {
+                TasksNotificationUtil::submitTaskNotificationMessage($task,
+                                                         TasksNotificationUtil::CHANGE_TASK_DUE_DATE_NOTIFY_ACTION);
             }
         }
     }
