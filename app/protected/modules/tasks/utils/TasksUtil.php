@@ -541,7 +541,9 @@
          */
         public static function registerSubscriptionScript($taskId = null)
         {
-            $unsubscribeLink = '<strong>' . Zurmo::t('TasksModule', 'Unsubscribe') . '</strong>';
+            $title  = Zurmo::t('TasksModule', 'Unsubscribe');
+            $unsubscribeLink = ZurmoHtml::tag('i', array('class' => 'icon-unsubscribe', 'title' => $title), '');
+
             if($taskId == null)
             {
                 $url     = Yii::app()->createUrl('tasks/default/addKanbanSubscriber');
@@ -562,7 +564,9 @@
          */
         public static function registerUnsubscriptionScript($taskId = null)
         {
-            $subscribeLink = '<strong>' . Zurmo::t('Core', 'Subscribe') . '</strong>';
+            $title  = Zurmo::t('TasksModule', 'Subscribe');
+            $subscribeLink = ZurmoHtml::tag('i', array('class' => 'icon-subscribe', 'title' => $title), '');
+
             if($taskId == null)
             {
                 $url           = Yii::app()->createUrl('tasks/default/removeKanbanSubscriber');
@@ -682,7 +686,7 @@
             assert('is_string($unsubscribeLinkClass)');
             if(TasksUtil::isUserSubscribedForTask($task, Yii::app()->user->userModel) === false)
             {
-                $label       = '';//Zurmo::t('Core', 'Subscribe');
+                $label       = Zurmo::t('Core', 'Subscribe');
                 $class       = $subscribeLinkClass;
                 $iconContent = ZurmoHtml::tag('i', array('class' => 'icon-subscribe'), '');
             }
