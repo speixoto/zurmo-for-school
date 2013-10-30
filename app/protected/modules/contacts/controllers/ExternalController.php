@@ -52,11 +52,13 @@
         public function actionSourceFiles($id)
         {
             $formContentUrl          = Yii::app()->createAbsoluteUrl('contacts/external/form/', array('id' => $id));
-            $renderFormFileUrl       = Yii::app()->getAssetManager()->getPublishedUrl(Yii::getPathOfAlias('application.core.views.assets') .
+            $renderFormFileUrl       = Yii::app()->getAssetManager()->getPublishedUrl(
+                                       Yii::getPathOfAlias('application.core.views.assets') .
                                        DIRECTORY_SEPARATOR . 'renderExternalForm.js');
             if ($renderFormFileUrl === false || file_exists($renderFormFileUrl) === false)
             {
-                $renderFormFileUrl   = Yii::app()->getAssetManager()->publish(Yii::getPathOfAlias('application.core.views.assets') .
+                $renderFormFileUrl   = Yii::app()->getAssetManager()->publish(
+                                       Yii::getPathOfAlias('application.core.views.assets') .
                                        DIRECTORY_SEPARATOR . 'renderExternalForm.js');
             }
             $renderFormFileUrl      = Yii::app()->getRequest()->getHostInfo() . $renderFormFileUrl;
@@ -64,7 +66,8 @@
             $jsOutput              .= "var externalFormScriptElement = document.createElement('script');
                                        externalFormScriptElement.src = '" . $renderFormFileUrl . "';
                                        document.getElementsByTagName('head')[0].appendChild(externalFormScriptElement);
-                                       var captchaPostBackUrl = '" . Yii::app()->createAbsoluteUrl('contacts/external/validateCaptcha') . "';";
+                                       var captchaPostBackUrl = '" .
+                                       Yii::app()->createAbsoluteUrl('contacts/external/validateCaptcha') . "';";
             $this->renderResponse($jsOutput);
         }
 
@@ -82,78 +85,89 @@
             {
                 $metadata['global']['toolbar']['elements'][0]['label'] = $contactWebForm->submitButtonLabel;
             }
-            $this->attemptToValidate($contactWebForm);
-            $contact                                 = new Contact();
-            $contact->state                          = $contactWebForm->defaultState;
-            $contact->owner                          = $contactWebForm->defaultOwner;
-            $contact->googleWebTrackingId            = Yii::app()->getRequest()->getPost(
-                                                       ContactExternalEditAndDetailsView::GOOGLE_WEB_TRACKING_ID_FIELD);
             $customDisplayLabels                     = ContactWebFormsUtil::getCustomDisplayLabels($contactWebForm);
             $customRequiredFields                    = ContactWebFormsUtil::getCustomRequiredFields($contactWebForm);
-            $contactWebFormModelForm                 = new ContactWebFormsModelForm($contact);
+            $contactWebFormModelForm                 = new ContactWebFormsModelForm(new Contact());
+            $contactWebFormModelForm->state          = $contactWebForm->defaultState;
+            $contactWebFormModelForm->owner          = $contactWebForm->defaultOwner;
+            $contactWebFormModelForm->googleWebTrackingId = Yii::app()->getRequest()->getPost(
+                                                            ContactExternalEditAndDetailsView::GOOGLE_WEB_TRACKING_ID_FIELD);
             $contactWebFormModelForm->setCustomDisplayLabels($customDisplayLabels);
             $contactWebFormModelForm->setCustomRequiredFields($customRequiredFields);
             $postVariableName                        = get_class($contactWebFormModelForm);
             if (isset($_POST[$postVariableName]))
             {
                 ContactWebFormsUtil::resolveHiddenAttributesForContactModel($postVariableName, $contactWebForm);
-            }
-            $containedView                           = new ContactExternalEditAndDetailsView('Edit',
-                                                       $this->getId(),
-                                                       $this->getModule()->getId(),
-                                                       $this->attemptToSaveModelFromPost($contactWebFormModelForm, null, false),
-                                                       $metadata);
-            $view = new ContactWebFormsExternalPageView(ZurmoExternalViewUtil::
-                                                        makeExternalViewForCurrentUser($containedView));
-            if (isset($_POST[$postVariableName]) && isset($contact->id) && intval($contact->id) > 0)
-            {
-                $this->resolveContactWebFormEntry($contactWebForm, $contact, $contactWebFormModelForm);
-                $controllerUtil = static::getZurmoControllerUtil();
-                $controllerUtil::setContactModelPermissionsByContactWebForm($contact, $contactWebForm);
-                $responseData                        = array();
-                $responseData['redirectUrl']         = $contactWebForm->redirectUrl;
-                $this->renderResponse(CJSON::encode($responseData));
-            }
-            $cs->registerScript('catchGoogleWebTrackingId', "
-                                $(document).ready(function()
-                                {
-                                    $('html').addClass('zurmo-embedded-form-active');
-                                    if (typeof ga !== 'undefined')
-                                    {
-                                        ga(function(tracker)
-                                        {
-                                            var googleWebTrackingId = tracker.get('clientId');
-                                            $('#" . ContactExternalEditAndDetailsView::GOOGLE_WEB_TRACKING_ID_FIELD . "').val(googleWebTrackingId);
-                                        });
-                                    }
-                                });");
-            $excludeStyles                           = $contactWebForm->excludeStyles;
-            $rawXHtml                                = $view->render();
-            $rawXHtml                                = ZurmoExternalViewUtil::resolveAndCombineScripts($rawXHtml);
-            $combinedHtml                            = array();
-            $combinedHtml['head']                    = ZurmoExternalViewUtil::resolveHeadTag($rawXHtml, $excludeStyles);
-            $combinedHtml['body']                    = ZurmoExternalViewUtil::resolveHtmlAndScriptInBody($rawXHtml);
-            if (isset($contactWebForm->enableCaptcha) && $contactWebForm->enableCaptcha == true)
-            {
-                $combinedHtml['enableCaptcha']       = true;
+                $_POST[$postVariableName] = PostUtil::sanitizePostByDesignerTypeForSavingModel(
+                                            $contactWebFormModelForm->getModel(), $_POST[$postVariableName]);
+                $contactWebFormModelForm->setAttributes($_POST[$postVariableName]);
+                $this->attemptToValidate($contactWebForm, $contactWebFormModelForm);
+                $this->attemptToSaveModelFromPost($contactWebFormModelForm, null, false);
+                if (isset($contactWebFormModelForm->getModel()->id) && intval($contactWebFormModelForm->getModel()->id) > 0)
+                {
+                    $this->resolveContactWebFormEntry($contactWebForm, $contactWebFormModelForm);
+                    $controllerUtil = static::getZurmoControllerUtil();
+                    $controllerUtil::setContactModelPermissionsByContactWebForm($contactWebFormModelForm->getModel(),
+                                                                                $contactWebForm);
+                    $responseData                        = array();
+                    $responseData['redirectUrl']         = $contactWebForm->redirectUrl;
+                    $this->renderResponse(CJSON::encode($responseData));
+                }
             }
             else
             {
-                $combinedHtml['enableCaptcha']       = false;
+                $containedView                           = new ContactExternalEditAndDetailsView('Edit',
+                                                               $this->getId(),
+                                                               $this->getModule()->getId(),
+                                                               $this->attemptToSaveModelFromPost($contactWebFormModelForm,
+                                                                                                null, false),
+                                                               $metadata);
+                $view = new ContactWebFormsExternalPageView(ZurmoExternalViewUtil::
+                                                            makeExternalViewForCurrentUser($containedView));
+                $cs->registerScript('catchGoogleWebTrackingId', "
+                                    $(document).ready(function()
+                                    {
+                                        $('html').addClass('zurmo-embedded-form-active');
+                                        if (typeof ga !== 'undefined')
+                                        {
+                                            ga(function(tracker)
+                                            {
+                                                var googleWebTrackingId = tracker.get('clientId');
+                                                $('#" . ContactExternalEditAndDetailsView::GOOGLE_WEB_TRACKING_ID_FIELD .
+                                                "').val(googleWebTrackingId);
+                                            });
+                                        }
+                                    });");
+                $excludeStyles                           = $contactWebForm->excludeStyles;
+                $rawXHtml                                = $view->render();
+                $rawXHtml                                = ZurmoExternalViewUtil::resolveAndCombineScripts($rawXHtml);
+                $combinedHtml                            = array();
+                $combinedHtml['head']                    = ZurmoExternalViewUtil::resolveHeadTag($rawXHtml, $excludeStyles);
+                $combinedHtml['body']                    = ZurmoExternalViewUtil::resolveHtmlAndScriptInBody($rawXHtml);
+                if (isset($contactWebForm->enableCaptcha) && $contactWebForm->enableCaptcha == true)
+                {
+                    $combinedHtml['enableCaptcha']       = true;
+                }
+                else
+                {
+                    $combinedHtml['enableCaptcha']       = false;
+                }
+                $response = 'renderFormCallback('. CJSON::encode($combinedHtml) . ');';
+                $this->renderResponse($response);
             }
-            $response = 'renderFormCallback('. CJSON::encode($combinedHtml) . ');';
-            $this->renderResponse($response);
         }
 
-        protected function attemptToValidate($contactWebForm)
+        protected function attemptToValidate(ContactWebForm $contactWebForm,
+                                             ContactWebFormsModelForm $contactWebFormModelForm)
         {
             if (isset($_POST['ajax']) && $_POST['ajax'] == 'edit-form')
             {
                 if (isset($contactWebForm->enableCaptcha) && $contactWebForm->enableCaptcha == true)
                 {
-                    if (!empty($_POST['captchaHash']) && $_POST['captchaHash'] == md5('ContactWebFormModelForm' . ZURMO_TOKEN))
+                    if (!empty($_POST['captchaHash']) && $_POST['captchaHash'] == md5('ContactWebFormModelForm' .
+                                                                                       ZURMO_TOKEN))
                     {
-                        $this->validateContact($contactWebForm);
+                        $this->validateContactWebFormModelForm($contactWebForm, $contactWebFormModelForm);
                     }
                     else
                     {
@@ -162,24 +176,15 @@
                 }
                 else
                 {
-                    $this->validateContact($contactWebForm);
+                    $this->validateContactWebFormModelForm($contactWebForm, $contactWebFormModelForm);
                 }
             }
         }
 
-        protected function validateContact($contactWebForm)
+        protected function validateContactWebFormModelForm(ContactWebForm $contactWebForm,
+                                                           ContactWebFormsModelForm $contactWebFormModelForm)
         {
-            $contact        = new Contact();
-            $contact->state = $contactWebForm->defaultState;
-            $contact->owner = $contactWebForm->defaultOwner;
-            $customRequiredFields = ContactWebFormsUtil::getCustomRequiredFields($contactWebForm);
-            $contactWebFormModelForm = new ContactWebFormsModelForm($contact);
-            $contactWebFormModelForm->setCustomRequiredFields($customRequiredFields);
-            $postVariableName = get_class($contactWebFormModelForm);
-            ContactWebFormsUtil::resolveHiddenAttributesForContactModel($postVariableName, $contactWebForm);
-            $sanitizedPostData = PostUtil::sanitizePostByDesignerTypeForSavingModel($contact, $_POST[$postVariableName]);
-            $contact->setAttributes($sanitizedPostData);
-            $this->resolveContactWebFormEntry($contactWebForm, $contact, $contactWebFormModelForm);
+            $this->resolveContactWebFormEntry($contactWebForm, $contactWebFormModelForm);
             if ($contactWebFormModelForm->validate())
             {
                 $response = CJSON::encode(array());
@@ -192,7 +197,8 @@
             $this->renderResponse($response);
         }
 
-        protected function resolveContactWebFormEntry($contactWebForm, $contact, $contactWebFormModelForm)
+        protected function resolveContactWebFormEntry(ContactWebForm $contactWebForm,
+                                                      ContactWebFormsModelForm $contactWebFormModelForm)
         {
             $postVariableName                    = get_class($contactWebFormModelForm);
             $contactFormAttributes               = $_POST[$postVariableName];
@@ -210,15 +216,16 @@
                 $contactWebFormEntryStatus       = ContactWebFormEntry::STATUS_ERROR;
                 $contactWebFormEntryMessage      = ContactWebFormEntry::STATUS_ERROR_MESSAGE;
             }
-            if (isset($contact->id) && intval($contact->id) > 0)
+            if (isset($contactWebFormModelForm->getModel()->id) && intval($contactWebFormModelForm->getModel()->id) > 0)
             {
-                $contactWebFormEntryContact      = $contact;
+                $contactWebFormEntryContact      = $contactWebFormModelForm->getModel();
             }
             else
             {
                 $contactWebFormEntryContact      = null;
             }
-            $hashIndex                           = Yii::app()->getRequest()->getPost(ContactWebFormEntry::HASH_INDEX_HIDDEN_FIELD);
+            $hashIndex                           = Yii::app()->getRequest()->getPost(
+                                                   ContactWebFormEntry::HASH_INDEX_HIDDEN_FIELD);
             $contactWebFormEntry                 = ContactWebFormEntry::getByHashIndex($hashIndex);
             if ($contactWebFormEntry === null)
             {
@@ -245,13 +252,15 @@
         {
             assert('$contactWebForm instanceof ContactWebForm');
             $contactWebFormAttributes = array_keys(ContactWebFormsUtil::getPlacedAttributes($contactWebForm));
-            $contactWebFormAttributes = ContactWebFormsUtil::excludeHiddenAttributes($contactWebForm, $contactWebFormAttributes);
+            $contactWebFormAttributes = ContactWebFormsUtil::excludeHiddenAttributes($contactWebForm,
+                                                                                     $contactWebFormAttributes);
             $viewClassName            = 'ContactExternalEditAndDetailsView';
             $moduleClassName          = 'ContactsModule';
             $modelClassName           = $moduleClassName::getPrimaryModelName();
             $editableMetadata         = $viewClassName::getMetadata();
             $designerRules            = new EditAndDetailsViewDesignerRules();
-            $modelAttributesAdapter   = DesignerModelToViewUtil::getModelAttributesAdapter($viewClassName, $modelClassName);
+            $modelAttributesAdapter   = DesignerModelToViewUtil::getModelAttributesAdapter($viewClassName,
+                                                                                           $modelClassName);
             $derivedAttributesAdapter = new DerivedAttributesAdapter($modelClassName);
             $attributeCollection      = array_merge($modelAttributesAdapter->getAttributes(),
                                         $derivedAttributesAdapter->getAttributes());
@@ -265,8 +274,8 @@
                                             $designerRules,
                                             $attributesLayoutAdapter->getPlaceableLayoutAttributes(),
                                             $attributesLayoutAdapter->getRequiredDerivedLayoutAttributeTypes());
-            $metadata                 = $layoutMetadataAdapter->resolveMetadataFromSelectedListAttributes($viewClassName,
-                                        $contactWebFormAttributes);
+            $metadata                 = $layoutMetadataAdapter->resolveMetadataFromSelectedListAttributes(
+                                                                $viewClassName, $contactWebFormAttributes);
             foreach ($metadata['global']['panels'][0]['rows'] as $index => $data)
             {
                 if ($data['cells'][0]['elements'][0]['type'] == 'EmailAddressInformation')
@@ -308,7 +317,7 @@
                 else
                 {
                     $response['status']                 = 'invalid';
-                    $response['captchaHash']            = '';
+                    $response['captchaHash']            = null;
                 }
                 $this->renderResponse(CJSON::encode($response));
             }

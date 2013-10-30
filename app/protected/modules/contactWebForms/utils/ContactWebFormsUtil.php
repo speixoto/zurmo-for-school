@@ -68,6 +68,10 @@
             return $placeAbleAttributes;
         }
 
+        /**
+         * @param ContactWebForm $contactWebForm
+         * @return array of placed attributes on given web form
+         */
         public static function getPlacedAttributes(ContactWebForm $contactWebForm)
         {
             assert('$contactWebForm instanceof ContactWebForm');
@@ -78,7 +82,8 @@
             $allAttributes            = static::getAllAttributes();
             $contactWebFormAttributes = unserialize($contactWebForm->serializedData);
             $contactWebFormAttributes = static::resolveWebFormAttributes($contactWebFormAttributes);
-            $contactWebFormAttributes = static::resolveWebFormWithAllRequiredAttributes($contactWebFormAttributes, $allAttributes);
+            $contactWebFormAttributes = static::resolveWebFormWithAllRequiredAttributes($contactWebFormAttributes,
+                                                                                        $allAttributes);
             $placedAttributes         = array();
             foreach ($contactWebFormAttributes as $attributeName)
             {
@@ -87,6 +92,10 @@
             return $placedAttributes;
         }
 
+        /**
+         * @param ContactWebForm $contactWebForm
+         * @return array of attributes that are not placed on given web form
+         */
         public static function getNonPlacedAttributes(ContactWebForm $contactWebForm)
         {
             assert('$contactWebForm instanceof ContactWebForm');
@@ -103,6 +112,11 @@
             return $nonPlacedAttributes;
         }
 
+        /**
+         * @param ContactWebForm $contactWebForm
+         * @param $model
+         * @return array of formulated placed attributes, used by SortableContactWebFormAttributesElement
+         */
         public static function resolvePlacedAttributesForWebFormAttributesElement(ContactWebForm $contactWebForm, $model)
         {
             $resolvedPlacedAttributes = array();
@@ -129,7 +143,15 @@
             return $resolvedPlacedAttributes;
         }
 
-        public static function resolvePlacedAttributeByName($webFormAttributeForm, $model, $attributeName, $attributeData)
+        /**
+         * @param $webFormAttributeForm
+         * @param $model
+         * @param $attributeName
+         * @param $attributeData
+         * @return array
+         */
+        public static function resolvePlacedAttributeByName($webFormAttributeForm, $model, $attributeName,
+                                                            $attributeData)
         {
             $webFormAttributeForm->attribute = $attributeName;
             $params = array('inputPrefix' => array(get_class($webFormAttributeForm), $attributeName));
@@ -153,7 +175,8 @@
                     $isRequiredDisabled = null;
                 }
                 $removePlacedAttributeLink = '<a class="remove-dynamic-row-link" id="ContactWebForm_serializedData_' .
-                                              $attributeName . '" data-value="' . $attributeName . '" href="#">—</a>';
+                                              $attributeName . '" data-value="' . $attributeName . '"' .
+                                              ' data-label="' . $attributeData['attributeLabel'] . '" href="#">—</a>';
             }
             if (isset($webFormAttributeForm->hidden) && $webFormAttributeForm->hidden == true)
             {
@@ -176,8 +199,8 @@
                                                               array('htmlOptions' => array('class' => 'hiddenAttribute',
                                                                                      'data-value' => $attributeName))));
                 $isHiddenElement->editableTemplate       = '{content}{label}{error}';
-                $renderHiddenAttributeElement = static::renderHiddenAttributeElement($webFormAttributeForm, 'hiddenValue',
-                                                $model, $attributeData['elementType'], $params);
+                $renderHiddenAttributeElement = static::renderHiddenAttributeElement($webFormAttributeForm,
+                                                'hiddenValue', $model, $attributeData['elementType'], $params);
                 $isHiddenElementContent       = $isHiddenElement->render();
             }
             else
@@ -205,11 +228,16 @@
         {
             $embedScript = '<div id="zurmoExternalWebForm">' .
                            '<script type="text/javascript" ' .
-                           'src="' . Yii::app()->createAbsoluteUrl('contacts/external/sourceFiles/', array('id' => $id)) . '">' .
+                           'src="' . Yii::app()->createAbsoluteUrl('contacts/external/sourceFiles/',
+                                                                    array('id' => $id)) . '">' .
                            '</script></div>';
             return $embedScript;
         }
 
+        /**
+         * @param $contactWebFormAttributes
+         * @return array of placed attributes' name
+         */
         public static function resolveWebFormAttributes($contactWebFormAttributes)
         {
             if (ArrayUtil::isAssoc($contactWebFormAttributes))
@@ -222,23 +250,32 @@
             }
         }
 
+        /**
+         * @param ContactWebForm $contactWebForm
+         * @return array of placed attributes having custom labels
+         */
         public static function getCustomDisplayLabels(ContactWebForm $contactWebForm)
         {
             $contactWebFormAttributes = unserialize($contactWebForm->serializedData);
-            $customDisplayAttributes  = array();
+            $customLabelAttributes    = array();
             if (ArrayUtil::isAssoc($contactWebFormAttributes))
             {
                 foreach ($contactWebFormAttributes as $attributeId => $attributeData)
                 {
                     if (isset($attributeData['label']))
                     {
-                        $customDisplayAttributes[$attributeId] = Zurmo::t('ContactWebFormsModule', $attributeData['label']);
+                        $customLabelAttributes[$attributeId] = Zurmo::t('ContactWebFormsModule',
+                                                                         $attributeData['label']);
                     }
                 }
             }
-            return $customDisplayAttributes;
+            return $customLabelAttributes;
         }
 
+        /**
+         * @param ContactWebForm $contactWebForm
+         * @return array of rules for custom required attributes
+         */
         public static function getCustomRequiredFields(ContactWebForm $contactWebForm)
         {
             $contactWebFormAttributes = unserialize($contactWebForm->serializedData);
@@ -256,7 +293,13 @@
             return $customRequiredFields;
         }
 
-        public static function resolveWebFormWithAllRequiredAttributes($contactWebFormAttributes, $allAttributes = array())
+        /**
+         * @param $contactWebFormAttributes
+         * @param array $allAttributes
+         * @return array of required attributes - custom field required attributes and custom required attributes
+         */
+        public static function resolveWebFormWithAllRequiredAttributes($contactWebFormAttributes,
+                                                                       $allAttributes = array())
         {
             if (count($allAttributes) == 0)
             {
@@ -272,12 +315,19 @@
             return $contactWebFormAttributes;
         }
 
-        public static function excludeHiddenAttributes($contactWebForm, $resolvedWebFormAttributes = array())
+        /**
+         * @param $contactWebForm
+         * @param array $resolvedWebFormAttributes
+         * @return array of web form attributes, excluding custom hidden attributes
+         */
+        public static function excludeHiddenAttributes(ContactWebForm $contactWebForm,
+                                                       $resolvedWebFormAttributes = array())
         {
             $webFormAttributes = unserialize($contactWebForm->serializedData);
             foreach ($webFormAttributes as $attributeName => $attribute)
             {
-                if (isset($attribute['hidden']) && $attribute['hidden'] == true && isset($attribute['hiddenValue']) && !empty($attribute['hiddenValue']))
+                if (isset($attribute['hidden']) && $attribute['hidden'] == true &&
+                    isset($attribute['hiddenValue']) && !empty($attribute['hiddenValue']))
                 {
                     if (in_array($attributeName, $resolvedWebFormAttributes))
                     {
@@ -297,13 +347,17 @@
             return $resolvedWebFormAttributes;
         }
 
-        public static function resolveHiddenAttributesForContactModel($postVariableName, $contactWebForm)
+        /**
+         * @param $postVariableName
+         * @param $contactWebForm
+         */
+        public static function resolveHiddenAttributesForContactModel($postVariableName, ContactWebForm $contactWebForm)
         {
             $ContactWebFormAttributes = unserialize($contactWebForm->serializedData);
             foreach ($ContactWebFormAttributes as $attributeName => $attribute)
             {
-                if (isset($attribute['hidden']) && $attribute['hidden'] == true && isset($attribute['hiddenValue']) &&
-                    !empty($attribute['hiddenValue']))
+                if (isset($attribute['hidden']) && $attribute['hidden'] == true
+                    && isset($attribute['hiddenValue']) && !empty($attribute['hiddenValue']))
                 {
                     $dropDownAttributeTypes = array('CheckBox', 'RadioDropDown', 'DropDown');
                     $allAttributes = ContactWebFormsUtil::getAllAttributes();
@@ -320,13 +374,19 @@
             }
         }
 
-        public static function resolveHiddenAttributesForContactWebFormEntryModel($webFormEntryAttributes = array(), $contactWebForm)
+        /**
+         * @param array $webFormEntryAttributes
+         * @param $contactWebForm
+         * @return array of resolved web form attributes, for web form entry model
+         */
+        public static function resolveHiddenAttributesForContactWebFormEntryModel($webFormEntryAttributes = array(),
+                                                                                  ContactWebForm $contactWebForm)
         {
             $ContactWebFormAttributes = unserialize($contactWebForm->serializedData);
             foreach ($ContactWebFormAttributes as $attributeName => $attribute)
             {
-                if (isset($attribute['hidden']) && $attribute['hidden'] == true && isset($attribute['hiddenValue']) &&
-                    !empty($attribute['hiddenValue']))
+                if (isset($attribute['hidden']) && $attribute['hidden'] == true
+                    && isset($attribute['hiddenValue']) && !empty($attribute['hiddenValue']))
                 {
                     $webFormEntryAttributes[$attributeName] = $attribute['hiddenValue'];
                 }
@@ -334,6 +394,14 @@
             return $webFormEntryAttributes;
         }
 
+        /**
+         * @param $model
+         * @param $attributeName
+         * @param $form
+         * @param $elementType
+         * @param $params
+         * @return mixed
+         */
         public static function renderHiddenAttributeElement($model, $attributeName, $form, $elementType, $params)
         {
             if ($elementType === 'CheckBox')
@@ -364,10 +432,14 @@
             $value = ZurmoHtml::tag('label', array(), Zurmo::t('ContactWebFormsModule', 'Value'));
             $content  = ZurmoHtml::openTag('li');
             $content .= ZurmoHtml::openTag('div', array('class' => 'dynamic-row webform-chosen-field clearfix'));
-            $content .= ZurmoHtml::tag('span', array('class' => 'is-required-checkbox'), $attributeData['{isRequiredElement}']);
-            $content .= ZurmoHtml::tag('span', array('class' => 'field-label'), $label . $attributeData['{attributeLabelElement}']);
-            $content .= ZurmoHtml::tag('span', array('class' => 'is-hidden-checkbox'), $attributeData['{isHiddenElement}']);
-            $content .= ZurmoHtml::openTag('span', array('id'    => 'hiddenAttributeElement_' . $attributeData['{attributeName}'],
+            $content .= ZurmoHtml::tag('span', array('class' => 'is-required-checkbox'),
+                                        $attributeData['{isRequiredElement}']);
+            $content .= ZurmoHtml::tag('span', array('class' => 'field-label'), $label .
+                                        $attributeData['{attributeLabelElement}']);
+            $content .= ZurmoHtml::tag('span', array('class' => 'is-hidden-checkbox'),
+                                        $attributeData['{isHiddenElement}']);
+            $content .= ZurmoHtml::openTag('span', array('id'    => 'hiddenAttributeElement_' .
+                                                                     $attributeData['{attributeName}'],
                                                          'class' => 'hidden-field-label',
                                                          'style' => $attributeData['{hideHiddenAttributeElementStyle}']));
             $content .= $value . $attributeData['{renderHiddenAttributeElement}'];
@@ -377,6 +449,11 @@
             return $content;
         }
 
+        /**
+         * @param $attributeName
+         * @param $value
+         * @return string
+         */
         public static function sanitizeHiddenAttributeValue($attributeName, $value)
         {
             $designerType = ModelAttributeToDesignerTypeUtil::getDesignerType(new Contact(false), $attributeName);
@@ -387,7 +464,8 @@
             }
             if ($designerType == 'DateTime' && !empty($value))
             {
-                $sanitizedAttributeValue = DateTimeUtil::convertDateTimeLocaleFormattedDisplayToDbFormattedDateTimeWithSecondsAsZero($value);
+                $sanitizedAttributeValue =
+                    DateTimeUtil::convertDateTimeLocaleFormattedDisplayToDbFormattedDateTimeWithSecondsAsZero($value);
             }
             return DataUtil::purifyHtml($sanitizedAttributeValue);
         }
