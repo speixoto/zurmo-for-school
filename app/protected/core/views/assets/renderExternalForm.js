@@ -48,7 +48,11 @@ if(typeof window.jQQ !== 'object'){
               window.jQQ.isReady = true;
               // this stores the new version and gives back the old one, completely.              
               jq = jQuery.noConflict(true);
-              callbacks.forEach(window.jQQ.isolate);
+              //callbacks.forEach(window.jQQ.isolate);
+              for (var thisCallback in callbacks)
+              {
+                  window.jQQ.isolate(callbacks[thisCallback]);
+              }
               delete(callbacks);
           });
       }
@@ -149,11 +153,11 @@ if(typeof window.jQQ !== 'object'){
                         if (isCaptchaEnabled == false && respData.enableCaptcha == true)
                         {
                             isCaptchaEnabled = true;
-                            jsScriptElement.innerHTML = "jQQ.isolate (function(jQuery,$) { " + bodyJs[bodyJsIndex].body + " }); enableCaptcha();";
+                            jsScriptElement.text = "jQQ.isolate (function(jQuery,$) { " + bodyJs[bodyJsIndex].body + " }); enableCaptcha();";
                         }
                         else
                         {
-                            jsScriptElement.innerHTML = "jQQ.isolate (function(jQuery,$) { " + bodyJs[bodyJsIndex].body + " });";
+                            jsScriptElement.text = "jQQ.isolate (function(jQuery,$) { " + bodyJs[bodyJsIndex].body + " });";
                         }
 					}
 					jsScriptElement.async = false;
@@ -198,7 +202,9 @@ if(typeof window.jQQ !== 'object'){
     function enableCaptcha()
     {
         requireJS(['http://www.google.com/recaptcha/api/js/recaptcha_ajax.js'], 0, function(){
-            Recaptcha.create("6Ldjl-cSAAAAAP-8r9GMK0MamygxAQa2PtHVWK_7",
+
+            var reCaptchaPublicKey = document.getElementById('reCaptchaPublicKey').value;
+            Recaptcha.create(reCaptchaPublicKey,
                 "reCaptcha",
                 {
                     theme: "white"

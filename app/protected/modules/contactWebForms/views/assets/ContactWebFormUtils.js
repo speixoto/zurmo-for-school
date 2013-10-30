@@ -19,11 +19,13 @@ $("[id^='ContactWebForm_serializedData_']").live('change', function()
 $('.remove-dynamic-row-link').live('click', function(){
     var attributeId      = $(this).attr('data-value');
     var elementId        = $(this).attr('id');
-    var attributeLabel   = $('#ContactWebFormAttributeForm_' + attributeId + '_label').val();
+    var attributeLabel   = $(this).data('label');
     $(this).closest('li').remove();
-    var attributeElement = '<div class=\'multi-select-checkbox-input\'><label class=\'hasCheckBox\'><label class=\'hasCheckBox\'>';
+    var attributeElement = '<div class=\'multi-select-checkbox-input\'><label class=\'hasCheckBox\'>' +
+                           '<label class=\'hasCheckBox\'>';
     attributeElement    += '<input id=\'' + elementId + '\' value=\'' + attributeId + '\' type=\'checkbox\'';
-    attributeElement    += ' name=\'ContactWebForm[serializedData][]\'></label></label><label for=\'' + elementId + '\'>' + attributeLabel + '</label></div>';
+    attributeElement    += ' name=\'ContactWebForm[serializedData][]\'></label></label>' +
+                           '<label for=\'' + elementId + '\'>' + attributeLabel + '</label></div>';
     $('span#ContactWebForm_serializedData').append(attributeElement);
     return false;
 });
