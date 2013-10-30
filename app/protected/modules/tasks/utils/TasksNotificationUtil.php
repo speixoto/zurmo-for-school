@@ -149,7 +149,11 @@
             }
             elseif($action == self::CHANGE_TASK_OWNER_NOTIFY_ACTION)
             {
-                $peopleToSendNotification = array($task->owner, $relatedUser);
+                $peopleToSendNotification[] = $task->owner;
+                if($relatedUser != null)
+                {
+                    $peopleToSendNotification[] = $relatedUser;
+                }
             }
             elseif($action == self::CHANGE_TASK_DUE_DATE_NOTIFY_ACTION)
             {

@@ -613,50 +613,13 @@
             if (isset($_POST['ajax']) &&
                 ($_POST['ajax'] == 'task-left-column-form-data' || $_POST['ajax'] == 'task-right-column-form-data'))
             {
-                $taskBeforeSave = new Task();
-                ActivityCopyModelUtil::copy($task, $taskBeforeSave);
                 $task = $this->attemptToSaveModelFromPost($task, null, false);
                 $errorData = ZurmoActiveForm::makeErrorsDataAndResolveForOwnedModelAttributes($task);
-                if(empty($errorData))
-                {
-                    $data = array();
-                    if($task->status != $taskBeforeSave->status && $task->status == Task::STATUS_COMPLETED)
-                    {
-                        $data['completedDateTime'] = TasksUtil::renderCompletionDateTime($task);
-                    }
-                    $this->processNotificationsOnModalDetails($task, $taskBeforeSave);
-                    echo CJSON::encode($data);
-                }
-                else
+                if(!empty($errorData))
                 {
                     echo CJSON::encode($errorData);
                 }
                 Yii::app()->end(0, false);
-            }
-        }
-
-        /**
-         * Process notifications on modal details screen
-         * @param Task $task
-         * @param Task $taskBeforeSave
-         */
-        protected function processNotificationsOnModalDetails(Task $task, Task $taskBeforeSave)
-        {
-            if($task->status != $taskBeforeSave->status && $task->status == Task::STATUS_COMPLETED)
-            {
-                TasksNotificationUtil::submitTaskNotificationMessage($task,
-                                                         TasksNotificationUtil::CLOSE_TASK_NOTIFY_ACTION);
-            }
-            if($task->owner->id != $taskBeforeSave->owner->id)
-            {
-                TasksNotificationUtil::submitTaskNotificationMessage($task,
-                                                         TasksNotificationUtil::CHANGE_TASK_OWNER_NOTIFY_ACTION,
-                                                         $taskBeforeSave->owner);
-            }
-            if($task->dueDateTime != $taskBeforeSave->dueDateTime)
-            {
-                TasksNotificationUtil::submitTaskNotificationMessage($task,
-                                                         TasksNotificationUtil::CHANGE_TASK_DUE_DATE_NOTIFY_ACTION);
             }
         }
     }

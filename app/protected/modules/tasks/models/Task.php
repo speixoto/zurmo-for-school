@@ -212,12 +212,19 @@
                 if($this->status != Task::STATUS_COMPLETED)
                 {
                     $this->completed = false;
-                    $this->completedDateTime = null;
                 }
                 else
                 {
                     $this->completed = true;
-                    $this->completedDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
+                }
+
+                if (array_key_exists('completed', $this->originalAttributeValues) &&
+                    $this->completed == true)
+                {
+                    if ($this->completedDateTime == null)
+                    {
+                        $this->completedDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
+                    }
                     $this->unrestrictedSet('latestDateTime', $this->completedDateTime);
                 }
                 return true;
@@ -285,6 +292,7 @@
          */
         protected function afterSave()
         {
+            $this->processNotificationsToBeSent();
             parent::afterSave();
             $kanbanItem       = KanbanItem::getByTask($this->id);
             if($kanbanItem != null)
@@ -302,6 +310,31 @@
                       throw new FailedToSaveModelException();
                   }
                 }
+            }
+        }
+
+        /**
+         * Process notifications on modal details screen
+         * @param Task $this
+         */
+        private function processNotificationsToBeSent()
+        {
+            if($this->status == Task::STATUS_COMPLETED && (array_key_exists('status', $this->originalAttributeValues)))
+            {
+                TasksNotificationUtil::submitTaskNotificationMessage($this,
+                                                         TasksNotificationUtil::CLOSE_TASK_NOTIFY_ACTION);
+            }
+            if(array_key_exists('owner', $this->originalAttributeValues))
+            {
+                $previousOwner = User::getById($this->originalAttributeValues['owner'][1]);
+                TasksNotificationUtil::submitTaskNotificationMessage($this,
+                                                         TasksNotificationUtil::CHANGE_TASK_OWNER_NOTIFY_ACTION,
+                                                         $previousOwner);
+            }
+            if(array_key_exists('dueDateTime', $this->originalAttributeValues))
+            {
+                TasksNotificationUtil::submitTaskNotificationMessage($this,
+                                                         TasksNotificationUtil::CHANGE_TASK_DUE_DATE_NOTIFY_ACTION);
             }
         }
     }
