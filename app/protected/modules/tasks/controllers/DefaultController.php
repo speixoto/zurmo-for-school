@@ -615,10 +615,7 @@
             {
                 $task = $this->attemptToSaveModelFromPost($task, null, false);
                 $errorData = ZurmoActiveForm::makeErrorsDataAndResolveForOwnedModelAttributes($task);
-                if(!empty($errorData))
-                {
-                    echo CJSON::encode($errorData);
-                }
+                echo CJSON::encode($errorData);
                 Yii::app()->end(0, false);
             }
         }

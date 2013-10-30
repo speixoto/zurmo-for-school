@@ -44,6 +44,8 @@
          */
         protected $renderViewToolBarDuringRenderContent = true;
 
+        protected static $defaultPageSize = 1000;
+
         /**
          * @return array
          */
@@ -420,6 +422,19 @@
                         ' . TaskKanbanBoardExtendedGridView::registerKanbanColumnSortableScript() . '
                     }';
             // End Not Coding Standard
+        }
+
+        /**
+         * Resolve configuration for data provider
+         * @return array
+         */
+        protected function resolveConfigForDataProvider()
+        {
+            return array(
+                            'pagination' => array(
+                                'pageSize' => static::$defaultPageSize,
+                        )
+                    );
         }
     }
 ?>
