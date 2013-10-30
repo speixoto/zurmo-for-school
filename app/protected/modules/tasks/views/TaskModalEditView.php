@@ -223,17 +223,11 @@
             $sourceKanbanBoardId = Yii::app()->request->getParam('sourceKanbanBoardId');
 
             //Would be used from other source
-            $sourceId            = Yii::app()->request->getParam('sourceId');
-            $modalId             = $this->resolveModalIdFromGet();
-            $relationModelId     = Yii::app()->request->getParam('relationModelId');
-            if($relationModelId != null)
-            {
-                $url = Yii::app()->createUrl('tasks/default/modalSaveFromRelation', GetUtil::getData());
-            }
-            else
-            {
-                $url = Yii::app()->createUrl('tasks/default/modalSave', GetUtil::getData());
-            }
+            $sourceId         = Yii::app()->request->getParam('sourceId');
+            $modalId          = $this->resolveModalIdFromGet();
+            $relationModelId  = Yii::app()->request->getParam('relationModelId');
+            $action           = TasksUtil::resolveModalSaveActionNameForByRelationModelId($relationModelId);
+            $url              = Yii::app()->createUrl('tasks/default/' . $action, GetUtil::getData());
             return array('enableAjaxValidation' => true,
                         'clientOptions' => array(
                             'beforeValidate'    => 'js:$(this).beforeValidateAction',
