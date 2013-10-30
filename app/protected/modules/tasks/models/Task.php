@@ -291,7 +291,8 @@
             {
                 $targetKanbanType = TasksUtil::resolveKanbanItemTypeForTaskStatus(intval($this->status));
                 $sourceKanbanType = $kanbanItem->type;
-                if($sourceKanbanType != $targetKanbanType)
+                $taskStatusByKanbanItem = TasksUtil::getDefaultTaskStatusForKanbanItemType($kanbanItem->type);
+                if($taskStatusByKanbanItem != intval($this->status))
                 {
                   $sortOrder             = KanbanItem::getMaximumSortOrderByType($targetKanbanType);
                   $kanbanItem->sortOrder = $sortOrder;
