@@ -44,7 +44,8 @@
          */
         protected function getHomeLinkLabel()
         {
-            return Zurmo::t('HomeModule', 'Dashboard');
+            $params = LabelUtil::getTranslationParamsForAllModules();
+            return Zurmo::t('ProjectsModule', 'ProjectsModulePluralLabel', $params);
         }
 
         /**

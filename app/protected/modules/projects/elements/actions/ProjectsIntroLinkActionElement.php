@@ -33,105 +33,13 @@
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
-    /**
-     * Intro link action element for project dashboard
-     */
-    class ProjectsIntroLinkActionElement extends LinkActionElement
+
+    class ProjectsIntroLinkActionElement extends IntroLinkActionElement
     {
-        public function getActionType()
+        protected function shouldRender()
         {
-            return null;
-        }
-
-        public function render()
-        {
-            if ($this->moduleId == 'projects' && $this->controllerId == 'default' &&
-               (Yii::app()->controller->action->id == 'dashboardDetails' ||
-                Yii::app()->controller->action->id == null ||
-                Yii::app()->controller->action->id == 'index'))
-            {
-                $items          = array($this->renderMenuItem());
-                $clipName       = get_class($this);
-                $cClipWidget    = new CClipWidget();
-                $cClipWidget->beginClip($clipName);
-                $cClipWidget->widget('application.core.widgets.MinimalDynamicLabelMbMenu', array(
-                    'htmlOptions'   => array(
-                        'id' => $clipName,
-                        'class' => 'clickable-mbmenu'
-                    ),
-                    'items'         => $items,
-                ));
-                $cClipWidget->endClip();
-                return $cClipWidget->getController()->clips[$clipName];
-            }
-        }
-
-        public function renderMenuItem()
-        {
-            return array(
-                'label' => $this->getLabel(),
-                'url'   => $this->getRoute(),
-                'items' => array(
-                    array(
-                        'label'                 => '',
-                        'dynamicLabelContent'   => $this->renderHideOrShowContent(),
-                    ),
-                ),
-            );
-        }
-
-        protected function getDefaultLabel()
-        {
-            return Zurmo::t('ZurmoModule', 'Screen Options');
-        }
-
-        protected function getDefaultRoute()
-        {
-            return null;
-        }
-
-        protected function renderHideOrShowContent()
-        {
-            $name        = $this->getPanelId() . '-checkbox-id';
-            $ajaxOptions = array('type'     => 'GET',
-                                 'url'      => Yii::app()->createUrl('zurmo/default/toggleDismissIntroView',
-                                                                  array('moduleName' => $this->getModuleName(),
-                                                                        'panelId'    => $this->getPanelId())
-                                                    ),
-                                 'success'  => "function()
-                                       {
-                                           var checked = $('#{$this->getPanelId()}-checkbox-id').attr('checked');
-                                           $('#{$this->getPanelId()}').slideToggle();
-                                           $('#{$this->getPanelId()}-checkbox-id').attr('checked', !checked);
-                                           if (checked)
-                                           {
-                                             $('#{$this->getPanelId()}-checkbox-id').parent().removeClass('c_on');
-                                           }
-                                           else
-                                           {
-                                             $('#{$this->getPanelId()}-checkbox-id').parent().addClass('c_on');
-                                           }
-                                       }
-            ");
-            $htmlOptions = array('id'   => $this->getPanelId() . '-checkbox-id',
-                                 'ajax' => $ajaxOptions);
-            $checkBox    = ZurmoHtml::checkBox($name, $this->getChecked(), $htmlOptions);
-            return '<div class="screen-options"><h4>Screen Options</h4>' . $checkBox . Zurmo::t('ZurmoModule', 'Show intro message') . '</div>';
-        }
-
-        protected function getPanelId()
-        {
-            return $this->params['panelId'];
-        }
-
-        protected function getChecked()
-        {
-            return $this->params['checked'];
-        }
-
-        protected function getModuleName()
-        {
-            return $this->params['moduleName'];
+            return ($this->moduleId == 'projects' && $this->controllerId == 'default' &&
+                   (Yii::app()->controller->action->id == 'dashboardDetails'));
         }
     }
 ?>
