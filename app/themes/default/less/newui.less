@@ -2452,7 +2452,7 @@ div.wide.form{
 		font-family:"Times New Roman", Times, serif;
 		font-style:italic;
 		font-size:48px;
-		line-height:60px;
+		line-height:1;
 		font-weight:normal;
 		padding:15px 50px 15px 30px;
 	}
@@ -2574,19 +2574,24 @@ div.wide.form{
 		line-height: 52%;
 	}
 	.GameReward .large-icon:after{
-		content:'\2205';// '\2248'; //2205
+		content:'\2205';
 		.symbly(300px);
 		line-height: 52%;
 	}
 	.Task .large-icon:after{
-		content:'4';// '\2248'; //2205
+		content:'4';
 		.symbly(300px);
 		line-height: 62%;
 	}
 	.Project .large-icon:after{
-		content:'\02C7';// '\2248'; //2205
+		content:'\02C7';
 		.symbly(300px);
 		line-height: 65%;
+	}
+	.QueueModel .large-icon:after{
+		content:'\00EF';
+		.symbly(300px);
+		line-height: 52%;
 	}
 }
 
@@ -3456,6 +3461,9 @@ div.wide.form{
 .details-table{
 	position:relative;
 	margin:0px !important;
+	.col-0{
+		width: 30%;
+	}
 	table{
 		margin:0 0 10px 0;
 	}

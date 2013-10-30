@@ -34,75 +34,41 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class TaskCheckListItem extends OwnedModel
+    abstract class MassActionUtil
     {
-        /**
-         * @return string
-         */
-        public function __toString()
+        public static function isMassEditOrDeleteLikeAction($actionId)
         {
-            if (trim($this->name) == '')
-            {
-                return Zurmo::t('TasksModule', '(None)');
-            }
-            return $this->name;
+            return (static::isMassEditLikeAction($actionId) || static::isMassDeleteLikeAction($actionId));
         }
 
-        /**
-         * @return array
-         */
-        public static function getDefaultMetadata()
+        public static function isMassDeleteLikeAction($actionId)
         {
-            $metadata = parent::getDefaultMetadata();
-            $metadata[__CLASS__] = array(
-                'members' => array(
-                    'name',
-                    'completed',
-                ),
-                'relations' => array(
-                    'task' => array(static::HAS_ONE, 'Task', static::NOT_OWNED),
-                ),
-                'rules' => array(
-                    array('name',       'required'),
-                    array('name',       'type', 'type' => 'string'),
-                    array('completed',  'type', 'type' => 'boolean'),
-                ),
-                'defaultSortAttribute' => 'name',
-                'customFields' => array(
-                ),
-            );
-            return $metadata;
+            return (strpos($actionId, 'massDelete') === 0);
         }
 
-        /**
-         * @return bool
-         */
-        public static function canSaveMetadata()
+        public static function isMassEditLikeAction($actionId)
         {
-            return true;
+            return (strpos($actionId, 'massEdit') === 0);
         }
 
-        /**
-         * @return string
-         */
-        public static function getModuleClassName()
+        public static function isMassProgressLikeAction($actionId)
         {
-            return 'TasksModule';
+            return (strpos($actionId, 'Progress') !== false);
         }
 
-        /**
-         * Given a related model id return a list of check items models.
-         * @param integer $taskId
-         */
-        public static function getByTask($taskId)
+        public static function isMassSubscribeOrUnsubscribeLikeAction($actionId)
         {
-            assert('is_int($taskId)');
-            $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('TaskCheckListItem');
-            $orderByColumnName = RedBeanModelDataProvider::
-                                 resolveSortAttributeColumnName('TaskCheckListItem', $joinTablesAdapter, 'id');
-            $where             = "task_id = '" . $taskId . "'";
-            $orderBy           = $orderByColumnName . ' desc';
-            return self::getSubset($joinTablesAdapter, null, null, $where, $orderBy);
+            return (static::isMassSubscribeLikeAction($actionId) || static::isMassUnsubscribeLikeAction($actionId));
+        }
+
+        public static function isMassSubscribeLikeAction($actionId)
+        {
+            return (strpos($actionId, 'massSubscribe') === 0);
+        }
+
+        public static function isMassUnsubscribeLikeAction($actionId)
+        {
+            return (strpos($actionId, 'massUnsubscribe') === 0);
         }
     }
 ?>

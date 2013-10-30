@@ -1304,14 +1304,13 @@ div#LeaderboardView > .view-toolbar-container > .view-toolbar .z-label {
 }
 #UserGameDashboardView {
   position: absolute;
-  top: 0;
+  top: 38px;
   left: 0;
   right: 0;
   width: 100%;
   display: block;
 }
 #game-overlay {
-  top: 38px;
   position: static;
 }
 #game-dashboard {
@@ -1358,6 +1357,7 @@ div#LeaderboardView > .view-toolbar-container > .view-toolbar .z-label {
   width: 100% !important;
   float: none !important;
   height: 250px !important;
+  overflow: hidden;
 }
 #gd-collections .nav-button {
   display: none;
@@ -1371,4 +1371,7 @@ div#LeaderboardView > .view-toolbar-container > .view-toolbar .z-label {
 }
 .gd-collection-item img {
   max-height: 35px;
+}
+.gd-collection-panel {
+  width: 320px;
 }

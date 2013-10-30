@@ -55,23 +55,29 @@
             $content  = $this->renderTitleContent();
             $content .= '<ul class="configuration-list">';
             $modules = Module::getModuleObjects();
+            $moduleClassNamesAndLabels = array();
             foreach ($modules as $module)
             {
                 $moduleTreeMenuItems = $module->getDesignerMenuItems();
                 if ($module->isEnabled() &&
                     !empty($moduleTreeMenuItems))
                 {
-                    $route = $this->moduleId . '/' . $this->controllerId . '/modulesMenu/';
-                    $content .= '<li>';
-                    $content .= '<h4>'. Zurmo::t('DesignerModule', $module::getModuleLabelByTypeAndLanguage('Plural')) . '</h4>';
-                    $content .= ZurmoHtml::link(ZurmoHtml::wrapLabel(Zurmo::t('DesignerModule', 'Configure') ),
-                                        Yii::app()->createUrl($route,
-                            array(
-                                'moduleClassName' => get_class($module),
-                            )
-                        ));
-                    $content .= '</li>';
+                    $moduleClassNamesAndLabels[get_class($module)] = $module::getModuleLabelByTypeAndLanguage('Plural');
                 }
+            }
+            asort($moduleClassNamesAndLabels);
+            foreach($moduleClassNamesAndLabels as $moduleClassName => $label)
+            {
+                $route = $this->moduleId . '/' . $this->controllerId . '/modulesMenu/';
+                $content .= '<li>';
+                $content .= '<h4>'. $label . '</h4>';
+                $content .= ZurmoHtml::link(ZurmoHtml::wrapLabel(Zurmo::t('DesignerModule', 'Configure') ),
+                    Yii::app()->createUrl($route,
+                        array(
+                            'moduleClassName' => $moduleClassName,
+                        )
+                    ));
+                $content .= '</li>';
             }
             $content .= '</ul>';
             return $content;
