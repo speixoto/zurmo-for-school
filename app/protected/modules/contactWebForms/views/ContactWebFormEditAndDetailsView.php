@@ -99,7 +99,8 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'null', 'type' => 'AllContactStatesDropDownForContactWebForm'),
+                                                array('attributeName' => 'null',
+                                                      'type' => 'AllContactStatesDropDownForContactWebForm'),
                                             ),
                                         ),
                                     )
@@ -117,7 +118,8 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'null', 'type' => 'DerivedExplicitReadWritePermissionsContactWebForm'),
+                                                array('attributeName' => 'null',
+                                                      'type' => 'DerivedExplicitReadWritePermissionsContactWebForm'),
                                             ),
                                         ),
                                     )
@@ -135,7 +137,8 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'enableCaptcha', 'type' => 'CheckBox'),
+                                                array('attributeName' => 'enableCaptcha',
+                                                      'type' => 'ContactWebFormsEnableCaptchaCheckBox'),
                                             ),
                                         ),
                                     )
@@ -145,7 +148,8 @@
                                         array(
                                             'detailViewOnly' => 1,
                                             'elements' => array(
-                                                array('attributeName' => 'serializedData', 'type' => 'SortableContactWebFormAttributes'),
+                                                array('attributeName' => 'serializedData',
+                                                      'type' => 'SortableContactWebFormAttributes'),
                                             ),
                                         ),
                                     )
@@ -174,10 +178,13 @@
         {
             $embedScript = '<div id="zurmoExternalWebForm">' .
                             '<script type="text/javascript" ' .
-                            'src="' . Yii::app()->createAbsoluteUrl('contacts/external/sourceFiles/', array('id' => $this->model->id)) . '">' .
+                            'src="' . Yii::app()->createAbsoluteUrl('contacts/external/sourceFiles/',
+                                                                    array('id' => $this->model->id)) . '">' .
                             '</script></div>';
-            $title = ZurmoHtml::tag('h3', array(), Zurmo::t('ContactWebFormsModule', 'Copy/Paste this code to your web page..'));
-            return '<div class="webform-embed-code">' . $title . '<textarea onclick="this.focus();this.select()" readonly="readonly">' . htmlspecialchars($embedScript) . '</textarea></div>';
+            $title = ZurmoHtml::tag('h3', array(), Zurmo::t('ContactWebFormsModule',
+                                                            'Copy/Paste this code to your web page..'));
+            return '<div class="webform-embed-code">' . $title . '<textarea onclick="this.focus();this.select()"
+                     readonly="readonly">' . htmlspecialchars($embedScript) . '</textarea></div>';
         }
 
         protected function renderAfterFormLayout($form)
