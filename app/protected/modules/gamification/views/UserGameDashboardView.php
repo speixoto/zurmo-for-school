@@ -187,8 +187,7 @@ SPT;
             $content .= $this->renderCollectionsContent();
             $content  = ZurmoHtml::tag('div', array('id' => 'game-dashboard', 'class' => 'clearfix'), $content);
             $content  = $this->renderDashboardCloseButton() . $content;
-            $content  = ZurmoHtml::tag('div', array('id' => 'game-overlay'), $content);
-            return      ZurmoHtml::tag('div', array('id' => 'game-dashboard-container'), $content);
+            return $content;
         }
 
         protected function renderProfileContent()
@@ -322,9 +321,9 @@ SPT;
 
         protected function renderCollectionsContent()
         {
-            $content  = ZurmoHtml::link('◀', '#', array('id' => 'nav-left', 'class' => 'nav-button'));
+            $content  = ZurmoHtml::link('&cedil;', '#', array('id' => 'nav-left', 'class' => 'nav-button'));
             $content .= $this->renderCollectionsCarouselWrapperAndContent();
-            $content .= ZurmoHtml::link('▶', '#', array('id' => 'nav-right', 'class' => 'nav-button'));
+            $content .= ZurmoHtml::link('&circ;', '#', array('id' => 'nav-right', 'class' => 'nav-button'));
             return      ZurmoHtml::tag('div', array('id' => 'gd-collections'), $content);
         }
 
