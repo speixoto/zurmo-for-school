@@ -64,8 +64,8 @@
 	<td></td>
 </tr>
 <tr>
-	<td>clickAndWait</td>
-	<td>//ul[@id='MarketingCreateLinkActionElement']/li/ul/li[2]/a</td>
+	<td>click</td>
+	<td>link=Create Template</td>
 	<td></td>
 </tr>
 <tr>
@@ -77,6 +77,11 @@
 	<td>waitForCondition</td>
 	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
 	<td>30000</td>
+</tr>
+<tr>
+	<td>setSpeed</td>
+	<td>3000</td>
+	<td></td>
 </tr>
 <tr>
 	<td>assertTextPresent</td>
@@ -93,6 +98,11 @@
 	<td>waitForCondition</td>
 	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
 	<td>30000</td>
+</tr>
+<tr>
+	<td>setSpeed</td>
+	<td>0</td>
+	<td></td>
 </tr>
 <tr>
 	<td>waitForTextPresent</td>
