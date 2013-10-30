@@ -11151,10 +11151,6 @@ body > .ui-autocomplete {
   position: relative;
   z-index: 9999;
 }
-.view-toolbar-container + div {
-  position: relative;
-  z-index: 1;
-}
 h1 + .view-toolbar-container {
   margin-top: 15px;
 }
