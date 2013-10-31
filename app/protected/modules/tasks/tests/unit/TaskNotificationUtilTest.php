@@ -51,37 +51,27 @@
         {
             Yii::app()->user->userModel = User::getByUsername('super');
             $count = Notification::getCount();
+            $this->assertEquals(0, $count);
             $task                       = new Task();
             $task->name                 = 'My Task';
             $task->owner                = Yii::app()->user->userModel;
             $task->requestedByUser      = Yii::app()->user->userModel;
-            $task->completedDateTime    = '0000-00-00 00:00:00';
-            $saved = $task->save();
-            $this->assertTrue($saved);
+            $this->assertTrue($task->save());
 
-            TasksNotificationUtil::submitTaskNotificationMessage($task, TasksNotificationUtil::NEW_TASK_NOTIFY_ACTION);
             $newCount = Notification::getCount();
-            $this->assertTrue($newCount > $count);
-
+            $this->assertEquals(1, $newCount);
             $user                       = UserTestHelper::createBasicUser('Billy');
             $task->owner                = $user;
-            $saved = $task->save();
-            $this->assertTrue($saved);
-            TasksNotificationUtil::submitTaskNotificationMessage($task,
-                                                                 TasksNotificationUtil::CHANGE_TASK_OWNER_NOTIFY_ACTION,
-                                                                 Yii::app()->user->userModel);
-            $prevCount = $newCount;
+            $this->assertTrue($task->save());
             $newCount = Notification::getCount();
-            $this->assertTrue($newCount > $prevCount);
+            $this->assertEquals(2, $newCount);
 
             $dueDateTime  = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
             $task->dueDateTime = $dueDateTime;
-            $this->assertTrue($saved);
-            TasksNotificationUtil::submitTaskNotificationMessage($task,
-                                                                 TasksNotificationUtil::CHANGE_TASK_DUE_DATE_NOTIFY_ACTION);
-            $prevCount = $newCount;
+            $this->assertTrue($task->save());
             $newCount = Notification::getCount();
-            $this->assertTrue($newCount > $prevCount);
+            //As there are two default subscribers owner and requested by user
+            $this->assertEquals(4, $newCount);
 
             $comment                = new Comment();
             $comment->description   = 'My Description';
@@ -89,19 +79,16 @@
             $this->assertTrue($task->save());
             TasksNotificationUtil::submitTaskNotificationMessage($task,
                                                                     TasksNotificationUtil::TASK_ADD_COMMENT_NOTIFY_ACTION,
-                                                                    $task->createdByUser);
-            $prevCount = $newCount;
+                                                                    $task->comments[0]->createdByUser);
             $newCount = Notification::getCount();
-            $this->assertTrue($newCount > $prevCount);
+            $this->assertEquals(5, $newCount);
 
-            $task->completedDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
             $task->completed         = true;
+            $task->status            = Task::STATUS_COMPLETED;
             $this->assertTrue($task->save());
-            TasksNotificationUtil::submitTaskNotificationMessage($task,
-                                                                    TasksNotificationUtil::CLOSE_TASK_NOTIFY_ACTION);
-            $prevCount = $newCount;
             $newCount = Notification::getCount();
-            $this->assertTrue($newCount > $prevCount);
+            $this->assertEquals(7, $newCount);
+            $this->assertTrue(strtotime($task->completedDateTime) > strtotime(date('Y-m-d')));
         }
     }
 ?>

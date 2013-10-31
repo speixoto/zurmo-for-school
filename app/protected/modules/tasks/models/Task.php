@@ -333,18 +333,24 @@
                 TasksNotificationUtil::submitTaskNotificationMessage($this,
                                                          TasksNotificationUtil::CLOSE_TASK_NOTIFY_ACTION);
             }
-            if(array_key_exists('owner', $this->originalAttributeValues) &&
-                intval($this->originalAttributeValues['owner'][1]) > 0)
+            if(array_key_exists('owner', $this->originalAttributeValues))
             {
-                $previousOwner = User::getById(intval($this->originalAttributeValues['owner'][1]));
                 TasksNotificationUtil::submitTaskNotificationMessage($this,
-                                                         TasksNotificationUtil::CHANGE_TASK_OWNER_NOTIFY_ACTION,
-                                                         $previousOwner);
+                                                         TasksNotificationUtil::CHANGE_TASK_OWNER_NOTIFY_ACTION);
             }
             if(array_key_exists('dueDateTime', $this->originalAttributeValues))
             {
                 TasksNotificationUtil::submitTaskNotificationMessage($this,
                                                          TasksNotificationUtil::CHANGE_TASK_DUE_DATE_NOTIFY_ACTION);
+            }
+
+            if($this->isNewModel)
+            {
+                if($this->owner->id != $this->requestedByUser->id)
+                {
+                    TasksNotificationUtil::submitTaskNotificationMessage($this,
+                                                         TasksNotificationUtil::NEW_TASK_NOTIFY_ACTION);
+                }
             }
         }
     }

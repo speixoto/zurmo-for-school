@@ -173,8 +173,6 @@
             $dueDateTime  = DateTimeUtil::convertTimestampToDbFormatDateTime($dateTime);
             $task->dueDateTime = $dueDateTime;
             $task->save();
-            TasksNotificationUtil::submitTaskNotificationMessage($task,
-                                                                 TasksNotificationUtil::CHANGE_TASK_DUE_DATE_NOTIFY_ACTION);
         }
 
         /**

@@ -431,13 +431,20 @@
                 if($user->isSame($task->owner))
                 {
                     $content .= TasksUtil::renderSubscriberImageAndLinkContent($user, 20, 'task-owner');
+                    break;
                 }
             }
+            //To take care of the case of duplicates
+            $addedSubscribers = array();
             foreach($subscribedUsers as $user)
             {
                 if(!$user->isSame($task->owner))
                 {
-                    $content .= TasksUtil::renderSubscriberImageAndLinkContent($user, 20);
+                    if(!in_array($user->id, $addedSubscribers))
+                    {
+                        $content .= TasksUtil::renderSubscriberImageAndLinkContent($user, 20);
+                        $addedSubscribers[] = $user->id;
+                    }
                 }
             }
             return $content;

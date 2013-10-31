@@ -115,19 +115,6 @@
         }
 
         /**
-         * Resolve people on task
-         * @param Task $task
-         * @return array
-         */
-        public static function resolvePeopleSubscribedForTask(Task $task)
-        {
-            $people   = self::getTaskSubscribers($task);
-            $people[] = $task->owner;
-            $people[] = $task->requestedByUser;
-            return $people;
-        }
-
-        /**
          * Gets url to task detail view
          * @param Task $model
          * @return string
@@ -809,6 +796,7 @@
                 if($notificationSubscriber->person->id == $user->id)
                 {
                     $isAlreadySubscribed = true;
+                    break;
                 }
             }
             if(!$isAlreadySubscribed)
