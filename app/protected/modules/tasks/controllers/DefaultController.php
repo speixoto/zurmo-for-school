@@ -427,7 +427,7 @@
                         //if kanban type is completed
                         if($type == KanbanItem::TYPE_COMPLETED)
                         {
-                            $this->processStatusUpdateViaAjax(Task::STATUS_COMPLETED, intval($taskId), false);
+                            $this->processStatusUpdateViaAjax($taskId, Task::STATUS_COMPLETED, false);
                             $response['button'] = '';
                             $response['status'] = Task::getStatusDisplayName($task->status);
                         }
@@ -443,7 +443,7 @@
                             else
                             {
                                 $targetStatus = TasksUtil::getDefaultTaskStatusForKanbanItemType(intval($type));
-                                $this->processStatusUpdateViaAjax(intval($taskId), $targetStatus, false);
+                                $this->processStatusUpdateViaAjax($taskId, $targetStatus, false);
                                 $content = TasksUtil::resolveActionButtonForTaskByStatus($targetStatus,
                                                                                         $this->getId(),
                                                                                         $this->getModule()->getId(),
