@@ -618,12 +618,13 @@
         public static function setDefaultValuesForTask(Task $task)
         {
             $user = Yii::app()->user->userModel;
-            $task->requestedByUser = $user;
             $task->status = Task::STATUS_NEW;
-            $notificationSubscriber = new NotificationSubscriber();
-            $notificationSubscriber->person = $user;
-            $notificationSubscriber->hasReadLatest = false;
-            $task->notificationSubscribers->add($notificationSubscriber);
+            //Add requested by user as default subscriber
+            if($task->requestedByUser != null)
+            {
+                self::addSubscriber($task->requestedByUser, $task, false);
+            }
+            self::addSubscriber($task->owner, $task, false);
         }
 
         /**
@@ -807,6 +808,21 @@
             {
                 return 'modalSave';
             }
+        }
+
+        /**
+         * Add subscriber to the task
+         * @param User $user
+         * @param Task $task
+         * @param bool $hasReadLatest
+         */
+        public static function addSubscriber(User $user, Task $task, $hasReadLatest = false)
+        {
+            assert('is_bool($hasReadLatest)');
+            $notificationSubscriber = new NotificationSubscriber();
+            $notificationSubscriber->person = $user;
+            $notificationSubscriber->hasReadLatest = $hasReadLatest;
+            $task->notificationSubscribers->add($notificationSubscriber);
         }
     }
 ?>
