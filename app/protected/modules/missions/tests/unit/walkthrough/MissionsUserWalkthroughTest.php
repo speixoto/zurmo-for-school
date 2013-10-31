@@ -129,7 +129,7 @@
                                                  makeBySecurableItem($missions[0]);
             $readWritePermitables              = $explicitReadWriteModelPermissions->getReadWritePermitables();
             $this->assertEquals(1, count($readWritePermitables));
-            $this->assertTrue(isset($readWritePermitables[$everyoneGroup->id]));
+            $this->assertTrue(isset($readWritePermitables[$everyoneGroup->getClassId('Permitable')]));
 
             //Confirm email was sent
             $this->assertEquals(2, Yii::app()->emailHelper->getQueuedCount());

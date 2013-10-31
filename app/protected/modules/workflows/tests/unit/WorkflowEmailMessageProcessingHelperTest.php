@@ -137,7 +137,7 @@
             $this->assertTrue($explicitReadWriteModelPermissions instanceof ExplicitReadWriteModelPermissions);
             $readWritePermitables = $explicitReadWriteModelPermissions->getReadWritePermitables();
             $this->assertEquals(1, count($readWritePermitables));
-            $this->assertEquals(self::$alphaGroup, $readWritePermitables[self::$alphaGroup->id]);
+            $this->assertEquals(self::$alphaGroup, $readWritePermitables[self::$alphaGroup->getClassId('Permitable')]);
 
             $emailMessages[0]->delete();
         }
