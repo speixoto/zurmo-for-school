@@ -138,7 +138,7 @@
             {
                 $message = Zurmo::t('EmailMessagesModule',
                                     'Emails in the specified folder will be deleted by Zurmo after processing. ' .
-                                    'DO NOT use a personal email for Bounce handling')
+                                    'DO NOT use a personal email for Bounce handling');
                 $notification = ZurmoHtml::tag('span',
                                                array('class' => 'row-description'),
                                                $message);
