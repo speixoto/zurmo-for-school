@@ -15162,6 +15162,9 @@ div.hasHalfs > div input {
 .hasDropDown + input {
   margin-top: 15px;
 }
+.isMultiSelect select {
+  height: auto;
+}
 .isMultiSelect span {
   display: none !important;
 }
@@ -16546,6 +16549,7 @@ table.configuration-list td:last-child a .z-label:before {
 .AdministrativeArea #edit-form table {
   width: 100%;
   float: none;
+  table-layout: fixed;
 }
 .AdministrativeArea .view-toolbar {
   margin-top: 0;
