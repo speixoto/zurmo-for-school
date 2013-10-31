@@ -80,7 +80,14 @@
                 $task->activityItems->add($opportunity);
                 $task->activityItems->add($opportunity->contacts[0]);
                 $task->activityItems->add($opportunity->account);
-                $this->populateModel($task, $demoDataHelper);
+
+                //Notification subscriber
+                $notificationSubscriber             = new NotificationSubscriber();
+                $notificationSubscriber->person     = $demoDataHelper->getRandomByModelName('User');
+                $notificationSubscriber->hasReadLatest = false;
+                $task->notificationSubscribers->add($notificationSubscriber);
+
+                $this->populateModel($task);
                 $saved = $task->save();
                 assert('$saved');
                 $tasks[] = $task->id;
@@ -92,7 +99,7 @@
          * Populates model
          * @param Task $model
          */
-        public function populateModel(& $model, $demoDataHelper)
+        public function populateModel(& $model)
         {
             assert('$model instanceof Task');
             parent::populateModel($model);
@@ -114,11 +121,6 @@
             $dueDateTime        = DateTimeUtil::convertTimestampToDbFormatDateTime($dueTimeStamp);
             $model->name        = $name;
             $model->dueDateTime = $dueDateTime;
-            //Notification subscriber
-            $notificationSubscriber             = new NotificationSubscriber();
-            $notificationSubscriber->person     = $demoDataHelper->getRandomByModelName('User');
-            $notificationSubscriber->hasReadLatest = false;
-            $model->notificationSubscribers->add($notificationSubscriber);
         }
     }
 ?>
