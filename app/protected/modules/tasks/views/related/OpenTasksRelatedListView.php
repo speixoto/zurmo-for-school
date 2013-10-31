@@ -163,7 +163,8 @@
         public function resolveLinkString($data, $row)
         {
             $content = TasksUtil::getModalDetailsLink($data, $this->controllerId,
-                                                      $this->moduleId, $this->getActionModuleClassName());
+                                                      $this->moduleId,
+                                                      $this->getActionModuleClassName(), false);
             return $content;
         }
 

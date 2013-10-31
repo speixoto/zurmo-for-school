@@ -270,12 +270,23 @@
          * @param $moduleClassName
          * @return null|string
          */
-        public static function getModalDetailsLink(Task $task, $controllerId, $moduleId, $moduleClassName)
+        public static function getModalDetailsLink(Task $task,
+                                                   $controllerId,
+                                                   $moduleId,
+                                                   $moduleClassName,
+                                                   $isOwnerRequiredInDisplay = true)
         {
             assert('is_string($controllerId) || is_null($controllerId)');
             assert('is_string($moduleId)  || is_null($moduleId)');
             assert('is_string($moduleClassName)');
-            $label       = $task->name . ZurmoHtml::tag('span', array(), '(' . strval($task->owner) . ')');
+            if($isOwnerRequiredInDisplay)
+            {
+                $label       = $task->name . ZurmoHtml::tag('span', array(), '(' . strval($task->owner) . ')');
+            }
+            else
+            {
+                $label       = $task->name;
+            }
             $params      = array('label' => $label, 'routeModuleId' => 'tasks',
                                  'wrapLabel' => false,
                                  'htmlOptions' => array('id' => 'task-' . $task->id)
