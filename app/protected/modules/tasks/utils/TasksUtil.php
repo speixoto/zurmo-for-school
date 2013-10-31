@@ -612,22 +612,6 @@
         }
 
         /**
-         * Set default values for task
-         * @param Task $task
-         */
-        public static function setDefaultValuesForTask(Task $task)
-        {
-            $user = Yii::app()->user->userModel;
-            $task->status = Task::STATUS_NEW;
-            //Add requested by user as default subscriber
-            if($task->requestedByUser != null)
-            {
-                self::addSubscriber($task->requestedByUser, $task, false);
-            }
-            self::addSubscriber($task->owner, $task, false);
-        }
-
-        /**
          * Saves the kanban item from task
          * @param type array
          */
@@ -819,10 +803,21 @@
         public static function addSubscriber(User $user, Task $task, $hasReadLatest = false)
         {
             assert('is_bool($hasReadLatest)');
-            $notificationSubscriber = new NotificationSubscriber();
-            $notificationSubscriber->person = $user;
-            $notificationSubscriber->hasReadLatest = $hasReadLatest;
-            $task->notificationSubscribers->add($notificationSubscriber);
+            $isAlreadySubscribed = false;
+            foreach($task->notificationSubscribers as $notificationSubscriber)
+            {
+                if($notificationSubscriber->person->id == $user->id)
+                {
+                    $isAlreadySubscribed = true;
+                }
+            }
+            if(!$isAlreadySubscribed)
+            {
+                $notificationSubscriber = new NotificationSubscriber();
+                $notificationSubscriber->person = $user;
+                $notificationSubscriber->hasReadLatest = $hasReadLatest;
+                $task->notificationSubscribers->add($notificationSubscriber);
+            }
         }
     }
 ?>

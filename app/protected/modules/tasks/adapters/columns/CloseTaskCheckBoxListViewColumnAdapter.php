@@ -107,6 +107,8 @@
                                 $('.LatestActivitiesForPortletView').each(function(){
                                     $(this).find('.pager').find('.refresh').find('a').click();
                                 });
+                                
+                                $('.OpenTasksRelatedListView').find('.pager').find('.refresh').find('a').click();
                             },
                             error : function()
                             {

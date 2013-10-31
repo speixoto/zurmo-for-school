@@ -217,8 +217,7 @@
                     $this->completed = true;
                 }
 
-                if (array_key_exists('completed', $this->originalAttributeValues) &&
-                    $this->completed == true)
+                if ($this->completed == true)
                 {
                     if ($this->completedDateTime == null)
                     {
@@ -226,6 +225,18 @@
                     }
                     $this->unrestrictedSet('latestDateTime', $this->completedDateTime);
                 }
+
+                if($this->isNewModel)
+                {
+                    $this->status = Task::STATUS_NEW;
+                }
+
+                //Add requested by user as default subscriber
+                if($this->requestedByUser->id > 0)
+                {
+                    TasksUtil::addSubscriber($this->requestedByUser, $this, false);
+                }
+                TasksUtil::addSubscriber($this->owner, $this, false);
                 return true;
             }
             else

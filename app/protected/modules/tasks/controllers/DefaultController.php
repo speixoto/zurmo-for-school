@@ -126,6 +126,7 @@
         {
             $task                    = Task::getById(intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($task);
+            $task->status            = Task::STATUS_COMPLETED;
             $task->completedDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
             $task->completed         = true;
             $saved                   = $task->save();
@@ -268,7 +269,6 @@
             if($id == null)
             {
                 $task  = new Task();
-                TasksUtil::setDefaultValuesForTask($task);
                 if($relationAttributeName == 'project' && $relationModelId != null)
                 {
                     $project = Project::getById((int)$relationModelId);
