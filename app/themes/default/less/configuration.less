@@ -744,7 +744,7 @@ table.configuration-list{
 #PoliciesEditAndDetailsView,
 #ModulePermissionsEditAndDetailsView,
 #RightsEditAndDetailsView{
-	//margin-top: 15px;
+	margin-top: 15px;
 	.details-table{
 		margin-right:0;
 	}
@@ -905,7 +905,10 @@ table.configuration-list{
 		margin-top: 5px;
 	}
 	tr td:last-child{
-		padding-right:15px;
+		padding-right:0;
+		vertical-align: top;
+	}
+	td + td {
 		vertical-align: top;
 	}
 }
@@ -923,16 +926,16 @@ table.configuration-list{
 	label{
 		line-height: 26px;
 		padding-right: 10px;
-		width: 22%;
+		width: 35%;
 		++.border-box;
 	}
 	> div{
-		width: 49%;
+		width: 49.5%;
 		display: inline-block;
 		> .has-model-select,
 		> .hasDropDown,
 		> input{
-			width: 78% !important;
+			width: 65% !important;
 			display: inline-block;
 		}
 	}
@@ -940,14 +943,14 @@ table.configuration-list{
 		width: 100%;
 	}
 	> div + div:last-child{
-		width: 49%;
-		margin-left: 2%;
+		width: 49.5%;
+		margin-left: 1%;
 	}
 }
 
 .mapping-rules.multiple{
 	table{
-		width: 49% !important;
+		width: 49.5% !important;
 		float: left !important;
 	}
 	table + table{
@@ -1092,7 +1095,6 @@ table.configuration-list{
 	}
 	table tr:first-child{
 		th{
-			//padding:0 0 0 15px !important;
 			font-weight:bold !important;
 		}
 	}
@@ -1110,15 +1112,12 @@ table.configuration-list{
 	}
 }
 
-
-
 #import-temp-table-list-view-rowDrillDown{
 	width: 30px;
 }
 
 .icon-import-mapping{
 	display: block;
-	//.symbly(24px);
 	font-weight: bold;
 	padding: 3px 0 5px 0;
 }
