@@ -3459,17 +3459,29 @@ div.wide.form{
 		.unstyle-panel();
 		border: none !important;
 		.b-shadow(none) !important;
+		.col-0{
+			width: 30%;
+		}
+		.double-column{
+			.col-0, .col-2{
+				width: 22% !important;
+			}
+			.col-1, .col-3{
+				width: 28% !important;
+			}
+		}
 	}
 }
 
 .details-table{
 	position:relative;
 	margin:0px !important;
-	.col-0{
-		width: 30%;
-	}
+
 	table{
 		margin:0 0 10px 0;
+	}
+	/*.col-0{
+		width: 30%;
 	}
 	.double-column{
 		.col-0, .col-2{
@@ -3478,7 +3490,7 @@ div.wide.form{
 		.col-1, .col-3{
 			width: 28% !important;
 		}
-	}
+	}*/
 	td, th{
 		font-weight: bold;
 		.box-sizing();
@@ -3536,7 +3548,7 @@ div.wide.form{
 
 .DetailsView{
 	.col-0{
-		width: 15%;
+		width: 20%;
 	}
 }
 

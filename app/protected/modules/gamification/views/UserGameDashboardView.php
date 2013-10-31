@@ -187,7 +187,10 @@ SPT;
             $content .= $this->renderCollectionsContent();
             $content  = ZurmoHtml::tag('div', array('id' => 'game-dashboard', 'class' => 'clearfix'), $content);
             $content  = $this->renderDashboardCloseButton() . $content;
-            return $content;
+            $content  = ZurmoHtml::tag('div', array('id' => 'gd-centralizer'), $content);
+            $blackOut  = ZurmoHtml::tag('div', array('id' => 'gd-overlay'), '');
+            $container = ZurmoHtml::tag('div', array('id' => 'gd-container'), $content);
+            return $blackOut . $container;
         }
 
         protected function renderProfileContent()
