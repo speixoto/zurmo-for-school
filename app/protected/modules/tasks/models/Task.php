@@ -178,7 +178,7 @@
                     'completed'         => Zurmo::t('TasksModule', 'Completed',  array(), null, $language),
                     'description'       => Zurmo::t('ZurmoModule', 'Description',  array(), null, $language),
                     'dueDateTime'       => Zurmo::t('TasksModule', 'Due On',       array(), null, $language),
-                    'name'              => Zurmo::t('TasksModule', 'Name',  array(), null, $language),
+                    'name'              => Zurmo::t('Core', 'Name',  array(), null, $language),
                     'status'            => Zurmo::t('ZurmoModule', 'Status',  array(), null, $language),
                     'requestedByUser'   => Zurmo::t('TasksModule', 'Requested By User',  array(), null, $language),
                     'files'             => Zurmo::t('ZurmoModule', 'Files',  array(), null, $language),

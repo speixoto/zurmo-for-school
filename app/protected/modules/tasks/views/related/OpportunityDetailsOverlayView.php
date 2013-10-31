@@ -73,7 +73,7 @@
         protected function renderNameContent()
         {
             $content = ZurmoHtml::tag('p', array('class' => static::DESCRIPTION_CLASS),
-                                      Zurmo::t('ZurmoModule', 'Name') .
+                                      Zurmo::t('Core', 'Name') .
                                       $this->overlayKeyValueSeparator . $this->model->name);
             return $content;
         }

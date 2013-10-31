@@ -452,7 +452,7 @@
                     'emailAccounts'       => Zurmo::t('UsersModule', 'Email Accounts',          array(), null, $language),
                     'emailBoxes'          => Zurmo::t('UsersModule', 'Email Boxes',             array(), null, $language),
                     'emailSignatures'     => Zurmo::t('UsersModule', 'Email Signatures',        array(), null, $language),
-                    'fullName'            => Zurmo::t('UsersModule', 'Name',                    array(), null, $language),
+                    'fullName'            => Zurmo::t('Core', 'Name',                    array(), null, $language),
                     'groups'              => Zurmo::t('ZurmoModule', 'Groups',                  array(), null, $language),
                     'hash'                => Zurmo::t('UsersModule', 'Hash',                    array(), null, $language),
                     'isActive'            => Zurmo::t('UsersModule', 'Is Active',               array(), null, $language),

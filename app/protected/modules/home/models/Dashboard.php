@@ -99,7 +99,7 @@
                     'layoutId'   => Zurmo::t('HomeModule',  'Layout Id',   array(), null, $language),
                     'layoutType' => Zurmo::t('HomeModule',  'Layout Type', array(), null, $language),
                     'isDefault'  => Zurmo::t('HomeModule',  'Is Default',  array(), null, $language),
-                    'name'       => Zurmo::t('ZurmoModule', 'Name',        array(), null, $language),
+                    'name'       => Zurmo::t('Core', 'Name',        array(), null, $language),
                 )
             );
         }

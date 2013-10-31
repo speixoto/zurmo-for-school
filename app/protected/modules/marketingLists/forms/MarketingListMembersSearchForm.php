@@ -52,7 +52,7 @@
         {
             return array_merge(parent::attributeLabels(), array(
                 'anyEmail'           => Zurmo::t('Default', 'Any Email Address'),
-                'fullName'           => Zurmo::t('Default', 'Name'),
+                'fullName'           => Zurmo::t('Core', 'Name'),
             ));
         }
 

@@ -150,7 +150,7 @@
         public function attributeLabels()
         {
             return array(
-                'name' => Zurmo::t('WorkflowsModule', 'Name'),
+                'name' => Zurmo::t('Core', 'Name'),
             );
         }
 

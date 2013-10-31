@@ -227,7 +227,7 @@
         {
             return array_merge(parent::translatedAttributeLabels($language),
                 array(
-                    'name'                  => Zurmo::t('ZurmoModule', 'Name', null,  null, $language),
+                    'name'                  => Zurmo::t('Core', 'Name', null,  null, $language),
                     'status'                => Zurmo::t('ZurmoModule', 'Status', null,  null, $language),
                     'sendOnDateTime'       => Zurmo::t('CampaignsModule', 'Send On', null,  null, $language),
                     'supportsRichText'      => Zurmo::t('CampaignsModule', 'Supports HTML', null,  null, $language),

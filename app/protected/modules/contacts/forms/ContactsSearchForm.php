@@ -82,7 +82,7 @@
                 'anyEmail'           => Zurmo::t('ContactsModule', 'Any Email Address'),
                 'anyInvalidEmail'    => Zurmo::t('ContactsModule', 'Any Invalid Email'),
                 'anyOptOutEmail'     => Zurmo::t('ContactsModule', 'Any Opted Out Email'),
-                'fullName'           => Zurmo::t('ContactsModule', 'Name'),
+                'fullName'           => Zurmo::t('Core', 'Name'),
             ));
         }
 
