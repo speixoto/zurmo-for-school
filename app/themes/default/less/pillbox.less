@@ -212,6 +212,7 @@
 }
 
 .button-actions{
+	cursor:text;
 	z-index: 999;
 	color:#EFEFEF;
 	display: none;
@@ -396,9 +397,12 @@
 		text-align: left;
 		a{
 			display: inline;
-			color:#fff !important;
+			color:#EFEFEF !important;
 			padding: 0;
-			text-decoration: underline;
+			text-decoration: underline !important;
+			&:hover{
+				//see after this declaration because of specificity issues
+			}
 		}
 	}
 	h3{
@@ -412,7 +416,16 @@
 		line-height: 1.4;
 		font-size: 12px;
 	}
+	strong{
+		display: block;
+	}
+}
 
+body .overlay-view .after-form-details-content a:hover{
+	background: none !important;
+	background-image: none !important;
+	color:#fff !important;
+	.t-shadow(none) !important;
 }
 
 .stay-open {

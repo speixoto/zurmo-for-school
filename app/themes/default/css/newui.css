@@ -17280,6 +17280,7 @@ table.configuration-list td:last-child a .z-label:before {
 }
 #ImportWizardMappingView tr td:last-child {
   padding-right: 15px;
+  vertical-align: top;
 }
 .mapping-rules h4 {
   padding: 10px 0 5px 0;
@@ -25669,6 +25670,7 @@ div.special-pager .hidden.next:after {
   padding: 0 3px;
 }
 .button-actions {
+  cursor: text;
   z-index: 999;
   color: #EFEFEF;
   display: none;
@@ -25895,9 +25897,9 @@ div.special-pager .hidden.next:after {
 }
 .overlay-view .after-form-details-content a {
   display: inline;
-  color: #fff !important;
+  color: #EFEFEF !important;
   padding: 0;
-  text-decoration: underline;
+  text-decoration: underline !important;
 }
 .overlay-view h3 {
   font-weight: bold;
@@ -25913,6 +25915,19 @@ div.special-pager .hidden.next:after {
   margin-bottom: 5px !important;
   line-height: 1.4;
   font-size: 12px;
+}
+.overlay-view strong {
+  display: block;
+}
+body .overlay-view .after-form-details-content a:hover {
+  background: none !important;
+  background-image: none !important;
+  color: #fff !important;
+  -webkit-text-shadow: none !important;
+  -moz-text-shadow: none !important;
+  -o-text-shadow: none !important;
+  -ms-text-shadow: none !important;
+  text-shadow: none !important;
 }
 .stay-open {
   display: block !important;
