@@ -80,7 +80,7 @@
                 $task->activityItems->add($opportunity);
                 $task->activityItems->add($opportunity->contacts[0]);
                 $task->activityItems->add($opportunity->account);
-                $this->populateModel($task, $demoDataHelper);
+                $this->populateTaskModel($task, $demoDataHelper);
                 $saved = $task->save();
                 assert('$saved');
                 $tasks[] = $task->id;
@@ -92,9 +92,10 @@
          * Populates model
          * @param Task $model
          */
-        public function populateModel(& $model, $demoDataHelper)
+        public function populateTaskModel(& $model, $demoDataHelper)
         {
             assert('$model instanceof Task');
+            assert('$demoDataHelper instanceof DemoDataHelper');
             parent::populateModel($model);
             $taskRandomData    = ZurmoRandomDataUtil::
                                  getRandomDataByModuleAndModelClassNames('TasksModule', 'Task');
