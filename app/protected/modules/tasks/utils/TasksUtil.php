@@ -791,5 +791,22 @@
             return '<p>' . Zurmo::t('TasksModule', 'Completed On') . ': ' .
                                  DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay($task->completedDateTime) . '</p>';
         }
+
+        /**
+         * @param $relationModelId
+         * @return string
+         */
+        public static function resolveModalSaveActionNameForByRelationModelId($relationModelId)
+        {
+            assert('is_string($relationModelId) || $relationModelId == null');
+            if($relationModelId != null)
+            {
+                return 'modalSaveFromRelation';
+            }
+            else
+            {
+                return 'modalSave';
+            }
+        }
     }
 ?>

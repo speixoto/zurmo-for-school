@@ -187,14 +187,23 @@
             return ZurmoHtml::tag('div', array('class' => 'left-side-edit-view-panel'), $content);
         }
 
+        /**
+         * Need to define validationUrl in order to ensure the task id is populated. If it is a new task, then
+         * the task id would not be in the GET
+         * @return array
+         */
         protected function resolveActiveFormAjaxValidationOptions()
         {
+            $relationModelId  = Yii::app()->request->getParam('relationModelId');
+            $action           = TasksUtil::resolveModalSaveActionNameForByRelationModelId($relationModelId);
+            $validationUrl    = Yii::app()->createUrl('tasks/default/' . $action,
+                                array_merge(GetUtil::getData(), array('id' => $this->getModel()->id)));
             return array('enableAjaxValidation' => true,
                 'clientOptions' => array(
                     'validateOnChange'  => true,
-                    //'validationUrl' => Yii::app()->createUrl('tasks/default/performAjaxValidation', array('id' => $this->getModel()->id)),
+                    'validationUrl' => $validationUrl
                 ),
-                );
+            );
         }
 
         protected function renderLeftSideBottomContent()
