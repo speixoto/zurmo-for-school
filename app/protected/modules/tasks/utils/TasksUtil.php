@@ -115,19 +115,6 @@
         }
 
         /**
-         * Resolve people on task
-         * @param Task $task
-         * @return array
-         */
-        public static function resolvePeopleSubscribedForTask(Task $task)
-        {
-            $people   = self::getTaskSubscribers($task);
-            $people[] = $task->owner;
-            $people[] = $task->requestedByUser;
-            return $people;
-        }
-
-        /**
          * Gets url to task detail view
          * @param Task $model
          * @return string
@@ -612,21 +599,6 @@
         }
 
         /**
-         * Set default values for task
-         * @param Task $task
-         */
-        public static function setDefaultValuesForTask(Task $task)
-        {
-            $user = Yii::app()->user->userModel;
-            $task->requestedByUser = $user;
-            $task->status = Task::STATUS_NEW;
-            $notificationSubscriber = new NotificationSubscriber();
-            $notificationSubscriber->person = $user;
-            $notificationSubscriber->hasReadLatest = false;
-            $task->notificationSubscribers->add($notificationSubscriber);
-        }
-
-        /**
          * Saves the kanban item from task
          * @param type array
          */
@@ -806,6 +778,33 @@
             else
             {
                 return 'modalSave';
+            }
+        }
+
+        /**
+         * Add subscriber to the task
+         * @param User $user
+         * @param Task $task
+         * @param bool $hasReadLatest
+         */
+        public static function addSubscriber(User $user, Task $task, $hasReadLatest = false)
+        {
+            assert('is_bool($hasReadLatest)');
+            $isAlreadySubscribed = false;
+            foreach($task->notificationSubscribers as $notificationSubscriber)
+            {
+                if($notificationSubscriber->person->id == $user->id)
+                {
+                    $isAlreadySubscribed = true;
+                    break;
+                }
+            }
+            if(!$isAlreadySubscribed)
+            {
+                $notificationSubscriber = new NotificationSubscriber();
+                $notificationSubscriber->person = $user;
+                $notificationSubscriber->hasReadLatest = $hasReadLatest;
+                $task->notificationSubscribers->add($notificationSubscriber);
             }
         }
     }

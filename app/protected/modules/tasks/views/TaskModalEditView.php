@@ -58,7 +58,9 @@
                         'DerivedExplicitReadWriteModelPermissions',
                     ),
                     'nonPlaceableAttributeNames' => array(
-                        'latestDateTime'
+                        'latestDateTime',
+                        'completed',
+                        'completedDateTime'
                     ),
                     'panelsDisplayType' => FormLayout::PANELS_DISPLAY_TYPE_FIRST,
                     'panels' => array(
@@ -118,24 +120,6 @@
                                         array(
                                             'elements' => array(
                                                 array('attributeName' => 'dueDateTime', 'type' => 'DateTime'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'completed', 'type' => 'CheckBox'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'completedDateTime', 'type' => 'DateTime'),
                                             ),
                                         ),
                                     )

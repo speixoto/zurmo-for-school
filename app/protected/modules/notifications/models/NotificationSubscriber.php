@@ -50,6 +50,7 @@
                 'relations' => array(
                     'person'      => array(static::HAS_ONE, 'Item', static::NOT_OWNED,
                                                 static::LINK_TYPE_SPECIFIC, 'person'),
+                    'task'        => array(static::HAS_ONE,  'Task', static::NOT_OWNED),
                 ),
                 'rules' => array(
                     array('hasReadLatest', 'type', 'type' => 'boolean')

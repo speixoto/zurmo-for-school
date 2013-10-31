@@ -106,8 +106,7 @@
                     'comments'                  => array(static::HAS_MANY, 'Comment', static::OWNED,
                                                         static::LINK_TYPE_POLYMORPHIC, 'relatedModel'),
                     'checkListItems'            => array(static::HAS_MANY, 'TaskCheckListItem', static::OWNED),
-                    'notificationSubscribers'   => array(static::HAS_MANY, 'NotificationSubscriber', static::OWNED,
-                                                        static::LINK_TYPE_POLYMORPHIC, 'relatedModel'),
+                    'notificationSubscribers'   => array(static::HAS_MANY, 'NotificationSubscriber', static::OWNED),
                     'files'                     => array(static::HAS_MANY, 'FileModel', static::OWNED,
                                                         static::LINK_TYPE_POLYMORPHIC, 'relatedModel'),
                     'project'                   => array(static::HAS_ONE, 'Project'),
@@ -121,6 +120,7 @@
                     array('name',             'type',    'type' => 'string'),
                     array('name',             'length',  'min'  => 1, 'max' => 64),
                     array('status',           'type', 'type' => 'integer'),
+                    array('status',           'default', 'value' => Task::STATUS_NEW),
                 ),
                 'elements' => array(
                     'completedDateTime' => 'DateTime',
@@ -209,24 +209,8 @@
         {
             if (parent::beforeSave())
             {
-                if($this->status != Task::STATUS_COMPLETED)
-                {
-                    $this->completed = false;
-                }
-                else
-                {
-                    $this->completed = true;
-                }
-
-                if (array_key_exists('completed', $this->originalAttributeValues) &&
-                    $this->completed == true)
-                {
-                    if ($this->completedDateTime == null)
-                    {
-                        $this->completedDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
-                    }
-                    $this->unrestrictedSet('latestDateTime', $this->completedDateTime);
-                }
+                $this->resolveStatusAndSetCompletedFields();
+                $this->resolveAndSetDefaultSubscribers();
                 return true;
             }
             else
@@ -323,18 +307,61 @@
                 TasksNotificationUtil::submitTaskNotificationMessage($this,
                                                          TasksNotificationUtil::CLOSE_TASK_NOTIFY_ACTION);
             }
-            if(array_key_exists('owner', $this->originalAttributeValues) &&
-                intval($this->originalAttributeValues['owner'][1]) > 0)
+            if(array_key_exists('owner', $this->originalAttributeValues))
             {
-                $previousOwner = User::getById(intval($this->originalAttributeValues['owner'][1]));
                 TasksNotificationUtil::submitTaskNotificationMessage($this,
-                                                         TasksNotificationUtil::CHANGE_TASK_OWNER_NOTIFY_ACTION,
-                                                         $previousOwner);
+                                                         TasksNotificationUtil::CHANGE_TASK_OWNER_NOTIFY_ACTION);
             }
             if(array_key_exists('dueDateTime', $this->originalAttributeValues))
             {
                 TasksNotificationUtil::submitTaskNotificationMessage($this,
                                                          TasksNotificationUtil::CHANGE_TASK_DUE_DATE_NOTIFY_ACTION);
+            }
+
+            if($this->isNewModel)
+            {
+                if($this->owner->id != $this->requestedByUser->id)
+                {
+                    TasksNotificationUtil::submitTaskNotificationMessage($this,
+                                                         TasksNotificationUtil::NEW_TASK_NOTIFY_ACTION);
+                }
+            }
+        }
+
+        /**
+         * Resolve and set default subscribers
+         */
+        protected function resolveAndSetDefaultSubscribers()
+        {
+            //Add requested by user as default subscriber
+            if($this->requestedByUser->id > 0)
+            {
+                TasksUtil::addSubscriber($this->requestedByUser, $this, false);
+            }
+            TasksUtil::addSubscriber($this->owner, $this, false);
+        }
+
+        /**
+         * Resolve status and set completed fields
+         */
+        protected function resolveStatusAndSetCompletedFields()
+        {
+            if($this->status != Task::STATUS_COMPLETED)
+            {
+                $this->completed = false;
+            }
+            else
+            {
+                $this->completed = true;
+            }
+
+            if ($this->completed == true)
+            {
+                if ($this->completedDateTime == null)
+                {
+                    $this->completedDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
+                }
+                $this->unrestrictedSet('latestDateTime', $this->completedDateTime);
             }
         }
     }

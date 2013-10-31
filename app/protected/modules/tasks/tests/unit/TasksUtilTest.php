@@ -149,26 +149,6 @@
         }
 
         /**
-         * @covers resolvePeopleSubscribedForTask
-         */
-        public function testResolvePeopleSubscribedForTask()
-        {
-            Yii::app()->user->userModel = User::getByUsername('super');
-            $user  = User::getByUsername('steven');
-
-            $tasks  = Task::getByName('MyTest');
-            $task   = $tasks[0];
-
-            $task->requestedByUser = Yii::app()->user->userModel;
-            $this->assertTrue($task->save());
-            $people = TasksUtil::resolvePeopleSubscribedForTask($task);
-            $this->assertEquals(3, count($people));
-            $this->assertEquals($people[0], $user);
-            $this->assertEquals($people[1], Yii::app()->user->userModel);
-            $this->assertEquals($people[2], Yii::app()->user->userModel);
-        }
-
-        /**
          * @covers getEmailSubject
          */
         public function testGetEmailSubject()

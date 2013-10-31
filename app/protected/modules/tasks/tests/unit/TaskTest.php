@@ -298,13 +298,15 @@
         public function testAddSubscriberToTask()
         {
             Yii::app()->user->userModel = User::getByUsername('super');
-
+            $user = User::getByUsername('billy');
             $task = new Task();
             $task->name = 'MyTest';
+            $task->owner = $user;
             $nowStamp = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
             $this->assertTrue($task->save());
+            $this->assertEquals($user, $task->owner);
 
-            $task = Task::getById($task->id);
+            //$this->assertEquals(0, count($task->notificationSubscribers));
             $user = Yii::app()->user->userModel;
             $notificationSubscriber = new NotificationSubscriber();
             $notificationSubscriber->person = $user;
@@ -317,6 +319,7 @@
             $modelDerivationPathToItem = RuntimeUtil::getModelDerivationPathToItem('User');
             $subscribedUser = $subscriber->person->castDown(array($modelDerivationPathToItem));
             $this->assertEquals($user, $subscribedUser);
+            //$this->assertEquals(1, count($task->notificationSubscribers));
         }
 
         public function testAddCheckListItemsToTask()

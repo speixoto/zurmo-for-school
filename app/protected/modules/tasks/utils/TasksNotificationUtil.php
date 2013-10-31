@@ -60,11 +60,6 @@
         public static function submitTaskNotificationMessage(Task $task, $action, User $relatedUser = null)
         {
             assert('is_string($action)');
-            if ($action == self::NEW_TASK_NOTIFY_ACTION
-                                    && $task->owner != $task->requestedByUser)
-            {
-                return;
-            }
             $message = static::getNotificationMessageByAction($task, $action, $relatedUser);
             $rule = new TaskNotificationRules();
             $peopleToSendNotification = static::resolvePeopleToSendNotification($task, $action, $relatedUser);
@@ -145,19 +140,15 @@
             }
             elseif($action == self::CLOSE_TASK_NOTIFY_ACTION)
             {
-                $peopleToSendNotification = TasksUtil::resolvePeopleSubscribedForTask($task);
+                $peopleToSendNotification = TasksUtil::getTaskSubscribers($task);
             }
             elseif($action == self::CHANGE_TASK_OWNER_NOTIFY_ACTION)
             {
                 $peopleToSendNotification[] = $task->owner;
-                if($relatedUser != null)
-                {
-                    $peopleToSendNotification[] = $relatedUser;
-                }
             }
             elseif($action == self::CHANGE_TASK_DUE_DATE_NOTIFY_ACTION)
             {
-                $peopleToSendNotification     = TasksUtil::resolvePeopleSubscribedForTask($task);
+                $peopleToSendNotification = TasksUtil::getTaskSubscribers($task);
             }
             elseif($action == self::TASK_ADD_COMMENT_NOTIFY_ACTION)
             {
