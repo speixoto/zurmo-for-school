@@ -87,8 +87,8 @@
   <td></td>
 </tr>
 <tr>
-  <td>clickAndWait</td>
-  <td>//div[@id='LeadDetailsAndRelationsView']/div[2]/div/ul[2]/li[2]/div/div/div/a</td>
+  <td>click</td>
+  <td>//div[@id='LeadDetailsAndRelationsView']/div[2]/div/ul[2]/li[2]/div[1]/div/div/a/span</td>
   <td></td>
 </tr>
 <tr>
@@ -110,6 +110,16 @@
   <td>type</td>
   <td>Task_name</td>
   <td>Task kick-off lead ${randomSuffix}</td>
+</tr>
+<tr>
+  <td>click</td>
+  <td>link=More Details</td>
+  <td></td>
+</tr>
+<tr>
+	<td>waitForCondition</td>
+	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+	<td>30000</td>
 </tr>
 <tr>
   <td>click</td>
