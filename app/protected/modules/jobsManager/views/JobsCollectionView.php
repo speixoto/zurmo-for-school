@@ -165,7 +165,7 @@
             {
                 $content .= '<tr>';
                 $content .= '<td>' . $this->renderViewJobLogLinkContent($type);
-                $content .= '<span class="job-name">'.ZurmoHtml::encode($jobData['label']) . ZurmoHtml::encode($jobData['label']) . ZurmoHtml::encode($jobData['label']) . '</span></td>';
+                $content .= '<span class="job-name">'.ZurmoHtml::encode($jobData['label']) . '</span></td>';
                 $content .= '<td>' . $jobData['lastCompletedRunEncodedContent'] . '</td>';
                 $content .= '<td>' . ZurmoHtml::encode($jobData['statusContent']) . '</td>';
                 $content .= '<td class="button-column-right">' . $this->resolveActionContentByStatus($type, $jobData['status']) . '</td>';
