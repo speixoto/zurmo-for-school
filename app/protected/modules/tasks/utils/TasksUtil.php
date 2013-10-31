@@ -887,11 +887,11 @@
         {
             if($task->project->id > 0)
             {
-                $sortOrder = KanbanItem::getMaximumSortOrderByType($targetKanbanType, $task->project);
+                $sortOrder = KanbanItem::getMaximumSortOrderByType(intval($targetKanbanType), $task->project);
             }
             else
             {
-                $sortOrder = KanbanItem::getMaximumSortOrderByType($targetKanbanType, $task->activityItems->offsetGet(0));
+                $sortOrder = KanbanItem::getMaximumSortOrderByType(intval($targetKanbanType), $task->activityItems->offsetGet(0));
             }
             return $sortOrder;
         }

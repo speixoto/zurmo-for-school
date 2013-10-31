@@ -300,9 +300,11 @@
                             var idParts = id.split('_');
                             var taskId = parseInt(idParts[1]);
                             var columnType = parseInt(ulidParts[3]);
-                            $('#task-sortable-rows-{$targetKanbanItemType}').append(element);
-                            $('#task-sortable-rows-' + columnType).remove('#' + id);
-
+                            if(parseInt('{$targetKanbanItemType}') != columnType)
+                            {
+                                $('#task-sortable-rows-{$targetKanbanItemType}').append(element);
+                                $('#task-sortable-rows-' + columnType).remove('#' + id);
+                            }
                             if('{$targetStatus}' != '{$completedStatus}')
                             {
                                 var linkTag = $(element).find('.{$buttonClass}');

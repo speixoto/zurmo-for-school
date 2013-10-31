@@ -119,7 +119,7 @@
             assert('is_string($action)');
             $message                      = new NotificationMessage();
             $message->htmlContent         = self::getEmailMessage($task, $action, $relatedUser);
-            $url                          = Yii::app()->createAbsoluteUrl('tasks/default/details/',
+            $url                          = Yii::app()->createUrl('tasks/default/details/',
                                                                 array('id' => $task->id));
             $message->htmlContent        .= '-' . ZurmoHtml::link(Zurmo::t('Core', 'Click Here'), $url);
             return $message;

@@ -66,7 +66,7 @@
                 'column_0' => ImportMappingUtil::makeStringColumnMappingData       ('name'),
                 'column_1' => ImportMappingUtil::makeDateTimeColumnMappingData     ('dueDateTime'),
                 'column_2' => ImportMappingUtil::makeDateTimeColumnMappingData     ('completedDateTime'),
-                'column_3' => ImportMappingUtil::makeBooleanColumnMappingData      ('completed'),
+                'column_3' => ImportMappingUtil::makeIntegerColumnMappingData      ('status'),
                 'column_4' => ImportMappingUtil::makeModelDerivedColumnMappingData ('AccountDerived'),
                 'column_5' => ImportMappingUtil::makeModelDerivedColumnMappingData ('ContactDerived'),
                 'column_6' => ImportMappingUtil::makeModelDerivedColumnMappingData ('OpportunityDerived'),
@@ -98,7 +98,8 @@
             $this->assertEquals(1,                  count($tasks[0]->activityItems));
             $this->assertEquals('testAccount',      $tasks[0]->activityItems[0]->name);
             $this->assertEquals('Account',          get_class($tasks[0]->activityItems[0]));
-            $this->assertNull  ($tasks[0]->completed);
+            $this->assertFalse  ((bool)$tasks[0]->completed);
+            $this->assertEquals  (Task::STATUS_NEW, $tasks[0]->status);
             $this->assertEquals($actionDateTime, substr($tasks[0]->latestDateTime, 0, -3));
 
             $tasks = Task::getByName('task2');
@@ -106,7 +107,8 @@
             $this->assertEquals(1,                  count($tasks[0]->activityItems));
             $this->assertEquals('testContact',      $tasks[0]->activityItems[0]->firstName);
             $this->assertEquals('Contact',          get_class($tasks[0]->activityItems[0]));
-            $this->assertEquals(1,                  $tasks[0]->completed);
+            $this->assertTrue  ((bool)$tasks[0]->completed);
+            $this->assertEquals  (Task::STATUS_COMPLETED, $tasks[0]->status);
             $this->assertEquals('2011-12-22 06:03', substr($tasks[0]->latestDateTime, 0, -3));
 
             $tasks = Task::getByName('task3');
@@ -114,7 +116,8 @@
             $this->assertEquals(1,                 count($tasks[0]->activityItems));
             $this->assertEquals('testOpportunity', $tasks[0]->activityItems[0]->name);
             $this->assertEquals('Opportunity',     get_class($tasks[0]->activityItems[0]));
-            $this->assertNull  ($tasks[0]->completed);
+            $this->assertFalse  ((bool)$tasks[0]->completed);
+            $this->assertEquals  (Task::STATUS_IN_PROGRESS, $tasks[0]->status);
             $this->assertEquals($actionDateTime, substr($tasks[0]->latestDateTime, 0, -3));
 
             //Confirm 10 rows were processed as 'created'.
