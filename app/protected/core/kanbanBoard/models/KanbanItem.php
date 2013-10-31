@@ -88,7 +88,7 @@
                 'relations' => array(
                     'kanbanRelatedItem'         => array(static::HAS_ONE, 'Item', static::OWNED,
                                                     static::LINK_TYPE_SPECIFIC, 'kanbanrelateditem'),
-                    'task'                      => array(static::HAS_ONE, 'Task', static::NOT_OWNED)
+                    'task'                      => array(static::HAS_ONE, 'Task', static::NOT_OWNED),
                 ),
                 'rules' => array(
                     array('type', 'type', 'type' => 'integer'),
@@ -189,9 +189,10 @@
         /**
          * Get maximum sort order by type
          * @param int $taskType
+         * @param Item $childObjectOfItem it could be project or account or contact
          * @return int
          */
-        public static function getMaximumSortOrderByType($taskType)
+        public static function getMaximumSortOrderByType($taskType, Item $childObjectOfItem)
         {
             assert('is_int($taskType)');
             $searchAttributeData = array();
@@ -200,9 +201,14 @@
                     'attributeName'             => 'type',
                     'operatorType'              => 'equals',
                     'value'                     => intval($taskType),
+                ),
+                2 => array(
+                    'attributeName'             => 'kanbanRelatedItem',
+                    'operatorType'              => 'equals',
+                    'value'                     => $childObjectOfItem->getClassId('Item'),
                 )
             );
-            $searchAttributeData['structure'] = '1';
+            $searchAttributeData['structure'] = '(1 and 2)';
             $joinTablesAdapter                = new RedBeanModelJoinTablesQueryAdapter(get_called_class());
             $where  = RedBeanModelDataProvider::makeWhere(get_called_class(), $searchAttributeData, $joinTablesAdapter);
             $models = self::getSubset($joinTablesAdapter, null, null, $where, 'sortOrder DESC');
@@ -212,7 +218,7 @@
             }
             elseif (count($models) >= 1)
             {
-                return intval($models[0]->sortOrder) + 1;
+                return count($models) + 1;
             }
         }
     }

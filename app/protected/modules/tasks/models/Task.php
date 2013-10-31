@@ -278,23 +278,6 @@
         {
             $this->processNotificationsToBeSent();
             parent::afterSave();
-            $kanbanItem       = KanbanItem::getByTask($this->id);
-            if($kanbanItem != null)
-            {
-                $targetKanbanType = TasksUtil::resolveKanbanItemTypeForTaskStatus(intval($this->status));
-                $sourceKanbanType = $kanbanItem->type;
-                $taskStatusByKanbanItem = TasksUtil::getDefaultTaskStatusForKanbanItemType($kanbanItem->type);
-                if($taskStatusByKanbanItem != intval($this->status))
-                {
-                  $sortOrder             = KanbanItem::getMaximumSortOrderByType($targetKanbanType);
-                  $kanbanItem->sortOrder = $sortOrder;
-                  $kanbanItem->type      = $targetKanbanType;
-                  if(!$kanbanItem->save())
-                  {
-                      throw new FailedToSaveModelException();
-                  }
-                }
-            }
         }
 
         /**

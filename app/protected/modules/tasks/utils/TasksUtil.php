@@ -69,10 +69,16 @@
         {
             $content = null;
             $modelDerivationPathToItem = RuntimeUtil::getModelDerivationPathToItem('User');
+            $alreadySubscribedUsers = array();
             foreach ($task->notificationSubscribers as $subscriber)
             {
                 $user     = $subscriber->person->castDown(array($modelDerivationPathToItem));
-                $content .= static::renderSubscriberImageAndLinkContent($user);
+                //Take care of duplicates if any
+                if(!in_array($user->id, $alreadySubscribedUsers))
+                {
+                    $content .= static::renderSubscriberImageAndLinkContent($user);
+                    $alreadySubscribedUsers[] = $user->id;
+                }
             }
 
             return $content;
@@ -607,8 +613,15 @@
             $kanbanItem                     = new KanbanItem();
             $kanbanItem->type               = TasksUtil::resolveKanbanItemTypeForTaskStatus($task->status);
             $kanbanItem->task               = $task;
-            $kanbanItem->kanbanRelatedItem  = $task->activityItems->offsetGet(0);
-            $sortOrder = KanbanItem::getMaximumSortOrderByType($kanbanItem->type);
+            if($task->project->id > 0)
+            {
+                $kanbanItem->kanbanRelatedItem  = $task->project;
+            }
+            else
+            {
+                $kanbanItem->kanbanRelatedItem  = $task->activityItems->offsetGet(0);
+            }
+            $sortOrder = self::resolveAndGetSortOrderForTaskOnKanbanBoard($kanbanItem->type, $task);
             $kanbanItem->sortOrder          = $sortOrder;
             $kanbanItem->save();
             return $kanbanItem;
@@ -806,6 +819,70 @@
                 $notificationSubscriber->hasReadLatest = $hasReadLatest;
                 $task->notificationSubscribers->add($notificationSubscriber);
             }
+        }
+
+        /**
+         * Process kanban item update on button click on kanban board
+         * @param int $targetStatus
+         * @param int $taskId
+         * @param int $sourceKanbanType
+         */
+        public static function processKanbanItemUpdateOnButtonAction($targetStatus, $taskId, $sourceKanbanType)
+        {
+            assert('is_int($targetStatus)');
+            assert('is_int($taskId)');
+            assert('is_int($sourceKanbanType)');
+            $task = Task::getById($taskId);
+            $kanbanItem = KanbanItem::getByTask($taskId);
+            $targetKanbanType = null;
+            if($sourceKanbanType == KanbanItem::TYPE_SOMEDAY || $sourceKanbanType == KanbanItem::TYPE_TODO)
+            {
+                $targetKanbanType = KanbanItem::TYPE_IN_PROGRESS;
+            }
+            elseif($sourceKanbanType == KanbanItem::TYPE_IN_PROGRESS)
+            {
+                if($targetStatus == Task::STATUS_AWAITING_ACCEPTANCE
+                                    || $targetStatus == Task::STATUS_REJECTED
+                                        || $targetStatus == Task::STATUS_NEW)
+                {
+                    $targetKanbanType = KanbanItem::TYPE_IN_PROGRESS;
+                }
+                elseif(intval($targetStatus) == Task::STATUS_COMPLETED)
+                {
+                    $targetKanbanType = KanbanItem::TYPE_COMPLETED;
+                }
+            }
+
+            //If kanbantype is changed, do the sort
+            if($sourceKanbanType != $targetKanbanType)
+            {
+                $sortOrder = self::resolveAndGetSortOrderForTaskOnKanbanBoard($targetKanbanType, $task);
+                $kanbanItem->sortOrder = $sortOrder;
+                $kanbanItem->type      = $targetKanbanType;
+                if(!$kanbanItem->save())
+                {
+                    throw new FailedToSaveModelException();
+                }
+            }
+        }
+
+        /**
+         * Returns sortorder
+         * @param Task $task
+         * @param int $targetKanbanType
+         * @return int
+         */
+        public static function resolveAndGetSortOrderForTaskOnKanbanBoard($targetKanbanType, Task $task)
+        {
+            if($task->project->id > 0)
+            {
+                $sortOrder = KanbanItem::getMaximumSortOrderByType($targetKanbanType, $task->project);
+            }
+            else
+            {
+                $sortOrder = KanbanItem::getMaximumSortOrderByType($targetKanbanType, $task->activityItems->offsetGet(0));
+            }
+            return $sortOrder;
         }
     }
 ?>

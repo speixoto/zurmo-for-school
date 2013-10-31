@@ -198,6 +198,8 @@
         protected function registerKanbanColumnFinishActionScript($labelAccept, $labelReject, $targetStatus, $url)
         {
             $acceptanceStatusLabel = Task::getStatusDisplayName(Task::STATUS_AWAITING_ACCEPTANCE);
+            $acceptanceStatus      = Task::STATUS_AWAITING_ACCEPTANCE;
+            $inProgressKanbanType  = KanbanItem::TYPE_IN_PROGRESS;
             $script = "$(document).on('click','.action-type-finish',function()
                             {
                                 var element = $(this).parent().parent().parent().parent();
@@ -216,7 +218,7 @@
                                 $.ajax(
                                     {
                                         type : 'GET',
-                                        data : {'targetStatus':" . Task::STATUS_AWAITING_ACCEPTANCE . ", 'taskId':taskId},
+                                        data : {'targetStatus':'{$acceptanceStatus}', 'taskId':taskId, 'sourceKanbanType':'{$inProgressKanbanType}'},
                                         url  : '" . $url . "'
                                     }
                                 );
@@ -283,7 +285,6 @@
         protected function registerButtonActionScript($buttonClass, $targetKanbanItemType, $label,
                                                       $targetButtonClass, $url, $targetStatus)
         {
-            $completionText       = Zurmo::t('TasksModule', '% Complete - 100');
             $rejectStatusLabel    = Task::getStatusDisplayName(Task::STATUS_REJECTED);
             $inProgressStatusLabel = Task::getStatusDisplayName(Task::STATUS_IN_PROGRESS);
             $completedStatusLabel = Task::getStatusDisplayName(Task::STATUS_COMPLETED);
@@ -327,7 +328,7 @@
                             $.ajax(
                             {
                                 type : 'GET',
-                                data : {'targetStatus':'{$targetStatus}', 'taskId':taskId},
+                                data : {'targetStatus':'{$targetStatus}', 'taskId':taskId, 'sourceKanbanType':columnType},
                                 url  : '{$url}'
                             }
                             );
