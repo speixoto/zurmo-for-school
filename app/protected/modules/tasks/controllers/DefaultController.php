@@ -447,6 +447,7 @@
                                                                                         $this->getModule()->getId(),
                                                                                         intval($taskId));
                                 //This would be the one which is dragged across column
+                                $kanbanItem->sortOrder = TasksUtil::resolveAndGetSortOrderForTaskOnKanbanBoard(intval($type), $task);
                                 $kanbanItem->type = intval($type);
                                 $kanbanItem->save();
                                 $response['button'] = $content;
@@ -465,10 +466,11 @@
         * @param int $targetStatus
         * @param int $taskId
         */
-        public function actionUpdateStatusInKanbanView($targetStatus, $taskId)
+        public function actionUpdateStatusInKanbanView($targetStatus, $taskId, $sourceKanbanType)
         {
            //Run update queries for update task staus and update type and sort order in kanban column
            $this->processStatusUpdateViaAjax($taskId, $targetStatus, false);
+           TasksUtil::processKanbanItemUpdateOnButtonAction(intval($targetStatus), intval($taskId), intval($sourceKanbanType));
         }
 
         /**
@@ -493,8 +495,6 @@
                 $task->completedDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
                 $task->completed         = true;
                 $task->save();
-                TasksNotificationUtil::submitTaskNotificationMessage($task,
-                                                                 TasksNotificationUtil::CLOSE_TASK_NOTIFY_ACTION);
                 if($showCompletionDate)
                 {
                     echo TasksUtil::renderCompletionDateTime($task);
