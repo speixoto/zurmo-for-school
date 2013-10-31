@@ -120,6 +120,7 @@
                     array('name',             'type',    'type' => 'string'),
                     array('name',             'length',  'min'  => 1, 'max' => 64),
                     array('status',           'type', 'type' => 'integer'),
+                    array('status',           'default', 'value' => Task::STATUS_NEW),
                 ),
                 'elements' => array(
                     'completedDateTime' => 'DateTime',
@@ -208,35 +209,8 @@
         {
             if (parent::beforeSave())
             {
-                if($this->status != Task::STATUS_COMPLETED)
-                {
-                    $this->completed = false;
-                }
-                else
-                {
-                    $this->completed = true;
-                }
-
-                if ($this->completed == true)
-                {
-                    if ($this->completedDateTime == null)
-                    {
-                        $this->completedDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
-                    }
-                    $this->unrestrictedSet('latestDateTime', $this->completedDateTime);
-                }
-
-                if($this->isNewModel)
-                {
-                    $this->status = Task::STATUS_NEW;
-                }
-
-                //Add requested by user as default subscriber
-                if($this->requestedByUser->id > 0)
-                {
-                    TasksUtil::addSubscriber($this->requestedByUser, $this, false);
-                }
-                TasksUtil::addSubscriber($this->owner, $this, false);
+                $this->resolveStatusAndSetCompletedFields();
+                $this->resolveAndSetDefaultSubscribers();
                 return true;
             }
             else
@@ -351,6 +325,43 @@
                     TasksNotificationUtil::submitTaskNotificationMessage($this,
                                                          TasksNotificationUtil::NEW_TASK_NOTIFY_ACTION);
                 }
+            }
+        }
+
+        /**
+         * Resolve and set default subscribers
+         */
+        protected function resolveAndSetDefaultSubscribers()
+        {
+            //Add requested by user as default subscriber
+            if($this->requestedByUser->id > 0)
+            {
+                TasksUtil::addSubscriber($this->requestedByUser, $this, false);
+            }
+            TasksUtil::addSubscriber($this->owner, $this, false);
+        }
+
+        /**
+         * Resolve status and set completed fields
+         */
+        protected function resolveStatusAndSetCompletedFields()
+        {
+            if($this->status != Task::STATUS_COMPLETED)
+            {
+                $this->completed = false;
+            }
+            else
+            {
+                $this->completed = true;
+            }
+
+            if ($this->completed == true)
+            {
+                if ($this->completedDateTime == null)
+                {
+                    $this->completedDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
+                }
+                $this->unrestrictedSet('latestDateTime', $this->completedDateTime);
             }
         }
     }

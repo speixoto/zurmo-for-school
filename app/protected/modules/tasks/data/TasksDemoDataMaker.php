@@ -102,7 +102,6 @@
         public function populateModel(& $model)
         {
             assert('$model instanceof Task');
-            assert('$demoDataHelper instanceof DemoDataHelper');
             parent::populateModel($model);
             $taskRandomData    = ZurmoRandomDataUtil::
                                  getRandomDataByModuleAndModelClassNames('TasksModule', 'Task');
