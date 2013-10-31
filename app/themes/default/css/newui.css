@@ -11813,6 +11813,9 @@ textarea[disabled] {
   position: relative;
   top: 2px;
 }
+.hasCheckBox + .row-description {
+  margin-left: 10px;
+}
 .AppContent label {
   font-size: 12px;
   color: #666;
@@ -21840,6 +21843,7 @@ a.user-link {
   padding: 0 0 15px 0 !important;
 }
 .email-archive-item td {
+  padding-right: 0 !important;
   padding-bottom: 15px;
 }
 .email-archive-item th,
@@ -24775,6 +24779,10 @@ a + .autoresponder-stats {
 .hidden-field-label textarea {
   width: 80%;
 }
+.field-label .has-model-select,
+.hidden-field-label .has-model-select,
+.field-label .has-date-select,
+.hidden-field-label .has-date-select,
 .field-label .hasDropDown,
 .hidden-field-label .hasDropDown {
   width: 80% !important;
