@@ -49,7 +49,7 @@
                     'account'          => Zurmo::t('AccountsModule', 'AccountsModuleSingularLabel',    $params, null, $language),
                     'companyName'      => Zurmo::t('ContactsModule', 'Company Name',  array(), null, $language),
                     'description'      => Zurmo::t('ZurmoModule', 'Description',  array(), null, $language),
-                    'industry'         => Zurmo::t('ContactsModule', 'Industry',  array(), null, $language),
+                    'industry'         => Zurmo::t('ZurmoModule', 'Industry',  array(), null, $language),
                     'latestActivityDateTime' => Zurmo::t('ZurmoModule', 'Latest Activity Date Time', array(), null, $language),
                     'meetings'         => Zurmo::t('MeetingsModule', 'MeetingsModulePluralLabel', $params, null, $language),
                     'notes'            => Zurmo::t('NotesModule', 'NotesModulePluralLabel', $params, null, $language),
