@@ -99,7 +99,6 @@
          */
         public static function resolveNotificationTextTemplate($bodyContent, User $user = null)
         {
-            var_dump($bodyContent);
             assert('is_string($bodyContent)');
             if ($user === null)
             {
