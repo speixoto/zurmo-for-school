@@ -867,12 +867,22 @@
             //If kanbantype is changed, do the sort
             if($sourceKanbanType != $targetKanbanType)
             {
+                //Set the sort and type for target
                 $sortOrder = self::resolveAndGetSortOrderForTaskOnKanbanBoard($targetKanbanType, $task);
                 $kanbanItem->sortOrder = $sortOrder;
                 $kanbanItem->type      = $targetKanbanType;
                 if(!$kanbanItem->save())
                 {
                     throw new FailedToSaveModelException();
+                }
+                //Resort the source one
+                if($task->project->id > 0)
+                {
+                    TasksUtil::sortKanbanColumnItems($sourceKanbanType, $task->project);
+                }
+                else
+                {
+                    TasksUtil::sortKanbanColumnItems($sourceKanbanType, $task->activityItems->offsetGet(0));
                 }
             }
         }
@@ -894,6 +904,50 @@
                 $sortOrder = KanbanItem::getMaximumSortOrderByType(intval($targetKanbanType), $task->activityItems->offsetGet(0));
             }
             return $sortOrder;
+        }
+
+        /**
+         * Reset the sortoder for kanban type for the associated to it
+         * @param Task $task
+         * @param int $kanbanType
+         * @param Item $childObjectOfItem
+         * @return int
+         */
+        public static function sortKanbanColumnItems($kanbanType, Item $childObjectOfItem)
+        {
+            $models = KanbanItem::getAllTasksByType(intval($kanbanType), $childObjectOfItem);
+            foreach($models as $index => $model)
+            {
+                $model->sortOrder = $index + 1;
+                $model->save();
+            }
+        }
+
+        /**
+         * Check kanban type for status and update if it is required, it is required
+         * when user is changing the status from modal detail view
+         */
+        public static function checkKanbanTypeByStatusAndUpdateIfRequired(Task $task)
+        {
+            $kanbanItem = KanbanItem::getByTask($task->id);
+            $kanbanTypeByStatus = TasksUtil::resolveKanbanItemTypeForTaskStatus($task->status);
+            if($kanbanItem->type != $kanbanTypeByStatus)
+            {
+                $sourceKanbanItemType = $kanbanItem->type;
+                //put the item at the end
+                $kanbanItem->sortOrder = TasksUtil::resolveAndGetSortOrderForTaskOnKanbanBoard($kanbanTypeByStatus, $task);
+                $kanbanItem->type = $kanbanTypeByStatus;
+                $kanbanItem->save();
+                //Resort the source column
+                if($task->project->id > 0)
+                {
+                    TasksUtil::sortKanbanColumnItems($sourceKanbanItemType, $task->project);
+                }
+                else
+                {
+                    TasksUtil::sortKanbanColumnItems($sourceKanbanItemType, $task->activityItems->offsetGet(0));
+                }
+            }
         }
     }
 ?>
