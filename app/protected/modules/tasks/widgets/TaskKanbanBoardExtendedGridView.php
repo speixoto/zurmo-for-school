@@ -209,7 +209,15 @@
                                     {
                                         type : 'GET',
                                         data : {'targetStatus':'{$acceptanceStatus}', 'taskId':taskId, 'sourceKanbanType':'{$inProgressKanbanType}'},
-                                        url  : '" . $url . "'
+                                        url  : '" . $url . "',
+                                        beforeSend : function(){
+                                          $('.ui-overlay-block').fadeIn(50);
+                                          $(this).makeLargeLoadingSpinner(true, '.ui-overlay-block'); //- add spinner to block anything else
+                                        },
+                                        success: function(data){
+                                            $(this).makeLargeLoadingSpinner(false, '.ui-overlay-block');
+                                            $('.ui-overlay-block').fadeOut(50);
+                                         }
                                     }
                                 );
                             }
@@ -321,7 +329,15 @@
                             {
                                 type : 'GET',
                                 data : {'targetStatus':'{$targetStatus}', 'taskId':taskId, 'sourceKanbanType':columnType},
-                                url  : '{$url}'
+                                url  : '{$url}',
+                                beforeSend : function(){
+                                          $('.ui-overlay-block').fadeIn(50);
+                                          $(this).makeLargeLoadingSpinner(true, '.ui-overlay-block'); //- add spinner to block anything else
+                                        },
+                                success: function(data){
+                                            $(this).makeLargeLoadingSpinner(false, '.ui-overlay-block');
+                                            $('.ui-overlay-block').fadeOut(50);
+                                         }
                             }
                             );
                         }
