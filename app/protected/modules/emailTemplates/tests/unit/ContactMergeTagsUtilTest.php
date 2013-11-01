@@ -59,7 +59,7 @@
             self::$super = User::getByUsername('super');
             Yii::app()->user->userModel = self::$super;
             $loaded = ContactsModule::loadStartingData();
-            if(!$loaded)
+            if (!$loaded)
             {
                 throw new NotSupportedException();
             }

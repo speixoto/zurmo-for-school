@@ -44,7 +44,7 @@
             $gameReward->quantity = 5;
             $gameReward->cost     = 5;
             $saved = $gameReward->save();
-            if(!$saved)
+            if (!$saved)
 
             {
                 throw new FailedToSaveModelException();

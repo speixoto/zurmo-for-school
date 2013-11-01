@@ -68,19 +68,19 @@
                 'seconds' => floor($timeSinceLatestUpdate)
             );
 
-            if($timeForString['days'] >= 1)
+            if ($timeForString['days'] >= 1)
             {
                 return Zurmo::t('Core', '{n} day ago|{n} days ago', $timeForString['days']);
             }
             else
             {
-                if($timeForString['hours'] >= 1)
+                if ($timeForString['hours'] >= 1)
                 {
                     return Zurmo::t('Core', '{n} hour ago|{n} hours ago', $timeForString['hours']);
                 }
                 else
                 {
-                    if($timeForString['minutes'] >= 1)
+                    if ($timeForString['minutes'] >= 1)
                     {
                         return Zurmo::t('Core', '{n} minute ago|{n} minutes ago', $timeForString['minutes']);
                     }
@@ -429,7 +429,7 @@
         public static function resolveDateTimeAsDate($dateTime)
         {
             assert('is_string($date)');
-            if($dateTime == '0000-00-00 00:00:00')
+            if ($dateTime == '0000-00-00 00:00:00')
             {
                 return '0000-00-00';
             }

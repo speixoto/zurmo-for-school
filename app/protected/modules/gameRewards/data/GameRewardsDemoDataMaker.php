@@ -68,7 +68,7 @@
                 }
                 $gameReward->addPermissions(Group::getByName(Group::EVERYONE_GROUP_NAME), Permission::READ_WRITE_CHANGE_PERMISSIONS_CHANGE_OWNER);
                 $saved = $gameReward->save();
-                if(!$saved)
+                if (!$saved)
                 {
                     throw new FailedToSaveModelException();
                 }

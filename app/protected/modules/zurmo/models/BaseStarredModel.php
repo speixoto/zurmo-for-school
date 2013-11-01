@@ -137,7 +137,7 @@
             $models = static::getByUserIdAndModelId($userId, $modelId);
             foreach ($models as $model)
             {
-                if(!$model->delete())
+                if (!$model->delete())
                 {
                     throw new NotSupportedException("Unable to delete id: " . $model->id);
                 }

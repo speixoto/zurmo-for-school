@@ -272,7 +272,7 @@
 
         public function resolveNewCollectionItems()
         {
-            if(GameCollection::shouldReceiveCollectionItem())
+            if (GameCollection::shouldReceiveCollectionItem())
             {
                 return GameCollection::processRandomReceivingCollectionItemByUser(Yii::app()->user->userModel);
             }

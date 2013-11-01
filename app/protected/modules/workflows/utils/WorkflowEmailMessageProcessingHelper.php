@@ -153,9 +153,9 @@
                 $sender->fromAddress        = $this->emailMessageForm->sendFromAddress;
                 $sender->fromName           = $this->emailMessageForm->sendFromName;
             }
-            elseif($this->emailMessageForm->sendFromType == EmailMessageForWorkflowForm::SEND_FROM_TYPE_TRIGGERED_MODEL_OWNER)
+            elseif ($this->emailMessageForm->sendFromType == EmailMessageForWorkflowForm::SEND_FROM_TYPE_TRIGGERED_MODEL_OWNER)
             {
-                if($this->triggeredModel instanceof OwnedSecurableItem)
+                if ($this->triggeredModel instanceof OwnedSecurableItem)
                 {
                     if ($this->triggeredModel->owner->primaryEmail->emailAddress != null)
                     {

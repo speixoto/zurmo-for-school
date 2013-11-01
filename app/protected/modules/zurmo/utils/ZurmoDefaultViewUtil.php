@@ -423,7 +423,7 @@
             assert('is_string($moduleId)');
             assert('is_int($modelId)');
             assert('is_bool($kanbanIsActive)');
-            if($kanbanIsActive)
+            if ($kanbanIsActive)
             {
                 $active = DetailsAndRelationsViewTypesToggleLinkActionElement::TYPE_KANBAN_BOARD;
             }

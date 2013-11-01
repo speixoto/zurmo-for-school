@@ -178,7 +178,7 @@
 
         protected static function getZurmoVersionDisplayContent()
         {
-            if(defined('COMMERCIAL_VERSION'))
+            if (defined('COMMERCIAL_VERSION'))
             {
                 $zurmoVersion = COMMERCIAL_VERSION;
                 // Remove REPO_ID from Zurmo version

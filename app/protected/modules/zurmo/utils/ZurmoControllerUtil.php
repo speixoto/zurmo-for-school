@@ -136,7 +136,7 @@
                $model->setExplicitReadWriteModelPermissionsForWorkflow($explicitReadWriteModelPermissions);
             }
             $isDataValid = $model->validate();
-            if($returnOnValidate)
+            if ($returnOnValidate)
             {
                 return $model;
             }
@@ -206,7 +206,7 @@
         {
             $savedSuccessfully = false;
             $modelToStringValue = null;
-            if(isset($_POST[$postVariableName]))
+            if (isset($_POST[$postVariableName]))
             {
                 $postData         = $_POST[$postVariableName];
                 $model            = $this->saveModelFromPost($postData, $model, $savedSuccessfully,

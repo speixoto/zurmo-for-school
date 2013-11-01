@@ -55,14 +55,14 @@
                                                                                 array('{{model}}' => $modelClassName)));
             $membersWithRules   = array();
             $columns            = array();
-            foreach($rules as $rule)
+            foreach ($rules as $rule)
             {
                 if (in_array($rule[0], $members))
                 {
                     $membersWithRules[$rule[0]][] = $rule;
                 }
             }
-            foreach($membersWithRules as $member => $rules)
+            foreach ($membersWithRules as $member => $rules)
             {
                 $column = RedBeanModelMemberRulesToColumnAdapter::resolve($modelClassName, $rules, $messageLogger);
                 if ($column)

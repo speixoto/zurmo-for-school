@@ -73,7 +73,7 @@
             $displayAttributes = $model->getDisplayAttributes();
             $displayAttribute  = $displayAttributes[$displayAttributeKey];
             $realAttributeName = $displayAttribute->getResolvedAttribute();
-            if($realAttributeName == static::$attributeName)
+            if ($realAttributeName == static::$attributeName)
             {
                 $dataArray = static::resolveDropDownArray();
             }

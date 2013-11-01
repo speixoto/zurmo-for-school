@@ -436,7 +436,7 @@
         public function resolveNewTimeStampForThirdValueDuration($initialTimeStamp)
         {
             assert('is_int($initialTimeStamp)');
-            if($this->valueType ==
+            if ($this->valueType ==
                     MixedDateTypesTriggerForWorkflowFormAttributeMappingRules::TYPE_AT_LEAST_X_AFTER_TRIGGERED_DATE ||
                 $this->valueType ==
                     MixedDateTypesTriggerForWorkflowFormAttributeMappingRules::TYPE_LESS_THAN_X_AFTER_TRIGGERED_DATE)
@@ -547,7 +547,7 @@
         private function resolveAndValidateValueData(Array $rules, & $passedValidation, $ruleAttributeName,
                                                      $getTriggerRulesByAttribute = true)
         {
-            if($getTriggerRulesByAttribute)
+            if ($getTriggerRulesByAttribute)
             {
                 $modelToWorkflowAdapter = $this->makeResolvedAttributeModelRelationsAndAttributesToWorkflowAdapter();
                 $rules                  = array_merge($rules, $modelToWorkflowAdapter->getTriggerRulesByAttribute(

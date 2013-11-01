@@ -89,7 +89,7 @@
         protected function renderActionElementBar($renderedInForm)
         {
             $getData = GetUtil::getData();
-            if(isset($getData['kanbanBoard']) && $getData['kanbanBoard'] == 1)
+            if (isset($getData['kanbanBoard']) && $getData['kanbanBoard'] == 1)
             {
                 $isKanbanActive = true;
             }
@@ -102,7 +102,7 @@
             {
                 $kanbanToggleLink    = ZurmoDefaultViewUtil::renderActionBarLinksForKanbanBoard(
                                        $this->controllerId, $this->moduleId, $this->modelId, $isKanbanActive);
-                if($isKanbanActive)
+                if ($isKanbanActive)
                 {
                     $content = parent::renderActionElementBar($renderedInForm) . $kanbanToggleLink;
                 }

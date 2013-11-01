@@ -74,7 +74,7 @@
             {
                 $user     = $subscriber->person->castDown(array($modelDerivationPathToItem));
                 //Take care of duplicates if any
-                if(!in_array($user->id, $alreadySubscribedUsers))
+                if (!in_array($user->id, $alreadySubscribedUsers))
                 {
                     $content .= static::renderSubscriberImageAndLinkContent($user);
                     $alreadySubscribedUsers[] = $user->id;
@@ -96,7 +96,7 @@
             assert('is_int($imageSize)');
             assert('is_string($class) || $class === null');
             $htmlOptions = array('title' => strval($user));
-            if($class != null)
+            if ($class != null)
             {
                 $htmlOptions['class'] = $class;
             }
@@ -203,15 +203,15 @@
         public static function getModalTitleForCreateTask($renderType = "Create")
         {
             $params = LabelUtil::getTranslationParamsForAllModules();
-            if($renderType == "Create")
+            if ($renderType == "Create")
             {
                 $title = Zurmo::t('TasksModule', 'Create TasksModuleSingularLabel', $params);
             }
-            elseif($renderType == "Copy")
+            elseif ($renderType == "Copy")
             {
                 $title = Zurmo::t('TasksModule', 'Copy TasksModuleSingularLabel', $params);
             }
-            elseif($renderType == "Details")
+            elseif ($renderType == "Details")
             {
                 $title = static::getModalDetailsTitle();
             }
@@ -256,7 +256,7 @@
         public static function resolveExtraCloseScriptForModalAjaxOptions($sourceId = null)
         {
             assert('is_string($sourceId) || $sourceId == null');
-            if($sourceId != null)
+            if ($sourceId != null)
             {
                 return "$.fn.yiiGridView.update('{$sourceId}');";
             }
@@ -279,7 +279,7 @@
             assert('is_string($controllerId) || is_null($controllerId)');
             assert('is_string($moduleId)  || is_null($moduleId)');
             assert('is_string($moduleClassName)');
-            if($isOwnerRequiredInDisplay)
+            if ($isOwnerRequiredInDisplay)
             {
                 $label       = $task->name . ZurmoHtml::tag('span', array(), '(' . strval($task->owner) . ')');
             }
@@ -370,7 +370,7 @@
          */
         public static function resolveKanbanItemTypeForTaskStatus($status)
         {
-            if($status == null)
+            if ($status == null)
             {
                 return KanbanItem::TYPE_SOMEDAY;
             }
@@ -415,7 +415,7 @@
             $title  = Zurmo::t('Core', 'Unsubscribe');
             $unsubscribeLink = ZurmoHtml::tag('i', array('class' => 'icon-unsubscribe', 'title' => $title), '');
 
-            if($taskId == null)
+            if ($taskId == null)
             {
                 $url     = Yii::app()->createUrl('tasks/default/addKanbanSubscriber');
                 $script  = self::getKanbanSubscriptionScript($url, 'subscribe-task-link', 'unsubscribe-task-link', $unsubscribeLink);
@@ -438,7 +438,7 @@
             $title  = Zurmo::t('Core', 'Subscribe');
             $subscribeLink = ZurmoHtml::tag('i', array('class' => 'icon-subscribe', 'title' => $title), '');
 
-            if($taskId == null)
+            if ($taskId == null)
             {
                 $url           = Yii::app()->createUrl('tasks/default/removeKanbanSubscriber');
                 $script    = self::getKanbanSubscriptionScript($url, 'unsubscribe-task-link', 'subscribe-task-link', $subscribeLink);
@@ -555,7 +555,7 @@
         {
             assert('is_string($subscribeLinkClass)');
             assert('is_string($unsubscribeLinkClass)');
-            if(TasksUtil::isUserSubscribedForTask($task, Yii::app()->user->userModel) === false)
+            if (TasksUtil::isUserSubscribedForTask($task, Yii::app()->user->userModel) === false)
             {
                 $label       = Zurmo::t('Core', 'Subscribe');
                 $class       = $subscribeLinkClass;
@@ -578,7 +578,7 @@
         public static function getTaskCompletionPercentage(Task $task)
         {
             $checkListItemsCount = count($task->checkListItems);
-            if($checkListItemsCount == 0)
+            if ($checkListItemsCount == 0)
             {
                 return 0;
             }
@@ -624,7 +624,7 @@
             $kanbanItem                     = new KanbanItem();
             $kanbanItem->type               = TasksUtil::resolveKanbanItemTypeForTaskStatus($task->status);
             $kanbanItem->task               = $task;
-            if($task->project->id > 0)
+            if ($task->project->id > 0)
             {
                 $kanbanItem->kanbanRelatedItem  = $task->project;
             }
@@ -646,7 +646,7 @@
         public static function renderCompletionProgressBarContent(Task $task)
         {
             $checkListItemsCount = count($task->checkListItems);
-            if( $checkListItemsCount == 0)
+            if ( $checkListItemsCount == 0)
             {
                 return null;
             }
@@ -663,9 +663,9 @@
         public static function getTaskCompletedCheckListItems(Task $task)
         {
             $completedItemsCount = 0;
-            foreach($task->checkListItems as $checkListItem)
+            foreach ($task->checkListItems as $checkListItem)
             {
-                    if((bool)$checkListItem->completed)
+                    if ((bool)$checkListItem->completed)
                     {
                         $completedItemsCount++;
                     }
@@ -780,7 +780,7 @@
          */
         public static function renderCompletionDateTime(Task $task)
         {
-            if($task->completedDateTime == null)
+            if ($task->completedDateTime == null)
             {
                 $task->completedDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
             }
@@ -796,13 +796,13 @@
         {
             assert('is_string($relationModelId) || $relationModelId == null');
             assert('is_string($copyAction) || $copyAction == null');
-            if($copyAction == 'copy')
+            if ($copyAction == 'copy')
             {
                 return 'modalCopyFromRelation';
             }
             else
             {
-                if($relationModelId != null)
+                if ($relationModelId != null)
                 {
                     return 'modalSaveFromRelation';
                 }
@@ -823,15 +823,15 @@
         {
             assert('is_bool($hasReadLatest)');
             $isAlreadySubscribed = false;
-            foreach($task->notificationSubscribers as $notificationSubscriber)
+            foreach ($task->notificationSubscribers as $notificationSubscriber)
             {
-                if($notificationSubscriber->person->id == $user->id)
+                if ($notificationSubscriber->person->id == $user->id)
                 {
                     $isAlreadySubscribed = true;
                     break;
                 }
             }
-            if(!$isAlreadySubscribed)
+            if (!$isAlreadySubscribed)
             {
                 $notificationSubscriber = new NotificationSubscriber();
                 $notificationSubscriber->person = $user;
@@ -854,26 +854,26 @@
             $task = Task::getById($taskId);
             $kanbanItem = KanbanItem::getByTask($taskId);
             $targetKanbanType = null;
-            if($sourceKanbanType == KanbanItem::TYPE_SOMEDAY || $sourceKanbanType == KanbanItem::TYPE_TODO)
+            if ($sourceKanbanType == KanbanItem::TYPE_SOMEDAY || $sourceKanbanType == KanbanItem::TYPE_TODO)
             {
                 $targetKanbanType = KanbanItem::TYPE_IN_PROGRESS;
             }
-            elseif($sourceKanbanType == KanbanItem::TYPE_IN_PROGRESS)
+            elseif ($sourceKanbanType == KanbanItem::TYPE_IN_PROGRESS)
             {
-                if($targetStatus == Task::STATUS_AWAITING_ACCEPTANCE
+                if ($targetStatus == Task::STATUS_AWAITING_ACCEPTANCE
                                     || $targetStatus == Task::STATUS_REJECTED
                                         || $targetStatus == Task::STATUS_IN_PROGRESS)
                 {
                     $targetKanbanType = KanbanItem::TYPE_IN_PROGRESS;
                 }
-                elseif(intval($targetStatus) == Task::STATUS_COMPLETED)
+                elseif (intval($targetStatus) == Task::STATUS_COMPLETED)
                 {
                     $targetKanbanType = KanbanItem::TYPE_COMPLETED;
                 }
             }
 
             //If kanbantype is changed, do the sort
-            if($sourceKanbanType != $targetKanbanType)
+            if ($sourceKanbanType != $targetKanbanType)
             {
                 //Set the sort and type for target
                 $sortOrder = self::resolveAndGetSortOrderForTaskOnKanbanBoard($targetKanbanType, $task);
@@ -884,7 +884,7 @@
                     throw new FailedToSaveModelException();
                 }
                 //Resort the source one
-                if($task->project->id > 0)
+                if ($task->project->id > 0)
                 {
                     TasksUtil::sortKanbanColumnItems($sourceKanbanType, $task->project);
                 }
@@ -903,7 +903,7 @@
          */
         public static function resolveAndGetSortOrderForTaskOnKanbanBoard($targetKanbanType, Task $task)
         {
-            if($task->project->id > 0)
+            if ($task->project->id > 0)
             {
                 $sortOrder = KanbanItem::getMaximumSortOrderByType(intval($targetKanbanType), $task->project);
             }
@@ -924,7 +924,7 @@
         public static function sortKanbanColumnItems($kanbanType, Item $childObjectOfItem)
         {
             $models = KanbanItem::getAllTasksByType(intval($kanbanType), $childObjectOfItem);
-            foreach($models as $index => $model)
+            foreach ($models as $index => $model)
             {
                 $model->sortOrder = $index + 1;
                 $model->save();
@@ -940,7 +940,7 @@
         {
             $kanbanItem = KanbanItem::getByTask($task->id);
             $kanbanTypeByStatus = TasksUtil::resolveKanbanItemTypeForTaskStatus($task->status);
-            if($kanbanItem->type != $kanbanTypeByStatus)
+            if ($kanbanItem->type != $kanbanTypeByStatus)
             {
                 $sourceKanbanItemType = $kanbanItem->type;
                 //put the item at the end
@@ -948,7 +948,7 @@
                 $kanbanItem->type = $kanbanTypeByStatus;
                 $kanbanItem->save();
                 //Resort the source column
-                if($task->project->id > 0)
+                if ($task->project->id > 0)
                 {
                     TasksUtil::sortKanbanColumnItems($sourceKanbanItemType, $task->project);
                 }

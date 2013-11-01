@@ -635,10 +635,10 @@
                 }
                 foreach ($ajaxLinkOptionsElements as $ajaxLinkOptionsElement)
                 {
-                    if(isset($menuItems[$itemKey][$ajaxLinkOptionsElement]))
+                    if (isset($menuItems[$itemKey][$ajaxLinkOptionsElement]))
                     {
                         $substring = $menuItems[$itemKey][$ajaxLinkOptionsElement];
-                        if(is_string($substring))
+                        if (is_string($substring))
                         {
                             $options = array();
                             eval("\$options = $substring;");
