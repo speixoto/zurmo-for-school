@@ -266,7 +266,6 @@
 
         /**
          * Resolve to save notification
-         * @param Notification $notification
          * @return bool
          */
         protected static function resolveToSaveNotification()
