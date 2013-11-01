@@ -292,6 +292,7 @@
                 if ($('#" . $id . "').val() == '')
                 {
                     //do nothing
+                    $('#actionsNextLink').parent().parent().show();
                 }
                 else if ($('#" . $id . "').val() == '" . ActionForWorkflowForm::TYPE_UPDATE_SELF . "')
                 {
