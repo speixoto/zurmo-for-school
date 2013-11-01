@@ -427,6 +427,7 @@ To: Steve <steve@example.com>
             {
                 $this->markTestSkipped(Zurmo::t('EmailMessagesModule', 'Test email settings are not configured in perInstanceTest.php file.'));
             }
+            ForgetAllCacheUtil::forgetAllCaches();
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
             $user = User::getByUsername('steve');
