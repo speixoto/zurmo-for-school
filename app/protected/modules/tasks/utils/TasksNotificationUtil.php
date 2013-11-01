@@ -107,11 +107,12 @@
         protected static function getNotificationMessageByAction(Task $task, $action, User $relatedUser = null)
         {
             assert('is_string($action)');
-            $message                      = new NotificationMessage();
-            $message->htmlContent         = self::getEmailMessage($task, $action, $relatedUser);
-            $url                          = Yii::app()->createAbsoluteUrl('tasks/default/details/',
-                                                                array('id' => $task->id));
-            $message->htmlContent        .= '-' . ZurmoHtml::link(Zurmo::t('Core', 'Click Here'), $url);
+            $message                     = new NotificationMessage();
+            $messageContent              = self::getEmailMessage($task, $action, $relatedUser);
+            $url                         = Yii::app()->createAbsoluteUrl('tasks/default/details/',
+                                           array('id' => $task->id));
+            $message->textContent        = $messageContent . "\n" . ZurmoHtml::link(Zurmo::t('Core', 'Click Here'), $url);
+            $message->htmlContent        = $messageContent . "<br/>" . ZurmoHtml::link(Zurmo::t('Core', 'Click Here'), $url);
             return $message;
         }
 
