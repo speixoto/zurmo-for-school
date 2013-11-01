@@ -92,7 +92,8 @@
             $content = $this->runControllerWithNoExceptionsAndGetContent('tasks/default/addSubscriber', false);
             $this->assertTrue(strpos($content, 'gravatar') > 0);
             $task   = Task::getById($taskId);
-            $this->assertEquals(1, $task->notificationSubscribers->count());
+            //as owner and requested by user are default
+            $this->assertEquals(3, $task->notificationSubscribers->count());
             $notificationSubscribers = $task->notificationSubscribers;
             $modelDerivationPathToItem = RuntimeUtil::getModelDerivationPathToItem('User');
             $user = $notificationSubscribers[0]->person->castDown(array($modelDerivationPathToItem));
@@ -100,10 +101,10 @@
 
             //Remove subscriber
             $this->setGetArray(array('id' => $task->id));
-            $this->assertEquals(1, $task->notificationSubscribers->count());
-            $this->runControllerWithNoExceptionsAndGetContent('tasks/default/removeSubscriber', true);
+            $this->assertEquals(3, $task->notificationSubscribers->count());
+            $this->runControllerWithNoExceptionsAndGetContent('tasks/default/removeSubscriber', false);
             $task   = Task::getById($taskId);
-            $this->assertEquals(0, $task->notificationSubscribers->count());
+            $this->assertEquals(2, $task->notificationSubscribers->count());
         }
 
         /**
@@ -163,36 +164,6 @@
             $this->assertTrue(strpos($content, 'Task for test cases') > 0);
         }
 
-        public function testAddAndRemoveKanbanSubscriberViaAjax()
-        {
-            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
-            $task     = new Task();
-            $task->name = 'newTest';
-            $nowStamp = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
-            $this->assertTrue($task->save());
-            unset($task);
-            $tasks  = Task::getByName('newTest');
-            $task   = $tasks[0];
-            $taskId = $task->id;
-            $this->setGetArray(array('id' => $task->id));
-            $this->assertEquals(0, $task->notificationSubscribers->count());
-            $this->runControllerWithNoExceptionsAndGetContent('tasks/default/addKanbanSubscriber', true);
-            $task   = Task::getById($taskId);
-            $this->assertEquals(1, $task->notificationSubscribers->count());
-            $notificationSubscribers = $task->notificationSubscribers;
-            $modelDerivationPathToItem = RuntimeUtil::getModelDerivationPathToItem('User');
-            $user = $notificationSubscribers[0]->person->castDown(array($modelDerivationPathToItem));
-            $this->assertEquals($user->id, $super->id);
-
-            //Remove kanban subscriber
-            $this->setGetArray(array('id' => $task->id));
-            $this->assertEquals(1, $task->notificationSubscribers->count());
-            $this->runControllerWithNoExceptionsAndGetContent('tasks/default/removeKanbanSubscriber', true);
-            $task   = Task::getById($taskId);
-            $this->assertEquals(0, $task->notificationSubscribers->count());
-        }
-
-
         public function testUpdateStatusOnDragInKanbanView()
         {
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
@@ -246,7 +217,9 @@
             $tasks = Task::getByName('My Kanban Task');
             $task  = $tasks[0];
             $taskId = $task->id;
-            $this->setGetArray(array('targetStatus' => Task::STATUS_AWAITING_ACCEPTANCE, 'taskId' => $task->id));
+            $this->setGetArray(array('targetStatus' => Task::STATUS_AWAITING_ACCEPTANCE,
+                                     'taskId' => $task->id,
+                                     'sourceKanbanType' => KanbanItem::TYPE_IN_PROGRESS));
             $this->runControllerWithNoExceptionsAndGetContent('tasks/default/updateStatusInKanbanView', true);
             $task = Task::getById($taskId);
             $this->assertEquals(Task::STATUS_AWAITING_ACCEPTANCE, $task->status);

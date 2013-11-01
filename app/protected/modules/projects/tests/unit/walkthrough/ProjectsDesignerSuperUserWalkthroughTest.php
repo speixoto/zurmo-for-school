@@ -543,14 +543,14 @@
             $superUserId    = $super->id;
 
             //Search a created Project using the customfields.
-            $this->resetPostArray();
+            $this->resetGetArray();
             $this->setGetArray(array(
                         'ProjectsSearchForm' =>
                             ProjectsDesignerWalkthroughHelperUtil::fetchProjectsSearchFormGetData($superUserId),
                         'ajax'                    =>  'list-view')
             );
             //TODO Need to ask Jason
-            $content = $this->runControllerWithNoExceptionsAndGetContent('projects/default/edit');
+            $content = $this->runControllerWithNoExceptionsAndGetContent('projects/default');
 
             //Assert that the edit Project does not exits after the search.
             $this->assertTrue(strpos($content, "No results found") > 0);

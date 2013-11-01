@@ -136,7 +136,7 @@
             $matcher= array(
                 'tag' => 'h4',
                 //Multiple ancestors
-                'ancestor' => array('tag' => 'li', 'id' => 'items_' . $taskNew->id, 'tag' => 'ul', 'id' => 'task-sortable-rows-2'),
+                'ancestor' => array('tag' => 'li', 'id' => 'items_' . $taskNew->id, 'tag' => 'ul', 'id' => 'task-sortable-rows-1'),
                 'content' => 'MyTask New'
             );
             $this->assertTag($matcher, $content);
