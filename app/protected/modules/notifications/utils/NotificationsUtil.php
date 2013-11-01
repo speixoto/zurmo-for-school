@@ -250,15 +250,28 @@
                     $notification->owner               = $user;
                     $notification->type                = $type;
                     $notification->notificationMessage = $message;
-                    $saved                             = $notification->save();
-                    if (!$saved)
+                    if(static::resolveToSaveNotification())
                     {
-                        throw new NotSupportedException();
+                        $saved = $notification->save();
+                        if (!$saved)
+                        {
+                            throw new NotSupportedException();
+                        }
                     }
                     $notifications[] = $notification;
                 }
             }
             return $notifications;
+        }
+
+        /**
+         * Resolve to save notification
+         * @param Notification $notification
+         * @return bool
+         */
+        protected static function resolveToSaveNotification()
+        {
+            return true;
         }
     }
 ?>

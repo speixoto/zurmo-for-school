@@ -71,39 +71,29 @@
             $rule->setModel($task);
             $rule->setCritical(true);
             $rule->setAllowDuplicates(true);
-            static::submitTaskNotification($message, $rule);
-        }
-
-        /**
-         * Submits task notification
-         * @param NotificationMessage $message
-         * @param TaskNotificationRules $rule
-         */
-        public static function submitTaskNotification(NotificationMessage $message, $rule)
-        {
-            assert('$rule instanceof TaskNotificationRules');
-            $users = $rule->getUsers();
-            if (count($users) == 0)
-            {
-                throw new NotSupportedException();
-            }
-            static::processTaskNotification($message, $rule);
+            static::processTaskNotification($message, $rule, $action);
         }
 
         /**
          * Process task notification
          * @param NotificationMessage $message
          * @param TaskNotificationRules $rule
+         * @param string $action
          */
-        protected static function processTaskNotification(NotificationMessage $message, TaskNotificationRules $rule)
+        protected static function processTaskNotification(NotificationMessage $message, TaskNotificationRules $rule, $action)
         {
+            assert('is_string($action)');
             $users = $rule->getUsers();
+            if (count($users) == 0)
+            {
+                throw new NotSupportedException();
+            }
             $notifications = static::resolveAndGetNotifications($users, $rule->getType(), $message, $rule->allowDuplicates());
             if (static::resolveShouldSendEmailIfCritical() && $rule->isCritical())
             {
                 foreach ($notifications as $notification)
                 {
-                    static::sendTaskEmail($notification, $rule);
+                    static::sendTaskEmail($notification, $rule, $action);
                 }
             }
         }
@@ -119,7 +109,7 @@
             assert('is_string($action)');
             $message                      = new NotificationMessage();
             $message->htmlContent         = self::getEmailMessage($task, $action, $relatedUser);
-            $url                          = Yii::app()->createUrl('tasks/default/details/',
+            $url                          = Yii::app()->createAbsoluteUrl('tasks/default/details/',
                                                                 array('id' => $task->id));
             $message->htmlContent        .= '-' . ZurmoHtml::link(Zurmo::t('Core', 'Click Here'), $url);
             return $message;
@@ -236,14 +226,15 @@
          * Send task email
          * @param Notification $notification
          * @param TaskNotificationRules $rule
+         * @param string $action
          */
-        protected static function sendTaskEmail(Notification $notification, $rule)
+        protected static function sendTaskEmail(Notification $notification, TaskNotificationRules $rule, $action)
         {
-            assert('$rule instanceof TaskNotificationRules');
+            assert('is_string($action)');
             if ($notification->owner->primaryEmail->emailAddress !== null &&
                 !UserConfigurationFormAdapter::resolveAndGetValue($notification->owner, 'turnOffEmailNotifications'))
             {
-                $emailMessage               = static::makeEmailMessage($notification, $rule);
+                $emailMessage               = static::makeEmailMessage($notification, $rule, $action);
                 $emailMessage->content      = static::makeEmailContent($notification);
                 $emailMessage->sender       = static::makeSender();
                 $emailMessage->recipients->add(static::makeRecipient($notification));
@@ -251,7 +242,7 @@
                 $emailMessage->folder       = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_DRAFT);
                 try
                 {
-                    Yii::app()->emailHelper->sendImmediately($emailMessage);
+                    Yii::app()->emailHelper->send($emailMessage);
                 }
                 catch (CException $e)
                 {
@@ -263,15 +254,16 @@
         /**
          * @param Notification $notification
          * @param TaskNotificationRules $rule
+         * @param string $action
          * @return EmailMessage
          */
-        protected static function makeEmailMessage(Notification $notification, $rule)
+        protected static function makeEmailMessage(Notification $notification, TaskNotificationRules $rule, $action)
         {
-            assert('$rule instanceof TaskNotificationRules');
+            assert('is_string($action)');
             $emailMessage               = new EmailMessage();
             $emailMessage->owner        = Yii::app()->user->userModel;
             $task                       = $rule->getModel();
-            $emailMessage->subject      = static::getTaskEmailSubject($task, $rule->getType());
+            $emailMessage->subject      = static::getTaskEmailSubject($task, $action);
             return $emailMessage;
         }
 
@@ -315,6 +307,16 @@
             $recipient->type            = EmailMessageRecipient::TYPE_TO;
             $recipient->personsOrAccounts->add($notification->owner);
             return $recipient;
+        }
+
+        /**
+         * Resolve to save notification
+         * @param Notification $notification
+         * @return bool
+         */
+        protected static function resolveToSaveNotification()
+        {
+            return false;
         }
     }
 ?>

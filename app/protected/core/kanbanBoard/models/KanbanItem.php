@@ -194,6 +194,25 @@
          */
         public static function getMaximumSortOrderByType($taskType, Item $childObjectOfItem)
         {
+            $models = self::getAllTasksByType($taskType, $childObjectOfItem);
+            if (count($models) == 0)
+            {
+                return 1;
+            }
+            elseif (count($models) >= 1)
+            {
+                return count($models) + 1;
+            }
+        }
+
+        /**
+         * Get all tasks by kanban type
+         * @param int $taskType
+         * @param Item $childObjectOfItem
+         * @return array of objects
+         */
+        public static function getAllTasksByType($taskType, Item $childObjectOfItem)
+        {
             assert('is_int($taskType)');
             $searchAttributeData = array();
             $searchAttributeData['clauses'] = array(
@@ -211,15 +230,8 @@
             $searchAttributeData['structure'] = '(1 and 2)';
             $joinTablesAdapter                = new RedBeanModelJoinTablesQueryAdapter(get_called_class());
             $where  = RedBeanModelDataProvider::makeWhere(get_called_class(), $searchAttributeData, $joinTablesAdapter);
-            $models = self::getSubset($joinTablesAdapter, null, null, $where, 'sortOrder DESC');
-            if (count($models) == 0)
-            {
-                return 1;
-            }
-            elseif (count($models) >= 1)
-            {
-                return count($models) + 1;
-            }
+            $models = self::getSubset($joinTablesAdapter, null, null, $where, 'sortOrder ASC');
+            return $models;
         }
     }
 ?>

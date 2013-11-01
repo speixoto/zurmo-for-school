@@ -36,12 +36,39 @@
 
     class TaskNotificationUtilTest extends ZurmoBaseTest
     {
+        public static $emailHelperSendEmailThroughTransport;
+
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
             SecurityTestHelper::createSuperAdmin();
-            $super = User::getByUsername('super');
-            Yii::app()->user->userModel = $super;
+            Yii::app()->user->userModel = User::getByUsername('super');
+            self::$emailHelperSendEmailThroughTransport = Yii::app()->emailHelper->sendEmailThroughTransport;
+
+            $box = EmailBox::resolveAndGetByName(EmailBox::NOTIFICATIONS_NAME);
+            $steve = UserTestHelper::createBasicUserWithEmailAddress('steve');
+            if (EmailMessageTestHelper::isSetEmailAccountsTestConfiguration())
+            {
+                EmailMessageTestHelper::createEmailAccount($steve);
+
+                Yii::app()->imap->imapHost        = Yii::app()->params['emailTestAccounts']['userImapSettings']['imapHost'];
+                Yii::app()->imap->imapUsername    = Yii::app()->params['emailTestAccounts']['userImapSettings']['imapUsername'];
+                Yii::app()->imap->imapPassword    = Yii::app()->params['emailTestAccounts']['userImapSettings']['imapPassword'];
+                Yii::app()->imap->imapPort        = Yii::app()->params['emailTestAccounts']['userImapSettings']['imapPort'];
+                Yii::app()->imap->imapSSL         = Yii::app()->params['emailTestAccounts']['userImapSettings']['imapSSL'];
+                Yii::app()->imap->imapFolder      = Yii::app()->params['emailTestAccounts']['userImapSettings']['imapFolder'];
+                Yii::app()->imap->setInboundSettings();
+                Yii::app()->imap->init();
+
+                Yii::app()->emailHelper->outboundHost     = Yii::app()->params['emailTestAccounts']['smtpSettings']['outboundHost'];
+                Yii::app()->emailHelper->outboundPort     = Yii::app()->params['emailTestAccounts']['smtpSettings']['outboundPort'];
+                Yii::app()->emailHelper->outboundUsername = Yii::app()->params['emailTestAccounts']['smtpSettings']['outboundUsername'];
+                Yii::app()->emailHelper->outboundPassword = Yii::app()->params['emailTestAccounts']['smtpSettings']['outboundPassword'];
+                Yii::app()->emailHelper->outboundSecurity = Yii::app()->params['emailTestAccounts']['smtpSettings']['outboundSecurity'];
+                Yii::app()->emailHelper->sendEmailThroughTransport = true;
+                Yii::app()->emailHelper->setOutboundSettings();
+                Yii::app()->emailHelper->init();
+            }
         }
 
         /**
@@ -50,28 +77,28 @@
         public function testTaskNotifications()
         {
             Yii::app()->user->userModel = User::getByUsername('super');
-            $count = Notification::getCount();
-            $this->assertEquals(0, $count);
+            $this->assertEquals(0, Yii::app()->emailHelper->getQueuedCount());
+            $user                       = User::getByUsername('steve');
+            UserConfigurationFormAdapter::setValue($user, false, 'turnOffEmailNotifications');
             $task                       = new Task();
             $task->name                 = 'My Task';
-            $task->owner                = Yii::app()->user->userModel;
+            $task->owner                = $user;
             $task->requestedByUser      = Yii::app()->user->userModel;
             $this->assertTrue($task->save());
 
-            $newCount = Notification::getCount();
-            $this->assertEquals(1, $newCount);
-            $user                       = UserTestHelper::createBasicUser('Billy');
-            $task->owner                = $user;
+            $this->assertEquals(2, Yii::app()->emailHelper->getQueuedCount());
+
+            $billy = UserTestHelper::createBasicUserWithEmailAddress('billy');
+            EmailMessageTestHelper::createEmailAccount($billy);
+            $task->owner                = $billy;
             $this->assertTrue($task->save());
-            $newCount = Notification::getCount();
-            $this->assertEquals(2, $newCount);
+            $this->assertEquals(3, Yii::app()->emailHelper->getQueuedCount());
 
             $dueDateTime  = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
             $task->dueDateTime = $dueDateTime;
             $this->assertTrue($task->save());
-            $newCount = Notification::getCount();
             //As there are two default subscribers owner and requested by user
-            $this->assertEquals(4, $newCount);
+            $this->assertEquals(5, Yii::app()->emailHelper->getQueuedCount());
 
             $comment                = new Comment();
             $comment->description   = 'My Description';
@@ -80,14 +107,12 @@
             TasksNotificationUtil::submitTaskNotificationMessage($task,
                                                                     TasksNotificationUtil::TASK_ADD_COMMENT_NOTIFY_ACTION,
                                                                     $task->comments[0]->createdByUser);
-            $newCount = Notification::getCount();
-            $this->assertEquals(5, $newCount);
+            $this->assertEquals(6, Yii::app()->emailHelper->getQueuedCount());
 
             $task->completed         = true;
             $task->status            = Task::STATUS_COMPLETED;
             $this->assertTrue($task->save());
-            $newCount = Notification::getCount();
-            $this->assertEquals(7, $newCount);
+            $this->assertEquals(8, Yii::app()->emailHelper->getQueuedCount());
             $this->assertTrue(strtotime($task->completedDateTime) > strtotime(date('Y-m-d')));
         }
     }

@@ -316,14 +316,29 @@
          */
         public function actionModalCopy($id)
         {
+            $task = Task::getById((int)$id);
+            $this->processTaskEdit($task);
+        }
+
+        /**
+         * Copy task in the modal view
+         * @param string $relationAttributeName
+         * @param string $relationModelId
+         * @param string $relationModuleId
+         */
+        public function actionModalCopyFromRelation($relationAttributeName, $relationModelId, $relationModuleId, $id = null)
+        {
             $copyToTask   = new Task();
-            if (!isset($_POST['Task']))
+            $task   = Task::getById(intval($id));
+            ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($task);
+            TaskActivityCopyModelUtil::copy($task, $copyToTask);
+            $copyToTask   = $this->attemptToSaveModelFromPost($copyToTask, null, false);
+            //Log event for project audit
+            if($relationAttributeName == 'project')
             {
-                $task = Task::getById((int)$id);
-                ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($task);
-                ActivityCopyModelUtil::copy($task, $copyToTask);
+                ProjectsUtil::logAddTaskEvent($copyToTask);
             }
-            $this->processTaskEdit($copyToTask);
+            $this->actionModalDetails($copyToTask->id);
         }
 
         /**
@@ -420,17 +435,21 @@
                 {
                     if($taskId != '')
                     {
-                        $task               = Task::getById(intval($taskId));
+                        $kanbanItem  = KanbanItem::getByTask(intval($taskId));
+                        $task        = Task::getById(intval($taskId));
                         //if kanban type is completed
                         if($type == KanbanItem::TYPE_COMPLETED)
                         {
+                            //kanban update has to be done first
+                            $kanbanItem->sortOrder = TasksUtil::resolveAndGetSortOrderForTaskOnKanbanBoard($type, $task);
+                            $kanbanItem->type = intval($type);
+                            $kanbanItem->save();
                             $this->processStatusUpdateViaAjax($taskId, Task::STATUS_COMPLETED, false);
                             $response['button'] = '';
                             $response['status'] = Task::getStatusDisplayName($task->status);
                         }
                         else
                         {
-                            $kanbanItem  = KanbanItem::getByTask(intval($taskId));
                             //When in the same column
                             if($type == $kanbanItem->type)
                             {
@@ -439,21 +458,22 @@
                             }
                             else
                             {
+                                //This would be the one which is dragged across column
+                                //kanban update has to be done first
+                                $kanbanItem->sortOrder = $counter;
+                                $kanbanItem->type = intval($type);
+                                $kanbanItem->save();
                                 $targetStatus = TasksUtil::getDefaultTaskStatusForKanbanItemType(intval($type));
                                 $this->processStatusUpdateViaAjax($taskId, $targetStatus, false);
                                 $content = TasksUtil::resolveActionButtonForTaskByStatus($targetStatus,
                                                                                         $this->getId(),
                                                                                         $this->getModule()->getId(),
                                                                                         intval($taskId));
-                                //This would be the one which is dragged across column
-                                $kanbanItem->sortOrder = TasksUtil::resolveAndGetSortOrderForTaskOnKanbanBoard(intval($type), $task);
-                                $kanbanItem->type = intval($type);
-                                $kanbanItem->save();
                                 $response['button'] = $content;
                                 $response['status'] = Task::getStatusDisplayName($task->status);
                             }
-                            $counter++;
                         }
+                        $counter++;
                     }
                 }
             }
@@ -612,6 +632,11 @@
             {
                 $task = $this->attemptToSaveModelFromPost($task, null, false);
                 $errorData = ZurmoActiveForm::makeErrorsDataAndResolveForOwnedModelAttributes($task);
+                if(empty ($errorData))
+                {
+                    //may need to reset the kanban type and sort as well
+                    TasksUtil::checkKanbanTypeByStatusAndUpdateIfRequired($task);
+                }
                 echo CJSON::encode($errorData);
                 Yii::app()->end(0, false);
             }
