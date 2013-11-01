@@ -123,16 +123,6 @@
          */
         protected function registerScripts()
         {
-            $taskSortableScript = "
-                        var fixHelper = function(e, ui) {
-                            var label = $($('<div></div>').html(ui.clone())).html();
-                            var width = $(ui).width();
-                            var clone = $('<div class=\"kanban-card clone\">' + label + '</div>');
-                            clone.width(width);
-                            return clone;
-                        };";
-            Yii::app()->clientScript->registerScript('task-sortable-data-helper', $taskSortableScript);
-
             /*@TODO Mayank: we need to integrate the drag/drop actions from KanbanUtils.js into your code, this is for the visual feedabck, see opps kanban when u drag/drop
             Yii::app()->clientScript->registerScriptFile(
                 Yii::app()->getAssetManager()->publish(
@@ -219,7 +209,15 @@
                                     {
                                         type : 'GET',
                                         data : {'targetStatus':'{$acceptanceStatus}', 'taskId':taskId, 'sourceKanbanType':'{$inProgressKanbanType}'},
-                                        url  : '" . $url . "'
+                                        url  : '" . $url . "',
+                                        beforeSend : function(){
+                                          $('.ui-overlay-block').fadeIn(50);
+                                          $(this).makeLargeLoadingSpinner(true, '.ui-overlay-block'); //- add spinner to block anything else
+                                        },
+                                        success: function(data){
+                                            $(this).makeLargeLoadingSpinner(false, '.ui-overlay-block');
+                                            $('.ui-overlay-block').fadeOut(50);
+                                         }
                                     }
                                 );
                             }
@@ -331,7 +329,15 @@
                             {
                                 type : 'GET',
                                 data : {'targetStatus':'{$targetStatus}', 'taskId':taskId, 'sourceKanbanType':columnType},
-                                url  : '{$url}'
+                                url  : '{$url}',
+                                beforeSend : function(){
+                                          $('.ui-overlay-block').fadeIn(50);
+                                          $(this).makeLargeLoadingSpinner(true, '.ui-overlay-block'); //- add spinner to block anything else
+                                        },
+                                success: function(data){
+                                            $(this).makeLargeLoadingSpinner(false, '.ui-overlay-block');
+                                            $('.ui-overlay-block').fadeOut(50);
+                                         }
                             }
                             );
                         }
