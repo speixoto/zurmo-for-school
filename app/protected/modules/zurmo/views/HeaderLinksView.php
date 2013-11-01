@@ -127,7 +127,6 @@
             {
                 $content .= static::renderHeaderGameDashboardContent();
             }
-            $content     .= static::renderHeaderGameDashboardContent();
             $content     .= static::renderHeaderMenuContent($userMenuItemsWithTopLevel, self::USER_MENU_ID);
             $content     .= static::renderHeaderMenuContent($settingsMenuItemsWithTopLevel, self::SETTINGS_MENU_ID);
             return $content;
