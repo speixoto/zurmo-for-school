@@ -39,6 +39,8 @@
      */
     class ImportResultsImportTempTableListView extends ImportTempTableListView
     {
+        protected $isTableEditable = false;
+
         protected static function getExpandableContentType()
         {
             return self::EXPANDABLE_IMPORT_RESULTS_CONTENT_TYPE;
