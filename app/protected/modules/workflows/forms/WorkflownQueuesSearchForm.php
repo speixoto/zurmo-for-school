@@ -59,13 +59,13 @@
         {
             $namesAndLabels         = array();
             $moduleNamesAndLabels   = Workflow::getWorkflowSupportedModulesAndLabelsForCurrentUser();
-            foreach($moduleNamesAndLabels as $moduleClassName => $label)
+            foreach ($moduleNamesAndLabels as $moduleClassName => $label)
             {
-                if($moduleClassName::getPrimaryModelName() != null &&
+                if ($moduleClassName::getPrimaryModelName() != null &&
                    $moduleClassName::hasAtLeastOneGlobalSearchAttributeName())
                 {
                     $modelClassName = $moduleClassName::getPrimaryModelName();
-                    if(is_subclass_of($modelClassName, 'Item'))
+                    if (is_subclass_of($modelClassName, 'Item'))
                     {
                         $namesAndLabels[$moduleClassName::getPrimaryModelName()] = $label;
                     }
@@ -88,7 +88,7 @@
 
         public function isAttributeSafe($attributeName)
         {
-            if($attributeName == 'anyMixedAttributes')
+            if ($attributeName == 'anyMixedAttributes')
             {
                 return false;
             }

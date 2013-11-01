@@ -130,7 +130,7 @@
                                     setTimeout('$(this).searchByQueuedSearch(\"" . $inputId . "\")', 1000);
                                 }
                             };";
-            if($this->bindBasicSearchHandlerToKeyUp)
+            if ($this->bindBasicSearchHandlerToKeyUp)
             {
                 $script  .= "   $('#" . $inputId . "').unbind('input.ajax propertychange.ajax keyup.ajax');
                                 $('#" . $inputId . "').bind('input.ajax propertychange.ajax keyup.ajax', basicSearchHandler);

@@ -373,7 +373,7 @@
             $element  = new TaskStatusDropDownElement($this->getModel(), 'status', $form);
             $content .= $element->render();
             $content .= '<span id="completionDate">';
-            if($this->model->status == Task::STATUS_COMPLETED)
+            if ($this->model->status == Task::STATUS_COMPLETED)
             {
                 $content .= TasksUtil::renderCompletionDateTime($this->model);;
             }
@@ -406,7 +406,7 @@
          */
         protected function resolveElementDuringFormLayoutRender(& $element)
         {
-            if(get_class($element) == 'NullElement')
+            if (get_class($element) == 'NullElement')
             {
                 $element->nonEditableTemplate = '';
             }

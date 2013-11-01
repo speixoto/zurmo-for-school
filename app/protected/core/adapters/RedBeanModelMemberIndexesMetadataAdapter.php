@@ -52,7 +52,7 @@
             $messageLogger->addInfoMessage(Zurmo::t('Core', 'Building Indexes definitions for {{model}}',
                                                                                 array('{{model}}' => $modelClassName)));
             $indexes                        = array();
-            foreach($indexesMetadata as $indexName => $indexMetadata)
+            foreach ($indexesMetadata as $indexName => $indexMetadata)
             {
                 $indexResolved = RedBeanModelMemberIndexMetadataAdapter::resolve($indexMetadata);
                 if ($indexResolved)

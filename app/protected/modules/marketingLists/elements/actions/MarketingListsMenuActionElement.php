@@ -59,6 +59,7 @@
         {
             return null;
         }
+        
         protected function getMenuItems()
         {
             $items = array();

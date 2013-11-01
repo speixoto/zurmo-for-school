@@ -105,7 +105,7 @@
             $htmlOptions   = array();
             $disabledClass = null;
             $disabled      = false;
-            if($gameReward->cost > $availableCoins)
+            if ($gameReward->cost > $availableCoins)
             {
                 $disabledClass = ' disabled';
                 $disabled      = true;
@@ -115,7 +115,7 @@
             $htmlOptions['name']      = $id;
             $htmlOptions['class']     = 'attachLoading z-button reward-redeem-link' . $disabledClass;
             $htmlOptions['namespace'] = 'redeem';
-            if($disabled)
+            if ($disabled)
             {
                 $htmlOptions['onclick']   = 'js:return false;';
             }

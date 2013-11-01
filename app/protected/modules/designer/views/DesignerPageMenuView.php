@@ -66,7 +66,7 @@
                 }
             }
             asort($moduleClassNamesAndLabels);
-            foreach($moduleClassNamesAndLabels as $moduleClassName => $label)
+            foreach ($moduleClassNamesAndLabels as $moduleClassName => $label)
             {
                 $route = $this->moduleId . '/' . $this->controllerId . '/modulesMenu/';
                 $content .= '<li>';

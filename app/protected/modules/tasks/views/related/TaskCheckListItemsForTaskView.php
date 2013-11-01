@@ -127,7 +127,7 @@
             $data = array();
             foreach ($this->checkListItemsData as $checkListItem)
             {
-                if($checkListItem->completed == null || $checkListItem->completed == 0)
+                if ($checkListItem->completed == null || $checkListItem->completed == 0)
                 {
                     $checked = false;
                 }

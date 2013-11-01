@@ -54,7 +54,7 @@
             $columns            = array();
             if ($modelClassName && @class_exists($modelClassName))
             {
-                foreach($relations as $relationName => $relationMetadata)
+                foreach ($relations as $relationName => $relationMetadata)
                 {
                     $column = RedBeanModelRelationToColumnAdapter::resolve($modelClassName,
                                                                             $relationName,

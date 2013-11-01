@@ -202,11 +202,11 @@
         {
             $namesAndUnlockedAtLevels = $this->model->getKanbanBoard()->getThemeColorNamesAndUnlockedAtLevel();
             $data = array();
-            foreach($this->model->getKanbanBoard()->getThemeNamesAndLabels() as $name => $label)
+            foreach ($this->model->getKanbanBoard()->getThemeNamesAndLabels() as $name => $label)
             {
                 $label = '<span class="background-texture-1"></span>' . $label;
                 $unlockedAtLevel = $namesAndUnlockedAtLevels[$name];
-                if($unlockedAtLevel > (int)$gameLevel->value)
+                if ($unlockedAtLevel > (int)$gameLevel->value)
                 {
                     $title   = Zurmo::t('GamificationModule', 'Unlocked at level {level}', array('{level}' => $unlockedAtLevel));
                     $content = '<span id="background-texture-tooltip-' . $name. '" title="' . $title . '"><i class="icon-lock"></i></span>' . $label;
@@ -226,10 +226,10 @@
         protected function resolveDataHtmlOptions(GameLevel $gameLevel)
         {
             $dataHtmlOptions = array();
-            foreach($this->model->getKanbanBoard()->getThemeColorNamesAndUnlockedAtLevel() as $name => $unlockedAtLevel)
+            foreach ($this->model->getKanbanBoard()->getThemeColorNamesAndUnlockedAtLevel() as $name => $unlockedAtLevel)
             {
                 $dataHtmlOptions[$name] = array();
-                if($unlockedAtLevel > (int)$gameLevel->value)
+                if ($unlockedAtLevel > (int)$gameLevel->value)
                 {
                     $dataHtmlOptions[$name]['class']    = 'locked';
                     $dataHtmlOptions[$name]['disabled'] = 'disabled';
