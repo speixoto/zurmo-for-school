@@ -62,7 +62,7 @@
 
         protected function renderLabel()
         {
-            return Zurmo::t('MeetingsModule', 'Summary');
+            return Zurmo::t('Core', 'Summary');
         }
 
         public static function getDisplayName()

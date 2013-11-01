@@ -41,7 +41,7 @@
             return array(
                 'name'  => $this->attribute,
                 'value' => 'MeetingsUtil::renderDaySummaryContent($data, ' .
-                            $this->view->getLinkString(Zurmo::t('MeetingsModule', 'Edit'), $this->attribute) . ')',
+                            $this->view->getLinkString(Zurmo::t('Core', 'Edit'), $this->attribute) . ')',
                 'type'  => 'raw',
             );
         }

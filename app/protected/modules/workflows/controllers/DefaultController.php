@@ -160,7 +160,7 @@
                 $this->actionSelectType();
                 Yii::app()->end(0, false);
             }
-            $breadCrumbLinks = array(Zurmo::t('WorkflowsModule', 'Create'));
+            $breadCrumbLinks = array(Zurmo::t('Core', 'Create'));
             assert('is_string($type)');
             $workflow         = new Workflow();
             $workflow->setType($type);

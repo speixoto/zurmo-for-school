@@ -412,7 +412,7 @@
          */
         public static function registerSubscriptionScript($taskId = null)
         {
-            $title  = Zurmo::t('TasksModule', 'Unsubscribe');
+            $title  = Zurmo::t('Core', 'Unsubscribe');
             $unsubscribeLink = ZurmoHtml::tag('i', array('class' => 'icon-unsubscribe', 'title' => $title), '');
 
             if($taskId == null)
@@ -435,7 +435,7 @@
          */
         public static function registerUnsubscriptionScript($taskId = null)
         {
-            $title  = Zurmo::t('TasksModule', 'Subscribe');
+            $title  = Zurmo::t('Core', 'Subscribe');
             $subscribeLink = ZurmoHtml::tag('i', array('class' => 'icon-subscribe', 'title' => $title), '');
 
             if($taskId == null)
@@ -563,7 +563,7 @@
             }
             else
             {
-                $label       = Zurmo::t('TasksModule', 'Unsubscribe');
+                $label       = Zurmo::t('Core', 'Unsubscribe');
                 $class       = $unsubscribeLinkClass;
                 $iconContent = ZurmoHtml::tag('i', array('class' => 'icon-unsubscribe'), '');
             }

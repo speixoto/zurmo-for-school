@@ -47,7 +47,7 @@
 
         protected function getDefaultLabel()
         {
-            return Zurmo::t('MarketingListsModule', 'Details');
+            return Zurmo::t('Core', 'Details');
         }
 
         protected function getDefaultRoute()

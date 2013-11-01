@@ -73,7 +73,7 @@
             }
             elseif ($adapterName == 'LeadsStateMetadataAdapter')
             {
-                return Zurmo::t('ContactsModule', 'LeadsModulePluralLabel', LabelUtil::getTranslationParamsForAllModules());
+                return Zurmo::t('LeadsModule', 'LeadsModulePluralLabel', LabelUtil::getTranslationParamsForAllModules());
             }
             elseif ($adapterName == 'ContactsStateMetadataAdapter')
             {

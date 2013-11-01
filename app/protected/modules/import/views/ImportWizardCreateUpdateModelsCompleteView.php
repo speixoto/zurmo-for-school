@@ -110,7 +110,7 @@
             $content  = null;
             $content .= '<ul class="import-summary">';
 
-            $label    = Zurmo::t('ImportModule', 'Created');
+            $label    = Zurmo::t('Core', 'Created');
             $count    = ZurmoHtml::tag('strong', array(), $this->modelsCreated);
             $led      = ZurmoHtml::tag('i', array('class' => 'led state-true'), '');
             $content .= ZurmoHtml::tag('li', array(), $count . $label . $led );
@@ -120,7 +120,7 @@
             $led      = ZurmoHtml::tag('i', array('class' => 'led'), '');
             $content .= ZurmoHtml::tag('li', array(), $count . $label . $led );
 
-            $label    = Zurmo::t('ImportModule', 'Skipped');
+            $label    = Zurmo::t('Core', 'Skipped');
             $count    = ZurmoHtml::tag('strong', array(), $this->rowsWithErrors);
             $led      = ZurmoHtml::tag('i', array('class' => 'led state-false'), '');
             $content .= ZurmoHtml::tag('li', array(), $count . $label . $led );

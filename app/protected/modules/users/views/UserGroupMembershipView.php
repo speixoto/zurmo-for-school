@@ -77,7 +77,7 @@
             $content .= '<col style="width:100%" />';
             $content .= '</colgroup>';
             $content .= '<tbody>';
-            $content .= '<tr><th>' . Zurmo::t('UsersModule', 'Group') . '</th></tr>'; //<th></th>
+            $content .= '<tr><th>' . Zurmo::t('ZurmoModule', 'Group') . '</th></tr>'; //<th></th>
             foreach ($this->groupMembership as $groupId => $information)
             {
                 $content .= '<tr>';

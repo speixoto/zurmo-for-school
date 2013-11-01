@@ -56,7 +56,7 @@
 
         protected function renderLabel()
         {
-            return Zurmo::t('WorkflowsModule', 'Details');
+            return Zurmo::t('Core', 'Details');
         }
 
         public static function getDisplayName()

@@ -171,12 +171,12 @@
             $led      = ZurmoHtml::tag('i', array('class' => 'led state-true'), '');
             $content .= ZurmoHtml::tag('li', array(), $count . $label . $led );
 
-            $label    = Zurmo::t('ImportModule', 'Warning');
+            $label    = Zurmo::t('Core', 'Warning');
             $count    = ZurmoHtml::tag('strong', array(), self::findCountByGroupDataAndStatus($groupData, ImportDataAnalyzer::STATUS_WARN));
             $led      = ZurmoHtml::tag('i', array('class' => 'led'), '');
             $content .= ZurmoHtml::tag('li', array(), $count . $label . $led );
 
-            $label    = Zurmo::t('ImportModule', 'Skip');
+            $label    = Zurmo::t('Core', 'Skip');
             $count    = ZurmoHtml::tag('strong', array(), self::findCountByGroupDataAndStatus($groupData, ImportDataAnalyzer::STATUS_SKIP));
             $led      = ZurmoHtml::tag('i', array('class' => 'led state-false'), '');
             $content .= ZurmoHtml::tag('li', array(), $count . $label . $led );
@@ -200,7 +200,7 @@
 
         protected function renderPreviousPageLinkLabel()
         {
-            return Zurmo::t('ImportModule', 'Map Fields');
+            return Zurmo::t('ZurmoModule', 'Map Fields');
         }
 
         protected function renderNextPageLinkLabel()

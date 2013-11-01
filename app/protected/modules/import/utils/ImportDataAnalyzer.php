@@ -81,11 +81,11 @@
             }
             elseif ($type == self::STATUS_WARN)
             {
-                $label = Zurmo::t('ImportModule', 'Warning');
+                $label = Zurmo::t('Core', 'Warning');
             }
             elseif ($type == self::STATUS_SKIP)
             {
-                $label = Zurmo::t('ImportModule', 'Skip');
+                $label = Zurmo::t('Core', 'Skip');
             }
             return $label;
         }

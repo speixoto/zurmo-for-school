@@ -66,7 +66,7 @@
 
         public function getTitle()
         {
-            return strval($this->model) . ' - ' . Zurmo::t('MarketingListsModule', 'List');
+            return strval($this->model) . ' - ' . Zurmo::t('Core', 'List');
         }
 
         protected function renderContent()

@@ -54,7 +54,7 @@
         public function attributeLabels()
         {
             return array(
-                'title' => Zurmo::t('RssReaderModule', 'Title'),
+                'title' => Zurmo::t('ZurmoModule', 'Title'),
                 'url'   => Zurmo::t('RssReaderModule', 'RSS URL'),
             );
         }

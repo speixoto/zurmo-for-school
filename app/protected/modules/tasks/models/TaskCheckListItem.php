@@ -43,7 +43,7 @@
         {
             if (trim($this->name) == '')
             {
-                return Zurmo::t('TasksModule', '(None)');
+                return Zurmo::t('Core', '(None)');
             }
             return $this->name;
         }

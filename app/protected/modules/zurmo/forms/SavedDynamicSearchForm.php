@@ -74,7 +74,7 @@
         {
             return array_merge(parent::attributeLabels(), array(
                                'savedSearchId'      => Zurmo::t('ZurmoModule',   'Id'),
-                               'savedSearchName'    => Zurmo::t('ZurmoModule', 'Name'),
+                               'savedSearchName'    => Zurmo::t('Core', 'Name'),
                                'loadSavedSearchUrl' => 'LoadSavedSearchUrl',
             ));
         }
@@ -84,7 +84,7 @@
             if ($this->$attribute == null)
             {
                 $this->addError('savedSearchName', Zurmo::t('Core', '{attribute} cannot be blank.',
-                                                        array('{attribute}' => Zurmo::t('ZurmoModule', 'Name'))));
+                                                        array('{attribute}' => Zurmo::t('Core', 'Name'))));
             }
         }
     }

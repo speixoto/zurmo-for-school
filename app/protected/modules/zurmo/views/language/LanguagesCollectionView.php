@@ -212,7 +212,7 @@ EOD;
                 ZurmoHtml::tag(
                     'span',
                     array('class' => 'z-label'),
-                    Zurmo::t('ZurmoModule', 'Update')
+                    Zurmo::t('Core', 'Update')
                 ),
                 '#',
                 $this->renderButtonHtml('update', $languageCode, $languageData)

@@ -71,7 +71,7 @@
             }
             catch (AccessDeniedSecurityException $e)
             {
-                $modelContent = Zurmo::t('ZurmoModule', 'Restricted');
+                $modelContent = Zurmo::t('Core', 'Restricted');
             }
             catch (NotFoundException $e)
             {

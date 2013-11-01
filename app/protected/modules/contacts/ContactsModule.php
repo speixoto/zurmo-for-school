@@ -117,12 +117,12 @@
                 return false;
             }
             $data = array(
-                Zurmo::t('ContactsModule', 'New'),
-                Zurmo::t('ContactsModule', 'In Progress'),
+                Zurmo::t('Core', 'New'),
+                Zurmo::t('Core', 'In Progress'),
                 Zurmo::t('ContactsModule', 'Recycled'),
                 Zurmo::t('ContactsModule', 'Dead'),
                 Zurmo::t('ContactsModule', 'Qualified'),
-                Zurmo::t('ContactsModule', 'Customer')
+                Zurmo::t('ZurmoModule', 'Customer')
             );
             $order = 0;
             $startingStateId = null;

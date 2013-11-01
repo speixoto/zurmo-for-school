@@ -38,7 +38,7 @@
     {
         protected function getSubtitle()
         {
-            return Zurmo::t('HomeModule', 'Home');
+            return Zurmo::t('ZurmoModule', 'Home');
         }
     }
 ?>

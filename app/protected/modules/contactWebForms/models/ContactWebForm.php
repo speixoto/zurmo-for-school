@@ -72,7 +72,7 @@
         {
             return array_merge(parent::translatedAttributeLabels($language),
                 array(
-                    'name'              => Zurmo::t('ContactWebFormsModule', 'Name', array(), null, $language),
+                    'name'              => Zurmo::t('Core', 'Name', array(), null, $language),
                     'redirectUrl'       => Zurmo::t('ContactWebFormsModule', 'Redirect Url',  array(), null, $language),
                     'submitButtonLabel' => Zurmo::t('ContactWebFormsModule', 'Submit Button Label',  array(), null, $language),
                     'defaultState'      => Zurmo::t('ContactWebFormsModule', 'Default Status',  array(), null, $language),

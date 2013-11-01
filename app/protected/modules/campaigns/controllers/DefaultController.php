@@ -134,13 +134,13 @@
         protected function actionCreateByModel(Campaign $campaign, $redirectUrl = null)
         {
             $breadCrumbLinks            = static::getDetailsAndEditBreadcrumbLinks();
-            $breadCrumbLinks[]          = Zurmo::t('CampaignsModule', 'Create');
+            $breadCrumbLinks[]          = Zurmo::t('Core', 'Create');
             $campaign->status           = Campaign::STATUS_ACTIVE;
             $campaign->supportsRichText = true;
             $campaign->enableTracking   = true;
             $editView                   = new CampaignEditView($this->getId(), $this->getModule()->getId(),
                                           $this->attemptToSaveModelFromPost($campaign, $redirectUrl),
-                                          Zurmo::t('Default', 'Create Campaign'));
+                                          Zurmo::t('CampaignsModule', 'Create Campaign'));
             $view                       = new CampaignsPageView(MarketingDefaultViewUtil::
                                           makeViewWithBreadcrumbsForCurrentUser($this, $editView,
                                           $breadCrumbLinks, 'MarketingBreadCrumbView'));

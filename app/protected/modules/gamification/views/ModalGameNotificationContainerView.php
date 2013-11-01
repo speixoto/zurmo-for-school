@@ -102,13 +102,13 @@
         {
             if (!RightsUtil::canUserAccessModule('SocialItemsModule', Yii::app()->user->userModel))
             {
-                return ZurmoHtml::link(Zurmo::t('GamificationModule', 'Continue'), '#',
+                return ZurmoHtml::link(Zurmo::t('Core', 'Continue'), '#',
                              array('class'   => 'close-ModalGameNotification',
                                     'onclick' => '$("#ModalGameNotification' . $index . '").dialog("close");'));
             }
             else
             {
-                $content = ZurmoHtml::link(Zurmo::t('GamificationModule', 'Skip'), '#',
+                $content = ZurmoHtml::link(Zurmo::t('Core', 'Skip'), '#',
                                  array('class'   => 'close-ModalGameNotification simple-link',
                                        'onclick' => '$("#ModalGameNotification' . $index . '").dialog("close");'));
                 $content .= static::renderPostToProfileLinkContent($notification, $index);
@@ -123,7 +123,7 @@
             $url       =   Yii::app()->createUrl('socialItems/default/postGameNotificationToProfile',
                                                array('content' => $socialItemAdapter->getMessageContent()));
 
-            $aContent                = ZurmoHtml::wrapLink(Zurmo::t('GamificationModule', 'Post to Profile'));
+            $aContent                = ZurmoHtml::wrapLink(Zurmo::t('ZurmoModule', 'Post to Profile'));
             // Begin Not Coding Standard
             $content   = ZurmoHtml::ajaxLink($aContent, $url,
                          array('type'     => 'GET',

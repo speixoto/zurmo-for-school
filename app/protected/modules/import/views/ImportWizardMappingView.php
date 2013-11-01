@@ -155,7 +155,7 @@
             $content = '<div class="required-fields">';
             if (count($this->requiredAttributesLabelsData) > 0)
             {
-                $content .= '<strong>' . Zurmo::t('ImportModule', 'Required Fields') . ':</strong>' . '<br/>';
+                $content .= '<strong>' . Zurmo::t('ZurmoModule', 'Required Fields') . ':</strong>' . '<br/>';
                 foreach ($this->requiredAttributesLabelsData as $label)
                 {
                     $content .= $label. '<br/>';

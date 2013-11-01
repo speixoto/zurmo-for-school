@@ -131,7 +131,7 @@
                                         array('class' => 'total-column',
                                               'colspan' => $colSpanForTotal,
                                               'rowspan' => count($this->leadingHeaders['rows'])),
-                                        Zurmo::t('ReportsModule', 'Total'));
+                                        Zurmo::t('Core', 'Total'));
                 }
                 echo '</tr>';
             }

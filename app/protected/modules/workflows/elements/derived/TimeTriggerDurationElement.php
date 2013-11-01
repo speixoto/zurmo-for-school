@@ -60,7 +60,7 @@
         {
             if ($this->valueElementType != 'MixedDateTypesForWorkflow')
             {
-                return array(TimeDurationUtil::DURATION_SIGN_POSITIVE => Zurmo::t('WorkflowsModule', 'After'));
+                return array(TimeDurationUtil::DURATION_SIGN_POSITIVE => Zurmo::t('Core', 'After'));
             }
             else
             {

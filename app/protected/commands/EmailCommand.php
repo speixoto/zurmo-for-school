@@ -180,11 +180,11 @@ EOD;
 
         if (!$emailMessage->hasSendError())
         {
-            echo Zurmo::t('Commands', 'Message successfully sent') . "\n";
+            echo Zurmo::t('EmailMessagesModule', 'Message successfully sent') . "\n";
         }
         else
         {
-            echo Zurmo::t('Commands', 'Message failed to send') . "\n";
+            echo Zurmo::t('EmailMessagesModule', 'Message failed to send') . "\n";
             echo $emailMessage->error     . "\n";
         }
         $saved = $emailMessage->save();

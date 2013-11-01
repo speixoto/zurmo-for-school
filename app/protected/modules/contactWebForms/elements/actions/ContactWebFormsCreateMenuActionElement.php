@@ -41,7 +41,7 @@
          */
         protected function getDefaultLabel()
         {
-            return Zurmo::t('ContactWebFormsModule', 'Create');
+            return Zurmo::t('Core', 'Create');
         }
 
         /**

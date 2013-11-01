@@ -97,7 +97,7 @@
                 $content .= $this->renderServiceGroupDisplayByServiceDataAndCheckResult(
                                         Zurmo::t('InstallModule', 'Service Status Partially Known'),
                                         $this->checkResultsDisplayData[$warningIndexId],
-                                        '<span class="warning">' . Zurmo::t('InstallModule', 'WARNING') . '</span>');
+                                        '<span class="warning">' . Zurmo::t('Core', 'WARNING') . '</span>');
                 $content .= '<br/>';
             }
 

@@ -81,7 +81,7 @@
             $content .= '<br/>';
             $content .= Zurmo::t('InstallModule', 'Click below to go to the login page. The username is <b>super</b>');
             $content .= '<br/><br/>';
-            $content .= ZurmoHtml::link(ZurmoHtml::wrapLabel(Zurmo::t('InstallModule', 'Sign in')),
+            $content .= ZurmoHtml::link(ZurmoHtml::wrapLabel(Zurmo::t('ZurmoModule', 'Sign in')),
                                         $loginUrl, array('class' => 'z-button'));
             $content .= '</td></tr></table>';
             $content .= '</div>';

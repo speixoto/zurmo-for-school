@@ -215,7 +215,7 @@
             {
                 $params = array('type' => $type);
                 $route   = Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/resetJob/', $params);
-                $content = ZurmoHtml::link(Zurmo::t('JobsManagerModule', 'Reset'), $route, array('class' => 'z-link reset-job-link'));
+                $content = ZurmoHtml::link(Zurmo::t('Core', 'Reset'), $route, array('class' => 'z-link reset-job-link'));
                 return $content;
             }
             return null;

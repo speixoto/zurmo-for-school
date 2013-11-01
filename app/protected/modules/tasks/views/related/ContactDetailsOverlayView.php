@@ -73,7 +73,7 @@
         protected function renderFullNameContent()
         {
             $content = ZurmoHtml::tag('div', array('class' => static::DESCRIPTION_CLASS),
-                                      Zurmo::t('ContactsModule', 'Full Name') . $this->overlayKeyValueSeparator .
+                                      Zurmo::t('Core', 'Full Name') . $this->overlayKeyValueSeparator .
                                       strval($this->model));
             return $content;
         }
@@ -85,7 +85,7 @@
         protected function renderStateContent()
         {
             $content = ZurmoHtml::tag('div', array('class' => static::DESCRIPTION_CLASS),
-                                      Zurmo::t('ContactsModule', 'State') . $this->overlayKeyValueSeparator .
+                                      Zurmo::t('ZurmoModule', 'State') . $this->overlayKeyValueSeparator .
                                       $this->model->state->resolveTranslatedNameByLanguage(Yii::app()->language));
             return $content;
         }

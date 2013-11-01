@@ -71,7 +71,7 @@
         {
             return array_merge(parent::getAttributesMappedToRealAttributesMetadata(), array(
                 'webFormName' => array(
-                    array('contactWebForm', 'name'),
+                    array('Core', 'name'),
                 ),
             ));
         }

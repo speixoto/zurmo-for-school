@@ -172,8 +172,8 @@
         public static function getStatusDropDownArray()
         {
             return array(
-                self::STATUS_ACTIVE    => Zurmo::t('ProjectsModule', 'Active'),
-                self::STATUS_ARCHIVED  => Zurmo::t('ProjectsModule', 'Archived'),
+                self::STATUS_ACTIVE    => Zurmo::t('Core', 'Active'),
+                self::STATUS_ARCHIVED  => Zurmo::t('ZurmoModule', 'Archived'),
             );
         }
 

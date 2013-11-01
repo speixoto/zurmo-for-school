@@ -142,7 +142,7 @@
         public function actionCreate()
         {
             $breadCrumbLinks    = static::getDetailsAndEditBreadcrumbLinks();
-            $breadCrumbLinks[]  = Zurmo::t('ProductTemplatesModule', 'Create');
+            $breadCrumbLinks[]  = Zurmo::t('Core', 'Create');
             $editAndDetailsView = $this->makeEditAndDetailsView(
                                             $this->attemptToSaveModelFromPost(new ProductTemplate()), 'Edit');
             $view               = new ProductTemplatesPageView(ProductDefaultViewUtil::

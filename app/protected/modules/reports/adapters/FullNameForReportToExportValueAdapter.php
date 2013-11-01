@@ -64,7 +64,7 @@
             {
                 return $this->params['label'];
             }
-            return Zurmo::t('ReportsModule', 'Name');
+            return Zurmo::t('Core', 'Name');
         }
     }
 ?>

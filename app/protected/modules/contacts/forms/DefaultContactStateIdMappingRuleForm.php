@@ -82,7 +82,7 @@
 
         public function attributeLabels()
         {
-            return array('defaultStateId' => Zurmo::t('ContactsModule', 'Default Value'));
+            return array('defaultStateId' => Zurmo::t('ZurmoModule', 'Default Value'));
         }
 
         public static function getAttributeName()

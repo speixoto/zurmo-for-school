@@ -108,7 +108,7 @@
         protected static function translatedAttributeLabels($language)
         {
             return array_merge(parent::translatedAttributeLabels($language), array(
-                'name'    => Zurmo::t('ZurmoModule', 'Name', array(), null, $language),
+                'name'    => Zurmo::t('Core', 'Name', array(), null, $language),
             ));
         }
 

@@ -259,7 +259,7 @@
                     }
                     catch (InvalidValueToSanitizeException $e)
                     {
-                        $this->assertEquals(Zurmo::t('ProductTemplatesModule', 'Status specified is invalid.'), $e->getMessage());
+                        $this->assertEquals(Zurmo::t('ZurmoModule', 'Status specified is invalid.'), $e->getMessage());
                     }
                 }
                 elseif ($counter == 2)

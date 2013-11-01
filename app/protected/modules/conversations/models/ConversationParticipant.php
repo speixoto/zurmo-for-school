@@ -44,7 +44,7 @@
         {
             return array_merge(parent::translatedAttributeLabels($language),
                 array(
-                    'hasReadLatest'   => Zurmo::t('ConversationsModule', 'Has Read Latest',  array(), null, $language),
+                    'hasReadLatest'   => Zurmo::t('NotificationsModule', 'Has Read Latest',  array(), null, $language),
                 )
             );
         }

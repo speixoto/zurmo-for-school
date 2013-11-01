@@ -114,7 +114,7 @@
         public function actionCreate()
         {
            $breadCrumbLinks    = static::getDetailsAndEditBreadcrumbLinks();
-           $breadCrumbLinks[]  = Zurmo::t('MarketingListsModule', 'Create');
+           $breadCrumbLinks[]  = Zurmo::t('Core', 'Create');
            $editView = new MarketingListEditView($this->getId(), $this->getModule()->getId(),
                                                  $this->attemptToSaveModelFromPost(new MarketingList()),
                                                  Zurmo::t('Default', 'Create Marketing List'));

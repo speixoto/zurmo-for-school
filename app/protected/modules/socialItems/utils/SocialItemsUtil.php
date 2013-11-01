@@ -136,7 +136,7 @@
             $url     =   Yii::app()->createUrl('socialItems/default/deleteViaAjax',
                                                array('id' => $model->id));
             // Begin Not Coding Standard
-            return       ZurmoHtml::ajaxLink(Zurmo::t('SocialItemsModule', 'Delete'), $url,
+            return       ZurmoHtml::ajaxLink(Zurmo::t('Core', 'Delete'), $url,
                          array('type'     => 'GET',
                                'complete' => "function(XMLHttpRequest, textStatus){
                                               $('#deleteSocialItemLink" . $model->id . "').parent().parent().parent().parent().parent().parent().remove();}"),
@@ -173,7 +173,7 @@
         private static function renderCreateCommentContent(SocialItem $model)
         {
             $content       = ZurmoHtml::tag('span', array(),
-                                            ZurmoHtml::link(Zurmo::t('SocialItemsModule', 'Comment'), '#',
+                                            ZurmoHtml::link(Zurmo::t('CommentsModule', 'Comment'), '#',
                                                             array('class' => 'show-create-comment')));
             $comment       = new Comment();
             $uniquePageId  = self::makeUniquePageIdByModel($model);

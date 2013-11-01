@@ -75,7 +75,7 @@
             $model                          = $this->attemptToSaveModelFromPost($autoresponder, $redirectUrl);
             $editAndDetailsView             = $this->makeEditAndDetailsView($model, 'Edit');
             $breadCrumbLinks                = static::getDetailsAndEditBreadcrumbLinks($autoresponder->marketingList);
-            $breadCrumbLinks[]              = Zurmo::t('AutorespondersModule', 'Create');
+            $breadCrumbLinks[]              = Zurmo::t('Core', 'Create');
             $view                           = new AutorespondersPageView(MarketingDefaultViewUtil::
                                                         makeViewWithBreadcrumbsForCurrentUser($this, $editAndDetailsView,
                                                         $breadCrumbLinks, 'MarketingBreadCrumbView'));

@@ -44,7 +44,7 @@
          */
         public function getTitle()
         {
-            return Zurmo::t('ReportsModule', 'Filters');
+            return Zurmo::t('Core', 'Filters');
         }
 
         /**
@@ -215,7 +215,7 @@
         protected function renderViewToolBarLinks($form)
         {
             $params                = array();
-            $params['label']       = Zurmo::t('ReportsModule', 'Apply');
+            $params['label']       = Zurmo::t('Core', 'Apply');
             $params['htmlOptions'] = array('id'      => 'apply-runtime-filters',
                                            'onclick' => 'js:$(this).addClass("attachLoadingTarget");');
             $resetElement          = new RefreshRuntimeFiltersAjaxLinkActionElement(null, null,

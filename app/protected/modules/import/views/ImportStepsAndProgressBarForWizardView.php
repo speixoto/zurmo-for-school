@@ -68,7 +68,7 @@
             {
                 return array(Zurmo::t('Core',         'Select Module'),
                              Zurmo::t('ZurmoModule',  'Upload File'),
-                             Zurmo::t('ImportModule', 'Map Fields'),
+                             Zurmo::t('ZurmoModule', 'Map Fields'),
                              Zurmo::t('ImportModule', 'Analyze Data'),
                              Zurmo::t('ImportModule', 'Import Data'));
             }
@@ -77,7 +77,7 @@
                 return array(Zurmo::t('Core',         'Select Module'),
                              Zurmo::t('ZurmoModule',  'Upload File'),
                              Zurmo::t('ZurmoModule',  'Select Permissions'),
-                             Zurmo::t('ImportModule', 'Map Fields'),
+                             Zurmo::t('ZurmoModule', 'Map Fields'),
                              Zurmo::t('ImportModule', 'Analyze Data'),
                              Zurmo::t('ImportModule', 'Import Data'));
             }

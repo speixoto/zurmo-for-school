@@ -181,7 +181,7 @@
                ($this->getValueElementType() == 'MixedDateTypesForReport' && $this->valueType == null))) &&
                $this->value == null)
             {
-                $this->addError('value', Zurmo::t('ReportsModule', 'Value cannot be blank.'));
+                $this->addError('value', Zurmo::t('Core', 'Value cannot be blank.'));
             }
             $passedValidation = true;
             $rules            = array();

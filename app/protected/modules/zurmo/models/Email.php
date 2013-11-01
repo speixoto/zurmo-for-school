@@ -81,7 +81,7 @@
          */
         protected static function getLabel($language = null)
         {
-            return Zurmo::t('ZurmoModule', 'Email', array(), null, $language);
+            return Zurmo::t('EmailMessagesModule', 'Email', array(), null, $language);
         }
 
         /**

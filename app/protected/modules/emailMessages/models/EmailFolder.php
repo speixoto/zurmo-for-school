@@ -67,7 +67,7 @@
 
         public static function getDefaultSentName()
         {
-            return Zurmo::t('EmailMessagesModule', 'Sent');
+            return Zurmo::t('Core', 'Sent');
         }
 
         public static function getDefaultOutboxName()
@@ -87,7 +87,7 @@
 
         public static function getDefaultArchivedName()
         {
-            return Zurmo::t('EmailMessagesModule', 'Archived');
+            return Zurmo::t('ZurmoModule', 'Archived');
         }
 
         public static function getDefaultArchivedUnmatchedName()
@@ -225,7 +225,7 @@
         {
             return array_merge(parent::translatedAttributeLabels($language),
                 array(
-                    'name'   => Zurmo::t('ZurmoModule', 'Name',  array(), null, $language),
+                    'name'   => Zurmo::t('Core', 'Name',  array(), null, $language),
                     'type'   => Zurmo::t('Core',        'Type',  array(), null, $language),
                 )
             );

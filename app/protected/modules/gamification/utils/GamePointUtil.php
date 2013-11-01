@@ -220,7 +220,7 @@
             {
                 $rankLabel = '--';
             }
-            $rankingData[] = array('typeLabel' => Zurmo::t('GamificationModule', 'Monthly'), 'rank' => $rankLabel);
+            $rankingData[] = array('typeLabel' => Zurmo::t('Core', 'Monthly'), 'rank' => $rankLabel);
             if (isset($overallData[$user->id]))
             {
                 $rankLabel = $overallData[$user->id]['rank'];

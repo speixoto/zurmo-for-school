@@ -88,10 +88,10 @@
                 {
                     $content .= '<tr><td>' . $data['attributeLabel'] . '</td>';
                     $content .= '<td>' . $attributeName . '</td>';
-                    $canBeUsedInMathExpression = Zurmo::t('DesignerModule', 'No');
+                    $canBeUsedInMathExpression = Zurmo::t('Core', 'No');
                     if (in_array($attributeName, array_keys($attributeDataNumerOrCurrency)))
                     {
-                        $canBeUsedInMathExpression = Zurmo::t('DesignerModule', 'Yes');
+                        $canBeUsedInMathExpression = Zurmo::t('Core', 'Yes');
                     }
                     $content .= '<td>' . $canBeUsedInMathExpression . '</td></tr>';
                 }

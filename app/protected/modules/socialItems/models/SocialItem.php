@@ -151,7 +151,7 @@
         {
             return array_merge(parent::translatedAttributeLabels($language),
                 array(
-                    'comments'       => Zurmo::t('SocialItemsModule', 'Comments',  array(), null, $language),
+                    'comments'       => Zurmo::t('CommentsModule', 'Comments',  array(), null, $language),
                     'description'    => Zurmo::t('ZurmoModule', 'Description',  array(), null, $language),
                     'files'          => Zurmo::t('ZurmoModule',  'Files',  array(), null, $language),
                     'latestDateTime' => Zurmo::t('ActivitiesModule',  'Latest Date Time',  array(), null, $language),

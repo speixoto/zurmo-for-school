@@ -114,7 +114,7 @@
             return array_merge(parent::translatedAttributeLabels($language),
                 array(
                     'type'          => Zurmo::t('Core', 'Type', array(), null, $language),
-                    'sortOrder'     => Zurmo::t('TasksModule', 'Order',  array(), null, $language),
+                    'sortOrder'     => Zurmo::t('Core', 'Order',  array(), null, $language),
                     'kanbanItem'    => Zurmo::t('TasksModule', 'Kanban Item',  array(), null, $language),
                     'task'          => Zurmo::t('TasksModule', 'Task', array(), null, $language)
                 )
@@ -138,7 +138,7 @@
                 self::TYPE_SOMEDAY                  => Zurmo::t('TasksModule', 'Someday'),
                 self::TYPE_TODO                     => Zurmo::t('TasksModule', 'To Do'),
                 self::TYPE_IN_PROGRESS              => Zurmo::t('TasksModule', 'Working On'),
-                self::TYPE_COMPLETED                => Zurmo::t('TasksModule', 'Completed'),
+                self::TYPE_COMPLETED                => Zurmo::t('Core', 'Completed'),
             );
         }
 
