@@ -129,9 +129,9 @@
         public static function getTypeDataAndLabels()
         {
                 return array(
-                    self::TYPE_UPDATE_SELF       => Zurmo::t('WorkflowsModule', 'Update'),
+                    self::TYPE_UPDATE_SELF       => Zurmo::t('Core', 'Update'),
                     self::TYPE_UPDATE_RELATED    => Zurmo::t('WorkflowsModule', 'Update Related'),
-                    self::TYPE_CREATE            => Zurmo::t('WorkflowsModule', 'Create'),
+                    self::TYPE_CREATE            => Zurmo::t('Core', 'Create'),
                     self::TYPE_CREATE_RELATED    => Zurmo::t('WorkflowsModule', 'Create Related'),
                     self::TYPE_SUBSCRIBE_TO_LIST => self::getLabelForSubscribeToList(),
                 );

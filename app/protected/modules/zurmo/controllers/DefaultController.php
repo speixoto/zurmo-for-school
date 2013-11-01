@@ -423,7 +423,7 @@
             }
             catch (FailedFileUploadException $e)
             {
-                $logoFileData = array('error' => Zurmo::t('ZurmoModule', 'Error') . ' ' . $e->getMessage());
+                $logoFileData = array('error' => Zurmo::t('Core', 'Error') . ' ' . $e->getMessage());
             }
             echo CJSON::encode(array($logoFileData));
             Yii::app()->end(0, false);

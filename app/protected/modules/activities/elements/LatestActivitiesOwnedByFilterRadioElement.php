@@ -53,7 +53,7 @@
                 $this->getArray(),
                 $this->getEditableHtmlOptions()
             );
-            return ZurmoHtml::tag('strong', array(), Zurmo::t('ActivitiesModule', 'View')) . ':' . $content;
+            return ZurmoHtml::tag('strong', array(), Zurmo::t('Core', 'View')) . ':' . $content;
         }
 
         protected function renderControlNonEditable()
@@ -90,7 +90,7 @@
         {
             $data = array(
                         LatestActivitiesConfigurationForm::OWNED_BY_FILTER_USER => Zurmo::t('ActivitiesModule', 'Mine'),
-                        LatestActivitiesConfigurationForm::OWNED_BY_FILTER_ALL  => Zurmo::t('ActivitiesModule', 'Everyone')
+                        LatestActivitiesConfigurationForm::OWNED_BY_FILTER_ALL  => Zurmo::t('Core', 'Everyone')
                     );
 
             return $data;

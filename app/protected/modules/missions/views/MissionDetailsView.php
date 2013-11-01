@@ -135,7 +135,7 @@
 
         protected function renderMissionCreateCommentContent()
         {
-            $content       = ZurmoHtml::tag('h2', array(), Zurmo::t('MissionsModule', 'Add Comment'));
+            $content       = ZurmoHtml::tag('h2', array(), Zurmo::t('CommentsModule', 'Add Comment'));
             $comment       = new Comment();
             $uniquePageId  = 'CommentInlineEditForModelView';
             $redirectUrl   = Yii::app()->createUrl('/missions/default/inlineCreateCommentFromAjax',

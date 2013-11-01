@@ -109,7 +109,7 @@
         public function actionEdit($id)
         {
             $group               = Group::getById(intval($id));
-            $title           = Zurmo::t('ZurmoModule', 'Edit');
+            $title           = Zurmo::t('Core', 'Edit');
             $breadCrumbLinks = array(strval($group) => array('group/' . static::resolveBreadCrumbActionByGroup($group),  'id' => $id), $title);
             $this->resolveCanGroupBeEdited($group);
             $titleBarAndEditView = new GroupActionBarAndEditView($this->getId(),

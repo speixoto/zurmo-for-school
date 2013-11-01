@@ -91,7 +91,7 @@
                     $currencyHelper = Yii::app()->currencyHelper;
                     if (!ZurmoCurrencyCodes::isValidCode($model->code))
                     {
-                        $model->addError('code', Zurmo::t('ZurmoModule', 'Invalid currency code'));
+                        $model->addError('code', Zurmo::t('Core', 'Invalid currency code'));
                         $currencyHelper->resetErrors();
                         return $model;
                     }

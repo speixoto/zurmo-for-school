@@ -64,7 +64,7 @@
                             'Camera'    => Zurmo::t('GamificationModule', 'Camera'),
                             'Hotel'     => Zurmo::t('GamificationModule', 'Hotel'),
                             'Landscape' => Zurmo::t('GamificationModule', 'Landscape'),
-                            'Map'       => Zurmo::t('GamificationModule', 'Map'),
+                            'Map'       => Zurmo::t('MapsModule', 'Map'),
             );
         }
 

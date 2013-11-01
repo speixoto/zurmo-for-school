@@ -56,7 +56,7 @@
         public function getActionViewOptions()
         {
             return array(
-                array('label' => Zurmo::t('ConversationsModule', 'Created'),
+                array('label' => Zurmo::t('Core', 'Created'),
                       'type'  => ConversationsSearchDataProviderMetadataAdapter::LIST_TYPE_CREATED),
                 array('label' => Zurmo::t('ConversationsModule', 'Participating In'),
                       'type'  => ConversationsSearchDataProviderMetadataAdapter::LIST_TYPE_PARTICIPANT),

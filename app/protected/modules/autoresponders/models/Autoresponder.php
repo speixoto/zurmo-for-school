@@ -183,12 +183,12 @@
         {
             return array_merge(parent::translatedAttributeLabels($language),
                 array(
-                    'subject'               => Zurmo::t('EmailMessagesModule', 'Subject', null,  null, $language),
+                    'subject'               => Zurmo::t('Core', 'Subject', null,  null, $language),
                     'operationType'         => Zurmo::t('Core', 'Triggered By', null,  null, $language),
-                    'fromOperationDurationInterval' => Zurmo::t('AutorespondersModule', 'Send After', null,  null, $language),
+                    'fromOperationDurationInterval' => Zurmo::t('Core', 'Send After', null,  null, $language),
                     'htmlContent'           => Zurmo::t('EmailMessagesModule', 'Html Content', null,  null, $language),
                     'textContent'           => Zurmo::t('EmailMessagesModule', 'Text Content', null,  null, $language),
-                    'enableTracking'        => Zurmo::t('AutorespondersModule', 'Enable Tracking', null,  null, $language),
+                    'enableTracking'        => Zurmo::t('ZurmoModule', 'Enable Tracking', null,  null, $language),
                 )
             );
         }

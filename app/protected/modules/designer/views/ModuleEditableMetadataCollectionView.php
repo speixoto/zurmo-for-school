@@ -68,7 +68,7 @@
             foreach ($this->editableMetadataCollection as $item)
             {
                 //todo: make sure the route has attributeTypeName as well as attributeName
-                $link    = ZurmoHtml::link( ZurmoHtml::wrapLabel(Zurmo::t('DesignerModule', 'Configure')),
+                $link    = ZurmoHtml::link( ZurmoHtml::wrapLabel(Zurmo::t('Core', 'Configure')),
                                        Yii::app()->createUrl('/' . $this->moduleId . '/' . $this->controllerId . '/layoutEdit',
                                        array('viewClassName'   => $item['viewClassName'],
                                              'moduleClassName' => $this->moduleClassName,

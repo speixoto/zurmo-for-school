@@ -91,7 +91,7 @@
         public function actionEdit($id)
         {
             $role            = Role::getById(intval($id));
-            $title           = Zurmo::t('ZurmoModule', 'Edit');
+            $title           = Zurmo::t('Core', 'Edit');
             $breadCrumbLinks = array(strval($role) => array('role/edit',  'id' => $id), $title);
             $editView = new RoleEditAndDetailsView('Edit',
                                                    $this->getId(),

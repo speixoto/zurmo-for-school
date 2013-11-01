@@ -60,7 +60,7 @@
                     'toolbar' => array(
                         'elements' => array(
                             array('type'  => 'CancelConvertLink'),
-                            array('type'  => 'SaveButton', 'label' => "eval:Zurmo::t('AccountsModule', 'Complete Conversion')"),
+                            array('type'  => 'SaveButton', 'label' => "eval:Zurmo::t('ZurmoModule', 'Complete Conversion')"),
                         ),
                     ),
                     'panelsDisplayType' => FormLayout::PANELS_DISPLAY_TYPE_ALL,

@@ -122,7 +122,7 @@
                     {
                         $content  .= ',&#160;';
                     }
-                    $content  .= Zurmo::t('EmailMessagesModule', 'Invalid');
+                    $content  .= Zurmo::t('Core', 'Invalid');
                 }
                 if ($optOut || $isInvalid)
                 {

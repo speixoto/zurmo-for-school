@@ -46,10 +46,10 @@
 
         protected function getMenuItems()
         {
-            return array(array('label'   => Zurmo::t('UsersModule', 'General'),
+            return array(array('label'   => Zurmo::t('Core', 'General'),
                                'url'     => $this->getRouteFormMenuItems() . '/configurationEdit?id=' . $this->modelId,
                                'itemOptions' => array( 'id'   => 'abc')),
-                         array('label'   => Zurmo::t('UsersModule', 'Email'),
+                         array('label'   => Zurmo::t('EmailMessagesModule', 'Email'),
                                'url'     => $this->getRouteFormMenuItems() . '/emailConfiguration?id=' . $this->modelId,
                                'itemOptions' => array( 'id'   => 'def')),
                          array('label'   => Zurmo::t('UsersModule', 'Security Overview'),
@@ -60,7 +60,7 @@
 
         protected function getDefaultLabel()
         {
-            return Zurmo::t('UsersModule', 'Configuration');
+            return Zurmo::t('ConfigurationModule', 'Configuration');
         }
 
         protected function getDefaultRoute()

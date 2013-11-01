@@ -85,7 +85,7 @@
         public function attributeLabels()
         {
             return array(
-                'emailAddress'          => Zurmo::t('ContactsModule', 'Primary Email'),
+                'emailAddress'          => Zurmo::t('ZurmoModule', 'Primary Email'),
             );
         }
     }

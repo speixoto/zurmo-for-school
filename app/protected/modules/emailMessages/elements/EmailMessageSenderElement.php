@@ -62,7 +62,7 @@
 
         protected function renderLabel()
         {
-            return $this->resolveNonActiveFormFormattedLabel(Zurmo::t('EmailMessagesModule', 'From'));
+            return $this->resolveNonActiveFormFormattedLabel(Zurmo::t('Core', 'From'));
         }
     }
 ?>

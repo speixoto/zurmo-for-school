@@ -71,7 +71,7 @@
                 $route = $this->moduleId . '/' . $this->controllerId . '/modulesMenu/';
                 $content .= '<li>';
                 $content .= '<h4>'. $label . '</h4>';
-                $content .= ZurmoHtml::link(ZurmoHtml::wrapLabel(Zurmo::t('DesignerModule', 'Configure') ),
+                $content .= ZurmoHtml::link(ZurmoHtml::wrapLabel(Zurmo::t('Core', 'Configure') ),
                     Yii::app()->createUrl($route,
                         array(
                             'moduleClassName' => $moduleClassName,

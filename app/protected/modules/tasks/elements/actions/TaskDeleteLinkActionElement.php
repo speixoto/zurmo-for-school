@@ -45,7 +45,7 @@
          */
         protected function resolveConfirmAlertInHtmlOptions($htmlOptions)
         {
-            $htmlOptions['confirm'] = Zurmo::t('TasksModule', 'Are you sure you want to delete this {modelLabel}?',
+            $htmlOptions['confirm'] = Zurmo::t('Core', 'Are you sure you want to delete this {modelLabel}?',
                                       array('{modelLabel}' => TasksModule::getModuleLabelByTypeAndLanguage('SingularLowerCase')));
             $this->registerDeleteActionScript($htmlOptions);
             return $htmlOptions;

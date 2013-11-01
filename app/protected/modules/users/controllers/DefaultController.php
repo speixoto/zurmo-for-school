@@ -202,7 +202,7 @@
             UserAccessUtil::resolveCanCurrentUserAccessRootUser($user);
             UserAccessUtil::resolveAccessingASystemUser($user);
             $user->setScenario('editUser');
-            $title           = Zurmo::t('UsersModule', 'Details');
+            $title           = Zurmo::t('Core', 'Details');
             $breadCrumbLinks = array(strval($user) => array('default/details',  'id' => $id), $title);
             $this->attemptToValidateAjaxFromPost($user, 'User');
             if ($user == Yii::app()->user->userModel)
@@ -468,7 +468,7 @@
             $user = User::getById(intval($id));
             UserAccessUtil::resolveCanCurrentUserAccessRootUser($user);
             UserAccessUtil::resolveAccessingASystemUser($user);
-            $title           = Zurmo::t('UsersModule', 'Configuration');
+            $title           = Zurmo::t('ConfigurationModule', 'Configuration');
             $breadCrumbLinks = array(strval($user) => array('default/details',  'id' => $id), $title);
             $configurationForm = UserConfigurationFormAdapter::makeFormFromUserConfigurationByUser($user);
             $postVariableName   = get_class($configurationForm);
@@ -508,7 +508,7 @@
             $user  = User::getById(intval($id));
             UserAccessUtil::resolveCanCurrentUserAccessRootUser($user);
             UserAccessUtil::resolveAccessingASystemUser($user);
-            $title = Zurmo::t('UsersModule', 'Email Configuration');
+            $title = Zurmo::t('EmailMessagesModule', 'Email Configuration');
             $breadCrumbLinks = array(strval($user) => array('default/details',  'id' => $id), $title);
             $emailAccount = EmailAccount::resolveAndGetByUserAndName($user);
             $userEmailConfigurationForm = new UserEmailConfigurationForm($emailAccount);
@@ -582,7 +582,7 @@
         {
             $user = User::getById(intval($id));
             UserAccessUtil::resolveAccessingASystemUser($user);
-            $title               = Zurmo::t('HomeModule', 'Dashboard');
+            $title               = Zurmo::t('ZurmoModule', 'Dashboard');
             $breadCrumbLinks     = array(strval($user) => array('default/gameDashboard',  'id' => $id), $title);
             $badgeData           = GameBadge::getAllByPersonIndexedByType($user);
             $generalLevelData    = GameLevelUtil::getStatisticsDataForAGivenLevelType($user, GameLevel::TYPE_GENERAL);

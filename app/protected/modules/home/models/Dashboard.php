@@ -155,7 +155,7 @@
         {
             assert('$user instanceof User && $user->id > 0');
             $dashboard             = new Dashboard();
-            $dashboard->name       = Zurmo::t('HomeModule', 'Dashboard');
+            $dashboard->name       = Zurmo::t('ZurmoModule', 'Dashboard');
             $dashboard->layoutId   = Dashboard::DEFAULT_USER_LAYOUT_ID;
             $dashboard->owner      = $user;
             $dashboard->layoutType = '50,50'; // Not Coding Standard
@@ -194,7 +194,7 @@
          */
         protected static function getLabel($language = null)
         {
-            return Zurmo::t('HomeModule', 'Dashboard', array(), null, $language);
+            return Zurmo::t('ZurmoModule', 'Dashboard', array(), null, $language);
         }
 
         /**

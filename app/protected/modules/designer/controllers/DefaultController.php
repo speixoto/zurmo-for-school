@@ -346,7 +346,7 @@
                 $this->actionModuleSave($moduleForm, $module);
             }
             $title           = $moduleClassName::getModuleLabelByTypeAndLanguage('Plural') .
-                               ': ' . Zurmo::t('DesignerModule', 'General');
+                               ': ' . Zurmo::t('Core', 'General');
             $breadCrumbLinks = array($title);
             $canvasView = new ActionBarAndModuleEditView(
                         $this->getId(),

@@ -87,7 +87,7 @@
                 $content .= '<td>';
                 if (isset($node['route']) && $node['route'] != null && static::shouldRenderConfigureLink())
                 {
-                    $content .= ZurmoHtml::link(ZurmoHtml::wrapLabel(Zurmo::t('ProductTemplatesModule', 'Configure') ),
+                    $content .= ZurmoHtml::link(ZurmoHtml::wrapLabel(Zurmo::t('Core', 'Configure') ),
                         $node['route']);
                 }
                 $content .= '</td>';

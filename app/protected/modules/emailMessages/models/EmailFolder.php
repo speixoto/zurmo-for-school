@@ -67,7 +67,7 @@
 
         public static function getDefaultSentName()
         {
-            return Zurmo::t('EmailMessagesModule', 'Sent');
+            return Zurmo::t('Core', 'Sent');
         }
 
         public static function getDefaultOutboxName()
@@ -87,7 +87,7 @@
 
         public static function getDefaultArchivedName()
         {
-            return Zurmo::t('EmailMessagesModule', 'Archived');
+            return Zurmo::t('ZurmoModule', 'Archived');
         }
 
         public static function getDefaultArchivedUnmatchedName()

@@ -93,12 +93,12 @@
                 }
                 else
                 {
-                    throw new InvalidValueToSanitizeException(Zurmo::t('ProjectsModule', 'Status specified is invalid.'));
+                    throw new InvalidValueToSanitizeException(Zurmo::t('ZurmoModule', 'Status specified is invalid.'));
                 }
             }
             catch (NotFoundException $e)
             {
-                throw new InvalidValueToSanitizeException(Zurmo::t('ProjectsModule', 'Status specified is invalid.'));
+                throw new InvalidValueToSanitizeException(Zurmo::t('ZurmoModule', 'Status specified is invalid.'));
             }
         }
 

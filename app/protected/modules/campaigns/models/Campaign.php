@@ -58,9 +58,9 @@
         {
             return array(
                 static::STATUS_PAUSED       => Zurmo::t('CampaignsModule', 'Paused'),
-                static::STATUS_ACTIVE       => Zurmo::t('CampaignsModule', 'Active'),
-                static::STATUS_PROCESSING   => Zurmo::t('CampaignsModule', 'Processing'),
-                static::STATUS_COMPLETED    => Zurmo::t('CampaignsModule', 'Completed'),
+                static::STATUS_ACTIVE       => Zurmo::t('Core', 'Active'),
+                static::STATUS_PROCESSING   => Zurmo::t('Core', 'Processing'),
+                static::STATUS_COMPLETED    => Zurmo::t('Core', 'Completed'),
             );
         }
 
@@ -231,9 +231,9 @@
                     'status'                => Zurmo::t('ZurmoModule', 'Status', null,  null, $language),
                     'sendOnDateTime'       => Zurmo::t('CampaignsModule', 'Send On', null,  null, $language),
                     'supportsRichText'      => Zurmo::t('CampaignsModule', 'Supports HTML', null,  null, $language),
-                    'fromName'              => Zurmo::t('CampaignsModule', 'From Name', null,  null, $language),
-                    'fromAddress'           => Zurmo::t('CampaignsModule', 'From Address', null,  null, $language),
-                    'subject'               => Zurmo::t('EmailMessagesModule', 'Subject', null,  null, $language),
+                    'fromName'              => Zurmo::t('EmailMessagesModule', 'From Name', null,  null, $language),
+                    'fromAddress'           => Zurmo::t('EmailMessagesModule', 'From Address', null,  null, $language),
+                    'subject'               => Zurmo::t('Core', 'Subject', null,  null, $language),
                     'htmlContent'           => Zurmo::t('EmailMessagesModule', 'Html Content', null,  null, $language),
                     'textContent'           => Zurmo::t('EmailMessagesModule', 'Text Content', null,  null, $language),
                 )

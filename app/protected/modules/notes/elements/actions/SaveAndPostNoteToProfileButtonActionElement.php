@@ -65,7 +65,7 @@
             {
                 return parent::render();
             }
-            $postToProfileContent  = ZurmoHtml::tag('span', array(), Zurmo::t('NotesModule', 'Post to Profile'));
+            $postToProfileContent  = ZurmoHtml::tag('span', array(), Zurmo::t('ZurmoModule', 'Post to Profile'));
             $postToProfileContent .= static::renderHelpSpan();
             $postToProfileContent .= ZurmoHtml::checkBox('postToProfile', false);
             $content               = parent::render();
@@ -84,7 +84,7 @@
 
         protected function getDefaultLabel()
         {
-            return Zurmo::t('NotesModule', 'Save');
+            return Zurmo::t('Core', 'Save');
         }
 
         protected function getDefaultRoute()

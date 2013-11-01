@@ -559,7 +559,7 @@
                             MassDeleteInsufficientPermissionSkipSavingUtil::clear($modelClassName);
                             $notificationContent =  $successfulCount . ' ' .
                                                     LabelUtil::getUncapitalizedRecordLabelByCount($successfulCount) .
-                                                    ' ' . Zurmo::t('ZurmoModule', 'successfully deleted') . '.';
+                                                    ' ' . Zurmo::t('Core', 'successfully deleted') . '.';
                             if ($skipCount > 0)
                             {
                                 $notificationContent .= ' ' .

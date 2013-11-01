@@ -73,11 +73,11 @@
         {
             return array(
                 'imapHost'                             => Zurmo::t('ZurmoModule', 'Host'),
-                'imapUsername'                         => Zurmo::t('EmailMessagesModule', 'Username'),
-                'imapPassword'                         => Zurmo::t('EmailMessagesModule', 'Password'),
+                'imapUsername'                         => Zurmo::t('ZurmoModule', 'Username'),
+                'imapPassword'                         => Zurmo::t('ZurmoModule', 'Password'),
                 'imapPort'                             => Zurmo::t('ZurmoModule', 'Port'),
                 'imapSSL'                              => Zurmo::t('EmailMessagesModule', 'SSL connection'),
-                'imapFolder'                           => Zurmo::t('EmailMessagesModule', 'Folder'),
+                'imapFolder'                           => Zurmo::t('ZurmoModule', 'Folder'),
                 'testImapConnection'                   => Zurmo::t('EmailMessagesModule', 'Test IMAP connection'),
             );
         }

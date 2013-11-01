@@ -60,7 +60,7 @@
          */
         public static function getItemTypesAndLabels()
         {
-            return array(   'Email'         => Zurmo::t('GamificationModule', 'Email'),
+            return array(   'Email'         => Zurmo::t('EmailMessagesModule', 'Email'),
                             'Photos'        => Zurmo::t('GamificationModule', 'Photos'),
                             'Smartphone'    => Zurmo::t('GamificationModule', 'Smartphone'),
                             'Blog'          => Zurmo::t('GamificationModule', 'Social Network'),

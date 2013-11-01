@@ -190,7 +190,7 @@
             $result = static::mathEval($expression);
             if ($result === false)
             {
-                return Zurmo::t('ZurmoModule', 'Invalid');
+                return Zurmo::t('Core', 'Invalid');
             }
             return $result . $extraZerosForDecimalPart;
         }

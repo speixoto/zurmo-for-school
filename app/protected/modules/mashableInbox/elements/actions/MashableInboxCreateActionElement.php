@@ -76,7 +76,7 @@
 
         protected function getDefaultLabel()
         {
-            return Zurmo::t('MashableInboxModule', 'Create');
+            return Zurmo::t('Core', 'Create');
         }
 
         protected function getDefaultRoute()

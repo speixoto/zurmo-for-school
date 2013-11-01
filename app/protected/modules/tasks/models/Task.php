@@ -175,7 +175,7 @@
             return array_merge(parent::translatedAttributeLabels($language),
                 array(
                     'completedDateTime' => Zurmo::t('TasksModule', 'Completed On', array(), null, $language),
-                    'completed'         => Zurmo::t('TasksModule', 'Completed',  array(), null, $language),
+                    'completed'         => Zurmo::t('Core', 'Completed',  array(), null, $language),
                     'description'       => Zurmo::t('ZurmoModule', 'Description',  array(), null, $language),
                     'dueDateTime'       => Zurmo::t('TasksModule', 'Due On',       array(), null, $language),
                     'name'              => Zurmo::t('Core', 'Name',  array(), null, $language),

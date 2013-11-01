@@ -64,12 +64,12 @@
             }
             if ($autorespondersClass)
             {
-                $autorespondersTranslatedLabel = Zurmo::t('MarketingListsModule', 'Autoresponders');
+                $autorespondersTranslatedLabel = Zurmo::t('AutorespondersModule', 'Autoresponders');
                 $content                .= $this->getCheckboxContent($autorespondersTranslatedLabel, $autorespondersClass);
             }
             if ($metricsClass)
             {
-                $membersTranslatedLabel = Zurmo::t('HomeModule', 'Dashboard');
+                $membersTranslatedLabel = Zurmo::t('ZurmoModule', 'Dashboard');
                 $content               .= $this->getCheckboxContent($membersTranslatedLabel, $metricsClass);
             }
             return ZurmoHtml::tag('div', $this->getHtmlOptions(), $content );
@@ -89,7 +89,7 @@
          */
         protected function getDefaultLabel()
         {
-            return Zurmo::t('MarketingListsModule', 'Toggle View');
+            return Zurmo::t('Core', 'Toggle View');
         }
 
         /**

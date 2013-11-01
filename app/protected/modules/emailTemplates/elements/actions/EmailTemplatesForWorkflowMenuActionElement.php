@@ -44,7 +44,7 @@
          */
         protected function getDefaultLabel()
         {
-            return Zurmo::t('EmailTemplatesModule', 'Templates');
+            return Zurmo::t('Core', 'Templates');
         }
 
         /**

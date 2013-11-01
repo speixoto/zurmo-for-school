@@ -221,7 +221,7 @@
 
         public static function getDisplayDescription()
         {
-            return Zurmo::t('ContactsModule', 'Matching Archived Emails');
+            return Zurmo::t('EmailMessagesModule', 'Matching Archived Emails');
         }
 
         protected static function getNotificationBarId()

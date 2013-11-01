@@ -38,7 +38,7 @@
     {
         protected function getDefaultLabel()
         {
-            return Zurmo::t('GamificationModule', 'Monthly');
+            return Zurmo::t('Core', 'Monthly');
         }
 
         protected function getDefaultRoute()

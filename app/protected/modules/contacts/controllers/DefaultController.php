@@ -413,7 +413,7 @@
         {
             if (MassActionUtil::isMassSubscribeLikeAction($actionId))
             {
-                return Zurmo::t('Marketing List', 'Mass Subscribe');
+                return Zurmo::t('Core', 'Mass Subscribe');
             }
             return parent::resolveTitleByMassActionId($actionId);
         }

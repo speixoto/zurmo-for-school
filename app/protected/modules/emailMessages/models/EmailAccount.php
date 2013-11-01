@@ -202,7 +202,7 @@
                 array(
                     'fromAddress'       => Zurmo::t('EmailMessagesModule', 'From Address',  array(), null, $language),
                     'fromName'          => Zurmo::t('EmailMessagesModule', 'From Name',  array(), null, $language),
-                    'messages'          => Zurmo::t('EmailMessagesModule', 'Messages',  array(), null, $language),
+                    'messages'          => Zurmo::t('Core', 'Messages',  array(), null, $language),
                     'name'              => Zurmo::t('ZurmoModule',         'Name',  array(), null, $language),
                     'outboundHost'      => Zurmo::t('EmailMessagesModule', 'Outbound Host',  array(), null, $language),
                     'outboundPassword'  => Zurmo::t('EmailMessagesModule', 'Outbound Password',  array(), null, $language),

@@ -38,7 +38,7 @@
     {
         public static function getAttributeTypeDisplayName()
         {
-            return Zurmo::t('DesignerModule', 'Currency');
+            return Zurmo::t('ZurmoModule', 'Currency');
         }
 
         public static function getAttributeTypeDisplayDescription()

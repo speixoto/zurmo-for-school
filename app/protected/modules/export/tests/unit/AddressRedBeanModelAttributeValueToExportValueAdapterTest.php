@@ -73,11 +73,11 @@
             $this->assertEquals($compareData, $data);
             $data = array();
             $adapter->resolveHeaderData($data);
-            $compareData = array($model->getAttributeLabel('primaryAddress') . ' - ' . Zurmo::t('ExportModule', 'City'),
-                                 $model->getAttributeLabel('primaryAddress') . ' - ' . Zurmo::t('ExportModule', 'Country'),
-                                 $model->getAttributeLabel('primaryAddress') . ' - ' . Zurmo::t('ExportModule', 'Postal Code'),
-                                 $model->getAttributeLabel('primaryAddress') . ' - ' . Zurmo::t('ExportModule', 'Street 1'),
-                                 $model->getAttributeLabel('primaryAddress') . ' - ' . Zurmo::t('ExportModule', 'Street 2'),
+            $compareData = array($model->getAttributeLabel('primaryAddress') . ' - ' . Zurmo::t('ZurmoModule', 'City'),
+                                 $model->getAttributeLabel('primaryAddress') . ' - ' . Zurmo::t('ZurmoModule', 'Country'),
+                                 $model->getAttributeLabel('primaryAddress') . ' - ' . Zurmo::t('ZurmoModule', 'Postal Code'),
+                                 $model->getAttributeLabel('primaryAddress') . ' - ' . Zurmo::t('ZurmoModule', 'Street 1'),
+                                 $model->getAttributeLabel('primaryAddress') . ' - ' . Zurmo::t('ZurmoModule', 'Street 2'),
                                  $model->getAttributeLabel('primaryAddress') . ' - ' . Zurmo::t('ExportModule', 'State')
                                 );
             $this->assertEquals($compareData, $data);
@@ -94,11 +94,11 @@
             $this->assertEquals($compareData, $data);
             $data        = array();
             $adapter->resolveHeaderData($data);
-            $compareData = array($model->getAttributeLabel('primaryAddress') . ' - ' . Zurmo::t('ExportModule', 'City'),
-                                 $model->getAttributeLabel('primaryAddress') . ' - ' . Zurmo::t('ExportModule', 'Country'),
-                                 $model->getAttributeLabel('primaryAddress') . ' - ' . Zurmo::t('ExportModule', 'Postal Code'),
-                                 $model->getAttributeLabel('primaryAddress') . ' - ' . Zurmo::t('ExportModule', 'Street 1'),
-                                 $model->getAttributeLabel('primaryAddress') . ' - ' . Zurmo::t('ExportModule', 'Street 2'),
+            $compareData = array($model->getAttributeLabel('primaryAddress') . ' - ' . Zurmo::t('ZurmoModule', 'City'),
+                                 $model->getAttributeLabel('primaryAddress') . ' - ' . Zurmo::t('ZurmoModule', 'Country'),
+                                 $model->getAttributeLabel('primaryAddress') . ' - ' . Zurmo::t('ZurmoModule', 'Postal Code'),
+                                 $model->getAttributeLabel('primaryAddress') . ' - ' . Zurmo::t('ZurmoModule', 'Street 1'),
+                                 $model->getAttributeLabel('primaryAddress') . ' - ' . Zurmo::t('ZurmoModule', 'Street 2'),
                                  $model->getAttributeLabel('primaryAddress') . ' - ' . Zurmo::t('ExportModule', 'State')
                                 );
             $this->assertEquals($compareData, $data);

@@ -74,7 +74,7 @@
                 $content .= $this->renderServiceGroupDisplayByServiceDataAndCheckResult(
                     ZurmoHtml::tag('h4', array(), Zurmo::t('InstallModule', 'Service Status Partially Known')),
                     $this->checkResultsDisplayData[$warningIndexId],
-                    '<span class="warning">' . Zurmo::t('InstallModule', 'WARNING') . '</span>');
+                    '<span class="warning">' . Zurmo::t('Core', 'WARNING') . '</span>');
             }
 
             if (count($this->checkResultsDisplayData[$passedIndexId]) > 0)

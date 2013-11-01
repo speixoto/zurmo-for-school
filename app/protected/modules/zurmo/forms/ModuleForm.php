@@ -70,7 +70,7 @@
             {
                 if ( empty($data[$language]))
                 {
-                    $this->addError($attribute . '[' . $language . ']', Zurmo::t('ZurmoModule', 'Label must not be empty.'));
+                    $this->addError($attribute . '[' . $language . ']', Zurmo::t('Core', 'Label must not be empty.'));
                 }
                 if ($data[$language] != TextUtil::strToLowerWithDefaultEncoding($data[$language]))
                 {

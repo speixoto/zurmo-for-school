@@ -60,9 +60,9 @@
             return array_merge(parent::translatedAttributeLabels($language),
                 array(
                     'description'        => Zurmo::t('ZurmoModule', 'Description',  array(), null, $language),
-                    'latestDateTime'     => Zurmo::t('ActivitiesModule', 'Latest Date Time',  array(), null, $language),
-                    'subject'            => Zurmo::t('ConversationsModule', 'Subject',  array(), null, $language),
-                    'ownerHasReadLatest' => Zurmo::t('ConversationsModule', 'Owner Has Read Latest',  array(), null, $language),
+                    'latestDateTime'     => Zurmo::t('ZurmoModule', 'Latest Date Time',  array(), null, $language),
+                    'subject'            => Zurmo::t('Core', 'Subject',  array(), null, $language),
+                    'ownerHasReadLatest' => Zurmo::t('NotificationsModule', 'Owner Has Read Latest',  array(), null, $language),
                     'isClosed'           => Zurmo::t('ConversationsModule', 'Is Closed',  array(), null, $language),
                     'comments'           => Zurmo::t('CommentsModule', 'Comments',  array(), null, $language),
                     'conversationItems'  => Zurmo::t('ConversationsModule', 'Conversation Items',  array(), null, $language),

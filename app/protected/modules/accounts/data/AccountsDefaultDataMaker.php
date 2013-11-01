@@ -56,7 +56,7 @@
 
             $values = array(
                 Zurmo::t('CustomField', 'Prospect'),
-                Zurmo::t('CustomField', 'Customer'),
+                Zurmo::t('ZurmoModule', 'Customer'),
                 Zurmo::t('CustomField', 'Vendor'),
             );
             static::makeCustomFieldDataByValuesAndDefault('AccountTypes', $values);

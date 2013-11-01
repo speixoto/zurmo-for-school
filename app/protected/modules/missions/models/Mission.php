@@ -155,7 +155,7 @@
                     'description'     => Zurmo::t('ZurmoModule',    'Description', array(), null, $language),
                     'dueDateTime'     => Zurmo::t('TasksModule', 'Due On', array(), null, $language),
                     'files'           => Zurmo::t('ZurmoModule', 'Files', array(), null, $language),
-                    'latestDateTime'  => Zurmo::t('ActivitiesModule', 'Latest Date Time', array(), null, $language),
+                    'latestDateTime'  => Zurmo::t('ZurmoModule', 'Latest Date Time', array(), null, $language),
                     'personsWhoHaveNotReadLatest' => Zurmo::t('MissionsModule', 'Persons Who Have Not Read Latest', array(), null, $language),
                     'reward'          => Zurmo::t('MissionsModule', 'Reward', array(), null, $language),
                     'status'          => Zurmo::t('ZurmoModule', 'Status', array(), null, $language),

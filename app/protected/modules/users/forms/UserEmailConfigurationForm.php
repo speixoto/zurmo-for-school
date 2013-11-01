@@ -64,8 +64,8 @@
         public function attributeLabels()
         {
             return array_merge($this->model->attributeLabels(), array(
-                'aTestToAddress'            => Zurmo::t('UsersModule', 'Send a test email to'),
-                'emailSignatureHtmlContent' => Zurmo::t('UsersModule', 'Email Signature')
+                'aTestToAddress'            => Zurmo::t('EmailMessagesModule', 'Send a test email to'),
+                'emailSignatureHtmlContent' => Zurmo::t('EmailMessagesModule', 'Email Signature')
             ));
         }
 
