@@ -926,6 +926,7 @@
         /**
          * Check kanban type for status and update if it is required, it is required
          * when user is changing the status from modal detail view
+         * @param $task Task
          */
         public static function checkKanbanTypeByStatusAndUpdateIfRequired(Task $task)
         {
