@@ -89,7 +89,7 @@
             $readOnlyPermitables  = $explicitReadWriteModelPermissions->getReadOnlyPermitables();
             $this->assertEquals(1, count($readWritePermitables));
             $this->assertEquals(0, count($readOnlyPermitables));
-            $this->assertEquals($group1, $readWritePermitables[$group1->id]);
+            $this->assertEquals($group1, $readWritePermitables[$group1->getClassId('Permitable')]);
 
             //Change the permissions to Everyone group
             $this->setGetArray(array('id' => $superAccountId));
@@ -107,7 +107,7 @@
             $readOnlyPermitables  = $explicitReadWriteModelPermissions->getReadOnlyPermitables();
             $this->assertEquals(1, count($readWritePermitables));
             $this->assertEquals(0, count($readOnlyPermitables));
-            $this->assertEquals($everyoneGroup, $readWritePermitables[$everyoneGroup->id]);
+            $this->assertEquals($everyoneGroup, $readWritePermitables[$everyoneGroup->getClassId('Permitable')]);
 
             //Remove all explicit permissions.
             $this->setGetArray(array('id' => $superAccountId));
@@ -173,7 +173,7 @@
             $readOnlyPermitables  = $explicitReadWriteModelPermissions->getReadOnlyPermitables();
             $this->assertEquals(1, count($readWritePermitables));
             $this->assertEquals(0, count($readOnlyPermitables));
-            $this->assertEquals($everyoneGroup, $readWritePermitables[$everyoneGroup->id]);
+            $this->assertEquals($everyoneGroup, $readWritePermitables[$everyoneGroup->getClassId('Permitable')]);
 
             //Create a new account with a non-everyone group explicitly added.
             $this->resetGetArray();
@@ -195,7 +195,7 @@
             $readOnlyPermitables  = $explicitReadWriteModelPermissions->getReadOnlyPermitables();
             $this->assertEquals(1, count($readWritePermitables));
             $this->assertEquals(0, count($readOnlyPermitables));
-            $this->assertEquals($group1, $readWritePermitables[$group1->id]);
+            $this->assertEquals($group1, $readWritePermitables[$group1->getClassId('Permitable')]);
         }
     }
 ?>

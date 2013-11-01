@@ -147,7 +147,7 @@
                                                  makeBySecurableItem($conversations[0]);
             $readWritePermitables              = $explicitReadWriteModelPermissions->getReadWritePermitables();
             $this->assertEquals(1, count($readWritePermitables));
-            $this->assertTrue(isset($readWritePermitables[$mary->id]));
+            $this->assertTrue(isset($readWritePermitables[$mary->getClassId('Permitable')]));
         }
 
         /**

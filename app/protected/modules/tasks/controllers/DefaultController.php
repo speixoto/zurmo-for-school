@@ -300,7 +300,6 @@
             if($id == null)
             {
                 $task = new Task();
-                TasksUtil::setDefaultValuesForTask($task);
             }
             else
             {
@@ -322,12 +321,10 @@
         }
 
         /**
-         * Saves task in the modal view
+         * Copy task in the modal view
          * @param string $relationAttributeName
          * @param string $relationModelId
          * @param string $relationModuleId
-         * @param string $portletId
-         * @param string $uniqueLayoutId
          */
         public function actionModalCopyFromRelation($relationAttributeName, $relationModelId, $relationModuleId, $id = null)
         {

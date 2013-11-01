@@ -199,14 +199,12 @@
             $project = ProjectTestHelper::createProjectByNameForOwner('a new project', $super);
             $task = TaskTestHelper::createTaskByNameForOwner('My Kanban Task', Yii::app()->user->userModel);
             $task->project = $project;
-            TasksUtil::setDefaultValuesForTask($task);
             $task->status = Task::STATUS_IN_PROGRESS;
             $taskId = $task->id;
             $this->assertTrue($task->save());
 
             $task1 = TaskTestHelper::createTaskByNameForOwner('My Kanban Task 1', Yii::app()->user->userModel);
             $task1->project = $project;
-            TasksUtil::setDefaultValuesForTask($task1);
             $task1->status = Task::STATUS_NEW;
             $this->assertTrue($task1->save());
             $task1Id = $task1->id;

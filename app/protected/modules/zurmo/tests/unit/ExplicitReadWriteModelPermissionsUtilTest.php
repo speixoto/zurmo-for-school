@@ -74,10 +74,10 @@
             $this->assertEquals(1, $explicitReadWriteModelPermissions->getReadOnlyPermitablesCount());
             $this->assertEquals(2, $explicitReadWriteModelPermissions->getReadWritePermitablesCount());
             $readOnlyPermitables  = $explicitReadWriteModelPermissions->getReadOnlyPermitables();
-            $this->assertEquals($group1, $readOnlyPermitables[$group1->id]);
+            $this->assertEquals($group1, $readOnlyPermitables[$group1->getClassId('Permitable')]);
             $readWritePermitables = $explicitReadWriteModelPermissions->getReadWritePermitables();
-            $this->assertEquals($group2, $readWritePermitables[$group2->id]);
-            $this->assertEquals($group3, $readWritePermitables[$group3->id]);
+            $this->assertEquals($group2, $readWritePermitables[$group2->getClassId('Permitable')]);
+            $this->assertEquals($group3, $readWritePermitables[$group3->getClassId('Permitable')]);
         }
 
         public function testMakeMixedPermitablesDataByExplicitReadWriteModelPermissions()
@@ -122,7 +122,7 @@
             $this->assertEquals(1, $explicitReadWriteModelPermissions->getReadWritePermitablesCount());
             $readWritePermitables = $explicitReadWriteModelPermissions->getReadWritePermitables();
             $everyoneGroup        = Group::getByName(Group::EVERYONE_GROUP_NAME);
-            $this->assertEquals($everyoneGroup, $readWritePermitables[$everyoneGroup->id]);
+            $this->assertEquals($everyoneGroup, $readWritePermitables[$everyoneGroup->getClassId('Permitable')]);
 
             //Test selecting a group that is not the everyone group.
             $group2 = Group::getByName('group2');
@@ -132,7 +132,7 @@
             $this->assertEquals(0, $explicitReadWriteModelPermissions->getReadOnlyPermitablesCount());
             $this->assertEquals(1, $explicitReadWriteModelPermissions->getReadWritePermitablesCount());
             $readWritePermitables = $explicitReadWriteModelPermissions->getReadWritePermitables();
-            $this->assertEquals($group2, $readWritePermitables[$group2->id]);
+            $this->assertEquals($group2, $readWritePermitables[$group2->getClassId('Permitable')]);
         }
 
         public function testMakeBySecurableItem()
@@ -157,8 +157,8 @@
             $readOnlyPermitables  = $explicitReadWriteModelPermissions->getReadOnlyPermitables();
             $this->assertEquals(1, count($readWritePermitables));
             $this->assertEquals(1, count($readOnlyPermitables));
-            $this->assertEquals($group3, $readOnlyPermitables[$group3->id]);
-            $this->assertEquals($group2, $readWritePermitables[$group2->id]);
+            $this->assertEquals($group3, $readOnlyPermitables[$group3->getClassId('Permitable')]);
+            $this->assertEquals($group2, $readWritePermitables[$group2->getClassId('Permitable')]);
         }
 
         /**
@@ -187,8 +187,8 @@
             $readOnlyPermitables               = $explicitReadWriteModelPermissions->getReadOnlyPermitables();
             $this->assertEquals(2, count($readWritePermitables));
             $this->assertEquals(0, count($readOnlyPermitables));
-            $this->assertEquals($group2, $readWritePermitables[$group2->id]);
-            $this->assertEquals($group4, $readWritePermitables[$group4->id]);
+            $this->assertEquals($group2, $readWritePermitables[$group2->getClassId('Permitable')]);
+            $this->assertEquals($group4, $readWritePermitables[$group4->getClassId('Permitable')]);
 
             //Test adding group4 again. The _read count should be the same
             $account = Account::getById($accountId);
@@ -236,7 +236,7 @@
             $readOnlyPermitables               = $explicitReadWriteModelPermissions->getReadOnlyPermitables();
             $this->assertEquals(1, count($readWritePermitables));
             $this->assertEquals(0, count($readOnlyPermitables));
-            $this->assertEquals($group3, $readWritePermitables[$group3->id]);
+            $this->assertEquals($group3, $readWritePermitables[$group3->getClassId('Permitable')]);
         }
     }
 ?>
