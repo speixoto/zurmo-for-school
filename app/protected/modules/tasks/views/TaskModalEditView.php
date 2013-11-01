@@ -210,7 +210,8 @@
             $sourceId         = Yii::app()->request->getParam('sourceId');
             $modalId          = $this->resolveModalIdFromGet();
             $relationModelId  = Yii::app()->request->getParam('relationModelId');
-            $action           = TasksUtil::resolveModalSaveActionNameForByRelationModelId($relationModelId);
+            $copyAction       = Yii::app()->request->getParam('action', null);
+            $action           = TasksUtil::resolveModalSaveActionNameForByRelationModelId($relationModelId, $copyAction);
             $url              = Yii::app()->createUrl('tasks/default/' . $action, GetUtil::getData());
             return array('enableAjaxValidation' => true,
                         'clientOptions' => array(

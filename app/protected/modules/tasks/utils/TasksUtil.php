@@ -792,16 +792,24 @@
          * @param $relationModelId
          * @return string
          */
-        public static function resolveModalSaveActionNameForByRelationModelId($relationModelId)
+        public static function resolveModalSaveActionNameForByRelationModelId($relationModelId, $copyAction = null)
         {
             assert('is_string($relationModelId) || $relationModelId == null');
-            if($relationModelId != null)
+            assert('is_string($copyAction) || $copyAction == null');
+            if($copyAction == 'copy')
             {
-                return 'modalSaveFromRelation';
+                return 'modalCopyFromRelation';
             }
             else
             {
-                return 'modalSave';
+                if($relationModelId != null)
+                {
+                    return 'modalSaveFromRelation';
+                }
+                else
+                {
+                    return 'modalSave';
+                }
             }
         }
 

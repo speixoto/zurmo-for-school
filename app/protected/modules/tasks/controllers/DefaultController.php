@@ -317,14 +317,31 @@
          */
         public function actionModalCopy($id)
         {
+            $task = Task::getById((int)$id);
+            $this->processTaskEdit($task);
+        }
+
+        /**
+         * Saves task in the modal view
+         * @param string $relationAttributeName
+         * @param string $relationModelId
+         * @param string $relationModuleId
+         * @param string $portletId
+         * @param string $uniqueLayoutId
+         */
+        public function actionModalCopyFromRelation($relationAttributeName, $relationModelId, $relationModuleId, $id = null)
+        {
             $copyToTask   = new Task();
-            if (!isset($_POST['Task']))
+            $task   = Task::getById(intval($id));
+            ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($task);
+            TaskActivityCopyModelUtil::copy($task, $copyToTask);
+            $copyToTask   = $this->attemptToSaveModelFromPost($copyToTask, null, false);
+            //Log event for project audit
+            if($relationAttributeName == 'project')
             {
-                $task = Task::getById((int)$id);
-                ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($task);
-                ActivityCopyModelUtil::copy($task, $copyToTask);
+                ProjectsUtil::logAddTaskEvent($copyToTask);
             }
-            $this->processTaskEdit($copyToTask);
+            $this->actionModalDetails($copyToTask->id);
         }
 
         /**
