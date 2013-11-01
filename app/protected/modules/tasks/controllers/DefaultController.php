@@ -300,7 +300,6 @@
             if($id == null)
             {
                 $task = new Task();
-                TasksUtil::setDefaultValuesForTask($task);
             }
             else
             {
