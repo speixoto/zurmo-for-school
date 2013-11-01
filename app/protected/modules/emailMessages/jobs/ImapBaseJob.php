@@ -64,7 +64,7 @@
         public function run()
         {
             $this->resolveImapObject();
-            if($this->imapManager->imapHost == null)
+            if ($this->imapManager->imapHost == null)
             {
                 return true;
             }

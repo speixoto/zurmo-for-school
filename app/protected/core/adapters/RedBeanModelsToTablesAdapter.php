@@ -61,7 +61,7 @@
                     $tables[] = $table;
                 }
             }
-            foreach($tables as $schemaDefinition)
+            foreach ($tables as $schemaDefinition)
             {
                 $tableName          = key($schemaDefinition);
                 $polymorphicColumns = RedBeanModelRelationToColumnAdapter::resolvePolymorphicColumnsByTableName($tableName);

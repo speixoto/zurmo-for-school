@@ -486,7 +486,7 @@
         {
             if (static::getCanHaveBean() && static::isTypeDeletable())
             {
-                foreach(static::getAll() as $model)
+                foreach (static::getAll() as $model)
                 {
                     if (!$model->delete())
                     {

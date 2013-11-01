@@ -59,7 +59,7 @@
             $unserializedData = unserialize($model->serializedData);
             try
             {
-                if(isset($unserializedData[0]) && isset($unserializedData[0]['emailTemplateId']))
+                if (isset($unserializedData[0]) && isset($unserializedData[0]['emailTemplateId']))
                 {
                     $emailTemplate = EmailTemplate::getById((int)$unserializedData[0]['emailTemplateId']);
                     $modelContent = strval($emailTemplate);

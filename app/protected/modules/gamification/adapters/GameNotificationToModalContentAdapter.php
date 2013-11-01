@@ -82,7 +82,7 @@
          */
         protected function getCoinContent($data)
         {
-            if(null != $coins = ArrayUtil::getArrayValue($data, 'coins'))
+            if (null != $coins = ArrayUtil::getArrayValue($data, 'coins'))
             {
                 return '<h3>' . Zurmo::t('GamificationModule', 'You have received {n} coin | You have received {n} coins',
                                             array($coins)) . '</h3>';

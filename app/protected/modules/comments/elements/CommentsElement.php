@@ -68,7 +68,7 @@
             $this->form      = $form;
             $this->params    = $params;
 
-            if(isset($params['relatedModelRelationName']))
+            if (isset($params['relatedModelRelationName']))
             {
                 $this->relatedModelRelationName = $params['relatedModelRelationName'];
             }

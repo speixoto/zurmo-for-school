@@ -55,7 +55,7 @@
             foreach ($this->dataProvider->data as $notUsed => $data)
             {
                 $kanbanItem  = KanbanItem::getByTask($data->id);
-                if($kanbanItem == null)
+                if ($kanbanItem == null)
                 {
                     //Create KanbanItem here
                     $kanbanItem = TasksUtil::createKanbanItemFromTask($data);
@@ -63,10 +63,10 @@
 
                 $kanbanItemsArray[$kanbanItem->type][intval($kanbanItem->sortOrder)] = $kanbanItem->task;
             }
-            foreach($kanbanItemsArray as $type => $kanbanData)
+            foreach ($kanbanItemsArray as $type => $kanbanData)
             {
                 ksort($kanbanData, SORT_NUMERIC);
-                foreach($kanbanData as $sort => $item)
+                foreach ($kanbanData as $sort => $item)
                 {
                     if (isset($this->columnsData[$type]))
                     {
@@ -230,7 +230,7 @@
          */
         protected function getRowClassForTaskKanbanColumn($data)
         {
-            if($data->status == Task::STATUS_COMPLETED)
+            if ($data->status == Task::STATUS_COMPLETED)
             {
                 return 'kanban-card item-to-place ui-state-disabled';
             }
@@ -390,7 +390,7 @@
             $content .= ZurmoHtml::openTag('h4');
             $content .= $this->renderCardDataContent($this->cardColumns['name'], $task, $row);
             $content .= ZurmoHtml::closeTag('h4');
-            if($task->description != null)
+            if ($task->description != null)
             {
                 $description = $task->description;
                 if (strlen($description) > TaskKanbanBoard::TASK_DESCRIPTION_LENGTH)
@@ -411,7 +411,7 @@
 
         protected function resolveAndRenderTaskCardDetailsDueDateContent(Task $task)
         {
-            if($task->dueDateTime != null)
+            if ($task->dueDateTime != null)
             {
                 $content = DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay(
                            $task->dueDateTime, DateTimeUtil::DATETIME_FORMAT_DATE_WIDTH, null);
@@ -422,7 +422,7 @@
         protected function resolveAndRenderTaskCardDetailsStatusContent(Task $task, $row)
         {
             $statusContent = $this->renderCardDataContent($this->cardColumns['status'], $task, $row);
-            if($statusContent != null)
+            if ($statusContent != null)
             {
                 $content  = ZurmoHtml::openTag('div', array('class' => 'task-action-toolbar pillbox'));
                 $content .= $this->renderCardDataContent($this->cardColumns['status'], $task, $row);
@@ -435,9 +435,9 @@
         {
             $content         = null;
             $subscribedUsers = TasksUtil::getTaskSubscribers($task);
-            foreach($subscribedUsers as $user)
+            foreach ($subscribedUsers as $user)
             {
-                if($user->isSame($task->owner))
+                if ($user->isSame($task->owner))
                 {
                     $content .= TasksUtil::renderSubscriberImageAndLinkContent($user, 20, 'task-owner');
                     break;
@@ -445,11 +445,11 @@
             }
             //To take care of the case of duplicates
             $addedSubscribers = array();
-            foreach($subscribedUsers as $user)
+            foreach ($subscribedUsers as $user)
             {
-                if(!$user->isSame($task->owner))
+                if (!$user->isSame($task->owner))
                 {
-                    if(!in_array($user->id, $addedSubscribers))
+                    if (!in_array($user->id, $addedSubscribers))
                     {
                         $content .= TasksUtil::renderSubscriberImageAndLinkContent($user, 20);
                         $addedSubscribers[] = $user->id;

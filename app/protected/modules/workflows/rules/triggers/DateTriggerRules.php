@@ -168,13 +168,13 @@
          */
         protected function sanitize($value, $adjustForTimezone = false)
         {
-            if($adjustForTimezone)
+            if ($adjustForTimezone)
             {
                 $timeZone = date_default_timezone_get();
                 date_default_timezone_set('GMT');
             }
             $timeStamp = strtotime($value);
-            if($adjustForTimezone)
+            if ($adjustForTimezone)
             {
                 date_default_timezone_set($timeZone);
             }
@@ -202,13 +202,13 @@
 
         protected function sanitizeAndResolveThirdValue()
         {
-            if($this->trigger->valueEvaluationType == 'Date')
+            if ($this->trigger->valueEvaluationType == 'Date')
             {
                 $todayDate = Yii::app()->dateFormatter->format(DatabaseCompatibilityUtil::getDateFormat(), time());
                 $todayDateTime = DateTimeUtil::resolveDateAsDateTime($todayDate);
                 return $this->trigger->resolveNewTimeStampForThirdValueDuration(strtotime($todayDateTime));
             }
-            elseif($this->trigger->valueEvaluationType == 'DateTime')
+            elseif ($this->trigger->valueEvaluationType == 'DateTime')
             {
                 $timeZone = date_default_timezone_get();
                 date_default_timezone_set('GMT');

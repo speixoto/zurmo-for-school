@@ -124,7 +124,7 @@
          */
         protected function resolveAndRenderActionContent()
         {
-            if($this->model->isModelActionVariant())
+            if ($this->model->isModelActionVariant())
             {
                 $content  = $this->renderMergeTagGuideContent();
                 $content .= $this->renderAttributesRowsContent($this->makeAttributeRows());
@@ -195,7 +195,7 @@
             {
                 return $this->resolveAttributeRowsForUpdateTypes($inputPrefixData);
             }
-            elseif($this->model->isModelActionVariant())
+            elseif ($this->model->isModelActionVariant())
             {
                 return $this->resolveAttributeRowsForCreateTypes($inputPrefixData);
             }

@@ -95,7 +95,7 @@
             $indexes                = array();
             $compositeIndexKey      = null;
             $compositeIndexValues   = array('columns' => array(), 'unique' => true);
-            foreach($columns as $column)
+            foreach ($columns as $column)
             {
                 $columnName             = $column['name'];
                 $indexName              = RedBeanModelMemberIndexMetadataAdapter::resolveRandomIndexName($columnName, false);

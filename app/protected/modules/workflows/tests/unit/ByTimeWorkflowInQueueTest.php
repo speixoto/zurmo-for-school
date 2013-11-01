@@ -40,6 +40,7 @@
         {
             return array('WorkflowModelTestItem');
         }
+        
         public function testSetAndGet()
         {
             $model = new WorkflowModelTestItem();

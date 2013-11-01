@@ -44,19 +44,19 @@
          */
         protected function getHomeLinkLabel()
         {
-            if($this->moduleId == 'projects')
+            if ($this->moduleId == 'projects')
             {
                 return Zurmo::t('ProjectsModule', 'ProjectsModulePluralLabel', LabelUtil::getTranslationParamsForAllModules());
             }
-            elseif($this->moduleId == 'accounts')
+            elseif ($this->moduleId == 'accounts')
             {
                 return Zurmo::t('AccountsModule', 'AccountsModulePluralLabel', LabelUtil::getTranslationParamsForAllModules());
             }
-            elseif($this->moduleId == 'contacts')
+            elseif ($this->moduleId == 'contacts')
             {
                 return Zurmo::t('ContactsModule', 'ContactsModulePluralLabel', LabelUtil::getTranslationParamsForAllModules());
             }
-            elseif($this->moduleId == 'opportunities')
+            elseif ($this->moduleId == 'opportunities')
             {
                 return Zurmo::t('OpportunitiesModule', 'OpportunitiesModulePluralLabel', LabelUtil::getTranslationParamsForAllModules());
             }

@@ -54,7 +54,7 @@
             if (!empty($modelClassName) && @class_exists($modelClassName))
             {
                 $mixins        = $modelClassName::getMixedInModelClassNames();
-                foreach($mixins as $mixinModelClassName)
+                foreach ($mixins as $mixinModelClassName)
                 {
                     $column = RedBeanModelMixinToColumnAdapter::resolve($mixinModelClassName);
                     if ($column)

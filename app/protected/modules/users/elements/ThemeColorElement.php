@@ -97,12 +97,12 @@
         {
             $namesAndUnlockedAtLevels = Yii::app()->themeManager->getThemeColorNamesAndUnlockedAtLevel();
             $data = array();
-            foreach(Yii::app()->themeManager->getThemeColorNamesAndLabels() as $name => $label)
+            foreach (Yii::app()->themeManager->getThemeColorNamesAndLabels() as $name => $label)
             {
                 $label = '<span class="theme-color-1"></span><span class="theme-color-2">' .
                          '</span><span class="theme-color-3"></span>' . $label;
                 $unlockedAtLevel = $namesAndUnlockedAtLevels[$name];
-                if($unlockedAtLevel > (int)$gameLevel->value)
+                if ($unlockedAtLevel > (int)$gameLevel->value)
                 {
                     $title   = Zurmo::t('GamificationModule', 'Unlocked at level {level}', array('{level}' => $unlockedAtLevel));
                     $content = '<span id="theme-color-tooltip-' . $name. '" title="' . $title . '"><i class="icon-lock"></i></span>' . $label;
@@ -121,10 +121,10 @@
         protected function resolveDataHtmlOptions(GameLevel $gameLevel)
         {
             $dataHtmlOptions = array();
-            foreach(Yii::app()->themeManager->getThemeColorNamesAndUnlockedAtLevel() as $name => $unlockedAtLevel)
+            foreach (Yii::app()->themeManager->getThemeColorNamesAndUnlockedAtLevel() as $name => $unlockedAtLevel)
             {
                 $dataHtmlOptions[$name] = array();
-                if($unlockedAtLevel > (int)$gameLevel->value)
+                if ($unlockedAtLevel > (int)$gameLevel->value)
                 {
                     $dataHtmlOptions[$name]['class']    = 'locked';
                     $dataHtmlOptions[$name]['disabled'] = 'disabled';

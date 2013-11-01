@@ -48,6 +48,7 @@
             $ownDependencies = array('WorkflowModelTestItem2', 'WorkflowModelTestItem3');
             return CMap::mergeArray(parent::getDependentTestModelClassNames(), $ownDependencies);
         }
+        
         public function testTimeTriggerBeforeSaveEquals()
         {
             $workflow = self::makeOnSaveWorkflowAndTimeTriggerWithoutValueType('string', 'equals', 'aValue', 500);

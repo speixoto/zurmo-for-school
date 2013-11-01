@@ -222,7 +222,7 @@
 
         public function isModelActionVariant()
         {
-            if($this->type != self::TYPE_SUBSCRIBE_TO_LIST)
+            if ($this->type != self::TYPE_SUBSCRIBE_TO_LIST)
             {
                 return true;
             }
@@ -242,7 +242,7 @@
          */
         public function resolveAllRequiredActionAttributeFormsAndLabelsAndSort()
         {
-            if($this->type == self::TYPE_SUBSCRIBE_TO_LIST)
+            if ($this->type == self::TYPE_SUBSCRIBE_TO_LIST)
             {
                 return $this->resolveActionAttributeFormsAndLabelsAndSortForSubscribeToList();
             }
@@ -324,7 +324,7 @@
         {
             assert('is_string($attribute)');
             assert('$this->type != null');
-            if($this->type == self::TYPE_SUBSCRIBE_TO_LIST)
+            if ($this->type == self::TYPE_SUBSCRIBE_TO_LIST)
             {
                 return 'MarketingList';
             }
@@ -783,7 +783,7 @@
             assert('$this->type != null');
             foreach ($valuesAttributes as $attribute => $attributeData)
             {
-                if($this->type == self::TYPE_SUBSCRIBE_TO_LIST)
+                if ($this->type == self::TYPE_SUBSCRIBE_TO_LIST)
                 {
                     $form = new MarketingListWorkflowActionAttributeForm('MarketingList', 'id');
                 }

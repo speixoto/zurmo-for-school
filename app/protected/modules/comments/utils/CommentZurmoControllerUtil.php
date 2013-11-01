@@ -107,7 +107,7 @@
                                                                     TasksNotificationUtil::TASK_ADD_COMMENT_NOTIFY_ACTION,
                                                                     $model->createdByUser);
                 //Log the event
-                if($this->relatedModel->project->id > 0)
+                if ($this->relatedModel->project->id > 0)
                 {
                     ProjectsUtil::logAddCommentEvent($this->relatedModel, $model->description);
                 }

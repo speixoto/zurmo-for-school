@@ -93,7 +93,7 @@
         {
             $content  = '<div class="view-toolbar-container clearfix">';
             $firstActionElementBarContent = $this->renderActionElementBar(false);
-            if($firstActionElementBarContent == null)
+            if ($firstActionElementBarContent == null)
             {
                 $extraClass = ' empty';
             }

@@ -190,7 +190,7 @@
         protected function resolveModalIdFromGet()
         {
             $modalId             = Yii::app()->request->getParam('modalId');
-            if($modalId == null)
+            if ($modalId == null)
             {
                 $modalId = TasksUtil::getModalContainerId();
             }
@@ -238,7 +238,7 @@
         protected function renderConfigSaveAjax($formId, $url, $sourceKanbanBoardId, $modalId, $sourceId)
         {
             // Begin Not Coding Standard
-            if($sourceId == null)
+            if ($sourceId == null)
             {
                 $kanbanRefreshScript = TasksUtil::resolveExtraCloseScriptForModalAjaxOptions($sourceKanbanBoardId);
             }
