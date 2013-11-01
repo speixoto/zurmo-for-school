@@ -44,12 +44,12 @@
             $content  = '<h1>' . Zurmo::t('MarketingModule', 'How does Email Marketing work in Zurmo?', LabelUtil::getTranslationParamsForAllModules()). '</h1>';
             $content .= '<div id="marketing-intro-steps" class="module-intro-steps clearfix">';
             $content .= '<div class="third"><h3>' . Zurmo::t('Core', 'Step') . '<strong>1<span>➜</span></strong></h3>';
-            $content .= '<p><strong>' . Zurmo::t('MarketingModule', 'Group') . '</strong>';
+            $content .= '<p><strong>' . Zurmo::t('ZurmoModule', 'Group') . '</strong>';
             $content .= Zurmo::t('MarketingModule', 'Group together the email recipients into a list, use different lists for different purposes');
             $content .= '</p>';
             $content .= '</div>';
             $content .= '<div class="third"><h3>' . Zurmo::t('Core', 'Step') . '<strong>2<span>➜</span></strong></h3>';
-            $content .= '<p><strong>' . Zurmo::t('MarketingModule', 'Create') . '</strong>';
+            $content .= '<p><strong>' . Zurmo::t('Core', 'Create') . '</strong>';
             $content .= Zurmo::t('MarketingModule', 'Create the template for the email you are going to send, import and use either full, ' .
                         'rich HTML templates or plain text');
             $content .= '</p>';

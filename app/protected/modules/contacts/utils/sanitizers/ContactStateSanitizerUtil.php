@@ -99,7 +99,7 @@
                 $startingState = ContactsUtil::getStartingState();
                 if (!static::resolvesValidStateByOrder($state->order, $startingState->order))
                 {
-                    throw new InvalidValueToSanitizeException(Zurmo::t('ContactsModule', 'Status specified is invalid.'));
+                    throw new InvalidValueToSanitizeException(Zurmo::t('ZurmoModule', 'Status specified is invalid.'));
                 }
                 return $state;
             }

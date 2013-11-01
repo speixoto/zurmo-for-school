@@ -86,7 +86,7 @@
             $content  = ZurmoHtml::tag('span', array('id' => 'gd-z-coin'), '');
             $content .= ZurmoHtml::tag('h3', array(), Zurmo::t('GamificationModule', '{n} coin|{n} coins',
                 array($coinValue)));
-            $content .= ZurmoHtml::link(Zurmo::t('GamificationModule', 'Redeem'), $url);
+            $content .= ZurmoHtml::link(Zurmo::t('ZurmoModule', 'Redeem'), $url);
             return      ZurmoHtml::tag('div', array('id' => self::getGameCoinContainerId()), $content);
         }
 
@@ -142,7 +142,7 @@
 
         protected function registerCloseButtonScript()
         {
-            $script = "$('.close-dashboard-button a').on('click', function(){
+            $script = "$('.close-dashboard-button a, #gd-overlay, #gd-container, #gd-centralizer').on('click', function(){
                            if($('#UserGameDashboardView').length){
                                closeGamificationDashboard();
                                return false;
@@ -186,9 +186,11 @@ SPT;
             $content .= $this->renderStatisticsContent();
             $content .= $this->renderCollectionsContent();
             $content  = ZurmoHtml::tag('div', array('id' => 'game-dashboard', 'class' => 'clearfix'), $content);
-            $content .= $this->renderDashboardCloseButton();
-            $content  = ZurmoHtml::tag('div', array('id' => 'game-overlay'), $content);
-            return      ZurmoHtml::tag('div', array('id' => 'game-dashboard-container'), $content);
+            $content  = $this->renderDashboardCloseButton() . $content;
+            $content  = ZurmoHtml::tag('div', array('id' => 'gd-centralizer'), $content);
+            $blackOut  = ZurmoHtml::tag('div', array('id' => 'gd-overlay'), '');
+            $container = ZurmoHtml::tag('div', array('id' => 'gd-container'), $content);
+            return $blackOut . $container;
         }
 
         protected function renderProfileContent()
@@ -300,7 +302,7 @@ SPT;
                 $rankingContent .= ZurmoHtml::tag('span', array(), $ranking['typeLabel']);
                 $content .= ZurmoHtml::tag('div', array('class' => 'leaderboard-rank'), $rankingContent);
             }
-            return      ZurmoHtml::tag('div', array('id' => 'gd-leaderboard'), $content);
+            return      ZurmoHtml::tag('div', array('id' => 'gd-leaderboard', 'class' => 'clearfix'), $content);
         }
 
         protected function renderStatisticsContent()
@@ -322,9 +324,9 @@ SPT;
 
         protected function renderCollectionsContent()
         {
-            $content  = ZurmoHtml::link('◀', '#', array('id' => 'nav-left', 'class' => 'nav-button'));
+            $content  = ZurmoHtml::link('&cedil;', '#', array('id' => 'nav-left', 'class' => 'nav-button'));
             $content .= $this->renderCollectionsCarouselWrapperAndContent();
-            $content .= ZurmoHtml::link('▶', '#', array('id' => 'nav-right', 'class' => 'nav-button'));
+            $content .= ZurmoHtml::link('&circ;', '#', array('id' => 'nav-right', 'class' => 'nav-button'));
             return      ZurmoHtml::tag('div', array('id' => 'gd-collections'), $content);
         }
 
@@ -403,7 +405,9 @@ SPT;
                 'success' => 'js:function(data)
                     {
                         $("#' . $containerId . '").replaceWith(data);
+                        $("#' . $containerId . '").addClass("visible-panel");
                         ' . self::renderGameCoinRefreshAjax($userId) . '
+                        updateGamificationImagesSrcForLazyLoading();
                     }'
             ), $htmlOptions);
         }

@@ -153,7 +153,7 @@
             $explicitReadWriteModelPermissions = ExplicitReadWriteModelPermissionsUtil::
                                                     makeBySecurableItem($message1);
             $readWritePermitables = $explicitReadWriteModelPermissions->getReadWritePermitables();
-            $this->assertEquals($everyoneGroup, $readWritePermitables[$everyoneGroup->id]);
+            $this->assertEquals($everyoneGroup, $readWritePermitables[$everyoneGroup->getClassId('Permitable')]);
 
             //test creating new contact and saving
             $this->assertEquals(1, Contact::getCount());
@@ -175,7 +175,7 @@
             $explicitReadWriteModelPermissions = ExplicitReadWriteModelPermissionsUtil::
                                                     makeBySecurableItem($message2);
             $readWritePermitables = $explicitReadWriteModelPermissions->getReadWritePermitables();
-            $this->assertEquals($everyoneGroup, $readWritePermitables[$everyoneGroup->id]);
+            $this->assertEquals($everyoneGroup, $readWritePermitables[$everyoneGroup->getClassId('Permitable')]);
 
             //test creating new lead and saving
             $this->assertEquals(2, Contact::getCount());
@@ -197,7 +197,7 @@
             $explicitReadWriteModelPermissions = ExplicitReadWriteModelPermissionsUtil::
                                                     makeBySecurableItem($message3);
             $readWritePermitables = $explicitReadWriteModelPermissions->getReadWritePermitables();
-            $this->assertEquals($everyoneGroup, $readWritePermitables[$everyoneGroup->id]);
+            $this->assertEquals($everyoneGroup, $readWritePermitables[$everyoneGroup->getClassId('Permitable')]);
         }
 
         /**

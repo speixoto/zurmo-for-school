@@ -18,7 +18,7 @@ div.showing-panel{
 	}
 	h2{
 		line-height: 100%;
-		padding-bottom: 15px;
+		margin-right: 10px;
 		display: inline-block;
 		.salutation{
 			font-weight: normal;
@@ -35,6 +35,7 @@ div.showing-panel{
 		margin-left: 5px;
 	}
 	h3.position{
+		margin-top: 10px;
 		line-height: 140%;
 		font-weight: normal;
 		color: #545454 !important;
@@ -69,6 +70,7 @@ div.showing-panel{
 			.symbly(20px);
 			padding-right: 3px;
 			color: #111;
+			line-height: 1;
 		}
 	}
 	.icon-mobile-phone{
@@ -77,6 +79,7 @@ div.showing-panel{
 			.symbly(21px);
 			padding-right: 3px;
 			color: #111;
+			line-height: 1;
 		}
 	}
 	.icon-email{
@@ -85,6 +88,7 @@ div.showing-panel{
 			.symbly(18px);
 			padding-right: 5px;
 			color: #111;
+			line-height: 1;
 		}
 	}
 	.icon-map{
@@ -93,6 +97,7 @@ div.showing-panel{
 			.symbly(20px);
 			padding-right: 3px;
 			color: #111;
+			line-height: 1;
 		}
 	}
 	.demographic-details{
@@ -116,7 +121,7 @@ div.showing-panel{
 			background: url(../images/people.png) right bottom no-repeat;
 		}
 		span{
-			margin-top: 13px;
+			margin-top: 8px;
 			font-weight: bold;
 			display: block;
 			float: right;
@@ -125,6 +130,7 @@ div.showing-panel{
 	}
 }
 
+/*
 .icon-demographic{
 
 }
@@ -140,6 +146,7 @@ div.showing-panel{
 .icon-purchase{
 
 }
+*/
 
 #business-card-buttons{
 	display: none !important;
@@ -285,6 +292,10 @@ div.showing-panel{
 .icon-klout{ background: url(../images/social-icons/klout.png) center center no-repeat }
 .icon-gravatar{ background: url(../images/social-icons/gravatar.png) center center no-repeat }
 .icon-plancast{ background: url(../images/social-icons/plancast.png) center center no-repeat }
+.icon-quora{ background: url(../images/social-icons/quora.png) center center no-repeat }
+.icon-foursquare{ background: url(../images/social-icons/foursquare.png) center center no-repeat }
+.icon-lanyrd{ background: url(../images/social-icons/lanyrd.png) center center no-repeat }
+.icon-aboutme{ background: url(../images/social-icons/aboutme.png) center center no-repeat }
 
 .back-of-card{
 	display: none;
@@ -366,6 +377,7 @@ div.special-pager{
 }
 
 .mini-button{
+	cursor: pointer;
 	display: inline-block;
 	border:1px solid #b7b7b7;
 	border-top-color: #e7e7e7;
@@ -376,17 +388,23 @@ div.special-pager{
 	++.border-box;
 	.b-shadow(inset 0 0 1px 1px #efefef);
 	color:#545454;
-	text-shadow:#fff 0 1px 0;
-	position: relative;
-	margin-left: 10px;
-	top: -2px;
+	.t-shadow(#fff 0 1px 0);
+	line-height:22px;
+	height: 22px;
+	padding: 0 6px;
 	span{
 		.smaller();
 		font-weight:bold;
 		.t-shadow(0 1px 0 #fff);
 		color:#545454;
-		display: none;
 		line-height:22px;
+	}
+}
+
+.toggle-back-of-card-link{
+	margin-top: 5px;
+	span{
+		display: none;
 		padding: 0 6px 0 28px;
 		background: url(../images/rapleaf.png) 4px center no-repeat;
 	}
@@ -395,5 +413,83 @@ div.special-pager{
 	}
 	.show{
 		display:block;
+	}
+}
+
+.callable-item{
+	position: relative;
+	z-index: 100;
+	em{
+		margin-right: 4px;
+		font-style:normal;
+	}
+	&:hover{
+		.icon-onsip{
+			display: block;
+		}
+	}
+	.icon-onsip{
+		animation-name: shake;
+		animation-duration: 200ms;
+		animation-iteration-count: 2;
+		animation-timing-function: linear;
+
+		-moz-animation-name: shake;
+		-moz-animation-duration: 200ms;
+		-moz-animation-iteration-count: 2;
+		-moz-animation-timing-function: linear;
+
+		-webkit-animation-name: shake;
+		-webkit-animation-duration: 200ms;
+		-webkit-animation-iteration-count: 2;
+		-webkit-animation-timing-function: linear;
+
+		font-size: 28px;
+		font-weight: normal !important;
+		.t-shadow(none) !important;
+		display: none;
+		color: #fff;
+		position: absolute;
+		left:-32px;
+		top: -2px;//-30px;
+		background: #545454;
+		width: 24px;
+		height: 24px;
+		line-height: 21px;
+		text-align: center;
+		.radius(50%);
+		&:before{
+			position: absolute;
+			right: -10px;
+			top: 6px;
+			content: '';
+			display: block;
+			border: 6px solid #545454;
+			border-top-color: transparent;
+			border-bottom-color: transparent;
+			border-right-color: transparent;
+
+		}
+	}
+}
+
+.hangup{
+	position: relative;
+	z-index: 0;
+	padding-left: 12px;
+	margin-left: -25px;
+	.smaller();
+	@topColor: #c43d53;
+	@bottomColor: #a82d31;
+	border: 1px solid @topColor;
+	.b-shadow(inset 0 0 1px 1px @bottomColor);
+	.t-shadow(@bottomColor 0 1px 0);
+	line-height:20px;
+	color: lighten(@topColor, 80%);
+	#gradient > .vertical(@topColor, @bottomColor );
+	&:hover{
+		color: darken(@bottomColor, 75%) !important;
+		.t-shadow(0px 1px 0 lighten(@topColor, 5%));
+		#gradient > .vertical(@topColor, darken(@bottomColor, 10%));
 	}
 }

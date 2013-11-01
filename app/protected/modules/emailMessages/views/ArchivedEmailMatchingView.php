@@ -180,10 +180,10 @@
                                         $this->urlParameters), $row, 0);
             }
             $selectLink            = $this->renderSelectLinkContent();
-            $createContactLink     = ZurmoHtml::link(Zurmo::t('EmailMessagesModule', 'Create ContactsModuleSingularLabel',
+            $createContactLink     = ZurmoHtml::link(Zurmo::t('ContactsModule', 'Create ContactsModuleSingularLabel',
                                      LabelUtil::getTranslationParamsForAllModules()), '#',
                                      array('class' => 'create-link contact-create-link z-action-link'));
-            $createLeadLink        = ZurmoHtml::link(Zurmo::t('EmailMessagesModule', 'Create LeadsModuleSingularLabel',
+            $createLeadLink        = ZurmoHtml::link(Zurmo::t('LeadsModule', 'Create LeadsModuleSingularLabel',
                                      LabelUtil::getTranslationParamsForAllModules()), '#',
                                      array('class' => 'create-link lead-create-link z-action-link'));
             $deleteLink            = $this->renderDeleteLink();
@@ -213,6 +213,7 @@
                                         $(this).parent().parent().parent().find('.AnyContactSelectForEmailMatchingView').show();
                                         $(this).parent().parent().parent().find('.ContactInlineCreateForArchivedEmailCreateView').hide();
                                         $(this).parent().parent().parent().find('.LeadInlineCreateForArchivedEmailCreateView').hide();
+                                        return false;
                                    })
                                    $('.contact-create-link').live('click', function ()
                                    {
@@ -222,6 +223,7 @@
                                         $(this).parent().parent().parent().find('.AnyContactSelectForEmailMatchingView').hide();
                                         $(this).parent().parent().parent().find('.ContactInlineCreateForArchivedEmailCreateView').show();
                                         $(this).parent().parent().parent().find('.LeadInlineCreateForArchivedEmailCreateView').hide();
+                                        return false;
                                    })
                                    $('.lead-create-link').live('click', function ()
                                    {
@@ -231,6 +233,7 @@
                                         $(this).parent().parent().parent().find('.AnyContactSelectForEmailMatchingView').hide();
                                         $(this).parent().parent().parent().find('.ContactInlineCreateForArchivedEmailCreateView').hide();
                                         $(this).parent().parent().parent().find('.LeadInlineCreateForArchivedEmailCreateView').show();
+                                        return false;
                                    })
             ");
         }
@@ -306,7 +309,7 @@
             $htmlOptions = $this->getHtmlOptionsForDelete();
             $route = $this->getDefaultRouteForDelete();
             $ajaxOptions = $this->getAjaxOptionsForDelete();
-            $content = ' &#183; ' . ZurmoHtml::ajaxLink(Zurmo::t('EmailMessagesModule', 'Delete'), $route, $ajaxOptions,
+            $content = ' &#183; ' . ZurmoHtml::ajaxLink(Zurmo::t('Core', 'Delete'), $route, $ajaxOptions,
                                      $htmlOptions);
             return $content;
         }

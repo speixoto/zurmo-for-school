@@ -104,7 +104,7 @@
                                                  makeBySecurableItem($conversation);
             $readWritePermitables              = $explicitReadWriteModelPermissions->getReadWritePermitables();
             $this->assertEquals(1, count($readWritePermitables));
-            $this->assertEquals($steven, $readWritePermitables[$steven->id]);
+            $this->assertEquals($steven, $readWritePermitables[$steven->getClassId('Permitable')]);
             $this->assertEquals(1, $conversation->conversationParticipants->count());
             $this->assertEquals($steven, $conversation->conversationParticipants[0]->person);
         }
@@ -204,7 +204,7 @@
                                                  makeBySecurableItem($conversation);
             $readWritePermitables              = $explicitReadWriteModelPermissions->getReadWritePermitables();
             $this->assertEquals(1, count($readWritePermitables));
-            $this->assertEquals($steven, $readWritePermitables[$steven->id]);
+            $this->assertEquals($steven, $readWritePermitables[$steven->getClassId('Permitable')]);
             $this->assertEquals(1, $conversation->conversationParticipants->count());
             $this->assertEquals($steven, $conversation->conversationParticipants[0]->person);
         }

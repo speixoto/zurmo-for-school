@@ -260,7 +260,7 @@
             {
                 $content .= '<div class="horizontal-line latest-activity-toolbar">';
                 $content .= $innerContent;
-                $content .= ZurmoHtml::link(Zurmo::t('ActivitiesModule', 'Filters'), '#', array('id' => 'filter-latest-activities-link'));
+                $content .= ZurmoHtml::link(Zurmo::t('Core', 'Filters'), '#', array('id' => 'filter-latest-activities-link'));
                 $content .= '</div>' . "\n";
             }
             if ($innerContent != null &&

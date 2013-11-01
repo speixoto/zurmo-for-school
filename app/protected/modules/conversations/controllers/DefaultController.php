@@ -86,7 +86,7 @@
                                                                     array('modelClassName' => 'Conversation'));
             $breadCrumbLinks                = array(Zurmo::t('ConversationsModule', 'Conversations') =>
                                                         $conversationsMashableInboxUrl,
-                                                    Zurmo::t('ConversationsModule', 'Create'));
+                                                    Zurmo::t('Core', 'Create'));
             $editView = new ConversationEditView($this->getId(), $this->getModule()->getId(),
                                                  $this->attemptToSaveModelFromPost(new Conversation()),
                                                  Zurmo::t('ConversationsModule', 'Create Conversation'));
@@ -104,7 +104,7 @@
             $breadCrumbLinks = array(Zurmo::t('ConversationsModule', 'Conversations') =>
                                         $conversationsMashableInboxUrl,
                                      StringUtil::getChoppedStringContent(strval($conversation), 25) =>
-                                        array('default/details',  'id' => $id), Zurmo::t('ConversationsModule', 'Edit'));
+                                        array('default/details',  'id' => $id), Zurmo::t('Core', 'Edit'));
             $conversation = Conversation::getById(intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($conversation);
             $editView = new ConversationEditView($this->getId(), $this->getModule()->getId(),
@@ -226,7 +226,7 @@
                                    'relatedModelRelationName' => 'comments',
                                    'redirectUrl'              => $redirectUrl); //After save, the url to go to.
             $uniquePageId  = 'CommentInlineEditForModelView';
-            echo             ZurmoHtml::tag('h2', array(), Zurmo::t('ConversationsModule', 'Add Comment'));
+            echo             ZurmoHtml::tag('h2', array(), Zurmo::t('CommentsModule', 'Add Comment'));
             $inlineView    = new CommentInlineEditView($comment, 'default', 'comments', 'inlineCreateSave',
                                                        $urlParameters, $uniquePageId);
             $view          = new AjaxPageView($inlineView);

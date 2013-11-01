@@ -91,7 +91,7 @@
             $content .= $scope->render();
             //Search button
             $params                = array();
-            $params['label']       = Zurmo::t('ZurmoModule', 'Search');
+            $params['label']       = Zurmo::t('Core', 'Search');
             $params['htmlOptions'] = array('id' => $this->getSearchFormId() . '-search',
                 'onclick' => 'js:$(this).addClass("attachLoadingTarget");');
             $element               = new SaveButtonActionElement(null, null, null, $params);

@@ -51,7 +51,7 @@
             $content .= '</p>';
             $content .= '</div>';
             $content .= '<div class="third"><h3>' . Zurmo::t('Core', 'Step') . '<strong>2<span>➜</span></strong></h3>';
-            $content .= '<p><strong>' . Zurmo::t('GameRewardsModule', 'Redeem') . '</strong>';
+            $content .= '<p><strong>' . Zurmo::t('ZurmoModule', 'Redeem') . '</strong>';
             $content .= Zurmo::t('GameRewardsModule', 'Use coins to redeem rewards added by your manager and HR department');
             $content .= '</p>';
             $content .= '</div>';

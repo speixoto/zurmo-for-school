@@ -72,7 +72,7 @@
          */
         protected function getDefaultLabel()
         {
-            return Zurmo::t('ReportsModule', 'Details');
+            return Zurmo::t('Core', 'Details');
         }
 
         /**

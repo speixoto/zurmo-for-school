@@ -70,6 +70,11 @@
 
         protected $importId;
 
+        /**
+         * @var bool
+         */
+        protected $isTableEditable = true;
+
         abstract protected function resolveSecondColumn();
 
         abstract protected function getDefaultRoute();
@@ -267,18 +272,39 @@
                     $this->columnLabelsByName[$columnName] = $column['header'];
                     if (!isset($column['class']))
                     {
-                        $column['class']     = 'phaZurmoEditColumn';
-                        $column['actionUrl'] = Yii::app()->createUrl('import/default/update',
-                                                                     array('id'        => $this->importId,
-                                                                           'attribute' => $columnName
-                                                                     )
-                        );
-                        $column['htmlEditDecorationOptions'] = array('class' => 'editable-cell');
+                        $this->resolveColumnData($column, $columnName);
                     }
                     array_push($columns, $column);
                 }
             }
             return $columns;
+        }
+
+        /**
+         * Resolves the column data info for the table
+         * @param Array $column
+         * @param string $columnName
+         */
+        protected function resolveColumnData(& $column, $columnName)
+        {
+            if (isset($column['class']))
+            {
+                return;
+            }
+            if ($this->isTableEditable)
+            {
+                $column['class']     = 'phaZurmoEditColumn';
+                $column['actionUrl'] = Yii::app()->createUrl('import/default/update',
+                    array('id'        => $this->importId,
+                        'attribute' => $columnName
+                    )
+                );
+                $column['htmlEditDecorationOptions'] = array('class' => 'editable-cell');
+            }
+            else
+            {
+                $column['class']     = 'DataColumn';
+            }
         }
 
         protected function resolveHeaderColumnContent($columnName, $label)

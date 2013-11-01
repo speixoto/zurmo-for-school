@@ -154,9 +154,13 @@
             return 'projects-feed-list-view';
         }
 
-        public static function getDesignerRulesType()
+        /**
+         * What kind of PortletRules this view follows
+         * @return PortletRulesType as string.
+         */
+        public static function getPortletRulesType()
         {
-            return null;
+            return 'MyList';
         }
     }
 ?>

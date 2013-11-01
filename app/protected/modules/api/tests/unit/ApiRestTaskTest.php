@@ -133,6 +133,11 @@
                 'id' => $super->id,
                 'username' => 'super'
             );
+            $data['project'] = null;
+            $data['requestedByUser']  = array(
+                'id' => $super->id,
+                'username' => 'super'
+            );
             $data['createdByUser']    = array(
                 'id' => $super->id,
                 'username' => 'super'

@@ -56,6 +56,8 @@
             $form->defaultTestToEmailAddress              = Yii::app()->emailHelper->resolveAndGetDefaultTestToAddress();
             $form->gamificationModalNotificationsEnabled  = Yii::app()->gameHelper->modalNotificationsEnabled;
             $form->realtimeUpdatesEnabled                 = static::getRealtimeUpdatesEnabled();
+            $form->reCaptchaPrivateKey                    = ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'reCaptchaPrivateKey');
+            $form->reCaptchaPublicKey                     = ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'reCaptchaPublicKey');
             self::getLogoAttributes($form);
             return $form;
         }
@@ -79,6 +81,8 @@
             ZurmoConfigurationUtil::setByModuleName('ZurmoModule',
                                                     'realtimeUpdatesEnabled',
                                                     (boolean) $form->realtimeUpdatesEnabled);
+            ZurmoConfigurationUtil::setByModuleName('ZurmoModule', 'reCaptchaPrivateKey', $form->reCaptchaPrivateKey);
+            ZurmoConfigurationUtil::setByModuleName('ZurmoModule', 'reCaptchaPublicKey',  $form->reCaptchaPublicKey);
             self::setLogoAttributes($form);
         }
 

@@ -44,6 +44,8 @@
          */
         protected $renderViewToolBarDuringRenderContent = true;
 
+        protected static $defaultPageSize = 1000;
+
         /**
          * @return array
          */
@@ -132,6 +134,7 @@
                                                                  $this->moduleId, 'Task',
                                                                  get_class($this->params['relationModel']));
             $content .= $zeroModelView->render();
+            $content .= $this->renderUIOverLayBlock();
             return $content;
         }
 
@@ -417,9 +420,42 @@
                             $("#' . $this->getGridId() . '").hide();
                             $("#ZeroTasksForRelatedModelYetView").show();
                         }
+                        $(this).makeLargeLoadingSpinner(false, ".ui-overlay-block");
+                        $(".ui-overlay-block").fadeOut(50);
                         ' . TaskKanbanBoardExtendedGridView::registerKanbanColumnSortableScript() . '
                     }';
             // End Not Coding Standard
+        }
+
+        /**
+         * Resolve configuration for data provider
+         * @return array
+         */
+        protected function resolveConfigForDataProvider()
+        {
+            return array(
+                            'pagination' => array(
+                                'pageSize' => static::$defaultPageSize,
+                        )
+                    );
+        }
+
+        protected function renderUIOverLayBlock()
+        {
+            $spinner = ZurmoHtml::tag('span', array('class' => 'z-spinner'), '');
+            return ZurmoHtml::tag('div', array('class' => 'ui-overlay-block'), $spinner);
+        }
+
+        /**
+         * Override to take care of blocking kanban by overlay
+         * @return string
+         */
+        protected function getCGridViewBeforeAjaxUpdate()
+        {
+            return 'js:function(id, options){
+                            $(".ui-overlay-block").fadeIn(50);
+                            $(this).makeLargeLoadingSpinner(true, ".ui-overlay-block");
+                    }';
         }
     }
 ?>

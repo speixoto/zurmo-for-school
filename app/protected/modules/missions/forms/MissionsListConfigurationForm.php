@@ -76,12 +76,12 @@
 
         public static function getListTypeCreatedLabel()
         {
-            return Zurmo::t('MissionsModule', 'Created');
+            return Zurmo::t('Core', 'Created');
         }
 
         public static function getListTypeAvailableLabel()
         {
-            return Zurmo::t('MissionsModule', 'Available');
+            return Zurmo::t('Core', 'Available');
         }
 
         public static function getListTypeMineTakenButNotAcceptedLabel()

@@ -57,12 +57,12 @@
             $campaignItemsClass     = $this->getCampaignItemsPortletClass();
             if ($metricsClass)
             {
-                $membersTranslatedLabel = Zurmo::t('HomeModule', 'Dashboard');
+                $membersTranslatedLabel = Zurmo::t('ZurmoModule', 'Dashboard');
                 $content                .= $this->getCheckboxContent($membersTranslatedLabel, $metricsClass);
             }
             if ($campaignItemsClass)
             {
-                $campaignItemsTranslatedLabel = Zurmo::t('CampaignsModule', 'Email Recipients');
+                $campaignItemsTranslatedLabel = Zurmo::t('EmailMessagesModule', 'Email Recipients');
                 $content                .= $this->getCheckboxContent($campaignItemsTranslatedLabel, $campaignItemsClass);
             }
             return ZurmoHtml::tag('div', $this->getHtmlOptions(), $content );
@@ -82,7 +82,7 @@
          */
         protected function getDefaultLabel()
         {
-            return Zurmo::t('CampaignsModule', 'Toggle View');
+            return Zurmo::t('Core', 'Toggle View');
         }
 
         /**

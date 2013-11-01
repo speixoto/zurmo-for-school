@@ -58,7 +58,9 @@
                         'DerivedExplicitReadWriteModelPermissions',
                     ),
                     'nonPlaceableAttributeNames' => array(
-                        'latestDateTime'
+                        'latestDateTime',
+                        'completed',
+                        'completedDateTime'
                     ),
                     'panelsDisplayType' => FormLayout::PANELS_DISPLAY_TYPE_FIRST,
                     'panels' => array(
@@ -126,24 +128,6 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'completed', 'type' => 'CheckBox'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'completedDateTime', 'type' => 'DateTime'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
                                                 array('attributeName' => 'null', 'type' => 'ActivityItems'),
                                             ),
                                         ),
@@ -203,6 +187,16 @@
 
         }
 
+        protected function resolveModalIdFromGet()
+        {
+            $modalId             = Yii::app()->request->getParam('modalId');
+            if($modalId == null)
+            {
+                $modalId = TasksUtil::getModalContainerId();
+            }
+            return $modalId;
+        }
+
         /**
          * Resolves ajax validation option for save button
          * @return array
@@ -213,18 +207,12 @@
             $sourceKanbanBoardId = Yii::app()->request->getParam('sourceKanbanBoardId');
 
             //Would be used from other source
-            $sourceId = Yii::app()->request->getParam('sourceId');
-
-            $modalId             = Yii::app()->request->getParam('modalId');
-            $relationModelId     = Yii::app()->request->getParam('relationModelId');
-            if($relationModelId != null)
-            {
-                $url = Yii::app()->createUrl('tasks/default/modalSaveFromRelation', GetUtil::getData());
-            }
-            else
-            {
-                $url = Yii::app()->createUrl('tasks/default/modalSave', GetUtil::getData());
-            }
+            $sourceId         = Yii::app()->request->getParam('sourceId');
+            $modalId          = $this->resolveModalIdFromGet();
+            $relationModelId  = Yii::app()->request->getParam('relationModelId');
+            $copyAction       = Yii::app()->request->getParam('action', null);
+            $action           = TasksUtil::resolveModalSaveActionNameForByRelationModelId($relationModelId, $copyAction);
+            $url              = Yii::app()->createUrl('tasks/default/' . $action, GetUtil::getData());
             return array('enableAjaxValidation' => true,
                         'clientOptions' => array(
                             'beforeValidate'    => 'js:$(this).beforeValidateAction',

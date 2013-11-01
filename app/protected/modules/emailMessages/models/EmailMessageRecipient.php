@@ -59,7 +59,7 @@
         public static function getRecipientTypesArray()
         {
             return array(
-                static::TYPE_TO  => Zurmo::t('EmailMessagesModule', 'To'),
+                static::TYPE_TO  => Zurmo::t('Core', 'To'),
                 static::TYPE_CC  => Zurmo::t('EmailMessagesModule', 'Cc'),
                 static::TYPE_BCC => Zurmo::t('EmailMessagesModule', 'Bcc'),
             );

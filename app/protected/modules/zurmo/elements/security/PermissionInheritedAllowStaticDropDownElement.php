@@ -41,7 +41,7 @@
             return array(
                 Permission::DENY  => Zurmo::t('ZurmoModule', 'Owner Only'),
                 ''                => Zurmo::t('ZurmoModule', 'Inherited - All'),
-                Permission::ALLOW => Zurmo::t('ZurmoModule', 'All'),
+                Permission::ALLOW => Zurmo::t('Core', 'All'),
             );
         }
     }

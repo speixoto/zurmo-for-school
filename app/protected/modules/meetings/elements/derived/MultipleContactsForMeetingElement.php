@@ -146,7 +146,7 @@
             }
             catch (AccessDeniedSecurityException $exception)
             {
-                return Zurmo::t('MeetingsModule', 'Restricted');
+                return Zurmo::t('Core', 'Restricted');
             }
         }
     }

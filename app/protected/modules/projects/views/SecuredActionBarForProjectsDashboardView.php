@@ -58,7 +58,7 @@
                             ),
                         ),
                     ),
-                    'secondToolBar' => array(
+                    'secondToolbar' => array(
                         'elements' => array(
                             array('type'        => 'ProjectsIntroLink',
                                   'panelId'     => 'eval:$this->introView->getPanelId()',

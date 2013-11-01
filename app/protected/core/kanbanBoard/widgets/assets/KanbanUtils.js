@@ -86,14 +86,18 @@ function setUpTaskKanbanSortable(inputurl)
                     items: 'li:not(.ui-state-disabled)',
                     connectWith: '.connectedSortable',
                     cursor: 'move',
-                    placeholder: 'kanban-card clone',
-                    stop: function(event, ui){
-                        document.body.style.cursor = 'auto';
+                    placeholder: 'kanban-card item-to-place',
+                    helper: function(event, ui){
+                        var width = ui.width();
+                        var clone = $('<div class="kanban-card clone">' + ui.clone().html() + '</div>');
+                        clone.width(width);
+                        $('body').append(clone);
+                        return clone;
+                    },
+                    start: function( event, ui ) {
+                        $(ui.helper).attr("id", $(ui.item).data("id"));
                     },
                     update : function (event, ui) {
-                        var id = $(ui.item).attr('id');
-                        var idParts = id.split('_');
-                        var taskId = parseInt(idParts[1]);
                         serial = $(this).sortable('serialize', {key: 'items[]', attribute: 'id'});
                         var ulid = $(this).attr('id');
                         var ulidParts = ulid.split('-');
@@ -102,8 +106,11 @@ function setUpTaskKanbanSortable(inputurl)
                         $.ajax({
                             url: url,
                             type: 'get',
-                            data: serial,
                             dataType : 'json',
+                            beforeSend : function(){
+                                          $(".ui-overlay-block").fadeIn(50);
+                                          $(this).makeLargeLoadingSpinner(true, ".ui-overlay-block"); //- add spinner to block anything else
+                                        },
                             success: function(data){
                                 if(data.hasOwnProperty('button'))
                                 {
@@ -113,11 +120,12 @@ function setUpTaskKanbanSortable(inputurl)
                                     }
                                     else
                                     {
-                                        //console.log($(ui.item).find('.task-action-toolbar'));
                                         $(ui.item).addClass('ui-state-disabled');
                                         $(ui.item).find('.task-action-toolbar').remove();
                                     }
                                     $(ui.item).find('.task-status').html(data.status);
+                                    $(this).makeLargeLoadingSpinner(false, ".ui-overlay-block");
+                                    $(".ui-overlay-block").fadeOut(50);
                                 }
                             },
                             error: function(request, status, error){
@@ -125,6 +133,9 @@ function setUpTaskKanbanSortable(inputurl)
                             }
                         });
                     },
-                    helper: 'clone'
+                    stop: function(event, ui){
+                        document.body.style.cursor = 'auto';
+                    }
+                    //helper: 'clone'
   }).disableSelection();
 }

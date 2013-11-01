@@ -121,14 +121,14 @@
             $content .= '<colgroup>';
             if (count($headerColumns) == 3)
             {
-                $content .= '<col style="width:50%" />';
-                $content .= '<col style="width:25%" />';
-                $content .= '<col style="width:25%" />';
+                $content .= '<col style="width:70%" />';
+                $content .= '<col style="width:15%" />';
+                $content .= '<col style="width:15%" />';
             }
             else
             {
-                $content .= '<col style="width:80%" />';
-                $content .= '<col style="width:20%" />';                
+                $content .= '<col style="width:85%" />';
+                $content .= '<col style="width:15%" />';
             }
             $content .= '</colgroup>';
             $content .= '<tbody>';
@@ -155,7 +155,7 @@
             $content = '<div class="required-fields">';
             if (count($this->requiredAttributesLabelsData) > 0)
             {
-                $content .= '<strong>' . Zurmo::t('ImportModule', 'Required Fields') . ':</strong>' . '<br/>';
+                $content .= '<strong>' . Zurmo::t('ZurmoModule', 'Required Fields') . ':</strong>' . '<br/>';
                 foreach ($this->requiredAttributesLabelsData as $label)
                 {
                     $content .= $label. '<br/>';

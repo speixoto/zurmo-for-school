@@ -225,7 +225,7 @@
                ($this->getValueElementType()  == 'MixedDateTypesForWorkflow' && $this->valueType == null)) &&
                $this->value == null)
             {
-                $this->addError('value', Zurmo::t('WorkflowsModule', 'Value cannot be blank.'));
+                $this->addError('value', Zurmo::t('Core', 'Value cannot be blank.'));
             }
             $passedValidation = true;
             $rules            = array();

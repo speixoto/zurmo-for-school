@@ -62,7 +62,7 @@
 
         public static function getListBreadcrumbLinks()
         {
-            $title = Zurmo::t('ContactWebFormsModule', 'List');
+            $title = Zurmo::t('Core', 'List');
             return array($title);
         }
 

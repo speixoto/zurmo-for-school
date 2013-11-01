@@ -123,16 +123,6 @@
          */
         protected function registerScripts()
         {
-            $taskSortableScript = "
-                        var fixHelper = function(e, ui) {
-                            var label = $($('<div></div>').html(ui.clone())).html();
-                            var width = $(ui).width();
-                            var clone = $('<div class=\"kanban-card clone\">' + label + '</div>');
-                            clone.width(width);
-                            return clone;
-                        };";
-            Yii::app()->clientScript->registerScript('task-sortable-data-helper', $taskSortableScript);
-
             /*@TODO Mayank: we need to integrate the drag/drop actions from KanbanUtils.js into your code, this is for the visual feedabck, see opps kanban when u drag/drop
             Yii::app()->clientScript->registerScriptFile(
                 Yii::app()->getAssetManager()->publish(
@@ -198,6 +188,8 @@
         protected function registerKanbanColumnFinishActionScript($labelAccept, $labelReject, $targetStatus, $url)
         {
             $acceptanceStatusLabel = Task::getStatusDisplayName(Task::STATUS_AWAITING_ACCEPTANCE);
+            $acceptanceStatus      = Task::STATUS_AWAITING_ACCEPTANCE;
+            $inProgressKanbanType  = KanbanItem::TYPE_IN_PROGRESS;
             $script = "$(document).on('click','.action-type-finish',function()
                             {
                                 var element = $(this).parent().parent().parent().parent();
@@ -216,8 +208,16 @@
                                 $.ajax(
                                     {
                                         type : 'GET',
-                                        data : {'targetStatus':" . Task::STATUS_AWAITING_ACCEPTANCE . ", 'taskId':taskId},
-                                        url  : '" . $url . "'
+                                        data : {'targetStatus':'{$acceptanceStatus}', 'taskId':taskId, 'sourceKanbanType':'{$inProgressKanbanType}'},
+                                        url  : '" . $url . "',
+                                        beforeSend : function(){
+                                          $('.ui-overlay-block').fadeIn(50);
+                                          $(this).makeLargeLoadingSpinner(true, '.ui-overlay-block'); //- add spinner to block anything else
+                                        },
+                                        success: function(data){
+                                            $(this).makeLargeLoadingSpinner(false, '.ui-overlay-block');
+                                            $('.ui-overlay-block').fadeOut(50);
+                                         }
                                     }
                                 );
                             }
@@ -230,7 +230,7 @@
          */
         protected function getRowClassForTaskKanbanColumn($data)
         {
-            if((bool)$data->completed)
+            if($data->status == Task::STATUS_COMPLETED)
             {
                 return 'kanban-card item-to-place ui-state-disabled';
             }
@@ -283,9 +283,10 @@
         protected function registerButtonActionScript($buttonClass, $targetKanbanItemType, $label,
                                                       $targetButtonClass, $url, $targetStatus)
         {
-            $completionText = Zurmo::t('TasksModule', '% Complete - 100');
-            $newStatusLabel = Task::getStatusDisplayName(Task::STATUS_NEW);
+            $rejectStatusLabel    = Task::getStatusDisplayName(Task::STATUS_REJECTED);
+            $inProgressStatusLabel = Task::getStatusDisplayName(Task::STATUS_IN_PROGRESS);
             $completedStatusLabel = Task::getStatusDisplayName(Task::STATUS_COMPLETED);
+            $completedStatus      = Task::STATUS_COMPLETED;
             return "$(document).on('click','." . $buttonClass . "',
                         function()
                         {
@@ -297,18 +298,24 @@
                             var idParts = id.split('_');
                             var taskId = parseInt(idParts[1]);
                             var columnType = parseInt(ulidParts[3]);
-                            $('#task-sortable-rows-" . $targetKanbanItemType . "').append(element);
-                            $('#task-sortable-rows-' + columnType).remove('#' + id);
-
-                            if(" . $targetStatus . " != " . Task::STATUS_COMPLETED . ")
+                            if(parseInt('{$targetKanbanItemType}') != columnType)
                             {
-                                var linkTag = $('#task-sortable-rows-" . $targetKanbanItemType . " #' + id + ' ." . $buttonClass . "');
+                                $('#task-sortable-rows-{$targetKanbanItemType}').append(element);
+                                $('#task-sortable-rows-' + columnType).remove('#' + id);
+                            }
+                            if('{$targetStatus}' != '{$completedStatus}')
+                            {
+                                var linkTag = $(element).find('.{$buttonClass}');
                                 $(linkTag).find('.button-label').html('" . $label . "');
                                 $(linkTag).removeClass('" . $buttonClass . "').addClass('" . $targetButtonClass . "');
-                                if('" . $buttonClass . "' == 'action-type-reject')
+                                if('{$buttonClass}' == 'action-type-reject')
                                 {
-                                    $('#task-sortable-rows-" . $targetKanbanItemType . " #' + id + ' .action-type-accept').remove();
-                                    $(element).find('.task-status').html('{$newStatusLabel}');
+                                    $(element).find('.action-type-accept').remove();
+                                    $(element).find('.task-status').html('{$rejectStatusLabel}');
+                                }
+                                if('{$buttonClass}' == 'action-type-restart')
+                                {
+                                    $(element).find('.task-status').html('{$inProgressStatusLabel}');
                                 }
                             }
                             else
@@ -317,13 +324,20 @@
                                 $(element).find('.task-action-toolbar').remove();
                                 $(element).addClass('ui-state-disabled');
                                 $(element).find('.task-status').html('{$completedStatusLabel}');
-                                //$('#task-sortable-rows-" . $targetKanbanItemType . " #' + id + ' .task-completion').html('" . $completionText . "');
                             }
                             $.ajax(
                             {
                                 type : 'GET',
-                                data : {'targetStatus':" . $targetStatus . ", 'taskId':taskId},
-                                url  : '" . $url . "'
+                                data : {'targetStatus':'{$targetStatus}', 'taskId':taskId, 'sourceKanbanType':columnType},
+                                url  : '{$url}',
+                                beforeSend : function(){
+                                          $('.ui-overlay-block').fadeIn(50);
+                                          $(this).makeLargeLoadingSpinner(true, '.ui-overlay-block'); //- add spinner to block anything else
+                                        },
+                                success: function(data){
+                                            $(this).makeLargeLoadingSpinner(false, '.ui-overlay-block');
+                                            $('.ui-overlay-block').fadeOut(50);
+                                         }
                             }
                             );
                         }
@@ -426,13 +440,20 @@
                 if($user->isSame($task->owner))
                 {
                     $content .= TasksUtil::renderSubscriberImageAndLinkContent($user, 20, 'task-owner');
+                    break;
                 }
             }
+            //To take care of the case of duplicates
+            $addedSubscribers = array();
             foreach($subscribedUsers as $user)
             {
                 if(!$user->isSame($task->owner))
                 {
-                    $content .= TasksUtil::renderSubscriberImageAndLinkContent($user, 20);
+                    if(!in_array($user->id, $addedSubscribers))
+                    {
+                        $content .= TasksUtil::renderSubscriberImageAndLinkContent($user, 20);
+                        $addedSubscribers[] = $user->id;
+                    }
                 }
             }
             return $content;

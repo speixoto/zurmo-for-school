@@ -280,7 +280,7 @@
         {
             assert('$user instanceof User && $user != null');
             $modules         = Module::getModuleObjects();
-            $createMenuItems = array('label' => Zurmo::t('ZurmoModule', 'Create'),
+            $createMenuItems = array('label' => Zurmo::t('Core', 'Create'),
                                      'url'   => null,
                                      'items' => array());
             foreach ($modules as $module)

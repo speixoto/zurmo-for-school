@@ -46,20 +46,20 @@
             $params = LabelUtil::getTranslationParamsForAllModules();
             return array_merge(parent::translatedAttributeLabels($language),
                 array(
-                    'account'          => Zurmo::t('ContactsModule', 'AccountsModuleSingularLabel',    $params, null, $language),
+                    'account'          => Zurmo::t('AccountsModule', 'AccountsModuleSingularLabel',    $params, null, $language),
                     'companyName'      => Zurmo::t('ContactsModule', 'Company Name',  array(), null, $language),
-                    'description'      => Zurmo::t('ContactsModule', 'Description',  array(), null, $language),
+                    'description'      => Zurmo::t('ZurmoModule', 'Description',  array(), null, $language),
                     'industry'         => Zurmo::t('ContactsModule', 'Industry',  array(), null, $language),
                     'latestActivityDateTime' => Zurmo::t('ZurmoModule', 'Latest Activity Date Time', array(), null, $language),
-                    'meetings'         => Zurmo::t('ContactsModule', 'MeetingsModulePluralLabel', $params, null, $language),
-                    'notes'            => Zurmo::t('ContactsModule', 'NotesModulePluralLabel', $params, null, $language),
-                    'opportunities'    => Zurmo::t('ContactsModule', 'OpportunitiesModulePluralLabel', $params, null, $language),
+                    'meetings'         => Zurmo::t('MeetingsModule', 'MeetingsModulePluralLabel', $params, null, $language),
+                    'notes'            => Zurmo::t('NotesModule', 'NotesModulePluralLabel', $params, null, $language),
+                    'opportunities'    => Zurmo::t('OpportunitiesModule', 'OpportunitiesModulePluralLabel', $params, null, $language),
                     'secondaryAddress' => Zurmo::t('ContactsModule', 'Secondary Address',  array(), null, $language),
-                    'secondaryEmail'   => Zurmo::t('ContactsModule', 'Secondary Email',  array(), null, $language),
+                    'secondaryEmail'   => Zurmo::t('ZurmoModule', 'Secondary Email',  array(), null, $language),
                     'source'           => Zurmo::t('ContactsModule', 'Source', $params, null, $language),
                     'state'            => Zurmo::t('ZurmoModule', 'Status', $params, null, $language),
-                    'tasks'            => Zurmo::t('ContactsModule', 'TasksModulePluralLabel', $params, null, $language),
-                    'website'          => Zurmo::t('ContactsModule', 'Website',  array(), null, $language),
+                    'tasks'            => Zurmo::t('TasksModule', 'TasksModulePluralLabel', $params, null, $language),
+                    'website'          => Zurmo::t('ZurmoModule', 'Website',  array(), null, $language),
                 )
             );
         }

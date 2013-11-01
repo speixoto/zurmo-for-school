@@ -148,7 +148,7 @@
 
         public static function getDropDownArray()
         {
-            return array('0' => Zurmo::t('ConversationsModule', 'Open'),
+            return array('0' => Zurmo::t('Core', 'Open'),
                          '1' => Zurmo::t('ConversationsModule', 'Closed'));
         }
     }

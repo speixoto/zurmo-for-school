@@ -44,7 +44,7 @@
          */
         public static function getDashboardBreadcrumbLinks()
         {
-            $title = Zurmo::t('HomeModule', 'Dashboard');
+            $title = Zurmo::t('ZurmoModule', 'Dashboard');
             return array($title);
         }
 
@@ -117,7 +117,12 @@
             }
             else
             {
-                $mixedView        = $this->makeActionBarSearchAndListView($searchForm, $dataProvider, 'SecuredActionBarForProjectsSearchAndListView');
+                $mixedView        = $this->makeActionBarSearchAndListView(
+                                                    $searchForm,
+                                                    $dataProvider,
+                                                    'SecuredActionBarForProjectsSearchAndListView',
+                                                    null,
+                                                    'ProjectsListMenu');
                 $view             = new ProjectsPageView(ProjectDefaultViewUtil::
                                                     makeViewWithBreadcrumbsForCurrentUser(
                                                         $this, $mixedView, $breadCrumbLinks, 'ProjectBreadCrumbView'));
@@ -476,7 +481,7 @@
                                             $gridViewId,
                                             $pageVar,
                                             false,
-                                            'ProjectsDashboardLink',
+                                            'ProjectsDashboardMenu',
                                             $introView);
             $projectsDashboardView  = new ProjectsDashboardView(
                                             $this->getId(),

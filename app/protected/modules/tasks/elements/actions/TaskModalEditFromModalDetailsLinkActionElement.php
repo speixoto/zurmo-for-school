@@ -38,7 +38,7 @@
     {
         protected function getDefaultLabel()
         {
-            return Zurmo::t('ZurmoModule', 'Edit');
+            return Zurmo::t('Core', 'Edit');
         }
 
         public function getElementValue()

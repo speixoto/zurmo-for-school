@@ -175,24 +175,7 @@
             assert('is_array($users) && count($users) > 0');
             assert('is_bool($allowDuplicates)');
             assert('is_bool($isCritical)');
-            $notifications = array();
-            foreach ($users as $user)
-            {
-                //todo: !!!process duplication check
-                if ($allowDuplicates || Notification::getCountByTypeAndUser($type, $user) == 0)
-                {
-                    $notification                      = new Notification();
-                    $notification->owner               = $user;
-                    $notification->type                = $type;
-                    $notification->notificationMessage = $message;
-                    $saved                             = $notification->save();
-                    if (!$saved)
-                    {
-                        throw new NotSupportedException();
-                    }
-                    $notifications[] = $notification;
-                }
-            }
+            $notifications = static::resolveAndGetNotifications($users, $type, $message, $allowDuplicates);
             if (static::resolveShouldSendEmailIfCritical() && $isCritical)
             {
                 foreach ($notifications as $notification)
@@ -245,6 +228,49 @@
                     //Not sure what to do yet when catching an exception here. Currently ignoring gracefully.
                 }
             }
+        }
+
+        /**
+         * Resolve and get notifications
+         * @param array $users
+         * @param string $type
+         * @param NotificationMessage $message
+         * @param bool $allowDuplicates
+         * @return Notification
+         */
+        protected static function resolveAndGetNotifications($users, $type, NotificationMessage $message, $allowDuplicates)
+        {
+            $notifications = array();
+            foreach ($users as $user)
+            {
+                //todo: !!!process duplication check
+                if ($allowDuplicates || Notification::getCountByTypeAndUser($type, $user) == 0)
+                {
+                    $notification                      = new Notification();
+                    $notification->owner               = $user;
+                    $notification->type                = $type;
+                    $notification->notificationMessage = $message;
+                    if(static::resolveToSaveNotification())
+                    {
+                        $saved = $notification->save();
+                        if (!$saved)
+                        {
+                            throw new NotSupportedException();
+                        }
+                    }
+                    $notifications[] = $notification;
+                }
+            }
+            return $notifications;
+        }
+
+        /**
+         * Resolve to save notification
+         * @return bool
+         */
+        protected static function resolveToSaveNotification()
+        {
+            return true;
         }
     }
 ?>

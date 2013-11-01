@@ -51,8 +51,8 @@
         public function attributeLabels()
         {
             return array_merge(parent::attributeLabels(), array(
-                'anyEmail'           => Zurmo::t('Default', 'Any Email Address'),
-                'fullName'           => Zurmo::t('Default', 'Name'),
+                'anyEmail'           => Zurmo::t('ZurmoModule', 'Any Email Address'),
+                'fullName'           => Zurmo::t('Core', 'Name'),
             ));
         }
 

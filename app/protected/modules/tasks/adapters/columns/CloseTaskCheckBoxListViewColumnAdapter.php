@@ -65,7 +65,7 @@
         {
             return array(
                 'name'        => $this->attribute,
-                'header'      => Zurmo::t('TasksModule', 'Close'),
+                'header'      => Zurmo::t('Core', 'Close'),
                 'value'       => $this->resolveToRenderCheckBox('Task', '$data->' . 'id', '$data->completed'),
                 'type'        => 'raw',
                 'htmlOptions' => array('class' => 'checkbox-column')

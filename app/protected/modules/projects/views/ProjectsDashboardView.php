@@ -89,6 +89,16 @@
         }
 
         /**
+         * Override to always block portlets from being removable, collapsable, and configurable
+         * @return mixed
+         */
+        protected function renderContent()
+        {
+            $this->portlets = $this->getPortlets($this->uniqueLayoutId, self::getMetadata());
+            return $this->renderPortlets($this->uniqueLayoutId, false, false, false);
+        }
+
+        /**
          * Override to allow for making a default set of portlets
          * via metadata optional.
          * @param string $uniqueLayoutId
@@ -107,5 +117,7 @@
             }
             return PortletsSecurityUtil::resolvePortletsForCurrentUser($portlets);
         }
+
+
     }
 ?>

@@ -81,7 +81,7 @@
             return array(  'itemId'         => null,
                            'modelClassName' => null,
                            'value'          => null,
-                           'label'          => Zurmo::t('ZurmoModule', 'No Results Found'),
+                           'label'          => Zurmo::t('Core', 'No Results Found'),
                            'iconClass'      => '');
         }
 

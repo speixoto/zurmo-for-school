@@ -61,7 +61,7 @@
 
         public static function getDisplayName()
         {
-            return Zurmo::t('MashableInboxModule', 'Summary');
+            return Zurmo::t('Core', 'Summary');
         }
 
         /**

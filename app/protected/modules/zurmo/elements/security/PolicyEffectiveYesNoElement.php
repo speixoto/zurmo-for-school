@@ -49,11 +49,11 @@
             $value = $this->model->{$this->attribute};
             if ($value == Policy::NO || $value == Policy::NONE)
             {
-                return Yii::app()->format->text(Zurmo::t('ZurmoModule', 'No'));
+                return Yii::app()->format->text(Zurmo::t('Core', 'No'));
             }
             elseif ($value == Policy::YES)
             {
-                return Yii::app()->format->text(Zurmo::t('ZurmoModule', 'Yes'));
+                return Yii::app()->format->text(Zurmo::t('Core', 'Yes'));
             }
             throw new NotSupportedException();
         }

@@ -88,7 +88,7 @@
                 'relations' => array(
                     'kanbanRelatedItem'         => array(static::HAS_ONE, 'Item', static::OWNED,
                                                     static::LINK_TYPE_SPECIFIC, 'kanbanrelateditem'),
-                    'task'                      => array(static::HAS_ONE, 'Task', static::NOT_OWNED)
+                    'task'                      => array(static::HAS_ONE, 'Task', static::NOT_OWNED),
                 ),
                 'rules' => array(
                     array('type', 'type', 'type' => 'integer'),
@@ -114,7 +114,7 @@
             return array_merge(parent::translatedAttributeLabels($language),
                 array(
                     'type'          => Zurmo::t('Core', 'Type', array(), null, $language),
-                    'sortOrder'     => Zurmo::t('TasksModule', 'Order',  array(), null, $language),
+                    'sortOrder'     => Zurmo::t('Core', 'Order',  array(), null, $language),
                     'kanbanItem'    => Zurmo::t('TasksModule', 'Kanban Item',  array(), null, $language),
                     'task'          => Zurmo::t('TasksModule', 'Task', array(), null, $language)
                 )
@@ -138,7 +138,7 @@
                 self::TYPE_SOMEDAY                  => Zurmo::t('TasksModule', 'Someday'),
                 self::TYPE_TODO                     => Zurmo::t('TasksModule', 'To Do'),
                 self::TYPE_IN_PROGRESS              => Zurmo::t('TasksModule', 'Working On'),
-                self::TYPE_COMPLETED                => Zurmo::t('TasksModule', 'Completed'),
+                self::TYPE_COMPLETED                => Zurmo::t('Core', 'Completed'),
             );
         }
 
@@ -189,9 +189,29 @@
         /**
          * Get maximum sort order by type
          * @param int $taskType
+         * @param Item $childObjectOfItem it could be project or account or contact
          * @return int
          */
-        public static function getMaximumSortOrderByType($taskType)
+        public static function getMaximumSortOrderByType($taskType, Item $childObjectOfItem)
+        {
+            $models = self::getAllTasksByType($taskType, $childObjectOfItem);
+            if (count($models) == 0)
+            {
+                return 1;
+            }
+            elseif (count($models) >= 1)
+            {
+                return count($models) + 1;
+            }
+        }
+
+        /**
+         * Get all tasks by kanban type
+         * @param int $taskType
+         * @param Item $childObjectOfItem
+         * @return array of objects
+         */
+        public static function getAllTasksByType($taskType, Item $childObjectOfItem)
         {
             assert('is_int($taskType)');
             $searchAttributeData = array();
@@ -200,20 +220,18 @@
                     'attributeName'             => 'type',
                     'operatorType'              => 'equals',
                     'value'                     => intval($taskType),
+                ),
+                2 => array(
+                    'attributeName'             => 'kanbanRelatedItem',
+                    'operatorType'              => 'equals',
+                    'value'                     => $childObjectOfItem->getClassId('Item'),
                 )
             );
-            $searchAttributeData['structure'] = '1';
+            $searchAttributeData['structure'] = '(1 and 2)';
             $joinTablesAdapter                = new RedBeanModelJoinTablesQueryAdapter(get_called_class());
             $where  = RedBeanModelDataProvider::makeWhere(get_called_class(), $searchAttributeData, $joinTablesAdapter);
-            $models = self::getSubset($joinTablesAdapter, null, null, $where, 'sortOrder DESC');
-            if (count($models) == 0)
-            {
-                return 1;
-            }
-            elseif (count($models) >= 1)
-            {
-                return intval($models[0]->sortOrder) + 1;
-            }
+            $models = self::getSubset($joinTablesAdapter, null, null, $where, 'sortOrder ASC');
+            return $models;
         }
     }
 ?>

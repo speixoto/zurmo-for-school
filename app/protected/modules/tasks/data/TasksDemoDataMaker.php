@@ -80,6 +80,13 @@
                 $task->activityItems->add($opportunity);
                 $task->activityItems->add($opportunity->contacts[0]);
                 $task->activityItems->add($opportunity->account);
+
+                //Notification subscriber
+                $notificationSubscriber             = new NotificationSubscriber();
+                $notificationSubscriber->person     = $demoDataHelper->getRandomByModelName('User');
+                $notificationSubscriber->hasReadLatest = false;
+                $task->notificationSubscribers->add($notificationSubscriber);
+
                 $this->populateModel($task);
                 $saved = $task->save();
                 assert('$saved');

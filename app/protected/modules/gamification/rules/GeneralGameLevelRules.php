@@ -102,7 +102,7 @@
 
         public static function getDisplayLabel()
         {
-            return Zurmo::t('GamificationModule', 'General');
+            return Zurmo::t('Core', 'General');
         }
     }
 ?>

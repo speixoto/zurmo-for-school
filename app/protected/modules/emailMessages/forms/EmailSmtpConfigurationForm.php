@@ -70,8 +70,8 @@
             return array(
                 'host'                                 => Zurmo::t('ZurmoModule', 'Host'),
                 'port'                                 => Zurmo::t('ZurmoModule', 'Port'),
-                'username'                             => Zurmo::t('EmailMessagesModule', 'Username'),
-                'password'                             => Zurmo::t('EmailMessagesModule', 'Password'),
+                'username'                             => Zurmo::t('ZurmoModule', 'Username'),
+                'password'                             => Zurmo::t('ZurmoModule', 'Password'),
                 'security'                             => Zurmo::t('EmailMessagesModule', 'Extra Mail Settings'),
                 'aTestToAddress'                       => Zurmo::t('EmailMessagesModule', 'Send a test email to')
             );

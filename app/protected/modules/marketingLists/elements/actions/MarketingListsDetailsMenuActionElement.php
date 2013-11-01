@@ -47,7 +47,7 @@
 
         protected function getDefaultLabel()
         {
-            return Zurmo::t('MarketingListsModule', 'Details');
+            return Zurmo::t('Core', 'Details');
         }
 
         protected function getDefaultRoute()
@@ -67,7 +67,7 @@
         public function renderMenuItem()
         {
             $menuItem = parent::renderMenuItem();
-            $menuItem['submenuOptions'] = array('class' => 'button-actions open-on-left flyout-action');
+            $menuItem['submenuOptions'] = array('class' => 'button-actions open-on-left');
             return $menuItem;
         }
     }

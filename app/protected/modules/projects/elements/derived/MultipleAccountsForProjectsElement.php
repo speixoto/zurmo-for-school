@@ -63,7 +63,7 @@
 
         protected function getFormattedAttributeLabel()
         {
-            return Yii::app()->format->text(Zurmo::t('ProjectsModule', 'Accounts'));
+            return Yii::app()->format->text(Zurmo::t('AccountsModule', 'Accounts'));
         }
 
         public static function getDisplayName()

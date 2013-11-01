@@ -66,28 +66,6 @@
         /**
          * @depends testInlineCreateCommentFromAjax
          */
-        public function testUpdateUserViaAjax()
-        {
-            $super  = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
-            $user   = UserTestHelper::createBasicUser('test');
-            $tasks  = Task::getByName('aTest');
-            $task   = $tasks[0];
-            $taskId = $task->id;
-            $this->setGetArray(array('id' => $task->id, 'attribute' => 'owner', 'userId' => $user->id));
-            $this->runControllerWithNoExceptionsAndGetContent('tasks/default/updateRelatedUsersViaAjax');
-            $task   = Task::getById($taskId);
-            $this->assertEquals($user->id, $task->owner->id);
-
-            $this->setGetArray(array('id' => $task->id, 'attribute' => 'requestedByUser', 'userId' => $user->id));
-            $this->runControllerWithNoExceptionsAndGetContent('tasks/default/updateRelatedUsersViaAjax');
-            $task   = Task::getById($taskId);
-
-            $this->assertEquals($user->id, $task->requestedByUser->id);
-        }
-
-        /**
-         * @depends testInlineCreateCommentFromAjax
-         */
         public function testUpdateDueDateTimeViaAjax()
         {
             $super  = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
@@ -114,7 +92,8 @@
             $content = $this->runControllerWithNoExceptionsAndGetContent('tasks/default/addSubscriber', false);
             $this->assertTrue(strpos($content, 'gravatar') > 0);
             $task   = Task::getById($taskId);
-            $this->assertEquals(1, $task->notificationSubscribers->count());
+            //as owner and requested by user are default
+            $this->assertEquals(3, $task->notificationSubscribers->count());
             $notificationSubscribers = $task->notificationSubscribers;
             $modelDerivationPathToItem = RuntimeUtil::getModelDerivationPathToItem('User');
             $user = $notificationSubscribers[0]->person->castDown(array($modelDerivationPathToItem));
@@ -122,10 +101,10 @@
 
             //Remove subscriber
             $this->setGetArray(array('id' => $task->id));
-            $this->assertEquals(1, $task->notificationSubscribers->count());
-            $this->runControllerWithNoExceptionsAndGetContent('tasks/default/removeSubscriber', true);
+            $this->assertEquals(3, $task->notificationSubscribers->count());
+            $this->runControllerWithNoExceptionsAndGetContent('tasks/default/removeSubscriber', false);
             $task   = Task::getById($taskId);
-            $this->assertEquals(0, $task->notificationSubscribers->count());
+            $this->assertEquals(2, $task->notificationSubscribers->count());
         }
 
         /**
@@ -185,50 +164,18 @@
             $this->assertTrue(strpos($content, 'Task for test cases') > 0);
         }
 
-        public function testAddAndRemoveKanbanSubscriberViaAjax()
-        {
-            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
-            $task     = new Task();
-            $task->name = 'newTest';
-            $nowStamp = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
-            $this->assertTrue($task->save());
-            unset($task);
-            $tasks  = Task::getByName('newTest');
-            $task   = $tasks[0];
-            $taskId = $task->id;
-            $this->setGetArray(array('id' => $task->id));
-            $this->assertEquals(0, $task->notificationSubscribers->count());
-            $this->runControllerWithNoExceptionsAndGetContent('tasks/default/addKanbanSubscriber', true);
-            $task   = Task::getById($taskId);
-            $this->assertEquals(1, $task->notificationSubscribers->count());
-            $notificationSubscribers = $task->notificationSubscribers;
-            $modelDerivationPathToItem = RuntimeUtil::getModelDerivationPathToItem('User');
-            $user = $notificationSubscribers[0]->person->castDown(array($modelDerivationPathToItem));
-            $this->assertEquals($user->id, $super->id);
-
-            //Remove kanban subscriber
-            $this->setGetArray(array('id' => $task->id));
-            $this->assertEquals(1, $task->notificationSubscribers->count());
-            $this->runControllerWithNoExceptionsAndGetContent('tasks/default/removeKanbanSubscriber', true);
-            $task   = Task::getById($taskId);
-            $this->assertEquals(0, $task->notificationSubscribers->count());
-        }
-
-
         public function testUpdateStatusOnDragInKanbanView()
         {
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
             $project = ProjectTestHelper::createProjectByNameForOwner('a new project', $super);
             $task = TaskTestHelper::createTaskByNameForOwner('My Kanban Task', Yii::app()->user->userModel);
             $task->project = $project;
-            TasksUtil::setDefaultValuesForTask($task);
             $task->status = Task::STATUS_IN_PROGRESS;
             $taskId = $task->id;
             $this->assertTrue($task->save());
 
             $task1 = TaskTestHelper::createTaskByNameForOwner('My Kanban Task 1', Yii::app()->user->userModel);
             $task1->project = $project;
-            TasksUtil::setDefaultValuesForTask($task1);
             $task1->status = Task::STATUS_NEW;
             $this->assertTrue($task1->save());
             $task1Id = $task1->id;
@@ -244,7 +191,7 @@
                 }
                 $kanbanItemsArray[] = $kanbanItem;
             }
-            $this->assertEquals(KanbanItem::TYPE_TODO, $kanbanItemsArray[1]->type);
+            $this->assertEquals(KanbanItem::TYPE_SOMEDAY, $kanbanItemsArray[1]->type);
             $this->assertEquals(1, $kanbanItemsArray[1]->sortOrder);
             $this->assertEquals(1, $kanbanItemsArray[0]->sortOrder);
 
@@ -270,7 +217,9 @@
             $tasks = Task::getByName('My Kanban Task');
             $task  = $tasks[0];
             $taskId = $task->id;
-            $this->setGetArray(array('targetStatus' => Task::STATUS_AWAITING_ACCEPTANCE, 'taskId' => $task->id));
+            $this->setGetArray(array('targetStatus' => Task::STATUS_AWAITING_ACCEPTANCE,
+                                     'taskId' => $task->id,
+                                     'sourceKanbanType' => KanbanItem::TYPE_IN_PROGRESS));
             $this->runControllerWithNoExceptionsAndGetContent('tasks/default/updateStatusInKanbanView', true);
             $task = Task::getById($taskId);
             $this->assertEquals(Task::STATUS_AWAITING_ACCEPTANCE, $task->status);

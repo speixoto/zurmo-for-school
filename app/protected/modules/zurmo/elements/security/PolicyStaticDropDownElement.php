@@ -39,9 +39,9 @@
         protected function getDropDownArray()
         {
             return array(
-                Policy::NO  => Zurmo::t('ZurmoModule', 'No'),
+                Policy::NO  => Zurmo::t('Core', 'No'),
                 ''          => Zurmo::t('ZurmoModule', 'Not Set'),
-                Policy::YES => Zurmo::t('ZurmoModule', 'Yes'),
+                Policy::YES => Zurmo::t('Core', 'Yes'),
             );
         }
     }

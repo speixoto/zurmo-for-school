@@ -69,15 +69,28 @@
         {
             $content = null;
             $modelDerivationPathToItem = RuntimeUtil::getModelDerivationPathToItem('User');
+            $alreadySubscribedUsers = array();
             foreach ($task->notificationSubscribers as $subscriber)
             {
                 $user     = $subscriber->person->castDown(array($modelDerivationPathToItem));
-                $content .= static::renderSubscriberImageAndLinkContent($user);
+                //Take care of duplicates if any
+                if(!in_array($user->id, $alreadySubscribedUsers))
+                {
+                    $content .= static::renderSubscriberImageAndLinkContent($user);
+                    $alreadySubscribedUsers[] = $user->id;
+                }
             }
 
             return $content;
         }
 
+        /**
+         * Renders subscriber image and link content
+         * @param User $user
+         * @param int $imageSize
+         * @param string $class
+         * @return string
+         */
         public static function renderSubscriberImageAndLinkContent(User $user, $imageSize = 36, $class = null)
         {
             assert('is_int($imageSize)');
@@ -108,136 +121,6 @@
         }
 
         /**
-         * Given a Task and the User that updates the task
-         * return the people on the task to send new notification to
-         * @param Task $task
-         * @param User $user
-         * @return Array $peopleToSendNotification
-         */
-        public static function resolvePeopleToSendNotificationToOnTaskUpdate(Task $task, User $user)
-        {
-            $peopleToSendNotification    = array();
-            $peopleSubscribedForTask     = self::resolvePeopleSubscribedForTask($task);
-            foreach ($peopleSubscribedForTask as $person)
-            {
-                if ($person->id != $user->id)
-                {
-                    $peopleToSendNotification[] = $person;
-                }
-            }
-            return $peopleToSendNotification;
-        }
-
-        /**
-         * Resolve people on task
-         * @param Task $task
-         * @return array
-         */
-        public static function resolvePeopleSubscribedForTask(Task $task)
-        {
-            $people   = self::getTaskSubscribers($task);
-            $people[] = $task->owner;
-            $people[] = $task->requestedByUser;
-            return $people;
-        }
-
-        /**
-         * Send notification to user on task update
-         * @param Task $task
-         * @param string $message
-         * @return null
-         */
-        public static function sendNotificationOnTaskUpdate(Task $task, $message, $peopleToSendNotification)
-        {
-            assert('$task instanceof Task');
-            assert('is_string($message)');
-            assert('is_array($peopleToSendNotification)');
-            $currentUser = Yii::app()->user->userModel;
-            if (count($peopleToSendNotification) > 0)
-            {
-                $emailRecipients = array();
-                foreach ($peopleToSendNotification as $person)
-                {
-                    if ($person->primaryEmail->emailAddress !== null &&
-                        !UserConfigurationFormAdapter::resolveAndGetValue($person, 'turnOffEmailNotifications'))
-                    {
-                        $emailRecipients[] = $person;
-                    }
-                }
-                $subject = self::getEmailSubject($task);
-                $content = self::getEmailContent($task, $message, $currentUser);
-                if ($emailRecipients > 0)
-                {
-                    EmailNotificationUtil::resolveAndSendEmail($currentUser, $emailRecipients, $subject, $content);
-                }
-                else
-                {
-                    return;
-                }
-            }
-            else
-            {
-                return;
-            }
-        }
-
-        /**
-         * Get email content
-         * @param RedBeanModel $model
-         * @param string $message
-         * @param User $user
-         * @return EmailMessageContent
-         */
-        public static function getEmailContent(RedBeanModel $model, $message, User $user)
-        {
-            assert('$model instanceof RedBeanModel');
-            assert('is_string($message)');
-            assert('$user instanceof User');
-            $emailContent  = new EmailMessageContent();
-            $url           = static::getUrlToEmail($model);
-            $textContent   = Zurmo::t('TasksModule', "Hello, {lineBreak} {updaterName} updates to the " .
-                                             "{strongStartTag}{modelName}{strongEndTag}: {lineBreak}" .
-                                             "\"{message}.\" {lineBreak}{lineBreak} {url} ",
-                                    array('{lineBreak}'           => "\n",
-                                          '{strongStartTag}'      => null,
-                                          '{strongEndTag}'        => null,
-                                          '{updaterName}'         => strval($user),
-                                          '{modelName}'           => $model->getModelLabelByTypeAndLanguage(
-                                                                     'SingularLowerCase'),
-                                          '{message}'             => strval($message),
-                                          '{url}'                 => ZurmoHtml::link($url, $url)
-                                        ));
-            $emailContent->textContent  = EmailNotificationUtil::
-                                                resolveNotificationTextTemplate($textContent);
-            $htmlContent = Zurmo::t('TasksModule', "Hello, {lineBreak} {updaterName} updates to the " .
-                                             "{strongStartTag}{url}{strongEndTag}: {lineBreak}" .
-                                             "\"{message}.\"",
-                               array('{lineBreak}'           => "<br/>",
-                                     '{strongStartTag}'      => '<strong>',
-                                     '{strongEndTag}'        => '</strong>',
-                                     '{updaterName}'         => strval($user),
-                                     '{message}'             => strval($message),
-                                     '{url}'                 => ZurmoHtml::link($model->getModelLabelByTypeAndLanguage(
-                                                                'SingularLowerCase'), $url)
-                                   ));
-            $emailContent->htmlContent  = EmailNotificationUtil::resolveNotificationHtmlTemplate($htmlContent);
-            return $emailContent;
-        }
-
-        /**
-         * Gets email subject for the notification
-         * @param Task $model
-         * @return string
-         */
-        public static function getEmailSubject($model)
-        {
-            assert('$model instanceof Task');
-            return Zurmo::t('TasksModule', 'New update on {modelName}: {subject}',
-                                    array('{subject}'   => strval($model),
-                                          '{modelName}' => $model->getModelLabelByTypeAndLanguage('SingularLowerCase')));
-        }
-
-        /**
          * Gets url to task detail view
          * @param Task $model
          * @return string
@@ -246,29 +129,6 @@
         {
             assert('$model instanceof Task');
             return Yii::app()->createAbsoluteUrl('tasks/default/details/', array('id' => $model->id));
-        }
-
-        /**
-         * Given a Task and the User that created the new comment
-         * return the people on the task to send new notification to
-         * @param Task $task
-         * @param User $user
-         * @return array $peopleToSendNotification
-         */
-        public static function  resolvePeopleToSendNotificationToOnNewComment(Task $task, User $user)
-        {
-            assert('$task instanceof Task');
-            assert('$user instanceof User');
-            $peopleToSendNotification    = array();
-            $peopleSubscribedForTask     = self::resolvePeopleSubscribedForTask($task);
-            foreach ($peopleSubscribedForTask as $person)
-            {
-                if (!$person->isSame($user))
-                {
-                    $peopleToSendNotification[] = $person;
-                }
-            }
-            return $peopleToSendNotification;
         }
 
         /**
@@ -410,12 +270,23 @@
          * @param $moduleClassName
          * @return null|string
          */
-        public static function getModalDetailsLink(Task $task, $controllerId, $moduleId, $moduleClassName)
+        public static function getModalDetailsLink(Task $task,
+                                                   $controllerId,
+                                                   $moduleId,
+                                                   $moduleClassName,
+                                                   $isOwnerRequiredInDisplay = true)
         {
             assert('is_string($controllerId) || is_null($controllerId)');
             assert('is_string($moduleId)  || is_null($moduleId)');
             assert('is_string($moduleClassName)');
-            $label       = $task->name . ZurmoHtml::tag('span', array(), '(' . strval($task->owner) . ')');
+            if($isOwnerRequiredInDisplay)
+            {
+                $label       = $task->name . ZurmoHtml::tag('span', array(), '(' . strval($task->owner) . ')');
+            }
+            else
+            {
+                $label       = $task->name;
+            }
             $params      = array('label' => $label, 'routeModuleId' => 'tasks',
                                  'wrapLabel' => false,
                                  'htmlOptions' => array('id' => 'task-' . $task->id)
@@ -484,7 +355,7 @@
         public static function getTaskStatusMappingToKanbanItemTypeArray()
         {
             return array(
-                            Task::STATUS_NEW                   => KanbanItem::TYPE_TODO,
+                            Task::STATUS_NEW                   => KanbanItem::TYPE_SOMEDAY,
                             Task::STATUS_IN_PROGRESS           => KanbanItem::TYPE_IN_PROGRESS,
                             Task::STATUS_AWAITING_ACCEPTANCE   => KanbanItem::TYPE_IN_PROGRESS,
                             Task::STATUS_REJECTED              => KanbanItem::TYPE_IN_PROGRESS,
@@ -541,7 +412,9 @@
          */
         public static function registerSubscriptionScript($taskId = null)
         {
-            $unsubscribeLink = '<strong>' . Zurmo::t('TasksModule', 'Unsubscribe') . '</strong>';
+            $title  = Zurmo::t('Core', 'Unsubscribe');
+            $unsubscribeLink = ZurmoHtml::tag('i', array('class' => 'icon-unsubscribe', 'title' => $title), '');
+
             if($taskId == null)
             {
                 $url     = Yii::app()->createUrl('tasks/default/addKanbanSubscriber');
@@ -562,7 +435,9 @@
          */
         public static function registerUnsubscriptionScript($taskId = null)
         {
-            $subscribeLink = '<strong>' . Zurmo::t('Core', 'Subscribe') . '</strong>';
+            $title  = Zurmo::t('Core', 'Subscribe');
+            $subscribeLink = ZurmoHtml::tag('i', array('class' => 'icon-subscribe', 'title' => $title), '');
+
             if($taskId == null)
             {
                 $url           = Yii::app()->createUrl('tasks/default/removeKanbanSubscriber');
@@ -682,13 +557,13 @@
             assert('is_string($unsubscribeLinkClass)');
             if(TasksUtil::isUserSubscribedForTask($task, Yii::app()->user->userModel) === false)
             {
-                $label       = '';//Zurmo::t('Core', 'Subscribe');
+                $label       = Zurmo::t('Core', 'Subscribe');
                 $class       = $subscribeLinkClass;
                 $iconContent = ZurmoHtml::tag('i', array('class' => 'icon-subscribe'), '');
             }
             else
             {
-                $label       = Zurmo::t('TasksModule', 'Unsubscribe');
+                $label       = Zurmo::t('Core', 'Unsubscribe');
                 $class       = $unsubscribeLinkClass;
                 $iconContent = ZurmoHtml::tag('i', array('class' => 'icon-unsubscribe'), '');
             }
@@ -735,24 +610,9 @@
          */
         public static function getDefaultTaskStatusForKanbanItemType($kanbanItemType)
         {
-            assert('is_int($kanbanItemType)');
+            assert('is_int(intval($kanbanItemType))');
             $mappingArray = self::getKanbanItemTypeToDefaultTaskStatusMappingArray();
-            return $mappingArray[$kanbanItemType];
-        }
-
-        /**
-         * Set default values for task
-         * @param Task $task
-         */
-        public static function setDefaultValuesForTask(Task $task)
-        {
-            $user = Yii::app()->user->userModel;
-            $task->requestedByUser = $user;
-            $task->status = Task::STATUS_NEW;
-            $notificationSubscriber = new NotificationSubscriber();
-            $notificationSubscriber->person = $user;
-            $notificationSubscriber->hasReadLatest = false;
-            $task->notificationSubscribers->add($notificationSubscriber);
+            return $mappingArray[intval($kanbanItemType)];
         }
 
         /**
@@ -764,8 +624,15 @@
             $kanbanItem                     = new KanbanItem();
             $kanbanItem->type               = TasksUtil::resolveKanbanItemTypeForTaskStatus($task->status);
             $kanbanItem->task               = $task;
-            $kanbanItem->kanbanRelatedItem  = $task->activityItems->offsetGet(0);
-            $sortOrder = KanbanItem::getMaximumSortOrderByType($kanbanItem->type);
+            if($task->project->id > 0)
+            {
+                $kanbanItem->kanbanRelatedItem  = $task->project;
+            }
+            else
+            {
+                $kanbanItem->kanbanRelatedItem  = $task->activityItems->offsetGet(0);
+            }
+            $sortOrder = self::resolveAndGetSortOrderForTaskOnKanbanBoard($kanbanItem->type, $task);
             $kanbanItem->sortOrder          = $sortOrder;
             $kanbanItem->save();
             return $kanbanItem;
@@ -786,7 +653,6 @@
             $percentageComplete = ceil(static::getTaskCompletionPercentage($task));
             return ZurmoHtml::tag('div', array('class' => 'completion-percentage-bar', 'style' => 'width:' . $percentageComplete . '%'),
                                   $percentageComplete . '%');
-            $percentage = TasksUtil::getTaskCompletionPercentage(intval($task->id));
         }
 
         /**
@@ -846,6 +712,7 @@
          */
         public static function registerTaskModalDetailsScript($sourceId)
         {
+            assert('is_string($sourceId)');
             $modalId = TasksUtil::getModalContainerId();
             $url = Yii::app()->createUrl('tasks/default/modalDetails');
             $ajaxOptions = TasksUtil::resolveAjaxOptionsForModalView('Details', $sourceId);
@@ -902,6 +769,192 @@
                 }
                 catch (NotFoundException $e)
                 {
+                }
+            }
+        }
+
+        /**
+         * Renders completion date time content for the task
+         * @param Task $task
+         * @return string
+         */
+        public static function renderCompletionDateTime(Task $task)
+        {
+            if($task->completedDateTime == null)
+            {
+                $task->completedDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
+            }
+            return '<p>' . Zurmo::t('TasksModule', 'Completed On') . ': ' .
+                                 DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay($task->completedDateTime) . '</p>';
+        }
+
+        /**
+         * @param $relationModelId
+         * @return string
+         */
+        public static function resolveModalSaveActionNameForByRelationModelId($relationModelId, $copyAction = null)
+        {
+            assert('is_string($relationModelId) || $relationModelId == null');
+            assert('is_string($copyAction) || $copyAction == null');
+            if($copyAction == 'copy')
+            {
+                return 'modalCopyFromRelation';
+            }
+            else
+            {
+                if($relationModelId != null)
+                {
+                    return 'modalSaveFromRelation';
+                }
+                else
+                {
+                    return 'modalSave';
+                }
+            }
+        }
+
+        /**
+         * Add subscriber to the task
+         * @param User $user
+         * @param Task $task
+         * @param bool $hasReadLatest
+         */
+        public static function addSubscriber(User $user, Task $task, $hasReadLatest = false)
+        {
+            assert('is_bool($hasReadLatest)');
+            $isAlreadySubscribed = false;
+            foreach($task->notificationSubscribers as $notificationSubscriber)
+            {
+                if($notificationSubscriber->person->id == $user->id)
+                {
+                    $isAlreadySubscribed = true;
+                    break;
+                }
+            }
+            if(!$isAlreadySubscribed)
+            {
+                $notificationSubscriber = new NotificationSubscriber();
+                $notificationSubscriber->person = $user;
+                $notificationSubscriber->hasReadLatest = $hasReadLatest;
+                $task->notificationSubscribers->add($notificationSubscriber);
+            }
+        }
+
+        /**
+         * Process kanban item update on button click on kanban board
+         * @param int $targetStatus
+         * @param int $taskId
+         * @param int $sourceKanbanType
+         */
+        public static function processKanbanItemUpdateOnButtonAction($targetStatus, $taskId, $sourceKanbanType)
+        {
+            assert('is_int($targetStatus)');
+            assert('is_int($taskId)');
+            assert('is_int($sourceKanbanType)');
+            $task = Task::getById($taskId);
+            $kanbanItem = KanbanItem::getByTask($taskId);
+            $targetKanbanType = null;
+            if($sourceKanbanType == KanbanItem::TYPE_SOMEDAY || $sourceKanbanType == KanbanItem::TYPE_TODO)
+            {
+                $targetKanbanType = KanbanItem::TYPE_IN_PROGRESS;
+            }
+            elseif($sourceKanbanType == KanbanItem::TYPE_IN_PROGRESS)
+            {
+                if($targetStatus == Task::STATUS_AWAITING_ACCEPTANCE
+                                    || $targetStatus == Task::STATUS_REJECTED
+                                        || $targetStatus == Task::STATUS_IN_PROGRESS)
+                {
+                    $targetKanbanType = KanbanItem::TYPE_IN_PROGRESS;
+                }
+                elseif(intval($targetStatus) == Task::STATUS_COMPLETED)
+                {
+                    $targetKanbanType = KanbanItem::TYPE_COMPLETED;
+                }
+            }
+
+            //If kanbantype is changed, do the sort
+            if($sourceKanbanType != $targetKanbanType)
+            {
+                //Set the sort and type for target
+                $sortOrder = self::resolveAndGetSortOrderForTaskOnKanbanBoard($targetKanbanType, $task);
+                $kanbanItem->sortOrder = $sortOrder;
+                $kanbanItem->type      = $targetKanbanType;
+                if(!$kanbanItem->save())
+                {
+                    throw new FailedToSaveModelException();
+                }
+                //Resort the source one
+                if($task->project->id > 0)
+                {
+                    TasksUtil::sortKanbanColumnItems($sourceKanbanType, $task->project);
+                }
+                else
+                {
+                    TasksUtil::sortKanbanColumnItems($sourceKanbanType, $task->activityItems->offsetGet(0));
+                }
+            }
+        }
+
+        /**
+         * Returns sortorder
+         * @param Task $task
+         * @param int $targetKanbanType
+         * @return int
+         */
+        public static function resolveAndGetSortOrderForTaskOnKanbanBoard($targetKanbanType, Task $task)
+        {
+            if($task->project->id > 0)
+            {
+                $sortOrder = KanbanItem::getMaximumSortOrderByType(intval($targetKanbanType), $task->project);
+            }
+            else
+            {
+                $sortOrder = KanbanItem::getMaximumSortOrderByType(intval($targetKanbanType), $task->activityItems->offsetGet(0));
+            }
+            return $sortOrder;
+        }
+
+        /**
+         * Reset the sortoder for kanban type for the associated to it
+         * @param Task $task
+         * @param int $kanbanType
+         * @param Item $childObjectOfItem
+         * @return int
+         */
+        public static function sortKanbanColumnItems($kanbanType, Item $childObjectOfItem)
+        {
+            $models = KanbanItem::getAllTasksByType(intval($kanbanType), $childObjectOfItem);
+            foreach($models as $index => $model)
+            {
+                $model->sortOrder = $index + 1;
+                $model->save();
+            }
+        }
+
+        /**
+         * Check kanban type for status and update if it is required, it is required
+         * when user is changing the status from modal detail view
+         * @param $task Task
+         */
+        public static function checkKanbanTypeByStatusAndUpdateIfRequired(Task $task)
+        {
+            $kanbanItem = KanbanItem::getByTask($task->id);
+            $kanbanTypeByStatus = TasksUtil::resolveKanbanItemTypeForTaskStatus($task->status);
+            if($kanbanItem->type != $kanbanTypeByStatus)
+            {
+                $sourceKanbanItemType = $kanbanItem->type;
+                //put the item at the end
+                $kanbanItem->sortOrder = TasksUtil::resolveAndGetSortOrderForTaskOnKanbanBoard($kanbanTypeByStatus, $task);
+                $kanbanItem->type = $kanbanTypeByStatus;
+                $kanbanItem->save();
+                //Resort the source column
+                if($task->project->id > 0)
+                {
+                    TasksUtil::sortKanbanColumnItems($sourceKanbanItemType, $task->project);
+                }
+                else
+                {
+                    TasksUtil::sortKanbanColumnItems($sourceKanbanItemType, $task->activityItems->offsetGet(0));
                 }
             }
         }

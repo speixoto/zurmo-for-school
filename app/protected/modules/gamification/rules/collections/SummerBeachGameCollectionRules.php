@@ -105,7 +105,7 @@
          */
         public static function getCollectionLogoLabel()
         {
-            return Zurmo::t('GamificationModule', 'Flip Flops');
+            return Zurmo::t('Core', 'Flip Flops');
         }
     }
 ?>

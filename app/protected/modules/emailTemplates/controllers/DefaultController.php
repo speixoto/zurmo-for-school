@@ -44,18 +44,18 @@
 
         public static function getListBreadcrumbLinks()
         {
-            $title = Zurmo::t('EmailTemplatesModule', 'Templates');
+            $title = Zurmo::t('Core', 'Templates');
             return array($title);
         }
 
         public static function getDetailsAndEditForWorkflowBreadcrumbLinks()
         {
-            return array(Zurmo::t('EmailTemplatesModule', 'Templates') => array('default/listForWorkflow'));
+            return array(Zurmo::t('Core', 'Templates') => array('default/listForWorkflow'));
         }
 
         public static function getDetailsAndEditForMarketingBreadcrumbLinks()
         {
-            return array(Zurmo::t('EmailTemplatesModule', 'Templates') => array('default/listForMarketing'));
+            return array(Zurmo::t('Core', 'Templates') => array('default/listForMarketing'));
         }
 
         public function filters()
@@ -146,7 +146,7 @@
             if ($emailTemplate->type == EmailTemplate::TYPE_WORKFLOW)
             {
                 $breadCrumbLinks    = static::getDetailsAndEditForWorkflowBreadcrumbLinks();
-                $breadCrumbLinks[]  = Zurmo::t('EmailTemplatesModule', 'Create');
+                $breadCrumbLinks[]  = Zurmo::t('Core', 'Create');
                 $view               = new EmailTemplatesPageView(WorkflowDefaultAdminViewUtil::
                                       makeViewWithBreadcrumbsForCurrentUser($this, $editAndDetailsView,
                                       $breadCrumbLinks, 'WorkflowBreadCrumbView'));
@@ -155,7 +155,7 @@
             {
                 $emailTemplate->modelClassName = 'Contact';
                 $breadCrumbLinks    = static::getDetailsAndEditForMarketingBreadcrumbLinks();
-                $breadCrumbLinks[]  = Zurmo::t('EmailTemplatesModule', 'Create');
+                $breadCrumbLinks[]  = Zurmo::t('Core', 'Create');
                 $view               = new EmailTemplatesPageView(MarketingDefaultViewUtil::
                                       makeViewWithBreadcrumbsForCurrentUser($this, $editAndDetailsView,
                                       $breadCrumbLinks, 'MarketingBreadCrumbView'));

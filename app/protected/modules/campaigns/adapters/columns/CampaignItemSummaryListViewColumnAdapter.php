@@ -141,7 +141,7 @@
         protected static function renderRestrictedContactAccessLink(Contact $contact)
         {
             $title       = Zurmo::t('CampaignsModule', 'You cannot see this contact due to limited access');
-            $content     = ZurmoHtml::tag('em', array(), Zurmo::t('CampaignsModule', 'Restricted'));
+            $content     = ZurmoHtml::tag('em', array(), Zurmo::t('Core', 'Restricted'));
             $content    .= ZurmoHtml::tag('span', array('id'    => 'restricted-access-contact-tooltip' . $contact->id,
                                                         'class' => 'tooltip',
                                                         'title' => $title), '?');
@@ -158,7 +158,7 @@
         protected static function renderRestrictedEmailMessageAccessLink(EmailMessage $emailMessage)
         {
             $title       = Zurmo::t('CampaignsModule', 'You cannot see the performance metrics due to limited access');
-            $content     = ZurmoHtml::tag('em', array(), Zurmo::t('CampaignsModule', 'Restricted'));
+            $content     = ZurmoHtml::tag('em', array(), Zurmo::t('Core', 'Restricted'));
             $content    .= ZurmoHtml::tag('span', array('id'    => 'restricted-access-email-message-tooltip' . $emailMessage->id,
                            'class' => 'tooltip',
                            'title' => $title), '?');
@@ -263,7 +263,7 @@
 
         protected static function getSkippedContent()
         {
-            $span       = ZurmoHtml::tag('span', array(), Zurmo::t('MarketingModule', 'Skipped'));
+            $span       = ZurmoHtml::tag('span', array(), Zurmo::t('Core', 'Skipped'));
             $content    = '<i>&#9679;</i>' . $span;
             return ZurmoHtml::tag('div',
                                   array('class'        => 'email-recipient-stage-status stage-false'),
@@ -319,7 +319,7 @@
 
         protected static function getSentContent()
         {
-            $content = '<i>&#9679;</i><span>' . Zurmo::t('MarketingModule', 'Sent') . '</span>';
+            $content = '<i>&#9679;</i><span>' . Zurmo::t('Core', 'Sent') . '</span>';
             return ZurmoHtml::tag('div', array('class' => 'email-recipient-stage-status stage-true'), $content);
         }
 
@@ -458,10 +458,10 @@
             $tableContent  = '<table>';
             $tableContent .= '<thead><tr>';
             $tableContent .= '<th>' . Zurmo::t('MarketingModule', 'Event') . '</th>';
-            $tableContent .= '<th>' . Zurmo::t('MarketingModule', 'Latest Date Time') . '</th>';
+            $tableContent .= '<th>' . Zurmo::t('ZurmoModule', 'Latest Date Time') . '</th>';
             $tableContent .= '<th>' . Zurmo::t('MarketingModule', 'Quantity') . '</th>';
             $tableContent .= '<th>' . Zurmo::t('MarketingModule', 'Latest source IP') . '</th>';
-            $tableContent .= '<th>' . Zurmo::t('MarketingModule', 'URL') . '</th>';
+            $tableContent .= '<th>' . Zurmo::t('Core', 'URL') . '</th>';
             $tableContent .= '</tr></thead>';
             $tableContent .= $tableRows;
             $tableContent .= '</table>';

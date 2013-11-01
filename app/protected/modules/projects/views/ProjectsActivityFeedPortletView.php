@@ -101,14 +101,6 @@
         }
 
         /**
-         * @return bool
-         */
-        public static function canUserRemove()
-        {
-            return false;
-        }
-
-        /**
          * What kind of PortletRules this view follows
          * @return PortletRulesType as string.
          */
