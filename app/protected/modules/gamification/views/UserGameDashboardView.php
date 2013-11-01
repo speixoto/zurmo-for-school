@@ -142,8 +142,14 @@
 
         protected function registerCloseButtonScript()
         {
-            $script = "$('.close-dashboard-button a, #gd-overlay, #gd-container, #gd-centralizer').on('click', function(){
+            $script = "$('.close-dashboard-button a').on('click', function(){
                            if($('#UserGameDashboardView').length){
+                               closeGamificationDashboard();
+                               return false;
+                           }
+                       });
+                       $('#gd-overlay, #gd-container, #gd-centralizer').on('click', function(event){
+                           if(this === event.target && $('#UserGameDashboardView').length){
                                closeGamificationDashboard();
                                return false;
                            }
