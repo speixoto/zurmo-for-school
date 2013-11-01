@@ -319,7 +319,12 @@ body{
 	}
 }
 
+.mobile-actions{
+	display: none;
+}
+
 .mobile-view-toolbar-container{
+	display: none;
 	.hasDropDown{
 		span.select-arrow{
 			z-index:0;
@@ -725,23 +730,6 @@ body{
 	}
 }
 
-/*
-.right-side-edit-view-panel{
-	float:none;
-	width:100%;
-	position:relative;
-	right:0;
-	top:0;
-	.buffer{
-		padding-left:0;
-		> div{
-			padding:0;
-			background: none;
-		}
-	}
-}
-*/
-
 .hasParallelFields > div{
     width: 100% !important;
     display: block;
@@ -956,82 +944,71 @@ div#LeaderboardView > .view-toolbar-container > .view-toolbar{
 //game dashboard
 .gd-dashboard-active{
 	overflow: visible;
+	.AppContainer{
+		padding-top: 38px;
+	}
 }
 
-#UserGameDashboardView{
-	position: absolute;
-	top: 38px;
+#gd-overlay{
+	top:38px;
 	left: 0;
 	right: 0;
-	width: 100%;
+	bottom:0;
+	background: rgba(0, 0, 0, 0.65);
+	position:absolute;
+	width:100%;
 	display: block;
 }
 
-#game-overlay{
-	position: static;
+#gd-container{
+	z-index: 100;
+	top:38px;
 }
 
 #game-dashboard{
 	width: 100%;
 	height: auto;
+	max-height: none;
 	position: relative;
 	left: 0;
 	.radius(5px);
 	overflow:hidden;
 	margin:0;
+	background-size: 100% 100%;
 	> div{
-		width: 50%;
+		width: 100%;
 		height: auto;
-		/*float: none;
-		border: none;
-		@black : #151f1f;
+		float: none;
+		display: block;
+		margin: 0;
+		padding: 20px;
 		@ccc : rgba(32, 50, 52, 0.5);
 		@fff : rgba(83, 112, 115, 0.4);
-		border-top:1px solid fff;
-		border-bottom:1px solid @ccc;*/
+		border-top:1px solid @fff;
+		border-bottom:1px solid @ccc;
 	}
 }
 
-#gd-profile-card,
-#gd-leaderboard{
-	border-bottom: none;
+.gd-mini-stats-card{
+	padding-bottom: 20px;
 }
 
 #gd-profile-card .gravatar,
 #gd-profile-card img{
-	width: 100%;
+	width: 50%;
+	margin: 15px 25%;
+	.radius(50%);
 }
 
-#gd-statistics{
-	clear: left;
-	width: 100% !important;
-	border-top:1px solid rgba(32, 50, 52, 0.5);
-	float: none;
-	height: auto;
+#gd-badges-list{
+	position: relative;
+	left: 0;
 }
 
-#gd-collections{
-	width: 100% !important;
-	float: none !important;
-	height: 250px !important;
-	overflow: hidden;
-	.nav-button{
-		display: none;
-	}
+.nav-button{
+	width: 5%;
 }
 
 #gd-carousel-wrapper{
-	width: 100%;
-	float: none;
-	.nav-button{
-		display: none;
-	}
-}
-
-.gd-collection-item img{
-	max-height: 35px;
-}
-
-.gd-collection-panel{
-	width: 320px;
+	width: 90%;
 }

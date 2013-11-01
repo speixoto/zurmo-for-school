@@ -63,5 +63,12 @@
                                       );
             return $detailsOverlayView->render();
         }
+
+        public function renderMenuItem()
+        {
+            $menuItem = parent::renderMenuItem();
+            $menuItem['submenuOptions'] = array('class' => 'button-actions open-on-left flyout-action');
+            return $menuItem;
+        }
     }
 ?>

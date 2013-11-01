@@ -162,26 +162,17 @@
 
         protected static function filterCanHaveBeanModels($model)
         {
-            if (is_subclass_of($model, 'RedBeanModel') && $model::getCanHaveBean())
-            {
-                return $model;
-            }
+            return (is_subclass_of($model, 'RedBeanModel') && $model::getCanHaveBean());
         }
 
         protected static function filterReadSubscriptionModels($model)
         {
-            if (is_subclass_of($model, 'OwnedSecurableItem') && $model::hasReadPermissionsSubscriptionOptimization())
-            {
-                return $model;
-            }
+            return (is_subclass_of($model, 'OwnedSecurableItem') && $model::hasReadPermissionsSubscriptionOptimization());
         }
 
         protected static function filterMungableModels($model)
         {
-            if (is_subclass_of($model, 'SecurableItem') && $model::hasReadPermissionsOptimization())
-            {
-                return $model;
-            }
+            return (is_subclass_of($model, 'SecurableItem') && $model::hasReadPermissionsOptimization());
         }
     }
 ?>

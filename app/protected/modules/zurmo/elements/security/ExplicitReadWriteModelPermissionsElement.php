@@ -81,7 +81,6 @@
             assert('$this->getExplicitReadWriteModelPermissions() instanceof ExplicitReadWriteModelPermissions');
             assert('$this->getExplicitReadWriteModelPermissions()->getReadOnlyPermitablesCount() == 0');
             assert('$this->getExplicitReadWriteModelPermissions()->getReadWritePermitablesCount() >= 0');
-            assert('$this->getExplicitReadWriteModelPermissions()->getReadWritePermitablesCount() < 2');
         }
 
         protected function renderControlNonEditable()
@@ -162,22 +161,20 @@
          */
         protected function resolveSelectedType()
         {
-            $permitables = $this->getExplicitReadWriteModelPermissions()->getReadWritePermitables();
-            if ($permitables == null)
+            $selectedType           = null;
+            $firstGroupPermitable   = $this->findFirstGroupPermitable();
+            if (isset($firstGroupPermitable))
             {
-                return null;
-            }
-            elseif (current($permitables) instanceof Group)
-            {
-                if (current($permitables)->name == Group::EVERYONE_GROUP_NAME)
+                if ($firstGroupPermitable->name == Group::EVERYONE_GROUP_NAME)
                 {
-                    return ExplicitReadWriteModelPermissionsUtil::MIXED_TYPE_EVERYONE_GROUP;
+                    $selectedType = ExplicitReadWriteModelPermissionsUtil::MIXED_TYPE_EVERYONE_GROUP;
                 }
                 else
                 {
-                    return ExplicitReadWriteModelPermissionsUtil::MIXED_TYPE_NONEVERYONE_GROUP;
+                    $selectedType = ExplicitReadWriteModelPermissionsUtil::MIXED_TYPE_NONEVERYONE_GROUP;
                 }
             }
+            return $selectedType;
         }
 
         /**
@@ -187,25 +184,13 @@
          */
         protected function resolveSelectedGroup()
         {
-            $permitables = $this->getExplicitReadWriteModelPermissions()->getReadWritePermitables();
-            if ($permitables == null)
+            $selectedGroupId        = null;
+            $firstGroupPermitable   = $this->findFirstGroupPermitable();
+            if (isset($firstGroupPermitable) && $firstGroupPermitable->name != Group::EVERYONE_GROUP_NAME)
             {
-                return null;
+                $selectedGroupId = $firstGroupPermitable->id;
             }
-            else
-            {
-                assert(count($permitables) == 1); // Not Coding Standard
-                reset($permitables);
-                $permitable = current($permitables);
-                if ($permitable->name == Group::EVERYONE_GROUP_NAME)
-                {
-                    return null;
-                }
-                else
-                {
-                    return $permitable->id;
-                }
-            }
+            return $selectedGroupId;
         }
 
         protected function getPermissionTypes()
@@ -261,6 +246,23 @@
         protected function getSelectableAttributeName()
         {
             return $this->getAttributeName();
+        }
+
+        protected function findFirstGroupPermitable()
+        {
+            $permitablesCount = $this->getExplicitReadWriteModelPermissions()->getReadWritePermitablesCount();
+            if ($permitablesCount)
+            {
+                $permitables = $this->getExplicitReadWriteModelPermissions()->getReadWritePermitables();
+                foreach ($permitables as $permitable)
+                {
+                    if (get_class($permitable) === 'Group')
+                    {
+                        return $permitable;
+                    }
+                }
+            }
+            return null;
         }
     }
 ?>

@@ -129,17 +129,12 @@
                     'value'                => (int)$this->params['relationModel']->getClassId('Item'),
                 ),
                 2 => array(
-                    'attributeName'        => 'completed',
+                    'attributeName'        => 'status',
                     'operatorType'         => 'doesNotEqual',
-                    'value'                => (bool)1
-                ),
-                3 => array(
-                    'attributeName'        => 'completed',
-                    'operatorType'         => 'isNull',
-                    'value'                => null,
+                    'value'                => Task::STATUS_COMPLETED
                 )
             );
-            $searchAttributeData['structure'] = '(1 and (2 OR 3))';
+            $searchAttributeData['structure'] = '(1 and 2)';
             return $searchAttributeData;
         }
 
@@ -168,7 +163,8 @@
         public function resolveLinkString($data, $row)
         {
             $content = TasksUtil::getModalDetailsLink($data, $this->controllerId,
-                                                      $this->moduleId, $this->getActionModuleClassName());
+                                                      $this->moduleId,
+                                                      $this->getActionModuleClassName(), false);
             return $content;
         }
 

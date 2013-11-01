@@ -213,7 +213,7 @@
             $explicitReadWriteModelPermissions = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($copyToItem);
             $permitables                       = $explicitReadWriteModelPermissions->getReadWritePermitables();
             $this->assertEquals(1, count($permitables));
-            $this->assertEquals('AAA', $permitables[self::$groupA->id]->name);
+            $this->assertEquals('AAA', $permitables[self::$groupA->getClassId('Permitable')]->name);
         }
 
         /**

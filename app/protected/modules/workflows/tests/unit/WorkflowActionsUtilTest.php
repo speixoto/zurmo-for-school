@@ -212,7 +212,7 @@
             $this->assertEquals(1, $explicitReadWriteModelPermissions->getReadWritePermitablesCount());
             $readWritePermitables = $explicitReadWriteModelPermissions->getReadWritePermitables();
             $everyoneGroup      = Group::getByName(Group::EVERYONE_GROUP_NAME);
-            $this->assertTrue(isset($readWritePermitables[$everyoneGroup->id]));
+            $this->assertTrue(isset($readWritePermitables[$everyoneGroup->getClassId('Permitable')]));
         }
 
         /**

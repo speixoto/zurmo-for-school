@@ -13489,23 +13489,35 @@ div.wide.form label.hasCheckBox {
   -ms-box-shadow: none !important;
   box-shadow: none !important;
 }
+.juiportlet-widget-content .details-table .col-0 {
+  width: 30%;
+}
+.juiportlet-widget-content .details-table .double-column .col-0,
+.juiportlet-widget-content .details-table .double-column .col-2 {
+  width: 22% !important;
+}
+.juiportlet-widget-content .details-table .double-column .col-1,
+.juiportlet-widget-content .details-table .double-column .col-3 {
+  width: 28% !important;
+}
 .details-table {
   position: relative;
   margin: 0px !important;
-}
-.details-table .col-0 {
-  width: 30%;
+  /*.col-0{
+		width: 30%;
+	}
+	.double-column{
+		.col-0, .col-2{
+			width: 22% !important;
+		}
+		.col-1, .col-3{
+			width: 28% !important;
+		}
+	}*/
+
 }
 .details-table table {
   margin: 0 0 10px 0;
-}
-.details-table .double-column .col-0,
-.details-table .double-column .col-2 {
-  width: 22% !important;
-}
-.details-table .double-column .col-1,
-.details-table .double-column .col-3 {
-  width: 28% !important;
 }
 .details-table td,
 .details-table th {
@@ -13567,7 +13579,7 @@ div.wide.form label.hasCheckBox {
   top: 27px;
 }
 .DetailsView .col-0 {
-  width: 15%;
+  width: 20%;
 }
 .after-form-details-content {
   color: #545454 !important;
@@ -15150,6 +15162,9 @@ div.hasHalfs > div input {
 .hasDropDown + input {
   margin-top: 15px;
 }
+.isMultiSelect select {
+  height: auto;
+}
 .isMultiSelect span {
   display: none !important;
 }
@@ -16534,6 +16549,7 @@ table.configuration-list td:last-child a .z-label:before {
 .AdministrativeArea #edit-form table {
   width: 100%;
   float: none;
+  table-layout: fixed;
 }
 .AdministrativeArea .view-toolbar {
   margin-top: 0;
@@ -17090,6 +17106,12 @@ table.configuration-list td:last-child a .z-label:before {
   top: -2px;
 }
 /*=User Security*/
+.UserGroupMembershipView,
+#PoliciesEditAndDetailsView,
+#ModulePermissionsEditAndDetailsView,
+#RightsEditAndDetailsView {
+  margin-top: 15px;
+}
 .UserGroupMembershipView .details-table,
 #PoliciesEditAndDetailsView .details-table,
 #ModulePermissionsEditAndDetailsView .details-table,
@@ -17279,7 +17301,11 @@ table.configuration-list td:last-child a .z-label:before {
   margin-top: 5px;
 }
 #ImportWizardMappingView tr td:last-child {
-  padding-right: 15px;
+  padding-right: 0;
+  vertical-align: top;
+}
+#ImportWizardMappingView td + td {
+  vertical-align: top;
 }
 .mapping-rules h4 {
   padding: 10px 0 5px 0;
@@ -17287,27 +17313,27 @@ table.configuration-list td:last-child a .z-label:before {
 .mapping-rules label {
   line-height: 26px;
   padding-right: 10px;
-  width: 22%;
+  width: 35%;
 }
 .mapping-rules > div {
-  width: 49%;
+  width: 49.5%;
   display: inline-block;
 }
 .mapping-rules > div > .has-model-select,
 .mapping-rules > div > .hasDropDown,
 .mapping-rules > div > input {
-  width: 78% !important;
+  width: 65% !important;
   display: inline-block;
 }
 .mapping-rules > div:last-child {
   width: 100%;
 }
 .mapping-rules > div + div:last-child {
-  width: 49%;
-  margin-left: 2%;
+  width: 49.5%;
+  margin-left: 1%;
 }
 .mapping-rules.multiple table {
-  width: 49% !important;
+  width: 49.5% !important;
   float: left !important;
 }
 .mapping-rules.multiple table + table {
@@ -25669,6 +25695,7 @@ div.special-pager .hidden.next:after {
   padding: 0 3px;
 }
 .button-actions {
+  cursor: text;
   z-index: 999;
   color: #EFEFEF;
   display: none;
@@ -25895,9 +25922,9 @@ div.special-pager .hidden.next:after {
 }
 .overlay-view .after-form-details-content a {
   display: inline;
-  color: #fff !important;
+  color: #EFEFEF !important;
   padding: 0;
-  text-decoration: underline;
+  text-decoration: underline !important;
 }
 .overlay-view h3 {
   font-weight: bold;
@@ -25914,6 +25941,19 @@ div.special-pager .hidden.next:after {
   line-height: 1.4;
   font-size: 12px;
 }
+.overlay-view strong {
+  display: block;
+}
+body .overlay-view .after-form-details-content a:hover {
+  background: none !important;
+  background-image: none !important;
+  color: #fff !important;
+  -webkit-text-shadow: none !important;
+  -moz-text-shadow: none !important;
+  -o-text-shadow: none !important;
+  -ms-text-shadow: none !important;
+  text-shadow: none !important;
+}
 .stay-open {
   display: block !important;
 }
@@ -25924,24 +25964,46 @@ div.special-pager .hidden.next:after {
 .gd-dashboard-active .AppContainer {
   padding-top: 78px;
 }
-#UserGameDashboardView {
-  z-index: 100;
-  overflow: scroll;
-  width: 100%;
-  position: absolute;
+#gd-overlay {
   top: 78px;
   left: 0;
   right: 0;
   bottom: 0;
   background: rgba(0, 0, 0, 0.65);
+  position: absolute;
+  width: 100%;
+  display: block;
+}
+#gd-container {
+  z-index: 100;
+  top: 78px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: table;
   overflow: hidden;
 }
+#gd-container * {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+#gd-centralizer {
+  display: table-cell;
+  vertical-align: middle;
+  width: 100%;
+  height: 100%;
+  padding: 0 30px;
+}
 #game-dashboard {
-  width: 1200px;
-  height: 600px;
-  position: absolute;
-  left: 50%;
-  margin: 30px auto auto -600px;
+  position: relative;
+  width: 100%;
+  max-width: 1200px;
+  max-height: 600px;
+  margin: auto;
   overflow: hidden;
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
@@ -25951,20 +26013,9 @@ div.special-pager .hidden.next:after {
   color: #f1f1f1;
   background: url(../images/game-dashboard/blue-chalkboard-blurred.jpg) left top repeat;
 }
-#game-dashboard * {
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-}
 #game-dashboard > div {
   padding: 10px 15px 15px 15px;
-}
-#game-dashboard > div:hover {
-  -webkit-box-shadow: inset 0 5px 0 0 rgba(32, 50, 52, 0.5), inset 0 6px 0 0 rgba(83, 112, 115, 0.4);
-  -moz-box-shadow: inset 0 5px 0 0 rgba(32, 50, 52, 0.5), inset 0 6px 0 0 rgba(83, 112, 115, 0.4);
-  -o-box-shadow: inset 0 5px 0 0 rgba(32, 50, 52, 0.5), inset 0 6px 0 0 rgba(83, 112, 115, 0.4);
-  -ms-box-shadow: inset 0 5px 0 0 rgba(32, 50, 52, 0.5), inset 0 6px 0 0 rgba(83, 112, 115, 0.4);
-  box-shadow: inset 0 5px 0 0 rgba(32, 50, 52, 0.5), inset 0 6px 0 0 rgba(83, 112, 115, 0.4);
+  display: block;
 }
 #game-dashboard h2,
 #game-dashboard h3 {
@@ -25986,11 +26037,12 @@ div.special-pager .hidden.next:after {
 }
 .close-dashboard-button {
   z-index: 999;
-  width: 1200px;
+  width: 100%;
   height: 31px;
-  position: absolute;
-  left: 50%;
-  margin: 15px auto auto -600px;
+  max-width: 1200px;
+  margin: auto;
+  position: relative;
+  top: 15px;
 }
 .close-dashboard-button a {
   margin-right: -15px;
@@ -26034,7 +26086,6 @@ div.special-pager .hidden.next:after {
   width: 20%;
   float: left;
   border-right: 1px solid rgba(32, 50, 52, 0.5);
-  border-bottom: 1px solid rgba(32, 50, 52, 0.5);
   text-align: center;
 }
 #gd-profile-card h3 {
@@ -26137,10 +26188,12 @@ div.special-pager .hidden.next:after {
   overflow-y: auto;
   height: 84%;
   width: 30%;
+  position: absolute;
+  top: 0;
+  left: 20%;
   float: left;
   border-left: 1px solid rgba(83, 112, 115, 0.4);
   border-right: 1px solid rgba(32, 50, 52, 0.5);
-  border-bottom: 1px solid rgba(32, 50, 52, 0.5);
 }
 #gd-badges-list li {
   *zoom: 1;
@@ -26196,6 +26249,7 @@ div.special-pager .hidden.next:after {
   width: 15%;
   height: 25%;
   float: left;
+  margin-left: 30%;
   border-left: 1px solid rgba(83, 112, 115, 0.4);
   border-right: 1px solid rgba(32, 50, 52, 0.5);
   border-bottom: 1px solid rgba(32, 50, 52, 0.5);
@@ -26303,9 +26357,9 @@ div.special-pager .hidden.next:after {
 #gd-statistics {
   width: 50%;
   height: 59%;
+  margin-left: 30%;
   float: left;
   border-top: 1px solid rgba(83, 112, 115, 0.4);
-  border-bottom: 1px solid rgba(32, 50, 52, 0.5);
   border-left: 1px solid rgba(83, 112, 115, 0.4);
 }
 #gd-stats-wrapper {
@@ -26361,7 +26415,7 @@ div.special-pager .hidden.next:after {
 /*Collections*/
 #gd-collections {
   width: 100%;
-  height: 16%;
+  height: 100px;
   float: left;
   border-top: 1px solid rgba(83, 112, 115, 0.4);
   padding: 0 !important;
@@ -26369,8 +26423,8 @@ div.special-pager .hidden.next:after {
   z-index: 100;
 }
 #gd-carousel-wrapper {
-  width: 1140px;
-  height: 100%;
+  width: 95%;
+  height: 100px;
   float: left;
   border-left: 1px solid rgba(83, 112, 115, 0.4);
   border-right: 1px solid rgba(32, 50, 52, 0.5);
@@ -26378,15 +26432,16 @@ div.special-pager .hidden.next:after {
   z-index: 0;
 }
 #gd-carousel {
-  height: 100%;
-  position: relative;
+  width: 100%;
+  height: 100px;
+  position: absolute;
   z-index: 1;
 }
 .nav-button {
-  width: 30px;
+  width: 2.5%;
   height: 100%;
   text-align: center;
-  line-height: 96px;
+  line-height: 100px;
   font-size: 22px;
   float: left;
   display: block;
@@ -26414,7 +26469,7 @@ div.special-pager .hidden.next:after {
 .gd-collection-panel {
   position: relative;
   width: 285px;
-  height: 100%;
+  height: 300px;
   float: left;
   border-left: 1px solid rgba(32, 50, 52, 0.5);
   border-right: 1px solid rgba(83, 112, 115, 0.4);

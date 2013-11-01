@@ -60,11 +60,6 @@
         public static function submitTaskNotificationMessage(Task $task, $action, User $relatedUser = null)
         {
             assert('is_string($action)');
-            if ($action == self::NEW_TASK_NOTIFY_ACTION
-                                    && $task->owner != $task->requestedByUser)
-            {
-                return;
-            }
             $message = static::getNotificationMessageByAction($task, $action, $relatedUser);
             $rule = new TaskNotificationRules();
             $peopleToSendNotification = static::resolvePeopleToSendNotification($task, $action, $relatedUser);
@@ -124,7 +119,7 @@
             assert('is_string($action)');
             $message                      = new NotificationMessage();
             $message->htmlContent         = self::getEmailMessage($task, $action, $relatedUser);
-            $url                          = Yii::app()->createAbsoluteUrl('tasks/default/details/',
+            $url                          = Yii::app()->createUrl('tasks/default/details/',
                                                                 array('id' => $task->id));
             $message->htmlContent        .= '-' . ZurmoHtml::link(Zurmo::t('Core', 'Click Here'), $url);
             return $message;
@@ -145,19 +140,15 @@
             }
             elseif($action == self::CLOSE_TASK_NOTIFY_ACTION)
             {
-                $peopleToSendNotification = TasksUtil::resolvePeopleSubscribedForTask($task);
+                $peopleToSendNotification = TasksUtil::getTaskSubscribers($task);
             }
             elseif($action == self::CHANGE_TASK_OWNER_NOTIFY_ACTION)
             {
                 $peopleToSendNotification[] = $task->owner;
-                if($relatedUser != null)
-                {
-                    $peopleToSendNotification[] = $relatedUser;
-                }
             }
             elseif($action == self::CHANGE_TASK_DUE_DATE_NOTIFY_ACTION)
             {
-                $peopleToSendNotification     = TasksUtil::resolvePeopleSubscribedForTask($task);
+                $peopleToSendNotification = TasksUtil::getTaskSubscribers($task);
             }
             elseif($action == self::TASK_ADD_COMMENT_NOTIFY_ACTION)
             {
