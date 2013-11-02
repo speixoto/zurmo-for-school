@@ -61,7 +61,7 @@
         public static function getItemTypesAndLabels()
         {
             return array(   'Bed'        => Zurmo::t('GamificationModule', 'Bed'),
-                            'Bookshelf ' => Zurmo::t('GamificationModule', 'Bookshelf'),
+                            'Bookshelf'  => Zurmo::t('GamificationModule', 'Bookshelf'),
                             'Flowers'    => Zurmo::t('GamificationModule', 'Flowers'),
                             'Lights'     => Zurmo::t('GamificationModule', 'Lights'),
                             'Sofa'       => Zurmo::t('GamificationModule', 'Sofa'),

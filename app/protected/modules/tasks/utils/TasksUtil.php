@@ -794,7 +794,7 @@
          */
         public static function resolveModalSaveActionNameForByRelationModelId($relationModelId, $copyAction = null)
         {
-            assert('is_string($relationModelId) || $relationModelId == null');
+            assert('is_string($relationModelId) || is_int($relationModelId) ||$relationModelId == null');
             assert('is_string($copyAction) || $copyAction == null');
             if ($copyAction == 'copy')
             {

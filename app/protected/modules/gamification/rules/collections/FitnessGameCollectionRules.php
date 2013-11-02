@@ -62,9 +62,9 @@
         {
             return array(   'Apple'          => Zurmo::t('GamificationModule', 'Apple'),
                             'StationaryBike' => Zurmo::t('GamificationModule', 'Stationary Bike'),
-                            'Scale '         => Zurmo::t('GamificationModule', 'Scale'),
+                            'Scale'          => Zurmo::t('GamificationModule', 'Scale'),
                             'Weights'        => Zurmo::t('GamificationModule', 'Weights'),
-                            'Muscles'           => Zurmo::t('GamificationModule', 'Muscles'),
+                            'Muscles'        => Zurmo::t('GamificationModule', 'Muscles'),
             );
         }
 
@@ -77,7 +77,7 @@
                             'StationaryBike' => 10,
                             'Scale'          => 10,
                             'Weights'        => 3,
-                            'Muscles'           => 6,
+                            'Muscles'        => 6,
             );
         }
 

@@ -105,7 +105,7 @@
             $htmlOptions   = array();
             $disabledClass = null;
             $disabled      = false;
-            if ($gameReward->cost > $availableCoins)
+            if ($gameReward->cost > $availableCoins || $gameReward->quantity <= 0)
             {
                 $disabledClass = ' disabled';
                 $disabled      = true;
