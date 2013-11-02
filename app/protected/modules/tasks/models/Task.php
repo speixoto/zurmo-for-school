@@ -285,30 +285,44 @@
          */
         private function processNotificationsToBeSent()
         {
-            if($this->status == Task::STATUS_COMPLETED && (array_key_exists('status', $this->originalAttributeValues)))
+            if(array_key_exists('status', $this->originalAttributeValues))
             {
-                TasksNotificationUtil::submitTaskNotificationMessage($this,
-                                                         TasksNotificationUtil::CLOSE_TASK_NOTIFY_ACTION);
-            }
-            if(array_key_exists('owner', $this->originalAttributeValues))
-            {
-                TasksNotificationUtil::submitTaskNotificationMessage($this,
-                                                         TasksNotificationUtil::CHANGE_TASK_OWNER_NOTIFY_ACTION);
-            }
-            if(array_key_exists('dueDateTime', $this->originalAttributeValues))
-            {
-                TasksNotificationUtil::submitTaskNotificationMessage($this,
-                                                         TasksNotificationUtil::CHANGE_TASK_DUE_DATE_NOTIFY_ACTION);
-            }
-
-            if($this->isNewModel)
-            {
-                if($this->owner->id != $this->requestedByUser->id)
+                if($this->status == Task::STATUS_AWAITING_ACCEPTANCE &&
+                   $this->requestedByUser->id != Yii::app()->user->userModel->id)
                 {
                     TasksNotificationUtil::submitTaskNotificationMessage($this,
-                                                         TasksNotificationUtil::NEW_TASK_NOTIFY_ACTION);
+                        TasksNotificationUtil::TASK_STATUS_BECOMES_AWAITING_ACCEPTANCE,
+                        Yii::app()->user->userModel);
+                }
+                elseif($this->status == Task::STATUS_REJECTED &&
+                       $this->owner->id != Yii::app()->user->userModel->id)
+                {
+                    TasksNotificationUtil::submitTaskNotificationMessage($this,
+                        TasksNotificationUtil::TASK_STATUS_BECOMES_REJECTED,
+                        Yii::app()->user->userModel);
+                }
+                elseif($this->status == Task::STATUS_COMPLETED)
+                {
+                    TasksNotificationUtil::submitTaskNotificationMessage($this,
+                        TasksNotificationUtil::TASK_STATUS_BECOMES_COMPLETED,
+                        Yii::app()->user->userModel);
                 }
             }
+            if($this->isNewModel)
+            {
+                if($this->owner->id != $this->requestedByUser->id && $this->owner->id != Yii::app()->user->userModel->id)
+                {
+                    TasksNotificationUtil::submitTaskNotificationMessage($this,
+                        TasksNotificationUtil::TASK_NEW);
+                }
+            }
+            elseif(array_key_exists('owner', $this->originalAttributeValues) &&
+               $this->owner->id != Yii::app()->user->userModel->id)
+            {
+                TasksNotificationUtil::submitTaskNotificationMessage($this,
+                                                         TasksNotificationUtil::TASK_OWNER_CHANGE);
+            }
+
         }
 
         /**

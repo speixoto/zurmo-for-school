@@ -86,33 +86,33 @@
             $task->requestedByUser      = Yii::app()->user->userModel;
             $this->assertTrue($task->save());
 
-            $this->assertEquals(2, Yii::app()->emailHelper->getQueuedCount());
+            $this->assertEquals(1, Yii::app()->emailHelper->getQueuedCount());
 
             $billy = UserTestHelper::createBasicUserWithEmailAddress('billy');
             EmailMessageTestHelper::createEmailAccount($billy);
             $task->owner                = $billy;
             $this->assertTrue($task->save());
-            $this->assertEquals(3, Yii::app()->emailHelper->getQueuedCount());
+            $this->assertEquals(2, Yii::app()->emailHelper->getQueuedCount());
 
             $dueDateTime  = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
             $task->dueDateTime = $dueDateTime;
             $this->assertTrue($task->save());
-            //As there are two default subscribers owner and requested by user
-            $this->assertEquals(5, Yii::app()->emailHelper->getQueuedCount());
+            //No notifications for change of due date time
+            $this->assertEquals(2, Yii::app()->emailHelper->getQueuedCount());
 
             $comment                = new Comment();
             $comment->description   = 'My Description';
             $task->comments->add($comment);
             $this->assertTrue($task->save());
             TasksNotificationUtil::submitTaskNotificationMessage($task,
-                                                                    TasksNotificationUtil::TASK_ADD_COMMENT_NOTIFY_ACTION,
+                                                                    TasksNotificationUtil::TASK_NEW_COMMENT,
                                                                     $task->comments[0]->createdByUser);
-            $this->assertEquals(6, Yii::app()->emailHelper->getQueuedCount());
+            $this->assertEquals(4, Yii::app()->emailHelper->getQueuedCount());
 
             $task->completed         = true;
             $task->status            = Task::STATUS_COMPLETED;
             $this->assertTrue($task->save());
-            $this->assertEquals(8, Yii::app()->emailHelper->getQueuedCount());
+            $this->assertEquals(6, Yii::app()->emailHelper->getQueuedCount());
             $this->assertTrue(strtotime($task->completedDateTime) > strtotime(date('Y-m-d')));
         }
     }

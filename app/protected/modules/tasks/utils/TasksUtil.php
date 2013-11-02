@@ -757,6 +757,46 @@
             Yii::app()->clientScript->registerScript('openToTaskModalDetailsScript' . $sourceId, $script);
         }
 
+        /**
+         * Resolves the related project or first related activityItem string value
+         * @param Task $task
+         * @return null|string
+         */
+        public static function resolveFirstRelatedModelStringValue(Task $task)
+        {
+            $modelOrNull = static::resolveFirstRelatedModel($task);
+            if($modelOrNull === null)
+            {
+                return null;
+            }
+            return strval($modelOrNull);
+        }
+
+        /**
+         * Resolves the related project or first related activityItem model
+         * @param Task $task
+         * @return null|RedBeanModel $model
+         */
+        public static function resolveFirstRelatedModel(Task $task)
+        {
+            if($task->project->id > 0)
+            {
+                return $task->project;
+            }
+            elseif($task->activityItems->count() > 0)
+            {
+                try
+                {
+                    $castedDownModel = TasksUtil::castDownActivityItem($task->activityItems[0]);
+                    return $castedDownModel;
+                }
+                catch (NotFoundException $e)
+                {
+                }
+            }
+            return null;
+        }
+
         public static function castDownActivityItem(Item $activityItem)
         {
             $relationModelClassNames = ActivitiesUtil::getActivityItemsModelClassNames();

@@ -135,7 +135,8 @@
                 throw new NotSupportedException();
             }
             TasksNotificationUtil::submitTaskNotificationMessage($task,
-                                                                 TasksNotificationUtil::CLOSE_TASK_NOTIFY_ACTION);
+                                                                 TasksNotificationUtil::TASK_STATUS_BECOMES_COMPLETED,
+                                                                 Yii::app()->user->userModel);
         }
 
         /**

@@ -327,21 +327,21 @@
             $message->setAttributes(array(EmailMessageForWorkflowForm::EMAIL_MESSAGE_RECIPIENTS => $recipients));
 
             $helper = new WorkflowEmailMessageProcessingHelper($message, $task, Yii::app()->user->userModel);
-            $this->assertEquals(2, Yii::app()->emailHelper->getQueuedCount());
+            $this->assertEquals(0, Yii::app()->emailHelper->getQueuedCount());
             $this->assertEquals(0, Yii::app()->emailHelper->getSentCount());
             $helper->process();
-            $this->assertEquals(3, Yii::app()->emailHelper->getQueuedCount());
+            $this->assertEquals(1, Yii::app()->emailHelper->getQueuedCount());
             $this->assertEquals(0, Yii::app()->emailHelper->getSentCount());
             $emailMessages = EmailMessage::getAllByFolderType(EmailFolder::TYPE_OUTBOX);
-            $this->assertEquals('some subject testTask',   $emailMessages[2]->subject);
+            $this->assertEquals('some subject testTask',   $emailMessages[0]->subject);
             $this->assertEquals('Account: testAccount Contact: testContact Opportunity: testOpportunity',
-                                $emailMessages[2]->content->textContent);
+                                $emailMessages[0]->content->textContent);
             $this->assertEquals('Account: testAccount Contact: testContact Opportunity: testOpportunity',
-                                $emailMessages[2]->content->htmlContent);
-            $this->assertEquals('Jason',             $emailMessages[2]->sender->fromName);
-            $this->assertEquals('someone@zurmo.com', $emailMessages[2]->sender->fromAddress);
-            $this->assertEquals(1,                   $emailMessages[2]->recipients->count());
-            $this->assertEquals('super@zurmo.com',   $emailMessages[2]->recipients[0]->toAddress);
+                                $emailMessages[0]->content->htmlContent);
+            $this->assertEquals('Jason',             $emailMessages[0]->sender->fromName);
+            $this->assertEquals('someone@zurmo.com', $emailMessages[0]->sender->fromAddress);
+            $this->assertEquals(1,                   $emailMessages[0]->recipients->count());
+            $this->assertEquals('super@zurmo.com',   $emailMessages[0]->recipients[0]->toAddress);
 
             $taskId = $task->id;
             $task->forgetAll();
@@ -359,21 +359,21 @@
             $message->setAttributes(array(EmailMessageForWorkflowForm::EMAIL_MESSAGE_RECIPIENTS => $recipients));
 
             $helper = new WorkflowEmailMessageProcessingHelper($message, $task, Yii::app()->user->userModel);
-            $this->assertEquals(3, Yii::app()->emailHelper->getQueuedCount());
+            $this->assertEquals(1, Yii::app()->emailHelper->getQueuedCount());
             $this->assertEquals(0, Yii::app()->emailHelper->getSentCount());
             $helper->process();
-            $this->assertEquals(4, Yii::app()->emailHelper->getQueuedCount());
+            $this->assertEquals(2, Yii::app()->emailHelper->getQueuedCount());
             $this->assertEquals(0, Yii::app()->emailHelper->getSentCount());
             $emailMessages = EmailMessage::getAllByFolderType(EmailFolder::TYPE_OUTBOX);
-            $this->assertEquals('some subject testTask',   $emailMessages[3]->subject);
+            $this->assertEquals('some subject testTask',   $emailMessages[1]->subject);
             $this->assertEquals('Account: testAccount Contact: testContact Opportunity: testOpportunity',
-                $emailMessages[3]->content->textContent);
+                $emailMessages[1]->content->textContent);
             $this->assertEquals('Account: testAccount Contact: testContact Opportunity: testOpportunity',
-                $emailMessages[3]->content->htmlContent);
-            $this->assertEquals('Jason',             $emailMessages[3]->sender->fromName);
-            $this->assertEquals('someone@zurmo.com', $emailMessages[3]->sender->fromAddress);
-            $this->assertEquals(1,                   $emailMessages[3]->recipients->count());
-            $this->assertEquals('super@zurmo.com',   $emailMessages[3]->recipients[0]->toAddress);
+                $emailMessages[1]->content->htmlContent);
+            $this->assertEquals('Jason',             $emailMessages[1]->sender->fromName);
+            $this->assertEquals('someone@zurmo.com', $emailMessages[1]->sender->fromAddress);
+            $this->assertEquals(1,                   $emailMessages[1]->recipients->count());
+            $this->assertEquals('super@zurmo.com',   $emailMessages[1]->recipients[0]->toAddress);
 
             $emailMessages[0]->delete();
         }
