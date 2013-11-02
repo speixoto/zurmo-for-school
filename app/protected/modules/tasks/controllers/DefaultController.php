@@ -540,12 +540,15 @@
          */
         protected function processSubscriptionRequest($id)
         {
+
             $task = Task::getById(intval($id));
-            $user = Yii::app()->user->userModel;
-            $notificationSubscriber = new NotificationSubscriber();
-            $notificationSubscriber->person = $user;
-            $notificationSubscriber->hasReadLatest = false;
-            $task->notificationSubscribers->add($notificationSubscriber);
+            if(!$task->doNotificationSubscribersContainPerson(Yii::app()->user->userModel))
+            {
+                $notificationSubscriber = new NotificationSubscriber();
+                $notificationSubscriber->person = Yii::app()->user->userModel;
+                $notificationSubscriber->hasReadLatest = false;
+                $task->notificationSubscribers->add($notificationSubscriber);
+            }
             $task->save();
             return $task;
         }
@@ -553,20 +556,25 @@
         /**
          * Process unsubscription request for task
          * @param int $id
+         * @throws FailedToSaveModelException
+         * @return Task $task
          */
         protected function processUnsubscriptionRequest($id)
         {
             $task = Task::getById(intval($id));
-            $user = Yii::app()->user->userModel;
             foreach($task->notificationSubscribers as $notificationSubscriber)
             {
-                if($notificationSubscriber->person->getClassId('Item') == $user->getClassId('Item'))
+                if($notificationSubscriber->person->getClassId('Item') == Yii::app()->user->userModel->getClassId('Item'))
                 {
                     $task->notificationSubscribers->remove($notificationSubscriber);
                     break;
                 }
             }
-            $task->save();
+            $saved = $task->save();
+            if(!$saved)
+            {
+                throw new FailedToSaveModelException();
+            }
             return $task;
         }
 
@@ -631,9 +639,11 @@
             if (isset($_POST['ajax']) &&
                 ($_POST['ajax'] == 'task-left-column-form-data' || $_POST['ajax'] == 'task-right-column-form-data'))
             {
+                $oldStatus = $task->status;
                 $task = $this->attemptToSaveModelFromPost($task, null, false);
                 $errorData = ZurmoActiveForm::makeErrorsDataAndResolveForOwnedModelAttributes($task);
-                if(empty ($errorData))
+
+                if(empty ($errorData) && $oldStatus != $task->status)
                 {
                     //may need to reset the kanban type and sort as well
                     TasksUtil::checkKanbanTypeByStatusAndUpdateIfRequired($task);

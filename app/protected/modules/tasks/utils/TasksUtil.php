@@ -40,27 +40,6 @@
     class TasksUtil
     {
         /**
-         * Given a Task and User, determine if the user is already a subscriber.
-         * @param Task $model
-         * @param User $user
-         * @return boolean
-         */
-        public static function isUserSubscribedForTask(Task $model, User $user)
-        {
-            if ($model->notificationSubscribers->count() > 0)
-            {
-                foreach ($model->notificationSubscribers as $subscriber)
-                {
-                    if ($subscriber->person->getClassId('Item') == $user->getClassId('Item'))
-                    {
-                        return true;
-                    }
-                }
-            }
-            return false;
-        }
-
-        /**
          * Get task subscriber data
          * @param Task $task
          * @return string
@@ -555,7 +534,7 @@
         {
             assert('is_string($subscribeLinkClass)');
             assert('is_string($unsubscribeLinkClass)');
-            if (TasksUtil::isUserSubscribedForTask($task, Yii::app()->user->userModel) === false)
+            if ($task->doNotificationSubscribersContainPerson(Yii::app()->user->userModel) === false)
             {
                 $label       = Zurmo::t('Core', 'Subscribe');
                 $class       = $subscribeLinkClass;
@@ -865,7 +844,7 @@
             $isAlreadySubscribed = false;
             foreach ($task->notificationSubscribers as $notificationSubscriber)
             {
-                if ($notificationSubscriber->person->id == $user->id)
+                if ($notificationSubscriber->person->getClassId('Item') == $user->getClassId('Item'))
                 {
                     $isAlreadySubscribed = true;
                     break;

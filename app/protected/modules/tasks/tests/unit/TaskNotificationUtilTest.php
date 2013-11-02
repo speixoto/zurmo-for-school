@@ -36,84 +36,215 @@
 
     class TaskNotificationUtilTest extends ZurmoBaseTest
     {
-        public static $emailHelperSendEmailThroughTransport;
+        protected static $super;
+
+        protected static $steve;
+
+        protected static $sally;
+
+        protected static $katie;
 
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
-            SecurityTestHelper::createSuperAdmin();
+            Yii::app()->user->userModel = SecurityTestHelper::createSuperAdmin();
+            self::$super = Yii::app()->user->userModel;
+            self::$steve = UserTestHelper::createBasicUserWithEmailAddress('steve');
+            self::$sally = UserTestHelper::createBasicUserWithEmailAddress('sally');
+            self::$katie = UserTestHelper::createBasicUserWithEmailAddress('katie');
+        }
+
+        public function setUp()
+        {
+            parent::setUp();
             Yii::app()->user->userModel = User::getByUsername('super');
-            self::$emailHelperSendEmailThroughTransport = Yii::app()->emailHelper->sendEmailThroughTransport;
-
-            $box = EmailBox::resolveAndGetByName(EmailBox::NOTIFICATIONS_NAME);
-            $steve = UserTestHelper::createBasicUserWithEmailAddress('steve');
-            if (EmailMessageTestHelper::isSetEmailAccountsTestConfiguration())
-            {
-                EmailMessageTestHelper::createEmailAccount($steve);
-
-                Yii::app()->imap->imapHost        = Yii::app()->params['emailTestAccounts']['userImapSettings']['imapHost'];
-                Yii::app()->imap->imapUsername    = Yii::app()->params['emailTestAccounts']['userImapSettings']['imapUsername'];
-                Yii::app()->imap->imapPassword    = Yii::app()->params['emailTestAccounts']['userImapSettings']['imapPassword'];
-                Yii::app()->imap->imapPort        = Yii::app()->params['emailTestAccounts']['userImapSettings']['imapPort'];
-                Yii::app()->imap->imapSSL         = Yii::app()->params['emailTestAccounts']['userImapSettings']['imapSSL'];
-                Yii::app()->imap->imapFolder      = Yii::app()->params['emailTestAccounts']['userImapSettings']['imapFolder'];
-                Yii::app()->imap->setInboundSettings();
-                Yii::app()->imap->init();
-
-                Yii::app()->emailHelper->outboundHost     = Yii::app()->params['emailTestAccounts']['smtpSettings']['outboundHost'];
-                Yii::app()->emailHelper->outboundPort     = Yii::app()->params['emailTestAccounts']['smtpSettings']['outboundPort'];
-                Yii::app()->emailHelper->outboundUsername = Yii::app()->params['emailTestAccounts']['smtpSettings']['outboundUsername'];
-                Yii::app()->emailHelper->outboundPassword = Yii::app()->params['emailTestAccounts']['smtpSettings']['outboundPassword'];
-                Yii::app()->emailHelper->outboundSecurity = Yii::app()->params['emailTestAccounts']['smtpSettings']['outboundSecurity'];
-                Yii::app()->emailHelper->sendEmailThroughTransport = true;
-                Yii::app()->emailHelper->setOutboundSettings();
-                Yii::app()->emailHelper->init();
-            }
+            EmailMessage::deleteAll();
         }
 
         /**
-         * @covers makeAndSubmitNewTaskNotificationMessage
+         * Owner should not receive email because owner is the current user
          */
-        public function testTaskNotifications()
+        public function testTaskNewNotificationWhenOwnerIsCurrentUser()
         {
-            Yii::app()->user->userModel = User::getByUsername('super');
-            $this->assertEquals(0, Yii::app()->emailHelper->getQueuedCount());
-            $user                       = User::getByUsername('steve');
-            UserConfigurationFormAdapter::setValue($user, false, 'turnOffEmailNotifications');
             $task                       = new Task();
             $task->name                 = 'My Task';
-            $task->owner                = $user;
+            $task->owner                = Yii::app()->user->userModel;
             $task->requestedByUser      = Yii::app()->user->userModel;
+            $this->assertEquals(0, Yii::app()->emailHelper->getQueuedCount());
             $this->assertTrue($task->save());
+            $this->assertEquals(0, Yii::app()->emailHelper->getQueuedCount());
+        }
 
+        public function testTaskNewNotificationWhenOwnerIsNotCurrentUser()
+        {
+            $task                       = new Task();
+            $task->name                 = 'Her Task';
+            $task->owner                = self::$sally;
+            $task->requestedByUser      = Yii::app()->user->userModel;
+            $this->assertEquals(0, Yii::app()->emailHelper->getQueuedCount());
+            $this->assertTrue($task->save());
             $this->assertEquals(1, Yii::app()->emailHelper->getQueuedCount());
+            $emailMessages = EmailMessage::getAllByFolderType(EmailFolder::TYPE_OUTBOX);
+            $this->assertCount(1, $emailMessages);
+            $this->assertEquals(1,                   $emailMessages[0]->recipients->count());
+            $this->assertEquals('sally@zurmo.com',   $emailMessages[0]->recipients[0]->toAddress);
+        }
 
-            $billy = UserTestHelper::createBasicUserWithEmailAddress('billy');
-            EmailMessageTestHelper::createEmailAccount($billy);
-            $task->owner                = $billy;
+        public function testTaskStatusBecomesInProgressNotificationWhenUsersAreNotCurrentUser()
+        {
+            $task                       = new Task();
+            $task->name                 = 'Her Task';
+            $task->owner                = self::$sally;
+            $task->requestedByUser      = self::$katie;
+            $this->assertEquals(0, Yii::app()->emailHelper->getQueuedCount());
+            $this->assertTrue($task->save());
+            $this->assertEquals(1, Yii::app()->emailHelper->getQueuedCount());
+            EmailMessage::deleteAll();
+            $this->assertEquals(0, Yii::app()->emailHelper->getQueuedCount());
+            //Now change status
+            $task->status               = Task::STATUS_IN_PROGRESS;
+            $this->assertTrue($task->save());
+            //No emails should be queued up
+            $this->assertEquals(0, Yii::app()->emailHelper->getQueuedCount());
+        }
+
+        public function testTaskStatusBecomesAwaitingAcceptanceNotificationWhenRequestedByUserIsCurrentUser()
+        {
+            $task                       = new Task();
+            $task->name                 = 'Her Task';
+            $task->owner                = self::$sally;
+            $task->requestedByUser      = Yii::app()->user->userModel;
+            $this->assertEquals(0, Yii::app()->emailHelper->getQueuedCount());
+            $this->assertTrue($task->save());
+            $this->assertEquals(1, Yii::app()->emailHelper->getQueuedCount());
+            EmailMessage::deleteAll();
+            $this->assertEquals(0, Yii::app()->emailHelper->getQueuedCount());
+            //Now change status
+            $task->status               = Task::STATUS_AWAITING_ACCEPTANCE;
+            $this->assertTrue($task->save());
+            //No emails should be queued up
+            $this->assertEquals(0, Yii::app()->emailHelper->getQueuedCount());
+        }
+
+        public function testTaskStatusBecomesAwaitingAcceptanceNotificationWhenRequestedByUserIsNotCurrentUser()
+        {
+            $task                       = new Task();
+            $task->name                 = 'Her Task';
+            $task->owner                = self::$sally;
+            $task->requestedByUser      = self::$katie;
+            $this->assertEquals(0, Yii::app()->emailHelper->getQueuedCount());
+            $this->assertTrue($task->save());
+            $this->assertEquals(1, Yii::app()->emailHelper->getQueuedCount());
+            EmailMessage::deleteAll();
+            $this->assertEquals(0, Yii::app()->emailHelper->getQueuedCount());
+            //Now change status
+            $task->status               = Task::STATUS_AWAITING_ACCEPTANCE;
+            $this->assertTrue($task->save());
+            //One email should be queued up
+            $this->assertEquals(1, Yii::app()->emailHelper->getQueuedCount());
+            $emailMessages = EmailMessage::getAllByFolderType(EmailFolder::TYPE_OUTBOX);
+            $this->assertCount(1, $emailMessages);
+            $this->assertEquals(1,                   $emailMessages[0]->recipients->count());
+            $this->assertEquals('katie@zurmo.com',   $emailMessages[0]->recipients[0]->toAddress);
+        }
+
+        public function testTaskStatusBecomesAcceptedWithNoExtraSubscribers()
+        {
+            $task                       = new Task();
+            $task->name                 = 'Her Task';
+            $task->owner                = self::$sally;
+            $task->requestedByUser      = self::$katie;
+            $this->assertEquals(0, Yii::app()->emailHelper->getQueuedCount());
+            $this->assertTrue($task->save());
+            $this->assertEquals(1, Yii::app()->emailHelper->getQueuedCount());
+            EmailMessage::deleteAll();
+            $this->assertEquals(0, Yii::app()->emailHelper->getQueuedCount());
+            //Now change status
+            $task->status               = Task::STATUS_COMPLETED;
             $this->assertTrue($task->save());
             $this->assertEquals(2, Yii::app()->emailHelper->getQueuedCount());
+            $emailMessages = EmailMessage::getAllByFolderType(EmailFolder::TYPE_OUTBOX);
+            $this->assertCount(2, $emailMessages);
+            $this->assertTrue('katie@zurmo.com' == $emailMessages[0]->recipients[0]->toAddress ||
+                              'katie@zurmo.com' == $emailMessages[1]->recipients[0]->toAddress);
+            $this->assertTrue('sally@zurmo.com' == $emailMessages[0]->recipients[0]->toAddress ||
+                              'sally@zurmo.com' == $emailMessages[1]->recipients[0]->toAddress);
+        }
 
-            $dueDateTime  = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
-            $task->dueDateTime = $dueDateTime;
+        public function testTaskStatusBecomesAcceptedWithExtraSubscribers()
+        {
+            $task                       = new Task();
+            $task->name                 = 'Her Task';
+            $task->owner                = self::$sally;
+            $task->requestedByUser      = self::$katie;
+            $notificationSubscriber = new NotificationSubscriber();
+            $notificationSubscriber->person = self::$steve;
+            $notificationSubscriber->hasReadLatest = false;
+            $task->notificationSubscribers->add($notificationSubscriber);
+            $this->assertEquals(0, Yii::app()->emailHelper->getQueuedCount());
             $this->assertTrue($task->save());
-            //No notifications for change of due date time
-            $this->assertEquals(2, Yii::app()->emailHelper->getQueuedCount());
+            $this->assertEquals(1, Yii::app()->emailHelper->getQueuedCount());
+            EmailMessage::deleteAll();
+            $taskId = $task->id;
+            $task->forget();
+            $task = Task::getById($taskId);
+            $this->assertEquals(0, Yii::app()->emailHelper->getQueuedCount());
+            //Now change status
+            $task->status               = Task::STATUS_COMPLETED;
+            $this->assertTrue($task->save());
+            $this->assertEquals(3, Yii::app()->emailHelper->getQueuedCount());
+            $emailMessages = EmailMessage::getAllByFolderType(EmailFolder::TYPE_OUTBOX);
+            $this->assertCount(3, $emailMessages);
+            $this->assertTrue('katie@zurmo.com' == $emailMessages[0]->recipients[0]->toAddress ||
+                              'katie@zurmo.com' == $emailMessages[1]->recipients[0]->toAddress ||
+                              'katie@zurmo.com' == $emailMessages[2]->recipients[0]->toAddress);
+            $this->assertTrue('sally@zurmo.com' == $emailMessages[0]->recipients[0]->toAddress ||
+                              'sally@zurmo.com' == $emailMessages[1]->recipients[0]->toAddress ||
+                              'sally@zurmo.com' == $emailMessages[2]->recipients[0]->toAddress);
+            $this->assertTrue('steve@zurmo.com' == $emailMessages[0]->recipients[0]->toAddress ||
+                              'steve@zurmo.com' == $emailMessages[1]->recipients[0]->toAddress ||
+                              'steve@zurmo.com' == $emailMessages[2]->recipients[0]->toAddress);
+        }
 
-            $comment                = new Comment();
-            $comment->description   = 'My Description';
+        public function testTaskAddCommentWithExtraSubscribers()
+        {
+            $task                       = new Task();
+            $task->name                 = 'Her Task';
+            $task->owner                = self::$sally;
+            $task->requestedByUser      = self::$katie;
+            $notificationSubscriber = new NotificationSubscriber();
+            $notificationSubscriber->person = self::$steve;
+            $notificationSubscriber->hasReadLatest = false;
+            $task->notificationSubscribers->add($notificationSubscriber);
+            $this->assertEquals(0, Yii::app()->emailHelper->getQueuedCount());
+            $this->assertTrue($task->save());
+            $this->assertEquals(1, Yii::app()->emailHelper->getQueuedCount());
+            EmailMessage::deleteAll();
+            $taskId = $task->id;
+            $task->forget();
+            $task = Task::getById($taskId);
+            $this->assertEquals(0, Yii::app()->emailHelper->getQueuedCount());
+            //Now add comment
+            $comment = new Comment();
+            $comment->description = 'some comment';
             $task->comments->add($comment);
             $this->assertTrue($task->save());
-            TasksNotificationUtil::submitTaskNotificationMessage($task,
-                                                                    TasksNotificationUtil::TASK_NEW_COMMENT,
-                                                                    $task->comments[0]->createdByUser);
-            $this->assertEquals(4, Yii::app()->emailHelper->getQueuedCount());
+            $this->assertEquals(0, Yii::app()->emailHelper->getQueuedCount());
+            TasksNotificationUtil::submitTaskNotificationMessage($task, TasksNotificationUtil::TASK_NEW_COMMENT,
+                                                                 self::$super, $comment);
 
-            $task->completed         = true;
-            $task->status            = Task::STATUS_COMPLETED;
-            $this->assertTrue($task->save());
-            $this->assertEquals(6, Yii::app()->emailHelper->getQueuedCount());
-            $this->assertTrue(strtotime($task->completedDateTime) > strtotime(date('Y-m-d')));
+            $this->assertEquals(3, Yii::app()->emailHelper->getQueuedCount());
+            $emailMessages = EmailMessage::getAllByFolderType(EmailFolder::TYPE_OUTBOX);
+            $this->assertCount(3, $emailMessages);
+            $this->assertTrue('katie@zurmo.com' == $emailMessages[0]->recipients[0]->toAddress ||
+                              'katie@zurmo.com' == $emailMessages[1]->recipients[0]->toAddress ||
+                              'katie@zurmo.com' == $emailMessages[2]->recipients[0]->toAddress);
+            $this->assertTrue('sally@zurmo.com' == $emailMessages[0]->recipients[0]->toAddress ||
+                              'sally@zurmo.com' == $emailMessages[1]->recipients[0]->toAddress ||
+                              'sally@zurmo.com' == $emailMessages[2]->recipients[0]->toAddress);
+            $this->assertTrue('steve@zurmo.com' == $emailMessages[0]->recipients[0]->toAddress ||
+                              'steve@zurmo.com' == $emailMessages[1]->recipients[0]->toAddress ||
+                              'steve@zurmo.com' == $emailMessages[2]->recipients[0]->toAddress);
         }
     }
 ?>

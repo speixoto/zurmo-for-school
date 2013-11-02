@@ -71,7 +71,6 @@
             {
                 $rule->addUser($person);
             }
-            $rule->addUser($task->owner);
             $rule->setModel($task);
             $rule->setCritical(true);
             $rule->setAllowDuplicates(true);
@@ -122,15 +121,15 @@
             $message->textContent        = $messageContent;
             if($messageContentSecondPart != null)
             {
-                $message->textContent = "\n" . $messageContentSecondPart;
+                $message->textContent .= "\n" . $messageContentSecondPart;
             }
-            $message->textContent        = "\n" . ZurmoHtml::link(Zurmo::t('Core', 'Click Here'), $url);
+            $message->textContent       .= "\n" . ZurmoHtml::link(Zurmo::t('Core', 'Click Here'), $url);
             $message->htmlContent        = $messageContent;
             if($messageContentSecondPart != null)
             {
-                $message->textContent = "<br/>" . $messageContentSecondPart;
+                $message->htmlContent .= "<br/>" . $messageContentSecondPart;
             }
-            $message->htmlContent        = "<br/>" . ZurmoHtml::link(Zurmo::t('Core', 'Click Here'), $url);
+            $message->htmlContent       .= "<br/>" . ZurmoHtml::link(Zurmo::t('Core', 'Click Here'), $url);
             return $message;
         }
 
@@ -158,6 +157,16 @@
                    $action == self::TASK_NEW_COMMENT)
             {
                 $peopleToSendNotification = TasksUtil::getTaskSubscribers($task);
+                if($action == self::TASK_NEW_COMMENT && $relatedUser != null)
+                {
+                    foreach($peopleToSendNotification as $key => $person)
+                    {
+                        if($person->getClassId('Item') == $relatedUser->getClassId('Item'))
+                        {
+                            unset($peopleToSendNotification[$key]);
+                        }
+                    }
+                }
             }
             return $peopleToSendNotification;
         }
@@ -172,31 +181,35 @@
         {
             assert('$task instanceof Task');
             $relatedModelStringValue = TasksUtil::resolveFirstRelatedModelStringValue($task);
+            if($relatedModelStringValue != null)
+            {
+                $relatedModelStringValue = '(' . $relatedModelStringValue . ')';
+            }
             $params = array('{task}'         => strval($task),
                             '{relatedModel}' => $relatedModelStringValue);
             if($action == self::TASK_NEW)
             {
-                return Zurmo::t('TasksModule', 'ASSIGNMENT:({relatedModel}): {task}', $params);
+                return Zurmo::t('TasksModule', 'ASSIGNMENT {relatedModel}: {task}', $params);
             }
             elseif($action == self::TASK_STATUS_BECOMES_AWAITING_ACCEPTANCE)
             {
-                return Zurmo::t('TasksModule', 'DELIVERED:({relatedModel}): {task}', $params);
+                return Zurmo::t('TasksModule', 'DELIVERED {relatedModel}: {task}', $params);
             }
             elseif($action == self::TASK_STATUS_BECOMES_COMPLETED)
             {
-                return Zurmo::t('TasksModule', 'ACCEPTED:({relatedModel}): {task}', $params);
+                return Zurmo::t('TasksModule', 'ACCEPTED {relatedModel}: {task}', $params);
             }
             elseif($action == self::TASK_STATUS_BECOMES_REJECTED)
             {
-                return Zurmo::t('TasksModule', 'REJECTED:({relatedModel}): {task}', $params);
+                return Zurmo::t('TasksModule', 'REJECTED {relatedModel}: {task}', $params);
             }
             elseif($action == self::TASK_OWNER_CHANGE)
             {
-                return Zurmo::t('TasksModule', 'ASSIGNMENT:({relatedModel}): {task}', $params);
+                return Zurmo::t('TasksModule', 'ASSIGNMENT {relatedModel}: {task}', $params);
             }
             elseif($action == self::TASK_NEW_COMMENT)
             {
-                return Zurmo::t('TasksModule', 'NEW COMMENT:({relatedModel}): {task}', $params);
+                return Zurmo::t('TasksModule', 'NEW COMMENT {relatedModel}: {task}', $params);
             }
         }
 

@@ -271,9 +271,18 @@
             return true;
         }
 
-        /**
-         * Updates kanban item after saving task
-         */
+        public function doNotificationSubscribersContainPerson(Item $item)
+        {
+            foreach($this->notificationSubscribers as $notificationSubscriber)
+            {
+                if($notificationSubscriber->person->getClassId('Item') == $item->getClassId('Item'))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         protected function afterSave()
         {
             $this->processNotificationsToBeSent();

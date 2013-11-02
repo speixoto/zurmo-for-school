@@ -91,19 +91,6 @@
         }
 
         /**
-         * @covers isUserSubscribedForTask
-         */
-        public function testIsUserSubscribedForTask()
-        {
-            $user  = User::getByUsername('steven');
-
-            $tasks  = Task::getByName('MyTest');
-            $task   = $tasks[0];
-
-            $this->assertTrue(TasksUtil::isUserSubscribedForTask($task, $user));
-        }
-
-        /**
          * @covers getTaskSubscriberData
          */
         public function testGetTaskSubscriberData()
