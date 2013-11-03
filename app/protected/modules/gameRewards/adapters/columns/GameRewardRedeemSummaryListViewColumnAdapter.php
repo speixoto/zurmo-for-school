@@ -59,6 +59,11 @@
             assert('is_int($availableCoins)');
             $content  = ZurmoHtml::tag('h4', array('class' => 'reward-name'),
                         strval($gameReward));
+            if($gameReward->description != null)
+            {
+                // $content .= ZurmoHtml::tag('h3', array('class' => 'reward-description'),
+                //             $gameReward->description);
+            }
             $content .= '<br />';
             $content .= ZurmoHtml::tag('span', array('class' => 'reward-cost'), $gameReward->cost . ' x ');
             $content .= ZurmoHtml::tag('span', array(),
@@ -70,9 +75,9 @@
 
         protected static function renderExpirationDateTimeContent(GameReward $gameReward)
         {
-            if ($gameReward->expirationDateTime != null)
+            if (!DateTimeUtil::isDateTimeStringNull($gameReward->expirationDateTime))
             {
-                $content = Zurmo::t('ZurmoModule', 'Until');
+                $content = Zurmo::t('ZurmoModule', 'Until') . ' ';
                 return $content . DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay($gameReward->expirationDateTime);
             }
         }

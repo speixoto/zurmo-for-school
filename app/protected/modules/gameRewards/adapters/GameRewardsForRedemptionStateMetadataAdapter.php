@@ -35,22 +35,57 @@
      ********************************************************************************/
 
     /**
-     * Class for showing a message and create link when there are no game rewards visible to the logged in user when
-     * going to the game rewards list view.
+     * Adapter class to filter by expired date/time of a game reward
      */
-    class GameRewardsZeroModelsYetView extends ZeroModelsYetView
+    class GameRewardsForRedemptionStateMetadataAdapter extends StateMetadataAdapter
     {
-        protected function getCreateLinkDisplayLabel()
+        /**
+         * Creates where clauses and adds structure information
+         * to existing DataProvider metadata.
+         */
+        public function getAdaptedDataProviderMetadata()
         {
-            return Zurmo::t('GameRewardsModule', 'Create Game Reward');
+            $metadata      = $this->metadata;
+            $clauseCount   = count($metadata['clauses']);
+            $startingCount = $clauseCount + 1;
+            $secondCount     = $startingCount + 1;
+            $thirdCount     = $secondCount + 1;
+            $structure     = '';
+            $metadata['clauses'][$startingCount] = array(
+                'attributeName' => 'expirationDateTime',
+                'operatorType'  => 'isNull',
+                'value'         => null
+            );
+            $metadata['clauses'][$secondCount] = array(
+                'attributeName' => 'expirationDateTime',
+                'operatorType'  => 'greaterThanOrEqualTo',
+                'value'         => DateTimeUtil::convertTimestampToDbFormatDateTime(time())
+            );
+            $metadata['clauses'][$thirdCount] = array(
+                'attributeName' => 'expirationDateTime',
+                'operatorType'  => 'equals',
+                'value'         => '0000-00-00 00:00:00'
+            );
+            $structure    .= '(' . $startingCount . ' OR ' . $secondCount . ' OR ' . $thirdCount . ')';
+            if (empty($metadata['structure']))
+            {
+                $metadata['structure'] = '(' . $structure . ')';
+            }
+            else
+            {
+                $metadata['structure'] = '(' . $metadata['structure'] . ') and (' . $structure . ')';
+            }
+            return $metadata;
         }
 
-        protected function getMessageContent()
+        /**
+         * Not Used
+         * @return array|void
+         * @throws NotImplementedException
+         */
+        protected function getStateIds()
         {
-            return Zurmo::t('GameRewardsModule', '<h2>"For every disciplined effort there is a multiple reward.' .
-                                     '"</h2><i>- Jim Rohn</i></i><div class="large-icon"></div><p>Reward your users ' .
-                                     'for their discipline in adopting and using the system by creating gifts they ' .
-                                     'can redeem with their points.</p>');
+            throw new NotImplementedException();
         }
     }
 ?>
