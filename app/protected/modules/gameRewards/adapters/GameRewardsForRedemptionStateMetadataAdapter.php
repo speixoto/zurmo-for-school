@@ -35,18 +35,57 @@
      ********************************************************************************/
 
     /**
-     * View that renders the settings breadcrumb content
+     * Adapter class to filter by expired date/time of a game reward
      */
-    class SettingsBreadCrumbView extends BreadCrumbView
+    class GameRewardsForRedemptionStateMetadataAdapter extends StateMetadataAdapter
     {
-        protected function getHomeLinkLabel()
+        /**
+         * Creates where clauses and adds structure information
+         * to existing DataProvider metadata.
+         */
+        public function getAdaptedDataProviderMetadata()
         {
-            return Zurmo::t('ConfigurationModule', 'Administration Home');
+            $metadata      = $this->metadata;
+            $clauseCount   = count($metadata['clauses']);
+            $startingCount = $clauseCount + 1;
+            $secondCount     = $startingCount + 1;
+            $thirdCount     = $secondCount + 1;
+            $structure     = '';
+            $metadata['clauses'][$startingCount] = array(
+                'attributeName' => 'expirationDateTime',
+                'operatorType'  => 'isNull',
+                'value'         => null
+            );
+            $metadata['clauses'][$secondCount] = array(
+                'attributeName' => 'expirationDateTime',
+                'operatorType'  => 'greaterThanOrEqualTo',
+                'value'         => DateTimeUtil::convertTimestampToDbFormatDateTime(time())
+            );
+            $metadata['clauses'][$thirdCount] = array(
+                'attributeName' => 'expirationDateTime',
+                'operatorType'  => 'equals',
+                'value'         => '0000-00-00 00:00:00'
+            );
+            $structure    .= '(' . $startingCount . ' OR ' . $secondCount . ' OR ' . $thirdCount . ')';
+            if (empty($metadata['structure']))
+            {
+                $metadata['structure'] = '(' . $structure . ')';
+            }
+            else
+            {
+                $metadata['structure'] = '(' . $metadata['structure'] . ') and (' . $structure . ')';
+            }
+            return $metadata;
         }
 
-        protected function getHomeUrl()
+        /**
+         * Not Used
+         * @return array|void
+         * @throws NotImplementedException
+         */
+        protected function getStateIds()
         {
-            return Yii::app()->createUrl('configuration/default/index');
+            throw new NotImplementedException();
         }
     }
 ?>

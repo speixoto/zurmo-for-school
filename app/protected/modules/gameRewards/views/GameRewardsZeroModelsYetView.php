@@ -50,7 +50,7 @@
             return Zurmo::t('GameRewardsModule', '<h2>"For every disciplined effort there is a multiple reward.' .
                                      '"</h2><i>- Jim Rohn</i></i><div class="large-icon"></div><p>Reward your users ' .
                                      'for their discipline in adopting and using the system by creating gifts they ' .
-                                     'can redeem with their points."</p>');
+                                     'can redeem with their points.</p>');
         }
     }
 ?>
