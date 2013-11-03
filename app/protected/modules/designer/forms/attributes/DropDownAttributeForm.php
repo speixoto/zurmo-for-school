@@ -122,7 +122,7 @@
             return array_merge(parent::attributeLabels(), array(
                 'customFieldDataData'   => Zurmo::t('DesignerModule', 'Pick List Values'),
                 'customFieldDataLabels' => Zurmo::t('DesignerModule', 'Pick List Value Translations'),
-                'defaultValueOrder'     => Zurmo::t('DesignerModule', 'Default Value'),
+                'defaultValueOrder'     => Zurmo::t('ZurmoModule', 'Default Value'),
             ));
         }
 
@@ -183,7 +183,7 @@
                     }
                     elseif ($value == '')
                     {
-                        $this->addError('customFieldDataData', Zurmo::t('DesignerModule', 'Value cannot be blank.'));
+                        $this->addError('customFieldDataData', Zurmo::t('Core', 'Value cannot be blank.'));
                         return;
                     }
                 }

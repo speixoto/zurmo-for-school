@@ -124,7 +124,7 @@
          */
         protected function resolveAndRenderActionContent()
         {
-            if($this->model->isModelActionVariant())
+            if ($this->model->isModelActionVariant())
             {
                 $content  = $this->renderMergeTagGuideContent();
                 $content .= $this->renderAttributesRowsContent($this->makeAttributeRows());
@@ -195,7 +195,7 @@
             {
                 return $this->resolveAttributeRowsForUpdateTypes($inputPrefixData);
             }
-            elseif($this->model->isModelActionVariant())
+            elseif ($this->model->isModelActionVariant())
             {
                 return $this->resolveAttributeRowsForCreateTypes($inputPrefixData);
             }
@@ -281,7 +281,7 @@
             $content = null;
             if (count($attributeRows[self::REQUIRED_ATTRIBUTES_INDEX]) > 0)
             {
-                $content .= ZurmoHtml::tag('h3', array(), Zurmo::t('WorkflowsModule', 'Required Fields'));
+                $content .= ZurmoHtml::tag('h3', array(), Zurmo::t('ZurmoModule', 'Required Fields'));
             }
             foreach ($attributeRows[self::REQUIRED_ATTRIBUTES_INDEX] as $attributeContent)
             {

@@ -76,19 +76,22 @@
             $completedTodosCount = 0;
             foreach ($tasks as $task)
             {
-                $totalToDosCount += count($task->checkListItems);
-                if(count($task->checkListItems) != 0)
+                if(ControllerSecurityUtil::doesCurrentUserHavePermissionOnSecurableItem($task, Permission::READ))
                 {
-                    $completedTodosCount += TasksUtil::getTaskCompletedCheckListItems($task);
-                }
-                $kanbanItem  = KanbanItem::getByTask($task->id);
-                if($kanbanItem == null)
-                {
-                    //Create KanbanItem here
-                    $kanbanItem = TasksUtil::createKanbanItemFromTask($task);
-                }
+                    $totalToDosCount += count($task->checkListItems);
+                    if(count($task->checkListItems) != 0)
+                    {
+                        $completedTodosCount += TasksUtil::getTaskCompletedCheckListItems($task);
+                    }
+                    $kanbanItem  = KanbanItem::getByTask($task->id);
+                    if($kanbanItem == null)
+                    {
+                        //Create KanbanItem here
+                        $kanbanItem = TasksUtil::createKanbanItemFromTask($task);
+                    }
 
-                $kanbanItemsArray[$kanbanItem->type][] = $kanbanItem->id;
+                    $kanbanItemsArray[$kanbanItem->type][] = $kanbanItem->id;
+                }
             }
 
             $stats = array();
@@ -147,8 +150,9 @@
                 }
                 else
                 {
-                    $label = '% ' . Zurmo::t('ProjectsModule', 'Complete');
-                    $color = (int) $value > 0 ? 'percent-green' : 'percent-yellow';
+                    $label = '% ' . Zurmo::t('Core', 'Complete');
+                    $color = (int) $value > 0 ? 'percent-yellow' : 'percent-red';
+                    $color = (int) $value == 100 ? 'percent-green' : $color;
                     $content .= ZurmoHtml::tag('div', array('class' => 'project-stats percent-complete ' . $color),
                                             ZurmoHtml::tag('strong', array(), $value) .
                                             ZurmoHtml::tag('span', array(), $label));

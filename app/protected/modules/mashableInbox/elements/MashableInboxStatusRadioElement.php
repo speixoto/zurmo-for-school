@@ -66,7 +66,7 @@
         private function getArray()
         {
             $getArray = array(
-                MashableInboxForm::FILTERED_BY_ALL    => Zurmo::t('MashableInboxModule', 'All'),
+                MashableInboxForm::FILTERED_BY_ALL    => Zurmo::t('Core', 'All'),
                 MashableInboxForm::FILTERED_BY_UNREAD => Zurmo::t('MashableInboxModule', 'Unread'),
             );
             return $getArray;

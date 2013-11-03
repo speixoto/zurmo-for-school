@@ -180,7 +180,7 @@
                 $checked                =   !strcmp($value, $select);
                 $htmlOptions['value']   =   $value;
                 $htmlOptions['id']      =   $baseID . '_' . $id++;
-                if(isset($dataHtmlOptions[$value]) && isset($dataHtmlOptions[$value]['disabled']))
+                if (isset($dataHtmlOptions[$value]) && isset($dataHtmlOptions[$value]['disabled']))
                 {
                     $htmlOptions['disabled'] = $dataHtmlOptions[$value]['disabled'];
                 }
@@ -191,7 +191,7 @@
                 {
                     $selectOption       =   str_replace("{bindId}", $htmlOptions['id'], $dataSelectOptions[$value]);
                 }
-                if(isset($dataHtmlOptions[$value]) && isset($dataHtmlOptions[$value]['class']))
+                if (isset($dataHtmlOptions[$value]) && isset($dataHtmlOptions[$value]['class']))
                 {
                     $class = $dataHtmlOptions[$value]['class'];
                 }

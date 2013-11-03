@@ -46,7 +46,7 @@
                 1 => array(
                     'attributeName'        => 'sender',
                     'relatedModelData' => array(
-                        'attributeName'        => 'personOrAccounts',
+                        'attributeName'        => 'personsOrAccounts',
                         'relatedAttributeName' => 'id',
                         'operatorType'         => 'equals',
                         'value'                => $relationItemId,
@@ -55,7 +55,7 @@
                 2 => array(
                     'attributeName'        => 'recipients',
                     'relatedModelData' => array(
-                        'attributeName'        => 'personOrAccounts',
+                        'attributeName'        => 'personsOrAccounts',
                         'relatedAttributeName' => 'id',
                         'operatorType'         => 'equals',
                         'value'                => $relationItemId,
@@ -78,7 +78,7 @@
                 1 => array(
                     'attributeName'        => 'sender',
                     'relatedModelData' => array(
-                        'attributeName'        => 'personOrAccounts',
+                        'attributeName'        => 'personsOrAccounts',
                         'relatedAttributeName' => 'id',
                         'operatorType'         => 'oneOf',
                         'value'                => $relationItemIds,
@@ -87,7 +87,7 @@
                 2 => array(
                     'attributeName'        => 'recipients',
                     'relatedModelData' => array(
-                        'attributeName'        => 'personOrAccounts',
+                        'attributeName'        => 'personsOrAccounts',
                         'relatedAttributeName' => 'id',
                         'operatorType'         => 'oneOf',
                         'value'                => $relationItemIds,
@@ -172,13 +172,13 @@
         public static function getSenderContent(EmailMessageSender $emailMessageSender)
         {
             $existingModels  = array();
-            if ($emailMessageSender->personOrAccounts->count() == 0)
+            if ($emailMessageSender->personsOrAccounts->count() == 0)
             {
                 $existingModels[] = $emailMessageSender->fromAddress . ' ' . $emailMessageSender->fromName;
             }
             else
             {
-                foreach ($emailMessageSender->personOrAccounts as $personOrAccount)
+                foreach ($emailMessageSender->personsOrAccounts as $personOrAccount)
                 {
                     $castedDownModel = self::castDownItem($personOrAccount);
                     try
@@ -220,14 +220,14 @@
             {
                 if ($type == null || $recipient->type == $type)
                 {
-                    $existingPersonOrAccounts = array();
-                    if ($recipient->personOrAccounts->count() == 0)
+                    $existingPersonsOrAccounts = array();
+                    if ($recipient->personsOrAccounts->count() == 0)
                     {
-                        $existingPersonOrAccounts[] = $recipient->toAddress . ' ' . $recipient->toName;
+                        $existingPersonsOrAccounts[] = $recipient->toAddress . ' ' . $recipient->toName;
                     }
                     else
                     {
-                        foreach ($recipient->personOrAccounts as $personOrAccount)
+                        foreach ($recipient->personsOrAccounts as $personOrAccount)
                         {
 
                             try
@@ -240,22 +240,22 @@
                                                 $moduleId        = $moduleClassName::getDirectoryName();
                                                 $element         = new DetailsLinkActionElement('default', $moduleId,
                                                                                                 $castedDownModel->id, $params);
-                                                $existingPersonOrAccounts[] = $element->render();
+                                                $existingPersonsOrAccounts[] = $element->render();
                                             }
                             }
                             catch (AccessDeniedSecurityException $e)
                             {
-                                $existingPersonOrAccounts[] = $recipient->toAddress . ' ' . $recipient->toName;
+                                $existingPersonsOrAccounts[] = $recipient->toAddress . ' ' . $recipient->toName;
                             }
                             catch (NotSupportedException $e)
                             {
                                 //If the personOrAccount no longer exists or something else isn't right with the model
-                                $existingPersonOrAccounts[] = $recipient->toAddress . ' ' . $recipient->toName;
+                                $existingPersonsOrAccounts[] = $recipient->toAddress . ' ' . $recipient->toName;
                             }
                         }
                     }
-                    $recipientString = self::resolveStringValueModelsDataToStringContent($existingPersonOrAccounts);
-                    if (count($existingPersonOrAccounts) > 1)
+                    $recipientString = self::resolveStringValueModelsDataToStringContent($existingPersonsOrAccounts);
+                    if (count($existingPersonsOrAccounts) > 1)
                     {
                         $existingModels[] = $recipient->toAddress . '(' . $recipientString . ')';
                     }

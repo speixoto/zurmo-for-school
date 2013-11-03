@@ -46,7 +46,7 @@
 
         protected function getDefaultLabel()
         {
-            return Zurmo::t('TasksModule', 'Details');
+            return Zurmo::t('Core', 'Details');
         }
 
         protected function getDefaultRoute()

@@ -50,19 +50,19 @@
         {
             $modelClass = get_class($this->model);
             $content = null;
-            if($modelClass == 'Project')
+            if ($modelClass == 'Project')
             {
                 $overlayView = new ProjectDetailsOverlayView($this->controllerId, $this->moduleId, $this->model);
             }
-            elseif($modelClass == 'Account')
+            elseif ($modelClass == 'Account')
             {
                 $overlayView = new AccountDetailsOverlayView($this->controllerId, $this->moduleId, $this->model);
             }
-            elseif($modelClass == 'Contact')
+            elseif ($modelClass == 'Contact')
             {
                 $overlayView = new ContactDetailsOverlayView($this->controllerId, $this->moduleId, $this->model);
             }
-            elseif($modelClass == 'Opportunity')
+            elseif ($modelClass == 'Opportunity')
             {
                 $overlayView = new OpportunityDetailsOverlayView($this->controllerId, $this->moduleId, $this->model);
             }

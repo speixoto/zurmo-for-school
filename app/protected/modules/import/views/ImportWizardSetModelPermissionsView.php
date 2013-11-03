@@ -74,7 +74,7 @@
 
         protected function renderNextPageLinkLabel()
         {
-            return Zurmo::t('ImportModule', 'Map Fields');
+            return Zurmo::t('ZurmoModule', 'Map Fields');
         }
     }
 ?>

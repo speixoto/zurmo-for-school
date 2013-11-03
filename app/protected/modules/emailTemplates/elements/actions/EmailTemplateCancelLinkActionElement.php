@@ -41,7 +41,7 @@
     {
         protected function getDefaultLabel()
         {
-            return Zurmo::t('Default', 'Cancel');
+            return Zurmo::t('Core', 'Cancel');
         }
 
         public function getActionType()

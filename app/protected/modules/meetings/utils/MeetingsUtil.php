@@ -70,7 +70,7 @@
             if ($meeting->description != null)
             {
                 $content .= '<br/>';
-                $content .= Zurmo::t('MeetingsModule', 'Description') . ':<br/>';
+                $content .= Zurmo::t('ZurmoModule', 'Description') . ':<br/>';
                 $content .= $meeting->description;
             }
             return $content;

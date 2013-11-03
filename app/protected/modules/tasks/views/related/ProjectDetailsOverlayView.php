@@ -60,7 +60,6 @@
         protected function renderDescriptionContent()
         {
             $content = ZurmoHtml::tag('div', array('class' => static::DESCRIPTION_CLASS),
-                                      Zurmo::t('ZurmoModule', 'Description') . $this->overlayKeyValueSeparator .
                                       StringUtil::getChoppedStringContent($this->model->description, 50));
             return $content;
         }
@@ -71,9 +70,8 @@
          */
         protected function renderNameContent()
         {
-            $content = ZurmoHtml::tag('p', array('class' => static::DESCRIPTION_CLASS),
-                                      Zurmo::t('ZurmoModule', 'Name') .
-                                      $this->overlayKeyValueSeparator . $this->model->name);
+            $content = ZurmoHtml::tag('div', array('class' => static::DESCRIPTION_CLASS),
+                                      ZurmoHtml::tag('strong', array(), $this->model->name));
             return $content;
         }
     }

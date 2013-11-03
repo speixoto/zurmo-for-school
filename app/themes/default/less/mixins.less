@@ -40,16 +40,16 @@
 .t-shadow(@style){
     -webkit-text-shadow: @style;
        -moz-text-shadow: @style;
-         -o-text-shadow: @style;
         -ms-text-shadow: @style;
+		 -o-text-shadow: @style;
             text-shadow: @style;
 }
 
 .b-shadow(@style){
     -webkit-box-shadow: @style;
        -moz-box-shadow: @style;
-         -o-box-shadow: @style;
-        -ms-box-shadow: @style;
+		-ms-box-shadow: @style;
+		 -o-box-shadow: @style;
             box-shadow: @style;
 }
 
@@ -102,8 +102,8 @@
 .animateAll(@time: 0.5s){
     -webkit-transition: all @time ease-out;
        -moz-transition: all @time ease-out;
+		-ms-transition: all @time ease-out;
          -o-transition: all @time ease-out;
-        -ms-transition: all @time ease-out;
             transition: all @time ease-out;
 }
 
@@ -174,7 +174,7 @@ a.z-button,
     cursor:pointer;
     text-indent:0;
     display:inline-block;
-    ++.border-box;
+	.border-box();
     .clearfix();
     &.attachLoading.z-button{
         color: #fff;
@@ -219,7 +219,7 @@ a.z-button,
 }
 
 .z-label{
-    ++.border-box;
+	.border-box();
     float:left;
     font-weight:bold;
     padding:0 25px;

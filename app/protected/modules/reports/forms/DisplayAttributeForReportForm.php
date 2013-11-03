@@ -261,11 +261,11 @@
             {
                 if ($value)
                 {
-                    $translatedValue = Zurmo::t('ReportsModule', 'Yes');
+                    $translatedValue = Zurmo::t('Core', 'Yes');
                 }
                 elseif ($value == false && $value != '')
                 {
-                    $translatedValue = Zurmo::t('ReportsModule', 'No');
+                    $translatedValue = Zurmo::t('Core', 'No');
                 }
             }
             elseif ($displayElementType == 'GroupByModifierMonth')

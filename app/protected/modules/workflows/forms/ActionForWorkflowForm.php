@@ -129,9 +129,9 @@
         public static function getTypeDataAndLabels()
         {
                 return array(
-                    self::TYPE_UPDATE_SELF       => Zurmo::t('WorkflowsModule', 'Update'),
+                    self::TYPE_UPDATE_SELF       => Zurmo::t('Core', 'Update'),
                     self::TYPE_UPDATE_RELATED    => Zurmo::t('WorkflowsModule', 'Update Related'),
-                    self::TYPE_CREATE            => Zurmo::t('WorkflowsModule', 'Create'),
+                    self::TYPE_CREATE            => Zurmo::t('Core', 'Create'),
                     self::TYPE_CREATE_RELATED    => Zurmo::t('WorkflowsModule', 'Create Related'),
                     self::TYPE_SUBSCRIBE_TO_LIST => self::getLabelForSubscribeToList(),
                 );
@@ -222,7 +222,7 @@
 
         public function isModelActionVariant()
         {
-            if($this->type != self::TYPE_SUBSCRIBE_TO_LIST)
+            if ($this->type != self::TYPE_SUBSCRIBE_TO_LIST)
             {
                 return true;
             }
@@ -242,7 +242,7 @@
          */
         public function resolveAllRequiredActionAttributeFormsAndLabelsAndSort()
         {
-            if($this->type == self::TYPE_SUBSCRIBE_TO_LIST)
+            if ($this->type == self::TYPE_SUBSCRIBE_TO_LIST)
             {
                 return $this->resolveActionAttributeFormsAndLabelsAndSortForSubscribeToList();
             }
@@ -324,7 +324,7 @@
         {
             assert('is_string($attribute)');
             assert('$this->type != null');
-            if($this->type == self::TYPE_SUBSCRIBE_TO_LIST)
+            if ($this->type == self::TYPE_SUBSCRIBE_TO_LIST)
             {
                 return 'MarketingList';
             }
@@ -783,7 +783,7 @@
             assert('$this->type != null');
             foreach ($valuesAttributes as $attribute => $attributeData)
             {
-                if($this->type == self::TYPE_SUBSCRIBE_TO_LIST)
+                if ($this->type == self::TYPE_SUBSCRIBE_TO_LIST)
                 {
                     $form = new MarketingListWorkflowActionAttributeForm('MarketingList', 'id');
                 }

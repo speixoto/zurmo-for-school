@@ -280,7 +280,7 @@
         {
             assert('$user instanceof User && $user != null');
             $modules         = Module::getModuleObjects();
-            $createMenuItems = array('label' => Zurmo::t('ZurmoModule', 'Create'),
+            $createMenuItems = array('label' => Zurmo::t('Core', 'Create'),
                                      'url'   => null,
                                      'items' => array());
             foreach ($modules as $module)
@@ -635,10 +635,10 @@
                 }
                 foreach ($ajaxLinkOptionsElements as $ajaxLinkOptionsElement)
                 {
-                    if(isset($menuItems[$itemKey][$ajaxLinkOptionsElement]))
+                    if (isset($menuItems[$itemKey][$ajaxLinkOptionsElement]))
                     {
                         $substring = $menuItems[$itemKey][$ajaxLinkOptionsElement];
-                        if(is_string($substring))
+                        if (is_string($substring))
                         {
                             $options = array();
                             eval("\$options = $substring;");

@@ -69,12 +69,12 @@
          */
         public function resolveHeaderData(& $headerData)
         {
-            $headerData[] = $this->getLabel() . ' - ' . Zurmo::t('ExportModule', 'City');
-            $headerData[] = $this->getLabel() . ' - ' . Zurmo::t('ExportModule', 'Country');
-            $headerData[] = $this->getLabel() . ' - ' . Zurmo::t('ExportModule', 'Postal Code');
-            $headerData[] = $this->getLabel() . ' - ' . Zurmo::t('ExportModule', 'Street 1');
-            $headerData[] = $this->getLabel() . ' - ' . Zurmo::t('ExportModule', 'Street 2');
-            $headerData[] = $this->getLabel() . ' - ' . Zurmo::t('ExportModule', 'State');
+            $headerData[] = $this->getLabel() . ' - ' . Zurmo::t('ZurmoModule', 'City');
+            $headerData[] = $this->getLabel() . ' - ' . Zurmo::t('ZurmoModule', 'Country');
+            $headerData[] = $this->getLabel() . ' - ' . Zurmo::t('ZurmoModule', 'Postal Code');
+            $headerData[] = $this->getLabel() . ' - ' . Zurmo::t('ZurmoModule', 'Street 1');
+            $headerData[] = $this->getLabel() . ' - ' . Zurmo::t('ZurmoModule', 'Street 2');
+            $headerData[] = $this->getLabel() . ' - ' . Zurmo::t('ZurmoModule', 'State');
         }
     }
 ?>

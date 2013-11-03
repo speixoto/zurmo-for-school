@@ -44,7 +44,8 @@
                     'member',
                 ),
                 'relations' => array(
-                    'files' => array(static::HAS_MANY,  'FileTestModel', static::OWNED),
+                    'files'             => array(static::HAS_MANY,  'FileModel', static::OWNED,
+                                                        static::LINK_TYPE_POLYMORPHIC, 'relatedModel'),
                 ),
                 'rules' => array(
                     array('member', 'type',  'type' => 'string'),

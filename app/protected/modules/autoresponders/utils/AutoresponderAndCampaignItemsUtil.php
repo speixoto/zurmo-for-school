@@ -215,7 +215,7 @@
                 $recipient->toAddress       = $contact->primaryEmail->emailAddress;
                 $recipient->toName          = strval($contact);
                 $recipient->type            = EmailMessageRecipient::TYPE_TO;
-                $recipient->personOrAccounts->add($contact);
+                $recipient->personsOrAccounts->add($contact);
                 $emailMessage->recipients->add($recipient);
             }
         }

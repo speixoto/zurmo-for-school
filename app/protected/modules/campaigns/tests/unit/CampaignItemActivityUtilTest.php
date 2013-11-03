@@ -136,9 +136,9 @@
             $this->assertNotEmpty($result);
             $this->assertCount(2, $result);
             $this->assertArrayHasKey('redirect',        $result);
-            $this->assertArrayHasKey('imageUrl',       $result);
+            $this->assertArrayHasKey('imagePath',       $result);
             $this->assertEquals(false,                  $result['redirect']);
-            $this->assertEquals(PlaceholderImageUtil::resolveOneByOnePixelImageUrl(), $result['imageUrl']);
+            $this->assertEquals(PlaceholderImageUtil::resolveOneByOnePixelImagePath(), $result['imagePath']);
 
             // check activity object count to confirm we got a new activity
             $existingActivities                     = $modelClassName::getByType($type);
@@ -156,9 +156,9 @@
             $this->assertNotEmpty($result);
             $this->assertCount(2, $result);
             $this->assertArrayHasKey('redirect',        $result);
-            $this->assertArrayHasKey('imageUrl',       $result);
+            $this->assertArrayHasKey('imagePath',       $result);
             $this->assertEquals(false,                  $result['redirect']);
-            $this->assertEquals(PlaceholderImageUtil::resolveOneByOnePixelImageUrl(), $result['imageUrl']);
+            $this->assertEquals(PlaceholderImageUtil::resolveOneByOnePixelImagePath(), $result['imagePath']);
 
             // check activity object count to confirm we got a new activity
             $existingActivities                     = $modelClassName::getByType($type);

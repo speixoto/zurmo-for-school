@@ -40,7 +40,7 @@
         {
             return array(
                     'name' => 'summary',
-                    'header' => Zurmo::t('WorkflowsModule', 'Details'),
+                    'header' => Zurmo::t('Core', 'Details'),
                     'type'  => 'raw',
                     'value'  => 'ByTimeWorkflowInQueueUtil::renderSummaryContent($data)',
             );

@@ -296,7 +296,7 @@
                 $data['challenge']  = $_POST['recaptcha_challenge_field'];
                 $data['response']   = $_POST['recaptcha_response_field'];
                 $fields = '';
-                foreach($data as $key => $value)
+                foreach ($data as $key => $value)
                 {
                     $fields .= $key . '=' . $value . '&';
                 }

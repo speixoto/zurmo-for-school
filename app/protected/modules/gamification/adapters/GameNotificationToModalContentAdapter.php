@@ -48,7 +48,7 @@
             $data = $this->getAndValidateUnserializedData();
             if ($data['type'] == GameNotification::TYPE_LEVEL_CHANGE)
             {
-                $content  = '<h2>' . Zurmo::t('GamificationModule', 'Congratulations!') . '</h2>';
+                $content  = '<h2>' . Zurmo::t('Core', 'Congratulations!') . '</h2>';
                 $content .= '<h3>' . Zurmo::t('GamificationModule', 'You have reached level {nextLevel}',
                                                     array('{nextLevel}' => $data['levelValue'])) . '</h3>';
                 $content .= $this->getCoinContent($data);
@@ -82,7 +82,7 @@
          */
         protected function getCoinContent($data)
         {
-            if(null != $coins = ArrayUtil::getArrayValue($data, 'coins'))
+            if (null != $coins = ArrayUtil::getArrayValue($data, 'coins'))
             {
                 return '<h3>' . Zurmo::t('GamificationModule', 'You have received {n} coin | You have received {n} coins',
                                             array($coins)) . '</h3>';

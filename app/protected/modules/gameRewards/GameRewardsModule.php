@@ -110,7 +110,7 @@
 
         protected static function getPluralModuleLabel($language)
         {
-            return Zurmo::t('GamificationModule', 'Game Rewards', array(), null, $language);
+            return Zurmo::t('GameRewardsModule', 'Game Rewards', array(), null, $language);
         }
 
         public static function modelsAreNeverGloballySearched()

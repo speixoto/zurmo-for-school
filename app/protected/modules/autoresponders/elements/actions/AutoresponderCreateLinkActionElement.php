@@ -44,8 +44,7 @@
 
         protected function getDefaultLabel()
         {
-            $icon = ZurmoHtml::tag('i', array('class' => 'icon-create'), '');
-            return $icon . Zurmo::t('Core', 'Create');
+            return Zurmo::t('Core', 'Create');
         }
     }
 ?>

@@ -82,13 +82,12 @@
 
             $user                   = UserTestHelper::createBasicUser('Billy');
             $dueStamp               = DateTimeUtil::convertTimestampToDbFormatDateTime(time()  + 10000);
-            $completedStamp         = DateTimeUtil::convertTimestampToDbFormatDateTime(time() + 9000);
             $task                   = new Task();
             $task->name             = 'MyTask';
             $task->owner            = $user;
             $task->requestedByUser  = $user;
             $task->dueDateTime      = $dueStamp;
-            $task->completedDateTime = $completedStamp;
+            $task->status           = Task::STATUS_COMPLETED;
             $task->description      = 'my test description';
             $taskCheckListItem      = new TaskCheckListItem();
             $taskCheckListItem->name = 'Test Check List Item';
@@ -100,7 +99,7 @@
             $task = Task::getById($id);
             $this->assertEquals('MyTask',              $task->name);
             $this->assertEquals($dueStamp,             $task->dueDateTime);
-            $this->assertEquals($completedStamp,       $task->completedDateTime);
+            $this->assertNotNull($task->completedDateTime);
             $this->assertEquals('my test description', $task->description);
             $this->assertEquals($user,                 $task->owner);
             $this->assertEquals($user,                 $task->requestedByUser);
@@ -278,31 +277,15 @@
             $nowStamp = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
             $this->assertTrue($task->save());
             $this->assertEquals(null, $task->completedDateTime);
-            $this->assertEquals($nowStamp, $task->latestDateTime);
 
             //Modify the task. Complete the task. The CompletedDateTime should show as now.
             $task = Task::getById($task->id);
-            $this->assertNull($task->completed);
-            $task->completed = true;
-            $this->assertEquals($nowStamp, $task->latestDateTime);
-            $completedStamp = DateTimeUtil::convertTimestampToDbFormatDateTime(time() + 1);
-            $this->assertNotEquals($nowStamp, $completedStamp);
-            sleep(1); //Some servers are too fast and the test will fail if we don't have this.
+            $this->assertFalse((bool)$task->completed);
+            $this->assertEquals(null, $task->completedDateTime);
+            $task->status = Task::STATUS_COMPLETED;
             $this->assertTrue($task->save());
-            $this->assertNotEquals($nowStamp, $task->completedDateTime);
-            $this->assertNotEquals($nowStamp, $task->latestDateTime);
-            $this->assertTrue($task->completedDateTime == $task->latestDateTime);
-            $existingStamp = $task->completedDateTime;
-
-            //Modify the task. CompletedDateTime and LatestDateTime should remain the same.
-            $newStamp = DateTimeUtil::convertTimestampToDbFormatDateTime(time() + 1);
-            $this->assertNotEquals($existingStamp, $newStamp);
-            $task = Task::getById($task->id);
-            $task->name = 'aNewName';
-            sleep(1); //Some servers are too fast and the test will fail if we don't have this.
-            $this->assertTrue($task->save());
-            $this->assertEquals($existingStamp, $task->completedDateTime);
-            $this->assertEquals($existingStamp, $task->latestDateTime);
+            $this->assertTrue((bool)$task->completed);
+            $this->assertNotNull($task->completedDateTime);
         }
 
         public function testGetModelClassNames()
@@ -315,15 +298,15 @@
         public function testAddSubscriberToTask()
         {
             Yii::app()->user->userModel = User::getByUsername('super');
-
-            //Creating a new task that is not completed. LatestDateTime should default to now, and
-            //completedDateTime should be null.
+            $user = User::getByUsername('billy');
             $task = new Task();
             $task->name = 'MyTest';
+            $task->owner = $user;
             $nowStamp = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
             $this->assertTrue($task->save());
+            $this->assertEquals($user, $task->owner);
 
-            $task = Task::getById($task->id);
+            //$this->assertEquals(0, count($task->notificationSubscribers));
             $user = Yii::app()->user->userModel;
             $notificationSubscriber = new NotificationSubscriber();
             $notificationSubscriber->person = $user;
@@ -336,14 +319,13 @@
             $modelDerivationPathToItem = RuntimeUtil::getModelDerivationPathToItem('User');
             $subscribedUser = $subscriber->person->castDown(array($modelDerivationPathToItem));
             $this->assertEquals($user, $subscribedUser);
+            //$this->assertEquals(1, count($task->notificationSubscribers));
         }
 
         public function testAddCheckListItemsToTask()
         {
             Yii::app()->user->userModel = User::getByUsername('super');
 
-            //Creating a new task that is not completed. LatestDateTime should default to now, and
-            //completedDateTime should be null.
             $task = new Task();
             $task->name = 'MyTest1';
             $nowStamp = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
@@ -374,8 +356,6 @@
         {
             Yii::app()->user->userModel = User::getByUsername('super');
 
-            //Creating a new task that is not completed. LatestDateTime should default to now, and
-            //completedDateTime should be null.
             $task = new Task();
             $task->name = 'MyTest2';
             $nowStamp = DateTimeUtil::convertTimestampToDbFormatDateTime(time());

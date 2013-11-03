@@ -103,7 +103,7 @@
                                                       null,
                                                       array('htmlOptions' =>
                                                           array('name'   => 'AccountSelect', 'id' => 'AccountSelect'),
-                                                                'label'  => Zurmo::t('AccountsModule', 'Complete Conversion')));
+                                                                'label'  => Zurmo::t('ZurmoModule', 'Complete Conversion')));
             $content .= $element->render();
             $content .= $this->renderModalContainer();
             $content .= '</div></div>';

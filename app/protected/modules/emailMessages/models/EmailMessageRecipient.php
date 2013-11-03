@@ -59,7 +59,7 @@
         public static function getRecipientTypesArray()
         {
             return array(
-                static::TYPE_TO  => Zurmo::t('EmailMessagesModule', 'To'),
+                static::TYPE_TO  => Zurmo::t('Core', 'To'),
                 static::TYPE_CC  => Zurmo::t('EmailMessagesModule', 'Cc'),
                 static::TYPE_BCC => Zurmo::t('EmailMessagesModule', 'Bcc'),
             );
@@ -95,7 +95,7 @@
                     'type',
                 ),
                 'relations' => array(
-                    'personOrAccounts' => array(static::MANY_MANY, 'Item',           static::NOT_OWNED),
+                    'personsOrAccounts' => array(static::MANY_MANY, 'Item',           static::NOT_OWNED),
                     'emailMessage'    => array(static::HAS_ONE,   'EmailMessage',   static::NOT_OWNED),
                 ),
                 'rules' => array(
@@ -146,7 +146,7 @@
             $params = LabelUtil::getTranslationParamsForAllModules();
             return array_merge(parent::translatedAttributeLabels($language),
                 array(
-                    'personOrAccounts' => Zurmo::t('ZurmoModule',         'Person Or AccountsModulePluralLabel',  $params, null, $language),
+                    'personsOrAccounts' => Zurmo::t('ZurmoModule',         'Person Or AccountsModulePluralLabel',  $params, null, $language),
                     'toAddress'        => Zurmo::t('EmailMessagesModule', 'To Address',  array(), null, $language),
                     'toName'           => Zurmo::t('EmailMessagesModule', 'To Name',  array(), null, $language),
                     'type'             => Zurmo::t('Core', 'Type',  array(), null, $language),

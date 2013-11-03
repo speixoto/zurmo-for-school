@@ -40,13 +40,5 @@
      */
     class ModelDetailsPortletRules extends PortletRules
     {
-        /**
-         * (non-PHPdoc)
-         * @see PortletRules::allowOnDashboard()
-         */
-        public function allowOnDashboard()
-        {
-            return true;
-        }
     }
 ?>

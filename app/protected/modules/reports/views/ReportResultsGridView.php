@@ -158,7 +158,7 @@
          */
         protected static function getSummaryText()
         {
-            return Zurmo::t('ReportsModule', '{count} result(s)');
+            return Zurmo::t('Core', '{count} result(s)');
         }
 
         /**
@@ -322,7 +322,7 @@
                     }
                     if (isset($grandTotalsRow) && $isFirstRow)
                     {
-                        $column['footer'] = Zurmo::t('ReportsModule', 'Total');
+                        $column['footer'] = Zurmo::t('Core', 'Total');
                     }
                     if (isset($grandTotalsRow[$displayAttribute->columnAliasName]))
                     {

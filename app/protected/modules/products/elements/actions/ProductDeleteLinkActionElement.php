@@ -43,7 +43,7 @@
          */
         protected function resolveConfirmAlertInHtmlOptions($htmlOptions)
         {
-            $htmlOptions['confirm'] = Zurmo::t('ProductsModule', 'Are you sure you want to delete this {modelLabel}?',
+            $htmlOptions['confirm'] = Zurmo::t('Core', 'Are you sure you want to delete this {modelLabel}?',
                                       array('{modelLabel}' => ProductsModule::getModuleLabelByTypeAndLanguage('SingularLowerCase')));
             return $htmlOptions;
         }

@@ -427,6 +427,7 @@ To: Steve <steve@example.com>
             {
                 $this->markTestSkipped(Zurmo::t('EmailMessagesModule', 'Test email settings are not configured in perInstanceTest.php file.'));
             }
+            ForgetAllCacheUtil::forgetAllCaches(); //Special situation to deal with email box and ensuring the user cache doesn't get corrupted
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
             $user = User::getByUsername('steve');
@@ -488,7 +489,7 @@ To: Steve <steve@example.com>
 
             $this->assertEquals(1, count($emailMessage->recipients));
             $recipient = $emailMessage->recipients[0];
-            $this->assertCount(3, $recipient->personOrAccounts);
+            $this->assertCount(3, $recipient->personsOrAccounts);
             $this->assertEquals($recipient->toAddress, Yii::app()->params['emailTestAccounts']['testEmailAddress']);
             $this->assertEquals(EmailMessageRecipient::TYPE_TO, $recipient->type);
             $this->assertEquals(EmailFolder::TYPE_ARCHIVED, $emailMessage->folder->type);

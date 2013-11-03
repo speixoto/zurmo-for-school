@@ -84,7 +84,7 @@
 
         public function actionList()
         {
-            $activeActionElementType        = 'ProductCategoriesLink';
+            $activeActionElementType        = 'ProductCategoriesMenu';
             $breadCrumbLinks                = static::getListBreadcrumbLinks();
             $introView                      = new ProductsIntroView('ProductsModule');
             $actionBarAndTreeView           = new ProductCategoriesActionBarAndTreeListView(
@@ -116,7 +116,7 @@
         public function actionCreate()
         {
             $breadCrumbLinks    = static::getDetailsAndEditBreadcrumbLinks();
-            $breadCrumbLinks[]  = Zurmo::t('ProductTemplatesModule', 'Create');
+            $breadCrumbLinks[]  = Zurmo::t('Core', 'Create');
             $productCategory        = new ProductCategory();
             $productCatalog         = ProductCatalog::resolveAndGetByName(ProductCatalog::DEFAULT_NAME);
             if (!empty($productCatalog))

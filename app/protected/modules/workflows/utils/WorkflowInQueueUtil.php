@@ -70,7 +70,7 @@
 
         protected static function renderEmailTemplateLinkContent(EmailMessageForWorkflowForm $emailMessageForWorkflowForm)
         {
-            if($emailMessageForWorkflowForm->emailTemplateId <= 0)
+            if ($emailMessageForWorkflowForm->emailTemplateId <= 0)
             {
                 return null;
             }
@@ -84,11 +84,11 @@
                                  self::resolveModelContent($emailTemplate));
                 return $content;
             }
-            catch(NotFoundException $e)
+            catch (NotFoundException $e)
             {
                 return null;
             }
-            catch(AccessDeniedSecurityException $e)
+            catch (AccessDeniedSecurityException $e)
             {
                 return null;
             }

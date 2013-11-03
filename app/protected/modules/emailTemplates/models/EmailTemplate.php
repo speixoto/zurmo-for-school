@@ -245,7 +245,7 @@
                     'language'        => Zurmo::t('ZurmoModule',         'Language',   null, null, $language),
                     'htmlContent'     => Zurmo::t('EmailMessagesModule', 'Html Content',  null, null, $language),
                     'name'            => Zurmo::t('ZurmoModule',         'Name',  null, null, $language),
-                    'subject'         => Zurmo::t('EmailMessagesModule', 'Subject',  null, null, $language),
+                    'subject'         => Zurmo::t('Core', 'Subject',  null, null, $language),
                     'type'            => Zurmo::t('Core',                'Type',  null, null, $language),
                     'textContent'     => Zurmo::t('EmailMessagesModule', 'Text Content',  null, null, $language),
                 )

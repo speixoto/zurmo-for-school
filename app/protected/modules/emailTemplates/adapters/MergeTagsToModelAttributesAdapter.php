@@ -268,7 +268,9 @@
 
         protected static function resolveStringToAttributeAccessor($string)
         {
-            return StringUtil::camelize(str_replace(MergeTagsUtil::PROPERTY_DELIMITER, '->', strtolower($string)));
+            return StringUtil::camelize(str_replace(MergeTagsUtil::PROPERTY_DELIMITER, '->', strtolower($string)),
+                                                                                    false,
+                                                                                    MergeTagsUtil::CAPITAL_DELIMITER);
         }
     }
 ?>

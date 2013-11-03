@@ -65,7 +65,7 @@
             $content .= '<col style="width:25%" />';
             $content .= '</colgroup>';
             $content .= '<tbody>';
-            $content .= '<tr><th>' . Zurmo::t('ProductTemplatesModule', 'Name') . '</th><th></th><th></th></tr>';
+            $content .= '<tr><th>' . Zurmo::t('Core', 'Name') . '</th><th></th><th></th></tr>';
             static::renderTreeListViewNode($content, $data, 0);
             $content .= '</tbody>';
             $content .= '</table>';
@@ -87,7 +87,7 @@
                 $content .= '<td>';
                 if (isset($node['route']) && $node['route'] != null && static::shouldRenderConfigureLink())
                 {
-                    $content .= ZurmoHtml::link(ZurmoHtml::wrapLabel(Zurmo::t('ProductTemplatesModule', 'Configure') ),
+                    $content .= ZurmoHtml::link(ZurmoHtml::wrapLabel(Zurmo::t('Core', 'Configure') ),
                         $node['route']);
                 }
                 $content .= '</td>';

@@ -44,7 +44,12 @@
             $everyoneGroup = Group::getByName(Group::EVERYONE_GROUP_NAME);
             $everyoneGroup->save();
             $super                = User::getByUsername('super');
+            //Steven have access to missions module
             $steven               = UserTestHelper::createBasicUser('steven');
+            $steven->setRight('MissionsModule', MissionsModule::RIGHT_ACCESS_MISSIONS);
+            $steven->save();
+            //Jack dont have acess to missions module
+            $jack                 = UserTestHelper::createBasicUser('jack');
             $mission              = new Mission();
             $mission->owner       = $super;
             $mission->takenByUser = $steven;
@@ -140,12 +145,15 @@
             $super                              = User::getByUsername('super');
             Yii::app()->user->userModel         = $super;
             $steven                             = User::getByUsername('steven');
+            $jack                               = User::getByUsername('steven');
             $missions                           = Mission::getAll();
             $mission                            = $missions[0];
             $super->primaryEmail->emailAddress  = 'super@zurmo.org';
             $this->assertTrue($super->save());
             $steven->primaryEmail->emailAddress = 'steven@zurmo.org';
             $this->assertTrue($steven->save());
+            $jack->primaryEmail->emailAddress   = 'jack@zurmo.org';
+            $this->assertTrue($jack->save());
             // super updated mission
             $participants                       = MissionsUtil::
                     resolvePeopleToSendNotificationToOnNewComment($mission, $super);
@@ -163,13 +171,15 @@
             $super                              = User::getByUsername('super');
             Yii::app()->user->userModel         = $super;
             $steven                             = User::getByUsername('steven');
-            $mary                               = UserTestHelper::createBasicUser('mary');
+            $jack                               = User::getByUsername('jack');
+            $this->assertTrue (RightsUtil::canUserAccessModule('MissionsModule', $steven));
+            $this->assertFalse(RightsUtil::canUserAccessModule('MissionsModule', $jack));
             $missions                           = Mission::getAll();
             $mission                            = $missions[0];
             $people                             = MissionsUtil::resolvePeopleToSendNotificationToOnNewMission($mission);
             $this->assertNotContains($super,  $people);
             $this->assertContains   ($steven, $people);
-            $this->assertContains   ($mary,   $people);
+            $this->assertNotContains($jack,   $people);
         }
     }
 ?>

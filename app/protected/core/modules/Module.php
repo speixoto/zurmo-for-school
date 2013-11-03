@@ -475,7 +475,7 @@
         public static function hasAtLeastOneGlobalSearchAttributeName()
         {
             $metadata = static::getMetadata();
-            if( isset($metadata['global']['globalSearchAttributeNames']) &&
+            if ( isset($metadata['global']['globalSearchAttributeNames']) &&
                 is_array($metadata['global']['globalSearchAttributeNames']) &&
                 count($metadata['global']['globalSearchAttributeNames']) > 0)
             {

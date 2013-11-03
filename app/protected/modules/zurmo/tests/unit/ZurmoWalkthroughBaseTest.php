@@ -473,7 +473,8 @@
                                       'OpportunitiesModule'     => 'decimalCstm * integerCstm',
                                       'TasksModule'             => 'decimalCstm * integerCstm',
                                       'ProductTemplatesModule'  => 'decimalCstm * integerCstm',
-                                      'ProductsModule'          => 'decimalCstm * integerCstm');
+                                      'ProductsModule'          => 'decimalCstm * integerCstm',
+                                      'ProjectsModule'          => 'decimalCstm * integerCstm');
 
             $extraPostData = array('formula' => $formulaForModule[$moduleClassName]);
             $this->createCustomAttributeWalkthroughSequence($moduleClassName, $name, 'CalculatedNumber', $extraPostData, null, true);

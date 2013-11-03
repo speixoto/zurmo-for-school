@@ -359,7 +359,7 @@
             $extraPostData = array( 'startingStateOrder'  => '2',
                                     'isAudited'           => '1',
                                     'isRequired'          => '1',
-                                    'contactStatesData' => array('NA', ' NB', 'NC'));
+                                    'contactStatesData' => array('', ' NB', 'NC'));
             $this->setPostArray(array(   'ajax'                 => 'edit-form',
                                         'ContactStateAttributeForm' => array_merge(array(
                                             'attributeLabels' => $this->createAttributeLabelGoodValidationPostData('state'),

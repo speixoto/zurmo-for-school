@@ -46,7 +46,7 @@
 
         protected $checkListItemsData;
 
-        protected $relatedModel;
+        protected $task;
 
         protected $pageSize;
 
@@ -56,19 +56,18 @@
 
         protected $form;
 
-        public function __construct($controllerId, $moduleId, $checkListItemsData, Item $relatedModel, $form, $getParams, $uniquePageId = null)
+        public function __construct($controllerId, $moduleId, $checkListItemsData, Task $task, $form, $getParams, $uniquePageId = null)
         {
             assert('is_string($controllerId)');
             assert('is_string($moduleId)');
             assert('is_array($checkListItemsData)');
-            assert('$relatedModel->id > 0');
             assert('is_string($form) || $form == null');
             assert('is_array($getParams)');
             assert('is_string($uniquePageId) || $uniquePageId == null');
             $this->controllerId           = $controllerId;
             $this->moduleId               = $moduleId;
             $this->checkListItemsData     = $checkListItemsData;
-            $this->relatedModel           = $relatedModel;
+            $this->task                   = $task;
             $this->getParams              = $getParams;
             $this->uniquePageId           = $uniquePageId;
         }
@@ -128,7 +127,7 @@
             $data = array();
             foreach ($this->checkListItemsData as $checkListItem)
             {
-                if($checkListItem->completed == null || $checkListItem->completed == 0)
+                if ($checkListItem->completed == null || $checkListItem->completed == 0)
                 {
                     $checked = false;
                 }
@@ -171,7 +170,7 @@
         private function registerCheckListItemsScript()
         {
             $url = Yii::app()->createUrl('/tasks/taskCheckItems/updateNameViaAjax');
-            $deleteUrl = Yii::app()->createUrl('/tasks/taskCheckItems/deleteCheckListItem');
+            $deleteUrl = Yii::app()->createUrl('/tasks/taskCheckItems/deleteCheckListItem', array('taskId' => $this->task->id));
             $errorMessage = Yii::t('Core', 'Name can not be blank');
             Yii::app()->getClientScript()->registerScript('checklistitemscript', "
                                                                 var litag;

@@ -103,8 +103,8 @@
 
         protected function getDurationSignDropDownArray()
         {
-            return array(TimeDurationUtil::DURATION_SIGN_POSITIVE => Zurmo::t('WorkflowsModule', 'After'),
-                         TimeDurationUtil::DURATION_SIGN_NEGATIVE => Zurmo::t('WorkflowsModule', 'Before'));
+            return array(TimeDurationUtil::DURATION_SIGN_POSITIVE => Zurmo::t('Core', 'After'),
+                         TimeDurationUtil::DURATION_SIGN_NEGATIVE => Zurmo::t('Core', 'Before'));
         }
 
         protected function getDurationTypeDropDownArray()

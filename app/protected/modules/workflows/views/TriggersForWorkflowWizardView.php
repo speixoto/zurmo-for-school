@@ -131,7 +131,7 @@
                                          'name'  => $this->getStructureInputName(),
                                          'class' => 'triggers-structure-input');
             $content             = $this->form->textField($this->model, 'triggersStructure', $idInputHtmlOptions);
-            $content            .= ZurmoHtml::tag('span', array(), Zurmo::t('WorkflowsModule', 'Search Operator'));
+            $content            .= ZurmoHtml::tag('span', array(), Zurmo::t('Core', 'Search Operator'));
             $content            .= $this->form->error($this->model, 'triggersStructure');
             return $content;
         }

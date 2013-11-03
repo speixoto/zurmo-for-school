@@ -137,7 +137,7 @@
             $this->assertTrue($explicitReadWriteModelPermissions instanceof ExplicitReadWriteModelPermissions);
             $readWritePermitables = $explicitReadWriteModelPermissions->getReadWritePermitables();
             $this->assertEquals(1, count($readWritePermitables));
-            $this->assertEquals(self::$alphaGroup, $readWritePermitables[self::$alphaGroup->id]);
+            $this->assertEquals(self::$alphaGroup, $readWritePermitables[self::$alphaGroup->getClassId('Permitable')]);
 
             $emailMessages[0]->delete();
         }
@@ -365,7 +365,7 @@
             $this->assertEquals(2, Yii::app()->emailHelper->getQueuedCount());
             $this->assertEquals(0, Yii::app()->emailHelper->getSentCount());
             $emailMessages = EmailMessage::getAllByFolderType(EmailFolder::TYPE_OUTBOX);
-            $this->assertEquals('some subject testTask',   $emailMessages[0]->subject);
+            $this->assertEquals('some subject testTask',   $emailMessages[1]->subject);
             $this->assertEquals('Account: testAccount Contact: testContact Opportunity: testOpportunity',
                 $emailMessages[1]->content->textContent);
             $this->assertEquals('Account: testAccount Contact: testContact Opportunity: testOpportunity',

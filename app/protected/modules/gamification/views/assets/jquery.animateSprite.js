@@ -1,10 +1,10 @@
+/* jQuery.animateSprite
+ * http://blaiprat.github.io/jquery.animateSprite/
+ *
+ * Copyright (c) 2013 Blai Pratdesaba  <hello@blaipratdesaba.com>, contributors
+ * Licensed under the MIT license.
+ */
 (function($) {
-    // @author: Blai Pratdesaba <hello@blaipratdesaba.com>
-
-    // read the documentation on
-    // http://blaiprat.github.com/jquery.animateSprite/
-    // from https://github.com/blaiprat/jquery.animateSprite
-    // GPL Licence https://github.com/blaiprat/jquery.animateSprite/blob/master/GPL-LICENSE.txt
 
     var methods = {
         init: function(options){
@@ -49,9 +49,9 @@
                 }
 
             });
-                // if ( settings.autoPlay === true){
-                //   fireAnimation();
-                // }
+            // if ( settings.autoPlay === true){
+            //   fireAnimation();
+            // }
         },
         frame: function(frameNumber){
             // frame: number of the frame to be displayed

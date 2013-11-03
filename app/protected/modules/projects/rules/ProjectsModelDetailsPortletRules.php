@@ -34,9 +34,18 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    Yii::import('application.modules.zurmo.controllers.FileModelController', true);
-    class ZurmoFileTestModelController extends ZurmoFileModelController
+    /**
+     * Class defines rules for any project related model details view for a portlet.
+     */
+    class ProjectsModelDetailsPortletRules extends ModelDetailsPortletRules
     {
-        const FILE_MODEL_CLASS_NAME = 'FileTestModel';
+        /**
+         * (non-PHPdoc)
+         * @see PortletRules::allowOnDashboard()
+         */
+        public function allowOnDashboard()
+        {
+            return true;
+        }
     }
 ?>

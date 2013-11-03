@@ -89,8 +89,8 @@
                                      array('title'       => "'" . Zurmo::t('MarketingModule', 'Queued') . "'",
                                            'balloonText' => "'" . Zurmo::t('MarketingModule', 'Queued') . ": [[value]]'"));
             $amChart->addSerialGraph(MarketingChartDataProvider::SENT, 'column',
-                                     array('title'       => "'" . Zurmo::t('MarketingModule', 'Sent') . "'",
-                                           'balloonText' => "'" . Zurmo::t('MarketingModule', 'Sent') . ": [[value]]'"));
+                                     array('title'       => "'" . Zurmo::t('Core', 'Sent') . "'",
+                                           'balloonText' => "'" . Zurmo::t('Core', 'Sent') . ": [[value]]'"));
             $amChart->addSerialGraph(MarketingChartDataProvider::UNIQUE_OPENS, 'column',
                                      array('title'       => "'" . Zurmo::t('MarketingModule', 'Opened') . "'",
                                            'balloonText' => "'" . Zurmo::t('MarketingModule', 'Opened') . ": [[value]]'"));

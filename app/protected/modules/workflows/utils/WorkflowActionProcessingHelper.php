@@ -101,7 +101,7 @@
             {
                 self::processCreateRelatedAction();
             }
-            elseif($this->action->type == ActionForWorkflowForm::TYPE_SUBSCRIBE_TO_LIST)
+            elseif ($this->action->type == ActionForWorkflowForm::TYPE_SUBSCRIBE_TO_LIST)
             {
                 self::processSubscribeToListAction();
             }
@@ -436,7 +436,7 @@
         protected function processSubscribeToListAction()
         {
             $actionAttributes = $this->action->getActionAttributes();
-            if(count($actionAttributes) > 1 ||
+            if (count($actionAttributes) > 1 ||
                !isset($actionAttributes['marketingList']) ||
                !$this->triggeredModel instanceof Contact)
             {

@@ -43,7 +43,7 @@
 
         protected function init()
         {
-            if(RightsUtil::doesUserHaveAllowByRightName('UsersModule', UsersModule::getAccessRight(),
+            if (RightsUtil::doesUserHaveAllowByRightName('UsersModule', UsersModule::getAccessRight(),
                Yii::app()->user->userModel))
             {
                 $this->currentUserCanAccessUsers = true;
@@ -52,7 +52,7 @@
 
         protected function getHomeLinkLabel()
         {
-            if($this->currentUserCanAccessUsers)
+            if ($this->currentUserCanAccessUsers)
             {
                 return Zurmo::t('UsersModule', 'Users Home');
             }
@@ -64,7 +64,7 @@
 
         protected function getHomeUrl()
         {
-            if($this->currentUserCanAccessUsers)
+            if ($this->currentUserCanAccessUsers)
             {
                 return Yii::app()->createUrl($this->resolveModuleId() . '/' . $this->resolveControllerId() . '/index');
             }

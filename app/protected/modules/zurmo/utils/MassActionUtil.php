@@ -34,54 +34,41 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class FileTestModel extends FileModel
+    abstract class MassActionUtil
     {
-        public static function getDefaultMetadata()
+        public static function isMassEditOrDeleteLikeAction($actionId)
         {
-            $metadata = parent::getDefaultMetadata();
-            $metadata[__CLASS__] = array(
-                'relations' => array(
-                    'modelWithAttachmentTestItem' => array(static::HAS_ONE, 'ModelWithAttachmentTestItem',
-                                                           static::NOT_OWNED),
-                ),
-            );
-            return $metadata;
+            return (static::isMassEditLikeAction($actionId) || static::isMassDeleteLikeAction($actionId));
         }
 
-        protected function beforeDelete()
+        public static function isMassDeleteLikeAction($actionId)
         {
-            $searchAttributeData = array();
-            $searchAttributeData['clauses'] = array(
-                1 => array(
-                    'attributeName'    => 'fileContent',
-                    'relatedModelData' => array(
-                        'attributeName' => 'id',
-                        'operatorType'  => 'equals',
-                        'value'         => $this->fileContent->id,
-                    )
-                ),
-            );
-            $searchAttributeData['structure'] = '1';
-            $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('FileTestModel');
-            $where             = RedBeanModelDataProvider::makeWhere('FileTestModel', $searchAttributeData, $joinTablesAdapter);
-            if (count(static::getSubsetIds($joinTablesAdapter, null, null, $where)) == 1)
-            {
-                $fileContent = FileContent::getById($this->fileContent->id);
-                if (!$fileContent->delete())
-                {
-                    return false;
-                }
-            }
-            if ($this->hasEventHandler('onBeforeDelete'))
-            {
-                $event = new CModelEvent($this);
-                $this->onBeforeDelete($event);
-                return $event->isValid;
-            }
-            else
-            {
-                return true;
-            }
+            return (strpos($actionId, 'massDelete') === 0);
         }
-  }
+
+        public static function isMassEditLikeAction($actionId)
+        {
+            return (strpos($actionId, 'massEdit') === 0);
+        }
+
+        public static function isMassProgressLikeAction($actionId)
+        {
+            return (strpos($actionId, 'Progress') !== false);
+        }
+
+        public static function isMassSubscribeOrUnsubscribeLikeAction($actionId)
+        {
+            return (static::isMassSubscribeLikeAction($actionId) || static::isMassUnsubscribeLikeAction($actionId));
+        }
+
+        public static function isMassSubscribeLikeAction($actionId)
+        {
+            return (strpos($actionId, 'massSubscribe') === 0);
+        }
+
+        public static function isMassUnsubscribeLikeAction($actionId)
+        {
+            return (strpos($actionId, 'massUnsubscribe') === 0);
+        }
+    }
 ?>

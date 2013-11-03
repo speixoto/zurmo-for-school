@@ -43,7 +43,7 @@
         {
             if (trim($this->name) == '')
             {
-                return Zurmo::t('TasksModule', '(None)');
+                return Zurmo::t('Core', '(None)');
             }
             return $this->name;
         }
@@ -60,7 +60,7 @@
                     'completed',
                 ),
                 'relations' => array(
-                    'task'    => array(static::HAS_ONE, 'Task', static::NOT_OWNED),
+                    'task' => array(static::HAS_ONE, 'Task', static::NOT_OWNED),
                 ),
                 'rules' => array(
                     array('name',       'required'),

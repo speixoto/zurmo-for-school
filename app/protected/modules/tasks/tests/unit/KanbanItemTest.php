@@ -75,7 +75,7 @@
             $kanbanItem->type               = TasksUtil::resolveKanbanItemTypeForTaskStatus($task->status);
             $kanbanItem->task               = $task;
             $kanbanItem->kanbanRelatedItem  = $task->activityItems->offsetGet(0);
-            $sortOrder = KanbanItem::getMaximumSortOrderByType($kanbanItem->type);
+            $sortOrder = KanbanItem::getMaximumSortOrderByType($kanbanItem->type, $task->activityItems->offsetGet(0));
             $kanbanItem->sortOrder          = $sortOrder;
             $saved = $kanbanItem->save();
             $kanbanItemId = $kanbanItem->id;
@@ -100,7 +100,7 @@
             $tasks = Task::getByName('MyTask');
             $task  = $tasks[0];
             $kanbanItem = KanbanItem::getByTask($task->id);
-            $sortOrder = KanbanItem::getMaximumSortOrderByType($kanbanItem->type);
+            $sortOrder = KanbanItem::getMaximumSortOrderByType($kanbanItem->type, $task->activityItems->offsetGet(0));
             $this->assertEquals(2, $sortOrder);
         }
     }

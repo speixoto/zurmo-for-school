@@ -211,7 +211,7 @@
                 array(
                     'city'        => Zurmo::t('ZurmoModule', 'City',         array(), null, $language),
                     'country'     => Zurmo::t('ZurmoModule', 'Country',      array(), null, $language),
-                    'invalid'     => Zurmo::t('ZurmoModule', 'Invalid',      array(), null, $language),
+                    'invalid'     => Zurmo::t('Core', 'Invalid',      array(), null, $language),
                     'latitude'    => Zurmo::t('ZurmoModule', 'Latitude',     array(), null, $language),
                     'longitude'   => Zurmo::t('ZurmoModule', 'Longitude',    array(), null, $language),
                     'postalCode'  => Zurmo::t('ZurmoModule', 'Postal Code',  array(), null, $language),

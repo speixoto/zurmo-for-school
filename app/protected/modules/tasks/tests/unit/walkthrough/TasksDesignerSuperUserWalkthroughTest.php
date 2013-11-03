@@ -352,8 +352,7 @@
             $this->setPostArray(array('Task' => array(
                                 'name'                              => 'myEditTask',
                                 'dueDateTime'                       => $datetime,
-                                'completed'                         => '1',
-                                'completedDateTime'                 => $datetime,
+                                'status'                            => Task::STATUS_COMPLETED,
                                 'description'                       => 'This is edit task Description',
                                 'owner'                             => array('id' => $superUserId),
                                 'explicitReadWriteModelPermissions' => array('type' => $explicitReadWriteModelPermission),
@@ -381,7 +380,7 @@
                                 'Contact'     => array('id'  => $superContactId),
                                 'Opportunity' => array('id'  => $superOpportunityId)),
                                 'save' => 'Save'));
-            $this->runControllerWithRedirectExceptionAndGetUrl('tasks/default/edit');
+            $this->runControllerWithNoExceptionsAndGetContent('tasks/default/modalSave');
 
              //Check the details if they are saved properly for the custom fields.
             $task = Task::getByName('myEditTask');
@@ -394,8 +393,8 @@
 
             $this->assertEquals($task[0]->name                             , 'myEditTask');
             $this->assertEquals($task[0]->dueDateTime                      , $datetimeAssert);
-            $this->assertEquals($task[0]->completed                        , '1');
-            $this->assertEquals($task[0]->completedDateTime                , $datetimeAssert);
+            $this->assertTrue((bool)$task[0]->completed);
+            $this->assertNotNull($task[0]->completedDateTime);
             $this->assertEquals($task[0]->description                      , 'This is edit task Description');
             $this->assertEquals($task[0]->owner->id                        , $superUserId);
             $this->assertEquals($task[0]->activityItems->count()           , 3);
@@ -455,8 +454,7 @@
             $this->setPostArray(array('Task' => array(
                                 'name'                              => 'myEditTask',
                                 'dueDateTime'                       => $datetime,
-                                'completed'                         => '1',
-                                'completedDateTime'                 => $datetime,
+                                'status'                            => Task::STATUS_COMPLETED,
                                 'description'                       => 'This is edit task Description',
                                 'owner'                             => array('id' => $superUserId),
                                 'explicitReadWriteModelPermissions' => array('type' => $explicitReadWriteModelPermission),
@@ -484,7 +482,7 @@
                                 'Contact'     => array('id'  => $superContactId),
                                 'Opportunity' => array('id'  => $superOpportunityId)),
                                 'save' => 'Save'));
-            $this->runControllerWithRedirectExceptionAndGetUrl('tasks/default/edit');
+            $this->runControllerWithNoExceptionsAndGetContent('tasks/default/modalSave');
 
              //Check the details if they are saved properly for the custom fields.
             $task = Task::getByName('myEditTask');
@@ -497,8 +495,8 @@
 
             $this->assertEquals($task[0]->name                             , 'myEditTask');
             $this->assertEquals($task[0]->dueDateTime                      , $datetimeAssert);
-            $this->assertEquals($task[0]->completed                        , '1');
-            $this->assertEquals($task[0]->completedDateTime                , $datetimeAssert);
+            $this->assertTrue((bool)$task[0]->completed);
+            $this->assertNotNull($task[0]->completedDateTime);
             $this->assertEquals($task[0]->description                      , 'This is edit task Description');
             $this->assertEquals($task[0]->owner->id                        , $superUserId);
             $this->assertEquals($task[0]->activityItems->count()           , 3);

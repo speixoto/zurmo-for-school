@@ -123,7 +123,7 @@
                                          'name'  => $this->getStructureInputName(),
                                          'class' => 'filters-structure-input');
             $content             = $this->form->textField($this->model, 'filtersStructure', $idInputHtmlOptions);
-            $content            .= ZurmoHtml::tag('span', array(), Zurmo::t('ReportsModule', 'Search Operator'));
+            $content            .= ZurmoHtml::tag('span', array(), Zurmo::t('Core', 'Search Operator'));
             $content            .= $this->form->error($this->model, 'filtersStructure');
             return $content;
         }

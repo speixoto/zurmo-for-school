@@ -490,12 +490,12 @@
                                                 'Campaign using Create - Campaign</span></span></h1>') !== false);
             $this->assertTrue(strpos($content, '<div class="view-toolbar-container clearfix"><nav class="pillbox clearfix">' .
                                                 '<div id="ListViewDetailsActionMenu" class="default-button">') !== false);
-            $this->assertTrue(strpos($content, '<div id="CampaignDetailsOverlayView" class="SecuredDetailsView '.
+            $this->assertTrue(strpos($content, '<div id="CampaignDetailsOverlayView" class="overlay-view SecuredDetailsView '.
                                                 'DetailsView ModelView ConfigurableMetadataView '.
                                                 'MetadataView">') !== false);
-            $this->assertTrue(strpos($content, '<div class="campaign-description"><b>Send On:</b> 6/13/13 ' .
-                                                '10:54 AM</BR>') !== false);
-            $this->assertTrue(strpos($content, '<b>Subject:</b> New Campaign using Create Subject</div>') !== false);
+            $this->assertTrue(strpos($content, '<div class="campaign-description"><strong>Send On: 6/13/13 ' .
+                                                '10:54 AM</strong>') !== false);
+            $this->assertTrue(strpos($content, '<strong>Subject: New Campaign using Create Subject</strong></div>') !== false);
             $this->assertTrue(strpos($content, '<p class="after-form-details-content">') !== false);
             $this->assertTrue(strpos($content, 'EditLinkActionElement') !== false);
             $this->assertTrue(strpos($content, 'CampaignDeleteLinkActionElement') !== false);

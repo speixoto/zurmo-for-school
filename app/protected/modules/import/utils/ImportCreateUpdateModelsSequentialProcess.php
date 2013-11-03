@@ -73,7 +73,7 @@
 
         protected function stepMessages()
         {
-            return array('processRows'  => Zurmo::t('ImportModule', 'Processing'),
+            return array('processRows'  => Zurmo::t('Core', 'Processing'),
                          'complete'     => Zurmo::t('ImportModule', 'Completing...')
                     );
         }

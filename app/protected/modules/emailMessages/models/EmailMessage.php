@@ -156,7 +156,7 @@
                     'sender'       => Zurmo::t('EmailMessagesModule', 'Sender',  array(), null, $language),
                     'sendAttempts' => Zurmo::t('EmailMessagesModule', 'Send Attempts',  array(), null, $language),
                     'sentDateTime' => Zurmo::t('EmailMessagesModule', 'Sent Date Time',  array(), null, $language),
-                    'subject'      => Zurmo::t('EmailMessagesModule', 'Subject',  array(), null, $language),
+                    'subject'      => Zurmo::t('Core', 'Subject',  array(), null, $language),
                     //'type'         => Zurmo::t('Core',                'Type',  array(), null, $language),
                 )
             );
@@ -179,7 +179,7 @@
          */
         protected static function getPluralLabel($language = null)
         {
-            return Zurmo::t('EmailMessagesModule', 'Emails', array(), null, $language);
+            return Zurmo::t('ZurmoModule', 'Emails', array(), null, $language);
         }
 
         public function hasSendError()

@@ -53,7 +53,7 @@
             $mashableUtilRules  = MashableUtil::createMashableInboxRulesByModel($this->getModelClassName());
             if ($mashableUtilRules->shouldRenderCreateAction)
             {
-                $label              = Zurmo::t('MashableInboxModule', 'Create');
+                $label              = Zurmo::t('Core', 'Create');
                 $modelClassName     = $this->getModelClassName();
                 $moduleClassName    = $modelClassName::getModuleClassName();
                 $label             .= ' ' . $moduleClassName::getModuleLabelByTypeAndLanguage('Singular');

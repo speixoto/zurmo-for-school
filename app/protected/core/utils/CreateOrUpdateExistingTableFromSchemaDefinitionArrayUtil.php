@@ -243,7 +243,7 @@
                                             Zurmo::t('Core', 'Index: {{indexName}} column definition is not an array',
                                                 array('{{indexName}}' => $indexName)));
                 }
-                foreach($index['columns'] as $column)
+                foreach ($index['columns'] as $column)
                 {
                     list($column) = explode('(', $column);
                     if (!in_array($column, $columnNames))

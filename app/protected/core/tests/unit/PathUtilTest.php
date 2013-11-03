@@ -73,5 +73,21 @@
             $this->assertNotContains('RedBeanModel', $models);
             $this->assertNotContains('OwnedModel', $models);
         }
+
+        /**
+         * @depends testGetAllModelClassNames
+         */
+        public function testGetAllMungableModelClassNames()
+        {
+            $modelClassNames = PathUtil::getAllMungableModelClassNames();
+            $compareData = array('Account', 'Campaign', 'Contact', 'Conversation', 'EmailMessage', 'EmailTemplate', 'GameReward',
+                'MarketingList', 'Meeting', 'Mission',
+                'Note', 'Opportunity', 'SavedReport', 'Product', 'SocialItem', 'Task', 'ContactWebForm', 'Project');
+            $this->assertEquals($compareData, $modelClassNames);
+            $modelClassNames2 = PathUtil::getAllMungableModelClassNames();
+            $this->assertEquals($modelClassNames, $modelClassNames2);
+            $modelClassNames3 = PathUtil::getAllMungableModelClassNames();
+            $this->assertEquals($modelClassNames2, $modelClassNames3);
+        }
     }
 ?>

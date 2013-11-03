@@ -523,8 +523,7 @@
 
         public function handleLoadWorkflowsObserver($event)
         {
-            $workflowsObserver = new WorkflowsObserver();
-            $workflowsObserver->init();
+            Yii::app()->workflowsObserver;
         }
 
         public function handleLoadGamification($event)

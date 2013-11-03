@@ -202,7 +202,7 @@
         {
             assert('is_string($gameBoardUrl)');
             $collectionAndItemKey = Yii::app()->gameHelper->resolveNewCollectionItems();
-            if(null != $collectionAndItemKey)
+            if (null != $collectionAndItemKey)
             {
                 $gameCollectionRules = GameCollectionRulesFactory::createByType($collectionAndItemKey[0]->type);
                 $collectionItemTypesAndLabels = $gameCollectionRules::getItemTypesAndLabels();
@@ -237,7 +237,7 @@
                     $("body").addClass("gd-dashboard-active");
                     $("#' . $id . '").html("‰").toggleClass("highlighted");
                 }',
-                'success'    => 'js:function(data){$("body").append(data);}');
+                'success'    => 'js:function(data){$("#FooterView").after(data);}');
         }
 
         protected static function getModalContainerId($id)

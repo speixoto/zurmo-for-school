@@ -95,7 +95,7 @@
                                              array('modelClassName' => 'Mission'));
             $breadCrumbLinks = array(Zurmo::t('MissionsModule', 'Missions') =>
                                             $missionsMashableInboxUrl,
-                                     Zurmo::t('MissionsModule', 'Create'));
+                                     Zurmo::t('Core', 'Create'));
             $view     = new MissionsPageView(ZurmoDefaultViewUtil::
                                              makeViewWithBreadcrumbsForCurrentUser($this, $editView, $breadCrumbLinks,
                                                                                     'MissionBreadCrumbView'));
@@ -115,7 +115,7 @@
             $breadCrumbLinks = array(Zurmo::t('MissionsModule', 'Missions') =>
                                         $missionsMashableInboxUrl,
                                      StringUtil::getChoppedStringContent(strval($mission), 25) =>
-                                        array('default/details',  'id' => $id), Zurmo::t('MissionsModule', 'Edit'));
+                                        array('default/details',  'id' => $id), Zurmo::t('Core', 'Edit'));
             $view     = new MissionsPageView(ZurmoDefaultViewUtil::
                                              makeViewWithBreadcrumbsForCurrentUser($this, $editView, $breadCrumbLinks,
                                                                                     'MissionBreadCrumbView'));
@@ -146,7 +146,7 @@
                                    'relatedModelRelationName' => 'comments',
                                    'redirectUrl'              => $redirectUrl); //After save, the url to go to.
             $uniquePageId  = 'CommentInlineEditForModelView';
-            echo             ZurmoHtml::tag('h2', array(), Zurmo::t('MissionsModule', 'Add Comment'));
+            echo             ZurmoHtml::tag('h2', array(), Zurmo::t('CommentsModule', 'Add Comment'));
             $inlineView    = new CommentInlineEditView($comment, 'default', 'comments', 'inlineCreateSave',
                                                        $urlParameters, $uniquePageId);
             $view          = new AjaxPageView($inlineView);

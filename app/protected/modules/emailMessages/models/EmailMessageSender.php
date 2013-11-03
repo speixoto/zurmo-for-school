@@ -69,7 +69,7 @@
                     'fromName',
                 ),
                 'relations' => array(
-                    'personOrAccounts' => array(static::MANY_MANY, 'Item', static::NOT_OWNED)
+                    'personsOrAccounts' => array(static::MANY_MANY, 'Item', static::NOT_OWNED)
                 ),
                 'rules' => array(
                     array('fromAddress', 'required'),
@@ -113,7 +113,7 @@
                 array(
                     'fromAddress'      => Zurmo::t('EmailMessagesModule', 'From Address',  array(), null, $language),
                     'fromName'         => Zurmo::t('EmailMessagesModule', 'From Name',  array(), null, $language),
-                    'personOrAccounts' => Zurmo::t('ZurmoModule',         'Person Or AccountsModulePluralLabel',  $params, null, $language)
+                    'personsOrAccounts' => Zurmo::t('ZurmoModule',         'Person Or AccountsModulePluralLabel',  $params, null, $language)
                 )
             );
         }

@@ -68,7 +68,7 @@
             $this->form      = $form;
             $this->params    = $params;
 
-            if(isset($params['relatedModelRelationName']))
+            if (isset($params['relatedModelRelationName']))
             {
                 $this->relatedModelRelationName = $params['relatedModelRelationName'];
             }
@@ -142,7 +142,7 @@
          */
         protected function renderRelatedModelCreateCommentContent()
         {
-            $content       = '';//ZurmoHtml::tag('h2', array(), Zurmo::t('ConversationsModule', 'Add Comment'));
+            $content       = '';//ZurmoHtml::tag('h2', array(), Zurmo::t('CommentsModule', 'Add Comment'));
             $comment       = new Comment();
             $uniquePageId  = 'CommentInlineEditForModelView';
             $redirectUrl   = Yii::app()->createUrl('/' . $this->moduleId . '/default/inlineCreateCommentFromAjax',

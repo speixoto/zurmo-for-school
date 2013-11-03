@@ -624,7 +624,7 @@
                 }
                 catch (FailedFileUploadException $e)
                 {
-                    $fileUploadData = array('error' => Zurmo::t('ImportModule', 'Error') . ' ' . $e->getMessage());
+                    $fileUploadData = array('error' => Zurmo::t('Core', 'Error') . ' ' . $e->getMessage());
                     ImportWizardUtil::clearFileAndRelatedDataFromImport($import);
                 }
             }

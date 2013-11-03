@@ -47,7 +47,7 @@
                 $string = '';
                 if (isset($data['code']))
                 {
-                    $string .= Zurmo::t('EmailMessagesModule', 'Error Code:') . ' ' . $data['code'];
+                    $string .= Zurmo::t('Core', 'Error Code:') . ' ' . $data['code'];
                 }
                 if (isset($data['message']))
                 {

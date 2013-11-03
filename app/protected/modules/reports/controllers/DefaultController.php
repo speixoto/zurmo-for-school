@@ -137,7 +137,7 @@
                 $this->actionSelectType();
                 Yii::app()->end(0, false);
             }
-            $breadCrumbLinks         = array(Zurmo::t('ReportsModule', 'Create'));
+            $breadCrumbLinks         = array(Zurmo::t('Core', 'Create'));
             assert('is_string($type)');
             $report           = new Report();
             $report->setType($type);
@@ -296,16 +296,16 @@
             $rangeAttributesData  =                       $modelToReportAdapter->
                                                           getAttributesForChartRange ($report->getDisplayAttributes());
             $dataAndLabels                              = array();
-            $dataAndLabels['firstSeriesDataAndLabels']  = array('' => Zurmo::t('ReportsModule', '(None)'));
+            $dataAndLabels['firstSeriesDataAndLabels']  = array('' => Zurmo::t('Core', '(None)'));
             $dataAndLabels['firstSeriesDataAndLabels']  = array_merge($dataAndLabels['firstSeriesDataAndLabels'],
                                                           ReportUtil::makeDataAndLabelsForSeriesOrRange($seriesAttributesData));
-            $dataAndLabels['firstRangeDataAndLabels']   = array('' => Zurmo::t('ReportsModule', '(None)'));
+            $dataAndLabels['firstRangeDataAndLabels']   = array('' => Zurmo::t('Core', '(None)'));
             $dataAndLabels['firstRangeDataAndLabels']   = array_merge($dataAndLabels['firstRangeDataAndLabels'],
                                                           ReportUtil::makeDataAndLabelsForSeriesOrRange($rangeAttributesData));
-            $dataAndLabels['secondSeriesDataAndLabels'] = array('' => Zurmo::t('ReportsModule', '(None)'));
+            $dataAndLabels['secondSeriesDataAndLabels'] = array('' => Zurmo::t('Core', '(None)'));
             $dataAndLabels['secondSeriesDataAndLabels'] = array_merge($dataAndLabels['secondSeriesDataAndLabels'],
                                                           ReportUtil::makeDataAndLabelsForSeriesOrRange($seriesAttributesData));
-            $dataAndLabels['secondRangeDataAndLabels']  = array('' => Zurmo::t('ReportsModule', '(None)'));
+            $dataAndLabels['secondRangeDataAndLabels']  = array('' => Zurmo::t('Core', '(None)'));
             $dataAndLabels['secondRangeDataAndLabels']  = array_merge($dataAndLabels['secondRangeDataAndLabels'],
                                                           ReportUtil::makeDataAndLabelsForSeriesOrRange($rangeAttributesData));
             echo CJSON::encode($dataAndLabels);

@@ -57,10 +57,10 @@
         {
             $labels                                             = array();
             $labels[self::RIGHT_ACCESS_ADMINISTRATION]          = Zurmo::t('ZurmoModule', 'Access Administration Tab');
-            $labels[self::RIGHT_BULK_WRITE]                     = Zurmo::t('ZurmoModule', 'Mass Update');
+            $labels[self::RIGHT_BULK_WRITE]                     = Zurmo::t('Core', 'Mass Update');
             $labels[self::RIGHT_ACCESS_GLOBAL_CONFIGURATION]    = Zurmo::t('ZurmoModule', 'Access Global Configuration');
             $labels[self::RIGHT_ACCESS_CURRENCY_CONFIGURATION]  = Zurmo::t('ZurmoModule', 'Access Currency Configuration');
-            $labels[self::RIGHT_BULK_DELETE]                    = Zurmo::t('ZurmoModule', 'Mass Delete');
+            $labels[self::RIGHT_BULK_DELETE]                    = Zurmo::t('Core', 'Mass Delete');
             return $labels;
         }
 
@@ -239,9 +239,9 @@
                         }
                     }
                     $s .= join(' ', $attributeLabels);
-                    $s .= ' ' . Zurmo::t('ZurmoModule', 'from') . ' ';
+                    $s .= ' ' . Zurmo::t('Core', 'from') . ' ';
                     $s .= AuditUtil::stringifyValue($attributeModel, $attributeName, $oldValue, $format) . ' ';
-                    $s .= Zurmo::t('ZurmoModule', 'to') . ' ';
+                    $s .= Zurmo::t('Core', 'to') . ' ';
                     $s .= AuditUtil::stringifyValue($attributeModel, $attributeName, $newValue, $format);
                     break;
             }

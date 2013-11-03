@@ -44,6 +44,8 @@
          */
         protected $renderViewToolBarDuringRenderContent = true;
 
+        protected static $defaultPageSize = 1000;
+
         /**
          * @return array
          */
@@ -132,6 +134,7 @@
                                                                  $this->moduleId, 'Task',
                                                                  get_class($this->params['relationModel']));
             $content .= $zeroModelView->render();
+            $content .= $this->renderUIOverLayBlock();
             return $content;
         }
 
@@ -266,20 +269,20 @@
         protected function renderActionElementBar($renderedInForm)
         {
             $kanbanActive = false;
-            if($this->params['relationModuleId'] == 'projects')
+            if ($this->params['relationModuleId'] == 'projects')
             {
                 $kanbanActive = true;
             }
             else
             {
                 $getData = GetUtil::getData();
-                if(isset($getData['kanbanBoard']) && $getData['kanbanBoard'] == 1)
+                if (isset($getData['kanbanBoard']) && $getData['kanbanBoard'] == 1)
                 {
                    $kanbanActive = true;
                 }
             }
 
-            if($kanbanActive)
+            if ($kanbanActive)
             {
                $content = parent::renderActionElementBar($renderedInForm);
             }
@@ -325,7 +328,7 @@
                                                       $actionElementBarContent);
             $secondActionBarContent  = $this->renderSecondActionElementBar(false);
             $secondActionBarContent .= $this->resolveShouldRenderActionBarLinksForKanbanBoard();
-            if($secondActionBarContent != null)
+            if ($secondActionBarContent != null)
             {
                 $actionBarContent .= ZurmoHtml::tag('nav', array('class' => 'pillbox clearfix'), $secondActionBarContent);
             }
@@ -335,7 +338,7 @@
 
         protected function resolveShouldRenderActionBarLinksForKanbanBoard()
         {
-            if($this->shouldRenderActionBarLinksForKanbanBoard())
+            if ($this->shouldRenderActionBarLinksForKanbanBoard())
             {
                 return ZurmoDefaultViewUtil::renderActionBarLinksForKanbanBoard($this->controllerId,
                     $this->params['relationModuleId'],
@@ -374,7 +377,7 @@
                 Yii::app()->getAssetManager()->publish(
                     Yii::getPathOfAlias('application.core.kanbanBoard.widgets.assets')) . '/KanbanUtils.js');
             TasksUtil::registerTaskModalDetailsScript($this->getGridId());
-            if($this->dataProvider->getTotalItemCount() == 0)
+            if ($this->dataProvider->getTotalItemCount() == 0)
             {
                 $script  = "$('#" . $this->getGridId() . "').hide();";
                 $script .= "$('#ZeroTasksForRelatedModelYetView').show();";
@@ -391,7 +394,7 @@
         protected function resolveShouldOpenToTask()
         {
             $getData = GetUtil::getData();
-            if(null != $taskId = ArrayUtil::getArrayValue($getData, 'openToTaskId'))
+            if (null != $taskId = ArrayUtil::getArrayValue($getData, 'openToTaskId'))
             {
                 TasksUtil::registerOpenToTaskModalDetailsScript((int)$taskId, $this->getGridId());
             }
@@ -417,9 +420,42 @@
                             $("#' . $this->getGridId() . '").hide();
                             $("#ZeroTasksForRelatedModelYetView").show();
                         }
+                        $(this).makeLargeLoadingSpinner(false, ".ui-overlay-block");
+                        $(".ui-overlay-block").fadeOut(50);
                         ' . TaskKanbanBoardExtendedGridView::registerKanbanColumnSortableScript() . '
                     }';
             // End Not Coding Standard
+        }
+
+        /**
+         * Resolve configuration for data provider
+         * @return array
+         */
+        protected function resolveConfigForDataProvider()
+        {
+            return array(
+                            'pagination' => array(
+                                'pageSize' => static::$defaultPageSize,
+                        )
+                    );
+        }
+
+        protected function renderUIOverLayBlock()
+        {
+            $spinner = ZurmoHtml::tag('span', array('class' => 'z-spinner'), '');
+            return ZurmoHtml::tag('div', array('class' => 'ui-overlay-block'), $spinner);
+        }
+
+        /**
+         * Override to take care of blocking kanban by overlay
+         * @return string
+         */
+        protected function getCGridViewBeforeAjaxUpdate()
+        {
+            return 'js:function(id, options){
+                            $(".ui-overlay-block").fadeIn(50);
+                            $(this).makeLargeLoadingSpinner(true, ".ui-overlay-block");
+                    }';
         }
     }
 ?>

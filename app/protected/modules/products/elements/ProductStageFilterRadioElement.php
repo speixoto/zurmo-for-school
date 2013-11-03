@@ -53,7 +53,7 @@
                 $this->getStageDropDownArray(),
                 $this->getEditableHtmlOptions()
             );
-            return ZurmoHtml::tag('strong', array(), Zurmo::t('ProductsModule', 'View')) . ':' . $content;
+            return ZurmoHtml::tag('strong', array(), Zurmo::t('Core', 'View')) . ':' . $content;
         }
 
         protected function renderControlNonEditable()
@@ -100,7 +100,7 @@
             $customFieldIndexedData     = CustomFieldDataUtil::getDataIndexedByDataAndTranslatedLabelsByLanguage($customFieldData,
                                                                                                                     Yii::app()->language);
             $data                       = array_merge(array(ProductsConfigurationForm::FILTERED_BY_ALL_STAGES
-                                                                            => Zurmo::t('ProductsModule', 'All')), $customFieldIndexedData);
+                                                                            => Zurmo::t('Core', 'All')), $customFieldIndexedData);
             return $data;
         }
     }

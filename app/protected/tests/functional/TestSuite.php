@@ -35,11 +35,13 @@
      ********************************************************************************/
 
     $cwd = getcwd();
-    require_once('../common/PhpUnitServiceUtil.php');
-    require_once('../common/testRoots.php');
     require_once('../common/TestConfigFileUtils.php');
     TestConfigFileUtils::configureConfigFiles();
+    require_once(INSTANCE_ROOT . '/protected/config/debugTest.php');
 
+    chdir(__DIR__);
+    require_once('../common/PhpUnitServiceUtil.php');
+    require_once('../common/testRoots.php');
     require_once 'File/Iterator.php';
     require_once('File/Iterator/Factory.php');
 
@@ -47,11 +49,11 @@
     define('TEST_BASE_URL', $seleniumTestBaseUrl);
     define('TEST_RESULTS_URL', $seleniumTestResultUrl);
     define('TEST_RESULTS_PATH', $seleniumTestResultsPath);
-    //following is path to the user-extension.js, so as to enable the use of global variables
-    define('USER_EXTENSIONS_JS_PATH', './assets/extensions/user-extensions.js');
     define('SELENIUM_SERVER_PORT', $seleniumServerPort);
     define('BROWSERS_TO_RUN', $seleniumBrowsersToRun);
     define('TEST_BASE_CONTROL_URL', $seleniumControlUrl);
+    //following is path to the user-extension.js, so as to enable the use of global variables
+    define('USER_EXTENSIONS_JS_PATH', './assets/extensions/user-extensions.js');
 
     class TestSuite
     {

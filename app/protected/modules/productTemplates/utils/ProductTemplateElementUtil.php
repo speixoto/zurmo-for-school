@@ -215,7 +215,7 @@
         public static function getProductTemplateStatusDropdownArray()
         {
             return array(
-                ProductTemplate::STATUS_ACTIVE       => Yii::t('Default', 'Active'),
+                ProductTemplate::STATUS_ACTIVE       => Yii::t('Core', 'Active'),
                 ProductTemplate::STATUS_INACTIVE     => Yii::t('Default', 'Inactive'),
             );
         }
@@ -239,7 +239,7 @@
         {
             return array(
                 ProductTemplate::PRICE_FREQUENCY_ONE_TIME  => Yii::t('Default', 'One Time'),
-                ProductTemplate::PRICE_FREQUENCY_MONTHLY   => Yii::t('Default', 'Monthly'),
+                ProductTemplate::PRICE_FREQUENCY_MONTHLY   => Yii::t('Core', 'Monthly'),
                 ProductTemplate::PRICE_FREQUENCY_ANNUALLY  => Yii::t('Default', 'Annually'),
             );
         }

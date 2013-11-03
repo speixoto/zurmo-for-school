@@ -135,12 +135,12 @@
                 array('type',                 'type',              'type' => 'string'),
                 array('type',                 'length',            'max' => 15),
                 array('type',                 'required'),
-                array('timeTrigger',          'validateTimeTrigger', 'on' => self::TIME_TRIGGER_VALIDATION_SCENARIO),
+                array('timeTrigger',          'validateTimeTrigger',       'on' => self::TIME_TRIGGER_VALIDATION_SCENARIO),
                 array('triggersStructure',    'validateTriggersStructure', 'on' => self::TRIGGERS_VALIDATION_SCENARIO),
-                array('triggers',             'validateTriggers',  'on' => self::TRIGGERS_VALIDATION_SCENARIO),
-                array('actions',              'validateActions',   'on' => self::ACTIONS_VALIDATION_SCENARIO),
-                array('emailMessages',          'validateEmailMessages', 'on' => self::EMAIL_MESSAGES_VALIDATION_SCENARIO),
-                array('timeTriggerAttribute', 'type',                'type' => 'string'),
+                array('triggers',             'validateTriggers',          'on' => self::TRIGGERS_VALIDATION_SCENARIO),
+                array('actions',              'validateActions',           'on' => self::ACTIONS_VALIDATION_SCENARIO),
+                array('emailMessages',        'validateEmailMessages',     'on' => self::EMAIL_MESSAGES_VALIDATION_SCENARIO),
+                array('timeTriggerAttribute', 'type',              'type' => 'string'),
             );
         }
 
@@ -150,7 +150,7 @@
         public function attributeLabels()
         {
             return array(
-                'name' => Zurmo::t('WorkflowsModule', 'Name'),
+                'name' => Zurmo::t('Core', 'Name'),
             );
         }
 

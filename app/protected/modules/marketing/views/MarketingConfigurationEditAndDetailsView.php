@@ -51,7 +51,7 @@
                     'toolbar' => array(
                         'elements' => array(
                             array('type' => 'ConfigurationLink',
-                                            'label' => "eval:Zurmo::t('ZurmoModule', 'Cancel')"),
+                                            'label' => "eval:Zurmo::t('Core', 'Cancel')"),
                             array('type' => 'SaveButton',    'renderType' => 'Edit'),
                             array('type' => 'EditLink',      'renderType' => 'Details'),
                         ),

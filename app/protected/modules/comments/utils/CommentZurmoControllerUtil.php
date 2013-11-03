@@ -103,10 +103,11 @@
             }
             elseif ($this->relatedModel instanceof Task)
             {
-                $participants = TasksUtil::resolvePeopleToSendNotificationToOnNewComment($this->relatedModel, $user);
-                CommentsUtil::sendNotificationOnNewComment($this->relatedModel, $model, $user, $participants);
+                TasksNotificationUtil::submitTaskNotificationMessage($this->relatedModel,
+                                                                    TasksNotificationUtil::TASK_NEW_COMMENT,
+                                                                    $model->createdByUser, $model);
                 //Log the event
-                if($this->relatedModel->project->id > 0)
+                if ($this->relatedModel->project->id > 0)
                 {
                     ProjectsUtil::logAddCommentEvent($this->relatedModel, $model->description);
                 }

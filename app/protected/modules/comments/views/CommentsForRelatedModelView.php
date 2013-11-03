@@ -195,7 +195,7 @@
         {
             $url     =   Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/deleteViaAjax',
                             array_merge($this->getParams, array('id' => $comment->id)));
-            return       ZurmoHtml::ajaxLink(Zurmo::t('CommentsModule', 'Delete'), $url,
+            return       ZurmoHtml::ajaxLink(Zurmo::t('Core', 'Delete'), $url,
                          array('type'     => 'GET',
                                'complete' => "function(XMLHttpRequest, textStatus){
                                               $('#deleteCommentLink" . $comment->id . "').parent().parent().parent().remove();}"),
@@ -210,7 +210,7 @@
         protected function renderEditLinkContent(Comment $comment)
         {
             $url     =   '';
-            return       ZurmoHtml::ajaxLink(Zurmo::t('CommentsModule', 'Edit'), $url);
+            return       ZurmoHtml::ajaxLink(Zurmo::t('Core', 'Edit'), $url);
         }
 
         /**

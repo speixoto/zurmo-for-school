@@ -174,7 +174,7 @@
 
         public function testGetSenderContent()
         {
-            //Test without personOrAccounts
+            //Test without personsOrAccounts
             $emailMessageSender              = new EmailMessageSender();
             $emailMessageSender->fromName    = 'test name';
             $emailMessageSender->fromAddress = 'test@zurmo.com';
@@ -185,15 +185,15 @@
             //Test with one personOrAccount
             $contact = new Contact();
             $contact->lastName = 'name1';
-            $emailMessageSender->personOrAccounts->add($contact);
+            $emailMessageSender->personsOrAccounts->add($contact);
             $content = EmailMessageMashableActivityRules::getSenderContent($emailMessageSender);
             $this->assertContains('href=', $content);
             $this->assertContains('name1',   $content);
 
-            //Test with more than one personOrAccounts
+            //Test with more than one personsOrAccounts
             $contact = new Contact();
             $contact->lastName = 'name2';
-            $emailMessageSender->personOrAccounts->add($contact);
+            $emailMessageSender->personsOrAccounts->add($contact);
             $content = EmailMessageMashableActivityRules::getSenderContent($emailMessageSender);
             $this->assertContains('test@zurmo.com', $content);
             $this->assertContains('href=',        $content);
@@ -203,7 +203,7 @@
 
         public function testGetRecipientsContent()
         {
-            //Test without personOrAccounts
+            //Test without personsOrAccounts
             $emailMessageRecipient1            = new EmailMessageRecipient();
             $emailMessageRecipient1->type      = EmailMessageRecipient::TYPE_TO;
             $emailMessageRecipient1->toName    = 'test name1';
@@ -227,9 +227,9 @@
             $contact2 = new Contact();
             $contact1->lastName = 'contact1';
             $contact2->lastName = 'contact2';
-            $emailMessageRecipient1->personOrAccounts->add($contact1);
-            $emailMessageRecipient2->personOrAccounts->add($contact1);
-            $emailMessageRecipient2->personOrAccounts->add($contact2);
+            $emailMessageRecipient1->personsOrAccounts->add($contact1);
+            $emailMessageRecipient2->personsOrAccounts->add($contact1);
+            $emailMessageRecipient2->personsOrAccounts->add($contact2);
 
             $content = EmailMessageMashableActivityRules::getRecipientsContent($emailMessage->recipients);
             $this->assertContains   ('href=',         $content);

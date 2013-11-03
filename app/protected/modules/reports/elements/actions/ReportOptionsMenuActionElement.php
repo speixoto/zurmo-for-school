@@ -78,7 +78,7 @@
 
             if ($this->showEdit)
             {
-                $menuItems[] = array('label' => Zurmo::t('ReportsModule', 'Edit'),
+                $menuItems[] = array('label' => Zurmo::t('Core', 'Edit'),
                                      'url'   => Yii::app()->createUrl($this->getEditRoute(),
                                                                                   array('id' => $this->modelId)));
             }
@@ -92,7 +92,7 @@
 
             if ($this->showDelete)
             {
-                $menuItems[] = array('label'       => Zurmo::t('ReportsModule', 'Delete'),
+                $menuItems[] = array('label'       => Zurmo::t('Core', 'Delete'),
                                      'url'         => Yii::app()->createUrl($this->getDeleteRoute(),
                                                                                      array('id' => $this->modelId)),
                                      'linkOptions' =>

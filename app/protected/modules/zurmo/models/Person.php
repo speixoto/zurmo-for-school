@@ -73,7 +73,7 @@
                 array(
                     'department'     => Zurmo::t('ZurmoModule', 'Department', array(), null, $language),
                     'firstName'      => Zurmo::t('ZurmoModule', 'First Name', array(), null, $language),
-                    'fullName'       => Zurmo::t('ZurmoModule', 'Name', array(), null, $language),
+                    'fullName'       => Zurmo::t('Core', 'Name', array(), null, $language),
                     'jobTitle'       => Zurmo::t('ZurmoModule', 'Job Title', array(), null, $language),
                     'lastName'       => Zurmo::t('ZurmoModule', 'Last Name', array(), null, $language),
                     'mobilePhone'    => Zurmo::t('ZurmoModule', 'Mobile Phone', array(), null, $language),

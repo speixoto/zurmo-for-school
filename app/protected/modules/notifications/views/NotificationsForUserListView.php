@@ -71,18 +71,6 @@
             return array();
         }
 
-        /**
-         * Override to provide the correct pager URL
-         * (non-PHPdoc)
-         * @see ListView::getCGridViewPagerParams()
-         */
-        protected function getCGridViewPagerParams()
-        {
-            $params             = parent::getCGridViewPagerParams();
-            $params['route']    = $this->getGridViewActionRoute('userList', $this->moduleId);
-            return $params;
-        }
-
         protected function getCGridViewParams()
         {
             $gridViewParams = parent::getCGridViewParams();

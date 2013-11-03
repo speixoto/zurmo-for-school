@@ -56,7 +56,7 @@
         {
             if (trim($this->name) == '')
             {
-                return Zurmo::t('ProductTemplatesModule', '(None)');
+                return Zurmo::t('Core', '(None)');
             }
             return $this->name;
         }

@@ -74,7 +74,7 @@
                 ),
                 'tabMenuItems' => array(
                     array(
-                        'label'  => "eval:Zurmo::t('HomeModule', 'Home')",
+                        'label'  => "eval:Zurmo::t('ZurmoModule', 'Home')",
                         'url'    => array('/home/default'),
                         'mobile' => true,
                     ),
@@ -85,7 +85,7 @@
 
         protected static function getSingularModuleLabel($language)
         {
-            return Zurmo::t('HomeModule', 'Home', array(), null, $language);
+            return Zurmo::t('ZurmoModule', 'Home', array(), null, $language);
         }
 
         protected static function getPluralModuleLabel($language)

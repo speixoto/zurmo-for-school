@@ -51,6 +51,10 @@
     $config = INSTANCE_ROOT . '/protected/config/console.php';
 
     require_once(COMMON_ROOT   . "/version.php");
+    if (is_file(COMMON_ROOT   . "/commercialVersion.php"))
+    {
+        require_once(COMMON_ROOT   . "/commercialVersion.php");
+    }
     require_once($debug);
     require_once($yii);
     require_once(COMMON_ROOT . '/protected/core/components/ConsoleApplication.php');

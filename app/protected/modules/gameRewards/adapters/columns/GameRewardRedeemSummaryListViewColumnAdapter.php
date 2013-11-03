@@ -62,7 +62,7 @@
             $content .= '<br />';
             $content .= ZurmoHtml::tag('span', array('class' => 'reward-cost'), $gameReward->cost . ' x ');
             $content .= ZurmoHtml::tag('span', array(),
-                        ' - ' . $gameReward->quantity . ' ' . Zurmo::t('ZurmoModule', 'Available') .
+                        ' - ' . $gameReward->quantity . ' ' . Zurmo::t('Core', 'Available') .
                         ' ' . static::renderExpirationDateTimeContent($gameReward));
             $content .= static::renderRedeemLink($gameReward, $availableCoins);
             return $content;
@@ -81,7 +81,7 @@
         {
             assert('is_int($availableCoins)');
             $url      = Yii::app()->createUrl('gameRewards/default/redeemReward', array('id' => $gameReward->id));
-            $label    = Zurmo::t('GameRewardsModule', 'Redeem');
+            $label    = Zurmo::t('ZurmoModule', 'Redeem');
             $aContent = ZurmoHtml::wrapLink($label);
             return      ZurmoHtml::ajaxLink($aContent, $url,
                 array('type'       => 'GET',
@@ -105,7 +105,7 @@
             $htmlOptions   = array();
             $disabledClass = null;
             $disabled      = false;
-            if($gameReward->cost > $availableCoins)
+            if ($gameReward->cost > $availableCoins || $gameReward->quantity <= 0)
             {
                 $disabledClass = ' disabled';
                 $disabled      = true;
@@ -115,7 +115,7 @@
             $htmlOptions['name']      = $id;
             $htmlOptions['class']     = 'attachLoading z-button reward-redeem-link' . $disabledClass;
             $htmlOptions['namespace'] = 'redeem';
-            if($disabled)
+            if ($disabled)
             {
                 $htmlOptions['onclick']   = 'js:return false;';
             }

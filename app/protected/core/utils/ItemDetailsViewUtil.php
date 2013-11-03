@@ -35,55 +35,60 @@
      ********************************************************************************/
 
     /**
-     * Class utilized by 'select' modal popup of user in the task detail view
+     * Helper functionality for rendering renderAfterFormLayoutForDetailsContent() for items
      */
-    class TaskSelectFromRelatedListModalListLinkProvider extends SelectFromRelatedEditModalListLinkProvider
+    class ItemDetailsViewUtil
     {
-        /**
-         * Attribute to be updated
-         * @var string
-         */
-        protected $attribute;
-
-        /**
-         * Source model id
-         * @var string
-         */
-        protected $sourceModelId;
-
-        /**
-         * sourceIdFieldName and sourceNameFieldId are needed to know
-         * which fields in the parent form to populate data with
-         * upon selecting a row in the listview
-         *
-         */
-        public function __construct($sourceIdFieldId, $sourceNameFieldId, $attribute, $modelId, $modalId = ModelElement::MODAL_CONTAINER_PREFIX)
+        protected static function shouldRenderDetailsContent($model)
         {
-            assert('is_string($sourceIdFieldId)');
-            assert('is_string($sourceNameFieldId)');
-            assert('is_string($attribute)');
-            $this->sourceIdFieldId   = $sourceIdFieldId;
-            $this->sourceNameFieldId = $sourceNameFieldId;
-            $this->modalId           = $modalId;
-            $this->attribute         = $attribute;
-            $this->sourceModelId     = $modelId;
+            if ($model instanceof Item) {
+                return true;
+            }
+            return false;
         }
 
-        /**
-         * @param string $attributeString
-         * @return string
-         */
-        public function getLinkString($attributeString)
+        protected static function getElements($model)
         {
-            $url     = Yii::app()->createUrl('tasks/default/updateRelatedUsersViaAjax', array('id' => $this->sourceModelId));
-            $errorInProcess = CJavaScript::quote(Zurmo::t('Core', 'There was an error processing your request'));
-            $string  = 'ZurmoHtml::link(';
-            $string .= $attributeString . ', ';
-            $string .= '"javascript:transferUserModalValues(\"#'. $this->modalId . '\", " . CJavaScript::encode(array(\'' .
-                       $this->sourceIdFieldId . '\' => $data->id, \'' . $this->sourceNameFieldId . '\' => strval(' . $attributeString . ')))';
-            $string .= '. ",\'' . $url . '\',\'' . $this->attribute . '\', \'' . $errorInProcess . '\');"';
-            $string .= ')';
-            return $string;
+            $elements = array(
+                array('className' => 'DateTimeModifiedUserElement',
+                    'parameters' => array($model, 'null'),
+                ),
+                array('className' => 'DateTimeCreatedUserElement',
+                    'parameters' => array($model, 'null'),
+                ),
+            );
+            return $elements;
+        }
+
+        public static function renderAfterFormLayoutForDetailsContent($model, $content = null)
+        {
+            $detailsContent = null;
+            if (static::shouldRenderDetailsContent($model)) {
+                if ($content != null) {
+                    $detailsContent .= ZurmoHtml::tag('br');
+                }
+                $detailsContent .= static::renderElementsContent(static::getElements($model));
+            }
+            $content .= ZurmoHtml::tag('p', array('class' => 'after-form-details-content'), $detailsContent);
+            return $content;
+        }
+
+        protected static function renderElementsContent($elements)
+        {
+            $content = null;
+            $elementsCount = count($elements);
+            foreach ($elements as $index => $elementDetails) {
+                $elementClassName = $elementDetails['className'];
+                $elementParams = $elementDetails['parameters'];
+                $element = new $elementClassName($elementParams[0], $elementParams[1]);
+                $element->nonEditableTemplate = '{label} {content}';
+                $content .= $element->render();
+                $isLast = (($index + 1) == $elementsCount);
+                if (!$isLast) {
+                    $content .= '&#160;|&#160;';
+                }
+            }
+            return $content;
         }
     }
 ?>

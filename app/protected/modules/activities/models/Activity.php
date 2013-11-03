@@ -49,7 +49,7 @@
         {
             return array_merge(parent::translatedAttributeLabels($language),
                 array(
-                    'latestDateTime' => Zurmo::t('ActivitiesModule', 'Latest Date Time',  array(), null, $language),
+                    'latestDateTime' => Zurmo::t('ZurmoModule', 'Latest Date Time',  array(), null, $language),
                     'activityItems'  => Zurmo::t('ActivitiesModule', 'Activity Items',    array(), null, $language),
                 )
             );

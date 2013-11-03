@@ -106,8 +106,7 @@
                     'comments'                  => array(static::HAS_MANY, 'Comment', static::OWNED,
                                                         static::LINK_TYPE_POLYMORPHIC, 'relatedModel'),
                     'checkListItems'            => array(static::HAS_MANY, 'TaskCheckListItem', static::OWNED),
-                    'notificationSubscribers'   => array(static::HAS_MANY, 'NotificationSubscriber', static::OWNED,
-                                                        static::LINK_TYPE_POLYMORPHIC, 'relatedModel'),
+                    'notificationSubscribers'   => array(static::HAS_MANY, 'NotificationSubscriber', static::OWNED),
                     'files'                     => array(static::HAS_MANY, 'FileModel', static::OWNED,
                                                         static::LINK_TYPE_POLYMORPHIC, 'relatedModel'),
                     'project'                   => array(static::HAS_ONE, 'Project'),
@@ -121,6 +120,7 @@
                     array('name',             'type',    'type' => 'string'),
                     array('name',             'length',  'min'  => 1, 'max' => 64),
                     array('status',           'type', 'type' => 'integer'),
+                    array('status',           'default', 'value' => Task::STATUS_NEW),
                 ),
                 'elements' => array(
                     'completedDateTime' => 'DateTime',
@@ -175,10 +175,10 @@
             return array_merge(parent::translatedAttributeLabels($language),
                 array(
                     'completedDateTime' => Zurmo::t('TasksModule', 'Completed On', array(), null, $language),
-                    'completed'         => Zurmo::t('TasksModule', 'Completed',  array(), null, $language),
+                    'completed'         => Zurmo::t('Core', 'Completed',  array(), null, $language),
                     'description'       => Zurmo::t('ZurmoModule', 'Description',  array(), null, $language),
                     'dueDateTime'       => Zurmo::t('TasksModule', 'Due On',       array(), null, $language),
-                    'name'              => Zurmo::t('TasksModule', 'Name',  array(), null, $language),
+                    'name'              => Zurmo::t('Core', 'Name',  array(), null, $language),
                     'status'            => Zurmo::t('ZurmoModule', 'Status',  array(), null, $language),
                     'requestedByUser'   => Zurmo::t('TasksModule', 'Requested By User',  array(), null, $language),
                     'files'             => Zurmo::t('ZurmoModule', 'Files',  array(), null, $language),
@@ -209,15 +209,8 @@
         {
             if (parent::beforeSave())
             {
-                if (array_key_exists('completed', $this->originalAttributeValues) &&
-                    $this->completed == true)
-                {
-                    if ($this->completedDateTime == null)
-                    {
-                        $this->completedDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
-                    }
-                    $this->unrestrictedSet('latestDateTime', $this->completedDateTime);
-                }
+                $this->resolveStatusAndSetCompletedFields();
+                $this->resolveAndSetDefaultSubscribers();
                 return true;
             }
             else
@@ -278,27 +271,103 @@
             return true;
         }
 
-        /**
-         * Updates kanban item after saving task
-         */
+        public function doNotificationSubscribersContainPerson(Item $item)
+        {
+            foreach($this->notificationSubscribers as $notificationSubscriber)
+            {
+                if($notificationSubscriber->person->getClassId('Item') == $item->getClassId('Item'))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         protected function afterSave()
         {
+            $this->processNotificationsToBeSent();
             parent::afterSave();
-            $kanbanItem       = KanbanItem::getByTask($this->id);
-            if($kanbanItem != null)
+        }
+
+        /**
+         *  Process notifications on modal details screen
+         */
+        private function processNotificationsToBeSent()
+        {
+            if(array_key_exists('status', $this->originalAttributeValues))
             {
-                $targetKanbanType = TasksUtil::resolveKanbanItemTypeForTaskStatus(intval($this->status));
-                $sourceKanbanType = $kanbanItem->type;
-                if($sourceKanbanType != $targetKanbanType)
+                if($this->status == Task::STATUS_AWAITING_ACCEPTANCE &&
+                   $this->requestedByUser->id != Yii::app()->user->userModel->id)
                 {
-                  $sortOrder             = KanbanItem::getMaximumSortOrderByType($targetKanbanType);
-                  $kanbanItem->sortOrder = $sortOrder;
-                  $kanbanItem->type      = $targetKanbanType;
-                  if(!$kanbanItem->save())
-                  {
-                      throw new FailedToSaveModelException();
-                  }
+                    TasksNotificationUtil::submitTaskNotificationMessage($this,
+                        TasksNotificationUtil::TASK_STATUS_BECOMES_AWAITING_ACCEPTANCE,
+                        Yii::app()->user->userModel);
                 }
+                elseif($this->status == Task::STATUS_REJECTED &&
+                       $this->owner->id != Yii::app()->user->userModel->id)
+                {
+                    TasksNotificationUtil::submitTaskNotificationMessage($this,
+                        TasksNotificationUtil::TASK_STATUS_BECOMES_REJECTED,
+                        Yii::app()->user->userModel);
+                }
+                elseif($this->status == Task::STATUS_COMPLETED)
+                {
+                    TasksNotificationUtil::submitTaskNotificationMessage($this,
+                        TasksNotificationUtil::TASK_STATUS_BECOMES_COMPLETED,
+                        Yii::app()->user->userModel);
+                }
+            }
+            if($this->isNewModel)
+            {
+                if($this->owner->id != $this->requestedByUser->id && $this->owner->id != Yii::app()->user->userModel->id)
+                {
+                    TasksNotificationUtil::submitTaskNotificationMessage($this,
+                        TasksNotificationUtil::TASK_NEW);
+                }
+            }
+            elseif(array_key_exists('owner', $this->originalAttributeValues) &&
+               $this->owner->id != Yii::app()->user->userModel->id)
+            {
+                TasksNotificationUtil::submitTaskNotificationMessage($this,
+                                                         TasksNotificationUtil::TASK_OWNER_CHANGE);
+            }
+
+        }
+
+        /**
+         * Resolve and set default subscribers
+         */
+        protected function resolveAndSetDefaultSubscribers()
+        {
+            //Add requested by user as default subscriber
+            if($this->requestedByUser->id > 0)
+            {
+                TasksUtil::addSubscriber($this->requestedByUser, $this, false);
+            }
+            TasksUtil::addSubscriber($this->owner, $this, false);
+        }
+
+        /**
+         * Resolve status and set completed fields
+         */
+        protected function resolveStatusAndSetCompletedFields()
+        {
+            if($this->completed != true && $this->status != Task::STATUS_COMPLETED)
+            {
+                $this->completed = false;
+            }
+            else
+            {
+                $this->completed = true;
+            }
+
+            if ($this->completed == true)
+            {
+                if ($this->completedDateTime == null)
+                {
+                    $this->completedDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
+                }
+                $this->unrestrictedSet('latestDateTime', $this->completedDateTime);
             }
         }
     }

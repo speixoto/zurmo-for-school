@@ -277,7 +277,9 @@
                         //attachLoadingSpinner("' . $inputDivId . '", true, "dark");
                         $("#' . $inputDivId . '").show();
                         }',
-                'success' => 'js:function(data){ $("#' . $inputDivId . '").html(data);}',
+                'success' => 'js:function(data){$("#' . $inputDivId . '").html(data);
+                                                $("#actionsNextLink").parent().parent().hide();
+                                               }',
             ));
             $script = "$('#" . $id . "').live('change', function()
             {
@@ -290,6 +292,7 @@
                 if ($('#" . $id . "').val() == '')
                 {
                     //do nothing
+                    $('#actionsNextLink').parent().parent().show();
                 }
                 else if ($('#" . $id . "').val() == '" . ActionForWorkflowForm::TYPE_UPDATE_SELF . "')
                 {

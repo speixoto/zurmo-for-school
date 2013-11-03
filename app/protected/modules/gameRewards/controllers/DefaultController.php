@@ -147,7 +147,7 @@
 
         protected function processEdit(GameReward $gameReward, $redirectUrl = null, $isBeingCopied = false)
         {
-            if($isBeingCopied)
+            if ($isBeingCopied)
             {
                 $title = Zurmo::t('Core', 'Edit Game Reward');
             }
@@ -391,7 +391,7 @@
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($gameReward);
 
             $gameCoin = GameCoin::resolveByPerson(Yii::app()->user->userModel);
-            if($gameCoin->value < $gameReward->cost)
+            if ($gameCoin->value < $gameReward->cost)
             {
                 $message = Zurmo::t('GameRewardsModule', 'You do not have enough coins to redeem this reward');
                 echo CJSON::encode(array('message' => $message));
@@ -402,12 +402,12 @@
             $gameRewardTransaction->quantity = 1;
             $gameRewardTransaction->person = Yii::app()->user->userModel;
             $gameReward->transactions->add($gameRewardTransaction);
-            if(!$gameReward->save())
+            if (!$gameReward->save())
             {
                 throw new FailedToSaveModelException();
             }
             $gameCoin->removeValue((int)$gameReward->cost);
-            if(!$gameCoin->save())
+            if (!$gameCoin->save())
             {
                 throw new FailedToSaveModelException();
             }

@@ -57,7 +57,7 @@
             $metadata['global'] = array(
                 'adminTabMenuItems' => array(
                     array(
-                        'label' => "eval:Zurmo::t('ConfigurationModule', 'Administration')",
+                        'label' => "eval:Zurmo::t('ZurmoModule', 'Administration')",
                         'url'   => array('/configuration/default'),
                         'right' => ZurmoModule::RIGHT_ACCESS_ADMINISTRATION
                     ),

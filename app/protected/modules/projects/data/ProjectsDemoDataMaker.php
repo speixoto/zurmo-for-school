@@ -39,7 +39,11 @@
      */
     class ProjectsDemoDataMaker extends DemoDataMaker
     {
-        protected $ratioToLoad = 3;
+        /**
+         * Limit projects to 5
+         * @var int
+         */
+        protected $loadMagnitude = 5;
 
         public static function getDependencies()
         {
@@ -61,7 +65,13 @@
                 $account            = $demoDataHelper->getRandomByModelName('Account');
                 $project->accounts->add($account);
                 $this->populateModel($project);
+                $project->addPermissions(Group::getByName(Group::EVERYONE_GROUP_NAME), Permission::READ_WRITE_CHANGE_PERMISSIONS_CHANGE_OWNER);
                 $saved = $project->save();
+                assert('$saved');
+                $project = Project::getById($project->id);
+                ReadPermissionsOptimizationUtil::
+                    securableItemGivenPermissionsForGroup($project, Group::getByName(Group::EVERYONE_GROUP_NAME));
+                $project->save();
                 assert('$saved');
                 ProjectAuditEvent::logAuditEvent(ProjectAuditEvent::PROJECT_CREATED, $project, $project->name);
                 self::addDemoTasks($project, 3, $demoDataHelper);
@@ -113,7 +123,7 @@
                 {
                     $taskCheckListItem = new TaskCheckListItem();
                     $taskCheckListItem->name = $name;
-                    if(($itemKey * $i) % 2 == 0)
+                    if(($itemKey * $i * rand(5, 100)) % 3 == 0)
                     {
                         $taskCheckListItem->completed = true;
                     }
@@ -129,16 +139,21 @@
                     $comment->setScenario('importModel');
                     $comment->createdByUser = $demoDataHelper->getRandomByModelName('User');
                     $task->comments->add($comment);
-                    ProjectsUtil::logAddCommentEvent($task, $comment);
+                    ProjectsUtil::logAddCommentEvent($task, strval($comment));
                 }
                 //Add Super user
                 $comment                = new Comment();
                 $comment->description   = 'Versatile idea regarding the task';
                 $task->comments->add($comment);
+                $task->addPermissions(Group::getByName(Group::EVERYONE_GROUP_NAME), Permission::READ_WRITE_CHANGE_PERMISSIONS_CHANGE_OWNER);
                 $task->save();
                 $currentStatus              = $task->status;
                 ProjectsUtil::logAddTaskEvent($task);
+                $task = Task::getById($task->id);
                 $task->status = RandomDataUtil::getRandomValueFromArray(self::getTaskStatusOptions());
+                $task->save();
+                ReadPermissionsOptimizationUtil::
+                    securableItemGivenPermissionsForGroup($task, Group::getByName(Group::EVERYONE_GROUP_NAME));
                 $task->save();
                 ProjectsUtil::logTaskStatusChangeEvent($task,
                                                        Task::getStatusDisplayName($currentStatus),
@@ -158,8 +173,6 @@
                 'Prepare telephone directory for the company',
                 'Get an accounting software',
                 'Usage of google analytics on company website',
-                'Buy new laptops for the company',
-                'Arrange a good chef for the cafeteria'
             );
             $multipliedTasksList = array();
             for($i = 1; $i <= 2; $i++)
@@ -191,12 +204,6 @@
                                                                         'Discuss with the team'),
                 'Usage of google analytics on company website'=> array('Explore the usage',
                                                                         'Implement into the website'),
-                'Buy new laptops for the company'             => array('Gather the information',
-                                                                        'Do research',
-                                                                        'Submit the analysis for the review'),
-                'Arrange a good chef for the cafeteria'       => array('List down the chefs available',
-                                                                        'Ask them for a sample',
-                                                                        'Get an approval on the same'),
             );
 
             return $checklistItemsArray[$key];
@@ -220,10 +227,6 @@
                                                                         'Less number of people required'),
                 'Usage of google analytics on company website'=> array('Aids in site analysis',
                                                                         'Would be helpful from SEO perspective'),
-                'Buy new laptops for the company'             => array('Sony vaio would be good',
-                                                                        'No no mac would be more better'),
-                'Arrange a good chef for the cafeteria'       => array('I want to taste every sample',
-                                                                        'Please arrange the same for me'),
             );
             return $comments[$key];
         }

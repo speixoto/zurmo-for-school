@@ -56,7 +56,7 @@
         {
             $metadata = array(
                 'perUser' => array(
-                    'title' => "eval:Zurmo::t('CampaignsModule', 'Email Recipients')",
+                    'title' => "eval:Zurmo::t('EmailMessagesModule', 'Email Recipients')",
                 ),
                 'global' => array(
                     'gridViewType' => RelatedListView::GRID_VIEW_TYPE_NORMAL,

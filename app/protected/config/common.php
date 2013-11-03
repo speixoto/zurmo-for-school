@@ -322,7 +322,7 @@
                 ),
             ),
             'workflowsObserver' => array(
-                'class' => 'application.modules.workflow.observers.WorkflowsObserver',
+                'class' => 'application.modules.workflows.observers.WorkflowsObserver',
             ),
         ),
         'controllerMap' => array(

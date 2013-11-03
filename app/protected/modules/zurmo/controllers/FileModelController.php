@@ -36,16 +36,14 @@
 
     class ZurmoFileModelController extends ZurmoModuleController
     {
-        const FILE_MODEL_CLASS_NAME = 'FileModel';
-
         public function actionUpload($filesVariableName)
         {
             try
             {
                 $uploadedFile = UploadedFileUtil::getByNameAndCatchError($filesVariableName);
                 assert('$uploadedFile instanceof CUploadedFile');
-                $fileModel     = FileModelUtil::makeByUploadedFile($uploadedFile, static::FILE_MODEL_CLASS_NAME);
-                assert('$fileModel instanceof FileModel || is_subclass_of(get_class($fileModel), "FileModel")');
+                $fileModel     = FileModelUtil::makeByUploadedFile($uploadedFile);
+                assert('$fileModel instanceof FileModel');
                 $fileUploadData = array('name' => $fileModel->name,
                                         'type' => $fileModel->type,
                                         'size' =>
@@ -54,7 +52,7 @@
             }
             catch (FailedFileUploadException $e)
             {
-                $fileUploadData = array('error' => Zurmo::t('ZurmoModule', 'Error') . ' ' . $e->getMessage());
+                $fileUploadData = array('error' => Zurmo::t('Core', 'Error') . ' ' . $e->getMessage());
             }
             echo CJSON::encode(array($fileUploadData));
             Yii::app()->end(0, false);
@@ -70,15 +68,13 @@
                 echo $view->render();
                 Yii::app()->end(0, false);
             }
-            $fileModelClassName = static::FILE_MODEL_CLASS_NAME;
-            $fileModel = $fileModelClassName::getById((int)$id);
+            $fileModel = FileModel::getById((int)$id);
             Yii::app()->request->sendFile($fileModel->name, $fileModel->fileContent->content, $fileModel->type, false);
         }
 
         public function actionDelete($id)
         {
-            $fileModelClassName = static::FILE_MODEL_CLASS_NAME;
-            $fileModel = $fileModelClassName::getById((int)$id);
+            $fileModel = FileModel::getById((int)$id);
             $fileModel->delete();
             //todo: add error handling.
         }
@@ -94,8 +90,7 @@
             $newFileModelsData      = array(); //needs id, name, size at least, preferably type too.
             foreach ($existingFileModelIds as $existingFileModelId)
             {
-                $newFileModel           = FileModelUtil::makeByExistingFileModelId($existingFileModelId, true,
-                                                                                    static::FILE_MODEL_CLASS_NAME);
+                $newFileModel           = FileModelUtil::makeByExistingFileModelId($existingFileModelId, true);
                 if ($newFileModel === false)
                 {
                     throw new FailedFileUploadException();

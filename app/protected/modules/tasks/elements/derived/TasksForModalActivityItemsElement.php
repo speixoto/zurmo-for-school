@@ -43,7 +43,7 @@
         {
             $template  = "<tr>\n";
             $template .= "<td colspan=\"" . $this->getColumnSpan() . "\">\n";
-            $template .= '{label}{content}';
+            $template .= '{label}<strong>{content}</strong>';
             $template .= "</td></tr>\n";
             return $template;
         }

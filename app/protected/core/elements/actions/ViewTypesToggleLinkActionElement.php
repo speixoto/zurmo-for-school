@@ -133,7 +133,7 @@
          */
         protected function getDefaultLabel()
         {
-            return Zurmo::t('ZurmoModule', 'Toggle Results');
+            return Zurmo::t('Core', 'Toggle Results');
         }
 
         /**

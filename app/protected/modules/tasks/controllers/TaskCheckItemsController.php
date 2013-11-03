@@ -37,14 +37,17 @@
             {
                 $this->actionInlineEditValidate(new TaskCheckListItem());
             }
-
             $taskCheckListItem          = new TaskCheckListItem();
             $postData                   = PostUtil::getData();
             $postFormData               = ArrayUtil::getArrayValue($postData, get_class($taskCheckListItem));
             $taskCheckListItem->name    = $postFormData['name'];
             $task                       = Task::getById(intval($relatedModelId));
             $task->checkListItems->add($taskCheckListItem);
-            $task->save(false);
+            $saved = $task->save();
+            if(!$saved)
+            {
+                throw new FailedToSaveModelException();
+            }
             if($task->project->id > 0)
             {
                 ProjectsUtil::logTaskCheckItemEvent($task, $taskCheckListItem);
@@ -70,7 +73,8 @@
                                         'relatedModelClassName'    => 'Task',
                                         'relatedModelRelationName' => 'checkListItems',
                                         'redirectUrl'              => $redirectUrl); //After save, the url to go to.
-            $inlineView         = new TaskCheckItemInlineEditView($taskCheckListItem, 'taskCheckItems', 'tasks', 'inlineCreateTaskCheckItemSave', $urlParameters, $uniquePageId);
+            $inlineView         = new TaskCheckItemInlineEditView($taskCheckListItem, 'taskCheckItems',
+                                                                  'tasks', 'inlineCreateTaskCheckItemSave', $urlParameters, $uniquePageId);
             $view               = new AjaxPageView($inlineView);
             echo $view->render();
         }
@@ -98,17 +102,16 @@
         public function actionAjaxCheckItemListForRelatedTaskModel($uniquePageId = null)
         {
             $getData                  = GetUtil::getData();
-            $relatedModelId           = ArrayUtil::getArrayValue($getData, 'relatedModelId');
-            $relatedModelClassName    = ArrayUtil::getArrayValue($getData, 'relatedModelClassName');
-            $relatedModelRelationName = ArrayUtil::getArrayValue($getData, 'relatedModelRelationName');
-            $checkItemsData           = TaskCheckListItem::getByTask((int)$relatedModelId);
+            $taskId                   = ArrayUtil::getArrayValue($getData, 'relatedModelId');
+            $taskCheckListItem        = TaskCheckListItem::getByTask((int)$taskId);
             $getParams                = array('uniquePageId'             => $uniquePageId,
-                                              'relatedModelId'           => $relatedModelId,
-                                              'relatedModelClassName'    => $relatedModelClassName,
-                                              'relatedModelRelationName' => $relatedModelRelationName);
-            $relatedModel             = $relatedModelClassName::getById((int)$relatedModelId);
+                                              'relatedModelId'           => $taskId,
+                                              'relatedModelClassName'    => 'Task',
+                                              'relatedModelRelationName' => 'checkListItems');
+            $task                     = Task::getById((int)$taskId);
             $view                     = new TaskCheckListItemsForTaskView('taskCheckItems', 'tasks',
-                                                                            $checkItemsData, $relatedModel, null, $getParams);
+                                                                          $taskCheckListItem, $task,
+                                                                          null, $getParams);
             $content                  = $view->render();
             Yii::app()->getClientScript()->setToAjaxMode();
             Yii::app()->getClientScript()->render($content);
@@ -130,34 +133,32 @@
         /**
          * Update checklist item name
          */
-        public function actionUpdateNameViaAjax()
+        public function actionUpdateNameViaAjax($id, $name)
         {
-            $getData = GetUtil::getData();
-            $checkListItemId = $getData['id'];
-            $checkListItemName = $getData['name'];
-            $taskCheckListItem = TaskCheckListItem::getById(intval($checkListItemId));
-            $taskCheckListItem->name = $checkListItemName;
+            $taskCheckListItem       = TaskCheckListItem::getById(intval($id));
+            $taskCheckListItem->name = $name;
             $taskCheckListItem->unrestrictedSave();
-            echo $checkListItemName;
+            echo $name;
         }
 
         /**
          * Delete checklist item
          */
-        public function actionDeleteCheckListItem()
+        public function actionDeleteCheckListItem($id, $taskId)
         {
-            $getData = GetUtil::getData();
-            $id      = $getData['id'];
+            $task              = Task::getById((int)$taskId);
             $taskCheckListItem = TaskCheckListItem::getById(intval($id));
-            $task = $taskCheckListItem->task;
             $task->checkListItems->remove($taskCheckListItem);
-            $task->save();
+            $saved = $task->save();
+            if(!$saved)
+            {
+                throw new FailedToSaveModelException();
+            }
             $getParams                = array('uniquePageId'             => null,
                                               'relatedModelId'           => $task->id,
                                               'relatedModelClassName'    => 'Task',
-                                              'relatedModelRelationName' => 'task');
-            $url     =   Yii::app()->createUrl('tasks/taskCheckItems/ajaxCheckItemListForRelatedTaskModel',
-                            $getParams);
+                                              'relatedModelRelationName' => 'checkListItems');
+            $url = Yii::app()->createUrl('tasks/taskCheckItems/ajaxCheckItemListForRelatedTaskModel', $getParams);
             $this->redirect($url);
         }
     }

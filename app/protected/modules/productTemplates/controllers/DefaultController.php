@@ -92,7 +92,7 @@
         {
             $pageSize                       = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                                               'listPageSize', get_class($this->getModule()));
-            $activeActionElementType        = 'ProductTemplatesLink';
+            $activeActionElementType        = 'ProductTemplatesMenu';
             $productTemplate                = new ProductTemplate(false);
             $searchForm                     = new ProductTemplatesSearchForm($productTemplate);
             $listAttributesSelector         = new ListAttributesSelector('ProductTemplatesListView', get_class($this->getModule()));
@@ -142,7 +142,7 @@
         public function actionCreate()
         {
             $breadCrumbLinks    = static::getDetailsAndEditBreadcrumbLinks();
-            $breadCrumbLinks[]  = Zurmo::t('ProductTemplatesModule', 'Create');
+            $breadCrumbLinks[]  = Zurmo::t('Core', 'Create');
             $editAndDetailsView = $this->makeEditAndDetailsView(
                                             $this->attemptToSaveModelFromPost(new ProductTemplate()), 'Edit');
             $view               = new ProductTemplatesPageView(ProductDefaultViewUtil::

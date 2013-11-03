@@ -58,7 +58,7 @@
 
         protected function renderMenu($items)
         {
-            if(count($items))
+            if (count($items))
             {
                 if (count($items) > 1)
                 {
@@ -72,7 +72,7 @@
                 {
                     $class = 'default-button';
                 }
-                if(empty($this->htmlOptions['class']))
+                if (empty($this->htmlOptions['class']))
                 {
                     $this->htmlOptions['class'] = $class;
                 }
@@ -91,13 +91,13 @@
             $item = $items[0];
             $options=isset($item['itemOptions']) ? $item['itemOptions'] : array();
             $class=array();
-            if($item['active'] && $this->activeCssClass!='')
+            if ($item['active'] && $this->activeCssClass!='')
             {
                 $class[]=$this->activeCssClass;
             }
-            if($class!==array())
+            if ($class!==array())
             {
-                if(empty($options['class']))
+                if (empty($options['class']))
                 {
                     $options['class']=implode(' ',$class);
                 }
@@ -121,7 +121,7 @@
                 $item['dynamicLabel'] = null;
             }
 
-            if(isset($item['url']))
+            if (isset($item['url']))
             {
                 $label = $this->linkLabelWrapper===null ? $item['label'] : CHtml::tag($this->linkLabelWrapper, $this->linkLabelWrapperHtmlOptions, $item['label']);
                 $label = ZurmoHtml::tag('span', array('class' => 'button-label'), $label);
@@ -136,7 +136,7 @@
                 $spanForTrigger .= $item['dynamicLabel'];
             }
 
-            if(isset($item['items']) && count($item['items']) || isset($item['dynamicContent']))
+            if (isset($item['items']) && count($item['items']) || isset($item['dynamicContent']))
             {
                 $label = ZurmoHtml::tag('i', array('class' => 'icon-trigger'), null);
                 if (isset($spanForTrigger))
@@ -154,18 +154,18 @@
                     echo $item['dynamicContent'];
                     echo ZurmoHtml::closeTag('li');
                 }
-                if(isset($item['items']) && count($item['items']))
+                if (isset($item['items']) && count($item['items']))
                 {
                     foreach ($item['items'] as $item)
                     {
 
                         $options=isset($item['itemOptions']) ? $item['itemOptions'] : array();
                         $class=array();
-                        if($item['active'] && $this->activeCssClass!='')
+                        if ($item['active'] && $this->activeCssClass!='')
                             $class[]=$this->activeCssClass;
-                        if($class!==array())
+                        if ($class!==array())
                         {
-                            if(empty($options['class']))
+                            if (empty($options['class']))
                             {
                                 $options['class']=implode(' ',$class);
                             }

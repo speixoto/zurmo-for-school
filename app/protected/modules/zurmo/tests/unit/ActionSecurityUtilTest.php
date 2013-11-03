@@ -89,9 +89,10 @@
                                     'accounts/default/details');
             $this->assertNull($link);
             $accounts                   = Account::getByName('Supermart');
-            $betty = User::getByUsername('betty');
+            $betty                      = User::getByUsername('betty');
+            $bettyAccount               = AccountTestHelper::createAccountByNameForOwner('bopbeebop', $betty);
             Yii::app()->user->userModel = $betty;
-            $bettyAccount = AccountTestHelper::createAccountByNameForOwner('bopbeebop', $betty);
+
             $link = ActionSecurityUtil::resolveLinkToModelForCurrentUser(
                                     'bpoboo',
                                     $bettyAccount,
