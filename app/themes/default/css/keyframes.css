@@ -55,3 +55,21 @@
 @-webkit-keyframes spinCoin {
 	100% { -webkit-transform:rotateY(360deg); }
 }
+
+@keyframes shake{
+	0% { transform: translate(3px, 0); opacity:0  }
+	50% { transform: translate(-3px, 0); opacity:.5; box-shadow:0 0 15px 2px #7cb830; }
+	100% { transform: translate(0, 0); opacity:1  }
+}
+
+@-moz-keyframes shake{
+	0% { -moz-transform: translate(3px, 0); opacity:0  }
+	50% { -moz-transform: translate(-3px, 0); opacity:.5; -moz-box-shadow:0 0 15px 2px #7cb830;}
+	100% { -moz-transform: translate(0, 0); opacity:1 }
+}
+
+@-webkit-keyframes shake {
+	0% { -webkit-transform: translate(3px, 0); opacity:0  }
+	50% { -webkit-transform: translate(-3px, 0); opacity:.5; -webkit-box-shadow:0 0 15px 2px #7cb830; }
+	100% { -webkit-transform: translate(0, 0); opacity:1 }
+}

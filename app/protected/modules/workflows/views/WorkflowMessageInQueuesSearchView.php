@@ -64,7 +64,7 @@
                                         array(
                                             'elements' => array(
                                                 array('attributeName' => 'anyMixedAttributes',
-                                                      'type' => 'AnyMixedAttributesSearch', 'wide' => true),
+                                                      'type' => 'WorkflowMixedModelsAndNameAttributeSearch', 'wide' => true),
                                             ),
                                         ),
                                     )
@@ -83,6 +83,13 @@
         public static function getModelForMetadataClassName()
         {
             return 'WorkflowMessageInQueuesSearchForm';
+        }
+
+        protected function getExtraRenderForClearSearchLinkScript()
+        {
+            return parent::getExtraRenderForClearSearchLinkScript() .
+            "$('.workflow-in-queues-hidden-input').val('');
+            ";
         }
     }
 ?>

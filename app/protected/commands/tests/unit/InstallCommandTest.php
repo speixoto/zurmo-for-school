@@ -136,7 +136,7 @@
                                    Yii::app()->tempDb->username,
                                    Yii::app()->tempDb->password,
                                    true);
-            $count   = R::getRow('select count(*) count from _user');
+            $count   = ZurmoRedBean::getRow('select count(*) count from _user');
             $this->assertEquals(10, $count['count']);
         }
     }

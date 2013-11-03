@@ -37,7 +37,7 @@
     /**
      * View for showing a search panel to create a filtered list of ByTimeWorkflowInQueue models
      */
-    class ByTimeWorkflowInQueuesSearchView extends SearchView
+    class ByTimeWorkflowInQueuesSearchView extends WorkflowInQueuesSearchView
     {
         /**
          * @var bool
@@ -64,7 +64,7 @@
                                         array(
                                             'elements' => array(
                                                 array('attributeName' => 'anyMixedAttributes',
-                                                      'type' => 'AnyMixedAttributesSearch', 'wide' => true),
+                                                      'type' => 'WorkflowMixedModelsAndNameAttributeSearch', 'wide' => true),
                                             ),
                                         ),
                                     )

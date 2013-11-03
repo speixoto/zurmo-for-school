@@ -215,7 +215,7 @@
                                                               (bool)$importWizardForm->firstRowIsHeaderRow);
             if ($importWizardForm->firstRowIsHeaderRow)
             {
-                $headerRow = ImportDatabaseUtil::getFirstRowByTableName($import->getTempTableName());
+                $headerRow = ZurmoRedBean::$writer->getFirstRowByTableName($import->getTempTableName());
                 assert('$headerRow != null');
             }
             else
@@ -585,10 +585,11 @@
                         $tempTableName = $import->getTempTableName();
                         try
                         {
-                            $tableCreated = ImportDatabaseUtil::
-                                            makeDatabaseTableByFileHandleAndTableName($fileHandle, $tempTableName,
-                                                                                      $importWizardForm->rowColumnDelimiter,
-                                                                                      $importWizardForm->rowColumnEnclosure);
+                            $tableCreated = ImportDatabaseUtil::makeDatabaseTableByFileHandleAndTableName($fileHandle,
+                                                                                    $tempTableName,
+                                                                                    $importWizardForm->rowColumnDelimiter,
+                                                                                    $importWizardForm->rowColumnEnclosure,
+                                                                                    $importWizardForm->firstRowIsHeaderRow);
                             if (!$tableCreated)
                             {
                                 throw new FailedFileUploadException(Zurmo::t('ImportModule', 'Failed to create temporary database table from CSV.'));
@@ -598,7 +599,10 @@
                         {
                             throw new FailedFileUploadException($e->getMessage());
                         }
-
+                        catch (TooManyColumnsFailedException $e)
+                        {
+                            throw new FailedFileUploadException($e->getMessage());
+                        }
                         $fileUploadData = array(
                             'name' => $uploadedFile->getName(),
                             'type' => $uploadedFile->getType(),
@@ -620,7 +624,7 @@
                 }
                 catch (FailedFileUploadException $e)
                 {
-                    $fileUploadData = array('error' => Zurmo::t('ImportModule', 'Error') . ' ' . $e->getMessage());
+                    $fileUploadData = array('error' => Zurmo::t('Core', 'Error') . ' ' . $e->getMessage());
                     ImportWizardUtil::clearFileAndRelatedDataFromImport($import);
                 }
             }
@@ -678,6 +682,18 @@
             assert('is_bool($firstRowIsHeaderRow)');
             $config = array('pagination' => array('pageSize' => 1));
             return    new ImportDataProvider($import->getTempTableName(), $firstRowIsHeaderRow, $config);
+        }
+
+        public function actionUpdate($id, $attribute, $item, $value)
+        {
+            assert('$id != null && $id != ""');
+            assert('$attribute != null && $attribute != ""');
+            assert('$item != null && $item != ""');
+            $id     = intval($id);
+            $item   = intval($item);
+            $import = Import::getById($id);
+            ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($import);
+            ImportDatabaseUtil::updateRowValue($import->getTempTableName(), $item, $attribute, $value);
         }
     }
 ?>

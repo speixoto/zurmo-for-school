@@ -48,7 +48,7 @@
             //Level up notification
             $gameNotification           = new GameNotification();
             $gameNotification->user     = $user;
-            $gameNotification->setLevelChangeByNextLevelValue(2);
+            $gameNotification->setLevelChangeByNextLevelValue(2, 5);
             $saved                      = $gameNotification->save();
             $this->assertTrue($saved);
 
@@ -109,7 +109,7 @@
             $this->assertEquals('game-badge-LoginUser', $adapter2->getIconCssName());
             $this->assertEquals('game-badge-LoginUser', $adapter3->getIconCssName());
 
-            $this->assertEquals('<h2>Congratulations!</h2><h3>You have reached level 2</h3>',
+            $this->assertEquals('<h2>Congratulations!</h2><h3>You have reached level 2</h3><h3> You have received 5 coins</h3>',
                                 $adapter1->getMessageContent());
             $this->assertEquals('<h2>New Badge</h2><h3>1 Zurmo login</h3>',
                                 $adapter2->getMessageContent());

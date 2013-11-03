@@ -472,7 +472,8 @@
                 $this->fail();
             }
 
-            $attributeForm->precisionLength  = 3;
+            $attributeForm->precisionLength     = 3;
+            $attributeForm->attributeName       = $attributeName . 'Cstm';
             try
             {
                 $adapter->setAttributeMetadataFromForm($attributeForm);
@@ -578,7 +579,7 @@
             //Test that validation on completely new picklists works correctly and is inline with the rules from
             //the CustomFieldData model.
             $attributeForm = new DropDownAttributeForm();
-            $attributeForm->attributeName       = 's';    //name to short. test that this fails.
+            $attributeForm->attributeName       = '';    //name to short. test that this fails.
             $attributeForm->attributeLabels  = array(
                 'de' => 'Test Airplane 3 de',
                 'en' => 'Test Airplane 3 en',
@@ -657,6 +658,7 @@
                 $attributeForm->defaultValue  = 50;
             }
 
+            $attributeForm->attributeName   = $attributeName . 'Cstm';
             try
             {
                 $adapter->setAttributeMetadataFromForm($attributeForm);
@@ -697,7 +699,7 @@
         /**
          * @depends testSetAndGetIntegerAttribute
          */
-        public function testsetAndGetIntegerAttributeWithNoMinOrMax()
+        public function testSetAndGetIntegerAttributeWithNoMinOrMax()
         {
             $attributeName = 'integernominmax';
             $attributeForm = new IntegerAttributeForm();
@@ -725,6 +727,7 @@
                 $this->fail();
             }
 
+            $attributeForm->attributeName   = $attributeName . 'Cstm';
             try
             {
                 $adapter->setAttributeMetadataFromForm($attributeForm);
@@ -755,7 +758,7 @@
         }
 
         /**
-         * @depends testsetAndGetIntegerAttributeWithNoMinOrMax
+         * @depends testSetAndGetIntegerAttributeWithNoMinOrMax
          */
         public function testSetAndGetMultiSelectDropDownAttribute()
         {
@@ -850,7 +853,7 @@
             //Test that validation on completely new multi select picklists works correctly and is inline with the rules
             //from the CustomFieldData model.
             $attributeForm = new MultiSelectDropDownAttributeForm();
-            $attributeForm->attributeName    = 's';    //name to short. test that this fails.
+            $attributeForm->attributeName    = '';    //name to short. test that this fails.
             $attributeForm->attributeLabels  = array(
                 'de' => 'Test Hobbies 3 de',
                 'en' => 'Test Hobbies 3 en',
@@ -981,7 +984,7 @@
             //Test that validation on completely new multi select picklists works correctly and is inline with the rules
             //from the CustomFieldData model.
             $attributeForm = new TagCloudAttributeForm();
-            $attributeForm->attributeName    = 's';    //name to short. test that this fails.
+            $attributeForm->attributeName    = '';    //name to short. test that this fails.
             $attributeForm->attributeLabels  = array(
                 'de' => 'Test Languages 3 de',
                 'en' => 'Test Languages 3 en',
@@ -1569,7 +1572,8 @@
                 $this->fail();
             }
 
-            $attributeForm->maxLength     = 20;
+            $attributeForm->maxLength       = 20;
+            $attributeForm->attributeName   = $attributeName . 'Cstm';
             try
             {
                 $adapter->setAttributeMetadataFromForm($attributeForm);
@@ -1739,8 +1743,8 @@
          */
         public function testSetAndGetTextAreaAttribute()
         {
-            $this->setAndGetTextAreaAttribute('testTextArea2', true);
-            $this->setAndGetTextAreaAttribute('testTextArea3', false);
+            $this->setAndGetTextAreaAttribute('testTextArea30', true);
+            $this->setAndGetTextAreaAttribute('testTextArea31', false);
         }
 
         protected function setAndGetTextAreaAttribute($attributeName, $withDefaultData)
@@ -1934,6 +1938,7 @@
             $account->testText3Cstm                         = 'some test stuff 3';
             $account->testTextArea2Cstm                     = 'some test text area stuff';
             $account->testTextArea3Cstm                     = 'some test text area stuff 3';
+            $account->testTextArea31Cstm                    = 'some test text area stuff 31';
             $account->testUrl2Cstm                          = 'https://www.zurmo.com';
             $account->testUrl3Cstm                          = 'www.zurmo.org';
             $account->playMyFavoriteSongCstm->value         = 'song2'; // song 3
@@ -2166,7 +2171,7 @@
                 'it' => 'sameattribute it',
             );
             $attributeForm = new TextAreaAttributeForm();
-            $attributeForm->attributeName       = 'same';
+            $attributeForm->attributeName       = 'same2';
             $attributeForm->attributeLabels     = $compareAttributeLabels;
 
             $modelAttributesAdapterClassName    = $attributeForm::getModelAttributeAdapterNameForSavingAttributeFormData();
@@ -2174,7 +2179,7 @@
             $adapter->setAttributeMetadataFromForm($attributeForm);
 
             $attributeForm = new TextAreaAttributeForm();
-            $attributeForm->attributeName       = 'same';
+            $attributeForm->attributeName       = 'same2';
             $attributeForm->attributeLabels     = $compareAttributeLabels;
             $attributeForm->modelClassName      = 'Contact';
             $attributeForm->setScenario('createAttribute');

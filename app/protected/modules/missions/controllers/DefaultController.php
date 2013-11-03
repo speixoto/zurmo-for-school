@@ -70,11 +70,11 @@
             $detailsView              = new MissionDetailsView($this->getId(), $this->getModule()->getId(), $mission);
             $missionsMashableInboxUrl = Yii::app()->createUrl('mashableInbox/default/list',
                                              array('modelClassName' => 'Mission'));
-            $breadcrumbLinks = array(Zurmo::t('MissionsModule', 'Missions') =>
+            $breadCrumbLinks = array(Zurmo::t('MissionsModule', 'Missions') =>
                                             $missionsMashableInboxUrl,
                                      StringUtil::getChoppedStringContent(strval($mission), 25));
             $view     = new MissionsPageView(ZurmoDefaultViewUtil::
-                                             makeViewWithBreadcrumbsForCurrentUser($this, $detailsView, $breadcrumbLinks,
+                                             makeViewWithBreadcrumbsForCurrentUser($this, $detailsView, $breadCrumbLinks,
                                                                                     'MissionBreadCrumbView'));
             echo $view->render();
         }
@@ -93,11 +93,11 @@
                                                  Zurmo::t('MissionsModule', 'Create Mission'));
             $missionsMashableInboxUrl = Yii::app()->createUrl('mashableInbox/default/list',
                                              array('modelClassName' => 'Mission'));
-            $breadcrumbLinks = array(Zurmo::t('MissionsModule', 'Missions') =>
+            $breadCrumbLinks = array(Zurmo::t('MissionsModule', 'Missions') =>
                                             $missionsMashableInboxUrl,
-                                     Zurmo::t('MissionsModule', 'Create'));
+                                     Zurmo::t('Core', 'Create'));
             $view     = new MissionsPageView(ZurmoDefaultViewUtil::
-                                             makeViewWithBreadcrumbsForCurrentUser($this, $editView, $breadcrumbLinks,
+                                             makeViewWithBreadcrumbsForCurrentUser($this, $editView, $breadCrumbLinks,
                                                                                     'MissionBreadCrumbView'));
             echo $view->render();
         }
@@ -112,12 +112,12 @@
                                                  strval($mission));
             $missionsMashableInboxUrl = Yii::app()->createUrl('mashableInbox/default/list',
                                              array('modelClassName' => 'Mission'));
-            $breadcrumbLinks = array(Zurmo::t('MissionsModule', 'Missions') =>
+            $breadCrumbLinks = array(Zurmo::t('MissionsModule', 'Missions') =>
                                         $missionsMashableInboxUrl,
                                      StringUtil::getChoppedStringContent(strval($mission), 25) =>
-                                        array('default/details',  'id' => $id), Zurmo::t('MissionsModule', 'Edit'));
+                                        array('default/details',  'id' => $id), Zurmo::t('Core', 'Edit'));
             $view     = new MissionsPageView(ZurmoDefaultViewUtil::
-                                             makeViewWithBreadcrumbsForCurrentUser($this, $editView, $breadcrumbLinks,
+                                             makeViewWithBreadcrumbsForCurrentUser($this, $editView, $breadCrumbLinks,
                                                                                     'MissionBreadCrumbView'));
             echo $view->render();
         }
@@ -146,7 +146,7 @@
                                    'relatedModelRelationName' => 'comments',
                                    'redirectUrl'              => $redirectUrl); //After save, the url to go to.
             $uniquePageId  = 'CommentInlineEditForModelView';
-            echo             ZurmoHtml::tag('h2', array(), Zurmo::t('MissionsModule', 'Add Comment'));
+            echo             ZurmoHtml::tag('h2', array(), Zurmo::t('CommentsModule', 'Add Comment'));
             $inlineView    = new CommentInlineEditView($comment, 'default', 'comments', 'inlineCreateSave',
                                                        $urlParameters, $uniquePageId);
             $view          = new AjaxPageView($inlineView);

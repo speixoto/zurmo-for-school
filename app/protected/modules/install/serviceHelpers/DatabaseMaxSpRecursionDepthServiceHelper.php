@@ -37,21 +37,11 @@
     /**
      * Makes sure the upload file size is large enough.
      */
-    class DatabaseMaxSpRecursionDepthServiceHelper extends ServiceHelper
+    class DatabaseMaxSpRecursionDepthServiceHelper extends DatabaseBaseServiceHelper
     {
         protected $required = false;
-        protected $form;
 
         protected $minimumRequiredMaxSpRecursionDepth = 20;
-
-        /**
-         * @param InstallSettingsForm $form
-         */
-        public function __construct($form)
-        {
-            assert('$form instanceof InstallSettingsForm');
-            $this->form = $form;
-        }
 
         protected function checkService()
         {

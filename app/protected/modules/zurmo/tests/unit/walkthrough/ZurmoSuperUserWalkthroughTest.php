@@ -50,6 +50,11 @@
             Yii::app()->user->userModel = $super;
         }
 
+        public static function getDependentTestModelClassNames()
+        {
+            return array('ModelWithAttachmentTestItem');
+        }
+
         public function testSuperUserAllDefaultControllerActions()
         {
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
@@ -183,24 +188,21 @@
             $fileModels = FileModel::getAll();
             $this->assertEquals(1, count($fileModels));
             $this->assertEquals($contents, $fileModels[0]->fileContent->content);
-            if (!RedBeanDatabase::isFrozen())
-            {
-                //add fileModel to a model.
-                $model = new ModelWithAttachmentTestItem();
-                $model->member = 'test';
-                $model->files->add($fileModels[0]);
-                $this->assertTrue($model->save());
-                $modelId = $model->id;
-                $model->forget();
+            //add fileModel to a model.
+            $model = new ModelWithAttachmentTestItem();
+            $model->member = 'test';
+            $model->files->add($fileModels[0]);
+            $this->assertTrue($model->save());
+            $modelId = $model->id;
+            $model->forget();
 
-                //download a file.
-                $this->setGetArray(array('id' => $fileModels[0]->id, 'modelId' => $modelId,
-                                         'modelClassName' => 'ModelWithAttachmentTestItem'));
-                $this->resetPostArray();
-                $content = $this->runControllerWithExitExceptionAndGetContent('zurmo/fileModel/download');
-                $compareContent = 'Testing download.';
-                $this->assertEquals($compareContent, $content);
-            }
+            //download a file.
+            $this->setGetArray(array('id' => $fileModels[0]->id, 'modelId' => $modelId,
+                                     'modelClassName' => 'ModelWithAttachmentTestItem'));
+            $this->resetPostArray();
+            $content = $this->runControllerWithExitExceptionAndGetContent('zurmo/fileModel/download');
+            $compareContent = 'Testing download.';
+            $this->assertEquals($compareContent, $content);
             //todo: test all file errors.
 
             //Test deleting a file.
@@ -219,8 +221,8 @@
             $this->setGetArray(array('term' => 'something'));
             $this->resetPostArray();
             $content        = $this->runControllerWithNoExceptionsAndGetContent('zurmo/default/globalSearchAutoComplete');
-            $compareContent = '[{"href":"","label":"No results found","iconClass":""}'; // Not Coding Standard
-            $this->assertTrue(strpos($content, $compareContent) !== false);
+            $compareContent = '[{"href":"","label":"No Results Found","iconClass":""}'; // Not Coding Standard
+            $this->assertContains($compareContent, $content);
         }
 
         /*
@@ -271,25 +273,21 @@
 
         public function testToggleStar()
         {
-            if (!RedBeanDatabase::isFrozen())
-            {
-                StarredUtil::createStarredTables();
-                $super                = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
-                $account              = new Account();
-                $account->owner       = $super;
-                $account->name        = 'Test Account';
-                $account->officePhone = '1234567890';
-                $this->assertTrue($account->save());
+            $super                = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $account              = new Account();
+            $account->owner       = $super;
+            $account->name        = 'Test Account';
+            $account->officePhone = '1234567890';
+            $this->assertTrue($account->save());
 
-                $this->setGetArray(array('modelClassName' => 'Account',
-                                         'modelId' => $account->id));
-                $content = $this->runControllerWithNoExceptionsAndGetContent('zurmo/default/toggleStar');
-                $this->assertEquals('icon-star starred', $content);
-                $this->assertTrue(StarredUtil::isModelStarred($account));
-                $content = $this->runControllerWithNoExceptionsAndGetContent('zurmo/default/toggleStar');
-                $this->assertEquals('icon-star unstarred', $content);
-                $this->assertFalse(StarredUtil::isModelStarred($account));
-            }
+            $this->setGetArray(array('modelClassName' => 'Account',
+                                     'modelId' => $account->id));
+            $content = $this->runControllerWithNoExceptionsAndGetContent('zurmo/default/toggleStar');
+            $this->assertEquals('icon-star starred', $content);
+            $this->assertTrue(StarredUtil::isModelStarred($account));
+            $content = $this->runControllerWithNoExceptionsAndGetContent('zurmo/default/toggleStar');
+            $this->assertEquals('icon-star unstarred', $content);
+            $this->assertFalse(StarredUtil::isModelStarred($account));
         }
 
         public function testSuperUserEditUserMembershipAction()

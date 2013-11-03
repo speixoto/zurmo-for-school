@@ -131,9 +131,9 @@
          */
         public function testExtraItemsCreatedOnModelInstantiation()
         {
-            $countBefore = intval(R::getCell("select count(*) from item;"));
+            $countBefore = intval(ZurmoRedBean::getCell("select count(*) from item;"));
             $account = new Account();
-            $countAfter  = intval(R::getCell("select count(*) from item;"));
+            $countAfter  = intval(ZurmoRedBean::getCell("select count(*) from item;"));
             $this->assertEquals($countBefore, $countAfter);
         }
 

@@ -41,12 +41,12 @@
             $metadata = parent::getDefaultMetadata();
             $metadata[__CLASS__] = array(
                 'relations' => array(
-                    'q'           => array(RedBeanModel::HAS_ONE,  'Q'),
-                    'qRequired'   => array(RedBeanModel::HAS_ONE,  'Q', RedBeanModel::NOT_OWNED,
-                                           RedBeanModel::LINK_TYPE_SPECIFIC, 'eRequired'),
-                    'qUnique'     => array(RedBeanModel::HAS_ONE,  'Q', RedBeanModel::NOT_OWNED,
-                                           RedBeanModel::LINK_TYPE_SPECIFIC, 'eUnique'),
-                    'qMany'       => array(RedBeanModel::HAS_MANY, 'Q')
+                    'q'           => array(static::HAS_ONE,  'Q'),
+                    'qRequired'   => array(static::HAS_ONE,  'Q', static::NOT_OWNED,
+                                           static::LINK_TYPE_SPECIFIC, 'eRequired'),
+                    'qUnique'     => array(static::HAS_ONE,  'Q', static::NOT_OWNED,
+                                           static::LINK_TYPE_SPECIFIC, 'eUnique'),
+                    'qMany'       => array(static::HAS_MANY, 'Q')
                 ),
                 'rules' => array(
                     array('qRequired',    'required'),

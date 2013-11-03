@@ -99,13 +99,13 @@
             $contactWebForm        = ContactWebForm::getById($contactWebFormId);
             $attributes            = ContactWebFormTestHelper::getContactWebFormAttributes();
             $this->setPostArray(array('ContactWebForm' => array('submitButtonLabel' => 'Test Save'),
-                                      'attributeIndexOrDerivedType' => $attributes));
+                                      'ContactWebFormAttributeForm' => $attributes));
             $this->runControllerWithRedirectExceptionAndGetContent('contactWebForms/default/edit');
             $contactWebForm        = ContactWebForm::getById($contactWebFormId);
             $this->assertEquals('Test Save', $contactWebForm->submitButtonLabel);
             //Test having a failed validation on the contact during save.
             $this->setGetArray (array('id'       => $contactWebFormId));
-            $this->setPostArray(array('ContactWebForm' => array('name' => ''), 'attributeIndexOrDerivedType' => $attributes));
+            $this->setPostArray(array('ContactWebForm' => array('name' => ''), 'ContactWebFormAttributeForm' => $attributes));
             $content = $this->runControllerWithNoExceptionsAndGetContent('contactWebForms/default/edit');
             $this->assertFalse(strpos($content, 'Name cannot be blank') === false);
 
@@ -129,7 +129,7 @@
             $contactWebForm['submitButtonLabel']        = 'Save & Next';
             $contactWebForm['defaultState']             = $contactStates[0];
             $contactWebForm['defaultOwner']             = $super;
-            $this->setPostArray(array('ContactWebForm'  => $contactWebForm, 'attributeIndexOrDerivedType' => $attributes));
+            $this->setPostArray(array('ContactWebForm'  => $contactWebForm, 'ContactWebFormAttributeForm' => $attributes));
             $redirectUrl                                = $this->runControllerWithRedirectExceptionAndGetUrl('contactWebForms/default/create');
             $contactWebForms                            = ContactWebForm::getByName('External Web Form (Drupal)');
             $this->assertEquals(1, count($contactWebForms));

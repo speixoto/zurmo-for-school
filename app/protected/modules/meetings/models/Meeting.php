@@ -42,7 +42,7 @@
             {
                 if (trim($this->name) == '')
                 {
-                    return Zurmo::t('MeetingsModule', '(Unnamed)');
+                    return Zurmo::t('Core', '(Unnamed)');
                 }
                 return $this->name;
             }
@@ -98,8 +98,8 @@
                                               'compareAttribute' => 'endDateTime'),
                 ),
                 'relations' => array(
-                    'category'             => array(RedBeanModel::HAS_ONE, 'OwnedCustomField', RedBeanModel::OWNED,
-                                                    RedBeanModel::LINK_TYPE_SPECIFIC, 'category'),
+                    'category'             => array(static::HAS_ONE, 'OwnedCustomField', static::OWNED,
+                                                    static::LINK_TYPE_SPECIFIC, 'category'),
                 ),
                 'elements' => array(
                     'endDateTime'   => 'DateTime',

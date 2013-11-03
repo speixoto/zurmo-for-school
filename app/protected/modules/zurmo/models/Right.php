@@ -52,7 +52,7 @@
             assert('is_string($rightName)');
             assert('$moduleName != ""');
             assert('$rightName != ""');
-            $bean = R::findOne('_right', "modulename = '$moduleName' and name = '$rightName'");
+            $bean = ZurmoRedBean::findOne('_right', "modulename = '$moduleName' and name = '$rightName'");
             assert('$bean === false || $bean instanceof RedBean_OODBBean');
             if ($bean === false)
             {
@@ -63,13 +63,13 @@
 
         public static function removeAllForPermitable(Permitable $permitable)
         {
-            R::exec("delete from _right where permitable_id = :id;",
+            ZurmoRedBean::exec("delete from _right where permitable_id = :id;",
                     array('id' => $permitable->getClassId('Permitable')));
         }
 
         public static function removeAll()
         {
-            R::exec("delete from _right;");
+            ZurmoRedBean::exec("delete from _right;");
         }
 
         public static function rightToString($right)
@@ -113,15 +113,15 @@
                     'type',
                 ),
                 'relations'   => array(
-                    'permitable' => array(RedBeanModel::HAS_MANY_BELONGS_TO, 'Permitable'),
+                    'permitable' => array(static::HAS_MANY_BELONGS_TO, 'Permitable'),
                 ),
                 'rules' => array(
                     array('moduleName', 'required'),
                     array('moduleName', 'type',      'type' => 'string'),
-                    array('moduleName', 'length',    'min'  => 3, 'max' => 64),
+                    array('moduleName', 'length',    'min'  => 1, 'max' => 64),
                     array('name',       'required'),
                     array('name',       'type',      'type' => 'string'),
-                    array('name',       'length',    'min'  => 3, 'max' => 64),
+                    array('name',       'length',    'min'  => 1, 'max' => 64),
                     array('type',       'required'),
                     array('type',       'type',      'type' => 'integer'),
                     array('type',       'numerical', 'min'  => 0, 'max' => 2),

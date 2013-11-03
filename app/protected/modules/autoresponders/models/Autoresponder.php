@@ -92,13 +92,14 @@
                 'rules' => array(
                     array('subject',                'required'),
                     array('subject',                'type',    'type' => 'string'),
-                    array('subject',                'length',  'min'  => 3, 'max' => 64),
+                    array('subject',                'length',  'min'  => 1, 'max' => 64),
                     array('htmlContent',            'type',    'type' => 'string'),
                     array('textContent',            'type',    'type' => 'string'),
+                    array('htmlContent',            'StripDummyHtmlContentFromOtherwiseEmptyFieldValidator'),
                     array('htmlContent',            'AtLeastOneContentAreaRequiredValidator'),
                     array('textContent',            'AtLeastOneContentAreaRequiredValidator'),
-                    array('htmlContent',            'AutoresponderMergeTagsValidator', 'except' => 'autoBuildDatabase'),
-                    array('textContent',            'AutoresponderMergeTagsValidator', 'except' => 'autoBuildDatabase'),
+                    array('htmlContent',            'AutoresponderMergeTagsValidator'),
+                    array('textContent',            'AutoresponderMergeTagsValidator'),
                     array('fromOperationDurationInterval', 'type', 'type' => 'integer'),
                     array('fromOperationDurationInterval', 'numerical', 'min' => 0),
                     array('fromOperationDurationInterval', 'required'),
@@ -112,10 +113,10 @@
 
                 ),
                 'relations' => array(
-                    'autoresponderItems'    => array(RedBeanModel::HAS_MANY, 'AutoresponderItem'),
-                    'marketingList'         => array(RedBeanModel::HAS_ONE, 'MarketingList', RedBeanModel::NOT_OWNED),
-                    'files'                 => array(RedBeanModel::HAS_MANY,  'FileModel', RedBeanModel::OWNED,
-                                                    RedBeanModel::LINK_TYPE_POLYMORPHIC, 'relatedModel'),
+                    'autoresponderItems'    => array(static::HAS_MANY, 'AutoresponderItem'),
+                    'marketingList'         => array(static::HAS_ONE, 'MarketingList', static::NOT_OWNED),
+                    'files'                 => array(static::HAS_MANY,  'FileModel', static::OWNED,
+                                                        static::LINK_TYPE_POLYMORPHIC, 'relatedModel'),
                 ),
                 'elements' => array(
                     'htmlContent'                   => 'TextArea',
@@ -182,12 +183,12 @@
         {
             return array_merge(parent::translatedAttributeLabels($language),
                 array(
-                    'subject'               => Zurmo::t('EmailMessagesModule', 'Subject', null,  null, $language),
+                    'subject'               => Zurmo::t('Core', 'Subject', null,  null, $language),
                     'operationType'         => Zurmo::t('Core', 'Triggered By', null,  null, $language),
-                    'fromOperationDurationInterval' => Zurmo::t('AutorespondersModule', 'Send After', null,  null, $language),
+                    'fromOperationDurationInterval' => Zurmo::t('Core', 'Send After', null,  null, $language),
                     'htmlContent'           => Zurmo::t('EmailMessagesModule', 'Html Content', null,  null, $language),
                     'textContent'           => Zurmo::t('EmailMessagesModule', 'Text Content', null,  null, $language),
-                    'enableTracking'        => Zurmo::t('AutorespondersModule', 'Enable Tracking', null,  null, $language),
+                    'enableTracking'        => Zurmo::t('ZurmoModule', 'Enable Tracking', null,  null, $language),
                 )
             );
         }

@@ -46,6 +46,8 @@
 
         const DESCRIPTION_CLASS          = 'marketing-list-description';
 
+        protected $cssClasses = array('overlay-view');
+
         public static function getMemberCountUpdateUrl()
         {
             return Yii::app()->createUrl('/marketingLists/defaultPortlet/countMembers/');
@@ -53,7 +55,7 @@
 
         protected function renderContent()
         {
-            $content = $this->renderMemberStatisticsContent();
+            $content  = $this->renderMemberStatisticsContent();
             $content .= $this->renderDescriptionContent();
             $content .= $this->renderAfterFormLayoutForDetailsContent();
             return $content;

@@ -43,7 +43,7 @@
         {
                 return array(
                     'name'  => $this->attribute,
-                    'value' => 'ProductTemplateElementUtil::renderProductTemplateListViewAttributeForReports($data, "' . $this->attribute . '")',
+                    'value' => 'ProductTemplateStatusDropDownElement::renderDisplayAttributeForReport($data, "' . $this->attribute . '")',
                     'type'  => 'raw',
                 );
         }

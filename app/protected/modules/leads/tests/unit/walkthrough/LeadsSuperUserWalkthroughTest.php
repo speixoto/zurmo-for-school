@@ -419,7 +419,7 @@
 
             $this->assertTrue($leads[0]->save());
             $this->assertTrue(
-                $this->checkCopyActionResponseAttributeValuesFromPostArray($leads[0], $postArray, 'Lead')
+                $this->checkCopyActionResponseAttributeValuesFromPostArray($leads[0], $postArray, 'Lead', 'leads')
             );
 
             $postArray['Contact']['firstName']  = 'myClonedLead';

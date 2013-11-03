@@ -47,7 +47,7 @@
         )
         {
             parent::__construct(2, 1);
-            $this->setView(new ActionBarForDesignerModuleView($controllerId, $moduleId, $module, 'DesignerGeneralLink'), 0, 0);
+            $this->setView(new ActionBarForDesignerModuleView($controllerId, $moduleId, $module, 'DesignerGeneralMenu'), 0, 0);
             $moduleEditViewClassName = get_class($module) . 'EditView';
             $this->setView(new $moduleEditViewClassName(
                 $controllerId,

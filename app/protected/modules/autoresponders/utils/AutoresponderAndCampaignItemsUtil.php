@@ -85,7 +85,10 @@
                 }
                 catch (MissingRecipientsForEmailMessageException $e)
                 {
-                    // TODO: @Shoaibi/@Jason: Medium: Do something about it.
+                    $activityClass  = $itemClass . 'Activity';
+                    $personId       = $contact->getClassId('Person');
+                    $type           = $activityClass::TYPE_SKIP;
+                    $activityClass::createNewActivity($type, $itemId, $personId);
                 }
             }
             static::markItemAsProcessed($item);
@@ -103,7 +106,7 @@
 
         protected static function resolveContentForMergeTags(& $textContent, & $htmlContent, Contact $contact)
         {
-            // TODO: @Shoaibi/@Jason: High: we might add support for language
+            // TODO: @Shoaibi/@Jason: Low: we might add support for language
             $language               = null;
             $errorOnFirstMissing    = true;
             $templateType           = EmailTemplate::TYPE_CONTACT;
@@ -212,7 +215,7 @@
                 $recipient->toAddress       = $contact->primaryEmail->emailAddress;
                 $recipient->toName          = strval($contact);
                 $recipient->type            = EmailMessageRecipient::TYPE_TO;
-                $recipient->personOrAccount = $contact;
+                $recipient->personsOrAccounts->add($contact);
                 $emailMessage->recipients->add($recipient);
             }
         }

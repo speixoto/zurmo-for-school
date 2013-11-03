@@ -46,7 +46,7 @@
         {
             assert('is_string($name)');
             assert('$name != ""');
-            $bean = R::findOne(ProductCatalog::getTableName('ProductCatalog'), "name = :name ", array(':name' => $name));
+            $bean = ZurmoRedBean::findOne(ProductCatalog::getTableName('ProductCatalog'), "name = :name ", array(':name' => $name));
             assert('$bean === false || $bean instanceof RedBean_OODBBean');
             if ($bean === false)
             {
@@ -109,7 +109,7 @@
             {
                 if (trim($this->name) == '')
                 {
-                    return Zurmo::t('ProductTemplatesModule', '(Unnamed)');
+                    return Zurmo::t('Core', '(Unnamed)');
                 }
                 return $this->name;
             }
@@ -164,12 +164,12 @@
                     'name',
                 ),
                 'relations' => array(
-                    'productCategories'         => array(RedBeanModel::MANY_MANY, 'ProductCategory'),
+                    'productCategories'         => array(static::MANY_MANY, 'ProductCategory'),
                 ),
                 'rules' => array(
                     array('name',  'required'),
                     array('name',  'type',    'type' => 'string'),
-                    array('name',  'length',  'min'  => 3,  'max' => 64),
+                    array('name',  'length',  'min'  => 1,  'max' => 64),
                 ),
                 'elements' => array(
                 ),

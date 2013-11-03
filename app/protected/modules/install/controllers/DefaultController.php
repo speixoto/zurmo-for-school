@@ -159,7 +159,6 @@
             RedBeanDatabase::setup(Yii::app()->db->connectionString,
                                    Yii::app()->db->username,
                                    Yii::app()->db->password);
-            InstallUtil::freezeDatabase();
             ForgetAllCacheUtil::forgetAllCaches();
             Yii::app()->user->userModel = User::getByUsername('super');
             $nextView = new InstallCompleteView($this->getId(), $this->getModule()->getId());

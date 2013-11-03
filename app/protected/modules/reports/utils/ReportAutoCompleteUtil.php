@@ -45,10 +45,13 @@
          * @param int $pageSize
          * @param null|string $moduleClassName
          * @param null|string $type
+         * @param $autoCompleteOptions
          * @return array Jui AutoComplete ready array containing id, value, and label elements.
          */
-        public static function getByPartialName($partialName, $pageSize, $moduleClassName = null, $type = null)
+        public static function getByPartialName($partialName, $pageSize, $moduleClassName = null,
+                                                    $type = null, $autoCompleteOptions = null)
         {
+            // autoCompleteOptions is not used but here for future uses.
             assert('is_string($partialName)');
             assert('is_int($pageSize)');
             $autoCompleteResults  = array();

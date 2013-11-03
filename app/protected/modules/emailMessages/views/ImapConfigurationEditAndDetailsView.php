@@ -55,7 +55,6 @@
                     'panelsDisplayType' => FormLayout::PANELS_DISPLAY_TYPE_ALL,
                     'panels' => array(
                         array(
-                            'title' => static::getPanelTitle(),
                             'rows' => array(
                                 array('cells' =>
                                     array(
@@ -129,11 +128,6 @@
             return $metadata;
         }
 
-        protected static function getPanelTitle()
-        {
-            throw new NotSupportedException();
-        }
-
         /**
          * Override to change the editableTemplate to place the label above the input.
          * @see DetailsView::resolveElementDuringFormLayoutRender()
@@ -142,8 +136,12 @@
         {
             if ($element->getAttribute() == 'imapFolder')
             {
-                $notification = ZurmoHtml::tag('span', array('class' => 'row-description'),
-                    Zurmo::t('EmailMessagesModule', 'Emails in the specified folder will be deleted by Zurmo after processing.  We do not recommend using a personal email for archiving'));
+                $message = Zurmo::t('EmailMessagesModule',
+                                    'Emails in the specified folder will be deleted by Zurmo after processing. ' .
+                                    'DO NOT use a personal email for Bounce handling');
+                $notification = ZurmoHtml::tag('span',
+                                               array('class' => 'row-description'),
+                                               $message);
                 $element->editableTemplate = '<th>{label}</th><td colspan="{colspan}">{content}' .
                     $notification . '{error}</td>';
             }

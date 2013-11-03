@@ -75,12 +75,13 @@
          * @param object $permitable
          * @throws NotSupportedException
          */
-        public function addReadOnlyPermitable($permitable)
+        public function addReadOnlyPermitable(Permitable $permitable)
         {
             assert('$permitable instanceof Permitable');
-            if (!isset($this->readOnlyPermitables[$permitable->id]))
+            $key = $this->resolvePermitableKey($permitable);
+            if (!isset($this->readOnlyPermitables[$key]))
             {
-                $this->readOnlyPermitables[$permitable->id] = $permitable;
+                $this->readOnlyPermitables[$key] = $permitable;
             }
             else
             {
@@ -93,12 +94,13 @@
          * @param object $permitable
          * @throws NotSupportedException
          */
-        public function addReadWritePermitable($permitable)
+        public function addReadWritePermitable(Permitable $permitable)
         {
             assert('$permitable instanceof Permitable');
-            if (!isset($this->readWritePermitables[$permitable->id]))
+            $key = $this->resolvePermitableKey($permitable);
+            if (!isset($this->readWritePermitables[$key]))
             {
-                $this->readWritePermitables[$permitable->id] = $permitable;
+                $this->readWritePermitables[$key] = $permitable;
             }
             else
             {
@@ -111,12 +113,13 @@
          * @param object $permitable
          * @throws NotSupportedException
          */
-        public function addReadOnlyPermitableToRemove($permitable)
+        public function addReadOnlyPermitableToRemove(Permitable $permitable)
         {
             assert('$permitable instanceof Permitable');
-            if (!isset($this->readOnlyPermitablesToRemove[$permitable->id]))
+            $key = $this->resolvePermitableKey($permitable);
+            if (!isset($this->readOnlyPermitablesToRemove[$key]))
             {
-                $this->readOnlyPermitablesToRemove[$permitable->id] = $permitable;
+                $this->readOnlyPermitablesToRemove[$key] = $permitable;
             }
             else
             {
@@ -129,12 +132,13 @@
          * @param object $permitable
          * @throws NotSupportedException
          */
-        public function addReadWritePermitableToRemove($permitable)
+        public function addReadWritePermitableToRemove(Permitable $permitable)
         {
             assert('$permitable instanceof Permitable');
-            if (!isset($this->readWritePermitablesToRemove[$permitable->id]))
+            $key = $this->resolvePermitableKey($permitable);
+            if (!isset($this->readWritePermitablesToRemove[$key]))
             {
-                $this->readWritePermitablesToRemove[$permitable->id] = $permitable;
+                $this->readWritePermitablesToRemove[$key] = $permitable;
             }
             else
             {
@@ -146,9 +150,10 @@
         {
             foreach ($this->readWritePermitables as $permitable)
             {
-                if (!isset($this->readWritePermitablesToRemove[$permitable->id]))
+                $key = $this->resolvePermitableKey($permitable);
+                if (!isset($this->readWritePermitablesToRemove[$key]))
                 {
-                    $this->readWritePermitablesToRemove[$permitable->id] = $permitable;
+                    $this->readWritePermitablesToRemove[$key] = $permitable;
                 }
             }
         }
@@ -222,15 +227,28 @@
          * @param Permitable $permitable
          * @return boolean true if it is in one of the data arrays.
          */
-        public function isReadOrReadWritePermitable($permitable)
+        public function isReadOrReadWritePermitable(Permitable $permitable)
         {
             assert('$permitable instanceof Permitable');
-            if (isset($this->readWritePermitables[$permitable->id]) ||
-                isset($this->readOnlyPermitables[$permitable->id]))
+            $key = $this->resolvePermitableKey($permitable);
+            if (isset($this->readWritePermitables[$key]) ||
+                isset($this->readOnlyPermitables[$key]))
             {
                 return true;
             }
             return false;
         }
+
+        /**
+         * Returns the related id from permitable models. This is unique for every Permitable child.
+         * Public for tests
+         * @param Permitable $permitable
+         * @return int
+         */
+        public function resolvePermitableKey(Permitable $permitable)
+        {
+            return $permitable->getClassId('Permitable');
+        }
+
     }
 ?>

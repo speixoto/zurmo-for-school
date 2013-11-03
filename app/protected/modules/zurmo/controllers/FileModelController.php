@@ -52,7 +52,7 @@
             }
             catch (FailedFileUploadException $e)
             {
-                $fileUploadData = array('error' => Zurmo::t('ZurmoModule', 'Error') . ' ' . $e->getMessage());
+                $fileUploadData = array('error' => Zurmo::t('Core', 'Error') . ' ' . $e->getMessage());
             }
             echo CJSON::encode(array($fileUploadData));
             Yii::app()->end(0, false);
@@ -90,7 +90,7 @@
             $newFileModelsData      = array(); //needs id, name, size at least, preferably type too.
             foreach ($existingFileModelIds as $existingFileModelId)
             {
-                $newFileModel           = FileModelUtil::makeByExistingFileModelId($existingFileModelId);
+                $newFileModel           = FileModelUtil::makeByExistingFileModelId($existingFileModelId, true);
                 if ($newFileModel === false)
                 {
                     throw new FailedFileUploadException();

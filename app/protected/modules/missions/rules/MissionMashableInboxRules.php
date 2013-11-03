@@ -111,9 +111,9 @@
         public function getActionViewOptions()
         {
             return array(
-                array('label' => Zurmo::t('MissionsModule', 'Created'),
+                array('label' => Zurmo::t('Core', 'Created'),
                       'type'  => MissionsListConfigurationForm::LIST_TYPE_CREATED),
-                array('label' => Zurmo::t('MissionsModule', 'Available'),
+                array('label' => Zurmo::t('Core', 'Available'),
                       'type'  => MissionsListConfigurationForm::LIST_TYPE_AVAILABLE),
                 array('label' => Zurmo::t('MissionsModule', 'My Missions'),
                       'type'  => MissionsListConfigurationForm::LIST_TYPE_MINE_TAKEN_BUT_NOT_ACCEPTED),

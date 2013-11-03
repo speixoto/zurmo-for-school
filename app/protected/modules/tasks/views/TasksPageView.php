@@ -36,6 +36,9 @@
 
     class TasksPageView extends ZurmoDefaultPageView
     {
+        /**
+         * @return string
+         */
         protected function getSubtitle()
         {
             return Zurmo::t('TasksModule', 'TasksModulePluralLabel', LabelUtil::getTranslationParamsForAllModules());

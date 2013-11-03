@@ -58,6 +58,9 @@
 
         public function actionConfigurationList()
         {
+            $breadCrumbLinks = array(
+                Zurmo::t('ZurmoModule', 'Currencies'),
+            );
             $redirectUrlParams = array('/zurmo/' . $this->getId() . '/ConfigurationList');
             $currency          = new Currency();
             $currency = $this->attemptToSaveModelFromPost($currency, $redirectUrlParams);
@@ -68,8 +71,8 @@
                             $currency,
                             Currency::getAll(),
                             $messageBoxContent);
-            $view = new ZurmoConfigurationPageView(ZurmoDefaultAdminViewUtil::
-                                         makeStandardViewForCurrentUser($this, $view));
+            $view = new ZurmoConfigurationPageView(ZurmoDefaultAdminViewUtil::makeViewWithBreadcrumbsForCurrentUser(
+                                                   $this, $view, $breadCrumbLinks, 'SettingsBreadCrumbView'));
             echo $view->render();
         }
 
@@ -88,7 +91,7 @@
                     $currencyHelper = Yii::app()->currencyHelper;
                     if (!ZurmoCurrencyCodes::isValidCode($model->code))
                     {
-                        $model->addError('code', Zurmo::t('ZurmoModule', 'Invalid currency code'));
+                        $model->addError('code', Zurmo::t('Core', 'Invalid currency code'));
                         $currencyHelper->resetErrors();
                         return $model;
                     }
@@ -173,9 +176,9 @@
             $this->redirect(array($this->getId() . '/configurationList'));
         }
 
-        public function actionAutoComplete($term)
+        public function actionAutoComplete($term, $autoCompleteOptions = null)
         {
-            $autoCompleteResults = CurrencyCodeAutoCompleteUtil::getByPartialCodeOrName($term);
+            $autoCompleteResults = CurrencyCodeAutoCompleteUtil::getByPartialCodeOrName($term, $autoCompleteOptions);
             echo CJSON::encode($autoCompleteResults);
         }
     }

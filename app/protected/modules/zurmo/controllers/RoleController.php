@@ -54,16 +54,18 @@
         public function actionList()
         {
             $title           = Zurmo::t('ZurmoModule', 'Roles');
-            $breadcrumbLinks = array(
+            $breadCrumbLinks = array(
                  $title,
             );
+            $introView = new SecurityIntroView('ZurmoModule');
             $actionBarAndTreeView = new RolesActionBarAndTreeListView(
                 $this->getId(),
                 $this->getModule()->getId(),
-                Role::getAll('name')
+                Role::getAll('name'),
+                $introView
             );
             $view = new RolesPageView(ZurmoDefaultAdminViewUtil::
-                                         makeViewWithBreadcrumbsForCurrentUser($this, $actionBarAndTreeView, $breadcrumbLinks, 'RoleBreadCrumbView'));
+                                         makeViewWithBreadcrumbsForCurrentUser($this, $actionBarAndTreeView, $breadCrumbLinks, 'RoleBreadCrumbView'));
             echo $view->render();
         }
 
@@ -75,29 +77,29 @@
         public function actionCreate()
         {
             $title           = Zurmo::t('ZurmoModule', 'Create Role');
-            $breadcrumbLinks = array($title);
+            $breadCrumbLinks = array($title);
             $editView = new RoleEditAndDetailsView('Edit',
                                                    $this->getId(),
                                                    $this->getModule()->getId(),
                                                    $this->attemptToSaveModelFromPost(new Role()));
             $editView->setCssClasses(array('AdministrativeArea'));
             $view     = new RolesPageView(ZurmoDefaultAdminViewUtil::
-                                          makeViewWithBreadcrumbsForCurrentUser($this, $editView, $breadcrumbLinks, 'RoleBreadCrumbView'));
+                                          makeViewWithBreadcrumbsForCurrentUser($this, $editView, $breadCrumbLinks, 'RoleBreadCrumbView'));
             echo $view->render();
         }
 
         public function actionEdit($id)
         {
             $role            = Role::getById(intval($id));
-            $title           = Zurmo::t('ZurmoModule', 'Edit');
-            $breadcrumbLinks = array(strval($role) => array('role/edit',  'id' => $id), $title);
+            $title           = Zurmo::t('Core', 'Edit');
+            $breadCrumbLinks = array(strval($role) => array('role/edit',  'id' => $id), $title);
             $editView = new RoleEditAndDetailsView('Edit',
                                                    $this->getId(),
                                                    $this->getModule()->getId(),
                                                    $this->attemptToSaveModelFromPost($role));
             $editView->setCssClasses(array('AdministrativeArea'));
             $view     = new RolesPageView(ZurmoDefaultAdminViewUtil::
-                                          makeViewWithBreadcrumbsForCurrentUser($this, $editView, $breadcrumbLinks, 'RoleBreadCrumbView'));
+                                          makeViewWithBreadcrumbsForCurrentUser($this, $editView, $breadCrumbLinks, 'RoleBreadCrumbView'));
             echo $view->render();
         }
 
@@ -155,10 +157,9 @@
             $this->redirect(array($this->getId() . '/index'));
         }
 
-        public function actionAutoComplete($term)
+        public function actionAutoComplete($term, $autoCompleteOptions = null)
         {
-            $modelClassName = RolesModule::getPrimaryModelName();
-            echo $this->renderAutoCompleteResults($modelClassName, $term);
+            echo $this->renderAutoCompleteResults(RolesModule::getPrimaryModelName(), $term, $autoCompleteOptions);
         }
 
         /**

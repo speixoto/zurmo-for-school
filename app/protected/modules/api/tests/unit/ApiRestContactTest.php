@@ -228,6 +228,7 @@
             unset($response['data']['title']['id']);
             unset($response['data']['id']);
             unset($response['data']['googleWebTrackingId']);
+            unset($response['data']['latestActivityDateTime']);
 
             ksort($data);
             ksort($response['data']);

@@ -473,7 +473,8 @@
                                       'OpportunitiesModule'     => 'decimalCstm * integerCstm',
                                       'TasksModule'             => 'decimalCstm * integerCstm',
                                       'ProductTemplatesModule'  => 'decimalCstm * integerCstm',
-                                      'ProductsModule'          => 'decimalCstm * integerCstm');
+                                      'ProductsModule'          => 'decimalCstm * integerCstm',
+                                      'ProjectsModule'          => 'decimalCstm * integerCstm');
 
             $extraPostData = array('formula' => $formulaForModule[$moduleClassName]);
             $this->createCustomAttributeWalkthroughSequence($moduleClassName, $name, 'CalculatedNumber', $extraPostData, null, true);
@@ -613,6 +614,9 @@
                 $this->setGetArray(array(   'moduleClassName'       => $moduleClassName,
                                             'attributeTypeName'     => $attributeTypeName,
                                             'attributeName'         => $name));
+                // if we don't do this attributeName from POST will override and result in duplicate columns.
+                // Frontend also doesn't send attributeName in POST on edit.
+                unset($_POST[$formName]['attributeName']);
                 $content = $this->runControllerWithRedirectExceptionAndGetContent('designer/default/attributeEdit');
             }
         }
@@ -639,44 +643,42 @@
 
         /**
          * Uses postArray to check response field values.
-         *
-         * @param OwnedSecurableItem $model     Model to get values from
-         * @param array              $postArray Array of post values
-         * @return boolean
+         * @param $model
+         * @param $postArray
+         * @param null $linkClass
+         * @return bool
          */
-        protected function checkCopyActionResponseAttributeValuesFromPostArray($model, $postArray, $linkClass = null)
+        protected function checkCopyActionResponseAttributeValuesFromPostArray($model, $postArray, $linkClass = null,
+                                                                               $controllerId = null)
         {
             return $this->checkCopyActionResponseAttributeValues(
                 $model,
                 $this->buildAttributesArrayFromPostArray($postArray),
-                $linkClass
+                $linkClass,
+                $controllerId
             );
         }
 
         /**
-         * Test if form fields have values from record.
-         *
+         *  Test if form fields have values from record.
          * It supports selects, plain text fields and textareas.
-         *
-         * @param OwnedSecurableItem $model          Model to get values from
-         * @param array              $testAttributes Array of fields to test
-         * @return boolean
+         * @param $model
+         * @param $testAttributes
+         * @param null $linkClass
+         * @param null $controllerId
+         * @return bool
          */
-        protected function checkCopyActionResponseAttributeValues($model, $testAttributes, $linkClass = null)
+        protected function checkCopyActionResponseAttributeValues($model, $testAttributes, $linkClass = null, $controllerId = null)
         {
-            $class = get_class($model);
-            if (empty($linkClass))
+            $moduleClassName = $model::getModuleClassName();
+            if ($controllerId == null)
             {
-                $realm = strtolower($class);
-            }
-            else
-            {
-                $realm = rtrim(strtolower($linkClass), 's');
+                $controllerId = $moduleClassName::getDirectoryName();
             }
             $this->setGetArray(array('id' => $model->id));
             $this->resetPostArray();
-            $response = $this->runControllerWithNoExceptionsAndGetContent($realm.'s/default/copy');
-            return $this->checkResponseAgainstAttributeArray($response, $model, $class, $testAttributes, $linkClass);
+            $response = $this->runControllerWithNoExceptionsAndGetContent($controllerId . '/default/copy');
+            return $this->checkResponseAgainstAttributeArray($response, $model, get_class($model), $testAttributes, $linkClass);
         }
 
         private function checkResponseAgainstAttributeArray($response, $model, $class, $testAttributes, $linkClass = null)

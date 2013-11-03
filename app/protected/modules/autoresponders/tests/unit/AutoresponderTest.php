@@ -114,12 +114,71 @@
         /**
          * @depends testCreateAndGetAutoresponderById
          */
+        public function testDummyHtmlContentThrowsValidationErrorWhenTextContentIsEmpty()
+        {
+            $autoresponder                                  = new Autoresponder();
+            $autoresponder->subject                         = 'Another Test subject';
+            $autoresponder->textContent                     = '';
+            $autoresponder->htmlContent                     = "<html>\n<head>\n</head>\n<body>\n</body>\n</html>";
+            $autoresponder->fromOperationDurationInterval   = '1';
+            $autoresponder->fromOperationDurationType       = TimeDurationUtil::DURATION_TYPE_MONTH;
+            $autoresponder->operationType                   = Autoresponder::OPERATION_UNSUBSCRIBE;
+            $autoresponder->enableTracking                  = 1;
+            $this->assertFalse($autoresponder->save());
+            $errorMessages = $autoresponder->getErrors();
+            $this->assertEquals(1, count($errorMessages));
+            $this->assertTrue(array_key_exists('textContent', $errorMessages));
+            $this->assertEquals(1, count($errorMessages['textContent']));
+            $this->assertEquals('Please provide at least one of the contents field.', $errorMessages['textContent'][0]);
+
+            $autoresponder->textContent                     = 'Text Content';
+            $this->assertTrue($autoresponder->save());
+            $this->assertEquals(3, count(Autoresponder::getAll()));
+            $id = $autoresponder->id;
+            unset($autoresponder);
+            $autoresponder = Autoresponder::getById($id);
+            $this->assertEquals('Another Test subject',                 $autoresponder->subject);
+            $this->assertEquals(null,                                   $autoresponder->htmlContent);
+            $this->assertEquals('Text Content',                         $autoresponder->textContent);
+            $this->assertEquals('1',                                    $autoresponder->fromOperationDurationInterval);
+            $this->assertEquals(TimeDurationUtil::DURATION_TYPE_MONTH,  $autoresponder->fromOperationDurationType);
+            $this->assertEquals(Autoresponder::OPERATION_UNSUBSCRIBE ,  $autoresponder->operationType);
+            $this->assertEquals(1,                                      $autoresponder->enableTracking);
+        }
+
+        /**
+         * @depends testCreateAndGetAutoresponderById
+         */
+        public function testHtmlContentGetsSavedCorrectly()
+        {
+            $randomData                     = ZurmoRandomDataUtil::getRandomDataByModuleAndModelClassNames(
+                                                                            'EmailTemplatesModule', 'EmailTemplate');
+            $htmlContent                    = $randomData['htmlContent'][count($randomData['htmlContent']) -1];
+            $autoresponder                                  = new Autoresponder();
+            $autoresponder->subject                         = 'Another Test subject';
+            $autoresponder->textContent                     = 'Text Content';
+            $autoresponder->htmlContent                     = $htmlContent;
+            $autoresponder->fromOperationDurationInterval   = '1';
+            $autoresponder->fromOperationDurationType       = TimeDurationUtil::DURATION_TYPE_MONTH;
+            $autoresponder->operationType                   = Autoresponder::OPERATION_UNSUBSCRIBE;
+            $autoresponder->enableTracking                  = 1;
+            $this->assertTrue($autoresponder->save());
+            $autoresponderId = $autoresponder->id;
+            $autoresponder->forgetAll();
+            $autoresponder = Autoresponder::getById($autoresponderId);
+            $this->assertEquals($htmlContent, $autoresponder->htmlContent);
+            $this->assertEquals(4, count(Autoresponder::getAll()));
+        }
+
+        /**
+         * @depends testCreateAndGetAutoresponderById
+         */
         public function testGetByOperationType()
         {
             $autoresponders = Autoresponder::getByOperationType(Autoresponder::OPERATION_SUBSCRIBE);
             $this->assertCount(1, $autoresponders);
             $autoresponders = Autoresponder::getByOperationType(Autoresponder::OPERATION_UNSUBSCRIBE);
-            $this->assertCount(1, $autoresponders);
+            $this->assertCount(3, $autoresponders);
         }
 
         /**
@@ -169,10 +228,10 @@
         public function testDeleteAutoresponder()
         {
             $autoresponders = Autoresponder::getAll();
-            $this->assertCount(5, $autoresponders);
+            $this->assertCount(7, $autoresponders);
             $autoresponders[0]->delete();
             $autoresponders = Autoresponder::getAll();
-            $this->assertEquals(4, count($autoresponders));
+            $this->assertEquals(6, count($autoresponders));
         }
 
         public function testResolveNewTimeStampForDuration()

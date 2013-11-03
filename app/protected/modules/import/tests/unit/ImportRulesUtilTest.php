@@ -56,6 +56,7 @@
                 'Opportunities' => 'Opportunities',
                 'Products'         => 'Products',
                 'ProductTemplates' => 'Catalog Items',
+                'Projects'      => 'Projects',
                 'Tasks'         => 'Tasks',
                 'Users'         => 'Users',
             );
@@ -70,7 +71,7 @@
             Yii::app()->user->userModel  = User::getByUsername('super');
             $requiredAttributeCollection = ImportModelTestItemImportRules::
                                            getRequiredAttributesCollectionNotIncludingReadOnly();
-            $this->assertEquals(3, count($requiredAttributeCollection));
+            $this->assertEquals(2, count($requiredAttributeCollection));
 
             //Should fail, because nothing has been mapped.
             $mappedAttributeImportRulesCollection = AttributeImportRulesFactory::
@@ -80,8 +81,8 @@
                                                                 $mappedAttributeImportRulesCollection);
             $this->assertFalse($passed);
 
-            //Should fail because only one of 3 required attributes has been mapped.
-            $this->assertEquals(3, count($requiredAttributeCollection));
+            //Should fail because only one of 2 required attributes has been mapped.
+            $this->assertEquals(2, count($requiredAttributeCollection));
             $mappedAttributeImportRulesCollection = AttributeImportRulesFactory::
                                                     makeCollection( 'ImportModelTestItem', array('boolean'));
             $passed = ImportRulesUtil::
@@ -89,11 +90,11 @@
                                                                 $mappedAttributeImportRulesCollection);
             $this->assertFalse($passed);
 
-            //Should pass because all three required attributes are mapped as non-derived
-            $this->assertEquals(3, count($requiredAttributeCollection));
+            //Should pass because all two required attributes are mapped as non-derived
+            $this->assertEquals(2, count($requiredAttributeCollection));
             $mappedAttributeImportRulesCollection = AttributeImportRulesFactory::
                                                     makeCollection( 'ImportModelTestItem',
-                                                    array('owner', 'boolean', 'string', 'lastName'));
+                                                    array('boolean', 'string', 'lastName'));
             $passed = ImportRulesUtil::
                       areAllRequiredAttributesMappedOrHaveRules($requiredAttributeCollection,
                                                                 $mappedAttributeImportRulesCollection);
@@ -102,7 +103,7 @@
             $this->assertEquals(0, count($requiredAttributeCollection));
             $mappedAttributeImportRulesCollection = AttributeImportRulesFactory::
                                                     makeCollection( 'ImportModelTestItem',
-                                                    array('owner', 'boolean', 'string', 'FullName'));
+                                                    array('boolean', 'string', 'FullName'));
             $requiredAttributeCollection = ImportModelTestItemImportRules::
                                            getRequiredAttributesCollectionNotIncludingReadOnly();
             $passed = ImportRulesUtil::

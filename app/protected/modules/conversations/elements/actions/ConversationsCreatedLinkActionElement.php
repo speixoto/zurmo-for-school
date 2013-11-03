@@ -38,7 +38,7 @@
     {
         protected function getDefaultLabel()
         {
-            return Zurmo::t('ConversationsModule', 'Created');
+            return Zurmo::t('Core', 'Created');
         }
 
         protected function getDefaultRoute()

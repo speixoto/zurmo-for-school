@@ -98,17 +98,15 @@
             $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
             $content = $this->runControllerWithNoExceptionsAndGetContent('emailMessages/default/configurationEditImap');
             $this->assertTrue(strpos($content, '<div id="EmailArchivingConfigurationEditAndDetailsView" '.
-                                                'class="AdministrativeArea AppContent ImapConfigurationEditAndDetails' .
+                                                'class="AdministrativeArea ImapConfigurationEditAndDetails' .
                                                 'View EditAndDetailsView DetailsView ModelView '.
                                                 'ConfigurableMetadataView MetadataView">') !== false);
-            $this->assertTrue(strpos($content, '<h1><span class="truncated-title">') !== false);
-            $this->assertTrue(strpos($content, '<span class="ellipsis-content">Email Configuration</span>') !== false);
+            $this->assertTrue(strpos($content, '<h1><span class="truncated-title"') !== false);
+            $this->assertTrue(strpos($content, '<span class="ellipsis-content">Email Archiving Configuration (IMAP)</span>') !== false);
             $this->assertTrue(strpos($content, '<div class="wide form">') !== false);
             $this->assertTrue(strpos($content, '<div class="attributesContainer">') !== false);
             $this->assertTrue(strpos($content, '<div class="left-column full-width">') !== false);
             $this->assertTrue(strpos($content, '<div class="panel">') !== false);
-            $this->assertTrue(strpos($content, '<div class="panelTitle">Email Archiving '.
-                                                'Configuration (IMAP)</div>') !== false);
             $this->assertTrue(strpos($content, '<label for="EmailArchivingConfigurationForm_imapHost" class="required"' .
                                                 '>Host <span class="required">*</span></label>') !== false);
             $this->assertTrue(strpos($content, '<input id="EmailArchivingConfigurationForm_imapHost" ' .
@@ -193,17 +191,15 @@
             $this->setGetArray(array('type' => 1));
             $content = $this->runControllerWithNoExceptionsAndGetContent('emailMessages/default/configurationEditImap');
             $this->assertTrue(strpos($content, '<div id="EmailArchivingConfigurationEditAndDetailsView" '.
-                                                'class="AdministrativeArea AppContent ImapConfigurationEditAndDetails' .
+                                                'class="AdministrativeArea ImapConfigurationEditAndDetails' .
                                                 'View EditAndDetailsView DetailsView ModelView '.
                                                 'ConfigurableMetadataView MetadataView">') !== false);
-            $this->assertTrue(strpos($content, '<h1><span class="truncated-title">') !== false);
-            $this->assertTrue(strpos($content, '<span class="ellipsis-content">Email Configuration</span>') !== false);
+            $this->assertTrue(strpos($content, '<h1><span class="truncated-title"') !== false);
+            $this->assertTrue(strpos($content, '<span class="ellipsis-content">Email Archiving Configuration (IMAP)</span>') !== false);
             $this->assertTrue(strpos($content, '<div class="wide form">') !== false);
             $this->assertTrue(strpos($content, '<div class="attributesContainer">') !== false);
             $this->assertTrue(strpos($content, '<div class="left-column full-width">') !== false);
             $this->assertTrue(strpos($content, '<div class="panel">') !== false);
-            $this->assertTrue(strpos($content, '<div class="panelTitle">Email Archiving '.
-                                                'Configuration (IMAP)</div>') !== false);
             $this->assertTrue(strpos($content, '<label for="EmailArchivingConfigurationForm_imapHost" class="required"' .
                                                 '>Host <span class="required">*</span></label>') !== false);
             $this->assertTrue(strpos($content, '<input id="EmailArchivingConfigurationForm_imapHost" ' .
@@ -268,17 +264,16 @@
             $this->setGetArray(array('type' => 2));
             $content = $this->runControllerWithNoExceptionsAndGetContent('emailMessages/default/configurationEditImap');
             $this->assertTrue(strpos($content, '<div id="BounceConfigurationEditAndDetailsView" ' .
-                                                'class="AdministrativeArea AppContent ImapConfigurationEditAndDetails' .
+                                                'class="AdministrativeArea ImapConfigurationEditAndDetails' .
                                                 'View EditAndDetailsView DetailsView ModelView ' .
                                                 'ConfigurableMetadataView MetadataView">') !== false);
             $this->assertTrue(strpos($content, '<div class="wrapper">') !== false);
             $this->assertTrue(strpos($content, '<h1><span class="truncated-title">') !== false);
-            $this->assertTrue(strpos($content, '<span class="ellipsis-content">Email Configuration</span>') !== false);
+            $this->assertTrue(strpos($content, '<span class="ellipsis-content">Bounce Configuration (IMAP)</span>') !== false);
             $this->assertTrue(strpos($content, '<div class="wide form">') !== false);
             $this->assertTrue(strpos($content, '<div class="attributesContainer">') !== false);
             $this->assertTrue(strpos($content, '<div class="left-column full-width">') !== false);
             $this->assertTrue(strpos($content, '<div class="panel">') !== false);
-            $this->assertTrue(strpos($content, '<div class="panelTitle">Bounce Configuration (IMAP)</div>') !== false);
             $this->assertTrue(strpos($content, '<th><label for="BounceConfigurationForm_imapHost" class="required">' .
                                                 'Host <span class="required">*</span></label></th>') !== false);
             $this->assertTrue(strpos($content, '<td colspan="1"><input id="BounceConfigurationForm_imapHost" ' .

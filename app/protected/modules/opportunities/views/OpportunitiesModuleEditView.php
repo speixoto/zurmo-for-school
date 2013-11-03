@@ -44,6 +44,16 @@
                 array(
                     array(
                         'elements' => array(
+                            array('attributeName' => 'automaticProbabilityMappingDisabled', 'type' => 'AutomaticProbabilityMappingDisabled'),
+                        ),
+                    ),
+                ),
+                );
+            $metadata['global']['panels'][0]['rows'][] =
+                array('cells' =>
+                array(
+                    array(
+                        'elements' => array(
                             array('attributeName' => 'stageToProbabilityMapping', 'type' => 'StageToProbabilityMapping'),
                         ),
                     ),

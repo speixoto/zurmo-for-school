@@ -154,7 +154,11 @@
 
         protected function renderAfterFormLayout($form)
         {
-            $content  = ZurmoHtml::hiddenField($this->hashIndexHiddenField, md5('ContactWebFormEntry'.time()));
+            $content  = "<div id='reCaptcha'></div>";
+            $content .= ZurmoHtml::hiddenField('captchaHash');
+            $content .= ZurmoHtml::hiddenField('reCaptchaPublicKey',
+                        ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'reCaptchaPublicKey'));
+            $content .= ZurmoHtml::hiddenField($this->hashIndexHiddenField, md5('ContactWebFormEntry'.time()));
             $content .= ZurmoHtml::hiddenField(ZurmoHttpRequest::EXTERNAL_REQUEST_TOKEN, ZURMO_TOKEN);
             $content .= ZurmoHtml::hiddenField(self::GOOGLE_WEB_TRACKING_ID_FIELD);
             return $content;

@@ -37,98 +37,30 @@
     /**
      * Used to render multiple listview options such as grid, kanban or cards.
      */
-    class ListViewTypesToggleLinkActionElement extends LinkActionElement
+    class ListViewTypesToggleLinkActionElement extends ViewTypesToggleLinkActionElement
     {
-        const TYPE_KANBAN_BOARD = 'KanbanBoard';
-
-        const TYPE_GRID         = 'Grid';
-
-        /**
-         * @return null
-         */
-        public function getActionType()
+        protected function resolveLabelForNonKanbanBoard()
         {
-            return null;
+            return ZurmoHtml::tag('i', array('class' => $this->resolveNonKanbanBoardClass()),
+                                             "<span>" . Zurmo::t('Core', 'Grid') . "</span>");
         }
 
-        /**
-         * @return string
-         */
-        public function render()
+        protected function getKanbanBoardUrl()
         {
-            $kanbanBoardUrl = Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/list/',
-                              array('kanbanBoard' => true));
-            $listUrl        = Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/list/',
-                              array('kanbanBoard' => false));
-            $content        = null;
-            $content       .= ZurmoHtml::link('<span>Kanban</span>', $kanbanBoardUrl,
-                                              array('class' => $this->resolveKanbanBoardClass(),
-                                                    'title' => Zurmo::t('Core', 'View as Kanban Board')));
-            $content       .= ZurmoHtml::link('<span>Grid</span>', $listUrl,
-                                              array('class' => $this->resolveGridClass(),
-                                                    'title' => Zurmo::t('Core', 'View as Grid')));
-            return $content;
+            return Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/list/',
+                                         array('kanbanBoard' => true));
         }
 
-        /**
-         * Selecting a different type of list view is not supported right now in mobile.
-         * @return array|void
-         * @throws NotSupportedException
-         */
-        public function renderMenuItem()
+
+        protected function getNonKanbanBoardUrl()
         {
-            throw new NotSupportedException();
+            return Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/list/',
+                                         array('kanbanBoard' => false));
         }
 
-        /**
-         * @return string
-         */
-        protected function resolveKanbanBoardClass()
+        protected function getViewLabelForNonKanbanBoard()
         {
-            $kanbanBoardClass = 'icon-kanban-board-view-type';
-            if ($this->getActive() == static::TYPE_KANBAN_BOARD)
-            {
-                $kanbanBoardClass .= ' active';
-            }
-            return $kanbanBoardClass;
-        }
-
-        /**
-         * @return string
-         */
-        protected function resolveGridClass()
-        {
-            $gridClass = 'icon-grid-view-type';
-            if ($this->getActive() == static::TYPE_GRID)
-            {
-                $gridClass .= ' active';
-            }
-            return $gridClass;
-        }
-
-        /**
-         * @return string
-         */
-        protected function getDefaultLabel()
-        {
-            return Zurmo::t('ReportsModule', 'Toggle Results');
-        }
-
-        /**
-         * @return null
-         */
-        protected function getDefaultRoute()
-        {
-            return null;
-        }
-
-        protected function getActive()
-        {
-            if (!isset($this->params['active']))
-            {
-                return static::TYPE_GRID;
-            }
-            return $this->params['active'];
+            return Zurmo::t('Core', 'View as Grid');
         }
     }
 ?>

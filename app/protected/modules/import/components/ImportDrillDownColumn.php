@@ -75,7 +75,6 @@ END;
          */
         protected function renderDataCellContent($row, $data)
         {
-            $dataParams               = array('rowId' => $data->getId());
             $expandAndLoadLinkContent = ZurmoHtml::tag('span', array('class' => 'drillDownExpandAndLoadLink drilldown-link'),
                                                                      'G');
             $expandLinkContent        = ZurmoHtml::tag('span', array('class' => 'drillDownExpandLink drilldown-link',

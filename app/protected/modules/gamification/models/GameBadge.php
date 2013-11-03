@@ -43,7 +43,7 @@
         {
             if (trim($this->type) == '')
             {
-                return Zurmo::t('GamificationModule', '(Unnamed)');
+                return Zurmo::t('Core', '(Unnamed)');
             }
             return $this->type . ' ' . $this->grade;
         }
@@ -97,13 +97,13 @@
                     'grade',
                 ),
                 'relations' => array(
-                    'person'       => array(RedBeanModel::HAS_ONE, 'Item', RedBeanModel::NOT_OWNED,
-                                            RedBeanModel::LINK_TYPE_SPECIFIC, 'person')
+                    'person'       => array(static::HAS_ONE, 'Item', static::NOT_OWNED,
+                                            static::LINK_TYPE_SPECIFIC, 'person')
                 ),
                 'rules' => array(
                     array('type',          'required'),
                     array('type',          'type',    'type' => 'string'),
-                    array('type',          'length',  'min'  => 3, 'max' => 64),
+                    array('type',          'length',  'min'  => 1, 'max' => 64),
                     array('grade',         'required'),
                     array('grade',         'type',    'type' => 'integer'),
                     array('grade',         'default', 'value' => 1),

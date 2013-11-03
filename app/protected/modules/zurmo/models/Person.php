@@ -43,7 +43,7 @@
                 $fullName = $this->getFullName();
                 if ($fullName == '')
                 {
-                    return Zurmo::t('ZurmoModule', '(Unnamed)');
+                    return Zurmo::t('Core', '(Unnamed)');
                 }
                 return $fullName;
             }
@@ -73,7 +73,7 @@
                 array(
                     'department'     => Zurmo::t('ZurmoModule', 'Department', array(), null, $language),
                     'firstName'      => Zurmo::t('ZurmoModule', 'First Name', array(), null, $language),
-                    'fullName'       => Zurmo::t('ZurmoModule', 'Name', array(), null, $language),
+                    'fullName'       => Zurmo::t('Core', 'Name', array(), null, $language),
                     'jobTitle'       => Zurmo::t('ZurmoModule', 'Job Title', array(), null, $language),
                     'lastName'       => Zurmo::t('ZurmoModule', 'Last Name', array(), null, $language),
                     'mobilePhone'    => Zurmo::t('ZurmoModule', 'Mobile Phone', array(), null, $language),
@@ -120,16 +120,16 @@
                     'officeFax',
                 ),
                 'relations' => array(
-                    'primaryAddress' => array(RedBeanModel::HAS_ONE, 'Address',          RedBeanModel::OWNED,
-                                         RedBeanModel::LINK_TYPE_SPECIFIC, 'primaryAddress'),
-                    'primaryEmail'   => array(RedBeanModel::HAS_ONE, 'Email',            RedBeanModel::OWNED,
-                                         RedBeanModel::LINK_TYPE_SPECIFIC, 'primaryEmail'),
-                    'title'          => array(RedBeanModel::HAS_ONE, 'OwnedCustomField', RedBeanModel::OWNED,
-                                         RedBeanModel::LINK_TYPE_SPECIFIC, 'title'),
+                    'primaryAddress' => array(static::HAS_ONE, 'Address',          static::OWNED,
+                                         static::LINK_TYPE_SPECIFIC, 'primaryAddress'),
+                    'primaryEmail'   => array(static::HAS_ONE, 'Email',            static::OWNED,
+                                         static::LINK_TYPE_SPECIFIC, 'primaryEmail'),
+                    'title'          => array(static::HAS_ONE, 'OwnedCustomField', static::OWNED,
+                                         static::LINK_TYPE_SPECIFIC, 'title'),
                 ),
                 'rules' => array(
                     array('department',     'type',   'type' => 'string'),
-                    array('department',     'length', 'min'  => 3, 'max' => 64),
+                    array('department',     'length', 'min'  => 1, 'max' => 64),
                     array('firstName',      'type',   'type' => 'string'),
                     array('firstName',      'length', 'min'  => 1, 'max' => 32),
                     array('jobTitle',       'type',   'type' => 'string'),

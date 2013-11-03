@@ -59,8 +59,8 @@
 
         protected static function renderLabels()
         {
-            $labels = array(Zurmo::t('EmailTemplatesModule', 'Html Content'),
-                            Zurmo::t('EmailTemplatesModule', 'Text Content'));
+            $labels = array(Zurmo::t('EmailMessagesModule', 'Html Content'),
+                            Zurmo::t('EmailMessagesModule', 'Text Content'));
             return array_combine(static::getModelAttributeNames(), $labels);
         }
 
@@ -169,13 +169,16 @@
         {
             $id                      = $this->getEditableInputId(static::HTML_CONTENT_INPUT_NAME);
             $htmlOptions             = array();
+            $htmlContent             = $this->model->htmlContent;
             $htmlOptions['id']       = $id;
             $htmlOptions['name']     = $this->getEditableInputName(static::HTML_CONTENT_INPUT_NAME);
             $cClipWidget             = new CClipWidget();
             $cClipWidget->beginClip("Redactor");
             $cClipWidget->widget('application.core.widgets.Redactor', array(
                                         'htmlOptions' => $htmlOptions,
-                                        'content'     => $this->model->htmlContent,
+                                        'content'     => $htmlContent,
+                                        'paragraphy'  => "false",
+                                        'deniedTags'  => json_encode(array()),
                                 ));
             $cClipWidget->endClip();
             $content                 = ZurmoHtml::label($this->renderHtmlContentAreaLabel(), $id);

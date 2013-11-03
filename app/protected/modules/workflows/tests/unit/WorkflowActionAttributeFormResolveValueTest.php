@@ -36,8 +36,6 @@
 
     class WorkflowActionAttributeFormResolveValueTest extends WorkflowBaseTest
     {
-        public $freeze = false;
-
         protected static $baseCurrencyId;
 
         protected static $eurCurrencyId;
@@ -139,25 +137,9 @@
             assert($saved); // Not Coding Standard
         }
 
-        public function setup()
+        public static function getDependentTestModelClassNames()
         {
-            parent::setUp();
-            $freeze = false;
-            if (RedBeanDatabase::isFrozen())
-            {
-                RedBeanDatabase::unfreeze();
-                $freeze = true;
-            }
-            $this->freeze = $freeze;
-        }
-
-        public function teardown()
-        {
-            if ($this->freeze)
-            {
-                RedBeanDatabase::freeze();
-            }
-            parent::teardown();
+            return array('WorkflowModelTestItem');
         }
 
         public function testPermissionsResolveValueAndSetToModelUpdateAsDynamicCreatedByUser()
@@ -207,7 +189,7 @@
             $explicitReadWriteModelPermissions = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($model);
             $this->assertEquals(1, $explicitReadWriteModelPermissions->getReadWritePermitablesCount());
             $readWritePermitables = $explicitReadWriteModelPermissions->getReadWritePermitables();
-            $this->assertTrue(isset($readWritePermitables[self::$groupTest->id]));
+            $this->assertTrue(isset($readWritePermitables[self::$groupTest->getClassId('Permitable')]));
 
             //Test same as owner
             $form        = new ExplicitReadWriteModelPermissionsWorkflowActionAttributeForm('WorkflowsTestModule', 'WorkflowModelTestItem');
@@ -236,7 +218,7 @@
             $this->assertEquals(1, $explicitReadWriteModelPermissions->getReadWritePermitablesCount());
             $readWritePermitables = $explicitReadWriteModelPermissions->getReadWritePermitables();
             $everyoneGroup      = Group::getByName(Group::EVERYONE_GROUP_NAME);
-            $this->assertTrue(isset($readWritePermitables[$everyoneGroup->id]));
+            $this->assertTrue(isset($readWritePermitables[$everyoneGroup->getClassId('Permitable')]));
 
             //Test a specific group
             $form        = new ExplicitReadWriteModelPermissionsWorkflowActionAttributeForm('WorkflowsTestModule', 'WorkflowModelTestItem');
@@ -251,7 +233,7 @@
             $explicitReadWriteModelPermissions = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($model);
             $this->assertEquals(1, $explicitReadWriteModelPermissions->getReadWritePermitablesCount());
             $readWritePermitables = $explicitReadWriteModelPermissions->getReadWritePermitables();
-            $this->assertTrue(isset($readWritePermitables[self::$groupTest->id]));
+            $this->assertTrue(isset($readWritePermitables[self::$groupTest->getClassId('Permitable')]));
         }
 
         /**
@@ -298,7 +280,7 @@
             $explicitReadWriteModelPermissions = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($model);
             $this->assertEquals(1, $explicitReadWriteModelPermissions->getReadWritePermitablesCount());
             $readWritePermitables = $explicitReadWriteModelPermissions->getReadWritePermitables();
-            $this->assertTrue(isset($readWritePermitables[self::$groupTest->id]));
+            $this->assertTrue(isset($readWritePermitables[self::$groupTest->getClassId('Permitable')]));
 
             //Test clearing out the ExplicitReadWriteModelPermissionsForWorkflow
             $this->assertTrue($triggeredModel->getExplicitReadWriteModelPermissionsForWorkflow() instanceof  ExplicitReadWriteModelPermissions);

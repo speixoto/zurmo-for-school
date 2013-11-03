@@ -37,22 +37,26 @@
     // This is for testing details of how PDO works.
     class PDOTest extends BaseTest
     {
+        public static function getDependentTestModelClassNames()
+        {
+            return array('Wukka');
+        }
+
         public function testPDOTypesToShowTheDodginessOfNotBeingAbleToGetNumbersOut()
         {
-            $wukka = R::dispense('wukka');
+            $wukka = ZurmoRedBean::dispense('wukka');
             $wukka->integer = 69;
-            R::store($wukka);
+            ZurmoRedBean::store($wukka);
             $id = $wukka->id;
             unset($wukka);
 
             $pdo = new PDO(Yii::app()->db->connectionString, Yii::app()->db->username, Yii::app()->db->password); // Not Coding Standard
 
-            $phpVersion = substr(phpversion(), 0, 5);
-
             $statement = $pdo->prepare('select version() as version;');
             $statement->execute();
             $rows = $statement->fetchAll();
             $mysqlVersion = substr($rows[0]['version'], 0, 3);
+            $phpVersion = substr(phpversion(), 0, 5);
 
             // These is what we are interested in. They seem to be ignored in
             // php 5.3 with mysql 5.1, but works in php 5.3.6 & mysql 5.5.
@@ -63,21 +67,21 @@
             $pdo->setAttribute(PDO::ATTR_STRINGIFY_FETCHES, false);
             $pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES,  false);
 
-            $wukka = R::load('wukka', $id);
+            $wukka = ZurmoRedBean::load('wukka', $id);
 
             $statement = $pdo->prepare('select * from wukka;');
             $statement->execute();
             $rows = $statement->fetchAll();
-             if (($phpVersion == '5.3.6' || $phpVersion == '5.3.5') && $mysqlVersion == '5.5')
-             {
-                 $this->assertEquals('integer', gettype($rows[0]['integer'])); // Good! This is what we want!!!
-                 $this->assertEquals('string',  gettype($wukka->integer));     // Dodgy!!!
-             }
-             else
-             {
-                 $this->assertEquals('string',  gettype($rows[0]['integer'])); // Dodgy!!!
-                 $this->assertEquals('string',  gettype($wukka->integer));     // Dodgy!!!
-             }
+            if (($phpVersion == '5.3.6' || $phpVersion == '5.3.5' || $phpVersion == '5.5.2') && $mysqlVersion == '5.5')
+            {
+                $this->assertEquals('integer', gettype($rows[0]['integer'])); // Good! This is what we want!!!
+                $this->assertEquals('string',  gettype($wukka->integer));     // Dodgy!!!
+            }
+            else
+            {
+                $this->assertEquals('string',  gettype($rows[0]['integer'])); // Dodgy!!!
+                $this->assertEquals('string',  gettype($wukka->integer));     // Dodgy!!!
+            }
         }
     }
 ?>

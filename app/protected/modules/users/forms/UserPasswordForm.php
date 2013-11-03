@@ -70,7 +70,7 @@
         public function attributeLabels()
         {
             return array_merge($this->model->attributeLabels(), array(
-                'newPassword'            => Zurmo::t('UsersModule', 'Password'),
+                'newPassword'            => Zurmo::t('ZurmoModule', 'Password'),
                 'newPassword_repeat'     => Zurmo::t('UsersModule', 'Confirm Password'),
             ));
         }

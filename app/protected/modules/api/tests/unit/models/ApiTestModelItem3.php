@@ -47,7 +47,7 @@
                     'name',
                 ),
                 'relations' => array(
-                    'modelItems'      => array(RedBeanModel::MANY_MANY, 'ApiTestModelItem'),
+                    'modelItems'      => array(static::MANY_MANY, 'ApiTestModelItem'),
                 ),
                 'rules' => array(
                     array('name',  'type',   'type' => 'string'),

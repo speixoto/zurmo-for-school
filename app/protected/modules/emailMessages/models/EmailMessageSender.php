@@ -45,7 +45,7 @@
         {
             if (trim($this->fromAddress) == '')
             {
-                return Zurmo::t('EmailMessagesModule', '(Unnamed)');
+                return Zurmo::t('Core', '(Unnamed)');
             }
             return $this->fromAddress;
         }
@@ -69,8 +69,7 @@
                     'fromName',
                 ),
                 'relations' => array(
-                    'personOrAccount'      => array(RedBeanModel::HAS_ONE, 'Item',    RedBeanModel::NOT_OWNED,
-                                                    RedBeanModel::LINK_TYPE_SPECIFIC, 'personOrAccount')
+                    'personsOrAccounts' => array(static::MANY_MANY, 'Item', static::NOT_OWNED)
                 ),
                 'rules' => array(
                     array('fromAddress', 'required'),
@@ -112,9 +111,9 @@
             $params = LabelUtil::getTranslationParamsForAllModules();
             return array_merge(parent::translatedAttributeLabels($language),
                 array(
-                    'fromAddress'     => Zurmo::t('EmailMessagesModule', 'From Address',  array(), null, $language),
-                    'fromName'        => Zurmo::t('EmailMessagesModule', 'From Name',  array(), null, $language),
-                    'personOrAccount' => Zurmo::t('ZurmoModule',         'Person Or AccountsModuleSingularLabel',  $params, null, $language)
+                    'fromAddress'      => Zurmo::t('EmailMessagesModule', 'From Address',  array(), null, $language),
+                    'fromName'         => Zurmo::t('EmailMessagesModule', 'From Name',  array(), null, $language),
+                    'personsOrAccounts' => Zurmo::t('ZurmoModule',         'Person Or AccountsModulePluralLabel',  $params, null, $language)
                 )
             );
         }

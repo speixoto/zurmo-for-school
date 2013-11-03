@@ -57,7 +57,7 @@
                                      'url'     => $this->getRouteForItem($modelClassName));
                 }
             }
-            $menuItems = array('label' => $this->getLabel(),
+            $menuItems = array('label' => $this->getDefaultLabel(),
                                'url'   => null,
                                'items' => $items);
             if (!empty($items))
@@ -76,7 +76,7 @@
 
         protected function getDefaultLabel()
         {
-            return Zurmo::t('MashableInboxModule', 'Create');
+            return Zurmo::t('Core', 'Create');
         }
 
         protected function getDefaultRoute()

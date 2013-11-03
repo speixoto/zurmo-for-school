@@ -220,7 +220,7 @@
          */
         protected function renderRecipientSelectorContentAndWrapper()
         {
-            $content     = ZurmoHtml::tag('h3', array(), Zurmo::t('WorkflowsModule', 'Recipients'));
+            $content     = ZurmoHtml::tag('h3', array(), Zurmo::t('EmailMessagesModule', 'Recipients'));
             $htmlOptions = array('id' => $this->resolveAddRecipientId(), 'class' => self::ADD_RECIPIENT_CLASS_NAME);
             $content    .= ZurmoHtml::dropDownList(self::ADD_RECIPIENT_TYPE_NAME, null,
                            $this->resolveRecipientTypeDataAndLabels(), $htmlOptions);
@@ -336,7 +336,8 @@
             $sendFromAddressId        = TextElement::resolveInputIdPrefixIntoString(
                                         array_merge($inputPrefixData, array('sendFromAddress')));
             Yii::app()->clientScript->registerScript('emailMessageSendFromTypeHelper' . $sendFromTypeSelectId, "
-                if ($('#" . $sendFromTypeSelectId . "').val() == '" . EmailMessageForWorkflowForm::SEND_FROM_TYPE_DEFAULT . "')
+                if ($('#" . $sendFromTypeSelectId . "').val() == '" . EmailMessageForWorkflowForm::SEND_FROM_TYPE_DEFAULT . "' ||
+                    $('#" . $sendFromTypeSelectId . "').val() == '" . EmailMessageForWorkflowForm::SEND_FROM_TYPE_TRIGGERED_MODEL_OWNER . "')
                 {
                     $('#" . $sendFromNameId . "').parentsUntil('tr').parent().hide();
                     $('#" . $sendFromAddressId . "').parentsUntil('tr').parent().hide();

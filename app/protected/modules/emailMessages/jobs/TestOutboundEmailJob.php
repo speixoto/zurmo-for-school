@@ -57,7 +57,7 @@
 
         public static function getRecommendedRunFrequencyContent()
         {
-            return Zurmo::t('EmailMessagesModule', 'Once a day, early in the morning.');
+            return Zurmo::t('JobsManagerModule', 'Once a day, early in the morning.');
         }
 
         /**
@@ -71,10 +71,13 @@
             $userToSendMessagesFrom    = BaseControlUserConfigUtil::getUserToRunAs();
             $emailMessage              = new EmailMessage();
             $emailMessage->owner       = Yii::app()->user->userModel;
-            $emailMessage->subject     = Zurmo::t('EmailMessagesModule', 'A test email from Zurmo', LabelUtil::getTranslationParamsForAllModules());
+            $emailMessage->subject     = Zurmo::t('EmailMessagesModule', 'A test email from Zurmo',
+                                         LabelUtil::getTranslationParamsForAllModules());
             $emailContent              = new EmailMessageContent();
-            $emailContent->textContent = Zurmo::t('EmailMessagesModule', 'A test text message from Zurmo.', LabelUtil::getTranslationParamsForAllModules());
-            $emailContent->htmlContent = Zurmo::t('EmailMessagesModule', 'A test text message from Zurmo.', LabelUtil::getTranslationParamsForAllModules());
+            $emailContent->textContent = Zurmo::t('EmailMessagesModule', 'A test text message from Zurmo.',
+                                         LabelUtil::getTranslationParamsForAllModules());
+            $emailContent->htmlContent = Zurmo::t('EmailMessagesModule', 'A test text message from Zurmo.',
+                                         LabelUtil::getTranslationParamsForAllModules());
             $emailMessage->content     = $emailContent;
             $sender                    = new EmailMessageSender();
             $sender->fromAddress       = Yii::app()->emailHelper->resolveFromAddressByUser($userToSendMessagesFrom);

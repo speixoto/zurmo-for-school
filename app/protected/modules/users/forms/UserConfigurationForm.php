@@ -125,7 +125,7 @@
             return array(
                 'listPageSize'                  => Zurmo::t('ZurmoModule', 'List page size'),
                 'subListPageSize'               => Zurmo::t('ZurmoModule', 'Sublist page size'),
-                'themeColor'                    => Zurmo::t('UsersModule', 'Theme'),
+                'themeColor'                    => Zurmo::t('Core', 'Theme'),
                 'backgroundTexture'             => Zurmo::t('UsersModule', 'Texture'),
                 'hideWelcomeView'               => Zurmo::t('UsersModule', 'Hide welcome page'),
                 'hideFromSelecting'             => Zurmo::t('UsersModule', 'Hide from selecting'),

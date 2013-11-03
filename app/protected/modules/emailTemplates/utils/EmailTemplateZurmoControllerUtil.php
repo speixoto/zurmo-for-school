@@ -36,5 +36,9 @@
 
     class EmailTemplateZurmoControllerUtil extends FileZurmoControllerUtil
     {
+        protected function getDataSanitizerUtilClassName()
+        {
+            return 'HtmlPostUtil';
+        }
     }
 ?>

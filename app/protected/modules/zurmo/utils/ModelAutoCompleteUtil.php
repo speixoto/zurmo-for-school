@@ -42,20 +42,24 @@
      * while User adds the additional usage of username
      * in the resulting label
      */
-    class ModelAutoCompleteUtil
+    class ModelAutoCompleteUtil extends BaseModelAutoCompleteUtil
     {
         /**
-         * @return array - Jui AutoComplete ready array
-         *  containing id, value, and label elements.
+         * @param $modelClassName
+         * @param $partialName
+         * @param $pageSize
+         * @return array
+         * @throws NotImplementedException
+         * @throws NotSupportedException
          */
-        public static function getByPartialName($modelClassName, $partialName, $pageSize)
+        public static function getByPartialName($modelClassName, $partialName, $pageSize, $autoCompleteOptions = null)
         {
             assert('is_string($modelClassName)');
             assert('is_string($partialName)');
             assert('is_int($pageSize)');
             if ($modelClassName == 'User')
             {
-                return ModelAutoCompleteUtil::getUserResults($partialName, $pageSize);
+                return ModelAutoCompleteUtil::getUserResults($partialName, $pageSize, $autoCompleteOptions);
             }
             elseif ($modelClassName == 'Contact')
             {
@@ -67,45 +71,17 @@
             }
             else
             {
-                return ModelAutoCompleteUtil::getGenericResults($modelClassName, $partialName, $pageSize);
+                return ModelAutoCompleteUtil::getGenericResults($modelClassName, $partialName, $pageSize, $autoCompleteOptions);
             }
-        }
-
-        protected static function getGenericResults($modelClassName, $partialName, $pageSize)
-        {
-            $autoCompleteResults = array();
-            $models = $modelClassName::getSubset(null, null, $pageSize, "name like lower('{$partialName}%')", 'name');
-            foreach ($models as $model)
-            {
-                $autoCompleteResults[] = array(
-                    'id'    => $model->id,
-                    'value' => strval($model),
-                    'label' => strval($model)
-                );
-            }
-            return $autoCompleteResults;
-        }
-
-        protected static function getUserResults($partialName, $pageSize)
-        {
-            $autoCompleteResults  = array();
-            $users                = UserSearch::getUsersByPartialFullName($partialName, $pageSize);
-            foreach ($users as $user)
-            {
-                $autoCompleteResults[] = array(
-                    'id'    => $user->id,
-                    'value' => strval($user),
-                    'label' => strval($user) .' (' . $user->username . ')'
-                );
-            }
-            return $autoCompleteResults;
         }
 
         /**
          * Given a partial term, search across modules that support global search.
-         * @param string  $partialTerm
-         * @param integer $pageSize
-         * @param User    $user
+         * @param $partialTerm
+         * @param $pageSize
+         * @param User $user
+         * @param null $scopeData
+         * @return array
          */
         public static function getGlobalSearchResultsByPartialTerm($partialTerm, $pageSize, User $user, $scopeData = null)
         {
@@ -113,31 +89,67 @@
             assert('is_int($pageSize)');
             assert('$user->id > 0');
             assert('$scopeData == null || is_array($scopeData)');
-            $modelClassNamesAndSearchAttributeData = self::makeModelClassNamesAndSearchAttributeData($partialTerm, $user, $scopeData);
+            $modelClassNamesAndSearchAttributeData = static::makeModelClassNamesAndSearchAttributeData($partialTerm, $user, $scopeData);
             if (empty($modelClassNamesAndSearchAttributeData))
             {
-                return array(array('href' => '', 'label' => Zurmo::t('Core', 'No results found'), 'iconClass' => ''));
+                return array(static::makeNoResultsFoundResultsData());
             }
-            $dataProvider = new RedBeanModelsDataProvider('anId', null, false, $modelClassNamesAndSearchAttributeData);
+            $dataProvider = new RedBeanModelsDataProvider('anId', null, false, $modelClassNamesAndSearchAttributeData,
+                                                          array('pagination' => array('pageSize' => $pageSize)));
             $data = $dataProvider->getData();
             if (empty($data))
             {
-                return array(array('href' => '', 'label' => Zurmo::t('Core', 'No results found'), 'iconClass' => ''));
+                return array(static::makeNoResultsFoundResultsData());
             }
             $autoCompleteResults = array();
             foreach ($data as $model)
             {
-                $moduleClassName = ModelStateUtil::resolveModuleClassNameByStateOfModel($model);
-                $moduleLabel     = $moduleClassName::getModuleLabelByTypeAndLanguage('Singular');
-                $route           = Yii::app()->createUrl($moduleClassName::getDirectoryName()
-                                                         . '/default/details/', array('id' => $model->id));
-                $autoCompleteResults[] = array(
-                    'href'           => $route,
-                    'label'          => strval($model),
-                    'iconClass' => 'autocomplete-icon-' . $moduleClassName,
-                );
+                $autoCompleteResults[] = static::makeModelResultsData($model);
             }
             return $autoCompleteResults;
+        }
+
+        /**
+         * Given a name of a customFieldData object and a term to search on return a JSON encoded
+         * array of autocomplete search results.
+         * @param $customFieldDataName
+         * @param $partialName
+         * @return array
+         */
+        public static function getCustomFieldDataByPartialName($customFieldDataName, $partialName)
+        {
+            assert('is_string($customFieldDataName)');
+            assert('is_string($partialName)');
+            $customFieldData     = CustomFieldData::getByName($customFieldDataName);
+            $dataAndLabels       = CustomFieldDataUtil::
+                getDataIndexedByDataAndTranslatedLabelsByLanguage($customFieldData, Yii::app()->language);
+            $autoCompleteResults = array();
+            foreach ($dataAndLabels as $data => $label)
+            {
+                if (stripos($label, $partialName) === 0)
+                {
+                    $autoCompleteResults[] = array(
+                        'id'   => $data,
+                        'name' => $label,
+                    );
+                }
+            }
+            return $autoCompleteResults;
+        }
+
+        protected static function makeNoResultsFoundResultsData()
+        {
+            return array('href' => '', 'label' => Zurmo::t('Core', 'No Results Found'), 'iconClass' => '');
+        }
+
+        protected static function makeModelResultsData(RedBeanModel $model)
+        {
+            $moduleClassName = ModelStateUtil::resolveModuleClassNameByStateOfModel($model);
+            $route           = Yii::app()->createUrl($moduleClassName::getDirectoryName()
+                                                     . '/default/details/', array('id' => $model->id));
+            return array('href'      => $route,
+                         'label'     => strval($model),
+                         'iconClass' => 'autocomplete-icon-' . $moduleClassName);
         }
 
         protected static function makeModelClassNamesAndSearchAttributeData($partialTerm, User $user, $scopeData)
@@ -182,29 +194,35 @@
             return $modelClassNamesAndSearchAttributeData;
         }
 
-        /**
-         * Given a name of a customFieldData object and a term to search on return a JSON encoded
-         * array of autocomplete search results.
-         * @param string $customFieldDataName
-         * @param string $partialName
-         */
-        public static function getCustomFieldDataByPartialName($customFieldDataName, $partialName)
+        protected static function getGenericResults($modelClassName, $partialName, $pageSize, $autoCompleteOptions)
         {
-            assert('is_string($customFieldDataName)');
-            assert('is_string($partialName)');
-            $customFieldData     = CustomFieldData::getByName($customFieldDataName);
-            $dataAndLabels       = CustomFieldDataUtil::
-                                   getDataIndexedByDataAndTranslatedLabelsByLanguage($customFieldData, Yii::app()->language);
             $autoCompleteResults = array();
-            foreach ($dataAndLabels as $data => $label)
+            $joinTablesAdapter = null;
+            $where = "name like lower('{$partialName}%')";
+            static::handleAutoCompleteOptions($joinTablesAdapter, $where, $autoCompleteOptions);
+            $models = $modelClassName::getSubset($joinTablesAdapter, null, $pageSize, $where, 'name');
+            foreach ($models as $model)
             {
-                if (stripos($label, $partialName) === 0)
-                {
-                    $autoCompleteResults[] = array(
-                        'id'   => $data,
-                        'name' => $label,
-                    );
-                }
+                $autoCompleteResults[] = array(
+                    'id'    => $model->id,
+                    'value' => strval($model),
+                    'label' => strval($model)
+                );
+            }
+            return $autoCompleteResults;
+        }
+
+        protected static function getUserResults($partialName, $pageSize, $autoCompleteOptions = null)
+        {
+            $autoCompleteResults  = array();
+            $users                = UserSearch::getUsersByPartialFullName($partialName, $pageSize, $autoCompleteOptions);
+            foreach ($users as $user)
+            {
+                $autoCompleteResults[] = array(
+                    'id'    => $user->id,
+                    'value' => strval($user),
+                    'label' => strval($user) .' (' . $user->username . ')'
+                );
             }
             return $autoCompleteResults;
         }

@@ -140,7 +140,7 @@
             {
                 return $displayLabel;
             }
-            return Zurmo::t('ZurmoModule', 'Everyone');
+            return Zurmo::t('Core', 'Everyone');
         }
 
         public static function setEveryoneDisplayLabel($label)

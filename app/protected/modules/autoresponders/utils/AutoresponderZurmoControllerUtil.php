@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class AutoresponderZurmoControllerUtil extends FileZurmoControllerUtil
+    class AutoresponderZurmoControllerUtil extends EmailTemplateZurmoControllerUtil
     {
     }
 ?>

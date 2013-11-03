@@ -39,125 +39,96 @@
      * specifically for the 'user' or 'contact' relation. This is utilized by the conversation model.
      *
      */
-    class MultiplePeopleForConversationElement extends Element implements DerivedElementInterface
+    class MultiplePeopleForConversationElement extends MultipleRelatedItemModelsAutoCompleteElement
     {
+        protected $modelDerivationPathToItemFromContact = null;
+
+        protected $modelDerivationPathToItemFromUser = null;
+
         protected function renderControlNonEditable()
         {
             throw new NotSupportedException();
         }
 
-        protected function renderControlEditable()
+        protected function getFormName()
+        {
+            return 'ConversationParticipantsForm';
+        }
+
+        protected function assertModelType()
         {
             assert('$this->model instanceof Conversation');
-            $cClipWidget = new CClipWidget();
-            $cClipWidget->beginClip("ModelElement");
-            $cClipWidget->widget('application.core.widgets.MultiSelectAutoComplete', array(
-                'name'        => $this->getNameForIdField(),
-                'id'          => $this->getIdForIdField(),
-                'jsonEncodedIdsAndLabels'   => CJSON::encode($this->getExistingPeopleRelationsIdsAndLabels()),
-            //change source url to something else.
-                'sourceUrl'   => Yii::app()->createUrl('users/default/autoCompleteForMultiSelectAutoComplete'),
-                'htmlOptions' => array(
-                    'disabled' => $this->getDisabledValue(),
-                    ),
-                'hintText' => Zurmo::t('ConversationsModule', 'Type a User\'s name'),
-                'onAdd'    => $this->getOnAddContent(),
-                'onDelete' => $this->getOnDeleteContent(),
-            ));
-            $cClipWidget->endClip();
-            $content = $cClipWidget->getController()->clips['ModelElement'];
-            return $content;
         }
 
-        protected function getOnAddContent()
-        {
-        }
-
-        protected function getOnDeleteContent()
-        {
-        }
-
-        protected function renderError()
-        {
-        }
-
-        protected function renderLabel()
-        {
-            return $this->resolveNonActiveFormFormattedLabel($this->getFormattedAttributeLabel());
-        }
-
-        protected function getFormattedAttributeLabel()
-        {
-            return Yii::app()->format->text(Zurmo::t('ConversationsModule', 'Participants'));
-        }
-
-         public static function getDisplayName()
+        public static function getDisplayName()
         {
             return Zurmo::t('ConversationsModule', 'Participants');
         }
 
-        /**
-         * Get the attributeNames of attributes used in
-         * the derived element. For this element, there are no attributes from the model.
-         * @return array - empty
-         */
-        public static function getModelAttributeNames()
+        protected function getWidgetSourceUrl()
         {
-            return array();
+            return  Yii::app()->createUrl('users/default/autoCompleteForMultiSelectAutoComplete');
         }
 
-        protected function getNameForIdField()
+        protected function getWidgetHintText()
         {
-                return 'ConversationParticipantsForm[itemIds]';
+            return Zurmo::t('ConversationsModule', 'Type a User\'s name');
         }
 
-        protected function getIdForIdField()
+        protected function getRelationName()
         {
-            return 'ConversationParticipantsForm_item_ids';
+            return 'conversationParticipants';
         }
 
-        protected function getExistingPeopleRelationsIdsAndLabels()
+        protected function getDefaultExistingIdsAndLabel()
         {
-            $existingPeople = array(
-                                array(  'id'       => $this->model->owner->getClassId('Item'),
-                                        'name'     => strval($this->model->owner),
-                                        'readonly' => true));
-            $modelDerivationPathToItem = RuntimeUtil::getModelDerivationPathToItem('Contact');
-            foreach ($this->model->conversationParticipants as $participant)
+            return array('id'                               => $this->model->owner->getClassId('Item'),
+                        $this->getWidgetPropertyToSearch()  => strval($this->model->owner),
+                        'readonly'                          => true);
+        }
+
+        protected function resolveIdAndNameByModel(RedBeanModel $model)
+        {
+            $existingPeople = null;
+            if (!isset($this->modelDerivationPathToItemFromContact))
+            {
+                $this->modelDerivationPathToItemFromContact = RuntimeUtil::getModelDerivationPathToItem('Contact');
+            }
+            if (!isset($this->modelDerivationPathToItemFromUser))
+            {
+                $this->modelDerivationPathToItemFromUser = RuntimeUtil::getModelDerivationPathToItem('User');
+            }
+            try
+            {
+                $contact = $model->person->castDown(array($this->modelDerivationPathToItemFromContact));
+                if (get_class($contact) == 'Contact')
+                {
+                    $existingPeople = array('id'                                => $contact->getClassId('Item'),
+                                            $this->getWidgetPropertyToSearch()  => strval($contact));
+                }
+                else
+                {
+                    throw new NotFoundException();
+                }
+            }
+            catch (NotFoundException $e)
             {
                 try
                 {
-                    $contact = $participant->person->castDown(array($modelDerivationPathToItem));
-                    if (get_class($contact) == 'Contact')
+                    $user = $model->person->castDown(array($this->modelDerivationPathToItemFromUser));
+                    //Owner is always added first.
+                    if (get_class($user) == 'User' && $user->id != $this->model->owner->id)
                     {
-                        $existingPeople[] = array('id' => $contact->getClassId('Item'),
-                                                    'name' => strval($contact));
-                    }
-                    else
-                    {
-                        throw new NotFoundException();
+                        $readOnly = false;
+                        $existingPeople = array('id'                                => $user->getClassId('Item'),
+                                                $this->getWidgetPropertyToSearch()  => strval($user),
+                                                'readonly'                          => $readOnly);
                     }
                 }
                 catch (NotFoundException $e)
                 {
-                    $modelDerivationPathToItem = RuntimeUtil::getModelDerivationPathToItem('User');
-                    try
-                    {
-                        $user = $participant->person->castDown(array($modelDerivationPathToItem));
-                        //Owner is always added first.
-                        if (get_class($user) == 'User' && $user->id != $this->model->owner->id)
-                        {
-                            $readOnly = false;
-                            $existingPeople[] = array('id'       => $user->getClassId('Item'),
-                                                      'name'     => strval($user),
-                                                      'readonly' => $readOnly);
-                        }
-                    }
-                    catch (NotFoundException $e)
-                    {
-                        //This means the item is not a recognized or expected supported model.
-                        throw new NotSupportedException();
-                    }
+                    //This means the item is not a recognized or expected supported model.
+                    throw new NotSupportedException();
                 }
             }
             return $existingPeople;

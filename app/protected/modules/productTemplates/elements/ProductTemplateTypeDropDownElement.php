@@ -36,12 +36,14 @@
     /**
      * Type dropdown element for product template
      */
-    class ProductTemplateTypeDropDownElement extends StaticDropDownFormElement
+    class ProductTemplateTypeDropDownElement extends ConstantBasedStaticDropDownFormElement
     {
+        protected static $attributeName = 'type';
+
         /**
-         * @return string
+         * @return array
          */
-        protected function getDropDownArray()
+        protected static function resolveDropDownArray()
         {
             return ProductTemplateElementUtil::getProductTemplateTypeDropdownArray();
         }

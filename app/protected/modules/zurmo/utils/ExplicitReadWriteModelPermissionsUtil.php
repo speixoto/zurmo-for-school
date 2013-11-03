@@ -241,7 +241,7 @@
                 $saveSecurableItem = true;
                 foreach ($explicitReadWriteModelPermissions->getReadOnlyPermitables() as $permitable)
                 {
-                    if($securableItem->addPermissions($permitable, Permission::READ))
+                    if ($securableItem->addPermissions($permitable, Permission::READ))
                     {
                         if ($permitable instanceof Group)
                         {
@@ -265,7 +265,7 @@
                 $saveSecurableItem = true;
                 foreach ($explicitReadWriteModelPermissions->getReadWritePermitables() as $permitable)
                 {
-                    if($securableItem->addPermissions($permitable, Permission::READ_WRITE_CHANGE_PERMISSIONS_CHANGE_OWNER))
+                    if ($securableItem->addPermissions($permitable, Permission::READ_WRITE_CHANGE_PERMISSIONS_CHANGE_OWNER))
                     {
                         if ($permitable instanceof Group)
                         {

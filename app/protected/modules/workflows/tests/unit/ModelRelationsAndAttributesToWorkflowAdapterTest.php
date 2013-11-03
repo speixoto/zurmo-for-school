@@ -75,7 +75,7 @@
             $adapter            = new ModelRelationsAndAttributesToOnSaveWorkflowAdapter($model, $rules,
                                   $workflow->getType());
             $relations          = $adapter->getSelectableRelationsData();
-            $this->assertEquals(9, count($relations));
+            $this->assertEquals(11, count($relations));
             $compareData        = array('label' => 'Workflow Model Test Item 9');
             $this->assertEquals($compareData, $relations['workflowModelTestItem9']);
             $compareData        = array('label' => 'Workflow Model Test Item 9s');
@@ -87,6 +87,7 @@
          */
         public function testPassingPrecedingRelationThatHasAssumptiveLinkIsProperlyHandled()
         {
+            $this->markTestSkipped("New autobuild requires this to be link type specific so this tests isn't needed.");
             $model              = new WorkflowModelTestItem3();
             $rules              = new WorkflowsTestWorkflowRules();
             $workflow             = new Workflow();
@@ -98,7 +99,7 @@
         }
 
         /**
-         * @depends testPassingPrecedingRelationThatHasAssumptiveLinkIsProperlyHandled
+         * @depends testGetHasManyBelongsToRelations
          */
         public function testGetAllWorkflowableRelations()
         {

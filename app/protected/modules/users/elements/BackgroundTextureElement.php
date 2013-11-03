@@ -45,12 +45,15 @@
          */
         protected function renderControlEditable()
         {
+            $gameLevel = GameLevel::resolveByTypeAndPerson(GameLevel::TYPE_GENERAL, Yii::app()->user->userModel);
             $content = null;
             $content .= $this->form->radioButtonList(
                 $this->model,
                 $this->attribute,
-                $this->makeData(),
-                $this->getEditableHtmlOptions()
+                $this->makeData($gameLevel),
+                $this->getEditableHtmlOptions(),
+                array(),
+                $this->resolveDataHtmlOptions($gameLevel)
             );
             $this->registerScript();
             return $content;
@@ -68,15 +71,15 @@
         protected function getEditableHtmlOptions()
         {
             $htmlOptions             = array();
-            $htmlOptions['template'] =  '<div class="radio-input texture-swatch {value}">{input}<span class="background-texture-1">' .
-                                        '</span>{label}</div>';
+            $htmlOptions['separator'] = '';
+            $htmlOptions['template']  = '<div class="radio-input texture-swatch {value}">{input}{label}</div>';
             return $htmlOptions;
         }
 
-        protected function makeData()
+        protected function makeData(GameLevel $gameLevel)
         {
             $data = array('' => Zurmo::t('UsersModule', 'None'));
-            return array_merge($data, Yii::app()->themeManager->getBackgroundTextureNamesAndLabels());
+            return array_merge($data, $this->resolveBackgroundTextureNamesAndLabelsForLocking($gameLevel));
         }
 
         public function registerScript()
@@ -94,6 +97,46 @@
                       ";
             // End Not Coding Standard
             Yii::app()->clientScript->registerScript('changeBackgroundTexture', $script);
+        }
+
+        protected function resolveBackgroundTextureNamesAndLabelsForLocking(GameLevel $gameLevel)
+        {
+            $namesAndUnlockedAtLevels = Yii::app()->themeManager->getBackgroundTextureNamesAndUnlockedAtLevel();
+            $data = array();
+            foreach (Yii::app()->themeManager->getBackgroundTextureNamesAndLabels() as $name => $label)
+            {
+                $label = '<span class="background-texture-1"></span>' . $label;
+                $unlockedAtLevel = $namesAndUnlockedAtLevels[$name];
+                if ($unlockedAtLevel > (int)$gameLevel->value)
+                {
+                    $title   = Zurmo::t('GamificationModule', 'Unlocked at level {level}', array('{level}' => $unlockedAtLevel));
+                    $content = '<span id="background-texture-tooltip-' . $name. '" title="' . $title . '"><i class="icon-lock"></i></span>' . $label;
+                    $qtip    = new ZurmoTip();
+                    $qtip->addQTip("#background-texture-tooltip-" . $name);
+
+                }
+                else
+                {
+                    $content = $label;
+                }
+                $data[$name] = $content;
+            }
+            return $data;
+        }
+
+        protected function resolveDataHtmlOptions(GameLevel $gameLevel)
+        {
+            $dataHtmlOptions = array();
+            foreach (Yii::app()->themeManager->getBackgroundTextureNamesAndUnlockedAtLevel() as $name => $unlockedAtLevel)
+            {
+                $dataHtmlOptions[$name] = array();
+                if ($unlockedAtLevel > (int)$gameLevel->value)
+                {
+                    $dataHtmlOptions[$name]['class']    = 'locked';
+                    $dataHtmlOptions[$name]['disabled'] = 'disabled';
+                }
+            }
+            return $dataHtmlOptions;
         }
     }
 ?>

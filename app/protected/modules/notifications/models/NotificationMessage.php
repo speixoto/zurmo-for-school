@@ -49,7 +49,7 @@
                     'textContent',
                 ),
                 'relations' => array(
-                    'notifications' => array(RedBeanModel::HAS_MANY, 'Notification'),
+                    'notifications' => array(static::HAS_MANY, 'Notification'),
                 ),
                 'rules' => array(
                     array('htmlContent',   'type',    'type' => 'string'),

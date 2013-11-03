@@ -283,7 +283,7 @@
 
         protected function renderActionContent()
         {
-            $actionElementContent = $this->renderActionElementMenu(Zurmo::t('ActivitiesModule', 'Create'));
+            $actionElementContent = $this->renderActionElementMenu(Zurmo::t('Core', 'Create'));
             $content              = null;
             if ($actionElementContent != null)
             {

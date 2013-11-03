@@ -53,8 +53,7 @@
             $this->moduleId            = $moduleId;
             $this->uniqueLayoutId      = get_class($this);
             $this->params              = $params;
-            $model                     = $params["relationModel"];
-            $this->modelId             = $model->id;
+            $this->modelId             = $params["relationModel"]->id;
         }
 
         /**
@@ -62,7 +61,6 @@
          */
         protected function renderContent()
         {
-            $getData  = GetUtil::getData();
             $metadata = self::getMetadata();
             $portletsAreRemovable   = true;
             $portletsAreMovable     = true;
@@ -91,30 +89,55 @@
         protected function renderActionElementBar($renderedInForm)
         {
             $getData = GetUtil::getData();
-            $toolbarContent = '';
+            if (isset($getData['kanbanBoard']) && $getData['kanbanBoard'] == 1)
+            {
+                $isKanbanActive = true;
+            }
+            else
+            {
+                $isKanbanActive = false;
+            }
+            $toolbarContent = null;
             if (Yii::app()->userInterface->isMobile() === false)
             {
-                $isViewLocked     = ZurmoDefaultViewUtil::getLockKeyForDetailsAndRelationsView('lockPortletsForDetailsAndRelationsView');
-                $lockTitle        = Zurmo::t('Core', 'Unlock to edit this screen\'s layout');
-                $unlockTitle      = Zurmo::t('Core', 'Lock and prevent layout changes to this screen');
-                if ($isViewLocked === false)
+                $kanbanToggleLink    = ZurmoDefaultViewUtil::renderActionBarLinksForKanbanBoard(
+                                       $this->controllerId, $this->moduleId, $this->modelId, $isKanbanActive);
+                if ($isKanbanActive)
                 {
-                    $url = $this->resolveLockPortletUrl((int)$getData['id'], '1');
-                    $link = ZurmoHtml::link('<!--' . Zurmo::t('Core', 'Lock') . '-->', $url, array('class' => 'icon-unlock',
-                                                                                                    'title' => $unlockTitle));
-                    $content = parent::renderActionElementBar($renderedInForm) . $link;
+                    $content = parent::renderActionElementBar($renderedInForm) . $kanbanToggleLink;
                 }
                 else
                 {
-                    $url = $this->resolveLockPortletUrl((int)$getData['id'], '0');
-                    $link = ZurmoHtml::link('<!--' . Zurmo::t('Core', 'Unlock') . '-->', $url, array('class' => 'icon-lock',
-                                                                                                      'title' => $lockTitle));
-                    $content = $link;
+                    $content = $kanbanToggleLink. $this->resolveAndRenderLockingLink($renderedInForm);
                 }
-                $toolbarContent = ZurmoHtml::tag('div', array('class' => 'view-toolbar'), $content);
+                $toolbarContent = ZurmoHtml::tag('nav', array('class' => 'pillbox clearfix'), $content);
             }
             $toolbarContent = ZurmoHtml::tag('div', array('class' => 'view-toolbar-container widgets-lock clearfix '), $toolbarContent);
             return $toolbarContent;
+        }
+
+        protected function resolveAndRenderLockingLink($renderedInForm)
+        {
+            $isViewLocked     = ZurmoDefaultViewUtil::getLockKeyForDetailsAndRelationsView('lockPortletsForDetailsAndRelationsView');
+            if ($isViewLocked === false)
+            {
+                $title   = Zurmo::t('Core', 'Lock and prevent layout changes to this screen');
+                $url     = $this->resolveLockPortletUrl($this->params["relationModel"]->id, true);
+                $icon    = ZurmoHtml::tag('i', array('class' => 'icon-unlock'), '<!--' . Zurmo::t('Core', 'Lock') . '-->');
+                $link    = ZurmoHtml::link($icon, $url, array('title' => $title));
+                $content = ZurmoHtml::tag('nav', array('class' => 'default-button'), $link);
+                $content = parent::renderActionElementBar($renderedInForm) . $content;
+            }
+            else
+            {
+                $title   = Zurmo::t('Core', 'Unlock to edit this screen\'s layout');
+                $url     = $this->resolveLockPortletUrl($this->params["relationModel"]->id, false);
+                $icon    = ZurmoHtml::tag('i', array('class' => 'icon-lock'), '<!--' . Zurmo::t('Core', 'Unlock') . '-->');
+                $content = ZurmoHtml::link($icon, $url, array('title' => $title));
+                $content = ZurmoHtml::tag('nav', array('class' => 'default-button'), $content);
+
+            }
+            return $content;
         }
 
         /**
@@ -134,10 +157,10 @@
          */
         private function resolveLockPortletUrl($id, $lockPortlets)
         {
-            assert('is_string($lockPortlets)');
+            assert('is_bool($lockPortlets)');
             assert('is_int($id)');
             $url = Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/details',
-                                                        array('id' => $id, 'lockPortlets' => $lockPortlets));
+                                         array('id' => $id, 'lockPortlets' => $lockPortlets));
             return $url;
         }
 
@@ -146,7 +169,7 @@
          * @param boolean $portletsAreMovable
          * @param boolean $portletsAreRemovable
          */
-        private function resolvePortletConfigurableParams(& $portletsAreMovable, & $portletsAreRemovable)
+        protected function resolvePortletConfigurableParams(& $portletsAreMovable, & $portletsAreRemovable)
         {
             assert('is_bool($portletsAreMovable)');
             assert('is_bool($portletsAreRemovable)');

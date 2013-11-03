@@ -181,9 +181,8 @@
          */
         public static function isStateALead(ContactState $state)
         {
-            assert('$state->id > 0');
             $leadStatesData = self::getLeadStateDataFromStartingStateOnAndKeyedById();
-            if (isset($leadStatesData[$state->id]))
+            if ($state->id > 0 && isset($leadStatesData[$state->id]))
             {
                 return true;
             }

@@ -98,25 +98,28 @@
                 Yii::app()->clientScript->registerScript(static::JS_HANDLER_ID, '
                     $("a.' . static::LINK_ACTION_ELEMENT_CLASS . '").unbind("click.action").bind("click.action", function(event)
                         {
-                            linkUrl = $(this).attr("href");
-                            linkId  = $(this).attr("id");
+                            linkUrl     = $(this).attr("href");
+                            linkId      = $(this).attr("id");
+                            refreshGrid = false;
                             if (linkId.indexOf("delete") !== -1 && !$(this).onAjaxSubmitRelatedListAction("' . $unlinkConfirmMessage . '", "' . $this->getGridId() . '"))
                             {
-                                event.preventDefault();
-                                return false
+                                refreshMembersListGridView();
                             }
-                            $.ajax({
-                                "error"     : function(xhr, textStatus, errorThrown)
-                                                {
-                                                    alert("' . $errorMessage . '");
-                                                },
-                                "success"   : function()
-                                                {
-                                                    $("#" + linkId).closest(".items").parent().find(".pager").find(".refresh").find("a").click();
-                                                },
-                                "url"       : linkUrl,
-                                "cache"	    : false
-                            });
+                            else
+                            {
+                                $.ajax({
+                                    "error"     : function(xhr, textStatus, errorThrown)
+                                                    {
+                                                        alert("' . $errorMessage . '");
+                                                    },
+                                    "success"   : function()
+                                                    {
+                                                        refreshMembersListGridView();
+                                                    },
+                                    "url"       : linkUrl,
+                                    "cache"	    : false
+                                });
+                            }
                             event.preventDefault();
                             return false;
                         }

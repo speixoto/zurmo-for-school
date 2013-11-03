@@ -91,12 +91,15 @@
          */
         protected function renderThemeContent()
         {
-            $content = ZurmoHtml::tag('h3', array(), Zurmo::t('Core', 'Theme'));
-            $content .= ZurmoHtml::radioButtonList(
+            $gameLevel = GameLevel::resolveByTypeAndPerson(GameLevel::TYPE_GENERAL, Yii::app()->user->userModel);
+            $content   = ZurmoHtml::tag('h3', array(), Zurmo::t('Core', 'Theme'));
+            $content  .= ZurmoHtml::radioButtonList(
                 $this->getEditableInputName(KanbanBoard::SELECTED_THEME),
                 $this->model->getKanbanBoard()->getSelectedTheme(),
-                $this->model->getKanbanBoard()->getThemeNamesAndLabels(),
-                $this->getEditableThemeHtmlOptions()
+                $this->resolveThemeColorNamesAndLabelsForLocking($gameLevel),
+                $this->getEditableThemeHtmlOptions(),
+                array(),
+                $this->resolveDataHtmlOptions($gameLevel)
             );
             return $content;
         }
@@ -113,11 +116,11 @@
 
         protected function getEditableThemeHtmlOptions()
         {
-            $htmlOptions             = array();
-            $htmlOptions['id']       = $this->getEditableInputId(KanbanBoard::SELECTED_THEME);
-            $htmlOptions['template'] =  '<div class="radio-input texture-swatch {value}">{input}<span class="background-texture-1">' .
-                                        '</span>{label}</div>';
-            $htmlOptions['class']    = 'ignore-clearform';
+            $htmlOptions              = array();
+            $htmlOptions['id']        = $this->getEditableInputId(KanbanBoard::SELECTED_THEME);
+            $htmlOptions['separator'] = '';
+            $htmlOptions['template']  = '<div class="radio-input texture-swatch {value}">{input}{label}</div>';
+            $htmlOptions['class']     = 'ignore-clearform';
             return $htmlOptions;
         }
 
@@ -193,6 +196,46 @@
                                            'onclick' => 'js:$(this).addClass("attachLoadingTarget");');
             $element               = new SaveButtonActionElement(null, null, null, $params);
             return $element->render();
+        }
+
+        protected function resolveThemeColorNamesAndLabelsForLocking(GameLevel $gameLevel)
+        {
+            $namesAndUnlockedAtLevels = $this->model->getKanbanBoard()->getThemeColorNamesAndUnlockedAtLevel();
+            $data = array();
+            foreach ($this->model->getKanbanBoard()->getThemeNamesAndLabels() as $name => $label)
+            {
+                $label = '<span class="background-texture-1"></span>' . $label;
+                $unlockedAtLevel = $namesAndUnlockedAtLevels[$name];
+                if ($unlockedAtLevel > (int)$gameLevel->value)
+                {
+                    $title   = Zurmo::t('GamificationModule', 'Unlocked at level {level}', array('{level}' => $unlockedAtLevel));
+                    $content = '<span id="background-texture-tooltip-' . $name. '" title="' . $title . '"><i class="icon-lock"></i></span>' . $label;
+                    $qtip    = new ZurmoTip();
+                    $qtip->addQTip("#background-texture-tooltip-" . $name);
+
+                }
+                else
+                {
+                    $content = $label;
+                }
+                $data[$name] = $content;
+            }
+            return $data;
+        }
+
+        protected function resolveDataHtmlOptions(GameLevel $gameLevel)
+        {
+            $dataHtmlOptions = array();
+            foreach ($this->model->getKanbanBoard()->getThemeColorNamesAndUnlockedAtLevel() as $name => $unlockedAtLevel)
+            {
+                $dataHtmlOptions[$name] = array();
+                if ($unlockedAtLevel > (int)$gameLevel->value)
+                {
+                    $dataHtmlOptions[$name]['class']    = 'locked';
+                    $dataHtmlOptions[$name]['disabled'] = 'disabled';
+                }
+            }
+            return $dataHtmlOptions;
         }
     }
 ?>

@@ -63,10 +63,10 @@
                     }
                     break;
                 case MixedDateTypesSearchFormAttributeMappingRules::TYPE_ON:
-                if (static::sanitize($model->$attribute) === static::sanitizeTriggerValue($this->trigger->value))
-                {
-                    return true;
-                }
+                    if (static::sanitize($model->$attribute) === static::sanitizeTriggerValue($this->trigger->value))
+                    {
+                        return true;
+                    }
                     break;
                 case MixedDateTypesSearchFormAttributeMappingRules::TYPE_BETWEEN:
                     if (static::sanitize($model->$attribute) > static::sanitizeTriggerValue($this->trigger->value) &&
@@ -114,6 +114,27 @@
                         return true;
                     }
                     break;
+                case MixedDateTypesTriggerForWorkflowFormAttributeMappingRules::TYPE_AT_LEAST_X_AFTER_TRIGGERED_DATE:
+                    if (!DateTimeUtil::isDateValueNull($model, $attribute) &&
+                         static::sanitize($model->$attribute, true) >= static::sanitizeAndResolveThirdValue())
+                    {
+                        return true;
+                    }
+                    break;
+                case MixedDateTypesTriggerForWorkflowFormAttributeMappingRules::TYPE_AT_LEAST_X_BEFORE_TRIGGERED_DATE:
+                    if (!DateTimeUtil::isDateValueNull($model, $attribute) &&
+                        static::sanitize($model->$attribute, true) <= static::sanitizeAndResolveThirdValue())
+                    {
+                        return true;
+                    }
+                    break;
+                case MixedDateTypesTriggerForWorkflowFormAttributeMappingRules::TYPE_LESS_THAN_X_AFTER_TRIGGERED_DATE:
+                    if (!DateTimeUtil::isDateValueNull($model, $attribute) &&
+                        static::sanitize($model->$attribute, true) < static::sanitizeAndResolveThirdValue())
+                    {
+                        return true;
+                    }
+                    break;
                 default:
                     throw new NotSupportedException();
             }
@@ -142,11 +163,22 @@
 
         /**
          * @param $value
+         * @param bool $adjustForTimezone
          * @return int|mixed
          */
-        protected function sanitize($value)
+        protected function sanitize($value, $adjustForTimezone = false)
         {
-            return strtotime($value);
+            if ($adjustForTimezone)
+            {
+                $timeZone = date_default_timezone_get();
+                date_default_timezone_set('GMT');
+            }
+            $timeStamp = strtotime($value);
+            if ($adjustForTimezone)
+            {
+                date_default_timezone_set($timeZone);
+            }
+            return $timeStamp;
         }
 
         /**
@@ -166,6 +198,28 @@
         protected function resolveAttributeValueIsChanged(RedBeanModel $model, $attribute)
         {
             return array_key_exists($attribute, $model->originalAttributeValues);
+        }
+
+        protected function sanitizeAndResolveThirdValue()
+        {
+            if ($this->trigger->valueEvaluationType == 'Date')
+            {
+                $todayDate = Yii::app()->dateFormatter->format(DatabaseCompatibilityUtil::getDateFormat(), time());
+                $todayDateTime = DateTimeUtil::resolveDateAsDateTime($todayDate);
+                return $this->trigger->resolveNewTimeStampForThirdValueDuration(strtotime($todayDateTime));
+            }
+            elseif ($this->trigger->valueEvaluationType == 'DateTime')
+            {
+                $timeZone = date_default_timezone_get();
+                date_default_timezone_set('GMT');
+                $timeStamp = $this->trigger->resolveNewTimeStampForThirdValueDuration(time());
+                date_default_timezone_set($timeZone);
+                return $timeStamp;
+            }
+            else
+            {
+                throw new NotSupportedException();
+            }
         }
     }
 ?>

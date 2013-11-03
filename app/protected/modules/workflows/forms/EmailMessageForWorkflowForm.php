@@ -39,9 +39,11 @@
      */
     class EmailMessageForWorkflowForm extends ConfigurableMetadataModel implements RowKeyInterface
     {
-        const SEND_FROM_TYPE_DEFAULT      = 'Default';
+        const SEND_FROM_TYPE_DEFAULT               = 'Default';
 
-        const SEND_FROM_TYPE_CUSTOM       = 'Custom';
+        const SEND_FROM_TYPE_CUSTOM                = 'Custom';
+
+        const SEND_FROM_TYPE_TRIGGERED_MODEL_OWNER = 'TriggeredModelOwner';
 
         /**
          * Similar to the types defined in ComponentForWorkflowForm like TYPE_EMAIL_MESSAGES.
@@ -211,10 +213,10 @@
         public function attributeLabels()
         {
             return array('emailTemplateId'           => Zurmo::t('WorkflowsModule', 'Template'),
-                         'sendAfterDurationInterval' => Zurmo::t('WorkflowsModule', 'Send After'),
+                         'sendAfterDurationInterval' => Zurmo::t('Core', 'Send After'),
                          'sendFromType'              => Zurmo::t('WorkflowsModule', 'Send From'),
-                         'sendFromName'              => Zurmo::t('WorkflowsModule', 'From Name'),
-                         'sendFromAddress'           => Zurmo::t('WorkflowsModule', 'From Address'),
+                         'sendFromName'              => Zurmo::t('EmailMessagesModule', 'From Name'),
+                         'sendFromAddress'           => Zurmo::t('EmailMessagesModule', 'From Address'),
             );
         }
 
@@ -274,7 +276,8 @@
                 }
                 return $validated;
             }
-            elseif ($this->sendFromType != self::SEND_FROM_TYPE_DEFAULT)
+            elseif ($this->sendFromType != self::SEND_FROM_TYPE_DEFAULT &&
+                    $this->sendFromType != self::SEND_FROM_TYPE_TRIGGERED_MODEL_OWNER)
             {
                 $this->addError('type', Zurmo::t('WorkflowsModule', 'Invalid Send From Type'));
             }
@@ -329,6 +332,8 @@
             $data                               = array();
             $data[self::SEND_FROM_TYPE_DEFAULT] = Zurmo::t('WorkflowsModule', 'Default System From Name/Address');
             $data[self::SEND_FROM_TYPE_CUSTOM]  = Zurmo::t('WorkflowsModule', 'Custom From Name/Address');
+            $data[self::SEND_FROM_TYPE_TRIGGERED_MODEL_OWNER] =
+                Zurmo::t('WorkflowsModule', "Triggered Record Owner's From Name/Address");
             return $data;
         }
 

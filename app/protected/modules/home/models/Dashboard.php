@@ -53,7 +53,7 @@
                    ' and dashboard.ownedsecurableitem_id = ownedsecurableitem.id '.
                    ' and layoutid = ' . $layoutId                                 .
                    ' order by layoutId;';
-            $ids = R::getCol($sql);
+            $ids = ZurmoRedBean::getCol($sql);
             assert('count($ids) <= 1');
             if (count($ids) == 0)
             {
@@ -63,7 +63,7 @@
                 }
                 throw new NotFoundException();
             }
-            $bean = R::load(RedBeanModel::getTableName('Dashboard'), $ids[0]);
+            $bean = ZurmoRedBean::load(static::getTableName('Dashboard'), $ids[0]);
             assert('$bean === false || $bean instanceof RedBean_OODBBean');
             if ($bean === false)
             {
@@ -84,12 +84,12 @@
                    'where ownedsecurableitem.owner__user_id = ' . $userId            .
                    ' and dashboard.ownedsecurableitem_id = ownedsecurableitem.id '   .
                    'order by layoutId;';
-            return R::getAll($sql);
+            return ZurmoRedBean::getAll($sql);
         }
 
         public static function getNextLayoutId()
         {
-            return max(2, (int)R::getCell('select max(layoutId) + 1 from dashboard'));
+            return max(2, (int)ZurmoRedBean::getCell('select max(layoutId) + 1 from dashboard'));
         }
 
         protected static function translatedAttributeLabels($language)
@@ -99,7 +99,7 @@
                     'layoutId'   => Zurmo::t('HomeModule',  'Layout Id',   array(), null, $language),
                     'layoutType' => Zurmo::t('HomeModule',  'Layout Type', array(), null, $language),
                     'isDefault'  => Zurmo::t('HomeModule',  'Is Default',  array(), null, $language),
-                    'name'       => Zurmo::t('ZurmoModule', 'Name',        array(), null, $language),
+                    'name'       => Zurmo::t('Core', 'Name',        array(), null, $language),
                 )
             );
         }
@@ -110,7 +110,7 @@
             {
                 if (trim($this->name) == '')
                 {
-                    return Zurmo::t('HomeModule', '(Unnamed)');
+                    return Zurmo::t('Core', '(Unnamed)');
                 }
                 return $this->name;
             }
@@ -139,7 +139,7 @@
                     array('layoutType', 'length', 'max' => 10),
                     array('name',       'required'),
                     array('name',       'type',   'type' => 'string'),
-                    array('name',       'length', 'min' => 3, 'max' => 64),
+                    array('name',       'length', 'min' => 1, 'max' => 64),
                 ),
                 'defaultSortAttribute' => 'name'
             );
@@ -155,7 +155,7 @@
         {
             assert('$user instanceof User && $user->id > 0');
             $dashboard             = new Dashboard();
-            $dashboard->name       = Zurmo::t('HomeModule', 'Dashboard');
+            $dashboard->name       = Zurmo::t('ZurmoModule', 'Dashboard');
             $dashboard->layoutId   = Dashboard::DEFAULT_USER_LAYOUT_ID;
             $dashboard->owner      = $user;
             $dashboard->layoutType = '50,50'; // Not Coding Standard
@@ -194,7 +194,7 @@
          */
         protected static function getLabel($language = null)
         {
-            return Zurmo::t('HomeModule', 'Dashboard', array(), null, $language);
+            return Zurmo::t('ZurmoModule', 'Dashboard', array(), null, $language);
         }
 
         /**

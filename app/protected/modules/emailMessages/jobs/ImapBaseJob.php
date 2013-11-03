@@ -64,6 +64,10 @@
         public function run()
         {
             $this->resolveImapObject();
+            if ($this->imapManager->imapHost == null)
+            {
+                return true;
+            }
             if ($this->imapManager->connect())
             {
                 $lastImapCheckTime     = $this->getLastImapDropboxCheckTime();
