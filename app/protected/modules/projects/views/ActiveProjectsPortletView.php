@@ -135,7 +135,7 @@
          */
         public function getTitle()
         {
-            $title  = Zurmo::t('ProjectsModule', 'Active Projects');
+            $title  = Zurmo::t('ProjectsModule', 'Active ProjectsModulePluralLabel', LabelUtil::getTranslationParamsForAllModules());
             return $title;
         }
 
