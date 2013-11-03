@@ -53,6 +53,17 @@
 
         protected $requiredAttributesLabelsData;
 
+        /**
+         * @param string $controllerId
+         * @param string $moduleId
+         * @param ImportWizardForm $model
+         * @param null $sampleColumnPagerContent
+         * @param array $mappingDataMetadata
+         * @param array $mappingDataMappingRuleFormsAndElementTypes
+         * @param array $mappableAttributeIndicesAndDerivedTypes
+         * @param array $requiredAttributesLabelsData
+         * @param $title
+         */
         public function __construct($controllerId,
                                     $moduleId,
                                     ImportWizardForm $model,
@@ -108,18 +119,16 @@
             $content .= $this->renderRequiredAttributesLabelsDataContent();
             $content .= '<table>';
             $content .= '<colgroup>';
-            if (count($headerColumns) == 4)
+            if (count($headerColumns) == 3)
             {
-                $content .= '<col style="width:20%" />';
-                $content .= '<col style="width:20%" />';
-                $content .= '<col style="width:25%" />';
-                $content .= '<col style="width:35%" />';
+                $content .= '<col style="width:70%" />';
+                $content .= '<col style="width:15%" />';
+                $content .= '<col style="width:15%" />';
             }
             else
             {
-                $content .= '<col style="width:20%" />';
-                $content .= '<col style="width:25%" />';
-                $content .= '<col style="width:55%" />';
+                $content .= '<col style="width:85%" />';
+                $content .= '<col style="width:15%" />';
             }
             $content .= '</colgroup>';
             $content .= '<tbody>';
@@ -146,7 +155,7 @@
             $content = '<div class="required-fields">';
             if (count($this->requiredAttributesLabelsData) > 0)
             {
-                $content .= '<strong>' . Zurmo::t('ImportModule', 'Required Fields') . ':</strong>' . '<br/>';
+                $content .= '<strong>' . Zurmo::t('ZurmoModule', 'Required Fields') . ':</strong>' . '<br/>';
                 foreach ($this->requiredAttributesLabelsData as $label)
                 {
                     $content .= $label. '<br/>';
@@ -167,10 +176,17 @@
             }
             $headerColumns[] = '<div id="' . MappingFormLayoutUtil::getSampleColumnHeaderId() . '">' .
                                $this->sampleColumnPagerContent . '</div>';
-            $headerColumns[] = Zurmo::t('ImportModule', 'Rules');
             return $headerColumns;
         }
 
+        /**
+         * @param $mappingFormLayoutUtil
+         * @param $mappingDataMetadata
+         * @param $firstRowIsHeaderRow
+         * @param $importRulesType
+         * @param $id
+         * @return array
+         */
         protected function resolveMappingDataMetadataWithRenderedElements($mappingFormLayoutUtil, $mappingDataMetadata,
                                                                           $firstRowIsHeaderRow, $importRulesType, $id)
         {
@@ -184,11 +200,20 @@
                 assert('$mappingDataRow["type"] == "importColumn" || $mappingDataRow["type"] == "extraColumn"');
                 $row          = array();
                 $row['cells'] = array();
-                $row['cells'][] = $mappingFormLayoutUtil->renderAttributeAndColumnTypeContent(
+                $firstCell    = $mappingFormLayoutUtil->renderAttributeAndColumnTypeContent(
                                                                        $columnName,
                                                                        $mappingDataRow['type'],
                                                                        $mappingDataRow['attributeIndexOrDerivedType'],
                                                                        $ajaxOnChangeUrl);
+                
+                $firstCell   .= $mappingFormLayoutUtil->renderMappingRulesElements(
+                                      $columnName,
+                                      $mappingDataRow['attributeIndexOrDerivedType'],
+                                      $importRulesType,
+                                      $mappingDataRow['type'],
+                                      $this->resolveMappingRuleFormsAndElementTypesByColumn($columnName));
+                $row['cells'][] = $firstCell;
+                        
                 if ($firstRowIsHeaderRow)
                 {
                     assert('$mappingDataRow["headerValue"] == null || is_string($mappingDataRow["headerValue"])');
@@ -196,18 +221,16 @@
                                                                                     $mappingDataRow['headerValue']);
                 }
                 $row['cells'][] = $mappingFormLayoutUtil->renderImportColumnContent ($columnName,
-                                                                                 $mappingDataRow['sampleValue']);
-                $row['cells'][] = $mappingFormLayoutUtil->renderMappingRulesElements(
-                                      $columnName,
-                                      $mappingDataRow['attributeIndexOrDerivedType'],
-                                      $importRulesType,
-                                      $mappingDataRow['type'],
-                                      $this->resolveMappingRuleFormsAndElementTypesByColumn($columnName));
+                                                                                 $mappingDataRow['sampleValue']);                
                 $metadata['rows'][] = $row;
             }
             return $metadata;
         }
 
+        /**
+         * @param int $columnCount
+         * @return string
+         */
         protected function renderAddExtraColumnContent($columnCount)
         {
             assert('is_int($columnCount)');
@@ -236,6 +259,10 @@
             return $content;
         }
 
+        /**
+         * @param string $columnName
+         * @return array
+         */
         protected function resolveMappingRuleFormsAndElementTypesByColumn($columnName)
         {
             assert('is_string($columnName)');
@@ -263,6 +290,24 @@
                 $previousStep = 'step3';
             }
             return $this->getPreviousPageLinkContentByControllerAction($previousStep);
+        }
+
+        protected function renderPreviousPageLinkLabel()
+        {
+            $importRulesClassName  = ImportRulesUtil::getImportRulesClassNameByType($this->model->importRulesType);
+            if (!is_subclass_of($importRulesClassName::getModelClassName(), 'SecurableItem'))
+            {
+                return Zurmo::t('ZurmoModule', 'Upload File');
+            }
+            else
+            {
+                return Zurmo::t('ZurmoModule', 'Select Permissions');
+            }
+        }
+
+        protected function renderNextPageLinkLabel()
+        {
+            return Zurmo::t('ImportModule', 'Analyze Data');
         }
     }
 ?>

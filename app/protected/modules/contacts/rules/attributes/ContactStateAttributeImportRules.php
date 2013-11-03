@@ -46,7 +46,7 @@
 
         public function getDisplayLabel()
         {
-            return Zurmo::t('ContactsModule', 'Status');
+            return Zurmo::t('ZurmoModule', 'Status');
         }
 
         /**
@@ -62,15 +62,16 @@
             return array('ContactState', 'ContactStateRequired');
         }
 
-        public function resolveValueForImport($value, $columnMappingData, ImportSanitizeResultsUtil $importSanitizeResultsUtil)
+        public function resolveValueForImport($value, $columnName, $columnMappingData, ImportSanitizeResultsUtil $importSanitizeResultsUtil)
         {
+            assert('is_string($columnName)');
             $attributeNames = $this->getRealModelAttributeNames();
             assert('count($attributeNames) == 1');
             assert('$attributeNames[0] == "state"');
             $modelClassName = $this->getModelClassName();
             $value          = ImportSanitizerUtil::
                               sanitizeValueBySanitizerTypes(static::getSanitizerUtilTypesInProcessingOrder(),
-                              $modelClassName, null, $value, $columnMappingData, $importSanitizeResultsUtil);
+                              $modelClassName, null, $value, $columnName, $columnMappingData, $importSanitizeResultsUtil);
             return array('state' => $value);
         }
     }

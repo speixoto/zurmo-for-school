@@ -142,7 +142,7 @@
 
         public static function getDisplayDescription()
         {
-            return Zurmo::t('LeadsModule', 'Matching Archived Emails');
+            return Zurmo::t('EmailMessagesModule', 'Matching Archived Emails');
         }
 
         public function renderAfterFormLayout($form)

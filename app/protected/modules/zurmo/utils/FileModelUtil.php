@@ -43,6 +43,7 @@
         /**
          *
          * @param string $filePath
+         * @param string $fileName
          * @return $fileModel or false on failure
          */
         public static function makeByFilePathAndName($filePath, $fileName)
@@ -90,6 +91,11 @@
             return $file;
         }
 
+        /**
+         * @param $model
+         * @param $relationName
+         * @param $postDataVariableName
+         */
         public static function resolveModelsHasManyFilesFromPost(& $model, $relationName, $postDataVariableName)
         {
             assert('$model instanceof RedBeanModel');
@@ -101,7 +107,7 @@
                 $newFileModelsIndexedById = array();
                 foreach ($_POST[$postDataVariableName] as $notUsed => $fileModelId)
                 {
-                    $fileModel = FileModel::getById((int)$fileModelId);
+                    $fileModel = $relationModelClassName::getById((int)$fileModelId);
                     $newFileModelsIndexedById[$fileModel->id] = $fileModel;
                 }
                 if ($model->{$relationName}->count() > 0)
@@ -134,18 +140,32 @@
         /**
          *
          * @param integer $fileModelId
+         * @param bool $sharedContent
          * @return $fileModel or false on failure
          */
-        public static function makeByExistingFileModelId($fileModelId)
+        public static function makeByExistingFileModelId($fileModelId, $sharedContent = true)
         {
             assert('is_int($fileModelId) || (is_string($fileModelId) && !empty($fileModelId))');
             $existingFileModel      = FileModel::getById($fileModelId);
+            return static::makeByFileModel($existingFileModel, $sharedContent);
+        }
+
+        /**
+         *
+         * @param FileModel $existingFileModel
+         * @param bool $sharedContent
+         * @return $fileModel or false on failure
+         */
+        public static function makeByFileModel($existingFileModel, $sharedContent = true)
+        {
             $file                   = new FileModel();
-            // TODO: @Shoaibi/@Jason: High: Following should also clone FileContent as its HAS_ONE.
             ZurmoCopyModelUtil::copy($existingFileModel, $file);
-            $fileContent            = new FileContent();
-            $fileContent->content   = $existingFileModel->fileContent->content;
-            $file->fileContent      = $fileContent;
+            if (!$sharedContent)
+            {
+                $fileContent            = new FileContent();
+                $fileContent->content   = $existingFileModel->fileContent->content;
+                $file->fileContent      = $fileContent;
+            }
             if (!$file->save())
             {
                 return false;

@@ -33,30 +33,6 @@
  * "Copyright Zurmo Inc. 2013. All rights reserved".
  ********************************************************************************/
 .border-box,
-.modal-view-toolbar a,
-.modal-view-toolbar input[type="submit"],
-.modal-view-toolbar input[type="button"],
-.form-toolbar a,
-.form-toolbar input[type="submit"],
-.form-toolbar input[type="button"],
-.zButton,
-.z-button,
-a.zButton,
-a.z-button,
-.white-button,
-.default-btn .modal-view-toolbar a,
-.default-btn .modal-view-toolbar input[type="submit"],
-.default-btn .modal-view-toolbar input[type="button"],
-.default-btn .form-toolbar a,
-.default-btn .form-toolbar input[type="submit"],
-.default-btn .form-toolbar input[type="button"],
-.default-btn .zButton,
-.default-btn .z-button,
-.default-btn a.zButton,
-.default-btn a.z-button,
-.default-btn .white-button,
-.default-btn,
-.z-label,
 .AppNavigation,
 #MenuView {
   -moz-box-sizing: border-box;
@@ -65,28 +41,28 @@ a.z-button,
 }
 .cf:before,
 .cf:after {
-  content: "";
+  content: " ";
   display: table;
 }
 .cf:after {
   clear: both;
 }
 .cf {
-  zoom: 1;
+  *zoom: 1;
 }
 .clearfix,
 .filter-portlet-model-bar {
-  zoom: 1;
+  *zoom: 1;
 }
 .clearfix:before,
-.filter-portlet-model-bar:before {
-  content: "";
+.filter-portlet-model-bar:before,
+.clearfix:after,
+.filter-portlet-model-bar:after {
+  content: " ";
   display: table;
 }
 .clearfix:after,
 .filter-portlet-model-bar:after {
-  content: "";
-  display: table;
   clear: both;
 }
 .flyout,
@@ -100,11 +76,10 @@ a.z-button,
   background-image: -webkit-linear-gradient(top, #f5f5f5, #ebebeb);
   background-image: -o-linear-gradient(top, #f5f5f5, #ebebeb);
   background-image: linear-gradient(top, #f5f5f5, #ebebeb);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f5f5f5', endColorstr='#ebebeb', GradientType=0);
   -webkit-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
   -moz-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -o-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
   -ms-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
+  -o-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
   box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
   white-space: nowrap;
 }
@@ -126,13 +101,13 @@ a.z-button,
   color: #666 !important;
   -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
   -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
   -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
   box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
   -webkit-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
   -moz-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
-  -o-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
   -ms-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  -o-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
   text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
@@ -144,7 +119,10 @@ a.z-button,
   cursor: pointer;
   text-indent: 0;
   display: inline-block;
-  zoom: 1;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  *zoom: 1;
 }
 .modal-view-toolbar a:before,
 .modal-view-toolbar input[type="submit"]:before,
@@ -156,8 +134,19 @@ a.z-button,
 .z-button:before,
 a.zButton:before,
 a.z-button:before,
-.white-button:before {
-  content: "";
+.white-button:before,
+.modal-view-toolbar a:after,
+.modal-view-toolbar input[type="submit"]:after,
+.modal-view-toolbar input[type="button"]:after,
+.form-toolbar a:after,
+.form-toolbar input[type="submit"]:after,
+.form-toolbar input[type="button"]:after,
+.zButton:after,
+.z-button:after,
+a.zButton:after,
+a.z-button:after,
+.white-button:after {
+  content: " ";
   display: table;
 }
 .modal-view-toolbar a:after,
@@ -171,8 +160,6 @@ a.z-button:before,
 a.zButton:after,
 a.z-button:after,
 .white-button:after {
-  content: "";
-  display: table;
   clear: both;
 }
 .modal-view-toolbar a.attachLoading.z-button,
@@ -188,32 +175,29 @@ a.z-button.attachLoading.z-button,
 .white-button.attachLoading.z-button {
   color: #fff;
 }
-.modal-view-toolbar a:not(.attachLoading) .z-label,
-.modal-view-toolbar input[type="submit"]:not(.attachLoading) .z-label,
-.modal-view-toolbar input[type="button"]:not(.attachLoading) .z-label,
-.form-toolbar a:not(.attachLoading) .z-label,
-.form-toolbar input[type="submit"]:not(.attachLoading) .z-label,
-.form-toolbar input[type="button"]:not(.attachLoading) .z-label,
-.zButton:not(.attachLoading) .z-label,
-.z-button:not(.attachLoading) .z-label,
-a.zButton:not(.attachLoading) .z-label,
-a.z-button:not(.attachLoading) .z-label,
-.white-button:not(.attachLoading) .z-label {
+.modal-view-toolbar a:not(.attachLoading):not(.green-button) .z-label,
+.modal-view-toolbar input[type="submit"]:not(.attachLoading):not(.green-button) .z-label,
+.modal-view-toolbar input[type="button"]:not(.attachLoading):not(.green-button) .z-label,
+.form-toolbar a:not(.attachLoading):not(.green-button) .z-label,
+.form-toolbar input[type="submit"]:not(.attachLoading):not(.green-button) .z-label,
+.form-toolbar input[type="button"]:not(.attachLoading):not(.green-button) .z-label,
+.zButton:not(.attachLoading):not(.green-button) .z-label,
+.z-button:not(.attachLoading):not(.green-button) .z-label,
+a.zButton:not(.attachLoading):not(.green-button) .z-label,
+a.z-button:not(.attachLoading):not(.green-button) .z-label,
+.white-button:not(.attachLoading):not(.green-button) .z-label {
   background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
 }
 .white-button .z-label {
   color: #666 !important;
   -webkit-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
   -moz-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
-  -o-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
   -ms-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  -o-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
   text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
   background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
 }
 .default-btn {
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   border-top: 1px solid rgba(200, 200, 200, 0.4);
   border-left: 1px solid rgba(185, 185, 185, 0.4);
   border-right: 1px solid rgba(185, 185, 185, 0.4);
@@ -221,13 +205,13 @@ a.z-button:not(.attachLoading) .z-label,
   color: #666 !important;
   -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
   -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
   -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
   box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
   -webkit-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
   -moz-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
-  -o-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
   -ms-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  -o-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
   text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
@@ -239,22 +223,39 @@ a.z-button:not(.attachLoading) .z-label,
   cursor: pointer;
   text-indent: 0;
   display: inline-block;
-  zoom: 1;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  *zoom: 1;
 }
-.default-btn:before {
-  content: "";
+.default-btn:before,
+.default-btn:after {
+  content: " ";
   display: table;
 }
 .default-btn:after {
-  content: "";
-  display: table;
   clear: both;
 }
 .default-btn.attachLoading.z-button {
   color: #fff;
 }
-.default-btn:not(.attachLoading) .z-label {
+.default-btn:not(.attachLoading):not(.green-button) .z-label {
   background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
+}
+.z-button.disabled {
+  pointer-events: none;
+  filter: alpha(opacity=50);
+  -khtml-opacity: 0.5;
+  -moz-opacity: 0.5;
+  opacity: 0.5;
+  -webkit-filter: grayscale(85%);
+  -moz-filter: grayscale(85%);
+  -ms-filter: grayscale(85%);
+  -o-filter: grayscale(85%);
+  filter: grayscale(85%);
+  filter: gray;
+  /* IE 6-9 */
+
 }
 /*
 .zButton:not(.attacheLoading),
@@ -268,6 +269,9 @@ a.z-button:not(.attachLoading) .z-label,
   cursor: pointer;
 }
 .z-label {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
   float: left;
   font-weight: bold;
   padding: 0 25px;
@@ -348,8 +352,8 @@ a.z-button:not(.attachLoading) .z-label,
   background: none;
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
-  -o-box-shadow: none;
   -ms-box-shadow: none;
+  -o-box-shadow: none;
   box-shadow: none;
   padding: 0;
   margin: 0;
@@ -528,6 +532,71 @@ body > div {
 #AboutView #leftCol > div {
   float: none;
 }
+.pillbox {
+  width: 100%;
+}
+.split-button,
+.default-button {
+  float: none;
+  display: block;
+}
+.split-button + .default-button,
+.default-button + .default-button,
+.split-button + .split-button,
+.default-button + .split-button {
+  border-left: none;
+  border-top: 1px solid #DFDFDF;
+  -webkit-box-shadow: inset 0 2px 0 0 #ffffff;
+  -moz-box-shadow: inset 0 2px 0 0 #ffffff;
+  -ms-box-shadow: inset 0 2px 0 0 #ffffff;
+  -o-box-shadow: inset 0 2px 0 0 #ffffff;
+  box-shadow: inset 0 2px 0 0 #ffffff;
+}
+.split-button .button-action-trigger,
+.default-button .button-action-trigger,
+.split-button .button-trigger,
+.default-button .button-trigger {
+  text-align: left;
+  float: none;
+  width: 100%;
+}
+.split-button:hover .button-action-trigger .icon-trigger:before,
+.default-button:hover .button-action-trigger .icon-trigger:before,
+.split-button:hover .button-trigger .icon-trigger:before,
+.default-button:hover .button-trigger .icon-trigger:before {
+  display: none !important;
+  background: red !important;
+}
+.button-actions {
+  position: relative;
+  top: 2px;
+  left: 0;
+  clear: left;
+}
+.button-actions:before {
+  right: 4px;
+  background: url(../images/tip.png) right bottom no-repeat;
+}
+.split-button {
+  *zoom: 1;
+}
+.split-button:before,
+.split-button:after {
+  content: " ";
+  display: table;
+}
+.split-button:after {
+  clear: both;
+}
+.split-button .button-action {
+  float: left;
+  width: 80%;
+}
+.split-button .button-trigger {
+  text-align: left;
+  float: right;
+  width: auto;
+}
 .view-toolbar {
   border: none;
   -webkit-border-radius: none;
@@ -538,8 +607,8 @@ body > div {
   background-image: none;
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
-  -o-box-shadow: none;
   -ms-box-shadow: none;
+  -o-box-shadow: none;
   box-shadow: none;
   width: 100%;
 }
@@ -553,8 +622,8 @@ body > div {
   border-radius: 4px;
   -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
+  -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   background: url(../images/view-toolbar-gradient.png) left bottom repeat-x;
 }
@@ -562,13 +631,19 @@ body > div {
   float: left;
   margin: 1px 0 0 0;
 }
+.mobile-actions {
+  display: none;
+}
+.mobile-view-toolbar-container {
+  display: none;
+}
 .mobile-view-toolbar-container .hasDropDown span.select-arrow {
   z-index: 0;
   background: none;
 }
 .mobile-view-toolbar-container .hasDropDown span.select-arrow:before {
   content: "n";
-  font-weight: normal;
+  font-weight: normal !important;
   font-size: 30px;
   font-family: "zurmo_gamification_symbly_rRg";
   line-height: 26px;
@@ -594,8 +669,8 @@ body > div {
   border-radius: 4px;
   -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
+  -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
 }
 .AppContainer {
@@ -656,8 +731,8 @@ body > div {
   background: none;
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
-  -o-box-shadow: none;
   -ms-box-shadow: none;
+  -o-box-shadow: none;
   box-shadow: none;
   padding: 0;
   filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
@@ -697,15 +772,14 @@ body > div {
   border-radius: 0 0 0 5px;
 }
 #MenuView > ul > li {
-  zoom: 1;
+  *zoom: 1;
 }
-#MenuView > ul > li:before {
-  content: "";
+#MenuView > ul > li:before,
+#MenuView > ul > li:after {
+  content: " ";
   display: table;
 }
 #MenuView > ul > li:after {
-  content: "";
-  display: table;
   clear: both;
 }
 #MenuView > ul > li > a em {
@@ -727,13 +801,13 @@ body > div {
   -ms-border-radius: 4px;
   -o-border-radius: 4px;
   border-radius: 4px;
-  font-weight: normal;
+  font-weight: normal !important;
   font-size: 24px;
   font-family: "zurmo_gamification_symbly_rRg";
   -webkit-text-shadow: none !important;
   -moz-text-shadow: none !important;
-  -o-text-shadow: none !important;
   -ms-text-shadow: none !important;
+  -o-text-shadow: none !important;
   text-shadow: none !important;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
@@ -827,11 +901,10 @@ body > div {
   background-image: -webkit-linear-gradient(top, #f5f5f5, #ebebeb);
   background-image: -o-linear-gradient(top, #f5f5f5, #ebebeb);
   background-image: linear-gradient(top, #f5f5f5, #ebebeb);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f5f5f5', endColorstr='#ebebeb', GradientType=0);
   -webkit-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
   -moz-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -o-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
   -ms-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
+  -o-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
   box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
   z-index: 9999;
   min-width: 110px;
@@ -934,6 +1007,14 @@ body > div {
 .latest-activity-toolbar > div:first-child {
   margin-bottom: 10px;
 }
+/*.filters-bar{
+	float: none;
+	margin-left: 0;
+	padding-left: 0;
+	> div{
+
+	}
+}*/
 #filter-latest-activities-link {
   margin-left: 5px !important;
 }
@@ -963,6 +1044,9 @@ body > div {
   left: auto;
   right: 10px;
 }
+#list-view .items-wrapper {
+  border-top: none;
+}
 #modal-edit-form .panel,
 #edit-form .panel,
 #delete-form .panel {
@@ -975,22 +1059,6 @@ body > div {
   position: relative;
   top: 6px;
 }
-/*
-	.right-side-edit-view-panel{
-		float:none;
-		width:100%;
-		position:relative;
-		right:0;
-		top:0;
-		.buffer{
-			padding-left:0;
-			> div{
-				padding:0;
-				background: none;
-			}
-		}
-	}
-	*/
 .hasParallelFields > div {
   width: 100% !important;
   display: block;
@@ -1006,8 +1074,8 @@ body > div {
 }
 #ConversationDetailsView {
   /*.right-side-edit-view-panel{
-			display:none;
-		}*/
+		display:none;
+	}*/
 
 }
 .model-details-summary {
@@ -1044,7 +1112,7 @@ div:not(#MashableInboxActionBarForViews) .toolbar-mbmenu .options-menu > li > a 
 div:not(#LeaderboardView) .toolbar-mbmenu .options-menu > li > a:after,
 div:not(#MashableInboxActionBarForViews) .toolbar-mbmenu .options-menu > li > a:after {
   content: "{";
-  font-weight: normal;
+  font-weight: normal !important;
   font-size: 24px;
   font-family: "zurmo_gamification_symbly_rRg";
   left: -5px;
@@ -1145,8 +1213,8 @@ div#MashableInboxActionBarForViews > .view-toolbar-container > .view-toolbar {
   margin: 0 0 15px 0;
   -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
+  -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   background: url(../images/view-toolbar-gradient.png) left bottom repeat-x;
 }
@@ -1202,4 +1270,72 @@ div#LeaderboardView > .view-toolbar-container > .view-toolbar .z-label {
   width: 100%;
   top: 50px;
   right: 0;
+}
+.gd-dashboard-active {
+  overflow: visible;
+}
+.gd-dashboard-active .AppContainer {
+  padding-top: 38px;
+}
+#gd-overlay {
+  top: 38px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.65);
+  position: absolute;
+  width: 100%;
+  display: block;
+}
+#gd-container {
+  z-index: 100;
+  top: 38px;
+}
+#game-dashboard {
+  width: 100%;
+  height: auto;
+  max-height: none;
+  position: relative;
+  left: 0;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+  overflow: hidden;
+  margin: 0;
+  background-size: 100% 100%;
+}
+#game-dashboard > div {
+  width: 100%;
+  height: auto;
+  float: none;
+  display: block;
+  margin: 0;
+  padding: 20px;
+  border-top: 1px solid rgba(83, 112, 115, 0.4);
+  border-bottom: 1px solid rgba(32, 50, 52, 0.5);
+}
+.gd-mini-stats-card {
+  padding-bottom: 20px;
+}
+#gd-profile-card .gravatar,
+#gd-profile-card img {
+  width: 50%;
+  margin: 15px 25%;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  -o-border-radius: 50%;
+  border-radius: 50%;
+}
+#gd-badges-list {
+  position: relative;
+  left: 0;
+}
+.nav-button {
+  width: 5%;
+}
+#gd-carousel-wrapper {
+  width: 90%;
 }

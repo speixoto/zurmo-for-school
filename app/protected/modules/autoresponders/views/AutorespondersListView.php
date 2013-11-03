@@ -101,6 +101,17 @@
             return $metadata;
         }
 
+        /**
+         * @param RedBeanModelsDataProvider $dataProvider
+         * @param $configurationForm
+         * @param string $controllerId
+         * @param string $moduleId
+         * @param string $portletDetailsUrl
+         * @param string $redirectUrl
+         * @param string $uniquePageId
+         * @param array $params
+         * @param string $containerModuleClassName
+         */
         public function __construct(RedBeanModelsDataProvider $dataProvider,
                                 $configurationForm,
                                 $controllerId,
@@ -211,7 +222,7 @@
         protected function getEmptyText()
         {
             $content  = '<div class="general-issue-notice no-autoresponders-found"><span class="icon-notice"></span><p>';
-            $content .= Zurmo::t('CampaignsModule', 'No Autoresponders created');
+            $content .= Zurmo::t('CampaignsModule', 'No autoresponders created');
             $content .= '</p></div>';
             return $content;
         }

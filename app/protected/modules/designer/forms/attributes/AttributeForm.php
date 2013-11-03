@@ -84,7 +84,7 @@
             $attributeLabel = ModelFormAttributeLabelsUtil::getTranslatedAttributeLabelByLabels($this->attributeLabels);
             if ($attributeLabel == null)
             {
-                return Zurmo::t('DesignerModule', '(Unnamed)');
+                return Zurmo::t('Core', '(Unnamed)');
             }
             return $attributeLabel;
         }
@@ -94,10 +94,10 @@
             return array(
                 array('attributeName', 'required'),
                 array('attributeName', 'match', 'pattern' => '/^[A-Za-z0-9_]+$/', // Not Coding Standard
-                                                'message' =>  Zurmo::t('DesignerModule', 'Name must not contain spaces or special characters'),
+                                                'message' =>  Zurmo::t('Core', 'Name must not contain spaces or special characters'),
                 ),
                 array('attributeName', 'match', 'pattern' => '/^[a-z]/', // Not Coding Standard
-                                                'message' =>  Zurmo::t('DesignerModule', 'First character must be a lower case letter'),
+                                                'message' =>  Zurmo::t('Core', 'First character must be a lower case letter'),
                 ),
                 array('attributeName',
                     'length',
@@ -122,7 +122,7 @@
             return array(
                 'attributeName'   => Zurmo::t('DesignerModule', 'Field Name'),
                 'attributeLabels' => Zurmo::t('DesignerModule', 'Display Name'),
-                'defaultValue'    => Zurmo::t('DesignerModule', 'Default Value'),
+                'defaultValue'    => Zurmo::t('ZurmoModule', 'Default Value'),
                 'isAudited'       => Zurmo::t('DesignerModule', 'Track Audit Log'),
                 'isRequired'      => Zurmo::t('DesignerModule', 'Required Field'),
             );
@@ -212,7 +212,7 @@
             {
                 if ( empty($data[$language]))
                 {
-                    $this->addError($attribute . '[' . $language . ']', Zurmo::t('DesignerModule', 'Label must not be empty.'));
+                    $this->addError($attribute . '[' . $language . ']', Zurmo::t('Core', 'Label must not be empty.'));
                 }
             }
         }

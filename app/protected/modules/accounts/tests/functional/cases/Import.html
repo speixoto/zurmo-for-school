@@ -48,7 +48,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>link=Settings</td>
+	<td>link=Administration</td>
 	<td></td>
 </tr>
 <tr>
@@ -56,11 +56,6 @@
 	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
 	<td>30000</td>
 </tr>
-<!--tr>
-	<td>open</td>
-	<td>/demos/bleeding/app/index.php/import/default/step4?id=2</td>
-	<td></td>
-</tr-->
 <tr>
 	<td>clickAndWait</td>
 	<td>link=Import</td>
@@ -88,7 +83,7 @@
 </tr>
 <tr>
         <td>clickAndWait</td>
-        <td>link=Next</td>
+        <td>link=Upload File</td>
         <td></td>
 </tr>
 <tr>
@@ -118,7 +113,7 @@
 </tr>
 <tr>
         <td>clickAndWait</td>
-        <td>link=Next</td>
+        <td>link=Select Permissions</td>
         <td></td>
 </tr>
 <tr>
@@ -133,7 +128,7 @@
 </tr>
 <tr>
         <td>verifyTextPresent</td>
-        <td>Step 3 of 6</td>
+        <td>Import Wizard - Select Permissions</td>
         <td></td>
 </tr>
 <tr>
@@ -143,7 +138,7 @@
 </tr>
 <tr>
         <td>clickAndWait</td>
-        <td>link=Next</td>
+        <td>link=Map Fields</td>
         <td></td>
 </tr>
 <tr>
@@ -353,8 +348,23 @@
         <td></td>
 </tr>
 <tr>
+	<td>assertText</td>
+	<td>//form[@id='edit-form']/div[2]/div/ul/li[1]/strong</td>
+	<td>6</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>//form[@id='edit-form']/div[2]/div/ul/li[2]/strong</td>
+	<td>0</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>//form[@id='edit-form']/div[2]/div/ul/li[3]/strong</td>
+	<td>0</td>
+</tr>
+<tr>
         <td>clickAndWait</td>
-        <td>link=Next</td>
+        <td>link=Import Data</td>
         <td></td>
 </tr>
 <tr>
@@ -373,14 +383,19 @@
         <td></td>
 </tr>
 <tr>
-        <td>assertTextPresent</td>
-        <td>Rows with errors: 0</td>
-        <td></td>
+	<td>assertText</td>
+	<td>//form[@id='edit-form']/div[2]/div/ul/li[1]/strong</td>
+	<td>6</td>
 </tr>
 <tr>
-	<td>assertTextPresent</td>
-	<td>Records created: 6</td>
-	<td></td>
+	<td>assertText</td>
+	<td>//form[@id='edit-form']/div[2]/div/ul/li[2]/strong</td>
+	<td>0</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>//form[@id='edit-form']/div[2]/div/ul/li[3]/strong</td>
+	<td>0</td>
 </tr>
 <tr>
 	<td>waitForCondition</td>

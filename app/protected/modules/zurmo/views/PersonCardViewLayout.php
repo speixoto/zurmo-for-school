@@ -57,7 +57,7 @@
 
         protected function renderFrontOfCardContent()
         {
-            $content  = $this-> resolveAvatarContent();
+            $content  = $this->resolveAvatarContent();
             $content .= $this->resolveNameContent();
             $content .= $this->resolveBackOfCardLinkContent();
             $content .= $this->resolveJobTitleContent();
@@ -85,16 +85,18 @@
         {
             $element                       = new DropDownElement($this->model, 'title', null);
             $element->nonEditableTemplate  = '{content}';
-            $salutation = $element->render();
+            $starLink = null;
+            $spanContent = null;
+            if (StarredUtil::modelHasStarredInterface($this->model))
+            {
+                $starLink = StarredUtil::getToggleStarStatusLink($this->model, null);
+            }
+            $salutation                    = $element->render();
             if ($salutation != null)
             {
                 $spanContent = ZurmoHtml::tag('span', array('class' => 'salutation'), $element->render());
             }
-            else
-            {
-                $spanContent = null;
-            }
-            return ZurmoHtml::tag('h2', array(), $spanContent . strval($this->model));
+            return ZurmoHtml::tag('h2', array(), $spanContent . strval($this->model) . $starLink);
         }
 
         protected function resolveBackOfCardLinkContent()
@@ -139,6 +141,10 @@
                 {
                     $departmentAndAccountContent .=  ' / ' . $this->model->companyName;
                 }
+                elseif ($departmentAndAccountContent == null && $this->model->companyName != null)
+                {
+                    $departmentAndAccountContent = $this->model->companyName;
+                }
             }
             if ($departmentAndAccountContent != null)
             {
@@ -169,11 +175,13 @@
             $content = null;
             if ($this->model->officePhone != null)
             {
-                $content .= ZurmoHtml::tag('span', array('class' => 'icon-office-phone'), $this->model->officePhone);
+                $content .= Yii::app()->phoneHelper->resolvePersonCardViewOfficePhoneNumberContent($this->model->officePhone,
+                                                                                                    $this->model);
             }
             if ($this->model->mobilePhone != null)
             {
-                $content .= ZurmoHtml::tag('span', array('class' => 'icon-mobile-phone'), $this->model->mobilePhone);
+                $content .= Yii::app()->phoneHelper->resolvePersonCardViewMobilePhoneNumberContent($this->model->mobilePhone,
+                                                                                                    $this->model);
             }
             if ($this->model->primaryEmail->emailAddress != null)
             {

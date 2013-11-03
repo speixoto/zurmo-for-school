@@ -48,7 +48,7 @@
 
         public function __toString()
         {
-            return Zurmo::t('ExportModule', '(Unnamed)');
+            return Zurmo::t('Core', '(Unnamed)');
         }
 
         public static function getModuleClassName()
@@ -65,10 +65,11 @@
                     'exportFileType',
                     'exportFileName',
                     'modelClassName',
+                    'processOffset',
                     'serializedData'
                 ),
                 'relations' => array(
-                    'exportFileModel' => array(RedBeanModel::HAS_ONE,  'ExportFileModel', RedBeanModel::OWNED),
+                    'exportFileModel' => array(static::HAS_ONE,  'ExportFileModel', static::OWNED),
                 ),
                 'rules' => array(
                     array('isCompleted',      'boolean'),
@@ -78,12 +79,17 @@
                     array('exportFileName',   'type', 'type' => 'string'),
                     array('modelClassName',   'required'),
                     array('modelClassName',   'type', 'type' => 'string'),
+                    array('processOffset',    'type',    'type' => 'integer'),
+                    array('processOffset',    'default',    'value' => 0),
                     array('serializedData',   'required'),
                     array('serializedData',   'type', 'type' => 'string'),
                 ),
                 'defaultSortAttribute' => 'modifiedDateTime',
                 'noAudit' => array(
-                    'serializedData', 'exportFileModel'
+                    'modelClassName',
+                    'processOffset',
+                    'serializedData',
+                    'exportFileModel',
                 )
             );
             return $metadata;

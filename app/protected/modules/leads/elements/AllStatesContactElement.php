@@ -52,7 +52,7 @@
 
         protected function renderLabel()
         {
-            $label = Zurmo::t('LeadsModule', 'ContactsModuleSingularLabel or LeadsModuleSingularLabel',
+            $label = Zurmo::t('ContactsModule', 'ContactsModuleSingularLabel or LeadsModuleSingularLabel',
                                                 LabelUtil::getTranslationParamsForAllModules());
             if ($this->form === null)
             {
@@ -64,7 +64,7 @@
 
         protected function makeNonEditableLinkUrl()
         {
-            if(LeadsUtil::isStateALead($this->resolveState()))
+            if (LeadsUtil::isStateALead($this->resolveState()))
             {
                 $moduleId = 'leads';
             }
@@ -78,11 +78,11 @@
 
         protected function resolveState()
         {
-            if($this->model instanceof Contact)
+            if ($this->model instanceof Contact)
             {
                 return $this->model->state;
             }
-            elseif($this->model instanceof RelatedItemForm)
+            elseif ($this->model instanceof RelatedItemForm)
             {
                 return $this->model->Contact->state;
             }

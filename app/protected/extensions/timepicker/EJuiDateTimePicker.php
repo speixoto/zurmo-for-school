@@ -99,14 +99,16 @@ class EJuiDateTimePicker extends CJuiInputWidget
         {
             echo ZurmoHtml::textField($name,$this->value,$this->htmlOptions);
         }
+        
+        $this->registerScriptForNowButton();
 
         if (!isset($this->options['currentText']))
         {
-            $this->options['currentText'] = ZurmoHtml::wrapLabel(Zurmo::t('TimepickerExtension', 'Now'));
+            $this->options['currentText'] = ZurmoHtml::wrapLabel(Zurmo::t('Core', 'Now'));
         }
         if (!isset($this->options['closeText']))
         {
-            $this->options['closeText'] = ZurmoHtml::wrapLabel(Zurmo::t('TimepickerExtension', 'Done'));
+            $this->options['closeText'] = ZurmoHtml::wrapLabel(Zurmo::t('Core', 'Done'));
         }
         $options=CJavaScript::encode($this->options);
 
@@ -135,6 +137,31 @@ class EJuiDateTimePicker extends CJuiInputWidget
             return true;
         }
         return false;
+    }
+    
+    protected function getOffsetForCurrentUserTimezone()
+    {
+        $timezone           = Yii::app()->timeZoneHelper->getForCurrentUser();
+        $dateTimeZoneObject = new DateTimeZone($timezone);
+        $offset             = $dateTimeZoneObject->getOffset(new DateTime())/60;                                                            
+        return $offset;
+    }        
+    
+    protected function registerScriptForNowButton()
+    {
+        $offset = $this->getOffsetForCurrentUserTimezone();  
+        $script = "                       
+            jQuery.datepicker._gotoToday = function (id) {            
+                var inst = this._getInst($(id)[0]);
+                dp = inst.dpDiv;                                
+                var now = new Date();
+                jQuery.datepicker._base_gotoToday(id);
+                now.setMinutes(now.getMinutes()+({$offset})+now.getTimezoneOffset());
+                this._setTime(inst, now);     
+                $('.ui-datepicker-today', dp).click();
+            };            
+        ";
+        Yii::app()->clientScript->registerScript('adjustOffsetForNowButton', $script, CClientScript::POS_END);
     }
 }
 ?>

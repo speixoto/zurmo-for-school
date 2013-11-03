@@ -47,7 +47,7 @@
         public function getChartData()
         {
             $sql = static::makeSqlQuery(static::makeSearchAttributeData($this->autoresponder));
-            $row = R::getRow($sql);
+            $row = ZurmoRedBean::getRow($sql);
             $data = static::resolveChartDataBaseGroupElements();
             foreach ($data as $index => $notUsed)
             {
@@ -59,6 +59,10 @@
             return $data;
         }
 
+        /**
+         * @param Autoresponder $autoresponder
+         * @return array
+         */
         protected static function makeSearchAttributeData(Autoresponder $autoresponder)
         {
             assert('$autoresponder->id > 0');

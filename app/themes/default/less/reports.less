@@ -273,6 +273,13 @@
         font-weight: bold;
         .t-shadow(0 1px 0 rgba(255, 255, 255, 0.8));
     }
+  .errorMessage{
+    margin-bottom: 5px;
+  }
+    .errorMessage + .hasDropDown{
+      //margin-top: 15px;
+      //clear: left;
+    }
     .hasDropDown{
         width: auto !important;
     }
@@ -437,7 +444,7 @@
 }
 
 .first-date-area{
-	margin-top: 10px;
+	//margin-top: 10px;
 	display: block;
 }
 
@@ -456,9 +463,6 @@
     margin-top:15px;
     span{
         width:120px;
-    }
-    input{
-        text-indent: 50px;
     }
 }
 
@@ -535,9 +539,22 @@
                 padding-left:5px !important;
                 border-left:none !important;
             }
-            tbody td:first-child{
-                border-left:none !important;
+            tbody, tfoot{
+	            td:first-child{
+		            border-left:none !important;
+	            }
             }
+	        .total-column,
+	        tfoot td{
+		        font-weight: bold;
+		        .products-portlet-totals();
+		        background-color: #3d3d3d !important;
+		        display: table-cell;
+		        border-color:transparent !important;
+		        //border-bottom: none !important;
+		        border: none !important;
+		        border-left: 1px solid #3d3d3d !important;
+	        }
             .expanded-row{
                 td, th{
                     #gradient > .vertical( #222, #333 );
@@ -556,10 +573,12 @@
     }
     .items{
         overflow-x: hidden;
+
     }
 	.icon-empty:before{
 		content:"V";
 	}
+
 }
 
 #MatrixReportResultsGridView #report-results-grid-view{
@@ -605,6 +624,9 @@
             padding-bottom: 5px !important;
         }
     }
+	> h4, > h5{
+		padding: 5px 5px 0 5px;
+	}
 }
 
 .hasDrillDownLink{
@@ -620,6 +642,7 @@
     .symbly(18px);
     position: relative;
     left: 5px;
+	top:-2px;
 }
 
 .refreshPortletLink{
@@ -661,7 +684,7 @@
 #MarketingListDetailsView,
 #ReportDetailsView{
     h1{
-        margin-bottom: 15px;
+        //margin-bottom: 15px;
     }
     .view-toolbar ul:first-child{
         > li > a{
@@ -669,39 +692,6 @@
         }
     }
 }
-
-.hasCheckboxes{
-    display: inline-block;
-    border-left: 1px solid #bababa;
-    text-indent: 0 !important;
-    vertical-align: middle;
-    padding: 0 0 0 15px;
-    line-height: 30px;
-    &:before{
-        content: "";
-        margin: 0;
-        display: none;
-    }
-    .hasCheckBox{
-        display: inline-block;
-        width: auto;
-        padding-left: 20px;
-        margin-right: 0;
-        position: relative;
-        top:3px;
-	    + label{
-		    padding-right: 15px;
-		    margin: 0 !important;
-		    .smaller() !important;
-		    font-weight: bold !important;
-	    }
-    }
-	&:last-child{
-
-	}
-
-}
-
 
 #reset-runtime-filters{
     .z-label{
@@ -917,16 +907,14 @@
 
 .email-message-recipient-type-selector-container{
     width: 22%;
-    margin-top: 20px;
+    margin:0 0 15px 0;
 }
 
 .all-related-field{
     ++.border-box;
     float: left;
     width: 80%;
-    //padding-left: 15px;
-
-
+    padding-left: 10px;
     .value-data{
         width: 42.5%;
 	    float:left;
@@ -994,6 +982,9 @@
 	margin-top: 10px;
 	++.border-box;
 	padding-left: 15px;
+    > div{
+      margin-top: 0 !important;
+    }
 }
 
 /*for actions in WORKFLOWS hide/show sequence*/

@@ -40,34 +40,13 @@
     class ImportUtil
     {
         /**
-         * @param object $import
-         * @param array $messagesData
-         * @param boolean $merge - if true, then merge the $messagesData with existing data, otherwise overwrite
-         * existing data.
-         */
-        public static function setDataAnalyzerMessagesDataToImport($import, $messagesData, $merge = false)
-        {
-            assert('$import instanceof Import');
-            assert('is_array($messagesData) || $messagesData == null');
-            $serializedData = unserialize($import->serializedData);
-            if ($merge && isset($serializedData['dataAnalyzerMessagesData']))
-            {
-                $serializedData['dataAnalyzerMessagesData'] = array_merge($serializedData['dataAnalyzerMessagesData'],
-                                                                          $messagesData);
-            }
-            else
-            {
-                $serializedData['dataAnalyzerMessagesData'] = $messagesData;
-            }
-            $import->serializedData = serialize($serializedData);
-        }
-
-        /**
          * Given a data provider, call getData and for each row, attempt to import the data.
-         * @param object $dataProvider
-         * @param object $importRules
-         * @param array $mappingData
-         * @param object $importResultsUtil
+         * @param ImportDataProvider $dataProvider
+         * @param ImportRules $importRules
+         * @param $mappingData
+         * @param ImportResultsUtil $importResultsUtil
+         * @param ExplicitReadWriteModelPermissions $explicitReadWriteModelPermissions
+         * @param ImportMessageLogger $messageLogger
          */
         public static function importByDataProvider(ImportDataProvider $dataProvider,
                                                     ImportRules $importRules,
@@ -130,6 +109,7 @@
                                         resolveValueToSanitizeByValueAndColumnType($rowBean->$idColumnName,
                                                                                    $columnMappingData['type']);
                 $attributeValueData   = $attributeImportRules->resolveValueForImport($valueReadyToSanitize,
+                                                                                     $idColumnName,
                                                                                      $columnMappingData,
                                                                                      $importSanitizeResultsUtil);
                 assert('count($attributeValueData) == 0 || count($attributeValueData) == 1');
@@ -188,7 +168,10 @@
                     {
                         ExternalSystemIdUtil::updateByModel($model, $externalSystemId);
                     }
-                    $importRowDataResultsUtil->addMessage(Zurmo::t('ImportModule', 'Record saved correctly.'));
+                    $importRowDataResultsUtil->addMessage(Zurmo::t('ImportModule', '{modelLabel} saved correctly: {linkToModel}',
+                                array('{modelLabel}'  => $model->getModelLabelByTypeAndLanguage('Singular'),
+                                      '{linkToModel}' => static::resolveLinkMessageToModel($model))));
+                    $importRowDataResultsUtil->addMessages($importSanitizeResultsUtil->getRelatedModelMessages());
                     if ($makeNewModel)
                     {
                         if ($model instanceof SecurableItem)
@@ -245,6 +228,30 @@
             }
         }
 
+        /**
+         * Public for testing only
+         * @param RedBeanModel $model
+         * @return string
+         */
+        public static function resolveLinkMessageToModel(RedBeanModel $model)
+        {
+            $moduleClassName   = $model::getModuleClassName();
+            $stateMetadataAdapterClassName = $moduleClassName::getStateMetadataAdapterClassName();
+            if ($stateMetadataAdapterClassName != null)
+            {
+                //todo: eventually refactor this to be more broad in handling, but for now we want the scope of this to be narrow
+                if ($model instanceof OwnedSecurableItem)
+                {
+                    $model->setTreatCurrentUserAsOwnerForPermissions(true);
+                }
+                $moduleClassName = $stateMetadataAdapterClassName::getModuleClassNameByModel($model);
+                $model->setTreatCurrentUserAsOwnerForPermissions(false);
+            }
+            $moduleId   = $moduleClassName::getDirectoryName();
+            $urlToModel = Yii::app()->createUrl('/' . $moduleId . '/default/details', array('id' => $model->id));
+            return ZurmoHtml::link(strval($model), $urlToModel, array('class' => 'simple-link', 'target' => 'blank'));
+        }
+
         protected static function sanitizeValueAndPopulateModel(RedBean_OODBBean $rowBean,
                                                                 ImportRules $importRules,
                                                                 RedBeanModel $model,
@@ -272,6 +279,7 @@
                     static::resolveModelForAttributeIndexWithMultipleNonDerivedAttributes($model,
                                                                                           $attributeImportRules,
                                                                                           $valueReadyToSanitize,
+                                                                                          $columnName,
                                                                                           $columnMappingData,
                                                                                           $importSanitizeResultsUtil);
                 }
@@ -281,6 +289,7 @@
                                                                                        $importRules::getType(),
                                                                                        $attributeImportRules,
                                                                                        $valueReadyToSanitize,
+                                                                                       $columnName,
                                                                                        $columnMappingData,
                                                                                        $importSanitizeResultsUtil);
                 }
@@ -289,6 +298,7 @@
                     static::resolveAfterSaveActionDerivedAttributeImportRules(  $afterSaveActionsData,
                                                                                 $attributeImportRules,
                                                                                 $valueReadyToSanitize,
+                                                                                $columnName,
                                                                                 $columnMappingData,
                                                                                 $importSanitizeResultsUtil);
                 }
@@ -297,6 +307,7 @@
                     static::resolveAfterSaveActionNonDerivedAttributeImportRules($afterSaveActionsData,
                                                                                  $attributeImportRules,
                                                                                  $valueReadyToSanitize,
+                                                                                 $columnName,
                                                                                  $columnMappingData,
                                                                                  $importSanitizeResultsUtil);
                 }
@@ -306,6 +317,7 @@
                     resolveModelForAttributeIndexWithSingleAttributeOrDerivedAttribute($model,
                                                                                        $attributeImportRules,
                                                                                        $valueReadyToSanitize,
+                                                                                       $columnName,
                                                                                        $columnMappingData,
                                                                                        $importSanitizeResultsUtil);
                 }
@@ -351,17 +363,19 @@
                                   RedBeanModel $model,
                                   AttributeImportRules $attributeImportRules,
                                   $valueReadyToSanitize,
+                                  $columnName,
                                   $columnMappingData,
                                   ImportSanitizeResultsUtil $importSanitizeResultsUtil)
         {
+            assert('is_string($columnName)');
             assert('is_array($columnMappingData)');
             if ($attributeImportRules->getModelClassName() == null)
             {
                 throw new NotSupportedException();
             }
-            $attributeValueData     = $attributeImportRules->resolveValueForImport($valueReadyToSanitize,
-                                                                                 $columnMappingData,
-                                                                                 $importSanitizeResultsUtil);
+            $attributeValueData     = $attributeImportRules->resolveValueForImport($valueReadyToSanitize, $columnName,
+                                                                                   $columnMappingData,
+                                                                                   $importSanitizeResultsUtil);
             $attributeName          = AttributeImportRulesFactory::
                                       getAttributeNameFromAttributeNameByAttributeIndexOrDerivedType(
                                       $columnMappingData['attributeIndexOrDerivedType']);
@@ -385,11 +399,13 @@
                                   RedBeanModel $model,
                                   AttributeImportRules $attributeImportRules,
                                   $valueReadyToSanitize,
+                                  $columnName,
                                   $columnMappingData,
                                   ImportSanitizeResultsUtil $importSanitizeResultsUtil)
         {
+            assert('is_string($columnName)');
             assert('is_array($columnMappingData)');
-            $attributeValueData   = $attributeImportRules->resolveValueForImport($valueReadyToSanitize,
+            $attributeValueData   = $attributeImportRules->resolveValueForImport($valueReadyToSanitize, $columnName,
                                                                                  $columnMappingData,
                                                                                  $importSanitizeResultsUtil);
             foreach ($attributeValueData as $attributeName => $value)
@@ -421,13 +437,15 @@
                                   & $afterSaveActionsData,
                                   DerivedAttributeImportRules $attributeImportRules,
                                   $valueReadyToSanitize,
+                                  $columnName,
                                   $columnMappingData,
                                   ImportSanitizeResultsUtil $importSanitizeResultsUtil)
         {
             assert('is_array($afterSaveActionsData)');
             assert('$attributeImportRules instanceof AfterSaveActionDerivedAttributeImportRules');
+            assert('is_string($columnName)');
             assert('is_array($columnMappingData)');
-            $attributeValueData   = $attributeImportRules->resolveValueForImport($valueReadyToSanitize,
+            $attributeValueData   = $attributeImportRules->resolveValueForImport($valueReadyToSanitize, $columnName,
                                                                                  $columnMappingData,
                                                                                  $importSanitizeResultsUtil);
             if ($attributeValueData != null)
@@ -452,13 +470,15 @@
                                   & $afterSaveActionsData,
                                   NonDerivedAttributeImportRules $attributeImportRules,
                                   $valueReadyToSanitize,
+                                  $columnName,
                                   $columnMappingData,
                                   ImportSanitizeResultsUtil $importSanitizeResultsUtil)
         {
             assert('is_array($afterSaveActionsData)');
             assert('$attributeImportRules instanceof AfterSaveActionNonDerivedAttributeImportRules');
+            assert('is_string($columnName)');
             assert('is_array($columnMappingData)');
-            $attributeValueData   = $attributeImportRules->resolveValueForImport($valueReadyToSanitize,
+            $attributeValueData   = $attributeImportRules->resolveValueForImport($valueReadyToSanitize, $columnName,
                                                                                  $columnMappingData,
                                                                                  $importSanitizeResultsUtil);
             if ($attributeValueData != null)
@@ -472,13 +492,15 @@
                                   $importRulesType,
                                   AttributeImportRules $attributeImportRules,
                                   $valueReadyToSanitize,
+                                  $columnName,
                                   $columnMappingData,
                                   ImportSanitizeResultsUtil $importSanitizeResultsUtil)
         {
             assert('is_string($importRulesType)');
             assert('$attributeImportRules instanceof ModelDerivedAttributeImportRules');
+            assert('is_string($columnName)');
             assert('is_array($columnMappingData)');
-            $attributeValueData   = $attributeImportRules->resolveValueForImport($valueReadyToSanitize,
+            $attributeValueData   = $attributeImportRules->resolveValueForImport($valueReadyToSanitize, $columnName,
                                                                                  $columnMappingData,
                                                                                  $importSanitizeResultsUtil);
             assert('count($attributeValueData) == 1');
@@ -556,13 +578,13 @@
             if (isset($args[3]))
             {
                 set_time_limit($args[3]);
-                $messageStreamer->add(Zurmo::t('ImportModule', 'Script will run at most for {seconds} seconds.',
+                $messageStreamer->add(Zurmo::t('JobsManagerModule', 'Script will run at most for {seconds} seconds.',
                                       array('{seconds}' => $args[3])));
             }
             else
             {
                 set_time_limit('1200');
-                $messageStreamer->add(Zurmo::t('ImportModule', 'Script will run at most for {seconds} seconds.',
+                $messageStreamer->add(Zurmo::t('JobsManagerModule', 'Script will run at most for {seconds} seconds.',
                                       array('{seconds}' => '1200')));
             }
             if (isset($args[0]))

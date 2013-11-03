@@ -55,6 +55,8 @@
             $super                     = User::getByUsername('super');
             $fileModel                 = ZurmoTestHelper::createFileModel();
             $steven                    = UserTestHelper::createBasicUser('steven');
+            $steven->setRight('MissionsModule', MissionsModule::RIGHT_ACCESS_MISSIONS);
+            $steven->save();
             $dueStamp                  = DateTimeUtil::convertTimestampToDbFormatDateTime(time()  + 10000);
 
             $mission              = new Mission();

@@ -69,18 +69,6 @@
                                                                'MarketingList Description',
                                                                'first',
                                                                'first@zurmo.com');
-            CampaignTestHelper::createCampaign('campaign01',
-                                               'campaign subject 01',
-                                               'text content for campaign 01',
-                                                'html content for campaign 01',
-                                                'fromCampaign',
-                                                'fromCampaign@zurmo.com');
-            CampaignTestHelper::createCampaign('campaign02',
-                                                'campaign subject 02',
-                                                'text content for campaign 02',
-                                                'html content for campaign 02',
-                                                'fromCampaign2',
-                                                'fromCampaign2@zurmo.com');
         }
 
         public function setUp()
@@ -89,12 +77,32 @@
             $this->user = User::getByUsername('super');
             Yii::app()->user->userModel = $this->user;
             $campaigns = Campaign::getAll();
-            $this->campaign = $campaigns[0];
+            if (count($campaigns) > 0)
+            {
+                $this->campaign = $campaigns[0];
+            }
         }
 
         public function testSuperUserAllDefaultControllerActions()
         {
             // Test all default controller actions that do not require any POST/GET variables to be passed.
+            $this->runControllerWithNoExceptionsAndGetContent('campaigns/default');
+            $this->runControllerWithNoExceptionsAndGetContent('campaigns/default/index');
+            $this->runControllerWithNoExceptionsAndGetContent('campaigns/default/list');
+
+            CampaignTestHelper::createCampaign('campaign01',
+                'campaign subject 01',
+                'text content for campaign 01',
+                'html content for campaign 01',
+                'fromCampaign',
+                'fromCampaign@zurmo.com');
+            CampaignTestHelper::createCampaign('campaign02',
+                'campaign subject 02',
+                'text content for campaign 02',
+                'html content for campaign 02',
+                'fromCampaign2',
+                'fromCampaign2@zurmo.com');
+
             $this->runControllerWithNoExceptionsAndGetContent('campaigns/default');
             $this->runControllerWithNoExceptionsAndGetContent('campaigns/default/index');
             $content = $this->runControllerWithNoExceptionsAndGetContent('campaigns/default/list');
@@ -177,7 +185,7 @@
                 ) ,
             ));
             $content    = $this->runControllerWithNoExceptionsAndGetContent('campaigns/default/list');
-            $this->assertTrue(strpos($content, 'No results found.') !== false);
+            $this->assertTrue(strpos($content, 'No results found') !== false);
 
             StickyReportUtil::clearDataByKey('CampaignsSearchForm');
             $this->setGetArray(array(
@@ -357,8 +365,7 @@
             $this->assertTrue(strpos($content, '<div class="email-template-content"><div class="tabs-nav">') !== false);
             $this->assertTrue(strpos($content, '<a href="#tab1">Text Content</a>') !== false);
             $this->assertTrue(strpos($content, '<a class="active-tab" href="#tab2">Html Content</a>') !== false);
-            $this->assertTrue(strpos($content, '<a id="mergetag-guide" class="simple-link" href="#">' .
-                                                'MergeTag Guide</a></div>') !== false);
+            $this->assertTrue(strpos($content, 'class="simple-link" href="#">MergeTag Guide</a></div>') !== false);
             $this->assertTrue(strpos($content, '<div id="tab1" class=" tab email-template-textContent">') !== false);
             $this->assertTrue(strpos($content, '<th><label for="Campaign_textContent">Text Content</label></th>') !== false);
             $this->assertTrue(strpos($content, '<td colspan="1"><textarea id="Campaign_textContent" ' .
@@ -429,7 +436,7 @@
                                         'marketingList' => array('id' => $marketingListId),
                                         'fromName' => 'Zurmo Sales',
                                         'fromAddress' => 'sales@zurmo.com',
-                                        'sendOnDateTime' => '6/13/13 10:54 AM',
+                                        'sendOnDateTime' => '6/13/2013 10:54 AM',
                                         'subject' => 'New Campaign using Create Subject',
                                         'enableTracking' => '1',
                                         'supportsRichText' => '0',
@@ -481,28 +488,23 @@
                                                 'ModelView ConfigurableMetadataView MetadataView">') !== false);
             $this->assertTrue(strpos($content, '<h1><span class="truncated-title"><span class="ellipsis-content">New '.
                                                 'Campaign using Create - Campaign</span></span></h1>') !== false);
-            $this->assertTrue(strpos($content, '<div class="view-toolbar-container clearfix"><div class="view-toolbar">' .
-                                                '<ul id="ListViewDetailsActionMenu" class="nav">') !== false);
-            $this->assertTrue(strpos($content, '<li class="hasDetailsFlyout parent last"><a href="javascript:void(0);' .
-                                                '"><span>Details</span></a>') !== false);
-            $this->assertTrue(strpos($content, '<div id="CampaignDetailsOverlayView" class="SecuredDetailsView '.
+            $this->assertTrue(strpos($content, '<div class="view-toolbar-container clearfix"><nav class="pillbox clearfix">' .
+                                                '<div id="ListViewDetailsActionMenu" class="default-button">') !== false);
+            $this->assertTrue(strpos($content, '<div id="CampaignDetailsOverlayView" class="overlay-view SecuredDetailsView '.
                                                 'DetailsView ModelView ConfigurableMetadataView '.
                                                 'MetadataView">') !== false);
-            $this->assertTrue(strpos($content, '<div class="campaign-description"><b>Send On:</b> 6/13/13 ' .
-                                                '10:54 AM</BR>') !== false);
-            $this->assertTrue(strpos($content, '<b>Subject:</b> New Campaign using Create Subject</div>') !== false);
+            $this->assertTrue(strpos($content, '<div class="campaign-description"><strong>Send On: 6/13/13 ' .
+                                                '10:54 AM</strong>') !== false);
+            $this->assertTrue(strpos($content, '<strong>Subject: New Campaign using Create Subject</strong></div>') !== false);
             $this->assertTrue(strpos($content, '<p class="after-form-details-content">') !== false);
-            $this->assertTrue(strpos($content, 'ul id="ListViewOptionsActionMenu" class="nav">') !== false);
-            $this->assertTrue(strpos($content, '<li class="parent last"><a href="javascript:void(0);"><span>' .
-                                                'Options</span></a>') !== false);
-            $this->assertTrue(strpos($content, '<span>Edit</span></a></li>') !== false);
-            $this->assertTrue(strpos($content, '<span>Delete</span></a></li>') !== false);
+            $this->assertTrue(strpos($content, 'EditLinkActionElement') !== false);
+            $this->assertTrue(strpos($content, 'CampaignDeleteLinkActionElement') !== false);
             $this->assertTrue(strpos($content, '<div class="ModelRelationsSecuredPortletFrameView SecuredPortlet' .
                                                 'FrameView PortletFrameView MetadataView">') !== false);
             $this->assertTrue(strpos($content, '<div class="juiportlet-columns"> ') !== false);
             $this->assertTrue(strpos($content, '<ul class="juiportlet-columns-CampaignDetailsAndRelationsViewLeft' .
                                                 'BottomView juiportlet-widget-column1 juiportlet-column juiportlet-column-no-split">') !== false);
-            $this->assertTrue(strpos($content, '<li class="juiportlet-widget CampaignOverallMetricsView" id="Campaign' .
+            $this->assertTrue(strpos($content, '<li class="juiportlet-widget CampaignOverallMetricsView type-campaigns" id="Campaign' .
                                                 'DetailsAndRelationsViewLeftBottomView') !== false);
             $this->assertTrue(strpos($content, '<div class="juiportlet-widget-head">') !== false);
             $this->assertTrue(strpos($content, '<h3>Campaign Dashboard</h3><ul class="options-menu '.
@@ -549,7 +551,7 @@
                                                 "LeftBottomView") !== false);
             $this->assertTrue(strpos($content, "EmailsInThisList' style='width: 100%; " .
                                                 "height: 400px;'></div>") !== false);
-            $this->assertTrue(strpos($content, '<li class="juiportlet-widget CampaignItemsRelatedListView" ' .
+            $this->assertTrue(strpos($content, '<li class="juiportlet-widget CampaignItemsRelatedListView type-campaigns" ' .
                                                 'id="CampaignDetailsAndRelationsViewLeftBottomView') !== false);
             $this->assertTrue(strpos($content, '<div class="juiportlet-widget-head">') !== false);
             $this->assertTrue(strpos($content, '<h3>Email Recipients</h3>') !== false);
@@ -557,7 +559,7 @@
             $this->assertTrue(strpos($content, '<div class="CampaignItemsRelatedListView RelatedListView ListView ' .
                                                 'ModelView ConfigurableMetadataView MetadataView">') !== false);
             $this->assertTrue(strpos($content, '<div class="campaign-items-container">') !== false);
-            $this->assertTrue(strpos($content, '<div class="cgrid-view" id="list-viewCampaignDetailsAndRelations' .
+            $this->assertTrue(strpos($content, '<div class="cgrid-view type-campaigns" id="list-viewCampaignDetailsAndRelations' .
                                                 'ViewLeftBottomView') !== false);
             $this->assertTrue(strpos($content, 'Email recipients will appear here once the campaign begins ' .
                                                 'sending out') !== false);
@@ -614,7 +616,7 @@
             $this->assertTrue(strpos($content, '<td colspan="1"><div class="has-date-select"><input ' .
                                                 'id="Campaign_sendOnDateTime" name="Campaign[sendOnDateTime]" ' .
                                                 'style="position:relative;z-index:10000;" type="text" ' .
-                                                'value="6/13/13 10:54 AM"') !== false);
+                                                'value="6/13/2013 10:54 AM"') !== false);
             $this->assertTrue(strpos($content, '<th><label for="Campaign_subject" class="required">Subject ' .
                                                 '<span class="required">*</span></label></th>') !== false);
             $this->assertTrue(strpos($content, '<td colspan="1"><input id="Campaign_subject" name="Campaign[subject]" ' .
@@ -654,8 +656,6 @@
             $this->assertTrue(strpos($content, '<div class="email-template-content"><div class="tabs-nav">') !== false);
             $this->assertTrue(strpos($content, '<a class="active-tab" href="#tab1">Text Content</a>') !== false);
             $this->assertTrue(strpos($content, '<a href="#tab2">Html Content</a>') !== false);
-            $this->assertTrue(strpos($content, '<a id="mergetag-guide" class="simple-link" href="#">' .
-                                                'MergeTag Guide</a></div>') !== false);
             $this->assertTrue(strpos($content, '<div id="tab1" class="active-tab tab email-template-' .
                                                 'textContent"><th>') !== false);
             $this->assertTrue(strpos($content, '<label for="Campaign_textContent">Text Content</label></th>') !== false);
@@ -676,7 +676,7 @@
                                             'marketingList' => array('id' => $marketingList->id),
                                             'fromName' => 'Zurmo Support',
                                             'fromAddress' => 'support@zurmo.com',
-                                            'sendOnDateTime' => '5/14/13 10:54 AM',
+                                            'sendOnDateTime' => '5/14/2013 10:54 AM',
                                             'subject' => 'New Campaign Subject',
                                             'enableTracking' => '0',
                                             'supportsRichText' => '1',
@@ -747,13 +747,60 @@
         {
             $campaigns = Campaign::getAll();
             $this->assertEquals(3, count($campaigns));
-            $this->setGetArray(array('id' => $campaigns[0]->id));
+            $this->setGetArray(array('id' => $campaigns[1]->id));
             $this->resetPostArray();
             $redirectUrl = $this->runControllerWithRedirectExceptionAndGetUrl('campaigns/default/delete');
             $compareRedirectUrl = Yii::app()->createUrl('campaigns/default/index');
             $this->assertEquals($redirectUrl, $compareRedirectUrl);
             $campaigns = Campaign::getAll();
             $this->assertEquals(2, count($campaigns));
+        }
+
+        /**
+         * @depends testSuperUserDeleteAction
+         */
+        public function testSuperUserCreateFromRelationAction()
+        {
+            $super          = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $campaigns      = Campaign::getAll();
+            $this->assertEquals(2, count($campaigns));
+            $marketingList  = MarketingListTestHelper::createMarketingListByName('my list');
+            //Create a new campaign from a related marketing list.
+            $this->setGetArray(array(   'relationAttributeName' => 'marketingList',
+                'relationModelId'       => $marketingList->id,
+                'relationModuleId'      => 'marketingLists',
+                'redirectUrl'           => 'someRedirect'));
+            $this->setPostArray(array('Campaign' => array(
+                'name'           => 'New Campaign using Create',
+                'fromName'       => 'Zurmo Sales',
+                'fromAddress'    => 'sales@zurmo.com',
+                'sendOnDateTime' => '6/13/2013 10:54 AM',
+                'subject' => 'New Campaign using Create Subject',
+                'enableTracking' => '1',
+                'supportsRichText' => '0',
+                'textContent'    => 'Text',
+                'htmlContent'    => 'Html',
+            )));
+            $this->runControllerWithRedirectExceptionAndGetContent('campaigns/default/createFromRelation');
+            $campaigns = Campaign::getByName('New Campaign using Create');
+            $this->assertEquals(1, count($campaigns));
+            $this->assertTrue($campaigns[0]->id > 0);
+            $this->assertTrue($campaigns[0]->owner   == $super);
+            $this->assertTrue($campaigns[0]->marketingList->id == $marketingList->id);
+            $campaigns = Campaign::getAll();
+            $this->assertEquals(3, count($campaigns));
+        }
+
+        /**
+         * @depends testSuperUserCreateFromRelationAction
+         */
+        public function testDrillDownDetailsAction()
+        {
+            $campaign     = Campaign::getByName('campaign01');
+            $campaignItem = CampaignItemTestHelper::createCampaignItem(true, $campaign[0]);
+            $this->setGetArray(array('campaignItemId' => $campaignItem->id));
+            $content      = $this->runControllerWithNoExceptionsAndGetContent('campaigns/default/drillDownDetails');
+            $this->assertNotNull($content);
         }
     }
 ?>

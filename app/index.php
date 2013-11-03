@@ -34,6 +34,10 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
     require_once('version.php');
+    if (is_file('commercialVersion.php'))
+    {
+        require_once('commercialVersion.php');
+    }
     require_once('roots.php');
 
     // Debug is used per instance.

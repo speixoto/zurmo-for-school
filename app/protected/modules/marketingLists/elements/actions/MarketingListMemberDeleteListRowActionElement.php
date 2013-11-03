@@ -48,7 +48,7 @@
 
         protected function getDefaultLabel()
         {
-            return Zurmo::t('MarketingListsModule', 'Delete');
+            return Zurmo::t('Core', 'Unlink');
         }
 
         protected function getActionId()

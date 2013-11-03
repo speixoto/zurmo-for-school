@@ -4,12 +4,12 @@
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="selenium.base" href="http://localhost/" />
-<title>CreateAccount</title>
+<title>CreateCampaign</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">Create Account</td></tr>
+<tr><td rowspan="1" colspan="3">Create Campaign</td></tr>
 </thead>
 <tbody>
 <tr>
@@ -39,7 +39,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>//ul[@id='MarketingCreateLinkActionElement']/li/ul/li[3]/a</td>
+	<td>link=Create Campaign</td>
 	<td></td>
 </tr>
 <tr>
@@ -174,7 +174,7 @@
 </tr>
 <tr>
 	<td>waitForText</td>
-	<td>//div[@id='list-viewmodal']/table/tbody/tr/td</td>
+	<td>//div[@id='list-viewmodal']/div[2]/table/tbody/tr/td</td>
 	<td>Sales</td>
 </tr>
 <tr>
@@ -189,7 +189,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>//div[@id='list-viewmodal']/table/tbody/tr/td/a</td>
+	<td>//div[@id='list-viewmodal']/div[2]/table/tbody/tr/td/a</td>
 	<td></td>
 </tr>
 <tr>
@@ -211,6 +211,41 @@
 	<td>type</td>
 	<td>Campaign_textContent</td>
 	<td>test</td>
+</tr>
+<tr>
+	<td>waitForCondition</td>
+	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+	<td>30000</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>Campaign_htmlContent</td>
+	<td>test html</td>
+</tr>
+<tr>
+	<td>waitForCondition</td>
+	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+	<td>30000</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>css=a.redactor_btn.redactor_btn_html</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForCondition</td>
+	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+	<td>30000</td>
+</tr>
+<tr>
+	<td>verifyValue</td>
+	<td>Campaign_htmlContent</td>
+	<td>test html</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>css=a.redactor_btn.redactor_btn_html</td>
+	<td></td>
 </tr>
 <tr>
 	<td>waitForCondition</td>

@@ -57,7 +57,7 @@
 
         public function getTitle()
         {
-            return Zurmo::t('ConfigurationModule', 'Administration');
+            return Zurmo::t('ZurmoModule', 'Administration');
         }
 
         protected function getCategoryData()
@@ -112,7 +112,7 @@
         protected function getCategoriesArray()
         {
             return array(
-                ZurmoModule::ADMINISTRATION_CATEGORY_GENERAL   => Zurmo::t('ConfigurationModule', 'General'),
+                ZurmoModule::ADMINISTRATION_CATEGORY_GENERAL   => Zurmo::t('Core', 'General'),
             );
         }
 
@@ -129,7 +129,7 @@
             }
             else
             {
-                return Zurmo::t('ConfigurationModule', 'Configure');
+                return Zurmo::t('Core', 'Configure');
             }
         }
     }

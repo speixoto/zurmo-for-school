@@ -49,6 +49,7 @@
                         ),
                     ),
                     'nonPlaceableAttributeNames' => array(
+                        'anyMixedAttributes',
                         'latestDateTime',
                     ),
                     'panelsDisplayType' => FormLayout::PANELS_DISPLAY_TYPE_ALL,
@@ -91,11 +92,17 @@
             return $metadata;
         }
 
+        /**
+         * @return string
+         */
         public static function getDisplayDescription()
         {
             return Zurmo::t('TasksModule', 'My Open TasksModulePluralLabel', LabelUtil::getTranslationParamsForAllModules());
         }
 
+        /**
+         * @return string
+         */
         public static function getModelForMetadataClassName()
         {
             return 'TasksSearchForm';

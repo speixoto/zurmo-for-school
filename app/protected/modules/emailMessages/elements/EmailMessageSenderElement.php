@@ -44,7 +44,7 @@
             assert('$this->model->{$this->attribute} instanceof EmailMessageSender');
             $sender = $this->model->{$this->attribute};
             $senderContent = EmailMessageMashableActivityRules::getSenderContent($sender);
-            if($senderContent == null && $this->form != null)
+            if ($senderContent == null && $this->form != null)
             {
                 $senderContent = '&nbsp;';
             }
@@ -62,7 +62,7 @@
 
         protected function renderLabel()
         {
-            return $this->resolveNonActiveFormFormattedLabel(Zurmo::t('EmailMessagesModule', 'From'));
+            return $this->resolveNonActiveFormFormattedLabel(Zurmo::t('Core', 'From'));
         }
     }
 ?>

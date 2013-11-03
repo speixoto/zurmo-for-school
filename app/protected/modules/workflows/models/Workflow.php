@@ -136,8 +136,8 @@
          */
         public static function getTypeDropDownArray()
         {
-            return array(self::TYPE_ON_SAVE  => Yii::t('Default', 'On-Save'),
-                         self::TYPE_BY_TIME  => Yii::t('Default', 'Time-Based'));
+            return array(self::TYPE_ON_SAVE  => Zurmo::t('WorkflowsModule', 'On-Save'),
+                         self::TYPE_BY_TIME  => Zurmo::t('WorkflowsModule', 'Time-Based'));
         }
 
         /**
@@ -195,7 +195,7 @@
         {
             if (trim($this->name) == '')
             {
-                return Yii::t('Default', '(Unnamed)');
+                return Yii::t('Core', '(Unnamed)');
             }
             return $this->name;
         }

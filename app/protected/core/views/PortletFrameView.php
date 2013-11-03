@@ -56,7 +56,7 @@
         protected function renderContent()
         {
             $this->portlets = $this->getPortlets($this->uniqueLayoutId, self::getMetadata());
-            $this->renderPortlets($this->uniqueLayoutId);
+            return $this->renderPortlets($this->uniqueLayoutId);
         }
 
         protected function getPortlets($uniqueLayoutId, $metadata)
@@ -84,7 +84,6 @@
                 foreach ($columnPortlets as $position => $portlet)
                 {
                     $className = get_class($portlet->getView());
-                    //TODO @Mayank, If i am calling the following if else as a function it doesn't work
                     if (method_exists($className, 'canUserRemove'))
                     {
                         $removable      = $className::canUserRemove();
@@ -130,6 +129,8 @@
             {
                 $content .= ' ' . $cssClass;
             }
+            $portletRules = PortletRulesFactory::createPortletRulesByView(get_class($portlet->getView()));
+            $content .= ' ' . $portletRules->resolveIconTypeName();
             return $content;
         }
 

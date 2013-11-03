@@ -57,10 +57,10 @@
         {
             $labels                                             = array();
             $labels[self::RIGHT_ACCESS_ADMINISTRATION]          = Zurmo::t('ZurmoModule', 'Access Administration Tab');
-            $labels[self::RIGHT_BULK_WRITE]                     = Zurmo::t('ZurmoModule', 'Mass Update');
+            $labels[self::RIGHT_BULK_WRITE]                     = Zurmo::t('Core', 'Mass Update');
             $labels[self::RIGHT_ACCESS_GLOBAL_CONFIGURATION]    = Zurmo::t('ZurmoModule', 'Access Global Configuration');
             $labels[self::RIGHT_ACCESS_CURRENCY_CONFIGURATION]  = Zurmo::t('ZurmoModule', 'Access Currency Configuration');
-            $labels[self::RIGHT_BULK_DELETE]                    = Zurmo::t('ZurmoModule', 'Mass Delete');
+            $labels[self::RIGHT_BULK_DELETE]                    = Zurmo::t('Core', 'Mass Delete');
             return $labels;
         }
 
@@ -83,7 +83,7 @@
             // with the models that are specific to itself.
             return array('ActiveLanguage', 'AuditEvent', 'NamedSecurableItem', 'GlobalMetadata', 'PerUserMetadata', 'Portlet',
                          'CustomFieldData', 'CalculatedDerivedAttributeMetadata', 'DropDownDependencyDerivedAttributeMetadata',
-                         'SavedSearch', 'MessageSource', 'MessageTranslation');
+                         'SavedSearch', 'MessageSource', 'MessageTranslation', 'KanbanItem');
         }
 
         public static function getDefaultMetadata()
@@ -136,10 +136,10 @@
                 ),
                 'headerMenuItems' => array(
                     array(
-                        'label'  => "eval:Zurmo::t('ZurmoModule', 'Settings')",
+                        'label'  => "eval:Zurmo::t('ZurmoModule', 'Administration')",
                         'url'    => array('/configuration'),
                         'right'  => self::RIGHT_ACCESS_ADMINISTRATION,
-                        'order'  => 6,
+                        'order'  => 1,
                         'mobile' => false,
                     ),
                     array(
@@ -183,8 +183,9 @@
                     'contacts',
                     'opportunities',
                     'marketing',
-                    'reports',
+                    'projects',
                     'products',
+                    'reports',
                 )
             );
             return $metadata;
@@ -238,9 +239,9 @@
                         }
                     }
                     $s .= join(' ', $attributeLabels);
-                    $s .= ' ' . Zurmo::t('ZurmoModule', 'from') . ' ';
+                    $s .= ' ' . Zurmo::t('Core', 'from') . ' ';
                     $s .= AuditUtil::stringifyValue($attributeModel, $attributeName, $oldValue, $format) . ' ';
-                    $s .= Zurmo::t('ZurmoModule', 'to') . ' ';
+                    $s .= Zurmo::t('Core', 'to') . ' ';
                     $s .= AuditUtil::stringifyValue($attributeModel, $attributeName, $newValue, $format);
                     break;
             }

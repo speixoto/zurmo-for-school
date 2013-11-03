@@ -90,6 +90,17 @@
          */
         protected $containerModuleClassName;
 
+        /**
+         * @param RedBeanModelsDataProvider $dataProvider
+         * @param LatestActivitiesConfigurationForm $configurationForm
+         * @param string $controllerId
+         * @param string $moduleId
+         * @param string $portletDetailsUrl
+         * @param string $redirectUrl
+         * @param string $uniquePageId
+         * @param array $params
+         * @param string $containerModuleClassName
+         */
         public function __construct(RedBeanModelsDataProvider $dataProvider,
                                     LatestActivitiesConfigurationForm $configurationForm,
                                     $controllerId,
@@ -219,6 +230,7 @@
             $formEnd  = $clipWidget->renderEndWidget();
             $content .= $formEnd;
             $this->registerConfigurationFormLayoutScripts($form);
+            TasksUtil::registerTaskModalDetailsScript($this->getGridViewId());
             return $content;
         }
 
@@ -248,7 +260,7 @@
             {
                 $content .= '<div class="horizontal-line latest-activity-toolbar">';
                 $content .= $innerContent;
-                $content .= ZurmoHtml::link(Zurmo::t('ActivitiesModule', 'Filters'), '#', array('id' => 'filter-latest-activities-link'));
+                $content .= ZurmoHtml::link(Zurmo::t('Core', 'Filters'), '#', array('id' => 'filter-latest-activities-link'));
                 $content .= '</div>' . "\n";
             }
             if ($innerContent != null &&

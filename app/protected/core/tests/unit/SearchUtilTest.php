@@ -388,6 +388,22 @@
             $this->assertEquals(array('name', 'a'), $searchModel->getListAttributesSelector()->getSelected());
         }
 
+        public function testResolveFilterByStarredFromGetArray()
+        {
+            $searchModel  = new ASearchFormTestModel(new A());
+            $getArrayName = 'someArray';
+            SearchUtil::resolveFilterByStarredFromGetArray($searchModel, $getArrayName);
+            $this->assertNull($searchModel->filterByStarred);
+
+            $_GET['someArray']['filterByStarred'] = true;
+            SearchUtil::resolveFilterByStarredFromGetArray($searchModel, $getArrayName);
+            $this->assertTrue($searchModel->filterByStarred);
+
+            $_GET['someArray']['filterByStarred'] = false;
+            SearchUtil::resolveFilterByStarredFromGetArray($searchModel, $getArrayName);
+            $this->assertFalse($searchModel->filterByStarred);
+        }
+
         public function testGetDynamicSearchAttributesFromGetArray()
         {
             //Test without any dynamic search
@@ -490,22 +506,22 @@
                                         0 => array('attributeIndexOrDerivedType' => 'date__Date',
                                                     'structurePosition'          => '1',
                                                     'date__Date'                 =>
-                                                        array('firstDate' => '5/4/11',
+                                                        array('firstDate' => '5/4/2011',
                                                               'type'      => MixedDateTypesSearchFormAttributeMappingRules::TYPE_AFTER)),
                                         2 => array('attributeIndexOrDerivedType' => 'date2__Date',
                                                     'structurePosition'          => '2',
                                                     'date2__Date'                =>
-                                                        array('firstDate' => '5/6/11',
+                                                        array('firstDate' => '5/6/2011',
                                                               'type'      => MixedDateTypesSearchFormAttributeMappingRules::TYPE_AFTER)),
                                         3 => array('attributeIndexOrDerivedType' => 'dateTime__DateTime',
                                                     'structurePosition'          => '1',
                                                     'dateTime__DateTime'         =>
-                                                        array('firstDate' => '5/7/11',
+                                                        array('firstDate' => '5/7/2011',
                                                               'type'      => MixedDateTypesSearchFormAttributeMappingRules::TYPE_AFTER)),
                                         5 => array('attributeIndexOrDerivedType' => 'dateTime2__DateTime',
                                                     'structurePosition'          => '2',
                                                     'dateTime2__DateTime'        =>
-                                                        array('firstDate' => '5/8/11',
+                                                        array('firstDate' => '5/8/2011',
                                                               'type'      => MixedDateTypesSearchFormAttributeMappingRules::TYPE_AFTER)),
                                         );
             $newArray = SearchUtil::sanitizeDynamicSearchAttributesByDesignerTypeForSavingModel($searchModel,
@@ -546,14 +562,14 @@
                                                     'iii'                        => array(
                                                     'relatedModelData'           => true,
                                                     'date__Date'                 =>
-                                                        array('firstDate' => '5/4/11',
+                                                        array('firstDate' => '5/4/1011',
                                                               'type'      => MixedDateTypesSearchFormAttributeMappingRules::TYPE_AFTER))),
                                         1 => array('attributeIndexOrDerivedType' => 'iii' . FormModelUtil::RELATION_DELIMITER . 'dateTime__DateTime',
                                                     'structurePosition'          => '1',
                                                     'iii'                        => array(
                                                     'relatedModelData'           => true,
                                                     'dateTime__DateTime'         =>
-                                                        array('firstDate' => '5/7/11',
+                                                        array('firstDate' => '5/7/2011',
                                                               'type'      => MixedDateTypesSearchFormAttributeMappingRules::TYPE_AFTER))),
                                         );
 
@@ -565,7 +581,7 @@
                                                     'iii'                        => array(
                                                     'relatedModelData'           => true,
                                                     'date__Date'                 =>
-                                                        array('firstDate' => '2011-05-04',
+                                                        array('firstDate' => '1011-05-04',
                                                               'type'      => MixedDateTypesSearchFormAttributeMappingRules::TYPE_AFTER))),
                                         1 => array('attributeIndexOrDerivedType' => 'iii' . FormModelUtil::RELATION_DELIMITER . 'dateTime__DateTime',
                                                     'structurePosition'          => '1',
@@ -596,7 +612,7 @@
                                                     'iii'                        => array(
                                                     'relatedModelData'           => true,
                                                     'date__Date'                 =>
-                                                        array('firstDate' => '5/4/11',
+                                                        array('firstDate' => '5/4/2011',
                                                               'type'      => MixedDateTypesSearchFormAttributeMappingRules::TYPE_AFTER))))),
                                         1 => array('attributeIndexOrDerivedType' => 'bbb' .
                                                     FormModelUtil::RELATION_DELIMITER . 'ccc' .
@@ -610,7 +626,7 @@
                                                     'iii'                        => array(
                                                     'relatedModelData'           => true,
                                                     'date__Date'                 =>
-                                                        array('firstDate' => '5/7/11',
+                                                        array('firstDate' => '5/7/2011',
                                                               'type'      => MixedDateTypesSearchFormAttributeMappingRules::TYPE_AFTER))))),
                                         );
 

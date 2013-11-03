@@ -93,7 +93,7 @@
                         'label' => "eval:Zurmo::t('DesignerModule', 'Designer')",
                         'url' => array('/designer/default'),
                         'right' => self::RIGHT_ACCESS_DESIGNER,
-                        'order' => 1,
+                        'order' => 2,
                         'mobile' => false,
                     ),
                 ),

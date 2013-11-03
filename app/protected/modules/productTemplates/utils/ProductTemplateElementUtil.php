@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -20,8 +20,18 @@
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU Affero General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -205,7 +215,7 @@
         public static function getProductTemplateStatusDropdownArray()
         {
             return array(
-                ProductTemplate::STATUS_ACTIVE       => Yii::t('Default', 'Active'),
+                ProductTemplate::STATUS_ACTIVE       => Yii::t('Core', 'Active'),
                 ProductTemplate::STATUS_INACTIVE     => Yii::t('Default', 'Inactive'),
             );
         }
@@ -216,7 +226,7 @@
         public static function getProductTemplateTypeDropdownArray()
         {
             return array(
-                ProductTemplate::TYPE_PRODUCT       => Yii::t('Default', 'Product'),
+                ProductTemplate::TYPE_PRODUCT       => Yii::t('ProductsModule', 'Product'),
                 ProductTemplate::TYPE_SERVICE       => Yii::t('Default', 'Service'),
                 ProductTemplate::TYPE_SUBSCRIPTION  => Yii::t('Default', 'Subscription'),
             );
@@ -229,66 +239,9 @@
         {
             return array(
                 ProductTemplate::PRICE_FREQUENCY_ONE_TIME  => Yii::t('Default', 'One Time'),
-                ProductTemplate::PRICE_FREQUENCY_MONTHLY   => Yii::t('Default', 'Monthly'),
+                ProductTemplate::PRICE_FREQUENCY_MONTHLY   => Yii::t('Core', 'Monthly'),
                 ProductTemplate::PRICE_FREQUENCY_ANNUALLY  => Yii::t('Default', 'Annually'),
             );
-        }
-
-        /**
-         * Get the value of type displayed in grid view for product template
-         * @param RedBeanModel $data
-         * @param int $row
-         * @return null or string
-         */
-        public static function getProductTemplateTypeDisplayedGridValue($data, $row)
-        {
-            $typeDropdownData = self::getProductTemplateTypeDropdownArray();
-            if (isset($typeDropdownData[$data->type]))
-            {
-                return $typeDropdownData[$data->type];
-            }
-            else
-            {
-                return null;
-            }
-        }
-
-        /**
-         * Get the value of status displayed in grid view for product template
-         * @param RedBeanModel $data
-         * @param int $row
-         * @return null or string
-         */
-        public static function getProductTemplateStatusDisplayedGridValue($data, $row)
-        {
-            $statusDropdownData = self::getProductTemplateStatusDropdownArray();
-            if (isset($statusDropdownData[$data->status]))
-            {
-                return $statusDropdownData[$data->status];
-            }
-            else
-            {
-                return null;
-            }
-        }
-
-        /**
-         * Get the value of price frequency displayed in grid view for product template
-         * @param RedBeanModel $data
-         * @param int $row
-         * @return null or string
-         */
-        public static function getProductTemplatePriceFrequencyDisplayedGridValue($data, $row)
-        {
-            $frequencyDropdownData = self::getProductTemplatePriceFrequencyDropdownArray();
-            if (isset($frequencyDropdownData[$data->priceFrequency]))
-            {
-                return $frequencyDropdownData[$data->priceFrequency];
-            }
-            else
-            {
-                return null;
-            }
         }
 
         /**
@@ -315,49 +268,6 @@
             }
 
             return $content;
-        }
-
-        /**
-         * Get the attribute value for the report grid view based on the input
-         * dropdown attribute
-         * @param object $data
-         * @param int $row
-         * @param string $inputAttribute
-         * @param array $dataArray
-         * @return string or null value
-         */
-        public static function renderProductTemplateListViewAttributeForReports($model, $attribute)
-        {
-            assert('$model instanceof ReportResultsRowData');
-            if (null === $displayAttributeKey = $model::resolveKeyByAttributeName($attribute))
-            {
-                return $model->{$attribute};
-            }
-            $displayAttributes = $model->getDisplayAttributes();
-            $displayAttribute  = $displayAttributes[$displayAttributeKey];
-            $realAttributeName = $displayAttribute->getResolvedAttribute();
-            switch($realAttributeName)
-            {
-                case 'priceFrequency':
-                    $dataArray = self::getProductTemplatePriceFrequencyDropdownArray();
-                    break;
-                case 'status'        :
-                    $dataArray = self::getProductTemplateStatusDropdownArray();
-                    break;
-                case 'type'          :
-                    $dataArray = self::getProductTemplateTypeDropdownArray();
-                    break;
-                default              :   break;
-            }
-            $value = $model->{$attribute};
-            if (isset($dataArray[$value]))
-            {
-                return $dataArray[$value];
-            }
-            else
-            {
-                return null;
-            }
         }
     }
 ?>

@@ -39,12 +39,19 @@
         /**
          * Based on the current theme, retrieve the email notification template for html content and replace the
          * content tags with the appropriate strings
+         * @param string $bodyContent
+         * @param User|null $user
+         * @return string
          */
-        public static function resolveNotificationHtmlTemplate($bodyContent)
+        public static function resolveNotificationHtmlTemplate($bodyContent, User $user = null)
         {
             assert('is_string($bodyContent)');
+            if ($user === null)
+            {
+                $user = Yii::app()->user->userModel;
+            }
             $url                                = Yii::app()->createAbsoluteUrl('users/default/configurationEdit',
-                                                  array('id' => Yii::app()->user->userModel->id));
+                                                  array('id' => $user->id));
             $htmlTemplate                       = self::getNotificationHtmlTemplate();
             $htmlContent                        = array();
             $htmlContent['{bodyContent}']       = $bodyContent;
@@ -86,12 +93,19 @@
         /**
          * Based on the current theme, retrieve the email notification template for text content and replace the
          * content tags with the appropriate strings
+         * @param string $bodyContent
+         * @param User $user
+         * @return string
          */
-        public static function resolveNotificationTextTemplate($bodyContent)
+        public static function resolveNotificationTextTemplate($bodyContent, User $user = null)
         {
             assert('is_string($bodyContent)');
+            if ($user === null)
+            {
+                $user = Yii::app()->user->userModel;
+            }
             $url                                = Yii::app()->createAbsoluteUrl('users/default/configurationEdit',
-                                                  array('id' => Yii::app()->user->userModel->id));
+                                                  array('id' => $user->id));
             $htmlTemplate                       = self::getNotificationTextTemplate();
             $htmlContent                        = array();
             $htmlContent['{bodyContent}']       = $bodyContent;
@@ -130,6 +144,12 @@
             }
         }
 
+        /**
+         * @param User $senderPerson
+         * @param array $recipients
+         * @param string $subject
+         * @param EmailMessageContent $content
+         */
         public static function resolveAndSendEmail($senderPerson, $recipients, $subject, $content)
         {
             assert('$senderPerson instanceof User');
@@ -148,7 +168,7 @@
             $sender                     = new EmailMessageSender();
             $sender->fromAddress        = Yii::app()->emailHelper->resolveFromAddressByUser($userToSendMessagesFrom);
             $sender->fromName           = strval($userToSendMessagesFrom);
-            $sender->personOrAccount    = $userToSendMessagesFrom;
+            $sender->personsOrAccounts->add($userToSendMessagesFrom);
             $emailMessage->sender       = $sender;
             foreach ($recipients as $recipientPerson)
             {
@@ -156,7 +176,7 @@
                 $recipient->toAddress       = $recipientPerson->primaryEmail->emailAddress;
                 $recipient->toName          = strval($recipientPerson);
                 $recipient->type            = EmailMessageRecipient::TYPE_TO;
-                $recipient->personOrAccount = $recipientPerson;
+                $recipient->personsOrAccounts->add($recipientPerson);
                 $emailMessage->recipients->add($recipient);
             }
             $box                        = EmailBox::resolveAndGetByName(EmailBox::NOTIFICATIONS_NAME);

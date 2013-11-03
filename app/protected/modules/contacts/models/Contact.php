@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class Contact extends Person
+    class Contact extends Person implements StarredInterface
     {
         public static function getByName($name)
         {
@@ -46,20 +46,20 @@
             $params = LabelUtil::getTranslationParamsForAllModules();
             return array_merge(parent::translatedAttributeLabels($language),
                 array(
-
                     'account'          => Zurmo::t('AccountsModule', 'AccountsModuleSingularLabel',    $params, null, $language),
                     'companyName'      => Zurmo::t('ContactsModule', 'Company Name',  array(), null, $language),
-                    'description'      => Zurmo::t('ZurmoModule',    'Description',  array(), null, $language),
-                    'industry'         => Zurmo::t('ZurmoModule',    'Industry',  array(), null, $language),
-                    'meetings'         => Zurmo::t('MeetingsModule', 'Meetings',  array(), null, $language),
-                    'notes'            => Zurmo::t('NotesModule',    'Notes',  array(), null, $language),
+                    'description'      => Zurmo::t('ZurmoModule', 'Description',  array(), null, $language),
+                    'industry'         => Zurmo::t('ZurmoModule', 'Industry',  array(), null, $language),
+                    'latestActivityDateTime' => Zurmo::t('ZurmoModule', 'Latest Activity Date Time', array(), null, $language),
+                    'meetings'         => Zurmo::t('MeetingsModule', 'MeetingsModulePluralLabel', $params, null, $language),
+                    'notes'            => Zurmo::t('NotesModule', 'NotesModulePluralLabel', $params, null, $language),
                     'opportunities'    => Zurmo::t('OpportunitiesModule', 'OpportunitiesModulePluralLabel', $params, null, $language),
-                    'secondaryAddress' => Zurmo::t('ZurmoModule',    'Secondary Address',  array(), null, $language),
-                    'secondaryEmail'   => Zurmo::t('ZurmoModule',    'Secondary Email',  array(), null, $language),
+                    'secondaryAddress' => Zurmo::t('ContactsModule', 'Secondary Address',  array(), null, $language),
+                    'secondaryEmail'   => Zurmo::t('ZurmoModule', 'Secondary Email',  array(), null, $language),
                     'source'           => Zurmo::t('ContactsModule', 'Source', $params, null, $language),
-                    'state'            => Zurmo::t('ContactsModule', 'Status', $params, null, $language),
-                    'tasks'            => Zurmo::t('TasksModule',    'Tasks',  array(), null, $language),
-                    'website'          => Zurmo::t('ZurmoModule',    'Website',  array(), null, $language),
+                    'state'            => Zurmo::t('ZurmoModule', 'Status', $params, null, $language),
+                    'tasks'            => Zurmo::t('TasksModule', 'TasksModulePluralLabel', $params, null, $language),
+                    'website'          => Zurmo::t('ZurmoModule', 'Website',  array(), null, $language),
                 )
             );
         }
@@ -81,33 +81,37 @@
                 'members' => array(
                     'companyName',
                     'description',
+                    'latestActivityDateTime',
                     'website',
                     'googleWebTrackingId',
                 ),
                 'relations' => array(
-                    'account'          => array(RedBeanModel::HAS_ONE,   'Account'),
-                    'industry'         => array(RedBeanModel::HAS_ONE,   'OwnedCustomField', RedBeanModel::OWNED,
-                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'industry'),
-                    'products'         => array(RedBeanModel::HAS_MANY, 'Product'),
-                    'opportunities'    => array(RedBeanModel::MANY_MANY, 'Opportunity'),
-                    'secondaryAddress' => array(RedBeanModel::HAS_ONE,   'Address',          RedBeanModel::OWNED,
-                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'secondaryAddress'),
-                    'secondaryEmail'   => array(RedBeanModel::HAS_ONE,   'Email',            RedBeanModel::OWNED,
-                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'secondaryEmail'),
-                    'source'           => array(RedBeanModel::HAS_ONE,   'OwnedCustomField', RedBeanModel::OWNED,
-                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'source'),
-                    'state'            => array(RedBeanModel::HAS_ONE,   'ContactState', RedBeanModel::NOT_OWNED,
-                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'state'),
+                    'account'          => array(static::HAS_ONE,   'Account'),
+                    'industry'         => array(static::HAS_ONE,   'OwnedCustomField', static::OWNED,
+                                                static::LINK_TYPE_SPECIFIC, 'industry'),
+                    'products'         => array(static::HAS_MANY, 'Product'),
+                    'opportunities'    => array(static::MANY_MANY, 'Opportunity'),
+                    'secondaryAddress' => array(static::HAS_ONE,   'Address',          static::OWNED,
+                                                static::LINK_TYPE_SPECIFIC, 'secondaryAddress'),
+                    'secondaryEmail'   => array(static::HAS_ONE,   'Email',            static::OWNED,
+                                                static::LINK_TYPE_SPECIFIC, 'secondaryEmail'),
+                    'source'           => array(static::HAS_ONE,   'OwnedCustomField', static::OWNED,
+                                                static::LINK_TYPE_SPECIFIC, 'source'),
+                    'state'            => array(static::HAS_ONE,   'ContactState', static::NOT_OWNED,
+                                                static::LINK_TYPE_SPECIFIC, 'state'),
+                    'projects'         => array(static::MANY_MANY, 'Project'),
                 ),
                 'derivedRelationsViaCastedUpModel' => array(
-                    'meetings' => array(RedBeanModel::MANY_MANY, 'Meeting', 'activityItems'),
-                    'notes'    => array(RedBeanModel::MANY_MANY, 'Note',    'activityItems'),
-                    'tasks'    => array(RedBeanModel::MANY_MANY, 'Task',    'activityItems'),
+                    'meetings' => array(static::MANY_MANY, 'Meeting', 'activityItems'),
+                    'notes'    => array(static::MANY_MANY, 'Note',    'activityItems'),
+                    'tasks'    => array(static::MANY_MANY, 'Task',    'activityItems'),
                 ),
                 'rules' => array(
                     array('companyName',            'type',    'type' => 'string'),
-                    array('companyName',            'length',  'min'  => 3, 'max' => 64),
+                    array('companyName',            'length',  'min'  => 1, 'max' => 64),
                     array('description',            'type',    'type' => 'string'),
+                    array('latestActivityDateTime', 'readOnly'),
+                    array('latestActivityDateTime', 'type', 'type' => 'datetime'),
                     array('state',                  'required'),
                     array('website',                'url',     'defaultScheme' => 'http'),
                     array('googleWebTrackingId',    'type',    'type' => 'string'),
@@ -115,6 +119,7 @@
                 'elements' => array(
                     'account'          => 'Account',
                     'description'      => 'TextArea',
+                    'latestActivityDateTime'  => 'DateTime',
                     'secondaryEmail'   => 'EmailAddressInformation',
                     'secondaryAddress' => 'Address',
                     'state'            => 'ContactState',
@@ -129,6 +134,7 @@
                 ),
                 'noAudit' => array(
                     'description',
+                    'latestActivityDateTime',
                     'website'
                 ),
             );
@@ -183,6 +189,16 @@
                 return $moduleClassName::getModuleLabelByTypeAndLanguage('Plural', $language);
             }
             return static::getLabel($language) . 's';
+        }
+
+        public static function hasReadPermissionsSubscriptionOptimization()
+        {
+            return true;
+        }
+
+        public static function supportsQueueing()
+        {
+            return true;
         }
     }
 ?>

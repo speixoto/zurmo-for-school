@@ -51,7 +51,7 @@
             $this->assertTrue($import->save());
 
             $testTableName = $import->getTempTableName();
-            $this->assertTrue(ImportTestHelper::createTempTableByFileNameAndTableName('importTest.csv', $testTableName));
+            $this->assertTrue(ImportTestHelper::createTempTableByFileNameAndTableName('importTest.csv', $testTableName, true));
             $count = ImportDatabaseUtil::getCount($testTableName);
             $this->assertEquals(5, $count);
 
@@ -76,7 +76,7 @@
             $resultsUtil->processStatusAndMessagesForEachRow();
 
             $sql = 'select * from ' . $testTableName . ' where id != 1';
-            $tempTableData = R::getAll($sql);
+            $tempTableData = ZurmoRedBean::getAll($sql);
             $compareData   = array(
                 array
                 (
@@ -85,7 +85,9 @@
                     'column_1'           => '123',
                     'column_2'           => 'a',
                     'status'             => 1,
-                    'serializedmessages' => serialize(array('the first message')),
+                    'serializedMessages' => serialize(array('the first message')),
+                    'analysisStatus'     => null,
+                    'serializedAnalysisMessages' => null,
                 ),
                 array
                 (
@@ -94,7 +96,9 @@
                     'column_1'           => '563',
                     'column_2'           => 'b',
                     'status'             => 2,
-                    'serializedmessages' => serialize(array('the second message')),
+                    'serializedMessages' => serialize(array('the second message')),
+                    'analysisStatus'     => null,
+                    'serializedAnalysisMessages' => null,
                 ),
                 array
                 (
@@ -103,7 +107,9 @@
                     'column_1'           => '456',
                     'column_2'           => 'a',
                     'status'             => 3,
-                    'serializedmessages' => serialize(array('the third message')),
+                    'serializedMessages' => serialize(array('the third message')),
+                    'analysisStatus'     => null,
+                    'serializedAnalysisMessages' => null,
                 ),
                 array
                 (
@@ -112,7 +118,9 @@
                     'column_1'           => null,
                     'column_2'           => 'b',
                     'status'             => null,
-                    'serializedmessages' => null,
+                    'serializedMessages' => null,
+                    'analysisStatus'     => null,
+                    'serializedAnalysisMessages' => null,
                 ),
             );
             $this->assertEquals($compareData, $tempTableData);

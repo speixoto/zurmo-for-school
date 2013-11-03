@@ -40,16 +40,9 @@
      * option log_bin_trust_function_creators must be turned on too.
      * For more details: http://dev.mysql.com/doc/refman/5.1/en/binary-log.html
      */
-    class DatabaseLogBinServiceHelper extends ServiceHelper
+    class DatabaseLogBinServiceHelper extends DatabaseBaseServiceHelper
     {
         protected $required = true;
-        protected $form;
-
-        public function __construct($form)
-        {
-            assert('$form instanceof InstallSettingsForm');
-            $this->form = $form;
-        }
 
         protected function checkService()
         {

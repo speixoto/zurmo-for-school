@@ -51,30 +51,32 @@
             );
         }
 
-        public function actionIndex($showRunJobLink = false)
+        public function actionIndex()
         {
-            $this->actionList($showRunJobLink);
+            $this->actionList();
         }
 
-        public function actionList($showRunJobLink = false)
+        public function actionList()
         {
-            $this->processListAction(null, $showRunJobLink);
+            $this->processListAction(null);
         }
 
-        protected function processListAction($messageBoxContent = null, $showRunJobLink = false)
+        protected function processListAction($messageBoxContent = null)
         {
             $view = new JobsManagerTitleBarAndListView(
                             $this->getId(),
                             $this->getModule()->getId(),
                             JobsToJobsCollectionViewUtil::getMonitorJobData(),
                             JobsToJobsCollectionViewUtil::getNonMonitorJobsData(),
-                            $messageBoxContent,
-                            (bool)$showRunJobLink);
+                            $messageBoxContent);
             $view = new JobsManagerPageView(ZurmoDefaultAdminViewUtil::
                                             makeStandardViewForCurrentUser($this, $view));
             echo $view->render();
         }
 
+        /**
+         * @param string $type
+         */
         public function actionResetJob($type)
         {
             assert('is_string($type) && $type != ""');
@@ -97,6 +99,9 @@
             }
         }
 
+        /**
+         * @param string $type
+         */
         public function actionJobLogsModalList($type)
         {
             assert('is_string($type) && $type != ""');
@@ -138,17 +143,17 @@
 
         public function actionRunJob($type, $timeLimit = 500, $messageLoggerClassName = 'MessageLogger')
         {
-            if (Yii::app()->user->userModel->username != 'super')
+            if (!Group::isUserASuperAdministrator(Yii::app()->user->userModel))
             {
-                Zurmo::t('JobsManagerModule', 'Only super administrators can run jobs from the browser');
+                echo Zurmo::t('JobsManagerModule', 'Only super administrators can run jobs from the browser');
                 Yii::app()->end(0, false);
             }
-            $breadcrumbLinks = array(
+            $breadCrumbLinks = array(
                 Zurmo::t('JobsManagerModule', 'Run Job'),
             );
             $runJobView = new RunJobView($this->getId(), $this->getModule()->getId(), $type, (int)$timeLimit);
             $view = new JobsManagerPageView(ZurmoDefaultAdminViewUtil::
-                        makeViewWithBreadcrumbsForCurrentUser($this, $runJobView, $breadcrumbLinks, 'JobsManagerBreadCrumbView'));
+                        makeViewWithBreadcrumbsForCurrentUser($this, $runJobView, $breadCrumbLinks, 'JobsManagerBreadCrumbView'));
             echo $view->render();
             $template = ZurmoHtml::script("$('#logging-table ol').append('<li>{message}</li>');");
             JobsManagerUtil::runFromJobManagerCommandOrBrowser($type, (int)$timeLimit, $messageLoggerClassName, $template);

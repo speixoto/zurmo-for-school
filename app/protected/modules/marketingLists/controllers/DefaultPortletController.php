@@ -56,7 +56,7 @@
 
         public function actionCountMembers($marketingListId)
         {
-            $marketingList  = MarketingList::getById($marketingListId);
+            $marketingList  = MarketingList::getById((int) $marketingListId);
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($marketingList);
             $countArray = array(
                             'subscriberCount' => MarketingListMember::getCountByMarketingListIdAndUnsubscribed($marketingListId, false),
@@ -67,13 +67,12 @@
 
         public function actionSubscribeContacts($marketingListId, $id, $type, $page = 1, $subscribedCount = 0, $skippedCount = 0)
         {
-            assert('is_int($id)');
             assert('$type === "contact" || $type === "report"');
             if (!in_array($type, array('contact', 'report')))
             {
                 throw new NotSupportedException();
             }
-            $contactIds = array($id);
+            $contactIds = array((int) $id);
             if  ($type === 'report')
             {
                 $attributeName      = null;
@@ -126,7 +125,7 @@
         protected function addNewSubscribers($marketingListId, $contactIds)
         {
             $subscriberInformation = array('subscribedCount' => 0, 'skippedCount' => 0);
-            $marketingList         = MarketingList::getById($marketingListId);
+            $marketingList         = MarketingList::getById((int) $marketingListId);
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($marketingList);
             foreach ($contactIds as $contactId)
             {
@@ -140,6 +139,68 @@
                 }
             }
             return $subscriberInformation;
+        }
+
+        /**
+         * Override to support adding a contact to a marketing list.  This is currently the only type of select from related
+         * model that is supported for adding a marketing list
+         * @param string $modelId
+         * @param string $portletId
+         * @param string $uniqueLayoutId
+         * @param string $relationAttributeName
+         * @param string $relationModelId
+         * @param string $relationModuleId
+         * @param null|string $relationModelClassName
+         * @throws NotSupportedException
+         */
+        public function actionSelectFromRelatedListSave($modelId, $portletId, $uniqueLayoutId,
+                                                        $relationAttributeName, $relationModelId, $relationModuleId,
+                                                        $relationModelClassName = null)
+        {
+            if ($relationModelClassName == null)
+            {
+                $relationModelClassName = Yii::app()->getModule($relationModuleId)->getPrimaryModelName();
+            }
+            if ($relationModelClassName != 'Contact' && $relationAttributeName != 'contact')
+            {
+                throw new NotSupportedException();
+            }
+            $relationModel          = $relationModelClassName::getById((int)$relationModelId);
+            $modelClassName         = $this->getModule()->getPrimaryModelName();
+            $model                  = $modelClassName::getById((int)$modelId);
+            $redirectUrl            = $this->createUrl('/' . $relationModuleId . '/default/details',
+                                      array('id' => $relationModelId));
+            try
+            {
+                if (!$model->addNewMember($relationModel->id, false))
+                {
+                    $this->processSelectFromRelatedListSaveAlreadyConnected($model, $relationModel);
+                }
+            }
+            catch (FailedToSaveModelException $e)
+            {
+                $this->processSelectFromRelatedListSaveFails($model);
+            }
+            $this->redirect(array('/' . $relationModuleId . '/defaultPortlet/modalRefresh',
+                'id'                   => $relationModelId,
+                'portletId'            => $portletId,
+                'uniqueLayoutId'       => $uniqueLayoutId,
+                'redirectUrl'          => $redirectUrl,
+                'portletParams'        => array(  'relationModuleId' => $relationModuleId,
+                    'relationModelId'  => $relationModelId),
+                'portletsAreRemovable' => false));
+        }
+
+        protected function processSelectFromRelatedListSaveAlreadyConnected(RedBeanModel $model, Contact $contact = null)
+        {
+            if ($contact == null)
+            {
+                throw new NotSupportedException();
+            }
+            echo CJSON::encode(array('message' => Zurmo::t('MarketingListsModule', '{contactString} is already subscribed to {modelString}.',
+                                                  array('{modelString}' => strval($model), '{contactString}' => strval($contact))),
+                                                        'messageType'   => 'message'));
+            Yii::app()->end(0, false);
         }
     }
 ?>

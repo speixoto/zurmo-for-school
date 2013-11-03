@@ -228,6 +228,7 @@
             unset($response['data']['title']['id']);
             unset($response['data']['id']);
             unset($response['data']['googleWebTrackingId']);
+            unset($response['data']['latestActivityDateTime']);
 
             ksort($data);
             ksort($response['data']);
@@ -307,6 +308,27 @@
             $this->assertEquals(1, $response['data']['currentPage']);
             $this->assertEquals(1, $response['data']['totalCount']);
             $this->assertEquals(array($compareData), $response['data']['items']);
+        }
+
+        public function testListContactAttributes()
+        {
+            RedBeanModel::forgetAll();
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
+
+            $authenticationData = $this->login();
+            $headers = array(
+                'Accept: application/json',
+                'ZURMO_SESSION_ID: ' . $authenticationData['sessionId'],
+                'ZURMO_TOKEN: ' . $authenticationData['token'],
+                'ZURMO_API_REQUEST_TYPE: REST',
+            );
+            $allAttributes      = ApiRestTestHelper::getModelAttributes(new Contact());
+
+            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/contacts/contact/api/listAttributes/' , 'GET', $headers);
+            $response = json_decode($response, true);
+            $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
+            $this->assertEquals($allAttributes, $response['data']['items']);
         }
 
         /**
@@ -897,15 +919,15 @@
             $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/contacts/contact/api/create/', 'POST', $headers, array('data' => $data));
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_FAILURE, $response['status']);
-            $this->assertEquals(3, count($response['errors']));
+            $this->assertEquals(2, count($response['errors']));
 
             $id = $contact->id;
             $data = array();
             $data['companyName']         = "A";
             $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/contacts/contact/api/update/' . $id, 'PUT', $headers, array('data' => $data));
             $response = json_decode($response, true);
-            $this->assertEquals(ApiResponse::STATUS_FAILURE, $response['status']);
-            $this->assertEquals(1, count($response['errors']));
+            $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
+            $this->assertEquals(0, count($response['errors']));
         }
     }
 ?>

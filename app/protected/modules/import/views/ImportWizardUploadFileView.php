@@ -54,22 +54,38 @@
             $firstRowIsHeaderElement                   = new CheckBoxElement($this->model, 'firstRowIsHeaderRow', $form);
             $firstRowIsHeaderElement->editableTemplate = '{content}{label}';
             $content  = $form->errorSummary($this->model);
-            $content .= '<table>'     . "\n";
-            $content .= '<tbody>'     . "\n";
-            //$content .= '<tr><td>'    . "\n";
+            $content .= '<table class="form-fields">';
+            $content .= '<tbody>';
             $content .= $fileUploadElement->render();
-            //$content .= '</td></tr>'  . "\n";
-            $content .= '<tr><td>'    . "\n";
+            $content .= '<tr><td>';
             $content .= $firstRowIsHeaderElement->render();
-            $content .= '</td></tr>'  . "\n";
-            $content .= '</tbody>'    . "\n";
-            $content .= '</table>'    . "\n";
+            $content .= '</td></tr>';
+            $content .= '</tbody>';
+            $content .= '</table>';
             return $content;
         }
 
         protected function renderPreviousPageLinkContent()
         {
             return $this->getPreviousPageLinkContentByControllerAction('step1');
+        }
+
+        protected function renderPreviousPageLinkLabel()
+        {
+            return Zurmo::t('Core', 'Select Module');
+        }
+
+        protected function renderNextPageLinkLabel()
+        {
+            $importRulesClassName  = ImportRulesUtil::getImportRulesClassNameByType($this->model->importRulesType);
+            if (!is_subclass_of($importRulesClassName::getModelClassName(), 'SecurableItem'))
+            {
+                return Zurmo::t('ZurmoModule', 'Map Fields');
+            }
+            else
+            {
+                return Zurmo::t('ZurmoModule', 'Select Permissions');
+            }
         }
     }
 ?>

@@ -60,7 +60,7 @@
             $this->assertEquals(0, count(EmailMessage::getAll()));
 
             $emailMessage = new EmailMessage();
-            $emailMessage->owner   = BaseJobControlUserConfigUtil::getUserToRunAs();
+            $emailMessage->owner   = BaseControlUserConfigUtil::getUserToRunAs();
             $emailMessage->subject = 'My First Email';
 
             //Attempt to save without setting required information
@@ -88,7 +88,7 @@
             $recipient->toAddress       = 'billy@fakeemail.com';
             $recipient->toName          = 'Billy James';
             $recipient->type            = EmailMessageRecipient::TYPE_TO;
-            $recipient->personOrAccount = $billy;
+            $recipient->personsOrAccounts->add($billy);
             $emailMessage->recipients->add($recipient);
 
             //At this point the message is in no folder
@@ -179,7 +179,7 @@
             $sender                    = new EmailMessageSender();
             $sender->fromAddress       = 'jane@fakeemail.com';
             $sender->fromName          = 'Jane Smith';
-            $sender->personOrAccount   = $jane;
+            $sender->personsOrAccounts->add($jane);
             $emailMessage->sender      = $sender;
 
             //Recipient is billy.
@@ -187,7 +187,7 @@
             $recipient->toAddress       = 'billy@fakeemail.com';
             $recipient->toName          = 'Billy James';
             $recipient->type            = EmailMessageRecipient::TYPE_TO;
-            $recipient->personOrAccount = $billy;
+            $recipient->personsOrAccounts->add($billy);
             $emailMessage->recipients->add($recipient);
 
             //At this point the message is not in a folder.
@@ -215,7 +215,7 @@
             $emailMessage = new EmailMessage();
             $emailMessage->owner   = $jane;
             $emailMessage->subject = 'My Email with an Attachment';
-            $fileModel        = ZurmoTestHelper::createFileModel('testNote.txt', 'FileModel');
+            $fileModel        = ZurmoTestHelper::createFileModel('testNote.txt');
             $emailMessage->files->add($fileModel);
 
             //Attempt to save without setting required information
@@ -235,7 +235,7 @@
             $sender                    = new EmailMessageSender();
             $sender->fromAddress       = 'jane@fakeemail.com';
             $sender->fromName          = 'Jane Smith';
-            $sender->personOrAccount   = $jane;
+            $sender->personsOrAccounts->add($jane);
             $emailMessage->sender      = $sender;
 
             //Recipient is billy.
@@ -243,7 +243,7 @@
             $recipient->toAddress       = 'billy@fakeemail.com';
             $recipient->toName          = 'Billy James';
             $recipient->type            = EmailMessageRecipient::TYPE_TO;
-            $recipient->personOrAccount = $billy;
+            $recipient->personsOrAccounts->add($billy);
             $emailMessage->recipients->add($recipient);
 
             //At this point the message is not in a folder.
@@ -299,7 +299,7 @@
             $sender                    = new EmailMessageSender();
             $sender->fromAddress       = 'jane@fakeemail.com';
             $sender->fromName          = 'Jane Smith';
-            $sender->personOrAccount   = $jane;
+            $sender->personsOrAccounts->add($jane);
             $emailMessage->sender      = $sender;
 
             //Recipient is billy.
@@ -307,7 +307,7 @@
             $recipient->toAddress       = 'billy@fakeemail.com';
             $recipient->toName          = 'Billy James';
             $recipient->type            = EmailMessageRecipient::TYPE_TO;
-            $recipient->personOrAccount = $billy;
+            $recipient->personsOrAccounts->add($billy);
             $emailMessage->recipients->add($recipient);
 
             //CC recipient is Sally
@@ -315,7 +315,7 @@
             $recipient->toAddress       = 'sally@fakeemail.com';
             $recipient->toName          = 'Sally Pail';
             $recipient->type            = EmailMessageRecipient::TYPE_CC;
-            $recipient->personOrAccount = $sally;
+            $recipient->personsOrAccounts->add($sally);
             $emailMessage->recipients->add($recipient);
 
             //BCC recipient is Jason
@@ -323,7 +323,7 @@
             $recipient->toAddress       = 'jason@fakeemail.com';
             $recipient->toName          = 'Jason Blue';
             $recipient->type            = EmailMessageRecipient::TYPE_BCC;
-            $recipient->personOrAccount = $jason;
+            $recipient->personsOrAccounts->add($jason);
             $emailMessage->recipients->add($recipient);
 
             //At this point the message is not in a folder.
@@ -378,6 +378,67 @@
             Yii::app()->emailHelper->send($emailMessage);
             $this->assertEquals(1, Yii::app()->emailHelper->getQueuedCount());
             $this->assertEquals(0, Yii::app()->emailHelper->getSentCount());
+        }
+
+        public function testCreateMultipleEmailMessageWithAttachments()
+        {
+            $super                      = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
+            $jane                       = User::getByUsername('jane');
+            $billy                      = User::getByUsername('billy');
+            $emailMessageIds            = array();
+
+            for ($count = 0 ; $count < 5; $count++)
+            {
+                $emailMessage = new EmailMessage();
+                $emailMessage->owner   = $jane;
+                $emailMessage->subject = 'My Email with 2 Attachments';
+                $emailMessage->files->add(ZurmoTestHelper::createFileModel('testNote.txt'));
+                $emailMessage->files->add(ZurmoTestHelper::createFileModel('testPDF.pdf'));
+
+                //Set sender, and recipient, and content
+                $emailContent              = new EmailMessageContent();
+                $emailContent->textContent = 'My Second Message';
+                $emailMessage->content     = $emailContent;
+
+                //Sending from jane
+                $sender                    = new EmailMessageSender();
+                $sender->fromAddress       = 'jane@fakeemail.com';
+                $sender->fromName          = 'Jane Smith';
+                $sender->personsOrAccounts->add($jane);
+                $emailMessage->sender      = $sender;
+
+                //Recipient is billy.
+                $recipient                  = new EmailMessageRecipient();
+                $recipient->toAddress       = 'billy@fakeemail.com';
+                $recipient->toName          = 'Billy James';
+                $recipient->type            = EmailMessageRecipient::TYPE_TO;
+                $recipient->personsOrAccounts->add($billy);
+                $emailMessage->recipients->add($recipient);
+
+                //At this point the message is not in a folder.
+                $this->assertTrue($emailMessage->folder->id < 0);
+
+                $box                  = EmailBox::resolveAndGetByName('JaneBox');
+                $emailMessage->folder = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_DRAFT);
+
+                //Save, at this point the email should be in the draft folder
+                $saved = $emailMessage->save();
+                $this->assertTrue($saved);
+                $this->assertTrue($emailMessage->folder->id > 0);
+
+                $emailMessageIds[] = $emailMessage->id;
+                unset($emailMessage);
+                ForgetAllCacheUtil::forgetAllCaches();
+            }
+            foreach ($emailMessageIds as $id)
+            {
+                $emailMessage = EmailMessage::getById($id);
+                $this->assertEquals('My Email with 2 Attachments', $emailMessage->subject);
+                $this->assertEquals(2, $emailMessage->files->count());
+                unset($emailMessage);
+                ForgetAllCacheUtil::forgetAllCaches();
+            }
         }
 
         public function testCrudForHasOneAndHasManyEmailMessageRelations()

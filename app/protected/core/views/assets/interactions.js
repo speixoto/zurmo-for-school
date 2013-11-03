@@ -427,7 +427,7 @@ $.fn.resolvePaddingForHasLangLabel = function(context){
  * @state (Bool) true/false, activate/deactivate the spinner.
  * @domObject (String), the object's seletor where the spinner runs inside it. The CSS selector (with . or #).
  * @styleObject (Object) key-value pairs for the spinner's styles.
- * @spinnerClassName (String) Optional, used mostly for the Big-Spinners. The CSS selector for the actuall spinner (with . or #).
+ * @spinnerClassName (String) Optional, used mostly for the Big-Spinners. The CSS selector for the actual spinner (with . or #).
  */
 
 $.fn.resolveSpinner = function(state, domObject, styleObject, spinnerClassName){
@@ -491,12 +491,17 @@ $.fn.attachLoadingSpinnerForLanguageActivation = function( id, state, color ){
  */
 
 $.fn.makeOrRemoveLoadingSpinner = function(state, context, shade){
+    if(typeof shade === 'undefined'){
+        shade = '#fff';
+    } else if(shade === 'dark'){
+        shade = '#999';
+    }
     var style = {
         lines : 9,
         length : 2.3,
         width : 1.7,
         radius : 3,
-        color : ( shade === 'dark' ) ? '#999' : '#fff',
+        color : shade,
         speed : 2.5,
         trail : 37,
         top : 4,
@@ -667,6 +672,13 @@ $(window).ready(function(){
         }
     );
 
+    $('.clickable-dividedmenu').find('a.button-trigger, a.button-action-trigger, .close-flyout').click(
+        function(){
+            $(this).closest('.clickable-dividedmenu').toggleClass('nav-open');
+            return false;
+        }
+    );
+
     //Main nav hover
      $('#MenuView > ul > li > a, #RecentlyViewedView  > ul > li > a').hover(
         function(){
@@ -829,7 +841,6 @@ $.extend({
     }
 });
 
-// TODO: @Shoaibi: Medium: Ask Nabeel/Sergio on extending buttonset widget to add this functionality before _create
 $.fn.createButtonSetIfNotAlreadyExist = function(qualifier, classFlag) {
     classFlag = typeof classFlag !== 'undefined' ? classFlag : 'ui-buttonset';
     if ($(qualifier).hasClass(classFlag)) {
@@ -858,3 +869,23 @@ $.fn.readCookie = function(name)
     }
     return null;
 };
+
+/**
+ * Mostly used for intro boxes (products, marketing etc.)
+ * takes a container div/element, finds highest element and sets teh same height on the other siblings
+ * @param context a DOM object representing the container.
+ */
+
+$.fn.resolveHighestAndEqualize = function(context)
+{
+    var elementsToCompare = context.children();
+    var heights = [];
+    elementsToCompare.each(function() {
+        heights.push($(this).height());
+    });
+
+    var largest = Math.max.apply(Math, heights); // 306
+    elementsToCompare.each(function() {
+        $(this).css({'min-height': largest});
+    });
+}

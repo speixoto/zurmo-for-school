@@ -73,7 +73,7 @@
         {
             if (trim($this->type) == '')
             {
-                return Zurmo::t('GamificationModule', '(Unnamed)');
+                return Zurmo::t('Core', '(Unnamed)');
             }
             return $this->type;
         }
@@ -182,14 +182,14 @@
                     'value',
                 ),
                 'relations' => array(
-                    'person'       => array(RedBeanModel::HAS_ONE, 'Item', RedBeanModel::NOT_OWNED,
-                                            RedBeanModel::LINK_TYPE_SPECIFIC, 'person'),
-                    'transactions' => array(RedBeanModel::HAS_MANY, 'GamePointTransaction', RedBeanModel::OWNED),
+                    'person'       => array(static::HAS_ONE, 'Item', static::NOT_OWNED,
+                                            static::LINK_TYPE_SPECIFIC, 'person'),
+                    'transactions' => array(static::HAS_MANY, 'GamePointTransaction', static::OWNED),
                 ),
                 'rules' => array(
                     array('type',          'required'),
                     array('type',          'type',    'type' => 'string'),
-                    array('type',          'length',  'min'  => 3, 'max' => 64),
+                    array('type',          'length',  'min'  => 1, 'max' => 64),
                     array('value',         'type',    'type' => 'integer'),
                     array('value',         'numerical', 'min' => 1),
                     array('value',         'required'),
@@ -215,6 +215,7 @@
 
         /**
          * Add specified value.
+         * @param int $value
          */
         public function addValue($value)
         {
@@ -227,6 +228,7 @@
 
         /**
          * Replace value with specified value.
+         * @param int $value
          */
         public function replaceValue($value)
         {
@@ -260,6 +262,11 @@
             }
         }
 
+        /**
+         * @param User $user
+         * @param string $levelType
+         * @return array
+         */
         public static function getSummationPointsDataByLevelTypeAndUser(User $user, $levelType)
         {
             assert('$user->id > 0');
@@ -267,7 +274,7 @@
             $wherePart = static::getPointTypeWherePartByLevelType($levelType);
             $sql       = "select sum(value) sum from gamepoint where " . $wherePart . " person_item_id = " .
                          $user->getClassId('Item') . " group by person_item_id";
-            return R::getRow($sql);
+            return ZurmoRedBean::getRow($sql);
         }
 
         /**
@@ -280,7 +287,7 @@
             assert('$user->id > 0');
             $sql       = "select type, sum(value) sum from gamepoint where person_item_id = " .
                          $user->getClassId('Item') . " group by type";
-            $rows      = R::getAll($sql);
+            $rows      = ZurmoRedBean::getAll($sql);
             $indexedData = array();
             foreach ($rows as $row)
             {

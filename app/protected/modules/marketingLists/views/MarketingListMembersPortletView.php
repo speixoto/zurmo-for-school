@@ -70,6 +70,9 @@
 
         /**
          * Some extra assertions are made to ensure this view is used in a way that it supports.
+         * @param array $viewData
+         * @param array $params
+         * @param string $uniqueLayoutId
          */
         public function __construct($viewData, $params, $uniqueLayoutId)
         {
@@ -104,30 +107,37 @@
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array('type'            => 'MarketingListAddSubscriberLink',
-                                'htmlOptions'       => array('class' => 'icon-edit'),
-                                'pageVarName'       => 'eval:$this->getPageVarName()',
-                                'listViewGridId'    => 'eval:$this->getListGridId()'),
-                            array('type'            => 'MarketingListMembersSubscribeLink',
-                                'htmlOptions'       => array('class' => 'icon-edit'),
-                                'controllerId'      => 'eval:$this->getMassActionsControllerId()',
-                                'pageVarName'       => 'eval:$this->getPageVarName()',
-                                'listViewGridId'    => 'eval:$this->getListGridId()'),
-                            array('type'            => 'MarketingListMembersUnsubscribeLink',
-                                'htmlOptions'       => array('class' => 'icon-edit'),
-                                'controllerId'      => 'eval:$this->getMassActionsControllerId()',
-                                'pageVarName'       => 'eval:$this->getPageVarName()',
-                                'listViewGridId'    => 'eval:$this->getListGridId()'),
-                            array('type'            => 'MassDeleteLink',
-                                'htmlOptions'       => array('class' => 'icon-delete'),
-                                'controllerId'      => 'eval:$this->getMassActionsControllerId()',
-                                'pageVarName'       => 'eval:$this->getPageVarName()',
-                                'listViewGridId'    => 'eval:$this->getListGridId()'),
+                            array('type'            => 'MarketingListAddSubscriberMenu',
+                                  'iconClass'       => 'icon-add',
+                                  'pageVarName'     => 'eval:$this->getPageVarName()',
+                                  'listViewGridId'  => 'eval:$this->getListGridId()'),
+                            array('type'            => 'MarketingListMembersSubscribeMenu',
+                                  'iconClass'       => 'icon-edit',
+                                  'controllerId'    => 'eval:$this->getMassActionsControllerId()',
+                                  'pageVarName'     => 'eval:$this->getPageVarName()',
+                                  'listViewGridId'  => 'eval:$this->getListGridId()'),
+                            array('type'            => 'MarketingListMembersUnsubscribeMenu',
+                                  'iconClass'       => 'icon-edit',
+                                  'controllerId'    => 'eval:$this->getMassActionsControllerId()',
+                                  'pageVarName'     => 'eval:$this->getPageVarName()',
+                                  'listViewGridId'  => 'eval:$this->getListGridId()'),
+                            array('type'            => 'MassDeleteMenu',
+                                  'iconClass'       => 'icon-delete',
+                                  'controllerId'    => 'eval:$this->getMassActionsControllerId()',
+                                  'pageVarName'     => 'eval:$this->getPageVarName()',
+                                  'listViewGridId'  => 'eval:$this->getListGridId()'),
                         ),
                     ),
                 ),
             );
             return $metadata;
+        }
+
+        /**
+         * Override to add a description for the view to be shown when adding a portlet
+         */
+        public static function getPortletDescription()
+        {
         }
 
         public function getTitle()
@@ -144,7 +154,7 @@
             }
             elseif ($this->shouldRenderActionElementBar())
             {
-                $actionElementBar = ZurmoHtml::tag('div', array('class' => 'portlet-view-toolbar view-toolbar'),
+                $actionElementBar = ZurmoHtml::tag('nav', array('class' => 'pillbox clearfix'),
                                                                                 $this->renderActionElementBar(false));
             }
             else
@@ -232,7 +242,7 @@
             return ZurmoHtml::tag('div', array('class' => $this->getListContentWrapperDivClass()), $listContent);
         }
 
-        protected function makeListView()
+        public function makeListView()
         {
             $listViewClassName = $this->getListViewClassName();
             $this->getDataProvider(); // no need to save return value as we don't need it.

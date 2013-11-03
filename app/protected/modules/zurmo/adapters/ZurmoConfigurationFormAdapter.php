@@ -52,11 +52,12 @@
             $form->subListPageSize                        = Yii::app()->pagination->getGlobalValueByType('subListPageSize');
             $form->modalListPageSize                      = Yii::app()->pagination->getGlobalValueByType('modalListPageSize');
             $form->dashboardListPageSize                  = Yii::app()->pagination->getGlobalValueByType('dashboardListPageSize');
+            $form->defaultFromEmailAddress                = Yii::app()->emailHelper->resolveAndGetDefaultFromAddress();
+            $form->defaultTestToEmailAddress              = Yii::app()->emailHelper->resolveAndGetDefaultTestToAddress();
             $form->gamificationModalNotificationsEnabled  = Yii::app()->gameHelper->modalNotificationsEnabled;
             $form->realtimeUpdatesEnabled                 = static::getRealtimeUpdatesEnabled();
-            $form->autoresponderOrCampaignBatchSize       = AutoresponderOrCampaignBatchSizeConfigUtil::getBatchSize();
-            $form->autoresponderOrCampaignFooterPlainText = UnsubscribeAndManageSubscriptionsPlaceholderUtil::getContentByType(false);
-            $form->autoresponderOrCampaignFooterRichText  = UnsubscribeAndManageSubscriptionsPlaceholderUtil::getContentByType(true);
+            $form->reCaptchaPrivateKey                    = ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'reCaptchaPrivateKey');
+            $form->reCaptchaPublicKey                     = ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'reCaptchaPublicKey');
             self::getLogoAttributes($form);
             return $form;
         }
@@ -72,15 +73,16 @@
             Yii::app()->pagination->setGlobalValueByType('subListPageSize',       (int)   $form->subListPageSize);
             Yii::app()->pagination->setGlobalValueByType('modalListPageSize',     (int)   $form->modalListPageSize);
             Yii::app()->pagination->setGlobalValueByType('dashboardListPageSize', (int)   $form->dashboardListPageSize);
+            Yii::app()->emailHelper->setDefaultFromAddress($form->defaultFromEmailAddress);
+            Yii::app()->emailHelper->setDefaultTestToAddress($form->defaultTestToEmailAddress);
             ZurmoConfigurationUtil::setByModuleName('ZurmoModule',
                                                     'gamificationModalNotificationsEnabled',
                                                     (boolean) $form->gamificationModalNotificationsEnabled);
             ZurmoConfigurationUtil::setByModuleName('ZurmoModule',
                                                     'realtimeUpdatesEnabled',
                                                     (boolean) $form->realtimeUpdatesEnabled);
-            AutoresponderOrCampaignBatchSizeConfigUtil::setBatchSize((int)$form->autoresponderOrCampaignBatchSize);
-            UnsubscribeAndManageSubscriptionsPlaceholderUtil::setContentByType($form->autoresponderOrCampaignFooterPlainText, false);
-            UnsubscribeAndManageSubscriptionsPlaceholderUtil::setContentByType($form->autoresponderOrCampaignFooterRichText, true);
+            ZurmoConfigurationUtil::setByModuleName('ZurmoModule', 'reCaptchaPrivateKey', $form->reCaptchaPrivateKey);
+            ZurmoConfigurationUtil::setByModuleName('ZurmoModule', 'reCaptchaPublicKey',  $form->reCaptchaPublicKey);
             self::setLogoAttributes($form);
         }
 
@@ -101,7 +103,7 @@
            if (null !== ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'logoThumbFileModelId'))
            {
                $logoThumbFileId  = ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'logoThumbFileModelId');
-               $logoThumbFileSrc = Yii::app()->createUrl('zurmo/default/logo', array('id' => $logoThumbFileId));
+               $logoThumbFileSrc = Yii::app()->createUrl('zurmo/default/logo');
                $logoThumbFile    = FileModel::getById($logoThumbFileId);
                $logoFileData     = array('name'              => $logoThumbFile->name,
                                          'type'              => $logoThumbFile->type,
@@ -172,16 +174,14 @@
         {
            if (ZurmoConfigurationUtil::getByModuleName('ZurmoModule', $fileModelIdentifier) !== null)
            {
-               $fileModelId          = ZurmoConfigurationUtil::getByModuleName('ZurmoModule', $fileModelIdentifier);
-               $file                 = FileModel::getById($fileModelId);
-               $fileContent          = FileContent::getById($file->fileContent->id);
-               $contents             = file_get_contents($filePath);
-               $fileContent->content = $contents;
-               $file->fileContent    = $fileContent;
-               $file->name           = $fileName;
-               $file->type           = ZurmoFileHelper::getMimeType($filePath);
-               $file->size           = filesize($filePath);
-               $saved                = $file->save();
+               $fileModelId                   = ZurmoConfigurationUtil::getByModuleName('ZurmoModule', $fileModelIdentifier);
+               $file                          = FileModel::getById($fileModelId);
+               $contents                      = file_get_contents($filePath);
+               $file->fileContent->content    = $contents;
+               $file->name                    = $fileName;
+               $file->type                    = ZurmoFileHelper::getMimeType($filePath);
+               $file->size                    = filesize($filePath);
+               $file->save();
                return $file->id;
            }
            else
@@ -194,8 +194,7 @@
                $file->name           = $fileName;
                $file->type           = ZurmoFileHelper::getMimeType($filePath);
                $file->size           = filesize($filePath);
-               $saved                = $file->save();
-
+               $file->save();
                return $file->id;
            }
         }

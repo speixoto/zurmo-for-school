@@ -46,7 +46,7 @@
 
         public function getDisplayLabel()
         {
-            return Zurmo::t('UsersModule', 'Username');
+            return Zurmo::t('ZurmoModule', 'Username');
         }
     }
 ?>

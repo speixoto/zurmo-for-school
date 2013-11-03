@@ -118,7 +118,8 @@
         /**
          * This function overrides the activeRadioButtonList from CHtml to properly call radioButtonList in ZurmoHtml
          */
-        public static function activeRadioButtonList($model, $attribute, $data, $htmlOptions = array())
+        public static function activeRadioButtonList($model, $attribute, $data, $htmlOptions = array(),
+                                                     $dataSelectOptions = array(), $dataHtmlOptions = array())
         {
             self::resolveNameID($model, $attribute, $htmlOptions);
             $selection = self::resolveValue($model, $attribute);
@@ -154,7 +155,7 @@
                 $hiddenOptions = array('id' => false);
             }
             $hidden = $uncheck !== null ? self::hiddenField($name, $uncheck, $hiddenOptions) : '';
-            return $hidden . self::radioButtonList($name, $selection, $data, $htmlOptions);
+            return $hidden . self::radioButtonList($name, $selection, $data, $htmlOptions, $dataSelectOptions, $dataHtmlOptions);
         }
 
          /**
@@ -162,7 +163,7 @@
           * box to be appended to the label element.
           */
         public static function radioButtonList($name, $select, $data, $htmlOptions = array(),
-                                               $dataSelectOption = array())
+                                               $dataSelectOptions = array(), $dataHtmlOptions = array())
         {
             $template   =   isset($htmlOptions['template'])?$htmlOptions['template']:'{input} {label}';
             $separator  =   isset($htmlOptions['separator'])?$htmlOptions['separator']:"<br/>\n";
@@ -179,16 +180,29 @@
                 $checked                =   !strcmp($value, $select);
                 $htmlOptions['value']   =   $value;
                 $htmlOptions['id']      =   $baseID . '_' . $id++;
+                if (isset($dataHtmlOptions[$value]) && isset($dataHtmlOptions[$value]['disabled']))
+                {
+                    $htmlOptions['disabled'] = $dataHtmlOptions[$value]['disabled'];
+                }
                 $option                 =   self::radioButton($name, $checked, $htmlOptions);
                 $label                  =   self::label($label, $htmlOptions['id'], $labelOptions);
                 $selectOption           =   "";
-                if (isset($dataSelectOption[$value]))
+                if (isset($dataSelectOptions[$value]))
                 {
-                    $selectOption       =   str_replace("{bindId}", $htmlOptions['id'], $dataSelectOption[$value]);
+                    $selectOption       =   str_replace("{bindId}", $htmlOptions['id'], $dataSelectOptions[$value]);
+                }
+                if (isset($dataHtmlOptions[$value]) && isset($dataHtmlOptions[$value]['class']))
+                {
+                    $class = $dataHtmlOptions[$value]['class'];
+                }
+                else
+                {
+                    $class = null;
                 }
                 $items[] = strtr($template, array('{input}'    =>  $option,
                                                   '{label}'    =>  $label . $selectOption,
-                                                  '{value}'    =>  $value));
+                                                  '{value}'    =>  $value,
+                                                  '{class}'    =>  $class));
             }
             return implode($separator, $items);
         }
@@ -422,26 +436,36 @@
                 }
             }
 
+            if (isset($htmlOptions['selector']))
+            {
+                $selector = $htmlOptions['selector'];
+                unset($htmlOptions['selector']);
+            }
+            else
+            {
+                $selector = '#' . $id;
+            }
+
             if ($live)
             {
                 if ($namespace)
                 {
-                   $cs->registerScript('Yii.CHtml.#' . $id, "$('body').off('$event', '#$id'); $('body').on('$event', '#$id', function(){{$handler}});");
+                    $cs->registerScript('Yii.CHtml.' . $selector, "$('body').off('$event', '$selector'); $('body').on('$event', '$selector', function(){{$handler}});");
                 }
                 else
                 {
-                    $cs->registerScript('Yii.CHtml.#' . $id, "$('body').on('$event', '#$id', function(){{$handler}});");
+                    $cs->registerScript('Yii.CHtml.' . $selector, "$('body').on('$event', '$selector', function(){{$handler}});");
                 }
             }
             else
             {
                 if ($namespace)
                 {
-                    $cs->registerScript('Yii.CHtml.#' . $id, "$('#$id').off('$event'); $('#$id').on('$event', function(){{$handler}});");
+                    $cs->registerScript('Yii.CHtml.' . $selector, "$('$selector').off('$event'); $('$selector').on('$event', function(){{$handler}});");
                 }
                 else
                 {
-                    $cs->registerScript('Yii.CHtml.#' . $id, "$('#$id').on('$event', function(){{$handler}});");
+                    $cs->registerScript('Yii.CHtml.' . $selector, "$('$selector').on('$event', function(){{$handler}});");
                 }
             }
             unset($htmlOptions['params'],
@@ -663,6 +687,12 @@ EOD;
             {
                 $content .= ZurmoHtml::tag('div', $htmlOptions, $innerContent);
             }
+        }
+
+        public static function wrapAndRenderContinuumButtonContent($content)
+        {
+            $clearFixContent = ZurmoHtml::tag('div', array('class' => 'clearfix'), $content);
+            return ZurmoHtml::tag('div', array('class' => 'continuum'), $clearFixContent);
         }
     }
 ?>

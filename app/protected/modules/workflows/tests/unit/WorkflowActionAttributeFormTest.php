@@ -155,6 +155,14 @@
             $form            = new ExplicitReadWriteModelPermissionsWorkflowActionAttributeForm('WorkflowModelTestItem', 'permissions');
             $valuesAndLabels = $form->getTypeValuesAndLabels(true, true);
             $this->assertEquals(4, count($valuesAndLabels));
+
+            //Test subscribeToList action form
+            $form        = new MarketingListWorkflowActionAttributeForm('MarketingList', 'id');
+            $valuesAndLabels = $form->getTypeValuesAndLabels(true, true);
+            $this->assertEquals(1, count($valuesAndLabels));
+            $valuesAndLabels = $form->getTypeValuesAndLabels(true, false);
+            $this->assertEquals(1, count($valuesAndLabels));
+            $this->assertTrue($form->resolveValueBeforeSave());
         }
 
         /**
@@ -167,21 +175,21 @@
             $form->shouldSetValue = true;
             $validated            = $form->validate();
             $this->assertFalse($validated);
-            $compareErrors = array('alternateValue' => array('Value must be integer.'));
+            $compareErrors = array('durationInterval' => array('Interval cannot be blank.'));
             $this->assertEquals($compareErrors, $form->getErrors());
 
             $form->value          = '';
             $validated            = $form->validate();
             $this->assertFalse($validated);
-            $compareErrors = array('alternateValue' => array('Value must be integer.'));
+            $compareErrors = array('durationInterval' => array('Interval cannot be blank.'));
             $this->assertEquals($compareErrors, $form->getErrors());
 
-            $form->value          = 0;
-            $validated            = $form->validate();
+            $form->durationInterval = 0;
+            $validated              = $form->validate();
             $this->assertTrue($validated);
 
-            $form->value          = '0';
-            $validated            = $form->validate();
+            $form->durationInterval = '0';
+            $validated              = $form->validate();
             $this->assertTrue($validated);
         }
     }

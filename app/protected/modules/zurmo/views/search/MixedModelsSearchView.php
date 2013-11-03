@@ -62,7 +62,7 @@
 
         protected function renderContent()
         {
-            $titleView = new TitleBarView(Zurmo::t('ZurmoModule', 'Global search'), null, 1);
+            $titleView = new TitleBarView(Zurmo::t('ZurmoModule', 'Global Search'), null, 1);
             $content = $titleView->render();
             $model = new MixedModelsSearchForm();
             $model->setGlobalSearchAttributeNamesAndLabelsAndAll($this->moduleNamesAndLabelsAndAll);
@@ -91,7 +91,7 @@
             $content .= $scope->render();
             //Search button
             $params                = array();
-            $params['label']       = Zurmo::t('ZurmoModule', 'Search');
+            $params['label']       = Zurmo::t('Core', 'Search');
             $params['htmlOptions'] = array('id' => $this->getSearchFormId() . '-search',
                 'onclick' => 'js:$(this).addClass("attachLoadingTarget");');
             $element               = new SaveButtonActionElement(null, null, null, $params);

@@ -51,6 +51,10 @@
         ),
 
         'components' => array(
+            'additionalModelsConfig' => array(
+                'class'         => 'application.core.components.AdditionalModelsConfig',
+                'zurmoModels'   => array('application.core.models', 'application.core.portlets', 'application.core.kanbanBoard.models'),
+            ),
             'apiRequest' => array(
                 'class' => 'application.modules.api.components.ApiRequest',
             ),
@@ -115,6 +119,9 @@
             'gamificationObserver' => array(
                 'class' => 'application.modules.gamification.observers.GamificationObserver',
             ),
+            'licenseManager' => array(
+                'class' => 'application.core.components.LicenseManager',
+            ),
             'messages' => array(
                 'class' => 'application.core.components.ZurmoMessageSource',
             ),
@@ -160,33 +167,33 @@
                 //Add scripts here that do not need to load when using an ajax request such as a modal search box.  The scripts
                 //are already loaded in the minified script that loads on every page.
                 'usingAjaxShouldNotIncludeJsPathAliasesAndFileNames' => array(
-                    array('system.web.js.source',                                       '/jquery.min.js'),
-                    array('system.web.js.source',                                       '/jquery.yii.js'),
-                    array('system.web.js.source',                                       '/jquery.ba-bbq.js'),
-                    array('system.web.js.source',                                       '/jui/js/jquery-ui.min.js'),
-                    array('system.web.js.source',                                       '/jquery.yiiactiveform.js'),
-                    array('system.web.js.source',                                       '/jquery.jquery.cookie.js'),
-                    array('system.web.js.source',                                       '/jquery.jquery.treeview.js'),
-                    array('system.web.js.source',                                       '/jquery.treeview.edit.js'),
-                    array('application.extensions.qtip.assets',                         '/jquery.qtip-2.min.js'),
-                    array('application.core.widgets.assets',   '/extendedGridView/jquery.yiigridview.js'),
-                    array('application.core.elements.assets',  '/Modal.js'),
-                    array('application.core.views.assets',     '/FormUtils.js'),
-                    array('application.core.views.assets',     '/dynamicSearchViewUtils.js'),
-                    array('application.core.views.assets',     '/ListViewUtils.js'),
-                    array('application.core.views.assets',     '/interactions.js'),
-                    array('application.core.views.assets',     '/jquery.truncateText.js'),
-                    array('application.core.widgets.assets',   '/rssReader/jquery.zrssfeed.min.js'),
-                    array('application.core.widgets.assets',   '/juiportlets/JuiPortlets.js'),
-                    array('application.core.widgets.assets',   '/jnotify/jquery.jnotify.js'),
-                    array('application.core.widgets.assets',   '/juiMultiSelect/jquery.multiselect.js'),
-                    array('application.core.widgets.assets',   '/fileUpload/jquery.fileupload.js'),
-                    array('application.core.widgets.assets',   '/fileUpload/jquery.fileupload-ui.js'),
-                    array('application.core.widgets.assets',   '/fileUpload/jquery.tmpl.min.js'),
-                    array('application.core.widgets.assets',   '/fileUpload/jquery.iframe-transport.js'),
-                    array('application.core.widgets.assets',   '/treeView/jquery.treeview.async.js'),
-                    array('application.extensions.timepicker.assets',                   '/jquery-ui-timepicker-addon.min.js'),
-                    array('application.core.widgets.assets',   '/calendar/Calendar.js')
+                    array('system.web.js.source',                       '/jquery.min.js'),
+                    array('system.web.js.source',                       '/jquery.yii.js'),
+                    array('system.web.js.source',                       '/jquery.ba-bbq.js'),
+                    array('system.web.js.source',                       '/jui/js/jquery-ui.min.js'),
+                    array('system.web.js.source',                       '/jquery.yiiactiveform.js'),
+                    array('system.web.js.source',                       '/jquery.jquery.cookie.js'),
+                    array('system.web.js.source',                       '/jquery.jquery.treeview.js'),
+                    array('system.web.js.source',                       '/jquery.treeview.edit.js'),
+                    array('application.extensions.qtip.assets',         '/jquery.qtip-2.min.js'),
+                    array('application.core.widgets.assets',            '/extendedGridView/jquery.yiigridview.js'),
+                    array('application.core.elements.assets',           '/Modal.js'),
+                    array('application.core.views.assets',              '/FormUtils.js'),
+                    array('application.core.views.assets',              '/dynamicSearchViewUtils.js'),
+                    array('application.core.views.assets',              '/ListViewUtils.js'),
+                    array('application.core.views.assets',              '/interactions.js'),
+                    array('application.core.views.assets',              '/jquery.truncateText.js'),
+                    array('application.core.widgets.assets',            '/rssReader/jquery.zrssfeed.min.js'),
+                    array('application.core.widgets.assets',            '/juiportlets/JuiPortlets.js'),
+                    array('application.core.widgets.assets',            '/jnotify/jquery.jnotify.js'),
+                    array('application.core.widgets.assets',            '/juiMultiSelect/jquery.multiselect.js'),
+                    array('application.core.widgets.assets',            '/fileUpload/jquery.fileupload.js'),
+                    array('application.core.widgets.assets',            '/fileUpload/jquery.fileupload-ui.js'),
+                    array('application.core.widgets.assets',            '/fileUpload/jquery.tmpl.min.js'),
+                    array('application.core.widgets.assets',            '/fileUpload/jquery.iframe-transport.js'),
+                    array('application.core.widgets.assets',            '/treeView/jquery.treeview.async.js'),
+                    array('application.extensions.timepicker.assets',   '/jquery-ui-timepicker-addon.min.js'),
+                    array('application.core.widgets.assets',            '/calendar/Calendar.js')
                 ),
             ),
             'languageHelper' => array(
@@ -220,6 +227,9 @@
             ),
             'performance' => array(
                 'class'          => 'application.core.components.PerformanceMeasurement',
+            ),
+            'phoneHelper' => array(
+                'class'          => 'application.core.components.PhoneHelper',
             ),
             'sanitizer' => array(
                 'class'          => 'application.extensions.esanitizer.ESanitizer',
@@ -258,10 +268,12 @@
                     array('<module>/<model>Api/read',           'pattern' => '<module:\w+>/<model:\w+>/api/read/<id:\d+>',    'verb' => 'GET'),    // Not Coding Standard
                     array('<module>/<model>Api/read',           'pattern' => '<module:\w+>/<model:\w+>/api/read/<id:\w+>',    'verb' => 'GET'),    // Not Coding Standard
                     array('<module>/<model>Api/list',           'pattern' => '<module:\w+>/<model:\w+>/api/list/*',           'verb' => 'GET'),    // Not Coding Standard
-                    array('<module>/<model>Api/list',           'pattern' => '<module:\w+>/<model:\w+>/api/list/',            'verb' => 'POST'),    // Not Coding Standard
+                    array('<module>/<model>Api/list',           'pattern' => '<module:\w+>/<model:\w+>/api/list/',            'verb' => 'POST'),   // Not Coding Standard
+                    array('<module>/<model>Api/listAttributes', 'pattern' => '<module:\w+>/<model:\w+>/api/listAttributes',   'verb' => 'GET'),    // Not Coding Standard
                     array('<module>/<model>Api/update',         'pattern' => '<module:\w+>/<model:\w+>/api/update/<id:\d+>',  'verb' => 'PUT'),    // Not Coding Standard
                     array('<module>/<model>Api/delete',         'pattern' => '<module:\w+>/<model:\w+>/api/delete/<id:\d+>',  'verb' => 'DELETE'), // Not Coding Standard
                     array('<module>/<model>Api/create',         'pattern' => '<module:\w+>/<model:\w+>/api/create/',          'verb' => 'POST'),   // Not Coding Standard
+                    array('zurmo/CustomFieldApi/addValues',     'pattern' => 'zurmo/customField/api/addValues/<id:\w+>',      'verb' => 'PUT'),    // Not Coding Standard
                     array('<module>/<model>Api/<action>',       'pattern' => '<module:\w+>/<model:\w+>/api/<action>/*'),                           // Not Coding Standard
 
                     '<module:\w+>/<controller:\w+>/<action:\w+>' => '<module>/<controller>/<action>',                       // Not Coding Standard
@@ -310,7 +322,7 @@
                 ),
             ),
             'workflowsObserver' => array(
-                'class' => 'application.modules.workflow.observers.WorkflowsObserver',
+                'class' => 'application.modules.workflows.observers.WorkflowsObserver',
             ),
         ),
         'controllerMap' => array(
@@ -349,6 +361,7 @@
             'emailMessages',
             'emailTemplates',
             'export',
+            'gameRewards',
             'gamification',
             'home',
             'import',
@@ -380,6 +393,7 @@
             'users',
             'maps',
             'contactWebForms',
+            'projects'
         ),
 
         'params' => array(

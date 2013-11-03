@@ -55,6 +55,10 @@
             return $link . $details;
         }
 
+        /**
+         * @param Mission $mission
+         * @param User $user
+         */
         public static function markUserHasReadLatest(Mission $mission, User $user)
         {
             $mashableUtilRules  = MashableUtil::createMashableInboxRulesByModel('Mission');
@@ -62,6 +66,10 @@
             return $hasReadLatest;
         }
 
+        /**
+         * @param Mission $mission
+         * @param User $user
+         */
         public static function markUserHasUnreadLatest(Mission $mission, User $user)
         {
             $mashableUtilRules  = MashableUtil::createMashableInboxRulesByModel('Mission');
@@ -69,6 +77,11 @@
             return $hasReadLatest;
         }
 
+        /**
+         * @param Mission $mission
+         * @param User $user
+         * @return bool
+         */
         public static function hasUserReadMissionLatest(Mission $mission, User $user)
         {
             $mashableUtilRules  = MashableUtil::createMashableInboxRulesByModel('Mission');
@@ -76,6 +89,9 @@
             return $hasReadLatest;
         }
 
+        /**
+         * @param Mission $mission
+         */
         public static function markAllUserHasReadLatestExceptOwnerAndTakenBy(Mission $mission)
         {
             $users = User::getAll();
@@ -89,6 +105,9 @@
             }
         }
 
+        /**
+         * @param Mission $mission
+         */
         public static function markAllUserHasUnreadLatest(Mission $mission)
         {
             $users = static::resolvePeopleToSendNotificationToOnNewMission($mission);
@@ -98,6 +117,11 @@
             }
         }
 
+        /**
+         * @param int $type
+         * @return string
+         * @throws NotSupportedException
+         */
         public static function makeActiveActionElementType($type)
         {
             assert('$type == null || is_int($type)');
@@ -123,6 +147,12 @@
             }
         }
 
+        /**
+         * @param Mission $mission
+         * @param int $type
+         * @param int $pageSize
+         * @return RedBeanModelDataProvider'
+         */
         public static function makeDataProviderByType(Mission $mission, $type, $pageSize)
         {
             if ($type == null)
@@ -186,25 +216,31 @@
             NotificationsUtil::submit($message, $rules);
         }
 
+        /**
+         * @param Mission $mission
+         */
         public static function makeAndSubmitNewMissionNotificationMessage(Mission $mission)
         {
-            $recipients = array();
             $peopleToSendNotification = static::resolvePeopleToSendNotificationToOnNewMission($mission);
             foreach ($peopleToSendNotification as $person)
             {
                 if ($person->primaryEmail->emailAddress != null &&
                     !UserConfigurationFormAdapter::resolveAndGetValue($person, 'turnOffEmailNotifications'))
                 {
-                    $recipients[] = $person;
+                    EmailNotificationUtil::resolveAndSendEmail($mission->owner,
+                                                               array($person),
+                                                               static::getEmailSubject($mission),
+                                                               static::getEmailContent($mission, $person));
                 }
             }
-            EmailNotificationUtil::resolveAndSendEmail($mission->owner,
-                                                 $recipients,
-                                                 static::getEmailSubject($mission),
-                                                 static::getEmailContent($mission));
         }
 
-        public static function getEmailContent(Mission $mission)
+        /**
+         * @param Mission $mission
+         * @param User $user
+         * @return EmailMessageContent
+         */
+        public static function getEmailContent(Mission $mission, User $user)
         {
             $emailContent  = new EmailMessageContent();
             $url           = CommentsUtil::getUrlToEmail($mission);
@@ -215,33 +251,41 @@
                                           '{reward}'    => $mission->reward,
                                           '{url}'       => ZurmoHtml::link($url, $url)
                                         ));
-            $emailContent->textContent  = $emailContent->htmlContent  = EmailNotificationUtil::
-                                                resolveNotificationTextTemplate($textContent);
+            $emailContent->textContent  = EmailNotificationUtil::resolveNotificationTextTemplate($textContent, $user);
             $htmlContent = Zurmo::t('MissionsModule', "Hello, {lineBreak}There is a new {url}. " .
                                     "Be the first one to start it and get this great reward: {reward}.",
-                               array('{lineBreak}'      => "<br/>",
-                                     '{strongStartTag}' => '<strong>',
-                                     '{strongEndTag}'   => '</strong>',
-                                     '{reward}'         => $mission->reward,
-                                     '{url}'            => ZurmoHtml::link($mission->getModelLabelByTypeAndLanguage(
-                                                                'SingularLowerCase'), $url)
-                                   ));
-            $emailContent->htmlContent  = EmailNotificationUtil::resolveNotificationHtmlTemplate($htmlContent);
+                                    array('{lineBreak}'      => "<br/>",
+                                          '{strongStartTag}' => '<strong>',
+                                          '{strongEndTag}'   => '</strong>',
+                                          '{reward}'         => $mission->reward,
+                                          '{url}'            => ZurmoHtml::link($mission->getModelLabelByTypeAndLanguage(
+                                                                    'SingularLowerCase'), $url)
+                                    ));
+            $emailContent->htmlContent  = EmailNotificationUtil::resolveNotificationHtmlTemplate($htmlContent, $user);
             return $emailContent;
         }
 
+        /**
+         * @param Mission $mission
+         * @return string
+         */
         public static function getEmailSubject(Mission $mission)
         {
             return Zurmo::t('MissionsModule', 'New mission');
         }
 
+        /**
+         * @param Mission $mission
+         * @return array
+         */
         public static function resolvePeopleToSendNotificationToOnNewMission(Mission $mission)
         {
             $users = User::getAll();
             $people = array();
             foreach ($users as $user)
             {
-                if ($user->getClassId('Item') != $mission->owner->getClassId('Item'))
+                if ($user->getClassId('Item') != $mission->owner->getClassId('Item') &&
+                    RightsUtil::canUserAccessModule('MissionsModule', $user))
                 {
                     $people[] = $user;
                 }
@@ -262,12 +306,13 @@
             $peopleToSendNotification = array();
             foreach ($usersToSendNotification as $userToSendNotification)
             {
-                if ($userToSendNotification->getClassId('Item') != $user->getClassId('Item'))
+                if ($userToSendNotification->getClassId('Item') != $user->getClassId('Item') &&
+                    RightsUtil::canUserAccessModule('MissionsModule', $userToSendNotification))
                 {
                     if ($mission->takenByUser->id > 0)
                     {
                         if ($userToSendNotification->getClassId('Item') == $mission->owner->getClassId('Item') ||
-                           $userToSendNotification->getClassId('Item') == $mission->takenByUser->getClassId('Item') )
+                            $userToSendNotification->getClassId('Item') == $mission->takenByUser->getClassId('Item') )
                         {
                             $peopleToSendNotification[] = $userToSendNotification;
                         }

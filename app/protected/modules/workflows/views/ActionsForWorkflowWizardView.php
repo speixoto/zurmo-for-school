@@ -80,7 +80,7 @@
             assert('is_string($moduleClassName)');
             assert('is_string($modelClassName)');
             assert('is_string($workflowType)');
-            $data = array('' => Zurmo::t('WorkflowsModule', 'Select Module'));
+            $data = array('' => Zurmo::t('Core', 'Select Module'));
             return array_merge($data, ActionForWorkflowForm::
                                       getTypeRelationDataAndLabels($moduleClassName, $modelClassName, $workflowType));
         }
@@ -98,7 +98,7 @@
             assert('is_string($modelClassName)');
             assert('is_string($workflowType)');
             assert('is_string($relation)');
-            $data = array('' => Zurmo::t('WorkflowsModule', 'Select Module'));
+            $data = array('' => Zurmo::t('Core', 'Select Module'));
             return array_merge($data, ActionForWorkflowForm::getTypeRelatedModelRelationDataAndLabels($moduleClassName,
                                       $modelClassName, $workflowType, $relation));
         }
@@ -114,10 +114,9 @@
         /**
          * @return array
          */
-        protected static function resolveTypeDataAndLabels()
+        protected function resolveTypeDataAndLabels()
         {
-            $data = array();
-            return array_merge($data, ActionForWorkflowForm::getTypeDataAndLabels());
+            return ActionForWorkflowForm::getTypeDataAndLabels();
         }
 
         /**
@@ -135,6 +134,19 @@
             $this->registerRowEditScript();
         }
 
+        public static function renderScriptContentForModuleClassNameChange()
+        {
+            return "
+            $('#" . ActionsForWorkflowWizardView::ACTION_TYPE_NAME .
+                        " option[value=\"" . ActionForWorkflowForm::TYPE_SUBSCRIBE_TO_LIST . "\"]').remove();
+            if($(this).val() == 'ContactsModule')
+            {
+                $('#" . ActionsForWorkflowWizardView::ACTION_TYPE_NAME . "').
+                    append(\"<option value='" . ActionForWorkflowForm::TYPE_SUBSCRIBE_TO_LIST . "'>" .
+                        ActionForWorkflowForm::getLabelForSubscribeToList() . "</option>\");
+            }
+            ";
+        }
         /**
          * @return bool
          */
@@ -180,7 +192,7 @@
             $htmlOptions                   = array();
             $htmlOptions['empty']          = Zurmo::t('WorkflowsModule', 'Select Action');
             $actionTypeContent             = ZurmoHtml::dropDownList(self::ACTION_TYPE_NAME, null,
-                                             static::resolveTypeDataAndLabels(), $htmlOptions);
+                                             $this->resolveTypeDataAndLabels(), $htmlOptions);
             $content  = '';
             $content .= $actionTypeContent;
             $content .= ZurmoHtml::tag('div', array('id'    => self::ACTION_TYPE_RELATION_DIV_ID,
@@ -265,7 +277,9 @@
                         //attachLoadingSpinner("' . $inputDivId . '", true, "dark");
                         $("#' . $inputDivId . '").show();
                         }',
-                'success' => 'js:function(data){ $("#' . $inputDivId . '").html(data);}',
+                'success' => 'js:function(data){$("#' . $inputDivId . '").html(data);
+                                                $("#actionsNextLink").parent().parent().hide();
+                                               }',
             ));
             $script = "$('#" . $id . "').live('change', function()
             {
@@ -278,8 +292,13 @@
                 if ($('#" . $id . "').val() == '')
                 {
                     //do nothing
+                    $('#actionsNextLink').parent().parent().show();
                 }
                 else if ($('#" . $id . "').val() == '" . ActionForWorkflowForm::TYPE_UPDATE_SELF . "')
+                {
+                    loadWorkflowAction();
+                }
+                else if ($('#" . $id . "').val() == '" . ActionForWorkflowForm::TYPE_SUBSCRIBE_TO_LIST . "')
                 {
                     loadWorkflowAction();
                 }
@@ -427,11 +446,10 @@
                 $(".remove-dynamic-row-link, .remove-action-row-link").live("click", function()
                 {
                     $("#' . self::ACTION_TYPE_NAME . '").val("").removeAttr("disabled");
-                    size = $(this).parents("ul").find("li").size();
-                    console.log(size);
-                    $(this).parentsUntil("ul").siblings().show();
                     $(this).parents("li").remove(); //removes the <li>
-                    if (size <= 2)
+                    $("#' . ComponentForWorkflowForm::TYPE_ACTIONS .'attributeRowsUl").children("li").show();
+                    var size = $("#' . get_class($this) . ' .dynamic-rows > ul > li").length;
+                    if (size < 1)
                     {
                         $(".' . static::getZeroComponentsClassName() . '").show();
                     }

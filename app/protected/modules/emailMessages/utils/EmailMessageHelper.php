@@ -47,7 +47,7 @@
         public static function sendSystemEmail($subject, $recipients, $textContent = '', $htmlContent = '')
         {
             $emailMessage = new EmailMessage();
-            $emailMessage->owner   = BaseJobControlUserConfigUtil::getUserToRunAs();
+            $emailMessage->owner   = BaseControlUserConfigUtil::getUserToRunAs();
             $emailMessage->subject = $subject;
 
             $emailContent              = new EmailMessageContent();
@@ -58,7 +58,7 @@
             $sender                    = new EmailMessageSender();
             $sender->fromAddress       = Yii::app()->emailHelper->resolveFromAddressByUser(Yii::app()->user->userModel);
             $sender->fromName          = strval(Yii::app()->user->userModel);
-            $sender->personOrAccount            = Yii::app()->user->userModel;
+            $sender->personsOrAccounts->add(Yii::app()->user->userModel);
             $emailMessage->sender      = $sender;
 
             foreach ($recipients as $recipientEmail)

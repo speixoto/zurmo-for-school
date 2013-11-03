@@ -48,6 +48,15 @@
          * @param User $userToSendMessagesFrom
          * @return boolean
          */
+
+        /**
+         * Given post data and an email message, populate the sender and account on the email message if possible.
+         * Also add message recipients and any attachments.
+         * @param array $postData
+         * @param CreateEmailMessageForm $emailMessageForm
+         * @param User $userToSendMessagesFrom
+         * @return CreateEmailMessageForm
+         */
         public static function resolveEmailMessageFromPostData(Array & $postData,
                                                                CreateEmailMessageForm $emailMessageForm,
                                                                User $userToSendMessagesFrom)
@@ -78,16 +87,16 @@
             }
             $emailAccount                           = EmailAccount::getByUserAndName($userToSendMessagesFrom);
             $sender                                 = new EmailMessageSender();
-            $sender->fromName                       = Yii::app()->emailHelper->fromName;
-            $sender->fromAddress                    = Yii::app()->emailHelper->fromAddress;
-            $sender->personOrAccount                = $userToSendMessagesFrom;
+            $sender->fromName                       = $emailAccount->fromName;
+            $sender->fromAddress                    = $emailAccount->fromAddress;
+            $sender->personsOrAccounts->add($userToSendMessagesFrom);
             $emailMessageForm->sender               = $sender;
             $emailMessageForm->account              = $emailAccount;
             $emailMessageForm->content->textContent = EmailMessageUtil::resolveTextContent(
                                                         ArrayUtil::getArrayValue(
                                                             $postData[$postVariableName]['content'], 'htmlContent'),
                                                             null);
-            $box                                    = EmailBox::resolveAndGetByName(EmailBox::NOTIFICATIONS_NAME);
+            $box                                    = EmailBoxUtil::getDefaultEmailBoxByUser($userToSendMessagesFrom);
             $emailMessageForm->folder               = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_OUTBOX);
             return $emailMessageForm;
         }
@@ -103,13 +112,16 @@
         {
             assert('is_int($type)');
             $existingPersonsOrAccounts = array();
-            if ($emailMessage->recipients->count() >0)
+            if ($emailMessage->recipients->count() > 0)
             {
                 foreach ($emailMessage->recipients as $recipient)
                 {
-                    if ($recipient->personOrAccount != null && $recipient->personOrAccount->id > 0)
+                    foreach ($recipient->personsOrAccounts as $personOrAccount)
                     {
-                        $existingPersonsOrAccounts[] = $recipient->personOrAccount->getClassId('Item');
+                        if ($personOrAccount != null && $personOrAccount->id > 0)
+                        {
+                            $existingPersonsOrAccounts[] = $personOrAccount->getClassId('Item');
+                        }
                     }
                 }
             }
@@ -133,7 +145,7 @@
                                 if ($personOrAccount != null)
                                 {
                                     $messageRecipient->toName           = strval($personOrAccount);
-                                    $messageRecipient->personOrAccount  = $personOrAccount;
+                                    $messageRecipient->personsOrAccounts->add($personOrAccount);
                                     $existingPersonsOrAccounts[] = $personOrAccount->getClassId('Item');
                                 }
                                 $emailMessage->recipients->add($messageRecipient);
@@ -191,7 +203,7 @@
                 $messageRecipient->toName           = strval($personOrAccount);
                 $messageRecipient->toAddress        = $toAddress;
                 $messageRecipient->type             = EmailMessageRecipient::TYPE_TO;
-                $messageRecipient->personOrAccount  = $personOrAccount;
+                $messageRecipient->personsOrAccounts->add($personOrAccount);
                 $emailMessage->recipients->add($messageRecipient);
             }
         }
@@ -231,12 +243,15 @@
                                                                  'relatedModelClassName' => get_class($model),
                                                                  'redirectUrl'           =>  Yii::app()->request->getRequestUri()));
                 $modalAjaxOptions  = ModalView::getAjaxOptionsForModalLink(
-                                     Zurmo::t('EmailMessagesModule', 'Compose Email'), 'modalContainer', 'auto', 800,
-                                                                    array(
-                                                                        'my' => 'top',
-                                                                        'at' => 'bottom',
-                                                                        'of' => '#HeaderView'));
-                $content           = ZurmoHtml::ajaxLink($emailAddress, $url, $modalAjaxOptions);
+                        Zurmo::t('EmailMessagesModule', 'Compose Email'), 'modalContainer', 'auto', 800,
+                        array('my' => 'top',
+                              'at' => 'bottom',
+                              'of' => '#HeaderView'));
+                $content           = ZurmoHtml::ajaxLink($emailAddress, 'js:$(this).attr("href")', $modalAjaxOptions, array('id'        => 'composeEmailLink-' . $model->id,
+                                                                                                                            'class'     => 'composeEmailLink',
+                                                                                                                            'selector'  => '.composeEmailLink',
+                                                                                                                            'href'      => $url,
+                                                                                                                            'return'    => false));
             }
             else
             {
@@ -245,6 +260,11 @@
             return $content;
         }
 
+        /**
+         * @param string $htmlContent
+         * @param string $textContent
+         * @return mixed
+         */
         public static function resolveTextContent($htmlContent, $textContent)
         {
            if ($htmlContent != null && $textContent == null)

@@ -51,7 +51,8 @@
                     array('somethingOn3',  'length', 'max' => 32),
                 ),
                 'relations' => array(
-                    'hasMany1' => array(RedBeanModel::MANY_MANY, 'ReportModelTestItem'),
+                    'hasMany1' => array(static::MANY_MANY, 'ReportModelTestItem'),
+                    'hasMany2' => array(static::MANY_MANY, 'ReportModelTestItem2'),
                 )
             );
             return $metadata;

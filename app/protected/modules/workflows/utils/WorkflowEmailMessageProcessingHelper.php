@@ -60,7 +60,7 @@
         {
             $this->emailMessageForm  = $emailMessageForm;
             $this->triggeredModel    = $triggeredModel;
-            $this->triggeredByUser     = $triggeredByUser;
+            $this->triggeredByUser   = $triggeredByUser;
         }
 
         /**
@@ -78,6 +78,7 @@
             $emailMessage->content      = $emailContent;
             $emailMessage->sender       = $this->resolveSender();
             $this->resolveRecipients($emailMessage);
+            $this->resolveAttachments($emailMessage, $emailTemplate);
             if ($emailMessage->recipients->count() == 0)
             {
                 throw new MissingRecipientsForEmailMessageException();
@@ -85,6 +86,7 @@
             $box                        = EmailBox::resolveAndGetByName(EmailBox::NOTIFICATIONS_NAME);
             $emailMessage->folder       = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_DRAFT);
             Yii::app()->emailHelper->send($emailMessage);
+            ZurmoControllerUtil::updatePermissionsWithDefaultForModelByUser($emailMessage, $this->triggeredByUser);
         }
 
         /**
@@ -144,20 +146,44 @@
             $sender                     = new EmailMessageSender();
             if ($this->emailMessageForm->sendFromType == EmailMessageForWorkflowForm::SEND_FROM_TYPE_DEFAULT)
             {
-                $userToSendMessagesFrom     = BaseJobControlUserConfigUtil::getUserToRunAs();
-                $sender->fromAddress        = Yii::app()->emailHelper->resolveFromAddressByUser($userToSendMessagesFrom);
-                $sender->fromName           = strval($userToSendMessagesFrom);
+                $this->resolveSenderAsDefault($sender);
             }
             elseif ($this->emailMessageForm->sendFromType == EmailMessageForWorkflowForm::SEND_FROM_TYPE_CUSTOM)
             {
                 $sender->fromAddress        = $this->emailMessageForm->sendFromAddress;
                 $sender->fromName           = $this->emailMessageForm->sendFromName;
             }
+            elseif ($this->emailMessageForm->sendFromType == EmailMessageForWorkflowForm::SEND_FROM_TYPE_TRIGGERED_MODEL_OWNER)
+            {
+                if ($this->triggeredModel instanceof OwnedSecurableItem)
+                {
+                    if ($this->triggeredModel->owner->primaryEmail->emailAddress != null)
+                    {
+                        $sender->fromAddress = $this->triggeredModel->owner->primaryEmail->emailAddress;
+                        $sender->fromName    = strval($this->triggeredModel->owner);
+                    }
+                    else
+                    {
+                        $this->resolveSenderAsDefault($sender);
+                    }
+                }
+                else
+                {
+                    $this->resolveSenderAsDefault($sender);
+                }
+            }
             else
             {
                 throw new NotSupportedException();
             }
             return $sender;
+        }
+
+        protected function resolveSenderAsDefault(EmailMessageSender $sender)
+        {
+            $userToSendMessagesFrom     = BaseControlUserConfigUtil::getUserToRunAs();
+            $sender->fromAddress        = Yii::app()->emailHelper->resolveFromAddressByUser($userToSendMessagesFrom);
+            $sender->fromName           = strval($userToSendMessagesFrom);
         }
 
         /**
@@ -170,6 +196,23 @@
                 foreach ($emailMessageRecipient->makeRecipients($this->triggeredModel, $this->triggeredByUser) as $recipient)
                 {
                     $emailMessage->recipients->add($recipient);
+                }
+            }
+        }
+
+        /**
+         * Add the files from EmailTemplate to the EmailMessage
+         * @param EmailMessage $emailMessage
+         * @param EmailTemplate $emailTemplate
+         */
+        protected function resolveAttachments(EmailMessage $emailMessage, EmailTemplate $emailTemplate)
+        {
+            if (!empty($emailTemplate->files))
+            {
+                foreach ($emailTemplate->files as $file)
+                {
+                    $emailMessageFile   = FileModelUtil::makeByFileModel($file);
+                    $emailMessage->files->add($emailMessageFile);
                 }
             }
         }

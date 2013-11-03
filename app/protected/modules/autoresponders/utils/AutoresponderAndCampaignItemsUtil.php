@@ -55,7 +55,7 @@
             assert('is_object($itemOwnerModel)');
             assert('get_class($itemOwnerModel) === "Autoresponder" || get_class($itemOwnerModel) === "Campaign"');
             if ($contact->primaryEmail->optOut ||
-               (get_class($itemOwnerModel) === "Campaign" && MarketingListMember::getByMarketingListIdContactIdAndSubscribed(
+               (get_class($itemOwnerModel) === "Campaign" && MarketingListMember::getByMarketingListIdContactIdAndUnsubscribed(
                                                                                 $itemOwnerModel->marketingList->id,
                                                                                 $contact->id,
                                                                                 true) != false))
@@ -85,7 +85,10 @@
                 }
                 catch (MissingRecipientsForEmailMessageException $e)
                 {
-                    // TODO: @Shoaibi/@Jason: Medium: Do something about it.
+                    $activityClass  = $itemClass . 'Activity';
+                    $personId       = $contact->getClassId('Person');
+                    $type           = $activityClass::TYPE_SKIP;
+                    $activityClass::createNewActivity($type, $itemId, $personId);
                 }
             }
             static::markItemAsProcessed($item);
@@ -103,7 +106,7 @@
 
         protected static function resolveContentForMergeTags(& $textContent, & $htmlContent, Contact $contact)
         {
-            // TODO: @Shoaibi/@Jason: High: we might add support for language
+            // TODO: @Shoaibi/@Jason: Low: we might add support for language
             $language               = null;
             $errorOnFirstMissing    = true;
             $templateType           = EmailTemplate::TYPE_CONTACT;
@@ -174,6 +177,10 @@
             $explicitReadWriteModelPermissions  = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($marketingList);
             ExplicitReadWriteModelPermissionsUtil::resolveExplicitReadWriteModelPermissions($emailMessage,
                                                                                     $explicitReadWriteModelPermissions);
+            if (!$emailMessage->save())
+            {
+                throw new FailedToSaveModelException("Unable to save EmailMessage");
+            }
             return $emailMessage;
         }
 
@@ -193,7 +200,7 @@
             }
             else
             {
-                $userToSendMessagesFrom         = BaseJobControlUserConfigUtil::getUserToRunAs();
+                $userToSendMessagesFrom         = BaseControlUserConfigUtil::getUserToRunAs();
                 $sender->fromAddress            = Yii::app()->emailHelper->resolveFromAddressByUser($userToSendMessagesFrom);
                 $sender->fromName               = strval($userToSendMessagesFrom);
             }
@@ -208,7 +215,7 @@
                 $recipient->toAddress       = $contact->primaryEmail->emailAddress;
                 $recipient->toName          = strval($contact);
                 $recipient->type            = EmailMessageRecipient::TYPE_TO;
-                $recipient->personOrAccount = $contact;
+                $recipient->personsOrAccounts->add($contact);
                 $emailMessage->recipients->add($recipient);
             }
         }
@@ -219,7 +226,8 @@
             {
                 foreach ($itemOwnerModel->files as $file)
                 {
-                    $emailMessage->files->add($file);
+                    $emailMessageFile   = FileModelUtil::makeByFileModel($file);
+                    $emailMessage->files->add($emailMessageFile);
                 }
             }
         }
@@ -243,7 +251,11 @@
         protected static function markItemAsProcessed($item)
         {
             $item->processed   = 1;
-            return $item->unrestrictedSave();
+            if (!$item->unrestrictedSave())
+            {
+                throw new FailedToSaveModelException("Unable to save " . get_class($item));
+            }
+            return true;
         }
 
         protected static function resolveItemOwnerModelRelationName($itemClass)

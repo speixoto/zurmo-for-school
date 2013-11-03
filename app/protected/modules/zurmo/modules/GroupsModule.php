@@ -129,5 +129,24 @@
         {
             return array('GroupsDemoDataMaker');
         }
+
+        /**
+         * Resolves the everyone display label for a custom label
+         * @return string
+         */
+        public static function resolveEveryoneDisplayLabel()
+        {
+            if (null != $displayLabel = ZurmoConfigurationUtil::getByModuleName('GroupsModule', 'EveryoneDisplayLabel'))
+            {
+                return $displayLabel;
+            }
+            return Zurmo::t('Core', 'Everyone');
+        }
+
+        public static function setEveryoneDisplayLabel($label)
+        {
+            assert('is_string($label)');
+            ZurmoConfigurationUtil::setByModuleName('GroupsModule', 'EveryoneDisplayLabel', $label);
+        }
     }
 ?>

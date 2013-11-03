@@ -220,6 +220,10 @@
             return $dynamicClauseOnlyWithAttributes;
         }
 
+        /**
+         * @param int $rowCount
+         * @return string
+         */
         protected function renderAddExtraRowContent($rowCount)
         {
             assert('is_int($rowCount)');
@@ -331,7 +335,7 @@
                                          'name'  => $this->getStructureInputName(),
                                          'class' => 'dynamic-search-structure-input');
             $content             = $form->textField($this->model, 'dynamicStructure', $idInputHtmlOptions);
-            $content            .= ZurmoHtml::tag('span', array(), Zurmo::t('ZurmoModule', 'Search Operator'));
+            $content            .= ZurmoHtml::tag('span', array(), Zurmo::t('Core', 'Search Operator'));
             $content            .= $form->error($this->model, 'dynamicStructure');
             return $content;
         }

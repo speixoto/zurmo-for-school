@@ -41,6 +41,10 @@
             return true;
         }
 
+        /**
+         * @param String $viewClassName
+         * @return string|void
+         */
         public function resolveDisplayNameByView($viewClassName)
         {
             assert('is_string($viewClassName)');
@@ -81,6 +85,11 @@
                 'modifiedByUser',
                 'id'
             );
+        }
+
+        public function canMergeAndSplitCells()
+        {
+            return false;
         }
     }
 ?>

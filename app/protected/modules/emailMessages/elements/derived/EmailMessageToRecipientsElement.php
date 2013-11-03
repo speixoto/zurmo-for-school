@@ -44,7 +44,7 @@
             assert('$this->model instanceof EmailMessage');
             $recipientsContent = EmailMessageMashableActivityRules::
                                  getRecipientsContent($this->model->recipients, EmailMessageRecipient::TYPE_TO);
-            if($recipientsContent == null && $this->form != null)
+            if ($recipientsContent == null && $this->form != null)
             {
                 $recipientsContent = '&nbsp;';
             }
@@ -62,7 +62,7 @@
 
         protected function renderLabel()
         {
-            return $this->resolveNonActiveFormFormattedLabel(Zurmo::t('EmailMessagesModule', 'To'));
+            return $this->resolveNonActiveFormFormattedLabel(Zurmo::t('Core', 'To'));
         }
 
         public static function getDisplayName()

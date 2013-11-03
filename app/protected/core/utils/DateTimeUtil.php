@@ -44,6 +44,8 @@
 
         const DATETIME_FORMAT_TIME_WIDTH                     = 'short';
 
+        const DISPLAY_FORMAT_FOR_INPUT                       = 'Display Format For Input';
+
         const DISPLAY_FORMAT_ABBREVIATED_MONTH_ONLY_WIDTH    = 'Display Format Abbreviated Month';
 
         const DISPLAY_FORMAT_ABBREVIATED_MONTH_AND_DAY_WIDTH = 'Display Format Abbreviated Month And Day';
@@ -55,33 +57,39 @@
          */
         public static function getTimeSinceDisplayContent($dateTime)
         {
+            assert('DateTimeUtil::isValidDbFormattedDateTime($dateTime)');
             $nowTimeStamp           = time();
             $dateTimeStamp          = DateTimeUtil::convertDbFormatDateTimeToTimeStamp($dateTime);
             $timeSinceLatestUpdate  = $nowTimeStamp - $dateTimeStamp;
             $timeForString = array(
                 'days'  => floor($timeSinceLatestUpdate / 86400),
                 'hours' => floor($timeSinceLatestUpdate / 3600),
+                'minutes' => floor($timeSinceLatestUpdate / (60)),
+                'seconds' => floor($timeSinceLatestUpdate)
             );
-            if ($timeForString['days'] == 0)
+
+            if ($timeForString['days'] >= 1)
             {
-                if ($timeForString['hours'] == 1)
-                {
-                    $string = Zurmo::t('MashableInboxModule', '{hours} hour ago', array('{hours}' => $timeForString['hours']));
-                }
-                else
-                {
-                    $string = Zurmo::t('MashableInboxModule', '{hours} hours ago', array('{hours}' => $timeForString['hours']));
-                }
-            }
-            elseif (($timeForString['days'] == 1))
-            {
-                $string = Zurmo::t('MashableInboxModule', '{days} day ago', array('{days}' => $timeForString['days']));
+                return Zurmo::t('Core', '{n} day ago|{n} days ago', $timeForString['days']);
             }
             else
             {
-                $string = Zurmo::t('MashableInboxModule', '{days} days ago', array('{days}' => $timeForString['days']));
+                if ($timeForString['hours'] >= 1)
+                {
+                    return Zurmo::t('Core', '{n} hour ago|{n} hours ago', $timeForString['hours']);
+                }
+                else
+                {
+                    if ($timeForString['minutes'] >= 1)
+                    {
+                        return Zurmo::t('Core', '{n} minute ago|{n} minutes ago', $timeForString['minutes']);
+                    }
+                    else
+                    {
+                        return Zurmo::t('Core', '{n} second ago|{n} seconds ago', $timeForString['seconds']);
+                    }
+                }
             }
-            return $string;
         }
 
         /**
@@ -110,9 +118,22 @@
             return strtr($dateTimePattern, array('{0}' => $timeFormat, '{1}' => $dateFormat));
         }
 
+        public static function getLocaleDateTimeFormatForInput()
+        {
+            $dateTimePattern = Yii::app()->locale->getDateTimeFormat();
+            $timeFormat      = Yii::app()->locale->getTimeFormat(self::DATETIME_FORMAT_TIME_WIDTH);
+            $dateFormat      = Yii::app()->locale->getDateFormatForInput(self::DATETIME_FORMAT_DATE_WIDTH);
+            return strtr($dateTimePattern, array('{0}' => $timeFormat, '{1}' => $dateFormat));
+        }
+
         public static function getLocaleDateFormat($dateWidth = self::DATETIME_FORMAT_DATE_WIDTH)
         {
             return Yii::app()->locale->getDateFormat($dateWidth);
+        }
+
+        public static function getLocaleDateFormatForInput($dateWidth = self::DATETIME_FORMAT_DATE_WIDTH)
+        {
+            return Yii::app()->locale->getDateFormatForInput($dateWidth);
         }
 
         public static function getLocaleTimeFormat($timeWidth = self::DATETIME_FORMAT_TIME_WIDTH)
@@ -132,11 +153,17 @@
 
         public static function resolveTimeStampForDateTimeLocaleFormattedDisplay($value,
                                     $dateWidth = self::DATETIME_FORMAT_DATE_WIDTH,
-                                    $timeWidth = self::DATETIME_FORMAT_TIME_WIDTH)
+                                    $timeWidth = self::DATETIME_FORMAT_TIME_WIDTH,
+                                    $forInput = false)
         {
             if ($value == null)
             {
                 return null;
+            }
+            if ($forInput)
+            {
+                $pattern = static::getLocaleDateTimeFormatForInput();
+                return Yii::app()->dateFormatter->format($pattern, $value);
             }
             return Yii::app()->dateFormatter->formatDateTime($value, $dateWidth, $timeWidth);
         }
@@ -172,6 +199,10 @@
                 $content .= ' ' . Yii::app()->dateFormatter->format('d', $parsedTimeStamp);
                 return $content;
             }
+            elseif ($displayFormat == static::DISPLAY_FORMAT_FOR_INPUT)
+            {
+                return Yii::app()->dateFormatter->format(static::getLocaleDateFormatForInput(self::DATETIME_FORMAT_DATE_WIDTH), $parsedTimeStamp);
+            }
             return Yii::app()->dateFormatter->format(static::getLocaleDateFormat(self::DATETIME_FORMAT_DATE_WIDTH), $parsedTimeStamp);
         }
 
@@ -181,8 +212,9 @@
             {
                 return null;
             }
+            $localeDateFormat = DateTimeUtil::getLocaleDateFormatForInput();
             return Yii::app()->dateFormatter->format(DatabaseCompatibilityUtil::getDateFormat(),
-                                CDateTimeParser::parse($value, DateTimeUtil::getLocaleDateFormat()));
+                                CDateTimeParser::parse($value, $localeDateFormat));
         }
 
         /**
@@ -241,10 +273,11 @@
 
         public static function convertTimestampToDisplayFormat($timestamp,
                                     $dateWidth = self::DATETIME_FORMAT_DATE_WIDTH,
-                                    $timeWidth = self::DATETIME_FORMAT_TIME_WIDTH)
+                                    $timeWidth = self::DATETIME_FORMAT_TIME_WIDTH,
+                                    $forInput = false)
         {
             assert('is_int($timestamp)');
-            return self::resolveTimeStampForDateTimeLocaleFormattedDisplay($timestamp, $dateWidth, $timeWidth);
+            return self::resolveTimeStampForDateTimeLocaleFormattedDisplay($timestamp, $dateWidth, $timeWidth, $forInput);
         }
 
         public static function isValidDbFormattedDate($date) // Basic version, feel free to enhance.
@@ -270,7 +303,8 @@
 
         public static function convertDbFormattedDateTimeToLocaleFormattedDisplay($dbFormatDateTime,
                                     $dateWidth = self::DATETIME_FORMAT_DATE_WIDTH,
-                                    $timeWidth = self::DATETIME_FORMAT_TIME_WIDTH)
+                                    $timeWidth = self::DATETIME_FORMAT_TIME_WIDTH,
+                                    $forInput = false)
         {
             assert('is_string($dbFormatDateTime) || $dbFormatDateTime == null');
             if ($dbFormatDateTime == null || $dbFormatDateTime == '0000-00-00 00:00:00')
@@ -278,7 +312,7 @@
                 return null;
             }
             $timestamp = self::convertDbFormatDateTimeToTimestamp($dbFormatDateTime);
-            return self::convertTimestampToDisplayFormat((int)$timestamp, $dateWidth, $timeWidth);
+            return self::convertTimestampToDisplayFormat((int)$timestamp, $dateWidth, $timeWidth, $forInput);
         }
 
         /**
@@ -293,7 +327,7 @@
             {
                 return null;
             }
-            $timestamp = CDateTimeParser::parse($localeFormattedDateTime, self::getLocaleDateTimeFormat());
+            $timestamp = CDateTimeParser::parse($localeFormattedDateTime, self::getLocaleDateTimeFormatForInput());
             if ($timestamp == null)
             {
                 return null;
@@ -390,6 +424,20 @@
         {
             assert('is_string($date)');
             return $date . ' 00:00:00';
+        }
+
+        public static function resolveDateTimeAsDate($dateTime)
+        {
+            assert('is_string($date)');
+            if ($dateTime == '0000-00-00 00:00:00')
+            {
+                return '0000-00-00';
+            }
+            elseif ($dateTime == null)
+            {
+                return null;
+            }
+            return substr($dateTime, 0, 10);
         }
 
         /**

@@ -39,52 +39,28 @@
      * specifically for the 'contact' relation. This is utilized by the meeting model.
      *
      */
-    class MultipleContactsForMeetingElement extends Element implements DerivedElementInterface
+    class MultipleContactsForMeetingElement extends MultiSelectRelatedModelsAutoCompleteElement
     {
-        protected function renderControlNonEditable()
+        protected $modelDerivationPathToItemFromContact = null;
+
+        protected function getFormName()
         {
-            $content  = null;
-            $contacts = $this->getExistingContactRelationsIdsAndLabels();
-            foreach ($contacts as $contactData)
-            {
-                if ($content != null)
-                {
-                    $content .= ', ';
-                }
-                $content .= $contactData['name'];
-            }
-            return $content;
+            return 'ActivityItemForm';
         }
 
-        protected function renderControlEditable()
+        protected function getUnqualifiedNameForIdField()
+        {
+            return '[Contact][ids]';
+        }
+
+        protected function getUnqualifiedIdForIdField()
+        {
+            return '_Contact_ids';
+        }
+
+        protected function assertModelType()
         {
             assert('$this->model instanceof Activity');
-            $cClipWidget = new CClipWidget();
-            $cClipWidget->beginClip("ModelElement");
-            $cClipWidget->widget('application.core.widgets.MultiSelectAutoComplete', array(
-                'name'        => $this->getNameForIdField(),
-                'id'          => $this->getIdForIdField(),
-                'jsonEncodedIdsAndLabels'   => CJSON::encode($this->getExistingContactRelationsIdsAndLabels()),
-                'sourceUrl'   => Yii::app()->createUrl('contacts/variableContactState/autoCompleteAllContactsForMultiSelectAutoComplete'),
-                'htmlOptions' => array(
-                    'disabled' => $this->getDisabledValue(),
-                    ),
-                'hintText' => Zurmo::t('MeetingsModule', 'Type a ContactsModuleSingularLowerCaseLabel ' .
-                                                'or LeadsModuleSingularLowerCaseLabel: name or email address',
-                                LabelUtil::getTranslationParamsForAllModules())
-            ));
-            $cClipWidget->endClip();
-            $content = $cClipWidget->getController()->clips['ModelElement'];
-            return $content;
-        }
-
-        protected function renderError()
-        {
-        }
-
-        protected function renderLabel()
-        {
-            return $this->resolveNonActiveFormFormattedLabel($this->getFormattedAttributeLabel());
         }
 
         protected function getFormattedAttributeLabel()
@@ -92,53 +68,50 @@
             return Yii::app()->format->text(Zurmo::t('MeetingsModule', 'Attendees'));
         }
 
-         public static function getDisplayName()
+        public static function getDisplayName()
         {
             return Zurmo::t('MeetingsModule', 'Related ContactsModulePluralLabel and LeadsModulePluralLabel',
-                       LabelUtil::getTranslationParamsForAllModules());
+                LabelUtil::getTranslationParamsForAllModules());
         }
 
-        /**
-         * Get the attributeNames of attributes used in
-         * the derived element. For this element, there are no attributes from the model.
-         * @return array - empty
-         */
-        public static function getModelAttributeNames()
+        protected function getWidgetSourceUrl()
         {
-            return array();
+            return  Yii::app()->createUrl('contacts/variableContactState/autoCompleteAllContactsForMultiSelectAutoComplete');
         }
 
-        protected function getNameForIdField()
+        protected function getWidgetHintText()
         {
-                return 'ActivityItemForm[Contact][ids]';
+            return Zurmo::t('MeetingsModule', 'Type a ContactsModuleSingularLowerCaseLabel ' .
+                                                'or LeadsModuleSingularLowerCaseLabel: name or email address',
+                                            LabelUtil::getTranslationParamsForAllModules());
         }
 
-        protected function getIdForIdField()
+        protected function getRelationName()
         {
-            return 'ActivityItemForm_Contact_ids';
+            return 'activityItems';
         }
 
-        protected function getExistingContactRelationsIdsAndLabels()
+        protected function resolveIdAndNameByModel(RedBeanModel $model)
         {
-            $existingContacts = array();
-            $modelDerivationPathToItem = RuntimeUtil::getModelDerivationPathToItem('Contact');
-            foreach ($this->model->activityItems as $item)
+            $existingContact = null;
+            if (!isset($this->modelDerivationPathToItemFromContact))
             {
-                try
+                $this->modelDerivationPathToItemFromContact = RuntimeUtil::getModelDerivationPathToItem('Contact');
+            }
+            try
+            {
+                $contact = $model->castDown(array($this->modelDerivationPathToItemFromContact));
+                if (get_class($contact) == 'Contact')
                 {
-                    $contact = $item->castDown(array($modelDerivationPathToItem));
-                    if (get_class($contact) == 'Contact')
-                    {
-                        $existingContacts[] = array('id' => $contact->id,
-                                                    'name' => self::renderHtmlContentLabelFromContactAndKeyword($contact, null));
-                    }
-                }
-                catch (NotFoundException $e)
-                {
-                    //do nothing
+                    $existingContact = array('id' => $contact->id,
+                                            'name' => self::renderHtmlContentLabelFromContactAndKeyword($contact, null));
                 }
             }
-            return $existingContacts;
+            catch (NotFoundException $e)
+            {
+                //do nothing
+            }
+            return $existingContact;
         }
 
         /**
@@ -152,22 +125,28 @@
         {
             assert('$contact instanceof Contact && $contact->id > 0');
             assert('$keyword == null || is_string($keyword)');
-
-            if (substr($contact->secondaryEmail->emailAddress, 0, strlen($keyword)) === $keyword)
+            try
             {
-                $emailAddressToUse = $contact->secondaryEmail->emailAddress;
+                if (substr($contact->secondaryEmail->emailAddress, 0, strlen($keyword)) === $keyword)
+                {
+                    $emailAddressToUse = $contact->secondaryEmail->emailAddress;
+                }
+                else
+                {
+                    $emailAddressToUse = $contact->primaryEmail->emailAddress;
+                }
+                if ($emailAddressToUse != null)
+                {
+                    return strval($contact) . '&#160&#160<b>' . strval($emailAddressToUse) . '</b>';
+                }
+                else
+                {
+                    return strval($contact);
+                }
             }
-            else
+            catch (AccessDeniedSecurityException $exception)
             {
-                $emailAddressToUse = $contact->primaryEmail->emailAddress;
-            }
-            if ($emailAddressToUse != null)
-            {
-                return strval($contact) . '&#160&#160<b>' . strval($emailAddressToUse) . '</b>';
-            }
-            else
-            {
-                return strval($contact);
+                return Zurmo::t('Core', 'Restricted');
             }
         }
     }

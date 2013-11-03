@@ -85,12 +85,12 @@
         public function processWorkflowBeforeSave(CEvent $event)
         {
             $model                   = $event->sender;
-            if ($model->getScenario() != 'autoBuildDatabase' && $model->shouldProcessWorkflowOnSave())
+            if ($model->shouldProcessWorkflowOnSave())
             {
                 try
                 {
                     $triggeredByUser                = Yii::app()->user->userModel;
-                    Yii::app()->user->userModel     = BaseActionControlUserConfigUtil::getUserToRunAs();
+                    Yii::app()->user->userModel     = BaseControlUserConfigUtil::getUserToRunAs();
                     $model->setDoNotProcessWorkflowOnSave();
                     SavedWorkflowsUtil::resolveBeforeSaveByModel($model, $triggeredByUser);
                     $model->setProcessWorkflowOnSave();
@@ -110,13 +110,13 @@
         public function processWorkflowAfterSave(CEvent $event)
         {
             $model                   = $event->sender;
-            if ($model->getScenario() != 'autoBuildDatabase' && $this->depth < 11 && $model->shouldProcessWorkflowOnSave())
+            if ($this->depth < 11 && $model->shouldProcessWorkflowOnSave())
             {
                 try
                 {
                     $this->depth                = $this->depth + 1;
                     $triggeredByUser            = Yii::app()->user->userModel;
-                    Yii::app()->user->userModel = BaseActionControlUserConfigUtil::getUserToRunAs();
+                    Yii::app()->user->userModel = BaseControlUserConfigUtil::getUserToRunAs();
                     $model->setDoNotProcessWorkflowOnSave();
                     SavedWorkflowsUtil::resolveAfterSaveByModel($model, $triggeredByUser);
                     $model->setProcessWorkflowOnSave();

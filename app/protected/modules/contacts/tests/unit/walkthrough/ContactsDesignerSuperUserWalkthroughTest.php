@@ -359,7 +359,7 @@
             $extraPostData = array( 'startingStateOrder'  => '2',
                                     'isAudited'           => '1',
                                     'isRequired'          => '1',
-                                    'contactStatesData' => array('NA', ' NB', 'NC'));
+                                    'contactStatesData' => array('', ' NB', 'NC'));
             $this->setPostArray(array(   'ajax'                 => 'edit-form',
                                         'ContactStateAttributeForm' => array_merge(array(
                                             'attributeLabels' => $this->createAttributeLabelGoodValidationPostData('state'),
@@ -381,9 +381,9 @@
             $superUserId = $super->id;
 
             //Set the date and datetime variable values here.
-            $date           = Yii::app()->dateFormatter->format(DateTimeUtil::getLocaleDateFormat(), time());
+            $date           = Yii::app()->dateFormatter->format(DateTimeUtil::getLocaleDateFormatForInput(), time());
             $dateAssert     = date('Y-m-d');
-            $datetime       = Yii::app()->dateFormatter->format(DateTimeUtil::getLocaleDateTimeFormat(), time());
+            $datetime       = Yii::app()->dateFormatter->format(DateTimeUtil::getLocaleDateTimeFormatForInput(), time());
             $datetimeAssert = date('Y-m-d H:i:')."00";
             $baseCurrency   = Currency::getByCode(Yii::app()->currencyHelper->getBaseCode());
 
@@ -587,9 +587,9 @@
             $super          = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
 
             //Set the date and datetime variable values here.
-            $date           = Yii::app()->dateFormatter->format(DateTimeUtil::getLocaleDateFormat(), time());
+            $date           = Yii::app()->dateFormatter->format(DateTimeUtil::getLocaleDateFormatForInput(), time());
             $dateAssert     = date('Y-m-d');
-            $datetime       = Yii::app()->dateFormatter->format(DateTimeUtil::getLocaleDateTimeFormat(), time());
+            $datetime       = Yii::app()->dateFormatter->format(DateTimeUtil::getLocaleDateTimeFormatForInput(), time());
             $datetimeAssert = date('Y-m-d H:i:')."00";
             $baseCurrency   = Currency::getByCode(Yii::app()->currencyHelper->getBaseCode());
             $explicitReadWriteModelPermission = ExplicitReadWriteModelPermissionsUtil::MIXED_TYPE_EVERYONE_GROUP;
@@ -736,9 +736,9 @@
             $super          = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
 
             //Set the date and datetime variable values here.
-            $date           = Yii::app()->dateFormatter->format(DateTimeUtil::getLocaleDateFormat(), time());
+            $date           = Yii::app()->dateFormatter->format(DateTimeUtil::getLocaleDateFormatForInput(), time());
             $dateAssert     = date('Y-m-d');
-            $datetime       = Yii::app()->dateFormatter->format(DateTimeUtil::getLocaleDateTimeFormat(), time());
+            $datetime       = Yii::app()->dateFormatter->format(DateTimeUtil::getLocaleDateTimeFormatForInput(), time());
             $datetimeAssert = date('Y-m-d H:i:')."00";
             $baseCurrency   = Currency::getByCode(Yii::app()->currencyHelper->getBaseCode());
             $explicitReadWriteModelPermission = ExplicitReadWriteModelPermissionsUtil::MIXED_TYPE_EVERYONE_GROUP;
@@ -951,7 +951,7 @@
             $content = $this->runControllerWithNoExceptionsAndGetContent('contacts/default');
 
             //Assert that the edit contact does not exits after the search.
-            $this->assertTrue(strpos($content, "No results found.") > 0);
+            $this->assertTrue(strpos($content, "No results found") > 0);
             $this->assertFalse(strpos($content, "26378 South Arlington Ave") > 0);
         }
 

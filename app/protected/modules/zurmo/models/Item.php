@@ -146,6 +146,11 @@
             return $this->_processWorkflowOnSave;
         }
 
+        /**
+         * @param string $attributeName
+         * @param string $value
+         * @return An
+         */
         protected static function getByNameOrEquivalent($attributeName, $value)
         {
             assert('is_string($attributeName)');
@@ -161,30 +166,30 @@
          */
         protected function beforeSave()
         {
-             $this->isNewModel = $this->id < 0;
-             if (parent::beforeSave())
-             {
-                if ($this->unrestrictedGet('id') < 0)
+            $this->isNewModel = $this->id < 0;
+            if ($this->unrestrictedGet('id') < 0)
+            {
+                if ($this->getScenario() != 'importModel' ||
+                    ($this->getScenario() == 'importModel' && $this->createdByUser->id  < 0))
                 {
-                    if ($this->getScenario() != 'importModel' ||
-                      ($this->getScenario() == 'importModel' && $this->createdByUser->id  < 0))
+                    if (Yii::app()->user->userModel != null && Yii::app()->user->userModel->id > 0)
                     {
-                        if (Yii::app()->user->userModel != null && Yii::app()->user->userModel->id > 0)
-                        {
-                            $this->unrestrictedSet('createdByUser', Yii::app()->user->userModel);
-                        }
+                        $this->unrestrictedSet('createdByUser', Yii::app()->user->userModel);
                     }
                 }
-                if($this->isModified())
+            }
+            if (parent::beforeSave())
+            {
+                if ($this->isModified())
                 {
                     $this->onModified();
                 }
                 return true;
-             }
-             else
-             {
-                 return false;
-             }
+            }
+            else
+            {
+                return false;
+            }
         }
 
         protected function afterSave()
@@ -226,10 +231,10 @@
                     'modifiedDateTime',
                 ),
                 'relations' => array(
-                    'createdByUser'  => array(RedBeanModel::HAS_ONE,  'User', RedBeanModel::NOT_OWNED,
-                                     RedBeanModel::LINK_TYPE_SPECIFIC, 'createdByUser'),
-                    'modifiedByUser' => array(RedBeanModel::HAS_ONE,  'User', RedBeanModel::NOT_OWNED,
-                                     RedBeanModel::LINK_TYPE_SPECIFIC, 'modifiedByUser'),
+                    'createdByUser'  => array(static::HAS_ONE,  'User', static::NOT_OWNED,
+                                     static::LINK_TYPE_SPECIFIC, 'createdByUser'),
+                    'modifiedByUser' => array(static::HAS_ONE,  'User', static::NOT_OWNED,
+                                     static::LINK_TYPE_SPECIFIC, 'modifiedByUser'),
                 ),
                 'rules' => array(
                     array('createdDateTime',  'required'),

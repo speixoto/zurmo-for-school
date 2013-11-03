@@ -36,6 +36,9 @@
 
     abstract class OpenTasksRelatedListView extends SecuredRelatedListView
     {
+        /**
+         * @return array
+         */
         public static function getDefaultMetadata()
         {
             $metadata = array(
@@ -45,15 +48,34 @@
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array(  'type'            => 'CreateFromRelatedListLink',
+                            array(  'type'            => 'CreateFromRelatedModalLink',
+                                    'portletId'       => 'eval:$this->params["portletId"]',
                                     'routeModuleId'   => 'eval:$this->moduleId',
-                                    'routeParameters' => 'eval:$this->getCreateLinkRouteParameters()'),
+                                    'routeParameters' => 'eval:$this->getCreateLinkRouteParameters()',
+                                    'ajaxOptions'     => 'eval:TasksUtil::resolveAjaxOptionsForModalView("Create")',
+                                    'uniqueLayoutId'  => 'eval:$this->uniqueLayoutId',
+                                    'modalContainerId'=> 'eval:TasksUtil::getModalContainerId()'
+                                 ),
                         ),
                     ),
                     'rowMenu' => array(
                         'elements' => array(
-                            array('type' => 'EditLink'),
-                            array('type' => 'CopyLink'),
+                            array(  'type'            => 'EditModalLink',
+                                    'portletId'       => 'eval:$this->params["portletId"]',
+                                    'routeModuleId'   => 'eval:$this->moduleId',
+                                    'routeParameters' => 'eval:$this->getCreateLinkRouteParameters()',
+                                    'ajaxOptions'     => 'eval:TasksUtil::resolveAjaxOptionsForModalView("Edit")',
+                                    'uniqueLayoutId'  => 'eval:$this->uniqueLayoutId',
+                                    'modalContainerId'=> 'eval:TasksUtil::getModalContainerId()'
+                                 ),
+                            array(  'type'            => 'CopyModalLink',
+                                    'portletId'       => 'eval:$this->params["portletId"]',
+                                    'routeModuleId'   => 'eval:$this->moduleId',
+                                    'routeParameters' => 'eval:$this->getCreateLinkRouteParameters()',
+                                    'ajaxOptions'     => 'eval:TasksUtil::resolveAjaxOptionsForModalView("Copy")',
+                                    'uniqueLayoutId'  => 'eval:$this->uniqueLayoutId',
+                                    'modalContainerId'=> 'eval:TasksUtil::getModalContainerId()'
+                                 ),
                             array('type' => 'RelatedDeleteLink'),
                         ),
                     ),
@@ -93,6 +115,9 @@
             return $metadata;
         }
 
+        /**
+         * @return array
+         */
         protected function makeSearchAttributeData()
         {
             $searchAttributeData = array();
@@ -104,23 +129,62 @@
                     'value'                => (int)$this->params['relationModel']->getClassId('Item'),
                 ),
                 2 => array(
-                    'attributeName'        => 'completed',
+                    'attributeName'        => 'status',
                     'operatorType'         => 'doesNotEqual',
-                    'value'                => (bool)1
-                ),
-                3 => array(
-                    'attributeName'        => 'completed',
-                    'operatorType'         => 'isNull',
-                    'value'                => null,
+                    'value'                => Task::STATUS_COMPLETED
                 )
             );
-            $searchAttributeData['structure'] = '(1 and (2 OR 3))';
+            $searchAttributeData['structure'] = '(1 and 2)';
             return $searchAttributeData;
         }
 
+        /**
+         * @return string
+         */
         public static function getModuleClassName()
         {
             return 'TasksModule';
+        }
+
+        /**
+         * Override to handle security/access resolution on links.
+         */
+        public function getLinkString($attributeString, $attribute)
+        {
+            return array($this, 'resolveLinkString');
+        }
+
+        /**
+         * Resolves the link string for task detail modal view
+         * @param array $data
+         * @param int $row
+         * @return string
+         */
+        public function resolveLinkString($data, $row)
+        {
+            $content = TasksUtil::getModalDetailsLink($data, $this->controllerId,
+                                                      $this->moduleId,
+                                                      $this->getActionModuleClassName(), false);
+            return $content;
+        }
+
+        /**
+         * Override to pass the sourceId
+         * @return type
+         */
+        protected function getCreateLinkRouteParameters()
+        {
+            return array_merge( array('sourceId' => $this->getGridViewId()),
+                                parent::getCreateLinkRouteParameters());
+        }
+
+        /**
+         * Register the additional script for task detail modal
+         */
+        protected function renderScripts()
+        {
+            parent::renderScripts();
+            TasksUtil::registerTaskModalDetailsScript($this->getGridViewId());
         }
     }
 ?>

@@ -45,12 +45,18 @@
             AccountTestHelper::createAccountByNameForOwner('anAccount', $super);
         }
 
+        public static function getDependentTestModelClassNames()
+        {
+            return array('TestManyManyRelationToItemModel');
+        }
+
         public function testCreateTaskWithZerosStampAndEditAgain()
         {
             Yii::app()->user->userModel = User::getByUsername('super');
             $task                       = new Task();
             $task->name                 = 'My Task';
             $task->owner                = Yii::app()->user->userModel;
+            $task->requestedByUser      = Yii::app()->user->userModel;
             $task->completedDateTime    = '0000-00-00 00:00:00';
             $saved = $task->save();
             $this->assertTrue($saved);
@@ -76,13 +82,16 @@
 
             $user                   = UserTestHelper::createBasicUser('Billy');
             $dueStamp               = DateTimeUtil::convertTimestampToDbFormatDateTime(time()  + 10000);
-            $completedStamp         = DateTimeUtil::convertTimestampToDbFormatDateTime(time() + 9000);
             $task                   = new Task();
             $task->name             = 'MyTask';
             $task->owner            = $user;
-            $task->dueDateTime       = $dueStamp;
-            $task->completedDateTime = $completedStamp;
+            $task->requestedByUser  = $user;
+            $task->dueDateTime      = $dueStamp;
+            $task->status           = Task::STATUS_COMPLETED;
             $task->description      = 'my test description';
+            $taskCheckListItem      = new TaskCheckListItem();
+            $taskCheckListItem->name = 'Test Check List Item';
+            $task->checkListItems->add($taskCheckListItem);
             $task->activityItems->add($accounts[0]);
             $this->assertTrue($task->save());
             $id = $task->id;
@@ -90,11 +99,13 @@
             $task = Task::getById($id);
             $this->assertEquals('MyTask',              $task->name);
             $this->assertEquals($dueStamp,             $task->dueDateTime);
-            $this->assertEquals($completedStamp,       $task->completedDateTime);
+            $this->assertNotNull($task->completedDateTime);
             $this->assertEquals('my test description', $task->description);
             $this->assertEquals($user,                 $task->owner);
+            $this->assertEquals($user,                 $task->requestedByUser);
             $this->assertEquals(1, $task->activityItems->count());
             $this->assertEquals($accounts[0], $task->activityItems->offsetGet(0));
+            $this->assertEquals($taskCheckListItem, $task->checkListItems->offsetGet(0));
             foreach ($task->activityItems as $existingItem)
             {
                 $castedDownModel = $existingItem->castDown(array('Account')); //this should not fail
@@ -219,42 +230,37 @@
 
         public function testManyToManyRelationInTheMiddleOfTheInheritanceHierarchy()
         {
-            if (!RedBeanDatabase::isFrozen())
-            {
-                // This test uses TestManyManyRelationToItemModel
-                // which is not created in freeze land.
-                Yii::app()->user->userModel = User::getByUsername('super');
-                $accounts = Account::getByName('anAccount');
+           Yii::app()->user->userModel = User::getByUsername('super');
+            $accounts = Account::getByName('anAccount');
 
-                $possibleDerivationPaths = array(
-                                               array('SecurableItem', 'OwnedSecurableItem', 'Account'),
-                                               array('SecurableItem', 'OwnedSecurableItem', 'Person', 'Contact'),
-                                               array('SecurableItem', 'OwnedSecurableItem', 'Opportunity'),
-                                           );
+            $possibleDerivationPaths = array(
+                                           array('SecurableItem', 'OwnedSecurableItem', 'Account'),
+                                           array('SecurableItem', 'OwnedSecurableItem', 'Person', 'Contact'),
+                                           array('SecurableItem', 'OwnedSecurableItem', 'Opportunity'),
+                                       );
 
-                $model = new TestManyManyRelationToItemModel();
-                $model->items->add($accounts[0]);
-                $this->assertTrue($model->save());
+            $model = new TestManyManyRelationToItemModel();
+            $model->items->add($accounts[0]);
+            $this->assertTrue($model->save());
 
-                $item = Item::getById($model->items[0]->getClassId('Item'));
-                $this->assertTrue ($item instanceof Item);
-                $this->assertFalse($item instanceof Account);
-                $this->assertTrue ($item->isSame($accounts[0]));
-                $account2 = $item->castDown($possibleDerivationPaths);
-                $this->assertTrue ($account2->isSame($accounts[0]));
+            $item = Item::getById($model->items[0]->getClassId('Item'));
+            $this->assertTrue ($item instanceof Item);
+            $this->assertFalse($item instanceof Account);
+            $this->assertTrue ($item->isSame($accounts[0]));
+            $account2 = $item->castDown($possibleDerivationPaths);
+            $this->assertTrue ($account2->isSame($accounts[0]));
 
-                $id = $model->id;
-                unset($model);
-                RedBeanModel::forgetAll();
+            $id = $model->id;
+            unset($model);
+            RedBeanModel::forgetAll();
 
-                $model = TestManyManyRelationToItemModel::getById($id);
-                $this->assertEquals(1, $model->items->count());
-                $this->assertTrue ($model->items[0] instanceof Item);
-                $this->assertFalse($model->items[0] instanceof Account);
-                $this->assertTrue ($model->items[0]->isSame($accounts[0]));
-                $account3 = $model->items[0]->castDown($possibleDerivationPaths);
-                $this->assertTrue ($account3->isSame($accounts[0]));
-            }
+            $model = TestManyManyRelationToItemModel::getById($id);
+            $this->assertEquals(1, $model->items->count());
+            $this->assertTrue ($model->items[0] instanceof Item);
+            $this->assertFalse($model->items[0] instanceof Account);
+            $this->assertTrue ($model->items[0]->isSame($accounts[0]));
+            $account3 = $model->items[0]->castDown($possibleDerivationPaths);
+            $this->assertTrue ($account3->isSame($accounts[0]));
         }
 
         /**
@@ -271,38 +277,99 @@
             $nowStamp = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
             $this->assertTrue($task->save());
             $this->assertEquals(null, $task->completedDateTime);
-            $this->assertEquals($nowStamp, $task->latestDateTime);
 
             //Modify the task. Complete the task. The CompletedDateTime should show as now.
             $task = Task::getById($task->id);
-            $this->assertNull($task->completed);
-            $task->completed = true;
-            $this->assertEquals($nowStamp, $task->latestDateTime);
-            $completedStamp = DateTimeUtil::convertTimestampToDbFormatDateTime(time() + 1);
-            $this->assertNotEquals($nowStamp, $completedStamp);
-            sleep(1); //Some servers are too fast and the test will fail if we don't have this.
+            $this->assertFalse((bool)$task->completed);
+            $this->assertEquals(null, $task->completedDateTime);
+            $task->status = Task::STATUS_COMPLETED;
             $this->assertTrue($task->save());
-            $this->assertNotEquals($nowStamp, $task->completedDateTime);
-            $this->assertNotEquals($nowStamp, $task->latestDateTime);
-            $this->assertTrue($task->completedDateTime == $task->latestDateTime);
-            $existingStamp = $task->completedDateTime;
-
-            //Modify the task. CompletedDateTime and LatestDateTime should remain the same.
-            $newStamp = DateTimeUtil::convertTimestampToDbFormatDateTime(time() + 1);
-            $this->assertNotEquals($existingStamp, $newStamp);
-            $task = Task::getById($task->id);
-            $task->name = 'aNewName';
-            sleep(1); //Some servers are too fast and the test will fail if we don't have this.
-            $this->assertTrue($task->save());
-            $this->assertEquals($existingStamp, $task->completedDateTime);
-            $this->assertEquals($existingStamp, $task->latestDateTime);
+            $this->assertTrue((bool)$task->completed);
+            $this->assertNotNull($task->completedDateTime);
         }
 
         public function testGetModelClassNames()
         {
             $modelClassNames = TasksModule::getModelClassNames();
-            $this->assertEquals(1, count($modelClassNames));
+            $this->assertEquals(2, count($modelClassNames));
             $this->assertEquals('Task', $modelClassNames[0]);
+        }
+
+        public function testAddSubscriberToTask()
+        {
+            Yii::app()->user->userModel = User::getByUsername('super');
+            $user = User::getByUsername('billy');
+            $task = new Task();
+            $task->name = 'MyTest';
+            $task->owner = $user;
+            $nowStamp = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
+            $this->assertTrue($task->save());
+            $this->assertEquals($user, $task->owner);
+
+            //$this->assertEquals(0, count($task->notificationSubscribers));
+            $user = Yii::app()->user->userModel;
+            $notificationSubscriber = new NotificationSubscriber();
+            $notificationSubscriber->person = $user;
+            $notificationSubscriber->hasReadLatest = false;
+            $task->notificationSubscribers->add($notificationSubscriber);
+            $this->assertTrue($task->save());
+
+            $task = Task::getById($task->id);
+            $subscriber = $task->notificationSubscribers->offsetGet(0);
+            $modelDerivationPathToItem = RuntimeUtil::getModelDerivationPathToItem('User');
+            $subscribedUser = $subscriber->person->castDown(array($modelDerivationPathToItem));
+            $this->assertEquals($user, $subscribedUser);
+            //$this->assertEquals(1, count($task->notificationSubscribers));
+        }
+
+        public function testAddCheckListItemsToTask()
+        {
+            Yii::app()->user->userModel = User::getByUsername('super');
+
+            $task = new Task();
+            $task->name = 'MyTest1';
+            $nowStamp = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
+            $this->assertTrue($task->save());
+
+            $taskCheckListItem            = new TaskCheckListItem();
+            $taskCheckListItem->name      = 'Test Check List Item1';
+            $taskCheckListItem->completed = true;
+            $task->checkListItems->add($taskCheckListItem);
+
+            $taskCheckListItem2       = new TaskCheckListItem();
+            $taskCheckListItem2->name = 'Test Check List Item2';
+            $task->checkListItems->add($taskCheckListItem2);
+            $this->assertTrue($task->save());
+
+            $task = Task::getById($task->id);
+            $this->assertEquals(2, $task->checkListItems->count());
+            $fetchedCheckListItem = $task->checkListItems[0];
+            $this->assertEquals('Test Check List Item1', $fetchedCheckListItem->name);
+            $this->assertTrue((bool)$fetchedCheckListItem->completed);
+            $task->checkListItems->remove($taskCheckListItem2);
+            $this->assertTrue($task->save());
+            $task = Task::getById($task->id);
+            $this->assertEquals(1, $task->checkListItems->count());
+        }
+
+        public function testAddCommentsToTask()
+        {
+            Yii::app()->user->userModel = User::getByUsername('super');
+
+            $task = new Task();
+            $task->name = 'MyTest2';
+            $nowStamp = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
+            $this->assertTrue($task->save());
+
+            $comment                = new Comment();
+            $comment->description   = 'My Description';
+            $task->comments->add($comment);
+            $this->assertTrue($task->save());
+
+            $task = Task::getById($task->id);
+            $this->assertEquals(1, $task->comments->count());
+            $fetchedComment = $task->comments[0];
+            $this->assertEquals('My Description', $fetchedComment->description);
         }
     }
 ?>

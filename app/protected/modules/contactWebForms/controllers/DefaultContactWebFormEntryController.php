@@ -37,6 +37,7 @@
     /**
      * Default controller for ContactWebFormEntry actions
       */
+    Yii::import('application.modules.contactWebForms.controllers.DefaultController', true);
     class ContactWebFormsDefaultContactWebFormEntryController extends ZurmoBaseController
     {
         public static function getListBreadcrumbLinks()
@@ -57,8 +58,10 @@
                         'viewClassName'   => $viewClassName,
                     ),
                     array(
-                        ZurmoModuleController::ZERO_MODELS_CHECK_FILTER_PATH . ' + list, index',
+                        ContactWebFormsDefaultController::ZERO_MODELS_CHECK_FILTER_PATH . ' + list, index',
                         'controller' => $this,
+                        'activeActionElementType' => 'ContactWebFormEntriesListLink',
+                        'breadCrumbLinks'         => static::getListBreadcrumbLinks(),
                     ),
                 )
             );
@@ -73,12 +76,12 @@
         {
             $pageSize                       = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                                               'listPageSize', get_class($this->getModule()));
-            $activeActionElementType        = 'ContactWebFormEntriesListLink';
+            $activeActionElementType        = 'ContactWebFormEntriesListMenu';
             $model                          = new ContactWebFormEntry(false);
             $searchForm                     = new ContactWebFormEntrySearchForm($model);
             $dataProvider                   = $this->resolveSearchDataProvider($searchForm, $pageSize, null,
                                               'ContactWebFormEntrySearchView');
-            $breadcrumbLinks                = static::getListBreadcrumbLinks();
+            $breadCrumbLinks                = static::getListBreadcrumbLinks();
             if (isset($_GET['ajax']) && $_GET['ajax'] == 'list-view')
             {
                 $mixedView = $this->makeListView(
@@ -95,7 +98,7 @@
                              $activeActionElementType);
                 $view = new ContactWebFormsPageView(ZurmoDefaultAdminViewUtil::
                                               makeViewWithBreadcrumbsForCurrentUser(
-                                              $this, $mixedView, $breadcrumbLinks, 'ContactWebFormsBreadCrumbView'));
+                                              $this, $mixedView, $breadCrumbLinks, 'ContactWebFormsBreadCrumbView'));
             }
             echo $view->render();
         }
@@ -131,14 +134,11 @@
         }
 
         protected function makeMassDeleteView($model, $activeAttributes, $selectedRecordCount, $title,
-                                              $massDeleteViewClassName = 'MassDeleteView')
+                                              $massDeleteViewClassName = 'MassDeleteView',
+                                              $useModuleClassNameForItemLabel = true)
         {
-            $moduleName          = $this->getModule()->getPluralCamelCasedName();
-            $moduleClassName     = $moduleName . 'Module';
-            $title               = Zurmo::t('Core', 'Mass Delete') . ': ' . $title;
-            $view                = new $massDeleteViewClassName($this->getId(), $this->getModule()->getId(),
-                                   $model, $activeAttributes, $selectedRecordCount, $title, null, $moduleClassName, false);
-            return $view;
+            return parent::makeMassDeleteView($model, $activeAttributes, $selectedRecordCount, $title,
+                                              $massDeleteViewClassName = 'MassDeleteView', false);
         }
     }
 ?>

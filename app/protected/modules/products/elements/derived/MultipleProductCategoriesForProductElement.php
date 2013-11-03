@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -20,8 +20,18 @@
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU Affero General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -29,65 +39,11 @@
      * specifically for the 'productCategories' relation. This is utilized by the Product Template model.
      *
      */
-    class MultipleProductCategoriesForProductElement extends Element implements DerivedElementInterface
+    class MultipleProductCategoriesForProductElement extends  MultipleProductCategoriesForProductTemplateElement
     {
-        /**
-         * @return string
-         */
-        protected function renderControlNonEditable()
+        protected function assertModelType()
         {
-            $content  = null;
-            $productCategories = $this->getExistingProductCategoriesRelationsIdsAndLabels();
-            foreach ($productCategories as $productCategoryData)
-            {
-                if ($content != null)
-                {
-                    $content .= ', ';
-                }
-                $content .= $productCategoryData['name'];
-            }
-            return $content;
-        }
-
-        /**
-         * @return string
-         */
-        protected function renderControlEditable()
-        {
-            assert('$this->model instanceof Product || $this->model instanceof Product');
-            $cClipWidget = new CClipWidget();
-            $cClipWidget->beginClip("ModelElement");
-            $cClipWidget->widget('application.core.widgets.MultiSelectAutoComplete', array(
-                                        'name'                      => $this->getNameForIdField(),
-                                        'id'                        => $this->getIdForIdField(),
-                                        'jsonEncodedIdsAndLabels'   => CJSON::encode($this->getExistingProductCategoriesRelationsIdsAndLabels()),
-                                        'sourceUrl'                 => Yii::app()->createUrl('productTemplates/default/autoCompleteAllProductCategoriesForMultiSelectAutoComplete'),
-                                        'htmlOptions'               => array('disabled' => $this->getDisabledValue()),
-                                        'hintText'                  => Zurmo::t('ProductTemplatesModule', 'Type a category')
-            ));
-            $cClipWidget->endClip();
-            $content = $cClipWidget->getController()->clips['ModelElement'];
-            return $content;
-        }
-
-        protected function renderError()
-        {
-        }
-
-        /**
-         * @return string
-         */
-        protected function renderLabel()
-        {
-            return $this->resolveNonActiveFormFormattedLabel($this->getFormattedAttributeLabel());
-        }
-
-        /**
-         * @return string
-         */
-        protected function getFormattedAttributeLabel()
-        {
-            return Yii::app()->format->text(Zurmo::t('ProductsModule', 'Categories'));
+            assert('$this->model instanceof Product');
         }
 
         /**
@@ -96,65 +52,28 @@
         public static function getDisplayName()
         {
             return Zurmo::t('ProductsModule', 'Related ProductsModulePluralLabel',
-                       LabelUtil::getTranslationParamsForAllModules());
+                                                LabelUtil::getTranslationParamsForAllModules());
         }
 
-        /**
-         * Get the attributeNames of attributes used in
-         * the derived element. For this element, there are no attributes from the model.
-         * @return array - empty
-         */
-        public static function getModelAttributeNames()
+        protected function getFormName()
         {
-            return array();
+            return 'ProductCategoriesForm';
         }
 
         /**
          * @return string
          */
-        protected function getNameForIdField()
+        protected function getUnqualifiedNameForIdField()
         {
-            return 'ProductCategoriesForm[categoryIds]';
+            return '[categoryIds]';
         }
 
         /**
          * @return string
          */
-        protected function getIdForIdField()
+        protected function getUnqualifiedIdForIdField()
         {
-            return 'ProductCategoriesForm_ProductCategory_ids';
-        }
-
-        /**
-         * @return string
-         */
-        protected function getExistingProductCategoriesRelationsIdsAndLabels()
-        {
-            $existingProductCategories = array();
-            for ($i = 0; $i < count($this->model->productCategories); $i++)
-            {
-                $existingProductCategories[] = array('id' => $this->model->productCategories[$i]->id,
-                                                     'name' => $this->model->productCategories[$i]->name);
-            }
-            return $existingProductCategories;
-        }
-
-        /**
-         * @return string
-         */
-        public static function renderHtmlContentLabelFromProductCategoryAndKeyword($productCategory, $keyword)
-        {
-            assert('$productCategory instanceof ProductCategory && $productCategory->id > 0');
-            assert('$keyword == null || is_string($keyword)');
-
-            if ($productCategory->name != null)
-            {
-                return strval($productCategory) . '&#160&#160<b>'. '</b>';
-            }
-            else
-            {
-                return strval($productCategory);
-            }
+            return '_ProductCategory_ids';
         }
     }
 ?>

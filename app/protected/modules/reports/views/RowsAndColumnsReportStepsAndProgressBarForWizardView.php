@@ -42,10 +42,10 @@
         protected function getSpanLabels()
         {
             return array(Zurmo::t('Core', 'Module'),
-                         Zurmo::t('ReportsModule', 'Filters'),
-                         Zurmo::t('ReportsModule', 'Columns'),
-                         Zurmo::t('ReportsModule', 'Ordering'),
-                         Zurmo::t('ReportsModule', 'General'));
+                         Zurmo::t('Core', 'Filters'),
+                         Zurmo::t('Core', 'Columns'),
+                         Zurmo::t('ZurmoModule',   'Ordering'),
+                         Zurmo::t('Core', 'General'));
         }
     }
 ?>

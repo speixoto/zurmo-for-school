@@ -58,7 +58,7 @@
 </tr>
 <tr>
   <td>waitForText</td>
-  <td>//div[@id='LeadsListView']/div/table/tbody/tr/td[2]/a</td>
+  <td>//div[@id='list-view']/div[2]/table/tbody/tr[1]/td[3]/a</td>
   <td>Silly Sally ${randomSuffix}</td>
 </tr>
 <tr>
@@ -87,8 +87,8 @@
   <td></td>
 </tr>
 <tr>
-  <td>clickAndWait</td>
-  <td>//div[@id='LeadDetailsAndRelationsView']/div[2]/div/ul[2]/li[2]/div/div/div/a</td>
+  <td>click</td>
+  <td>//div[@id='LeadDetailsAndRelationsView']/div[2]/div/ul[2]/li[2]/div[1]/div/div/a/span</td>
   <td></td>
 </tr>
 <tr>
@@ -110,6 +110,16 @@
   <td>type</td>
   <td>Task_name</td>
   <td>Task kick-off lead ${randomSuffix}</td>
+</tr>
+<tr>
+  <td>click</td>
+  <td>link=More Details</td>
+  <td></td>
+</tr>
+<tr>
+	<td>waitForCondition</td>
+	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+	<td>30000</td>
 </tr>
 <tr>
   <td>click</td>
@@ -188,7 +198,7 @@
 </tr>
 <tr>
   <td>waitForText</td>
-  <td>//div[@id='list-viewmodal']/table/tbody/tr/td[1]/a</td>
+  <td>//div[@id='list-viewmodal']/div[2]/table/tbody/tr/td[1]/a</td>
   <td>my account ${randomSuffix}</td>
 </tr>
 <tr>
@@ -198,7 +208,7 @@
 </tr>
 <tr>
   <td>click</td>
-  <td>//div[@id='list-viewmodal']/table/tbody/tr/td[1]/a</td>
+  <td>//div[@id='list-viewmodal']/div[2]/table/tbody/tr/td[1]/a</td>
   <td></td>
 </tr>
 <tr>
@@ -243,7 +253,7 @@
 </tr>
 <tr>
   <td>waitForText</td>
-  <td>//div[@id='list-viewmodal']/table/tbody/tr/td[1]/a</td>
+  <td>//div[@id='list-viewmodal']/div[2]/table/tbody/tr/td[1]/a</td>
   <td>Test Opportunity ${randomSuffix}</td>
 </tr>
 <tr>
@@ -253,7 +263,7 @@
 </tr>
 <tr>
   <td>click</td>
-  <td>//div[@id='list-viewmodal']/table/tbody/tr/td[1]/a</td>
+  <td>//div[@id='list-viewmodal']/div[2]/table/tbody/tr/td[1]/a</td>
   <td></td>
 </tr>
 <tr>
@@ -303,7 +313,7 @@
 </tr>
 <tr>
     <td>waitForText</td>
-    <td>//div[@id='UsersModalListView']/div/table/tbody/tr/td/a</td>
+    <td>//div[@id='list-viewmodal']/div[2]/table/tbody/tr[1]/td/a</td>
     <td>Sam Smith</td>
 </tr>
 <tr>
@@ -327,9 +337,14 @@
 	<td>30000</td>
 </tr>
 <tr>
-  <td>clickAndWait</td>
-  <td>save</td>
+  <td>click</td>
+  <td>//div[@id='TaskModalEditView']/div/div/form/div[3]/div/div/a[1]/span[3]</td>
   <td></td>
+</tr>
+<tr>
+    <td>waitForPageToLoad</td>
+    <td></td>
+    <td></td>
 </tr>
 <tr>
 	<td>waitForCondition</td>
@@ -337,8 +352,13 @@
 	<td>30000</td>
 </tr>
 <tr>
-  <td>clickAndWait</td>
-  <td>link=Task kick-off lead ${randomSuffix}</td>
+	<td>click</td>
+	<td>css=span.ui-icon.ui-icon-closethick</td>
+	<td></td>
+</tr>
+<tr>
+  <td>click</td>
+  <td>link=Task kick-off lead ${randomSuffix}(Sam Smith)</td>
   <td></td>
 </tr>
 <tr>
@@ -377,8 +397,8 @@
   <td></td>
 </tr>
 <tr>
-  <td>clickAndWait</td>
-  <td>link=Edit</td>
+  <td>click</td>
+  <td>//div[@id='TaskModalDetailsView']/div[1]/div/ul/li/ul/li[1]/a/span</td>
   <td></td>
 </tr>
 <tr>
@@ -395,6 +415,11 @@
   <td>type</td>
   <td>Task_name</td>
   <td>Task kick-off new lead ${randomSuffix}</td>
+</tr>
+<tr>
+  <td>click</td>
+  <td>link=More Details</td>
+  <td></td>
 </tr>
 <tr>
   <td>click</td>
@@ -462,8 +487,8 @@
 	<td>30000</td>
 </tr>
 <tr>
-  <td>clickAndWait</td>
-  <td>save</td>
+  <td>click</td>
+  <td>//div[@id='TaskModalEditView']/div/div/form/div[3]/div/div/a[1]/span[3]</td>
   <td></td>
 </tr>
 <tr>
@@ -476,7 +501,7 @@
 	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
 	<td>30000</td>
 </tr>
-<tr>
+<!--tr>
   <td>waitForTextPresent</td>
   <td>Task kick-off new lead ${randomSuffix}</td>
   <td></td>
@@ -495,10 +520,10 @@
   <td>verifyTextPresent</td>
   <td>Owner</td>
   <td></td>
-</tr>
+</tr-->
 <tr>
-  <td>clickAndWait</td>
-  <td>link=Delete</td>
+  <td>click</td>
+  <td>//div[@id='TaskModalDetailsView']/div[1]/div/ul/li/ul/li[3]/a/span</td>
   <td></td>
 </tr>
 <tr>

@@ -89,6 +89,7 @@
             $searchAttributes          = $dataCollection->resolveSearchAttributesFromSourceData();
             $dataCollection->resolveAnyMixedAttributesScopeForSearchModelFromSourceData();
             $dataCollection->resolveSelectedListAttributesForSearchModelFromSourceData();
+            $dataCollection->resolveFilterByStarredFromSourceData();
             $dataCollection->resolveKanbanBoardOptionsForSearchModelFromSourceData();
             $sanitizedSearchAttributes = GetUtil::sanitizePostByDesignerTypeForSavingModel($searchModel,
                                                                                            $searchAttributes);
@@ -103,10 +104,15 @@
                                                                               $dataCollection);
             $this->resolveKanbanBoardMetadataBeforeMakingDataProvider($searchModel, $metadata);
             $this->resolveMetadataBeforeMakingDataProvider($metadata);
+            $dataProviderClassName = 'RedBeanModelDataProvider';
+            if ($searchModel->filterByStarred)
+            {
+                $dataProviderClassName = 'StarredModelDataProvider';
+            }
             return RedBeanModelDataProviderUtil::makeDataProvider(
                 $metadata,
                 $listModelClassName,
-                'RedBeanModelDataProvider',
+                $dataProviderClassName,
                 $sortAttribute,
                 $sortDescending,
                 $pageSize,
@@ -276,7 +282,8 @@
             $activeAttributes,
             $selectedRecordCount,
             $title,
-            $massDeleteViewClassName = 'MassDeleteView'
+            $massDeleteViewClassName = 'MassDeleteView',
+            $useModuleClassNameForItemLabel = true
         )
         {
             // TODO: @Shoaibi/@Jason: Low: Deprecated
@@ -284,10 +291,9 @@
             $moduleName            = $this->getModule()->getPluralCamelCasedName();
             $moduleClassName       = $moduleName . 'Module';
             $title                 = Zurmo::t('Core', 'Mass Delete') . ': ' . $title;
-            $selectedIds = GetUtil::getData();
-            //TODO This call is not correct, $selectedIds is not required in Mass Delete View contructor
             $view  = new $massDeleteViewClassName($this->getId(), $this->getModule()->getId(), $model, $activeAttributes,
-                                                      $selectedRecordCount, $title, null, $moduleClassName, $selectedIds);
+                                                  $selectedRecordCount, $title, null,
+                                                  $moduleClassName, $useModuleClassNameForItemLabel);
             return $view;
         }
 

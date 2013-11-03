@@ -57,7 +57,7 @@
 
         public static function getRecommendedRunFrequencyContent()
         {
-            return Zurmo::t('JobsManagerModule', 'Once per day.');
+            return Zurmo::t('Core', 'Once per day.');
         }
 
         /**
@@ -71,7 +71,7 @@
             $oneWeekAgoTimeStamp     = DateTimeUtil::convertTimestampToDbFormatDateTime(time() - 60 * 60 *24 * 7);
             $sql                     = 'DELETE from item, joblog using joblog inner join item on ' .
                                        'item.id = joblog.item_id where joblog.enddatetime <= "' . $oneWeekAgoTimeStamp . '"';
-            R::exec($sql);
+            ZurmoRedBean::exec($sql);
             return true;
         }
     }

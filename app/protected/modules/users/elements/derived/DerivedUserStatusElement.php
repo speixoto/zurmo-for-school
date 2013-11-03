@@ -84,7 +84,8 @@
 
         protected function renderError()
         {
-            return null;
+            return $this->form->error($this->model, 'isActive',
+                array('inputID' => $this->getEditableInputId('userStatus')));
         }
 
         protected function assertModelIsValid()
@@ -106,7 +107,7 @@
 
         protected function getFormattedAttributeLabel()
         {
-            return Yii::app()->format->text(Zurmo::t('UsersModule', 'Status'));
+            return Yii::app()->format->text(Zurmo::t('ZurmoModule', 'Status'));
         }
 
         /**
@@ -120,7 +121,7 @@
 
         public static function getDisplayName()
         {
-            return Zurmo::t('UsersModule', 'Status');
+            return Zurmo::t('ZurmoModule', 'Status');
         }
 
         protected function getUserModel()

@@ -68,6 +68,7 @@
                 $this->model->getAttributeLabel('id'),
                 'Text'
             );
+            $modelMetadata = $this->model->getMetadata();
             foreach ($this->model->attributeNames() as $attributeName)
             {
                 if (!$this->model->isRelation($attributeName) ||
@@ -81,6 +82,21 @@
                     {
                         $isAudited = false;
                     }
+
+                    $customFieldName = null;
+                    if ($this->model->isRelation($attributeName) &&
+                        $this->model->{$attributeName} instanceof BaseCustomField)
+                    {
+                        foreach ($modelMetadata as $modelClassName => $modelClassMetadata)
+                        {
+                            if (isset($modelMetadata[$modelClassName]['customFields']) &&
+                                isset($modelMetadata[$modelClassName]['customFields'][$attributeName]))
+                            {
+                                $customFieldName = $modelMetadata[$modelClassName]['customFields'][$attributeName];
+                            }
+                        }
+                    }
+
                     ModelAttributeCollectionUtil::populateCollection(
                         $attributes,
                         $attributeName,
@@ -88,7 +104,8 @@
                         ModelAttributeToDesignerTypeUtil::getDesignerType($this->model, $attributeName),
                         $this->model->isAttributeRequired($attributeName),
                         $this->model->isAttributeReadOnly($attributeName),
-                        $isAudited
+                        $isAudited,
+                        $customFieldName
                     );
                 }
             }
@@ -250,6 +267,9 @@
             }
         }
 
+        /**
+         * @param string $attributeName
+         */
         public function removeAttributeMetadata($attributeName)
         {
             assert('is_string($attributeName) && $attributeName != ""');
@@ -260,16 +280,13 @@
         public function resolveDatabaseSchemaForModel($modelClassName)
         {
             assert('is_string($modelClassName) && $modelClassName != ""');
-            if (RedBeanDatabase::isFrozen())
+            Yii::app()->gameHelper->muteScoringModelsOnSave();
+            $messageLogger = new MessageLogger();
+            RedBeanModelsToTablesAdapter::generateTablesFromModelClassNames(array($modelClassName), $messageLogger);
+            Yii::app()->gameHelper->unmuteScoringModelsOnSave();
+            if ($messageLogger->isErrorMessagePresent())
             {
-                Yii::app()->gameHelper->muteScoringModelsOnSave();
-                $messageLogger = new MessageLogger();
-                RedBeanDatabaseBuilderUtil::manageFrozenStateAndAutoBuildModels(array('User', $modelClassName), $messageLogger);
-                Yii::app()->gameHelper->unmuteScoringModelsOnSave();
-                if ($messageLogger->isErrorMessagePresent())
-                {
-                    throw new FailedDatabaseSchemaChangeException($messageLogger->printMessages(true, true));
-                }
+                throw new FailedDatabaseSchemaChangeException($messageLogger->printMessages(true, true));
             }
         }
 

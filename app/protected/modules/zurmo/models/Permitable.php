@@ -55,6 +55,11 @@
             return $this->isSame($permitable);
         }
 
+        /**
+         * @param string $moduleName
+         * @param string $rightName
+         * @return mixed
+         */
         public function getEffectiveRight($moduleName, $rightName)
         {
             assert('is_string($moduleName)');
@@ -64,6 +69,12 @@
             return $this->getActualRight($moduleName, $rightName) == Right::ALLOW ? Right::ALLOW : Right::DENY;
         }
 
+        /**
+         * @param string $moduleName
+         * @param string $rightName
+         * @return int
+         * @throws NotSupportedException
+         */
         public function getActualRight($moduleName, $rightName)
         {
             assert('is_string($moduleName)');
@@ -93,6 +104,11 @@
             }
         }
 
+        /**
+         * @param string $moduleName
+         * @param string $rightName
+         * @return int
+         */
         public function getExplicitActualRight($moduleName, $rightName)
         {
             assert('is_string($moduleName)');
@@ -139,6 +155,12 @@
             throw new NotSupportedException();
         }
 
+        /**
+         * @param string $moduleName
+         * @param string $rightName
+         * @return int
+         * @throws NotSupportedException
+         */
         public function getInheritedActualRight($moduleName, $rightName)
         {
             assert('is_string($moduleName)');
@@ -249,6 +271,11 @@
             }
         }
 
+        /**
+         * @param string $moduleName
+         * @param string $policyName
+         * @return mixed|null|string
+         */
         public function getEffectivePolicy($moduleName, $policyName)
         {
             assert('is_string($moduleName)');
@@ -267,6 +294,11 @@
             return $moduleName::getPolicyDefault($policyName);
         }
 
+        /**
+         * @param string $moduleName
+         * @param string $policyName
+         * @return mixed|null|string
+         */
         public function getActualPolicy($moduleName, $policyName)
         {
             assert('is_string($moduleName)');
@@ -292,6 +324,7 @@
                 $permitableName = 'Everyone';
                 try
                 {
+                    // not using $default to save cpu cycles, else default value would have to be computed every time.
                     return PoliciesCache::getEntry($permitableName . $moduleName . $policyName .  'ActualPolicy');
                 }
                 catch (NotFoundException $e)
@@ -306,6 +339,11 @@
             }
         }
 
+        /**
+         * @param string $moduleName
+         * @param string $policyName
+         * @return mixed|null|string
+         */
         public function getExplicitActualPolicy($moduleName, $policyName)
         {
             assert('is_string($moduleName)');
@@ -331,6 +369,7 @@
                 $permitableId = $this->getClassId('Permitable');
                 try
                 {
+                    // not using $default because computing default value would involve extra cpu cycles each time.
                     return PoliciesCache::getEntry($permitableId . $moduleName . $policyName .  'ExplicitActualPolicy');
                 }
                 catch (NotFoundException $e)
@@ -345,6 +384,11 @@
             }
         }
 
+        /**
+         * @param string $moduleName
+         * @param string $policyName
+         * @return mixed|null|string
+         */
         public function getInheritedActualPolicy($moduleName, $policyName)
         {
             assert('is_string($moduleName)');
@@ -359,6 +403,11 @@
             return Group::getByName(Group::EVERYONE_GROUP_NAME)->getExplicitActualPolicy($moduleName, $policyName);
         }
 
+        /**
+         * @param string $moduleName
+         * @param string $policyName
+         * @param $value
+         */
         public function setPolicy($moduleName, $policyName, $value)
         {
             assert('is_string($moduleName)');
@@ -390,6 +439,10 @@
             }
         }
 
+        /**
+         * @param string $moduleName
+         * @param string $policyName
+         */
         public function removePolicy($moduleName, $policyName)
         {
             assert('is_string($moduleName)');
@@ -422,8 +475,8 @@
             $metadata = parent::getDefaultMetadata();
             $metadata[__CLASS__] = array(
                 'relations' => array(
-                    'policies'    => array(RedBeanModel::HAS_MANY, 'Policy', RedBeanModel::OWNED),
-                    'rights'      => array(RedBeanModel::HAS_MANY, 'Right',  RedBeanModel::OWNED),
+                    'policies'    => array(static::HAS_MANY, 'Policy', static::OWNED),
+                    'rights'      => array(static::HAS_MANY, 'Right',  static::OWNED),
                 ),
                 'foreignRelations' => array(
                     'Permission',

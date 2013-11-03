@@ -109,7 +109,7 @@
             if ($isBeingCopied || $savedWorkflow->id < 0 ||
                 array_key_exists('moduleClassName', $savedWorkflow->originalAttributeValues))
             {
-                $maxOrder             = R::getCell($sql);
+                $maxOrder             = ZurmoRedBean::getCell($sql);
                 $savedWorkflow->order = (int)$maxOrder +  1;
             }
         }
@@ -182,7 +182,6 @@
          */
         public static function resolveProcessDateTimeByWorkflowAndModel(Workflow $workflow, RedBeanModel $model)
         {
-            $workflow->getTimeTrigger()->durationSeconds;
             $valueEvaluationType = $workflow->getTimeTrigger()->getValueEvaluationType();
             if ($valueEvaluationType == 'Date')
             {
@@ -194,7 +193,7 @@
             }
             else
             {
-                $timeStamp = time() + $workflow->getTimeTrigger()->durationSeconds;
+                $timeStamp =  + $workflow->getTimeTrigger()->resolveNewTimeStampForDuration(time());
             }
             return DateTimeUtil::convertTimestampToDbFormatDateTime($timeStamp);
         }
@@ -215,8 +214,8 @@
             }
             else
             {
-                return DateTimeUtil::convertDbFormatDateTimeToTimestamp(DateTimeUtil::resolveDateAsDateTime($date)) +
-                        $trigger->durationSeconds;
+                return $trigger->resolveNewTimeStampForDuration(
+                    DateTimeUtil::convertDbFormatDateTimeToTimestamp(DateTimeUtil::resolveDateAsDateTime($date)));
             }
         }
 
@@ -236,7 +235,7 @@
             }
             else
             {
-                return DateTimeUtil::convertDbFormatDateTimeToTimestamp($dateTime) + $trigger->durationSeconds;
+                return $trigger->resolveNewTimeStampForDuration(DateTimeUtil::convertDbFormatDateTimeToTimestamp($dateTime));
             }
         }
 

@@ -39,8 +39,6 @@
      */
     class DiagnosticCheckServicesView extends CheckServicesView
     {
-
-
         protected function renderContent()
         {
             $failedIndexId   = CheckServicesUtil::CHECK_FAILED;
@@ -53,7 +51,6 @@
             $content .= ZurmoHtml::tag('h1', array(), Zurmo::t('InstallModule', 'System Diagnostics'));
             $content .= '<div class="left-column full-width">';
             $content .= ZurmoHtml::tag('h3', array(), $this->renderIntroductionContent());
-
 
             if (count($this->checkResultsDisplayData[$failedIndexId]) > 0)
             {
@@ -77,7 +74,7 @@
                 $content .= $this->renderServiceGroupDisplayByServiceDataAndCheckResult(
                     ZurmoHtml::tag('h4', array(), Zurmo::t('InstallModule', 'Service Status Partially Known')),
                     $this->checkResultsDisplayData[$warningIndexId],
-                    '<span class="warning">' . Zurmo::t('InstallModule', 'WARNING') . '</span>');
+                    '<span class="warning">' . Zurmo::t('Core', 'WARNING') . '</span>');
             }
 
             if (count($this->checkResultsDisplayData[$passedIndexId]) > 0)
@@ -87,7 +84,6 @@
                     $this->checkResultsDisplayData[$passedIndexId],
                     '<span class="pass">' . Zurmo::t('InstallModule', 'PASS') . '</span>');
             }
-
 
             $content .= $this->renderActionBarContent();
             $content .= '</div>';

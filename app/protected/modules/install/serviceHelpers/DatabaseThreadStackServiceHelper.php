@@ -37,18 +37,11 @@
     /**
      * Makes sure that thread_stack value is high enough.
      */
-    class DatabaseThreadStackServiceHelper extends ServiceHelper
+    class DatabaseThreadStackServiceHelper extends DatabaseBaseServiceHelper
     {
         protected $required = false;
-        protected $form;
 
         protected $minimumRequiredThreadStackValue = 524288;
-
-        public function __construct($form)
-        {
-            assert('$form instanceof InstallSettingsForm');
-            $this->form = $form;
-        }
 
         protected function checkService()
         {

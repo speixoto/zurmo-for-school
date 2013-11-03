@@ -46,7 +46,7 @@
             $workflow->setName           ('myFirstWorkflow');
             $workflow->setTriggerOn      (Workflow::TRIGGER_ON_NEW);
             $workflow->setType           (Workflow::TYPE_ON_SAVE);
-            $workflow->setTriggersStructure('1 and 2 or 3 or 4');
+            $workflow->setTriggersStructure('1 and 2 or 3 or 4 or 5');
 
             $trigger = new TriggerForWorkflowForm('WorkflowsTestModule', 'WorkflowModelTestItem', $workflow->getType());
             $trigger->attributeIndexOrDerivedType = 'string';
@@ -77,9 +77,20 @@
             $trigger->valueType                   = 'Between';
             $workflow->addTrigger($trigger);
 
+            $trigger = new TriggerForWorkflowForm('WorkflowsTestModule', 'WorkflowModelTestItem', $workflow->getType());
+            $trigger->attributeIndexOrDerivedType = 'createdDateTime';
+            $trigger->value                       = null;
+            $trigger->secondValue                 = null;
+            $trigger->thirdValueDurationInterval  = 5;
+            $trigger->thirdValueDurationType      = TimeDurationUtil::DURATION_TYPE_DAY;
+            $trigger->operator                    = null;
+            $trigger->currencyIdForValue          = null;
+            $trigger->valueType                   = 'At Least X After Triggered Date';
+            $workflow->addTrigger($trigger);
+
             $trigger = new TimeTriggerForWorkflowForm('WorkflowsTestModule', 'WorkflowModelTestItem', $workflow->getType());
             $trigger->attributeIndexOrDerivedType = 'date';
-            $trigger->durationSeconds             = 500;
+            $trigger->durationInterval             = 500;
             $trigger->valueType                   = 'Is Time For';
             $workflow->setTimeTrigger($trigger);
 
@@ -93,7 +104,8 @@
             $workflow->addAction($action);
 
             $message       = new EmailMessageForWorkflowForm('WorkflowModelTestItem', Workflow::TYPE_ON_SAVE);
-            $message->sendAfterDurationSeconds = 86400;
+            $message->sendAfterDurationInterval = 86400;
+            $message->sendAfterDurationType     = TimeDurationUtil::DURATION_TYPE_WEEK;
             $message->emailTemplateId          = 5;
             $message->sendFromType             = EmailMessageForWorkflowForm::SEND_FROM_TYPE_DEFAULT;
             $recipients = array(array('type' => WorkflowEmailMessageRecipientForm::TYPE_DYNAMIC_TRIGGERED_MODEL_USER,
@@ -114,12 +126,14 @@
             $this->assertEquals(5,                             $savedWorkflow->order);
             $this->assertEquals(Workflow::TRIGGER_ON_NEW,      $savedWorkflow->triggerOn);
             $this->assertEquals(Workflow::TYPE_ON_SAVE,        $savedWorkflow->type);
-            $this->assertEquals('1 and 2 or 3 or 4',           $workflow->getTriggersStructure());
+            $this->assertEquals('1 and 2 or 3 or 4 or 5',      $workflow->getTriggersStructure());
             $compareData = array('Triggers' => array(
                 array(
                     'currencyIdForValue'           => null,
                     'value'                        => 'aValue',
                     'secondValue'                  => null,
+                    'thirdValueDurationInterval'   => null,
+                    'thirdValueDurationType'       => null,
                     'stringifiedModelForValue'     => null,
                     'valueType'                    => null,
                     'attributeIndexOrDerivedType'  => 'string',
@@ -130,6 +144,8 @@
                     'currencyIdForValue'           => '4',
                     'value'                        => 'aValue',
                     'secondValue'                  => 'bValue',
+                    'thirdValueDurationInterval'   => null,
+                    'thirdValueDurationType'       => null,
                     'stringifiedModelForValue'     => null,
                     'valueType'                    => null,
                     'attributeIndexOrDerivedType'  => 'currencyValue',
@@ -140,6 +156,8 @@
                     'currencyIdForValue'           => null,
                     'value'                        => 'aValue',
                     'secondValue'                  => null,
+                    'thirdValueDurationInterval'   => null,
+                    'thirdValueDurationType'       => null,
                     'stringifiedModelForValue'     => 'someName',
                     'valueType'                    => null,
                     'attributeIndexOrDerivedType'  => 'owner__User',
@@ -149,8 +167,22 @@
                 array(
                     'value'                        => 'aValue',
                     'secondValue'                  => 'bValue',
+                    'thirdValueDurationInterval'   => null,
+                    'thirdValueDurationType'       => null,
                     'stringifiedModelForValue'     => null,
                     'valueType'                    => 'Between',
+                    'attributeIndexOrDerivedType'  => 'createdDateTime',
+                    'operator'                     => null,
+                    'currencyIdForValue'           => null,
+                    'relationFilter'               => TriggerForWorkflowForm::RELATION_FILTER_ANY
+                ),
+                array(
+                    'value'                        => null,
+                    'secondValue'                  => null,
+                    'thirdValueDurationInterval'   => 5,
+                    'thirdValueDurationType'       => TimeDurationUtil::DURATION_TYPE_DAY,
+                    'stringifiedModelForValue'     => null,
+                    'valueType'                    => 'At Least X After Triggered Date',
                     'attributeIndexOrDerivedType'  => 'createdDateTime',
                     'operator'                     => null,
                     'currencyIdForValue'           => null,
@@ -169,7 +201,8 @@
                                                        ),
                                                   )));
             $compareData['EmailMessages'] = array(array('emailTemplateId' => 5,
-                                                         'sendAfterDurationSeconds' => 86400,
+                                                         'sendAfterDurationInterval' => 86400,
+                                                         'sendAfterDurationType'     => TimeDurationUtil::DURATION_TYPE_WEEK,
                                                          'sendFromType' => 'Default',
                                                          'sendFromName' => null,
                                                          'sendFromAddress' => null,
@@ -179,10 +212,14 @@
                                                                 'type' => 'DynamicTriggeredModelUser',
                                                                 'audienceType' => 1,
                                                             ))));
-            $compareData['TimeTrigger'] = array('durationSeconds' => 500,
+            $compareData['TimeTrigger'] = array('durationInterval' => 500,
+                                                'durationSign'     => TimeDurationUtil::DURATION_SIGN_POSITIVE,
+                                                'durationType'     => TimeDurationUtil::DURATION_TYPE_DAY,
                                                 'currencyIdForValue' => null,
                                                 'value'              => null,
                                                 'secondValue'        => null,
+                                                'thirdValueDurationInterval'   => null,
+                                                'thirdValueDurationType'       => null,
                                                 'valueType'          => 'Is Time For',
                                                 'relationFilter'     => 'RelationFilterAny',
                                                 'attributeIndexOrDerivedType' => 'date',
@@ -192,7 +229,7 @@
             $this->assertEquals($compareData['Actions'],                     $unserializedData['Actions']);
             $this->assertEquals($compareData['EmailMessages'],               $unserializedData['EmailMessages']);
             $this->assertEquals($compareData['TimeTrigger'],                 $unserializedData['TimeTrigger']);
-            $this->assertEquals('1 and 2 or 3 or 4',                         $unserializedData['triggersStructure']);
+            $this->assertEquals('1 and 2 or 3 or 4 or 5',                    $unserializedData['triggersStructure']);
             $saved = $savedWorkflow->save();
             $this->assertTrue($saved);
         }
@@ -214,8 +251,8 @@
             $this->assertEquals           (5,                             $workflow->getOrder());
             $this->assertEquals           (Workflow::TRIGGER_ON_NEW,      $workflow->getTriggerOn());
             $this->assertEquals           (Workflow::TYPE_ON_SAVE,        $workflow->getType());
-            $this->assertEquals           ('1 and 2 or 3 or 4',           $workflow->getTriggersStructure());
-            $this->assertCount            (4, $triggers);
+            $this->assertEquals           ('1 and 2 or 3 or 4 or 5',      $workflow->getTriggersStructure());
+            $this->assertCount            (5, $triggers);
         }
     }
 ?>

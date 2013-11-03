@@ -292,5 +292,68 @@
             $this->runControllerWithNoExceptionsAndGetContent('home/default');
 */
         }
+
+        public function testAddPortletOnTwoColumnsDashboard()
+        {
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $superDashboard1 = Dashboard::getByLayoutIdAndUser(Dashboard::DEFAULT_USER_LAYOUT_ID, $super);
+            //load details view
+            $this->setGetArray(array('id' => $superDashboard1->id));
+            $this->resetPostArray();
+            $this->runControllerWithNoExceptionsAndGetContent('home/default/dashboardDetails');
+
+            //Portlet Controller Actions
+            $uniqueLayoutId = 'HomeDashboard' . $superDashboard1->layoutId;
+            $this->setGetArray(array(
+                'dashboardId'    => $superDashboard1->id,
+                'uniqueLayoutId' => $uniqueLayoutId));
+            $this->resetPostArray();
+            $this->runControllerWithNoExceptionsAndGetContent('home/defaultPortlet/addList');
+
+            //Add AccountsMyList Portlet to dashboard
+            $this->setGetArray(array(
+                'dashboardId'    => $superDashboard1->id,
+                'portletType'    => 'AccountsMyList',
+                'uniqueLayoutId' => $uniqueLayoutId));
+            $this->resetPostArray();
+            $this->runControllerWithRedirectExceptionAndGetContent('home/defaultPortlet/add');
+
+            $portlets = Portlet::getByLayoutIdAndUserSortedByColumnIdAndPosition($uniqueLayoutId, $super->id, array());
+            $this->assertEquals(8, count($portlets[1]));
+            $this->assertEquals(1, count($portlets[2]));
+            $portletPostData = array();
+            $portletCount = 0;
+            foreach ($portlets as $column => $columnPortlets)
+            {
+                foreach ($columnPortlets as $position => $portlet)
+                {
+                    $portletPostData['HomeDashboard1_' . $portlet->id] = array(
+                        'collapsed' => 'true',
+                        'column'    => 0,
+                        'id'        => 'HomeDashboard1_' . $portlet->id,
+                        'position'  => $portletCount,
+                    );
+                    $portletCount++;
+                }
+            }
+            //There should have been a total of 3 portlets. Checking positions as 4 will confirm this.
+            $this->assertEquals(9, $portletCount);
+            $this->resetGetArray();
+            $this->setPostArray(array(
+                'portletLayoutConfiguration' => array(
+                    'portlets' => $portletPostData,
+                    'uniqueLayoutId' => $uniqueLayoutId,
+                )
+            ));
+            $this->runControllerWithNoExceptionsAndGetContent('home/defaultPortlet/saveLayout', true);
+
+            //Add ContactsMyList Portlet to dashboard
+            $this->setGetArray(array(
+                'dashboardId'    => $superDashboard1->id,
+                'portletType'    => 'ContactsMyList',
+                'uniqueLayoutId' => $uniqueLayoutId));
+            $this->resetPostArray();
+            $this->runControllerWithRedirectExceptionAndGetContent('home/defaultPortlet/add');
+        }
     }
 ?>

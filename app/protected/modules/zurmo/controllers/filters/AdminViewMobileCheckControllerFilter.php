@@ -62,7 +62,7 @@
 
         protected static function renderMobileAccessFailureContent()
         {
-            $messageView = new AccessFailureView(Zurmo::t('Zurmo', 'This page is not available in mobile mode.'));
+            $messageView = new AccessFailureView(Zurmo::t('ZurmoModule', 'This page is not available in mobile mode.'));
             $view        = new AccessFailurePageView($messageView);
             echo $view->render();
         }

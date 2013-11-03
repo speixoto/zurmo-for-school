@@ -38,16 +38,9 @@
      * Check settings related to optimizer search depth global option.
      * For more details: DatabaseOptimizerSearchDepthServiceHelper
      */
-    class DatabaseOptimizerSearchDepthServiceHelper extends ServiceHelper
+    class DatabaseOptimizerSearchDepthServiceHelper extends DatabaseBaseServiceHelper
     {
         protected $required = false;
-        protected $form;
-
-        public function __construct($form)
-        {
-            assert('$form instanceof InstallSettingsForm');
-            $this->form = $form;
-        }
 
         protected function checkService()
         {

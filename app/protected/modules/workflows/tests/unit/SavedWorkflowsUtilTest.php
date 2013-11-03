@@ -36,27 +36,9 @@
 
     class SavedWorkflowsUtilTest extends WorkflowBaseTest
     {
-        public $freeze = false;
-
-        public function setup()
+        public static function getDependentTestModelClassNames()
         {
-            parent::setUp();
-            $freeze = false;
-            if (RedBeanDatabase::isFrozen())
-            {
-                RedBeanDatabase::unfreeze();
-                $freeze = true;
-            }
-            $this->freeze = $freeze;
-        }
-
-        public function teardown()
-        {
-            if ($this->freeze)
-            {
-                RedBeanDatabase::freeze();
-            }
-            parent::teardown();
+            return array('WorkflowModelTestItem', 'WorkflowModelTestItem2');
         }
 
         public function testResolveProcessDateTimeByWorkflowAndModel()
@@ -65,7 +47,7 @@
             $model    = new WorkflowModelTestItem();
             $model->date = '2007-02-02';
             $workflow = WorkflowTriggersUtilBaseTest::
-                        makeOnSaveWorkflowAndTimeTriggerForDateOrDateTime('date', 'Is Time For', null, 86400);
+                        makeOnSaveWorkflowAndTimeTriggerForDateOrDateTime('date', 'Is Time For', null, 1);
             $processDateTime = SavedWorkflowsUtil::resolveProcessDateTimeByWorkflowAndModel($workflow, $model);
             $this->assertEquals('2007-02-03 00:00:00', $processDateTime);
 
@@ -73,7 +55,8 @@
             $model    = new WorkflowModelTestItem();
             $model->date = '2007-02-02';
             $workflow = WorkflowTriggersUtilBaseTest::
-                        makeOnSaveWorkflowAndTimeTriggerForDateOrDateTime('date', 'Is Time For', null, -86400);
+                        makeOnSaveWorkflowAndTimeTriggerForDateOrDateTime('date', 'Is Time For', null, 1, 'WorkflowsTestModule',
+                        'WorkflowModelTestItem', null, TimeDurationUtil::DURATION_SIGN_NEGATIVE);
             $processDateTime = SavedWorkflowsUtil::resolveProcessDateTimeByWorkflowAndModel($workflow, $model);
             $this->assertEquals('2007-02-01 00:00:00', $processDateTime);
 
@@ -81,7 +64,7 @@
             $model           = new WorkflowModelTestItem();
             $model->dateTime = '2007-05-02 04:00:02';
             $workflow = WorkflowTriggersUtilBaseTest::
-                        makeOnSaveWorkflowAndTimeTriggerForDateOrDateTime('dateTime', 'Is Time For', null, 86400);
+                        makeOnSaveWorkflowAndTimeTriggerForDateOrDateTime('dateTime', 'Is Time For', null, 1);
             $processDateTime = SavedWorkflowsUtil::resolveProcessDateTimeByWorkflowAndModel($workflow, $model);
             $this->assertEquals('2007-05-03 04:00:02', $processDateTime);
 
@@ -89,7 +72,8 @@
             $model           = new WorkflowModelTestItem();
             $model->dateTime = '2007-05-02 04:00:02';
             $workflow = WorkflowTriggersUtilBaseTest::
-                        makeOnSaveWorkflowAndTimeTriggerForDateOrDateTime('dateTime', 'Is Time For', null, -86400);
+                        makeOnSaveWorkflowAndTimeTriggerForDateOrDateTime('dateTime', 'Is Time For', null, 1, 'WorkflowsTestModule',
+                        'WorkflowModelTestItem', null, TimeDurationUtil::DURATION_SIGN_NEGATIVE);
             $processDateTime = SavedWorkflowsUtil::resolveProcessDateTimeByWorkflowAndModel($workflow, $model);
             $this->assertEquals('2007-05-01 04:00:02', $processDateTime);
         }
@@ -102,7 +86,7 @@
         {
             $model    = new WorkflowModelTestItem();
             $workflow = WorkflowTriggersUtilBaseTest::
-                        makeOnSaveWorkflowAndTimeTriggerForDateOrDateTime('date', 'Is Time For', null, 86400);
+                        makeOnSaveWorkflowAndTimeTriggerForDateOrDateTime('date', 'Is Time For', null, 1);
             SavedWorkflowsUtil::resolveProcessDateTimeByWorkflowAndModel($workflow, $model);
         }
 
@@ -115,7 +99,7 @@
             $model           = new WorkflowModelTestItem();
             $model->dateTime = '0000-00-00';
             $workflow = WorkflowTriggersUtilBaseTest::
-                        makeOnSaveWorkflowAndTimeTriggerForDateOrDateTime('date', 'Is Time For', null, 86400);
+                        makeOnSaveWorkflowAndTimeTriggerForDateOrDateTime('date', 'Is Time For', null, 1);
             SavedWorkflowsUtil::resolveProcessDateTimeByWorkflowAndModel($workflow, $model);
         }
 
@@ -127,7 +111,7 @@
         {
             $model    = new WorkflowModelTestItem();
             $workflow = WorkflowTriggersUtilBaseTest::
-                        makeOnSaveWorkflowAndTimeTriggerForDateOrDateTime('dateTime', 'Is Time For', null, 86400);
+                        makeOnSaveWorkflowAndTimeTriggerForDateOrDateTime('dateTime', 'Is Time For', null, 1);
             SavedWorkflowsUtil::resolveProcessDateTimeByWorkflowAndModel($workflow, $model);
         }
 
@@ -140,7 +124,7 @@
             $model    = new WorkflowModelTestItem();
             $model->dateTime = '0000-00-00 00:00:00';
             $workflow = WorkflowTriggersUtilBaseTest::
-                        makeOnSaveWorkflowAndTimeTriggerForDateOrDateTime('dateTime', 'Is Time For', null, 86400);
+                        makeOnSaveWorkflowAndTimeTriggerForDateOrDateTime('dateTime', 'Is Time For', null, 1);
             SavedWorkflowsUtil::resolveProcessDateTimeByWorkflowAndModel($workflow, $model);
         }
 
@@ -310,7 +294,9 @@
             //Add time trigger
             $trigger = new TimeTriggerForWorkflowForm('WorkflowsTestModule', 'WorkflowModelTestItem', $workflow->getType());
             $trigger->attributeIndexOrDerivedType = 'date';
-            $trigger->durationSeconds             = '500';
+            $trigger->durationInterval            = '500';
+            $trigger->durationSign                = TimeDurationUtil::DURATION_SIGN_NEGATIVE;
+            $trigger->durationType                = TimeDurationUtil::DURATION_TYPE_WEEK;
             $trigger->valueType                   = 'Is Time For';
             $workflow->setTimeTrigger($trigger);
             //Create the saved Workflow
@@ -396,7 +382,9 @@
             //Add time trigger
             $trigger = new TimeTriggerForWorkflowForm('WorkflowsTestModule', 'WorkflowModelTestItem', $workflow->getType());
             $trigger->attributeIndexOrDerivedType = 'date';
-            $trigger->durationSeconds             = '500';
+            $trigger->durationInterval            = '500';
+            $trigger->durationSign            = TimeDurationUtil::DURATION_SIGN_NEGATIVE;
+            $trigger->durationType            = TimeDurationUtil::DURATION_TYPE_WEEK;
             $trigger->valueType                   = 'Is Time For';
             $workflow->setTimeTrigger($trigger);
             //Create the saved Workflow

@@ -49,17 +49,19 @@
                     'dateTime2'
                 ),
                 'relations' => array(
-                    'bbb'                => array(RedBeanModel::HAS_MANY,            'BBB'),
-                    'iii'                => array(RedBeanModel::HAS_MANY,            'III'),
-                    'eee'                => array(RedBeanModel::HAS_ONE,             'EEE'),
-                    'industry'           => array(RedBeanModel::HAS_ONE, 'CustomField', RedBeanModel::NOT_OWNED,
-                                           RedBeanModel::LINK_TYPE_SPECIFIC, 'industry'),
-                    'multipleIndustries' => array(RedBeanModel::HAS_ONE, 'MultipleValuesCustomField', RedBeanModel::NOT_OWNED,
-                                           RedBeanModel::LINK_TYPE_SPECIFIC, 'multipleIndustries')
+                    'bbb'                => array(static::HAS_MANY,            'BBB'),
+                    'iii'                => array(static::HAS_MANY,            'III'),
+                    'eee'                => array(static::HAS_ONE,             'EEE'),
+                    'industry'           => array(static::HAS_ONE, 'CustomField', static::NOT_OWNED,
+                                           static::LINK_TYPE_SPECIFIC, 'industry'),
+                    'multipleIndustries' => array(static::HAS_ONE, 'MultipleValuesCustomField', static::NOT_OWNED,
+                                           static::LINK_TYPE_SPECIFIC, 'multipleIndustries')
                 ),
                 'rules' => array(
                     array('cccMember',  'type', 'type' => 'string'),
+                    array('cccMember', 'length', 'max' => 255),
                     array('cccMember2', 'type', 'type' => 'string'),
+                    array('cccMember', 'length', 'max' => 255),
                     array('date',       'type', 'type' => 'date'),
                     array('date2',      'type', 'type' => 'date'),
                     array('dateTime',   'type', 'type' => 'datetime'),

@@ -34,97 +34,14 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class MarketingIntroLinkActionElement extends LinkActionElement
+    class MarketingIntroLinkActionElement extends IntroLinkActionElement
     {
-        public function getActionType()
+        protected function shouldRender()
         {
-            return null;
-        }
-
-        public function render()
-        {
-            $this->registerScripts();
-            if ($this->moduleId == 'marketing' && $this->controllerId == 'default' &&
-               (Yii::app()->controller->action->id == 'dashboardDetails' ||
-                Yii::app()->controller->action->id == null ||
-                Yii::app()->controller->action->id == 'index'))
-            {
-                $items          = array($this->renderMenuItem());
-                $clipName       = get_class($this);
-                $cClipWidget    = new CClipWidget();
-                $cClipWidget->beginClip($clipName);
-                $cClipWidget->widget('application.core.widgets.MinimalDynamicLabelMbMenu', array(
-                    'htmlOptions'   => array(
-                        'id' => $clipName,
-                        'class' => 'clickable-mbmenu'
-                    ),
-                    'items'         => $items,
-                ));
-                $cClipWidget->endClip();
-                return $cClipWidget->getController()->clips[$clipName];
-            }
-        }
-
-        public function renderMenuItem()
-        {
-            return array(
-                'label' => $this->getLabel(),
-                'url'   => $this->getRoute(),
-                'items' => array(
-                    array(
-                        'label'                 => '',
-                        'dynamicLabelContent'   => $this->renderHideOrShowContent(),
-                    ),
-                ),
-            );
-        }
-
-        protected function getDefaultLabel()
-        {
-            return Zurmo::t('MarketingModule', 'n');
-        }
-
-        protected function getDefaultRoute()
-        {
-            return null;
-        }
-
-        protected function renderHideOrShowContent()
-        {
-            $name        = MarketingDashboardIntroView::PANEL_ID . '-checkbox-id';
-            $htmlOptions = array('id' => MarketingDashboardIntroView::PANEL_ID . '-checkbox-id');
-            $checkBox    = ZurmoHtml::checkBox($name, $this->resolveChecked(), $htmlOptions);
-            return '<div class="screen-options"><h4>Screen Options</h4>' . $checkBox . Zurmo::t('MarketingModule', 'Show intro message') . '</div>';
-        }
-
-        protected function resolveChecked()
-        {
-            if ($this->params['cookieValue'] == MarketingDashboardIntroView::HIDDEN_COOKIE_VALUE)
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
-        }
-
-        protected function registerScripts()
-        {
-            $script = "$('#" . MarketingDashboardIntroView::PANEL_ID . "-checkbox-id').click(function()
-                        {
-                            if (!$(this).attr('checked'))
-                            {
-                                document.cookie = '" . MarketingDashboardIntroView::resolveCookieId() . "=" .
-                                                       MarketingDashboardIntroView::HIDDEN_COOKIE_VALUE . "';
-                            }
-                            else
-                            {
-                                document.cookie = '" . MarketingDashboardIntroView::resolveCookieId() . "=';
-                            }
-                            $('#" . MarketingDashboardIntroView::PANEL_ID . "').slideToggle();
-                        });";
-            Yii::app()->clientScript->registerScript(get_class() . 'CheckBoxClickScript', $script);
+            return ($this->moduleId == 'marketing' && $this->controllerId == 'default' &&
+                    (Yii::app()->controller->action->id == 'dashboardDetails' ||
+                     Yii::app()->controller->action->id == null ||
+                     Yii::app()->controller->action->id == 'index'));
         }
     }
 ?>

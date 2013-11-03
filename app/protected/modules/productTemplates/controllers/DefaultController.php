@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -20,8 +20,18 @@
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU Affero General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     class ProductTemplatesDefaultController extends ZurmoModuleController
@@ -70,7 +80,7 @@
                                             'pageViewClassName'          => $pageViewClassName,
                                             'defaultViewUtilClassName'   => 'ProductDefaultViewUtil',
                                             'activeActionElementType'    => 'ProductTemplatesLink',
-                                            'breadcrumbLinks'            => static::getListBreadcrumbLinks()
+                                            'breadCrumbLinks'            => static::getListBreadcrumbLinks()
                                        ),
                                    ), $filters
             );
@@ -82,7 +92,7 @@
         {
             $pageSize                       = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                                               'listPageSize', get_class($this->getModule()));
-            $activeActionElementType        = 'ProductTemplatesLink';
+            $activeActionElementType        = 'ProductTemplatesMenu';
             $productTemplate                = new ProductTemplate(false);
             $searchForm                     = new ProductTemplatesSearchForm($productTemplate);
             $listAttributesSelector         = new ListAttributesSelector('ProductTemplatesListView', get_class($this->getModule()));
@@ -93,7 +103,7 @@
                                 null,
                                 'ProductTemplatesSearchView'
                                 );
-            $breadcrumbLinks = static::getListBreadcrumbLinks();
+            $breadCrumbLinks = static::getListBreadcrumbLinks();
             if (isset($_GET['ajax']) && $_GET['ajax'] == 'list-view')
             {
                 $mixedView  = $this->makeListView(
@@ -104,12 +114,13 @@
             }
             else
             {
+                $introView        = new ProductsIntroView('ProductsModule');
                 $mixedView  = $this->makeActionBarSearchAndListView($searchForm, $dataProvider,
                                     'SecuredActionBarForProductsSearchAndListView',
-                                    null, $activeActionElementType);
+                                    null, $activeActionElementType, $introView);
                 $view       = new ProductTemplatesPageView(ProductDefaultViewUtil::
                                                                makeViewWithBreadcrumbsForCurrentUser(
-                                                                    $this, $mixedView, $breadcrumbLinks, 'ProductBreadCrumbView'));
+                                                                    $this, $mixedView, $breadCrumbLinks, 'ProductBreadCrumbView'));
             }
             echo $view->render();
         }
@@ -117,39 +128,39 @@
         public function actionDetails($id)
         {
             $productTemplate    = static::getModelAndCatchNotFoundAndDisplayError('ProductTemplate', intval($id));
-            $breadcrumbLinks    = static::getDetailsAndEditBreadcrumbLinks();
-            $breadcrumbLinks[]  = StringUtil::getChoppedStringContent(strval($productTemplate), 25);
+            $breadCrumbLinks    = static::getDetailsAndEditBreadcrumbLinks();
+            $breadCrumbLinks[]  = StringUtil::getChoppedStringContent(strval($productTemplate), 25);
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($productTemplate);
             AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED, array(strval($productTemplate), 'ProductTemplatesModule'), $productTemplate);
-            $detailsView        = new ProductTemplateDetailsView($this->getId(), $this->getModule()->getId(), $productTemplate);
+            $editAndDetailsView = $this->makeEditAndDetailsView($productTemplate, 'Details');
             $view               = new ProductTemplatesPageView(ProductDefaultViewUtil::
                                                                 makeViewWithBreadcrumbsForCurrentUser(
-                                                                    $this, $detailsView, $breadcrumbLinks, 'ProductBreadCrumbView'));
+                                                                    $this, $editAndDetailsView, $breadCrumbLinks, 'ProductBreadCrumbView'));
             echo $view->render();
         }
 
         public function actionCreate()
         {
-            $breadcrumbLinks    = static::getDetailsAndEditBreadcrumbLinks();
-            $breadcrumbLinks[]  = Zurmo::t('ProductTemplatesModule', 'Create');
+            $breadCrumbLinks    = static::getDetailsAndEditBreadcrumbLinks();
+            $breadCrumbLinks[]  = Zurmo::t('Core', 'Create');
             $editAndDetailsView = $this->makeEditAndDetailsView(
                                             $this->attemptToSaveModelFromPost(new ProductTemplate()), 'Edit');
             $view               = new ProductTemplatesPageView(ProductDefaultViewUtil::
                                                                 makeViewWithBreadcrumbsForCurrentUser(
-                                                                    $this, $editAndDetailsView, $breadcrumbLinks, 'ProductBreadCrumbView'));
+                                                                    $this, $editAndDetailsView, $breadCrumbLinks, 'ProductBreadCrumbView'));
             echo $view->render();
         }
 
         public function actionEdit($id, $redirectUrl = null)
         {
             $productTemplate   = ProductTemplate::getById(intval($id));
-            $breadcrumbLinks   = static::getDetailsAndEditBreadcrumbLinks();
-            $breadcrumbLinks[] = StringUtil::getChoppedStringContent(strval($productTemplate), 25);
+            $breadCrumbLinks   = static::getDetailsAndEditBreadcrumbLinks();
+            $breadCrumbLinks[] = StringUtil::getChoppedStringContent(strval($productTemplate), 25);
             $view              = new ProductTemplatesPageView(ProductDefaultViewUtil::
                                                                  makeViewWithBreadcrumbsForCurrentUser($this,
                                                                  $this->makeEditAndDetailsView(
                                                                      $this->attemptToSaveModelFromPost(
-                                                                         $productTemplate, $redirectUrl), 'Edit'), $breadcrumbLinks, 'ProductBreadCrumbView'));
+                                                                         $productTemplate, $redirectUrl), 'Edit'), $breadCrumbLinks, 'ProductBreadCrumbView'));
             echo $view->render();
         }
 
@@ -250,7 +261,7 @@
         {
             $params          = LabelUtil::getTranslationParamsForAllModules();
             $title           = Zurmo::t('ProductTemplatesModule', 'Mass Delete ProductTemplatesModulePluralLabel', $params);
-            $breadcrumbLinks = array(
+            $breadCrumbLinks = array(
                  $title,
             );
             $pageSize           = Yii::app()->pagination->resolveActiveForCurrentUserByType(
@@ -291,7 +302,7 @@
                     'ProductTemplatesMassDeleteView'
                 );
                 $view = new ProductTemplatesPageView(ZurmoDefaultViewUtil::
-                                                        makeViewWithBreadcrumbsForCurrentUser($this, $massDeleteView, $breadcrumbLinks, 'ProductBreadCrumbView'));
+                                                        makeViewWithBreadcrumbsForCurrentUser($this, $massDeleteView, $breadCrumbLinks, 'ProductBreadCrumbView'));
                 echo $view->render();
             }
         }
@@ -370,12 +381,18 @@
             {
                 $autoCompleteResults[] = array(
                     'id'   => $productCategory->id,
-                    'name' => self::renderHtmlContentLabelFromProductCategoryAndKeyword($productCategory, $term)
+                    'name' => MultipleProductCategoriesForProductTemplateElement::
+                                        renderHtmlContentLabelFromProductCategoryAndKeyword($productCategory)
                 );
             }
             echo CJSON::encode($autoCompleteResults);
         }
 
+        /**
+         * @param string $partialName
+         * @param int $pageSize
+         * @param null|string $stateMetadataAdapterClassName
+         */
         public static function getProductCategoriesByPartialName($partialName, $pageSize, $stateMetadataAdapterClassName = null)
         {
             assert('is_string($partialName)');
@@ -398,25 +415,14 @@
             return ProductCategory::getSubset($joinTablesAdapter, null, $pageSize, $where, "productcategory.name");
         }
 
+        /**
+         * @param string $partialName
+         * @return string
+         */
         protected static function getWherePartForPartialNameSearchByPartialName($partialName)
         {
             assert('is_string($partialName)');
             return "   (productcategory.name  like '$partialName%') ";
-        }
-
-        public static function renderHtmlContentLabelFromProductCategoryAndKeyword($productCategory, $keyword)
-        {
-            assert('$productCategory instanceof ProductCategory && $productCategory->id > 0');
-            assert('$keyword == null || is_string($keyword)');
-
-            if ($productCategory->name != null)
-            {
-                return strval($productCategory) . '&#160&#160<b>'. '</b>';
-            }
-            else
-            {
-                return strval($productCategory);
-            }
         }
 
         /**

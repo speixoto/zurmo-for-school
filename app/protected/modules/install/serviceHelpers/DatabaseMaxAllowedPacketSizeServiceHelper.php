@@ -37,18 +37,11 @@
     /**
      * Makes sure the upload file size is large enough.
      */
-    class DatabaseMaxAllowedPacketSizeServiceHelper extends ServiceHelper
+    class DatabaseMaxAllowedPacketSizeServiceHelper extends DatabaseBaseServiceHelper
     {
         protected $required = false;
-        protected $form;
 
         protected $minimumUploadRequireBytes = 20000000;
-
-        public function __construct($form)
-        {
-            assert('$form instanceof InstallSettingsForm');
-            $this->form = $form;
-        }
 
         protected function checkService()
         {

@@ -46,6 +46,12 @@
 
         protected $currencies;
 
+        /**
+         * @param string $controllerId
+         * @param string $moduleId
+         * @param array $currencies
+         * @param null|string $messageBoxContent
+         */
         public function __construct($controllerId, $moduleId, $currencies, $messageBoxContent = null)
         {
             assert('is_string($controllerId)');
@@ -110,7 +116,7 @@
             $content .= '<th>' . Zurmo::t('ZurmoModule', 'Code') . '</th>';
             $content .= '<th>' . Zurmo::t('ZurmoModule', 'Rate to') . '&#160;' .
                         Yii::app()->currencyHelper->getBaseCode(). ' ' . $this->renderLastUpdatedHeaderContent() . '</th>';
-            $content .= '<th>' . Zurmo::t('ZurmoModule', 'Remove') . '</th>';
+            $content .= '<th>' . Zurmo::t('Core', 'Remove') . '</th>';
             $content .= '</tr>';
             foreach ($this->currencies as $currency)
             {
@@ -126,7 +132,7 @@
                 }
                 else
                 {
-                    $content .= ZurmoHtml::link(Zurmo::t('ZurmoModule', 'Remove'),
+                    $content .= ZurmoHtml::link(Zurmo::t('Core', 'Remove'),
                       Yii::app()->createUrl($route, array('id' => $currency->id)), array('class' => 'z-link'));
                 }
                 $content .= '</td>';
@@ -144,7 +150,7 @@
                     'toolbar' => array(
                         'elements' => array(
                             array('type'  => 'SaveButton',
-                                  'label' => "eval:Zurmo::t('ZurmoModule', 'Update')",
+                                  'label' => "eval:Zurmo::t('Core', 'Update')",
                                   'htmlOptions' => array('id' => 'save-collection', 'name' => 'save-collection')),
                         ),
                      ),
@@ -184,7 +190,7 @@
         protected static function renderActiveHeaderContent()
         {
             $title       = Zurmo::t('ZurmoModule', 'Active currencies can be used when creating new records and as a default currency for a user.');
-            $content     = Zurmo::t('ZurmoModule', 'Active');
+            $content     = Zurmo::t('Core', 'Active');
             $content    .= '<span id="active-currencies-tooltip" class="tooltip"  title="' . $title . '">?</span>';
             $qtip = new ZurmoTip();
             $qtip->addQTip("#active-currencies-tooltip");

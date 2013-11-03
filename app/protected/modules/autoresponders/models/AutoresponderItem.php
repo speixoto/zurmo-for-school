@@ -68,10 +68,10 @@
                     'processed',
                 ),
                 'relations' => array(
-                    'contact'                     => array(RedBeanModel::HAS_ONE, 'Contact', RedBeanModel::NOT_OWNED),
-                    'emailMessage'                => array(RedBeanModel::HAS_ONE, 'EmailMessage'),
-                    'autoresponderItemActivities' => array(RedBeanModel::HAS_MANY, 'AutoresponderItemActivity'),
-                    'autoresponder'               => array(RedBeanModel::HAS_ONE, 'Autoresponder', RedBeanModel::NOT_OWNED),
+                    'contact'                     => array(static::HAS_ONE, 'Contact', static::NOT_OWNED),
+                    'emailMessage'                => array(static::HAS_ONE, 'EmailMessage'),
+                    'autoresponderItemActivities' => array(static::HAS_MANY, 'AutoresponderItemActivity'),
+                    'autoresponder'               => array(static::HAS_ONE, 'Autoresponder', static::NOT_OWNED),
                 ),
                 'rules' => array(
                     array('processDateTime',        'required'),
@@ -140,6 +140,11 @@
             return self::getSubset($joinTablesAdapter, null, $pageSize, $where, 'processDateTime');
         }
 
+        /**
+         * @param int $processed
+         * @param int $autoresponderId
+         * @param null|int  $pageSize
+          */
         public static function getByProcessedAndAutoresponderId($processed, $autoresponderId, $pageSize = null)
         {
             assert('is_int($processed)');
@@ -164,6 +169,12 @@
             return self::getSubset($joinTablesAdapter, null, $pageSize, $where, 'processDateTime');
         }
 
+        /**
+         * @param int $processed
+         * @param int $autoresponderId
+         * @param null $timestamp
+         * @param null|int $pageSize
+         */
         public static function getByProcessedAndAutoresponderIdWithProcessDateTime($processed, $autoresponderId, $timestamp = null, $pageSize = null)
         {
             if (empty($timestamp))
@@ -204,7 +215,7 @@
             $now = time();
             foreach ($autoresponders as $autoresponder)
             {
-                $processTimestamp = $now + $autoresponder->secondsFromOperation;
+                $processTimestamp = $autoresponder->resolveNewTimeStampForDuration($now);
                 $processDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime($processTimestamp);
                 $processed = false;
                 static::addNewItem($processed, $processDateTime, $contact, $autoresponder);

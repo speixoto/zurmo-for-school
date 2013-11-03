@@ -56,6 +56,20 @@
         // changes can be written to the audit log.
         public $originalAttributeValues = array();
 
+        private static $canHaveBean = false;
+
+        /**
+         * @see RedBeanModel::getHasBean()
+         */
+        public static function getCanHaveBean()
+        {
+            if (get_called_class() == __CLASS__)
+            {
+                return self::$canHaveBean;
+            }
+            return parent::getCanHaveBean();
+        }
+
         public function __set($attributeName, $value)
         {
             AuditUtil::saveOriginalAttributeValue($this, $attributeName, $value);

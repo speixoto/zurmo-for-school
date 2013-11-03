@@ -37,21 +37,17 @@
     /**
      * Renders an action bar specifically for the search and listview.
      */
-    abstract class ActionBarForSecurityTreeListView extends ConfigurableMetadataView
+    abstract class ActionBarForSecurityTreeListView extends ActionBarConfigurableMetadataView
     {
-        protected $controllerId;
-
-        protected $moduleId;
-
-        /**
-         * Used to identify the active action for the action bar elements
-         * @var mixed null or string
-         */
-        protected $activeActionElementType;
-
         abstract protected function makeModel();
 
-        public function __construct($controllerId, $moduleId, $activeActionElementType = null)
+        /**
+         * @param string $controllerId
+         * @param string $moduleId
+         * @param null|string $activeActionElementType
+         * @param IntroView $introView
+         */
+        public function __construct($controllerId, $moduleId, $activeActionElementType = null, IntroView $introView = null)
         {
             assert('is_string($controllerId)');
             assert('is_string($moduleId)');
@@ -59,6 +55,7 @@
             $this->controllerId              = $controllerId;
             $this->moduleId                  = $moduleId;
             $this->activeActionElementType   = $activeActionElementType;
+            $this->introView                 = $introView;
         }
 
         protected function renderContent()
@@ -67,16 +64,22 @@
             $actionBarContent = $this->renderActionElementBar(false);
             if ($actionBarContent != null)
             {
-                $content .= '<div class="view-toolbar-container clearfix"><div class="view-toolbar">';
+                $content .= '<div class="view-toolbar-container clearfix">';
+                $content .= '<nav class="pillbox clearfix">';
                 $content .= $actionBarContent;
-                $content .= '</div></div>';
+                $content .= '</nav>';
+                if (!Yii::app()->userInterface->isMobile() &&
+                    null != $secondActionElementBarContent = $this->renderSecondActionElementBar(false))
+                {
+                    $content .= '<nav class="pillbox clearfix">' . $secondActionElementBarContent . '</nav>';
+                }
+                $content .= '</div>';
+            }
+            if (isset($this->introView))
+            {
+                $content .= $this->introView->render();
             }
             return $content;
-        }
-
-        public function isUniqueToAPage()
-        {
-            return true;
         }
 
         public static function getDefaultMetadata()
@@ -85,8 +88,18 @@
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array('type'  => 'CreateLink',
-                                'htmlOptions' => array('class' => 'icon-create'),
+                            array('type'      => 'CreateMenu',
+                                  'iconClass' => 'icon-create',
+                            ),
+                        ),
+                    ),
+                    'secondToolbar' => array(
+                        'elements' => array(
+                            array('type'        => 'SecurityIntroLink',
+                                  'iconClass'   => 'icon-options',
+                                  'panelId'     => 'eval:$this->introView->getPanelId()',
+                                  'checked'     => 'eval:!$this->introView->isIntroViewDismissed()',
+                                  'moduleName'  => 'eval:$this->introView->getModuleName()',
                             ),
                         ),
                     ),
@@ -95,6 +108,11 @@
             return $metadata;
         }
 
+        /**
+         * @param ActionElement $element
+         * @param array $elementInformation
+         * @return bool
+         */
         protected function shouldRenderToolBarElement($element, $elementInformation)
         {
             assert('$element instanceof ActionElement');
@@ -120,7 +138,14 @@
             parent::resolveActionElementInformationDuringRender($elementInformation);
             if ($elementInformation['type'] == $this->activeActionElementType)
             {
-                $elementInformation['htmlOptions']['class'] .= ' active';
+                if (isset($elementInformation['htmlOptions']['class']))
+                {
+                    $elementInformation['htmlOptions']['class'] .= ' active';
+                }
+                else
+                {
+                    $elementInformation['htmlOptions']['class'] = 'active';
+                }
             }
         }
     }

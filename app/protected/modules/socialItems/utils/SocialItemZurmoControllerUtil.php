@@ -41,6 +41,9 @@
     {
         protected $relatedUser;
 
+        /**
+         * @param User $relatedUser
+         */
         public function __construct($relatedUser)
         {
             assert('$relatedUser == null || ($relatedUser instanceof User && $relatedUser->id > 0)');
@@ -51,8 +54,14 @@
          * Handles when a user posts to another user's profile social feed.  Sets the toUser in that case.
          * (non-PHPdoc)
          * @see ZurmoControllerUtil::saveModelFromPost()
+         * @param $postData
+         * @param $model
+         * @param $savedSucessfully
+         * @param $modelToStringValue
+         * @param bool $returnOnValidate
+         * @return OwnedSecurableItem
          */
-        public function saveModelFromPost($postData, $model, & $savedSucessfully, & $modelToStringValue)
+        public function saveModelFromPost($postData, $model, & $savedSucessfully, & $modelToStringValue, $returnOnValidate = false)
         {
             $sanitizedPostData                 = PostUtil::sanitizePostByDesignerTypeForSavingModel(
                                                  $model, $postData);
@@ -60,7 +69,8 @@
             {
                 $model->toUser = $this->relatedUser;
             }
-            return $this->saveModelFromSanitizedData($sanitizedPostData, $model, $savedSucessfully, $modelToStringValue);
+            return $this->saveModelFromSanitizedData($sanitizedPostData, $model, $savedSucessfully,
+                                                     $modelToStringValue, $returnOnValidate);
         }
     }
 ?>

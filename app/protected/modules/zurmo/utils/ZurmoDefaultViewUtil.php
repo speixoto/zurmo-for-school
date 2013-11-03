@@ -53,23 +53,23 @@
          * used by the designer page view.
          * @param CController $controller
          * @param View $containedView
-         * @param $breadcrumbLinks
+         * @param array $breadCrumbLinks
          * @param $breadcrumbViewClassName
          * @param array $cssClasses
          * @return GridView
          */
         public static function makeViewWithBreadcrumbsForCurrentUser(CController $controller,
                                                                      View $containedView,
-                                                                     $breadcrumbLinks,
+                                                                     $breadCrumbLinks,
                                                                      $breadcrumbViewClassName,
                                                                      $cssClasses = array())
         {
-            assert('is_array($breadcrumbLinks)');
+            assert('is_array($breadCrumbLinks)');
             $gridView    = new GridView(2, 1);
             $gridView->setCssClasses($cssClasses);
             $gridView->setView(new $breadcrumbViewClassName($controller->getId(),
                                                             $controller->getModule()->getId(),
-                                                            $breadcrumbLinks), 0, 0);
+                                                            $breadCrumbLinks), 0, 0);
             $gridView->setView($containedView, 1, 0);
             return static::makeStandardViewForCurrentUser($controller, $gridView);
         }
@@ -78,7 +78,7 @@
 
          * @param CController $controller
          * @param View $containedView
-         * @param $breadcrumbLinks
+         * @param array $breadCrumbLinks
          * @param $breadcrumbViewClassName
          * @param array $cssClasses
          * @return GridView
@@ -91,7 +91,7 @@
          * @param CController $controller
          * @param View $containedView
          * @param View $secondContainedView
-         * @param $breadcrumbLinks
+         * @param array $breadCrumbLinks
          * @param $breadcrumbViewClassName
          * @param array $cssClasses
          * @return GridView
@@ -99,18 +99,30 @@
         public static function makeTwoViewsWithBreadcrumbsForCurrentUser(CController $controller,
                                                                          View $containedView,
                                                                          View $secondContainedView,
-                                                                         $breadcrumbLinks,
+                                                                         $breadCrumbLinks,
                                                                          $breadcrumbViewClassName,
                                                                          $cssClasses = array())
         {
-            assert('is_array($breadcrumbLinks)');
+            assert('is_array($breadCrumbLinks)');
             $gridView    = new GridView(3, 1);
             $gridView->setCssClasses($cssClasses);
             $gridView->setView(new $breadcrumbViewClassName($controller->getId(),
                                                             $controller->getModule()->getId(),
-                                                            $breadcrumbLinks), 0, 0);
+                                                            $breadCrumbLinks), 0, 0);
             $gridView->setView($containedView, 1, 0);
             $gridView->setView($secondContainedView, 2, 0);
+            return static::makeStandardViewForCurrentUser($controller, $gridView);
+        }
+
+        public static function makeTwoStandardViewsForCurrentUser(CController $controller,
+                                                                  View $containedView,
+                                                                  View $secondContainedView,
+                                                                  $cssClasses = array())
+        {
+            $gridView = new GridView(2, 1);
+            $gridView->setCssClasses($cssClasses);
+            $gridView->setView($containedView, 0, 0);
+            $gridView->setView($secondContainedView, 1, 0);
             return static::makeStandardViewForCurrentUser($controller, $gridView);
         }
 
@@ -149,12 +161,13 @@
             $horizontalGridView->setView($containedView, 0, 1);
             $horizontalGridView->setView(static::makeFlashMessageView($controller),   0, 2); //TODO needs to move into $cotainedView
 
-            $verticalGridView   = new GridView(5, 1);
+            $verticalGridView   = new GridView(6, 1);
             $verticalGridView->setView(static::makeHeaderView($controller),                 0, 0);
             $verticalGridView->setView($horizontalGridView,                                 1, 0);
             $verticalGridView->setView(static::makeModalContainerView(),                    2, 0);
             $verticalGridView->setView(static::makeModalGameNotificationContainerView(),    3, 0);
-            $verticalGridView->setView(static::makeFooterView(),                            4, 0);
+            $verticalGridView->setView(static::makeGameCoinContainerView($controller),      4, 0);
+            $verticalGridView->setView(static::makeFooterView(),                            5, 0);
 
             return $verticalGridView;
         }
@@ -293,6 +306,11 @@
             return new ModalGameNotificationContainerView(GameNotification::getAllByUser(Yii::app()->user->userModel));
         }
 
+        protected static function makeGameCoinContainerView(CController $controller)
+        {
+            return new GameCoinContainerView($controller);
+        }
+
         protected static function makeFooterView()
         {
             return new FooterView();
@@ -372,15 +390,50 @@
             }
         }
 
+        /**
+         * @param $key
+         * @param bool $value
+         */
         public static function setLockKeyForDetailsAndRelationsView($key, $value)
         {
             assert('is_bool($value)');
             Yii::app()->user->setState($key, $value);
         }
 
+        /**
+         * @param $key
+         * @return mixed
+         */
         public static function getLockKeyForDetailsAndRelationsView($key)
         {
             return Yii::app()->user->getState($key);
+        }
+
+        /**
+         * Render action bar links for kanban board on details view
+         * @param $controllerId
+         * @param $moduleId
+         * @param $modelId
+         * @param bool $kanbanIsActive
+         * @return string
+         */
+        public static function renderActionBarLinksForKanbanBoard($controllerId, $moduleId, $modelId, $kanbanIsActive)
+        {
+            assert('is_string($controllerId)');
+            assert('is_string($moduleId)');
+            assert('is_int($modelId)');
+            assert('is_bool($kanbanIsActive)');
+            if ($kanbanIsActive)
+            {
+                $active = DetailsAndRelationsViewTypesToggleLinkActionElement::TYPE_KANBAN_BOARD;
+            }
+            else
+            {
+                $active = DetailsAndRelationsViewTypesToggleLinkActionElement::TYPE_NON_KANBAN_BOARD;
+            }
+            $toggleLinkActionElement = new DetailsAndRelationsViewTypesToggleLinkActionElement(
+                                       $controllerId, $moduleId, $modelId, array('active' => $active));
+            return $toggleLinkActionElement->render();
         }
     }
 ?>

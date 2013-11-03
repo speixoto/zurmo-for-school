@@ -37,18 +37,12 @@
     /**
      * Makes sure the upload file size is large enough.
      */
-    class DatabaseDefaultCollationServiceHelper extends ServiceHelper
+    class DatabaseDefaultCollationServiceHelper extends DatabaseBaseServiceHelper
     {
         protected $required = true;
-        protected $form;
 
         protected $notAllowedDatabaseCollations = array('utf8_general_ci');
 
-        public function __construct($form)
-        {
-            assert('$form instanceof InstallSettingsForm');
-            $this->form = $form;
-        }
 
         protected function checkService()
         {

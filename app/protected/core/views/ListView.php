@@ -122,6 +122,17 @@
             $this->kanbanBoard            = $kanbanBoard;
         }
 
+        protected function getKanbanBoard()
+        {
+            return $this->kanbanBoard;
+        }
+
+        protected function setKanbanBoard($kanbanBoard)
+        {
+            assert('$kanbanBoard === null || $kanbanBoard instanceof $kanbanBoard');
+            $this->kanbanBoard = $kanbanBoard;
+        }
+
         /**
          * Renders content for a list view. Utilizes a CActiveDataprovider
          * and a CGridView widget.
@@ -191,10 +202,11 @@
         {
             $columns = $this->getCGridViewColumns();
             assert('is_array($columns)');
+            $listTypeCssClass = 'type-' . $this->moduleId;
             $params = array(
                 'id' => $this->getGridViewId(),
                 'htmlOptions' => array(
-                    'class' => 'cgrid-view'
+                    'class' => 'cgrid-view ' . $listTypeCssClass
                 ),
                 'loadingCssClass'      => 'loading',
                 'dataProvider'         => $this->getDataProvider(),
@@ -211,6 +223,8 @@
                 'summaryText'          => static::getSummaryText(),
                 'summaryCssClass'      => static::getSummaryCssClass(),
                 'summaryCloneId'       => $this->getSummaryCloneId(),
+                'tableColumnGroup'     => $this->getTableColumnGroup(),
+                'hideHeader'           => $this->isHeaderHidden()
             );
             return $this->resolveCGridViewParamsForKanbanBoard($params);
         }
@@ -218,7 +232,8 @@
         protected static function getGridTemplate()
         {
             $preloader = '<div class="list-preloader"><span class="z-spinner"></span></div>';
-            return "{summary}\n{items}\n{pager}" . $preloader;
+            $items     = '<div class="items-wrapper">{items}</div>';
+            return "{summary}" . $items . "{pager}" . $preloader;
         }
 
         protected static function getPagerCssClass()
@@ -239,6 +254,11 @@
         public function getSummaryCloneId()
         {
             return  $this->getGridViewId() . "-summary-clone";
+        }
+
+        public function getTableColumnGroup()
+        {
+            return array();
         }
 
         protected function getCGridViewPagerParams()
@@ -550,7 +570,7 @@
          */
         protected function processColumnInfoToFetchColumnData($columnInformation)
         {
-            $columnClassName = $columnInformation['type'] . 'ListViewColumnAdapter';
+            $columnClassName = ucfirst($columnInformation['type']) . 'ListViewColumnAdapter';
             $columnAdapter   = new $columnClassName($columnInformation['attributeName'], $this, array_slice($columnInformation, 1));
             $column = $columnAdapter->renderGridViewData();
             if (!isset($column['class']))
@@ -558,6 +578,15 @@
                 $column['class'] = 'DataColumn';
             }
             return $column;
+        }
+
+        /**
+         * Checks if header cells have to be hidden
+         * @return bool
+         */
+        protected function isHeaderHidden()
+        {
+            return false;
         }
     }
 ?>

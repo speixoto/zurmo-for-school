@@ -41,7 +41,7 @@
     {
         protected function getHomeLinkLabel()
         {
-            return Zurmo::t('Default', 'Templates');
+            return Zurmo::t('Core', 'Templates');
         }
     }
 ?>

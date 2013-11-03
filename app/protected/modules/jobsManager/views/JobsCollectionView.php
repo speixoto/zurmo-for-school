@@ -49,23 +49,27 @@
 
         protected $jobsData = array();
 
-        protected $showRunJobLink;
+        protected $showRunJobLink = true;
 
-        public function __construct($controllerId, $moduleId, $monitorJobData, $jobsData, $messageBoxContent = null,
-                                    $showRunJobLink = false)
+        /**
+         * @param string $controllerId
+         * @param string $moduleId
+         * @param array $monitorJobData
+         * @param array $jobsData
+         * @param null|string $messageBoxContent
+         */
+        public function __construct($controllerId, $moduleId, $monitorJobData, $jobsData, $messageBoxContent = null)
         {
             assert('is_string($controllerId)');
             assert('is_string($moduleId)');
             assert('is_array($monitorJobData)');
             assert('is_array($jobsData) && count($jobsData) > 0');
             assert('$messageBoxContent == null || is_string($messageBoxContent)');
-            assert('is_bool($showRunJobLink)');
             $this->controllerId           = $controllerId;
             $this->moduleId               = $moduleId;
             $this->monitorJobData         = $monitorJobData;
             $this->jobsData               = $jobsData;
             $this->messageBoxContent      = $messageBoxContent;
-            $this->showRunJobLink         = $showRunJobLink;
         }
 
         protected function renderContent()
@@ -124,13 +128,18 @@
                                           self::renderMonitorJobHeaderContent());
         }
 
+        /**
+         * @param array $jobsData
+         * @param string $jobLabelHeaderContent
+         * @return string
+         */
         protected function renderJobLayout($jobsData, $jobLabelHeaderContent)
         {
             assert('is_array($jobsData)');
             assert('is_string($jobLabelHeaderContent)');
             $content  = '<table>';
             $content .= '<colgroup>';
-            if($this->showRunJobLink)
+            if ($this->showRunJobLink)
             {
                 $content .= '<col style="width:40%" /><col style="width:20%" /><col style="width:20%" />';
                 $content .= '<col style="width:10%" />';
@@ -145,9 +154,9 @@
             $content .= '<tbody>';
             $content .= '<tr><th>' . $jobLabelHeaderContent . '</th>';
             $content .= '<th>' . Zurmo::t('JobsManagerModule', 'Last Completed Run') . '</th>';
-            $content .= '<th>' . Zurmo::t('JobsManagerModule', 'Status') . '</th>';
+            $content .= '<th>' . Zurmo::t('ZurmoModule', 'Status') . '</th>';
             $content .= '<th>&#160;</th>';
-            if($this->showRunJobLink)
+            if ($this->showRunJobLink)
             {
                 $content .= '<th>&#160;</th>';
             }
@@ -156,11 +165,11 @@
             {
                 $content .= '<tr>';
                 $content .= '<td>' . $this->renderViewJobLogLinkContent($type);
-                $content .=          '&#160;' . ZurmoHtml::encode($jobData['label']) . '</td>';
+                $content .= '<span class="job-name">'.ZurmoHtml::encode($jobData['label']) . '</span></td>';
                 $content .= '<td>' . $jobData['lastCompletedRunEncodedContent'] . '</td>';
                 $content .= '<td>' . ZurmoHtml::encode($jobData['statusContent']) . '</td>';
                 $content .= '<td class="button-column-right">' . $this->resolveActionContentByStatus($type, $jobData['status']) . '</td>';
-                if($this->showRunJobLink)
+                if ($this->showRunJobLink)
                 {
                     $runJobLink = ZurmoHtml::link(ZurmoHtml::wrapLabel(Zurmo::t('ZurmoModule', 'Run')),
                                     Yii::app()->createUrl(
@@ -206,7 +215,7 @@
             {
                 $params = array('type' => $type);
                 $route   = Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/resetJob/', $params);
-                $content = ZurmoHtml::link(Zurmo::t('JobsManagerModule', 'Reset'), $route, array('class' => 'z-link reset-job-link'));
+                $content = ZurmoHtml::link(Zurmo::t('Core', 'Reset'), $route, array('class' => 'z-link reset-job-link'));
                 return $content;
             }
             return null;
@@ -219,7 +228,7 @@
                                            array('type' => $type));
             $label = Zurmo::t('JobsManagerModule', 'Job Log');
             return ZurmoHtml::ajaxLink($label, $route, static::resolveAjaxOptionsForJobLogLink($type),
-                                       array('class' => 'z-link'));
+                                       array('class' => 'z-link job-log-link'));
         }
 
         protected static function resolveAjaxOptionsForJobLogLink($type)

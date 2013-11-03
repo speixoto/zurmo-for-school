@@ -59,7 +59,7 @@
 
         public static function getRecommendedRunFrequencyContent()
         {
-            return Zurmo::t('ImportModule', 'Once a week, early in the morning.');
+            return Zurmo::t('JobsManagerModule', 'Once a week, early in the morning.');
         }
 
         /**

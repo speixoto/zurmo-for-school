@@ -43,6 +43,11 @@
         /**
          * Constructs a user membershipview specifying the controller as
          * well as the model that will have its details displayed.
+         * @param string $controllerId
+         * @param string $moduleId
+         * @param GroupUserMembershipForm $model
+         * @param null|string $modelId
+         * @param string $title
          */
         public function __construct($controllerId, $moduleId, $model, $modelId, $title)
         {
@@ -77,7 +82,7 @@
                 'leftSideAttributeName'  => 'userNonMembershipData',
                 'leftSideDisplayLabel'   => Zurmo::t('ZurmoModule', 'Non Members'),
                 'rightSideAttributeName' => 'userMembershipData',
-                'rightSideDisplayLabel'  => Zurmo::t('ZurmoModule', 'Members'),
+                'rightSideDisplayLabel'  => Zurmo::t('Core', 'Members'),
             ));
             $cClipWidget->endClip();
             $cellsContent  = $cClipWidget->getController()->clips['SortableCompareLists'];

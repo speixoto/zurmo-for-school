@@ -41,7 +41,7 @@
     {
         public $activeActionElementType;
 
-        public $breadcrumbLinks;
+        public $breadCrumbLinks;
 
         /**
          * @return string
@@ -74,7 +74,7 @@
             $mixedView               = new ActionBarAndZeroModelsYetView($actionBarView, $messageView);
             $view                    = new $pageViewClassName(ProductDefaultViewUtil::
                                                                      makeViewWithBreadcrumbsForCurrentUser(
-                                                                         $this->controller, $mixedView, $this->breadcrumbLinks, 'ProductBreadCrumbView'));
+                                                                         $this->controller, $mixedView, $this->breadCrumbLinks, 'ProductBreadCrumbView'));
             echo $view->render();
         }
     }

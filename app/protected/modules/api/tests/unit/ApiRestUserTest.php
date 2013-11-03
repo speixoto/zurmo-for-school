@@ -195,6 +195,10 @@
             unset($response['data']['id']);
             unset($response['data']['password']);
             unset($response['data']['manager']['username']);
+            unset($response['data']['hideFromLeaderboard']);
+            unset($response['data']['hideFromSelecting']);
+            unset($response['data']['isRootUser']);
+            unset($response['data']['isSystemUser']);
             $hash = User::encryptPassword($data['password']);
             unset($data['password']);
 
@@ -298,6 +302,27 @@
             $this->assertEquals(3, count($response['data']['items']));
             $this->assertEquals(3, $response['data']['totalCount']);
             $this->assertEquals(1, $response['data']['currentPage']);
+        }
+
+        public function testListUserAttributes()
+        {
+            RedBeanModel::forgetAll();
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
+
+            $authenticationData = $this->login();
+            $headers = array(
+                'Accept: application/json',
+                'ZURMO_SESSION_ID: ' . $authenticationData['sessionId'],
+                'ZURMO_TOKEN: ' . $authenticationData['token'],
+                'ZURMO_API_REQUEST_TYPE: REST',
+            );
+            $allAttributes      = ApiRestTestHelper::getModelAttributes(new User());
+
+            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/users/user/api/listAttributes/' , 'GET', $headers);
+            $response = json_decode($response, true);
+            $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
+            $this->assertEquals($allAttributes, $response['data']['items']);
         }
 
         /**

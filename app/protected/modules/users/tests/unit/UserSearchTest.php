@@ -42,10 +42,14 @@
             SecurityTestHelper::createSuperAdmin();
         }
 
+        public function setUp()
+        {
+            parent::setUp();
+            Yii::app()->user->userModel = User::getByUsername('super');
+        }
+
         public function testGetUsersByPartialFullName()
         {
-            Yii::app()->user->userModel = User::getByUsername('super');
-
             UserTestHelper::createBasicUser('Azo');
             UserTestHelper::createBasicUser('Bdo');
             UserTestHelper::createBasicUser('Abzo');
@@ -62,7 +66,6 @@
 
         public function testGetUsersByEmailAddress()
         {
-            Yii::app()->user->userModel = User::getByUsername('super');
             $user = UserTestHelper::createBasicUser('Steve');
             $user->primaryEmail->emailAddress = 'steve@example.com';
             $user->primaryEmail->optOut       = 1;
@@ -72,6 +75,52 @@
             $users = UserSearch::getUsersByEmailAddress('steve@example.com');
             $this->assertEquals(1, count($users));
             $this->assertEquals($user->id, $users[0]->id);
+        }
+
+        /**
+         * Test users count using NonSystemUsersStateMetadataAdapter
+         */
+        public function testGetUsersListUsingNonSystemUsersStateMetadataAdapter()
+        {
+            $users                      = User::getAll();
+            $this->assertEquals(5, count($users));
+            $user                       = UserTestHelper::createBasicUser('mysysuser');
+            $user->setIsSystemUser();
+            $this->assertTrue($user->save());
+
+            $nonSystemUsersStateMetadataAdapter = new NonSystemUsersStateMetadataAdapter(array('clauses' => array(), 'structure' => ''));
+            $metadata                           = $nonSystemUsersStateMetadataAdapter->getAdaptedDataProviderMetadata();
+            $joinTablesAdapter                  = new RedBeanModelJoinTablesQueryAdapter('User');
+            $where  = RedBeanModelDataProvider::makeWhere('User', $metadata, $joinTablesAdapter);
+            $models = User::getSubset($joinTablesAdapter, null, null, $where, null);
+            $this->assertEquals(5, count($models));
+
+            $actualUsers = User::getAll();
+            $this->assertEquals(6, count($actualUsers));
+
+            unset($user);
+            $user   = User::getByUsername('mysysuser');
+            $this->assertTrue((bool)$user->isSystemUser);
+
+            $user->setIsNotSystemUser();
+            $this->assertTrue($user->save());
+            unset($user);
+            $user   = User::getByUsername('mysysuser');
+            $this->assertEquals(0, $user->isSystemUser);
+
+            $where  = RedBeanModelDataProvider::makeWhere('User', $metadata, $joinTablesAdapter);
+            $models = User::getSubset($joinTablesAdapter, null, null, $where, null);
+            $this->assertEquals(6, count($models));
+        }
+
+        /**
+         * @expectedException NotSupportedException
+         * @expectedExceptionMessage No such autoCompleteOption as: anOptionsThatdoesNotExist
+         */
+        public function testGetUsersByPartialFullNameWithInexistentAutoCompleteOption()
+        {
+            $autoCompleteOptions    = ArrayUtil::encodeAutoCompleteOptionsArray(array('anOptionsThatdoesNotExist' => true));
+            UserSearch::getUsersByPartialFullName('A', 5, $autoCompleteOptions);
         }
     }
 ?>

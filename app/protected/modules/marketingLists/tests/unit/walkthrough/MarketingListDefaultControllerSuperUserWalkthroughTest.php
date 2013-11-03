@@ -44,11 +44,6 @@
             SecurityTestHelper::createSuperAdmin();
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
-
-            MarketingListTestHelper::createMarketingListByName('MarketingListName', 'MarketingList Description',
-                                                                                            'first', 'first@zurmo.com');
-            MarketingListTestHelper::createMarketingListByName('MarketingListName2', 'MarketingList Description2',
-                                                                                        'second', 'second@zurmo.com');
             ReadPermissionsOptimizationUtil::rebuild();
         }
 
@@ -62,6 +57,16 @@
         public function testSuperUserAllDefaultControllerActions()
         {
             // Test all default controller actions that do not require any POST/GET variables to be passed.
+            $this->runControllerWithNoExceptionsAndGetContent('marketingLists/default');
+            $this->runControllerWithNoExceptionsAndGetContent('marketingLists/default/index');
+            $this->runControllerWithNoExceptionsAndGetContent('marketingLists/default/list');
+            $this->runControllerWithNoExceptionsAndGetContent('marketingLists/default/create');
+
+            MarketingListTestHelper::createMarketingListByName('MarketingListName', 'MarketingList Description',
+                'first', 'first@zurmo.com');
+            MarketingListTestHelper::createMarketingListByName('MarketingListName2', 'MarketingList Description2',
+                'second', 'second@zurmo.com');
+
             $this->runControllerWithNoExceptionsAndGetContent('marketingLists/default');
             $this->runControllerWithNoExceptionsAndGetContent('marketingLists/default/index');
             $this->runControllerWithNoExceptionsAndGetContent('marketingLists/default/list');
@@ -98,7 +103,7 @@
                 ) ,
             ));
             $content    = $this->runControllerWithNoExceptionsAndGetContent('marketingLists/default/list');
-            $this->assertTrue(strpos($content, 'No results found.') !== false);
+            $this->assertTrue(strpos($content, 'No results found') !== false);
 
             StickyReportUtil::clearDataByKey('MarketingListsSearchForm');
             $this->setGetArray(array(
@@ -184,7 +189,6 @@
          */
         public function testSuperUserCreateAction()
         {
-            // TODO: @Shoaibi: Low: Add test with different permissions
             $content = $this->runControllerWithNoExceptionsAndGetContent('marketingLists/default/create');
             $this->assertTrue(strpos($content, 'Create Marketing List') !== false);
             $this->assertTrue(strpos($content, '<label for="MarketingList_name" class="required">Name ' .
@@ -236,22 +240,22 @@
             $content = $this->runControllerWithNoExceptionsAndGetContent('marketingLists/default/details');
             $this->assertTrue(strpos($content, 'MarketingListName2') !== false);
             $this->assertEquals(3, substr_count($content, 'MarketingListName2'));
-            $this->assertTrue(strpos($content, '<span>Details</span></a>') !== false);
+            $this->assertTrue(strpos($content, '<span class="button-label">Details</span>') !== false);
             $this->assertTrue(strpos($content, '<strong class="marketing-list-subscribers-stats">' .
                                                                                     '0 Subscribed</strong>') !== false);
             $this->assertTrue(strpos($content, '<strong class="marketing-list-unsubscribers-stats">' .
                                                                                     '0 Unsubscribed</strong>') !== false);
             $this->assertTrue(strpos($content, 'MarketingList Description2') !== false);
-            $this->assertTrue(strpos($content, '<span>Options</span></a>') !== false);
-            $this->assertTrue(strpos($content, '<span>Edit</span></a></li>') !== false);
-            $this->assertTrue(strpos($content, '<span>Delete</span></a></li>') !== false);
+            $this->assertTrue(strpos($content, '<span class="button-label">Options</span>') !== false);
+            $this->assertTrue(strpos($content, '>Edit</a></li>') !== false);
+            $this->assertTrue(strpos($content, '>Delete</a></li>') !== false);
             $this->assertTrue(strpos($content, '<h3>Contacts/Leads</h3>') !== false);
-            $this->assertTrue(strpos($content, '<span>Add Contact/Lead</span></a>') !== false);
+            $this->assertTrue(strpos($content, '<span class="button-label">Add Contact/Lead</span>') !== false);
             $this->assertTrue(strpos($content, 'From Contacts/Leads</label>') !== false);
             $this->assertTrue(strpos($content, 'From Report</label>') !== false);
-            $this->assertTrue(strpos($content, '<span>Subscribe</span></a>') !== false);
-            $this->assertTrue(strpos($content, '<span>Unsubscribe</span></a>') !== false);
-            $this->assertTrue(strpos($content, '<span>Delete</span></a>') !== false);
+            $this->assertTrue(strpos($content, '<span class="button-label">Subscribe</span>') !== false);
+            $this->assertTrue(strpos($content, '<span class="button-label">Unsubscribe</span>') !== false);
+            $this->assertTrue(strpos($content, '<span class="button-label">Delete</span>') !== false);
         }
 
         /**
@@ -433,7 +437,7 @@
             $this->assertTrue(strpos($content, '<div id="modalContainer-search-formmodal"></div>') !== false);
             $this->assertTrue(strpos($content, '<div id="MarketingListsModalListView" class="ModalListView ListView ' .
                                                 'ModelView ConfigurableMetadataView MetadataView">') !== false);
-            $this->assertTrue(strpos($content, '<div class="cgrid-view" id="list-viewmodal">') !== false);
+            $this->assertTrue(strpos($content, '<div class="cgrid-view type-marketingLists" id="list-viewmodal">') !== false);
             $this->assertTrue(strpos($content, '<div class="summary">1-2 of 2 result(s).</div>') !== false);
             $this->assertTrue(strpos($content, '<table class="items">') !== false);
             $this->assertTrue(strpos($content, '<th id="list-viewmodal_c0">') !== false);

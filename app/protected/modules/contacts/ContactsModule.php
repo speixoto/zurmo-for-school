@@ -117,12 +117,12 @@
                 return false;
             }
             $data = array(
-                'New',
-                'In Progress',
-                'Recycled',
-                'Dead',
-                'Qualified',
-                'Customer'
+                Zurmo::t('Core', 'New'),
+                Zurmo::t('Core', 'In Progress'),
+                Zurmo::t('ContactsModule', 'Recycled'),
+                Zurmo::t('ContactsModule', 'Dead'),
+                Zurmo::t('ContactsModule', 'Qualified'),
+                Zurmo::t('ZurmoModule', 'Customer')
             );
             $order = 0;
             $startingStateId = null;
@@ -133,7 +133,7 @@
                 $state->order = $order;
                 $saved        = $state->save();
                 assert('$saved');
-                if ($stateName == 'Qualified')
+                if ($stateName == Zurmo::t('ContactsModule', 'Qualified'))
                 {
                     $startingStateId = $state->id;
                 }

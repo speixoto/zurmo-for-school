@@ -43,6 +43,10 @@
 
         private $moduleId;
 
+        /**
+         * @param string $controllerId
+         * @param string $moduleId
+         */
         public function __construct($controllerId, $moduleId)
         {
             assert('is_string($controllerId) && $controllerId != ""');
@@ -68,7 +72,7 @@
             $content .= '<br/>';
             $content .= Zurmo::t('InstallModule', 'Click below to go to the login page. The username is <b>super</b>');
             $content .= '<br/><br/>';
-            $content .= ZurmoHtml::link(Zurmo::t('InstallModule', 'Sign in'), $loginUrl);
+            $content .= ZurmoHtml::link(Zurmo::t('ZurmoModule', 'Sign in'), $loginUrl);
             $content .= '</td></tr></table>';
             $content .= '</div>';
             $content .= '<div id="progress-table">';

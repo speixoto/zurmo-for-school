@@ -86,7 +86,6 @@
             echo $view->render();
         }
 
-
         public function actionDetails($id, $redirectUrl = null)
         {
             $emailMessage          = EmailMessage::getById(intval($id));
@@ -100,13 +99,20 @@
 
         public function actionConfigurationEdit()
         {
-            $view = new ConfigurationPageView(ZurmoDefaultAdminViewUtil::
-                                                  makeStandardViewForCurrentUser($this, new EmailConfigurationListView()));
+            $breadCrumbLinks = array(
+                Zurmo::t('EmailMessagesModule', 'Email Configuration'),
+            );
+            $view = new ConfigurationPageView(ZurmoDefaultAdminViewUtil::makeViewWithBreadcrumbsForCurrentUser(
+                        $this, new EmailConfigurationListView(), $breadCrumbLinks, 'SettingsBreadCrumbView'));
             echo $view->render();
         }
 
         public function actionConfigurationEditOutbound()
         {
+            $breadCrumbLinks = array(
+                Zurmo::t('EmailMessagesModule', 'Email Configuration') => array('/emailMessages/default/configurationEdit'),
+                Zurmo::t('EmailMessagesModule', 'Outbound Email Configuration (SMTP)')
+            );
             $configurationForm = EmailSmtpConfigurationFormAdapter::makeFormFromGlobalConfiguration();
             $postVariableName   = get_class($configurationForm);
             if (isset($_POST[$postVariableName]))
@@ -127,8 +133,8 @@
                                     $this->getModule()->getId(),
                                     $configurationForm);
             $editView->setCssClasses( array('AdministrativeArea') );
-            $view = new ZurmoConfigurationPageView(ZurmoDefaultAdminViewUtil::
-                                         makeStandardViewForCurrentUser($this, $editView));
+            $view = new ZurmoConfigurationPageView(ZurmoDefaultAdminViewUtil::makeViewWithBreadcrumbsForCurrentUser(
+                    $this, $editView, $breadCrumbLinks, 'SettingsBreadCrumbView'));
             echo $view->render();
         }
 
@@ -142,11 +148,18 @@
             $adapterClassName   = 'EmailArchivingConfigurationFormAdapter';
             $editViewClassName  = 'EmailArchivingConfigurationEditAndDetailsView';
             $successMessage     = Zurmo::t('EmailMessagesModule', 'Email archiving configuration saved successfully.');
+            $breadCrumbLinks = array(Zurmo::t('EmailMessagesModule', 'Email Configuration')
+                                     => array('/emailMessages/default/configurationEdit'));
             if ($type == 2)
             {
                 $adapterClassName   = 'BounceConfigurationFormAdapter';
                 $editViewClassName  = 'BounceConfigurationEditAndDetailsView';
                 $successMessage     = Zurmo::t('EmailMessagesModule', 'Bounce configuration saved successfully.');
+                $breadCrumbLinks[]  = Zurmo::t('EmailMessagesModule', 'Bounce Configuration (IMAP)');
+            }
+            else
+            {
+                $breadCrumbLinks[] = Zurmo::t('EmailMessagesModule', 'Email Archiving Configuration (IMAP)');
             }
             $configurationForm = $adapterClassName::makeFormFromGlobalConfiguration();
             $postVariableName   = get_class($configurationForm);
@@ -166,8 +179,8 @@
                                     $this->getModule()->getId(),
                                     $configurationForm);
             $editView->setCssClasses( array('AdministrativeArea') );
-            $view = new ZurmoConfigurationPageView(ZurmoDefaultAdminViewUtil::
-                                         makeStandardViewForCurrentUser($this, $editView));
+            $view = new ZurmoConfigurationPageView(ZurmoDefaultAdminViewUtil::makeViewWithBreadcrumbsForCurrentUser(
+                        $this, $editView, $breadCrumbLinks, 'SettingsBreadCrumbView'));
             echo $view->render();
         }
 
@@ -216,7 +229,7 @@
                     }
                     else
                     {
-                        $user                   = BaseJobControlUserConfigUtil::getUserToRunAs();
+                        $user                   = BaseControlUserConfigUtil::getUserToRunAs();
                         $userToSendMessagesFrom = User::getById((int)$user->id);
                         $emailMessage = EmailMessageHelper::sendTestEmailFromUser($emailHelper, $userToSendMessagesFrom,
                                                                       $configurationForm->aTestToAddress);
@@ -252,7 +265,7 @@
                     $messageContent = Zurmo::t('EmailMessagesModule', 'A test email address must be entered before you can send a test email.') . "\n";
                 }
                 Yii::app()->getClientScript()->setToAjaxMode();
-                $messageView = new TestEmailMessageView($messageContent);
+                $messageView = new TestConnectionView($messageContent);
                 $view = new ModalView($this, $messageView);
                 echo $view->render();
             }
@@ -299,10 +312,8 @@
                 catch (Exception $e)
                 {
                     $connect = false;
-                    $messageContent = Zurmo::t('EmailMessagesModule', 'Could not connect to IMAP server.') . "\n";
                 }
-
-                if (isset($connect) && $connect == true)
+                if ($connect)
                 {
                     $messageContent = Zurmo::t('EmailMessagesModule', 'Successfully connected to IMAP server.') . "\n";
                 }
@@ -310,9 +321,8 @@
                 {
                     $messageContent = Zurmo::t('EmailMessagesModule', 'Could not connect to IMAP server.') . "\n";
                 }
-
                 Yii::app()->getClientScript()->setToAjaxMode();
-                $messageView = new TestImapConnectionMessageView($messageContent);
+                $messageView = new TestConnectionView($messageContent);
                 $view = new ModalView($this,
                                       $messageView,
                                       'modalContainer',
@@ -395,13 +405,12 @@
                     $selectForm->setAttributes($_POST[get_class($selectForm)][$id]);
                     $contact = Contact::getById((int)$selectForm->contactId);
                     ArchivedEmailMatchingUtil::resolveContactToSenderOrRecipient($emailMessage, $contact);
-                    ArchivedEmailMatchingUtil::resolveEmailAddressToContactIfEmailRelationAvailable($emailMessage, $contact);
                     $emailMessage->folder = EmailFolder::getByBoxAndType($emailMessage->folder->emailBox,
                                                                          EmailFolder::TYPE_ARCHIVED);
                     if (!$emailMessage->save())
                     {
                         throw new FailedToSaveModelException();
-                    }                    
+                    }
                 }
             }
             else
@@ -556,7 +565,7 @@
             }
             return $personOrAccount;
         }
-        
+
         protected function actionValidateCreateEmailMessage($postData, CreateEmailMessageForm $emailMessageForm)
         {
             if (isset($postData['ajax']) && $postData['ajax'] == 'edit-form')
@@ -579,13 +588,13 @@
          * Given a partial name or e-mail address, search for all Users, Leads or Contacts
          * JSON encode the resulting array of contacts.
          */
-        public function actionAutoCompleteForMultiSelectAutoComplete($term)
+        public function actionAutoCompleteForMultiSelectAutoComplete($term, $autoCompleteOptions = null)
         {
             $pageSize               = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                                                 'autoCompleteListPageSize', get_class($this->getModule()));
-            $usersByFullName        = UserSearch::getUsersByPartialFullName($term, $pageSize);
-            $usersByEmailAddress    = UserSearch::getUsersByEmailAddress($term, 'contains');
-            $contacts               = ContactSearch::getContactsByPartialFullNameOrAnyEmailAddress($term, $pageSize, null, 'contains');
+            $usersByFullName        = UserSearch::getUsersByPartialFullName($term, $pageSize, $autoCompleteOptions);
+            $usersByEmailAddress    = UserSearch::getUsersByEmailAddress($term, 'contains', true, $autoCompleteOptions);
+            $contacts               = ContactSearch::getContactsByPartialFullNameOrAnyEmailAddress($term, $pageSize, null, 'contains', $autoCompleteOptions);
             $autoCompleteResults    = array();
             foreach ($usersByEmailAddress as $user)
             {
@@ -642,7 +651,7 @@
             }
             ControllerSecurityUtil::resolveAccessCanCurrentUserDeleteModel($emailMessage);
             $emailMessage->delete();
-            if($redirect)
+            if ($redirect)
             {
                 $this->redirect($redirectUrl);
             }
@@ -652,6 +661,5 @@
         {
             return new FileZurmoControllerUtil();
         }
-
     }
 ?>

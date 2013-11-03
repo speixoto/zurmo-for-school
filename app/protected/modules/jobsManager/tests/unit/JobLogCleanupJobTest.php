@@ -63,7 +63,7 @@
             $jobLog2->save();
 
             $sql = 'select count(*) count from item';
-            $row = R::getRow($sql);
+            $row = ZurmoRedBean::getRow($sql);
             $this->assertEquals(4, $row['count']);
 
             $job = new JobLogCleanupJob();
@@ -72,7 +72,7 @@
             $this->assertEquals(1, count($jobLogs));
             $this->assertEquals($jobLog2->id, $jobLogs[0]->id);
             $sql = 'select count(*) count from item';
-            $row = R::getRow($sql);
+            $row = ZurmoRedBean::getRow($sql);
             $this->assertEquals(3, $row['count']);
         }
     }

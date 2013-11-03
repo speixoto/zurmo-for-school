@@ -206,6 +206,7 @@
             unset($response['data']['shippingAddress']['latitude']);
             unset($response['data']['shippingAddress']['invalid']);
             unset($response['data']['industry']['id']);
+            unset($response['data']['latestActivityDateTime']);
             unset($response['data']['type']['id']);
             unset($response['data']['id']);
 
@@ -286,6 +287,26 @@
             $this->assertEquals(1, $response['data']['currentPage']);
             $this->assertEquals(1, $response['data']['totalCount']);
             $this->assertEquals(array($compareData), $response['data']['items']);
+        }
+
+        public function testListAccountAttributes()
+        {
+            RedBeanModel::forgetAll();
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
+
+            $authenticationData = $this->login();
+            $headers = array(
+                'Accept: application/json',
+                'ZURMO_SESSION_ID: ' . $authenticationData['sessionId'],
+                'ZURMO_TOKEN: ' . $authenticationData['token'],
+                'ZURMO_API_REQUEST_TYPE: REST',
+            );
+            $allAttributes      = ApiRestTestHelper::getModelAttributes(new Account());
+            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/accounts/account/api/listAttributes/' , 'GET', $headers);
+            $response = json_decode($response, true);
+            $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
+            $this->assertEquals($allAttributes, $response['data']['items']);
         }
 
         /**

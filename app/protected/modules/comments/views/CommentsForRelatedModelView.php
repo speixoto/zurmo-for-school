@@ -54,6 +54,15 @@
 
         protected $uniquePageId;
 
+        /**
+         * @param string $controllerId
+         * @param string $moduleId
+         * @param array $commentsData
+         * @param Item $relatedModel
+         * @param int $pageSize
+         * @param array $getParams
+         * @param null|string $uniquePageId
+         */
         public function __construct($controllerId, $moduleId, $commentsData, Item $relatedModel, $pageSize, $getParams, $uniquePageId = null)
         {
             assert('is_string($controllerId)');
@@ -72,11 +81,17 @@
             $this->uniquePageId           = $uniquePageId;
         }
 
+        /**
+         * @return string
+         */
         protected function getId()
         {
             return 'CommentsForRelatedModelView' . $this->uniquePageId;
         }
 
+        /**
+         * @return string
+         */
         protected function renderContent()
         {
             $content = '<div>' . $this->renderHiddenRefreshLinkContent() . '</div>';
@@ -91,6 +106,9 @@
             return $content;
         }
 
+        /**
+         * @return string
+         */
         protected function renderHiddenRefreshLinkContent()
         {
             $url     =   Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/ajaxListForRelatedModel',
@@ -104,6 +122,9 @@
                                 'style'     => 'display:none;'));
         }
 
+        /**
+         * @return string
+         */
         protected function renderShowAllLinkContent()
         {
             $url     =   Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/ajaxListForRelatedModel',
@@ -116,6 +137,9 @@
                                 'namespace' => 'refresh'));
         }
 
+        /**
+         * @return string
+         */
         protected function renderCommentsContent()
         {
             $content  = null;
@@ -131,7 +155,7 @@
                 $userUrl        = Yii::app()->createUrl('/users/default/details', array('id' => $comment->createdByUser->id));
                 $stringContent  = ZurmoHtml::link($comment->createdByUser->getAvatarImage(36), $userUrl);
                 $userName       = ZurmoHtml::link(strval($comment->createdByUser), $userUrl, array('class' => 'user-link'));
-                $element        = new TextAreaElement($comment, 'description');
+                $element        = new CommentTextAreaElement($comment, 'description');
                 $element->nonEditableTemplate = '<div class="comment-content"><p>'. $userName . ': {content}</p>';
                 $stringContent .= $element->render();
 
@@ -164,30 +188,34 @@
             return $content;
         }
 
+        /**
+         * @return string
+         */
         protected function renderDeleteLinkContent(Comment $comment)
         {
             $url     =   Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/deleteViaAjax',
                             array_merge($this->getParams, array('id' => $comment->id)));
-            // Begin Not Coding Standard
-            return       ZurmoHtml::ajaxLink(Zurmo::t('CommentsModule', 'Delete'), $url,
+            return       ZurmoHtml::ajaxLink(Zurmo::t('Core', 'Delete'), $url,
                          array('type'     => 'GET',
                                'complete' => "function(XMLHttpRequest, textStatus){
                                               $('#deleteCommentLink" . $comment->id . "').parent().parent().parent().remove();}"),
-                         array('id'         => 'deleteCommentLink' . $comment->id,
+                         array( 'id'         => 'deleteCommentLink' . $comment->id,
                                 'class'     => 'deleteCommentLink' . $comment->id,
                                 'namespace' => 'delete'));
-            // End Not Coding Standard
         }
 
-        /*TODO*/
+        /**
+         * @return string
+         */
         protected function renderEditLinkContent(Comment $comment)
         {
             $url     =   '';
-            // Begin Not Coding Standard
-            return       ZurmoHtml::ajaxLink(Zurmo::t('CommentsModule', 'Edit'), $url);
-            // End Not Coding Standard
+            return       ZurmoHtml::ajaxLink(Zurmo::t('Core', 'Edit'), $url);
         }
 
+        /**
+         * @return bool
+         */
         public function isUniqueToAPage()
         {
             return false;

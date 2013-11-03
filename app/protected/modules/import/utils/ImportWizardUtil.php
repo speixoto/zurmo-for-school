@@ -49,8 +49,7 @@
                                                          'rowColumnDelimiter',
                                                          'rowColumnEnclosure',
                                                          'firstRowIsHeaderRow',
-                                                         'mappingData',
-                                                         'dataAnalyzerMessagesData');
+                                                         'mappingData');
 
         /**
          * Given an import object, make an ImportWizardForm, mapping the attributes from the import object into the
@@ -140,8 +139,7 @@
         }
 
         /**
-         * Step 4 is where the import mapping is done along with any mapping rules.  Also clears out
-         * dataAnalyzerMessagesData in case it was populated from a previous run.
+         * Step 4 is where the import mapping is done along with any mapping rules.
          * @param object $importWizardForm
          * @param array $postData
          */
@@ -149,7 +147,6 @@
         {
             assert('$importWizardForm instanceof ImportWizardForm');
             assert('is_array($postData)');
-            $importWizardForm->dataAnalyzerMessagesData = null;
             $importWizardForm->mappingData              = $postData;
         }
 
@@ -219,7 +216,7 @@
             $newUnserializedData['importRulesType'] = $unserializedData['importRulesType'];
             if ($import->save())
             {
-                ImportDatabaseUtil::dropTableByTableName($import->getTempTableName());
+                ZurmoRedBean::$writer->dropTableByTableName($import->getTempTableName());
                 return true;
             }
             return false;

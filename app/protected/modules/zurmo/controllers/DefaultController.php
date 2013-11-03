@@ -120,6 +120,9 @@
 
         public function actionConfigurationEdit()
         {
+            $breadCrumbLinks = array(
+                Zurmo::t('ZurmoModule', 'Global Configuration'),
+            );
             $configurationForm = ZurmoConfigurationFormAdapter::makeFormFromGlobalConfiguration();
             $postVariableName   = get_class($configurationForm);
             if (isset($_POST[$postVariableName]))
@@ -140,8 +143,8 @@
                                     $this->getModule()->getId(),
                                     $configurationForm);
             $editView->setCssClasses( array('AdministrativeArea') );
-            $view = new ZurmoConfigurationPageView(ZurmoDefaultAdminViewUtil::
-                                         makeStandardViewForCurrentUser($this, $editView));
+            $view = new ZurmoConfigurationPageView(ZurmoDefaultAdminViewUtil::makeViewWithBreadcrumbsForCurrentUser(
+                        $this, $editView, $breadCrumbLinks, 'SettingsBreadCrumbView'));
             echo $view->render();
         }
 
@@ -223,7 +226,7 @@
                                        $name, $term);
             if (count($autoCompleteResults) == 0)
             {
-                $data = 'No Results Found';
+                $data = Zurmo::t('Core', 'No results found');
                 $autoCompleteResults[] = array('id'    => '',
                                                'name' => $data
                 );
@@ -280,6 +283,11 @@
                     $searchForm->setListAttributesSelector($listAttributesSelector);
                     unset($_POST[$formModelClassName][SearchForm::SELECTED_LIST_ATTRIBUTES]);
                 }
+                if (isset($_POST[$formModelClassName]['filterByStarred']))
+                {
+                    $searchForm->filterByStarred = $_POST[$formModelClassName]['filterByStarred'];
+                    unset($_POST[$formModelClassName]['filterByStarred']);
+                }
                 if (isset($_POST[$formModelClassName][KanbanBoard::GROUP_BY_ATTRIBUTE_VISIBLE_VALUES]))
                 {
                     unset($_POST[$formModelClassName][KanbanBoard::GROUP_BY_ATTRIBUTE_VISIBLE_VALUES]);
@@ -307,7 +315,7 @@
                 }
                 if (!$searchForm->validate())
                 {
-                     $errorData = array();
+                    $errorData = array();
                     foreach ($searchForm->getErrors() as $attribute => $errors)
                     {
                             $errorData[ZurmoHtml::activeId($searchForm, $attribute)] = $errors;
@@ -415,7 +423,7 @@
             }
             catch (FailedFileUploadException $e)
             {
-                $logoFileData = array('error' => Zurmo::t('ZurmoModule', 'Error') . ' ' . $e->getMessage());
+                $logoFileData = array('error' => Zurmo::t('Core', 'Error') . ' ' . $e->getMessage());
             }
             echo CJSON::encode(array($logoFileData));
             Yii::app()->end(0, false);
@@ -428,8 +436,9 @@
             Yii::app()->end(0, false);
         }
 
-        public function actionLogo($id)
+        public function actionLogo()
         {
+            $id   = (int)ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'logoThumbFileModelId');
             $logo = FileModel::getById($id);
             header("Content-Type:   $logo->type");
             header("Content-Length: $logo->size");
@@ -441,14 +450,6 @@
         {
             header("Content-Type:   ZurmoFileHelper::getMimeType($filePath)");
             echo file_get_contents($filePath);
-        }
-
-        public function actionPreviewFooter($isHtmlContent, $content)
-        {
-            Yii::app()->getClientScript()->setToAjaxMode();
-            $view   = new AutoresponderOrCampaignFooterTextPreviewView((bool)$isHtmlContent, $content);
-            $modalView = new ModalView($this, $view);
-            echo $modalView->render();
         }
 
         public function actionAjaxUpdateSlidingPanelShowingByDefault($portletId, $shouldSlideToSecondPanel)
@@ -476,6 +477,17 @@
             }
 
             return '';
+        }
+
+        public function actionToggleStar($modelClassName, $modelId)
+        {
+            echo StarredUtil::toggleModelStarStatus($modelClassName, (int) $modelId);
+        }
+
+        public function actionToggleDismissIntroView($moduleName, $panelId)
+        {
+            $value = (bool) ZurmoConfigurationUtil::getForCurrentUserByModuleName($moduleName, $panelId);
+            ZurmoConfigurationUtil::setForCurrentUserByModuleName($moduleName, $panelId, !$value);
         }
     }
 ?>

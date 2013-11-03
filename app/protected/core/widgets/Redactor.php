@@ -36,24 +36,38 @@
 
     class Redactor extends ZurmoWidget
     {
-        public $scriptFile = 'redactor.min.js';
+        public $scriptFile      = 'redactor.min.js';
 
-        public $cssFile = 'redactor.css';
+        public $cssFile         = 'redactor.css';
 
         public $htmlOptions;
 
         public $content;
 
-        public $buttons = "['html', 'html', '|', 'formatting', 'bold', 'italic', 'deleted', '|',
-                           'unorderedlist', 'orderedlist', 'outdent', 'indent', '|', 'table', 'link', '|',
-                           'fontcolor', 'backcolor', '|', 'alignleft', 'aligncenter', 'alignright', 'justify', '|',
-                           'horizontalrule']";
+        public $buttons         = "['html', '|', 'formatting', 'bold', 'italic', 'deleted', '|',
+                                   'unorderedlist', 'orderedlist', 'outdent', 'indent', '|', 'table', 'link', '|',
+                                   'fontcolor', 'backcolor', '|', 'alignleft', 'aligncenter', 'alignright', 'justify', '|',
+                                   'horizontalrule']";
 
-        public $source = "false";
+        public $source          = "false";
 
-        public $paragraphy = "true";
+        public $paragraphy      = "true";
 
-        public $wim = "false";
+        public $cleanup         = "true";
+
+        public $fullpage        = "true";
+
+        public $iframe          = "false";
+
+        public $minHeight       = 100;
+
+        public $convertDivs     = "false";
+
+        public $observeImages   = "false";
+
+        public $wym             = "false";
+
+        public $deniedTags      = "['html', 'head', 'link', 'body', 'meta', 'script', 'style', 'applet']";
 
         public function run()
         {
@@ -65,15 +79,22 @@
                         {
                             $('#{$id}').redactor(
                             {
-                                buttons:    {$this->buttons},
-                                source:     {$this->source},
-                                paragraphy: {$this->paragraphy},
-                                wim:        {$this->wim},
+                                buttons:        {$this->buttons},
+                                cleanup:        {$this->cleanup},
+                                convertDivs:    {$this->convertDivs},
+                                deniedTags:     {$this->deniedTags},
+                                fullpage:       {$this->fullpage},
+                                iframe:         {$this->iframe},
+                                minHeight:      {$this->minHeight},
+                                observeImages:  {$this->observeImages},
+                                source:         {$this->source},
+                                paragraphy:     {$this->paragraphy},
+                                wym:            {$this->wym},
                             });
                         }
                     );";
             Yii::app()->getClientScript()->registerScript(__CLASS__ . '#' . $this->getId(), $javaScript);
-            echo "<textarea id='{$id}' name='{$name}'>{$this->content}</textarea>";
+            echo "<textarea id='{$id}' name='{$name}'>" . CHtml::encode($this->content) . "</textarea>";
         }
 
         protected function resolvePackagePath()

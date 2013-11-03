@@ -52,7 +52,7 @@
 
         public static function getManageOrderBreadcrumbLinks()
         {
-            $title = Zurmo::t('WorkflowsModule', 'Ordering');
+            $title = Zurmo::t('ZurmoModule', 'Ordering');
             return array($title);
         }
 
@@ -72,14 +72,14 @@
                    array(
                        static::ZERO_MODELS_CHECK_FILTER_PATH . ' + list, index',
                        'controller' => $this,
-                       'activeActionElementType' => 'WorkflowsLink',
-                       'breadcrumbLinks'         => static::getListBreadcrumbLinks(),
+                       'activeActionElementType' => 'WorkflowsMenu',
+                       'breadCrumbLinks'         => static::getListBreadcrumbLinks(),
                    ),
                     array(
                         static::ZERO_MODELS_CHECK_FILTER_PATH . ' + manageOrder',
                         'controller' => $this,
-                        'activeActionElementType' => 'WorkflowManageOrderLink',
-                        'breadcrumbLinks'         => static::getManageOrderBreadcrumbLinks(),
+                        'activeActionElementType' => 'WorkflowManageOrderMenu',
+                        'breadCrumbLinks'         => static::getManageOrderBreadcrumbLinks(),
                     ),
 
                 )
@@ -95,12 +95,12 @@
         {
             $pageSize                       = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                                               'listPageSize', get_class($this->getModule()));
-            $activeActionElementType        = 'WorkflowsLink';
+            $activeActionElementType        = 'WorkflowsMenu';
             $savedWorkflow                    = new SavedWorkflow(false);
             $searchForm                     = new WorkflowsSearchForm($savedWorkflow);
             $dataProvider                   = $this->resolveSearchDataProvider($searchForm, $pageSize, null,
                                               'WorkflowsSearchView');
-            $breadcrumbLinks                = static::getListBreadcrumbLinks();
+            $breadCrumbLinks                = static::getListBreadcrumbLinks();
             if (isset($_GET['ajax']) && $_GET['ajax'] == 'list-view')
             {
                 $mixedView = $this->makeListView(
@@ -115,7 +115,7 @@
                              'SecuredActionBarForWorkflowsSearchAndListView', null, $activeActionElementType);
                 $view = new WorkflowsPageView(ZurmoDefaultAdminViewUtil::
                                               makeViewWithBreadcrumbsForCurrentUser(
-                                              $this, $mixedView, $breadcrumbLinks, 'WorkflowBreadCrumbView'));
+                                              $this, $mixedView, $breadCrumbLinks, 'WorkflowBreadCrumbView'));
             }
             echo $view->render();
         }
@@ -127,7 +127,7 @@
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($savedWorkflow);
             AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED,
                                       array(strval($savedWorkflow), 'WorkflowsModule'), $savedWorkflow);
-            $breadcrumbLinks         = array(strval($savedWorkflow));
+            $breadCrumbLinks         = array(strval($savedWorkflow));
             $workflow                = SavedWorkflowToWorkflowAdapter::makeWorkflowBySavedWorkflow($savedWorkflow);
             $workflowToWizardFormAdapter = new WorkflowToWizardFormAdapter($workflow);
             $form = $workflowToWizardFormAdapter->makeFormByType();
@@ -136,19 +136,19 @@
                                             makeViewWithBreadcrumbsForCurrentUser(
                                             $this,
                                             $detailsView,
-                                            $breadcrumbLinks,
+                                            $breadCrumbLinks,
                                             'WorkflowBreadCrumbView'));
             echo $view->render();
         }
 
         public function actionSelectType()
         {
-            $breadcrumbLinks  = array(Zurmo::t('WorkflowsModule', 'Select Workflow Type'));
+            $breadCrumbLinks  = array(Zurmo::t('WorkflowsModule', 'Select Workflow Type'));
             $view             = new WorkflowsPageView(  ZurmoDefaultAdminViewUtil::
                                                         makeViewWithBreadcrumbsForCurrentUser(
                                                         $this,
                                                         new WorkflowWizardTypesGridView(),
-                                                        $breadcrumbLinks,
+                                                        $breadCrumbLinks,
                                                         'WorkflowBreadCrumbView'));
             echo $view->render();
         }
@@ -160,7 +160,7 @@
                 $this->actionSelectType();
                 Yii::app()->end(0, false);
             }
-            $breadcrumbLinks = array(Zurmo::t('WorkflowsModule', 'Create'));
+            $breadCrumbLinks = array(Zurmo::t('Core', 'Create'));
             assert('is_string($type)');
             $workflow         = new Workflow();
             $workflow->setType($type);
@@ -171,7 +171,7 @@
                                                         makeTwoViewsWithBreadcrumbsForCurrentUser(
                                                         $this, $progressBarAndStepsView,
                                                         $wizardWizardView,
-                                                        $breadcrumbLinks,
+                                                        $breadCrumbLinks,
                                                         'WorkflowBreadCrumbView'));
             echo $view->render();
         }
@@ -180,7 +180,7 @@
         {
             $savedWorkflow      = SavedWorkflow::getById((int)$id);
             ControllerSecurityUtil::resolveCanCurrentUserAccessModule($savedWorkflow->moduleClassName);
-            $breadcrumbLinks    = array(strval($savedWorkflow));
+            $breadCrumbLinks    = array(strval($savedWorkflow));
             $workflow           = SavedWorkflowToWorkflowAdapter::makeWorkflowBySavedWorkflow($savedWorkflow);
             $progressBarAndStepsView = WorkflowWizardViewFactory::makeStepsAndProgressBarViewFromReport($workflow);
             $wizardWizardView = WorkflowWizardViewFactory::makeViewFromWorkflow($workflow, (bool)$isBeingCopied);
@@ -188,7 +188,7 @@
                                                         makeTwoViewsWithBreadcrumbsForCurrentUser(
                                                         $this, $progressBarAndStepsView,
                                                         $wizardWizardView,
-                                                        $breadcrumbLinks,
+                                                        $breadCrumbLinks,
                                                         'WorkflowBreadCrumbView'));
             echo $view->render();
         }
@@ -431,7 +431,7 @@
 
         public function actionManageOrder()
         {
-            $activeActionElementType = 'WorkflowManageOrderLink';
+            $activeActionElementType = 'WorkflowManageOrderMenu';
             $actionBarView           = new SecuredActionBarForWorkflowsSearchAndListView(
                                             $this->getId(),
                                             $this->getModule()->getId(), new SavedWorkflow(),
@@ -442,12 +442,12 @@
             $gridView                = new GridView(2, 1);
             $gridView->setView($actionBarView, 0, 0);
             $gridView->setView(new WorkflowManageOrderView(), 1, 0);
-            $breadcrumbLinks         = static::getManageOrderBreadcrumbLinks();
+            $breadCrumbLinks         = static::getManageOrderBreadcrumbLinks();
             $view                    = new WorkflowsPageView(  ZurmoDefaultAdminViewUtil::
                                             makeViewWithBreadcrumbsForCurrentUser(
                                             $this,
                                             $gridView,
-                                            $breadcrumbLinks,
+                                            $breadCrumbLinks,
                                             'WorkflowBreadCrumbView'));
             echo $view->render();
         }
@@ -494,6 +494,20 @@
                                          'type' => 'error'));
             }
             Yii::app()->end(0, false);
+        }
+
+        public function actionInQueuesAutoComplete($term, $formClassName)
+        {
+            $scopeData           = GlobalSearchUtil::resolveGlobalSearchScopeFromGetData($_GET[$formClassName],
+                                   'anyMixedAttributesScope');
+            $pageSize            = Yii::app()->pagination->resolveActiveForCurrentUserByType(
+                                   'autoCompleteListPageSize', get_class($this->getModule()));
+            $autoCompleteResults = WorkflowInQueuesModelAutoCompleteUtil::getGlobalSearchResultsByPartialTerm(
+                                    $term,
+                                    $pageSize,
+                                    Yii::app()->user->userModel,
+                                    $scopeData);
+            echo CJSON::encode($autoCompleteResults);
         }
 
         protected function resolveCanCurrentUserAccessWorkflows()

@@ -92,6 +92,16 @@
         }
 
         /**
+         * Get array or models and send response
+         */
+        public function actionListAttributes()
+        {
+            $params = Yii::app()->apiRequest->getParams();
+            $result    =  $this->processListAttributes($params);
+            Yii::app()->apiHelper->sendResponse($result);
+        }
+
+        /**
          * Create new model, and send response
          * @throws ApiException
          */
@@ -342,6 +352,34 @@
         }
 
         /**
+         * List all model attributes
+         * @param $params
+         * @return ApiResult
+         * @throws ApiException
+         */
+        protected function processListAttributes($params)
+        {
+            $data = array();
+            try
+            {
+                $modelClassName           = $this->getModelName();
+                $model                    = new $modelClassName();
+                $adapter                  = new ModelAttributesAdapter($model);
+                $customAttributes   = ArrayUtil::subValueSort($adapter->getCustomAttributes(), 'attributeLabel', 'asort');
+                $standardAttributes = ArrayUtil::subValueSort($adapter->getStandardAttributes(), 'attributeLabel', 'asort');
+                $allAttributes      = array_merge($customAttributes, $standardAttributes);
+                $data['items'] = $allAttributes;
+                $result = new ApiResult(ApiResponse::STATUS_SUCCESS, $data, null, null);
+            }
+            catch (Exception $e)
+            {
+                $message = $e->getMessage();
+                throw new ApiException($message);
+            }
+            return $result;
+        }
+
+        /**
          * Add model relation
          * @param array $params
          * @throws ApiException
@@ -360,7 +398,6 @@
                 $relationName = $data['relationName'];
                 $modelId = $data['id'];
                 $relatedId = $data['relatedId'];
-
                 $model = $modelClassName::getById(intval($modelId));
                 $relatedModelClassName = $model->getRelationModelClassName($relationName);
                 $relatedModel = $relatedModelClassName::getById(intval($relatedId));
@@ -702,8 +739,8 @@
             if (isset($data))
             {
                 $controllerUtil   = new ZurmoControllerUtil();
-                $model            = $controllerUtil->saveModelFromSanitizedData($data, $model,
-                                                                                $savedSucessfully, $modelToStringValue);
+                $model            = $controllerUtil->saveModelFromSanitizedData($data, $model, $savedSucessfully,
+                    $modelToStringValue, false);
             }
             if ($savedSucessfully && $redirect)
             {

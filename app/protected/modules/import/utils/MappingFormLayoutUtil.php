@@ -53,6 +53,12 @@
 
         protected $mappableAttributeIndicesAndDerivedTypesForExtraColumns;
 
+        /**
+         * @param string $mappingFormModelClassName
+         * @param ZurmoActiveForm $form
+         * @param array $mappableAttributeIndicesAndDerivedTypesForImportColumns
+         * @param array $mappableAttributeIndicesAndDerivedTypesForExtraColumns
+         */
         public function __construct($mappingFormModelClassName, $form,
                                     $mappableAttributeIndicesAndDerivedTypesForImportColumns,
                                     $mappableAttributeIndicesAndDerivedTypesForExtraColumns)
@@ -84,6 +90,13 @@
             return $this->mappableAttributeIndicesAndDerivedTypesForExtraColumns;
         }
 
+        /**
+         * @param string $columnName
+         * @param string $columnType
+         * @param string $attributeIndexOrDerivedType
+         * @param string $ajaxOnChangeUrl
+         * @return string
+         */
         public function renderAttributeAndColumnTypeContent  ($columnName,
                                                               $columnType,
                                                               $attributeIndexOrDerivedType,
@@ -154,6 +167,11 @@
             return ZurmoHtml::hiddenField($hiddenInputName, $columnType, $idInputHtmlOptions);
         }
 
+        /**
+         * @param string $columnName
+         * @param string $headerValue
+         * @return string
+         */
         public function renderHeaderColumnContent($columnName, $headerValue)
         {
             assert('is_string($columnName)');
@@ -162,6 +180,11 @@
             return $content;
         }
 
+        /**
+         * @param string $columnName
+         * @param string $sampleValue
+         * @return string
+         */
         public function renderImportColumnContent($columnName, $sampleValue)
         {
             assert('is_string($columnName)');
@@ -171,6 +194,14 @@
             return $content;
         }
 
+        /**
+         * @param string $columnName
+         * @param string $attributeIndexOrDerivedType
+         * @param string $importRulesType
+         * @param string $columnType
+         * @param array $mappingRuleFormsAndElementTypes
+         * @return string
+         */
         public function renderMappingRulesElements($columnName,
                                                    $attributeIndexOrDerivedType,
                                                    $importRulesType,
@@ -182,7 +213,8 @@
             assert('is_string($importRulesType)');
             assert('$columnType == "importColumn" || $columnType == "extraColumn"');
             assert('is_array($mappingRuleFormsAndElementTypes) || $mappingRuleFormsAndElementTypes == null');
-            $content = '<div id="' . self::getMappingRulesDivIdByColumnName($columnName) . '" class="mapping-rules">';
+            $content                      = null;
+            $multipleMappingRulesCssClass = null;
             if ($attributeIndexOrDerivedType != null)
             {
                 if ($mappingRuleFormsAndElementTypes == null)
@@ -197,6 +229,7 @@
                                                            $attributeIndexOrDerivedType,
                                                            $columnType);
                 }
+                $content .= ZurmoHtml::tag('h4', array(), Zurmo::t('ImportModule', 'Rules'));
                 foreach ($mappingRuleFormsAndElementTypes as $notUsed => $ruleFormAndElementType)
                 {
                     $mappingRuleForm        = $ruleFormAndElementType['mappingRuleForm'];
@@ -218,12 +251,13 @@
                                                   $attributeName,
                                                   $this->form,
                                                   $params);
-                    $content .= '<table><tbody><tr>';
+                    $element->editableTemplate = '<div>{label}{content}{error}</div>';
                     $content .= $element->render();
-                    $content .= '</tr></tbody></table>';
                 }
             }
-            $content .= '</div>';
+
+            $content = ZurmoHtml::tag('div', array('id' => self::getMappingRulesDivIdByColumnName($columnName),
+                                                   'class' => 'mapping-rules'), $content);
             return $content;
         }
 
@@ -275,6 +309,10 @@
             );";
         }
 
+        /**
+         * @param string $columnName
+         * @return string
+         */
         public static function resolveSampleColumnIdByColumnName($columnName)
         {
             assert('is_string($columnName)');

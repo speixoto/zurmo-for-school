@@ -78,7 +78,12 @@
 
         public function getTitle()
         {
-            return Zurmo::t('MarketingListsModule', 'My Subscriptions');
+            $applicationName    = ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'applicationName');
+            if ($applicationName != null)
+            {
+                $applicationName = ' - ' . $applicationName;
+            }
+            return Zurmo::t('MarketingListsModule', 'My Subscriptions') . $applicationName;
         }
 
         protected function renderContent()
@@ -178,8 +183,8 @@
 
         public static function getDropDownArray($subscribeUrl, $unsubscribeUrl)
         {
-            return array($subscribeUrl => Zurmo::t('MarketingListsModule', 'Subscribe'),
-                        $unsubscribeUrl => Zurmo::t('MarketingListsModule', 'Unsubcribe'));
+            return array($subscribeUrl => Zurmo::t('Core', 'Subscribe'),
+                        $unsubscribeUrl => Zurmo::t('Core', 'Unsubcribe'));
         }
 
         protected function renderScripts()

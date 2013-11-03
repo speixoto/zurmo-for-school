@@ -41,7 +41,7 @@
     {
         protected function getHomeLinkLabel()
         {
-            return Zurmo::t('ConfigurationModule', 'Settings Home');
+            return Zurmo::t('ConfigurationModule', 'Administration Home');
         }
 
         protected function getHomeUrl()

@@ -34,23 +34,20 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class CampaignStatusElement extends StaticDropDownElement
+    /**
+     * Class CampaignStatusElement should be renamed to CampaignStatusDropDownElement along with all references.
+     * But first considerations must be made for upgrade and existing usage like in the listview.
+     */
+    class CampaignStatusElement extends ConstantBasedStaticDropDownFormElement
     {
+        protected static $attributeName = 'status';
+
         /**
-         * Called from outside to render status value as label. @see CampaignStatusListViewColumnAdapter
-         * Called from outside to render status value as label. @see CampaignStatusListViewColumnAdapter
-         * @param string $status
-         * @return string, translated status if available otherwise just return status value
+         * @return array
          */
-        public static function renderNonEditableStringContent($status)
+        protected static function resolveDropDownArray()
         {
-            assert('is_int($status)');
-            $data = Campaign::getStatusDropDownArray();
-            if (isset($data[$status]))
-            {
-                return $data[$status];
-            }
-            return $status;
+            return Campaign::getStatusDropDownArray();
         }
 
         /**

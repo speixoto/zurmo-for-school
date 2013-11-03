@@ -41,16 +41,18 @@
     {
         /**
          * Given a string and a length, return the chopped string if it is larger than the length.
-         * @param string $string
-         * @param integer $length
+         * @param $string
+         * @param $length
+         * @param string $ellipsis
+         * @return string
          */
-        public static function getChoppedStringContent($string, $length)
+        public static function getChoppedStringContent($string, $length, $ellipsis = '...')
         {
-            assert('is_string($string)');
+            assert('is_string($string) || is_null($string)');
             assert('is_int($length)');
-            if (strlen($string) > $length)
+            if ($string != null && strlen($string) > $length)
             {
-                return substr($string, 0, ($length - 3)) . '...';
+                return substr($string, 0, ($length - 3)) . $ellipsis;
             }
             else
             {
@@ -76,10 +78,10 @@
             }
         }
 
-        public static function renderFluidTitleContent($title)
+        public static function renderFluidContent($content)
         {
-            assert('$title == null || is_string($title)');
-            if ($title != null)
+            assert('$content == null || is_string($content)');
+            if ($content != null)
             {
                 // Begin Not Coding Standard
                 Yii::app()->clientScript->registerScript('TruncateTitleText', "
@@ -87,10 +89,17 @@
                         $('.truncated-title').ThreeDots({ max_rows:1 });
                     });");
                 // End Not Coding Standard
-                $innerContent = ZurmoHtml::wrapLabel(strip_tags($title), 'ellipsis-content');
+                $innerContent = ZurmoHtml::wrapLabel(strip_tags($content), 'ellipsis-content');
                 $content      = ZurmoHtml::wrapLabel($innerContent, 'truncated-title');
-                return          ZurmoHtml::tag('h1', array(), $content);
+                return $content;
             }
+        }
+
+        public static function renderFluidTitleContent($title)
+        {
+            assert('$title == null || is_string($title)');
+            $content = static::renderFluidContent($title);
+            return ZurmoHtml::tag('h1', array(), $content);
         }
 
         /**
@@ -99,6 +108,22 @@
         public static function resolveCustomizedLabel()
         {
             return strtolower(preg_replace('/[^\da-z]/i', '', Yii::app()->label));
+        }
+
+        public static function uncamelize($string ) {
+            $string[0] = strtolower($string[0]);
+            $uncamelizeFunction = create_function('$c', 'return "_" . strtolower($c[1]);');
+            return preg_replace_callback( '/([A-Z])/', $uncamelizeFunction, $string);
+        }
+
+        public static function camelize($string, $capitaliseFirstCharacter = false, $delimiter = '_')
+        {
+            if ($capitaliseFirstCharacter)
+            {
+                $string[0] = strtoupper($string[0]);
+            }
+            $camelizeFunction = create_function('$character', 'return strtoupper($character[1]);');
+            return preg_replace_callback('/' . preg_quote($delimiter) . '([a-z])/', $camelizeFunction, $string);
         }
 
         /**
@@ -117,4 +142,47 @@
                 $content = PHP_EOL . $content;
             }
         }
+
+        /**
+         * Generate a random string
+         * @param int $length
+         * @param null $characterSet
+         * @return string
+         */
+        public static function generateRandomString($length = 10, $characterSet = null)
+        {
+            if (empty($characterSet))
+            {
+                $characterSet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            }
+            $characterSetLength = strlen($characterSet);
+            $randomString = '';
+            for ($i = 0; $i < $length; $i++)
+            {
+                $randomCharacter    = $characterSet[rand(0, $characterSetLength - 1)];
+                $randomString       .= $randomCharacter;
+            }
+            return $randomString;
+        }
+
+        /**
+         * @param $haystack
+         * @param $needle
+         * @return bool
+         */
+        public static function startsWith($haystack, $needle)
+        {
+            return $needle === "" || strpos($haystack, $needle) === 0;
+        }
+
+        /**
+         * @param $haystack
+         * @param $needle
+         * @return bool
+         */
+        public static function endsWith($haystack, $needle)
+        {
+            return $needle === "" || substr($haystack, -strlen($needle)) === $needle;
+        }
     }
+?>

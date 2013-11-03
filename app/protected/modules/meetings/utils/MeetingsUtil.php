@@ -36,6 +36,11 @@
 
     class MeetingsUtil
     {
+        /**
+         * @param Meeting $meeting
+         * @param string $link
+         * @return string
+         */
         public static function renderDaySummaryContent(Meeting $meeting, $link)
         {
             $content = null;
@@ -65,7 +70,7 @@
             if ($meeting->description != null)
             {
                 $content .= '<br/>';
-                $content .= Zurmo::t('MeetingsModule', 'Description') . ':<br/>';
+                $content .= Zurmo::t('ZurmoModule', 'Description') . ':<br/>';
                 $content .= $meeting->description;
             }
             return $content;

@@ -55,6 +55,10 @@
          */
         protected $moduleIdOfDefaultModel;
 
+        /**
+         * @param string $modelClassName
+         * @param string $modelAttributeName
+         */
         public function __construct($modelClassName, $modelAttributeName)
         {
             parent::__construct($modelClassName, $modelAttributeName);
@@ -87,8 +91,12 @@
                                                          $this->modelAttributeName,
                                                          'defaultModelStringifiedName',
                                                          $requiredRuleIsApplicable);
-                                                         return array_merge(parent::rules(), $defaultValueApplicableModelAttributeRules);
-            return array_merge(parent::rules(), $defaultValueApplicableModelAttributeRules);
+            $rules = $defaultValueApplicableModelAttributeRules;
+            if (empty($rules))
+            {
+                return array(array('defaultModelStringifiedName, defaultModelId', 'safe'));
+            }
+            return $rules;
         }
 
         /**
@@ -101,7 +109,7 @@
 
         public function attributeLabels()
         {
-            return array('defaultModelId'              => Zurmo::t('ImportModule', 'Default Value'),
+            return array('defaultModelId'              => Zurmo::t('ZurmoModule', 'Default Value'),
                          'defaultModelStringifiedName' => Zurmo::t('ImportModule', 'Default Name'));
         }
 

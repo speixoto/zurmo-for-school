@@ -47,11 +47,7 @@
             $metadata = array(
                 'global' => array(
                     'toolbar' => array(
-                        'elements' => array(
-                            array('type'          => 'MashableInboxCreate',
-                                  'htmlOptions'   => array('class' => 'icon-create'),
-                            ),
-                        ),
+                        'elements' => array(),
                     ),
                 ),
             );
@@ -76,11 +72,11 @@
 
         protected function renderContent()
         {
-            $content  = '<div class="view-toolbar-container clearfix"><div class="view-toolbar">';
+            $content  = '<nav class="pillbox clearfix">';
             $content .= $this->renderActionElementBar(false);
             $content .= $this->renderMashableInboxModelsToolbar();
             $content .= $this->renderMassActionElement();
-            $content .= '</div></div>';
+            $content .= '</nav>';
             $content .= $this->renderMashableInboxForm();
             $content .= $this->listView->render();
             return $content;
@@ -89,12 +85,12 @@
         private function renderMassActionElement()
         {
             $params = array('type'           => 'MashableInboxMass',
-                            'htmlOptions'    => array('class' => 'icon-create'),
                             'listViewGridId' => $this->listView->getGridViewId(),
                             'modelClassName' => $this->modelClassName,
                             'formName'       => $this->formName,
+                            'iconClass'      => 'icon-options'
                         );
-            $massActionElement = new MashableInboxMassActionElement($this->controllerId, $this->moduleId, 'MashableInboxForm', $params);
+            $massActionElement = new MashableInboxMassMenuActionElement($this->controllerId, $this->moduleId, 'MashableInboxForm', $params);
             return $massActionElement->render();
         }
 
@@ -121,6 +117,7 @@
             $content      = null;
             $model        = $this->mashableInboxForm;
             $content      = $this->renderSearchView($model, $form);
+            $content     .= $this->renderStarredFilterHidenField($model, $form);
             $element      = new MashableInboxOptionsByModelRadioElement($model, 'optionForModel', $form, array(), $this->getArrayForByModelRadioElement());
             $element->editableTemplate =  '<div id="MashableInboxForm_optionForModel_area">{content}</div>';
             $content     .= '<div class="filters-bar">';
@@ -161,11 +158,18 @@
                 $activeClass = "active";
             }
             $unreadCount           = MashableUtil::getUnreadCountMashableInboxForCurrentUser();
-            $url                   = Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/list');
             $label                 = Zurmo::t('MashableInboxModule', 'Combined');
-            $span                  = ZurmoHtml::tag('span', array("class" => "unread-count"), $unreadCount);
-            $zLabel                = ZurmoHtml::tag('span', array("class" => "z-label"), $label . $span);
-            $content               = ZurmoHtml::link($zLabel, $url, array('class' => 'icon-combined ' . $activeClass));
+            $params   = array('label'           => $label,
+                              'modelClassName'  => null,
+                              'unread'          => $unreadCount,
+                              'htmlOptions'     => array('class' => $activeClass),
+                              'iconClass'       => 'icon-combined');
+            $element  = new MashableInboxModelMenuActionElement($this->controllerId,
+                                                            $this->moduleId,
+                                                            null,
+                                                            $params);
+            $content  = $element->render();
+
             $combinedInboxesModels = MashableUtil::getModelDataForCurrentUserByInterfaceName('MashableInboxInterface');
             foreach ($combinedInboxesModels as $modelClassName => $modelLabel)
             {
@@ -175,12 +179,15 @@
                     $activeClass = "active";
                 }
                 $unreadCount = MashableUtil::getUnreadCountForCurrentUserByModelClassName($modelClassName);
-                $url         = Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/list',
-                                                     array('modelClassName' => $modelClassName));
-                $span        = ZurmoHtml::tag('span', array("class" => "unread-count"), $unreadCount);
-                $zLabel      = ZurmoHtml::tag('span', array("class" => "z-label"), $modelLabel . $span);
-                $content    .= ZurmoHtml::link($zLabel, $url, array('class' => 'icon-' . strtolower($modelClassName) . ' '  . $activeClass));
+                $params   = array('label'           => $modelLabel,
+                                  'modelClassName'  => $modelClassName,
+                                  'htmlOptions'     => array('class' => $activeClass),
+                                  'unread'          => $unreadCount,
+                                  'iconClass'      => 'icon-' . strtolower($modelClassName));
+                $element  = new MashableInboxModelMenuActionElement($this->controllerId, $this->moduleId, null, $params);
+                $content .= $element->render();
             }
+
             return $content;
         }
 
@@ -196,8 +203,6 @@
 
         private function registerFormScript($form)
         {
-            $listViewId       = $this->listView->getGridViewId();
-            $ajaxSubmitScript = "$('#{$listViewId}').yiiGridView('update', {data: $('#" . $form->getId() . "').serialize()});";
             $script = "
                     $('#MashableInboxForm_optionForModel_area').find('input:checked').next().addClass('ui-state-active');
                     $('#MashableInboxForm_filteredBy_area').find('input:checked').next().addClass('ui-state-active');
@@ -205,13 +210,13 @@
                     $('#MashableInboxForm_optionForModel_area').change(
                         function()
                         {
-                            " . $ajaxSubmitScript . "
+                            " . $this->getAjaxSubmitScript($form) . "
                         }
                     );
                     $('#MashableInboxForm_filteredBy_area').change(
                         function()
                         {
-                            " . $ajaxSubmitScript . "
+                            " . $this->getAjaxSubmitScript($form) . "
                         }
                     );
                 ";
@@ -243,6 +248,33 @@
                             );
                 ";
             return $script;
+        }
+
+        /**
+         * Render a checkBox to filter models by starred only
+         * @param  ZurmoActiveForm $form
+         * @return string
+         */
+        protected function renderStarredFilterHidenField($model, $form)
+        {
+            $content = null;
+            $modelsImplementsStarredInterface = false;
+            if (isset($this->modelClassName) && StarredUtil::modelHasStarredInterface($this->modelClassName))
+            {
+                $modelsImplementsStarredInterface = true;
+            }
+            if ($modelsImplementsStarredInterface)
+            {
+                $content .= $form->hiddenField($model, 'filterByStarred', array('class' => $form->id . '_filterByStarred'));
+            }
+            return $content;
+        }
+
+        private function getAjaxSubmitScript($form)
+        {
+            $listViewId       = $this->listView->getGridViewId();
+            $ajaxSubmitScript = "$('#{$listViewId}').yiiGridView('update', {data: $('#" . $form->getId() . "').serialize()});";
+            return $ajaxSubmitScript;
         }
     }
 ?>

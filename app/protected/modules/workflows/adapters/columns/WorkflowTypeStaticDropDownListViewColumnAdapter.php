@@ -46,7 +46,7 @@
         {
             return array(
                 'name' => 'type',
-                'header' => Zurmo::t('WorkflowsModule', 'Type'),
+                'header' => Zurmo::t('Core', 'Type'),
                 'type'   => 'raw',
                 'value'  => 'WorkflowUtil::renderNonEditableTypeStringContent($data->type)'
             );

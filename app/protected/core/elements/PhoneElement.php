@@ -54,7 +54,9 @@
 
         protected function renderControlNonEditable()
         {
-            return parent::renderControlNonEditable();
+            $content = Yii::app()->format->text($this->model->{$this->attribute});
+            $id = $this->getEditableInputId($this->attribute, 'CallableItem');
+            return Yii::app()->phoneHelper->resolvePhoneNumberContentForDialing($content, $id, $this->model);
         }
     }
 ?>

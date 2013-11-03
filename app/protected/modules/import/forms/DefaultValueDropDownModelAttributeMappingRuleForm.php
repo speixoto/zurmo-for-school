@@ -47,6 +47,10 @@
          */
         protected $data;
 
+        /**
+         * @param string $modelClassName
+         * @param string $modelAttributeName
+         */
         public function __construct($modelClassName, $modelAttributeName)
         {
             parent::__construct($modelClassName, $modelAttributeName);
@@ -61,7 +65,7 @@
 
         public function attributeLabels()
         {
-            return array('defaultValue' => Zurmo::t('ImportModule', 'Default Value'));
+            return array('defaultValue' => Zurmo::t('ZurmoModule', 'Default Value'));
         }
 
         public static function getAttributeName()

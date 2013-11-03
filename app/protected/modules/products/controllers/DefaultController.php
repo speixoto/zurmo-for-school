@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -20,8 +20,18 @@
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU Affero General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     class ProductsDefaultController extends ZurmoModuleController
@@ -56,8 +66,8 @@
                         'modelClassName'             => $modelClassName,
                         'pageViewClassName'          => $pageViewClassName,
                         'defaultViewUtilClassName'   => 'ProductDefaultViewUtil',
-                        'activeActionElementType'    => 'ProductsLink',
-                        'breadcrumbLinks'            => static::getListBreadcrumbLinks()
+                        'activeActionElementType'    => 'ProductsMenu',
+                        'breadCrumbLinks'            => static::getListBreadcrumbLinks()
                    ),
                )
             );
@@ -67,7 +77,7 @@
         {
             $pageSize                       = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                                               'listPageSize', get_class($this->getModule()));
-            $activeActionElementType        = 'ProductsLink';
+            $activeActionElementType        = 'ProductsMenu';
             $product                        = new Product(false);
             $searchForm                     = new ProductsSearchForm($product);
             $listAttributesSelector         = new ListAttributesSelector('ProductsListView', get_class($this->getModule()));
@@ -78,7 +88,7 @@
                                                     null,
                                                     'ProductsSearchView'
                                                 );
-            $breadcrumbLinks                = static::getListBreadcrumbLinks();
+            $breadCrumbLinks                = static::getListBreadcrumbLinks();
             if (isset($_GET['ajax']) && $_GET['ajax'] == 'list-view')
             {
                 $mixedView  = $this->makeListView(
@@ -89,12 +99,13 @@
             }
             else
             {
+                $introView        = new ProductsIntroView(get_class($this->getModule()));
                 $mixedView  = $this->makeActionBarSearchAndListView($searchForm, $dataProvider,
                                    'SecuredActionBarForProductsSearchAndListView',
-                                    null, $activeActionElementType);
+                                    null, $activeActionElementType, $introView);
                 $view       = new ProductsPageView(ZurmoDefaultViewUtil::
                                                     makeViewWithBreadcrumbsForCurrentUser(
-                                                        $this, $mixedView, $breadcrumbLinks, 'ProductBreadCrumbView'));
+                                                        $this, $mixedView, $breadCrumbLinks, 'ProductBreadCrumbView'));
             }
             echo $view->render();
         }
@@ -103,12 +114,12 @@
         {
             $product            = static::getModelAndCatchNotFoundAndDisplayError('Product', intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($product);
-            $breadcrumbLinks = array(StringUtil::getChoppedStringContent(strval($product), 25));
+            $breadCrumbLinks = array(StringUtil::getChoppedStringContent(strval($product), 25));
             AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED, array(strval($product), 'ProductsModule'), $product);
             $detailsView        = new ProductEditAndDetailsView('Details', $this->getId(), $this->getModule()->getId(), $product);
             $view               = new ProductsPageView(ProductDefaultViewUtil::
                                                          makeViewWithBreadcrumbsForCurrentUser(
-                                                            $this, $detailsView, $breadcrumbLinks, 'ProductBreadCrumbView'));
+                                                            $this, $detailsView, $breadCrumbLinks, 'ProductBreadCrumbView'));
             echo $view->render();
         }
 
@@ -116,12 +127,12 @@
         {
             $params                 = LabelUtil::getTranslationParamsForAllModules();
             $title                  = Zurmo::t('ProductsModule', 'Create ProductsModuleSingularLabel', $params);
-            $breadcrumbLinks        = array($title);
+            $breadCrumbLinks        = array($title);
             $editAndDetailsView     = $this->makeEditAndDetailsView(
                                             $this->attemptToSaveModelFromPost(new Product()), 'Edit');
             $view                   = new ProductsPageView(ProductDefaultViewUtil::
                                                 makeViewWithBreadcrumbsForCurrentUser(
-                                                    $this, $editAndDetailsView, $breadcrumbLinks, 'ProductBreadCrumbView'));
+                                                    $this, $editAndDetailsView, $breadCrumbLinks, 'ProductBreadCrumbView'));
             echo $view->render();
         }
 
@@ -129,12 +140,12 @@
         {
             $product         = Product::getById(intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($product);
-            $breadcrumbLinks = array(StringUtil::getChoppedStringContent(strval($product), 25));
+            $breadCrumbLinks = array(StringUtil::getChoppedStringContent(strval($product), 25));
             $view            = new ProductsPageView(ProductDefaultViewUtil::
                                                         makeViewWithBreadcrumbsForCurrentUser($this,
                                                             $this->makeEditAndDetailsView(
                                                                 $this->attemptToSaveModelFromPost(
-                                                                    $product, $redirectUrl), 'Edit'), $breadcrumbLinks, 'ProductBreadCrumbView'                                                   ));
+                                                                    $product, $redirectUrl), 'Edit'), $breadCrumbLinks, 'ProductBreadCrumbView'                                                   ));
             echo $view->render();
         }
 
@@ -233,8 +244,8 @@
         public function actionMassDelete()
         {
             $params          = LabelUtil::getTranslationParamsForAllModules();
-            $title           = Zurmo::t('ProductTemplatesModule', 'Mass Delete ProductsModulePluralLabel', $params);
-            $breadcrumbLinks = array(
+            $title           = Zurmo::t('ProductsModule', 'Mass Delete ProductsModulePluralLabel', $params);
+            $breadCrumbLinks = array(
                  $title,
             );
             $pageSize           = Yii::app()->pagination->resolveActiveForCurrentUserByType('massDeleteProgressPageSize');
@@ -264,7 +275,7 @@
                                                              ProductsModule::getModuleLabelByTypeAndLanguage('Plural')
                                                             );
             $view               = new ProductsPageView(ZurmoDefaultViewUtil::
-                                                            makeViewWithBreadcrumbsForCurrentUser($this, $massDeleteView, $breadcrumbLinks, 'ProductBreadCrumbView'));
+                                                            makeViewWithBreadcrumbsForCurrentUser($this, $massDeleteView, $breadCrumbLinks, 'ProductBreadCrumbView'));
             echo $view->render();
         }
 
@@ -387,8 +398,9 @@
             {
                 $product->productCategories->add($productCategory);
             }
-            $relationModel                      = $relationModelClassName::getById((int)$relationModelId);
-            $product->$relationAttributeName    = $relationModel;
+            $relatedModel                      = $relationModelClassName::getById((int)$relationModelId);
+            $product->$relationAttributeName   = $relatedModel;
+            $this->addRelatedModelAccountToModel($product, $relatedModel);
             $product->save();
             ZurmoControllerUtil::updatePermissionsWithDefaultForModelByCurrentUser($product);
 

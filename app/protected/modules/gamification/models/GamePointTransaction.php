@@ -59,6 +59,7 @@
                     'createdDateTime',
                 ),
                 'relations' => array(
+                    'gamepoint' => array(static::HAS_ONE, 'GamePoint', static::NOT_OWNED),
                 ),
                 'rules' => array(
                     array('value',            'type',    'type' => 'integer'),

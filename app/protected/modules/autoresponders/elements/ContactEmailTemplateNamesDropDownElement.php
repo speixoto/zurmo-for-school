@@ -77,12 +77,16 @@
             {
                 // Begin Not Coding Standard
                 Yii::app()->clientScript->registerScript($scriptName, '
-                        function updateContentElementsWithData(textContentElement, htmlContentElement, redActorElement, subjectElement, data)
+                        function updateContentElementsWithData(textContentElement, htmlContentElement, subjectElement, data)
                         {
+                            if ($(htmlContentElement).css("display") !== "none")
+                            {
+                                $(htmlContentElement).redactor("toggle");
+                            }
                             updateElementWithData(textContentElement, data.textContent);
-                            updateElementWithData(htmlContentElement, data.htmlContent);
-                            updateElementWithData(redActorElement, data.htmlContent);
                             updateElementWithData(subjectElement, data.subject);
+                            $(htmlContentElement).redactor("set", data.htmlContent);
+                            //$(htmlContentElement).redactor("sync");
                         }
 
                         function updateElementWithData(element, data)
@@ -115,9 +119,10 @@
                                     {
                                         url:        url,
                                         dataType:   "json",
-                                        data:       {
-                                                        commaSeparatedExistingModelIds: filesIdsString
-                                                    },
+                                        data:
+                                        {
+                                            commaSeparatedExistingModelIds: filesIdsString
+                                        },
                                         success:    function(data, status, request)
                                                     {
                                                         $(templateId).tmpl(data).appendTo(targetClass);
@@ -159,11 +164,12 @@
                                     {
                                         url:        url,
                                         dataType:   "json",
-                                        data:       {
-                                                        id: selectedOptionValue,
-                                                        renderJson: true,
-                                                        includeFilesInJson: true
-                                                    },
+                                        data:
+                                        {
+                                            id: selectedOptionValue,
+                                            renderJson: true,
+                                            includeFilesInJson: true
+                                        },
                                         beforeSend: function(request, settings)
                                                     {
                                                         $(this).makeLargeLoadingSpinner(true, ".email-template-content");
@@ -186,7 +192,6 @@
                                                         $(".email-template-content .big-spinner").remove();
                                                         updateContentElementsWithData(textContentElement,
                                                                                         htmlContentElement,
-                                                                                        redActorElement,
                                                                                         subjectElement,
                                                                                         data);
                                                         updateAddFilesWithDataFromAjax(data.filesIds, notificationBarId);

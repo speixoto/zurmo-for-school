@@ -289,6 +289,21 @@
             $opportunity = Opportunity::getById($id);
             $this->assertEquals('New Name', $opportunity->name);
             $this->assertEquals(500.54,     $opportunity->amount->value);
+            $this->assertEquals(50,         $opportunity->probability);
+            $this->assertEquals(1, $currencies[0]->rateToBase);
+
+            //Updating probability mapping should make changes on saving opportunity
+            $metadata = OpportunitiesModule::getMetadata();
+            $metadata['global']['stageToProbabilityMapping']['Negotiating'] = 60;
+            OpportunitiesModule::setMetadata($metadata);
+            $postData = array();
+            $opportunity->setAttributes($postData);
+            $this->assertTrue($opportunity->save());
+            unset($opportunity);
+            $opportunity = Opportunity::getById($id);
+            $this->assertEquals('New Name', $opportunity->name);
+            $this->assertEquals(500.54,     $opportunity->amount->value);
+            $this->assertEquals(60,         $opportunity->probability);
             $this->assertEquals(1, $currencies[0]->rateToBase);
         }
 
@@ -367,8 +382,9 @@
         public function testGetModelClassNames()
         {
             $modelClassNames = OpportunitiesModule::getModelClassNames();
-            $this->assertEquals(1, count($modelClassNames));
+            $this->assertEquals(2, count($modelClassNames));
             $this->assertEquals('Opportunity', $modelClassNames[0]);
+            $this->assertEquals('OpportunityStarred', $modelClassNames[1]);
         }
     }
 ?>

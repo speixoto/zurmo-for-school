@@ -55,12 +55,22 @@
             13 => 300
         );
 
+        /**
+         * Get passive display label
+         * @param int $value
+         * @return string
+         */
         public static function getPassiveDisplayLabel($value)
         {
             return Zurmo::t('TasksModule', '{n} TasksModuleSingularLabel created|{n} TasksModulePluralLabel created',
                           array_merge(array($value), LabelUtil::getTranslationParamsForAllModules()));
         }
 
+        /**
+         * @param array $userPointsByType
+         * @param array $userScoresByType
+         * @return int|string
+         */
         public static function badgeGradeUserShouldHaveByPointsAndScores($userPointsByType, $userScoresByType)
         {
             assert('is_array($userPointsByType)');

@@ -48,6 +48,13 @@
 
         protected $userId;
 
+        /**
+         * @param string $controllerId
+         * @param string $moduleId
+         * @param array $groupMembership
+         * @param int $userId
+         * @param null|string $title
+         */
         public function __construct($controllerId, $moduleId, array $groupMembership, $userId, $title = null)
         {
             assert('is_string($controllerId) && $controllerId != null');
@@ -70,7 +77,7 @@
             $content .= '<col style="width:100%" />';
             $content .= '</colgroup>';
             $content .= '<tbody>';
-            $content .= '<tr><th>' . Zurmo::t('UsersModule', 'Group') . '</th></tr>'; //<th></th>
+            $content .= '<tr><th>' . Zurmo::t('ZurmoModule', 'Group') . '</th></tr>'; //<th></th>
             foreach ($this->groupMembership as $groupId => $information)
             {
                 $content .= '<tr>';

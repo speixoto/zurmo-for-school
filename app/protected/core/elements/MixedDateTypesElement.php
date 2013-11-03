@@ -77,19 +77,24 @@
             $valueTypeId                        = $this->getValueTypeEditableInputId();
             $firstDateSpanAreaSuffix            = '-first-date-area';
             $secondDateSpanAreaSuffix           = '-second-date-area';
+            $thirdDateSpanAreaSuffix            = '-third-date-area';
             $firstDateSpanAreaId                = $valueTypeId . $firstDateSpanAreaSuffix;
             $secondDateSpanAreaId               = $valueTypeId . $secondDateSpanAreaSuffix;
+            $thirdDateSpanAreaId                = $valueTypeId . $thirdDateSpanAreaSuffix;
             $valueTypesRequiringFirstDateInput  = MixedDateTypesSearchFormAttributeMappingRules::
                                                   getValueTypesRequiringFirstDateInput();
             $valueTypesRequiringSecondDateInput = MixedDateTypesSearchFormAttributeMappingRules::
                                                   getValueTypesRequiringSecondDateInput();
+            $valueTypesRequiringThirdDateInput  = $this->getValueTypesRequiringThirdDateInput();
             Yii::app()->clientScript->registerScript('mixedDateTypes', "
                 $('.dateValueType').change( function()
                     {
                         arr  = " . CJSON::encode($valueTypesRequiringFirstDateInput) . ";
                         arr2 = " . CJSON::encode($valueTypesRequiringSecondDateInput) . ";
+                        arr3 = " . CJSON::encode($valueTypesRequiringThirdDateInput) . ";
                         firstDateSpanAreaQualifier = '#' + $(this).attr('id') + '" . $firstDateSpanAreaSuffix . "';
                         secondDateSpanAreaQualifier = '#' + $(this).attr('id') + '" . $secondDateSpanAreaSuffix . "';
+                        thirdDateSpanAreaQualifier = '#' + $(this).attr('id') + '" . $thirdDateSpanAreaSuffix . "';
                         if ($.inArray($(this).val(), arr) != -1)
                         {
                             $(firstDateSpanAreaQualifier).show();
@@ -110,11 +115,22 @@
                             $(secondDateSpanAreaQualifier).hide();
                             $(secondDateSpanAreaQualifier).find('.hasDatepicker').prop('disabled', true);
                         }
+                        if ($.inArray($(this).val(), arr3) != -1)
+                        {
+                            $(thirdDateSpanAreaQualifier).show();
+                            $(thirdDateSpanAreaQualifier).find('.hasDatepicker').prop('disabled', false);
+                        }
+                        else
+                        {
+                            $(thirdDateSpanAreaQualifier).hide();
+                            $(thirdDateSpanAreaQualifier).find('.hasDatepicker').prop('disabled', true);
+                        }
                     }
                 );
             ");
             $startingDivStyleFirstDate   = null;
             $startingDivStyleSecondDate  = null;
+            $startingDivStyleThirdDate   = null;
             if (!in_array($this->getValueType(), $valueTypesRequiringFirstDateInput))
             {
                 $startingDivStyleFirstDate = "display:none;";
@@ -133,6 +149,15 @@
             {
                 $secondDateDisabled = null;
             }
+            if (!in_array($this->getValueType(), $valueTypesRequiringThirdDateInput))
+            {
+                $startingDivStyleThirdDate = "display:none;";
+                $thirdDateDisabled         = 'disabled';
+            }
+            else
+            {
+                $thirdDateDisabled = null;
+            }
             $content  = ZurmoHtml::tag('span', array('id'    => $firstDateSpanAreaId,
                                                      'class' => 'first-date-area',
                                                      'style' => $startingDivStyleFirstDate),
@@ -142,6 +167,10 @@
                                                      'style' => $startingDivStyleSecondDate),
                                                      ZurmoHtml::Tag('span', array('class' => 'dynamic-and-for-mixed'), Zurmo::t('Core', 'and')) .
                                                      $this->renderEditableSecondDateContent($secondDateDisabled));
+            $content .= ZurmoHtml::tag('span', array('id'    => $thirdDateSpanAreaId,
+                                                     'class' => 'third-date-area',
+                                                     'style' => $startingDivStyleThirdDate),
+                                                     $this->renderEditableThirdDateContent($thirdDateDisabled));
             return $content;
         }
 
@@ -161,7 +190,8 @@
             $cClipWidget->widget('application.core.widgets.ZurmoJuiDatePicker', array(
                 'attribute'           => $this->attribute,
                 'value'               => DateTimeUtil::resolveValueForDateLocaleFormattedDisplay(
-                                         $this->getValueFirstDate()),
+                                         $this->getValueFirstDate(),
+                                         DateTimeUtil::DISPLAY_FORMAT_FOR_INPUT),
                 'htmlOptions'         => array(
                     'id'              => $this->getValueFirstDateEditableInputId(),
                     'name'            => $this->getValueFirstDateEditableInputName(),
@@ -180,7 +210,8 @@
             $cClipWidget->widget('application.core.widgets.ZurmoJuiDatePicker', array(
                 'attribute'           => $this->attribute,
                 'value'               => DateTimeUtil::resolveValueForDateLocaleFormattedDisplay(
-                                         $this->getValueSecondDate()),
+                                         $this->getValueSecondDate(),
+                                         DateTimeUtil::DISPLAY_FORMAT_FOR_INPUT),
                 'htmlOptions'         => array(
                     'id'              => $this->getValueSecondDateEditableInputId(),
                     'name'            => $this->getValueSecondDateEditableInputName(),
@@ -232,6 +263,15 @@
          * @see Element::renderError()
          */
         protected function renderError()
+        {
+        }
+
+        protected function getValueTypesRequiringThirdDateInput()
+        {
+            return array();
+        }
+
+        protected function renderEditableThirdDateContent($disabled = null)
         {
         }
     }

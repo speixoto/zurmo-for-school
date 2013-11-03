@@ -32,7 +32,7 @@
 // "Copyright Zurmo Inc. 2013. All rights reserved".
 
 .symbly( @size : 32px ) {
-    font-weight:normal;
+    font-weight:normal !important;
     font-size:@size;
     font-family: "zurmo_gamification_symbly_rRg";
 }
@@ -40,16 +40,16 @@
 .t-shadow(@style){
     -webkit-text-shadow: @style;
        -moz-text-shadow: @style;
-         -o-text-shadow: @style;
         -ms-text-shadow: @style;
+		 -o-text-shadow: @style;
             text-shadow: @style;
 }
 
 .b-shadow(@style){
     -webkit-box-shadow: @style;
        -moz-box-shadow: @style;
-         -o-box-shadow: @style;
-        -ms-box-shadow: @style;
+		-ms-box-shadow: @style;
+		 -o-box-shadow: @style;
             box-shadow: @style;
 }
 
@@ -102,34 +102,33 @@
 .animateAll(@time: 0.5s){
     -webkit-transition: all @time ease-out;
        -moz-transition: all @time ease-out;
+		-ms-transition: all @time ease-out;
          -o-transition: all @time ease-out;
-        -ms-transition: all @time ease-out;
             transition: all @time ease-out;
 }
 
 .cf:before,
 .cf:after{
-    content:"";
+    content:" ";
     display:table;
 }
 .cf:after{
     clear:both;
 }
 .cf{
-    zoom:1;
+    *zoom:1;
 }
 
 .clearfix{
-    &:before{
-        content:"";
+    &:before,
+    &:after{
+        content:" ";
         display:table;
     }
-    &:after{
-        content:"";
-        display:table;
+	&:after{
         clear:both;
     }
-    zoom:1;
+    *zoom:1;
 }
 
 .debug(){
@@ -175,12 +174,12 @@ a.z-button,
     cursor:pointer;
     text-indent:0;
     display:inline-block;
-    ++.border-box;
+	.border-box();
     .clearfix();
     &.attachLoading.z-button{
         color: #fff;
     }
-    &:not(.attachLoading) .z-label{
+    &:not(.attachLoading):not(.green-button) .z-label{
         background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
     }
 }
@@ -193,6 +192,17 @@ a.z-button,
 
 .default-btn{
     .zButton() !important;
+}
+
+.z-button.disabled{
+	pointer-events:none;
+	.opacity(50);
+	-webkit-filter: grayscale(85%);
+	-moz-filter: grayscale(85%);
+	-ms-filter: grayscale(85%);
+	-o-filter: grayscale(85%);
+	filter: grayscale(85%);
+	filter: gray; /* IE 6-9 */
 }
 
 /*
@@ -209,7 +219,7 @@ a.z-button,
 }
 
 .z-label{
-    ++.border-box;
+	.border-box();
     float:left;
     font-weight:bold;
     padding:0 25px;
@@ -275,7 +285,6 @@ a.z-button,
     .opacity(100);    
 }
 
-
 // Gradients
 #gradient {
   .horizontal (@startColor: #555, @endColor: #333) {
@@ -288,7 +297,7 @@ a.z-button,
     background-image: -webkit-linear-gradient(left, @startColor, @endColor); // Safari 5.1+, Chrome 10+
     background-image: -o-linear-gradient(left, @startColor, @endColor); // Opera 11.10
     background-image: linear-gradient(left, @startColor, @endColor); // Le standard
-    filter: e(%("progid:DXImageTransform.Microsoft.gradient(startColorstr='%d', endColorstr='%d', GradientType=1)",@startColor,@endColor)); // IE9 and down
+    //filter: e(%("progid:DXImageTransform.Microsoft.gradient(startColorstr='%d', endColorstr='%d', GradientType=1)",@startColor,@endColor)); // IE9 and down
   }
   .vertical (@startColor: #555, @endColor: #333) {
     background-color: @endColor;
@@ -300,7 +309,7 @@ a.z-button,
     background-image: -webkit-linear-gradient(top, @startColor, @endColor); // Safari 5.1+, Chrome 10+
     background-image: -o-linear-gradient(top, @startColor, @endColor); // Opera 11.10
     background-image: linear-gradient(top, @startColor, @endColor); // The standard
-    filter: e(%("progid:DXImageTransform.Microsoft.gradient(startColorstr='%d', endColorstr='%d', GradientType=0)",@startColor,@endColor)); // IE9 and down
+    //filter: e(%("progid:DXImageTransform.Microsoft.gradient(startColorstr='%d', endColorstr='%d', GradientType=0)",@startColor,@endColor)); // IE9 and down
   }
   .directional (@startColor: #555, @endColor: #333, @deg: 45deg) {
     background-color: @endColor;
@@ -320,7 +329,7 @@ a.z-button,
     background-image: -ms-linear-gradient(@startColor, @midColor @colorStop, @endColor) @importance;
     background-image: -o-linear-gradient(@startColor, @midColor @colorStop, @endColor) @importance;
     background-image: linear-gradient(@startColor, @midColor @colorStop, @endColor) @importance;
-    filter: e(%("progid:DXImageTransform.Microsoft.gradient(startColorstr='%d', endColorstr='%d', GradientType=0)",@startColor,@endColor)); // IE9 and down, gets no color-stop at all for proper fallback
+    //filter: e(%("progid:DXImageTransform.Microsoft.gradient(startColorstr='%d', endColorstr='%d', GradientType=0)",@startColor,@endColor)); // IE9 and down, gets no color-stop at all for proper fallback
   }
 }
 

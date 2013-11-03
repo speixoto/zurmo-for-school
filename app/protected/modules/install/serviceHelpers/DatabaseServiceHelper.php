@@ -37,17 +37,9 @@
     /**
      * Currently only mysql is supported. Checks to make sure it is installed and has the correct minimum version.
      */
-    class DatabaseServiceHelper extends ServiceHelper
+    class DatabaseServiceHelper extends DatabaseBaseServiceHelper
     {
         protected $minimumVersion = '5.0.0';
-
-        protected $form;
-
-        public function __construct($form)
-        {
-            assert('$form instanceof InstallSettingsForm');
-            $this->form = $form;
-        }
 
         protected function checkService()
         {

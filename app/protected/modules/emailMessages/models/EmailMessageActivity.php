@@ -39,24 +39,24 @@
      */
     class EmailMessageActivity extends Item
     {
-        const TYPE_OPEN         = 1;
+        const TYPE_OPEN                       = 1;
 
-        const TYPE_CLICK        = 2;
+        const TYPE_CLICK                      = 2;
 
-        const TYPE_UNSUBSCRIBE  = 3;
+        const TYPE_UNSUBSCRIBE                = 3;
 
-        const TYPE_BOUNCE       = 4;
+        const TYPE_BOUNCE                     = 4;
 
-        const TYPE_SKIP         = 5;
+        const TYPE_SKIP                       = 5;
 
         public static function getTypesArray()
         {
             return array(
-                static::TYPE_OPEN           => Zurmo::t('EmailMessagesModule', 'Open'),
-                static::TYPE_CLICK          => Zurmo::t('EmailMessagesModule', 'Click'),
-                static::TYPE_UNSUBSCRIBE    => Zurmo::t('EmailMessagesModule', 'Unsubscribe'),
-                static::TYPE_BOUNCE         => Zurmo::t('EmailMessagesModule', 'Bounce'),
-                static::TYPE_SKIP           => Zurmo::t('EmailMessagesModule', 'Skipped'),
+                static::TYPE_OPEN               => Zurmo::t('Core', 'Open'),
+                static::TYPE_CLICK              => Zurmo::t('EmailMessagesModule', 'Click'),
+                static::TYPE_UNSUBSCRIBE        => Zurmo::t('Core',                'Unsubscribe'),
+                static::TYPE_BOUNCE             => Zurmo::t('EmailMessagesModule', 'Bounce'),
+                static::TYPE_SKIP               => Zurmo::t('Core', 'Skipped'),
             );
         }
 
@@ -91,12 +91,11 @@
                     array('latestSourceIP',         'type', 'type' => 'string'),
                 ),
                 'relations' => array(
-                    'person'                        => array(RedBeanModel::HAS_ONE, 'Person', RedBeanModel::NOT_OWNED),
-                    'emailMessageUrl'               => array(RedBeanModel::HAS_ONE, 'EmailMessageUrl'),
+                    'person'                        => array(static::HAS_ONE, 'Person', static::NOT_OWNED),
+                    'emailMessageUrl'               => array(static::HAS_ONE, 'EmailMessageUrl'),
                 ),
                 'elements' => array(
                     'latestDateTime'                => 'DateTime',
-                    // TODO: @Shoaibi: High: What other elements shall we define here?
                 ),
                 'defaultSortAttribute' => 'latestDateTime',
             );
@@ -132,36 +131,35 @@
             assert('is_int($personId)');
             assert('is_string($url) || $url === null');
             $searchAttributeData = array();
-            $searchAttributeData['clauses'] = array(
-                1 => array(
-                    'attributeName'             => 'type',
-                    'operatorType'              => 'equals',
-                    'value'                     => $type,
-                ),
-                2 => array(
+            $searchAttributeData['clauses'][1] = array(
+                'attributeName'             => 'type',
+                'operatorType'              => 'equals',
+                'value'                     => $type,
+            );
+            $structure = '1';
+            $clauseNumber = count($searchAttributeData['clauses']) + 1;
+            $searchAttributeData['clauses'][$clauseNumber++] = array(
                     'attributeName'             => 'person',
                     'relatedAttributeName'      => 'id',
                     'operatorType'              => 'equals',
                     'value'                     => $personId,
-                ),
             );
-            $searchAttributeData['structure'] = '(1 and 2)';
+            $structure .= ' and ' . $clauseNumber;
             if ($url)
             {
-                $searchAttributeData['clauses'][3] = array(
+                $searchAttributeData['clauses'][$clauseNumber++] = array(
                     'attributeName'             => 'emailMessageUrl',
                     'relatedAttributeName'      => 'url',
                     'operatorType'              => 'equals',
                     'value'                     => $url,
                 );
-                $searchAttributeData['structure'] = '(1 and 2 and 3)';
+                $structure .= ' and ' . $clauseNumber;
             }
+            $searchAttributeData['structure'] = "({$structure})";
             return $searchAttributeData;
         }
 
-        public static function getChildActivityByTypeAndModelIdAndModelRelationNameAndPersonIdAndUrl($type, $modelId,
-                                                                                           $relationName,
-                                                                                           $personId, $url = null,
+        public static function getByTypeAndModelIdAndPersonIdAndUrl($type, $modelId, $personId, $url = null,
                                                                                             $sortBy = 'latestDateTime',
                                                                                             $pageSize = null,
                                                                                             $countOnly = false)
@@ -169,39 +167,41 @@
             assert('is_int($type)');
             assert('is_int($personId) || is_string($personId)');
             assert('is_int($modelId) || is_string($modelId)');
-            assert('is_string($relationName)');
             assert('is_string($url) || $url === null');
+            $relationName   = static::getRelationName();
             $searchAttributeData = array();
-            $searchAttributeData['clauses'] = array(
-                1 => array(
-                    'attributeName'             => 'type',
-                    'operatorType'              => 'equals',
-                    'value'                     => $type,
-                ),
-                2 => array(
+            $searchAttributeData['clauses'][1] = array(
+                'attributeName'             => 'type',
+                'operatorType'              => 'equals',
+                'value'                     => $type,
+            );
+            $structure = '1';
+            $clauseNumber = count($searchAttributeData['clauses']) + 1;
+            $searchAttributeData['clauses'][$clauseNumber++] = array(
                     'attributeName'             => 'person',
                     'relatedAttributeName'      => 'id',
                     'operatorType'              => 'equals',
                     'value'                     => intval($personId),
-                ),
-                3 => array(
+            );
+            $structure .= ' and ' . $clauseNumber;
+            $searchAttributeData['clauses'][$clauseNumber++] = array(
                     'attributeName'             => $relationName,
                     'relatedAttributeName'      => 'id',
                     'operatorType'              => 'equals',
                     'value'                     => intval($modelId),
-                ),
             );
-            $searchAttributeData['structure'] = '(1 and 2 and 3)';
+            $structure .= ' and ' . $clauseNumber;
             if ($url)
             {
-                $searchAttributeData['clauses'][4] = array(
+                $searchAttributeData['clauses'][$clauseNumber++] = array(
                     'attributeName'             => 'emailMessageUrl',
                     'relatedAttributeName'      => 'url',
                     'operatorType'              => 'equals',
                     'value'                     => $url,
                 );
-                $searchAttributeData['structure'] = '(1 and 2 and 3 and 4)';
+                $structure .= ' and ' . $clauseNumber;
             }
+            $searchAttributeData['structure'] = "({$structure})";
             $joinTablesAdapter                = new RedBeanModelJoinTablesQueryAdapter(get_called_class());
             $where = RedBeanModelDataProvider::makeWhere(get_called_class(), $searchAttributeData, $joinTablesAdapter);
             if ($countOnly)
@@ -211,8 +211,15 @@
             return self::getSubset($joinTablesAdapter, null, $pageSize, $where, $sortBy);
         }
 
-        protected static function createNewChildActivity($type, $personId, $url, $relationName, $relatedModel, $sourceIP)
+        public static function createNewActivity($type, $modelId, $personId, $url = null, $sourceIP = null,
+                                                                                            $relatedModel = null)
         {
+            $relationName               = static::getRelationName();
+            if (!isset($relatedModel))
+            {
+                $relatedModelClassName      = static::getRelatedModelClassName();
+                $relatedModel               = $relatedModelClassName::getById(intval($modelId));
+            }
             $className                  = get_called_class();
             $activity                   = new $className();
             $activity->quantity         = 1;
@@ -237,42 +244,27 @@
             }
             else
             {
-                static::createNewOpenActivityForFirstClickTrackingActivity($type,
-                                                                            $personId,
-                                                                            $relationName,
-                                                                            $relatedModel,
-                                                                            $sourceIP);
+                static::createNewOpenActivityForFirstClickTrackingActivity($type, $personId, $relatedModel, $sourceIP);
                 return true;
             }
         }
 
-        protected static function createNewOpenActivityForFirstClickTrackingActivity($type, $personId,
-                                                                                $relationName, $relatedModel, $sourceIP)
+        protected static function createNewOpenActivityForFirstClickTrackingActivity($type, $personId, $relatedModel,
+                                                                                                            $sourceIP)
         {
-            if (static::shouldCreateOpenActivityForTrackingActivity($type, $personId, $relationName, $relatedModel->id))
+            if (static::shouldCreateOpenActivityForTrackingActivity($type, $personId, $relatedModel->id))
             {
-                return static::createNewChildActivity(static::TYPE_OPEN,
-                                                        $personId,
-                                                        null,
-                                                        $relationName,
-                                                        $relatedModel,
-                                                        $sourceIP);
+                return static::createNewActivity(static::TYPE_OPEN, $relatedModel->id, $personId, null,
+                                                    $sourceIP, $relatedModel);
             }
         }
 
-        protected static function shouldCreateOpenActivityForTrackingActivity($type, $personId, $relationName, $modelId)
+        protected static function shouldCreateOpenActivityForTrackingActivity($type, $personId, $modelId)
         {
             if ($type === static::TYPE_CLICK)
             {
-                $existingActivitiesCount = static::getChildActivityByTypeAndModelIdAndModelRelationNameAndPersonIdAndUrl(
-                                                                                                        $type,
-                                                                                                        $modelId,
-                                                                                                        $relationName,
-                                                                                                        $personId,
-                                                                                                        null,
-                                                                                                        null,
-                                                                                                        null,
-                                                                                                        true);
+                $existingActivitiesCount = static::getByTypeAndModelIdAndPersonIdAndUrl($type, $modelId, $personId, null,
+                                                                                            null, null, true);
                 return ($existingActivitiesCount == 1);
             }
             return false;
@@ -314,6 +306,28 @@
                 }
             }
             return $this->latestDateTime . ': ' . strval($this->person) . '/' . $type;
+        }
+
+        protected static function getRelationName()
+        {
+            throw new NotImplementedException();
+        }
+
+        protected static function getRelatedModelClassName()
+        {
+            return ucfirst(static::getRelationName());
+        }
+
+        protected static function getIndexesDefinition()
+        {
+            $relatedModelClassName = static::getRelatedModelClassName();
+            $relatedColumnName = static::getTableName($relatedModelClassName) . '_id';
+            $baseColumnName = static::getTableName(get_class()) . '_id';
+            return array($baseColumnName . '_' . $relatedColumnName => array(
+                                'members' => array($baseColumnName, $relatedColumnName),
+                                'unique' => true,
+                            )
+                        );
         }
     }
 ?>

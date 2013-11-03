@@ -38,74 +38,10 @@
      * This is a bean model cache helper that utilizes just memcaching if available. Utilized for
      * caching requirements that are simple in/out of a serialized array or string of information.
      */
-    class BeanModelCache extends ZurmoCache
+    abstract class BeanModelCache extends GeneralCache
     {
-        private static $cachedEntries = array();
+        const ALLOW_PHP_CACHING = false;
 
         public static $cacheType = 'BM:';
-
-        /**
-         * Get entry from memcache
-         * @param string $identifier
-         * @return mixed
-         * @throws NotFoundException
-         */
-        public static function getEntry($identifier)
-        {
-            assert('is_string($identifier)');
-            if (MEMCACHE_ON && Yii::app()->cache !== null)
-            {
-                $prefix          = self::getCachePrefix($identifier, static::$cacheType);
-                @$serializedData = Yii::app()->cache->get($prefix . $identifier);
-                if ($serializedData !== false)
-                {
-                    return unserialize($serializedData);
-                }
-            }
-            throw new NotFoundException();
-        }
-
-        /**
-         * Add entry to memcache
-         * @param string $identifier
-         * @param mixed $entry
-         */
-        public static function cacheEntry($identifier, $entry)
-        {
-            assert('is_string($identifier)');
-            assert('is_string($entry) || is_array($entry) || is_numeric($entry) || is_object($entry) || $entry == null');
-            if (MEMCACHE_ON && Yii::app()->cache !== null)
-            {
-                $prefix = self::getCachePrefix($identifier, static::$cacheType);
-                @Yii::app()->cache->set($prefix . $identifier, serialize($entry));
-            }
-        }
-
-        /**
-         * Remove entry from memcache
-         * @param string $identifier
-         */
-        public static function forgetEntry($identifier)
-        {
-            if (MEMCACHE_ON && Yii::app()->cache !== null)
-            {
-                $prefix = self::getCachePrefix($identifier, static::$cacheType);
-                @Yii::app()->cache->delete($prefix . $identifier);
-            }
-        }
-
-        /**
-         * Remove all BeanModelCache data from php cache and/or memcache
-         * Please note that we are not using $Yii::app()->cache->forget function, because
-         * this function remove all data from memcache, so it would remove memcache data
-         * that are added by other application on same server(if there is only one instance of memcache on server)
-         */
-        public static function forgetAll()
-        {
-            if (MEMCACHE_ON && Yii::app()->cache !== null)
-            {
-                self::incrementCacheIncrementValue(static::$cacheType);
-            }
-        }
     }
 ?>

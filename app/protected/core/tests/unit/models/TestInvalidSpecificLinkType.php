@@ -34,10 +34,6 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Test for throwing an exception if trying to make a relation with the relation name the same as the relation
-     * model class name, not-owned, and a specific link
-     */
     class TestInvalidSpecificLinkType extends RedBeanModel
     {
         public static function getDefaultMetadata()
@@ -48,8 +44,8 @@
                     'name',
                 ),
                 'relations' => array(
-                    'a' => array(RedBeanModel::HAS_ONE, 'A', RedBeanModel::NOT_OWNED,
-                                 RedBeanModel::LINK_TYPE_SPECIFIC, 'aSomething'),
+                    'a' => array(static::HAS_ONE, 'A', static::NOT_OWNED,
+                                 static::LINK_TYPE_SPECIFIC, 'aSomething'),
                 ),
                 'rules' => array(
                     array('name', 'type',   'type' => 'string'),

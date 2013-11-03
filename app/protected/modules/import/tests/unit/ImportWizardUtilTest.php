@@ -52,8 +52,7 @@
 
             //Test an import object with existing data and a data element that does not go into the form.
             $import                 = new Import();
-            $dataToSerialize        = array('importRulesType' => 'test', 'anElementToIgnore' => 'something',
-                                            'dataAnalyzerMessagesData' => 'ttt');
+            $dataToSerialize        = array('importRulesType' => 'test', 'anElementToIgnore' => 'something');
             $import->serializedData = serialize($dataToSerialize);
             $form                   = ImportWizardUtil::makeFormByImport($import);
             $this->assertTrue  ($form instanceof ImportWizardForm);
@@ -62,7 +61,6 @@
             $this->assertEquals(null,    $form->firstRowIsHeaderRow);
             $this->assertTrue($form->explicitReadWriteModelPermissions instanceof ExplicitReadWriteModelPermissions);
             $this->assertEquals(null,    $form->mappingData);
-            $this->assertEquals('ttt',   $form->dataAnalyzerMessagesData);
             $this->assertFalse ($form->isAttribute('anElementToIgnore'));
         }
 
@@ -77,8 +75,7 @@
                                                                 'fileUploadData'       => array('a' => 'b'),
                                                                 'firstRowIsHeaderRow'  => false,
                                                                 'explicitReadWriteModelPermissions'     => 'z',
-                                                                'mappingData'          => array('x' => 'y'),
-                                                                'dataAnalyzerMessagesData' => array('h'));
+                                                                'mappingData'          => array('x' => 'y'));
             $import->serializedData                     = serialize($dataToSerialize);
             $importWizardForm                           = new ImportWizardForm();
             $importWizardForm->importRulesType          = 'xx';
@@ -86,7 +83,6 @@
             $importWizardForm->firstRowIsHeaderRow      = true;
             $importWizardForm->explicitReadWriteModelPermissions = $explicitReadWriteModelPermissions;
             $importWizardForm->mappingData              = array('xx' => 'yy');
-            $importWizardForm->dataAnalyzerMessagesData = array('hhh');
             ImportWizardUtil::setImportSerializedDataFromForm($importWizardForm, $import);
             $compareDataToSerialize                 = array( 'importRulesType' => 'xx',
                                                              'fileUploadData'       => array('aa' => 'bb'),
@@ -94,8 +90,7 @@
                                                              'rowColumnEnclosure'  => '"',
                                                              'firstRowIsHeaderRow'  => true,
                                                              'explicitReadWriteModelPermissions'     => null,
-                                                             'mappingData'          => array('xx' => 'yy'),
-                                                             'dataAnalyzerMessagesData' => array('hhh'));
+                                                             'mappingData'          => array('xx' => 'yy'));
             $this->assertEquals(unserialize($import->serializedData), $compareDataToSerialize);
         }
 
@@ -137,7 +132,7 @@
             $this->assertEquals(1, $explicitReadWriteModelPermissions->getReadOnlyPermitablesCount());
             $fileUploadData                                      = array('a', 'b');
             $testTableName                                       = 'testimporttable';
-            $this->assertTrue(ImportTestHelper::createTempTableByFileNameAndTableName('importTest.csv', $testTableName));
+            $this->assertTrue(ImportTestHelper::createTempTableByFileNameAndTableName('importTest.csv', $testTableName, true));
             $importWizardForm                                    = new ImportWizardForm();
             $importWizardForm->importRulesType                   = 'testAbc';
             $importWizardForm->explicitReadWriteModelPermissions = $explicitReadWriteModelPermissions;
@@ -178,7 +173,8 @@
             $this->assertTrue($import->save());
             $this->assertTrue(ImportTestHelper::
                               createTempTableByFileNameAndTableName('headerRowOnlyImportTest.csv',
-                                                                    $import->getTempTableName()));
+                                                                    $import->getTempTableName(),
+                                                                    true));
             $importWizardForm = new ImportWizardForm();
             $this->assertTrue(ImportWizardUtil::
                               importFileHasAtLeastOneImportRow($importWizardForm, $import));
@@ -186,7 +182,7 @@
             $importWizardForm->firstRowIsHeaderRow = true;
             $this->assertFalse(ImportWizardUtil::
                               importFileHasAtLeastOneImportRow($importWizardForm, $import));
-            ImportDatabaseUtil::dropTableByTableName($import->getTempTableName());
+            ZurmoRedBean::$writer->dropTableByTableName($import->getTempTableName());
         }
 
         /**

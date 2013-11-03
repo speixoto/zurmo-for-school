@@ -114,7 +114,7 @@
 
         protected static function resolveTitleByMassActionId($actionId)
         {
-            if (strpos($actionId, 'massSubscribe') === 0 || strpos($actionId, 'massUnsubscribe') === 0)
+            if (MassActionUtil::isMassSubscribeOrUnsubscribeLikeAction($actionId))
             {
                 $term = 'Mass '. ucfirst(str_replace('mass', '', $actionId));
                 return Zurmo::t('MarketingListsModule', $term);
@@ -146,7 +146,7 @@
 
         protected static function resolveViewIdByMassActionId($actionId, $returnProgressViewName, $moduleName = null)
         {
-            if (strpos($actionId, 'massSubscribe') === 0 || strpos($actionId, 'massUnsubscribe') === 0)
+            if (MassActionUtil::isMassSubscribeOrUnsubscribeLikeAction($actionId))
             {
                 $viewNameSuffix    = 'View';
                 if ($returnProgressViewName)

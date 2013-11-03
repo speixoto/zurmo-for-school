@@ -84,6 +84,7 @@
                     'Closed Won'    => 100,
                     'Closed Lost'   => 0,
                 ),
+                'automaticProbabilityMappingDisabled' => false,
                 'tabMenuItems' => array(
                     array(
                         'label'  => "eval:Zurmo::t('OpportunitiesModule', 'OpportunitiesModulePluralLabel', \$translationParams)",
@@ -184,6 +185,10 @@
             return array();
         }
 
+        /**
+         * @param string $value
+         * @return int
+         */
         public static function getProbabilityByStageValue($value)
         {
             assert('is_string($value) || $value == null');
@@ -193,6 +198,16 @@
                 return $stageToProbabilityMapping[$value];
             }
             return 0;
+        }
+        
+        public static function isAutomaticProbabilityMappingDisabled()
+        {
+            $metadata = static::getMetadata();
+            if (isset($metadata['global']['automaticProbabilityMappingDisabled']))
+            {
+                return (bool) $metadata['global']['automaticProbabilityMappingDisabled'];
+            }
+            return false;
         }
     }
 ?>

@@ -53,7 +53,7 @@
                                             $this->getArray(),
                                             $this->getEditableHtmlOptions()
                                         );
-            return ZurmoHtml::tag('strong', array(), Zurmo::t('MarketingListsModule', 'View') . ':') . $content;
+            return ZurmoHtml::tag('strong', array(), Zurmo::t('Core', 'View') . ':') . $content;
         }
 
         protected function renderControlNonEditable()
@@ -89,11 +89,11 @@
         protected function getArray()
         {
             $data = array(MarketingListMembersConfigurationForm::FILTERED_USER_ALL =>
-                            Zurmo::t('MarketingListsModule', 'All'),
+                            Zurmo::t('Core', 'All'),
                           MarketingListMembersConfigurationForm::FILTER_USER_SUBSCRIBERS =>
-                            Zurmo::t('MarketingListsModule', 'Subscribed'),
+                            Zurmo::t('Core', 'Subscribed'),
                           MarketingListMembersConfigurationForm::FILTER_USER_UNSUBSCRIBERS =>
-                            Zurmo::t('MarketingListsModule', 'Unsubscribed'));
+                            Zurmo::t('Core', 'Unsubscribed'));
             return $data;
         }
     }

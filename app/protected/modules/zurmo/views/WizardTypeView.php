@@ -94,7 +94,7 @@
          */
         protected function getLinkText()
         {
-            return Zurmo::t('ZurmoModule', 'Create');
+            return Zurmo::t('Core', 'Create');
         }
     }
 ?>

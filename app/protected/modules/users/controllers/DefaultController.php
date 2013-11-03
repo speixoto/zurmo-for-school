@@ -52,8 +52,9 @@
             $filters = array();
             $filters[] = array(
                     ZurmoBaseController::RIGHTS_FILTER_PATH .
-                    ' - modalList, autoComplete, details, profile, edit, auditEventsModalList, changePassword, configurationEdit, emailConfiguration, securityDetails, ' .
-                        'autoCompleteForMultiSelectAutoComplete, confirmTimeZone, changeAvatar',
+                    ' - modalList, autoComplete, details, profile, edit, auditEventsModalList, changePassword, ' .
+                    'configurationEdit, emailConfiguration, securityDetails, ' .
+                    'autoCompleteForMultiSelectAutoComplete, confirmTimeZone, changeAvatar, gameDashboard',
                     'moduleClassName' => 'UsersModule',
                     'rightName' => UsersModule::getAccessRight(),
             );
@@ -79,17 +80,18 @@
             $pageSize                       = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                                               'listPageSize', get_class($this->getModule()));
             $user                           = new User(false);
+            $user->setScenario('searchModel');
             $searchForm                     = new UsersSearchForm($user);
             $listAttributesSelector         = new ListAttributesSelector('UsersListView', get_class($this->getModule()));
             $searchForm->setListAttributesSelector($listAttributesSelector);
             $dataProvider = $this->resolveSearchDataProvider(
                 $searchForm,
                 $pageSize,
-                null,
+                'NonSystemUsersStateMetadataAdapter',
                 'UsersSearchView'
             );
             $title           = Zurmo::t('UsersModule', 'Users');
-            $breadcrumbLinks = array(
+            $breadCrumbLinks = array(
                  $title,
             );
             if (isset($_GET['ajax']) && $_GET['ajax'] == 'list-view')
@@ -104,7 +106,7 @@
             {
                 $mixedView = $this->makeActionBarSearchAndListView($searchForm, $dataProvider, 'UsersActionBarForSearchAndListView');
                 $view = new UsersPageView(ZurmoDefaultAdminViewUtil::
-                                         makeViewWithBreadcrumbsForCurrentUser($this, $mixedView, $breadcrumbLinks, 'UserBreadCrumbView'));
+                                         makeViewWithBreadcrumbsForCurrentUser($this, $mixedView, $breadCrumbLinks, 'UserBreadCrumbView'));
             }
             echo $view->render();
         }
@@ -115,10 +117,18 @@
                 RightsUtil::canUserAccessModule('UsersModule', Yii::app()->user->userModel))
             {
                 $user                 = User::getById(intval($id));
-                $userAvatarForm       = new UserAvatarForm($user);
-                $this->attemptToValidateAjaxFromPost($userAvatarForm, 'UserAvatarForm');
-                $viewForModal = new UserChangeAvatarView($this->getId(), $this->getModule()->getId(), $userAvatarForm);
-                $this->attemptToSaveModelFromPost($userAvatarForm);
+                if (UserAccessUtil::resolveCanCurrentUserAccessRootUser($user, false) &&
+                   UserAccessUtil::resolveAccessingASystemUser($user, false))
+                {
+                    $userAvatarForm       = new UserAvatarForm($user);
+                    $this->attemptToValidateAjaxFromPost($userAvatarForm, 'UserAvatarForm');
+                    $viewForModal = new UserChangeAvatarView($this->getId(), $this->getModule()->getId(), $userAvatarForm);
+                    $this->attemptToSaveModelFromPost($userAvatarForm);
+                }
+                else
+                {
+                    $viewForModal = new AccessFailureView();
+                }
             }
             else
             {
@@ -133,8 +143,9 @@
         public function actionDetails($id)
         {
             $user = User::getById(intval($id));
+            UserAccessUtil::resolveAccessingASystemUser($user);
             $title           = Zurmo::t('UsersModule', 'Profile');
-            $breadcrumbLinks = array(strval($user) => array('default/details',  'id' => $id), $title);
+            $breadCrumbLinks = array(strval($user) => array('default/details',  'id' => $id), $title);
             AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED, array(strval($user), 'UsersModule'), $user);
             $params = array(
                 'controllerId'     => $this->getId(),
@@ -147,7 +158,7 @@
             $detailsAndRelationsView = new UserDetailsAndRelationsView($this->getId(),
                                                                        $this->getModule()->getId(),
                                                                        $params);
-            $view = new UsersPageView($this->resolveZurmoDefaultOrAdminView($detailsAndRelationsView, $breadcrumbLinks, 'UserBreadCrumbView'));
+            $view = new UsersPageView($this->resolveZurmoDefaultOrAdminView($detailsAndRelationsView, $breadCrumbLinks, 'UserBreadCrumbView'));
             echo $view->render();
         }
 
@@ -157,10 +168,18 @@
             parent::actionAuditEventsModalList($id);
         }
 
+        protected function resolveModelForAuditEventsModalList($id)
+        {
+            $user = User::getById((int)$id);
+            UserAccessUtil::resolveCanCurrentUserAccessRootUser($user);
+            UserAccessUtil::resolveAccessingASystemUser($user);
+            return $user;
+        }
+
         public function actionCreate()
         {
             $title           = Zurmo::t('UsersModule', 'Create User');
-            $breadcrumbLinks = array($title);
+            $breadCrumbLinks = array($title);
             $user             = new User();
             $user->language   = Yii::app()->language;
             $user->currency   = Yii::app()->currencyHelper->getActiveCurrencyForCurrentUser();
@@ -172,7 +191,7 @@
                                          makeViewWithBreadcrumbsForCurrentUser($this,
                                              $this->makeTitleBarAndEditView(
                                                 $this->attemptToSaveModelFromPost($userPasswordForm),
-                                                    'UserCreateView'), $breadcrumbLinks, 'UserBreadCrumbView'));
+                                                    'UserCreateView'), $breadCrumbLinks, 'UserBreadCrumbView'));
             echo $view->render();
         }
 
@@ -180,9 +199,11 @@
         {
             UserAccessUtil::resolveCanCurrentUserAccessAction(intval($id));
             $user            = User::getById(intval($id));
+            UserAccessUtil::resolveCanCurrentUserAccessRootUser($user);
+            UserAccessUtil::resolveAccessingASystemUser($user);
             $user->setScenario('editUser');
-            $title           = Zurmo::t('UsersModule', 'Details');
-            $breadcrumbLinks = array(strval($user) => array('default/details',  'id' => $id), $title);
+            $title           = Zurmo::t('Core', 'Details');
+            $breadCrumbLinks = array(strval($user) => array('default/details',  'id' => $id), $title);
             $this->attemptToValidateAjaxFromPost($user, 'User');
             if ($user == Yii::app()->user->userModel)
             {
@@ -205,7 +226,7 @@
             $view = new UsersPageView($this->resolveZurmoDefaultOrAdminView(
                                              $this->makeTitleBarAndEditView(
                                                 $this->attemptToSaveModelFromPost($user, $redirectUrlParams),
-                                                    'UserActionBarAndEditView'), $breadcrumbLinks, 'UserBreadCrumbView'));
+                                                    'UserActionBarAndEditView'), $breadCrumbLinks, 'UserBreadCrumbView'));
             echo $view->render();
         }
 
@@ -213,8 +234,10 @@
         {
             UserAccessUtil::resolveCanCurrentUserAccessAction(intval($id));
             $user = User::getById(intval($id));
+            UserAccessUtil::resolveCanCurrentUserAccessRootUser($user);
+            UserAccessUtil::resolveAccessingASystemUser($user);
             $title           = Zurmo::t('UsersModule', 'Change Password');
-            $breadcrumbLinks = array(strval($user) => array('default/details',  'id' => $id), $title);
+            $breadCrumbLinks = array(strval($user) => array('default/details',  'id' => $id), $title);
             $user->setScenario('changePassword');
             $userPasswordForm = new UserPasswordForm($user);
             $userPasswordForm->setScenario('changePassword');
@@ -222,7 +245,7 @@
             $view = new UsersPageView($this->resolveZurmoDefaultOrAdminView(
                                              $this->makeTitleBarAndEditView(
                                                 $this->attemptToSaveModelFromPost($userPasswordForm),
-                                                'UserActionBarAndChangePasswordView'), $breadcrumbLinks, 'UserBreadCrumbView'));
+                                                'UserActionBarAndChangePasswordView'), $breadCrumbLinks, 'UserBreadCrumbView'));
             echo $view->render();
         }
 
@@ -393,15 +416,18 @@
                                             $_GET['modalTransferInformation']['sourceNameFieldId'],
                                             $_GET['modalTransferInformation']['modalId']
             );
-            echo ModalSearchListControllerUtil::setAjaxModeAndRenderModalSearchList($this, $modalListLinkProvider);
+            echo ModalSearchListControllerUtil::setAjaxModeAndRenderModalSearchList($this, $modalListLinkProvider,
+                                                'SelectableUsersStateMetadataAdapter');
         }
 
         public function actionSecurityDetails($id)
         {
             UserAccessUtil::resolveCanCurrentUserAccessAction(intval($id));
             $user = User::getById(intval($id));
+            UserAccessUtil::resolveCanCurrentUserAccessRootUser($user);
+            UserAccessUtil::resolveAccessingASystemUser($user);
             $title           = Zurmo::t('UsersModule', 'Security Overview');
-            $breadcrumbLinks = array(strval($user) => array('default/details',  'id' => $id), $title);
+            $breadCrumbLinks = array(strval($user) => array('default/details',  'id' => $id), $title);
             $modulePermissionsData =  PermissionsUtil::getAllModulePermissionsDataByPermitable($user);
             $modulePermissionsForm = ModulePermissionsFormUtil::makeFormFromPermissionsData($modulePermissionsData);
             $viewReadyModulePermissionsData = GroupModulePermissionsDataToEditViewAdapater::resolveData($modulePermissionsData);
@@ -432,7 +458,7 @@
                 $policiesViewMetadata,
                 $groupMembershipViewData
             );
-            $view = new UsersPageView($this->resolveZurmoDefaultOrAdminView($securityDetailsView, $breadcrumbLinks, 'UserBreadCrumbView'));
+            $view = new UsersPageView($this->resolveZurmoDefaultOrAdminView($securityDetailsView, $breadCrumbLinks, 'UserBreadCrumbView'));
             echo $view->render();
         }
 
@@ -440,8 +466,10 @@
         {
             UserAccessUtil::resolveCanCurrentUserAccessAction(intval($id));
             $user = User::getById(intval($id));
-            $title           = Zurmo::t('UsersModule', 'Configuration');
-            $breadcrumbLinks = array(strval($user) => array('default/details',  'id' => $id), $title);
+            UserAccessUtil::resolveCanCurrentUserAccessRootUser($user);
+            UserAccessUtil::resolveAccessingASystemUser($user);
+            $title           = Zurmo::t('ConfigurationModule', 'Configuration');
+            $breadCrumbLinks = array(strval($user) => array('default/details',  'id' => $id), $title);
             $configurationForm = UserConfigurationFormAdapter::makeFormFromUserConfigurationByUser($user);
             $postVariableName   = get_class($configurationForm);
             if (isset($_POST[$postVariableName]))
@@ -470,7 +498,7 @@
                                     $configurationForm
             );
             $titleBarAndEditView->setCssClasses(array('AdministrativeArea'));
-            $view = new UsersPageView($this->resolveZurmoDefaultOrAdminView($titleBarAndEditView, $breadcrumbLinks, 'UserBreadCrumbView'));
+            $view = new UsersPageView($this->resolveZurmoDefaultOrAdminView($titleBarAndEditView, $breadCrumbLinks, 'UserBreadCrumbView'));
             echo $view->render();
         }
 
@@ -478,8 +506,10 @@
         {
             UserAccessUtil::resolveCanCurrentUserAccessAction(intval($id));
             $user  = User::getById(intval($id));
-            $title = Zurmo::t('UsersModule', 'Email Configuration');
-            $breadcrumbLinks = array(strval($user) => array('default/details',  'id' => $id), $title);
+            UserAccessUtil::resolveCanCurrentUserAccessRootUser($user);
+            UserAccessUtil::resolveAccessingASystemUser($user);
+            $title = Zurmo::t('EmailMessagesModule', 'Email Configuration');
+            $breadCrumbLinks = array(strval($user) => array('default/details',  'id' => $id), $title);
             $emailAccount = EmailAccount::resolveAndGetByUserAndName($user);
             $userEmailConfigurationForm = new UserEmailConfigurationForm($emailAccount);
             $userEmailConfigurationForm->emailSignatureHtmlContent = $user->getEmailSignature()->htmlContent;
@@ -512,7 +542,7 @@
                                     $userEmailConfigurationForm
             );
             $titleBarAndEditView->setCssClasses(array('AdministrativeArea'));
-            $view = new UsersPageView($this->resolveZurmoDefaultOrAdminView($titleBarAndEditView, $breadcrumbLinks, 'UserBreadCrumbView'));
+            $view = new UsersPageView($this->resolveZurmoDefaultOrAdminView($titleBarAndEditView, $breadCrumbLinks, 'UserBreadCrumbView'));
             echo $view->render();
         }
 
@@ -532,11 +562,11 @@
          * user does not have access to the Leads or Contacts module.
          * JSON encode the resulting array of contacts.
          */
-        public function actionAutoCompleteForMultiSelectAutoComplete($term)
+        public function actionAutoCompleteForMultiSelectAutoComplete($term, $autoCompleteOptions = null)
         {
             $pageSize = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                             'autoCompleteListPageSize', get_class($this->getModule()));
-            $users    = UserSearch::getUsersByPartialFullName($term, $pageSize);
+            $users    = UserSearch::getUsersByPartialFullName($term, $pageSize, $autoCompleteOptions);
             $autoCompleteResults  = array();
             foreach ($users as $user)
             {
@@ -548,17 +578,33 @@
             echo CJSON::encode($autoCompleteResults);
         }
 
+        public function actionGameDashboard($id)
+        {
+            $user = User::getById(intval($id));
+            UserAccessUtil::resolveAccessingASystemUser($user);
+            $title               = Zurmo::t('ZurmoModule', 'Dashboard');
+            $breadCrumbLinks     = array(strval($user) => array('default/gameDashboard',  'id' => $id), $title);
+            $badgeData           = GameBadge::getAllByPersonIndexedByType($user);
+            $generalLevelData    = GameLevelUtil::getStatisticsDataForAGivenLevelType($user, GameLevel::TYPE_GENERAL);
+            $rankingData         = GamePointUtil::getUserRankingData($user);
+            $statisticsData      = GameLevelUtil::getUserStatisticsData($user);
+            $collectionData      = GameCollection::resolvePersonAndAvailableTypes($user, GameCollection::getAvailableTypes());
+            $dashboardView = new UserGameDashboardView($this, $user, $generalLevelData, $badgeData, $rankingData, $statisticsData, $collectionData);
+            $view = new AjaxPageView($dashboardView);
+            echo $view->render();
+        }
+
         /**
          * Depending on the user interface, the user views should utilize the admin or regular view.  This especially
          * important for mobile, since for mobile there are no admin views available yet.
          * @param $containedView
-         * @param $breadcrumbLinks
+         * @param $breadCrumbLinks
          * @param $breadcrumbViewClassName
          * @return GridView
          */
-        protected function resolveZurmoDefaultOrAdminView(View $containedView, $breadcrumbLinks, $breadcrumbViewClassName)
+        protected function resolveZurmoDefaultOrAdminView(View $containedView, $breadCrumbLinks, $breadcrumbViewClassName)
         {
-            assert('is_array($breadcrumbLinks)');
+            assert('is_array($breadCrumbLinks)');
             assert('is_string($breadcrumbViewClassName)');
             if (Yii::app()->userInterface->isMobile())
             {
@@ -567,8 +613,47 @@
             else
             {
                 return ZurmoDefaultAdminViewUtil::
-                    makeViewWithBreadcrumbsForCurrentUser($this, $containedView, $breadcrumbLinks, $breadcrumbViewClassName);
+                    makeViewWithBreadcrumbsForCurrentUser($this, $containedView, $breadCrumbLinks, $breadcrumbViewClassName);
             }
+        }
+
+        /**
+         * Override to handle userStatus validation
+         * @param User | ModelForm $model
+         * @param string $postVariableName
+         */
+        protected function attemptToValidateAjaxFromPost($model, $postVariableName)
+        {
+            if (isset($_POST['ajax']) && $_POST['ajax'] == 'edit-form')
+            {
+                $model->setAttributes($_POST[$postVariableName]);
+                $model->validate();
+                $userStatus = UserStatusUtil::makeByPostData($_POST[$postVariableName]);
+                if ($model instanceof User)
+                {
+                    if ($userStatus == null)
+                    {
+                        $userStatus = UserStatusUtil::makeByUser($model);
+                    }
+                    Yii::app()->licenseManager->resolveValidationOnCreateOrEditUser($model, $userStatus);
+                }
+                elseif ($model instanceof ModelForm)
+                {
+                    if ($userStatus == null)
+                    {
+                        $userStatus = UserStatusUtil::makeByUser($model->getModel());
+                    }
+                    Yii::app()->licenseManager->resolveValidationOnCreateOrEditUser($model->getModel(), $userStatus);
+                }
+                $errorData = ZurmoActiveForm::makeErrorsDataAndResolveForOwnedModelAttributes($model);
+                echo CJSON::encode($errorData);
+                Yii::app()->end(0, false);
+            }
+        }
+
+        protected function resolveStateMetadataAdapterClassNameForExport()
+        {
+            return 'NonSystemUsersStateMetadataAdapter';
         }
     }
 ?>

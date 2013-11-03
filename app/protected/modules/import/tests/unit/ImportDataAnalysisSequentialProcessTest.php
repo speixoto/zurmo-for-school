@@ -62,7 +62,7 @@
             $serializedData['mappingData']     = $mappingData;
             $import->serializedData            = serialize($serializedData);
             $this->assertTrue($import->save());
-            ImportTestHelper::createTempTableByFileNameAndTableName('importAnalyzerTest.csv', $import->getTempTableName());
+            ImportTestHelper::createTempTableByFileNameAndTableName('importAnalyzerTest.csv', $import->getTempTableName(), true);
             $config            = array('pagination' => array('pageSize' => 2));
             $dataProvider      = new ImportDataProvider($import->getTempTableName(), true, $config);
             $sequentialProcess = new ImportDataAnalysisSequentialProcess($import, $dataProvider);
@@ -75,13 +75,13 @@
 
             //Now process the first run. Will process page 0.
             $sequentialProcess = new ImportDataAnalysisSequentialProcess($import, $dataProvider);
-            $sequentialProcess->run('processColumns', null);
+            $sequentialProcess->run('processRows', null);
             $route   = 'default/someAction';
             $view    = SequentialProcessViewFactory::makeBySequentialProcess($sequentialProcess, $route);
             $content = $view->render();
             $this->assertNotNull($content);
             $this->assertEquals('SequentialProcessView', get_class($view));
-            $this->assertEquals(array('columnNameToProcess' => 'column_1'),  $sequentialProcess->getNextParams());
+            $this->assertEquals(array('page' => '1'),  $sequentialProcess->getNextParams());
         }
     }
 ?>

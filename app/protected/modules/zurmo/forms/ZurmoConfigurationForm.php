@@ -45,12 +45,13 @@
         public $subListPageSize;
         public $modalListPageSize;
         public $dashboardListPageSize;
+        public $defaultFromEmailAddress;
+        public $defaultTestToEmailAddress;
         public $gamificationModalNotificationsEnabled;
-        public $autoresponderOrCampaignBatchSize;
-        public $autoresponderOrCampaignFooterPlainText;
-        public $autoresponderOrCampaignFooterRichText;
         public $realtimeUpdatesEnabled;
         public $logoFileData;
+        public $reCaptchaPrivateKey;
+        public $reCaptchaPublicKey;
 
         const DEFAULT_LOGO_THUMBNAIL_HEIGHT = 30;
         const DEFAULT_LOGO_THUMBNAIL_WIDTH  = 65;
@@ -76,17 +77,16 @@
                 array('dashboardListPageSize',                  'required'),
                 array('dashboardListPageSize',                  'type',      'type' => 'integer'),
                 array('dashboardListPageSize',                  'numerical', 'min' => 1),
+                array('defaultFromEmailAddress',                'email'),
+                array('defaultFromEmailAddress',                'required'),
+                array('defaultTestToEmailAddress',              'email'),
+                array('defaultTestToEmailAddress',              'required'),
                 array('gamificationModalNotificationsEnabled',  'boolean'),
                 array('realtimeUpdatesEnabled',                 'boolean'),
                 array('subListPageSize',                        'type',      'type' => 'integer'),
                 array('logoFileData',                           'type',      'type' => 'array'),
-                array('autoresponderOrCampaignBatchSize',       'required'),
-                array('autoresponderOrCampaignBatchSize',       'type',      'type' => 'integer'),
-                array('autoresponderOrCampaignBatchSize',       'numerical', 'min' => 1),
-                array('autoresponderOrCampaignFooterPlainText', 'required'),
-                array('autoresponderOrCampaignFooterPlainText', 'type',    'type' => 'string'),
-                array('autoresponderOrCampaignFooterRichText',  'required'),
-                array('autoresponderOrCampaignFooterRichText',  'type',    'type' => 'string'),
+                array('reCaptchaPrivateKey',                    'type',      'type' => 'string'),
+                array('reCaptchaPublicKey',                     'type',      'type' => 'string'),
             );
         }
 
@@ -94,16 +94,17 @@
         {
             return array(
                 'applicationName'                        => Zurmo::t('ZurmoModule', 'Application Name'),
-                'timeZone'                               => Zurmo::t('ZurmoModule', 'Time zone'),
+                'timeZone'                               => Zurmo::t('ZurmoModule', 'Time Zone'),
                 'listPageSize'                           => Zurmo::t('ZurmoModule', 'List page size'),
                 'subListPageSize'                        => Zurmo::t('ZurmoModule', 'Sublist page size'),
                 'modalListPageSize'                      => Zurmo::t('ZurmoModule', 'Popup list page size'),
                 'dashboardListPageSize'                  => Zurmo::t('ZurmoModule', 'Dashboard portlet list page size'),
+                'defaultFromEmailAddress'                => Zurmo::t('ZurmoModule', 'Default From Email Address'),
+                'defaultTestToEmailAddress'              => Zurmo::t('ZurmoModule', 'Default Test To Email Address'),
                 'gamificationModalNotificationsEnabled'  => Zurmo::t('ZurmoModule', 'Enable game notification popup'),
                 'realtimeUpdatesEnabled'                 => Zurmo::t('ZurmoModule', 'Enable real-time updates'),
-                'autoresponderOrCampaignBatchSize'       => Zurmo::t('ZurmoModule', 'Autoresponder/Campaign batch size'),
-                'autoresponderOrCampaignFooterPlainText' => Zurmo::t('ZurmoModule', 'Autoresponder/Campaign Footer(Plain Text)'),
-                'autoresponderOrCampaignFooterRichText'  => Zurmo::t('ZurmoModule', 'Autoresponder/Campaign Footer(Rich Text)'),
+                'reCaptchaPrivateKey'                    => Zurmo::t('ZurmoModule', 'ReCaptcha Private Key'),
+                'reCaptchaPublicKey'                     => Zurmo::t('ZurmoModule', 'ReCaptcha Public Key'),
             );
         }
     }

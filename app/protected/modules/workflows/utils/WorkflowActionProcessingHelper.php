@@ -101,6 +101,10 @@
             {
                 self::processCreateRelatedAction();
             }
+            elseif ($this->action->type == ActionForWorkflowForm::TYPE_SUBSCRIBE_TO_LIST)
+            {
+                self::processSubscribeToListAction();
+            }
             else
             {
                 throw new NotSupportedException('Invalid action type: ' . $this->action->type);
@@ -417,7 +421,7 @@
                     {
                         throw new FailedToSaveModelException();
                     }
-                    if($modelToForgetCache instanceof RedBeanModel)
+                    if ($modelToForgetCache instanceof RedBeanModel)
                     {
                         $modelToForgetCache->forget();
                     }
@@ -427,6 +431,20 @@
             {
                 throw new NotSupportedException();
             }
+        }
+
+        protected function processSubscribeToListAction()
+        {
+            $actionAttributes = $this->action->getActionAttributes();
+            if (count($actionAttributes) > 1 ||
+               !isset($actionAttributes['marketingList']) ||
+               !$this->triggeredModel instanceof Contact)
+            {
+                throw new NotSupportedException();
+            }
+            $marketingListId = $actionAttributes['marketingList']->value;
+            $marketingList   = MarketingList::getById((int)$marketingListId);
+            $marketingList->addNewMember((int)$this->triggeredModel->id, false);
         }
     }
 ?>

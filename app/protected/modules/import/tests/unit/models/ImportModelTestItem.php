@@ -65,26 +65,26 @@
                     'url',
             ),
                 'relations' => array(
-                    'currencyValue'    => array(RedBeanModel::HAS_ONE,   'CurrencyValue',    RedBeanModel::OWNED),
-                    'dropDown'         => array(RedBeanModel::HAS_ONE,   'OwnedCustomField', RedBeanModel::OWNED,
-                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'dropDown'),
-                    'radioDropDown'    => array(RedBeanModel::HAS_ONE,   'OwnedCustomField', RedBeanModel::OWNED,
-                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'radioDropDown'),
-                    'multiDropDown'    => array(RedBeanModel::HAS_ONE,   'OwnedMultipleValuesCustomField', RedBeanModel::OWNED,
-                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'multiDropDown'),
-                    'tagCloud'         => array(RedBeanModel::HAS_ONE,   'OwnedMultipleValuesCustomField', RedBeanModel::OWNED,
-                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'tagCloud'),
-                    'hasOne'           => array(RedBeanModel::HAS_ONE,   'ImportModelTestItem2', RedBeanModel::NOT_OWNED,
-                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'hasOne'),
-                    'hasMany'          => array(RedBeanModel::MANY_MANY, 'ImportModelTestItem3'),
-                    'hasOneAlso'       => array(RedBeanModel::HAS_ONE,   'ImportModelTestItem4', RedBeanModel::NOT_OWNED,
-                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'hasOneAlso'),
-                    'primaryEmail'     => array(RedBeanModel::HAS_ONE,   'Email', RedBeanModel::OWNED,
-                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'primaryEmail'),
-                    'primaryAddress'   => array(RedBeanModel::HAS_ONE,   'Address', RedBeanModel::OWNED,
-                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'primaryAddress'),
-                    'secondaryEmail'   => array(RedBeanModel::HAS_ONE,   'Email', RedBeanModel::OWNED,
-                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'secondaryEmail'),
+                    'currencyValue'    => array(static::HAS_ONE,   'CurrencyValue',    static::OWNED),
+                    'dropDown'         => array(static::HAS_ONE,   'OwnedCustomField', static::OWNED,
+                                                static::LINK_TYPE_SPECIFIC, 'dropDown'),
+                    'radioDropDown'    => array(static::HAS_ONE,   'OwnedCustomField', static::OWNED,
+                                                static::LINK_TYPE_SPECIFIC, 'radioDropDown'),
+                    'multiDropDown'    => array(static::HAS_ONE,   'OwnedMultipleValuesCustomField', static::OWNED,
+                                                static::LINK_TYPE_SPECIFIC, 'multiDropDown'),
+                    'tagCloud'         => array(static::HAS_ONE,   'OwnedMultipleValuesCustomField', static::OWNED,
+                                                static::LINK_TYPE_SPECIFIC, 'tagCloud'),
+                    'hasOne'           => array(static::HAS_ONE,   'ImportModelTestItem2', static::NOT_OWNED,
+                                                static::LINK_TYPE_SPECIFIC, 'hasOne'),
+                    'hasMany'          => array(static::MANY_MANY, 'ImportModelTestItem3'),
+                    'hasOneAlso'       => array(static::HAS_ONE,   'ImportModelTestItem4', static::NOT_OWNED,
+                                                static::LINK_TYPE_SPECIFIC, 'hasOneAlso'),
+                    'primaryEmail'     => array(static::HAS_ONE,   'Email', static::OWNED,
+                                                static::LINK_TYPE_SPECIFIC, 'primaryEmail'),
+                    'primaryAddress'   => array(static::HAS_ONE,   'Address', static::OWNED,
+                                                static::LINK_TYPE_SPECIFIC, 'primaryAddress'),
+                    'secondaryEmail'   => array(static::HAS_ONE,   'Email', static::OWNED,
+                                                static::LINK_TYPE_SPECIFIC, 'secondaryEmail'),
 
                 ),
                 'rules' => array(
@@ -138,6 +138,11 @@
         public static function isTypeDeletable()
         {
             return true;
+        }
+
+        public static function getModuleClassName()
+        {
+            return 'ImportModule';
         }
     }
 ?>

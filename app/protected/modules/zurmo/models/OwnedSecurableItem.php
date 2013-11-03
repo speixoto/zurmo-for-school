@@ -55,6 +55,11 @@
             $this->treatCurrentUserAsOwnerForPermissions = $value;
         }
 
+        /**
+         * @param RedBean_OODBBean $bean
+         * @param bool $setDefaults
+         * @throws NoCurrentUserSecurityException
+         */
         protected function constructDerived($bean, $setDefaults)
         {
             assert('$bean === null || $bean instanceof RedBean_OODBBean');
@@ -103,8 +108,8 @@
             //have full access
             elseif ((($this->id < 0) &&
                    (($createdByUser->id > 0 &&
-                    $createdByUser->isSame($permitable)) || $createdByUser->id < 0))
-                    || $this->treatCurrentUserAsOwnerForPermissions)
+                    $createdByUser->isSame($permitable)) || $createdByUser->id < 0)) ||
+                    $this->treatCurrentUserAsOwnerForPermissions)
             {
                 return Permission::ALL;
             }
@@ -141,31 +146,58 @@
             }
         }
 
+        /**
+         * Used to set model's owner without all the checks and audit logs.
+         * Used in event handling code for queues.
+         * @param User $user
+         */
+        public function setOwnerUnrestricted(User $user)
+        {
+            parent::unrestrictedSet('owner', $user);
+        }
+
         public function __set($attributeName, $value)
         {
             if ($attributeName == 'owner')
             {
-                $this->checkPermissionsHasAnyOf(Permission::CHANGE_OWNER);
-                $this->isSetting = true;
-                try
-                {
-                    if (!$this->isSaving)
-                    {
-                        AuditUtil::saveOriginalAttributeValue($this, $attributeName, $value);
-                    }
-                    parent::unrestrictedSet($attributeName, $value);
-                    $this->isSetting = false;
-                }
-                catch (Exception $e)
-                {
-                    $this->isSetting = false;
-                    throw $e;
-                }
+                $this->onBeforeOwnerChange(new CEvent($this, array('newOwner' => $value)));
+                $this->ownerChange($value);
+                $this->onAfterOwnerChange(new CEvent($this));
             }
             else
             {
                 parent::__set($attributeName, $value);
             }
+        }
+
+        public function onBeforeOwnerChange(CEvent $event)
+        {
+            $this->raiseEvent('onBeforeOwnerChange', $event);
+        }
+
+        protected function ownerChange($newOwnerValue)
+        {
+            $this->checkPermissionsHasAnyOf(Permission::CHANGE_OWNER);
+            $this->isSetting = true;
+            try
+            {
+                if (!$this->isSaving)
+                {
+                    AuditUtil::saveOriginalAttributeValue($this, 'owner', $newOwnerValue);
+                }
+                parent::unrestrictedSet('owner', $newOwnerValue);
+                $this->isSetting = false;
+            }
+            catch (Exception $e)
+            {
+                $this->isSetting = false;
+                throw $e;
+            }
+        }
+
+        public function onAfterOwnerChange(CEvent $event)
+        {
+            $this->raiseEvent('onAfterOwnerChange', $event);
         }
 
         protected function afterSave()
@@ -204,8 +236,8 @@
             $metadata = parent::getDefaultMetadata();
             $metadata[__CLASS__] = array(
                 'relations' => array(
-                    'owner' => array(RedBeanModel::HAS_ONE, 'User', RedBeanModel::NOT_OWNED,
-                                     RedBeanModel::LINK_TYPE_SPECIFIC, 'owner'),
+                    'owner' => array(static::HAS_ONE, 'User', static::NOT_OWNED,
+                                     static::LINK_TYPE_SPECIFIC, 'owner'),
                 ),
                 'rules' => array(
                     array('owner', 'required'),
@@ -219,6 +251,17 @@
 
         /**
          * Override to add ReadPermissionOptimization query parts.
+         * @param string $tableName
+         * @param RedBeanModelJoinTablesQueryAdapter $joinTablesAdapter
+         * @param null|int  $offset
+         * @param null|int  $count
+         * @param null|string $where
+         * @param null|string $orderBy
+         * @param bool $selectCount
+         * @param bool $selectDistinct
+         * @param array $quotedExtraSelectColumnNameAndAliases
+         * @return string
+         * @throws NoCurrentUserSecurityException
          */
         public static function makeSubsetOrCountSqlQuery($tableName,
                                                          RedBeanModelJoinTablesQueryAdapter $joinTablesAdapter = null,
@@ -278,7 +321,7 @@
                                                                $modelClassName, null);
                     $builder           = new ModelJoinBuilder($modelAttributeToDataProviderAdapter, $joinTablesAdapter);
                     $ownedTableAliasName = $builder->resolveJoins();
-                    $ownerColumnName = RedBeanModel::getForeignKeyName('OwnedSecurableItem', 'owner');
+                    $ownerColumnName = static::getForeignKeyName('OwnedSecurableItem', 'owner');
                     $mungeIds = ReadPermissionsOptimizationUtil::getMungeIdsByUser($user);
                     if ($where != null)
                     {
@@ -323,6 +366,25 @@
                     'owner' => Zurmo::t('ZurmoModule', 'Owner', array(), null, $language),
                 )
             );
+        }
+
+        /**
+         * Should model have read permission subscription table or not.
+         * This feature is used to track of created/deleted models, so we can easily sync Zurmo with Google Apps or Outlook
+         * @return bool
+         */
+        public static function hasReadPermissionsSubscriptionOptimization()
+        {
+            return false;
+        }
+
+        /**
+         * Describes if the current model supports being routed through queues.
+         * This is for the Queues feature in commercial edition.
+         */
+        public static function supportsQueueing()
+        {
+            return false;
         }
     }
 ?>

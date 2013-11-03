@@ -49,15 +49,12 @@
 
         public function testGetAttributes()
         {
-            $allAttributes          = ContactWebFormsUtil::getAllAttributes();
+            $contactWebForm      = new ContactWebForm();
+            $allAttributes       = ContactWebFormsUtil::getAllAttributes();
             $this->assertNotEmpty($allAttributes);
-            $allPlacedAttributes    = ContactWebFormsUtil::getAllPlacedAttributes($allAttributes);
-            $allNonPlacedAttributes = ContactWebFormsUtil::getAllNonPlacedAttributes($allAttributes);
-            $this->assertTrue(count($allPlacedAttributes) < count($allNonPlacedAttributes));
-
-            $selectiveAttributes    = array('firstName', 'lastName', 'companyName', 'jobTitle');
-            $allPlacedAttributes    = ContactWebFormsUtil::getAllPlacedAttributes($allAttributes, $selectiveAttributes);
-            $this->assertEquals(count($selectiveAttributes), count($allPlacedAttributes));
+            $placedAttributes    = ContactWebFormsUtil::getPlacedAttributes($contactWebForm);
+            $nonPlacedAttributes = ContactWebFormsUtil::getNonPlacedAttributes($contactWebForm);
+            $this->assertTrue(count($placedAttributes) < count($nonPlacedAttributes));
         }
 
         public function testGetEmbedScript()

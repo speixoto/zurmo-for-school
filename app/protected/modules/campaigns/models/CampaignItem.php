@@ -67,10 +67,10 @@
                     'processed',
                 ),
                 'relations' => array(
-                    'contact'                       => array(RedBeanModel::HAS_ONE, 'Contact', RedBeanModel::NOT_OWNED),
-                    'emailMessage'                  => array(RedBeanModel::HAS_ONE, 'EmailMessage'),
-                    'campaignItemActivities'        => array(RedBeanModel::HAS_MANY, 'CampaignItemActivity'),
-                    'campaign'                      => array(RedBeanModel::HAS_ONE, 'Campaign', RedBeanModel::NOT_OWNED),
+                    'contact'                       => array(static::HAS_ONE, 'Contact', static::NOT_OWNED),
+                    'emailMessage'                  => array(static::HAS_ONE, 'EmailMessage'),
+                    'campaignItemActivities'        => array(static::HAS_MANY, 'CampaignItemActivity'),
+                    'campaign'                      => array(static::HAS_ONE, 'Campaign', static::NOT_OWNED),
                 ),
                 'rules' => array(
                     array('processed',              'boolean'),
@@ -92,6 +92,10 @@
             return true;
         }
 
+        /**
+         * @param int $processed
+         * @param null|int $pageSize
+         */
         public static function getByProcessed($processed, $pageSize = null)
         {
             assert('is_int($processed)');
@@ -109,6 +113,11 @@
             return self::getSubset($joinTablesAdapter, null, $pageSize, $where, null);
         }
 
+        /**
+         * @param int $processed
+         * @param null $timestamp
+         * @param null|int $pageSize
+         */
         public static function getByProcessedAndSendOnDateTime($processed, $timestamp = null, $pageSize = null)
         {
             if (empty($timestamp))
@@ -172,6 +181,11 @@
             return self::getSubset($joinTablesAdapter, null, $pageSize, $where, null);
         }
 
+        /**
+         * @param int $processed
+         * @param int $campaignId
+         * @param null|int $pageSize
+         */
         public static function getByProcessedAndCampaignId($processed, $campaignId, $pageSize = null)
         {
             assert('is_int($processed)');
@@ -229,7 +243,8 @@
          */
         public function isQueued()
         {
-            if ($this->emailMessage->folder->type ==  EmailFolder::TYPE_OUTBOX)
+            if ($this->emailMessage->folder->type ==  EmailFolder::TYPE_OUTBOX ||
+                $this->emailMessage->folder->type ==  EmailFolder::TYPE_OUTBOX_ERROR)
             {
                 return true;
             }
@@ -241,9 +256,13 @@
          */
         public function isSkipped()
         {
-            $count = CampaignItemActivity::getChildActivityByTypeAndModelIdAndModelRelationNameAndPersonIdAndUrl(
-                                           CampaignItemActivity::TYPE_SKIP, $this->id, 'campaignItem',
-                                           $this->contact->getClassId('Person'), null, 'latestDateTime', null, true);
+            $count = CampaignItemActivity::getByTypeAndModelIdAndPersonIdAndUrl(CampaignItemActivity::TYPE_SKIP,
+                                                                                $this->id,
+                                                                                $this->contact->getClassId('Person'),
+                                                                                null,
+                                                                                'latestDateTime',
+                                                                                null,
+                                                                                true);
             if ($count > 0)
             {
                 return true;
@@ -281,9 +300,13 @@
          */
         public function hasAtLeastOneOpenActivity()
         {
-            $count = CampaignItemActivity::getChildActivityByTypeAndModelIdAndModelRelationNameAndPersonIdAndUrl(
-                                           CampaignItemActivity::TYPE_OPEN, $this->id, 'campaignItem',
-                                           $this->contact->getClassId('Person'), null, 'latestDateTime', null, true);
+            $count = CampaignItemActivity::getByTypeAndModelIdAndPersonIdAndUrl(CampaignItemActivity::TYPE_OPEN,
+                                                                                $this->id,
+                                                                                $this->contact->getClassId('Person'),
+                                                                                null,
+                                                                                'latestDateTime',
+                                                                                null,
+                                                                                true);
             if ($count > 0)
             {
                 return true;
@@ -296,9 +319,13 @@
          */
         public function hasAtLeastOneClickActivity()
         {
-            $count = CampaignItemActivity::getChildActivityByTypeAndModelIdAndModelRelationNameAndPersonIdAndUrl(
-                                           CampaignItemActivity::TYPE_CLICK, $this->id, 'campaignItem',
-                                           $this->contact->getClassId('Person'), null, 'latestDateTime', null, true);
+            $count = CampaignItemActivity::getByTypeAndModelIdAndPersonIdAndUrl(CampaignItemActivity::TYPE_CLICK,
+                                                                                $this->id,
+                                                                                $this->contact->getClassId('Person'),
+                                                                                null,
+                                                                                'latestDateTime',
+                                                                                null,
+                                                                                true);
             if ($count > 0)
             {
                 return true;
@@ -311,9 +338,13 @@
          */
         public function hasAtLeastOneUnsubscribeActivity()
         {
-             $count = CampaignItemActivity::getChildActivityByTypeAndModelIdAndModelRelationNameAndPersonIdAndUrl(
-                                           CampaignItemActivity::TYPE_UNSUBSCRIBE, $this->id, 'campaignItem',
-                                           $this->contact->getClassId('Person'), null, 'latestDateTime', null, true);
+             $count = CampaignItemActivity::getByTypeAndModelIdAndPersonIdAndUrl(CampaignItemActivity::TYPE_UNSUBSCRIBE,
+                                                                                 $this->id,
+                                                                                 $this->contact->getClassId('Person'),
+                                                                                 null,
+                                                                                 'latestDateTime',
+                                                                                 null,
+                                                                                 true);
             if ($count > 0)
             {
                 return true;
@@ -326,9 +357,13 @@
          */
         public function hasAtLeastOneBounceActivity()
         {
-            $count = CampaignItemActivity::getChildActivityByTypeAndModelIdAndModelRelationNameAndPersonIdAndUrl(
-                                           CampaignItemActivity::TYPE_BOUNCE, $this->id, 'campaignItem',
-                                           $this->contact->getClassId('Person'), null, 'latestDateTime', null, true);
+            $count = CampaignItemActivity::getByTypeAndModelIdAndPersonIdAndUrl(CampaignItemActivity::TYPE_BOUNCE,
+                                                                                $this->id,
+                                                                                $this->contact->getClassId('Person'),
+                                                                                null,
+                                                                                'latestDateTime',
+                                                                                null,
+                                                                                true);
             if ($count > 0)
             {
                 return true;

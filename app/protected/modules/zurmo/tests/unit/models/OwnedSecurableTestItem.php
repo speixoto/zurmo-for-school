@@ -40,7 +40,7 @@
         {
             if (trim($this->member) == '')
             {
-                return Zurmo::t('ZurmoModule', '(Unnamed)');
+                return Zurmo::t('Core', '(Unnamed)');
             }
             return $this->member;
         }
@@ -54,9 +54,11 @@
                 ),
                 'rules' => array(
                     array('member', 'required'),
+                    array('member', 'type', 'type' => 'string'),
+                    array('member', 'length', 'max' => 255),
                 ),
                 'relations' => array(
-                    'currencyValue'    => array(RedBeanModel::HAS_ONE,   'CurrencyValue',    RedBeanModel::OWNED),
+                    'currencyValue'    => array(static::HAS_ONE,   'CurrencyValue',    static::OWNED),
                 ),
             );
             return $metadata;

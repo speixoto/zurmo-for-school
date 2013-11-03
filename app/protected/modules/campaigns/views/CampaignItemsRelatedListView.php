@@ -42,6 +42,11 @@
             return ZurmoHtml::tag('div', array('class' => $this->getWrapperDivClass()), $content);
         }
 
+        protected function getGridViewWidgetPath()
+        {
+            return 'application.modules.campaigns.widgets.CampaignItemsExtendedGridView';
+        }
+
         protected function getRelationAttributeName()
         {
             return 'campaign';
@@ -51,7 +56,7 @@
         {
             $metadata = array(
                 'perUser' => array(
-                    'title' => "eval:Zurmo::t('CampaignsModule', 'Email Recipients')",
+                    'title' => "eval:Zurmo::t('EmailMessagesModule', 'Email Recipients')",
                 ),
                 'global' => array(
                     'gridViewType' => RelatedListView::GRID_VIEW_TYPE_NORMAL,
@@ -104,7 +109,20 @@
         protected function getCGridViewParams()
         {
             return array_merge(parent::getCGridViewParams(),
-                array('hideHeader'     => true));
+                array('hideHeader'     => true,
+                      'expandableRows' => true));
+        }
+
+        protected function getCGridViewColumns()
+        {
+            $columns = parent::getCGridViewColumns();
+            $firstColumn = array(
+                'class'                 => 'CampaignItemsDrillDownColumn',
+                'id'                    => $this->gridId . $this->gridIdSuffix . '-rowDrillDown',
+                'htmlOptions'           => array('class' => 'hasDrillDownLink')
+            );
+            array_unshift($columns, $firstColumn);
+            return $columns;
         }
     }
 ?>

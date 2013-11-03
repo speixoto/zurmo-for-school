@@ -48,6 +48,9 @@
             return array('users');
         }
 
+        /**
+         * @param DemoDataHelper $demoDataHelper
+         */
         public function makeAll(& $demoDataHelper)
         {
             assert('$demoDataHelper instanceof DemoDataHelper');
@@ -95,8 +98,8 @@
             {
                 $model->language            = $this->seedData['language'][$this->index];
             }
-            $model->textContent         = $this->seedData['textContent'][$this->index % 2];
-            $model->htmlContent         = $this->seedData['htmlContent'][$this->index % 2];
+            $model->textContent         = str_replace('Zurmo', Yii::app()->label, $this->seedData['textContent'][$this->index % 2]);
+            $model->htmlContent         = str_replace('Zurmo', Yii::app()->label, $this->seedData['htmlContent'][$this->index % 2]);
             $this->populateMarketingModelWithFiles($model);
         }
     }

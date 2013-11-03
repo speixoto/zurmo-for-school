@@ -55,6 +55,7 @@
             //Create test users
             $steven                             = UserTestHelper::createBasicUser('steven');
             $steven->primaryEmail->emailAddress = 'steven@testzurmo.com';
+            //Steven has turned off notifications
             UserConfigurationFormAdapter::setValue($steven, true, 'turnOffEmailNotifications');
             $sally                              = UserTestHelper::createBasicUser('sally');
             $sally->primaryEmail->emailAddress  = 'sally@testzurmo.com';
@@ -106,6 +107,8 @@
         public function testSuperUserCreateMission()
         {
             $super          = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $steven         = User::getByUsername('steven');
+            $sally          = User::getByUsername('sally');
             $mary           = User::getByUsername('mary');
 
             $missions = Mission::getAll();
@@ -126,15 +129,23 @@
                                                  makeBySecurableItem($missions[0]);
             $readWritePermitables              = $explicitReadWriteModelPermissions->getReadWritePermitables();
             $this->assertEquals(1, count($readWritePermitables));
-            $this->assertTrue(isset($readWritePermitables[$everyoneGroup->id]));
+            $this->assertTrue(isset($readWritePermitables[$everyoneGroup->getClassId('Permitable')]));
 
             //Confirm email was sent
-            $this->assertEquals(1, Yii::app()->emailHelper->getQueuedCount());
+            $this->assertEquals(2, Yii::app()->emailHelper->getQueuedCount());
             $this->assertEquals(0, Yii::app()->emailHelper->getSentCount());
             $emailMessages = EmailMessage::getAll();
             //Dont send message to super neither to steven (he has turned off)
-            $this->assertEquals(2, count($emailMessages[0]->recipients));
-            $this->assertEquals(4, count(User::getAll()));
+            $recipents = array();
+            $recipents[] = strval($emailMessages[0]->recipients[0]);
+            $recipents[] = strval($emailMessages[1]->recipients[0]);
+            $this->assertEquals     (1,         count($emailMessages[0]->recipients));
+            $this->assertEquals     (1,         count($emailMessages[1]->recipients));
+            $this->assertNotContains(strval($super->primaryEmail),    $recipents);
+            $this->assertNotContains(strval($steven->primaryEmail),   $recipents);
+            $this->assertContains   (strval($mary->primaryEmail),     $recipents);
+            $this->assertContains   (strval($sally->primaryEmail),    $recipents);
+            $this->assertEquals     (4,         count(User::getAll()));
         }
 
         /**
@@ -153,7 +164,7 @@
             $missions  = Mission::getAll();
             $this->assertEquals(1, count($missions));
             $this->assertEquals(0, $missions[0]->comments->count());
-            $this->assertEquals(1, Yii::app()->emailHelper->getQueuedCount());
+            $this->assertEquals(2, Yii::app()->emailHelper->getQueuedCount());
             $this->assertEquals(0, Yii::app()->emailHelper->getSentCount());
             $oldStamp        = $missions[0]->latestDateTime;
 

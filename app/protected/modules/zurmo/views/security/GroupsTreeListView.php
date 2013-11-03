@@ -63,7 +63,7 @@
             $content .= '<col style="width:25%" />';
             $content .= '</colgroup>';
             $content .= '<tbody>';
-            $content .= '<tr><th>' . Zurmo::t('ZurmoModule', 'Name') . '</th><th>' . Zurmo::t('ZurmoModule', 'Users') . '</th><th></th></tr>';
+            $content .= '<tr><th>' . Zurmo::t('Core', 'Name') . '</th><th>' . Zurmo::t('UsersModule', 'Users') . '</th><th></th></tr>';
             static::renderTreeListViewNode($content, $data, 0);
             $content .= '</tbody>';
             $content .= '</table>';
@@ -77,6 +77,16 @@
                 return User::getCount();
             }
             return $item->{$this->getModelRelationNameForUserCount()}->count();
+        }
+
+        protected static function resolveShouldShowLinkableUserCount()
+        {
+            return true;
+        }
+
+        protected static function resolveRouteAction()
+        {
+            return '/usersInGroupModalList/';
         }
     }
 ?>

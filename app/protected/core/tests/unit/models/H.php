@@ -40,7 +40,7 @@
         {
             assert('is_string($name)');
             assert('$name != ""');
-            $bean = R::findOne('h', "name = :name ", array(':name' => $name));
+            $bean = ZurmoRedBean::findOne('h', "name = :name ", array(':name' => $name));
             assert('$bean === false || $bean instanceof RedBean_OODBBean');
             if ($bean === false)
             {
@@ -57,8 +57,8 @@
                     'name',
                 ),
                 'relations' => array(
-                    'castUpHasOne' => array(RedBeanModel::HAS_ONE, 'G', RedBeanModel::NOT_OWNED,
-                                            RedBeanModel::LINK_TYPE_SPECIFIC, 'castUpHasOne'),
+                    'castUpHasOne' => array(static::HAS_ONE, 'G', static::NOT_OWNED,
+                                            static::LINK_TYPE_SPECIFIC, 'castUpHasOne'),
                 ),
                 'rules' => array(
                     array('name', 'type',   'type' => 'string'),

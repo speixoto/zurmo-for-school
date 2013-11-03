@@ -95,7 +95,7 @@
                                                       array('htmlOptions' =>
                                                           array('name'   => 'AccountSkip', 'id' => 'AccountSkip',
                                                                 'params' => array('AccountSkip' => true)),
-                                                                'label'  => Zurmo::t('LeadsModule', 'Complete Conversion')));
+                                                                'label'  => Zurmo::t('ZurmoModule', 'Complete Conversion')));
             $content .= $element->render();
             $content .= '</div></div>';
             return $content;

@@ -47,6 +47,9 @@
         /**
          * (non-PHPdoc)
          * @see MashableActivityRules::getSummaryContentTemplate()
+         * @param string $ownedByFilter
+         * @param string $viewModuleClassName
+         * @return string
          */
         public function getSummaryContentTemplate($ownedByFilter, $viewModuleClassName)
         {
@@ -59,12 +62,12 @@
                 {
                     return "<span>{modelStringContent}</span><br/><span>{relatedModelsByImportanceContent} " .
                            "</span><span class='less-pronounced-text'>" .
-                           Zurmo::t('NotesModule', 'by {ownerStringContent}') . "</span><span>{extraContent}</span>";
+                           Zurmo::t('ZurmoModule', 'by {ownerStringContent}') . "</span><span>{extraContent}</span>";
                 }
                 else
                 {
                     return "<span>{modelStringContent} </span><span class='less-pronounced-text'>" .
-                           Zurmo::t('NotesModule', 'by {ownerStringContent}') . "</span><span>{extraContent}</span>";
+                           Zurmo::t('ZurmoModule', 'by {ownerStringContent}') . "</span><span>{extraContent}</span>";
                 }
             }
             else

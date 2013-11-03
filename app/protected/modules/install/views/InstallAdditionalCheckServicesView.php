@@ -48,6 +48,11 @@
 
         private $checkResultsDisplayData;
 
+        /**
+         * @param string $controllerId
+         * @param string $moduleId
+         * @param array $checkResultsDisplayData
+         */
         public function __construct($controllerId, $moduleId, $checkResultsDisplayData)
         {
             assert('is_string($controllerId) && $controllerId != ""');
@@ -99,7 +104,7 @@
                 $content .= $this->renderServiceGroupDisplayByServiceDataAndCheckResult(
                                         Zurmo::t('InstallModule', 'Service Status Partially Known'),
                                         $this->checkResultsDisplayData[$warningIndexId],
-                                        '<span class="warning">' . Zurmo::t('InstallModule', 'WARNING') . '</span>');
+                                        '<span class="warning">' . Zurmo::t('Core', 'WARNING') . '</span>');
                 $content .= '<br/>';
             }
 
@@ -118,6 +123,12 @@
             return $content;
         }
 
+        /**
+         * @param string $groupLabel
+         * @param array $groupData
+         * @param string $checkResultLabel
+         * @return string
+         */
         protected function renderServiceGroupDisplayByServiceDataAndCheckResult($groupLabel, $groupData,
                                                                                 $checkResultLabel)
         {

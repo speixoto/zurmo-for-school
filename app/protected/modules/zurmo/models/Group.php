@@ -49,11 +49,16 @@
         protected $isEveryone            = false;
         protected $isSuperAdministrators = false;
 
+        /**
+         * @param string $name
+         * @return An|Group
+         * @throws NotFoundException
+         */
         public static function getByName($name)
         {
             assert('is_string($name)');
             assert('$name != ""');
-            $bean = R::findOne('_group', "name = :name ", array(':name' => $name));
+            $bean = ZurmoRedBean::findOne('_group', "name = :name ", array(':name' => $name));
             assert('$bean === false || $bean instanceof RedBean_OODBBean');
             if ($bean === false)
             {
@@ -80,6 +85,27 @@
             return $group;
         }
 
+        public static function isUserASuperAdministrator(User $user)
+        {
+            if ($user->id < 0)
+            {
+                throw new NotSupportedException();
+            }
+            $superGroup   = Group::getByName(Group::SUPER_ADMINISTRATORS_GROUP_NAME);
+            if ($user->groups->contains($superGroup))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        /**
+         * @param RedBean_OODBBean $bean
+         * @param bool $setDefaults
+         */
         protected function constructDerived($bean, $setDefaults)
         {
             assert('$bean === null || $bean instanceof RedBean_OODBBean');
@@ -101,6 +127,10 @@
 
         public function canModifyMemberships()
         {
+            if (!static::isUserASuperAdministrator(Yii::app()->user->userModel) && $this->isSuperAdministrators)
+            {
+                return false;
+            }
             return !$this->isEveryone;
         }
 
@@ -161,11 +191,15 @@
             assert('$this->name === null || is_string($this->name)');
             if ($this->name === null)
             {
-                return Zurmo::t('ZurmoModule', '(Unnamed)');
+                return Zurmo::t('Core', '(Unnamed)');
             }
-            if ($this->name == self::EVERYONE_GROUP_NAME || $this->name == self::SUPER_ADMINISTRATORS_GROUP_NAME)
+            if ($this->name == self::EVERYONE_GROUP_NAME)
             {
-                return Zurmo::t('ZurmoModule', $this->name);
+                return GroupsModule::resolveEveryoneDisplayLabel();
+            }
+            elseif ($this->name == self::SUPER_ADMINISTRATORS_GROUP_NAME)
+            {
+                return Zurmo::t('ZurmoModule', 'Super Administrators');
             }
             return $this->name;
         }
@@ -180,7 +214,7 @@
             return array_merge(parent::translatedAttributeLabels($language), array(
                 'group'  => Zurmo::t('ZurmoModule', 'Parent Group', array(), null, $language),
                 'groups' => Zurmo::t('ZurmoModule', 'Groups', array(), null, $language),
-                'name'   => Zurmo::t('ZurmoModule', 'Name', array(), null, $language),
+                'name'   => Zurmo::t('Core', 'Name', array(), null, $language),
                 'users'  => Zurmo::t('UsersModule', 'Users', array(), null, $language)
             ));
         }
@@ -227,6 +261,11 @@
             return $this->getActualRight($moduleName, $rightName) == Right::ALLOW ? Right::ALLOW : Right::DENY;
         }
 
+        /**
+         * @param string $moduleName
+         * @param string $rightName
+         * @return int
+         */
         public function getActualRight($moduleName, $rightName)
         {
             assert('is_string($moduleName)');
@@ -256,6 +295,11 @@
             return Right::NONE;
         }
 
+        /**
+         * @param string $moduleName
+         * @param string $rightName
+         * @return int
+         */
         public function getInheritedActualRight($moduleName, $rightName)
         {
             assert('is_string($moduleName)');
@@ -280,6 +324,12 @@
             }
         }
 
+        /**
+         * @param string $moduleName
+         * @param string $rightName
+         * @return int|void
+         * @throws NotSupportedException
+         */
         protected function getInheritedActualRightIgnoringEveryone($moduleName, $rightName)
         {
             assert('is_string($moduleName)');
@@ -312,6 +362,11 @@
             }
         }
 
+        /**
+         * @param string $moduleName
+         * @param string $policyName
+         * @return mixed|null|string
+         */
         public function getInheritedActualPolicy($moduleName, $policyName)
         {
             assert('is_string($moduleName)');
@@ -325,6 +380,11 @@
             return parent::getInheritedActualPolicy($moduleName, $policyName);
         }
 
+        /**
+         * @param string $moduleName
+         * @param string $policyName
+         * @return null
+         */
         public function getInheritedActualPolicyIgnoringEveryone($moduleName, $policyName)
         {
             assert('is_string($moduleName)');
@@ -355,9 +415,9 @@
                     'name',
                 ),
                 'relations' => array(
-                    'group'  => array(RedBeanModel::HAS_MANY_BELONGS_TO, 'Group'),
-                    'groups' => array(RedBeanModel::HAS_MANY,            'Group'),
-                    'users'  => array(RedBeanModel::MANY_MANY,           'User'),
+                    'group'  => array(static::HAS_MANY_BELONGS_TO, 'Group'),
+                    'groups' => array(static::HAS_MANY,            'Group'),
+                    'users'  => array(static::MANY_MANY,           'User'),
                 ),
                 'rules' => array(
                     array('name', 'required'),

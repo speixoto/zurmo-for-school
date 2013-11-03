@@ -36,6 +36,11 @@
 
     class RedBeanModelTypeValidatorTest extends BaseTest
     {
+        public static function getDependentTestModelClassNames()
+        {
+            return array('DateDateTime');
+        }
+
         public function testValidAndInvalidDateDateTimeValidation()
         {
             $language = Yii::app()->getLanguage();

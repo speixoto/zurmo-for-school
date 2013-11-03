@@ -38,10 +38,6 @@
     // Check it in as false!
     $debugOn = false;
 
-    // Turn this on to use the application with the database unfrozen. Turn it off in production.
-    // Check it in as true!
-    $forceNoFreeze = true;
-
     // Turn this on to see additional performance information. Turn it off in production.
     // Check it in as true!
     $performanceOn = false;
@@ -128,7 +124,6 @@
 
     define('YII_DEBUG',              $debugOn);
     define('YII_TRACE_LEVEL',        $debugOn ? 3 : 0);
-    define('FORCE_NO_FREEZE',        $forceNoFreeze);
     define('SHOW_PERFORMANCE',       $performanceOn);
     define('SHOW_QUERY_DATA',        $queryDataOn);
     define('REDBEAN_DEBUG',          $redBeanDebugOn);

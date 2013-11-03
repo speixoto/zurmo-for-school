@@ -42,11 +42,15 @@
 
         private $avatarImageUrl;
 
+        /**
+         * @param string $username
+         * @throws NotFoundException
+         */
         public static function getByUsername($username)
         {
             assert('is_string($username)');
             assert('$username != ""');
-            $bean = R::findOne('_user', "username = :username ", array(':username' => $username));
+            $bean = ZurmoRedBean::findOne('_user', "username = :username ", array(':username' => $username));
             assert('$bean === false || $bean instanceof RedBean_OODBBean');
             if ($bean === false)
             {
@@ -56,6 +60,15 @@
             return self::makeModel($bean);
         }
 
+        /**
+         * Added fallback for system users to never be able to login
+         * @param $username
+         * @param $password
+         * @return An
+         * @throws NoRightWebLoginException
+         * @throws BadPasswordException
+         * @throws ApiNoRightWebApiLoginException
+         */
         public static function authenticate($username, $password)
         {
             assert('is_string($username)');
@@ -66,21 +79,45 @@
             {
                 throw new BadPasswordException();
             }
+            self::resolveAuthenticatedUserCanLogin($user);
+            $user->login();
+            return $user;
+        }
+
+        /**
+         * Check if authenticated user can login
+         * @param User $user
+         * @return bool
+         * @throws NoRightWebLoginException
+         * @throws ApiNoRightWebApiLoginException
+         */
+        public static function resolveAuthenticatedUserCanLogin(User $user)
+        {
             if (Right::ALLOW != $user->getEffectiveRight('UsersModule', UsersModule::RIGHT_LOGIN_VIA_WEB) &&
                 !ApiRequest::isApiRequest())
             {
                 throw new NoRightWebLoginException();
             }
-
             if (Right::ALLOW != $user->getEffectiveRight('UsersModule', UsersModule::RIGHT_LOGIN_VIA_WEB_API) &&
                 ApiRequest::isApiRequest())
             {
                 throw new ApiNoRightWebApiLoginException();
             }
-            $user->login();
-            return $user;
+            if ($user->isSystemUser && !ApiRequest::isApiRequest())
+            {
+                throw new NoRightWebLoginException();
+            }
+            if ($user->isSystemUser && ApiRequest::isApiRequest())
+            {
+                throw new ApiNoRightWebApiLoginException();
+            }
+            return true;
         }
 
+        /**
+         * @param RedBean_OODBBean $bean
+         * @param bool $setDefaults
+         */
         protected function constructDerived($bean, $setDefaults)
         {
             assert('$bean === null || $bean instanceof RedBean_OODBBean');
@@ -92,7 +129,7 @@
             $tableName = self::getTableName($modelClassName);
             if ($bean === null)
             {
-                $personBean = R::dispense($tableName);
+                $personBean = ZurmoRedBean::dispense($tableName);
             }
             else
             {
@@ -116,19 +153,7 @@
             return parent::unrestrictedDelete();
         }
 
-        /**
-         * Override to handle Person mixin.  When the Person is the baseModelClassName, we should ignore trying to
-         * resolve the column.  Otherwise a phantom person_id is created on CustomFieldsModel.
-         */
-        protected static function resolveMixinsOnSaveForEnsuringColumnsAreCorrectlyFormed($baseModelClassName, $modelClassName)
-        {
-            if ($baseModelClassName != 'Person')
-            {
-                parent::resolveMixinsOnSaveForEnsuringColumnsAreCorrectlyFormed($baseModelClassName, $modelClassName);
-            }
-        }
-
-        protected static function getMixedInModelClassNames()
+        public static function getMixedInModelClassNames()
         {
             return array('Person');
         }
@@ -149,23 +174,12 @@
                 if ($baseBean !== null)
                 {
                     ZurmoRedBeanLinkManager::link($bean, $baseBean);
-                    if (!RedBeanDatabase::isFrozen())
-                    {
-                        $tableName  = self::getTableName(get_class($this));
-                        $columnName = 'person_id';
-                        RedBeanColumnTypeOptimizer::optimize($tableName, $columnName, 'id');
-                    }
                 }
                 $baseBean = $bean;
             }
             $userBean   = $this->modelClassNameToBean['User'];
             $personBean = $this->modelClassNameToBean['Person'];
             ZurmoRedBeanLinkManager::link($userBean, $personBean);
-            if (!RedBeanDatabase::isFrozen())
-            {
-                $tableName  = self::getTableName(get_class($this));
-                RedBeanColumnTypeOptimizer::optimize($tableName, 'person_id', 'id');
-            }
         }
 
         // Because no functionality is mixed in, because this is
@@ -176,7 +190,7 @@
             $fullName = $this->getFullName();
             if ($fullName == '')
             {
-                return Zurmo::t('UsersModule', '(Unnamed)');
+                return Zurmo::t('Core', '(Unnamed)');
             }
             return $fullName;
         }
@@ -297,6 +311,7 @@
             $className = get_called_class();
             try
             {
+                // not using default value to save cpu cycles on requests that follow the first exception.
                 return GeneralCache::getEntry($className . 'Metadata');
             }
             catch (NotFoundException $e)
@@ -433,24 +448,28 @@
         {
             return array_merge(parent::translatedAttributeLabels($language),
                 array(
-                    'currency'          => Zurmo::t('ZurmoModule',         'Currency',          array(), null, $language),
-                    'emailAccounts'     => Zurmo::t('EmailMessagesModule', 'Email Accounts',    array(), null, $language),
-                    'emailBoxes'        => Zurmo::t('EmailMessagesModule', 'Email Boxes',       array(), null, $language),
-                    'emailSignatures'   => Zurmo::t('EmailMessagesModule', 'Email Signatures',  array(), null, $language),
-                    'fullName'          => Zurmo::t('ZurmoModule',         'Name',              array(), null, $language),
-                    'groups'            => Zurmo::t('ZurmoModule',         'Groups',            array(), null, $language),
-                    'hash'              => Zurmo::t('UsersModule',         'Hash',              array(), null, $language),
-                    'isActive'          => Zurmo::t('UsersModule',         'Is Active',         array(), null, $language),
-                    'language'          => Zurmo::t('ZurmoModule',         'Language',          array(), null, $language),
-                    'locale'            => Zurmo::t('ZurmoModule',         'Locale',            array(), null, $language),
-                    'manager'           => Zurmo::t('UsersModule',         'Manager',           array(), null, $language),
-                    'primaryEmail'      => Zurmo::t('ZurmoModule',         'Email',             array(), null, $language),
-                    'primaryAddress'    => Zurmo::t('ZurmoModule',         'Address',           array(), null, $language),
-                    'role'              => Zurmo::t('ZurmoModule',         'Role',              array(), null, $language),
-                    'timeZone'          => Zurmo::t('UsersModule',         'Time Zone',         array(), null, $language),
-                    'title'             => Zurmo::t('ZurmoModule',         'Salutation',        array(), null, $language),
-                    'username'          => Zurmo::t('UsersModule',         'Username',          array(), null, $language),
-                    'lastLoginDateTime' => Zurmo::t('UsersModule',         'Last Login',        array(), null, $language),
+                    'currency'            => Zurmo::t('ZurmoModule', 'Currency',                array(), null, $language),
+                    'emailAccounts'       => Zurmo::t('EmailMessagesModule', 'Email Accounts',          array(), null, $language),
+                    'emailBoxes'          => Zurmo::t('EmailMessagesModule', 'Email Boxes',             array(), null, $language),
+                    'emailSignatures'     => Zurmo::t('EmailMessagesModule', 'Email Signatures',        array(), null, $language),
+                    'fullName'            => Zurmo::t('Core', 'Name',                    array(), null, $language),
+                    'groups'              => Zurmo::t('ZurmoModule', 'Groups',                  array(), null, $language),
+                    'hash'                => Zurmo::t('UsersModule', 'Hash',                    array(), null, $language),
+                    'isActive'            => Zurmo::t('UsersModule', 'Is Active',               array(), null, $language),
+                    'isRootUser'          => Zurmo::t('UsersModule', 'Is Root User',            array(), null, $language),
+                    'hideFromSelecting'   => Zurmo::t('UsersModule', 'Hide from selecting',     array(), null, $language),
+                    'hideFromLeaderboard' => Zurmo::t('UsersModule', 'Hide from leaderboard',   array(), null, $language),
+                    'isSystemUser'        => Zurmo::t('UsersModule', 'Is System User',          array(), null, $language),
+                    'language'            => Zurmo::t('Core', 'Language',                array(), null, $language),
+                    'locale'              => Zurmo::t('UsersModule', 'Locale',                  array(), null, $language),
+                    'manager'             => Zurmo::t('UsersModule', 'Manager',                 array(), null, $language),
+                    'primaryEmail'        => Zurmo::t('EmailMessagesModule', 'Email',                   array(), null, $language),
+                    'primaryAddress'      => Zurmo::t('ZurmoModule', 'Address',                 array(), null, $language),
+                    'role'                => Zurmo::t('ZurmoModule', 'Role',                    array(), null, $language),
+                    'timeZone'            => Zurmo::t('ZurmoModule', 'Time Zone',               array(), null, $language),
+                    'title'               => Zurmo::t('ZurmoModule', 'Salutation',              array(), null, $language),
+                    'username'            => Zurmo::t('ZurmoModule', 'Username',                array(), null, $language),
+                    'lastLoginDateTime'   => Zurmo::t('UsersModule', 'Last Login',              array(), null, $language),
                 )
             );
         }
@@ -461,24 +480,34 @@
             assert('is_string($rightName)');
             assert('$moduleName != ""');
             assert('$rightName  != ""');
+                $identifier = $this->id . $moduleName . $rightName . 'ActualRight';
                 if (!SECURITY_OPTIMIZED)
                 {
                     // The slow way will remain here as documentation
                     // for what the optimized way is doing.
-                    if (Group::getByName(Group::SUPER_ADMINISTRATORS_GROUP_NAME)->contains($this))
+                    try
                     {
-                        $actualRight = Right::ALLOW;
+                        // not using default value to save cpu cycles on requests that follow the first exception.
+                        return RightsCache::getEntry($identifier);
                     }
-                    else
+                    catch (NotFoundException $e)
                     {
-                        $actualRight = parent::getActualRight($moduleName, $rightName);
+                        if (Group::getByName(Group::SUPER_ADMINISTRATORS_GROUP_NAME)->contains($this))
+                        {
+                            $actualRight = Right::ALLOW;
+                        }
+                        else
+                        {
+                            $actualRight = parent::getActualRight($moduleName, $rightName);
+                        }
+                        RightsCache::cacheEntry($identifier, $actualRight);
                     }
                 }
                 else
                 {
-                    $identifier = $this->id . $moduleName . $rightName . 'ActualRight';
                     try
                     {
+                        // not using default value to save cpu cycles on requests that follow the first exception.
                         return RightsCache::getEntry($identifier);
                     }
                     catch (NotFoundException $e)
@@ -541,6 +570,11 @@
             }
         }
 
+        /**
+         * @param string $moduleName
+         * @param string $rightName
+         * @return int
+         */
         public function getInheritedActualRight($moduleName, $rightName)
         {
             assert('is_string($moduleName)');
@@ -561,6 +595,12 @@
             }
         }
 
+        /**
+         * @param string $moduleName
+         * @param string $rightName
+         * @return int|void
+         * @throws NotSupportedException
+         */
         protected function getInheritedActualRightIgnoringEveryone($moduleName, $rightName)
         {
             assert('is_string($moduleName)');
@@ -593,6 +633,11 @@
             }
         }
 
+        /**
+         * @param string $moduleName
+         * @param string $policyName
+         * @return null
+         */
         protected function getInheritedActualPolicyIgnoringEveryone($moduleName, $policyName)
         {
             assert('is_string($moduleName)');
@@ -657,17 +702,21 @@
                     'serializedAvatarData',
                     'isActive',
                     'lastLoginDateTime',
+                    'isRootUser',
+                    'hideFromSelecting',
+                    'isSystemUser',
+                    'hideFromLeaderboard'
                 ),
                 'relations' => array(
-                    'currency'          => array(RedBeanModel::HAS_ONE,             'Currency'),
-                    'groups'            => array(RedBeanModel::MANY_MANY,           'Group'),
-                    'manager'           => array(RedBeanModel::HAS_ONE,             'User',
-                                                    RedBeanModel::NOT_OWNED,            RedBeanModel::LINK_TYPE_SPECIFIC,  'manager'),
-                    'role'              => array(RedBeanModel::HAS_MANY_BELONGS_TO, 'Role'),
-                    'emailBoxes'        => array(RedBeanModel::HAS_MANY,            'EmailBox'),
-                    'emailAccounts'     => array(RedBeanModel::HAS_MANY,            'EmailAccount'),
-                    'emailSignatures'   => array(RedBeanModel::HAS_MANY,            'EmailSignature',
-                                                    RedBeanModel::OWNED),
+                    'currency'          => array(static::HAS_ONE,             'Currency'),
+                    'groups'            => array(static::MANY_MANY,           'Group'),
+                    'manager'           => array(static::HAS_ONE,             'User',
+                                                    static::NOT_OWNED,            static::LINK_TYPE_SPECIFIC,  'manager'),
+                    'role'              => array(static::HAS_MANY_BELONGS_TO, 'Role'),
+                    'emailBoxes'        => array(static::HAS_MANY,            'EmailBox'),
+                    'emailAccounts'     => array(static::HAS_MANY,            'EmailAccount'),
+                    'emailSignatures'   => array(static::HAS_MANY,            'EmailSignature',
+                                                    static::OWNED),
                 ),
                 'foreignRelations' => array(
                     'Dashboard',
@@ -693,8 +742,14 @@
                     array('username', 'length',  'max'   => 64),
                     array('username', 'filter', 'filter' => 'trim'),
                     array('serializedAvatarData', 'type', 'type' => 'string'),
-                    array('isActive', 'readOnly'),
-                    array('isActive', 'boolean'),
+                    array('isActive',            'readOnly'),
+                    array('isActive',            'boolean'),
+                    array('isRootUser',          'readOnly'),
+                    array('isRootUser',          'boolean'),
+                    array('hideFromSelecting',   'boolean'),
+                    array('isSystemUser',        'readOnly'),
+                    array('isSystemUser',        'boolean'),
+                    array('hideFromLeaderboard', 'boolean'),
                     array('lastLoginDateTime',    'type', 'type' => 'datetime'),
                 ),
                 'elements' => array(
@@ -781,6 +836,56 @@
             return true;
         }
 
+        public static function getActiveUserCount()
+        {
+            $searchAttributeData['clauses'] = array(
+                1 => array(
+                    'attributeName'        => 'isActive',
+                    'operatorType'         => 'equals',
+                    'value'                => true,
+                ),
+                2 => array(
+                    'attributeName'        => 'isRootUser',
+                    'operatorType'         => 'equals',
+                    'value'                => 0,
+                ),
+                3 => array(
+                    'attributeName'        => 'isRootUser',
+                    'operatorType'         => 'isNull',
+                    'value'                => null,
+                ),
+                4 => array(
+                    'attributeName'        => 'isSystemUser',
+                    'operatorType'         => 'equals',
+                    'value'                => 0,
+                ),
+                5 => array(
+                    'attributeName'        => 'isSystemUser',
+                    'operatorType'         => 'isNull',
+                    'value'                => null,
+                )
+            );
+            $searchAttributeData['structure'] = '1 and (2 or 3) and (4 or 5)';
+            $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('User');
+            $where = RedBeanModelDataProvider::makeWhere('User', $searchAttributeData, $joinTablesAdapter);
+            return User::getCount($joinTablesAdapter, $where, null);
+        }
+
+        public static function getRootUserCount()
+        {
+            $searchAttributeData['clauses'] = array(
+                1 => array(
+                    'attributeName'        => 'isRootUser',
+                    'operatorType'         => 'equals',
+                    'value'                => true,
+                ),
+            );
+            $searchAttributeData['structure'] = '1';
+            $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('User');
+            $where = RedBeanModelDataProvider::makeWhere('User', $searchAttributeData, $joinTablesAdapter);
+            return User::getCount($joinTablesAdapter, $where, null);
+        }
+
         public static function isTypeDeletable()
         {
             return true;
@@ -815,6 +920,24 @@
                 return false;
             }
             return parent::isDeletable();
+        }
+
+        /**
+         * Sets the user as the root user only if there is not an existing root user.  There is only one root user allowed
+         * @throws NotSupportedException
+         */
+        public function setIsRootUser()
+        {
+            if (User::getRootUserCount() > 0)
+            {
+                throw new ExistingRootUserException();
+            }
+            $this->unrestrictedSet('isRootUser', true);
+        }
+
+        public function setIsSystemUser()
+        {
+            $this->unrestrictedSet('isSystemUser', true);
         }
 
         /**
@@ -858,6 +981,49 @@
                 $this->unrestrictedSet('lastLoginDateTime',  DateTimeUtil::convertTimestampToDbFormatDateTime(time()));
                 $this->save();
             }
+        }
+
+        /**
+         * Handle the search scenario for isActive, isRootUser and isSystemUser attributes.
+         */
+        public function isAllowedToSetReadOnlyAttribute($attributeName)
+        {
+            if ($this->getScenario() == 'importModel' || $this->getScenario() == 'searchModel')
+            {
+                if ( in_array($attributeName, array('isActive',
+                                                    'isRootUser',
+                                                    'isSystemUser')))
+                {
+                    return true;
+                }
+                else
+                {
+                    return parent::isAllowedToSetReadOnlyAttribute($attributeName);
+                }
+            }
+        }
+
+        public function setIsNotRootUser()
+        {
+            $this->unrestrictedSet('isRootUser', false);
+        }
+
+        public function setIsNotSystemUser()
+        {
+            $this->unrestrictedSet('isSystemUser', false);
+        }
+
+        /**
+         * @return bool
+         */
+        public function isSuperAdministrator()
+        {
+            $superGroup = Group::getByName(Group::SUPER_ADMINISTRATORS_GROUP_NAME);
+            if ($this->groups->contains($superGroup))
+            {
+                return true;
+            }
+            return false;
         }
     }
 ?>

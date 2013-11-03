@@ -93,37 +93,50 @@
          */
         protected function resolveMessageSubjectAndContentAndSendSystemMessage($messageType, $originalMessage)
         {
+            $sendNotification = false;
             switch ($messageType)
             {
                 case "OwnerNotExist":
-                    $subject = Zurmo::t('EmailMessagesModule', 'Invalid email address');
+                    $subject     = Zurmo::t('EmailMessagesModule', 'Invalid email address');
                     $textContent = Zurmo::t('EmailMessagesModule', 'Email address does not exist in system') . "\n\n" . $originalMessage->textBody;
                     $htmlContent = Zurmo::t('EmailMessagesModule', 'Email address does not exist in system') . "<br\><br\>" . $originalMessage->htmlBody;
+                    $sendNotification = true;
                     break;
                 case "SenderNotExtracted":
-                    $subject = Zurmo::t('EmailMessagesModule', "Sender info can't be extracted from email message");
+                    $subject     = Zurmo::t('EmailMessagesModule', "Sender info can't be extracted from email message");
                     $textContent = Zurmo::t('EmailMessagesModule', "Sender info can't be extracted from email message") . "\n\n" . $originalMessage->textBody;
                     $htmlContent = Zurmo::t('EmailMessagesModule', "Sender info can't be extracted from email message") . "<br\><br\>" . $originalMessage->htmlBody;
                     break;
                 case "RecipientNotExtracted":
-                    $subject = Zurmo::t('EmailMessagesModule', "Recipient info can't be extracted from email message");
+                    $subject     = Zurmo::t('EmailMessagesModule', "Recipient info can't be extracted from email message");
                     $textContent = Zurmo::t('EmailMessagesModule', "Recipient info can't be extracted from email message") . "\n\n" . $originalMessage->textBody;
                     $htmlContent = Zurmo::t('EmailMessagesModule', "Recipient info can't be extracted from email message") . "<br\><br\>" . $originalMessage->htmlBody;
                     break;
                 case "EmailMessageNotValidated":
-                    $subject = Zurmo::t('EmailMessagesModule', 'Email message could not be validated');
+                    $subject     = Zurmo::t('EmailMessagesModule', 'Email message could not be validated');
                     $textContent = Zurmo::t('EmailMessagesModule', 'Email message could not be validated') . "\n\n" . $originalMessage->textBody;
                     $htmlContent = Zurmo::t('EmailMessagesModule', 'Email message could not be validated') . "<br\><br\>" . $originalMessage->htmlBody;
                     break;
                 case "EmailMessageNotSaved":
-                    $subject = Zurmo::t('EmailMessagesModule', 'Email message could not be saved');
+                    $subject     = Zurmo::t('EmailMessagesModule', 'Email message could not be saved');
                     $textContent = Zurmo::t('EmailMessagesModule', 'Email message could not be saved') . "\n\n" . $originalMessage->textBody;
                     $htmlContent = Zurmo::t('EmailMessagesModule', 'Email message could not be saved') . "<br\><br\>" . $originalMessage->htmlBody;
                     break;
                 default:
                     throw new NotSupportedException();
             }
-            return EmailMessageHelper::sendSystemEmail($subject, array($originalMessage->fromEmail), $textContent, $htmlContent);
+            if ($sendNotification)
+            {
+                $notificationMessage                    = new NotificationMessage();
+                $notificationMessage->textContent       = $textContent;
+                $notificationMessage->htmlContent       = $htmlContent;
+                $rules                                  = new EmailMessageOwnerNotExistNotificationRules();
+                NotificationsUtil::submit($notificationMessage, $rules);
+            }
+            else
+            {
+                return EmailMessageHelper::sendSystemEmail($subject, array($originalMessage->fromEmail), $textContent, $htmlContent);
+            }
         }
 
         /**
@@ -143,12 +156,18 @@
             {
                 $sender->fromName          = $senderInfo['name'];
             }
-            $personOrAccount = EmailArchivingUtil::resolvePersonOrAccountByEmailAddress(
+            $personsOrAccounts = EmailArchivingUtil::getPersonsAndAccountsByEmailAddress(
                     $senderInfo['email'],
                     $userCanAccessContacts,
                     $userCanAccessLeads,
                     $userCanAccessAccounts);
-            $sender->personOrAccount = $personOrAccount;
+            if (!empty($personsOrAccounts))
+            {
+                foreach ($personsOrAccounts as $personOrAccount)
+                {
+                    $sender->personsOrAccounts->add($personOrAccount);
+                }
+            }
             return $sender;
         }
 
@@ -168,12 +187,18 @@
             $recipient->toName         = $recipientInfo['name'];
             $recipient->type           = $recipientInfo['type'];
 
-            $personOrAccount = EmailArchivingUtil::resolvePersonOrAccountByEmailAddress(
+            $personsOrAccounts = EmailArchivingUtil::getPersonsAndAccountsByEmailAddress(
                     $recipientInfo['email'],
                     $userCanAccessContacts,
                     $userCanAccessLeads,
                     $userCanAccessAccounts);
-            $recipient->personOrAccount = $personOrAccount;
+            if (!empty($personsOrAccounts))
+            {
+                foreach ($personsOrAccounts as $personOrAccount)
+                {
+                    $recipient->personsOrAccounts->add($personOrAccount);
+                }
+            }
             return $recipient;
         }
 
@@ -240,7 +265,7 @@
                 $sender = $this->createEmailMessageSender($senderInfo, $userCanAccessContacts,
                               $userCanAccessLeads, $userCanAccessAccounts);
 
-                if (empty($sender->personOrAccount) || $sender->personOrAccount->id <= 0)
+                if ($sender->personsOrAccounts->count() == 0)
                 {
                     $emailSenderOrRecipientEmailNotFoundInSystem = true;
                 }
@@ -272,7 +297,7 @@
                 // Check if at least one recipient email can't be found in Contacts, Leads, Account and User emails
                 // so we will save email message in EmailFolder::TYPE_ARCHIVED_UNMATCHED folder, and user will
                 // be able to match emails with items(Contacts, Accounts...) emails in systems
-                if (!(empty($recipient->personOrAccount) || $recipient->personOrAccount->id <= 0))
+                if ($recipient->personsOrAccounts->count() > 0)
                 {
                     $emailRecipientNotFoundInSystem = false;
                 }
@@ -283,7 +308,14 @@
             {
                 $emailSenderOrRecipientEmailNotFoundInSystem = $emailRecipientNotFoundInSystem;
             }
-            $box                       = EmailBox::resolveAndGetByName(EmailBox::NOTIFICATIONS_NAME);
+            if ($emailOwner instanceof User)
+            {
+                $box = EmailBoxUtil::getDefaultEmailBoxByUser($emailOwner);
+            }
+            else
+            {
+                $box = EmailBox::resolveAndGetByName(EmailBox::NOTIFICATIONS_NAME);
+            }
             if ($emailSenderOrRecipientEmailNotFoundInSystem)
             {
                 $emailMessage->folder  = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_ARCHIVED_UNMATCHED);

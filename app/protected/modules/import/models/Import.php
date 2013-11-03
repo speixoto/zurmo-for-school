@@ -40,7 +40,7 @@
 
         public function __toString()
         {
-            return Zurmo::t('ImportModule', '(Unnamed)');
+            return Zurmo::t('Core', '(Unnamed)');
         }
 
         public static function getModuleClassName()
@@ -91,10 +91,13 @@
             {
                 return $this->tempTableName;
             }
-            $this->tempTableName = 'importtable' . $this->id;
+            $this->setTempTableName('importtable' . $this->id);
             return $this->tempTableName;
         }
 
+        /**
+         * @param string $name
+         */
         public function setTempTableName($name)
         {
             assert('is_string($name)');
@@ -107,8 +110,7 @@
             {
                 return false;
             }
-            $sql = 'Drop table if exists ' . $this->getTempTableName();
-            R::exec($sql);
+            ZurmoRedBean::$writer->dropTableByTableName($this->getTempTableName());
             return true;
         }
     }

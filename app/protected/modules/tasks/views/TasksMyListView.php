@@ -39,11 +39,17 @@
      */
     class TasksMyListView extends SecuredMyListView
     {
+        /**
+         * @return string
+         */
         protected function getSortAttributeForDataProvider()
         {
             return 'dueDateTime';
         }
 
+        /**
+         * @return array
+         */
         public static function getDefaultMetadata()
         {
             $metadata = array(
@@ -97,27 +103,90 @@
             return $metadata;
         }
 
+        /**
+         * @return string
+         */
         public static function getModuleClassName()
         {
             return 'TasksModule';
         }
 
+        /**
+         * @return string
+         */
         public static function getDisplayDescription()
         {
             return Zurmo::t('TasksModule', 'My Open TasksModulePluralLabel', LabelUtil::getTranslationParamsForAllModules());
         }
 
+        /**
+         * @return TasksSearchForm
+         */
         protected function getSearchModel()
         {
             $modelClassName = $this->modelClassName;
             $model = new $modelClassName(false);
-            $model->setScenario('searchModel');
             return new TasksSearchForm($model);
         }
 
+        /**
+         * @return string
+         */
         protected static function getConfigViewClassName()
         {
             return 'TasksMyListConfigView';
+        }
+
+        /**
+         * Override to handle security/access resolution on links.
+         */
+        public function getLinkString($attributeString, $attribute)
+        {
+            return array($this, 'resolveLinkString');
+        }
+
+        /**
+         * Resolves the link string for task detail modal view
+         * @param array $data
+         * @param int $row
+         * @return string
+         */
+        public function resolveLinkString($data, $row)
+        {
+            $content = TasksUtil::getModalDetailsLink($data, $this->controllerId,
+                       $this->moduleId, $this->getActionModuleClassName());
+            return $content;
+        }
+
+        /**
+         * Override to handle security/access resolution on links.
+         */
+        protected function getCGridViewLastColumn()
+        {
+            $url  = 'Yii::app()->createUrl("tasks/default/modalEdit", array("id" => $data->id))';
+            return array(
+                'class'           => 'TaskModalButtonColumn',
+                'template'        => '{update}',
+                'buttons' => array(
+                    'update' => array(
+                        'url'             => $url,
+                        'imageUrl'        => false,
+                        'visible'         => 'ActionSecurityUtil::canCurrentUserPerformAction("Edit", $data)',
+                        'options'         => array('class' => 'pencil', 'title' => 'Update'),
+                        'label'           => '!',
+                        'ajaxOptions'     => TasksUtil::resolveAjaxOptionsForModalView('Edit')
+                    ),
+                ),
+            );
+        }
+
+        /**
+         * Register the additional script for task detail modal
+         */
+        protected function renderScripts()
+        {
+            parent::renderScripts();
+            TasksUtil::registerTaskModalDetailsScript($this->getGridViewId());
         }
     }
 ?>

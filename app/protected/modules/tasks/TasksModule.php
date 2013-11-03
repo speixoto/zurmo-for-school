@@ -37,9 +37,14 @@
     class TasksModule extends SecurableModule
     {
         const RIGHT_CREATE_TASKS = 'Create Tasks';
+
         const RIGHT_DELETE_TASKS = 'Delete Tasks';
+
         const RIGHT_ACCESS_TASKS = 'Access Tasks';
 
+        /**
+         * @return array
+         */
         public function getDependencies()
         {
             return array(
@@ -47,11 +52,17 @@
             );
         }
 
+        /**
+         * @return array
+         */
         public function getRootModelNames()
         {
             return array('Task');
         }
 
+        /**
+         * @return array
+         */
         public static function getTranslatedRightsLabels()
         {
             $params                           = LabelUtil::getTranslationParamsForAllModules();
@@ -62,6 +73,9 @@
             return $labels;
         }
 
+        /**
+         * @return array
+         */
         public static function getDefaultMetadata()
         {
             $metadata = array();
@@ -72,35 +86,66 @@
                     'showLayoutsLink' => true,
                     'showMenusLink' => false,
                 ),
+                'shortcutsCreateMenuItems' => array(
+                    array(
+                        'label'  => "eval:Zurmo::t('TasksModule', 'TasksModuleSingularLabel', \$translationParams)",
+                        'url'    => Yii::app()->createUrl('tasks/default/modalCreate',
+                                    array('modalId' => TasksUtil::getModalContainerId())),
+                        'ajaxLinkOptions' => "TasksUtil::resolveAjaxOptionsForCreateMenuItem()",
+                        'right'  => self::RIGHT_CREATE_TASKS,
+                        'mobile' => true,
+                    ),
+                ),
+                'globalSearchAttributeNames' => array(
+                    'name',
+                ),
             );
             return $metadata;
         }
 
+        /**
+         * @return string
+         */
         public static function getPrimaryModelName()
         {
             return 'Task';
         }
 
+        /**
+         * @return string
+         */
         public static function getAccessRight()
         {
             return self::RIGHT_ACCESS_TASKS;
         }
 
+        /**
+         * @return string
+         */
         public static function getCreateRight()
         {
             return self::RIGHT_CREATE_TASKS;
         }
 
+        /**
+         * @return string
+         */
         public static function getDeleteRight()
         {
             return self::RIGHT_DELETE_TASKS;
         }
 
+        /**
+         * @return array
+         */
         public static function getDemoDataMakerClassNames()
         {
             return array('TasksDemoDataMaker');
         }
 
+        /**
+         * @return bool
+         */
         public static function hasPermissions()
         {
             return true;
@@ -116,31 +161,49 @@
             return 'TasksSearchForm';
         }
 
+        /**
+         * @return bool
+         */
         public static function modelsAreNeverGloballySearched()
         {
             return true;
         }
 
+        /**
+         * @return bool
+         */
         public static function isReportable()
         {
             return true;
         }
 
+        /**
+         * @return bool
+         */
         public static function canHaveWorkflow()
         {
             return true;
         }
 
+        /**
+         * @return bool
+         */
         public static function canHaveContentTemplates()
         {
             return true;
         }
 
+        /**
+         * @return string
+         */
         protected static function getSingularModuleLabel($language)
         {
             return Zurmo::t('TasksModule', 'Task', array(), null, $language);
         }
 
+        /**
+         * @return string
+         */
         protected static function getPluralModuleLabel($language)
         {
             return Zurmo::t('TasksModule', 'Tasks', array(), null, $language);

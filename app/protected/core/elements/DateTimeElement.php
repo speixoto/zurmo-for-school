@@ -46,19 +46,26 @@
          */
         protected function renderControlEditable()
         {
+            $htmlOptionsFromParams   = $this->getHtmlOptions();
+            $htmlOptions             = $this->resolveHtmlOptions();
+            $htmlOptions             = array_merge($htmlOptionsFromParams, $htmlOptions);
+            if ($this->getDisabledValue())
+            {
+                return ZurmoHtml::textField($this->getEditableInputName(), $this->renderControlNonEditable(), $htmlOptions);
+            }
             $themePath = Yii::app()->themeManager->baseUrl . '/' . Yii::app()->theme->name;
             $value     = DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay(
-                            $this->model->{$this->attribute});
+                            $this->model->{$this->attribute},
+                            DateTimeUtil::DATETIME_FORMAT_DATE_WIDTH,
+                            DateTimeUtil::DATETIME_FORMAT_TIME_WIDTH,
+                            true);
             $cClipWidget = new CClipWidget();
             $cClipWidget->beginClip("EditableDateTimeElement");
             $cClipWidget->widget('application.core.widgets.ZurmoJuiDateTimePicker', array(
-                'attribute'  => $this->attribute,
-                'value'      => $value,
-                'htmlOptions' => array(
-                    'id'              => $this->getEditableInputId(),
-                    'name'            => $this->getEditableInputName(),
-                    'disabled'        => $this->getDisabledValue(),
-                )
+                'attribute'   => $this->attribute,
+                'value'       => $value,
+                'htmlOptions' => $htmlOptions,
+                'options'     => $this->resolveDatePickerOptions()
             ));
             $cClipWidget->endClip();
             $content = $cClipWidget->getController()->clips['EditableDateTimeElement'];
@@ -78,6 +85,28 @@
                                $this->model->{$this->attribute});
                 return ZurmoHtml::encode($content);
             }
+        }
+
+        /**
+         * Resolve html options
+         * @return array
+         */
+        protected function resolveHtmlOptions()
+        {
+            return array(
+                    'id'              => $this->getEditableInputId(),
+                    'name'            => $this->getEditableInputName(),
+                    'disabled'        => $this->getDisabledValue(),
+                );
+        }
+
+        /**
+         * Resolve datepicker options
+         * @return array
+         */
+        protected function resolveDatePickerOptions()
+        {
+            return array();
         }
     }
 ?>

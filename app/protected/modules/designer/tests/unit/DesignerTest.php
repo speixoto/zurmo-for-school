@@ -128,7 +128,7 @@
                             ),
                             array(
                                 'cells' => array(
-                                    array('element' => 'name'),
+                                    array('element' => 'name', 'detailViewOnly' => 1),
                                 )
                             )
                         )
@@ -180,6 +180,54 @@
             $this->assertNotEquals($editableMetadataNew, $editableMetadata);
             $this->assertEquals($editableMetadataNew['global']['panels'], $compareMetadata['panels']);
             $this->assertNotEmpty($adapter->getMessage());
+
+            //DetailViewOnly is setted
+            $compareMetadata = array('panels' =>
+                                     array(
+                                         array(
+                                             'rows' => array(
+                                                 array(
+                                                     'cells' => array(
+                                                         array('elements' => array(
+                                                             array('attributeName' => null,
+                                                                   'type' => 'Null') // Not Coding Standard
+                                                         )
+                                                         ),
+                                                     ),
+                                                 ),
+                                                 array(
+                                                     'cells' => array(
+                                                         array('elements' => array(
+                                                             array('attributeName' => 'name',
+                                                                   'type' => 'Text')
+                                                         ),
+                                                         'detailViewOnly' => 1
+                                                         ),
+                                                     )
+                                                 )
+                                             )
+                                         )
+                                     )
+            );
+            $editableMetadata = AccountEditAndDetailsView::getMetadata();
+            $this->assertNotEquals($editableMetadata['global']['panels'], $layout);
+            $attributesLayoutAdapter = AttributesLayoutAdapterUtil::makeAttributesLayoutAdapter(
+                $modelAttributesAdapter->getAttributes(),
+                new EditAndDetailsViewDesignerRules(),
+                $editableMetadata
+            );
+            $adapter = new LayoutMetadataAdapter('AccountEditAndDetailsView',
+                'AccountsModule',
+                $editableMetadata,
+                new EditAndDetailsViewDesignerRules(),
+                $attributesLayoutAdapter->getPlaceableLayoutAttributes(),
+                $attributesLayoutAdapter->getRequiredDerivedLayoutAttributeTypes()
+            );
+            $this->assertTrue($adapter->setMetadataFromLayout($layout, array()));
+            $editableMetadataNew = AccountEditAndDetailsView::getMetadata();
+            $this->assertNotEquals($editableMetadataNew, $editableMetadata);
+            $this->assertEquals($editableMetadataNew['global']['panels'], $compareMetadata['panels']);
+            $this->assertEquals('Layout saved successfully.', $adapter->getMessage());
         }
 
         /**
@@ -482,15 +530,17 @@
             $account = new Account();
             $adapter = new ModelAttributesAdapter($account);
             $attributes = $adapter->getStandardAttributes();
-            $this->assertEquals(19, count($attributes));
+            $this->assertEquals(20, count($attributes));
 
-            $this->assertEquals('Name',     $attributes['name']    ['attributeLabel']);
-            $this->assertEquals('Industry', $attributes['industry']['attributeLabel']);
-            $this->assertEquals('Type',     $attributes['type']    ['attributeLabel']);
+            $this->assertEquals('Name',                      $attributes['name']                  ['attributeLabel']);
+            $this->assertEquals('Industry',                  $attributes['industry']              ['attributeLabel']);
+            $this->assertEquals('Type',                      $attributes['type']                  ['attributeLabel']);
+            $this->assertEquals('Latest Activity Date Time', $attributes['latestActivityDateTime']['attributeLabel']);
 
-            $this->assertEquals('Text',     $attributes['name']    ['elementType']);
-            $this->assertEquals('DropDown', $attributes['industry']['elementType']);
-            $this->assertEquals('DropDown', $attributes['type']    ['elementType']);
+            $this->assertEquals('Text',     $attributes['name']                  ['elementType']);
+            $this->assertEquals('DropDown', $attributes['industry']              ['elementType']);
+            $this->assertEquals('DropDown', $attributes['type']                  ['elementType']);
+            $this->assertEquals('DateTime', $attributes['latestActivityDateTime']['elementType']);
 
             $this->assertTrue(!isset($attributes['notes']));
         }

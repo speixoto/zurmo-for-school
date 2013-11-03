@@ -43,6 +43,14 @@
 
         protected $ownerOnly = false;
 
+        /**
+         * @param string $controllerId
+         * @param string $moduleId
+         * @param string $stringTime
+         * @param string $redirectUrl
+         * @param bool $ownerOnly
+         * @param null|RedBeanModel $relationModel
+         */
         public function __construct($controllerId, $moduleId, $stringTime, $redirectUrl,
                                     $ownerOnly = false, $relationModel = null)
         {
@@ -71,11 +79,13 @@
         protected function getCGridViewPagerParams()
         {
             return array(
-                    'prevPageLabel' => '<span>previous</span>',
-                    'nextPageLabel' => '<span>next</span>',
-                    'class'          => 'SimpleListLinkPager',
+                    'firstPageLabel'   => '<span>first</span>',
+                    'prevPageLabel'    => '<span>previous</span>',
+                    'nextPageLabel'    => '<span>next</span>',
+                    'lastPageLabel'    => '<span>last</span>',
+                    'class'            => 'SimpleListLinkPager',
                     'paginationParams' => GetUtil::getData(),
-                    'route'         => 'default/daysMeetingsFromCalendarModalList',
+                    'route'            => 'default/daysMeetingsFromCalendarModalList',
                 );
         }
 

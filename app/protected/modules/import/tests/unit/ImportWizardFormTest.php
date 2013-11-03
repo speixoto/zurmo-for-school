@@ -56,7 +56,7 @@
             $this->assertTrue($importWizardForm->hasErrors());
             $compareData = array(
                 'mappingData' => array('You must map at least one of your import columns.',
-                                       'All required fields must be mapped or added: Owner, Last Name, String'),
+                                       'All required fields must be mapped or added: Last Name, String'),
             );
             $this->assertEquals($compareData, $importWizardForm->getErrors());
 
@@ -71,7 +71,7 @@
             $this->assertTrue($importWizardForm->hasErrors());
             $compareData = array(
                 'mappingData' => array('You can only map each field once.',
-                                       'All required fields must be mapped or added: Owner, Last Name'),
+                                       'All required fields must be mapped or added: Last Name'),
             );
             $this->assertEquals($compareData, $importWizardForm->getErrors());
 
@@ -86,7 +86,7 @@
             $importWizardForm->validateMappingData('mappingData', array());
             $this->assertTrue($importWizardForm->hasErrors());
             $compareData = array(
-                'mappingData' => array('All required fields must be mapped or added: Owner, String',
+                'mappingData' => array('All required fields must be mapped or added: String',
                                        'The following field is mapped more than once. Last Name'),
             );
             $this->assertEquals($compareData, $importWizardForm->getErrors());

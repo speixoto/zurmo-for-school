@@ -44,10 +44,11 @@
                     'lMember',
                 ),
                 'relations' => array(
-                    'is' => array(RedBeanModel::MANY_MANY, 'I'),
+                    'is' => array(static::MANY_MANY, 'I'),
                 ),
                 'rules' => array(
-                    array('lMember', 'safe'),
+                    array('lMember',      'type', 'type' => 'string'),
+                    array('lMember',      'length', 'max' => 255),
                 ),
             );
             return $metadata;

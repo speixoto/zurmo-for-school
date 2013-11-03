@@ -133,6 +133,11 @@
                 'id' => $super->id,
                 'username' => 'super'
             );
+            $data['project'] = null;
+            $data['requestedByUser']  = array(
+                'id' => $super->id,
+                'username' => 'super'
+            );
             $data['createdByUser']    = array(
                 'id' => $super->id,
                 'username' => 'super'
@@ -147,6 +152,7 @@
             unset($response['data']['modifiedDateTime']);
             unset($response['data']['latestDateTime']);
             unset($response['data']['id']);
+
             //$data['latestDateTime'] = $dueStamp;
 
             ksort($data);
@@ -230,6 +236,27 @@
             $this->assertEquals(1, $response['data']['totalCount']);
             $this->assertEquals(1, $response['data']['currentPage']);
             $this->assertEquals(array($compareData), $response['data']['items']);
+        }
+
+        public function testListTaskAttributes()
+        {
+            RedBeanModel::forgetAll();
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
+
+            $authenticationData = $this->login();
+            $headers = array(
+                'Accept: application/json',
+                'ZURMO_SESSION_ID: ' . $authenticationData['sessionId'],
+                'ZURMO_TOKEN: ' . $authenticationData['token'],
+                'ZURMO_API_REQUEST_TYPE: REST',
+            );
+            $allAttributes      = ApiRestTestHelper::getModelAttributes(new Task());
+
+            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/tasks/task/api/listAttributes/' , 'GET', $headers);
+            $response = json_decode($response, true);
+            $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
+            $this->assertEquals($allAttributes, $response['data']['items']);
         }
 
         /**

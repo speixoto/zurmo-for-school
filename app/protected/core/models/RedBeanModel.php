@@ -238,7 +238,7 @@
             $ids = self::getSubsetIds($joinTablesAdapter, $offset, $count, $where,
                 $orderBy, $modelClassName, $selectDistinct);
             $tableName = self::getTableName($modelClassName);
-            $beans = R::batch ($tableName, $ids);
+            $beans = ZurmoRedBean::batch ($tableName, $ids);
             return self::makeModels($beans, $modelClassName);
         }
 
@@ -276,7 +276,7 @@
             $tableName = self::getTableName($modelClassName);
             $sql       = static::makeSubsetOrCountSqlQuery($tableName, $joinTablesAdapter, $offset, $count, $where,
                 $orderBy, false, $selectDistinct);
-            $ids       = R::getCol($sql);
+            $ids       = ZurmoRedBean::getCol($sql);
             return $ids;
         }
 
@@ -338,12 +338,12 @@
             $tableName      = self::getTableName($modelClassName);
             $sql = static::makeSubsetOrCountSqlQuery($tableName, $joinTablesAdapter, null, null, $where, null, true,
                                                      $selectDistinct);
-            $count = R::getCell($sql);
+            $count = ZurmoRedBean::getCell($sql);
             if ($count === null || empty($count))
             {
                 $count = 0;
             }
-            return $count;
+            return intval($count);
         }
 
         /**
@@ -357,7 +357,7 @@
         {
             assert('is_integer($id) && $id > 0');
             assert('$modelClassName === null || is_string($modelClassName) && $modelClassName != ""');
-            // I would have thought it was correct to user R::load() and get
+            // I would have thought it was correct to user ZurmoRedBean::load() and get
             // a null, or error or something if the bean doesn't exist, but
             // it still returns a bean. So until I've investigated further
             // I'm using Finder.
@@ -366,13 +366,13 @@
                 $modelClassName = get_called_class();
             }
             $tableName = self::getTableName($modelClassName);
-            $beans = R::find($tableName, "id = '$id'");
+            $beans = ZurmoRedBean::find($tableName, "id = '$id'");
             assert('count($beans) <= 1');
             if (count($beans) == 0)
             {
                 throw new NotFoundException();
             }
-            return RedBeanModel::makeModel(end($beans), $modelClassName);
+            return static::makeModel(end($beans), $modelClassName);
         }
 
         public function getIsNewModel()
@@ -417,7 +417,7 @@
                     if ($modelClassName::getCanHaveBean())
                     {
                         $tableName = self::getTableName($modelClassName);
-                        $newBean = R::dispense($tableName);
+                        $newBean = ZurmoRedBean::dispense($tableName);
                         $this->modelClassNameToBean[$modelClassName] = $newBean;
                         $this->mapAndCacheMetadataAndSetHints($modelClassName, $newBean);
                     }
@@ -477,6 +477,28 @@
                 }
             }
             $this->modified = false;
+        }
+
+        /**
+         * Delete all models
+         */
+        public static function deleteAll()
+        {
+            if (static::getCanHaveBean() && static::isTypeDeletable())
+            {
+                foreach (static::getAll() as $model)
+                {
+                    if (!$model->delete())
+                    {
+                        throw new NotSupportedException("Unable to delete id# " . $model->id);
+                    }
+                }
+                // we could have used ZurmoRedBean::$writer->wipe() but that won't fire events related to delete.
+            }
+            else
+            {
+                throw new NotSupportedException(get_called_class() . "Can either not have bean or is not deletable");
+            }
         }
 
         // Derived classes can insert additional steps into the construction.
@@ -621,10 +643,19 @@
                     self::resolveLinkTypeAndRelationLinkName($metadata[$modelClassName]['relations'][$relationName],
                                                              $linkType,
                                                              $relationLinkName);
-                   $linkName               = self::makeCasedLinkName($metadata[$modelClassName]['relations'][$relationName][0],
+                    $linkName               = self::makeCasedLinkName($metadata[$modelClassName]['relations'][$relationName][0],
                                                                      $linkType, $relationLinkName);
-                   $columnName             = $relatedModelTableName . '_id';
-                   $columnName             = ZurmoRedBeanLinkManager::resolveColumnPrefix($linkName) . $columnName;
+                    if ($metadata[$modelClassName]['relations'][$relationName][0] == self::HAS_MANY ||
+                       $metadata[$modelClassName]['relations'][$relationName][0] == self::HAS_ONE_BELONGS_TO)
+                    {
+                        $columnName = self::getTableName($modelClassName) . '_id';
+                    }
+                    else
+                    {
+                        $columnName = $relatedModelTableName . '_id';
+                    }
+                    $columnName             = ZurmoRedBeanLinkManager::resolveColumnPrefix($linkName) . $columnName;
+
                     return $columnName;
                 }
             }
@@ -667,7 +698,8 @@
             assert('is_int($relationType)');
             assert('is_int($linkType)');
             assert('is_string($relationLinkName) || $relationLinkName == null');
-            if ($relationType == self::HAS_ONE && $linkType == self::LINK_TYPE_SPECIFIC)
+            if (($relationType == self::HAS_ONE || $relationType == self::HAS_MANY ||
+                 $relationType == self::HAS_ONE_BELONGS_TO) && $linkType == self::LINK_TYPE_SPECIFIC)
             {
                 return strtolower($relationLinkName);
             }
@@ -937,6 +969,7 @@
         {
             try
             {
+                // not using default value to save cpu cycles on requests that follow the first exception.
                 return GeneralCache::getEntry(get_called_class() . 'Metadata');
             }
             catch (NotFoundException $e)
@@ -1071,6 +1104,14 @@
                             assert('ctype_lower($relationName{0})');
                         }
                     }
+                    if (isset($metadata[$modelClassName]['indexes']))
+                    {
+                        assert('is_array($metadata[$modelClassName]["indexes"])');
+                        foreach ($metadata[$modelClassName]["indexes"] as $indexName => $notUsed)
+                        {
+                            assert('ctype_lower($indexName{0})');
+                        }
+                    }
                     if (isset($metadata[$modelClassName]['rules']))
                     {
                         assert('is_array($metadata[$modelClassName]["rules"])');
@@ -1149,7 +1190,7 @@
         {
             $key = strtolower($modelClassName1) . '_id';
             $tableName = self::getTableName($modelClassName2);
-            $beans = R::find($tableName, "$key = :id", array('id' => $bean->id));
+            $beans = ZurmoRedBean::find($tableName, "$key = :id", array('id' => $bean->id));
             if (count($beans) == 1)
             {
                 return reset($beans);
@@ -1255,7 +1296,7 @@
                             case self::HAS_ONE_BELONGS_TO:
                                 $linkName          = strtolower(get_class($this));
                                 $columnName        = $linkName . '_id';
-                                $relatedBeans      = R::find($relatedTableName, $columnName . " = " . $bean->id);
+                                $relatedBeans      = ZurmoRedBean::find($relatedTableName, $columnName . " = " . $bean->id);
                                 if (count($relatedBeans) > 1)
                                 {
                                     throw new NotFoundException();
@@ -1419,7 +1460,7 @@
                     {
                         $this->unrestrictedGet($attributeName);
                     }
-                    elseif ($value !== null && $owns == RedBeanModel::OWNED &&
+                    elseif ($value !== null && $owns == static::OWNED &&
                            !in_array($attributeName, $this->unlinkedRelationNames) &&
                            !isset($this->relationNameToRelatedModel[$attributeName]))
                     {
@@ -1438,7 +1479,7 @@
                             isset($this->relationNameToRelatedModel[$attributeName]))
                         {
                             $this->unlinkedRelationNames[] = $attributeName;
-                            if ($owns == RedBeanModel::OWNED)
+                            if ($owns == static::OWNED)
                             {
                                 $this->unlinkedOwnedRelatedModelsToRemove[$attributeName] =
                                        $this->relationNameToRelatedModel[$attributeName];
@@ -1742,7 +1783,7 @@
          */
         public function forgetValidators()
         {
-            if(!empty($this->validators))
+            if (!empty($this->validators))
             {
                 $this->validators = array();
             }
@@ -1771,7 +1812,7 @@
             {
                 $modelClassName = $this->attributeNameToBeanAndClassName[$attributeName][1];
                 $tableName = self::getTableName($modelClassName);
-                $rows = R::getAll('select id from ' . $tableName . " where $attributeName = ?", array($value));
+                $rows = ZurmoRedBean::getAll('select id from ' . $tableName . " where $attributeName = ?", array($value));
                 return count($rows) == 0 || count($rows) == 1 && $rows[0]['id'] == $this->id;
             }
             else
@@ -1784,7 +1825,7 @@
                 $relationAndOwns = static::getRelationNameToRelationTypeModelClassNameAndOwnsForModel();
                 $modelClassName = $relationAndOwns[$attributeName][1];
                 $tableName = self::getTableName($modelClassName);
-                $rows = R::getAll('select id from ' . $tableName . ' where id = ?', array($model->id));
+                $rows = ZurmoRedBean::getAll('select id from ' . $tableName . ' where id = ?', array($model->id));
                 return count($rows) == 0 || count($rows) == 1 && $rows[0]['id'] == $this->id;
             }
         }
@@ -1828,14 +1869,14 @@
                             self::resolveModelClassNameForClassesWithoutBeans($tempRelatedModelClassName);
                             $relatedTableName          = self::getTableName($tempRelatedModelClassName);
                             $linkName = strtolower($relationName);
-                            if ($linkName == strtolower($relatedModelClassName))
-                            {
-                                $linkName = null;
-                            }
-                            elseif (static::getRelationType($relationName) == self::HAS_ONE &&
-                                    static::getRelationLinkType($relationName) == self::LINK_TYPE_SPECIFIC)
+                            if (static::getRelationType($relationName) == self::HAS_ONE &&
+                                static::getRelationLinkType($relationName) == self::LINK_TYPE_SPECIFIC)
                             {
                                 $linkName = strtolower(static::getRelationLinkName($relationName));
+                            }
+                            else if ($linkName == strtolower($relatedModelClassName))
+                            {
+                                $linkName = null;
                             }
                             ZurmoRedBeanLinkManager::breakLink($bean, $relatedTableName, $linkName);
                             //Check the $this->{$relationName} second in the if clause to avoid accidentially getting
@@ -1888,18 +1929,18 @@
                                 $relationAndOwns       = static::getRelationNameToRelationTypeModelClassNameAndOwnsForModel();
                                 $relatedModelClassName = $relationAndOwns[$relationName][1];
                                 $linkName = strtolower($relationName);
-                                if (strtolower($linkName) == strtolower($relatedModelClassName) ||
-                                    static::getRelationLinkType($relationName) == self::LINK_TYPE_ASSUMPTIVE)
-                                {
-                                    $linkName = null;
-                                }
-                                elseif ($relationType == self::HAS_ONE &&
+                                if ($relationType == self::HAS_ONE &&
                                     static::getRelationLinkType($relationName) == self::LINK_TYPE_SPECIFIC)
                                 {
                                     $linkName = strtolower(static::getRelationLinkName($relationName));
                                 }
-                                elseif ($relationType == RedBeanModel::HAS_MANY_BELONGS_TO ||
-                                        $relationType == RedBeanModel::HAS_ONE_BELONGS_TO)
+                                else if (strtolower($linkName) == strtolower($relatedModelClassName)  ||
+                                    static::getRelationLinkType($relationName) == self::LINK_TYPE_ASSUMPTIVE)
+                                {
+                                    $linkName = null;
+                                }
+                                elseif ($relationType == static::HAS_MANY_BELONGS_TO ||
+                                        $relationType == static::HAS_ONE_BELONGS_TO)
                                 {
                                     $label = 'Relations of type HAS_MANY_BELONGS_TO OR HAS_ONE_BELONGS_TO must have the relation name ' .
                                              'the same as the related model class name. Relation: {relationName} ' .
@@ -1910,7 +1951,7 @@
                                 }
                                 //Needed to exclude HAS_ONE_BELONGS_TO because an additional column was being created
                                 //on the wrong side.
-                                if ($relationType != RedBeanModel::HAS_ONE_BELONGS_TO && ($relatedModel->isModified() ||
+                                if ($relationType != static::HAS_ONE_BELONGS_TO && ($relatedModel->isModified() ||
                                     $relatedModel->id > 0       ||
                                     $this->isAttributeRequired($relationName)))
                                 {
@@ -1919,15 +1960,9 @@
                                     //Exclude HAS_MANY_BELONGS_TO because if the existing relation is unlinked, then
                                     //this link should not be reactivated, because it will improperly create the bean
                                     //in the database.
-                                    if (!($relationType == RedBeanModel::HAS_MANY_BELONGS_TO && $this->{$relationName}->id < 0))
+                                    if (!($relationType == static::HAS_MANY_BELONGS_TO && $this->{$relationName}->id < 0))
                                     {
                                         ZurmoRedBeanLinkManager::link($bean, $relatedBean, $linkName);
-                                    }
-                                    if (!RedBeanDatabase::isFrozen())
-                                    {
-                                        $tableName  = self::getTableName(static::getAttributeModelClassName($relationName));
-                                        $columnName = self::getForeignKeyName(get_class($this), $relationName);
-                                        RedBeanColumnTypeOptimizer::optimize($tableName, $columnName, 'id');
                                     }
                                 }
                             }
@@ -1935,14 +1970,8 @@
                         $baseModelClassName = null;
                         foreach ($this->modelClassNameToBean as $modelClassName => $bean)
                         {
-                            R::store($bean);
+                            ZurmoRedBean::store($bean);
                             assert('$bean->id > 0');
-                            if (!RedBeanDatabase::isFrozen())
-                            {
-                                static::resolveMixinsOnSaveForEnsuringColumnsAreCorrectlyFormed($baseModelClassName,
-                                                                                                $modelClassName);
-                                $baseModelClassName = $modelClassName;
-                            }
                         }
                         $this->modified = false;
                         $this->afterSave();
@@ -1962,23 +1991,6 @@
             {
                 $this->isSaving = false;
                 throw $e;
-            }
-        }
-
-        /**
-         * Resolve that the id columns are properly formed as integers.
-         * @param string or null $baseModelClassName
-         * @param string $modelClassName
-         */
-        protected static function resolveMixinsOnSaveForEnsuringColumnsAreCorrectlyFormed($baseModelClassName, $modelClassName)
-        {
-            assert('$baseModelClassName == null || is_string($baseModelClassName)');
-            assert('is_string($modelClassName)');
-            if ($baseModelClassName !== null)
-            {
-                $tableName  = self::getTableName($modelClassName);
-                $columnName = self::getTableName($baseModelClassName) . '_id';
-                RedBeanColumnTypeOptimizer::optimize($tableName, $columnName, 'id');
             }
         }
 
@@ -2055,21 +2067,13 @@
 
         protected function linkBeans()
         {
-            $baseModelClassName = null;
             $baseBean = null;
             foreach ($this->modelClassNameToBean as $modelClassName => $bean)
             {
                 if ($baseBean !== null)
                 {
                     ZurmoRedBeanLinkManager::link($bean, $baseBean);
-                    if (!RedBeanDatabase::isFrozen())
-                    {
-                        $tableName  = self::getTableName($modelClassName);
-                        $columnName = self::getTableName($baseModelClassName) . '_id';
-                        RedBeanColumnTypeOptimizer::optimize($tableName, $columnName, 'id');
-                    }
                 }
-                $baseModelClassName = $modelClassName;
                 $baseBean = $bean;
             }
         }
@@ -2099,8 +2103,7 @@
                         $relationAndOwns       = static::getRelationNameToRelationTypeModelClassNameAndOwnsForModel();
                         if (!in_array($relationAndOwns[$relationName][0],
                                       array(self::HAS_ONE_BELONGS_TO,
-                                            self::HAS_MANY_BELONGS_TO,
-                                            self::MANY_MANY)))
+                                            self::HAS_MANY_BELONGS_TO)))
                         {
                             if ($this->$relationName->isModified() ||
                                 $this->isAttributeRequired($relationName) &&
@@ -2203,7 +2206,7 @@
             }
             foreach ($this->modelClassNameToBean as $modelClassName => $bean)
             {
-                R::trash($bean);
+                ZurmoRedBean::trash($bean);
             }
             // The model cannot be used anymore.
             $this->deleted = true;
@@ -2232,6 +2235,7 @@
                         {
                             if ($this->$relationName->id > 0)
                             {
+                                // we can't change these to delete() because its Owned, it can't be deleted from outside
                                 $this->$relationName->unrestrictedDelete();
                             }
                         }
@@ -2239,6 +2243,7 @@
                         {
                             foreach ($this->$relationName as $model)
                             {
+                                // we can't change this to delete() because its Owned, it can't be deleted from outside
                                 $model->unrestrictedDelete();
                             }
                         }
@@ -2279,7 +2284,7 @@
             }
             $tableName = self::getTableName($relatedModelClassName);
             $foreignKeyName = strtolower($modelClassName) . '_id';
-            $beans = R::find($tableName, "$foreignKeyName = $id");
+            $beans = ZurmoRedBean::find($tableName, "$foreignKeyName = $id");
             return self::makeModels($beans, $relatedModelClassName);
         }
 
@@ -3111,6 +3116,11 @@
         public static function isCacheable()
         {
             return true;
+        }
+
+        public static function getYiiValidatorsToRedBeanValidators()
+        {
+            return static::$yiiValidatorsToRedBeanValidators;
         }
     }
 ?>

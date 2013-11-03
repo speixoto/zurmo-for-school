@@ -51,7 +51,7 @@
                     'toolbar' => array(
                         'elements' => array(
                             array('type' => 'ConfigurationLink',
-                                            'label' => "eval:Zurmo::t('ZurmoModule', 'Cancel')"),
+                                            'label' => "eval:Zurmo::t('Core', 'Cancel')"),
                             array('type' => 'SaveButton',    'renderType' => 'Edit'),
                             array('type' => 'EditLink',      'renderType' => 'Details'),
                         ),
@@ -118,8 +118,34 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'autoresponderOrCampaignBatchSize',
-                                                                                                'type' => 'Integer'),
+                                                array('attributeName' => 'defaultFromEmailAddress', 'type' => 'Text'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'defaultTestToEmailAddress', 'type' => 'Text'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'reCaptchaPrivateKey', 'type' => 'Text'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'reCaptchaPublicKey', 'type' => 'Text'),
                                             ),
                                         ),
                                     )
@@ -147,26 +173,6 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'autoresponderOrCampaignFooterPlainText',
-                                                                                    'type' => 'TextAreaWithPreviewLink'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'autoresponderOrCampaignFooterRichText',
-                                                                                    'type' => 'RedactorWithPreviewLink'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
                                                 array('attributeName' => 'null', 'type' => 'SettingsLogoFileUpload'),
                                             ),
                                         ),
@@ -183,6 +189,28 @@
         protected function getNewModelTitleLabel()
         {
             return null;
+        }
+
+        protected function resolveElementDuringFormLayoutRender(& $element)
+        {
+            if ($element->getAttribute() == 'reCaptchaPrivateKey')
+            {
+                $title    = Zurmo::t('ZurmoModule', 'ReCaptcha private key can be generated at http://recpatcha.net');
+                $content  = '<span id="captcha-private-key-tooltip" class="tooltip"  title="' . $title . '">?</span>';
+                $qtip     = new ZurmoTip();
+                $qtip->addQTip("#captcha-private-key-tooltip");
+                $element->editableTemplate = '<th>{label}' . $content . '</th>' .
+                                             '<td colspan="{colspan}">{content}{error}</td>';
+            }
+            elseif ($element->getAttribute() == 'reCaptchaPublicKey')
+            {
+                $title    = Zurmo::t('ZurmoModule', 'ReCaptcha public key can be generated at http://recpatcha.net');
+                $content  = '<span id="captcha-public-key-tooltip" class="tooltip"  title="' . $title . '">?</span>';
+                $qtip     = new ZurmoTip();
+                $qtip->addQTip("#captcha-public-key-tooltip");
+                $element->editableTemplate = '<th>{label}' . $content . '</th>' .
+                                             '<td colspan="{colspan}">{content}{error}</td>';
+            }
         }
     }
 ?>

@@ -39,21 +39,8 @@
      * in memcache by categories. This way in the future we can flush just the policies cache instead of having to flush
      * the entire cache like we are doing now.
      */
-    class PoliciesCache
+    abstract class PoliciesCache extends GeneralCache
     {
-        public static function getEntry($identifier)
-        {
-            return GeneralCache::getEntry($identifier);
-        }
 
-        public static function cacheEntry($identifier, $entry)
-        {
-            GeneralCache::cacheEntry($identifier, $entry);
-        }
-
-        public static function forgetAll()
-        {
-            GeneralCache::forgetAll();
-        }
     }
 ?>

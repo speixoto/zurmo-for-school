@@ -39,7 +39,7 @@
      */
     class LeadsSuperUserExportWalkthroughTest extends ZurmoWalkthroughBaseTest
     {
-        protected static $asynchronusThreshold;
+        protected static $asynchronousThreshold;
 
         public static function setUpBeforeClass()
         {
@@ -48,13 +48,13 @@
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
 
-            self::$asynchronusThreshold = ExportModule::$asynchronusThreshold;
-            ExportModule::$asynchronusThreshold = 3;
+            self::$asynchronousThreshold = ExportModule::$asynchronousThreshold;
+            ExportModule::$asynchronousThreshold = 3;
         }
 
         public static function tearDownAfterClass()
         {
-            ExportModule::$asynchronusThreshold = self::$asynchronusThreshold;
+            ExportModule::$asynchronousThreshold = self::$asynchronousThreshold;
             parent::tearDownAfterClass();
         }
 
@@ -146,16 +146,9 @@
             $notificationsBeforeCount        = count(Notification::getAll());
             $notificationMessagesBeforeCount = count(NotificationMessage::getAll());
 
-            $contacts = Contact::getAll();
-            if (count($contacts))
-            {
-                foreach ($contacts as $contact)
-                {
-                    $contact->delete();
-                }
-            }
+            Contact::deleteAll();
             $leads = array();
-            for ($i = 0; $i <= (ExportModule::$asynchronusThreshold + 1); $i++)
+            for ($i = 0; $i <= (ExportModule::$asynchronousThreshold + 1); $i++)
             {
                 $leads[] = LeadTestHelper::createLeadWithAccountByNameForOwner('superContact' . $i, $super, $account);
             }
@@ -190,14 +183,7 @@
             $notificationMessagesBeforeCount = count(NotificationMessage::getAll());
 
             // Now test case when multiple ids are selected
-            $exportItems = ExportItem::getAll();
-            if (count($exportItems))
-            {
-                foreach ($exportItems as $exportItem)
-                {
-                    $exportItem->delete();
-                }
-            }
+            ExportItem::deleteAll();
 
             $selectedIds = "";
             foreach ($leads as $lead)

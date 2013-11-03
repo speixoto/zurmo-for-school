@@ -47,7 +47,7 @@
             $metadata['global'] = array(
                 'tabMenuItems' => array(
                     array(
-                        'label'               => Zurmo::t('MashableInboxModule', 'Inbox'),
+                        'label'               => Zurmo::t('EmailMessagesModule', 'Inbox'),
                         'url'                 => array('/mashableInbox/default'),
                         'dynamicLabelContent' => 'eval:MashableUtil::renderUnreadCountForDynamicLabelContent()',
                         'mobile'              => true,
@@ -59,7 +59,7 @@
 
         protected static function getSingularModuleLabel($language)
         {
-            return Zurmo::t('MashableInboxModule', 'Inbox', array(), null, $language);
+            return Zurmo::t('EmailMessagesModule', 'Inbox', array(), null, $language);
         }
 
         protected static function getPluralModuleLabel($language)

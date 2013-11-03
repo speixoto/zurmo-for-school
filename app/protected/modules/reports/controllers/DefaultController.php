@@ -72,6 +72,8 @@
                                               'listPageSize', get_class($this->getModule()));
             $savedReport                    = new SavedReport(false);
             $searchForm                     = new ReportsSearchForm($savedReport);
+            $listAttributesSelector         = new ListAttributesSelector('ReportsListView', get_class($this->getModule()));
+            $searchForm->setListAttributesSelector($listAttributesSelector);
             $dataProvider                   = $this->resolveSearchDataProvider(
                 $searchForm,
                 $pageSize,
@@ -79,7 +81,7 @@
                 'ReportsSearchView'
             );
             $title           = Zurmo::t('ReportsModule', 'Reports');
-            $breadcrumbLinks = array(
+            $breadCrumbLinks = array(
                  $title,
             );
             if (isset($_GET['ajax']) && $_GET['ajax'] == 'list-view')
@@ -96,7 +98,7 @@
                              'SecuredActionBarForReportsSearchAndListView');
                 $view = new ReportsPageView(ZurmoDefaultViewUtil::
                                             makeViewWithBreadcrumbsForCurrentUser(
-                                            $this, $mixedView, $breadcrumbLinks, 'ReportBreadCrumbView'));
+                                            $this, $mixedView, $breadCrumbLinks, 'ReportBreadCrumbView'));
             }
             echo $view->render();
         }
@@ -107,8 +109,8 @@
             ControllerSecurityUtil::resolveCanCurrentUserAccessModule($savedReport->moduleClassName);
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($savedReport);
             AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED, array(strval($savedReport), 'ReportsModule'), $savedReport);
-            $breadcrumbLinks         = array(strval($savedReport));
-            $breadCrumbView          = new ReportBreadCrumbView($this->getId(), $this->getModule()->getId(), $breadcrumbLinks);
+            $breadCrumbLinks         = array(strval($savedReport));
+            $breadCrumbView          = new ReportBreadCrumbView($this->getId(), $this->getModule()->getId(), $breadCrumbLinks);
             $detailsAndRelationsView = $this->makeReportDetailsAndRelationsView($savedReport, Yii::app()->request->getRequestUri(),
                                                                                 $breadCrumbView);
             $view = new ReportsPageView(ZurmoDefaultViewUtil::
@@ -118,12 +120,12 @@
 
         public function actionSelectType()
         {
-            $breadcrumbLinks  = array(Zurmo::t('ReportsModule', 'Select Report Type'));
+            $breadCrumbLinks  = array(Zurmo::t('ReportsModule', 'Select Report Type'));
             $view             = new ReportsPageView(ZurmoDefaultViewUtil::
                                                     makeViewWithBreadcrumbsForCurrentUser(
                                                     $this,
                                                     new ReportWizardTypesGridView(),
-                                                    $breadcrumbLinks,
+                                                    $breadCrumbLinks,
                                                     'ReportBreadCrumbView'));
             echo $view->render();
         }
@@ -135,7 +137,7 @@
                 $this->actionSelectType();
                 Yii::app()->end(0, false);
             }
-            $breadcrumbLinks         = array(Zurmo::t('ReportsModule', 'Create'));
+            $breadCrumbLinks         = array(Zurmo::t('Core', 'Create'));
             assert('is_string($type)');
             $report           = new Report();
             $report->setType($type);
@@ -146,7 +148,7 @@
                                                     $this,
                                                     $progressBarAndStepsView,
                                                     $reportWizardView,
-                                                    $breadcrumbLinks,
+                                                    $breadCrumbLinks,
                                                     'ReportBreadCrumbView'));
             echo $view->render();
         }
@@ -159,7 +161,7 @@
             {
                 ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($savedReport);
             }
-            $breadcrumbLinks  = array(strval($savedReport));
+            $breadCrumbLinks  = array(strval($savedReport));
             $report           = SavedReportToReportAdapter::makeReportBySavedReport($savedReport);
             $progressBarAndStepsView = ReportWizardViewFactory::makeStepsAndProgressBarViewFromReport($report);
             $reportWizardView = ReportWizardViewFactory::makeViewFromReport($report, (bool)$isBeingCopied);
@@ -168,7 +170,7 @@
                                                     $this,
                                                     $progressBarAndStepsView,
                                                     $reportWizardView,
-                                                    $breadcrumbLinks,
+                                                    $breadCrumbLinks,
                                                     'ReportBreadCrumbView'));
             echo $view->render();
         }
@@ -195,6 +197,7 @@
             ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($savedReport);
             if ($savedReport->save())
             {
+                StickyReportUtil::clearDataByKey($savedReport->id);
                 if ($explicitReadWriteModelPermissions != null)
                 {
                     ExplicitReadWriteModelPermissionsUtil::resolveExplicitReadWriteModelPermissions($savedReport,
@@ -293,16 +296,16 @@
             $rangeAttributesData  =                       $modelToReportAdapter->
                                                           getAttributesForChartRange ($report->getDisplayAttributes());
             $dataAndLabels                              = array();
-            $dataAndLabels['firstSeriesDataAndLabels']  = array('' => Zurmo::t('ReportsModule', '(None)'));
+            $dataAndLabels['firstSeriesDataAndLabels']  = array('' => Zurmo::t('Core', '(None)'));
             $dataAndLabels['firstSeriesDataAndLabels']  = array_merge($dataAndLabels['firstSeriesDataAndLabels'],
                                                           ReportUtil::makeDataAndLabelsForSeriesOrRange($seriesAttributesData));
-            $dataAndLabels['firstRangeDataAndLabels']   = array('' => Zurmo::t('ReportsModule', '(None)'));
+            $dataAndLabels['firstRangeDataAndLabels']   = array('' => Zurmo::t('Core', '(None)'));
             $dataAndLabels['firstRangeDataAndLabels']   = array_merge($dataAndLabels['firstRangeDataAndLabels'],
                                                           ReportUtil::makeDataAndLabelsForSeriesOrRange($rangeAttributesData));
-            $dataAndLabels['secondSeriesDataAndLabels'] = array('' => Zurmo::t('ReportsModule', '(None)'));
+            $dataAndLabels['secondSeriesDataAndLabels'] = array('' => Zurmo::t('Core', '(None)'));
             $dataAndLabels['secondSeriesDataAndLabels'] = array_merge($dataAndLabels['secondSeriesDataAndLabels'],
                                                           ReportUtil::makeDataAndLabelsForSeriesOrRange($seriesAttributesData));
-            $dataAndLabels['secondRangeDataAndLabels']  = array('' => Zurmo::t('ReportsModule', '(None)'));
+            $dataAndLabels['secondRangeDataAndLabels']  = array('' => Zurmo::t('Core', '(None)'));
             $dataAndLabels['secondRangeDataAndLabels']  = array_merge($dataAndLabels['secondRangeDataAndLabels'],
                                                           ReportUtil::makeDataAndLabelsForSeriesOrRange($rangeAttributesData));
             echo CJSON::encode($dataAndLabels);
@@ -393,22 +396,14 @@
             $data                           = array();
             if ($totalItems > 0)
             {
-                if ($totalItems <= ExportModule::$asynchronusThreshold)
+                if ($totalItems <= ExportModule::$asynchronousThreshold)
                 {
                     // Output csv file directly to user browser
                     if ($dataProvider)
                     {
-                        $data1 = ExportUtil::getDataForExport($dataProvider);
-                        $headerData = array();
-                        foreach ($data1 as $reportResultsRowData)
-                        {
-                          $reportToExportAdapter  = new ReportToExportAdapter($reportResultsRowData, $report);
-                          if (count($headerData) == 0)
-                          {
-                              $headerData = $reportToExportAdapter->getHeaderData();
-                          }
-                          $data[] = $reportToExportAdapter->getData();
-                        }
+                          $reportToExportAdapter  = ReportToExportAdapterFactory::createReportToExportAdapter($report, $dataProvider);
+                          $headerData             = $reportToExportAdapter->getHeaderData();
+                          $data                   = $reportToExportAdapter->getData();
                     }
                     // Output data
                     if (count($data))
@@ -464,11 +459,12 @@
                     setAjaxModeAndRenderModalSearchList($this, $modalListLinkProvider, $stateMetadataAdapterClassName);
         }
 
-        public function actionAutoComplete($term, $moduleClassName = null, $type = null)
+        public function actionAutoComplete($term, $moduleClassName = null, $type = null, $autoCompleteOptions = null)
         {
             $pageSize = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                         'autoCompleteListPageSize', get_class($this->getModule()));
-            $autoCompleteResults = ReportAutoCompleteUtil::getByPartialName($term, $pageSize, $moduleClassName, $type);
+            $autoCompleteResults = ReportAutoCompleteUtil::getByPartialName($term, $pageSize, $moduleClassName,
+                                                                            $type, $autoCompleteOptions);
             echo CJSON::encode($autoCompleteResults);
         }
 
@@ -576,6 +572,11 @@
             $pageSize     = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                             'reportResultsListPageSize', get_class($this->getModule()));
             $dataProvider = ReportDataProviderFactory::makeByReport($report, $pageSize);
+            if (!($dataProvider instanceof MatrixReportDataProvider))
+            {
+                $totalItems = intval($dataProvider->calculateTotalItemCount());
+                $dataProvider->getPagination()->setPageSize($totalItems);
+            }
             if ($runReport)
             {
                 $dataProvider->setRunReport($runReport);

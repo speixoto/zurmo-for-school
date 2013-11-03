@@ -67,10 +67,19 @@
             }
             elseif ($this->model->getWorkflowType() == Workflow::TYPE_ON_SAVE && $this->model->getAttribute() != null)
             {
+                $valueTypesAndLabels[MixedDateTypesTriggerForWorkflowFormAttributeMappingRules::
+                    TYPE_AT_LEAST_X_AFTER_TRIGGERED_DATE] = Zurmo::t('Core', 'At Least X After Triggered Date');
+                $valueTypesAndLabels[MixedDateTypesTriggerForWorkflowFormAttributeMappingRules::
+                    TYPE_AT_LEAST_X_BEFORE_TRIGGERED_DATE] = Zurmo::t('Core', 'At Least X Before Triggered Date');
+                $valueTypesAndLabels[MixedDateTypesTriggerForWorkflowFormAttributeMappingRules::
+                    TYPE_LESS_THAN_X_AFTER_TRIGGERED_DATE] = Zurmo::t('Core', 'Less Than X After Triggered Date');
                 $valueTypesAndLabels[MixedDateTypesSearchFormAttributeMappingRules::TYPE_DOES_NOT_CHANGE] = Zurmo::t('Core', 'Does Not Change');
                 $valueTypesAndLabels[MixedDateTypesSearchFormAttributeMappingRules::TYPE_CHANGES]         = Zurmo::t('Core', 'Changes');
-                $valueTypesAndLabels[MixedDateTypesSearchFormAttributeMappingRules::TYPE_WAS_ON]          = Zurmo::t('Core', 'Was On');
-                $valueTypesAndLabels[MixedDateTypesSearchFormAttributeMappingRules::TYPE_BECOMES_ON]      = Zurmo::t('Core', 'Becomes On');
+                if ($this->model->getAttribute() != 'createdDateTime' && $this->model->getAttribute() != 'modifiedDateTime')
+                {
+                    $valueTypesAndLabels[MixedDateTypesSearchFormAttributeMappingRules::TYPE_WAS_ON]          = Zurmo::t('Core', 'Was On');
+                    $valueTypesAndLabels[MixedDateTypesSearchFormAttributeMappingRules::TYPE_BECOMES_ON]      = Zurmo::t('Core', 'Becomes On');
+                }
             }
             elseif ($this->model->getWorkflowType() == Workflow::TYPE_ON_SAVE && $this->model->getAttribute() == null)
             {
@@ -91,6 +100,18 @@
                 unset($htmlOptions['empty']);
             }
             return $htmlOptions;
+        }
+
+        protected function getValueTypesRequiringThirdDateInput()
+        {
+            return MixedDateTypesTriggerForWorkflowFormAttributeMappingRules::getValueTypesRequiringThirdDateInput();
+        }
+
+        protected function renderEditableThirdDateContent($disabled = null)
+        {
+            $element = new TriggerDateOrDateTimeDurationElement($this->model, $this->attribute, $this->form, $this->params);
+            $element->editableTemplate = '{content}{error}';
+            return $element->render();
         }
     }
 ?>

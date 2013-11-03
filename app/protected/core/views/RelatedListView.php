@@ -133,15 +133,10 @@
         protected function makeDataProviderBySearchAttributeData($searchAttributeData)
         {
             assert('is_array($searchAttributeData)');
-            $pageSize       = Yii::app()->pagination->resolveActiveForCurrentUserByType('subListPageSize');
             $sortAttribute  = SearchUtil::resolveSortAttributeFromGetArray($this->modelClassName);
             $sortDescending =  SearchUtil::resolveSortDescendingFromGetArray($this->modelClassName);
-            return new RedBeanModelDataProvider( $this->modelClassName, $sortAttribute, $sortDescending,
-                                                                $searchAttributeData, array(
-                                                                    'pagination' => array(
-                                                                        'pageSize' => $pageSize,
-                                                                    )
-                                                                ));
+            return new RedBeanModelDataProvider( $this->modelClassName, $sortAttribute, (bool)$sortDescending,
+                                                                $searchAttributeData, $this->resolveConfigForDataProvider());
         }
 
         public function renderPortletHeadContent()
@@ -177,9 +172,7 @@
                     'nextPageLabel'  => '<span>next</span>',
                     'lastPageLabel'  => '<span>last</span>',
                     'class'          => 'SimpleListLinkPager',
-                    'paginationParams' => array_merge(GetUtil::getData(),
-                                            array('portletId'   => $this->params['portletId'],
-                                                  'redirectUrl' => $this->params['redirectUrl'])),
+                    'paginationParams'  => $this->resolvePaginationParams(),
                     'route'         => 'defaultPortlet/details',
                 );
         }
@@ -298,6 +291,38 @@
         public static function allowMultiplePlacement()
         {
             return false;
+        }
+
+        /**
+         * Override to add a description for the view to be shown when adding a portlet
+         */
+        public static function getPortletDescription()
+        {
+        }
+
+         /**
+         * Resolves pagination params
+         * @return array
+         */
+        protected function resolvePaginationParams()
+        {
+            return array_merge(GetUtil::getData(),
+                                            array('portletId'   => $this->params['portletId'],
+                                                  'redirectUrl' => $this->params['redirectUrl']));
+        }
+
+        /**
+         * Resolve configuration for data provider
+         * @return array
+         */
+        protected function resolveConfigForDataProvider()
+        {
+            $pageSize = Yii::app()->pagination->resolveActiveForCurrentUserByType('subListPageSize');
+            return array(
+                            'pagination' => array(
+                                'pageSize' => $pageSize,
+                        )
+                    );
         }
     }
 ?>

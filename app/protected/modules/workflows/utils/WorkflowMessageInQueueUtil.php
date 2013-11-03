@@ -37,7 +37,7 @@
     /**
      * Helper class for working with WorkflowMessageInQueue models
      */
-    class WorkflowMessageInQueueUtil
+    class WorkflowMessageInQueueUtil extends InQueueUtil
     {
         /**
          * @param WorkflowMessageInQueue $model
@@ -49,35 +49,35 @@
             $moduleClassName = $model->getModuleClassName();
             $moduleId        = $moduleClassName::getDirectoryName();
             $element         = new DetailsLinkActionElement('default', $moduleId, $model->savedWorkflow->id, $params);
-            $relatedModel    = self::resolveModel($model);
-            return $element->render() . ' &mdash; <span class="less-pronounced-text">' . self::resolveModelContent($relatedModel) . '</span>';
+            $content         = $element->render() . static::resolveModelAndContent($model);
+            $content        .= static::resolveEmailTemplateContent($model);
+            return $content;
         }
 
-        /**
-         * @param WorkflowMessageInQueue $workflowMessageInQueue
-         * @return An|RedBeanModel
-         */
-        protected static function resolveModel(WorkflowMessageInQueue $workflowMessageInQueue)
+        protected static function resolveEmailTemplateContent(WorkflowMessageInQueue $model)
         {
-            $modelDerivationPathToItem = RuntimeUtil::getModelDerivationPathToItem($workflowMessageInQueue->modelClassName);
-            return $workflowMessageInQueue->modelItem->castDown(array($modelDerivationPathToItem));
-        }
-
-        /**
-         * @param RedBeanModel $model
-         * @return string
-         */
-        protected static function resolveModelContent(RedBeanModel $model)
-        {
-            $security = new DetailsActionSecurity(Yii::app()->user->userModel, $model);
-            if ($security->canUserPerformAction())
+            $unserializedData = unserialize($model->serializedData);
+            try
             {
-                $params              = array('label' => strval($model), 'wrapLabel' => false);
-                $moduleClassName     = $model->getModuleClassName();
-                $moduleId            = $moduleClassName::getDirectoryName();
-                $relatedModelElement = new DetailsLinkActionElement('default', $moduleId, $model->id, $params);
-                return $relatedModelElement->render();
+                if (isset($unserializedData[0]) && isset($unserializedData[0]['emailTemplateId']))
+                {
+                    $emailTemplate = EmailTemplate::getById((int)$unserializedData[0]['emailTemplateId']);
+                    $modelContent = strval($emailTemplate);
+                }
+                else
+                {
+                    throw new NotFoundException();
+                }
             }
+            catch (AccessDeniedSecurityException $e)
+            {
+                $modelContent = Zurmo::t('Core', 'Restricted');
+            }
+            catch (NotFoundException $e)
+            {
+                $modelContent = Zurmo::t('ZurmoModule', 'Record no longer exists');
+            }
+            return ' &mdash; <span class="less-pronounced-text">' . $modelContent . '</span>';
         }
     }
 ?>

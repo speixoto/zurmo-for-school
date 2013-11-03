@@ -60,13 +60,11 @@
         {
             assert('!empty($_GET["uniqueLayoutId"])');
             assert('!empty($_GET["portletType"])');
-            $isPortletAlreadyAdded = Portlet::doesPortletExistByViewTypeLayoutIdAndUser($_GET['portletType'], $_GET['uniqueLayoutId'], Yii::app()->user->userModel->id);
             $maximumColumns = $this->resolveMaximumColumnsByDashboardId();
-
-            if ($isPortletAlreadyAdded === false)
+            $portletCollection = Portlet::getByLayoutIdAndUserSortedByColumnIdAndPosition($_GET['uniqueLayoutId'], Yii::app()->user->userModel->id, array());
+            if (!empty($portletCollection))
             {
-                $portletCollection = Portlet::getByLayoutIdAndUserSortedByColumnIdAndPosition($_GET['uniqueLayoutId'], Yii::app()->user->userModel->id, array());
-                if (!empty($portletCollection))
+                if (isset($portletCollection[$maximumColumns]))
                 {
                     foreach ($portletCollection[$maximumColumns] as $position => $portlet)
                     {

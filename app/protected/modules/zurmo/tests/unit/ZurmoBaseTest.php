@@ -57,16 +57,9 @@
             Yii::app()->emailHelper->sendEmailThroughTransport = false;
         }
 
-        public static function tearDownAfterClass()
-        {
-            RedBeanColumnTypeOptimizer::$optimizedTableColumns = array();
-            parent::tearDownAfterClass();
-        }
-
         public function setUp()
         {
             parent::setUp();
-            RedBeanColumnTypeOptimizer::$optimizedTableColumns = array();
             Yii::app()->gameHelper->resetDeferredPointTypesAndValuesByUserIdToAdd();
         }
 
@@ -79,6 +72,7 @@
         {
             $content = ob_get_contents();
             ob_end_clean();
+            self::cleanUpOutputBuffer();
             return $content;
         }
 
@@ -86,6 +80,14 @@
         {
             echo $this->endAndGetOutputBuffer();
             $this->fail();
+        }
+
+        private static function cleanUpOutputBuffer()
+        {
+            while (count(ob_get_status(true)) > 1)
+            {
+                ob_end_clean();
+            }
         }
     }
 ?>

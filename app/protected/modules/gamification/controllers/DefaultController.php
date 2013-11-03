@@ -49,28 +49,90 @@
             }
             if ($type == GamePointUtil::LEADERBOARD_TYPE_WEEKLY)
             {
-                $activeActionElementType = 'LeaderboardWeeklyLink';
+                $activeActionElementType = 'LeaderboardWeeklyMenu';
             }
             elseif ($type == GamePointUtil::LEADERBOARD_TYPE_MONTHLY)
             {
-                $activeActionElementType = 'LeaderboardMonthlyLink';
+                $activeActionElementType = 'LeaderboardMonthlyMenu';
             }
             elseif ($type == GamePointUtil::LEADERBOARD_TYPE_OVERALL)
             {
-                $activeActionElementType = 'LeaderboardOverallLink';
+                $activeActionElementType = 'LeaderboardOverallMenu';
             }
             else
             {
                 throw new NotSupportedException();
             }
-            $view = new TitleBarAndLeaderboardView(
-                            $this->getId(),
-                            $this->getModule()->getId(),
-                            GamePointUtil::getUserLeaderboardData($type),
-                            $activeActionElementType);
-            $view = new LeaderboardPageView(ZurmoDefaultViewUtil::
-                                            makeStandardViewForCurrentUser($this, $view));
+            $metadata = array(); //can put the typing information here easily. from the type.
+            $pageSize                         = Yii::app()->pagination->resolveActiveForCurrentUserByType(
+                                                'listPageSize', get_class($this->getModule()));
+            $gameLevel                        = new GameLevel(false);
+            $dataProvider = RedBeanModelDataProviderUtil::makeDataProvider( $metadata,
+                                                                            get_class($gameLevel),
+                                                                            'LeaderboardDataProvider',
+                                                                            'notUsed',
+                                                                            true,
+                                                                            $pageSize);
+            $dataProvider->setType($type);
+            if (isset($_GET['ajax']) && $_GET['ajax'] == 'list-view')
+            {
+                $listView            = new LeaderboardListView($this->getId(), $this->getModule()->getId(),
+                                                               get_class($gameLevel), $dataProvider, array());
+                $view = new AccountsPageView($listView);
+            }
+            else
+            {
+                $mixedView = new LeaderboardActionBarAndListView(
+                                    $this->getId(),
+                                    $this->getModule()->getId(),
+                                    $gameLevel,
+                                    'GamificationModule',
+                                    $dataProvider,
+                                    $activeActionElementType);
+                $view = new AccountsPageView(ZurmoDefaultViewUtil::
+                            makeStandardViewForCurrentUser($this, $mixedView));
+            }
             echo $view->render();
+        }
+
+        public function actionCollectRandomCoin()
+        {
+            $gameCoin = GameCoin::resolveByPerson(Yii::app()->user->userModel);
+            $gameCoin->addValue(1);
+            $saved = $gameCoin->save();
+            if(!$saved)
+            {
+                throw new FailedToSaveModelException();
+            }
+        }
+
+        public function actionRedeemCollection($id)
+        {
+            $gameCollection = GameCollection::getById((int)$id);
+            if($gameCollection->person->getClassId('Item') != Yii::app()->user->userModel->getClassId('Item'))
+            {
+                throw new NotSupportedException();
+            }
+            if($gameCollection->redeem())
+            {
+                $gameCollectionRules = GameCollectionRulesFactory::createByType($gameCollection->type);
+                $gameCoin = GameCoin::resolveByPerson(Yii::app()->user->userModel);
+                $gameCoin->addValue($gameCollectionRules::getCoinRedemptionValue());
+                $saved = $gameCoin->save();
+                if(!$saved)
+                {
+                    throw new FailedToSaveModelException();
+                }
+            }
+            echo UserGameDashboardView::renderCollectionContent(Yii::app()->user->userModel, $gameCollection);
+        }
+
+
+        public function actionRefreshGameDashboardCoinContainer($id)
+        {
+            $user     = User::getById((int)$id);
+            $gameCoin = GameCoin::resolveByPerson($user);
+            echo UserGameDashboardView::renderCoinsContent($gameCoin->value);
         }
     }
 ?>

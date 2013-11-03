@@ -50,6 +50,11 @@
             Yii::app()->user->userModel = $super;
         }
 
+        public static function getDependentTestModelClassNames()
+        {
+            return array('ModelWithAttachmentTestItem');
+        }
+
         public function testSuperUserAllDefaultControllerActions()
         {
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
@@ -183,24 +188,21 @@
             $fileModels = FileModel::getAll();
             $this->assertEquals(1, count($fileModels));
             $this->assertEquals($contents, $fileModels[0]->fileContent->content);
-            if (!RedBeanDatabase::isFrozen())
-            {
-                //add fileModel to a model.
-                $model = new ModelWithAttachmentTestItem();
-                $model->member = 'test';
-                $model->files->add($fileModels[0]);
-                $this->assertTrue($model->save());
-                $modelId = $model->id;
-                $model->forget();
+            //add fileModel to a model.
+            $model = new ModelWithAttachmentTestItem();
+            $model->member = 'test';
+            $model->files->add($fileModels[0]);
+            $this->assertTrue($model->save());
+            $modelId = $model->id;
+            $model->forget();
 
-                //download a file.
-                $this->setGetArray(array('id' => $fileModels[0]->id, 'modelId' => $modelId,
-                                         'modelClassName' => 'ModelWithAttachmentTestItem'));
-                $this->resetPostArray();
-                $content = $this->runControllerWithExitExceptionAndGetContent('zurmo/fileModel/download');
-                $compareContent = 'Testing download.';
-                $this->assertEquals($compareContent, $content);
-            }
+            //download a file.
+            $this->setGetArray(array('id' => $fileModels[0]->id, 'modelId' => $modelId,
+                                     'modelClassName' => 'ModelWithAttachmentTestItem'));
+            $this->resetPostArray();
+            $content = $this->runControllerWithExitExceptionAndGetContent('zurmo/fileModel/download');
+            $compareContent = 'Testing download.';
+            $this->assertEquals($compareContent, $content);
             //todo: test all file errors.
 
             //Test deleting a file.
@@ -220,7 +222,7 @@
             $this->resetPostArray();
             $content        = $this->runControllerWithNoExceptionsAndGetContent('zurmo/default/globalSearchAutoComplete');
             $compareContent = '[{"href":"","label":"No Results Found","iconClass":""}'; // Not Coding Standard
-            $this->assertTrue(strpos($content, $compareContent) !== false);
+            $this->assertContains($compareContent, $content);
         }
 
         /*
@@ -267,6 +269,60 @@
                                                     (boolean) true);
             $content = $this->runControllerWithNoExceptionsAndGetContent('zurmo/default/about');
             $this->assertContains('startAutoUpdater', $content);
+        }
+
+        public function testToggleStar()
+        {
+            $super                = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $account              = new Account();
+            $account->owner       = $super;
+            $account->name        = 'Test Account';
+            $account->officePhone = '1234567890';
+            $this->assertTrue($account->save());
+
+            $this->setGetArray(array('modelClassName' => 'Account',
+                                     'modelId' => $account->id));
+            $content = $this->runControllerWithNoExceptionsAndGetContent('zurmo/default/toggleStar');
+            $this->assertEquals('icon-star starred', $content);
+            $this->assertTrue(StarredUtil::isModelStarred($account));
+            $content = $this->runControllerWithNoExceptionsAndGetContent('zurmo/default/toggleStar');
+            $this->assertEquals('icon-star unstarred', $content);
+            $this->assertFalse(StarredUtil::isModelStarred($account));
+        }
+
+        public function testSuperUserEditUserMembershipAction()
+        {
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $group = Group::getByName('Super Administrators');
+            //Test all default controller actions that do not require any POST/GET variables to be passed.
+            //This does not include portlet controller actions.
+            $this->setGetArray(array('id' => $group->id));
+            $user1 = UserTestHelper::createBasicUser('Test User');
+            $user2 = UserTestHelper::createBasicUser('Test User2');
+
+            $this->setPostArray(array(
+                'GroupUserMembershipForm' => array($user1->id, $user2->id)
+            ));
+
+            $content = $this->runControllerWithNoExceptionsAndGetContent('zurmo/group/editUserMembership');
+            $pos     = strpos($content, 'There must be at least one super administrator');
+            $this->assertTrue($pos > 0);
+
+            $user2->setIsSystemUser();
+            $this->assertTrue($user2->save());
+
+            $group->users->add($user1);
+            $saved = $group->save();
+            $this->assertTrue($saved);
+            $group->users->add($user2);
+            $saved = $group->save();
+            $this->assertTrue($saved);
+
+            $this->setPostArray(array(
+                'GroupUserMembershipForm' => array('userMembershipData' => array($user1->id, $user2->id)
+            )));
+
+            $this->runControllerWithRedirectExceptionAndGetContent('zurmo/group/editUserMembership');
         }
     }
 ?>

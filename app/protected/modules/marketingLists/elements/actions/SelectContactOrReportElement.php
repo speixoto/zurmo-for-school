@@ -51,7 +51,7 @@
 
         protected function getDefaultLabel()
         {
-            return Zurmo::t('Default', 'Select');
+            return Zurmo::t('Core', 'Select');
         }
 
         protected function getDefaultRoute()

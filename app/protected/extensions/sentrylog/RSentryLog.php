@@ -72,7 +72,10 @@ class RSentryLog extends CLogRoute
       } else if ($log[1] == 'trace') {
         $level = self::DEBUG;
       }
-
+      if ($level != self::ERROR)
+      {
+          return;
+      }
       $format = explode("\n", $log[0]);
       $title = strip_tags($format[0]);
       $sentryEventId = $this->_client->getIdent($this->_client->captureMessage($title, array('zurmoVersion' => VERSION), $level, true));

@@ -55,7 +55,7 @@
             }
             else
             {
-                return Zurmo::t('JobsManagerModule', '(Unnamed)');
+                return Zurmo::t('Core', '(Unnamed)');
             }
         }
     }

@@ -39,6 +39,8 @@
      */
     class DataUtil
     {
+        protected static $skippedAttributes = array();
+
         /**
         * Sanitizes data for date and date time attributes by converting them to the proper
         * format and timezone for saving.
@@ -50,14 +52,14 @@
             assert('is_array($data)');
             foreach ($data as $attributeName => $value)
             {
-                if ($value !== null)
+                if ($value !== null && static::isNotMarkedSkipped($attributeName))
                 {
                     if (!is_array($value))
                     {
                         if ($model->isAttribute($attributeName) && $model->isAttributeSafe($attributeName))
                         {
                             $designerType = ModelAttributeToDesignerTypeUtil::getDesignerType(
-                                                $model, $attributeName);                            
+                                                $model, $attributeName);
                             if ($designerType == 'Date' && !empty($value))
                             {
                                 $data[$attributeName] = DateTimeUtil::resolveValueForDateDBFormatted($value);
@@ -66,7 +68,7 @@
                             {
                                 $data[$attributeName] = DateTimeUtil::convertDateTimeLocaleFormattedDisplayToDbFormattedDateTimeWithSecondsAsZero($value);
                             }
-                            $data[$attributeName] = self::purifyHtml($data[$attributeName]);
+                            $data[$attributeName] = static::purifyHtml($data[$attributeName]);
                         }
                     }
                     else
@@ -79,7 +81,7 @@
                         {
                             //In the event that a designer type does not exist.
                             $designerType = null;
-                        }                        
+                        }
                         if ($model->isAttributeSafe($attributeName) && $designerType != 'TagCloud')
                         {
                             if ($designerType == 'MixedDateTypesForSearch' && isset($value['firstDate']) &&
@@ -88,14 +90,14 @@
                                 $data[$attributeName]['firstDate'] = DateTimeUtil::
                                                                          resolveValueForDateDBFormatted(
                                                                          $value['firstDate']);
-                            }                            
+                            }
                             if ($designerType == 'MixedDateTypesForSearch' && isset($value['secondDate']) &&
                             $value['secondDate'] != null)
                             {
                                 $data[$attributeName]['secondDate'] = DateTimeUtil::
                                                                      resolveValueForDateDBFormatted(
                                                                      $value['secondDate']);
-                            }                            
+                            }
                         }
                         elseif (isset($value['values']) && is_string($value['values']) && $designerType == 'TagCloud')
                         {
@@ -107,14 +109,14 @@
                             {
                                 $data[$attributeName]['values'] = explode(',', $data[$attributeName]['values']); // Not Coding Standard
                             }
-                        }                        
-                        if ($designerType == 'CheckBox')
-                        {     
-                            $data[$attributeName] = (bool) $value['value'];                                
                         }
-                        else 
+                        if ($designerType == 'CheckBox')
                         {
-                            array_walk_recursive($data[$attributeName], array('DataUtil', 'purifyHtmlAndModifyInput'));
+                            $data[$attributeName] = $value['value'];
+                        }
+                        else
+                        {
+                            array_walk_recursive($data[$attributeName], array(get_called_class(), 'purifyHtmlAndModifyInput'));
                         }
                     }
                 }
@@ -164,7 +166,13 @@
         {
             if (is_string($text))
             {
-                $safeCharacters     = array('&' => '&amp;', '[' => '%5B', '^' => '%5E', ']' => '%5D', '%' => '%25');
+                $safeCharacters     = array('&' => '&amp;',
+                                            '[' => '%5B',
+                                            '^' => '%5E',
+                                            ']' => '%5D',
+                                            '%' => '%25',
+                                            '<' => '&lt;',
+                                            '>' => '&gt;');
                 $purifier           = new CHtmlPurifier();
                 $purifier->options  = array('Cache.SerializerPermissions' => 0777);
                 $purifiedText       = $purifier->purify($text);
@@ -192,8 +200,13 @@
             assert('is_scalar($item) || empty($item)');
             if (!empty($item))
             {
-                $item = self::purifyHtml($item);
+                $item = static::purifyHtml($item);
             }
+        }
+
+        protected static function isNotMarkedSkipped($attributeName)
+        {
+            return !(in_array($attributeName, static::$skippedAttributes));
         }
     }
 ?>

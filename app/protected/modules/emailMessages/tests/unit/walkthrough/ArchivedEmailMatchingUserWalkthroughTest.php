@@ -77,6 +77,7 @@
             $startingContactState = ContactsUtil::getStartingState();
             $startingLeadState    = LeadsUtil::getStartingState();
             //test validating selecting an existing contact
+
             $this->setGetArray(array('id' => $message1->id));
             $this->setPostArray(array('ajax' => 'select-contact-form-' . $message1->id,
                                     'AnyContactSelectForm' => array($message1->id => array(
@@ -103,7 +104,7 @@
                                     'officePhone'       => '456765421',
                                     'state'             => array('id' => $startingLeadState->id)))));
             $this->runControllerWithExitExceptionAndGetContent('emailMessages/default/completeMatch');
-            
+
             //test selecting existing contact and saving
             $this->assertNull($contact->primaryEmail->emailAddress);
             $this->setGetArray(array('id' => $message1->id));
@@ -111,16 +112,48 @@
                                             'contactId'   => $contact->id,
                                             'contactName' => 'Some Name'))));
             $this->runControllerWithNoExceptionsAndGetContent('emailMessages/default/completeMatch', true);
-            $this->assertEquals('bob.message@zurmotest.com', $contact->primaryEmail->emailAddress);
-            $this->assertTrue($message1->sender->personOrAccount->isSame($contact));
+            $this->assertNull($contact->primaryEmail->emailAddress);
+            $this->assertCount(1, $message1->sender->personsOrAccounts);
+            $this->assertTrue($message1->sender->personsOrAccounts[0]->isSame($contact));
             $this->assertEquals('Archived', $message1->folder);
-            
-            //Test the default permission was setted            
+
+            //assert subject of the email going to edit.
+            $this->setGetArray(array('id' => $contact->id));
+            $this->runControllerWithNoExceptionsAndGetContent('contacts/default/details');
+            $this->assertEquals('A test unmatched archived received email', $message1->subject);
+
+            //edit subject of email message.
+            $this->setGetArray(array('id' => $message1->id));
+            $createEmailMessageFormData = array('subject'        => 'A test unmatched archived received email edited');
+            $this->setPostArray(array('ajax' => 'edit-form', 'EmailMessage' => $createEmailMessageFormData));
+            $this->runControllerWithRedirectExceptionAndGetUrl('emailMessages/default/edit');
+
+            //assert subject is edited or not.
+            $this->setGetArray(array('id' => $contact->id));
+            $this->runControllerWithNoExceptionsAndGetContent('contacts/default/details');
+            $this->assertEquals('A test unmatched archived received email edited', $message1->subject);
+
+            //delete email message.
+            $this->setGetArray(array('id' => $message1->id));
+            $this->runControllerWithRedirectExceptionAndGetUrl('emailMessages/default/delete', true);
+
+            //assert subject not present.
+            try
+            {
+                EmailMessage::getById($message1->id);
+                $this->fail();
+            }
+            catch (NotFoundException $e)
+            {
+                //success
+            }
+
+            //Test the default permission was setted
             $everyoneGroup        = Group::getByName(Group::EVERYONE_GROUP_NAME);
             $explicitReadWriteModelPermissions = ExplicitReadWriteModelPermissionsUtil::
                                                     makeBySecurableItem($message1);
-            $readWritePermitables = $explicitReadWriteModelPermissions->getReadWritePermitables();            
-            $this->assertEquals($everyoneGroup, $readWritePermitables[$everyoneGroup->id]);
+            $readWritePermitables = $explicitReadWriteModelPermissions->getReadWritePermitables();
+            $this->assertEquals($everyoneGroup, $readWritePermitables[$everyoneGroup->getClassId('Permitable')]);
 
             //test creating new contact and saving
             $this->assertEquals(1, Contact::getCount());
@@ -134,14 +167,15 @@
             $this->assertEquals(2, Contact::getCount());
             $contacts = Contact::getByName('George Patton');
             $contact  = $contacts[0];
-            $this->assertTrue($message2->sender->personOrAccount->isSame($contact));
+            $this->assertCount(1, $message2->sender->personsOrAccounts);
+            $this->assertTrue($message2->sender->personsOrAccounts[0]->isSame($contact));
             $this->assertEquals('Archived', $message2->folder);
-            
+
             //Test the default permission was setted
             $explicitReadWriteModelPermissions = ExplicitReadWriteModelPermissionsUtil::
                                                     makeBySecurableItem($message2);
-            $readWritePermitables = $explicitReadWriteModelPermissions->getReadWritePermitables();            
-            $this->assertEquals($everyoneGroup, $readWritePermitables[$everyoneGroup->id]);
+            $readWritePermitables = $explicitReadWriteModelPermissions->getReadWritePermitables();
+            $this->assertEquals($everyoneGroup, $readWritePermitables[$everyoneGroup->getClassId('Permitable')]);
 
             //test creating new lead and saving
             $this->assertEquals(2, Contact::getCount());
@@ -155,14 +189,15 @@
             $this->assertEquals(3, Contact::getCount());
             $contacts = Contact::getByName('Billy Kid');
             $contact  = $contacts[0];
-            $this->assertTrue($message3->sender->personOrAccount->isSame($contact));
+            $this->assertCount(1, $message3->sender->personsOrAccounts);
+            $this->assertTrue($message3->sender->personsOrAccounts[0]->isSame($contact));
             $this->assertEquals('Archived', $message3->folder);
-            
+
             //Test the default permission was setted
             $explicitReadWriteModelPermissions = ExplicitReadWriteModelPermissionsUtil::
                                                     makeBySecurableItem($message3);
-            $readWritePermitables = $explicitReadWriteModelPermissions->getReadWritePermitables();            
-            $this->assertEquals($everyoneGroup, $readWritePermitables[$everyoneGroup->id]);
+            $readWritePermitables = $explicitReadWriteModelPermissions->getReadWritePermitables();
+            $this->assertEquals($everyoneGroup, $readWritePermitables[$everyoneGroup->getClassId('Permitable')]);
         }
 
         /**

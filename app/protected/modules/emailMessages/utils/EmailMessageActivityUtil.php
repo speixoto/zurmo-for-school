@@ -39,13 +39,20 @@
      */
     class EmailMessageActivityUtil
     {
-        // TODO: @Shoaibi: Critical: Refactor this class into multiple sub-classes
-        const IMAGE_PATH            =   '/default/images/1x1-pixel.png';
-
         const VALID_HASH_PATTERN    = '~^[A-Z0-9\+=/ ]+~i'; // Not Coding Standard
 
         protected static $baseQueryStringArray;
 
+        /**
+         * @param bool $tracking
+         * @param string $content
+         * @param int $modelId
+         * @param $modelType
+         * @param int $personId
+         * @param int $marketingListId
+         * @param bool $isHtmlContent
+         * @return bool
+         */
         public static function resolveContentForTrackingAndFooter($tracking, & $content, $modelId, $modelType, $personId,
                                                                             $marketingListId, $isHtmlContent = false)
         {
@@ -61,6 +68,13 @@
             return true;
         }
 
+        /**
+         * @param $hash
+         * @param bool $validateQueryStringArray
+         * @param bool $validateForTracking
+         * @return array
+         * @throws NotSupportedException
+         */
         public static function resolveQueryStringArrayForHash($hash, $validateQueryStringArray = true,
                                                                                             $validateForTracking = true)
         {
@@ -132,11 +146,16 @@
             }
             else
             {
-                return array('redirect' => false, 'imagePath' => static::resolveFullyQualifiedImagePath());
+                return array('redirect' => false, 'imagePath' => PlaceholderImageUtil::resolveOneByOnePixelImagePath());
             }
         }
 
         // this should be protected but we use it in EmailBounceJob so it has to be public.
+        /**
+         * @param array $queryStringArray
+         * @return bool | array
+         * @throws FailedToSaveModelException
+         */
         public static function createOrUpdateActivity($queryStringArray)
         {
             $activity = static::resolveExistingActivity($queryStringArray);
@@ -257,12 +276,12 @@
             $prefix = substr($matches[1], 0, $matchPosition);
             return $prefix . static::resolveTrackingUrlForLink(trim($matches[2])) . ' ';
         }
-        
+
         protected static function resolveTrackingUrlForMatchedPlainLinkArrayWithHtmlContent($matches)
         {
             $matchPosition  = strpos($matches[0], $matches[2]);
-            $prefix = substr($matches[1], 0, $matchPosition);            
-            $trackingUrl = $prefix . '<a href="' . static::resolveTrackingUrlForLink(trim($matches[2])) . '">' . trim($matches[2]) . '</a> ';            
+            $prefix = substr($matches[1], 0, $matchPosition);
+            $trackingUrl = $prefix . '<a href="' . static::resolveTrackingUrlForLink(trim($matches[2])) . '">' . trim($matches[2]) . '</a> ';
             return $trackingUrl;
         }
 
@@ -324,8 +343,9 @@ PTN;
         protected static function getPlainLinkRegex($isHtmlContent)
         {
             $baseLinkRegex  = static::getBaseLinkRegex();
-            // TODO: @Shoaibi: High: Change this so it matches to any link not surrounded by quotes(single or double)
-            $plainLinkRegex = '(\n|\r|\s)' . $baseLinkRegex;
+            // plain links would either be on new line or have a space before them.
+            // we don't care about "here is a linkhttp://www.yahoo.com" for now.
+            $plainLinkRegex = '(\n|\r|\r\n|\s)' . $baseLinkRegex;
             if ($isHtmlContent)
             {
                 $plainLinkRegex = substr($plainLinkRegex, 0, -1) . '(?!(?>[^<]*(?:<(?!/?a\b)[^<]*)*)</a>))';
@@ -375,6 +395,16 @@ PTN;
                                                                     $modelType, $isHtmlContent, $replaceExisting, false);
         }
 
+        /**
+         * @param string $content
+         * @param int $personId
+         * @param int $marketingListId
+         * @param int $modelId
+         * @param $modelType
+         * @param bool $isHtmlContent
+         * @param bool $replaceExisting
+         * @param bool $preview
+         */
         public static function resolveUnsubscribeAndManageSubscriptionPlaceholders(& $content, $personId,
                                                                                       $marketingListId, $modelId,
                                                                                       $modelType, $isHtmlContent,
@@ -413,7 +443,7 @@ PTN;
         {
             if ($isHtmlContent)
             {
-                $unsubscribeTranslated          = Zurmo::t('MarketingListsModule', 'Unsubscribe');
+                $unsubscribeTranslated          = Zurmo::t('Core', 'Unsubscribe');
                 $unsubscribeUrl = ZurmoHtml::link($unsubscribeTranslated, $unsubscribeUrl);
             }
         }
@@ -560,14 +590,13 @@ PTN;
             }
         }
 
+        /**
+         * @param $modelType
+         * @return string
+         */
         public static function resolveModelClassNameByModelType($modelType)
         {
             return $modelType . 'Activity';
-        }
-
-        protected static function resolveFullyQualifiedImagePath()
-        {
-            return Yii::app()->themeManager->basePath . static::IMAGE_PATH;
         }
 
         protected static function replaceSpacesWithPlusSymbol(& $hash)

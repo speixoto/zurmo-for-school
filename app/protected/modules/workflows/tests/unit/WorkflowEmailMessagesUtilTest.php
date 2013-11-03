@@ -36,8 +36,6 @@
 
     class WorkflowEmailMessagesUtilTest extends WorkflowBaseTest
     {
-        public $freeze = false;
-
         protected static $savedWorkflow;
 
         public static function setUpBeforeClass()
@@ -60,25 +58,9 @@
             self::$savedWorkflow = $savedWorkflow;
         }
 
-        public function setup()
+        public static function getDependentTestModelClassNames()
         {
-            parent::setUp();
-            $freeze = false;
-            if (RedBeanDatabase::isFrozen())
-            {
-                RedBeanDatabase::unfreeze();
-                $freeze = true;
-            }
-            $this->freeze = $freeze;
-        }
-
-        public function teardown()
-        {
-            if ($this->freeze)
-            {
-                RedBeanDatabase::freeze();
-            }
-            parent::teardown();
+            return array('WorkflowModelTestItem');
         }
 
         public function testProcessAfterSaveWhenSendIsInFuture()
@@ -88,7 +70,8 @@
             $workflow->setId(self::$savedWorkflow->id);
             $workflow->type   = Workflow::TYPE_ON_SAVE;
             $emailMessageForm = new EmailMessageForWorkflowForm('WorkflowModelTestItem', Workflow::TYPE_ON_SAVE);
-            $emailMessageForm->sendAfterDurationSeconds = 86400;
+            $emailMessageForm->sendAfterDurationInterval = 1;
+            $emailMessageForm->sendAfterDurationType     = TimeDurationUtil::DURATION_TYPE_DAY;
             $recipients = array(array('type'              => WorkflowEmailMessageRecipientForm::
                                                              TYPE_DYNAMIC_TRIGGERED_MODEL_USER,
                                        'audienceType'    => EmailMessageRecipient::TYPE_TO,
@@ -135,7 +118,8 @@
             $workflow->setId(self::$savedWorkflow->id);
             $workflow->type   = Workflow::TYPE_ON_SAVE;
             $emailMessageForm = new EmailMessageForWorkflowForm('WorkflowModelTestItem', Workflow::TYPE_ON_SAVE);
-            $emailMessageForm->sendAfterDurationSeconds = 0;
+            $emailMessageForm->sendAfterDurationInterval = 0;
+            $emailMessageForm->sendAfterDurationType     = TimeDurationUtil::DURATION_TYPE_WEEK;
             $emailMessageForm->emailTemplateId = $emailTemplate->id;
             $emailMessageForm->sendFromType    = EmailMessageForWorkflowForm::SEND_FROM_TYPE_DEFAULT;
             $recipients = array(array('type'             => WorkflowEmailMessageRecipientForm::
@@ -173,7 +157,8 @@
             $workflow->setId(self::$savedWorkflow->id);
             $workflow->type   = Workflow::TYPE_ON_SAVE;
             $emailMessageForm = new EmailMessageForWorkflowForm('Contact', Workflow::TYPE_ON_SAVE);
-            $emailMessageForm->sendAfterDurationSeconds = 0;
+            $emailMessageForm->sendAfterDurationInterval = 0;
+            $emailMessageForm->sendAfterDurationType     = TimeDurationUtil::DURATION_TYPE_WEEK;
             $emailMessageForm->emailTemplateId = $emailTemplate->id;
             $emailMessageForm->sendFromType    = EmailMessageForWorkflowForm::SEND_FROM_TYPE_DEFAULT;
             $recipients = array(array('type'             => WorkflowEmailMessageRecipientForm::
@@ -196,7 +181,7 @@
             $this->assertEquals(1, count($queuedEmailMessages[0]->recipients));
             $this->assertEquals('Jason Blue' ,           $queuedEmailMessages[0]->recipients[0]->toName);
             $this->assertEquals('jason@something.com',   $queuedEmailMessages[0]->recipients[0]->toAddress);
-            $this->assertEquals($model->id,              $queuedEmailMessages[0]->recipients[0]->personOrAccount->id);
+            $this->assertEquals($model->id,              $queuedEmailMessages[0]->recipients[0]->personsOrAccounts[0]->id);
         }
 
         public function testProcessAfterSaveWhenSendIsImmediateAndToAContactThatIsRelatedToTheTriggeredModel()
@@ -220,7 +205,8 @@
             $workflow->setId(self::$savedWorkflow->id);
             $workflow->type   = Workflow::TYPE_ON_SAVE;
             $emailMessageForm = new EmailMessageForWorkflowForm('Account', Workflow::TYPE_ON_SAVE);
-            $emailMessageForm->sendAfterDurationSeconds = 0;
+            $emailMessageForm->sendAfterDurationInterval = 0;
+            $emailMessageForm->sendAfterDurationType     = TimeDurationUtil::DURATION_TYPE_WEEK;
             $emailMessageForm->emailTemplateId = $emailTemplate->id;
             $emailMessageForm->sendFromType    = EmailMessageForWorkflowForm::SEND_FROM_TYPE_DEFAULT;
             $recipients = array(array('type'             => WorkflowEmailMessageRecipientForm::
@@ -255,10 +241,10 @@
             $this->assertEquals(2, count($queuedEmailMessages[0]->recipients));
             $this->assertEquals('Jason Blue' ,           $queuedEmailMessages[0]->recipients[0]->toName);
             $this->assertEquals('jason@something.com',   $queuedEmailMessages[0]->recipients[0]->toAddress);
-            $this->assertEquals($contact->id,            $queuedEmailMessages[0]->recipients[0]->personOrAccount->id);
+            $this->assertEquals($contact->id,            $queuedEmailMessages[0]->recipients[0]->personsOrAccounts[0]->id);
             $this->assertEquals('Laura Blue' ,           $queuedEmailMessages[0]->recipients[1]->toName);
             $this->assertEquals('laura@something.com',   $queuedEmailMessages[0]->recipients[1]->toAddress);
-            $this->assertEquals($contact2->id,           $queuedEmailMessages[0]->recipients[1]->personOrAccount->id);
+            $this->assertEquals($contact2->id,           $queuedEmailMessages[0]->recipients[1]->personsOrAccounts[0]->id);
         }
 
         public function testMakeEmailMessageForWorkflowFormByQueueModelAndWorkflow()
@@ -278,13 +264,14 @@
             $emailMessage = null;
             $emailMessage['emailTemplateId'] = 5;
             $emailMessage['sendFromType']    = EmailMessageForWorkflowForm::SEND_FROM_TYPE_DEFAULT;
-            $emailMessage['sendAfterDurationSeconds'] = '0';
+            $emailMessage['sendAfterDurationType']    = TimeDurationUtil::DURATION_TYPE_DAY;
+            $emailMessage['sendAfterDurationInterval'] = '44';
             $emailMessage[EmailMessageForWorkflowForm::EMAIL_MESSAGE_RECIPIENTS] =
                                 array(
                                     array('type'          => WorkflowEmailMessageRecipientForm::TYPE_DYNAMIC_TRIGGERED_MODEL,
                                         'audienceType'    => EmailMessageRecipient::TYPE_TO),
                                 );
-            $workflowMessageInQueue = WorkflowTestHelper::createExpiredWorkflowMessageInQueue($model, $savedWorkflow, serialize($emailMessage));
+            $workflowMessageInQueue = WorkflowTestHelper::createExpiredWorkflowMessageInQueue($model, $savedWorkflow, serialize(array($emailMessage)));
             $workflow               = new Workflow();
             $workflow->setModuleClassName('WorkflowsTestModule');
             $workflow->setType(Workflow::TYPE_ON_SAVE);
@@ -293,7 +280,8 @@
                                                 $workflowMessageInQueue, $workflow);
             $this->assertEquals(5, $emailMessageForWorkflowForm->emailTemplateId);
             $this->assertEquals(EmailMessageForWorkflowForm::SEND_FROM_TYPE_DEFAULT, $emailMessageForWorkflowForm->sendFromType);
-            $this->assertEquals(0, $emailMessageForWorkflowForm->sendAfterDurationSeconds);
+            $this->assertEquals(TimeDurationUtil::DURATION_TYPE_DAY, $emailMessageForWorkflowForm->sendAfterDurationType);
+            $this->assertEquals(44, $emailMessageForWorkflowForm->sendAfterDurationInterval);
             $this->assertEquals(1, count($emailMessageForWorkflowForm->getEmailMessageRecipients()));
         }
     }

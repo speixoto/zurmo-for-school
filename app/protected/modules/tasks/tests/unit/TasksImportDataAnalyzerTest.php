@@ -45,13 +45,9 @@
             $accountTableName     = Account::getTableName('Account');
             $contactTableName     = Contact::getTableName('Contact');
             $opportunityTableName = Opportunity::getTableName('Opportunity');
-            $columnName = ExternalSystemIdUtil::EXTERNAL_SYSTEM_ID_COLUMN_NAME;
-            RedBeanColumnTypeOptimizer::
-            externalIdColumn($accountTableName,     $columnName);
-            RedBeanColumnTypeOptimizer::
-            externalIdColumn($contactTableName,     $columnName);
-            RedBeanColumnTypeOptimizer::
-            externalIdColumn($opportunityTableName, $columnName);
+            ExternalSystemIdUtil::addExternalIdColumnIfMissing($accountTableName);
+            ExternalSystemIdUtil::addExternalIdColumnIfMissing($contactTableName);
+            ExternalSystemIdUtil::addExternalIdColumnIfMissing($opportunityTableName);
         }
 
         public function testImportDataAnalysisResults()
@@ -62,10 +58,6 @@
             $serializedData['importRulesType'] = 'Tasks';
             $import->serializedData            = serialize($serializedData);
             $this->assertTrue($import->save());
-
-            $accountTableName     = Account::getTableName('Account');
-            $contactTableName     = Contact::getTableName('Contact');
-            $opportunityTableName = Opportunity::getTableName('Opportunity');
 
             $account1 = AccountTestHelper::createAccountByNameForOwner('account1', $super);
             $account2 = AccountTestHelper::createAccountByNameForOwner('account2', $super);
@@ -85,13 +77,13 @@
             ImportTestHelper::updateModelsExternalId($opportunity2, 'OPP');
 
             ImportTestHelper::
-            createTempTableByFileNameAndTableName('importAnalyzerTest.csv', $import->getTempTableName(),
+            createTempTableByFileNameAndTableName('importAnalyzerTest.csv', $import->getTempTableName(), true,
                                                   Yii::getPathOfAlias('application.modules.tasks.tests.unit.files'));
-            R::exec("update " . $import->getTempTableName() . " set column_0 = " .
+            ZurmoRedBean::exec("update " . $import->getTempTableName() . " set column_0 = " .
                     $account3->id . " where id != 1 limit 3");
-            R::exec("update " . $import->getTempTableName() . " set column_2 = " .
+            ZurmoRedBean::exec("update " . $import->getTempTableName() . " set column_2 = " .
                     $contact3->id . " where id != 1 limit 4");
-            R::exec("update " . $import->getTempTableName() . " set column_4 = " .
+            ZurmoRedBean::exec("update " . $import->getTempTableName() . " set column_4 = " .
                     $opportunity3->id . " where id != 1 limit 5");
 
             $mappingData = array(
@@ -111,47 +103,110 @@
             $this->assertTrue($import->save());
 
             $importRules  = ImportRulesUtil::makeImportRulesByType('Tasks');
-            $config       = array('pagination' => array('pageSize' => 2));
+            $config       = array('pagination' => array('pageSize' => 15));
             //This test csv has a header row.
             $dataProvider = new ImportDataProvider($import->getTempTableName(), true, $config);
 
             //Run data analyzer
-            $importDataAnalyzer = new ImportDataAnalyzer($importRules, $dataProvider);
-            foreach ($mappingData as $columnName => $columnMappingData)
-            {
-                $importDataAnalyzer->analyzeByColumnNameAndColumnMappingData($columnName, $columnMappingData);
-            }
-            $messagesData = $importDataAnalyzer->getMessagesData();
-            $compareData = array(
-                'column_0' => array(
-                    array('message' => '3 record(s) will be updated and 7 record(s) will be skipped during import.',
-                           'sanitizerUtilType' => 'AccountDerivedIdValueType', 'moreAvailable' => false),
-                ),
-                'column_1' => array(
-                    array('message' => '3 record(s) will be updated and 7 record(s) will be skipped during import.',
-                           'sanitizerUtilType' => 'AccountDerivedIdValueType', 'moreAvailable' => false),
-                ),
-                'column_2' => array(
-                    array('message' => '4 record(s) will be updated and 6 record(s) will be skipped during import.',
-                           'sanitizerUtilType' => 'ContactDerivedIdValueType', 'moreAvailable' => false),
-                ),
-                'column_3' => array(
-                    array('message' => '3 record(s) will be updated and 7 record(s) will be skipped during import.',
-                           'sanitizerUtilType' => 'ContactDerivedIdValueType', 'moreAvailable' => false),
-                ),
-                'column_4' => array(
-                    array('message' => '5 record(s) will be updated and 5 record(s) will be skipped during import.',
-                           'sanitizerUtilType' => 'OpportunityDerivedIdValueType', 'moreAvailable' => false),
-                ),
-                'column_5' => array(
-                    array('message' => '3 record(s) will be updated and 7 record(s) will be skipped during import.',
-                           'sanitizerUtilType' => 'OpportunityDerivedIdValueType', 'moreAvailable' => false),
-                ),
-            );
-            $this->assertEquals($compareData, $messagesData);
-            $importInstructionsData   = $importDataAnalyzer->getImportInstructionsData();
-            $compareInstructionsData  = array();
-            $this->assertEquals($compareInstructionsData, $importInstructionsData);
+            $importDataAnalyzer = new ImportDataAnalyzer($importRules, $dataProvider, $mappingData,
+                                  array('column_0', 'column_1', 'column_2', 'column_3', 'column_4', 'column_5'));
+            $importDataAnalyzer->analyzePage();
+            $data = $dataProvider->getData();
+            $this->assertEquals(10, count($data));
+
+            $compareData = array();
+            $compareData['column_0'][] = 'Is an existing record and will be updated.';
+            $compareData['column_1'][] = 'Was not found and this row will be skipped during import.';
+            $compareData['column_2'][] = 'Is an existing record and will be updated.';
+            $compareData['column_3'][] = 'Was not found and this row will be skipped during import.';
+            $compareData['column_4'][] = 'Is an existing record and will be updated.';
+            $compareData['column_5'][] = 'Was not found and this row will be skipped during import.';
+            $this->assertEquals($compareData, unserialize($data[0]->serializedAnalysisMessages));
+            $this->assertEquals(ImportDataAnalyzer::STATUS_SKIP, $data[0]->analysisStatus);
+
+            $compareData = array();
+            $compareData['column_0'][] = 'Is an existing record and will be updated.';
+            $compareData['column_1'][] = 'Is an existing record and will be updated.';
+            $compareData['column_2'][] = 'Is an existing record and will be updated.';
+            $compareData['column_3'][] = 'Was not found and this row will be skipped during import.';
+            $compareData['column_4'][] = 'Is an existing record and will be updated.';
+            $compareData['column_5'][] = 'Was not found and this row will be skipped during import.';
+            $this->assertEquals($compareData, unserialize($data[1]->serializedAnalysisMessages));
+            $this->assertEquals(ImportDataAnalyzer::STATUS_SKIP, $data[1]->analysisStatus);
+
+            $compareData = array();
+            $compareData['column_0'][] = 'Is an existing record and will be updated.';
+            $compareData['column_1'][] = 'Is an existing record and will be updated.';
+            $compareData['column_2'][] = 'Is an existing record and will be updated.';
+            $compareData['column_3'][] = 'Was not found and this row will be skipped during import.';
+            $compareData['column_4'][] = 'Is an existing record and will be updated.';
+            $compareData['column_5'][] = 'Was not found and this row will be skipped during import.';
+            $this->assertEquals($compareData, unserialize($data[2]->serializedAnalysisMessages));
+            $this->assertEquals(ImportDataAnalyzer::STATUS_SKIP, $data[2]->analysisStatus);
+
+            $compareData = array();
+            $compareData['column_0'][] = 'Was not found and this row will be skipped during import.';
+            $compareData['column_1'][] = 'Is an existing record and will be updated.';
+            $compareData['column_2'][] = 'Is an existing record and will be updated.';
+            $compareData['column_3'][] = 'Was not found and this row will be skipped during import.';
+            $compareData['column_4'][] = 'Is an existing record and will be updated.';
+            $compareData['column_5'][] = 'Was not found and this row will be skipped during import.';
+            $this->assertEquals($compareData, unserialize($data[3]->serializedAnalysisMessages));
+            $this->assertEquals(ImportDataAnalyzer::STATUS_SKIP, $data[3]->analysisStatus);
+
+            $compareData = array();
+            $compareData['column_0'][] = 'Was not found and this row will be skipped during import.';
+            $compareData['column_1'][] = 'Was not found and this row will be skipped during import.';
+            $compareData['column_2'][] = 'Was not found and this row will be skipped during import.';
+            $compareData['column_3'][] = 'Is an existing record and will be updated.';
+            $compareData['column_4'][] = 'Is an existing record and will be updated.';
+            $compareData['column_5'][] = 'Was not found and this row will be skipped during import.';
+            $this->assertEquals($compareData, unserialize($data[4]->serializedAnalysisMessages));
+            $this->assertEquals(ImportDataAnalyzer::STATUS_SKIP, $data[4]->analysisStatus);
+
+            $compareData = array();
+            $compareData['column_0'][] = 'Was not found and this row will be skipped during import.';
+            $compareData['column_1'][] = 'Was not found and this row will be skipped during import.';
+            $compareData['column_2'][] = 'Was not found and this row will be skipped during import.';
+            $compareData['column_3'][] = 'Is an existing record and will be updated.';
+            $compareData['column_4'][] = 'Was not found and this row will be skipped during import.';
+            $compareData['column_5'][] = 'Was not found and this row will be skipped during import.';
+            $this->assertEquals($compareData, unserialize($data[5]->serializedAnalysisMessages));
+            $this->assertEquals(ImportDataAnalyzer::STATUS_SKIP, $data[5]->analysisStatus);
+
+            $compareData = array();
+            $compareData['column_0'][] = 'Was not found and this row will be skipped during import.';
+            $compareData['column_1'][] = 'Was not found and this row will be skipped during import.';
+            $compareData['column_2'][] = 'Was not found and this row will be skipped during import.';
+            $compareData['column_3'][] = 'Is an existing record and will be updated.';
+            $compareData['column_4'][] = 'Was not found and this row will be skipped during import.';
+            $compareData['column_5'][] = 'Is an existing record and will be updated.';
+            $this->assertEquals($compareData, unserialize($data[6]->serializedAnalysisMessages));
+            $this->assertEquals(ImportDataAnalyzer::STATUS_SKIP, $data[6]->analysisStatus);
+
+            $compareData = array();
+            $compareData['column_0'][] = 'Was not found and this row will be skipped during import.';
+            $compareData['column_1'][] = 'Was not found and this row will be skipped during import.';
+            $compareData['column_2'][] = 'Was not found and this row will be skipped during import.';
+            $compareData['column_3'][] = 'Was not found and this row will be skipped during import.';
+            $compareData['column_4'][] = 'Was not found and this row will be skipped during import.';
+            $compareData['column_5'][] = 'Is an existing record and will be updated.';
+            $this->assertEquals($compareData, unserialize($data[7]->serializedAnalysisMessages));
+            $this->assertEquals(ImportDataAnalyzer::STATUS_SKIP, $data[7]->analysisStatus);
+
+            $compareData = array();
+            $compareData['column_0'][] = 'Was not found and this row will be skipped during import.';
+            $compareData['column_1'][] = 'Was not found and this row will be skipped during import.';
+            $compareData['column_2'][] = 'Was not found and this row will be skipped during import.';
+            $compareData['column_3'][] = 'Was not found and this row will be skipped during import.';
+            $compareData['column_4'][] = 'Was not found and this row will be skipped during import.';
+            $compareData['column_5'][] = 'Is an existing record and will be updated.';
+            $this->assertEquals($compareData, unserialize($data[8]->serializedAnalysisMessages));
+            $this->assertEquals(ImportDataAnalyzer::STATUS_SKIP, $data[8]->analysisStatus);
+
+            //Will result with no problems since it is all blank.
+            $this->assertFalse(unserialize($data[9]->serializedAnalysisMessages));
+            $this->assertEquals(ImportDataAnalyzer::STATUS_CLEAN, $data[9]->analysisStatus);
         }
     }
 ?>

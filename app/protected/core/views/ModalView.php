@@ -65,7 +65,9 @@
             return $this->view->render();
         }
 
-        public static function getAjaxOptionsForModalLink($title, $containerId = 'modalContainer', $height = 'auto', $width = 600, $position = 'center top+25', $class = "''") // Not Coding Standard
+        public static function getAjaxOptionsForModalLink($title, $containerId = 'modalContainer', $height = 'auto',
+                                                          $width = 600, $position = 'center top+25', $class = "''",// Not Coding Standard
+                                                          $extraCloseScript = null)
         {
             assert('is_string($containerId)');
             assert('is_string($title)');
@@ -73,12 +75,21 @@
             assert('is_int($width)');
             assert('is_string($position) || is_array($position)');
             assert('is_string($class) || $class == null');
+            assert('is_string($extraCloseScript) || $extraCloseScript == null');
             return array(
-                    'beforeSend' => static::getAjaxBeforeSendOptionForModalLinkContent($title, $containerId, $height, $width, $position, $class),
+                    'beforeSend' => static::getAjaxBeforeSendOptionForModalLinkContent($title, $containerId,
+                                                                                       $height, $width, $position,
+                                                                                       $class, $extraCloseScript),
                     'update'     => '#' . $containerId);
         }
 
-        public static function getAjaxBeforeSendOptionForModalLinkContent($title, $containerId = 'modalContainer', $height = 'auto', $width = 600, $position = 'center top+25', $class = "''") // Not Coding Standard
+        public static function getAjaxBeforeSendOptionForModalLinkContent($title,
+                                                                          $containerId = 'modalContainer',
+                                                                          $height = 'auto',
+                                                                          $width = 600,
+                                                                          $position = 'center top+25',
+                                                                          $class = "''",// Not Coding Standard
+                                                                          $extraCloseScript = null)
         {
             assert('is_string($containerId)');
             assert('is_string($title)');
@@ -86,6 +97,7 @@
             assert('is_int($width)');
             assert('is_string($position) || is_array($position)');
             assert('is_string($class) || $class == null');
+            assert('is_string($extraCloseScript) || $extraCloseScript == null');
             if ($height == 'auto')
             {
                 $heightContent = "'auto'";
@@ -117,7 +129,10 @@
                     'dialogClass' : {$class},
                     'height' : {$heightContent},
                     'open': function( event, ui )  { jQuery('#{$containerId}').parent().addClass('openingModal'); },
-                    'close': function( event, ui ) { jQuery('#{$containerId}').parent().removeClass('openingModal'); $('#{$containerId}').dialog('destroy'); }
+                    'close': function( event, ui ) { jQuery('#{$containerId}').parent().removeClass('openingModal');
+                                                     $('#{$containerId}').dialog('destroy');
+                                                     " . $extraCloseScript . "
+                                                     }
                 });
                 return true;
             }";

@@ -38,6 +38,8 @@
     {
         const DESCRIPTION_CLASS          = 'campaign-description';
 
+        protected $cssClasses = array('overlay-view');
+
         protected function renderContent()
         {
             $content  = $this->renderDescriptionContent();
@@ -47,11 +49,15 @@
 
         protected function renderDescriptionContent()
         {
-            $innerContent  = '<b>' . $this->model->getAttributeLabel('sendOnDateTime') . ':</b> ';
+            $innerContent  = $this->model->getAttributeLabel('sendOnDateTime') . ': ';
             $innerContent .= DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay($this->model->sendOnDateTime);
-            $innerContent .= "</BR><b>" . $this->model->getAttributeLabel('subject') . ':</b> ';
+            $content       = ZurmoHtml::tag('strong', array(), $innerContent);
+
+            $innerContent  = $this->model->getAttributeLabel('subject') . ': ';
             $innerContent .= $this->model->subject;
-            $content       = ZurmoHtml::tag('div', array('class' => static::DESCRIPTION_CLASS), $innerContent);
+            $content      .= ZurmoHtml::tag('strong', array(), $innerContent);
+
+            $content       = ZurmoHtml::tag('div', array('class' => static::DESCRIPTION_CLASS), $content);
             return $content;
         }
     }

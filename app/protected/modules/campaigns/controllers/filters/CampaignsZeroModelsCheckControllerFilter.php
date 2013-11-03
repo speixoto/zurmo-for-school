@@ -41,7 +41,7 @@
     {
         public $activeActionElementType;
 
-        public $breadcrumbLinks;
+        public $breadCrumbLinks;
 
         protected function getMessageViewClassName()
         {
@@ -53,7 +53,7 @@
             $gridViewId              = 'notUsed';
             $pageVar                 = 'notUsed';
             $listModel               = new Campaign();
-            $actionBarView           = new SecuredActionBarForMarketingSearchAndListView(
+            $actionBarView           = new SecuredActionBarForMarketingListsSearchAndListView(
                                        'default',
                                        'marketing',
                                        $listModel,
@@ -63,7 +63,7 @@
             $mixedView               = new ActionBarAndZeroModelsYetView($actionBarView, $messageView);
             $view                    = new CampaignsPageView(MarketingDefaultViewUtil::
                                        makeViewWithBreadcrumbsForCurrentUser(
-                                       $this->controller, $mixedView, $this->breadcrumbLinks, 'MarketingBreadCrumbView'));
+                                       $this->controller, $mixedView, $this->breadCrumbLinks, 'MarketingBreadCrumbView'));
             echo $view->render();
         }
     }

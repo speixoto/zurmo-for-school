@@ -55,27 +55,7 @@
 
         public function actionDetails($id)
         {
-            $id              = intval($id);
-            $modelName       = $this->getModule()->getPrimaryModelName();
-            $model           = $modelName::getById($id);
-            ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($model, true);
-            $portlet         = Portlet::getById(intval($_GET['portletId']));
-
-            if(null != $redirectUrl = ArrayUtil::getArrayValue($_GET, 'redirectUrl'))
-            {
-                $redirectUrl = $redirectUrl;
-            }
-            else
-            {
-                $redirectUrl = Yii::app()->request->getRequestUri();
-            }
-            $portlet->params = array(
-                    'controllerId' => 'default',
-                    'relationModuleId' => $this->getModule()->getId(),
-                    'relationModel'    => $model,
-                    'redirectUrl'      => $redirectUrl,
-            );
-            $portletView = $portlet->getView();
+            $portletView = $this->getPortletViewForDetails($id);
             if (!RightsUtil::canUserAccessModule($portletView::getModuleClassName(), Yii::app()->user->userModel))
             {
                 $messageView = new AccessFailureView();
@@ -84,6 +64,24 @@
                 Yii::app()->end(0, false);
             }
             $view            = new AjaxPageView($portletView);
+            echo $view->render();
+        }
+
+        /**
+         * Used by details with list view to do pagination and ordering
+         * @param integer $id
+         */
+        public function actionListDetails($id)
+        {
+            $portletView = $this->getPortletViewForDetails($id);
+            if (!RightsUtil::canUserAccessModule($portletView::getModuleClassName(), Yii::app()->user->userModel))
+            {
+                $messageView = new AccessFailureView();
+                $view        = new AccessFailurePageView($messageView);
+                echo $view->render();
+                Yii::app()->end(0, false);
+            }
+            $view            = new AjaxPageView($portletView->makeListView());
             echo $view->render();
         }
 
@@ -301,6 +299,32 @@
                     }
                 }
             }
+        }
+
+        protected function getPortletViewForDetails($id)
+        {
+            $id              = intval($id);
+            $modelName       = $this->getModule()->getPrimaryModelName();
+            $model           = $modelName::getById($id);
+            ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($model, true);
+            $portlet         = Portlet::getById(intval($_GET['portletId']));
+
+            if (null != $redirectUrl = ArrayUtil::getArrayValue($_GET, 'redirectUrl'))
+            {
+                $redirectUrl = $redirectUrl;
+            }
+            else
+            {
+                $redirectUrl = Yii::app()->request->getRequestUri();
+            }
+            $portlet->params = array(
+                'controllerId' => 'default',
+                'relationModuleId' => $this->getModule()->getId(),
+                'relationModel'    => $model,
+                'redirectUrl'      => $redirectUrl,
+            );
+            $portletView = $portlet->getView();
+            return $portletView;
         }
     }
 ?>

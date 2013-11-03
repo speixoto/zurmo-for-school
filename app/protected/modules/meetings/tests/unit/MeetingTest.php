@@ -124,7 +124,11 @@
                     'id' => $user->id,
                 ),
                 'name' => 'New Name',
-                'startDateTime' => DateTimeUtil::convertTimestampToDisplayFormat($timeStamp),
+                'startDateTime' => DateTimeUtil::convertTimestampToDisplayFormat(
+                                            $timeStamp,
+                                            DateTimeUtil::DATETIME_FORMAT_DATE_WIDTH,
+                                            DateTimeUtil::DATETIME_FORMAT_TIME_WIDTH,
+                                            true)
             );
             $sanitizedPostData = PostUtil::sanitizePostByDesignerTypeForSavingModel($meeting, $postData);
             $meeting->setAttributes($sanitizedPostData);
@@ -144,7 +148,11 @@
                     'id' => $user->id,
                 ),
                 'name' => 'Lamazing',
-                'startDateTime' => DateTimeUtil::convertTimestampToDisplayFormat($timeStamp),
+                'startDateTime' => DateTimeUtil::convertTimestampToDisplayFormat(
+                                            $timeStamp,
+                                            DateTimeUtil::DATETIME_FORMAT_DATE_WIDTH,
+                                            DateTimeUtil::DATETIME_FORMAT_TIME_WIDTH,
+                                            true)
             );
             $sanitizedPostData = PostUtil::sanitizePostByDesignerTypeForSavingModel($meeting, $postData);
             $meeting->setAttributes($sanitizedPostData);
@@ -191,6 +199,10 @@
             //Now test with the start date time before the end date time.
             $meeting->startDateTime    = DateTimeUtil::convertTimestampToDbFormatDateTime(time()  + 9000);
             $meeting->endDateTime      = DateTimeUtil::convertTimestampToDbFormatDateTime(time()  + 10000);
+            $saved                     = $meeting->save();
+            $this->assertTrue($saved);
+            //Now test with end date time equals '0000-00-00 00:00:00'.
+            $meeting->endDateTime      = '0000-00-00 00:00:00';
             $saved                     = $meeting->save();
             $this->assertTrue($saved);
         }

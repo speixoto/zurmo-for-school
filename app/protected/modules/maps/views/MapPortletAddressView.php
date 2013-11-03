@@ -34,9 +34,9 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class MapPortletAddressView extends View implements PortletViewInterface,RelatedPortletViewInterface
+    class MapPortletAddressView extends View implements PortletViewInterface, RelatedPortletViewInterface
     {
-	    protected $params;
+        protected $params;
 
         protected $viewData;
 
@@ -46,6 +46,11 @@
 
         protected $containerIdSuffix;
 
+        /**
+         * @param array $viewData
+         * @param array $params
+         * @param array $uniqueLayoutId
+         */
         public function __construct($viewData, $params, $uniqueLayoutId)
         {
             assert('is_array($viewData) || $viewData == null');
@@ -94,8 +99,7 @@
                                          'latitude'  => '',
                                          'longitude' => '');
             return $modalMapAddressData;
-
-	}
+        }
 
         public static function getMetadata()
         {
@@ -115,7 +119,7 @@
 
         public function renderContent()
         {
-            if(!$this->shouldRenderMap())
+            if (!$this->shouldRenderMap())
             {
                 $emptyLabel = Zurmo::t('ZurmoModule', 'No address found');
                 return ZurmoHtml::tag('span', array('class' => 'empty'),
@@ -124,21 +128,36 @@
             $mapCanvasContainerId = $this->getMapCanvasContainerId();
             $cClipWidget          = new CClipWidget();
             $cClipWidget->beginClip("Map");
-            echo "<div id='" . $mapCanvasContainerId . "' class=\"mapCanvasPortlet\"></div>";
-            Yii::app()->mappingHelper->renderMapContentForView($this->geoCodeQueryData, $mapCanvasContainerId);
+            try
+            {
+                Yii::app()->mappingHelper->renderMapContentForView($this->geoCodeQueryData, $mapCanvasContainerId);
+                echo "<div id='" . $mapCanvasContainerId . "' class=\"mapCanvasPortlet\"></div>";
+            }
+            catch(GeoCode_Exception $e)
+            {
+                $emptyLabel = Zurmo::t('ZurmoModule', 'No address found');
+                echo          ZurmoHtml::tag('span', array('class' => 'empty'),
+                              ZurmoHtml::tag('span', array('class' => 'icon-empty'), '') . $emptyLabel);
+            }
             $cClipWidget->endClip();
             return $cClipWidget->getController()->clips['Map'];
         }
-
 
         public function renderPortletHeadContent()
         {
             return false;
         }
 
-	    public static function canUserConfigure()
+        public static function canUserConfigure()
         {
             return false;
+        }
+
+        /**
+         * Override to add a description for the view to be shown when adding a portlet
+         */
+        public static function getPortletDescription()
+        {
         }
 
         public static function hasRollupSwitch()
@@ -168,7 +187,7 @@
 
         protected function shouldRenderMap()
         {
-            if($this->params['relationModel']->primaryAddress->makeAddress() == null)
+            if ($this->params['relationModel']->primaryAddress->makeAddress() == null)
             {
                 return false;
             }
@@ -176,4 +195,3 @@
         }
     }
 ?>
-

@@ -36,27 +36,9 @@
 
     class ByTimeWorkflowInQueueJobTest extends WorkflowBaseTest
     {
-        public $freeze = false;
-
-        public function setup()
+        public static function getDependentTestModelClassNames()
         {
-            parent::setUp();
-            $freeze = false;
-            if (RedBeanDatabase::isFrozen())
-            {
-                RedBeanDatabase::unfreeze();
-                $freeze = true;
-            }
-            $this->freeze = $freeze;
-        }
-
-        public function teardown()
-        {
-            if ($this->freeze)
-            {
-                RedBeanDatabase::freeze();
-            }
-            parent::teardown();
+            return array('WorkflowModelTestItem');
         }
 
         public function testRun()
@@ -65,7 +47,7 @@
             $timeTrigger = array('attributeIndexOrDerivedType' => 'string',
                                  'operator'                    => OperatorRules::TYPE_EQUALS,
                                  'value'                       => '514',
-                                 'durationSeconds'             => '333');
+                                 'durationInterval'             => '5');
             $actions     = array(array('type' => ActionForWorkflowForm::TYPE_UPDATE_SELF,
                                        ActionForWorkflowForm::ACTION_ATTRIBUTES =>
                                             array('string' => array('shouldSetValue'    => '1',
