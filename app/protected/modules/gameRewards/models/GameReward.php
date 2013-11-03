@@ -113,7 +113,7 @@
                     array('name',           'required'),
                     array('name',           'type',    'type' => 'string'),
                     array('name',           'length',  'min'  => 3, 'max' => 64),
-                    array('quantity',       'numerical',  'min' => 1),
+                    array('quantity',       'numerical',  'min' => 0),
                     array('quantity',       'type',    'type' => 'integer'),
                     array('quantity',       'required'),
                 ),
