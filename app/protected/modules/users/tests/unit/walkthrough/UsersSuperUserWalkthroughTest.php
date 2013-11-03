@@ -679,7 +679,15 @@
                                                         'username' => $aUser->username,
                                                         'password' => 'bNewPassword',
                                                         'rememberMe' => '0')));
-            $this->runControllerWithRedirectExceptionAndGetContent('zurmo/default/login');
+            if(Yii::app()->edition == 'Community')
+            {
+                $this->runControllerWithRedirectExceptionAndGetContent('zurmo/default/login');
+            }
+            else
+            {
+                //Proper handling of license key infrastructure
+                $this->runControllerWithNoExceptionsAndGetContent('zurmo/default/login');
+            }
         }
     }
 ?>
