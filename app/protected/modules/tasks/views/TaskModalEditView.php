@@ -270,7 +270,7 @@
         }
 
         /**
-         * Override to disabling probability attribute.
+         * Override set the description row size
          */
         protected function resolveElementInformationDuringFormLayoutRender(& $elementInformation)
         {
