@@ -38,7 +38,7 @@
     {
         protected function getSubtitle()
         {
-            return Zurmo::t('JobsManagerModule', 'Job Manager', LabelUtil::getTranslationParamsForAllModules());
+            return Zurmo::t('JobsManagerModule', 'JobsManagerModuleSingularLabel', LabelUtil::getTranslationParamsForAllModules());
         }
     }
 ?>

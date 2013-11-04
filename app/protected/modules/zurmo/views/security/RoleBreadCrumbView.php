@@ -37,11 +37,11 @@
     /**
      * View that renders role module breadcrumb content
      */
-    class RoleBreadCrumbView extends BreadCrumbView
+    class RoleBreadCrumbView extends SettingsBreadCrumbView
     {
-            protected function getHomeLinkLabel()
+        protected function getModuleTitle()
         {
-            return Zurmo::t('ZurmoModule', 'Roles Home');
+            return Zurmo::t('ZurmoModule', 'Roles');
         }
     }
 ?>

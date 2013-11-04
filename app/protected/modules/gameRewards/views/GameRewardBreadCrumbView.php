@@ -37,11 +37,11 @@
     /**
      * View that renders gameRewards module breadcrumb content
      */
-    class GameRewardBreadCrumbView extends BreadCrumbView
+    class GameRewardBreadCrumbView extends SettingsBreadCrumbView
     {
-            protected function getHomeLinkLabel()
+        protected function getModuleTitle()
         {
-            return Zurmo::t('GameRewardsModule', 'Game Rewards Home');
+            return Zurmo::t('GameRewardsModule', 'Game Rewards');
         }
     }
 ?>
