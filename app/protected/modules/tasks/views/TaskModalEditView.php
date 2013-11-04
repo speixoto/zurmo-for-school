@@ -128,7 +128,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'null', 'type' => 'ActivityItems'),
+                                                array('attributeName' => 'null', 'type' => 'TaskActivityItems'),
                                             ),
                                         ),
                                     )
