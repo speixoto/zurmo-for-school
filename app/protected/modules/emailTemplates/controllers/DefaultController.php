@@ -282,6 +282,14 @@
             echo $view->render();
         }
 
+        public function actionGetHtmlContent($id)
+        {
+            $modelId = (int) $id;
+            $model = EmailTemplate::getById($modelId);
+            ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($model);
+            echo $model->htmlContent;
+        }
+
         protected static function getZurmoControllerUtil()
         {
             return new EmailTemplateZurmoControllerUtil();

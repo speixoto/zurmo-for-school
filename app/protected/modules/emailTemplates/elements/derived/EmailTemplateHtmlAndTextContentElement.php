@@ -146,7 +146,10 @@
         {
             assert('$this->attribute == null');
             $activeTab = $this->getActiveTab();
-            return $this->resolveTabbedContent($this->model->textContent, $this->model->htmlContent, $activeTab);
+            $url = Yii::app()->createUrl('emailTemplates/default/getHtmlContent',
+                                    array('id' => $this->model->id));
+            $htmlContent = "<iframe src='" . $url . "'></iframe>";
+            return $this->resolveTabbedContent($this->model->textContent, $htmlContent, $activeTab);
         }
 
         protected function renderControlEditable()
