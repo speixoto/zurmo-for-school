@@ -157,6 +157,7 @@
             unset($response['data']['modifiedDateTime']);
             unset($response['data']['category']['id']);
             unset($response['data']['id']);
+            unset($response['data']['logged']);
             $data['latestDateTime'] = $startStamp;
 
             ksort($data);
