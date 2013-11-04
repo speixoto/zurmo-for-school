@@ -47,7 +47,7 @@
          */
         private static $canHaveBean = false;
 
-            /**
+        /**
          * @see RedBeanModel::getHasBean()
          */
         public static function getCanHaveBean()

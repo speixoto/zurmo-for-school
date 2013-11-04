@@ -45,7 +45,7 @@
         public function make()
         {
             $values = array(
-                Zurmo::t('CustomField', 'Open'),
+                Zurmo::t('Core', 'Open'),
                 Zurmo::t('CustomField', 'Lost'),
                 Zurmo::t('CustomField', 'Won'),
             );

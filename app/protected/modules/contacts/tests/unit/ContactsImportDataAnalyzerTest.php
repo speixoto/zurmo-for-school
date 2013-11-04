@@ -54,7 +54,7 @@
             $this->assertTrue($import->save());
 
             ImportTestHelper::
-            createTempTableByFileNameAndTableName('importAnalyzerTest.csv', $import->getTempTableName(),
+            createTempTableByFileNameAndTableName('importAnalyzerTest.csv', $import->getTempTableName(), true,
                                                   Yii::getPathOfAlias('application.modules.contacts.tests.unit.files'));
             $mappingData = array(
                 'column_0'  => array('attributeIndexOrDerivedType' => 'ContactState',

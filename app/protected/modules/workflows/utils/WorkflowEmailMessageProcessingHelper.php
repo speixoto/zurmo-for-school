@@ -146,20 +146,44 @@
             $sender                     = new EmailMessageSender();
             if ($this->emailMessageForm->sendFromType == EmailMessageForWorkflowForm::SEND_FROM_TYPE_DEFAULT)
             {
-                $userToSendMessagesFrom     = BaseControlUserConfigUtil::getUserToRunAs();
-                $sender->fromAddress        = Yii::app()->emailHelper->resolveFromAddressByUser($userToSendMessagesFrom);
-                $sender->fromName           = strval($userToSendMessagesFrom);
+                $this->resolveSenderAsDefault($sender);
             }
             elseif ($this->emailMessageForm->sendFromType == EmailMessageForWorkflowForm::SEND_FROM_TYPE_CUSTOM)
             {
                 $sender->fromAddress        = $this->emailMessageForm->sendFromAddress;
                 $sender->fromName           = $this->emailMessageForm->sendFromName;
             }
+            elseif ($this->emailMessageForm->sendFromType == EmailMessageForWorkflowForm::SEND_FROM_TYPE_TRIGGERED_MODEL_OWNER)
+            {
+                if ($this->triggeredModel instanceof OwnedSecurableItem)
+                {
+                    if ($this->triggeredModel->owner->primaryEmail->emailAddress != null)
+                    {
+                        $sender->fromAddress = $this->triggeredModel->owner->primaryEmail->emailAddress;
+                        $sender->fromName    = strval($this->triggeredModel->owner);
+                    }
+                    else
+                    {
+                        $this->resolveSenderAsDefault($sender);
+                    }
+                }
+                else
+                {
+                    $this->resolveSenderAsDefault($sender);
+                }
+            }
             else
             {
                 throw new NotSupportedException();
             }
             return $sender;
+        }
+
+        protected function resolveSenderAsDefault(EmailMessageSender $sender)
+        {
+            $userToSendMessagesFrom     = BaseControlUserConfigUtil::getUserToRunAs();
+            $sender->fromAddress        = Yii::app()->emailHelper->resolveFromAddressByUser($userToSendMessagesFrom);
+            $sender->fromName           = strval($userToSendMessagesFrom);
         }
 
         /**

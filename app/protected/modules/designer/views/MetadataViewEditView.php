@@ -137,7 +137,7 @@
                     'success' => 'function(data){designer.updateFlashBarAfterSaveLayout(data, "' . $notificationBarId . '")}', // Not Coding Standard
                     'error' => 'function(data){ ' . // Not Coding Standard
                         'var data = {' . // Not Coding Standard
-                        '   "message" : "' . Zurmo::t('DesignerModule', 'There was an error processing your request'). '",
+                        '   "message" : "' . Zurmo::t('Core', 'There was an error processing your request'). '",
                             "type"    : "error"
                         };
                         designer.updateFlashBarAfterSaveLayout(data, "' . $notificationBarId . '")
@@ -149,7 +149,7 @@
         {
             $route = Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/moduleLayoutsList/',
                                                  array('moduleClassName' => $this->moduleClassName));
-            return ZurmoHtml::link(ZurmoHtml::wrapLabel(Zurmo::t('DesignerModule', 'Cancel')), $route);
+            return ZurmoHtml::link(ZurmoHtml::wrapLabel(Zurmo::t('Core', 'Cancel')), $route);
         }
 
         /**

@@ -36,8 +36,6 @@
 
     class WorkflowEmailMessageProcessingHelperTest extends WorkflowBaseTest
     {
-        public $freeze = false;
-
         protected static $superUserId;
 
         protected static $bobbyUserId;
@@ -95,25 +93,9 @@
             assert($everyoneGroup->save()); // Not Coding Standard
         }
 
-        public function setup()
+        public static function getDependentTestModelClassNames()
         {
-            parent::setUp();
-            $freeze = false;
-            if (RedBeanDatabase::isFrozen())
-            {
-                RedBeanDatabase::unfreeze();
-                $freeze = true;
-            }
-            $this->freeze = $freeze;
-        }
-
-        public function teardown()
-        {
-            if ($this->freeze)
-            {
-                RedBeanDatabase::freeze();
-            }
-            parent::teardown();
+            return array('WorkflowModelTestItem');
         }
 
         public function testProcessWithDefaultSender()
@@ -155,7 +137,7 @@
             $this->assertTrue($explicitReadWriteModelPermissions instanceof ExplicitReadWriteModelPermissions);
             $readWritePermitables = $explicitReadWriteModelPermissions->getReadWritePermitables();
             $this->assertEquals(1, count($readWritePermitables));
-            $this->assertEquals(self::$alphaGroup, $readWritePermitables[self::$alphaGroup->id]);
+            $this->assertEquals(self::$alphaGroup, $readWritePermitables[self::$alphaGroup->getClassId('Permitable')]);
 
             $emailMessages[0]->delete();
         }
@@ -201,7 +183,73 @@
         }
 
         /**
-         * @depends testProcessWithCustomSender
+         * @depends testProcessWithDefaultSender
+         */
+        public function testProcessWithTriggeredModelOwnerSender()
+        {
+            $message               = new EmailMessageForWorkflowForm('WorkflowModelTestItem', Workflow::TYPE_ON_SAVE);
+            $recipients = array(array('type'             => WorkflowEmailMessageRecipientForm::TYPE_DYNAMIC_TRIGGERED_MODEL_USER,
+                                      'audienceType'     => EmailMessageRecipient::TYPE_TO,
+                                      'dynamicUserType'  => DynamicTriggeredModelUserWorkflowEmailMessageRecipientForm::
+                                      DYNAMIC_USER_TYPE_CREATED_BY_USER));
+            $message->emailTemplateId = self::$emailTemplate->id;
+            $message->sendFromType    = EmailMessageForWorkflowForm::SEND_FROM_TYPE_TRIGGERED_MODEL_OWNER;
+            $message->setAttributes(array(EmailMessageForWorkflowForm::EMAIL_MESSAGE_RECIPIENTS => $recipients));
+
+            $model           = new WorkflowModelTestItem();
+            $model->lastName = 'the lastName';
+            $model->string   = 'the string';
+            $model->phone    = 'the phone';
+            $saved = $model->save();
+            $this->assertTrue($saved);
+            $helper = new WorkflowEmailMessageProcessingHelper($message, $model, Yii::app()->user->userModel);
+            $this->assertEquals(0, Yii::app()->emailHelper->getQueuedCount());
+            $this->assertEquals(0, Yii::app()->emailHelper->getSentCount());
+            $helper->process();
+            $this->assertEquals(1, Yii::app()->emailHelper->getQueuedCount());
+            $this->assertEquals(0, Yii::app()->emailHelper->getSentCount());
+            $emailMessages = EmailMessage::getAllByFolderType(EmailFolder::TYPE_OUTBOX);
+            $this->assertEquals('some subject the lastName',  $emailMessages[0]->subject);
+            $this->assertEquals('text content the phone',     $emailMessages[0]->content->textContent);
+            $this->assertEquals('html content the string',    $emailMessages[0]->content->htmlContent);
+            $this->assertEquals('Clark Kent',      $emailMessages[0]->sender->fromName);
+            $this->assertEquals('super@zurmo.com', $emailMessages[0]->sender->fromAddress);
+            $this->assertEquals(1,                 $emailMessages[0]->recipients->count());
+            $this->assertEquals('super@zurmo.com', $emailMessages[0]->recipients[0]->toAddress);
+            $this->assertEquals(self::$emailTemplate->files[0]->fileContent->content, $emailMessages[0]->files[0]->fileContent->content);
+            $emailMessages[0]->delete();
+
+            //Now test a user that doesn't have an email address
+            $sally = UserTestHelper::createBasicUser('sally');
+            $this->assertNull($sally->primaryEmail->emailAddress);
+
+            $model           = new WorkflowModelTestItem();
+            $model->lastName = 'the lastName';
+            $model->string   = 'the string';
+            $model->phone    = 'the phone';
+            $model->owner    = $sally;
+            $saved = $model->save();
+            $this->assertTrue($saved);
+            $helper = new WorkflowEmailMessageProcessingHelper($message, $model, Yii::app()->user->userModel);
+            $this->assertEquals(0, Yii::app()->emailHelper->getQueuedCount());
+            $this->assertEquals(0, Yii::app()->emailHelper->getSentCount());
+            $helper->process();
+            $this->assertEquals(1, Yii::app()->emailHelper->getQueuedCount());
+            $this->assertEquals(0, Yii::app()->emailHelper->getSentCount());
+            $emailMessages = EmailMessage::getAllByFolderType(EmailFolder::TYPE_OUTBOX);
+            $this->assertEquals('some subject the lastName',  $emailMessages[0]->subject);
+            $this->assertEquals('text content the phone',     $emailMessages[0]->content->textContent);
+            $this->assertEquals('html content the string',    $emailMessages[0]->content->htmlContent);
+            $this->assertEquals('System User',      $emailMessages[0]->sender->fromName);
+            $this->assertEquals('notification@zurmoalerts.com', $emailMessages[0]->sender->fromAddress);
+            $this->assertEquals(1,                 $emailMessages[0]->recipients->count());
+            $this->assertEquals('super@zurmo.com', $emailMessages[0]->recipients[0]->toAddress);
+            $this->assertEquals(self::$emailTemplate->files[0]->fileContent->content, $emailMessages[0]->files[0]->fileContent->content);
+            $emailMessages[0]->delete();
+        }
+
+        /**
+         * @depends testProcessWithTriggeredModelOwnerSender
          */
         public function testInvalidMergeTagsReturnOriginalContent()
         {
@@ -317,7 +365,7 @@
             $this->assertEquals(2, Yii::app()->emailHelper->getQueuedCount());
             $this->assertEquals(0, Yii::app()->emailHelper->getSentCount());
             $emailMessages = EmailMessage::getAllByFolderType(EmailFolder::TYPE_OUTBOX);
-            $this->assertEquals('some subject testTask',   $emailMessages[0]->subject);
+            $this->assertEquals('some subject testTask',   $emailMessages[1]->subject);
             $this->assertEquals('Account: testAccount Contact: testContact Opportunity: testOpportunity',
                 $emailMessages[1]->content->textContent);
             $this->assertEquals('Account: testAccount Contact: testContact Opportunity: testOpportunity',

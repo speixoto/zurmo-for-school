@@ -62,30 +62,27 @@
          */
         public function testASingleAttributeThatRunsFrozenQueryCorrectly()
         {
-            if (RedBeanDatabase::isFrozen())
-            {
-                $q                                     = DatabaseCompatibilityUtil::getQuote();
-                $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem');
-                $builder                               = new FiltersReportQueryBuilder($joinTablesAdapter, '1');
-                $filter                                = new FilterForReportForm('AccountsModule', 'Account',
-                                                         Report::TYPE_ROWS_AND_COLUMNS);
-                $filter->attributeIndexOrDerivedType   = 'ReadOptimization';
-                $content                               = $builder->makeQueryContent(array($filter));
-                $compareContent = "({$q}ownedsecurableitem{$q}.{$q}securableitem_id{$q} = (select securableitem_id " .
-                                  "from {$q}account_read{$q} where {$q}securableitem_id{$q} = {$q}ownedsecurableitem" .
-                                  "{$q}.{$q}securableitem_id{$q} and {$q}munge_id{$q} in ('U" .
-                                  self::$superUserId . "', 'G" . self::$everyoneGroupId . "') limit 1))";
-                $this->assertEquals($compareContent, $content);
-                $this->assertEquals(1, $joinTablesAdapter->getFromTableJoinCount());
-                $this->assertEquals(0, $joinTablesAdapter->getLeftTableJoinCount());
+            $q                                     = DatabaseCompatibilityUtil::getQuote();
+            $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem');
+            $builder                               = new FiltersReportQueryBuilder($joinTablesAdapter, '1');
+            $filter                                = new FilterForReportForm('AccountsModule', 'Account',
+                                                     Report::TYPE_ROWS_AND_COLUMNS);
+            $filter->attributeIndexOrDerivedType   = 'ReadOptimization';
+            $content                               = $builder->makeQueryContent(array($filter));
+            $compareContent = "({$q}ownedsecurableitem{$q}.{$q}securableitem_id{$q} = (select securableitem_id " .
+                              "from {$q}account_read{$q} where {$q}securableitem_id{$q} = {$q}ownedsecurableitem" .
+                              "{$q}.{$q}securableitem_id{$q} and {$q}munge_id{$q} in ('U" .
+                              self::$superUserId . "', 'G" . self::$everyoneGroupId . "') limit 1))";
+            $this->assertEquals($compareContent, $content);
+            $this->assertEquals(1, $joinTablesAdapter->getFromTableJoinCount());
+            $this->assertEquals(0, $joinTablesAdapter->getLeftTableJoinCount());
 
-                $selectQueryAdapter     = new RedBeanModelSelectQueryAdapter();
-                $selectQueryAdapter->addClause(Account::getTableName('Account'), 'id');
-                $sql                    = SQLQueryUtil::makeQuery(Account::getTableName('Account'),
-                                          $selectQueryAdapter, $joinTablesAdapter, null, null, $content, null, null);
-                $rows                   = R::getAll($sql);
-                $this->assertEquals(0, count($rows));
-            }
+            $selectQueryAdapter     = new RedBeanModelSelectQueryAdapter();
+            $selectQueryAdapter->addClause(Account::getTableName('Account'), 'id');
+            $sql                    = SQLQueryUtil::makeQuery(Account::getTableName('Account'),
+                                      $selectQueryAdapter, $joinTablesAdapter, null, null, $content, null, null);
+            $rows                   = ZurmoRedBean::getAll($sql);
+            $this->assertEquals(0, count($rows));
         }
 
         public function testASingleAttribute()

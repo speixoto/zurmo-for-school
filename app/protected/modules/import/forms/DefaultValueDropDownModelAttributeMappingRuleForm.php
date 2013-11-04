@@ -65,7 +65,7 @@
 
         public function attributeLabels()
         {
-            return array('defaultValue' => Zurmo::t('ImportModule', 'Default Value'));
+            return array('defaultValue' => Zurmo::t('ZurmoModule', 'Default Value'));
         }
 
         public static function getAttributeName()

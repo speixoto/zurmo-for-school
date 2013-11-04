@@ -134,7 +134,7 @@
                     $messageContent = Zurmo::t('ZurmoModule', 'All fields are required') . "\n";
                 }
                 Yii::app()->getClientScript()->setToAjaxMode();
-                $messageView = new TestLdapConnectionView($messageContent);
+                $messageView = new TestConnectionView($messageContent);
                 $view = new ModalView($this, $messageView);
                 echo $view->render();
             }

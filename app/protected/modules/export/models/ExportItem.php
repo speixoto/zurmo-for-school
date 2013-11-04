@@ -48,7 +48,7 @@
 
         public function __toString()
         {
-            return Zurmo::t('ExportModule', '(Unnamed)');
+            return Zurmo::t('Core', '(Unnamed)');
         }
 
         public static function getModuleClassName()
@@ -69,7 +69,7 @@
                     'serializedData'
                 ),
                 'relations' => array(
-                    'exportFileModel' => array(RedBeanModel::HAS_ONE,  'ExportFileModel', RedBeanModel::OWNED),
+                    'exportFileModel' => array(static::HAS_ONE,  'ExportFileModel', static::OWNED),
                 ),
                 'rules' => array(
                     array('isCompleted',      'boolean'),

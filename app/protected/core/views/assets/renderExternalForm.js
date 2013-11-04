@@ -1,3 +1,4 @@
+var onClickAction = '';
 if(typeof window.jQQ !== 'object'){
 (function() {
     var callbacks = [],jq;
@@ -47,7 +48,11 @@ if(typeof window.jQQ !== 'object'){
               window.jQQ.isReady = true;
               // this stores the new version and gives back the old one, completely.              
               jq = jQuery.noConflict(true);
-              callbacks.forEach(window.jQQ.isolate);
+              //callbacks.forEach(window.jQQ.isolate);
+              for (var thisCallback in callbacks)
+              {
+                  window.jQQ.isolate(callbacks[thisCallback]);
+              }
               delete(callbacks);
           });
       }
@@ -128,6 +133,7 @@ if(typeof window.jQQ !== 'object'){
 			requireCSS(cssFiles, 0, function(){
                 var element = document.getElementById("zurmoExternalWebForm");
                 var e = document.createElement('div');
+                var isCaptchaEnabled = false;
                 e.innerHTML = respData.body.html;
 				var bodyJs = respData.body.js;
                 while(e.firstChild)
@@ -144,7 +150,15 @@ if(typeof window.jQQ !== 'object'){
 					}
 					if (bodyJs[bodyJsIndex].type == 'codeBlock')
 					{
-						jsScriptElement.innerHTML = "jQQ.isolate (function(jQuery,$) { " + bodyJs[bodyJsIndex].body + " });";
+                        if (isCaptchaEnabled == false && respData.enableCaptcha == true)
+                        {
+                            isCaptchaEnabled = true;
+                            jsScriptElement.text = "jQQ.isolate (function(jQuery,$) { " + bodyJs[bodyJsIndex].body + " }); enableCaptcha();";
+                        }
+                        else
+                        {
+                            jsScriptElement.text = "jQQ.isolate (function(jQuery,$) { " + bodyJs[bodyJsIndex].body + " });";
+                        }
 					}
 					jsScriptElement.async = false;
                     element.appendChild(jsScriptElement);
@@ -160,4 +174,45 @@ if(typeof window.jQQ !== 'object'){
 			});
 		});
 	}
-	getContent();
+    getContent();
+    function validateCaptcha()
+    {
+        jQQ.isolate (function(jQuery,$) {
+            $('#captchaError').remove();
+            $(this).attachLoadingOnSubmit("edit-form");
+            $.ajax({
+                type: "POST",
+                url: captchaPostBackUrl,
+                data: $("#edit-form").serialize()
+            }).done(function(validationResp) {
+                    $(this).detachLoadingOnSubmit("edit-form");
+                    if (validationResp.status == 'success')
+                    {
+                        $('#captchaHash').val(validationResp.captchaHash);
+                        $('#saveyt1').attr('onclick', onClickAction);
+                        $('#saveyt1').trigger('click');
+                    }
+                    else
+                    {
+                        $('#reCaptcha').prepend('<span id="captchaError" style=\"color: red;\">Invalid verification code</span>');
+                    }
+                });
+        });
+    }
+    function enableCaptcha()
+    {
+        requireJS(['http://www.google.com/recaptcha/api/js/recaptcha_ajax.js'], 0, function(){
+
+            var reCaptchaPublicKey = document.getElementById('reCaptchaPublicKey').value;
+            Recaptcha.create(reCaptchaPublicKey,
+                "reCaptcha",
+                {
+                    theme: "white"
+                }
+            );
+            jQQ.isolate (function(jQuery,$) {
+                onClickAction = $('#saveyt1').attr('onclick');
+                $('#saveyt1').attr('onclick', 'validateCaptcha(); return false;');
+            });
+        });
+    }

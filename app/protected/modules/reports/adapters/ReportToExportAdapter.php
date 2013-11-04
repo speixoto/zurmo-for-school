@@ -145,7 +145,7 @@
             $grandTotal = null;
             if (isset($this->dataForGrandTotals) && $isFirstColumn && $isFirstRow)
             {
-                $grandTotal    = Zurmo::t('ReportsModule', 'Total');
+                $grandTotal    = Zurmo::t('Core', 'Total');
             }
             if (isset($this->dataForGrandTotals[$displayAttribute->columnAliasName]) && !$isFirstColumn && $isFirstRow)
             {

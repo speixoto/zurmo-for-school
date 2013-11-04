@@ -52,7 +52,7 @@
 
         protected function renderLabel()
         {
-            $label = Zurmo::t('LeadsModule', 'ContactsModuleSingularLabel or LeadsModuleSingularLabel',
+            $label = Zurmo::t('ContactsModule', 'ContactsModuleSingularLabel or LeadsModuleSingularLabel',
                                                 LabelUtil::getTranslationParamsForAllModules());
             if ($this->form === null)
             {

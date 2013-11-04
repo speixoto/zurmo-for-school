@@ -67,7 +67,7 @@
         public function attributeLabels()
         {
             return array_merge(parent::attributeLabels(), array(
-                'defaultValueCalculationType' => Zurmo::t('DesignerModule', 'Default Value'),
+                'defaultValueCalculationType' => Zurmo::t('ZurmoModule', 'Default Value'),
             ));
         }
 

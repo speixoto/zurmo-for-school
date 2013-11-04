@@ -64,7 +64,6 @@
             assert('is_string($relationModelClassName)');
             assert('is_int($relationModelId)');
             assert('is_string($relationModuleId)');
-
             $metadata = Activity::getMetadata();
             if (in_array($relationModelClassName, $metadata['Activity']['activityItemsModelClassNames']))
             {

@@ -45,11 +45,7 @@
                     'language',
                 ),
                 'relations' => array(
-                    'messagesource'   => array(
-                                               RedBeanModel::HAS_ONE,
-                                               'MessageSource',
-                                               RedBeanModel::OWNED
-                                               ),
+                    'messagesource'   => array(static::HAS_ONE, 'MessageSource', static::OWNED),
                 ),
                 'rules' => array(
                     array('translation',        'required'),
@@ -60,7 +56,13 @@
                 ),
                 'elements' => array(
                     'messagesource' => 'MessageSource',
-                )
+                ),
+                'indexes' => array(
+                    'sourceLanguageTranslation' => array(
+                        'members'   => array('messagesource_id', 'language','translation(767)'),
+                        'unique'    => true,
+                    )
+                ),
             );
             return $metadata;
         }
@@ -83,7 +85,7 @@
                 $modelClassName = get_called_class();
             }
             $tableName = self::getTableName($modelClassName);
-            $bean = R::findOne(
+            $bean = ZurmoRedBean::findOne(
                                $tableName,
                                ' messagesource_id = :sourceId AND language = :languageCode',
                                array(

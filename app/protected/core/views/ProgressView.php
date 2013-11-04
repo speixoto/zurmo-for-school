@@ -77,7 +77,7 @@
             $this->controllerId        = $controllerId;
             $this->moduleId            = $moduleId;
             $this->model               = $model;
-            $this->totalRecordCount    = $totalRecordCount;
+            $this->totalRecordCount    = (int) $totalRecordCount;
             $this->start               = $start;
             $this->pageSize            = $pageSize;
             $this->page                = $page;

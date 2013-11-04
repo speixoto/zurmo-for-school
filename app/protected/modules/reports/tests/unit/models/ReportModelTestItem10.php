@@ -48,8 +48,9 @@
                     'integer',
                 ),
                 'relations' => array(
-                    'currencyValue'         => array(RedBeanModel::HAS_ONE,  'CurrencyValue',    RedBeanModel::OWNED),
-                    'reportModelTestItem11' => array(RedBeanModel::HAS_MANY, 'ReportModelTestItem11', RedBeanModel::OWNED),
+                    'currencyValue'         => array(static::HAS_ONE,  'CurrencyValue',    static::OWNED),
+                    'reportModelTestItem11' => array(static::HAS_MANY, 'ReportModelTestItem11', static::OWNED,
+                                                        static::LINK_TYPE_SPECIFIC, 'reportModelTestItem10'),
                 ),
                 'rules' => array(
                     array('date',      'type', 'type' => 'date'),

@@ -214,13 +214,13 @@
                     'Ivica', Yii::app()->params['emailTestAccounts']['userImapSettings']['imapUsername']);
 
                 $filesIds = array();
-                $fileTxt = ZurmoTestHelper::createFileModel('testNote.txt', 'FileModel');
+                $fileTxt = ZurmoTestHelper::createFileModel('testNote.txt');
                 $filesIds[] = $fileTxt->id;
-                $filePng = ZurmoTestHelper::createFileModel('testImage.png', 'FileModel');
+                $filePng = ZurmoTestHelper::createFileModel('testImage.png');
                 $filesIds[] = $filePng->id;
-                $fileZip = ZurmoTestHelper::createFileModel('testZip.zip', 'FileModel');
+                $fileZip = ZurmoTestHelper::createFileModel('testZip.zip');
                 $filesIds[] = $fileZip->id;
-                $filePdf = ZurmoTestHelper::createFileModel('testPDF.pdf', 'FileModel');
+                $filePdf = ZurmoTestHelper::createFileModel('testPDF.pdf');
                 $filesIds[] = $filePdf->id;
                 EmailMessageUtil::attachFilesToMessage($filesIds, $emailMessage);
                 $this->assertEquals('4', count($emailMessage->files));

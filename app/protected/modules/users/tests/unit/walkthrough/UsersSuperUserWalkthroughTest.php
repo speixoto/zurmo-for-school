@@ -142,6 +142,10 @@
             $this->setGetArray(array('id' => $aUser->id));
             $this->resetPostArray();
             $this->runControllerWithNoExceptionsAndGetContent('users/default/details');
+            //Load game dashboard view
+            $this->setGetArray(array('id' => $aUser->id));
+            $this->resetPostArray();
+            $this->runControllerWithNoExceptionsAndGetContent('users/default/gameDashboard');
 
             //Load Model Security Detail View
             $this->setGetArray(array('id' => $aUser->id));
@@ -534,6 +538,55 @@
         {
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
             $aUser = User::getByUsername('auser');
+            $this->setGetArray(array('id' => $aUser->id));
+            $content = $this->runControllerWithNoExceptionsAndGetContent('users/default/details');
+            $this->assertTag(
+                array(
+                    'tag'       => 'span',
+                    'content'   => 'Details',
+                    'ancestor'  => array(
+                        'id'  => 'UserDetailsAndRelationsView',
+                    )
+                ), $content
+            );
+            $this->assertTag(
+                array(
+                    'tag'       => 'span',
+                    'content'   => 'Edit',
+                    'ancestor'  => array(
+                        'id'  => 'UserDetailsAndRelationsView',
+                    )
+                ), $content
+            );
+            $this->assertTag(
+                array(
+                    'tag'       => 'span',
+                    'content'   => 'Audit Trail',
+                    'ancestor'  => array(
+                        'id'  => 'UserDetailsAndRelationsView',
+                    )
+                ), $content
+            );
+            $this->assertTag(
+                array(
+                    'tag'       => 'span',
+                    'content'   => 'Change Password',
+                    'ancestor'  => array(
+                        'id'  => 'UserDetailsAndRelationsView',
+                    )
+                ), $content
+            );
+            $this->assertTag(
+                array(
+                    'tag'       => 'span',
+                    'content'   => 'Configuration',
+                    'ancestor'  => array(
+                        'id'  => 'UserDetailsAndRelationsView',
+                    )
+                ), $content
+            );
+
+            $aUser = User::getByUsername('auser');
             $aUser->setIsRootUser();
             $this->assertTrue($aUser->save());
             unset($aUser);
@@ -543,7 +596,58 @@
             $this->assertFalse((bool)$aUser->isSystemUser);
 
             $this->setGetArray(array('id' => $aUser->id));
-            $this->runControllerWithNoExceptionsAndGetContent('users/default/details');
+            $content = $this->runControllerWithNoExceptionsAndGetContent('users/default/details');
+            $this->runControllerWithNoExceptionsAndGetContent('users/default/gameDashboard');
+
+            //Normal user should only see details of other users
+            $this->logoutCurrentUserLoginNewUserAndGetByUsername('bUser');
+            $this->setGetArray(array('id' => $aUser->id));
+            $content = $this->runControllerWithNoExceptionsAndGetContent('users/default/details');
+            $this->assertTag(
+                array(
+                    'tag'       => 'span',
+                    'content'   => 'Details',
+                    'ancestor'  => array(
+                        'id'  => 'UserDetailsAndRelationsView',
+                    )
+                ), $content
+            );
+            $this->assertNotTag(
+                array(
+                    'tag'       => 'span',
+                    'content'   => 'Edit',
+                    'ancestor'  => array(
+                        'id'  => 'UserDetailsAndRelationsView',
+                    )
+                ), $content
+            );
+            $this->assertNotTag(
+                array(
+                    'tag'       => 'span',
+                    'content'   => 'Audit Trail',
+                    'ancestor'  => array(
+                        'id'  => 'UserDetailsAndRelationsView',
+                    )
+                ), $content
+            );
+            $this->assertNotTag(
+                array(
+                    'tag'       => 'span',
+                    'content'   => 'Change Password',
+                    'ancestor'  => array(
+                        'id'  => 'UserDetailsAndRelationsView',
+                    )
+                ), $content
+            );
+            $this->assertNotTag(
+                array(
+                    'tag'       => 'span',
+                    'content'   => 'Configuration',
+                    'ancestor'  => array(
+                        'id'  => 'UserDetailsAndRelationsView',
+                    )
+                ), $content
+            );
         }
 
         public function testExplicitLoginPermissions()
@@ -575,7 +679,15 @@
                                                         'username' => $aUser->username,
                                                         'password' => 'bNewPassword',
                                                         'rememberMe' => '0')));
-            $this->runControllerWithRedirectExceptionAndGetContent('zurmo/default/login');
+            if(Yii::app()->edition == 'Community')
+            {
+                $this->runControllerWithRedirectExceptionAndGetContent('zurmo/default/login');
+            }
+            else
+            {
+                //Proper handling of license key infrastructure
+                $this->runControllerWithNoExceptionsAndGetContent('zurmo/default/login');
+            }
         }
     }
 ?>

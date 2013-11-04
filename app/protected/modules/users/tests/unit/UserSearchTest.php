@@ -42,10 +42,14 @@
             SecurityTestHelper::createSuperAdmin();
         }
 
+        public function setUp()
+        {
+            parent::setUp();
+            Yii::app()->user->userModel = User::getByUsername('super');
+        }
+
         public function testGetUsersByPartialFullName()
         {
-            Yii::app()->user->userModel = User::getByUsername('super');
-
             UserTestHelper::createBasicUser('Azo');
             UserTestHelper::createBasicUser('Bdo');
             UserTestHelper::createBasicUser('Abzo');
@@ -62,7 +66,6 @@
 
         public function testGetUsersByEmailAddress()
         {
-            Yii::app()->user->userModel = User::getByUsername('super');
             $user = UserTestHelper::createBasicUser('Steve');
             $user->primaryEmail->emailAddress = 'steve@example.com';
             $user->primaryEmail->optOut       = 1;
@@ -79,7 +82,6 @@
          */
         public function testGetUsersListUsingNonSystemUsersStateMetadataAdapter()
         {
-            Yii::app()->user->userModel = User::getByUsername('super');
             $users                      = User::getAll();
             $this->assertEquals(5, count($users));
             $user                       = UserTestHelper::createBasicUser('mysysuser');
@@ -109,6 +111,16 @@
             $where  = RedBeanModelDataProvider::makeWhere('User', $metadata, $joinTablesAdapter);
             $models = User::getSubset($joinTablesAdapter, null, null, $where, null);
             $this->assertEquals(6, count($models));
+        }
+
+        /**
+         * @expectedException NotSupportedException
+         * @expectedExceptionMessage No such autoCompleteOption as: anOptionsThatdoesNotExist
+         */
+        public function testGetUsersByPartialFullNameWithInexistentAutoCompleteOption()
+        {
+            $autoCompleteOptions    = ArrayUtil::encodeAutoCompleteOptionsArray(array('anOptionsThatdoesNotExist' => true));
+            UserSearch::getUsersByPartialFullName('A', 5, $autoCompleteOptions);
         }
     }
 ?>

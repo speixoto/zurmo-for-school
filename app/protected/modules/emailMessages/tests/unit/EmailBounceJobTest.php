@@ -140,7 +140,7 @@
                 null,
                 $headers
             );
-            sleep(60);
+            sleep(90);
             $messages = $bounce->getMessages();
             $this->assertEquals(1, count($messages));
             $this->assertEquals("Mail delivery failed: returning message to sender", $messages[0]->subject);

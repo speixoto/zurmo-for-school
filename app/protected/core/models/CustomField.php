@@ -66,18 +66,18 @@
         public static function updateValueByDataIdAndOldValueAndNewValue($customFieldDataId, $oldValue, $newValue)
         {
             $quote                         = DatabaseCompatibilityUtil::getQuote();
-            $customFieldTableName          = RedBeanModel::getTableName('CustomField');
-            $baseCustomFieldTableName      = RedBeanModel::getTableName('BaseCustomField');
+            $customFieldTableName          = static::getTableName('CustomField');
+            $baseCustomFieldTableName      = static::getTableName('BaseCustomField');
             $baseCustomFieldJoinColumnName = $baseCustomFieldTableName . '_id';
             $valueAttributeColumnName      = 'value';
-            $dataAttributeColumnName       = RedBeanModel::getForeignKeyName('BaseCustomField', 'data');
+            $dataAttributeColumnName       = static::getForeignKeyName('BaseCustomField', 'data');
             $sql  = "update {$quote}{$customFieldTableName}{$quote}, {$quote}{$baseCustomFieldTableName}{$quote} ";
             $sql .= "set {$quote}{$valueAttributeColumnName}{$quote} = '{$newValue}' ";
             $sql .= "where {$quote}{$customFieldTableName}{$quote}.$baseCustomFieldJoinColumnName = "; // Not Coding Standard
             $sql .= "{$quote}{$baseCustomFieldTableName}{$quote}.id ";
             $sql .= "AND {$quote}{$dataAttributeColumnName}{$quote} = $customFieldDataId ";
             $sql .= "AND {$quote}{$valueAttributeColumnName}{$quote} = '{$oldValue}'";
-            R::exec($sql);
+            ZurmoRedBean::exec($sql);
         }
     }
 ?>

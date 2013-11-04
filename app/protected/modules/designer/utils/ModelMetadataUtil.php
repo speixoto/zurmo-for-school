@@ -89,11 +89,15 @@
             assert('$mixedRule === null || is_array($mixedRule)');
             $metadata   = $modelClassName::getMetadata();
             assert('isset($metadata[$modelClassName])');
-            if (!isset   (             $metadata[$modelClassName]['members']) ||
+            if (!isset($metadata[$modelClassName]['members']) ||
                 !in_array($memberName, $metadata[$modelClassName]['members']))
             {
                 $memberName = self::resolveName($memberName);
                 $metadata[$modelClassName]['members'][] = $memberName;
+            }
+            if (!ArrayUtil::isArrayNotUnique($metadata[$modelClassName]['members']))
+            {
+                throw new NotSupportedException("Model metadata contains duplicate members");
             }
             static::resolveAddOrRemoveNoAuditInformation($isAudited, $metadata[$modelClassName], $memberName);
             $metadata[$modelClassName]['elements'][$memberName] = $elementType;

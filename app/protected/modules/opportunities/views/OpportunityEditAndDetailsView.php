@@ -151,16 +151,24 @@
         protected function resolveElementInformationDuringFormLayoutRender(& $elementInformation)
         {
             parent::resolveElementInformationDuringFormLayoutRender($elementInformation);
-            if ($elementInformation['attributeName'] == 'probability')
+            $automaticMappingDisabled = OpportunitiesModule::isAutomaticProbabilityMappingDisabled();
+            if($automaticMappingDisabled === false)
             {
-                $elementInformation['disabled'] = true;
+                if ($elementInformation['attributeName'] == 'probability')
+                {
+                    $elementInformation['disabled'] = true;
+                }
             }
         }
 
         protected function renderAfterFormLayout($form)
         {
             parent::renderAfterFormLayout($form);
-            $this->registerStageToProbabilityMappingScript($form);
+            $automaticMappingDisabled = OpportunitiesModule::isAutomaticProbabilityMappingDisabled();
+            if($automaticMappingDisabled === false)
+            {
+                $this->registerStageToProbabilityMappingScript($form);
+            }
         }
 
         protected function registerStageToProbabilityMappingScript($form)
@@ -171,6 +179,15 @@
             if (count($mappingData) > 0)
             {
                 $jsonEncodedMapping = CJSON::encode($mappingData);
+                // In case of edit, we need the exact value from db
+                if($this->model->id > 0)
+                {
+                    $initialCallToFunction = "";
+                }
+                else
+                {
+                    $initialCallToFunction = " stageToProbabilityMapping($('#" . $stageInputId . "'));";
+                }
                 Yii::app()->clientScript->registerScript('stageToProbabilityMapping', "
                 $('#" . $stageInputId . "').unbind('change');
                 $('#" . $stageInputId . "').bind('change', function()
@@ -192,8 +209,8 @@
                         }
                     });
                  }
-                 stageToProbabilityMapping($('#" . $stageInputId . "'));
-                ");
+                 ".$initialCallToFunction
+                 );
             }
         }
     }

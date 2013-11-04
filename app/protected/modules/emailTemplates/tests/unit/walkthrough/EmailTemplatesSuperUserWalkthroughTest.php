@@ -447,7 +447,7 @@
                             'anyMixedAttributes'    => 'xyz'
                         )));
             $content = $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/listForMarketing');
-            $this->assertTrue(strpos($content, 'No results found.') !== false);
+            $this->assertTrue(strpos($content, 'No results found') !== false);
             $data = StickySearchUtil::getDataByKey('EmailTemplatesSearchView');
             $compareData = array('dynamicClauses'                     => array(),
                 'dynamicStructure'                      => null,

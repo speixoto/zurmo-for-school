@@ -46,8 +46,7 @@
             {
                 $type = 'RightInheritedDenyText';
             }
-            elseif ($rightInformation['inherited'] == Right::ALLOW &&
-                    $rightInformation['explicit']  == null)
+            elseif ($rightInformation['inherited'] == Right::ALLOW)
             {
                 $type = 'RightInheritedAllowStaticDropDown';
             }

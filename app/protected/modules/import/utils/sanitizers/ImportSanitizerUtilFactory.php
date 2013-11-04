@@ -39,7 +39,8 @@
      */
     class ImportSanitizerUtilFactory
     {
-        public static function make($attributeValueSanitizerUtilType, $modelClassName, $attributeName, $columnName, $columnMappingData)
+        public static function make($attributeValueSanitizerUtilType, $modelClassName, $attributeName, $columnName,
+                                    $columnMappingData, ImportSanitizeResultsUtil $importSanitizeResultsUtil = null)
         {
             assert('is_string($attributeValueSanitizerUtilType)');
             assert('is_string($modelClassName)');
@@ -47,7 +48,8 @@
             assert('is_string($columnName)');
             assert('$columnMappingData == null || is_array($columnMappingData)');
             $sanitizerUtilClassName = $attributeValueSanitizerUtilType . 'SanitizerUtil';
-            return new $sanitizerUtilClassName($modelClassName, $attributeName, $columnName, $columnMappingData);
+            return new $sanitizerUtilClassName($modelClassName, $attributeName, $columnName, $columnMappingData,
+                                               $importSanitizeResultsUtil);
         }
     }
 ?>

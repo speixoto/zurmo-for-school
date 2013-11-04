@@ -59,7 +59,7 @@
 
         public static function getRecommendedRunFrequencyContent()
         {
-            return Zurmo::t('ZurmoModule', 'Once per day.');
+            return Zurmo::t('Core', 'Once per day.');
         }
 
         public function run()

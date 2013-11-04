@@ -86,11 +86,11 @@
             }
             elseif ($type == self::CREATED)
             {
-                $label = Zurmo::t('ImportModule', 'Created');
+                $label = Zurmo::t('Core', 'Created');
             }
             elseif ($type == self::ERROR)
             {
-                $label = Zurmo::t('ImportModule', 'Skipped');
+                $label = Zurmo::t('Core', 'Skipped');
             }
             return $label;
         }

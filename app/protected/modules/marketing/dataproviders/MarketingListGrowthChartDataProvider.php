@@ -49,7 +49,7 @@
                 $endDateTime         = DateTimeUtil::convertDateIntoTimeZoneAdjustedDateTimeEndOfDay($groupData['endDate']);
                 $searchAttributedata = static::makeSearchAttributeData($endDateTime, $this->marketingList);
                 $sql                 = static::makeColumnSqlQuery($beginDateTime, $searchAttributedata);
-                $row                 = R::getRow($sql);
+                $row                 = ZurmoRedBean::getRow($sql);
                 $columnData          = array(MarketingChartDataProvider::NEW_SUBSCRIBERS_COUNT      =>
                                                 ArrayUtil::getArrayValueAndResolveNullAsZero($row,
                                                     static::NEW_SUBSCRIBERS_COUNT),

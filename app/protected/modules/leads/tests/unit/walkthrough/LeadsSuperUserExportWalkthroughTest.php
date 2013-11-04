@@ -146,14 +146,7 @@
             $notificationsBeforeCount        = count(Notification::getAll());
             $notificationMessagesBeforeCount = count(NotificationMessage::getAll());
 
-            $contacts = Contact::getAll();
-            if (count($contacts))
-            {
-                foreach ($contacts as $contact)
-                {
-                    $contact->delete();
-                }
-            }
+            Contact::deleteAll();
             $leads = array();
             for ($i = 0; $i <= (ExportModule::$asynchronousThreshold + 1); $i++)
             {
@@ -190,14 +183,7 @@
             $notificationMessagesBeforeCount = count(NotificationMessage::getAll());
 
             // Now test case when multiple ids are selected
-            $exportItems = ExportItem::getAll();
-            if (count($exportItems))
-            {
-                foreach ($exportItems as $exportItem)
-                {
-                    $exportItem->delete();
-                }
-            }
+            ExportItem::deleteAll();
 
             $selectedIds = "";
             foreach ($leads as $lead)

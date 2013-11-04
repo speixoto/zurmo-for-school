@@ -45,7 +45,7 @@
         {
             parent::__construct(2, 1);
             $this->setView(new ActionBarForUserEditAndDetailsView ($controllerId, $moduleId, $user, 'UserConfigurationEditLink'), 0, 0);
-            $title = strval($user) . ': ' . Zurmo::t('UsersModule', 'Email Configuration');
+            $title = strval($user) . ': ' . Zurmo::t('EmailMessagesModule', 'Email Configuration');
             $this->setView(new UserEmailConfigurationEditView($controllerId, $moduleId, $emailAccountForm, $title), 1, 0);
         }
     }

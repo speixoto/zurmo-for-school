@@ -713,5 +713,74 @@
             // End Not Coding Standard
             $this->assertEquals($compareContent, $content);
         }
+
+        public function testMassSubscribeActionsForSelectedIds()
+        {
+            $super          = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $contactsCount  = Contact::getCount();
+
+            $superContactId1 = ContactTestHelper::createContactByNameForOwner('superContact1', $super);
+            $superContactId2 = ContactTestHelper::createContactByNameForOwner('superContact2', $super);
+            $superContactId3 = ContactTestHelper::createContactByNameForOwner('superContact3', $super);
+            $superContactId4 = ContactTestHelper::createContactByNameForOwner('superContact4', $super);
+            $superContactId5 = ContactTestHelper::createContactByNameForOwner('superContact5', $super);
+            $superContactId6 = ContactTestHelper::createContactByNameForOwner('superContact6', $super);
+            $superContactId7 = ContactTestHelper::createContactByNameForOwner('superContact7', $super);
+            $superContactId8 = ContactTestHelper::createContactByNameForOwner('superContact8', $super);
+            $superContactId9 = ContactTestHelper::createContactByNameForOwner('superContact9', $super);
+
+            $marketingList1  = MarketingListTestHelper::createMarketingListByName('marketingList1');
+            $marketingList2  = MarketingListTestHelper::createMarketingListByName('marketingList2');
+
+            //Load Model MassSubscribe Views.
+            //MassSubscribe view for single selected ids
+            $selectedIds = implode(',', array($superContactId1->id, $superContactId4->id));
+            $this->setGetArray(array('selectedIds' => $selectedIds, 'selectAll' => '', ));
+            $this->resetPostArray();
+            $content = $this->runControllerWithNoExceptionsAndGetContent('contacts/default/massSubscribe');
+            $this->assertContains('<strong>2</strong>&#160;Contacts selected for subscription', $content);
+
+            //MassSubscribe view for all result selected ids
+            $this->setGetArray(array('selectAll' => '1'));
+            $this->resetPostArray();
+            $content = $this->runControllerWithNoExceptionsAndGetContent('contacts/default/massSubscribe');
+            $this->assertContains('<strong>9</strong>&#160;Contacts selected for subscription', $content);
+
+            //MassSubscribe with no marketingList selected
+
+            //MassSubscribe for selected ids for paged scenario
+            //MassSubscribe for selected ids for page 1
+            $pageSize           = Yii::app()->pagination->getForCurrentUserByType('massEditProgressPageSize');
+            $this->assertEquals(5, $pageSize);
+            $selectedIds = implode(',', array($superContactId1->id, $superContactId2->id, $superContactId3->id,
+                                              $superContactId5->id, $superContactId6->id, $superContactId8->id,
+                                              $superContactId9->id));
+            $this->setGetArray(array(
+                'selectedIds'   => $selectedIds,
+                'selectAll'     => '',
+                'massSubscribe' => '',
+                'Contact_page'  => 1));
+            $this->setPostArray(array('selectedRecordCount' => 7,
+                                      'MarketingListMember' => array('marketingList' => array('id' => $marketingList1->id))));
+            $this->runControllerWithExitExceptionAndGetContent('contacts/default/massSubscribe');
+            $expectedSubscribedCountAfterFirstRequest   = $pageSize;
+            $actualSubscribedCountAfterFirstRequest     = MarketingListMember::getCountByMarketingListIdAndUnsubscribed($marketingList1->id, 0);
+            $this->assertEquals($expectedSubscribedCountAfterFirstRequest, $actualSubscribedCountAfterFirstRequest);
+            $this->assertEquals(0, MarketingListMember::getCountByMarketingListIdAndUnsubscribed($marketingList2->id, 0));
+            //MassSubscribe for selected ids for page 2
+            $this->setGetArray(array(
+                'selectedIds'   => $selectedIds,
+                'selectAll'     => '',
+                'massSubscribe' => '',
+                'Contact_page'  => 2,
+                'MarketingListMember' => array('marketingList' => array('id' => $marketingList1->id))));
+            $this->setPostArray(array('selectedRecordCount' => 7,
+                                      'MarketingListMember' => array('marketingList' => array('id' => $marketingList1->id))));
+            $this->runControllerWithNoExceptionsAndGetContent('contacts/default/massSubscribeProgress');
+            $expectedSubscribedCountAfterSecondRequest   = $actualSubscribedCountAfterFirstRequest + (7 - $pageSize);
+            $actualSubscribedCountAfterSecondRequest     = MarketingListMember::getCountByMarketingListIdAndUnsubscribed($marketingList1->id, 0);
+            $this->assertEquals($expectedSubscribedCountAfterSecondRequest, $actualSubscribedCountAfterSecondRequest);
+            $this->assertEquals(0, MarketingListMember::getCountByMarketingListIdAndUnsubscribed($marketingList2->id, 0));
+        }
     }
 ?>

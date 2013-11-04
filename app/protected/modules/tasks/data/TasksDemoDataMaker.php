@@ -41,6 +41,9 @@
     {
         protected $ratioToLoad = 3;
 
+        /**
+         * @return array
+         */
         public static function getDependencies()
         {
             return array('opportunities');
@@ -62,9 +65,28 @@
                 $opportunity     = $demoDataHelper->getRandomByModelName('Opportunity');
                 $task->owner     = $opportunity->owner;
                 $task->completed = false;
+                if($i%2 == 0)
+                {
+                    $task->status = Task::STATUS_NEW;
+                }
+                elseif($i%3 == 0)
+                {
+                    $task->status = Task::STATUS_IN_PROGRESS;
+                }
+                elseif($i%5 == 0)
+                {
+                    $task->status = Task::STATUS_COMPLETED;
+                }
                 $task->activityItems->add($opportunity);
                 $task->activityItems->add($opportunity->contacts[0]);
                 $task->activityItems->add($opportunity->account);
+
+                //Notification subscriber
+                $notificationSubscriber             = new NotificationSubscriber();
+                $notificationSubscriber->person     = $demoDataHelper->getRandomByModelName('User');
+                $notificationSubscriber->hasReadLatest = false;
+                $task->notificationSubscribers->add($notificationSubscriber);
+
                 $this->populateModel($task);
                 $saved = $task->save();
                 assert('$saved');
@@ -73,6 +95,10 @@
             $demoDataHelper->setRangeByModelName('Task', $tasks[0], $tasks[count($tasks)-1]);
         }
 
+        /**
+         * Populates model
+         * @param Task $model
+         */
         public function populateModel(& $model)
         {
             assert('$model instanceof Task');
@@ -80,7 +106,7 @@
             $taskRandomData    = ZurmoRandomDataUtil::
                                  getRandomDataByModuleAndModelClassNames('TasksModule', 'Task');
             $name              = RandomDataUtil::getRandomValueFromArray($taskRandomData['names']);
-            if (RandomDataUtil::getRandomBooleanValue())
+            if (intval($model->status) == Task::STATUS_COMPLETED)
             {
                 $dueTimeStamp             = time() - (mt_rand(1, 50) * 60 * 60 * 24);
                 $completedDateTime        = DateTimeUtil::convertTimestampToDbFormatDateTime(

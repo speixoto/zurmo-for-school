@@ -38,7 +38,7 @@
     {
         public static function getDashboardBreadcrumbLinks()
         {
-            $title = Zurmo::t('HomeModule', 'Dashboard');
+            $title = Zurmo::t('ZurmoModule', 'Dashboard');
             return array($title);
         }
 
@@ -76,7 +76,7 @@
                                             $gridViewId,
                                             $pageVar,
                                             false,
-                                            'MarketingDashboardLink',
+                                            'MarketingDashboardMenu',
                                             $introView);
             $marketingDashboardView  = new MarketingDashboardView(
                                             $this->getId(),
@@ -88,14 +88,53 @@
             $gridView                = new GridView(2, 1);
             $gridView->setView($actionBarView, 0, 0);
             $gridView->setView($marketingDashboardView, 1, 0);
-            $breadcrumbLinks         = static::getDashboardBreadcrumbLinks();
+            $breadCrumbLinks         = static::getDashboardBreadcrumbLinks();
             $view                    = new MarketingPageView(MarketingDefaultViewUtil::
                                        makeViewWithBreadcrumbsForCurrentUser(
                                             $this,
                                             $gridView,
-                                            $breadcrumbLinks,
+                                            $breadCrumbLinks,
                                             'MarketingBreadCrumbView'));
             echo $view->render();
+        }
+
+        public function actionConfigurationEdit()
+        {
+            $breadCrumbLinks = array(
+                Zurmo::t('MarketingModule', 'Marketing Configuration'),
+            );
+            $form               = MarketingConfigurationFormAdapter::makeFormFromMarketingConfiguration();
+            $postData           = PostUtil::getData();
+            $postVariableName   = get_class($form);
+            if (isset($postData[$postVariableName]))
+            {
+                $form->setAttributes($postData[$postVariableName]);
+                if ($form->validate())
+                {
+                    MarketingConfigurationFormAdapter::setConfigurationFromForm($form);
+                    Yii::app()->user->setFlash('notification',
+                        Zurmo::t('ZurmoModule', 'Global configuration saved successfully.')
+                    );
+                    $this->redirect(Yii::app()->createUrl('configuration/default/index'));
+                }
+            }
+            $editView = new MarketingConfigurationEditAndDetailsView(
+                'Edit',
+                $this->getId(),
+                $this->getModule()->getId(),
+                $form);
+            $editView->setCssClasses( array('AdministrativeArea') );
+            $view = new ZurmoConfigurationPageView(ZurmoDefaultAdminViewUtil::makeViewWithBreadcrumbsForCurrentUser(
+                    $this, $editView, $breadCrumbLinks, 'SettingsBreadCrumbView'));
+            echo $view->render();
+        }
+
+        public function actionPreviewFooter($isHtmlContent, $content)
+        {
+            Yii::app()->getClientScript()->setToAjaxMode();
+            $view   = new AutoresponderOrCampaignFooterTextPreviewView((bool)$isHtmlContent, $content);
+            $modalView = new ModalView($this, $view);
+            echo $modalView->render();
         }
     }
 ?>

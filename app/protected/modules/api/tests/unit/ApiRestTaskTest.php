@@ -133,6 +133,11 @@
                 'id' => $super->id,
                 'username' => 'super'
             );
+            $data['project'] = null;
+            $data['requestedByUser']  = array(
+                'id' => $super->id,
+                'username' => 'super'
+            );
             $data['createdByUser']    = array(
                 'id' => $super->id,
                 'username' => 'super'
@@ -147,6 +152,7 @@
             unset($response['data']['modifiedDateTime']);
             unset($response['data']['latestDateTime']);
             unset($response['data']['id']);
+
             //$data['latestDateTime'] = $dueStamp;
 
             ksort($data);

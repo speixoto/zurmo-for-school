@@ -67,8 +67,8 @@
             $this->linkName              = $linkName;
             if ($this->bean->id > 0)
             {
-                $this->relatedBeansAndModels = array_values(R::related($this->bean, $tableName, null, array(),
-                    $this->getTableName(R::dispense($tableName))));
+                $this->relatedBeansAndModels = array_values(ZurmoRedBean::related($this->bean, $tableName, null, array(),
+                    $this->getTableName(ZurmoRedBean::dispense($tableName))));
             }
             else
             {
@@ -107,21 +107,13 @@
             foreach ($this->deferredRelateBeans as $bean)
             {
                 $tableName = $this->getTableName($bean);
-                R::associate($this->bean, $bean, null, $tableName);
-                if (!RedBeanDatabase::isFrozen())
-                {
-                    foreach (array($this->bean->getMeta("type"), $bean->getMeta("type")) as $type)
-                    {
-                        $columnName = "{$type}_id";
-                        RedBeanColumnTypeOptimizer::optimize($tableName, $columnName, 'id');
-                    }
-                }
+                ZurmoRedBean::associate($this->bean, $bean, null, $tableName);
             }
             $this->deferredRelateBeans = array();
             foreach ($this->deferredUnrelateBeans as $bean)
             {
                 $tableName = $this->getTableName($bean);
-                R::unassociate($this->bean, $bean, false, $tableName);
+                ZurmoRedBean::unassociate($this->bean, $bean, false, $tableName);
             }
             $this->deferredUnrelateBeans = array();
             return true;
@@ -131,14 +123,27 @@
         {
             if ($bean == null)
             {
-                $bean = R::dispense(RedBeanModel::getTableName($this->modelClassName));
+                $bean = ZurmoRedBean::dispense(RedBeanModel::getTableName($this->modelClassName));
             }
             $types = array($this->bean->getMeta("type"), $bean->getMeta("type"));
-            sort($types);
-            $tableName = implode("_", $types);
-            if ($this->linkName != null)
+            return static::resolveTableNamesWithLinkName($types, $this->linkName);
+        }
+
+        public static function getTableNameByModelClassNames($modelClassName, $anotherModelClassName, $linkName = null)
+        {
+            $modelTableName         = RedBeanModel::getTableName($modelClassName);
+            $anotherModelTableName  = RedBeanModel::getTableName($anotherModelClassName);
+            $tableNames = array($modelTableName, $anotherModelTableName);
+            return static::resolveTableNamesWithLinkName($tableNames, $linkName);
+        }
+
+        protected static function resolveTableNamesWithLinkName(array $tableNames, $linkName = null)
+        {
+            sort($tableNames);
+            $tableName = implode("_", $tableNames);
+            if ($linkName != null)
             {
-                $tableName = strtolower($this->linkName) . '_' . $tableName;
+                $tableName = strtolower($linkName) . '_' . $tableName;
             }
             return $tableName;
         }

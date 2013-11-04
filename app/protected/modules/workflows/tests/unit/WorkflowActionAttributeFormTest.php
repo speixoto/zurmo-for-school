@@ -155,6 +155,14 @@
             $form            = new ExplicitReadWriteModelPermissionsWorkflowActionAttributeForm('WorkflowModelTestItem', 'permissions');
             $valuesAndLabels = $form->getTypeValuesAndLabels(true, true);
             $this->assertEquals(4, count($valuesAndLabels));
+
+            //Test subscribeToList action form
+            $form        = new MarketingListWorkflowActionAttributeForm('MarketingList', 'id');
+            $valuesAndLabels = $form->getTypeValuesAndLabels(true, true);
+            $this->assertEquals(1, count($valuesAndLabels));
+            $valuesAndLabels = $form->getTypeValuesAndLabels(true, false);
+            $this->assertEquals(1, count($valuesAndLabels));
+            $this->assertTrue($form->resolveValueBeforeSave());
         }
 
         /**

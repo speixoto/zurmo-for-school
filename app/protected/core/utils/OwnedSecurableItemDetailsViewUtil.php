@@ -37,55 +37,26 @@
     /**
      * Helper functionality for rendering renderAfterFormLayoutForDetailsContent() for ownedsecurableitems
      */
-    class OwnedSecurableItemDetailsViewUtil
+    class OwnedSecurableItemDetailsViewUtil extends ItemDetailsViewUtil
     {
-        public static function renderAfterFormLayoutForDetailsContent($model, $content = null)
+        protected static function shouldRenderDetailsContent($model)
         {
-            $detailsContent = null;
-            if ($model instanceof OwnedSecurableItem)
-            {
-                if ($content != null)
-                {
-                    $detailsContent .= ZurmoHtml::tag('br');
-                }
-                $elements           = array(
-                                        array('className' => 'DateTimeModifiedUserElement',
-                                               'parameters' => array($model, 'null'),
-                                        ),
-                                        array('className' => 'DateTimeCreatedUserElement',
-                                            'parameters' => array($model, 'null'),
-                                        ),
-                                        array('className' => 'UserElement',
-                                            'parameters' => array($model, 'owner'),
-                                        ),
-                                        array('className' => 'DerivedExplicitReadWriteModelPermissionsElement',
-                                            'parameters' => array($model, 'null'),
-                                        ),
-                                    );
-                $detailsContent     .= static::renderElementsContent($elements);
+            if ($model instanceof OwnedSecurableItem) {
+                return true;
             }
-            $content .= ZurmoHtml::tag('p', array('class' => 'after-form-details-content'), $detailsContent);
-            return $content;
+            return false;
         }
 
-        protected static function renderElementsContent($elements)
+        protected static function getElements($model)
         {
-            $content                = null;
-            $elementsCount = count($elements);
-            foreach ($elements as $index => $elementDetails)
-            {
-                $elementClassName   = $elementDetails['className'];
-                $elementParams      = $elementDetails['parameters'];
-                $element            = new $elementClassName($elementParams[0], $elementParams[1]);
-                $element->nonEditableTemplate = '{label} {content}';
-                $content            .= $element->render();
-                $isLast             = (($index +1) == $elementsCount);
-                if (!$isLast)
-                {
-                    $content .= '&#160;|&#160;';
-                }
-            }
-            return $content;
+            $elements = parent::getElements($model);
+            $elements[] = array('className'  => 'UserElement',
+                                'parameters' => array($model, 'owner'),
+            );
+            $elements[] = array('className'  => 'DerivedExplicitReadWriteModelPermissionsElement',
+                                'parameters' => array($model, 'null'),
+            );
+            return $elements;
         }
     }
 ?>

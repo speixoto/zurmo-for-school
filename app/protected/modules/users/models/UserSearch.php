@@ -34,15 +34,17 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class UserSearch
+    class UserSearch extends BaseModelAutoCompleteUtil
     {
         /**
          * For a give User name, run a partial search by
          * full name and retrieve user models.
-         * @param string $partialName
-         * @param int $pageSize
+         * @param $partialName
+         * @param $pageSize
+         * @param $autoCompleteOptions
+         * @return Array
          */
-        public static function getUsersByPartialFullName($partialName, $pageSize)
+        public static function getUsersByPartialFullName($partialName, $pageSize, $autoCompleteOptions = null)
         {
             assert('is_string($partialName)');
             assert('is_int($pageSize)');
@@ -56,6 +58,7 @@
              $where .= "      (person.firstname      like lower('$partialName%') or "    .
                        "       person.lastname       like lower('$partialName%') or "    .
                        "       $fullNameSql like lower('$partialName%')) ";
+            static::handleAutoCompleteOptions($joinTablesAdapter, $where, $autoCompleteOptions);
             return User::getSubset($joinTablesAdapter, null, $pageSize,
                                             $where, "person.firstname, person.lastname");
         }
@@ -64,9 +67,11 @@
          * @param string $emailAddress
          * @param null|string $operatorType
          * @param bool $filterOutHideFromSelecting
-         * @return An
+         * @param $autoCompleteOptions
+         * @return Array
          */
-        public static function getUsersByEmailAddress($emailAddress, $operatorType = null, $filterOutHideFromSelecting = false)
+        public static function getUsersByEmailAddress($emailAddress, $operatorType = null,
+                                                  $filterOutHideFromSelecting = false, $autoCompleteOptions = null)
         {
             assert('is_string($emailAddress)');
             assert('$operatorType == null || is_string($operatorType)');
@@ -102,8 +107,9 @@
             }
             $joinTablesAdapter   = new RedBeanModelJoinTablesQueryAdapter('User');
             $where  = RedBeanModelDataProvider::makeWhere('User', $metadata, $joinTablesAdapter);
+            static::handleAutoCompleteOptions($joinTablesAdapter, $where, $autoCompleteOptions);
             $users = User::getSubset($joinTablesAdapter, null, null, $where);
             return $users;
         }
-    }
+   }
 ?>

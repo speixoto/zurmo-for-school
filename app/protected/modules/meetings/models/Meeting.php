@@ -42,7 +42,7 @@
             {
                 if (trim($this->name) == '')
                 {
-                    return Zurmo::t('MeetingsModule', '(Unnamed)');
+                    return Zurmo::t('Core', '(Unnamed)');
                 }
                 return $this->name;
             }
@@ -79,6 +79,7 @@
                     'description',
                     'endDateTime',
                     'location',
+                    'logged',
                     'name',
                     'startDateTime',
                 ),
@@ -89,6 +90,7 @@
                                               'compareAttribute' => 'startDateTime'),
                     array('location',         'type',    'type' => 'string'),
                     array('location',         'length',  'min'  => 1, 'max' => 64),
+                    array('logged',           'boolean'),
                     array('name',             'required'),
                     array('name',             'type',    'type' => 'string'),
                     array('name',             'length',  'min'  => 1, 'max' => 64),
@@ -98,8 +100,8 @@
                                               'compareAttribute' => 'endDateTime'),
                 ),
                 'relations' => array(
-                    'category'             => array(RedBeanModel::HAS_ONE, 'OwnedCustomField', RedBeanModel::OWNED,
-                                                    RedBeanModel::LINK_TYPE_SPECIFIC, 'category'),
+                    'category'             => array(static::HAS_ONE, 'OwnedCustomField', static::OWNED,
+                                                    static::LINK_TYPE_SPECIFIC, 'category'),
                 ),
                 'elements' => array(
                     'endDateTime'   => 'DateTime',

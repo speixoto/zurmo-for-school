@@ -56,7 +56,7 @@
             {
                 return null;
             }
-            return ZurmoHtml::tag('strong', array(), Zurmo::t('MashableInboxModule', 'View') . ':' ) . $content;
+            return ZurmoHtml::tag('strong', array(), Zurmo::t('Core', 'View') . ':' ) . $content;
         }
 
         protected function renderControlNonEditable()

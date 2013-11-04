@@ -36,17 +36,26 @@
 
     class OpenTasksForContactRelatedListView extends OpenTasksRelatedListView
     {
+        /**
+         * @return string
+         */
         protected function getRelationAttributeName()
         {
             return 'Contact';
         }
 
+        /**
+         * @return string
+         */
         public static function getDisplayDescription()
         {
             return Zurmo::t('TasksModule', 'TasksModulePluralLabel For ContactsModuleSingularLabel',
                         LabelUtil::getTranslationParamsForAllModules());
         }
 
+        /**
+         * @return array
+         */
         public static function getAllowedOnPortletViewClassNames()
         {
             return array('ContactDetailsAndRelationsView');

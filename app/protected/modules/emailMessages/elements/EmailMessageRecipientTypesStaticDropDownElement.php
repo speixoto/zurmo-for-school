@@ -44,11 +44,7 @@
          */
         protected function getDropDownArray()
         {
-            return array(
-                EmailMessageRecipient::TYPE_TO  => Zurmo::t('EmailMessagesModule', 'To'),
-                EmailMessageRecipient::TYPE_CC  => Zurmo::t('EmailMessagesModule', 'Cc'),
-                EmailMessageRecipient::TYPE_BCC => Zurmo::t('EmailMessagesModule', 'Bcc'),
-            );
+            return EmailMessageRecipient::getRecipientTypesArray();
         }
     }
 ?>

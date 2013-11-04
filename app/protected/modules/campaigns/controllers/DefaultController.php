@@ -67,8 +67,8 @@
                     array(
                         static::ZERO_MODELS_CHECK_FILTER_PATH . ' + list, index',
                         'controller'                    => $this,
-                        'activeActionElementType'       => 'CampaignsLink',
-                        'breadcrumbLinks'               => static::getListBreadcrumbLinks(),
+                        'activeActionElementType'       => 'CampaignsMenu',
+                        'breadCrumbLinks'               => static::getListBreadcrumbLinks(),
                     ),
                     array(
                         static::JOBS_CHECK_FILTER_PATH . ' + create, details, edit',
@@ -108,10 +108,10 @@
             else
             {
                 $mixedView = $this->makeActionBarSearchAndListView($searchForm, $dataProvider,
-                             'SecuredActionBarForMarketingListsSearchAndListView', null, 'CampaignsLink');
-                $breadcrumbLinks = static::getListBreadcrumbLinks();
+                             'SecuredActionBarForMarketingListsSearchAndListView', null, 'CampaignsMenu');
+                $breadCrumbLinks = static::getListBreadcrumbLinks();
                 $view      = new CampaignsPageView(MarketingDefaultViewUtil::
-                                 makeViewWithBreadcrumbsForCurrentUser($this, $mixedView, $breadcrumbLinks,
+                                 makeViewWithBreadcrumbsForCurrentUser($this, $mixedView, $breadCrumbLinks,
                                  'MarketingBreadCrumbView'));
             }
             echo $view->render();
@@ -133,17 +133,17 @@
 
         protected function actionCreateByModel(Campaign $campaign, $redirectUrl = null)
         {
-            $breadcrumbLinks            = static::getDetailsAndEditBreadcrumbLinks();
-            $breadcrumbLinks[]          = Zurmo::t('CampaignsModule', 'Create');
+            $breadCrumbLinks            = static::getDetailsAndEditBreadcrumbLinks();
+            $breadCrumbLinks[]          = Zurmo::t('Core', 'Create');
             $campaign->status           = Campaign::STATUS_ACTIVE;
             $campaign->supportsRichText = true;
             $campaign->enableTracking   = true;
             $editView                   = new CampaignEditView($this->getId(), $this->getModule()->getId(),
                                           $this->attemptToSaveModelFromPost($campaign, $redirectUrl),
-                                          Zurmo::t('Default', 'Create Campaign'));
+                                          Zurmo::t('CampaignsModule', 'Create Campaign'));
             $view                       = new CampaignsPageView(MarketingDefaultViewUtil::
                                           makeViewWithBreadcrumbsForCurrentUser($this, $editView,
-                                          $breadcrumbLinks, 'MarketingBreadCrumbView'));
+                                          $breadCrumbLinks, 'MarketingBreadCrumbView'));
             echo $view->render();
         }
 
@@ -169,15 +169,21 @@
         {
             $campaign           = Campaign::getById(intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($campaign);
-            $breadcrumbLinks    = static::getDetailsAndEditBreadcrumbLinks();
-            $breadcrumbLinks[]  = StringUtil::getChoppedStringContent(strval($campaign), 25);
+            if ($campaign->status != Campaign::STATUS_ACTIVE)
+            {
+                Yii::app()->user->setFlash('notification',
+                    Zurmo::t('CampaignsModule', 'This campaign has already started, you can only edit its name, rights and permissions.')
+                );
+            }
+            $breadCrumbLinks    = static::getDetailsAndEditBreadcrumbLinks();
+            $breadCrumbLinks[]  = StringUtil::getChoppedStringContent(strval($campaign), 25);
             //todo: wizard
             $editView = new CampaignEditView($this->getId(), $this->getModule()->getId(),
                                                  $this->attemptToSaveModelFromPost($campaign),
                                                  strval($campaign));
             $view               = new CampaignsPageView(MarketingDefaultViewUtil::
                                   makeViewWithBreadcrumbsForCurrentUser($this, $editView,
-                                  $breadcrumbLinks, 'MarketingBreadCrumbView'));
+                                  $breadCrumbLinks, 'MarketingBreadCrumbView'));
             echo $view->render();
         }
 
@@ -197,6 +203,16 @@
                                             $_GET['modalTransferInformation']['modalId']
             );
             echo ModalSearchListControllerUtil::setAjaxModeAndRenderModalSearchList($this, $modalListLinkProvider);
+        }
+
+        public function actionDrillDownDetails($campaignItemId)
+        {
+            $id = (int) $campaignItemId;
+            $campaignItem = CampaignItem::getById($id);
+            ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($campaignItem->campaign);
+            ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($campaignItem->contact);
+            ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($campaignItem->emailMessage);
+            echo CampaignItemSummaryListViewColumnAdapter::resolveDrillDownMetricsSummaryContent($campaignItem);
         }
 
         protected static function getSearchFormClassName()

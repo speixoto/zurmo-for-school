@@ -39,14 +39,11 @@
      */
     class ZurmoConfigurationUtil
     {
-        // TODO: @Shoaibi: Critical: 2.3: Refactor this to an extra optional parameter to all get and set methods, defaults to true
-        const ENABLE_CACHE = false;
-
         /**
          * For the current user, retrieve a configuration value by module name and key.
          * @return configuration value of specified key
          */
-        public static function getForCurrentUserByModuleName($moduleName, $key)
+        public static function getForCurrentUserByModuleName($moduleName, $key, $cache = true)
         {
             assert('is_string($moduleName)');
             assert('is_string($key)');
@@ -55,14 +52,14 @@
             {
                 return null;
             }
-            return ZurmoConfigurationUtil::getByUserAndModuleName(Yii::app()->user->userModel, $moduleName, $key);
+            return ZurmoConfigurationUtil::getByUserAndModuleName(Yii::app()->user->userModel, $moduleName, $key, $cache);
         }
 
         /**
          * Retrieve a global configuration value by module name and key.
          * @return configuration value of specified key
          */
-        public static function getByModuleName($moduleName, $key)
+        public static function getByModuleName($moduleName, $key, $cache = true)
         {
             assert('is_string($moduleName)');
             assert('is_string($key)');
@@ -70,14 +67,14 @@
             {
                 return null;
             }
-            $value = static::getCachedValue($moduleName, $key);
+            $value = static::getCachedValue($moduleName, $key, null, $cache);
             if ($value === null)
             {
                 $metadata = $moduleName::getMetadata();
                 if (isset($metadata['global']) && isset($metadata['global'][$key]))
                 {
                     $value = $metadata['global'][$key];
-                    static::cacheValue($moduleName, $key, $value);
+                    static::cacheValue($moduleName, $key, $value, null, $cache);
                 }
             }
             return $value;
@@ -87,12 +84,12 @@
          * For a specific user, retrieve a configuration value by module name and key.
          * @return configuration value of specified key
          */
-        public static function getByUserAndModuleName($user, $moduleName, $key)
+        public static function getByUserAndModuleName($user, $moduleName, $key, $cache = true)
         {
             assert('$user instanceof User && $user->id > 0');
             assert('is_string($moduleName)');
             assert('is_string($key)');
-            $value = static::getCachedValue($moduleName, $key, $user->id);
+            $value = static::getCachedValue($moduleName, $key, $user->id, $cache);
             if ($value === null)
             {
                 $metadata = $moduleName::getMetadata($user);
@@ -104,7 +101,7 @@
                 {
                     $value = $metadata['global'][$key];
                 }
-                static::cacheValue($moduleName, $key, $value, $user->id);
+                static::cacheValue($moduleName, $key, $value, $user->id, $cache);
             }
             return $value;
         }
@@ -112,7 +109,7 @@
         /**
          * For the current user, set a configuration value by module name and key.
          */
-        public static function setForCurrentUserByModuleName($moduleName, $key, $value)
+        public static function setForCurrentUserByModuleName($moduleName, $key, $value, $cache = true)
         {
             assert('is_string($moduleName)');
             assert('is_string($key)');
@@ -121,13 +118,13 @@
             {
                 return null;
             }
-            ZurmoConfigurationUtil::setByUserAndModuleName(Yii::app()->user->userModel, $moduleName, $key, $value);
+            ZurmoConfigurationUtil::setByUserAndModuleName(Yii::app()->user->userModel, $moduleName, $key, $value, $cache);
         }
 
         /**
          * Set a global configuration value by module name and key
          */
-        public static function setByModuleName($moduleName, $key, $value)
+        public static function setByModuleName($moduleName, $key, $value, $cache = true)
         {
             assert('is_string($moduleName)');
             assert('is_string($key)');
@@ -137,21 +134,21 @@
             }
             $metadata = $moduleName::getMetadata();
             $metadata['global'][$key] = $value;
-            static::cacheValue($moduleName, $key, $value);
+            static::cacheValue($moduleName, $key, $value, null, $cache);
             $moduleName::setMetadata($metadata);
         }
 
         /**
          * For a specified user, set a configuration value by module name and key
          */
-        public static function setByUserAndModuleName($user, $moduleName, $key, $value)
+        public static function setByUserAndModuleName($user, $moduleName, $key, $value, $cache = true)
         {
             assert('$user instanceof User && $user->id > 0');
             assert('is_string($moduleName)');
             assert('is_string($key)');
             $metadata = $moduleName::getMetadata($user);
             $metadata['perUser'][$key] = $value;
-            static::cacheValue($moduleName, $key, $value, $user->id);
+            static::cacheValue($moduleName, $key, $value, $user->id, $cache);
             $moduleName::setMetadata($metadata, $user);
         }
 
@@ -159,7 +156,7 @@
         {
             $cacheKey   = "${moduleName}.{$configKey}";
             $prefix     = 'global.';
-            if ($userId)
+            if ($userId !== null)
             {
                 $prefix = 'perUser_' . $userId . '.';
             }
@@ -167,9 +164,9 @@
             return $cacheKey;
         }
 
-        protected static function getCachedValue($moduleName, $configKey, $userId = null)
+        protected static function getCachedValue($moduleName, $configKey, $userId = null, $cache = true)
         {
-            if (!static::ENABLE_CACHE)
+            if ($cache === false)
             {
                 return null;
             }
@@ -185,9 +182,9 @@
             return $value;
         }
 
-        protected static function cacheValue($moduleName, $configKey, $value, $userId = null)
+        protected static function cacheValue($moduleName, $configKey, $value, $userId = null, $cache = true)
         {
-            if (!static::ENABLE_CACHE)
+            if ($cache === false)
             {
                 return;
             }

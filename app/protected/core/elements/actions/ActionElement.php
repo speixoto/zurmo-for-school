@@ -91,9 +91,15 @@
         {
             if (!isset($this->params['htmlOptions']))
             {
-                return array();
+                $htmlOptions = array();
             }
-            return $this->params['htmlOptions'];
+            else
+            {
+                $htmlOptions = $this->params['htmlOptions'];
+            }
+
+            $htmlOptions = $this->resolveUniqueIdInHtmlOptions($htmlOptions);
+            return $htmlOptions;
         }
 
         protected function getAjaxOptions()
@@ -149,6 +155,16 @@
                 return ZurmoHtml::wrapLabel($this->getLabel());
             }
             return $this->getLabel();
+        }
+
+        protected function resolveUniqueIdInHtmlOptions($htmlOptions)
+        {
+            if (!isset($htmlOptions['id']))
+            {
+                $htmlOptions['id'] = get_class($this) . '-' . $this->modelId . '-' .
+                                     ZurmoHtml::ID_PREFIX . ZurmoHtml::$count++;;
+            }
+            return $htmlOptions;
         }
     }
 ?>

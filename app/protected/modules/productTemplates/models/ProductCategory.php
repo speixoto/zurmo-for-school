@@ -71,7 +71,7 @@
             {
                 if (trim($this->name) == '')
                 {
-                    return Zurmo::t('ProductTemplatesModule', '(Unnamed)');
+                    return Zurmo::t('Core', '(Unnamed)');
                 }
                 return $this->name;
             }
@@ -128,16 +128,16 @@
                     'name'
                 ),
                 'relations' => array(
-                    'productTemplates'  => array(RedBeanModel::MANY_MANY, 'ProductTemplate'),
-                    'products'          => array(RedBeanModel::MANY_MANY, 'Product'),
-                    'productCatalogs'   => array(RedBeanModel::MANY_MANY, 'ProductCatalog'),
-                    'productCategory'   => array(RedBeanModel::HAS_MANY_BELONGS_TO, 'ProductCategory'),
-                    'productCategories' => array(RedBeanModel::HAS_MANY, 'ProductCategory'),
+                    'productTemplates'  => array(static::MANY_MANY, 'ProductTemplate'),
+                    'products'          => array(static::MANY_MANY, 'Product'),
+                    'productCatalogs'   => array(static::MANY_MANY, 'ProductCatalog'),
+                    'productCategory'   => array(static::HAS_MANY_BELONGS_TO, 'ProductCategory'),
+                    'productCategories' => array(static::HAS_MANY, 'ProductCategory'),
                 ),
                 'rules' => array(
                     array('name',  'required'),
                     array('name',  'type',    'type' => 'string'),
-                    array('name',  'length',  'min'  => 3,  'max' => 64),
+                    array('name',  'length',  'min'  => 1,  'max' => 64),
                 ),
                 'elements' => array(
                 ),
@@ -176,23 +176,8 @@
          */
         protected function beforeDelete()
         {
-            if ($this->getScenario() != 'autoBuildDatabase')
-            {
-                parent::beforeDelete();
-
-                if (count($this->productTemplates) > 0 || count($this->productCategories) > 0 )
-                {
-                    return false;
-                }
-                else
-                {
-                    return true;
-                }
-            }
-            else
-            {
-                return parent::beforeDelete();
-            }
+            parent::beforeDelete();
+            return !(count($this->productTemplates) > 0 || count($this->productCategories) > 0 );
         }
 
         /**

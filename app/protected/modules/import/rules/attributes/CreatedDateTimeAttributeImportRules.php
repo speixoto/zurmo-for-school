@@ -51,7 +51,7 @@
 
         public function getDisplayLabel()
         {
-            return Zurmo::t('ImportModule', 'Created Date Time');
+            return Zurmo::t('ZurmoModule', 'Created Date Time');
         }
     }
 ?>

@@ -155,32 +155,32 @@
             //30 minutes ago
             $timeStampLatestUpdate  = DateTimeUtil::convertTimestampToDbFormatDateTime(time() - (30 * 60));
             $timeSinceLastestUpdate = DateTimeUtil::getTimeSinceDisplayContent($timeStampLatestUpdate);
-            $this->assertEquals($timeSinceLastestUpdate, '0 hours ago');
+            $this->assertEquals('30 minutes ago', $timeSinceLastestUpdate);
 
             //58 minutes ago
             $timeStampLatestUpdate  = DateTimeUtil::convertTimestampToDbFormatDateTime(time() - (58 * 60));
             $timeSinceLastestUpdate = DateTimeUtil::getTimeSinceDisplayContent($timeStampLatestUpdate);
-            $this->assertEquals($timeSinceLastestUpdate, '0 hours ago');
+            $this->assertEquals('58 minutes ago', $timeSinceLastestUpdate);
 
             //61 minutes ago
             $timeStampLatestUpdate  = DateTimeUtil::convertTimestampToDbFormatDateTime(time() - (61 * 60));
             $timeSinceLastestUpdate = DateTimeUtil::getTimeSinceDisplayContent($timeStampLatestUpdate);
-            $this->assertEquals($timeSinceLastestUpdate, '1 hour ago');
+            $this->assertEquals('1 hour ago', $timeSinceLastestUpdate);
 
             //3 hours ago
             $timeStampLatestUpdate  = DateTimeUtil::convertTimestampToDbFormatDateTime(time() - (3 * 60 * 60));
             $timeSinceLastestUpdate = DateTimeUtil::getTimeSinceDisplayContent($timeStampLatestUpdate);
-            $this->assertEquals($timeSinceLastestUpdate, '3 hours ago');
+            $this->assertEquals('3 hours ago', $timeSinceLastestUpdate);
 
             //27 hours ago
             $timeStampLatestUpdate  = DateTimeUtil::convertTimestampToDbFormatDateTime(time() - (27 * 60 * 60));
             $timeSinceLastestUpdate = DateTimeUtil::getTimeSinceDisplayContent($timeStampLatestUpdate);
-            $this->assertEquals($timeSinceLastestUpdate, '1 day ago');
+            $this->assertEquals('1 day ago', $timeSinceLastestUpdate);
 
             //10 days ago
             $timeStampLatestUpdate  = DateTimeUtil::convertTimestampToDbFormatDateTime(time() - (10 * 24 * 60 * 60));
             $timeSinceLastestUpdate = DateTimeUtil::getTimeSinceDisplayContent($timeStampLatestUpdate);
-            $this->assertEquals($timeSinceLastestUpdate, '10 days ago');
+            $this->assertEquals('10 days ago', $timeSinceLastestUpdate);
         }
 
         public function testConvertTimestampToDbFormatDateTimeAndBackToTimeStamp()
@@ -234,26 +234,26 @@
             $displayValue = DateTimeUtil::resolveTimeStampForDateTimeLocaleFormattedDisplay($value);
             $this->assertEquals('6/3/80 12:00 AM', $displayValue);
             //For input
-            $value = strtotime("3 June 1080");
+            $value = strtotime("3 June 1920");
             $displayValue = DateTimeUtil::resolveTimeStampForDateTimeLocaleFormattedDisplay(
                 $value,
                 DateTimeUtil::DATETIME_FORMAT_DATE_WIDTH,
                 DateTimeUtil::DATETIME_FORMAT_TIME_WIDTH,
                 true);
-            $this->assertEquals('6/3/1080 12:00 AM', $displayValue);
+            $this->assertEquals('6/3/1920 12:00 AM', $displayValue);
             //other locales
             Yii::app()->setLanguage('de');
             $value = strtotime("3 June 1980");
             $displayValue = DateTimeUtil::resolveTimeStampForDateTimeLocaleFormattedDisplay($value);
             $this->assertEquals('03.06.80 00:00', $displayValue);
             //For input
-            $value = strtotime("3 June 1080");
+            $value = strtotime("3 June 1920");
             $displayValue = DateTimeUtil::resolveTimeStampForDateTimeLocaleFormattedDisplay(
                 $value,
                 DateTimeUtil::DATETIME_FORMAT_DATE_WIDTH,
                 DateTimeUtil::DATETIME_FORMAT_TIME_WIDTH,
                 true);
-            $this->assertEquals('03.06.1080 00:00', $displayValue);
+            $this->assertEquals('03.06.1920 00:00', $displayValue);
         }
 
         public function testResolveValueForDateLocaleFormattedDisplay()

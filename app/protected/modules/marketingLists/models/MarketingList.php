@@ -52,7 +52,7 @@
             {
                 if (trim($this->name) == '')
                 {
-                    return Zurmo::t('Default', '(Unnamed)');
+                    return Zurmo::t('Core', '(Unnamed)');
                 }
                 return $this->name;
             }
@@ -98,20 +98,20 @@
                     'anyoneCanSubscribe',
                 ),
                 'relations' => array(
-                    'marketingListMembers'  => array(RedBeanModel::HAS_MANY,   'MarketingListMember', RedBeanModel::OWNED),
-                    'autoresponders'        => array(RedBeanModel::HAS_MANY,   'Autoresponder', RedBeanModel::OWNED),
-                    'campaigns'             => array(RedBeanModel::HAS_MANY,   'Campaign', RedBeanModel::OWNED),
+                    'marketingListMembers'  => array(static::HAS_MANY,   'MarketingListMember', static::OWNED),
+                    'autoresponders'        => array(static::HAS_MANY,   'Autoresponder', static::OWNED),
+                    'campaigns'             => array(static::HAS_MANY,   'Campaign', static::OWNED),
                 ),
                 'rules' => array(
                     array('name',               'required'),
                     array('name',               'type',    'type' => 'string'),
-                    array('name',               'length',  'min'  => 3, 'max' => 64),
+                    array('name',               'length',  'min'  => 1, 'max' => 64),
                     array('description',        'type',    'type' => 'string'),
                     array('fromName',           'type', 'type' => 'string'),
-                    array('fromName',           'length',  'min'  => 3, 'max' => 64),
+                    array('fromName',           'length',  'min'  => 1, 'max' => 64),
                     array('fromAddress',        'type', 'type' => 'string'),
                     array('fromAddress',        'length',  'min'  => 6, 'max' => 64),
-                    array('fromAddress',        'email', 'except' => 'autoBuildDatabase'),
+                    array('fromAddress',        'email'),
                     array('anyoneCanSubscribe', 'boolean'),
                     array('anyoneCanSubscribe', 'default', 'value' => false),
                 ),

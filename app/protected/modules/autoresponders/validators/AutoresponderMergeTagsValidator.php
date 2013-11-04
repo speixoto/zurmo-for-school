@@ -40,7 +40,7 @@
         {
             $this->modelClassName   = ContactsModule::getPrimaryModelName();
             $this->type             = EmailTemplate::TYPE_CONTACT;
-            $this->language         = null; // TODO: @Shoaibi/@Jason: High: We might utilize this.
+            $this->language         = null; // TODO: @Shoaibi/@Jason: Low: We might utilize this.
         }
     }
 ?>

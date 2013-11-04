@@ -65,13 +65,13 @@
             if ($actionBarContent != null)
             {
                 $content .= '<div class="view-toolbar-container clearfix">';
-                $content .= '<div class="view-toolbar">';
+                $content .= '<nav class="pillbox clearfix">';
                 $content .= $actionBarContent;
-                $content .= '</div>';
+                $content .= '</nav>';
                 if (!Yii::app()->userInterface->isMobile() &&
                     null != $secondActionElementBarContent = $this->renderSecondActionElementBar(false))
                 {
-                    $content .= '<div class="view-toolbar">' . $secondActionElementBarContent . '</div>';
+                    $content .= '<nav class="pillbox clearfix">' . $secondActionElementBarContent . '</nav>';
                 }
                 $content .= '</div>';
             }
@@ -88,8 +88,18 @@
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array('type'  => 'CreateLink',
-                                'htmlOptions' => array('class' => 'icon-create'),
+                            array('type'      => 'CreateMenu',
+                                  'iconClass' => 'icon-create',
+                            ),
+                        ),
+                    ),
+                    'secondToolbar' => array(
+                        'elements' => array(
+                            array('type'        => 'SecurityIntroLink',
+                                  'iconClass'   => 'icon-options',
+                                  'panelId'     => 'eval:$this->introView->getPanelId()',
+                                  'checked'     => 'eval:!$this->introView->isIntroViewDismissed()',
+                                  'moduleName'  => 'eval:$this->introView->getModuleName()',
                             ),
                         ),
                     ),
@@ -128,7 +138,14 @@
             parent::resolveActionElementInformationDuringRender($elementInformation);
             if ($elementInformation['type'] == $this->activeActionElementType)
             {
-                $elementInformation['htmlOptions']['class'] .= ' active';
+                if (isset($elementInformation['htmlOptions']['class']))
+                {
+                    $elementInformation['htmlOptions']['class'] .= ' active';
+                }
+                else
+                {
+                    $elementInformation['htmlOptions']['class'] = 'active';
+                }
             }
         }
     }

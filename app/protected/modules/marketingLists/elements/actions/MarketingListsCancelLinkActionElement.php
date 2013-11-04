@@ -46,7 +46,7 @@
 
         protected function getDefaultLabel()
         {
-            return Zurmo::t('Default', 'Cancel');
+            return Zurmo::t('Core', 'Cancel');
         }
 
         protected function getDefaultRoute()

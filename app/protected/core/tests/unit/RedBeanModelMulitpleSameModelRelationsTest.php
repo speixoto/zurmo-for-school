@@ -41,6 +41,11 @@
      */
     class RedBeanModelMulitpleSameModelRelationsTest extends BaseTest
     {
+        public static function getDependentTestModelClassNames()
+        {
+            return array('P', 'PP', 'PPP', 'PPPP');
+        }
+
         public function testMultipleHasOnesToTheSameModel()
         {
             $pp1       = new PP();
@@ -62,14 +67,14 @@
             $this->assertTrue($p->save());
 
             //Retrieve row to make sure columns are coppect
-            $row = R::getRow('select * from p');
+            $row = ZurmoRedBean::getRow('select * from p');
             $this->assertTrue(isset($row['id']) && $row['id'] = $p->id);
             $this->assertTrue(isset($row['pp_id']) && $row['pp_id'] = $pp1->id);
             $this->assertTrue(isset($row['pp1link_pp_id']) && $row['pp1link_pp_id'] = $pp2->id);
             $this->assertTrue(isset($row['pp2link_pp_id']) && $row['pp2link_pp_id'] = $pp3->id);
             $this->assertCount(5, $row);
 
-            $row = R::getRow('select * from pp');
+            $row = ZurmoRedBean::getRow('select * from pp');
             $this->assertTrue(isset($row['id']) && $row['id'] = $pp1->id);
             $this->assertTrue(isset($row['name']) && $row['name'] = 'pp1');
             $this->assertCount(2, $row);
@@ -96,14 +101,14 @@
             $this->assertTrue($p->save());
 
             //Retrieve row to make sure columns are correct
-            $row = R::getRow('select * from p where id =' . $p->id);
+            $row = ZurmoRedBean::getRow('select * from p where id =' . $p->id);
             $this->assertTrue(isset($row['id']) && $row['id'] = $p->id);
             $this->assertEquals(null, $row['pp_id']);
             $this->assertEquals(null, $row['pp1link_pp_id']);
             $this->assertEquals(null, $row['pp2link_pp_id']);
             $this->assertCount(5, $row);
 
-            $row = R::getRow('select * from ppp where id =' . $ppp1->id);
+            $row = ZurmoRedBean::getRow('select * from ppp where id =' . $ppp1->id);
             $this->assertTrue(isset($row['id']) && $row['id'] = $ppp1->id);
             $this->assertTrue(isset($row['name']) && $row['name'] = 'ppp1');
             $this->assertTrue(isset($row['p_id']) && $row['p_id'] = $p->id);
@@ -111,7 +116,7 @@
             $this->assertEquals(null, $row['ppp2link_p_id']);
             $this->assertCount(5, $row);
 
-            $row = R::getRow('select * from ppp where id =' . $ppp2->id);
+            $row = ZurmoRedBean::getRow('select * from ppp where id =' . $ppp2->id);
             $this->assertTrue(isset($row['id']) && $row['id'] = $ppp2->id);
             $this->assertTrue(isset($row['name']) && $row['name'] = 'ppp2');
             $this->assertEquals(null, $row['p_id']);
@@ -119,7 +124,7 @@
             $this->assertEquals(null, $row['ppp2link_p_id']);
             $this->assertCount(5, $row);
 
-            $row = R::getRow('select * from ppp where id =' . $ppp3->id);
+            $row = ZurmoRedBean::getRow('select * from ppp where id =' . $ppp3->id);
             $this->assertTrue(isset($row['id']) && $row['id'] = $ppp3->id);
             $this->assertTrue(isset($row['name']) && $row['name'] = 'ppp3');
             $this->assertEquals(null, $row['p_id']);
@@ -152,21 +157,21 @@
             $this->assertTrue($saved);
 
             //test rows are empty..
-            $row = R::getRow('select * from ppp where id =' . $ppp1->id);
+            $row = ZurmoRedBean::getRow('select * from ppp where id =' . $ppp1->id);
             $this->assertTrue(isset($row['id']) && $row['id'] = $ppp1->id);
             $this->assertTrue(isset($row['name']) && $row['name'] = 'ppp1');
             $this->assertEquals(null, $row['p_id']);
             $this->assertEquals(null, $row['ppp1link_p_id']);
             $this->assertEquals(null, $row['ppp2link_p_id']);
 
-            $row = R::getRow('select * from ppp where id =' . $ppp2->id);
+            $row = ZurmoRedBean::getRow('select * from ppp where id =' . $ppp2->id);
             $this->assertTrue(isset($row['id']) && $row['id'] = $ppp2->id);
             $this->assertTrue(isset($row['name']) && $row['name'] = 'ppp2');
             $this->assertEquals(null, $row['p_id']);
             $this->assertEquals(null, $row['ppp1link_p_id']);
             $this->assertEquals(null, $row['ppp2link_p_id']);
 
-            $row = R::getRow('select * from ppp where id =' . $ppp3->id);
+            $row = ZurmoRedBean::getRow('select * from ppp where id =' . $ppp3->id);
             $this->assertTrue(isset($row['id']) && $row['id'] = $ppp3->id);
             $this->assertTrue(isset($row['name']) && $row['name'] = 'ppp3');
             $this->assertEquals(null, $row['p_id']);
@@ -186,12 +191,12 @@
 
             $pppp               = new PPPP();
             $pppp->name         = 'name1';
-            $pppp->ppAssumptive = $pp1;
+            $pppp->pp           = $pp1;
             $pppp->pp1          = $pp2;
             $this->assertTrue($pppp->save());
 
             //Retrieve row to make sure columns are correct
-            $row = R::getRow('select * from pppp where id =' . $pppp->id);
+            $row = ZurmoRedBean::getRow('select * from pppp where id =' . $pppp->id);
             $this->assertTrue(isset($row['id']) && $row['id'] = $pppp->id);
             $this->assertEquals($pp1->id, $row['pp_id']);
             $this->assertEquals($pp2->id, $row['pp1link_pp_id']);
@@ -209,7 +214,7 @@
             $searchAttributeData = array();
             $searchAttributeData['clauses'] = array(
                 1 => array(
-                    'attributeName' => 'ppAssumptive',
+                    'attributeName' => 'pp',
                     'relatedModelData' => array(
                         'attributeName'     => 'name',
                         'operatorType'      => 'equals',
@@ -277,17 +282,17 @@
             $pId = $p->id;
 
             //Retrieve row to make sure columns are coppect
-            $row = R::getRow('select * from p');
+            $row = ZurmoRedBean::getRow('select * from p');
             $this->assertCount(5, $row);
 
-            $this->assertEquals(1, R::count('p_pp'));
-            $row = R::getRow('select * from p_pp');
+            $this->assertEquals(1, ZurmoRedBean::count('p_pp'));
+            $row = ZurmoRedBean::getRow('select * from p_pp');
             $this->assertTrue(isset($row['p_id']) && $row['p_id'] = $p->id);
             $this->assertTrue(isset($row['pp_id']) && $row['pp_id'] = $pp1->id);
             $this->assertCount(3, $row);
 
-            $this->assertEquals(1, R::count('ppmanyspecificlink_p_pp'));
-            $row = R::getRow('select * from ppmanyspecificlink_p_pp');
+            $this->assertEquals(1, ZurmoRedBean::count('ppmanyspecificlink_p_pp'));
+            $row = ZurmoRedBean::getRow('select * from ppmanyspecificlink_p_pp');
             $this->assertTrue(isset($row['p_id']) && $row['p_id'] = $p->id);
             $this->assertTrue(isset($row['pp_id']) && $row['pp_id'] = $pp2->id);
             $this->assertCount(3, $row);
@@ -304,8 +309,8 @@
             $p->ppManySpecific->removeAll();
             $this->assertTrue($p->save());
 
-            $this->assertEquals(0, R::count('p_pp'));
-            $this->assertEquals(0, R::count('ppmanyspecificlink_p_pp'));
+            $this->assertEquals(0, ZurmoRedBean::count('p_pp'));
+            $this->assertEquals(0, ZurmoRedBean::count('ppmanyspecificlink_p_pp'));
         }
 
         public function testMultipleManyManysToTheSameModelSearchQueryFormsCorrectly()

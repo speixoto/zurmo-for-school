@@ -42,8 +42,12 @@
     {
         public function actionConfigurationEdit()
         {
-            $view = new ConfigurationPageView(ZurmoDefaultAdminViewUtil::
-                                                  makeStandardViewForCurrentUser($this, new AuthenticationConfigurationListView()));
+            $breadCrumbLinks = array(
+                Zurmo::t('ZurmoModule', 'Authentication Configuration'),
+            );
+            $view = new ConfigurationPageView(ZurmoDefaultAdminViewUtil::makeViewWithBreadcrumbsForCurrentUser(
+                                              $this, new AuthenticationConfigurationListView(),
+                                              $breadCrumbLinks, 'SettingsBreadCrumbView'));
             echo $view->render();
         }
     }

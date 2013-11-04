@@ -36,6 +36,11 @@
 
     class TriggerForWorkflowFormTest extends WorkflowBaseTest
     {
+        public static function getDependentTestModelClassNames()
+        {
+            return array('WorkflowModelTestItem');
+        }
+
         public function testValidateValueForUserNameIdAttributeWhenOperatorIsChanged()
         {
             $trigger     = new TriggerForWorkflowForm('AccountsModule', 'Account', Workflow::TYPE_ON_SAVE);
@@ -55,6 +60,48 @@
             $validated   = $trigger->validate();
             $this->assertTrue($validated);
             $this->assertCount(0, $trigger->getErrors());
+        }
+
+        public function testValidateThirdValues()
+        {
+            $trigger     = new TriggerForWorkflowForm('AccountsModule', 'Account', Workflow::TYPE_ON_SAVE);
+            $trigger->attributeIndexOrDerivedType = 'createdDateTime';
+            $trigger->value                       = null;
+            $trigger->secondValue                 = null;
+            $trigger->thirdValueDurationInterval  = 5;
+            $trigger->thirdValueDurationType      = TimeDurationUtil::DURATION_TYPE_DAY;
+            $trigger->operator                    = null;
+            $trigger->currencyIdForValue          = null;
+            $trigger->valueType                   = 'At Least X After Triggered Date';
+            $validated   = $trigger->validate();
+            $this->assertTrue($validated);
+            $this->assertCount(0, $trigger->getErrors());
+
+            $trigger     = new TriggerForWorkflowForm('AccountsModule', 'Account', Workflow::TYPE_ON_SAVE);
+            $trigger->attributeIndexOrDerivedType = 'createdDateTime';
+            $trigger->value                       = null;
+            $trigger->secondValue                 = null;
+            $trigger->thirdValueDurationInterval  = 5;
+            $trigger->thirdValueDurationType      = null;
+            $trigger->operator                    = null;
+            $trigger->currencyIdForValue          = null;
+            $trigger->valueType                   = 'At Least X After Triggered Date';
+            $validated   = $trigger->validate();
+            $this->assertFalse($validated);
+            $this->assertCount(1, $trigger->getErrors());
+
+            $trigger     = new TriggerForWorkflowForm('AccountsModule', 'Account', Workflow::TYPE_ON_SAVE);
+            $trigger->attributeIndexOrDerivedType = 'createdDateTime';
+            $trigger->value                       = null;
+            $trigger->secondValue                 = null;
+            $trigger->thirdValueDurationInterval  = 'asd'; //should be integer
+            $trigger->thirdValueDurationType      = null;
+            $trigger->operator                    = null;
+            $trigger->currencyIdForValue          = null;
+            $trigger->valueType                   = 'At Least X After Triggered Date';
+            $validated   = $trigger->validate();
+            $this->assertFalse($validated);
+            $this->assertCount(2, $trigger->getErrors());
         }
 
         public function testRun()

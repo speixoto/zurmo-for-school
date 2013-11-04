@@ -112,15 +112,8 @@
                     echo '<div class="kanban-column" style="width:'.$width.'%;">'; // Not Coding Standard
                     echo "<div data-value='" . $attributeValue . "' class='droppable-dynamic-rows-container'>";
                     echo ZurmoHtml::tag('div', array('class' => 'column-header'), $this->resolveGroupByColumnHeaderLabel($attributeValue));
-                    $listItems = '';
-                    foreach ($attributeValueAndData as $row)
-                    {
-                        $listItems .= ZurmoHtml::tag('li',
-                                                      array('class' => 'kanban-card item-to-place',
-                                                            'data-id' => $this->dataProvider->data[$row]->id),
-                                                      ZurmoHtml::tag('div', array(), $this->renderCardDetailsContent($row)));
-                    }
-                    echo ZurmoHtml::tag('ul', array(), $listItems);
+                    $listItems = $this->getListItemsByAttributeValueAndData($attributeValueAndData);
+                    echo $this->renderUlTagForKanbanColumn($listItems, $attributeValue);
                     $dropZone =  ZurmoHtml::tag('div', array('class' => 'drop-zone'), '');
                     echo ZurmoHtml::tag('div', array('class' => 'drop-zone-container'), $dropZone);
                     echo "</div>";
@@ -267,14 +260,74 @@
             $cardDetails = null;
             foreach ($this->cardColumns as $cardData)
             {
-                $content      = $this->evaluateExpression($cardData['value'], array('data' => $this->dataProvider->data[$row],
-                                                                                    'offset' => ($this->getOffset() + $row)));
+
+                $content      = $this->renderCardDataContent($cardData, $this->dataProvider->data[$row], $row);
                 $cardDetails .= ZurmoHtml::tag('span', array('class' => $cardData['class']), $content);
             }
             $userUrl      = Yii::app()->createUrl('/users/default/details', array('id' => $this->dataProvider->data[$row]->owner->id));
             $cardDetails .= ZurmoHtml::link($this->dataProvider->data[$row]->owner->getAvatarImage(20), $userUrl,
                                             array('class' => 'opportunity-owner'));
             return $cardDetails;
+        }
+
+        protected function renderCardDataContent(array $cardData, RedBeanModel $model, $row)
+        {
+            assert('is_int($row)');
+            return $this->evaluateExpression($cardData['value'], array('data' => $model,
+                                             'offset' => ($this->getOffset() + $row)));
+        }
+
+        /**
+         * @param string $listItems
+         * @param string $attributeValue
+         * @return string
+         */
+        protected function renderUlTagForKanbanColumn($listItems, $attributeValue = null)
+        {
+            return ZurmoHtml::tag('ul', array(), $listItems);
+        }
+
+        /**
+         * @return string
+         */
+        protected function getRowClassForKanbanColumn()
+        {
+            return 'kanban-card item-to-place';
+        }
+
+        /**
+         * @param int $row
+         * @return string
+         */
+        protected function createRowForKanbanColumn($row)
+        {
+            return ZurmoHtml::tag('li', array('class' => $this->getRowClassForKanbanColumn(),
+                                                'data-id' => $this->dataProvider->data[$row]->id),
+                                                    $this->wrapCardDetailsContent($row));
+        }
+
+        /**
+         * @param array $attributeValueAndData
+         * @return string
+         */
+        protected function getListItemsByAttributeValueAndData($attributeValueAndData)
+        {
+            $listItems = '';
+            foreach ($attributeValueAndData as $row)
+            {
+                $listItems .= $this->createRowForKanbanColumn($row);
+            }
+            return $listItems;
+        }
+
+        /**
+         * Wraps card details content
+         * @param int $row
+         * @return string
+         */
+        protected function wrapCardDetailsContent($row)
+        {
+            return ZurmoHtml::tag('div', array(), $this->renderCardDetailsContent($row));
         }
     }
 ?>

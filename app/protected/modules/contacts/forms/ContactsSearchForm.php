@@ -74,15 +74,15 @@
         public function attributeLabels()
         {
             return array_merge(parent::attributeLabels(), array(
-                'anyCity'            => Zurmo::t('ContactsModule', 'Any City'),
-                'anyStreet'          => Zurmo::t('ContactsModule', 'Any Street'),
-                'anyState'           => Zurmo::t('ContactsModule', 'Any State'),
-                'anyPostalCode'      => Zurmo::t('ContactsModule', 'Any Postal Code'),
-                'anyCountry'         => Zurmo::t('ContactsModule', 'Any Country'),
-                'anyEmail'           => Zurmo::t('ContactsModule', 'Any Email Address'),
-                'anyInvalidEmail'    => Zurmo::t('ContactsModule', 'Any Invalid Email'),
-                'anyOptOutEmail'     => Zurmo::t('ContactsModule', 'Any Opted Out Email'),
-                'fullName'           => Zurmo::t('ContactsModule', 'Name'),
+                'anyCity'            => Zurmo::t('ZurmoModule', 'Any City'),
+                'anyStreet'          => Zurmo::t('ZurmoModule', 'Any Street'),
+                'anyState'           => Zurmo::t('ZurmoModule', 'Any State'),
+                'anyPostalCode'      => Zurmo::t('ZurmoModule', 'Any Postal Code'),
+                'anyCountry'         => Zurmo::t('ZurmoModule', 'Any Country'),
+                'anyEmail'           => Zurmo::t('ZurmoModule', 'Any Email Address'),
+                'anyInvalidEmail'    => Zurmo::t('ZurmoModule', 'Any Invalid Email'),
+                'anyOptOutEmail'     => Zurmo::t('ZurmoModule', 'Any Opted Out Email'),
+                'fullName'           => Zurmo::t('Core', 'Name'),
             ));
         }
 

@@ -41,7 +41,7 @@
     {
         public $activeActionElementType;
 
-        public $breadcrumbLinks;
+        public $breadCrumbLinks;
 
         protected function resolveMessageControllerId()
         {
@@ -73,7 +73,7 @@
             $mixedView               = new ActionBarAndZeroModelsYetView($actionBarView, $messageView);
             $view                    = new WorkflowsPageView(WorkflowDefaultAdminViewUtil::
                                        makeViewWithBreadcrumbsForCurrentUser(
-                                       $this->controller, $mixedView, $this->breadcrumbLinks, 'WorkflowBreadCrumbView'));
+                                       $this->controller, $mixedView, $this->breadCrumbLinks, 'WorkflowBreadCrumbView'));
             echo $view->render();
         }
     }

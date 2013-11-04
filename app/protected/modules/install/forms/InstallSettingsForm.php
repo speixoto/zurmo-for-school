@@ -136,7 +136,7 @@
                                                                            (int)$this->memcachePortNumber);
                     if ($memcacheResult !== true)
                     {
-                        $this->addError('memcacheHostname', Zurmo::t('InstallModule', 'Error code:') . " " .
+                        $this->addError('memcacheHostname', Zurmo::t('Core', 'Error code:') . " " .
                         $memcacheResult[0] . '<br/>Message(Memcached): ' . $memcacheResult[1]);
                         return;
                     }
@@ -171,7 +171,7 @@
                                                                       (int)$this->databasePort);
                     if ($connectionResult !== true)
                     {
-                        $this->addError('databaseAdminUsername', Zurmo::t('InstallModule', 'Error code:') . " " .
+                        $this->addError('databaseAdminUsername', Zurmo::t('Core', 'Error code:') . " " .
                         $connectionResult[0] . '<br/>Message: ' . $connectionResult[1]);
                         return;
                     }
@@ -237,7 +237,7 @@
                                                                              (int)$this->databasePort);
                     if ($connectionResult !== true)
                     {
-                        $this->addError('databaseUsername', Zurmo::t('InstallModule', 'Error code:') . " " .
+                        $this->addError('databaseUsername', Zurmo::t('Core', 'Error code:') . " " .
                         $connectionResult[0] . '<br/>Message: ' . $connectionResult[1]);
                         return;
                     }
@@ -251,7 +251,7 @@
                     {
                         $this->addError('databaseName', Zurmo::t('InstallModule', 'The database name specified does not ' .
                         'exist or the user specified does not have access.') . '<br/>' .
-                        Zurmo::t('InstallModule', 'Error code:') . " " . $databaseExistsResult[0] .
+                        Zurmo::t('Core', 'Error code:') . " " . $databaseExistsResult[0] .
                         '<br/>Message: ' . $databaseExistsResult[1]);
                         return;
                     }

@@ -50,11 +50,11 @@
 
         public function testCreateAndGetContactWebFormEntryById()
         {
-            $allAttributes                      = ContactWebFormsUtil::getAllAttributes();
             $placedAttributes                   = array('firstName', 'lastName', 'companyName', 'jobTitle');
-            $contactFormAttributes              = ContactWebFormsUtil::getAllPlacedAttributes($allAttributes,
-                                                                                              $placedAttributes);
-            $attributes                         = array_keys($contactFormAttributes);
+            $contactFormAttributes              = array('firstName'   => '',
+                                                        'lastName'    => '',
+                                                        'companyName' => '',
+                                                        'jobTitle'    => '');
             $this->assertTrue(ContactsModule::loadStartingData());
             $contactStates                      = ContactState::getByName('New');
             $contactWebForm                     = new ContactWebForm();
@@ -63,7 +63,7 @@
             $contactWebForm->submitButtonLabel  = 'Save';
             $contactWebForm->defaultState       = $contactStates[0];
             $contactWebForm->defaultOwner       = Yii::app()->user->userModel;
-            $contactWebForm->serializedData     = serialize($attributes);
+            $contactWebForm->serializedData     = serialize($placedAttributes);
             $contactWebForm->save();
 
             $contact                = new Contact();
@@ -73,17 +73,9 @@
             $contact->lastName      = 'Man';
             $contact->jobTitle      = 'Superhero';
             $contact->companyName   = 'Test Inc.';
-            if ($contact->validate())
-            {
-                $contactWebFormEntryStatus  = ContactWebFormEntry::STATUS_SUCCESS;
-                $contactWebFormEntryMessage = ContactWebFormEntry::STATUS_SUCCESS_MESSAGE;
-            }
-            else
-            {
-                $contactWebFormEntryStatus  = ContactWebFormEntry::STATUS_ERROR;
-                $contactWebFormEntryMessage = ContactWebFormEntry::STATUS_ERROR_MESSAGE;
-            }
-            $contact->save();
+            $contactWebFormEntryStatus  = ContactWebFormEntry::STATUS_SUCCESS;
+            $contactWebFormEntryMessage = ContactWebFormEntry::STATUS_SUCCESS_MESSAGE;
+            $this->assertTrue($contact->save());
 
             foreach ($contactFormAttributes as $attributeName => $attributeValue)
             {
@@ -111,6 +103,35 @@
             $this->assertEquals('Man'           , $contactFormAttributes['lastName']);
             $this->assertEquals('Superhero'     , $contactFormAttributes['jobTitle']);
             $this->assertEquals('Test Inc.'     , $contactFormAttributes['companyName']);
+
+            $contact                             = $contactWebFormEntry->contact;
+            $contact->firstName                  = 'Bat';
+            $contact->lastName                   = 'Man Jr.';
+            $this->assertTrue($contact->save());
+            $contactFormAttributes['firstName']  = $contact->firstName;
+            $contactFormAttributes['lastName']   = $contact->lastName;
+            $contactWebFormEntry->serializedData = serialize($contactFormAttributes);
+            $this->assertTrue($contactWebFormEntry->save());
+            unset($contactWebFormEntry);
+
+            $contactWebFormEntry = ContactWebFormEntry::getById($contactWebFormEntryId);
+            $this->assertEquals('Bat'           , $contactWebFormEntry->contact->firstName);
+            $this->assertEquals('Man Jr.'       , $contactWebFormEntry->contact->lastName);
+            $contactFormAttributes = unserialize($contactWebFormEntry->serializedData);
+            $this->assertEquals('Bat'           , $contactFormAttributes['firstName']);
+            $this->assertEquals('Man Jr.'       , $contactFormAttributes['lastName']);
+        }
+
+        /**
+         * @depends testCreateAndGetContactWebFormEntryById
+         */
+        public function testDeleteContactWebFormEntry()
+        {
+            $contactWebFormEntries = ContactWebFormEntry::getAll();
+            $initialCount          = count($contactWebFormEntries);
+            $contactWebFormEntries[0]->delete();
+            $contactWebFormEntries = ContactWebFormEntry::getAll();
+            $this->assertEquals(intval($initialCount-1), count($contactWebFormEntries));
         }
     }
 ?>

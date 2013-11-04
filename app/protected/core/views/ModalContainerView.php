@@ -36,9 +36,11 @@
 
     class ModalContainerView extends View
     {
+        const ID = 'modalContainer';
+
         protected function renderContent()
         {
-            return "<div id=\"modalContainer\"></div>";
+            return "<div id=\"" . self::ID . "\"></div>";
         }
 
         public function isUniqueToAPage()

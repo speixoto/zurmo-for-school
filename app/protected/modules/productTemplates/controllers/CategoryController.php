@@ -71,7 +71,7 @@
                         'pageViewClassName'          => $pageViewClassName,
                         'defaultViewUtilClassName'   => 'ProductDefaultViewUtil',
                         'activeActionElementType'    => 'ProductTemplatesLink',
-                        'breadcrumbLinks'            => static::getListBreadcrumbLinks()
+                        'breadCrumbLinks'            => static::getListBreadcrumbLinks()
                    ),
                )
             );
@@ -84,8 +84,8 @@
 
         public function actionList()
         {
-            $activeActionElementType        = 'ProductCategoriesLink';
-            $breadcrumbLinks                = static::getListBreadcrumbLinks();
+            $activeActionElementType        = 'ProductCategoriesMenu';
+            $breadCrumbLinks                = static::getListBreadcrumbLinks();
             $introView                      = new ProductsIntroView('ProductsModule');
             $actionBarAndTreeView           = new ProductCategoriesActionBarAndTreeListView(
                                                                                         $this->getId(),
@@ -97,26 +97,26 @@
             $view                           = new ProductCategoriesPageView(ProductDefaultViewUtil::
                                                     makeViewWithBreadcrumbsForCurrentUser(
                                                     $this, $actionBarAndTreeView,
-                                                        $breadcrumbLinks, 'ProductBreadCrumbView'));
+                                                        $breadCrumbLinks, 'ProductBreadCrumbView'));
             echo $view->render();
         }
 
         public function actionDetails($id)
         {
             $productCategory    = static::getModelAndCatchNotFoundAndDisplayError('ProductCategory', intval($id));
-            $breadcrumbLinks    = static::getDetailsAndEditBreadcrumbLinks();
-            $breadcrumbLinks[]  = StringUtil::getChoppedStringContent(strval($productCategory), 25);
+            $breadCrumbLinks    = static::getDetailsAndEditBreadcrumbLinks();
+            $breadCrumbLinks[]  = StringUtil::getChoppedStringContent(strval($productCategory), 25);
             $detailsView        = new ProductCategoryDetailsView($this->getId(), $this->getModule()->getId(), $productCategory);
             $view               = new ProductCategoriesPageView(ProductDefaultViewUtil::
                                     makeViewWithBreadcrumbsForCurrentUser(
-                                        $this, $detailsView, $breadcrumbLinks, 'ProductBreadCrumbView'));
+                                        $this, $detailsView, $breadCrumbLinks, 'ProductBreadCrumbView'));
             echo $view->render();
         }
 
         public function actionCreate()
         {
-            $breadcrumbLinks    = static::getDetailsAndEditBreadcrumbLinks();
-            $breadcrumbLinks[]  = Zurmo::t('ProductTemplatesModule', 'Create');
+            $breadCrumbLinks    = static::getDetailsAndEditBreadcrumbLinks();
+            $breadCrumbLinks[]  = Zurmo::t('Core', 'Create');
             $productCategory        = new ProductCategory();
             $productCatalog         = ProductCatalog::resolveAndGetByName(ProductCatalog::DEFAULT_NAME);
             if (!empty($productCatalog))
@@ -127,20 +127,20 @@
                                             $this->attemptToSaveModelFromPost($productCategory), 'Edit');
             $view                   = new ProductCategoriesPageView(ProductDefaultViewUtil::
                                             makeViewWithBreadcrumbsForCurrentUser(
-                                                $this, $editAndDetailsView, $breadcrumbLinks, 'ProductBreadCrumbView'));
+                                                $this, $editAndDetailsView, $breadCrumbLinks, 'ProductBreadCrumbView'));
             echo $view->render();
         }
 
         public function actionEdit($id, $redirectUrl = null)
         {
             $productCategory    = ProductCategory::getById(intval($id));
-            $breadcrumbLinks    = static::getDetailsAndEditBreadcrumbLinks();
-            $breadcrumbLinks[]  = StringUtil::getChoppedStringContent(strval($productCategory), 25);
+            $breadCrumbLinks    = static::getDetailsAndEditBreadcrumbLinks();
+            $breadCrumbLinks[]  = StringUtil::getChoppedStringContent(strval($productCategory), 25);
             $view                   = new ProductCategoriesPageView(ProductDefaultViewUtil::
                                             makeViewWithBreadcrumbsForCurrentUser($this,
                                                 $this->makeEditAndDetailsView(
                                                     $this->attemptToSaveModelFromPost(
-                                                        $productCategory, $redirectUrl), 'Edit'), $breadcrumbLinks, 'ProductBreadCrumbView'));
+                                                        $productCategory, $redirectUrl), 'Edit'), $breadCrumbLinks, 'ProductBreadCrumbView'));
             echo $view->render();
         }
 

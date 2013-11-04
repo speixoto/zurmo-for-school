@@ -102,7 +102,7 @@
                 $column['class']  = 'YAxisHeaderColumn';
                 if ($isFirstRow)
                 {
-                    $column['footer'] = Zurmo::t('ReportsModule', 'Total');
+                    $column['footer'] = Zurmo::t('Core', 'Total');
                     $column['footerHtmlOptions'] = array('colSpan' => $this->dataProvider->getYAxisGroupByDataValuesCount());
                 }
                 array_push($columns, $column);

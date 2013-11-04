@@ -44,6 +44,12 @@
                     'a',
                     'b',
                 ),
+                'rules' => array(
+                    array('a',      'type', 'type' => 'string'),
+                    array('a',      'length', 'max' => 255),
+                    array('b',      'type', 'type' => 'string'),
+                    array('a',      'length', 'max' => 255),
+                )
             );
             return $metadata;
         }

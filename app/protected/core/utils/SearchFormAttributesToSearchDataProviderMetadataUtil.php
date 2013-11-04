@@ -99,10 +99,7 @@
                 }
                 return $adaptedMetadata;
             }
-            else
-            {
-                throw new NotSupportedException();
-            }
+            return array();
         }
 
         protected static function resolveMetadataForResolveEntireMappingByRules($model, & $metadata, $attributeName,

@@ -48,11 +48,10 @@
         public $defaultFromEmailAddress;
         public $defaultTestToEmailAddress;
         public $gamificationModalNotificationsEnabled;
-        public $autoresponderOrCampaignBatchSize;
-        public $autoresponderOrCampaignFooterPlainText;
-        public $autoresponderOrCampaignFooterRichText;
         public $realtimeUpdatesEnabled;
         public $logoFileData;
+        public $reCaptchaPrivateKey;
+        public $reCaptchaPublicKey;
 
         const DEFAULT_LOGO_THUMBNAIL_HEIGHT = 30;
         const DEFAULT_LOGO_THUMBNAIL_WIDTH  = 65;
@@ -86,13 +85,8 @@
                 array('realtimeUpdatesEnabled',                 'boolean'),
                 array('subListPageSize',                        'type',      'type' => 'integer'),
                 array('logoFileData',                           'type',      'type' => 'array'),
-                array('autoresponderOrCampaignBatchSize',       'required'),
-                array('autoresponderOrCampaignBatchSize',       'type',      'type' => 'integer'),
-                array('autoresponderOrCampaignBatchSize',       'numerical', 'min' => 1),
-                array('autoresponderOrCampaignFooterPlainText', 'required'),
-                array('autoresponderOrCampaignFooterPlainText', 'type',    'type' => 'string'),
-                array('autoresponderOrCampaignFooterRichText',  'required'),
-                array('autoresponderOrCampaignFooterRichText',  'type',    'type' => 'string'),
+                array('reCaptchaPrivateKey',                    'type',      'type' => 'string'),
+                array('reCaptchaPublicKey',                     'type',      'type' => 'string'),
             );
         }
 
@@ -109,9 +103,8 @@
                 'defaultTestToEmailAddress'              => Zurmo::t('ZurmoModule', 'Default Test To Email Address'),
                 'gamificationModalNotificationsEnabled'  => Zurmo::t('ZurmoModule', 'Enable game notification popup'),
                 'realtimeUpdatesEnabled'                 => Zurmo::t('ZurmoModule', 'Enable real-time updates'),
-                'autoresponderOrCampaignBatchSize'       => Zurmo::t('ZurmoModule', 'Autoresponder/Campaign batch size'),
-                'autoresponderOrCampaignFooterPlainText' => Zurmo::t('ZurmoModule', 'Autoresponder/Campaign Footer(Plain Text)'),
-                'autoresponderOrCampaignFooterRichText'  => Zurmo::t('ZurmoModule', 'Autoresponder/Campaign Footer(Rich Text)'),
+                'reCaptchaPrivateKey'                    => Zurmo::t('ZurmoModule', 'ReCaptcha Private Key'),
+                'reCaptchaPublicKey'                     => Zurmo::t('ZurmoModule', 'ReCaptcha Public Key'),
             );
         }
     }

@@ -74,7 +74,7 @@
                                             $reportResultsRowData->$attributeName, true);
                     if ($isFirstRow)
                     {
-                        $grandTotalsData[]  = Zurmo::t('ReportsModule', 'Total');
+                        $grandTotalsData[]  = Zurmo::t('Core', 'Total');
                     }
                 }
                 $leadingHeaders         = $this->dataProvider->makeAxisCrossingColumnCountAndLeadingHeaderRowsData(true);
@@ -176,7 +176,7 @@
                         }
                     }
                 }
-                $headerRow[]                = Zurmo::t('ReportsModule', 'Total');
+                $headerRow[]                = Zurmo::t('Core', 'Total');
                 $previousGroupByValuesCount = count($leadingHeaders['rows'][$i]['groupByValues']);
                 $headerData[]               = $headerRow;
             }

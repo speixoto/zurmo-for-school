@@ -39,24 +39,24 @@
      */
     class EmailMessageActivity extends Item
     {
-        const TYPE_OPEN         = 1;
+        const TYPE_OPEN                       = 1;
 
-        const TYPE_CLICK        = 2;
+        const TYPE_CLICK                      = 2;
 
-        const TYPE_UNSUBSCRIBE  = 3;
+        const TYPE_UNSUBSCRIBE                = 3;
 
-        const TYPE_BOUNCE       = 4;
+        const TYPE_BOUNCE                     = 4;
 
-        const TYPE_SKIP         = 5;
+        const TYPE_SKIP                       = 5;
 
         public static function getTypesArray()
         {
             return array(
-                static::TYPE_OPEN           => Zurmo::t('EmailMessagesModule', 'Open'),
-                static::TYPE_CLICK          => Zurmo::t('EmailMessagesModule', 'Click'),
-                static::TYPE_UNSUBSCRIBE    => Zurmo::t('Core', 'Unsubscribe'),
-                static::TYPE_BOUNCE         => Zurmo::t('EmailMessagesModule', 'Bounce'),
-                static::TYPE_SKIP           => Zurmo::t('EmailMessagesModule', 'Skipped'),
+                static::TYPE_OPEN               => Zurmo::t('Core', 'Open'),
+                static::TYPE_CLICK              => Zurmo::t('EmailMessagesModule', 'Click'),
+                static::TYPE_UNSUBSCRIBE        => Zurmo::t('Core',                'Unsubscribe'),
+                static::TYPE_BOUNCE             => Zurmo::t('EmailMessagesModule', 'Bounce'),
+                static::TYPE_SKIP               => Zurmo::t('Core', 'Skipped'),
             );
         }
 
@@ -91,12 +91,11 @@
                     array('latestSourceIP',         'type', 'type' => 'string'),
                 ),
                 'relations' => array(
-                    'person'                        => array(RedBeanModel::HAS_ONE, 'Person', RedBeanModel::NOT_OWNED),
-                    'emailMessageUrl'               => array(RedBeanModel::HAS_ONE, 'EmailMessageUrl'),
+                    'person'                        => array(static::HAS_ONE, 'Person', static::NOT_OWNED),
+                    'emailMessageUrl'               => array(static::HAS_ONE, 'EmailMessageUrl'),
                 ),
                 'elements' => array(
                     'latestDateTime'                => 'DateTime',
-                    // TODO: @Shoaibi: High: What other elements shall we define here?
                 ),
                 'defaultSortAttribute' => 'latestDateTime',
             );
@@ -132,30 +131,31 @@
             assert('is_int($personId)');
             assert('is_string($url) || $url === null');
             $searchAttributeData = array();
-            $searchAttributeData['clauses'] = array(
-                1 => array(
-                    'attributeName'             => 'type',
-                    'operatorType'              => 'equals',
-                    'value'                     => $type,
-                ),
-                2 => array(
+            $searchAttributeData['clauses'][1] = array(
+                'attributeName'             => 'type',
+                'operatorType'              => 'equals',
+                'value'                     => $type,
+            );
+            $structure = '1';
+            $clauseNumber = count($searchAttributeData['clauses']) + 1;
+            $searchAttributeData['clauses'][$clauseNumber++] = array(
                     'attributeName'             => 'person',
                     'relatedAttributeName'      => 'id',
                     'operatorType'              => 'equals',
                     'value'                     => $personId,
-                ),
             );
-            $searchAttributeData['structure'] = '(1 and 2)';
+            $structure .= ' and ' . $clauseNumber;
             if ($url)
             {
-                $searchAttributeData['clauses'][3] = array(
+                $searchAttributeData['clauses'][$clauseNumber++] = array(
                     'attributeName'             => 'emailMessageUrl',
                     'relatedAttributeName'      => 'url',
                     'operatorType'              => 'equals',
                     'value'                     => $url,
                 );
-                $searchAttributeData['structure'] = '(1 and 2 and 3)';
+                $structure .= ' and ' . $clauseNumber;
             }
+            $searchAttributeData['structure'] = "({$structure})";
             return $searchAttributeData;
         }
 
@@ -170,36 +170,38 @@
             assert('is_string($url) || $url === null');
             $relationName   = static::getRelationName();
             $searchAttributeData = array();
-            $searchAttributeData['clauses'] = array(
-                1 => array(
-                    'attributeName'             => 'type',
-                    'operatorType'              => 'equals',
-                    'value'                     => $type,
-                ),
-                2 => array(
+            $searchAttributeData['clauses'][1] = array(
+                'attributeName'             => 'type',
+                'operatorType'              => 'equals',
+                'value'                     => $type,
+            );
+            $structure = '1';
+            $clauseNumber = count($searchAttributeData['clauses']) + 1;
+            $searchAttributeData['clauses'][$clauseNumber++] = array(
                     'attributeName'             => 'person',
                     'relatedAttributeName'      => 'id',
                     'operatorType'              => 'equals',
                     'value'                     => intval($personId),
-                ),
-                3 => array(
+            );
+            $structure .= ' and ' . $clauseNumber;
+            $searchAttributeData['clauses'][$clauseNumber++] = array(
                     'attributeName'             => $relationName,
                     'relatedAttributeName'      => 'id',
                     'operatorType'              => 'equals',
                     'value'                     => intval($modelId),
-                ),
             );
-            $searchAttributeData['structure'] = '(1 and 2 and 3)';
+            $structure .= ' and ' . $clauseNumber;
             if ($url)
             {
-                $searchAttributeData['clauses'][4] = array(
+                $searchAttributeData['clauses'][$clauseNumber++] = array(
                     'attributeName'             => 'emailMessageUrl',
                     'relatedAttributeName'      => 'url',
                     'operatorType'              => 'equals',
                     'value'                     => $url,
                 );
-                $searchAttributeData['structure'] = '(1 and 2 and 3 and 4)';
+                $structure .= ' and ' . $clauseNumber;
             }
+            $searchAttributeData['structure'] = "({$structure})";
             $joinTablesAdapter                = new RedBeanModelJoinTablesQueryAdapter(get_called_class());
             $where = RedBeanModelDataProvider::makeWhere(get_called_class(), $searchAttributeData, $joinTablesAdapter);
             if ($countOnly)

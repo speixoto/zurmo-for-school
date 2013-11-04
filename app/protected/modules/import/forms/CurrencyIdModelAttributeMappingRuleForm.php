@@ -60,7 +60,7 @@
 
         public function attributeLabels()
         {
-            return array('id'   => Zurmo::t('ImportModule', 'Currency'));
+            return array('id'   => Zurmo::t('ZurmoModule', 'Currency'));
         }
 
         public static function getAttributeName()

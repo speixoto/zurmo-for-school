@@ -39,8 +39,6 @@
     */
     class ModelToArrayAdapterTest extends ZurmoBaseTest
     {
-        public $freeze = false;
-
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
@@ -66,25 +64,10 @@
             assert('$save'); // Not Coding Standard
         }
 
-        public function setUp()
+        public static function getDependentTestModelClassNames()
         {
-            parent::setUp();
-            $freeze = false;
-            if (RedBeanDatabase::isFrozen())
-            {
-                RedBeanDatabase::unfreeze();
-                $freeze = true;
-            }
-            $this->freeze = $freeze;
-        }
-
-        public function teardown()
-        {
-            if ($this->freeze)
-            {
-                RedBeanDatabase::freeze();
-            }
-            parent::teardown();
+            return array('ModelToArrayAdapterTestItem', 'ModelToArrayAdapterTestItem2',
+                            'ModelToArrayAdapterTestItem3', 'ModelToArrayAdapterTestItem4');
         }
 
         public function testGetDataWithNoRelationsSet()

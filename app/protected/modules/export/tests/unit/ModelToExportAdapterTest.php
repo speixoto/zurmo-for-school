@@ -39,8 +39,6 @@
     */
     class ModelToExportAdapterTest extends ZurmoBaseTest
     {
-        public $freeze = false;
-
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
@@ -66,25 +64,10 @@
             assert('$saved'); // Not Coding Standard
         }
 
-        public function setUp()
+        public static function getDependentTestModelClassNames()
         {
-            parent::setUp();
-            $freeze = false;
-            if (RedBeanDatabase::isFrozen())
-            {
-                RedBeanDatabase::unfreeze();
-                $freeze = true;
-            }
-            $this->freeze = $freeze;
-        }
-
-        public function teardown()
-        {
-            if ($this->freeze)
-            {
-                RedBeanDatabase::freeze();
-            }
-            parent::teardown();
+            return array('ExportTestModelItem', 'ExportTestModelItem2', 'ExportTestModelItem3',
+                        'ExportTestModelItem4', 'ExportTestModelItem5');
         }
 
         public function testGetDataWithEmailAddress()
@@ -354,7 +337,7 @@
                 100,
                 'USD',
                 'Test2',
-                'Test2',
+                null,
                 null,
                 null,
                 null,

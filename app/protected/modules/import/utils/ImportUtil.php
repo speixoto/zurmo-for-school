@@ -171,6 +171,7 @@
                     $importRowDataResultsUtil->addMessage(Zurmo::t('ImportModule', '{modelLabel} saved correctly: {linkToModel}',
                                 array('{modelLabel}'  => $model->getModelLabelByTypeAndLanguage('Singular'),
                                       '{linkToModel}' => static::resolveLinkMessageToModel($model))));
+                    $importRowDataResultsUtil->addMessages($importSanitizeResultsUtil->getRelatedModelMessages());
                     if ($makeNewModel)
                     {
                         if ($model instanceof SecurableItem)
@@ -577,13 +578,13 @@
             if (isset($args[3]))
             {
                 set_time_limit($args[3]);
-                $messageStreamer->add(Zurmo::t('ImportModule', 'Script will run at most for {seconds} seconds.',
+                $messageStreamer->add(Zurmo::t('JobsManagerModule', 'Script will run at most for {seconds} seconds.',
                                       array('{seconds}' => $args[3])));
             }
             else
             {
                 set_time_limit('1200');
-                $messageStreamer->add(Zurmo::t('ImportModule', 'Script will run at most for {seconds} seconds.',
+                $messageStreamer->add(Zurmo::t('JobsManagerModule', 'Script will run at most for {seconds} seconds.',
                                       array('{seconds}' => '1200')));
             }
             if (isset($args[0]))

@@ -43,7 +43,7 @@
 
         protected function getDefaultLabel()
         {
-            return Zurmo::t('AutorespondersModule', 'Delete');
+            return Zurmo::t('Core', 'Delete');
         }
 
         protected function getActionId()
