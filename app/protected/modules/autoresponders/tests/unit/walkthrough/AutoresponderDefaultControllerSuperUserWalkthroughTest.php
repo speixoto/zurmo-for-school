@@ -306,7 +306,7 @@
             $this->assertTrue(strpos($content, '<a class="active-tab" href="#tab1">Text Content</a>') !== false);
             $this->assertTrue(strpos($content, '<a href="#tab2">Html Content</a>') !== false);
             $this->assertTrue(strpos($content, 'Text Content 04') !== false);
-            $this->assertTrue(strpos($content, 'Html Content 04') !== false);
+            $this->assertTrue(strpos($content, 'iframe') !== false); //Now Html is in an iframe
         }
 
         /**
