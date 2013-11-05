@@ -434,8 +434,6 @@
         //public function testAShootLoadOfAccounts() // Uncomment to run.
         public function disabled_testAShootLoadOfAccounts() // Uncomment to check in.
         {
-            $freezeAfterFirst20 = false;
-
             $super = User::getByUsername('super');
 
             foreach (array(20, 50, 100, 200, 500, 1000, 10000, 100000, 200000) as $shootLoad)
@@ -459,13 +457,13 @@
                 echo "\n";
 
                 $startTime = microtime(true);
-                ReadPermissionsOptimizationUtil::rebuild(true);
+                ReadPermissionsOptimizationUtil::rebuild(true, true);
                 $endTime = microtime(true);
                 if ($this->isDebug())
                 {
                     echo 'Rebuilt the munge in php in ' . round($endTime - $startTime, 1) . ' seconds, ' . self::getAccountMungeRowCount() . " rows.\n";
                 }
-                $phpRows = R::getAll('select munge_id, securableitem_id, count from account_read order by munge_id, securableitem_id, count');
+                $phpRows = ZurmoRedBean::getAll('select munge_id, securableitem_id, count from account_read order by munge_id, securableitem_id, count');
 
                 // If $securityOptimized is false in debug.php the second one will just do the php again.
                 $startTime = microtime(true);
@@ -475,7 +473,7 @@
                 {
                     echo 'Rebuilt the munge ' . (SECURITY_OPTIMIZED ? 'optimized' : 'in php') . ' in ' . round($endTime - $startTime, 1) . ' seconds, ' . self::getAccountMungeRowCount() . " rows.\n";
                 }
-                $otherRows = R::getAll('select munge_id, securableitem_id, count from account_read order by munge_id, securableitem_id, count');
+                $otherRows = ZurmoRedBean::getAll('select munge_id, securableitem_id, count from account_read order by munge_id, securableitem_id, count');
 
                 if (count(array_diff($phpRows, $otherRows)) > 0)
                 {
@@ -513,12 +511,6 @@
 
                 echo "Done.\n";
                 echo "\n-------------------------------\n";
-
-                if ($freezeAfterFirst20 && !RedBeanDatabase::isFrozen())
-                {
-                    echo "Freezing database...\n";
-                    RedBeanDatabase::freeze();
-                }
             }
         }
     }

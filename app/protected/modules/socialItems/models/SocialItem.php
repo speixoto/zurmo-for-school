@@ -52,7 +52,7 @@
         {
             if (trim($this->description) == '')
             {
-                return Zurmo::t('SocialItemsModule', '(Unnamed)');
+                return Zurmo::t('Core', '(Unnamed)');
             }
             return $this->description;
         }
@@ -76,13 +76,13 @@
                     'latestDateTime',
                 ),
                 'relations' => array(
-                    'comments'  => array(RedBeanModel::HAS_MANY, 'Comment', RedBeanModel::OWNED,
-                                         RedBeanModel::LINK_TYPE_POLYMORPHIC, 'relatedModel'),
-                    'note'      => array(RedBeanModel::HAS_ONE,  'Note'),
-                    'files'     => array(RedBeanModel::HAS_MANY, 'FileModel', RedBeanModel::OWNED,
-                                         RedBeanModel::LINK_TYPE_POLYMORPHIC, 'relatedModel'),
-                    'toUser'    => array(RedBeanModel::HAS_ONE,  'User', RedBeanModel::NOT_OWNED,
-                                         RedBeanModel::LINK_TYPE_SPECIFIC, 'toUser'),
+                    'comments'  => array(static::HAS_MANY, 'Comment', static::OWNED,
+                                         static::LINK_TYPE_POLYMORPHIC, 'relatedModel'),
+                    'note'      => array(static::HAS_ONE,  'Note'),
+                    'files'     => array(static::HAS_MANY, 'FileModel', static::OWNED,
+                                         static::LINK_TYPE_POLYMORPHIC, 'relatedModel'),
+                    'toUser'    => array(static::HAS_ONE,  'User', static::NOT_OWNED,
+                                         static::LINK_TYPE_SPECIFIC, 'toUser'),
                 ),
                 'rules' => array(
                     array('description',    'type',     'type' => 'string'),
@@ -151,7 +151,7 @@
         {
             return array_merge(parent::translatedAttributeLabels($language),
                 array(
-                    'comments'       => Zurmo::t('SocialItemsModule', 'Comments',  array(), null, $language),
+                    'comments'       => Zurmo::t('CommentsModule', 'Comments',  array(), null, $language),
                     'description'    => Zurmo::t('ZurmoModule', 'Description',  array(), null, $language),
                     'files'          => Zurmo::t('ZurmoModule',  'Files',  array(), null, $language),
                     'latestDateTime' => Zurmo::t('ActivitiesModule',  'Latest Date Time',  array(), null, $language),

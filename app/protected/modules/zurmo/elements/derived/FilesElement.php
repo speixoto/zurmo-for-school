@@ -62,6 +62,10 @@
 
         protected function renderControlEditable()
         {
+            if ($this->getDisabledValue())
+            {
+                return $this->renderControlNonEditable();
+            }
             assert('$this->model instanceof Item || $this->model->getModel() instanceof Item');
             $existingFilesInformation = array();
             foreach ($this->model->files as $existingFile)
@@ -161,7 +165,7 @@
                          '<div class="file-upload-box">{content}{error}</div>' .
                          '<a href="#" class="show-file-upload-box" onclick="jQuery' .
                          '(this).hide().prev().show().find(\'input[type=file]\').click(); ' .
-                         'return false;">' . Zurmo::t('ZurmoModule', 'Add Files') . '</a>' .
+                         'return false;">' . Zurmo::t('Core', 'Add Files') . '</a>' .
                          '</td>';
             // End Not Coding Standard
         }

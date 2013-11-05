@@ -491,12 +491,17 @@ $.fn.attachLoadingSpinnerForLanguageActivation = function( id, state, color ){
  */
 
 $.fn.makeOrRemoveLoadingSpinner = function(state, context, shade){
+    if(typeof shade === 'undefined'){
+        shade = '#fff';
+    } else if(shade === 'dark'){
+        shade = '#999';
+    }
     var style = {
         lines : 9,
         length : 2.3,
         width : 1.7,
         radius : 3,
-        color : ( shade === 'dark' ) ? '#999' : '#fff',
+        color : shade,
         speed : 2.5,
         trail : 37,
         top : 4,
@@ -667,6 +672,13 @@ $(window).ready(function(){
         }
     );
 
+    $('.clickable-dividedmenu').find('a.button-trigger, a.button-action-trigger, .close-flyout').click(
+        function(){
+            $(this).closest('.clickable-dividedmenu').toggleClass('nav-open');
+            return false;
+        }
+    );
+
     //Main nav hover
      $('#MenuView > ul > li > a, #RecentlyViewedView  > ul > li > a').hover(
         function(){
@@ -829,7 +841,6 @@ $.extend({
     }
 });
 
-// TODO: @Shoaibi: Medium: Ask Nabeel/Sergio on extending buttonset widget to add this functionality before _create
 $.fn.createButtonSetIfNotAlreadyExist = function(qualifier, classFlag) {
     classFlag = typeof classFlag !== 'undefined' ? classFlag : 'ui-buttonset';
     if ($(qualifier).hasClass(classFlag)) {

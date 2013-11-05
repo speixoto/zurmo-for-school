@@ -45,7 +45,7 @@
         {
             if (trim($this->name) == '')
             {
-                return Zurmo::t('EmailMessagesModule', '(Unnamed)');
+                return Zurmo::t('Core', '(Unnamed)');
             }
             return $this->name;
         }
@@ -71,7 +71,7 @@
                 throw new NotSupportedException();
             }
             assert('is_string($name)');
-            $bean = R::findOne(EmailAccount::getTableName('EmailAccount'),
+            $bean = ZurmoRedBean::findOne(EmailAccount::getTableName('EmailAccount'),
                                "_user_id = ? AND name = ?", array($user->id, $name));
             assert('$bean === false || $bean instanceof RedBean_OODBBean');
             if ($bean === false)
@@ -135,8 +135,9 @@
                     'outboundSecurity',
                 ),
                 'relations' => array(
-                    'messages' => array(RedBeanModel::HAS_MANY, 'EmailMessage'),
-                    'user'     => array(RedBeanModel::HAS_ONE,  'User'),
+                    'messages' => array(static::HAS_MANY, 'EmailMessage', static::NOT_OWNED,
+                                            static::LINK_TYPE_SPECIFIC, 'account'),
+                    'user'     => array(static::HAS_ONE,  'User'),
                 ),
                 'rules'     => array(
                                   array('fromName',                  'required'),
@@ -201,7 +202,7 @@
                 array(
                     'fromAddress'       => Zurmo::t('EmailMessagesModule', 'From Address',  array(), null, $language),
                     'fromName'          => Zurmo::t('EmailMessagesModule', 'From Name',  array(), null, $language),
-                    'messages'          => Zurmo::t('EmailMessagesModule', 'Messages',  array(), null, $language),
+                    'messages'          => Zurmo::t('Core', 'Messages',  array(), null, $language),
                     'name'              => Zurmo::t('ZurmoModule',         'Name',  array(), null, $language),
                     'outboundHost'      => Zurmo::t('EmailMessagesModule', 'Outbound Host',  array(), null, $language),
                     'outboundPassword'  => Zurmo::t('EmailMessagesModule', 'Outbound Password',  array(), null, $language),

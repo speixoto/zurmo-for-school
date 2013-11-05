@@ -82,7 +82,7 @@
                 'leftSideAttributeName'  => 'userNonMembershipData',
                 'leftSideDisplayLabel'   => Zurmo::t('ZurmoModule', 'Non Members'),
                 'rightSideAttributeName' => 'userMembershipData',
-                'rightSideDisplayLabel'  => Zurmo::t('ZurmoModule', 'Members'),
+                'rightSideDisplayLabel'  => Zurmo::t('Core', 'Members'),
             ));
             $cClipWidget->endClip();
             $cellsContent  = $cClipWidget->getController()->clips['SortableCompareLists'];

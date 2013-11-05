@@ -57,7 +57,7 @@
             }
             elseif ($this->model->status == JobLog::STATUS_COMPLETE_WITHOUT_ERROR)
             {
-                return Zurmo::t('JobsManagerModule', 'Completed');
+                return Zurmo::t('Core', 'Completed');
             }
             else
             {

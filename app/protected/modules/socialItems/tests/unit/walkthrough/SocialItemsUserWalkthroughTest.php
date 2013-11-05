@@ -129,7 +129,7 @@
                                                  makeBySecurableItem($socialItems[0]);
             $readWritePermitables              = $explicitReadWriteModelPermissions->getReadWritePermitables();
             $this->assertEquals(1, count($readWritePermitables));
-            $this->assertTrue(isset($readWritePermitables[$everyoneGroup->id]));
+            $this->assertTrue(isset($readWritePermitables[$everyoneGroup->getClassId('Permitable')]));
         }
 
         /**
@@ -167,7 +167,7 @@
                                                  makeBySecurableItem($socialItems[1]);
             $readWritePermitables              = $explicitReadWriteModelPermissions->getReadWritePermitables();
             $this->assertEquals(1, count($readWritePermitables));
-            $this->assertTrue(isset($readWritePermitables[$everyoneGroup->id]));
+            $this->assertTrue(isset($readWritePermitables[$everyoneGroup->getClassId('Permitable')]));
         }
 
         /**

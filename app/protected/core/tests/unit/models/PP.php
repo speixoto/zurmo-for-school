@@ -40,7 +40,7 @@
         {
             assert('is_string($name)');
             assert('$name != ""');
-            $bean = R::findOne('pp', "name = '$name'");
+            $bean = ZurmoRedBean::findOne('pp', "name = '$name'");
             assert('$bean === false || $bean instanceof RedBean_OODBBean');
             if ($bean === false)
             {
@@ -64,14 +64,14 @@
                 'rules' => array(
                     array('name',          'required'),
                     array('name',          'type',     'type' => 'string'),
-                    array('name',          'length',  'min'  => 3, 'max' => 64),
+                    array('name',          'length',  'min'  => 1, 'max' => 64),
                 ),
                 'relations' => array(
-                    'p'                 => array(RedBeanModel::HAS_MANY,           'PP'),
-                    'p1'                => array(RedBeanModel::HAS_MANY,           'PP', RedBeanModel::NOT_OWNED,
-                                                 RedBeanModel::LINK_TYPE_SPECIFIC, 'pp1Link'),
-                    'p2'                => array(RedBeanModel::HAS_MANY,           'PP', RedBeanModel::NOT_OWNED,
-                                                 RedBeanModel::LINK_TYPE_SPECIFIC, 'pp2Link'),
+                    'p'                 => array(static::HAS_MANY,           'PP'),
+                    'p1'                => array(static::HAS_MANY,           'PP', static::NOT_OWNED,
+                                                 static::LINK_TYPE_SPECIFIC, 'pp1Link'),
+                    'p2'                => array(static::HAS_MANY,           'PP', static::NOT_OWNED,
+                                                 static::LINK_TYPE_SPECIFIC, 'pp2Link'),
                 ),
             );
             return $metadata;

@@ -44,18 +44,18 @@
 
         public static function getListBreadcrumbLinks()
         {
-            $title = Zurmo::t('EmailTemplatesModule', 'Templates');
+            $title = Zurmo::t('Core', 'Templates');
             return array($title);
         }
 
         public static function getDetailsAndEditForWorkflowBreadcrumbLinks()
         {
-            return array(Zurmo::t('EmailTemplatesModule', 'Templates') => array('default/listForWorkflow'));
+            return array(Zurmo::t('Core', 'Templates') => array('default/listForWorkflow'));
         }
 
         public static function getDetailsAndEditForMarketingBreadcrumbLinks()
         {
-            return array(Zurmo::t('EmailTemplatesModule', 'Templates') => array('default/listForMarketing'));
+            return array(Zurmo::t('Core', 'Templates') => array('default/listForMarketing'));
         }
 
         public function filters()
@@ -65,15 +65,15 @@
                     array(
                         static::ZERO_MODELS_FOR_CONTACT_CHECK_FILTER_PATH . ' + listForMarketing, index',
                         'controller'                    => $this,
-                        'activeActionElementType'       => EmailTemplatesForMarketingLinkActionElement::getType(),
-                        'breadcrumbLinks'               => static::getListBreadcrumbLinks(),
+                        'activeActionElementType'       => EmailTemplatesForMarketingMenuActionElement::getType(),
+                        'breadCrumbLinks'               => static::getListBreadcrumbLinks(),
                         'stateMetadataAdapterClassName' => 'EmailTemplatesForMarketingStateMetadataAdapter'
                     ),
                     array(
                         static::ZERO_MODELS_FOR_WORKFLOW_CHECK_FILTER_PATH . ' + listForWorkflow',
                         'controller'                    => $this,
-                        'activeActionElementType'       => EmailTemplatesForWorkflowLinkActionElement::getType(),
-                        'breadcrumbLinks'               => static::getListBreadcrumbLinks(),
+                        'activeActionElementType'       => EmailTemplatesForWorkflowMenuActionElement::getType(),
+                        'breadCrumbLinks'               => static::getListBreadcrumbLinks(),
                         'stateMetadataAdapterClassName' => 'EmailTemplatesForWorkflowStateMetadataAdapter'
                     ),
                 )
@@ -89,13 +89,13 @@
         {
             $pageSize                       = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                                                             'listPageSize', get_class($this->getModule()));
-            $activeActionElementType        = EmailTemplatesForMarketingLinkActionElement::getType();
+            $activeActionElementType        = EmailTemplatesForMarketingMenuActionElement::getType();
             $emailTemplate                  = new EmailTemplate(false);
             $searchForm                     = new EmailTemplatesSearchForm($emailTemplate);
             $dataProvider                   = $this->resolveSearchDataProvider($searchForm, $pageSize,
                                               'EmailTemplatesForMarketingStateMetadataAdapter',
                                               'EmailTemplatesSearchView');
-            $breadcrumbLinks                = static::getListBreadcrumbLinks();
+            $breadCrumbLinks                = static::getListBreadcrumbLinks();
             if (isset($_GET['ajax']) && $_GET['ajax'] == 'list-view')
             {
                 $mixedView = $this->makeListView($searchForm, $dataProvider);
@@ -106,7 +106,7 @@
                 $mixedView = $this->makeActionBarSearchAndListView($searchForm, $dataProvider,
                              'SecuredActionBarForMarketingListsSearchAndListView', null, $activeActionElementType);
                 $view      = new EmailTemplatesPageView(MarketingDefaultViewUtil::
-                             makeViewWithBreadcrumbsForCurrentUser($this, $mixedView, $breadcrumbLinks, 'MarketingBreadCrumbView'));
+                             makeViewWithBreadcrumbsForCurrentUser($this, $mixedView, $breadCrumbLinks, 'MarketingBreadCrumbView'));
             }
             echo $view->render();
         }
@@ -115,13 +115,13 @@
         {
             $pageSize                       = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                                               'listPageSize', get_class($this->getModule()));
-            $activeActionElementType        = EmailTemplatesForWorkflowLinkActionElement::getType();
+            $activeActionElementType        = EmailTemplatesForWorkflowMenuActionElement::getType();
             $emailTemplate                  = new EmailTemplate(false);
             $searchForm                     = new EmailTemplatesSearchForm($emailTemplate);
             $dataProvider                   = $this->resolveSearchDataProvider($searchForm, $pageSize,
                                               'EmailTemplatesForWorkflowStateMetadataAdapter',
                                               'EmailTemplatesSearchView');
-            $breadcrumbLinks                = static::getListBreadcrumbLinks();
+            $breadCrumbLinks                = static::getListBreadcrumbLinks();
             if (isset($_GET['ajax']) && $_GET['ajax'] == 'list-view')
             {
                 $mixedView = $this->makeListView($searchForm, $dataProvider);
@@ -132,7 +132,7 @@
                 $mixedView = $this->makeActionBarSearchAndListView($searchForm, $dataProvider,
                              'SecuredActionBarForWorkflowsSearchAndListView', null, $activeActionElementType);
                 $view      = new EmailTemplatesPageView(WorkflowDefaultAdminViewUtil::
-                             makeViewWithBreadcrumbsForCurrentUser($this, $mixedView, $breadcrumbLinks, 'WorkflowBreadCrumbView'));
+                             makeViewWithBreadcrumbsForCurrentUser($this, $mixedView, $breadCrumbLinks, 'WorkflowBreadCrumbView'));
             }
             echo $view->render();
         }
@@ -145,20 +145,20 @@
             $editAndDetailsView  = $this->makeEditAndDetailsView($this->attemptToSaveModelFromPost($emailTemplate), 'Edit');
             if ($emailTemplate->type == EmailTemplate::TYPE_WORKFLOW)
             {
-                $breadcrumbLinks    = static::getDetailsAndEditForWorkflowBreadcrumbLinks();
-                $breadcrumbLinks[]  = Zurmo::t('EmailTemplatesModule', 'Create');
+                $breadCrumbLinks    = static::getDetailsAndEditForWorkflowBreadcrumbLinks();
+                $breadCrumbLinks[]  = Zurmo::t('Core', 'Create');
                 $view               = new EmailTemplatesPageView(WorkflowDefaultAdminViewUtil::
                                       makeViewWithBreadcrumbsForCurrentUser($this, $editAndDetailsView,
-                                      $breadcrumbLinks, 'WorkflowBreadCrumbView'));
+                                      $breadCrumbLinks, 'WorkflowBreadCrumbView'));
             }
             elseif ($emailTemplate->type == EmailTemplate::TYPE_CONTACT)
             {
                 $emailTemplate->modelClassName = 'Contact';
-                $breadcrumbLinks    = static::getDetailsAndEditForMarketingBreadcrumbLinks();
-                $breadcrumbLinks[]  = Zurmo::t('EmailTemplatesModule', 'Create');
+                $breadCrumbLinks    = static::getDetailsAndEditForMarketingBreadcrumbLinks();
+                $breadCrumbLinks[]  = Zurmo::t('Core', 'Create');
                 $view               = new EmailTemplatesPageView(MarketingDefaultViewUtil::
                                       makeViewWithBreadcrumbsForCurrentUser($this, $editAndDetailsView,
-                                      $breadcrumbLinks, 'MarketingBreadCrumbView'));
+                                      $breadCrumbLinks, 'MarketingBreadCrumbView'));
             }
             else
             {
@@ -175,19 +175,19 @@
             $editAndDetailsView = $this->makeEditAndDetailsView($this->attemptToSaveModelFromPost($emailTemplate, $redirectUrl), 'Edit');
             if ($emailTemplate->type == EmailTemplate::TYPE_WORKFLOW)
             {
-                $breadcrumbLinks    = static::getDetailsAndEditForWorkflowBreadcrumbLinks();
-                $breadcrumbLinks[]  = StringUtil::getChoppedStringContent(strval($emailTemplate), 25);
+                $breadCrumbLinks    = static::getDetailsAndEditForWorkflowBreadcrumbLinks();
+                $breadCrumbLinks[]  = StringUtil::getChoppedStringContent(strval($emailTemplate), 25);
                 $view               = new EmailTemplatesPageView(WorkflowDefaultAdminViewUtil::
                                       makeViewWithBreadcrumbsForCurrentUser($this, $editAndDetailsView,
-                                      $breadcrumbLinks, 'WorkflowBreadCrumbView'));
+                                      $breadCrumbLinks, 'WorkflowBreadCrumbView'));
             }
             elseif ($emailTemplate->type == EmailTemplate::TYPE_CONTACT)
             {
-                $breadcrumbLinks    = static::getDetailsAndEditForMarketingBreadcrumbLinks();
-                $breadcrumbLinks[]  = StringUtil::getChoppedStringContent(strval($emailTemplate), 25);
+                $breadCrumbLinks    = static::getDetailsAndEditForMarketingBreadcrumbLinks();
+                $breadCrumbLinks[]  = StringUtil::getChoppedStringContent(strval($emailTemplate), 25);
                 $view               = new EmailTemplatesPageView(MarketingDefaultViewUtil::
                                       makeViewWithBreadcrumbsForCurrentUser($this, $editAndDetailsView,
-                                      $breadcrumbLinks, 'MarketingBreadCrumbView'));
+                                      $breadCrumbLinks, 'MarketingBreadCrumbView'));
             }
             else
             {
@@ -213,19 +213,19 @@
 
             if ($emailTemplate->type == EmailTemplate::TYPE_WORKFLOW)
             {
-                $breadcrumbLinks          = static::getDetailsAndEditForWorkflowBreadcrumbLinks();
-                $breadcrumbLinks[]        = StringUtil::getChoppedStringContent(strval($emailTemplate), 25);
+                $breadCrumbLinks          = static::getDetailsAndEditForWorkflowBreadcrumbLinks();
+                $breadCrumbLinks[]        = StringUtil::getChoppedStringContent(strval($emailTemplate), 25);
                 $view                     = new EmailTemplatesPageView(WorkflowDefaultAdminViewUtil::
                                             makeViewWithBreadcrumbsForCurrentUser($this, $detailsView,
-                                            $breadcrumbLinks, 'WorkflowBreadCrumbView'));
+                                            $breadCrumbLinks, 'WorkflowBreadCrumbView'));
             }
             elseif ($emailTemplate->type == EmailTemplate::TYPE_CONTACT)
             {
-                $breadcrumbLinks          = static::getDetailsAndEditForMarketingBreadcrumbLinks();
-                $breadcrumbLinks[]        = StringUtil::getChoppedStringContent(strval($emailTemplate), 25);
+                $breadCrumbLinks          = static::getDetailsAndEditForMarketingBreadcrumbLinks();
+                $breadCrumbLinks[]        = StringUtil::getChoppedStringContent(strval($emailTemplate), 25);
                 $view                     = new EmailTemplatesPageView(MarketingDefaultViewUtil::
                                             makeViewWithBreadcrumbsForCurrentUser($this, $detailsView,
-                                            $breadcrumbLinks, 'MarketingBreadCrumbView'));
+                                            $breadCrumbLinks, 'MarketingBreadCrumbView'));
             }
             else
             {
@@ -280,6 +280,14 @@
             Yii::app()->getClientScript()->setToAjaxMode();
             $view = new ModalView($this, new MergeTagGuideView());
             echo $view->render();
+        }
+
+        public function actionGetHtmlContent($id)
+        {
+            $modelId = (int) $id;
+            $model = EmailTemplate::getById($modelId);
+            ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($model);
+            echo $model->htmlContent;
         }
 
         protected static function getZurmoControllerUtil()

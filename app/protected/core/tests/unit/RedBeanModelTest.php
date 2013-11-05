@@ -60,6 +60,37 @@
 
     class RedBeanModelTest extends BaseTest
     {
+        public static function getDependentTestModelClassNames()
+        {
+            return array('A',
+                        'B',
+                        'C',
+                        'D',
+                        'E',
+                        'F',
+                        'G',
+                        'H',
+                        'I',
+                        'J',
+                        'M',
+                        'TestAttributeNamedLikeSqlKeywordModel',
+                        'TestBlobModel',
+                        'TestBooleanAttributeModel',
+                        'TestDateTimeModel',
+                        'TestDefaultedAttributeModel',
+                        'TestIdentityModel',
+                        'TestNameModel',
+                        'TestSelfRelatingModel',
+                        'TestSimplestModel',
+                        'Y',
+                        );
+        }
+
+        public static function tearDownAfterClass()
+        {
+            parent::tearDownAfterClass();
+        }
+
         public function testA()
         {
             $a = new A();
@@ -420,13 +451,13 @@
             $this->assertTrue(TestHelpers::isClassInArray('RedBeanModelRequiredValidator', $validators));
             $this->assertTrue(TestHelpers::isClassInArray('CBooleanValidator',             $validators));
             $validators = $a->getValidators('junk');
-            $this->assertEquals(0, count($validators));
+            $this->assertEquals(2, count($validators));
             $validators = $a->getValidators('uniqueRequiredEmail');
             $this->assertEquals(2, count($validators));
             $this->assertTrue(TestHelpers::isClassInArray('CEmailValidator',               $validators));
             $this->assertTrue(TestHelpers::isClassInArray('RedBeanModelUniqueValidator',   $validators));
             $validators = $a->getValidators();
-            $this->assertEquals(6, count($validators));
+            $this->assertEquals(8, count($validators));
             $this->assertTrue(TestHelpers::isClassInArray('RedBeanModelRequiredValidator',     $validators));
             $this->assertTrue(TestHelpers::isClassInArray('CBooleanValidator',                 $validators));
             $this->assertTrue(TestHelpers::isClassInArray('CEmailValidator',                   $validators));
@@ -434,7 +465,7 @@
             $this->assertTrue(TestHelpers::isClassInArray('RedBeanModelTypeValidator',         $validators));
             $this->assertTrue(TestHelpers::isClassInArray('RedBeanModelDefaultValueValidator', $validators));
             $validators = $a->getValidatorList();
-            $this->assertEquals(7, count($validators));
+            $this->assertEquals(9, count($validators));
             $this->assertTrue(TestHelpers::isClassInArray('RedBeanModelRequiredValidator',     $validators));
             $this->assertTrue(TestHelpers::isClassInArray('CBooleanValidator',                 $validators));
             $this->assertTrue(TestHelpers::isClassInArray('RedBeanModelDefaultValueValidator', $validators));
@@ -450,7 +481,7 @@
         {
             $a = new A();
             $validators = $a->getValidators();
-            $this->assertEquals(6, count($validators));
+            $this->assertEquals(8, count($validators));
             $this->assertTrue(TestHelpers::isClassInArray('RedBeanModelRequiredValidator',     $validators));
             $this->assertTrue(TestHelpers::isClassInArray('CBooleanValidator',                 $validators));
             $this->assertTrue(TestHelpers::isClassInArray('CEmailValidator',                   $validators));
@@ -458,7 +489,7 @@
             $this->assertTrue(TestHelpers::isClassInArray('RedBeanModelTypeValidator',         $validators));
             $this->assertTrue(TestHelpers::isClassInArray('RedBeanModelDefaultValueValidator', $validators));
             $validators = $a->getValidatorList();
-            $this->assertEquals(7, count($validators));
+            $this->assertEquals(9, count($validators));
             $this->assertTrue(TestHelpers::isClassInArray('RedBeanModelRequiredValidator',     $validators));
             $this->assertTrue(TestHelpers::isClassInArray('CBooleanValidator',                 $validators));
             $this->assertTrue(TestHelpers::isClassInArray('CEmailValidator',                   $validators));
@@ -472,7 +503,7 @@
             $this->assertTrue(TestHelpers::isClassInArray('CBooleanValidator',             $validators));
 
             $validators = $a->getValidators('junk');
-            $this->assertEquals(0, count($validators));
+            $this->assertEquals(2, count($validators));
 
             $validators = $a->getValidators('uniqueRequiredEmail');
             $this->assertEquals(2, count($validators));
@@ -482,9 +513,9 @@
             $a->setScenario('Tuesday');
             $this->assertEquals('Tuesday', $a->getScenario());
             $validators = $a->getValidators();
-            $this->assertEquals(7, count($validators));
+            $this->assertEquals(9, count($validators));
             $validators = $a->getValidatorList();
-            $this->assertEquals(7, count($validators));
+            $this->assertEquals(9, count($validators));
 
             $validators = $a->getValidators('a');
             $this->assertEquals(3, count($validators));
@@ -492,7 +523,7 @@
             $this->assertTrue(TestHelpers::isClassInArray('CBooleanValidator',             $validators));
 
             $validators = $a->getValidators('junk');
-            $this->assertEquals(0, count($validators));
+            $this->assertEquals(2, count($validators));
 
             $validators = $a->getValidators('uniqueRequiredEmail');
             $this->assertEquals(3, count($validators));
@@ -503,9 +534,9 @@
             $a->setScenario('Monday');
             $this->assertEquals('Monday', $a->getScenario());
             $validators = $a->getValidators();
-            $this->assertEquals(6, count($validators));
+            $this->assertEquals(8, count($validators));
             $validators = $a->getValidatorList();
-            $this->assertEquals(7, count($validators));
+            $this->assertEquals(9, count($validators));
 
             $validators = $a->getValidators('a');
             $this->assertEquals(3, count($validators));
@@ -513,7 +544,7 @@
             $this->assertTrue(TestHelpers::isClassInArray('CBooleanValidator',             $validators));
 
             $validators = $a->getValidators('junk');
-            $this->assertEquals(0, count($validators));
+            $this->assertEquals(2, count($validators));
 
             $validators = $a->getValidators('uniqueRequiredEmail');
             $this->assertEquals(2, count($validators));
@@ -523,9 +554,9 @@
             $a->setScenario('');
             $this->assertEquals('', $a->getScenario());
             $validators = $a->getValidators();
-            $this->assertEquals(6, count($validators));
+            $this->assertEquals(8, count($validators));
             $validators = $a->getValidatorList();
-            $this->assertEquals(7, count($validators));
+            $this->assertEquals(9, count($validators));
 
             $validators = $a->getValidators('a');
             $this->assertEquals(3, count($validators));
@@ -533,7 +564,7 @@
             $this->assertTrue(TestHelpers::isClassInArray('CBooleanValidator',             $validators));
 
             $validators = $a->getValidators('junk');
-            $this->assertEquals(0, count($validators));
+            $this->assertEquals(2, count($validators));
 
             $validators = $a->getValidators('uniqueRequiredEmail');
             $this->assertEquals(2, count($validators));
@@ -770,7 +801,7 @@
             $c1 = new C();
             $c1->setAttributes($_FAKEPOST);
             $this->assertEquals(1,                 $c1->a);
-            $this->assertEquals(null,              $c1->junk);
+            $this->assertEquals('something',       $c1->junk);
             $this->assertEquals('c1@zurmoinc.com', $c1->uniqueRequiredEmail);
             $this->assertTrue($c1->validate());
             $this->assertTrue($c1->save());
@@ -803,7 +834,7 @@
             $c3 = new C();
             $c3->setAttributes($_FAKEPOST);
             $this->assertEquals('garbage',   $c3->a);
-            $this->assertEquals(null,        $c3->junk);
+            $this->assertEquals('something', $c3->junk);
             $this->assertEquals('junk',      $c3->uniqueRequiredEmail);
             $this->assertFalse($c3->validate());
             $this->assertFalse($c3->save());
@@ -811,11 +842,11 @@
 
             $c1 = C::getById($idC1);
             $this->assertEquals(1,                 $c1->a);
-            $this->assertEquals(null,              $c1->junk);
+            $this->assertEquals('something',       $c1->junk);
             $this->assertEquals('c1@zurmoinc.com', $c1->uniqueRequiredEmail);
             $values = $c1->getAttributes();
             $this->assertEquals(1,                 $values['a']);
-            $this->assertEquals(null,              $values['junk']);
+            $this->assertEquals('something',       $values['junk']);
             $this->assertEquals('c1@zurmoinc.com', $values['uniqueRequiredEmail']);
 
             $c2 = C::getById($idC2);
@@ -912,17 +943,16 @@
         public function testRedBeanModelDefaultValueValidator()
         {
             $theDefaultE = E::getByE('theDefaultE');
-
             $c1 = new C();
             $c1->a = 1;
-            $this->assertEquals(69,               $c1->defaultedInt);
-            $this->assertEquals($theDefaultE->id, $c1->eDefaulted1->id);
-            $this->assertEquals($theDefaultE->id, $c1->eDefaulted2->id);
+            $this->assertEquals(69,                     $c1->defaultedInt);
+            $this->assertEquals($theDefaultE->id,       $c1->eDefaulted1->id);
+            $this->assertEquals($theDefaultE->id,       $c1->eDefaulted2->id);
             $c1->validate();
         }
 
         /**
-         * @dependss testValidateAndGetErrors
+         * @depends testValidateAndGetErrors
          */
         public function testRedBeanModelNumberValidator()
         {
@@ -1159,27 +1189,13 @@
         }
 
         /**
-         * @depends testC
-         */
-        public function notReady_testDefaultForRelatedModel()
-        {
-            $c = new C();
-            $c->a = 1;
-            $this->assertTrue($c->validate());
-
-            $theDefaultE = E::getByE('theDefaultE');
-            $this->assertEquals($c->e2->id, $theDefaultE->id);
-            $this->assertEquals($c->e3->id, $theDefaultE->id);
-        }
-
-        /**
          * @depends testB
          */
         public function testParentModelsOnNewModelsDoNotGetRowsUntilTheyAreSaved()
         {
-            $countBefore = intval(R::getCell("select count(*) from a;"));
+            $countBefore = intval(ZurmoRedBean::getCell("select count(*) from a;"));
             $account = new B();
-            $countAfter  = intval(R::getCell("select count(*) from a;"));
+            $countAfter  = intval(ZurmoRedBean::getCell("select count(*) from a;"));
             $this->assertEquals($countBefore, $countAfter);
         }
 
@@ -1449,7 +1465,7 @@
             $this->assertGreaterThanOrEqual($now - 2, DateTimeUtil::convertDbFormatDateTimeToTimestamp($model->myDateTime));
             $this->assertLessThanOrEqual($now + 2, DateTimeUtil::convertDbFormatDateTimeToTimestamp($model->myDateTime));
 
-            $rows = R::getAll('desc testdatetimemodel');
+            $rows = ZurmoRedBean::getAll('desc testdatetimemodel');
             $this->assertEquals('mydate',     $rows[1]['Field']);
             $this->assertEquals('date',       $rows[1]['Type']);
             $this->assertEquals('mydatetime', $rows[2]['Field']);
@@ -1481,7 +1497,7 @@
             $model->forget();
             unset($model);
 
-            $rows = R::getAll('desc testblobmodel');
+            $rows = ZurmoRedBean::getAll('desc testblobmodel');
             $this->assertEquals('binarystuff',    $rows[1]['Field']);
             $this->assertEquals('blob',           $rows[1]['Type']);
             $this->assertEquals('bigbinarystuff', $rows[2]['Field']);

@@ -39,8 +39,6 @@
     */
     class ZurmoCopyModelUtilTest extends ZurmoBaseTest
     {
-        public $freeze = false;
-
         protected static $sally;
 
         protected static $groupA;
@@ -96,23 +94,13 @@
         public function setUp()
         {
             parent::setUp();
-            $freeze = false;
-            if (RedBeanDatabase::isFrozen())
-            {
-                RedBeanDatabase::unfreeze();
-                $freeze = true;
-            }
-            $this->freeze = $freeze;
             Yii::app()->user->userModel = User::getByUsername('super');
         }
 
-        public function teardown()
+        public static function getDependentTestModelClassNames()
         {
-            if ($this->freeze)
-            {
-                RedBeanDatabase::freeze();
-            }
-            parent::teardown();
+            return array('ModelToArrayAdapterTestItem', 'ModelToArrayAdapterTestItem2',
+                        'ModelToArrayAdapterTestItem3', 'ModelToArrayAdapterTestItem4');
         }
 
         public function testCopy()
@@ -225,7 +213,7 @@
             $explicitReadWriteModelPermissions = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($copyToItem);
             $permitables                       = $explicitReadWriteModelPermissions->getReadWritePermitables();
             $this->assertEquals(1, count($permitables));
-            $this->assertEquals('AAA', $permitables[self::$groupA->id]->name);
+            $this->assertEquals('AAA', $permitables[self::$groupA->getClassId('Permitable')]->name);
         }
 
         /**

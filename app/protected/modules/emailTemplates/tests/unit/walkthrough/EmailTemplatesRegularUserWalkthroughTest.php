@@ -126,8 +126,8 @@
          */
         public function testRegularUserCreateActionForWorkflow()
         {
-            // TODO: @Shoaibi/@Jason: Medium: Even if a user doesn't have module permission he can sent that modelClassName in POST
-            // nobody needs access to meetings ans contact to have that in ddl.
+            // TODO: @Shoaibi/@Jason: Low: Even if a user doesn't have module permission he can send that modelClassName in POST
+            // nobody needs access to meetings and contact to have that in ddl.
             $this->user->setRight('ContactsModule', ContactsModule::getAccessRight());
             $this->user->setRight('MeetingsModule', MeetingsModule::getAccessRight());
             $this->assertTrue($this->user->save());

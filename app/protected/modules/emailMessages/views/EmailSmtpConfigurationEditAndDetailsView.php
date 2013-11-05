@@ -41,7 +41,7 @@
     {
         public function getTitle()
         {
-            return Zurmo::t('EmailMessagesModule', 'Email Configuration');
+            return Zurmo::t('EmailMessagesModule', 'Outbound Email Configuration (SMTP)');
         }
 
         public static function getDefaultMetadata()

@@ -64,8 +64,8 @@
 	<td></td>
 </tr>
 <tr>
-	<td>clickAndWait</td>
-	<td>//ul[@id='MarketingCreateLinkActionElement']/li/ul/li[2]/a</td>
+	<td>click</td>
+	<td>link=Create Template</td>
 	<td></td>
 </tr>
 <tr>
@@ -77,6 +77,11 @@
 	<td>waitForCondition</td>
 	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
 	<td>30000</td>
+</tr>
+<tr>
+	<td>setSpeed</td>
+	<td>3000</td>
+	<td></td>
 </tr>
 <tr>
 	<td>assertTextPresent</td>
@@ -93,6 +98,11 @@
 	<td>waitForCondition</td>
 	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
 	<td>30000</td>
+</tr>
+<tr>
+	<td>setSpeed</td>
+	<td>0</td>
+	<td></td>
 </tr>
 <tr>
 	<td>waitForTextPresent</td>
@@ -147,6 +157,11 @@
 </tr>
 <tr>
 	<td>type</td>
+	<td>id=EmailTemplate_htmlContent</td>
+	<td><body>test</body></td>
+</tr>
+<tr>
+	<td>type</td>
 	<td>id=EmailTemplate_textContent</td>
 	<td>Our goal with Zurmo is to provide an easy-to-use, easy-to-customize CRM application that can be adapted to any business use case. We have taken special care to think through many different use cases and have designed a system that we believe provides a high degree of flexibility and a wide range of out-of-the-box use cases. Zurmo is capable of supporting your complex business processes, yet very simple to use.</td>
 </tr>
@@ -187,13 +202,18 @@
 </tr>
 <tr>
 	<td>assertText</td>
-	<td>//div[@id='EmailTemplateEditAndDetailsView']/div/div[2]/div[1]/table/tbody/tr[3]/td/ul/li/a</td>
-	<td>testLogo.png</td>
+	<td>//div[@id='tab1']</td>
+	<td>Our goal with Zurmo is to provide an easy-to-use, easy-to-customize CRM application that can be adapted to any business use case. We have taken special care to think through many different use cases and have designed a system that we believe provides a high degree of flexibility and a wide range of out-of-the-box use cases. Zurmo is capable of supporting your complex business processes, yet very simple to use.</td>
 </tr>
 <tr>
 	<td>assertText</td>
 	<td>//div[@id='tab1']</td>
 	<td>Our goal with Zurmo is to provide an easy-to-use, easy-to-customize CRM application that can be adapted to any business use case. We have taken special care to think through many different use cases and have designed a system that we believe provides a high degree of flexibility and a wide range of out-of-the-box use cases. Zurmo is capable of supporting your complex business processes, yet very simple to use.</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>//div[@id='tab2']</td>
+	<td><body>test</body></td>
 </tr>
 <tr>
 	<td>setSpeed</td>

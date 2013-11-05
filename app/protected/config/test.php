@@ -42,6 +42,7 @@
         array(
             'import' => array(
                 'application.tests.unit.*',
+                'application.tests.unit.models.*',
                 'ext.userinterface.UserInterface',
     ////////////////////////////////////////////////////////////////////////////////
     // Temporary - See Readme.txt in the app/protected/tests/unit/notSupposedToBeHere directory.
@@ -63,19 +64,19 @@
 
     //override and use test specific begin behavior
     $common_config['behaviors']['onBeginRequest'] = array(
-        'class' => 'application.tests.BeginRequestTestBehavior'
+        'class' => 'application.tests.common.BeginRequestTestBehavior'
     );
     //override and use INSTANCE_ROOT for handling paths during testing.
     $common_config['components']['assetManager']['baseUrl'] = INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'assets/';
-    $common_config['behaviors']['onEndRequest']['class'] = 'application.tests.EndRequestTestBehavior';
+    $common_config['behaviors']['onEndRequest']['class'] = 'application.tests.common.EndRequestTestBehavior';
     //breaks WalkthroughDocumentationTests so disabling Csrf and Cookie validation and use different class
-    $common_config['components']['clientScript']['class']              = 'application.tests.ClientScriptForTesting';
-    $common_config['components']['request']['class']                   = 'application.tests.HttpRequestForTesting';
-    $common_config['components']['userInterface']['class']             = 'application.tests.UserInterfaceForTesting';
+    $common_config['components']['clientScript']['class']              = 'application.tests.common.ClientScriptForTesting';
+    $common_config['components']['request']['class']                   = 'application.tests.common.HttpRequestForTesting';
+    $common_config['components']['userInterface']['class']             = 'application.tests.common.UserInterfaceForTesting';
     $common_config['components']['request']['enableCsrfValidation']    = false; //todo: get this working, since for production this is true.
     $common_config['components']['request']['enableCookieValidation']  = false;
-    $common_config['components']['emailHelper']['class']               = 'application.tests.EmailHelperForTesting';
-    $common_config['components']['languageHelper']['class']               = 'application.tests.ZurmoLanguageHelperForTesting';
+    $common_config['components']['emailHelper']['class']               = 'application.tests.common.EmailHelperForTesting';
+    $common_config['components']['languageHelper']['class']               = 'application.tests.common.ZurmoLanguageHelperForTesting';
     $common_config['components']['timeZoneHelper']['timeZone']         = 'UTC';
     unset($common_config['components']['apiRequest']);
     unset($common_config['components']['apiHelper']);

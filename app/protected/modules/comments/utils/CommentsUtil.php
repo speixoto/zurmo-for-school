@@ -142,6 +142,10 @@
             {
                 return Yii::app()->createAbsoluteUrl('missions/default/details/', array('id' => $model->id));
             }
+            elseif ($model instanceof Task)
+            {
+                return Yii::app()->createAbsoluteUrl('tasks/default/details/', array('id' => $model->id));
+            }
         }
     }
 ?>

@@ -74,7 +74,7 @@
 
         protected function getAjaxLinkOptions()
         {
-            return ModalView::getAjaxOptionsForModalLink($this->getAjaxLinkTitle());
+            return ModalView::getAjaxOptionsForModalLink($this->getAjaxLinkTitle(), $this->getModalContainerId());
         }
 
         protected function getDefaultRoute()
@@ -86,5 +86,14 @@
         abstract protected function getAjaxLinkTitle();
 
         abstract protected function getRouteAction();
+
+        /**
+         * Get the modal container id
+         * @return string
+         */
+        protected function getModalContainerId()
+        {
+            return ModalContainerView::ID;
+        }
     }
 ?>

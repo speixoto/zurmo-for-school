@@ -47,12 +47,13 @@
 
         public function __toString()
         {
-            return Zurmo::t('GamificationModule', '(Unnamed)');
+            return Zurmo::t('Core', '(Unnamed)');
         }
 
         /**
          * Given a user, retrieval all notifications for that user, sorted desc by Id
          * @param User $user
+         * @return array $models
          */
         public static function getAllByUser(User $user)
         {
@@ -91,7 +92,7 @@
                     'serializedData',
                 ),
                 'relations' => array(
-                    'user' => array(RedBeanModel::HAS_ONE, 'User'),
+                    'user' => array(static::HAS_ONE, 'User'),
                 ),
                 'rules' => array(
                     array('user',           'required'),
@@ -109,12 +110,19 @@
 
         /**
          * Sets the serializedData for a notification when a new level is reached
-         * @param integer $nextLevel
+         * @param integer $nextLevelValue
+         * @param integer $coinsValue
          */
-        public function setLevelChangeByNextLevelValue($nextLevelValue)
+        public function setLevelChangeByNextLevelValue($nextLevelValue, $coinsValue)
         {
             assert('is_int($nextLevelValue)');
-            $this->serializedData = serialize(array('type' => self::TYPE_LEVEL_CHANGE, 'levelValue' => $nextLevelValue));
+            assert('is_int($coinsValue)');
+            $data = array('type' => self::TYPE_LEVEL_CHANGE, 'levelValue' => $nextLevelValue);
+            if($coinsValue > 0)
+            {
+                $data['coins'] = $coinsValue;
+            }
+            $this->serializedData = serialize($data);
         }
 
         /**

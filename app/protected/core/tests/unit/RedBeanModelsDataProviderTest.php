@@ -85,6 +85,11 @@
             assert($k->save()); // Not Coding Standard
         }
 
+        public static function getDependentTestModelClassNames()
+        {
+            return array('H', 'I', 'J', 'K');
+        }
+
         public function testUnionSqlAcrossMultipleModels()
         {
             $quote        = DatabaseCompatibilityUtil::getQuote();

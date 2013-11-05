@@ -49,7 +49,7 @@
         {
             return array_merge(parent::translatedAttributeLabels($language),
                 array(
-                    'latestDateTime' => Zurmo::t('ActivitiesModule', 'Latest Date Time',  array(), null, $language),
+                    'latestDateTime' => Zurmo::t('ZurmoModule', 'Latest Date Time',  array(), null, $language),
                     'activityItems'  => Zurmo::t('ActivitiesModule', 'Activity Items',    array(), null, $language),
                 )
             );
@@ -74,7 +74,7 @@
                     'latestDateTime',
                 ),
                 'relations' => array(
-                    'activityItems' => array(RedBeanModel::MANY_MANY, 'Item'),
+                    'activityItems' => array(static::MANY_MANY, 'Item'),
                 ),
                 'rules' => array(
                     array('latestDateTime', 'required'),
@@ -88,7 +88,7 @@
                 'activityItemsModelClassNames' => array(
                     'Account',
                     'Contact',
-                    'Opportunity',
+                    'Opportunity'
                 ),
             );
             return $metadata;

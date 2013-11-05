@@ -50,29 +50,96 @@
 
         public function testCreateAndGetContactWebFormById()
         {
-            $allAttributes                      = ContactWebFormsUtil::getAllAttributes();
+            ContactWebFormTestHelper::deleteAllContactWebForms();
             $placedAttributes                   = array('firstName', 'lastName', 'companyName', 'jobTitle');
-            $contactFormAttributes              = ContactWebFormsUtil::getAllPlacedAttributes($allAttributes,
-                                                                                              $placedAttributes);
-            $attributes                         = array_keys($contactFormAttributes);
             $this->assertTrue(ContactsModule::loadStartingData());
             $contactStates                      = ContactState::getByName('New');
             $contactWebForm                     = new ContactWebForm();
             $contactWebForm->name               = 'Test Form';
-            $contactWebForm->redirectUrl        = 'http://google.com';
+            $contactWebForm->redirectUrl        = 'http://zurmo.com';
             $contactWebForm->submitButtonLabel  = 'Save';
             $contactWebForm->defaultState       = $contactStates[0];
-            $contactWebForm->serializedData     = serialize($attributes);
+            $contactWebForm->serializedData     = serialize($placedAttributes);
             $contactWebForm->defaultOwner       = Yii::app()->user->userModel;
             $this->assertTrue($contactWebForm->save());
             $id                                 = $contactWebForm->id;
             unset($contactWebForm);
             $contactWebForm = ContactWebForm::getById($id);
             $this->assertEquals('Test Form'         , $contactWebForm->name);
-            $this->assertEquals('http://google.com' , $contactWebForm->redirectUrl);
+            $this->assertEquals('http://zurmo.com'  , $contactWebForm->redirectUrl);
             $this->assertEquals('Save'              , $contactWebForm->submitButtonLabel);
             $this->assertEquals('New'               , $contactWebForm->defaultState->name);
-            $this->assertEquals($attributes         , unserialize($contactWebForm->serializedData));
+            $this->assertEquals($placedAttributes   , unserialize($contactWebForm->serializedData));
+            $contactWebForm->name                   = 'New Test Form';
+            $contactWebForm->redirectUrl            = 'http://zurmo.org';
+            $contactWebForm->submitButtonLabel      = 'Save and Redirect';
+            $this->assertTrue($contactWebForm->save());
+            $id                                     = $contactWebForm->id;
+            unset($contactWebForm);
+            $contactWebForm = ContactWebForm::getById($id);
+            $this->assertEquals('New Test Form'     , $contactWebForm->name);
+            $this->assertEquals('http://zurmo.org'  , $contactWebForm->redirectUrl);
+            $this->assertEquals('Save and Redirect' , $contactWebForm->submitButtonLabel);
+        }
+
+        /**
+         * @depends testCreateAndGetContactWebFormById
+         */
+        public function testCreateWebFormEntries()
+        {
+            $contactWebForms            = ContactWebForm::getAll();
+            $contactWebForm             = $contactWebForms[0];
+            $contactFormAttributes      = unserialize($contactWebForm->serializedData);
+            $contact                    = new Contact();
+            $contact->owner             = $contactWebForm->defaultOwner;
+            $contact->state             = $contactWebForm->defaultState;
+            $contact->firstName         = 'Super';
+            $contact->lastName          = 'Man';
+            $contact->jobTitle          = 'Superhero';
+            $contact->companyName       = 'Test Inc.';
+            $contactWebFormEntryStatus  = ContactWebFormEntry::STATUS_SUCCESS;
+            $contactWebFormEntryMessage = ContactWebFormEntry::STATUS_SUCCESS_MESSAGE;
+            $this->assertTrue($contact->save());
+
+            foreach ($contactFormAttributes as $attributeName)
+            {
+                $contactFormAttributes[$attributeName] = $contact->$attributeName;
+            }
+            $contactFormAttributes['owner']      = $contactWebForm->defaultOwner->id;
+            $contactFormAttributes['state']      = $contactWebForm->defaultState->id;
+
+            $contactWebFormEntry = new ContactWebFormEntry();
+            $contactWebFormEntry->serializedData = serialize($contactFormAttributes);
+            $contactWebFormEntry->status         = $contactWebFormEntryStatus;
+            $contactWebFormEntry->message        = $contactWebFormEntryMessage;
+            $contactWebFormEntry->contactWebForm = $contactWebForm;
+            $contactWebFormEntry->contact        = $contact;
+            $this->assertTrue($contactWebFormEntry->save());
+            unset($contactWebFormEntry);
+            $this->assertEquals(1, count($contactWebForm->entries));
+            $contactWebFormEntry = new ContactWebFormEntry();
+            $contactWebFormEntry->serializedData = serialize($contactFormAttributes);
+            $contactWebFormEntry->status         = $contactWebFormEntryStatus;
+            $contactWebFormEntry->message        = $contactWebFormEntryMessage;
+            $contactWebFormEntry->contactWebForm = $contactWebForm;
+            $contactWebFormEntry->contact        = $contact;
+            $this->assertTrue($contactWebFormEntry->save());
+            $contactWebForm->entries->add($contactWebFormEntry);
+            $contactWebFormEntryId               = $contactWebFormEntry->id;
+            unset($contactWebFormEntry);
+            $this->assertEquals(2, count($contactWebForm->entries));
+        }
+
+        /**
+         * @depends testCreateWebFormEntries
+         */
+        public function testDeleteContactWebForm()
+        {
+            $contactWebForms = ContactWebForm::getAll();
+            $this->assertEquals(1, count($contactWebForms));
+            $contactWebForms[0]->delete();
+            $contactWebForms = ContactWebForm::getAll();
+            $this->assertEquals(0, count($contactWebForms));
         }
     }
 ?>

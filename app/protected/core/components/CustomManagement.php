@@ -44,6 +44,8 @@
     {
         /**
          * Called right before the auto build is initialized in the installation process.
+         * Make sure you do not clear the cache in here if you are running any type of autobuilder such as building
+         * the globalmetadata table in order to populate it.
          * @see InstallUtil::runInstallation
          * @param MessageLogger $messageLogger
          */

@@ -36,34 +36,21 @@
 
     class MatrixReportDataProviderTest extends ZurmoBaseTest
     {
-        public $freeze = false;
-
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
             SecurityTestHelper::createSuperAdmin();
         }
 
+        public static function getDependentTestModelClassNames()
+        {
+            return array('ReportModelTestItem');
+        }
+
         public function setUp()
         {
             parent::setUp();
             Yii::app()->user->userModel = User::getByUsername('super');
-            $freeze = false;
-            if (RedBeanDatabase::isFrozen())
-            {
-                RedBeanDatabase::unfreeze();
-                $freeze = true;
-            }
-            $this->freeze = $freeze;
-        }
-
-        public function teardown()
-        {
-            if ($this->freeze)
-            {
-                RedBeanDatabase::freeze();
-            }
-            parent::teardown();
         }
 
         public function testResolveDisplayAttributes()
@@ -209,7 +196,7 @@
             $report->addDisplayAttribute($displayAttribute);
             $reportDataProvider = new MatrixReportDataProvider($report);
             $count = $reportDataProvider->calculateTotalItemCount();
-            $this->assertEquals(0, $count);
+            $this->assertEquals(1, $count);
         }
 
         public function testCalculateTotalGroupingsCount()

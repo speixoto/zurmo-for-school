@@ -67,9 +67,9 @@
 
         protected function renderContent()
         {
-            $content  = '<div class="view-toolbar-container clearfix"><div class="view-toolbar">';
+            $content  = '<div class="view-toolbar-container clearfix"><nav class="pillbox clearfix">';
             $content .= $this->renderActionElementBar(false);
-            $content .= '</div></div>';
+            $content .= '</nav></div>';
             return $content;
         }
 
@@ -84,30 +84,34 @@
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array('type'           => 'EditLink',
+                            array('type'           => 'EditMenu',
                                 'resolveToDisplay' => 'canModifyName',
-                                'label'            => "eval:Zurmo::t('ZurmoModule', 'Edit')", //was GENERAL..
-                                'htmlOptions' => array('class' => 'icon-edit')
+                                'iconClass'        => 'icon-edit',
+                                'htmlOptions' => array('class' => '')
                             ),
                             array(
-                                'type'             => 'GroupUserMembershipEditLink',
+                                'type'             => 'GroupUserMembershipEditMenu',
                                 'resolveToDisplay' => 'canModifyMemberships',
-                                'htmlOptions' => array('class' => 'icon-memberships')
+                                'iconClass'        => 'icon-memberships',
+                                'htmlOptions'      => array('class' => '')
                                 ),
                             array(
-                                'type'             => 'GroupModulePermissionsEditLink',
+                                'type'             => 'GroupModulePermissionsEditMenu',
                                 'resolveToDisplay' => 'canGivePermissions',
-                                'htmlOptions' => array('class' => 'icon-permissions')
+                                'iconClass'        => 'icon-permissions',
+                                'htmlOptions'      => array('class' => '')
                                 ),
                             array(
-                                'type'             => 'GroupRightsEditLink',
+                                'type'             => 'GroupRightsEditMenu',
                                 'resolveToDisplay' => 'canModifyRights',
-                                'htmlOptions' => array('class' => 'icon-rights')
+                                'iconClass'        => 'icon-rights',
+                                'htmlOptions'      => array('class' => '')
                                 ),
                             array(
-                                'type'             => 'GroupPoliciesEditLink',
+                                'type'             => 'GroupPoliciesEditMenu',
                                 'resolveToDisplay' => 'canModifyPolicies',
-                                'htmlOptions' => array('class' => 'icon-policies')
+                                'iconClass'        => 'icon-policies',
+                                'htmlOptions'      => array('class' => '')
                                 ),
                         ),
                     ),

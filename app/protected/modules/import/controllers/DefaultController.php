@@ -85,9 +85,7 @@
             $importView = new ImportWizardImportRulesView($this->getId(),
                                                           $this->getModule()->getId(),
                                                           $importWizardForm, $title);
-            $view       = new ImportPageView(ZurmoDefaultAdminViewUtil::
-                              makeTwoStandardViewsForCurrentUser($this, $progressBarAndStepsView, $importView));
-            echo $view->render();
+            echo $this->getImportPageView($progressBarAndStepsView, $importView)->render();
         }
 
         /**
@@ -138,9 +136,7 @@
             $progressBarAndStepsView = new ImportStepsAndProgressBarForWizardView($importRulesClassName, 1);
             $importView = new ImportWizardUploadFileView($this->getId(), $this->getModule()->getId(),
                                                          $importWizardForm, $title);
-            $view       = new ImportPageView(ZurmoDefaultAdminViewUtil::
-                              makeTwoStandardViewsForCurrentUser($this, $progressBarAndStepsView, $importView));
-            echo $view->render();
+            echo $this->getImportPageView($progressBarAndStepsView, $importView)->render();
         }
 
         /**
@@ -161,9 +157,7 @@
             $importView = new ImportWizardSetModelPermissionsView($this->getId(),
                                                                   $this->getModule()->getId(),
                                                                   $importWizardForm, $title);
-            $view       = new ImportPageView(ZurmoDefaultAdminViewUtil::
-                                makeTwoStandardViewsForCurrentUser($this, $progressBarAndStepsView, $importView));
-            echo $view->render();
+            echo $this->getImportPageView($progressBarAndStepsView, $importView)->render();
         }
 
         /**
@@ -215,7 +209,7 @@
                                                               (bool)$importWizardForm->firstRowIsHeaderRow);
             if ($importWizardForm->firstRowIsHeaderRow)
             {
-                $headerRow = ImportDatabaseUtil::getFirstRowByTableName($import->getTempTableName());
+                $headerRow = ZurmoRedBean::$writer->getFirstRowByTableName($import->getTempTableName());
                 assert('$headerRow != null');
             }
             else
@@ -249,10 +243,7 @@
                                                               $mappableAttributeIndicesAndDerivedTypes,
                                                               $importRulesClassName::getRequiredAttributesLabelsData(),
                                                               $title);
-            $view                                           = new ImportPageView(ZurmoDefaultAdminViewUtil::
-                                                              makeTwoStandardViewsForCurrentUser($this,
-                                                              $progressBarAndStepsView, $importView));
-            echo $view->render();
+            echo $this->getImportPageView($progressBarAndStepsView, $importView)->render();
         }
 
         /**
@@ -332,8 +323,7 @@
                                                                          $sequentialProcess->getAllStepsMessage(),
                                                                          $title);
                 $wrapperView->setCssClasses(array('DetailsView'));
-                $view = new ImportPageView(ZurmoDefaultAdminViewUtil::makeTwoStandardViewsForCurrentUser($this,
-                                $progressBarAndStepsView, $wrapperView));
+                $view = $this->getImportPageView($progressBarAndStepsView, $wrapperView);
             }
             else
             {
@@ -439,8 +429,7 @@
                 $progressBarAndStepsView = new ImportStepsAndProgressBarForWizardView($importRulesClassName, $stepToUse);
                 $wrapperView  = new ImportSequentialProcessContainerView($resolvedView, $sequentialProcess->getAllStepsMessage(), $title);
                 $wrapperView->setCssClasses(array('DetailsView'));
-                $view = new ImportPageView(ZurmoDefaultAdminViewUtil::makeTwoStandardViewsForCurrentUser($this,
-                                $progressBarAndStepsView, $wrapperView));
+                $view =  $this->getImportPageView($progressBarAndStepsView, $wrapperView);
             }
             else
             {
@@ -585,10 +574,11 @@
                         $tempTableName = $import->getTempTableName();
                         try
                         {
-                            $tableCreated = ImportDatabaseUtil::
-                                            makeDatabaseTableByFileHandleAndTableName($fileHandle, $tempTableName,
-                                                                                      $importWizardForm->rowColumnDelimiter,
-                                                                                      $importWizardForm->rowColumnEnclosure);
+                            $tableCreated = ImportDatabaseUtil::makeDatabaseTableByFileHandleAndTableName($fileHandle,
+                                                                                    $tempTableName,
+                                                                                    $importWizardForm->rowColumnDelimiter,
+                                                                                    $importWizardForm->rowColumnEnclosure,
+                                                                                    $importWizardForm->firstRowIsHeaderRow);
                             if (!$tableCreated)
                             {
                                 throw new FailedFileUploadException(Zurmo::t('ImportModule', 'Failed to create temporary database table from CSV.'));
@@ -598,7 +588,10 @@
                         {
                             throw new FailedFileUploadException($e->getMessage());
                         }
-
+                        catch (TooManyColumnsFailedException $e)
+                        {
+                            throw new FailedFileUploadException($e->getMessage());
+                        }
                         $fileUploadData = array(
                             'name' => $uploadedFile->getName(),
                             'type' => $uploadedFile->getType(),
@@ -620,7 +613,7 @@
                 }
                 catch (FailedFileUploadException $e)
                 {
-                    $fileUploadData = array('error' => Zurmo::t('ImportModule', 'Error') . ' ' . $e->getMessage());
+                    $fileUploadData = array('error' => Zurmo::t('Core', 'Error') . ' ' . $e->getMessage());
                     ImportWizardUtil::clearFileAndRelatedDataFromImport($import);
                 }
             }
@@ -678,6 +671,34 @@
             assert('is_bool($firstRowIsHeaderRow)');
             $config = array('pagination' => array('pageSize' => 1));
             return    new ImportDataProvider($import->getTempTableName(), $firstRowIsHeaderRow, $config);
+        }
+
+        public function actionUpdate($id, $attribute, $item, $value)
+        {
+            assert('$id != null && $id != ""');
+            assert('$attribute != null && $attribute != ""');
+            assert('$item != null && $item != ""');
+            $id     = intval($id);
+            $item   = intval($item);
+            $import = Import::getById($id);
+            ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($import);
+            ImportDatabaseUtil::updateRowValue($import->getTempTableName(), $item, $attribute, $value);
+        }
+
+        protected function getImportPageView($progressBarAndStepsView, $importView)
+        {
+            $breadCrumbLinks = array(
+                Zurmo::t('ZurmoModule', 'Import'),
+                Zurmo::t('ZurmoModule', 'Create')
+            );
+            $view       = new ImportPageView(ZurmoDefaultAdminViewUtil::makeTwoViewsWithBreadcrumbsForCurrentUser(
+                $this,
+                $progressBarAndStepsView,
+                $importView,
+                $breadCrumbLinks,
+                'SettingsBreadCrumbView'
+            ));
+            return $view;
         }
     }
 ?>

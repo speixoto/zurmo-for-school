@@ -54,7 +54,8 @@
         {
             if (parent::beforeSave())
             {
-                if (!isset($this->originalAttributeValues['probability']))
+                $automaticMappingDisabled = OpportunitiesModule::isAutomaticProbabilityMappingDisabled();
+                if (!isset($this->originalAttributeValues['probability']) && $automaticMappingDisabled === false)
                 {
                     $this->resolveStageToProbability();
                 }
@@ -72,7 +73,7 @@
             {
                 if (trim($this->name) == '')
                 {
-                    return Zurmo::t('OpportunitiesModule', '(Unnamed)');
+                    return Zurmo::t('Core', '(Unnamed)');
                 }
                 return $this->name;
             }
@@ -96,13 +97,13 @@
                 'closeDate'   => Zurmo::t('OpportunitiesModule', 'Close Date',  array(), null, $language),
                 'contacts'    => Zurmo::t('ContactsModule',      'ContactsModulePluralLabel',   $params, null, $language),
                 'description' => Zurmo::t('ZurmoModule',         'Description',  array(), null, $language),
-                'meetings'    => Zurmo::t('MeetingsModule',      'Meetings',  array(), null, $language),
+                'meetings'    => Zurmo::t('MeetingsModule',      'MeetingsModulePluralLabel', $params, null, $language),
                 'name'        => Zurmo::t('ZurmoModule',         'Name',  array(), null, $language),
-                'notes'       => Zurmo::t('NotesModule',         'Notes',  array(), null, $language),
+                'notes'       => Zurmo::t('NotesModule',         'NotesModulePluralLabel', $params, null, $language),
                 'probability' => Zurmo::t('OpportunitiesModule', 'Probability',  array(), null, $language),
                 'source'      => Zurmo::t('ContactsModule',      'Source',   array(), null, $language),
-                'stage'       => Zurmo::t('OpportunitiesModule', 'Stage',  array(), null, $language),
-                'tasks'       => Zurmo::t('TasksModule',         'Tasks',  array(), null, $language)));
+                'stage'       => Zurmo::t('ZurmoModule',         'Stage',  array(), null, $language),
+                'tasks'       => Zurmo::t('TasksModule',         'TasksModulePluralLabel', $params, null, $language)));
         }
 
         public static function canSaveMetadata()
@@ -121,20 +122,21 @@
                     'probability',
                 ),
                 'relations' => array(
-                    'account'       => array(RedBeanModel::HAS_ONE,   'Account'),
-                    'amount'        => array(RedBeanModel::HAS_ONE,   'CurrencyValue',    RedBeanModel::OWNED,
-                                             RedBeanModel::LINK_TYPE_SPECIFIC, 'amount'),
-                    'products'      => array(RedBeanModel::HAS_MANY, 'Product'),
-                    'contacts'      => array(RedBeanModel::MANY_MANY, 'Contact'),
-                    'stage'         => array(RedBeanModel::HAS_ONE,   'OwnedCustomField', RedBeanModel::OWNED,
-                                             RedBeanModel::LINK_TYPE_SPECIFIC, 'stage'),
-                    'source'        => array(RedBeanModel::HAS_ONE,   'OwnedCustomField', RedBeanModel::OWNED,
-                                             RedBeanModel::LINK_TYPE_SPECIFIC, 'source'),
+                    'account'       => array(static::HAS_ONE,   'Account'),
+                    'amount'        => array(static::HAS_ONE,   'CurrencyValue',    static::OWNED,
+                                             static::LINK_TYPE_SPECIFIC, 'amount'),
+                    'products'      => array(static::HAS_MANY, 'Product'),
+                    'contacts'      => array(static::MANY_MANY, 'Contact'),
+                    'stage'         => array(static::HAS_ONE,   'OwnedCustomField', static::OWNED,
+                                             static::LINK_TYPE_SPECIFIC, 'stage'),
+                    'source'        => array(static::HAS_ONE,   'OwnedCustomField', static::OWNED,
+                                             static::LINK_TYPE_SPECIFIC, 'source'),
+                    'projects'      => array(static::MANY_MANY, 'Project'),
                 ),
                 'derivedRelationsViaCastedUpModel' => array(
-                    'meetings' => array(RedBeanModel::MANY_MANY, 'Meeting', 'activityItems'),
-                    'notes'    => array(RedBeanModel::MANY_MANY, 'Note',    'activityItems'),
-                    'tasks'    => array(RedBeanModel::MANY_MANY, 'Task',    'activityItems'),
+                    'meetings' => array(static::MANY_MANY, 'Meeting', 'activityItems'),
+                    'notes'    => array(static::MANY_MANY, 'Note',    'activityItems'),
+                    'tasks'    => array(static::MANY_MANY, 'Task',    'activityItems'),
                 ),
                 'rules' => array(
                     array('amount',        'required'),
@@ -143,7 +145,7 @@
                     array('description',   'type',      'type' => 'string'),
                     array('name',          'required'),
                     array('name',          'type',      'type' => 'string'),
-                    array('name',          'length',    'min'  => 3, 'max' => 64),
+                    array('name',          'length',    'min'  => 1, 'max' => 64),
                     array('probability',   'type',      'type' => 'integer'),
                     array('probability',   'numerical', 'min' => 0, 'max' => 100),
                     array('probability',   'required'),

@@ -40,7 +40,7 @@
         {
             return array(
                     'name' => 'summary',
-                    'header' => Zurmo::t('SocialItemsModule', 'Summary'),
+                    'header' => Zurmo::t('Core', 'Summary'),
                     'type'  => 'raw',
                     'value'  => 'SocialItemsUtil::renderItemAndCommentsContent($data, "' .
                                 $this->view->redirectUrl . '", "' . $this->view->getRenderToUserString() . '")',

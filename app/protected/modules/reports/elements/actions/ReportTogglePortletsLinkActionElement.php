@@ -56,8 +56,8 @@
             if ($this->hasRuntimeFilters())
             {
                 $htmlOptions = array('onClick' => 'js:$(".RuntimeFiltersForPortletView").toggle();');
-                $label       = ZurmoHtml::label(Zurmo::t('ReportsModule', 'Filters'), Zurmo::t('ReportsModule', 'Filters'), array('class' => 'label-for-report-widgets'));
-                $content    .= ZurmoHtml::checkBox(Zurmo::t('ReportsModule', 'Filters'), true, $htmlOptions) . $label;
+                $label       = ZurmoHtml::label(Zurmo::t('Core', 'Filters'), Zurmo::t('Core', 'Filters'), array('class' => 'label-for-report-widgets'));
+                $content    .= ZurmoHtml::checkBox(Zurmo::t('Core', 'Filters'), true, $htmlOptions) . $label;
             }
             if ($this->hasChart())
             {
@@ -66,8 +66,8 @@
                 $content    .= ZurmoHtml::checkBox(Zurmo::t('ReportsModule', 'Chart'), true, $htmlOptions) . $label;
             }
             $htmlOptions = array('onClick' => 'js:$(".ReportResultsGridForPortletView").toggle();');
-            $label       = ZurmoHtml::label(Zurmo::t('ReportsModule', 'Grid'), Zurmo::t('ReportsModule', 'Grid'), array('class' => 'label-for-report-widgets'));
-            $content    .= ZurmoHtml::checkBox(Zurmo::t('ReportsModule', 'Grid'), true, $htmlOptions) . $label;
+            $label       = ZurmoHtml::label(Zurmo::t('Core', 'Grid'), Zurmo::t('Core', 'Grid'), array('class' => 'label-for-report-widgets'));
+            $content    .= ZurmoHtml::checkBox(Zurmo::t('Core', 'Grid'), true, $htmlOptions) . $label;
             $htmlOptions = array('onClick' => 'js:$(".ReportSQLForPortletView").toggle();');
             $label       = ZurmoHtml::label(Zurmo::t('ReportsModule', 'SQL'), Zurmo::t('ReportsModule', 'SQL'), array('class' => 'label-for-report-widgets'));
             $content    .= ZurmoHtml::checkBox(Zurmo::t('ReportsModule', 'SQL'), false, $htmlOptions) . $label;
@@ -79,7 +79,7 @@
          */
         protected function getDefaultLabel()
         {
-            return Zurmo::t('ReportsModule', 'Toggle Results');
+            return Zurmo::t('Core', 'Toggle Results');
         }
 
         /**

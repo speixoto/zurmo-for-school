@@ -139,7 +139,7 @@
             return array(
                 'READ'   => Zurmo::t('ZurmoModule', 'Read'),
                 'WRITE'  => Zurmo::t('ZurmoModule', 'Write'),
-                'DELETE' => Zurmo::t('ZurmoModule', 'Delete'),
+                'DELETE' => Zurmo::t('Core', 'Delete'),
             );
         }
     }

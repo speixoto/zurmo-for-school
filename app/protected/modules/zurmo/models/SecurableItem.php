@@ -44,6 +44,18 @@
          */
         private $_explicitReadWriteModelPermissionsForWorkflow;
 
+        /**
+         * Permitables we should add to model in afterSave()
+         * @var array
+         */
+        private $_permitablesToAttachAfterSave  = array();
+
+        /**
+         * Permitables we should remove from model in afterSave()
+         * @var array
+         */
+        private $_permitablesToDetachAfterSave  = array();
+
         public function getExplicitReadWriteModelPermissionsForWorkflow()
         {
             return $this->_explicitReadWriteModelPermissionsForWorkflow;
@@ -156,7 +168,7 @@
                     assert('$permitableId > 0');
                     $className       = get_class($this);
                     $moduleName      = static::getModuleClassName();
-                    $cachingOn  = DB_CACHING_ON ? 1 : 0;
+                    $cachingOn  = PermissionsCache::supportsAndAllowsDatabaseCaching() ? 1 : 0;
                     $combinedPermissions = intval(ZurmoDatabaseCompatibilityUtil::
                                                     callFunction("get_securableitem_actual_permissions_for_permitable($securableItemId, $permitableId, '$className', '$moduleName', $cachingOn)"));
                     PermissionsCache::cacheCombinedPermissions($this, $permitable, $combinedPermissions);
@@ -317,6 +329,8 @@
          * @param Permitable $permitable
          * @param int $permissions
          * @param array $type
+         * @return bool true/false if permissions was added. if false, the the permission already
+         * existed
          */
         public function addPermissions(Permitable $permitable, $permissions, $type = Permission::ALLOW)
         {
@@ -351,6 +365,11 @@
                 $permission->type        = $type;
                 $permission->permissions = $permissions;
                 $this->permissions->add($permission);
+                return true;
+            }
+            else
+            {
+               return false;
             }
         }
 
@@ -460,7 +479,7 @@
             $metadata = parent::getDefaultMetadata();
             $metadata[__CLASS__] = array(
                 'relations' => array(
-                    'permissions' => array(RedBeanModel::HAS_MANY, 'Permission', RedBeanModel::OWNED),
+                    'permissions' => array(static::HAS_MANY, 'Permission', static::OWNED),
                 ),
             );
             return $metadata;
@@ -476,6 +495,167 @@
          */
         public static function hasReadPermissionsOptimization()
         {
+            return false;
+        }
+
+        /**
+         * Handle Permitable Attachment/Detachment after model has been saved.
+         */
+        protected function afterSave()
+        {
+            $this->resolvePermitablesToUpdate();
+            parent::afterSave();
+        }
+
+        /**
+         * Resolve Permitables to be updated, save model again if required.
+         */
+        protected function resolvePermitablesToUpdate()
+        {
+            $explicitReadWriteModelPermissions  = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($this);
+            $this->resolveRelativePermitablesToBeUpdated($explicitReadWriteModelPermissions);
+            if ($this->isPermitableUpdateRequired($explicitReadWriteModelPermissions))
+            {
+                $this->updatePermitables($explicitReadWriteModelPermissions);
+            }
+        }
+
+        /**
+         * Updates permitables for current model.
+         * @param ExplicitReadWriteModelPermissions $explicitReadWriteModelPermissions
+         * @return bool
+         * @throws NotSupportedException
+         */
+        protected function updatePermitables(ExplicitReadWriteModelPermissions $explicitReadWriteModelPermissions)
+        {
+            $this->isSaving = false;
+            $this->resolvePermitablesToAttach($explicitReadWriteModelPermissions);
+            $this->resolvePermitablesToDetach($explicitReadWriteModelPermissions);
+            $permissionsUpdated = ExplicitReadWriteModelPermissionsUtil::resolveExplicitReadWriteModelPermissions(
+                                                                                $this,
+                                                                                $explicitReadWriteModelPermissions);
+            if (!$permissionsUpdated || !$this->save(false))
+            {
+                throw new NotSupportedException('Unable to update permissions of model');
+            }
+        }
+
+        /**
+         * Return true/false depending on if we need to update Permitables or not.
+         * @param ExplicitReadWriteModelPermissions $explicitReadWriteModelPermissions
+         * @return bool
+         */
+        protected function isPermitableUpdateRequired(ExplicitReadWriteModelPermissions $explicitReadWriteModelPermissions)
+        {
+            return (!(empty($this->_permitablesToAttachAfterSave) && empty($this->_permitablesToDetachAfterSave)));
+        }
+
+        /**
+         * Resolves relative _permitablesToDetachAfterSave and _permitablesToAttachAfterSave.
+         * _permitablesToDetachAfterSave is rid of items that exist in _permitablesToAttachAfterSave too.
+         * _permitablesToAttachAfterSave is rid of items that are already attached to model due to previous save.
+         * @param ExplicitReadWriteModelPermissions $explicitReadWriteModelPermissions
+         */
+        protected function resolveRelativePermitablesToBeUpdated(ExplicitReadWriteModelPermissions $explicitReadWriteModelPermissions)
+        {
+            // If same permitable exists in the attachment and detachment list, attachment takes precedence
+            // this has to be done before we calculate relative attachment list below else we would end
+            // up removing a permitable that was in attachment list and already existing too.
+            $this->_permitablesToDetachAfterSave = array_diff($this->_permitablesToDetachAfterSave,
+                                                                $this->_permitablesToAttachAfterSave);
+
+            // calculate new permitables to add relative to existing ones, do not re-add existing ones.
+            $existingPermitables                 = $explicitReadWriteModelPermissions->getReadWritePermitables();
+            $this->_permitablesToAttachAfterSave = array_diff($this->_permitablesToAttachAfterSave, $existingPermitables);
+        }
+
+        /**
+         * Add desired RW permitables to model, reset the _permitablesToAttachAfterSave array once done.
+         * @param ExplicitReadWriteModelPermissions $explicitReadWriteModelPermissions
+         */
+        protected function resolvePermitablesToAttach(ExplicitReadWriteModelPermissions $explicitReadWriteModelPermissions)
+        {
+            foreach ($this->_permitablesToAttachAfterSave as $permitable)
+            {
+                $explicitReadWriteModelPermissions->addReadWritePermitable($permitable);
+            }
+            // this is what prevents infinite loops of saves
+            $this->_permitablesToAttachAfterSave = array();
+        }
+
+        /**
+         * Remove desired RW permitables from model, reset the _permitablesToDetachAfterSave array once done.
+         * @param ExplicitReadWriteModelPermissions $explicitReadWriteModelPermissions
+         */
+        protected function resolvePermitablesToDetach(ExplicitReadWriteModelPermissions $explicitReadWriteModelPermissions)
+        {
+            foreach ($this->_permitablesToDetachAfterSave as $permitable)
+            {
+                $explicitReadWriteModelPermissions->addReadWritePermitableToRemove($permitable);
+            }
+            // this is what prevents infinite loops of saves
+            $this->_permitablesToDetachAfterSave = array();
+        }
+
+        /**
+         * Add a permitable to list of permitables to be attached on model's afterSave
+         * checkDetachBeforeAddition ensures that we do not have same permitable in attachment
+         * as well as detachment. If found in detachment list, it is removed from there.
+         * @param Permitable $permitable
+         * @param bool $checkDetachBeforeAddition
+         */
+        public function addPermitableToAttachAfterSave(Permitable $permitable, $checkDetachBeforeAddition = false)
+        {
+            if (!$checkDetachBeforeAddition || !$this->removePermitableFromPermitablesToDetachAfterSave($permitable))
+            {
+                $this->_permitablesToAttachAfterSave[] = $permitable;
+            }
+        }
+
+        /**
+         * Remove a permitable from the list of permitables to be attached on model's afterSave
+         * @param Permitable $permitable
+         * @return bool
+         */
+        public function removePermitableFromPermitablesToAttachAfterSave(Permitable $permitable)
+        {
+            $key = array_search($permitable, $this->_permitablesToAttachAfterSave);
+            if ($key !== false)
+            {
+                unset($this->_permitablesToAttachAfterSave[$key]);
+                return true;
+            }
+            return false;
+        }
+
+        /**
+         * Add a permitable to list of permitables to be detached on model's afterSave
+         * checkAttachBeforeAddition ensures that we do not have same permitable in detachment
+         * as well as attachment. If found in attachment list, it is removed from there.
+         * @param Permitable $permitable
+         * @param bool $checkAttachBeforeAddition
+         */
+        public function addPermitableToDetachAfterSave(Permitable $permitable, $checkAttachBeforeAddition = false)
+        {
+            if (!$checkAttachBeforeAddition || !$this->removePermitableFromPermitablesToAttachAfterSave($permitable))
+            {
+                $this->_permitablesToDetachAfterSave[] = $permitable;
+            }
+        }
+
+        /**
+         * Remove a permitable from the list of permitables to be detached on model's afterSave
+         * @param Permitable $permitable
+         * @return bool
+         */
+        public function removePermitableFromPermitablesToDetachAfterSave(Permitable $permitable)
+        {
+            $key = array_search($permitable, $this->_permitablesToDetachAfterSave);
+            if ($key !== false)
+            {
+                unset($this->_permitablesToDetachAfterSave[$key]);
+                return true;
+            }
             return false;
         }
     }

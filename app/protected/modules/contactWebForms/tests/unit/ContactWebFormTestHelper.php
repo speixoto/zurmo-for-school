@@ -42,11 +42,7 @@
             {
                 $owner = Yii::app()->user->userModel;
             }
-            $allAttributes                      = ContactWebFormsUtil::getAllAttributes();
             $placedAttributes                   = array('firstName', 'lastName', 'companyName', 'jobTitle');
-            $contactFormAttributes              = ContactWebFormsUtil::getAllPlacedAttributes($allAttributes,
-                                                                                              $placedAttributes);
-            $attributes                         = array_keys($contactFormAttributes);
             ContactsModule::loadStartingData();
             $contactStates                      = ContactState::getByName('New');
             $contactWebForm                     = new ContactWebForm();
@@ -54,7 +50,7 @@
             $contactWebForm->redirectUrl        = 'http://www.zurmo.com/';
             $contactWebForm->submitButtonLabel  = 'Save';
             $contactWebForm->defaultState       = $contactStates[0];
-            $contactWebForm->serializedData     = serialize($attributes);
+            $contactWebForm->serializedData     = serialize($placedAttributes);
             $contactWebForm->defaultOwner       = $owner;
             $saved                              = $contactWebForm->save();
             assert('$saved');
@@ -63,12 +59,17 @@
 
         public static function getContactWebFormAttributes()
         {
-            $allAttributes                              = ContactWebFormsUtil::getAllAttributes();
-            $placedAttributes                           = array('firstName', 'lastName', 'companyName', 'jobTitle');
-            $contactFormAttributes                      = ContactWebFormsUtil::getAllPlacedAttributes($allAttributes,
-                                                                                                      $placedAttributes);
-            $attributes                                 = array_keys($contactFormAttributes);
-            return $attributes;
+            $placedAttributes                   = array('firstName', 'lastName', 'companyName', 'jobTitle');
+            return $placedAttributes;
+        }
+
+        public static function deleteAllContactWebForms()
+        {
+            $contactWebForms = ContactWebForm::getAll();
+            foreach ($contactWebForms as $webForm)
+            {
+                $webForm->delete();
+            }
         }
     }
 ?>

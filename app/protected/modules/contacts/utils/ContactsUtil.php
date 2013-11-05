@@ -333,5 +333,35 @@
                 }
             }
         }
+
+        /**
+         * Given a contact model and a keyword, render the strval of the contact and the matched email address
+         * that the keyword matches. If the keyword does not match any email addresses on the contact, render the
+         * primary email if it exists. Otherwise just render the strval contact.
+         * @param object $contact - model
+         * @param string $keyword
+         */
+        public static function renderHtmlContentLabelFromContactAndKeyword($contact, $keyword)
+        {
+            assert('$contact instanceof Contact && $contact->id > 0');
+            assert('$keyword == null || is_string($keyword)');
+
+            if (substr($contact->secondaryEmail->emailAddress, 0, strlen($keyword)) === $keyword)
+            {
+                $emailAddressToUse = $contact->secondaryEmail->emailAddress;
+            }
+            else
+            {
+                $emailAddressToUse = $contact->primaryEmail->emailAddress;
+            }
+            if ($emailAddressToUse != null)
+            {
+                return strval($contact) . '&#160&#160<b>' . strval($emailAddressToUse) . '</b>';
+            }
+            else
+            {
+                return strval($contact);
+            }
+        }
     }
 ?>

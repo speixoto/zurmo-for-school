@@ -48,23 +48,26 @@
 
                 ),
                 'relations' => array(
-                    'e'           => array(RedBeanModel::HAS_ONE,  'E'),
-                    'eRequired'   => array(RedBeanModel::HAS_ONE,  'E', RedBeanModel::NOT_OWNED,
-                                           RedBeanModel::LINK_TYPE_SPECIFIC, 'eRequired'),
-                    'eUnique'     => array(RedBeanModel::HAS_ONE,  'E', RedBeanModel::NOT_OWNED,
-                                           RedBeanModel::LINK_TYPE_SPECIFIC, 'eUnique'),
-                    'eDefaulted1' => array(RedBeanModel::HAS_ONE,  'E', RedBeanModel::NOT_OWNED,
-                                           RedBeanModel::LINK_TYPE_SPECIFIC, 'eDefaulted1'),
-                    'eDefaulted2' => array(RedBeanModel::HAS_ONE,  'E', RedBeanModel::NOT_OWNED,
-                                           RedBeanModel::LINK_TYPE_SPECIFIC, 'eDefaulted2'),
-                    'eMany'       => array(RedBeanModel::HAS_MANY, 'E')
+                    'e'           => array(static::HAS_ONE,  'E'),
+                    'eRequired'   => array(static::HAS_ONE,  'E', static::NOT_OWNED,
+                                           static::LINK_TYPE_SPECIFIC, 'eRequired'),
+                    'eUnique'     => array(static::HAS_ONE,  'E', static::NOT_OWNED,
+                                           static::LINK_TYPE_SPECIFIC, 'eUnique'),
+                    'eDefaulted1' => array(static::HAS_ONE,  'E', static::NOT_OWNED,
+                                           static::LINK_TYPE_SPECIFIC, 'eDefaulted1'),
+                    'eDefaulted2' => array(static::HAS_ONE,  'E', static::NOT_OWNED,
+                                           static::LINK_TYPE_SPECIFIC, 'eDefaulted2'),
+                    'eMany'       => array(static::HAS_MANY, 'E')
                 ),
                 'rules' => array(
-                    array('eRequired',    'required'),
-                    array('eUnique',      'unique'),
-                    array('defaultedInt', 'default', 'value' => 69),
-                    array('eDefaulted1',  'default', 'value' => E::getByE('theDefaultE')),
-                    array('eDefaulted2',  'default', 'value' => self::getTheDefaultE()),
+                    array('eRequired',      'required'),
+                    array('eUnique',        'unique'),
+                    array('c',              'type', 'type' => 'string'),
+                    array('c',              'length', 'max' => 255),
+                    array('defaultedInt',   'type', 'type' => 'integer'),
+                    array('defaultedInt',   'default', 'value' => 69),
+                    array('eDefaulted1',    'default', 'value' => E::getByE('theDefaultE')),
+                    array('eDefaulted2',    'default', 'value' => self::getTheDefaultE()),
                 ),
             );
             return $metadata;
@@ -72,7 +75,7 @@
 
         protected static function getTheDefaultE()
         {
-            if (self::$theDefaultE === null)
+            if (self::$theDefaultE === null || !self::theDefaultEIsAvailable())
             {
                 // The tests needing the default E must create it.
                 // In real life it would need to make sense that it
@@ -80,6 +83,19 @@
                 self::$theDefaultE = E::getByE('theDefaultE');
             }
             return self::$theDefaultE;
+        }
+
+        protected static function theDefaultEIsAvailable()
+        {
+            try
+            {
+                $e = E::getById(self::$theDefaultE->id);
+                return true;
+            }
+            catch (NotFoundException $ex)
+            {
+                return false;
+            }
         }
     }
 ?>

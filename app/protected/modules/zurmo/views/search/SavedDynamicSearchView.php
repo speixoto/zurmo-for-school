@@ -190,7 +190,7 @@
             $content              .= $form->hiddenField($this->model, 'savedSearchId');
             $content              .= $form->hiddenField($this->model, 'sortAttribute');
             $content              .= $form->hiddenField($this->model, 'sortDescending');
-            $params['label']       = Zurmo::t('ZurmoModule', 'Save');
+            $params['label']       = Zurmo::t('Core', 'Save');
             $params['htmlOptions'] = array('id'      => 'save-advanced-search',
                                            'value'   => 'saveSearch',
                                            'onclick' => 'js:$(this).addClass("attachLoadingTarget");');
@@ -236,7 +236,7 @@
             // End Not Coding Standard
             if ($this->model->savedSearchId != null)
             {
-                $label = Zurmo::t('ZurmoModule', 'Delete') . "<span class='icon'></span>";
+                $label = Zurmo::t('Core', 'Delete') . "<span class='icon'></span>";
                 return ZurmoHtml::link($label, "#", array( 'id'      => 'removeSavedSearch',
                                                            'class'   => 'remove',
                                                            'onclick' => "deleteSavedSearchAndRemoveFromView('" . $this->model->savedSearchId . "')"));

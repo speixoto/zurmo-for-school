@@ -48,7 +48,7 @@
          */
         protected static function renderAccessFailureContent()
         {
-            $message = Zurmo::t('ApiModule', 'You do not have rights to perform this action.');
+            $message = Zurmo::t('ZurmoModule', 'You do not have rights to perform this action.');
             throw new SecurityException($message);
         }
     }

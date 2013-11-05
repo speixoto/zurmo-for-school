@@ -217,7 +217,7 @@
         {
             if ($this->type == self::TYPE_STATIC && empty($this->value) && $this->shouldSetValue)
             {
-                $this->addError('value', Zurmo::t('WorkflowsModule', 'Value cannot be blank.'));
+                $this->addError('value', Zurmo::t('Core', 'Value cannot be blank.'));
                 return false;
             }
             return true;

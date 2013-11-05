@@ -48,7 +48,7 @@
             {
                 return array(
                     'name' => 'lastName',
-                    'header' => Zurmo::t('ReportsModule', 'Name'),
+                    'header' => Zurmo::t('Core', 'Name'),
                     'type' => 'raw',
                     'value' => $this->view->getLinkString('$data->getModel("' . $this->attribute . '")', $this->attribute),
                 );
@@ -57,7 +57,7 @@
             {
                 return array(
                     'name' => 'lastName',
-                    'header' => Zurmo::t('ReportsModule', 'Name'),
+                    'header' => Zurmo::t('Core', 'Name'),
                     'value'  => 'strval($data->getModel("' . $this->attribute . '"))',
                 );
             }

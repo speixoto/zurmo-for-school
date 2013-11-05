@@ -56,7 +56,7 @@
         {
             if (trim($this->name) == '')
             {
-                return Zurmo::t('ProductTemplatesModule', '(None)');
+                return Zurmo::t('Core', '(None)');
             }
             return $this->name;
         }
@@ -73,7 +73,7 @@
                     'discountOrMarkupPercentage',
                 ),
                 'relations' => array(
-                    'productTemplate' => array(RedBeanModel::HAS_ONE, 'ProductTemplate'),
+                    'productTemplate' => array(static::HAS_ONE, 'ProductTemplate'),
                 ),
                 'rules' => array(
                     array('type',                        'required'),

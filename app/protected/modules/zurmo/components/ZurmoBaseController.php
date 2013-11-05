@@ -559,7 +559,7 @@
                             MassDeleteInsufficientPermissionSkipSavingUtil::clear($modelClassName);
                             $notificationContent =  $successfulCount . ' ' .
                                                     LabelUtil::getUncapitalizedRecordLabelByCount($successfulCount) .
-                                                    ' ' . Zurmo::t('ZurmoModule', 'successfully deleted') . '.';
+                                                    ' ' . Zurmo::t('Core', 'successfully deleted') . '.';
                             if ($skipCount > 0)
                             {
                                 $notificationContent .= ' ' .
@@ -679,11 +679,12 @@
 
         protected static function resolveViewIdByMassActionId($actionId, $returnProgressViewName, $moduleName = null)
         {
-            if (strpos($actionId, 'massEdit') === 0 || strpos($actionId, 'massDelete') === 0)
+            // TODO: @Shoaibi/@Jason: Low: Candidate for MassActionController
+            if (static::applyGenericViewIdGenerationRules($actionId)) // decides when to use generic rules to build ViewId
             {
                 $viewNameSuffix    = (!$returnProgressViewName)? 'View': 'ProgressView';
                 $viewNamePrefix    = static::resolveMassActionId($actionId, true);
-                if (strpos($actionId, 'massEdit') === 0)
+                if (MassActionUtil::isMassEditLikeAction($actionId))
                 {
                     $viewNamePrefix = $moduleName . $viewNamePrefix;
                 }
@@ -695,14 +696,21 @@
             }
         }
 
+        protected static function applyGenericViewIdGenerationRules($actionId)
+        {
+            // TODO: @Shoaibi/@Jason: Low: Candidate for MassActionController
+            // overridden in Contacts/DefaultController
+            return MassActionUtil::isMassEditOrDeleteLikeAction($actionId);
+        }
+
         protected static function resolveTitleByMassActionId($actionId)
         {
             // TODO: @Shoaibi/@Jason: Low: Candidate for MassActionController
-            if (strpos($actionId, 'massDelete') === 0)
+            if (MassActionUtil::isMassDeleteLikeAction($actionId))
             {
                 return Zurmo::t('Core', 'Mass Delete');
             }
-            elseif (strpos($actionId, 'massEdit') === 0)
+            elseif (MassActionUtil::isMassEditLikeAction($actionId))
             {
                 return Zurmo::t('Core', 'Mass Update');
             }
@@ -747,6 +755,7 @@
             assert('$redirectUrlParams == null || is_array($redirectUrlParams) || is_string($redirectUrlParams)');
             if (ControllerSecurityUtil::doesCurrentUserHavePermissionOnSecurableItem($model, Permission::READ))
             {
+                $this->beforeRedirect($model);
                 $this->redirectAfterSaveModel($model->id, $redirectUrlParams);
             }
             else
@@ -805,7 +814,8 @@
                                                                                         $stateMetadataAdapterClassName,
                                                                                         $searchView
                                                                                     );
-            if (strpos($actionId, 'Progress') !== false)
+            static::resolveOffsetForDataProvider($dataProvider, $actionId);
+            if (MassActionUtil::isMassProgressLikeAction($actionId))
             {
                 $this->massActionProgress($model, $pageSize, $title, $actionId, $dataProvider);
             }
@@ -911,6 +921,7 @@
                                                              $page, $pageSize, $insufficientPermissionSkipSavingUtil,
                                                              $postModelClassName, $actionId)
         {
+            // TODO: @Shoaibi/@Jason: Low: Candidate for MassActionController
             $doMassActionFunctionName               = 'processModelsForMassActionWithoutScoring';
             $doMassActionFunctionArguments          = array(
                                                             $modelClassName,
@@ -921,7 +932,7 @@
                                                             $insufficientPermissionSkipSavingUtil,
                                                             $actionId
                                                         );
-            if (strpos($actionId, 'massEdit') === 0 && strpos($actionId, 'Progress') === false)
+            if (MassActionUtil::isMassEditLikeAction($actionId) && !MassActionUtil::isMassProgressLikeAction($actionId))
             {
                 $doMassActionFunctionName           = 'processModelsForMassEditAction';
                 array_unshift($doMassActionFunctionArguments, $postModelClassName, $model);
@@ -1083,7 +1094,8 @@
 
         protected static function resolvePostDataByMassActionId($actionId, $modelClassName = null)
         {
-            if (strpos($actionId, 'massEdit') === 0)
+            // TODO: @Shoaibi/@Jason: Low: Candidate for MassActionController
+            if (MassActionUtil::isMassEditLikeAction($actionId))
             {
                 PostUtil::sanitizePostForSavingMassEdit($modelClassName);
             }
@@ -1094,7 +1106,7 @@
         {
             // TODO: @Shoaibi/@Jason: Low: Candidate for MassActionController
             $selectedRecordCount = static::getSelectedRecordCountByResolvingSelectAllFromGet($dataProvider);
-            if (strpos($actionId, 'Progress') !== false && strpos($actionId, 'massEdit') === false)
+            if (MassActionUtil::isMassProgressLikeAction($actionId) && !MassActionUtil::isMassEditLikeAction($actionId))
             {
                 $selectedRecordCount = ArrayUtil::getArrayValue($postData, 'selectedRecordCount');
             }
@@ -1114,7 +1126,7 @@
         {
             // TODO: @Shoaibi/@Jason: Low: Candidate for MassActionController
             $type = 'massEditProgressPageSize';
-            if (strpos($actionId, 'massDelete') === 0)
+            if (MassActionUtil::isMassDeleteLikeAction($actionId))
             {
                 $type = 'massDeleteProgressPageSize';
             }
@@ -1125,7 +1137,7 @@
         {
             // TODO: @Shoaibi/@Jason: Low: Candidate for MassActionController
             $toggle = ($mute)? 'mute' : 'unmute';
-            $function = (strpos($actionId, 'massDelete') === 0)? 'Delete' : 'Save';
+            $function = (MassActionUtil::isMassDeleteLikeAction($actionId))? 'Delete' : 'Save';
             $function = $toggle . 'ScoringModelsOn' . $function;
             Yii::app()->gameHelper->$function();
         }
@@ -1133,7 +1145,7 @@
         protected static function resolvePermissionOnSecurableItemByMassActionId($actionId)
         {
             // TODO: @Shoaibi/@Jason: Low: Candidate for MassActionController
-            return (strpos($actionId, 'massDelete') === 0) ? Permission::DELETE : Permission::WRITE;
+            return (MassActionUtil::isMassDeleteLikeAction($actionId)) ? Permission::DELETE : Permission::WRITE;
         }
 
         protected static function processModelForMassDelete(& $model)
@@ -1149,8 +1161,19 @@
             }
         }
 
+        protected static function resolveOffsetForDataProvider($dataProvider, $actionId)
+        {
+            // TODO: @Shoaibi/@Jason: Low: Candidate for MassActionController
+            // if we are doing something for massDelete we want offset to be 0 always because rows keep getting deleted.
+            if (isset($dataProvider) && MassActionUtil::isMassDeleteLikeAction($actionId)) // works for massDelete and massDeleteProgress
+            {
+                $dataProvider->setOffset(0);
+            }
+        }
+
         protected static function processModelForMassEdit(& $model)
         {
+            // TODO: @Shoaibi/@Jason: Low: Candidate for MassActionController
             $postModelClassName             = Yii::app()->request->getPost(get_class($model));
             $sanitizedPostData              = PostUtil::sanitizePostByDesignerTypeForSavingModel($model, $postModelClassName);
             $sanitizedOwnerPostData         = PostUtil::sanitizePostDataToJustHavingElementForSavingModel($sanitizedPostData, 'owner');
@@ -1174,7 +1197,7 @@
         {
             // TODO: @Shoaibi/@Jason: Low: Candidate for MassActionController
             $insufficientPermissionSkipSavingUtil   = 'MassEditInsufficientPermissionSkipSavingUtil';
-            if (strpos($actionId, 'massDelete') === 0)
+            if (MassActionUtil::isMassDeleteLikeAction($actionId))
             {
                 $insufficientPermissionSkipSavingUtil   = 'MassDeleteInsufficientPermissionSkipSavingUtil';
             }
@@ -1186,7 +1209,7 @@
             // TODO: @Shoaibi/@Jason: Low: Candidate for MassActionController
             $actionId = static::resolveMassActionId($actionId, false);
             $actionId .= 'Progress';
-            $actionId = (strpos($actionId, 'massEdit') === 0)? $actionId . 'Save' : $actionId;
+            $actionId = (MassActionUtil::isMassEditLikeAction($actionId))? $actionId . 'Save' : $actionId;
             return $actionId;
         }
 
@@ -1215,8 +1238,57 @@
             }
             else
             {
-                return ListViewTypesToggleLinkActionElement::TYPE_GRID;
+                return ListViewTypesToggleLinkActionElement::TYPE_NON_KANBAN_BOARD;
             }
+        }
+
+        /**
+         * Resolve active element type
+         * @param type $detailsAndRelationsView
+         * @return type
+         */
+        protected function resolveActiveElementTypeForKanbanBoardInDetailView($detailsAndRelationsView)
+        {
+            $detailsAndRelationsView = $this->resolveKanbanBoardIsActiveByGetForDetailsView($detailsAndRelationsView);
+
+            if ($detailsAndRelationsView->getKanbanBoard()->getIsActive())
+            {
+                return DetailsAndRelationsViewTypesToggleLinkActionElement::TYPE_KANBAN_BOARD;
+            }
+            else
+            {
+                return DetailsAndRelationsViewTypesToggleLinkActionElement::TYPE_NON_KANBAN_BOARD;
+            }
+        }
+
+        /**
+         * @param $detailsAndRelationsView
+         */
+        protected function resolveKanbanBoardIsActiveByGetForDetailsView($detailsAndRelationsView)
+        {
+            if (isset($_GET['kanbanBoard']) && $_GET['kanbanBoard'] && !Yii::app()->userInterface->isMobile())
+            {
+                $detailsAndRelationsView->getKanbanBoard()->setIsActive();
+            }
+            elseif (isset($_GET['kanbanBoard']) && !$_GET['kanbanBoard'])
+            {
+                $detailsAndRelationsView->getKanbanBoard()->setIsNotActive();
+                $detailsAndRelationsView->getKanbanBoard()->setClearSticky();
+            }
+            elseif (Yii::app()->userInterface->isMobile())
+            {
+                $detailsAndRelationsView->getKanbanBoard()->setIsNotActive();
+            }
+
+            return $detailsAndRelationsView;
+        }
+
+        /**
+         * Process info before redirection
+         */
+        protected function beforeRedirect($model)
+        {
+
         }
     }
 ?>

@@ -44,7 +44,7 @@
                 $this->getArray(),
                 $this->getEditableHtmlOptions()
             );
-            return ZurmoHtml::tag('strong', array(), Zurmo::t('MashableInboxModule', 'Status') . ':' ) . $content;
+            return ZurmoHtml::tag('strong', array(), Zurmo::t('ZurmoModule', 'Status') . ':' ) . $content;
         }
 
         protected function renderControlNonEditable()
@@ -66,7 +66,7 @@
         private function getArray()
         {
             $getArray = array(
-                MashableInboxForm::FILTERED_BY_ALL    => Zurmo::t('MashableInboxModule', 'All'),
+                MashableInboxForm::FILTERED_BY_ALL    => Zurmo::t('Core', 'All'),
                 MashableInboxForm::FILTERED_BY_UNREAD => Zurmo::t('MashableInboxModule', 'Unread'),
             );
             return $getArray;

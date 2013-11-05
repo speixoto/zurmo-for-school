@@ -359,7 +359,7 @@
             $extraPostData = array( 'startingStateOrder'  => '2',
                                     'isAudited'           => '1',
                                     'isRequired'          => '1',
-                                    'contactStatesData' => array('NA', ' NB', 'NC'));
+                                    'contactStatesData' => array('', ' NB', 'NC'));
             $this->setPostArray(array(   'ajax'                 => 'edit-form',
                                         'ContactStateAttributeForm' => array_merge(array(
                                             'attributeLabels' => $this->createAttributeLabelGoodValidationPostData('state'),
@@ -951,7 +951,7 @@
             $content = $this->runControllerWithNoExceptionsAndGetContent('contacts/default');
 
             //Assert that the edit contact does not exits after the search.
-            $this->assertTrue(strpos($content, "No results found.") > 0);
+            $this->assertTrue(strpos($content, "No results found") > 0);
             $this->assertFalse(strpos($content, "26378 South Arlington Ave") > 0);
         }
 

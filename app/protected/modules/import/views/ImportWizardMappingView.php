@@ -119,18 +119,16 @@
             $content .= $this->renderRequiredAttributesLabelsDataContent();
             $content .= '<table>';
             $content .= '<colgroup>';
-            if (count($headerColumns) == 4)
+            if (count($headerColumns) == 3)
             {
-                $content .= '<col style="width:20%" />';
-                $content .= '<col style="width:20%" />';
-                $content .= '<col style="width:25%" />';
-                $content .= '<col style="width:35%" />';
+                $content .= '<col style="width:70%" />';
+                $content .= '<col style="width:15%" />';
+                $content .= '<col style="width:15%" />';
             }
             else
             {
-                $content .= '<col style="width:20%" />';
-                $content .= '<col style="width:25%" />';
-                $content .= '<col style="width:55%" />';
+                $content .= '<col style="width:85%" />';
+                $content .= '<col style="width:15%" />';
             }
             $content .= '</colgroup>';
             $content .= '<tbody>';
@@ -157,7 +155,7 @@
             $content = '<div class="required-fields">';
             if (count($this->requiredAttributesLabelsData) > 0)
             {
-                $content .= '<strong>' . Zurmo::t('ImportModule', 'Required Fields') . ':</strong>' . '<br/>';
+                $content .= '<strong>' . Zurmo::t('ZurmoModule', 'Required Fields') . ':</strong>' . '<br/>';
                 foreach ($this->requiredAttributesLabelsData as $label)
                 {
                     $content .= $label. '<br/>';
@@ -176,9 +174,9 @@
             {
                 $headerColumns[] = Zurmo::t('ImportModule', 'Header');
             }
-            $headerColumns[] = '<div id="' . MappingFormLayoutUtil::getSampleColumnHeaderId() . '">' .
-                               $this->sampleColumnPagerContent . '</div>';
-            $headerColumns[] = Zurmo::t('ImportModule', 'Rules');
+            $headerColumns[] = ZurmoHtml::tag('div',
+                               array('id' =>  MappingFormLayoutUtil::getSampleColumnHeaderId(),
+                                     'class' => 'clearfix'), $this->sampleColumnPagerContent);
             return $headerColumns;
         }
 
@@ -203,11 +201,20 @@
                 assert('$mappingDataRow["type"] == "importColumn" || $mappingDataRow["type"] == "extraColumn"');
                 $row          = array();
                 $row['cells'] = array();
-                $row['cells'][] = $mappingFormLayoutUtil->renderAttributeAndColumnTypeContent(
+                $firstCell    = $mappingFormLayoutUtil->renderAttributeAndColumnTypeContent(
                                                                        $columnName,
                                                                        $mappingDataRow['type'],
                                                                        $mappingDataRow['attributeIndexOrDerivedType'],
                                                                        $ajaxOnChangeUrl);
+                
+                $firstCell   .= $mappingFormLayoutUtil->renderMappingRulesElements(
+                                      $columnName,
+                                      $mappingDataRow['attributeIndexOrDerivedType'],
+                                      $importRulesType,
+                                      $mappingDataRow['type'],
+                                      $this->resolveMappingRuleFormsAndElementTypesByColumn($columnName));
+                $row['cells'][] = $firstCell;
+                        
                 if ($firstRowIsHeaderRow)
                 {
                     assert('$mappingDataRow["headerValue"] == null || is_string($mappingDataRow["headerValue"])');
@@ -215,13 +222,7 @@
                                                                                     $mappingDataRow['headerValue']);
                 }
                 $row['cells'][] = $mappingFormLayoutUtil->renderImportColumnContent ($columnName,
-                                                                                 $mappingDataRow['sampleValue']);
-                $row['cells'][] = $mappingFormLayoutUtil->renderMappingRulesElements(
-                                      $columnName,
-                                      $mappingDataRow['attributeIndexOrDerivedType'],
-                                      $importRulesType,
-                                      $mappingDataRow['type'],
-                                      $this->resolveMappingRuleFormsAndElementTypesByColumn($columnName));
+                                                                                 $mappingDataRow['sampleValue']);                
                 $metadata['rows'][] = $row;
             }
             return $metadata;

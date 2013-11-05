@@ -36,12 +36,14 @@
     /**
      * Price frequency dropdown element for product template
      */
-    class ProductTemplatePriceFrequencyDropDownElement extends StaticDropDownFormElement
+    class ProductTemplatePriceFrequencyDropDownElement extends ConstantBasedStaticDropDownFormElement
     {
+        protected static $attributeName = 'priceFrequency';
+
         /**
          * @return array
          */
-        protected function getDropDownArray()
+        protected static function resolveDropDownArray()
         {
             return ProductTemplateElementUtil::getProductTemplatePriceFrequencyDropdownArray();
         }

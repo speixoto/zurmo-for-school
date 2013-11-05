@@ -62,7 +62,7 @@
             $this->assertTrue($import->save());
 
             ImportTestHelper::
-            createTempTableByFileNameAndTableName('productsSample.csv', $import->getTempTableName(),
+            createTempTableByFileNameAndTableName('productsSample.csv', $import->getTempTableName(), true,
                                                   Yii::getPathOfAlias('application.modules.products.tests.unit.files'));
 
             $this->assertEquals(3, ImportDatabaseUtil::getCount($import->getTempTableName())); // includes header rows.
@@ -174,11 +174,11 @@
             $this->assertTrue($import->save());
 
             ImportTestHelper::
-            createTempTableByFileNameAndTableName('productsSampleWithRelations.csv', $import->getTempTableName(),
+            createTempTableByFileNameAndTableName('productsSampleWithRelations.csv', $import->getTempTableName(), true,
                                                   Yii::getPathOfAlias('application.modules.products.tests.unit.files'));
 
             //update the ids of the account column to match the parent account.
-            R::exec("update " . $import->getTempTableName() . " set column_9 = " .
+            ZurmoRedBean::exec("update " . $import->getTempTableName() . " set column_9 = " .
                     $contact->id . " where id != 1 limit 3");
 
             $this->assertEquals(3, ImportDatabaseUtil::getCount($import->getTempTableName())); // includes header rows.

@@ -362,7 +362,8 @@
 
         protected function getSelectListAttributesLinkContent()
         {
-            if ($this->model->getListAttributesSelector() != null)
+            if ($this->model->getListAttributesSelector() != null &&
+               ($this->model->getKanbanBoard() == null || !$this->model->getKanbanBoard()->getIsActive()))
             {
                 return ZurmoHtml::link(Zurmo::t('Core', 'Columns'), '#', array('id' => 'select-list-attributes-link' . $this->gridIdSuffix));
             }
@@ -643,7 +644,7 @@
         protected function renderStarredFilterHidenField($form)
         {
             $content = null;
-            if (in_array('StarredInterface', class_implements($this->model->getModel())))
+            if (StarredUtil::modelHasStarredInterface($this->model->getModel()))
             {
                 $content .= $form->hiddenField($this->model, 'filterByStarred',
                                                array('class' => $form->id . '_filterByStarred'));

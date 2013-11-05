@@ -114,7 +114,7 @@
             }
             $element                      = new MissionStatusElement($this->model, 'status');
             $element->nonEditableTemplate = '<div class="comment-content">' .
-                                            Zurmo::t('MissionsModule', 'Status') . ': {content}</div>';
+                                            Zurmo::t('ZurmoModule', 'Status') . ': {content}</div>';
             $content                     .= $element->render();
             $content .= '</div>';
             return ZurmoHtml::tag('div', array('id' => 'ModelDetailsSummaryView'), $content);
@@ -135,7 +135,7 @@
 
         protected function renderMissionCreateCommentContent()
         {
-            $content       = ZurmoHtml::tag('h2', array(), Zurmo::t('MissionsModule', 'Add Comment'));
+            $content       = ZurmoHtml::tag('h2', array(), Zurmo::t('CommentsModule', 'Add Comment'));
             $comment       = new Comment();
             $uniquePageId  = 'CommentInlineEditForModelView';
             $redirectUrl   = Yii::app()->createUrl('/missions/default/inlineCreateCommentFromAjax',

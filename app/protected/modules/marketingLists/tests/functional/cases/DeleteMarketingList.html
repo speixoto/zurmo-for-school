@@ -60,7 +60,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>//div[@id='SecuredActionBarForMarketingSearchAndListView']/div[1]/div[1]/a[2]</td>
+	<td>//div[@id='SecuredActionBarForMarketingSearchAndListView']/div[1]/nav/div[2]/a[1]/span</td>
 	<td></td>
 </tr>
 <tr>
@@ -86,7 +86,7 @@
 </tr>
 <tr>
 	<td>waitForText</td>
-	<td>//div[@id='list-view']/table/tbody/tr/td[2]</td>
+	<td>//div[@id='list-view']/div[2]/table/tbody/tr/td[2]</td>
 	<td>Test Marketing List ${randomSuffix}</td>
 </tr>
 <tr>
@@ -106,7 +106,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>//div[@id='list-view']/table/tbody/tr/td[2]/a</td>
+	<td>//div[@id='list-view']/div[2]/table/tbody/tr/td[2]/a</td>
 	<td></td>
 </tr>
 <tr>
@@ -178,7 +178,7 @@
 </tr>
 <tr>
 	<td>waitForNotText</td>
-	<td>//div[@id='list-view']/table/tbody/tr/td[2]</td>
+	<td>//div[@id='list-view']/div[2]/table/tbody/tr/td[2]</td>
 	<td>Test Marketing List ${randomSuffix}</td>
 </tr>
 <tr>
@@ -232,7 +232,7 @@
 	<td>waitForCondition</td>
 	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
 	<td>30000</td>
-</tr>    
+</tr>
 <tr>
 	<td>type</td>
 	<td>ContactsSearchForm_anyMixedAttributes</td>
@@ -275,7 +275,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>//ul[@id='MassDeleteLinkActionElement']/li/ul/li/a/span</td>
+	<td>//li[@id='list-view-deleteMassActionSelected']/a</td>
 	<td></td>
 </tr>
 <tr>
@@ -330,12 +330,12 @@
 </tr>
 <tr>
 	<td>verifyTextPresent</td>
-	<td>No results found.</td>
+	<td>No results found</td>
 	<td></td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>//ul[@id='MassDeleteLinkActionElement']/li/ul/li[2]/a/span</td>
+	<td>//li[@id='list-view-deleteMassActionAll']/a</td>
 	<td></td>
 </tr>
 <tr>

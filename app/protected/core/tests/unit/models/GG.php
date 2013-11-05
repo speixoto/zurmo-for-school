@@ -43,6 +43,10 @@
                 'members' => array(
                     'gg',
                 ),
+                'rules' => array(
+                    array('gg',      'type', 'type' => 'string'),
+                    array('gg',      'length', 'max' => 255),
+                ),
             );
             return $metadata;
         }

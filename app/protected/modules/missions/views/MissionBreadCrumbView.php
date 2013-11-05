@@ -41,7 +41,7 @@
     {
         protected function getHomeLinkLabel()
         {
-            return Zurmo::t('ConversationsModule', 'Inbox');
+            return Zurmo::t('EmailMessagesModule', 'Inbox');
         }
 
         protected function getHomeUrl()

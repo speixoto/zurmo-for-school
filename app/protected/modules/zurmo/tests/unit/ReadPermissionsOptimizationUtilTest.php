@@ -48,19 +48,6 @@
             Yii::app()->user->userModel = User::getByUsername('super');
         }
 
-        public function testFindMungableModelClassNames()
-        {
-            $modelClassNames = ReadPermissionsOptimizationUtil::findMungableModelClassNames();
-            $compareData = array('Account', 'Campaign', 'Contact', 'Conversation', 'EmailMessage', 'EmailTemplate',
-                                 'MarketingList', 'Meeting', 'Mission',
-                                 'Note', 'Opportunity', 'SavedReport', 'Product', 'SocialItem', 'Task', 'ContactWebForm');
-            $this->assertEquals($compareData, $modelClassNames);
-            $modelClassNames2 = ReadPermissionsOptimizationUtil::getMungableModelClassNames();
-            $this->assertEquals($modelClassNames, $modelClassNames2);
-            $modelClassNames3 = ReadPermissionsOptimizationUtil::getMungableModelClassNames();
-            $this->assertEquals($modelClassNames2, $modelClassNames3);
-        }
-
         public function testGetMungeIdsByUserIncludesEveryoneGroup()
         {
             Yii::app()->user->userModel = User::getByUsername('super');

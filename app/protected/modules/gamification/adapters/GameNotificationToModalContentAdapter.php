@@ -40,16 +40,18 @@
     class GameNotificationToModalContentAdapter extends GameNotificationToContentAdapter
     {
         /**
-         * @return string content of the notification message content to display.
+         * @return  string content of the notification message content to display.
+         * @throws NotSupportedException
          */
         public function getMessageContent()
         {
             $data = $this->getAndValidateUnserializedData();
             if ($data['type'] == GameNotification::TYPE_LEVEL_CHANGE)
             {
-                $content  = '<h2>' . Zurmo::t('GamificationModule', 'Congratulations!') . '</h2>';
+                $content  = '<h2>' . Zurmo::t('Core', 'Congratulations!') . '</h2>';
                 $content .= '<h3>' . Zurmo::t('GamificationModule', 'You have reached level {nextLevel}',
-                                            array('{nextLevel}' => $data['levelValue'])) . '</h3>';
+                                                    array('{nextLevel}' => $data['levelValue'])) . '</h3>';
+                $content .= $this->getCoinContent($data);
                 return $content;
             }
             elseif ($data['type'] == GameNotification::TYPE_NEW_BADGE)
@@ -71,6 +73,19 @@
             else
             {
                 throw new NotSupportedException();
+            }
+        }
+
+        /**
+         * @param $data
+         * @return string
+         */
+        protected function getCoinContent($data)
+        {
+            if (null != $coins = ArrayUtil::getArrayValue($data, 'coins'))
+            {
+                return '<h3>' . Zurmo::t('GamificationModule', 'You have received {n} coin | You have received {n} coins',
+                                            array($coins)) . '</h3>';
             }
         }
     }

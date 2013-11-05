@@ -671,7 +671,7 @@
             $content = $this->runControllerWithNoExceptionsAndGetContent('opportunities/default');
 
             //Assert that the edit Opportunity does not exits after the search.
-            $this->assertTrue(strpos($content, "No results found.") > 0);
+            $this->assertTrue(strpos($content, "No results found") > 0);
         }
 
         /**

@@ -47,11 +47,16 @@
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array('type'        => 'MarketingListsDetailsLink',
-                                'model'                         => 'eval:$this->model',
-                                'htmlOptions'                   => array('class' => 'icon-details')),
-                            array('type'        => 'MarketingListsOptionsLink',
-                                'htmlOptions'                   => array('class' => 'icon-edit')),
+                            array('type'        => 'MarketingListsDetailsMenu',
+                                  'iconClass'   => 'icon-details',
+                                  'id'          => 'ListViewDetailsActionMenu',
+                                  'itemOptions' => array('class' => 'hasDetailsFlyout'),
+                                  'model'       => 'eval:$this->model',
+                            ),
+                            array('type'        => 'MarketingListsOptionsMenu',
+                                  'id'          => 'ListViewOptionsActionMenu',
+                                  'iconClass'   => 'icon-edit',
+                            ),
                         ),
                     ),
                 ),
@@ -61,7 +66,7 @@
 
         public function getTitle()
         {
-            return strval($this->model) . ' - ' . Zurmo::t('MarketingListsModule', 'List');
+            return strval($this->model) . ' - ' . Zurmo::t('Core', 'List');
         }
 
         protected function renderContent()
@@ -70,7 +75,7 @@
             $actionElementBarContent        = $this->renderActionElementBar(false);
             $content                        = $this->renderTitleContent();
             $content                       .= ZurmoHtml::tag('div', array('class' => 'view-toolbar-container clearfix'),
-                                                ZurmoHtml::tag('div', array('class' => 'view-toolbar'),
+                                                ZurmoHtml::tag('nav', array('class' => 'pillbox clearfix'),
                                                                                     $actionElementBarContent));
             return $content;
         }

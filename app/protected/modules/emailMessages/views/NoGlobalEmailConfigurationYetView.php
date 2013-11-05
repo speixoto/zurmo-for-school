@@ -60,7 +60,7 @@
 
         protected function getCreateLinkDisplayLabel()
         {
-            return Zurmo::t('EmailMessagesModule', 'Configure');
+            return Zurmo::t('Core', 'Configure');
         }
 
         protected function getMessageContent()

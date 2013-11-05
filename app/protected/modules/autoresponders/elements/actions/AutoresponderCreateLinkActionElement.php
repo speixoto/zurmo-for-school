@@ -41,5 +41,10 @@
             $moduleId = 'autoresponders';
             parent::__construct($controllerId, $moduleId, $modelId, $params);
         }
+
+        protected function getDefaultLabel()
+        {
+            return Zurmo::t('Core', 'Create');
+        }
     }
 ?>

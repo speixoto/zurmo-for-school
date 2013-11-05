@@ -49,7 +49,7 @@
             {
                 if (trim($this->name) == '')
                 {
-                    return Zurmo::t('ContactsModule', '(Unnamed)');
+                    return Zurmo::t('Core', '(Unnamed)');
                 }
                 return $this->name;
             }
@@ -85,7 +85,7 @@
         public function attributeLabels()
         {
             return array(
-                'emailAddress'          => Zurmo::t('ContactsModule', 'Primary Email'),
+                'emailAddress'          => Zurmo::t('ZurmoModule', 'Primary Email'),
             );
         }
     }

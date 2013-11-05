@@ -50,6 +50,7 @@
             assert('$user->id > 0');
             try
             {
+                // not using default value to save cpu cycles on requests that follow the first exception.
                 return GeneralCache::getEntry(self::getGlobalSearchScopingCacheIdentifier($user));
             }
             catch (NotFoundException $e)
@@ -102,17 +103,19 @@
          * Given a $_GET array, resolve the value of the globalSearchScope.  if the globalSearchScope
          * isset but the value is 'All', return null, since this is the same as having null to begin with.
          * @param  array $get
+         * @param string $attributeName
          * @return null or array of globalSearchScope value.
          */
-        public static function resolveGlobalSearchScopeFromGetData($get)
+        public static function resolveGlobalSearchScopeFromGetData($get, $attributeName = 'globalSearchScope')
         {
-            if (!isset($get['globalSearchScope']) || in_array('All', $get['globalSearchScope']))
+            assert('is_string($attributeName)');
+            if (!isset($get[$attributeName]) || in_array('All', $get[$attributeName]))
             {
                 return null;
             }
             else
             {
-                return $get['globalSearchScope'];
+                return $get[$attributeName];
             }
         }
 

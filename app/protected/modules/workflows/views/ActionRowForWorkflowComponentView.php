@@ -111,13 +111,29 @@
             $content .= '</div>';
             $content .= ZurmoHtml::link('—', '#', array('class' => 'remove-dynamic-row-link'));
             $content .= '<div class="toggle-me">';
-            $content .= $this->renderMergeTagGuideContent();
-            $content .= $this->renderAttributesRowsContent($this->makeAttributeRows());
+            $content .= $this->resolveAndRenderActionContent();
             $content .= $this->renderSaveActionElementsContent($rowId);
             $content .= $this->renderDeleteActionElementsContent();
             $content .= '</div>';
             $content  =  ZurmoHtml::tag('div', array('class' => 'dynamic-row'), $content);
             return ZurmoHtml::tag('li', array('id' => $rowId, 'class' => 'expanded-row'), $content);
+        }
+
+        /**
+         * Resolve for either a model action or subscribe to list action
+         */
+        protected function resolveAndRenderActionContent()
+        {
+            if ($this->model->isModelActionVariant())
+            {
+                $content  = $this->renderMergeTagGuideContent();
+                $content .= $this->renderAttributesRowsContent($this->makeAttributeRows());
+            }
+            else
+            {
+                $content  = $this->renderAttributesRowsContent($this->makeAttributeRows());
+            }
+            return $content;
         }
 
         /**
@@ -175,13 +191,17 @@
         {
             $inputPrefixData   = $this->inputPrefixData;
             $inputPrefixData[] = ActionForWorkflowForm::ACTION_ATTRIBUTES;
-            if ($this->model->isTypeAnUpdateVariant())
+            if ($this->model->isModelActionVariant() && $this->model->isTypeAnUpdateVariant())
             {
                 return $this->resolveAttributeRowsForUpdateTypes($inputPrefixData);
             }
-            else
+            elseif ($this->model->isModelActionVariant())
             {
                 return $this->resolveAttributeRowsForCreateTypes($inputPrefixData);
+            }
+            else
+            {
+                return $this->resolveAttributeRowsForLinkToTypes($inputPrefixData);
             }
         }
 
@@ -197,7 +217,7 @@
             foreach ($this->model->resolveAllActionAttributeFormsAndLabelsAndSort() as $attribute => $actionAttributeForm)
             {
                 $elementAdapter  = new WorkflowActionAttributeToElementAdapter($actionAttributeForm, $this->form,
-                                   $this->model->type, array_merge($inputPrefixData, array($attribute)), false);
+                                        $this->model->type, array_merge($inputPrefixData, array($attribute)), false);
                 $attributeRows[self::NON_REQUIRED_ATTRIBUTES_INDEX][] = $elementAdapter->getContent();
             }
             return $attributeRows;
@@ -215,14 +235,28 @@
             foreach ($this->model->resolveAllRequiredActionAttributeFormsAndLabelsAndSort() as $attribute => $actionAttributeForm)
             {
                 $elementAdapter  = new WorkflowActionAttributeToElementAdapter($actionAttributeForm, $this->form,
-                    $this->model->type, array_merge($inputPrefixData, array($attribute)), true);
+                                        $this->model->type, array_merge($inputPrefixData, array($attribute)), true);
                 $attributeRows[self::REQUIRED_ATTRIBUTES_INDEX][] = $elementAdapter->getContent();
             }
             foreach ($this->model->resolveAllNonRequiredActionAttributeFormsAndLabelsAndSort() as $attribute => $actionAttributeForm)
             {
                 $elementAdapter  = new WorkflowActionAttributeToElementAdapter($actionAttributeForm, $this->form,
-                    $this->model->type, array_merge($inputPrefixData, array($attribute)), false);
+                                        $this->model->type, array_merge($inputPrefixData, array($attribute)), false);
                 $attributeRows[self::NON_REQUIRED_ATTRIBUTES_INDEX][] = $elementAdapter->getContent();
+            }
+            return $attributeRows;
+        }
+
+        protected function resolveAttributeRowsForLinkToTypes(Array $inputPrefixData)
+        {
+            assert('is_array($inputPrefixData)');
+            $attributeRows     = array(self::REQUIRED_ATTRIBUTES_INDEX     => array(),
+                                       self::NON_REQUIRED_ATTRIBUTES_INDEX => array());
+            foreach ($this->model->resolveAllRequiredActionAttributeFormsAndLabelsAndSort() as $attribute => $actionAttributeForm)
+            {
+                $elementAdapter  = new WorkflowActionAttributeToElementAdapter($actionAttributeForm, $this->form,
+                                        $this->model->type, array_merge($inputPrefixData, array($attribute)), true);
+                $attributeRows[self::REQUIRED_ATTRIBUTES_INDEX][] = $elementAdapter->getContent();
             }
             return $attributeRows;
         }
@@ -247,7 +281,7 @@
             $content = null;
             if (count($attributeRows[self::REQUIRED_ATTRIBUTES_INDEX]) > 0)
             {
-                $content .= ZurmoHtml::tag('h3', array(), Zurmo::t('WorkflowsModule', 'Required Fields'));
+                $content .= ZurmoHtml::tag('h3', array(), Zurmo::t('ZurmoModule', 'Required Fields'));
             }
             foreach ($attributeRows[self::REQUIRED_ATTRIBUTES_INDEX] as $attributeContent)
             {

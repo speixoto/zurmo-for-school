@@ -53,7 +53,7 @@
             $params = Yii::app()->apiRequest->getParams();
             if (!isset($params['data']))
             {
-                $message = Zurmo::t('UsersModule', 'Please provide data.');
+                $message = Zurmo::t('ZurmoModule', 'Please provide data.');
                 throw new ApiException($message);
             }
             $this->resolvePasswordParameter($params);

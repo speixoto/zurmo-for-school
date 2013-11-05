@@ -45,8 +45,8 @@
                          Zurmo::t('WorkflowsModule', 'Time Trigger'),
                          Zurmo::t('WorkflowsModule', 'Triggers'),
                          Zurmo::t('WorkflowsModule', 'Actions'),
-                         Zurmo::t('WorkflowsModule', 'Messages'),
-                         Zurmo::t('WorkflowsModule', 'General'));
+                         Zurmo::t('Core', 'Messages'),
+                         Zurmo::t('Core', 'General'));
         }
     }
 ?>

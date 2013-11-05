@@ -122,6 +122,17 @@
             $this->kanbanBoard            = $kanbanBoard;
         }
 
+        protected function getKanbanBoard()
+        {
+            return $this->kanbanBoard;
+        }
+
+        protected function setKanbanBoard($kanbanBoard)
+        {
+            assert('$kanbanBoard === null || $kanbanBoard instanceof $kanbanBoard');
+            $this->kanbanBoard = $kanbanBoard;
+        }
+
         /**
          * Renders content for a list view. Utilizes a CActiveDataprovider
          * and a CGridView widget.
@@ -213,6 +224,7 @@
                 'summaryCssClass'      => static::getSummaryCssClass(),
                 'summaryCloneId'       => $this->getSummaryCloneId(),
                 'tableColumnGroup'     => $this->getTableColumnGroup(),
+                'hideHeader'           => $this->isHeaderHidden()
             );
             return $this->resolveCGridViewParamsForKanbanBoard($params);
         }
@@ -558,7 +570,7 @@
          */
         protected function processColumnInfoToFetchColumnData($columnInformation)
         {
-            $columnClassName = $columnInformation['type'] . 'ListViewColumnAdapter';
+            $columnClassName = ucfirst($columnInformation['type']) . 'ListViewColumnAdapter';
             $columnAdapter   = new $columnClassName($columnInformation['attributeName'], $this, array_slice($columnInformation, 1));
             $column = $columnAdapter->renderGridViewData();
             if (!isset($column['class']))
@@ -566,6 +578,15 @@
                 $column['class'] = 'DataColumn';
             }
             return $column;
+        }
+
+        /**
+         * Checks if header cells have to be hidden
+         * @return bool
+         */
+        protected function isHeaderHidden()
+        {
+            return false;
         }
     }
 ?>
