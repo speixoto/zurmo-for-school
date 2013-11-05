@@ -174,8 +174,9 @@
             {
                 $headerColumns[] = Zurmo::t('ImportModule', 'Header');
             }
-            $headerColumns[] = '<div id="' . MappingFormLayoutUtil::getSampleColumnHeaderId() . '">' .
-                               $this->sampleColumnPagerContent . '</div>';
+            $headerColumns[] = ZurmoHtml::tag('div',
+                               array('id' =>  MappingFormLayoutUtil::getSampleColumnHeaderId(),
+                                     'class' => 'clearfix'), $this->sampleColumnPagerContent);
             return $headerColumns;
         }
 

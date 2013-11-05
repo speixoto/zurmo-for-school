@@ -35,65 +35,27 @@
      ********************************************************************************/
 
     /**
-     * View that renders sticky breadcrumb content if available.
+     * Helper class for working with Game Rewards Sticky searches
      */
-    class StickyDetailsAndRelationsBreadCrumbView extends BreadCrumbView
+    class GameRewardsStickySearchUtil extends StickySearchUtil
     {
-        protected $homeLinkLabel;
-
-        protected $stickyLoadUrl;
-
-        protected $homeUrl;
-
-        public function __construct($controllerId, $moduleId, $breadCrumbLinks, $homeLinkLabel, $stickyLoadUrl = null, $homeUrl = null)
+        protected static function resolveBreadcrumbLinks(RedBeanModel $model)
         {
-            assert('is_string($homeLinkLabel)');
-            assert('is_string($stickyLoadUrl) || $stickyLoadUrl == null');
-            parent::__construct($controllerId, $moduleId, $breadCrumbLinks);
-            $this->homeLinkLabel = $homeLinkLabel;
-            $this->stickyLoadUrl = $stickyLoadUrl;
-            $this->homeUrl       = $homeUrl;
+            $title = Zurmo::t('GameRewardsModule',
+                              'GameRewardsModulePluralLabel',
+                              LabelUtil::getTranslationParamsForAllModules());
+            return array($title => array('/gameRewards/default'),
+                         strval($model));
         }
 
-        protected function getHomeLinkLabel()
+        protected static function getHomeLinkLabel($controller)
         {
-            return $this->homeLinkLabel;
+            return Zurmo::t('ConfigurationModule', 'Administration Home');
         }
 
-        protected function getHomeUrl()
+        protected static function getHomeUrl()
         {
-            if ($this->homeUrl === null)
-            {
-                return parent::getHomeUrl();
-            }
-            return $this->homeUrl;
-        }
-
-        protected function renderContent()
-        {
-            $content = parent::renderContent();
-            if ($this->stickyLoadUrl != null)
-            {
-                $content .= '<div id="stickyListLoadingArea"><span class="loading"></span></div>';
-            }
-            $this->renderScripts();
-            return $content;
-        }
-
-        protected function renderScripts()
-        {
-            if ($this->stickyLoadUrl != null)
-            {
-                $ajaxLoadScript  = ZurmoHtml::ajax(array(
-                        'type'    => 'GET',
-                        'url'     =>  $this->stickyLoadUrl,
-                        'update'  => '#stickyListLoadingArea',
-                ));
-                $javaScript  = "$(document).ready(function () { ";
-                $javaScript .= $ajaxLoadScript;
-                $javaScript .= "});";
-                Yii::app()->getClientScript()->registerScript(__CLASS__, $javaScript);
-            }
+            return Yii::app()->createUrl('configuration/default/index');
         }
     }
 ?>

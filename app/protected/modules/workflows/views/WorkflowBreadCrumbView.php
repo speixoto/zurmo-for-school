@@ -37,12 +37,9 @@
     /**
      * View that renders workflows module breadcrumb content
      */
-    class WorkflowBreadCrumbView extends BreadCrumbView
+    class WorkflowBreadCrumbView extends SettingsBreadCrumbView
     {
-        /**
-         * @return string
-         */
-        protected function getHomeLinkLabel()
+        protected function getModuleTitle()
         {
             return Zurmo::t('WorkflowsModule', 'Workflows');
         }

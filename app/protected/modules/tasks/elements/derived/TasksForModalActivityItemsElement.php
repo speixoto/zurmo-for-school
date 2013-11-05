@@ -47,5 +47,10 @@
             $template .= "</td></tr>\n";
             return $template;
         }
+
+        protected static function getRelatedItemFormClassName()
+        {
+            return 'TaskActivityItemForm';
+        }
     }
 ?>

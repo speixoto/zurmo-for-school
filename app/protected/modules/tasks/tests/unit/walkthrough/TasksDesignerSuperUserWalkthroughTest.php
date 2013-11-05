@@ -272,7 +272,7 @@
                                             'textCstm'                          => 'This is a test Text',
                                             'textareaCstm'                      => 'This is a test TextArea',
                                             'urlCstm'                           => 'http://wwww.abc.com'),
-                                      'ActivityItemForm' => array(
+                                      'TaskActivityItemForm' => array(
                                             'Account'     => array('id'  => $superAccount[0]->id),
                                             'Contact'     => array('id'  => $superContactId),
                                             'Opportunity' => array('id'  => $superOpportunityId))));
@@ -375,7 +375,7 @@
                                 'textCstm'                          => 'This is a test Edit Text',
                                 'textareaCstm'                      => 'This is a test Edit TextArea',
                                 'urlCstm'                           => 'http://wwww.abc-edit.com'),
-                                'ActivityItemForm' => array(
+                                'TaskActivityItemForm' => array(
                                 'Account'     => array('id'  => $superAccount[0]->id),
                                 'Contact'     => array('id'  => $superContactId),
                                 'Opportunity' => array('id'  => $superOpportunityId)),
@@ -477,7 +477,7 @@
                                 'textCstm'                          => 'This is a test Edit Text',
                                 'textareaCstm'                      => 'This is a test Edit TextArea',
                                 'urlCstm'                           => 'http://wwww.abc-edit.com'),
-                                'ActivityItemForm' => array(
+                                'TaskActivityItemForm' => array(
                                 'Account'     => array('id'  => $superAccount[0]->id),
                                 'Contact'     => array('id'  => $superContactId),
                                 'Opportunity' => array('id'  => $superOpportunityId)),
