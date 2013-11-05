@@ -199,7 +199,7 @@
             }
             return 0;
         }
-        
+
         public static function isAutomaticProbabilityMappingDisabled()
         {
             $metadata = static::getMetadata();

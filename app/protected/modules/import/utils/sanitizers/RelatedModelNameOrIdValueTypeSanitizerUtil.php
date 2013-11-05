@@ -77,7 +77,7 @@
             elseif ($this->mappingRuleData["type"] == RelatedModelValueTypeMappingRuleForm::ZURMO_MODEL_NAME)
             {
                 $found = $this->resolveFoundNameByValue($rowBean);
-                if($found === null)
+                if ($found === null)
                 {
                     return;
                 }

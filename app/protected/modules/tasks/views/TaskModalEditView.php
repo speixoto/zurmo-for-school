@@ -184,7 +184,6 @@
             return array(
                 'onclick' => '$("#ModalView").parent().dialog("close");'
             );
-
         }
 
         protected function resolveModalIdFromGet()

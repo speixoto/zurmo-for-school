@@ -55,7 +55,7 @@
             $label=isset($button['label']) ? $button['label'] : $id;
             $url=isset($button['url']) ? $this->evaluateExpression($button['url'],array('data'=>$data,'row'=>$row)) : '#';
             $options=isset($button['options']) ? $button['options'] : array();
-            if(!isset($options['title']))
+            if (!isset($options['title']))
                 $options['title']=$label;
             echo ZurmoHtml::ajaxLink($label, $url, $button['ajaxOptions'], $options);
         }

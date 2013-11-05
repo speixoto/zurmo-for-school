@@ -183,13 +183,13 @@
          */
         protected function beforeDelete()
         {
-            if(parent::beforeDelete())
+            if (parent::beforeDelete())
             {
-                foreach($this->tasks as $task)
+                foreach ($this->tasks as $task)
                 {
                     $task->delete();
                 }
-                foreach($this->auditEvents as $auditEvent)
+                foreach ($this->auditEvents as $auditEvent)
                 {
                     $auditEvent->delete();
                 }
@@ -203,11 +203,11 @@
          */
         protected function afterSave()
         {
-            if($this->getIsNewModel())
+            if ($this->getIsNewModel())
             {
                 ProjectAuditEvent::logAuditEvent(ProjectAuditEvent::PROJECT_CREATED, $this, $this->name);
             }
-            elseif($this->status == Project::STATUS_ARCHIVED)
+            elseif ($this->status == Project::STATUS_ARCHIVED)
             {
                 ProjectAuditEvent::logAuditEvent(ProjectAuditEvent::PROJECT_ARCHIVED, $this, $this->name);
             }

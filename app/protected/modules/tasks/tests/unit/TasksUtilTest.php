@@ -116,7 +116,7 @@
 
             $subscribers = TasksUtil::getTaskSubscribers($task);
             $found = false;
-            foreach($subscribers as $subscriber)
+            foreach ($subscribers as $subscriber)
             {
                 if ($subscriber->id == $user->id)
                 {
@@ -206,9 +206,9 @@
             $link = TasksUtil::getKanbanSubscriptionLink($task,0);
             $this->assertTrue(strpos($link, 'unsubscribe-task-link') > 0);
 
-            foreach($task->notificationSubscribers as $notificationSubscriber)
+            foreach ($task->notificationSubscribers as $notificationSubscriber)
             {
-                if($notificationSubscriber->person == Yii::app()->user->userModel)
+                if ($notificationSubscriber->person == Yii::app()->user->userModel)
                 {
                     $task->notificationSubscribers->remove($notificationSubscriber);
                 }

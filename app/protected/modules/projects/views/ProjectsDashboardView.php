@@ -117,7 +117,5 @@
             }
             return PortletsSecurityUtil::resolvePortletsForCurrentUser($portlets);
         }
-
-
     }
 ?>

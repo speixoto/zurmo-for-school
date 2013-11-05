@@ -229,7 +229,6 @@
                     {
                         foreach ($recipient->personsOrAccounts as $personOrAccount)
                         {
-
                             try
                             {
                                 $castedDownModel = self::castDownItem($personOrAccount);

@@ -41,6 +41,5 @@
      */
     abstract class PoliciesCache extends GeneralCache
     {
-
     }
 ?>

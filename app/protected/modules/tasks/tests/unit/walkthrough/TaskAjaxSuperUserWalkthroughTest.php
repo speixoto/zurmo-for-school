@@ -193,7 +193,7 @@
             foreach ($taskArray as $row => $data)
             {
                 $kanbanItem  = KanbanItem::getByTask($data->id);
-                if($kanbanItem == null)
+                if ($kanbanItem == null)
                 {
                     //Create KanbanItem here
                     $kanbanItem = TasksUtil::createKanbanItemFromTask($data);

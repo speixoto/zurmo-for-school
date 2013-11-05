@@ -77,7 +77,7 @@
             }
             return $valid;
         }
-        
+
         /**
          * Override to casting automaticProbabilityMappingDisabled to integer
          */

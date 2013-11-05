@@ -101,9 +101,7 @@
                            Android Mail does not support "class" declarations outside of a media query so use inline CSS as a rule.
                            More info: Http://www.emailonacid.com/blog/the_android_mail_app_and_css_class_declarations/ */
 
-
                         /****** EMAIL CLIENT BUG FIXES - BEST NOT TO CHANGE THESE ********/
-
 
                         /* Forces Hotmail to display emails at full width. */
                         .ExternalClass {width:100%;}
@@ -123,12 +121,9 @@
                         /* Resolves the Outlook 2007, 2010, and Gmail td padding issue. */
                         table td {border-collapse:collapse;}
 
-
                         /****** END BUG FIXES ********/
 
-
                         /****** RESETTING DEFAULTS, IT IS BEST TO OVERWRITE THESE STYLES INLINE ********/
-
 
                         /* This sets a clean slate for all clients EXCEPT Gmail.
                            From there it forces you to do all of your spacing inline during the development process.
@@ -143,12 +138,9 @@
                            From there, you can override with inline CSS if needed. */
                         h1, h2, h3, h4, h5, h6 {color:#333333; line-height:100%;}
 
-
                         /****** END RESETTING DEFAULTS ********/
 
-
                         /****** EDITABLE STYLES - FOR YOUR TEMPLATE ********/
-
 
                         /* The "body" is defined here for Yahoo Beta because it does not support your body tag. Instead, it will
                            create a wrapper div around your email and that div will inherit your embedded body styles.
@@ -175,7 +167,6 @@
                         a[href^="tel"], a[href^="sms"] {text-decoration:none; color:#333333; pointer-events:none; cursor:default;}
                         .mobile_link a[href^="tel"], .mobile_link a[href^="sms"] {text-decoration:default; color:#6e5c4f !important; pointer-events:auto; cursor:default;}
 
-
                         /****** MEDIA QUERIES ********/
                         /* You must use attribute selectors in your media queries to prevent Yahoo from rendering these styles.
                            We added a yahoo attribute in the body tag to complete this fix.
@@ -184,7 +175,6 @@
                         /* Target mobile devices. */
                         /* @media only screen and (max-device-width: 639px) { */
                         @media only screen and (max-width: 639px) {
-
                             /* Hide elements at smaller screen sizes (!important needed to override inline CSS). */
                             body[yahoo] .hide {display:none !important;}
 
@@ -199,21 +189,17 @@
                             body[yahoo] .shadow {width:280px !important; height:4px !important;}
 
                             /* Collapse footer columns. */
-                            body[yahoo] .footer-left	{width:320px !important;}
+                            body[yahoo] .footer-left   {width:320px !important;}
                             body[yahoo] .footer-right {width:320px !important;}
                             body[yahoo] .footer-right img {float:left !important; margin:0 1em 0 0 !important;}
-
                         }
 
                         /* Target tablet devices. */
                         /* @media only screen and (min-device-width: 640px) and (max-device-width: 1024px) { */
                         @media only screen and (min-width: 640px) and (max-width: 1024px) {
-
                         }
 
-
                         /*** END EDITABLE STYLES ***/
-
 
                         /****** TEMPORARY - THESE SHOULD BE MOVED INLINE AT END OF YOUR DEVELOPMENT PROCESS ********/
 
@@ -244,12 +230,10 @@
                 <!-- PAGE WRAPPER -->
                     <div id="body_style">
 
-
                         <!-- Wrapper/Container Table: Use a wrapper table to control the width and the background color consistently of your email. Use this approach instead of setting attributes on the body tag. -->
                         <table cellpadding="0" cellspacing="0" border="0" align="center" style="width:100% !important; margin:0; padding:0;">
                             <tr bgcolor="#f0f0f0">
                                 <td>
-
 
                                     <!-- Tables are the most common way to format your email consistently. Set your table widths inside cells and in most cases reset cellpadding, cellspacing, and border to zero. Use nested tables as a way to space effectively in your message. -->
                                     <table width="600" cellpadding="0" cellspacing="0" border="0" align="center" class="table">
@@ -276,12 +260,10 @@
                                         </tr>
                                         <!-- /HEADER -->
 
-
                                         <!-- CONTENT -->
                                         <!-- set a value for bgcolor -->
                                         <tr bgcolor="#ffffff">
                                             <td style="padding-top:20px;">
-
 
                                                 <!-- hero article -->
                                                 <table style="margin-bottom:1em;" width="560" cellpadding="0" cellspacing="0" border="0" align="center" class="innertable">
@@ -312,7 +294,6 @@
                                                     <!-- /hero article main image -->
                                                 </table>
                                                 <!-- /hero article -->
-
 
                                                 <!-- standard article (left text) -->
                                                 <table style="margin-bottom: 1em;" width="560" cellpadding="0" cellspacing="0" border="0" align="center" class="innertable">
@@ -348,7 +329,6 @@
                                                 </table>
                                                 <!-- /standard article (left text) -->
 
-
                                                 <!-- standard article (right text) -->
                                                 <table width="560" cellpadding="0" cellspacing="0" border="0" align="center" class="innertable">
                                                     <tr valign="top">
@@ -383,11 +363,9 @@
                                                 </table>
                                                 <!-- /standard article (right text) -->
 
-
                                             </td>
                                         </tr>
                                         <!-- /CONTENT -->
-
 
                                         <!-- FOOTER -->
                                         <tr>
@@ -422,7 +400,6 @@
                                         </tr>
                                         <!-- /FOOTER -->
 
-
                                         <!-- SUBFOOTER -->
                                         <tr>
                                             <td>
@@ -436,7 +413,6 @@
                                             </td>
                                         </tr>
                                         <!-- /SUBFOOTER -->
-
 
                                     </table>
                                 </td>

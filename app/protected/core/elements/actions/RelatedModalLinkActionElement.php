@@ -36,6 +36,5 @@
 
     abstract class RelatedModalLinkActionElement extends ModalLinkActionElement
     {
-        
     }
 ?>
