@@ -34,15 +34,11 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * User interface element for managing task related model relations for activities.
-     *
-     */
-    class TaskActivityItemsElement extends ActivityItemsElement
+    class NonModifiableListViewDesignerRules extends ListViewDesignerRules
     {
-        protected static function getRelatedItemFormClassName()
+        public function allowEditInLayoutTool()
         {
-            return 'TaskActivityItemForm';
+            return false;
         }
     }
 ?>
