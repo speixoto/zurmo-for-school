@@ -169,7 +169,7 @@ $('a.nav-button#nav-right[href="#"]').unbind('click.lazyLoadImages').bind('click
 
     function updateGamificationImagesSrcForLazyLoading()
     {
-        $('div.gd-collection-panel.visible-panel img[src*="{$dummyImageUrl}"], div.gd-collection-panel.visible-panel-last img[src*="{$dummyImageUrl}"]').each(function()
+        $('.visible-panel img[src*="{$dummyImageUrl}"]').each(function()
         {
             var dataSrc = $(this).data('src');
             if (typeof dataSrc !== 'undefined')
