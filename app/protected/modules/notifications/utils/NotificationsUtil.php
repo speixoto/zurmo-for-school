@@ -250,7 +250,7 @@
                     $notification->owner               = $user;
                     $notification->type                = $type;
                     $notification->notificationMessage = $message;
-                    if(static::resolveToSaveNotification())
+                    if (static::resolveToSaveNotification())
                     {
                         $saved = $notification->save();
                         if (!$saved)

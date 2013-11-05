@@ -96,7 +96,6 @@
          */
         protected function renderTextField()
         {
-
             $this->registerScriptForAutoCompleteTextField();
             $cClipWidget = new CClipWidget();
             $cClipWidget->beginClip("ModelElement");
@@ -163,7 +162,6 @@
 
         protected function makeSourceUrl()
         {
-
             return Yii::app()->createUrl('workflows/default/inQueuesAutoComplete',
                                          array('formClassName' => get_class($this->model)));
         }

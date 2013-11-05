@@ -57,7 +57,6 @@
             $schema = array();
             CreateOrUpdateExistingTableFromSchemaDefinitionArrayUtil::generateOrUpdateTableBySchemaDefinition($schema,
                                                                                                 static::$messageLogger);
-
         }
 
         /**
@@ -346,7 +345,6 @@
             );
             CreateOrUpdateExistingTableFromSchemaDefinitionArrayUtil::generateOrUpdateTableBySchemaDefinition($schema,
                                                                                                 static::$messageLogger);
-
         }
 
         /**

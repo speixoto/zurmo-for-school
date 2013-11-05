@@ -41,6 +41,5 @@
      */
     abstract class RightsCache extends GeneralCache
     {
-
     }
 ?>

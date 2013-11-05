@@ -57,7 +57,6 @@
                                                                                 $relationMetadata,
                                                                                 static::$messageLogger);
             $this->assertFalse($column);
-
         }
 
         /**
@@ -73,7 +72,6 @@
                                                                                 $relationMetadata,
                                                                                 static::$messageLogger);
             $this->assertFalse($column);
-
         }
 
         /**
@@ -89,7 +87,6 @@
                                                                                 $relationMetadata,
                                                                                 static::$messageLogger);
             $this->assertFalse($column);
-
         }
 
         /**
@@ -105,7 +102,6 @@
                                                                                 $relationMetadata,
                                                                                 static::$messageLogger);
             $this->assertFalse($column);
-
         }
 
         /**
@@ -121,7 +117,6 @@
                                                                                 $relationMetadata,
                                                                                 static::$messageLogger);
             $this->assertFalse($column);
-
         }
 
         /**
@@ -137,7 +132,6 @@
                                                                                 $relationMetadata,
                                                                                 static::$messageLogger);
             $this->assertFalse($column);
-
         }
 
         /**
@@ -153,7 +147,6 @@
                                                                                 $relationMetadata,
                                                                                 static::$messageLogger);
             $this->assertFalse($column);
-
         }
 
         /**
@@ -263,7 +256,6 @@
             $this->assertEquals('NULL', $column['notNull']);
             $this->assertNull($column['collation']);
             $this->assertEquals('DEFAULT NULL', $column['default']);
-
         }
 
         /**
@@ -294,7 +286,6 @@
             $this->assertEquals('DEFAULT NULL', $column['default']);
         }
 
-
         /**
          * @depends testResolveWithHasOneWithLinkTypeSpecific
          */
@@ -323,7 +314,6 @@
                                                                                 $relationMetadata,
                                                                                 static::$messageLogger);
             $this->assertNull($column);
-
         }
 
         /**
@@ -340,7 +330,6 @@
                                                                                 $relationMetadata,
                                                                                 static::$messageLogger);
             $this->assertNull($column);
-
         }
 
         /**
@@ -357,7 +346,6 @@
                                                                                 $relationMetadata,
                                                                                 static::$messageLogger);
             $this->assertNull($column);
-
         }
 
         /**
@@ -429,7 +417,6 @@
             $this->assertEquals('NULL', $column['notNull']);
             $this->assertNull($column['collation']);
             $this->assertEquals('DEFAULT NULL', $column['default']);
-
         }
 
         /**

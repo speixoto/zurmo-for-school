@@ -75,7 +75,7 @@
             $this->assertEquals(18, Meeting::getCount());
             $this->assertEquals(12, Note::getCount());
             $this->assertEquals(39,  Task::getCount());
-            if(Yii::app()->edition == 'Community')
+            if (Yii::app()->edition == 'Community')
             {
                 $this->assertEquals(10,  User::getCount());
             }

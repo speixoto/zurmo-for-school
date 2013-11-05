@@ -133,7 +133,7 @@
                 Yii::app()->mappingHelper->renderMapContentForView($this->geoCodeQueryData, $mapCanvasContainerId);
                 echo "<div id='" . $mapCanvasContainerId . "' class=\"mapCanvasPortlet\"></div>";
             }
-            catch(GeoCode_Exception $e)
+            catch (GeoCode_Exception $e)
             {
                 $emptyLabel = Zurmo::t('ZurmoModule', 'No address found');
                 echo          ZurmoHtml::tag('span', array('class' => 'empty'),
