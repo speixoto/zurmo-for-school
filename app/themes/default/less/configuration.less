@@ -915,8 +915,25 @@ table.configuration-list{
 }
 
 #sample-column-header{
+	position: relative;
+	white-space: nowrap;
 	a{
 		++.z-link;
+		.symbly(16px);
+		&:hover{
+			text-decoration: none;
+			.opacity(75);
+		}
+		+ a{
+			margin-left: 5px;
+		}
+	}
+	div{
+		display: inline-block;
+		//position: absolute;
+		top: 16px;
+		left: 0;
+		margin-left: 5px;
 	}
 }
 

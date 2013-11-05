@@ -612,7 +612,7 @@
          */
         protected static function getZurmoControllerUtil()
         {
-            return new TaskZurmoControllerUtil('activityItems', 'ActivityItemForm');
+            return new TaskZurmoControllerUtil('activityItems', 'TaskActivityItemForm');
         }
 
         /**

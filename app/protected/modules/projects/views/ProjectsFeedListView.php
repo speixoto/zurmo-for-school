@@ -162,5 +162,10 @@
         {
             return 'MyList';
         }
+
+        public static function getDesignerRulesType()
+        {
+            return 'NonModifiableListView';
+        }
     }
 ?>

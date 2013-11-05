@@ -48,5 +48,25 @@
         {
             return Yii::app()->createUrl('configuration/default/index');
         }
+
+        protected function resolveBreadCrumbLinks()
+        {
+            $breadCrumbLinks = array();
+            if ($this->getModuleTitle() !== null)
+            {
+                $title = $this->getModuleTitle();
+                $breadCrumbLinks[$title] =  Yii::app()->createUrl($this->resolveModuleId() . '/' . $this->resolveControllerId() . '/index');
+                if (in_array($title, $this->breadCrumbLinks))
+                {
+                    return $this->breadCrumbLinks;
+                }
+            }
+            return array_merge($breadCrumbLinks, $this->breadCrumbLinks);
+        }
+
+        protected function getModuleTitle()
+        {
+            return null;
+        }
     }
 ?>

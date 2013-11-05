@@ -34,66 +34,11 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * View that renders sticky breadcrumb content if available.
-     */
-    class StickyDetailsAndRelationsBreadCrumbView extends BreadCrumbView
+    class NonModifiableListViewDesignerRules extends ListViewDesignerRules
     {
-        protected $homeLinkLabel;
-
-        protected $stickyLoadUrl;
-
-        protected $homeUrl;
-
-        public function __construct($controllerId, $moduleId, $breadCrumbLinks, $homeLinkLabel, $stickyLoadUrl = null, $homeUrl = null)
+        public function allowEditInLayoutTool()
         {
-            assert('is_string($homeLinkLabel)');
-            assert('is_string($stickyLoadUrl) || $stickyLoadUrl == null');
-            parent::__construct($controllerId, $moduleId, $breadCrumbLinks);
-            $this->homeLinkLabel = $homeLinkLabel;
-            $this->stickyLoadUrl = $stickyLoadUrl;
-            $this->homeUrl       = $homeUrl;
-        }
-
-        protected function getHomeLinkLabel()
-        {
-            return $this->homeLinkLabel;
-        }
-
-        protected function getHomeUrl()
-        {
-            if ($this->homeUrl === null)
-            {
-                return parent::getHomeUrl();
-            }
-            return $this->homeUrl;
-        }
-
-        protected function renderContent()
-        {
-            $content = parent::renderContent();
-            if ($this->stickyLoadUrl != null)
-            {
-                $content .= '<div id="stickyListLoadingArea"><span class="loading"></span></div>';
-            }
-            $this->renderScripts();
-            return $content;
-        }
-
-        protected function renderScripts()
-        {
-            if ($this->stickyLoadUrl != null)
-            {
-                $ajaxLoadScript  = ZurmoHtml::ajax(array(
-                        'type'    => 'GET',
-                        'url'     =>  $this->stickyLoadUrl,
-                        'update'  => '#stickyListLoadingArea',
-                ));
-                $javaScript  = "$(document).ready(function () { ";
-                $javaScript .= $ajaxLoadScript;
-                $javaScript .= "});";
-                Yii::app()->getClientScript()->registerScript(__CLASS__, $javaScript);
-            }
+            return false;
         }
     }
 ?>

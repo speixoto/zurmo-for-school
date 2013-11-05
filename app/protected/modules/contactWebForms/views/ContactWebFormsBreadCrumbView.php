@@ -37,12 +37,9 @@
     /**
      * View that renders contact web forms module breadcrumb content
      */
-    class ContactWebFormsBreadCrumbView extends BreadCrumbView
+    class ContactWebFormsBreadCrumbView extends SettingsBreadCrumbView
     {
-        /**
-         * @return string
-         */
-        protected function getHomeLinkLabel()
+        protected function getModuleTitle()
         {
             return Zurmo::t('ContactWebFormsModule', 'Contact Web Forms');
         }
