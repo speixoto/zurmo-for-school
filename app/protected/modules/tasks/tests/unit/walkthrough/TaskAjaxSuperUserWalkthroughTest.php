@@ -154,7 +154,7 @@
 
             $this->setGetArray(array(
                                     'id'                       => $tasks[1]->id,
-                                    'modalTransferInformation' =>array('modalId' => 'relatedModalContainer-tasks')
+                                    'modalTransferInformation' => array('modalId' => 'relatedModalContainer-tasks')
                                     )
                               );
             $content = $this->runControllerWithNoExceptionsAndGetContent('tasks/default/modalDetails');

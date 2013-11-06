@@ -71,7 +71,8 @@
             $columns    = array();
             $tableName  = $this->safeTable($tableName);
             $columnsRaw = $this->adapter->get("DESCRIBE $tableName");
-            foreach ($columnsRaw as $r) {
+            foreach ($columnsRaw as $r)
+            {
                 $columns[$r['Field']]   =   $r;
             }
             return $columns;
@@ -156,7 +157,8 @@
          * @param string $name of table
          * @return string table name
          */
-        public function safeTable($name, $noQuotes = false) {
+        public function safeTable($name, $noQuotes = false)
+        {
             assert('is_string($name)');
             return parent::safeTable(strtolower($name), $noQuotes);
         }

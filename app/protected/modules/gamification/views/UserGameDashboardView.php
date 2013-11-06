@@ -435,7 +435,7 @@ SPT;
             {
                 if ($collection->getRedemptionCount() > 0)
                 {
-                    $count ++;
+                    $count++;
                 }
             }
             return $count;
