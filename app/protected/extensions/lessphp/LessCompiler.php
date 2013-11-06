@@ -119,6 +119,14 @@
             $lessCompiler->setPreserveComments(true);
             $lessCompiler->setFormatter($this->formatterName);
             $lessCompiler->setImportDir($this->getLessFilesPath());
+            $lessCompiler->setVariables(array(
+                "z_textColor"         => "#545454",
+                "z_themeColor"        => "#282A76",
+                "z_themeColor2"       => "#7CB830",
+                "z_themeColorBtn"     => "#97c43d",
+                "z_themeColorHeader"  => "#464646",
+                "z_themeColorHeader2" => "#333535",
+            ));
             return $lessCompiler;
         }
 

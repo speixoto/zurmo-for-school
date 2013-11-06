@@ -1,0 +1,65 @@
+//yellow
+.action-take,
+.action-type-finish{
+	@topColor: #ffcc00;
+	@bottomColor: #e4b600;
+	.z-label{
+		#gradient > .vertical(@topColor, @bottomColor ) !important;
+	}
+	&:hover .z-label{
+		color: darken(@topColor, 40%) !important;
+		#gradient > .vertical( @topColor, darken(@bottomColor, 10%) ) !important;
+		.t-shadow( 0px 1px 0 lighten(@topColor, 15%) ) !important;
+	}
+}
+
+//green
+.action-type-accept,
+.action-accept,
+.action-complete{
+	@topColor: #97c43d;
+	@bottomColor: #6fa82d;
+	.z-label{
+		#gradient > .vertical(@topColor, @bottomColor ) !important;
+	}
+	&:hover .z-label{
+		color: darken(@topColor, 40%) !important;
+		#gradient > .vertical( @topColor, darken(@bottomColor, 10%) ) !important;
+		.t-shadow( 0px 1px 0 lighten(@topColor, 15%) ) !important;
+	}
+}
+
+//red
+.action-type-reject,
+.action-reject{
+	@topColor: #c43d53;
+	@bottomColor: #a82d31;
+	.z-label{
+		#gradient > .vertical(@topColor, @bottomColor ) !important;
+	}
+	&:hover .z-label{
+		color: darken(@topColor, 40%) !important;
+		#gradient > .vertical( @topColor, darken(@bottomColor, 10%) ) !important;
+		.t-shadow( 0px 1px 0 lighten(@topColor, 15%) ) !important;
+	}
+}
+
+.action-type-restart{
+	@topColor: #4e6d87;
+	@bottomColor: #4d6c87;
+	.button-label{
+		color: lighten(@topColor, 80%);
+		&:before{
+			#gradient > .vertical(@topColor, @bottomColor );
+		}
+	}
+	.button-action:hover{
+		.button-label{
+			color: darken(@topColor, 33%);
+			.t-shadow(0px 1px 0 lighten(@topColor, 5%));
+			&:before{
+				#gradient > .vertical(@topColor, darken(@bottomColor, 10%));
+			}
+		}
+	}
+}

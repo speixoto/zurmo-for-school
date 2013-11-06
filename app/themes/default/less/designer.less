@@ -92,7 +92,7 @@
 .designer-toolbar{
     margin:0;
     input[type="submit"]{
-        ++.z-button;
+        .z-button();
         margin-bottom:15px;
     }
     h3{
@@ -131,7 +131,7 @@
     border:1px solid #ccc;
     #gradient > .vertical(#f6f6f6, #ededed);
     .b-shadow(inset 0 1px 0 0 #ffffff);
-    ++.themeColor;
+    .themeColor();
     &.ui-state-disabled{
         color:#dcdcdc;
         #gradient > .vertical(#efefef, #ededed);
@@ -165,6 +165,7 @@
 
 .sortable-panel {
     .box-sizing();
+	color: @themeColor;
     height:auto;
     display:block;
     float:left;
@@ -184,6 +185,7 @@
 }
 
 .cell-element {
+	color: @themeColor;
     .box-sizing();
     text-align: center;
     margin: 0px;
@@ -251,7 +253,7 @@
 }
 
 .sortable-row-list{
-    ++.themeColor-important;
+	.themeColor-important();
 }
 
 .layout-single-column {
@@ -379,7 +381,7 @@
         position: fixed;
         z-index: 1000;
         margin-top:15px;
-        .b-shadow(0 0 15px 0 #000);
+        .b-shadow(0 0 15px 0 #333);
     }
 }
 
@@ -401,7 +403,7 @@
     .ui-widget-header .ui-state-highlight{
         border:1px solid #fcefa1;
         background:#fbf9ee;
-        color:#363636 ;
+        color:#333;
     }
     .ui-state-highlight{
 	width: 100%;
@@ -412,7 +414,7 @@
     .ui-state-highlight a,
     .ui-widget-content .ui-state-highlight a,
     .ui-widget-header .ui-state-highlight a{
-        color:#363636 ;
+        color:#333 ;
     }
     .droppable-cell-container{
         background:#EFEFEF;
@@ -444,7 +446,8 @@
     .ui-widget-content .ui-state-active,
     .ui-widget-header .ui-state-active{
         z-index:9999;
-        color:#212121;
+        color:#333;
+	    .b-shadow(0 0 1px 1px @themeColor);
     }
 }
 
@@ -468,7 +471,7 @@
         margin-right:3px;
         position:relative;
         top:1px;
-        ++.themeColor2;
+    	.themeColor2();
     }
     .sortable{
         list-style: none;
@@ -574,7 +577,7 @@
 
 #contactStatesData_AddInputButton,
 #customFieldDataData_AddInputButton{
-    ++.z-button;
+    .z-button();
     margin:5px 0 0 0 !important;
     float: left;
     clear: both;

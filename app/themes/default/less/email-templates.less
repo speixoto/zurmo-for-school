@@ -37,7 +37,7 @@
     //min-height: 200px;
 	//margin: 15px;
 	margin-bottom: 15px;
-	++.border-box;
+	.box-sizing();
     > .tab{
         position: absolute;
         top:28px;
@@ -49,7 +49,7 @@
 	    padding:0;
 	    border: 1px solid #dfdfdf;
 	    border-top:none;
-	    ++.border-box;
+	    .box-sizing();
 	    background: #fefefe;
         label{
             display: none;
@@ -87,7 +87,7 @@
 		height: 100%;
 		//background: rgba(255, 255, 255, 0.9);
 		margin: 0;
-		++.border-box;
+		.box-sizing();
 	}
 	.spinner{
 		margin: 100px 0 0 50%;
@@ -106,7 +106,7 @@
 		height: 100%;
 		background: rgba(255, 255, 255, 0.8);
 		margin: 0;
-		++.border-box;
+		.box-sizing();
 	}
 	/*
 	.spinner{
@@ -138,6 +138,7 @@
         text-decoration: none;
 		position: relative;
 	    top: 1px;
+	    color: @themeColor;
     }
 }
 

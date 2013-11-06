@@ -84,6 +84,7 @@
 	text-align:center;
 	.radius(6px);
     .smaller();
+	background-color: @themeColor2;
 }
 
 .ranking{
@@ -101,6 +102,7 @@
 	.smaller();
 	.radius(50%);
     .t-shadow(none) !important;
+	background-color: @themeColor2;
 }
 
 .UserLeaderboardRankingForPortletView,
@@ -152,6 +154,7 @@
 		.b-shadow( ~"inset 0 0 1px rgba(155,155,155,.5), inset 0 1px 0 rgba(225,225,225,.5),  inset 0 -6px 0 rgba(155,155,155,.7), inset 0 -7px 0 rgba(255,255,255,.3)");
 	}
 	.badge-icon{
+		color: @themeColor;
 	    .symbly(50px);
 	    display:block;
 	    text-align:center;
@@ -181,6 +184,7 @@
 		.radius(50%);
 		line-height:18px;
 		z-index:10;
+		background-color: @themeColor2;
 	}
 	.gloss {
 	    #gradient > .horizontal( rgba( 255, 255, 255, 0.3 ), rgba( 255, 255, 255, 0.1 ) );
@@ -236,6 +240,7 @@
 		.b-shadow( ~"inset 0 0 1px rgba(155,155,155,.5), inset 0 1px 0 rgba(225,225,225,.5),  inset 0 -20px 0 rgba(155,155,155,.7), inset 0 -21px 0 rgba(255,255,255,.3)");
 	}
 	.badge-icon{
+		color: @themeColor;
 	    font-size:200px;
 		.radius(27px);
 		&:before{
@@ -250,7 +255,7 @@
     text-align:center;
     width:100%;
     h3{
-        ++.themeColor2-important;
+        color: @themeColor2 !important;
         margin-top:3px;
     }
 }
@@ -543,6 +548,7 @@
 }
 
 .percentComplete{
+	color: @themeColor;
 	position: relative;
 	line-height:16px;
 	.box-sizing();
@@ -668,7 +674,7 @@
 	.b-shadow(~"inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12)");
     #gradient > .vertical-three-colors( #ffffff, #f5f5f5, 80%, #f5f5f5 );
 	a{
-		++.z-button;
+		.z-button();
 		&:focus{
 			outline:none;
 		}
@@ -799,7 +805,7 @@ a.close-ModalGameNotification.simple-link{
 	span{
 		font-weight: normal;
 		.smaller();
-		color: #545454;
+		color: @textColor;
 	}
 }
 

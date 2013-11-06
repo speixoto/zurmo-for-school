@@ -60,10 +60,12 @@
         public function __construct(View $containedView)
         {
             $this->containedView = $containedView;
+
         }
 
         public function render()
         {
+            Yii::app()->lessCompiler->compile();
             if (SHOW_PERFORMANCE)
             {
                 $startTime = microtime(true);

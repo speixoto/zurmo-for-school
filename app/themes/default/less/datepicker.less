@@ -153,7 +153,8 @@
     		}
     		&.ui-datepicker-today{
     			background-image:none !important;
-    		}
+			    background:lighten(@themeColor, 50%) !important;
+		    }
     		&:hover{
     			background-image:none;
     			background:#f5f5f5 url(../images/datepicker-sprite-ie.png) left bottom repeat-x !important;
@@ -168,12 +169,12 @@
 		.clearfix();
 	}
 	.ui-datepicker-current{
-		++.z-button;
+		.z-button();
 		float:left;
 		margin:0 10px;
 	}
 	.ui-datepicker-close{
-		++.z-button;
+		.z-button();
 		float:right;
 		margin:0 10px;
 	}
@@ -225,6 +226,7 @@
 	.calendar-events-5,
 	.calendar-events-6{
 		span{
+			color: @themeColor;
 			position:relative !important;
 			float:left;
 			width:100%;
@@ -233,8 +235,6 @@
 			text-align:left !important;
 			font-size: 46px;
 			letter-spacing: -6px;
-			vertical-align: middle;
-			text-align: left;
 			vertical-align: top;
 			&:before{
 				position:absolute;

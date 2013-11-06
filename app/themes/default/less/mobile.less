@@ -134,6 +134,13 @@ body{
 
 #nav-trigger{
 	display:block;
+	border-right: 1px solid darken(@themeColor, 12%);
+	.b-shadow(1px 0 0 0 lighten(@themeColor, 1%));
+	color:lighten(@themeColor, 100%);
+}
+
+#nav-trigger:active{
+	.t-shadow(0 1px 0 lighten(@themeColor, 25%));
 }
 
 #corp-logo span{
@@ -421,7 +428,7 @@ body{
 	padding:0 0 0 0;
 	margin: 0;
 	z-index: 0;
-	++.border-box;
+	.box-sizing();
 	float:none;
 }
 
@@ -441,7 +448,7 @@ body{
 	padding: 0 0 0 10px !important;
 	top: 0 !important;
 	.opacity(0);
-	++.border-box;
+	.box-sizing();
 	//padding:40px 9px 0 19px; //add padding-top:50px when position fixed for blue bar is possible
 	left: 0;
 	//position: fixed;
@@ -534,7 +541,7 @@ body{
 #search{
 	position: relative;
 	> div{
-		++.flyout;
+		.flyout();
 		display:none;
 		position: absolute;
 		margin: 0;
@@ -557,7 +564,7 @@ body{
 	position: relative;
 	> ul{
 		width: auto;
-		++.headerDropDown;
+		.headerDropDown();
 		border:1px solid #b6b6b6;
 		#gradient > .vertical( #f5f5f5, #ebebeb );
 		.b-shadow(~"inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12)");
@@ -686,14 +693,20 @@ body{
 	padding-left:3px;
 	padding-bottom: 10px;
 	height: auto;
-	++.clearfix;
+	.clearfix();
 	label{
 		line-height: 1;
 		float: left;
 		margin: 10px 0 0 2px;
+		&:hover{
+			background-color: @themeColor2;
+		}
 	}
 	> .ui-buttonset{
 		padding-top: 0;
+	}
+	.ui-state-active{
+		background-color: @themeColor2;
 	}
 }
 

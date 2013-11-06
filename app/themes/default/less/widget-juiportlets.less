@@ -112,6 +112,10 @@
 		margin:0 8px;
 		outline: none;
 	}
+	a.remove:hover .icon:after,
+	a.edit:hover .icon:after{
+		color: @themeColor;
+	}
 }
 
 .collapse ~ h3{
@@ -120,6 +124,7 @@
 
 .juiportlet-widget-placeholder {
 	margin: 0 20px 20px 2px;
+	border:2px dashed @themeColor;
 }
 
 .juiportlet-widget-content{

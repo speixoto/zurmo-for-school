@@ -76,6 +76,9 @@
         li:active{
             cursor: move;
         }
+	    span:hover{
+		    color: @themeColor;
+	    }
         .ui-draggable-dragging{
             background:none;
             font-weight: bold;
@@ -113,7 +116,7 @@
 .hasTree{
     width:25%;
     float: left;
-    ++.border-box;
+    .box-sizing();
     padding: 8px 0;
     min-height: 500px;
     max-height:600px;
@@ -127,7 +130,7 @@
 }
 
 .dynamic-droppable-area{
-    ++.border-box;
+    .box-sizing();
     width: 75%;
     float: right;
     padding-left: 15px;
@@ -169,8 +172,9 @@
 }
 
 .drop-zone{
+	color: @themeColor;
     .animateAll(0.25s);
-    ++.border-box;
+    .box-sizing();
     width: 100%;
     height: 100%;
     display: block;
@@ -187,7 +191,7 @@
     background: rgba(255, 255, 255, 0.5);
     div{
         padding-top:35%;
-        ++.border-box;
+        .box-sizing();
         display: block;
         width: 100%;
         height: 100%;
@@ -215,7 +219,7 @@
 }
 
 .dynamic-row{
-    ++.cf;
+    .clearfix();
     position: relative;
     width: 100%;
     display: block;
@@ -223,13 +227,13 @@
     background: #f0f0f0;
     .radius(3px);
     padding:10px 30px 10px 10px;
-    ++.border-box;
+    .box-sizing();
 	.b-shadow(~'inset 0 0 0 1px rgba(204, 204, 204, 0.3) , 1px 1px 1px 0px rgba(153, 153, 153, 0.15)');
 	> div{
         position: relative;
         float: left;
         width: 100%;
-        ++.cf;
+        .clearfix();
         > span:first-child + div{
             margin-right: 0 !important;
             width: 45%;
@@ -310,8 +314,8 @@
 }
 
 .dynamic-sub-row{
-    ++.cf;
-    ++.border-box;
+    .clearfix();
+    .box-sizing();
     position: relative;
     width: 100%;
     display: block;
@@ -374,14 +378,14 @@
     float: left;
     line-height: 26px;
     width:25%;
-    ++.border-box;
+    .box-sizing();
 }
 
 .dynamic-action-attribute-should-set-value,
 .dynamic-row-operator{
     float: left;
     width:20%;
-    ++.border-box;
+    .box-sizing();
     padding-left: 15px;
 }
 
@@ -389,13 +393,13 @@
 .dynamic-row-field{
     float: right;
     width: 75%;
-    ++.border-box;
+    .box-sizing();
 }
 
 .value-data{
     float: right;
     width:80%;
-    ++.border-box;
+    .box-sizing();
 }
 
 .first-value-area + .second-value-area{
@@ -403,7 +407,7 @@
 }
 
 .report-runtime-availability{
-    ++.border-box;
+    .box-sizing();
     min-width: 145px;
     position: relative;
     display: block;
@@ -468,7 +472,7 @@
 
 #show-triggers-structure-div-link,
 #show-filters-structure-div-link{
-    ++.z-link;
+    .z-link();
 }
 
 #RuntimeFiltersForPortletView{
@@ -477,7 +481,7 @@
     .wrapper,
     #edit-form,
     .dynamic-row{
-        ++.unstyle-panel;
+        .unstyle-panel();
     }
     .dynamic-row{
         padding: 0 0 15px 0;
@@ -498,7 +502,7 @@
     .view-toolbar-container{
         //clear: left;
         //margin:0 15px 15px 15px;
-        ++.border-box;
+        .box-sizing();
         width: 100%;
     }
 }
@@ -607,7 +611,7 @@
 
 .hasDrillDownContent{
     padding:0 5px 5px 5px !important;
-    ++.border-box;
+    .box-sizing();
     #gradient > .vertical( #333, #555 );
     .big-spinner{
         margin-top:10px;
@@ -657,7 +661,7 @@
         margin-bottom: 15px;
         width: 50%;
         float: left;
-        ++.border-box;
+        .box-sizing();
         padding-right: 5px;
         + div{
             padding-left: 5px;
@@ -867,7 +871,7 @@
 
 
 .email-message-recipient-rows{
-    ++.border-box;
+    .box-sizing();
     .hasDropDown{
         float: left;
         min-width: 20%;
@@ -911,7 +915,7 @@
 }
 
 .all-related-field{
-    ++.border-box;
+    .box-sizing();
     float: left;
     width: 80%;
     padding-left: 10px;
@@ -930,7 +934,7 @@
 }
 
 .static-address-field{
-    ++.border-box;
+    .box-sizing();
     float: left;
     width: 80%;
     .value-data{
@@ -957,8 +961,8 @@
 	float: right !important;
 	width: 80% !important;
 	padding-left: 15px;
-	++.cf;
-	++.border-box;
+	.clearfix();
+	.box-sizing();
 	.value-data {
 		float: left;
 		width: 55%;
@@ -971,7 +975,7 @@
 .time-trigger-attribute-selector-container{
 	width: 20%;
 	float: left;
-	++.border-box;
+	.box-sizing();
 	min-height: 300px;
 }
 
@@ -980,7 +984,7 @@
 	width: 75%;
 	margin-left: 25%;
 	margin-top: 10px;
-	++.border-box;
+	.box-sizing();
 	padding-left: 15px;
     > div{
       margin-top: 0 !important;
@@ -993,13 +997,13 @@
 	.action-type-selector-container{
 		width: 20%;
 		float: left !important;
-		++.cf;
-		++.border-box;
+		.clearfix();
+		.box-sizing();
 	}
 	.droppable-dynamic-rows-container,
 	.zero-components-view{
 		float: left !important;
-		++.border-box;
+		.box-sizing();
 	}
 	.Actions,
 	.EmailMessages,
@@ -1040,8 +1044,8 @@
 .workflow-order-module-selector-container{
 	width: 20%;
 	float: left !important;
-	++.cf;
-	++.border-box;
+	.clearfix();
+	.box-sizing();
 	min-height: 300px;
 }
 
@@ -1049,7 +1053,7 @@
 .WorkflowRulesOrder,
 .no-workflows-to-order-view{
 	float: right !important;
-	++.border-box;
+	.box-sizing();
 	width: 80% !important;
 	padding-left: 15px;
 	+ .float-bar{
@@ -1097,6 +1101,7 @@
 	.progress-bar{
 		height: 100%;
 		.radius(3px);
+		background-color: @themeColor;
 	}
 	span{
 		display: inline-block;
@@ -1104,6 +1109,7 @@
 	}
 	.current-step{
 		font-weight: bold;
+		color: @themeColor !important;
 	}
 }
 

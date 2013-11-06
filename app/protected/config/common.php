@@ -324,6 +324,15 @@
             'workflowsObserver' => array(
                 'class' => 'application.modules.workflows.observers.WorkflowsObserver',
             ),
+            'lessCompiler' => array(
+                'class'        => 'application.extensions.lessphp.LessCompiler',
+                'formatterName'    => 'lessjs',
+                'lessFilesToCompile'    => array(
+                    'ie.less',
+                    'mobile.less',
+                    'newui.less'
+                ),
+            ),
         ),
         'controllerMap' => array(
             'min' => 'application.extensions.minscript.controllers.ExtMinScriptController',

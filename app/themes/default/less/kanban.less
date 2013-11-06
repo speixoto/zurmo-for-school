@@ -137,34 +137,33 @@
 	background-size: 100%;
 }
 
-
 #kanban-board{
-	++.clearfix;
-	++.border-box;
+	.clearfix();
+	.box-sizing();
 	display: table;
 	vertical-align: top;
 	height: 100%;
 	width: 100%;
-	.drop-zone-container{
-		padding: 37px 2px 2px 2px;
-		++.border-box;
-		position: absolute;
-		left: 0;
-		top: 0;
-		height: 100%;
-		width: 100%;
-	}
-	.drop-zone{
-		++.border-box;
-		position: relative;
-	}
-	.ui-state-active{
+	.ui-state-active{}
+}
 
-	}
+.drop-zone-container{
+	padding: 37px 2px 2px 2px;
+	.box-sizing();
+	position: absolute;
+	left: 0;
+	top: 0;
+	height: 100%;
+	width: 100%;
+}
+.drop-zone{
+	.box-sizing();
+	position: relative;
+	border:2px dashed @themeColor;
 }
 
 .kanban-column{
-	++.border-box;
+	.box-sizing();
 	white-space: normal;
 	display: table-cell;//inline-block;
 	vertical-align: top;
@@ -196,12 +195,6 @@
 	white-space: nowrap;
 	border-bottom: 1px solid #dfdfdf;
 }
-/*
-@themeColor        : #282A76;
-    @themeColor2       : #7CB830;
-    @themeColorBtn     : #97c43d;
-    @themeColorBtn2    : darken(@themeColorBtn, 10%);
-    */
 
 .kanban-card{
 	> div{
@@ -212,7 +205,7 @@
 		background: #f0f0f0;
 		.radius(3px);
 		padding:5px;
-		++.border-box;
+		.box-sizing();
 		.b-shadow(~'inset 0 0 0 1px rgba(204, 204, 204, 0.3) , 1px 1px 1px 0px rgba(153, 153, 153, 0.15)');
 	}
 	span{
@@ -309,6 +302,10 @@
 	}
 }
 
+#kanban-board-options-link{
+	color: @themeColor;
+}
+
 .icon-kanban-board-view-type,
 .icon-grid-view-type{
 	margin:0 3px !important;
@@ -348,7 +345,7 @@
 	}
 }
 
-//.status-1 .task-status{ color: #545454; }
+//.status-1 .task-status{ color: @textColor; }
 //.status-2 .task-status{ color: #6fa82d; }
 //.status-3 .task-status{ color: #ffb63b; }
 .status-4 .task-status{ color: #a82d31; }
@@ -371,9 +368,6 @@
 			.smaller();
 		}
 	}
-	p{
-
-	}
 }
 
 .task-subscribers{
@@ -381,9 +375,6 @@
 	padding-top: 7px;
 	border-top:1px solid #dfdfdf;
 	.b-shadow(inset 0 1px 0 #fff);
-	a{
-
-	}
 	img{
 		margin-right: 5px;
 	}
@@ -394,7 +385,9 @@
 }
 
 .task-owner{
-
+	.gravatar{
+		background-color: @themeColor;
+	}
 }
 
 .task-action-toolbar{
@@ -414,86 +407,6 @@
 			bottom: 0;
 			left: 0;
 			z-index: -1;
-		}
-	}
-}
-
-.action-type-accept{
-	@topColor: #97c43d;
-	@bottomColor: #6fa82d;
-	.button-label{
-		color: lighten(@topColor, 80%);
-		&:before{
-			#gradient > .vertical(@topColor, @bottomColor );
-		}
-	}
-	.button-action:hover{
-		.button-label{
-			color: darken(@topColor, 33%);
-			.t-shadow(0px 1px 0 lighten(@topColor, 5%));
-			&:before{
-				#gradient > .vertical(@topColor, darken(@bottomColor, 10%));
-			}
-		}
-	}
-}
-
-.action-type-reject{
-	@topColor: #c43d53;
-	@bottomColor: #a82d31;
-	.button-label{
-		color: lighten(@topColor, 80%);
-		&:before{
-			#gradient > .vertical(@topColor, @bottomColor );
-		}
-	}
-	.button-action:hover{
-		.button-label{
-			color: darken(@topColor, 33%);
-			.t-shadow(0px 1px 0 lighten(@topColor, 5%));
-			&:before{
-				#gradient > .vertical(@topColor, darken(@bottomColor, 10%));
-			}
-		}
-	}
-}
-
-.action-type-finish{
-	@topColor: #ffcc00;
-	@bottomColor: #e4b600;
-	.button-label{
-		color: lighten(@topColor, 80%);
-		&:before{
-			#gradient > .vertical(@topColor, @bottomColor );
-		}
-	}
-	.button-action:hover{
-		.button-label{
-			color: darken(@topColor, 33%);
-			.t-shadow(0px 1px 0 lighten(@topColor, 5%));
-			&:before{
-				#gradient > .vertical(@topColor, darken(@bottomColor, 10%));
-			}
-		}
-	}
-}
-
-.action-type-restart{
-	@topColor: #4e6d87;
-	@bottomColor: #4d6c87;
-	.button-label{
-		color: lighten(@topColor, 80%);
-		&:before{
-			#gradient > .vertical(@topColor, @bottomColor );
-		}
-	}
-	.button-action:hover{
-		.button-label{
-			color: darken(@topColor, 33%);
-			.t-shadow(0px 1px 0 lighten(@topColor, 5%));
-			&:before{
-				#gradient > .vertical(@topColor, darken(@bottomColor, 10%));
-			}
 		}
 	}
 }
@@ -546,9 +459,5 @@
 	content:'\2122' !important;
 }
 
-
 .detail-unsubscribe-task-link,
-.unsubscribe-task-link{
-	//float: right;
-	//margin: 0 0 0 0;
-}
+.unsubscribe-task-link{}

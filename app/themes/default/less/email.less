@@ -152,7 +152,7 @@
     font-weight: normal;
     &:before{
         position: relative;
-        color:#545454 !important;
+        color:@textColor !important;
         content:"6";
         .symbly(18px);
         top:1px;
@@ -164,7 +164,7 @@
     font-weight: normal;
     &:before{
         position: relative;
-        color:#545454 !important;
+        color:@textColor !important;
         content:"5";
         .symbly(18px);
         top:1px;
@@ -205,7 +205,7 @@
     }
 }
 .recipient{
-    ++.cf;
+    .clearfix();;
     > label{
         float: left;
         width: 3%;
@@ -224,7 +224,7 @@
 
 /*email modal*/
 #NoUserEmailConfigurationYetView{
-    ++.cf;
+    .clearfix();;
     padding:0 0 30px 0;
 	.large-icon{
 		margin-top: 0;

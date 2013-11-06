@@ -31,6 +31,16 @@
 // feasible for technical reasons, the Appropriate Legal Notices must display the words
 // "Copyright Zurmo Inc. 2013. All rights reserved".
 
+@textColor         : @z_textColor;
+@themeColor        : @z_themeColor;
+@themeColor2       : @z_themeColor2;
+@themeColorBtn     : @z_themeColorBtn;
+@themeColorBtn2    : darken(@z_themeColorBtn, 10%);
+@themeColorHeader  : @z_themeColorHeader;
+@themeColorHeader2 : @z_themeColorHeader2;
+@borderColor       : darken(@z_themeColor, 10%);
+@headerBarColor    : @z_themeColor;
+
 .symbly( @size : 32px ) {
     font-weight:normal !important;
     font-size:@size;
@@ -174,7 +184,7 @@ a.z-button,
     cursor:pointer;
     text-indent:0;
     display:inline-block;
-	.border-box();
+	.box-sizing();
     .clearfix();
     &.attachLoading.z-button{
         color: #fff;
@@ -219,7 +229,7 @@ a.z-button,
 }
 
 .z-label{
-	.border-box();
+	.box-sizing();
     float:left;
     font-weight:bold;
     padding:0 25px;
@@ -264,6 +274,7 @@ a.z-button,
     .radius(3px);
     color:#fff !important;
     .smaller();
+	background-color: @themeColor !important;
 }
 
 .zLink:hover, .z-link:hover{
@@ -275,6 +286,7 @@ a.z-button,
    .smaller();
    .opacity(50);
    text-decoration: none;
+	color: @themeColor;
    &:hover{
        .opacity(100);
        text-decoration: none;
