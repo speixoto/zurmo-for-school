@@ -38,7 +38,7 @@
     {
         public static function resolveAndGetDefaultPermissionSetting(ContactWebForm $contactWebForm)
         {
-            if (!is_null($defaultPermission = $contactWebForm->defaultPermissionSetting))
+            if (($defaultPermission = $contactWebForm->defaultPermissionSetting) !== null)
             {
                 return $defaultPermission;
             }

@@ -90,7 +90,7 @@
                     RedBeanModelToJoinTableAdapter::resolve($modelClassName, $relationMetadata, $messageLogger);
                     return null;
                 }
-                else if (in_array($relationType, array(RedBeanModel::HAS_ONE, RedBeanModel::HAS_MANY_BELONGS_TO)))
+                elseif (in_array($relationType, array(RedBeanModel::HAS_ONE, RedBeanModel::HAS_MANY_BELONGS_TO)))
                 {
                     $linkName               = null;
                     if ($linkType == RedBeanModel::LINK_TYPE_ASSUMPTIVE &&
@@ -101,7 +101,7 @@
                     $name   = $linkName . RedBeanModel::getForeignKeyName($modelClassName, $relationName);
                     $column = RedBeanModelMemberToColumnUtil::resolveForeignKeyColumnMetadata($name);
                 }
-                else if ($relationType == RedBeanModel::HAS_MANY && $linkType == RedBeanModel::LINK_TYPE_POLYMORPHIC)
+                elseif ($relationType == RedBeanModel::HAS_MANY && $linkType == RedBeanModel::LINK_TYPE_POLYMORPHIC)
                 {
                     static::setColumnsForPolymorphicLink($relatedModelClass, $relationMetadata[4]);
                 }
