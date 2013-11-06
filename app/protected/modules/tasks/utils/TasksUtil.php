@@ -878,9 +878,9 @@
             }
             elseif ($sourceKanbanType == KanbanItem::TYPE_IN_PROGRESS)
             {
-                if ($targetStatus == Task::STATUS_AWAITING_ACCEPTANCE
-                                    || $targetStatus == Task::STATUS_REJECTED
-                                        || $targetStatus == Task::STATUS_IN_PROGRESS)
+                if ($targetStatus == Task::STATUS_AWAITING_ACCEPTANCE ||
+                                       $targetStatus == Task::STATUS_REJECTED ||
+                                           $targetStatus == Task::STATUS_IN_PROGRESS)
                 {
                     $targetKanbanType = KanbanItem::TYPE_IN_PROGRESS;
                 }

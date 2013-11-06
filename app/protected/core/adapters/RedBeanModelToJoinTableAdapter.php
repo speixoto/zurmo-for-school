@@ -49,8 +49,8 @@
          */
         public static function resolve($modelClassName, array $relationMetadata, & $messageLogger)
         {
-            if (empty($modelClassName) || !@class_exists($modelClassName) || empty($relationMetadata)
-                        || count($relationMetadata) < 2 || $relationMetadata[0] != RedBeanModel::MANY_MANY ||
+            if (empty($modelClassName) || !@class_exists($modelClassName) || empty($relationMetadata) ||
+                           count($relationMetadata) < 2 || $relationMetadata[0] != RedBeanModel::MANY_MANY ||
                                                                                 !@class_exists($relationMetadata[1]))
             {
                 return;

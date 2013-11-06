@@ -356,8 +356,8 @@
             $ContactWebFormAttributes = unserialize($contactWebForm->serializedData);
             foreach ($ContactWebFormAttributes as $attributeName => $attribute)
             {
-                if (isset($attribute['hidden']) && $attribute['hidden'] == true
-                    && isset($attribute['hiddenValue']) && !empty($attribute['hiddenValue']))
+                if (isset($attribute['hidden']) && $attribute['hidden'] == true &&
+                       isset($attribute['hiddenValue']) && !empty($attribute['hiddenValue']))
                 {
                     $dropDownAttributeTypes = array('CheckBox', 'RadioDropDown', 'DropDown');
                     $allAttributes = ContactWebFormsUtil::getAllAttributes();
@@ -385,8 +385,8 @@
             $ContactWebFormAttributes = unserialize($contactWebForm->serializedData);
             foreach ($ContactWebFormAttributes as $attributeName => $attribute)
             {
-                if (isset($attribute['hidden']) && $attribute['hidden'] == true
-                    && isset($attribute['hiddenValue']) && !empty($attribute['hiddenValue']))
+                if (isset($attribute['hidden']) && $attribute['hidden'] == true &&
+                       isset($attribute['hiddenValue']) && !empty($attribute['hiddenValue']))
                 {
                     $webFormEntryAttributes[$attributeName] = $attribute['hiddenValue'];
                 }
@@ -464,8 +464,8 @@
             }
             if ($designerType == 'DateTime' && !empty($value))
             {
-                $sanitizedAttributeValue =
-                    DateTimeUtil::convertDateTimeLocaleFormattedDisplayToDbFormattedDateTimeWithSecondsAsZero($value);
+                $sanitizedAttributeValue = DateTimeUtil::
+                                               convertDateTimeLocaleFormattedDisplayToDbFormattedDateTimeWithSecondsAsZero($value);
             }
             return DataUtil::purifyHtml($sanitizedAttributeValue);
         }

@@ -41,7 +41,7 @@
     {
         protected static function shouldRenderDetailsContent($model)
         {
-            if ($model instanceof OwnedSecurableItem) 
+            if ($model instanceof OwnedSecurableItem)
             {
                 return true;
             }

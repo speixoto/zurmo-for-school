@@ -70,8 +70,8 @@
         public static function resolve($modelClassName, $relationName, array $relationMetadata, & $messageLogger)
         {
             $column = null;
-            if (!empty($modelClassName) && @class_exists($modelClassName) && !empty($relationName)
-                                            && count($relationMetadata) >= 2 && @class_exists($relationMetadata[1]))
+            if (!empty($modelClassName) && @class_exists($modelClassName) && !empty($relationName) &&
+                                                count($relationMetadata) >= 2 && @class_exists($relationMetadata[1]))
             {
                 $relationType           = $relationMetadata[0];
                 $relatedModelClass      = $relationMetadata[1];

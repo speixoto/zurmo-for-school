@@ -41,7 +41,7 @@
     {
         protected static function shouldRenderDetailsContent($model)
         {
-            if ($model instanceof Item) 
+            if ($model instanceof Item)
             {
                 return true;
             }
@@ -64,9 +64,9 @@
         public static function renderAfterFormLayoutForDetailsContent($model, $content = null)
         {
             $detailsContent = null;
-            if (static::shouldRenderDetailsContent($model)) 
+            if (static::shouldRenderDetailsContent($model))
             {
-                if ($content != null) 
+                if ($content != null)
                 {
                     $detailsContent .= ZurmoHtml::tag('br');
                 }
@@ -80,7 +80,7 @@
         {
             $content = null;
             $elementsCount = count($elements);
-            foreach ($elements as $index => $elementDetails) 
+            foreach ($elements as $index => $elementDetails)
             {
                 $elementClassName = $elementDetails['className'];
                 $elementParams = $elementDetails['parameters'];
@@ -88,7 +88,7 @@
                 $element->nonEditableTemplate = '{label} {content}';
                 $content .= $element->render();
                 $isLast = (($index + 1) == $elementsCount);
-                if (!$isLast) 
+                if (!$isLast)
                 {
                     $content .= '&#160;|&#160;';
                 }

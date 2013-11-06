@@ -422,7 +422,7 @@
             $tableMetadata  = join(',' . PHP_EOL, $tableMetadata);
             $query          = "CREATE TABLE `${tableName}` (" . PHP_EOL .
                                 $tableMetadata . PHP_EOL .
-                                " ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1;";
+                                " ) ENGINE = InnoDB DEFAULT CHARSET = utf8 COLLATE = utf8_unicode_ci AUTO_INCREMENT = 1;";
             return $query;
         }
 

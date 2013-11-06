@@ -52,8 +52,8 @@
             {
                 $this->setId($this->htmlOptions['id']);
             }
-            $route=$this->getController()->getRoute();
-            $this->items=$this->normalizeItems($this->items,$route,$hasActiveChild);
+            $route = $this->getController()->getRoute();
+            $this->items = $this->normalizeItems($this->items,$route,$hasActiveChild);
         }
 
         protected function renderMenu($items)
@@ -89,17 +89,17 @@
         protected function renderMenuRecursive($items)
         {
             $item = $items[0];
-            $options=isset($item['itemOptions']) ? $item['itemOptions'] : array();
-            $class=array();
+            $options = isset($item['itemOptions']) ? $item['itemOptions'] : array();
+            $class = array();
             if ($item['active'] && $this->activeCssClass!='')
             {
-                $class[]=$this->activeCssClass;
+                $class[] = $this->activeCssClass;
             }
-            if ($class!==array())
+            if ($class !== array())
             {
                 if (empty($options['class']))
                 {
-                    $options['class']=implode(' ',$class);
+                    $options['class'] = implode(' ',$class);
                 }
                 else
                 {
@@ -123,7 +123,7 @@
 
             if (isset($item['url']))
             {
-                $label = $this->linkLabelWrapper===null ? $item['label'] : CHtml::tag($this->linkLabelWrapper, $this->linkLabelWrapperHtmlOptions, $item['label']);
+                $label = $this->linkLabelWrapper === null ? $item['label'] : CHtml::tag($this->linkLabelWrapper, $this->linkLabelWrapperHtmlOptions, $item['label']);
                 $label = ZurmoHtml::tag('span', array('class' => 'button-label'), $label);
                 echo CHtml::link($icon . $label . $item['dynamicLabel'],$item['url'], array('class' => 'button-action'));
                             $spanForTrigger = null;
@@ -158,15 +158,17 @@
                 {
                     foreach ($item['items'] as $item)
                     {
-                        $options=isset($item['itemOptions']) ? $item['itemOptions'] : array();
-                        $class=array();
+                        $options = isset($item['itemOptions']) ? $item['itemOptions'] : array();
+                        $class = array();
                         if ($item['active'] && $this->activeCssClass!='')
-                            $class[]=$this->activeCssClass;
-                        if ($class!==array())
+                        {
+                            $class[] = $this->activeCssClass;
+                        }
+                        if ($class !== array())
                         {
                             if (empty($options['class']))
                             {
-                                $options['class']=implode(' ',$class);
+                                $options['class'] = implode(' ',$class);
                             }
                             else
                             {
