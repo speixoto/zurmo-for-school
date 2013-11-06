@@ -348,6 +348,7 @@
             $('." . $this->getFormId() . "marketingMetricsGroupByLink').click(function()
                 {
                     " . $ajaxSubmitScript . "
+                    return false;
                 }
             );
             ");

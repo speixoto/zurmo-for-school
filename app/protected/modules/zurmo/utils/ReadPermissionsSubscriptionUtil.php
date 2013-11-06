@@ -68,46 +68,46 @@
         {
             assert('is_string($tableName) && $tableName  != ""');
             return array($tableName =>  array('columns' => array(
-                                                            array(
-                                                                'name' => 'userid',
-                                                                'type' => 'INT(11)',
-                                                                'unsigned' => 'UNSIGNED',
-                                                                'notNull' => 'NOT NULL',
-                                                                'collation' => null,
-                                                                'default' => null,
-                                                            ),
-                                                            array(
-                                                                'name' => 'modelid',
-                                                                'type' => 'INT(11)',
-                                                                'unsigned' => 'UNSIGNED',
-                                                                'notNull' => 'NOT NULL',
-                                                                'collation' => null,
-                                                                'default' => null,
-                                                            ),
-                                                            array(
-                                                                'name' => 'modifieddatetime',
-                                                                'type' => 'DATETIME',
-                                                                'unsigned' => null,
-                                                                'notNull' => 'NULL',
-                                                                'collation' => null,
-                                                                'default' => 'NULL',
-                                                            ),
-                                                            array(
-                                                                'name' => 'subscriptiontype',
-                                                                'type' => 'TINYINT(4)',
-                                                                'unsigned' => null,
-                                                                'notNull' => 'NULL',
-                                                                'collation' => null,
-                                                                'default' => 'NULL',
-                                                            ),
-                                                        ),
-                                                'indexes' => array('userid_modelid' => array(
-                                                                        'columns' => array('userid', 'modelid'),
-                                                                        'unique' => true,
-                                                                    ),
-                                                    ),
-                                                )
-                                            );
+                array(
+                    'name' => 'userid',
+                    'type' => 'INT(11)',
+                    'unsigned' => 'UNSIGNED',
+                    'notNull' => 'NOT NULL',
+                    'collation' => null,
+                    'default' => null,
+                ),
+                array(
+                    'name' => 'modelid',
+                    'type' => 'INT(11)',
+                    'unsigned' => 'UNSIGNED',
+                    'notNull' => 'NOT NULL',
+                    'collation' => null,
+                    'default' => null,
+                ),
+                array(
+                    'name' => 'modifieddatetime',
+                    'type' => 'DATETIME',
+                    'unsigned' => null,
+                    'notNull' => 'NULL',
+                    'collation' => null,
+                    'default' => 'NULL',
+                ),
+                array(
+                    'name' => 'subscriptiontype',
+                    'type' => 'TINYINT(4)',
+                    'unsigned' => null,
+                    'notNull' => 'NULL',
+                    'collation' => null,
+                    'default' => 'NULL',
+                ),
+            ),
+                'indexes' => array('userid_modelid' => array(
+                    'columns' => array('userid', 'modelid'),
+                    'unique' => true,
+                ),
+                ),
+            )
+            );
         }
 
         protected static function getModelTableName($modelClassName)
@@ -221,13 +221,13 @@
                 foreach ($modelIdsToAdd as $modelId)
                 {
                     $sql = "DELETE FROM $tableName WHERE
-                                                userid = '" . $user->id . "'
-                                                AND modelid = '{$modelId}'
-                                                AND subscriptiontype='" . self::TYPE_DELETE . "';";
+                                                    userid = '" . $user->id . "'
+                                                    AND modelid = '{$modelId}'
+                                                    AND subscriptiontype='" . self::TYPE_DELETE . "';";
                     ZurmoRedBean::exec($sql);
 
                     $sql = "INSERT INTO $tableName VALUES
-                                                (null, '" . $user->id . "', '{$modelId}', '{$nowDateTime}', '" . self::TYPE_ADD . "');";
+                                                    (null, '" . $user->id . "', '{$modelId}', '{$nowDateTime}', '" . self::TYPE_ADD . "');";
                     ZurmoRedBean::exec($sql);
                 }
             }
@@ -237,13 +237,13 @@
                 foreach ($modelIdsToDelete as $modelId)
                 {
                     $sql = "DELETE FROM $tableName WHERE
-                                                userid = '" . $user->id . "'
-                                                AND modelid = '{$modelId}'
-                                                AND subscriptiontype='" . self::TYPE_ADD . "';";
+                                                    userid = '" . $user->id . "'
+                                                    AND modelid = '{$modelId}'
+                                                    AND subscriptiontype='" . self::TYPE_ADD . "';";
                     ZurmoRedBean::exec($sql);
 
                     $sql = "INSERT INTO $tableName VALUES
-                                                (null, '" . $user->id . "', '{$modelId}', '{$nowDateTime}', '" . self::TYPE_DELETE . "');";
+                                                    (null, '" . $user->id . "', '{$modelId}', '{$nowDateTime}', '" . self::TYPE_DELETE . "');";
                     ZurmoRedBean::exec($sql);
                 }
             }
@@ -258,10 +258,12 @@
          * @param $lastUpdateTimestamp
          * @param $type
          * @param $user
+         * @param $checkIfModelCreationApiSyncUtilIsNull
          * @return array
          */
         public static function getAddedOrDeletedModelsFromReadSubscriptionTable($serviceName, $modelClassName,
-                                                                                $lastUpdateTimestamp, $type, $user)
+                                                                                $lastUpdateTimestamp, $type, $user,
+                                                                                $checkIfModelCreationApiSyncUtilIsNull = true)
         {
             assert('$user instanceof User');
             $tableName = static::getSubscriptionTableName($modelClassName);
@@ -283,9 +285,12 @@
                     " AND isct.modelclassname = '" . $modelClassName . "'" .
                     " WHERE {$tableName}.userid = " . $user->id .
                     " AND {$tableName}.subscriptiontype = " . $type .
-                    " AND {$tableName}.modifieddatetime >= '" . $dateTime . "'" .
-                    " AND isct.modelid is null" .
-                    " order by {$tableName}.modifieddatetime ASC, {$tableName}.modelid  ASC";
+                    " AND {$tableName}.modifieddatetime >= '" . $dateTime . "'";
+                if ($checkIfModelCreationApiSyncUtilIsNull)
+                {
+                    $sql .= " AND isct.modelid is null";
+                }
+                $sql .= " order by {$tableName}.modifieddatetime ASC, {$tableName}.modelid  ASC";
             }
             $modelIdsRows = ZurmoRedBean::getAll($sql);
             $modelIds = array();
