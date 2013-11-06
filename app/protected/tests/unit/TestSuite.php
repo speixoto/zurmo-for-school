@@ -307,7 +307,6 @@
             }
         }
 
-
         protected static function setupDatabaseConnection($force = false)
         {
             if (!RedBeanDatabase::isSetup() || $force)

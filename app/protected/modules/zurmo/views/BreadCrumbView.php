@@ -53,7 +53,6 @@
 
         protected function init()
         {
-
         }
 
         public function isUniqueToAPage()

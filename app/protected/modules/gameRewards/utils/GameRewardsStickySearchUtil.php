@@ -34,7 +34,28 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    abstract class RelatedModalLinkActionElement extends ModalLinkActionElement
+    /**
+     * Helper class for working with Game Rewards Sticky searches
+     */
+    class GameRewardsStickySearchUtil extends StickySearchUtil
     {
+        protected static function resolveBreadcrumbLinks(RedBeanModel $model)
+        {
+            $title = Zurmo::t('GameRewardsModule',
+                              'GameRewardsModulePluralLabel',
+                              LabelUtil::getTranslationParamsForAllModules());
+            return array($title => array('/gameRewards/default'),
+                         strval($model));
+        }
+
+        protected static function getHomeLinkLabel($controller)
+        {
+            return Zurmo::t('ConfigurationModule', 'Administration Home');
+        }
+
+        protected static function getHomeUrl()
+        {
+            return Yii::app()->createUrl('configuration/default/index');
+        }
     }
 ?>

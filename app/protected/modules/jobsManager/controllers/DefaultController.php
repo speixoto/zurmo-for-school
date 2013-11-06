@@ -63,6 +63,11 @@
 
         protected function processListAction($messageBoxContent = null)
         {
+            $breadCrumbLinks = array(
+                Zurmo::t('JobsManagerModule',
+                    'JobsManagerModuleSingularLabel',
+                    LabelUtil::getTranslationParamsForAllModules()),
+            );
             $view = new JobsManagerTitleBarAndListView(
                             $this->getId(),
                             $this->getModule()->getId(),
@@ -70,7 +75,7 @@
                             JobsToJobsCollectionViewUtil::getNonMonitorJobsData(),
                             $messageBoxContent);
             $view = new JobsManagerPageView(ZurmoDefaultAdminViewUtil::
-                                            makeStandardViewForCurrentUser($this, $view));
+                            makeViewWithBreadcrumbsForCurrentUser($this, $view, $breadCrumbLinks, 'SettingsBreadCrumbView'));
             echo $view->render();
         }
 
@@ -149,11 +154,14 @@
                 Yii::app()->end(0, false);
             }
             $breadCrumbLinks = array(
+                Zurmo::t('JobsManagerModule',
+                         'JobsManagerModuleSingularLabel',
+                         LabelUtil::getTranslationParamsForAllModules()) => array('/jobsManager/default'),
                 Zurmo::t('JobsManagerModule', 'Run Job'),
             );
             $runJobView = new RunJobView($this->getId(), $this->getModule()->getId(), $type, (int)$timeLimit);
             $view = new JobsManagerPageView(ZurmoDefaultAdminViewUtil::
-                        makeViewWithBreadcrumbsForCurrentUser($this, $runJobView, $breadCrumbLinks, 'JobsManagerBreadCrumbView'));
+                        makeViewWithBreadcrumbsForCurrentUser($this, $runJobView, $breadCrumbLinks, 'SettingsBreadCrumbView'));
             echo $view->render();
             $template = ZurmoHtml::script("$('#logging-table ol').append('<li>{message}</li>');");
             JobsManagerUtil::runFromJobManagerCommandOrBrowser($type, (int)$timeLimit, $messageLoggerClassName, $template);

@@ -158,7 +158,6 @@
                 {
                     foreach ($item['items'] as $item)
                     {
-
                         $options=isset($item['itemOptions']) ? $item['itemOptions'] : array();
                         $class=array();
                         if ($item['active'] && $this->activeCssClass!='')

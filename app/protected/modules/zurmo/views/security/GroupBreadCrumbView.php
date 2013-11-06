@@ -37,11 +37,11 @@
     /**
      * View that renders group module breadcrumb content
      */
-    class GroupBreadCrumbView extends BreadCrumbView
+    class GroupBreadCrumbView extends SettingsBreadCrumbView
     {
-            protected function getHomeLinkLabel()
+        protected function getModuleTitle()
         {
-            return Zurmo::t('ZurmoModule', 'Groups Home');
+            return Zurmo::t('ZurmoModule', 'Groups');
         }
     }
 ?>

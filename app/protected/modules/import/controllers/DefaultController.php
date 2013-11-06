@@ -85,9 +85,7 @@
             $importView = new ImportWizardImportRulesView($this->getId(),
                                                           $this->getModule()->getId(),
                                                           $importWizardForm, $title);
-            $view       = new ImportPageView(ZurmoDefaultAdminViewUtil::
-                              makeTwoStandardViewsForCurrentUser($this, $progressBarAndStepsView, $importView));
-            echo $view->render();
+            echo $this->getImportPageView($progressBarAndStepsView, $importView)->render();
         }
 
         /**
@@ -138,9 +136,7 @@
             $progressBarAndStepsView = new ImportStepsAndProgressBarForWizardView($importRulesClassName, 1);
             $importView = new ImportWizardUploadFileView($this->getId(), $this->getModule()->getId(),
                                                          $importWizardForm, $title);
-            $view       = new ImportPageView(ZurmoDefaultAdminViewUtil::
-                              makeTwoStandardViewsForCurrentUser($this, $progressBarAndStepsView, $importView));
-            echo $view->render();
+            echo $this->getImportPageView($progressBarAndStepsView, $importView)->render();
         }
 
         /**
@@ -161,9 +157,7 @@
             $importView = new ImportWizardSetModelPermissionsView($this->getId(),
                                                                   $this->getModule()->getId(),
                                                                   $importWizardForm, $title);
-            $view       = new ImportPageView(ZurmoDefaultAdminViewUtil::
-                                makeTwoStandardViewsForCurrentUser($this, $progressBarAndStepsView, $importView));
-            echo $view->render();
+            echo $this->getImportPageView($progressBarAndStepsView, $importView)->render();
         }
 
         /**
@@ -249,10 +243,7 @@
                                                               $mappableAttributeIndicesAndDerivedTypes,
                                                               $importRulesClassName::getRequiredAttributesLabelsData(),
                                                               $title);
-            $view                                           = new ImportPageView(ZurmoDefaultAdminViewUtil::
-                                                              makeTwoStandardViewsForCurrentUser($this,
-                                                              $progressBarAndStepsView, $importView));
-            echo $view->render();
+            echo $this->getImportPageView($progressBarAndStepsView, $importView)->render();
         }
 
         /**
@@ -332,8 +323,7 @@
                                                                          $sequentialProcess->getAllStepsMessage(),
                                                                          $title);
                 $wrapperView->setCssClasses(array('DetailsView'));
-                $view = new ImportPageView(ZurmoDefaultAdminViewUtil::makeTwoStandardViewsForCurrentUser($this,
-                                $progressBarAndStepsView, $wrapperView));
+                $view = $this->getImportPageView($progressBarAndStepsView, $wrapperView);
             }
             else
             {
@@ -439,8 +429,7 @@
                 $progressBarAndStepsView = new ImportStepsAndProgressBarForWizardView($importRulesClassName, $stepToUse);
                 $wrapperView  = new ImportSequentialProcessContainerView($resolvedView, $sequentialProcess->getAllStepsMessage(), $title);
                 $wrapperView->setCssClasses(array('DetailsView'));
-                $view = new ImportPageView(ZurmoDefaultAdminViewUtil::makeTwoStandardViewsForCurrentUser($this,
-                                $progressBarAndStepsView, $wrapperView));
+                $view =  $this->getImportPageView($progressBarAndStepsView, $wrapperView);
             }
             else
             {
@@ -694,6 +683,22 @@
             $import = Import::getById($id);
             ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($import);
             ImportDatabaseUtil::updateRowValue($import->getTempTableName(), $item, $attribute, $value);
+        }
+
+        protected function getImportPageView($progressBarAndStepsView, $importView)
+        {
+            $breadCrumbLinks = array(
+                Zurmo::t('ZurmoModule', 'Import'),
+                Zurmo::t('ZurmoModule', 'Create')
+            );
+            $view       = new ImportPageView(ZurmoDefaultAdminViewUtil::makeTwoViewsWithBreadcrumbsForCurrentUser(
+                $this,
+                $progressBarAndStepsView,
+                $importView,
+                $breadCrumbLinks,
+                'SettingsBreadCrumbView'
+            ));
+            return $view;
         }
     }
 ?>

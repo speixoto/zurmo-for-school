@@ -208,7 +208,14 @@
         {
             Yii::app()->user->userModel = User::getByUsername('jimmy');
             $beforeCount = AuditEvent::getCount();
-
+            if (Yii::app()->edition == 'Community')
+            {
+                $differential = 0;
+            }
+            else
+            {
+                $differential = 1;
+            }
             $account = new Account();
             $account->name = 'Dooble';
             $this->assertTrue($account->save());
@@ -220,23 +227,23 @@
 
             $account->name = 'Kookle';
             $this->assertTrue($account->save());
-            $this->assertEquals($beforeCount + 2, AuditEvent::getCount());
+            $this->assertEquals($beforeCount + 2 + $differential, AuditEvent::getCount());
 
             $account->officePhone = 'klm-noodles'; // No event until save.
-            $this->assertEquals($beforeCount + 2, AuditEvent::getCount());
+            $this->assertEquals($beforeCount + 2 + $differential, AuditEvent::getCount());
 
             $account->officeFax = '555-dontcall';
-            $this->assertEquals($beforeCount + 2, AuditEvent::getCount());
+            $this->assertEquals($beforeCount + 2 + $differential, AuditEvent::getCount());
 
             $account->website = 'http://example.com';
-            $this->assertEquals($beforeCount + 2, AuditEvent::getCount());
+            $this->assertEquals($beforeCount + 2 + $differential, AuditEvent::getCount());
 
             $account->annualRevenue = 4039311;
-            $this->assertEquals($beforeCount + 2, AuditEvent::getCount());
+            $this->assertEquals($beforeCount + 2 + $differential, AuditEvent::getCount());
 
             //Several attributes are not audited by default.
             $this->assertTrue($account->save());
-            $this->assertEquals($beforeCount + 4, AuditEvent::getCount());
+            $this->assertEquals($beforeCount + 4 + $differential, AuditEvent::getCount());
 
             $AuditEventsList = AuditEvent::getTailEvents(3);
             $this->assertRegExp('/[0-9]+\/[0-9]+\/[0-9]+ [0-9]+:[0-9]+ [AP]M, ' .    // Not Coding Standard
@@ -255,9 +262,9 @@
                                 'Changed Office Fax from \(None\) to 555-dontcall/', // Not Coding Standard
                                 ZurmoModule::stringifyAuditEvent($AuditEventsList[2]));
             $account->name = 'Bookle';
-            $this->assertEquals($beforeCount + 4, AuditEvent::getCount());
+            $this->assertEquals($beforeCount + 4 + $differential, AuditEvent::getCount());
             $this->assertTrue($account->save());
-            $this->assertEquals($beforeCount + 5, AuditEvent::getCount());
+            $this->assertEquals($beforeCount + 5 + $differential + $differential, AuditEvent::getCount());
 
             $AuditEventsList = AuditEvent::getTailEvents(1);
             $this->assertRegExp('/[0-9]+\/[0-9]+\/[0-9]+ [0-9]+:[0-9]+ [AP]M, ' .    // Not Coding Standard

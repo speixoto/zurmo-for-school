@@ -137,7 +137,14 @@
                                    Yii::app()->tempDb->password,
                                    true);
             $count   = ZurmoRedBean::getRow('select count(*) count from _user');
-            $this->assertEquals(10, $count['count']);
+            if (Yii::app()->edition == 'Community')
+            {
+                $this->assertEquals(10, $count['count']);
+            }
+            else
+            {
+                $this->assertEquals(14, $count['count']);
+            }
         }
     }
 ?>

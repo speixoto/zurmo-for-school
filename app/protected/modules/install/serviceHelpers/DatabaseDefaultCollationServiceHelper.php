@@ -43,7 +43,6 @@
 
         protected $notAllowedDatabaseCollations = array('utf8_general_ci');
 
-
         protected function checkService()
         {
             $passed = true;

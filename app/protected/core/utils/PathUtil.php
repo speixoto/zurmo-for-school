@@ -78,7 +78,7 @@
                 $modules                            = Module::getModuleObjects();
                 foreach ($modules as $module)
                 {
-                    $modelClass	=  $module::getPrimaryModelName();
+                    $modelClass = $module::getPrimaryModelName();
                     if (!empty($modelClasses))
                     {
                         $allPrimaryModelClasses[] = $modelClass;
@@ -107,7 +107,7 @@
                 $modules                    = Module::getModuleObjects();
                 foreach ($modules as $module)
                 {
-                    $modelClasses	=  $module::getModelClassNames();
+                    $modelClasses = $module::getModelClassNames();
                     if (!empty($modelClasses))
                     {
                         $allModelClasses = CMap::mergeArray($allModelClasses, array_values($modelClasses));

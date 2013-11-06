@@ -51,7 +51,6 @@
                                          array('id' => $this->modelId, 'kanbanBoard' => true));
         }
 
-
         protected function getNonKanbanBoardUrl()
         {
             return Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/details/',

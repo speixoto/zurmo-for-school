@@ -174,8 +174,9 @@
             {
                 $headerColumns[] = Zurmo::t('ImportModule', 'Header');
             }
-            $headerColumns[] = '<div id="' . MappingFormLayoutUtil::getSampleColumnHeaderId() . '">' .
-                               $this->sampleColumnPagerContent . '</div>';
+            $headerColumns[] = ZurmoHtml::tag('div',
+                               array('id' =>  MappingFormLayoutUtil::getSampleColumnHeaderId(),
+                                     'class' => 'clearfix'), $this->sampleColumnPagerContent);
             return $headerColumns;
         }
 
@@ -205,7 +206,7 @@
                                                                        $mappingDataRow['type'],
                                                                        $mappingDataRow['attributeIndexOrDerivedType'],
                                                                        $ajaxOnChangeUrl);
-                
+
                 $firstCell   .= $mappingFormLayoutUtil->renderMappingRulesElements(
                                       $columnName,
                                       $mappingDataRow['attributeIndexOrDerivedType'],
@@ -213,7 +214,7 @@
                                       $mappingDataRow['type'],
                                       $this->resolveMappingRuleFormsAndElementTypesByColumn($columnName));
                 $row['cells'][] = $firstCell;
-                        
+
                 if ($firstRowIsHeaderRow)
                 {
                     assert('$mappingDataRow["headerValue"] == null || is_string($mappingDataRow["headerValue"])');
@@ -221,7 +222,7 @@
                                                                                     $mappingDataRow['headerValue']);
                 }
                 $row['cells'][] = $mappingFormLayoutUtil->renderImportColumnContent ($columnName,
-                                                                                 $mappingDataRow['sampleValue']);                
+                                                                                 $mappingDataRow['sampleValue']);
                 $metadata['rows'][] = $row;
             }
             return $metadata;

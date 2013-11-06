@@ -72,7 +72,7 @@
         public static function getCoinsByLevel($level)
         {
             assert('is_int($level)');
-            if(isset(self::$levelCoinMap[$level]))
+            if (isset(self::$levelCoinMap[$level]))
             {
                 return self::$levelCoinMap[$level];
             }

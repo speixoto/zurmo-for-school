@@ -34,7 +34,11 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    abstract class RelatedModalLinkActionElement extends ModalLinkActionElement
+    /**
+     * TaskActivityForm helps manage task related models to an Activity. This form is used by ModelElements and its interface
+     * mimics if a ZurmoActiveForm was used.
+     */
+    class TaskActivityItemForm extends ActivityItemForm
     {
     }
 ?>

@@ -59,12 +59,12 @@
         {
             $task = static::getModelAndCatchNotFoundAndDisplayError('Task', intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($task);
-            if($task->project->id > 0)
+            if ($task->project->id > 0)
             {
                 $this->redirect(Yii::app()->createUrl('projects/default/details',
                                                       array('id' => $task->project->id, 'openToTaskId' => $task->id)));
             }
-            elseif($task->activityItems->count() > 0)
+            elseif ($task->activityItems->count() > 0)
             {
                 try
                 {
@@ -90,12 +90,12 @@
         {
             $task = Task::getById(intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($task);
-            if($task->project->id > 0)
+            if ($task->project->id > 0)
             {
                 $this->redirect(Yii::app()->createUrl('projects/default/details',
                                                       array('id' => $task->project->id, 'openToTaskId' => $task->id)));
             }
-            elseif($task->activityItems->count() > 0)
+            elseif ($task->activityItems->count() > 0)
             {
                 try
                 {
@@ -195,7 +195,7 @@
         {
             $task    = $this->processUnsubscriptionRequest($id);
             $content = TasksUtil::getTaskSubscriberData($task);
-            if($content == null)
+            if ($content == null)
             {
                 echo "";
             }
@@ -233,7 +233,7 @@
                                                       $relationModuleId = null)
         {
             $task  = new Task();
-            if($relationAttributeName == 'project' && $relationModelId != null)
+            if ($relationAttributeName == 'project' && $relationModelId != null)
             {
                 $project = Project::getById((int)$relationModelId);
                 $task->project = $project;
@@ -265,10 +265,10 @@
          */
         public function actionModalSaveFromRelation($relationAttributeName, $relationModelId, $relationModuleId, $id = null)
         {
-            if($id == null)
+            if ($id == null)
             {
                 $task  = new Task();
-                if($relationAttributeName == 'project' && $relationModelId != null)
+                if ($relationAttributeName == 'project' && $relationModelId != null)
                 {
                     $project = Project::getById((int)$relationModelId);
                     $task->project = $project;
@@ -286,7 +286,7 @@
             }
             $task       = $this->attemptToSaveModelFromPost($task, null, false);
             //Log event for project audit
-            if($relationAttributeName == 'project')
+            if ($relationAttributeName == 'project')
             {
                 ProjectsUtil::logAddTaskEvent($task);
             }
@@ -298,7 +298,7 @@
          */
         public function actionModalSave($id = null)
         {
-            if($id == null)
+            if ($id == null)
             {
                 $task = new Task();
             }
@@ -335,7 +335,7 @@
             TaskActivityCopyModelUtil::copy($task, $copyToTask);
             $copyToTask   = $this->attemptToSaveModelFromPost($copyToTask, null, false);
             //Log event for project audit
-            if($relationAttributeName == 'project')
+            if ($relationAttributeName == 'project')
             {
                 ProjectsUtil::logAddTaskEvent($copyToTask);
             }
@@ -386,7 +386,7 @@
                 {
                     $controllerUtil   = static::getZurmoControllerUtil();
                     $controllerUtil->validateAjaxFromPost($task, 'Task');
-                    if($isNewModel)
+                    if ($isNewModel)
                     {
                         TasksNotificationUtil::makeAndSubmitNewTaskNotificationMessage($task);
                     }
@@ -430,16 +430,16 @@
             $getData = GetUtil::getData();
             $counter = 1;
             $response = array();
-            if(count($getData['items']) > 0)
+            if (count($getData['items']) > 0)
             {
-                foreach($getData['items'] as $taskId)
+                foreach ($getData['items'] as $taskId)
                 {
-                    if($taskId != '')
+                    if ($taskId != '')
                     {
                         $kanbanItem  = KanbanItem::getByTask(intval($taskId));
                         $task        = Task::getById(intval($taskId));
                         //if kanban type is completed
-                        if($type == KanbanItem::TYPE_COMPLETED)
+                        if ($type == KanbanItem::TYPE_COMPLETED)
                         {
                             //kanban update has to be done first
                             $kanbanItem->sortOrder = TasksUtil::resolveAndGetSortOrderForTaskOnKanbanBoard($type, $task);
@@ -452,7 +452,7 @@
                         else
                         {
                             //When in the same column
-                            if($type == $kanbanItem->type)
+                            if ($type == $kanbanItem->type)
                             {
                                 $kanbanItem->sortOrder = $counter;
                                 $kanbanItem->save();
@@ -504,7 +504,7 @@
             $task          = Task::getById(intval($id));
             $currentStatus = $task->status;
             $task->status = intval($status);
-            if(intval($status) == Task::STATUS_COMPLETED)
+            if (intval($status) == Task::STATUS_COMPLETED)
             {
                 foreach ($task->checkListItems as $checkItem)
                 {
@@ -515,7 +515,7 @@
                 $task->completedDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
                 $task->completed         = true;
                 $task->save();
-                if($showCompletionDate)
+                if ($showCompletionDate)
                 {
                     echo TasksUtil::renderCompletionDateTime($task);
                 }
@@ -526,7 +526,7 @@
                 $task->completed         = false;
                 $task->save();
             }
-            if($task->project->id > 0)
+            if ($task->project->id > 0)
             {
                 ProjectsUtil::logTaskStatusChangeEvent($task,
                                                        Task::getStatusDisplayName(intval($currentStatus)),
@@ -540,9 +540,8 @@
          */
         protected function processSubscriptionRequest($id)
         {
-
             $task = Task::getById(intval($id));
-            if(!$task->doNotificationSubscribersContainPerson(Yii::app()->user->userModel))
+            if (!$task->doNotificationSubscribersContainPerson(Yii::app()->user->userModel))
             {
                 $notificationSubscriber = new NotificationSubscriber();
                 $notificationSubscriber->person = Yii::app()->user->userModel;
@@ -562,16 +561,16 @@
         protected function processUnsubscriptionRequest($id)
         {
             $task = Task::getById(intval($id));
-            foreach($task->notificationSubscribers as $notificationSubscriber)
+            foreach ($task->notificationSubscribers as $notificationSubscriber)
             {
-                if($notificationSubscriber->person->getClassId('Item') == Yii::app()->user->userModel->getClassId('Item'))
+                if ($notificationSubscriber->person->getClassId('Item') == Yii::app()->user->userModel->getClassId('Item'))
                 {
                     $task->notificationSubscribers->remove($notificationSubscriber);
                     break;
                 }
             }
             $saved = $task->save();
-            if(!$saved)
+            if (!$saved)
             {
                 throw new FailedToSaveModelException();
             }
@@ -590,9 +589,9 @@
             $model   = Task::getById(intval($descriptionFieldArray[1]));
             ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($model);
             $model->description = $getData['update_value'];
-            if($model->save())
+            if ($model->save())
             {
-                if($model->description != '')
+                if ($model->description != '')
                 {
                     echo $model->description;
                 }
@@ -612,7 +611,7 @@
          */
         protected static function getZurmoControllerUtil()
         {
-            return new TaskZurmoControllerUtil('activityItems', 'ActivityItemForm');
+            return new TaskZurmoControllerUtil('activityItems', 'TaskActivityItemForm');
         }
 
         /**
@@ -624,7 +623,7 @@
         {
             $task              = Task::getById(intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserDeleteModel($task);
-            if(!$task->delete())
+            if (!$task->delete())
             {
                 throw new FailedToDeleteModelException();
             }
@@ -643,7 +642,7 @@
                 $task = $this->attemptToSaveModelFromPost($task, null, false);
                 $errorData = ZurmoActiveForm::makeErrorsDataAndResolveForOwnedModelAttributes($task);
 
-                if(empty ($errorData) && $oldStatus != $task->status)
+                if (empty ($errorData) && $oldStatus != $task->status)
                 {
                     //may need to reset the kanban type and sort as well
                     TasksUtil::checkKanbanTypeByStatusAndUpdateIfRequired($task);

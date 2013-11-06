@@ -34,7 +34,11 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    abstract class RelatedModalLinkActionElement extends ModalLinkActionElement
+    class NonModifiableListViewDesignerRules extends ListViewDesignerRules
     {
+        public function allowEditInLayoutTool()
+        {
+            return false;
+        }
     }
 ?>

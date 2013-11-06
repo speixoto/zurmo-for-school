@@ -356,9 +356,6 @@
             $saved = $savedWorkflow->save();
             $this->assertTrue($saved);
 
-
-
-
             //Confirm that the workflow processes and the contact gets updated
             $contact = ContactTestHelper::createContactByNameForOwner('jason', Yii::app()->user->userModel);
             $marketingList->forget();

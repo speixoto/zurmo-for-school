@@ -68,6 +68,10 @@
                     $this->redirect(Yii::app()->createUrl('configuration/default/index'));
                 }
             }
+            $breadCrumbLinks = array(
+                Zurmo::t('ZurmoModule', 'Authentication Configuration') => array('/zurmo/authentication/configurationEdit'),
+                Zurmo::t('ZurmoModule', 'LDAP Configuration')
+            );
             $editView = new LdapConfigurationEditAndDetailsView(
                                     'Edit',
                                     $this->getId(),
@@ -75,7 +79,7 @@
                                     $configurationForm);
             $editView->setCssClasses( array('AdministrativeArea') );
             $view = new ZurmoConfigurationPageView(ZurmoDefaultAdminViewUtil::
-                                         makeStandardViewForCurrentUser($this, $editView));
+                                makeViewWithBreadcrumbsForCurrentUser($this, $editView, $breadCrumbLinks, 'SettingsBreadCrumbView'));
             echo $view->render();
         }
 

@@ -36,7 +36,6 @@
 
     class GameRewardsDefaultController extends ZurmoModuleController
     {
-
         /**
          * Override to exclude redeemList
          * since these are available to all users regardless
@@ -46,7 +45,7 @@
         {
             $filters = array();
             $filters[] = array(
-                ZurmoBaseController::RIGHTS_FILTER_PATH . ' - redeemList',
+                ZurmoBaseController::RIGHTS_FILTER_PATH . ' - redeemList, redeemReward',
                 'moduleClassName' => 'UsersModule',
                 'rightName' => GameRewardsModule::getAccessRight(),
             );
@@ -76,7 +75,9 @@
                 null,
                 'GameRewardsSearchView'
             );
-            $title           = Zurmo::t('GameRewardsModule', 'Game Rewards');
+            $title           = Zurmo::t('GameRewardsModule',
+                                        'GameRewardsModulePluralLabel',
+                                        LabelUtil::getTranslationParamsForAllModules());
             $breadCrumbLinks = array(
                 $title,
             );
@@ -103,7 +104,7 @@
             $gameReward = static::getModelAndCatchNotFoundAndDisplayError('GameReward', intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($gameReward);
             AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED, array(strval($gameReward), 'GameRewardsModule'), $gameReward);
-            $breadCrumbView          = StickySearchUtil::resolveBreadCrumbViewForDetailsControllerAction($this, 'GameRewardsSearchView', $gameReward);
+            $breadCrumbView          = GameRewardsStickySearchUtil::resolveBreadCrumbViewForDetailsControllerAction($this, 'GameRewardsSearchView', $gameReward);
             $detailsAndRelationsView = $this->makeDetailsAndRelationsView($gameReward, 'GameRewardsModule',
                                                                           'GameRewardDetailsAndRelationsView',
                                                                           Yii::app()->request->getRequestUri(),
@@ -163,7 +164,6 @@
                             $breadCrumbLinks, 'GameRewardBreadCrumbView'));
             echo $view->render();
         }
-
 
         /**
          * Action for displaying a mass edit form and also action when that form is first submitted.
@@ -352,14 +352,12 @@
                                               'listPageSize', get_class($this->getModule()));
             $gameReward                     = new GameReward(false);
             $searchForm                     = new GameRewardsSearchForm($gameReward);
-            //todo: kill all action bars... since we shouldn't have it here.
             $dataProvider = $this->resolveSearchDataProvider(
                 $searchForm,
                 $pageSize,
-                null,
+                'GameRewardsForRedemptionStateMetadataAdapter',
                 'GameRewardsRedeemSearchView'
             );
-            $title           = Zurmo::t('GameRewardsModule', 'Redeem Rewards'); //todo: fix this
             $breadCrumbLinks = array(
                 Zurmo::t('GameRewardsModule', 'Redeem Rewards'),
             );
@@ -397,21 +395,26 @@
                 echo CJSON::encode(array('message' => $message));
                 Yii::app()->end(0, false);
             }
-
+            if ($gameReward->quantity <= 0)
+            {
+                $message = Zurmo::t('GameRewardsModule', 'This reward is no longer available');
+                echo CJSON::encode(array('message' => $message));
+                Yii::app()->end(0, false);
+            }
             $gameRewardTransaction = new GameRewardTransaction();
             $gameRewardTransaction->quantity = 1;
             $gameRewardTransaction->person = Yii::app()->user->userModel;
             $gameReward->transactions->add($gameRewardTransaction);
-            if (!$gameReward->save())
-            {
-                throw new FailedToSaveModelException();
-            }
             $gameCoin->removeValue((int)$gameReward->cost);
             if (!$gameCoin->save())
             {
                 throw new FailedToSaveModelException();
             }
-
+            $gameReward->quantity = $gameReward->quantity - 1;
+            if (!$gameReward->save())
+            {
+                throw new FailedToSaveModelException();
+            }
             //Notify the owner of the game reward
             $message                      = new NotificationMessage();
             $message->htmlContent         = Zurmo::t('JobsManagerModule', '{name} was redeemed by {personFullName}.',

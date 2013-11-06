@@ -54,7 +54,7 @@
                         ),
                     ),
                     'derivedAttributeTypes' => array(
-                        'ActivityItems',
+                        'TasksForModalActivityItems',
                         'DerivedExplicitReadWriteModelPermissions',
                     ),
                     'nonPlaceableAttributeNames' => array(
@@ -128,7 +128,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'null', 'type' => 'ActivityItems'),
+                                                array('attributeName' => 'null', 'type' => 'TasksForModalActivityItems'),
                                             ),
                                         ),
                                     )
@@ -184,7 +184,6 @@
             return array(
                 'onclick' => '$("#ModalView").parent().dialog("close");'
             );
-
         }
 
         protected function resolveModalIdFromGet()
@@ -270,7 +269,7 @@
         }
 
         /**
-         * Override to disabling probability attribute.
+         * Override set the description row size
          */
         protected function resolveElementInformationDuringFormLayoutRender(& $elementInformation)
         {

@@ -424,7 +424,6 @@
                                 $tableMetadata . PHP_EOL .
                                 " ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1;";
             return $query;
-
         }
 
         protected static function resolveColumnStatementFromDefinition($column, $isAddition = true)

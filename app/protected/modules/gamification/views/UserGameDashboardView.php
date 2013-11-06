@@ -68,7 +68,7 @@
                                        Zurmo::t('GamificationModule', 'Collection'));
             $content .= static::renderCollectionItemsContent($user, $collection, $gameCollectionRules);
             $content  = ZurmoHtml::tag('div', array(), $content);
-            if($collection->canRedeem())
+            if ($collection->canRedeem())
             {
                 $extraClass = ' redeemable';
             }
@@ -169,7 +169,7 @@ $('a.nav-button#nav-right[href="#"]').unbind('click.lazyLoadImages').bind('click
 
     function updateGamificationImagesSrcForLazyLoading()
     {
-        $('div.gd-collection-panel.visible-panel img[src*="{$dummyImageUrl}"], div.gd-collection-panel.visible-panel-last img[src*="{$dummyImageUrl}"]').each(function()
+        $('.visible-panel img[src*="{$dummyImageUrl}"]').each(function()
         {
             var dataSrc = $(this).data('src');
             if (typeof dataSrc !== 'undefined')
@@ -257,7 +257,7 @@ SPT;
         protected function renderBadgesContent()
         {
             $content  = ZurmoHtml::tag('h2', array(), Zurmo::t('GamificationModule', 'Badges Achieved'));
-            if(empty($this->badgeData))
+            if (empty($this->badgeData))
             {
                 $content .= $this->renderEmptyBadgeContent();
             }
@@ -278,7 +278,7 @@ SPT;
         protected function renderPopulatedBadgeContent()
         {
             $content = '<ul>' . "\n";
-            foreach($this->badgeData as $badge)
+            foreach ($this->badgeData as $badge)
             {
                 $gameBadgeRulesClassName = $badge->type . 'GameBadgeRules';
                 $value                   = $gameBadgeRulesClassName::getItemCountByGrade((int)$badge->grade);
@@ -302,7 +302,7 @@ SPT;
         protected function renderLeaderboardContent()
         {
             $content  = ZurmoHtml::tag('h2', array(), Zurmo::t('GamificationModule', 'Leaderboard Rankings'));
-            foreach($this->rankingData as $ranking)
+            foreach ($this->rankingData as $ranking)
             {
                 $rankingContent  = ZurmoHtml::tag('strong', array(), $ranking['rank']);
                 $rankingContent .= ZurmoHtml::tag('span', array(), $ranking['typeLabel']);
@@ -315,7 +315,7 @@ SPT;
         {
             $content = ZurmoHtml::tag('h2', array(), Zurmo::t('GamificationModule', 'Overall Statistics'));
             $rows = '';
-            foreach($this->statisticsData as $statistics)
+            foreach ($this->statisticsData as $statistics)
             {
                 $statisticsContent  = ZurmoHtml::tag('h3', array(), $statistics['levelTypeLabel']);
                 $statisticsContent .= ZurmoHtml::tag('span', array('class' => 'stat-level'), $statistics['level']);
@@ -339,7 +339,7 @@ SPT;
         protected function renderCollectionsCarouselWrapperAndContent()
         {
             $collectionsListContent = null;
-            foreach($this->collectionData as $collection)
+            foreach ($this->collectionData as $collection)
             {
                 $collectionsListContent .= $this->renderCollectionContent($this->user, $collection);
             }
@@ -365,7 +365,7 @@ SPT;
                 $qtip->addQTip(".gd-collection-item img");
                 $itemContent .= ZurmoHtml::tag('span', array('class' => 'num-collected'), 'x' . $quantityCollected);
                 $classContent = 'gd-collection-item';
-                if($quantityCollected == 0)
+                if ($quantityCollected == 0)
                 {
                     $classContent .= ' missing';
                     $canCollect = false;
@@ -386,7 +386,7 @@ SPT;
             $htmlOptions   = array();
             $disabledClass = null;
             $disabled      = false;
-            if(!$canCollect)
+            if (!$canCollect)
             {
                 $disabledClass = ' disabled';
                 $disabled      = true;
@@ -395,7 +395,7 @@ SPT;
             $htmlOptions['id']       = $id;
             $htmlOptions['name']     = $id;
             $htmlOptions['class']    = 'attachLoading z-button coin-button' . $disabledClass;
-            if($disabled)
+            if ($disabled)
             {
                 $htmlOptions['onclick']   = 'js:return false;';
             }
@@ -431,9 +431,9 @@ SPT;
         protected function getCompletedCollectionCount()
         {
             $count = 0;
-            foreach($this->collectionData as $collection)
+            foreach ($this->collectionData as $collection)
             {
-                if($collection->getRedemptionCount() > 0)
+                if ($collection->getRedemptionCount() > 0)
                 {
                     $count ++;
                 }

@@ -386,7 +386,6 @@
             {
                 $script  = "$('#" . $this->getGridId() . "').show();";
                 $script .= "$('#ZeroTasksForRelatedModelYetView').hide();";
-
             }
             Yii::app()->clientScript->registerScript('taskKanbanDetailScript',$script);
         }

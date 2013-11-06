@@ -43,18 +43,30 @@
 
         protected $stickyLoadUrl;
 
-        public function __construct($controllerId, $moduleId, $breadCrumbLinks, $homeLinkLabel, $stickyLoadUrl = null)
+        protected $homeUrl;
+
+        public function __construct($controllerId, $moduleId, $breadCrumbLinks, $homeLinkLabel, $stickyLoadUrl = null, $homeUrl = null)
         {
             assert('is_string($homeLinkLabel)');
             assert('is_string($stickyLoadUrl) || $stickyLoadUrl == null');
             parent::__construct($controllerId, $moduleId, $breadCrumbLinks);
             $this->homeLinkLabel = $homeLinkLabel;
             $this->stickyLoadUrl = $stickyLoadUrl;
+            $this->homeUrl       = $homeUrl;
         }
 
         protected function getHomeLinkLabel()
         {
             return $this->homeLinkLabel;
+        }
+
+        protected function getHomeUrl()
+        {
+            if ($this->homeUrl === null)
+            {
+                return parent::getHomeUrl();
+            }
+            return $this->homeUrl;
         }
 
         protected function renderContent()

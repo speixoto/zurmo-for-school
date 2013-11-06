@@ -37,7 +37,7 @@
     abstract class SecurableModule extends Module
     {
         protected static $policyDefaults = array();
-        
+
         /**
          * Returns an array of names of rights applicable to the module.
          */

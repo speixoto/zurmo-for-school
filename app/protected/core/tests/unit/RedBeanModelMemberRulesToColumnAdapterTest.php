@@ -157,7 +157,6 @@
             $this->assertFalse($column);
         }
 
-
         /**
          * @depends testResolveWithJustTypeValidatorAndInvalidType
          */
