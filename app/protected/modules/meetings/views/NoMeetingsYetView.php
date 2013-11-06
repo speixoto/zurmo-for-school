@@ -34,56 +34,46 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class MeetingsDefaultController extends ActivityModelsDefaultController
+    /**
+     * View for showing in the user interface when the user does not have a valid email configuration.  This needs to be
+     * configured first before a user can send email from the application.
+     */
+    class NoMeetingsYetView extends View
     {
-        const MEETINGS_EXIST_FOR_DAY_FILTER_PATH =
-            'application.modules.meetings.controllers.filters.MeetingsExistPerUserAndDayCheckControllerFilter';
+        public $cssClasses = array('splash-view');
+        protected $redirectUrl;
 
-        public function filters()
+        public function __construct($redirectUrl = null)
         {
-            return array(
-                array(self::MEETINGS_EXIST_FOR_DAY_FILTER_PATH . ' + daysMeetingsFromCalendarModalList',
-                    'controller' => $this,
-                ),
-            );
+            $this->redirectUrl = $redirectUrl;
         }
-        
-        public function actionDaysMeetingsFromCalendarModalList($stringTime, $redirectUrl)
+
+        protected function renderContent()
         {
-            if (isset($_GET['ownerOnly']))
-            {
-                $ownerOnly = true;
-            }
-            else
-            {
-                $ownerOnly = false;
-            }
-            if (isset($_GET['relationModelId']))
-            {
-                $relationModelClassName = $_GET['relationModelClassName'];
-                $relationModel          = $relationModelClassName::getById((int)$_GET['relationModelId']);
-            }
-            else
-            {
-                $relationModel = null;
-            }
-            Yii::app()->getClientScript()->setToAjaxMode();
-            $meetingsView = new DaysMeetingsFromCalendarModalListView(
-                $this->getId(),
-                $this->getModule()->getId(),
-                $stringTime,
-                $redirectUrl,
-                $ownerOnly,
-                $relationModel
-            );
-            $view = new ModalView($this, $meetingsView);
-            echo $view->render();
+            $params  = array('label' => $this->getCreateLinkDisplayLabel());
+            $url     = Yii::app()->createUrl('/meetings/default/createMeeting',
+                                             array('redirectUrl' => $this->redirectUrl));
+            $content = '<div class="' . $this->getIconName() . '">';
+            $content .= $this->getMessageContent();
+            $content .= ZurmoHtml::link(ZurmoHtml::wrapLabel($this->getCreateLinkDisplayLabel()), $url, array('class' => 'z-button green-button'));
+            $content .= '</div>';
+            return $content;
         }
-        
-        public function actionCreateMeeting($redirectUrl)
+
+        protected function getIconName()
         {
-            $meeting = new Meeting();
-            $this->actionCreateByModel($meeting, $redirectUrl);
+            return 'NoMeetings';
+        }
+
+        protected function getCreateLinkDisplayLabel()
+        {
+            return Zurmo::t('MeetingsModule', 'Create');
+        }
+
+        protected function getMessageContent()
+        {
+            return Zurmo::t('MeetingsModule', '<h2>No Meetings yet.</h2>' .
+                                     '<p>Add new meeting.</p>');
         }
     }
 ?>
