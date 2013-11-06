@@ -76,9 +76,19 @@
                     'value'                => DateTimeUtil::
                                               convertDateIntoTimeZoneAdjustedDateTimeEndOfDay(
                                               DateTimeUtil::getLastDayOfAMonthDate($stringTime))
+                ),
+                3 => array(
+                    'attributeName'        => 'logged',
+                    'operatorType'         => 'doesNotEqual',
+                    'value'                => true
+                ),
+                4 => array(
+                    'attributeName'        => 'logged',
+                    'operatorType'         => 'isNull',
+                    'value'                => null
                 )
-                );
-            $searchAttributeData['structure'] = '(1 and 2)';
+            );
+            $searchAttributeData['structure'] = '(1 and 2 and (3 or 4))';
             return $searchAttributeData;
         }
 

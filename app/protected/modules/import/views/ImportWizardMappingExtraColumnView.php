@@ -111,7 +111,7 @@
                 assert('$mappingDataRow["type"] == "extraColumn"');
                 $row          = array();
                 $row['cells'] = array();
-                
+
                 $firstCell  = $mappingFormLayoutUtil->renderAttributeAndColumnTypeContent(
                                                                        $columnName,
                                                                        $mappingDataRow['type'],
@@ -123,7 +123,7 @@
                                       $importRulesType,
                                       $mappingDataRow['type'],
                                       array());
-                
+
                 $row['cells'][] = $firstCell;
                 if ($firstRowIsHeaderRow)
                 {

@@ -36,7 +36,6 @@
 
     class GameRewardsDefaultController extends ZurmoModuleController
     {
-
         /**
          * Override to exclude redeemList
          * since these are available to all users regardless
@@ -165,7 +164,6 @@
                             $breadCrumbLinks, 'GameRewardBreadCrumbView'));
             echo $view->render();
         }
-
 
         /**
          * Action for displaying a mass edit form and also action when that form is first submitted.
@@ -397,7 +395,7 @@
                 echo CJSON::encode(array('message' => $message));
                 Yii::app()->end(0, false);
             }
-            if($gameReward->quantity <= 0)
+            if ($gameReward->quantity <= 0)
             {
                 $message = Zurmo::t('GameRewardsModule', 'This reward is no longer available');
                 echo CJSON::encode(array('message' => $message));

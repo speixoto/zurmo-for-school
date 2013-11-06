@@ -92,7 +92,7 @@
             $this->assertEquals(1, $gameReward->transactions[0]->quantity);
             $this->assertEquals($sally->getClassId('Item'), $gameReward->transactions[0]->person->getClassId('Item'));
         }
-        
+
         /**
          * @depends testCreateAndGetGameRewardById
          */
@@ -102,7 +102,7 @@
             $this->assertEquals(1, count($gameReward));
             $this->assertEquals('50 dollar giftcard to somewhere', $gameReward[0]->name);
         }
-        
+
         /**
          * @depends testCreateAndGetGameRewardById
          */
@@ -113,7 +113,7 @@
             $this->assertEquals('Game Reward',  $gameReward[0]::getModelLabelByTypeAndLanguage('Singular'));
             $this->assertEquals('Game Rewards', $gameReward[0]::getModelLabelByTypeAndLanguage('Plural'));
         }
-        
+
         /**
          * @depends testGetGameRewardsByName
          */
@@ -122,7 +122,7 @@
             $gameReward = GameReward::getByName('59 dollar giftcard to somewhere');
             $this->assertEquals(0, count($gameReward));
         }
-        
+
         /**
          * @depends testCreateAndGetGameRewardById
          */
@@ -144,7 +144,7 @@
             $this->assertFalse($gameReward->validate());
             $gameReward->forget();
         }
-        
+
         /**
          * @depends testSetAndGetOwner
          */
@@ -162,7 +162,7 @@
             $this->assertEquals('sally', $user->username);
             unset($user);
         }
-        
+
         /**
          * @depends testCreateAndGetGameRewardById
          */

@@ -52,7 +52,6 @@
             $this->assertEquals(strtolower($memberName), $columnName);
         }
 
-
         /**
          * @depends testResolve
          */

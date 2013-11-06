@@ -48,16 +48,18 @@
          * @param $timestamp
          * @param null $stateMetadataAdapterClassName
          * @param null $owner
+         * @param bool $checkIfModelCreationApiSyncUtilIsNull
          * @return bool
          */
         public static function getCreatedModels($serviceName, $modelClassName, $pageSize, $offset, $timestamp,
-                                                $stateMetadataAdapterClassName = null, $owner = null)
+                                                $stateMetadataAdapterClassName = null, $owner = null,
+                                                $checkIfModelCreationApiSyncUtilIsNull = true)
         {
             $metadata = array();
 
             $modelIds = ReadPermissionsSubscriptionUtil::getAddedOrDeletedModelsFromReadSubscriptionTable(
                 $serviceName, $modelClassName, $timestamp, ReadPermissionsSubscriptionUtil::TYPE_ADD,
-                Yii::app()->user->userModel);
+                Yii::app()->user->userModel, $checkIfModelCreationApiSyncUtilIsNull);
             if (!is_array($modelIds) || empty($modelIds))
             {
                 return false;

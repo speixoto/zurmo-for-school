@@ -57,7 +57,7 @@
             );
             return $menuItems;
         }
-        
+
         public function renderMenuItem()
         {
             Yii::app()->clientScript->registerScript( 'exportToCsv', "

@@ -39,6 +39,5 @@
      */
     abstract class ModalEditAndDetailsLinkProvider
     {
-        
     }
 ?>

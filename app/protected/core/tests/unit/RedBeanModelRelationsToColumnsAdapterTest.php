@@ -55,7 +55,6 @@
                                                                                 $relations,
                                                                                 static::$messageLogger);
             $this->assertEmpty($columns);
-
         }
 
         /**

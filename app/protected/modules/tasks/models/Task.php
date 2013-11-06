@@ -256,7 +256,7 @@
         public static function getStatusDisplayName($status)
         {
             $statusArray = self::getStatusDropDownArray();
-            if(array_key_exists($status, $statusArray))
+            if (array_key_exists($status, $statusArray))
             {
                 return $statusArray[$status];
             }
@@ -273,9 +273,9 @@
 
         public function doNotificationSubscribersContainPerson(Item $item)
         {
-            foreach($this->notificationSubscribers as $notificationSubscriber)
+            foreach ($this->notificationSubscribers as $notificationSubscriber)
             {
-                if($notificationSubscriber->person->getClassId('Item') == $item->getClassId('Item'))
+                if ($notificationSubscriber->person->getClassId('Item') == $item->getClassId('Item'))
                 {
                     return true;
                 }
@@ -294,44 +294,43 @@
          */
         private function processNotificationsToBeSent()
         {
-            if(array_key_exists('status', $this->originalAttributeValues))
+            if (array_key_exists('status', $this->originalAttributeValues))
             {
-                if($this->status == Task::STATUS_AWAITING_ACCEPTANCE &&
+                if ($this->status == Task::STATUS_AWAITING_ACCEPTANCE &&
                    $this->requestedByUser->id != Yii::app()->user->userModel->id)
                 {
                     TasksNotificationUtil::submitTaskNotificationMessage($this,
                         TasksNotificationUtil::TASK_STATUS_BECOMES_AWAITING_ACCEPTANCE,
                         Yii::app()->user->userModel);
                 }
-                elseif($this->status == Task::STATUS_REJECTED &&
+                elseif ($this->status == Task::STATUS_REJECTED &&
                        $this->owner->id != Yii::app()->user->userModel->id)
                 {
                     TasksNotificationUtil::submitTaskNotificationMessage($this,
                         TasksNotificationUtil::TASK_STATUS_BECOMES_REJECTED,
                         Yii::app()->user->userModel);
                 }
-                elseif($this->status == Task::STATUS_COMPLETED)
+                elseif ($this->status == Task::STATUS_COMPLETED)
                 {
                     TasksNotificationUtil::submitTaskNotificationMessage($this,
                         TasksNotificationUtil::TASK_STATUS_BECOMES_COMPLETED,
                         Yii::app()->user->userModel);
                 }
             }
-            if($this->isNewModel)
+            if ($this->isNewModel)
             {
-                if($this->owner->id != $this->requestedByUser->id && $this->owner->id != Yii::app()->user->userModel->id)
+                if ($this->owner->id != $this->requestedByUser->id && $this->owner->id != Yii::app()->user->userModel->id)
                 {
                     TasksNotificationUtil::submitTaskNotificationMessage($this,
                         TasksNotificationUtil::TASK_NEW);
                 }
             }
-            elseif(array_key_exists('owner', $this->originalAttributeValues) &&
+            elseif (array_key_exists('owner', $this->originalAttributeValues) &&
                $this->owner->id != Yii::app()->user->userModel->id)
             {
                 TasksNotificationUtil::submitTaskNotificationMessage($this,
                                                          TasksNotificationUtil::TASK_OWNER_CHANGE);
             }
-
         }
 
         /**
@@ -340,7 +339,7 @@
         protected function resolveAndSetDefaultSubscribers()
         {
             //Add requested by user as default subscriber
-            if($this->requestedByUser->id > 0)
+            if ($this->requestedByUser->id > 0)
             {
                 TasksUtil::addSubscriber($this->requestedByUser, $this, false);
             }
@@ -352,7 +351,7 @@
          */
         protected function resolveStatusAndSetCompletedFields()
         {
-            if($this->completed != true && $this->status != Task::STATUS_COMPLETED)
+            if ($this->completed != true && $this->status != Task::STATUS_COMPLETED)
             {
                 $this->completed = false;
             }

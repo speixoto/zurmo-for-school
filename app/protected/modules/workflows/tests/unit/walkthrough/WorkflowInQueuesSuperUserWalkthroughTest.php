@@ -99,7 +99,6 @@
             {
                 $model->delete();
             }
-
         }
 
         public function testInQueuesAutoCompleteAction()

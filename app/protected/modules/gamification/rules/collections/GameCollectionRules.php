@@ -123,11 +123,11 @@
         public static function makeDefaultData()
         {
             $data = array();
-            if(static::hasCollectionRedemptionItem())
+            if (static::hasCollectionRedemptionItem())
             {
                 $data['RedemptionItem'] = 0;
             }
-            foreach(static::getItemTypesAndLabels() as $type => $notUsed)
+            foreach (static::getItemTypesAndLabels() as $type => $notUsed)
             {
                 $data['Items'][$type] = 0;
             }

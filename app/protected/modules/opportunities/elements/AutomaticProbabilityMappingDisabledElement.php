@@ -46,14 +46,14 @@
         protected function renderControlEditable()
         {
             $content = null;
-            
+
             $htmlOptions['uncheckValue'] = 0;
-            if($this->model->automaticProbabilityMappingDisabled === true)
+            if ($this->model->automaticProbabilityMappingDisabled === true)
             {
                 $htmlOptions['checked'] = 'checked';
             }
-            $element = $this->form->checkBox($this->model, 
-                                            'automaticProbabilityMappingDisabled', 
+            $element = $this->form->checkBox($this->model,
+                                            'automaticProbabilityMappingDisabled',
                                             $htmlOptions
                         );
             $content .= $element;

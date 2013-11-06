@@ -212,7 +212,6 @@
                     $content = '<span id="background-texture-tooltip-' . $name. '" title="' . $title . '"><i class="icon-lock"></i></span>' . $label;
                     $qtip    = new ZurmoTip();
                     $qtip->addQTip("#background-texture-tooltip-" . $name);
-
                 }
                 else
                 {

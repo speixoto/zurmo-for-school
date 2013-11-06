@@ -57,14 +57,14 @@
             $this->assertTrue($validated);
             $this->assertEquals(0, count($form->getErrors()));
         }
-        
+
         public function testAutomaticProbabilityMappingDisabledIsBoolean()
         {
             $form      = new OpportunitiesModuleForm();
             $form->automaticProbabilityMappingDisabled = "Some string..";
             $validated = $form->validate(array('automaticProbabilityMappingDisabled'));
             $this->assertFalse($validated);
-            
+
             $form->automaticProbabilityMappingDisabled = true;
             $form->clearErrors();
             $validated = $form->validate(array('automaticProbabilityMappingDisabled'));

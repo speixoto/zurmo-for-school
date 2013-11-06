@@ -65,15 +65,15 @@
                 $opportunity     = $demoDataHelper->getRandomByModelName('Opportunity');
                 $task->owner     = $opportunity->owner;
                 $task->completed = false;
-                if($i%2 == 0)
+                if ($i%2 == 0)
                 {
                     $task->status = Task::STATUS_NEW;
                 }
-                elseif($i%3 == 0)
+                elseif ($i%3 == 0)
                 {
                     $task->status = Task::STATUS_IN_PROGRESS;
                 }
-                elseif($i%5 == 0)
+                elseif ($i%5 == 0)
                 {
                     $task->status = Task::STATUS_COMPLETED;
                 }

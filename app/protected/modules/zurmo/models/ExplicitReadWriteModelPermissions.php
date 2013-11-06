@@ -249,6 +249,5 @@
         {
             return $permitable->getClassId('Permitable');
         }
-
     }
 ?>

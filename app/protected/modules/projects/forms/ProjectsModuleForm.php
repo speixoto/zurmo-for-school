@@ -36,6 +36,5 @@
 
     class ProjectsModuleForm extends GlobalSearchEnabledModuleForm
     {
-        
     }
 ?>

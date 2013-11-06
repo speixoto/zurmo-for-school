@@ -39,7 +39,6 @@
      */
     class GameCoinContainerView extends View
     {
-
         protected $controller;
 
         /**
@@ -57,7 +56,7 @@
 
         protected function renderContent()
         {
-            if(GameCoin::showCoin($this->controller))
+            if (GameCoin::showCoin($this->controller))
             {
                 $this->registerScripts();
                 return $this->renderCoinContainerContent();

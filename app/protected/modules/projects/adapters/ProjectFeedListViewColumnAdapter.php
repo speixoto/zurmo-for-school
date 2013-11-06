@@ -68,7 +68,7 @@
             $dateTime          = DateTimeUtil::getTimeSinceDisplayContent($projectAuditEvent->dateTime);
             $data              = array('{projectname}' => $projectName, '{username}' => $user->getFullName(),
                                        '{timeSpanLabel}' => $dateTime);
-            if(is_array($unserializedData))
+            if (is_array($unserializedData))
             {
                 $data = array_merge($unserializedData, $data);
             }
@@ -96,37 +96,37 @@
         {
             assert('is_string($event)');
             assert('is_array($data)');
-            if($event == ProjectAuditEvent::PROJECT_CREATED)
+            if ($event == ProjectAuditEvent::PROJECT_CREATED)
             {
                 return Zurmo::t('ProjectsModule', '<strong><i>{projectname}</i></strong> is added by user
                                                    <strong>{username}</strong>
                                                    <small>about {timeSpanLabel}</small>', $data);
             }
-            elseif($event == ProjectAuditEvent::PROJECT_ARCHIVED)
+            elseif ($event == ProjectAuditEvent::PROJECT_ARCHIVED)
             {
                 return Zurmo::t('ProjectsModule', '<strong><i>{projectname}</i></strong> is archived by user
                                                    <strong>{username}</strong>
                                                    <small>about {timeSpanLabel}</small>', $data);
             }
-            elseif($event == ProjectAuditEvent::TASK_STATUS_CHANGED)
+            elseif ($event == ProjectAuditEvent::TASK_STATUS_CHANGED)
             {
                 return Zurmo::t('ProjectsModule', '<strong><i>{projectname}</i> {username} changed status
                                                   from "{fromstatus} to {tostatus}"</strong>
                                                   <small>about {timeSpanLabel}</small>', $data);
             }
-            elseif($event == ProjectAuditEvent::TASK_ADDED)
+            elseif ($event == ProjectAuditEvent::TASK_ADDED)
             {
                 return Zurmo::t('ProjectsModule', '<strong><i>{projectname}</i> {username}
                                                     added task "{taskname}"</strong>
                                                     <small>about {timeSpanLabel}</small>', $data);
             }
-            elseif($event == ProjectAuditEvent::COMMENT_ADDED)
+            elseif ($event == ProjectAuditEvent::COMMENT_ADDED)
             {
                 return Zurmo::t('ProjectsModule', '<strong><i>{projectname}</i> {username}
                                                     added comment "{comment}"</strong>
                                                     <small>about {timeSpanLabel}</small>', $data);
             }
-            elseif($event == ProjectAuditEvent::CHECKLIST_ITEM_ADDED)
+            elseif ($event == ProjectAuditEvent::CHECKLIST_ITEM_ADDED)
             {
                 return Zurmo::t('ProjectsModule', '<strong><i>{projectname}</i> {username}
                                                   added checklist item "{taskcheckitemname} in Task {taskname}"

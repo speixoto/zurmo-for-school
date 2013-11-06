@@ -102,7 +102,7 @@
         protected static function addDemoTasks($project, $taskInputCount = 1, & $demoDataHelper)
         {
             $randomTasks = self::getRandomTasks();
-            for($i = 0; $i < count($randomTasks); $i++)
+            for ($i = 0; $i < count($randomTasks); $i++)
             {
                 $task                       = new Task();
                 $task->name                 = $randomTasks[$i]['name'];
@@ -119,11 +119,11 @@
                 //Task check list items
                 $task->notificationSubscribers->add($notificationSubscriber);
                 $taskCheckListItems = $randomTasks[$i]['checkListItems'];
-                foreach($taskCheckListItems as $itemKey => $name)
+                foreach ($taskCheckListItems as $itemKey => $name)
                 {
                     $taskCheckListItem = new TaskCheckListItem();
                     $taskCheckListItem->name = $name;
-                    if(($itemKey * $i * rand(5, 100)) % 3 == 0)
+                    if (($itemKey * $i * rand(5, 100)) % 3 == 0)
                     {
                         $taskCheckListItem->completed = true;
                     }
@@ -132,7 +132,7 @@
                 }
                 //Comments
                 $commentItems  = $randomTasks[$i]['comments'];
-                foreach($commentItems as $description)
+                foreach ($commentItems as $description)
                 {
                     $comment = new Comment();
                     $comment->description = $description;
@@ -175,9 +175,9 @@
                 'Usage of google analytics on company website',
             );
             $multipliedTasksList = array();
-            for($i = 1; $i <= 2; $i++)
+            for ($i = 1; $i <= 2; $i++)
             {
-               foreach($tasksList as $task)
+               foreach ($tasksList as $task)
                {
                    $multipliedTasksList[] = array('name' => $task . ' v' . $i,
                                                   'checkListItems' => self::getTaskCheckListItems($task),
