@@ -117,7 +117,7 @@
                 " where servicename = '{$serviceName}'" .
                 " AND modelid = '{$modelId}'" .
                 " AND modelclassname = '{$modelClassName}'";
-            R::exec($sql);
+            ZurmoRedBean::exec($sql);
         }
     }
 ?>
