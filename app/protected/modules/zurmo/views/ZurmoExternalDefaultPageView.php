@@ -92,6 +92,10 @@
                     $cs->registerCssFile($absoluteBaseUrl . '/' . $theme . '/css/mobile.css');
                 }
             }
+            if (Yii::app()->getClientScript()->isIsolationMode())
+            {
+                $cs->registerCssFile($absoluteBaseUrl . '/' . $theme . '/css/webforms.css');
+            }
             if (MINIFY_SCRIPTS)
             {
                 Yii::app()->minScript->generateScriptMap('css');

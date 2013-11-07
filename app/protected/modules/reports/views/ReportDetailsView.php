@@ -67,13 +67,13 @@
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array('type'      => 'ReportOptionsMenu',
-                                  'iconClass' => 'icon-options',
-                                  'htmlOptions'=> array('id' => 'ListViewOptionsActionMenu'),
+                            array('type'        => 'ReportOptionsMenu',
+                                  'iconClass'   => 'icon-options',
+                                  'htmlOptions' => array('id' => 'ListViewOptionsActionMenu'),
                             ),
-                            array('type'       => 'ReportExportMenu',
-                                  'iconClass'  => 'icon-export',
-                                  'htmlOptions'=> array('id' => 'ListViewExportActionMenu'),
+                            array('type'        => 'ReportExportMenu',
+                                  'iconClass'   => 'icon-export',
+                                  'htmlOptions' => array('id' => 'ListViewExportActionMenu'),
                             ),
                             array('type'  => 'ReportTogglePortletsLink',
                                   'htmlOptions' => array('class' => 'hasCheckboxes'),

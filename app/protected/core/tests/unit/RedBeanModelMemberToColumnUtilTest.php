@@ -68,11 +68,11 @@
             $this->assertArrayHasKey('unsigned', $columnDefinition);
             $this->assertEquals('UNSIGNED', $columnDefinition['unsigned']);
             $this->assertArrayHasKey('notNull', $columnDefinition);
-            $this->assertEquals('NULL', $columnDefinition['notNull']);
+            $this->assertEquals('NULL', $columnDefinition['notNull']); // Not Coding Standard
             $this->assertArrayHasKey('collation', $columnDefinition);
             $this->assertNull($columnDefinition['collation']);
             $this->assertArrayHasKey('default', $columnDefinition);
-            $this->assertEquals('DEFAULT NULL', $columnDefinition['default']);
+            $this->assertEquals('DEFAULT NULL', $columnDefinition['default']); // Not Coding Standard
             $this->assertArrayNotHasKey('length', $columnDefinition);
         }
 
@@ -93,11 +93,11 @@
             $this->assertArrayHasKey('unsigned', $columnDefinition);
             $this->assertEquals('UNSIGNED', $columnDefinition['unsigned']);
             $this->assertArrayHasKey('notNull', $columnDefinition);
-            $this->assertEquals('NULL', $columnDefinition['notNull']);
+            $this->assertEquals('NULL', $columnDefinition['notNull']); // Not Coding Standard
             $this->assertArrayHasKey('collation', $columnDefinition);
             $this->assertNull($columnDefinition['collation']);
             $this->assertArrayHasKey('default', $columnDefinition);
-            $this->assertEquals('DEFAULT NULL', $columnDefinition['default']);
+            $this->assertEquals('DEFAULT NULL', $columnDefinition['default']); // Not Coding Standard
             $this->assertArrayNotHasKey('length', $columnDefinition);
         }
 
@@ -117,11 +117,11 @@
             $this->assertArrayHasKey('unsigned', $columnDefinition);
             $this->assertNull($columnDefinition['unsigned']);
             $this->assertArrayHasKey('notNull', $columnDefinition);
-            $this->assertEquals('NULL', $columnDefinition['notNull']);
+            $this->assertEquals('NULL', $columnDefinition['notNull']); // Not Coding Standard
             $this->assertArrayHasKey('collation', $columnDefinition);
             $this->assertEquals('COLLATE utf8_unicode_ci', $columnDefinition['collation']);
             $this->assertArrayHasKey('default', $columnDefinition);
-            $this->assertEquals('DEFAULT NULL', $columnDefinition['default']);
+            $this->assertEquals('DEFAULT NULL', $columnDefinition['default']); // Not Coding Standard
             $this->assertArrayNotHasKey('length', $columnDefinition);
         }
     }

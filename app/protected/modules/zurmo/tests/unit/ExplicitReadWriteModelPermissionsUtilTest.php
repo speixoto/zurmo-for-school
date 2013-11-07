@@ -192,7 +192,7 @@
 
             //Test adding group4 again. The _read count should be the same
             $account = Account::getById($accountId);
-            $sanitizedData= array();
+            $sanitizedData = array();
             $sanitizedData['explicitReadWriteModelPermissions'] =
                             array('type' => ExplicitReadWriteModelPermissionsUtil::MIXED_TYPE_NONEVERYONE_GROUP,
                                   'nonEveryoneGroup' => $group4->id);

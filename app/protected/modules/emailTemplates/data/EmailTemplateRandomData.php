@@ -82,8 +82,9 @@
                 'yet very simple to use.',
         ),
         'htmlContent'           => array(
-            'Zurmo\'s source code is hosted on bitbucket while we use ' .
-                '<img src="http://www.selenic.com/hg-logo/droplets-50.png" alt="mercurial" /> for version control.',
+            '<html><head></head><body><p>Zurmo\'s source code is hosted on bitbucket while we use ' .
+                '<img src="http://www.selenic.com/hg-logo/droplets-50.png" alt="mercurial" /> for ' .
+                'version control.</body></html>',
             '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
                 <html>
                     <head>

@@ -64,7 +64,7 @@
                     {
                         $columns[] = $column;
                     }
-                    else if ($column === false)
+                    elseif ($column === false)
                     {
                         $errorMessage = Zurmo::t('Core', 'Failed to resolve {{model}}.{{relation}} to column',
                                                     array('{{model}}' => $modelClassName, '{{relation}}' => $relationName));
