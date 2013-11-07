@@ -131,7 +131,7 @@
     border:1px solid #ccc;
     #gradient > .vertical(#f6f6f6, #ededed);
     .b-shadow(inset 0 1px 0 0 #ffffff);
-    .themeColor();
+    color: @themeColor;
     &.ui-state-disabled{
         color:#dcdcdc;
         #gradient > .vertical(#efefef, #ededed);
@@ -253,7 +253,7 @@
 }
 
 .sortable-row-list{
-	.themeColor-important();
+	color: @themeColor !important;
 }
 
 .layout-single-column {
@@ -471,7 +471,7 @@
         margin-right:3px;
         position:relative;
         top:1px;
-    	.themeColor2();
+    	color: @themeColor2;
     }
     .sortable{
         list-style: none;

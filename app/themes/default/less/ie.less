@@ -33,7 +33,7 @@
  * Copyright Zurmo Inc. 2013. All rights reserved.
  ********************************************************************************/
 
-@import 'mixins.less';
+//@import 'mixins.less';
 
 /*Target only Explorer*/
 .form{
@@ -45,7 +45,7 @@
 
 /*Top Right Create New Menu*/
 #ShortcutsMenu > li > a {
-	filter: e(%("progid:DXImageTransform.Microsoft.gradient(enabled = false)"));
+	//filter: e(%("progid:DXImageTransform.Microsoft.gradient(enabled = false)"));
 }
 
 /*Calendar with dates*/
@@ -87,26 +87,25 @@
 
 #ActionBarSearchAndListView{
     > div:first-child{
-        z-index:10005;       
+        z-index:10005;
     }
 }
 
-.modal-view-toolbar a,
-.modal-view-toolbar input[type="submit"],
-.modal-view-toolbar input[type="button"],
-.form-toolbar a,
-.form-toolbar input[type="submit"],
-.form-toolbar input[type="button"]
-{
-    border-top:1px solid    rgb(235, 235, 235);
-    border-left: 1px solid  rgb(220, 220, 220);
-    border-right:1px solid  rgb(220, 220, 220);
-    border-bottom:1px solid rgb(205, 205, 205);
-    color:#666;
-    overflow: hidden;
-    position: relative;
-    cursor:pointer;
-    margin:0 10px;
-    text-indent:0;
-    display:inline-block;
+.modal-view-toolbar,
+.form-toolbar{
+	a,
+	input[type="submit"],
+	input[type="button"]{
+		border-top:1px solid    rgb(235, 235, 235);
+		border-left: 1px solid  rgb(220, 220, 220);
+		border-right:1px solid  rgb(220, 220, 220);
+		border-bottom:1px solid rgb(205, 205, 205);
+		color:#666;
+		overflow: hidden;
+		position: relative;
+		cursor:pointer;
+		margin:0 10px;
+		text-indent:0;
+		display:inline-block;
+	}
 }

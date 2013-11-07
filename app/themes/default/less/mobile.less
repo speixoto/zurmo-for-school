@@ -42,6 +42,7 @@
 //http://bennettfeely.com/flexplorer/
 
 @import 'mixins.less';
+
 @recentlyViewedIconSize : 24px;
 
 //@media all and (max-width: 800px) {} not used finally since included when php refreshes teh app and loads mobile version.
@@ -283,11 +284,11 @@ body{
 	top: 2px;
 	left: 0;
 	clear: left;
-	//display: block !important;
-	&:before{
-		right:4px;
-		background:url(../images/tip.png) right bottom no-repeat; //another option is an img with 4px trasnparent padding on the right just for this class
-	}
+}
+
+.button-actions:before{
+	right:4px;
+	background:url(../images/tip.png) right bottom no-repeat;
 }
 
 .split-button{
@@ -314,7 +315,7 @@ body{
 		float: left;
 		border:1px solid #b7b7b7;
 		border-top-color: #e7e7e7;
-		border-left:1px solid #d7d7d7 !important;
+		border-left-color:#d7d7d7 !important;
 		border-right-color:#d7d7d7;
 		border-radius:4px;
 		.b-shadow(0 0 9px 5px rgba(153, 153, 153, 0.12));
@@ -449,9 +450,7 @@ body{
 	top: 0 !important;
 	.opacity(0);
 	.box-sizing();
-	//padding:40px 9px 0 19px; //add padding-top:50px when position fixed for blue bar is possible
 	left: 0;
-	//position: fixed;
 	width:auto;
 	height: 100%;
 	border: none;
