@@ -107,6 +107,14 @@ a:hover{
 	color: @themeColor;
 }
 
+a:hover, a:active{
+	i[class^="icon"],
+	i[class^="icon"]:after{
+		color: @themeColor2;
+	}
+}
+
+
 h1, h2, h3, h4, h5, h6{
 	color: @themeColor;
 	.t-shadow(  0 1px 0 rgba( 255, 255, 255, 0.8 ) );
@@ -590,12 +598,12 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
 		}
 	}
 	> li > a:after{
-		content: "n";
 		color:#ddd;
 		.symbly(26px);
 		line-height: 1;
 		display: inline-block;
 		vertical-align: middle;
+		content: 'n';
 	}
 	ul{
 		right:0;
@@ -1508,6 +1516,19 @@ form,
 	> a:first-child{
 		border-left:none;
 	}
+	> a:hover,
+	> a:active,
+	> a:hover:before,
+	> a:active:before,
+	> a:hover span,
+	> a:active span,
+	.active,
+	.active > a span,
+	.active > a:before,
+	.nav > li > a:hover,
+	.nav > li > a:active{
+		color: @themeColor2;
+	}
 }
 
 .view-toolbar + .view-toolbar {
@@ -1529,7 +1550,6 @@ form,
 #ActionBarSearchAndListView{
 	.view-toolbar{
 		margin-top:0;
-
 	}
 }
 
@@ -1580,6 +1600,10 @@ form,
 		&:active{
 			color:#656565;
 			box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #FFF;
+		}
+		&:hover,
+		.active{
+			color: @themeColor2;
 		}
 	}
 }
@@ -2025,6 +2049,13 @@ textarea[disabled] {
 	background:#EFEFEF;
 }
 
+input[type="button"]:hover,
+input[type="button"]:hover:before,
+input[type="button"]:hover:after{
+	color: @themeColor2;
+}
+
+
 .form{
 	input[type="checkbox"]{
 		margin:0 0 10px 0 !important;
@@ -2083,9 +2114,6 @@ textarea[disabled] {
 .portlet-toolbar{
 	float: right;
 	margin-right: 10px;
-	//position: absolute;
-	//top:-35px;
-	//right:8px;
 	a{
 		line-height:25px;
 		margin:0;
@@ -2137,14 +2165,16 @@ textarea[disabled] {
 		content: "—";
 		.view-toolbar-icons();
 		top:-1px;
-		color:#fff;
+		//color:#fff;
+		color: @themeColor2;
 		margin-left:0;
 	}
 	.icon-edit:before{
 		content: "!";
 		.view-toolbar-icons();
 		top:-1px;
-		color:#fff;
+		//color:#fff;
+		color: @themeColor2;
 		margin-left:0;
 	}
 }
@@ -2799,16 +2829,10 @@ div.wide.form{
 #more-search-linkmodal,
 #more-search-link{
 	margin-left:0;
-	color: @themeColor;
-	&:after{
-		content: "÷";
-		.symbly(14px);
-		position:relative;
-		top:1px;
-		margin-left:5px;
-	}
 }
 
+#more-search-linkmodal,
+#more-search-link,
 #kanban-board-options-link,
 #select-list-attributes-link{
 	color: @themeColor;
@@ -2819,7 +2843,12 @@ div.wide.form{
 		top:1px;
 		margin-left:5px;
 	}
+	&:hover{
+		color: @themeColor2;
+	}
 }
+
+
 
 #mixed-models-form-search{
 	margin-left:15px;
@@ -4058,58 +4087,61 @@ div.radio-input{
 	> div{
 		display: inline-block;
 	}
-	#StickyListMenu{
+}
+
+#StickyListMenu{
+	list-style: none;
+	> li > a > span{
+		top:0;
+		position: absolute;
+		display: block;
+		margin-left: 10px;
+		width:13px;
+		padding: 1px;
+		text-align: center;
+		line-height: 1;
+		color: #666;
+		border:1px solid #fff;
+		.b-shadow(inset 0 0 0 1px #ddd);
+		.t-shadow(0 1px 0 #fff);
+		.radius(2px);
+		#gradient > .vertical(#e8e8e8, #f5f5f5);
+		.symbly(14px);
+	}
+	ul{
+		.flyout;
+		display: none;
 		list-style: none;
-		> li > a > span{
-			top:0;
-			position: absolute;
-			display: block;
-			margin-left: 10px;
-			width:13px;
-			padding: 1px;
-			text-align: center;
-			line-height: 1;
-			color: #666;
-			border:1px solid #fff;
-			.b-shadow(inset 0 0 0 1px #ddd);
-			.t-shadow(0 1px 0 #fff);
-			.radius(2px);
-			#gradient > .vertical(#e8e8e8, #f5f5f5);
-			.symbly(14px);
-		}
-		ul{
-			.flyout;
-			display: none;
-			list-style: none;
-			position: absolute;
-			margin-top:3px;
-			margin-left:11px;
-			padding-top:3px;
-			padding-bottom:3px;
-			font-weight:normal !important;
-			.strong{
-				a, span{
-					font-weight: bold !important;
-				}
+		position: absolute;
+		margin-top:3px;
+		margin-left:11px;
+		padding-top:3px;
+		padding-bottom:3px;
+		font-weight:normal !important;
+		.strong{
+			a, span{
+				font-weight: bold !important;
 			}
-			a{
-				text-indent:0;
-				color: #666;
-				.smaller();
-				font-weight: normal;
-				display: block;
-				padding: 5px 10px 5px 10px;
-				margin: 0 2px;
-				line-height: normal;
-				.t-shadow(none);
-				&:hover{
-					background-color: @themeColor2 !important;
-					color:#fff !important;
-				}
+		}
+		a{
+			text-indent:0;
+			color: #666;
+			.smaller();
+			font-weight: normal;
+			display: block;
+			padding: 5px 10px 5px 10px;
+			margin: 0 2px;
+			line-height: normal;
+			.t-shadow(none);
+			&:hover{
+				background-color: @themeColor2 !important;
+				color:#fff !important;
 			}
 		}
 	}
 }
+
+
 
 /*=Madlib*/
 .mad-lib{
@@ -4412,6 +4444,10 @@ div.hasHalfs{
 		&.hidden:after{
 			color:#ccc;
 		}
+	}
+	a:hover:before,
+	a:hover:after{
+		color: @themeColor2;
 	}
 	//doesnt work in IE
 	&:empty{

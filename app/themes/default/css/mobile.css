@@ -55,25 +55,18 @@
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
-.cf:before,
-.cf:after {
-  content: " ";
-  display: table;
-}
-.cf:after {
-  clear: both;
-}
-.cf {
-  *zoom: 1;
-}
+.cf,
 .clearfix {
   *zoom: 1;
 }
+.cf:before,
+.cf:after,
 .clearfix:before,
 .clearfix:after {
   content: " ";
   display: table;
 }
+.cf:after,
 .clearfix:after {
   clear: both;
 }

@@ -140,32 +140,38 @@
 			border-top:none;
 			margin-top:none;
 		}
-		h4{
-			margin:0 0 0 0;
-			display:inline-block;
+	}
+	h4{
+		margin:0 0 0 0;
+		display:inline-block;
+	}
+	a{
+		.z-button();
+		float:right;
+		position: absolute;
+		right:15px;
+		top:14px;
+		vertical-align: middle;
+		margin:0;
+		.z-label{
+			.z-label-smaller();
 		}
-		a{
-			.z-button();
-			float:right;
-			position: absolute;
-			right:15px;
-			top:14px;
+		.z-label:before{
+			content: "n";
+			.symbly(20px);
+			color: #666;
+			margin-right:5px;
+			position:relative;
+			top:-2px;
+			font-weight: normal !important;
 			vertical-align: middle;
-			margin:0;
-			.z-label{
-				.z-label-smaller();
-			}
-			.z-label:before{
-				content: "n";
-				.symbly(20px);
-				color: #666;
-				margin-right:5px;
-				position:relative;
-				top:-2px;
-				font-weight: normal !important;
-				vertical-align: middle;
-			}
 		}
+	}
+	a:hover,
+	a:hover span:before,
+	td:last-child a:hover,
+	td:last-child a:hover span:before{
+		color: @themeColor2;
 	}
 }
 

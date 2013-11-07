@@ -37,9 +37,10 @@
 @themeColorBtn     : @z_themeColorBtn;
 @themeColorBtn2    : darken(@z_themeColorBtn, 10%);
 @themeColorHeader  : @z_themeColorHeader;
-@themeColorHeader2 : @z_themeColorHeader2;
+@themeColorHeader2 : darken(@z_themeColorHeader, 8%);//@z_themeColorHeader2;
 @borderColor       : darken(@z_themeColor, 10%);
 @headerBarColor    : @z_themeColor;
+
 
 .symbly( @size : 32px ) {
     font-weight:normal !important;
@@ -117,18 +118,7 @@
             transition: all @time ease-out;
 }
 
-.cf:before,
-.cf:after{
-    content:" ";
-    display:table;
-}
-.cf:after{
-    clear:both;
-}
-.cf{
-    *zoom:1;
-}
-
+.cf,
 .clearfix{
     &:before,
     &:after{

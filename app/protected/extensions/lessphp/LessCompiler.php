@@ -120,12 +120,12 @@
             $lessCompiler->setFormatter($this->formatterName);
             $lessCompiler->setImportDir($this->getLessFilesPath());
             $lessCompiler->setVariables(array(
-                "z_textColor"         => "#545454",
-                "z_themeColor"        => "#282A76",
-                "z_themeColor2"       => "#7CB830",
-                "z_themeColorBtn"     => "#97c43d",
-                "z_themeColorHeader"  => "#464646",
-                "z_themeColorHeader2" => "#333535",
+                "z_textColor"         => "#545454", //text color all around
+                "z_themeColor"        => "#282A76", //main color for links/titles/top-bar (blue in the original theme)
+                "z_themeColor2"       => "#7CB830", //secondary color used for hovers and emphasizing (green in the original theme)
+                "z_themeColorBtn"     => "#97c43d", //<-- this is suggested so buttons would always be green and not maybe red/purple etc.
+                "z_themeColorHeader"  => "#464646", //used to create the top dark bar gradient (top)
+                //"z_themeColorHeader2" => "#333535", //used to create the top dark bar gradient (bottom)
             ));
             return $lessCompiler;
         }
