@@ -36,10 +36,8 @@
 @themeColor2       : @z_themeColor2;
 @themeColorBtn     : @z_themeColorBtn;
 @themeColorBtn2    : darken(@z_themeColorBtn, 10%);
-
 @themeColorBtnDefault     : @z_themeColorBtn;//#97c43d;
 @themeColorBtn2Default    : darken(@z_themeColorBtn, 10%);
-
 @themeColorHeader  : @z_themeColorHeader;
 @themeColorHeader2 : darken(@z_themeColorHeader, 8%);//@z_themeColorHeader2;
 @borderColor       : darken(@z_themeColor, 10%);
@@ -69,7 +67,7 @@
 }
 
 .ie-shadow(@color:0, @blur:0, @alpha:0){
-    /* http://www.useragentman.com/blog/2011/08/24/how-to-simulate-css3-box-shadow-in-ie7-8-without-javascript/ */
+    // http://www.useragentman.com/blog/2011/08/24/how-to-simulate-css3-box-shadow-in-ie7-8-without-javascript
     zoom: 1;
     filter:progid:DXImageTransform.Microsoft.Shadow(Color=lighten(@color, @alpha), Strength=@blur, Direction=0),
            progid:DXImageTransform.Microsoft.Shadow(Color=lighten(@color, @alpha), Strength=@blur, Direction=90),
@@ -210,26 +208,34 @@ a.z-button,
 	.box-sizing();
     .clearfix();
     &.attachLoading.z-button{
-        color: #fff;
+        //color: #fff;
     }
     &:not(.attachLoading):not(.green-button) .z-label{
-        background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
+        //background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
     }
 }
 
-.white-button .z-label{
-    color:#666 !important;
-    .t-shadow( 0px 1px 0 rgba(255, 255, 255, 0.75) ) !important;
-    background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
+.white-button,
+.cancel-button{
+	.z-label{
+        color:#666;
+        .t-shadow( 0px 1px 0 rgba(255, 255, 255, 0.75) ) !important;
+        background: url(../images/view-toolbar-gradient.png) left bottom repeat-x;
+	}
+	&:hover{
+		.z-label{
+			//background: url(../images/view-toolbar-gradient.png) left top repeat-x !important;
+			color: @themeColor2 !important;
+			background-image: none;
+			#gradient > .vertical( #fefefe, #ededed ) !important;
+			.t-shadow( 0px 1px 0 rgba(255, 255, 255, 0.75) ) !important;
+		}
+	}
 }
 
 .default-btn{
     .zButton() !important;
 }
-
-
-
-
 
 .z-label{
 	color:#fff;
@@ -246,15 +252,8 @@ a:active .z-label{
 
 a:active .z-label,
 a:active .z-label{
-	.b-shadow( ~"inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF" );
+	.b-shadow( ~"inset 0 5px 12px 0 rgba(0, 0, 0, 0.33), 0 1px 0 0 #FFF" );
 }
-
-
-
-
-
-
-
 
 .z-button.disabled{
 	pointer-events:none;

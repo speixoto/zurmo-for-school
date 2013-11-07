@@ -32,7 +32,6 @@
  * feasible for technical reasons, the Appropriate Legal Notices must display the words
  * "Copyright Zurmo Inc. 2013. All rights reserved".
  ********************************************************************************/
-/* http://www.useragentman.com/blog/2011/08/24/how-to-simulate-css3-box-shadow-in-ie7-8-without-javascript/ */
 /*
 .zButton:not(.attacheLoading),
 .z-button:not(.attachLoading){
@@ -199,40 +198,32 @@ a.z-button:after,
 .white-button:after {
   clear: both;
 }
-.modal-view-toolbar a.attachLoading.z-button,
-.modal-view-toolbar input[type="submit"].attachLoading.z-button,
-.modal-view-toolbar input[type="button"].attachLoading.z-button,
-.form-toolbar a.attachLoading.z-button,
-.form-toolbar input[type="submit"].attachLoading.z-button,
-.form-toolbar input[type="button"].attachLoading.z-button,
-.zButton.attachLoading.z-button,
-.z-button.attachLoading.z-button,
-a.zButton.attachLoading.z-button,
-a.z-button.attachLoading.z-button,
-.white-button.attachLoading.z-button {
-  color: #fff;
-}
-.modal-view-toolbar a:not(.attachLoading):not(.green-button) .z-label,
-.modal-view-toolbar input[type="submit"]:not(.attachLoading):not(.green-button) .z-label,
-.modal-view-toolbar input[type="button"]:not(.attachLoading):not(.green-button) .z-label,
-.form-toolbar a:not(.attachLoading):not(.green-button) .z-label,
-.form-toolbar input[type="submit"]:not(.attachLoading):not(.green-button) .z-label,
-.form-toolbar input[type="button"]:not(.attachLoading):not(.green-button) .z-label,
-.zButton:not(.attachLoading):not(.green-button) .z-label,
-.z-button:not(.attachLoading):not(.green-button) .z-label,
-a.zButton:not(.attachLoading):not(.green-button) .z-label,
-a.z-button:not(.attachLoading):not(.green-button) .z-label,
-.white-button:not(.attachLoading):not(.green-button) .z-label {
-  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
-}
-.white-button .z-label {
-  color: #666 !important;
+.white-button .z-label,
+.cancel-button .z-label {
+  color: #666;
   -webkit-text-shadow: 0px 1px 0 rgba(255,255,255,0.75) !important;
   -moz-text-shadow: 0px 1px 0 rgba(255,255,255,0.75) !important;
   -ms-text-shadow: 0px 1px 0 rgba(255,255,255,0.75) !important;
   -o-text-shadow: 0px 1px 0 rgba(255,255,255,0.75) !important;
   text-shadow: 0px 1px 0 rgba(255,255,255,0.75) !important;
-  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
+  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x;
+}
+.white-button:hover .z-label,
+.cancel-button:hover .z-label {
+  color: #7CB830 !important;
+  background-image: none;
+  background-color: #ededed !important;
+  background-repeat: repeat-x !important;
+  background-image: -ms-linear-gradient(top,#fefefe,#ededed) !important;
+  background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0%,#fefefe),color-stop(100%,#ededed)) !important;
+  background-image: -webkit-linear-gradient(top,#fefefe,#ededed) !important;
+  background-image: -o-linear-gradient(top,#fefefe,#ededed) !important;
+  background-image: linear-gradient(top,#fefefe,#ededed) !important;
+  -webkit-text-shadow: 0px 1px 0 rgba(255,255,255,0.75) !important;
+  -moz-text-shadow: 0px 1px 0 rgba(255,255,255,0.75) !important;
+  -ms-text-shadow: 0px 1px 0 rgba(255,255,255,0.75) !important;
+  -o-text-shadow: 0px 1px 0 rgba(255,255,255,0.75) !important;
+  text-shadow: 0px 1px 0 rgba(255,255,255,0.75) !important;
 }
 .default-btn {
   border-top: 1px solid rgba(200,200,200,0.4) !important;
@@ -273,12 +264,6 @@ a.z-button:not(.attachLoading):not(.green-button) .z-label,
 .default-btn:after {
   clear: both;
 }
-.default-btn.attachLoading.z-button {
-  color: #fff;
-}
-.default-btn:not(.attachLoading):not(.green-button) .z-label {
-  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
-}
 .z-label {
   color: #fff;
   background-color: #799e30;
@@ -312,11 +297,11 @@ a:active .z-label {
 }
 a:active .z-label,
 a:active .z-label {
-  -webkit-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
-  -moz-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
-  -ms-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
-  -o-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
-  box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
+  -webkit-box-shadow: inset 0 5px 12px 0 rgba(0, 0, 0, 0.33), 0 1px 0 0 #FFF;
+  -moz-box-shadow: inset 0 5px 12px 0 rgba(0, 0, 0, 0.33), 0 1px 0 0 #FFF;
+  -ms-box-shadow: inset 0 5px 12px 0 rgba(0, 0, 0, 0.33), 0 1px 0 0 #FFF;
+  -o-box-shadow: inset 0 5px 12px 0 rgba(0, 0, 0, 0.33), 0 1px 0 0 #FFF;
+  box-shadow: inset 0 5px 12px 0 rgba(0, 0, 0, 0.33), 0 1px 0 0 #FFF;
 }
 .z-button.disabled {
   pointer-events: none;

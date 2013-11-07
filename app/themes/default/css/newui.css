@@ -32,7 +32,6 @@
  * feasible for technical reasons, the Appropriate Legal Notices must display the words
  * Copyright Zurmo Inc. 2013. All rights reserved.
  ********************************************************************************/
-/* http://www.useragentman.com/blog/2011/08/24/how-to-simulate-css3-box-shadow-in-ie7-8-without-javascript/ */
 /*
 .zButton:not(.attacheLoading),
 .z-button:not(.attachLoading){
@@ -420,40 +419,32 @@ a.z-button:after,
 .white-button:after {
   clear: both;
 }
-.modal-view-toolbar a.attachLoading.z-button,
-.modal-view-toolbar input[type="submit"].attachLoading.z-button,
-.modal-view-toolbar input[type="button"].attachLoading.z-button,
-.form-toolbar a.attachLoading.z-button,
-.form-toolbar input[type="submit"].attachLoading.z-button,
-.form-toolbar input[type="button"].attachLoading.z-button,
-.zButton.attachLoading.z-button,
-.z-button.attachLoading.z-button,
-a.zButton.attachLoading.z-button,
-a.z-button.attachLoading.z-button,
-.white-button.attachLoading.z-button {
-  color: #fff;
-}
-.modal-view-toolbar a:not(.attachLoading):not(.green-button) .z-label,
-.modal-view-toolbar input[type="submit"]:not(.attachLoading):not(.green-button) .z-label,
-.modal-view-toolbar input[type="button"]:not(.attachLoading):not(.green-button) .z-label,
-.form-toolbar a:not(.attachLoading):not(.green-button) .z-label,
-.form-toolbar input[type="submit"]:not(.attachLoading):not(.green-button) .z-label,
-.form-toolbar input[type="button"]:not(.attachLoading):not(.green-button) .z-label,
-.zButton:not(.attachLoading):not(.green-button) .z-label,
-.z-button:not(.attachLoading):not(.green-button) .z-label,
-a.zButton:not(.attachLoading):not(.green-button) .z-label,
-a.z-button:not(.attachLoading):not(.green-button) .z-label,
-.white-button:not(.attachLoading):not(.green-button) .z-label {
-  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
-}
-.white-button .z-label {
-  color: #666 !important;
+.white-button .z-label,
+.cancel-button .z-label {
+  color: #666;
   -webkit-text-shadow: 0px 1px 0 rgba(255,255,255,0.75) !important;
   -moz-text-shadow: 0px 1px 0 rgba(255,255,255,0.75) !important;
   -ms-text-shadow: 0px 1px 0 rgba(255,255,255,0.75) !important;
   -o-text-shadow: 0px 1px 0 rgba(255,255,255,0.75) !important;
   text-shadow: 0px 1px 0 rgba(255,255,255,0.75) !important;
-  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
+  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x;
+}
+.white-button:hover .z-label,
+.cancel-button:hover .z-label {
+  color: #7CB830 !important;
+  background-image: none;
+  background-color: #ededed !important;
+  background-repeat: repeat-x !important;
+  background-image: -ms-linear-gradient(top,#fefefe,#ededed) !important;
+  background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0%,#fefefe),color-stop(100%,#ededed)) !important;
+  background-image: -webkit-linear-gradient(top,#fefefe,#ededed) !important;
+  background-image: -o-linear-gradient(top,#fefefe,#ededed) !important;
+  background-image: linear-gradient(top,#fefefe,#ededed) !important;
+  -webkit-text-shadow: 0px 1px 0 rgba(255,255,255,0.75) !important;
+  -moz-text-shadow: 0px 1px 0 rgba(255,255,255,0.75) !important;
+  -ms-text-shadow: 0px 1px 0 rgba(255,255,255,0.75) !important;
+  -o-text-shadow: 0px 1px 0 rgba(255,255,255,0.75) !important;
+  text-shadow: 0px 1px 0 rgba(255,255,255,0.75) !important;
 }
 .default-btn {
   border-top: 1px solid rgba(200,200,200,0.4) !important;
@@ -494,12 +485,6 @@ a.z-button:not(.attachLoading):not(.green-button) .z-label,
 .default-btn:after {
   clear: both;
 }
-.default-btn.attachLoading.z-button {
-  color: #fff;
-}
-.default-btn:not(.attachLoading):not(.green-button) .z-label {
-  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
-}
 .z-label {
   color: #fff;
   background-color: #799e30;
@@ -533,11 +518,11 @@ a:active .z-label {
 }
 a:active .z-label,
 a:active .z-label {
-  -webkit-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
-  -moz-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
-  -ms-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
-  -o-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
-  box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
+  -webkit-box-shadow: inset 0 5px 12px 0 rgba(0, 0, 0, 0.33), 0 1px 0 0 #FFF;
+  -moz-box-shadow: inset 0 5px 12px 0 rgba(0, 0, 0, 0.33), 0 1px 0 0 #FFF;
+  -ms-box-shadow: inset 0 5px 12px 0 rgba(0, 0, 0, 0.33), 0 1px 0 0 #FFF;
+  -o-box-shadow: inset 0 5px 12px 0 rgba(0, 0, 0, 0.33), 0 1px 0 0 #FFF;
+  box-shadow: inset 0 5px 12px 0 rgba(0, 0, 0, 0.33), 0 1px 0 0 #FFF;
 }
 .z-button.disabled {
   pointer-events: none;
@@ -651,7 +636,7 @@ a:active .z-label {
   margin: 0;
   filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
 }
-.zurmo * {
+* {
   margin: 0;
   padding: 0;
 }
@@ -3947,12 +3932,6 @@ div.wide.form a {
 .search-form-tools input[type="submit"]:after {
   clear: both;
 }
-.search-form-tools input[type="submit"].attachLoading.z-button {
-  color: #fff;
-}
-.search-form-tools input[type="submit"]:not(.attachLoading):not(.green-button) .z-label {
-  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
-}
 .search-form-tools > a {
   margin-right: 25px;
 }
@@ -6657,12 +6636,6 @@ div.hasHalfs > div input {
 #progressBar-links a:after {
   clear: both;
 }
-#progressBar-links a.attachLoading.z-button {
-  color: #fff;
-}
-#progressBar-links a:not(.attachLoading):not(.green-button) .z-label {
-  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
-}
 .progressbar-wrapper {
   width: 100%;
   position: relative;
@@ -7775,12 +7748,6 @@ i[class^="icon"] {
 #InstallPageView .AppContainer a:after {
   clear: both;
 }
-#InstallPageView .AppContainer a.attachLoading.z-button {
-  color: #fff;
-}
-#InstallPageView .AppContainer a:not(.attachLoading):not(.green-button) .z-label {
-  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
-}
 #InstallPageView div.wide.form {
   float: none;
 }
@@ -7877,12 +7844,6 @@ i[class^="icon"] {
 }
 #InstallPageView #install-form input[type="submit"]:after {
   clear: both;
-}
-#InstallPageView #install-form input[type="submit"].attachLoading.z-button {
-  color: #fff;
-}
-#InstallPageView #install-form input[type="submit"]:not(.attachLoading):not(.green-button) .z-label {
-  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
 }
 #InstallPageView #install-form table {
   padding-bottom: 15px;
@@ -8086,12 +8047,6 @@ i[class^="icon"] {
 .configuration-list a:after {
   clear: both;
 }
-.configuration-list a.attachLoading.z-button {
-  color: #fff;
-}
-.configuration-list a:not(.attachLoading):not(.green-button) .z-label {
-  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
-}
 .configuration-list a .z-label {
   padding: 0 15px;
 }
@@ -8173,12 +8128,6 @@ table.configuration-list td:last-child a:after {
 }
 table.configuration-list td:last-child a:after {
   clear: both;
-}
-table.configuration-list td:last-child a.attachLoading.z-button {
-  color: #fff;
-}
-table.configuration-list td:last-child a:not(.attachLoading):not(.green-button) .z-label {
-  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
 }
 table.configuration-list td:last-child a .z-label {
   padding: 0 15px;
@@ -8315,12 +8264,6 @@ table.configuration-list td:last-child a .z-label:before {
 }
 .multiselect-holder input[type="button"]:after {
   clear: both;
-}
-.multiselect-holder input[type="button"].attachLoading.z-button {
-  color: #fff;
-}
-.multiselect-holder input[type="button"]:not(.attachLoading):not(.green-button) .z-label {
-  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
 }
 .multiselect-holder .select-arrow {
   display: none !important;
@@ -8886,12 +8829,6 @@ table.configuration-list td:last-child a .z-label:before {
 .EmailTestingButton:after {
   clear: both;
 }
-.EmailTestingButton.attachLoading.z-button {
-  color: #fff;
-}
-.EmailTestingButton:not(.attachLoading):not(.green-button) .z-label {
-  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
-}
 #testImapConnection {
   margin: 0;
 }
@@ -8981,12 +8918,6 @@ table.configuration-list td:last-child a .z-label:before {
 }
 .AppContent.ImportWizardView #addExtraColumnButton:after {
   clear: both;
-}
-.AppContent.ImportWizardView #addExtraColumnButton.attachLoading.z-button {
-  color: #fff;
-}
-.AppContent.ImportWizardView #addExtraColumnButton:not(.attachLoading):not(.green-button) .z-label {
-  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
 }
 .AppContent.ImportWizardView .required-fields {
   font-size: 12px;
@@ -9944,12 +9875,6 @@ div.wide.form .errorMessage {
 .file-upload-box .ui-icon-plusthick:after {
   clear: both;
 }
-.file-upload-box .ui-icon-plusthick.attachLoading.z-button {
-  color: #fff;
-}
-.file-upload-box .ui-icon-plusthick:not(.attachLoading):not(.green-button) .z-label {
-  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
-}
 .file-upload-box .ui-icon-plusthick:after {
   content: "Y";
   font-weight: normal !important;
@@ -10155,12 +10080,6 @@ div.wide.form .errorMessage {
 }
 .addfileinput-button span:after {
   clear: both;
-}
-.addfileinput-button span.attachLoading.z-button {
-  color: #fff;
-}
-.addfileinput-button span:not(.attachLoading):not(.green-button) .z-label {
-  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
 }
 .addfileinput-button input {
   position: absolute;
@@ -10422,12 +10341,6 @@ div.wide.form .errorMessage {
 .ui-datepicker .ui-datepicker-current:after {
   clear: both;
 }
-.ui-datepicker .ui-datepicker-current.attachLoading.z-button {
-  color: #fff;
-}
-.ui-datepicker .ui-datepicker-current:not(.attachLoading):not(.green-button) .z-label {
-  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
-}
 .ui-datepicker .ui-datepicker-close {
   border-top: 1px solid rgba(200,200,200,0.4);
   border-left: 1px solid rgba(185,185,185,0.4);
@@ -10468,12 +10381,6 @@ div.wide.form .errorMessage {
 }
 .ui-datepicker .ui-datepicker-close:after {
   clear: both;
-}
-.ui-datepicker .ui-datepicker-close.attachLoading.z-button {
-  color: #fff;
-}
-.ui-datepicker .ui-datepicker-close:not(.attachLoading):not(.green-button) .z-label {
-  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
 }
 .ui-datepicker .ui-timepicker-div {
   float: left;
@@ -10860,12 +10767,6 @@ div.wide.form .errorMessage {
 }
 .designer-toolbar input[type="submit"]:after {
   clear: both;
-}
-.designer-toolbar input[type="submit"].attachLoading.z-button {
-  color: #fff;
-}
-.designer-toolbar input[type="submit"]:not(.attachLoading):not(.green-button) .z-label {
-  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
 }
 .designer-toolbar h3 {
   margin: 0 0 5px 0;
@@ -11415,14 +11316,6 @@ div.wide.form .errorMessage {
 #contactStatesData_AddInputButton:after,
 #customFieldDataData_AddInputButton:after {
   clear: both;
-}
-#contactStatesData_AddInputButton.attachLoading.z-button,
-#customFieldDataData_AddInputButton.attachLoading.z-button {
-  color: #fff;
-}
-#contactStatesData_AddInputButton:not(.attachLoading):not(.green-button) .z-label,
-#customFieldDataData_AddInputButton:not(.attachLoading):not(.green-button) .z-label {
-  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
 }
 @-moz-document url-prefix() {
   body {
@@ -12773,12 +12666,6 @@ div.wide.form .errorMessage {
 }
 .ModalGameNotification a:after {
   clear: both;
-}
-.ModalGameNotification a.attachLoading.z-button {
-  color: #fff;
-}
-.ModalGameNotification a:not(.attachLoading):not(.green-button) .z-label {
-  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
 }
 .ModalGameNotification a:focus {
   outline: none;
