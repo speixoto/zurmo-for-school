@@ -120,9 +120,9 @@
             $this->assertEquals('memberone', $columns[0]['name']);
             $this->assertEquals('VARCHAR(255)', $columns[0]['type']);
             $this->assertNull($columns[0]['unsigned']);
-            $this->assertEquals('NULL', $columns[0]['notNull']);
+            $this->assertEquals('NULL', $columns[0]['notNull']); // Not Coding Standard
             $this->assertEquals('COLLATE utf8_unicode_ci', $columns[0]['collation']);
-            $this->assertEquals('DEFAULT NULL', $columns[0]['default']);
+            $this->assertEquals('DEFAULT NULL', $columns[0]['default']); // Not Coding Standard
         }
 
         /**
@@ -153,57 +153,57 @@
                     'name'      => 'type',
                     'type'      => 'INT(11)',
                     'unsigned'  => null,
-                    'notNull'   => 'NULL',
+                    'notNull'   => 'NULL', // Not Coding Standard
                     'collation' => null,
-                    'default'   => 'DEFAULT NULL',
+                    'default'   => 'DEFAULT NULL', // Not Coding Standard
                 ),
             array(
                     'name'      => 'modelclassname',
                     'type'      => 'VARCHAR(64)',
                     'unsigned'  => null,
-                    'notNull'   => 'NULL',
+                    'notNull'   => 'NULL', // Not Coding Standard
                     'collation' => 'COLLATE utf8_unicode_ci',
-                    'default'   => 'DEFAULT NULL',
+                    'default'   => 'DEFAULT NULL', // Not Coding Standard
                 ),
             array(
                     'name'      => 'name',
                     'type'      => 'VARCHAR(64)',
                     'unsigned'  => null,
-                    'notNull'   => 'NULL',
+                    'notNull'   => 'NULL', // Not Coding Standard
                     'collation' => 'COLLATE utf8_unicode_ci',
-                    'default'   => 'DEFAULT NULL',
+                    'default'   => 'DEFAULT NULL', // Not Coding Standard
                 ),
             array(
                     'name'      => 'subject',
                     'type'      => 'VARCHAR(64)',
                     'unsigned'  => null,
-                    'notNull'   => 'NULL',
+                    'notNull'   => 'NULL', // Not Coding Standard
                     'collation' => 'COLLATE utf8_unicode_ci',
-                    'default'   => 'DEFAULT NULL',
+                    'default'   => 'DEFAULT NULL', // Not Coding Standard
                 ),
             array(
                     'name'      => 'language',
                     'type'      => 'VARCHAR(2)',
                     'unsigned'  => null,
-                    'notNull'   => 'NULL',
+                    'notNull'   => 'NULL', // Not Coding Standard
                     'collation' => 'COLLATE utf8_unicode_ci',
-                    'default'   => 'DEFAULT NULL',
+                    'default'   => 'DEFAULT NULL', // Not Coding Standard
                 ),
             array(
                     'name'      => 'htmlcontent',
                     'type'      => 'TEXT',
                     'unsigned'  => null,
-                    'notNull'   => 'NULL',
+                    'notNull'   => 'NULL', // Not Coding Standard
                     'collation' => 'COLLATE utf8_unicode_ci',
-                    'default'   => 'DEFAULT NULL',
+                    'default'   => 'DEFAULT NULL', // Not Coding Standard
                 ),
             array(
                     'name'      => 'textcontent',
                     'type'      => 'TEXT',
                     'unsigned'  => null,
-                    'notNull'   => 'NULL',
+                    'notNull'   => 'NULL', // Not Coding Standard
                     'collation' => 'COLLATE utf8_unicode_ci',
-                    'default'   => 'DEFAULT NULL',
+                    'default'   => 'DEFAULT NULL', // Not Coding Standard
                 )
 
             );

@@ -110,9 +110,9 @@
             $this->assertEquals('attributename', $column['name']);
             $this->assertEquals('INT(11)', $column['type']);
             $this->assertNull($column['unsigned']);
-            $this->assertEquals('NULL', $column['notNull']);
+            $this->assertEquals('NULL', $column['notNull']); // Not Coding Standard
             $this->assertNull($column['collation']);
-            $this->assertEquals('DEFAULT NULL', $column['default']);
+            $this->assertEquals('DEFAULT NULL', $column['default']); // Not Coding Standard
         }
 
         /**
@@ -137,9 +137,9 @@
             $this->assertEquals('attributename', $column['name']);
             $this->assertEquals('TEXT', $column['type']);
             $this->assertNull($column['unsigned']);
-            $this->assertEquals('NULL', $column['notNull']);
+            $this->assertEquals('NULL', $column['notNull']); // Not Coding Standard
             $this->assertEquals('COLLATE utf8_unicode_ci', $column['collation']);
-            $this->assertEquals('DEFAULT NULL', $column['default']);
+            $this->assertEquals('DEFAULT NULL', $column['default']); // Not Coding Standard
         }
 
         /**
@@ -201,9 +201,9 @@
             $this->assertEquals('attributename', $column['name']);
             $this->assertEquals('DOUBLE', $column['type']);
             $this->assertEquals($unsigned, $column['unsigned']);
-            $this->assertEquals('NULL', $column['notNull']);
+            $this->assertEquals('NULL', $column['notNull']); // Not Coding Standard
             $this->assertNull($column['collation']);
-            $this->assertEquals('DEFAULT NULL', $column['default']);
+            $this->assertEquals('DEFAULT NULL', $column['default']); // Not Coding Standard
         }
 
         /**
@@ -235,9 +235,9 @@
             $this->assertEquals('attributename', $column['name']);
             $this->assertEquals('DOUBLE', $column['type']);
             $this->assertEquals($unsigned, $column['unsigned']);
-            $this->assertEquals('NULL', $column['notNull']);
+            $this->assertEquals('NULL', $column['notNull']); // Not Coding Standard
             $this->assertNull($column['collation']);
-            $this->assertEquals('DEFAULT NULL', $column['default']);
+            $this->assertEquals('DEFAULT NULL', $column['default']); // Not Coding Standard
         }
 
         /**
@@ -263,9 +263,9 @@
             $this->assertEquals('attributename', $column['name']);
             $this->assertEquals('VARCHAR(100)', $column['type']);
             $this->assertNull($column['unsigned']);
-            $this->assertEquals('NULL', $column['notNull']);
+            $this->assertEquals('NULL', $column['notNull']); // Not Coding Standard
             $this->assertEquals('COLLATE utf8_unicode_ci', $column['collation']);
-            $this->assertEquals('DEFAULT NULL', $column['default']);
+            $this->assertEquals('DEFAULT NULL', $column['default']); // Not Coding Standard
         }
 
         /**
@@ -291,9 +291,9 @@
             $this->assertEquals('attributename', $column['name']);
             $this->assertEquals('VARCHAR(100)', $column['type']);
             $this->assertNull($column['unsigned']);
-            $this->assertEquals('NULL', $column['notNull']);
+            $this->assertEquals('NULL', $column['notNull']); // Not Coding Standard
             $this->assertEquals('COLLATE utf8_unicode_ci', $column['collation']);
-            $this->assertEquals('DEFAULT NULL', $column['default']);
+            $this->assertEquals('DEFAULT NULL', $column['default']); // Not Coding Standard
         }
 
         /**
@@ -319,9 +319,9 @@
             $this->assertEquals('attributename', $column['name']);
             $this->assertEquals('VARCHAR(10)', $column['type']);
             $this->assertNull($column['unsigned']);
-            $this->assertEquals('NULL', $column['notNull']);
+            $this->assertEquals('NULL', $column['notNull']); // Not Coding Standard
             $this->assertEquals('COLLATE utf8_unicode_ci', $column['collation']);
-            $this->assertEquals('DEFAULT NULL', $column['default']);
+            $this->assertEquals('DEFAULT NULL', $column['default']); // Not Coding Standard
 
             $rules          = array(
                 array('attributeName', 'type', 'type' => 'string'),
@@ -368,9 +368,9 @@
             $this->assertEquals('attributename', $column['name']);
             $this->assertEquals('VARCHAR(255)', $column['type']);
             $this->assertNull($column['unsigned']);
-            $this->assertEquals('NULL', $column['notNull']);
+            $this->assertEquals('NULL', $column['notNull']); // Not Coding Standard
             $this->assertEquals('COLLATE utf8_unicode_ci', $column['collation']);
-            $this->assertEquals('DEFAULT NULL', $column['default']);
+            $this->assertEquals('DEFAULT NULL', $column['default']); // Not Coding Standard
         }
 
         /**
@@ -396,9 +396,9 @@
             $this->assertEquals('attributename', $column['name']);
             $this->assertEquals('VARCHAR(255)', $column['type']);
             $this->assertNull($column['unsigned']);
-            $this->assertEquals('NULL', $column['notNull']);
+            $this->assertEquals('NULL', $column['notNull']); // Not Coding Standard
             $this->assertEquals('COLLATE utf8_unicode_ci', $column['collation']);
-            $this->assertEquals('DEFAULT NULL', $column['default']);
+            $this->assertEquals('DEFAULT NULL', $column['default']); // Not Coding Standard
         }
 
         /**
@@ -424,9 +424,9 @@
             $this->assertEquals('attributename', $column['name']);
             $this->assertEquals('VARCHAR(255)', $column['type']);
             $this->assertNull($column['unsigned']);
-            $this->assertEquals('NULL', $column['notNull']);
+            $this->assertEquals('NULL', $column['notNull']); // Not Coding Standard
             $this->assertEquals('COLLATE utf8_unicode_ci', $column['collation']);
-            $this->assertEquals('DEFAULT NULL', $column['default']);
+            $this->assertEquals('DEFAULT NULL', $column['default']); // Not Coding Standard
         }
 
         /**
@@ -453,9 +453,9 @@
             $this->assertEquals('attributename', $column['name']);
             $this->assertEquals('VARCHAR(64)', $column['type']);
             $this->assertNull($column['unsigned']);
-            $this->assertEquals('NULL', $column['notNull']);
+            $this->assertEquals('NULL', $column['notNull']); // Not Coding Standard
             $this->assertEquals('COLLATE utf8_unicode_ci', $column['collation']);
-            $this->assertEquals('DEFAULT NULL', $column['default']);
+            $this->assertEquals('DEFAULT NULL', $column['default']); // Not Coding Standard
         }
 
         /**
@@ -482,9 +482,9 @@
             $this->assertEquals('attributename', $column['name']);
             $this->assertEquals('VARCHAR(64)', $column['type']);
             $this->assertNull($column['unsigned']);
-            $this->assertEquals('NULL', $column['notNull']);
+            $this->assertEquals('NULL', $column['notNull']); // Not Coding Standard
             $this->assertEquals('COLLATE utf8_unicode_ci', $column['collation']);
-            $this->assertEquals('DEFAULT NULL', $column['default']);
+            $this->assertEquals('DEFAULT NULL', $column['default']); // Not Coding Standard
         }
 
         /**
@@ -509,9 +509,9 @@
             $this->assertEquals('attributename', $column['name']);
             $this->assertEquals('VARCHAR(255)', $column['type']);
             $this->assertNull($column['unsigned']);
-            $this->assertEquals('NULL', $column['notNull']);
+            $this->assertEquals('NULL', $column['notNull']); // Not Coding Standard
             $this->assertEquals('COLLATE utf8_unicode_ci', $column['collation']);
-            $this->assertEquals('DEFAULT NULL', $column['default']);
+            $this->assertEquals('DEFAULT NULL', $column['default']); // Not Coding Standard
         }
 
         /**
@@ -537,9 +537,9 @@
             $this->assertEquals('attributename', $column['name']);
             $this->assertEquals('VARCHAR(255)', $column['type']);
             $this->assertNull($column['unsigned']);
-            $this->assertEquals('NULL', $column['notNull']);
+            $this->assertEquals('NULL', $column['notNull']); // Not Coding Standard
             $this->assertEquals('COLLATE utf8_unicode_ci', $column['collation']);
-            $this->assertEquals('DEFAULT NULL', $column['default']);
+            $this->assertEquals('DEFAULT NULL', $column['default']); // Not Coding Standard
         }
 
         /**
@@ -565,9 +565,9 @@
             $this->assertEquals('attributename', $column['name']);
             $this->assertEquals('VARCHAR(255)', $column['type']);
             $this->assertNull($column['unsigned']);
-            $this->assertEquals('NULL', $column['notNull']);
+            $this->assertEquals('NULL', $column['notNull']); // Not Coding Standard
             $this->assertEquals('COLLATE utf8_unicode_ci', $column['collation']);
-            $this->assertEquals('DEFAULT NULL', $column['default']);
+            $this->assertEquals('DEFAULT NULL', $column['default']); // Not Coding Standard
         }
 
         /**
@@ -594,9 +594,9 @@
             $this->assertEquals('attributename', $column['name']);
             $this->assertEquals('VARCHAR(64)', $column['type']);
             $this->assertNull($column['unsigned']);
-            $this->assertEquals('NULL', $column['notNull']);
+            $this->assertEquals('NULL', $column['notNull']); // Not Coding Standard
             $this->assertEquals('COLLATE utf8_unicode_ci', $column['collation']);
-            $this->assertEquals('DEFAULT NULL', $column['default']);
+            $this->assertEquals('DEFAULT NULL', $column['default']); // Not Coding Standard
         }
 
         /**
@@ -623,9 +623,9 @@
             $this->assertEquals('attributename', $column['name']);
             $this->assertEquals('VARCHAR(64)', $column['type']);
             $this->assertNull($column['unsigned']);
-            $this->assertEquals('NULL', $column['notNull']);
+            $this->assertEquals('NULL', $column['notNull']); // Not Coding Standard
             $this->assertEquals('COLLATE utf8_unicode_ci', $column['collation']);
-            $this->assertEquals('DEFAULT NULL', $column['default']);
+            $this->assertEquals('DEFAULT NULL', $column['default']); // Not Coding Standard
         }
 
         /**
@@ -668,9 +668,9 @@
                 $this->assertEquals('attributename' . $type, $column['name']);
                 $this->assertEquals($dbType, $column['type']);
                 $this->assertEquals($unsigned, $column['unsigned']);
-                $this->assertEquals('NULL', $column['notNull']);
+                $this->assertEquals('NULL', $column['notNull']); // Not Coding Standard
                 $this->assertNull($column['collation']);
-                $this->assertEquals('DEFAULT NULL', $column['default']);
+                $this->assertEquals('DEFAULT NULL', $column['default']); // Not Coding Standard
             }
         }
 
@@ -715,9 +715,9 @@
                 $this->assertEquals('attributename' . $type, $column['name']);
                 $this->assertEquals($dbType, $column['type']);
                 $this->assertNull($column['unsigned']);
-                $this->assertEquals('NULL', $column['notNull']);
+                $this->assertEquals('NULL', $column['notNull']); // Not Coding Standard
                 $this->assertNull($column['collation']);
-                $this->assertEquals('DEFAULT NULL', $column['default']);
+                $this->assertEquals('DEFAULT NULL', $column['default']); // Not Coding Standard
             }
         }
 
@@ -760,9 +760,9 @@
             $this->assertEquals('attributename', $column['name']);
             $this->assertEquals('INT(11)', $column['type']);
             $this->assertEquals($unsigned, $column['unsigned']);
-            $this->assertEquals('NULL', $column['notNull']);
+            $this->assertEquals('NULL', $column['notNull']); // Not Coding Standard
             $this->assertNull($column['collation']);
-            $this->assertEquals('DEFAULT NULL', $column['default']);
+            $this->assertEquals('DEFAULT NULL', $column['default']); // Not Coding Standard
 
             $uniqueIndex = RedBeanModelMemberRulesToColumnAdapter::resolveUniqueIndexesFromValidator($modelClassName);
             $this->assertNotEmpty($uniqueIndex);

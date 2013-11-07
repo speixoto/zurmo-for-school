@@ -53,7 +53,7 @@
                 $this->setId($this->htmlOptions['id']);
             }
             $route = $this->getController()->getRoute();
-            $this->items = $this->normalizeItems($this->items,$route,$hasActiveChild);
+            $this->items = $this->normalizeItems($this->items, $route, $hasActiveChild);
         }
 
         protected function renderMenu($items)
@@ -99,11 +99,11 @@
             {
                 if (empty($options['class']))
                 {
-                    $options['class'] = implode(' ',$class);
+                    $options['class'] = implode(' ', $class);
                 }
                 else
                 {
-                    $options['class'].=' '.implode(' ',$class);
+                    $options['class'].=' '.implode(' ', $class);
                 }
             }
 
@@ -125,7 +125,7 @@
             {
                 $label = $this->linkLabelWrapper === null ? $item['label'] : CHtml::tag($this->linkLabelWrapper, $this->linkLabelWrapperHtmlOptions, $item['label']);
                 $label = ZurmoHtml::tag('span', array('class' => 'button-label'), $label);
-                echo CHtml::link($icon . $label . $item['dynamicLabel'],$item['url'], array('class' => 'button-action'));
+                echo CHtml::link($icon . $label . $item['dynamicLabel'], $item['url'], array('class' => 'button-action'));
                             $spanForTrigger = null;
             }
             else
@@ -168,11 +168,11 @@
                         {
                             if (empty($options['class']))
                             {
-                                $options['class'] = implode(' ',$class);
+                                $options['class'] = implode(' ', $class);
                             }
                             else
                             {
-                                $options['class'].=' '.implode(' ',$class);
+                                $options['class'].=' '.implode(' ', $class);
                             }
                         }
                         echo ZurmoHtml::openTag('li', $options);
