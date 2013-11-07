@@ -135,7 +135,7 @@
         {
             return array(
                 ''          => Zurmo::t('ZurmoModule', 'Not Set'),
-                PolicyIntegerAndStaticDropDownElement::HELPER_DROPDOWN_VALUE_YES => Zurmo::t('ZurmoModule', 'Yes'),
+                PolicyIntegerAndStaticDropDownElement::HELPER_DROPDOWN_VALUE_YES => Zurmo::t('Core', 'Yes'),
             );
         }
 

@@ -70,6 +70,11 @@
 
         protected $importId;
 
+        /**
+         * @var bool
+         */
+        protected $isTableEditable = true;
+
         abstract protected function resolveSecondColumn();
 
         abstract protected function getDefaultRoute();
@@ -212,7 +217,7 @@
         protected function resolveColumnLabelsByName()
         {
             $columnLabelsByName = array();
-            $headerRow = ImportDatabaseUtil::getFirstRowByTableName($this->dataProvider->getTableName());
+            $headerRow = ZurmoRedBean::$writer->getFirstRowByTableName($this->dataProvider->getTableName());
             foreach ($headerRow as $columnName => $label)
             {
                 if (!in_array($columnName, ImportDatabaseUtil::getReservedColumnNames()) &&
@@ -249,7 +254,7 @@
                 array_push($columns, $firstColumn);
             }
             array_push($columns, $this->resolveSecondColumn());
-            $headerRow = ImportDatabaseUtil::getFirstRowByTableName($this->dataProvider->getTableName());
+            $headerRow = ZurmoRedBean::$writer->getFirstRowByTableName($this->dataProvider->getTableName());
             foreach ($headerRow as $columnName => $label)
             {
                 if (!in_array($columnName, ImportDatabaseUtil::getReservedColumnNames()) &&
@@ -267,12 +272,39 @@
                     $this->columnLabelsByName[$columnName] = $column['header'];
                     if (!isset($column['class']))
                     {
-                        $column['class'] = 'DataColumn';
+                        $this->resolveColumnData($column, $columnName);
                     }
                     array_push($columns, $column);
                 }
             }
             return $columns;
+        }
+
+        /**
+         * Resolves the column data info for the table
+         * @param Array $column
+         * @param string $columnName
+         */
+        protected function resolveColumnData(& $column, $columnName)
+        {
+            if (isset($column['class']))
+            {
+                return;
+            }
+            if ($this->isTableEditable)
+            {
+                $column['class']     = 'phaZurmoEditColumn';
+                $column['actionUrl'] = Yii::app()->createUrl('import/default/update',
+                    array('id'        => $this->importId,
+                        'attribute' => $columnName
+                    )
+                );
+                $column['htmlEditDecorationOptions'] = array('class' => 'editable-cell');
+            }
+            else
+            {
+                $column['class']     = 'DataColumn';
+            }
         }
 
         protected function resolveHeaderColumnContent($columnName, $label)

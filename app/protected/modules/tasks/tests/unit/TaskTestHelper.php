@@ -51,17 +51,37 @@
             return $task;
         }
 
-        public static function createTaskWithOwnerAndRelatedAccount($name, $owner, $account)
+        public static function createTaskWithOwnerAndRelatedAccount($name, $owner, $account, $status = Task::STATUS_IN_PROGRESS)
         {
             $dueStamp       = DateTimeUtil::convertTimestampToDbFormatDateTime(time() + 10000);
             $completedStamp = DateTimeUtil::convertTimestampToDbFormatDateTime(time() + 9000);
             $task = new Task();
             $task->name             = $name;
             $task->owner            = $owner;
+            $task->requestedByUser  = $owner;
             $task->dueDateTime       = $dueStamp;
             $task->completedDateTime = $completedStamp;
             $task->description      = 'my test description';
             $task->activityItems->add($account);
+            $task->status = $status;
+            $saved = $task->save();
+            assert('$saved');
+            return $task;
+        }
+
+        public static function createTaskWithOwnerAndRelatedItem($name, $owner, $item, $status = Task::STATUS_IN_PROGRESS)
+        {
+            $dueStamp       = DateTimeUtil::convertTimestampToDbFormatDateTime(time() + 10000);
+            $completedStamp = DateTimeUtil::convertTimestampToDbFormatDateTime(time() + 9000);
+            $task = new Task();
+            $task->name             = $name;
+            $task->owner            = $owner;
+            $task->requestedByUser  = $owner;
+            $task->dueDateTime       = $dueStamp;
+            $task->completedDateTime = $completedStamp;
+            $task->description      = 'my test description';
+            $task->activityItems->add($item);
+            $task->status = $status;
             $saved = $task->save();
             assert('$saved');
             return $task;

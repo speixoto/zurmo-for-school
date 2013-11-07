@@ -67,7 +67,7 @@
             $this->assertContains('<div class="cgrid-view type-leads" id="list-view-leads">', $content);
             $this->assertContains('<div class="cgrid-view type-opportunities" id="list-view-opportunities">', $content);
             //Even if there are results it should return a cgridview with no text
-            $this->assertNotContains('No results found.', $content);
+            $this->assertNotContains('No results found', $content);
 
             //Test if actionGlobalList only show the module requested
             ContactTestHelper::createContactByNameForOwner('tim', $super);

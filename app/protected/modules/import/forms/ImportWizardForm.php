@@ -184,7 +184,7 @@
                                                              $this->importRulesType,
                                                              $mappedAttributeIndicesOrDerivedAttributeTypes);
             if (!ImportRulesUtil::areAllRequiredAttributesMappedOrHaveRules($requiredAttributeCollection,
-                                                                           $mappedAttributeImportRulesCollection))
+                                                                            $mappedAttributeImportRulesCollection))
             {
                 $attributesLabelContent = null;
                 foreach ($requiredAttributeCollection as $noteUsed => $attributeData)

@@ -58,8 +58,12 @@
 
         public function actionConfigurationList()
         {
-            $redirectUrlParams = array('/zurmo/' . $this->getId() . '/ConfigurationList');
-            $messageBoxContent = Zurmo::t('ZurmoModule', 'Don\'t see a language that you want to load? Help us make Zurmo better by contributing on a translation. Click <a href="{l10nServerDomain}" class="simple-link normal-size" target="_blank">here</a>.',
+            $breadCrumbLinks = array(
+                Zurmo::t('ZurmoModule', 'Languages'),
+            );
+            $messageBoxContent = Zurmo::t('ZurmoModule', 'Don\'t see a language that you want to load? ' .
+                                                         'Help us make Zurmo better by contributing on a translation. ' .
+                                                         'Click <a href="{l10nServerDomain}" class="simple-link normal-size" target="_blank">here</a>.',
                 array(
                     '{l10nServerDomain}' => ZurmoTranslationServerUtil::getServerDomain()
                 )
@@ -68,8 +72,8 @@
                             $this->getId(),
                             $this->getModule()->getId(),
                             $messageBoxContent);
-            $view = new ZurmoConfigurationPageView(ZurmoDefaultAdminViewUtil::
-                                         makeStandardViewForCurrentUser($this, $view));
+            $view = new ZurmoConfigurationPageView(ZurmoDefaultAdminViewUtil::makeViewWithBreadcrumbsForCurrentUser(
+                                                   $this, $view, $breadCrumbLinks, 'SettingsBreadCrumbView'));
             echo $view->render();
         }
 

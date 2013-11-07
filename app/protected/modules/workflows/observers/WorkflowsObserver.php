@@ -85,7 +85,7 @@
         public function processWorkflowBeforeSave(CEvent $event)
         {
             $model                   = $event->sender;
-            if ($model->getScenario() != 'autoBuildDatabase' && $model->shouldProcessWorkflowOnSave())
+            if ($model->shouldProcessWorkflowOnSave())
             {
                 try
                 {
@@ -110,7 +110,7 @@
         public function processWorkflowAfterSave(CEvent $event)
         {
             $model                   = $event->sender;
-            if ($model->getScenario() != 'autoBuildDatabase' && $this->depth < 11 && $model->shouldProcessWorkflowOnSave())
+            if ($this->depth < 11 && $model->shouldProcessWorkflowOnSave())
             {
                 try
                 {

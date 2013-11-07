@@ -180,7 +180,7 @@
                     }
                 );
             ");
-            $createLink = ZurmoHtml::link(Zurmo::t('LeadsModule', 'Create AccountsModuleSingularLabel',
+            $createLink = ZurmoHtml::link(Zurmo::t('AccountsModule', 'Create AccountsModuleSingularLabel',
                             LabelUtil::getTranslationParamsForAllModules()), '#', array('class' => 'account-create-link'));
             $selectLink = ZurmoHtml::link(Zurmo::t('LeadsModule', 'Select AccountsModuleSingularLabel',
                             LabelUtil::getTranslationParamsForAllModules()), '#', array('class' => 'account-select-link'));

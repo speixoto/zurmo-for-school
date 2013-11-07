@@ -64,6 +64,10 @@
             }
         }
 
+        /**
+         * Utilize POS_HEAD so its available when registerDropdownScripts() checks for it.
+         * @return string
+         */
         public function getElementValue()
         {
             $eventHandlerName = 'addPortletAjaxLinkActionElementHandler';
@@ -79,9 +83,27 @@
                     {
                         " . ZurmoHtml::ajax($ajaxOptions)."
                     }
-                ", CClientScript::POS_HEAD); // POS_HEAD so its available when registerDropdownScripts() checks for it.
+                ", CClientScript::POS_HEAD);
             }
             return $eventHandlerName;
+        }
+
+        public function render()
+        {
+            $content  = ZurmoHtml::openTag('div', array('class' => 'default-button'));
+            $content .= parent::render();
+            $content .= ZurmoHtml::closeTag('div');
+            return $content;
+        }
+
+        protected function resolveLabelAndWrap()
+        {
+            if ($this->wrapLabel())
+            {
+                $content = ZurmoHtml::tag('i', array('class' => 'icon-add'), '');
+                return $content . ZurmoHtml::wrapLabel($this->getLabel(), 'button-label');
+            }
+            return $this->getLabel();
         }
     }
 ?>

@@ -51,7 +51,7 @@
 
         public function getDisplayLabel()
         {
-            return Zurmo::t('ImportModule', 'Created By User');
+            return Zurmo::t('ZurmoModule', 'Created By User');
         }
     }
 ?>

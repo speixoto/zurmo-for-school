@@ -45,13 +45,9 @@
             $accountTableName     = Account::getTableName('Account');
             $contactTableName     = Contact::getTableName('Contact');
             $opportunityTableName = Opportunity::getTableName('Opportunity');
-            $columnName = ExternalSystemIdUtil::EXTERNAL_SYSTEM_ID_COLUMN_NAME;
-            RedBeanColumnTypeOptimizer::
-            externalIdColumn($accountTableName,     $columnName);
-            RedBeanColumnTypeOptimizer::
-            externalIdColumn($contactTableName,     $columnName);
-            RedBeanColumnTypeOptimizer::
-            externalIdColumn($opportunityTableName, $columnName);
+            ExternalSystemIdUtil::addExternalIdColumnIfMissing($accountTableName);
+            ExternalSystemIdUtil::addExternalIdColumnIfMissing($contactTableName);
+            ExternalSystemIdUtil::addExternalIdColumnIfMissing($opportunityTableName);
         }
 
         public function testImportDataAnalysisResults()
@@ -81,13 +77,13 @@
             ImportTestHelper::updateModelsExternalId($opportunity2, 'OPP');
 
             ImportTestHelper::
-            createTempTableByFileNameAndTableName('importAnalyzerTest.csv', $import->getTempTableName(),
+            createTempTableByFileNameAndTableName('importAnalyzerTest.csv', $import->getTempTableName(), true,
                                                   Yii::getPathOfAlias('application.modules.tasks.tests.unit.files'));
-            R::exec("update " . $import->getTempTableName() . " set column_0 = " .
+            ZurmoRedBean::exec("update " . $import->getTempTableName() . " set column_0 = " .
                     $account3->id . " where id != 1 limit 3");
-            R::exec("update " . $import->getTempTableName() . " set column_2 = " .
+            ZurmoRedBean::exec("update " . $import->getTempTableName() . " set column_2 = " .
                     $contact3->id . " where id != 1 limit 4");
-            R::exec("update " . $import->getTempTableName() . " set column_4 = " .
+            ZurmoRedBean::exec("update " . $import->getTempTableName() . " set column_4 = " .
                     $opportunity3->id . " where id != 1 limit 5");
 
             $mappingData = array(

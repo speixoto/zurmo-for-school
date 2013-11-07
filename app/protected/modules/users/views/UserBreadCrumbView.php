@@ -37,11 +37,52 @@
     /**
      * View that renders user module breadcrumb content
      */
-    class UserBreadCrumbView extends BreadCrumbView
+    class UserBreadCrumbView extends SettingsBreadCrumbView
     {
-            protected function getHomeLinkLabel()
+        protected $currentUserCanAccessUsers = false;
+
+        protected function init()
         {
-            return Zurmo::t('UsersModule', 'Users Home');
+            if (RightsUtil::doesUserHaveAllowByRightName('UsersModule', UsersModule::getAccessRight(),
+               Yii::app()->user->userModel))
+            {
+                $this->currentUserCanAccessUsers = true;
+            }
+        }
+
+        protected function getHomeLinkLabel()
+        {
+            if ($this->currentUserCanAccessUsers)
+            {
+                return parent::getHomeLinkLabel();
+            }
+            else
+            {
+                return Zurmo::t('UsersModule', 'Users');
+            }
+        }
+
+        protected function getHomeUrl()
+        {
+            if ($this->currentUserCanAccessUsers)
+            {
+                return parent::getHomeUrl();
+            }
+        }
+
+        protected function resolveBreadCrumbLinks()
+        {
+            $breadCrumbLinks = array();
+            if ($this->currentUserCanAccessUsers)
+            {
+                $title = Zurmo::t('UsersModule', 'Users');
+                $breadCrumbLinks[$title] =  Yii::app()->createUrl($this->resolveModuleId() . '/' . $this->resolveControllerId() . '/index');
+                if (in_array($title, $this->breadCrumbLinks))
+                {
+                    return $this->breadCrumbLinks;
+                }
+            }
+            return array_merge($breadCrumbLinks, $this->breadCrumbLinks);
         }
     }
 ?>

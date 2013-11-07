@@ -43,12 +43,12 @@
         }
 
         /**
-         * Test account  attribute that is a hasOne relation off of Opportunity
+         * Test account attribute that is a hasOne relation off of Opportunity
          */
         public function testModifyingAHasOneModelRelationDoesNotCreateNewAttribute()
         {
             $opportunity = new Opportunity(false);
-            $this->assertEquals(16, count($opportunity->getAttributes()));
+            $this->assertEquals(17, count($opportunity->getAttributes()));
             $validated   = $opportunity->validate();
             $this->assertFalse($validated);
             $this->assertEquals(6, count($opportunity->getErrors()));
@@ -61,7 +61,7 @@
             $adapter->setAttributeMetadataFromForm($attributeForm);
 
             $opportunity = new Opportunity(false);
-            $this->assertEquals(16, count($opportunity->getAttributes()));
+            $this->assertEquals(17, count($opportunity->getAttributes()));
             $validated = $opportunity->validate();
             $this->assertFalse($validated);
             $this->assertEquals(7, count($opportunity->getErrors()));

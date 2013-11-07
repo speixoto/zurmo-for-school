@@ -52,7 +52,7 @@
             assert('is_string($policyName)');
             assert('$moduleName != ""');
             assert('$policyName != ""');
-            $bean = R::findOne('policy', "modulename = '$moduleName' and name = '$policyName'");
+            $bean = ZurmoRedBean::findOne('policy', "modulename = '$moduleName' and name = '$policyName'");
             assert('$bean === false || $bean instanceof RedBean_OODBBean');
             if ($bean === false)
             {
@@ -68,18 +68,18 @@
         {
             assert('is_string($moduleName)');
             assert('$moduleName != ""');
-            R::exec("delete from policy where modulename = '$moduleName';");
+            ZurmoRedBean::exec("delete from policy where modulename = '$moduleName';");
         }
 
         public static function removeAllForPermitable(Permitable $permitable)
         {
-            R::exec("delete from policy where permitable_id = :id;",
+            ZurmoRedBean::exec("delete from policy where permitable_id = :id;",
                     array('id' => $permitable->getClassId('Permitable')));
         }
 
         public static function removeAll()
         {
-            R::exec("delete from policy;");
+            ZurmoRedBean::exec("delete from policy;");
         }
 
         public function __toString()
@@ -106,15 +106,15 @@
                     'value',
                 ),
                 'relations'   => array(
-                    'permitable' => array(RedBeanModel::HAS_MANY_BELONGS_TO, 'Permitable'),
+                    'permitable' => array(static::HAS_MANY_BELONGS_TO, 'Permitable'),
                 ),
                 'rules' => array(
                     array('moduleName', 'required'),
                     array('moduleName', 'type',   'type' => 'string'),
-                    array('moduleName', 'length', 'min'  => 3, 'max' => 64),
+                    array('moduleName', 'length', 'min'  => 1, 'max' => 64),
                     array('name',       'required'),
                     array('name',       'type',   'type' => 'string'),
-                    array('name',       'length', 'min'  => 3, 'max' => 64),
+                    array('name',       'length', 'min'  => 1, 'max' => 64),
                     array('value',      'type',   'type' => 'string'),
                     array('value',      'length', 'max'  => 64),
                 ),

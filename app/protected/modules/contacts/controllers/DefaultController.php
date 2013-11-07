@@ -80,7 +80,8 @@
             }
             else
             {
-                $mixedView = $this->makeActionBarSearchAndListView($searchForm, $dataProvider);
+                $mixedView = $this->makeActionBarSearchAndListView($searchForm, $dataProvider,
+                                                                   'SecuredActionBarForContactsSearchAndListView');
                 $view = new ContactsPageView(ZurmoDefaultViewUtil::
                                          makeStandardViewForCurrentUser($this, $mixedView));
             }
@@ -92,13 +93,21 @@
             $contact = static::getModelAndCatchNotFoundAndDisplayError('Contact', intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($contact);
             AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED, array(strval($contact), 'ContactsModule'), $contact);
-            $breadCrumbView          = StickySearchUtil::resolveBreadCrumbViewForDetailsControllerAction($this, 'ContactsSearchView', $contact);
-            $detailsAndRelationsView = $this->makeDetailsAndRelationsView($contact, 'ContactsModule',
-                                                                          'ContactDetailsAndRelationsView',
-                                                                          Yii::app()->request->getRequestUri(),
-                                                                          $breadCrumbView);
-            $view = new ContactsPageView(ZurmoDefaultViewUtil::
-                                         makeStandardViewForCurrentUser($this, $detailsAndRelationsView));
+            if (KanbanUtil::isKanbanRequest() === false)
+            {
+                $breadCrumbView          = StickySearchUtil::resolveBreadCrumbViewForDetailsControllerAction($this, 'ContactsSearchView', $contact);
+                $detailsAndRelationsView = $this->makeDetailsAndRelationsView($contact, 'ContactsModule',
+                                                                              'ContactDetailsAndRelationsView',
+                                                                              Yii::app()->request->getRequestUri(),
+                                                                              $breadCrumbView);
+                $view                    = new ContactsPageView(ZurmoDefaultViewUtil::
+                                                                        makeStandardViewForCurrentUser($this, $detailsAndRelationsView));
+            }
+            else
+            {
+                $view = TasksUtil::resolveTaskKanbanViewForRelation($contact, $this->getModule()->getId(), $this,
+                                                                        'TasksForContactKanbanView', 'ContactsPageView');
+            }
             echo $view->render();
         }
 
@@ -343,11 +352,12 @@
         /**
          * Override to always add contact state filter on search results.
          */
-        public function actionAutoComplete($term)
+        public function actionAutoComplete($term, $autoCompleteOptions = null)
         {
             $pageSize = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                             'autoCompleteListPageSize', get_class($this->getModule()));
-            $autoCompleteResults = ContactAutoCompleteUtil::getByPartialName($term, $pageSize, 'ContactsStateMetadataAdapter');
+            $autoCompleteResults = ContactAutoCompleteUtil::getByPartialName($term, $pageSize,
+                                                                'ContactsStateMetadataAdapter', $autoCompleteOptions);
             echo CJSON::encode($autoCompleteResults);
         }
 
@@ -375,6 +385,62 @@
         public function actionExport()
         {
             $this->export('ContactsSearchView');
+        }
+
+        public function actionMassSubscribe()
+        {
+            $this->triggerMassAction('Contact',
+                static::getSearchFormClassName(),
+                'ContactsPageView',
+                Contact::getModelLabelByTypeAndLanguage('Plural'),
+                'ContactsSearchView',
+                'ContactsStateMetadataAdapter',
+                false);
+        }
+
+        public function actionMassSubscribeProgress()
+        {
+            $this->triggerMassAction('Contact',
+                static::getSearchFormClassName(),
+                'ContactsPageView',
+                Contact::getModelLabelByTypeAndLanguage('Plural'),
+                'ContactsSearchView',
+                'ContactsStateMetadataAdapter',
+                false);
+        }
+
+        protected static function resolveTitleByMassActionId($actionId)
+        {
+            if (MassActionUtil::isMassSubscribeLikeAction($actionId))
+            {
+                return Zurmo::t('Core', 'Mass Subscribe');
+            }
+            return parent::resolveTitleByMassActionId($actionId);
+        }
+
+        protected static function applyGenericViewIdGenerationRules($actionId)
+        {
+            return (MassActionUtil::isMassSubscribeLikeAction($actionId) || parent::applyGenericViewIdGenerationRules($actionId));
+        }
+
+        protected static function processModelForMassSubscribe(& $model)
+        {
+            $marketingListMember            = Yii::app()->request->getPost('MarketingListMember');
+            if ($marketingListMember['marketingList']['id'] > 0)
+            {
+                $marketingList = MarketingList::getById((int) $marketingListMember['marketingList']['id']);
+                $marketingList->addNewMember($model->id);
+                return true;
+            }
+        }
+
+        protected static function resolveMassSubscribeAlertMessage($postVariableName)
+        {   $marketingListMember = Yii::app()->request->getPost('MarketingListMember');
+            if (isset($marketingListMember) && $marketingListMember['marketingList']['id'] == 0)
+            {
+                return Zurmo::t('ContactsModule', 'You must select a MarketingListsModuleSingularLabel',
+                                                   LabelUtil::getTranslationParamsForAllModules());
+            }
         }
     }
 ?>

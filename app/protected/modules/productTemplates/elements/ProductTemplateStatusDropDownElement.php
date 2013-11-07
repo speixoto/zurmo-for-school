@@ -36,12 +36,14 @@
     /**
      * Status dropdown element for product template
      */
-    class ProductTemplateStatusDropDownElement extends StaticDropDownFormElement
+    class ProductTemplateStatusDropDownElement extends ConstantBasedStaticDropDownFormElement
     {
+        protected static $attributeName = 'status';
+
         /**
          * @return array
          */
-        protected function getDropDownArray()
+        protected static function resolveDropDownArray()
         {
             return ProductTemplateElementUtil::getProductTemplateStatusDropdownArray();
         }

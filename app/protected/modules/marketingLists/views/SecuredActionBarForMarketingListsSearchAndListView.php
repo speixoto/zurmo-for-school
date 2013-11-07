@@ -49,24 +49,21 @@
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array('type'  => 'MarketingCreateLink',
-                                'htmlOptions' => array('class' => 'icon-create'),
+                            array(
+                                'type'      => 'MarketingDashboardMenu',
+                                'iconClass' => 'icon-marketing-dashboard'
                             ),
                             array(
-                                'type'            => 'MarketingDashboardLink',
-                                'htmlOptions'     => array( 'class' => 'icon-marketing-dashboard' )
+                                'type'      => 'MarketingListsMenu',
+                                'iconClass' => 'icon-marketing-lists'
                             ),
                             array(
-                                'type'            => 'MarketingListsLink',
-                                'htmlOptions'     => array( 'class' => 'icon-marketing-lists' )
+                                'type'      => EmailTemplatesForMarketingMenuActionElement::getType(),
+                                'iconClass' => 'icon-email-templates'
                             ),
                             array(
-                                'type'            => EmailTemplatesForMarketingLinkActionElement::getType(),
-                                'htmlOptions'     => array( 'class' => 'icon-email-templates', )
-                            ),
-                            array(
-                                'type'            => 'CampaignsLink',
-                                'htmlOptions'     => array( 'class' => 'icon-marketing-campaigns' )
+                                'type'      => 'CampaignsMenu',
+                                'iconClass' => 'icon-marketing-campaigns'
                             ),
                         ),
                     ),

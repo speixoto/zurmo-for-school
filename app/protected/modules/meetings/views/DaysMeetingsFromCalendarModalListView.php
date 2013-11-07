@@ -79,11 +79,13 @@
         protected function getCGridViewPagerParams()
         {
             return array(
-                    'prevPageLabel' => '<span>previous</span>',
-                    'nextPageLabel' => '<span>next</span>',
-                    'class'          => 'SimpleListLinkPager',
+                    'firstPageLabel'   => '<span>first</span>',
+                    'prevPageLabel'    => '<span>previous</span>',
+                    'nextPageLabel'    => '<span>next</span>',
+                    'lastPageLabel'    => '<span>last</span>',
+                    'class'            => 'SimpleListLinkPager',
                     'paginationParams' => GetUtil::getData(),
-                    'route'         => 'default/daysMeetingsFromCalendarModalList',
+                    'route'            => 'default/daysMeetingsFromCalendarModalList',
                 );
         }
 

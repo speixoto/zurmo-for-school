@@ -40,7 +40,7 @@
         {
             return array(
                     'name' => 'summary',
-                    'header' => Zurmo::t('MashableInboxModule', 'Summary'),
+                    'header' => Zurmo::t('Core', 'Summary'),
                     'type'  => 'raw',
                     'value'  => 'MashableUtil::renderSummaryContent($data)',
             );

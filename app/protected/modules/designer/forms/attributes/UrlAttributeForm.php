@@ -38,7 +38,7 @@
     {
         public static function getAttributeTypeDisplayName()
         {
-            return Zurmo::t('DesignerModule', 'URL');
+            return Zurmo::t('Core', 'URL');
         }
 
         public function getAttributeTypeName()

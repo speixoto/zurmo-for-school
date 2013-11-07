@@ -115,6 +115,30 @@
         }
 
         /**
+         * Override to include a reanalyze button
+         */
+        protected function renderActionLinksContent()
+        {
+            $previousPageLinkContent = $this->renderPreviousPageLinkContent();
+            $reanalyzeLinkContent    = $this->renderReanalyseLinkContent();
+            $nextPageLinkContent     = $this->renderNextPageLinkContent();
+            $content                 = null;
+            if ($previousPageLinkContent)
+            {
+                $content .= $previousPageLinkContent;
+            }
+            if ($reanalyzeLinkContent)
+            {
+                $content .= $reanalyzeLinkContent;
+            }
+            if ($nextPageLinkContent)
+            {
+                $content .= $nextPageLinkContent;
+            }
+            return $content;
+        }
+
+        /**
          * Override to specify step 6
          */
         protected function renderNextPageLinkContent()
@@ -122,6 +146,13 @@
             $route = Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/step6/',
                                            array('id' => $this->model->id));
             return ZurmoHtml::link(ZurmoHtml::wrapLabel($this->renderNextPageLinkLabel()), $route, array('class' => 'green-button'));
+        }
+
+        protected function renderReanalyseLinkContent()
+        {
+            $route = Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/step5/',
+                array('id' => $this->model->id));
+            return ZurmoHtml::link(ZurmoHtml::wrapLabel(Zurmo::t('ImportModule', 'Analyze Data')), $route);
         }
 
         protected function renderPreviousPageLinkContent()
@@ -140,12 +171,12 @@
             $led      = ZurmoHtml::tag('i', array('class' => 'led state-true'), '');
             $content .= ZurmoHtml::tag('li', array(), $count . $label . $led );
 
-            $label    = Zurmo::t('ImportModule', 'Warning');
+            $label    = Zurmo::t('Core', 'Warning');
             $count    = ZurmoHtml::tag('strong', array(), self::findCountByGroupDataAndStatus($groupData, ImportDataAnalyzer::STATUS_WARN));
             $led      = ZurmoHtml::tag('i', array('class' => 'led'), '');
             $content .= ZurmoHtml::tag('li', array(), $count . $label . $led );
 
-            $label    = Zurmo::t('ImportModule', 'Skip');
+            $label    = Zurmo::t('Core', 'Skip');
             $count    = ZurmoHtml::tag('strong', array(), self::findCountByGroupDataAndStatus($groupData, ImportDataAnalyzer::STATUS_SKIP));
             $led      = ZurmoHtml::tag('i', array('class' => 'led state-false'), '');
             $content .= ZurmoHtml::tag('li', array(), $count . $label . $led );
@@ -169,7 +200,7 @@
 
         protected function renderPreviousPageLinkLabel()
         {
-            return Zurmo::t('ImportModule', 'Map Fields');
+            return Zurmo::t('ZurmoModule', 'Map Fields');
         }
 
         protected function renderNextPageLinkLabel()

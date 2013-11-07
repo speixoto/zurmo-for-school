@@ -35,8 +35,6 @@
      ********************************************************************************/
     class ContactMergeTagsUtilTest extends ZurmoBaseTest
     {
-        public static $freeze = false;
-
         protected static $emailTemplate;
 
         protected static $super;
@@ -45,6 +43,10 @@
 
         protected static $content;
 
+        protected static $contact;
+
+        protected static $lead;
+
         protected $invalidTags;
 
         protected $mergeTagsUtil;
@@ -52,16 +54,15 @@
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
-            self::$freeze = false;
-            if (RedBeanDatabase::isFrozen())
-            {
-                RedBeanDatabase::unfreeze();
-                self::$freeze = true;
-            }
             SecurityTestHelper::createSuperAdmin();
             SecurityTestHelper::createUsers();
             self::$super = User::getByUsername('super');
             Yii::app()->user->userModel = self::$super;
+            $loaded = ContactsModule::loadStartingData();
+            if (!$loaded)
+            {
+                throw new NotSupportedException();
+            }
 
             $currencies                                     = Currency::getAll();
             $currencyValue                                  = new CurrencyValue();
@@ -128,8 +129,9 @@
             $attributeForm                                  = new TextAttributeForm();
             $attributeForm->attributeName                   = 'custom';
             $attributeForm->attributeLabels                 = array('en' => 'test label en');
+
             $modelAttributesAdapterClassName                = $attributeForm::
-                getModelAttributeAdapterNameForSavingAttributeFormData();
+                                                                getModelAttributeAdapterNameForSavingAttributeFormData();
             $adapter = new $modelAttributesAdapterClassName(new EmailTemplateModelTestItem());
             $adapter->setAttributeMetadataFromForm($attributeForm);
 
@@ -166,6 +168,15 @@
             self::$emailTemplate                            = $model;
             self::$content                                  = '[[STRING]] [[FIRST^NAME]] [[LAST^NAME]] [[PHONE]]';
             self::$compareContent                           = 'abc James Jackson 1122334455';
+            self::$contact                                  = ContactTestHelper::
+                                                              createContactByNameForOwner('Jason', self::$super);
+            self::$lead                                     = LeadTestHelper::
+                                                              createLeadByNameForOwner('Laura', self::$super);
+        }
+
+        public static function getDependentTestModelClassNames()
+        {
+            return array('EmailTemplateModelTestItem');
         }
 
         public function setUp()
@@ -174,15 +185,6 @@
             Yii::app()->user->userModel     = self::$super;
             $this->mergeTagsUtil            = MergeTagsUtilFactory::make(EmailTemplate::TYPE_CONTACT, null, self::$content);
             $this->invalidTags              = array();
-        }
-
-        public static function tearDownAfterClass()
-        {
-            if (self::$freeze)
-            {
-                RedBeanDatabase::freeze();
-            }
-            parent::tearDownAfterClass();
         }
 
         public function testCanInstantiateContactMergeTags()
@@ -663,6 +665,34 @@
 
         /**
          * @depends testModelUrlMergeTag
+         */
+        public function testModelUrlMergeTagContactAndLead()
+        {
+            $content                        = '[[MODEL^URL]]';
+            $mergeTagsUtil                  = MergeTagsUtilFactory::make(EmailTemplate::TYPE_CONTACT, null, $content);
+            $this->assertTrue($mergeTagsUtil instanceof MergeTagsUtil);
+            $this->assertTrue($mergeTagsUtil instanceof ContactMergeTagsUtil);
+            $resolvedContent                = $mergeTagsUtil->resolveMergeTags(self::$contact, $this->invalidTags);
+            $this->assertTrue($resolvedContent !== false);
+            $this->assertNotEquals($resolvedContent, $content);
+            $expectedSuffix                 = '/contacts/default/details?id=' . static::$contact->id;
+            $this->assertTrue(strpos($resolvedContent, $expectedSuffix) !== false);
+            $this->assertEmpty($this->invalidTags);
+
+            $content                        = '[[MODEL^URL]]';
+            $mergeTagsUtil                  = MergeTagsUtilFactory::make(EmailTemplate::TYPE_CONTACT, null, $content);
+            $this->assertTrue($mergeTagsUtil instanceof MergeTagsUtil);
+            $this->assertTrue($mergeTagsUtil instanceof ContactMergeTagsUtil);
+            $resolvedContent                = $mergeTagsUtil->resolveMergeTags(self::$lead, $this->invalidTags);
+            $this->assertTrue($resolvedContent !== false);
+            $this->assertNotEquals($resolvedContent, $content);
+            $expectedSuffix                 = '/leads/default/details?id=' . static::$lead->id;
+            $this->assertTrue(strpos($resolvedContent, $expectedSuffix) !== false);
+            $this->assertEmpty($this->invalidTags);
+        }
+
+        /**
+         * @depends testModelUrlMergeTagContactAndLead
          */
         public function testModelCustomAttribute()
         {

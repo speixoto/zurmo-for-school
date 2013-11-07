@@ -39,60 +39,27 @@
      * specifically for the 'productCategories' relation. This is utilized by the Product Template model.
      *
      */
-    class MultipleProductCategoriesForProductTemplateElement extends Element implements DerivedElementInterface
+    class MultipleProductCategoriesForProductTemplateElement extends MultiSelectRelatedModelsAutoCompleteElement
     {
-        /**
-         * @return string
-         */
-        protected function renderControlNonEditable()
+        protected function getFormName()
         {
-            $content  = null;
-            $productCategories = $this->getExistingProductCategoriesRelationsIdsAndLabels();
-            foreach ($productCategories as $productCategoryData)
-            {
-                if ($content != null)
-                {
-                    $content .= ', ';
-                }
-                $content .= $productCategoryData['name'];
-            }
-            return $content;
+            return 'ProductTemplateCategoriesForm';
         }
 
         /**
          * @return string
          */
-        protected function renderControlEditable()
+        protected function getUnqualifiedNameForIdField()
         {
-            assert('$this->model instanceof ProductTemplate || $this->model instanceof Product');
-            $cClipWidget = new CClipWidget();
-            $cClipWidget->beginClip("ModelElement");
-            $cClipWidget->widget('application.core.widgets.MultiSelectAutoComplete', array(
-                                'name'              => $this->getNameForIdField(),
-                                'id'                => $this->getIdForIdField(),
-                                'jsonEncodedIdsAndLabels'   => CJSON::encode($this->getExistingProductCategoriesRelationsIdsAndLabels()),
-                                'sourceUrl'         => Yii::app()->createUrl('productTemplates/default/autoCompleteAllProductCategoriesForMultiSelectAutoComplete'),
-                                'htmlOptions'       => array(
-                                                                'disabled' => $this->getDisabledValue(),
-                                                                ),
-                                'hintText' => Zurmo::t('ProductTemplatesModule', 'Type a ' . LabelUtil::getUncapitalizedModelLabelByCountAndModelClassName(1, 'ProductCategory'),
-                                LabelUtil::getTranslationParamsForAllModules())
-            ));
-            $cClipWidget->endClip();
-            $content = $cClipWidget->getController()->clips['ModelElement'];
-            return $content;
-        }
-
-        protected function renderError()
-        {
+            return '[categoryIds]';
         }
 
         /**
          * @return string
          */
-        protected function renderLabel()
+        protected function getUnqualifiedIdForIdField()
         {
-            return $this->resolveNonActiveFormFormattedLabel($this->getFormattedAttributeLabel());
+            return '_ProductCategory_ids';
         }
 
         /**
@@ -109,47 +76,30 @@
         public static function getDisplayName()
         {
             return Zurmo::t('ProductTemplatesModule', 'Related ProductTemplatesModulePluralLabel',
-                       LabelUtil::getTranslationParamsForAllModules());
+                                                        LabelUtil::getTranslationParamsForAllModules());
         }
 
-        /**
-         * Get the attributeNames of attributes used in
-         * the derived element. For this element, there are no attributes from the model.
-         * @return array - empty
-         */
-        public static function getModelAttributeNames()
+        protected function assertModelType()
         {
-            return array();
+            assert('$this->model instanceof ProductTemplate || $this->model instanceof Product');
         }
 
-        /**
-         * @return string
-         */
-        protected function getNameForIdField()
+        protected function getWidgetHintText()
         {
-            return 'ProductTemplateCategoriesForm[categoryIds]';
+            return Zurmo::t('ProductTemplatesModule', 'Type a ' .
+                                                        LabelUtil::getUncapitalizedModelLabelByCountAndModelClassName(1,
+                                                                                                    'ProductCategory'),
+                                                    LabelUtil::getTranslationParamsForAllModules());
         }
 
-        /**
-         * @return string
-         */
-        protected function getIdForIdField()
+        protected function getWidgetSourceUrl()
         {
-            return 'ProductTemplateCategoriesForm_ProductCategory_ids';
+            return Yii::app()->createUrl('productTemplates/default/autoCompleteAllProductCategoriesForMultiSelectAutoComplete');
         }
 
-        /**
-         * @return array
-         */
-        protected function getExistingProductCategoriesRelationsIdsAndLabels()
+        protected function getRelationName()
         {
-            $existingProductCategories = array();
-            for ($i = 0; $i < count($this->model->productCategories); $i++)
-            {
-                $existingProductCategories[] = array('id' => $this->model->productCategories[$i]->id,
-                                                     'name' => $this->model->productCategories[$i]->name);
-            }
-            return $existingProductCategories;
+            return 'productCategories';
         }
 
         /**
@@ -157,11 +107,9 @@
          * @param string $keyword
          * @return string
          */
-        public static function renderHtmlContentLabelFromProductCategoryAndKeyword($productCategory, $keyword)
+        public static function renderHtmlContentLabelFromProductCategoryAndKeyword($productCategory)
         {
             assert('$productCategory instanceof ProductCategory && $productCategory->id > 0');
-            assert('$keyword == null || is_string($keyword)');
-
             if ($productCategory->name != null)
             {
                 return strval($productCategory) . '&#160&#160<b>'. '</b>';

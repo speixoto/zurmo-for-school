@@ -608,7 +608,7 @@ class RedBean_Driver_PDO implements RedBean_Driver {
           array(1002 => 'SET NAMES utf8',
                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-
+               PDO::MYSQL_ATTR_LOCAL_INFILE => true,
           )
     );
     $this->pdo->setAttribute(PDO::ATTR_STRINGIFY_FETCHES, true);
@@ -2920,7 +2920,7 @@ class RedBean_QueryWriter_MySQL extends RedBean_QueryWriter_AQueryWriter impleme
    * @return integer $const data type to be used for IDS.
    */
   public function getTypeForID() {
-    return self::C_DATATYPE_UINT32;
+    return static::C_DATATYPE_UINT32;
   }
 
   /**
@@ -3045,9 +3045,9 @@ class RedBean_QueryWriter_MySQL extends RedBean_QueryWriter_AQueryWriter impleme
    * @return integer $typecode code
    */
   public function code( $typedescription, $includeSpecials = false ) {
-    $r = ((isset($this->sqltype_typeno[$typedescription])) ? $this->sqltype_typeno[$typedescription] : self::C_DATATYPE_SPECIFIED);
+    $r = ((isset($this->sqltype_typeno[$typedescription])) ? $this->sqltype_typeno[$typedescription] : static::C_DATATYPE_SPECIFIED);
     if ($includeSpecials) return $r;
-    if ($r > self::C_DATATYPE_SPECIFIED) return self::C_DATATYPE_SPECIFIED;
+    if ($r > static::C_DATATYPE_SPECIFIED) return static::C_DATATYPE_SPECIFIED;
     return $r;
   }
 
@@ -3280,7 +3280,7 @@ class RedBean_QueryWriter_SQLiteT extends RedBean_QueryWriter_AQueryWriter imple
    * @return integer $const data type to be used for IDS.
    */
   public function getTypeForID() {
-    return self::C_DATATYPE_INTEGER;
+    return static::C_DATATYPE_INTEGER;
   }
 
   /**
@@ -3293,17 +3293,17 @@ class RedBean_QueryWriter_SQLiteT extends RedBean_QueryWriter_AQueryWriter imple
    */
   public function scanType( $value, $flagSpecial=false ) {
     $this->svalue=$value;
-    if ($value===false) return self::C_DATATYPE_INTEGER;
-    if ($value===null) return self::C_DATATYPE_INTEGER; //for fks
-    if ($this->startsWithZeros($value)) return self::C_DATATYPE_TEXT;
-    if (is_numeric($value) && (intval($value)==$value) && $value<2147483648) return self::C_DATATYPE_INTEGER;
+    if ($value===false) return static::C_DATATYPE_INTEGER;
+    if ($value===null) return static::C_DATATYPE_INTEGER; //for fks
+    if ($this->startsWithZeros($value)) return static::C_DATATYPE_TEXT;
+    if (is_numeric($value) && (intval($value)==$value) && $value<2147483648) return static::C_DATATYPE_INTEGER;
     if ((is_numeric($value) && $value < 2147483648)
           || preg_match('/\d{4}\-\d\d\-\d\d/',$value)
           || preg_match('/\d{4}\-\d\d\-\d\d\s\d\d:\d\d:\d\d/',$value)
     ) {
-      return self::C_DATATYPE_NUMERIC;
+      return static::C_DATATYPE_NUMERIC;
     }
-    return self::C_DATATYPE_TEXT;
+    return static::C_DATATYPE_TEXT;
   }
 
   /**
@@ -3336,7 +3336,7 @@ class RedBean_QueryWriter_SQLiteT extends RedBean_QueryWriter_AQueryWriter imple
   public function code( $typedescription, $includeSpecials = false ) {
     $r =  ((isset($this->sqltype_typeno[$typedescription])) ? $this->sqltype_typeno[$typedescription] : 99);
     if ($includeSpecials) return $r;
-    if ($r > self::C_DATATYPE_SPECIFIED) return self::C_DATATYPE_SPECIFIED;
+    if ($r > static::C_DATATYPE_SPECIFIED) return static::C_DATATYPE_SPECIFIED;
     return $r;
   }
 
@@ -3702,7 +3702,7 @@ class RedBean_QueryWriter_PostgreSQL extends RedBean_QueryWriter_AQueryWriter im
   * @return integer $const data type to be used for IDS.
   */
   public function getTypeForID() {
-    return self::C_DATATYPE_INTEGER;
+    return static::C_DATATYPE_INTEGER;
   }
 
   /**
@@ -3726,17 +3726,17 @@ class RedBean_QueryWriter_PostgreSQL extends RedBean_QueryWriter_AQueryWriter im
 
 
     $this->typeno_sqltype = array(
-          self::C_DATATYPE_INTEGER=>' integer ',
-          self::C_DATATYPE_DOUBLE=>' double precision ',
-          self::C_DATATYPE_TEXT=>' text ',
-          self::C_DATATYPE_SPECIAL_DATE => ' date ',
-          self::C_DATATYPE_SPECIAL_DATETIME => ' timestamp without time zone ',
-          self::C_DATATYPE_SPECIAL_POINT => ' point ',
-          self::C_DATATYPE_SPECIAL_LINE => ' line ',
-          self::C_DATATYPE_SPECIAL_LSEG => ' lseg ',
-          self::C_DATATYPE_SPECIAL_BOX => ' box ',
-          self::C_DATATYPE_SPECIAL_CIRCLE => ' circle ',
-          self::C_DATATYPE_SPECIAL_POLYGON => ' polygon ',
+          static::C_DATATYPE_INTEGER=>' integer ',
+          static::C_DATATYPE_DOUBLE=>' double precision ',
+          static::C_DATATYPE_TEXT=>' text ',
+          static::C_DATATYPE_SPECIAL_DATE => ' date ',
+          static::C_DATATYPE_SPECIAL_DATETIME => ' timestamp without time zone ',
+          static::C_DATATYPE_SPECIAL_POINT => ' point ',
+          static::C_DATATYPE_SPECIAL_LINE => ' line ',
+          static::C_DATATYPE_SPECIAL_LSEG => ' lseg ',
+          static::C_DATATYPE_SPECIAL_BOX => ' box ',
+          static::C_DATATYPE_SPECIAL_CIRCLE => ' circle ',
+          static::C_DATATYPE_SPECIAL_POLYGON => ' polygon ',
 
     );
 
@@ -3828,18 +3828,18 @@ class RedBean_QueryWriter_PostgreSQL extends RedBean_QueryWriter_AQueryWriter im
     }
 
     $sz = ($this->startsWithZeros($value));
-    if ($sz) return self::C_DATATYPE_TEXT;
+    if ($sz) return static::C_DATATYPE_TEXT;
     if ($value===null || ($value instanceof RedBean_Driver_PDO_NULL) ||(is_numeric($value)
           && floor($value)==$value
           && $value < 2147483648
           && $value > -2147483648)) {
-      return self::C_DATATYPE_INTEGER;
+      return static::C_DATATYPE_INTEGER;
     }
     elseif(is_numeric($value)) {
-      return self::C_DATATYPE_DOUBLE;
+      return static::C_DATATYPE_DOUBLE;
     }
     else {
-      return self::C_DATATYPE_TEXT;
+      return static::C_DATATYPE_TEXT;
     }
   }
 
@@ -3858,7 +3858,7 @@ class RedBean_QueryWriter_PostgreSQL extends RedBean_QueryWriter_AQueryWriter im
   public function code( $typedescription, $includeSpecials = false ) {
     $r = ((isset($this->sqltype_typeno[$typedescription])) ? $this->sqltype_typeno[$typedescription] : 99);
     if ($includeSpecials) return $r;
-    if ($r > self::C_DATATYPE_SPECIFIED) return self::C_DATATYPE_SPECIFIED;
+    if ($r > static::C_DATATYPE_SPECIFIED) return static::C_DATATYPE_SPECIFIED;
     return $r;
   }
 
@@ -4233,7 +4233,7 @@ class RedBean_QueryWriter_CUBRID extends RedBean_QueryWriter_AQueryWriter implem
     $this->sqltype_typeno = array();
     foreach($this->typeno_sqltype as $k=>$v)
     $this->sqltype_typeno[trim(($v))]=$k;
-    $this->sqltype_typeno['STRING(1073741823)'] = self::C_DATATYPE_STRING;
+    $this->sqltype_typeno['STRING(1073741823)'] = static::C_DATATYPE_STRING;
 
     $this->adapter = $adapter;
     parent::__construct();
@@ -4246,7 +4246,7 @@ class RedBean_QueryWriter_CUBRID extends RedBean_QueryWriter_AQueryWriter implem
    * @return integer $const data type to be used for IDS.
    */
   public function getTypeForID() {
-    return self::C_DATATYPE_INTEGER;
+    return static::C_DATATYPE_INTEGER;
   }
 
   /**
@@ -4310,29 +4310,29 @@ class RedBean_QueryWriter_CUBRID extends RedBean_QueryWriter_AQueryWriter implem
     $this->svalue = $value;
 
     if (is_null($value)) {
-      return self::C_DATATYPE_INTEGER;
+      return static::C_DATATYPE_INTEGER;
     }
 
     if ($flagSpecial) {
       if (preg_match('/^\d{4}\-\d\d-\d\d$/',$value)) {
-        return self::C_DATATYPE_SPECIAL_DATE;
+        return static::C_DATATYPE_SPECIAL_DATE;
       }
       if (preg_match('/^\d{4}\-\d\d-\d\d\s\d\d:\d\d:\d\d$/',$value)) {
-        return self::C_DATATYPE_SPECIAL_DATETIME;
+        return static::C_DATATYPE_SPECIAL_DATETIME;
       }
     }
     $value = strval($value);
     if (!$this->startsWithZeros($value)) {
 
       if (is_numeric($value) && (floor($value)==$value) && $value >= -2147483647  && $value <= 2147483647 ) {
-        return self::C_DATATYPE_INTEGER;
+        return static::C_DATATYPE_INTEGER;
       }
       if (is_numeric($value)) {
-        return self::C_DATATYPE_DOUBLE;
+        return static::C_DATATYPE_DOUBLE;
       }
     }
 
-    return self::C_DATATYPE_STRING;
+    return static::C_DATATYPE_STRING;
   }
 
   /**
@@ -4350,10 +4350,10 @@ class RedBean_QueryWriter_CUBRID extends RedBean_QueryWriter_AQueryWriter implem
   public function code( $typedescription, $includeSpecials = false ) {
 
 
-    $r = ((isset($this->sqltype_typeno[$typedescription])) ? $this->sqltype_typeno[$typedescription] : self::C_DATATYPE_SPECIFIED);
+    $r = ((isset($this->sqltype_typeno[$typedescription])) ? $this->sqltype_typeno[$typedescription] : static::C_DATATYPE_SPECIFIED);
 
     if ($includeSpecials) return $r;
-    if ($r > self::C_DATATYPE_SPECIFIED) return self::C_DATATYPE_SPECIFIED;
+    if ($r > static::C_DATATYPE_SPECIFIED) return static::C_DATATYPE_SPECIFIED;
     return $r;
   }
 
@@ -6092,28 +6092,76 @@ class RedBean_Setup {
       $dsn = $pdo->getDatabaseType() ;
     }
     else {
-      self::checkDSN($dsn);
+      static::checkDSN($dsn);
       $pdo = new RedBean_Driver_PDO($dsn,$username,$password);
     }
     $adapter = new RedBean_Adapter_DBAdapter($pdo);
-    if (strpos($dsn,'pgsql')===0) {
-      $writer = new RedBean_QueryWriter_PostgreSQL($adapter);
-    }
-    else if (strpos($dsn,'sqlite')===0) {
-      $writer = new RedBean_QueryWriter_SQLiteT($adapter);
-    }
-    else if (strpos($dsn,'cubrid')===0) {
-      $writer = new RedBean_QueryWriter_CUBRID($adapter);
-    }
-    else {
-      $writer = new RedBean_QueryWriter_MySQL($adapter);
-    }
+    $writerClassName    = static::resolveQueryWriterTypeByDsn($dsn);
+    $writer             = new $writerClassName($adapter);
     $redbean = new RedBean_OODB($writer);
     if ($frozen) $redbean->freeze(true);
     $toolbox = new RedBean_ToolBox($redbean,$adapter,$writer);
     //deliver everything back in a neat toolbox
     return $toolbox;
   }
+
+
+ /**
+  * A relevant query writer class name is resolve from dsn
+  * @param $dsn
+  * @return string name of writer class
+  */
+ protected static function resolveQueryWriterTypeByDsn($dsn)
+ {
+     if (strpos($dsn,'pgsql')===0) {
+         return static::resolvePostgreSQLWriterClassName();
+     }
+     else if (strpos($dsn,'sqlite')===0) {
+         return static::resolveSQLiteWriterClassName();
+     }
+     else if (strpos($dsn,'cubrid')===0) {
+         return static::resolveCubridWriterClassName();
+     }
+     else {
+         return static::resolveMySQLWriterClassName();
+     }
+ }
+
+ /**
+  * Allows overriding postgresql writer individually
+  * @return string name of postgresql writer class
+  */
+ protected static function resolvePostgreSQLWriterClassName()
+ {
+     return 'RedBean_QueryWriter_PostgreSQL';
+ }
+
+ /**
+  * Allows overriding sqlite writer individually
+  * @return string name of sqlite writer class
+  */
+ protected static function resolveSQLiteWriterClassName()
+ {
+     return 'RedBean_QueryWriter_SQLiteT';
+ }
+
+ /**
+  * Allows overriding cubrid writer individually
+  * @return string name of cubrid writer class
+  */
+ protected static function resolveCubridWriterClassName()
+ {
+     return 'RedBean_QueryWriter_CUBRID';
+ }
+
+ /**
+  * Allows overriding mysql writer individually
+  * @return string name of mysql writer class
+  */
+ protected static function resolveMySQLWriterClassName()
+ {
+     return 'RedBean_QueryWriter_MySQL';
+ }
 }
 
 /**
@@ -6414,8 +6462,8 @@ class RedBean_ModelHelper implements RedBean_Observer {
    * @return string $fullname
    */
   public static function getModelName( $model, $bean = null ) {
-    if (self::$modelFormatter){
-      return self::$modelFormatter->formatModel($model,$bean);
+    if (static::$modelFormatter){
+      return static::$modelFormatter->formatModel($model,$bean);
     }
     else {
       return 'Model_'.ucfirst($model);
@@ -6429,7 +6477,7 @@ class RedBean_ModelHelper implements RedBean_Observer {
    * @param string $modelFormatter
    */
   public static function setModelFormatter( $modelFormatter ) {
-    self::$modelFormatter = $modelFormatter;
+    static::$modelFormatter = $modelFormatter;
   }
 
 
@@ -6440,8 +6488,8 @@ class RedBean_ModelHelper implements RedBean_Observer {
    * @param string $modelClassName name of the model
    */
   public static function factory( $modelClassName ) {
-    if (self::$dependencyInjector) {
-      return self::$dependencyInjector->getInstance($modelClassName);
+    if (static::$dependencyInjector) {
+      return static::$dependencyInjector->getInstance($modelClassName);
     }
     return new $modelClassName();
   }
@@ -6452,7 +6500,7 @@ class RedBean_ModelHelper implements RedBean_Observer {
    * @param RedBean_DependencyInjector $di injecto to be used
    */
   public static function setDependencyInjector( RedBean_DependencyInjector $di ) {
-    self::$dependencyInjector = $di;
+    static::$dependencyInjector = $di;
   }
 
   /**
@@ -6460,7 +6508,7 @@ class RedBean_ModelHelper implements RedBean_Observer {
    * reference to the dependency injector.
    */
   public static function clearDependencyInjector() {
-    self::$dependencyInjector = null;
+    static::$dependencyInjector = null;
   }
 
 }
@@ -6963,9 +7011,9 @@ class RedBean_Facade {
   public static function setup( $dsn=NULL, $username=NULL, $password=NULL ) {
     if (function_exists('sys_get_temp_dir')) $tmp = sys_get_temp_dir(); else $tmp = 'tmp';
     if (is_null($dsn)) $dsn = 'sqlite:/'.$tmp.'/red.db';
-    self::addDatabase('default',$dsn,$username,$password);
-    self::selectDatabase('default');
-    return self::$toolbox;
+    static::addDatabase('default',$dsn,$username,$password);
+    static::selectDatabase('default');
+    return static::$toolbox;
   }
 
 
@@ -6982,7 +7030,8 @@ class RedBean_Facade {
    * @return void
    */
   public static function addDatabase( $key, $dsn, $user=null, $pass=null, $frozen=false ) {
-    self::$toolboxes[$key] = RedBean_Setup::kickstart($dsn,$user,$pass,$frozen);
+    $setupClassName          = static::getRedBeanSetupClassName();
+    static::$toolboxes[$key] = $setupClassName::kickstart($dsn,$user,$pass,$frozen);
   }
 
 
@@ -6993,9 +7042,9 @@ class RedBean_Facade {
    * @return int 1
    */
   public static function selectDatabase($key) {
-    if (self::$currentDB===$key) return false;
-    self::configureFacadeWithToolbox(self::$toolboxes[$key]);
-    self::$currentDB = $key;
+    if (static::$currentDB===$key) return false;
+    static::configureFacadeWithToolbox(static::$toolboxes[$key]);
+    static::$currentDB = $key;
     return true;
   }
 
@@ -7010,7 +7059,7 @@ class RedBean_Facade {
    */
   public static function debug( $tf = true, $logger = NULL ) {
     if (!$logger) $logger = new RedBean_Logger;
-    self::$adapter->getDatabase()->setDebugMode( $tf, $logger );
+    static::$adapter->getDatabase()->setDebugMode( $tf, $logger );
   }
 
   /**
@@ -7021,7 +7070,7 @@ class RedBean_Facade {
    * @return integer $id id
    */
   public static function store( $bean ) {
-    return self::$redbean->store( $bean );
+    return static::$redbean->store( $bean );
   }
 
 
@@ -7037,7 +7086,7 @@ class RedBean_Facade {
    * @param boolean|array $trueFalse
    */
   public static function freeze( $tf = true ) {
-    self::$redbean->freeze( $tf );
+    static::$redbean->freeze( $tf );
   }
 
 
@@ -7050,7 +7099,7 @@ class RedBean_Facade {
    * @return RedBean_OODBBean $bean
    */
   public static function load( $type, $id ) {
-    return self::$redbean->load( $type, $id );
+    return static::$redbean->load( $type, $id );
   }
 
   /**
@@ -7061,7 +7110,7 @@ class RedBean_Facade {
    * @return mixed
    */
   public static function trash( $bean ) {
-    return self::$redbean->trash( $bean );
+    return static::$redbean->trash( $bean );
   }
 
   /**
@@ -7074,11 +7123,11 @@ class RedBean_Facade {
    */
   public static function dispense( $type, $num = 1 ) {
     if ($num==1) {
-      return self::$redbean->dispense( $type );
+      return static::$redbean->dispense( $type );
     }
     else {
       $beans = array();
-      for($v=0; $v<$num; $v++) $beans[] = self::$redbean->dispense( $type );
+      for($v=0; $v<$num; $v++) $beans[] = static::$redbean->dispense( $type );
       return $beans;
     }
   }
@@ -7094,8 +7143,8 @@ class RedBean_Facade {
    * @return array $beans Contains RedBean_OODBBean instances
    */
   public static function findOrDispense( $type, $sql, $values ) {
-    $foundBeans = self::find($type,$sql,$values);
-    if (count($foundBeans)==0) return array(self::dispense($type)); else return $foundBeans;
+    $foundBeans = static::find($type,$sql,$values);
+    if (count($foundBeans)==0) return array(static::dispense($type)); else return $foundBeans;
   }
 
   /**
@@ -7119,7 +7168,7 @@ class RedBean_Facade {
   public static function associate( RedBean_OODBBean $bean1, RedBean_OODBBean $bean2, $extra = null, $table = null) {
     //No extra? Just associate like always (default)
     if (!$extra) {
-      return self::$associationManager->associate( $bean1, $bean2, $table);
+      return static::$associationManager->associate( $bean1, $bean2, $table);
     }
     elseif($table != null)
     {
@@ -7135,7 +7184,7 @@ class RedBean_Facade {
       }
       $bean = RedBean_Facade::dispense('typeLess');
       $bean->import($info);
-      return self::$extAssocManager->extAssociate($bean1, $bean2, $bean);
+      return static::$extAssocManager->extAssociate($bean1, $bean2, $bean);
     }
 
   }
@@ -7154,7 +7203,7 @@ class RedBean_Facade {
    * @return mixed
    */
   public static function unassociate( RedBean_OODBBean $bean1, RedBean_OODBBean $bean2 , $fast=false, $table = null) {
-    return self::$associationManager->unassociate( $bean1, $bean2, $fast, $table );
+    return static::$associationManager->unassociate( $bean1, $bean2, $fast, $table );
   }
 
   /**
@@ -7181,11 +7230,11 @@ class RedBean_Facade {
    * @return array $beans	beans yielded by your query.
    */
   public static function related( $bean, $type, $sql=null, $values=array(), $table = null) {
-    $keys = self::$associationManager->related( $bean, $type, false, false, $table );
+    $keys = static::$associationManager->related( $bean, $type, false, false, $table );
     if (count($keys)==0) return array();
-    if (!$sql) return self::batch($type, $keys);
-    $rows = self::$writer->selectRecord( $type, array('id'=>$keys),array($sql,$values),false );
-    return self::$redbean->convertToBeans($type,$rows);
+    if (!$sql) return static::batch($type, $keys);
+    $rows = static::$writer->selectRecord( $type, array('id'=>$keys),array($sql,$values),false );
+    return static::$redbean->convertToBeans($type,$rows);
   }
 
   /**
@@ -7200,7 +7249,7 @@ class RedBean_Facade {
   * @return RedBean_OODBBean $bean
   */
   public static function relatedOne( RedBean_OODBBean $bean, $type, $sql=null, $values=array() ) {
-    $beans = self::related($bean, $type, $sql, $values);
+    $beans = static::related($bean, $type, $sql, $values);
     if (count($beans)==0) return null;
     return reset( $beans );
   }
@@ -7215,7 +7264,7 @@ class RedBean_Facade {
    * @return bool $yesNo whether they are related
    */
   public static function areRelated( RedBean_OODBBean $bean1, RedBean_OODBBean $bean2) {
-    return self::$associationManager->areRelated($bean1,$bean2);
+    return static::$associationManager->areRelated($bean1,$bean2);
   }
 
 
@@ -7231,9 +7280,9 @@ class RedBean_Facade {
    * @return array $beans beans
    */
   public static function unrelated(RedBean_OODBBean $bean, $type, $sql=null, $values=array()) {
-    $keys = self::$associationManager->related( $bean, $type );
-    $rows = self::$writer->selectRecord( $type, array('id'=>$keys), array($sql,$values), false, true );
-    return self::$redbean->convertToBeans($type,$rows);
+    $keys = static::$associationManager->related( $bean, $type );
+    $rows = static::$writer->selectRecord( $type, array('id'=>$keys), array($sql,$values), false, true );
+    return static::$redbean->convertToBeans($type,$rows);
 
   }
 
@@ -7249,7 +7298,7 @@ class RedBean_Facade {
    * @return void
    */
   public static function clearRelations( RedBean_OODBBean $bean, $type ) {
-    self::$associationManager->clearRelations( $bean, $type );
+    static::$associationManager->clearRelations( $bean, $type );
   }
 
   /**
@@ -7268,7 +7317,7 @@ class RedBean_Facade {
   public static function find( $type, $sql=null, $values=array() ) {
     if ($sql instanceof RedBean_SQLHelper) list($sql,$values) = $sql->getQuery();
     if (!is_array($values)) throw new InvalidArgumentException('Expected array, ' . gettype($values) . ' given.');
-    return self::$redbean->find($type,array(),array($sql,$values));
+    return static::$redbean->find($type,array(),array($sql,$values));
   }
 
   /**
@@ -7292,7 +7341,7 @@ class RedBean_Facade {
    */
   public static function findAll( $type, $sql=null, $values=array() ) {
     if (!is_array($values)) throw new InvalidArgumentException('Expected array, ' . gettype($values) . ' given.');
-    return self::$redbean->find($type,array(),array($sql,$values),true);
+    return static::$redbean->find($type,array(),array($sql,$values),true);
   }
 
   /**
@@ -7310,7 +7359,7 @@ class RedBean_Facade {
    * @return array $arrays arrays
    */
   public static function findAndExport($type, $sql=null, $values=array()) {
-    $items = self::find( $type, $sql, $values );
+    $items = static::find( $type, $sql, $values );
     $arr = array();
     foreach($items as $key=>$item) {
       $arr[$key]=$item->export();
@@ -7333,7 +7382,7 @@ class RedBean_Facade {
    * @return RedBean_OODBBean $bean
    */
   public static function findOne( $type, $sql=null, $values=array()) {
-    $items = self::find($type,$sql,$values);
+    $items = static::find($type,$sql,$values);
     $found = reset($items);
 //  if (!$found) return null;
     return $found;
@@ -7354,7 +7403,7 @@ class RedBean_Facade {
    * @return RedBean_OODBBean $bean
    */
   public static function findLast( $type, $sql=null, $values=array() ) {
-    $items = self::find( $type, $sql, $values );
+    $items = static::find( $type, $sql, $values );
     $found = end( $items );
     if (!$found) return null;
     return $found;
@@ -7375,7 +7424,7 @@ class RedBean_Facade {
    * @return array $beans resulting beans (may include empty ones)
    */
   public static function batch( $type, $ids ) {
-    return self::$redbean->batch($type, $ids);
+    return static::$redbean->batch($type, $ids);
   }
 
   /**
@@ -7388,7 +7437,7 @@ class RedBean_Facade {
    * @return integer $affected  number of affected rows
    */
   public static function exec( $sql, $values=array() ) {
-    return self::query('exec',$sql,$values);
+    return static::query('exec',$sql,$values);
   }
 
   /**
@@ -7401,7 +7450,7 @@ class RedBean_Facade {
    * @return array $results
    */
   public static function getAll( $sql, $values=array() ) {
-    return self::query('get',$sql,$values);
+    return static::query('get',$sql,$values);
   }
 
   /**
@@ -7414,7 +7463,7 @@ class RedBean_Facade {
    * @return string $result scalar
    */
   public static function getCell( $sql, $values=array() ) {
-    return self::query('getCell',$sql,$values);
+    return static::query('getCell',$sql,$values);
   }
 
   /**
@@ -7427,7 +7476,7 @@ class RedBean_Facade {
    * @return array $results
    */
   public static function getRow( $sql, $values=array() ) {
-    return self::query('getRow',$sql,$values);
+    return static::query('getRow',$sql,$values);
   }
 
   /**
@@ -7440,9 +7489,17 @@ class RedBean_Facade {
    * @return array $results
    */
   public static function getCol( $sql, $values=array() ) {
-    return self::query('getCol',$sql,$values);
+    return static::query('getCol',$sql,$values);
   }
 
+ /**
+  * Allows overriding setup class to something else.
+  * @return string Name of the class we should use to setup toolbox. This should extend RedBean_Setup
+  */
+ protected static function getRedBeanSetupClassName()
+ {
+    return 'RedBean_Setup';
+ }
   /**
    * Internal Query function, executes the desired query. Used by
    * all facade query functions. This keeps things DRY.
@@ -7456,11 +7513,11 @@ class RedBean_Facade {
    * @return array $results results of query
    */
   private static function query($method,$sql,$values) {
-    if (!self::$redbean->isFrozen()) {
+    if (!static::$redbean->isFrozen()) {
       try {
         $rs = RedBean_Facade::$adapter->$method( $sql, $values );
       }catch(RedBean_Exception_SQL $e) {
-        if(self::$writer->sqlStateIn($e->getSQLState(),
+        if(static::$writer->sqlStateIn($e->getSQLState(),
         array(
         RedBean_QueryWriter::C_SQLSTATE_NO_SUCH_COLUMN,
         RedBean_QueryWriter::C_SQLSTATE_NO_SUCH_TABLE)
@@ -7493,7 +7550,7 @@ class RedBean_Facade {
    * @return array $results
    */
   public static function getAssoc($sql,$values=array()) {
-    return self::query('getAssoc',$sql,$values);
+    return static::query('getAssoc',$sql,$values);
   }
 
 
@@ -7518,7 +7575,7 @@ class RedBean_Facade {
    * @return array $copiedBean the duplicated bean
    */
   public static function dup($bean,$trail=array(),$pid=false) {
-    $duplicationManager = new RedBean_DuplicationManager(self::$toolbox);
+    $duplicationManager = new RedBean_DuplicationManager(static::$toolbox);
     return $duplicationManager->dup($bean, $trail,$pid);
   }
 
@@ -7538,7 +7595,7 @@ class RedBean_Facade {
     $array = array();
     if (!is_array($beans)) $beans = array($beans);
     foreach($beans as $bean) {
-      $f = self::dup($bean,array(),true);
+      $f = static::dup($bean,array(),true);
       $array[] = $f->export();
     }
     return $array;
@@ -7573,7 +7630,7 @@ class RedBean_Facade {
    * @return array $beans
    */
   public static function convertToBeans($type,$rows) {
-    return self::$redbean->convertToBeans($type,$rows);
+    return static::$redbean->convertToBeans($type,$rows);
   }
 
 
@@ -7594,7 +7651,7 @@ class RedBean_Facade {
    * @return boolean $didMatch whether the bean has been assoc. with the tags
    */
   public static function hasTag($bean, $tags, $all=false) {
-    return self::$tagManager->hasTag($bean,$tags,$all);
+    return static::$tagManager->hasTag($bean,$tags,$all);
   }
 
   /**
@@ -7608,7 +7665,7 @@ class RedBean_Facade {
    * @return void
    */
   public static function untag($bean,$tagList) {
-    return self::$tagManager->untag($bean,$tagList);
+    return static::$tagManager->untag($bean,$tagList);
   }
 
   /**
@@ -7626,7 +7683,7 @@ class RedBean_Facade {
    * @return string $commaSepListTags
    */
   public static function tag( RedBean_OODBBean $bean, $tagList = null ) {
-    return self::$tagManager->tag($bean,$tagList);
+    return static::$tagManager->tag($bean,$tagList);
   }
 
   /**
@@ -7642,7 +7699,7 @@ class RedBean_Facade {
    * @return void
    */
   public static function addTags( RedBean_OODBBean $bean, $tagList ) {
-    return self::$tagManager->addTags($bean,$tagList);
+    return static::$tagManager->addTags($bean,$tagList);
   }
 
   /**
@@ -7655,7 +7712,7 @@ class RedBean_Facade {
    * @return array
    */
   public static function tagged( $beanType, $tagList ) {
-    return self::$tagManager->tagged($beanType,$tagList);
+    return static::$tagManager->tagged($beanType,$tagList);
   }
 
   /**
@@ -7668,7 +7725,7 @@ class RedBean_Facade {
    * @return array
    */
   public static function taggedAll( $beanType, $tagList ) {
-    return self::$tagManager->taggedAll($beanType,$tagList);
+    return static::$tagManager->taggedAll($beanType,$tagList);
   }
 
 
@@ -7703,24 +7760,24 @@ class RedBean_Facade {
    * @return RedBean_ToolBox $tb old, rusty, previously used toolbox
    */
   public static function configureFacadeWithToolbox( RedBean_ToolBox $tb ) {
-    $oldTools = self::$toolbox;
-    self::$toolbox = $tb;
-    self::$writer = self::$toolbox->getWriter();
-    self::$adapter = self::$toolbox->getDatabaseAdapter();
-    self::$redbean = self::$toolbox->getRedBean();
-    self::$associationManager = new RedBean_AssociationManager( self::$toolbox );
-    self::$redbean->setAssociationManager(self::$associationManager);
-    self::$extAssocManager = new RedBean_ExtAssociationManager( self::$toolbox );
+    $oldTools = static::$toolbox;
+    static::$toolbox = $tb;
+    static::$writer = static::$toolbox->getWriter();
+    static::$adapter = static::$toolbox->getDatabaseAdapter();
+    static::$redbean = static::$toolbox->getRedBean();
+    static::$associationManager = new RedBean_AssociationManager( static::$toolbox );
+    static::$redbean->setAssociationManager(static::$associationManager);
+    static::$extAssocManager = new RedBean_ExtAssociationManager( static::$toolbox );
     $helper = new RedBean_ModelHelper();
-    self::$redbean->addEventListener('update', $helper );
-    self::$redbean->addEventListener('open', $helper );
-    self::$redbean->addEventListener('delete', $helper );
-    self::$associationManager->addEventListener('delete', $helper );
-    self::$redbean->addEventListener('after_delete', $helper );
-    self::$redbean->addEventListener('after_update', $helper );
-    self::$redbean->addEventListener('dispense', $helper );
-    self::$tagManager = new RedBean_TagManager( self::$toolbox );
-    self::$f = new RedBean_SQLHelper(self::$adapter);
+    static::$redbean->addEventListener('update', $helper );
+    static::$redbean->addEventListener('open', $helper );
+    static::$redbean->addEventListener('delete', $helper );
+    static::$associationManager->addEventListener('delete', $helper );
+    static::$redbean->addEventListener('after_delete', $helper );
+    static::$redbean->addEventListener('after_update', $helper );
+    static::$redbean->addEventListener('dispense', $helper );
+    static::$tagManager = new RedBean_TagManager( static::$toolbox );
+    static::$f = new RedBean_SQLHelper(static::$adapter);
     return $oldTools;
   }
 
@@ -7736,7 +7793,7 @@ class RedBean_Facade {
    */
   public static function graph($array,$filterEmpty=false) {
     $cooker = new RedBean_Cooker();
-    $cooker->setToolbox(self::$toolbox);
+    $cooker->setToolbox(static::$toolbox);
     return $cooker->graph($array,$filterEmpty);
   }
 
@@ -7749,7 +7806,7 @@ class RedBean_Facade {
    * @return void
    */
   public static function begin() {
-    self::$adapter->startTransaction();
+    static::$adapter->startTransaction();
   }
 
   /**
@@ -7759,7 +7816,7 @@ class RedBean_Facade {
    * @return void
    */
   public static function commit() {
-    self::$adapter->commit();
+    static::$adapter->commit();
   }
 
   /**
@@ -7769,7 +7826,7 @@ class RedBean_Facade {
    * @return void
    */
   public static function rollback() {
-    self::$adapter->rollback();
+    static::$adapter->rollback();
   }
 
   /**
@@ -7783,7 +7840,7 @@ class RedBean_Facade {
    * @return array  $columns list of columns and their types
    */
   public static function getColumns($table) {
-    return self::$writer->getColumns($table);
+    return static::$writer->getColumns($table);
   }
 
   /**
@@ -7806,8 +7863,8 @@ class RedBean_Facade {
    * Nukes the entire database.
    */
   public static function nuke() {
-    if (!self::$redbean->isFrozen()) {
-      self::$writer->wipeAll();
+    if (!static::$redbean->isFrozen()) {
+      static::$writer->wipeAll();
     }
   }
 
@@ -7839,7 +7896,7 @@ class RedBean_Facade {
    * @param array $dep list of dependencies
    */
   public static function dependencies($dep) {
-    self::$redbean->setDepList($dep);
+    static::$redbean->setDepList($dep);
     }
 
   /**
@@ -7854,7 +7911,7 @@ class RedBean_Facade {
    */
   public static function storeAll($beans) {
     $ids = array();
-    foreach($beans as $bean) $ids[] = self::store($bean);
+    foreach($beans as $bean) $ids[] = static::store($bean);
     return $ids;
   }
 
@@ -7866,7 +7923,7 @@ class RedBean_Facade {
    * @param array $beans list of beans to be trashed
    */
   public static function trashAll($beans) {
-    foreach($beans as $bean) self::trash($bean);
+    foreach($beans as $bean) static::trash($bean);
   }
 
   /**
@@ -7883,7 +7940,7 @@ class RedBean_Facade {
   public static function dispenseLabels($type,$labels) {
     $labelBeans = array();
     foreach($labels as $label) {
-      $labelBean = self::dispense($type);
+      $labelBean = static::dispense($type);
       $labelBean->name = $label;
       $labelBeans[] = $labelBean;
     }
@@ -7912,8 +7969,8 @@ class RedBean_Facade {
    * Closes the database connection.
    */
   public static function close() {
-    if (isset(self::$adapter)){
-      self::$adapter->close();
+    if (isset(static::$adapter)){
+      static::$adapter->close();
     }
   }
 
@@ -7925,7 +7982,7 @@ class RedBean_Facade {
    */
   public static function log($filename) {
     $tl = new RedBean_Plugin_TimeLine($filename);
-    self::$adapter->addEventListener('sql_exec',$tl);
+    static::$adapter->addEventListener('sql_exec',$tl);
   }
 
 
@@ -8206,7 +8263,7 @@ class RedBean_Cooker {
           $bean->$property = $this->graph($value,$filterEmpty);
         }
         else {
-          if($value == '' && self::$useNULLForEmptyString){
+          if($value == '' && static::$useNULLForEmptyString){
             $bean->$property = null;
                     }
           else
@@ -8243,7 +8300,7 @@ class RedBean_Cooker {
    * @param boolean $yesNo
    */
   public function setUseNullFlag($yesNo) {
-    self::$useNULLForEmptyString = (boolean) $yesNo;
+    static::$useNULLForEmptyString = (boolean) $yesNo;
   }
 
 }

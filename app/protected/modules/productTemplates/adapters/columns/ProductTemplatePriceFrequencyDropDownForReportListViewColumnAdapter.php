@@ -42,7 +42,7 @@
         {
                 return array(
                     'name'  => $this->attribute,
-                    'value' => 'ProductTemplateElementUtil::renderProductTemplateListViewAttributeForReports($data, "' . $this->attribute . '")',
+                    'value' => 'ProductTemplatePriceFrequencyDropDownElement::renderDisplayAttributeForReport($data, "' . $this->attribute . '")',
                     'type'  => 'raw',
                 );
         }

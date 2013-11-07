@@ -89,7 +89,7 @@
             {
                 if (trim($this->name) == '')
                 {
-                    return Zurmo::t('Default', '(Unnamed)');
+                    return Zurmo::t('Core', '(Unnamed)');
                 }
                 return $this->name;
             }
@@ -129,30 +129,31 @@
                     array('modelClassName',             'required'),
                     array('modelClassName',             'type',   'type' => 'string'),
                     array('modelClassName',             'length', 'max' => 64),
-                    array('modelClassName',             'validateModelExists', 'except' => 'autoBuildDatabase'),
+                    array('modelClassName',             'validateModelExists'),
                     array('name',                       'required'),
                     array('name',                       'type',    'type' => 'string'),
-                    array('name',                       'length',  'min'  => 3, 'max' => 64),
+                    array('name',                       'length',  'min'  => 1, 'max' => 64),
                     array('subject',                    'required'),
                     array('subject',                    'type',    'type' => 'string'),
-                    array('subject',                    'length',  'min'  => 3, 'max' => 64),
+                    array('subject',                    'length',  'min'  => 1, 'max' => 64),
                     array('language',                   'type',    'type' => 'string'),
                     array('language',                   'length',  'min' => 2, 'max' => 2),
                     array('language',                   'setToUserDefaultLanguage'),
                     array('htmlContent',                'type',    'type' => 'string'),
                     array('textContent',                'type',    'type' => 'string'),
+                    array('htmlContent',                'StripDummyHtmlContentFromOtherwiseEmptyFieldValidator'),
                     array('htmlContent',                'AtLeastOneContentAreaRequiredValidator'),
                     array('textContent',                'AtLeastOneContentAreaRequiredValidator'),
-                    array('htmlContent',                'EmailTemplateMergeTagsValidator', 'except' => 'autoBuildDatabase'),
-                    array('textContent',                'EmailTemplateMergeTagsValidator', 'except' => 'autoBuildDatabase'),
+                    array('htmlContent',                'EmailTemplateMergeTagsValidator'),
+                    array('textContent',                'EmailTemplateMergeTagsValidator'),
                 ),
                 'elements' => array(
                     'htmlContent'                   => 'TextArea',
                     'textContent'                   => 'TextArea',
                 ),
                 'relations' => array(
-                    'files'                         => array(RedBeanModel::HAS_MANY,  'FileModel', RedBeanModel::OWNED,
-                                                            RedBeanModel::LINK_TYPE_POLYMORPHIC, 'relatedModel'),
+                    'files'                         => array(static::HAS_MANY,  'FileModel', static::OWNED,
+                                                            static::LINK_TYPE_POLYMORPHIC, 'relatedModel'),
                 ),
             );
             return $metadata;
@@ -161,13 +162,19 @@
         public function validateModelExists($attribute, $params)
         {
             $passedValidation = true;
-            if (!empty($this->$attribute))
+            $modelClassName = $this->$attribute;
+            if (!empty($modelClassName))
             {
-                if (@class_exists($this->$attribute))
+                if (@class_exists($modelClassName))
                 {
-                    if (!is_subclass_of($this->$attribute, 'RedBeanModel'))
+                    if (!is_subclass_of($modelClassName, 'RedBeanModel'))
                     {
                         $this->addError($attribute, Zurmo::t('EmailTemplatesModule', 'Provided class name is not a valid Model class.'));
+                        $passedValidation = false;
+                    }
+                    else if (!RightsUtil::canUserAccessModule($modelClassName::getModuleClassName(), Yii::app()->user->userModel))
+                    {
+                        $this->addError($attribute, Zurmo::t('EmailTemplatesModule', 'Provided class name access is prohibited.'));
                         $passedValidation = false;
                     }
                 }
@@ -244,7 +251,7 @@
                     'language'        => Zurmo::t('ZurmoModule',         'Language',   null, null, $language),
                     'htmlContent'     => Zurmo::t('EmailMessagesModule', 'Html Content',  null, null, $language),
                     'name'            => Zurmo::t('ZurmoModule',         'Name',  null, null, $language),
-                    'subject'         => Zurmo::t('EmailMessagesModule', 'Subject',  null, null, $language),
+                    'subject'         => Zurmo::t('Core', 'Subject',  null, null, $language),
                     'type'            => Zurmo::t('Core',                'Type',  null, null, $language),
                     'textContent'     => Zurmo::t('EmailMessagesModule', 'Text Content',  null, null, $language),
                 )

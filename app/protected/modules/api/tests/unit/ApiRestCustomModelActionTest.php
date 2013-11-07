@@ -39,6 +39,11 @@
     */
     class ApiRestCustomModelActionTest extends ApiRestTest
     {
+        public static function getDependentTestModelClassNames()
+        {
+            return array('ApiTestModelItem2');
+        }
+
         public function testApiServerUrl()
         {
             if (!$this->isApiTestUrlConfigured())

@@ -46,7 +46,7 @@
 
         public function getDisplayLabel()
         {
-            return Zurmo::t('ImportModule', 'Full Name');
+            return Zurmo::t('Core', 'Full Name');
         }
 
         /**

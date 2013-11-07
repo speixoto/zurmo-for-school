@@ -53,12 +53,17 @@
                 $htmlOptions = $this->getHtmlOptions();
                 $htmlOptions = $this->resolveConfirmAlertInHtmlOptions($htmlOptions);
                 $htmlOptions = $this->resolveSimpleLinkClassHtmlOptions($htmlOptions);
-                return ZurmoHtml::link(
+                return $this->renderLink($htmlOptions);
+            }
+        }
+
+        protected function renderLink($htmlOptions)
+        {
+            return ZurmoHtml::link(
                     $this->resolveLabelAndWrap(),
                     $this->route,
                     $htmlOptions
                 );
-            }
         }
 
         public function renderMenuItem()

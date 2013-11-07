@@ -59,6 +59,12 @@
             $emailMessageActivity = EmailMessageActivity::getById($id);
             $this->assertEquals(EmailMessageActivity::TYPE_OPEN     ,   $emailMessageActivity->type);
             $this->assertEquals(10                                  ,   $emailMessageActivity->quantity);
+
+            //Skip activities
+            $emailMessageActivity           = new EmailMessageActivity();
+            $emailMessageActivity->type     = EmailMessageActivity::TYPE_SKIP;
+            $emailMessageActivity->quantity = 1;
+            $this->assertTrue($emailMessageActivity->save());
         }
 
         /**
@@ -99,6 +105,8 @@
             $this->assertCount(1, $emailMessageActivities);
             $emailMessageActivities = EmailMessageActivity::getByType(EmailMessageActivity::TYPE_CLICK);
             $this->assertCount(1, $emailMessageActivities);
+            $emailMessageActivities = EmailMessageActivity::getByType(EmailMessageActivity::TYPE_SKIP);
+            $this->assertCount(1, $emailMessageActivities);
         }
 
         /**
@@ -118,10 +126,10 @@
         public function testDeleteEmailMessageActivity()
         {
             $emailMessageActivities = EmailMessageActivity::getAll();
-            $this->assertCount(2, $emailMessageActivities);
+            $this->assertCount(3, $emailMessageActivities);
             $emailMessageActivities[0]->delete();
             $emailMessageActivities = EmailMessageActivity::getAll();
-            $this->assertEquals(1, count($emailMessageActivities));
+            $this->assertEquals(2, count($emailMessageActivities));
         }
 
         /**
@@ -130,7 +138,7 @@
         public function testEmailMessageActivityStringValue()
         {
             $emailMessageActivities = EmailMessageActivity::getAll();
-            $this->assertCount(1, $emailMessageActivities);
+            $this->assertCount(2, $emailMessageActivities);
             $types  = EmailMessageActivity::getTypesArray();
             $type   = $types[$emailMessageActivities[0]->type];
             $expectedStringValue = $emailMessageActivities[0]->latestDateTime . ': ' .

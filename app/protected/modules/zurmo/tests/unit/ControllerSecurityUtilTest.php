@@ -129,7 +129,7 @@
                 $compareString = 'You have tried to access a page you do not have access to';
                 $this->assertFalse(strpos($this->endAndGetOutputBuffer(), $compareString) === false);
             }
-
+            Yii::app()->user->userModel = User::getByUsername('super');
             $account = AccountTestHelper::createAccountByNameForOwner('BettyInc', $betty);
             $this->startOutputBuffer();
             try

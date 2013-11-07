@@ -69,6 +69,11 @@
             SecurityTestHelper::createSuperAdmin();
         }
 
+        public static function getDependentTestModelClassNames()
+        {
+            return array('AAA', 'BBB', 'CCC', 'DDD', 'EEE', 'FFF', 'GGG', 'HHH');
+        }
+
         /**
          * AAA -> hasOne -> BBB -> hasOne -> CCC -> hasOne -> EEE
          */

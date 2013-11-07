@@ -50,6 +50,11 @@
                 is_string($this->model->{$this->attribute}) ||
                 is_integer(BooleanUtil::boolIntVal($this->model->{$this->attribute}))'
             );
+            if ($this->getDisabledValue())
+            {
+                $htmlOptions             = array();
+                $htmlOptions['disabled'] = 'disabled';
+            }
             return $this->form->checkBox($this->model, $this->attribute, $this->getEditableHtmlOptions());
         }
 

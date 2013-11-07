@@ -92,6 +92,7 @@
                 'industry'                   => 'Industry',
                 'jobTitle'                   => 'Job Title',
                 'lastName'                   => 'Last Name',
+                'latestActivity__DateTime'   => 'Latest Activity Date Time',
                 'mobilePhone'                => 'Mobile Phone',
                 'modifiedByUser'             => 'Modified By User',
                 'modifiedDateTime__DateTime' => 'Modified Date Time',

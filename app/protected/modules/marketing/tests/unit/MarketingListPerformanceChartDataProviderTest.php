@@ -303,12 +303,12 @@
             $sender                                  = new EmailMessageSender();
             $sender->fromAddress                     = 'super@zurmotest.com';
             $sender->fromName                        = 'Super User';
-            $sender->personOrAccount                 = Yii::app()->user->userModel;
+            $sender->personsOrAccounts->add(Yii::app()->user->userModel);
 
             $recipient                               = new EmailMessageRecipient();
             $recipient->toAddress                    = 'test.to@zurmotest.com';
             $recipient->toName                       = strval($contact);
-            $recipient->personOrAccount              = $contact;
+            $recipient->personsOrAccounts->add($contact);
             $recipient->type                         = EmailMessageRecipient::TYPE_TO;
 
             $emailMessage->owner                     = Yii::app()->user->userModel;

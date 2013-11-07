@@ -132,7 +132,7 @@
             $this->assertEquals(1, $explicitReadWriteModelPermissions->getReadOnlyPermitablesCount());
             $fileUploadData                                      = array('a', 'b');
             $testTableName                                       = 'testimporttable';
-            $this->assertTrue(ImportTestHelper::createTempTableByFileNameAndTableName('importTest.csv', $testTableName));
+            $this->assertTrue(ImportTestHelper::createTempTableByFileNameAndTableName('importTest.csv', $testTableName, true));
             $importWizardForm                                    = new ImportWizardForm();
             $importWizardForm->importRulesType                   = 'testAbc';
             $importWizardForm->explicitReadWriteModelPermissions = $explicitReadWriteModelPermissions;
@@ -173,7 +173,8 @@
             $this->assertTrue($import->save());
             $this->assertTrue(ImportTestHelper::
                               createTempTableByFileNameAndTableName('headerRowOnlyImportTest.csv',
-                                                                    $import->getTempTableName()));
+                                                                    $import->getTempTableName(),
+                                                                    true));
             $importWizardForm = new ImportWizardForm();
             $this->assertTrue(ImportWizardUtil::
                               importFileHasAtLeastOneImportRow($importWizardForm, $import));
@@ -181,7 +182,7 @@
             $importWizardForm->firstRowIsHeaderRow = true;
             $this->assertFalse(ImportWizardUtil::
                               importFileHasAtLeastOneImportRow($importWizardForm, $import));
-            ImportDatabaseUtil::dropTableByTableName($import->getTempTableName());
+            ZurmoRedBean::$writer->dropTableByTableName($import->getTempTableName());
         }
 
         /**

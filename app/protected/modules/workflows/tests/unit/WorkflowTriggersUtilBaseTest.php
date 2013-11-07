@@ -36,27 +36,9 @@
 
     class WorkflowTriggersUtilBaseTest extends WorkflowBaseTest
     {
-        public $freeze = false;
-
-        public function setup()
+        public static function getDependentTestModelClassNames()
         {
-            parent::setUp();
-            $freeze = false;
-            if (RedBeanDatabase::isFrozen())
-            {
-                RedBeanDatabase::unfreeze();
-                $freeze = true;
-            }
-            $this->freeze = $freeze;
-        }
-
-        public function teardown()
-        {
-            if ($this->freeze)
-            {
-                RedBeanDatabase::freeze();
-            }
-            parent::teardown();
+            return array('WorkflowModelTestItem');
         }
 
         public static function makeOnSaveWorkflowAndTriggerWithoutValueType($attributeIndexOrDerivedType, $operator,
@@ -110,7 +92,9 @@
                                                                                  $value,
                                                                                  $moduleClassName = 'WorkflowsTestModule',
                                                                                  $modelClassName  = 'WorkflowModelTestItem',
-                                                                                 $secondValue     = null)
+                                                                                 $secondValue     = null,
+                                                                                 $thirdValueDurationInterval = null,
+                                                                                 $thirdValueDurationType     = null)
         {
             assert('is_string($attributeIndexOrDerivedType)'); // Not Coding Standard
             assert('is_string($valueType)');                   // Not Coding Standard
@@ -124,6 +108,8 @@
             $trigger->valueType                   = $valueType;
             $trigger->value                       = $value;
             $trigger->secondValue                 = $secondValue;
+            $trigger->thirdValueDurationInterval  = $thirdValueDurationInterval;
+            $trigger->thirdValueDurationType      = $thirdValueDurationType;
             $workflow->addTrigger($trigger);
             return $workflow;
         }

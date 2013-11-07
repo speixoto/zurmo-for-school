@@ -160,7 +160,7 @@
                     if ($this->model->{$attributeName}->id > 0)
                     {
                         $label  = static::getLabelFromTwoAttributeStrings(
-                                  $this->model->getAttributeLabel($attributeName), Zurmo::t('ExportModule', 'Name'));
+                                  $this->model->getAttributeLabel($attributeName), Zurmo::t('Core', 'Name'));
                         $data[] = $label;
                     }
                     else

@@ -38,7 +38,7 @@
     {
         protected function getSubtitle()
         {
-            return Zurmo::t('EmailMessagesModule', 'Emails');
+            return Zurmo::t('ZurmoModule', 'Emails');
         }
     }
 ?>

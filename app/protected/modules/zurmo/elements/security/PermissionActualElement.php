@@ -55,7 +55,7 @@
             }
             elseif ($value == Permission::ALLOW)
             {
-                return Yii::app()->format->text(Zurmo::t('ZurmoModule', 'All'));
+                return Yii::app()->format->text(Zurmo::t('Core', 'All'));
             }
             return Yii::app()->format->text    (Zurmo::t('ZurmoModule', 'Ad-hoc / Owner'));
         }

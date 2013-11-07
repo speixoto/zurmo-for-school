@@ -372,12 +372,21 @@
                 $cClipWidget = new CClipWidget();
                 $cClipWidget->beginClip("OptionMenu");
                 $cClipWidget->widget('application.core.widgets.MbMenu', array(
-                    'htmlOptions' => array('class' => 'options-menu'),
+                    'htmlOptions' => array('class' => static::getOptionsMenuCssClass()),
                     'items'                   => array($menuItems),
                 ));
                 $cClipWidget->endClip();
                 return $cClipWidget->getController()->clips['OptionMenu'];
             }
+        }
+
+        /**
+         * Gets the options menu class
+         * @return string
+         */
+        protected static function getOptionsMenuCssClass()
+        {
+            return 'options-menu';
         }
     }
 ?>

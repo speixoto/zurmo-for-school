@@ -57,7 +57,7 @@ class JobLogViewWalkthroughTest extends ZurmoWalkthroughBaseTest
         $this->assertTrue($jobLog->save());
         $this->setGetArray(array('type' => 'Monitor'));
         $content                = $this->runControllerWithNoExceptionsAndGetContent('jobsManager/default/jobLogsModalList');
-        $this->assertTrue(stripos($content, Zurmo::t('JobsManagerModule', 'Completed')) !== false);
+        $this->assertTrue(stripos($content, Zurmo::t('Core', 'Completed')) !== false);
 
         $jobLog->status         = JobLog::STATUS_COMPLETE_WITH_ERROR;
         $this->assertTrue($jobLog->save());

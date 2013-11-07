@@ -55,7 +55,7 @@
                 $options     = array('content' =>
                                         array('title' =>
                                             array('text'   => Zurmo::t('JobsManagerModule', 'Error Log'),
-                                                  'button' => Zurmo::t('JobsManagerModule', 'Close'))
+                                                  'button' => Zurmo::t('Core', 'Close'))
                                         ),
                                      'hide' => array('event' => 'click'),
                                      'show' => array('event' => 'click mouseenter', 'solo' => true),
@@ -76,7 +76,7 @@
             }
             elseif ($jobLog->status == JobLog::STATUS_COMPLETE_WITHOUT_ERROR)
             {
-                return Zurmo::t('JobsManagerModule', 'Completed');
+                return Zurmo::t('Core', 'Completed');
             }
             else
             {

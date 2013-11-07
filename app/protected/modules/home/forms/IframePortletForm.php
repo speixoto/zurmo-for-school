@@ -56,7 +56,7 @@
         public function attributeLabels()
         {
             return array(
-                'title' => Zurmo::t('HomeModule', 'Title'),
+                'title' => Zurmo::t('ZurmoModule', 'Title'),
                 'iframeUrl' => Zurmo::t('HomeModule', 'IFrame URL'),
                 'iframeHeight' => Zurmo::t('HomeModule', 'IFrame Height in pixels'),
             );

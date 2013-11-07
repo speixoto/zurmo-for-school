@@ -60,9 +60,9 @@
             return array_merge(parent::translatedAttributeLabels($language),
                 array(
                     'description'        => Zurmo::t('ZurmoModule', 'Description',  array(), null, $language),
-                    'latestDateTime'     => Zurmo::t('ActivitiesModule', 'Latest Date Time',  array(), null, $language),
-                    'subject'            => Zurmo::t('ConversationsModule', 'Subject',  array(), null, $language),
-                    'ownerHasReadLatest' => Zurmo::t('ConversationsModule', 'Owner Has Read Latest',  array(), null, $language),
+                    'latestDateTime'     => Zurmo::t('ZurmoModule', 'Latest Date Time',  array(), null, $language),
+                    'subject'            => Zurmo::t('Core', 'Subject',  array(), null, $language),
+                    'ownerHasReadLatest' => Zurmo::t('NotificationsModule', 'Owner Has Read Latest',  array(), null, $language),
                     'isClosed'           => Zurmo::t('ConversationsModule', 'Is Closed',  array(), null, $language),
                     'comments'           => Zurmo::t('CommentsModule', 'Comments',  array(), null, $language),
                     'conversationItems'  => Zurmo::t('ConversationsModule', 'Conversation Items',  array(), null, $language),
@@ -78,7 +78,7 @@
             {
                 if (trim($this->subject) == '')
                 {
-                    return Zurmo::t('ConversationsModule', '(Unnamed)');
+                    return Zurmo::t('Core', '(Unnamed)');
                 }
                 return $this->subject;
             }
@@ -165,13 +165,13 @@
                     'isClosed'
                 ),
                 'relations' => array(
-                    'comments'                 => array(RedBeanModel::HAS_MANY,  'Comment', RedBeanModel::OWNED,
-                                                        RedBeanModel::LINK_TYPE_POLYMORPHIC, 'relatedModel'),
-                    'conversationItems'        => array(RedBeanModel::MANY_MANY, 'Item'),
-                    'conversationParticipants' => array(RedBeanModel::HAS_MANY,  'ConversationParticipant',
-                                                        RedBeanModel::OWNED),
-                    'files'                    => array(RedBeanModel::HAS_MANY,  'FileModel', RedBeanModel::OWNED,
-                                                        RedBeanModel::LINK_TYPE_POLYMORPHIC, 'relatedModel'),
+                    'comments'                 => array(static::HAS_MANY,  'Comment', static::OWNED,
+                                                        static::LINK_TYPE_POLYMORPHIC, 'relatedModel'),
+                    'conversationItems'        => array(static::MANY_MANY, 'Item'),
+                    'conversationParticipants' => array(static::HAS_MANY,  'ConversationParticipant',
+                                                        static::OWNED),
+                    'files'                    => array(static::HAS_MANY,  'FileModel', static::OWNED,
+                                                        static::LINK_TYPE_POLYMORPHIC, 'relatedModel'),
                 ),
                 'rules' => array(
                     array('description',        'type',    'type' => 'string'),
@@ -180,7 +180,7 @@
                     array('latestDateTime',     'type', 'type' => 'datetime'),
                     array('subject',            'required'),
                     array('subject',            'type',    'type' => 'string'),
-                    array('subject',            'length',  'min'  => 3, 'max' => 255),
+                    array('subject',            'length',  'min'  => 1, 'max' => 255),
                     array('ownerHasReadLatest', 'boolean'),
                     array('isClosed',           'boolean'),
                 ),

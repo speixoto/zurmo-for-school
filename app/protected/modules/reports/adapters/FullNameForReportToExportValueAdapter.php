@@ -39,7 +39,7 @@
         public function resolveData(& $data)
         {
             $model = $this->model->getModel($this->attribute);
-            if ($model->id > 0)
+            if ($model !== null && $model->id > 0)
             {
                 $data[] = strval($model);
             }
@@ -64,7 +64,7 @@
             {
                 return $this->params['label'];
             }
-            return Zurmo::t('ReportsModule', 'Name');
+            return Zurmo::t('Core', 'Name');
         }
     }
 ?>

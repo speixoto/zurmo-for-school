@@ -47,7 +47,6 @@
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
             UserTestHelper::createBasicUser('nobody');
-
             MarketingListTestHelper::createMarketingListByName('MarketingListName',
                                                                 'MarketingList Description',
                                                                 'first',
@@ -147,6 +146,18 @@
             $this->runControllerShouldResultInAccessFailureAndGetContent('campaigns/default/edit');
             $this->runControllerShouldResultInAccessFailureAndGetContent('campaigns/default/details');
             $this->runControllerShouldResultInAccessFailureAndGetContent('campaigns/default/delete');
+        }
+
+        public function testDrillDownDetailsAction()
+        {
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
+            $campaignItem = CampaignItemTestHelper::createCampaignItem(true, static::$campaignOwnedBySuper);
+
+            Yii::app()->user->userModel = $this->user;
+            $this->setGetArray(array('campaignItemId' => $campaignItem->id));
+            $content      = $this->runControllerWithExitExceptionAndGetContent('campaigns/default/drillDownDetails');
+            $this->assertContains('You have tried to access a page you do not have access to.', $content);
         }
     }
 ?>

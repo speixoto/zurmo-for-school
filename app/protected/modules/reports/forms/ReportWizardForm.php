@@ -177,7 +177,7 @@
         public function attributeLabels()
         {
             return array(
-                'name'                       => Zurmo::t('ReportsModule', 'Name'),
+                'name'                       => Zurmo::t('Core', 'Name'),
                 'ownerId'                    => Zurmo::t('ReportsModule', 'Owner Id'),
                 'ownerName'                  => Zurmo::t('ReportsModule', 'Owner Name'),
                 'currencyConversionType'     => Zurmo::t('ReportsModule', 'Currency Conversion'),

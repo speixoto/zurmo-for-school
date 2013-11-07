@@ -221,27 +221,26 @@
          */
         public static function makeAndSubmitNewMissionNotificationMessage(Mission $mission)
         {
-            $recipients = array();
             $peopleToSendNotification = static::resolvePeopleToSendNotificationToOnNewMission($mission);
             foreach ($peopleToSendNotification as $person)
             {
                 if ($person->primaryEmail->emailAddress != null &&
                     !UserConfigurationFormAdapter::resolveAndGetValue($person, 'turnOffEmailNotifications'))
                 {
-                    $recipients[] = $person;
+                    EmailNotificationUtil::resolveAndSendEmail($mission->owner,
+                                                               array($person),
+                                                               static::getEmailSubject($mission),
+                                                               static::getEmailContent($mission, $person));
                 }
             }
-            EmailNotificationUtil::resolveAndSendEmail($mission->owner,
-                                                 $recipients,
-                                                 static::getEmailSubject($mission),
-                                                 static::getEmailContent($mission));
         }
 
         /**
          * @param Mission $mission
+         * @param User $user
          * @return EmailMessageContent
          */
-        public static function getEmailContent(Mission $mission)
+        public static function getEmailContent(Mission $mission, User $user)
         {
             $emailContent  = new EmailMessageContent();
             $url           = CommentsUtil::getUrlToEmail($mission);
@@ -252,18 +251,17 @@
                                           '{reward}'    => $mission->reward,
                                           '{url}'       => ZurmoHtml::link($url, $url)
                                         ));
-            $emailContent->textContent  = $emailContent->htmlContent  = EmailNotificationUtil::
-                                                resolveNotificationTextTemplate($textContent);
+            $emailContent->textContent  = EmailNotificationUtil::resolveNotificationTextTemplate($textContent, $user);
             $htmlContent = Zurmo::t('MissionsModule', "Hello, {lineBreak}There is a new {url}. " .
                                     "Be the first one to start it and get this great reward: {reward}.",
-                               array('{lineBreak}'      => "<br/>",
-                                     '{strongStartTag}' => '<strong>',
-                                     '{strongEndTag}'   => '</strong>',
-                                     '{reward}'         => $mission->reward,
-                                     '{url}'            => ZurmoHtml::link($mission->getModelLabelByTypeAndLanguage(
-                                                                'SingularLowerCase'), $url)
-                                   ));
-            $emailContent->htmlContent  = EmailNotificationUtil::resolveNotificationHtmlTemplate($htmlContent);
+                                    array('{lineBreak}'      => "<br/>",
+                                          '{strongStartTag}' => '<strong>',
+                                          '{strongEndTag}'   => '</strong>',
+                                          '{reward}'         => $mission->reward,
+                                          '{url}'            => ZurmoHtml::link($mission->getModelLabelByTypeAndLanguage(
+                                                                    'SingularLowerCase'), $url)
+                                    ));
+            $emailContent->htmlContent  = EmailNotificationUtil::resolveNotificationHtmlTemplate($htmlContent, $user);
             return $emailContent;
         }
 
@@ -286,7 +284,8 @@
             $people = array();
             foreach ($users as $user)
             {
-                if ($user->getClassId('Item') != $mission->owner->getClassId('Item'))
+                if ($user->getClassId('Item') != $mission->owner->getClassId('Item') &&
+                    RightsUtil::canUserAccessModule('MissionsModule', $user))
                 {
                     $people[] = $user;
                 }
@@ -307,12 +306,13 @@
             $peopleToSendNotification = array();
             foreach ($usersToSendNotification as $userToSendNotification)
             {
-                if ($userToSendNotification->getClassId('Item') != $user->getClassId('Item'))
+                if ($userToSendNotification->getClassId('Item') != $user->getClassId('Item') &&
+                    RightsUtil::canUserAccessModule('MissionsModule', $userToSendNotification))
                 {
                     if ($mission->takenByUser->id > 0)
                     {
                         if ($userToSendNotification->getClassId('Item') == $mission->owner->getClassId('Item') ||
-                           $userToSendNotification->getClassId('Item') == $mission->takenByUser->getClassId('Item') )
+                            $userToSendNotification->getClassId('Item') == $mission->takenByUser->getClassId('Item') )
                         {
                             $peopleToSendNotification[] = $userToSendNotification;
                         }

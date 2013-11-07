@@ -41,45 +41,32 @@
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
-            global $freeze;
             RedBeanDatabase::setup(Yii::app()->db->connectionString,
-                Yii::app()->db->username,
-                Yii::app()->db->password);
-            assert('RedBeanDatabase::isSetup()'); // Not Coding Standard
-            if ($freeze)
+                                    Yii::app()->db->username,
+                                    Yii::app()->db->password);
+            $schemaFile = sys_get_temp_dir() . '/autobuilt.sql';
+            $success = preg_match("/;dbname=([^;]+)/", Yii::app()->db->connectionString, $matches); // Not Coding Standard
+            assert('$success == 1'); // Not Coding Standard
+            $databaseName = $matches[1];
+            if (is_readable($schemaFile) && filesize($schemaFile) > 0)
             {
-                $schemaFile = sys_get_temp_dir() . '/autobuilt.sql';
-                $success = preg_match("/;dbname=([^;]+)/", Yii::app()->db->connectionString, $matches); // Not Coding Standard
-                assert('$success == 1'); // Not Coding Standard
-                $databaseName = $matches[1];
-                if (is_readable($schemaFile) && filesize($schemaFile) > 0)
-                {
-                    $systemOutput = system('mysql -u' . Yii::app()->db->username .
-                                ' -p' . Yii::app()->db->password .
-                                  ' ' . $databaseName            . " < $schemaFile");
-                   if ($systemOutput != null)
-                   {
-                       echo 'Loading schema using system command. Output: ' . $systemOutput . "\n\n";
-                   }
-                }
-                else
-                {
-                    echo "The schema file is not readable: $schemaFile. \n\n";
-                    exit;
-                }
+                $systemOutput = system('mysql -u' . Yii::app()->db->username .
+                            ' -p' . Yii::app()->db->password .
+                              ' ' . $databaseName            . " < $schemaFile");
+               if ($systemOutput != null)
+               {
+                   echo 'Loading schema using system command. Output: ' . $systemOutput . "\n\n";
+               }
+            }
+            else
+            {
+                echo "The schema file is not readable: $schemaFile. \n\n";
+                exit;
             }
             CustomFieldData::forgetAllPhpCache();
             GeneralCache::forgetAll();
             BeanModelCache::forgetAll();
-            if ($freeze)
-            {
-                RedBeanDatabase::freeze();
-                TestDatabaseUtil::deleteRowsFromAllTablesExceptLog();
-            }
-            else
-            {
-                TestDatabaseUtil::deleteAllTablesExceptLog();
-            }
+            TestDatabaseUtil::deleteRowsFromAllTablesExceptLog();
             Yii::app()->user->userModel = null;
             Yii::app()->user->clearStates(); //reset session.
             Yii::app()->language        = Yii::app()->getConfigLanguageValue();
@@ -101,15 +88,7 @@
                 Yii::app()->languageHelper->deactivateLanguagesForTesting();
             }
 
-            if (RedBeanDatabase::isFrozen())
-            {
-                TestDatabaseUtil::deleteRowsFromAllTablesExceptLog();
-            }
-            else
-            {
-                TestDatabaseUtil::deleteAllTablesExceptLog();
-            }
-
+            TestDatabaseUtil::deleteRowsFromAllTablesExceptLog();
             PermissionsCache::forgetAll();
             RedBeanModel::forgetAll();
             RedBeanDatabase::close();
@@ -128,6 +107,11 @@
             $_FILES = array($arrayName => array('name'     => $fileName, 'type'  => ZurmoFileHelper::getMimeType($filePath),
                                                 'tmp_name' => $filePath, 'error' => UPLOAD_ERR_OK,
                                                 'size'     => filesize($filePath)));
+        }
+
+        public static function getDependentTestModelClassNames()
+        {
+            return array();
         }
 
         public function setup()

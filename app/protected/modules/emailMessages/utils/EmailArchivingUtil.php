@@ -290,9 +290,9 @@
          * @return Contact || Account || User || NULL
          */
         public static function resolvePersonOrAccountByEmailAddress($emailAddress,
-                                                                      $userCanAccessContacts = false,
-                                                                      $userCanAccessLeads = false,
-                                                                      $userCanAccessAccounts = false)
+                                                                    $userCanAccessContacts = false,
+                                                                    $userCanAccessLeads    = false,
+                                                                    $userCanAccessAccounts = false)
         {
             assert('is_string($emailAddress)');
             assert('is_bool($userCanAccessContacts)');

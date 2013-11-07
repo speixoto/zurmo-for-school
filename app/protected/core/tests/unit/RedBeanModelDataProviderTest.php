@@ -80,6 +80,19 @@
             assert($saved);    // Not Coding Standard
         }
 
+        public static function getDependentTestModelClassNames()
+        {
+            return array(
+                'G',
+                'GG',
+                'H',
+                'I',
+                'II',
+                'K',
+                'L',
+                'TestCustomFieldsModel');
+        }
+
         public function testSearchByCustomFieldWithMultipleValues()
         {
             //Save a sample model.
@@ -835,11 +848,7 @@
 
         public function testGetDataReturningAllResults()
         {
-            $allGG          = GG::getAll();
-            foreach ($allGG as $gg)
-            {
-                $gg->delete();
-            }
+            GG::deleteAll();
             $numberOfRecords = rand (12, 100);
             for ($i = 1; $i <= $numberOfRecords; $i++)
             {

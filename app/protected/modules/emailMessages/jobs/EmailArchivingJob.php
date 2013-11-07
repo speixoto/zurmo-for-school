@@ -156,12 +156,18 @@
             {
                 $sender->fromName          = $senderInfo['name'];
             }
-            $personOrAccount = EmailArchivingUtil::resolvePersonOrAccountByEmailAddress(
+            $personsOrAccounts = EmailArchivingUtil::getPersonsAndAccountsByEmailAddress(
                     $senderInfo['email'],
                     $userCanAccessContacts,
                     $userCanAccessLeads,
                     $userCanAccessAccounts);
-            $sender->personOrAccount = $personOrAccount;
+            if (!empty($personsOrAccounts))
+            {
+                foreach ($personsOrAccounts as $personOrAccount)
+                {
+                    $sender->personsOrAccounts->add($personOrAccount);
+                }
+            }
             return $sender;
         }
 
@@ -181,12 +187,18 @@
             $recipient->toName         = $recipientInfo['name'];
             $recipient->type           = $recipientInfo['type'];
 
-            $personOrAccount = EmailArchivingUtil::resolvePersonOrAccountByEmailAddress(
+            $personsOrAccounts = EmailArchivingUtil::getPersonsAndAccountsByEmailAddress(
                     $recipientInfo['email'],
                     $userCanAccessContacts,
                     $userCanAccessLeads,
                     $userCanAccessAccounts);
-            $recipient->personOrAccount = $personOrAccount;
+            if (!empty($personsOrAccounts))
+            {
+                foreach ($personsOrAccounts as $personOrAccount)
+                {
+                    $recipient->personsOrAccounts->add($personOrAccount);
+                }
+            }
             return $recipient;
         }
 
@@ -253,7 +265,7 @@
                 $sender = $this->createEmailMessageSender($senderInfo, $userCanAccessContacts,
                               $userCanAccessLeads, $userCanAccessAccounts);
 
-                if (empty($sender->personOrAccount) || $sender->personOrAccount->id <= 0)
+                if ($sender->personsOrAccounts->count() == 0)
                 {
                     $emailSenderOrRecipientEmailNotFoundInSystem = true;
                 }
@@ -285,7 +297,7 @@
                 // Check if at least one recipient email can't be found in Contacts, Leads, Account and User emails
                 // so we will save email message in EmailFolder::TYPE_ARCHIVED_UNMATCHED folder, and user will
                 // be able to match emails with items(Contacts, Accounts...) emails in systems
-                if (!(empty($recipient->personOrAccount) || $recipient->personOrAccount->id <= 0))
+                if ($recipient->personsOrAccounts->count() > 0)
                 {
                     $emailRecipientNotFoundInSystem = false;
                 }

@@ -96,11 +96,8 @@
             $model->name                = $this->seedData['name'][$this->index];
             $model->redirectUrl         = $this->seedData['redirectUrl'][$this->index];
             $model->submitButtonLabel   = $this->seedData['submitButtonLabel'][$this->index];
-            $allAttributes              = ContactWebFormsUtil::getAllAttributes();
             $placedAttributes           = array('firstName', 'lastName', 'companyName', 'jobTitle');
-            $contactFormAttributes      = ContactWebFormsUtil::getAllPlacedAttributes($allAttributes, $placedAttributes);
-            $attributes                 = array_keys($contactFormAttributes);
-            $model->serializedData      = serialize($attributes);
+            $model->serializedData      = serialize($placedAttributes);
         }
     }
 ?>

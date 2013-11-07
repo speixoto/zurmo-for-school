@@ -63,6 +63,10 @@
                     // of CDefaultValueValidator.
                     // http://www.yiiframework.com/doc/api/1.1/CDefaultValueValidator
                     array('email2', 'default', 'value' => 'no-reply@nowhere.com'),
+                    array('email1', 'type', 'type' => 'string'),
+                    array('email1', 'length', 'max' => 255),
+                    array('email2', 'type', 'type' => 'string'),
+                    array('email2', 'length', 'max' => 255),
                 )
             );
             return $metadata;

@@ -62,7 +62,7 @@
 
         protected function renderLabel()
         {
-            return $this->resolveNonActiveFormFormattedLabel(Zurmo::t('EmailMessagesModule', 'To'));
+            return $this->resolveNonActiveFormFormattedLabel(Zurmo::t('Core', 'To'));
         }
 
         public static function getDisplayName()

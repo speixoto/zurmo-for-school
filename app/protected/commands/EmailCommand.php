@@ -162,7 +162,7 @@ EOD;
         $sender                    = new EmailMessageSender();
         $sender->fromAddress       = Yii::app()->emailHelper->resolveFromAddressByUser(Yii::app()->user->userModel);
         $sender->fromName          = strval(Yii::app()->user->userModel);
-        $sender->personOrAccount   = Yii::app()->user->userModel;
+        $sender->personsOrAccounts->add(Yii::app()->user->userModel);
         $emailMessage->sender      = $sender;
         $recipient                 = new EmailMessageRecipient();
         $recipient->toAddress      = $toAddress;
@@ -180,11 +180,11 @@ EOD;
 
         if (!$emailMessage->hasSendError())
         {
-            echo Zurmo::t('Commands', 'Message successfully sent') . "\n";
+            echo Zurmo::t('EmailMessagesModule', 'Message successfully sent') . "\n";
         }
         else
         {
-            echo Zurmo::t('Commands', 'Message failed to send') . "\n";
+            echo Zurmo::t('EmailMessagesModule', 'Message failed to send') . "\n";
             echo $emailMessage->error     . "\n";
         }
         $saved = $emailMessage->save();

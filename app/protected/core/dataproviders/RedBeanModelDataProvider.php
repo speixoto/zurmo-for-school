@@ -106,7 +106,7 @@
                 $offset = 0;
                 $limit  = null;
             }
-            if ($this->offset != null)
+            if ($this->offset !== null)
             {
                 $offset = $this->offset;
             }

@@ -82,7 +82,7 @@
          */
         public function testGetByProcessed()
         {
-            $this->deleteAllCampaignItems();
+            CampaignItem::deleteAll();
             for ($i = 0; $i < 5; $i++)
             {
                 $processed                          = 0;
@@ -107,7 +107,7 @@
          */
         public function testGetByProcessedAndSendOnDateTime()
         {
-            $this->deleteAllCampaignItems();
+            CampaignItem::deleteAll();
             $marketingList                  = MarketingListTestHelper::createMarketingListByName('marketingList 01');
             $this->assertNotNull($marketingList);
             $campaignToday                  = CampaignTestHelper::createCampaign('campaign Today',
@@ -185,7 +185,7 @@
          */
         public function testGetByProcessedAndStatusAndSendOnDateTime()
         {
-            $this->deleteAllCampaignItems();
+            CampaignItem::deleteAll();
             $marketingList              = MarketingListTestHelper::createMarketingListByName('marketingList 02');
             $this->assertNotNull($marketingList);
             $campaignTodayActive        = CampaignTestHelper::createCampaign('campaign Today Active',
@@ -312,7 +312,7 @@
          */
         public function testGetByProcessedAndCampaignId()
         {
-            $this->deleteAllCampaignItems();
+            CampaignItem::deleteAll();
             $marketingList      = MarketingListTestHelper::createMarketingListByName('marketingList 03');
             $this->assertNotNull($marketingList);
             $campaign1          = CampaignTestHelper::createCampaign('campaign 01',
@@ -738,15 +738,6 @@
             CampaignItemActivity::createNewActivity(CampaignItemActivity::TYPE_BOUNCE, $campaignItem->id,
                                                             $contact->getClassId('Person'), null, null, $campaignItem);
             $this->assertTrue($campaignItem->hasAtLeastOneBounceActivity());
-        }
-
-        protected function deleteAllCampaignItems()
-        {
-            $campaignItems  = CampaignItem::getAll();
-            foreach ($campaignItems as $campaignItem)
-            {
-                $campaignItem->delete();
-            }
         }
     }
 ?>

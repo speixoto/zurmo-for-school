@@ -44,8 +44,8 @@
             return array(Zurmo::t('Core', 'Module'),
                          Zurmo::t('WorkflowsModule', 'Triggers'),
                          Zurmo::t('WorkflowsModule', 'Actions'),
-                         Zurmo::t('WorkflowsModule', 'Messages'),
-                         Zurmo::t('WorkflowsModule', 'General'));
+                         Zurmo::t('Core', 'Messages'),
+                         Zurmo::t('Core', 'General'));
         }
     }
 ?>

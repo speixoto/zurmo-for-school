@@ -38,7 +38,7 @@
     {
         protected function getDefaultLabel()
         {
-            return Zurmo::t('DesignerModule', 'Edit');
+            return Zurmo::t('Core', 'Edit');
         }
 
         protected function getDefaultRoute()

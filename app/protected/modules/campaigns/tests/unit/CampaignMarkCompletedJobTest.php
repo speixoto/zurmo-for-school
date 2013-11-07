@@ -200,7 +200,7 @@
          */
         public function testRunWithCustomBatchSize()
         {
-            $this->purgeAllCampaigns();
+            Campaign::deleteAll();
             $contact            = ContactTestHelper::createContactByNameForOwner('contact 03', $this->user);
             $marketingList      = MarketingListTestHelper::populateMarketingListByName('marketingList 04');
             $campaign01         = CampaignTestHelper::createCampaign('campaign 01',
@@ -275,15 +275,6 @@
             $campaign03 = Campaign::getById($campaign03Id);
             $this->assertNotNull($campaign03);
             $this->assertEquals(Campaign::STATUS_COMPLETED, $campaign03->status);
-        }
-
-        protected function purgeAllCampaigns()
-        {
-            $campaigns = Campaign::getAll();
-            foreach ($campaigns as $campaign)
-            {
-                $campaign->delete();
-            }
         }
     }
 ?>

@@ -39,11 +39,13 @@
      */
     class NullElement extends Element
     {
+        public $nonEditableTemplate = '<th>&#160;</th><td colspan="{colspan}">&#160;</td>';
+
         /**
          * Render a filler for the layout.
          * @return The element's content. 2 table columns with null empty information.
          */
-        public function render()
+        protected function renderEditable()
         {
             $colspan = $this->getColumnSpan();
             return '<th>&#160;</th><td colspan="' . $colspan . '">&#160;</td>';
@@ -54,6 +56,10 @@
         }
 
         protected function renderControlNonEditable()
+        {
+        }
+
+        protected function renderLabel()
         {
         }
     }

@@ -55,7 +55,11 @@
                                       DYNAMIC_USER_TYPE_CREATED_BY_USER));
             $message->setAttributes(array(EmailMessageForWorkflowForm::EMAIL_MESSAGE_RECIPIENTS => $recipients));
             $validated = $message->validate();
-            $errors    = $message->getErrors();
+            $this->assertTrue($validated);
+
+            //Test validation with SEND_FROM_TYPE_TRIGGERED_MODEL_OWNER
+            $message->sendFromType             = EmailMessageForWorkflowForm::SEND_FROM_TYPE_TRIGGERED_MODEL_OWNER;
+            $validated = $message->validate();
             $this->assertTrue($validated);
             //Test validation with SEND_FROM_TYPE_CUSTOM
             $message               = new EmailMessageForWorkflowForm('WorkflowModelTestItem', Workflow::TYPE_ON_SAVE);

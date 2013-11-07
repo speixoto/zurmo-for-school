@@ -41,7 +41,7 @@
     {
         protected $productCategoryFormName;
 
-        protected $peopleAddedAsProductCategories;
+        protected $processedProductCategories;
 
         /**
          * Constructor for class
@@ -67,7 +67,7 @@
             $postData = PostUtil::getData();
             if (isset($postData[$this->productCategoryFormName]))
             {
-                $this->peopleAddedAsProductCategories = ProductCategoriesUtil::
+                $this->processedProductCategories = ProductCategoriesUtil::
                                                                resolveProductHasManyProductCategoriesFromPost($model,
                                                                $postData[$this->productCategoryFormName]);
             }
