@@ -94,7 +94,7 @@
             }
             if (Yii::app()->getClientScript()->isIsolationMode())
             {
-                $cs->registerCssFile($absoluteBaseUrl . '/' . $theme . '/css/webforms.css');
+                $cs->registerCssFile($absoluteBaseUrl . '/' . $theme . '/css/webforms-external.css');
             }
             if (MINIFY_SCRIPTS)
             {
