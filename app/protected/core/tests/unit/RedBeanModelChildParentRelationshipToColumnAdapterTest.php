@@ -73,11 +73,11 @@
             $this->assertArrayHasKey('unsigned', $parentColumnDefinition);
             $this->assertEquals('UNSIGNED', $parentColumnDefinition['unsigned']);
             $this->assertArrayHasKey('notNull', $parentColumnDefinition);
-            $this->assertEquals('NULL', $parentColumnDefinition['notNull']);
+            $this->assertEquals('NULL', $parentColumnDefinition['notNull']); // Not Coding Standard
             $this->assertArrayHasKey('collation', $parentColumnDefinition);
             $this->assertNull($parentColumnDefinition['collation']);
             $this->assertArrayHasKey('default', $parentColumnDefinition);
-            $this->assertEquals('DEFAULT NULL', $parentColumnDefinition['default']);
+            $this->assertEquals('DEFAULT NULL', $parentColumnDefinition['default']); // Not Coding Standard
             $this->assertArrayNotHasKey('length', $parentColumnDefinition);
         }
     }

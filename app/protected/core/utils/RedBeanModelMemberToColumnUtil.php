@@ -60,8 +60,8 @@
         }
 
         public static function resolveColumnMetadataByHintType($name, $hintType = 'string', $length = 255,
-                                                                $unsigned = null, $notNull = 'NULL',
-                                                                $default = 'DEFAULT NULL', $collation = null,
+                                                                $unsigned = null, $notNull = 'NULL', // Not Coding Standard
+                                                                $default = 'DEFAULT NULL', $collation = null, // Not Coding Standard
                                                                 $resolveName = true)
         {
             // TODO: @Shoaibi: Critical: write tests for: integer, smallint, tinyint, blob, date, datetime, double, string, text, email, url
@@ -74,8 +74,8 @@
             $defaults           = array(
                 'hintType'      => 'string',
                 'length'        => 255,
-                'notNull'       => 'NULL',
-                'default'       => 'DEFAULT NULL',
+                'notNull'       => 'NULL', // Not Coding Standard
+                'default'       => 'DEFAULT NULL', // Not Coding Standard
                 'unsigned'      => 'eval:DatabaseCompatibilityUtil::resolveUnsignedByHintType($hintType, ' .
                                             RedBeanModelMemberRulesToColumnAdapter::ASSUME_SIGNED .", '{$name}');",
                 'collation'     => 'eval:DatabaseCompatibilityUtil::resolveCollationByHintType($hintType);',
@@ -90,7 +90,7 @@
                 }
             }
             // field is set to be NOT NULL in db, its default can't be 'NULL', unsetting variable.
-            if ($notNull !== 'NULL')
+            if ($notNull !== 'NULL') // Not Coding Standard
             {
                 $default    = null;
             }
