@@ -11,11 +11,22 @@ before_script:
 #  - if [[ "$DB" == "pgsql" ]]; then psql -c "DROP DATABASE IF EXISTS hello_world_test;" -U postgres; fi
 #  - if [[ "$DB" == "pgsql" ]]; then psql -c "create database hello_world_test;" -U postgres; fi
   - if [[ "$DB" == "mysql" ]]; then mysql -e "create database IF NOT EXISTS zurmo_test;" -uroot; fi
+  - chmod -R 755 ../
+  - chmod -R 757 app/protected/data
+  - chmod -R 757 app/protected/runtime
+  - chmod -R 757 app/assets
+  - chmod -R 757 app/protected/config
+  - cp app/protected/config/debugDIST.php app/protected/config/debug.php
+  - cp app/protected/config/perInstanceDIST.php app/protected/config/perInstance.php'
+  - chmod -R 757 app/protected/config/debug.php
+  - chmod -R 757 app/protected/config/perInstance.php
+  - chmod -R 757 app/version.php
 
 #script: phpunit --configuration phpunit_$DB.xml --coverage-text
 script:
-  - app/protected/commands/zurmoc install localhost zurmo_test zurmo zurmo  super
-  - phpunit --coverage-text app/protected/test/unit/TestSuite.php All
+  - app/protected/commands/zurmoc install localhost zurmo_test zurmo zurmo super
+  - cd app/protected/test/unit
+  - phpunit --coverage-text TestSuite.php All
 
 #notifications:
 #  irc: "irc.freenode.org#travis"
