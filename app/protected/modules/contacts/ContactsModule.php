@@ -95,7 +95,11 @@
                         'right'  => self::RIGHT_CREATE_CONTACTS,
                         'mobile' => true,
                     ),
-                )
+                ),
+                'updateLatestActivityDateTimeWhenATaskIsCompleted'        => true,
+                'updateLatestActivityDateTimeWhenANoteIsCreated'          => true,
+                'updateLatestActivityDateTimeWhenAnEmailIsSentOrArchived' => true,
+                'updateLatestActivityDateTimeWhenAMeetingIsInThePast'     => true,
             );
             return $metadata;
         }
