@@ -17,7 +17,7 @@ before_script:
   - chmod -R 757 app/assets
   - chmod -R 757 app/protected/config
   - cp app/protected/config/debugDIST.php app/protected/config/debug.php
-  - cp app/protected/config/perInstanceDIST.php app/protected/config/perInstance.php'
+  - cp app/protected/config/perInstanceDIST.php app/protected/config/perInstance.php
   - chmod -R 757 app/protected/config/debug.php
   - chmod -R 757 app/protected/config/perInstance.php
   - chmod -R 757 app/version.php
