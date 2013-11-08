@@ -220,7 +220,7 @@
                                      array('{dashboardLink}' => $dashboardLink,
                                            '{closeLink}' => $closeLink));
                 $content = $outerContent . ZurmoHtml::tag('p', array(), $content);
-                $content =  ZurmoHtml::tag('div', array('id'=> 'game-notification'), $content);
+                $content =  ZurmoHtml::tag('div', array('id' => 'game-notification'), $content);
                 return $content;
             }
         }

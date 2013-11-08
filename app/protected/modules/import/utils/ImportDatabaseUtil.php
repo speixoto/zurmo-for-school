@@ -72,8 +72,6 @@
             return true;
         }
 
-
-
         protected static function createTableByTableNameAndImportCsvIntoTable($fileHandle, $tableName, $delimiter,
                                                                                 $enclosure, $firstRowIsHeaderRow)
         {
@@ -284,7 +282,7 @@
         {
             if ($columnCount > 0)
             {
-                if($columnCount > static::MAX_IMPORT_COLUMN_COUNT)
+                if ($columnCount > static::MAX_IMPORT_COLUMN_COUNT)
                 {
                     throw new TooManyColumnsFailedException(
                         Zurmo::t('ImportModule', 'The file has too many columns. The maximum is 100'));
@@ -292,7 +290,6 @@
                 static::createTableByTableNameAndImportColumns($tableName, $columns);
             }
         }
-
 
         /**
          * Writes provided array as csv to a temporary file
@@ -559,7 +556,6 @@
                 {
                     $update = true;
                 }
-
             }
             if ($update)
             {
@@ -590,7 +586,6 @@
             $columnLength = isset($results[2]) ? trim($results[2], '()') : null;
             return compact('columnType', 'columnLength');
         }
-
 
         /**
          * For the temporary import tables, some of the columns are reserved and not used by any of the import data

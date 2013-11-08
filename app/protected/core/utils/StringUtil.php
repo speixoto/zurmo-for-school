@@ -48,7 +48,7 @@
          */
         public static function getChoppedStringContent($string, $length, $ellipsis = '...')
         {
-            assert('is_string($string) || is_null($string)');
+            assert('is_string($string) || $string === null');
             assert('is_int($length)');
             if ($string != null && strlen($string) > $length)
             {
@@ -110,7 +110,8 @@
             return strtolower(preg_replace('/[^\da-z]/i', '', Yii::app()->label));
         }
 
-        public static function uncamelize($string ) {
+        public static function uncamelize($string )
+        {
             $string[0] = strtolower($string[0]);
             $uncamelizeFunction = create_function('$c', 'return "_" . strtolower($c[1]);');
             return preg_replace_callback( '/([A-Z])/', $uncamelizeFunction, $string);

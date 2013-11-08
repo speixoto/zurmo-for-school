@@ -77,7 +77,7 @@
             $projectAuditEvent->project        = $project;
             $projectAuditEvent->serializedData = serialize($data);
             $saved                             = $projectAuditEvent->save();
-            if($saved)
+            if ($saved)
             {
                 return true;
             }

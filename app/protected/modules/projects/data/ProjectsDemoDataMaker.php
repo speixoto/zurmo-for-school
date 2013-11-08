@@ -102,7 +102,7 @@
         protected static function addDemoTasks($project, $taskInputCount = 1, & $demoDataHelper)
         {
             $randomTasks = self::getRandomTasks();
-            for($i = 0; $i < count($randomTasks); $i++)
+            for ($i = 0; $i < count($randomTasks); $i++)
             {
                 $task                       = new Task();
                 $task->name                 = $randomTasks[$i]['name'];
@@ -119,11 +119,11 @@
                 //Task check list items
                 $task->notificationSubscribers->add($notificationSubscriber);
                 $taskCheckListItems = $randomTasks[$i]['checkListItems'];
-                foreach($taskCheckListItems as $itemKey => $name)
+                foreach ($taskCheckListItems as $itemKey => $name)
                 {
                     $taskCheckListItem = new TaskCheckListItem();
                     $taskCheckListItem->name = $name;
-                    if(($itemKey * $i * rand(5, 100)) % 3 == 0)
+                    if (($itemKey * $i * rand(5, 100)) % 3 == 0)
                     {
                         $taskCheckListItem->completed = true;
                     }
@@ -132,7 +132,7 @@
                 }
                 //Comments
                 $commentItems  = $randomTasks[$i]['comments'];
-                foreach($commentItems as $description)
+                foreach ($commentItems as $description)
                 {
                     $comment = new Comment();
                     $comment->description = $description;
@@ -175,9 +175,9 @@
                 'Usage of google analytics on company website',
             );
             $multipliedTasksList = array();
-            for($i = 1; $i <= 2; $i++)
+            for ($i = 1; $i <= 2; $i++)
             {
-               foreach($tasksList as $task)
+               foreach ($tasksList as $task)
                {
                    $multipliedTasksList[] = array('name' => $task . ' v' . $i,
                                                   'checkListItems' => self::getTaskCheckListItems($task),
@@ -194,15 +194,15 @@
         protected static function getTaskCheckListItems($key)
         {
             $checklistItemsArray =  array(
-                'Create Demo Proposal'                        => array('Get the requirements',
+                'Create Demo Proposal'                         => array('Get the requirements',
                                                                         'Analysis of requirements'),
-                'Come up with a contacts list for the client' => array('Call the contacts',
+                'Come up with a contacts list for the client'  => array('Call the contacts',
                                                                         'Enter the data into excel'),
-                'Prepare telephone directory for the company' => array('Gather the list of employees with there contact details',
+                'Prepare telephone directory for the company'  => array('Gather the list of employees with there contact details',
                                                                         'Enter the data into excel'),
-                'Get an accounting software'                  => array('Research the available softwares',
+                'Get an accounting software'                   => array('Research the available softwares',
                                                                         'Discuss with the team'),
-                'Usage of google analytics on company website'=> array('Explore the usage',
+                'Usage of google analytics on company website' => array('Explore the usage',
                                                                         'Implement into the website'),
             );
 
@@ -216,16 +216,16 @@
         protected static function getTaskComments($key)
         {
             $comments = array(
-                'Create Demo Proposal'                        => array('Quite useful moving forward',
+                'Create Demo Proposal'                         => array('Quite useful moving forward',
                                                                        'Would be helful for other people'),
-                'Come up with a contacts list for the client' => array('Very beneficial for the company',
+                'Come up with a contacts list for the client'  => array('Very beneficial for the company',
                                                                         'Helpful for the sales team'),
-                'Prepare telephone directory for the company' => array('Very helpful for the employees',
+                'Prepare telephone directory for the company'  => array('Very helpful for the employees',
                                                                         'Can easily track people'),
-                'Get an accounting software'                  => array('Helpful for finance department',
+                'Get an accounting software'                   => array('Helpful for finance department',
                                                                         'Reduced work load',
                                                                         'Less number of people required'),
-                'Usage of google analytics on company website'=> array('Aids in site analysis',
+                'Usage of google analytics on company website' => array('Aids in site analysis',
                                                                         'Would be helpful from SEO perspective'),
             );
             return $comments[$key];

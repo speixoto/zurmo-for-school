@@ -97,7 +97,6 @@
             return Zurmo::t('GameRewardsModule', 'No Transactions found');
         }
 
-
         protected function getCGridViewLastColumn()
         {
             return array();

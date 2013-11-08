@@ -77,11 +77,11 @@
             }
             return $valid;
         }
-        
+
         /**
          * Override to casting automaticProbabilityMappingDisabled to integer
          */
-        public function setAttributes($values,$safeOnly=true)
+        public function setAttributes($values,$safeOnly = true)
         {
             parent::setAttributes($values,$safeOnly);
             $this->automaticProbabilityMappingDisabled = (int) $this->automaticProbabilityMappingDisabled;

@@ -36,6 +36,5 @@
 
     class TasksModuleForm extends ModuleForm
     {
-        
     }
 ?>

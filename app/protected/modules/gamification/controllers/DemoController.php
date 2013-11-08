@@ -78,16 +78,16 @@
                 throw new NotSupportedException();
             }
             $collectionData      = GameCollection::resolvePersonAndAvailableTypes(Yii::app()->user->userModel, GameCollection::getAvailableTypes());
-            foreach($collectionData as $collection)
+            foreach ($collectionData as $collection)
             {
                 $itemsData = $collection->getItemsData();
-                foreach($itemsData as $type => $quantity)
+                foreach ($itemsData as $type => $quantity)
                 {
                     $itemsData[$type] = $quantity + 1;
                 }
                 $collection->setItemsData($itemsData);
                 $saved = $collection->save();
-                if(!$saved)
+                if (!$saved)
                 {
                     throw new FailedToSaveModelException();
                 }

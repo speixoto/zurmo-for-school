@@ -51,10 +51,10 @@
             'Your unsubscription triggered the next big bang',
         ),
         'htmlContent'                  => array(
-            '<p>Thanks for <i>subscribing</i>. You are not gonna <strong>regret</strong> this.</p>',
-            '<p>So you like <i>our</i> emails so far?</p>',
-            '<p><strong>You are now unsubscribed. Its really sad to see you go but you can always subscribe</strong></p>',
-            '<p>So you are <strong>not</strong> coming back?</p>',
+            '<html><head></head><body><p>Thanks for <i>subscribing</i>. You are not gonna <strong>regret</strong> this.</body></html>',
+            '<html><head></head><body><p>So you like <i>our</i> emails so far?</body></html>',
+            '<html><head></head><body><p><strong>You are now unsubscribed. Its really sad to see you go but you can always subscribe</strong></body></html>',
+            '<html><head></head><body><p>So you are <strong>not</strong> coming back?</body></html>',
         ),
         'textContent'                  => array(
             'Thanks for subscribing. You are not gonna regret this.',

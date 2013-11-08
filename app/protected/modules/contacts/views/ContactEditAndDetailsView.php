@@ -61,6 +61,7 @@
                         'owner',
                         'state',
                         'googleWebTrackingId',
+                        'latestActivityDateTime'
                     ),
                     'panelsDisplayType' => FormLayout::PANELS_DISPLAY_TYPE_ALL,
                     'panels' => array(

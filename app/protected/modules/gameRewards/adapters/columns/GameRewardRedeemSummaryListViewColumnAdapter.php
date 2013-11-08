@@ -59,7 +59,7 @@
             assert('is_int($availableCoins)');
             $content  = ZurmoHtml::tag('h4', array('class' => 'reward-name'),
                         strval($gameReward));
-            if($gameReward->description != null)
+            if ($gameReward->description != null)
             {
                 // $content .= ZurmoHtml::tag('h3', array('class' => 'reward-description'),
                 //             $gameReward->description);

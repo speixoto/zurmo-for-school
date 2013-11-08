@@ -255,8 +255,8 @@
                                                    $moduleClassName,
                                                    $isOwnerRequiredInDisplay = true)
         {
-            assert('is_string($controllerId) || is_null($controllerId)');
-            assert('is_string($moduleId)  || is_null($moduleId)');
+            assert('is_string($controllerId) || $controllerId === null');
+            assert('is_string($moduleId)  || $moduleId === null');
             assert('is_string($moduleClassName)');
             if ($isOwnerRequiredInDisplay)
             {
@@ -324,7 +324,6 @@
                     break;
             }
             return $element->render();
-
         }
 
         /**
@@ -744,7 +743,7 @@
         public static function resolveFirstRelatedModelStringValue(Task $task)
         {
             $modelOrNull = static::resolveFirstRelatedModel($task);
-            if($modelOrNull === null)
+            if ($modelOrNull === null)
             {
                 return null;
             }
@@ -758,11 +757,11 @@
          */
         public static function resolveFirstRelatedModel(Task $task)
         {
-            if($task->project->id > 0)
+            if ($task->project->id > 0)
             {
                 return $task->project;
             }
-            elseif($task->activityItems->count() > 0)
+            elseif ($task->activityItems->count() > 0)
             {
                 try
                 {
@@ -879,9 +878,9 @@
             }
             elseif ($sourceKanbanType == KanbanItem::TYPE_IN_PROGRESS)
             {
-                if ($targetStatus == Task::STATUS_AWAITING_ACCEPTANCE
-                                    || $targetStatus == Task::STATUS_REJECTED
-                                        || $targetStatus == Task::STATUS_IN_PROGRESS)
+                if ($targetStatus == Task::STATUS_AWAITING_ACCEPTANCE ||
+                                       $targetStatus == Task::STATUS_REJECTED ||
+                                           $targetStatus == Task::STATUS_IN_PROGRESS)
                 {
                     $targetKanbanType = KanbanItem::TYPE_IN_PROGRESS;
                 }
@@ -898,7 +897,7 @@
                 $sortOrder = self::resolveAndGetSortOrderForTaskOnKanbanBoard($targetKanbanType, $task);
                 $kanbanItem->sortOrder = $sortOrder;
                 $kanbanItem->type      = $targetKanbanType;
-                if(!$kanbanItem->save())
+                if (!$kanbanItem->save())
                 {
                     throw new FailedToSaveModelException();
                 }

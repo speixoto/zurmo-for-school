@@ -55,7 +55,6 @@
             DisplayAttributeForReportForm::resetCount();
         }
 
-
         public function testGetCurrencyValueAndDateAttributesOnOwnedModel()
         {
             $reportModelTestItem11            = new ReportModelTestItem11();

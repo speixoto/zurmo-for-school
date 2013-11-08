@@ -63,7 +63,6 @@
             $polySideId = $polySide->id;
             $this->assertTrue($polySideId > 0);
 
-
             $oneSideId = $oneSide->id;
             $oneSide->forget();
             unset($oneSide);

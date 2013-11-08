@@ -57,7 +57,7 @@
                     RightsUtil::canUserAccessModule(get_class($module), $user) &&
                     ($scopeData == null || in_array($modelClassName, $scopeData)))
                 {
-                    $searchAttributes= MixedTermSearchUtil::
+                    $searchAttributes = MixedTermSearchUtil::
                                         getGlobalSearchAttributeByModuleAndPartialTerm($module, $partialTerm);
                     if (!empty($searchAttributes))
                     {

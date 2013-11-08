@@ -100,15 +100,15 @@
         {
             assert('is_string($stringTime) || $stringTime == null');
             $searchAttributeData = parent::makeSearchAttributeData($stringTime);
-            assert("count(\$searchAttributeData['clauses']) == 2");
-            $searchAttributeData['clauses'][3] =
+            assert("count(\$searchAttributeData['clauses']) == 4");
+            $searchAttributeData['clauses'][5] =
             array(
                 'attributeName'        => 'activityItems',
                 'relatedAttributeName' => 'id',
                 'operatorType'         => 'equals',
                 'value'                => (int)$this->params['relationModel']->getClassId('Item')
             );
-            $searchAttributeData['structure'] = '(1 and 2 and 3)';
+            $searchAttributeData['structure'] = '(1 and 2 and (3 or 4) and 5)';
             return $searchAttributeData;
         }
 

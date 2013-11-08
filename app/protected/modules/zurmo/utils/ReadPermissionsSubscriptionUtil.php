@@ -72,7 +72,7 @@
                     'name' => 'userid',
                     'type' => 'INT(11)',
                     'unsigned' => 'UNSIGNED',
-                    'notNull' => 'NOT NULL',
+                    'notNull' => 'NOT NULL', // Not Coding Standard
                     'collation' => null,
                     'default' => null,
                 ),
@@ -80,7 +80,7 @@
                     'name' => 'modelid',
                     'type' => 'INT(11)',
                     'unsigned' => 'UNSIGNED',
-                    'notNull' => 'NOT NULL',
+                    'notNull' => 'NOT NULL', // Not Coding Standard
                     'collation' => null,
                     'default' => null,
                 ),
@@ -88,17 +88,17 @@
                     'name' => 'modifieddatetime',
                     'type' => 'DATETIME',
                     'unsigned' => null,
-                    'notNull' => 'NULL',
+                    'notNull' => 'NULL', // Not Coding Standard
                     'collation' => null,
-                    'default' => 'NULL',
+                    'default' => 'NULL', // Not Coding Standard
                 ),
                 array(
                     'name' => 'subscriptiontype',
                     'type' => 'TINYINT(4)',
                     'unsigned' => null,
-                    'notNull' => 'NULL',
+                    'notNull' => 'NULL', // Not Coding Standard
                     'collation' => null,
-                    'default' => 'NULL',
+                    'default' => 'NULL', // Not Coding Standard
                 ),
             ),
                 'indexes' => array('userid_modelid' => array(

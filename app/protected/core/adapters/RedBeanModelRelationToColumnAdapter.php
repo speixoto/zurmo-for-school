@@ -70,8 +70,8 @@
         public static function resolve($modelClassName, $relationName, array $relationMetadata, & $messageLogger)
         {
             $column = null;
-            if (!empty($modelClassName) && @class_exists($modelClassName) && !empty($relationName)
-                                            && count($relationMetadata) >= 2 && @class_exists($relationMetadata[1]))
+            if (!empty($modelClassName) && @class_exists($modelClassName) && !empty($relationName) &&
+                                                count($relationMetadata) >= 2 && @class_exists($relationMetadata[1]))
             {
                 $relationType           = $relationMetadata[0];
                 $relatedModelClass      = $relationMetadata[1];
@@ -90,7 +90,7 @@
                     RedBeanModelToJoinTableAdapter::resolve($modelClassName, $relationMetadata, $messageLogger);
                     return null;
                 }
-                else if (in_array($relationType, array(RedBeanModel::HAS_ONE, RedBeanModel::HAS_MANY_BELONGS_TO)))
+                elseif (in_array($relationType, array(RedBeanModel::HAS_ONE, RedBeanModel::HAS_MANY_BELONGS_TO)))
                 {
                     $linkName               = null;
                     if ($linkType == RedBeanModel::LINK_TYPE_ASSUMPTIVE &&
@@ -101,7 +101,7 @@
                     $name   = $linkName . RedBeanModel::getForeignKeyName($modelClassName, $relationName);
                     $column = RedBeanModelMemberToColumnUtil::resolveForeignKeyColumnMetadata($name);
                 }
-                else if ($relationType == RedBeanModel::HAS_MANY && $linkType == RedBeanModel::LINK_TYPE_POLYMORPHIC)
+                elseif ($relationType == RedBeanModel::HAS_MANY && $linkType == RedBeanModel::LINK_TYPE_POLYMORPHIC)
                 {
                     static::setColumnsForPolymorphicLink($relatedModelClass, $relationMetadata[4]);
                 }

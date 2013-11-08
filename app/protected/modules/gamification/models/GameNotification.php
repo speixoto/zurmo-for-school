@@ -118,7 +118,7 @@
             assert('is_int($nextLevelValue)');
             assert('is_int($coinsValue)');
             $data = array('type' => self::TYPE_LEVEL_CHANGE, 'levelValue' => $nextLevelValue);
-            if($coinsValue > 0)
+            if ($coinsValue > 0)
             {
                 $data['coins'] = $coinsValue;
             }

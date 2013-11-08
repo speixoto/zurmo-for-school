@@ -50,7 +50,6 @@
             ContactsModule::loadStartingData();
             self::$message1 = EmailMessageTestHelper::createArchivedUnmatchedReceivedMessage($super);
             $super->forget(); //ensures the there is no emailBox caching going on that is not needed
-
         }
 
         public function testResolveContactToSenderOrRecipientForReceivedEmail()
