@@ -445,9 +445,10 @@
                             $kanbanItem->sortOrder = TasksUtil::resolveAndGetSortOrderForTaskOnKanbanBoard($type, $task);
                             $kanbanItem->type = intval($type);
                             $kanbanItem->save();
-                            $this->processStatusUpdateViaAjax($taskId, Task::STATUS_COMPLETED, false);
+                            $this->processStatusUpdateViaAjax($task, Task::STATUS_COMPLETED, false);
                             $response['button'] = '';
                             $response['status'] = Task::getStatusDisplayName($task->status);
+                            $response['owner']  = $task->owner->getFullName();
                         }
                         else
                         {
@@ -465,13 +466,14 @@
                                 $kanbanItem->type = intval($type);
                                 $kanbanItem->save();
                                 $targetStatus = TasksUtil::getDefaultTaskStatusForKanbanItemType(intval($type));
-                                $this->processStatusUpdateViaAjax($taskId, $targetStatus, false);
+                                $this->processStatusUpdateViaAjax($task, $targetStatus, false);
                                 $content = TasksUtil::resolveActionButtonForTaskByStatus($targetStatus,
                                                                                         $this->getId(),
                                                                                         $this->getModule()->getId(),
                                                                                         intval($taskId));
                                 $response['button'] = $content;
                                 $response['status'] = Task::getStatusDisplayName($task->status);
+                                $response['owner']  = $task->owner->getFullName();
                             }
                         }
                         $counter++;
@@ -489,7 +491,8 @@
         public function actionUpdateStatusInKanbanView($targetStatus, $taskId, $sourceKanbanType)
         {
            //Run update queries for update task staus and update type and sort order in kanban column
-           $this->processStatusUpdateViaAjax($taskId, $targetStatus, false);
+           $task = Task::getById(intval($taskId));
+           $this->processStatusUpdateViaAjax($task, $targetStatus, false);
            TasksUtil::processKanbanItemUpdateOnButtonAction(intval($targetStatus), intval($taskId), intval($sourceKanbanType));
         }
 
@@ -499,11 +502,17 @@
          * @param int $status
          * @param bool $showCompletionDate whether to show completion date
          */
-        protected function processStatusUpdateViaAjax($id, $status, $showCompletionDate = true)
+        protected function processStatusUpdateViaAjax(Task $task, $status, $showCompletionDate = true)
         {
-            $task          = Task::getById(intval($id));
+            //$task          = Task::getById(intval($id));
             $currentStatus = $task->status;
             $task->status = intval($status);
+            //check for owner in case a user start the task
+            if($currentStatus == Task::STATUS_NEW && $currentStatus != $task->status)
+            {
+                $task->owner = Yii::app()->user->userModel;
+            }
+
             if (intval($status) == Task::STATUS_COMPLETED)
             {
                 foreach ($task->checkListItems as $checkItem)

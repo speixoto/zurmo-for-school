@@ -260,7 +260,7 @@
             assert('is_string($moduleClassName)');
             if ($isOwnerRequiredInDisplay)
             {
-                $label       = $task->name . ZurmoHtml::tag('span', array(), '(' . strval($task->owner) . ')');
+                $label       = $task->name . ZurmoHtml::tag('span', array('class' => 'task-owner'), '(' . strval($task->owner) . ')');
             }
             else
             {
