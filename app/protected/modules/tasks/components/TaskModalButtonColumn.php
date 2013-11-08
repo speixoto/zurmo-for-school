@@ -56,7 +56,14 @@
                 return;
             }
             $label = isset($button['label']) ? $button['label'] : $id;
-            $url = isset($button['url']) ? $this->evaluateExpression($button['url'], array('data'=>$data,'row'=>$row)) : '#';
+            if (isset($button['url']))
+            {
+                $url = $this->evaluateExpression($button['url'], array('data'=>$data,'row'=>$row));
+            }
+            else
+            {
+                $url = '#';
+            }
             $options = isset($button['options']) ? $button['options'] : array();
             if (!isset($options['title']))
             {
