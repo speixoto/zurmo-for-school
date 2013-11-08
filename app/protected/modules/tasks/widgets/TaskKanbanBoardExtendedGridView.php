@@ -413,7 +413,7 @@
             $content .= ZurmoHtml::closeTag('div');
 
             $content .= ZurmoHtml::openTag('div', array('class' => 'task-subscribers'));
-            $content .= $this->resolveAndRenderTaskCardDetailsSubscribersContent($task);
+            $content .= TasksUtil::resolveAndRenderTaskCardDetailsSubscribersContent($task);
             $content .= $this->renderCardDataContent($this->cardColumns['subscribe'], $task, $row);
             $content .= ZurmoHtml::closeTag('div');
 
@@ -440,34 +440,6 @@
                 $content .= ZurmoHtml::closeTag('div');
                 return $content;
             }
-        }
-
-        protected function resolveAndRenderTaskCardDetailsSubscribersContent(Task $task)
-        {
-            $content         = null;
-            $subscribedUsers = TasksUtil::getTaskSubscribers($task);
-            foreach ($subscribedUsers as $user)
-            {
-                if ($user->isSame($task->owner))
-                {
-                    $content .= TasksUtil::renderSubscriberImageAndLinkContent($user, 20, 'task-owner');
-                    break;
-                }
-            }
-            //To take care of the case of duplicates
-            $addedSubscribers = array();
-            foreach ($subscribedUsers as $user)
-            {
-                if (!$user->isSame($task->owner))
-                {
-                    if (!in_array($user->id, $addedSubscribers))
-                    {
-                        $content .= TasksUtil::renderSubscriberImageAndLinkContent($user, 20);
-                        $addedSubscribers[] = $user->id;
-                    }
-                }
-            }
-            return $content;
         }
     }
 ?>

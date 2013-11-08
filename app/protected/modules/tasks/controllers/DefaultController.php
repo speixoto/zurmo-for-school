@@ -184,6 +184,7 @@
         {
             $task    = $this->processSubscriptionRequest($id);
             $content = TasksUtil::getTaskSubscriberData($task);
+            $content .= TasksUtil::resolveSubscriptionLink($task, 'detail-subscribe-task-link', 'detail-unsubscribe-task-link');
             echo $content;
         }
 
@@ -195,6 +196,7 @@
         {
             $task    = $this->processUnsubscriptionRequest($id);
             $content = TasksUtil::getTaskSubscriberData($task);
+            $content .= TasksUtil::resolveSubscriptionLink($task, 'detail-subscribe-task-link', 'detail-unsubscribe-task-link');
             if ($content == null)
             {
                 echo "";
@@ -211,7 +213,10 @@
          */
         public function actionAddKanbanSubscriber($id)
         {
-            $this->processSubscriptionRequest($id);
+            $task = $this->processSubscriptionRequest($id);
+            $content = TasksUtil::resolveAndRenderTaskCardDetailsSubscribersContent($task);
+            $content .= TasksUtil::resolveSubscriptionLink($task, 'subscribe-task-link', 'unsubscribe-task-link');
+            echo $content;
         }
 
         /**
@@ -220,7 +225,17 @@
          */
         public function actionRemoveKanbanSubscriber($id)
         {
-            $this->processUnsubscriptionRequest($id);
+            $task = $this->processUnsubscriptionRequest($id);
+            $content = TasksUtil::resolveAndRenderTaskCardDetailsSubscribersContent($task);
+            $content .= TasksUtil::resolveSubscriptionLink($task, 'subscribe-task-link', 'unsubscribe-task-link');
+            if ($content == null)
+            {
+                echo "";
+            }
+            else
+            {
+                echo $content;
+            }
         }
 
         /**

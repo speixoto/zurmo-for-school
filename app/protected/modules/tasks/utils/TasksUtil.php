@@ -418,14 +418,14 @@
 
             if ($taskId == null)
             {
-                $url           = Yii::app()->createUrl('tasks/default/removeKanbanSubscriber');
-                $script    = self::getKanbanSubscriptionScript($url, 'unsubscribe-task-link', 'subscribe-task-link', $subscribeLink);
+                $url    = Yii::app()->createUrl('tasks/default/removeKanbanSubscriber');
+                $script = self::getKanbanSubscriptionScript($url, 'unsubscribe-task-link', 'subscribe-task-link', $subscribeLink);
                 Yii::app()->clientScript->registerScript('kanban-unsubscribe-task-link-script', $script);
             }
             else
             {
-                $url             = Yii::app()->createUrl('tasks/default/removeSubscriber', array('id' => $taskId));
-                $script    = self::getDetailSubscriptionScript($url, 'detail-unsubscribe-task-link', 'detail-subscribe-task-link', $subscribeLink, $taskId);
+                $url    = Yii::app()->createUrl('tasks/default/removeSubscriber', array('id' => $taskId));
+                $script = self::getDetailSubscriptionScript($url, 'detail-unsubscribe-task-link', 'detail-subscribe-task-link', $subscribeLink, $taskId);
                 Yii::app()->clientScript->registerScript('detail-unsubscribe-task-link-script', $script);
             }
         }
@@ -447,6 +447,8 @@
                                                         var id          = $(element).attr('id');
                                                         var idParts     = id.split('_');
                                                         var taskId      = parseInt(idParts[1]);
+                                                        var linkParent  = $(this).parent();
+                                                        console.log(linkParent);
                                                         $.ajax(
                                                         {
                                                             type : 'GET',
@@ -454,8 +456,7 @@
                                                             url  : '" . $url . "',
                                                             success : function(data)
                                                                       {
-                                                                        $(linkElement).html('" . $link . "');
-                                                                        $(linkElement).attr('class', '" . $targetClass . "');
+                                                                        $(linkParent).html(data);
                                                                       }
                                                         }
                                                         );
@@ -975,6 +976,39 @@
                     TasksUtil::sortKanbanColumnItems($sourceKanbanItemType, $task->activityItems->offsetGet(0));
                 }
             }
+        }
+
+        /**
+         * Resolve and render task card details subscribers content
+         * @param Task $task
+         * @return type
+         */
+        public static function resolveAndRenderTaskCardDetailsSubscribersContent(Task $task)
+        {
+            $content         = null;
+            $subscribedUsers = TasksUtil::getTaskSubscribers($task);
+            foreach ($subscribedUsers as $user)
+            {
+                if ($user->isSame($task->owner))
+                {
+                    $content .= TasksUtil::renderSubscriberImageAndLinkContent($user, 20, 'task-owner');
+                    break;
+                }
+            }
+            //To take care of the case of duplicates
+            $addedSubscribers = array();
+            foreach ($subscribedUsers as $user)
+            {
+                if (!$user->isSame($task->owner))
+                {
+                    if (!in_array($user->id, $addedSubscribers))
+                    {
+                        $content .= TasksUtil::renderSubscriberImageAndLinkContent($user, 20);
+                        $addedSubscribers[] = $user->id;
+                    }
+                }
+            }
+            return $content;
         }
     }
 ?>
