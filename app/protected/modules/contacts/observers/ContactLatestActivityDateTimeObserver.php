@@ -125,7 +125,7 @@
         /**
          * Given a event, check that the event's sender is a meeting.  this is a beforeSave event
          * that should reset the latestActivityDateTimeProcessFlag if the startDateTime has changed.
-         * This flag is then used by the UpdateMeetingsRelatedContactLatestActivityDateTimeJob
+         * This flag is then used by the UpdateContactLatestActivityDateTimeByMeetingJob
          * @param Cevent $event
          */
         public function resolveContactLatestActivityDateTimeProcessFlagByMeeting(Cevent $event)
@@ -141,12 +141,13 @@
          * @param $activityItems
          * @param $dateTime
          */
-        protected function resolveRelatedContactsAndSetLatestActivityDateTime($activityItems, $dateTime)
+        public static function resolveRelatedContactsAndSetLatestActivityDateTime($activityItems, $dateTime)
         {
-
+            assert('is_array($activityItems)');
+            assert('is_string($dateTime)');
             foreach ($activityItems as $item)
             {
-                $this->resolveItemToContactAndPopulateLatestActivityDateTime($item, $dateTime);
+                static::resolveItemToContactAndPopulateLatestActivityDateTime($item, $dateTime);
             }
         }
 
@@ -155,8 +156,9 @@
          * @param $dateTime
          * @throws FailedToSaveModelException
          */
-        protected function resolveItemToContactAndPopulateLatestActivityDateTime(Item $item, $dateTime)
+        public static function resolveItemToContactAndPopulateLatestActivityDateTime(Item $item, $dateTime)
         {
+            assert('is_string($dateTime)');
             $modelDerivationPathToItem = RuntimeUtil::getModelDerivationPathToItem('Contact');
             try
             {
@@ -164,7 +166,7 @@
                 if(DateTimeUtil::isDateTimeStringNull($castedDownModel->latestActivityDateTime) ||
                     $dateTime > $castedDownModel->latestActivityDateTime)
                 {
-                    $castedDownModel->setLatestActivityDateTime = $dateTime;
+                    $castedDownModel->setLatestActivityDateTime($dateTime);
                     $saved = $castedDownModel->save();
                     if(!$saved)
                     {
