@@ -82,8 +82,9 @@
                 'yet very simple to use.',
         ),
         'htmlContent'           => array(
-            'Zurmo\'s source code is hosted on bitbucket while we use ' .
-                '<img src="http://www.selenic.com/hg-logo/droplets-50.png" alt="mercurial" /> for version control.',
+            '<html><head></head><body><p>Zurmo\'s source code is hosted on bitbucket while we use ' .
+                '<img src="http://www.selenic.com/hg-logo/droplets-50.png" alt="mercurial" /> for ' .
+                'version control.</body></html>',
             '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
                 <html>
                     <head>
@@ -174,7 +175,8 @@
 
                         /* Target mobile devices. */
                         /* @media only screen and (max-device-width: 639px) { */
-                        @media only screen and (max-width: 639px) {
+                        @media only screen and (max-width: 639px) 
+                        {
                             /* Hide elements at smaller screen sizes (!important needed to override inline CSS). */
                             body[yahoo] .hide {display:none !important;}
 
@@ -196,7 +198,8 @@
 
                         /* Target tablet devices. */
                         /* @media only screen and (min-device-width: 640px) and (max-device-width: 1024px) { */
-                        @media only screen and (min-width: 640px) and (max-width: 1024px) {
+                        @media only screen and (min-width: 640px) and (max-width: 1024px) 
+                        {
                         }
 
                         /*** END EDITABLE STYLES ***/

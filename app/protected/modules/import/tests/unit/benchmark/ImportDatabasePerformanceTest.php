@@ -133,7 +133,7 @@
                 do
                 {
                     $lengthOfCurrentSegment = rand(1, $remainingLength);
-                    $data[$i][] = str_repeat('_',$lengthOfCurrentSegment);
+                    $data[$i][] = str_repeat('_', $lengthOfCurrentSegment);
                     $remainingLength -= $lengthOfCurrentSegment;
                 } while ($remainingLength > 0);
             }

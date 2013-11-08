@@ -56,7 +56,8 @@
             return "task-check-item-inline-edit-form";
         }
 
-        public function renderFormLayout($form = null){
+        public function renderFormLayout($form = null)
+        {
             $nameElement = new TextElement($this->getModel(), 'name', $form);
             $nameElement->editableTemplate = '{content}{error}';
             $taskInput = ZurmoHtml::tag('div', array('class' => 'task-input'), $nameElement->render());

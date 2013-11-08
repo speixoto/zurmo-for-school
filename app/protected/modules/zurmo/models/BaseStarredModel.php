@@ -84,7 +84,7 @@
 
         public static function getByUserIdAndModelId($userId, $modelId, $countOnly = false)
         {
-            assert('is_int($userId) || is_string($userId) || is_null($userId)');
+            assert('is_int($userId) || is_string($userId) || $userId === null');
             assert('is_int($modelId) || is_string($modelId)');
             $relationName = static::getRelationName();
             $searchAttributeData = array();

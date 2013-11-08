@@ -60,7 +60,7 @@
             $taskNew = TaskTestHelper::createTaskWithOwnerAndRelatedItem('MyTask New', $super, $lead, Task::STATUS_NEW);
             $this->setGetArray(array('id' => $task->id, 'kanbanBoard' => '1'));
             $content = $this->runControllerWithNoExceptionsAndGetContent('leads/default/details');
-            $matcher= array(
+            $matcher = array(
                 'tag' => 'h4',
                 //Multiple ancestors
                 'ancestor' => array('tag' => 'li', 'id' => 'items_' . $task->id, 'tag' => 'ul', 'id' => 'task-sortable-rows-3'),
@@ -68,7 +68,7 @@
             );
             $this->assertTag($matcher, $content);
 
-            $matcher= array(
+            $matcher = array(
                 'tag' => 'h4',
                 //Multiple ancestors
                 'ancestor' => array('tag' => 'li', 'id' => 'items_' . $taskNew->id, 'tag' => 'ul', 'id' => 'task-sortable-rows-1'),

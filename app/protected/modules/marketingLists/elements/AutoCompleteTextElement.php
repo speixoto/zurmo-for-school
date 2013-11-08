@@ -162,12 +162,14 @@
             else
             {
                 $selectLinkId = $this->getWidgetId() . '-select-link';
+                // Begin Not Coding Standard
                 Yii::app()->clientScript->registerScript($scriptName, "
                     $('#{$selectLinkId}').off();
                     $('#{$this->getIdForHiddenSelectLinkField()}').change(function(event){
                         {$this->getAfterChangeSelectIdScript()}
                     });
                 ");
+                // End Not Coding Standard
             }
         }
 

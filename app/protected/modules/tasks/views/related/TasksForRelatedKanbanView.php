@@ -61,12 +61,12 @@
                                   'itemOptions' => array('class' => 'hasDetailsFlyout'),
                                   'model'       => 'eval:$this->params["relationModel"]',
                             ),
-                            array('type'            => 'CreateTaskFromRelatedKanbanModalLink',
-                                  'routeModuleId'   => 'eval:$this->moduleId',
-                                  'routeParameters' => 'eval:$this->getCreateLinkRouteParameters()',
-                                  'ajaxOptions'     => 'eval:TasksUtil::resolveAjaxOptionsForModalView("Create", $this->getGridViewId())',
+                            array('type'                => 'CreateTaskFromRelatedKanbanModalLink',
+                                  'routeModuleId'       => 'eval:$this->moduleId',
+                                  'routeParameters'     => 'eval:$this->getCreateLinkRouteParameters()',
+                                  'ajaxOptions'         => 'eval:TasksUtil::resolveAjaxOptionsForModalView("Create", $this->getGridViewId())',
                                   'sourceKanbanBoardId' => 'eval:$this->getGridViewId()',
-                                  'modalContainerId'=> 'eval:TasksUtil::getModalContainerId()'
+                                  'modalContainerId'    => 'eval:TasksUtil::getModalContainerId()'
                             ),
 
                         ),
@@ -387,7 +387,7 @@
                 $script  = "$('#" . $this->getGridId() . "').show();";
                 $script .= "$('#ZeroTasksForRelatedModelYetView').hide();";
             }
-            Yii::app()->clientScript->registerScript('taskKanbanDetailScript',$script);
+            Yii::app()->clientScript->registerScript('taskKanbanDetailScript', $script);
         }
 
         protected function resolveShouldOpenToTask()
@@ -451,10 +451,12 @@
          */
         protected function getCGridViewBeforeAjaxUpdate()
         {
+            // Begin Not Coding Standard
             return 'js:function(id, options){
                             $(".ui-overlay-block").fadeIn(50);
                             $(this).makeLargeLoadingSpinner(true, ".ui-overlay-block");
                     }';
+            // End Not Coding Standard
         }
     }
 ?>

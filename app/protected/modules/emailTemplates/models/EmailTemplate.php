@@ -162,13 +162,19 @@
         public function validateModelExists($attribute, $params)
         {
             $passedValidation = true;
-            if (!empty($this->$attribute))
+            $modelClassName = $this->$attribute;
+            if (!empty($modelClassName))
             {
-                if (@class_exists($this->$attribute))
+                if (@class_exists($modelClassName))
                 {
-                    if (!is_subclass_of($this->$attribute, 'RedBeanModel'))
+                    if (!is_subclass_of($modelClassName, 'RedBeanModel'))
                     {
                         $this->addError($attribute, Zurmo::t('EmailTemplatesModule', 'Provided class name is not a valid Model class.'));
+                        $passedValidation = false;
+                    }
+                    elseif (!RightsUtil::canUserAccessModule($modelClassName::getModuleClassName(), Yii::app()->user->userModel))
+                    {
+                        $this->addError($attribute, Zurmo::t('EmailTemplatesModule', 'Provided class name access is prohibited.'));
                         $passedValidation = false;
                     }
                 }

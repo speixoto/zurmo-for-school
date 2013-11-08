@@ -56,14 +56,14 @@
                 $gameReward           = new GameReward();
                 $gameReward->name     = $gameRewardRandomData['names'][$i];
                 $gameReward->owner    = $demoDataHelper->getRandomByModelName('User');
-                $gameReward->cost     = mt_rand(1,10);
-                $gameReward->quantity = mt_rand(1,20);
+                $gameReward->cost     = mt_rand(1, 10);
+                $gameReward->quantity = mt_rand(1, 20);
 
                 for ($j = 0; $j < 5; $j++)
                 {
                     $gameRewardTransaction           = new GameRewardTransaction();
                     $gameRewardTransaction->person   = $demoDataHelper->getRandomByModelName('User');
-                    $gameRewardTransaction->quantity = mt_rand(1,3);
+                    $gameRewardTransaction->quantity = mt_rand(1, 3);
                     $gameReward->transactions->add($gameRewardTransaction);
                 }
                 $gameReward->addPermissions(Group::getByName(Group::EVERYONE_GROUP_NAME), Permission::READ_WRITE_CHANGE_PERMISSIONS_CHANGE_OWNER);

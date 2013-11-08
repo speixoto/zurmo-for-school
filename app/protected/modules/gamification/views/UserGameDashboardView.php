@@ -142,6 +142,7 @@
 
         protected function registerCloseButtonScript()
         {
+            // Begin Not Coding Standard
             $script = "$('.close-dashboard-button a').on('click', function(){
                            if($('#UserGameDashboardView').length){
                                closeGamificationDashboard();
@@ -154,6 +155,7 @@
                                return false;
                            }
                        });";
+            // End Not Coding Standard
             Yii::app()->clientScript->registerScript('closeGameficationDashboardScript', $script);
         }
 
@@ -435,7 +437,7 @@ SPT;
             {
                 if ($collection->getRedemptionCount() > 0)
                 {
-                    $count ++;
+                    $count++;
                 }
             }
             return $count;

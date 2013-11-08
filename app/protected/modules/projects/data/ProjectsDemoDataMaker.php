@@ -194,15 +194,15 @@
         protected static function getTaskCheckListItems($key)
         {
             $checklistItemsArray =  array(
-                'Create Demo Proposal'                        => array('Get the requirements',
+                'Create Demo Proposal'                         => array('Get the requirements',
                                                                         'Analysis of requirements'),
-                'Come up with a contacts list for the client' => array('Call the contacts',
+                'Come up with a contacts list for the client'  => array('Call the contacts',
                                                                         'Enter the data into excel'),
-                'Prepare telephone directory for the company' => array('Gather the list of employees with there contact details',
+                'Prepare telephone directory for the company'  => array('Gather the list of employees with there contact details',
                                                                         'Enter the data into excel'),
-                'Get an accounting software'                  => array('Research the available softwares',
+                'Get an accounting software'                   => array('Research the available softwares',
                                                                         'Discuss with the team'),
-                'Usage of google analytics on company website'=> array('Explore the usage',
+                'Usage of google analytics on company website' => array('Explore the usage',
                                                                         'Implement into the website'),
             );
 
@@ -216,16 +216,16 @@
         protected static function getTaskComments($key)
         {
             $comments = array(
-                'Create Demo Proposal'                        => array('Quite useful moving forward',
+                'Create Demo Proposal'                         => array('Quite useful moving forward',
                                                                        'Would be helful for other people'),
-                'Come up with a contacts list for the client' => array('Very beneficial for the company',
+                'Come up with a contacts list for the client'  => array('Very beneficial for the company',
                                                                         'Helpful for the sales team'),
-                'Prepare telephone directory for the company' => array('Very helpful for the employees',
+                'Prepare telephone directory for the company'  => array('Very helpful for the employees',
                                                                         'Can easily track people'),
-                'Get an accounting software'                  => array('Helpful for finance department',
+                'Get an accounting software'                   => array('Helpful for finance department',
                                                                         'Reduced work load',
                                                                         'Less number of people required'),
-                'Usage of google analytics on company website'=> array('Aids in site analysis',
+                'Usage of google analytics on company website' => array('Aids in site analysis',
                                                                         'Would be helpful from SEO perspective'),
             );
             return $comments[$key];

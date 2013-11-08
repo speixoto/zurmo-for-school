@@ -37,11 +37,11 @@
     /**
      * View that renders designer module breadcrumb content
      */
-    class DesignerBreadCrumbView extends BreadCrumbView
+    class DesignerBreadCrumbView extends SettingsBreadCrumbView
     {
-        protected function getHomeLinkLabel()
+        protected function getModuleTitle()
         {
-            return Zurmo::t('DesignerModule', 'Designer Home');
+            return Zurmo::t('DesignerModule', 'Designer');
         }
     }
 ?>

@@ -73,8 +73,11 @@
                 2 => array('attributeName' => 'startDateTime',
                            'operatorType' => 'lessThan',
                            'value' => DateTimeUtil::convertTimestampToDbFormatDateTime(time())),
+                3 => array('attributeName' => 'logged',
+                           'operatorType' => 'equals',
+                           'value' => true)
             );
-            $compareSearchAttributesData['Meeting']['structure'] = '1 and 2';
+            $compareSearchAttributesData['Meeting']['structure'] = '1 and (2 or 3)';
             $compareSearchAttributesData['Task']['clauses'] = array(
                 1 => array('attributeName' => 'activityItems',
                            'relatedAttributeName' => 'id',
@@ -102,8 +105,8 @@
                                         getSearchAttributesDataByModelClassNamesAndRelatedItemIds($modelClassNames,
                                                                                                   $relationItemIds,
                                                                                                   LatestActivitiesConfigurationForm::OWNED_BY_FILTER_USER);
-            $compareSearchAttributesData['Meeting']['structure'] = '1 and 2 and 3';
-            $compareSearchAttributesData['Meeting']['clauses'][3] = array(
+            $compareSearchAttributesData['Meeting']['structure'] = '1 and (2 or 3) and 4';
+            $compareSearchAttributesData['Meeting']['clauses'][4] = array(
                 'attributeName' => 'owner',
                 'operatorType' => 'equals',
                 'value' => Yii::app()->user->userModel->id
