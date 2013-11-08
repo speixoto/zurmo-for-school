@@ -46,14 +46,26 @@
             {
                 Task::model()->attachEventHandler('onAfterSave', array($this, 'updateContactLatestActivityDateTimeByTask'));
             }
-            //todo: add note, meeting, emailMessage
+            if(ContactsModule::shouldUpdateLatestActivityDateTimeWhenANoteIsCreated())
+            {
+                Note::model()->attachEventHandler('onAfterSave', array($this, 'updateContactLatestActivityDateTimeByNote'));
+            }
+            if(ContactsModule::shouldUpdateLatestActivityDateTimeWhenAnEmailIsSentOrArchived())
+            {
+                EmailMessage::model()->attachEventHandler('onAfterSave',
+                    array($this, 'updateContactLatestActivityDateTimeByEmailMessage'));
+            }
+            if(ContactsModule::shouldUpdateLatestActivityDateTimeWhenAMeetingIsInThePast())
+            {
+                Meeting::model()->attachEventHandler('onBeforeSave',
+                    array($this, 'resolveContactLatestActivityDateTimeProcessFlagByMeeting'));
+            }
         }
 
         /**
          * Given a event, check that the event's sender is a Task and then check to process updating a related
          * contact's latestActivityDateTime if it should
          * @param CEvent $event
-         * @throws FailedToSaveModelException
          */
         public function updateContactLatestActivityDateTimeByTask(CEvent $event)
         {
@@ -61,28 +73,112 @@
             if(array_key_exists('status', $event->sender->originalAttributeValues) &&
                 $event->sender->status == Task::STATUS_COMPLETED)
             {
-                $modelDerivationPathToItem = RuntimeUtil::getModelDerivationPathToItem('Contact');
-                foreach ($event->sender->activityItems as $item)
+                $this->resolveRelatedContactsAndSetLatestActivityDateTime($event->sender->activityItems,
+                    DateTimeUtil::convertTimestampToDbFormatDateTime(time()));
+            }
+        }
+
+        /**
+         * Given a event, check that the event's sender is a Note and then check to process updating a related
+         * contact's latestActivityDateTime if it should
+         * @param CEvent $event
+         */
+        public function updateContactLatestActivityDateTimeByNote(CEvent $event)
+        {
+            assert('$event->sender instanceof Note');
+            if($event->sender->getIsNewModel())
+            {
+                $this->resolveRelatedContactsAndSetLatestActivityDateTime($event->sender->activityItems,
+                    DateTimeUtil::convertTimestampToDbFormatDateTime(time()));
+            }
+        }
+
+        /**
+         * Given a event, check that the event's sender is a EmailMessage and then check to process updating a related
+         * contact's latestActivityDateTime if it should
+         * Both sent and archived emails will have the sentDateTime just populated.
+         * @param CEvent $event
+         */
+        public function updateContactLatestActivityDateTimeByEmailMessage(CEvent $event)
+        {
+            assert('$event->sender instanceof EmailMessage');
+            //Check for a just sent message
+            if(array_key_exists('sentDateTime', $event->sender->originalAttributeValues) &&
+                !DateTimeUtil::isDateTimeStringNull($event->sender->sentDateTime))
+            {
+                foreach($event->sender->sender->personsOrAccounts as $senderPersonsOrAccount)
                 {
-                    try
+                    $this->resolveItemToContactAndPopulateLatestActivityDateTime($senderPersonsOrAccount,
+                        $event->sender->sentDateTime);
+                }
+                foreach($event->sender->recipients as $emailMessageRecipient)
+                {
+                    foreach($emailMessageRecipient->personsOrAccounts as $recipientPersonsOrAccount)
                     {
-                        $castedDownModel = $item->castDown(array($modelDerivationPathToItem));
-                        $castedDownModel->setLatestActivityDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
-                        $saved = $castedDownModel->save();
-                        if(!$saved)
-                        {
-                            throw new FailedToSaveModelException();
-                        }
-                    }
-                    catch (NotFoundException $e)
-                    {
-                        //do nothing
-                    }
-                    catch(AccessDeniedSecurityException $e)
-                    {
-                        //do nothing, since the current user cannot update the related contact. Fail silently.
+                        $this->resolveItemToContactAndPopulateLatestActivityDateTime($recipientPersonsOrAccount,
+                            $event->sender->sentDateTime);
                     }
                 }
+            }
+        }
+
+        /**
+         * Given a event, check that the event's sender is a meeting.  this is a beforeSave event
+         * that should reset the latestActivityDateTimeProcessFlag if the startDateTime has changed.
+         * This flag is then used by the UpdateMeetingsRelatedContactLatestActivityDateTimeJob
+         * @param Cevent $event
+         */
+        public function resolveContactLatestActivityDateTimeProcessFlagByMeeting(Cevent $event)
+        {
+            assert('$event->sender instanceof Meeting');
+            if(array_key_exists('startDateTime', $event->sender->originalAttributeValues))
+            {
+                $event->sender->processedForLatestActivity = false;
+            }
+        }
+
+        /**
+         * @param $activityItems
+         * @param $dateTime
+         */
+        protected function resolveRelatedContactsAndSetLatestActivityDateTime($activityItems, $dateTime)
+        {
+
+            foreach ($activityItems as $item)
+            {
+                $this->resolveItemToContactAndPopulateLatestActivityDateTime($item, $dateTime);
+            }
+        }
+
+        /**
+         * @param Item $item
+         * @param $dateTime
+         * @throws FailedToSaveModelException
+         */
+        protected function resolveItemToContactAndPopulateLatestActivityDateTime(Item $item, $dateTime)
+        {
+            $modelDerivationPathToItem = RuntimeUtil::getModelDerivationPathToItem('Contact');
+            try
+            {
+                $castedDownModel = $item->castDown(array($modelDerivationPathToItem));
+                if(DateTimeUtil::isDateTimeStringNull($castedDownModel->latestActivityDateTime) ||
+                    $dateTime > $castedDownModel->latestActivityDateTime)
+                {
+                    $castedDownModel->setLatestActivityDateTime = $dateTime;
+                    $saved = $castedDownModel->save();
+                    if(!$saved)
+                    {
+                        throw new FailedToSaveModelException();
+                    }
+                }
+            }
+            catch (NotFoundException $e)
+            {
+                //do nothing
+            }
+            catch(AccessDeniedSecurityException $e)
+            {
+                //do nothing, since the current user cannot update the related contact. Fail silently.
             }
         }
     }
