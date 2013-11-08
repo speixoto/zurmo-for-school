@@ -734,7 +734,7 @@
 
             //Load Model MassSubscribe Views.
             //MassSubscribe view for single selected ids
-            $selectedIds = implode(', ' , array($superContactId1->id, $superContactId4->id));
+            $selectedIds = implode(',' , array($superContactId1->id, $superContactId4->id)); // Not Coding Standard
             $this->setGetArray(array('selectedIds' => $selectedIds, 'selectAll' => '', ));
             $this->resetPostArray();
             $content = $this->runControllerWithNoExceptionsAndGetContent('contacts/default/massSubscribe');
@@ -752,7 +752,7 @@
             //MassSubscribe for selected ids for page 1
             $pageSize           = Yii::app()->pagination->getForCurrentUserByType('massEditProgressPageSize');
             $this->assertEquals(5, $pageSize);
-            $selectedIds = implode(', ' , array($superContactId1->id, $superContactId2->id, $superContactId3->id,
+            $selectedIds = implode(',' , array($superContactId1->id, $superContactId2->id, $superContactId3->id, // Not Coding Standard
                                               $superContactId5->id, $superContactId6->id, $superContactId8->id,
                                               $superContactId9->id));
             $this->setGetArray(array(
