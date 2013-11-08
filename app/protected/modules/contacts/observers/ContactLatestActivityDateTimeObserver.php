@@ -143,7 +143,7 @@
          */
         public static function resolveRelatedContactsAndSetLatestActivityDateTime($activityItems, $dateTime)
         {
-            assert('is_array($activityItems)');
+            assert('$activityItems instanceof RedBeanManyToManyRelatedModels');
             assert('is_string($dateTime)');
             foreach ($activityItems as $item)
             {

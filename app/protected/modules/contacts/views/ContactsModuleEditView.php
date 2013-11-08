@@ -44,7 +44,7 @@
                 array(
                     array(
                         'elements' => array(
-                            array('attributeName' => null, 'type' => 'UpdateLatestActivityDateTime'),
+                            array('attributeName' => 'null', 'type' => 'UpdateLatestActivityDateTime'),
                         ),
                     ),
                 ),

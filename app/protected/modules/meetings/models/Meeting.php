@@ -90,7 +90,6 @@
                     array('endDateTime',      'RedBeanModelCompareDateTimeValidator', 'type' => 'after',
                                               'compareAttribute' => 'startDateTime'),
                     array('processedForLatestActivity', 'boolean'),
-                    array('processedForLatestActivity', 'required'),
                     array('location',         'type',    'type' => 'string'),
                     array('location',         'length',  'min'  => 1, 'max' => 64),
                     array('logged',           'boolean'),
