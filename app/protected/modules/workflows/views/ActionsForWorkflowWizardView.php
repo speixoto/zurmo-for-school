@@ -136,6 +136,7 @@
 
         public static function renderScriptContentForModuleClassNameChange()
         {
+            // Begin Not Coding Standard
             return "
             $('#" . ActionsForWorkflowWizardView::ACTION_TYPE_NAME .
                         " option[value=\"" . ActionForWorkflowForm::TYPE_SUBSCRIBE_TO_LIST . "\"]').remove();
@@ -146,6 +147,7 @@
                         ActionForWorkflowForm::getLabelForSubscribeToList() . "</option>\");
             }
             ";
+            // End Not Coding Standard
         }
 
         /**

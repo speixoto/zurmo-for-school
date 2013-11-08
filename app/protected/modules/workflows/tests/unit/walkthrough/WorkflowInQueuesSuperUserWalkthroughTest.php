@@ -163,7 +163,7 @@
 
             //Load Model MassDelete Views.
             //MassDelete view for single selected ids
-            $selectedIds = implode(',', array($byTimeWorkflowInQueue05->id,
+            $selectedIds = implode(', ', array($byTimeWorkflowInQueue05->id,
                                               $byTimeWorkflowInQueue06->id,
                                               $byTimeWorkflowInQueue07->id,
                                               $byTimeWorkflowInQueue08->id));
@@ -178,7 +178,7 @@
             $content = $this->runControllerWithNoExceptionsAndGetContent('workflows/defaultTimeQueue/massDelete');
             $this->assertContains('<strong>20</strong>&#160;Time Queue Items selected for removal', $content);
             //MassDelete for selected ids
-            $selectedIds = implode(',', array($byTimeWorkflowInQueue02->id,
+            $selectedIds = implode(', ', array($byTimeWorkflowInQueue02->id,
                                               $byTimeWorkflowInQueue03->id,
                                               $byTimeWorkflowInQueue20->id));
             $this->setGetArray(array('selectedIds' => $selectedIds,
@@ -192,7 +192,7 @@
             $this->assertEquals(17, count($models));
 
             //MassDelete for selected ids for paged scenario
-            $selectedIds = implode(',', array($byTimeWorkflowInQueue12->id,
+            $selectedIds = implode(', ', array($byTimeWorkflowInQueue12->id,
                                               $byTimeWorkflowInQueue13->id,
                                               $byTimeWorkflowInQueue14->id,
                                               $byTimeWorkflowInQueue15->id,
@@ -297,7 +297,7 @@
 
             //Load Model MassDelete Views.
             //MassDelete view for single selected ids
-            $selectedIds = implode(',', array($workflowMessageInQueue05->id,
+            $selectedIds = implode(', ', array($workflowMessageInQueue05->id,
                                               $workflowMessageInQueue06->id,
                                               $workflowMessageInQueue07->id,
                                               $workflowMessageInQueue08->id));
@@ -312,7 +312,7 @@
             $content = $this->runControllerWithNoExceptionsAndGetContent('workflows/defaultMessageQueue/massDelete');
             $this->assertContains('<strong>20</strong>&#160;Message Queue Items selected for removal', $content);
             //MassDelete for selected ids
-            $selectedIds = implode(',', array($workflowMessageInQueue02->id,
+            $selectedIds = implode(', ', array($workflowMessageInQueue02->id,
                                               $workflowMessageInQueue03->id,
                                               $workflowMessageInQueue20->id));
             $this->setGetArray(array('selectedIds' => $selectedIds,
@@ -326,7 +326,7 @@
             $this->assertEquals(17, count($models));
 
             //MassDelete for selected ids for paged scenario
-            $selectedIds = implode(',', array($workflowMessageInQueue12->id,
+            $selectedIds = implode(', ', array($workflowMessageInQueue12->id,
                                               $workflowMessageInQueue13->id,
                                               $workflowMessageInQueue14->id,
                                               $workflowMessageInQueue15->id,
