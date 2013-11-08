@@ -66,7 +66,7 @@
         }
 
         public static function getAjaxOptionsForModalLink($title, $containerId = 'modalContainer', $height = 'auto',
-                                                          $width = 600, $position = 'center top+25', $class = "''",// Not Coding Standard
+                                                          $width = 600, $position = 'center top+25', $class = "''", // Not Coding Standard
                                                           $extraCloseScript = null)
         {
             assert('is_string($containerId)');
@@ -88,7 +88,7 @@
                                                                           $height = 'auto',
                                                                           $width = 600,
                                                                           $position = 'center top+25',
-                                                                          $class = "''",// Not Coding Standard
+                                                                          $class = "''", // Not Coding Standard
                                                                           $extraCloseScript = null)
         {
             assert('is_string($containerId)');

@@ -153,7 +153,7 @@
         public function testGetModalDetailsTitle()
         {
             $title = TasksUtil::getModalDetailsTitle();
-            $this->assertEquals('Collaborate On This Task',$title);
+            $this->assertEquals('Collaborate On This Task', $title);
         }
 
         /**
@@ -162,13 +162,13 @@
         public function testGetModalTitleForCreateTask()
         {
             $title = TasksUtil::getModalTitleForCreateTask();
-            $this->assertEquals('Create Task',$title);
+            $this->assertEquals('Create Task', $title);
 
             $title = TasksUtil::getModalTitleForCreateTask("Edit");
-            $this->assertEquals('Edit Task',$title);
+            $this->assertEquals('Edit Task', $title);
 
             $title = TasksUtil::getModalTitleForCreateTask("Copy");
-            $this->assertEquals('Copy Task',$title);
+            $this->assertEquals('Copy Task', $title);
         }
 
         /**
@@ -177,7 +177,7 @@
         public function testGetModalEditTitle()
         {
             $title = TasksUtil::getModalEditTitle();
-            $this->assertEquals('Edit Task',$title);
+            $this->assertEquals('Edit Task', $title);
         }
 
         /**
@@ -203,7 +203,7 @@
             $notificationSubscriber->person = Yii::app()->user->userModel;
             $task->notificationSubscribers->add($notificationSubscriber);
             $task->save();
-            $link = TasksUtil::getKanbanSubscriptionLink($task,0);
+            $link = TasksUtil::getKanbanSubscriptionLink($task, 0);
             $this->assertTrue(strpos($link, 'unsubscribe-task-link') > 0);
 
             foreach ($task->notificationSubscribers as $notificationSubscriber)
@@ -214,7 +214,7 @@
                 }
             }
             $task->save();
-            $link = TasksUtil::getKanbanSubscriptionLink($task,0);
+            $link = TasksUtil::getKanbanSubscriptionLink($task, 0);
             $this->assertTrue(strpos($link, 'subscribe-task-link') > 0);
         }
 
