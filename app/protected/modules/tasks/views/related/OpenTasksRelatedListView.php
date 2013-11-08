@@ -48,33 +48,33 @@
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array(  'type'            => 'CreateFromRelatedModalLink',
-                                    'portletId'       => 'eval:$this->params["portletId"]',
-                                    'routeModuleId'   => 'eval:$this->moduleId',
-                                    'routeParameters' => 'eval:$this->getCreateLinkRouteParameters()',
-                                    'ajaxOptions'     => 'eval:TasksUtil::resolveAjaxOptionsForModalView("Create")',
-                                    'uniqueLayoutId'  => 'eval:$this->uniqueLayoutId',
-                                    'modalContainerId'=> 'eval:TasksUtil::getModalContainerId()'
+                            array(  'type'             => 'CreateFromRelatedModalLink',
+                                    'portletId'        => 'eval:$this->params["portletId"]',
+                                    'routeModuleId'    => 'eval:$this->moduleId',
+                                    'routeParameters'  => 'eval:$this->getCreateLinkRouteParameters()',
+                                    'ajaxOptions'      => 'eval:TasksUtil::resolveAjaxOptionsForModalView("Create")',
+                                    'uniqueLayoutId'   => 'eval:$this->uniqueLayoutId',
+                                    'modalContainerId' => 'eval:TasksUtil::getModalContainerId()'
                                  ),
                         ),
                     ),
                     'rowMenu' => array(
                         'elements' => array(
-                            array(  'type'            => 'EditModalLink',
-                                    'portletId'       => 'eval:$this->params["portletId"]',
-                                    'routeModuleId'   => 'eval:$this->moduleId',
-                                    'routeParameters' => 'eval:$this->getCreateLinkRouteParameters()',
-                                    'ajaxOptions'     => 'eval:TasksUtil::resolveAjaxOptionsForModalView("Edit")',
-                                    'uniqueLayoutId'  => 'eval:$this->uniqueLayoutId',
-                                    'modalContainerId'=> 'eval:TasksUtil::getModalContainerId()'
+                            array(  'type'             => 'EditModalLink',
+                                    'portletId'        => 'eval:$this->params["portletId"]',
+                                    'routeModuleId'    => 'eval:$this->moduleId',
+                                    'routeParameters'  => 'eval:$this->getCreateLinkRouteParameters()',
+                                    'ajaxOptions'      => 'eval:TasksUtil::resolveAjaxOptionsForModalView("Edit")',
+                                    'uniqueLayoutId'   => 'eval:$this->uniqueLayoutId',
+                                    'modalContainerId' => 'eval:TasksUtil::getModalContainerId()'
                                  ),
-                            array(  'type'            => 'CopyModalLink',
-                                    'portletId'       => 'eval:$this->params["portletId"]',
-                                    'routeModuleId'   => 'eval:$this->moduleId',
-                                    'routeParameters' => 'eval:$this->getCreateLinkRouteParameters()',
-                                    'ajaxOptions'     => 'eval:TasksUtil::resolveAjaxOptionsForModalView("Copy")',
-                                    'uniqueLayoutId'  => 'eval:$this->uniqueLayoutId',
-                                    'modalContainerId'=> 'eval:TasksUtil::getModalContainerId()'
+                            array(  'type'             => 'CopyModalLink',
+                                    'portletId'        => 'eval:$this->params["portletId"]',
+                                    'routeModuleId'    => 'eval:$this->moduleId',
+                                    'routeParameters'  => 'eval:$this->getCreateLinkRouteParameters()',
+                                    'ajaxOptions'      => 'eval:TasksUtil::resolveAjaxOptionsForModalView("Copy")',
+                                    'uniqueLayoutId'   => 'eval:$this->uniqueLayoutId',
+                                    'modalContainerId' => 'eval:TasksUtil::getModalContainerId()'
                                  ),
                             array('type' => 'RelatedDeleteLink'),
                         ),

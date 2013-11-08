@@ -53,11 +53,16 @@
                     'value'                => DateTimeUtil::convertTimestampToDbFormatDateTime(
                                                         Yii::app()->timeZoneHelper->convertFromLocalTimeStampForCurrentUser(time()))
             );
+            $searchAttributeData['clauses'][($clausesCount + 2)] = array(
+                'attributeName'        => 'logged',
+                'operatorType'         => 'equals',
+                'value'                => true
+            );
             if ($searchAttributeData['structure'] != null)
             {
                 $searchAttributeData['structure'] .= ' and ';
             }
-            $searchAttributeData['structure'] .=  ($clausesCount + 1);
+            $searchAttributeData['structure'] .= '(' . ($clausesCount + 1) . ' or ' . ($clausesCount + 2) . ')';
             return $searchAttributeData;
         }
 

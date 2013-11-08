@@ -42,17 +42,12 @@
         protected function resolveBreadCrumbLinks()
         {
             return array_merge(array(Zurmo::t('ZurmoModule', 'Plugins') => array('/zurmo/plugins/configurationEdit')),
-                               $this->breadCrumbLinks);
+                $this->breadCrumbLinks);
         }
 
-        protected function getHomeLinkLabel()
+        protected function getModuleTitle()
         {
-            return Zurmo::t('ConfigurationModule', 'Settings Home');
-        }
-
-        protected function getHomeUrl()
-        {
-            return Yii::app()->createUrl('configuration/default/index');
+            return Zurmo::t('QueuesModule', 'Queues');
         }
     }
 ?>

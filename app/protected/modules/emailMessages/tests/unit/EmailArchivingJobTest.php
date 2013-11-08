@@ -60,6 +60,7 @@
                 ContactsModule::loadStartingData();
                 $steve->setRight('ContactsModule',  ContactsModule::RIGHT_ACCESS_CONTACTS);
                 $steve->setRight('AccountsModule',  AccountsModule::RIGHT_ACCESS_ACCOUNTS);
+                $steve->save();
 
                 Yii::app()->imap->imapHost        = Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapHost'];
                 Yii::app()->imap->imapUsername    = Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapUsername'];

@@ -71,7 +71,7 @@
                                                                         'name' => 'servicename',
                                                                         'type' => 'VARCHAR(50)',
                                                                         'unsigned' => null,
-                                                                        'notNull' => 'NOT NULL',
+                                                                        'notNull' => 'NOT NULL', // Not Coding Standard
                                                                         'collation' => 'COLLATE utf8_unicode_ci',
                                                                         'default' => null,
                                                                     ),
@@ -79,7 +79,7 @@
                                                                         'name' => 'modelid',
                                                                         'type' => 'INT(11)',
                                                                         'unsigned' => 'UNSIGNED',
-                                                                        'notNull' => 'NOT NULL',
+                                                                        'notNull' => 'NOT NULL', // Not Coding Standard
                                                                         'collation' => null,
                                                                         'default' => null,
                                                                     ),
@@ -87,7 +87,7 @@
                                                                         'name' => 'modelclassname',
                                                                         'type' => 'VARCHAR(50)',
                                                                         'unsigned' => null,
-                                                                        'notNull' => 'NOT NULL',
+                                                                        'notNull' => 'NOT NULL', // Not Coding Standard
                                                                         'collation' => 'COLLATE utf8_unicode_ci',
                                                                         'default' => null,
                                                                     ),
@@ -95,9 +95,9 @@
                                                                         'name' => 'createddatetime',
                                                                         'type' => 'DATETIME',
                                                                         'unsigned' => null,
-                                                                        'notNull' => 'NULL',
+                                                                        'notNull' => 'NULL', // Not Coding Standard
                                                                         'collation' => null,
-                                                                        'default' => 'NULL',
+                                                                        'default' => 'NULL', // Not Coding Standard
                                                                     ),
                                                                 ),
                                                         'indexes' => array(),
@@ -117,7 +117,7 @@
                 " where servicename = '{$serviceName}'" .
                 " AND modelid = '{$modelId}'" .
                 " AND modelclassname = '{$modelClassName}'";
-            R::exec($sql);
+            ZurmoRedBean::exec($sql);
         }
     }
 ?>

@@ -1,3 +1,3 @@
-"Owner","Name","Description"
-"super","My first project","My first project Desc"
-"super","My second project","My second project Desc"
+"Owner","Name","Description","Status"
+"super","My first project","My first project Desc",0
+"super","My second project","My second project Desc",1

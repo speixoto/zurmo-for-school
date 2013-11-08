@@ -255,8 +255,8 @@
                                                    $moduleClassName,
                                                    $isOwnerRequiredInDisplay = true)
         {
-            assert('is_string($controllerId) || is_null($controllerId)');
-            assert('is_string($moduleId)  || is_null($moduleId)');
+            assert('is_string($controllerId) || $controllerId === null');
+            assert('is_string($moduleId)  || $moduleId === null');
             assert('is_string($moduleClassName)');
             if ($isOwnerRequiredInDisplay)
             {
@@ -878,9 +878,9 @@
             }
             elseif ($sourceKanbanType == KanbanItem::TYPE_IN_PROGRESS)
             {
-                if ($targetStatus == Task::STATUS_AWAITING_ACCEPTANCE
-                                    || $targetStatus == Task::STATUS_REJECTED
-                                        || $targetStatus == Task::STATUS_IN_PROGRESS)
+                if ($targetStatus == Task::STATUS_AWAITING_ACCEPTANCE ||
+                                       $targetStatus == Task::STATUS_REJECTED ||
+                                           $targetStatus == Task::STATUS_IN_PROGRESS)
                 {
                     $targetKanbanType = KanbanItem::TYPE_IN_PROGRESS;
                 }

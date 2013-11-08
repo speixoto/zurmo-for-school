@@ -1874,7 +1874,7 @@
                             {
                                 $linkName = strtolower(static::getRelationLinkName($relationName));
                             }
-                            else if ($linkName == strtolower($relatedModelClassName))
+                            elseif ($linkName == strtolower($relatedModelClassName))
                             {
                                 $linkName = null;
                             }
@@ -1934,7 +1934,7 @@
                                 {
                                     $linkName = strtolower(static::getRelationLinkName($relationName));
                                 }
-                                else if (strtolower($linkName) == strtolower($relatedModelClassName)  ||
+                                elseif (strtolower($linkName) == strtolower($relatedModelClassName)  ||
                                     static::getRelationLinkType($relationName) == self::LINK_TYPE_ASSUMPTIVE)
                                 {
                                     $linkName = null;
