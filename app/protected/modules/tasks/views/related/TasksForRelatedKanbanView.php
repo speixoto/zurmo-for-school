@@ -387,7 +387,7 @@
                 $script  = "$('#" . $this->getGridId() . "').show();";
                 $script .= "$('#ZeroTasksForRelatedModelYetView').hide();";
             }
-            Yii::app()->clientScript->registerScript('taskKanbanDetailScript',$script);
+            Yii::app()->clientScript->registerScript('taskKanbanDetailScript', $script);
         }
 
         protected function resolveShouldOpenToTask()
@@ -451,10 +451,12 @@
          */
         protected function getCGridViewBeforeAjaxUpdate()
         {
+            // Begin Not Coding Standard
             return 'js:function(id, options){
                             $(".ui-overlay-block").fadeIn(50);
                             $(this).makeLargeLoadingSpinner(true, ".ui-overlay-block");
                     }';
+            // End Not Coding Standard
         }
     }
 ?>
