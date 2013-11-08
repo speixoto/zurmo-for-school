@@ -92,10 +92,10 @@
                     {
                         $removable      = $portletsAreRemovable;
                     }
-                    $additionalMenuItems = array();
-                    if (method_exists($className, 'getAdditionalMenuItems'))
+                    $additionalOptionMenuItems = array();
+                    if (method_exists($className, 'getAdditionalOptionMenuItems'))
                     {
-                        $additionalMenuItems = $className::getAdditionalMenuItems();
+                        $additionalOptionMenuItems = $className::getAdditionalOptionMenuItems();
                     }
                     $juiPortletsWidgetItems[$column][$position] = array(
                         'id'            => $portlet->id,
@@ -108,7 +108,7 @@
                         'removable'     => $removable,
                         'uniqueClass'   => $this->resolveUniqueClass($portlet),
                         'portletParams' => $portlet->getPortletParams(),
-                        'additionalMenuItems'=>$additionalMenuItems,
+                        'additionalOptionMenuItems'=>$additionalOptionMenuItems,
                     );
                 }
             }

@@ -35,28 +35,51 @@
      ********************************************************************************/
 
     /**
-     * View for showing in the user interface when the user does not have a valid email configuration.  This needs to be
-     * configured first before a user can send email from the application.
+     * View for showing in the user interface when the user does not have any meeting yet for specific date.
      */
     class NoMeetingsYetView extends View
     {
         public $cssClasses = array('splash-view');
         protected $redirectUrl;
+        protected $controllerId;
+        protected $moduleId;
+        protected $relationModel;
+        protected $relationModuleId;
 
-        public function __construct($redirectUrl = null)
+        public function __construct($redirectUrl , $controllerId, $moduleId, $relationModel = null, $relationModuleId = null)
         {
             $this->redirectUrl = $redirectUrl;
+            $this->controllerId = $controllerId;
+            $this->moduleId = $moduleId;
+            $this->relationModel = $relationModel;
+            $this->relationModuleId = $relationModuleId;
         }
 
         protected function renderContent()
-        {
-            $params  = array('label' => $this->getCreateLinkDisplayLabel());
-            $url     = Yii::app()->createUrl('/meetings/default/createMeeting',
+        {   
+            if(!$this->relationModel && !$this->relationModuleId)
+            {
+                $url     = Yii::app()->createUrl('/meetings/default/createMeeting',
                                              array('redirectUrl' => $this->redirectUrl));
+            }
+            else
+            {
+                $params = array(
+                    'relationAttributeName' => get_class($this->relationModel),
+                    'relationModelId'       => $this->relationModel->id,
+                    'relationModuleId'      => $this->relationModuleId,
+                    'redirectUrl'           => $this->redirectUrl,
+                );
+                
+                $url = Yii::app()->createUrl($this->moduleId . '/' .
+                                        $this->controllerId . '/createFromRelation/', $params);
+            }
+            
             $content = '<div class="' . $this->getIconName() . '">';
             $content .= $this->getMessageContent();
             $content .= ZurmoHtml::link(ZurmoHtml::wrapLabel($this->getCreateLinkDisplayLabel()), $url, array('class' => 'z-button green-button'));
             $content .= '</div>';
+            $content .= '<br /><a href="'.$url.'">click</a>';
             return $content;
         }
 
@@ -72,7 +95,7 @@
 
         protected function getMessageContent()
         {
-            return Zurmo::t('MeetingsModule', '<h2>No Meetings yet.</h2>' .
+            return Zurmo::t('MeetingsModule', '<h2>No Meetings yet.</h2><div class="large-icon"></div>' .
                                      '<p>Add new meeting.</p>');
         }
     }

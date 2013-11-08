@@ -118,7 +118,8 @@
                                                         array_merge($_GET, array(
                                                             'redirectUrl'            => $this->params['redirectUrl'],
                                                             'relationModelId'        => $this->params['relationModel']->id,
-                                                            'relationModelClassName' => get_class($this->params['relationModel'])
+                                                            'relationModelClassName' => get_class($this->params['relationModel']),
+                                                            'relationModuleId'       => $this->params['relationModuleId']
                                                             )));
         }
 

@@ -187,12 +187,12 @@
                 $menuItems['items'][] = array('label' => Zurmo::t('Core', 'Remove Portlet'), 'url' => '#',
                     'linkOptions' => array('class' => 'remove-portlet'));
             }
-            if (isset($item['additionalMenuItems']) && !empty($item['additionalMenuItems']) )
+            if (isset($item['additionalOptionMenuItems']) && !empty($item['additionalOptionMenuItems']) )
             {
-                foreach($item['additionalMenuItems'] as $additionalMenuItem)
+                foreach($item['additionalOptionMenuItems'] as $additionalOptionMenuItem)
                 {
-                    $menuItems['items'][] = array('label' => Zurmo::t('Core', $additionalMenuItem['label']), 
-                            'url' => $additionalMenuItem['url']);
+                    $menuItems['items'][] = array('label' => Zurmo::t('Core', $additionalOptionMenuItem['label']), 
+                            'url' => $additionalOptionMenuItem['url']);
                 }
             }
             if (count($menuItems['items']) > 0)

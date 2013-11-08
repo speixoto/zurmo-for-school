@@ -110,7 +110,7 @@
         {
             return array();
         }
-
+        
         public static function getDefaultMetadata()
         {
             $metadata = array(
@@ -153,7 +153,7 @@
 
             return parent::getGridViewWidgetPath();
         }
-
+        
         /**
          * Override to handle security/access resolution on links.
          */
@@ -226,7 +226,7 @@
             return true;
         }
 
-        protected function getDataProvider()
+        public function getDataProvider()
         {
             if ($this->dataProvider == null)
             {

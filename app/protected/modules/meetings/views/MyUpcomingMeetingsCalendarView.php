@@ -111,7 +111,7 @@
             return 'home';
         }
         
-        public static function getAdditionalMenuItems()
+        public static function getAdditionalOptionMenuItems()
         {
             return array(array('label'=>'Create Meeting', 
                             'url'=>Yii::app()->createUrl('/meetings/default/createMeeting', 
