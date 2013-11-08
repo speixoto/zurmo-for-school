@@ -1,3 +1,5 @@
+#!/bin/sh
+
 chmod -R 755 ../../
 chmod -R 757 ../app/protected/data
 chmod -R 757 ../app/protected/runtime
