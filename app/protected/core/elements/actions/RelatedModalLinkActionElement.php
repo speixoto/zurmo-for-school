@@ -36,6 +36,9 @@
 
     abstract class RelatedModalLinkActionElement extends ModalLinkActionElement
     {
-        
+        protected function resolveHtmlOptionsForRendering()
+        {
+            return array('class' => 'portlet-create-button');
+        }
     }
 ?>

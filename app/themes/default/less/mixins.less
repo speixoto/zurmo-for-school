@@ -216,7 +216,8 @@ a.z-button,
 }
 
 .white-button,
-.cancel-button{
+.cancel-button,
+.portlet-create-button{
 	.z-label{
         color:#666;
         .t-shadow( 0px 1px 0 rgba(255, 255, 255, 0.75) ) !important;
@@ -241,6 +242,19 @@ a.z-button,
 	color:#fff;
 	#gradient > .vertical( @themeColorBtnDefault, @themeColorBtn2Default );
 	.t-shadow( 0px -1px 0 rgba(0, 0, 0, 0.2) ) !important;
+	.box-sizing();
+	float:left;
+	font-weight:bold;
+	padding:0 25px;
+	line-height:25px;
+	display: inline-block;
+	.radius( 3px );
+	position:relative;
+	white-space: nowrap;
+}
+
+.z-label-smaller{
+	padding:0 15px;
 }
 
 a:hover .z-label,
@@ -277,23 +291,6 @@ a:active .z-label{
 .attachLoading{
     color:#FFF;
     cursor:pointer;
-}
-
-.z-label{
-	.box-sizing();
-    float:left;
-    font-weight:bold;
-    padding:0 25px;
-    line-height:25px;
-    display: inline-block;
-    .radius( 3px );
-    position:relative;
-    z-index:1;
-	white-space: nowrap;
-}
-
-.z-label-smaller{
-    padding:0 15px;
 }
 
 .zButton.loading, .z-button.loading{

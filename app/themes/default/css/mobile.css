@@ -199,7 +199,8 @@ a.z-button:after,
   clear: both;
 }
 .white-button .z-label,
-.cancel-button .z-label {
+.cancel-button .z-label,
+.portlet-create-button .z-label {
   color: #666;
   -webkit-text-shadow: 0px 1px 0 rgba(255,255,255,0.75) !important;
   -moz-text-shadow: 0px 1px 0 rgba(255,255,255,0.75) !important;
@@ -209,7 +210,8 @@ a.z-button:after,
   background: url(../images/view-toolbar-gradient.png) left bottom repeat-x;
 }
 .white-button:hover .z-label,
-.cancel-button:hover .z-label {
+.cancel-button:hover .z-label,
+.portlet-create-button:hover .z-label {
   color: #7CB830 !important;
   background-image: none;
   background-color: #ededed !important;
