@@ -172,7 +172,7 @@
                         $this->addError($attribute, Zurmo::t('EmailTemplatesModule', 'Provided class name is not a valid Model class.'));
                         $passedValidation = false;
                     }
-                    else if (!RightsUtil::canUserAccessModule($modelClassName::getModuleClassName(), Yii::app()->user->userModel))
+                    elseif (!RightsUtil::canUserAccessModule($modelClassName::getModuleClassName(), Yii::app()->user->userModel))
                     {
                         $this->addError($attribute, Zurmo::t('EmailTemplatesModule', 'Provided class name access is prohibited.'));
                         $passedValidation = false;

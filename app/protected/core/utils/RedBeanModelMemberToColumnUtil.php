@@ -96,7 +96,7 @@
             }
             // resolve hint type to db type.
             $type               = DatabaseCompatibilityUtil::mapHintTypeIntoDatabaseColumnType($hintType, $length);
-            $column             = compact('name', 'type', 'unsigned', 'notNull','collation', 'default');
+            $column             = compact('name', 'type', 'unsigned', 'notNull', 'collation', 'default');
             return $column;
         }
 

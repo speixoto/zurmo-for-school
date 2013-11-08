@@ -59,7 +59,7 @@
                 ),
                 'indexes' => array(
                     'sourceLanguageTranslation' => array(
-                        'members'   => array('messagesource_id', 'language','translation(767)'),
+                        'members'   => array('messagesource_id', 'language', 'translation(767)'),
                         'unique'    => true,
                     )
                 ),

@@ -45,7 +45,7 @@
     {
         public static function getDependentTestModelClassNames()
         {
-            $ownDependencies = array('WorkflowModelTestItem2','WorkflowModelTestItem3', 'WorkflowModelTestItem9');
+            $ownDependencies = array('WorkflowModelTestItem2', 'WorkflowModelTestItem3', 'WorkflowModelTestItem9');
             return CMap::mergeArray(parent::getDependentTestModelClassNames(), $ownDependencies);
         }
 
