@@ -22,7 +22,8 @@ before_script:
 #script: phpunit --configuration phpunit_$DB.xml --coverage-text
 script:
   - cd app/protected/tests/unit
-  - phpunit --coverage-text TestSuite.php All
+#  - phpunit --coverage-text TestSuite.php All
+  - phpunit TestSuite.php All
 
 #notifications:
 #  irc: "irc.freenode.org#travis"
