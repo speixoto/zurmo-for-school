@@ -1,6 +1,6 @@
 #!/bin/sh
 sudo apt-get update
-sudo apt-get install php5-imap, php5-mysql, php5-pdo, php5-pdo_mysql, php5-memcache, php5-curl, php5-mbstring, php-apc, php-soap, php-imap, php-gd
+sudo apt-get install php5-imap php5-mysql php5-memcache php5-curl php-apc php-soap php5-imap php5-gd
 chmod -R 755 ../
 chmod -R 757 app/protected/data
 chmod -R 757 app/protected/runtime
