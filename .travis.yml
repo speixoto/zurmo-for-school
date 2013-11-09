@@ -4,6 +4,9 @@ php:
   - 5.4
   - 5.5
 
+services:
+  - memcached
+
 env:
   - DB=mysql
 
@@ -12,6 +15,7 @@ before_script:
 #  - if [[ "$DB" == "pgsql" ]]; then psql -c "create database hello_world_test;" -U postgres; fi
 #  - if [[ "$DB" == "mysql" ]]; then mysql -e "create database IF NOT EXISTS zurmo_test;" -uroot; fi
 #  - if [[ "$DB" == "mysql" ]]; then mysql -e "create database IF NOT EXISTS zurmo_temp;" -uroot; fi
+  - phpenv config-add testScript/myconfig.ini
   - mysql -e 'create database zurmo_test;'
   - mysql -e 'create database zurmo_temp;'
   - echo "USE mysql;\nUPDATE user SET password=PASSWORD('password') WHERE user='travis';\nFLUSH PRIVILEGES;\n" | mysql -u root
