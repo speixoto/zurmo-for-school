@@ -283,7 +283,6 @@ a.z-button:not(.attachLoading):not(.green-button) .z-label,
   -o-border-radius: 3px;
   border-radius: 3px;
   position: relative;
-  z-index: 1;
   white-space: nowrap;
 }
 .z-label-smaller {

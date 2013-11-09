@@ -573,7 +573,6 @@ table.configuration-list td:last-child a.disabled,
   -o-border-radius: 3px;
   border-radius: 3px;
   position: relative;
-  z-index: 1;
   white-space: nowrap;
 }
 .z-label-smaller {
