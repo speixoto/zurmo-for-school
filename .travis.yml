@@ -10,6 +10,10 @@ services:
 env:
   - DB=mysql
 
+before_install:
+  - sudo apt-get update -qq
+  - sudo apt-get install -qq php5-imap php5-mysql php5-memcache php5-curl php-apc php-soap php5-gd
+
 before_script:
 #  - if [[ "$DB" == "pgsql" ]]; then psql -c "DROP DATABASE IF EXISTS hello_world_test;" -U postgres; fi
 #  - if [[ "$DB" == "pgsql" ]]; then psql -c "create database hello_world_test;" -U postgres; fi
