@@ -56,7 +56,7 @@
             $this->assertTrue($import->save());
 
             ImportTestHelper::
-            createTempTableByFileNameAndTableName('projectsSample.csv', $import->getTempTableName(),true,
+            createTempTableByFileNameAndTableName('projectsSample.csv', $import->getTempTableName(), true,
                                                   Yii::getPathOfAlias('application.modules.projects.tests.unit.files'));
 
             $this->assertEquals(3, ImportDatabaseUtil::getCount($import->getTempTableName())); // includes header rows.
@@ -73,6 +73,7 @@
                 'column_0'  => $ownerColumnMappingData,
                 'column_1'  => ImportMappingUtil::makeStringColumnMappingData      ('name'),
                 'column_2'  => ImportMappingUtil::makeTextAreaColumnMappingData    ('description'),
+                'column_3'  => ImportMappingUtil::makeDropDownColumnMappingData    ('status'),
             );
 
             $importRules  = ImportRulesUtil::makeImportRulesByType('Projects');
@@ -97,6 +98,7 @@
             $this->assertEquals(1,                         count($projects[0]));
             $this->assertEquals('super',                   $projects[0]->owner->username);
             $this->assertEquals('My first project',        $projects[0]->name);
+            $this->assertEquals(0,                         $projects[0]->status);
             //todo ask Jason for it
             //$this->assertEquals('My first project Desc',   $projects[0]->description);
             $projects[0]->delete();
@@ -105,6 +107,7 @@
             $this->assertEquals(1,                         count($projects[0]));
             $this->assertEquals('super',                   $projects[0]->owner->username);
             $this->assertEquals('My second project',       $projects[0]->name);
+            $this->assertEquals(1,                         $projects[0]->status);
             //$this->assertEquals('My second project Desc',  $projects[0]->description);
 
             $projects[0]->delete();

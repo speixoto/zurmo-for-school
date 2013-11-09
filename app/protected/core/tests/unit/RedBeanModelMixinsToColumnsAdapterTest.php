@@ -94,9 +94,9 @@
             $this->assertEquals('person_id', $column['name']);
             $this->assertEquals('INT(11)', $column['type']);
             $this->assertEquals('UNSIGNED', $column['unsigned']);
-            $this->assertEquals('NULL', $column['notNull']);
+            $this->assertEquals('NULL', $column['notNull']); // Not Coding Standard
             $this->assertNull($column['collation']);
-            $this->assertEquals('DEFAULT NULL', $column['default']);
+            $this->assertEquals('DEFAULT NULL', $column['default']); // Not Coding Standard
         }
     }
 ?>

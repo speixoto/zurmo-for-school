@@ -184,7 +184,6 @@
             return array(
                 'onclick' => '$("#ModalView").parent().dialog("close");'
             );
-
         }
 
         protected function resolveModalIdFromGet()
@@ -213,6 +212,7 @@
             $copyAction       = Yii::app()->request->getParam('action', null);
             $action           = TasksUtil::resolveModalSaveActionNameForByRelationModelId($relationModelId, $copyAction);
             $url              = Yii::app()->createUrl('tasks/default/' . $action, GetUtil::getData());
+            // Begin Not Coding Standard
             return array('enableAjaxValidation' => true,
                         'clientOptions' => array(
                             'beforeValidate'    => 'js:$(this).beforeValidateAction',
@@ -233,6 +233,7 @@
                             'inputContainer'    => 'td'
                         )
             );
+            // End Not Coding Standard
         }
 
         protected function renderConfigSaveAjax($formId, $url, $sourceKanbanBoardId, $modalId, $sourceId)
@@ -247,6 +248,7 @@
                 $kanbanRefreshScript = TasksUtil::resolveExtraCloseScriptForModalAjaxOptions($sourceId);
             }
             $title   = TasksUtil::getModalDetailsTitle();
+            // Begin Not Coding Standard
             $options = array(
                 'type' => 'POST',
                 'data' => 'js:$("#' . $formId . '").serialize()',
@@ -256,6 +258,7 @@
                                     $('#" . $modalId .  "').dialog('option', 'title', '" . $title . "');
                                     " . $kanbanRefreshScript . "}"
             );
+            // End Not Coding Standard
             return ZurmoHtml::ajax($options);
         }
 

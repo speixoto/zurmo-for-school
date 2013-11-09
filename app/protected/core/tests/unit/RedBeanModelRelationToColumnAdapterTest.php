@@ -57,7 +57,6 @@
                                                                                 $relationMetadata,
                                                                                 static::$messageLogger);
             $this->assertFalse($column);
-
         }
 
         /**
@@ -73,7 +72,6 @@
                                                                                 $relationMetadata,
                                                                                 static::$messageLogger);
             $this->assertFalse($column);
-
         }
 
         /**
@@ -89,7 +87,6 @@
                                                                                 $relationMetadata,
                                                                                 static::$messageLogger);
             $this->assertFalse($column);
-
         }
 
         /**
@@ -105,7 +102,6 @@
                                                                                 $relationMetadata,
                                                                                 static::$messageLogger);
             $this->assertFalse($column);
-
         }
 
         /**
@@ -121,7 +117,6 @@
                                                                                 $relationMetadata,
                                                                                 static::$messageLogger);
             $this->assertFalse($column);
-
         }
 
         /**
@@ -137,7 +132,6 @@
                                                                                 $relationMetadata,
                                                                                 static::$messageLogger);
             $this->assertFalse($column);
-
         }
 
         /**
@@ -153,7 +147,6 @@
                                                                                 $relationMetadata,
                                                                                 static::$messageLogger);
             $this->assertFalse($column);
-
         }
 
         /**
@@ -178,9 +171,9 @@
             $this->assertEquals('takenbyuser__user_id', $column['name']);
             $this->assertEquals('INT(11)', $column['type']);
             $this->assertEquals('UNSIGNED', $column['unsigned']);
-            $this->assertEquals('NULL', $column['notNull']);
+            $this->assertEquals('NULL', $column['notNull']); // Not Coding Standard
             $this->assertNull($column['collation']);
-            $this->assertEquals('DEFAULT NULL', $column['default']);
+            $this->assertEquals('DEFAULT NULL', $column['default']); // Not Coding Standard
         }
 
         /**
@@ -205,9 +198,9 @@
             $this->assertEquals('marketinglist_id', $column['name']);
             $this->assertEquals('INT(11)', $column['type']);
             $this->assertEquals('UNSIGNED', $column['unsigned']);
-            $this->assertEquals('NULL', $column['notNull']);
+            $this->assertEquals('NULL', $column['notNull']); // Not Coding Standard
             $this->assertNull($column['collation']);
-            $this->assertEquals('DEFAULT NULL', $column['default']);
+            $this->assertEquals('DEFAULT NULL', $column['default']); // Not Coding Standard
         }
 
         /**
@@ -232,9 +225,9 @@
             $this->assertEquals('touser_touser__user_id', $column['name']);
             $this->assertEquals('INT(11)', $column['type']);
             $this->assertEquals('UNSIGNED', $column['unsigned']);
-            $this->assertEquals('NULL', $column['notNull']);
+            $this->assertEquals('NULL', $column['notNull']); // Not Coding Standard
             $this->assertNull($column['collation']);
-            $this->assertEquals('DEFAULT NULL', $column['default']);
+            $this->assertEquals('DEFAULT NULL', $column['default']); // Not Coding Standard
         }
 
         /**
@@ -260,10 +253,9 @@
             $this->assertEquals('touser_touser__user_id', $column['name']);
             $this->assertEquals('INT(11)', $column['type']);
             $this->assertEquals('UNSIGNED', $column['unsigned']);
-            $this->assertEquals('NULL', $column['notNull']);
+            $this->assertEquals('NULL', $column['notNull']); // Not Coding Standard
             $this->assertNull($column['collation']);
-            $this->assertEquals('DEFAULT NULL', $column['default']);
-
+            $this->assertEquals('DEFAULT NULL', $column['default']); // Not Coding Standard
         }
 
         /**
@@ -289,11 +281,10 @@
             $this->assertEquals('touser__user_id', $column['name']);
             $this->assertEquals('INT(11)', $column['type']);
             $this->assertEquals('UNSIGNED', $column['unsigned']);
-            $this->assertEquals('NULL', $column['notNull']);
+            $this->assertEquals('NULL', $column['notNull']); // Not Coding Standard
             $this->assertNull($column['collation']);
-            $this->assertEquals('DEFAULT NULL', $column['default']);
+            $this->assertEquals('DEFAULT NULL', $column['default']); // Not Coding Standard
         }
-
 
         /**
          * @depends testResolveWithHasOneWithLinkTypeSpecific
@@ -323,7 +314,6 @@
                                                                                 $relationMetadata,
                                                                                 static::$messageLogger);
             $this->assertNull($column);
-
         }
 
         /**
@@ -340,7 +330,6 @@
                                                                                 $relationMetadata,
                                                                                 static::$messageLogger);
             $this->assertNull($column);
-
         }
 
         /**
@@ -357,7 +346,6 @@
                                                                                 $relationMetadata,
                                                                                 static::$messageLogger);
             $this->assertNull($column);
-
         }
 
         /**
@@ -386,9 +374,9 @@
             $this->assertEquals('relatedmodel_id', $polymorphicColumns[0]['name']);
             $this->assertEquals('INT(11)', $polymorphicColumns[0]['type']);
             $this->assertEquals('UNSIGNED', $polymorphicColumns[0]['unsigned']);
-            $this->assertEquals('NULL', $polymorphicColumns[0]['notNull']);
+            $this->assertEquals('NULL', $polymorphicColumns[0]['notNull']); // Not Coding Standard
             $this->assertNull($polymorphicColumns[0]['collation']);
-            $this->assertEquals('DEFAULT NULL', $polymorphicColumns[0]['default']);
+            $this->assertEquals('DEFAULT NULL', $polymorphicColumns[0]['default']); // Not Coding Standard
 
             $this->assertArrayHasKey('name', $polymorphicColumns[1]);
             $this->assertArrayHasKey('type', $polymorphicColumns[1]);
@@ -399,9 +387,9 @@
             $this->assertEquals('relatedmodel_type', $polymorphicColumns[1]['name']);
             $this->assertEquals('VARCHAR(255)', $polymorphicColumns[1]['type']);
             $this->assertNull($polymorphicColumns[1]['unsigned']);
-            $this->assertEquals('NULL', $polymorphicColumns[1]['notNull']);
+            $this->assertEquals('NULL', $polymorphicColumns[1]['notNull']); // Not Coding Standard
             $this->assertEquals('COLLATE utf8_unicode_ci', $polymorphicColumns[1]['collation']);
-            $this->assertEquals('DEFAULT NULL', $polymorphicColumns[1]['default']);
+            $this->assertEquals('DEFAULT NULL', $polymorphicColumns[1]['default']); // Not Coding Standard
         }
 
         /**
@@ -426,10 +414,9 @@
             $this->assertEquals('i_id', $column['name']);
             $this->assertEquals('INT(11)', $column['type']);
             $this->assertEquals('UNSIGNED', $column['unsigned']);
-            $this->assertEquals('NULL', $column['notNull']);
+            $this->assertEquals('NULL', $column['notNull']); // Not Coding Standard
             $this->assertNull($column['collation']);
-            $this->assertEquals('DEFAULT NULL', $column['default']);
-
+            $this->assertEquals('DEFAULT NULL', $column['default']); // Not Coding Standard
         }
 
         /**
@@ -454,9 +441,9 @@
             $this->assertEquals('i_id', $column['name']);
             $this->assertEquals('INT(11)', $column['type']);
             $this->assertEquals('UNSIGNED', $column['unsigned']);
-            $this->assertEquals('NULL', $column['notNull']);
+            $this->assertEquals('NULL', $column['notNull']); // Not Coding Standard
             $this->assertNull($column['collation']);
-            $this->assertEquals('DEFAULT NULL', $column['default']);
+            $this->assertEquals('DEFAULT NULL', $column['default']); // Not Coding Standard
         }
 
         /**
@@ -482,9 +469,9 @@
             $this->assertEquals('ii_id', $column['name']);
             $this->assertEquals('INT(11)', $column['type']);
             $this->assertEquals('UNSIGNED', $column['unsigned']);
-            $this->assertEquals('NULL', $column['notNull']);
+            $this->assertEquals('NULL', $column['notNull']); // Not Coding Standard
             $this->assertNull($column['collation']);
-            $this->assertEquals('DEFAULT NULL', $column['default']);
+            $this->assertEquals('DEFAULT NULL', $column['default']); // Not Coding Standard
         }
 
         /**
@@ -510,9 +497,9 @@
             $this->assertEquals('iii_id', $column['name']);
             $this->assertEquals('INT(11)', $column['type']);
             $this->assertEquals('UNSIGNED', $column['unsigned']);
-            $this->assertEquals('NULL', $column['notNull']);
+            $this->assertEquals('NULL', $column['notNull']); // Not Coding Standard
             $this->assertNull($column['collation']);
-            $this->assertEquals('DEFAULT NULL', $column['default']);
+            $this->assertEquals('DEFAULT NULL', $column['default']); // Not Coding Standard
         }
 
         /**

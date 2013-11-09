@@ -573,7 +573,6 @@ table.configuration-list td:last-child a.disabled,
   -o-border-radius: 3px;
   border-radius: 3px;
   position: relative;
-  z-index: 1;
   white-space: nowrap;
 }
 .z-label-smaller {
@@ -17338,7 +17337,6 @@ table.configuration-list td:last-child a .z-label:before {
 }
 #sample-column-header {
   position: relative;
-  white-space: nowrap;
 }
 #sample-column-header a {
   font-weight: normal !important;
@@ -17357,8 +17355,6 @@ table.configuration-list td:last-child a .z-label:before {
 }
 #sample-column-header div {
   display: inline-block;
-  top: 16px;
-  left: 0;
   margin-left: 5px;
 }
 .mapping-rules h4 {
@@ -18053,6 +18049,10 @@ table.configuration-list td:last-child a .z-label:before {
 .mapCanvasPortlet {
   width: 100%;
   height: 400px;
+}
+/*Products*/
+#product-portlet-grid-view {
+  overflow-x: scroll;
 }
 div.form fieldset {
   border: 1px solid #DDD;
@@ -21730,7 +21730,7 @@ a.user-link {
 #MissionsPageView #social-item-inline-edit-form .left-column,
 #ConversationsPageView #social-item-inline-edit-form .left-column {
   padding: 0;
-  z-index: 110;
+  z-index: 99999;
   position: relative;
 }
 #MissionsPageView #comment-inline-edit-form .form-toolbar,

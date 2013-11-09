@@ -111,7 +111,6 @@
             echo "${sizeInMB}MB (${expectedRecordCount} rows) CSV test: ${difference} seconds." . PHP_EOL . PHP_EOL;
         }
 
-
         protected static function generateCsvAndReturnFileName($sizeInMB)
         {
             echo "Setting up dummy csv file of ${sizeInMB}MB" . PHP_EOL;
@@ -134,7 +133,7 @@
                 do
                 {
                     $lengthOfCurrentSegment = rand(1, $remainingLength);
-                    $data[$i][] = str_repeat('_',$lengthOfCurrentSegment);
+                    $data[$i][] = str_repeat('_', $lengthOfCurrentSegment);
                     $remainingLength -= $lengthOfCurrentSegment;
                 } while ($remainingLength > 0);
             }

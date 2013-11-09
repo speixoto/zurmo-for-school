@@ -76,15 +76,15 @@
             $completedTodosCount = 0;
             foreach ($tasks as $task)
             {
-                if(ControllerSecurityUtil::doesCurrentUserHavePermissionOnSecurableItem($task, Permission::READ))
+                if (ControllerSecurityUtil::doesCurrentUserHavePermissionOnSecurableItem($task, Permission::READ))
                 {
                     $totalToDosCount += count($task->checkListItems);
-                    if(count($task->checkListItems) != 0)
+                    if (count($task->checkListItems) != 0)
                     {
                         $completedTodosCount += TasksUtil::getTaskCompletedCheckListItems($task);
                     }
                     $kanbanItem  = KanbanItem::getByTask($task->id);
-                    if($kanbanItem == null)
+                    if ($kanbanItem == null)
                     {
                         //Create KanbanItem here
                         $kanbanItem = TasksUtil::createKanbanItemFromTask($task);
@@ -96,9 +96,9 @@
 
             $stats = array();
             $kanbanTypeDropDownData = KanbanItem::getTypeDropDownArray();
-            foreach($kanbanTypeDropDownData as $type => $label)
+            foreach ($kanbanTypeDropDownData as $type => $label)
             {
-                if(isset($kanbanItemsArray[$type]))
+                if (isset($kanbanItemsArray[$type]))
                 {
                     $stats[$type] = count($kanbanItemsArray[$type]);
                 }
@@ -119,7 +119,7 @@
          */
         protected static function resolveCompletionPercentage($completedTodosCount, $totalToDosCount)
         {
-            if($totalToDosCount != 0)
+            if ($totalToDosCount != 0)
             {
                 $completionPercent = ($completedTodosCount/$totalToDosCount)*100;
             }
@@ -140,9 +140,9 @@
             $content = static::resolveProjectLinkWithRedirectURl($project->name, $project->id);
             $stats = static::groupTasksByKanbanTypeAndGetStats($project);
             $kanbanTypes = KanbanItem::getTypeDropDownArray();
-            foreach($stats as $key => $value)
+            foreach ($stats as $key => $value)
             {
-                if($key != 'completionPercent')
+                if ($key != 'completionPercent')
                 {
                     $content .= ZurmoHtml::tag('div', array('class' => 'project-stats'),
                                             ZurmoHtml::tag('strong', array(), $value) .

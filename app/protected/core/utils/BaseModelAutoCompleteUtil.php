@@ -44,7 +44,7 @@
          */
         protected static function handleAutoCompleteOptions(& $joinTablesAdapter, & $where, $autoCompleteOptions = null)
         {
-            assert('is_string($autoCompleteOptions) || is_null($autoCompleteOptions)');
+            assert('is_string($autoCompleteOptions) || $autoCompleteOptions === null');
             $autoCompleteOptions = ArrayUtil::decodeAutoCompleteOptionsArray($autoCompleteOptions);
             assert('is_array($autoCompleteOptions)');
             foreach ($autoCompleteOptions as $optionName => $optionValue)

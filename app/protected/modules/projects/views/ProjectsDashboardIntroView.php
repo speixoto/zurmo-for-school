@@ -66,6 +66,7 @@
             $this->registerScripts();
             return $content;
         }
+
         /**
          * Register scripts
          */

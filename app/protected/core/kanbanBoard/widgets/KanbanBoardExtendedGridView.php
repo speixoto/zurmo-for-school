@@ -260,7 +260,6 @@
             $cardDetails = null;
             foreach ($this->cardColumns as $cardData)
             {
-
                 $content      = $this->renderCardDataContent($cardData, $this->dataProvider->data[$row], $row);
                 $cardDetails .= ZurmoHtml::tag('span', array('class' => $cardData['class']), $content);
             }

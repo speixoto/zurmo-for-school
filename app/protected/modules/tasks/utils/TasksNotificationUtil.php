@@ -119,13 +119,13 @@
             $url                         = Yii::app()->createAbsoluteUrl('tasks/default/details/',
                                            array('id' => $task->id));
             $message->textContent        = $messageContent;
-            if($messageContentSecondPart != null)
+            if ($messageContentSecondPart != null)
             {
                 $message->textContent .= "\n" . $messageContentSecondPart;
             }
             $message->textContent       .= "\n" . ZurmoHtml::link(Zurmo::t('Core', 'Click Here'), $url);
             $message->htmlContent        = $messageContent;
-            if($messageContentSecondPart != null)
+            if ($messageContentSecondPart != null)
             {
                 $message->htmlContent .= "<br/>" . $messageContentSecondPart;
             }
@@ -144,24 +144,24 @@
         {
             assert('is_string($action)');
             $peopleToSendNotification = array();
-            if($action == self::TASK_NEW || $action == self::TASK_OWNER_CHANGE ||
+            if ($action == self::TASK_NEW || $action == self::TASK_OWNER_CHANGE ||
                $action == self::TASK_STATUS_BECOMES_REJECTED)
             {
                 $peopleToSendNotification[] = $task->owner;
             }
-            elseif($action == self::TASK_STATUS_BECOMES_AWAITING_ACCEPTANCE)
+            elseif ($action == self::TASK_STATUS_BECOMES_AWAITING_ACCEPTANCE)
             {
                 $peopleToSendNotification[] = $task->requestedByUser;
             }
-            elseif($action == self::TASK_STATUS_BECOMES_COMPLETED ||
+            elseif ($action == self::TASK_STATUS_BECOMES_COMPLETED ||
                    $action == self::TASK_NEW_COMMENT)
             {
                 $peopleToSendNotification = TasksUtil::getTaskSubscribers($task);
-                if($action == self::TASK_NEW_COMMENT && $relatedUser != null)
+                if ($action == self::TASK_NEW_COMMENT && $relatedUser != null)
                 {
-                    foreach($peopleToSendNotification as $key => $person)
+                    foreach ($peopleToSendNotification as $key => $person)
                     {
-                        if($person->getClassId('Item') == $relatedUser->getClassId('Item'))
+                        if ($person->getClassId('Item') == $relatedUser->getClassId('Item'))
                         {
                             unset($peopleToSendNotification[$key]);
                         }
@@ -181,33 +181,33 @@
         {
             assert('$task instanceof Task');
             $relatedModelStringValue = TasksUtil::resolveFirstRelatedModelStringValue($task);
-            if($relatedModelStringValue != null)
+            if ($relatedModelStringValue != null)
             {
                 $relatedModelStringValue = '(' . $relatedModelStringValue . ')';
             }
             $params = array('{task}'         => strval($task),
                             '{relatedModel}' => $relatedModelStringValue);
-            if($action == self::TASK_NEW)
+            if ($action == self::TASK_NEW)
             {
                 return Zurmo::t('TasksModule', 'ASSIGNMENT {relatedModel}: {task}', $params);
             }
-            elseif($action == self::TASK_STATUS_BECOMES_AWAITING_ACCEPTANCE)
+            elseif ($action == self::TASK_STATUS_BECOMES_AWAITING_ACCEPTANCE)
             {
                 return Zurmo::t('TasksModule', 'DELIVERED {relatedModel}: {task}', $params);
             }
-            elseif($action == self::TASK_STATUS_BECOMES_COMPLETED)
+            elseif ($action == self::TASK_STATUS_BECOMES_COMPLETED)
             {
                 return Zurmo::t('TasksModule', 'ACCEPTED {relatedModel}: {task}', $params);
             }
-            elseif($action == self::TASK_STATUS_BECOMES_REJECTED)
+            elseif ($action == self::TASK_STATUS_BECOMES_REJECTED)
             {
                 return Zurmo::t('TasksModule', 'REJECTED {relatedModel}: {task}', $params);
             }
-            elseif($action == self::TASK_OWNER_CHANGE)
+            elseif ($action == self::TASK_OWNER_CHANGE)
             {
                 return Zurmo::t('TasksModule', 'ASSIGNMENT {relatedModel}: {task}', $params);
             }
-            elseif($action == self::TASK_NEW_COMMENT)
+            elseif ($action == self::TASK_NEW_COMMENT)
             {
                 return Zurmo::t('TasksModule', 'NEW COMMENT {relatedModel}: {task}', $params);
             }
@@ -223,35 +223,35 @@
         public static function getEmailMessageContent(Task $task, $action, User $relatedUser = null)
         {
             assert('is_string($action)');
-            if($action == self::TASK_NEW)
+            if ($action == self::TASK_NEW)
             {
                 return Zurmo::t('TasksModule', "The task, '{task}', is now owned by you.",
                                                array('{task}'   => strval($task)));
             }
-            elseif($action == self::TASK_STATUS_BECOMES_AWAITING_ACCEPTANCE)
+            elseif ($action == self::TASK_STATUS_BECOMES_AWAITING_ACCEPTANCE)
             {
                 return Zurmo::t('TasksModule', "The task you requested, '{task}', has been finished. You can now choose to accept or reject the task.",
                                                array('{task}' => strval($task),
                                                      '{user}' => strval($relatedUser)));
             }
-            elseif($action == self::TASK_STATUS_BECOMES_COMPLETED)
+            elseif ($action == self::TASK_STATUS_BECOMES_COMPLETED)
             {
                 return Zurmo::t('TasksModule', "The task, '{task}', was accepted by {user}.",
                                                array('{task}'         => strval($task),
                                                      '{user}' => strval($relatedUser)));
             }
-            elseif($action == self::TASK_STATUS_BECOMES_REJECTED)
+            elseif ($action == self::TASK_STATUS_BECOMES_REJECTED)
             {
                 return Zurmo::t('TasksModule', "The task, '{task}', has been rejected by {user}.",
                     array('{task}'         => strval($task),
                         '{user}' => strval($relatedUser)));
             }
-            elseif($action == self::TASK_OWNER_CHANGE)
+            elseif ($action == self::TASK_OWNER_CHANGE)
             {
                 return Zurmo::t('TasksModule', "The task, '{task}', is now owned by you.",
                                                array('{task}'   => strval($task)));
             }
-            elseif($action == self::TASK_NEW_COMMENT)
+            elseif ($action == self::TASK_NEW_COMMENT)
             {
                 return Zurmo::t('TasksModule', "{user} has commented on the task '{task}':",
                                                array('{task}'         => strval($task),
@@ -267,7 +267,7 @@
         public static function getEmailMessageContentSecondPart($action, Comment $comment = null)
         {
             assert('is_string($action)');
-            if($action == self::TASK_NEW_COMMENT)
+            if ($action == self::TASK_NEW_COMMENT)
             {
                 return strval($comment);
             }

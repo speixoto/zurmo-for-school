@@ -154,7 +154,7 @@
 
             $this->setGetArray(array(
                                     'id'                       => $tasks[1]->id,
-                                    'modalTransferInformation' =>array('modalId' => 'relatedModalContainer-tasks')
+                                    'modalTransferInformation' => array('modalId' => 'relatedModalContainer-tasks')
                                     )
                               );
             $content = $this->runControllerWithNoExceptionsAndGetContent('tasks/default/modalDetails');
@@ -193,7 +193,7 @@
             foreach ($taskArray as $row => $data)
             {
                 $kanbanItem  = KanbanItem::getByTask($data->id);
-                if($kanbanItem == null)
+                if ($kanbanItem == null)
                 {
                     //Create KanbanItem here
                     $kanbanItem = TasksUtil::createKanbanItemFromTask($data);

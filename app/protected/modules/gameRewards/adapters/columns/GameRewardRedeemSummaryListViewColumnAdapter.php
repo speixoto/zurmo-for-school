@@ -59,7 +59,7 @@
             assert('is_int($availableCoins)');
             $content  = ZurmoHtml::tag('h4', array('class' => 'reward-name'),
                         strval($gameReward));
-            if($gameReward->description != null)
+            if ($gameReward->description != null)
             {
                 // $content .= ZurmoHtml::tag('h3', array('class' => 'reward-description'),
                 //             $gameReward->description);
@@ -88,6 +88,7 @@
             $url      = Yii::app()->createUrl('gameRewards/default/redeemReward', array('id' => $gameReward->id));
             $label    = Zurmo::t('ZurmoModule', 'Redeem');
             $aContent = ZurmoHtml::wrapLink($label);
+            // Begin Not Coding Standard
             return      ZurmoHtml::ajaxLink($aContent, $url,
                 array('type'       => 'GET',
                       'dataType'     => 'json',
@@ -102,6 +103,7 @@
                       }'
                 ),
                 self::resolveHtmlOptionsForRedeemLink($gameReward, $availableCoins));
+            // End Not Coding Standard
         }
 
         protected static function resolveHtmlOptionsForRedeemLink(GameReward $gameReward, $availableCoins)

@@ -57,7 +57,6 @@
             $schema = array();
             CreateOrUpdateExistingTableFromSchemaDefinitionArrayUtil::generateOrUpdateTableBySchemaDefinition($schema,
                                                                                                 static::$messageLogger);
-
         }
 
         /**
@@ -73,9 +72,9 @@
                         'name' => 'hash',
                         'type' => 'VARCHAR(32)',
                         'unsigned' => null,
-                        'notNull' => 'NULL',
+                        'notNull' => 'NULL', // Not Coding Standard
                         'collation' => 'COLLATE utf8_unicode_ci',
-                        'default' => 'DEFAULT NULL',
+                        'default' => 'DEFAULT NULL', // Not Coding Standard
                     ),
                 ),
                 'indexes' => array(),
@@ -98,9 +97,9 @@
                                             'name' => 'hash',
                                             'type' => 'VARCHAR(32)',
                                             'unsigned' => null,
-                                            'notNull' => 'NULL',
+                                            'notNull' => 'NULL', // Not Coding Standard
                                             'collation' => 'COLLATE utf8_unicode_ci',
-                                            'default' => 'DEFAULT NULL',
+                                            'default' => 'DEFAULT NULL', // Not Coding Standard
                                         ),
                                     ),
                                     'indexes' => array(),
@@ -111,9 +110,9 @@
                                             'name' => 'hash',
                                             'type' => 'VARCHAR(32)',
                                             'unsigned' => null,
-                                            'notNull' => 'NULL',
+                                            'notNull' => 'NULL', // Not Coding Standard
                                             'collation' => 'COLLATE utf8_unicode_ci',
-                                            'default' => 'DEFAULT NULL',
+                                            'default' => 'DEFAULT NULL', // Not Coding Standard
                                         ),
                                     ),
                                     'indexes' => array(),
@@ -170,9 +169,9 @@
                         'name' => 'hash',
                         'type' => 'VARCHAR(32)',
                         'unsigned' => null,
-                        'notNull' => 'NULL',
+                        'notNull' => 'NULL', // Not Coding Standard
                         'collation' => 'COLLATE utf8_unicode_ci',
-                        'default' => 'DEFAULT NULL',
+                        'default' => 'DEFAULT NULL', // Not Coding Standard
                     ),
                 ),
                 ),
@@ -192,9 +191,9 @@
                         'name' => 'hash',
                         'type' => 'VARCHAR(32)',
                         'unsigned' => null,
-                        'notNull' => 'NULL',
+                        'notNull' => 'NULL', // Not Coding Standard
                         'collation' => 'COLLATE utf8_unicode_ci',
-                        'default' => 'DEFAULT NULL',
+                        'default' => 'DEFAULT NULL', // Not Coding Standard
                     ),
                 ),
                 'indexes' => array(),
@@ -222,7 +221,7 @@
                         'name' => 'hash',
                         'type' => 'VARCHAR(32)',
                         'collation' => 'COLLATE utf8_unicode_ci',
-                        'default' => 'DEFAULT NULL',
+                        'default' => 'DEFAULT NULL', // Not Coding Standard
                     ),
                 ),
                 'indexes' => array(),
@@ -245,9 +244,9 @@
                         'name' => 'hash',
                         'type' => 'VARCHAR(32)',
                         'unsigned' => null,
-                        'NOTNULLHERE' => 'NULL',
+                        'NOTNULLHERE' => 'NULL', // Not Coding Standard
                         'collation' => 'COLLATE utf8_unicode_ci',
-                        'default' => 'DEFAULT NULL',
+                        'default' => 'DEFAULT NULL', // Not Coding Standard
                     ),
                 ),
                 'indexes' => array(),
@@ -270,9 +269,9 @@
                         'name' => 'hash',
                         'type' => 'VARCHAR(32)',
                         'unsigned' => null,
-                        'notNull' => 'NULL',
+                        'notNull' => 'NULL', // Not Coding Standard
                         'collation' => 'COLLATE utf8_unicode_ci',
-                        'default' => 'DEFAULT NULL',
+                        'default' => 'DEFAULT NULL', // Not Coding Standard
                     ),
                 ),
                 'indexes' => array(
@@ -300,9 +299,9 @@
                         'name' => 'hash',
                         'type' => 'VARCHAR(32)',
                         'unsigned' => null,
-                        'notNull' => 'NULL',
+                        'notNull' => 'NULL', // Not Coding Standard
                         'collation' => 'COLLATE utf8_unicode_ci',
-                        'default' => 'DEFAULT NULL',
+                        'default' => 'DEFAULT NULL', // Not Coding Standard
                     ),
                 ),
                 'indexes' => array(
@@ -331,9 +330,9 @@
                         'name' => 'hash',
                         'type' => 'VARCHAR(32)',
                         'unsigned' => null,
-                        'notNull' => 'NULL',
+                        'notNull' => 'NULL', // Not Coding Standard
                         'collation' => 'COLLATE utf8_unicode_ci',
-                        'default' => 'DEFAULT NULL',
+                        'default' => 'DEFAULT NULL', // Not Coding Standard
                     ),
                 ),
                 'indexes' => array(
@@ -346,7 +345,6 @@
             );
             CreateOrUpdateExistingTableFromSchemaDefinitionArrayUtil::generateOrUpdateTableBySchemaDefinition($schema,
                                                                                                 static::$messageLogger);
-
         }
 
         /**
@@ -362,9 +360,9 @@
                         'name' => 'hash',
                         'type' => 'VARCHAR(32)',
                         'unsigned' => null,
-                        'notNull' => 'NULL',
+                        'notNull' => 'NULL', // Not Coding Standard
                         'collation' => 'COLLATE utf8_unicode_ci',
-                        'default' => 'DEFAULT NULL',
+                        'default' => 'DEFAULT NULL', // Not Coding Standard
                     ),
                 ),
                 'indexes' => array(
@@ -392,9 +390,9 @@
                         'name' => 'hash',
                         'type' => 'VARCHAR(32)',
                         'unsigned' => null,
-                        'notNull' => 'NULL',
+                        'notNull' => 'NULL', // Not Coding Standard
                         'collation' => 'COLLATE utf8_unicode_ci',
-                        'default' => 'DEFAULT NULL',
+                        'default' => 'DEFAULT NULL', // Not Coding Standard
                     ),
                 ),
                 'indexes' => array(
@@ -422,9 +420,9 @@
                         'name' => 'hash',
                         'type' => 'VARCHAR(32)',
                         'unsigned' => null,
-                        'notNull' => 'NULL',
+                        'notNull' => 'NULL', // Not Coding Standard
                         'collation' => 'COLLATE utf8_unicode_ci',
-                        'default' => 'DEFAULT NULL',
+                        'default' => 'DEFAULT NULL', // Not Coding Standard
                     ),
                 ),
                 'indexes' => array(
@@ -450,105 +448,105 @@
                         'name' => 'hash',
                         'type' => 'VARCHAR(32)',
                         'unsigned' => null,
-                        'notNull' => 'NULL',
+                        'notNull' => 'NULL', // Not Coding Standard
                         'collation' => 'COLLATE utf8_unicode_ci',
-                        'default' => 'DEFAULT NULL',
+                        'default' => 'DEFAULT NULL', // Not Coding Standard
                     ),
                     array(
                         'name' => 'language',
                         'type' => 'VARCHAR(10)',
                         'unsigned' => null,
-                        'notNull' => 'NULL',
+                        'notNull' => 'NULL', // Not Coding Standard
                         'collation' => 'COLLATE utf8_unicode_ci',
-                        'default' => 'DEFAULT NULL',
+                        'default' => 'DEFAULT NULL', // Not Coding Standard
                     ),
                     array(
                         'name' => 'locale',
                         'type' => 'VARCHAR(10)',
                         'unsigned' => null,
-                        'notNull' => 'NULL',
+                        'notNull' => 'NULL', // Not Coding Standard
                         'collation' => 'COLLATE utf8_unicode_ci',
-                        'default' => 'DEFAULT NULL',
+                        'default' => 'DEFAULT NULL', // Not Coding Standard
                     ),
                     array(
                         'name' => 'timezone',
                         'type' => 'VARCHAR(64)',
                         'unsigned' => null,
-                        'notNull' => 'NULL',
+                        'notNull' => 'NULL', // Not Coding Standard
                         'collation' => 'COLLATE utf8_unicode_ci',
-                        'default' => 'DEFAULT NULL',
+                        'default' => 'DEFAULT NULL', // Not Coding Standard
                     ),
                     array(
                         'name' => 'username',
                         'type' => 'VARCHAR(64)',
                         'unsigned' => null,
-                        'notNull' => 'NULL',
+                        'notNull' => 'NULL', // Not Coding Standard
                         'collation' => 'COLLATE utf8_unicode_ci',
-                        'default' => 'DEFAULT NULL',
+                        'default' => 'DEFAULT NULL', // Not Coding Standard
                     ),
                     array(
                         'name' => 'serializedavatardata',
                         'type' => 'TEXT',
                         'unsigned' => null,
-                        'notNull' => 'NULL',
+                        'notNull' => 'NULL', // Not Coding Standard
                         'collation' => 'COLLATE utf8_unicode_ci',
-                        'default' => 'DEFAULT NULL',
+                        'default' => 'DEFAULT NULL', // Not Coding Standard
                     ),
                     array(
                         'name' => 'isactive',
                         'type' => 'TINYINT(1) UNSIGNED',
                         'unsigned' => null,
-                        'notNull' => 'NULL',
+                        'notNull' => 'NULL', // Not Coding Standard
                         'collation' => null,
-                        'default' => 'DEFAULT NULL',
+                        'default' => 'DEFAULT NULL', // Not Coding Standard
                     ),
                     array(
                         'name' => 'lastlogindatetime',
                         'type' => 'DATETIME',
                         'unsigned' => null,
-                        'notNull' => 'NULL',
+                        'notNull' => 'NULL', // Not Coding Standard
                         'collation' => null,
-                        'default' => 'DEFAULT NULL',
+                        'default' => 'DEFAULT NULL', // Not Coding Standard
                     ),
                     array(
                         'name' => 'permitable_id',
                         'type' => 'INT(11)',
                         'unsigned' => 'UNSIGNED',
-                        'notNull' => 'NULL',
+                        'notNull' => 'NULL', // Not Coding Standard
                         'collation' => null,
-                        'default' => 'DEFAULT NULL',
+                        'default' => 'DEFAULT NULL', // Not Coding Standard
                     ),
                     array(
                         'name' => 'person_id',
                         'type' => 'INT(11)',
                         'unsigned' => 'UNSIGNED',
-                        'notNull' => 'NULL',
+                        'notNull' => 'NULL', // Not Coding Standard
                         'collation' => null,
-                        'default' => 'DEFAULT NULL',
+                        'default' => 'DEFAULT NULL', // Not Coding Standard
                     ),
                     array(
                         'name' => 'currency_id',
                         'type' => 'INT(11)',
                         'unsigned' => 'UNSIGNED',
-                        'notNull' => 'NULL',
+                        'notNull' => 'NULL', // Not Coding Standard
                         'collation' => null,
-                        'default' => 'DEFAULT NULL',
+                        'default' => 'DEFAULT NULL', // Not Coding Standard
                     ),
                     array(
                         'name' => 'manager__user_id',
                         'type' => 'INT(11)',
                         'unsigned' => 'UNSIGNED',
-                        'notNull' => 'NULL',
+                        'notNull' => 'NULL', // Not Coding Standard
                         'collation' => null,
-                        'default' => 'DEFAULT NULL',
+                        'default' => 'DEFAULT NULL', // Not Coding Standard
                     ),
                     array(
                         'name' => 'role_id',
                         'type' => 'INT(11)',
                         'unsigned' => 'UNSIGNED',
-                        'notNull' => 'NULL',
+                        'notNull' => 'NULL', // Not Coding Standard
                         'collation' => null,
-                        'default' => 'DEFAULT NULL',
+                        'default' => 'DEFAULT NULL', // Not Coding Standard
                     ),
                 ),
                 'indexes' => array(
@@ -585,7 +583,7 @@
                         'name' => 'hash',
                         'type' => 'VARCHAR(64)',
                         'unsigned' => null,
-                        'notNull' => 'NOT NULL',
+                        'notNull' => 'NOT NULL', // Not Coding Standard
                         'collation' => 'COLLATE utf8_unicode_ci',
                         'default' => 'DEFAULT "bacdefghi"',
                     ),
@@ -593,7 +591,7 @@
                         'name' => 'newlanguage',
                         'type' => 'VARCHAR(100)',
                         'unsigned' => null,
-                        'notNull' => 'NOT NULL',
+                        'notNull' => 'NOT NULL', // Not Coding Standard
                         'collation' => 'COLLATE utf8_unicode_ci',
                         'default' => 'DEFAULT "1234567"',
                     ),
@@ -601,15 +599,15 @@
                         'name' => 'locale',
                         'type' => 'VARCHAR(100)',
                         'unsigned' => null,
-                        'notNull' => 'NULL',
+                        'notNull' => 'NULL', // Not Coding Standard
                         'collation' => 'COLLATE utf8_unicode_ci',
-                        'default' => 'DEFAULT NULL',
+                        'default' => 'DEFAULT NULL', // Not Coding Standard
                     ),
                     array(
                         'name' => 'timezone',
                         'type' => 'VARCHAR(32)',
                         'unsigned' => null,
-                        'notNull' => 'NOT NULL',
+                        'notNull' => 'NOT NULL', // Not Coding Standard
                         'collation' => 'COLLATE utf8_general_ci',
                         'default' => 'DEFAULT "abc/def"',
                     ),
@@ -617,7 +615,7 @@
                         'name' => 'username',
                         'type' => 'VARCHAR(10)',
                         'unsigned' => null,
-                        'notNull' => 'NOT NULL',
+                        'notNull' => 'NOT NULL', // Not Coding Standard
                         'collation' => 'COLLATE utf8_unicode_ci',
                         'default' => 'DEFAULT "superman"',
                     ),
@@ -625,33 +623,33 @@
                         'name' => 'serializedavatardata',
                         'type' => 'TEXT',
                         'unsigned' => null,
-                        'notNull' => 'NULL',
+                        'notNull' => 'NULL', // Not Coding Standard
                         'collation' => 'COLLATE utf8_unicode_ci',
-                        'default' => 'DEFAULT NULL',
+                        'default' => 'DEFAULT NULL', // Not Coding Standard
                     ),
                     array(
                         'name' => 'isactive',
                         'type' => 'TINYINT(1) UNSIGNED',
                         'unsigned' => null,
-                        'notNull' => 'NULL',
+                        'notNull' => 'NULL', // Not Coding Standard
                         'collation' => null,
-                        'default' => 'DEFAULT NULL',
+                        'default' => 'DEFAULT NULL', // Not Coding Standard
                     ),
                     array(
                         'name' => 'permitable_id',
                         'type' => 'INT(11)',
                         'unsigned' => 'UNSIGNED',
-                        'notNull' => 'NULL',
+                        'notNull' => 'NULL', // Not Coding Standard
                         'collation' => null,
-                        'default' => 'DEFAULT NULL',
+                        'default' => 'DEFAULT NULL', // Not Coding Standard
                     ),
                     array(
                         'name' => 'role_id',
                         'type' => 'INT(11)',
                         'unsigned' => 'UNSIGNED',
-                        'notNull' => 'NULL',
+                        'notNull' => 'NULL', // Not Coding Standard
                         'collation' => null,
-                        'default' => 'DEFAULT NULL',
+                        'default' => 'DEFAULT NULL', // Not Coding Standard
                     ),
                 ),
                 'indexes' => array(
@@ -697,31 +695,31 @@
                         'name' => 'hash',
                         'type' => 'TEXT',
                         'unsigned' => null,
-                        'notNull' => 'NULL',
+                        'notNull' => 'NULL', // Not Coding Standard
                         'collation' => 'COLLATE utf8_unicode_ci',
-                        'default' => 'DEFAULT NULL',
+                        'default' => 'DEFAULT NULL', // Not Coding Standard
                     ),
                     array(
                         'name' => 'language',
                         'type' => 'VARCHAR(100)',
                         'unsigned' => null,
-                        'notNull' => 'NULL',
+                        'notNull' => 'NULL', // Not Coding Standard
                         'collation' => 'COLLATE utf8_unicode_ci',
-                        'default' => 'DEFAULT NULL',
+                        'default' => 'DEFAULT NULL', // Not Coding Standard
                     ),
                     array(
                         'name' => 'newlocale',
                         'type' => 'VARCHAR(10)',
                         'unsigned' => null,
-                        'notNull' => 'NULL',
+                        'notNull' => 'NULL', // Not Coding Standard
                         'collation' => 'COLLATE utf8_unicode_ci',
-                        'default' => 'DEFAULT NULL',
+                        'default' => 'DEFAULT NULL', // Not Coding Standard
                     ),
                     array(
                         'name' => 'timezone',
                         'type' => 'VARCHAR(64)',
                         'unsigned' => null,
-                        'notNull' => 'NOT NULL',
+                        'notNull' => 'NOT NULL', // Not Coding Standard
                         'collation' => 'COLLATE utf8_unicode_ci',
                         'default' => 'DEFAULT "America/Chicago"',
                     ),
@@ -729,7 +727,7 @@
                         'name' => 'username',
                         'type' => 'VARCHAR(64)',
                         'unsigned' => null,
-                        'notNull' => 'NULL',
+                        'notNull' => 'NULL', // Not Coding Standard
                         'collation' => 'COLLATE utf8_unicode_ci',
                         'default' => 'DEFAULT "superman"',
                     ),
@@ -737,7 +735,7 @@
                         'name' => 'serializedavatardata',
                         'type' => 'VARCHAR(255)',
                         'unsigned' => null,
-                        'notNull' => 'NOT NULL',
+                        'notNull' => 'NOT NULL', // Not Coding Standard
                         'collation' => 'COLLATE utf8_unicode_ci',
                         'default' => 'DEFAULT "abcdef"',
                     ),
@@ -745,9 +743,9 @@
                         'name' => 'role_id',
                         'type' => 'INT(11)',
                         'unsigned' => 'UNSIGNED',
-                        'notNull' => 'NULL',
+                        'notNull' => 'NULL', // Not Coding Standard
                         'collation' => null,
-                        'default' => 'DEFAULT NULL',
+                        'default' => 'DEFAULT NULL', // Not Coding Standard
                     ),
                 ),
                 'indexes' => array(
@@ -789,7 +787,7 @@
             $this->assertEquals('text', $existingFields['hash']['Type']);
             $this->assertEquals('varchar(100)', $existingFields['language']['Type']);
             $this->assertArrayHasKey('newlocale', $existingFields);
-            $this->assertEquals('NO', $existingFields['timezone']['Null']);
+            $this->assertEquals('NO', $existingFields['timezone']['Null']); // Not Coding Standard
             $this->assertEquals('America/Chicago', $existingFields['timezone']['Default']);
             $this->assertEquals('superman', $existingFields['username']['Default']);
             $this->assertEquals('varchar(255)', $existingFields['serializedavatardata']['Type']);

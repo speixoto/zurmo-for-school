@@ -372,7 +372,6 @@
             $emailMessage->save();
             $campaignItem->emailMessage = $emailMessage;
             $campaignItem->unrestrictedSave();
-
         }
     }
 ?>

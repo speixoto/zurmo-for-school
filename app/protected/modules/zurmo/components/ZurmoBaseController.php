@@ -1288,7 +1288,6 @@
          */
         protected function beforeRedirect($model)
         {
-
         }
     }
 ?>

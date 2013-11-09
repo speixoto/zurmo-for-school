@@ -63,16 +63,26 @@
             'Upgrade to v1.6',
         ),
         'htmlContent'                  => array(
-            '<p>We are offering <strong>10% discount</strong> on all packages to new clients.</p>',
-            '<p>Existing clients can upgrade to a higher package and enjoy a special one time <strong>5% discount</strong>.</p>',
-            '<p>We have done lot of infrastructure redesign in terms and <strong>seucrity and performance</strong>.</p>',
-            '<p>Brace yourselves. This year santa came bit early with a special gift for you, <strong>25% discount</strong> on all packages.</p>',
-            '<p>All existing clients have been <strong>upgraded to v1.6</strong> as of now. Please contact support if you face any issues.</p>',
-            '<p>We are offering <strong>10% discount</strong> on all packages to new clients.</p>',
-            '<p>Existing clients can upgrade to a higher package and enjoy a special one time <strong>5% discount</strong>.</p>',
-            '<p>We have done lot of infrastructure redesign in terms and <strong>seucrity and performance</strong>.</p>',
-            '<p>Brace yourselves. This year santa came bit early with a special gift for you, <strong>25% discount</strong> on all packages.</p>',
-            '<p>All existing clients have been <strong>upgraded to v1.6</strong> as of now. Please contact support if you face any issues.</p>',
+            '<html><head></head><body><p>We are offering <strong>10% discount</strong>' .
+                ' on all packages to new clients.</p></body></html>',
+            '<html><head></head><body><p>Existing clients can upgrade to a higher package ' .
+                'and enjoy a special one time <strong>5% discount</strong>.</p></body></html>',
+            '<html><head></head><body><p>We have done lot of infrastructure redesign in terms ' .
+                'and <strong>seucrity and performance</strong>.</p></body></html>',
+            '<html><head></head><body><p>Brace yourselves. This year santa came bit early with' .
+                ' a special gift for you, <strong>25% discount</strong> on all packages.</p></body></html>',
+            '<html><head></head><body><p>All existing clients have been <strong>upgraded to v1.6</strong> ' .
+                'as of now. Please contact support if you face any issues.</p></body></html>',
+            '<html><head></head><body><p>We are offering <strong>10% discount</strong> on all ' .
+                'packages to new clients.</p></body></html>',
+            '<html><head></head><body><p>Existing clients can upgrade to a higher package and' .
+                ' enjoy a special one time <strong>5% discount</strong>.</p></body></html>',
+            '<html><head></head><body><p>We have done lot of infrastructure redesign in terms ' .
+                'and <strong>seucrity and performance</strong>.</p></body></html>',
+            '<html><head></head><body><p>Brace yourselves. This year santa came bit early with a' .
+                ' special gift for you, <strong>25% discount</strong> on all packages.</p></body></html>',
+            '<html><head></head><body><p>All existing clients have been <strong>upgraded to v1.6</strong> ' .
+                'as of now. Please contact support if you face any issues.</p></body></html>',
         ),
         'textContent'                  => array(
             'We are offering 10% discount on all packages to new clients.',

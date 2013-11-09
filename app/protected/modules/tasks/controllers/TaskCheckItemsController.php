@@ -44,15 +44,15 @@
             $task                       = Task::getById(intval($relatedModelId));
             $task->checkListItems->add($taskCheckListItem);
             $saved = $task->save();
-            if(!$saved)
+            if (!$saved)
             {
                 throw new FailedToSaveModelException();
             }
-            if($task->project->id > 0)
+            if ($task->project->id > 0)
             {
                 ProjectsUtil::logTaskCheckItemEvent($task, $taskCheckListItem);
             }
-            if($redirectUrl != null)
+            if ($redirectUrl != null)
             {
                 $this->redirect($redirectUrl);
             }
@@ -150,7 +150,7 @@
             $taskCheckListItem = TaskCheckListItem::getById(intval($id));
             $task->checkListItems->remove($taskCheckListItem);
             $saved = $task->save();
-            if(!$saved)
+            if (!$saved)
             {
                 throw new FailedToSaveModelException();
             }

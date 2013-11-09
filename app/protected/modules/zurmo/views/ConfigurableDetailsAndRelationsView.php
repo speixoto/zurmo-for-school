@@ -135,7 +135,6 @@
                 $icon    = ZurmoHtml::tag('i', array('class' => 'icon-lock'), '<!--' . Zurmo::t('Core', 'Unlock') . '-->');
                 $content = ZurmoHtml::link($icon, $url, array('title' => $title));
                 $content = ZurmoHtml::tag('nav', array('class' => 'default-button'), $content);
-
             }
             return $content;
         }

@@ -922,7 +922,7 @@
                                                         'name' => 'securableitem_id',
                                                         'type' => 'INT(11)',
                                                         'unsigned' => 'UNSIGNED',
-                                                        'notNull' => 'NOT NULL',
+                                                        'notNull' => 'NOT NULL', // Not Coding Standard
                                                         'collation' => null,
                                                         'default' => null,
                                                     ),
@@ -930,7 +930,7 @@
                                                         'name' => 'munge_id',
                                                         'type' => 'VARCHAR(12)',
                                                         'unsigned' => null,
-                                                        'notNull' => 'NOT NULL',
+                                                        'notNull' => 'NOT NULL', // Not Coding Standard
                                                         'collation' => 'COLLATE utf8_unicode_ci',
                                                         'default' => null,
                                                     ),
@@ -938,7 +938,7 @@
                                                         'name' => 'count',
                                                         'type' => 'INT(8)',
                                                         'unsigned' => 'UNSIGNED',
-                                                        'notNull' => 'NOT NULL',
+                                                        'notNull' => 'NOT NULL', // Not Coding Standard
                                                         'collation' => null,
                                                         'default' => null,
                                                     ),

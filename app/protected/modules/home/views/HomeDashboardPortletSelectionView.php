@@ -80,7 +80,7 @@
                                         'portletType'    => $portletRules->getType(),
                                         )
                                     );
-                                    if(isset ($metadata['perUser']['title']))
+                                    if (isset ($metadata['perUser']['title']))
                                     {
                                         $title = $metadata['perUser']['title'];
                                     }

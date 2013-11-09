@@ -60,6 +60,7 @@
                 ContactsModule::loadStartingData();
                 $steve->setRight('ContactsModule',  ContactsModule::RIGHT_ACCESS_CONTACTS);
                 $steve->setRight('AccountsModule',  AccountsModule::RIGHT_ACCESS_ACCOUNTS);
+                $steve->save();
 
                 Yii::app()->imap->imapHost        = Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapHost'];
                 Yii::app()->imap->imapUsername    = Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapUsername'];
@@ -89,6 +90,7 @@
 
         public function setup()
         {
+            ForgetAllCacheUtil::forgetAllCaches(); //Special situation to deal with email box and ensuring the user cache doesn't get corrupted
             parent::setup();
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
@@ -427,7 +429,6 @@ To: Steve <steve@example.com>
             {
                 $this->markTestSkipped(Zurmo::t('EmailMessagesModule', 'Test email settings are not configured in perInstanceTest.php file.'));
             }
-            ForgetAllCacheUtil::forgetAllCaches(); //Special situation to deal with email box and ensuring the user cache doesn't get corrupted
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
             $user = User::getByUsername('steve');

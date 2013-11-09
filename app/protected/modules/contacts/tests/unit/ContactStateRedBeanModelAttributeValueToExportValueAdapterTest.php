@@ -36,7 +36,6 @@
 
     class ContactStateRedBeanModelAttributeValueToExportValueAdapterTest extends ZurmoBaseTest
     {
-
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
