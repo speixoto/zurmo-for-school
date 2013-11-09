@@ -89,17 +89,79 @@
 
         public function testUpdateLatestActivityDateTimeWhenANoteIsCreated()
         {
-            //UpdateLatestActivityDateTimeWhenANoteIsCreated
+            $contact = ContactTestHelper::createContactByNameForOwner('contact2', Yii::app()->user->userModel);
+            $this->assertNull($contact->latestActivityDateTime);
+            $note = new Note();
+            $note->owner               = Yii::app()->user->userModel;
+            $note->description         = 'aNote';
+            $note->activityItems->add($contact);
+            $this->assertTrue($note->save());
+            $this->assertNotNull($note->activityItems[0]->latestActivityDateTime);
+            $dateTimeAMinuteAgo     = DateTimeUtil::convertTimestampToDbFormatDateTime(time() - 60);
+            $dateTimeAMinuteFromNow = DateTimeUtil::convertTimestampToDbFormatDateTime(time() + 60);
+            $this->assertTrue($note->activityItems[0]->latestActivityDateTime > $dateTimeAMinuteAgo);
+            $this->assertTrue($note->activityItems[0]->latestActivityDateTime < $dateTimeAMinuteFromNow);
+
+            //Change note name, and confirm the latestActivityDateTime does not update
+            $oldDateTime       = $note->activityItems[0]->latestActivityDateTime;
+            $note->description = 'aNoteAlso';
+            $this->assertTrue($note->save());
+            $this->assertEquals($oldDateTime, $note->activityItems[0]->latestActivityDateTime);
         }
 
         public function testUpdateLatestActivityDateTimeWhenAnEmailIsSentOrArchived()
         {
-            //UpdateLatestActivityDateTimeWhenAnEmailIsSentOrArchived
+            $emailMessage = EmailMessageTestHelper::createDraftSystemEmail('subject 1', Yii::app()->user->userModel);
+            $contact3     = ContactTestHelper::createContactByNameForOwner('contact3', Yii::app()->user->userModel);
+            $contact4     = ContactTestHelper::createContactByNameForOwner('contact4', Yii::app()->user->userModel);
+            $contact5     = ContactTestHelper::createContactByNameForOwner('contact4', Yii::app()->user->userModel);
+            $dateTime     = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
+            $contact5->setLatestActivityDateTime($dateTime);
+            $this->assertTrue($contact5->save());
+            $contact3Id   = $contact3->id;
+            $contact4Id   = $contact4->id;
+            $contact5Id   = $contact5->id;
+            $this->assertNull($contact3->latestActivityDateTime);
+            $this->assertNull($contact4->latestActivityDateTime);
+            $this->assertEquals($dateTime, $contact5->latestActivityDateTime);
+            $emailMessage->sender->personsOrAccounts->add($contact3);
+            $emailMessage->recipients[0]->personsOrAccounts->add($contact4);
+            $emailMessage->recipients[0]->personsOrAccounts->add($contact5);
+            $this->assertTrue($emailMessage->save());
+            $this->assertNull($contact3->latestActivityDateTime);
+            $this->assertNull($contact4->latestActivityDateTime);
+            $this->assertEquals($dateTime, $contact5->latestActivityDateTime);
+            $emailMessageId = $emailMessage->id;
+            $emailMessage->forget();
+            $contact3->forget();
+            $contact4->forget();
+            $contact5->forget();
+
+            //Retrieve email message and set sentDateTime, at this point the contacts should update with this value
+            $sentDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time() - 86400);
+            $emailMessage = EmailMessage::getById($emailMessageId);
+            $emailMessage->sentDateTime = $sentDateTime;
+            $this->assertTrue($emailMessage->save());
+            $contact3 = Contact::getById($contact3Id);
+            $contact4 = Contact::getById($contact4Id);
+            $contact5 = Contact::getById($contact5Id);
+            $this->assertEquals($sentDateTime, $contact3->latestActivityDateTime);
+            $this->assertEquals($sentDateTime, $contact4->latestActivityDateTime);
+            $this->assertEquals($dateTime, $contact5->latestActivityDateTime);
         }
 
         public function testUpdateLatestActivityDateTimeWhenAMeetingIsInThePast()
         {
-            //UpdateLatestActivityDateTimeWhenAMeetingIsInThePast
+            $meeting = new Meeting();
+            $meeting->name = 'my meeting';
+            $meeting->startDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time() - 86400);
+            $this->assertNull($meeting->processedForLatestActivity);
+            $meeting->processedForLatestActivity = true;
+            $this->assertTrue($meeting->save());
+            $this->assertTrue($meeting->processedForLatestActivity == false);
+            $meeting->processedForLatestActivity = true;
+            $this->assertTrue($meeting->save());
+            $this->assertTrue($meeting->processedForLatestActivity == true);
         }
     }
 ?>
