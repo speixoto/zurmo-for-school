@@ -1,5 +1,5 @@
 #!/bin/sh
-
+sudo apt-get install php5-imap
 chmod -R 755 ../
 chmod -R 757 app/protected/data
 chmod -R 757 app/protected/runtime
