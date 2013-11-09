@@ -14,6 +14,7 @@ before_script:
 #  - if [[ "$DB" == "mysql" ]]; then mysql -e "create database IF NOT EXISTS zurmo_temp;" -uroot; fi
   - mysql -e 'create database zurmo_test;'
   - mysql -e 'create database zurmo_temp;'
+  - echo "USE mysql;\nUPDATE user SET password=PASSWORD('password') WHERE user='travis';\nFLUSH PRIVILEGES;\n" | mysql -u root
   - chmod +x testScript/testScript.sh
   - testScript/testScript.sh
 

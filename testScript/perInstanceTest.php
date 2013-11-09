@@ -40,7 +40,7 @@
     $theme            = 'default';
     $connectionString = 'mysql:host=localhost;port=3306;dbname=zurmo_test'; // Not Coding Standard
     $username = 'travis';
-    $password = '';
+    $password = 'password';
     $memcacheServers  = array( // An empty array means memcache is not used.
                             array(
                                 'host'   => '127.0.0.1',
@@ -57,7 +57,7 @@
         'class' => 'CDbConnection',
         'connectionString' => 'mysql:host=localhost;port=3306;dbname=zurmo_temp', // Not Coding Standard,
         'username'         => 'travis',
-        'password'         => '',
+        'password'         => 'password',
         'emulatePrepare' => true,
         'charset'        => 'utf8',
     );
