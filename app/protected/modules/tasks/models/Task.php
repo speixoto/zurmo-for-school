@@ -121,6 +121,7 @@
                     array('name',              'length',  'min'  => 1, 'max' => 64),
                     array('status',            'type', 'type' => 'integer'),
                     array('status',            'default', 'value' => Task::STATUS_NEW),
+                    array('status',            'required'),
                 ),
                 'elements' => array(
                     'completedDateTime' => 'DateTime',
