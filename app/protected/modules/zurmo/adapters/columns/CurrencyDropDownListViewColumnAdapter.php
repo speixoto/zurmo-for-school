@@ -34,64 +34,22 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Displays the list of currencies from the currency model.
-     */
-    class CurrencyDropDownElement extends DropDownElement
+    class CurrencyDropDownListViewColumnAdapter extends TextListViewColumnAdapter
     {
-        public static function resolveDropDownArray($model, $attribute)
+        public function renderGridViewData()
         {
-            $selectedCurrencyId = $model->{$attribute}->id;
-            if ($selectedCurrencyId < 0)
-            {
-                $selectedCurrencyId = null;
-            }
-            return Yii::app()->currencyHelper->getActiveCurrenciesOrSelectedCurrenciesData((int)$selectedCurrencyId);
-        }
-
-        /**
-         * Override to utilize 'id' instead of 'value' as attribute.
-         * @return A string containing the element's content.
-         */
-        protected function renderControlEditable()
-        {
-            assert('$this->model->{$this->attribute} instanceof Currency');
-            return $this->form->dropDownList(
-                $this->model->{$this->attribute},
-                'id',
-                $this->getDropDownArray(),
-                $this->getEditableHtmlOptions()
+            return array(
+                'name'   => $this->attribute,
+                'value'  => 'CurrencyDropDownListViewColumnAdapter::renderNonEditable($data, "' . $this->attribute . '")',
+                'type'   => 'raw',
             );
         }
 
-        /**
-         * Override to utilize 'id' instead of 'value' as attribute.
-         * @return A string containing the element's content.
-         */
-        protected function renderControlNonEditable()
+        public static function renderNonEditable($model, $attribute)
         {
-            $dropDownModel = $this->model->{$this->attribute};
-            $dropDownArray = $this->getDropDownArray();
-            return Yii::app()->format->text(ArrayUtil::getArrayValue($dropDownArray, $dropDownModel->id));
-        }
-
-        public function getIdForSelectInput()
-        {
-            return $this->getEditableInputId($this->attribute, 'id');
-        }
-
-        protected function getNameForSelectInput()
-        {
-            return $this->getEditableInputName($this->attribute, 'id');
-        }
-
-        /**
-         * (non-PHPdoc)
-         * @see DropDownElement::getDropDownArray()
-         */
-        protected function getDropDownArray()
-        {
-            return static::resolveDropDownArray($this->model, $this->attribute);
+            $dropDownModel = $model->{$attribute};
+            $dropDownArray = CurrencyDropDownElement::resolveDropDownArray($model, $attribute);
+            return ArrayUtil::getArrayValue($dropDownArray, $dropDownModel->id);
         }
     }
 ?>
