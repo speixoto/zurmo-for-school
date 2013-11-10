@@ -841,16 +841,7 @@
         public static function addSubscriber(User $user, Task $task, $hasReadLatest = false)
         {
             assert('is_bool($hasReadLatest)');
-            $isAlreadySubscribed = false;
-            foreach ($task->notificationSubscribers as $notificationSubscriber)
-            {
-                if ($notificationSubscriber->person->getClassId('Item') == $user->getClassId('Item'))
-                {
-                    $isAlreadySubscribed = true;
-                    break;
-                }
-            }
-            if (!$isAlreadySubscribed)
+            if ($task->doNotificationSubscribersContainPerson($user) === false)
             {
                 $notificationSubscriber = new NotificationSubscriber();
                 $notificationSubscriber->person = $user;
