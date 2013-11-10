@@ -195,6 +195,7 @@
         {
             $url     =   Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/deleteViaAjax',
                             array_merge($this->getParams, array('id' => $comment->id)));
+            // Begin Not Coding Standard
             return       ZurmoHtml::ajaxLink(Zurmo::t('Core', 'Delete'), $url,
                          array('type'     => 'GET',
                                'complete' => "function(XMLHttpRequest, textStatus){
@@ -202,6 +203,7 @@
                          array( 'id'         => 'deleteCommentLink' . $comment->id,
                                 'class'     => 'deleteCommentLink' . $comment->id,
                                 'namespace' => 'delete'));
+            // End Not Coding Standard
         }
 
         /**

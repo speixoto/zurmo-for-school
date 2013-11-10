@@ -681,7 +681,7 @@
                                                             $params, null, array(), $kanbanBoard);
             $view                       = new $pageView(ZurmoDefaultViewUtil::
                                                              makeViewWithBreadcrumbsForCurrentUser(
-                                                                    $controller,$listView, $breadCrumbLinks, 'KanbanBoardBreadCrumbView'));
+                                                                    $controller, $listView, $breadCrumbLinks, 'KanbanBoardBreadCrumbView'));
             return $view;
         }
 

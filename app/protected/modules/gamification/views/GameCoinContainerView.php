@@ -75,6 +75,7 @@
             );
 
             $url    = $this->makeAjaxClickUrl();
+            // Begin Not Coding Standard
             $script = "$('.random-game-coin').click(function(e){
                             $(this).unbind('click');
                             " . ZurmoHtml::ajax(array('type' => 'GET', 'url' =>  $url)) . "
@@ -91,7 +92,8 @@
                                 }
                             });
                         });";
-           Yii::app()->clientScript->registerScript('gameCoinClickScript', $script);
+            Yii::app()->clientScript->registerScript('gameCoinClickScript', $script);
+            // End Not Coding Standard
         }
 
         protected function renderCoinContainerContent()
