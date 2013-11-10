@@ -31,7 +31,7 @@ before_script:
 script:
   - cd app/protected/tests/unit
 #  - phpunit --coverage-text TestSuite.php All
-  - phpunit TestSuite.php All
+  - phpunit TestSuite.php mashableInbox
 
 #notifications:
 #  irc: "irc.freenode.org#travis"
