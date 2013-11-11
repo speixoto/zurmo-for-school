@@ -52,11 +52,11 @@
         {
             try
             {
+                $messageStreamer->add(Zurmo::t('Core', 'Clearing cache.'));
+                self::clearCache();
                 $messageStreamer->add(Zurmo::t('Core', 'Checking permissions, files, upgrade version....'));
                 $messageLogger = new MessageLogger($messageStreamer);
 
-                $messageStreamer->add(Zurmo::t('Core', 'Clearing cache.'));
-                self::clearCache();
                 self::setUpgradeState('zurmoUpgradeTimestamp', time());
                 self::isApplicationInUpgradeMode();
                 self::checkPermissions();
@@ -88,8 +88,8 @@
                     self::processAfterFiles();
                 }
 
-                self::clearCache();
                 $messageStreamer->add(Zurmo::t('Core', 'Clearing cache.'));
+                self::clearCache();
                 $messageStreamer->add(Zurmo::t('Core', 'Part 1 complete.'));
             }
             catch (CException $e)
@@ -114,12 +114,12 @@
         {
             try
             {
+                $messageStreamer->add(Zurmo::t('Core', 'Clearing cache.'));
+                self::clearCache();
                 $upgradeExtractPath = self::getUpgradeState('zurmoUpgradeFolderPath');
                 $messageLogger = new MessageLogger($messageStreamer);
 
                 self::isApplicationInUpgradeMode();
-                $messageStreamer->add(Zurmo::t('Core', 'Clearing cache.'));
-                self::clearCache();
                 $messageStreamer->add(Zurmo::t('Core', 'Loading UpgraderComponent.'));
                 self::loadUpgraderComponent($upgradeExtractPath, $messageLogger);
                 $messageStreamer->add(Zurmo::t('Core', 'Clearing cache.'));
@@ -147,6 +147,8 @@
                 $messageStreamer->add(Zurmo::t('Core', 'Removing upgrade files.'));
                 self::removeUpgradeFiles($upgradeExtractPath);
                 self::unsetUpgradeState();
+                $messageStreamer->add(Zurmo::t('Core', 'Clearing cache.'));
+                self::clearCache();
                 $messageStreamer->add(Zurmo::t('Core', 'Upgrade process completed.'));
             }
             catch (CException $e)
