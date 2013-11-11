@@ -195,7 +195,7 @@
         {
             if ($element->getAttribute() == 'reCaptchaPrivateKey')
             {
-                $title    = Zurmo::t('ZurmoModule', 'ReCaptcha private key can be generated at http://recpatcha.net');
+                $title    = Zurmo::t('ZurmoModule', 'ReCaptcha private key can be generated at http://recaptcha.net');
                 $content  = '<span id="captcha-private-key-tooltip" class="tooltip"  title="' . $title . '">?</span>';
                 $qtip     = new ZurmoTip();
                 $qtip->addQTip("#captcha-private-key-tooltip");
@@ -204,7 +204,7 @@
             }
             elseif ($element->getAttribute() == 'reCaptchaPublicKey')
             {
-                $title    = Zurmo::t('ZurmoModule', 'ReCaptcha public key can be generated at http://recpatcha.net');
+                $title    = Zurmo::t('ZurmoModule', 'ReCaptcha public key can be generated at http://recaptcha.net');
                 $content  = '<span id="captcha-public-key-tooltip" class="tooltip"  title="' . $title . '">?</span>';
                 $qtip     = new ZurmoTip();
                 $qtip->addQTip("#captcha-public-key-tooltip");
