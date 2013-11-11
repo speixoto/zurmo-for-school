@@ -181,46 +181,48 @@
 	}
 }
 
-.modal-view-toolbar a,
-.modal-view-toolbar input[type="submit"],
-.modal-view-toolbar input[type="button"],
-.form-toolbar a,
-.form-toolbar input[type="submit"],
-.form-toolbar input[type="button"],
+//.modal-view-toolbar a,
+//.modal-view-toolbar input[type="submit"],
+//.modal-view-toolbar input[type="button"],
+//.form-toolbar a,
+//.form-toolbar input[type="submit"],
+//.form-toolbar input[type="button"],
 .zButton,
 .z-button,
-a.zButton,
-a.z-button,
-.white-button{
-    border-top:1px solid    rgba(200, 200, 200, 0.4);
-    border-left: 1px solid  rgba(185, 185, 185, 0.4);
-    border-right:1px solid  rgba(185, 185, 185, 0.4);
-    border-bottom:1px solid rgba(170, 170, 170, 0.4);
-    color:#666 !important;
-    .b-shadow(0 0 9px 5px rgba(153, 153, 153, 0.15));
-    .t-shadow( 0px 1px 0 rgba(255, 255, 255, 0.75) ) !important;
+.default-btn,
+.white-button,
+.cancel-button,
+.portlet-create-button{
+	cursor:pointer;
     .radius( 3px );
     overflow: hidden;
     position: relative;
-    cursor:pointer;
     text-indent:0;
     display:inline-block;
 	.box-sizing();
     .clearfix();
-    &.attachLoading.z-button{
-        //color: #fff;
-    }
-    &:not(.attachLoading):not(.green-button) .z-label{
-        //background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
-    }
+
+	@hexToRGBA : rgba(red(@themeColorBtnDefault), green(@themeColorBtnDefault), blue(@themeColorBtnDefault), 0.8);
+
+	border-top:1px solid  lighten(@hexToRGBA, 10%); /*lighter*/
+	border-left: 1px solid @hexToRGBA;
+	border-right:1px solid @hexToRGBA;
+	border-bottom:1px solid darken(@hexToRGBA, 10%); /*darker*/
+
+	.b-shadow(0 0 9px 5px rgba(153, 153, 153, 0.15));
 }
 
+.default-btn,
 .white-button,
 .cancel-button,
 .portlet-create-button{
+	border-top:1px solid    rgba(200, 200, 200, 0.4);
+	border-left: 1px solid  rgba(185, 185, 185, 0.4);
+	border-right:1px solid  rgba(185, 185, 185, 0.4);
+	border-bottom:1px solid rgba(170, 170, 170, 0.4);
 	.z-label{
         color:#666;
-        .t-shadow( 0px 1px 0 rgba(255, 255, 255, 0.75) ) !important;
+        .t-shadow( 0px -1px 0 rgba(255, 255, 255, 0.75) ) !important;
         background: url(../images/view-toolbar-gradient.png) left bottom repeat-x;
 	}
 	&:hover{
@@ -229,13 +231,9 @@ a.z-button,
 			color: @themeColor2 !important;
 			background-image: none;
 			#gradient > .vertical( #fefefe, #ededed ) !important;
-			.t-shadow( 0px 1px 0 rgba(255, 255, 255, 0.75) ) !important;
+			.t-shadow( 0px -1px 0 rgba(255, 255, 255, 0.75) ) !important;
 		}
 	}
-}
-
-.default-btn{
-    .zButton() !important;
 }
 
 .z-label{
@@ -280,20 +278,8 @@ a:active .z-label{
 	filter: gray; /* IE 6-9 */
 }
 
-/*
-.zButton:not(.attacheLoading),
-.z-button:not(.attachLoading){
-     background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
-}
-*/
-
-.green-button,
-.attachLoading{
-    color:#FFF;
-    cursor:pointer;
-}
-
-.zButton.loading, .z-button.loading{
+.zButton.loading,
+.z-button.loading{
     .z-spinner{
         display:inline-block;
         position: absolute;

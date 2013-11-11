@@ -32,12 +32,6 @@
  * feasible for technical reasons, the Appropriate Legal Notices must display the words
  * "Copyright Zurmo Inc. 2013. All rights reserved".
  ********************************************************************************/
-/*
-.zButton:not(.attacheLoading),
-.z-button:not(.attachLoading){
-     background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
-}
-*/
 /*.filters-bar{
 	float: none;
 	margin-left: 0;
@@ -119,32 +113,13 @@
 .headerDropDown li > a:hover {
   color: #fff !important;
 }
-.modal-view-toolbar a,
-.modal-view-toolbar input[type="submit"],
-.modal-view-toolbar input[type="button"],
-.form-toolbar a,
-.form-toolbar input[type="submit"],
-.form-toolbar input[type="button"],
 .zButton,
 .z-button,
-a.zButton,
-a.z-button,
-.white-button {
-  border-top: 1px solid rgba(200,200,200,0.4);
-  border-left: 1px solid rgba(185,185,185,0.4);
-  border-right: 1px solid rgba(185,185,185,0.4);
-  border-bottom: 1px solid rgba(170,170,170,0.4);
-  color: #666 !important;
-  -webkit-box-shadow: 0 0 9px 5px rgba(153,153,153,0.15);
-  -moz-box-shadow: 0 0 9px 5px rgba(153,153,153,0.15);
-  -ms-box-shadow: 0 0 9px 5px rgba(153,153,153,0.15);
-  -o-box-shadow: 0 0 9px 5px rgba(153,153,153,0.15);
-  box-shadow: 0 0 9px 5px rgba(153,153,153,0.15);
-  -webkit-text-shadow: 0px 1px 0 rgba(255,255,255,0.75) !important;
-  -moz-text-shadow: 0px 1px 0 rgba(255,255,255,0.75) !important;
-  -ms-text-shadow: 0px 1px 0 rgba(255,255,255,0.75) !important;
-  -o-text-shadow: 0px 1px 0 rgba(255,255,255,0.75) !important;
-  text-shadow: 0px 1px 0 rgba(255,255,255,0.75) !important;
+.default-btn,
+.white-button,
+.cancel-button,
+.portlet-create-button {
+  cursor: pointer;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   -ms-border-radius: 3px;
@@ -152,63 +127,69 @@ a.z-button,
   border-radius: 3px;
   overflow: hidden;
   position: relative;
-  cursor: pointer;
   text-indent: 0;
   display: inline-block;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
   *zoom: 1;
+  border-top: 1px solid rgba(172,208,100,0.4);
+  /*lighter*/
+  border-left: 1px solid rgba(151,196,61,0.4);
+  border-right: 1px solid rgba(151,196,61,0.4);
+  border-bottom: 1px solid rgba(121,158,48,0.4);
+  /*darkerr*/
+  -webkit-box-shadow: 0 0 9px 5px rgba(153,153,153,0.15);
+  -moz-box-shadow: 0 0 9px 5px rgba(153,153,153,0.15);
+  -ms-box-shadow: 0 0 9px 5px rgba(153,153,153,0.15);
+  -o-box-shadow: 0 0 9px 5px rgba(153,153,153,0.15);
+  box-shadow: 0 0 9px 5px rgba(153,153,153,0.15);
 }
-.modal-view-toolbar a:before,
-.modal-view-toolbar a:after,
-.modal-view-toolbar input[type="submit"]:before,
-.modal-view-toolbar input[type="submit"]:after,
-.modal-view-toolbar input[type="button"]:before,
-.modal-view-toolbar input[type="button"]:after,
-.form-toolbar a:before,
-.form-toolbar a:after,
-.form-toolbar input[type="submit"]:before,
-.form-toolbar input[type="submit"]:after,
-.form-toolbar input[type="button"]:before,
-.form-toolbar input[type="button"]:after,
 .zButton:before,
 .zButton:after,
 .z-button:before,
 .z-button:after,
-a.zButton:before,
-a.zButton:after,
-a.z-button:before,
-a.z-button:after,
+.default-btn:before,
+.default-btn:after,
 .white-button:before,
-.white-button:after {
+.white-button:after,
+.cancel-button:before,
+.cancel-button:after,
+.portlet-create-button:before,
+.portlet-create-button:after {
   content: " ";
   display: table;
 }
-.modal-view-toolbar a:after,
-.modal-view-toolbar input[type="submit"]:after,
-.modal-view-toolbar input[type="button"]:after,
-.form-toolbar a:after,
-.form-toolbar input[type="submit"]:after,
-.form-toolbar input[type="button"]:after,
 .zButton:after,
 .z-button:after,
-a.zButton:after,
-a.z-button:after,
-.white-button:after {
+.default-btn:after,
+.white-button:after,
+.cancel-button:after,
+.portlet-create-button:after {
   clear: both;
 }
+.default-btn,
+.white-button,
+.cancel-button,
+.portlet-create-button {
+  border-top: 1px solid rgba(200,200,200,0.4);
+  border-left: 1px solid rgba(185,185,185,0.4);
+  border-right: 1px solid rgba(185,185,185,0.4);
+  border-bottom: 1px solid rgba(170,170,170,0.4);
+}
+.default-btn .z-label,
 .white-button .z-label,
 .cancel-button .z-label,
 .portlet-create-button .z-label {
   color: #666;
-  -webkit-text-shadow: 0px 1px 0 rgba(255,255,255,0.75) !important;
-  -moz-text-shadow: 0px 1px 0 rgba(255,255,255,0.75) !important;
-  -ms-text-shadow: 0px 1px 0 rgba(255,255,255,0.75) !important;
-  -o-text-shadow: 0px 1px 0 rgba(255,255,255,0.75) !important;
-  text-shadow: 0px 1px 0 rgba(255,255,255,0.75) !important;
+  -webkit-text-shadow: 0px -1px 0 rgba(255,255,255,0.75) !important;
+  -moz-text-shadow: 0px -1px 0 rgba(255,255,255,0.75) !important;
+  -ms-text-shadow: 0px -1px 0 rgba(255,255,255,0.75) !important;
+  -o-text-shadow: 0px -1px 0 rgba(255,255,255,0.75) !important;
+  text-shadow: 0px -1px 0 rgba(255,255,255,0.75) !important;
   background: url(../images/view-toolbar-gradient.png) left bottom repeat-x;
 }
+.default-btn:hover .z-label,
 .white-button:hover .z-label,
 .cancel-button:hover .z-label,
 .portlet-create-button:hover .z-label {
@@ -221,50 +202,11 @@ a.z-button:after,
   background-image: -webkit-linear-gradient(top,#fefefe,#ededed) !important;
   background-image: -o-linear-gradient(top,#fefefe,#ededed) !important;
   background-image: linear-gradient(top,#fefefe,#ededed) !important;
-  -webkit-text-shadow: 0px 1px 0 rgba(255,255,255,0.75) !important;
-  -moz-text-shadow: 0px 1px 0 rgba(255,255,255,0.75) !important;
-  -ms-text-shadow: 0px 1px 0 rgba(255,255,255,0.75) !important;
-  -o-text-shadow: 0px 1px 0 rgba(255,255,255,0.75) !important;
-  text-shadow: 0px 1px 0 rgba(255,255,255,0.75) !important;
-}
-.default-btn {
-  border-top: 1px solid rgba(200,200,200,0.4) !important;
-  border-left: 1px solid rgba(185,185,185,0.4) !important;
-  border-right: 1px solid rgba(185,185,185,0.4) !important;
-  border-bottom: 1px solid rgba(170,170,170,0.4) !important;
-  color: #666 !important !important;
-  -webkit-box-shadow: 0 0 9px 5px rgba(153,153,153,0.15);
-  -moz-box-shadow: 0 0 9px 5px rgba(153,153,153,0.15);
-  -ms-box-shadow: 0 0 9px 5px rgba(153,153,153,0.15);
-  -o-box-shadow: 0 0 9px 5px rgba(153,153,153,0.15);
-  box-shadow: 0 0 9px 5px rgba(153,153,153,0.15);
-  -webkit-text-shadow: 0px 1px 0 rgba(255,255,255,0.75) !important;
-  -moz-text-shadow: 0px 1px 0 rgba(255,255,255,0.75) !important;
-  -ms-text-shadow: 0px 1px 0 rgba(255,255,255,0.75) !important;
-  -o-text-shadow: 0px 1px 0 rgba(255,255,255,0.75) !important;
-  text-shadow: 0px 1px 0 rgba(255,255,255,0.75) !important;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  -ms-border-radius: 3px;
-  -o-border-radius: 3px;
-  border-radius: 3px;
-  overflow: hidden !important;
-  position: relative !important;
-  cursor: pointer !important;
-  text-indent: 0 !important;
-  display: inline-block !important;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  *zoom: 1;
-}
-.default-btn:before,
-.default-btn:after {
-  content: " ";
-  display: table;
-}
-.default-btn:after {
-  clear: both;
+  -webkit-text-shadow: 0px -1px 0 rgba(255,255,255,0.75) !important;
+  -moz-text-shadow: 0px -1px 0 rgba(255,255,255,0.75) !important;
+  -ms-text-shadow: 0px -1px 0 rgba(255,255,255,0.75) !important;
+  -o-text-shadow: 0px -1px 0 rgba(255,255,255,0.75) !important;
+  text-shadow: 0px -1px 0 rgba(255,255,255,0.75) !important;
 }
 .z-label {
   color: #fff;
@@ -336,11 +278,6 @@ a:active .z-label {
   filter: grayscale(85%);
   filter: gray;
   /* IE 6-9 */
-}
-.green-button,
-.attachLoading {
-  color: #FFF;
-  cursor: pointer;
 }
 .zButton.loading .z-spinner,
 .z-button.loading .z-spinner {
