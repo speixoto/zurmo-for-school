@@ -131,10 +131,6 @@
                                             resolveNotificationTextTemplate(
                                             Zurmo::t('EmailMessagesModule', 'A test text message from Zurmo.',
                                             LabelUtil::getTranslationParamsForAllModules()));
-            $emailContent->htmlContent = EmailNotificationUtil::
-                                            resolveNotificationHtmlTemplate(
-                                            Zurmo::t('EmailMessagesModule', 'A test text message from Zurmo.',
-                                            LabelUtil::getTranslationParamsForAllModules()));
             $emailMessage->content     = $emailContent;
             $sender                    = new EmailMessageSender();
             $sender->fromAddress       = $from['address'];

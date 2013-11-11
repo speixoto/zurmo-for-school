@@ -328,9 +328,6 @@
             $emailContent->textContent  = EmailNotificationUtil::
                                             resolveNotificationTextTemplate(
                                             $notification->notificationMessage->textContent);
-            $emailContent->htmlContent  = EmailNotificationUtil::
-                                            resolveNotificationHtmlTemplate(
-                                            $notification->notificationMessage->htmlContent);
             return $emailContent;
         }
 

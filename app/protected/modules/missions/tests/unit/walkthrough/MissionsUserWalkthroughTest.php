@@ -416,8 +416,9 @@
             $this->assertEquals(1, count($emailMessage->recipients));
             $this->assertContains('mission', $emailMessage->subject);
             $this->assertContains(strval($mission), $emailMessage->subject);
-            $this->assertContains(strval($mission->comments[0]), $emailMessage->content->htmlContent);
             $this->assertContains(strval($mission->comments[0]), $emailMessage->content->textContent);
+            //Confirm email notification dont have htmlContent
+            $this->assertNull($emailMessage->content->htmlContent);
         }
 
         public function testMissionReadUnreadStatus()

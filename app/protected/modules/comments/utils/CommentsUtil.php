@@ -99,18 +99,6 @@
                                         ));
             $emailContent->textContent  = EmailNotificationUtil::
                                                 resolveNotificationTextTemplate($textContent);
-            $htmlContent = Zurmo::t('CommentsModule', "Hello, {lineBreak} {updaterName} added a new comment to the " .
-                                             "{strongStartTag}{url}{strongEndTag}: {lineBreak}" .
-                                             "\"{commentDescription}.\"",
-                               array('{lineBreak}'           => "<br/>",
-                                     '{strongStartTag}'      => '<strong>',
-                                     '{strongEndTag}'        => '</strong>',
-                                     '{updaterName}'         => strval($user),
-                                     '{commentDescription}'  => strval($comment),
-                                     '{url}'                 => ZurmoHtml::link($model->getModelLabelByTypeAndLanguage(
-                                                                'SingularLowerCase'), $url)
-                                   ));
-            $emailContent->htmlContent  = EmailNotificationUtil::resolveNotificationHtmlTemplate($htmlContent);
             return $emailContent;
         }
 

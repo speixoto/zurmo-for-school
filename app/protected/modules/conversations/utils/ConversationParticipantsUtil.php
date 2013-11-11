@@ -206,9 +206,6 @@
                 $emailContent->textContent  = EmailNotificationUtil::
                                                 resolveNotificationTextTemplate(
                                                 static::getParticipantInviteEmailTextContent($conversation));
-                $emailContent->htmlContent  = EmailNotificationUtil::
-                                                resolveNotificationHtmlTemplate(
-                                                static::getParticipantInviteEmailHtmlContent($conversation));
                 $emailMessage->content      = $emailContent;
                 $sender                     = new EmailMessageSender();
                 $sender->fromAddress        = Yii::app()->emailHelper->resolveFromAddressByUser($userToSendMessagesFrom);

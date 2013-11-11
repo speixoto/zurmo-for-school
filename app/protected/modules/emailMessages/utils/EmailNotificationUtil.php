@@ -55,7 +55,7 @@
             $htmlTemplate                       = self::getNotificationHtmlTemplate();
             $htmlContent                        = array();
             $htmlContent['{bodyContent}']       = $bodyContent;
-            $htmlContent['{sourceContent}']     = Zurmo::t('EmailMessagesModule', 'This message sent from Zurmo', LabelUtil::getTranslationParamsForAllModules());
+            $htmlContent['{sourceContent}']     = Zurmo::t('EmailMessagesModule', 'Powered By <a href =\'http://www.zurmo.com\'>Zurmo</a>', LabelUtil::getTranslationParamsForAllModules());
             $htmlContent['{preferenceContent}'] = ZurmoHtml::link(Zurmo::t('EmailMessagesModule', 'Manage your email preferences'), $url);
             return strtr($htmlTemplate, $htmlContent);
         }
@@ -106,12 +106,13 @@
             }
             $url                                = Yii::app()->createAbsoluteUrl('users/default/configurationEdit',
                                                   array('id' => $user->id));
-            $htmlTemplate                       = self::getNotificationTextTemplate();
-            $htmlContent                        = array();
-            $htmlContent['{bodyContent}']       = $bodyContent;
-            $htmlContent['{sourceContent}']     = Zurmo::t('EmailMessagesModule', 'This message sent from Zurmo', LabelUtil::getTranslationParamsForAllModules());
-            $htmlContent['{preferenceContent}'] = Zurmo::t('EmailMessagesModule', 'Manage your email preferences') . ZurmoHtml::link(null, $url);
-            return strtr($htmlTemplate, $htmlContent);
+            $textTemplate                       = self::getNotificationTextTemplate();
+            $textContent                        = array();
+            $textContent['{bodyContent}']       = $bodyContent;
+            $textContent['{sourceContent}']     = Zurmo::t('EmailMessagesModule', 'Powered By Zurmo', LabelUtil::getTranslationParamsForAllModules());
+            $textContent['{sourceContent}']    .= PHP_EOL .'http://www.zurmo.com';
+            $textContent['{preferenceContent}'] = Zurmo::t('EmailMessagesModule', 'Manage your email preferences') . ZurmoHtml::link(null, $url);
+            return strtr($textTemplate, $textContent);
         }
 
         protected static function getNotificationTextTemplate()

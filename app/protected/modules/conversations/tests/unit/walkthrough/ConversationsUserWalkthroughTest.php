@@ -566,8 +566,9 @@
             $this->assertEquals(2, count($emailMessage->recipients));
             $this->assertContains('conversation', $emailMessage->subject);
             $this->assertContains(strval($conversation), $emailMessage->subject);
-            $this->assertContains(strval($conversation->comments[0]), $emailMessage->content->htmlContent);
             $this->assertContains(strval($conversation->comments[0]), $emailMessage->content->textContent);
+            //Email sent should not contain htmlContent
+            $this->assertNull($emailMessage->content->htmlContent);
         }
     }
 ?>
