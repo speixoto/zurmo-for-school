@@ -126,29 +126,48 @@
         public function testAddAndRemoveSubscriberViaAjaxWithNormalUser()
         {
             //Adk Jason as why permission error is coming up here
-            return;
             $sally              = $this->logoutCurrentUserLoginNewUserAndGetByUsername('sally');
-            $tasks              = Task::getByName('SubscriberTask');
             $task               = new Task();
             $task->name         = 'NewSubscriberTask';
-            $task->owner        = self::$sally;
+            $task->owner        = $sally;
             $task->requestedByUser = self::$myUser;
             $this->assertTrue($task->save());
+            $this->setGetArray(array('id' => $task->id));
+            $this->runControllerShouldResultInAccessFailureAndGetContent('tasks/default/removeSubscriber');
+            $this->setGetArray(array('id' => $task->id));
+            $this->runControllerShouldResultInAccessFailureAndGetContent('tasks/default/addSubscriber');
+
+            //Now test peon with elevated rights to accounts
+            $sally->setRight('TasksModule', TasksModule::RIGHT_ACCESS_TASKS);
+            $sally->setRight('TasksModule', TasksModule::RIGHT_CREATE_TASKS);
+            $sally->setRight('TasksModule', TasksModule::RIGHT_DELETE_TASKS);
+            $this->assertTrue($sally->save());
+
+            //Test nobody with elevated rights.
+            Yii::app()->user->userModel = User::getByUsername('sally');
+
             $this->setGetArray(array('id' => $task->id));
             $content = $this->runControllerWithNoExceptionsAndGetContent('tasks/default/removeSubscriber', false);
             $this->assertTrue(strpos($content, $sally->getFullName()) !== false);
             $this->assertEquals(2, $task->notificationSubscribers->count());
 
+            //Now super user would be added as a subscriber as he becomes the owner
             $task->owner        = self::$super;
             $this->assertTrue($task->save());
 
             $content = $this->runControllerWithNoExceptionsAndGetContent('tasks/default/removeSubscriber', false);
             $this->assertTrue(strpos($content, $sally->getFullName()) === false);
-            $this->assertEquals(1, $task->notificationSubscribers->count());
+            $this->assertEquals(2, $task->notificationSubscribers->count());
+
+            $isSallyFound = $this->checkIfUserFoundInSubscribersList($task, $sally->id);
+            $this->assertFalse($isSallyFound);
 
             $content = $this->runControllerWithNoExceptionsAndGetContent('tasks/default/addSubscriber', false);
             $this->assertTrue(strpos($content, $sally->getFullName()) !== false);
-            $this->assertEquals(2, $task->notificationSubscribers->count());
+            $this->assertEquals(3, $task->notificationSubscribers->count());
+
+            $isSallyFound = $this->checkIfUserFoundInSubscribersList($task, $sally->id);
+            $this->assertTrue($isSallyFound);
         }
 
         public function testAddAndRemoveKanbanSubscriberViaAjaxAsSuperUser()
@@ -185,6 +204,51 @@
             $this->assertEquals(3, $task->notificationSubscribers->count());
         }
 
+        public function testAddAndRemoveKanbanSubscriberViaAjaxWithNormalUser()
+        {
+            //Adk Jason as why permission error is coming up here
+            $myuser              = $this->logoutCurrentUserLoginNewUserAndGetByUsername('myuser');
+            $task               = new Task();
+            $task->name         = 'NewKanbanSubscriberTask';
+            $task->owner        = $myuser;
+            $task->requestedByUser = self::$sally;
+            $this->assertTrue($task->save());
+            $this->setGetArray(array('id' => $task->id));
+            $this->runControllerShouldResultInAccessFailureAndGetContent('tasks/default/removeKanbanSubscriber');
+            $this->setGetArray(array('id' => $task->id));
+            $this->runControllerShouldResultInAccessFailureAndGetContent('tasks/default/addKanbanSubscriber');
+
+            //Now test peon with elevated rights to accounts
+            $myuser->setRight('TasksModule', TasksModule::RIGHT_ACCESS_TASKS);
+            $myuser->setRight('TasksModule', TasksModule::RIGHT_CREATE_TASKS);
+            $myuser->setRight('TasksModule', TasksModule::RIGHT_DELETE_TASKS);
+            $this->assertTrue($myuser->save());
+
+            //Test nobody with elevated rights.
+            Yii::app()->user->userModel = User::getByUsername('myuser');
+
+            $this->setGetArray(array('id' => $task->id));
+            $content = $this->runControllerWithNoExceptionsAndGetContent('tasks/default/removeKanbanSubscriber', false);
+            $this->assertTrue(strpos($content, $myuser->getFullName()) !== false);
+            $this->assertEquals(2, $task->notificationSubscribers->count());
+
+            //Now super user would be added as a subscriber as he becomes the owner
+            $task->owner        = self::$super;
+            $this->assertTrue($task->save());
+
+            $content = $this->runControllerWithNoExceptionsAndGetContent('tasks/default/removeKanbanSubscriber', false);
+            $this->assertTrue(strpos($content, $myuser->getFullName()) === false);
+            $this->assertEquals(2, $task->notificationSubscribers->count());
+            $isMyUserFound = $this->checkIfUserFoundInSubscribersList($task, $myuser->id);
+            $this->assertFalse($isMyUserFound);
+
+            $content = $this->runControllerWithNoExceptionsAndGetContent('tasks/default/addKanbanSubscriber', false);
+            $this->assertTrue(strpos($content, $myuser->getFullName()) !== false);
+            $this->assertEquals(3, $task->notificationSubscribers->count());
+            $isMyUserFound = $this->checkIfUserFoundInSubscribersList($task, $myuser->id);
+            $this->assertTrue($isMyUserFound);
+        }
+
         /**
          * @depends testInlineCreateCommentFromAjax
          */
@@ -203,7 +267,7 @@
                                     ));
             $this->runControllerWithNoExceptionsAndGetContent('tasks/default/modalCreateFromRelation');
             $tasks              = Task::getAll();
-            $this->assertEquals(2, count($tasks));
+            $this->assertEquals(5, count($tasks));
             $this->setGetArray(array(
                                       'relationAttributeName'   => 'Account',
                                       'relationModelId'         => $accountId,
@@ -219,22 +283,22 @@
             $content = $this->runControllerWithNoExceptionsAndGetContent('tasks/default/modalSaveFromRelation');
             $this->assertTrue(strpos($content, 'Task for test cases') > 0);
             $tasks              = Task::getAll();
-            $this->assertEquals(3, count($tasks));
+            $this->assertEquals(6, count($tasks));
 
             $this->setGetArray(array(
-                                    'id' => $tasks[2]->id
+                                    'id' => $tasks[5]->id
                                     )
                               );
             $content = $this->runControllerWithNoExceptionsAndGetContent('tasks/default/modalDetails');
             $this->assertTrue(strpos($content, 'Task for test cases') > 0);
 
             $this->setGetArray(array(
-                                    'id'  => $tasks[2]->id
+                                    'id'  => $tasks[5]->id
                               ));
             $content = $this->runControllerWithNoExceptionsAndGetContent('tasks/default/modalEdit');
 
             $this->setGetArray(array(
-                                    'id'  => $tasks[2]->id
+                                    'id'  => $tasks[5]->id
                               ));
             unset($_POST['Task']);
             $content = $this->runControllerWithNoExceptionsAndGetContent('tasks/default/modalCopy');
@@ -300,6 +364,21 @@
             $this->runControllerWithNoExceptionsAndGetContent('tasks/default/updateStatusInKanbanView', true);
             $task = Task::getById($taskId);
             $this->assertEquals(Task::STATUS_AWAITING_ACCEPTANCE, $task->status);
+        }
+
+        private function checkIfUserFoundInSubscribersList($task, $compareId)
+        {
+            $isUserFound = false;
+            $modelDerivationPathToItem = RuntimeUtil::getModelDerivationPathToItem('User');
+            foreach ($task->notificationSubscribers as $subscriber)
+            {
+                $user     = $subscriber->person->castDown(array($modelDerivationPathToItem));
+                if ($user->id == $compareId)
+                {
+                    $isUserFound = true;
+                }
+            }
+            return $isUserFound;
         }
    }
 ?>
