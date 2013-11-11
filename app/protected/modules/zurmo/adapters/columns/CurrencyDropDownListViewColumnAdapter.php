@@ -34,62 +34,22 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-    * ZurmoAPiController is responsible for login and logout actions.
-    */
-    class ZurmoApiController extends ZurmoModuleApiController
+    class CurrencyDropDownListViewColumnAdapter extends TextListViewColumnAdapter
     {
-        public function actionLogin()
+        public function renderGridViewData()
         {
-            try
-            {
-                $identity = Yii::app()->authenticationHelper->makeIdentity(Yii::app()->apiRequest->getUsername(),
-                    Yii::app()->apiRequest->getPassword());
-                $identity->authenticate();
-            }
-            catch (Exception $e)
-            {
-                $message = Zurmo::t('ZurmoModule', 'An error occured during login. Please try again.');
-                throw new ApiException($message);
-            }
-            if ($identity->errorCode == UserIdentity::ERROR_NONE)
-            {
-                Yii::app()->licenseManager->resolveUserIdentityApiAuthenticationForError($identity);
-                Yii::app()->user->login($identity);
-                $data['sessionId'] = Yii::app()->getSession()->getSessionID();
-                $data['token'] = Yii::app()->session['token'];
-                $session = Yii::app()->getSession();
-                $result = new ApiResult(ApiResponse::STATUS_SUCCESS, $data, null, null);
-                Yii::app()->apiHelper->sendResponse($result);
-            }
-            else
-            {
-                $message = Zurmo::t('ZurmoModule', 'Invalid username or password.');
-                throw new ApiException($message);
-            }
+            return array(
+                'name'   => $this->attribute,
+                'value'  => 'CurrencyDropDownListViewColumnAdapter::renderNonEditable($data, "' . $this->attribute . '")',
+                'type'   => 'raw',
+            );
         }
 
-        public function actionLogout()
+        public static function renderNonEditable($model, $attribute)
         {
-            Yii::app()->user->logout();
-            if (Yii::app()->user->isGuest)
-            {
-                $result = new ApiResult(ApiResponse::STATUS_SUCCESS, null, null, null);
-                Yii::app()->apiHelper->sendResponse($result);
-            }
-            else
-            {
-                $message = Zurmo::t('ZurmoModule', 'Sign out failed.');
-                throw new ApiException($message);
-            }
-        }
-
-        public function actionError()
-        {
-            if ($error = Yii::app()->errorHandler->error)
-            {
-                throw new ApiException($error);
-            }
+            $dropDownModel = $model->{$attribute};
+            $dropDownArray = CurrencyDropDownElement::resolveDropDownArray($model, $attribute);
+            return ArrayUtil::getArrayValue($dropDownArray, $dropDownModel->id);
         }
     }
 ?>
