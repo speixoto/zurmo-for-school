@@ -35,61 +35,27 @@
      ********************************************************************************/
 
     /**
-    * ZurmoAPiController is responsible for login and logout actions.
-    */
-    class ZurmoApiController extends ZurmoModuleApiController
+     * Form to work with dropDown attributes
+     */
+    class TaskStatusDropDownWorkflowActionAttributeForm extends WorkflowActionAttributeForm
     {
-        public function actionLogin()
+        public function getValueElementType()
         {
-            try
-            {
-                $identity = Yii::app()->authenticationHelper->makeIdentity(Yii::app()->apiRequest->getUsername(),
-                    Yii::app()->apiRequest->getPassword());
-                $identity->authenticate();
-            }
-            catch (Exception $e)
-            {
-                $message = Zurmo::t('ZurmoModule', 'An error occured during login. Please try again.');
-                throw new ApiException($message);
-            }
-            if ($identity->errorCode == UserIdentity::ERROR_NONE)
-            {
-                Yii::app()->licenseManager->resolveUserIdentityApiAuthenticationForError($identity);
-                Yii::app()->user->login($identity);
-                $data['sessionId'] = Yii::app()->getSession()->getSessionID();
-                $data['token'] = Yii::app()->session['token'];
-                $session = Yii::app()->getSession();
-                $result = new ApiResult(ApiResponse::STATUS_SUCCESS, $data, null, null);
-                Yii::app()->apiHelper->sendResponse($result);
-            }
-            else
-            {
-                $message = Zurmo::t('ZurmoModule', 'Invalid username or password.');
-                throw new ApiException($message);
-            }
+            return 'TaskStatusDropDown';
         }
 
-        public function actionLogout()
+        /**
+         * @param bool $isCreatingNewModel
+         * @param bool $isRequired
+         * @return array
+         */
+        protected function makeTypeValuesAndLabels($isCreatingNewModel, $isRequired)
         {
-            Yii::app()->user->logout();
-            if (Yii::app()->user->isGuest)
-            {
-                $result = new ApiResult(ApiResponse::STATUS_SUCCESS, null, null, null);
-                Yii::app()->apiHelper->sendResponse($result);
-            }
-            else
-            {
-                $message = Zurmo::t('ZurmoModule', 'Sign out failed.');
-                throw new ApiException($message);
-            }
-        }
-
-        public function actionError()
-        {
-            if ($error = Yii::app()->errorHandler->error)
-            {
-                throw new ApiException($error);
-            }
+            assert('is_bool($isCreatingNewModel)');
+            assert('is_bool($isRequired)');
+            $data                           = array();
+            $data[static::TYPE_STATIC]      = Zurmo::t('WorkflowsModule', 'As');
+            return $data;
         }
     }
 ?>
