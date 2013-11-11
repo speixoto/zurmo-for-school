@@ -566,5 +566,27 @@
             $this->assertEquals($task3->id, $kanbanItem3->task->id);
             $this->assertEquals(1, $kanbanItem3->sortOrder);
         }
+
+        /**
+         * @covers resolveAndRenderTaskCardDetailsSubscribersContent
+         */
+        public function testResolveAndRenderTaskCardDetailsSubscribersContent()
+        {
+            $hellodear      = UserTestHelper::createBasicUser('hellodear');
+            $task           = new Task();
+            $task->name     = 'MyCardTest';
+            $task->owner    = $hellodear;
+            $this->assertTrue($task->save());
+
+            $task = Task::getById($task->id);
+            $user = Yii::app()->user->userModel;
+            TasksUtil::addSubscriber($hellodear, $task);
+            $this->assertTrue($task->save());
+            $content = TasksUtil::resolveAndRenderTaskCardDetailsSubscribersContent($task);
+            $this->assertTrue(strpos($content, 'gravatar') > 0);
+            $this->assertTrue(strpos($content, 'users/default/details') !== false);
+            $this->assertTrue(strpos($content, 'hellodear') !== false);
+            $this->assertTrue(strpos($content, 'task-owner') !== false);
+        }
     }
 ?>
