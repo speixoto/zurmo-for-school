@@ -151,6 +151,40 @@
             $this->assertEquals(2, $task->notificationSubscribers->count());
         }
 
+        public function testAddAndRemoveKanbanSubscriberViaAjaxAsSuperUser()
+        {
+            //Login with super and check subscribe unsubscribe from modal detail view when super
+            //is not owner or requested by user
+            $super              = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $task               = new Task();
+            $task->name         = 'KanbanSubscriberTask';
+            $task->owner        = self::$sally;
+            $task->requestedByUser = self::$myUser;
+            $this->assertTrue($task->save());
+            $this->assertEquals(2, $task->notificationSubscribers->count());
+            $this->setGetArray(array('id' => $task->id));
+            $this->assertFalse($task->doNotificationSubscribersContainPerson($super));
+            $content = $this->runControllerWithNoExceptionsAndGetContent('tasks/default/addKanbanSubscriber', false);
+            $this->assertTrue(strpos($content, 'gravatar') > 0);
+            $this->assertTrue(strpos($content, 'users/default/details') !== false);
+            $this->assertTrue(strpos($content, $super->getFullName()) !== false);
+            $this->assertEquals(3, $task->notificationSubscribers->count());
+
+            $this->setGetArray(array('id' => $task->id));
+            $content = $this->runControllerWithNoExceptionsAndGetContent('tasks/default/removeKanbanSubscriber', false);
+            $this->assertTrue(strpos($content, $super->getFullName()) === false);
+            $this->assertEquals(2, $task->notificationSubscribers->count());
+            $task->owner        = $super;
+            $this->assertTrue($task->save());
+            $this->assertEquals(3, $task->notificationSubscribers->count());
+
+            //Super user is owner so even if it is removed, it would be restored
+            $this->setGetArray(array('id' => $task->id));
+            $content = $this->runControllerWithNoExceptionsAndGetContent('tasks/default/removeKanbanSubscriber', false);
+            $this->assertTrue(strpos($content, $super->getFullName()) !== false);
+            $this->assertEquals(3, $task->notificationSubscribers->count());
+        }
+
         /**
          * @depends testInlineCreateCommentFromAjax
          */

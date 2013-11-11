@@ -104,6 +104,8 @@
 
             $tasks = Task::getAll();
             $this->assertEquals(2, count($tasks));
+            $this->assertEquals('myTask', $tasks[1]->name);
+            $this->assertEquals(1, $tasks[1]->activityItems->count());
 
             //test removing a task.
             $this->setGetArray(array('id' => $tasks[0]->id));
