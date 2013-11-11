@@ -34,16 +34,13 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Class ZurmoShortUrlController for managing the ShortUrls
-     */
-    class ZurmoShortUrlController extends ZurmoModuleController
+    class ShortUrlUtil
     {
-        public function actionRedirect($hash)
+        public static function createShortUrl($url)
         {
-            assert('is_string($hash)');
-            $url = ShortUrl::getUrlByHash($hash);
-            $this->redirect($url);
+            assert('is_string($url)');
+            $hash = ShortUrl::resolveHashByUrl($url);
+            return Yii::app()->createAbsoluteUrl('zurmo/shortUrl/redirect/', array('hash' => $hash));
         }
     }
 ?>

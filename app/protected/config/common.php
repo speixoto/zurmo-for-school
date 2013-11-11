@@ -275,7 +275,7 @@
                     array('<module>/<model>Api/create',         'pattern' => '<module:\w+>/<model:\w+>/api/create/',          'verb' => 'POST'),   // Not Coding Standard
                     array('zurmo/CustomFieldApi/addValues',     'pattern' => 'zurmo/customField/api/addValues/<id:\w+>',      'verb' => 'PUT'),    // Not Coding Standard
                     array('<module>/<model>Api/<action>',       'pattern' => '<module:\w+>/<model:\w+>/api/<action>/*'),                           // Not Coding Standard
-
+                    't/<hash:\w+>'                               => 'zurmo/shortUrl/redirect',
                     '<module:\w+>/<controller:\w+>/<action:\w+>' => '<module>/<controller>/<action>',                       // Not Coding Standard
                 )
             ),

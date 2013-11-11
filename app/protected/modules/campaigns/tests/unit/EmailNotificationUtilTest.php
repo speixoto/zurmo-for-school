@@ -34,16 +34,31 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Class ZurmoShortUrlController for managing the ShortUrls
-     */
-    class ZurmoShortUrlController extends ZurmoModuleController
+    class EmailNotificationUtilTest extends ZurmoBaseTest
     {
-        public function actionRedirect($hash)
+        public $super;
+
+        public static function setUpBeforeClass()
         {
-            assert('is_string($hash)');
-            $url = ShortUrl::getUrlByHash($hash);
-            $this->redirect($url);
+            parent::setUpBeforeClass();
+            SecurityTestHelper::createSuperAdmin();
+        }
+
+        public function setUp()
+        {
+            parent::setUp();
+            $this->super = User::getByUsername('super');
+            Yii::app()->user->userModel = $this->super;
+        }
+
+        public function testResolveNotificationTextTemplate()
+        {
+            $bodyContent     = 'test my body';
+            $resolvedContent = EmailNotificationUtil::resolveNotificationTextTemplate($bodyContent);
+            $this->assertContains($bodyContent, $resolvedContent);
+            $this->assertContains('Manage your email preferences:', $resolvedContent);
+            $this->assertContains('Powered By Zurmo' . PHP_EOL . 'http://www.zurmo.com', $resolvedContent);
+            print_r($resolvedContent);
         }
     }
 ?>

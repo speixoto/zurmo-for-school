@@ -35,15 +35,27 @@
      ********************************************************************************/
 
     /**
-     * Class ZurmoShortUrlController for managing the ShortUrls
+     * Walkthrough for the super user of all possible controller actions.
+     * Since this is a super user, he should have access to all controller actions
+     * without any exceptions being thrown.
      */
-    class ZurmoShortUrlController extends ZurmoModuleController
+    class ShortUrlSuperUserWalkthroughTest extends ZurmoWalkthroughBaseTest
     {
-        public function actionRedirect($hash)
+        public static function setUpBeforeClass()
         {
-            assert('is_string($hash)');
-            $url = ShortUrl::getUrlByHash($hash);
-            $this->redirect($url);
+            parent::setUpBeforeClass();
+            SecurityTestHelper::createSuperAdmin();
+        }
+
+        public function testSuperUserAllDefaultControllerActions()
+        {
+            $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+
+            $hash = ShortUrl::resolveHashByUrl('http://www.zurmo.com');
+            $this->setGetArray(array(
+                        'hash' => $hash));
+            $url = $this->runControllerWithRedirectExceptionAndGetUrl('zurmo/shortUrl/redirect/');
+            $this->assertEquals('http://www.zurmo.com', $url);
         }
     }
 ?>

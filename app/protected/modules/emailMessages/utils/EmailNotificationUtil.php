@@ -55,8 +55,8 @@
             $htmlTemplate                       = self::getNotificationHtmlTemplate();
             $htmlContent                        = array();
             $htmlContent['{bodyContent}']       = $bodyContent;
-            $htmlContent['{sourceContent}']     = Zurmo::t('EmailMessagesModule', 'Powered By <a href =\'http://www.zurmo.com\'>Zurmo</a>', LabelUtil::getTranslationParamsForAllModules());
             $htmlContent['{preferenceContent}'] = ZurmoHtml::link(Zurmo::t('EmailMessagesModule', 'Manage your email preferences'), $url);
+            $htmlContent['{sourceContent}']     = Zurmo::t('EmailMessagesModule', 'Powered By <a href=\'http://www.zurmo.com\'>Zurmo</a>', LabelUtil::getTranslationParamsForAllModules());
             return strtr($htmlTemplate, $htmlContent);
         }
 
@@ -105,13 +105,14 @@
                 $user = Yii::app()->user->userModel;
             }
             $url                                = Yii::app()->createAbsoluteUrl('users/default/configurationEdit',
-                                                  array('id' => $user->id));
+                                                                                array('id' => $user->id));
+            $shortUrl                           = ShortUrlUtil::createShortUrl($url);
             $textTemplate                       = self::getNotificationTextTemplate();
             $textContent                        = array();
             $textContent['{bodyContent}']       = $bodyContent;
+            $textContent['{preferenceContent}'] = Zurmo::t('EmailMessagesModule', 'Manage your email preferences') . ': ' . $shortUrl;
             $textContent['{sourceContent}']     = Zurmo::t('EmailMessagesModule', 'Powered By Zurmo', LabelUtil::getTranslationParamsForAllModules());
-            $textContent['{sourceContent}']    .= PHP_EOL .'http://www.zurmo.com';
-            $textContent['{preferenceContent}'] = Zurmo::t('EmailMessagesModule', 'Manage your email preferences') . ZurmoHtml::link(null, $url);
+            $textContent['{sourceContent}']    .= PHP_EOL . 'http://www.zurmo.com';
             return strtr($textTemplate, $textContent);
         }
 

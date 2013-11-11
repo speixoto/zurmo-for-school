@@ -1,5 +1,4 @@
 {bodyContent}
 --------------------------------------------------------------------------------------------------
-{sourceContent}
 {preferenceContent}
-Zurmo: www.zurmo.com
+{sourceContent}
