@@ -280,6 +280,24 @@ a.z-button:after,
   -ms-text-shadow: 0px -1px 0 rgba(0,0,0,0.2) !important;
   -o-text-shadow: 0px -1px 0 rgba(0,0,0,0.2) !important;
   text-shadow: 0px -1px 0 rgba(0,0,0,0.2) !important;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  float: left;
+  font-weight: bold;
+  padding: 0 25px;
+  line-height: 25px;
+  display: inline-block;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+  border-radius: 3px;
+  position: relative;
+  white-space: nowrap;
+}
+.z-label-smaller {
+  padding: 0 15px;
 }
 a:hover .z-label,
 a:active .z-label {
@@ -323,27 +341,6 @@ a:active .z-label {
 .attachLoading {
   color: #FFF;
   cursor: pointer;
-}
-.z-label {
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  float: left;
-  font-weight: bold;
-  padding: 0 25px;
-  line-height: 25px;
-  display: inline-block;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  -ms-border-radius: 3px;
-  -o-border-radius: 3px;
-  border-radius: 3px;
-  position: relative;
-  z-index: 1;
-  white-space: nowrap;
-}
-.z-label-smaller {
-  padding: 0 15px;
 }
 .zButton.loading .z-spinner,
 .z-button.loading .z-spinner {

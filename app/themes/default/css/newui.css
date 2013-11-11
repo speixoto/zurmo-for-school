@@ -501,6 +501,24 @@ a.z-button:after,
   -ms-text-shadow: 0px -1px 0 rgba(0,0,0,0.2) !important;
   -o-text-shadow: 0px -1px 0 rgba(0,0,0,0.2) !important;
   text-shadow: 0px -1px 0 rgba(0,0,0,0.2) !important;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  float: left;
+  font-weight: bold;
+  padding: 0 25px;
+  line-height: 25px;
+  display: inline-block;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+  border-radius: 3px;
+  position: relative;
+  white-space: nowrap;
+}
+.z-label-smaller {
+  padding: 0 15px;
 }
 a:hover .z-label,
 a:active .z-label {
@@ -544,27 +562,6 @@ a:active .z-label {
 .attachLoading {
   color: #FFF;
   cursor: pointer;
-}
-.z-label {
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  float: left;
-  font-weight: bold;
-  padding: 0 25px;
-  line-height: 25px;
-  display: inline-block;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  -ms-border-radius: 3px;
-  -o-border-radius: 3px;
-  border-radius: 3px;
-  position: relative;
-  z-index: 1;
-  white-space: nowrap;
-}
-.z-label-smaller {
-  padding: 0 15px;
 }
 .zButton.loading .z-spinner,
 .z-button.loading .z-spinner {
@@ -1615,6 +1612,10 @@ body > .ui-autocomplete {
   margin: 0 2px;
 }
 #ShortcutsMenu ul li > a:hover {
+  color: #fff !important;
+}
+#ShortcutsMenu ul a:hover {
+  background-color: #7CB830 !important;
   color: #fff !important;
 }
 #ShortcutsMenu > li {
@@ -3878,13 +3879,13 @@ div.wide.form a {
   -ms-box-shadow: none;
   -o-box-shadow: none;
   box-shadow: none;
-  border-left: none;
   font-style: italic;
   color: #999;
   text-indent: 10px;
   line-height: 25px;
   height: 25px !important;
   border: 1px solid #d5d4d4;
+  border-left: none;
   background: url(../images/search-bar-gradient.png) left top repeat-x;
 }
 .search-view-0 input[type="text"]:focus {
@@ -4204,6 +4205,16 @@ div.wide.form a {
   margin-left: 23px;
   position: relative;
 }
+.add-fields-container a:hover,
+.add-fields-container a:hover .z-label {
+  background: none !important;
+  -webkit-text-shadow: none !important;
+  -moz-text-shadow: none !important;
+  -ms-text-shadow: none !important;
+  -o-text-shadow: none !important;
+  text-shadow: none !important;
+  color: #282A76 !important;
+}
 .add-fields-container .z-spinner {
   display: block !important;
   margin-top: -5px;
@@ -4214,6 +4225,13 @@ div.wide.form a {
   padding: 0;
   line-height: 1;
   float: none;
+  background: none;
+  color: #282A76;
+  -webkit-text-shadow: none !important;
+  -moz-text-shadow: none !important;
+  -ms-text-shadow: none !important;
+  -o-text-shadow: none !important;
+  text-shadow: none !important;
 }
 #show-dynamic-search-structure-wrapper-search-form {
   display: block;
@@ -18938,6 +18956,9 @@ body .overlay-view .after-form-details-content a:hover {
   position: absolute;
   right: 0;
   top: 12px;
+}
+.task-dialog .view-toolbar .parent > ul {
+  right: 0;
 }
 .task-dialog .wrapper,
 .task-dialog .details-table {

@@ -852,6 +852,10 @@ body > .ui-autocomplete{
 		margin-top:-8px;
 		margin-left:0px;
 		.headerDropDown();
+		a:hover{
+			background-color: @themeColor2 !important;
+			color:#fff !important;
+		}
 	}
 	> li{
 		list-style:none !important;
@@ -2765,7 +2769,6 @@ div.wide.form{
 		margin:0 0 0 0;
 		.radius(0);
 		.b-shadow(none);
-		border-left:none;
 		font-style: italic;
 		color: #999;
 		text-indent: 10px;
@@ -3024,6 +3027,12 @@ div.wide.form{
 	a{
 		margin-left:23px;
 		position:relative;
+		&:hover,
+		&:hover .z-label{
+			background: none !important;
+			.t-shadow(none) !important;
+			color: @themeColor !important;
+		}
 	}
 	.z-spinner{
 		display: block !important;
@@ -3035,6 +3044,9 @@ div.wide.form{
 		padding:0;
 		line-height:1;
 		float:none;
+		background: none;
+		color: @themeColor;
+		.t-shadow(none) !important;
 	}
 }
 
