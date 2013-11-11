@@ -34,12 +34,28 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    define('MAJOR_VERSION', 2);                           // Update for marketing purposes.
-    define('MINOR_VERSION', 5);                           // Update when functionality changes.
-    define('PATCH_VERSION', 2);                          // Update when fixes are made that does not change functionality.
-    define('REPO_ID',       '$Revision$'); // Updated by Mercurial. Numbers like 3650 have no meaning across
-                                                          // clones. This tells us the actual changeset that is universally
-                                                          // meaningful.
+    /**
+     * Form to work with dropDown attributes
+     */
+    class TaskStatusDropDownWorkflowActionAttributeForm extends WorkflowActionAttributeForm
+    {
+        public function getValueElementType()
+        {
+            return 'TaskStatusDropDown';
+        }
 
-    define('VERSION', join('.', array(MAJOR_VERSION, MINOR_VERSION, PATCH_VERSION)) . ' (' . substr(REPO_ID, strlen('$Revision: '), -2) . ')');
+        /**
+         * @param bool $isCreatingNewModel
+         * @param bool $isRequired
+         * @return array
+         */
+        protected function makeTypeValuesAndLabels($isCreatingNewModel, $isRequired)
+        {
+            assert('is_bool($isCreatingNewModel)');
+            assert('is_bool($isRequired)');
+            $data                           = array();
+            $data[static::TYPE_STATIC]      = Zurmo::t('WorkflowsModule', 'As');
+            return $data;
+        }
+    }
 ?>

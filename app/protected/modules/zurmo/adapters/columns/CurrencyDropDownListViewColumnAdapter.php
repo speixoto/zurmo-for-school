@@ -34,12 +34,22 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    define('MAJOR_VERSION', 2);                           // Update for marketing purposes.
-    define('MINOR_VERSION', 5);                           // Update when functionality changes.
-    define('PATCH_VERSION', 2);                          // Update when fixes are made that does not change functionality.
-    define('REPO_ID',       '$Revision$'); // Updated by Mercurial. Numbers like 3650 have no meaning across
-                                                          // clones. This tells us the actual changeset that is universally
-                                                          // meaningful.
+    class CurrencyDropDownListViewColumnAdapter extends TextListViewColumnAdapter
+    {
+        public function renderGridViewData()
+        {
+            return array(
+                'name'   => $this->attribute,
+                'value'  => 'CurrencyDropDownListViewColumnAdapter::renderNonEditable($data, "' . $this->attribute . '")',
+                'type'   => 'raw',
+            );
+        }
 
-    define('VERSION', join('.', array(MAJOR_VERSION, MINOR_VERSION, PATCH_VERSION)) . ' (' . substr(REPO_ID, strlen('$Revision: '), -2) . ')');
+        public static function renderNonEditable($model, $attribute)
+        {
+            $dropDownModel = $model->{$attribute};
+            $dropDownArray = CurrencyDropDownElement::resolveDropDownArray($model, $attribute);
+            return ArrayUtil::getArrayValue($dropDownArray, $dropDownModel->id);
+        }
+    }
 ?>

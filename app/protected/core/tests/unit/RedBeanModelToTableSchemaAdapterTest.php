@@ -87,17 +87,17 @@
                             'name' => 'securableitem_id',
                             'type' => 'INT(11)',
                             'unsigned' => 'UNSIGNED',
-                            'notNull' => 'NULL',
+                            'notNull' => 'NULL', // Not Coding Standard
                             'collation' => null,
-                            'default' => 'DEFAULT NULL',
+                            'default' => 'DEFAULT NULL', // Not Coding Standard
                         ),
                         array(
                             'name' => 'owner__user_id',
                             'type' => 'INT(11)',
                             'unsigned' => 'UNSIGNED',
-                            'notNull' => 'NULL',
+                            'notNull' => 'NULL', // Not Coding Standard
                             'collation' => null,
-                            'default' => 'DEFAULT NULL',
+                            'default' => 'DEFAULT NULL', // Not Coding Standard
                         ),
                     ),
                     'indexes' => array(),
@@ -119,138 +119,138 @@
                         array(
                             'name' => 'hash',
                             'type' => 'VARCHAR(32)',
-                            'unsigned' => NULL,
-                            'notNull' => 'NULL',
+                            'unsigned' => null,
+                            'notNull' => 'NULL', // Not Coding Standard
                             'collation' => 'COLLATE utf8_unicode_ci',
-                            'default' => 'DEFAULT NULL',
+                            'default' => 'DEFAULT NULL', // Not Coding Standard
                         ),
                         array(
                             'name' => 'language',
                             'type' => 'VARCHAR(10)',
-                            'unsigned' => NULL,
-                            'notNull' => 'NULL',
+                            'unsigned' => null,
+                            'notNull' => 'NULL', // Not Coding Standard
                             'collation' => 'COLLATE utf8_unicode_ci',
-                            'default' => 'DEFAULT NULL',
+                            'default' => 'DEFAULT NULL', // Not Coding Standard
                         ),
                         array(
                             'name' => 'locale',
                             'type' => 'VARCHAR(10)',
-                            'unsigned' => NULL,
-                            'notNull' => 'NULL',
+                            'unsigned' => null,
+                            'notNull' => 'NULL', // Not Coding Standard
                             'collation' => 'COLLATE utf8_unicode_ci',
-                            'default' => 'DEFAULT NULL',
+                            'default' => 'DEFAULT NULL', // Not Coding Standard
                         ),
                         array(
                             'name' => 'timezone',
                             'type' => 'VARCHAR(64)',
-                            'unsigned' => NULL,
-                            'notNull' => 'NULL',
+                            'unsigned' => null,
+                            'notNull' => 'NULL', // Not Coding Standard
                             'collation' => 'COLLATE utf8_unicode_ci',
-                            'default' => 'DEFAULT NULL',
+                            'default' => 'DEFAULT NULL', // Not Coding Standard
                         ),
                         array(
                             'name' => 'username',
                             'type' => 'VARCHAR(64)',
-                            'unsigned' => NULL,
-                            'notNull' => 'NULL',
+                            'unsigned' => null,
+                            'notNull' => 'NULL', // Not Coding Standard
                             'collation' => 'COLLATE utf8_unicode_ci',
-                            'default' => 'DEFAULT NULL',
+                            'default' => 'DEFAULT NULL', // Not Coding Standard
                         ),
                         array(
                             'name' => 'serializedavatardata',
                             'type' => 'TEXT',
-                            'unsigned' => NULL,
-                            'notNull' => 'NULL',
+                            'unsigned' => null,
+                            'notNull' => 'NULL', // Not Coding Standard
                             'collation' => 'COLLATE utf8_unicode_ci',
-                            'default' => 'DEFAULT NULL',
+                            'default' => 'DEFAULT NULL', // Not Coding Standard
                         ),
                         array(
                             'name' => 'isactive',
                             'type' => 'TINYINT(1) UNSIGNED',
-                            'unsigned' => NULL,
-                            'notNull' => 'NULL',
-                            'collation' => NULL,
-                            'default' => 'DEFAULT NULL',
+                            'unsigned' => null,
+                            'notNull' => 'NULL', // Not Coding Standard
+                            'collation' => null,
+                            'default' => 'DEFAULT NULL', // Not Coding Standard
                         ),
                         array(
                             'name' => 'isrootuser',
                             'type' => 'TINYINT(1) UNSIGNED',
-                            'unsigned' => NULL,
-                            'notNull' => 'NULL',
-                            'collation' => NULL,
-                            'default' => 'DEFAULT NULL',
+                            'unsigned' => null,
+                            'notNull' => 'NULL', // Not Coding Standard
+                            'collation' => null,
+                            'default' => 'DEFAULT NULL', // Not Coding Standard
                         ),
                         array(
                             'name' => 'hidefromselecting',
                             'type' => 'TINYINT(1) UNSIGNED',
-                            'unsigned' => NULL,
-                            'notNull' => 'NULL',
-                            'collation' => NULL,
-                            'default' => 'DEFAULT NULL',
+                            'unsigned' => null,
+                            'notNull' => 'NULL', // Not Coding Standard
+                            'collation' => null,
+                            'default' => 'DEFAULT NULL', // Not Coding Standard
                         ),
                         array(
                             'name' => 'issystemuser',
                             'type' => 'TINYINT(1) UNSIGNED',
-                            'unsigned' => NULL,
-                            'notNull' => 'NULL',
-                            'collation' => NULL,
-                            'default' => 'DEFAULT NULL',
+                            'unsigned' => null,
+                            'notNull' => 'NULL', // Not Coding Standard
+                            'collation' => null,
+                            'default' => 'DEFAULT NULL', // Not Coding Standard
                         ),
                         array(
                             'name' => 'hidefromleaderboard',
                             'type' => 'TINYINT(1) UNSIGNED',
-                            'unsigned' => NULL,
-                            'notNull' => 'NULL',
-                            'collation' => NULL,
-                            'default' => 'DEFAULT NULL',
+                            'unsigned' => null,
+                            'notNull' => 'NULL', // Not Coding Standard
+                            'collation' => null,
+                            'default' => 'DEFAULT NULL', // Not Coding Standard
                         ),
                         array(
                             'name' => 'lastlogindatetime',
                             'type' => 'DATETIME',
-                            'unsigned' => NULL,
-                            'notNull' => 'NULL',
-                            'collation' => NULL,
-                            'default' => 'DEFAULT NULL',
+                            'unsigned' => null,
+                            'notNull' => 'NULL', // Not Coding Standard
+                            'collation' => null,
+                            'default' => 'DEFAULT NULL', // Not Coding Standard
                         ),
                         array(
                             'name' => 'permitable_id',
                             'type' => 'INT(11)',
                             'unsigned' => 'UNSIGNED',
-                            'notNull' => 'NULL',
-                            'collation' => NULL,
-                            'default' => 'DEFAULT NULL',
+                            'notNull' => 'NULL', // Not Coding Standard
+                            'collation' => null,
+                            'default' => 'DEFAULT NULL', // Not Coding Standard
                         ),
                         array(
                             'name' => 'person_id',
                             'type' => 'INT(11)',
                             'unsigned' => 'UNSIGNED',
-                            'notNull' => 'NULL',
-                            'collation' => NULL,
-                            'default' => 'DEFAULT NULL',
+                            'notNull' => 'NULL', // Not Coding Standard
+                            'collation' => null,
+                            'default' => 'DEFAULT NULL', // Not Coding Standard
                         ),
                         array(
                             'name' => 'currency_id',
                             'type' => 'INT(11)',
                             'unsigned' => 'UNSIGNED',
-                            'notNull' => 'NULL',
-                            'collation' => NULL,
-                            'default' => 'DEFAULT NULL',
+                            'notNull' => 'NULL', // Not Coding Standard
+                            'collation' => null,
+                            'default' => 'DEFAULT NULL', // Not Coding Standard
                         ),
                         array(
                             'name' => 'manager__user_id',
                             'type' => 'INT(11)',
                             'unsigned' => 'UNSIGNED',
-                            'notNull' => 'NULL',
-                            'collation' => NULL,
-                            'default' => 'DEFAULT NULL',
+                            'notNull' => 'NULL', // Not Coding Standard
+                            'collation' => null,
+                            'default' => 'DEFAULT NULL', // Not Coding Standard
                         ),
                         array(
                             'name' => 'role_id',
                             'type' => 'INT(11)',
                             'unsigned' => 'UNSIGNED',
-                            'notNull' => 'NULL',
-                            'collation' => NULL,
-                            'default' => 'DEFAULT NULL',
+                            'notNull' => 'NULL', // Not Coding Standard
+                            'collation' => null,
+                            'default' => 'DEFAULT NULL', // Not Coding Standard
                         ),
                     ),
                     'indexes' => array(
@@ -277,250 +277,250 @@
                     array(
                         'name' => 'firstname',
                         'type' => 'VARCHAR(32)',
-                        'unsigned' => NULL,
-                        'notNull' => 'NULL',
+                        'unsigned' => null,
+                        'notNull' => 'NULL', // Not Coding Standard
                         'collation' => 'COLLATE utf8_unicode_ci',
-                        'default' => 'DEFAULT NULL',
+                        'default' => 'DEFAULT NULL', // Not Coding Standard
                     ),
                     array(
                         'name' => 'lastname',
                         'type' => 'VARCHAR(32)',
-                        'unsigned' => NULL,
-                        'notNull' => 'NULL',
+                        'unsigned' => null,
+                        'notNull' => 'NULL', // Not Coding Standard
                         'collation' => 'COLLATE utf8_unicode_ci',
-                        'default' => 'DEFAULT NULL',
+                        'default' => 'DEFAULT NULL', // Not Coding Standard
                     ),
                     array(
                         'name' => 'boolean',
                         'type' => 'TINYINT(1) UNSIGNED',
-                        'unsigned' => NULL,
-                        'notNull' => 'NULL',
-                        'collation' => NULL,
-                        'default' => 'DEFAULT NULL',
+                        'unsigned' => null,
+                        'notNull' => 'NULL', // Not Coding Standard
+                        'collation' => null,
+                        'default' => 'DEFAULT NULL', // Not Coding Standard
                     ),
                     array(
                         'name' => 'boolean2',
                         'type' => 'TINYINT(1) UNSIGNED',
-                        'unsigned' => NULL,
-                        'notNull' => 'NULL',
-                        'collation' => NULL,
-                        'default' => 'DEFAULT NULL',
+                        'unsigned' => null,
+                        'notNull' => 'NULL', // Not Coding Standard
+                        'collation' => null,
+                        'default' => 'DEFAULT NULL', // Not Coding Standard
                     ),
                     array(
                         'name' => 'date',
                         'type' => 'DATE',
-                        'unsigned' => NULL,
-                        'notNull' => 'NULL',
-                        'collation' => NULL,
-                        'default' => 'DEFAULT NULL',
+                        'unsigned' => null,
+                        'notNull' => 'NULL', // Not Coding Standard
+                        'collation' => null,
+                        'default' => 'DEFAULT NULL', // Not Coding Standard
                     ),
                     array(
                         'name' => 'date2',
                         'type' => 'DATE',
-                        'unsigned' => NULL,
-                        'notNull' => 'NULL',
-                        'collation' => NULL,
-                        'default' => 'DEFAULT NULL',
+                        'unsigned' => null,
+                        'notNull' => 'NULL', // Not Coding Standard
+                        'collation' => null,
+                        'default' => 'DEFAULT NULL', // Not Coding Standard
                     ),
                     array(
                         'name' => 'date3',
                         'type' => 'DATE',
-                        'unsigned' => NULL,
-                        'notNull' => 'NULL',
-                        'collation' => NULL,
-                        'default' => 'DEFAULT NULL',
+                        'unsigned' => null,
+                        'notNull' => 'NULL', // Not Coding Standard
+                        'collation' => null,
+                        'default' => 'DEFAULT NULL', // Not Coding Standard
                     ),
                     array(
                         'name' => 'date4',
                         'type' => 'DATE',
-                        'unsigned' => NULL,
-                        'notNull' => 'NULL',
-                        'collation' => NULL,
-                        'default' => 'DEFAULT NULL',
+                        'unsigned' => null,
+                        'notNull' => 'NULL', // Not Coding Standard
+                        'collation' => null,
+                        'default' => 'DEFAULT NULL', // Not Coding Standard
                     ),
                     array(
                         'name' => 'datetime',
                         'type' => 'DATETIME',
-                        'unsigned' => NULL,
-                        'notNull' => 'NULL',
-                        'collation' => NULL,
-                        'default' => 'DEFAULT NULL',
+                        'unsigned' => null,
+                        'notNull' => 'NULL', // Not Coding Standard
+                        'collation' => null,
+                        'default' => 'DEFAULT NULL', // Not Coding Standard
                     ),
                     array(
                         'name' => 'datetime2',
                         'type' => 'DATETIME',
-                        'unsigned' => NULL,
-                        'notNull' => 'NULL',
-                        'collation' => NULL,
-                        'default' => 'DEFAULT NULL',
+                        'unsigned' => null,
+                        'notNull' => 'NULL', // Not Coding Standard
+                        'collation' => null,
+                        'default' => 'DEFAULT NULL', // Not Coding Standard
                     ),
                     array(
                         'name' => 'datetime3',
                         'type' => 'DATETIME',
-                        'unsigned' => NULL,
-                        'notNull' => 'NULL',
-                        'collation' => NULL,
-                        'default' => 'DEFAULT NULL',
+                        'unsigned' => null,
+                        'notNull' => 'NULL', // Not Coding Standard
+                        'collation' => null,
+                        'default' => 'DEFAULT NULL', // Not Coding Standard
                     ),
                     array(
                         'name' => 'datetime4',
                         'type' => 'DATETIME',
-                        'unsigned' => NULL,
-                        'notNull' => 'NULL',
-                        'collation' => NULL,
-                        'default' => 'DEFAULT NULL',
+                        'unsigned' => null,
+                        'notNull' => 'NULL', // Not Coding Standard
+                        'collation' => null,
+                        'default' => 'DEFAULT NULL', // Not Coding Standard
                     ),
                     array(
                         'name' => 'float',
                         'type' => 'DOUBLE',
-                        'unsigned' => NULL,
-                        'notNull' => 'NULL',
-                        'collation' => NULL,
-                        'default' => 'DEFAULT NULL',
+                        'unsigned' => null,
+                        'notNull' => 'NULL', // Not Coding Standard
+                        'collation' => null,
+                        'default' => 'DEFAULT NULL', // Not Coding Standard
                     ),
                     array(
                         'name' => 'integer',
                         'type' => 'INT(11)',
-                        'unsigned' => NULL,
-                        'notNull' => 'NULL',
-                        'collation' => NULL,
-                        'default' => 'DEFAULT NULL',
+                        'unsigned' => null,
+                        'notNull' => 'NULL', // Not Coding Standard
+                        'collation' => null,
+                        'default' => 'DEFAULT NULL', // Not Coding Standard
                     ),
                     array(
                         'name' => 'phone',
                         'type' => 'VARCHAR(14)',
-                        'unsigned' => NULL,
-                        'notNull' => 'NULL',
+                        'unsigned' => null,
+                        'notNull' => 'NULL', // Not Coding Standard
                         'collation' => 'COLLATE utf8_unicode_ci',
-                        'default' => 'DEFAULT NULL',
+                        'default' => 'DEFAULT NULL', // Not Coding Standard
                     ),
                     array(
                         'name' => 'string',
                         'type' => 'VARCHAR(64)',
-                        'unsigned' => NULL,
-                        'notNull' => 'NULL',
+                        'unsigned' => null,
+                        'notNull' => 'NULL', // Not Coding Standard
                         'collation' => 'COLLATE utf8_unicode_ci',
-                        'default' => 'DEFAULT NULL',
+                        'default' => 'DEFAULT NULL', // Not Coding Standard
                     ),
                     array(
                         'name' => 'textarea',
                         'type' => 'TEXT',
-                        'unsigned' => NULL,
-                        'notNull' => 'NULL',
+                        'unsigned' => null,
+                        'notNull' => 'NULL', // Not Coding Standard
                         'collation' => 'COLLATE utf8_unicode_ci',
-                        'default' => 'DEFAULT NULL',
+                        'default' => 'DEFAULT NULL', // Not Coding Standard
                     ),
                     array(
                         'name' => 'url',
                         'type' => 'VARCHAR(255)',
-                        'unsigned' => NULL,
-                        'notNull' => 'NULL',
+                        'unsigned' => null,
+                        'notNull' => 'NULL', // Not Coding Standard
                         'collation' => 'COLLATE utf8_unicode_ci',
-                        'default' => 'DEFAULT NULL',
+                        'default' => 'DEFAULT NULL', // Not Coding Standard
                     ),
                     array(
                         'name' => 'ownedsecurableitem_id',
                         'type' => 'INT(11)',
                         'unsigned' => 'UNSIGNED',
-                        'notNull' => 'NULL',
-                        'collation' => NULL,
-                        'default' => 'DEFAULT NULL',
+                        'notNull' => 'NULL', // Not Coding Standard
+                        'collation' => null,
+                        'default' => 'DEFAULT NULL', // Not Coding Standard
                     ),
                     array(
                         'name' => 'currencyvalue_id',
                         'type' => 'INT(11)',
                         'unsigned' => 'UNSIGNED',
-                        'notNull' => 'NULL',
-                        'collation' => NULL,
-                        'default' => 'DEFAULT NULL',
+                        'notNull' => 'NULL', // Not Coding Standard
+                        'collation' => null,
+                        'default' => 'DEFAULT NULL', // Not Coding Standard
                     ),
                     array(
                         'name' => 'dropdown_customfield_id',
                         'type' => 'INT(11)',
                         'unsigned' => 'UNSIGNED',
-                        'notNull' => 'NULL',
-                        'collation' => NULL,
-                        'default' => 'DEFAULT NULL',
+                        'notNull' => 'NULL', // Not Coding Standard
+                        'collation' => null,
+                        'default' => 'DEFAULT NULL', // Not Coding Standard
                     ),
                     array(
                         'name' => 'dropdown2_customfield_id',
                         'type' => 'INT(11)',
                         'unsigned' => 'UNSIGNED',
-                        'notNull' => 'NULL',
-                        'collation' => NULL,
-                        'default' => 'DEFAULT NULL',
+                        'notNull' => 'NULL', // Not Coding Standard
+                        'collation' => null,
+                        'default' => 'DEFAULT NULL', // Not Coding Standard
                     ),
                     array(
                         'name' => 'radiodropdown_customfield_id',
                         'type' => 'INT(11)',
                         'unsigned' => 'UNSIGNED',
-                        'notNull' => 'NULL',
-                        'collation' => NULL,
-                        'default' => 'DEFAULT NULL',
+                        'notNull' => 'NULL', // Not Coding Standard
+                        'collation' => null,
+                        'default' => 'DEFAULT NULL', // Not Coding Standard
                     ),
                     array(
                         'name' => 'multidropdown_multiplevaluescustomfield_id',
                         'type' => 'INT(11)',
                         'unsigned' => 'UNSIGNED',
-                        'notNull' => 'NULL',
-                        'collation' => NULL,
-                        'default' => 'DEFAULT NULL',
+                        'notNull' => 'NULL', // Not Coding Standard
+                        'collation' => null,
+                        'default' => 'DEFAULT NULL', // Not Coding Standard
                     ),
                     array(
                         'name' => 'tagcloud_multiplevaluescustomfield_id',
                         'type' => 'INT(11)',
                         'unsigned' => 'UNSIGNED',
-                        'notNull' => 'NULL',
-                        'collation' => NULL,
-                        'default' => 'DEFAULT NULL',
+                        'notNull' => 'NULL', // Not Coding Standard
+                        'collation' => null,
+                        'default' => 'DEFAULT NULL', // Not Coding Standard
                     ),
                     array(
                         'name' => 'primaryemail_email_id',
                         'type' => 'INT(11)',
                         'unsigned' => 'UNSIGNED',
-                        'notNull' => 'NULL',
-                        'collation' => NULL,
-                        'default' => 'DEFAULT NULL',
+                        'notNull' => 'NULL', // Not Coding Standard
+                        'collation' => null,
+                        'default' => 'DEFAULT NULL', // Not Coding Standard
                     ),
                     array(
                         'name' => 'primaryaddress_address_id',
                         'type' => 'INT(11)',
                         'unsigned' => 'UNSIGNED',
-                        'notNull' => 'NULL',
-                        'collation' => NULL,
-                        'default' => 'DEFAULT NULL',
+                        'notNull' => 'NULL', // Not Coding Standard
+                        'collation' => null,
+                        'default' => 'DEFAULT NULL', // Not Coding Standard
                     ),
                     array(
                         'name' => 'secondaryemail_email_id',
                         'type' => 'INT(11)',
                         'unsigned' => 'UNSIGNED',
-                        'notNull' => 'NULL',
-                        'collation' => NULL,
-                        'default' => 'DEFAULT NULL',
+                        'notNull' => 'NULL', // Not Coding Standard
+                        'collation' => null,
+                        'default' => 'DEFAULT NULL', // Not Coding Standard
                     ),
                     array(
                         'name' => 'likecontactstate_contactstate_id',
                         'type' => 'INT(11)',
                         'unsigned' => 'UNSIGNED',
-                        'notNull' => 'NULL',
-                        'collation' => NULL,
-                        'default' => 'DEFAULT NULL',
+                        'notNull' => 'NULL', // Not Coding Standard
+                        'collation' => null,
+                        'default' => 'DEFAULT NULL', // Not Coding Standard
                     ),
                     array(
                         'name' => '_user_id',
                         'type' => 'INT(11)',
                         'unsigned' => 'UNSIGNED',
-                        'notNull' => 'NULL',
-                        'collation' => NULL,
-                        'default' => 'DEFAULT NULL',
+                        'notNull' => 'NULL', // Not Coding Standard
+                        'collation' => null,
+                        'default' => 'DEFAULT NULL', // Not Coding Standard
                     ),
                     array(
                         'name' => 'user2__user_id',
                         'type' => 'INT(11)',
                         'unsigned' => 'UNSIGNED',
-                        'notNull' => 'NULL',
-                        'collation' => NULL,
-                        'default' => 'DEFAULT NULL',
+                        'notNull' => 'NULL', // Not Coding Standard
+                        'collation' => null,
+                        'default' => 'DEFAULT NULL', // Not Coding Standard
                     ),
                 ),
                 'indexes' => array(),

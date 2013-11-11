@@ -76,12 +76,14 @@
         {
             $containerId = TasksUtil::getModalContainerId();
             $title       = TasksUtil::getModalEditTitle();
+            // Begin Not Coding Standard
             $options = array(
                 'type'   => 'GET',
                 'update' => '#' . $containerId,
                 'complete' => "function(XMLHttpRequest, textStatus){
                         $('#" . $containerId .  "').dialog('option', 'title', '" . $title . "');}"
             );
+            // End Not Coding Standard
             return $options;
         }
 

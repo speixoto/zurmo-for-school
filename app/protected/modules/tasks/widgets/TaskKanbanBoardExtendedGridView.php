@@ -139,8 +139,8 @@
         {
             Yii::app()->clientScript->registerScript('task-sortable-data', static::registerKanbanColumnSortableScript());
             $url = Yii::app()->createUrl('tasks/default/updateStatusInKanbanView', array());
-            $this->registerKanbanColumnStartActionScript('action-type-start' ,Zurmo::t('Core', 'Finish'), Task::STATUS_IN_PROGRESS, $url);
-            $this->registerKanbanColumnStartActionScript('action-type-restart' ,Zurmo::t('Core', 'Finish'), Task::STATUS_IN_PROGRESS, $url);
+            $this->registerKanbanColumnStartActionScript('action-type-start', Zurmo::t('Core', 'Finish'), Task::STATUS_IN_PROGRESS, $url);
+            $this->registerKanbanColumnStartActionScript('action-type-restart', Zurmo::t('Core', 'Finish'), Task::STATUS_IN_PROGRESS, $url);
             $this->registerKanbanColumnFinishActionScript(Zurmo::t('Core', 'Accept'),
                         Zurmo::t('Core', 'Reject'), Task::STATUS_AWAITING_ACCEPTANCE, $url);
             $this->registerKanbanColumnAcceptActionScript('', Task::STATUS_COMPLETED, $url);
@@ -190,6 +190,7 @@
             $acceptanceStatusLabel = Task::getStatusDisplayName(Task::STATUS_AWAITING_ACCEPTANCE);
             $acceptanceStatus      = Task::STATUS_AWAITING_ACCEPTANCE;
             $inProgressKanbanType  = KanbanItem::TYPE_IN_PROGRESS;
+            // Begin Not Coding Standard
             $script = "$(document).on('click','.action-type-finish',function()
                             {
                                 var element = $(this).parent().parent().parent().parent();
@@ -222,6 +223,7 @@
                                 );
                             }
                         );";
+            // End Not Coding Standard
             Yii::app()->clientScript->registerScript('finish-action-script', $script);
         }
 
@@ -287,6 +289,7 @@
             $inProgressStatusLabel = Task::getStatusDisplayName(Task::STATUS_IN_PROGRESS);
             $completedStatusLabel = Task::getStatusDisplayName(Task::STATUS_COMPLETED);
             $completedStatus      = Task::STATUS_COMPLETED;
+            // Begin Not Coding Standard
             return "$(document).on('click','." . $buttonClass . "',
                         function()
                         {
@@ -342,6 +345,7 @@
                             );
                         }
                     );";
+            // End Not Coding Standard
         }
 
         /**
@@ -353,7 +357,7 @@
         protected function registerKanbanColumnAcceptActionScript($label, $targetStatus, $url)
         {
             $script = $this->registerButtonActionScript('action-type-accept', KanbanItem::TYPE_COMPLETED,
-                      $label, 'task-complete-action ui-state-disabled', $url,$targetStatus);
+                      $label, 'task-complete-action ui-state-disabled', $url, $targetStatus);
             Yii::app()->clientScript->registerScript('accept-action-script', $script);
         }
 

@@ -12,8 +12,8 @@ var highestZIndex,
     numPanels,
     numToScroll;
 
-function getCurrentVisibleCollections(direction){
-    if( firstVisible >= 1 && firstVisible <= (numPanels + 1) - numToScroll ){
+function getCurrentVisibleCollections(direction, firstRun){
+    if( firstVisible >= 1 && firstVisible <= (numPanels + 1) - numToScroll || firstRun === true ){
         $('.gd-collection-panel').removeClass('visible-panel');
         $('.gd-collection-panel').removeClass('visible-panel-last');
         var step = fixedStep;
@@ -42,7 +42,9 @@ function getCurrentVisibleCollections(direction){
         if(firstVisible > (numPanels + 1) - numToScroll){
             firstVisible = (numPanels + 1) - 4;
         }
-        $('#gd-carousel').stop( true, true ).animate({ marginLeft : step.toString() }, animationTime, easingType);
+        if(firstRun !== true){
+            $('#gd-carousel').stop( true, true ).animate({ marginLeft : step.toString() }, animationTime, easingType);
+        }
         var i;
         for (i = firstVisible; i < firstVisible + numToScroll; i++){
             $( '.gd-collection-panel:nth-child(' + i + ')').addClass('visible-panel');
@@ -63,7 +65,7 @@ $(window).ready(function(){
     maxRight = 0;
     myLeft;
     fixedStep = 285;
-    firstVisible = 1;
+    firstVisible = -1;
     numPanels = $('.gd-collection-panel').length;
     numToScroll = 4;
 
@@ -79,10 +81,10 @@ $(window).ready(function(){
     });
 
     $('#gd-carousel').on('mouseleave', '.gd-collection-panel', function() {
-            $('> div', this).stop( true, true ).animate({width:'100%', top:0, left: 0}, animationTime, easingType,
-                function(){
-                    $(this).css('z-index', 0);
-                });
+        $('> div', this).stop( true, true ).animate({width:'100%', top:0, left: 0}, animationTime, easingType,
+            function(){
+                $(this).css('z-index', 0);
+            });
         }
     );
 
@@ -108,5 +110,5 @@ $(window).ready(function(){
         }, event);
     })
 
-    getCurrentVisibleCollections('forward');
+    getCurrentVisibleCollections('forward', true);
 });

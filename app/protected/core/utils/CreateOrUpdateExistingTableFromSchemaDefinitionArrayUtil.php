@@ -473,10 +473,10 @@
 
         protected static function isColumnNullSameAsExistingField($column, $existingField)
         {
-            $notNull = 'NOT NULL';
-            if ($existingField['Null'] == 'YES')
+            $notNull = 'NOT NULL'; // Not Coding Standard
+            if ($existingField['Null'] == 'YES') // Not Coding Standard
             {
-                $notNull = 'NULL';
+                $notNull = 'NULL'; // Not Coding Standard
             }
             return ($column['notNull'] == $notNull);
         }
@@ -484,7 +484,7 @@
         protected static function isColumnDefaultValueSameAsExistingField($column, $existingField)
         {
             $default = null;
-            if ($column['default'] != 'DEFAULT NULL')
+            if ($column['default'] != 'DEFAULT NULL') // Not Coding Standard
             {
                 $default = substr($column['default'], strpos($column['default'], 'DEFAULT '));
             }
@@ -493,7 +493,7 @@
 
         protected static function resolveCreateTableQuery($tableName, $columnsAndIndexesSchema)
         {
-            $columns        = array('`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT');
+            $columns        = array('`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT'); // Not Coding Standard
             $indexes        = array('PRIMARY KEY (id)');
             foreach ($columnsAndIndexesSchema['columns'] as $column)
             {
