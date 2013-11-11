@@ -949,6 +949,11 @@
         public static function checkKanbanTypeByStatusAndUpdateIfRequired(Task $task)
         {
             $kanbanItem = KanbanItem::getByTask($task->id);
+            //It should be created here but check for create as well here
+            if($kanbanItem == null)
+            {
+                $kanbanItem = TasksUtil::createKanbanItemFromTask($task);
+            }
             $kanbanTypeByStatus = TasksUtil::resolveKanbanItemTypeForTaskStatus($task->status);
             if ($kanbanItem->type != $kanbanTypeByStatus)
             {
