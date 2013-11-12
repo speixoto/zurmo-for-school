@@ -116,30 +116,30 @@
         }
 
         /**
-         * Override to check if the General, Fields, and Layouts link should show for the given module
-         * @return boolean
+         * @param $element
+         * @param $elementInformation
+         * @return bool
          */
         protected function shouldRenderToolBarElement($element, $elementInformation)
         {
             assert('$element instanceof ActionElement');
             assert('is_array($elementInformation)');
-
             $moduleMenuItems = $this->module->getDesignerMenuItems();
             if (!parent::shouldRenderToolBarElement($element, $elementInformation))
             {
                 return false;
             }
-            if ($elementInformation['type'] == 'DesignerGeneralLink' &&
+            if ($elementInformation['type'] == 'DesignerGeneralMenu' &&
                !ArrayUtil::getArrayValue($moduleMenuItems, 'showGeneralLink'))
             {
                 return false;
             }
-            if ($elementInformation['type'] == 'DesignerFieldsLink' &&
+            if ($elementInformation['type'] == 'DesignerFieldsMenu' &&
                !ArrayUtil::getArrayValue($moduleMenuItems, 'showFieldsLink'))
             {
                 return false;
             }
-            if ($elementInformation['type'] == 'DesignerLayoutsLink' &&
+            if ($elementInformation['type'] == 'DesignerLayoutsMenu' &&
                !ArrayUtil::getArrayValue($moduleMenuItems, 'showLayoutsLink'))
             {
                 return false;
