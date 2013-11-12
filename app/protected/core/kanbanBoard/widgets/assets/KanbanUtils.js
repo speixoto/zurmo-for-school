@@ -124,9 +124,10 @@ function setUpTaskKanbanSortable(inputurl)
                                         $(ui.item).find('.task-action-toolbar').remove();
                                     }
                                     $(ui.item).find('.task-status').html(data.status);
-                                    $(this).makeLargeLoadingSpinner(false, ".ui-overlay-block");
-                                    $(".ui-overlay-block").fadeOut(50);
                                 }
+                                $(ui.item).find('.task-owner').html('(' + data.owner + ')');
+                                $(this).makeLargeLoadingSpinner(false, ".ui-overlay-block");
+                                $(".ui-overlay-block").fadeOut(100);
                             },
                             error: function(request, status, error){
                                 alert('We are unable to set the sort order at this time.  Please try again in a few minutes.');

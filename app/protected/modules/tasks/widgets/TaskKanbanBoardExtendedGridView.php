@@ -139,8 +139,8 @@
         {
             Yii::app()->clientScript->registerScript('task-sortable-data', static::registerKanbanColumnSortableScript());
             $url = Yii::app()->createUrl('tasks/default/updateStatusInKanbanView', array());
-            $this->registerKanbanColumnStartActionScript('action-type-start', Zurmo::t('Core', 'Finish'), Task::STATUS_IN_PROGRESS, $url);
-            $this->registerKanbanColumnStartActionScript('action-type-restart', Zurmo::t('Core', 'Finish'), Task::STATUS_IN_PROGRESS, $url);
+            $this->registerKanbanColumnStartActionScript('action-type-start' ,Zurmo::t('Core', 'Finish'), Task::STATUS_IN_PROGRESS, $url);
+            $this->registerKanbanColumnStartActionScript('action-type-restart' ,Zurmo::t('Core', 'Finish'), Task::STATUS_IN_PROGRESS, $url);
             $this->registerKanbanColumnFinishActionScript(Zurmo::t('Core', 'Accept'),
                         Zurmo::t('Core', 'Reject'), Task::STATUS_AWAITING_ACCEPTANCE, $url);
             $this->registerKanbanColumnAcceptActionScript('', Task::STATUS_COMPLETED, $url);
@@ -190,7 +190,6 @@
             $acceptanceStatusLabel = Task::getStatusDisplayName(Task::STATUS_AWAITING_ACCEPTANCE);
             $acceptanceStatus      = Task::STATUS_AWAITING_ACCEPTANCE;
             $inProgressKanbanType  = KanbanItem::TYPE_IN_PROGRESS;
-            // Begin Not Coding Standard
             $script = "$(document).on('click','.action-type-finish',function()
                             {
                                 var element = $(this).parent().parent().parent().parent();
@@ -223,7 +222,6 @@
                                 );
                             }
                         );";
-            // End Not Coding Standard
             Yii::app()->clientScript->registerScript('finish-action-script', $script);
         }
 
@@ -274,7 +272,7 @@
 
         /**
          * Register button action script
-         * @param string $buttonClass
+         * @param string $sourceActionButtonClass
          * @param int $targetKanbanItemType
          * @param string $label
          * @param string $targetButtonClass
@@ -282,15 +280,16 @@
          * @param int $targetStatus
          * @return string
          */
-        protected function registerButtonActionScript($buttonClass, $targetKanbanItemType, $label,
+        protected function registerButtonActionScript($sourceActionButtonClass, $targetKanbanItemType, $label,
                                                       $targetButtonClass, $url, $targetStatus)
         {
-            $rejectStatusLabel    = Task::getStatusDisplayName(Task::STATUS_REJECTED);
-            $inProgressStatusLabel = Task::getStatusDisplayName(Task::STATUS_IN_PROGRESS);
-            $completedStatusLabel = Task::getStatusDisplayName(Task::STATUS_COMPLETED);
-            $completedStatus      = Task::STATUS_COMPLETED;
-            // Begin Not Coding Standard
-            return "$(document).on('click','." . $buttonClass . "',
+            $rejectStatusLabel       = Task::getStatusDisplayName(Task::STATUS_REJECTED);
+            $inProgressStatusLabel   = Task::getStatusDisplayName(Task::STATUS_IN_PROGRESS);
+            $completedStatusLabel    = Task::getStatusDisplayName(Task::STATUS_COMPLETED);
+            $completedStatus         = Task::STATUS_COMPLETED;
+            $rejectedStatusClass     = 'status-' . Task::STATUS_REJECTED;
+            $currentUserLoggedInName = '(' . Yii::app()->user->userModel->getFullName() . ')';
+            return "$(document).on('click','." . $sourceActionButtonClass . "',
                         function()
                         {
                             var element = $(this).parent().parent().parent().parent();
@@ -308,17 +307,26 @@
                             }
                             if('{$targetStatus}' != '{$completedStatus}')
                             {
-                                var linkTag = $(element).find('.{$buttonClass}');
+                                var linkTag = $(element).find('.{$sourceActionButtonClass}');
                                 $(linkTag).find('.button-label').html('" . $label . "');
-                                $(linkTag).removeClass('" . $buttonClass . "').addClass('" . $targetButtonClass . "');
-                                if('{$buttonClass}' == 'action-type-reject')
+                                $(linkTag).removeClass('" . $sourceActionButtonClass . "').addClass('" . $targetButtonClass . "');
+                                if('{$sourceActionButtonClass}' == 'action-type-reject')
                                 {
                                     $(element).find('.action-type-accept').remove();
                                     $(element).find('.task-status').html('{$rejectStatusLabel}');
+                                    $(element).find('.task-status').parent().addClass('{$rejectedStatusClass}');
                                 }
-                                if('{$buttonClass}' == 'action-type-restart')
+                                else
+                                {
+                                    $(element).find('.task-status').parent().removeClass('{$rejectedStatusClass}');
+                                }
+                                if('{$sourceActionButtonClass}' == 'action-type-restart')
                                 {
                                     $(element).find('.task-status').html('{$inProgressStatusLabel}');
+                                }
+                                if('{$sourceActionButtonClass}' == 'action-type-start')
+                                {
+                                    $(element).find('.task-owner').html('{$currentUserLoggedInName}');
                                 }
                             }
                             else
@@ -345,7 +353,6 @@
                             );
                         }
                     );";
-            // End Not Coding Standard
         }
 
         /**
@@ -357,7 +364,7 @@
         protected function registerKanbanColumnAcceptActionScript($label, $targetStatus, $url)
         {
             $script = $this->registerButtonActionScript('action-type-accept', KanbanItem::TYPE_COMPLETED,
-                      $label, 'task-complete-action ui-state-disabled', $url, $targetStatus);
+                      $label, 'task-complete-action ui-state-disabled', $url,$targetStatus);
             Yii::app()->clientScript->registerScript('accept-action-script', $script);
         }
 
@@ -406,7 +413,7 @@
             $content .= ZurmoHtml::closeTag('div');
 
             $content .= ZurmoHtml::openTag('div', array('class' => 'task-subscribers'));
-            $content .= $this->resolveAndRenderTaskCardDetailsSubscribersContent($task);
+            $content .= TasksUtil::resolveAndRenderTaskCardDetailsSubscribersContent($task);
             $content .= $this->renderCardDataContent($this->cardColumns['subscribe'], $task, $row);
             $content .= ZurmoHtml::closeTag('div');
 
@@ -433,34 +440,6 @@
                 $content .= ZurmoHtml::closeTag('div');
                 return $content;
             }
-        }
-
-        protected function resolveAndRenderTaskCardDetailsSubscribersContent(Task $task)
-        {
-            $content         = null;
-            $subscribedUsers = TasksUtil::getTaskSubscribers($task);
-            foreach ($subscribedUsers as $user)
-            {
-                if ($user->isSame($task->owner))
-                {
-                    $content .= TasksUtil::renderSubscriberImageAndLinkContent($user, 20, 'task-owner');
-                    break;
-                }
-            }
-            //To take care of the case of duplicates
-            $addedSubscribers = array();
-            foreach ($subscribedUsers as $user)
-            {
-                if (!$user->isSame($task->owner))
-                {
-                    if (!in_array($user->id, $addedSubscribers))
-                    {
-                        $content .= TasksUtil::renderSubscriberImageAndLinkContent($user, 20);
-                        $addedSubscribers[] = $user->id;
-                    }
-                }
-            }
-            return $content;
         }
     }
 ?>
