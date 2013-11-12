@@ -811,17 +811,17 @@
                         'name' => 'language',
                         'type' => 'VARCHAR(10)',
                         'unsigned' => null,
-                        'notNull' => 'NULL',
+                        'notNull' => 'NULL', // Not Coding Standard
                         'collation' => 'COLLATE utf8_unicode_ci',
-                        'default' => 'DEFAULT NULL',
+                        'default' => 'DEFAULT NULL', // Not Coding Standard
                     ),
                     array(
                         'name' => 'role_id',
                         'type' => 'INT(5)',
                         'unsigned' => 'UNSIGNED',
-                        'notNull' => 'NULL',
+                        'notNull' => 'NULL', // Not Coding Standard
                         'collation' => null,
-                        'default' => 'DEFAULT NULL',
+                        'default' => 'DEFAULT NULL', // Not Coding Standard
                     ),
                 ),
                 'indexes' => array()
@@ -851,17 +851,17 @@
                         'name' => 'language',
                         'type' => 'VARCHAR(120)',
                         'unsigned' => null,
-                        'notNull' => 'NULL',
+                        'notNull' => 'NULL', // Not Coding Standard
                         'collation' => 'COLLATE utf8_unicode_ci',
-                        'default' => 'DEFAULT NULL',
+                        'default' => 'DEFAULT NULL', // Not Coding Standard
                     ),
                     array(
                         'name' => 'role_id',
                         'type' => 'INT(15)',
                         'unsigned' => 'UNSIGNED',
-                        'notNull' => 'NULL',
+                        'notNull' => 'NULL', // Not Coding Standard
                         'collation' => null,
-                        'default' => 'DEFAULT NULL',
+                        'default' => 'DEFAULT NULL', // Not Coding Standard
                     ),
                 ),
                 'indexes' => array()

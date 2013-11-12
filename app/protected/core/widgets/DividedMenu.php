@@ -132,7 +132,7 @@
             {
                 $item['linkOptions']['class'] = 'button-label';
                 $spanForTrigger  = $icon;
-                $spanForTrigger .= CHtml::tag('span',isset($item['linkOptions']) ? $item['linkOptions'] : array(), $item['label']);
+                $spanForTrigger .= CHtml::tag('span',isset($item['linkOptions']) ? $item['linkOptions'] : array(), $item['label']); // Not Coding Standard
                 $spanForTrigger .= $item['dynamicLabel'];
             }
 
