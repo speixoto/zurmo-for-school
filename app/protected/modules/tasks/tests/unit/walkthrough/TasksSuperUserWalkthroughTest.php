@@ -97,13 +97,23 @@
             $this->setPostArray(array('Task' => array('name' => 'myTask', 'status' => Task::STATUS_IN_PROGRESS)));
             $this->runControllerWithNoExceptionsAndGetContent('tasks/default/modalDetails');
 
+            //Test just going to the copy from relation
+            $this->setGetArray(array(   'relationAttributeName' => 'Account', 'relationModelId' => $superAccountId,
+                                        'relationModuleId'      => 'accounts', 'id' => $tasks[0]->id));
+            $this->runControllerWithNoExceptionsAndGetContent('tasks/default/modalCopyFromRelation');
+
+            $tasks = Task::getAll();
+            $this->assertEquals(2, count($tasks));
+            $this->assertEquals('myTask', $tasks[1]->name);
+            $this->assertEquals(1, $tasks[1]->activityItems->count());
+
             //test removing a task.
             $this->setGetArray(array('id' => $tasks[0]->id));
             $this->resetPostArray();
             $this->runControllerWithNoExceptionsAndGetContent('tasks/default/delete', true);
             //Confirm no more tasks exist.
             $tasks = Task::getAll();
-            $this->assertEquals(0, count($tasks));
+            $this->assertEquals(1, count($tasks));
         }
    }
 ?>
