@@ -79,7 +79,8 @@
                 $stringTime,
                 $redirectUrl,
                 $ownerOnly,
-                $relationModel
+                $relationModel,
+                $relationModuleId
             );
             
             $dataProvider = $meetingsView->getDataProvider();

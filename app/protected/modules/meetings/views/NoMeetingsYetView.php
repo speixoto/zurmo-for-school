@@ -46,7 +46,7 @@
         protected $relationModel;
         protected $relationModuleId;
 
-        public function __construct($redirectUrl , $controllerId, $moduleId, $relationModel = null, $relationModuleId = null)
+        public function __construct($redirectUrl , $controllerId, $moduleId, $relationModel, $relationModuleId)
         {
             $this->redirectUrl = $redirectUrl;
             $this->controllerId = $controllerId;
@@ -79,7 +79,6 @@
             $content .= $this->getMessageContent();
             $content .= ZurmoHtml::link(ZurmoHtml::wrapLabel($this->getCreateLinkDisplayLabel()), $url, array('class' => 'z-button green-button'));
             $content .= '</div>';
-            $content .= '<br /><a href="'.$url.'">click</a>';
             return $content;
         }
 
@@ -90,13 +89,12 @@
 
         protected function getCreateLinkDisplayLabel()
         {
-            return Zurmo::t('MeetingsModule', 'Create');
+            return Zurmo::t('MeetingsModule', 'Create Meeting');
         }
 
         protected function getMessageContent()
         {
-            return Zurmo::t('MeetingsModule', '<h2>No Meetings yet.</h2><div class="large-icon"></div>' .
-                                     '<p>Add new meeting.</p>');
+            return Zurmo::t('MeetingsModule', '<h2>No meeting scheduled.</h2><div class="large-icon"></div>');
         }
     }
 ?>
