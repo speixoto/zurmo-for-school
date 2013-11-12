@@ -35,6 +35,11 @@
      ********************************************************************************/
     class ShortUrlTest extends ZurmoBaseTest
     {
+        public static function getDependentTestModelClassNames()
+        {
+            return array('ShortUrlForTest');
+        }
+
         public function testResolveHashByUrl()
         {
             $url  = 'http://www.zurmo.com';
@@ -77,6 +82,29 @@
             $shortUrl->save();
             $hash = ShortUrl::getHashByUrl($url);
             $this->assertEquals('abcdefghij', $hash);
+
+            ShortUrl::deleteAll();
+        }
+
+        public function testDeleteOld()
+        {
+            $shortUrlForTest = new ShortUrlForTest();
+            $shortUrlForTest->setStubCreatedDateTime(time() - 200 * 24 * 60 * 60);
+            $shortUrlForTest->hash = 'abcdefghij';
+            $shortUrlForTest->url  = 'http://www.zurmo.com';
+            $this->assertTrue($shortUrlForTest->save());
+
+            $shortUrlForTest2 = new ShortUrlForTest();
+            $shortUrlForTest2->setStubCreatedDateTime(time() - 3 * 24 * 60 * 60);
+            $shortUrlForTest2->hash = '1234567890';
+            $shortUrlForTest2->url  = 'http://www.zurmo.org';
+            $this->assertTrue($shortUrlForTest2->save());
+
+            $this->assertEquals(2, $shortUrlForTest::getCount());
+            ShortUrlForTest::deleteOld();
+            $this->assertEquals(1, $shortUrlForTest::getCount());
+            $shortUrlsForTest = ShortUrlForTest::getAll();
+            $this->assertEquals($shortUrlForTest2, $shortUrlsForTest[0]);
         }
     }
 ?>

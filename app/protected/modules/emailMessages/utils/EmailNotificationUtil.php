@@ -104,13 +104,15 @@
             {
                 $user = Yii::app()->user->userModel;
             }
-            $url                                = Yii::app()->createAbsoluteUrl('users/default/configurationEdit',
-                                                                                array('id' => $user->id));
-            $shortUrl                           = ShortUrlUtil::createShortUrl($url);
+            $url                                = ShortUrlUtil::createShortUrl(
+                                                        Yii::app()->createAbsoluteUrl('users/default/configurationEdit',
+                                                                                      array('id' => $user->id)
+                                                        )
+                                                  );
             $textTemplate                       = self::getNotificationTextTemplate();
             $textContent                        = array();
             $textContent['{bodyContent}']       = $bodyContent;
-            $textContent['{preferenceContent}'] = Zurmo::t('EmailMessagesModule', 'Manage your email preferences') . ': ' . $shortUrl;
+            $textContent['{preferenceContent}'] = Zurmo::t('EmailMessagesModule', 'Manage your email preferences') . ': ' . $url;
             $textContent['{sourceContent}']     = Zurmo::t('EmailMessagesModule', 'Powered By Zurmo', LabelUtil::getTranslationParamsForAllModules());
             $textContent['{sourceContent}']    .= PHP_EOL . 'http://www.zurmo.com';
             return strtr($textTemplate, $textContent);

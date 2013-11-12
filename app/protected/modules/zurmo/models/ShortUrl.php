@@ -40,6 +40,8 @@
 
         const HASH_LENGTH = 10;
 
+        const LIFE_TIME_IN_DAYS = 100;
+
         public function onCreated()
         {
             $this->unrestrictedSet('createdDateTime',  DateTimeUtil::convertTimestampToDbFormatDateTime(time()));
@@ -75,6 +77,7 @@
          * This resolves the hash by url, if url is not already saved it creates a new
          * ShortUrl model and saves the hash/url pair
          * @param string $url
+         * @return string
          */
         public static function resolveHashByUrl($url)
         {
@@ -98,7 +101,8 @@
                         $hashIsNew = true;
                     }
                 }
-                $shortUrl       = new ShortUrl();
+                $className      = __CLASS__;
+                $shortUrl       = new $className();
                 $shortUrl->url  = trim($url);
                 $shortUrl->hash = $hash;
                 $shortUrl->save();
@@ -106,12 +110,19 @@
             return $hash;
         }
 
+        /**
+         * Given an url get the stored hash or trows exception if it does not exists
+         * @param string $url
+         * @return string
+         * @throws NotFoundException
+         */
         public static function getHashByUrl($url)
         {
             assert('is_string($url)');
             assert('$url != ""');
-            $url    = trim($url);
-            $bean   = ZurmoRedBean::findOne(ShortUrl::getTableName('ShortUrl'), "url = :url", array(':url' => $url));
+            $url       = trim($url);
+            $className = __CLASS__;
+            $bean      = ZurmoRedBean::findOne($className::getTableName($className), "url = :url", array(':url' => $url));
             assert('$bean === false || $bean instanceof RedBean_OODBBean');
             if ($bean === false)
             {
@@ -125,16 +136,17 @@
         }
 
         /**
-         *
-         * @param $hash
-         * @return mixed
+         * Given an hash return the stored url or throws exception if hash does not exists
+         * @param string $hash
+         * @return string
          * @throws NotFoundException
          */
         public static function getUrlByHash($hash)
         {
             assert('is_string($hash)');
             assert('$hash != ""');
-            $bean = ZurmoRedBean::findOne(ShortUrl::getTableName('ShortUrl'), "hash = :hash ", array(':hash' => $hash));
+            $className = __CLASS__;
+            $bean = ZurmoRedBean::findOne($className::getTableName($className), "hash = :hash ", array(':hash' => $hash));
             assert('$bean === false || $bean instanceof RedBean_OODBBean');
             if ($bean === false)
             {
@@ -161,6 +173,31 @@
                 $hash .= $allowedChars[mt_rand(0, $length - 1)];
             }
             return $hash;
+        }
+
+        /**
+         * Deletes all the old ShortUrls
+         */
+        public static function deleteOld()
+        {
+            $timestamp = time() - static::LIFE_TIME_IN_DAYS * 24 * 60 * 60;
+            $dateTime  = DateTimeUtil::convertTimestampToDbFormatDateTime($timestamp);
+            $searchAttributeData = array();
+            $searchAttributeData['clauses'] = array(
+                1 => array(
+                    'attributeName'             => 'createdDateTime',
+                    'operatorType'              => 'lessThan',
+                    'value'                     => $dateTime,
+                ),
+            );
+            $searchAttributeData['structure'] = '1';
+            $joinTablesAdapter   = new RedBeanModelJoinTablesQueryAdapter(get_called_class());
+            $where = RedBeanModelDataProvider::makeWhere(get_called_class(), $searchAttributeData, $joinTablesAdapter);
+            $models = self::getSubset($joinTablesAdapter, null, null, $where, null);
+            foreach ($models as $model)
+            {
+                $model->delete();
+            }
         }
     }
 ?>

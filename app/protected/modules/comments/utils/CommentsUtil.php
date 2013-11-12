@@ -84,7 +84,8 @@
         public static function getEmailContent(RedBeanModel $model, Comment $comment, User $user)
         {
             $emailContent  = new EmailMessageContent();
-            $url           = static::getUrlToEmail($model);
+            $url           = ShortUrlUtil::createShortUrl(static::getUrlToEmail($model));
+
             $textContent   = Zurmo::t('CommentsModule', "Hello, {lineBreak} {updaterName} added a new comment to the " .
                                              "{strongStartTag}{modelName}{strongEndTag}: {lineBreak}" .
                                              "\"{commentDescription}.\" {lineBreak}{lineBreak} {url} ",
@@ -95,7 +96,7 @@
                                           '{modelName}'           => $model->getModelLabelByTypeAndLanguage(
                                                                      'SingularLowerCase'),
                                           '{commentDescription}'  => strval($comment),
-                                          '{url}'                 => ZurmoHtml::link($url, $url)
+                                          '{url}'                 => $url
                                         ));
             $emailContent->textContent  = EmailNotificationUtil::
                                                 resolveNotificationTextTemplate($textContent);
