@@ -50,9 +50,8 @@
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array('type' => 'ConfigurationLink',
-                                            'label' => "eval:Zurmo::t('Core', 'Cancel')"),
                             array('type' => 'SaveButton',    'renderType' => 'Edit'),
+                            array('type' => 'ConfigurationLink', 'label' => "eval:Zurmo::t('Core', 'Cancel')"),
                             array('type' => 'EditLink',      'renderType' => 'Details'),
                         ),
                     ),

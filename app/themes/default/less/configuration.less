@@ -140,18 +140,25 @@
 			border-top:none;
 			margin-top:none;
 		}
+		a{
+			float:right;
+			position: absolute;
+			right:15px;
+			top:14px;
+			vertical-align: middle;
+		}
 	}
 	h4{
 		margin:0 0 0 0;
 		display:inline-block;
 	}
 	a{
-		.z-button();
-		float:right;
-		position: absolute;
-		right:15px;
-		top:14px;
-		vertical-align: middle;
+		//.z-button();
+		//float:right;
+		//position: absolute;
+		//right:15px;
+		//top:14px;
+		//vertical-align: middle;
 		margin:0;
 		.z-label{
 			.z-label-smaller();
@@ -190,10 +197,14 @@ table.configuration-list{
 	tbody > tr > td{
 		position:relative !important;
 	}
+	td:last-child{
+		text-align: right;
+	}
 	td:last-child a{
-		.z-button();
-		float:right;
-		margin:0;
+		float:none;
+		//.z-button();
+		//float:right;
+		//margin:0;
 		.z-label{
 			.z-label-smaller();
 		}
@@ -207,6 +218,9 @@ table.configuration-list{
 			font-weight: normal !important;
 			vertical-align: middle;
 		}
+	}
+	tr:last-child td{
+		border-bottom: none;
 	}
 }
 
