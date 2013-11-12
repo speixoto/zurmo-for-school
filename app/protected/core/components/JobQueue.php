@@ -59,5 +59,12 @@
         {
             $this->queuedJobs = array();
         }
+
+        /**
+         * Override if there is processing to complete. see @EndRequestBehavior
+         */
+        public function processAll()
+        {
+        }
     }
 ?>
