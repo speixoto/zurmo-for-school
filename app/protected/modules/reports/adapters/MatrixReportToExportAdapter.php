@@ -91,6 +91,7 @@
                             $className     = $this->resolveExportClassNameForReportToExportValueAdapter(
                                                 $displayAttribute);
                             $params        = array('label' => $displayAttribute->label);
+                            $this->resolveParamsForCurrencyTypes($displayAttribute, $params);
                             $this->resolveParamsForGrandTotals($displayAttribute, $params, $isFirstRow, $i);
                             $adapter       = new $className($reportResultsRowData, $column, $params);
                             $adapter->resolveData($line);
@@ -125,6 +126,7 @@
                         $column        = MatrixReportDataProvider::resolveTotalColumnAliasName(
                             $displayAttribute->columnAliasName);
                         $params        = array('label' => $displayAttribute->label);
+                        $this->resolveParamsForCurrencyTypes($displayAttribute, $params);
                         $adapter       = new $className($reportResultsRowData, $column, $params);
                         $adapter->resolveData($line);
                         $adapter->resolveHeaderData($header);
