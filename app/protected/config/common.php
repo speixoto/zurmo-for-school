@@ -129,7 +129,7 @@
                 'class' => 'application.core.components.ZurmoExtMinScript',
                 'groupMap' => array(
                     'css' => array(
-                        INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'themes/THEME_NAME/css/newui.css',
+                        INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'themes/THEME_NAME/css/zurmo.css',
                         //INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/extensions/timepicker/assets/jquery-ui-timepicker-addon.css',
                     ),
 
@@ -330,7 +330,7 @@
                 'lessFilesToCompile'    => array(
                     'ie.less',
                     'mobile.less',
-                    'newui.less'
+                    'zurmo.less'
                 ),
             ),
         ),

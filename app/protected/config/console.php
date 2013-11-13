@@ -55,7 +55,7 @@
         'lessFilesToCompile'    => array(
             'ie.less',
             'mobile.less',
-            'newui.less'
+            'zurmo.less'
         ),
     );
 

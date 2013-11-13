@@ -284,8 +284,8 @@
                                   "</style>";
             if (!MINIFY_SCRIPTS && Yii::app()->isApplicationInstalled())
             {
-                $specialCssContent .= '<link rel="stylesheet/less" type="text/css" id="newui" href="' .
-                                                                                $themeBaseUrl . '/less/newui.less?version='.rand() .'"/>';
+                $specialCssContent .= '<link rel="stylesheet/less" type="text/css" id="zurmo" href="' .
+                                                                                $themeBaseUrl . '/less/zurmo.less?version='.rand() .'"/>';
                 if (Yii::app()->userInterface->isMobile())
                 {
                     $specialCssContent .= '<link rel="stylesheet/less" type="text/css" id="mobile" href="' .
@@ -296,7 +296,7 @@
             }
             else
             {
-                $cs->registerCssFile($themeBaseUrl . '/css/newui.css');
+                $cs->registerCssFile($themeBaseUrl . '/css/zurmo.css');
                 if (file_exists("themes/$themeName/css/commercial.css"))
                 {
                     $cs->registerCssFile($themeBaseUrl . '/css/commercial.css');
