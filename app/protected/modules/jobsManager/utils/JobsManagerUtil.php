@@ -202,7 +202,7 @@
             return false;
         }
 
-        protected static function getLocalizedDateTimeTimeZoneString()
+        public static function getLocalizedDateTimeTimeZoneString()
         {
             $content = DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay(
                                         DateTimeUtil::convertTimestampToDbFormatDateTime(time()));
