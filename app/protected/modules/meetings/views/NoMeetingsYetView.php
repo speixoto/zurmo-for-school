@@ -56,28 +56,16 @@
         }
 
         protected function renderContent()
-        {   
-            if(!$this->relationModel && !$this->relationModuleId)
-            {
-                $url     = Yii::app()->createUrl('/meetings/default/createMeeting',
-                                             array('redirectUrl' => $this->redirectUrl));
-            }
-            else
-            {
-                $params = array(
-                    'relationAttributeName' => get_class($this->relationModel),
-                    'relationModelId'       => $this->relationModel->id,
-                    'relationModuleId'      => $this->relationModuleId,
-                    'redirectUrl'           => $this->redirectUrl,
-                );
-                
-                $url = Yii::app()->createUrl($this->moduleId . '/' .
-                                        $this->controllerId . '/createFromRelation/', $params);
-            }
-            
+        {
+            $url = $this->getCreateMeetingUrl();
             $content = '<div class="' . $this->getIconName() . '">';
             $content .= $this->getMessageContent();
-            $content .= ZurmoHtml::link(ZurmoHtml::wrapLabel($this->getCreateLinkDisplayLabel()), $url, array('class' => 'z-button green-button'));
+            if (RightsUtil::doesUserHaveAllowByRightName('MeetingsModule', MeetingsModule::getCreateRight(),
+                Yii::app()->user->userModel))
+            {
+                $content .= ZurmoHtml::link(ZurmoHtml::wrapLabel($this->getCreateLinkDisplayLabel()), 
+                                        $url, array('class' => 'z-button green-button'));
+            }
             $content .= '</div>';
             return $content;
         }
@@ -94,7 +82,27 @@
 
         protected function getMessageContent()
         {
-            return Zurmo::t('MeetingsModule', '<h2>No meeting scheduled.</h2><div class="large-icon"></div>');
+            return '<h2>' . Zurmo::t('MeetingsModule', 'No meeting scheduled') . '.</h2><div class="large-icon"></div>';
+        }
+        
+        protected function getCreateMeetingUrl()
+        {
+            if(!$this->relationModel && !$this->relationModuleId)
+            {
+                return Yii::app()->createUrl('/meetings/default/createMeeting',
+                                             array('redirectUrl' => $this->redirectUrl));
+            }
+            else
+            {
+                $params = array(
+                    'relationAttributeName' => get_class($this->relationModel),
+                    'relationModelId'       => $this->relationModel->id,
+                    'relationModuleId'      => $this->relationModuleId,
+                    'redirectUrl'           => $this->redirectUrl,
+                );
+                return Yii::app()->createUrl($this->moduleId . '/' .
+                                        $this->controllerId . '/createFromRelation/', $params);
+            }
         }
     }
 ?>

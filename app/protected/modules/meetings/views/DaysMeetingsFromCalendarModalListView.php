@@ -264,10 +264,15 @@
          */
         protected function renderContent()
         {
-            $spanContent = ZurmoHtml::tag('span', array('class' => 'z-label'), Zurmo::t('MeetingsModule', 'Create Meeting'));
-            $linkContent = ZurmoHtml::link($spanContent, $this->getCreateMeetingUrl(), array());
-            $divContent = ZurmoHtml::tag('div', array('class' => 'portlet-toolbar'), $linkContent);
-            $content = ZurmoHtml::tag('div', array('class' => 'view-toolbar-container clearfix'), $divContent);
+            $content = '';
+            if (RightsUtil::doesUserHaveAllowByRightName('MeetingsModule', MeetingsModule::getCreateRight(),
+                Yii::app()->user->userModel))
+            {
+                $spanContent = ZurmoHtml::tag('span', array('class' => 'z-label'), Zurmo::t('MeetingsModule', 'Create Meeting'));
+                $linkContent = ZurmoHtml::link($spanContent, $this->getCreateMeetingUrl(), array());
+                $divContent = ZurmoHtml::tag('div', array('class' => 'portlet-toolbar'), $linkContent);
+                $content = ZurmoHtml::tag('div', array('class' => 'view-toolbar-container clearfix'), $divContent);
+            }
             $content .= parent::renderContent();
             return $content;
         }
