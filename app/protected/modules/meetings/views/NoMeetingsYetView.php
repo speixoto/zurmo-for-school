@@ -58,7 +58,7 @@
         protected function renderContent()
         {
             $url = $this->getCreateMeetingUrl();
-            $content = '<div class="' . $this->getIconName() . '">';
+            $content = ZurmoHtml::openTag('div', array('class' => $this->getIconName()));
             $content .= $this->getMessageContent();
             if (RightsUtil::doesUserHaveAllowByRightName('MeetingsModule', MeetingsModule::getCreateRight(),
                 Yii::app()->user->userModel))
@@ -66,7 +66,7 @@
                 $content .= ZurmoHtml::link(ZurmoHtml::wrapLabel($this->getCreateLinkDisplayLabel()), 
                                         $url, array('class' => 'z-button green-button'));
             }
-            $content .= '</div>';
+            $content .= ZurmoHtml::closeTag('div');
             return $content;
         }
 
