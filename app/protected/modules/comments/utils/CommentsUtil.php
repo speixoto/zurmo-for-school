@@ -55,18 +55,10 @@
                     if ($people->primaryEmail->emailAddress !== null &&
                     !UserConfigurationFormAdapter::resolveAndGetValue($people, 'turnOffEmailNotifications'))
                     {
-                        $emailRecipients[] = $people;
+                        $subject = self::getEmailSubject($relatedModel);
+                        $content = self::getEmailContent($relatedModel, $comment, $people);
+                        EmailNotificationUtil::resolveAndSendEmail($senderPerson, array($people), $subject, $content);
                     }
-                }
-                $subject = self::getEmailSubject($relatedModel);
-                $content = self::getEmailContent($relatedModel, $comment, $senderPerson);
-                if ($emailRecipients > 0)
-                {
-                    EmailNotificationUtil::resolveAndSendEmail($senderPerson, $emailRecipients, $subject, $content);
-                }
-                else
-                {
-                    return;
                 }
             }
             else
@@ -99,7 +91,7 @@
                                           '{url}'                 => $url
                                         ));
             $emailContent->textContent  = EmailNotificationUtil::
-                                                resolveNotificationTextTemplate($textContent);
+                                                resolveNotificationTextTemplate($textContent, $user);
             return $emailContent;
         }
 
