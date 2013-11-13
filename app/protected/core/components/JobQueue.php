@@ -71,5 +71,28 @@
         public function processAll()
         {
         }
+
+        /**
+         * Override and toggle as needed.
+         * @return bool
+         */
+        public function isEnabled()
+        {
+            return false;
+        }
+
+        public function getQueueJobLabel()
+        {
+            return Zurmo::t('JobsManagerModule', 'Queue Job');
+        }
+
+        public function getQueueJobAgainLabel()
+        {
+            return Zurmo::t('JobsManagerModule', 'Queue Job Again');
+        }
+
+        public function processByJobTypeAndDelay($type, $delay, MessageLogger $messageLogger)
+        {
+        }
     }
 ?>

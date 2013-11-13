@@ -35,9 +35,9 @@
      ********************************************************************************/
 
     /**
-     * View for running a job from the browser.
+     * View for queuing a job from the browser.
      */
-    class RunJobView extends View
+    class QueueJobView extends View
     {
         protected $controllerId;
 
@@ -45,24 +45,28 @@
 
         protected $type;
 
-        protected $timeLimit;
+        protected $delay;
+
+        protected $messageLogger;
 
         /**
          * @param string $controllerId
          * @param string $moduleId
          * @param string $type
-         * @param int $timeLimit
+         * @param int $delay
+         * @param MessageLogger $messageLogger
          */
-        public function __construct($controllerId, $moduleId, $type, $timeLimit)
+        public function __construct($controllerId, $moduleId, $type, $delay, MessageLogger $messageLogger)
         {
             assert('is_string($controllerId) && $controllerId != ""');
             assert('is_string($moduleId) && $moduleId != ""');
             assert('is_string($type)');
             assert('is_int($timeLimit)');
-            $this->controllerId = $controllerId;
-            $this->moduleId     = $moduleId;
-            $this->type         = $type;
-            $this->timeLimit    = $timeLimit;
+            $this->controllerId  = $controllerId;
+            $this->moduleId      = $moduleId;
+            $this->type          = $type;
+            $this->delay         = $delay;
+            $this->messageLogger = $messageLogger;
         }
 
         protected function getJobLabel()
@@ -73,23 +77,22 @@
 
         protected function renderContent()
         {
-            $imagePath = Yii::app()->themeManager->baseUrl . '/default/images/ajax-loader.gif';
-            $progressBarImageContent = ZurmoHtml::image($imagePath, 'Progress Bar');
+            Yii::app()->jobQueue->processByJobTypeAndDelay($this->type, (int)$this->delay, $this->messageLogger);
             $content  = '<div>';
             $content .= ZurmoHtml::tag('h1', array(), $this->getJobLabel());
             $content .= '<div class="left-column full-width">';
-            $content .= '<div id="complete-table" style="display:none;">';
-            $content .= ZurmoHtml::tag('h3', array(), Zurmo::t('JobsManagerModule', 'The job has completed running.'));
+            $content .= '<div id="complete-table">';
+            $content .= ZurmoHtml::tag('h3', array(), Zurmo::t('JobsManagerModule', 'The job was queued.'));
             $content .= $this->renderButtonsContent();
             $content .= '</div>';
-            $content .= '<div id="progress-table" class="progress-bar">';
-            $content .= Zurmo::t('JobsManagerModule', 'Job is running. Please wait.');
-            $content .= '<br/>';
-            $content .= $progressBarImageContent;
-            $content .= '</div>';
             $content .= '<div id="logging-table">';
-            $content .= ZurmoHtml::tag('h3', array(), Zurmo::t('JobsManagerModule', 'Job Output:'));
-            $content .= ZurmoHtml::tag('ol', array(), '');
+            $content .= ZurmoHtml::tag('h3', array(), Zurmo::t('JobsManagerModule', 'Queue Output:'));
+            foreach($this->messageLogger->getMessages() as $messageInfo)
+            {
+                $content .= ZurmoHtml::tag('ol', array(),
+                                           $this->messageLogger->getTypeLabel($messageInfo[0]) .
+                                           ' - ' . $messageInfo[1]);
+            }
             $content .= '</div>';
             $content .= '</div>';
             $content .= '</div>';
@@ -98,20 +101,17 @@
 
         protected function renderButtonsContent()
         {
+            $queueJobUrl   = Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/queueJob/',
+                                                   array('type' => $this->type, 'delay' => $this->delay));
             $runAgainUrl   = Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/runJob/',
-                                                   array('type' => $this->type, 'timeLimit' => $this->timeLimit));
+                                                   array('type' => $this->type));
             $jobManagerUrl = Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/list/');
-            $content  = ZurmoHtml::link(ZurmoHtml::wrapLabel(Zurmo::t('JobsManagerModule', 'Run Job Again')),
-                                        $runAgainUrl, array('class' => 'z-button'));
-            if(Yii::app()->jobQueue->isEnabled())
-            {
-                $queueJobUrl   = Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/queueJob/',
-                                 array('type' => $this->type));
-                $content .= ZurmoHtml::link(ZurmoHtml::wrapLabel(Yii::app()->jobQueue->getQueueJobLabel()),
-                                            $queueJobUrl, array('class' => 'z-button'));
-            }
-            $content .= ZurmoHtml::link(ZurmoHtml::wrapLabel(Zurmo::t('JobsManagerModule', 'Job Manager')),
-                                        $jobManagerUrl, array('class' => 'z-button'));
+            $content       = ZurmoHtml::link(ZurmoHtml::wrapLabel(Yii::app()->jobQueue->getQueueJobAgainLabel()),
+                                             $queueJobUrl, array('class' => 'z-button'));
+            $content      .= ZurmoHtml::link(ZurmoHtml::wrapLabel(Zurmo::t('JobsManagerModule', 'Run Job')),
+                                             $runAgainUrl, array('class' => 'z-button'));
+            $content      .= ZurmoHtml::link(ZurmoHtml::wrapLabel(Zurmo::t('JobsManagerModule', 'Job Manager')),
+                                             $jobManagerUrl, array('class' => 'z-button'));
             return $content;
         }
     }
