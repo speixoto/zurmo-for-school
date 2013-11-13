@@ -267,8 +267,12 @@ EOD;
                         $languageCode
                     )
                 ),
-                'class' => 'action-button attachLoading z-button green-button'
+                'class' => 'attachLoading z-button'
             );
+            if ($action == 'deactivate')
+            {
+                $buttonHtml['class'] .= ' cancel-button';
+            }
             if ($action == 'deactivate' && !$languageData['canDeactivate'])
             {
                 $buttonHtml['class'] .= ' disabled';

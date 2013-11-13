@@ -31,18 +31,17 @@
 // feasible for technical reasons, the Appropriate Legal Notices must display the words
 // "Copyright Zurmo Inc. 2013. All rights reserved".
 
-@textColor         : @z_textColor;
-@themeColor        : @z_themeColor;
-@themeColor2       : @z_themeColor2;
-@themeColorBtn     : @z_themeColorBtn;
-@themeColorBtn2    : darken(@z_themeColorBtn, 10%);
-@themeColorBtnDefault     : @z_themeColorBtn;//#97c43d;
-@themeColorBtn2Default    : darken(@z_themeColorBtn, 10%);
-@themeColorHeader  : @z_themeColorHeader;
-@themeColorHeader2 : darken(@z_themeColorHeader, 8%);//@z_themeColorHeader2;
-@borderColor       : darken(@z_themeColor, 10%);
-@headerBarColor    : @z_themeColor;
-
+@textColor             : @z_textColor;
+@themeColor            : @z_themeColor;
+@themeColor2           : @z_themeColor2;
+@themeColorBtn         : @z_themeColorBtn;
+@themeColorBtn2        : darken(@z_themeColorBtn, 10%);
+@themeColorBtnDefault  : @z_themeColorBtn;//#97c43d;
+@themeColorBtn2Default : darken(@z_themeColorBtn, 10%);
+@themeColorHeader      : @z_themeColorHeader;
+@themeColorHeader2     : darken(@z_themeColorHeader, 8%);
+@borderColor           : darken(@z_themeColor, 10%);
+@headerBarColor        : @z_themeColor;
 
 .symbly( @size : 32px ) {
     font-weight:normal !important;
@@ -177,158 +176,7 @@
 	}
 	li > a:hover{
 		color:#fff !important;
-		//.themeBackgroundColor2;
 	}
-}
-
-//.modal-view-toolbar a,
-//.modal-view-toolbar input[type="submit"],
-//.modal-view-toolbar input[type="button"],
-//.form-toolbar a,
-//.form-toolbar input[type="submit"],
-//.form-toolbar input[type="button"],
-.zButton,
-.z-button,
-.default-btn,
-.white-button,
-.cancel-button,
-.portlet-create-button{
-	cursor:pointer;
-    .radius( 3px );
-    overflow: hidden;
-    position: relative;
-    text-indent:0;
-    display:inline-block;
-	.box-sizing();
-    .clearfix();
-
-	@hexToRGBA : rgba(red(@themeColorBtnDefault), green(@themeColorBtnDefault), blue(@themeColorBtnDefault), 0.8);
-
-	border-top:1px solid  lighten(@hexToRGBA, 10%); /*lighter*/
-	border-left: 1px solid @hexToRGBA;
-	border-right:1px solid @hexToRGBA;
-	border-bottom:1px solid darken(@hexToRGBA, 10%); /*darker*/
-
-	.b-shadow(0 0 9px 5px rgba(153, 153, 153, 0.15));
-}
-
-.default-btn,
-.white-button,
-.cancel-button,
-.portlet-create-button{
-	border-top:1px solid    rgba(200, 200, 200, 0.4);
-	border-left: 1px solid  rgba(185, 185, 185, 0.4);
-	border-right:1px solid  rgba(185, 185, 185, 0.4);
-	border-bottom:1px solid rgba(170, 170, 170, 0.4);
-	.z-label{
-        color:#666;
-        .t-shadow( 0px -1px 0 rgba(255, 255, 255, 0.75) ) !important;
-        background: transparent url(../images/view-toolbar-gradient.png) left bottom repeat-x;
-	}
-	&:hover{
-		.z-label{
-			//background: url(../images/view-toolbar-gradient.png) left top repeat-x !important;
-			color: @themeColor2 !important;
-			background-image: none;
-			#gradient > .vertical( #fefefe, #ededed ) !important;
-			.t-shadow( 0px -1px 0 rgba(255, 255, 255, 0.75) ) !important;
-		}
-	}
-}
-
-.z-label{
-	color:#fff;
-	#gradient > .vertical( @themeColorBtnDefault, @themeColorBtn2Default );
-	.t-shadow( 0px -1px 0 rgba(0, 0, 0, 0.2) ) !important;
-	.box-sizing();
-	float:left;
-	font-weight:bold;
-	padding:0 25px;
-	line-height:25px;
-	display: inline-block;
-	.radius( 3px );
-	position:relative;
-	white-space: nowrap;
-}
-
-.z-label-smaller{
-	padding:0 15px;
-}
-
-a:hover .z-label,
-a:active .z-label{
-	color: darken(@themeColorBtnDefault, 40%) !important;
-	#gradient > .vertical( @themeColorBtnDefault, darken(@themeColorBtn2Default, 10%) );
-	.t-shadow( 0px 1px 0 lighten(@themeColorBtnDefault, 15%) ) !important;
-}
-
-a:active .z-label,
-a:active .z-label{
-	.b-shadow( ~"inset 0 5px 12px 0 rgba(0, 0, 0, 0.33), 0 1px 0 0 #FFF" );
-}
-
-.z-button.disabled{
-	pointer-events:none;
-	.opacity(50);
-	-webkit-filter: grayscale(85%);
-	-moz-filter: grayscale(85%);
-	-ms-filter: grayscale(85%);
-	-o-filter: grayscale(85%);
-	filter: grayscale(85%);
-	filter: gray; /* IE 6-9 */
-}
-
-.zButton.loading,
-.z-button.loading{
-    .z-spinner{
-        display:inline-block;
-        position: absolute;
-        margin: 1px 0 0 4px;
-    }
-    .z-icon{
-        display:none;
-    }
-}
-
-.z-spinner{
-    z-index:10;
-    width:23px;
-    height:23px;
-    display:none;
-    position:absolute;
-    left:0px;
-}
-
-.z-spinner.loading{
-    display:block !important;
-}
-
-.zLink, .z-link{
-    padding:2px 4px;
-    .radius(3px);
-    color:#fff !important;
-    .smaller();
-	background-color: @themeColor !important;
-}
-
-.zLink:hover, .z-link:hover{
-    color:#fff !important;
-    text-decoration:underline;
-}
-
-.z-action-link{
-   .smaller();
-   .opacity(50);
-   text-decoration: none;
-	color: @themeColor;
-   &:hover{
-       .opacity(100);
-       text-decoration: none;
-   }
-}
-
-.z-action-link-active{
-    .opacity(100);    
 }
 
 // Gradients
@@ -336,8 +184,6 @@ a:active .z-label{
   .horizontal (@startColor: #555, @endColor: #333) {
     background-color: @endColor;
     background-repeat: repeat-x;
-    //background-image: -khtml-gradient(linear, left top, right top, from(@startColor), to(@endColor)); // Konqueror
-    //background-image: -moz-linear-gradient(left, @startColor, @endColor); // FF 3.6+
     background-image: -ms-linear-gradient(left, @startColor, @endColor); // IE10
     background-image: -webkit-gradient(linear, left top, right top, color-stop(0%, @startColor), color-stop(100%, @endColor)); // Safari 4+, Chrome 2+
     background-image: -webkit-linear-gradient(left, @startColor, @endColor); // Safari 5.1+, Chrome 10+
@@ -348,8 +194,6 @@ a:active .z-label{
   .vertical (@startColor: #555, @endColor: #333) {
     background-color: @endColor;
     background-repeat: repeat-x;
-    //background-image: -khtml-gradient(linear, left top, left bottom, from(@startColor), to(@endColor)); // Konqueror
-    //background-image: -moz-linear-gradient(top, @startColor, @endColor); // FF 3.6+
     background-image: -ms-linear-gradient(top, @startColor, @endColor); // IE10
     background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, @startColor), color-stop(100%, @endColor)); // Safari 4+, Chrome 2+
     background-image: -webkit-linear-gradient(top, @startColor, @endColor); // Safari 5.1+, Chrome 10+
@@ -360,7 +204,6 @@ a:active .z-label{
   .directional (@startColor: #555, @endColor: #333, @deg: 45deg) {
     background-color: @endColor;
     background-repeat: repeat-x;
-    //background-image: -moz-linear-gradient(@deg, @startColor, @endColor); // FF 3.6+
     background-image: -ms-linear-gradient(@deg, @startColor, @endColor); // IE10
     background-image: -webkit-linear-gradient(@deg, @startColor, @endColor); // Safari 5.1+, Chrome 10+
     background-image: -o-linear-gradient(@deg, @startColor, @endColor); // Opera 11.10
@@ -371,7 +214,6 @@ a:active .z-label{
     background-repeat: no-repeat @importance;
     background-image: -webkit-gradient(linear, 0 0, 0 100%, from(@startColor), color-stop(@colorStop, @midColor), to(@endColor)) @importance;
     background-image: -webkit-linear-gradient(@startColor, @midColor @colorStop, @endColor) @importance;
-    //background-image: -moz-linear-gradient(top, @startColor, @midColor @colorStop, @endColor) @importance;
     background-image: -ms-linear-gradient(@startColor, @midColor @colorStop, @endColor) @importance;
     background-image: -o-linear-gradient(@startColor, @midColor @colorStop, @endColor) @importance;
     background-image: linear-gradient(@startColor, @midColor @colorStop, @endColor) @importance;
@@ -384,7 +226,6 @@ a:active .z-label{
   filter: e(%("progid:DXImageTransform.Microsoft.gradient(enabled = false)"));
 }
 
-// Opacity
 .opacity(@opacity: 100) {
   filter: e(%("alpha(opacity=%d)", @opacity));
   -khtml-opacity: @opacity / 100;

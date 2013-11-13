@@ -172,7 +172,7 @@
 
 .addfileinput-button {
 	position: relative;
-	overflow: hidden;
+	//overflow: hidden;
 	float: left;
     cursor: pointer;
     display: inline-block;
@@ -180,16 +180,30 @@
     font-weight: normal;
     padding: 2px 0;
     span{
-        cursor: pointer;
-        .zButton;
-        .b-shadow(0 0 2px 0 rgba(153, 153, 153, 0.15));
+	    cursor:pointer;
+	    .radius( 3px );
+	    .box-sizing();
+	    .clearfix();
+	    overflow: hidden;
+	    position: relative;
+	    display:inline-block;
+	    text-indent:0;
+	    .b-shadow(0 0 9px 5px rgba(153, 153, 153, 0.15));
         .symbly(36px);
         font-size: 24px;
         padding: 0 6px !important;
         margin:0 5px 0 0 !important;
         position: relative;
         top: 2px;
-        background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
+	    color:#666;
+	    .t-shadow( 0px -1px 0 rgba(255, 255, 255, 0.75) ) !important;
+	    background: transparent url(../images/view-toolbar-gradient.png) left bottom repeat-x;
+	    &:hover{
+		    color: @themeColor2 !important;
+		    background-image: none;
+		    #gradient > .vertical( #fefefe, #ededed ) !important;
+		    .t-shadow( 0px -1px 0 rgba(255, 255, 255, 0.75) ) !important;
+	    }
     }
     input {
         position: absolute;

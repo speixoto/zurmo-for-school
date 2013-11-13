@@ -124,7 +124,8 @@
 
         protected function renderReturnLink()
         {
-            return ZurmoHtml::link(ZurmoHtml::wrapLabel($this->renderReturnMessage()), $this->renderReturnUrl());
+            return ZurmoHtml::link(ZurmoHtml::wrapLabel($this->renderReturnMessage()), $this->renderReturnUrl(),
+                   array('class' => 'white-button'));
         }
 
         protected function renderReturnUrl()

@@ -308,15 +308,11 @@ table.configuration-list{
 		line-height: 150%;
 	}
 	input[type="button"]{
+		.symbly(22px);
 		display:block !important;
 		margin:0 0 15px 0 !important;
-		.z-button();
-		.symbly(22px);
-		background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
 		padding:0 15px;
 		line-height:25px;
-		.radius( 4px );
-		cursor:pointer;
 	}
 	.select-arrow{
 		display: none !important;
@@ -769,7 +765,6 @@ table.configuration-list{
 #PoliciesEditAndDetailsView,
 #ModulePermissionsEditAndDetailsView,
 #RightsEditAndDetailsView{
-	margin-top: 15px;
 	.details-table{
 		margin-right:0;
 	}
@@ -1020,9 +1015,12 @@ table.configuration-list{
 
 #import-temp-table-list-view{
 	text-align: center;
+	.items-wrapper{
+		border: 1px solid #DFDFDF;
+		border-bottom: none;
+	}
 	table{
 		table-layout:auto;
-		border-bottom: 1px solid #CCCCCC;
 		background: #fafafa;
 	}
 	tr:first-child th{
@@ -1107,6 +1105,7 @@ table.configuration-list{
 	}
 	td{
 		padding: 5px !important;
+		//border-bottom: none;
 		h3{
 			margin: 0 !important;
 		}
