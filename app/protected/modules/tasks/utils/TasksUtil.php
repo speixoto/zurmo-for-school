@@ -442,7 +442,6 @@
         {
             return "$('body').on('click', '." . $sourceClass . "', function()
                                                     {
-                                                        var linkElement = $(this);
                                                         var element     = $(this).parent().parent().parent();
                                                         var id          = $(element).attr('id');
                                                         var idParts     = id.split('_');
@@ -454,9 +453,15 @@
                                                             type : 'GET',
                                                             data : {'id':taskId},
                                                             url  : '" . $url . "',
+                                                            beforeSend : function(){
+                                                              $('.ui-overlay-block').fadeIn(50);
+                                                              $(this).makeLargeLoadingSpinner(true, '.ui-overlay-block');
+                                                            },
                                                             success : function(data)
                                                                       {
                                                                         $(linkParent).html(data);
+                                                                        $(this).makeLargeLoadingSpinner(false, '.ui-overlay-block');
+                                                                        $('.ui-overlay-block').fadeOut(100);
                                                                       }
                                                         }
                                                         );
@@ -476,15 +481,18 @@
         {
             return "$('body').on('click', '." . $sourceClass . "', function()
                                                     {
-                                                        var linkElement = $(this);
                                                         $.ajax(
                                                         {
                                                             type : 'GET',
                                                             url  : '" . $url . "',
+                                                            beforeSend : function(){
+                                                              $('#subscriberList').html('');
+                                                              $(this).makeLargeLoadingSpinner(true, '#subscriberList');
+                                                            },
                                                             success : function(data)
                                                                       {
-                                                                        $(linkElement).html('" . $link . "');
-                                                                        $(linkElement).attr('class', '" . $targetClass . "');
+                                                                        $(this).html('" . $link . "');
+                                                                        $(this).attr('class', '" . $targetClass . "');
                                                                         if(data == '')
                                                                         {
                                                                             $('#subscriberList').html('');
@@ -493,6 +501,7 @@
                                                                         {
                                                                             $('#subscriberList').html(data);
                                                                         }
+                                                                        $(this).makeLargeLoadingSpinner(false, '#subscriberList');
                                                                       }
                                                         }
                                                         );

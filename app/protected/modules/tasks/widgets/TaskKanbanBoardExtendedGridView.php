@@ -326,7 +326,7 @@
                                 }
                                 if('{$sourceActionButtonClass}' == 'action-type-start')
                                 {
-                                    $(element).find('.task-owner').html('{$currentUserLoggedInName}');
+                                    $(element).find('h4 .task-owner').html('{$currentUserLoggedInName}');
                                 }
                             }
                             else
