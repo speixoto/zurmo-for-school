@@ -296,7 +296,7 @@
             {
                 $model            = new $modelClassName(false);
                 $dataAndLabels    = CustomFieldDataUtil::
-                                    getDataIndexedByDataAndTranslatedLabelsByLanguage($model->{$attribute}->data, Yii::app()->language);
+                                        getDataIndexedByDataAndTranslatedLabelsByLanguage($model->{$attribute}->data, Yii::app()->language);
                 return $dataAndLabels;
             }
             else
@@ -403,6 +403,11 @@
                     $passedValidation = false;
                 }
             }
+        }
+
+        public function attributeLabels()
+        {
+            return array('availableAtRunTime' => Zurmo::t('ReportsModule', 'Available At Run Time'));
         }
     }
 ?>
