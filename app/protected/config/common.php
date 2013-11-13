@@ -261,7 +261,7 @@
             'urlManager' => array (
                 'urlFormat' => 'path',
                 'caseSensitive' => true,
-                'showScriptName' => true,
+                'showScriptName' => false,
                 'rules' => array(
                     // API REST patterns
                     array('zurmo/api/logout',                   'pattern' => 'zurmo/api/logout',                              'verb' => 'GET'),    // Not Coding Standard
