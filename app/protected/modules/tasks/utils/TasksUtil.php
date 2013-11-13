@@ -1016,16 +1016,30 @@
             return $content;
         }
 
+        /**
+         * Register task modal edit script
+         * @param string $sourceId
+         * @param array $routeParams
+         */
         public static function registerTaskModalEditScript($sourceId, $routeParams)
         {
+            assert('is_string($sourceId)');
+            assert('is_array($routeParams)');
             $modalId     = TasksUtil::getModalContainerId();
             $url         = Yii::app()->createUrl('tasks/default/modalEdit', $routeParams);
             $script      = self::registerTaskModalScript("Edit", $url, '.edit-related-open-task', $sourceId);
             Yii::app()->clientScript->registerScript('taskModalEditScript', $script, ClientScript::POS_END);
         }
 
+        /**
+         * Register task modal copy script
+         * @param string $sourceId
+         * @param array $routeParams
+         */
         public static function registerTaskModalCopyScript($sourceId, $routeParams)
         {
+            assert('is_string($sourceId)');
+            assert('is_array($routeParams)');
             $modalId     = TasksUtil::getModalContainerId();
             $url         = Yii::app()->createUrl('tasks/default/modalCopy',
                                                     array_merge($routeParams, array('action' => 'copy')));
@@ -1033,8 +1047,20 @@
             Yii::app()->clientScript->registerScript('taskModalCopyScript', $script, ClientScript::POS_END);
         }
 
+        /**
+         * Get task modal script
+         * @param string $type
+         * @param string $url
+         * @param string $selector
+         * @param mixed $sourceId
+         * @return string
+         */
         public static function registerTaskModalScript($type, $url, $selector, $sourceId = null)
         {
+            assert('is_string($type)');
+            assert('is_string($url)');
+            assert('is_string($selector)');
+            assert('is_string($sourceId) || $sourceId == null');
             $modalId     = TasksUtil::getModalContainerId();
             $ajaxOptions = TasksUtil::resolveAjaxOptionsForModalView($type, $sourceId);
             $ajaxOptions['beforeSend'] = new CJavaScriptExpression($ajaxOptions['beforeSend']);
@@ -1054,6 +1080,41 @@
                           }
                         );";
 
+        }
+
+        /**
+         * Register task modal delete script
+         * @param string $sourceId
+         */
+        public static function registerTaskModalDeleteScript($sourceId)
+        {
+            assert('is_string($sourceId)');
+            $url = Yii::app()->createUrl('tasks/default/delete');
+            $params = LabelUtil::getTranslationParamsForAllModules();
+            $confirmTitle  = Zurmo::t('Core', 'Are you sure you want to delete this {modelLabel}?',
+                                                        array('{modelLabel}' => Zurmo::t('TasksModule', 'TasksModuleSingularLabel', $params)));
+            $script = "$(document).on('click', '.delete-related-open-task', function()
+                         {
+                            if (!confirm('{$confirmTitle}'))
+                            {
+                                return false;
+                            }
+                            var id = $(this).attr('id');
+                            var idParts = id.split('-');
+                            var taskId = parseInt(idParts[3]);
+                            $.ajax(
+                            {
+                                'type' : 'GET',
+                                'url'  : '{$url}' + '?id=' + taskId,
+
+                                'success': function(data)
+                                           {
+                                             $.fn.yiiGridView.update('{$sourceId}');
+                                           }
+                            });
+                          }
+                        );";
+             Yii::app()->clientScript->registerScript('taskModalDeleteScript', $script, ClientScript::POS_END);
         }
     }
 ?>

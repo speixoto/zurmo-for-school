@@ -66,7 +66,7 @@
                             array(  'type'             => 'CopyModalLink',
                                     'htmlOptions'      => 'eval:$this->getActionModalLinksHtmlOptions("Copy")'
                                  ),
-                            array('type' => 'RelatedDeleteLink'),
+                            array('type' => 'TaskRelatedDeleteLink'),
                         ),
                     ),
                     'derivedAttributeTypes' => array(
@@ -177,6 +177,7 @@
             TasksUtil::registerTaskModalDetailsScript($this->getGridViewId());
             TasksUtil::registerTaskModalEditScript($this->getGridViewId(), $this->getCreateLinkRouteParameters());
             TasksUtil::registerTaskModalCopyScript($this->getGridViewId(), $this->getCreateLinkRouteParameters());
+            TasksUtil::registerTaskModalDeleteScript($this->getGridViewId());
         }
 
         /**
@@ -193,10 +194,6 @@
             elseif($type == "Copy")
             {
                 return array('class' => 'copy-related-open-task');
-            }
-            elseif($type == "Delete")
-            {
-                return array('class' => 'delete-related-open-task');
             }
         }
     }
