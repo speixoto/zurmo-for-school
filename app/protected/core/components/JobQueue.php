@@ -41,12 +41,17 @@
     {
         protected $queuedJobs = array();
 
-        public function add($jobType)
+        /**
+         * @param string $jobType
+         * @param int $delay - seconds to delay job
+         */
+        public function add($jobType, $delay = 0)
         {
             assert('is_string($jobType)');
-            if(!in_array($jobType, $this->queuedJobs))
+            assert('is_int($delay)');
+            if(!isset($this->queuedJobs[$delay]) || !in_array($jobType, $this->queuedJobs[$delay]))
             {
-                $this->queuedJobs[] = $jobType;
+                $this->queuedJobs[$delay][] = $jobType;
             }
         }
 
