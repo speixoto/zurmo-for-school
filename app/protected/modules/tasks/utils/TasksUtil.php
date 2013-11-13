@@ -260,7 +260,7 @@
             assert('is_string($moduleClassName)');
             if ($isOwnerRequiredInDisplay)
             {
-                $label       = $task->name . ZurmoHtml::tag('span', array(), '(' . strval($task->owner) . ')');
+                $label       = $task->name . ZurmoHtml::tag('span', array('class' => 'task-owner'), '(' . strval($task->owner) . ')');
             }
             else
             {
@@ -418,14 +418,14 @@
 
             if ($taskId == null)
             {
-                $url           = Yii::app()->createUrl('tasks/default/removeKanbanSubscriber');
-                $script    = self::getKanbanSubscriptionScript($url, 'unsubscribe-task-link', 'subscribe-task-link', $subscribeLink);
+                $url    = Yii::app()->createUrl('tasks/default/removeKanbanSubscriber');
+                $script = self::getKanbanSubscriptionScript($url, 'unsubscribe-task-link', 'subscribe-task-link', $subscribeLink);
                 Yii::app()->clientScript->registerScript('kanban-unsubscribe-task-link-script', $script);
             }
             else
             {
-                $url             = Yii::app()->createUrl('tasks/default/removeSubscriber', array('id' => $taskId));
-                $script    = self::getDetailSubscriptionScript($url, 'detail-unsubscribe-task-link', 'detail-subscribe-task-link', $subscribeLink, $taskId);
+                $url    = Yii::app()->createUrl('tasks/default/removeSubscriber', array('id' => $taskId));
+                $script = self::getDetailSubscriptionScript($url, 'detail-unsubscribe-task-link', 'detail-subscribe-task-link', $subscribeLink, $taskId);
                 Yii::app()->clientScript->registerScript('detail-unsubscribe-task-link-script', $script);
             }
         }
@@ -447,6 +447,8 @@
                                                         var id          = $(element).attr('id');
                                                         var idParts     = id.split('_');
                                                         var taskId      = parseInt(idParts[1]);
+                                                        var linkParent  = $(this).parent();
+                                                        console.log(linkParent);
                                                         $.ajax(
                                                         {
                                                             type : 'GET',
@@ -454,8 +456,7 @@
                                                             url  : '" . $url . "',
                                                             success : function(data)
                                                                       {
-                                                                        $(linkElement).html('" . $link . "');
-                                                                        $(linkElement).attr('class', '" . $targetClass . "');
+                                                                        $(linkParent).html(data);
                                                                       }
                                                         }
                                                         );
@@ -840,16 +841,7 @@
         public static function addSubscriber(User $user, Task $task, $hasReadLatest = false)
         {
             assert('is_bool($hasReadLatest)');
-            $isAlreadySubscribed = false;
-            foreach ($task->notificationSubscribers as $notificationSubscriber)
-            {
-                if ($notificationSubscriber->person->getClassId('Item') == $user->getClassId('Item'))
-                {
-                    $isAlreadySubscribed = true;
-                    break;
-                }
-            }
-            if (!$isAlreadySubscribed)
+            if ($task->doNotificationSubscribersContainPerson($user) === false)
             {
                 $notificationSubscriber = new NotificationSubscriber();
                 $notificationSubscriber->person = $user;
@@ -957,6 +949,11 @@
         public static function checkKanbanTypeByStatusAndUpdateIfRequired(Task $task)
         {
             $kanbanItem = KanbanItem::getByTask($task->id);
+            //It should be created here but check for create as well here
+            if($kanbanItem == null)
+            {
+                $kanbanItem = TasksUtil::createKanbanItemFromTask($task);
+            }
             $kanbanTypeByStatus = TasksUtil::resolveKanbanItemTypeForTaskStatus($task->status);
             if ($kanbanItem->type != $kanbanTypeByStatus)
             {
@@ -975,6 +972,39 @@
                     TasksUtil::sortKanbanColumnItems($sourceKanbanItemType, $task->activityItems->offsetGet(0));
                 }
             }
+        }
+
+        /**
+         * Resolve and render task card details subscribers content
+         * @param Task $task
+         * @return type
+         */
+        public static function resolveAndRenderTaskCardDetailsSubscribersContent(Task $task)
+        {
+            $content         = null;
+            $subscribedUsers = TasksUtil::getTaskSubscribers($task);
+            foreach ($subscribedUsers as $user)
+            {
+                if ($user->isSame($task->owner))
+                {
+                    $content .= TasksUtil::renderSubscriberImageAndLinkContent($user, 20, 'task-owner');
+                    break;
+                }
+            }
+            //To take care of the case of duplicates
+            $addedSubscribers = array();
+            foreach ($subscribedUsers as $user)
+            {
+                if (!$user->isSame($task->owner))
+                {
+                    if (!in_array($user->id, $addedSubscribers))
+                    {
+                        $content .= TasksUtil::renderSubscriberImageAndLinkContent($user, 20);
+                        $addedSubscribers[] = $user->id;
+                    }
+                }
+            }
+            return $content;
         }
     }
 ?>
