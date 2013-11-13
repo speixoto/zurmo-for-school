@@ -105,7 +105,7 @@
                 if ($unlockedAtLevel > (int)$gameLevel->value)
                 {
                     $title   = Zurmo::t('GamificationModule', 'Unlocked at level {level}', array('{level}' => $unlockedAtLevel));
-                    $content = '<span id="theme-color-tooltip-' . $name. '" title="' . $title . '"><i class="icon-lock"></i></span>' . $label;
+                    $content = '<span id="theme-color-tooltip-' . $name. '" title="' . $title . '"><i class="icon-lock"></i></span>' . $label; // Not Coding Standard
                     $qtip    = new ZurmoTip();
                     $qtip->addQTip("#theme-color-tooltip-" . $name);
                 }

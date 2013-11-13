@@ -110,5 +110,12 @@
         {
             return 'home';
         }
+        
+        public static function getAdditionalOptionMenuItems()
+        {
+            return array(array('label'=>'Create Meeting', 
+                            'url'=>Yii::app()->createUrl('/meetings/default/createMeeting', 
+                                                    array('redirectUrl' => Yii::app()->request->getRequestUri()))));
+        }
     }
 ?>

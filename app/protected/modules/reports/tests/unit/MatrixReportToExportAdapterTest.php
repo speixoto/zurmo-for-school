@@ -646,6 +646,57 @@
                                    );
             $this->assertEmpty($adapter->getHeaderData());
             $this->assertEquals($compareRowData, $adapter->getData());
+
+            //Test currency type is resolved
+            $report = new Report();
+            $report->setType(Report::TYPE_MATRIX);
+            $report->setModuleClassName('ReportsTestModule');
+            $report->setFiltersStructure('');
+            $report->setCurrencyConversionType(Report::CURRENCY_CONVERSION_TYPE_BASE);
+            $displayAttribute = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                Report::TYPE_MATRIX);
+            $displayAttribute->attributeIndexOrDerivedType = 'currencyValue__Summation';
+            $report->addDisplayAttribute($displayAttribute);
+            $groupBy           = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                Report::TYPE_MATRIX);
+            $groupBy->attributeIndexOrDerivedType = 'firstName';
+            $report->addGroupBy($groupBy);
+            $groupBy           = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                Report::TYPE_MATRIX);
+            $groupBy->attributeIndexOrDerivedType = 'lastName';
+            $groupBy->axis = 'y';
+            $report->addGroupBy($groupBy);
+
+            $dataProvider       = new MatrixReportDataProvider($report);
+            $adapter            = ReportToExportAdapterFactory::createReportToExportAdapter($report, $dataProvider);
+            $compareRowData     = array(
+                                    array(
+                                        null,
+                                        'xFirst',
+                                        'xFirst',
+                                        'Total',
+                                    ),
+                                    array(
+                                        'Last Name',
+                                        'Currency Value -(Sum)',
+                                        'Currency Value -(Sum) Currency',
+                                        'Currency Value -(Sum)',
+                                        'Currency Value -(Sum) Currency',
+                                    ),
+                                    array(
+                                        'xLast',
+                                        200,
+                                        'USD',
+                                        200,
+                                        'USD',
+                                    ),
+                                    array(
+                                        'Total',
+                                        200,
+                                        null,
+                                    ),
+                                  );
+            $this->assertEquals($compareRowData, $adapter->getData());
         }
 
         public function testGetLeadingHeadersDataFromMatrixReportDataProviderWithALinkableAttribute()

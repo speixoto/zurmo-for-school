@@ -187,6 +187,14 @@
                 $menuItems['items'][] = array('label' => Zurmo::t('Core', 'Remove Portlet'), 'url' => '#',
                     'linkOptions' => array('class' => 'remove-portlet'));
             }
+            if (isset($item['additionalOptionMenuItems']) && !empty($item['additionalOptionMenuItems']) )
+            {
+                foreach($item['additionalOptionMenuItems'] as $additionalOptionMenuItem)
+                {
+                    $menuItems['items'][] = array('label' => Zurmo::t('Core', $additionalOptionMenuItem['label']), 
+                            'url' => $additionalOptionMenuItem['url']);
+                }
+            }
             if (count($menuItems['items']) > 0)
             {
                 $cClipWidget = new CClipWidget();
