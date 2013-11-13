@@ -509,7 +509,7 @@
             $this->assertContains('myNewGameReward was redeemed by Clark Kent.', $notifications[0]->notificationMessage->htmlContent);
 
             //check url
-            $this->assertFalse(strpos($notifications[0]->notificationMessage->htmlContent, '/gameRewards/default/details?id=13') === false);
+            $this->assertFalse(strpos($notifications[0]->notificationMessage->htmlContent, '/gameRewards/default/details?id=13') === false); // Not Coding Standard
         }
     }
 ?>

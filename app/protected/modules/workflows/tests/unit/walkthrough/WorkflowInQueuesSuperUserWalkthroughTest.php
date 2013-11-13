@@ -110,7 +110,7 @@
                                      'WorkflowMessageInQueuesSearchForm' =>
                                         array('anyMixedAttributesScope' => array('All'))));
             $content = $this->runControllerWithNoExceptionsAndGetContent('workflows/default/inQueuesAutoComplete');
-            $compareContent = '[{"itemId":null,"modelClassName":null,"value":null,"label":"No Results Found","iconClass":""}]';
+            $compareContent = '[{"itemId":null,"modelClassName":null,"value":null,"label":"No Results Found","iconClass":""}]'; // Not Coding Standard
             $this->assertEquals($compareContent, $content);
 
             $this->setGetArray(array('term'          => 'abc',
@@ -118,7 +118,7 @@
                                      'ByTimeWorkflowInQueueSearchForm' =>
                                      array('anyMixedAttributesScope' => array('All'))));
             $content = $this->runControllerWithNoExceptionsAndGetContent('workflows/default/inQueuesAutoComplete');
-            $compareContent = '[{"itemId":null,"modelClassName":null,"value":null,"label":"No Results Found","iconClass":""}]';
+            $compareContent = '[{"itemId":null,"modelClassName":null,"value":null,"label":"No Results Found","iconClass":""}]'; // Not Coding Standard
             $this->assertEquals($compareContent, $content);
         }
 

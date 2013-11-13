@@ -102,7 +102,7 @@
                 $extraClass = null;
             }
 
-            $content .= '<nav class="pillbox clearfix' . $extraClass. '">' . $firstActionElementBarContent . '</nav>';
+            $content .= '<nav class="pillbox clearfix' . $extraClass. '">' . $firstActionElementBarContent . '</nav>'; // Not Coding Standard
             if (!Yii::app()->userInterface->isMobile() &&
                 null != $secondActionElementBarContent = $this->renderSecondActionElementBar(false))
             {

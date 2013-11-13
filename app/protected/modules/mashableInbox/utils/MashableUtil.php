@@ -248,7 +248,7 @@
                 return (($match[0] + $firstMetadataClausesCount));
             };
             $firstMetadata['structure'] = '(' . $firstMetadata['structure'] . ')' . $operator .
-                '(' . preg_replace_callback("/(\\d+)/", $callback, $secondMetadata['structure']) . ')';
+                '(' . preg_replace_callback("/(\\d+)/", $callback, $secondMetadata['structure']) . ')'; // Not Coding Standard
             return $firstMetadata;
         }
 

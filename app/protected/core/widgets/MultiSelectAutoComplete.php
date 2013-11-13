@@ -150,6 +150,7 @@
             {
                 $javaScript .= "prePopulate: " . $this->jsonEncodedIdsAndLabels . ","; // Not Coding Standard
             }
+            // Begin Not Coding Standard
             $javaScript .= "propertyToSearch: '" . $this->propertyToSearch . "',";
             $javaScript .= "searchDelay: " . $this->searchDelay . ",";
             $javaScript .= "minChars: " . $this->minChars . ",";
@@ -158,6 +159,7 @@
             $javaScript .= "classes: {tokenList: 'token-input-list" . $tokenListClassSuffix . "'}";
             $javaScript .= "});";
             $javaScript .= "});";
+            // End Not Coding Standard
             Yii::app()->getClientScript()->registerScript(__CLASS__ . '#' . $id, $javaScript);
         }
 
