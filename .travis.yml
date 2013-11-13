@@ -36,7 +36,5 @@ script:
   - phpunit TestSuite.php notifications --reuse-schema
   - phpunit TestSuite.php conversations --reuse-schema
   - phpunit TestSuite.php comments --reuse-schema
-  - phpunit TestSuite.php tasks --reuse-schema
-
 #notifications:
 #  irc: "irc.freenode.org#travis"
