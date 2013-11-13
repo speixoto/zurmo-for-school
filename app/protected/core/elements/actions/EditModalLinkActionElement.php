@@ -36,8 +36,14 @@
     /**
      * Action element which renders edit link on clicking of which opens a modal window
      */
-    class EditModalLinkActionElement extends ModalLinkActionElement
+    class EditModalLinkActionElement extends LinkActionElement
     {
+        public function render()
+        {
+            $content = ZurmoHtml::link($this->resolveLabelAndWrap(), '#', $this->getHtmlOptions());
+            return $content;
+        }
+
         /**
          * Gets default label
          * @return string
@@ -53,22 +59,7 @@
          */
         protected function getDefaultRoute()
         {
-            return Yii::app()->createUrl($this->getRouteModuleId() . '/' .
-                        $this->controllerId . '/modalEdit', array_merge(array('id' => $this->modelId),
-                                                                                       $this->getCreateLinkUrlParams()));
-        }
-
-        /**
-         * Gets route module id
-         * @return string
-         */
-        protected function getRouteModuleId()
-        {
-            if (!isset($this->params['routeModuleId']))
-            {
-                return null;
-            }
-            return $this->params['routeModuleId'];
+            return '#';
         }
 
         /**
@@ -77,62 +68,6 @@
         public function getActionType()
         {
             return 'Create';
-        }
-
-        /**
-         * @return array
-         */
-        protected function getCreateLinkUrlParams()
-        {
-            return $this->getModalTransferInformation();
-        }
-
-        /**
-         * @return array
-         */
-        protected function getModalTransferInformation()
-        {
-            return array_merge(array(
-                    'modalId'           => $this->getModalContainerId(),
-                    'portletId'         => $this->getPortletId(),
-                    'uniqueLayoutId'    => $this->getUniqueLayoutId()
-            ), $this->getRouteParameters());
-        }
-
-        /**
-         * @return string
-         */
-        protected function getModalContainerId()
-        {
-            if (!isset($this->params['modalContainerId']))
-            {
-                return array();
-            }
-            return $this->params['modalContainerId'];
-        }
-
-        /**
-         * @return string
-         */
-        protected function getPortletId()
-        {
-            if (!isset($this->params['portletId']))
-            {
-                return array();
-            }
-            return $this->params['portletId'];
-        }
-
-        /**
-         * @return string
-         */
-        protected function getUniqueLayoutId()
-        {
-            if (!isset($this->params['uniqueLayoutId']))
-            {
-                return array();
-            }
-            return $this->params['uniqueLayoutId'];
         }
     }
 ?>

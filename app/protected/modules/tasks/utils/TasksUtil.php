@@ -1015,5 +1015,45 @@
             }
             return $content;
         }
+
+        public static function registerTaskModalEditScript($sourceId, $routeParams)
+        {
+            $modalId     = TasksUtil::getModalContainerId();
+            $url         = Yii::app()->createUrl('tasks/default/modalEdit', $routeParams);
+            $script      = self::registerTaskModalScript("Edit", $url, '.edit-related-open-task', $sourceId);
+            Yii::app()->clientScript->registerScript('taskModalEditScript', $script, ClientScript::POS_END);
+        }
+
+        public static function registerTaskModalCopyScript($sourceId, $routeParams)
+        {
+            $modalId     = TasksUtil::getModalContainerId();
+            $url         = Yii::app()->createUrl('tasks/default/modalCopy',
+                                                    array_merge($routeParams, array('action' => 'copy')));
+            $script      = self::registerTaskModalScript("Copy", $url, '.copy-related-open-task', $sourceId);
+            Yii::app()->clientScript->registerScript('taskModalCopyScript', $script, ClientScript::POS_END);
+        }
+
+        public static function registerTaskModalScript($type, $url, $selector, $sourceId = null)
+        {
+            $modalId     = TasksUtil::getModalContainerId();
+            $ajaxOptions = TasksUtil::resolveAjaxOptionsForModalView($type, $sourceId);
+            $ajaxOptions['beforeSend'] = new CJavaScriptExpression($ajaxOptions['beforeSend']);
+            return "$(document).on('click', '{$selector}', function()
+                         {
+                            var id = $(this).attr('id');
+                            var idParts = id.split('-');
+                            var taskId = parseInt(idParts[1]);
+                            $.ajax(
+                            {
+                                'type' : 'GET',
+                                'url'  : '{$url}' + '&id=' + taskId,
+                                'beforeSend' : {$ajaxOptions['beforeSend']},
+                                'update'     : '{$ajaxOptions['update']}',
+                                'success': function(html){jQuery('#{$modalId}').html(html)}
+                            });
+                          }
+                        );";
+
+        }
     }
 ?>
