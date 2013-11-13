@@ -91,7 +91,7 @@
             return Zurmo::t('JobsManagerModule', 'Queue Job Again');
         }
 
-        public function processByJobTypeAndDelay($type, $delay, MessageLogger $messageLogger)
+        public function processByJobTypeAndDelay($jobType, $delay, MessageLogger $messageLogger)
         {
         }
     }
