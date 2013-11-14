@@ -361,7 +361,7 @@
             $this->setGetArray(array('targetStatus' => Task::STATUS_AWAITING_ACCEPTANCE,
                                      'taskId' => $task->id,
                                      'sourceKanbanType' => KanbanItem::TYPE_IN_PROGRESS));
-            $this->runControllerWithNoExceptionsAndGetContent('tasks/default/updateStatusInKanbanView', true);
+            $this->runControllerWithNoExceptionsAndGetContent('tasks/default/updateStatusInKanbanView', false);
             $task = Task::getById($taskId);
             $this->assertEquals(Task::STATUS_AWAITING_ACCEPTANCE, $task->status);
         }
