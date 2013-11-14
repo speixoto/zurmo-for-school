@@ -543,6 +543,11 @@
         {
             assert('is_string($subscribeLinkClass)');
             assert('is_string($unsubscribeLinkClass)');
+            if($task->owner->id == Yii::app()->user->userModel->id
+                        || $task->requestedByUser->id == Yii::app()->user->userModel->id)
+            {
+                return null;
+            }
             if ($task->doNotificationSubscribersContainPerson(Yii::app()->user->userModel) === false)
             {
                 $label       = Zurmo::t('Core', 'Subscribe');

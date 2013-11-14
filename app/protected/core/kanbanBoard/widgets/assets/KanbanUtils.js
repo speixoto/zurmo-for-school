@@ -125,10 +125,14 @@ function setUpTaskKanbanSortable(inputurl)
                                     }
                                     $(ui.item).find('.task-status').html(data.status);
                                 }
-                                console.log(data.owner);
+
                                 if(data.owner !== undefined)
                                 {
                                     $(ui.item).find('h4 .task-owner').html('(' + data.owner + ')');
+                                }
+                                if(data.subscriptionContent !== undefined)
+                                {
+                                    $(ui.item).find('.task-subscribers').html(data.subscriptionContent);
                                 }
                             },
                             complete:function(data)
