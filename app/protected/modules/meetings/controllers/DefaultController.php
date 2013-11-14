@@ -35,7 +35,7 @@
      ********************************************************************************/
 
     class MeetingsDefaultController extends ActivityModelsDefaultController
-    {
+    {   
         public function actionDaysMeetingsFromCalendarModalList($stringTime, $redirectUrl)
         {
             if (isset($_GET['ownerOnly']))
@@ -64,13 +64,13 @@
                 $relationModuleId = null;
             }
             Yii::app()->getClientScript()->setToAjaxMode();
-            $meetingsView = $this->resolveViewForActionDaysMeetingsFromCalendarModalList($stringTime, $redirectUrl,
+            $meetingsView = $this->resolveViewForActionDaysMeetingsFromCalendarModalList($stringTime, $redirectUrl, 
                                                                                 $ownerOnly, $relationModel, $relationModuleId);
             $view = new ModalView($this, $meetingsView);
             echo $view->render();
         }
-
-        protected function resolveViewForActionDaysMeetingsFromCalendarModalList($stringTime, $redirectUrl,
+        
+        protected function resolveViewForActionDaysMeetingsFromCalendarModalList($stringTime, $redirectUrl, 
                                                                                 $ownerOnly, $relationModel, $relationModuleId)
         {
             $meetingsView = new DaysMeetingsFromCalendarModalListView(
@@ -82,22 +82,42 @@
                 $relationModel,
                 $relationModuleId
             );
-
+            
             $dataProvider = $meetingsView->getDataProvider();
-            if ($dataProvider->getItemCount() > 0)
+            if($dataProvider->getItemCount() > 0)
             {
                 return $meetingsView;
             }
             else
             {
-                return new NoMeetingsYetView($redirectUrl, $this->getId(),
-                                        $this->getModule()->getId(), $relationModel, $relationModuleId);
+                return new NoMeetingsYetView($redirectUrl, $this->getId(), 
+                                        $this->getModule()->getId(), $relationModel, $relationModuleId, $stringTime);
             }
         }
-
-        public function actionCreateMeeting($redirectUrl)
+        
+        public function actionCreateMeeting($redirectUrl, $startDate = null)
         {
+            assert('$startDate == null || is_string($startDate)');
             $meeting = new Meeting();
+            if($startDate != null)
+            {
+                $meeting->startDateTime = DateTimeUtil::convertDateIntoTimeZoneAdjustedDateTimeBeginningOfDay($startDate);
+            }
+            $this->actionCreateByModel($meeting, $redirectUrl);
+        }
+        
+        public function actionCreateFromRelationAndStartDate($relationAttributeName, $relationModelId, 
+                                                            $relationModuleId, $redirectUrl, $startDate)
+        {
+            $modelClassName   = $this->getModule()->getPrimaryModelName();
+            $meeting          = $this->resolveNewModelByRelationInformation( new $modelClassName(),
+                                                                                $relationAttributeName,
+                                                                                (int)$relationModelId,
+                                                                                $relationModuleId);
+            if($startDate != null)
+            {
+                $meeting->startDateTime = DateTimeUtil::convertDateIntoTimeZoneAdjustedDateTimeBeginningOfDay($startDate);
+            }
             $this->actionCreateByModel($meeting, $redirectUrl);
         }
     }

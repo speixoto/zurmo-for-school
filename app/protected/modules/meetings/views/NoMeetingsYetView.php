@@ -45,14 +45,16 @@
         protected $moduleId;
         protected $relationModel;
         protected $relationModuleId;
+        protected $stringTime;
 
-        public function __construct($redirectUrl , $controllerId, $moduleId, $relationModel, $relationModuleId)
+        public function __construct($redirectUrl , $controllerId, $moduleId, $relationModel, $relationModuleId, $stringTime)
         {
             $this->redirectUrl = $redirectUrl;
             $this->controllerId = $controllerId;
             $this->moduleId = $moduleId;
             $this->relationModel = $relationModel;
             $this->relationModuleId = $relationModuleId;
+            $this->stringTime = $stringTime;
         }
 
         protected function renderContent()
@@ -90,7 +92,7 @@
             if (!$this->relationModel && !$this->relationModuleId)
             {
                 return Yii::app()->createUrl('/meetings/default/createMeeting',
-                                             array('redirectUrl' => $this->redirectUrl));
+                                             array('redirectUrl' => $this->redirectUrl, 'startDate' => $this->stringTime));
             }
             else
             {
@@ -98,10 +100,11 @@
                     'relationAttributeName' => get_class($this->relationModel),
                     'relationModelId'       => $this->relationModel->id,
                     'relationModuleId'      => $this->relationModuleId,
+                    'startDate'             => $this->stringTime,
                     'redirectUrl'           => $this->redirectUrl,
                 );
                 return Yii::app()->createUrl($this->moduleId . '/' .
-                                        $this->controllerId . '/createFromRelation/', $params);
+                                        $this->controllerId . '/createFromRelationAndStartDate/', $params);
             }
         }
     }
