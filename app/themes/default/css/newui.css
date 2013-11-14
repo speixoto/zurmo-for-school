@@ -15501,6 +15501,10 @@ div.hasHalfs > div input {
 .pivotal span {
   background-position: 100% bottom !important;
 }
+#twitter-widget-0 {
+  min-width: 0 !important;
+  width: 100%;
+}
 /*=RSS Widget*/
 .rssBody {
   line-height: 140%;
@@ -27382,6 +27386,16 @@ a + .project-stats {
     width: 100%;
     float: none;
     margin: 0 0 15px 0;
+  }
+  #AboutView #rightCol,
+  #AboutView #leftCol {
+    width: 100%;
+    float: none;
+    padding: 15px 15px 0 15px;
+  }
+  #AboutView #rightCol > div,
+  #AboutView #leftCol > div {
+    float: none;
   }
 }
 @media all and (max-width: 801px) {
