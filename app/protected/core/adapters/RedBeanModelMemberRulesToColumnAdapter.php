@@ -189,7 +189,7 @@
                         break;
                     case 'RedBeanModelRequiredValidator':
                     case 'CRequiredValidator':
-                        //$notNull = 'NOT NULL';
+                        //$notNull = 'NOT NULL'; // Not Coding Standard
                         // Left here for future use if we want to set required on db level too.
                         break;
                     case 'RedBeanModelUniqueValidator':

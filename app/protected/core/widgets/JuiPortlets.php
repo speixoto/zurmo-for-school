@@ -189,9 +189,9 @@
             }
             if (isset($item['additionalOptionMenuItems']) && !empty($item['additionalOptionMenuItems']) )
             {
-                foreach($item['additionalOptionMenuItems'] as $additionalOptionMenuItem)
+                foreach ($item['additionalOptionMenuItems'] as $additionalOptionMenuItem)
                 {
-                    $menuItems['items'][] = array('label' => Zurmo::t('Core', $additionalOptionMenuItem['label']), 
+                    $menuItems['items'][] = array('label' => Zurmo::t('Core', $additionalOptionMenuItem['label']),
                             'url' => $additionalOptionMenuItem['url']);
                 }
             }
