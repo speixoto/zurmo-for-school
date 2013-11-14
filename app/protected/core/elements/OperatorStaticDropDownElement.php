@@ -131,6 +131,8 @@
                                 $(this).parent().parent().parent().find('.value-data').find('.flexible-drop-down')
                                 .attr('multiple', 'multiple').addClass('multiple').addClass('ignore-style')
                                 .attr('name', newName);
+                                $(this).parent().parent().parent().find('.value-data')
+                                .find('.flexible-drop-down').parent().addClass('isMultiSelect');
                             }
                             else
                             {
@@ -141,6 +143,8 @@
                                     $(this).parent().parent().parent().find('.value-data').find('.flexible-drop-down')
                                     .prop('multiple', false).removeClass('multiple').removeClass('ignore-style')
                                     .attr('name', newName.replace('[]', ''));
+                                    $(this).parent().parent().parent().find('.value-data')
+                                    .find('.flexible-drop-down').parent().removeClass('isMultiSelect');
                                 }
                             }
                         }

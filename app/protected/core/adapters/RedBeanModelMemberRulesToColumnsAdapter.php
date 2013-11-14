@@ -84,7 +84,7 @@
                 $messageLogger->addErrorMessage($errorMessage);
                 $errorMessage .= Zurmo::t('Core', 'Members') . ': (';
                 $errorMessage .= join(', ', $members);
-                $errorMessage .= '),' . Zurmo::t('Core', 'Columns') . ' (';
+                $errorMessage .= '),' . Zurmo::t('Core', 'Columns') . ' ('; // Not Coding Standard
                 $columnNames = RedBeanModelMemberToColumnUtil::resolveColumnNamesArrayFromColumnSchemaDefinition($columns);
                 $columnNames = join(', ', $columnNames);
                 $errorMessage .= $columnNames . ')';

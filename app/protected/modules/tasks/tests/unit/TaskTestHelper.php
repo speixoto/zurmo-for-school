@@ -86,5 +86,30 @@
             assert('$saved');
             return $task;
         }
+
+        public static function createTaskByNameWithProjectAndStatus($name, $owner, $project, $status)
+        {
+            $dueStamp       = DateTimeUtil::convertTimestampToDbFormatDateTime(time() + 10000);
+            $completedStamp = DateTimeUtil::convertTimestampToDbFormatDateTime(time() + 9000);
+            $task = new Task();
+            $task->name             = $name;
+            $task->owner            = $owner;
+            $task->dueDateTime      = $dueStamp;
+            $task->status           = $status;
+            $task->project          = $project;
+            $saved                  = $task->save();
+            assert('$saved');
+            return $task;
+        }
+
+        public static function createKanbanItemForTask($task)
+        {
+            $id = $task->id;
+            $kanbanItem  = KanbanItem::getByTask($id);
+            assert('$kanbanItem === null');
+            $kanbanItem = TasksUtil::createKanbanItemFromTask($task);
+            assert('$kanbanItem !== null');
+            return $kanbanItem;
+        }
     }
 ?>
