@@ -142,6 +142,8 @@
             $sally->setRight('TasksModule', TasksModule::RIGHT_CREATE_TASKS);
             $sally->setRight('TasksModule', TasksModule::RIGHT_DELETE_TASKS);
             $this->assertTrue($sally->save());
+            $task->addPermissions($sally, Permission::READ_WRITE_CHANGE_PERMISSIONS);
+            $this->assertTrue($task->save());
 
             //Test nobody with elevated rights.
             Yii::app()->user->userModel = User::getByUsername('sally');
@@ -223,6 +225,8 @@
             $myuser->setRight('TasksModule', TasksModule::RIGHT_CREATE_TASKS);
             $myuser->setRight('TasksModule', TasksModule::RIGHT_DELETE_TASKS);
             $this->assertTrue($myuser->save());
+            $task->addPermissions($myuser, Permission::READ_WRITE_CHANGE_PERMISSIONS);
+            $this->assertTrue($task->save());
 
             //Test nobody with elevated rights.
             Yii::app()->user->userModel = User::getByUsername('myuser');
