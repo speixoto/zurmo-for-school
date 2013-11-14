@@ -91,13 +91,33 @@
             else
             {
                 return new NoMeetingsYetView($redirectUrl, $this->getId(), 
-                                        $this->getModule()->getId(), $relationModel, $relationModuleId);
+                                        $this->getModule()->getId(), $relationModel, $relationModuleId, $stringTime);
             }
         }
         
-        public function actionCreateMeeting($redirectUrl)
+        public function actionCreateMeeting($redirectUrl, $startDate = null)
         {
+            assert('$startDate == null || is_string($startDate)');
             $meeting = new Meeting();
+            if($startDate)
+            {
+                $meeting->startDateTime = DateTimeUtil::convertDateIntoTimeZoneAdjustedDateTimeBeginningOfDay($startDate);
+            }
+            $this->actionCreateByModel($meeting, $redirectUrl);
+        }
+        
+        public function actionCreateFromRelationAndStartDate($relationAttributeName, $relationModelId, 
+                                                            $relationModuleId, $redirectUrl, $startDate)
+        {
+            $modelClassName   = $this->getModule()->getPrimaryModelName();
+            $meeting          = $this->resolveNewModelByRelationInformation( new $modelClassName(),
+                                                                                $relationAttributeName,
+                                                                                (int)$relationModelId,
+                                                                                $relationModuleId);
+            if($startDate)
+            {
+                $meeting->startDateTime = DateTimeUtil::convertDateIntoTimeZoneAdjustedDateTimeBeginningOfDay($startDate);
+            }
             $this->actionCreateByModel($meeting, $redirectUrl);
         }
     }
