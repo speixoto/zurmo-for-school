@@ -99,7 +99,7 @@
         {
             assert('$startDate == null || is_string($startDate)');
             $meeting = new Meeting();
-            if($startDate)
+            if($startDate != null)
             {
                 $meeting->startDateTime = DateTimeUtil::convertDateIntoTimeZoneAdjustedDateTimeBeginningOfDay($startDate);
             }
@@ -114,7 +114,7 @@
                                                                                 $relationAttributeName,
                                                                                 (int)$relationModelId,
                                                                                 $relationModuleId);
-            if($startDate)
+            if($startDate != null)
             {
                 $meeting->startDateTime = DateTimeUtil::convertDateIntoTimeZoneAdjustedDateTimeBeginningOfDay($startDate);
             }
