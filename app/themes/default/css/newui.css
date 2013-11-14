@@ -13132,6 +13132,9 @@ div.wide.form label.hasCheckBox {
 .form-fields td {
   padding-bottom: 15px;
 }
+.form-fields label {
+  line-height: 26px;
+}
 #modal-edit-form {
   padding: 15px 15px 12px 15px;
 }
@@ -14200,7 +14203,7 @@ div.overlay-label-field:after {
 .overlay-label-field label {
   position: absolute !important;
   left: 4px;
-  top: 6px;
+  top: 0;
   color: #999;
   font-size: 14px;
   font-weight: normal;
@@ -22916,6 +22919,21 @@ a.user-link {
 .email-message-recipient-type-selector-container {
   width: 22%;
   margin: 0 0 15px 0;
+}
+.operation-duration-fields.twoFields > input,
+.operation-duration-fields.twoFields .hasDropDown {
+  width: 49% !important;
+  float: left;
+  margin-left: 2%;
+}
+.operation-duration-fields.threeFields > input,
+.operation-duration-fields.threeFields .hasDropDown {
+  width: 32% !important;
+  float: left;
+  margin-left: 2%;
+}
+.operation-duration-fields > :first-child {
+  margin-left: 0 !important;
 }
 .all-related-field {
   float: left;
