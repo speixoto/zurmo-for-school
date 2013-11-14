@@ -33,41 +33,23 @@
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
-    /**
-     * Action element which renders edit link on clicking of which opens a modal window
-     */
-    class EditModalLinkActionElement extends LinkActionElement
+
+    class CurrencyDropDownListViewColumnAdapter extends TextListViewColumnAdapter
     {
-        public function render()
+        public function renderGridViewData()
         {
-            $content = ZurmoHtml::link($this->resolveLabelAndWrap(), '#', $this->getHtmlOptions());
-            return $content;
+            return array(
+                'name'   => $this->attribute,
+                'value'  => 'CurrencyDropDownListViewColumnAdapter::renderNonEditable($data, "' . $this->attribute . '")',
+                'type'   => 'raw',
+            );
         }
 
-        /**
-         * Gets default label
-         * @return string
-         */
-        protected function getDefaultLabel()
+        public static function renderNonEditable($model, $attribute)
         {
-            return Zurmo::t('Core', 'Edit');
-        }
-
-        /**
-         * Gets default route
-         * @return string
-         */
-        protected function getDefaultRoute()
-        {
-            return '#';
-        }
-
-        /**
-         * @return string
-         */
-        public function getActionType()
-        {
-            return 'Create';
+            $dropDownModel = $model->{$attribute};
+            $dropDownArray = CurrencyDropDownElement::resolveDropDownArray($model, $attribute);
+            return ArrayUtil::getArrayValue($dropDownArray, $dropDownModel->id);
         }
     }
 ?>

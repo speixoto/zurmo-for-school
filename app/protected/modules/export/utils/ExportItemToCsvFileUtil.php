@@ -36,7 +36,7 @@
 
     class ExportItemToCsvFileUtil extends ExportItemToOutputUtil
     {
-        const DEFAULT_DELIMITER = ',';
+        const DEFAULT_DELIMITER = ','; // Not Coding Standard
 
         const DEFAULT_ENCLOSURE = '"';
 

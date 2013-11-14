@@ -96,7 +96,11 @@
 
         public function attributeLabels()
         {
-            return array();
+            return array('firstSeries'  =>  Zurmo::t('ReportsModule', 'First Series'),
+                         'secondSeries' =>  Zurmo::t('ReportsModule', 'Second Series'),
+                         'firstRange'   =>  Zurmo::t('ReportsModule', 'First Range'),
+                         'secondRange'  =>  Zurmo::t('ReportsModule', 'Second Range'),
+            );
         }
 
         /**

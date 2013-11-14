@@ -33,41 +33,29 @@
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
+
     /**
-     * Action element which renders edit link on clicking of which opens a modal window
+     * Form to work with dropDown attributes
      */
-    class EditModalLinkActionElement extends LinkActionElement
+    class TaskStatusDropDownWorkflowActionAttributeForm extends WorkflowActionAttributeForm
     {
-        public function render()
+        public function getValueElementType()
         {
-            $content = ZurmoHtml::link($this->resolveLabelAndWrap(), '#', $this->getHtmlOptions());
-            return $content;
+            return 'TaskStatusDropDown';
         }
 
         /**
-         * Gets default label
-         * @return string
+         * @param bool $isCreatingNewModel
+         * @param bool $isRequired
+         * @return array
          */
-        protected function getDefaultLabel()
+        protected function makeTypeValuesAndLabels($isCreatingNewModel, $isRequired)
         {
-            return Zurmo::t('Core', 'Edit');
-        }
-
-        /**
-         * Gets default route
-         * @return string
-         */
-        protected function getDefaultRoute()
-        {
-            return '#';
-        }
-
-        /**
-         * @return string
-         */
-        public function getActionType()
-        {
-            return 'Create';
+            assert('is_bool($isCreatingNewModel)');
+            assert('is_bool($isRequired)');
+            $data                           = array();
+            $data[static::TYPE_STATIC]      = Zurmo::t('WorkflowsModule', 'As');
+            return $data;
         }
     }
 ?>
