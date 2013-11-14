@@ -39,20 +39,22 @@
      */
     class NoMeetingsYetView extends View
     {
-        public $cssClasses = array('splash-view');
+        public $cssClasses = array('splash-view clearfix');
         protected $redirectUrl;
         protected $controllerId;
         protected $moduleId;
         protected $relationModel;
         protected $relationModuleId;
+        protected $stringTime;
 
-        public function __construct($redirectUrl , $controllerId, $moduleId, $relationModel, $relationModuleId)
+        public function __construct($redirectUrl , $controllerId, $moduleId, $relationModel, $relationModuleId, $stringTime)
         {
             $this->redirectUrl = $redirectUrl;
             $this->controllerId = $controllerId;
             $this->moduleId = $moduleId;
             $this->relationModel = $relationModel;
             $this->relationModuleId = $relationModuleId;
+            $this->stringTime = $stringTime;
         }
 
         protected function renderContent()
@@ -63,7 +65,7 @@
             if (RightsUtil::doesUserHaveAllowByRightName('MeetingsModule', MeetingsModule::getCreateRight(),
                 Yii::app()->user->userModel))
             {
-                $content .= ZurmoHtml::link(ZurmoHtml::wrapLabel($this->getCreateLinkDisplayLabel()), 
+                $content .= ZurmoHtml::link(ZurmoHtml::wrapLabel($this->getCreateLinkDisplayLabel()),
                                         $url, array('class' => 'z-button green-button'));
             }
             $content .= ZurmoHtml::closeTag('div');
@@ -84,13 +86,13 @@
         {
             return '<h2>' . Zurmo::t('MeetingsModule', 'No meeting scheduled') . '.</h2><div class="large-icon"></div>';
         }
-        
+
         protected function getCreateMeetingUrl()
         {
-            if(!$this->relationModel && !$this->relationModuleId)
+            if (!$this->relationModel && !$this->relationModuleId)
             {
                 return Yii::app()->createUrl('/meetings/default/createMeeting',
-                                             array('redirectUrl' => $this->redirectUrl));
+                                             array('redirectUrl' => $this->redirectUrl, 'startDate' => $this->stringTime));
             }
             else
             {
@@ -98,10 +100,11 @@
                     'relationAttributeName' => get_class($this->relationModel),
                     'relationModelId'       => $this->relationModel->id,
                     'relationModuleId'      => $this->relationModuleId,
+                    'startDate'             => $this->stringTime,
                     'redirectUrl'           => $this->redirectUrl,
                 );
                 return Yii::app()->createUrl($this->moduleId . '/' .
-                                        $this->controllerId . '/createFromRelation/', $params);
+                                        $this->controllerId . '/createFromRelationAndStartDate/', $params);
             }
         }
     }

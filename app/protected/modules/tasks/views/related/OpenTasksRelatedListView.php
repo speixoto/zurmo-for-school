@@ -61,22 +61,12 @@
                     'rowMenu' => array(
                         'elements' => array(
                             array(  'type'             => 'EditModalLink',
-                                    'portletId'        => 'eval:$this->params["portletId"]',
-                                    'routeModuleId'    => 'eval:$this->moduleId',
-                                    'routeParameters'  => 'eval:$this->getCreateLinkRouteParameters()',
-                                    'ajaxOptions'      => 'eval:TasksUtil::resolveAjaxOptionsForModalView("Edit")',
-                                    'uniqueLayoutId'   => 'eval:$this->uniqueLayoutId',
-                                    'modalContainerId' => 'eval:TasksUtil::getModalContainerId()'
+                                    'htmlOptions'      => 'eval:$this->getActionModalLinksHtmlOptions("Edit")'
                                  ),
                             array(  'type'             => 'CopyModalLink',
-                                    'portletId'        => 'eval:$this->params["portletId"]',
-                                    'routeModuleId'    => 'eval:$this->moduleId',
-                                    'routeParameters'  => 'eval:$this->getCreateLinkRouteParameters()',
-                                    'ajaxOptions'      => 'eval:TasksUtil::resolveAjaxOptionsForModalView("Copy")',
-                                    'uniqueLayoutId'   => 'eval:$this->uniqueLayoutId',
-                                    'modalContainerId' => 'eval:TasksUtil::getModalContainerId()'
+                                    'htmlOptions'      => 'eval:$this->getActionModalLinksHtmlOptions("Copy")'
                                  ),
-                            array('type' => 'RelatedDeleteLink'),
+                            array('type' => 'TaskRelatedDeleteLink'),
                         ),
                     ),
                     'derivedAttributeTypes' => array(
@@ -185,6 +175,26 @@
         {
             parent::renderScripts();
             TasksUtil::registerTaskModalDetailsScript($this->getGridViewId());
+            TasksUtil::registerTaskModalEditScript($this->getGridViewId(), $this->getCreateLinkRouteParameters());
+            TasksUtil::registerTaskModalCopyScript($this->getGridViewId(), $this->getCreateLinkRouteParameters());
+            TasksUtil::registerTaskModalDeleteScript($this->getGridViewId());
+        }
+
+        /**
+         * Get action modal link html options based on type
+         * @param string $type
+         * @return array
+         */
+        protected function getActionModalLinksHtmlOptions($type)
+        {
+            if($type == "Edit")
+            {
+                return array('class' => 'edit-related-open-task');
+            }
+            elseif($type == "Copy")
+            {
+                return array('class' => 'copy-related-open-task');
+            }
         }
     }
 ?>

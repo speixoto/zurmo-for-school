@@ -12316,6 +12316,30 @@ div.wide.form label.hasCheckBox {
   font-family: "zurmo_gamification_symbly_rRg";
   line-height: 52%;
 }
+.zero-components-view .NoMeetings .large-icon:after,
+.splash-view .NoMeetings .large-icon:after {
+  content: 'U';
+  font-weight: normal !important;
+  font-size: 300px;
+  font-family: "zurmo_gamification_symbly_rRg";
+  line-height: 65%;
+}
+#ModalView .splash-view {
+  padding-bottom: 20px;
+}
+#ModalView .splash-view h2 {
+  font-size: 42px;
+}
+#ModalView .splash-view .large-icon {
+  margin-top: 15px;
+}
+#ModalView .splash-view .z-button {
+  margin-top: 25px;
+}
+#ModalView .large-icon:after {
+  font-size: 200px;
+  line-height: 50%;
+}
 #NoUserEmailConfigurationYetView .z-label {
   z-index: auto;
 }
@@ -13108,6 +13132,9 @@ div.wide.form label.hasCheckBox {
 .form-fields td {
   padding-bottom: 15px;
 }
+.form-fields label {
+  line-height: 26px;
+}
 #modal-edit-form {
   padding: 15px 15px 12px 15px;
 }
@@ -13142,7 +13169,7 @@ div.wide.form label.hasCheckBox {
 }
 .radio-input input {
   float: left;
-  margin-top: 1px !important;
+  margin-top: -1px !important;
 }
 .radio-input label {
   margin-left: 10px;
@@ -13212,11 +13239,11 @@ div.wide.form label.hasCheckBox {
 }
 .right-side-edit-view-panel .radio-input input[type="radio"] {
   float: left;
-  margin: 0 8px 0 10px;
+  margin: 0 0 0 10px;
   vertical-align: middle;
 }
 .right-side-edit-view-panel .radio-input .hasDropDown {
-  padding-left: 40px;
+  padding-left: 32px;
 }
 .right-side-edit-view-panel input[type="text"] {
   margin-top: 6px;
@@ -14176,7 +14203,7 @@ div.overlay-label-field:after {
 .overlay-label-field label {
   position: absolute !important;
   left: 4px;
-  top: 6px;
+  top: 0;
   color: #999;
   font-size: 14px;
   font-weight: normal;
@@ -14609,6 +14636,15 @@ div.hasHalfs > div input {
 }
 #days-meetings-list-view h3 span a {
   outline: none;
+}
+#DaysMeetingsFromCalendarModalListView .view-toolbar-container {
+  position: absolute;
+  margin-top: -33px;
+  right: 0;
+  width: auto;
+}
+#DaysMeetingsFromCalendarModalListView tr:first-child td {
+  border-top: none;
 }
 /*=Meeting/Task Single View*/
 #NoteEditAndDetailsView .details-table,
@@ -15500,6 +15536,10 @@ div.hasHalfs > div input {
 }
 .pivotal span {
   background-position: 100% bottom !important;
+}
+#twitter-widget-0 {
+  min-width: 0 !important;
+  width: 100%;
 }
 /*=RSS Widget*/
 .rssBody {
@@ -22880,6 +22920,21 @@ a.user-link {
   width: 22%;
   margin: 0 0 15px 0;
 }
+.operation-duration-fields.twoFields > input,
+.operation-duration-fields.twoFields .hasDropDown {
+  width: 49% !important;
+  float: left;
+  margin-left: 2%;
+}
+.operation-duration-fields.threeFields > input,
+.operation-duration-fields.threeFields .hasDropDown {
+  width: 32% !important;
+  float: left;
+  margin-left: 2%;
+}
+.operation-duration-fields > :first-child {
+  margin-left: 0 !important;
+}
 .all-related-field {
   float: left;
   width: 80%;
@@ -27382,6 +27437,16 @@ a + .project-stats {
     width: 100%;
     float: none;
     margin: 0 0 15px 0;
+  }
+  #AboutView #rightCol,
+  #AboutView #leftCol {
+    width: 100%;
+    float: none;
+    padding: 15px 15px 0 15px;
+  }
+  #AboutView #rightCol > div,
+  #AboutView #leftCol > div {
+    float: none;
   }
 }
 @media all and (max-width: 801px) {

@@ -464,6 +464,9 @@
                             $response['button'] = '';
                             $response['status'] = Task::getStatusDisplayName($task->status);
                             $response['owner']  = $task->owner->getFullName();
+                            $subscriptionContent = TasksUtil::resolveAndRenderTaskCardDetailsSubscribersContent($task);
+                            $subscriptionContent .= TasksUtil::resolveSubscriptionLink($task, 'subscribe-task-link', 'unsubscribe-task-link');
+                            $response['subscriptionContent']  = $subscriptionContent;
                         }
                         else
                         {
@@ -486,9 +489,12 @@
                                                                                         $this->getId(),
                                                                                         $this->getModule()->getId(),
                                                                                         intval($taskId));
+                                $subscriptionContent = TasksUtil::resolveAndRenderTaskCardDetailsSubscribersContent($task);
+                                $subscriptionContent .= TasksUtil::resolveSubscriptionLink($task, 'subscribe-task-link', 'unsubscribe-task-link');
                                 $response['button'] = $content;
                                 $response['status'] = Task::getStatusDisplayName($task->status);
                                 $response['owner']  = $task->owner->getFullName();
+                                $response['subscriptionContent']  = $subscriptionContent;
                             }
                         }
                         $counter++;
@@ -505,10 +511,15 @@
         */
         public function actionUpdateStatusInKanbanView($targetStatus, $taskId, $sourceKanbanType)
         {
+           $response = array();
            //Run update queries for update task staus and update type and sort order in kanban column
            $task = Task::getById(intval($taskId));
            $this->processStatusUpdateViaAjax($task, $targetStatus, false);
            TasksUtil::processKanbanItemUpdateOnButtonAction(intval($targetStatus), intval($taskId), intval($sourceKanbanType));
+           $subscriptionContent = TasksUtil::resolveAndRenderTaskCardDetailsSubscribersContent($task);
+           $subscriptionContent .= TasksUtil::resolveSubscriptionLink($task, 'subscribe-task-link', 'unsubscribe-task-link');
+           $response['subscriptionContent']  = $subscriptionContent;
+           echo CJSON::encode($response);
         }
 
         /**
@@ -523,7 +534,7 @@
             $currentStatus = $task->status;
             $task->status = intval($status);
             //check for owner in case a user start the task
-            if($currentStatus == Task::STATUS_NEW && $currentStatus != $task->status)
+            if ($currentStatus == Task::STATUS_NEW && $currentStatus != $task->status)
             {
                 $task->owner = Yii::app()->user->userModel;
             }

@@ -442,7 +442,6 @@
         {
             return "$('body').on('click', '." . $sourceClass . "', function()
                                                     {
-                                                        var linkElement = $(this);
                                                         var element     = $(this).parent().parent().parent();
                                                         var id          = $(element).attr('id');
                                                         var idParts     = id.split('_');
@@ -454,9 +453,15 @@
                                                             type : 'GET',
                                                             data : {'id':taskId},
                                                             url  : '" . $url . "',
+                                                            beforeSend : function(){
+                                                              $('.ui-overlay-block').fadeIn(50);
+                                                              $(this).makeLargeLoadingSpinner(true, '.ui-overlay-block');
+                                                            },
                                                             success : function(data)
                                                                       {
                                                                         $(linkParent).html(data);
+                                                                        $(this).makeLargeLoadingSpinner(false, '.ui-overlay-block');
+                                                                        $('.ui-overlay-block').fadeOut(100);
                                                                       }
                                                         }
                                                         );
@@ -477,15 +482,18 @@
             // Begin Not Coding Standard
             return "$('body').on('click', '." . $sourceClass . "', function()
                                                     {
-                                                        var linkElement = $(this);
                                                         $.ajax(
                                                         {
                                                             type : 'GET',
                                                             url  : '" . $url . "',
+                                                            beforeSend : function(){
+                                                              $('#subscriberList').html('');
+                                                              $(this).makeLargeLoadingSpinner(true, '#subscriberList');
+                                                            },
                                                             success : function(data)
                                                                       {
-                                                                        $(linkElement).html('" . $link . "');
-                                                                        $(linkElement).attr('class', '" . $targetClass . "');
+                                                                        $(this).html('" . $link . "');
+                                                                        $(this).attr('class', '" . $targetClass . "');
                                                                         if(data == '')
                                                                         {
                                                                             $('#subscriberList').html('');
@@ -494,6 +502,7 @@
                                                                         {
                                                                             $('#subscriberList').html(data);
                                                                         }
+                                                                        $(this).makeLargeLoadingSpinner(false, '#subscriberList');
                                                                       }
                                                         }
                                                         );
@@ -536,6 +545,11 @@
         {
             assert('is_string($subscribeLinkClass)');
             assert('is_string($unsubscribeLinkClass)');
+            if($task->owner->id == Yii::app()->user->userModel->id
+                        || $task->requestedByUser->id == Yii::app()->user->userModel->id)
+            {
+                return null;
+            }
             if ($task->doNotificationSubscribersContainPerson(Yii::app()->user->userModel) === false)
             {
                 $label       = Zurmo::t('Core', 'Subscribe');
@@ -952,7 +966,7 @@
         {
             $kanbanItem = KanbanItem::getByTask($task->id);
             //It should be created here but check for create as well here
-            if($kanbanItem == null)
+            if ($kanbanItem == null)
             {
                 $kanbanItem = TasksUtil::createKanbanItemFromTask($task);
             }
@@ -1007,6 +1021,107 @@
                 }
             }
             return $content;
+        }
+
+        /**
+         * Register task modal edit script
+         * @param string $sourceId
+         * @param array $routeParams
+         */
+        public static function registerTaskModalEditScript($sourceId, $routeParams)
+        {
+            assert('is_string($sourceId)');
+            assert('is_array($routeParams)');
+            $modalId     = TasksUtil::getModalContainerId();
+            $url         = Yii::app()->createUrl('tasks/default/modalEdit', $routeParams);
+            $script      = self::registerTaskModalScript("Edit", $url, '.edit-related-open-task', $sourceId);
+            Yii::app()->clientScript->registerScript('taskModalEditScript', $script, ClientScript::POS_END);
+        }
+
+        /**
+         * Register task modal copy script
+         * @param string $sourceId
+         * @param array $routeParams
+         */
+        public static function registerTaskModalCopyScript($sourceId, $routeParams)
+        {
+            assert('is_string($sourceId)');
+            assert('is_array($routeParams)');
+            $modalId     = TasksUtil::getModalContainerId();
+            $url         = Yii::app()->createUrl('tasks/default/modalCopy',
+                                                    array_merge($routeParams, array('action' => 'copy')));
+            $script      = self::registerTaskModalScript("Copy", $url, '.copy-related-open-task', $sourceId);
+            Yii::app()->clientScript->registerScript('taskModalCopyScript', $script, ClientScript::POS_END);
+        }
+
+        /**
+         * Get task modal script
+         * @param string $type
+         * @param string $url
+         * @param string $selector
+         * @param mixed $sourceId
+         * @return string
+         */
+        public static function registerTaskModalScript($type, $url, $selector, $sourceId = null)
+        {
+            assert('is_string($type)');
+            assert('is_string($url)');
+            assert('is_string($selector)');
+            assert('is_string($sourceId) || $sourceId == null');
+            $modalId     = TasksUtil::getModalContainerId();
+            $ajaxOptions = TasksUtil::resolveAjaxOptionsForModalView($type, $sourceId);
+            $ajaxOptions['beforeSend'] = new CJavaScriptExpression($ajaxOptions['beforeSend']);
+            return "$(document).on('click', '{$selector}', function()
+                         {
+                            var id = $(this).attr('id');
+                            var idParts = id.split('-');
+                            var taskId = parseInt(idParts[1]);
+                            $.ajax(
+                            {
+                                'type' : 'GET',
+                                'url'  : '{$url}' + '&id=' + taskId,
+                                'beforeSend' : {$ajaxOptions['beforeSend']},
+                                'update'     : '{$ajaxOptions['update']}',
+                                'success': function(html){jQuery('#{$modalId}').html(html)}
+                            });
+                          }
+                        );";
+
+        }
+
+        /**
+         * Register task modal delete script
+         * @param string $sourceId
+         */
+        public static function registerTaskModalDeleteScript($sourceId)
+        {
+            assert('is_string($sourceId)');
+            $url = Yii::app()->createUrl('tasks/default/delete');
+            $params = LabelUtil::getTranslationParamsForAllModules();
+            $confirmTitle  = Zurmo::t('Core', 'Are you sure you want to delete this {modelLabel}?',
+                                                        array('{modelLabel}' => Zurmo::t('TasksModule', 'TasksModuleSingularLabel', $params)));
+            $script = "$(document).on('click', '.delete-related-open-task', function()
+                         {
+                            if (!confirm('{$confirmTitle}'))
+                            {
+                                return false;
+                            }
+                            var id = $(this).attr('id');
+                            var idParts = id.split('-');
+                            var taskId = parseInt(idParts[3]);
+                            $.ajax(
+                            {
+                                'type' : 'GET',
+                                'url'  : '{$url}' + '?id=' + taskId,
+
+                                'success': function(data)
+                                           {
+                                             $.fn.yiiGridView.update('{$sourceId}');
+                                           }
+                            });
+                          }
+                        );";
+             Yii::app()->clientScript->registerScript('taskModalDeleteScript', $script, ClientScript::POS_END);
         }
     }
 ?>
