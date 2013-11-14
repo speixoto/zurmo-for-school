@@ -13169,7 +13169,7 @@ div.wide.form label.hasCheckBox {
 }
 .radio-input input {
   float: left;
-  margin-top: 1px !important;
+  margin-top: -1px !important;
 }
 .radio-input label {
   margin-left: 10px;
@@ -13239,11 +13239,11 @@ div.wide.form label.hasCheckBox {
 }
 .right-side-edit-view-panel .radio-input input[type="radio"] {
   float: left;
-  margin: 0 8px 0 10px;
+  margin: 0 0 0 10px;
   vertical-align: middle;
 }
 .right-side-edit-view-panel .radio-input .hasDropDown {
-  padding-left: 40px;
+  padding-left: 32px;
 }
 .right-side-edit-view-panel input[type="text"] {
   margin-top: 6px;
