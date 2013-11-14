@@ -329,7 +329,7 @@
                                 }
                                 if('{$sourceActionButtonClass}' == 'action-type-start')
                                 {
-                                    $(element).find('.task-owner').html('{$currentUserLoggedInName}');
+                                    $(element).find('h4 .task-owner').html('{$currentUserLoggedInName}');
                                 }
                             }
                             else
@@ -344,11 +344,13 @@
                                 type : 'GET',
                                 data : {'targetStatus':'{$targetStatus}', 'taskId':taskId, 'sourceKanbanType':columnType},
                                 url  : '{$url}',
+                                dataType : 'json',
                                 beforeSend : function(){
                                           $('.ui-overlay-block').fadeIn(50);
                                           $(this).makeLargeLoadingSpinner(true, '.ui-overlay-block'); //- add spinner to block anything else
                                         },
                                 success: function(data){
+                                            $(element).find('.task-subscribers').html(data.subscriptionContent);
                                             $(this).makeLargeLoadingSpinner(false, '.ui-overlay-block');
                                             $('.ui-overlay-block').fadeOut(50);
                                          }

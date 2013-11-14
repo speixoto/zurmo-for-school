@@ -125,9 +125,20 @@ function setUpTaskKanbanSortable(inputurl)
                                     }
                                     $(ui.item).find('.task-status').html(data.status);
                                 }
-                                $(ui.item).find('.task-owner').html('(' + data.owner + ')');
+
+                                if(data.owner !== undefined)
+                                {
+                                    $(ui.item).find('h4 .task-owner').html('(' + data.owner + ')');
+                                }
+                                if(data.subscriptionContent !== undefined)
+                                {
+                                    $(ui.item).find('.task-subscribers').html(data.subscriptionContent);
+                                }
+                            },
+                            complete:function(data)
+                            {
                                 $(this).makeLargeLoadingSpinner(false, ".ui-overlay-block");
-                                $(".ui-overlay-block").fadeOut(100);
+                                $(".ui-overlay-block").fadeOut(50);
                             },
                             error: function(request, status, error){
                                 alert('We are unable to set the sort order at this time.  Please try again in a few minutes.');
