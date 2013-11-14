@@ -68,6 +68,7 @@
             $modalContainerId   = TasksUtil::getModalContainerId();
             $sourceViewId       = $this->getSourceViewId();
             $confirmation       = "if(!confirm(".CJavaScript::encode($htmlOptions['confirm']).")) return false;";
+            // Begin Not Coding Standard
             Yii::app()->clientScript->registerScript('deleteTaskAction',"
                                                       $('#" . $htmlOptions['id'] . "').click(function(){
                                                           $confirmation
@@ -88,6 +89,7 @@
                                                              return false;
                                                           });
                                                       ", CClientScript::POS_END);
+            // End Not Coding Standard
         }
 
         /**

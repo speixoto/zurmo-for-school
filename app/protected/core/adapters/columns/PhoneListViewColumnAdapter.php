@@ -52,7 +52,7 @@
                 return array(
                     'name'  => $this->attribute,
                     'value' => 'Yii::app()->phoneHelper->resolvePhoneListViewColumnValue($data->' . $this->attribute .
-                                ', "' . $this->attribute . '_".$data->id, $data)',
+                                ', "' . $this->attribute . '_".$data->id, $data)', // Not Coding Standard
                     'type'  => 'raw',
                     'htmlOptions' => array( 'class' => 'phone')
                 );
