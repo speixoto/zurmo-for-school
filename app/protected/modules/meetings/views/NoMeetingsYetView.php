@@ -39,7 +39,7 @@
      */
     class NoMeetingsYetView extends View
     {
-        public $cssClasses = array('splash-view');
+        public $cssClasses = array('splash-view clearfix');
         protected $redirectUrl;
         protected $controllerId;
         protected $moduleId;

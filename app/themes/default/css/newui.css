@@ -12316,6 +12316,30 @@ div.wide.form label.hasCheckBox {
   font-family: "zurmo_gamification_symbly_rRg";
   line-height: 52%;
 }
+.zero-components-view .NoMeetings .large-icon:after,
+.splash-view .NoMeetings .large-icon:after {
+  content: 'U';
+  font-weight: normal !important;
+  font-size: 300px;
+  font-family: "zurmo_gamification_symbly_rRg";
+  line-height: 65%;
+}
+#ModalView .splash-view {
+  padding-bottom: 20px;
+}
+#ModalView .splash-view h2 {
+  font-size: 42px;
+}
+#ModalView .splash-view .large-icon {
+  margin-top: 15px;
+}
+#ModalView .splash-view .z-button {
+  margin-top: 25px;
+}
+#ModalView .large-icon:after {
+  font-size: 200px;
+  line-height: 50%;
+}
 #NoUserEmailConfigurationYetView .z-label {
   z-index: auto;
 }
@@ -14609,6 +14633,15 @@ div.hasHalfs > div input {
 }
 #days-meetings-list-view h3 span a {
   outline: none;
+}
+#DaysMeetingsFromCalendarModalListView .view-toolbar-container {
+  position: absolute;
+  margin-top: -33px;
+  right: 0;
+  width: auto;
+}
+#DaysMeetingsFromCalendarModalListView tr:first-child td {
+  border-top: none;
 }
 /*=Meeting/Task Single View*/
 #NoteEditAndDetailsView .details-table,
