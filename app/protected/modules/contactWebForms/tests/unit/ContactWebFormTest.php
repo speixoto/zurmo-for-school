@@ -70,9 +70,12 @@
             $this->assertEquals('Save'              , $contactWebForm->submitButtonLabel);
             $this->assertEquals('New'               , $contactWebForm->defaultState->name);
             $this->assertEquals($placedAttributes   , unserialize($contactWebForm->serializedData));
-            $contactWebForm->name                   = 'New Test Form';
-            $contactWebForm->redirectUrl            = 'http://zurmo.org';
-            $contactWebForm->submitButtonLabel      = 'Save and Redirect';
+            $this->assertNull($contactWebForm->defaultPermissionSetting);
+            $this->assertNull($contactWebForm->defaultPermissionGroupSetting);
+            $contactWebForm->name                     = 'New Test Form';
+            $contactWebForm->redirectUrl              = 'http://zurmo.org';
+            $contactWebForm->submitButtonLabel        = 'Save and Redirect';
+            $contactWebForm->defaultPermissionSetting = UserConfigurationForm::DEFAULT_PERMISSIONS_SETTING_EVERYONE;
             $this->assertTrue($contactWebForm->save());
             $id                                     = $contactWebForm->id;
             unset($contactWebForm);
@@ -80,6 +83,9 @@
             $this->assertEquals('New Test Form'     , $contactWebForm->name);
             $this->assertEquals('http://zurmo.org'  , $contactWebForm->redirectUrl);
             $this->assertEquals('Save and Redirect' , $contactWebForm->submitButtonLabel);
+            $this->assertEquals($contactWebForm->defaultPermissionSetting,
+                                UserConfigurationForm::DEFAULT_PERMISSIONS_SETTING_EVERYONE);
+            $this->assertNull($contactWebForm->defaultPermissionGroupSetting);
         }
 
         /**

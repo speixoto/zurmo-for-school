@@ -65,7 +65,7 @@
             if (RightsUtil::doesUserHaveAllowByRightName('MeetingsModule', MeetingsModule::getCreateRight(),
                 Yii::app()->user->userModel))
             {
-                $content .= ZurmoHtml::link(ZurmoHtml::wrapLabel($this->getCreateLinkDisplayLabel()), 
+                $content .= ZurmoHtml::link(ZurmoHtml::wrapLabel($this->getCreateLinkDisplayLabel()),
                                         $url, array('class' => 'z-button green-button'));
             }
             $content .= ZurmoHtml::closeTag('div');
@@ -86,10 +86,10 @@
         {
             return '<h2>' . Zurmo::t('MeetingsModule', 'No meeting scheduled') . '.</h2><div class="large-icon"></div>';
         }
-        
+
         protected function getCreateMeetingUrl()
         {
-            if(!$this->relationModel && !$this->relationModuleId)
+            if (!$this->relationModel && !$this->relationModuleId)
             {
                 return Yii::app()->createUrl('/meetings/default/createMeeting',
                                              array('redirectUrl' => $this->redirectUrl, 'startDate' => $this->stringTime));

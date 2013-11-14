@@ -952,7 +952,7 @@
         {
             $kanbanItem = KanbanItem::getByTask($task->id);
             //It should be created here but check for create as well here
-            if($kanbanItem == null)
+            if ($kanbanItem == null)
             {
                 $kanbanItem = TasksUtil::createKanbanItemFromTask($task);
             }
