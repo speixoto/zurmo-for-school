@@ -50,7 +50,8 @@
 
         protected function renderBasicIntroContent()
         {
-            $content  = '<h1>' . Zurmo::t('ZurmoModule', 'How does security work in Zurmo?'). '</h1>';
+            $params   = LabelUtil::getTranslationParamsForAllModules();
+            $content  = '<h1>' . Zurmo::t('ZurmoModule', 'How does security work in Zurmo?', $params). '</h1>';
             $content .= '<div id="security-basic-intro" class="module-intro-steps clearfix">';
             $content .= '<div class="third security-rights"><span class="icon"></span>';
             $content .= '<p><strong>' . Zurmo::t('ZurmoModule', 'Rights') . '</strong>';
