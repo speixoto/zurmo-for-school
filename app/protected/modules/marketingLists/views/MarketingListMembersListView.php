@@ -365,7 +365,7 @@
 
         protected function registerScriptForRefreshingGridView()
         {
-            $scriptName = $this->uniquePageId.'_refreshMembersListGridView';
+            $scriptName = $this->uniquePageId.'_refreshMembersListGridView'; // Not Coding Standard
             if (Yii::app()->clientScript->isScriptRegistered($scriptName))
             {
                 return;

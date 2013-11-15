@@ -246,5 +246,42 @@
                               'steve@zurmo.com' == $emailMessages[1]->recipients[0]->toAddress ||
                               'steve@zurmo.com' == $emailMessages[2]->recipients[0]->toAddress);
         }
+
+        public function testTaskStatusBecomesRejectedNotificationWhenOwnerIsCurrentUser()
+        {
+            $task                       = new Task();
+            $task->name                 = 'Reject Task';
+            $task->requestedByUser      = self::$sally;
+            $task->owner                = Yii::app()->user->userModel;
+            $this->assertEquals(0, Yii::app()->emailHelper->getQueuedCount());
+            $this->assertTrue($task->save());
+            //Now change status
+            $task->status               = Task::STATUS_REJECTED;
+            $this->assertTrue($task->save());
+            //No emails should be queued up
+            $this->assertEquals(0, Yii::app()->emailHelper->getQueuedCount());
+        }
+
+        public function testTaskStatusBecomesRejectedNotificationWhenOwnerIsNotCurrentUser()
+        {
+            $task                       = new Task();
+            $task->name                 = 'RejectOwner Task';
+            $task->requestedByUser      = self::$sally;
+            $task->owner                = self::$katie;
+            $this->assertEquals(0, Yii::app()->emailHelper->getQueuedCount());
+            $this->assertTrue($task->save());
+            $this->assertEquals(1, Yii::app()->emailHelper->getQueuedCount());
+            EmailMessage::deleteAll();
+            $this->assertEquals(0, Yii::app()->emailHelper->getQueuedCount());
+            //Now change status
+            $task->status               = Task::STATUS_REJECTED;
+            $this->assertTrue($task->save());
+            //One email should be queued up
+            $this->assertEquals(1, Yii::app()->emailHelper->getQueuedCount());
+            $emailMessages = EmailMessage::getAllByFolderType(EmailFolder::TYPE_OUTBOX);
+            $this->assertCount(1, $emailMessages);
+            $this->assertEquals(1,                   $emailMessages[0]->recipients->count());
+            $this->assertEquals('katie@zurmo.com',   $emailMessages[0]->recipients[0]->toAddress);
+        }
     }
 ?>

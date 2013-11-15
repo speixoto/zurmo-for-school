@@ -274,7 +274,7 @@
 
         /**
          * Register button action script
-         * @param string $buttonClass
+         * @param string $sourceActionButtonClass
          * @param int $targetKanbanItemType
          * @param string $label
          * @param string $targetButtonClass
@@ -282,15 +282,17 @@
          * @param int $targetStatus
          * @return string
          */
-        protected function registerButtonActionScript($buttonClass, $targetKanbanItemType, $label,
+        protected function registerButtonActionScript($sourceActionButtonClass, $targetKanbanItemType, $label,
                                                       $targetButtonClass, $url, $targetStatus)
         {
-            $rejectStatusLabel    = Task::getStatusDisplayName(Task::STATUS_REJECTED);
-            $inProgressStatusLabel = Task::getStatusDisplayName(Task::STATUS_IN_PROGRESS);
-            $completedStatusLabel = Task::getStatusDisplayName(Task::STATUS_COMPLETED);
-            $completedStatus      = Task::STATUS_COMPLETED;
+            $rejectStatusLabel       = Task::getStatusDisplayName(Task::STATUS_REJECTED);
+            $inProgressStatusLabel   = Task::getStatusDisplayName(Task::STATUS_IN_PROGRESS);
+            $completedStatusLabel    = Task::getStatusDisplayName(Task::STATUS_COMPLETED);
+            $completedStatus         = Task::STATUS_COMPLETED;
+            $rejectedStatusClass     = 'status-' . Task::STATUS_REJECTED;
+            $currentUserLoggedInName = '(' . Yii::app()->user->userModel->getFullName() . ')';
             // Begin Not Coding Standard
-            return "$(document).on('click','." . $buttonClass . "',
+            return "$(document).on('click','." . $sourceActionButtonClass . "',
                         function()
                         {
                             var element = $(this).parent().parent().parent().parent();
@@ -308,17 +310,26 @@
                             }
                             if('{$targetStatus}' != '{$completedStatus}')
                             {
-                                var linkTag = $(element).find('.{$buttonClass}');
+                                var linkTag = $(element).find('.{$sourceActionButtonClass}');
                                 $(linkTag).find('.button-label').html('" . $label . "');
-                                $(linkTag).removeClass('" . $buttonClass . "').addClass('" . $targetButtonClass . "');
-                                if('{$buttonClass}' == 'action-type-reject')
+                                $(linkTag).removeClass('" . $sourceActionButtonClass . "').addClass('" . $targetButtonClass . "');
+                                if('{$sourceActionButtonClass}' == 'action-type-reject')
                                 {
                                     $(element).find('.action-type-accept').remove();
                                     $(element).find('.task-status').html('{$rejectStatusLabel}');
+                                    $(element).find('.task-status').parent().addClass('{$rejectedStatusClass}');
                                 }
-                                if('{$buttonClass}' == 'action-type-restart')
+                                else
+                                {
+                                    $(element).find('.task-status').parent().removeClass('{$rejectedStatusClass}');
+                                }
+                                if('{$sourceActionButtonClass}' == 'action-type-restart')
                                 {
                                     $(element).find('.task-status').html('{$inProgressStatusLabel}');
+                                }
+                                if('{$sourceActionButtonClass}' == 'action-type-start')
+                                {
+                                    $(element).find('h4 .task-owner').html('{$currentUserLoggedInName}');
                                 }
                             }
                             else
@@ -333,11 +344,13 @@
                                 type : 'GET',
                                 data : {'targetStatus':'{$targetStatus}', 'taskId':taskId, 'sourceKanbanType':columnType},
                                 url  : '{$url}',
+                                dataType : 'json',
                                 beforeSend : function(){
                                           $('.ui-overlay-block').fadeIn(50);
                                           $(this).makeLargeLoadingSpinner(true, '.ui-overlay-block'); //- add spinner to block anything else
                                         },
                                 success: function(data){
+                                            $(element).find('.task-subscribers').html(data.subscriptionContent);
                                             $(this).makeLargeLoadingSpinner(false, '.ui-overlay-block');
                                             $('.ui-overlay-block').fadeOut(50);
                                          }
@@ -406,7 +419,7 @@
             $content .= ZurmoHtml::closeTag('div');
 
             $content .= ZurmoHtml::openTag('div', array('class' => 'task-subscribers'));
-            $content .= $this->resolveAndRenderTaskCardDetailsSubscribersContent($task);
+            $content .= TasksUtil::resolveAndRenderTaskCardDetailsSubscribersContent($task);
             $content .= $this->renderCardDataContent($this->cardColumns['subscribe'], $task, $row);
             $content .= ZurmoHtml::closeTag('div');
 
@@ -433,34 +446,6 @@
                 $content .= ZurmoHtml::closeTag('div');
                 return $content;
             }
-        }
-
-        protected function resolveAndRenderTaskCardDetailsSubscribersContent(Task $task)
-        {
-            $content         = null;
-            $subscribedUsers = TasksUtil::getTaskSubscribers($task);
-            foreach ($subscribedUsers as $user)
-            {
-                if ($user->isSame($task->owner))
-                {
-                    $content .= TasksUtil::renderSubscriberImageAndLinkContent($user, 20, 'task-owner');
-                    break;
-                }
-            }
-            //To take care of the case of duplicates
-            $addedSubscribers = array();
-            foreach ($subscribedUsers as $user)
-            {
-                if (!$user->isSame($task->owner))
-                {
-                    if (!in_array($user->id, $addedSubscribers))
-                    {
-                        $content .= TasksUtil::renderSubscriberImageAndLinkContent($user, 20);
-                        $addedSubscribers[] = $user->id;
-                    }
-                }
-            }
-            return $content;
         }
     }
 ?>
