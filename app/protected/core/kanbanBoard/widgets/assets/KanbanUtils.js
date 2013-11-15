@@ -78,76 +78,80 @@ function setupKanbanDragDrop(){
     });
 }
 
-function setUpTaskKanbanSortable(inputurl)
-{
+function setUpTaskKanbanSortable(inputurl){
     $('.connectedSortable').sortable({
-                    forcePlaceholderSize: true,
-                    forceHelperSize: true,
-                    items: 'li:not(.ui-state-disabled)',
-                    connectWith: '.connectedSortable',
-                    cursor: 'move',
-                    placeholder: 'kanban-card item-to-place',
-                    helper: function(event, ui){
-                        var width = ui.width();
-                        var clone = $('<div class="kanban-card clone">' + ui.clone().html() + '</div>');
-                        clone.width(width);
-                        $('body').append(clone);
-                        return clone;
-                    },
-                    start: function( event, ui ) {
-                        $(ui.helper).attr("id", $(ui.item).data("id"));
-                    },
-                    update : function (event, ui) {
-                        serial = $(this).sortable('serialize', {key: 'items[]', attribute: 'id'});
-                        var ulid = $(this).attr('id');
-                        var ulidParts = ulid.split('-');
-                        var type = parseInt(ulidParts[3]);
-                        var url = inputurl + '?' + serial + '&type=' + type;
-                        $.ajax({
-                            url: url,
-                            type: 'get',
-                            dataType : 'json',
-                            beforeSend : function(){
-                                          $(".ui-overlay-block").fadeIn(50);
-                                          $(this).makeLargeLoadingSpinner(true, ".ui-overlay-block"); //- add spinner to block anything else
-                                        },
-                            success: function(data){
-                                if(data.hasOwnProperty('button'))
-                                {
-                                    if(data.button != '')
-                                    {
-                                        $(ui.item).find('.task-action-toolbar').html(data.button);
-                                    }
-                                    else
-                                    {
-                                        $(ui.item).addClass('ui-state-disabled');
-                                        $(ui.item).find('.task-action-toolbar').remove();
-                                    }
-                                    $(ui.item).find('.task-status').html(data.status);
-                                }
-
-                                if(data.owner !== undefined)
-                                {
-                                    $(ui.item).find('h4 .task-owner').html('(' + data.owner + ')');
-                                }
-                                if(data.subscriptionContent !== undefined)
-                                {
-                                    $(ui.item).find('.task-subscribers').html(data.subscriptionContent);
-                                }
-                            },
-                            complete:function(data)
-                            {
-                                $(this).makeLargeLoadingSpinner(false, ".ui-overlay-block");
-                                $(".ui-overlay-block").fadeOut(50);
-                            },
-                            error: function(request, status, error){
-                                alert('We are unable to set the sort order at this time.  Please try again in a few minutes.');
-                            }
-                        });
-                    },
-                    stop: function(event, ui){
-                        document.body.style.cursor = 'auto';
+        forcePlaceholderSize: true,
+        forceHelperSize: true,
+        items: 'li:not(.ui-state-disabled)',
+        connectWith: '.connectedSortable',
+        cursor: 'move',
+        placeholder: 'activate-drop-zone',//'kanban-card item-to-place',
+        helper: function(event, ui){
+            var width = ui.width();
+            var clone = $('<div class="kanban-card clone">' + ui.clone().html() + '</div>');
+            clone.width(width);
+            $('body').append(clone);
+            return clone;
+        },
+        over: function( event, ui ) {
+            $('.droppable-dynamic-rows-container').removeClass('activate-drop-zone');
+            $(this).parent().addClass('activate-drop-zone');
+        },
+        start: function( event, ui ) {
+            $(ui.helper).attr("id", $(ui.item).data("id"));
+        },
+        update : function (event, ui) {
+            serial = $(this).sortable('serialize', {key: 'items[]', attribute: 'id'});
+            var ulid = $(this).attr('id');
+            var ulidParts = ulid.split('-');
+            var type = parseInt(ulidParts[3]);
+            var url = inputurl + '?' + serial + '&type=' + type;
+            $.ajax({
+                url: url,
+                type: 'get',
+                dataType : 'json',
+                beforeSend : function(){
+                    $(".ui-overlay-block").fadeIn(50);
+                    $(this).makeLargeLoadingSpinner(true, ".ui-overlay-block"); //- add spinner to block anything else
+                },
+                success: function(data){
+                    if(data.hasOwnProperty('button'))
+                    {
+                        if(data.button != '')
+                        {
+                            $(ui.item).find('.task-action-toolbar').html(data.button);
+                        }
+                        else
+                        {
+                            $(ui.item).addClass('ui-state-disabled');
+                            $(ui.item).find('.task-action-toolbar').remove();
+                        }
+                        $(ui.item).find('.task-status').html(data.status);
                     }
-                    //helper: 'clone'
+
+                    if(data.owner !== undefined)
+                    {
+                        $(ui.item).find('h4 .task-owner').html('(' + data.owner + ')');
+                    }
+                    if(data.subscriptionContent !== undefined)
+                    {
+                        $(ui.item).find('.task-subscribers').html(data.subscriptionContent);
+                    }
+                },
+                complete:function(data)
+                {
+                    $(this).makeLargeLoadingSpinner(false, ".ui-overlay-block");
+                    $(".ui-overlay-block").fadeOut(50);
+                },
+                error: function(request, status, error){
+                    alert('We are unable to set the sort order at this time.  Please try again in a few minutes.');
+                }
+            });
+        },
+        stop: function(event, ui){
+            document.body.style.cursor = 'auto';
+            $('.droppable-dynamic-rows-container').removeClass('activate-drop-zone');
+        }
+        //helper: 'clone'
   }).disableSelection();
 }
