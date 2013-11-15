@@ -798,5 +798,91 @@
             $this->assertArrayHasKey('role_id_Index', $existingIndexes);
             $this->assertArrayHasKey('user_role_id_Index', $existingIndexes);
         }
+
+        /**
+         * @depends testGenerateOrUpdateTableBySchemaDefinitionWithValidButChangedSchemaForExistingTableWithNoIsFreshInstall
+         */
+        public function testGenerateOrUpdateTableBySchemaDefinitionChangingColumnLength()
+        {
+            // try decreasing length, shouldn't work
+            $schema     = array('tablename3' => array(
+                'columns' => array(
+                    array(
+                        'name' => 'language',
+                        'type' => 'VARCHAR(10)',
+                        'unsigned' => null,
+                        'notNull' => 'NULL', // Not Coding Standard
+                        'collation' => 'COLLATE utf8_unicode_ci',
+                        'default' => 'DEFAULT NULL', // Not Coding Standard
+                    ),
+                    array(
+                        'name' => 'role_id',
+                        'type' => 'INT(5)',
+                        'unsigned' => 'UNSIGNED',
+                        'notNull' => 'NULL', // Not Coding Standard
+                        'collation' => null,
+                        'default' => 'DEFAULT NULL', // Not Coding Standard
+                    ),
+                ),
+                'indexes' => array()
+            )
+            );
+            CreateOrUpdateExistingTableFromSchemaDefinitionArrayUtil::generateOrUpdateTableBySchemaDefinition($schema,
+                                                                                                static::$messageLogger);
+            $processedTables    = CreateOrUpdateExistingTableFromSchemaDefinitionArrayUtil::resolveProcessedTables();
+            $this->assertNotEmpty($processedTables);
+            $this->assertCount(3, $processedTables);
+            $this->assertEquals('tablewithnocolumns', $processedTables[0]);
+            $this->assertEquals('tablename1', $processedTables[1]);
+            $this->assertEquals('tablename3', $processedTables[2]);
+            // we do not need try-catch here as if there was an exception it would have been thrown already.
+            $existingFields     = ZurmoRedBean::$writer->getColumnsWithDetails('tablename3');
+            $this->assertNotEmpty($existingFields);
+            $this->assertCount(15, $existingFields);
+            $this->assertArrayHasKey('language', $existingFields);
+            $this->assertArrayHasKey('role_id', $existingFields);
+            $this->assertEquals('int(11) unsigned', $existingFields['role_id']['Type']);
+            $this->assertEquals('varchar(100)', $existingFields['language']['Type']);
+
+            // try increasing lengths, should work
+            $schema     = array('tablename3' => array(
+                'columns' => array(
+                    array(
+                        'name' => 'language',
+                        'type' => 'VARCHAR(120)',
+                        'unsigned' => null,
+                        'notNull' => 'NULL', // Not Coding Standard
+                        'collation' => 'COLLATE utf8_unicode_ci',
+                        'default' => 'DEFAULT NULL', // Not Coding Standard
+                    ),
+                    array(
+                        'name' => 'role_id',
+                        'type' => 'INT(15)',
+                        'unsigned' => 'UNSIGNED',
+                        'notNull' => 'NULL', // Not Coding Standard
+                        'collation' => null,
+                        'default' => 'DEFAULT NULL', // Not Coding Standard
+                    ),
+                ),
+                'indexes' => array()
+            )
+            );
+            CreateOrUpdateExistingTableFromSchemaDefinitionArrayUtil::generateOrUpdateTableBySchemaDefinition($schema,
+                                                                                                static::$messageLogger);
+            $processedTables    = CreateOrUpdateExistingTableFromSchemaDefinitionArrayUtil::resolveProcessedTables();
+            $this->assertNotEmpty($processedTables);
+            $this->assertCount(3, $processedTables);
+            $this->assertEquals('tablewithnocolumns', $processedTables[0]);
+            $this->assertEquals('tablename1', $processedTables[1]);
+            $this->assertEquals('tablename3', $processedTables[2]);
+            // we do not need try-catch here as if there was an exception it would have been thrown already.
+            $existingFields     = ZurmoRedBean::$writer->getColumnsWithDetails('tablename3');
+            $this->assertNotEmpty($existingFields);
+            $this->assertCount(15, $existingFields);
+            $this->assertArrayHasKey('language', $existingFields);
+            $this->assertArrayHasKey('role_id', $existingFields);
+            $this->assertEquals('int(15) unsigned', $existingFields['role_id']['Type']);
+            $this->assertEquals('varchar(120)', $existingFields['language']['Type']);
+        }
     }
 ?>

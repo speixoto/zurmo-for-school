@@ -92,17 +92,23 @@
                     {
                         $removable      = $portletsAreRemovable;
                     }
+                    $additionalOptionMenuItems = array();
+                    if (method_exists($className, 'getAdditionalOptionMenuItems'))
+                    {
+                        $additionalOptionMenuItems = $className::getAdditionalOptionMenuItems();
+                    }
                     $juiPortletsWidgetItems[$column][$position] = array(
-                        'id'            => $portlet->id,
-                        'uniqueId'      => $portlet->getUniquePortletPageId(),
-                        'title'         => $portlet->getTitle(),
-                        'content'       => $portlet->renderContent(),
-                        'headContent'   => $portlet->renderHeadContent(),
-                        'editable'      => $portlet->isEditable(),
-                        'collapsed'     => $portlet->collapsed,
-                        'removable'     => $removable,
-                        'uniqueClass'   => $this->resolveUniqueClass($portlet),
-                        'portletParams' => $portlet->getPortletParams(),
+                        'id'                        => $portlet->id,
+                        'uniqueId'                  => $portlet->getUniquePortletPageId(),
+                        'title'                     => $portlet->getTitle(),
+                        'content'                   => $portlet->renderContent(),
+                        'headContent'               => $portlet->renderHeadContent(),
+                        'editable'                  => $portlet->isEditable(),
+                        'collapsed'                 => $portlet->collapsed,
+                        'removable'                 => $removable,
+                        'uniqueClass'               => $this->resolveUniqueClass($portlet),
+                        'portletParams'             => $portlet->getPortletParams(),
+                        'additionalOptionMenuItems' => $additionalOptionMenuItems,
                     );
                 }
             }

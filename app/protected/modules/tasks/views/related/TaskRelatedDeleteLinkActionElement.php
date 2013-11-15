@@ -33,41 +33,24 @@
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
-    /**
-     * Action element which renders edit link on clicking of which opens a modal window
-     */
-    class EditModalLinkActionElement extends LinkActionElement
+
+    class TaskRelatedDeleteLinkActionElement extends RelatedDeleteLinkActionElement
     {
         public function render()
         {
-            $content = ZurmoHtml::link($this->resolveLabelAndWrap(), '#', $this->getHtmlOptions());
-            return $content;
+            return ZurmoHtml::link($this->getLabel(), '#', $this->getHtmlOptions());
         }
 
-        /**
-         * Gets default label
-         * @return string
-         */
-        protected function getDefaultLabel()
+        protected function getHtmlOptions()
         {
-            return Zurmo::t('Core', 'Edit');
-        }
-
-        /**
-         * Gets default route
-         * @return string
-         */
-        protected function getDefaultRoute()
-        {
-            return '#';
-        }
-
-        /**
-         * @return string
-         */
-        public function getActionType()
-        {
-            return 'Create';
+            $confirmTitle           = Zurmo::t('Core', 'Are you sure you want to delete this {modelLabel}?',
+                                                        array('{modelLabel}' => $this->getModelSingularLabel()));
+            $confirmTitle           = Yii::app()->format->text($confirmTitle);
+            $htmlOptions            = parent::getHtmlOptions();
+            $htmlOptions['id']      = $this->getLinkId();
+            $htmlOptions['class']   = 'delete-related-open-task';
+            //$htmlOptions['onclick'] = 'if (!$(this).onAjaxSubmitRelatedListAction("' . $confirmTitle . '", "' . $this->getGridId() . '")){return;};';
+            return $htmlOptions;
         }
     }
 ?>

@@ -184,6 +184,7 @@
         {
             $task    = $this->processSubscriptionRequest($id);
             $content = TasksUtil::getTaskSubscriberData($task);
+            $content .= TasksUtil::resolveSubscriptionLink($task, 'detail-subscribe-task-link', 'detail-unsubscribe-task-link');
             echo $content;
         }
 
@@ -195,6 +196,7 @@
         {
             $task    = $this->processUnsubscriptionRequest($id);
             $content = TasksUtil::getTaskSubscriberData($task);
+            $content .= TasksUtil::resolveSubscriptionLink($task, 'detail-subscribe-task-link', 'detail-unsubscribe-task-link');
             if ($content == null)
             {
                 echo "";
@@ -211,7 +213,10 @@
          */
         public function actionAddKanbanSubscriber($id)
         {
-            $this->processSubscriptionRequest($id);
+            $task = $this->processSubscriptionRequest($id);
+            $content = TasksUtil::resolveAndRenderTaskCardDetailsSubscribersContent($task);
+            $content .= TasksUtil::resolveSubscriptionLink($task, 'subscribe-task-link', 'unsubscribe-task-link');
+            echo $content;
         }
 
         /**
@@ -220,7 +225,17 @@
          */
         public function actionRemoveKanbanSubscriber($id)
         {
-            $this->processUnsubscriptionRequest($id);
+            $task = $this->processUnsubscriptionRequest($id);
+            $content = TasksUtil::resolveAndRenderTaskCardDetailsSubscribersContent($task);
+            $content .= TasksUtil::resolveSubscriptionLink($task, 'subscribe-task-link', 'unsubscribe-task-link');
+            if ($content == null)
+            {
+                echo "";
+            }
+            else
+            {
+                echo $content;
+            }
         }
 
         /**
@@ -445,9 +460,13 @@
                             $kanbanItem->sortOrder = TasksUtil::resolveAndGetSortOrderForTaskOnKanbanBoard($type, $task);
                             $kanbanItem->type = intval($type);
                             $kanbanItem->save();
-                            $this->processStatusUpdateViaAjax($taskId, Task::STATUS_COMPLETED, false);
+                            $this->processStatusUpdateViaAjax($task, Task::STATUS_COMPLETED, false);
                             $response['button'] = '';
                             $response['status'] = Task::getStatusDisplayName($task->status);
+                            $response['owner']  = $task->owner->getFullName();
+                            $subscriptionContent = TasksUtil::resolveAndRenderTaskCardDetailsSubscribersContent($task);
+                            $subscriptionContent .= TasksUtil::resolveSubscriptionLink($task, 'subscribe-task-link', 'unsubscribe-task-link');
+                            $response['subscriptionContent']  = $subscriptionContent;
                         }
                         else
                         {
@@ -465,13 +484,17 @@
                                 $kanbanItem->type = intval($type);
                                 $kanbanItem->save();
                                 $targetStatus = TasksUtil::getDefaultTaskStatusForKanbanItemType(intval($type));
-                                $this->processStatusUpdateViaAjax($taskId, $targetStatus, false);
+                                $this->processStatusUpdateViaAjax($task, $targetStatus, false);
                                 $content = TasksUtil::resolveActionButtonForTaskByStatus($targetStatus,
                                                                                         $this->getId(),
                                                                                         $this->getModule()->getId(),
                                                                                         intval($taskId));
+                                $subscriptionContent = TasksUtil::resolveAndRenderTaskCardDetailsSubscribersContent($task);
+                                $subscriptionContent .= TasksUtil::resolveSubscriptionLink($task, 'subscribe-task-link', 'unsubscribe-task-link');
                                 $response['button'] = $content;
                                 $response['status'] = Task::getStatusDisplayName($task->status);
+                                $response['owner']  = $task->owner->getFullName();
+                                $response['subscriptionContent']  = $subscriptionContent;
                             }
                         }
                         $counter++;
@@ -488,9 +511,15 @@
         */
         public function actionUpdateStatusInKanbanView($targetStatus, $taskId, $sourceKanbanType)
         {
+           $response = array();
            //Run update queries for update task staus and update type and sort order in kanban column
-           $this->processStatusUpdateViaAjax($taskId, $targetStatus, false);
+           $task = Task::getById(intval($taskId));
+           $this->processStatusUpdateViaAjax($task, $targetStatus, false);
            TasksUtil::processKanbanItemUpdateOnButtonAction(intval($targetStatus), intval($taskId), intval($sourceKanbanType));
+           $subscriptionContent = TasksUtil::resolveAndRenderTaskCardDetailsSubscribersContent($task);
+           $subscriptionContent .= TasksUtil::resolveSubscriptionLink($task, 'subscribe-task-link', 'unsubscribe-task-link');
+           $response['subscriptionContent']  = $subscriptionContent;
+           echo CJSON::encode($response);
         }
 
         /**
@@ -499,11 +528,17 @@
          * @param int $status
          * @param bool $showCompletionDate whether to show completion date
          */
-        protected function processStatusUpdateViaAjax($id, $status, $showCompletionDate = true)
+        protected function processStatusUpdateViaAjax(Task $task, $status, $showCompletionDate = true)
         {
-            $task          = Task::getById(intval($id));
+            //$task          = Task::getById(intval($id));
             $currentStatus = $task->status;
             $task->status = intval($status);
+            //check for owner in case a user start the task
+            if ($currentStatus == Task::STATUS_NEW && $currentStatus != $task->status)
+            {
+                $task->owner = Yii::app()->user->userModel;
+            }
+
             if (intval($status) == Task::STATUS_COMPLETED)
             {
                 foreach ($task->checkListItems as $checkItem)
@@ -575,35 +610,6 @@
                 throw new FailedToSaveModelException();
             }
             return $task;
-        }
-
-        /**
-         * Update description
-         * @param int $id
-         */
-        public function actionUpdateDescriptionViaAjax()
-        {
-            $getData = GetUtil::getData();
-            $descriptionId = $getData['id'];
-            $descriptionFieldArray = explode('_' , $descriptionId);
-            $model   = Task::getById(intval($descriptionFieldArray[1]));
-            ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($model);
-            $model->description = $getData['update_value'];
-            if ($model->save())
-            {
-                if ($model->description != '')
-                {
-                    echo $model->description;
-                }
-                else
-                {
-                    echo Zurmo::t('TasksModule', 'Click here to enter description');
-                }
-            }
-            else
-            {
-                throw new FailedToSaveModelException();
-            }
         }
 
         /**

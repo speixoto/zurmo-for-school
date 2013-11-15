@@ -81,6 +81,7 @@
                 ' range of out-of-the-box use cases. Zurmo is capable of supporting your complex business processes, ' .
                 'yet very simple to use.',
         ),
+        // Begin Not Coding Standard
         'htmlContent'           => array(
             '<html><head></head><body><p>Zurmo\'s source code is hosted on bitbucket while we use ' .
                 '<img src="http://www.selenic.com/hg-logo/droplets-50.png" alt="mercurial" /> for ' .
@@ -175,7 +176,7 @@
 
                         /* Target mobile devices. */
                         /* @media only screen and (max-device-width: 639px) { */
-                        @media only screen and (max-width: 639px) 
+                        @media only screen and (max-width: 639px)
                         {
                             /* Hide elements at smaller screen sizes (!important needed to override inline CSS). */
                             body[yahoo] .hide {display:none !important;}
@@ -198,7 +199,7 @@
 
                         /* Target tablet devices. */
                         /* @media only screen and (min-device-width: 640px) and (max-device-width: 1024px) { */
-                        @media only screen and (min-width: 640px) and (max-width: 1024px) 
+                        @media only screen and (min-width: 640px) and (max-width: 1024px)
                         {
                         }
 
@@ -427,5 +428,6 @@
                 </body>
                 </html>'
         ),
+        // End Not Coding Standard
     );
 ?>

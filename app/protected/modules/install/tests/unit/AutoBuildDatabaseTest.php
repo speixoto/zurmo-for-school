@@ -258,13 +258,14 @@
             RedBeanModel::forgetAll();
             $modifiedAccount = Account::getById($account->id);
 
-            $this->assertNotEquals($randomString, $modifiedAccount->string128);
-            $this->assertEquals(64, strlen($modifiedAccount->string128));
+            // autobuild should not decrease length or display width of an existing column
+            $this->assertEquals($randomString, $modifiedAccount->string128);
+            $this->assertEquals(128, strlen($modifiedAccount->string128));
 
             //Check Account fields
             $tableName = RedBeanModel::getTableName('Account');
             $columns   = ZurmoRedBean::$writer->getColumns($tableName);
-            $this->assertEquals('varchar(64)',     $columns['string128']);
+            $this->assertEquals('varchar(128)',     $columns['string128']);
         }
 
         /**

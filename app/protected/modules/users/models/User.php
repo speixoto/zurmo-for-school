@@ -753,6 +753,7 @@
                     array('lastLoginDateTime',    'type', 'type' => 'datetime'),
                 ),
                 'elements' => array(
+                    'currency' => 'CurrencyDropDown'
                 ),
                 'defaultSortAttribute' => 'lastName',
                 'noExport' => array(

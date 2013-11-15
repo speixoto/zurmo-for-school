@@ -209,7 +209,7 @@
                         }
                     });
                  }
-                 ".$initialCallToFunction
+                 ".$initialCallToFunction // Not Coding Standard
                  );
             }
         }
