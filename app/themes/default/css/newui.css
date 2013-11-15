@@ -13165,13 +13165,14 @@ div.wide.form label.hasCheckBox {
 .radio-input {
   clear: left;
   float: left;
-  margin-bottom: 5px;
+  margin-bottom: 15px;
 }
 .radio-input input {
   float: left;
   margin-top: -1px !important;
 }
 .radio-input label {
+  line-height: 1;
   margin-left: 10px;
 }
 .right-side-edit-view-panel {
@@ -13346,6 +13347,22 @@ div.wide.form label.hasCheckBox {
   color: #8b8b8b;
   text-align: center;
   vertical-align: bottom;
+}
+#zurmoContextiveGadget .has-model-select .model-select-icon,
+#zurmoExternalWebForm .has-model-select .model-select-icon {
+  background: transparent url(../images/ie-sprite.png) left -24px no-repeat;
+}
+#zurmoContextiveGadget .has-model-select .model-select-icon:before,
+#zurmoExternalWebForm .has-model-select .model-select-icon:before {
+  display: none;
+}
+#zurmoContextiveGadget .has-date-select button span,
+#zurmoExternalWebForm .has-date-select button span {
+  background: transparent url(../images/ie-sprite.png) left 0 no-repeat;
+}
+#zurmoContextiveGadget .has-date-select button span:before,
+#zurmoExternalWebForm .has-date-select button span:before {
+  display: none;
 }
 .beforeOptOutCheckBox {
   float: left;
