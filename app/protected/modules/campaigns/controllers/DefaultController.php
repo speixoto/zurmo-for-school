@@ -180,9 +180,8 @@
             {
                 $campaign = Campaign::getById((int)$id);
                 ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($campaign);
-                ZurmoCopyModelUtil::copy($campaign, $copyToCampaign);
+                CampaignCopyModelUtil::copy($campaign, $copyToCampaign);
             }
-            $copyToCampaign->status           = Campaign::STATUS_ACTIVE;
             $this->processEdit($copyToCampaign);
         }
         
