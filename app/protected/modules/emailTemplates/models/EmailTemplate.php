@@ -40,6 +40,13 @@
 
         const TYPE_CONTACT  = 2;
 
+        /**
+         * Php caching for a single request
+         * @var array
+         */
+        private static $cachedDataAndLabelsByType = array();
+
+
         public static function getByName($name)
         {
             return self::getByNameOrEquivalent('name', $name);
@@ -224,13 +231,18 @@
         public static function getDataAndLabelsByType($type)
         {
             assert('is_int($type)');
+            if (isset(self::$cachedDataAndLabelsByType[$type]))
+            {
+                return self::$cachedDataAndLabelsByType[$type];
+            }
             $dataAndLabels = array();
             $emailTemplates = static::getByType($type);
             foreach ($emailTemplates as $emailTemplate)
             {
                 $dataAndLabels[$emailTemplate->id] = strval($emailTemplate);
             }
-            return $dataAndLabels;
+            self::$cachedDataAndLabelsByType[$type] = $dataAndLabels;
+            return self::$cachedDataAndLabelsByType[$type];
         }
 
         public static function getGamificationRulesType()
