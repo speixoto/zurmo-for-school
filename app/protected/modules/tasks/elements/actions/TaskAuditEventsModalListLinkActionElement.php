@@ -34,54 +34,14 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Form for handling default values for the password attribute on a user.
-     */
-    class PasswordDefaultValueModelAttributeMappingRuleForm extends DerivedAttributeMappingRuleForm
+    class TaskAuditEventsModalListLinkActionElement extends AuditEventsModalListLinkActionElement
     {
-        public $defaultValue;
-
-        public function __construct($modelClassName, $derivedAttributeType)
+        /**
+         * @return string
+         */
+        protected function getModalContainerId()
         {
-            assert($modelClassName == "User"); // Not Coding Standard
-            parent::__construct($modelClassName, $derivedAttributeType);
-        }
-
-        public function rules()
-        {
-            if ($this->getScenario() == 'extraColumn')
-            {
-                $requiredRuleIsApplicable = true;
-            }
-            else
-            {
-                $requiredRuleIsApplicable = false;
-            }
-            $defaultValueApplicableModelAttributeRules = ModelAttributeRulesToDefaultValueMappingRuleUtil::
-                                                         getApplicableRulesByModelClassNameAndAttributeName(
-                                                         $this->modelClassName,
-                                                         'hash',
-                                                         static::getAttributeName(),
-                                                         $requiredRuleIsApplicable);
-            //Remove the has length rule
-            foreach ($defaultValueApplicableModelAttributeRules as $index => $rule)
-            {
-                if ($rule[1] == 'length')
-                {
-                    unset($defaultValueApplicableModelAttributeRules[$index]);
-                }
-            }
-            return array_merge(parent::rules(), $defaultValueApplicableModelAttributeRules);
-        }
-
-        public function attributeLabels()
-        {
-            return array('defaultValue' => Zurmo::t('ZurmoModule', 'Default Value'));
-        }
-
-        public static function getAttributeName()
-        {
-            return 'defaultValue';
+            return 'AuditEventsModalContainer';
         }
     }
 ?>
