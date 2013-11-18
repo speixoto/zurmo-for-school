@@ -48,7 +48,7 @@
          * @param integer $row the row number (zero-based)
          * @param mixed $data the data object associated with the row
          */
-        protected function renderButton($id, $button,$row,$data)
+        protected function renderButton($id, $button, $row, $data)
         {
             if (isset($button['visible']) && !$this->evaluateExpression($button['visible'],
                     array('row' => $row, 'data' => $data)))
@@ -58,7 +58,7 @@
             $label = isset($button['label']) ? $button['label'] : $id;
             if (isset($button['url']))
             {
-                $url = $this->evaluateExpression($button['url'], array('data'=>$data,'row'=>$row));
+                $url = $this->evaluateExpression($button['url'], array('data'=>$data, 'row'=>$row)); // Not Coding Standard
             }
             else
             {

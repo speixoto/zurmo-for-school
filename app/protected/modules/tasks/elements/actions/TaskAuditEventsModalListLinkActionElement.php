@@ -33,41 +33,15 @@
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
-    /**
-     * Action element which renders edit link on clicking of which opens a modal window
-     */
-    class EditModalLinkActionElement extends LinkActionElement
+
+    class TaskAuditEventsModalListLinkActionElement extends AuditEventsModalListLinkActionElement
     {
-        public function render()
-        {
-            $content = ZurmoHtml::link($this->resolveLabelAndWrap(), '#', $this->getHtmlOptions());
-            return $content;
-        }
-
-        /**
-         * Gets default label
-         * @return string
-         */
-        protected function getDefaultLabel()
-        {
-            return Zurmo::t('Core', 'Edit');
-        }
-
-        /**
-         * Gets default route
-         * @return string
-         */
-        protected function getDefaultRoute()
-        {
-            return '#';
-        }
-
         /**
          * @return string
          */
-        public function getActionType()
+        protected function getModalContainerId()
         {
-            return 'Create';
+            return 'AuditEventsModalContainer';
         }
     }
 ?>

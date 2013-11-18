@@ -103,6 +103,7 @@
 
         public function handleEndRequest($event)
         {
+            RedBeanDatabase::close();
             exit;
         }
 

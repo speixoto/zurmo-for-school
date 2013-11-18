@@ -37,6 +37,7 @@
     /**
      * Note related array of random seed data parts.
      */
+    // Begin Not Coding Standard
     return array(
         'modelClassName'        => array(
             'Contact',
@@ -175,7 +176,7 @@
 
                         /* Target mobile devices. */
                         /* @media only screen and (max-device-width: 639px) { */
-                        @media only screen and (max-width: 639px) 
+                        @media only screen and (max-width: 639px)
                         {
                             /* Hide elements at smaller screen sizes (!important needed to override inline CSS). */
                             body[yahoo] .hide {display:none !important;}
@@ -198,7 +199,7 @@
 
                         /* Target tablet devices. */
                         /* @media only screen and (min-device-width: 640px) and (max-device-width: 1024px) { */
-                        @media only screen and (min-width: 640px) and (max-width: 1024px) 
+                        @media only screen and (min-width: 640px) and (max-width: 1024px)
                         {
                         }
 
@@ -428,4 +429,5 @@
                 </html>'
         ),
     );
+    // End Not Coding Standard
 ?>

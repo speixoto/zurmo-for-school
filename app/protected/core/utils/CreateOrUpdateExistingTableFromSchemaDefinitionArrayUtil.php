@@ -294,14 +294,14 @@
             sort($indexColumns);
             // get rid of (767) and other prefixes for
             $indexColumns   = array_map(function ($column)
-            {
-                $parenthesisStart = strpos($column, '(');
-                if ($parenthesisStart !== false)
-                {
-                    return substr($column, 0, $parenthesisStart);
-                }
-                return $column;
-            }, $indexColumns);
+                                        {
+                                            $parenthesisStart = strpos($column, '(');
+                                            if ($parenthesisStart !== false)
+                                            {
+                                                return substr($column, 0, $parenthesisStart);
+                                            }
+                                            return $column;
+                                        }, $indexColumns);
             foreach ($existingIndexes as $existingIndexMetadata)
             {
                 $existingIndexColumns = $existingIndexMetadata['columns'];
@@ -341,7 +341,7 @@
             $upgradeStatements       = CMap::mergeArray($columnUpgradeStatements, $indexUpgradeStatements);
             if (!empty($upgradeStatements))
             {
-                $upgradeStatements  = join(',' . PHP_EOL, $upgradeStatements);
+                $upgradeStatements  = join(',' . PHP_EOL, $upgradeStatements); // Not Coding Standard
                 $query              = "ALTER TABLE `${tableName}` " . PHP_EOL .
                                         $upgradeStatements . ";";
                 return $query;
@@ -398,11 +398,11 @@
         protected static function isColumnLengthShrinkOrConversionToUnsigned($columnLength, $fieldLength,
                                                                                 $columnUnsigned, $fieldUnsigned)
         {
+            //($fieldUnsigned !== $columnUnsigned && $columnUnsigned = 'UNSIGNED') ||
+            // we do not check for signed/unsigned checks as again, we do not know if it would be safe.
+            // changing unsigned to signed might lose some data thats beyond signed range for that column
+            // changing signed to unsigned might lose some signed data;
             if ($columnLength < $fieldLength)
-                //($fieldUnsigned !== $columnUnsigned && $columnUnsigned = 'UNSIGNED') ||
-                // we do not check for signed/unsigned checks as again, we do not know if it would be safe.
-                // changing unsigned to signed might lose some data thats beyond signed range for that column
-                // changing signed to unsigned might lose some signed data;
             {
                 return true;
             }
@@ -505,7 +505,7 @@
             }
             // PHP_EOLs below are purely for readability, sql would work just fine without it.
             $tableMetadata  = CMap::mergeArray($columns, $indexes);
-            $tableMetadata  = join(',' . PHP_EOL, $tableMetadata);
+            $tableMetadata  = join(',' . PHP_EOL, $tableMetadata); // Not Coding Standard
             $query          = "CREATE TABLE `${tableName}` (" . PHP_EOL .
                                 $tableMetadata . PHP_EOL .
                                 " ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1;"; // Not Coding Standard
@@ -528,7 +528,7 @@
 
         protected static function resolveIndexStatementCreation($indexName, $indexMetadata, $alterTable = false)
         {
-            $clause = "KEY ${indexName} (" . join(',', $indexMetadata['columns']) . ")";
+            $clause = "KEY ${indexName} (" . join(',', $indexMetadata['columns']) . ")"; // Not Coding Standard
             if ($indexMetadata['unique'])
             {
                 $clause = 'UNIQUE ' . $clause;

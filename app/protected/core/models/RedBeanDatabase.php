@@ -109,18 +109,7 @@
 
         public static function close()
         {
-            // TODO - find out if there is a proper way.
-            ZurmoRedBean::$toolboxes          = array();
-            ZurmoRedBean::$toolbox            = null;
-            ZurmoRedBean::$redbean            = null;
-            ZurmoRedBean::$writer             = null;
-            ZurmoRedBean::$adapter            = null;
-            ZurmoRedBean::$associationManager = null;
-            ZurmoRedBean::$extAssocManager    = null;
-            ZurmoRedBean::$exporter           = null;
-            ZurmoRedBean::$tagManager         = null;
-            ZurmoRedBean::$currentDB          = '';
-            ZurmoRedBean::$f                  = null;
+            ZurmoRedBean::close();
             self::$isSetup = false;
         }
 

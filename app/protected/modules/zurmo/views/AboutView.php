@@ -125,40 +125,24 @@
             $content .= '</li>';
             $content .= '</ul></p></div>
                 <div>
-                    <script charset="utf-8" src="http://widgets.twimg.com/j/2/widget.js"></script>
+                    <a class="twitter-timeline" width="300" height="300" href="https://twitter.com/ZurmoCRM" data-widget-id="400952809924730881">
+                        Tweets by @ZurmoCRM
+                    </a>
                     <script>
-                    new TWTR.Widget(
-                    {
-                      version: 2,
-                      type: "profile",
-                      rpp: 4,
-                      interval: 30000,
-                      width: "auto",
-                      height: 300,
-                      theme:
-                      {
-                        shell:
+                        !function(d,s,id)
                         {
-                          background: "#f4f4f4",
-                          color: "#262777"
+                            var js,
+                            fjs = d.getElementsByTagName(s)[0],
+                            p = /^http:/.test(d.location)?"http":"https";
+                            if(!d.getElementById(id))
+                            {
+                                js = d.createElement(s);
+                                js.id = id;
+                                js.src = p+"://platform.twitter.com/widgets.js";
+                                fjs.parentNode.insertBefore(js,fjs);
+                            }
                         }
-                        ,
-                        tweets:
-                        {
-                          background: "#f4f4f4",
-                          color: "#545454",
-                          links: "#262777"
-                        }
-                      }
-                      ,
-                      features:
-                      {
-                        scrollbar: false,
-                        loop: false,
-                        live: false,
-                        behavior: "all"
-                      }
-                    }).render().setUser("ZurmoCRM").start();
+                        (document,"script","twitter-wjs");
                     </script>
                 </div>
             </div>

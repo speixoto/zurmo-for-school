@@ -361,7 +361,7 @@ SPT;
                 $itemLabel               = $itemTypesAndLabels[$itemType];
                 $collectionItemImagePath = $gameCollectionRules::makeMediumCOllectionItemImagePath($itemType);
                 $itemContent = static::resolveLazyLoadImage($collectionItemImagePath, $itemLabel,
-                                          array('class'=> 'qtip-shadow', 'data-tooltip' => $itemLabel));
+                                          array('class' => 'qtip-shadow', 'data-tooltip' => $itemLabel));
                 $qtip = new ZurmoTip(array('options' => array('position' => array('my' => 'bottom center', 'at' => 'top center'),
                                                           'content'  => array('attr' => 'data-tooltip'))));
                 $qtip->addQTip(".gd-collection-item img");
@@ -488,7 +488,7 @@ SPT;
             return PlaceholderImageUtil::resolveOneByOnePixelImageUrl(false);
         }
 
-        protected static function resolveLazyLoadImage($source, $alt='', $htmlOptions=array())
+        protected static function resolveLazyLoadImage($source, $alt = '', $htmlOptions = array())
         {
             $dummyImageUrl = static::getDummyImageUrl();
             if ($source != $dummyImageUrl)

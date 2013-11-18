@@ -87,7 +87,7 @@
                                                                           $containerId = 'modalContainer',
                                                                           $height = 'auto',
                                                                           $width = 600,
-                                                                          $position = 'center top+25',
+                                                                          $position = 'center top+25', // Not Coding Standard
                                                                           $class = "''", // Not Coding Standard
                                                                           $extraCloseScript = null)
         {

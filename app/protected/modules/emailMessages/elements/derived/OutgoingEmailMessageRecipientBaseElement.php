@@ -94,7 +94,7 @@
 
         protected function getUnqualifiedNameForIdField()
         {
-            return "[" . $this->attribute ."][" . $this->getRecipientTypeForId() . "]";
+            return "[" . $this->attribute ."][" . $this->getRecipientTypeForId() . "]"; // Not Coding Standard
         }
 
         protected function getWidgetSourceUrl()

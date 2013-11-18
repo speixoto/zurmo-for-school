@@ -2571,6 +2571,30 @@ div.wide.form{
 		.symbly(300px);
 		line-height: 52%;
 	}
+	.NoMeetings .large-icon:after{
+		content:'U';
+		.symbly(300px);
+		line-height: 65%;
+	}
+}
+
+#ModalView{
+	.splash-view{
+		padding-bottom: 20px;
+		h2{
+			font-size: 42px;
+		}
+		.large-icon{
+			margin-top: 15px;
+		}
+		.z-button{
+			margin-top: 25px;
+		}
+	}
+	.large-icon:after{
+		font-size: 200px;
+		line-height: 50%;
+	}
 }
 
 
@@ -3162,6 +3186,9 @@ div.wide.form{
 	td{
 		padding-bottom: 15px;
 	}
+	label{
+		line-height: 26px;
+	}
 }
 
 
@@ -3201,12 +3228,13 @@ div.wide.form{
 .radio-input{
 	clear: left;
 	float: left;
-	margin-bottom: 5px;
+	margin-bottom: 15px;
 	input{
 		float: left;
-		margin-top: 1px !important;
+		margin-top: -1px !important;
 	}
 	label{
+		line-height: 1;
 		margin-left: 10px;
 	}
 }
@@ -3263,11 +3291,11 @@ div.wide.form{
 		}
 		input[type="radio"]{
 			float:left;
-			margin:0 8px 0 10px;
+			margin:0 0 0 10px;
 			vertical-align: middle;
 		}
 		.hasDropDown{
-			padding-left:40px;
+			padding-left:32px;
 		}
 	}
 	input[type="text"]{
@@ -3370,6 +3398,24 @@ div.wide.form{
 				color:#8b8b8b;
 				text-align:center;
 				vertical-align:bottom;
+			}
+		}
+	}
+}
+
+#zurmoContextiveGadget,
+#zurmoExternalWebForm{
+	.has-model-select .model-select-icon{
+		background: transparent url(../images/ie-sprite.png) left -24px no-repeat;
+		&:before{
+			display: none;
+		}
+	}
+	.has-date-select{
+		button span{
+			background: transparent url(../images/ie-sprite.png) left 0 no-repeat;
+			&:before{
+				display: none;
 			}
 		}
 	}
@@ -4040,7 +4086,7 @@ div.overlay-label-field{
 .overlay-label-field label {
 	position: absolute !important;
 	left: 4px;
-	top: 6px;
+	top: 0;
 	color: #999;
 	font-size: 14px;
 	font-weight: normal;
@@ -4367,6 +4413,19 @@ div.hasHalfs{
 		}
 	}
 }
+
+#DaysMeetingsFromCalendarModalListView{
+	.view-toolbar-container {
+		position: absolute;
+		margin-top: -33px;
+		right: 0;
+		width: auto;
+	}
+	tr:first-child td{
+		border-top:none;
+	}
+}
+
 
 /*=Meeting/Task Single View*/
 #NoteEditAndDetailsView,
@@ -5042,6 +5101,11 @@ div.hasHalfs{
 }
 .pivotal span{
 	background-position: 100% bottom !important;
+}
+
+#twitter-widget-0{
+	min-width: 0 !important;
+	width: 100%;
 }
 
 /*=RSS Widget*/

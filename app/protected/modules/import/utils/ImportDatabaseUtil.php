@@ -323,7 +323,7 @@
             {
                 $headerArray    = array_shift($importArray);
             }
-            $csv = ExportItemToCsvFileUtil::export($importArray, $headerArray, '', false, true);
+            $csv = ExportItemToCsvFileUtil::export($importArray, $headerArray, '', false, true, true);
             return $csv;
         }
 
@@ -382,7 +382,7 @@
             {
                 if (strpos($e->getMessage(), ' 1148 ') !== false)
                 {
-                    $e = new NotSupportedException("Please enable LOCAL INFILE in mysql config. Add local-infile=1 to [mysqld] and [mysql] sections.");
+                    $e = new NotSupportedException("Please enable LOCAL INFILE in mysql config. Add local-infile=1 to [mysqld] and [mysql] sections."); // Not Coding Standard
                 }
                 throw $e;
             }
@@ -411,7 +411,7 @@
                 $importSubset       = ArrayUtil::chopArray($importArray, static::BULK_INSERT_COUNT);
                 // bulkInsert needs every subarray to have same number of columns as columnNames, pad with empty strings
                 static::padSubArrays($importSubset, count($columnNames));
-                DatabaseCompatibilityUtil::bulkInsert($tableName, $importSubset, $columnNames, static::BULK_INSERT_COUNT);
+                DatabaseCompatibilityUtil::bulkInsert($tableName, $importSubset, $columnNames, static::BULK_INSERT_COUNT, true);
             } while (count($importSubset) > 0);
         }
 
