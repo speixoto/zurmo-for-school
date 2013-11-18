@@ -55,6 +55,40 @@
             );
         }
 
+        public function actionList()
+        {
+            $pageSize                       = Yii::app()->pagination->resolveActiveForCurrentUserByType(
+                                              'listPageSize', get_class($this->getModule()));
+            $task                           = new Task(false);
+            $searchForm                     = new TasksSearchForm($task);
+            $listAttributesSelector         = new ListAttributesSelector('TasksListView', get_class($this->getModule()));
+            $searchForm->setListAttributesSelector($listAttributesSelector);
+            $dataProvider                   = $this->resolveSearchDataProvider(
+                                                    $searchForm,
+                                                    $pageSize,
+                                                    null,
+                                                    'TasksSearchView'
+                                                );
+            if (isset($_GET['ajax']) && $_GET['ajax'] == 'list-view')
+            {
+                $mixedView  = $this->makeListView(
+                            $searchForm,
+                            $dataProvider
+                        );
+                $view       = new TasksPageView($mixedView);
+            }
+            else
+            {
+                $mixedView  = $this->makeActionBarSearchAndListView($searchForm, $dataProvider,
+                                   'SecuredActionBarForTasksSearchAndListView',
+                                    null, null, null);
+                $view       = new TasksPageView(ZurmoDefaultViewUtil::
+                                                    makeStandardViewForCurrentUser(
+                                                        $this, $mixedView));
+            }
+            echo $view->render();
+        }
+
         public function actionDetails($id, $redirectUrl = null)
         {
             $task = static::getModelAndCatchNotFoundAndDisplayError('Task', intval($id));
@@ -81,8 +115,16 @@
             }
             else
             {
-                //todo: redirect to task list view, and open modal details, once we have a task details view
-                $this->redirect(Yii::app()->createUrl('home/default/index'));
+                try
+                {
+                    $this->redirect(Yii::app()->createUrl('tasks/default/list',
+                        array('id' => $task->id, 'openToTaskId' => $task->id)));
+                }
+                catch (NotFoundException $e)
+                {
+                    //Something is missing or deleted. Fallback to home page
+                    $this->redirect(Yii::app()->createUrl('home/default/index'));
+                }
             }
         }
 
@@ -112,8 +154,16 @@
             }
             else
             {
-                //todo: redirect to task list view, and open modal details, once we have a task details view
-                $this->redirect(Yii::app()->createUrl('home/default/index'));
+                try
+                {
+                    $this->redirect(Yii::app()->createUrl('tasks/default/list',
+                        array('openToTaskId' => $task->id)));
+                }
+                catch (NotFoundException $e)
+                {
+                    //Something is missing or deleted. Fallback to home page
+                    $this->redirect(Yii::app()->createUrl('home/default/index'));
+                }
             }
         }
 

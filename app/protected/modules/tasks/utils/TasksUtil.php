@@ -1123,5 +1123,17 @@
                         );";
              Yii::app()->clientScript->registerScript('taskModalDeleteScript', $script, ClientScript::POS_END);
         }
+
+        /**
+         * Resolve that should task be opened in modal detal view
+         */
+        public static function resolveShouldOpenToTask($gridId)
+        {
+            $getData = GetUtil::getData();
+            if (null != $taskId = ArrayUtil::getArrayValue($getData, 'openToTaskId'))
+            {
+                TasksUtil::registerOpenToTaskModalDetailsScript((int)$taskId, $gridId);
+            }
+        }
     }
 ?>
