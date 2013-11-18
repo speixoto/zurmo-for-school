@@ -187,11 +187,11 @@
          */
         protected function getActionModalLinksHtmlOptions($type)
         {
-            if($type == "Edit")
+            if ($type == "Edit")
             {
                 return array('class' => 'edit-related-open-task');
             }
-            elseif($type == "Copy")
+            elseif ($type == "Copy")
             {
                 return array('class' => 'copy-related-open-task');
             }
