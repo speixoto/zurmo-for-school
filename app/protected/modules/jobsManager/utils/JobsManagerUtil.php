@@ -62,13 +62,12 @@
             set_time_limit($timeLimit);
             $messageStreamer = new MessageStreamer($template);
             $messageStreamer->setExtraRenderBytes(0);
-            $messageStreamer->add(Zurmo::t('JobsManagerModule', 'Script will run at most for {seconds} seconds.',
-                                  array('{seconds}' => $timeLimit)));
             echo $lineBreak;
-            $messageStreamer->add(Zurmo::t('JobsManagerModule', '{dateTimeString} Starting job type: {type}',
-                                  array('{type}' => $type,
-                                         '{dateTimeString}' => static::getLocalizedDateTimeTimeZoneString())));
             $messageLogger = new $messageLoggerClassName($messageStreamer);
+            $messageLogger->addInfoMessage(Zurmo::t('JobsManagerModule', 'Script will run at most for {seconds} seconds.',
+                            array('{seconds}' => $timeLimit)));
+            $messageLogger->addInfoMessage(Zurmo::t('JobsManagerModule', 'Starting job type: {type}',
+                            array('{type}' => $type)));
             $messageLogger->addDebugMessage('Showing Debug Messages');
             if ($type == 'Monitor')
             {
@@ -78,9 +77,8 @@
             {
                 static::runNonMonitorJob($type, $messageLogger);
             }
-            $messageStreamer->add(Zurmo::t('JobsManagerModule', '{dateTimeString} Ending job type: {type}',
-                                  array('{type}' => $type,
-                                         '{dateTimeString}' => static::getLocalizedDateTimeTimeZoneString())));
+            $messageLogger->addInfoMessage(Zurmo::t('JobsManagerModule', 'Ending job type: {type}',
+                            array('{type}' => $type)));
         }
 
         /**
@@ -200,14 +198,6 @@
                 return true;
             }
             return false;
-        }
-
-        public static function getLocalizedDateTimeTimeZoneString()
-        {
-            $content = DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay(
-                                        DateTimeUtil::convertTimestampToDbFormatDateTime(time()));
-            $content .= ' ' . Yii::app()->user->userModel->timeZone;
-            return $content;
         }
     }
 ?>
