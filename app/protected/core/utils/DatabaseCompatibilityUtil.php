@@ -284,9 +284,12 @@
          * @param string $tableName
          * @param array $rowsOfColumnValues
          * @param array $columnNames
+         * @param $bulkQuantity
+         * @param bool $shouldTrim Should trim data before insert
+         * @throws BulkInsertFailedException
          * @throws NotSupportedException
          */
-        public static function bulkInsert($tableName, & $rowsOfColumnValues, & $columnNames, $bulkQuantity)
+        public static function bulkInsert($tableName, & $rowsOfColumnValues, & $columnNames, $bulkQuantity, $shouldTrim = false)
         {
             assert('is_string($tableName)');
             assert('is_array($rowsOfColumnValues)');
@@ -309,6 +312,10 @@
                     if ($counter == $bulkQuantity)
                     {
                         $quotedRow = array_map(array('DatabaseCompatibilityUtil', 'escape'), $row);
+                        if ($shouldTrim)
+                        {
+                            $quotedRow = array_map('trim', $quotedRow);
+                        }
                         $sql .= "('" . implode("','", $quotedRow). "')"; // Not Coding Standard
                         ZurmoRedBean::exec($sql);
                         $counter = 0;
@@ -316,6 +323,10 @@
                     else
                     {
                         $quotedRow = array_map(array('DatabaseCompatibilityUtil', 'escape'), $row);
+                        if ($shouldTrim)
+                        {
+                            $quotedRow = array_map('trim', $quotedRow);
+                        }
                         $sql .= "('" . implode("','", $quotedRow). "'),"; // Not Coding Standard
                         $counter++;
                     }

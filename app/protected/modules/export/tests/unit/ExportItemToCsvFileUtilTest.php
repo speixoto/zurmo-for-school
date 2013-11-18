@@ -182,6 +182,49 @@
             $this->assertTrue($this->isValidCsvConversion("Data, \n with, \n ,linebreaks, \n")); // Not Coding Standard
         }
 
+        public function testExportItemToCsvWorksWithShouldTrim()
+        {
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
+
+            $testItem = new ExportTestModelItem();
+            $testItem->firstName    = 'Bob3    ';
+            $testItem->lastName     = '    Bob3';
+            $testItem->boolean      = true;
+            $testItem->date         = '2002-04-03';
+            $testItem->dateTime     = '2002-04-03 02:00:43';
+            $testItem->float        = 54.22;
+            $testItem->integer      = 10;
+            $testItem->phone        = '21313213';
+            $testItem->string       = '  aString    ';
+            $testItem->textArea     = '         aText area \n new line    ';
+            $testItem->url          = 'http://www.asite.com';
+            $testItem->email        = 'a@a.com';
+
+            $testItem->save();
+            $id = $testItem->id;
+            $testItem->forget();
+            unset($testItem);
+
+            $testItem   = ExportTestModelItem::getById($id);
+            $adapter    = new ModelToExportAdapter($testItem);
+            $data       = array($adapter->getData());
+            $headerData = $adapter->getHeaderData();
+
+            // Export data to csv, and then revert csv back to array, so we compare data
+            $csvData      = ExportItemToCsvFileUtil::export($data, $headerData, 'exports.csv', false, false, true);
+            $revertedData = CsvParser::parseFromString($csvData);
+
+            $this->assertContains(trim($testItem->firstName),   array_values($revertedData[0]));
+            $this->assertContains(trim($testItem->lastName),    array_values($revertedData[0]));
+            $this->assertContains(trim($testItem->string),      array_values($revertedData[0]));
+            $this->assertContains(trim($testItem->textArea),    array_values($revertedData[0]));
+            $this->assertNotContains($testItem->firstName,   array_values($revertedData[0]));
+            $this->assertNotContains($testItem->lastName,    array_values($revertedData[0]));
+            $this->assertNotContains($testItem->string,      array_values($revertedData[0]));
+            $this->assertNotContains($testItem->textArea,    array_values($revertedData[0]));
+        }
+
         protected function isValidCsvConversion($textAreaContent)
         {
             $super = User::getByUsername('super');

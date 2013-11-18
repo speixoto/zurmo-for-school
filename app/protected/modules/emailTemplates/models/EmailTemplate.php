@@ -46,7 +46,6 @@
          */
         private static $cachedDataAndLabelsByType = array();
 
-
         public static function getByName($name)
         {
             return self::getByNameOrEquivalent('name', $name);
