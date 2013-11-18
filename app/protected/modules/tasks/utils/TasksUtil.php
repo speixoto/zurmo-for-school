@@ -237,7 +237,7 @@
             assert('is_string($sourceId) || $sourceId == null');
             if ($sourceId != null)
             {
-                return "$.fn.yiiGridView.update('{$sourceId}');";
+                return "$('#{$sourceId}').yiiGridView('update');";
             }
         }
 
