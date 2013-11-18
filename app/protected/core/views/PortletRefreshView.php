@@ -39,6 +39,7 @@
      */
     class PortletRefreshView extends View
     {
+        //TODO: @sergio: Check if we need this view, after changes made on PortletController::actionModalRefresh
         protected $portlet;
         protected $uniqueLayoutId;
         protected $moduleId;

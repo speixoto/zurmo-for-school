@@ -142,9 +142,27 @@
                 $modelClassName = Yii::app()->findModule($portlet->params["relationModuleId"])->getPrimaryModelName();
                 $portlet->params['relationModel'] = $modelClassName::getById((int)$portlet->params['relationModelId']);
             }
-            $view = new AjaxPageView(new PortletRefreshView($portlet, $uniqueLayoutId, $this->getModule()->getId(),
-                                                            (bool)$portletsAreRemovable));
+            $view = $portlet->getView();
+
+            if ($this->shouldRegisterScripts($view))
+            {
+                $view = new AjaxPageView($view);
+            }
             echo $view->render();
+        }
+
+        /**
+         * If view needs to register scripts to work
+         * @param $view
+         * @return bool
+         */
+        protected function shouldRegisterScripts($view)
+        {
+            if ($view instanceof MyListView)
+            {
+                return false;
+            }
+            return true;
         }
     }
 ?>

@@ -326,7 +326,7 @@
                     'type'       => 'GET',
                     'data'       => 'js:$("#' . $form->getId() . '").serialize()',
                     'url'        =>  $urlScript,
-                    'update'     => '#' . $this->uniqueLayoutId,
+                    'update'     => '#' . $this->uniqueLayoutId . ' .juiportlet-widget-content',
                     'beforeSend' => 'js:function(){$(this).makeSmallLoadingSpinner(true, "#' . $this->getGridViewId() . '"); $("#' . $form->getId() . '").parent().children(".cgrid-view").addClass("loading");}',
                     'complete'   => 'js:function()
                     {
@@ -421,7 +421,7 @@
         {
             $redirectUrl = $this->params['redirectUrl'];
             $params = array_merge($_GET, array('portletId'       => $this->params['portletId'],
-                                               'uniqueLayoutId'  => $this->uniqueLayoutId,
+                                               'uniqueLayoutId'  => $this->uniqueLayoutId . ' .juiportlet-widget-content',
                                                'redirectUrl'    => $redirectUrl,
                                                'portletParams'   => array('relationModuleId' => $this->relationModuleId,
                                                                          'relationModelId' => $this->params['relationModel']->id)
