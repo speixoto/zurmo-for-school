@@ -112,8 +112,9 @@
                     'type' => 'POST',
                     'data' => 'js:$("#' . $formName . '").serialize()',
                     'url'  => Yii::app()->createUrl($moduleId . '/' . $controllerId . '/' . $actionSave, $_GET),
-                    'complete' => 'function(XMLHttpRequest, textStatus){$("#modalContainer").dialog("close");}',
-                    'update' => '#' . $uniquePortletPageId . ' .juiportlet-widget-content',
+                    'complete' => 'function(XMLHttpRequest, textStatus){$("#modalContainer").dialog("close");
+                        juiPortlets.refresh();}',
+                    'update' => '#' . $uniquePortletPageId,
                 ));
         }
 

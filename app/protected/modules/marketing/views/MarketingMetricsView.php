@@ -340,7 +340,8 @@
                 'url'      =>  $this->getPortletSaveConfigurationUrl(),
                 'beforeSend' => 'js:function(){$(this).makeSmallLoadingSpinner(true, ".graph-container");
                                 $("#MarketingDashboardView").addClass("loading");}',
-                'update' => '#' . $this->uniqueLayoutId . ' .juiportlet-widget-content',
+                'complete' => 'function(XMLHttpRequest, textStatus){juiPortlets.refresh();}',
+                'update' => '#' . $this->uniqueLayoutId,
 
             ));
             Yii::app()->clientScript->registerScript($this->uniqueLayoutId . 'groupByChangeScript', "
