@@ -60,16 +60,35 @@
             $pageSize                       = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                                               'listPageSize', get_class($this->getModule()));
             $task                           = new Task(false);
+            $isFilterRequest                = false;
+            $isFilterAllStatus              = false;
             $searchForm                     = new TasksSearchForm($task);
             $listAttributesSelector         = new ListAttributesSelector('TasksListView', get_class($this->getModule()));
             $searchForm->setListAttributesSelector($listAttributesSelector);
-            $dataProvider                   = $this->resolveSearchDataProvider(
-                                                    $searchForm,
-                                                    $pageSize,
-                                                    null,
-                                                    'TasksSearchView'
-                                                );
-            if (isset($_GET['ajax']) && $_GET['ajax'] == 'list-view')
+            if ((isset($_GET['ajax']) && $_GET['ajax'] == 'filter-list-view'))
+            {
+                $isFilterRequest = true;
+                if($_GET['TasksConfigurationForm']['filteredByStatus'] != TasksConfigurationForm::FILTERED_BY_ALL_STATUS)
+                {
+                    $status = $_GET['TasksConfigurationForm']['filteredByStatus'];
+                    $dataProvider = TasksUtil::makeDataProviderForFilterByStatus($status, $pageSize);
+                    TasksUtil::saveSelectedOptionsAsStickyData($status);
+                }
+                else
+                {
+                    $isFilterAllStatus = true;
+                }
+            }
+            if(!$isFilterRequest || ($isFilterRequest === true &&  $isFilterAllStatus === true))
+            {
+                $dataProvider                   = $this->resolveSearchDataProvider(
+                                                        $searchForm,
+                                                        $pageSize,
+                                                        null,
+                                                        'TasksSearchView'
+                                                    );
+            }
+            if ((isset($_GET['ajax']) && ($_GET['ajax'] == 'list-view' || $_GET['ajax'] == 'filter-list-view')))
             {
                 $mixedView  = $this->makeListView(
                             $searchForm,
