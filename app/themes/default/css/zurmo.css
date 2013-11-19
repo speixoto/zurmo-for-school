@@ -106,7 +106,7 @@ body div.form-toolbar{
 		padding:8px 10px;
 		background:#F4F4F4;
 		width:100%;
-		.box-sizing();
+		//.box-sizing();
 	}
 }
 */
@@ -314,6 +314,11 @@ body div.form-toolbar{
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
+.border-box-sizing {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
 .cf,
 .clearfix {
   *zoom: 1;
@@ -397,6 +402,9 @@ body div.form-toolbar{
 * {
   margin: 0;
   padding: 0;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
 }
 .strong {
   font-weight: bold;
@@ -587,9 +595,6 @@ section {
   left: 50%;
 }
 #LoginLogo {
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   height: 100%;
   width: 50%;
   padding-right: 10px;
@@ -686,9 +691,6 @@ section {
   -ms-box-shadow: 0 0 10px 2px rgba(53, 53, 53, 0.5);
   -o-box-shadow: 0 0 10px 2px rgba(53, 53, 53, 0.5);
   box-shadow: 0 0 10px 2px rgba(53, 53, 53, 0.5);
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
 }
 #HeaderLinksView ul ul li {
   line-height: 100%;
@@ -729,9 +731,6 @@ section {
   -ms-box-shadow: 0 0 10px 2px rgba(53, 53, 53, 0.5);
   -o-box-shadow: 0 0 10px 2px rgba(53, 53, 53, 0.5);
   box-shadow: 0 0 10px 2px rgba(53, 53, 53, 0.5);
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
 }
 .headerDropDownSpecial li {
   line-height: 100%;
@@ -846,9 +845,6 @@ section {
   -ms-box-shadow: 0 0 10px 2px rgba(53, 53, 53, 0.5);
   -o-box-shadow: 0 0 10px 2px rgba(53, 53, 53, 0.5);
   box-shadow: 0 0 10px 2px rgba(53, 53, 53, 0.5);
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
 }
 #notifications-flyout .z-spinner {
   left: 50%;
@@ -1628,7 +1624,7 @@ body > .ui-autocomplete {
   background-image: linear-gradient(top,#dcdcdc,#e3e3e3);
   border-top: 1px solid #F9F9FA;
   padding: 20px 5px;
-  width: 160px;
+  width: 168px;
 }
 #RecentlyViewedView h3 {
   color: #666;
@@ -1724,9 +1720,6 @@ body > .ui-autocomplete {
 #RecentlyViewedView li em {
   z-index: 9999;
   position: absolute;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   width: 24px;
   height: 24px;
   line-height: 22px;
@@ -1935,9 +1928,6 @@ body > .ui-autocomplete {
   height: 40px;
   display: block;
   z-index: 10;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   padding: 0 15px 0 15px;
   margin-bottom: 15px;
 }
@@ -2238,9 +2228,6 @@ form .view-toolbar-container,
 }
 .hasDetailsFlyout ul {
   max-width: 50%;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   padding: 10px;
   line-height: 150%;
 }
@@ -2294,9 +2281,6 @@ form .view-toolbar-container,
   vertical-align: middle;
   padding: 0 0 0 0;
   position: relative;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
 }
 .ui-chooser .active {
   color: #7CB830;
@@ -2338,9 +2322,6 @@ td {
   width: 100%;
   border-collapse: collapse;
   border-spacing: 1px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
 }
 .items > tbody > tr > td,
 .items > thead > tr > td {
@@ -2424,9 +2405,6 @@ td {
 }
 .stacked-list td div.checkbox-column ~ div {
   padding-left: 25px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
 }
 .stacked-list td > div {
   margin: 0 0 2px 0;
@@ -2576,9 +2554,6 @@ td.empty {
   margin: 0;
   vertical-align: middle;
   position: relative;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
 }
 .icon-empty:before {
   content: "z";
@@ -2589,9 +2564,6 @@ td.empty {
   margin: 0;
   vertical-align: middle;
   position: relative;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   margin: 0 !important;
 }
 .general-issue-notice {
@@ -2637,9 +2609,6 @@ textarea {
   zoom: 1;
   filter: progid:DXImageTransform.Microsoft.Shadow(Color=#bfbfbf,Strength=1,Direction=0), progid:DXImageTransform.Microsoft.Shadow(Color=#bfbfbf,Strength=1,Direction=90), progid:DXImageTransform.Microsoft.Shadow(Color=#bfbfbf,Strength=1,Direction=180), progid:DXImageTransform.Microsoft.Shadow(Color=#bfbfbf,Strength=1,Direction=270);
   width: 100%;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
 }
 input[type="text"]:focus,
 input[type="password"]:focus,
@@ -2746,62 +2715,24 @@ input[type="button"]:hover:after {
 .portlet-toolbar {
   float: right;
   margin-right: 10px;
+  line-height: 1;
+  /*
+	.icon-create:before{
+		content: "";
+		margin:0;
+		padding:0;
+		display: none;
+		color: @themeColor2 !important;
+	}*/
 }
-.portlet-toolbar a {
-  line-height: 25px;
-  margin: 0;
-  font-weight: bold;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  -ms-border-radius: 4px;
-  -o-border-radius: 4px;
-  border-radius: 4px;
-  -webkit-box-shadow: 0 0 9px 5px rgba(153,153,153,0.12);
-  -moz-box-shadow: 0 0 9px 5px rgba(153,153,153,0.12);
-  -ms-box-shadow: 0 0 9px 5px rgba(153,153,153,0.12);
-  -o-box-shadow: 0 0 9px 5px rgba(153,153,153,0.12);
-  box-shadow: 0 0 9px 5px rgba(153,153,153,0.12);
-  border-top: 1px solid #e7e7e7;
-  border-left: 1px solid #d7d7d7;
-  border-right: 1px solid #d7d7d7;
-  border-bottom: 1px solid #bababa;
-  color: #656565;
-  display: inline-block;
-  -webkit-text-shadow: rgba(255,255,255,0.8) 0px 1px;
-  -moz-text-shadow: rgba(255,255,255,0.8) 0px 1px;
-  -ms-text-shadow: rgba(255,255,255,0.8) 0px 1px;
-  -o-text-shadow: rgba(255,255,255,0.8) 0px 1px;
-  text-shadow: rgba(255,255,255,0.8) 0px 1px;
-  font-size: 11px;
-}
-.portlet-toolbar a .z-label {
+.portlet-toolbar .z-label {
   padding: 0 10px 0 10px;
-  float: none;
-}
-.portlet-toolbar a:not(.attachLoading) {
-  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
-}
-.portlet-toolbar a:active {
-  color: #656565;
-  -webkit-box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #FFF;
-  -moz-box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #FFF;
-  -ms-box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #FFF;
-  -o-box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #FFF;
-  box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #FFF;
-}
-.portlet-toolbar a:hover {
-  color: #7CB830 !important;
+  font-size: 11px;
 }
 .portlet-toolbar .icon-create:hover {
   color: #7CB830 !important;
 }
-.portlet-toolbar .icon-create:before {
-  content: "";
-  margin: 0;
-  padding: 0;
-  display: none;
-  color: #7CB830 !important;
-}
+.portlet-toolbar .portlet-create-button .z-label:before,
 .portlet-toolbar .icon-create .z-label:before {
   content: "Y";
   font-weight: normal !important;
@@ -2811,9 +2742,6 @@ input[type="button"]:hover:after {
   margin: 0;
   vertical-align: middle;
   position: relative;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   font-size: 22px;
   top: -2px;
   margin: 0 5px 0 0 !important;
@@ -2827,9 +2755,6 @@ input[type="button"]:hover:after {
   margin: 0;
   vertical-align: middle;
   position: relative;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   top: -1px;
   color: #7CB830;
   margin-left: 0;
@@ -2843,12 +2768,12 @@ input[type="button"]:hover:after {
   margin: 0;
   vertical-align: middle;
   position: relative;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   top: -1px;
   color: #7CB830;
   margin-left: 0;
+}
+.juiportlet-widget-head .portlet-toolbar {
+  margin-top: 7px;
 }
 .normal-size {
   font-size: 12px !important;
@@ -3155,9 +3080,6 @@ div.wide.form a {
   float: left;
   width: 65%;
   margin: 45px 0 0 30px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
 }
 .zero-components-view a,
 .splash-view a {
@@ -3379,9 +3301,6 @@ div.wide.form a {
   font-size: 11px;
   float: left;
   width: 100%;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   *zoom: 1;
 }
 #search-form:before,
@@ -3424,9 +3343,6 @@ div.wide.form a {
 .filters-bar {
   font-size: 11px;
   padding-left: 8px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   border-bottom: 1px solid #DFDFDF;
   width: 100%;
   min-height: 40px;
@@ -3548,9 +3464,6 @@ div.wide.form a {
   float: left;
 }
 .search-view-0 input[type="text"] {
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   position: relative;
   left: -1px;
   width: 179px;
@@ -3595,9 +3508,6 @@ div.wide.form a {
   -ms-border-radius: 3px;
   -o-border-radius: 3px;
   border-radius: 3px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   *zoom: 1;
   overflow: hidden;
   position: relative;
@@ -3803,9 +3713,6 @@ div.wide.form a {
   right: -75px;
   float: right;
   padding: 0 15px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   width: 75px;
   height: 75px;
   text-align: center;
@@ -4052,9 +3959,6 @@ div.wide.form a {
   padding: 15px 15px 15px 15px;
   float: left;
   width: 70%;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
 }
 .left-column.full-width {
   width: 100%;
@@ -4073,17 +3977,11 @@ div.wide.form a {
   float: right;
   width: 30%;
   padding: 15px 15px 15px 15px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
 }
 #modal-edit-form,
 #edit-form,
 #delete-form {
   *zoom: 1;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   position: relative;
 }
 #modal-edit-form:before,
@@ -4199,9 +4097,6 @@ div.wide.form a {
   padding: 8px 10px;
   background: #F4F4F4;
   width: 100%;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   *zoom: 1;
 }
 .right-side-edit-view-panel:before,
@@ -4392,9 +4287,6 @@ div.wide.form a {
   width: auto;
   float: none;
   width: 95%;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
 }
 .beforeToolTip .hasDropDown {
   margin-right: 30px;
@@ -4462,9 +4354,6 @@ div.wide.form a {
 .details-table td,
 .details-table th {
   font-weight: bold;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   padding: 5px 5px 5px 5px;
 }
 .details-table th {
@@ -4529,9 +4418,6 @@ div.wide.form a {
   font-style: italic;
   text-align: center;
   padding: 0 10px 10px 10px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
 }
 .mapcanvas {
   width: 600px;
@@ -4559,9 +4445,6 @@ div.wide.form a {
   background-image: -ms-linear-gradient(#ffffff,#f5f5f5 80%,#f5f5f5) ;
   background-image: -o-linear-gradient(#ffffff,#f5f5f5 80%,#f5f5f5) ;
   background-image: linear-gradient(#ffffff,#f5f5f5 80%,#f5f5f5) ;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
 }
 .wrapper,
 .TitleBarAndDetailsView > div:not(.view-toolbar-container),
@@ -4856,9 +4739,6 @@ div.wide.form a {
   padding-left: 0 !important;
 }
 #NoteInlineEditView form #Note_description {
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   height: 60px;
   width: 100%;
   margin-bottom: 10px;
@@ -4912,9 +4792,6 @@ div.wide.form a {
   margin: 0;
   vertical-align: middle;
   position: relative;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   top: -1px;
   margin-left: 2px;
 }
@@ -4948,9 +4825,6 @@ div.wide.form a {
 }
 #inline-edit-form table + table {
   float: left;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
 }
 #inline-edit-form .panel td {
   padding-bottom: 15px;
@@ -4990,9 +4864,6 @@ div.wide.form a {
 #inline-edit-form .view-toolbar-container {
   display: inline-block;
   padding: 0 15px 15px 15px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
 }
 #inline-edit-form .view-toolbar-container a {
   float: right;
@@ -5074,9 +4945,6 @@ div.radio-input .hasDropDown {
   margin-top: 8px;
   padding-left: 24px;
   margin-bottom: 0;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
 }
 .post-to-profile {
   float: right;
@@ -5225,11 +5093,6 @@ div.radio-input .hasDropDown {
   font-size: 14px;
   font-weight: normal;
 }
-.overlay-label-field input {
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-}
 div.hasParallelFields,
 div.hasHalfs {
   *zoom: 1;
@@ -5257,9 +5120,6 @@ div.hasHalfs > div {
 div.hasParallelFields > div input,
 div.hasHalfs > div input {
   width: 100%;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
 }
 .seventh {
   width: 12.5%;
@@ -5487,9 +5347,6 @@ div.hasHalfs > div input {
   opacity: 0.5;
 }
 .pager {
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   width: 100%;
   text-align: center;
   background: #fff url(../images/view-toolbar-gradient.png) left bottom repeat-x;
@@ -5504,9 +5361,6 @@ div.hasHalfs > div input {
   display: block;
   width: 50%;
   margin: 0 auto;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   list-style: none;
   border-left: 1px solid #DFDFDF;
   *zoom: 1;
@@ -5541,9 +5395,6 @@ div.hasHalfs > div input {
   display: none;
 }
 .pager li {
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   float: left;
   width: 30%;
   padding: 0;
@@ -5788,9 +5639,6 @@ div.hasHalfs > div input {
   width: 100%;
   padding-left: 40px;
   position: relative;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
 }
 .LatestActivitiesListView .activity-item span,
 .LatestActivitiesView .activity-item span {
@@ -5889,9 +5737,6 @@ div.hasHalfs > div input {
 .filter-portlet-model-bar {
   font-size: 11px;
   padding-left: 8px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
 }
 #MashableInboxForm_filteredBy_area label,
 #MashableInboxForm_optionForModel_area label,
@@ -6154,9 +5999,6 @@ div.hasHalfs > div input {
   padding: 0;
   position: relative;
   cursor: pointer;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
 }
 .hasDropDown span {
   width: 22px;
@@ -6199,9 +6041,6 @@ div.hasHalfs > div input {
   color: #666;
   text-indent: 6px;
   vertical-align: middle;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   -webkit-box-shadow: 0 0 1px 1px rgba(153,153,153,0.3);
   -moz-box-shadow: 0 0 1px 1px rgba(153,153,153,0.3);
   -ms-box-shadow: 0 0 1px 1px rgba(153,153,153,0.3);
@@ -6333,9 +6172,6 @@ div.hasHalfs > div input {
   font-weight: bold;
 }
 .ui-progressbar {
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   padding-left: 35px;
   position: absolute;
   top: 0;
@@ -6417,9 +6253,6 @@ div.hasHalfs > div input {
   padding: 15px 0 50px 15px;
   width: 65%;
   float: left;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
 }
 #AboutView #leftCol > div {
   margin-bottom: 20px;
@@ -6428,9 +6261,6 @@ div.hasHalfs > div input {
   float: right;
   width: 30%;
   margin: 15px 15px 50px 0;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
 }
 #AboutView #rightCol > div {
   padding: 8px 10px;
@@ -6635,9 +6465,6 @@ i[class^="icon"] {
   margin: 0 0 0 0;
   position: relative;
   top: -2px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
 }
 .z-label i[class^="icon"] {
   margin-right: 5px;
@@ -6851,15 +6678,12 @@ i[class^="icon"] {
   top: -2px !important;
 }
 .z-label {
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   -ms-border-radius: 3px;
   -o-border-radius: 3px;
   border-radius: 3px;
-  display: block;
+  display: inline-block;
   color: #fff;
   font-weight: bold;
   padding: 0 25px;
@@ -6911,9 +6735,6 @@ a:active .z-label {
   -ms-border-radius: 3px;
   -o-border-radius: 3px;
   border-radius: 3px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   *zoom: 1;
   overflow: hidden;
   position: relative;
@@ -6954,9 +6775,6 @@ a:active .z-label {
   -ms-border-radius: 3px;
   -o-border-radius: 3px;
   border-radius: 3px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   *zoom: 1;
   overflow: hidden;
   position: relative;
@@ -7009,9 +6827,6 @@ a:active .z-label {
   -ms-border-radius: 3px;
   -o-border-radius: 3px;
   border-radius: 3px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   *zoom: 1;
   overflow: hidden;
   position: relative;
@@ -7340,13 +7155,13 @@ input[type="button"].portlet-create-button:focus {
   background-image: -o-linear-gradient(top,#4e6d87,#3a5267);
   background-image: linear-gradient(top,#4e6d87,#3a5267);
 }
-.juiportlet-columns .juiportlet-column {
+.juiportlet-column {
   float: left;
   min-height: 400px;
   height: auto !important;
   height: 400px;
 }
-.juiportlet-columns .juiportlet-column + .juiportlet-column .juiportlet-widget {
+.juiportlet-column + .juiportlet-column .juiportlet-widget {
   margin-right: 0;
 }
 .juiportlet-widget-column1 {
@@ -7357,6 +7172,7 @@ input[type="button"].portlet-create-button:focus {
   width: 100%;
 }
 .juiportlet-widget-column2 {
+  margin: 0;
   padding: 0;
   list-style: none;
 }
@@ -7401,8 +7217,8 @@ input[type="button"].portlet-create-button:focus {
 }
 .juiportlet-widget-head {
   width: 100%;
-  height: 40px;
-  line-height: 40px;
+  height: 43px;
+  line-height: 43px;
   background-color: #ededed;
   background-repeat: repeat-x;
   background-image: -ms-linear-gradient(top,#f6f6f6,#ededed);
@@ -7482,9 +7298,6 @@ input[type="button"].portlet-create-button:focus {
   margin: 0;
   vertical-align: middle;
   position: relative;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
 }
 .type-contacts .icon-empty:before {
   content: "e";
@@ -7495,9 +7308,6 @@ input[type="button"].portlet-create-button:focus {
   margin: 0;
   vertical-align: middle;
   position: relative;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
 }
 .juiportlet-widget-head.type-contacts h3 {
   padding-left: 30px;
@@ -7523,9 +7333,6 @@ input[type="button"].portlet-create-button:focus {
   margin: 0;
   vertical-align: middle;
   position: relative;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
 }
 .type-activities .icon-empty:before {
   content: '\00A5';
@@ -7536,9 +7343,6 @@ input[type="button"].portlet-create-button:focus {
   margin: 0;
   vertical-align: middle;
   position: relative;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
 }
 .type-products .icon-empty:before {
   content: '\003E';
@@ -7549,9 +7353,6 @@ input[type="button"].portlet-create-button:focus {
   margin: 0;
   vertical-align: middle;
   position: relative;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
 }
 .type-socialItems .icon-empty:before {
   content: 'u';
@@ -7562,9 +7363,6 @@ input[type="button"].portlet-create-button:focus {
   margin: 0;
   vertical-align: middle;
   position: relative;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
 }
 .type-missions .icon-empty:before {
   content: 'Q';
@@ -7575,9 +7373,6 @@ input[type="button"].portlet-create-button:focus {
   margin: 0;
   vertical-align: middle;
   position: relative;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
 }
 .type-leads .icon-empty:before {
   content: '.';
@@ -7588,9 +7383,6 @@ input[type="button"].portlet-create-button:focus {
   margin: 0;
   vertical-align: middle;
   position: relative;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
 }
 .type-accounts .icon-empty:before {
   content: 'P';
@@ -7601,9 +7393,6 @@ input[type="button"].portlet-create-button:focus {
   margin: 0;
   vertical-align: middle;
   position: relative;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
 }
 .type-contacts .icon-empty:before {
   content: "e";
@@ -7614,9 +7403,6 @@ input[type="button"].portlet-create-button:focus {
   margin: 0;
   vertical-align: middle;
   position: relative;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
 }
 .type-products .icon-empty:before {
   content: '\00AC';
@@ -7627,9 +7413,6 @@ input[type="button"].portlet-create-button:focus {
   margin: 0;
   vertical-align: middle;
   position: relative;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
 }
 .type-opportunities h3 {
   padding-left: 30px;
@@ -7654,9 +7437,6 @@ input[type="button"].portlet-create-button:focus {
   margin: 0;
   vertical-align: middle;
   position: relative;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
 }
 .type-achievements .icon-empty:before {
   content: ';';
@@ -7667,9 +7447,6 @@ input[type="button"].portlet-create-button:focus {
   margin: 0;
   vertical-align: middle;
   position: relative;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
 }
 .type-gameRewards .icon-empty:before {
   content: '\2205';
@@ -7680,9 +7457,6 @@ input[type="button"].portlet-create-button:focus {
   margin: 0;
   vertical-align: middle;
   position: relative;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
 }
 .type-queues .icon-empty:before {
   content: 'GG';
@@ -7693,9 +7467,6 @@ input[type="button"].portlet-create-button:focus {
   margin: 0;
   vertical-align: middle;
   position: relative;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   letter-spacing: -40px;
 }
 .type-projects .icon-empty:before {
@@ -7707,9 +7478,6 @@ input[type="button"].portlet-create-button:focus {
   margin: 0;
   vertical-align: middle;
   position: relative;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
 }
 #ZurmoLogo {
   background: url(../images/ZurmoLogo.png) left top no-repeat;
@@ -7783,9 +7551,6 @@ input[type="button"].portlet-create-button:focus {
   -ms-border-radius: 3px;
   -o-border-radius: 3px;
   border-radius: 3px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   *zoom: 1;
   overflow: hidden;
   position: relative;
@@ -7889,9 +7654,6 @@ input[type="button"].portlet-create-button:focus {
   -ms-border-radius: 3px;
   -o-border-radius: 3px;
   border-radius: 3px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   *zoom: 1;
   overflow: hidden;
   position: relative;
@@ -8065,9 +7827,6 @@ input[type="button"].portlet-create-button:focus {
   list-style: none;
 }
 .configuration-list li {
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   width: 100%;
   position: relative;
   margin: 0;
@@ -8226,9 +7985,6 @@ table.configuration-list tr:last-child td {
 .multiselect-holder select {
   display: block;
   width: 100%;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   line-height: 150%;
 }
 .multiselect-holder input[type="button"] {
@@ -8663,9 +8419,6 @@ table.configuration-list tr:last-child td {
   -o-border-radius: 1px 0 0 1px;
   border-radius: 1px 0 0 1px;
   padding: 0 10px 0 17px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
 }
 .has-lang-label .errorMessage {
   margin-bottom: 15px;
@@ -8676,16 +8429,8 @@ table.configuration-list tr:last-child td {
   width: 100%;
   margin-bottom: 20px;
 }
-#UsersPageView .panel {
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-}
 #UsersPageView .panel table {
   margin-right: 15px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
 }
 .panelTitle {
   padding-left: 15px;
@@ -8720,9 +8465,6 @@ table.configuration-list tr:last-child td {
   margin: 0;
   vertical-align: middle;
   position: relative;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   top: -2px;
 }
 .UserGroupMembershipView .details-table,
@@ -8762,9 +8504,6 @@ table.configuration-list tr:last-child td {
   -ms-border-radius: 3px;
   -o-border-radius: 3px;
   border-radius: 3px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   *zoom: 1;
   overflow: hidden;
   position: relative;
@@ -8864,9 +8603,6 @@ table.configuration-list tr:last-child td {
   -ms-border-radius: 3px;
   -o-border-radius: 3px;
   border-radius: 3px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   *zoom: 1;
   overflow: hidden;
   position: relative;
@@ -9003,9 +8739,6 @@ table.configuration-list tr:last-child td {
   line-height: 26px;
   padding-right: 10px;
   width: 35%;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
 }
 .mapping-rules > div {
   width: 49.5%;
@@ -9223,9 +8956,6 @@ table.configuration-list tr:last-child td {
   -o-border-radius: 3px;
   border-radius: 3px;
   padding: 10px 10px 10px 10px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   -webkit-box-shadow: inset 0 0 0 1px rgba(204, 204, 204, 0.3) , 1px 1px 1px 0px rgba(153, 153, 153, 0.0);
   -moz-box-shadow: inset 0 0 0 1px rgba(204, 204, 204, 0.3) , 1px 1px 1px 0px rgba(153, 153, 153, 0.0);
   -ms-box-shadow: inset 0 0 0 1px rgba(204, 204, 204, 0.3) , 1px 1px 1px 0px rgba(153, 153, 153, 0.0);
@@ -9811,9 +9541,6 @@ div.wide.form .errorMessage {
   color: #999;
 }
 .file-upload-box {
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   padding-left: 0;
   margin: 0 !important;
   width: 100%;
@@ -9834,9 +9561,6 @@ div.wide.form .errorMessage {
   -ms-border-radius: 3px;
   -o-border-radius: 3px;
   border-radius: 3px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   *zoom: 1;
   overflow: hidden;
   position: relative;
@@ -10036,9 +9760,6 @@ div.wide.form .errorMessage {
   -ms-border-radius: 3px;
   -o-border-radius: 3px;
   border-radius: 3px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   *zoom: 1;
   overflow: hidden;
   position: relative;
@@ -10163,9 +9884,6 @@ div.wide.form .errorMessage {
   float: left;
   width: 15%;
   line-height: 35px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   padding-left: 10px;
   text-align: left;
   cursor: pointer;
@@ -10184,9 +9902,6 @@ div.wide.form .errorMessage {
   width: 15%;
   line-height: 35px;
   text-align: right;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   cursor: pointer;
   position: relative;
 }
@@ -10215,9 +9930,6 @@ div.wide.form .errorMessage {
   text-shadow: #000 0 1px 0;
 }
 .ui-datepicker .ui-datepicker-calendar {
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   width: 100%;
   border-color: #BBB;
   border-style: solid;
@@ -10240,9 +9952,6 @@ div.wide.form .errorMessage {
   display: inline-block;
   width: 100%;
   text-indent: 5px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   padding-top: 3px;
   -webkit-text-shadow: rgba(255,255,255,0.8) 0 1px 0;
   -moz-text-shadow: rgba(255,255,255,0.8) 0 1px 0;
@@ -10314,9 +10023,6 @@ div.wide.form .errorMessage {
   -ms-border-radius: 3px;
   -o-border-radius: 3px;
   border-radius: 3px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   *zoom: 1;
   overflow: hidden;
   position: relative;
@@ -10364,9 +10070,6 @@ div.wide.form .errorMessage {
   -ms-border-radius: 3px;
   -o-border-radius: 3px;
   border-radius: 3px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   *zoom: 1;
   overflow: hidden;
   position: relative;
@@ -10541,9 +10244,6 @@ div.wide.form .errorMessage {
   -o-box-shadow: 0 0 1px 1px rgba(153,153,153,0.3);
   box-shadow: 0 0 1px 1px rgba(153,153,153,0.3);
   width: 100%;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
 }
 .token-input-list input[type="text"] {
   border: none;
@@ -10637,9 +10337,6 @@ div.wide.form .errorMessage {
   list-style-type: none;
 }
 .token-input-dropdown {
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   position: absolute;
   background-color: #fff;
   overflow: hidden;
@@ -10739,9 +10436,6 @@ div.wide.form .errorMessage {
   background-image: -webkit-linear-gradient(top,#ffffff,#F5F5F5);
   background-image: -o-linear-gradient(top,#ffffff,#F5F5F5);
   background-image: linear-gradient(top,#ffffff,#F5F5F5);
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
 }
 .modal-settings .hasCheckBox {
   margin-left: 0;
@@ -10760,9 +10454,6 @@ div.wide.form .errorMessage {
   -ms-border-radius: 3px;
   -o-border-radius: 3px;
   border-radius: 3px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   *zoom: 1;
   overflow: hidden;
   position: relative;
@@ -10873,9 +10564,6 @@ div.wide.form .errorMessage {
   float: left;
 }
 .sortable-panel {
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   color: #282A76;
   height: auto;
   display: block;
@@ -10899,9 +10587,6 @@ div.wide.form .errorMessage {
 }
 .cell-element {
   color: #282A76;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   text-align: center;
   margin: 0px;
   padding: 0px;
@@ -10974,20 +10659,11 @@ div.wide.form .errorMessage {
   line-height: 30px;
   float: left;
   width: 100%;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
 }
 .layout-single-column.droppable-cell-container {
   width: 90%;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
 }
 .layout-double-column {
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   margin: 15px 5px;
   line-height: 30px;
   width: 45%;
@@ -11313,9 +10989,6 @@ div.wide.form .errorMessage {
   -ms-border-radius: 3px;
   -o-border-radius: 3px;
   border-radius: 3px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   *zoom: 1;
   overflow: hidden;
   position: relative;
@@ -11861,9 +11534,6 @@ div.wide.form .errorMessage {
   margin: 0;
   vertical-align: middle;
   position: relative;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   top: -2px;
 }
 .icon-leaderboard-monthly:before {
@@ -11875,9 +11545,6 @@ div.wide.form .errorMessage {
   margin: 0;
   vertical-align: middle;
   position: relative;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   top: -2px;
 }
 .icon-leaderboard-overall:before {
@@ -11889,9 +11556,6 @@ div.wide.form .errorMessage {
   margin: 0;
   vertical-align: middle;
   position: relative;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   top: -2px;
 }
 .points {
@@ -12308,9 +11972,6 @@ div.wide.form .errorMessage {
   padding-right: 10px !important;
 }
 .percentHolder {
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   display: inline-block;
   border: 1px solid #ccc;
   -webkit-box-shadow: 0 0 8px 0 rgba(153,153,153,0.5);
@@ -12338,9 +11999,6 @@ div.wide.form .errorMessage {
   color: #282A76;
   position: relative;
   line-height: 16px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   height: 100%;
   padding: 2px 0;
   display: inline-block;
@@ -12733,9 +12391,6 @@ a.close-ModalGameNotification.simple-link {
   width: 100%;
   height: auto;
   background: rgba(255,255,255,0.7);
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
 }
 .gravatar-container:hover span {
   display: block;
@@ -12867,9 +12522,6 @@ a.dashboard-link .z-label {
 }
 .help-section {
   border-top: 1px solid #fff;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   padding: 30px 0 0 15px;
   width: 50%;
   float: left;
@@ -13358,9 +13010,6 @@ a.dashboard-link .z-label {
 #CommentInlineEditForModelView,
 #CommentsForRelatedModelView {
   max-width: 600px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
 }
 #ModelDetailsSummaryView .wide.form,
 #CommentInlineEditForModelView .wide.form,
@@ -13434,9 +13083,6 @@ a.dashboard-link .z-label {
 }
 #ConversationsPageView ~ .token-input-dropdown {
   min-width: 0 !important;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
 }
 .unread td,
 .unread td a {
@@ -14018,9 +13664,6 @@ a.user-link {
 .hasTree {
   width: 25%;
   float: left;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   padding: 8px 0;
   min-height: 500px;
   max-height: 600px;
@@ -14037,9 +13680,6 @@ a.user-link {
   margin-top: 30%;
 }
 .dynamic-droppable-area {
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   width: 75%;
   float: right;
   padding-left: 15px;
@@ -14086,9 +13726,6 @@ a.user-link {
   -ms-transition: all 0.25s ease-out;
   -o-transition: all 0.25s ease-out;
   transition: all 0.25s ease-out;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   width: 100%;
   height: 100%;
   display: block;
@@ -14109,9 +13746,6 @@ a.user-link {
 }
 .drop-zone div {
   padding-top: 35%;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   display: block;
   width: 100%;
   height: 100%;
@@ -14143,9 +13777,6 @@ a.user-link {
   -o-border-radius: 3px;
   border-radius: 3px;
   padding: 10px 30px 10px 10px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   -webkit-box-shadow: inset 0 0 0 1px rgba(204, 204, 204, 0.3) , 1px 1px 1px 0px rgba(153, 153, 153, 0.15);
   -moz-box-shadow: inset 0 0 0 1px rgba(204, 204, 204, 0.3) , 1px 1px 1px 0px rgba(153, 153, 153, 0.15);
   -ms-box-shadow: inset 0 0 0 1px rgba(204, 204, 204, 0.3) , 1px 1px 1px 0px rgba(153, 153, 153, 0.15);
@@ -14259,9 +13890,6 @@ a.user-link {
 }
 .dynamic-sub-row {
   *zoom: 1;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   position: relative;
   width: 100%;
   display: block;
@@ -14328,38 +13956,23 @@ a.user-link {
   float: left;
   line-height: 26px;
   width: 25%;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
 }
 .dynamic-action-attribute-should-set-value,
 .dynamic-row-operator {
   float: left;
   width: 20%;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   padding-left: 15px;
 }
 .dynamic-action-attribute-type-and-value-wrapper,
 .dynamic-row-field {
   float: right;
   width: 75%;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
 }
 .value-data {
   float: right;
   width: 80%;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
 }
 .report-runtime-availability {
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   min-width: 145px;
   position: relative;
   display: block;
@@ -14456,9 +14069,6 @@ a.user-link {
   margin-top: 0;
 }
 #RuntimeFiltersForPortletView .view-toolbar-container {
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   width: 100%;
 }
 .ReportResultsComponentForPortletView {
@@ -14557,9 +14167,6 @@ a.user-link {
 }
 .hasDrillDownContent {
   padding: 0 5px 5px 5px !important;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   background-color: #555;
   background-repeat: repeat-x;
   background-image: -ms-linear-gradient(top,#333,#555);
@@ -14611,9 +14218,6 @@ a.user-link {
   margin-bottom: 15px;
   width: 50%;
   float: left;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   padding-right: 5px;
 }
 .first-series-and-range-area > div + div,
@@ -14784,11 +14388,6 @@ a.user-link {
 .EmailMessages .panel {
   width: 100% !important;
 }
-.email-message-recipient-rows {
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-}
 .email-message-recipient-rows .hasDropDown {
   float: left;
   min-width: 20%;
@@ -14838,9 +14437,6 @@ a.user-link {
   margin: 0 0 15px 0;
 }
 .all-related-field {
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   float: left;
   width: 80%;
   padding-left: 10px;
@@ -14858,9 +14454,6 @@ a.user-link {
   float: left;
 }
 .static-address-field {
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   float: left;
   width: 80%;
 }
@@ -14885,9 +14478,6 @@ a.user-link {
   width: 80% !important;
   padding-left: 15px;
   *zoom: 1;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
 }
 .zero-components-view.TimeTrigger:before,
 .zero-components-view.TimeTrigger:after,
@@ -14912,9 +14502,6 @@ a.user-link {
 .time-trigger-attribute-selector-container {
   width: 20%;
   float: left;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   min-height: 300px;
 }
 .dynamic-row-duration {
@@ -14922,9 +14509,6 @@ a.user-link {
   width: 75%;
   margin-left: 25%;
   margin-top: 10px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   padding-left: 15px;
 }
 .dynamic-row-duration > div {
@@ -14960,9 +14544,6 @@ a.user-link {
   width: 20%;
   float: left !important;
   *zoom: 1;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
 }
 .ComponentForWorkflowWizardView .add-email-message-button-container:before,
 .ComponentForWorkflowWizardView .add-email-message-button-container:after,
@@ -14978,9 +14559,6 @@ a.user-link {
 .ComponentForWorkflowWizardView .droppable-dynamic-rows-container,
 .ComponentForWorkflowWizardView .zero-components-view {
   float: left !important;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
 }
 .ComponentForWorkflowWizardView .Actions.droppable-dynamic-rows-container,
 .ComponentForWorkflowWizardView .Actions.zero-components-view,
@@ -15015,9 +14593,6 @@ a.user-link {
   width: 20%;
   float: left !important;
   *zoom: 1;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   min-height: 300px;
 }
 .workflow-order-module-selector-container:before,
@@ -15032,9 +14607,6 @@ a.user-link {
 .WorkflowRulesOrder,
 .no-workflows-to-order-view {
   float: right !important;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   width: 80% !important;
   padding-left: 15px;
 }
@@ -15080,9 +14652,6 @@ a.user-link {
   -o-box-shadow: inset 0 0 5px 0 #ccc;
   box-shadow: inset 0 0 5px 0 #ccc;
   padding: 3px 2px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   -ms-border-radius: 3px;
@@ -15118,9 +14687,6 @@ a.user-link {
 }
 #MashableInboxActionBarForViews .search-view-0 {
   padding: 0 15px 15px 15px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
 }
 #MashableInboxActionBarForViews .list-view-items-summary-clone {
   margin-top: 5px;
@@ -15230,9 +14796,6 @@ a.user-link {
 .email-template-content {
   position: relative;
   margin-bottom: 15px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
 }
 .tabs-container > .tab,
 .email-template-content > .tab {
@@ -15245,9 +14808,6 @@ a.user-link {
   padding: 0;
   border: 1px solid #dfdfdf;
   border-top: none;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   background: #fefefe;
 }
 .tabs-container > .tab label,
@@ -15297,9 +14857,6 @@ a.user-link {
   width: 100%;
   height: 100%;
   margin: 0;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
 }
 .autoresponder-combined-content .spinner,
 .email-template-combined-content .spinner {
@@ -15324,9 +14881,6 @@ a.user-link {
   height: 100%;
   background: rgba(255,255,255,0.8);
   margin: 0;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
 }
 .tabs-nav {
   border-bottom: 1px solid #dfdfdf;
@@ -15408,9 +14962,6 @@ a.user-link {
   clear: both;
 }
 #marketing-list-member-configuration-form input[type="text"] {
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   position: relative;
   left: -3px;
   width: 219px;
@@ -15477,9 +15028,6 @@ a.user-link {
   display: block;
 }
 #marketing-list-member-select-contact-or-report-form input[type="text"] {
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   width: 300px;
   margin: 0 0 0 23px;
   font-style: italic;
@@ -15534,9 +15082,6 @@ a.user-link {
   background: url(../images/search-bar-loopa.png) left top no-repeat;
 }
 #MarketingListMembersConfigurationForm_filteredBySearchTerm_area input[type="text"] {
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   margin: 0 0 0 23px;
   text-indent: 5px;
   line-height: 23px;
@@ -15625,9 +15170,6 @@ a.user-link {
   font-style: italic;
 }
 .autoresponder-stats {
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   padding-right: 5px;
   width: 20%;
   float: left;
@@ -15713,18 +15255,12 @@ a + .autoresponder-stats {
   -ms-box-shadow: inset 0 1px 1px 0 rgba(200, 200, 200, 0.4), 0 1px 0 0 #111;
   -o-box-shadow: inset 0 1px 1px 0 rgba(200, 200, 200, 0.4), 0 1px 0 0 #111;
   box-shadow: inset 0 1px 1px 0 rgba(200, 200, 200, 0.4), 0 1px 0 0 #111;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   padding: 1px 0 0 0;
 }
 .module-intro-steps > div:first-child {
   margin-left: 0;
 }
 .module-intro-steps h3 {
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   color: #fff !important;
   font-size: 14px;
   padding: 34px 0 0 10px;
@@ -15755,9 +15291,6 @@ a + .autoresponder-stats {
   margin-top: -5px;
 }
 .module-intro-steps p {
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   min-height: 149px;
   padding: 10px 10px 10px 10px;
   margin-left: 85px;
@@ -15899,9 +15432,6 @@ a + .autoresponder-stats {
   border-right-color: #d7d7d7;
   border-radius: 4px;
   background: url(../images/view-toolbar-gradient-darker.png) left bottom repeat-x;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   -webkit-box-shadow: inset 0 0 1px 1px #efefef;
   -moz-box-shadow: inset 0 0 1px 1px #efefef;
   -ms-box-shadow: inset 0 0 1px 1px #efefef;
@@ -15910,9 +15440,6 @@ a + .autoresponder-stats {
 }
 .import-item-stage-status,
 .email-recipient-stage-status {
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   text-align: center;
   float: left;
   margin-left: 2%;
@@ -16320,9 +15847,6 @@ a + .autoresponder-stats {
 }
 #kanban-board {
   *zoom: 1;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   display: table;
   vertical-align: top;
   height: 100%;
@@ -16338,9 +15862,6 @@ a + .autoresponder-stats {
 }
 .drop-zone-container {
   padding: 37px 2px 2px 2px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   position: absolute;
   left: 0;
   top: 0;
@@ -16348,16 +15869,10 @@ a + .autoresponder-stats {
   width: 100%;
 }
 .drop-zone {
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   position: relative;
   border: 2px dashed #282A76;
 }
 .kanban-column {
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   white-space: normal;
   display: table-cell;
   vertical-align: top;
@@ -16399,9 +15914,6 @@ a + .autoresponder-stats {
   -o-border-radius: 3px;
   border-radius: 3px;
   padding: 5px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   -webkit-box-shadow: inset 0 0 0 1px rgba(204, 204, 204, 0.3) , 1px 1px 1px 0px rgba(153, 153, 153, 0.15);
   -moz-box-shadow: inset 0 0 0 1px rgba(204, 204, 204, 0.3) , 1px 1px 1px 0px rgba(153, 153, 153, 0.15);
   -ms-box-shadow: inset 0 0 0 1px rgba(204, 204, 204, 0.3) , 1px 1px 1px 0px rgba(153, 153, 153, 0.15);
@@ -16679,9 +16191,6 @@ a + .autoresponder-stats {
   box-shadow: inset 0 0 2px 0 #ccc;
   width: 100%;
   padding: 5px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   -webkit-border-radius: 2px;
   -moz-border-radius: 2px;
   -ms-border-radius: 2px;
@@ -16861,9 +16370,6 @@ a + .autoresponder-stats {
 .sliding-panel {
   display: none;
   width: 100%;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   position: relative;
 }
 div.showing-panel {
@@ -16998,9 +16504,6 @@ div.showing-panel {
   border-right-color: #d7d7d7;
   border-radius: 4px;
   background: url(../images/view-toolbar-gradient-darker.png) left bottom repeat-x;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   -webkit-box-shadow: inset 0 0 1px 1px #efefef, 0 0 9px 5px rgba(153, 153, 153, 0.12);
   -moz-box-shadow: inset 0 0 1px 1px #efefef, 0 0 9px 5px rgba(153, 153, 153, 0.12);
   -ms-box-shadow: inset 0 0 1px 1px #efefef, 0 0 9px 5px rgba(153, 153, 153, 0.12);
@@ -17010,9 +16513,6 @@ div.showing-panel {
 #business-card-buttons a {
   text-align: center;
   width: auto;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   position: relative;
   border-left: 1px solid #bababa;
   text-shadow: #fff 0 1px 0;
@@ -17310,9 +16810,6 @@ div.special-pager .hidden.next:after {
   display: none !important;
 }
 #sliding-panel-toggle {
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   width: 100%;
   background: #fff url(../images/view-toolbar-gradient.png) left bottom repeat-x;
   -webkit-box-shadow: inset 0 1px 0 #DFDFDF;
@@ -17336,9 +16833,6 @@ div.special-pager .hidden.next:after {
   border-right-color: #d7d7d7;
   border-radius: 4px;
   background: url(../images/view-toolbar-gradient-darker.png) left bottom repeat-x;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   -webkit-box-shadow: inset 0 0 1px 1px #efefef;
   -moz-box-shadow: inset 0 0 1px 1px #efefef;
   -ms-box-shadow: inset 0 0 1px 1px #efefef;
@@ -17498,9 +16992,6 @@ div.special-pager .hidden.next:after {
   margin: 0 0 0 0;
   position: relative;
   top: -1px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
 }
 .pillbox {
   position: relative;
@@ -17540,9 +17031,6 @@ div.special-pager .hidden.next:after {
   margin: 0 0 0 0;
   position: relative;
   top: -1px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
 }
 .pillbox .active a,
 .pillbox .active span,
@@ -17723,9 +17211,6 @@ div.special-pager .hidden.next:after {
   margin: 0 0 0 0;
   position: relative;
   top: -1px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
 }
 .button-action-trigger .icon-trigger {
   border-left: none !important;
@@ -18037,11 +17522,6 @@ body .overlay-view .after-form-details-content a:hover {
   height: 100%;
   display: table;
   overflow: hidden;
-}
-#gd-container * {
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
 }
 #gd-centralizer {
   display: table-cell;
@@ -19061,9 +18541,6 @@ body .overlay-view .after-form-details-content a:hover {
   -o-border-radius: 3px;
   border-radius: 3px;
   background: #f5f5f5;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
 }
 .check-list-item.ui-sortable-helper .task-check-item-actions {
   visibility: hidden !important;
@@ -19094,9 +18571,6 @@ body .overlay-view .after-form-details-content a:hover {
   color: #a7a7a7;
 }
 .editable-task-input {
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   padding-left: 22px;
 }
 .editable-task-input input {
@@ -19125,9 +18599,6 @@ body .overlay-view .after-form-details-content a:hover {
   box-shadow: 0 0 1px 1px rgba(153,153,153,0.3);
   zoom: 1;
   filter: progid:DXImageTransform.Microsoft.Shadow(Color=#bfbfbf,Strength=1,Direction=0), progid:DXImageTransform.Microsoft.Shadow(Color=#bfbfbf,Strength=1,Direction=90), progid:DXImageTransform.Microsoft.Shadow(Color=#bfbfbf,Strength=1,Direction=180), progid:DXImageTransform.Microsoft.Shadow(Color=#bfbfbf,Strength=1,Direction=270);
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
 }
 .editable-task-input input:focus {
   -webkit-box-shadow: 0 0 1px 1px #282A76;
@@ -19145,9 +18616,6 @@ body .overlay-view .after-form-details-content a:hover {
   -o-border-radius: 3px;
   border-radius: 3px;
   background: rgba(236,240,241,0.25) url(../images/stripes.png) left top repeat;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   display: table;
   width: 100%;
 }
@@ -19177,9 +18645,6 @@ body .overlay-view .after-form-details-content a:hover {
   zoom: 1;
   filter: progid:DXImageTransform.Microsoft.Shadow(Color=#bfbfbf,Strength=1,Direction=0), progid:DXImageTransform.Microsoft.Shadow(Color=#bfbfbf,Strength=1,Direction=90), progid:DXImageTransform.Microsoft.Shadow(Color=#bfbfbf,Strength=1,Direction=180), progid:DXImageTransform.Microsoft.Shadow(Color=#bfbfbf,Strength=1,Direction=270);
   width: 100%;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
 }
 #task-check-item-inline-edit-form input:focus {
   -webkit-box-shadow: 0 0 1px 1px #282A76;
@@ -19219,9 +18684,6 @@ body .overlay-view .after-form-details-content a:hover {
   -o-border-radius: 3px;
   border-radius: 3px;
   background: rgba(236,240,241,0.25) url(../images/stripes.png) left top repeat;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
 }
 .task-activity #CommentList {
   margin: 0 0 0 0;
@@ -19280,9 +18742,6 @@ body .overlay-view .after-form-details-content a:hover {
   font-style: italic;
 }
 .project-stats {
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   padding-right: 5px;
   width: 20%;
   float: left;
@@ -19381,9 +18840,6 @@ a + .project-stats {
     padding-top: 0;
   }
   #LoginPageView > div {
-    -moz-box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box;
     padding: 10px;
     display: -ms-flex;
     display: -moz-flex;

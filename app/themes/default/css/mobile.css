@@ -45,6 +45,11 @@
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
+.border-box-sizing {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
 .cf,
 .clearfix {
   *zoom: 1;
@@ -140,9 +145,6 @@ body > div {
   padding-top: 0;
 }
 #LoginPageView > div {
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   padding: 10px;
   display: -ms-flex;
   display: -moz-flex;
@@ -519,9 +521,6 @@ body > div {
   position: fixed;
   padding: 0 0 0 0;
   z-index: 0;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   float: none;
 }
 .high-z-index {
@@ -542,9 +541,6 @@ body > div {
   -khtml-opacity: 0;
   -moz-opacity: 0;
   opacity: 0;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   left: 0;
   width: auto;
   height: 100%;
@@ -594,9 +590,6 @@ body > div {
   -ms-text-shadow: none !important;
   -o-text-shadow: none !important;
   text-shadow: none !important;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
 }
 #MenuView > ul > li > a em:before {
   content: "z";
