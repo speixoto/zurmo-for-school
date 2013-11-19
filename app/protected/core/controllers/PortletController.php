@@ -142,8 +142,8 @@
                 $modelClassName = Yii::app()->findModule($portlet->params["relationModuleId"])->getPrimaryModelName();
                 $portlet->params['relationModel'] = $modelClassName::getById((int)$portlet->params['relationModelId']);
             }
-            $portletView = $portlet->getView();
-            $view        = new AjaxPageView($portletView);
+            $view = new AjaxPageView(new PortletRefreshView($portlet, $uniqueLayoutId, $this->getModule()->getId(),
+                                                            (bool)$portletsAreRemovable));
             echo $view->render();
         }
     }
