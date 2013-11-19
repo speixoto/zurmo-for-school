@@ -74,18 +74,27 @@
             {
                 $originalUser               = Yii::app()->user->userModel;
                 Yii::app()->user->userModel = BaseControlUserConfigUtil::getUserToRunAs();
-                foreach (WorkflowMessageInQueue::getModelsToProcess(self::$pageSize) as $workflowMessageInQueue)
+                $processedModelsCount       = 0;
+                foreach (WorkflowMessageInQueue::getModelsToProcess(self::$pageSize + 1) as $workflowMessageInQueue)
                 {
-                    try
+                    if($processedModelsCount < self::$pageSize)
                     {
-                        $model = $this->resolveModel($workflowMessageInQueue);
-                        $this->resolveSavedWorkflowIsValid($workflowMessageInQueue);
-                        $this->processWorkflowMessageInQueue($workflowMessageInQueue, $model);
+                        try
+                        {
+                            $model = $this->resolveModel($workflowMessageInQueue);
+                            $this->resolveSavedWorkflowIsValid($workflowMessageInQueue);
+                            $this->processWorkflowMessageInQueue($workflowMessageInQueue, $model);
+                        }
+                        catch (NotFoundException $e)
+                        {
+                        }
+                        $workflowMessageInQueue->delete();
+                        $processedModelsCount++;
                     }
-                    catch (NotFoundException $e)
+                    else
                     {
+                        Yii::app()->jobQueue->add('WorkflowMessageInQueue', 5);
                     }
-                    $workflowMessageInQueue->delete();
                 }
                 Yii::app()->user->userModel = $originalUser;
                 return true;

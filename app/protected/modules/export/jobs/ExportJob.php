@@ -123,6 +123,10 @@
                     }
                 }
                 Yii::app()->user->userModel = $originalUser;
+                if ($this->hasReachedMaximumProcessingCount())
+                {
+                    Yii::app()->jobQueue->add('Export', 5);
+                }
             }
             $this->processEndMemoryUsageMessage((int)$startTime);
             return true;

@@ -74,20 +74,29 @@
             {
                 $originalUser               = Yii::app()->user->userModel;
                 Yii::app()->user->userModel = BaseControlUserConfigUtil::getUserToRunAs();
-                foreach (ByTimeWorkflowInQueue::getModelsToProcess(self::$pageSize) as $byTimeWorkflowInQueue)
+                $processedModelsCount       = 0;
+                foreach (ByTimeWorkflowInQueue::getModelsToProcess(self::$pageSize + 1) as $byTimeWorkflowInQueue)
                 {
-                    try
+                    if($processedModelsCount < self::$pageSize)
                     {
-                        $model = $this->resolveModel($byTimeWorkflowInQueue);
-                        $this->resolveSavedWorkflowIsValid($byTimeWorkflowInQueue);
-                        $this->processByTimeWorkflowInQueue($byTimeWorkflowInQueue, $model);
+                        try
+                        {
+                            $model = $this->resolveModel($byTimeWorkflowInQueue);
+                            $this->resolveSavedWorkflowIsValid($byTimeWorkflowInQueue);
+                            $this->processByTimeWorkflowInQueue($byTimeWorkflowInQueue, $model);
+                        }
+                        catch (NotFoundException $e)
+                        {
+                            WorkflowUtil::handleProcessingException($e,
+                                'application.modules.workflows.jobs.ByTimeWorkflowInQueueJob.run');
+                        }
+                        $byTimeWorkflowInQueue->delete();
+                        $processedModelsCount++;
                     }
-                    catch (NotFoundException $e)
+                    else
                     {
-                        WorkflowUtil::handleProcessingException($e,
-                            'application.modules.workflows.jobs.ByTimeWorkflowInQueueJob.run');
+                        Yii::app()->jobQueue->add('ByTimeWorkflowInQueue', 5);
                     }
-                    $byTimeWorkflowInQueue->delete();
                 }
                 Yii::app()->user->userModel = $originalUser;
                 return true;

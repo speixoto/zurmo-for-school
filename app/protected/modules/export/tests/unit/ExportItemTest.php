@@ -34,61 +34,52 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class ZurmoBaseTest extends BaseTest
+    /**
+    * Test ExportItemToCsvFileUtil functions.
+    */
+    class ExportItemTest extends ZurmoBaseTest
     {
-        public static $activateDefaultLanguages = false;
-
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
-            ZurmoDatabaseCompatibilityUtil::createActualPermissionsCacheTable();
-            ZurmoDatabaseCompatibilityUtil::dropStoredFunctionsAndProcedures();
-            PermissionsCache::forgetAll();
-            RightsCache::forgetAll();
-            PoliciesCache::forgetAll();
-            Currency::resetCaches();  //php only cache
-            $activitiesObserver = new ActivitiesObserver();
-            $activitiesObserver->init(); //runs init();
-            $conversationsObserver = new ConversationsObserver();
-            $conversationsObserver->init(); //runs init();
-            Yii::app()->gameHelper;
-            Yii::app()->gamificationObserver; //runs init();
-            Yii::app()->gameHelper->resetDeferredPointTypesAndValuesByUserIdToAdd();
-            Yii::app()->emailHelper->sendEmailThroughTransport = false;
-            Yii::app()->jobQueue->deleteAll();
+            $super = SecurityTestHelper::createSuperAdmin();
         }
 
-        public function setUp()
+        public function testCreateAndEditExportItem()
         {
-            parent::setUp();
-            Yii::app()->gameHelper->resetDeferredPointTypesAndValuesByUserIdToAdd();
-        }
+            $idsToExport = array(1,2,3);
+            $exportItem = new ExportItem();
+            $exportItem->isCompleted = 0;
+            $exportItem->exportFileType = 'csv';
+            $exportItem->exportFileName = 'test';
+            $exportItem->modelClassName = 'Account';
+            $exportItem->serializedData = serialize($idsToExport);
+            $this->assertEquals(0, count(Yii::app()->jobQueue->getAll()));
+            $this->assertTrue($exportItem->save());
+            $queuedJobs = Yii::app()->jobQueue->getAll();
+            $this->assertEquals(1, count($queuedJobs));
+            $this->assertEquals('Export', $queuedJobs[0][0]);
 
-        protected static function startOutputBuffer()
-        {
-            ob_start();
-        }
+            //Now edit existing exportItem. The queuedJobs should not change
+            $exportItemId = $exportItem->id;
+            $exportItem->forget();
+            $exportItem   = ExportItem::getById($exportItemId);
+            $this->assertTrue($exportItem->save());
+            $this->assertEquals(1, count($queuedJobs));
+            $this->assertEquals('Export', $queuedJobs[0][0]);
 
-        protected static function endAndGetOutputBuffer()
-        {
-            $content = ob_get_contents();
-            ob_end_clean();
-            self::cleanUpOutputBuffer();
-            return $content;
-        }
-
-        protected function endPrintOutputBufferAndFail()
-        {
-            echo $this->endAndGetOutputBuffer();
-            $this->fail();
-        }
-
-        private static function cleanUpOutputBuffer()
-        {
-            while (count(ob_get_status(true)) > 1)
-            {
-                ob_end_clean();
-            }
+            //Now create a new export item that is already complete, should not create a queue job.
+            $idsToExport = array(1,2,3);
+            $exportItem = new ExportItem();
+            $exportItem->isCompleted = 1;
+            $exportItem->exportFileType = 'csv';
+            $exportItem->exportFileName = 'test';
+            $exportItem->modelClassName = 'Account';
+            $exportItem->serializedData = serialize($idsToExport);
+            $this->assertTrue($exportItem->save());
+            $queuedJobs = Yii::app()->jobQueue->getAll();
+            $this->assertEquals(1, count($queuedJobs));
+            $this->assertEquals('Export', $queuedJobs[0][0]);
         }
     }
 ?>
