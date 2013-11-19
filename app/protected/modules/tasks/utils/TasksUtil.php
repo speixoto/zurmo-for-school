@@ -237,7 +237,7 @@
             assert('is_string($sourceId) || $sourceId == null');
             if ($sourceId != null)
             {
-                return "$.fn.yiiGridView.update('{$sourceId}');";
+                return "$('#{$sourceId}').yiiGridView('update');";
             }
         }
 
@@ -440,6 +440,7 @@
          */
         public static function getKanbanSubscriptionScript($url, $sourceClass, $targetClass, $link)
         {
+            // Begin Not Coding Standard
             return "$('body').on('click', '." . $sourceClass . "', function()
                                                     {
                                                         var element     = $(this).parent().parent().parent();
@@ -467,6 +468,7 @@
                                                         );
                                                     }
                                                 );";
+            // End Not Coding Standard
         }
 
         /**
@@ -545,8 +547,8 @@
         {
             assert('is_string($subscribeLinkClass)');
             assert('is_string($unsubscribeLinkClass)');
-            if($task->owner->id == Yii::app()->user->userModel->id
-                        || $task->requestedByUser->id == Yii::app()->user->userModel->id)
+            if ($task->owner->id == Yii::app()->user->userModel->id ||
+                            $task->requestedByUser->id == Yii::app()->user->userModel->id)
             {
                 return null;
             }
@@ -1086,7 +1088,6 @@
                             });
                           }
                         );";
-
         }
 
         /**

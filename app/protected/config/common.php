@@ -95,6 +95,7 @@
                 'class' => 'application.core.components.DataEnhancer',
             ),
             'db' => array(
+                'autoConnect'    => false,
                 'emulatePrepare' => true,
                 'charset'        => 'utf8',
             ),

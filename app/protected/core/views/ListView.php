@@ -214,6 +214,7 @@
                 'pager'                => $this->getCGridViewPagerParams(),
                 'beforeAjaxUpdate'     => $this->getCGridViewBeforeAjaxUpdate(),
                 'afterAjaxUpdate'      => $this->getCGridViewAfterAjaxUpdate(),
+                'ajaxUrl'              => $this->getCGridViewAjaxUrl(),
                 'columns'              => $columns,
                 'nullDisplay'          => '&#160;',
                 'pagerCssClass'        => static::getPagerCssClass(),
@@ -397,6 +398,11 @@
                         jQuery.globalEval($data.filter("script").last().text());
                     }';
             // End Not Coding Standard
+        }
+
+        protected function getCGridViewAjaxUrl()
+        {
+            return null;
         }
 
         /**
