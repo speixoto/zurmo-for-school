@@ -67,6 +67,11 @@
                     {
                         throw new FailedToSaveModelException("Unable to save campaign");
                     }
+                    //todo: signal to run the queue message job
+                }
+                else
+                {
+                    //todo: signal to run job again since there might be a campaign we didn't fully process
                 }
             }
             return true;

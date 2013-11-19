@@ -144,5 +144,11 @@
             $where = RedBeanModelDataProvider::makeWhere('WorkflowMessageInQueue', $searchAttributeData, $joinTablesAdapter);
             return self::getSubset($joinTablesAdapter, null, $pageSize, $where, null);
         }
+
+        protected function afterSave()
+        {
+            InQueueUtil::resolveToAddJobToQueueAfterSaveOfModel($this, 'WorkflowMessageInQueue');
+            parent::afterSave();
+        }
     }
 ?>

@@ -188,5 +188,11 @@
             $where = RedBeanModelDataProvider::makeWhere('ByTimeWorkflowInQueue', $searchAttributeData, $joinTablesAdapter);
             return self::getSubset($joinTablesAdapter, null, $pageSize, $where, null);
         }
+
+        protected function afterSave()
+        {
+            InQueueUtil::resolveToAddJobToQueueAfterSaveOfModel($this, 'ByTimeWorkflowInQueue');
+            parent::afterSave();
+        }
     }
 ?>
