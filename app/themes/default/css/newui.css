@@ -21027,7 +21027,7 @@ a.close-ModalGameNotification.simple-link {
 }
 .reward-name {
   margin-bottom: 5px;
-  display: inline-block;
+  display: block;
 }
 .reward-name span {
   font-weight: normal;
