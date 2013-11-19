@@ -115,16 +115,16 @@
             }
             else
             {
-                try
-                {
-                    $this->redirect(Yii::app()->createUrl('tasks/default/list',
-                        array('id' => $task->id, 'openToTaskId' => $task->id)));
-                }
-                catch (NotFoundException $e)
-                {
-                    //Something is missing or deleted. Fallback to home page
-                    $this->redirect(Yii::app()->createUrl('home/default/index'));
-                }
+//                try
+//                {
+//                    $this->redirect(Yii::app()->createUrl('tasks/default/list',
+//                        array('id' => $task->id, 'openToTaskId' => $task->id)));
+//                }
+//                catch (NotFoundException $e)
+//                {
+//                    //Something is missing or deleted. Fallback to home page
+//                    $this->redirect(Yii::app()->createUrl('home/default/index'));
+//                }
             }
         }
 
@@ -154,16 +154,16 @@
             }
             else
             {
-                try
-                {
-                    $this->redirect(Yii::app()->createUrl('tasks/default/list',
-                        array('openToTaskId' => $task->id)));
-                }
-                catch (NotFoundException $e)
-                {
-                    //Something is missing or deleted. Fallback to home page
-                    $this->redirect(Yii::app()->createUrl('home/default/index'));
-                }
+//                try
+//                {
+//                    $this->redirect(Yii::app()->createUrl('tasks/default/list',
+//                        array('openToTaskId' => $task->id)));
+//                }
+//                catch (NotFoundException $e)
+//                {
+//                    //Something is missing or deleted. Fallback to home page
+//                    $this->redirect(Yii::app()->createUrl('home/default/index'));
+//                }
             }
         }
 
