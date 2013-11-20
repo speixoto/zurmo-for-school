@@ -1,0 +1,980 @@
+<!DOCTYPE html><!--[if IE 8]>
+<html class="zurmo ie8" lang="en"><![endif]--><!--[if gt IE 8]><!-->
+<html class="zurmo" lang="en"><!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <link rel="apple-touch-icon" sizes="144x144" href="/Zurmo/app/themes/default/images/touch-icon-iphone4.png"/>
+    <style>@font-face {
+        font-family: 'zurmo_gamification_symbly_rRg';
+        src: url('/Zurmo/app/protected/core/views/assets/zurmogamificationsymblyregular-regular-webfont.eot');
+        src: url('/Zurmo/app/protected/core/views/assets/zurmogamificationsymblyregular-regular-webfont.eot?#iefix') format('embedded-opentype'),
+             url('/Zurmo/app/protected/core/views/assets/zurmogamificationsymblyregular-regular-webfont.woff') format('woff'),
+             url('/Zurmo/app/protected/core/views/assets/zurmogamificationsymblyregular-regular-webfont.ttf') format('truetype'),
+             url('/Zurmo/app/protected/core/views/assets/zurmogamificationsymblyregular-regular-webfont.svg#zurmo_gamification_symbly_rRg') format('svg');
+        font-weight: normal;
+        font-style: normal;
+        unicode-range: U+00-FFFF;
+    }</style>
+    <link rel="shortcut icon" href="/Zurmo/app/themes/default/ico/favicon.ico"/>
+    <link rel="stylesheet" type="text/css" href="/Zurmo/app/themes/default/css/keyframes.css"/>
+    <link rel="stylesheet" type="text/css" href="/Zurmo/app/themes/default/css/zurmo.css"/>
+    <link rel="stylesheet" type="text/css" href="/Zurmo/app/assets/569e74c9/jquery-ui-timepicker-addon.css"/>
+    <title>ZurmoCRM - Contacts</title></head>
+<body class="blue">
+<div id="ContactsPageView" class="ZurmoDefaultPageView ZurmoPageView PageView">
+<div id="ZurmoDefaultView">
+<div class="GridView">
+<div id="HeaderView"><!-- Start of themes/default/templates/HeaderView.xhtml -->
+    <div id="MainLogo" class="zurmo-logo"></div>
+    <div class="GridView">
+        <div id="HeaderLinksView">
+            <div class="clearfix"><a href="#" id="nav-trigger" title="Toggle Navigation">&rsaquo;</a>
+
+                <div id="corp-logo"><a href="/Zurmo/app/index.php/home/default"><img
+                        src="/Zurmo/app/themes/default/images/Zurmo_logo.png" alt="Zurmo Logo" height="32" width="107"/></a><span>Demo Company Inc.</span>
+                </div>
+                <div id="user-toolbar" class="clearfix">
+                    <div id="header-game-dashboard-link-wrapper" class="user-menu-item"><a
+                            id="header-game-dashboard-link" href="#">∂</a></div>
+                    <ul id="user-header-menu" class="user-menu-item nav">
+                        <li class="parent last"><a href="javascript:void(0);"><span>super</span></a>
+                            <ul>
+                                <li><a href="/Zurmo/app/index.php/users/default/profile"><span>My Profile</span></a>
+                                </li>
+                                <li>
+                                    <a href="/Zurmo/app/index.php/gamification/default/leaderboard"><span>Leaderboard</span></a>
+                                </li>
+                                <li>
+                                    <a href="/Zurmo/app/index.php/emailMessages/default/matchingList"><span>Data Cleanup</span></a>
+                                </li>
+                                <li class="last"><a
+                                        href="/Zurmo/app/index.php/zurmo/default/logout"><span>Sign out</span></a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <ul id="settings-header-menu" class="user-menu-item nav">
+                        <li class="parent last"><a href="javascript:void(0);"><span>Administration</span></a>
+                            <ul>
+                                <li><a href="/Zurmo/app/index.php/configuration"><span>Administration</span></a></li>
+                                <li><a href="/Zurmo/app/index.php/designer/default"><span>Designer</span></a></li>
+                                <li><a href="/Zurmo/app/index.php/import/default"><span>Import</span></a></li>
+                                <li><a href="/Zurmo/app/index.php/users/default"><span>Users</span></a></li>
+                                <li><a href="http://www.zurmo.com/needSupport.php"><span>Need Support?</span></a></li>
+                                <li class="last"><a
+                                        href="/Zurmo/app/index.php/zurmo/default/about"><span>About Zurmo</span></a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="GridView">
+            <div id="GlobalSearchAndShortcutsCreateMenuView">
+                <div id="app-search" class="clearfix"><select class="ignore-style" id="globalSearchScope"
+                                                              multiple="multiple" style="display:none;" size="4"
+                                                              name="globalSearchScope[]">
+                    <option value="All" selected="selected">All</option>
+                    <option value="accounts">Accounts</option>
+                    <option value="contacts">Contacts</option>
+                    <option value="leads">Leads</option>
+                    <option value="opportunities">Opportunities</option>
+                </select><input class="global-search global-search-hint"
+                                onfocus="$(this).removeClass(&quot;global-search-hint&quot;); $(this).val(&quot;&quot;);"
+                                onblur="$(this).val(&quot;&quot;)" id="globalSearchInput" type="text"
+                                value="Search by name, phone, or e-mail" name="globalSearchInput"/><span
+                        class="z-spinner"></span></div>
+                <ul id="ShortcutsMenu" class="nav">
+                    <li class="parent last"><a href="javascript:void(0);"><span>Create</span></a>
+                        <ul>
+                            <li><a href="/Zurmo/app/index.php/accounts/default/create"><span>Account</span></a></li>
+                            <li><a href="/Zurmo/app/index.php/contacts/default/create"><span>Contact</span></a></li>
+                            <li>
+                                <a href="/Zurmo/app/index.php/conversations/default/create"><span>Conversation</span></a>
+                            </li>
+                            <li><a href="/Zurmo/app/index.php/leads/default/create"><span>Lead</span></a></li>
+                            <li><a href="/Zurmo/app/index.php/missions/default/create"><span>Mission</span></a></li>
+                            <li><a href="/Zurmo/app/index.php/opportunities/default/create"><span>Opportunity</span></a>
+                            </li>
+                            <li><a href="/Zurmo/app/index.php/reports/default/selectType"><span>Report</span></a></li>
+                            <li class="last"><a href="#" id="yt0"><span>Task</span></a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- End of themes/default/templates/HeaderView.xhtml --></div>
+<div class="AppContainer clearfix GridView">
+    <div class="AppNavigation clearfix GridView">
+        <div id="MenuView">
+            <ul class="nav">
+                <li id="home"><a href="/Zurmo/app/index.php/home/default"><span></span><em></em><span>Home</span></a>
+                </li>
+                <li id="mashableInbox"><a href="/Zurmo/app/index.php/mashableInbox/default"><span></span><em></em><span>Inbox<span
+                        class="unread-inbox-count">8</span></span></a></li>
+                <li id="accounts"><a
+                        href="/Zurmo/app/index.php/accounts/default"><span></span><em></em><span>Accounts</span></a>
+                </li>
+                <li id="leads"><a href="/Zurmo/app/index.php/leads/default"><span></span><em></em><span>Leads</span></a>
+                </li>
+                <li id="contacts" class="active"><a
+                        href="/Zurmo/app/index.php/contacts/default"><span></span><em></em><span>Contacts</span></a>
+                </li>
+                <li id="opportunities"><a href="/Zurmo/app/index.php/opportunities/default"><span></span><em></em><span>Opportunities</span></a>
+                </li>
+                <li id="marketing" class="hidden-nav-item"><a
+                        href="/Zurmo/app/index.php/marketing/default/dashboardDetails"><span></span><em></em><span>Marketing</span></a>
+                </li>
+                <li id="projects" class="hidden-nav-item"><a
+                        href="/Zurmo/app/index.php/projects/default/dashboardDetails"><span></span><em></em><span>Projects</span></a>
+                </li>
+                <li id="products" class="hidden-nav-item"><a
+                        href="/Zurmo/app/index.php/products/default"><span></span><em></em><span>Products</span></a>
+                </li>
+                <li id="reports" class="hidden-nav-item last"><a
+                        href="/Zurmo/app/index.php/reports/default"><span></span><em></em><span>Reports</span></a></li>
+            </ul>
+            <a class="toggle-hidden-nav-items"></a></div>
+        <div id="RecentlyViewedView"><h3>Recently Viewed</h3>
+            <ul class="nav">
+                <li class="type-ContactsModule"><a
+                        href="/Zurmo/app/index.php/contacts/default/details?id=10"><span></span><em></em><span>Kirby Davis</span></a>
+                </li>
+                <li class="type-AccountsModule"><a
+                        href="/Zurmo/app/index.php/accounts/default/details?id=6"><span></span><em></em><span>Acme, Inc.</span></a>
+                </li>
+                <li class="type-UsersModule"><a
+                        href="/Zurmo/app/index.php/users/default/details?id=1"><span></span><em></em><span>Super User</span></a>
+                </li>
+                <li class="type-UsersModule"><a
+                        href="/Zurmo/app/index.php/users/default/details?id=3"><span></span><em></em><span>Jason Blue</span></a>
+                </li>
+                <li class="type-GameRewardsModule last"><a href="/Zurmo/app/index.php/gameRewards/default/details?id=8"><span></span><em></em><span>$500 gift card</span></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="AppContent GridView">
+        <div id="StickyDetailsAndRelationsBreadCrumbView" class="BreadCrumbView">
+            <div class="breadcrumbs">
+                <a href="/Zurmo/app/index.php/contacts/default/index">Contacts</a> &#47; <span>Kirby Davis</span></div>
+            <div id="stickyListLoadingArea"><span class="loading"></span></div>
+        </div>
+        <div id="ContactDetailsAndRelationsView"
+             class="ConfigurableDetailsAndRelationsView DetailsAndRelationsView ConfigurableMetadataView MetadataView">
+            <div class="view-toolbar-container widgets-lock clearfix ">
+                <nav class="pillbox clearfix">
+                    <div class="default-button"><a title="View as Kanban Board"
+                                                   href="/Zurmo/app/index.php/contacts/default/details?id=10&amp;kanbanBoard=1"><i
+                            class="icon-kanban-board-view-type"><span>Kanban</span></i></a></div>
+                    <div class="default-button active"><a title="View as Details"
+                                                          href="/Zurmo/app/index.php/contacts/default/details?id=10&amp;kanbanBoard="><i
+                            class="icon-grid-view-type active"><span>Details</span></i></a></div>
+                    <nav class="default-button"><a title="Unlock to edit this screen&#039;s layout"
+                                                   href="/Zurmo/app/index.php/contacts/default/details?id=10&amp;lockPortlets="><i
+                            class="icon-lock"><!--Unlock--></i></a></nav>
+                </nav>
+            </div>
+            <div class="ModelRelationsSecuredPortletFrameView SecuredPortletFrameView PortletFrameView MetadataView">
+                <div class="juiportlet-columns">
+                    <ul class="juiportlet-columns-ContactDetailsAndRelationsView juiportlet-widget-column1 juiportlet-column juiportlet-column-split-left-75">
+                        <li class="juiportlet-widget ContactDetailsPortletView type-contacts"
+                            id="ContactDetailsAndRelationsView_18">
+                            <div class="juiportlet-widget-head">
+                                <h3>Details</h3>
+
+                                <div class="view-toolbar-container toolbar-mbmenu clearfix">
+                                    <div class="view-toolbar">
+                                        <ul class="options-menu nav">
+                                            <li class="parent last"><a
+                                                    href="javascript:void(0);"><span>Options</span></a>
+                                                <ul>
+                                                    <li id="EditLinkActionElement"><a id="EditLinkActionElement-10-yt3"
+                                                                                      href="/Zurmo/app/index.php/contacts/default/edit?id=10"><span>Edit</span></a>
+                                                    </li>
+                                                    <li id="AuditEventsModalListLinkActionElement"><a
+                                                            id="AuditEventsModalListLinkActionElement-10-yt4"
+                                                            href="#"><span>Audit Trail</span></a></li>
+                                                    <li><a id="CopyLinkActionElement-10-yt5"
+                                                           href="/Zurmo/app/index.php/contacts/default/copy?id=10"><span>Clone</span></a>
+                                                    </li>
+                                                    <li class="last"><a id="ContactDeleteLinkActionElement-10-yt6"
+                                                                        href="/Zurmo/app/index.php/contacts/default/delete?id=10"><span>Delete</span></a>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="juiportlet-widget-content">
+                                <div id="ContactDetailsPortletView"
+                                     class="ContactEditAndDetailsView SecuredEditAndDetailsView EditAndDetailsView DetailsView ModelView ConfigurableMetadataView MetadataView">
+                                    <div class="details-table">
+                                        <div class="left-column full-width">
+                                            <div class="sliding-panel showing-panel" id="zurmoView">
+
+<!-- new layout -->
+<style>
+.details{
+}
+
+.detail-row{
+    border:1px solid gold;
+}
+
+.details .panel{
+    margin-bottom: 30px;
+}
+
+.details .panel > h3{
+    margin-bottom: 15px;
+}
+
+.details-item{
+    position: relative;
+    width: 100%;
+    text-overflow: ellipsis;
+    padding-bottom: 10px;
+}
+
+.details-item label{
+    font-weight: bold;
+    color: #999;
+    text-align: right;
+    width: 100%;
+    max-width: 175px;
+    float: left;
+    display: block;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    vertical-align: top;
+    padding-right: 5px;
+    position: absolute;
+    z-index: 10;
+}
+
+.details-item label:hover{
+    overflow: visible;
+}
+
+.details-item label:hover strong{
+    background-image: -webkit-linear-gradient(360deg, #fff, #fff 95%, rgba(255, 0, 0, 0));
+    cursor: help;
+}
+
+.details-item span{
+    word-wrap: break-word;
+    word-break: break-all;
+    font-weight: bold;
+    padding-left: 5px;
+    margin-left: 175px;
+    display: block;
+}
+
+.details-item.full-row{
+    float: none !important;
+    width: 100% !important;
+}
+
+.split-panel .details-item{
+    width: 50%;
+    float: left;
+}
+
+.mobile-view .details-item{
+    float: none !important;
+    width: 100% !important;
+}
+
+.mobile-view .details-item label,
+.mobile-view .details-item span{
+    float: none !important;
+    width: 100% !important;
+    text-align: left;
+    margin:0;
+    padding-left: 0;
+    padding-right: 0;
+}
+</style>
+
+            <section class="details">
+                <div class="panel clearfix split-panel _mobile-view">
+                    <h3>This is the panel's title!</h3>
+
+                    <div class="details-item clearfix">
+                        <label><strong>1 Position</strong></label>
+                        <span>In charge or that</span>
+                    </div>
+                    <div class="details-item clearfix">
+                        <label>2 Positiodad sdsdn</label>
+                        <span>In charge or that</span>
+                    </div>
+                    <div class="details-item clearfix full-row">
+                        <label><strong>Full row 3 lkdalkdaslkjdasX lkdalkdaslkjdasX</strong></label>
+                        <span>In charge or that but this also a pretty long line which shoudl eithr break or just fillup to the right</span>
+                    </div>
+                    <div class="details-item clearfix">
+                        <label>4 jdjs</label>
+                        <span>In charge or that</span>
+                    </div>
+                    <div class="details-item clearfix">
+                        <label>2 Positiodad sdsdn</label>
+                        <span>In charge or that but this also a pretty long line which shoudl eithr break or just fillup to the right</span>
+                    </div>
+                    <div class="details-item clearfix">
+                        <label>3 lkdalkdaslkjdas</label>
+                        <span>In charge or that</span>
+                    </div>
+                    <div class="details-item clearfix">
+                        <label>4 jdjs</label>
+                        <span>In charge or that</span>
+                    </div>
+                </div>
+            </section>
+<!--end new layout -->
+
+
+
+
+
+
+
+
+
+
+                                                <p class="after-form-details-content">Last Modified 11/13/13 11:30 AM&#160;by&#160;Super
+                                                    User&#160;|&#160;Created On 11/11/13 3:11 PM&#160;by&#160;Super User&#160;|&#160;Owner
+                                                    <a href="/Zurmo/app/index.php/users/default/details?id=3">Jason
+                                                        Blue</a>&#160;|&#160;Who can read and write Owner</p></div>
+                                            <div class="sliding-panel business-card" id="businessCardView"><img
+                                                    class="gravatar" width="100" height="100"
+                                                    src="/Zurmo/app/themes/default/images/offline_user.png"
+                                                    alt="Kirby Davis"/>
+
+                                                <h2><span class="salutation">Mr.</span>Kirby Davis<a
+                                                        class="icon-star unstarred" id="star-Contact-10" href="#">w</a>
+                                                </h2>
+
+                                                <h3 class="position">Vice President</h3><h4 class="position">Information
+                                                    Technology / <a
+                                                            href="/Zurmo/app/index.php/accounts/default/details?id=4">U.S.
+                                                        Robotics and Mechanical Men</a></h4>
+
+                                                <div class="contact-details"><span class="icon-office-phone">309-527-4713</span><span
+                                                        class="icon-mobile-phone">406-257-8256</span><span
+                                                        class="icon-email"><a id="composeEmailLink-10"
+                                                                              class="composeEmailLink"
+                                                                              href="/Zurmo/app/index.php/emailMessages/default/createEmailMessage?toAddress=Kirby.Davis%40USRoboticsandMe.com&amp;relatedId=10&amp;relatedModelClassName=Contact&amp;redirectUrl=%2FZurmo%2Fapp%2Findex.php%2Fcontacts%2Fdefault%2Fdetails%3Fid%3D10%26stickyOffset%3D4">Kirby.Davis@USRoboticsandMe.com</a></span>
+                                                </div>
+                                                <div class="address"><a id="Contact_primaryAddress_MapLink"
+                                                                        class="icon-map" href="#">4007 South Pine Creek
+                                                    Los Angeles CA,&#160;90009</a></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <a id="sliding-panel-toggle" class="vertical-forward-pager" href="#"><span>Switch to Business Card View</span></a>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="juiportlet-widget NoteInlineEditForPortletView type-notes"
+                            id="ContactDetailsAndRelationsView_19">
+                            <div class="juiportlet-widget-head">
+                                <h3>Notes</h3>
+                            </div>
+                            <div class="juiportlet-widget-content">
+                                <div id="NoteInlineEditForPortletView"
+                                     class="InlineEditForPortletView ConfigurableMetadataView MetadataView">
+                                    <div class="NoteInlineEditView InlineEditView EditView DetailsView ModelView ConfigurableMetadataView MetadataView">
+                                        <div class="wide form">
+                                            <form id="inline-edit-form"
+                                                  action="/Zurmo/app/index.php/notes/default/inlineCreateSave?redirectUrl=%2FZurmo%2Fapp%2Findex.php%2Fcontacts%2FdefaultPortlet%2Fdetails%3Fid%3D10%26stickyOffset%3D4%26portletId%3D19%26uniqueLayoutId%3DContactDetailsAndRelationsView_19"
+                                                  method="post">
+                                                <div style="display:none"><input type="hidden"
+                                                                                 value="b5e7c6e15d033c29aa166ee112f6341ce18a922d"
+                                                                                 name="YII_CSRF_TOKEN"/></div>
+                                                <div class="left-column full-width">
+                                                    <div class="panel">
+                                                        <table class="form-fields">
+                                                            <colgroup>
+                                                                <col class="col-0"/>
+                                                            </colgroup>
+                                                            <tbody>
+                                                            <tr>
+                                                                <td colspan="1"><textarea id="Note_description"
+                                                                                          name="Note[description]"
+                                                                                          rows="6" cols="50"></textarea>
+
+                                                                    <div class="errorMessage" id="Note_description_em_"
+                                                                         style="display:none"></div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td colspan="1"><a class="more-panels-link"
+                                                                                   id="show-more-panels-link-yt7"
+                                                                                   href="yt7">More Options</a><a
+                                                                        class="more-panels-link"
+                                                                        id="show-less-panels-link-yt7"
+                                                                        style="display:none;" href="yt7">Fewer
+                                                                    Options</a></td>
+                                                            </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                    <div class="panel more-view-panel-yt7" style="display:none;">
+                                                        <table class="form-fields">
+                                                            <colgroup>
+                                                                <col class="col-0"/>
+                                                            </colgroup>
+                                                            <tbody>
+                                                            <tr>
+                                                                <td colspan="1">
+                                                                    <div class="file-upload-box">
+                                                                        <div id="fileUploadNote">
+                                                                            <div class="fileupload-buttonbar clearfix">
+                                                                                <div class="addfileinput-button">
+                                                                                    <span>Y</span><strong
+                                                                                        class="add-label">Add
+                                                                                    Files</strong><input id="Note_files"
+                                                                                                         type="file"
+                                                                                                         name="Note_files"/>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="fileupload-content">
+                                                                                <table class="files">
+                                                                                    <tbody></tbody>
+                                                                                </table>
+                                                                            </div>
+                                                                        </div>
+                                                                        <script id="template-upload"
+                                                                                type="text/x-jquery-tmpl">
+    <tr class="template-upload{{if error}} ui-state-error{{/if}}">
+        <td class="name">
+            <span class="z-spinner"></span>
+            ${name} <span class="file-size">(${sizef})</span>
+            {{if error}}
+                <span class="upload-error">${error}</span>
+            {{else}}
+                <span class="upload-actions cancel">
+                    <button class="cancel" title="Cancel"><span>Cancel</span></button>
+                </span>
+            {{/if}}
+        </td>
+    </tr>
+
+                                                                        </script>
+                                                                        <script id="template-download"
+                                                                                type="text/x-jquery-tmpl">
+    <tr class="template-download{{if error}} ui-state-error{{/if}}">
+        {{if error}}
+            <td class="error" colspan="4">${error}</td>
+        {{else}}
+            <td class="name">
+                ${name} <span class="file-size">(${size})</span>
+                <span class="upload-actions delete">
+                    <button class="icon-delete" title="Remove" data-url="/Zurmo/app/index.php/zurmo/fileModel/delete?id=${id}"><span><!--Delete--><span></button>
+                </span>
+                <input name="filesIds[]" type="hidden" value="${id}"/>
+            </td>
+        {{/if}}
+    </tr>
+
+                                                                        </script>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td colspan="1"><label for="Note_occurredOnDateTime">Occurred
+                                                                    On</label><br/>
+
+                                                                    <div class="has-date-select"><input
+                                                                            id="Note_occurredOnDateTime"
+                                                                            name="Note[occurredOnDateTime]"
+                                                                            style="position:relative;z-index:10000;"
+                                                                            type="text" value="11/15/2013 2:14 PM"/>
+                                                                    </div>
+                                                                    <div class="errorMessage"
+                                                                         id="Note_occurredOnDateTime_em_"
+                                                                         style="display:none"></div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <label for="ActivityItemForm_Account_id">Account</label><br/><input
+                                                                        name="ActivityItemForm[Account][id]"
+                                                                        id="ActivityItemForm_Account_id" value=""
+                                                                        type="hidden"/>
+
+                                                                    <div class="has-model-select"><input
+                                                                            onblur="clearIdFromAutoCompleteField($(this).val(), &#039;ActivityItemForm_Account_id&#039;);"
+                                                                            id="ActivityItemForm_Account_name"
+                                                                            type="text" value=""
+                                                                            name="ActivityItemForm_Account_name"/><a
+                                                                            id="ActivityItemForm_Account_SelectLink"
+                                                                            href="#"><span
+                                                                            class="model-select-icon"></span><span
+                                                                            class="z-spinner"></span></a></div>
+                                                                    <div class="errorMessage"
+                                                                         id="ActivityItemForm_Account_em_"
+                                                                         style="display:none"></div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <label for="ActivityItemForm_Contact_id">Contact or
+                                                                        Lead</label><br/><input
+                                                                        name="ActivityItemForm[Contact][id]"
+                                                                        id="ActivityItemForm_Contact_id" value="10"
+                                                                        type="hidden"/>
+
+                                                                    <div class="has-model-select"><input
+                                                                            onblur="clearIdFromAutoCompleteField($(this).val(), &#039;ActivityItemForm_Contact_id&#039;);"
+                                                                            id="ActivityItemForm_Contact_name"
+                                                                            type="text" value="Kirby Davis"
+                                                                            name="ActivityItemForm_Contact_name"/><a
+                                                                            id="ActivityItemForm_Contact_SelectLink"
+                                                                            href="#"><span
+                                                                            class="model-select-icon"></span><span
+                                                                            class="z-spinner"></span></a></div>
+                                                                    <div class="errorMessage"
+                                                                         id="ActivityItemForm_Contact_em_"
+                                                                         style="display:none"></div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <label for="ActivityItemForm_Opportunity_id">Opportunity</label><br/><input
+                                                                        name="ActivityItemForm[Opportunity][id]"
+                                                                        id="ActivityItemForm_Opportunity_id" value=""
+                                                                        type="hidden"/>
+
+                                                                    <div class="has-model-select"><input
+                                                                            onblur="clearIdFromAutoCompleteField($(this).val(), &#039;ActivityItemForm_Opportunity_id&#039;);"
+                                                                            id="ActivityItemForm_Opportunity_name"
+                                                                            type="text" value=""
+                                                                            name="ActivityItemForm_Opportunity_name"/><a
+                                                                            id="ActivityItemForm_Opportunity_SelectLink"
+                                                                            href="#"><span
+                                                                            class="model-select-icon"></span><span
+                                                                            class="z-spinner"></span></a></div>
+                                                                    <div class="errorMessage"
+                                                                         id="ActivityItemForm_Opportunity_em_"
+                                                                         style="display:none"></div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td colspan="1">
+                                                                    <div class="permissions-box"><label>Who can read and
+                                                                        write</label><br/>
+
+                                                                        <div class="radio-input"><input
+                                                                                id="Note_explicitReadWriteModelPermissions_type_0"
+                                                                                value="" type="radio"
+                                                                                name="Note[explicitReadWriteModelPermissions][type]"/><label
+                                                                                for="Note_explicitReadWriteModelPermissions_type_0">Owner</label>
+                                                                        </div>
+                                                                        <div class="radio-input"><input
+                                                                                id="Note_explicitReadWriteModelPermissions_type_1"
+                                                                                value="2" type="radio"
+                                                                                name="Note[explicitReadWriteModelPermissions][type]"/><label
+                                                                                for="Note_explicitReadWriteModelPermissions_type_1">Owner
+                                                                            and users in</label>&#160;
+                                                                            <div class="hasDropDown"><span
+                                                                                    class="select-arrow"></span><select
+                                                                                    id="Note_explicitReadWriteModelPermissions_nonEveryoneGroup"
+                                                                                    onclick="document.getElementById(&quot;Note_explicitReadWriteModelPermissions_type_1&quot;).checked=&quot;checked&quot;;"
+                                                                                    name="Note[explicitReadWriteModelPermissions][nonEveryoneGroup]">
+                                                                                <option value="3">East</option>
+                                                                                <option value="5">East Channel Sales
+                                                                                </option>
+                                                                                <option value="7">East Direct Sales
+                                                                                </option>
+                                                                                <option value="4">West</option>
+                                                                                <option value="6">West Channel Sales
+                                                                                </option>
+                                                                                <option value="8">West Direct Sales
+                                                                                </option>
+                                                                            </select></div>
+                                                                        </div>
+                                                                        <div class="radio-input"><input
+                                                                                id="Note_explicitReadWriteModelPermissions_type_2"
+                                                                                value="1" checked="checked" type="radio"
+                                                                                name="Note[explicitReadWriteModelPermissions][type]"/><label
+                                                                                for="Note_explicitReadWriteModelPermissions_type_2">Everyone</label>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                                <div class="view-toolbar-container clearfix">
+                                                    <div class="form-toolbar clearfix"><a id="save" name="save"
+                                                                                          class="attachLoading z-button"
+                                                                                          onclick="jQuery.yii.submitForm(this, &#039;&#039;, {}); return false;"
+                                                                                          href="#"><span
+                                                            class="z-spinner"></span><span class="z-icon"></span><span
+                                                            class="z-label">Save</span></a>
+
+                                                        <div class="post-to-profile clearfix">
+                                                            <span>Post to Profile</span><span
+                                                                id="post-to-profile-note-tooltip" class="tooltip"
+                                                                title="Post this note to your profile to share with your colleagues">?</span><label
+                                                                class="hasCheckBox"><input type="checkbox" value="1"
+                                                                                           name="postToProfile"
+                                                                                           id="postToProfile"/></label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                            <div id="modalContainer-inline-edit-form"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="juiportlet-widget ContactLatestActivitiesForPortletView type-activities"
+                            id="ContactDetailsAndRelationsView_20">
+                            <div class="juiportlet-widget-head">
+                                <h3>Latest Activities</h3>
+
+                                <div class="view-toolbar-container toolbar-mbmenu clearfix">
+                                    <div class="view-toolbar">
+                                        <ul class="options-menu nav">
+                                            <li class="parent last"><a
+                                                    href="javascript:void(0);"><span>Create</span></a>
+                                                <ul>
+                                                    <li class="last"><a
+                                                            id="CreateEmailMessageFromRelatedListLinkActionElement--yt23"
+                                                            href="#"><span>Email</span></a></li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="juiportlet-widget-content">
+                                <div id="ContactLatestActivitiesForPortletView"
+                                     class="LatestActivitiesForPortletView ConfigurableMetadataView MetadataView">
+                                    <div class="LatestActivitiesForContactListView LatestActivitiesListView ListView ModelView ConfigurableMetadataView MetadataView">
+                                        <form id="latest-activity-configuration-form"
+                                              action="/Zurmo/app/index.php/contacts/default/details?id=10&amp;stickyOffset=4"
+                                              method="post">
+                                            <div style="display:none"><input type="hidden"
+                                                                             value="b5e7c6e15d033c29aa166ee112f6341ce18a922d"
+                                                                             name="YII_CSRF_TOKEN"/></div>
+                                            <div class="horizontal-line latest-activity-toolbar">
+                                                <div id="LatestActivitiesConfigurationForm_ownedByFilter_area"><strong>View</strong>:<input
+                                                        id="ytLatestActivitiesConfigurationForm_ownedByFilter"
+                                                        type="hidden" value=""
+                                                        name="LatestActivitiesConfigurationForm[ownedByFilter]"/><input
+                                                        id="LatestActivitiesConfigurationForm_ownedByFilter_0"
+                                                        value="user" type="radio"
+                                                        name="LatestActivitiesConfigurationForm[ownedByFilter]"/><label
+                                                        for="LatestActivitiesConfigurationForm_ownedByFilter_0">Mine</label><input
+                                                        id="LatestActivitiesConfigurationForm_ownedByFilter_1"
+                                                        value="all" checked="checked" type="radio"
+                                                        name="LatestActivitiesConfigurationForm[ownedByFilter]"/><label
+                                                        for="LatestActivitiesConfigurationForm_ownedByFilter_1">Everyone</label>
+                                                </div>
+                                                <div id="LatestActivitiesConfigurationForm_rollup_area">Roll Up:<span
+                                                        id="activities-rollup-tooltip" class="tooltip"
+                                                        title="Turn roll up on to see activities from related records.">?</span><input
+                                                        id="ytLatestActivitiesConfigurationForm_rollup" type="hidden"
+                                                        value=""
+                                                        name="LatestActivitiesConfigurationForm[rollup]"/><input
+                                                        id="LatestActivitiesConfigurationForm_rollup_0" value=""
+                                                        checked="checked" type="radio"
+                                                        name="LatestActivitiesConfigurationForm[rollup]"/><label
+                                                        for="LatestActivitiesConfigurationForm_rollup_0">Off</label><input
+                                                        id="LatestActivitiesConfigurationForm_rollup_1" value="1"
+                                                        type="radio"
+                                                        name="LatestActivitiesConfigurationForm[rollup]"/><label
+                                                        for="LatestActivitiesConfigurationForm_rollup_1">On</label>
+                                                </div>
+                                                <a id="filter-latest-activities-link" href="#">Filters</a></div>
+                                            <div id="filter-portlet-model-bar-ContactLatestActivitiesForPortletView"
+                                                 class="filter-portlet-model-bar" style="display:none">
+                                                <div id="LatestActivitiesConfigurationForm_filteredByModelName_area">
+                                                    <input id="ytLatestActivitiesConfigurationForm_filteredByModelName"
+                                                           type="hidden" value=""
+                                                           name="LatestActivitiesConfigurationForm[filteredByModelName]"/><input
+                                                        id="LatestActivitiesConfigurationForm_filteredByModelName_0"
+                                                        value="all" checked="checked" type="radio"
+                                                        name="LatestActivitiesConfigurationForm[filteredByModelName]"/><label
+                                                        for="LatestActivitiesConfigurationForm_filteredByModelName_0">All
+                                                    Activities</label><input
+                                                        id="LatestActivitiesConfigurationForm_filteredByModelName_1"
+                                                        value="Conversation" type="radio"
+                                                        name="LatestActivitiesConfigurationForm[filteredByModelName]"/><label
+                                                        for="LatestActivitiesConfigurationForm_filteredByModelName_1">Conversations</label><input
+                                                        id="LatestActivitiesConfigurationForm_filteredByModelName_2"
+                                                        value="EmailMessage" type="radio"
+                                                        name="LatestActivitiesConfigurationForm[filteredByModelName]"/><label
+                                                        for="LatestActivitiesConfigurationForm_filteredByModelName_2">Emails</label><input
+                                                        id="LatestActivitiesConfigurationForm_filteredByModelName_3"
+                                                        value="Meeting" type="radio"
+                                                        name="LatestActivitiesConfigurationForm[filteredByModelName]"/><label
+                                                        for="LatestActivitiesConfigurationForm_filteredByModelName_3">Meetings</label><input
+                                                        id="LatestActivitiesConfigurationForm_filteredByModelName_4"
+                                                        value="Note" type="radio"
+                                                        name="LatestActivitiesConfigurationForm[filteredByModelName]"/><label
+                                                        for="LatestActivitiesConfigurationForm_filteredByModelName_4">Notes</label><input
+                                                        id="LatestActivitiesConfigurationForm_filteredByModelName_5"
+                                                        value="Task" type="radio"
+                                                        name="LatestActivitiesConfigurationForm[filteredByModelName]"/><label
+                                                        for="LatestActivitiesConfigurationForm_filteredByModelName_5">Tasks</label>
+                                                </div>
+                                            </div>
+                                        </form>
+                                        <div class="cgrid-view type-activities"
+                                             id="list-viewContactLatestActivitiesForPortletView">
+
+                                            <table class="items">
+                                                <tbody>
+                                                <tr class="odd">
+                                                    <td>
+                                                        <div class="activity-item"><em class="EmailMessage"></em><strong
+                                                                class="activity-date">November 11, 2013</strong><span
+                                                                class='less-pronounced-text'><span
+                                                                class="email-from"><strong>From:</strong> <a
+                                                                id="DetailsLinkActionElement-1-yt9"
+                                                                href="/Zurmo/app/index.php/users/default/details?id=1">Super
+                                                            User</a></span> <span class="email-to"><strong>To:</strong> <a
+                                                                id="DetailsLinkActionElement-10-yt10"
+                                                                href="/Zurmo/app/index.php/contacts/default/details?id=10">Kirby
+                                                            Davis</a></span> </span><br/><span><a
+                                                                id="DetailsLinkActionElement-36-yt8"
+                                                                href="/Zurmo/app/index.php/emailMessages/default/details?id=36&amp;redirectUrl=%2FZurmo%2Fapp%2Findex.php%2Fcontacts%2Fdefault%2Fdetails%3Fid%3D10">Infrastructure
+                                                            Redesign Completed</a></span><span></span></div>
+                                                    </td>
+                                                </tr>
+                                                <tr class="even">
+                                                    <td>
+                                                        <div class="activity-item"><em class="EmailMessage"></em><strong
+                                                                class="activity-date">November 11, 2013</strong><span
+                                                                class='less-pronounced-text'><span
+                                                                class="email-from"><strong>From:</strong> <a
+                                                                id="DetailsLinkActionElement-1-yt12"
+                                                                href="/Zurmo/app/index.php/users/default/details?id=1">Super
+                                                            User</a></span> <span class="email-to"><strong>To:</strong> <a
+                                                                id="DetailsLinkActionElement-10-yt13"
+                                                                href="/Zurmo/app/index.php/contacts/default/details?id=10">Kirby
+                                                            Davis</a></span> </span><br/><span><a
+                                                                id="DetailsLinkActionElement-34-yt11"
+                                                                href="/Zurmo/app/index.php/emailMessages/default/details?id=34&amp;redirectUrl=%2FZurmo%2Fapp%2Findex.php%2Fcontacts%2Fdefault%2Fdetails%3Fid%3D10">Infrastructure
+                                                            Redesign Completed</a></span><span></span></div>
+                                                    </td>
+                                                </tr>
+                                                <tr class="odd">
+                                                    <td>
+                                                        <div class="activity-item"><em class="EmailMessage"></em><strong
+                                                                class="activity-date">November 11, 2013</strong><span
+                                                                class='less-pronounced-text'><span
+                                                                class="email-from"><strong>From:</strong> <a
+                                                                id="DetailsLinkActionElement-1-yt15"
+                                                                href="/Zurmo/app/index.php/users/default/details?id=1">Super
+                                                            User</a></span> <span class="email-to"><strong>To:</strong> <a
+                                                                id="DetailsLinkActionElement-10-yt16"
+                                                                href="/Zurmo/app/index.php/contacts/default/details?id=10">Kirby
+                                                            Davis</a></span> </span><br/><span><a
+                                                                id="DetailsLinkActionElement-35-yt14"
+                                                                href="/Zurmo/app/index.php/emailMessages/default/details?id=35&amp;redirectUrl=%2FZurmo%2Fapp%2Findex.php%2Fcontacts%2Fdefault%2Fdetails%3Fid%3D10">Infrastructure
+                                                            Redesign Completed</a></span><span></span></div>
+                                                    </td>
+                                                </tr>
+                                                <tr class="even">
+                                                    <td>
+                                                        <div class="activity-item"><em class="EmailMessage"></em><strong
+                                                                class="activity-date">November 11, 2013</strong><span
+                                                                class='less-pronounced-text'><span
+                                                                class="email-from"><strong>From:</strong> <a
+                                                                id="DetailsLinkActionElement-1-yt18"
+                                                                href="/Zurmo/app/index.php/users/default/details?id=1">Super
+                                                            User</a></span> <span class="email-to"><strong>To:</strong> <a
+                                                                id="DetailsLinkActionElement-10-yt19"
+                                                                href="/Zurmo/app/index.php/contacts/default/details?id=10">Kirby
+                                                            Davis</a></span> </span><br/><span><a
+                                                                id="DetailsLinkActionElement-27-yt17"
+                                                                href="/Zurmo/app/index.php/emailMessages/default/details?id=27&amp;redirectUrl=%2FZurmo%2Fapp%2Findex.php%2Fcontacts%2Fdefault%2Fdetails%3Fid%3D10">Infrastructure
+                                                            Redesign Completed</a></span><span></span></div>
+                                                    </td>
+                                                </tr>
+                                                <tr class="odd">
+                                                    <td>
+                                                        <div class="activity-item"><em class="EmailMessage"></em><strong
+                                                                class="activity-date">November 11, 2013</strong><span
+                                                                class='less-pronounced-text'><span
+                                                                class="email-from"><strong>From:</strong> <a
+                                                                id="DetailsLinkActionElement-1-yt21"
+                                                                href="/Zurmo/app/index.php/users/default/details?id=1">Super
+                                                            User</a></span> <span class="email-to"><strong>To:</strong> <a
+                                                                id="DetailsLinkActionElement-10-yt22"
+                                                                href="/Zurmo/app/index.php/contacts/default/details?id=10">Kirby
+                                                            Davis</a></span> </span><br/><span><a
+                                                                id="DetailsLinkActionElement-17-yt20"
+                                                                href="/Zurmo/app/index.php/emailMessages/default/details?id=17&amp;redirectUrl=%2FZurmo%2Fapp%2Findex.php%2Fcontacts%2Fdefault%2Fdetails%3Fid%3D10">You
+                                                            are now subscribed.</a></span><span></span></div>
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                            <div class="pager horizontal">
+                                                <ul id="yw1" class="yiiPager">
+                                                    <li class="refresh hidden"><a
+                                                            href="/Zurmo/app/index.php/contacts/defaultPortlet/details?id=10&amp;stickyOffset=4&amp;portletId=20">refresh</a>
+                                                    </li>
+                                                    <li class="first hidden"><span>first</span></li>
+                                                    <li class="previous hidden"><span>previous</span></li>
+                                                    <li class="next"><a
+                                                            href="/Zurmo/app/index.php/contacts/defaultPortlet/details?id=10&amp;stickyOffset=4&amp;portletId=20&amp;ContactLatestActivitiesForPortletView_page=2"><span>next</span></a>
+                                                    </li>
+                                                    <li class="last"><a
+                                                            href="/Zurmo/app/index.php/contacts/defaultPortlet/details?id=10&amp;stickyOffset=4&amp;portletId=20&amp;ContactLatestActivitiesForPortletView_page=2"><span>last</span></a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="list-preloader"><span class="z-spinner"></span></div>
+                                            <div class="keys" style="display:none"
+                                                 title="/Zurmo/app/index.php/contacts/default/details?id=10&amp;stickyOffset=4">
+                                                <span>36</span><span>34</span><span>35</span><span>27</span><span>17</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                    <ul class="juiportlet-columns-ContactDetailsAndRelationsView juiportlet-widget-column2 juiportlet-column juiportlet-column-split-right-25">
+                        <li class="juiportlet-widget UpcomingMeetingsForContactCalendarView type-meetings"
+                            id="ContactDetailsAndRelationsView_21">
+                            <div class="juiportlet-widget-head">
+                                <h3>Upcoming Meetings</h3>
+
+                                <div class="view-toolbar-container clearfix">
+                                    <div class="portlet-toolbar"><a id="CreateFromRelatedListLinkActionElement--yt24"
+                                                                    href="/Zurmo/app/index.php/meetings/default/createFromRelation?relationAttributeName=Contact&amp;relationModelId=10&amp;relationModuleId=contacts&amp;redirectUrl=%2FZurmo%2Fapp%2Findex.php%2Fcontacts%2Fdefault%2Fdetails%3Fid%3D10%26stickyOffset%3D4"><span
+                                            class="z-label">Create</span></a></div>
+                                </div>
+                            </div>
+                            <div class="juiportlet-widget-content">
+                                <div id="UpcomingMeetingsForContactCalendarView"
+                                     class="UpcomingMeetingsRelatedCalendarView UpcomingMeetingsCalendarView CalendarView ModelView ConfigurableMetadataView MetadataView">
+                                    <div id="calendarContactDetailsAndRelationsView_21_container"></div>
+                                    <input id="calendarSelectedDateContactDetailsAndRelationsView_21"
+                                           style="display:none;" type="text"
+                                           name="calendarSelectedDateContactDetailsAndRelationsView_21"/></div>
+                            </div>
+                        </li>
+                        <li class="juiportlet-widget OpenTasksForContactRelatedListView type-tasks"
+                            id="ContactDetailsAndRelationsView_22">
+                            <div class="juiportlet-widget-head">
+                                <h3>Open Tasks</h3>
+
+                                <div class="view-toolbar-container clearfix">
+                                    <div class="portlet-toolbar"><a id="CreateFromRelatedModalLinkActionElement--yt25"
+                                                                    href="#"><span class="z-label">Create</span></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="juiportlet-widget-content">
+                                <div class="OpenTasksForContactRelatedListView OpenTasksRelatedListView SecuredRelatedListView RelatedListView ListView ModelView ConfigurableMetadataView MetadataView">
+                                    <div class="cgrid-view type-tasks" id="list-viewContactDetailsAndRelationsView_22">
+
+                                        <span class="empty"><span class="icon-empty"></span>No tasks found</span>
+
+                                        <div class="pager horizontal">
+                                            <ul id="yw2" class="yiiPager">
+                                                <li class="refresh hidden"><a
+                                                        href="/Zurmo/app/index.php/contacts/defaultPortlet/details?id=10&amp;stickyOffset=4&amp;portletId=22&amp;redirectUrl=%2FZurmo%2Fapp%2Findex.php%2Fcontacts%2Fdefault%2Fdetails%3Fid%3D10%26stickyOffset%3D4">refresh</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div class="list-preloader"><span class="z-spinner"></span></div>
+                                        <div class="keys" style="display:none"
+                                             title="/Zurmo/app/index.php/contacts/default/details?id=10&amp;stickyOffset=4"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="juiportlet-widget OpportunitiesForContactRelatedListView type-opportunities"
+                            id="ContactDetailsAndRelationsView_23">
+                            <div class="juiportlet-widget-head">
+                                <h3>Opportunities</h3>
+
+                                <div class="view-toolbar-container toolbar-mbmenu clearfix">
+                                    <div class="view-toolbar">
+                                        <ul class="options-menu nav">
+                                            <li class="parent last"><a
+                                                    href="javascript:void(0);"><span>Options</span></a>
+                                                <ul>
+                                                    <li><a id="CreateFromRelatedListLinkActionElement--yt26"
+                                                           href="/Zurmo/app/index.php/opportunities/default/createFromRelation?relationAttributeName=contacts&amp;relationModelId=10&amp;relationModuleId=contacts&amp;redirectUrl=%2FZurmo%2Fapp%2Findex.php%2Fcontacts%2Fdefault%2Fdetails%3Fid%3D10%26stickyOffset%3D4"><span>Create</span></a>
+                                                    </li>
+                                                    <li class="last"><a
+                                                            id="SelectOpportunitiesForContactFromRelatedListLink"
+                                                            href="#"><span>Select</span></a></li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="juiportlet-widget-content">
+                                <div class="OpportunitiesForContactRelatedListView OpportunitiesRelatedListView SecuredRelatedListView RelatedListView ListView ModelView ConfigurableMetadataView MetadataView">
+                                    <div class="cgrid-view type-opportunities"
+                                         id="list-viewContactDetailsAndRelationsView_23">
+
+                                        <span class="empty"><span
+                                                class="icon-empty"></span>No opportunities found</span>
+
+                                        <div class="pager horizontal">
+                                            <ul id="yw3" class="yiiPager">
+                                                <li class="refresh hidden"><a
+                                                        href="/Zurmo/app/index.php/contacts/defaultPortlet/details?id=10&amp;stickyOffset=4&amp;portletId=23&amp;redirectUrl=%2FZurmo%2Fapp%2Findex.php%2Fcontacts%2Fdefault%2Fdetails%3Fid%3D10%26stickyOffset%3D4">refresh</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div class="list-preloader"><span class="z-spinner"></span></div>
+                                        <div class="keys" style="display:none"
+                                             title="/Zurmo/app/index.php/contacts/default/details?id=10&amp;stickyOffset=4"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="FlashMessageView">
+        <div id="FlashMessageBar"></div>
+    </div>
+</div>
+<div id="ModalContainerView">
+    <div id="modalContainer"></div>
+</div>
+<div id="ModalGameNotificationContainerView"></div>
+<div id="GameCoinContainerView"></div>
+<div id="FooterView"><a href="http://www.zurmo.com" id="credit-link" class="clearfix"><span>Copyright &#169; Zurmo Inc., 2013. All rights reserved.</span></a>
+
+    <div class="ui-chooser"><a class="icon-mobile"
+                               href="/Zurmo/app/index.php/zurmo/default/userInterface?userInterface=Mobile"><span>Show Mobile</span></a><a
+            class="icon-desktop active"
+            href="/Zurmo/app/index.php/zurmo/default/userInterface?userInterface=Desktop"><span>Show Full</span></a>
+    </div>
+</div>
+</div>
+</div>
+</div>
+
+</body>
+</html>
