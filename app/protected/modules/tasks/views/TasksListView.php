@@ -84,6 +84,29 @@
             return $metadata;
         }
 
+        /**
+         * Constructs a list view specifying the controller as
+         * well as the model that will have its details displayed.isDisplayAttributeACalculationOrModifier
+         */
+        public function __construct(
+            $controllerId,
+            $moduleId,
+            $modelClassName,
+            $dataProvider,
+            $selectedIds,
+            $gridIdSuffix = null,
+            $gridViewPagerParams = array(),
+            $listAttributesSelector = null,
+            $kanbanBoard            = null
+        )
+        {
+            parent::__construct($controllerId, $moduleId, $modelClassName,
+                                $dataProvider, $selectedIds, $gridIdSuffix,
+                                $gridViewPagerParams, $listAttributesSelector, null);
+            $this->uniquePageId = get_called_class();
+            $this->configurationForm = TasksUtil::getConfigurationFormWithStatusAsStickyData();
+        }
+
         protected function renderScripts()
         {
             parent::renderScripts();
@@ -171,7 +194,6 @@
         protected function renderConfigurationFormLayout($form)
         {
             assert('$form instanceof ZurmoActiveForm');
-            $this->configurationForm = TasksUtil::getConfigurationFormWithStatusAsStickyData();
             $content      = null;
             $innerContent = null;
             $element                   = new TaskStatusFilterRadioElement($this->configurationForm,
@@ -206,39 +228,17 @@
                     'complete'   => 'js:function()
                     {
                                         $("#' . $form->getId() . '").parent().children(".cgrid-view").removeClass("loading");
-                                        //$("#filter-portlet-model-bar-' . $this->getGridViewId() . '").show();
                     }'
             ));
             Yii::app()->clientScript->registerScript($this->getGridViewId() . '-statusfilter', "
-            $('#TasksConfigurationForm_filteredByStatus_area').buttonset();
-            $('#TasksConfigurationForm_filteredByStatus_area').change(function()
+            var filterarea = $('#TasksConfigurationForm_filteredByStatus_area');
+            filterarea.buttonset();
+            filterarea.change(function()
                 {
                     " . $ajaxSubmitScript . "
                 }
             );
             ");
-        }
-
-        /**
-         * @return TasksConfigurationForm
-         */
-        protected function getConfigurationForm()
-        {
-            return new TasksConfigurationForm();
-        }
-
-        /**
-         * @param TasksConfigurationForm $tasksConfigurationForm
-         */
-        protected function resolveProductsConfigFormFromRequest(&$tasksConfigurationForm)
-        {
-            $excludeFromRestore = array();
-            if (isset($_GET[get_class($tasksConfigurationForm)]))
-            {
-                $tasksConfigurationForm->setAttributes($_GET[get_class($tasksConfigurationForm)]);
-                $excludeFromRestore = $this->saveUserSettingsFromConfigForm($tasksConfigurationForm);
-            }
-            $this->restoreUserSettingsToConfigFrom($tasksConfigurationForm, $excludeFromRestore);
         }
     }
 ?>

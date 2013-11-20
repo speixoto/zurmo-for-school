@@ -50,5 +50,10 @@
         {
             parent::__construct($model);
         }
+
+        public static function getNonSearchableAttributes()
+        {
+            return array_merge(parent::getNonSearchableAttributes(), array('status'));
+        }
     }
 ?>
