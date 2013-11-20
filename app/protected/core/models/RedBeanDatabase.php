@@ -121,6 +121,7 @@
             ZurmoRedBean::$tagManager         = null;
             ZurmoRedBean::$currentDB          = '';
             ZurmoRedBean::$f                  = null;
+            ZurmoRedBean::close();
             self::$isSetup = false;
         }
 
