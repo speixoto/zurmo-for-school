@@ -46,7 +46,7 @@
                     'toolbar' => array(
                         'elements' => array(
                             array('type'  => 'TaskModalEditFromModalDetailsLink'),
-                            array('type'  => 'AuditEventsModalListLink'),
+                            array('type'  => 'TaskAuditEventsModalListLink'),
                             array('type'  => 'TaskDeleteLink',
                                   'sourceViewId' => 'eval:$this->getSourceViewId()'),
                         ),

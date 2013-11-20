@@ -323,7 +323,7 @@
             {
                 $headerArray    = array_shift($importArray);
             }
-            $csv = ExportItemToCsvFileUtil::export($importArray, $headerArray, '', false, true);
+            $csv = ExportItemToCsvFileUtil::export($importArray, $headerArray, '', false, true, true);
             return $csv;
         }
 
@@ -411,7 +411,7 @@
                 $importSubset       = ArrayUtil::chopArray($importArray, static::BULK_INSERT_COUNT);
                 // bulkInsert needs every subarray to have same number of columns as columnNames, pad with empty strings
                 static::padSubArrays($importSubset, count($columnNames));
-                DatabaseCompatibilityUtil::bulkInsert($tableName, $importSubset, $columnNames, static::BULK_INSERT_COUNT);
+                DatabaseCompatibilityUtil::bulkInsert($tableName, $importSubset, $columnNames, static::BULK_INSERT_COUNT, true);
             } while (count($importSubset) > 0);
         }
 
