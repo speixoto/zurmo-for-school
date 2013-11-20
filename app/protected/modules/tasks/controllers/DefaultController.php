@@ -92,6 +92,10 @@
                                                         );
                 if ((isset($_GET['ajax']) && $_GET['ajax'] == 'list-view'))
                 {
+                    if(isset($_GET['openToTaskId']))
+                    {
+                        unset($_GET['openToTaskId']);
+                    }
                     $mixedView  = $this->makeListView(
                                 $searchForm,
                                 $dataProvider
@@ -115,6 +119,7 @@
         {
             $task = static::getModelAndCatchNotFoundAndDisplayError('Task', intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($task);
+            AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED, array(strval($task), 'TasksModule'), $task);
             if ($task->project->id > 0)
             {
                 $this->redirect(Yii::app()->createUrl('projects/default/details',
@@ -134,6 +139,11 @@
                     //Something is missing or deleted. Fallback to home page
                     $this->redirect(Yii::app()->createUrl('home/default/index'));
                 }
+            }
+            else
+            {
+                $this->redirect(Yii::app()->createUrl('tasks/default/list',
+                                                      array('openToTaskId' => $id)));
             }
         }
 
@@ -160,6 +170,11 @@
                     //Something is missing or deleted. Fallback to home page
                     $this->redirect(Yii::app()->createUrl('home/default/index'));
                 }
+            }
+            else
+            {
+                $this->redirect(Yii::app()->createUrl('tasks/default/list',
+                                                      array('openToTaskId' => $id)));
             }
         }
 
@@ -388,15 +403,11 @@
          * @param string $relationModelId
          * @param string $relationModuleId
          */
-        public function actionModalCopyFromRelation($relationAttributeName, $relationModelId, $relationModuleId, $id = null)
+        public function actionModalCopyFromRelation($id)
         {
-            $copyToTask   = new Task();
-            $task   = Task::getById(intval($id));
-            ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($task);
-            TaskActivityCopyModelUtil::copy($task, $copyToTask);
-            $copyToTask   = $this->attemptToSaveModelFromPost($copyToTask, null, false);
+            $copyToTask = $this->processTaskCopy($id);
             //Log event for project audit
-            if ($relationAttributeName == 'project')
+            if ($copyToTask->project->id > 0)
             {
                 ProjectsUtil::logAddTaskEvent($copyToTask);
             }
@@ -411,6 +422,7 @@
         {
             $task = Task::getById(intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($task);
+            AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED, array(strval($task), 'TasksModule'), $task);
             $this->attemptToValidateAndSaveFromModalDetails($task);
             $this->processModalDetails($task);
         }
@@ -865,6 +877,21 @@
                                                 TasksModule::getModuleLabelByTypeAndLanguage('Plural'),
                                                 $dataProvider
                                              );
+        }
+
+        /**
+         * Process task copy
+         * @param string $id
+         * @return Task
+         */
+        private function processTaskCopy($id)
+        {
+            $copyToTask   = new Task();
+            $task   = Task::getById(intval($id));
+            ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($task);
+            TaskActivityCopyModelUtil::copy($task, $copyToTask);
+            $copyToTask   = $this->attemptToSaveModelFromPost($copyToTask, null, false);
+            return $copyToTask;
         }
     }
 ?>

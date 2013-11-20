@@ -933,9 +933,13 @@
             {
                 $sortOrder = KanbanItem::getMaximumSortOrderByType(intval($targetKanbanType), $task->project);
             }
-            else
+            elseif ($task->activityItems->count() > 0)
             {
                 $sortOrder = KanbanItem::getMaximumSortOrderByType(intval($targetKanbanType), $task->activityItems->offsetGet(0));
+            }
+            else
+            {
+                $sortOrder = 1;
             }
             return $sortOrder;
         }

@@ -107,54 +107,6 @@
             $this->configurationForm = TasksUtil::getConfigurationFormWithStatusAsStickyData();
         }
 
-        protected function renderScripts()
-        {
-            parent::renderScripts();
-            TasksUtil::registerTaskModalEditScript($this->getGridViewId(), array('sourceId' => $this->getGridViewId()));
-            TasksUtil::registerTaskModalDetailsScript($this->getGridViewId());
-        }
-
-        /**
-         * Override to handle security/access resolution on links.
-         */
-        public function getLinkString($attributeString, $attribute)
-        {
-            return array($this, 'resolveLinkString');
-        }
-
-        /**
-         * Resolves the link string for task detail modal view
-         * @param array $data
-         * @param int $row
-         * @return string
-         */
-        public function resolveLinkString($data, $row)
-        {
-            $content = TasksUtil::getModalDetailsLink($data, $this->controllerId,
-                                                      $this->moduleId,
-                                                      'TasksModule', false);
-            return $content;
-        }
-
-        /**
-         * Override to handle security/access resolution on links.
-         */
-        protected function getCGridViewLastColumn()
-        {
-            return array(
-                'class'           => 'TaskEditButtonColumn',
-                'template'        => '{update}',
-                'buttons'         => array(
-                    'update'      => array(
-                                            'visible'         => 'ActionSecurityUtil::canCurrentUserPerformAction("Edit", $data)',
-                                            'options'         => array('class' => 'pencil edit-related-open-task',
-                                                                       'title' => 'Update'),
-                                            'label'           => '!'
-                                            ),
-                ),
-            );
-        }
-
         /**
          * Renders content
          * @return string
@@ -162,6 +114,7 @@
         protected function renderContent()
         {
             $content = $this->renderConfigurationForm();
+            TasksUtil::resolveShouldOpenToTask($this->getGridViewId());
             $content .= parent::renderContent();
             return $content;
         }
