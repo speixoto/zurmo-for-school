@@ -63,56 +63,35 @@
             $searchForm                     = new TasksSearchForm($task);
             $listAttributesSelector         = new ListAttributesSelector('TasksListView', get_class($this->getModule()));
             $searchForm->setListAttributesSelector($listAttributesSelector);
-            if ((isset($_GET['ajax']) && $_GET['ajax'] == 'filter-list-view'))
+
+            $dataProvider  = $this->resolveSearchDataProvider(
+                                                        $searchForm,
+                                                        $pageSize,
+                                                        null,
+                                                        'TasksSearchView'
+                                                    );
+            if ((isset($_GET['ajax']) && $_GET['ajax'] == 'list-view'))
             {
-                $status = $_GET['TasksConfigurationForm']['filteredByStatus'];
-                if($status != TasksConfigurationForm::FILTERED_BY_ALL_STATUS)
+                if(isset($_GET['openToTaskId']))
                 {
-                    $dataProvider = TasksUtil::makeDataProviderForFilterByStatus($status, $pageSize);
+                    unset($_GET['openToTaskId']);
                 }
-                else
-                {
-                    $isFilterAllStatus = true;
-                }
-                TasksUtil::saveSelectedOptionsAsStickyData($status);
                 $mixedView  = $this->makeListView(
-                                $searchForm,
-                                $dataProvider
-                            );
-                $view = new AjaxPageView($mixedView);
-                echo $view->render();
+                            $searchForm,
+                            $dataProvider
+                        );
+                $view       = new TasksPageView($mixedView);
             }
             else
             {
-                $dataProvider  = $this->resolveSearchDataProvider(
-                                                            $searchForm,
-                                                            $pageSize,
-                                                            null,
-                                                            'TasksSearchView'
-                                                        );
-                if ((isset($_GET['ajax']) && $_GET['ajax'] == 'list-view'))
-                {
-                    if(isset($_GET['openToTaskId']))
-                    {
-                        unset($_GET['openToTaskId']);
-                    }
-                    $mixedView  = $this->makeListView(
-                                $searchForm,
-                                $dataProvider
-                            );
-                    $view       = new TasksPageView($mixedView);
-                }
-                else
-                {
-                    $mixedView  = $this->makeActionBarSearchAndListView($searchForm, $dataProvider,
-                                       'SecuredActionBarForTasksSearchAndListView',
-                                        null, null, null);
-                    $view       = new TasksPageView(ZurmoDefaultViewUtil::
-                                                        makeStandardViewForCurrentUser(
-                                                            $this, $mixedView));
-                }
-                echo $view->render();
+                $mixedView  = $this->makeActionBarSearchAndListView($searchForm, $dataProvider,
+                                   'SecuredActionBarForTasksSearchAndListView',
+                                    null, null, null);
+                $view       = new TasksPageView(ZurmoDefaultViewUtil::
+                                                    makeStandardViewForCurrentUser(
+                                                        $this, $mixedView));
             }
+            echo $view->render();
         }
 
         public function actionDetails($id, $redirectUrl = null)

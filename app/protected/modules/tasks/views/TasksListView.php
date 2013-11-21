@@ -36,11 +36,6 @@
 
     class TasksListView extends SecuredListView
     {
-        /**
-         * Form that has the information for status filter
-         */
-        protected $configurationForm = 'TasksConfigurationForm';
-
         public static function getDefaultMetadata()
         {
             $metadata = array(
@@ -113,85 +108,8 @@
          */
         protected function renderContent()
         {
-            $content = $this->renderConfigurationForm();
             TasksUtil::resolveShouldOpenToTask($this->getGridViewId());
-            $content .= parent::renderContent();
-            return $content;
-        }
-
-        /**
-         * @return string
-         */
-        protected function renderConfigurationForm()
-        {
-            $formName   = 'task-status-form';
-            $clipWidget = new ClipWidget();
-            list($form, $formStart) = $clipWidget->renderBeginWidget(
-                'ZurmoActiveForm',
-                array(
-                    'id' => $formName,
-                )
-            );
-            $content  = $formStart;
-            $content .= $this->renderConfigurationFormLayout($form);
-            $formEnd  = $clipWidget->renderEndWidget();
-            $content .= $formEnd;
-            $this->registerConfigurationFormLayoutScripts($form);
-            return $content;
-        }
-
-        /**
-         * @param ProductsConfigurationForm $form
-         * @return string
-         */
-        protected function renderConfigurationFormLayout($form)
-        {
-            assert('$form instanceof ZurmoActiveForm');
-            $content      = null;
-            $innerContent = null;
-            $element                   = new TaskStatusFilterRadioElement($this->configurationForm,
-                                                                                          'filteredByStatus',
-                                                                                          $form);
-            $element->editableTemplate =  '<div id="TasksConfigurationForm_filteredByStatus_area">{content}</div>';
-            $statusFilterContent       = $element->render();
-            $innerContent             .= $statusFilterContent;
-            if ($innerContent != null)
-            {
-                $content .= '<div class="filter-portlet-model-bar">';
-                $content .= $innerContent;
-                $content .= '</div>' . "\n";
-            }
-            return $content;
-        }
-
-        /**
-         * @param ProductsConfigurationForm $form
-         */
-        protected function registerConfigurationFormLayoutScripts($form)
-        {
-            assert('$form instanceof ZurmoActiveForm');
-            $urlScript = Yii::app()->createUrl('tasks/default/list', array('ajax' => 'filter-list-view')); // Not Coding Standard
-            $ajaxSubmitScript = ZurmoHtml::ajax(array(
-                    'type'       => 'GET',
-                    'data'       => 'js:$("#' . $form->getId() . '").serialize()',
-                    'url'        =>  $urlScript,
-                    'update'     => '#TasksListView',
-                    'beforeSend' => 'js:function(){$(this).makeSmallLoadingSpinner(true, "#' . $this->getGridViewId() . '"); '
-                . '                                 $("#' . $form->getId() . '").parent().children(".cgrid-view").addClass("loading");}',
-                    'complete'   => 'js:function()
-                    {
-                                        $("#' . $form->getId() . '").parent().children(".cgrid-view").removeClass("loading");
-                    }'
-            ));
-            Yii::app()->clientScript->registerScript($this->getGridViewId() . '-statusfilter', "
-            var filterarea = $('#TasksConfigurationForm_filteredByStatus_area');
-            filterarea.buttonset();
-            filterarea.change(function()
-                {
-                    " . $ajaxSubmitScript . "
-                }
-            );
-            ");
+            return parent::renderContent();
         }
     }
 ?>
