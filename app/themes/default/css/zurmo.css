@@ -1832,7 +1832,7 @@ body > .ui-autocomplete {
   -o-border-radius: 0 0 5px 5px;
   border-radius: 0 0 5px 5px;
   padding: 20px 20px 0 20px;
-  margin-left: 172px;
+  margin-left: 170px;
   margin-bottom: 20px;
   background-color: #ffffff ;
   background-repeat: no-repeat ;
@@ -4024,7 +4024,6 @@ div.wide.form a {
 #modal-edit-form .hasCheckBox,
 #edit-form .hasCheckBox,
 #delete-form .hasCheckBox {
-  margin: 8px 0 0 0;
   display: block;
 }
 #modal-edit-form .hasCheckBox input[type="checkbox"],
@@ -4271,11 +4270,11 @@ div.wide.form a {
   margin-right: 80px !important;
   width: auto;
 }
-.beforeOptOutCheckBox + .hasCheckBox {
+.beforeOptOutCheckBox + div {
   float: right;
   margin: 0 0 0 -80px !important;
   position: relative;
-  left: 10px;
+  padding-left: 10px;
   width: 80px;
 }
 .beforeToolTip {
@@ -5085,77 +5084,79 @@ div.radio-input .hasDropDown {
 }
 .overlay-label-field label {
   position: absolute !important;
-  left: 4px;
+  text-indent: 4px;
   top: 6px;
   color: #999;
-  font-size: 14px;
+  font-size: 12px;
   font-weight: normal;
 }
-div.hasParallelFields,
-div.hasHalfs {
+.hasParallelFields,
+.hasHalfs {
   *zoom: 1;
 }
-div.hasParallelFields:before,
-div.hasParallelFields:after,
-div.hasHalfs:before,
-div.hasHalfs:after {
+.hasParallelFields:before,
+.hasParallelFields:after,
+.hasHalfs:before,
+.hasHalfs:after {
   content: " ";
   display: table;
 }
-div.hasParallelFields:after,
-div.hasHalfs:after {
+.hasParallelFields:after,
+.hasHalfs:after {
   clear: both;
 }
-div.hasParallelFields div:first-child,
-div.hasHalfs div:first-child {
-  margin-right: 4%;
-}
-div.hasParallelFields > div,
-div.hasHalfs > div {
+.hasParallelFields > div,
+.hasHalfs > div {
   display: block;
   float: left;
+  padding-left: 15px;
 }
-div.hasParallelFields > div input,
-div.hasHalfs > div input {
+.hasParallelFields > div:first-child,
+.hasHalfs > div:first-child {
+  padding-left: 0;
+}
+.hasParallelFields > div input,
+.hasHalfs > div input {
   width: 100%;
 }
+.hasHalfs > div:first-child {
+  padding-right: 7.5px;
+}
+.hasHalfs > div:first-child + div {
+  padding-left: 7.5px;
+}
 .seventh {
-  width: 12.5%;
+  width: 14.2%;
 }
 .sixth {
-  width: 15%;
+  width: 16.6%;
 }
 .fifth {
-  width: 19%;
+  width: 20%;
 }
 .twoFifths {
-  width: 36.5%;
+  width: 40%;
 }
 .threeFifths {
-  width: 55.5%;
-  margin-right: 4%;
+  width: 60%;
 }
 .fourFifths {
-  width: 73%;
-  margin-right: 4%;
-}
-.fifth + .twoFifths {
-  margin-right: 4%;
+  width: 80%;
 }
 .half {
-  width: 48%;
+  width: 50%;
 }
 .quarter {
-  width: 23%;
+  width: 25%;
 }
 .threeQuarters {
-  width: 73%;
+  width: 75%;
 }
 .third {
-  width: 32%;
+  width: 33.3%;
 }
 .twoThirds {
-  width: 64%;
+  width: 66.6%;
 }
 .juiportlet-widget.OpportunitiesForAccountRelatedListView div.button-column,
 .juiportlet-widget.ContactsForAccountRelatedListView div.button-column {
@@ -5992,16 +5993,14 @@ div.hasHalfs > div input {
   font-style: normal;
 }
 .hasDropDown {
-  width: 100%;
   margin: 0;
   padding: 0;
   position: relative;
   cursor: pointer;
 }
 .hasDropDown span {
-  width: 22px;
+  width: 28px;
   height: 24px;
-  display: block;
   position: absolute;
   top: 1px;
   right: 1px;

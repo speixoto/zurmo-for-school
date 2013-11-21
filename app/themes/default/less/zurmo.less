@@ -821,7 +821,7 @@ body > .ui-autocomplete{
 	max-width: 1600px;
 	height:100%;
 	margin:0 3% 0 3%;
-	background:#fff url(../images/nav.png) left top repeat-y;
+	background:#fff url(../images/nav.png) -2px top repeat-y;
 	.b-shadow(0 0 12px 5px rgba(153, 153, 153, 0.3)); /*999*/
 	.radius(0 0 5px 5px);
 	z-index: 0;
@@ -1281,7 +1281,7 @@ body > .ui-autocomplete{
 .AppContent{
 	.radius(0 0 5px 5px);
 	padding:20px 20px 0 20px;
-	margin-left:172px;
+	margin-left:170px;
 	margin-bottom:20px;
 	#gradient > .vertical-three-colors( #f6f6f6, #ffffff, 100px, #ffffff );
 	.clearfix();
@@ -3190,7 +3190,7 @@ div.wide.form{
 		border-top:1px solid #CCCCCC;
 	}
 	.hasCheckBox{
-		margin:8px 0 0 0;
+		//margin:8px 0 0 0;
 		display:block;
 		input[type="checkbox"]{
 			margin-bottom:0 !important;
@@ -3441,11 +3441,11 @@ div.wide.form{
 	}
 }
 
-.beforeOptOutCheckBox + .hasCheckBox{
+.beforeOptOutCheckBox + div{
 	float: right;
 	margin:0 0 0 -80px !important;
 	position:relative;
-	left:10px;
+	padding-left: 10px;
 	width: 80px;
 }
 
@@ -4108,10 +4108,10 @@ div.radio-input{
 
 .overlay-label-field label {
 	position: absolute !important;
-	left: 4px;
+	text-indent: 4px;
 	top: 6px;
 	color: #999;
-	font-size: 14px;
+	font-size: 12px;
 	font-weight: normal;
 }
 
@@ -4119,60 +4119,42 @@ div.radio-input{
 	//.box-sizing();
 }
 
-div.hasParallelFields,
-div.hasHalfs{
+.hasParallelFields,
+.hasHalfs{
 	.clearfix();
-	div:first-child{
-		margin-right:4%;
-	}
 	> div{
 		display:block;
 		float:left;
+		padding-left: 15px;
+		&:first-child{
+			padding-left: 0;
+		}
 		input{
 			width:100%;
-			//.box-sizing();
 		}
 	}
 }
 
-.seventh{
-	width: 12.5%;
+.hasHalfs{
+	> div:first-child{
+		padding-right: 7.5px;
+		+ div{
+			padding-left: 7.5px;
+		}
+	}
 }
-.sixth{
-	width: 15%;
-}
-.fifth{
-	width:19%;
-}
-.twoFifths{
-	width:36.5%;
-}
-.threeFifths{
-	width:55.5%;
-	margin-right:4%;
-}
-.fourFifths{
-	width:73%;
-	margin-right:4%;
-}
-.fifth + .twoFifths{
-	margin-right:4%;
-}
-.half{
-	width:48%;
-}
-.quarter{
-	width:23%;
-}
-.threeQuarters{
-	width:73%;
-}
-.third{
-	width:32%;
-}
-.twoThirds{
-	width:64%;
-}
+
+.seventh{       width: 14.2%; }
+.sixth{         width: 16.6%;}
+.fifth{         width:20%;}
+.twoFifths{     width:40%;}
+.threeFifths{   width:60%;}
+.fourFifths{    width:80%;}
+.half{          width:50%;}
+.quarter{       width:25%;}
+.threeQuarters{ width:75%;}
+.third{         width:33.3%;}
+.twoThirds{     width:66.6%;}
 
 .juiportlet-widget.OpportunitiesForAccountRelatedListView,
 .juiportlet-widget.ContactsForAccountRelatedListView{
@@ -4805,16 +4787,15 @@ div.hasHalfs{
 
 /*Dropdowns*/
 .hasDropDown{
-	width: 100%;
+	//width: 100%;
 	margin: 0;
 	padding: 0;
 	position: relative;
 	cursor: pointer;
 	//.box-sizing();
 	span{
-		width: 22px;
+		width: 28px;
 		height: 24px;
-		display: block;
 		position: absolute;
 		top:1px;
 		right: 1px;
@@ -4825,7 +4806,6 @@ div.hasHalfs{
 		display: block !important;
 		font-weight: normal !important;
 		color: #666 !important;
-		z-index: 1;
 		cursor:pointer;
 	}
 	span:hover,

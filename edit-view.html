@@ -1,0 +1,405 @@
+<!DOCTYPE html><!--[if IE 8]>
+<html class="zurmo ie8" lang="en"><![endif]--><!--[if gt IE 8]><!-->
+<html class="zurmo" lang="en"><!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <link rel="apple-touch-icon" sizes="144x144" href="/Zurmo/app/themes/default/images/touch-icon-iphone4.png"/>
+    <style>@font-face {
+        font-family: 'zurmo_gamification_symbly_rRg';
+        src: url('/Zurmo/app/protected/core/views/assets/zurmogamificationsymblyregular-regular-webfont.eot');
+        src: url('/Zurmo/app/protected/core/views/assets/zurmogamificationsymblyregular-regular-webfont.eot?#iefix') format('embedded-opentype'),
+        url('/Zurmo/app/protected/core/views/assets/zurmogamificationsymblyregular-regular-webfont.woff') format('woff'),
+        url('/Zurmo/app/protected/core/views/assets/zurmogamificationsymblyregular-regular-webfont.ttf') format('truetype'),
+        url('/Zurmo/app/protected/core/views/assets/zurmogamificationsymblyregular-regular-webfont.svg#zurmo_gamification_symbly_rRg') format('svg');
+        font-weight: normal;
+        font-style: normal;
+        unicode-range: U+00-FFFF;
+    }</style>
+    <link rel="shortcut icon" href="/Zurmo/app/themes/default/ico/favicon.ico"/>
+    <link rel="stylesheet" type="text/css" href="/Zurmo/app/themes/default/css/keyframes.css"/>
+    <link rel="stylesheet" type="text/css" href="/Zurmo/app/themes/default/css/zurmo.css"/>
+    <link rel="stylesheet" type="text/css" href="/Zurmo/app/assets/569e74c9/jquery-ui-timepicker-addon.css"/>
+    <title>ZurmoCRM - Contacts</title></head>
+<body class="blue">
+<div id="ContactsPageView" class="ZurmoDefaultPageView ZurmoPageView PageView">
+    <div id="ZurmoDefaultView">
+        <div class="GridView">
+            <div id="HeaderView">
+                <!-- Start of themes/default/templates/HeaderView.xhtml -->
+                <div id="MainLogo" class="zurmo-logo"></div>
+                <div class="GridView">
+                    <div id="HeaderLinksView">
+                        <div class="clearfix"><a href="#" id="nav-trigger" title="Toggle Navigation">&rsaquo;</a>
+
+                            <div id="corp-logo"><a href="/Zurmo/app/index.php/home/default"><img
+                                    src="/Zurmo/app/themes/default/images/Zurmo_logo.png" alt="Zurmo Logo" height="32"
+                                    width="107"/></a><span>Demo Company Inc.</span></div>
+                            <div id="user-toolbar" class="clearfix">
+                                <div id="header-game-dashboard-link-wrapper" class="user-menu-item"><a
+                                        id="header-game-dashboard-link" href="#">∂</a></div>
+                                <ul id="user-header-menu" class="user-menu-item nav">
+                                    <li class="parent last"><a href="javascript:void(0);"><span>super</span></a>
+                                        <ul>
+                                            <li>
+                                                <a href="/Zurmo/app/index.php/users/default/profile"><span>My Profile</span></a>
+                                            </li>
+                                            <li><a href="/Zurmo/app/index.php/gamification/default/leaderboard"><span>Leaderboard</span></a>
+                                            </li>
+                                            <li><a href="/Zurmo/app/index.php/emailMessages/default/matchingList"><span>Data Cleanup</span></a>
+                                            </li>
+                                            <li class="last"><a href="/Zurmo/app/index.php/zurmo/default/logout"><span>Sign out</span></a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                                <ul id="settings-header-menu" class="user-menu-item nav">
+                                    <li class="parent last"><a
+                                            href="javascript:void(0);"><span>Administration</span></a>
+                                        <ul>
+                                            <li><a href="/Zurmo/app/index.php/configuration"><span>Administration</span></a>
+                                            </li>
+                                            <li>
+                                                <a href="/Zurmo/app/index.php/designer/default"><span>Designer</span></a>
+                                            </li>
+                                            <li><a href="/Zurmo/app/index.php/import/default"><span>Import</span></a>
+                                            </li>
+                                            <li><a href="/Zurmo/app/index.php/users/default"><span>Users</span></a></li>
+                                            <li>
+                                                <a href="http://www.zurmo.com/needSupport.php"><span>Need Support?</span></a>
+                                            </li>
+                                            <li class="last"><a href="/Zurmo/app/index.php/zurmo/default/about"><span>About Zurmo</span></a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="GridView">
+                        <div id="GlobalSearchAndShortcutsCreateMenuView">
+                            <div id="app-search" class="clearfix"><select class="ignore-style" id="globalSearchScope"
+                                                                          multiple="multiple" style="display:none;"
+                                                                          size="4" name="globalSearchScope[]">
+                                <option value="All" selected="selected">All</option>
+                                <option value="accounts">Accounts</option>
+                                <option value="contacts">Contacts</option>
+                                <option value="leads">Leads</option>
+                                <option value="opportunities">Opportunities</option>
+                            </select><input class="global-search global-search-hint"
+                                            onfocus="$(this).removeClass(&quot;global-search-hint&quot;); $(this).val(&quot;&quot;);"
+                                            onblur="$(this).val(&quot;&quot;)" id="globalSearchInput" type="text"
+                                            value="Search by name, phone, or e-mail" name="globalSearchInput"/><span
+                                    class="z-spinner"></span></div>
+                            <ul id="ShortcutsMenu" class="nav">
+                                <li class="parent last active"><a href="javascript:void(0);"><span>Create</span></a>
+                                    <ul>
+                                        <li><a href="/Zurmo/app/index.php/accounts/default/create"><span>Account</span></a>
+                                        </li>
+                                        <li><a href="/Zurmo/app/index.php/contacts/default/create"><span>Contact</span></a>
+                                        </li>
+                                        <li><a href="/Zurmo/app/index.php/conversations/default/create"><span>Conversation</span></a>
+                                        </li>
+                                        <li><a href="/Zurmo/app/index.php/leads/default/create"><span>Lead</span></a>
+                                        </li>
+                                        <li><a href="/Zurmo/app/index.php/missions/default/create"><span>Mission</span></a>
+                                        </li>
+                                        <li><a href="/Zurmo/app/index.php/opportunities/default/create"><span>Opportunity</span></a>
+                                        </li>
+                                        <li>
+                                            <a href="/Zurmo/app/index.php/reports/default/selectType"><span>Report</span></a>
+                                        </li>
+                                        <li class="last"><a href="#" id="yt0"><span>Task</span></a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- End of themes/default/templates/HeaderView.xhtml --></div>
+            <div class="AppContainer clearfix GridView">
+                <div class="AppNavigation clearfix GridView">
+                    <div id="MenuView">
+                        <ul class="nav">
+                            <li id="home"><a
+                                    href="/Zurmo/app/index.php/home/default"><span></span><em></em><span>Home</span></a>
+                            </li>
+                            <li id="mashableInbox"><a
+                                    href="/Zurmo/app/index.php/mashableInbox/default"><span></span><em></em><span>Inbox<span
+                                    class="unread-inbox-count">8</span></span></a></li>
+                            <li id="accounts"><a
+                                    href="/Zurmo/app/index.php/accounts/default"><span></span><em></em><span>Accounts</span></a>
+                            </li>
+                            <li id="leads"><a href="/Zurmo/app/index.php/leads/default"><span></span><em></em><span>Leads</span></a>
+                            </li>
+                            <li id="contacts" class="active"><a
+                                    href="/Zurmo/app/index.php/contacts/default"><span></span><em></em><span>Contacts</span></a>
+                            </li>
+                            <li id="opportunities"><a
+                                    href="/Zurmo/app/index.php/opportunities/default"><span></span><em></em><span>Opportunities</span></a>
+                            </li>
+                            <li id="marketing" class="hidden-nav-item"><a
+                                    href="/Zurmo/app/index.php/marketing/default/dashboardDetails"><span></span><em></em><span>Marketing</span></a>
+                            </li>
+                            <li id="projects" class="hidden-nav-item"><a
+                                    href="/Zurmo/app/index.php/projects/default/dashboardDetails"><span></span><em></em><span>Projects</span></a>
+                            </li>
+                            <li id="products" class="hidden-nav-item"><a
+                                    href="/Zurmo/app/index.php/products/default"><span></span><em></em><span>Products</span></a>
+                            </li>
+                            <li id="reports" class="hidden-nav-item last"><a
+                                    href="/Zurmo/app/index.php/reports/default"><span></span><em></em><span>Reports</span></a>
+                            </li>
+                        </ul>
+                        <a class="toggle-hidden-nav-items"></a></div>
+                    <div id="RecentlyViewedView"><h3>Recently Viewed</h3>
+                        <ul class="nav">
+                            <li class="type-ContactsModule"><a
+                                    href="/Zurmo/app/index.php/contacts/default/details?id=10"><span></span><em></em><span>Kirby Davis</span></a>
+                            </li>
+                            <li class="type-UsersModule"><a
+                                    href="/Zurmo/app/index.php/users/default/details?id=1"><span></span><em></em><span>Super User</span></a>
+                            </li>
+                            <li class="type-AccountsModule"><a
+                                    href="/Zurmo/app/index.php/accounts/default/details?id=6"><span></span><em></em><span>Acme, Inc.</span></a>
+                            </li>
+                            <li class="type-UsersModule"><a
+                                    href="/Zurmo/app/index.php/users/default/details?id=3"><span></span><em></em><span>Jason Blue</span></a>
+                            </li>
+                            <li class="type-GameRewardsModule last"><a
+                                    href="/Zurmo/app/index.php/gameRewards/default/details?id=8"><span></span><em></em><span>$500 gift card</span></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div id="ContactEditAndDetailsView"
+                     class="AppContent SecuredEditAndDetailsView EditAndDetailsView DetailsView ModelView ConfigurableMetadataView MetadataView">
+
+                <div class="wrapper">
+
+                    <h1><span class="truncated-title"><span class="ellipsis-content">Create Contact</span></span></h1>
+
+                        <div class="wide double-column form">
+
+                            <form id="edit-form" action="/Zurmo/app/index.php/contacts/default/create" method="post">
+
+
+
+
+                            <!-- new layout -->
+                            <link rel="stylesheet" type="text/css" href="/Zurmo/detail-edit-view.css"/>
+
+                                    <section class="details attributesContainer left-column form-fields">
+                                        <div class="panel clearfix mobile-view">
+                                            <h3>This is the panel's title!</h3>
+
+                                            <div class="details-item-editable full-row clearfix">
+                                                <label class="req"><strong>text field<span class="required">*</span></strong></label>
+                                                <div><input type="text" maxlength="64"/></div>
+                                            </div>
+
+                                            <div class="details-item-editable full-row clearfix">
+                                                <label class="req"><strong>dropdown</strong></label>
+                                                <div class="hasDropDown">
+                                                    <span class="select-arrow"></span>
+                                                    <select>
+                                                        <option value="">(None)</option>
+                                                        <option value="Self-Generated">Self-Generated</option>
+                                                        <option value="Inbound Call">Inbound Call</option>
+                                                        <option value="Tradeshow">Tradeshow</option>
+                                                        <option value="Word of Mouth">Word of Mouth</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="details-item-editable full-row clearfix">
+                                                <label class="req"><strong>paralel fields</strong></label>
+                                                <div class="hasParallelFields">
+                                                    <div class="overlay-label-field fifth">
+                                                        <div class="hasDropDown">
+                                                            <span class="select-arrow"></span>
+                                                            <select name="Contact[title][value]" id="Contact_title_value">
+                                                                <option value="">(None)</option>
+                                                                <option value="Mr.">Mr.</option>
+                                                                <option value="Mrs.">Mrs.</option>
+                                                                <option value="Ms.">Ms.</option>
+                                                                <option value="Dr.">Dr.</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="overlay-label-field twoFifths">
+                                                        <label>First Name</label>
+                                                        <input type="text" maxlength="32"/>
+                                                    </div>
+                                                    <div class="overlay-label-field twoFifths">
+                                                        <label>Last Name</label>
+                                                        <input type="text" maxlength="32"/>
+                                                   </div>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="details-item-editable clearfix">
+                                                <label class="req"><strong>field with checkbox</strong></label>
+                                                <div>
+                                                    <div class="beforeOptOutCheckBox">
+                                                        <div><input name="Contact[primaryEmail][emailAddress]" id="Contact_primaryEmail_emailAddress" type="text">
+                                                        </div>
+                                                    </div>
+                                                    <div class="hasCheckBox">
+                                                        <label class="hasCheckBox">
+                                                            <input name="Contact[primaryEmail][optOut]" id="Contact_primaryEmail_optOut" value="1"
+                                                                   type="checkbox"/>
+                                                        </label>
+                                                        <label for="Contact_primaryEmail_optOut">Opt Out</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="details-item-editable clearfix">
+                                                <label class="req"><strong>checkbox</strong></label>
+                                                <div class="hasCheckBox">
+                                                    <input id="ytContact_primaryEmail_optOut" type="hidden" value="0" name="Contact[primaryEmail][optOut]"/>
+                                                    <label class="hasCheckBox">
+                                                        <input name="Contact[primaryEmail][optOut]" id="Contact_primaryEmail_optOut" value="1"
+                                                               type="checkbox"/>
+                                                    </label>
+                                                    <label for="Contact_primaryEmail_optOut">Opt Out</label>
+                                                </div>
+                                            </div>
+
+                                            <div class="details-item-editable clearfix">
+                                                <label class="req"><strong>address</strong></label>
+                                                <div class="address-fields">
+                                                    <div class="overlay-label-field">
+                                                        <label for="Contact_secondaryAddress_street1">Street 1</label>
+                                                        <input name="Contact[secondaryAddress][street1]" id="Contact_secondaryAddress_street1" type="text" maxlength="128">
+                                                    </div>
+                                                    <div class="overlay-label-field">
+                                                        <label for="Contact_secondaryAddress_street2">Street 2</label>
+                                                        <input name="Contact[secondaryAddress][street2]" id="Contact_secondaryAddress_street2" type="text" maxlength="128">
+                                                    </div>
+                                                    <div class="overlay-label-field">
+                                                        <label for="Contact_secondaryAddress_city">City</label>
+                                                        <input name="Contact[secondaryAddress][city]" id="Contact_secondaryAddress_city" type="text" maxlength="32">
+                                                    </div>
+                                                    <div class="hasHalfs">
+                                                        <div class="overlay-label-field half">
+                                                            <label for="Contact_secondaryAddress_state">State</label>
+                                                            <input name="Contact[secondaryAddress][state]" id="Contact_secondaryAddress_state" type="text" maxlength="32">
+                                                        </div>
+                                                        <div class="overlay-label-field half">
+                                                            <label for="Contact_secondaryAddress_postalCode">Postal Code</label>
+                                                            <input name="Contact[secondaryAddress][postalCode]" id="Contact_secondaryAddress_postalCode" type="text" maxlength="16">
+                                                        </div>
+                                                    </div>
+                                                    <div class="overlay-label-field">
+                                                        <label for="Contact_secondaryAddress_country">Country</label>
+                                                        <input name="Contact[secondaryAddress][country]" id="Contact_secondaryAddress_country" type="text" maxlength="32">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </section>
+
+                            <!-- end new layout -->
+
+
+
+
+
+                                    <div class="right-column">
+                                        <div class="right-side-edit-view-panel"><h3>Rights and Permissions</h3>
+
+                                            <div id="owner-box"><label for="Contact_owner_id" class="required">Owner
+                                                <span class="required">*</span></label><input name="Contact[owner][id]"
+                                                                                              id="Contact_owner_id"
+                                                                                              value="1" type="hidden"/>
+
+                                                <div class="has-model-select"><input
+                                                        onblur="clearIdFromAutoCompleteField($(this).val(), &#039;Contact_owner_id&#039;);"
+                                                        id="Contact_owner_name" type="text" value="Super User"
+                                                        name="Contact_owner_name"/><a id="Contact_owner_SelectLink"
+                                                                                      href="#"><span
+                                                        class="model-select-icon"></span><span class="z-spinner"></span></a>
+                                                </div>
+                                            </div>
+                                            <label>Who can read and write</label>
+
+                                            <div class="radio-input"><input
+                                                    id="Contact_explicitReadWriteModelPermissions_type_0" value=""
+                                                    type="radio"
+                                                    name="Contact[explicitReadWriteModelPermissions][type]"/><label
+                                                    for="Contact_explicitReadWriteModelPermissions_type_0">Owner</label>
+                                            </div>
+                                            <div class="radio-input"><input
+                                                    id="Contact_explicitReadWriteModelPermissions_type_1" value="2"
+                                                    type="radio"
+                                                    name="Contact[explicitReadWriteModelPermissions][type]"/><label
+                                                    for="Contact_explicitReadWriteModelPermissions_type_1">Owner and
+                                                users in</label>&#160;
+                                                <div class="hasDropDown"><span class="select-arrow"></span><select
+                                                        id="Contact_explicitReadWriteModelPermissions_nonEveryoneGroup"
+                                                        onclick="document.getElementById(&quot;Contact_explicitReadWriteModelPermissions_type_1&quot;).checked=&quot;checked&quot;;"
+                                                        name="Contact[explicitReadWriteModelPermissions][nonEveryoneGroup]">
+                                                    <option value="3">East</option>
+                                                    <option value="5">East Channel Sales</option>
+                                                    <option value="7">East Direct Sales</option>
+                                                    <option value="4">West</option>
+                                                    <option value="6">West Channel Sales</option>
+                                                    <option value="8">West Direct Sales</option>
+                                                </select></div>
+                                            </div>
+                                            <div class="radio-input"><input
+                                                    id="Contact_explicitReadWriteModelPermissions_type_2" value="1"
+                                                    checked="checked" type="radio"
+                                                    name="Contact[explicitReadWriteModelPermissions][type]"/><label
+                                                    for="Contact_explicitReadWriteModelPermissions_type_2">Everyone</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <div class="float-bar">
+                                    <div class="view-toolbar-container clearfix dock">
+                                        <div class="form-toolbar">
+                                            <a id="saveyt2" name="save"
+                                               class="attachLoading z-button"
+                                               onclick="jQuery.yii.submitForm(this, &#039;&#039;, {&#039;save&#039;:&#039;save&#039;}); return false;"
+                                               href="#">
+                                                <span class="z-spinner"></span>
+                                                <span class="z-icon"></span>
+                                                <span class="z-label">Save</span>
+                                            </a>
+                                            <a class="cancel-button" href="/Zurmo/app/index.php/contacts/default">
+                                                <span class="z-label">Cancel</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                            <div id="modalContainer-edit-form"></div>
+                        </div>
+                    </div>
+                </div>
+                <div id="FlashMessageView">
+                    <div id="FlashMessageBar"></div>
+                </div>
+            </div>
+            <div id="ModalContainerView">
+                <div id="modalContainer"></div>
+            </div>
+            <div id="ModalGameNotificationContainerView"></div>
+            <div id="GameCoinContainerView"></div>
+            <div id="FooterView"><a href="http://www.zurmo.com" id="credit-link" class="clearfix"><span>Copyright &#169; Zurmo Inc., 2013. All rights reserved.</span></a>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
