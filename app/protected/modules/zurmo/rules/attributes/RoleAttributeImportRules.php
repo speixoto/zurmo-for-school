@@ -35,35 +35,23 @@
      ********************************************************************************/
 
     /**
-     * Defines the import rules for importing into the users module.
+     * Import rules for an attribute that is a role model.
      */
-    class UsersImportRules extends ImportRules
+    class RoleAttributeImportRules extends ModelAttributeImportRules
     {
-        /**
-         * Override to handle the password setting as well as not showing all the derived types that are available
-         * in other models. This is why this override does not call the parent first.
-         * @return array
-         */
-        public static function getDerivedAttributeTypes()
+        protected static function getAllModelAttributeMappingRuleFormTypesAndElementTypes()
         {
-            return array('Password', 'UserStatus');
+            return array('DefaultModelNameId' => 'ImportMappingRuleRoleModelNameId');
         }
 
-        /**
-         * Override to block out additional attributes that are not importable
-         * @return array
-         */
-        public static function getNonImportableAttributeNames()
+        protected static function getImportColumnOnlyModelAttributeMappingRuleFormTypesAndElementTypes()
         {
-            return array_merge(parent::getNonImportableAttributeNames(), array('currency', 'isActive', 'language', 'locale',
-                               'timeZone', 'manager', 'hash', 'createdByUser', 'modifiedByUser',
-                               'createdDateTime', 'modifiedDateTime', 'isRootUser', 'isSystemUser',
-                               'hideFromSelecting', 'hideFromLeaderboard', 'serializedAvatarData'));
+            return array('RelatedModelValueType' => 'ImportMappingRelatedModelValueTypeDropDown');
         }
 
-        public static function getModelClassName()
+        public static function getSanitizerUtilTypesInProcessingOrder()
         {
-            return 'User';
+            return array('RelatedModelNameOrIdValueType', 'ModelIdRequired');
         }
     }
 ?>

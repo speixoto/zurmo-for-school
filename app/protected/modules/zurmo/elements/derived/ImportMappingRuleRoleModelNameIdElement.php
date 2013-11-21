@@ -34,36 +34,18 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Defines the import rules for importing into the users module.
-     */
-    class UsersImportRules extends ImportRules
+    class ImportMappingRuleRoleModelNameIdElement extends ImportMappingRuleDefaultModelNameIdElement
     {
-        /**
-         * Override to handle the password setting as well as not showing all the derived types that are available
-         * in other models. This is why this override does not call the parent first.
-         * @return array
-         */
-        public static function getDerivedAttributeTypes()
+        protected $controllerId = 'role';
+
+        protected function resolveModuleId()
         {
-            return array('Password', 'UserStatus');
+            return 'zurmo';
         }
 
-        /**
-         * Override to block out additional attributes that are not importable
-         * @return array
-         */
-        public static function getNonImportableAttributeNames()
+        protected function getModalTitleForSelectingModel()
         {
-            return array_merge(parent::getNonImportableAttributeNames(), array('currency', 'isActive', 'language', 'locale',
-                               'timeZone', 'manager', 'hash', 'createdByUser', 'modifiedByUser',
-                               'createdDateTime', 'modifiedDateTime', 'isRootUser', 'isSystemUser',
-                               'hideFromSelecting', 'hideFromLeaderboard', 'serializedAvatarData'));
-        }
-
-        public static function getModelClassName()
-        {
-            return 'User';
+            return Zurmo::t('ZurmoModule', 'Select a Role');
         }
     }
 ?>
