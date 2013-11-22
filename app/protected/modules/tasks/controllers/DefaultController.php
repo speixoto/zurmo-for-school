@@ -315,8 +315,6 @@
          * @param string $relationAttributeName
          * @param string $relationModelId
          * @param string $relationModuleId
-         * @param string $portletId
-         * @param string $uniqueLayoutId
          */
         public function actionModalSaveFromRelation($relationAttributeName, $relationModelId, $relationModuleId, $id = null)
         {
