@@ -34,46 +34,18 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Edit and details view for the bounce global configuration view.
-     */
-    class BounceConfigurationEditAndDetailsView extends ImapConfigurationEditAndDetailsView
+    class ImportMappingRuleRoleModelNameIdElement extends ImportMappingRuleDefaultModelNameIdElement
     {
-        public function getTitle()
+        protected $controllerId = 'role';
+
+        protected function resolveModuleId()
         {
-            return Zurmo::t('EmailMessagesModule', 'Bounce Configuration (IMAP)');
+            return 'zurmo';
         }
 
-        public static function getDefaultMetadata()
+        protected function getModalTitleForSelectingModel()
         {
-            $parentMetadata = parent::getDefaultMetadata();
-            $metadata = array(
-                'global' => array(
-                    'panels' => array(
-                        array(
-                            'rows' => array(
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'returnPath', 'type' => 'Text'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                            ),
-                        ),
-                    ),
-                ),
-            );
-            return CMap::mergeArray($parentMetadata, $metadata);
-        }
-
-        protected function getMessageForLabelInput()
-        {
-            return Zurmo::t('EmailMessagesModule',
-                'Emails in the specified folder will be deleted by Zurmo after processing. ' .
-                'DO NOT use a personal email for Bounce handling');
+            return Zurmo::t('ZurmoModule', 'Select a Role');
         }
     }
 ?>

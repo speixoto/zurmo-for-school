@@ -250,6 +250,7 @@
                 $content           = ZurmoHtml::ajaxLink($emailAddress, 'js:$(this).attr("href")', $modalAjaxOptions, array('id'        => 'composeEmailLink-' . $model->id,
                                                                                                                             'class'     => 'composeEmailLink',
                                                                                                                             'selector'  => '.composeEmailLink',
+                                                                                                                            'namespace' => 'composeEmailLink',
                                                                                                                             'href'      => $url,
                                                                                                                             'return'    => false));
             }

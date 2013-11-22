@@ -75,8 +75,13 @@
                                       'mappingRulesData' => array(
                                           'UserStatusDefaultValueMappingRuleForm' =>
                                           array('defaultValue' => UserStatusUtil::ACTIVE))),
-                'column_3'  => ImportMappingUtil::makeStringColumnMappingData      ('firstName'),
-                'column_4'  => ImportMappingUtil::makeStringColumnMappingData      ('lastName')
+                'column_3'  => ImportMappingUtil::makeStringColumnMappingData('firstName'),
+                'column_4'  => ImportMappingUtil::makeStringColumnMappingData('lastName'),
+                'column_5'  => array('attributeIndexOrDerivedType'          => 'role',
+                                     'type'                                 => 'importColumn',
+                                     'mappingRulesData'                     => array(
+                                            'DefaultModelNameIdMappingRuleForm'    => array('defaultModelId' => null),
+                                            'RelatedModelValueTypeMappingRuleForm' => array('type' =>RelatedModelValueTypeMappingRuleForm::ZURMO_MODEL_ID)))
             );
 
             $importRules  = ImportRulesUtil::makeImportRulesByType('Users');

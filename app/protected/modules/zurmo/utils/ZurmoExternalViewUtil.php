@@ -177,7 +177,7 @@
         {
             $dom = new DOMDocument();
             libxml_use_internal_errors(true);
-            $dom->loadHTML($rawXHtml);
+            $dom->loadHTML('<?xml encoding="UTF-8">' . $rawXHtml);
             $externalScriptFilePath = Yii::getPathOfAlias('application.runtime.uploads') .
                                       DIRECTORY_SEPARATOR . self::EXTERNAL_SCRIPT_FILE_NAME;
             $publishedUrl = Yii::app()->getAssetManager()->getPublishedUrl($externalScriptFilePath);

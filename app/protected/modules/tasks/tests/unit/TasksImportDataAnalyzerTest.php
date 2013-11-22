@@ -96,6 +96,7 @@
                 'column_4'  => ImportMappingUtil::makeModelDerivedColumnMappingData ('OpportunityDerived',
                                IdValueTypeMappingRuleForm::ZURMO_MODEL_ID),
                 'column_5'  => ImportMappingUtil::makeModelDerivedColumnMappingData ('OpportunityDerived'),
+                'column_6'  => ImportMappingUtil::makeIntegerColumnMappingData      ('status'),
             );
             $serializedData                = unserialize($import->serializedData);
             $serializedData['mappingData'] = $mappingData;
@@ -109,11 +110,11 @@
 
             //Run data analyzer
             $importDataAnalyzer = new ImportDataAnalyzer($importRules, $dataProvider, $mappingData,
-                                  array('column_0', 'column_1', 'column_2', 'column_3', 'column_4', 'column_5'));
+                                  array('column_0', 'column_1', 'column_2', 'column_3', 'column_4', 'column_5', 'column_6'));
             $importDataAnalyzer->analyzePage();
             $data = $dataProvider->getData();
             $this->assertEquals(10, count($data));
-
+        
             $compareData = array();
             $compareData['column_0'][] = 'Is an existing record and will be updated.';
             $compareData['column_1'][] = 'Was not found and this row will be skipped during import.';
@@ -121,6 +122,7 @@
             $compareData['column_3'][] = 'Was not found and this row will be skipped during import.';
             $compareData['column_4'][] = 'Is an existing record and will be updated.';
             $compareData['column_5'][] = 'Was not found and this row will be skipped during import.';
+            $compareData['column_6'][] = 'Status specified is invalid and this row will be skipped during import.';
             $this->assertEquals($compareData, unserialize($data[0]->serializedAnalysisMessages));
             $this->assertEquals(ImportDataAnalyzer::STATUS_SKIP, $data[0]->analysisStatus);
 
@@ -131,6 +133,7 @@
             $compareData['column_3'][] = 'Was not found and this row will be skipped during import.';
             $compareData['column_4'][] = 'Is an existing record and will be updated.';
             $compareData['column_5'][] = 'Was not found and this row will be skipped during import.';
+            $compareData['column_6'][] = 'Status specified is invalid and this row will be skipped during import.';
             $this->assertEquals($compareData, unserialize($data[1]->serializedAnalysisMessages));
             $this->assertEquals(ImportDataAnalyzer::STATUS_SKIP, $data[1]->analysisStatus);
 
@@ -141,6 +144,7 @@
             $compareData['column_3'][] = 'Was not found and this row will be skipped during import.';
             $compareData['column_4'][] = 'Is an existing record and will be updated.';
             $compareData['column_5'][] = 'Was not found and this row will be skipped during import.';
+            $compareData['column_6'][] = 'Status specified is invalid and this row will be skipped during import.';
             $this->assertEquals($compareData, unserialize($data[2]->serializedAnalysisMessages));
             $this->assertEquals(ImportDataAnalyzer::STATUS_SKIP, $data[2]->analysisStatus);
 
@@ -151,6 +155,7 @@
             $compareData['column_3'][] = 'Was not found and this row will be skipped during import.';
             $compareData['column_4'][] = 'Is an existing record and will be updated.';
             $compareData['column_5'][] = 'Was not found and this row will be skipped during import.';
+            $compareData['column_6'][] = 'Status specified is invalid and this row will be skipped during import.';
             $this->assertEquals($compareData, unserialize($data[3]->serializedAnalysisMessages));
             $this->assertEquals(ImportDataAnalyzer::STATUS_SKIP, $data[3]->analysisStatus);
 
@@ -161,6 +166,7 @@
             $compareData['column_3'][] = 'Is an existing record and will be updated.';
             $compareData['column_4'][] = 'Is an existing record and will be updated.';
             $compareData['column_5'][] = 'Was not found and this row will be skipped during import.';
+            $compareData['column_6'][] = 'Status specified is invalid and this row will be skipped during import.';
             $this->assertEquals($compareData, unserialize($data[4]->serializedAnalysisMessages));
             $this->assertEquals(ImportDataAnalyzer::STATUS_SKIP, $data[4]->analysisStatus);
 
@@ -171,6 +177,7 @@
             $compareData['column_3'][] = 'Is an existing record and will be updated.';
             $compareData['column_4'][] = 'Was not found and this row will be skipped during import.';
             $compareData['column_5'][] = 'Was not found and this row will be skipped during import.';
+            $compareData['column_6'][] = 'Status specified is invalid and this row will be skipped during import.';
             $this->assertEquals($compareData, unserialize($data[5]->serializedAnalysisMessages));
             $this->assertEquals(ImportDataAnalyzer::STATUS_SKIP, $data[5]->analysisStatus);
 
@@ -180,6 +187,7 @@
             $compareData['column_2'][] = 'Was not found and this row will be skipped during import.';
             $compareData['column_3'][] = 'Is an existing record and will be updated.';
             $compareData['column_4'][] = 'Was not found and this row will be skipped during import.';
+            $compareData['column_6'][] = 'Status specified is invalid and this row will be skipped during import.';
             $compareData['column_5'][] = 'Is an existing record and will be updated.';
             $this->assertEquals($compareData, unserialize($data[6]->serializedAnalysisMessages));
             $this->assertEquals(ImportDataAnalyzer::STATUS_SKIP, $data[6]->analysisStatus);
@@ -190,6 +198,7 @@
             $compareData['column_2'][] = 'Was not found and this row will be skipped during import.';
             $compareData['column_3'][] = 'Was not found and this row will be skipped during import.';
             $compareData['column_4'][] = 'Was not found and this row will be skipped during import.';
+            $compareData['column_6'][] = 'Status specified is invalid and this row will be skipped during import.';
             $compareData['column_5'][] = 'Is an existing record and will be updated.';
             $this->assertEquals($compareData, unserialize($data[7]->serializedAnalysisMessages));
             $this->assertEquals(ImportDataAnalyzer::STATUS_SKIP, $data[7]->analysisStatus);
@@ -201,6 +210,7 @@
             $compareData['column_3'][] = 'Was not found and this row will be skipped during import.';
             $compareData['column_4'][] = 'Was not found and this row will be skipped during import.';
             $compareData['column_5'][] = 'Is an existing record and will be updated.';
+            $compareData['column_6'][] = 'Status specified is invalid and this row will be skipped during import.';
             $this->assertEquals($compareData, unserialize($data[8]->serializedAnalysisMessages));
             $this->assertEquals(ImportDataAnalyzer::STATUS_SKIP, $data[8]->analysisStatus);
 
