@@ -595,17 +595,11 @@
          * Derived classes can refer directly to the
          * table name.
          */
-        public static function getTableName($modelClassName = null)
+        public static function getTableName()
         {
-            // do not call this like: RedBeanModel::getTableName('User')
-            // use: User::getTableName() instead.
-            // worst? User::getTableName('User');
             // You could also call it on objects like: $model::getTableName() or
             // $model->getTableName() but it would be preferable to keep it accessed through class, statically.
-            if (!isset($modelClassName))
-            {
-                $modelClassName = get_called_class();
-            }
+            $modelClassName = get_called_class();
             $tableName = strtolower($modelClassName);
             if ($modelClassName::mangleTableName())
             {
