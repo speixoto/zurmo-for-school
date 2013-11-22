@@ -126,7 +126,7 @@
             // in order to mix in the Person - this is metadata wise,
             // User doesn't get any functionality from Person.
             $modelClassName = 'Person';
-            $tableName = self::getTableName($modelClassName);
+            $tableName = $modelClassName::getTableName();
             if ($bean === null)
             {
                 $personBean = ZurmoRedBean::dispense($tableName);

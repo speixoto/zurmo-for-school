@@ -223,7 +223,7 @@
             else
             {
                 $modelClassName = $this->attributeNameToBeanAndClassName[$attributeName][1];
-                $tableName = self::getTableName($modelClassName);
+                $tableName = $modelClassName::getTableName();
                 $rows = ZurmoRedBean::getAll('select id from ' . $tableName . " where $attributeName = ?", array($value));
                 static::$currencyIdRowsByCode[$value] = $rows;
             }
