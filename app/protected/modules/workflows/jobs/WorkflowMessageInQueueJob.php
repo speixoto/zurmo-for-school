@@ -94,6 +94,7 @@
                     else
                     {
                         Yii::app()->jobQueue->add('WorkflowMessageInQueue', 5);
+                        break;
                     }
                 }
                 Yii::app()->user->userModel = $originalUser;

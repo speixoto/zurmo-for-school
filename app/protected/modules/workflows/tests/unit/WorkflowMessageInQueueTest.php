@@ -66,8 +66,11 @@
             $workflowMessageInQueue->savedWorkflow   = $savedWorkflow;
             $workflowMessageInQueue->triggeredByUser = Yii::app()->user->userModel;
             $workflowMessageInQueue->serializedData  = serialize(array('something'));
+            $this->assertCount(0, Yii::app()->jobQueue->getAll());
             $saved = $workflowMessageInQueue->save();
             $this->assertTrue($saved);
+            $jobs = Yii::app()->jobQueue->getAll();
+            $this->assertCount(1, $jobs);
             $id = $workflowMessageInQueue->id;
             $workflowMessageInQueue->forget();
 

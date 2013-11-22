@@ -96,6 +96,7 @@
                     else
                     {
                         Yii::app()->jobQueue->add('ByTimeWorkflowInQueue', 5);
+                        break;
                     }
                 }
                 Yii::app()->user->userModel = $originalUser;

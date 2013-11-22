@@ -237,5 +237,27 @@
             }
             return $saved;
         }
+
+        /**
+         * Special handling to set 'isNewModel'. This is needed to properly set the jobQueue
+         * //todo: move backwards into OwnedModel if that is ok generally.
+         * @see RedBeanModel::beforeSave()
+         */
+        protected function beforeSave()
+        {
+            $this->isNewModel = $this->id < 0;
+            return parent::beforeSave();
+        }
+
+        protected function afterSave()
+        {
+            Yii::app()->jobQueue->resolveToAddJobTypeByModelByDateTimeAttribute($this, 'processDateTime',
+                                    'AutoresponderQueueMessagesInOutbox');
+            parent::afterSave();
+            $this->originalAttributeValues = array();
+            $this->isNewModel = false; //reset.
+        }
+
+
     }
 ?>

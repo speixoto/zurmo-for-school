@@ -61,30 +61,44 @@
 
         protected function processRun()
         {
-            $batchSize = $this->resolveBatchSize();
-            $autoresponderItemsToProcess    = AutoresponderItem::getByProcessedAndProcessDateTime(
-                                                                                        0,
-                                                                                        time(),
-                                                                                        $batchSize);
+            $batchSize                   = $this->resolveBatchSize();
+            if($batchSize != null)
+            {
+                $resolvedBatchSize = $batchSize + 1;
+            }
+            else
+            {
+                $resolvedBatchSize = null;
+            }
+            $autoresponderItemsToProcess = AutoresponderItem::getByProcessedAndProcessDateTime(0, time(),
+                $resolvedBatchSize);
             $startingMemoryUsage = memory_get_usage();
             $modelsProcessedCount = 0;
             foreach ($autoresponderItemsToProcess as $autoresponderItem)
             {
-                try
+                if($modelsProcessedCount < $batchSize || $batchSize == null)
                 {
-                    $this->processAutoresponderItemInQueue($autoresponderItem);
+                    try
+                    {
+                        $this->processAutoresponderItemInQueue($autoresponderItem);
+                    }
+                    catch (NotFoundException $e)
+                    {
+                        return $autoresponderItem->delete();
+                    }
+                    catch (NotSupportedException $e)
+                    {
+                        $this->errorMessage = $e->getMessage();
+                        return false;
+                    }
+                    $this->runGarbageCollection($autoresponderItem);
+                    $modelsProcessedCount++;
                 }
-                catch (NotFoundException $e)
+                else
                 {
-                    return $autoresponderItem->delete();
+                    Yii::app()->jobQueue->add('AutoresponderQueueMessagesInOutbox', 5);
+                    break;
                 }
-                catch (NotSupportedException $e)
-                {
-                    $this->errorMessage = $e->getMessage();
-                    return false;
-                }
-                $this->runGarbageCollection($autoresponderItem);
-                $modelsProcessedCount++;
             }
             $this->addMaxmimumProcessingCountMessage($modelsProcessedCount, $startingMemoryUsage);
             return true;

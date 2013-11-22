@@ -215,7 +215,7 @@
                     'textContent'      => 'TextArea',
                     'supportsRichText' => 'CheckBox',
                     'enableTracking'   => 'CheckBox',
-                    'sendDateTime'     => 'DateTime',
+                    'sendOnDateTime'   => 'DateTime',
                     'status'           => 'CampaignStatus',
                 ),
                 'defaultSortAttribute' => 'name',
@@ -282,6 +282,13 @@
                 return false;
             }
             return true;
+        }
+
+        protected function afterSave()
+        {
+            Yii::app()->jobQueue->resolveToAddJobTypeByModelByDateTimeAttribute($this, 'sendOnDateTime',
+                                                                                'CampaignGenerateDueCampaignItems');
+            parent::afterSave();
         }
     }
 ?>

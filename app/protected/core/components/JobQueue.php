@@ -94,5 +94,39 @@
         public function processByJobTypeAndDelay($jobType, $delay, MessageLogger $messageLogger)
         {
         }
+
+        /**
+         * For a given model, and dateTime attribute, resolve to add a job by the job type. The delay is calculated
+         * based on the value of the dateTime attribute
+         * @param RedBeanModel $model
+         * @param $attributeName
+         * @param $jobType
+         */
+        public function resolveToAddJobTypeByModelByDateTimeAttribute(RedBeanModel $model, $attributeName, $jobType)
+        {
+            assert('is_string($attributeName)');
+            assert('is_string($jobType)');
+            if ($model->getIsNewModel() || isset($model->originalAttributeValues[$attributeName]))
+            {
+                if(DateTimeUtil::isDateTimeStringNull($model->{$attributeName}))
+                {
+                    $secondsFromNow       = 0;
+                }
+                else
+                {
+                    $processDateTimeStamp = DateTimeUtil::convertDbFormatDateTimeToTimestamp($model->{$attributeName});
+                    $secondsFromNow       = $processDateTimeStamp - time();
+                }
+                if($secondsFromNow <= 0)
+                {
+                    $delay = 0;
+                }
+                else
+                {
+                    $delay = $secondsFromNow;
+                }
+                Yii::app()->jobQueue->add($jobType, $delay + 5);
+            }
+        }
     }
 ?>

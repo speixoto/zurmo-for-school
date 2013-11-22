@@ -67,11 +67,13 @@
                     {
                         throw new FailedToSaveModelException("Unable to save campaign");
                     }
-                    //todo: signal to run the queue message job
+                    //Run queue job since the campaign items are all generated
+                    Yii::app()->jobQueue->add('CampaignQueueMessagesInOutbox', 5);
                 }
                 else
                 {
-                    //todo: signal to run job again since there might be a campaign we didn't fully process
+                    //Run job again, since it has more items to generate
+                    Yii::app()->jobQueue->add('CampaignGenerateDueCampaignItems', 5);
                 }
             }
             return true;
@@ -115,12 +117,15 @@
                 {
                     return true;
                 }
+                else
+                {
+                    return false;
+                }
             }
             else
             {
                 return true;
             }
-            return false;
         }
 
         /**

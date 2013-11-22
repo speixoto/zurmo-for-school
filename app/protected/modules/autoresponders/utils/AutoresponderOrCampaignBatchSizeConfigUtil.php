@@ -58,6 +58,10 @@
                     static::setBatchSize($size);
                 }
             }
+            elseif(empty($size))
+            {
+                return null;
+            }
             return $size;
         }
 

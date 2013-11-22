@@ -43,27 +43,7 @@
         {
             assert('$model instanceof WorkflowMessageInQueue || $model instanceof ByTimeWorkflowInQueue');
             assert('is_string($jobType)');
-            if ($model->isNewModel || isset($model->originalAttributeValues['processDateTime']))
-            {
-                if(DateTimeUtil::isDateTimeStringNull($model->processDateTime))
-                {
-                    $secondsFromNow       = 0;
-                }
-                else
-                {
-                    $processDateTimeStamp = DateTimeUtil::convertDbFormatDateTimeToTimestamp($model->processDateTime);
-                    $secondsFromNow       = $processDateTimeStamp - time();
-                }
-                if($secondsFromNow <= 0)
-                {
-                    $delay = 0;
-                }
-                else
-                {
-                    $delay = $secondsFromNow;
-                }
-                Yii::app()->jobQueue->add($jobType, $delay + 5);
-            }
+            Yii::app()->jobQueue->resolveToAddJobTypeByModelByDateTimeAttribute($model, 'processDateTime', $jobType);
         }
 
         protected static function resolveModelAndContent($model)
@@ -85,7 +65,7 @@
         }
 
         /**
-         * @param WorkflowMessageInQueue $workflowMessageInQueue
+         * @param RedBeanModel $inQueueModel
          * @return An|RedBeanModel
          */
         protected static function resolveModel(RedBeanModel $inQueueModel)
