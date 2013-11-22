@@ -34,34 +34,37 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class CampaignsDefaultPortletController extends ZurmoPortletController
-    {   
+    /**
+     * Form to help manage filtering by campaign item stage.
+     */
+    class CampaignItemsConfigurationForm extends CFormModel
+    {
         /**
-         * Called using Ajax.
+         * Constants used for the stages
          */
-        public function actionModalConfigSave($portletId, $uniqueLayoutId, array $portletParams = array())
-        {
-            $portlet           = Portlet::getById(intval($portletId));
-            $this->resolveAddingRelationModelIdToPortletParams($portlet);
-            $configurableView  = $portlet->getView()->getConfigurationView();
-            $portlet->forget();
-            $configurableView->setMetadataFromPost($_POST[$configurableView->getPostArrayName()]);
-            $this->saveModalConfigPerUserAndRelationModelId($configurableView->getViewMetadata());
-            $this->actionModalRefresh($portletId, $uniqueLayoutId, null, $portletParams);
-        }
-        
-        protected function resolveAddingRelationModelIdToPortletParams($portlet)
-        {
-            $portlet->params['relationModelId'] = intval($_GET['portletParams']['relationModelId']);
-        }
-        
-        protected function saveModalConfigPerUserAndRelationModelId($modalConfigMetadata)
-        {
-            $user = Yii::app()->user->userModel;
-            $metadata = MetadataUtil::getMetadata('CampaignOverallMetricsView', $user);
-            $metadata['perUser'][intval($_GET['portletParams']['relationModelId'])] = $modalConfigMetadata;
-            MetadataUtil::setMetadata('CampaignOverallMetricsView', $metadata, $user);
-        }
+        const  FILTERED_BY_ALL_STAGES   = 'All';
 
+        const  OPENED_STAGE             = 'Opened';
+
+        const  CLICKED_STAGE            = 'Clicked';
+
+        const  BOUNCED_STAGE            = 'Bounced';
+
+        /**
+         * All option when filtering by stage which includes all the campaign email recipients
+         * irrespective of the stage
+         * @var string
+         */
+        public $filteredByStage = self::FILTERED_BY_ALL_STAGES;
+
+        /**
+         * @return array
+         */
+        public function rules()
+        {
+            return array(
+                array('filteredByStage', 'type', 'type' => 'string')
+            );
+        }
     }
 ?>

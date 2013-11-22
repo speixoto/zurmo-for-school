@@ -36,9 +36,26 @@
 
     class CampaignItemsRelatedListView extends RelatedListView
     {
+        protected static $persistantCampaignItemsPortletConfigs = array(
+            'filteredByStage'
+        );
+        
+        protected $showStageFilter = true;
+        
+        function __construct($viewData, $params, $uniqueLayoutId)
+        {
+            parent::__construct($viewData, $params, $uniqueLayoutId);
+            $this->uniquePageId             = get_called_class();
+            $campaignItemsConfigurationForm = $this->getConfigurationForm();
+            $this->resolveCampaignItemsConfigFormFromRequest($campaignItemsConfigurationForm);
+            $this->configurationForm        = $campaignItemsConfigurationForm;
+            $this->relationModuleId         = $this->params['relationModuleId'];
+        }
+        
         protected function renderContent()
         {
-            $content = parent::renderContent();
+            $content  = $this->renderConfigurationForm();
+            $content .= parent::renderContent();
             return ZurmoHtml::tag('div', array('class' => $this->getWrapperDivClass()), $content);
         }
 
@@ -52,6 +69,11 @@
             return 'campaign';
         }
 
+        protected function getUniquePageId()
+        {
+            return 'CampaignItemsForPortletView';
+        }
+        
         public static function getDefaultMetadata()
         {
             $metadata = array(
@@ -123,6 +145,216 @@
             );
             array_unshift($columns, $firstColumn);
             return $columns;
+        }
+        
+        
+        /**
+         * 
+         * Override to filter by email message stage
+         */
+        protected function makeSearchAttributeData()
+        {
+            $searchAttributeData = array();
+            $searchAttributeData['clauses'] = array(
+                1 => array(
+                    'attributeName'        => $this->getRelationAttributeName(),
+                    'relatedAttributeName' => 'id',
+                    'operatorType'         => 'equals',
+                    'value'                => (int)$this->params['relationModel']->id,
+                )
+            );
+            $searchAttributeData['structure'] = '1';
+            
+            if ($this->configurationForm->filteredByStage != CampaignItemsConfigurationForm::FILTERED_BY_ALL_STAGES)
+            {
+                switch($this->configurationForm->filteredByStage)
+                {
+                    case CampaignItemsConfigurationForm::OPENED_STAGE:
+                        $type = CampaignItemActivity::TYPE_OPEN;
+                        break;
+                    case CampaignItemsConfigurationForm::CLICKED_STAGE:
+                        $type = CampaignItemActivity::TYPE_CLICK;
+                        break;
+                    case CampaignItemsConfigurationForm::BOUNCED_STAGE:
+                        $type = CampaignItemActivity::TYPE_BOUNCE;
+                        break;
+                }
+                $searchAttributeData['clauses'][2] = array(
+                    'attributeName'             => 'campaignItemActivities',
+                    'relatedAttributeName'      => 'type',
+                    'operatorType'              => 'equals',
+                    'value'                     => $type,
+                );
+                $searchAttributeData['structure'] = '1 AND 2';
+            }
+            
+            return $searchAttributeData;
+        }
+        
+        /**
+         * @return string
+         */
+        protected function renderConfigurationForm()
+        {
+            $formName   = 'campaign-items-configuration-form';
+            $clipWidget = new ClipWidget();
+            list($form, $formStart) = $clipWidget->renderBeginWidget(
+                'ZurmoActiveForm',
+                array(
+                    'id' => $formName,
+                )
+            );
+            $content  = $formStart;
+            $content .= $this->renderConfigurationFormLayout($form);
+            $formEnd  = $clipWidget->renderEndWidget();
+            $content .= $formEnd;
+            $this->registerConfigurationFormLayoutScripts($form);
+            return $content;
+        }
+
+        /**
+         * @param CampaignItemsConfigurationForm $form
+         * @return string
+         */
+        protected function renderConfigurationFormLayout($form)
+        {
+            assert('$form instanceof ZurmoActiveForm');
+            $content      = null;
+            $innerContent = null;
+            if ($this->showStageFilter)
+            {
+                $element                   = new CampaignItemStageFilterRadioElement($this->configurationForm,
+                                                                        'filteredByStage',
+                                                                        $form,
+                                                                        array('relationModel'=>$this->params['relationModel']));
+                $element->editableTemplate =  '<div id="CampaignItemsConfigurationForm_filteredByStage_area">{content}</div>';
+                $stageFilterContent        = $element->render();
+                $innerContent             .= $stageFilterContent;
+            }
+            if ($innerContent != null)
+            {
+                $content .= '<div class="filter-portlet-model-bar">';
+                $content .= $innerContent;
+                $content .= '</div>' . "\n";
+            }
+            return $content;
+        }
+
+        /**
+         * @param CampaignItemsConfigurationForm $form
+         */
+        protected function registerConfigurationFormLayoutScripts($form)
+        {
+            assert('$form instanceof ZurmoActiveForm');
+            $urlScript = $this->getPortletDetailsUrl(); // Not Coding Standard
+            $ajaxSubmitScript = ZurmoHtml::ajax(array(
+                    'type'       => 'GET',
+                    'data'       => 'js:$("#' . $form->getId() . '").serialize()',
+                    'url'        =>  $urlScript,
+                    'update'     => '#' . $this->uniqueLayoutId,
+                    'beforeSend' => 'js:function(){$(this).makeSmallLoadingSpinner(true, "#' . $this->getGridViewId() . '"); $("#' . $form->getId() . '").parent().children(".cgrid-view").addClass("loading");}',
+                    'complete'   => 'js:function()
+                    {
+                                        $("#' . $form->getId() . '").parent().children(".cgrid-view").removeClass("loading");
+                                        $("#filter-portlet-model-bar-' . $this->uniquePageId . '").show();
+                    }'
+            ));
+            Yii::app()->clientScript->registerScript($this->uniquePageId, "
+            $('#CampaignItemsConfigurationForm_filteredByStage_area').buttonset();
+            $('#CampaignItemsConfigurationForm_filteredByStage_area').change(function()
+                {
+                    " . $ajaxSubmitScript . "
+                }
+            );
+            ");
+        }
+        
+        /**
+         * @return CampaignItemsConfigurationForm
+         */
+        protected function getConfigurationForm()
+        {
+            return new CampaignItemsConfigurationForm();
+        }
+
+        /**
+         * @param CampaignItemsConfigurationForm $campaignItemsConfigurationForm
+         */
+        protected function resolveCampaignItemsConfigFormFromRequest(&$campaignItemsConfigurationForm)
+        {
+            $excludeFromRestore = array();
+            if (isset($_GET[get_class($campaignItemsConfigurationForm)]))
+            {
+                $campaignItemsConfigurationForm->setAttributes($_GET[get_class($campaignItemsConfigurationForm)]);
+                $excludeFromRestore = $this->saveUserSettingsFromConfigForm($campaignItemsConfigurationForm);
+            }
+            $this->restoreUserSettingsToConfigFrom($campaignItemsConfigurationForm, $excludeFromRestore);
+        }
+
+        /**
+         * @param CampaignItemsConfigurationForm $campaignItemsConfigurationForm
+         * @return array
+         */
+        protected function saveUserSettingsFromConfigForm(&$campaignItemsConfigurationForm)
+        {
+            $savedConfigs = array();
+            $campaignId = $this->params['relationModel']->id;
+            foreach (static::$persistantCampaignItemsPortletConfigs as $persistantCampaignItemConfigItem)
+            {
+                if ($campaignItemsConfigurationForm->$persistantCampaignItemConfigItem !==
+                    CampaignItemsPortletPersistentConfigUtil::getForCurrentUserByPortletIdAndKey($this->params['portletId'],
+                                                                        "{$campaignId}_" . $persistantCampaignItemConfigItem))
+                {
+                    CampaignItemsPortletPersistentConfigUtil::setForCurrentUserByPortletIdAndKey($this->params['portletId'],
+                                                            "{$campaignId}_" . $persistantCampaignItemConfigItem,
+                                                            $campaignItemsConfigurationForm->$persistantCampaignItemConfigItem
+                                                        );
+                    $savedConfigs[] = $persistantCampaignItemConfigItem;
+                }
+            }
+            return $savedConfigs;
+        }
+
+        /**
+         * @param CampaignItemsConfigurationForm $campaignItemsConfigurationForm
+         * @param string $excludeFromRestore
+         * @return CampaignItemsConfigurationForm
+         */
+        protected function restoreUserSettingsToConfigFrom(&$campaignItemsConfigurationForm, $excludeFromRestore)
+        {
+            $campaignId = $this->params['relationModel']->id;
+            foreach (static::$persistantCampaignItemsPortletConfigs as $persistantCampaignItemConfigItem)
+            {
+                if (in_array($persistantCampaignItemConfigItem, $excludeFromRestore))
+                {
+                    continue;
+                }
+                $persistantCampaignItemConfigItemValue = CampaignItemsPortletPersistentConfigUtil::getForCurrentUserByPortletIdAndKey(
+                                                                                $this->params['portletId'],
+                                                                                "{$campaignId}_" . $persistantCampaignItemConfigItem);
+                if (isset($persistantCampaignItemConfigItemValue))
+                {
+                    $campaignItemsConfigurationForm->$persistantCampaignItemConfigItem = $persistantCampaignItemConfigItemValue;
+                }
+            }
+            return $campaignItemsConfigurationForm;
+        }
+        
+        /**
+         * After a portlet action is completed, the portlet must be refreshed. This is the url to correctly
+         * refresh the portlet content.
+         */
+        protected function getPortletDetailsUrl()
+        {
+            $redirectUrl = $this->params['redirectUrl'];
+            $params = array_merge($_GET, array('portletId'       => $this->params['portletId'],
+                                               'uniqueLayoutId'  => $this->uniqueLayoutId,
+                                               'redirectUrl'    => $redirectUrl,
+                                               'portletParams'   => array('relationModuleId' => $this->relationModuleId,
+                                                                         'relationModelId' => $this->params['relationModel']->id)
+                                               )
+                                  );
+            return Yii::app()->createUrl('/' . $this->relationModuleId . '/defaultPortlet/modalRefresh', $params);
         }
     }
 ?>

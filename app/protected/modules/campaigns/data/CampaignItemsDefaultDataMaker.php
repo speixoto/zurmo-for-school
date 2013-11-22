@@ -34,34 +34,22 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class CampaignsDefaultPortletController extends ZurmoPortletController
-    {   
+    /**
+     * Class to make default data that needs to be created upon an installation.
+     */
+    class CampaignItemsDefaultDataMaker extends DefaultDataMaker
+    {
         /**
-         * Called using Ajax.
+         * Make the field data for campaign item stages
          */
-        public function actionModalConfigSave($portletId, $uniqueLayoutId, array $portletParams = array())
+        public function make()
         {
-            $portlet           = Portlet::getById(intval($portletId));
-            $this->resolveAddingRelationModelIdToPortletParams($portlet);
-            $configurableView  = $portlet->getView()->getConfigurationView();
-            $portlet->forget();
-            $configurableView->setMetadataFromPost($_POST[$configurableView->getPostArrayName()]);
-            $this->saveModalConfigPerUserAndRelationModelId($configurableView->getViewMetadata());
-            $this->actionModalRefresh($portletId, $uniqueLayoutId, null, $portletParams);
+            $values = array(
+                Zurmo::t('Core', 'Opened'),
+                Zurmo::t('CustomField', 'Clicked'),
+                Zurmo::t('CustomField', 'Bounced'),
+            );
+            static::makeCustomFieldDataByValuesAndDefault('CampaignItemStages', $values);
         }
-        
-        protected function resolveAddingRelationModelIdToPortletParams($portlet)
-        {
-            $portlet->params['relationModelId'] = intval($_GET['portletParams']['relationModelId']);
-        }
-        
-        protected function saveModalConfigPerUserAndRelationModelId($modalConfigMetadata)
-        {
-            $user = Yii::app()->user->userModel;
-            $metadata = MetadataUtil::getMetadata('CampaignOverallMetricsView', $user);
-            $metadata['perUser'][intval($_GET['portletParams']['relationModelId'])] = $modalConfigMetadata;
-            MetadataUtil::setMetadata('CampaignOverallMetricsView', $metadata, $user);
-        }
-
     }
 ?>

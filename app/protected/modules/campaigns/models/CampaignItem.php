@@ -63,6 +63,9 @@
         {
             $metadata = parent::getDefaultMetadata();
             $metadata[__CLASS__] = array(
+                'customFields' => array(
+                    'stage'    => 'CampaignItemStages',
+                ),
                 'members' => array(
                     'processed',
                 ),
@@ -210,6 +213,41 @@
             return self::getSubset($joinTablesAdapter, null, $pageSize, $where, null);
         }
 
+        /**
+         * @param int $type
+         * @param int $campaignId
+         * @param null|int $pageSize
+         * @param null|bool $countOnly
+         */
+        public static function getByTypeAndCampaignId($type, $campaignId, $pageSize = null, $countOnly = false)
+        {
+            assert('is_int($type)');
+            assert('is_int($campaignId) || is_string($campaignId)');
+            $searchAttributeData = array();
+            $searchAttributeData['clauses'] = array(
+                1 => array(
+                    'attributeName'             => 'campaignItemActivities',
+                    'relatedAttributeName'      => 'type',
+                    'operatorType'              => 'equals',
+                    'value'                     => intval($type),
+                ),
+                2 => array(
+                    'attributeName'             => 'campaign',
+                    'relatedAttributeName'      => 'id',
+                    'operatorType'              => 'equals',
+                    'value'                     => $campaignId,
+                ),
+            );
+            $searchAttributeData['structure'] = '(1 and 2)';
+            $joinTablesAdapter                = new RedBeanModelJoinTablesQueryAdapter(get_called_class());
+            $where = RedBeanModelDataProvider::makeWhere(get_called_class(), $searchAttributeData, $joinTablesAdapter);
+            if ($countOnly)
+            {
+                return self::getCount($joinTablesAdapter, $where, get_called_class(), true);
+            }
+            return self::getSubset($joinTablesAdapter, null, $pageSize, $where, null);
+        }
+        
         public static function registerCampaignItemsByCampaign($campaign, $contacts)
         {
             foreach ($contacts as $contact)
