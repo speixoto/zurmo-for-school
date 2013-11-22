@@ -378,9 +378,7 @@
 
         /**
          * Copy task in the modal view
-         * @param string $relationAttributeName
-         * @param string $relationModelId
-         * @param string $relationModuleId
+         * @param string $id
          */
         public function actionModalCopyFromRelation($id)
         {

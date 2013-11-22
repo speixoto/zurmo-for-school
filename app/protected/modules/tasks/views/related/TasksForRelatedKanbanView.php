@@ -390,15 +390,6 @@
             Yii::app()->clientScript->registerScript('taskKanbanDetailScript', $script);
         }
 
-//        protected function resolveShouldOpenToTask()
-//        {
-//            $getData = GetUtil::getData();
-//            if (null != $taskId = ArrayUtil::getArrayValue($getData, 'openToTaskId'))
-//            {
-//                TasksUtil::registerOpenToTaskModalDetailsScript((int)$taskId, $this->getGridId());
-//            }
-//        }
-
         /**
          * Calling TaskKanbanBoardExtendedGridView::registerKanbanColumnSortableScript in order to reinitialize
          * the sorting for the card columns after the board is refreshed
