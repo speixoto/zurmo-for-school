@@ -56,7 +56,7 @@
             {
                 throw new NotFoundException();
             }
-            RedBeansCache::cacheBean($bean, User::getTableName('User') . $bean->id);
+            RedBeansCache::cacheBean($bean, User::getTableName() . $bean->id);
             return self::makeModel($bean);
         }
 

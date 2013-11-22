@@ -90,7 +90,7 @@
         public static function getByCode($code)
         {
             assert('is_string($code)');
-            $tableName = self::getTableName('Currency');
+            $tableName = Currency::getTableName();
             $beans = ZurmoRedBean::find($tableName, "code = '$code'");
             assert('count($beans) <= 1');
             if (count($beans) == 0)
