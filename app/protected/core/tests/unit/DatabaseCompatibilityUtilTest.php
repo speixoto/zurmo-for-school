@@ -295,7 +295,7 @@
             $model->delete();
 
             // Test with different quatations.
-            $tableName      = TestDatabaseBulkInsertModel::getTableName('TestDatabaseBulkInsertModel');
+            $tableName      = TestDatabaseBulkInsertModel::getTableName();
             $columnNames    = array('number', 'string');
             $insertData     = array(
                 array(999  , 'It\'s string with quatation.'),
@@ -315,7 +315,7 @@
             TestDatabaseBulkInsertModel::deleteAll();
 
             // Test when there are less rows of data then bulk quantity for one loop.
-            $tableName      = TestDatabaseBulkInsertModel::getTableName('TestDatabaseBulkInsertModel');
+            $tableName      = TestDatabaseBulkInsertModel::getTableName();
             $columnNames    = array('number', 'string');
             $numberOfRows   = 50;
             $bulkQuantity   = 100;
@@ -366,7 +366,7 @@
             TestDatabaseBulkInsertModel::deleteAll();
 
             //Test with shouldTrim
-            $tableName      = TestDatabaseBulkInsertModel::getTableName('TestDatabaseBulkInsertModel');
+            $tableName      = TestDatabaseBulkInsertModel::getTableName();
             $columnNames    = array('number', 'string');
             $insertData     = array(
                 array(999  , ' It\'s string with quotation. '),

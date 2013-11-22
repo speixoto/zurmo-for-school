@@ -80,8 +80,8 @@
             }
             $contacts = array();
             $quote    = DatabaseCompatibilityUtil::getQuote();
-            $marketingListMemberTableName  = RedBeanModel::getTableName('MarketingListMember');
-            $campaignItemTableName = RedBeanModel::getTableName('CampaignItem');
+            $marketingListMemberTableName  = MarketingListMember::getTableName();
+            $campaignItemTableName = CampaignItem::getTableName();
             $sql  = "select {$quote}{$marketingListMemberTableName}{$quote}.{$quote}contact_id{$quote} ";
             $sql  .= "from {$quote}{$marketingListMemberTableName}{$quote} ";
             $sql .= "left join {$quote}{$campaignItemTableName}{$quote} on ";

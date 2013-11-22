@@ -199,19 +199,18 @@
             if ($relationAttributeModelClassName != 'CustomFieldValue' && $operatorType != 'allOf')
             {
                 $modelClassName                  = $this->modelAttributeToDataProviderAdapter->getRelationModelClassName();
-                $relationAttributeTableName      = RedBeanModel::getTableName($modelClassName);
+                $relationAttributeTableName      = $modelClassName::getTableName();
                 $joinColumnName                  = $modelClassName::getColumnNameByAttribute(
                                                    $this->modelAttributeToDataProviderAdapter->getRelatedAttribute());
-                $relationColumnName              = self::resolveForeignKey(RedBeanModel::getTableName(
-                                                   $this->modelAttributeToDataProviderAdapter->getModelClassName()));
+                $relationColumnModelClassName    = $this->modelAttributeToDataProviderAdapter->getModelClassName();
+                $relationColumnName              = self::resolveForeignKey($relationColumnModelClassName::getTableName());
             }
             else
             {
-                $relationAttributeTableName      = RedBeanModel::getTableName($relationAttributeModelClassName);
+                $relationAttributeTableName      = $relationAttributeModelClassName::getTableName();
                 $joinColumnName                  = 'value';
-                $relationColumnName              = self::resolveForeignKey(RedBeanModel::getTableName(
-                                                   $this->modelAttributeToDataProviderAdapter->
-                                                   getRelatedAttributeModelClassName()));
+                $relatedAttributeModelClassName  = $this->modelAttributeToDataProviderAdapter->getRelatedAttributeModelClassName();
+                $relationColumnName              = self::resolveForeignKey($relatedAttributeModelClassName::getTableName());
             }
             $tableAliasName                  = $relationAttributeTableName;
             $quote                           = DatabaseCompatibilityUtil::getQuote();

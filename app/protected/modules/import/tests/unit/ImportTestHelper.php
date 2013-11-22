@@ -107,8 +107,9 @@
 
         public static function updateModelsExternalId(RedBeanModel $model, $externalId)
         {
-            $columnName = ExternalSystemIdUtil::EXTERNAL_SYSTEM_ID_COLUMN_NAME;
-            ZurmoRedBean::exec("update " . $model::getTableName(get_class($model))
+            $columnName     = ExternalSystemIdUtil::EXTERNAL_SYSTEM_ID_COLUMN_NAME;
+            $modelClassName = get_class($model);
+            ZurmoRedBean::exec("update " . $modelClassName::getTableName()
             . " set $columnName = '" . $externalId . "' where id = {$model->id}");
         }
     }
