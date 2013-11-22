@@ -76,7 +76,7 @@
             $jobInProcess->type    = 'Test';
             $this->assertTrue($jobInProcess->save());
             //Set the createdDateTime as way in the past, so that it is over the threshold
-            $sql  = "update " . Item::getTableName('Item'). " set createddatetime = '1980-06-03 18:33:03' where id = " .
+            $sql  = "update " . Item::getTableName(). " set createddatetime = '1980-06-03 18:33:03' where id = " .
                     $jobInProcess->getClassId('Item');
             ZurmoRedBean::exec($sql);
             $jobInProcessId        = $jobInProcess->id;

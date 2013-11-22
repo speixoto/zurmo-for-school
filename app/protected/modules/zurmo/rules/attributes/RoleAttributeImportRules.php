@@ -35,45 +35,23 @@
      ********************************************************************************/
 
     /**
-     * Edit and details view for the bounce global configuration view.
+     * Import rules for an attribute that is a role model.
      */
-    class BounceConfigurationEditAndDetailsView extends ImapConfigurationEditAndDetailsView
+    class RoleAttributeImportRules extends ModelAttributeImportRules
     {
-        public function getTitle()
+        protected static function getAllModelAttributeMappingRuleFormTypesAndElementTypes()
         {
-            return Zurmo::t('EmailMessagesModule', 'Bounce Configuration (IMAP)');
+            return array('DefaultModelNameId' => 'ImportMappingRuleRoleModelNameId');
         }
 
-        public static function getDefaultMetadata()
+        protected static function getImportColumnOnlyModelAttributeMappingRuleFormTypesAndElementTypes()
         {
-            $parentMetadata = parent::getDefaultMetadata();
-            $metadata = array(
-                'global' => array(
-                    'panels' => array(
-                        array(
-                            'rows' => array(
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'returnPath', 'type' => 'Text'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                            ),
-                        ),
-                    ),
-                ),
-            );
-            return CMap::mergeArray($parentMetadata, $metadata);
+            return array('RelatedModelValueType' => 'ImportMappingRelatedModelValueTypeDropDown');
         }
 
-        protected function getMessageForLabelInput()
+        public static function getSanitizerUtilTypesInProcessingOrder()
         {
-            return Zurmo::t('EmailMessagesModule',
-                'Emails in the specified folder will be deleted by Zurmo after processing. ' .
-                'DO NOT use a personal email for Bounce handling');
+            return array('RelatedModelNameOrIdValueType', 'ModelIdRequired');
         }
     }
 ?>

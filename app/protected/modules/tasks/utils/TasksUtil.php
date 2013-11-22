@@ -714,7 +714,8 @@
             $url = Yii::app()->createUrl('tasks/default/modalDetails');
             $ajaxOptions = TasksUtil::resolveAjaxOptionsForModalView('Details', $sourceId);
             $ajaxOptions['beforeSend'] = new CJavaScriptExpression($ajaxOptions['beforeSend']);
-            $script = "$(document).on('click', '#{$sourceId} .task-kanban-detail-link', function()
+            $script = " $(document).off('click.taskDetailLink', '#{$sourceId} .task-kanban-detail-link');
+                        $(document).on('click.taskDetailLink',  '#{$sourceId} .task-kanban-detail-link', function()
                           {
                             var id = $(this).attr('id');
                             var idParts = id.split('-');

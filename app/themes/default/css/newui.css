@@ -13351,6 +13351,7 @@ div.wide.form label.hasCheckBox {
 #zurmoContextiveGadget .has-model-select .model-select-icon,
 #zurmoExternalWebForm .has-model-select .model-select-icon {
   background: transparent url(../images/ie-sprite.png) left -24px no-repeat;
+  height: inherit;
 }
 #zurmoContextiveGadget .has-model-select .model-select-icon:before,
 #zurmoExternalWebForm .has-model-select .model-select-icon:before {
@@ -13359,6 +13360,7 @@ div.wide.form label.hasCheckBox {
 #zurmoContextiveGadget .has-date-select button span,
 #zurmoExternalWebForm .has-date-select button span {
   background: transparent url(../images/ie-sprite.png) left 0 no-repeat;
+  height: inherit;
 }
 #zurmoContextiveGadget .has-date-select button span:before,
 #zurmoExternalWebForm .has-date-select button span:before {
@@ -21025,12 +21027,16 @@ a.close-ModalGameNotification.simple-link {
 }
 .reward-name {
   margin-bottom: 5px;
-  display: inline-block;
+  display: block;
 }
 .reward-name span {
   font-weight: normal;
   font-size: 11px;
   color: #545454;
+}
+.reward-description {
+  line-height: 1.5;
+  padding-bottom: 1.33em;
 }
 .reward-cost {
   display: inline-block;
