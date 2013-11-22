@@ -54,14 +54,14 @@
         {
             assert('($filterByAttributeName == null && $filterByAttributeValue == null) ||
                         ($filterByAttributeName != null && $filterByAttributeValue != null)');
-            $tableName          = $modelClassName::getTableName();
+            $tableName          = RedBeanModel::getTableName($modelClassName);
             $joinTablesAdapter  = new RedBeanModelJoinTablesQueryAdapter($modelClassName);
             $selectQueryAdapter = new RedBeanModelSelectQueryAdapter();
             if ($modelClassName::isRelation($attributeName) && $modelClassName::getRelationType($attributeName) == RedBeanModel::HAS_MANY)
             {
                 assert('$attributeName == "values"'); //until we expand support on this method.
                 $relationModelClassName = $modelClassName::getRelationModelClassName($attributeName);
-                $attributeTableName     = $relationModelClassName::getTableName();
+                $attributeTableName     = RedBeanModel::getTableName($relationModelClassName);
                 $columnName             = 'value';
                 $relationTableAliasName = $joinTablesAdapter->addLeftTableAndGetAliasName(
                                                                             $attributeTableName,
@@ -79,7 +79,7 @@
             if ($filterByAttributeName != null)
             {
                $attributeModelClassName    = $modelClassName::resolveAttributeModelClassName($filterByAttributeName);
-               $filterByAttributeTableName = $attributeModelClassName::getTableName();
+               $filterByAttributeTableName = RedBeanModel::getTableName($attributeModelClassName);
                $filterByColumnName         = $modelClassName::getColumnNameByAttribute($filterByAttributeName);
                $where = $filterByAttributeTableName . '.' . $filterByColumnName . '=' . $filterByAttributeValue;
                if ($filterByAttributeTableName != $tableName)

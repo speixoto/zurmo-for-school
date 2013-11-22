@@ -42,9 +42,9 @@
             $super = SecurityTestHelper::createSuperAdmin();
             Yii::app()->user->userModel = $super;
 
-            $accountTableName     = Account::getTableName();
-            $contactTableName     = Contact::getTableName();
-            $opportunityTableName = Opportunity::getTableName();
+            $accountTableName     = Account::getTableName('Account');
+            $contactTableName     = Contact::getTableName('Contact');
+            $opportunityTableName = Opportunity::getTableName('Opportunity');
             ExternalSystemIdUtil::addExternalIdColumnIfMissing($accountTableName);
             ExternalSystemIdUtil::addExternalIdColumnIfMissing($contactTableName);
             ExternalSystemIdUtil::addExternalIdColumnIfMissing($opportunityTableName);
@@ -114,7 +114,7 @@
             $importDataAnalyzer->analyzePage();
             $data = $dataProvider->getData();
             $this->assertEquals(10, count($data));
-
+        
             $compareData = array();
             $compareData['column_0'][] = 'Is an existing record and will be updated.';
             $compareData['column_1'][] = 'Was not found and this row will be skipped during import.';

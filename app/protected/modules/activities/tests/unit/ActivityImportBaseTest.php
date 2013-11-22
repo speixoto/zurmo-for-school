@@ -42,9 +42,9 @@
             $super = SecurityTestHelper::createSuperAdmin();
             Yii::app()->user->userModel = $super;
 
-            ExternalSystemIdUtil::addExternalIdColumnIfMissing(Account::getTableName());
-            ExternalSystemIdUtil::addExternalIdColumnIfMissing(Contact::getTableName());
-            ExternalSystemIdUtil::addExternalIdColumnIfMissing(Opportunity::getTableName());
+            ExternalSystemIdUtil::addExternalIdColumnIfMissing(RedBeanModel::getTableName('Account'));
+            ExternalSystemIdUtil::addExternalIdColumnIfMissing(RedBeanModel::getTableName('Contact'));
+            ExternalSystemIdUtil::addExternalIdColumnIfMissing(RedBeanModel::getTableName('Opportunity'));
 
             $account = AccountTestHelper::createAccountByNameForOwner('testAccount', $super);
             ImportTestHelper::updateModelsExternalId($account, 'ACC');

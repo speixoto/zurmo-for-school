@@ -140,7 +140,7 @@
             $this->assertEquals(0, count($beansWithErrors));
 
             //Clear out data in table
-            ZurmoRedBean::exec("delete from " . Contact::getTableName());
+            ZurmoRedBean::exec("delete from " . Contact::getTableName('Contact'));
         }
 
         /**

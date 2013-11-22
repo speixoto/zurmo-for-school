@@ -87,9 +87,9 @@
             $quote                      = DatabaseCompatibilityUtil::getQuote();
             $where                      = null;
             $selectDistinct             = false;
-            $autoresponderTableName     = Autoresponder::getTableName();
-            $autoresponderItemTableName = AutoresponderItem::getTableName();
-            $emailMessageTableName      = EmailMessage::getTableName();
+            $autoresponderTableName     = Autoresponder::getTableName('Autoresponder');
+            $autoresponderItemTableName = AutoresponderItem::getTableName('AutoresponderItem');
+            $emailMessageTableName      = EmailMessage::getTableName('EmailMessage');
             $sentDateTimeColumnName     = EmailMessage::getColumnNameByAttribute('sentDateTime');
             $joinTablesAdapter          = new RedBeanModelJoinTablesQueryAdapter('Autoresponder');
             $selectQueryAdapter         = new RedBeanModelSelectQueryAdapter($selectDistinct);
