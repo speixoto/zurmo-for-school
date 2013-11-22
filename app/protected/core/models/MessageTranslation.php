@@ -84,7 +84,7 @@
             {
                 $modelClassName = get_called_class();
             }
-            $tableName = $modelClassName::getTableName();
+            $tableName = self::getTableName($modelClassName);
             $bean = ZurmoRedBean::findOne(
                                $tableName,
                                ' messagesource_id = :sourceId AND language = :languageCode',

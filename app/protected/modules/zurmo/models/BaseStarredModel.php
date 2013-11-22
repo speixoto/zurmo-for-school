@@ -158,8 +158,8 @@
         protected static function getIndexesDefinition()
         {
             $relatedModelClassName = static::getRelatedModelClassName();
-            $relatedColumnName = $relatedModelClassName::getTableName() . '_id';
-            $baseStarredColumnName = static::getTableName() . '_id';
+            $relatedColumnName = static::getTableName($relatedModelClassName) . '_id';
+            $baseStarredColumnName = static::getTableName(get_class()) . '_id';
             return array($baseStarredColumnName . '_' . $relatedColumnName => array(
                                                 'members' => array($baseStarredColumnName, $relatedColumnName),
                                                 'unique' => true,

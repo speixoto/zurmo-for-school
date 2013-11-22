@@ -44,11 +44,9 @@
             {
                 $where .= ' and ';
             }
-            $modelClassName         = $this->modelClassName;
-            $starredClassName       = StarredUtil::getStarredModelClassName($modelClassName);
-            $starredTableName       = $starredClassName::getTableName();
-            $modelIdColumnName      = $modelClassName::getTableName() . '_id';
-            $baseStarredTableName   = BaseStarredModel::getTableName();
+            $starredTableName       = RedBeanModel::getTableName(StarredUtil::getStarredModelClassName($this->modelClassName));
+            $modelIdColumnName      = RedBeanModel::getTableName($this->modelClassName) . '_id';
+            $baseStarredTableName   = RedBeanModel::getTableName('BaseStarredModel');
             $baseStarredColumnName  = $baseStarredTableName . '_id';
             $starredTableAliasName  = $joinTablesAdapter->addLeftTableAndGetAliasName(
                 $starredTableName,

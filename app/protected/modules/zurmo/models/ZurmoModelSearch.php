@@ -47,7 +47,7 @@
             assert('is_subclass_of($modelClassName, "Person") && $modelClassName != "Person" ||' .
                    '$modelClassName == "User"');
             assert('is_string($fullName)');
-            $personTableName   = Person::getTableName();
+            $personTableName   = RedBeanModel::getTableName('Person');
             $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter($modelClassName);
             $joinTablesAdapter->addFromTableAndGetAliasName($personTableName, "{$personTableName}_id");
             $fullNameSql = DatabaseCompatibilityUtil::concat(array('person.firstname',

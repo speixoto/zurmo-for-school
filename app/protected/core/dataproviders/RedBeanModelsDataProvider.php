@@ -125,7 +125,7 @@
                     $where             = ModelDataProviderUtil::makeWhere(  $modelClassName, $searchAttributeData,
                                                                             $joinTablesAdapter);
                     $orderByColumnName = null;
-                    $tableName         = $modelClassName::getTableName();
+                    $tableName         = $modelClassName::getTableName($modelClassName);
                     if ($modelClassNamesAndSortAttributes !== null)
                     {
                         if (isset($modelClassNamesAndSortAttributes[$modelClassName]))
@@ -177,7 +177,7 @@
             foreach ($idsAndModelClassNames as $data)
             {
                 $modelClassName = $data['modelClassName'];
-                $tableName = $modelClassName::getTableName();
+                $tableName = $modelClassName::getTableName($modelClassName);
                 $bean      = ZurmoRedBean::load($tableName, $data['id']);
                 $models[]  = $modelClassName::makeModel($bean, $modelClassName);
             }

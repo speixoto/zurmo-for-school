@@ -52,7 +52,7 @@
 
         public function testGetStarredTableName()
         {
-            $starredTableName = AccountStarred::getTableName();
+            $starredTableName = RedBeanModel::getTableName('AccountStarred');
             $this->assertEquals('accountstarred', $starredTableName);
         }
 

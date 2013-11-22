@@ -50,7 +50,7 @@
             assert('is_string($partialName)');
             assert('is_int($pageSize)');
             assert('$stateMetadataAdapterClassName == null || is_string($stateMetadataAdapterClassName)');
-            $personTableName   = Person::getTableName();
+            $personTableName   = RedBeanModel::getTableName('Person');
             $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('Contact');
             if (!$joinTablesAdapter->isTableInFromTables('person'))
             {

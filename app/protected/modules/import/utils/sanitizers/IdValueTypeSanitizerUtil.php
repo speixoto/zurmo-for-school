@@ -148,7 +148,7 @@
             if ($this->mappingRuleData["type"] == IdValueTypeMappingRuleForm::EXTERNAL_SYSTEM_ID)
             {
                 $modelClassName  = $this->attributeModelClassName;
-                ExternalSystemIdUtil::addExternalIdColumnIfMissing($modelClassName::getTableName(),
+                ExternalSystemIdUtil::addExternalIdColumnIfMissing(RedBeanModel::getTableName($modelClassName),
                                                                     $this->externalSystemIdMaxLength);
             }
         }

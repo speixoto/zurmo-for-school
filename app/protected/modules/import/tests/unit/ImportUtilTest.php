@@ -135,7 +135,7 @@
             $this->assertEquals('Dartmouth Financial Services', $testModels[1]->name);
 
             //Clear out data in table
-            ZurmoRedBean::exec("delete from " . ImportModelTestItem::getTableName());
+            ZurmoRedBean::exec("delete from " . ImportModelTestItem::getTableName('ImportModelTestItem'));
         }
 
         /**
@@ -256,7 +256,7 @@
             $this->assertEquals(0, count($beansWithErrors));
 
             //Clear out data in table
-            ZurmoRedBean::exec("delete from " . ImportModelTestItem::getTableName());
+            ZurmoRedBean::exec("delete from " . ImportModelTestItem::getTableName('ImportModelTestItem'));
         }
 
         /**
@@ -341,7 +341,7 @@
             $this->assertEquals(0, count($beansWithErrors));
 
             //Clear out data in table
-            ZurmoRedBean::exec("delete from " . ImportModelTestItem::getTableName());
+            ZurmoRedBean::exec("delete from " . ImportModelTestItem::getTableName('ImportModelTestItem'));
         }
 
         /**
@@ -428,7 +428,7 @@
             $this->assertEquals('USD', $testModels[0]->currencyValue->currency->code);
 
             //Clear out data in table
-            ZurmoRedBean::exec("delete from " . ImportModelTestItem::getTableName());
+            ZurmoRedBean::exec("delete from " . ImportModelTestItem::getTableName('ImportModelTestItem'));
         }
 
         /**
@@ -517,7 +517,7 @@
             $this->assertEquals($compareMessages, unserialize(next($beansWithErrors)->serializedMessages));
 
             //Clear out data in table
-            ZurmoRedBean::exec("delete from " . ImportModelTestItem::getTableName());
+            ZurmoRedBean::exec("delete from " . ImportModelTestItem::getTableName('ImportModelTestItem'));
         }
 
         /**
@@ -582,7 +582,7 @@
             }
 
             //Clear out data in table
-            ZurmoRedBean::exec("delete from " . ImportModelTestItem::getTableName());
+            ZurmoRedBean::exec("delete from " . ImportModelTestItem::getTableName('ImportModelTestItem'));
 
             //Now test with read/write permissions being set.
             $explicitReadWriteModelPermissions = new ExplicitReadWriteModelPermissions();

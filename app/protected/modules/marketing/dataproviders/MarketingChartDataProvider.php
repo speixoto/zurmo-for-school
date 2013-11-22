@@ -301,7 +301,7 @@
             assert('is_string($modelClassName)');
             assert('is_string($attributeName)');
             $quote                     = DatabaseCompatibilityUtil::getQuote();
-            $tableName                 = $modelClassName::getTableName();
+            $tableName                 = $modelClassName::getTableName($modelClassName);
             $columnName                = $modelClassName::getColumnNameByAttribute($attributeName);
             $groupByColumnString       = "{$quote}{$tableName}{$quote}.{$quote}{$columnName}{$quote}";
             if ($this->groupBy == MarketingOverallMetricsForm::GROUPING_TYPE_DAY)

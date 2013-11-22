@@ -99,7 +99,7 @@
         {
             assert('is_string($category)');
             assert('is_string($languageCode)');
-            $sourceTableName   = MessageSource::getTableName();
+            $sourceTableName   = RedBeanModel::getTableName('MessageSource');
             $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('MessageTranslation');
             $joinTablesAdapter->addFromTableAndGetAliasName($sourceTableName, "{$sourceTableName}_id");
             $where             =  " messagesource.`category` = '$category' AND"
