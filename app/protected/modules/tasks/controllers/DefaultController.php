@@ -445,6 +445,8 @@
             $getData = GetUtil::getData();
             $counter = 1;
             $response = array();
+            //Set the state for kanban update
+            Yii::app()->user->setState(Task::REQUIRED_KANBAN_UPDATE, false);
             if (count($getData['items']) > 0)
             {
                 foreach ($getData['items'] as $taskId)
@@ -501,10 +503,11 @@
                     }
                 }
             }
+            Yii::app()->user->setState(Task::REQUIRED_KANBAN_UPDATE, null);
             echo CJSON::encode($response);
         }
 
-        /**
+       /**
         * Update task status in kanban view
         * @param int $targetStatus
         * @param int $taskId
@@ -514,8 +517,11 @@
            $response = array();
            //Run update queries for update task staus and update type and sort order in kanban column
            $task = Task::getById(intval($taskId));
+           //Set the state for kanban update
+           Yii::app()->user->setState(Task::REQUIRED_KANBAN_UPDATE, false);
            $this->processStatusUpdateViaAjax($task, $targetStatus, false);
            TasksUtil::processKanbanItemUpdateOnButtonAction(intval($targetStatus), intval($taskId), intval($sourceKanbanType));
+           Yii::app()->user->setState(Task::REQUIRED_KANBAN_UPDATE, null);
            $subscriptionContent = TasksUtil::resolveAndRenderTaskCardDetailsSubscribersContent($task);
            $subscriptionContent .= TasksUtil::resolveSubscriptionLink($task, 'subscribe-task-link', 'unsubscribe-task-link');
            $response['subscriptionContent']  = $subscriptionContent;
@@ -530,7 +536,6 @@
          */
         protected function processStatusUpdateViaAjax(Task $task, $status, $showCompletionDate = true)
         {
-            //$task          = Task::getById(intval($id));
             $currentStatus = $task->status;
             $task->status = intval($status);
             //check for owner in case a user start the task
@@ -647,12 +652,6 @@
                 $oldStatus = $task->status;
                 $task = $this->attemptToSaveModelFromPost($task, null, false);
                 $errorData = ZurmoActiveForm::makeErrorsDataAndResolveForOwnedModelAttributes($task);
-
-                if (empty ($errorData) && $oldStatus != $task->status)
-                {
-                    //may need to reset the kanban type and sort as well
-                    TasksUtil::checkKanbanTypeByStatusAndUpdateIfRequired($task);
-                }
                 echo CJSON::encode($errorData);
                 Yii::app()->end(0, false);
             }

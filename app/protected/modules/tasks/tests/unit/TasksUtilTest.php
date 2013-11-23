@@ -431,21 +431,21 @@
                                                                               Yii::app()->user->userModel,
                                                                               $project,
                                                                               Task::STATUS_IN_PROGRESS);
-            $kanbanItem1            = TaskTestHelper::createKanbanItemForTask($task);
+            $kanbanItem1            = KanbanItem::getByTask($task->id);
             $this->assertEquals(KanbanItem::TYPE_IN_PROGRESS, $kanbanItem1->type);
             $this->assertEquals($task->project->id, $kanbanItem1->kanbanRelatedItem->id);
             $task2                  = TaskTestHelper::createTaskByNameWithProjectAndStatus('MySecondKanbanTask',
                                                                               Yii::app()->user->userModel,
                                                                               $project,
                                                                               Task::STATUS_IN_PROGRESS);
-            $kanbanItem2            = TaskTestHelper::createKanbanItemForTask($task2);
+            $kanbanItem2            = KanbanItem::getByTask($task2->id);
             $this->assertEquals(KanbanItem::TYPE_IN_PROGRESS, $kanbanItem2->type);
             $this->assertEquals($task2->project->id, $kanbanItem2->kanbanRelatedItem->id);
             $task3                  = TaskTestHelper::createTaskByNameWithProjectAndStatus('MyThirdKanbanTask',
                                                                               Yii::app()->user->userModel,
                                                                               $project,
                                                                               Task::STATUS_IN_PROGRESS);
-            $kanbanItem3            = TaskTestHelper::createKanbanItemForTask($task3);
+            $kanbanItem3            = KanbanItem::getByTask($task3->id);
             $this->assertEquals(KanbanItem::TYPE_IN_PROGRESS, $kanbanItem3->type);
             $this->assertEquals($task3->project->id, $kanbanItem3->kanbanRelatedItem->id);
             $sourceKanbanType       = TasksUtil::resolveKanbanItemTypeForTaskStatus(Task::STATUS_IN_PROGRESS);
@@ -485,6 +485,7 @@
          */
         public function testProcessKanbanItemUpdateWithSourceKanbanTypeAsSomeDay()
         {
+            Yii::app()->user->setState(Task::REQUIRED_KANBAN_UPDATE, false);
             $tasks          = Task::getByName('MyFirstKanbanTask');
             $task           = $tasks[0];
             $tasks          = Task::getByName('MySecondKanbanTask');
@@ -502,6 +503,7 @@
             $this->assertEquals(1, $kanbanItem2->sortOrder);
             $this->assertEquals($task3->id, $kanbanItem3->task->id);
             $this->assertEquals(2, $kanbanItem3->sortOrder);
+            Yii::app()->user->setState(Task::REQUIRED_KANBAN_UPDATE, null);
         }
 
         /**
@@ -509,6 +511,7 @@
          */
         public function testProcessKanbanItemUpdateWithSourceKanbanTypeAsInProgress()
         {
+            Yii::app()->user->setState(Task::REQUIRED_KANBAN_UPDATE, false);
             $tasks          = Task::getByName('MyFirstKanbanTask');
             $task           = $tasks[0];
             $tasks          = Task::getByName('MySecondKanbanTask');
@@ -565,6 +568,7 @@
             $this->assertEquals(1, $kanbanItem2->sortOrder);
             $this->assertEquals($task3->id, $kanbanItem3->task->id);
             $this->assertEquals(1, $kanbanItem3->sortOrder);
+            Yii::app()->user->setState(Task::REQUIRED_KANBAN_UPDATE, null);
         }
 
         /**
