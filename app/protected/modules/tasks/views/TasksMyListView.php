@@ -189,7 +189,13 @@
             TasksUtil::registerTaskModalDetailsScript($this->getGridViewId());
         }
 
-        /**
+        protected function getCGridViewAjaxUrl()
+        {
+            $params = array_merge(GetUtil::getData(), array('portletId' => $this->params['portletId']));
+            return Yii::app()->createUrl('home/defaultPortlet/myListDetails', $params);
+        }
+
+		/**
          * Renders portlet head content
          * @return string
          */

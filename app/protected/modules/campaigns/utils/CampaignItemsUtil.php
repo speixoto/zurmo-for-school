@@ -93,7 +93,14 @@
             $ids = ZurmoRedBean::getCol($sql);
             foreach ($ids as $contactId)
             {
-                $contacts[] = Contact::getById((int)$contactId);
+                try
+                {
+                    $contacts[] = Contact::getById((int)$contactId);
+                }
+                catch(NotFoundException $e)
+                {
+                    //Do nothing, just skip
+                }
             }
             if (!empty($contacts))
             {

@@ -57,7 +57,8 @@
         {
             return array_merge(parent::getNonImportableAttributeNames(), array('currency', 'isActive', 'language', 'locale',
                                'timeZone', 'manager', 'hash', 'createdByUser', 'modifiedByUser',
-                               'createdDateTime', 'modifiedDateTime'));
+                               'createdDateTime', 'modifiedDateTime', 'isRootUser', 'isSystemUser',
+                               'hideFromSelecting', 'hideFromLeaderboard', 'serializedAvatarData'));
         }
 
         public static function getModelClassName()

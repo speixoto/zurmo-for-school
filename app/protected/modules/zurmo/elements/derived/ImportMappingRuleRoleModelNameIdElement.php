@@ -34,52 +34,18 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class AccountsListView extends StarredListView
+    class ImportMappingRuleRoleModelNameIdElement extends ImportMappingRuleDefaultModelNameIdElement
     {
-        public static function getDefaultMetadata()
-        {
-            $metadata = array(
-                'global' => array(
-                    'nonPlaceableAttributeNames' => array(
-                        'account',
-                    ),
-                    'panels' => array(
-                        array(
-                            'rows' => array(
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'name', 'type' => 'Text', 'isLink' => true),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'type', 'type' => 'DropDown'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'owner', 'type' => 'User'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                            ),
-                        ),
-                    ),
-                ),
+        protected $controllerId = 'role';
 
-            );
-            return $metadata;
+        protected function resolveModuleId()
+        {
+            return 'zurmo';
+        }
+
+        protected function getModalTitleForSelectingModel()
+        {
+            return Zurmo::t('ZurmoModule', 'Select a Role');
         }
     }
 ?>

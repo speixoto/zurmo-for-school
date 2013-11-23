@@ -34,52 +34,24 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class AccountsListView extends StarredListView
+    /**
+     * Import rules for an attribute that is a role model.
+     */
+    class RoleAttributeImportRules extends ModelAttributeImportRules
     {
-        public static function getDefaultMetadata()
+        protected static function getAllModelAttributeMappingRuleFormTypesAndElementTypes()
         {
-            $metadata = array(
-                'global' => array(
-                    'nonPlaceableAttributeNames' => array(
-                        'account',
-                    ),
-                    'panels' => array(
-                        array(
-                            'rows' => array(
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'name', 'type' => 'Text', 'isLink' => true),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'type', 'type' => 'DropDown'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'owner', 'type' => 'User'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                            ),
-                        ),
-                    ),
-                ),
+            return array('DefaultModelNameId' => 'ImportMappingRuleRoleModelNameId');
+        }
 
-            );
-            return $metadata;
+        protected static function getImportColumnOnlyModelAttributeMappingRuleFormTypesAndElementTypes()
+        {
+            return array('RelatedModelValueType' => 'ImportMappingRelatedModelValueTypeDropDown');
+        }
+
+        public static function getSanitizerUtilTypesInProcessingOrder()
+        {
+            return array('RelatedModelNameOrIdValueType', 'ModelIdRequired');
         }
     }
 ?>
