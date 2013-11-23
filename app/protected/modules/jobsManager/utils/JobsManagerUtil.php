@@ -43,20 +43,23 @@
          * @see JobManagerCommand.  This method is called from the JobManagerCommand which is a commandline
          * tool to run jobs.  Based on the 'type' specified this method will call to run the monitor or a
          * regular non-monitor job.
-         * @param string $type
-         * @param int $timeLimit
+         * @param $type
+         * @param $timeLimit
          * @param $messageLoggerClassName
+         * @param $isJobInProgress
          * @param string $template
          * @param string $lineBreak
          */
         public static function runFromJobManagerCommandOrBrowser($type, $timeLimit, $messageLoggerClassName,
-                                                                 $template = "{message}\n", $lineBreak = "\n")
+                                                                 & $isJobInProgress, $template = "{message}\n",
+                                                                 $lineBreak = "\n")
         {
             assert('is_string($type)');
             assert('is_int($timeLimit)');
             assert('is_string($messageLoggerClassName) && (
                     is_subclass_of($messageLoggerClassName, "MessageLogger") ||
                     $messageLoggerClassName == "MessageLogger")');
+            assert('is_bool($isJobInProgress)');
             assert('is_string($template)');
             assert('is_string($lineBreak)');
             set_time_limit($timeLimit);
@@ -71,21 +74,23 @@
             $messageLogger->addDebugMessage('Showing Debug Messages');
             if ($type == 'Monitor')
             {
-                static::runMonitorJob($messageLogger);
+                static::runMonitorJob($messageLogger, $isJobInProgress);
             }
             else
             {
-                static::runNonMonitorJob($type, $messageLogger);
+                static::runNonMonitorJob($type, $messageLogger, $isJobInProgress);
             }
             $messageLogger->addInfoMessage(Zurmo::t('JobsManagerModule', 'Ending job type: {type}',
                             array('{type}' => $type)));
         }
 
         /**
-         * Run the monitor job.
+         * @param MessageLogger $messageLogger
+         * @param $isJobInProgress
          */
-        public static function runMonitorJob(MessageLogger $messageLogger)
+        public static function runMonitorJob(MessageLogger $messageLogger, & $isJobInProgress)
         {
+            assert('is_bool($isJobInProgress)');
             try
             {
                 $jobInProcess = JobInProcess::getByType('Monitor');
@@ -94,6 +99,10 @@
                 {
                     $messageLogger->addInfoMessage("Existing monitor job is stuck");
                     self::makeMonitorStuckJobNotification();
+                }
+                else
+                {
+                    $isJobInProgress = true;
                 }
             }
             catch (NotFoundException $e)
@@ -136,15 +145,19 @@
 
         /**
          * Given a 'type' of job, run the job.  This is for non-monitor jobs only.
-         * @param string $type
+         * @param $type
+         * @param MessageLogger $messageLogger
+         * @param $isJobInProgress
          */
-        public static function runNonMonitorJob($type, MessageLogger $messageLogger)
+        public static function runNonMonitorJob($type, MessageLogger $messageLogger, & $isJobInProgress)
         {
             assert('is_string($type) && $type != "Monitor"');
+            assert('is_bool($isJobInProgress)');
             try
             {
-                $jobInProcess = JobInProcess::getByType($type);
+                $jobInProcess    = JobInProcess::getByType($type);
                 $messageLogger->addInfoMessage("Existing job detected");
+                $isJobInProgress = true;
             }
             catch (NotFoundException $e)
             {
