@@ -163,7 +163,41 @@
             $job = new WorkflowMessageInQueueJob();
             $this->assertTrue($job->run());
             $this->assertEquals(0, count(WorkflowMessageInQueue::getAll()));
-                        $model->forget();
+            $model->forget();
+        }
+
+        public function testPagedRun()
+        {
+            $model = WorkflowTestHelper::createWorkflowModelTestItem('Blue', '514');
+            $timeTrigger = array('attributeIndexOrDerivedType' => 'string',
+                                    'operator'                    => OperatorRules::TYPE_EQUALS,
+                                    'value'                       => '514',
+                                    'durationInterval'             => '5');
+            $actions     = array(array('type' => ActionForWorkflowForm::TYPE_UPDATE_SELF,
+                                ActionForWorkflowForm::ACTION_ATTRIBUTES =>
+                                array('string' => array('shouldSetValue'    => '1',
+                                    'type'   => WorkflowActionAttributeForm::TYPE_STATIC,
+                                    'value'  => 'jason'))));
+            $savedWorkflow         = WorkflowTestHelper::createByTimeSavedWorkflow($timeTrigger, array(), $actions);
+            for ($index = 0; $index < 10; $index++)
+            {
+                WorkflowTestHelper::createExpiredWorkflowMessageInQueue($model, $savedWorkflow);
+            }
+            InQueueBatchSizeConfigUtil::setBatchSize(5);
+            Yii::app()->jobQueue->deleteAll();
+            $this->assertCount(0, Yii::app()->jobQueue->getAll());
+            $this->assertEquals(10, count(WorkflowMessageInQueue::getAll()));
+            $job = new WorkflowMessageInQueueJob();
+            $this->assertTrue($job->run());
+            $this->assertEquals(5, count(WorkflowMessageInQueue::getAll()));
+            $jobs = Yii::app()->jobQueue->getAll();
+            $this->assertCount(1, $jobs);
+            $this->assertEquals('WorkflowMessageInQueue', $jobs[key($jobs)][0]);
+
+            Yii::app()->jobQueue->deleteAll();
+            $this->assertTrue($job->run());
+            $this->assertEquals(0, count(WorkflowMessageInQueue::getAll()));
+            $this->assertCount(0, Yii::app()->jobQueue->getAll());
         }
     }
 ?>

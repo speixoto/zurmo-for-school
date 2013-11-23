@@ -35,14 +35,40 @@
      ********************************************************************************/
 
     /**
-     * Class AutoresponderOrCampaignBatchSizeConfigUtil
+     * Class BatchSizeConfigUtil
      */
-    class AutoresponderOrCampaignBatchSizeConfigUtil extends BatchSizeConfigUtil
+    class BatchSizeConfigUtil
     {
-        const CONFIG_KEY             = 'AutoresponderOrCampaignBatchSize';
+        /**
+         * @param bool $returnDefaultIfMissing
+         * @param bool $setDefaultIfMissing
+         * @return configuration|int $size
+         */
+        public static function getBatchSize($returnDefaultIfMissing = true, $setDefaultIfMissing = false)
+        {
+            $size = ZurmoConfigurationUtil::getByModuleName(static::CONFIG_MODULE_NAME, static::CONFIG_KEY);
+            if (empty($size) && $returnDefaultIfMissing)
+            {
+                $size = static::CONFIG_DEFAULT_VALUE;
+                if ($setDefaultIfMissing)
+                {
+                    static::setBatchSize($size);
+                }
+            }
+            elseif(empty($size))
+            {
+                return null;
+            }
+            return $size;
+        }
 
-        const CONFIG_MODULE_NAME     = 'AutorespondersModule';
-
-        const CONFIG_DEFAULT_VALUE   = 100;
+        /**
+         * @param int $size
+         */
+        public static function setBatchSize($size)
+        {
+            assert('is_int($size) || $size === null');
+            ZurmoConfigurationUtil::setByModuleName(static::CONFIG_MODULE_NAME, static::CONFIG_KEY, $size);
+        }
     }
 ?>

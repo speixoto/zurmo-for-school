@@ -37,13 +37,8 @@
     /**
      * A job for processing workflow messages that are not sent immediately when triggered
      */
-    class WorkflowMessageInQueueJob extends BaseJob
+    class WorkflowMessageInQueueJob extends InQueueJob
     {
-        /**
-         * @var int
-         */
-        protected static $pageSize = 200;
-
         /**
          * @returns Translated label that describes this job type.
          */
@@ -75,9 +70,18 @@
                 $originalUser               = Yii::app()->user->userModel;
                 Yii::app()->user->userModel = BaseControlUserConfigUtil::getUserToRunAs();
                 $processedModelsCount       = 0;
-                foreach (WorkflowMessageInQueue::getModelsToProcess(self::$pageSize + 1) as $workflowMessageInQueue)
+                $batchSize                  = $this->resolveBatchSize();
+                if($batchSize != null)
                 {
-                    if($processedModelsCount < self::$pageSize)
+                    $resolvedBatchSize = $batchSize + 1;
+                }
+                else
+                {
+                    $resolvedBatchSize = null;
+                }
+                foreach (WorkflowMessageInQueue::getModelsToProcess($resolvedBatchSize) as $workflowMessageInQueue)
+                {
+                    if($processedModelsCount < $batchSize || $batchSize == null)
                     {
                         try
                         {

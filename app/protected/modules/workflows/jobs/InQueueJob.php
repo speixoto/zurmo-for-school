@@ -35,14 +35,13 @@
      ********************************************************************************/
 
     /**
-     * Class AutoresponderOrCampaignBatchSizeConfigUtil
+     * A base job for processing in queue items
      */
-    class AutoresponderOrCampaignBatchSizeConfigUtil extends BatchSizeConfigUtil
+    abstract class InQueueJob extends BaseJob
     {
-        const CONFIG_KEY             = 'AutoresponderOrCampaignBatchSize';
-
-        const CONFIG_MODULE_NAME     = 'AutorespondersModule';
-
-        const CONFIG_DEFAULT_VALUE   = 100;
+        protected function resolveBatchSize()
+        {
+            return InQueueBatchSizeConfigUtil::getBatchSize();
+        }
     }
 ?>

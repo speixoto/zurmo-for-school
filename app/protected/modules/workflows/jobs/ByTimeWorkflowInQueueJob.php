@@ -37,13 +37,8 @@
     /**
      * A job for processing expired By-Time workflow objects
      */
-    class ByTimeWorkflowInQueueJob extends BaseJob
+    class ByTimeWorkflowInQueueJob extends InQueueJob
     {
-        /**
-         * @var int
-         */
-        protected static $pageSize = 200;
-
         /**
          * @returns Translated label that describes this job type.
          */
@@ -75,9 +70,18 @@
                 $originalUser               = Yii::app()->user->userModel;
                 Yii::app()->user->userModel = BaseControlUserConfigUtil::getUserToRunAs();
                 $processedModelsCount       = 0;
-                foreach (ByTimeWorkflowInQueue::getModelsToProcess(self::$pageSize + 1) as $byTimeWorkflowInQueue)
+                $batchSize                  = $this->resolveBatchSize();
+                if($batchSize != null)
                 {
-                    if($processedModelsCount < self::$pageSize)
+                    $resolvedBatchSize = $batchSize + 1;
+                }
+                else
+                {
+                    $resolvedBatchSize = null;
+                }
+                foreach (ByTimeWorkflowInQueue::getModelsToProcess($resolvedBatchSize) as $byTimeWorkflowInQueue)
+                {
+                    if($processedModelsCount < $batchSize || $batchSize == null)
                     {
                         try
                         {

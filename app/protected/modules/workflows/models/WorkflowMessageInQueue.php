@@ -129,7 +129,7 @@
          */
         public static function getModelsToProcess($pageSize)
         {
-            assert('is_int($pageSize)');
+            assert('is_int($pageSize) || $pageSize == null');
             $timeStamp = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
             $searchAttributeData = array();
             $searchAttributeData['clauses'] = array(
