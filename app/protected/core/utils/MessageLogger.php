@@ -54,10 +54,24 @@
          */
         const DEBUG = 3;
 
+        /**
+         * @var bool
+         */
+        public $logDateTimeStamp = true;
+
+        /**
+         * @var bool
+         */
         protected $errorMessagePresent = false;
 
+        /**
+         * @var array
+         */
         protected $messages = array();
 
+        /**
+         * @var null|object
+         */
         protected $messageStreamer;
 
         /**
@@ -109,7 +123,15 @@
                 if ($message[0] != MessageLogger::DEBUG ||
                     ($this->shouldPrintDebugMessages() && $message[0] == MessageLogger::DEBUG))
                 {
-                    $this->messageStreamer->add($message[2] . ' ' . static::getTypeLabel($message[0]) . ' - ' . $message[1]);
+                    if($this->logDateTimeStamp)
+                    {
+                        $prefixContent = $message[2] . ' ';
+                    }
+                    else
+                    {
+                        $prefixContent = null;
+                    }
+                    $this->messageStreamer->add($prefixContent . static::getTypeLabel($message[0]) . ' - ' . $message[1]);
                 }
             }
         }

@@ -975,6 +975,7 @@
             $messageStreamer->add(Zurmo::t('InstallModule', 'Creating super user.'));
 
             $messageLogger = new MessageLogger($messageStreamer);
+            $messageLogger->logDateTimeStamp = false;
             Yii::app()->custom->runBeforeInstallationAutoBuildDatabase($messageLogger);
             $messageStreamer->add(Zurmo::t('InstallModule', 'Starting database schema creation.'));
             $startTime = microtime(true);
@@ -1112,6 +1113,7 @@
                 {
                     $messageStreamer->add(Zurmo::t('InstallModule', 'Starting to load demo data.'));
                     $messageLogger = new MessageLogger($messageStreamer);
+                    $messageLogger->logDateTimeStamp = false;
                     $startTime = microtime(true);
                     if (isset($args[9]))
                     {
