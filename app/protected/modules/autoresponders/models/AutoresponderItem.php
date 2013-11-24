@@ -127,7 +127,7 @@
             $dateTime = DateTimeUtil::convertTimestampToDbFormatDateTime($timestamp);
             if($inPast)
             {
-                $processDateTimeTimeOperator = 'lessThan';
+                $processDateTimeOperator = 'lessThan';
             }
             else
             {
@@ -142,7 +142,7 @@
                 ),
                 2 => array(
                     'attributeName'             => 'processDateTime',
-                    'operatorType'              => $processDateTimeTimeOperator,
+                    'operatorType'              => $processDateTimeOperator,
                     'value'                     => $dateTime,
                 ),
             );
