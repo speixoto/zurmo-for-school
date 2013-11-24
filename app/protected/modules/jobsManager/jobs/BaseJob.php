@@ -50,7 +50,7 @@
          * available.
          * @var bool
          */
-        protected static$loadJobQueueOnCleanupAndFallback = false;
+        protected static $loadJobQueueOnCleanupAndFallback = false;
 
         /**
          * Populated when the job runs if needed.
@@ -67,6 +67,11 @@
          * After a Job is instantiated, the run method is called to execute the job.
          */
         abstract public function run();
+
+        public static function shouldLoadJobQueueOnCleanupAndFallback()
+        {
+            return static::$loadJobQueueOnCleanupAndFallback;
+        }
 
         /**
          * @returns Translated label that describes this job type.
