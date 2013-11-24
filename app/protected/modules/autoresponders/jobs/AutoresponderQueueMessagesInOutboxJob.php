@@ -41,11 +41,43 @@
     class AutoresponderQueueMessagesInOutboxJob extends AutoresponderOrCampaignBaseJob
     {
         /**
+         * @see BaseJob::$loadJobQueueOnCleanupAndFallback
+         * @var bool
+         */
+        protected static $loadJobQueueOnCleanupAndFallback = true;
+
+        /**
          * @returns Translated label that describes this job type.
          */
         public static function getDisplayName()
         {
            return Zurmo::t('AutorespondersModule', 'Process autoresponder messages');
+        }
+
+        /**
+         * @see parent::resolveJobsForQueue()
+         */
+        public static function resolveJobsForQueue()
+        {
+            parent::resolveJobsForQueue();
+            $pageSize       = static::JOB_QUEUE_PAGE_SIZE;
+            $offset         = 0;
+            $timeStamp      = time();
+            do
+            {
+                $autoresponderItems = AutoresponderItem::getByProcessedAndProcessDateTime(0, $timeStamp,
+                                                            $pageSize, $offset, false);
+                $offset    = $offset + $pageSize;
+                if (is_array($autoresponderItems) && count($autoresponderItems) > 0)
+                {
+                    foreach ($autoresponderItems as $autoresponderItem)
+                    {
+                        Yii::app()->jobQueue->resolveToAddJobTypeByModelByDateTimeAttribute($autoresponderItem, 'processDateTime',
+                                                'AutoresponderQueueMessagesInOutbox');
+                    }
+                }
+            }
+            while (is_array($autoresponderItems) && count($autoresponderItems) > 0);
         }
 
         /**

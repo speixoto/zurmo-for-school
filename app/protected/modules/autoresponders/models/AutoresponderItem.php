@@ -113,14 +113,26 @@
             return self::getSubset($joinTablesAdapter, null, $pageSize, $where, 'processDateTime');
         }
 
-        public static function getByProcessedAndProcessDateTime($processed, $timestamp = null, $pageSize = null)
+        public static function getByProcessedAndProcessDateTime($processed, $timestamp = null, $pageSize = null,
+                                                                $offset = 0, $inPast = true)
         {
+            assert('is_int($processed)');
+            assert('is_int($offset)');
+            assert('is_bool($inPast)');
             if (empty($timestamp))
             {
+
                 $timestamp = time();
             }
             $dateTime = DateTimeUtil::convertTimestampToDbFormatDateTime($timestamp);
-            assert('is_int($processed)');
+            if($inPast)
+            {
+                $processDateTimeTimeOperator = 'lessThan';
+            }
+            else
+            {
+                $processDateTimeOperator = 'greaterThan';
+            }
             $searchAttributeData = array();
             $searchAttributeData['clauses'] = array(
                 1 => array(
@@ -130,7 +142,7 @@
                 ),
                 2 => array(
                     'attributeName'             => 'processDateTime',
-                    'operatorType'              => 'lessThan',
+                    'operatorType'              => $processDateTimeTimeOperator,
                     'value'                     => $dateTime,
                 ),
             );

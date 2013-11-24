@@ -127,14 +127,24 @@
             return self::getSubset($joinTablesAdapter, null, $pageSize, $where, null);
         }
 
-        public static function getByStatusAndSendingTime($status, $sendingTimestamp = null, $pageSize = null)
+        public static function getByStatusAndSendingTime($status, $sendingTimestamp = null, $pageSize = null, $offset = 0, $inPast = true)
         {
+            assert('is_int($status)');
+            assert('is_int($offset)');
+            assert('is_bool($inPast)');
             if (empty($sendingTimestamp))
             {
                 $sendingTimestamp = time();
             }
             $sendOnDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime($sendingTimestamp);
-            assert('is_int($status)');
+            if($inPast)
+            {
+                $sendOnDateTimeOperator = 'lessThan';
+            }
+            else
+            {
+                $sendOnDateTimeOperator = 'greaterThan';
+            }
             $searchAttributeData = array();
             $searchAttributeData['clauses'] = array(
                 1 => array(
@@ -144,14 +154,14 @@
                 ),
                 2 => array(
                     'attributeName'             => 'sendOnDateTime',
-                    'operatorType'              => 'lessThan',
+                    'operatorType'              => $sendOnDateTimeOperator,
                     'value'                     => $sendOnDateTime,
                 ),
             );
             $searchAttributeData['structure'] = '(1 and 2)';
             $joinTablesAdapter                = new RedBeanModelJoinTablesQueryAdapter(get_called_class());
             $where = RedBeanModelDataProvider::makeWhere(get_called_class(), $searchAttributeData, $joinTablesAdapter);
-            return self::getSubset($joinTablesAdapter, null, $pageSize, $where, null);
+            return self::getSubset($joinTablesAdapter, $offset, $pageSize, $where, null);
         }
 
         public static function getDefaultMetadata()
