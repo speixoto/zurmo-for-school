@@ -447,5 +447,14 @@
                 return $content;
             }
         }
+
+        /**
+         * Checks if max count has to be validated in the kanban view
+         * @return boolean
+         */
+        protected function isMaxCountCheckRequired()
+        {
+            return false;
+        }
     }
 ?>

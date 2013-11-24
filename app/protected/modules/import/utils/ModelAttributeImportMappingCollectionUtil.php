@@ -65,11 +65,11 @@
             assert('is_bool($isRequired)');
 
             $collection[$attributeIndex] = array(
-                'attributeLabel'        => $attributeLabel,
-                'attributeName'         => $attributeName,
-                'relationAttributeName' => $relationAttributeName,
-                'attributeImportRulesType'           => $elementType,
-                'isRequired'            => $isRequired,
+                'attributeLabel'            => $attributeLabel,
+                'attributeName'             => $attributeName,
+                'relationAttributeName'     => $relationAttributeName,
+                'attributeImportRulesType'  => $elementType,
+                'isRequired'                => $isRequired,
             );
         }
     }

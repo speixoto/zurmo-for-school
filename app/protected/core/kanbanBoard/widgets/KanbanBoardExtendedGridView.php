@@ -79,7 +79,19 @@
          */
         public static function resolvePageSizeForMaxCount()
         {
-            return static::$maxCount + 1;
+            return static::getMaxCount() + 1;
+        }
+
+        public static function getMaxCount()
+        {
+            if (isset(Yii::app()->params['kanbanBoardMaxCount']))
+            {
+                return Yii::app()->params['kanbanBoardMaxCount'];
+            }
+            else
+            {
+                return static::$maxCount;
+            }
         }
 
         public function init()
@@ -99,7 +111,7 @@
             $width       = 100 / count($columnsData);
             echo "<tbody>";
             echo "<tr><td id=\"kanban-holder\" class='". $this->selectedTheme . "'>";
-            if ($modelsCount > static::$maxCount)
+            if ($this->isMaxCountCheckRequired() && $modelsCount > static::getMaxCount())
             {
                 $this->renderOverMaxCountText();
             }
@@ -327,6 +339,15 @@
         protected function wrapCardDetailsContent($row)
         {
             return ZurmoHtml::tag('div', array(), $this->renderCardDetailsContent($row));
+        }
+
+        /**
+         * Checks if max count has to be validated in the kanban view
+         * @return boolean
+         */
+        protected function isMaxCountCheckRequired()
+        {
+            return true;
         }
     }
 ?>
