@@ -3228,12 +3228,13 @@ div.wide.form{
 .radio-input{
 	clear: left;
 	float: left;
-	margin-bottom: 5px;
+	margin-bottom: 15px;
 	input{
 		float: left;
-		margin-top: 1px !important;
+		margin-top: -1px !important;
 	}
 	label{
+		line-height: 1;
 		margin-left: 10px;
 	}
 }
@@ -3290,11 +3291,11 @@ div.wide.form{
 		}
 		input[type="radio"]{
 			float:left;
-			margin:0 8px 0 10px;
+			margin:0 0 0 10px;
 			vertical-align: middle;
 		}
 		.hasDropDown{
-			padding-left:40px;
+			padding-left:32px;
 		}
 	}
 	input[type="text"]{
@@ -3397,6 +3398,26 @@ div.wide.form{
 				color:#8b8b8b;
 				text-align:center;
 				vertical-align:bottom;
+			}
+		}
+	}
+}
+
+#zurmoContextiveGadget,
+#zurmoExternalWebForm{
+	.has-model-select .model-select-icon{
+		background: transparent url(../images/ie-sprite.png) left -24px no-repeat;
+		height: inherit;
+		&:before{
+			display: none;
+		}
+	}
+	.has-date-select{
+		button span{
+			background: transparent url(../images/ie-sprite.png) left 0 no-repeat;
+			height: inherit;
+			&:before{
+				display: none;
 			}
 		}
 	}

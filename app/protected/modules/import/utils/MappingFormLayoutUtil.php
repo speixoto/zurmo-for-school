@@ -229,7 +229,15 @@
                                                            $attributeIndexOrDerivedType,
                                                            $columnType);
                 }
-                $content .= ZurmoHtml::tag('h4', array(), Zurmo::t('ImportModule', 'Rules'));
+                if (count($mappingRuleFormsAndElementTypes) > 0)
+                {
+                    $title = Zurmo::t('ImportModule', 'Rules');
+                }
+                else
+                {
+                    $title = null;
+                }
+                $content .= ZurmoHtml::tag('h4', array(), $title);
                 foreach ($mappingRuleFormsAndElementTypes as $notUsed => $ruleFormAndElementType)
                 {
                     $mappingRuleForm        = $ruleFormAndElementType['mappingRuleForm'];

@@ -294,14 +294,14 @@
             sort($indexColumns);
             // get rid of (767) and other prefixes for
             $indexColumns   = array_map(function ($column)
-            {
-                $parenthesisStart = strpos($column, '(');
-                if ($parenthesisStart !== false)
-                {
-                    return substr($column, 0, $parenthesisStart);
-                }
-                return $column;
-            }, $indexColumns);
+                                        {
+                                            $parenthesisStart = strpos($column, '(');
+                                            if ($parenthesisStart !== false)
+                                            {
+                                                return substr($column, 0, $parenthesisStart);
+                                            }
+                                            return $column;
+                                        }, $indexColumns);
             foreach ($existingIndexes as $existingIndexMetadata)
             {
                 $existingIndexColumns = $existingIndexMetadata['columns'];

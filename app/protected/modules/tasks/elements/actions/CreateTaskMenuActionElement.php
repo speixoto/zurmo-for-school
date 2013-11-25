@@ -34,52 +34,38 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class AccountsListView extends StarredListView
+    class CreateTaskMenuActionElement extends CreateMenuActionElement
     {
-        public static function getDefaultMetadata()
+        /**
+         * @return string
+         */
+        public function render()
         {
-            $metadata = array(
-                'global' => array(
-                    'nonPlaceableAttributeNames' => array(
-                        'account',
-                    ),
-                    'panels' => array(
-                        array(
-                            'rows' => array(
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'name', 'type' => 'Text', 'isLink' => true),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'type', 'type' => 'DropDown'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'owner', 'type' => 'User'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                            ),
-                        ),
-                    ),
-                ),
+            $ajaxLink = ZurmoHtml::ajaxLink($this->resolveLabelAndWrap(), $this->route, $this->getAjaxOptions(), array('class' => 'button-action-trigger'));
+            $content  = ZurmoHtml::tag('div', array('class' => 'default-button'), $ajaxLink);
+            return $content;
+        }
 
-            );
-            return $metadata;
+        /**
+         * @return string
+         */
+        protected function getDefaultRoute()
+        {
+            return Yii::app()->createUrl('tasks/default/modalCreate',
+                                    array('modalId' => TasksUtil::getModalContainerId()));
+        }
+
+        /**
+         * @return string
+         */
+        protected function resolveLabelAndWrap()
+        {
+            if ($this->wrapLabel())
+            {
+                $content = ZurmoHtml::tag('i', array('class' => 'icon-create'), '');
+                return $content . ZurmoHtml::wrapLabel($this->getLabel(), 'button-label');
+            }
+            return $this->getLabel();
         }
     }
 ?>

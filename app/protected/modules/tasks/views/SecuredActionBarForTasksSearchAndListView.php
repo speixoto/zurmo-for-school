@@ -34,50 +34,37 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class AccountsListView extends StarredListView
+    /**
+     * Action bar view for the tasks search and list user interface.
+     */
+    class SecuredActionBarForTasksSearchAndListView extends SecuredActionBarForSearchAndListView
     {
+        /**
+         * @return array
+         */
         public static function getDefaultMetadata()
         {
             $metadata = array(
                 'global' => array(
-                    'nonPlaceableAttributeNames' => array(
-                        'account',
-                    ),
-                    'panels' => array(
-                        array(
-                            'rows' => array(
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'name', 'type' => 'Text', 'isLink' => true),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'type', 'type' => 'DropDown'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'owner', 'type' => 'User'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                            ),
+                    'toolbar' => array(
+                        'elements' => array(
+                            array('type'        => 'CreateTaskMenu',
+                                  'ajaxOptions' => 'eval:TasksUtil::resolveAjaxOptionsForModalView("Create", $this->listViewGridId)'),
+                            array('type'  => 'MassEditMenu',
+                                  'listViewGridId' => 'eval:$this->listViewGridId',
+                                  'pageVarName' => 'eval:$this->pageVarName',
+                                  'iconClass'   => 'icon-edit'),
+                            array('type'  => 'ExportMenu',
+                                  'listViewGridId' => 'eval:$this->listViewGridId',
+                                  'pageVarName' => 'eval:$this->pageVarName',
+                                  'iconClass'   => 'icon-export'),
+                            array('type'  => 'MassDeleteMenu',
+                                  'listViewGridId' => 'eval:$this->listViewGridId',
+                                  'pageVarName' => 'eval:$this->pageVarName',
+                                  'iconClass'   => 'icon-delete'),
                         ),
                     ),
                 ),
-
             );
             return $metadata;
         }

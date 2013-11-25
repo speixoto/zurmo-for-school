@@ -34,52 +34,42 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class AccountsListView extends StarredListView
+    class TasksSearchView extends SavedDynamicSearchView
     {
         public static function getDefaultMetadata()
         {
             $metadata = array(
                 'global' => array(
-                    'nonPlaceableAttributeNames' => array(
-                        'account',
-                    ),
                     'panels' => array(
                         array(
-                            'rows' => array(
+                            'locked' => true,
+                            'title'  => 'Basic Search',
+                            'rows'   => array(
                                 array('cells' =>
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'name', 'type' => 'Text', 'isLink' => true),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'type', 'type' => 'DropDown'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'owner', 'type' => 'User'),
+                                                array('attributeName' => 'anyMixedAttributes',
+                                                      'type' => 'AnyMixedAttributesSearch', 'wide' => true),
                                             ),
                                         ),
                                     )
                                 ),
                             ),
                         ),
+                        array(
+                            'advancedSearchType' => static::ADVANCED_SEARCH_TYPE_DYNAMIC,
+                            'rows'   => array(),
+                        ),
                     ),
                 ),
-
             );
             return $metadata;
+        }
+
+        public static function getModelForMetadataClassName()
+        {
+            return 'TasksSearchForm';
         }
     }
 ?>

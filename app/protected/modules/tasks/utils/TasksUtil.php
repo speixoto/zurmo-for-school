@@ -237,7 +237,7 @@
             assert('is_string($sourceId) || $sourceId == null');
             if ($sourceId != null)
             {
-                return "$.fn.yiiGridView.update('{$sourceId}');";
+                return "$('#{$sourceId}').yiiGridView('update');";
             }
         }
 
@@ -440,6 +440,7 @@
          */
         public static function getKanbanSubscriptionScript($url, $sourceClass, $targetClass, $link)
         {
+            // Begin Not Coding Standard
             return "$('body').on('click', '." . $sourceClass . "', function()
                                                     {
                                                         var element     = $(this).parent().parent().parent();
@@ -467,6 +468,7 @@
                                                         );
                                                     }
                                                 );";
+            // End Not Coding Standard
         }
 
         /**
@@ -545,8 +547,8 @@
         {
             assert('is_string($subscribeLinkClass)');
             assert('is_string($unsubscribeLinkClass)');
-            if($task->owner->id == Yii::app()->user->userModel->id
-                        || $task->requestedByUser->id == Yii::app()->user->userModel->id)
+            if ($task->owner->id == Yii::app()->user->userModel->id ||
+                            $task->requestedByUser->id == Yii::app()->user->userModel->id)
             {
                 return null;
             }
@@ -712,7 +714,8 @@
             $url = Yii::app()->createUrl('tasks/default/modalDetails');
             $ajaxOptions = TasksUtil::resolveAjaxOptionsForModalView('Details', $sourceId);
             $ajaxOptions['beforeSend'] = new CJavaScriptExpression($ajaxOptions['beforeSend']);
-            $script = "$(document).on('click', '#{$sourceId} .task-kanban-detail-link', function()
+            $script = " $(document).off('click.taskDetailLink', '#{$sourceId} .task-kanban-detail-link');
+                        $(document).on('click.taskDetailLink',  '#{$sourceId} .task-kanban-detail-link', function()
                           {
                             var id = $(this).attr('id');
                             var idParts = id.split('-');
@@ -933,9 +936,13 @@
             {
                 $sortOrder = KanbanItem::getMaximumSortOrderByType(intval($targetKanbanType), $task->project);
             }
-            else
+            elseif ($task->activityItems->count() > 0)
             {
                 $sortOrder = KanbanItem::getMaximumSortOrderByType(intval($targetKanbanType), $task->activityItems->offsetGet(0));
+            }
+            else
+            {
+                $sortOrder = 1;
             }
             return $sortOrder;
         }
@@ -1086,7 +1093,6 @@
                             });
                           }
                         );";
-
         }
 
         /**
@@ -1122,6 +1128,75 @@
                           }
                         );";
              Yii::app()->clientScript->registerScript('taskModalDeleteScript', $script, ClientScript::POS_END);
+        }
+
+        /**
+         * Resolve that should task be opened in modal detal view
+         */
+        public static function resolveShouldOpenToTask($gridId)
+        {
+            $getData = GetUtil::getData();
+            if (null != $taskId = ArrayUtil::getArrayValue($getData, 'openToTaskId'))
+            {
+                TasksUtil::registerOpenToTaskModalDetailsScript((int)$taskId, $gridId);
+            }
+        }
+
+        /**
+         * @param string $modelClassName
+         */
+        public static function saveSelectedOptionsAsStickyData($filterValue = TasksConfigurationForm::FILTERED_BY_ALL_STATUS)
+        {
+            StickyUtil::setDataByKeyAndData('TasksListViewFilteredByStatus', array('filterValue' => $filterValue));
+        }
+
+        /**
+         * @param string $modelClassName
+         * @return MashableInboxForm
+         */
+        public static function getConfigurationFormWithStatusAsStickyData()
+        {
+            $data = StickyUtil::getDataByKey('TasksListViewFilteredByStatus');
+            $tasksConfigurationForm = new TasksConfigurationForm();
+            if($data == null)
+            {
+                $tasksConfigurationForm->filteredByStatus = TasksConfigurationForm::FILTERED_BY_ALL_STATUS;
+            }
+            else
+            {
+                $tasksConfigurationForm->filteredByStatus = $data['filterValue'];
+            }
+            return $tasksConfigurationForm;
+        }
+
+        public static function makeStatusSearchAttributeData($status)
+        {
+            $searchAttributeData = array();
+            $searchAttributeData['clauses'] = array(
+                1 => array(
+                    'attributeName'        => 'status',
+                    'operatorType'         => 'equals',
+                    'value'                => (int)$status,
+                )
+            );
+            $searchAttributeData['structure'] = '1';
+            return $searchAttributeData;
+        }
+
+        public static function makeDataProviderForFilterByStatus($status, $pageSize)
+        {
+            $searchAttributeData = self::makeStatusSearchAttributeData($status);
+            $sortAttribute  = SearchUtil::resolveSortAttributeFromGetArray('Task');
+            $sortDescending =  SearchUtil::resolveSortDescendingFromGetArray('Task');
+            return new RedBeanModelDataProvider( 'Task',
+                                                 $sortAttribute,
+                                                 (bool)$sortDescending,
+                                                 $searchAttributeData,
+                                                 array(
+                                                        'pagination' => array(
+                                                            'pageSize' => $pageSize,
+                                                    )
+                                                ));
         }
     }
 ?>

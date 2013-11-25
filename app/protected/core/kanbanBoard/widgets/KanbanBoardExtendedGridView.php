@@ -99,7 +99,7 @@
             $width       = 100 / count($columnsData);
             echo "<tbody>";
             echo "<tr><td id=\"kanban-holder\" class='". $this->selectedTheme . "'>";
-            if ($modelsCount > static::$maxCount)
+            if ($this->isMaxCountCheckRequired() && $modelsCount > static::$maxCount)
             {
                 $this->renderOverMaxCountText();
             }
@@ -327,6 +327,15 @@
         protected function wrapCardDetailsContent($row)
         {
             return ZurmoHtml::tag('div', array(), $this->renderCardDetailsContent($row));
+        }
+
+        /**
+         * Checks if max count has to be validated in the kanban view
+         * @return boolean
+         */
+        protected function isMaxCountCheckRequired()
+        {
+            return true;
         }
     }
 ?>

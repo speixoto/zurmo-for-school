@@ -37,6 +37,7 @@
     /**
      * Note related array of random seed data parts.
      */
+    // Begin Not Coding Standard
     return array(
         'modelClassName'        => array(
             'Contact',
@@ -81,7 +82,6 @@
                 ' range of out-of-the-box use cases. Zurmo is capable of supporting your complex business processes, ' .
                 'yet very simple to use.',
         ),
-        // Begin Not Coding Standard
         'htmlContent'           => array(
             '<html><head></head><body><p>Zurmo\'s source code is hosted on bitbucket while we use ' .
                 '<img src="http://www.selenic.com/hg-logo/droplets-50.png" alt="mercurial" /> for ' .
@@ -428,6 +428,6 @@
                 </body>
                 </html>'
         ),
-        // End Not Coding Standard
     );
+    // End Not Coding Standard
 ?>

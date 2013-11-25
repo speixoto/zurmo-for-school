@@ -188,5 +188,22 @@
             parent::renderScripts();
             TasksUtil::registerTaskModalDetailsScript($this->getGridViewId());
         }
+
+        protected function getCGridViewAjaxUrl()
+        {
+            $params = array_merge(GetUtil::getData(), array('portletId' => $this->params['portletId']));
+            return Yii::app()->createUrl('home/defaultPortlet/myListDetails', $params);
+        }
+
+		/**
+         * Renders portlet head content
+         * @return string
+         */
+        public function renderPortletHeadContent()
+        {
+            $label = ZurmoHtml::tag('span', array('class' => 'z-label'), Zurmo::t('TasksModule', 'All Tasks'));
+            $link  = ZurmoHtml::link($label, Yii::app()->createUrl('tasks/default/list'));
+            return ZurmoHtml::tag('div', array('class' => 'portlet-toolbar'), $link);
+        }
     }
 ?>

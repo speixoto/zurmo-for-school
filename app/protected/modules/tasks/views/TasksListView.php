@@ -34,15 +34,12 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class AccountsListView extends StarredListView
+    class TasksListView extends SecuredListView
     {
         public static function getDefaultMetadata()
         {
             $metadata = array(
                 'global' => array(
-                    'nonPlaceableAttributeNames' => array(
-                        'account',
-                    ),
                     'panels' => array(
                         array(
                             'rows' => array(
@@ -59,7 +56,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'type', 'type' => 'DropDown'),
+                                                array('attributeName' => 'dueDateTime', 'type' => 'Text'),
                                             ),
                                         ),
                                     )
@@ -80,6 +77,39 @@
 
             );
             return $metadata;
+        }
+
+        /**
+         * Constructs a list view specifying the controller as
+         * well as the model that will have its details displayed.isDisplayAttributeACalculationOrModifier
+         */
+        public function __construct(
+            $controllerId,
+            $moduleId,
+            $modelClassName,
+            $dataProvider,
+            $selectedIds,
+            $gridIdSuffix = null,
+            $gridViewPagerParams = array(),
+            $listAttributesSelector = null,
+            $kanbanBoard            = null
+        )
+        {
+            parent::__construct($controllerId, $moduleId, $modelClassName,
+                                $dataProvider, $selectedIds, $gridIdSuffix,
+                                $gridViewPagerParams, $listAttributesSelector, null);
+            $this->uniquePageId = get_called_class();
+            $this->configurationForm = TasksUtil::getConfigurationFormWithStatusAsStickyData();
+        }
+
+        /**
+         * Renders content
+         * @return string
+         */
+        protected function renderContent()
+        {
+            TasksUtil::resolveShouldOpenToTask($this->getGridViewId());
+            return parent::renderContent();
         }
     }
 ?>

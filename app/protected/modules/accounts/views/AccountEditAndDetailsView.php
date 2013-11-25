@@ -51,6 +51,7 @@
                         ),
                     ),
                     'nonPlaceableAttributeNames' => array(
+                        'account',
                         'owner',
                     ),
                     'panelsDisplayType' => FormLayout::PANELS_DISPLAY_TYPE_ALL,
