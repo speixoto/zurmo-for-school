@@ -54,8 +54,7 @@
         {
             assert('$externalSystemId == null || is_string($externalSystemId)');
             $columnName     = self::EXTERNAL_SYSTEM_ID_COLUMN_NAME;
-            $modelClassName = get_class($model);
-            $tableName      = $modelClassName::getTableName();
+            $tableName      = $model::getTableName();
             static::addExternalIdColumnIfMissing($tableName);
             ZurmoRedBean::exec("update " . $tableName . " set $columnName = '" . $externalSystemId . "' where id = " . $model->id);
         }

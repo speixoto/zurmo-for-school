@@ -600,12 +600,15 @@
             // You could also call it on objects like: $model::getTableName() or
             // $model->getTableName() but it would be preferable to keep it accessed through class, statically.
             $modelClassName = get_called_class();
-            $tableName = strtolower($modelClassName);
-            if ($modelClassName::mangleTableName())
+            if ($this->getCanHaveBean())
             {
-                $tableName = '_' . $tableName;
+                $tableName = strtolower($modelClassName);
+                if ($modelClassName::mangleTableName())
+                {
+                    $tableName = '_' . $tableName;
+                }
+                return $tableName;
             }
-            return $tableName;
         }
 
         /**
