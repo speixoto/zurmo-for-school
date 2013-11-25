@@ -322,7 +322,8 @@
         {
             $relatedModelClassName = static::getRelatedModelClassName();
             $relatedColumnName = $relatedModelClassName::getTableName() . '_id';
-            $baseColumnName = static::getTableName() . '_id';
+            // can't use self:: here as getTableName() uses get_called_class
+            $baseColumnName = EmailMessageActivity::getTableName() . '_id';
             return array($baseColumnName . '_' . $relatedColumnName => array(
                                 'members' => array($baseColumnName, $relatedColumnName),
                                 'unique' => true,

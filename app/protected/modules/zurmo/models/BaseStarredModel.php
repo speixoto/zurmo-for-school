@@ -159,7 +159,8 @@
         {
             $relatedModelClassName = static::getRelatedModelClassName();
             $relatedColumnName = $relatedModelClassName::getTableName() . '_id';
-            $baseStarredColumnName = static::getTableName() . '_id';
+            // can't use self:: here as getTableName() uses get_called_class
+            $baseStarredColumnName = BaseStarredModel::getTableName() . '_id';
             return array($baseStarredColumnName . '_' . $relatedColumnName => array(
                                                 'members' => array($baseStarredColumnName, $relatedColumnName),
                                                 'unique' => true,
