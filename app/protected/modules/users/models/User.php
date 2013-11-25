@@ -724,6 +724,7 @@
                 ),
                 'rules' => array(
                     array('hash',     'type',    'type' => 'string'),
+                    array('hash',     'required'),
                     array('hash',     'length',  'min'   => 32, 'max' => 32),
                     array('language', 'type',    'type'  => 'string'),
                     array('language', 'length',  'max'   => 10),
