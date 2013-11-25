@@ -49,8 +49,6 @@
 
         const STATUS_COMPLETED             = 5;
 
-        const REQUIRED_KANBAN_UPDATE       = 'taskKanbanUpdateRequired';
-
         /**
          * @return string
          */
@@ -289,7 +287,7 @@
         protected function afterSave()
         {
             $this->processNotificationsToBeSent();
-            if(Yii::app()->user->getState(Task::REQUIRED_KANBAN_UPDATE) !== false)
+            if($this->getScenario() != 'kanbanViewButtonClick' && $this->getScenario() != 'kanbanViewDrag')
             {
                 TasksUtil::checkKanbanTypeByStatusAndUpdateIfRequired($this);
             }

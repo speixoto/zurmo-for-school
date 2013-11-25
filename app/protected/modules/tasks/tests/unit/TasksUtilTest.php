@@ -485,7 +485,6 @@
          */
         public function testProcessKanbanItemUpdateWithSourceKanbanTypeAsSomeDay()
         {
-            Yii::app()->user->setState(Task::REQUIRED_KANBAN_UPDATE, false);
             $tasks          = Task::getByName('MyFirstKanbanTask');
             $task           = $tasks[0];
             $tasks          = Task::getByName('MySecondKanbanTask');
@@ -493,6 +492,7 @@
             $tasks          = Task::getByName('MyThirdKanbanTask');
             $task3          = $tasks[0];
             $kanbanItem     = KanbanItem::getByTask($task->id);
+            $task->setScenario('kanbanViewButtonClick');
             TasksUtil::processKanbanItemUpdateOnButtonAction(Task::STATUS_IN_PROGRESS, $task->id, $kanbanItem->type);
             $kanbanItem             = KanbanItem::getByTask($task->id);
             $kanbanItem2            = KanbanItem::getByTask($task2->id);
@@ -503,7 +503,6 @@
             $this->assertEquals(1, $kanbanItem2->sortOrder);
             $this->assertEquals($task3->id, $kanbanItem3->task->id);
             $this->assertEquals(2, $kanbanItem3->sortOrder);
-            Yii::app()->user->setState(Task::REQUIRED_KANBAN_UPDATE, null);
         }
 
         /**
@@ -511,7 +510,6 @@
          */
         public function testProcessKanbanItemUpdateWithSourceKanbanTypeAsInProgress()
         {
-            Yii::app()->user->setState(Task::REQUIRED_KANBAN_UPDATE, false);
             $tasks          = Task::getByName('MyFirstKanbanTask');
             $task           = $tasks[0];
             $tasks          = Task::getByName('MySecondKanbanTask');
@@ -519,7 +517,7 @@
             $tasks          = Task::getByName('MyThirdKanbanTask');
             $task3          = $tasks[0];
             $kanbanItem2     = KanbanItem::getByTask($task2->id);
-
+            $task2->setScenario('kanbanViewButtonClick');
             //Check for target status waiting for acceptance(should not change sort order)
             TasksUtil::processKanbanItemUpdateOnButtonAction(Task::STATUS_AWAITING_ACCEPTANCE, $task2->id, $kanbanItem2->type);
             $kanbanItem             = KanbanItem::getByTask($task->id);
@@ -532,6 +530,7 @@
             $this->assertEquals($task3->id, $kanbanItem3->task->id);
             $this->assertEquals(2, $kanbanItem3->sortOrder);
 
+            $task2->setScenario('kanbanViewButtonClick');
             //Check for target status rejected(should not change sort order)
             TasksUtil::processKanbanItemUpdateOnButtonAction(Task::STATUS_REJECTED, $task2->id, $kanbanItem2->type);
             $kanbanItem             = KanbanItem::getByTask($task->id);
@@ -544,6 +543,7 @@
             $this->assertEquals($task3->id, $kanbanItem3->task->id);
             $this->assertEquals(2, $kanbanItem3->sortOrder);
 
+            $task2->setScenario('kanbanViewButtonClick');
             //Check for target status in progress(should not change sort order)
             TasksUtil::processKanbanItemUpdateOnButtonAction(Task::STATUS_IN_PROGRESS, $task2->id, $kanbanItem2->type);
             $kanbanItem             = KanbanItem::getByTask($task->id);
@@ -556,6 +556,7 @@
             $this->assertEquals($task3->id, $kanbanItem3->task->id);
             $this->assertEquals(2, $kanbanItem3->sortOrder);
 
+            $task2->setScenario('kanbanViewButtonClick');
             //Check for target status completed(should change sort order)
             TasksUtil::processKanbanItemUpdateOnButtonAction(Task::STATUS_COMPLETED, $task2->id, $kanbanItem2->type);
             $kanbanItem             = KanbanItem::getByTask($task->id);
@@ -568,7 +569,6 @@
             $this->assertEquals(1, $kanbanItem2->sortOrder);
             $this->assertEquals($task3->id, $kanbanItem3->task->id);
             $this->assertEquals(1, $kanbanItem3->sortOrder);
-            Yii::app()->user->setState(Task::REQUIRED_KANBAN_UPDATE, null);
         }
 
         /**

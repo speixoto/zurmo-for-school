@@ -445,8 +445,6 @@
             $getData = GetUtil::getData();
             $counter = 1;
             $response = array();
-            //Set the state for kanban update
-            Yii::app()->user->setState(Task::REQUIRED_KANBAN_UPDATE, false);
             if (count($getData['items']) > 0)
             {
                 foreach ($getData['items'] as $taskId)
@@ -462,6 +460,8 @@
                             $kanbanItem->sortOrder = TasksUtil::resolveAndGetSortOrderForTaskOnKanbanBoard($type, $task);
                             $kanbanItem->type = intval($type);
                             $kanbanItem->save();
+                            //set the scenario
+                            $task->setScenario('kanbanViewDrag');
                             $this->processStatusUpdateViaAjax($task, Task::STATUS_COMPLETED, false);
                             $response['button'] = '';
                             $response['status'] = Task::getStatusDisplayName($task->status);
@@ -503,7 +503,6 @@
                     }
                 }
             }
-            Yii::app()->user->setState(Task::REQUIRED_KANBAN_UPDATE, null);
             echo CJSON::encode($response);
         }
 
@@ -517,11 +516,10 @@
            $response = array();
            //Run update queries for update task staus and update type and sort order in kanban column
            $task = Task::getById(intval($taskId));
-           //Set the state for kanban update
-           Yii::app()->user->setState(Task::REQUIRED_KANBAN_UPDATE, false);
+           //set the scenario
+           $task->setScenario('kanbanViewButtonClick');
            $this->processStatusUpdateViaAjax($task, $targetStatus, false);
            TasksUtil::processKanbanItemUpdateOnButtonAction(intval($targetStatus), intval($taskId), intval($sourceKanbanType));
-           Yii::app()->user->setState(Task::REQUIRED_KANBAN_UPDATE, null);
            $subscriptionContent = TasksUtil::resolveAndRenderTaskCardDetailsSubscribersContent($task);
            $subscriptionContent .= TasksUtil::resolveSubscriptionLink($task, 'subscribe-task-link', 'unsubscribe-task-link');
            $response['subscriptionContent']  = $subscriptionContent;
