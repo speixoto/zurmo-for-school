@@ -92,7 +92,7 @@
         public static function getMaxCount()
         {
             $maxCount = ZurmoConfigurationUtil::getByModuleName(static::CONFIG_MODULE_NAME, static::CONFIG_KEY);
-            if (empty($maxCount))
+            if ($maxCount == null)
             {
                 $maxCount = static::$maxCount;
             }
