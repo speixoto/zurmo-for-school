@@ -35,23 +35,25 @@
      ********************************************************************************/
 
     /**
-     * Import rules for an attribute that is a role model.
+     * Sanitizer for attributes that are role models.
      */
-    class RoleAttributeImportRules extends ModelAttributeImportRules
+    class RoleValueTypeSanitizerUtil extends RelatedModelNameOrIdValueTypeSanitizerUtil
     {
-        protected static function getAllModelAttributeMappingRuleFormTypesAndElementTypes()
+        protected function init()
         {
-            return array('DefaultModelNameId' => 'ImportMappingRuleRoleModelNameId');
+            if (!isset($this->mappingRuleData["type"]))
+            {
+                $this->mappingRuleData["type"] = RelatedModelValueTypeMappingRuleForm::ZURMO_MODEL_NAME;
+            }
+            parent::init();
         }
 
-        protected static function getImportColumnOnlyModelAttributeMappingRuleFormTypesAndElementTypes()
+        protected function assertMappingRuleDataIsValid()
         {
-            return array('RelatedModelValueType' => 'ImportMappingRelatedModelValueTypeDropDown');
-        }
-
-        public static function getSanitizerUtilTypesInProcessingOrder()
-        {
-            return array('RoleValueType', 'ModelIdRequired');
+            assert('!isset($this->mappingRuleData["type"]) ||
+                    $this->mappingRuleData["type"] == RelatedModelValueTypeMappingRuleForm::ZURMO_MODEL_ID ||
+                    $this->mappingRuleData["type"] == RelatedModelValueTypeMappingRuleForm::EXTERNAL_SYSTEM_ID ||
+                    $this->mappingRuleData["type"] == RelatedModelValueTypeMappingRuleForm::ZURMO_MODEL_NAME');
         }
     }
 ?>
