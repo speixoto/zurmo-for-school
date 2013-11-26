@@ -477,7 +477,6 @@
                                                        new ZurmoActiveForm(),
                                                        $importWizardForm->importRulesType,
                                                        $mappableAttributeIndicesAndDerivedTypes);
-
             $content                                 = $mappingFormLayoutUtil->renderMappingRulesElements(
                                                        $columnName,
                                                        $attributeIndexOrDerivedType,

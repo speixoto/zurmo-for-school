@@ -27304,7 +27304,8 @@ body .overlay-view .after-form-details-content a:hover {
   padding-right: 0;
 }
 .task-activity .show-file-upload-box {
-  z-index: 9999;
+  z-index: 99999;
+  position: relative;
 }
 .right-side-details-view-panel {
   margin-top: 15px;

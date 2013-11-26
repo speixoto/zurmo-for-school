@@ -282,10 +282,11 @@
             echo $view->render();
         }
 
-        public function actionGetHtmlContent($id)
+        public function actionGetHtmlContent($id, $className)
         {
+            assert('is_string($className)');
             $modelId = (int) $id;
-            $model = EmailTemplate::getById($modelId);
+            $model = $className::getById($modelId);
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($model);
             echo $model->htmlContent;
         }

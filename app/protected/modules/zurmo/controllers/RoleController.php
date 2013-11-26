@@ -135,7 +135,7 @@
             $rolesModalTreeView = new $modalViewName(
                 $this->getId(),
                 $this->getModule()->getId(),
-                $_GET['modalTransferInformation']['sourceModelId'],
+                isset($_GET['modalTransferInformation']['sourceModelId']) ? $_GET['modalTransferInformation']['sourceModelId'] : null,
                 Role::getAll('name'),
                 $_GET['modalTransferInformation']['sourceIdFieldId'],
                 $_GET['modalTransferInformation']['sourceNameFieldId'],

@@ -35,45 +35,25 @@
      ********************************************************************************/
 
     /**
-     * Element used by filters or triggers that can morph between a single select and a multi-select.
+     * Sanitizer for attributes that are role models.
      */
-    class StaticDropDownForWizardElement extends DataFromFormStaticDropDownFormElement
+    class RoleValueTypeSanitizerUtil extends RelatedModelNameOrIdValueTypeSanitizerUtil
     {
-        protected $alwaysMultiple = false;
-
-        /**
-         * @return string
-         */
-        protected function getDataAndLabelsModelPropertyName()
+        protected function init()
         {
-            return 'getCustomFieldDataAndLabels';
+            if (!isset($this->mappingRuleData["type"]))
+            {
+                $this->mappingRuleData["type"] = RelatedModelValueTypeMappingRuleForm::ZURMO_MODEL_NAME;
+            }
+            parent::init();
         }
 
-        /**
-         * The class is set to flexible-drop-down so this can be used by the operator to signal that the select input
-         * can change to a multi-select or back.
-         * @return array
-         */
-        protected function getEditableHtmlOptions()
+        protected function assertMappingRuleDataIsValid()
         {
-            $htmlOptions                 = parent::getEditableHtmlOptions();
-            $htmlOptions['class']        = 'flexible-drop-down';
-            if ( $this->resolveOperatorRequiresMultiSelect() || $this->alwaysMultiple)
-            {
-                $htmlOptions['multiple']  = true;
-                $htmlOptions['class']    .= ' multiple ignore-style';
-            }
-            return $htmlOptions;
-        }
-
-        protected function resolveOperatorRequiresMultiSelect()
-        {
-            if (($this->model instanceof OperatorInterface  &&
-                in_array($this->model->operator, OperatorStaticDropDownElement::getValuesRequiringMultiSelect())))
-            {
-                return true;
-            }
-            return false;
+            assert('!isset($this->mappingRuleData["type"]) ||
+                    $this->mappingRuleData["type"] == RelatedModelValueTypeMappingRuleForm::ZURMO_MODEL_ID ||
+                    $this->mappingRuleData["type"] == RelatedModelValueTypeMappingRuleForm::EXTERNAL_SYSTEM_ID ||
+                    $this->mappingRuleData["type"] == RelatedModelValueTypeMappingRuleForm::ZURMO_MODEL_NAME');
         }
     }
 ?>

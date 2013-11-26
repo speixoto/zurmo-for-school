@@ -47,6 +47,9 @@
         {
             $super                             = User::getByUsername('super');
             Yii::app()->user->userModel        = $super;
+            $role = new Role();
+            $role->name = 'role';
+            $this->assertTrue($role->save());
             $import                            = new Import();
             $serializedData['importRulesType'] = 'Users';
             $import->serializedData            = serialize($serializedData);
@@ -71,6 +74,11 @@
                                       'mappingRulesData' => array(
                                           'UserStatusDefaultValueMappingRuleForm' =>
                                           array('defaultValue' => UserStatusUtil::ACTIVE))),
+                'column_5'  => array('attributeIndexOrDerivedType'          => 'role',
+                                     'type'                                 => 'importColumn',
+                                     'mappingRulesData'                     => array(
+                                          'DefaultModelNameIdMappingRuleForm'    => array('defaultModelId' => $role->id),
+                                          'RelatedModelValueTypeMappingRuleForm' => array('type' =>RelatedModelValueTypeMappingRuleForm::ZURMO_MODEL_ID)))
                 );
             $serializedData                = unserialize($import->serializedData);
             $serializedData['mappingData'] = $mappingData;
@@ -84,13 +92,16 @@
 
             //Run data analyzer
             $importDataAnalyzer = new ImportDataAnalyzer($importRules, $dataProvider, $mappingData,
-                                                         array('column_0', 'column_1', 'column_2'));
+                                                         array('column_0', 'column_1', 'column_2', 'column_5'));
             $importDataAnalyzer->analyzePage();
             $data = $dataProvider->getData();
             $this->assertEquals(10, count($data));
 
-            $this->assertNull($data[0]->serializedAnalysisMessages);
-            $this->assertEquals(ImportDataAnalyzer::STATUS_CLEAN, $data[0]->analysisStatus);
+            $compareData = array();
+            $compareData['column_5']   = array();
+            $compareData['column_5'][] = 'Was not found and this row will be skipped during import.';
+            $this->assertEquals($compareData, unserialize($data[0]->serializedAnalysisMessages));
+            $this->assertEquals(ImportDataAnalyzer::STATUS_SKIP, $data[0]->analysisStatus);
 
             $this->assertNull($data[1]->serializedAnalysisMessages);
             $this->assertEquals(ImportDataAnalyzer::STATUS_CLEAN, $data[1]->analysisStatus);
