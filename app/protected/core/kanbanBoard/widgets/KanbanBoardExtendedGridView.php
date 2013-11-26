@@ -39,6 +39,10 @@
      */
     class KanbanBoardExtendedGridView extends StackedExtendedGridView
     {
+        const CONFIG_KEY             = 'KanbanMaxCount';
+
+        const CONFIG_MODULE_NAME     = 'KanbanBoardModule';
+
         public static $maxCount = 50;
 
         /**
@@ -82,16 +86,17 @@
             return static::getMaxCount() + 1;
         }
 
+        /**
+         * @return int
+         */
         public static function getMaxCount()
         {
-            if (isset(Yii::app()->params['kanbanBoardMaxCount']))
+            $maxCount = ZurmoConfigurationUtil::getByModuleName(static::CONFIG_MODULE_NAME, static::CONFIG_KEY);
+            if (empty($maxCount))
             {
-                return Yii::app()->params['kanbanBoardMaxCount'];
+                $maxCount = static::$maxCount;
             }
-            else
-            {
-                return static::$maxCount;
-            }
+            return (int) $maxCount;
         }
 
         public function init()
