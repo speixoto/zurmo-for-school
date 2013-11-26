@@ -27,5 +27,5 @@ s.parentNode.insertBefore(ga, s);
 $fileName = basename($_SERVER['REQUEST_URI'], ".php");
 $className = 'doxygen-' . rtrim($fileName, '.php');
 ?>
-<body id = '<?php echo $className;?>'>
+<body id = '<?php echo htmlspecialchars($className, ENT_QUOTES);?>'>
 <?php echo file_get_contents( "http://zurmo.org/z-header.php" ); ?>
