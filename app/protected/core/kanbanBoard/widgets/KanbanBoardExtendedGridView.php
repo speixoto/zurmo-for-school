@@ -39,6 +39,10 @@
      */
     class KanbanBoardExtendedGridView extends StackedExtendedGridView
     {
+        const CONFIG_KEY             = 'KanbanMaxCount';
+
+        const CONFIG_MODULE_NAME     = 'ZurmoModule';
+
         public static $maxCount = 50;
 
         /**
@@ -79,7 +83,20 @@
          */
         public static function resolvePageSizeForMaxCount()
         {
-            return static::$maxCount + 1;
+            return static::getMaxCount() + 1;
+        }
+
+        /**
+         * @return int
+         */
+        public static function getMaxCount()
+        {
+            $maxCount = ZurmoConfigurationUtil::getByModuleName(static::CONFIG_MODULE_NAME, static::CONFIG_KEY);
+            if ($maxCount == null)
+            {
+                $maxCount = static::$maxCount;
+            }
+            return (int) $maxCount;
         }
 
         public function init()
@@ -99,7 +116,7 @@
             $width       = 100 / count($columnsData);
             echo "<tbody>";
             echo "<tr><td id=\"kanban-holder\" class='". $this->selectedTheme . "'>";
-            if ($this->isMaxCountCheckRequired() && $modelsCount > static::$maxCount)
+            if ($this->isMaxCountCheckRequired() && $modelsCount > static::getMaxCount())
             {
                 $this->renderOverMaxCountText();
             }

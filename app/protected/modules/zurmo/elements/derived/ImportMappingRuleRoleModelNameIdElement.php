@@ -34,46 +34,18 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Element used by filters or triggers that can morph between a single select and a multi-select.
-     */
-    class StaticDropDownForWizardElement extends DataFromFormStaticDropDownFormElement
+    class ImportMappingRuleRoleModelNameIdElement extends ImportMappingRuleDefaultModelNameIdElement
     {
-        protected $alwaysMultiple = false;
+        protected $controllerId = 'role';
 
-        /**
-         * @return string
-         */
-        protected function getDataAndLabelsModelPropertyName()
+        protected function resolveModuleId()
         {
-            return 'getCustomFieldDataAndLabels';
+            return 'zurmo';
         }
 
-        /**
-         * The class is set to flexible-drop-down so this can be used by the operator to signal that the select input
-         * can change to a multi-select or back.
-         * @return array
-         */
-        protected function getEditableHtmlOptions()
+        protected function getModalTitleForSelectingModel()
         {
-            $htmlOptions                 = parent::getEditableHtmlOptions();
-            $htmlOptions['class']        = 'flexible-drop-down';
-            if ( $this->resolveOperatorRequiresMultiSelect() || $this->alwaysMultiple)
-            {
-                $htmlOptions['multiple']  = true;
-                $htmlOptions['class']    .= ' multiple ignore-style';
-            }
-            return $htmlOptions;
-        }
-
-        protected function resolveOperatorRequiresMultiSelect()
-        {
-            if (($this->model instanceof OperatorInterface  &&
-                in_array($this->model->operator, OperatorStaticDropDownElement::getValuesRequiringMultiSelect())))
-            {
-                return true;
-            }
-            return false;
+            return Zurmo::t('ZurmoModule', 'Select a Role');
         }
     }
 ?>

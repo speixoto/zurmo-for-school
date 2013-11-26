@@ -35,45 +35,23 @@
      ********************************************************************************/
 
     /**
-     * Element used by filters or triggers that can morph between a single select and a multi-select.
+     * Import rules for an attribute that is a role model.
      */
-    class StaticDropDownForWizardElement extends DataFromFormStaticDropDownFormElement
+    class RoleAttributeImportRules extends ModelAttributeImportRules
     {
-        protected $alwaysMultiple = false;
-
-        /**
-         * @return string
-         */
-        protected function getDataAndLabelsModelPropertyName()
+        protected static function getAllModelAttributeMappingRuleFormTypesAndElementTypes()
         {
-            return 'getCustomFieldDataAndLabels';
+            return array('DefaultModelNameId' => 'ImportMappingRuleRoleModelNameId');
         }
 
-        /**
-         * The class is set to flexible-drop-down so this can be used by the operator to signal that the select input
-         * can change to a multi-select or back.
-         * @return array
-         */
-        protected function getEditableHtmlOptions()
+        protected static function getImportColumnOnlyModelAttributeMappingRuleFormTypesAndElementTypes()
         {
-            $htmlOptions                 = parent::getEditableHtmlOptions();
-            $htmlOptions['class']        = 'flexible-drop-down';
-            if ( $this->resolveOperatorRequiresMultiSelect() || $this->alwaysMultiple)
-            {
-                $htmlOptions['multiple']  = true;
-                $htmlOptions['class']    .= ' multiple ignore-style';
-            }
-            return $htmlOptions;
+            return array('RelatedModelValueType' => 'ImportMappingRelatedModelValueTypeDropDown');
         }
 
-        protected function resolveOperatorRequiresMultiSelect()
+        public static function getSanitizerUtilTypesInProcessingOrder()
         {
-            if (($this->model instanceof OperatorInterface  &&
-                in_array($this->model->operator, OperatorStaticDropDownElement::getValuesRequiringMultiSelect())))
-            {
-                return true;
-            }
-            return false;
+            return array('RoleValueType', 'ModelIdRequired');
         }
     }
 ?>

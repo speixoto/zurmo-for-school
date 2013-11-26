@@ -36,12 +36,12 @@
 
     /**
      * Base class of import rules that assist with importing data from an external system.  Extend this class to make
-     * a set of ImportRules that is for a specific module or a combiniation of modules and/or models.
+     * a set of ImportRules that is for a specific module or a combination of modules and/or models.
      */
     abstract class ImportRules
     {
         /**
-         * Array of cached data to avoid multiple calls to make the attriubte import rules data.  Indexed by the model
+         * Array of cached data to avoid multiple calls to make the attribute import rules data.  Indexed by the model
          * class name.
          * @var array
          */
