@@ -51,11 +51,7 @@
             $htmlOptions             = array_merge($htmlOptionsFromParams, $htmlOptions);
             if ($this->getDisabledValue())
             {
-                $content = $this->processIfDisabled($htmlOptions);
-                if($content != null)
-                {
-                    return $content;
-                }
+                return ZurmoHtml::textField($this->getEditableInputName(), $this->renderControlNonEditable(), $htmlOptions);
             }
             $themePath = Yii::app()->themeManager->baseUrl . '/' . Yii::app()->theme->name;
             $value     = DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay(
@@ -73,7 +69,6 @@
             ));
             $cClipWidget->endClip();
             $content = $cClipWidget->getController()->clips['EditableDateTimeElement'];
-            $this->renderScripts();
             return ZurmoHtml::tag('div', array('class' => 'has-date-select'), $content);
         }
 
@@ -112,25 +107,6 @@
         protected function resolveDatePickerOptions()
         {
             return array();
-        }
-
-        /**
-         * Process if element is to be disabled
-         * @param array $htmlOptions
-         * @return mixed null|string
-         */
-        protected function processIfDisabled($htmlOptions)
-        {
-            assert('is_array($htmlOptions)');
-            return ZurmoHtml::textField($this->getEditableInputName(), $this->renderControlNonEditable(), $htmlOptions);
-        }
-
-        /**
-         * Register scripts
-         */
-        protected function renderScripts()
-        {
-
         }
     }
 ?>

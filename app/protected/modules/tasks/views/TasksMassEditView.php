@@ -84,7 +84,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'dueDateTime', 'type' => 'TaskMassEditDateTime'),
+                                                array('attributeName' => 'dueDateTime', 'type' => 'DateTime'),
                                             ),
                                         ),
                                     )
