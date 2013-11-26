@@ -121,6 +121,10 @@
                                                 $elementInformation, $checked, $realAttributeName);
                                     $content .= $element->render();
                                     $content .= '</tr>';
+                                    if ($element instanceof DateTimeElement)
+                                    {
+                                        $this->renderDateTimeScript();
+                                    }
                                 }
                             }
                         }
@@ -228,6 +232,32 @@ END;
             {
                 return $attributeName;
             }
+        }
+
+        /**
+         * Register datetime script
+         */
+        protected function renderDateTimeScript()
+        {
+            $script = "
+                        $('#MassEdit_dueDateTime').click(function()
+                        {
+                            if (this.checked)
+                            {
+                                $('.ui-datepicker-trigger').show();
+                            }
+                            else
+                            {
+                                $('.ui-datepicker-trigger').hide();
+                            }
+                        });
+                        var isChecked = $('#MassEdit_dueDateTime').is(':checked');
+                        if(!isChecked)
+                        {
+                            $('.ui-datepicker-trigger').hide();
+                        }
+                      ";
+            Yii::app()->clientScript->registerScript('masseditduedatetime', $script);
         }
     }
 ?>
