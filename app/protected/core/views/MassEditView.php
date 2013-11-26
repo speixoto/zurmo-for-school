@@ -123,7 +123,7 @@
                                     $content .= '</tr>';
                                     if ($element instanceof DateTimeElement)
                                     {
-                                        $this->renderDateTimeScript();
+                                        $this->renderDateTimeScript($elementInformation['attributeName']);
                                     }
                                 }
                             }
@@ -237,10 +237,10 @@ END;
         /**
          * Register datetime script
          */
-        protected function renderDateTimeScript()
+        protected function renderDateTimeScript($attributeName)
         {
             $script = "
-                        $('#MassEdit_dueDateTime').click(function()
+                        $('#MassEdit_{$attributeName}').click(function()
                         {
                             if (this.checked)
                             {
@@ -251,7 +251,7 @@ END;
                                 $('.ui-datepicker-trigger').hide();
                             }
                         });
-                        var isChecked = $('#MassEdit_dueDateTime').is(':checked');
+                        var isChecked = $('#MassEdit_{$attributeName}').is(':checked');
                         if(!isChecked)
                         {
                             $('.ui-datepicker-trigger').hide();

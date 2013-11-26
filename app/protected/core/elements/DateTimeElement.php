@@ -49,10 +49,6 @@
             $htmlOptionsFromParams   = $this->getHtmlOptions();
             $htmlOptions             = $this->resolveHtmlOptions();
             $htmlOptions             = array_merge($htmlOptionsFromParams, $htmlOptions);
-            if ($this->getDisabledValue())
-            {
-                return ZurmoHtml::textField($this->getEditableInputName(), $this->renderControlNonEditable(), $htmlOptions);
-            }
             $themePath = Yii::app()->themeManager->baseUrl . '/' . Yii::app()->theme->name;
             $value     = DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay(
                             $this->model->{$this->attribute},
