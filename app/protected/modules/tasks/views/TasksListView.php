@@ -99,7 +99,6 @@
                                 $dataProvider, $selectedIds, $gridIdSuffix,
                                 $gridViewPagerParams, $listAttributesSelector, null);
             $this->uniquePageId = get_called_class();
-            $this->configurationForm = TasksUtil::getConfigurationFormWithStatusAsStickyData();
         }
 
         /**
