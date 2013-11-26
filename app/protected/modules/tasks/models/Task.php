@@ -287,6 +287,10 @@
         protected function afterSave()
         {
             $this->processNotificationsToBeSent();
+            if($this->getScenario() != 'kanbanViewButtonClick' && $this->getScenario() != 'kanbanViewDrag')
+            {
+                TasksUtil::checkKanbanTypeByStatusAndUpdateIfRequired($this);
+            }
             parent::afterSave();
         }
 

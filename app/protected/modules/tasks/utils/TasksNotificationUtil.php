@@ -87,9 +87,11 @@
         {
             assert('is_string($action)');
             $users = $rule->getUsers();
+            //This scenario would be there when there is only one subscriber. In that case users would
+            //be zero
             if (count($users) == 0)
             {
-                throw new NotSupportedException();
+                return;
             }
             $notifications = static::resolveAndGetNotifications($users, $rule->getType(), $message, $rule->allowDuplicates());
             if (static::resolveShouldSendEmailIfCritical() && $rule->isCritical())
