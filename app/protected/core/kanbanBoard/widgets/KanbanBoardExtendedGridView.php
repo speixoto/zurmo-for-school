@@ -41,7 +41,7 @@
     {
         const CONFIG_KEY             = 'KanbanMaxCount';
 
-        const CONFIG_MODULE_NAME     = 'KanbanBoardModule';
+        const CONFIG_MODULE_NAME     = 'ZurmoModule';
 
         public static $maxCount = 50;
 
