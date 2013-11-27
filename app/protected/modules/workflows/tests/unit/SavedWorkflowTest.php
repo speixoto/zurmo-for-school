@@ -78,7 +78,7 @@
             $saved                          = $savedWorkflow->save();
             $this->assertTrue($saved);
 
-            $this->assertEquals(2, count(SavedWorkflow::getAll()));
+            $this->assertEquals(2, SavedWorkflow::getCount());
             $savedWorkflows = SavedWorkflow::getActiveByModuleClassNameAndIsNewModel('WorkflowsTestModule', true);
             $this->assertEquals(1, count($savedWorkflows));
             $savedWorkflowId = $savedWorkflows[0]->id;

@@ -62,7 +62,7 @@
             $import2->serializedData            = serialize($serializedData);
             $this->assertTrue($import2->save());
             ImportTestHelper::createTempTableByFileNameAndTableName('importAnalyzerTest.csv', $import2->getTempTableName(), true);
-            $this->assertEquals(2, count(Import::getAll()));
+            $this->assertEquals(2, Import::getCount());
             $tableExists = ZurmoRedBean::$writer->doesTableExist($import->getTempTableName());
             $this->assertTrue($tableExists);
 

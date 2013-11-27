@@ -84,7 +84,7 @@
             $kanbanItem                     = KanbanItem::getById($kanbanItemId);
             $this->assertEquals(KanbanItem::TYPE_IN_PROGRESS, $kanbanItem->type);
 
-            $this->assertEquals(1, count(KanbanItem::getAll()));
+            $this->assertEquals(1, KanbanItem::getCount());
         }
 
         public function testGetKanbanItemByTask()

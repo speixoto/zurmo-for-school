@@ -72,7 +72,7 @@
         {
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
 
-            $this->assertEquals(0, count(GameNotification::getAll()));
+            $this->assertEquals(0, GameNotification::getCount());
             $this->assertEquals(0, count(GameNotification::getAllByUser($super)));
 
             $content = $this->runControllerWithNoExceptionsAndGetContent('gamification/default/leaderboard');
@@ -85,14 +85,14 @@
             $saved                      = $gameNotification->save();
             $this->assertTrue($saved);
 
-            $this->assertEquals(1, count(GameNotification::getAll()));
+            $this->assertEquals(1, GameNotification::getCount());
             $this->assertEquals(1, count(GameNotification::getAllByUser($super)));
 
             $content = $this->runControllerWithNoExceptionsAndGetContent('gamification/default/leaderboard');
             $this->assertFalse(strpos($content, 'ModalGameNotification0') === false);
             $this->assertTrue(strpos($content, 'ModalGameNotification1') === false);
 
-            $this->assertEquals(0, count(GameNotification::getAll()));
+            $this->assertEquals(0, GameNotification::getCount());
             $this->assertEquals(0, count(GameNotification::getAllByUser($super)));
             Yii::app()->clientScript->reset();
 

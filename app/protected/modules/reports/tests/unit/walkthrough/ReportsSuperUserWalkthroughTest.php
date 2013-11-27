@@ -198,8 +198,8 @@
          */
         public function testExportAction()
         {
-            $notificationsBeforeCount        = count(Notification::getAll());
-            $notificationMessagesBeforeCount = count(NotificationMessage::getAll());
+            $notificationsBeforeCount        = Notification::getCount();
+            $notificationMessagesBeforeCount = NotificationMessage::getCount();
 
             $savedReports = SavedReport::getAll();
             $this->assertEquals(2, count($savedReports));
@@ -237,8 +237,8 @@
             $this->assertEquals('reports', $exportItems[0]->exportFileName);
             $this->assertTrue($fileModel instanceOf ExportFileModel);
 
-            $this->assertEquals($notificationsBeforeCount + 1, count(Notification::getAll()));
-            $this->assertEquals($notificationMessagesBeforeCount + 1, count(NotificationMessage::getAll()));
+            $this->assertEquals($notificationsBeforeCount + 1, Notification::getCount());
+            $this->assertEquals($notificationMessagesBeforeCount + 1, NotificationMessage::getCount());
         }
 
         /**

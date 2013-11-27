@@ -1160,7 +1160,7 @@
             unset($user);
             RedBeanModel::forgetAll();
 
-            $this->assertEquals(0, count(Permission::getAll()));
+            $this->assertEquals(0, Permission::getCount());
         }
 
         public function testPermissionsPropagationViaRolesWhenChildRoleHaveNoUsers()

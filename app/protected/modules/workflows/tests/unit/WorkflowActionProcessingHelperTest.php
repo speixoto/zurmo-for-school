@@ -430,7 +430,7 @@
             $model           = new WorkflowModelTestItem();
             $model->lastName = 'lastName';
             $model->string   = 'string';
-            $this->assertEquals(1, count(WorkflowModelTestItem5::getAll()));
+            $this->assertEquals(1, WorkflowModelTestItem5::getCount());
             $helper = new WorkflowActionProcessingHelper($action, $model, Yii::app()->user->userModel);
             $helper->processNonUpdateSelfAction();
             $derivedModels = WorkflowModelTestItem5::getAll();
@@ -445,7 +445,7 @@
          */
         public function testCreateDerived()
         {
-            $this->assertEquals(0, count(WorkflowModelTestItem5::getAll()));
+            $this->assertEquals(0, WorkflowModelTestItem5::getCount());
             $action                       = new ActionForWorkflowForm('WorkflowModelTestItem', Workflow::TYPE_ON_SAVE);
             $action->type                 = ActionForWorkflowForm::TYPE_CREATE;
             $action->relation             = 'model5ViaItem';
@@ -475,7 +475,7 @@
          */
         public function testCreateRelatedHasOnesDerivedNonOwned()
         {
-            $this->assertEquals(0, count(WorkflowModelTestItem5::getAll()));
+            $this->assertEquals(0, WorkflowModelTestItem5::getCount());
             $action                         = new ActionForWorkflowForm('WorkflowModelTestItem9', Workflow::TYPE_ON_SAVE);
             $action->type                   = ActionForWorkflowForm::TYPE_CREATE_RELATED;
             $action->relation               = 'hasOne';
@@ -510,7 +510,7 @@
          */
         public function testCreateRelatedDerivedsHasOneNonOwned()
         {
-            $this->assertEquals(0, count(WorkflowModelTestItem5::getAll()));
+            $this->assertEquals(0, WorkflowModelTestItem5::getCount());
             $action                         = new ActionForWorkflowForm('WorkflowModelTestItem', Workflow::TYPE_ON_SAVE);
             $action->type                   = ActionForWorkflowForm::TYPE_CREATE_RELATED;
             $action->relation               = 'model5ViaItem';
@@ -601,7 +601,7 @@
          */
         public function testCreateRelatedHasOnesInferredNonOwned()
         {
-            $this->assertEquals(0, count(WorkflowModelTestItem5::getAll()));
+            $this->assertEquals(0, WorkflowModelTestItem5::getCount());
             $action                         = new ActionForWorkflowForm('WorkflowModelTestItem9', Workflow::TYPE_ON_SAVE);
             $action->type                   = ActionForWorkflowForm::TYPE_CREATE_RELATED;
             $action->relation               = 'hasOne2';

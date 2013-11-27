@@ -86,7 +86,7 @@
          */
         public function testGetModelsToProcess($pageSize)
         {
-            $this->assertEquals(1, count(WorkflowMessageInQueue::getAll()));
+            $this->assertEquals(1, WorkflowMessageInQueue::getCount());
             $models = WorkflowMessageInQueue::getModelsToProcess(10);
             $this->assertEquals(1, count($models));
 

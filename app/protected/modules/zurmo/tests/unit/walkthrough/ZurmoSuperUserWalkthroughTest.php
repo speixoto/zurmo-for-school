@@ -169,7 +169,7 @@
         public function testFileControllerActions()
         {
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
-            $this->assertEquals(0, count(FileModel::getAll()));
+            $this->assertEquals(0, FileModel::getCount());
             $pathToFiles = Yii::getPathOfAlias('application.modules.zurmo.tests.unit.files');
             $filePath    = $pathToFiles . DIRECTORY_SEPARATOR . 'testNote.txt';
             $contents    = file_get_contents($pathToFiles . DIRECTORY_SEPARATOR . 'testNote.txt');
@@ -206,15 +206,15 @@
             //todo: test all file errors.
 
             //Test deleting a file.
-            $this->assertEquals(1, count(FileModel::getAll()));
-            $this->assertEquals(1, count(FileContent::getAll()));
+            $this->assertEquals(1, FileModel::getCount());
+            $this->assertEquals(1, FileContent::getCount());
             $this->setGetArray(array('id' => $fileModels[0]->id));
             $this->resetPostArray();
             $this->runControllerWithNoExceptionsAndGetContent('zurmo/fileModel/delete', true);
 
             //Now confirm that there are no file models or content in the system.
-            $this->assertEquals(0, count(FileModel::getAll()));
-            $this->assertEquals(0, count(FileContent::getAll()));
+            $this->assertEquals(0, FileModel::getCount());
+            $this->assertEquals(0, FileContent::getCount());
 
             //Test GlobalSearchAutoComplete
             $this->assertTrue(ContactsModule::loadStartingData());

@@ -119,7 +119,7 @@
          */
         public function testGetModelsToProcess($pageSize)
         {
-            $this->assertEquals(1, count(ByTimeWorkflowInQueue::getAll()));
+            $this->assertEquals(1, ByTimeWorkflowInQueue::getCount());
             $models = ByTimeWorkflowInQueue::getModelsToProcess(10);
             $this->assertEquals(1, count($models));
 
