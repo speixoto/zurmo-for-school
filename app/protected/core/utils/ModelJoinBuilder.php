@@ -878,7 +878,7 @@
                     }
                     elseif ($castedDownFurtherModelClassName::getCanHaveBean())
                     {
-                        $resolvedTableJoinIdName = $castedDownModelClassName::getTableName();
+                        $resolvedTableJoinIdName = $castedDownFurtherModelClassName::getTableName();
                     }
                     else
                     {
