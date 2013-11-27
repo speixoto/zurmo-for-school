@@ -236,7 +236,7 @@ END;
         }
 
         /**
-         * Register script for date and datetiem element
+         * Register script for date and datetime element
          */
         protected function renderDateTimeScript()
         {
