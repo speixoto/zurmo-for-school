@@ -121,10 +121,6 @@
                                                 $elementInformation, $checked, $realAttributeName);
                                     $content .= $element->render();
                                     $content .= '</tr>';
-                                    if ($element instanceof DateTimeElement)
-                                    {
-                                        $this->renderDateTimeScript($elementInformation['attributeName']);
-                                    }
                                 }
                             }
                         }
@@ -133,12 +129,17 @@
             }
             $content .= '</tbody>';
             $content .= '</table>';
+            $this->renderDateTimeScript();
             return $content;
         }
 
         protected function renderActiveAttributesCheckBox($elementIds, $elementInformation, $checked, $realAttributeName)
         {
             $checkBoxHtmlOptions         = array();
+            if($elementInformation['type'] == 'DateTime' || $elementInformation['type'] == 'Date')
+            {
+                $checkBoxHtmlOptions['class'] = 'datetime';
+            }
             $checkBoxHtmlOptions['id']   = "MassEdit_" . $realAttributeName;
             $enableInputsScript          = "";
             $disableInputsScript         = "";
@@ -235,29 +236,37 @@ END;
         }
 
         /**
-         * Register datetime script
+         * Register script for date and datetiem element
          */
-        protected function renderDateTimeScript($attributeName)
+        protected function renderDateTimeScript()
         {
             $script = "
-                        $('#MassEdit_{$attributeName}').click(function()
+                        $('.datetime').click(function()
                         {
-                            if (this.checked)
+                            if ($(this).is(':checked'))
                             {
-                                $('.ui-datepicker-trigger').show();
+                                $(this).parent().parent().parent().find('.ui-datepicker-trigger').show();
                             }
                             else
                             {
-                                $('.ui-datepicker-trigger').hide();
+                                $(this).parent().parent().parent().find('.ui-datepicker-trigger').hide();
                             }
                         });
-                        var isChecked = $('#MassEdit_{$attributeName}').is(':checked');
-                        if(!isChecked)
-                        {
-                            $('.ui-datepicker-trigger').hide();
-                        }
+                        $('.datetime').each(
+                            function(index)
+                            {
+                                if ($(this).is(':checked'))
+                                {
+                                    $(this).parent().parent().parent().find('.ui-datepicker-trigger').show();
+                                }
+                                else
+                                {
+                                    $(this).parent().parent().parent().find('.ui-datepicker-trigger').hide();
+                                }
+                            }
+                        );
                       ";
-            Yii::app()->clientScript->registerScript('masseditduedatetime', $script);
+            Yii::app()->clientScript->registerScript('datetimescript', $script);
         }
     }
 ?>
