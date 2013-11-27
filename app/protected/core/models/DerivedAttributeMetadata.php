@@ -51,7 +51,7 @@
             assert('is_string($modelClassName)');
             assert('$modelClassName != ""');
             assert('get_called_class() != "DerivedAttributeMetadata"');
-            $derivedAttirbuteMetadataTableName   = static::getTableName();
+            $derivedAttirbuteMetadataTableName   = DerivedAttributeMetadata::getTableName();
             $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter(get_called_class());
             $joinTablesAdapter->addFromTableAndGetAliasName($derivedAttirbuteMetadataTableName,
                                                             "{$derivedAttirbuteMetadataTableName}_id");
@@ -136,7 +136,7 @@
             assert('$attribute == "name"');
             if ($this->$attribute != null)
             {
-                $tableName = static::getTableName();
+                $tableName = DerivedAttributeMetadata::getTableName();
                 $sql       = 'select id from ' . $tableName . " where name = '{$this->$attribute}' and ";
                 $sql      .= "modelclassname = '" . $this->modelClassName . "'";
                 $rows      = ZurmoRedBean::getAll($sql);
