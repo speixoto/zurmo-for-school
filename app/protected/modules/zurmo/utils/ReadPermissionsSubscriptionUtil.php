@@ -138,16 +138,13 @@
                 {
                     foreach ($modelClassNames as $modelClassName)
                     {
+                        $onlyOwnedModels = false;
                         if ($modelClassName != 'Account')
                         {
-                            static::updateReadSubscriptionTableByModelClassNameAndUser($modelClassName,
-                                Yii::app()->user->userModel, $partialBuild, true);
+                            $onlyOwnedModels = true;
                         }
-                        else
-                        {
-                            static::updateReadSubscriptionTableByModelClassNameAndUser($modelClassName,
-                                Yii::app()->user->userModel, $partialBuild, false);
-                        }
+                        static::updateReadSubscriptionTableByModelClassNameAndUser($modelClassName,
+                                                Yii::app()->user->userModel, $partialBuild, $onlyOwnedModels);
                     }
                 }
             }
