@@ -765,7 +765,7 @@
             unset($user);
             unset($group);
             RedBeanModel::forgetAll();
-            Permission::removeAll();
+            Permission::deleteAll();
         }
 
         // The key to understanding the following tests is noting who
@@ -921,7 +921,7 @@
                 unset($buddy);
                 unset($pleb);
                 RedBeanModel::forgetAll();
-                Permission::removeAll();
+                Permission::deleteAll();
             }
             catch (AccessDeniedSecurityException $e)
             {
@@ -1007,7 +1007,7 @@
             unset($everyone);
             RedBeanModel::forgetAll();
 
-            Permission::removeAll();
+            Permission::deleteAll();
 
             $account1 = Account::getById($account1Id);
             $account2 = Account::getById($account2Id);
@@ -1107,7 +1107,7 @@
             $this->assertEquals(Permission::READ_WRITE, $account->getEffectivePermissions($userInParentRole));
             $this->assertEquals(Permission::WRITE,      $account->getEffectivePermissions($userInChildChildRole));
 
-            Permission::removeAll();
+            Permission::deleteAll();
             $accountId = $account->id;
             RedBeanModel::forgetAll();
             unset($account);
@@ -1178,7 +1178,7 @@
             $userInChildChildRole = $childChildRole->users[0];
             $this->assertEquals(0, count($childRole->users));
 
-            Permission::removeAll();
+            Permission::deleteAll();
 
             $accounts = Account::getAll();
             $account  = $accounts[0];
