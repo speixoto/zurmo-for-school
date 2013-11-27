@@ -72,7 +72,7 @@
         public static function getAllByModelClassName($modelClassName)
         {
             assert('$modelClassName != ""');
-            $derivedAttirbuteMetadataTableName   = static::getTableName();
+            $derivedAttirbuteMetadataTableName   = DerivedAttributeMetadata::getTableName();
             $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter(get_called_class());
             $joinTablesAdapter->addFromTableAndGetAliasName($derivedAttirbuteMetadataTableName,
                                                             "{$derivedAttirbuteMetadataTableName}_id");
