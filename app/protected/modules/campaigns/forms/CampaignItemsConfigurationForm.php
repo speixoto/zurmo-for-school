@@ -66,5 +66,14 @@
                 array('filteredByStage', 'type', 'type' => 'string')
             );
         }
+        
+        public static function getFilterStages()
+        {
+            return array(
+                self::OPENED_STAGE  => Zurmo::t('CampaignsModule', self::OPENED_STAGE),
+                self::CLICKED_STAGE => Zurmo::t('CampaignsModule', self::CLICKED_STAGE),
+                self::BOUNCED_STAGE => Zurmo::t('CampaignsModule', self::BOUNCED_STAGE),
+            );
+        }
     }
 ?>

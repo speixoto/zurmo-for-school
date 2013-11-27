@@ -63,9 +63,6 @@
         {
             $metadata = parent::getDefaultMetadata();
             $metadata[__CLASS__] = array(
-                'customFields' => array(
-                    'stage'    => 'CampaignItemStages',
-                ),
                 'members' => array(
                     'processed',
                 ),

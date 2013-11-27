@@ -96,11 +96,8 @@
          */
         protected function getStageDropDownArray()
         {
-            $customFieldData            = CustomFieldData::getByName('CampaignItemStages');
-            $customFieldIndexedData     = CustomFieldDataUtil::getDataIndexedByDataAndTranslatedLabelsByLanguage($customFieldData,
-                                                                                                                    Yii::app()->language);
-            
-            foreach($customFieldIndexedData as $key=>$customFieldData)
+            $filterStages = CampaignItemsConfigurationForm::getFilterStages();
+            foreach($filterStages as $key=>$stageString)
             {
                 switch($key)
                 {
@@ -115,10 +112,10 @@
                         break;
                 }
                 $count = CampaignItem::getByTypeAndCampaignId($type, (int) $this->params['relationModel']->id, null, true);
-                $customFieldIndexedData[$key] = $customFieldData . " ({$count})";
+                $filterStages[$key] = $stageString . " ({$count})";
             }
-            $data                       = array_merge(array(CampaignItemsConfigurationForm::FILTERED_BY_ALL_STAGES
-                                                                            => Zurmo::t('Core', 'All')), $customFieldIndexedData);
+            $data = array_merge(array(CampaignItemsConfigurationForm::FILTERED_BY_ALL_STAGES
+                                                                    => Zurmo::t('Core', 'All')), $filterStages);
             return $data;
         }
     }
