@@ -803,7 +803,7 @@
                         }
                         elseif ($onTableAliasName == null && $castedDownFurtherModelClassName::getCanHaveBean())
                         {
-                            $onTableAliasName = $castedDownModelClassName::getTableName();
+                            $onTableAliasName = $castedDownFurtherModelClassName::getTableName();
                         }
                         elseif ($onTableAliasName == null)
                         {
