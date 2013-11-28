@@ -325,19 +325,37 @@
             $this->export('AccountsSearchView');
         }
 
+        /**
+         * Modal create for account
+         */
         public function actionModalCreate()
         {
-//            $modalCreateLinkProvider = new SelectFromRelatedEditModalListLinkProvider(
-//                                            $_GET['modalTransferInformation']['sourceIdFieldId'],
-//                                            $_GET['modalTransferInformation']['sourceNameFieldId'],
-//                                            $_GET['modalTransferInformation']['modalId']
-//            );
-//
-//            Yii::app()->getClientScript()->setToAjaxMode();
-//            assert('$modalCreateLinkProvider instanceof ModalListLinkProvider');
-            echo ModalEditAndDetailsControllerUtil::setAjaxModeAndRenderModalEditView($this,
+            $account = new Account();
+            $this->attemptToValidateAndSaveFromModalCreate($account);
+            echo ModalEditAndDetailsControllerUtil::setAjaxModeAndRenderModalEditAndDetailsView($this,
                                                                                       'AccountModalCreateView',
-                                                                                      new Account());
+                                                                                      $account, 'Edit');
+        }
+
+        /**
+         * Validates and save from modal create
+         * @param Account $account
+         */
+        protected function attemptToValidateAndSaveFromModalCreate(Account $account)
+        {
+            if (isset($_POST['ajax']) && $_POST['ajax'] == 'edit-form')
+            {
+                $account = $this->attemptToSaveModelFromPost($account, null, false);
+                if($account->id > 0)
+                {
+                    echo CJSON::encode(array('id' => $account->id, 'name' => $account->name));
+                }
+                else
+                {
+                    echo CJSON::encode(ZurmoActiveForm::makeErrorsDataAndResolveForOwnedModelAttributes($account));
+                }
+                Yii::app()->end(0, false);
+            }
         }
     }
 ?>

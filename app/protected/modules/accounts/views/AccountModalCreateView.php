@@ -36,135 +36,24 @@
     /**
      * Modal window for creating account
      */
-    class AccountModalCreateView extends SecuredEditView
+    class AccountModalCreateView extends AccountEditAndDetailsView
     {
         /**
          * @return array
          */
         public static function getDefaultMetadata()
         {
-            $metadata = array(
-                'global' => array(
-                    'toolbar' => array(
-                        'elements' => array(
+            $getData           = GetUtil::getData();
+            $sourceIdFieldId   = $getData['modalTransferInformation']['sourceIdFieldId'];
+            $sourceNameFieldId = $getData['modalTransferInformation']['sourceNameFieldId'];
+            $modalId           = $getData['modalTransferInformation']['modalId'];
+            $metadata          = parent::getDefaultMetadata();
+            $metadata['global']['toolbar']['elements'] = array(
                             array('type'        => 'SaveButton'),
                             array('type'        => 'ModalCancelLink',
                                   'htmlOptions' => 'eval:static::resolveHtmlOptionsForCancel()'
                             )
-                        ),
-                    ),
-                    'nonPlaceableAttributeNames' => array(
-                        'account',
-                        'owner',
-                    ),
-                    'panelsDisplayType' => FormLayout::PANELS_DISPLAY_TYPE_ALL,
-                    'panels' => array(
-                        array(
-                            'rows' => array(
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'name', 'type' => 'Text'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'officePhone', 'type' => 'Phone'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'industry', 'type' => 'DropDown', 'addBlank' => true),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'officeFax', 'type' => 'Phone'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'employees', 'type' => 'Integer'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'annualRevenue', 'type' => 'Decimal'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'type', 'type' => 'DropDown', 'addBlank' => true),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'website', 'type' => 'Url'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'billingAddress', 'type' => 'Address'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'shippingAddress', 'type' => 'Address'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'description', 'type' => 'TextArea'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                            ),
-                        ),
-                    ),
-                ),
-            );
+                        );
             return $metadata;
         }
 
@@ -173,8 +62,7 @@
           */
          protected function getNewModelTitleLabel()
          {
-             return Zurmo::t('AccountsModule', 'Create AccountsModuleSingularLabel',
-                                     LabelUtil::getTranslationParamsForAllModules());
+             return null;
          }
 
         /**
@@ -187,30 +75,34 @@
             );
         }
 
-        protected function resolveModalIdFromGet()
-        {
-            $modalId             = Yii::app()->request->getParam('modalId');
-            if ($modalId == null)
-            {
-                $modalId = TasksUtil::getModalContainerId();
-            }
-            return $modalId;
-        }
-
         /**
          * Resolves ajax validation option for save button
          * @return array
          */
         protected function resolveActiveFormAjaxValidationOptions()
         {
-            $url              = Yii::app()->createUrl('accounts/default/modalSave', GetUtil::getData());
+            $url               = Yii::app()->createUrl('accounts/default/modalCreate', GetUtil::getData());
+            $getData           = GetUtil::getData();
+            $sourceIdFieldId   = $getData['modalTransferInformation']['sourceIdFieldId'];
+            $sourceNameFieldId = $getData['modalTransferInformation']['sourceNameFieldId'];
+            $modalId           = $getData['modalTransferInformation']['modalId'];
             // Begin Not Coding Standard
             return array('enableAjaxValidation' => true,
                         'clientOptions' => array(
                             'beforeValidate'    => 'js:$(this).beforeValidateAction',
                             'afterValidate'     => 'js:function(form, data, hasError){
+                                if(hasError)
+                                {
                                     form.find(".attachLoading:first").removeClass("loading");
                                     form.find(".attachLoading:first").removeClass("loading-ajax-submit");
+                                }
+                                else
+                                {
+                                    $("#" + "' . $sourceIdFieldId . '").val(data.id).trigger("change");
+                                    $("#" + "' . $sourceNameFieldId . '").val(data.name).trigger("change");
+                                    $("#" + "' . $modalId . '").dialog("close");
+                                }
+                                return false;
                             }',
                             'validateOnSubmit'  => true,
                             'validateOnChange'  => false,
@@ -220,32 +112,10 @@
             // End Not Coding Standard
         }
 
-        protected function renderConfigSaveAjax($formId, $url, $sourceKanbanBoardId, $modalId, $sourceId)
-        {
-            // Begin Not Coding Standard
-            if ($sourceId == null)
-            {
-                $kanbanRefreshScript = TasksUtil::resolveExtraCloseScriptForModalAjaxOptions($sourceKanbanBoardId);
-            }
-            else
-            {
-                $kanbanRefreshScript = TasksUtil::resolveExtraCloseScriptForModalAjaxOptions($sourceId);
-            }
-            $title   = TasksUtil::getModalDetailsTitle();
-            // Begin Not Coding Standard
-            $options = array(
-                'type' => 'POST',
-                'data' => 'js:$("#' . $formId . '").serialize()',
-                'url'  =>  $url,
-                'update' => '#' . $modalId,
-                'complete' => "function(XMLHttpRequest, textStatus){
-                                    $('#" . $modalId .  "').dialog('option', 'title', '" . $title . "');
-                                    " . $kanbanRefreshScript . "}"
-            );
-            // End Not Coding Standard
-            return ZurmoHtml::ajax($options);
-        }
-
+        /**
+         * Get designer rules type
+         * @return string
+         */
         public static function getDesignerRulesType()
         {
             return 'AccountModalCreateView';
