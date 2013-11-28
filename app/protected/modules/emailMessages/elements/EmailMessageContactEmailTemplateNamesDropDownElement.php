@@ -36,6 +36,19 @@
 
 class EmailMessageContactEmailTemplateNamesDropDownElement extends  ContactEmailTemplateNamesDropDownElement
 {
+    /**
+     * Override so it only render if to recipient is a Contact
+     * @return string
+     */
+    protected function renderControlEditable()
+    {
+        if ($this->shouldUseTemplate())
+        {
+            return parent::renderControlEditable();
+        }
+        return null;
+    }
+
     protected function getModuleId()
     {
         return 'CreateEmailMessageForm';
@@ -47,6 +60,30 @@ class EmailMessageContactEmailTemplateNamesDropDownElement extends  ContactEmail
         $htmlContentId .= '_';
         $htmlContentId .= EmailTemplateHtmlAndTextContentElement::HTML_CONTENT_INPUT_NAME;
         return $htmlContentId;
+    }
+
+    protected function getContactId()
+    {
+        if ($this->shouldUseTemplate())
+        {
+            $relatedId = Yii::app()->request->getQuery('relatedId');
+            return $relatedId;
+        }
+        return parent::getContactId();
+    }
+
+    /**
+     * If the emailMessage content can be populated from an emailTemplate
+     * @return bool
+     */
+    protected function shouldUseTemplate()
+    {
+        $relatedModelClassName = Yii::app()->request->getQuery('relatedModelClassName');
+        if ($relatedModelClassName == 'Contact')
+        {
+            return true;
+        }
+        return false;
     }
 }
 ?>

@@ -159,6 +159,7 @@
                                 var subjectElement      = $("#" + subjectId);
                                 var textContentElement  = $("#" + textContentId);
                                 var htmlContentElement  = $("#" + htmlContentId);
+                                var contactId           = ' . $this->getContactId() . ';
                                 var redActorElement     = $("#" + htmlContentId).parent().find(".redactor_editor");
                                 $.ajax(
                                     {
@@ -168,7 +169,8 @@
                                         {
                                             id: selectedOptionValue,
                                             renderJson: true,
-                                            includeFilesInJson: true
+                                            includeFilesInJson: true,
+                                            contactId: contactId
                                         },
                                         beforeSend: function(request, settings)
                                                     {
@@ -317,6 +319,11 @@
         protected function getCloneExitingFilesUrl()
         {
             return Yii::app()->createUrl('/zurmo/fileModel/cloneExistingFiles');
+        }
+
+        protected function getContactId()
+        {
+            return 'null';
         }
     }
 ?>

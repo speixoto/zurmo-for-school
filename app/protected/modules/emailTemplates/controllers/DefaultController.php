@@ -203,9 +203,14 @@
             if ($renderJson)
             {
                 header('Content-type: application/json');
-                if ($contactId !== null)
+                if ($contactId != null)
                 {
-                    AutoresponderAndCampaignItemsUtil::resolveContentForMergeTags($emailTemplate->textContent, $emailTemplate->htmlContent, $contactId);
+                    $contact     = Contact::getById($contactId);
+                    $textContent = $emailTemplate->textContent;
+                    $htmlContent = $emailTemplate->htmlContent;
+                    AutoresponderAndCampaignItemsUtil::resolveContentForMergeTags($textContent, $htmlContent, $contact);
+                    $emailTemplate->textContent = $textContent;
+                    $emailTemplate->htmlContent = $htmlContent;
                 }
                 $emailTemplate = $this->resolveEmailTemplateAsJson($emailTemplate, $includeFilesInJson);
                 echo $emailTemplate;
