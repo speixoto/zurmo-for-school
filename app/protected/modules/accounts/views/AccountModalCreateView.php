@@ -43,10 +43,6 @@
          */
         public static function getDefaultMetadata()
         {
-            $getData           = GetUtil::getData();
-            $sourceIdFieldId   = $getData['modalTransferInformation']['sourceIdFieldId'];
-            $sourceNameFieldId = $getData['modalTransferInformation']['sourceNameFieldId'];
-            $modalId           = $getData['modalTransferInformation']['modalId'];
             $metadata          = parent::getDefaultMetadata();
             $metadata['global']['toolbar']['elements'] = array(
                             array('type'        => 'SaveButton'),
