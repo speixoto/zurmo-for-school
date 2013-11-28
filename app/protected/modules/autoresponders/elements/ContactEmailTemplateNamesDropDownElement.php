@@ -36,7 +36,7 @@
 
     abstract class ContactEmailTemplateNamesDropDownElement extends StaticDropDownFormElement
     {
-        const DISABLE_DROPDOWN_WHEN_AJAX_IN_PROGRESS    = true;
+        const DISABLE_DROPDOWN_WHEN_AJAX_IN_PROGRESS   = true;
 
         const DISABLE_TEXTBOX_WHEN_AJAX_IN_PROGRESS    = true;
 

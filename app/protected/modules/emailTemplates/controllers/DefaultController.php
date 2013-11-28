@@ -196,14 +196,19 @@
             echo $view->render();
         }
 
-        public function actionDetails($id, $renderJson = false, $includeFilesInJson = false)
+        public function actionDetails($id, $renderJson = false, $includeFilesInJson = false, $contactId = null)
         {
             $emailTemplate = static::getModelAndCatchNotFoundAndDisplayError('EmailTemplate', intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($emailTemplate);
             if ($renderJson)
             {
                 header('Content-type: application/json');
-                echo $this->resolveEmailTemplateAsJson($emailTemplate, $includeFilesInJson);
+                if ($contactId !== null)
+                {
+                    AutoresponderAndCampaignItemsUtil::resolveContentForMergeTags($emailTemplate->textContent, $emailTemplate->htmlContent, $contactId);
+                }
+                $emailTemplate = $this->resolveEmailTemplateAsJson($emailTemplate, $includeFilesInJson);
+                echo $emailTemplate;
                 Yii::app()->end(0, false);
             }
             AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED, array(strval($emailTemplate),
