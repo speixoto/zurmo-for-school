@@ -417,6 +417,33 @@
         /**
          * @depends testSuperUserDetailsJsonActionForWorkflow
          */
+        public function testSuperUserDetailsJsonActionForCreateEmailMessage()
+        {
+            $contact         = ContactTestHelper::createContactByNameForOwner('test', $this->super);
+            $emailTemplateId = self::getModelIdByModelNameAndName ('EmailTemplate', 'New Test Workflow Email Template 00');
+            $emailTemplate   = EmailTemplate::getById($emailTemplateId);
+            $unsubscribePlaceholder         = UnsubscribeAndManageSubscriptionsPlaceholderUtil::
+                                                    UNSUBSCRIBE_URL_PLACEHOLDER;
+            $manageSubscriptionsPlaceholder = UnsubscribeAndManageSubscriptionsPlaceholderUtil::
+                                                    MANAGE_SUBSCRIPTIONS_URL_PLACEHOLDER;
+            $emailTemplate->textContent = "Test text content with contact tag: [[FIRST^NAME]] {$unsubscribePlaceholder}";
+            $emailTemplate->htmlContent = "Test html content with contact tag: [[FIRST^NAME]] {$manageSubscriptionsPlaceholder}";
+            $this->assertTrue($emailTemplate->save());
+            $this->setGetArray(array('id'                 => $emailTemplateId,
+                                     'renderJson'         => true,
+                                     'includeFilesInJson' => false,
+                                     'contactId'          => $contact->id));
+            // @ to avoid headers already sent error.
+            $content = @$this->runControllerWithExitExceptionAndGetContent('emailTemplates/default/details');
+            $emailTemplateDetailsResolvedArray = CJSON::decode($content);
+            $this->assertNotEmpty($emailTemplateDetailsResolvedArray);
+            $this->assertEquals('Test text content with contact tag: test ', $emailTemplateDetailsResolvedArray['textContent']);
+            $this->assertEquals('Test html content with contact tag: test ', $emailTemplateDetailsResolvedArray['htmlContent']);
+        }
+
+        /**
+         * @depends testSuperUserDetailsJsonActionForCreateEmailMessage
+         */
         public function testSuperUserDetailsActionForWorkflow()
         {
             $emailTemplateId = self::getModelIdByModelNameAndName ('EmailTemplate', 'New Test Workflow Email Template 00');

@@ -94,6 +94,16 @@
                                     array(
                                         array(
                                             'elements' => array(
+                                                array('attributeName' => 'null',
+                                                      'type' => 'EmailMessageContactEmailTemplateNamesDropDown')
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
                                                 array('attributeName' => 'content', 'type' => 'EmailMessageContent'),
                                             ),
                                         ),
