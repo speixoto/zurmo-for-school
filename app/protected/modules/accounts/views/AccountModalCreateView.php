@@ -119,17 +119,17 @@
          */
         protected function saveAccountViaAjax()
         {
-            $formId = static::getFormId();
             $getData           = GetUtil::getData();
             $sourceIdFieldId   = $getData['modalTransferInformation']['sourceIdFieldId'];
             $sourceNameFieldId = $getData['modalTransferInformation']['sourceNameFieldId'];
             $modalId           = $getData['modalTransferInformation']['modalId'];
+            $formId            = static::getFormId();
             $url               = Yii::app()->createUrl('accounts/default/modalCreate', GetUtil::getData());
             $options = array(
                                 'type'     => 'post',
                                 'dataType' => 'json',
                                 'url'      => $url,
-                                'data'     => 'js:$("#' . static::getFormId() . '").serialize()',
+                                'data'     => 'js:$("#' . $formId . '").serialize()',
                                 'success'  => "function(data){
                                                 console.log('i am here' + data);
                                                 $('#{$sourceIdFieldId}').val(data.id).trigger('change');
@@ -138,6 +138,17 @@
                                               }"
                             );
             return ZurmoHtml::ajax($options);
+        }
+
+        /**
+         * Gets form id
+         * @return string
+         */
+        protected static function getFormId()
+        {
+            $getData           = GetUtil::getData();
+            $sourceNameFieldId = $getData['modalTransferInformation']['sourceNameFieldId'];
+            return $sourceNameFieldId . '-' . parent::getFormId();
         }
     }
 ?>

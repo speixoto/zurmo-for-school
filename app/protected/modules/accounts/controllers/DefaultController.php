@@ -356,7 +356,7 @@
         public function actionModalValidate()
         {
             $account = new Account();
-            if (isset($_POST['ajax']) && $_POST['ajax'] == 'edit-form')
+            if (isset($_POST['ajax']) && Yii::app()->request->isAjaxRequest)
             {
                 $account = $this->attemptToSaveModelFromPost($account, null, false, true);
                 echo CJSON::encode(ZurmoActiveForm::makeErrorsDataAndResolveForOwnedModelAttributes($account));
