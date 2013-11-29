@@ -103,8 +103,10 @@
 
                         function deleteExistingAttachments()
                         {
-                            $("table.files tr.template-download td.name span.upload-actions.delete button.icon-delete")
+                            $("table.files tr.template-download td.name span.upload-actions.delete button.icon-delete:first")
                                 .click();
+                            $("table.files tr.template-download")
+                                .remove();
                         }
 
                         function updateAddFilesWithDataFromAjax(filesIds, notificationBarId)
@@ -196,6 +198,7 @@
                                                                                         htmlContentElement,
                                                                                         subjectElement,
                                                                                         data);
+                                                        subjectElement.focus();
                                                         updateAddFilesWithDataFromAjax(data.filesIds, notificationBarId);
                                                     },
                                         error:      function(request, status, error)

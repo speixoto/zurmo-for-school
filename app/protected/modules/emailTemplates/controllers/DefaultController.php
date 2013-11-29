@@ -198,6 +198,7 @@
 
         public function actionDetails($id, $renderJson = false, $includeFilesInJson = false, $contactId = null)
         {
+            $contactId     = (int) $contactId;
             $emailTemplate = static::getModelAndCatchNotFoundAndDisplayError('EmailTemplate', intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($emailTemplate);
             if ($renderJson)
@@ -209,6 +210,14 @@
                     $textContent = $emailTemplate->textContent;
                     $htmlContent = $emailTemplate->htmlContent;
                     AutoresponderAndCampaignItemsUtil::resolveContentForMergeTags($textContent, $htmlContent, $contact);
+                    $unsubscribePlaceholder         = UnsubscribeAndManageSubscriptionsPlaceholderUtil::
+                                                            UNSUBSCRIBE_URL_PLACEHOLDER;
+                    $manageSubscriptionsPlaceholder = UnsubscribeAndManageSubscriptionsPlaceholderUtil::
+                                                            MANAGE_SUBSCRIPTIONS_URL_PLACEHOLDER;
+                    $textContent = str_replace(array($unsubscribePlaceholder, $manageSubscriptionsPlaceholder),
+                                               null, $textContent);
+                    $htmlContent = str_replace(array($unsubscribePlaceholder, $manageSubscriptionsPlaceholder),
+                                               null, $htmlContent);
                     $emailTemplate->textContent = $textContent;
                     $emailTemplate->htmlContent = $htmlContent;
                 }
