@@ -77,11 +77,7 @@
          */
         protected function resolveActiveFormAjaxValidationOptions()
         {
-            $url               = Yii::app()->createUrl('accounts/default/modalCreate', GetUtil::getData());
-            $getData           = GetUtil::getData();
-            $sourceIdFieldId   = $getData['modalTransferInformation']['sourceIdFieldId'];
-            $sourceNameFieldId = $getData['modalTransferInformation']['sourceNameFieldId'];
-            $modalId           = $getData['modalTransferInformation']['modalId'];
+            $url               = Yii::app()->createUrl('accounts/default/modalValidate', GetUtil::getData());
             // Begin Not Coding Standard
             return array('enableAjaxValidation' => true,
                         'clientOptions' => array(
@@ -94,14 +90,14 @@
                                 }
                                 else
                                 {
-                                    $("#" + "' . $sourceIdFieldId . '").val(data.id).trigger("change");
-                                    $("#" + "' . $sourceNameFieldId . '").val(data.name).trigger("change");
-                                    $("#" + "' . $modalId . '").dialog("close");
+                                    console.log("no error");
+                                ' . $this->saveAccountViaAjax() . '
                                 }
                                 return false;
                             }',
                             'validateOnSubmit'  => true,
                             'validateOnChange'  => false,
+                            'validationUrl'     => $url,
                             'inputContainer'    => 'td'
                         )
             );
@@ -115,6 +111,33 @@
         public static function getDesignerRulesType()
         {
             return 'AccountModalCreateView';
+        }
+
+        /**
+         * Save account via ajax
+         * @return string ajax response
+         */
+        protected function saveAccountViaAjax()
+        {
+            $formId = static::getFormId();
+            $getData           = GetUtil::getData();
+            $sourceIdFieldId   = $getData['modalTransferInformation']['sourceIdFieldId'];
+            $sourceNameFieldId = $getData['modalTransferInformation']['sourceNameFieldId'];
+            $modalId           = $getData['modalTransferInformation']['modalId'];
+            $url               = Yii::app()->createUrl('accounts/default/modalCreate', GetUtil::getData());
+            $options = array(
+                                'type'     => 'post',
+                                'dataType' => 'json',
+                                'url'      => $url,
+                                'data'     => 'js:$("#' . static::getFormId() . '").serialize()',
+                                'success'  => "function(data){
+                                                console.log('i am here' + data);
+                                                $('#{$sourceIdFieldId}').val(data.id).trigger('change');
+                                                $('#{$sourceNameFieldId}').val(data.name).trigger('change');
+                                                $('#{$modalId}').dialog('close');
+                                              }"
+                            );
+            return ZurmoHtml::ajax($options);
         }
     }
 ?>

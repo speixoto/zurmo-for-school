@@ -331,29 +331,35 @@
         public function actionModalCreate()
         {
             $account = new Account();
-            $this->attemptToValidateAndSaveFromModalCreate($account);
+            if (isset($_POST['Account']) && Yii::app()->request->isAjaxRequest)
+            {
+                $account = $this->attemptToSaveModelFromPost($account, null, false);
+                if($account->id > 0)
+                {
+                    echo CJSON::encode(array('id' => $account->id, 'name' => $account->name));
+                    Yii::app()->end(0, false);
+                }
+                else
+                {
+                    throw new FailedToSaveModelException();
+                }
+
+            }
             echo ModalEditAndDetailsControllerUtil::setAjaxModeAndRenderModalEditAndDetailsView($this,
                                                                                       'AccountModalCreateView',
                                                                                       $account, 'Edit');
         }
 
         /**
-         * Validates and save from modal create
-         * @param Account $account
+         * Modal validate for account
          */
-        protected function attemptToValidateAndSaveFromModalCreate(Account $account)
+        public function actionModalValidate()
         {
+            $account = new Account();
             if (isset($_POST['ajax']) && $_POST['ajax'] == 'edit-form')
             {
-                $account = $this->attemptToSaveModelFromPost($account, null, false);
-                if($account->id > 0)
-                {
-                    echo CJSON::encode(array('id' => $account->id, 'name' => $account->name));
-                }
-                else
-                {
-                    echo CJSON::encode(ZurmoActiveForm::makeErrorsDataAndResolveForOwnedModelAttributes($account));
-                }
+                $account = $this->attemptToSaveModelFromPost($account, null, false, true);
+                echo CJSON::encode(ZurmoActiveForm::makeErrorsDataAndResolveForOwnedModelAttributes($account));
                 Yii::app()->end(0, false);
             }
         }
