@@ -35,19 +35,25 @@
      ********************************************************************************/
 
     /**
-     * Import rules for any attributes that are type Email.
+     * This form is used for dedupe for email attribute
      */
-    class EmailAttributeImportRules extends NonDerivedAttributeImportRules
+    class EmailModelAttributeDedupeMappingRuleForm extends ModelAttributeMappingRuleForm
     {
-        protected static function getAllModelAttributeMappingRuleFormTypesAndElementTypes()
+        public $dedupeRule = 1;
+
+        public function attributeLabels()
         {
-            return array('DefaultValueModelAttribute' => 'Text',
-                         'EmailModelAttributeDedupe' => 'ImportDedupeRulesRadioDropDown');
+            return array('dedupeRule'   => Zurmo::t('ZurmoModule', 'Dedupe Rule'));
         }
 
-        public static function getSanitizerUtilTypesInProcessingOrder()
+        public static function getAttributeName()
         {
-            return array('Email', 'Required');
+            return 'dedupeRule';
+        }
+
+        public function attributeNames()
+        {
+            return array('dedupeRule');
         }
     }
 ?>
