@@ -110,6 +110,7 @@
             ),
             'format' => array(
                 'class' => 'application.core.components.Formatter',
+                'htmlPurifierOptions' => array('Cache.SerializerPermissions' => 0777),
             ),
             'imap' => array(
                 'class'       => 'application.modules.emailMessages.components.ZurmoImap',
