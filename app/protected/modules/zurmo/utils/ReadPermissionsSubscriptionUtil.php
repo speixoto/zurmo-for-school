@@ -113,7 +113,7 @@
         protected static function getModelTableName($modelClassName)
         {
             assert('is_string($modelClassName) && $modelClassName != ""');
-            return RedBeanModel::getTableName($modelClassName);
+            return $modelClassName::getTableName();
         }
 
         public static function getSubscriptionTableName($modelClassName)
@@ -316,7 +316,7 @@
         {
             assert('$user instanceof User');
             $tableName = self::getSubscriptionTableName($modelClassName);
-            $modelTableName = RedBeanModel::getTableName($modelClassName);
+            $modelTableName = $modelClassName::getTableName();
             $dateTime = DateTimeUtil::convertTimestampToDbFormatDateTime($lastUpdateTimestamp);
             $sql = "SELECT {$tableName}.modelid, {$modelTableName}.name FROM $tableName" .
                 " left join " . ModelCreationApiSyncUtil::TABLE_NAME . " isct " .
