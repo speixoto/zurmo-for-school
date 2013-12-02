@@ -327,6 +327,17 @@
             $this->setPostArray($postData);
             $content = $this->runControllerWithNoExceptionsAndGetContent('reports/default/drillDownDetails');
             $this->assertTrue(strpos($content, '<th id="report-results-grid-view2_c2">Currency Value</th>') !== false);
+            $this->assertContains('No results found', $content);
+
+            //Check drillDown works with runtime filters
+            $this->setPostArray(array('SummationReportWizardForm' => array('Filters' => array(
+                array('attributeIndexOrDerivedType' => 'string',
+                    'operator'                    => OperatorRules::TYPE_EQUALS,
+                    'value'                       => 'string1')))));
+            $this->runControllerWithNoExceptionsAndGetContent('reports/default/applyRuntimeFilters', true);
+            $content = $this->runControllerWithNoExceptionsAndGetContent('reports/default/drillDownDetails');
+            $this->assertTrue(strpos($content, '<th id="report-results-grid-view2_c2">Currency Value</th>') !== false);
+            $this->assertContains('1 result(s)', $content);
         }
 
         /**

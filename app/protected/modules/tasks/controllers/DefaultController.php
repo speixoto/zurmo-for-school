@@ -493,6 +493,8 @@
                             $kanbanItem->sortOrder = TasksUtil::resolveAndGetSortOrderForTaskOnKanbanBoard($type, $task);
                             $kanbanItem->type = intval($type);
                             $kanbanItem->save();
+                            //set the scenario
+                            $task->setScenario('kanbanViewDrag');
                             $this->processStatusUpdateViaAjax($task, Task::STATUS_COMPLETED, false);
                             $response['button'] = '';
                             $response['status'] = Task::getStatusDisplayName($task->status);
@@ -537,7 +539,7 @@
             echo CJSON::encode($response);
         }
 
-        /**
+       /**
         * Update task status in kanban view
         * @param int $targetStatus
         * @param int $taskId
@@ -547,6 +549,8 @@
            $response = array();
            //Run update queries for update task staus and update type and sort order in kanban column
            $task = Task::getById(intval($taskId));
+           //set the scenario
+           $task->setScenario('kanbanViewButtonClick');
            $this->processStatusUpdateViaAjax($task, $targetStatus, false);
            TasksUtil::processKanbanItemUpdateOnButtonAction(intval($targetStatus), intval($taskId), intval($sourceKanbanType));
            $subscriptionContent = TasksUtil::resolveAndRenderTaskCardDetailsSubscribersContent($task);
@@ -563,7 +567,6 @@
          */
         protected function processStatusUpdateViaAjax(Task $task, $status, $showCompletionDate = true)
         {
-            //$task          = Task::getById(intval($id));
             $currentStatus = $task->status;
             $task->status = intval($status);
             //check for owner in case a user start the task
@@ -680,12 +683,6 @@
                 $oldStatus = $task->status;
                 $task = $this->attemptToSaveModelFromPost($task, null, false);
                 $errorData = ZurmoActiveForm::makeErrorsDataAndResolveForOwnedModelAttributes($task);
-
-                if (empty ($errorData) && $oldStatus != $task->status)
-                {
-                    //may need to reset the kanban type and sort as well
-                    TasksUtil::checkKanbanTypeByStatusAndUpdateIfRequired($task);
-                }
                 echo CJSON::encode($errorData);
                 Yii::app()->end(0, false);
             }

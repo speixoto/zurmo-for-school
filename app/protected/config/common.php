@@ -113,6 +113,7 @@
             ),
             'format' => array(
                 'class' => 'application.core.components.Formatter',
+                'htmlPurifierOptions' => array('Cache.SerializerPermissions' => 0777),
             ),
             'imap' => array(
                 'class'       => 'application.modules.emailMessages.components.ZurmoImap',
@@ -133,7 +134,8 @@
                 'class' => 'application.core.components.ZurmoExtMinScript',
                 'groupMap' => array(
                     'css' => array(
-                        INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'themes/THEME_NAME/css/newui.css',
+                        INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'themes/THEME_NAME/css/zurmo.css',
+                        INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'themes/THEME_NAME/css/color-scheme.css',
                         //INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/extensions/timepicker/assets/jquery-ui-timepicker-addon.css',
                     ),
 

@@ -373,6 +373,10 @@
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($savedReport, true);
             $report       = SavedReportToReportAdapter::makeReportBySavedReport($savedReport);
             $report->resolveGroupBysAsFilters(GetUtil::getData());
+            if (null != $stickyData = StickyReportUtil::getDataByKey($report->id))
+            {
+                StickyReportUtil::resolveStickyDataToReport($report, $stickyData);
+            }
             $pageSize     = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                             'reportResultsSubListPageSize', get_class($this->getModule()));
             $dataProvider = ReportDataProviderFactory::makeForSummationDrillDown($report, $pageSize);
