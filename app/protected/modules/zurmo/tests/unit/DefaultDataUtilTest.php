@@ -59,6 +59,9 @@
             $customFieldData = CustomFieldData::getByName('MeetingCategories');
             $this->assertEquals(0, count(unserialize($customFieldData->serializedData)));
             $this->assertEquals(0, ContactState::getCount());
+            // do a getAll to ensure we create base currency
+            $baseCurrency = Currency::getAll();
+            $this->assertCount(1, $baseCurrency);
             $this->assertEquals(1, Currency::getCount());
             $messageLogger   = new MessageLogger();
             DefaultDataUtil::load($messageLogger);
