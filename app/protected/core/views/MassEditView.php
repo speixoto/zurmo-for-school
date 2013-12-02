@@ -138,7 +138,7 @@
             $checkBoxHtmlOptions         = array();
             if($elementInformation['type'] == 'DateTime' || $elementInformation['type'] == 'Date')
             {
-                $checkBoxHtmlOptions['class'] = 'datetime';
+                $checkBoxHtmlOptions['class'] = 'dateOrDateTime';
             }
             $checkBoxHtmlOptions['id']   = "MassEdit_" . $realAttributeName;
             $enableInputsScript          = "";
@@ -241,7 +241,7 @@ END;
         protected function renderDateTimeScript()
         {
             $script = "
-                        $('.datetime').click(function()
+                        $('.dateOrDateTime').click(function()
                         {
                             if ($(this).is(':checked'))
                             {
@@ -252,7 +252,7 @@ END;
                                 $(this).parent().parent().parent().find('.ui-datepicker-trigger').hide();
                             }
                         });
-                        $('.datetime').each(
+                        $('.dateOrDateTime').each(
                             function(index)
                             {
                                 if ($(this).is(':checked'))
