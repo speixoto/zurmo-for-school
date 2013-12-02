@@ -228,7 +228,7 @@
             return $content;
         }
 
-        protected function renderMenuItem(array $item)
+        protected function renderMenuItem($item)
         {
             $htmlOptions    = $this->resolveHtmlOptions($item);
             $resolvedLabelContent   = $this->resolveLabelContent($item);
