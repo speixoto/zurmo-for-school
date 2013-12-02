@@ -93,12 +93,14 @@
         {
             $i = max(array_keys($items));
             $item = $items[$i];
-            $prefix = null;
             if (isset($item['itemOptions']['class']))
             {
-                $prefix = ' ';
+                $items[$i]['itemOptions']['class'] .= ' last';
             }
-            $items[$i]['itemOptions']['class'] = $prefix . 'last';
+            else
+            {
+                $items[$i]['itemOptions']['class'] = 'last';
+            }
             foreach ($items as $i => $item)
             {
                 if (isset($item['items']))
@@ -118,12 +120,14 @@
             {
                 if (isset($item['items']))
                 {
-                    $prefix = null;
                     if (isset($item['itemOptions']['class']))
                     {
-                        $prefix = ' ';
+                        $items[$i]['itemOptions']['class'] .= ' parent';
                     }
-                    $items[$i]['itemOptions']['class'] = $prefix . 'parent';
+                    else
+                    {
+                        $items[$i]['itemOptions']['class'] = 'parent';
+                    }
                     $items[$i]['items'] = $this->cssParentItems($item['items']);
                 }
             }
@@ -193,7 +197,7 @@
                     echo $liOpenTag;
                     echo $menuItem;
                 }
-                if ($this->doRenderSubMenu() && isset($item['items']) && count($item['items']))
+                if ($this->doRenderSubMenu())
                 {
                     $this->renderSubMenu($item);
                 }
@@ -361,7 +365,7 @@
 
         protected function doRenderSubMenu()
         {
-            return true;
+            return (isset($item['items']) && count($item['items']));
         }
 
         /**
