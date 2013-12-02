@@ -35,19 +35,28 @@
      ********************************************************************************/
 
     /**
-     * Import rules for any attributes that are type Email.
+     * Display radio buttons for selecting the rules for dedupe
+     * @see EmailAttributeImportRules
      */
-    class EmailAttributeImportRules extends NonDerivedAttributeImportRules
+    class ImportDedupeRulesRadioDropDownElement extends RadioDropDownElement
     {
-        protected static function getAllModelAttributeMappingRuleFormTypesAndElementTypes()
+        protected function renderControlEditable()
         {
-            return array('DefaultValueModelAttribute' => 'Text',
-                         'EmailModelAttributeDedupe' => 'ImportDedupeRulesRadioDropDown');
+            $content = null;
+            $content .= $this->form->radioButtonList(
+                $this->model,
+                $this->attribute,
+                $this->getDropDownArray(),
+                $this->getEditableHtmlOptions()
+            );
+            return $content;
         }
 
-        public static function getSanitizerUtilTypesInProcessingOrder()
+        protected function getDropDownArray()
         {
-            return array('Email', 'Required');
+            return array( 1 => 'Do not dedupe',
+                          2 => 'When a match is found, skip row',
+                          3 => 'When a match is found, update existing record');
         }
     }
 ?>
