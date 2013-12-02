@@ -75,15 +75,15 @@
             assert($saved);    // Not Coding Standard
 
             //Ensure the external system id column is present.
-            $userTableName = User::getTableName();
+            $userTableName = RedBeanModel::getTableName('User');
             ExternalSystemIdUtil::addExternalIdColumnIfMissing($userTableName);
             ExternalSystemIdUtil::updateByModel($super, 'A');
             ExternalSystemIdUtil::updateByModel($jim, 'B');
 
-            ExternalSystemIdUtil::addExternalIdColumnIfMissing(ImportModelTestItem::getTableName());
-            ExternalSystemIdUtil::addExternalIdColumnIfMissing(ImportModelTestItem2::getTableName());
-            ExternalSystemIdUtil::addExternalIdColumnIfMissing(ImportModelTestItem3::getTableName());
-            ExternalSystemIdUtil::addExternalIdColumnIfMissing(ImportModelTestItem4::getTableName());
+            ExternalSystemIdUtil::addExternalIdColumnIfMissing(RedBeanModel::getTableName('ImportModelTestItem'));
+            ExternalSystemIdUtil::addExternalIdColumnIfMissing(RedBeanModel::getTableName('ImportModelTestItem2'));
+            ExternalSystemIdUtil::addExternalIdColumnIfMissing(RedBeanModel::getTableName('ImportModelTestItem3'));
+            ExternalSystemIdUtil::addExternalIdColumnIfMissing(RedBeanModel::getTableName('ImportModelTestItem4'));
         }
 
         public static function getDependentTestModelClassNames()
@@ -208,7 +208,7 @@
             ZurmoRedBean::exec("update " . $import->getTempTableName() . " set column_10 = " .
                      $importModelTestItemModel1->id . " where id != 1 limit 3");
             //Update model2 to have an externalSystemId.
-            ZurmoRedBean::exec("update " . ImportModelTestItem::getTableName()
+            ZurmoRedBean::exec("update " . ImportModelTestItem::getTableName('ImportModelTestItem')
             . " set $externalSystemIdColumnName = 'B' where id = {$importModelTestItemModel2->id}");
 
             //Add test ImportModelTestItem2 models for use in this test.
@@ -219,7 +219,7 @@
             ZurmoRedBean::exec("update " . $import->getTempTableName() . " set column_14 = " .
                      $importModelTestItem2Model1->id . " where id != 1 limit 4");
             //Update model2 to have an externalSystemId.
-            ZurmoRedBean::exec("update " . ImportModelTestItem2::getTableName()
+            ZurmoRedBean::exec("update " . ImportModelTestItem2::getTableName('ImportModelTestItem2')
             . " set $externalSystemIdColumnName = 'B' where id = {$importModelTestItem2Model2->id}");
 
             //Add test ImportModelTestItem3 models for use in this test.
@@ -229,7 +229,7 @@
             ZurmoRedBean::exec("update " . $import->getTempTableName() . " set column_17 = " .
                      $importModelTestItem3Model1->id . " where id != 1 limit 3");
             //Update model2 to have an externalSystemId.
-            ZurmoRedBean::exec("update " . ImportModelTestItem3::getTableName()
+            ZurmoRedBean::exec("update " . ImportModelTestItem3::getTableName('ImportModelTestItem3')
             . " set $externalSystemIdColumnName = 'K' where id = {$importModelTestItem3Model2->id}");
 
             //Add test ImportModelTestItem4 models for use in this test.
@@ -239,7 +239,7 @@
             ZurmoRedBean::exec("update " . $import->getTempTableName() . " set column_12 = " .
                      $importModelTestItem4Model1->id . " where id != 1 limit 5");
             //Update model2 to have an externalSystemId.
-            ZurmoRedBean::exec("update " . ImportModelTestItem4::getTableName()
+            ZurmoRedBean::exec("update " . ImportModelTestItem3::getTableName('ImportModelTestItem4')
             . " set $externalSystemIdColumnName = 'J' where id = {$importModelTestItem4Model2->id}");
 
             $mappingData = array(

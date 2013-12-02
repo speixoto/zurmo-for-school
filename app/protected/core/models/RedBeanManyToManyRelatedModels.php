@@ -62,7 +62,7 @@
             assert('($linkType == RedBeanModel::LINK_TYPE_ASSUMPTIVE && $linkName == null) ||
                     ($linkType == RedBeanModel::LINK_TYPE_SPECIFIC && $linkName != null)');
             $this->modelClassName        = $modelClassName;
-            $tableName                   = $modelClassName::getTableName();
+            $tableName                   = RedBeanModel::getTableName($modelClassName);
             $this->bean                  = $bean;
             $this->linkName              = $linkName;
             if ($this->bean->id > 0)
@@ -123,8 +123,7 @@
         {
             if ($bean == null)
             {
-                $modelClassName = $this->modelClassName;
-                $bean = ZurmoRedBean::dispense($modelClassName::getTableName());
+                $bean = ZurmoRedBean::dispense(RedBeanModel::getTableName($this->modelClassName));
             }
             $types = array($this->bean->getMeta("type"), $bean->getMeta("type"));
             return static::resolveTableNamesWithLinkName($types, $this->linkName);
@@ -132,8 +131,8 @@
 
         public static function getTableNameByModelClassNames($modelClassName, $anotherModelClassName, $linkName = null)
         {
-            $modelTableName         = $modelClassName::getTableName();
-            $anotherModelTableName  = $anotherModelClassName::getTableName();
+            $modelTableName         = RedBeanModel::getTableName($modelClassName);
+            $anotherModelTableName  = RedBeanModel::getTableName($anotherModelClassName);
             $tableNames = array($modelTableName, $anotherModelTableName);
             return static::resolveTableNamesWithLinkName($tableNames, $linkName);
         }

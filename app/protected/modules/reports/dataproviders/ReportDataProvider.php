@@ -432,7 +432,7 @@
             $where                  = $this->makeFiltersContent($joinTablesAdapter);
             $orderBy                = $this->makeOrderBysContent($joinTablesAdapter);
             $groupBy                = $this->makeGroupBysContent($joinTablesAdapter);
-            return                    SQLQueryUtil::makeQuery($modelClassName::getTableName(),
+            return                    SQLQueryUtil::makeQuery($modelClassName::getTableName($modelClassName),
                                       $selectQueryAdapter, $joinTablesAdapter, $offset, $limit, $where, $orderBy, $groupBy);
         }
 
@@ -462,7 +462,7 @@
                 $selectQueryAdapter     = new RedBeanModelSelectQueryAdapter($selectQueryAdapter->isDistinct());
                 $selectQueryAdapter->addNonSpecificCountClause();
             }
-            return                    SQLQueryUtil::makeQuery($modelClassName::getTableName(),
+            return                    SQLQueryUtil::makeQuery($modelClassName::getTableName($modelClassName),
                                       $selectQueryAdapter, $joinTablesAdapter, null, null, $where, $orderBy, $groupBy);
         }
 
@@ -498,7 +498,7 @@
                 $groupBy                = $this->makeGroupBysContentForGrandTotals($joinTablesAdapter);
                 $offset                 = null;
                 $limit                  = null;
-                $sql = SQLQueryUtil::makeQuery($modelClassName::getTableName(),
+                $sql = SQLQueryUtil::makeQuery($modelClassName::getTableName($modelClassName),
                             $selectQueryAdapter, $joinTablesAdapter, $offset, $limit, $where, $orderBy, $groupBy);
             }
             catch (NotSupportedException $exception)

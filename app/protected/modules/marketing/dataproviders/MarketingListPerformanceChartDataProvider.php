@@ -117,9 +117,9 @@
             $quote                     = DatabaseCompatibilityUtil::getQuote();
             $where                     = null;
             $selectDistinct            = false;
-            $campaignTableName         = Campaign::getTableName();
-            $campaignItemTableName     = CampaignItem::getTableName();
-            $emailMessageTableName     = EmailMessage::getTableName();
+            $campaignTableName         = Campaign::getTableName('Campaign');
+            $campaignItemTableName     = CampaignItem::getTableName('CampaignItem');
+            $emailMessageTableName     = EmailMessage::getTableName('EmailMessage');
             $sentDateTimeColumnName    = EmailMessage::getColumnNameByAttribute('sentDateTime');
             $joinTablesAdapter         = new RedBeanModelJoinTablesQueryAdapter('Campaign');
             $where                     = RedBeanModelDataProvider::makeWhere('Campaign', $searchAttributeData, $joinTablesAdapter);
@@ -153,10 +153,10 @@
             $quote                      = DatabaseCompatibilityUtil::getQuote();
             $where                      = null;
             $selectDistinct             = false;
-            $marketingListTableName     = MarketingList::getTableName();
-            $autoresponderTableName     = Autoresponder::getTableName();
-            $autoresponderItemTableName = AutoresponderItem::getTableName();
-            $emailMessageTableName      = EmailMessage::getTableName();
+            $marketingListTableName     = Autoresponder::getTableName('MarketingList');
+            $autoresponderTableName     = Autoresponder::getTableName('Autoresponder');
+            $autoresponderItemTableName = AutoresponderItem::getTableName('AutoresponderItem');
+            $emailMessageTableName      = EmailMessage::getTableName('EmailMessage');
             $sentDateTimeColumnName     = EmailMessage::getColumnNameByAttribute('sentDateTime');
             $joinTablesAdapter          = new RedBeanModelJoinTablesQueryAdapter('Autoresponder');
             MarketingList::resolveReadPermissionsOptimizationToSqlQuery(Yii::app()->user->userModel,

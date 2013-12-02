@@ -38,7 +38,7 @@
     {
         public static function deleteAll()
         {
-            if (ZurmoRedBean::$writer->doesTableExist(static::getTableName()))
+            if (ZurmoRedBean::$writer->doesTableExist(static::getTableName(get_called_class())))
             {
                 parent::deleteAll();
             }

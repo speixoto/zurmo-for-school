@@ -56,7 +56,7 @@
             {
                 throw new NotFoundException();
             }
-            RedBeansCache::cacheBean($bean, User::getTableName() . $bean->id);
+            RedBeansCache::cacheBean($bean, User::getTableName('User') . $bean->id);
             return self::makeModel($bean);
         }
 
@@ -126,7 +126,7 @@
             // in order to mix in the Person - this is metadata wise,
             // User doesn't get any functionality from Person.
             $modelClassName = 'Person';
-            $tableName = $modelClassName::getTableName();
+            $tableName = self::getTableName($modelClassName);
             if ($bean === null)
             {
                 $personBean = ZurmoRedBean::dispense($tableName);
@@ -724,6 +724,7 @@
                 ),
                 'rules' => array(
                     array('hash',     'type',    'type' => 'string'),
+                    array('hash',     'required'),
                     array('hash',     'length',  'min'   => 32, 'max' => 32),
                     array('language', 'type',    'type'  => 'string'),
                     array('language', 'length',  'max'   => 10),

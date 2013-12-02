@@ -40,6 +40,9 @@
         {
             $metadata = array(
                 'global' => array(
+                    'nonPlaceableAttributeNames' => array(
+                        'account',
+                    ),
                     'panels' => array(
                         array(
                             'locked' => true,

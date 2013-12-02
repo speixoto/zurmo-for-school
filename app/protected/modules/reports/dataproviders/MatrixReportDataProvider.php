@@ -760,7 +760,7 @@
             $groupBy                = $builder->makeQueryContent($this->getYAxisGroupBys());
             $offset                 = null;
             $limit                  = null;
-            return                    SQLQueryUtil::makeQuery($modelClassName::getTableName(),
+            return                    SQLQueryUtil::makeQuery($modelClassName::getTableName($modelClassName),
                                       $selectQueryAdapter, $joinTablesAdapter, $offset, $limit, $where, $orderBy, $groupBy);
         }
     }

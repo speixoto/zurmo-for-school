@@ -61,7 +61,7 @@
         public function __construct($modelClassName)
         {
             assert('is_string($modelClassName)');
-            $tableName               = $modelClassName::getTableName();
+            $tableName               = RedBeanModel::getTableName($modelClassName);
             $quote                   = DatabaseCompatibilityUtil::getQuote();
             $this->baseFromTableName = $tableName;
             $this->addTableCount($tableName);

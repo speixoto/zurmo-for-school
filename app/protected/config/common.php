@@ -83,6 +83,9 @@
                         'depends'  => array('jquery', 'cookie')),
                 ),
             ),
+            'contactLatestActivityDateTimeObserver' => array(
+                'class' => 'application.modules.contacts.observers.ContactLatestActivityDateTimeObserver',
+            ),
             'currencyHelper' => array(
                 'class' => 'application.modules.zurmo.components.ZurmoCurrencyHelper',
                 'baseCode' => 'USD',

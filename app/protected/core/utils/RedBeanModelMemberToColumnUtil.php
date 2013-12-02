@@ -113,7 +113,7 @@
 
         protected static function resolveForeignKeyNameByModelName($className)
         {
-            return $className::getTableName() . '_id';
+            return RedBeanModel::getTableName($className) . '_id';
         }
     }
 ?>

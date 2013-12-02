@@ -497,7 +497,7 @@
                 $onTableAliasName = $this->joinTablesAdapter->addFromTableAndGetAliasName(
                     $attributeTableName,
                     self::resolveForeignKey($attributeTableName),
-                    $modelClassName::getTableName());
+                    $modelClassName::getTableName($modelClassName));
             }
             return $onTableAliasName;
         }
@@ -711,12 +711,12 @@
             {
                 if ($modelClassNameToCastDownTo::getCanHaveBean())
                 {
-                    $castedDownTableName = $modelClassNameToCastDownTo::getTableName();
+                    $castedDownTableName = $modelClassNameToCastDownTo::getTableName($modelClassNameToCastDownTo);
                     $onTableAliasName    = $this->joinTablesAdapter->addLeftTableAndGetAliasName(
                                            $castedDownTableName,
                                            'id',
                                            $onTableAliasName,
-                                           self::resolveForeignKey($modelClassName::getTableName()));
+                                           self::resolveForeignKey($modelClassName::getTableName($modelClassName)));
                     $modelClassName      = $modelClassNameToCastDownTo;
                 }
             }
@@ -782,7 +782,7 @@
         {
             assert('is_string($modelClassName)');
             assert('is_string($attributeModelClassName)');
-            $attributeTableName       = $attributeModelClassName::getTableName();
+            $attributeTableName       = $attributeModelClassName::getTableName($attributeModelClassName);
             $tableAliasName           = $attributeTableName;
             $castedDownModelClassName = $modelClassName;
             $onTableAliasName         = null;
@@ -794,12 +794,12 @@
                 $modelClassName                  = get_parent_class($modelClassName);
                 if ($modelClassName::getCanHaveBean())
                 {
-                    $castedUpAttributeTableName = $modelClassName::getTableName();
+                    $castedUpAttributeTableName = $modelClassName::getTableName($modelClassName);
                     if (!$this->joinTablesAdapter->isTableInFromTables($castedUpAttributeTableName))
                     {
                         if ($onTableAliasName == null && $castedDownModelClassName::getCanHaveBean())
                         {
-                            $onTableAliasName = $castedDownModelClassName::getTableName();
+                            $onTableAliasName = $castedDownModelClassName::getTableName($castedDownModelClassName);
                         }
                         elseif ($onTableAliasName == null && $castedDownFurtherModelClassName::getCanHaveBean())
                         {
@@ -821,7 +821,7 @@
                 if ($onTableAliasName == null)
                 {
                     $modelClassName   = static::resolveModelClassNameThatCanHaveTable($modelClassName, $castedDownModelClassName);
-                    $onTableAliasName = $modelClassName::getTableName();
+                    $onTableAliasName = $modelClassName::getTableName($modelClassName);
                 }
                 $tableAliasName   = $this->joinTablesAdapter->addFromTableAndGetAliasName(
                                     $attributeTableName, self::resolveForeignKey($attributeTableName), $onTableAliasName);
@@ -859,7 +859,7 @@
             assert('is_string($onTableAliasName)');
             assert('is_string($modelClassName)');
             assert('is_string($attributeModelClassName)');
-            $attributeTableName       = $attributeModelClassName::getTableName();
+            $attributeTableName       = $attributeModelClassName::getTableName($attributeModelClassName);
             $castedDownModelClassName = $modelClassName;
             while (get_parent_class($modelClassName) != $attributeModelClassName &&
                 get_parent_class($modelClassName) != 'RedBeanModel')
@@ -869,12 +869,12 @@
                 $modelClassName                  = get_parent_class($modelClassName);
                 if ($modelClassName::getCanHaveBean())
                 {
-                    $castedUpAttributeTableName = $modelClassName::getTableName();
+                    $castedUpAttributeTableName = $modelClassName::getTableName($modelClassName);
 
                     /**
                     if ($castedDownModelClassName::getCanHaveBean())
                     {
-                        $resolvedTableJoinIdName = $castedDownModelClassName::getTableName();
+                        $resolvedTableJoinIdName = $castedDownModelClassName::getTableName($castedDownModelClassName);
                     }
                     elseif ($castedDownFurtherModelClassName::getCanHaveBean())
                     {
@@ -898,7 +898,7 @@
                 $attributeTableName,
                 self::resolveForeignKey($attributeTableName),
                 $onTableAliasName); //,
-                //$modelClassName::getTableName());
+                //$modelClassName::getTableName($modelClassName));
             return $onTableAliasName;
         }
 

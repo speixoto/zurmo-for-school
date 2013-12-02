@@ -936,9 +936,13 @@
             {
                 $sortOrder = KanbanItem::getMaximumSortOrderByType(intval($targetKanbanType), $task->project);
             }
-            else
+            elseif ($task->activityItems->count() > 0)
             {
                 $sortOrder = KanbanItem::getMaximumSortOrderByType(intval($targetKanbanType), $task->activityItems->offsetGet(0));
+            }
+            else
+            {
+                $sortOrder = 1;
             }
             return $sortOrder;
         }
@@ -1124,6 +1128,18 @@
                           }
                         );";
              Yii::app()->clientScript->registerScript('taskModalDeleteScript', $script, ClientScript::POS_END);
+        }
+
+        /**
+         * Resolve that should task be opened in modal detal view
+         */
+        public static function resolveShouldOpenToTask($gridId)
+        {
+            $getData = GetUtil::getData();
+            if (null != $taskId = ArrayUtil::getArrayValue($getData, 'openToTaskId'))
+            {
+                TasksUtil::registerOpenToTaskModalDetailsScript((int)$taskId, $gridId);
+            }
         }
     }
 ?>
