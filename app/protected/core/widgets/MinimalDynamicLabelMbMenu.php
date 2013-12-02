@@ -55,11 +55,11 @@
             return $content;
         }
 
-        protected function renderMenuItemWithNoURLSpecified($resolvedLabelContent, array $htmlOptions)
+        protected function renderMenuItemWithNoURLSpecified($resolvedLabelContent, array $htmlOptions, array $item)
         {
             if (!empty($item['label']))
             {
-                return parent::renderMenuItemWithNoURLSpecified($resolvedLabelContent, $htmlOptions);
+                return parent::renderMenuItemWithNoURLSpecified($resolvedLabelContent, $htmlOptions, $item);
             }
             return $resolvedLabelContent;
         }

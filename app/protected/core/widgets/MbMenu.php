@@ -197,7 +197,7 @@
                     echo $liOpenTag;
                     echo $menuItem;
                 }
-                if ($this->doRenderSubMenu())
+                if ($this->doRenderSubMenu($item))
                 {
                     $this->renderSubMenu($item);
                 }
@@ -234,7 +234,7 @@
 
         protected function renderMenuItem($item)
         {
-            $htmlOptions    = $this->resolveHtmlOptions($item);
+            $htmlOptions            = $this->resolveHtmlOptions($item);
             $resolvedLabelContent   = $this->resolveLabelContent($item);
             if ((isset($item['ajaxLinkOptions'])))
             {
@@ -246,11 +246,11 @@
             }
             else
             {
-                return $this->renderMenuItemWithNoURLSpecified($resolvedLabelContent, $htmlOptions);
+                return $this->renderMenuItemWithNoURLSpecified($resolvedLabelContent, $htmlOptions, $item);
             }
         }
 
-        protected function renderMenuItemWithNoURLSpecified($resolvedLabelContent, array $htmlOptions)
+        protected function renderMenuItemWithNoURLSpecified($resolvedLabelContent, array $htmlOptions, array $item)
         {
             return ZurmoHtml::link($resolvedLabelContent, "javascript:void(0);", $htmlOptions);
         }
@@ -363,7 +363,7 @@
             return true;
         }
 
-        protected function doRenderSubMenu()
+        protected function doRenderSubMenu(array $item)
         {
             return (isset($item['items']) && count($item['items']));
         }
