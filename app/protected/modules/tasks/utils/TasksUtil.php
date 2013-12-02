@@ -936,7 +936,7 @@
             {
                 $sortOrder = KanbanItem::getMaximumSortOrderByType(intval($targetKanbanType), $task->project);
             }
-            else
+            elseif ($task->activityItems->count() > 0)
             {
                 $sortOrder = KanbanItem::getMaximumSortOrderByType(intval($targetKanbanType), $task->activityItems->offsetGet(0));
             }
@@ -967,28 +967,31 @@
          */
         public static function checkKanbanTypeByStatusAndUpdateIfRequired(Task $task)
         {
-            $kanbanItem = KanbanItem::getByTask($task->id);
-            //It should be created here but check for create as well here
-            if ($kanbanItem == null)
+            if ($task->project->id > 0 || $task->activityItems->count() > 0)
             {
-                $kanbanItem = TasksUtil::createKanbanItemFromTask($task);
-            }
-            $kanbanTypeByStatus = TasksUtil::resolveKanbanItemTypeForTaskStatus($task->status);
-            if ($kanbanItem->type != $kanbanTypeByStatus)
-            {
-                $sourceKanbanItemType = $kanbanItem->type;
-                //put the item at the end
-                $kanbanItem->sortOrder = TasksUtil::resolveAndGetSortOrderForTaskOnKanbanBoard($kanbanTypeByStatus, $task);
-                $kanbanItem->type = $kanbanTypeByStatus;
-                $kanbanItem->save();
-                //Resort the source column
-                if ($task->project->id > 0)
+                $kanbanItem = KanbanItem::getByTask($task->id);
+                //It should be created here but check for create as well here
+                if ($kanbanItem == null)
                 {
-                    TasksUtil::sortKanbanColumnItems($sourceKanbanItemType, $task->project);
+                    $kanbanItem = TasksUtil::createKanbanItemFromTask($task);
                 }
-                else
+                $kanbanTypeByStatus = TasksUtil::resolveKanbanItemTypeForTaskStatus($task->status);
+                if ($kanbanItem->type != $kanbanTypeByStatus)
                 {
-                    TasksUtil::sortKanbanColumnItems($sourceKanbanItemType, $task->activityItems->offsetGet(0));
+                    $sourceKanbanItemType = $kanbanItem->type;
+                    //put the item at the end
+                    $kanbanItem->sortOrder = TasksUtil::resolveAndGetSortOrderForTaskOnKanbanBoard($kanbanTypeByStatus, $task);
+                    $kanbanItem->type = $kanbanTypeByStatus;
+                    $kanbanItem->save();
+                    //Resort the source column
+                    if ($task->project->id > 0)
+                    {
+                        TasksUtil::sortKanbanColumnItems($sourceKanbanItemType, $task->project);
+                    }
+                    else
+                    {
+                        TasksUtil::sortKanbanColumnItems($sourceKanbanItemType, $task->activityItems->offsetGet(0));
+                    }
                 }
             }
         }
