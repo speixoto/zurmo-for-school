@@ -96,7 +96,9 @@
             $currencyHelper = Yii::app()->currencyHelper;
             $this->assertEquals('USD', $currencyHelper->getBaseCode());
             $this->assertEquals(0, Currency::getCount());
-            $this->assertEquals(1, count(Currency::getAll()));
+            // do a getAll to ensure we create base currency
+            $baseCurrency = Currency::getAll();
+            $this->assertCount(1, $baseCurrency);
             $this->assertEquals(1, Currency::getCount());
 
             //create a currency value and confirm the rateToBase populates correctly.
