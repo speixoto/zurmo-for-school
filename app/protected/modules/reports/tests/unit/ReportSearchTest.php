@@ -52,7 +52,7 @@
 
         public function testGetReportsByPartialName()
         {
-            $this->assertEquals(2, count(SavedReport::getAll()));
+            $this->assertEquals(2, SavedReport::getCount());
             $this->assertEquals(2, count(ReportSearch::getReportsByPartialName('a', 5)));
             $this->assertEquals(0, count(ReportSearch::getReportsByPartialName('a', 5, 'AccountsModule')));
             $this->assertEquals(1, count(ReportSearch::getReportsByPartialName('a', 5, 'ReportsTestModule')));

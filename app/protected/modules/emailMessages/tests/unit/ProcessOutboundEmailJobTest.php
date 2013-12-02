@@ -68,7 +68,7 @@
             $emailMessage2Id            = $emailMessage2->id;
             $emailMessage2->forget();
             unset($emailMessage2);
-            $this->assertEquals(2, count(EmailMessage::getAll()));
+            $this->assertEquals(2, EmailMessage::getCount());
 
             $job = new ProcessOutboundEmailJob();
             $this->assertTrue($job->run());

@@ -803,7 +803,7 @@
                         }
                         elseif ($onTableAliasName == null && $castedDownFurtherModelClassName::getCanHaveBean())
                         {
-                            $onTableAliasName = $castedDownModelClassName::getTableName($castedDownFurtherModelClassName);
+                            $onTableAliasName = $castedDownFurtherModelClassName::getTableName();
                         }
                         elseif ($onTableAliasName == null)
                         {
@@ -878,7 +878,7 @@
                     }
                     elseif ($castedDownFurtherModelClassName::getCanHaveBean())
                     {
-                        $resolvedTableJoinIdName = $castedDownModelClassName::getTableName($castedDownFurtherModelClassName);
+                        $resolvedTableJoinIdName = $castedDownFurtherModelClassName::getTableName();
                     }
                     else
                     {

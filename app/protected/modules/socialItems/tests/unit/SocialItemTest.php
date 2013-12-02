@@ -140,7 +140,7 @@
         public function testAddingNoteAndDeletingNoteAndThenTheSocialItemsAreRemoved()
         {
             $super                     = User::getByUsername('super');
-            $this->assertEquals(0, count(SocialItem::getAll()));
+            $this->assertEquals(0, SocialItem::getCount());
             $accounts                  = Account::getByName('anAccount');
             $note                      = NoteTestHelper::createNoteWithOwnerAndRelatedAccount('aNote', $super, $accounts[0]);
 
@@ -152,11 +152,11 @@
             $socialItemId            = $socialItem->id;
             $noteId                  = $note->id;
             $note->forget();
-            $this->assertEquals(1, count(SocialItem::getAll()));
+            $this->assertEquals(1, SocialItem::getCount());
             $note                    = Note::getById($noteId);
             $deleted = $note->delete();
             $this->assertTrue($deleted);
-            $this->assertEquals(0, count(SocialItem::getAll()));
+            $this->assertEquals(0, SocialItem::getCount());
         }
     }
 ?>

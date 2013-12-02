@@ -321,8 +321,9 @@
         protected static function getIndexesDefinition()
         {
             $relatedModelClassName = static::getRelatedModelClassName();
-            $relatedColumnName = static::getTableName($relatedModelClassName) . '_id';
-            $baseColumnName = static::getTableName(get_class()) . '_id';
+            $relatedColumnName = $relatedModelClassName::getTableName() . '_id';
+            // can't use self:: here as getTableName() uses get_called_class
+            $baseColumnName = EmailMessageActivity::getTableName() . '_id';
             return array($baseColumnName . '_' . $relatedColumnName => array(
                                 'members' => array($baseColumnName, $relatedColumnName),
                                 'unique' => true,

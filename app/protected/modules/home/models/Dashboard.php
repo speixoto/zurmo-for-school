@@ -63,7 +63,7 @@
                 }
                 throw new NotFoundException();
             }
-            $bean = ZurmoRedBean::load(static::getTableName('Dashboard'), $ids[0]);
+            $bean = ZurmoRedBean::load(Dashboard::getTableName(), $ids[0]);
             assert('$bean === false || $bean instanceof RedBean_OODBBean');
             if ($bean === false)
             {

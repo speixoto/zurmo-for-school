@@ -86,7 +86,7 @@
                 $meta = $model::getDefaultMetadata();
                 if (isset($meta[$model]['rules']))
                 {
-                    $tableName      = RedBeanModel::getTableName($model);
+                    $tableName      = $model::getTableName();
                     $columns = ZurmoRedBean::$writer->getColumns($tableName);
                     foreach ($meta[$model]['rules'] as $rule)
                     {

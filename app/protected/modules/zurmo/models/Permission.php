@@ -79,7 +79,7 @@
         public static function removeAll()
         {
             PermissionsCache::forgetAll();
-            ZurmoRedBean::exec("delete from permission;");
+            static::deleteAll();
         }
 
         public static function permissionsToString($permissions)

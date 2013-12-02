@@ -58,8 +58,8 @@
             $this->assertEquals(0, count(unserialize($customFieldData->serializedData)));
             $customFieldData = CustomFieldData::getByName('MeetingCategories');
             $this->assertEquals(0, count(unserialize($customFieldData->serializedData)));
-            $this->assertEquals(0, count(ContactState::getAll()));
-            $this->assertEquals(1, count(Currency::getAll()));
+            $this->assertEquals(0, ContactState::getCount());
+            $this->assertEquals(1, Currency::getCount());
             $messageLogger   = new MessageLogger();
             DefaultDataUtil::load($messageLogger);
             $customFieldData = CustomFieldData::getByName('Titles');
@@ -72,8 +72,8 @@
             $this->assertEquals(9, count(unserialize($customFieldData->serializedData)));
             $customFieldData = CustomFieldData::getByName('MeetingCategories');
             $this->assertEquals(2, count(unserialize($customFieldData->serializedData)));
-            $this->assertEquals(6, count(ContactState::getAll()));
-            $this->assertEquals(1, count(Currency::getAll()));
+            $this->assertEquals(6, ContactState::getCount());
+            $this->assertEquals(1, Currency::getCount());
         }
     }
 ?>
