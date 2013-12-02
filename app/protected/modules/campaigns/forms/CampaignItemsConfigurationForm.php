@@ -35,36 +35,45 @@
      ********************************************************************************/
 
     /**
-     * Campaigns Options link.
+     * Form to help manage filtering by campaign item stage.
      */
-    class CampaignsOptionsMenuActionElement extends MenuActionElement
+    class CampaignItemsConfigurationForm extends CFormModel
     {
-        public function getActionType()
-        {
-            return 'Delete';
-        }
+        /**
+         * Constants used for the stages
+         */
+        const  FILTERED_BY_ALL_STAGES   = 'All';
 
-        protected function getDefaultLabel()
-        {
-            return Zurmo::t('Core', 'Options');
-        }
+        const  OPENED_STAGE             = 'Opened';
 
-        protected function getDefaultRoute()
-        {
-            return null;
-        }
+        const  CLICKED_STAGE            = 'Clicked';
 
-        protected function getMenuItems()
+        const  BOUNCED_STAGE            = 'Bounced';
+
+        /**
+         * All option when filtering by stage which includes all the campaign email recipients
+         * irrespective of the stage
+         * @var string
+         */
+        public $filteredByStage = self::FILTERED_BY_ALL_STAGES;
+
+        /**
+         * @return array
+         */
+        public function rules()
         {
-            $deleteElement          = new CampaignDeleteLinkActionElement($this->controllerId, $this->moduleId, $this->modelId);
-            $deleteElementContent   = $deleteElement->renderMenuItem();
-            $editElement            = new EditLinkActionElement($this->controllerId, $this->moduleId, $this->modelId);
-            $editElementContent     = $editElement->renderMenuItem();
-            $copyElement            = new CopyLinkActionElement($this->controllerId, $this->moduleId, $this->modelId);
-            $copyElementContent     = $copyElement->renderMenuItem();
-            // TODO: @Shoaibi/@Jason: Low: securable on these items from the outside coming in?
-            $menuItems              = array( $editElementContent, $deleteElementContent, $copyElementContent);
-            return $menuItems;
+            return array(
+                array('filteredByStage', 'type', 'type' => 'string')
+            );
+        }
+        
+        public static function getFilterStages()
+        {
+            return array(
+                self::OPENED_STAGE  => Zurmo::t('CampaignsModule', self::OPENED_STAGE),
+                self::CLICKED_STAGE => Zurmo::t('CampaignsModule', self::CLICKED_STAGE),
+                self::BOUNCED_STAGE => Zurmo::t('CampaignsModule', self::BOUNCED_STAGE),
+            );
         }
     }
 ?>

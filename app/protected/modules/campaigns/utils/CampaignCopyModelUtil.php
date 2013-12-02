@@ -35,36 +35,19 @@
      ********************************************************************************/
 
     /**
-     * Campaigns Options link.
+     * Adds extra support for campaign specific properties
      */
-    class CampaignsOptionsMenuActionElement extends MenuActionElement
+    class CampaignCopyModelUtil extends ZurmoCopyModelUtil
     {
-        public function getActionType()
+        /**
+         * @param RedBeanModel $model
+         * @param RedBeanModel $copyToModel
+         */
+        public static function copy(RedBeanModel $model, RedBeanModel $copyToModel)
         {
-            return 'Delete';
-        }
-
-        protected function getDefaultLabel()
-        {
-            return Zurmo::t('Core', 'Options');
-        }
-
-        protected function getDefaultRoute()
-        {
-            return null;
-        }
-
-        protected function getMenuItems()
-        {
-            $deleteElement          = new CampaignDeleteLinkActionElement($this->controllerId, $this->moduleId, $this->modelId);
-            $deleteElementContent   = $deleteElement->renderMenuItem();
-            $editElement            = new EditLinkActionElement($this->controllerId, $this->moduleId, $this->modelId);
-            $editElementContent     = $editElement->renderMenuItem();
-            $copyElement            = new CopyLinkActionElement($this->controllerId, $this->moduleId, $this->modelId);
-            $copyElementContent     = $copyElement->renderMenuItem();
-            // TODO: @Shoaibi/@Jason: Low: securable on these items from the outside coming in?
-            $menuItems              = array( $editElementContent, $deleteElementContent, $copyElementContent);
-            return $menuItems;
+            parent::copy($model, $copyToModel);
+            $copyToModel->status            = Campaign::STATUS_ACTIVE;
+            $copyToModel->sendOnDateTime    = null;
         }
     }
 ?>

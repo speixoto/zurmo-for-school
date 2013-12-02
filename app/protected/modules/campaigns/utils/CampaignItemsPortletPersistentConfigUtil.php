@@ -35,36 +35,17 @@
      ********************************************************************************/
 
     /**
-     * Campaigns Options link.
+     * Helper class for working with campaign items portlet persistent configs
      */
-    class CampaignsOptionsMenuActionElement extends MenuActionElement
+    class CampaignItemsPortletPersistentConfigUtil extends PortletPersistentConfigUtil
     {
-        public function getActionType()
+        /**
+         * Gets module name
+         * @return string
+         */
+        protected static function getModuleName()
         {
-            return 'Delete';
-        }
-
-        protected function getDefaultLabel()
-        {
-            return Zurmo::t('Core', 'Options');
-        }
-
-        protected function getDefaultRoute()
-        {
-            return null;
-        }
-
-        protected function getMenuItems()
-        {
-            $deleteElement          = new CampaignDeleteLinkActionElement($this->controllerId, $this->moduleId, $this->modelId);
-            $deleteElementContent   = $deleteElement->renderMenuItem();
-            $editElement            = new EditLinkActionElement($this->controllerId, $this->moduleId, $this->modelId);
-            $editElementContent     = $editElement->renderMenuItem();
-            $copyElement            = new CopyLinkActionElement($this->controllerId, $this->moduleId, $this->modelId);
-            $copyElementContent     = $copyElement->renderMenuItem();
-            // TODO: @Shoaibi/@Jason: Low: securable on these items from the outside coming in?
-            $menuItems              = array( $editElementContent, $deleteElementContent, $copyElementContent);
-            return $menuItems;
+            return 'CampaignsModule';
         }
     }
 ?>
