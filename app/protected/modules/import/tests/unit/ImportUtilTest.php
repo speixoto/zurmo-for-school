@@ -341,6 +341,7 @@
             $this->assertEquals(0, count($beansWithErrors));
 
             //Clear out data in table
+            Yii::app()->user->userModel = $super;
             ImportModelTestItem::deleteAll();
         }
 
