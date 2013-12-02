@@ -158,8 +158,8 @@
             $this->assertTrue($customField->save());
 
             $quote                    = DatabaseCompatibilityUtil::getQuote();
-            $customFieldTableName     = RedBeanModel::getTableName('CustomField');
-            $baseCustomFieldTableName = RedBeanModel::getTableName('BaseCustomField');
+            $customFieldTableName     = CustomField::getTableName();
+            $baseCustomFieldTableName = BaseCustomField::getTableName();
             $valueAttributeColumnName = 'value';
             $dataAttributeColumnName  = RedBeanModel::getForeignKeyName('CustomField', 'data');
             $sql  = "select {$quote}{$customFieldTableName}{$quote}.id from {$quote}{$customFieldTableName}{$quote} ";

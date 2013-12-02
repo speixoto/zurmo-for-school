@@ -156,7 +156,7 @@
         public function getModelTableName()
         {
             $modelClassName = $this->modelClassName;
-            return $modelClassName::getTableName($modelClassName);
+            return $modelClassName::getTableName();
         }
 
         /**
@@ -179,8 +179,8 @@
          */
         public function getAttributeTableName()
         {
-            $modelClassName = $this->modelClassName;
-            return $modelClassName::getTableName($this->getAttributeModelClassName());
+            $attributeModelClassName = $this->getAttributeModelClassName();
+            return $attributeModelClassName::getTableName();
         }
 
         public function getModel()
@@ -328,7 +328,7 @@
             $modelClassName = $this->getRelationModelClassName();
             if ($this->canRelationHaveTable())
             {
-                return $modelClassName::getTableName($modelClassName);
+                return $modelClassName::getTableName();
             }
             else
             {
@@ -337,7 +337,7 @@
                     $modelClassName = get_parent_class($modelClassName);
                     if ($modelClassName::getCanHaveBean())
                     {
-                        return $modelClassName::getTableName($modelClassName);
+                        return $modelClassName::getTableName();
                     }
                 }
                 throw new NotSupportedException();
@@ -375,7 +375,7 @@
         public function getRelatedAttributeTableName()
         {
             $modelClassName = $this->getRelatedAttributeModelClassName();
-            return            $modelClassName::getTableName($modelClassName);
+            return            $modelClassName::getTableName();
         }
 
         /**
@@ -562,7 +562,7 @@
         public function getOpposingRelationTableName()
         {
             $opposingRelationModelClassName  = $this->getOpposingRelationModelClassName();
-            return $opposingRelationModelClassName::getTableName($opposingRelationModelClassName);
+            return $opposingRelationModelClassName::getTableName();
         }
 
         public function isDerivedRelationViaCastedUpModelDifferentThanOpposingModelClassName()

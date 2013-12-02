@@ -210,9 +210,9 @@
             $this->assertTrue($customField->save());
 
             $quote                     = DatabaseCompatibilityUtil::getQuote();
-            $customFieldTableName      = RedBeanModel::getTableName('MultipleValuesCustomField');
-            $baseCustomFieldTableName  = RedBeanModel::getTableName('BaseCustomField');
-            $customFieldValueTableName = RedBeanModel::getTableName('CustomFieldValue');
+            $customFieldTableName      = MultipleValuesCustomField::getTableName();
+            $baseCustomFieldTableName  = BaseCustomField::getTableName();
+            $customFieldValueTableName = CustomFieldValue::getTableName();
             $valueAttributeColumnName = 'value';
             $dataAttributeColumnName  = RedBeanModel::getForeignKeyName('MultipleValuesCustomField', 'data');
             $sql  = "select {$quote}{$customFieldTableName}{$quote}.id from {$quote}{$customFieldTableName}{$quote} ";

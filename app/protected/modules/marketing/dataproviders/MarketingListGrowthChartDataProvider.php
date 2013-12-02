@@ -75,8 +75,8 @@
             $quote                     = DatabaseCompatibilityUtil::getQuote();
             $where                     = null;
             $selectDistinct            = false;
-            $marketingListTableName    = MarketingList::getTableName('MarketingList');
-            $marketingListMemberTableName = MarketingListMember::getTableName('MarketingListMember');
+            $marketingListTableName    = MarketingList::getTableName();
+            $marketingListMemberTableName = MarketingListMember::getTableName();
             $createdDateTimeColumnName = MarketingListMember::getColumnNameByAttribute('createdDateTime');
             $unsubscribedColumnName    = MarketingListMember::getColumnNameByAttribute('unsubscribed');
             $joinTablesAdapter         = new RedBeanModelJoinTablesQueryAdapter('MarketingList');
