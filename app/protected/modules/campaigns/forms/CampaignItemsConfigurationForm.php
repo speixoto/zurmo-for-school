@@ -34,62 +34,46 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class CurrencyTest extends ZurmoBaseTest
+    /**
+     * Form to help manage filtering by campaign item stage.
+     */
+    class CampaignItemsConfigurationForm extends CFormModel
     {
-        public static function setUpBeforeClass()
-        {
-            parent::setUpBeforeClass();
-            ZurmoDatabaseCompatibilityUtil::dropStoredFunctionsAndProcedures();
-            SecurityTestHelper::createSuperAdmin();
-        }
+        /**
+         * Constants used for the stages
+         */
+        const  FILTERED_BY_ALL_STAGES   = 'All';
 
-        public function testGetAllMakesBaseCurrency()
-        {
-            $this->assertEquals(0, count(Currency::getAll(null, false, null, false)));
-            $currency = Yii::app()->currencyHelper;
-            $this->assertEquals('USD', $currency->getBaseCode());
-            $this->assertEquals(0, Currency::getCount());
-            // do a getAll to ensure we create base currency
-            $baseCurrency = Currency::getAll();
-            $this->assertCount(1, $baseCurrency);
-            $this->assertEquals(1, Currency::getCount());
-        }
+        const  OPENED_STAGE             = 'Opened';
+
+        const  CLICKED_STAGE            = 'Clicked';
+
+        const  BOUNCED_STAGE            = 'Bounced';
 
         /**
-         * @depends testGetAllMakesBaseCurrency
+         * All option when filtering by stage which includes all the campaign email recipients
+         * irrespective of the stage
+         * @var string
          */
-        public function testGetByCode()
+        public $filteredByStage = self::FILTERED_BY_ALL_STAGES;
+
+        /**
+         * @return array
+         */
+        public function rules()
         {
-            $currency = Currency::getByCode('USD');
-            $this->assertEquals('USD', $currency->code);
-            try
-            {
-                Currency::getByCode('XAT');
-                $this->fail();
-            }
-            catch (NotFoundException $e)
-            {
-                //success
-            }
+            return array(
+                array('filteredByStage', 'type', 'type' => 'string')
+            );
         }
-
-        public function testCreateCurrencyAndIsActiveByDefaultAndSettingActiveToFalse()
+        
+        public static function getFilterStages()
         {
-            $currency = new Currency();
-            $currency->code       = 'EUR';
-            $currency->rateToBase = 2;
-            $this->assertTrue($currency->save());
-            $currency->forget();
-
-            $currency = Currency::getByCode('EUR');
-            $this->assertEquals(1, $currency->active);
-
-            $currency->active     = false;
-            $this->assertTrue($currency->save());
-            $currency->forget();
-
-            $currency = Currency::getByCode('EUR');
-            $this->assertEquals(0, $currency->active);
+            return array(
+                self::OPENED_STAGE  => Zurmo::t('CampaignsModule', self::OPENED_STAGE),
+                self::CLICKED_STAGE => Zurmo::t('CampaignsModule', self::CLICKED_STAGE),
+                self::BOUNCED_STAGE => Zurmo::t('CampaignsModule', self::BOUNCED_STAGE),
+            );
         }
     }
 ?>

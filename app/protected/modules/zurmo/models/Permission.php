@@ -76,10 +76,10 @@
                     array('id' => $permitable->getClassId('Permitable')));
         }
 
-        public static function removeAll()
+        public static function deleteAll()
         {
             PermissionsCache::forgetAll();
-            static::deleteAll();
+            parent::deleteAll();
         }
 
         public static function permissionsToString($permissions)

@@ -34,62 +34,18 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class CurrencyTest extends ZurmoBaseTest
+    /**
+     * Helper class for working with campaign items portlet persistent configs
+     */
+    class CampaignItemsPortletPersistentConfigUtil extends PortletPersistentConfigUtil
     {
-        public static function setUpBeforeClass()
-        {
-            parent::setUpBeforeClass();
-            ZurmoDatabaseCompatibilityUtil::dropStoredFunctionsAndProcedures();
-            SecurityTestHelper::createSuperAdmin();
-        }
-
-        public function testGetAllMakesBaseCurrency()
-        {
-            $this->assertEquals(0, count(Currency::getAll(null, false, null, false)));
-            $currency = Yii::app()->currencyHelper;
-            $this->assertEquals('USD', $currency->getBaseCode());
-            $this->assertEquals(0, Currency::getCount());
-            // do a getAll to ensure we create base currency
-            $baseCurrency = Currency::getAll();
-            $this->assertCount(1, $baseCurrency);
-            $this->assertEquals(1, Currency::getCount());
-        }
-
         /**
-         * @depends testGetAllMakesBaseCurrency
+         * Gets module name
+         * @return string
          */
-        public function testGetByCode()
+        protected static function getModuleName()
         {
-            $currency = Currency::getByCode('USD');
-            $this->assertEquals('USD', $currency->code);
-            try
-            {
-                Currency::getByCode('XAT');
-                $this->fail();
-            }
-            catch (NotFoundException $e)
-            {
-                //success
-            }
-        }
-
-        public function testCreateCurrencyAndIsActiveByDefaultAndSettingActiveToFalse()
-        {
-            $currency = new Currency();
-            $currency->code       = 'EUR';
-            $currency->rateToBase = 2;
-            $this->assertTrue($currency->save());
-            $currency->forget();
-
-            $currency = Currency::getByCode('EUR');
-            $this->assertEquals(1, $currency->active);
-
-            $currency->active     = false;
-            $this->assertTrue($currency->save());
-            $currency->forget();
-
-            $currency = Currency::getByCode('EUR');
-            $this->assertEquals(0, $currency->active);
+            return 'CampaignsModule';
         }
     }
 ?>
