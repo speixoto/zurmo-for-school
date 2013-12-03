@@ -110,6 +110,12 @@
                                     if (empty($this->activeAttributes[$elementInformation['attributeName']]))
                                     {
                                         $params['disabled'] = true;
+                                        //The reason for adding the following loop is that in case of mass edit
+                                        //calendar need not be disabled but hidden as it is controlled using checkbox click
+                                        if($elementInformation['type'] == 'DateTime' || $elementInformation['type'] == 'Date')
+                                        {
+                                            $params['datePickerDisabled'] = false;
+                                        }
                                         $checked = false;
                                     }
                                     else

@@ -59,9 +59,10 @@
             $cClipWidget = new CClipWidget();
             $cClipWidget->beginClip("EditableDateElement");
             $cClipWidget->widget('application.core.widgets.ZurmoJuiDatePicker', array(
-                'attribute'           => $this->attribute,
-                'value'               => $value,
-                'htmlOptions'         => $htmlOptions
+                'attribute'     => $this->attribute,
+                'value'         => $value,
+                'htmlOptions'   => $htmlOptions,
+                'options'       => $this->resolveDatePickerOptions()
             ));
             $cClipWidget->endClip();
             $content = $cClipWidget->getController()->clips['EditableDateElement'];
@@ -76,6 +77,35 @@
         {
             return DateTimeUtil::resolveValueForDateLocaleFormattedDisplay(
                         $this->model->{$this->attribute});
+        }
+
+        /**
+         * Resolve datepicker options
+         * @return array
+         */
+        protected function resolveDatePickerOptions()
+        {
+            if ($this->getDisabledValue() && $this->isDatePickerDisabled())
+            {
+                return array('disabled' => true);
+            }
+            else
+            {
+                return array();
+            }
+        }
+
+        /**
+         * Check if datepicker is disabled
+         * @return boolean
+         */
+        protected function isDatePickerDisabled()
+        {
+            if (isset($this->params['datePickerDisabled']))
+            {
+                return $this->params['datePickerDisabled'];
+            }
+            return true;
         }
     }
 ?>

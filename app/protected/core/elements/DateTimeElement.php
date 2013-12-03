@@ -102,7 +102,27 @@
          */
         protected function resolveDatePickerOptions()
         {
-            return array();
+            if ($this->getDisabledValue() && $this->isDatePickerDisabled())
+            {
+                return array('disabled' => true);
+            }
+            else
+            {
+                return array();
+            }
+        }
+
+        /**
+         * Check if datepicker is disabled
+         * @return boolean
+         */
+        protected function isDatePickerDisabled()
+        {
+            if (isset($this->params['datePickerDisabled']))
+            {
+                return $this->params['datePickerDisabled'];
+            }
+            return true;
         }
     }
 ?>
