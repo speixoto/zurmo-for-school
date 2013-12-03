@@ -1291,7 +1291,7 @@ body > .ui-autocomplete {
   max-width: 1600px;
   height: 100%;
   margin: 0 3% 0 3%;
-  background: #fff url(../images/nav.png) left top repeat-y;
+  background: #fff url(../images/nav.png) -2px top repeat-y;
   -webkit-box-shadow: 0 0 12px 5px rgba(153,153,153,0.3);
   -moz-box-shadow: 0 0 12px 5px rgba(153,153,153,0.3);
   -ms-box-shadow: 0 0 12px 5px rgba(153,153,153,0.3);
@@ -4170,7 +4170,6 @@ div.wide.form a {
 .has-date-select,
 .has-model-select {
   position: relative;
-  width: 100%;
 }
 .has-date-select input,
 .has-model-select input {
