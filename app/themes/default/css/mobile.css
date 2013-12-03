@@ -464,19 +464,10 @@ body > div {
 #HeaderLinksView > div {
   margin: 0 10px;
 }
-#user-header-menu > li > a {
-  line-height: 1;
-}
-#user-header-menu > li > a:after {
-  top: -14px;
-}
-#user-header-menu > li > a span {
-  text-align: right;
-  line-height: 35px;
-  display: inline-block;
-  width: 120px;
-  text-overflow: ellipsis;
-  overflow: hidden;
+#user-toolbar {
+  position: absolute;
+  right: 3%;
+  top: 0;
 }
 #GlobalSearchAndShortcutsCreateMenuView {
   display: none;
