@@ -110,6 +110,12 @@
                                     if (empty($this->activeAttributes[$elementInformation['attributeName']]))
                                     {
                                         $params['disabled'] = true;
+                                        //The reason for adding the following loop is that in case of mass edit
+                                        //calendar need not be disabled but hidden as it is controlled using checkbox click
+                                        if($elementInformation['type'] == 'DateTime' || $elementInformation['type'] == 'Date')
+                                        {
+                                            $params['datePickerDisabled'] = false;
+                                        }
                                         $checked = false;
                                     }
                                     else
@@ -129,12 +135,17 @@
             }
             $content .= '</tbody>';
             $content .= '</table>';
+            $this->renderDateTimeScript();
             return $content;
         }
 
         protected function renderActiveAttributesCheckBox($elementIds, $elementInformation, $checked, $realAttributeName)
         {
             $checkBoxHtmlOptions         = array();
+            if($elementInformation['type'] == 'DateTime' || $elementInformation['type'] == 'Date')
+            {
+                $checkBoxHtmlOptions['class'] = 'dateOrDateTime';
+            }
             $checkBoxHtmlOptions['id']   = "MassEdit_" . $realAttributeName;
             $enableInputsScript          = "";
             $disableInputsScript         = "";
@@ -228,6 +239,40 @@ END;
             {
                 return $attributeName;
             }
+        }
+
+        /**
+         * Register script for date and datetime element
+         */
+        protected function renderDateTimeScript()
+        {
+            $script = "
+                        $('.dateOrDateTime').click(function()
+                        {
+                            if ($(this).is(':checked'))
+                            {
+                                $(this).parent().parent().parent().find('.ui-datepicker-trigger').show();
+                            }
+                            else
+                            {
+                                $(this).parent().parent().parent().find('.ui-datepicker-trigger').hide();
+                            }
+                        });
+                        $('.dateOrDateTime').each(
+                            function(index)
+                            {
+                                if ($(this).is(':checked'))
+                                {
+                                    $(this).parent().parent().parent().find('.ui-datepicker-trigger').show();
+                                }
+                                else
+                                {
+                                    $(this).parent().parent().parent().find('.ui-datepicker-trigger').hide();
+                                }
+                            }
+                        );
+                      ";
+            Yii::app()->clientScript->registerScript('datetimescript', $script);
         }
     }
 ?>

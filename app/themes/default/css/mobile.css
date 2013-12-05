@@ -464,6 +464,11 @@ body > div {
 #HeaderLinksView > div {
   margin: 0 10px;
 }
+#user-toolbar {
+  position: absolute;
+  right: 3%;
+  top: 0;
+}
 #GlobalSearchAndShortcutsCreateMenuView {
   display: none;
 }
