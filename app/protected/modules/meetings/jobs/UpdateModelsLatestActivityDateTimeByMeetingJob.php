@@ -35,9 +35,9 @@
      ********************************************************************************/
 
     /**
-     * A job //todO: fix
+     * A job to update LatestActivityDateTime on contacts and accounts when required because a meeting occurred in the past
      */
-    class UpdateContactLatestActivityDateTimeByMeetingJob extends BaseJob
+    class UpdateModelsLatestActivityDateTimeByMeetingJob extends BaseJob
     {
         /**
          * @var int
@@ -51,7 +51,7 @@
         {
            $params = LabelUtil::getTranslationParamsForAllModules();
            return Zurmo::t('JobsManagerModule',
-                    'Process MeetingsModulePluralLowerCaseLabel for related ContactsModulePluralLowerCaseLabel latest activity dates',
+                    'Process MeetingsModulePluralLowerCaseLabel for related records latest activity dates',
                     $params);
         }
 
@@ -60,7 +60,7 @@
          */
         public static function getType()
         {
-            return 'UpdateContactLatestActivityDateTimeByMeeting';
+            return 'UpdateModelsLatestActivityDateTimeByMeeting';
         }
 
         public static function getRecommendedRunFrequencyContent()
@@ -80,7 +80,11 @@
             foreach (static::getModelsToProcess(self::$pageSize) as $meeting)
             {
                 ContactLatestActivityDateTimeObserver::
-                    resolveRelatedContactsAndSetLatestActivityDateTime($meeting->activityItems, $meeting->startDateTime);
+                    resolveRelatedModelsAndSetLatestActivityDateTime(
+                        $meeting->activityItems, $meeting->startDateTime, 'Contact');
+                AccountLatestActivityDateTimeObserver::
+                    resolveRelatedModelsAndSetLatestActivityDateTime(
+                        $meeting->activityItems, $meeting->startDateTime, 'Account');
                 $meeting->processedForLatestActivity = true;
                 $saved = $meeting->save();
                 if(!$saved)

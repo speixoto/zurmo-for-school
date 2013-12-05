@@ -20,8 +20,8 @@
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
-     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     * You can account Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address account@zurmo.com.
      *
      * The interactive user interfaces in original and modified versions
      * of this program must display Appropriate Legal Notices, as required under
@@ -35,10 +35,10 @@
      ********************************************************************************/
 
     /**
-     * Class LatestActivityDateTimeDocumentationTest
-     * @see ContactLatestActivityDateTimeObserverTest
+     * Class AccountLatestActivityDateTimeDocumentationTest
+     * @see AccountLatestActivityDateTimeObserverTest
      */
-    class LatestActivityDateTimeDocumentationTest extends ZurmoBaseTest
+    class AccountLatestActivityDateTimeDocumentationTest extends ZurmoBaseTest
     {
         public static function setUpBeforeClass()
         {
@@ -46,19 +46,19 @@
             SecurityTestHelper::createSuperAdmin();
         }
 
-        public function createTaskWithRelatedContact($firstName, $taskName)
+        public function createTaskWithRelatedAccount($firstName, $taskName)
         {
-            $contact = ContactTestHelper::createContactByNameForOwner($firstName, Yii::app()->user->userModel);
-            $this->assertNull($contact->latestActivityDateTime);
+            $account = AccountTestHelper::createAccountByNameForOwner($firstName, Yii::app()->user->userModel);
+            $this->assertNull($account->latestActivityDateTime);
             $task    = TaskTestHelper::createTaskByNameForOwner($taskName, Yii::app()->user->userModel);
-            $task->activityItems->add($contact);
+            $task->activityItems->add($account);
             $this->assertTrue($task->save());
             $this->assertNull($task->activityItems[0]->latestActivityDateTime);
             $taskId = $task->id;
-            $contactId = $contact->id;
+            $accountId = $account->id;
             $task->forget();
-            $contact->forget();
-            return array($taskId, $contactId);
+            $account->forget();
+            return array($taskId, $accountId);
         }
 
         public function setUp()
@@ -69,32 +69,32 @@
 
         public function testUpdateLatestActivityDateTimeWhenATaskIsCompleted()
         {
-            $taskIdAndContactId = $this->createTaskWithRelatedContact('contact1', 'task1');
-            $task               = Task::getById($taskIdAndContactId[0]);
-            //update task status to STATUS_AWAITING_ACCEPTANCE, it should not update related contact
+            $taskIdAndAccountId = $this->createTaskWithRelatedAccount('account1', 'task1');
+            $task               = Task::getById($taskIdAndAccountId[0]);
+            //update task status to STATUS_AWAITING_ACCEPTANCE, it should not update related account
             $task->status = Task::STATUS_AWAITING_ACCEPTANCE;
             $this->assertTrue($task->save());
-            $contact            = Contact::getById($taskIdAndContactId[0]);
-            $this->assertNull($contact->latestActivityDateTime);
-            //update task status to STATUS_COMPLETED, now it should update the related contact
+            $account            = Account::getById($taskIdAndAccountId[0]);
+            $this->assertNull($account->latestActivityDateTime);
+            //update task status to STATUS_COMPLETED, now it should update the related account
             $task->status = Task::STATUS_COMPLETED;
             $this->assertTrue($task->save());
-            $contact            = Contact::getById($taskIdAndContactId[0]);
-            $this->assertNotNull($contact->latestActivityDateTime);
+            $account            = Account::getById($taskIdAndAccountId[0]);
+            $this->assertNotNull($account->latestActivityDateTime);
             $dateTimeAMinuteAgo     = DateTimeUtil::convertTimestampToDbFormatDateTime(time() - 60);
             $dateTimeAMinuteFromNow = DateTimeUtil::convertTimestampToDbFormatDateTime(time() + 60);
-            $this->assertTrue($contact->latestActivityDateTime > $dateTimeAMinuteAgo);
-            $this->assertTrue($contact->latestActivityDateTime < $dateTimeAMinuteFromNow);
+            $this->assertTrue($account->latestActivityDateTime > $dateTimeAMinuteAgo);
+            $this->assertTrue($account->latestActivityDateTime < $dateTimeAMinuteFromNow);
         }
 
         public function testUpdateLatestActivityDateTimeWhenANoteIsCreated()
         {
-            $contact = ContactTestHelper::createContactByNameForOwner('contact2', Yii::app()->user->userModel);
-            $this->assertNull($contact->latestActivityDateTime);
+            $account = AccountTestHelper::createAccountByNameForOwner('account2', Yii::app()->user->userModel);
+            $this->assertNull($account->latestActivityDateTime);
             $note = new Note();
             $note->owner               = Yii::app()->user->userModel;
             $note->description         = 'aNote';
-            $note->activityItems->add($contact);
+            $note->activityItems->add($account);
             $this->assertTrue($note->save());
             $this->assertNotNull($note->activityItems[0]->latestActivityDateTime);
             $dateTimeAMinuteAgo     = DateTimeUtil::convertTimestampToDbFormatDateTime(time() - 60);
@@ -112,42 +112,42 @@
         public function testUpdateLatestActivityDateTimeWhenAnEmailIsSentOrArchived()
         {
             $emailMessage = EmailMessageTestHelper::createDraftSystemEmail('subject 1', Yii::app()->user->userModel);
-            $contact3     = ContactTestHelper::createContactByNameForOwner('contact3', Yii::app()->user->userModel);
-            $contact4     = ContactTestHelper::createContactByNameForOwner('contact4', Yii::app()->user->userModel);
-            $contact5     = ContactTestHelper::createContactByNameForOwner('contact4', Yii::app()->user->userModel);
+            $account3     = AccountTestHelper::createAccountByNameForOwner('account3', Yii::app()->user->userModel);
+            $account4     = AccountTestHelper::createAccountByNameForOwner('account4', Yii::app()->user->userModel);
+            $account5     = AccountTestHelper::createAccountByNameForOwner('account4', Yii::app()->user->userModel);
             $dateTime     = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
-            $contact5->setLatestActivityDateTime($dateTime);
-            $this->assertTrue($contact5->save());
-            $contact3Id   = $contact3->id;
-            $contact4Id   = $contact4->id;
-            $contact5Id   = $contact5->id;
-            $this->assertNull($contact3->latestActivityDateTime);
-            $this->assertNull($contact4->latestActivityDateTime);
-            $this->assertEquals($dateTime, $contact5->latestActivityDateTime);
-            $emailMessage->sender->personsOrAccounts->add($contact3);
-            $emailMessage->recipients[0]->personsOrAccounts->add($contact4);
-            $emailMessage->recipients[0]->personsOrAccounts->add($contact5);
+            $account5->setLatestActivityDateTime($dateTime);
+            $this->assertTrue($account5->save());
+            $account3Id   = $account3->id;
+            $account4Id   = $account4->id;
+            $account5Id   = $account5->id;
+            $this->assertNull($account3->latestActivityDateTime);
+            $this->assertNull($account4->latestActivityDateTime);
+            $this->assertEquals($dateTime, $account5->latestActivityDateTime);
+            $emailMessage->sender->personsOrAccounts->add($account3);
+            $emailMessage->recipients[0]->personsOrAccounts->add($account4);
+            $emailMessage->recipients[0]->personsOrAccounts->add($account5);
             $this->assertTrue($emailMessage->save());
-            $this->assertNull($contact3->latestActivityDateTime);
-            $this->assertNull($contact4->latestActivityDateTime);
-            $this->assertEquals($dateTime, $contact5->latestActivityDateTime);
+            $this->assertNull($account3->latestActivityDateTime);
+            $this->assertNull($account4->latestActivityDateTime);
+            $this->assertEquals($dateTime, $account5->latestActivityDateTime);
             $emailMessageId = $emailMessage->id;
             $emailMessage->forget();
-            $contact3->forget();
-            $contact4->forget();
-            $contact5->forget();
+            $account3->forget();
+            $account4->forget();
+            $account5->forget();
 
-            //Retrieve email message and set sentDateTime, at this point the contacts should update with this value
+            //Retrieve email message and set sentDateTime, at this point the accounts should update with this value
             $sentDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time() - 86400);
             $emailMessage = EmailMessage::getById($emailMessageId);
             $emailMessage->sentDateTime = $sentDateTime;
             $this->assertTrue($emailMessage->save());
-            $contact3 = Contact::getById($contact3Id);
-            $contact4 = Contact::getById($contact4Id);
-            $contact5 = Contact::getById($contact5Id);
-            $this->assertEquals($sentDateTime, $contact3->latestActivityDateTime);
-            $this->assertEquals($sentDateTime, $contact4->latestActivityDateTime);
-            $this->assertEquals($dateTime, $contact5->latestActivityDateTime);
+            $account3 = Account::getById($account3Id);
+            $account4 = Account::getById($account4Id);
+            $account5 = Account::getById($account5Id);
+            $this->assertEquals($sentDateTime, $account3->latestActivityDateTime);
+            $this->assertEquals($sentDateTime, $account4->latestActivityDateTime);
+            $this->assertEquals($dateTime, $account5->latestActivityDateTime);
         }
 
         public function testUpdateLatestActivityDateTimeWhenAMeetingIsInThePast()

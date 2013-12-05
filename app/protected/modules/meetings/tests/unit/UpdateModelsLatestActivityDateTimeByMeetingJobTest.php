@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class UpdateContactLatestActivityDateTimeByMeetingJobTest extends ZurmoBaseTest
+    class UpdateModelsLatestActivityDateTimeByMeetingJobTest extends ZurmoBaseTest
     {
         public static function setUpBeforeClass()
         {
@@ -67,7 +67,7 @@
             return array($meetingId, $contactId);
         }
 
-        public function testRunWhereStartDateTimesAreInTheFuture()
+        public function testRunWhereStartDateTimesAreInTheFutureForAContact()
         {
             $meetingIdAndContactId1 = $this->createMeetingWithRelatedContact('first name1', 'meeting 1');
             $meetingIdAndContactId2 = $this->createMeetingWithRelatedContact('first name2', 'meeting 2');
@@ -79,17 +79,17 @@
             $this->assertNull($contact2->latestActivityDateTime);
             $this->assertNull($contact3->latestActivityDateTime);
 
-            $models = UpdateContactLatestActivityDateTimeByMeetingJob::getModelsToProcess(20);
+            $models = UpdateModelsLatestActivityDateTimeByMeetingJob::getModelsToProcess(20);
             $this->assertEquals(0, count($models));
 
-            $job = new UpdateContactLatestActivityDateTimeByMeetingJob();
+            $job = new UpdateModelsLatestActivityDateTimeByMeetingJob();
             $this->assertTrue($job->run());
             $this->assertNull($contact1->latestActivityDateTime);
             $this->assertNull($contact2->latestActivityDateTime);
             $this->assertNull($contact3->latestActivityDateTime);
         }
 
-        public function testRunWhereStartDateTimesAreInThePast()
+        public function testRunWhereStartDateTimesAreInThePastForAContact()
         {
             $meetingIdAndContactId4 = $this->createMeetingWithRelatedContact('first name4', 'meeting 4', true);
             $meetingIdAndContactId5 = $this->createMeetingWithRelatedContact('first name5', 'meeting 5', true);
@@ -107,10 +107,10 @@
             $this->assertNull($contact5->latestActivityDateTime);
             $this->assertNull($contact6->latestActivityDateTime);
 
-            $models = UpdateContactLatestActivityDateTimeByMeetingJob::getModelsToProcess(20);
+            $models = UpdateModelsLatestActivityDateTimeByMeetingJob::getModelsToProcess(20);
             $this->assertEquals(3, count($models));
             $dateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
-            $job      = new UpdateContactLatestActivityDateTimeByMeetingJob();
+            $job      = new UpdateModelsLatestActivityDateTimeByMeetingJob();
             $this->assertTrue($job->run());
             $this->assertTrue($meeting4->processedForLatestActivity == true);
             $this->assertTrue($meeting5->processedForLatestActivity == true);
@@ -121,6 +121,81 @@
             $this->assertTrue($contact4->latestActivityDateTime < $dateTime);
             $this->assertTrue($contact5->latestActivityDateTime < $dateTime);
             $this->assertTrue($contact6->latestActivityDateTime < $dateTime);
+        }
+
+        public function createMeetingWithRelatedAccount($firstName, $meetingName, $usePastStartDateTime = false)
+        {
+            $account = AccountTestHelper::createAccountByNameForOwner($firstName, Yii::app()->user->userModel);
+            $this->assertNull($account->latestActivityDateTime);
+            $meeting    = MeetingTestHelper::createMeetingByNameForOwner($meetingName, Yii::app()->user->userModel);
+            $meeting->activityItems->add($account);
+            if($usePastStartDateTime)
+            {
+                $meeting->startDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time() - 10000);
+            }
+            $this->assertTrue($meeting->save());
+            $this->assertNull($meeting->activityItems[0]->latestActivityDateTime);
+            $meetingId = $meeting->id;
+            $accountId = $account->id;
+            $meeting->forget();
+            $account->forget();
+            return array($meetingId, $accountId);
+        }
+
+        public function testRunWhereStartDateTimesAreInTheFutureForAnAccount()
+        {
+            $meetingIdAndAccountId1 = $this->createMeetingWithRelatedAccount('first name1', 'meeting 1');
+            $meetingIdAndAccountId2 = $this->createMeetingWithRelatedAccount('first name2', 'meeting 2');
+            $meetingIdAndAccountId3 = $this->createMeetingWithRelatedAccount('first name3', 'meeting 3');
+            $account1 = Account::getById($meetingIdAndAccountId1[1]);
+            $account2 = Account::getById($meetingIdAndAccountId2[1]);
+            $account3 = Account::getById($meetingIdAndAccountId3[1]);
+            $this->assertNull($account1->latestActivityDateTime);
+            $this->assertNull($account2->latestActivityDateTime);
+            $this->assertNull($account3->latestActivityDateTime);
+
+            $models = UpdateModelsLatestActivityDateTimeByMeetingJob::getModelsToProcess(20);
+            $this->assertEquals(0, count($models));
+
+            $job = new UpdateModelsLatestActivityDateTimeByMeetingJob();
+            $this->assertTrue($job->run());
+            $this->assertNull($account1->latestActivityDateTime);
+            $this->assertNull($account2->latestActivityDateTime);
+            $this->assertNull($account3->latestActivityDateTime);
+        }
+
+        public function testRunWhereStartDateTimesAreInThePastForAnAccount()
+        {
+            $meetingIdAndAccountId4 = $this->createMeetingWithRelatedAccount('first name4', 'meeting 4', true);
+            $meetingIdAndAccountId5 = $this->createMeetingWithRelatedAccount('first name5', 'meeting 5', true);
+            $meetingIdAndAccountId6 = $this->createMeetingWithRelatedAccount('first name6', 'meeting 6', true);
+            $meeting4  = Meeting::getById($meetingIdAndAccountId4[0]);
+            $meeting5  = Meeting::getById($meetingIdAndAccountId5[0]);
+            $meeting6  = Meeting::getById($meetingIdAndAccountId6[0]);
+            $this->assertTrue($meeting4->processedForLatestActivity == false);
+            $this->assertTrue($meeting5->processedForLatestActivity == false);
+            $this->assertTrue($meeting6->processedForLatestActivity == false);
+            $account4 = Account::getById($meetingIdAndAccountId4[1]);
+            $account5 = Account::getById($meetingIdAndAccountId5[1]);
+            $account6 = Account::getById($meetingIdAndAccountId6[1]);
+            $this->assertNull($account4->latestActivityDateTime);
+            $this->assertNull($account5->latestActivityDateTime);
+            $this->assertNull($account6->latestActivityDateTime);
+
+            $models = UpdateModelsLatestActivityDateTimeByMeetingJob::getModelsToProcess(20);
+            $this->assertEquals(3, count($models));
+            $dateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
+            $job      = new UpdateModelsLatestActivityDateTimeByMeetingJob();
+            $this->assertTrue($job->run());
+            $this->assertTrue($meeting4->processedForLatestActivity == true);
+            $this->assertTrue($meeting5->processedForLatestActivity == true);
+            $this->assertTrue($meeting6->processedForLatestActivity == true);
+            $this->assertTrue(!empty($account4->latestActivityDateTime));
+            $this->assertTrue(!empty($account5->latestActivityDateTime));
+            $this->assertTrue(!empty($account6->latestActivityDateTime));
+            $this->assertTrue($account4->latestActivityDateTime < $dateTime);
+            $this->assertTrue($account5->latestActivityDateTime < $dateTime);
+            $this->assertTrue($account6->latestActivityDateTime < $dateTime);
         }
     }
 ?>

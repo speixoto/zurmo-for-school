@@ -34,22 +34,18 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class AccountsModuleEditView extends GlobalSearchEnabledModuleEditView
+    /**
+     * Helper functionality for rendering renderAfterFormLayoutForDetailsContent() for accounts
+     */
+    class AccountDetailsViewUtil extends OwnedSecurableItemDetailsViewUtil
     {
-        public static function getDefaultMetadata()
+        protected static function getElements($model)
         {
-            $metadata = parent::getDefaultMetadata();
-            $metadata['global']['panels'][0]['rows'][] =
-                array('cells' =>
-                array(
-                    array(
-                        'elements' => array(
-                            array('attributeName' => 'null', 'type' => 'UpdateAccountLatestActivityDateTime'),
-                        ),
-                    ),
-                ),
-                );
-            return $metadata;
+            $elements = parent::getElements($model);
+            $elements[] = array('className'  => 'LatestActivityDateTimeElement',
+                'parameters' => array($model, 'latestActivityDateTime'),
+            );
+            return $elements;
         }
     }
 ?>

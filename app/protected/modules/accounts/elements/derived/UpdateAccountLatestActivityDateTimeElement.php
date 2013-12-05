@@ -35,9 +35,9 @@
      ********************************************************************************/
 
     /**
-     * Class to help manage the automatic probability mapping disabling for opportunities. This is used by designer.
+     * Class to help manage how the latest activity date time is updated for accounts.
      */
-    class UpdateLatestActivityDateTimeElement extends Element
+    class UpdateAccountLatestActivityDateTimeElement extends Element
     {
         /**
          * Render a checkbox (with a default value if not checked)
@@ -56,7 +56,7 @@
 
         protected function renderLabel()
         {
-            return Yii::app()->format->text(Contact::getAnAttributeLabel('latestActivityDateTime'));
+            return Yii::app()->format->text(Account::getAnAttributeLabel('latestActivityDateTime'));
         }
 
         protected function renderError()

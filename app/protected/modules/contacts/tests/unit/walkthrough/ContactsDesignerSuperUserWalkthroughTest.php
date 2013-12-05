@@ -110,8 +110,7 @@
             $postDataForForm['updateLatestActivityDateTimeWhenAnEmailIsSentOrArchived'] = '';
             $postDataForForm['updateLatestActivityDateTimeWhenAMeetingIsInThePast']     = '';
             $this->setGetArray(array('moduleClassName' => 'ContactsModule'));
-            $this->setPostArray(array('save' => 'Save',
-                'ContactsModuleForm' => $postDataForForm));
+            $this->setPostArray(array('save' => 'Save', 'ContactsModuleForm' => $postDataForForm));
             $this->runControllerWithRedirectExceptionAndGetContent('designer/default/moduleEdit');
 
             //Now confirm everything did in fact save correctly.

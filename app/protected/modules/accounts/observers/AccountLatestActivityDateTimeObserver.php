@@ -35,27 +35,27 @@
      ********************************************************************************/
 
     /**
-     * Used to observe when a contact's related model has a change that should update the contact's latestActivityDateTime
-     * These settings are enabled/disabled in the designer under the contacts module.
+     * Used to observe when a account's related model has a change that should update the account's latestActivityDateTime
+     * These settings are enabled/disabled in the designer under the accounts module.
      */
-    class ContactLatestActivityDateTimeObserver extends LatestActivityDateTimeObserver
+    class AccountLatestActivityDateTimeObserver extends LatestActivityDateTimeObserver
     {
         public function init()
         {
-            if(ContactsModule::shouldUpdateLatestActivityDateTimeWhenATaskIsCompleted())
+            if(AccountsModule::shouldUpdateLatestActivityDateTimeWhenATaskIsCompleted())
             {
-                Task::model()->attachEventHandler('onAfterSave', array($this, 'updateContactLatestActivityDateTimeByTask'));
+                Task::model()->attachEventHandler('onAfterSave', array($this, 'updateAccountLatestActivityDateTimeByTask'));
             }
-            if(ContactsModule::shouldUpdateLatestActivityDateTimeWhenANoteIsCreated())
+            if(AccountsModule::shouldUpdateLatestActivityDateTimeWhenANoteIsCreated())
             {
-                Note::model()->attachEventHandler('onAfterSave', array($this, 'updateContactLatestActivityDateTimeByNote'));
+                Note::model()->attachEventHandler('onAfterSave', array($this, 'updateAccountLatestActivityDateTimeByNote'));
             }
-            if(ContactsModule::shouldUpdateLatestActivityDateTimeWhenAnEmailIsSentOrArchived())
+            if(AccountsModule::shouldUpdateLatestActivityDateTimeWhenAnEmailIsSentOrArchived())
             {
                 EmailMessage::model()->attachEventHandler('onAfterSave',
-                    array($this, 'updateContactLatestActivityDateTimeByEmailMessage'));
+                    array($this, 'updateAccountLatestActivityDateTimeByEmailMessage'));
             }
-            if(ContactsModule::shouldUpdateLatestActivityDateTimeWhenAMeetingIsInThePast())
+            if(AccountsModule::shouldUpdateLatestActivityDateTimeWhenAMeetingIsInThePast())
             {
                 Meeting::model()->attachEventHandler('onBeforeSave',
                     array($this, 'resolveModelLatestActivityDateTimeProcessFlagByMeeting'));
@@ -64,42 +64,42 @@
 
         /**
          * Given a event, check that the event's sender is a Task and then check to process updating a related
-         * contact's latestActivityDateTime if it should
+         * account's latestActivityDateTime if it should
          * @param CEvent $event
          */
-        public function updateContactLatestActivityDateTimeByTask(CEvent $event)
+        public function updateAccountLatestActivityDateTimeByTask(CEvent $event)
         {
             assert('$event->sender instanceof Task');
             if(array_key_exists('status', $event->sender->originalAttributeValues) &&
                 $event->sender->status == Task::STATUS_COMPLETED)
             {
                 $this->resolveRelatedModelsAndSetLatestActivityDateTime($event->sender->activityItems,
-                    DateTimeUtil::convertTimestampToDbFormatDateTime(time()), 'Contact');
+                    DateTimeUtil::convertTimestampToDbFormatDateTime(time()), 'Account');
             }
         }
 
         /**
          * Given a event, check that the event's sender is a Note and then check to process updating a related
-         * contact's latestActivityDateTime if it should
+         * account's latestActivityDateTime if it should
          * @param CEvent $event
          */
-        public function updateContactLatestActivityDateTimeByNote(CEvent $event)
+        public function updateAccountLatestActivityDateTimeByNote(CEvent $event)
         {
             assert('$event->sender instanceof Note');
             if($event->sender->getIsNewModel())
             {
                 $this->resolveRelatedModelsAndSetLatestActivityDateTime($event->sender->activityItems,
-                    DateTimeUtil::convertTimestampToDbFormatDateTime(time()), 'Contact');
+                    DateTimeUtil::convertTimestampToDbFormatDateTime(time()), 'Account');
             }
         }
 
         /**
          * Given a event, check that the event's sender is a EmailMessage and then check to process updating a related
-         * contact's latestActivityDateTime if it should
+         * account's latestActivityDateTime if it should
          * Both sent and archived emails will have the sentDateTime just populated.
          * @param CEvent $event
          */
-        public function updateContactLatestActivityDateTimeByEmailMessage(CEvent $event)
+        public function updateAccountLatestActivityDateTimeByEmailMessage(CEvent $event)
         {
             assert('$event->sender instanceof EmailMessage');
             //Check for a just sent message
@@ -109,14 +109,14 @@
                 foreach($event->sender->sender->personsOrAccounts as $senderPersonsOrAccount)
                 {
                     $this->resolveItemToModelAndPopulateLatestActivityDateTime($senderPersonsOrAccount,
-                        $event->sender->sentDateTime, 'Contact');
+                        $event->sender->sentDateTime, 'Account');
                 }
                 foreach($event->sender->recipients as $emailMessageRecipient)
                 {
                     foreach($emailMessageRecipient->personsOrAccounts as $recipientPersonsOrAccount)
                     {
                         $this->resolveItemToModelAndPopulateLatestActivityDateTime($recipientPersonsOrAccount,
-                            $event->sender->sentDateTime, 'Contact');
+                            $event->sender->sentDateTime, 'Account');
                     }
                 }
             }

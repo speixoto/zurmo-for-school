@@ -35,10 +35,10 @@
      ********************************************************************************/
 
     /**
-     * Class ContactLatestActivityDateTimeObserverTest
+     * Class AccountLatestActivityDateTimeObserverTest
      * @see LatestActivityDateTimeDocumentationTest for more related tests
      */
-    class ContactLatestActivityDateTimeObserverTest extends ZurmoBaseTest
+    class AccountLatestActivityDateTimeObserverTest extends ZurmoBaseTest
     {
         public static function setUpBeforeClass()
         {
@@ -52,35 +52,35 @@
             Yii::app()->user->userModel = User::getByUsername('super');
         }
 
-        public function testResolveItemToContactAndPopulateLatestActivityDateTime()
+        public function testResolveItemToAccountAndPopulateLatestActivityDateTime()
         {
-            $contact = ContactTestHelper::createContactByNameForOwner('abc', Yii::app()->user->userModel);
-            $this->assertNull($contact->latestActivityDateTime);
+            $account = AccountTestHelper::createAccountByNameForOwner('abc', Yii::app()->user->userModel);
+            $this->assertNull($account->latestActivityDateTime);
             $task    = TaskTestHelper::createTaskByNameForOwner('task1', Yii::app()->user->userModel);
-            $task->activityItems->add($contact);
+            $task->activityItems->add($account);
             $this->assertTrue($task->save());
             $this->assertNull($task->activityItems[0]->latestActivityDateTime);
             $taskId = $task->id;
-            $contactId = $contact->id;
+            $accountId = $account->id;
             $task->forget();
-            $contact->forget();
+            $account->forget();
 
             //Retrieve the task, so the related activity item is an Item and needs to be casted down
             $task = Task::getById($taskId);
             $item = $task->activityItems[0];
             $dateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
-            ContactLatestActivityDateTimeObserver::resolveItemToModelAndPopulateLatestActivityDateTime(
-                            $item, $dateTime, 'Contact');
+            AccountLatestActivityDateTimeObserver::resolveItemToModelAndPopulateLatestActivityDateTime(
+                            $item, $dateTime, 'Account');
             $item->forget();
 
-            $contact = Contact::getById($contactId);
-            $this->assertEquals($dateTime, $contact->latestActivityDateTime);
+            $account = Account::getById($accountId);
+            $this->assertEquals($dateTime, $account->latestActivityDateTime);
         }
 
         /**
          * Test with a related account as the activity item, in which case nothing will get updated
          */
-        public function testResolveItemToContactAndPopulateLatestActivityDateTimeWithRelatedAccount()
+        public function testResolveItemToAccountAndPopulateLatestActivityDateTimeWithRelatedAccount()
         {
             $account = AccountTestHelper::createAccountByNameForOwner('Account 1', Yii::app()->user->userModel);
             $task    = TaskTestHelper::createTaskByNameForOwner('task2', Yii::app()->user->userModel);
@@ -95,40 +95,40 @@
             $task = Task::getById($taskId);
             $item = $task->activityItems[0];
             $dateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
-            ContactLatestActivityDateTimeObserver::resolveItemToModelAndPopulateLatestActivityDateTime(
-                            $item, $dateTime, 'Contact');
+            AccountLatestActivityDateTimeObserver::resolveItemToModelAndPopulateLatestActivityDateTime(
+                            $item, $dateTime, 'Account');
         }
 
-        public function testResolveRelatedContactsAndSetLatestActivityDateTime()
+        public function testResolveRelatedAccountsAndSetLatestActivityDateTime()
         {
-            $contact = ContactTestHelper::createContactByNameForOwner('contact2', Yii::app()->user->userModel);
-            $this->assertNull($contact->latestActivityDateTime);
-            $contact2 = ContactTestHelper::createContactByNameForOwner('contact3', Yii::app()->user->userModel);
-            $this->assertNull($contact2->latestActivityDateTime);
+            $account = AccountTestHelper::createAccountByNameForOwner('accountt2', Yii::app()->user->userModel);
+            $this->assertNull($account->latestActivityDateTime);
+            $account2 = AccountTestHelper::createAccountByNameForOwner('account3', Yii::app()->user->userModel);
+            $this->assertNull($account2->latestActivityDateTime);
             $task    = TaskTestHelper::createTaskByNameForOwner('task3', Yii::app()->user->userModel);
-            $task->activityItems->add($contact);
-            $task->activityItems->add($contact2);
+            $task->activityItems->add($account);
+            $task->activityItems->add($account2);
             $this->assertTrue($task->save());
             $this->assertNull($task->activityItems[0]->latestActivityDateTime);
             $this->assertNull($task->activityItems[1]->latestActivityDateTime);
             $taskId = $task->id;
-            $contactId = $contact->id;
-            $contact2Id = $contact2->id;
+            $accountId = $account->id;
+            $account2Id = $account2->id;
             $task->forget();
-            $contact->forget();
-            $contact2->forget();
+            $account->forget();
+            $account2->forget();
 
             //Retrieve the task, so the related activity item is an Item and needs to be casted down
             $task = Task::getById($taskId);
             $dateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
-            ContactLatestActivityDateTimeObserver::resolveRelatedModelsAndSetLatestActivityDateTime(
-                            $task->activityItems, $dateTime, 'Contact');
+            AccountLatestActivityDateTimeObserver::resolveRelatedModelsAndSetLatestActivityDateTime(
+                            $task->activityItems, $dateTime, 'Account');
             $task->forget();
 
-            $contact = Contact::getById($contactId);
-            $this->assertEquals($dateTime, $contact->latestActivityDateTime);
-            $contact2 = Contact::getById($contact2Id);
-            $this->assertEquals($dateTime, $contact2->latestActivityDateTime);
+            $account = Account::getById($accountId);
+            $this->assertEquals($dateTime, $account->latestActivityDateTime);
+            $account2 = Account::getById($account2Id);
+            $this->assertEquals($dateTime, $account2->latestActivityDateTime);
         }
     }
 ?>

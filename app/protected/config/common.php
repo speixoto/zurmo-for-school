@@ -51,6 +51,9 @@
         ),
 
         'components' => array(
+            'accountLatestActivityDateTimeObserver' => array(
+                'class' => 'application.modules.accounts.observers.AccountLatestActivityDateTimeObserver',
+            ),
             'additionalModelsConfig' => array(
                 'class'         => 'application.core.components.AdditionalModelsConfig',
                 'zurmoModels'   => array('application.core.models', 'application.core.portlets', 'application.core.kanbanBoard.models'),
