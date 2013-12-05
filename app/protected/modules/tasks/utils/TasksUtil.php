@@ -715,19 +715,18 @@
             $ajaxOptions = TasksUtil::resolveAjaxOptionsForModalView('Details', $sourceId);
             $ajaxOptions['beforeSend'] = new CJavaScriptExpression($ajaxOptions['beforeSend']);
             $script = " $(document).off('click.taskDetailLink', '#{$sourceId} .task-kanban-detail-link');
-                        $(document).on('click.taskDetailLink',  '#{$sourceId} .task-kanban-detail-link', function()
-                          {
+                        $(document).on('click.taskDetailLink',  '#{$sourceId} .task-kanban-detail-link', function(){
                             var id = $(this).attr('id');
                             var idParts = id.split('-');
                             var taskId = parseInt(idParts[1]);
-                            $.ajax(
-                            {
+                            $.ajax({
                                 'type' : 'GET',
                                 'url'  : '{$url}' + '?id=' + taskId,
                                 'beforeSend' : {$ajaxOptions['beforeSend']},
                                 'update'     : '{$ajaxOptions['update']}',
                                 'success': function(html){jQuery('#{$modalId}').html(html)}
                             });
+                            return false;
                           }
                         );";
              Yii::app()->clientScript->registerScript('taskModalDetailsScript' . $sourceId, $script);

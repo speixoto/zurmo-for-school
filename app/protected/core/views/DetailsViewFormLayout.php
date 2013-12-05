@@ -200,9 +200,9 @@
                 $content .= '<tr>';
                 $content .= '<td  colspan = "' . $this->maxCellsPerRow . '">';
                 $content .= ZurmoHtml::link($this->getMorePanelsLinkLabel(),
-                                        $this->uniqueId, array('class' => 'more-panels-link', 'id' => 'show-more-panels-link-' . $this->uniqueId . ''));
+                                        '#', array('class' => 'more-panels-link', 'id' => 'show-more-panels-link-' . $this->uniqueId . ''));
                 $content .= ZurmoHtml::link($this->getLessPanelsLinkLabel(),
-                                        $this->uniqueId,
+                                        '#',
                                         array('class' => 'more-panels-link', 'id' => 'show-less-panels-link-' . $this->uniqueId . '',
                                               'style' => 'display:none;'));
                 $content .= '</td>';
@@ -218,7 +218,7 @@
                 Yii::app()->clientScript->registerScript('showMorePanels' . $this->uniqueId, "
                     $('#show-more-panels-link-" . $this->uniqueId . "').click( function()
                         {
-                            $('.more-view-panel-' + $(this).attr('href')).show();
+                            $('.more-view-panel-{$this->uniqueId}').show();
                             $('#show-more-panels-link-" . $this->uniqueId . "').hide();
                             $('#show-less-panels-link-" . $this->uniqueId . "').show();
                             return false;
@@ -226,7 +226,7 @@
                     );
                     $('#show-less-panels-link-" . $this->uniqueId . "').click( function()
                         {
-                            $('.more-view-panel-' + $(this).attr('href')).hide();
+                            $('.more-view-panel-{$this->uniqueId}').hide();
                             $('#show-more-panels-link-" . $this->uniqueId . "').show();
                             $('#show-less-panels-link-" . $this->uniqueId . "').hide();
                             return false;

@@ -1454,6 +1454,22 @@
             $this->assertTrue($importSanitizeResultsUtil->shouldSaveModel());
             $messages = $importSanitizeResultsUtil->getMessages();
             $this->assertEquals(0, count($messages));
+
+            //Test a non-required textArea with no value, but a valid default value
+            $importSanitizeResultsUtil = new ImportSanitizeResultsUtil();
+            $columnMappingData         = array('type'             => 'importColumn',
+                                               'mappingRulesData' => array(
+                                                    'DefaultValueModelAttributeMappingRuleForm' =>
+                                                            array('defaultValue' => 'something valid')));
+            $sanitizerUtilTypes        = TextAreaAttributeImportRules::getSanitizerUtilTypesInProcessingOrder();
+            $sanitizedValue            = ImportSanitizerUtil::
+                sanitizeValueBySanitizerTypes(
+                    $sanitizerUtilTypes, 'ImportModelTestItem', 'textArea', null,
+                    'column_0', $columnMappingData, $importSanitizeResultsUtil);
+            $this->assertEquals('something valid', $sanitizedValue);
+            $this->assertTrue($importSanitizeResultsUtil->shouldSaveModel());
+            $messages = $importSanitizeResultsUtil->getMessages();
+            $this->assertEquals(0, count($messages));
         }
 
         public function testSanitizeValueBySanitizerTypesForUrlTypeThatIsNotRequired()
