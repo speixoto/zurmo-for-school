@@ -202,7 +202,7 @@
         {
             assert('is_string($gameBoardUrl)');
             $collectionAndItemKey = Yii::app()->gameHelper->resolveNewCollectionItems();
-            if (null != $collectionAndItemKey)
+            if (null != $collectionAndItemKey && Yii::app()->gameHelper->modalNotificationsEnabled)
             {
                 $gameCollectionRules = GameCollectionRulesFactory::createByType($collectionAndItemKey[0]->type);
                 $collectionItemTypesAndLabels = $gameCollectionRules::getItemTypesAndLabels();
