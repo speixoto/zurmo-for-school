@@ -127,7 +127,7 @@
          */
         public static function getRunTimeThresholdInSeconds()
         {
-            return 60;
+            return 900;
         }
 
         public function setMessageLogger(MessageLogger $messageLogger)

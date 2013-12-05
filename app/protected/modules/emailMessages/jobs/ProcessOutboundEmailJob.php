@@ -67,16 +67,6 @@
         }
 
         /**
-         * @returns the threshold for how long a job is allowed to run. This is the 'threshold'. If a job
-         * is running longer than the threshold, the monitor job might take action on it since it would be
-         * considered 'stuck'.
-         */
-        public static function getRunTimeThresholdInSeconds()
-        {
-            return 300;
-        }
-
-        /**
          * (non-PHPdoc)
          * @see BaseJob::run()
          */

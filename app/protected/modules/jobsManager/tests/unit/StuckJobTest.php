@@ -34,61 +34,54 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * A module to manage scheduled jobs that run and interact with the job logs from jobs that have
-     * already run.  Module provides a user interface to inspect information on any failed jobs.
-     */
-    class JobsManagerModule extends SecurableModule
+    class StuckJobTest extends ZurmoBaseTest
     {
-        const RIGHT_ACCESS_JOBSMANAGER = 'Access Jobs Manager Tab';
-
-        public static function getTranslatedRightsLabels()
+        public static function setUpBeforeClass()
         {
-            $labels                              = array();
-            $labels[self::RIGHT_ACCESS_JOBSMANAGER] = Zurmo::t('JobsManagerModule', 'Access Jobs Manager Tab');
-            return $labels;
+            parent::setUpBeforeClass();
+            SecurityTestHelper::createSuperAdmin();
         }
 
-        public function getDependencies()
+        public function testSetAndGet()
         {
-           return array('notifications', 'zurmo');
+            $stuckJob           = new StuckJob();
+            $stuckJob->type     = 'abc';
+            $stuckJob->quantity = 3;
+            $this->assertTrue($stuckJob->save());
+            $stuckJobId = $stuckJob->id;
+            $stuckJob->forget();
+            $stuckJob           = StuckJob::getById($stuckJobId);
+            $this->assertEquals('abc', $stuckJob->type);
+            $this->assertEquals(3    , $stuckJob->quantity);
+            $this->assertTrue($stuckJob->delete());
         }
 
-        public static function getDefaultMetadata()
+        public function testGetByType()
         {
-            $metadata = array();
-            $metadata['global'] = array(
-                'configureMenuItems' => array(
-                    array(
-                        'category'         => ZurmoModule::ADMINISTRATION_CATEGORY_GENERAL,
-                        'titleLabel'       => "eval:Zurmo::t('JobsManagerModule', 'Job Manager')",
-                        'descriptionLabel' => "eval:Zurmo::t('JobsManagerModule', 'Manage Scheduled Jobs')",
-                        'route'            => '/jobsManager/default/list',
-                        'right'            => self::RIGHT_ACCESS_JOBSMANAGER,
-                    ),
-                ),
-            );
-            return $metadata;
-        }
-
-        public static function getAccessRight()
-        {
-            return self::RIGHT_ACCESS_JOBSMANAGER;
-        }
-
-        protected static function getSingularModuleLabel($language)
-        {
-            return Zurmo::t('JobsManagerModule', 'Job Manager', array(), null, $language);
-        }
-
-        protected static function getPluralModuleLabel($language)
-        {
-            return Zurmo::t('JobsManagerModule', 'Job Managers', array(), null, $language);
-        }
-
-        public function getRootModelNames()
-        {
-            return array('JobLog', 'JobInProcess', 'StuckJob');
+            $this->assertEquals(0, count(StuckJob::getAll()));
+            $stuckJob           = new StuckJob();
+            $stuckJob->type     = 'abc';
+            $stuckJob->quantity = 3;
+            $this->assertTrue($stuckJob->save());
+            $stuckJob           = new StuckJob();
+            $stuckJob->type     = 'abc';
+            $stuckJob->quantity = 3;
+            $this->assertTrue($stuckJob->save());
+            $stuckJob           = new StuckJob();
+            $stuckJob->type     = 'def';
+            $stuckJob->quantity = 3;
+            $this->assertTrue($stuckJob->save());
+            $stuckJob = StuckJob::getByType('abc');
+            $this->assertEquals(1, count($stuckJob));
+            $this->assertEquals('abc', $stuckJob->type);
+            $this->assertTrue($stuckJob->id > 0);
+            $stuckJob = StuckJob::getByType('def');
+            $this->assertEquals(1, count($stuckJob));
+            $this->assertEquals('def', $stuckJob->type);
+            $this->assertTrue($stuckJob->id > 0);
+            $stuckJob = StuckJob::getByType('hij');
+            $this->assertEquals(1, count($stuckJob));
+            $this->assertTrue($stuckJob->id < 0);
         }
     }
 ?>

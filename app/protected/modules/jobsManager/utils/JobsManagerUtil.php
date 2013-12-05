@@ -187,7 +187,16 @@
                     $jobLog->message       = $errorMessage;
                 }
                 $jobLog->isProcessed = false;
-                $s = $jobLog->save();
+                if(!$jobLog->save())
+                {
+                    throw new FailedToSaveModelException();
+                }
+                $stuckJob               = StuckJob::getByType($type);
+                $stuckJob->quantity     = 0;
+                if(!$stuckJob->save())
+                {
+                    throw new FailedToSaveModelException();
+                }
             }
         }
 
