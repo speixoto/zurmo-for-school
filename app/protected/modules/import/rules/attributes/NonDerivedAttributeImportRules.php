@@ -94,7 +94,9 @@
                                                     $value,
                                                     $columnName,
                                                     $columnMappingData,
-                                                    $importSanitizeResultsUtil);
+                                                    $importSanitizeResultsUtil,
+                                                    $this->penultimateModelClassName,
+                                                    $this->penultimateAttributeName);
             return array($this->getModelAttributeName() => $value);
         }
 

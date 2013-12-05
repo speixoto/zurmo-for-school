@@ -86,7 +86,10 @@
             {
                 $attributeImportRules = new $attributeImportRulesClassName($model, $attributeName);
                 $attributeImportRules->setPenultimateModelClassName($penultimateModelClassName);
-                $attributeImportRules->setPenultimateAttributeName($attributeIndexOrDerivedType);
+                $penultimateAttributeName  = AttributeImportRulesFactory::
+                                            getAttributeNameFromAttributeNameByAttributeIndexOrDerivedType(
+                                                $attributeIndexOrDerivedType);
+                $attributeImportRules->setPenultimateAttributeName($penultimateAttributeName);
                 return $attributeImportRules;
             }
             return new $attributeImportRulesClassName($model, $attributeName);
@@ -182,7 +185,7 @@
                                $attributeIndexOrDerivedType)
         {
             assert('is_string($attributeIndexOrDerivedType)');
-                    $relationNameAndAttributeName = explode(FormModelUtil::DELIMITER, $attributeIndexOrDerivedType);
+            $relationNameAndAttributeName = explode(FormModelUtil::DELIMITER, $attributeIndexOrDerivedType);
             if (count($relationNameAndAttributeName) == 1)
             {
                 return $attributeIndexOrDerivedType;

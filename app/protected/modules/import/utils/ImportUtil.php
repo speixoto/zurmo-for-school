@@ -104,7 +104,9 @@
                 $columnMappingData = $mappingData[$idColumnName];
                 $attributeImportRules = AttributeImportRulesFactory::
                                         makeByImportRulesTypeAndAttributeIndexOrDerivedType(
-                                        $importRules::getType(), $columnMappingData['attributeIndexOrDerivedType']);
+                                            $importRules::getType(),
+                                            $columnMappingData['attributeIndexOrDerivedType'],
+                                            self::getPenultimateModelClassNameByImportRules($importRules));
                 $valueReadyToSanitize = static::
                                         resolveValueToSanitizeByValueAndColumnType($rowBean->$idColumnName,
                                                                                    $columnMappingData['type']);
@@ -268,7 +270,9 @@
             $columnMappingData["type"] == "extraColumn"');
                 $attributeImportRules = AttributeImportRulesFactory::
                                         makeByImportRulesTypeAndAttributeIndexOrDerivedType(
-                                        $importRules::getType(), $columnMappingData['attributeIndexOrDerivedType']);
+                                            $importRules::getType(),
+                                            $columnMappingData['attributeIndexOrDerivedType'],
+                                            self::getPenultimateModelClassNameByImportRules($importRules));
                 $valueReadyToSanitize = static::
                                         resolveValueToSanitizeByValueAndColumnType($rowBean->$columnName,
                                                                                    $columnMappingData['type']);
@@ -611,6 +615,17 @@
             }
             Yii::app()->custom->runImportsForImportCommand($messageLogger, $importName);
             $messageStreamer->add(Zurmo::t('ImportModule', 'Ending import.'));
+        }
+
+        /**
+         * Get Penultimate ModelClassName By Import Rules
+         * @param type $importRules
+         * @return type
+         */
+        public static function getPenultimateModelClassNameByImportRules(ImportRules $importRules)
+        {
+            $importingIntoModelClassName = $importRules::getType() . 'ImportRules';
+            return $importingIntoModelClassName::getModelClassName();
         }
     }
 ?>

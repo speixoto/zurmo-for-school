@@ -53,7 +53,9 @@
          */
         public static function sanitizeValueBySanitizerTypes($sanitizerUtilTypes, $modelClassName,
                                                              $attributeName, $value, $columnName, $columnMappingData,
-                                                             ImportSanitizeResultsUtil $importSanitizeResultsUtil)
+                                                             ImportSanitizeResultsUtil $importSanitizeResultsUtil,
+                                                             $penultimateModelClassName, $penultimateAttributeName
+                                                             )
         {
             assert('is_array($sanitizerUtilTypes)');
             assert('is_string($modelClassName)');
@@ -67,7 +69,8 @@
                     $sanitizer = ImportSanitizerUtilFactory::make($sanitizerUtilType,
                                                                   $modelClassName, $attributeName,
                                                                   $columnName, $columnMappingData,
-                                                                  $importSanitizeResultsUtil);
+                                                                  $importSanitizeResultsUtil,
+                                                                  $penultimateModelClassName, $penultimateAttributeName);
                     if ($sanitizer->shouldSanitizeValue())
                     {
                         $value = $sanitizer->sanitizeValue($value);

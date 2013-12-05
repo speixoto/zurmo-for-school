@@ -40,6 +40,12 @@
      */
     class ImportDedupeRulesRadioDropDownElement extends RadioDropDownElement
     {
+        const DO_NOT_DEDUPE = 1;
+
+        const SKIP_ROW_ON_MATCH_FOUND = 2;
+
+        const UPDATE_ROW_ON_MATCH_FOUND = 3;
+
         protected function renderControlEditable()
         {
             $content = null;
@@ -54,9 +60,9 @@
 
         protected function getDropDownArray()
         {
-            return array( 1 => 'Do not dedupe',
-                          2 => 'When a match is found, skip row',
-                          3 => 'When a match is found, update existing record');
+            return array( self::DO_NOT_DEDUPE             => Zurmo::t('ImportModule', 'Do not dedupe'),
+                          self::SKIP_ROW_ON_MATCH_FOUND   => Zurmo::t('ImportModule', 'When a match is found, skip row'),
+                          self::UPDATE_ROW_ON_MATCH_FOUND => Zurmo::t('ImportModule', 'When a match is found, update existing record'));
         }
     }
 ?>

@@ -150,8 +150,7 @@
                 foreach ($this->sanitizableColumnNames as $columnName)
                 {
                     $attributeIndexOrDerivedType = $this->mappingData[$columnName]['attributeIndexOrDerivedType'];
-                    $importingIntoModelClassName = $this->importRules->getType() . 'ImportRules';
-                    $penultimateModelClassName   = $importingIntoModelClassName::getModelClassName();
+                    $penultimateModelClassName   = ImportUtil::getPenultimateModelClassNameByImportRules($this->importRules);
                     $attributeImportRules = AttributeImportRulesFactory::
                                             makeByImportRulesTypeAndAttributeIndexOrDerivedType(
                                             $this->importRules->getType(),
@@ -166,7 +165,8 @@
                         {
                             $sanitizer = ImportSanitizerUtilFactory::
                                          make($attributeValueSanitizerUtilType, $modelClassName, $attributeName,
-                                         $columnName, $this->mappingData[$columnName]);
+                                         $columnName, $this->mappingData[$columnName], null, $penultimateModelClassName,
+                                         $attributeIndexOrDerivedType);
                             $sanitizer->analyzeByRow($rowBean);
                             if ($sanitizer->getShouldSkipRow())
                             {
@@ -185,7 +185,6 @@
                         }
                     }
                 }
-                exit;
 
                 if (!empty($columnMessages))
                 {

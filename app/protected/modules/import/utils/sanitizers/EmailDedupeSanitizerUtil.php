@@ -49,28 +49,25 @@
          */
         public function analyzeByRow(RedBean_OODBBean $rowBean)
         {
-            $modelClassName = $this->modelClassName;
+            $penultimateModelClassName = $this->penultimateModelClassName;
             $attributeName  = $this->attributeName;
-            print $modelClassName;
-            print $this->columnName;
-            print $attributeName;
-            exit;
-            $where          = $attributeName . '=' . $rowBean->{$this->columnName};
-            $matchedModels = $modelClassName::getSubset(null, null, null, $where);
-            if($matchedModels > 0)
+            if($penultimateModelClassName == 'Account')
             {
-
+                $matchedModels  = AccountSearch::getAccountsByAnyEmailAddress($rowBean->{$this->columnName});
             }
-            print "<pre>";
-            print_r($this->mappingRuleData);
-            print "</pre>";
-            exit;
-//            if ($rowBean->{$this->columnName} != null &&
-//                CDateTimeParser::parse($rowBean->{$this->columnName}, $this->mappingRuleData['format']) === false)
-//            {
-//                $label = Zurmo::t('ImportModule', 'Is an invalid date format. This value will be skipped during import.');
-//                $this->analysisMessages[] = $label;
-//            }
+            elseif($penultimateModelClassName == 'Contact')
+            {
+                $matchedModels  = ContactSearch::getContactsByAnyEmailAddress($rowBean->{$this->columnName});
+            }
+            if(count($matchedModels) > 0)
+            {
+                if($this->mappingRuleData["dedupeRule"]["value"] == ImportDedupeRulesRadioDropDownElement::SKIP_ROW_ON_MATCH_FOUND)
+                {
+                    $this->shouldSkipRow = true;
+                    $label = Zurmo::t('ImportModule', 'This value will be skipped during import due to dedupe rule.');
+                    $this->analysisMessages[] = $label;
+                }
+            }
         }
 
         /**
@@ -83,17 +80,7 @@
          */
         public function sanitizeValue($value)
         {
-            if ($value == null)
-            {
-                return $value;
-            }
-            $timeStamp = CDateTimeParser::parse($value, $this->mappingRuleData['format']);
-            if ($timeStamp === false)
-            {
-                throw new InvalidValueToSanitizeException(Zurmo::t('ImportModule', 'Invalid date format.'));
-            }
-            $dbDateValue = DateTimeUtil::convertTimestampToDbFormatDate($timeStamp);
-            return $dbDateValue;
+            return $value;
         }
 
         protected function assertMappingRuleDataIsValid()
