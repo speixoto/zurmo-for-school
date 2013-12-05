@@ -66,8 +66,10 @@
             $specialCssContent = null;
             if (!MINIFY_SCRIPTS && Yii::app()->isApplicationInstalled())
             {
-                $specialCssContent .= '<link rel="stylesheet/less" type="text/css" id="newui" href="' .
-                    $absoluteBaseUrl . '/' . $theme . '/less/newui.less"/>';
+                $specialCssContent .= '<link rel="stylesheet/less" type="text/css" id="zurmo" href="' .
+                    $absoluteBaseUrl . '/' . $theme . '/less/zurmo.less"/>';
+                $specialCssContent .= '<link rel="stylesheet/less" type="text/css" id="color-scheme" href="' .
+                    $absoluteBaseUrl . '/' . $theme . '/less/color-scheme.less"/>';
                 if (Yii::app()->userInterface->isMobile())
                 {
                     $specialCssContent .= '<link rel="stylesheet/less" type="text/css" id="mobile" href="' .
@@ -78,7 +80,8 @@
             }
             else
             {
-                $cs->registerCssFile($absoluteBaseUrl . '/' . $theme . '/css/newui.css');
+                $cs->registerCssFile($absoluteBaseUrl . '/' . $theme . '/css/zurmo.css');
+                $cs->registerCssFile($absoluteBaseUrl . '/' . $theme . '/css/color-scheme.css');
                 if (file_exists($theme . '/css/commercial.css'))
                 {
                     $cs->registerCssFile($absoluteBaseUrl . '/' . $theme . '/css/commercial.css');

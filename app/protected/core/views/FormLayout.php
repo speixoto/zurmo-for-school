@@ -87,7 +87,7 @@
          * @param array $metadata
          * @param integer $maxCellsPerRow
          */
-        public function __construct($metadata, $maxCellsPerRow, $errorSummaryContent)
+        public function __construct($metadata, $maxCellsPerRow, $errorSummaryContent, $uniqueId = null)
         {
             assert('is_array($metadata)');
             assert('is_int($maxCellsPerRow)');
@@ -95,7 +95,14 @@
             $this->metadata            = $metadata;
             $this->maxCellsPerRow      = $maxCellsPerRow;
             $this->errorSummaryContent = $errorSummaryContent;
-            $this->uniqueId       = $this->makeUniqueId();
+            if($uniqueId == null)
+            {
+                $this->uniqueId       = $this->makeUniqueId();
+            }
+            else
+            {
+                $this->uniqueId       = $uniqueId;
+            }
         }
 
         /**

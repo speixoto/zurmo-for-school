@@ -117,12 +117,12 @@
                     array('googleWebTrackingId',    'type',    'type' => 'string'),
                 ),
                 'elements' => array(
-                    'account'          => 'Account',
-                    'description'      => 'TextArea',
+                    'account'                 => 'Account',
+                    'description'             => 'TextArea',
                     'latestActivityDateTime'  => 'DateTime',
-                    'secondaryEmail'   => 'EmailAddressInformation',
-                    'secondaryAddress' => 'Address',
-                    'state'            => 'ContactState',
+                    'secondaryEmail'          => 'EmailAddressInformation',
+                    'secondaryAddress'        => 'Address',
+                    'state'                   => 'ContactState',
                 ),
                 'customFields' => array(
                     'industry' => 'Industries',

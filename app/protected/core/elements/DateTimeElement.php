@@ -49,10 +49,6 @@
             $htmlOptionsFromParams   = $this->getHtmlOptions();
             $htmlOptions             = $this->resolveHtmlOptions();
             $htmlOptions             = array_merge($htmlOptionsFromParams, $htmlOptions);
-            if ($this->getDisabledValue())
-            {
-                return ZurmoHtml::textField($this->getEditableInputName(), $this->renderControlNonEditable(), $htmlOptions);
-            }
             $themePath = Yii::app()->themeManager->baseUrl . '/' . Yii::app()->theme->name;
             $value     = DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay(
                             $this->model->{$this->attribute},
@@ -106,7 +102,27 @@
          */
         protected function resolveDatePickerOptions()
         {
-            return array();
+            if ($this->getDisabledValue() && $this->isDatePickerDisabled())
+            {
+                return array('disabled' => true);
+            }
+            else
+            {
+                return array();
+            }
+        }
+
+        /**
+         * Check if datepicker is disabled
+         * @return boolean
+         */
+        protected function isDatePickerDisabled()
+        {
+            if (isset($this->params['datePickerDisabled']))
+            {
+                return $this->params['datePickerDisabled'];
+            }
+            return true;
         }
     }
 ?>

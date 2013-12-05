@@ -34,63 +34,27 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class InlineEditViewDesignerRules extends EditViewDesignerRules
+    class ProjectListViewColumnAdapter extends TextListViewColumnAdapter
     {
-        public function allowEditInLayoutTool()
+        public function renderGridViewData()
         {
-            return true;
-        }
-
-        /**
-         * @param String $viewClassName
-         * @return string|void
-         */
-        public function resolveDisplayNameByView($viewClassName)
-        {
-            assert('is_string($viewClassName)');
-            $displayDescription = $viewClassName::getDisplayDescription();
-            if ($displayDescription != null)
+            if ($this->getIsLink())
             {
-                return $this->getDisplayName() . ' - ' . $displayDescription;
+                return array(
+                    'name' => $this->attribute,
+                    'type' => 'raw',
+                    'value' => $this->view->getRelatedLinkString(
+                            '$data->' . $this->attribute, $this->attribute, 'projects'),
+                );
             }
-            return $this->getDisplayName();
-        }
-
-        public function getDisplayName()
-        {
-            return Zurmo::t('DesignerModule', 'Inline Edit View');
-        }
-
-        public function maxCellsPerRow()
-        {
-            return 1;
-        }
-
-        public function canConfigureLayoutPanelsType()
-        {
-            return true;
-        }
-
-        public function getSavableMetadataRules()
-        {
-            return array();
-        }
-
-        public function getNonPlaceableLayoutAttributeNames()
-        {
-            return array(
-                'createdDateTime',
-                'latestActivityDateTime',
-                'modifiedDateTime',
-                'createdByUser',
-                'modifiedByUser',
-                'id'
-            );
-        }
-
-        public function canMergeAndSplitCells()
-        {
-            return false;
+            else
+            {
+                return array(
+                    'name'  => $this->attribute,
+                    'value' => 'strval($data->' . $this->attribute . ')',
+                    'type'  => 'raw',
+                );
+            }
         }
     }
 ?>
