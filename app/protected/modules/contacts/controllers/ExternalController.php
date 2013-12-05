@@ -94,6 +94,7 @@
                                                             ContactExternalEditAndDetailsView::GOOGLE_WEB_TRACKING_ID_FIELD);
             $contactWebFormModelForm->setCustomDisplayLabels($customDisplayLabels);
             $contactWebFormModelForm->setCustomRequiredFields($customRequiredFields);
+            $contactWebFormModelForm->resolveRequiredValidatorsForModel($customRequiredFields);
             $postVariableName                        = get_class($contactWebFormModelForm);
             if (isset($_POST[$postVariableName]))
             {
