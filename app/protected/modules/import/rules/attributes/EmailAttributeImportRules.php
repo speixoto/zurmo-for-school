@@ -47,7 +47,7 @@
 
         public static function getSanitizerUtilTypesInProcessingOrder()
         {
-            return array('Email', 'Required');
+            return array('Email', 'Required', 'EmailDedupe');
         }
     }
 ?>
