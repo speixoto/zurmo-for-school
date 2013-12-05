@@ -150,10 +150,13 @@
                 foreach ($this->sanitizableColumnNames as $columnName)
                 {
                     $attributeIndexOrDerivedType = $this->mappingData[$columnName]['attributeIndexOrDerivedType'];
+                    $importingIntoModelClassName = $this->importRules->getType() . 'ImportRules';
+                    $penultimateModelClassName   = $importingIntoModelClassName::getModelClassName();
                     $attributeImportRules = AttributeImportRulesFactory::
                                             makeByImportRulesTypeAndAttributeIndexOrDerivedType(
                                             $this->importRules->getType(),
-                                            $attributeIndexOrDerivedType);
+                                            $attributeIndexOrDerivedType,
+                                            $penultimateModelClassName);
                     $modelClassName       = $attributeImportRules->getModelClassName();
                     $attributeName        = static::resolveAttributeNameByRules($attributeImportRules);
                     if (null != $attributeValueSanitizerUtilTypes = $attributeImportRules->getSanitizerUtilTypesInProcessingOrder())
@@ -182,6 +185,8 @@
                         }
                     }
                 }
+                exit;
+
                 if (!empty($columnMessages))
                 {
                     $rowBean->serializedAnalysisMessages = serialize($columnMessages);
