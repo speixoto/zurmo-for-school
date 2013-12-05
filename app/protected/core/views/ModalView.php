@@ -120,7 +120,7 @@
             return "js:function(){
                 jQuery('#{$containerId}').html('');
                 $(this).makeLargeLoadingSpinner(true, '#{$containerId}');
-                window.scrollTo(0, 0);
+                //window.scrollTo(0, 0);
                 jQuery('#{$containerId}').dialog({
                     'title' : '{$modalTitle}',
                     'autoOpen' : true,
