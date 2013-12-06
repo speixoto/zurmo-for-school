@@ -135,6 +135,7 @@
                     ),
                     'css-color' => array(
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'themes/THEME_NAME/css/color-scheme.css',
+                        INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'themes/THEME_NAME/css/keyframes.css'
                     ),
                     'js' => array(
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . '/../yii/framework/web/js/source/jquery.min.js',
