@@ -3296,7 +3296,6 @@ label.hasCheckBox.disabled {
 }
 label.hasCheckBox + label {
   margin-left: 8px;
-  margin-top: 6px;
 }
 div.wide.form {
   position: relative;
