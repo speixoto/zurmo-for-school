@@ -699,6 +699,9 @@ table.configuration-list td:last-child a.loading .z-icon,
 .temp-hidden {
   display: none;
 }
+.hidden-visibility {
+  visibility: hidden !important;
+}
 .disabled-select-element {
   pointer-events: none;
 }
@@ -3297,6 +3300,7 @@ label.hasCheckBox.disabled {
 label.hasCheckBox + label {
   margin-left: 8px;
   margin-top: 6px;
+  line-height: 1;
 }
 div.wide.form {
   position: relative;
@@ -8397,6 +8401,7 @@ table.configuration-list td:last-child a .z-label:before {
   width: 100%;
   display: block;
   margin-top: 4px;
+  position: relative;
 }
 .multi-select-checkbox-input:before,
 .multi-select-checkbox-input:after {
@@ -8408,6 +8413,13 @@ table.configuration-list td:last-child a .z-label:before {
 }
 .multi-select-checkbox-input .hasCheckBox {
   margin: 0 10px 0 0 !important;
+  z-index: 20;
+}
+.multi-select-checkbox-input .z-spinner {
+  display: block;
+  left: -2px;
+  top: 3px;
+  z-index: 0;
 }
 .has-lang-label {
   position: relative;

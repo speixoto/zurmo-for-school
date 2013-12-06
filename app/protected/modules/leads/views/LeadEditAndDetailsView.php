@@ -62,6 +62,7 @@
                         'state',
                         'account',
                         'owner',
+                        'latestActivityDateTime'
                     ),
                     'panelsDisplayType' => FormLayout::PANELS_DISPLAY_TYPE_ALL,
                     'panels' => array(
