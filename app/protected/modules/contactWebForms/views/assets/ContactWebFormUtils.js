@@ -9,8 +9,6 @@ $("[id^='ContactWebForm_serializedData_']").live('change', function(){
             url: ajaxAction + "?attributeName=" + attributeId,
             data: {attributeLabel: attributeLabel},
             beforeSend: function(request, settings){
-                console.log($('label[for=' + elementId + ']').parent());
-                console.log($('label[for=' + elementId + ']'));
                 $('label[for=' + elementId + ']').siblings('.hasCheckBox').addClass('hidden-visibility');
                 $(this).makeOrRemoveTogglableSpinner(true, $('label[for=' + elementId + ']').parent());
             }
