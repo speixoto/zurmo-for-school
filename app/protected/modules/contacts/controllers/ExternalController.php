@@ -283,6 +283,11 @@
                 {
                     $metadata['global']['panels'][0]['rows'][$index]['cells'][0]['elements'][0]['hideOptOut'] = true;
                 }
+                if ($data['cells'][0]['elements'][0]['type'] == 'TagCloud')
+                {
+                    $metadata['global']['panels'][0]['rows'][$index]['cells'][0]['elements'][0]['type'] =
+                    'MultiSelectDropDown';
+                }
             }
             return $metadata;
         }
