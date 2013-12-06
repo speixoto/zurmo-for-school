@@ -165,6 +165,15 @@
                 $saved = $model->save();
                 if ($saved)
                 {
+                    //Check if matched models has to be updated(in case of dedupe update matched records)
+                    if(count($importSanitizeResultsUtil->getMatchedModels()) > 0)
+                    {
+                        $matchedModels = $importSanitizeResultsUtil->getMatchedModels();
+                        foreach($matchedModels as $matchedModel)
+                        {
+                            //ZurmoCopyModelUtil::copy($model, $matchedModel);
+                        }
+                    }
                     static::processAfterSaveActions($afterSaveActionsData, $model);
                     if ($externalSystemId!= null)
                     {

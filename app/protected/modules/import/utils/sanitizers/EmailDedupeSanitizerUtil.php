@@ -49,25 +49,7 @@
          */
         public function analyzeByRow(RedBean_OODBBean $rowBean)
         {
-            $penultimateModelClassName = $this->penultimateModelClassName;
-            $attributeName  = $this->attributeName;
-            if($penultimateModelClassName == 'Account')
-            {
-                $matchedModels  = AccountSearch::getAccountsByAnyEmailAddress($rowBean->{$this->columnName});
-            }
-            elseif($penultimateModelClassName == 'Contact')
-            {
-                $matchedModels  = ContactSearch::getContactsByAnyEmailAddress($rowBean->{$this->columnName});
-            }
-            if(count($matchedModels) > 0)
-            {
-                if($this->mappingRuleData["dedupeRule"]["value"] == ImportDedupeRulesRadioDropDownElement::SKIP_ROW_ON_MATCH_FOUND)
-                {
-                    $this->shouldSkipRow = true;
-                    $label = Zurmo::t('ImportModule', 'This value will be skipped during import due to dedupe rule.');
-                    $this->analysisMessages[] = $label;
-                }
-            }
+            $this->checkIfRowToBeSkippedAndSetAnalysisMessages($rowBean->{$this->columnName});
         }
 
         /**
@@ -80,12 +62,50 @@
          */
         public function sanitizeValue($value)
         {
+            $this->checkIfRowToBeSkippedAndSetAnalysisMessages($value);
             return $value;
         }
 
         protected function assertMappingRuleDataIsValid()
         {
             assert('is_array($this->mappingRuleData["dedupeRule"])');
+        }
+
+        /**
+         * Check if row to be skipped and set the analysis messages based on it
+         * @param string $value
+         */
+        private function checkIfRowToBeSkippedAndSetAnalysisMessages($value)
+        {
+            assert('is_string($value)');
+            $penultimateModelClassName = $this->penultimateModelClassName;
+            if($penultimateModelClassName == 'Account')
+            {
+                $matchedModels  = AccountSearch::getAccountsByAnyEmailAddress($value);
+            }
+            elseif($penultimateModelClassName == 'Contact')
+            {
+                $matchedModels  = ContactSearch::getContactsByAnyEmailAddress($value);
+            }
+            if(count($matchedModels) > 0)
+            {
+                if($this->mappingRuleData["dedupeRule"]["value"] == ImportDedupeRulesRadioDropDownElement::SKIP_ROW_ON_MATCH_FOUND)
+                {
+                    $this->shouldSkipRow = true;
+                    $label = Zurmo::t('ImportModule', 'The record will be skipped during import due to dedupe rule.');
+                    $this->analysisMessages[] = $label;
+                }
+                elseif($this->mappingRuleData["dedupeRule"]["value"] == ImportDedupeRulesRadioDropDownElement::UPDATE_ROW_ON_MATCH_FOUND)
+                {
+                    $this->shouldUpdateMatchedModels = true;
+                    $label = Zurmo::t('ImportModule', 'The matched records would be updated with the values of the record');
+                    $this->analysisMessages[] = $label;
+                    if($this->importSanitizeResultsUtil != null)
+                    {
+                        $this->importSanitizeResultsUtil->setMatchedModels($matchedModels);
+                    }
+                }
+            }
         }
     }
 ?>

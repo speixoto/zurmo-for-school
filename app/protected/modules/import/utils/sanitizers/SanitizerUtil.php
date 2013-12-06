@@ -65,6 +65,8 @@
 
         protected $penultimateAttributeName;
 
+        protected $shouldUpdateMatchedModels = false;
+
         /**
          * Sanitize a value, returning a sanitized value either as the same cast or different cast. This is the final
          * step for importing a row, this method is called as the value from the import column for a row is ready to
@@ -180,6 +182,11 @@
         public function getShouldSkipRow()
         {
             return $this->shouldSkipRow;
+        }
+
+        public function getShouldUpdateMatchedModels()
+        {
+            return $this->shouldUpdateMatchedModels;
         }
 
         /**

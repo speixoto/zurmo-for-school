@@ -75,6 +75,12 @@
                     {
                         $value = $sanitizer->sanitizeValue($value);
                     }
+                    if($sanitizer->getShouldSkipRow())
+                    {
+                        $importSanitizeResultsUtil->setModelShouldNotBeSaved();
+                        $importSanitizeResultsUtil->setMessages($sanitizer->getAnalysisMessages());
+                        break;
+                    }
                 }
                 catch (InvalidValueToSanitizeException $e)
                 {
