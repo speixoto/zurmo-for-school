@@ -42,8 +42,8 @@
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array('type' => 'CancelLink'),
                             array('type' => 'SaveButton'),
+                            array('type' => 'CancelLink'),
                         ),
                     ),
                     'nonPlaceableAttributeNames' => array(),

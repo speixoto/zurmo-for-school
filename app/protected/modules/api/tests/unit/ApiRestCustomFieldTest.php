@@ -140,7 +140,7 @@
                 getDataIndexedByDataAndTranslatedLabelsByLanguage($typeFieldData, 'en');
 
             $data = array(
-                'values' => array('Unknown', 'None'),
+                'values' => array('Unknown', 'None', array('Not Alowed', '22'), 'None'),
             );
             $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/zurmo/customField/api/addValues/' . $typeFieldData->name, 'PUT', $headers, array('data' => $data));
             $response = json_decode($response, true);

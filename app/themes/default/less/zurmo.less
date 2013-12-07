@@ -38,7 +38,8 @@
 	padding:0;
 }
 
-@import 'color-scheme.less';
+//@import 'color-scheme.less';
+@import 'mixins.less';
 
 /*=Variables*/
 .strong{
@@ -50,8 +51,13 @@
 	display:none !important;
 	visibility:hidden !important;
 }
+
 .temp-hidden{
 	display:none;
+}
+
+.hidden-visibility{
+	visibility:hidden !important;
 }
 
 .disabled-select-element{
@@ -2305,6 +2311,7 @@ label.hasCheckBox{
 	& + label{
 		margin-left:8px;
 		margin-top:6px;
+		line-height:1;
 	}
 }
 

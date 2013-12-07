@@ -283,5 +283,14 @@
                 $elementInformation['rows'] = 2;
             }
         }
+
+        /**
+         * Gets form layout unique id
+         * @return null
+         */
+        protected function getFormLayoutUniqueId()
+        {
+            return 'task-modal-edit-form-layout';
+        }
     }
 ?>

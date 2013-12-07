@@ -114,12 +114,14 @@
             else
             {
                 $unserializedValues = unserialize($customFieldData->serializedData);
-
                 if (is_array($params['data']['values']))
                 {
                     foreach ($params['data']['values'] as $value)
                     {
-                        $unserializedValues[] = $value;
+                        if (!is_array($value) && !is_object($value) && !in_array($value, $unserializedValues))
+                        {
+                            $unserializedValues[] = $value;
+                        }
                     }
                 }
                 $customFieldData->serializedData = serialize($unserializedValues);
