@@ -54,7 +54,8 @@
          * @return object AttributeImportRules
          */
         public static function makeByImportRulesTypeAndAttributeIndexOrDerivedType($importRulesType,
-                                                                                  $attributeIndexOrDerivedType)
+                                                                                  $attributeIndexOrDerivedType,
+                                                                                  $penultimateModelClassName = null)
         {
             assert('is_string($importRulesType)');
             assert('is_string($attributeIndexOrDerivedType)');
@@ -80,6 +81,16 @@
             if (is_subclass_of($attributeImportRulesClassName, 'DerivedAttributeImportRules'))
             {
                 return new $attributeImportRulesClassName($model);
+            }
+            if (is_subclass_of($attributeImportRulesClassName, 'NonDerivedAttributeImportRules'))
+            {
+                $attributeImportRules = new $attributeImportRulesClassName($model, $attributeName);
+                $attributeImportRules->setPenultimateModelClassName($penultimateModelClassName);
+                $penultimateAttributeName  = AttributeImportRulesFactory::
+                                            getAttributeNameFromAttributeNameByAttributeIndexOrDerivedType(
+                                                $attributeIndexOrDerivedType);
+                $attributeImportRules->setPenultimateAttributeName($penultimateAttributeName);
+                return $attributeImportRules;
             }
             return new $attributeImportRulesClassName($model, $attributeName);
         }
@@ -174,7 +185,7 @@
                                $attributeIndexOrDerivedType)
         {
             assert('is_string($attributeIndexOrDerivedType)');
-                    $relationNameAndAttributeName = explode(FormModelUtil::DELIMITER, $attributeIndexOrDerivedType);
+            $relationNameAndAttributeName = explode(FormModelUtil::DELIMITER, $attributeIndexOrDerivedType);
             if (count($relationNameAndAttributeName) == 1)
             {
                 return $attributeIndexOrDerivedType;

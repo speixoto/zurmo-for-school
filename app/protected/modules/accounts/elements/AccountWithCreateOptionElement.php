@@ -35,19 +35,61 @@
      ********************************************************************************/
 
     /**
-     * Import rules for any attributes that are type Email.
+     * Display the account selection. This is a
+     * combination of a type-ahead input text field
+     * and a selection button which renders a modal list view
+     * to search on account.  Also includes a hidden input for the user
+     * id.
      */
-    class EmailAttributeImportRules extends NonDerivedAttributeImportRules
+    class AccountWithCreateOptionElement extends AccountElement
     {
-        protected static function getAllModelAttributeMappingRuleFormTypesAndElementTypes()
+        protected static $moduleId = 'accounts';
+
+        /**
+         * Renders extra html content
+         * @return null
+         */
+        protected function renderExtraHtmlContent()
         {
-            return array('DefaultValueModelAttribute' => 'Text',
-                         'EmailModelAttributeDedupe' => 'ImportDedupeRulesRadioDropDown');
+            return $this->renderCreateAccountModalLink();
         }
 
-        public static function getSanitizerUtilTypesInProcessingOrder()
+        /**
+         * Render create account modal link
+         * @return array
+         */
+        private function renderCreateAccountModalLink()
         {
-            return array('Email', 'Required', 'EmailDedupe');
+            $id      = $this->getIdForCreateLink();
+            $label   = $this->getCreateAccountLabel();
+            $content = ZurmoHtml::ajaxLink('<br/>' . $label,
+                Yii::app()->createUrl('accounts/default/modalCreate', $this->getSelectLinkUrlParams()),
+                $this->resolveAjaxOptionsForModalView($id),
+                array(
+                'id'        => $id,
+                'style'     => $this->getSelectLinkStartingStyle(),
+                )
+            );
+            return $content;
+        }
+
+        protected function getIdForCreateLink()
+        {
+            return $this->getEditableInputId($this->attribute, 'CreateLink');
+        }
+
+        protected function resolveAjaxOptionsForModalView($linkId)
+        {
+            assert('is_string($linkId)');
+            $title  = $this->getCreateAccountLabel();
+            return   ModalView::getAjaxOptionsForModalLink($title, $this->getModalContainerId(), 'auto', 600,
+                     'center top+25', $class = "'task-dialog'");
+        }
+
+        private function getCreateAccountLabel()
+        {
+            $params = LabelUtil::getTranslationParamsForAllModules();
+            return Zurmo::t('AccountsModule', 'Create AccountsModuleSingularLabel', $params);
         }
     }
 ?>

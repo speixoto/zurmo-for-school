@@ -104,7 +104,9 @@
                 $columnMappingData = $mappingData[$idColumnName];
                 $attributeImportRules = AttributeImportRulesFactory::
                                         makeByImportRulesTypeAndAttributeIndexOrDerivedType(
-                                        $importRules::getType(), $columnMappingData['attributeIndexOrDerivedType']);
+                                            $importRules::getType(),
+                                            $columnMappingData['attributeIndexOrDerivedType'],
+                                            self::getPenultimateModelClassNameByImportRules($importRules));
                 $valueReadyToSanitize = static::
                                         resolveValueToSanitizeByValueAndColumnType($rowBean->$idColumnName,
                                                                                    $columnMappingData['type']);
@@ -163,6 +165,15 @@
                 $saved = $model->save();
                 if ($saved)
                 {
+                    //Check if matched models has to be updated(in case of dedupe update matched records)
+                    if(count($importSanitizeResultsUtil->getMatchedModels()) > 0)
+                    {
+                        $matchedModels = $importSanitizeResultsUtil->getMatchedModels();
+                        foreach($matchedModels as $matchedModel)
+                        {
+                            //ZurmoCopyModelUtil::copy($model, $matchedModel);
+                        }
+                    }
                     static::processAfterSaveActions($afterSaveActionsData, $model);
                     if ($externalSystemId!= null)
                     {
@@ -268,7 +279,9 @@
             $columnMappingData["type"] == "extraColumn"');
                 $attributeImportRules = AttributeImportRulesFactory::
                                         makeByImportRulesTypeAndAttributeIndexOrDerivedType(
-                                        $importRules::getType(), $columnMappingData['attributeIndexOrDerivedType']);
+                                            $importRules::getType(),
+                                            $columnMappingData['attributeIndexOrDerivedType'],
+                                            self::getPenultimateModelClassNameByImportRules($importRules));
                 $valueReadyToSanitize = static::
                                         resolveValueToSanitizeByValueAndColumnType($rowBean->$columnName,
                                                                                    $columnMappingData['type']);
@@ -611,6 +624,17 @@
             }
             Yii::app()->custom->runImportsForImportCommand($messageLogger, $importName);
             $messageStreamer->add(Zurmo::t('ImportModule', 'Ending import.'));
+        }
+
+        /**
+         * Get Penultimate ModelClassName By Import Rules
+         * @param type $importRules
+         * @return type
+         */
+        public static function getPenultimateModelClassNameByImportRules(ImportRules $importRules)
+        {
+            $importingIntoModelClassName = $importRules::getType() . 'ImportRules';
+            return $importingIntoModelClassName::getModelClassName();
         }
     }
 ?>
