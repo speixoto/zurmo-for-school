@@ -104,8 +104,7 @@
         protected function getEditableHtmlOptions()
         {
             return array(
-                'template'  => '<div class="multi-select-checkbox-input"><label class="hasCheckBox">{input}</label>' .
-                                '{label}</div>',
+                'template'  => '<div class="multi-select-checkbox-input">{input}{label}<span class="z-spinner"></span></div>',
                 'separator' => '');
         }
 
