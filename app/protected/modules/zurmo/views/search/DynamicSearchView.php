@@ -122,7 +122,7 @@
                         $('#" . $this->gridId . $this->gridIdSuffix . "-selectedIds').val(null);
                         $.fn.yiiGridView.update('" . $this->gridId . $this->gridIdSuffix . "',
                         {
-                            data: $('#" . $formName . "').serialize() + '&" . $this->listModelClassName . "_page=&" . // Not Coding Standard
+                            data: '" . $this->listModelClassName . "_page=&" . // Not Coding Standard
                             $this->listModelClassName . "_sort=" .
                             $this->getExtraQueryPartForSearchFormScriptSubmitFunction() ."' // Not Coding Standard
                          }

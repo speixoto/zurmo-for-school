@@ -65,14 +65,14 @@
             $this->assertNull($kanbanBoard->getIsActive());
             $searchModel = new AAASearchFormTestModel(new AAA());
             $searchModel->setKanbanBoard($kanbanBoard);
-            KanbanBoard::resolveKanbanBoardOptionsForSearchModelFromGetArray($searchModel, 'test');
+            KanbanBoard::resolveKanbanBoardOptionsForSearchModelFromArray($searchModel, 'test',);
             $this->assertNull($kanbanBoard->getGroupByAttributeVisibleValues());
             $this->assertNull($kanbanBoard->getSelectedTheme());
             $this->assertNull($kanbanBoard->getIsActive());
 
             //Now test setting in a selectedTheme and visibleValues
             $_GET['test'] = array('groupByAttributeVisibleValues' => array('c', 'd'), 'selectedTheme' => 'aTheme');
-            KanbanBoard::resolveKanbanBoardOptionsForSearchModelFromGetArray($searchModel, 'test');
+            KanbanBoard::resolveKanbanBoardOptionsForSearchModelFromArray($searchModel, 'test',);
             $this->assertEquals(array('c', 'd'), $kanbanBoard->getGroupByAttributeVisibleValues());
             $this->assertEquals('aTheme', $kanbanBoard->getSelectedTheme());
             $this->assertTrue($kanbanBoard->getIsActive());

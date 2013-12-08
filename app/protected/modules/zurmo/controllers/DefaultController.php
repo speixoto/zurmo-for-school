@@ -269,8 +269,9 @@
         {
             if (isset($_POST['ajax']) && $_POST['ajax'] === 'search-form' && isset($_POST[$formModelClassName]))
             {
-                $model                     = new $modelClassName(false);
-                $searchForm                = new $formModelClassName($model);
+                $model      = new $modelClassName(false);
+                $searchForm = new $formModelClassName($model);
+                $sourceData = $_POST;
                 if (isset($_POST[$formModelClassName][SearchForm::ANY_MIXED_ATTRIBUTES_SCOPE_NAME]))
                 {
                     $searchForm->setAnyMixedAttributesScope($_POST[$formModelClassName][SearchForm::ANY_MIXED_ATTRIBUTES_SCOPE_NAME]);
@@ -323,6 +324,45 @@
                     echo CJSON::encode($errorData);
                     Yii::app()->end(0, false);
                 }
+                $this->setStickyData($searchForm, $viewClassName, true, $sourceData);
+            }
+        }
+
+        protected function setStickyData($searchModel, $stickySearchKey = null, $setSticky = true, $sourceData)
+        {
+            if ($searchModel instanceof SavedDynamicSearchForm)
+            {
+                if ($stickySearchKey != null && isset($sourceData['clearingSearch']) && $sourceData['clearingSearch'])
+                {
+                    StickySearchUtil::clearDataByKey($stickySearchKey);
+                }
+                $dataCollection = new SavedSearchAttributesDataCollection($searchModel);
+                if ($stickySearchKey != null && null != $stickySearchData = StickySearchUtil::getDataByKey($stickySearchKey))
+                {
+                    SavedSearchUtil::resolveSearchFormByStickyDataAndModel($stickySearchData, $searchModel);
+                    SavedSearchUtil::resolveSearchFormByStickySortData($sourceData, $searchModel, $stickySearchData);
+                    SearchUtil::resolveSearchFormByStickyFilterByStarredData($sourceData, $searchModel, $stickySearchData);
+                    $dataCollection = new SavedSearchAttributesDataCollection($searchModel);
+                }
+                else
+                {
+                    SavedSearchUtil::resolveSearchFormByData($sourceData, $searchModel);
+                    if ($searchModel->savedSearchId != null)
+                    {
+                        $dataCollection = new SavedSearchAttributesDataCollection($searchModel);
+                    }
+                }
+                if ($stickySearchKey != null && ($setSticky ||
+                        ($searchModel->getKanbanBoard() != null && $searchModel->getKanbanBoard()->getClearSticky())))
+                {
+                    if ($stickySearchData == null)
+                    {
+                        $stickySearchData = array();
+                    }
+                    $dataCollection->setSourceData($sourceData);
+                    SavedSearchUtil::setDataByKeyAndDataCollection($stickySearchKey, $dataCollection, $stickySearchData);
+                }
+                $searchModel->loadSavedSearchUrl = Yii::app()->createUrl($this->getModule()->getId() . '/' . $this->getId() . '/list/');
             }
         }
 

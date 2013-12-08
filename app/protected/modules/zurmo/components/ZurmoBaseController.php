@@ -251,7 +251,7 @@
                 }
                 else
                 {
-                    SavedSearchUtil::resolveSearchFormByGetData($getData, $searchModel);
+                    SavedSearchUtil::resolveSearchFormByData($getData, $searchModel);
                     if ($searchModel->savedSearchId != null)
                     {
                         $dataCollection = new SavedSearchAttributesDataCollection($searchModel);
