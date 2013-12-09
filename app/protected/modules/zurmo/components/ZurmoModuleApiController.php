@@ -210,8 +210,7 @@
 
             try
             {
-                $redBeanModelToApiDataUtil = new RedBeanModelToApiDataUtil($model);
-                $data                      = $redBeanModelToApiDataUtil->getData();
+                $data           = static::getModelToApiDataUtilData($model);
                 $resultClassName = Yii::app()->apiRequest->getResultClassName();
                 $result                    = new $resultClassName(ApiResponse::STATUS_SUCCESS, $data, null, null);
             }
@@ -333,8 +332,7 @@
                     $formattedData = $dataProvider->getData();
                     foreach ($formattedData as $model)
                     {
-                        $redBeanModelToApiDataUtil  = new RedBeanModelToApiDataUtil($model);
-                        $data['items'][] = $redBeanModelToApiDataUtil->getData();
+                        $data['items'][] = static::getModelToApiDataUtilData($model);
                     }
                     $result = new ApiResult(ApiResponse::STATUS_SUCCESS, $data, null, null);
                 }
@@ -497,7 +495,9 @@
                     $modelRelations = $data['modelRelations'];
                     unset($data['modelRelations']);
                 }
-                $model = $this->attemptToSaveModelFromData(new $modelClassName, $data, null, false);
+                $model = new $modelClassName();
+                $this->preAttemptToSaveModelFromDataHook($model, $data);
+                $model = $this->attemptToSaveModelFromData($model, $data, null, false);
                 $id = $model->id;
                 $model->forget();
                 if (!count($model->getErrors()))
@@ -516,9 +516,8 @@
                             throw new ApiException($message);
                         }
                     }
-                    $model = $modelClassName::getById($id);
-                    $redBeanModelToApiDataUtil  = new RedBeanModelToApiDataUtil($model);
-                    $data  = $redBeanModelToApiDataUtil->getData();
+                    $model  = $modelClassName::getById($id);
+                    $data   = static::getModelToApiDataUtilData($model);
                     $result = new ApiResult(ApiResponse::STATUS_SUCCESS, $data, null, null);
                 }
                 else
@@ -596,8 +595,7 @@
                     }
 
                     $model = $modelClassName::getById($id);
-                    $redBeanModelToApiDataUtil  = new RedBeanModelToApiDataUtil($model);
-                    $data  = $redBeanModelToApiDataUtil->getData();
+                    $data  = static::getModelToApiDataUtilData($model);
                     $result = new ApiResult(ApiResponse::STATUS_SUCCESS, $data, null, null);
                 }
                 else
@@ -747,6 +745,38 @@
                 $this->actionAfterSuccessfulModelSave($model, $modelToStringValue, $redirectUrlParams);
             }
             return $model;
+        }
+
+        /**
+         * Hook to alter $model or $data before we attempt to save it.
+         * @param RedBeanModel $model
+         * @param array $data
+         */
+        protected function preAttemptToSaveModelFromDataHook(RedBeanModel $model, array & $data)
+        {
+
+        }
+
+        /**
+         * Util used to convert model to array
+         * @return string
+         */
+        protected static function getModelToApiDataUtil()
+        {
+            return 'RedBeanModelToApiDataUtil';
+        }
+
+        /**
+         * Returns data array for provided model using getModelToApiDataUtil
+         * @param RedBeanModel $model
+         * @return array
+         */
+        protected static function getModelToApiDataUtilData(RedBeanModel $model)
+        {
+            $dataUtil                   = static::getModelToApiDataUtil();
+            $redBeanModelToApiDataUtil  = new $dataUtil($model);
+            $data                       = $redBeanModelToApiDataUtil->getData();
+            return $data;
         }
     }
 ?>
