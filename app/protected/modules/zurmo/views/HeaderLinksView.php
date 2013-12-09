@@ -110,9 +110,9 @@
             $content  .= '</div>';
             if (!empty($this->userMenuItems) && !empty($this->settingsMenuItems))
             {
-                $content  .= '<div id="user-toolbar" class="clearfix">';
-                $content  .= static::renderHeaderMenus($this->userMenuItems, $this->settingsMenuItems);
-                $content  .= '</div>';
+                $content .= '<div id="user-toolbar" class="clearfix">';
+                $content .= static::renderHeaderMenus($this->userMenuItems, $this->settingsMenuItems);
+                $content .= '</div>';
             }
             $content  .= '</div>';
             return $content;

@@ -18152,7 +18152,7 @@ body .overlay-view .after-form-details-content a:hover {
   height: 128px;
   width: 128px;
   display: block;
-  cursor: default;
+  cursor: pointer;
   color: #e2b321;
   background: url(../images/game-dashboard/random-coin.png) center bottom no-repeat;
 }
@@ -18169,14 +18169,26 @@ body .overlay-view .after-form-details-content a:hover {
   font-weight: bold;
   font-size: 14px;
   line-height: 16px;
+  float: left;
+  position: relative;
+  top: 50px;
+  margin-right: 10px;
+  color: #FFF;
 }
 .game-coin-quantity i {
   display: inline-block;
   line-height: inherit;
-  margin-left: 10px;
+  position: relative;
+  top: 3px;
+  margin-left: 4px;
   height: 16px;
   width: 16px;
   background-image: url(../images/game-dashboard/z-coin-small.png);
+  -webkit-animation: spinCoin .7s linear infinite;
+  -moz-animation: spinCoin .7s linear infinite;
+  -ms-animation: spinCoin .7s linear infinite;
+  -o-animation: spinCoin .7s linear infinite;
+  animation: spinCoin .7s linear infinite;
 }
 /*Notification*/
 #header-game-dashboard-link-wrapper {
