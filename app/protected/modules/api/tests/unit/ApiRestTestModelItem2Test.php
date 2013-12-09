@@ -39,18 +39,6 @@
     */
     class ApiRestTestModelItem2Test extends ApiRestTest
     {
-        public function testApiServerUrl()
-        {
-            if (!$this->isApiTestUrlConfigured())
-            {
-                $this->markTestSkipped(Zurmo::t('ApiModule', 'API test url is not configured in perInstanceTest.php file.'));
-            }
-            $this->assertTrue(strlen($this->serverUrl) > 0);
-        }
-
-        /**
-        * @depends testApiServerUrl
-        */
         public function testLogin()
         {
             $headers = array(
@@ -68,9 +56,6 @@
             //$this->sessionId = $response['data']['sessionId'];
         }
 
-        /**
-        * @depends testApiServerUrl
-        */
         public function testCreate()
         {
             $super = User::getByUsername('super');
@@ -258,9 +243,6 @@
             $this->assertEquals(ApiResponse::STATUS_FAILURE, $response['status']);
         }
 
-        /**
-        * @depends testApiServerUrl
-        */
         public function testLogout()
         {
             $authenticationData = $this->login();

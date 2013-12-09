@@ -39,18 +39,6 @@
     */
     class ApiRestNoteTest extends ApiRestTest
     {
-        public function testApiServerUrl()
-        {
-            if (!$this->isApiTestUrlConfigured())
-            {
-                $this->markTestSkipped(Zurmo::t('ApiModule', 'API test url is not configured in perInstanceTest.php file.'));
-            }
-            $this->assertTrue(strlen($this->serverUrl) > 0);
-        }
-
-        /**
-        * @depends testApiServerUrl
-        */
         public function testGetNote()
         {
             $super = User::getByUsername('super');
@@ -100,9 +88,6 @@
             $this->assertEquals('The ID specified was invalid.', $response['message']);
         }
 
-        /**
-        * @depends testApiServerUrl
-        */
         public function testCreateNote()
         {
             $super = User::getByUsername('super');
@@ -614,8 +599,6 @@
 
         /**
         * Test get notes that are related with particular contact(MANY_MANY relationship)
-        *
-        * @depends testApiServerUrl
         */
         public function testGetNotesThatAreRelatedWithContactModel()
         {
@@ -696,9 +679,6 @@
             $this->assertEquals('Third note with relations', $response['data']['items'][0]['description']);
         }
 
-        /**
-        * @depends testApiServerUrl
-        */
         public function testCreateWithRelations()
         {
             $super = User::getByUsername('super');
@@ -808,9 +788,6 @@
             $this->assertEquals(0, count($note->activityItems));
         }
 
-        /**
-        * @depends testApiServerUrl
-        */
         public function testEditNoteWithIncompleteData()
         {
             $super = User::getByUsername('super');
@@ -842,9 +819,6 @@
             $this->assertEquals(1, count($response['errors']));
         }
 
-        /**
-        * @depends testApiServerUrl
-        */
         public function testEditNoteWIthIncorrectDataType()
         {
             $super = User::getByUsername('super');

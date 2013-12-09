@@ -39,18 +39,6 @@
     */
     class ApiRestTaskTest extends ApiRestTest
     {
-        public function testApiServerUrl()
-        {
-            if (!$this->isApiTestUrlConfigured())
-            {
-                $this->markTestSkipped(Zurmo::t('ApiModule', 'API test url is not configured in perInstanceTest.php file.'));
-            }
-            $this->assertTrue(strlen($this->serverUrl) > 0);
-        }
-
-    /**
-        * @depends testApiServerUrl
-        */
         public function testGetTask()
         {
             $super = User::getByUsername('super');
@@ -101,9 +89,6 @@
             $this->assertEquals('The ID specified was invalid.', $response['message']);
         }
 
-        /**
-        * @depends testApiServerUrl
-        */
         public function testCreateTask()
         {
             $super = User::getByUsername('super');
@@ -628,9 +613,6 @@
             $this->assertEquals('Second Task', $response['data']['items'][0]['name']);
         }
 
-        /**
-        * @depends testApiServerUrl
-        */
         public function testEditTaskWithIncompleteData()
         {
             $super = User::getByUsername('super');
@@ -662,9 +644,6 @@
             $this->assertEquals(1, count($response['errors']));
         }
 
-        /**
-        * @depends testApiServerUrl
-        */
         public function testEditTaskWIthIncorrectDataType()
         {
             $super = User::getByUsername('super');

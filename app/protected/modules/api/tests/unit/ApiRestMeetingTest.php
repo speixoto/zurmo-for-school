@@ -39,18 +39,6 @@
     */
     class ApiRestMeetingTest extends ApiRestTest
     {
-        public function testApiServerUrl()
-        {
-            if (!$this->isApiTestUrlConfigured())
-            {
-                $this->markTestSkipped(Zurmo::t('ApiModule', 'API test url is not configured in perInstanceTest.php file.'));
-            }
-            $this->assertTrue(strlen($this->serverUrl) > 0);
-        }
-
-        /**
-        * @depends testApiServerUrl
-        */
         public function testGetMeeting()
         {
             $super = User::getByUsername('super');
@@ -101,9 +89,6 @@
             $this->assertEquals('The ID specified was invalid.', $response['message']);
         }
 
-        /**
-        * @depends testApiServerUrl
-        */
         public function testCreateMeeting()
         {
             $super = User::getByUsername('super');
@@ -619,9 +604,6 @@
             $this->assertEquals('Second Meeting', $response['data']['items'][0]['name']);
         }
 
-        /**
-        * @depends testApiServerUrl
-        */
         public function testEditMeetingWithIncompleteData()
         {
             $super = User::getByUsername('super');
@@ -653,9 +635,6 @@
             $this->assertEquals(1, count($response['errors']));
         }
 
-        /**
-        * @depends testApiServerUrl
-        */
         public function testEditMeetingWIthIncorrectDataType()
         {
             $super = User::getByUsername('super');

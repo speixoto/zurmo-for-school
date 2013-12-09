@@ -39,18 +39,6 @@
     */
     class ApiRestOpportunityTest extends ApiRestTest
     {
-        public function testApiServerUrl()
-        {
-            if (!$this->isApiTestUrlConfigured())
-            {
-                $this->markTestSkipped(Zurmo::t('ApiModule', 'API test url is not configured in perInstanceTest.php file.'));
-            }
-            $this->assertTrue(strlen($this->serverUrl) > 0);
-        }
-
-        /**
-        * @depends testApiServerUrl
-        */
         public function testGetOpportunity()
         {
             $super = User::getByUsername('super');
@@ -103,9 +91,6 @@
             $this->assertEquals('The ID specified was invalid.', $response['message']);
         }
 
-        /**
-        * @depends testApiServerUrl
-        */
         public function testCreateOpportunity()
         {
             $super = User::getByUsername('super');
@@ -694,9 +679,6 @@
             $this->assertEquals('First Opportunity', $response['data']['items'][0]['name']);
         }
 
-        /**
-        * @depends testApiServerUrl
-        */
         public function testEditOpportunityWithIncompleteData()
         {
             $super = User::getByUsername('super');
@@ -728,9 +710,6 @@
             $this->assertEquals(1, count($response['errors']));
         }
 
-        /**
-        * @depends testApiServerUrl
-        */
         public function testEditOpportunityWIthIncorrectDataType()
         {
             $super = User::getByUsername('super');

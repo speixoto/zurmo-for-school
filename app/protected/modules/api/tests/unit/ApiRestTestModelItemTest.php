@@ -68,18 +68,6 @@
             return array('ApiTestModelItem', 'ApiTestModelItem2', 'ApiTestModelItem3', 'ApiTestModelItem4');
         }
 
-        public function testApiServerUrl()
-        {
-            if (!$this->isApiTestUrlConfigured())
-            {
-                $this->markTestSkipped(Zurmo::t('ApiModule', 'API test url is not configured in perInstanceTest.php file.'));
-            }
-            $this->assertTrue(strlen($this->serverUrl) > 0);
-        }
-
-        /**
-        * @depends testApiServerUrl
-        */
         public function testLogin()
         {
             $headers = array(
@@ -95,9 +83,6 @@
             $this->assertTrue(isset($response['data']['token']) && is_string($response['data']['token']));
         }
 
-        /**
-        * @depends testApiServerUrl
-        */
         public function testCreate()
         {
             $super = User::getByUsername('super');
@@ -308,9 +293,6 @@
             $this->assertEquals(array($compareData), $response['data']['items']);
         }
 
-        /**
-        * @depends testApiServerUrl
-        */
         public function testCreateWithRelations()
         {
             $super = User::getByUsername('super');
@@ -596,9 +578,6 @@
             $this->assertEquals(ApiResponse::STATUS_FAILURE, $response['status']);
         }
 
-        /**
-        * @depends testApiServerUrl
-        */
         public function testLogout()
         {
             $authenticationData = $this->login();

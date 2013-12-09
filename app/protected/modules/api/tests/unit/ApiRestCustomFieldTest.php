@@ -39,18 +39,6 @@
     */
     class ApiRestCustomFieldTest extends ApiRestTest
     {
-        public function testApiServerUrl()
-        {
-            if (!$this->isApiTestUrlConfigured())
-            {
-                $this->markTestSkipped(Zurmo::t('ApiModule', 'API test url is not configured in perInstanceTest.php file.'));
-            }
-            $this->assertTrue(strlen($this->serverUrl) > 0);
-        }
-
-        /**
-        * @depends testApiServerUrl
-        */
         public function testListCustomFieldData()
         {
             Yii::app()->user->userModel        = User::getByUsername('super');
@@ -88,9 +76,6 @@
             $this->assertEquals($compareData, $response['data']);
         }
 
-        /**
-        * @depends testApiServerUrl
-        */
         public function testGetCustomFieldData()
         {
             $authenticationData = $this->login();
@@ -122,9 +107,6 @@
             $this->assertEquals($compareData, $response['data']);
         }
 
-        /**
-         * @depends testApiServerUrl
-         */
         public function testAddValuesToCustomFieldData()
         {
             $authenticationData = $this->login();

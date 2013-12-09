@@ -39,18 +39,6 @@
     */
     class ApiRestAccountTest extends ApiRestTest
     {
-        public function testApiServerUrl()
-        {
-            if (!$this->isApiTestUrlConfigured())
-            {
-                $this->markTestSkipped(Zurmo::t('ApiModule', 'API test url is not configured in perInstanceTest.php file.'));
-            }
-            $this->assertTrue(strlen($this->serverUrl) > 0);
-        }
-
-        /**
-        * @depends testApiServerUrl
-        */
         public function testGetAccount()
         {
             $super = User::getByUsername('super');
@@ -100,9 +88,6 @@
             $this->assertEquals('The ID specified was invalid.', $response['message']);
         }
 
-        /**
-        * @depends testApiServerUrl
-        */
         public function testCreateAccount()
         {
             $super = User::getByUsername('super');
@@ -632,9 +617,6 @@
             $this->assertEquals('Second Account', $response['data']['items'][0]['name']);
         }
 
-        /**
-        * @depends testApiServerUrl
-        */
         public function testCreateWithRelations()
         {
             $super = User::getByUsername('super');
@@ -797,9 +779,6 @@
             $this->assertLessThanOrEqual(0, $contact->account->id);
         }
 
-        /**
-        * @depends testApiServerUrl
-        */
         public function testEditAccountWithIncompleteData()
         {
             $super = User::getByUsername('super');
@@ -833,9 +812,6 @@
             $this->assertEquals(1, count($response['errors']));
         }
 
-        /**
-        * @depends testApiServerUrl
-        */
         public function testEditAccountWIthIncorrectDataType()
         {
             $super = User::getByUsername('super');
@@ -870,9 +846,6 @@
             $this->assertEquals(1, count($response['errors']));
         }
 
-        /**
-        * @depends testApiServerUrl
-        */
         public function testNotAllowedGuestAction()
         {
             $authenticationData = $this->login('st', 'st');

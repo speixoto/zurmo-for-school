@@ -50,9 +50,19 @@
         public function setUp()
         {
             parent::setUp();
-            if (strlen(Yii::app()->params['testApiUrl']) > 0)
+            $this->setupServerUrl();
+            if (!$this->isApiTestUrlConfigured())
             {
-                $this->serverUrl = Yii::app()->params['testApiUrl'];
+                $this->markTestSkipped(Zurmo::t('ApiModule', 'API test url is not configured in perInstanceTest.php file.'));
+            }
+        }
+
+        protected function setupServerUrl()
+        {
+            $testApiUrl = Yii::app()->params['testApiUrl'];
+            if (isset($testApiUrl) && strlen($testApiUrl) > 0)
+            {
+                $this->serverUrl = $testApiUrl;
             }
         }
 
@@ -64,15 +74,6 @@
                 $isApiTestUrlConfigured = true;
             }
             return $isApiTestUrlConfigured;
-        }
-
-        public function testApiServerUrl()
-        {
-            if (!$this->isApiTestUrlConfigured())
-            {
-                $this->markTestSkipped(Zurmo::t('ApiModule', 'API test url is not configured in perInstanceTest.php file.'));
-            }
-            $this->assertTrue(strlen($this->serverUrl) > 0);
         }
     }
 ?>
