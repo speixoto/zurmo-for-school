@@ -81,8 +81,8 @@
                             " . ZurmoHtml::ajax(array('type' => 'GET', 'url' =>  $url)) . "
                             var audio = document.getElementById('game-coin-chime');
                             audio.play();
-                            $('.game-coin').animate({top:15},75).hide(0);
-                            $('.smoke').show(0).animate({top:0},500).animateSprite({
+                            $('.game-coin').animate({top:15},7500, function(){ $(this).hide(0) });
+                            $('.smoke').show(0).animate({top:0},7500).animateSprite({
                                 columns: 8,
                                 totalFrames: 40,
                                 duration: 1000,
@@ -105,10 +105,10 @@
 
         protected function renderCoinContent()
         {
-            $content = ZurmoHtml::tag('div', array('class' => 'game-coin'), '');
+            $content  = ZurmoHtml::tag('div', array('class' => 'game-coin'), '');
             $content .= ZurmoHtml::tag('div', array('class' => 'smoke'), '');
-            $content .= ZurmoHtml::tag('div', array('class' => 'game-coin-quantity', 'style' => 'display:none;'), 
-                                                                                    $this->getGameCoinForCurrentUser()->value + 1);
+            $content .= ZurmoHtml::tag('div', array('class' => 'game-coin-quantity'),
+                                       $this->getGameCoinForCurrentUser()->value + 1 . '<i></i>');
             return ZurmoHtml::tag('div', array(), $content);
         }
 
