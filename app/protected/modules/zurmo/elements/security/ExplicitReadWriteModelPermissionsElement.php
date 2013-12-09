@@ -86,7 +86,7 @@
         protected function renderControlNonEditable()
         {
             $selectedType    = $this->resolveSelectedType();
-            $permissionTypes = $this->getPermissionTypes();
+            $permissionTypes = static::getPermissionTypes();
             if ($selectedType == ExplicitReadWriteModelPermissionsUtil::MIXED_TYPE_NONEVERYONE_GROUP)
             {
                 $selectedGroups = static::getSelectableGroupsData();
@@ -140,7 +140,7 @@
         protected function resolveData()
         {
             $selectableGroupsDropDownContent     =  $this->renderSelectableGroupsContent();
-            $data                                =  $this->getPermissionTypes();
+            $data                                =  static::getPermissionTypes();
             $dataIndex                           =  ExplicitReadWriteModelPermissionsUtil::MIXED_TYPE_NONEVERYONE_GROUP;
             $dataSelectOption                    =  array();
             if ($selectableGroupsDropDownContent != null)
@@ -193,7 +193,7 @@
             return $selectedGroupId;
         }
 
-        protected function getPermissionTypes()
+        protected static function getPermissionTypes()
         {
             return array(
                 null => Zurmo::t('ZurmoModule', 'Owner'),

@@ -48,16 +48,8 @@
         {
             if ($model instanceof SecurableItem && count($model->permissions) === 0)
             {
-                $defaultPermission  = UserConfigurationFormAdapter::resolveAndGetDefaultPermissionSetting(
-                                                                                        $user);
-                $nonEveryoneGroup   = UserConfigurationFormAdapter::resolveAndGetValue($user,
-                                                                                        'defaultPermissionGroupSetting',
-                                                                                        false);
-                $type               = static::resolveDefaultPermissionToExplicitReadWriteModelPermissionsUtilType(
-                                                                                                    $defaultPermission);
-                $postData           =  array('explicitReadWriteModelPermissions' =>
-                                                    compact('type', 'nonEveryoneGroup'),
-                                        );
+                $postData           = static::resolveUserDefaultPermissionsForCurrentUser();
+                unset($postData['owner']); // we don't need owner for explicit permissions part.
                 $explicitReadWritePermissions   = self::resolveAndMakeExplicitReadWriteModelPermissions($postData,
                                                                                                         $model);
                 $updated    = ExplicitReadWriteModelPermissionsUtil::resolveExplicitReadWriteModelPermissions($model,
@@ -69,28 +61,30 @@
             }
         }
 
+        public static function resolveUserDefaultPermissionsForCurrentUser()
+        {
+            return static::resolveUserDefaultPermissionsByUser(Yii::app()->user->userModel);
+        }
+
+        public static function resolveUserDefaultPermissionsByUser(User $user)
+        {
+            $defaultPermissionSettings  = UserConfigurationFormAdapter::resolveAndGetDefaultPermissionSetting($user);
+            $nonEveryoneGroup           = UserConfigurationFormAdapter::resolveAndGetValue($user,
+                                                                                'defaultPermissionGroupSetting', false);
+            $type                       = DerivedExplicitReadWriteModelPermissionsElement::resolveUserPermissionConfigurationToPermissionType(
+                                                                                            $defaultPermissionSettings);
+            $owner                              = array('id' => $user->id);
+            $explicitReadWriteModelPermissions  = compact('type', 'nonEveryoneGroup');
+            $permissions                        = compact('owner', 'explicitReadWriteModelPermissions');
+            return $permissions;
+        }
+
         /**
          * @param SecurableItem $model
          */
         public static function updatePermissionsWithDefaultForModelByCurrentUser(SecurableItem $model)
         {
             static::updatePermissionsWithDefaultForModelByUser($model, Yii::app()->user->userModel);
-        }
-
-        protected static function resolveDefaultPermissionToExplicitReadWriteModelPermissionsUtilType($defaultPermission)
-        {
-            if ($defaultPermission == UserConfigurationForm::DEFAULT_PERMISSIONS_SETTING_EVERYONE)
-            {
-                return ExplicitReadWriteModelPermissionsUtil::MIXED_TYPE_EVERYONE_GROUP;
-            }
-            elseif ($defaultPermission == UserConfigurationForm::DEFAULT_PERMISSIONS_SETTING_OWNER_AND_USERS_IN_GROUP)
-            {
-                return ExplicitReadWriteModelPermissionsUtil::MIXED_TYPE_NONEVERYONE_GROUP;
-            }
-            else
-            {
-                return null;
-            }
         }
 
         /*

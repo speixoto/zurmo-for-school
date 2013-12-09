@@ -118,7 +118,7 @@
             }
             else
             {
-                return $this->resolveUserPermissionConfigurationToPermissionType($selectedType);
+                return static::resolveUserPermissionConfigurationToPermissionType($selectedType);
             }
         }
 
@@ -149,7 +149,7 @@
          * @param $selectedType Selected Type index from User's Configuration
          * @return $selectedTypeIndex Selected Type Index converted to ExplicitReadWriteModelPermissionsElement::getPermissionTypes() compatible format
          */
-        protected function resolveUserPermissionConfigurationToPermissionType($selectedType)
+        public static function resolveUserPermissionConfigurationToPermissionType($selectedType)
         {
             assert('is_int($selectedType)');
             assert('$selectedType >= UserConfigurationForm::DEFAULT_PERMISSIONS_SETTING_OWNER');
