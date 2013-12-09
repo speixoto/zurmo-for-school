@@ -97,12 +97,11 @@
                 }
                 elseif($this->mappingRuleData["dedupeRule"]["value"] == ImportDedupeRulesRadioDropDownElement::UPDATE_ROW_ON_MATCH_FOUND)
                 {
-                    $this->shouldUpdateMatchedModels = true;
-                    $label = Zurmo::t('ImportModule', 'The matched records would be updated with the values of the record');
+                    $label = Zurmo::t('ImportModule', 'The first matched record would be updated with the values of the imported record');
                     $this->analysisMessages[] = $label;
                     if($this->importSanitizeResultsUtil != null)
                     {
-                        $this->importSanitizeResultsUtil->setMatchedModels($matchedModels);
+                        $this->importSanitizeResultsUtil->setMatchedModel($matchedModels[0]);
                     }
                 }
             }
