@@ -206,7 +206,7 @@
             {
                 $gameCollectionRules = GameCollectionRulesFactory::createByType($collectionAndItemKey[0]->type);
                 $collectionItemTypesAndLabels = $gameCollectionRules::getItemTypesAndLabels();
-                $dashboardLink   = ZurmoHtml::ajaxLink(Zurmo::t('GamificationModule', 'Get this item'), $gameBoardUrl,
+                $claimRewardLink   = ZurmoHtml::ajaxLink(Zurmo::t('GamificationModule', 'Get this item'), $gameBoardUrl,
                     static::resolveAjaxOptionsForGameDashboardModel(static::CLAIM_ITEM_LINK_ID),
                     array('id' => static::CLAIM_ITEM_LINK_ID));
                 $closeLink       = ZurmoHtml::link(Zurmo::t('Core', 'Close'), '#', array('id' => 'close-game-notification-link'));
@@ -218,7 +218,7 @@
                     array('{name}' => $collectionItemTypesAndLabels[$collectionAndItemKey[1]]));
                 $content .= '<br/>';
                 $content .= Zurmo::t('GamificationModule', '{dashboardLink} or {closeLink}',
-                    array('{dashboardLink}' => $dashboardLink,
+                    array('{dashboardLink}' => $claimRewardLink,
                         '{closeLink}' => $closeLink));
                 $content = $outerContent . ZurmoHtml::tag('p', array(), $content);
                 $content =  ZurmoHtml::tag('div', array('id' => 'game-notification'), $content);
