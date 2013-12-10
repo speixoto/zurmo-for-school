@@ -223,7 +223,6 @@
         */
         protected function getMessage($messageNumber, $mailHeaderInfo)
         {
-            print_r($mailHeaderInfo);
             $imapMessage = new ImapMessage();
             $structure = imap_fetchstructure($this->imapStream, $messageNumber);
             if (isset($mailHeaderInfo->to))
