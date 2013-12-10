@@ -3122,5 +3122,19 @@
         {
             return static::$yiiValidatorsToRedBeanValidators;
         }
+
+        /**
+         * Wrapper for CValidator::createValidator
+         * @param $attribute
+         * @param $validator
+         * @param array $params
+         */
+        public function addValidator($attribute, $validator, $params=array())
+        {
+            if ($attribute != null && $validator != null)
+            {
+                $this->validators[] = CValidator::createValidator($validator, $this, $attribute, $params);
+            }
+        }
     }
 ?>

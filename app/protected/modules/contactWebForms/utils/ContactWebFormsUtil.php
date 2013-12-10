@@ -286,7 +286,7 @@
                 {
                     if (isset($attributeData['required']) && $attributeData['required'] == true)
                     {
-                        $customRequiredFields[] = array($attributeId, 'required');
+                        $customRequiredFields[] = $attributeId;
                     }
                 }
             }

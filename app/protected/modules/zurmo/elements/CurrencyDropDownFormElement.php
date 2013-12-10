@@ -86,5 +86,14 @@
            }
            return Yii::app()->currencyHelper->getActiveCurrenciesOrSelectedCurrenciesData((int)$selectedCurrencyId);
         }
+
+        /**
+         * Generate the error content. Used by editable content
+         * @return error content
+         */
+        protected function renderError()
+        {
+            return $this->form->error($this->model, $this->attribute, array('inputID' => $this->getEditableInputId()));
+        }
     }
 ?>
