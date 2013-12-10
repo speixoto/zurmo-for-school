@@ -328,6 +328,9 @@
             'workflowsObserver' => array(
                 'class' => 'application.modules.workflows.observers.WorkflowsObserver',
             ),
+            'loginHelper' => array(
+                'class'       => 'application.modules.zurmo.components.ZurmoLoginHelper',
+            ),
         ),
         'controllerMap' => array(
             'min' => 'application.extensions.minscript.controllers.ExtMinScriptController',
