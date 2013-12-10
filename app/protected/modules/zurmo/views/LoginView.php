@@ -106,7 +106,7 @@
                     }
                 });
             ", CClientScript::POS_END);
-            $content .= Yii::app()->loginHelper->resolveExtraViewContent();
+            $content .= Yii::app()->loginHelper->resolveExtraLoginViewContent();
             return $content;
         }
     }
