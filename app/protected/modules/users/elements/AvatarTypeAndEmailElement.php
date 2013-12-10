@@ -81,11 +81,12 @@
             $label       = $form->labelEx        ($model, $attribute, array('for'   => $id));
             $radioInput  = $form->radioButtonList($model, $attribute, $this->resolveRadioOptions(), $this->getEditableHtmlOptions());
             $error       = $form->error          ($model, $attribute, array('inputID' => $id));
+            $link        = $this->renderGravatarLink();
             if ($model->$attribute != null)
             {
                  $label = null;
             }
-            $content = ZurmoHtml::tag('div', array(), $label . $radioInput . $error);
+            $content = ZurmoHtml::tag('div', array(), $label . $radioInput . $error . $link);
             return $content;
         }
 
@@ -118,6 +119,13 @@
                                       array('id'    => 'customAvatarEmailAddressInput',
                                             'style' => 'display:none'),
                                       $label . $textField . $error . $tooltip);
+            return $content;
+        }
+        
+        protected function renderGravatarLink()
+        {
+            $content  = ZurmoHtml::tag('span', array(), Zurmo::t('UsersModule', 'Don\'t Have A Gravatar?'));
+            $content .= ZurmoHtml::link('Click Here', 'http://gravatar.com/', array('target'=>'_blank', 'class'=>'simple-link'));
             return $content;
         }
 
