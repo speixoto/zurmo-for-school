@@ -764,6 +764,7 @@
 	overflow: visible;
 }
 
+
 #game-notification{
 	position:absolute;
 	min-width: 250px;
@@ -783,9 +784,9 @@
 		margin-bottom: 10px;
 	}
 	img{
-		float: left;
-		margin-right: 15px;
-		padding-bottom: 15px;
+		//float: left;
+		//margin-right: 15px;
+		//padding-bottom: 15px;
 	}
 	.notification-wrapper{
 		float: left;
@@ -802,4 +803,43 @@
 		padding: 0;
 		text-decoration: underline;
 	}
+}
+
+.collection-item-image{
+	position: relative;
+	display: inline-block;
+	float: left;
+	overflow: hidden;
+	margin-right: 15px;
+	margin-bottom: 15px;
+	height: 70px;
+	min-width: 45px;
+	width: auto;
+	text-align: center;
+	img{
+		position: relative;
+		top:0;
+	}
+	i{
+		position: absolute;
+		top:70%;
+		left: 50%;
+		margin-left: -23px;
+		margin-top: -25px;
+		text-align: center;
+		display: block;
+		width: 45px;
+		height: 38px;
+		background: url(../images/game-dashboard/i-won.png) center bottom no-repeat;
+		background-size: 100%;
+		opacity: 0;
+	}
+}
+
+.animate-spin{
+	-webkit-animation: spinCoin 2s linear infinite;
+	-moz-animation: spinCoin 2s linear infinite;
+	-o-animation: spinCoin 2s linear infinite;
+	-ms-animation: spinCoin 2s linear infinite;
+	animation: spinCoin 2s linear infinite;
 }
