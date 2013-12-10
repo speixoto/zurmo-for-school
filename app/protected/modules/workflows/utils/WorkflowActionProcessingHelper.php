@@ -461,12 +461,12 @@
                 throw new NotSupportedException();
             }
             $marketingListId = $actionAttributes['marketingList']->value;
-            $member = MarketingListMember::getByMarketingListIdContactIdAndUnsubscribed($marketingListId, 
+            $members = MarketingListMember::getByMarketingListIdContactIdAndUnsubscribed($marketingListId, 
                                                                                     (int)$this->triggeredModel->id, 
                                                                                     false);
-            if($member != false)
+            if($members !== false)
             {
-                $member = $member[0];
+                $member = $members[0];
                 $member->unsubscribed = true;
                 if (!$member->unrestrictedSave())
                 {

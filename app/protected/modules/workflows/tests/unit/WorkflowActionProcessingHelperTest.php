@@ -128,6 +128,74 @@
             $helper->processNonUpdateSelfAction();
         }
 
+        public function testUnsubscribeContactFromList()
+        {
+            //Empty members from the test marketing list
+            $marketingList                = MarketingList::getById(self::$marketingListId);
+            foreach ($marketingList->marketingListMembers as $marketingListMember)
+            {
+                $marketingListMember->delete();
+            }
+            $marketingList->forget();
+            $marketingList                = MarketingList::getById(self::$marketingListId);
+            $this->assertEquals(0, $marketingList->marketingListMembers->count());
+            //Subscribe new member
+            $contact = ContactTestHelper::createContactByNameForOwner('jason', Yii::app()->user->userModel);
+            $marketingList->addNewMember($contact->id);
+            $marketingList->forget();
+            $marketingList                = MarketingList::getById(self::$marketingListId);
+            $this->assertEquals(1, $marketingList->marketingListMembers->count());
+            $this->assertEquals(0, $marketingList->marketingListMembers[0]->unsubscribed);
+            //Try to unsubscribe the contact, it should unsubscribe them
+            $action                       = new ActionForWorkflowForm('Contact', Workflow::TYPE_ON_SAVE);
+            $action->type                 = ActionForWorkflowForm::TYPE_UNSUBSCRIBE_FROM_LIST;
+            $attributes                   = array('marketingList' => array('shouldSetValue'    => '1',
+                                                  'type'          => WorkflowActionAttributeForm::TYPE_STATIC,
+                                                  'value'         => self::$marketingListId));
+            $action->setAttributes(array(ActionForWorkflowForm::ACTION_ATTRIBUTES => $attributes));
+            
+            $helper = new WorkflowActionProcessingHelper($action, $contact, Yii::app()->user->userModel);
+            $helper->processNonUpdateSelfAction();
+            $marketingList->forget();
+            $marketingList = MarketingList::getById(self::$marketingListId);
+            $this->assertEquals(1, $marketingList->marketingListMembers->count());
+            $this->assertEquals(1, $marketingList->marketingListMembers[0]->unsubscribed);
+
+            //Subscribe contact from list, then unsubscribe
+            $marketingListMembers = MarketingListMember::getAll();
+            $this->assertEquals(1, count($marketingListMembers));
+            $marketingListMembers[0]->unsubscribed = false;
+            $marketingListMembers[0]->unrestrictedSave();
+            $marketingList->forget();
+            $marketingList = MarketingList::getById(self::$marketingListId);
+            $this->assertEquals(1, $marketingList->marketingListMembers->count());
+            $this->assertEquals(0, $marketingList->marketingListMembers[0]->unsubscribed);
+
+            //Try to unsubscribe the contact, it should unsubscribe them
+            $helper = new WorkflowActionProcessingHelper($action, $contact, Yii::app()->user->userModel);
+            $helper->processNonUpdateSelfAction();
+            $marketingList->forget();
+            $marketingList = MarketingList::getById(self::$marketingListId);
+            $this->assertEquals(1, $marketingList->marketingListMembers->count());
+            $this->assertEquals(1, $marketingList->marketingListMembers[0]->unsubscribed);
+        }
+        
+        /**
+         * @expectedException NotSupportedException
+         */
+        public function testUnsubscribeNonContactFromList()
+        {
+            $action                       = new ActionForWorkflowForm('Contact', Workflow::TYPE_ON_SAVE);
+            $action->type                 = ActionForWorkflowForm::TYPE_UNSUBSCRIBE_FROM_LIST;
+            $attributes                   = array('marketingList' => array('shouldSetValue'    => '1',
+                                                  'type'          => WorkflowActionAttributeForm::TYPE_STATIC,
+                                                  'value'         => self::$marketingListId));
+            $action->setAttributes(array(ActionForWorkflowForm::ACTION_ATTRIBUTES => $attributes));
+            $account = AccountTestHelper::createAccountByNameForOwner('jason', Yii::app()->user->userModel);
+            $helper = new WorkflowActionProcessingHelper($action, $account, Yii::app()->user->userModel);
+            $helper->processNonUpdateSelfAction();
+        }
+        
         /**
          * Confirms that values for boolean, date, and dateTime get set on creating new records.
          */
