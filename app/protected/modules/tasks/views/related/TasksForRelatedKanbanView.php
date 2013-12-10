@@ -449,5 +449,14 @@
                     }';
             // End Not Coding Standard
         }
+
+        /**
+         * Show the table on empty as we need the javascripts initialized when first task is created
+         * @return boolean
+         */
+        protected function getShowTableOnEmpty()
+        {
+            return true;
+        }
     }
 ?>

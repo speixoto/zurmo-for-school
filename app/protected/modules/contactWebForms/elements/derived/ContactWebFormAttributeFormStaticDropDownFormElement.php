@@ -45,5 +45,10 @@
                               getDataIndexedByDataAndTranslatedLabelsByLanguage($dropDownModel->data, Yii::app()->language);
             return $dataAndLabels;
         }
+
+        public function getIdForSelectInput()
+        {
+            return $this->getEditableInputId($this->attribute);
+        }
     }
 ?>

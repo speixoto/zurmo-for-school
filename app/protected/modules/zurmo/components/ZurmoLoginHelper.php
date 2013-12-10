@@ -35,65 +35,12 @@
      ********************************************************************************/
 
     /**
-     * Displays the list of currencies from the currency model for use with a form model where the model->attribute
-     * is not a currency model.
-     * @see CurrencyDropDownElement for alternative useage
+     * Component for assisting extra login features like googlePlusSignIn
      */
-    class CurrencyDropDownFormElement extends DropDownElement
+    class ZurmoLoginHelper extends CApplicationComponent
     {
-        /**
-         * @return A string containing the element's content.
-         */
-        protected function renderControlEditable()
+        public function resolveExtraLoginViewContent()
         {
-            return $this->form->dropDownList(
-                $this->model,
-                $this->attribute,
-                $this->getDropDownArray(),
-                $this->getEditableHtmlOptions()
-            );
-        }
-
-        /**
-         * @return A string containing the element's content.
-         */
-        protected function renderControlNonEditable()
-        {
-            $dropDownArray = $this->getDropDownArray();
-            return Yii::app()->format->text(ArrayUtil::getArrayValue($dropDownArray, $this->model->{$this->attribute}));
-        }
-
-        public function getIdForSelectInput()
-        {
-            return $this->getEditableInputId();
-        }
-
-        protected function getNameForSelectInput()
-        {
-            return $this->getEditableInputName();
-        }
-
-        /**
-         * (non-PHPdoc)
-         * @see DropDownElement::getDropDownArray()
-         */
-        protected function getDropDownArray()
-        {
-           $selectedCurrencyId = $this->model->{$this->attribute};
-           if ($selectedCurrencyId < 0)
-           {
-               $selectedCurrencyId = null;
-           }
-           return Yii::app()->currencyHelper->getActiveCurrenciesOrSelectedCurrenciesData((int)$selectedCurrencyId);
-        }
-
-        /**
-         * Generate the error content. Used by editable content
-         * @return error content
-         */
-        protected function renderError()
-        {
-            return $this->form->error($this->model, $this->attribute, array('inputID' => $this->getEditableInputId()));
         }
     }
 ?>
