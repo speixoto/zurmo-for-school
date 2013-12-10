@@ -989,7 +989,7 @@
                 {
                     TasksUtil::sortKanbanColumnItems($sourceKanbanItemType, $task->project);
                 }
-                else
+                elseif ($task->activityItems->count() > 0)
                 {
                     TasksUtil::sortKanbanColumnItems($sourceKanbanItemType, $task->activityItems->offsetGet(0));
                 }

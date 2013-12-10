@@ -66,25 +66,16 @@
             $task->activityItems->add($accounts[0]);
             $task->status           = Task::STATUS_IN_PROGRESS;
             $this->assertTrue($task->save());
+            $this->assertEquals(1, KanbanItem::getCount());
             $id = $task->id;
             unset($task);
             $task = Task::getById($id);
 
-            //Create KanbanItem here
-            $kanbanItem                     = new KanbanItem();
-            $kanbanItem->type               = TasksUtil::resolveKanbanItemTypeForTaskStatus($task->status);
-            $kanbanItem->task               = $task;
-            $kanbanItem->kanbanRelatedItem  = $task->activityItems->offsetGet(0);
-            $sortOrder = KanbanItem::getMaximumSortOrderByType($kanbanItem->type, $task->activityItems->offsetGet(0));
-            $kanbanItem->sortOrder          = $sortOrder;
-            $saved = $kanbanItem->save();
-            $kanbanItemId = $kanbanItem->id;
-            $this->assertTrue($saved);
-
-            $kanbanItem                     = KanbanItem::getById($kanbanItemId);
+            //KanbanItem is created after saving Task
+            $kanbanItems = KanbanItem::getAll();
+            $this->assertCount(1, $kanbanItems);
+            $kanbanItem  = $kanbanItems[0];
             $this->assertEquals(KanbanItem::TYPE_IN_PROGRESS, $kanbanItem->type);
-
-            $this->assertEquals(1, KanbanItem::getCount());
         }
 
         public function testGetKanbanItemByTask()
