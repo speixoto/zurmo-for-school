@@ -35,12 +35,45 @@
      ********************************************************************************/
 
     /**
-     * Log sql queries into file.
-     * ZurmoRedBeanPluginQueryLogger doesn't contain all data we need to log, so we had to extend this class.
-     * Code is optimized, so data are written only once to file, in EndRequestBehavior
+     * Log jobManager logs queries into file.
      */
-    class ZurmoRedBeanQueryFileLogger extends ZurmoFileLogger
+    class JobManagerFileLogger extends ZurmoFileLogger
     {
+        /**
+         * Add log at the end of current logs
+         * @param $data
+         */
+        protected function addLog($data)
+        {
+            $logs  = $this->getLogs();
+            $logs .= $data;
+            $this->setLogs($logs);
+        }
+
+        /**
+         * Save log into file.
+         */
+        public function log()
+        {
+            if (func_num_args() > 0)
+            {
+                foreach (func_get_args() as $argument)
+                {
+                    if (is_array($argument))
+                    {
+                        $data = print_r($argument, true);
+                    }
+                    else
+                    {
+                        $data = $argument;
+                    }
+                    $this->addLog($data);
+                }
+            }
+            $this->processLogs();
+            $this->setLogs();
+        }
+
         /**
          * Save sql query logs into file
          */
@@ -53,38 +86,9 @@
             }
             $fp = @fopen($logFile, 'a');
             @flock($fp, LOCK_EX);
-            @fwrite($fp, $this->getRequestInfoDetails());
-            @fwrite($fp, $this->logs);
+            @fwrite($fp, $this->getLogs());
             @flock($fp, LOCK_UN);
             @fclose($fp);
-        }
-
-        /**
-         * Create header info for query logs
-         * @return string
-         */
-        protected function getRequestInfoDetails()
-        {
-            $requestInfoString = '';
-            if (isset(Yii::app()->request))
-            {
-                if (Yii::app() instanceof WebApplication)
-                {
-                    $pathInfo = Yii::app()->request->getPathInfo();
-                    $queryInfo = Yii::app()->request->getQueryString();
-                }
-                else
-                {
-                    $pathInfo  = '';
-                    $queryInfo = '';
-                }
-                $requestInfoString .= '--------------------------------' .         PHP_EOL;
-                $requestInfoString .= 'Request Date: ' . date('F j, Y, g:i:s a') . PHP_EOL;
-                $requestInfoString .= 'Request Url: '  . $pathInfo .               PHP_EOL;
-                $requestInfoString .= 'Query String: ' . $queryInfo .              PHP_EOL;
-                $requestInfoString .= '-------------------------------' .          PHP_EOL;
-            }
-            return $requestInfoString;
         }
     }
 ?>

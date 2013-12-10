@@ -77,6 +77,7 @@
                 {
                     $queryLoggerComponent = Yii::createComponent(array(
                         'class' => 'application.core.models.ZurmoRedBeanQueryFileLogger',
+                        'logFile'     => 'redBeanSqlQuery.log',
                     ));
                     $queryLoggerComponent->init();
                     Yii::app()->setComponent('queryFileLogger', $queryLoggerComponent);
