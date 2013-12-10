@@ -37,23 +37,8 @@
     /**
      * This form is used for dedupe for email attribute
      */
-    class EmailModelAttributeDedupeMappingRuleForm extends ModelAttributeMappingRuleForm
+    class EmailModelAttributeDedupeMappingRuleForm extends ModelAttributeDedupeMappingRuleForm
     {
-        public $dedupeRule = 1;
-
-        public function attributeLabels()
-        {
-            return array('dedupeRule'   => Zurmo::t('ZurmoModule', 'Dedupe Rule'));
-        }
-
-        public static function getAttributeName()
-        {
-            return 'dedupeRule';
-        }
-
-        public function attributeNames()
-        {
-            return array('dedupeRule');
-        }
+        
     }
 ?>

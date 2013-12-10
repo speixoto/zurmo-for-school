@@ -35,32 +35,10 @@
      ********************************************************************************/
 
     /**
-     * Sanitizer for email duplicate in the records
+     * This form is used for dedupe by name attribute
      */
-    class EmailDedupeSanitizerUtil extends DedupeSanitizerUtil
+    class NameModelAttributeDedupeMappingRuleForm extends ModelAttributeDedupeMappingRuleForm
     {
-        public static function getLinkedMappingRuleType()
-        {
-            return 'EmailModelAttributeDedupe';
-        }
-
-        /**
-         * Get matched models
-         * @return array
-         */
-        protected static function getMatchedModels()
-        {
-            $matchedModels = array();
-            $penultimateModelClassName = $this->penultimateModelClassName;
-            if($penultimateModelClassName == 'Account')
-            {
-                $matchedModels  = AccountSearch::getAccountsByAnyEmailAddress($value);
-            }
-            elseif($penultimateModelClassName == 'Contact')
-            {
-                $matchedModels  = ContactSearch::getContactsByAnyEmailAddress($value);
-            }
-            return $matchedModels;
-        }
+        
     }
 ?>

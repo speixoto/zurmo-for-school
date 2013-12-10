@@ -35,32 +35,25 @@
      ********************************************************************************/
 
     /**
-     * Sanitizer for email duplicate in the records
+     * This form is used for dedupe by model attribute
      */
-    class EmailDedupeSanitizerUtil extends DedupeSanitizerUtil
+    abstract class ModelAttributeDedupeMappingRuleForm extends ModelAttributeMappingRuleForm
     {
-        public static function getLinkedMappingRuleType()
+        public $dedupeRule = 1;
+
+        public function attributeLabels()
         {
-            return 'EmailModelAttributeDedupe';
+            return array('dedupeRule'   => Zurmo::t('ZurmoModule', 'Dedupe Rule'));
         }
 
-        /**
-         * Get matched models
-         * @return array
-         */
-        protected static function getMatchedModels()
+        public static function getAttributeName()
         {
-            $matchedModels = array();
-            $penultimateModelClassName = $this->penultimateModelClassName;
-            if($penultimateModelClassName == 'Account')
-            {
-                $matchedModels  = AccountSearch::getAccountsByAnyEmailAddress($value);
-            }
-            elseif($penultimateModelClassName == 'Contact')
-            {
-                $matchedModels  = ContactSearch::getContactsByAnyEmailAddress($value);
-            }
-            return $matchedModels;
+            return 'dedupeRule';
+        }
+
+        public function attributeNames()
+        {
+            return array('dedupeRule');
         }
     }
 ?>

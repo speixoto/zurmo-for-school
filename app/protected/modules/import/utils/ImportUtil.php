@@ -100,6 +100,9 @@
             $attributeValueData        = array();
             $skippedColumns            = array();
 
+            $model = new $modelClassName();
+            $model->setScenario('importModel');
+
             //Process the 'id' column first if available.
             if (false !== $idColumnName = static::getMappedColumnNameByMappingData('id', $mappingData))
             {
@@ -113,7 +116,6 @@
                 if (isset($attributeValueData['id']) && $attributeValueData['id'] != null)
                 {
                     $model        = $modelClassName::getById($attributeValueData['id']);
-                    $makeNewModel = false;
                 }
                 elseif (isset($attributeValueData[ExternalSystemIdUtil::EXTERNAL_SYSTEM_ID_COLUMN_NAME]) &&
                         $attributeValueData[ExternalSystemIdUtil::EXTERNAL_SYSTEM_ID_COLUMN_NAME] != null)
@@ -123,30 +125,24 @@
                 }
                 $skippedColumns[] = $idColumnName;
             }
-            if($modelClassName == 'Account')
+            //Process the dedupe fields
+            foreach($importRules->getDedupeFields() as $dedupeField)
             {
-                $primaryEmailColumnName = static::getMappedColumnNameByMappingData('primaryEmail__emailAddress', $mappingData);
-                if(false !== $primaryEmailColumnName)
+                static::processMappedColumnsToCheckForMatchedModelByColumnName($importRules,
+                                                                               $model,
+                                                                               $dedupeField,
+                                                                               $mappingData,
+                                                                               $rowBean,
+                                                                               $importSanitizeResultsUtil,
+                                                                               $skippedColumns);
+                if (!$importSanitizeResultsUtil->shouldSaveModel())
                 {
-                    $columnMappingData      = $mappingData[$primaryEmailColumnName];
-                    $attributeValueData     = static::getAttributeValueData($importRules,
-                                                                        $primaryEmailColumnName,
-                                                                        $columnMappingData,
-                                                                        $rowBean,
-                                                                        $importSanitizeResultsUtil);
-                    if($importSanitizeResultsUtil->getMatchedModel() != null)
-                    {
-                        $model = $importSanitizeResultsUtil->getMatchedModel();
-                        $makeNewModel = false;
-                    }
-                    $skippedColumns[] = $primaryEmailColumnName;
+                    $importRowDataResultsUtil->addMessages($importSanitizeResultsUtil->getMessages());
+                    $importRowDataResultsUtil->setStatusToError();
+                    return;
                 }
             }
-            if ($makeNewModel)
-            {
-                $model = new $modelClassName();
-                $model->setScenario('importModel');
-            }
+
             //Process the rest of the mapped colummns. ignoring owner.
             foreach ($mappingData as $columnName => $columnMappingData)
             {
@@ -664,6 +660,43 @@
                                                   $columnMappingData,
                                                   $attributeValueData,
                                                   $afterSaveActionsData);
+        }
+
+
+        /**
+         * Process mapped columns to check for matched record by column
+         * @param ImportRules $importRules
+         * @param RedBeanModel $model
+         * @param string $targetColumnName
+         * @param array $mappingData
+         * @param RedBean_OODBBean $rowBean
+         * @param ImportSanitizeResultsUtil $importSanitizeResultsUtil
+         * @param array $skippedColumns
+         */
+        protected static function processMappedColumnsToCheckForMatchedModelByColumnName(ImportRules $importRules,
+                                                                                RedBeanModel $model,
+                                                                                $targetColumnName,
+                                                                                $mappingData,
+                                                                                $rowBean,
+                                                                                ImportSanitizeResultsUtil $importSanitizeResultsUtil,
+                                                                                & $skippedColumns)
+        {
+            assert('$rowBean instanceof RedBean_OODBBean');
+            $sourceColumnName = static::getMappedColumnNameByMappingData($targetColumnName, $mappingData);
+            if(false !== $sourceColumnName)
+            {
+                $columnMappingData      = $mappingData[$sourceColumnName];
+                $attributeValueData     = static::getAttributeValueData($importRules,
+                                                                    $sourceColumnName,
+                                                                    $columnMappingData,
+                                                                    $rowBean,
+                                                                    $importSanitizeResultsUtil);
+                if($importSanitizeResultsUtil->getMatchedModel() != null)
+                {
+                    $model = $importSanitizeResultsUtil->getMatchedModel();
+                }
+                $skippedColumns[] = $sourceColumnName;
+            }
         }
     }
 ?>

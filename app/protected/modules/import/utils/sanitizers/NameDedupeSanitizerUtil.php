@@ -37,11 +37,11 @@
     /**
      * Sanitizer for email duplicate in the records
      */
-    class EmailDedupeSanitizerUtil extends DedupeSanitizerUtil
+    class NameDedupeSanitizerUtil extends DedupeSanitizerUtil
     {
         public static function getLinkedMappingRuleType()
         {
-            return 'EmailModelAttributeDedupe';
+            return 'NameModelAttributeDedupe';
         }
 
         /**
@@ -54,11 +54,11 @@
             $penultimateModelClassName = $this->penultimateModelClassName;
             if($penultimateModelClassName == 'Account')
             {
-                $matchedModels  = AccountSearch::getAccountsByAnyEmailAddress($value);
+                $matchedModels  = Account::getByName($value);
             }
             elseif($penultimateModelClassName == 'Contact')
             {
-                $matchedModels  = ContactSearch::getContactsByAnyEmailAddress($value);
+                $matchedModels  = Contact::getByName($value);
             }
             return $matchedModels;
         }
