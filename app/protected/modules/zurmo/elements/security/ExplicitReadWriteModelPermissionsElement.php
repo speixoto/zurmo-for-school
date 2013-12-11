@@ -264,5 +264,19 @@
             }
             return null;
         }
+
+        public function resolveModelPermissionsArray()
+        {
+            $type               = $this->resolveSelectedType();
+            $nonEveryoneGroup   = $this->resolveSelectedGroup();
+            $explicitReadWriteModelPermissions  = compact('type', 'nonEveryoneGroup');
+            $permissions                        = compact('explicitReadWriteModelPermissions');
+            if ($this->model instanceof OwnedSecurableItem)
+            {
+                $owner          = array('id' => $this->model->owner->id);
+                $permissions    = compact('owner', 'explicitReadWriteModelPermissions');
+            }
+            return $permissions;
+        }
     }
 ?>

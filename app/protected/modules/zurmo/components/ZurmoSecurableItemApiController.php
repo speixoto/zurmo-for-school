@@ -35,13 +35,36 @@
      ********************************************************************************/
 
     /**
-    * Contacts API Controller
-    */
-    class ContactsContactApiController extends ZurmoSecurableItemApiController
+     * Zurmo SecurableItem Api Controllers
+     * should extend this class to provide generic functionality
+     * that is applicable to all standard securable item api modules.
+     */
+    abstract class ZurmoSecurableItemApiController extends ZurmoModuleApiController
     {
-        protected static function getSearchFormClassName()
+        /**
+         * Hook to alter $model or $data before we attempt to save it.
+         * @param RedBeanModel $model
+         * @param array $data
+         */
+        protected function preAttemptToSaveModelFromDataHook(RedBeanModel $model, array & $data)
         {
-            return 'ContactsSearchForm';
+            // if its a new model and if explicit permissions are not set in data
+            if ($model->id < 0 && !isset($data['explicitReadWriteModelPermissions']))
+            {
+                // get user's default permissions
+                $defaultPermissions = ZurmoControllerUtil::resolveUserDefaultPermissionsForCurrentUser($model);
+                // merge them with current data, put data last.
+                $data               = CMap::mergeArray($defaultPermissions, $data);
+            }
+        }
+
+        /**
+         * Util used to convert model to array
+         * @return string
+         */
+        protected static function getModelToApiDataUtil()
+        {
+            return 'RedBeanModelToApiDataWithPermissionsUtil';
         }
     }
 ?>

@@ -57,10 +57,9 @@
             $this->assertTrue($saved);
 
             $groups                 = Group::getAll();
-            $redBeanModelToApiDataUtil  = new RedBeanModelToApiDataUtil($groups[0]);
-            $compareData  = $redBeanModelToApiDataUtil->getData();
+            $compareData  = $this->getModelToApiDataUtilData($groups[0]);
 
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/zurmo/group/api/read/' . $compareData['id'], 'GET', $headers);
+            $response = $this->createApiCallWithRelativeUrl('read/' . $compareData['id'], 'GET', $headers);
             $response = json_decode($response, true);
 
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
@@ -86,12 +85,11 @@
             $compareData = array();
             foreach ($groups as $group)
             {
-                $redBeanModelToApiDataUtil  = new RedBeanModelToApiDataUtil($group);
-                $compareData[] = $redBeanModelToApiDataUtil->getData();
+                $compareData[] = $this->getModelToApiDataUtilData($group);
             }
 
             //Test List
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/zurmo/group/api/list/', 'GET', $headers);
+            $response = $this->createApiCallWithRelativeUrl('list/', 'GET', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
             $this->assertEquals(count($groups), count($response['data']['items']));
@@ -115,10 +113,21 @@
             );
             $allAttributes      = ApiRestTestHelper::getModelAttributes(new Group());
 
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/zurmo/group/api/listAttributes/' , 'GET', $headers);
+            $response = $this->createApiCallWithRelativeUrl('listAttributes/' , 'GET', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
             $this->assertEquals($allAttributes, $response['data']['items']);
+        }
+
+        protected function getApiControllerClassName()
+        {
+            Yii::import('application.modules.zurmo.controllers.GroupApiController', true);
+            return 'ZurmoGroupApiController';
+        }
+
+        protected function getModuleBaseApiUrl()
+        {
+            return 'zurmo/group/api/';
         }
     }
 ?>

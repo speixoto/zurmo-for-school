@@ -37,7 +37,7 @@
     /**
     * Opportunities API Controller
     */
-    class OpportunitiesOpportunityApiController extends ZurmoModuleApiController
+    class OpportunitiesOpportunityApiController extends ZurmoSecurableItemApiController
     {
         protected static function getSearchFormClassName()
         {

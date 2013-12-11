@@ -55,10 +55,9 @@
 
             $contactStates = ContactState::getAll();
             $this->assertEquals(6, count($contactStates));
-            $redBeanModelToApiDataUtil  = new RedBeanModelToApiDataUtil($contactStates[3]);
-            $compareData  = $redBeanModelToApiDataUtil->getData();
+            $compareData  = $this->getModelToApiDataUtilData($contactStates[3]);
 
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/contacts/contactState/api/read/' . $compareData['id'], 'GET', $headers);
+            $response = $this->createApiCallWithRelativeUrl('read/' . $compareData['id'], 'GET', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
             $this->assertEquals($compareData, $response['data']);
@@ -84,11 +83,10 @@
             $compareData = array();
             foreach ($contactStates as $contactState)
             {
-                $redBeanModelToApiDataUtil  = new RedBeanModelToApiDataUtil($contactState);
-                $compareData[] = $redBeanModelToApiDataUtil->getData();
+                $compareData[] = $this->getModelToApiDataUtilData($contactState);
             }
 
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/contacts/contactState/api/listContactStates/', 'GET', $headers);
+            $response = $this->createApiCallWithRelativeUrl('listContactStates/', 'GET', $headers);
             $response = json_decode($response, true);
 
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
@@ -113,7 +111,7 @@
             );
             $allAttributes      = ApiRestTestHelper::getModelAttributes(new ContactState());
 
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/contacts/contactState/api/listAttributes/' , 'GET', $headers);
+            $response = $this->createApiCallWithRelativeUrl('listAttributes/' , 'GET', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
             $this->assertEquals($allAttributes, $response['data']['items']);
@@ -139,11 +137,10 @@
             $compareData = array();
             foreach ($leadStates as $leadState)
             {
-                $redBeanModelToApiDataUtil  = new RedBeanModelToApiDataUtil($leadState);
-                $compareData[] = $redBeanModelToApiDataUtil->getData();
+                $compareData[] = $this->getModelToApiDataUtilData($leadState);
             }
 
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/contacts/contactState/api/listLeadStates/', 'GET', $headers);
+            $response = $this->createApiCallWithRelativeUrl('listLeadStates/', 'GET', $headers);
             $response = json_decode($response, true);
 
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
@@ -173,17 +170,27 @@
             $this->assertEquals(6, count($contactStates));
             foreach ($contactStates as $contactState)
             {
-                $redBeanModelToApiDataUtil  = new RedBeanModelToApiDataUtil($contactState);
-                $compareData[]  = $redBeanModelToApiDataUtil->getData();
+                $compareData[]  = $this->getModelToApiDataUtilData($contactState);
             }
 
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/contacts/contactState/api/list/', 'GET', $headers);
+            $response = $this->createApiCallWithRelativeUrl('list/', 'GET', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
             $this->assertEquals(6, count($response['data']['items']));
             $this->assertEquals(6, $response['data']['totalCount']);
             $this->assertEquals(1, $response['data']['currentPage']);
             $this->assertEquals($compareData, $response['data']['items']);
+        }
+
+        protected function getApiControllerClassName()
+        {
+            Yii::import('application.modules.contacts.controllers.ContactStateApiController', true);
+            return 'ContactsContactStateApiController';
+        }
+
+        protected function getModuleBaseApiUrl()
+        {
+            return 'contacts/contactState/api/';
         }
     }
 ?>

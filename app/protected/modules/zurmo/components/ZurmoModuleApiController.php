@@ -496,7 +496,6 @@
                     unset($data['modelRelations']);
                 }
                 $model = new $modelClassName();
-                $this->preAttemptToSaveModelFromDataHook($model, $data);
                 $model = $this->attemptToSaveModelFromData($model, $data, null, false);
                 $id = $model->id;
                 $model->forget();
@@ -736,9 +735,10 @@
 
             if (isset($data))
             {
+                $this->preAttemptToSaveModelFromDataHook($model, $data);
                 $controllerUtil   = new ZurmoControllerUtil();
                 $model            = $controllerUtil->saveModelFromSanitizedData($data, $model, $savedSucessfully,
-                    $modelToStringValue, false);
+                                                                                            $modelToStringValue, false);
             }
             if ($savedSucessfully && $redirect)
             {

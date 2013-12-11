@@ -37,19 +37,42 @@
     /**
      * Base class to test API functions.
      */
-    class ApiBaseTest extends ZurmoBaseTest
+    abstract class ApiBaseTest extends ZurmoBaseTest
     {
         protected $serverUrl = '';
+
+        protected function getApiControllerClassName()
+        {
+            // TODO: @Shoaibi: Critical0: Make this abstract
+        }
+
+        protected final function getBaseApiUrl()
+        {
+            $moduleBaseApiUrl   = $this->getModuleBaseApiUrl();
+            $entryScript        = 'test.php/';
+            $baseApiUrl         = $this->serverUrl . $entryScript . $moduleBaseApiUrl;
+            return $baseApiUrl;
+        }
+
+        protected function getModuleBaseApiUrl()
+        {
+            // TODO: @Shoaibi: Critical0: Make this abstract
+        }
 
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
             SecurityTestHelper::createSuperAdmin();
+            SecurityTestHelper::createUsers();
+            SecurityTestHelper::createGroups();
+            $everyoneGroup = Group::getByName(Group::EVERYONE_GROUP_NAME);
+            assert($everyoneGroup->save()); // Not Coding Standard
         }
 
         public function setUp()
         {
             parent::setUp();
+            RedBeanModel::forgetAll();
             $this->setupServerUrl();
             if (!$this->isApiTestUrlConfigured())
             {
@@ -74,6 +97,21 @@
                 $isApiTestUrlConfigured = true;
             }
             return $isApiTestUrlConfigured;
+        }
+
+        protected function getModelToApiDataUtilData(RedBeanModel $model)
+        {
+            $apiControllerClassName = $this->getApiControllerClassName();
+            $method                 = $this->getProtectedMethod($apiControllerClassName, __FUNCTION__);
+            $data                   = $method->invokeArgs(null, array($model));
+            return $data;
+        }
+
+        protected function createApiCallWithRelativeUrl($relativeUrl, $method, $headers, $data = array())
+        {
+            $baseUrl                = $this->getBaseApiUrl();
+            $url                    = $baseUrl . $relativeUrl;
+            return ApiRestTestHelper::createApiCall($url, $method, $headers, $data);
         }
     }
 ?>

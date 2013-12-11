@@ -48,10 +48,13 @@
         {
             if ($model instanceof SecurableItem && count($model->permissions) === 0)
             {
-                $postData           = static::resolveUserDefaultPermissionsForCurrentUser();
-                unset($postData['owner']); // we don't need owner for explicit permissions part.
-                $explicitReadWritePermissions   = self::resolveAndMakeExplicitReadWriteModelPermissions($postData,
-                                                                                                        $model);
+                // we use a dummy SecurableItem here because we don't care about 'owner' in permission array;
+                // using SecurableItem here even when the actual model is OwnedSecurableItem would not cause
+                // any unintended behavior.
+                // If we use $model here and $model is SecurableItem but not OwnedSecurableItem we might
+                // would have to unset($postData['owner']);
+                $postData           = static::resolveUserDefaultPermissionsForCurrentUser(new SecurableItem());
+                $explicitReadWritePermissions = self::resolveAndMakeExplicitReadWriteModelPermissions($postData, $model);
                 $updated    = ExplicitReadWriteModelPermissionsUtil::resolveExplicitReadWriteModelPermissions($model,
                                                                                         $explicitReadWritePermissions);
                 if (!$updated)
@@ -61,21 +64,25 @@
             }
         }
 
-        public static function resolveUserDefaultPermissionsForCurrentUser()
+        public static function resolveUserDefaultPermissionsForCurrentUser(RedBeanModel $model = null)
         {
-            return static::resolveUserDefaultPermissionsByUser(Yii::app()->user->userModel);
+            return static::resolveUserDefaultPermissionsByUser(Yii::app()->user->userModel, $model);
         }
 
-        public static function resolveUserDefaultPermissionsByUser(User $user)
+        public static function resolveUserDefaultPermissionsByUser(User $user, RedBeanModel $model = null)
         {
             $defaultPermissionSettings  = UserConfigurationFormAdapter::resolveAndGetDefaultPermissionSetting($user);
             $nonEveryoneGroup           = UserConfigurationFormAdapter::resolveAndGetValue($user,
                                                                                 'defaultPermissionGroupSetting', false);
             $type                       = DerivedExplicitReadWriteModelPermissionsElement::resolveUserPermissionConfigurationToPermissionType(
                                                                                             $defaultPermissionSettings);
-            $owner                              = array('id' => $user->id);
             $explicitReadWriteModelPermissions  = compact('type', 'nonEveryoneGroup');
-            $permissions                        = compact('owner', 'explicitReadWriteModelPermissions');
+            $permissions                        = compact('explicitReadWriteModelPermissions');
+            if ($model === null || $model instanceof OwnedSecurableItem)
+            {
+                $owner                              = array('id' => $user->id);
+                $permissions                        = compact('owner', 'explicitReadWriteModelPermissions');
+            }
             return $permissions;
         }
 

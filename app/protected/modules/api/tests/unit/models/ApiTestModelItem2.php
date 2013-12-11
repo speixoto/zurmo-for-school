@@ -71,6 +71,12 @@
             return true;
         }
 
+        public static function hasReadPermissionsOptimization()
+        {
+            // TODO: @Shoaibi: Critical0: Why does ApiRestTestModelItem2Test fail without it?
+            return true;
+        }
+
         public static function getModuleClassName()
         {
             return 'ApiModule';

@@ -52,14 +52,20 @@
                 'ZURMO_API_REQUEST_TYPE: REST',
             );
 
-            $account = AccountTestHelper::createAccountByNameTypeAndIndustryForOwner('First Account', 'Customer', 'Automotive', $super);
-            $redBeanModelToApiDataUtil  = new RedBeanModelToApiDataUtil($account);
-            $compareData  = $redBeanModelToApiDataUtil->getData();
-
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/accounts/account/api/read/' . $account->id, 'GET', $headers);
+            $account        = AccountTestHelper::createAccountByNameTypeAndIndustryForOwner('First Account', 'Customer',
+                                                                                                'Automotive', $super);
+            $compareData    = $this->getModelToApiDataUtilData($account);
+            $response = $this->createApiCallWithRelativeUrl('read/' . $account->id, 'GET', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
             $this->assertEquals($compareData, $response['data']);
+            $this->assertArrayHasKey('owner', $response['data']);
+            $this->assertCount(2, $response['data']['owner']);
+            $this->assertArrayHasKey('id', $response['data']['owner']);
+            $this->assertEquals($super->id, $response['data']['owner']['id']);
+            $this->assertArrayHasKey('explicitReadWriteModelPermissions', $response['data']);
+            $this->assertArrayHasKey('type', $response['data']['explicitReadWriteModelPermissions']);
+            $this->assertArrayHasKey('nonEveryoneGroup', $response['data']['explicitReadWriteModelPermissions']);
         }
 
         /**
@@ -78,11 +84,11 @@
             $accounts = Account::getByName('First Account');
             $this->assertEquals(1, count($accounts));
 
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/accounts/account/api/delete/' . $accounts[0]->id, 'DELETE', $headers);
+            $response = $this->createApiCallWithRelativeUrl('delete/' . $accounts[0]->id, 'DELETE', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
 
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/accounts/account/api/read/' . $accounts[0]->id, 'GET', $headers);
+            $response = $this->createApiCallWithRelativeUrl('read/' . $accounts[0]->id, 'GET', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_FAILURE, $response['status']);
             $this->assertEquals('The ID specified was invalid.', $response['message']);
@@ -140,7 +146,7 @@
             $shippingAddress['country']     = 'Latinoland';
 
             $account = new Account();
-            $data['name']                = "My Company";
+            $data['name']                = "My Company with no permissions";
             $data['officePhone']         = "6438238";
             $data['officeFax']           = "6565465436";
             $data['employees']           = 100;
@@ -156,9 +162,22 @@
             $data['billingAddress']      = $billingAddress;
             $data['shippingAddress']     = $shippingAddress;
 
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/accounts/account/api/create/', 'POST', $headers, array('data' => $data));
+            $response = $this->createApiCallWithRelativeUrl('create/', 'POST', $headers, array('data' => $data));
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
+            $this->assertArrayHasKey('id', $response['data']);
+            $accountId     = $response['data']['id'];
+
+            $this->assertArrayHasKey('owner', $response['data']);
+            $this->assertCount(2, $response['data']['owner']);
+            $this->assertArrayHasKey('id', $response['data']['owner']);
+            $this->assertEquals($super->id, $response['data']['owner']['id']);
+            $this->assertArrayHasKey('explicitReadWriteModelPermissions', $response['data']);
+            $this->assertCount(2, $response['data']['explicitReadWriteModelPermissions']);
+            $this->assertArrayHasKey('type', $response['data']['explicitReadWriteModelPermissions']);
+            $this->assertEquals(1, $response['data']['explicitReadWriteModelPermissions']['type']);
+            $this->assertArrayHasKey('nonEveryoneGroup', $response['data']['explicitReadWriteModelPermissions']);
+            $this->assertEquals('', $response['data']['explicitReadWriteModelPermissions']['nonEveryoneGroup']);
 
             $data['owner'] = array(
                 'id' => $super->id,
@@ -172,7 +191,9 @@
                 'id' => $super->id,
                 'username' => 'super'
             );
-            unset($data['explicitReadWriteModelPermissions']);
+
+            // unset explicit permissions, we won't use these in comparison.
+            unset($response['data']['explicitReadWriteModelPermissions']);
             // We need to unset some empty values from response.
             unset($response['data']['createdDateTime']);
             unset($response['data']['modifiedDateTime']);
@@ -198,14 +219,325 @@
             ksort($data);
             ksort($response['data']);
             $this->assertEquals($data, $response['data']);
+
+            $response = $this->createApiCallWithRelativeUrl('read/' . $accountId, 'GET', $headers);
+            $response = json_decode($response, true);
+            $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
+            $this->assertArrayHasKey('data', $response);
+            $this->assertArrayHasKey('owner', $response['data']);
+            $this->assertCount(2, $response['data']['owner']);
+            $this->assertArrayHasKey('id', $response['data']['owner']);
+            $this->assertEquals($super->id, $response['data']['owner']['id']);
+
+            $this->assertArrayHasKey('explicitReadWriteModelPermissions', $response['data']);
+            $this->assertCount(2, $response['data']['explicitReadWriteModelPermissions']);
+            $this->assertArrayHasKey('type', $response['data']['explicitReadWriteModelPermissions']);
+            $this->assertEquals(1, $response['data']['explicitReadWriteModelPermissions']['type']);
+            $this->assertArrayHasKey('nonEveryoneGroup', $response['data']['explicitReadWriteModelPermissions']);
+            $this->assertEquals('', $response['data']['explicitReadWriteModelPermissions']['nonEveryoneGroup']);
         }
 
         /**
-        * @depends testCreateAccount
+         * @depends testCreateAccount
+         */
+        public function testCreateAccountWithSpecificOwner()
+        {
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
+            $billy  = User::getByUsername('billy');
+            ReadPermissionsOptimizationUtil::rebuild();
+            $authenticationData = $this->login();
+            $headers = array(
+                'Accept: application/json',
+                'ZURMO_SESSION_ID: ' . $authenticationData['sessionId'],
+                'ZURMO_TOKEN: ' . $authenticationData['token'],
+                'ZURMO_API_REQUEST_TYPE: REST',
+            );
+
+            $industryValues = array(
+                'Automotive',
+                'Adult Entertainment',
+                'Financial Services',
+                'Mercenaries & Armaments',
+            );
+            $industryFieldData = CustomFieldData::getByName('Industries');
+            $industryFieldData->serializedData = serialize($industryValues);
+            $this->assertTrue($industryFieldData->save());
+
+            $typeValues = array(
+                'Prospect',
+                'Customer',
+                'Vendor',
+            );
+            $typeFieldData = CustomFieldData::getByName('AccountTypes');
+            $typeFieldData->serializedData = serialize($typeValues);
+            $this->assertTrue($typeFieldData->save());
+
+            $primaryEmail['emailAddress']   = "a@example.com";
+            $primaryEmail['optOut']         = 1;
+
+            $secondaryEmail['emailAddress'] = "b@example.com";
+            $secondaryEmail['optOut']       = 0;
+            $secondaryEmail['isInvalid']    = 1;
+
+            $billingAddress['street1']      = '129 Noodle Boulevard';
+            $billingAddress['street2']      = 'Apartment 6000A';
+            $billingAddress['city']         = 'Noodleville';
+            $billingAddress['postalCode']   = '23453';
+            $billingAddress['country']      = 'The Good Old US of A';
+
+            $shippingAddress['street1']     = '25 de Agosto 2543';
+            $shippingAddress['street2']     = 'Local 3';
+            $shippingAddress['city']        = 'Ciudad de Los Fideos';
+            $shippingAddress['postalCode']  = '5123-4';
+            $shippingAddress['country']     = 'Latinoland';
+
+            $account = new Account();
+            $data['name']                = "My Company with just owner";
+            $data['officePhone']         = "6438238";
+            $data['officeFax']           = "6565465436";
+            $data['employees']           = 100;
+            $data['website']             = "http://www.google.com";
+            $data['annualRevenue']       = "1000000";
+            $data['description']         = "Some Description";
+
+            $data['industry']['value']   = $industryValues[2];
+            $data['type']['value']       = $typeValues[1];
+
+            $data['primaryEmail']        = $primaryEmail;
+            $data['secondaryEmail']      = $secondaryEmail;
+            $data['billingAddress']      = $billingAddress;
+            $data['shippingAddress']     = $shippingAddress;
+            $data['owner']['id']        = $billy->id;
+
+            $response = $this->createApiCallWithRelativeUrl('create/', 'POST', $headers, array('data' => $data));
+            $response = json_decode($response, true);
+            $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
+            $this->assertArrayHasKey('id', $response['data']);
+            $accountId     = $response['data']['id'];
+
+            $this->assertArrayHasKey('owner', $response['data']);
+            $this->assertCount(2, $response['data']['owner']);
+            $this->assertArrayHasKey('id', $response['data']['owner']);
+            $this->assertEquals($billy->id, $response['data']['owner']['id']);
+            $this->assertArrayHasKey('explicitReadWriteModelPermissions', $response['data']);
+            $this->assertCount(2, $response['data']['explicitReadWriteModelPermissions']);
+            $this->assertArrayHasKey('type', $response['data']['explicitReadWriteModelPermissions']);
+            $this->assertEquals(1, $response['data']['explicitReadWriteModelPermissions']['type']);
+            $this->assertArrayHasKey('nonEveryoneGroup', $response['data']['explicitReadWriteModelPermissions']);
+            $this->assertEquals('', $response['data']['explicitReadWriteModelPermissions']['nonEveryoneGroup']);
+
+            $data['owner'] = array(
+                'id' => $billy->id,
+                'username' => 'billy'
+            );
+            $data['createdByUser']    = array(
+                'id' => $super->id,
+                'username' => 'super'
+            );
+            $data['modifiedByUser'] = array(
+                'id' => $super->id,
+                'username' => 'super'
+            );
+
+            // unset explicit permissions, we won't use these in comparison.
+            unset($response['data']['explicitReadWriteModelPermissions']);
+            // We need to unset some empty values from response.
+            unset($response['data']['createdDateTime']);
+            unset($response['data']['modifiedDateTime']);
+            unset($response['data']['primaryEmail']['id']);
+            unset($response['data']['primaryEmail']['isInvalid']);
+            unset($response['data']['secondaryEmail']['id']);
+            unset($response['data']['billingAddress']['id']);
+            unset($response['data']['billingAddress']['state']);
+            unset($response['data']['billingAddress']['longitude']);
+            unset($response['data']['billingAddress']['latitude']);
+            unset($response['data']['billingAddress']['invalid']);
+
+            unset($response['data']['shippingAddress']['id']);
+            unset($response['data']['shippingAddress']['state']);
+            unset($response['data']['shippingAddress']['longitude']);
+            unset($response['data']['shippingAddress']['latitude']);
+            unset($response['data']['shippingAddress']['invalid']);
+            unset($response['data']['industry']['id']);
+            unset($response['data']['latestActivityDateTime']);
+            unset($response['data']['type']['id']);
+            unset($response['data']['id']);
+
+            ksort($data);
+            ksort($response['data']);
+            $this->assertEquals($data, $response['data']);
+
+            $response = $this->createApiCallWithRelativeUrl('read/' . $accountId, 'GET', $headers);
+            $response = json_decode($response, true);
+            $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
+            $this->assertArrayHasKey('data', $response);
+            $this->assertArrayHasKey('owner', $response['data']);
+            $this->assertCount(2, $response['data']['owner']);
+            $this->assertArrayHasKey('id', $response['data']['owner']);
+            $this->assertEquals($billy->id, $response['data']['owner']['id']);
+
+            $this->assertArrayHasKey('explicitReadWriteModelPermissions', $response['data']);
+            $this->assertCount(2, $response['data']['explicitReadWriteModelPermissions']);
+            $this->assertArrayHasKey('type', $response['data']['explicitReadWriteModelPermissions']);
+            $this->assertEquals(1, $response['data']['explicitReadWriteModelPermissions']['type']);
+            $this->assertArrayHasKey('nonEveryoneGroup', $response['data']['explicitReadWriteModelPermissions']);
+            $this->assertEquals('', $response['data']['explicitReadWriteModelPermissions']['nonEveryoneGroup']);
+        }
+
+        /**
+         * @depends testCreateAccount
+         */
+        public function testCreateAccountWithSpecificExplicitPermissions()
+        {
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
+            ReadPermissionsOptimizationUtil::rebuild();
+            $authenticationData = $this->login();
+            $headers = array(
+                'Accept: application/json',
+                'ZURMO_SESSION_ID: ' . $authenticationData['sessionId'],
+                'ZURMO_TOKEN: ' . $authenticationData['token'],
+                'ZURMO_API_REQUEST_TYPE: REST',
+            );
+
+            $industryValues = array(
+                'Automotive',
+                'Adult Entertainment',
+                'Financial Services',
+                'Mercenaries & Armaments',
+            );
+            $industryFieldData = CustomFieldData::getByName('Industries');
+            $industryFieldData->serializedData = serialize($industryValues);
+            $this->assertTrue($industryFieldData->save());
+
+            $typeValues = array(
+                'Prospect',
+                'Customer',
+                'Vendor',
+            );
+            $typeFieldData = CustomFieldData::getByName('AccountTypes');
+            $typeFieldData->serializedData = serialize($typeValues);
+            $this->assertTrue($typeFieldData->save());
+
+            $primaryEmail['emailAddress']   = "a@example.com";
+            $primaryEmail['optOut']         = 1;
+
+            $secondaryEmail['emailAddress'] = "b@example.com";
+            $secondaryEmail['optOut']       = 0;
+            $secondaryEmail['isInvalid']    = 1;
+
+            $billingAddress['street1']      = '129 Noodle Boulevard';
+            $billingAddress['street2']      = 'Apartment 6000A';
+            $billingAddress['city']         = 'Noodleville';
+            $billingAddress['postalCode']   = '23453';
+            $billingAddress['country']      = 'The Good Old US of A';
+
+            $shippingAddress['street1']     = '25 de Agosto 2543';
+            $shippingAddress['street2']     = 'Local 3';
+            $shippingAddress['city']        = 'Ciudad de Los Fideos';
+            $shippingAddress['postalCode']  = '5123-4';
+            $shippingAddress['country']     = 'Latinoland';
+
+            $account = new Account();
+            $data['name']                = "My Company with owner only permissions";
+            $data['officePhone']         = "6438238";
+            $data['officeFax']           = "6565465436";
+            $data['employees']           = 100;
+            $data['website']             = "http://www.google.com";
+            $data['annualRevenue']       = "1000000";
+            $data['description']         = "Some Description";
+
+            $data['industry']['value']   = $industryValues[2];
+            $data['type']['value']       = $typeValues[1];
+
+            $data['primaryEmail']        = $primaryEmail;
+            $data['secondaryEmail']      = $secondaryEmail;
+            $data['billingAddress']      = $billingAddress;
+            $data['shippingAddress']     = $shippingAddress;
+            // TODO: @Shoaibi/@Ivica: null does not work, empty works. Null doesn't send it.
+            $data['explicitReadWriteModelPermissions'] = array('nonEveryoneGroup' => '', 'type' => '');
+
+            $response = $this->createApiCallWithRelativeUrl('create/', 'POST', $headers, array('data' => $data));
+            $response = json_decode($response, true);
+            $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
+            $this->assertArrayHasKey('id', $response['data']);
+            $accountId     = $response['data']['id'];
+
+            $this->assertArrayHasKey('owner', $response['data']);
+            $this->assertCount(2, $response['data']['owner']);
+            $this->assertArrayHasKey('id', $response['data']['owner']);
+            $this->assertEquals($super->id, $response['data']['owner']['id']);
+            $this->assertArrayHasKey('explicitReadWriteModelPermissions', $response['data']);
+            $this->assertCount(2, $response['data']['explicitReadWriteModelPermissions']);
+            $this->assertArrayHasKey('type', $response['data']['explicitReadWriteModelPermissions']);
+            $this->assertEquals('', $response['data']['explicitReadWriteModelPermissions']['type']);
+            // following also works. wonder why.
+            //$this->assertTrue(null === $response['data']['explicitReadWriteModelPermissions']['type']);
+            $this->assertArrayHasKey('nonEveryoneGroup', $response['data']['explicitReadWriteModelPermissions']);
+            $this->assertEquals('', $response['data']['explicitReadWriteModelPermissions']['nonEveryoneGroup']);
+
+            $data['owner'] = array(
+                'id' => $super->id,
+                'username' => 'super'
+            );
+            $data['createdByUser']    = array(
+                'id' => $super->id,
+                'username' => 'super'
+            );
+            $data['modifiedByUser'] = array(
+                'id' => $super->id,
+                'username' => 'super'
+            );
+
+            // We need to unset some empty values from response.
+            unset($response['data']['createdDateTime']);
+            unset($response['data']['modifiedDateTime']);
+            unset($response['data']['primaryEmail']['id']);
+            unset($response['data']['primaryEmail']['isInvalid']);
+            unset($response['data']['secondaryEmail']['id']);
+            unset($response['data']['billingAddress']['id']);
+            unset($response['data']['billingAddress']['state']);
+            unset($response['data']['billingAddress']['longitude']);
+            unset($response['data']['billingAddress']['latitude']);
+            unset($response['data']['billingAddress']['invalid']);
+
+            unset($response['data']['shippingAddress']['id']);
+            unset($response['data']['shippingAddress']['state']);
+            unset($response['data']['shippingAddress']['longitude']);
+            unset($response['data']['shippingAddress']['latitude']);
+            unset($response['data']['shippingAddress']['invalid']);
+            unset($response['data']['industry']['id']);
+            unset($response['data']['latestActivityDateTime']);
+            unset($response['data']['type']['id']);
+            unset($response['data']['id']);
+
+            ksort($data);
+            ksort($response['data']);
+            $this->assertEquals($data, $response['data']);
+
+            $response = $this->createApiCallWithRelativeUrl('read/' . $accountId, 'GET', $headers);
+            $response = json_decode($response, true);
+            $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
+            $this->assertArrayHasKey('data', $response);
+            $this->assertArrayHasKey('owner', $response['data']);
+            $this->assertCount(2, $response['data']['owner']);
+            $this->assertArrayHasKey('id', $response['data']['owner']);
+            $this->assertEquals($super->id, $response['data']['owner']['id']);
+
+            $this->assertArrayHasKey('explicitReadWriteModelPermissions', $response['data']);
+            $this->assertCount(2, $response['data']['explicitReadWriteModelPermissions']);
+            $this->assertArrayHasKey('type', $response['data']['explicitReadWriteModelPermissions']);
+            $this->assertEquals('', $response['data']['explicitReadWriteModelPermissions']['type']);
+            $this->assertArrayHasKey('nonEveryoneGroup', $response['data']['explicitReadWriteModelPermissions']);
+            $this->assertEquals('', $response['data']['explicitReadWriteModelPermissions']['nonEveryoneGroup']);
+        }
+
+        /**
+        * @depends testCreateAccountWithSpecificOwner
         */
         public function testUpdateAccount()
         {
-            RedBeanModel::forgetAll();
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
 
@@ -217,25 +549,30 @@
                 'ZURMO_API_REQUEST_TYPE: REST',
             );
 
-            $accounts = Account::getByName('My Company');
+            $accounts = Account::getByName('My Company with just owner');
             $this->assertEquals(1, count($accounts));
-            $redBeanModelToApiDataUtil  = new RedBeanModelToApiDataUtil($accounts[0]);
-            $compareData  = $redBeanModelToApiDataUtil->getData();
+            $compareData                                        = $this->getModelToApiDataUtilData($accounts[0]);
+            $group  = RandomDataUtil::getRandomValueFromArray(Group::getAll());
+            $explicitReadWriteModelPermissions = array('type' => 2, 'nonEveryoneGroup' => $group->id);
 
-            $data['name']                = "My Company 2";
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/accounts/account/api/update/' . $compareData['id'], 'PUT', $headers, array('data' => $data));
+            $data['name']                                       = "My Company 2";
+            $data['explicitReadWriteModelPermissions']          = $explicitReadWriteModelPermissions;
+            $compareData['name']                                = "My Company 2";
+            $compareData['explicitReadWriteModelPermissions']   = $explicitReadWriteModelPermissions;
+
+            $response = $this->createApiCallWithRelativeUrl('update/' . $compareData['id'], 'PUT', $headers, array('data' => $data));
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
 
             // We need to unset some empty values from response and dates.
             unset($response['data']['modifiedDateTime']);
             unset($compareData['modifiedDateTime']);
-            $compareData['name'] = "My Company 2";
             ksort($compareData);
             ksort($response['data']);
+            // TODO: @Shoaibi: Critical0: this fails sometimes and falls to default user permissions.
             $this->assertEquals($compareData, $response['data']);
 
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/accounts/account/api/read/' . $compareData['id'], 'GET', $headers);
+            $response = $this->createApiCallWithRelativeUrl('read/' . $compareData['id'], 'GET', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
             unset($response['data']['modifiedDateTime']);
@@ -248,7 +585,6 @@
         */
         public function testListAccounts()
         {
-            RedBeanModel::forgetAll();
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
 
@@ -262,21 +598,19 @@
 
             $accounts = Account::getByName('My Company 2');
             $this->assertEquals(1, count($accounts));
-            $redBeanModelToApiDataUtil  = new RedBeanModelToApiDataUtil($accounts[0]);
-            $compareData  = $redBeanModelToApiDataUtil->getData();
+            $compareData  = $this->getModelToApiDataUtilData($accounts[0]);
 
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/accounts/account/api/list/' , 'GET', $headers);
+            $response = $this->createApiCallWithRelativeUrl('list/' , 'GET', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
-            $this->assertEquals(1, count($response['data']['items']));
+            $this->assertEquals(3, count($response['data']['items']));
             $this->assertEquals(1, $response['data']['currentPage']);
-            $this->assertEquals(1, $response['data']['totalCount']);
-            $this->assertEquals(array($compareData), $response['data']['items']);
+            $this->assertEquals(3, $response['data']['totalCount']);
+            $this->assertEquals($compareData, $response['data']['items'][0]);
         }
 
         public function testListAccountAttributes()
         {
-            RedBeanModel::forgetAll();
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
 
@@ -288,7 +622,7 @@
                 'ZURMO_API_REQUEST_TYPE: REST',
             );
             $allAttributes      = ApiRestTestHelper::getModelAttributes(new Account());
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/accounts/account/api/listAttributes/' , 'GET', $headers);
+            $response = $this->createApiCallWithRelativeUrl('listAttributes/' , 'GET', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
             $this->assertEquals($allAttributes, $response['data']['items']);
@@ -320,17 +654,17 @@
             $data['name']                = "My Company 3";
 
             // Check first if user doesn't have rights.
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/accounts/account/api/read/' . $accounts[0]->id, 'GET', $headers);
+            $response = $this->createApiCallWithRelativeUrl('read/' . $accounts[0]->id, 'GET', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_FAILURE, $response['status']);
             $this->assertEquals('You do not have rights to perform this action.', $response['message']);
 
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/accounts/account/api/update/' . $accounts[0]->id, 'PUT', $headers, array('data' => $data));
+            $response = $this->createApiCallWithRelativeUrl('update/' . $accounts[0]->id, 'PUT', $headers, array('data' => $data));
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_FAILURE, $response['status']);
             $this->assertEquals('You do not have rights to perform this action.', $response['message']);
 
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/accounts/account/api/delete/' . $accounts[0]->id, 'DELETE', $headers);
+            $response = $this->createApiCallWithRelativeUrl('delete/' . $accounts[0]->id, 'DELETE', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_FAILURE, $response['status']);
             $this->assertEquals('You do not have rights to perform this action.', $response['message']);
@@ -342,17 +676,17 @@
             $saved = $notAllowedUser->save();
             $this->assertTrue($saved);
 
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/accounts/account/api/read/' . $accounts[0]->id, 'GET', $headers);
+            $response = $this->createApiCallWithRelativeUrl('read/' . $accounts[0]->id, 'GET', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_FAILURE, $response['status']);
             $this->assertEquals('You do not have permissions for this action.', $response['message']);
 
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/accounts/account/api/update/' . $accounts[0]->id, 'PUT', $headers, array('data' => $data));
+            $response = $this->createApiCallWithRelativeUrl('update/' . $accounts[0]->id, 'PUT', $headers, array('data' => $data));
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_FAILURE, $response['status']);
             $this->assertEquals('You do not have permissions for this action.', $response['message']);
 
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/accounts/account/api/delete/' . $accounts[0]->id, 'DELETE', $headers);
+            $response = $this->createApiCallWithRelativeUrl('delete/' . $accounts[0]->id, 'DELETE', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_FAILURE, $response['status']);
             $this->assertEquals('You do not have permissions for this action.', $response['message']);
@@ -370,7 +704,7 @@
             $data['explicitReadWriteModelPermissions'] = array(
                 'type' => ExplicitReadWriteModelPermissionsUtil::MIXED_TYPE_EVERYONE_GROUP
             );
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/accounts/account/api/update/' . $accounts[0]->id, 'PUT', $headers, array('data' => $data));
+            $response = $this->createApiCallWithRelativeUrl('update/' . $accounts[0]->id, 'PUT', $headers, array('data' => $data));
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
 
@@ -381,18 +715,18 @@
                 'ZURMO_TOKEN: ' . $authenticationData['token'],
                 'ZURMO_API_REQUEST_TYPE: REST',
             );
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/accounts/account/api/read/' . $accounts[0]->id, 'GET', $headers);
+            $response = $this->createApiCallWithRelativeUrl('read/' . $accounts[0]->id, 'GET', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
 
             unset($data);
             $data['name']                = "My Company 3";
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/accounts/account/api/update/' . $accounts[0]->id, 'PUT', $headers, array('data' => $data));
+            $response = $this->createApiCallWithRelativeUrl('update/' . $accounts[0]->id, 'PUT', $headers, array('data' => $data));
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
             $this->assertEquals('My Company 3', $response['data']['name']);
 
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/accounts/account/api/delete/' . $accounts[0]->id, 'DELETE', $headers);
+            $response = $this->createApiCallWithRelativeUrl('delete/' . $accounts[0]->id, 'DELETE', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_FAILURE, $response['status']);
             $this->assertEquals('You do not have permissions for this action.', $response['message']);
@@ -407,11 +741,11 @@
             );
 
             //Test Delete
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/accounts/account/api/delete/' . $accounts[0]->id, 'DELETE', $headers);
+            $response = $this->createApiCallWithRelativeUrl('delete/' . $accounts[0]->id, 'DELETE', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
 
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/accounts/account/api/read/' . $accounts[0]->id, 'GET', $headers);
+            $response = $this->createApiCallWithRelativeUrl('read/' . $accounts[0]->id, 'GET', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_FAILURE, $response['status']);
         }
@@ -423,6 +757,7 @@
         {
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
+            Account::deleteAll();
             $authenticationData = $this->login();
             $headers = array(
                 'Accept: application/json',
@@ -447,7 +782,7 @@
                 'sort' => 'name',
             );
             $searchParamsQuery = http_build_query($searchParams);
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/accounts/account/api/list/filter/' . $searchParamsQuery, 'GET', $headers);
+            $response = $this->createApiCallWithRelativeUrl('list/filter/' . $searchParamsQuery, 'GET', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
             $this->assertEquals(3, count($response['data']['items']));
@@ -460,7 +795,7 @@
             // Second page
             $searchParams['pagination']['page'] = 2;
             $searchParamsQuery = http_build_query($searchParams);
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/accounts/account/api/list/filter/' . $searchParamsQuery, 'GET', $headers);
+            $response = $this->createApiCallWithRelativeUrl('list/filter/' . $searchParamsQuery, 'GET', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
             $this->assertEquals(2, count($response['data']['items']));
@@ -473,7 +808,7 @@
             $searchParams['pagination']['page'] = 1;
             $searchParams['search']['name'] = 'First Account';
             $searchParamsQuery = http_build_query($searchParams);
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/accounts/account/api/list/filter/' . $searchParamsQuery, 'GET', $headers);
+            $response = $this->createApiCallWithRelativeUrl('list/filter/' . $searchParamsQuery, 'GET', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
             $this->assertEquals(1, count($response['data']['items']));
@@ -485,7 +820,7 @@
             $searchParams['pagination']['page'] = 1;
             $searchParams['search']['name'] = 'First Account 2';
             $searchParamsQuery = http_build_query($searchParams);
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/accounts/account/api/list/filter/' . $searchParamsQuery, 'GET', $headers);
+            $response = $this->createApiCallWithRelativeUrl('list/filter/' . $searchParamsQuery, 'GET', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
             $this->assertEquals(0, $response['data']['totalCount']);
@@ -503,7 +838,7 @@
                 'sort' => 'name.desc',
             );
             $searchParamsQuery = http_build_query($searchParams);
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/accounts/account/api/list/filter/' . $searchParamsQuery, 'GET', $headers);
+            $response = $this->createApiCallWithRelativeUrl('list/filter/' . $searchParamsQuery, 'GET', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
             $this->assertEquals(3, count($response['data']['items']));
@@ -516,7 +851,7 @@
             // Second page
             $searchParams['pagination']['page'] = 2;
             $searchParamsQuery = http_build_query($searchParams);
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/accounts/account/api/list/filter/' . $searchParamsQuery, 'GET', $headers);
+            $response = $this->createApiCallWithRelativeUrl('list/filter/' . $searchParamsQuery, 'GET', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
             $this->assertEquals(2, count($response['data']['items']));
@@ -539,7 +874,7 @@
                 'sort' => 'name.desc',
             );
             $searchParamsQuery = http_build_query($searchParams);
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/accounts/account/api/list/filter/' . $searchParamsQuery, 'GET', $headers);
+            $response = $this->createApiCallWithRelativeUrl('list/filter/' . $searchParamsQuery, 'GET', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
             $this->assertEquals(2, $response['data']['totalCount']);
@@ -595,7 +930,7 @@
                 'sort' => 'name.asc',
            );
 
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/accounts/account/api/list/filter/', 'POST', $headers, array('data' => $data));
+            $response = $this->createApiCallWithRelativeUrl('list/filter/', 'POST', $headers, array('data' => $data));
 
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
@@ -607,7 +942,7 @@
 
             // Get second page
             $data['pagination']['page'] = 2;
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/accounts/account/api/list/filter/', 'POST', $headers, array('data' => $data));
+            $response = $this->createApiCallWithRelativeUrl('list/filter/', 'POST', $headers, array('data' => $data));
 
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
@@ -650,7 +985,7 @@
                     ),
                 ),
             );
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/accounts/account/api/create/', 'POST', $headers, array('data' => $data));
+            $response = $this->createApiCallWithRelativeUrl('create/', 'POST', $headers, array('data' => $data));
 
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
@@ -690,8 +1025,7 @@
             $account2 = AccountTestHelper::createAccountByNameForOwner('Troter', $super);
             $contact  = ContactTestHelper::createContactByNameForOwner('Simon', $super);
 
-            $redBeanModelToApiDataUtil  = new RedBeanModelToApiDataUtil($account);
-            $compareData  = $redBeanModelToApiDataUtil->getData();
+            $compareData  = $this->getModelToApiDataUtilData($account);
             $account->forget();
 
             $data['modelRelations'] = array(
@@ -717,7 +1051,7 @@
             );
             $data['name'] = 'Zurmo Inc.';
 
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/accounts/account/api/update/' . $compareData['id'], 'PUT', $headers, array('data' => $data));
+            $response = $this->createApiCallWithRelativeUrl('update/' . $compareData['id'], 'PUT', $headers, array('data' => $data));
             $response = json_decode($response, true);
             unset($response['data']['modifiedDateTime']);
             unset($compareData['modifiedDateTime']);
@@ -763,7 +1097,7 @@
                 ),
             );
 
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/accounts/account/api/update/' . $compareData['id'], 'PUT', $headers, array('data' => $data));
+            $response = $this->createApiCallWithRelativeUrl('update/' . $compareData['id'], 'PUT', $headers, array('data' => $data));
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
             RedBeanModel::forgetAll();
@@ -797,7 +1131,7 @@
             $data['officePhone']         = "6438238";
             $data['officeFax']           = "6565465436";
 
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/accounts/account/api/create/', 'POST', $headers, array('data' => $data));
+            $response = $this->createApiCallWithRelativeUrl('create/', 'POST', $headers, array('data' => $data));
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_FAILURE, $response['status']);
 
@@ -806,7 +1140,7 @@
             $id = $accounts[0]->id;
             $data = array();
             $data['name']                = '';
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/accounts/account/api/update/' . $id, 'PUT', $headers, array('data' => $data));
+            $response = $this->createApiCallWithRelativeUrl('update/' . $id, 'PUT', $headers, array('data' => $data));
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_FAILURE, $response['status']);
             $this->assertEquals(1, count($response['errors']));
@@ -830,7 +1164,7 @@
             $data['name']         = "AAA";
             $data['employees']           = "SS";
 
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/accounts/account/api/create/', 'POST', $headers, array('data' => $data));
+            $response = $this->createApiCallWithRelativeUrl('create/', 'POST', $headers, array('data' => $data));
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_FAILURE, $response['status']);
             $this->assertEquals(1, count($response['errors']));
@@ -840,7 +1174,7 @@
             $id = $accounts[0]->id;
             $data = array();
             $data['employees']                = 'DD';
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/accounts/account/api/update/' . $id, 'PUT', $headers, array('data' => $data));
+            $response = $this->createApiCallWithRelativeUrl('update/' . $id, 'PUT', $headers, array('data' => $data));
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_FAILURE, $response['status']);
             $this->assertEquals(1, count($response['errors']));
@@ -855,10 +1189,21 @@
                 'ZURMO_TOKEN: ' . $authenticationData['token'],
                 'ZURMO_API_REQUEST_TYPE: REST',
             );
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/accounts/account/api/read/1', 'GET', $headers);
+            $response = $this->createApiCallWithRelativeUrl('read/1', 'GET', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_FAILURE, $response['status']);
             $this->assertEquals('Sign in required.', $response['message']);
+        }
+
+        protected function getApiControllerClassName()
+        {
+            Yii::import('application.modules.accounts.controllers.AccountApiController', true);
+            return 'AccountsAccountApiController';
+        }
+
+        protected function getModuleBaseApiUrl()
+        {
+            return 'accounts/account/api/';
         }
     }
 ?>

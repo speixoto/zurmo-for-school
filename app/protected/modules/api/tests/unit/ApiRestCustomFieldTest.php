@@ -70,7 +70,7 @@
             }
 
             //Test List
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/zurmo/customField/api/list/', 'GET', $headers);
+            $response = $this->createApiCallWithRelativeUrl('list/', 'GET', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
             $this->assertEquals($compareData, $response['data']);
@@ -101,7 +101,7 @@
             $compareData    = CustomFieldDataUtil::
                 getDataIndexedByDataAndTranslatedLabelsByLanguage($customFieldData, 'en');
 
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/zurmo/customField/api/read/AccountTypes', 'GET', $headers);
+            $response = $this->createApiCallWithRelativeUrl('read/AccountTypes', 'GET', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
             $this->assertEquals($compareData, $response['data']);
@@ -124,7 +124,7 @@
             $data = array(
                 'values' => array('Unknown', 'None', array('Not Alowed', '22'), 'None'),
             );
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/zurmo/customField/api/addValues/' . $typeFieldData->name, 'PUT', $headers, array('data' => $data));
+            $response = $this->createApiCallWithRelativeUrl('addValues/' . $typeFieldData->name, 'PUT', $headers, array('data' => $data));
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
 
@@ -134,7 +134,7 @@
 
             // Test get custom field
             CustomFieldData::forgetAll();
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/zurmo/customField/api/read/AccountTypes', 'GET', $headers);
+            $response = $this->createApiCallWithRelativeUrl('read/AccountTypes', 'GET', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
             $this->assertEquals($compareData, $response['data']);
@@ -156,10 +156,21 @@
             $data = array(
                 'values' => array('Unknown2', 'None2'),
             );
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/zurmo/customField/api/addValues/AccountTypes', 'PUT', $headers, array('data' => $data));
+            $response = $this->createApiCallWithRelativeUrl('addValues/AccountTypes', 'PUT', $headers, array('data' => $data));
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_FAILURE, $response['status']);
             $this->assertEquals('You do not have rights to perform this action.', $response['message']);
+        }
+
+        protected function getApiControllerClassName()
+        {
+            Yii::import('application.modules.zurmo.controllers.CustomFieldApiController', true);
+            return 'ZurmoCustomFieldApiController';
+        }
+
+        protected function getModuleBaseApiUrl()
+        {
+            return 'zurmo/customField/api/';
         }
     }
 ?>

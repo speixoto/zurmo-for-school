@@ -142,5 +142,11 @@
         {
             return true;
         }
+
+        public static function hasReadPermissionsOptimization()
+        {
+            // TODO: @Shoaibi: Critical0: Why does ApiRestTestModelItemTest fail without it?
+            return true;
+        }
     }
 ?>

@@ -37,7 +37,7 @@
     /**
     * Base class for API REST functions tests.
     */
-    class ApiRestTest extends ApiBaseTest
+    abstract class ApiRestTest extends ApiBaseTest
     {
         protected function login($username = 'super', $password = 'super', $type = 'json')
         {
@@ -60,6 +60,8 @@
 
             if ($response['status'] == ApiResponse::STATUS_SUCCESS)
             {
+                $this->assertTrue(isset($response['data']['sessionId']) && is_string($response['data']['sessionId']));
+                $this->assertTrue(isset($response['data']['token']) && is_string($response['data']['token']));
                 return $response['data'];
             }
             else

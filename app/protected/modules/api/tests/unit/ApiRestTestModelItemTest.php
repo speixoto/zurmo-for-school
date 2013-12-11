@@ -68,21 +68,6 @@
             return array('ApiTestModelItem', 'ApiTestModelItem2', 'ApiTestModelItem3', 'ApiTestModelItem4');
         }
 
-        public function testLogin()
-        {
-            $headers = array(
-                'Accept: application/json',
-                'ZURMO_AUTH_USERNAME: super',
-                'ZURMO_AUTH_PASSWORD: super',
-                'ZURMO_API_REQUEST_TYPE: REST',
-            );
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/zurmo/api/login/', 'POST', $headers);
-            $response = json_decode($response, true);
-            $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
-            $this->assertTrue(isset($response['data']['sessionId']) && is_string($response['data']['sessionId']));
-            $this->assertTrue(isset($response['data']['token']) && is_string($response['data']['token']));
-        }
-
         public function testCreate()
         {
             $super = User::getByUsername('super');
@@ -103,39 +88,39 @@
             $this->assertEquals('USD', $currencyValue->currency->code);
 
             $testItem2 = new ApiTestModelItem2();
-            $testItem2->name     = 'John';
+            $testItem2->name     = 'John1';
             $this->assertTrue($testItem2->save());
 
             $testItem4 = new ApiTestModelItem4();
-            $testItem4->name     = 'John';
+            $testItem4->name     = 'John1';
             $this->assertTrue($testItem4->save());
 
             //HAS_MANY and MANY_MANY relationships should be ignored.
             $testItem3_1 = new ApiTestModelItem3();
-            $testItem3_1->name     = 'Kevin';
+            $testItem3_1->name     = 'Kevin1';
             $this->assertTrue($testItem3_1->save());
 
             $testItem3_2 = new ApiTestModelItem3();
-            $testItem3_2->name     = 'Jim';
+            $testItem3_2->name     = 'Jim1';
             $this->assertTrue($testItem3_2->save());
 
             $testItemRelated = new ApiTestModelItem();
-            $testItemRelated->lastName     = 'AAAA';
-            $testItemRelated->string        = 'some string';
+            $testItemRelated->lastName     = 'AAAA1';
+            $testItemRelated->string        = 'some string1';
             $this->assertTrue($testItemRelated->save());
 
             $testItem = new ApiTestModelItem();
 
-            $testItem->firstName     = 'Bob5';
-            $testItem->lastName      = 'Bob5';
+            $testItem->firstName     = 'Bob5 with no permissions';
+            $testItem->lastName      = 'Bob51';
             $testItem->boolean       = true;
             $testItem->date          = '2002-04-03';
             $testItem->dateTime      = '2002-04-03 02:00:43';
             $testItem->float         = 54.22;
             $testItem->integer       = 10;
             $testItem->phone         = '21313213';
-            $testItem->string        = 'aString';
-            $testItem->textArea      = 'Some Text Area';
+            $testItem->string        = 'aString1';
+            $testItem->textArea      = 'Some Text Area1';
             $testItem->url           = 'http://www.asite.com';
             $testItem->currencyValue = $currencyValue;
             $testItem->modelItem2    = $testItem2;
@@ -161,8 +146,7 @@
             $testItem->tagCloud->values->add($customFieldValue);
 
             $this->assertTrue($testItem->save());
-            $util  = new RedBeanModelToApiDataUtil($testItem);
-            $data  = $util->getData();
+            $data  = $this->getModelToApiDataUtilData($testItem);
             unset($data['createdDateTime']);
             unset($data['modifiedDateTime']);
             unset($data['id']);
@@ -180,10 +164,30 @@
             $testItem->forget();
             unset($testItem);
 
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/api/testModelItem/api/create/', 'POST', $headers, array('data' => $data));
+            $response = $this->createApiCallWithRelativeUrl('create/', 'POST', $headers, array('data' => $data));
             $response = json_decode($response, true);
+            $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
+            $this->assertTrue(is_int($response['data']['id']));
+            $this->assertGreaterThan(0, $response['data']['id']);
+            $modelId     = $response['data']['id'];
 
-            $id = $response['data']['id'];
+            $this->assertArrayHasKey('owner', $response['data']);
+            $this->assertCount(2, $response['data']['owner']);
+            $this->assertArrayHasKey('id', $response['data']['owner']);
+            $this->assertEquals($super->id, $response['data']['owner']['id']);
+            $this->assertArrayHasKey('explicitReadWriteModelPermissions', $response['data']);
+            $this->assertCount(2, $response['data']['explicitReadWriteModelPermissions']);
+            $this->assertArrayHasKey('type', $response['data']['explicitReadWriteModelPermissions']);
+            $this->assertEquals(1, $response['data']['explicitReadWriteModelPermissions']['type']);
+            $this->assertArrayHasKey('nonEveryoneGroup', $response['data']['explicitReadWriteModelPermissions']);
+            $this->assertEquals('', $response['data']['explicitReadWriteModelPermissions']['nonEveryoneGroup']);
+
+            // unset explicit permissions, we won't use these in comparison.
+            // compareData's version of permissions came from manual creation, would be none.
+            // response's one came from api, would be default
+            unset($response['data']['explicitReadWriteModelPermissions']);
+            unset($compareData['explicitReadWriteModelPermissions']);
+
             unset($response['data']['createdDateTime']);
             unset($response['data']['modifiedDateTime']);
             unset($response['data']['id']);
@@ -193,10 +197,339 @@
             unset($compareData['currencyValue']['id']);
             unset($compareData['createdDateTime']);
             unset($compareData['modifiedDateTime']);
-            $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
             ksort($compareData);
             ksort($response['data']);
             $this->assertEquals($compareData, $response['data']);
+
+            $response = $this->createApiCallWithRelativeUrl('read/' . $modelId, 'GET', $headers);
+            $response = json_decode($response, true);
+            $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
+            $this->assertArrayHasKey('data', $response);
+            $this->assertArrayHasKey('owner', $response['data']);
+            $this->assertCount(2, $response['data']['owner']);
+            $this->assertArrayHasKey('id', $response['data']['owner']);
+            $this->assertEquals($super->id, $response['data']['owner']['id']);
+
+            $this->assertArrayHasKey('explicitReadWriteModelPermissions', $response['data']);
+            $this->assertCount(2, $response['data']['explicitReadWriteModelPermissions']);
+            $this->assertArrayHasKey('type', $response['data']['explicitReadWriteModelPermissions']);
+            $this->assertEquals(1, $response['data']['explicitReadWriteModelPermissions']['type']);
+            $this->assertArrayHasKey('nonEveryoneGroup', $response['data']['explicitReadWriteModelPermissions']);
+            $this->assertEquals('', $response['data']['explicitReadWriteModelPermissions']['nonEveryoneGroup']);
+        }
+
+        /**
+         * @depends testCreate
+         */
+        public function testCreateWithSpecificOwner()
+        {
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel        = $super;
+            $billy  = User::getByUsername('billy');
+
+            $authenticationData = $this->login();
+            $headers = array(
+                'Accept: application/json',
+                'ZURMO_SESSION_ID: ' . $authenticationData['sessionId'],
+                'ZURMO_TOKEN: ' . $authenticationData['token'],
+                'ZURMO_API_REQUEST_TYPE: REST',
+            );
+
+            $currencies                 = Currency::getAll();
+            $currencyValue              = new CurrencyValue();
+            $currencyValue->value       = 100;
+            $currencyValue->currency    = $currencies[0];
+            $this->assertEquals('USD', $currencyValue->currency->code);
+
+            $testItem2 = new ApiTestModelItem2();
+            $testItem2->name     = 'John2';
+            $this->assertTrue($testItem2->save());
+
+            $testItem4 = new ApiTestModelItem4();
+            $testItem4->name     = 'John2';
+            $this->assertTrue($testItem4->save());
+
+            //HAS_MANY and MANY_MANY relationships should be ignored.
+            $testItem3_1 = new ApiTestModelItem3();
+            $testItem3_1->name     = 'Kevin2';
+            $this->assertTrue($testItem3_1->save());
+
+            $testItem3_2 = new ApiTestModelItem3();
+            $testItem3_2->name     = 'Jim2';
+            $this->assertTrue($testItem3_2->save());
+
+            $testItemRelated = new ApiTestModelItem();
+            $testItemRelated->lastName     = 'AAAA2';
+            $testItemRelated->string        = 'some string2';
+            $this->assertTrue($testItemRelated->save());
+
+            $testItem = new ApiTestModelItem();
+
+            $testItem->firstName     = 'Bob5 with just owner';
+            $testItem->lastName      = 'Bob52';
+            $testItem->boolean       = true;
+            $testItem->date          = '2002-04-03';
+            $testItem->dateTime      = '2002-04-03 02:00:43';
+            $testItem->float         = 54.22;
+            $testItem->integer       = 10;
+            $testItem->phone         = '21313213';
+            $testItem->string        = 'aString2';
+            $testItem->textArea      = 'Some Text Area2';
+            $testItem->url           = 'http://www.asite.com';
+            $testItem->currencyValue = $currencyValue;
+            $testItem->modelItem2    = $testItem2;
+            $testItem->modelItems3->add($testItem3_1);
+            $testItem->modelItems3->add($testItem3_2);
+            $testItem->modelItems4->add($testItem4);
+            $testItem->modelItems->add($testItemRelated);
+
+            $customFieldValue = new CustomFieldValue();
+            $customFieldValue->value = 'Multi 1';
+            $testItem->multiDropDown->values->add($customFieldValue);
+
+            $customFieldValue = new CustomFieldValue();
+            $customFieldValue->value = 'Multi 3';
+            $testItem->multiDropDown->values->add($customFieldValue);
+
+            $customFieldValue = new CustomFieldValue();
+            $customFieldValue->value = 'Cloud 2';
+            $testItem->tagCloud->values->add($customFieldValue);
+
+            $customFieldValue = new CustomFieldValue();
+            $customFieldValue->value = 'Cloud 3';
+            $testItem->tagCloud->values->add($customFieldValue);
+
+            $this->assertTrue($testItem->save());
+            $data  = $this->getModelToApiDataUtilData($testItem);
+            unset($data['createdDateTime']);
+            unset($data['modifiedDateTime']);
+            unset($data['id']);
+            unset($data['currencyValue']['id']);
+            $data['owner'] = array(
+                'id' => $super->id,
+            );
+
+            $compareData = $data;
+            unset($data['createdByUser']);
+            unset($data['modifiedByUser']);
+
+            $this->assertTrue($testItemRelated->delete());
+            $testItem->delete();
+            $testItem->forget();
+            unset($testItem);
+            $data['owner'] = array('id' => $billy->id);
+
+            $response = $this->createApiCallWithRelativeUrl('create/', 'POST', $headers, array('data' => $data));
+            $response = json_decode($response, true);
+            $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
+            $this->assertTrue(is_int($response['data']['id']));
+            $this->assertGreaterThan(0, $response['data']['id']);
+            $modelId     = $response['data']['id'];
+
+            $this->assertArrayHasKey('owner', $response['data']);
+            $this->assertCount(2, $response['data']['owner']);
+            $this->assertArrayHasKey('id', $response['data']['owner']);
+            $this->assertEquals($billy->id, $response['data']['owner']['id']);
+
+            $this->assertArrayHasKey('explicitReadWriteModelPermissions', $response['data']);
+            $this->assertCount(2, $response['data']['explicitReadWriteModelPermissions']);
+            $this->assertArrayHasKey('type', $response['data']['explicitReadWriteModelPermissions']);
+            $this->assertEquals(1, $response['data']['explicitReadWriteModelPermissions']['type']);
+            $this->assertArrayHasKey('nonEveryoneGroup', $response['data']['explicitReadWriteModelPermissions']);
+            $this->assertEquals('', $response['data']['explicitReadWriteModelPermissions']['nonEveryoneGroup']);
+
+            // unset explicit permissions, we won't use these in comparison.
+            // compareData's version of permissions came from manual creation, would be none.
+            // response's one came from api, would be default
+            unset($response['data']['explicitReadWriteModelPermissions']);
+            unset($compareData['explicitReadWriteModelPermissions']);
+
+            unset($response['data']['createdDateTime']);
+            unset($response['data']['modifiedDateTime']);
+            unset($response['data']['id']);
+            unset($compareData['id']);
+            unset($response['data']['owner']);
+            unset($compareData['owner']);
+            unset($response['data']['currencyValue']['id']);
+            unset($compareData['currencyValue']['id']);
+            unset($compareData['createdDateTime']);
+            unset($compareData['modifiedDateTime']);
+            ksort($compareData);
+            ksort($response['data']);
+            $this->assertEquals($compareData, $response['data']);
+
+            $response = $this->createApiCallWithRelativeUrl('read/' . $modelId, 'GET', $headers);
+            $response = json_decode($response, true);
+            $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
+            $this->assertArrayHasKey('data', $response);
+            $this->assertArrayHasKey('owner', $response['data']);
+            $this->assertCount(2, $response['data']['owner']);
+            $this->assertArrayHasKey('id', $response['data']['owner']);
+            $this->assertEquals($billy->id, $response['data']['owner']['id']);
+
+            $this->assertArrayHasKey('explicitReadWriteModelPermissions', $response['data']);
+            $this->assertCount(2, $response['data']['explicitReadWriteModelPermissions']);
+            $this->assertArrayHasKey('type', $response['data']['explicitReadWriteModelPermissions']);
+            $this->assertEquals(1, $response['data']['explicitReadWriteModelPermissions']['type']);
+            $this->assertArrayHasKey('nonEveryoneGroup', $response['data']['explicitReadWriteModelPermissions']);
+            $this->assertEquals('', $response['data']['explicitReadWriteModelPermissions']['nonEveryoneGroup']);
+        }
+
+        /**
+         * @depends testCreate
+         */
+        public function testCreateWithSpecificExplicitPermissions()
+        {
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel        = $super;
+
+            $authenticationData = $this->login();
+            $headers = array(
+                'Accept: application/json',
+                'ZURMO_SESSION_ID: ' . $authenticationData['sessionId'],
+                'ZURMO_TOKEN: ' . $authenticationData['token'],
+                'ZURMO_API_REQUEST_TYPE: REST',
+            );
+
+            $currencies                 = Currency::getAll();
+            $currencyValue              = new CurrencyValue();
+            $currencyValue->value       = 100;
+            $currencyValue->currency    = $currencies[0];
+            $this->assertEquals('USD', $currencyValue->currency->code);
+
+            $testItem2 = new ApiTestModelItem2();
+            $testItem2->name     = 'John3';
+            $this->assertTrue($testItem2->save());
+
+            $testItem4 = new ApiTestModelItem4();
+            $testItem4->name     = 'John3';
+            $this->assertTrue($testItem4->save());
+
+            //HAS_MANY and MANY_MANY relationships should be ignored.
+            $testItem3_1 = new ApiTestModelItem3();
+            $testItem3_1->name     = 'Kevin3';
+            $this->assertTrue($testItem3_1->save());
+
+            $testItem3_2 = new ApiTestModelItem3();
+            $testItem3_2->name     = 'Jim3';
+            $this->assertTrue($testItem3_2->save());
+
+            $testItemRelated = new ApiTestModelItem();
+            $testItemRelated->lastName     = 'AAAA3';
+            $testItemRelated->string        = 'some string3';
+            $this->assertTrue($testItemRelated->save());
+
+            $testItem = new ApiTestModelItem();
+
+            $testItem->firstName     = 'Bob5 with owner only';
+            $testItem->lastName      = 'Bob53';
+            $testItem->boolean       = true;
+            $testItem->date          = '2002-04-03';
+            $testItem->dateTime      = '2002-04-03 02:00:43';
+            $testItem->float         = 54.22;
+            $testItem->integer       = 10;
+            $testItem->phone         = '21313213';
+            $testItem->string        = 'aString3';
+            $testItem->textArea      = 'Some Text Area3';
+            $testItem->url           = 'http://www.asite.com';
+            $testItem->currencyValue = $currencyValue;
+            $testItem->modelItem2    = $testItem2;
+            $testItem->modelItems3->add($testItem3_1);
+            $testItem->modelItems3->add($testItem3_2);
+            $testItem->modelItems4->add($testItem4);
+            $testItem->modelItems->add($testItemRelated);
+
+            $customFieldValue = new CustomFieldValue();
+            $customFieldValue->value = 'Multi 1';
+            $testItem->multiDropDown->values->add($customFieldValue);
+
+            $customFieldValue = new CustomFieldValue();
+            $customFieldValue->value = 'Multi 3';
+            $testItem->multiDropDown->values->add($customFieldValue);
+
+            $customFieldValue = new CustomFieldValue();
+            $customFieldValue->value = 'Cloud 2';
+            $testItem->tagCloud->values->add($customFieldValue);
+
+            $customFieldValue = new CustomFieldValue();
+            $customFieldValue->value = 'Cloud 3';
+            $testItem->tagCloud->values->add($customFieldValue);
+
+            $this->assertTrue($testItem->save());
+            $data  = $this->getModelToApiDataUtilData($testItem);
+            unset($data['createdDateTime']);
+            unset($data['modifiedDateTime']);
+            unset($data['id']);
+            unset($data['currencyValue']['id']);
+            $data['owner'] = array(
+                'id' => $super->id,
+            );
+
+            $compareData = $data;
+            unset($data['createdByUser']);
+            unset($data['modifiedByUser']);
+
+            $this->assertTrue($testItemRelated->delete());
+            $testItem->delete();
+            $testItem->forget();
+            unset($testItem);
+            // TODO: @Shoaibi/@Ivica: null does not work, empty works. Null doesn't send it.
+            $data['explicitReadWriteModelPermissions'] = array('nonEveryoneGroup' => '', 'type' => '');
+
+            $response = $this->createApiCallWithRelativeUrl('create/', 'POST', $headers, array('data' => $data));
+            $response = json_decode($response, true);
+            $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
+            $this->assertTrue(is_int($response['data']['id']));
+            $this->assertGreaterThan(0, $response['data']['id']);
+            $modelId     = $response['data']['id'];
+
+            $this->assertArrayHasKey('owner', $response['data']);
+            $this->assertCount(2, $response['data']['owner']);
+            $this->assertArrayHasKey('id', $response['data']['owner']);
+            $this->assertEquals($super->id, $response['data']['owner']['id']);
+            $this->assertArrayHasKey('explicitReadWriteModelPermissions', $response['data']);
+            $this->assertCount(2, $response['data']['explicitReadWriteModelPermissions']);
+            $this->assertArrayHasKey('type', $response['data']['explicitReadWriteModelPermissions']);
+            $this->assertEquals('', $response['data']['explicitReadWriteModelPermissions']['type']);
+            // following also works. wonder why.
+            //$this->assertTrue(null === $response['data']['explicitReadWriteModelPermissions']['type']);
+            $this->assertArrayHasKey('nonEveryoneGroup', $response['data']['explicitReadWriteModelPermissions']);
+            $this->assertEquals('', $response['data']['explicitReadWriteModelPermissions']['nonEveryoneGroup']);
+
+            // unset explicit permissions, we won't use these in comparison.
+            // compareData's version of permissions came from manual creation, would be none.
+            // response's one came from api, would be default
+            unset($response['data']['explicitReadWriteModelPermissions']);
+            unset($compareData['explicitReadWriteModelPermissions']);
+
+            unset($response['data']['createdDateTime']);
+            unset($response['data']['modifiedDateTime']);
+            unset($response['data']['id']);
+            unset($response['data']['owner']['username']);
+            unset($compareData['id']);
+            unset($response['data']['currencyValue']['id']);
+            unset($compareData['currencyValue']['id']);
+            unset($compareData['createdDateTime']);
+            unset($compareData['modifiedDateTime']);
+            ksort($compareData);
+            ksort($response['data']);
+            $this->assertEquals($compareData, $response['data']);
+
+            $response = $this->createApiCallWithRelativeUrl('read/' . $modelId, 'GET', $headers);
+            $response = json_decode($response, true);
+            $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
+            $this->assertArrayHasKey('data', $response);
+            $this->assertArrayHasKey('owner', $response['data']);
+            $this->assertCount(2, $response['data']['owner']);
+            $this->assertArrayHasKey('id', $response['data']['owner']);
+            $this->assertEquals($super->id, $response['data']['owner']['id']);
+
+            $this->assertArrayHasKey('explicitReadWriteModelPermissions', $response['data']);
+            $this->assertCount(2, $response['data']['explicitReadWriteModelPermissions']);
+            $this->assertArrayHasKey('type', $response['data']['explicitReadWriteModelPermissions']);
+            $this->assertEquals('', $response['data']['explicitReadWriteModelPermissions']['type']);
+            $this->assertArrayHasKey('nonEveryoneGroup', $response['data']['explicitReadWriteModelPermissions']);
+            $this->assertEquals('', $response['data']['explicitReadWriteModelPermissions']['nonEveryoneGroup']);
         }
 
         /**
@@ -214,12 +547,11 @@
                 'ZURMO_TOKEN: ' . $authenticationData['token'],
                 'ZURMO_API_REQUEST_TYPE: REST',
             );
-            $testModels = ApiTestModelItem::getByName('Bob5');
+            $testModels = ApiTestModelItem::getByName('Bob5 with just owner');
             $this->assertEquals(1, count($testModels));
-            $redBeanModelToApiDataUtil  = new RedBeanModelToApiDataUtil($testModels[0]);
-            $compareData  = $redBeanModelToApiDataUtil->getData();
+            $compareData  = $this->getModelToApiDataUtilData($testModels[0]);
 
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/api/testModelItem/api/read/' . $compareData['id'], 'GET', $headers);
+            $response = $this->createApiCallWithRelativeUrl('read/' . $compareData['id'], 'GET', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
             $this->assertEquals($compareData, $response['data']);
@@ -241,22 +573,25 @@
                 'ZURMO_API_REQUEST_TYPE: REST',
             );
 
-            $testModels = ApiTestModelItem::getByName('Bob5');
+            $testModels = ApiTestModelItem::getByName('Bob5 with just owner');
             $this->assertEquals(1, count($testModels));
-            $redBeanModelToApiDataUtil  = new RedBeanModelToApiDataUtil($testModels[0]);
-            $compareData  = $redBeanModelToApiDataUtil->getData();
+            $compareData  = $this->getModelToApiDataUtilData($testModels[0]);
             $testModels[0]->forget();
 
-            $data = array('firstName' => 'Bob6');
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/api/testModelItem/api/update/' . $compareData['id'], 'PUT', $headers, array('data' => $data));
+            $data = array('firstName' => 'Bob6 with just owner');
+            $compareData['firstName'] = 'Bob6 with just owner';
+            $group  = RandomDataUtil::getRandomValueFromArray(Group::getAll());
+            $explicitReadWriteModelPermissions = array('type' => 2, 'nonEveryoneGroup' => $group->id);
+            $data['explicitReadWriteModelPermissions']    = $explicitReadWriteModelPermissions;
+            $compareData['explicitReadWriteModelPermissions']   = $explicitReadWriteModelPermissions;
+            $response = $this->createApiCallWithRelativeUrl('update/' . $compareData['id'], 'PUT', $headers, array('data' => $data));
             $response = json_decode($response, true);
             unset($response['data']['modifiedDateTime']);
             unset($compareData['modifiedDateTime']);
-            $compareData['firstName'] = 'Bob6';
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
             $this->assertEquals($compareData, $response['data']);
 
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/api/testModelItem/api/read/' . $compareData['id'], 'GET', $headers);
+            $response = $this->createApiCallWithRelativeUrl('read/' . $compareData['id'], 'GET', $headers);
             $response = json_decode($response, true);
             unset($response['data']['modifiedDateTime']);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
@@ -279,18 +614,17 @@
                 'ZURMO_API_REQUEST_TYPE: REST',
             );
 
-            $testModels = ApiTestModelItem::getByName('Bob6');
+            $testModels = ApiTestModelItem::getByName('Bob6 with just owner');
             $this->assertEquals(1, count($testModels));
-            $redBeanModelToApiDataUtil  = new RedBeanModelToApiDataUtil($testModels[0]);
-            $compareData  = $redBeanModelToApiDataUtil->getData();
+            $compareData  = $this->getModelToApiDataUtilData($testModels[0]);
 
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/api/testModelItem/api/list/', 'GET', $headers);
+            $response = $this->createApiCallWithRelativeUrl('list/', 'GET', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
-            $this->assertEquals(1, count($response['data']['items']));
-            $this->assertEquals(1, $response['data']['totalCount']);
+            $this->assertEquals(3, count($response['data']['items']));
+            $this->assertEquals(3, $response['data']['totalCount']);
             $this->assertEquals(1, $response['data']['currentPage']);
-            $this->assertEquals(array($compareData), $response['data']['items']);
+            $this->assertEquals($compareData, $response['data']['items'][1]);
         }
 
         public function testCreateWithRelations()
@@ -355,9 +689,27 @@
                 ),
             );
 
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/api/testModelItem/api/create/', 'POST', $headers, array('data' => $data));
+            $billy  = User::getByUsername('billy');
+            $data['owner'] = array('id' => $billy->id);
+
+            $response = $this->createApiCallWithRelativeUrl('create/', 'POST', $headers, array('data' => $data));
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
+            $this->assertTrue(is_int($response['data']['id']));
+            $this->assertGreaterThan(0, $response['data']['id']);
+            $modelId     = $response['data']['id'];
+
+            $this->assertArrayHasKey('owner', $response['data']);
+            $this->assertCount(2, $response['data']['owner']);
+            $this->assertArrayHasKey('id', $response['data']['owner']);
+            $this->assertEquals($billy->id, $response['data']['owner']['id']);
+
+            $this->assertArrayHasKey('explicitReadWriteModelPermissions', $response['data']);
+            $this->assertCount(2, $response['data']['explicitReadWriteModelPermissions']);
+            $this->assertArrayHasKey('type', $response['data']['explicitReadWriteModelPermissions']);
+            $this->assertEquals(1, $response['data']['explicitReadWriteModelPermissions']['type']);
+            $this->assertArrayHasKey('nonEveryoneGroup', $response['data']['explicitReadWriteModelPermissions']);
+            $this->assertEquals('', $response['data']['explicitReadWriteModelPermissions']['nonEveryoneGroup']);
 
             RedBeanModel::forgetAll();
             $updatedModel = ApiTestModelItem::getById($response['data']['id']);
@@ -372,6 +724,22 @@
 
             $this->assertEquals(1, count($updatedModel->modelItems));
             $this->assertEquals($testItemRelated->id, $updatedModel->modelItems[0]->id);
+
+            $response = $this->createApiCallWithRelativeUrl('read/' . $modelId, 'GET', $headers);
+            $response = json_decode($response, true);
+            $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
+            $this->assertArrayHasKey('data', $response);
+            $this->assertArrayHasKey('owner', $response['data']);
+            $this->assertCount(2, $response['data']['owner']);
+            $this->assertArrayHasKey('id', $response['data']['owner']);
+            $this->assertEquals($billy->id, $response['data']['owner']['id']);
+
+            $this->assertArrayHasKey('explicitReadWriteModelPermissions', $response['data']);
+            $this->assertCount(2, $response['data']['explicitReadWriteModelPermissions']);
+            $this->assertArrayHasKey('type', $response['data']['explicitReadWriteModelPermissions']);
+            $this->assertEquals(1, $response['data']['explicitReadWriteModelPermissions']['type']);
+            $this->assertArrayHasKey('nonEveryoneGroup', $response['data']['explicitReadWriteModelPermissions']);
+            $this->assertEquals('', $response['data']['explicitReadWriteModelPermissions']['nonEveryoneGroup']);
         }
 
         /**
@@ -396,8 +764,7 @@
             $testModel->string    = "aString";
             $this->assertTrue($testModel->save());
 
-            $redBeanModelToApiDataUtil  = new RedBeanModelToApiDataUtil($testModel);
-            $compareData  = $redBeanModelToApiDataUtil->getData();
+            $compareData  = $this->getModelToApiDataUtilData($testModel);
             $testModel->forget();
 
             $testItem4 = new ApiTestModelItem4();
@@ -447,8 +814,12 @@
             );
 
             $data['firstName'] = 'Michael6';
+            $group  = RandomDataUtil::getRandomValueFromArray(Group::getAll());
+            $explicitReadWriteModelPermissions = array('type' => 2, 'nonEveryoneGroup' => $group->id);
+            $data['explicitReadWriteModelPermissions']    = $explicitReadWriteModelPermissions;
+            $compareData['explicitReadWriteModelPermissions']   = $explicitReadWriteModelPermissions;
 
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/api/testModelItem/api/update/' . $compareData['id'], 'PUT', $headers, array('data' => $data));
+            $response = $this->createApiCallWithRelativeUrl('update/' . $compareData['id'], 'PUT', $headers, array('data' => $data));
             $response = json_decode($response, true);
             unset($response['data']['modifiedDateTime']);
             unset($compareData['modifiedDateTime']);
@@ -498,7 +869,7 @@
                     ),
                 ),
             );
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/api/testModelItem/api/update/' . $compareData['id'], 'PUT', $headers, array('data' => $data));
+            $response = $this->createApiCallWithRelativeUrl('update/' . $compareData['id'], 'PUT', $headers, array('data' => $data));
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
             RedBeanModel::forgetAll();
@@ -517,7 +888,7 @@
                     ),
                 ),
             );
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/api/testModelItem/api/update/' . $compareData['id'], 'PUT', $headers, array('data' => $data));
+            $response = $this->createApiCallWithRelativeUrl('update/' . $compareData['id'], 'PUT', $headers, array('data' => $data));
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_FAILURE, $response['status']);
 
@@ -531,7 +902,7 @@
                     ),
                 ),
             );
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/api/testModelItem/api/update/' . $compareData['id'], 'PUT', $headers, array('data' => $data));
+            $response = $this->createApiCallWithRelativeUrl('update/' . $compareData['id'], 'PUT', $headers, array('data' => $data));
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_FAILURE, $response['status']);
 
@@ -545,7 +916,7 @@
                     ),
                 ),
             );
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/api/testModelItem/api/update/' . $compareData['id'], 'PUT', $headers, array('data' => $data));
+            $response = $this->createApiCallWithRelativeUrl('update/' . $compareData['id'], 'PUT', $headers, array('data' => $data));
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_FAILURE, $response['status']);
         }
@@ -569,11 +940,11 @@
             $testModels = ApiTestModelItem::getByName('Michael6');
             $this->assertEquals(1, count($testModels));
 
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/api/testModelItem/api/delete/' . $testModels[0]->id, 'DELETE', $headers);
+            $response = $this->createApiCallWithRelativeUrl('delete/' . $testModels[0]->id, 'DELETE', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
 
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/api/testModelItem/api/read/' . $testModels[0]->id, 'GET', $headers);
+            $response = $this->createApiCallWithRelativeUrl('read/' . $testModels[0]->id, 'GET', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_FAILURE, $response['status']);
         }
@@ -590,6 +961,17 @@
             $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/zurmo/api/logout', 'GET', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
+        }
+
+        protected function getApiControllerClassName()
+        {
+            Yii::import('application.modules.api.controllers.TestModelItemApiController', true);
+            return 'ApiTestModelItemApiController';
+        }
+
+        protected function getModuleBaseApiUrl()
+        {
+            return 'api/testModelItem/api/';
         }
     }
 ?>

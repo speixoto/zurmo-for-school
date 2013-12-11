@@ -39,23 +39,76 @@
     */
     class ApiRestTestModelItem2Test extends ApiRestTest
     {
-        public function testLogin()
+        public static function getDependentTestModelClassNames()
         {
-            $headers = array(
-                'Accept: application/json',
-                'ZURMO_AUTH_USERNAME: super',
-                'ZURMO_AUTH_PASSWORD: super',
-                'ZURMO_API_REQUEST_TYPE: REST',
-            );
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/zurmo/api/login/', 'POST', $headers);
-            $response = json_decode($response, true);
-            $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
-            $this->assertTrue(isset($response['data']['sessionId']) && is_string($response['data']['sessionId']));
-            $this->assertTrue(isset($response['data']['token']) && is_string($response['data']['token']));
-            //ToDo: Check if session exist
-            //$this->sessionId = $response['data']['sessionId'];
+            return array('ApiTestModelItem2');
         }
 
+        public function testGet()
+        {
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel        = $super;
+            $apiTestModelItem2Temp = new ApiTestModelItem2();
+            $apiTestModelItem2Temp->name = 'first';
+            $saved = $apiTestModelItem2Temp->save();
+            $this->assertTrue($saved);
+
+            $authenticationData = $this->login();
+            $headers = array(
+                'Accept: application/json',
+                'ZURMO_SESSION_ID: ' . $authenticationData['sessionId'],
+                'ZURMO_TOKEN: ' . $authenticationData['token'],
+                'ZURMO_API_REQUEST_TYPE: REST',
+            );
+            $testModels = ApiTestModelItem2::getByName('first');
+            $this->assertEquals(1, count($testModels));
+            $compareData  = $this->getModelToApiDataUtilData($testModels[0]);
+
+            $response = $this->createApiCallWithRelativeUrl('read/' . $compareData['id'], 'GET', $headers);
+            $response = json_decode($response, true);
+            $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
+            $this->assertEquals($compareData, $response['data']);
+            $this->assertArrayHasKey('owner', $response['data']);
+            $this->assertCount(2, $response['data']['owner']);
+            $this->assertArrayHasKey('id', $response['data']['owner']);
+            $this->assertEquals($super->id, $response['data']['owner']['id']);
+            $this->assertArrayHasKey('explicitReadWriteModelPermissions', $response['data']);
+            $this->assertArrayHasKey('type', $response['data']['explicitReadWriteModelPermissions']);
+            $this->assertArrayHasKey('nonEveryoneGroup', $response['data']['explicitReadWriteModelPermissions']);
+        }
+
+        /**
+         * @depends testGet
+         */
+        public function testDelete()
+        {
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel        = $super;
+
+            $authenticationData = $this->login();
+            $headers = array(
+                'Accept: application/json',
+                'ZURMO_SESSION_ID: ' . $authenticationData['sessionId'],
+                'ZURMO_TOKEN: ' . $authenticationData['token'],
+                'ZURMO_API_REQUEST_TYPE: REST',
+            );
+
+            $testModels = ApiTestModelItem2::getByName('first');
+            $this->assertEquals(1, count($testModels));
+
+            //Test Delete
+            $response = $this->createApiCallWithRelativeUrl('delete/' . $testModels[0]->id, 'DELETE', $headers);
+            $response = json_decode($response, true);
+            $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
+
+            $response = $this->createApiCallWithRelativeUrl('read/' . $testModels[0]->id, 'GET', $headers);
+            $response = json_decode($response, true);
+            $this->assertEquals(ApiResponse::STATUS_FAILURE, $response['status']);
+        }
+
+        /**
+         * @depends testGet
+         */
         public function testCreate()
         {
             $super = User::getByUsername('super');
@@ -69,13 +122,181 @@
                 'ZURMO_API_REQUEST_TYPE: REST',
             );
             //Test Create
-            $data = array('name' => 'new name');
-
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/api/testModelItem2/api/create/', 'POST', $headers, array('data' => $data));
+			$data['name'] = 'new name with no permissions';
+            $response = $this->createApiCallWithRelativeUrl('create/', 'POST', $headers, array('data' => $data));
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
             $this->assertTrue(is_int($response['data']['id']));
             $this->assertGreaterThan(0, $response['data']['id']);
+            $modelId     = $response['data']['id'];
+
+            $this->assertArrayHasKey('owner', $response['data']);
+            $this->assertCount(2, $response['data']['owner']);
+            $this->assertArrayHasKey('id', $response['data']['owner']);
+            $this->assertEquals($super->id, $response['data']['owner']['id']);
+            $this->assertArrayHasKey('explicitReadWriteModelPermissions', $response['data']);
+            $this->assertCount(2, $response['data']['explicitReadWriteModelPermissions']);
+            $this->assertArrayHasKey('type', $response['data']['explicitReadWriteModelPermissions']);
+            $this->assertEquals(1, $response['data']['explicitReadWriteModelPermissions']['type']);
+            $this->assertArrayHasKey('nonEveryoneGroup', $response['data']['explicitReadWriteModelPermissions']);
+            $this->assertEquals('', $response['data']['explicitReadWriteModelPermissions']['nonEveryoneGroup']);
+
+            $data['owner'] = array(
+                'id' => $super->id,
+                'username' => 'super'
+            );
+            $data['createdByUser']    = array(
+                'id' => $super->id,
+                'username' => 'super'
+            );
+            $data['modifiedByUser'] = array(
+                'id' => $super->id,
+                'username' => 'super'
+            );
+            $data['modelItem'] = null;
+            // unset explicit permissions, we won't use these in comparison.
+            unset($response['data']['explicitReadWriteModelPermissions']);
+            unset($response['data']['createdDateTime']);
+            unset($response['data']['modifiedDateTime']);
+            unset($response['data']['id']);
+            ksort($data);
+            ksort($response['data']);
+            $this->assertEquals($data, $response['data']);
+
+            $response = $this->createApiCallWithRelativeUrl('read/' . $modelId, 'GET', $headers);
+            $response = json_decode($response, true);
+            $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
+            $this->assertArrayHasKey('data', $response);
+            $this->assertArrayHasKey('owner', $response['data']);
+            $this->assertCount(2, $response['data']['owner']);
+            $this->assertArrayHasKey('id', $response['data']['owner']);
+            $this->assertEquals($super->id, $response['data']['owner']['id']);
+
+            $this->assertArrayHasKey('explicitReadWriteModelPermissions', $response['data']);
+            $this->assertCount(2, $response['data']['explicitReadWriteModelPermissions']);
+            $this->assertArrayHasKey('type', $response['data']['explicitReadWriteModelPermissions']);
+            $this->assertEquals(1, $response['data']['explicitReadWriteModelPermissions']['type']);
+            $this->assertArrayHasKey('nonEveryoneGroup', $response['data']['explicitReadWriteModelPermissions']);
+            $this->assertEquals('', $response['data']['explicitReadWriteModelPermissions']['nonEveryoneGroup']);
+        }
+
+        /**
+         * @depends testCreate
+         */
+        public function testCreateWithSpecificOwner()
+        {
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel        = $super;
+            $billy  = User::getByUsername('billy');
+            $authenticationData = $this->login();
+            $headers = array(
+                'Accept: application/json',
+                'ZURMO_SESSION_ID: ' . $authenticationData['sessionId'],
+                'ZURMO_TOKEN: ' . $authenticationData['token'],
+                'ZURMO_API_REQUEST_TYPE: REST',
+            );
+
+            //Test Create
+            $data['name'] = 'new name with just owner';
+            $data['owner'] = array('id' => $billy->id);
+
+            $response = $this->createApiCallWithRelativeUrl('create/', 'POST', $headers, array('data' => $data));
+            $response = json_decode($response, true);
+            $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
+            $this->assertTrue(is_int($response['data']['id']));
+            $this->assertGreaterThan(0, $response['data']['id']);
+            $modelId     = $response['data']['id'];
+
+            $this->assertArrayHasKey('owner', $response['data']);
+            $this->assertCount(2, $response['data']['owner']);
+            $this->assertArrayHasKey('id', $response['data']['owner']);
+            $this->assertEquals($billy->id, $response['data']['owner']['id']);
+
+            $this->assertArrayHasKey('explicitReadWriteModelPermissions', $response['data']);
+            $this->assertCount(2, $response['data']['explicitReadWriteModelPermissions']);
+            $this->assertArrayHasKey('type', $response['data']['explicitReadWriteModelPermissions']);
+            $this->assertEquals(1, $response['data']['explicitReadWriteModelPermissions']['type']);
+            $this->assertArrayHasKey('nonEveryoneGroup', $response['data']['explicitReadWriteModelPermissions']);
+            $this->assertEquals('', $response['data']['explicitReadWriteModelPermissions']['nonEveryoneGroup']);
+
+            $data['owner'] = array(
+                'id' => $billy->id,
+                'username' => 'billy'
+            );
+            $data['createdByUser']    = array(
+                'id' => $super->id,
+                'username' => 'super'
+            );
+            $data['modifiedByUser'] = array(
+                'id' => $super->id,
+                'username' => 'super'
+            );
+            $data['modelItem'] = null;
+            // unset explicit permissions, we won't use these in comparison.
+            unset($response['data']['explicitReadWriteModelPermissions']);
+            unset($response['data']['createdDateTime']);
+            unset($response['data']['modifiedDateTime']);
+            unset($response['data']['id']);
+            ksort($data);
+            ksort($response['data']);
+            $this->assertEquals($data, $response['data']);
+
+            $response = $this->createApiCallWithRelativeUrl('read/' . $modelId, 'GET', $headers);
+            $response = json_decode($response, true);
+            $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
+            $this->assertArrayHasKey('data', $response);
+            $this->assertArrayHasKey('owner', $response['data']);
+            $this->assertCount(2, $response['data']['owner']);
+            $this->assertArrayHasKey('id', $response['data']['owner']);
+            $this->assertEquals($billy->id, $response['data']['owner']['id']);
+
+            $this->assertArrayHasKey('explicitReadWriteModelPermissions', $response['data']);
+            $this->assertCount(2, $response['data']['explicitReadWriteModelPermissions']);
+            $this->assertArrayHasKey('type', $response['data']['explicitReadWriteModelPermissions']);
+            $this->assertEquals(1, $response['data']['explicitReadWriteModelPermissions']['type']);
+            $this->assertArrayHasKey('nonEveryoneGroup', $response['data']['explicitReadWriteModelPermissions']);
+            $this->assertEquals('', $response['data']['explicitReadWriteModelPermissions']['nonEveryoneGroup']);
+        }
+
+        /**
+         * @depends testCreate
+         */
+        public function testCreateWithSpecificExplicitPermissions()
+        {
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel        = $super;
+            $authenticationData = $this->login();
+            $headers = array(
+                'Accept: application/json',
+                'ZURMO_SESSION_ID: ' . $authenticationData['sessionId'],
+                'ZURMO_TOKEN: ' . $authenticationData['token'],
+                'ZURMO_API_REQUEST_TYPE: REST',
+            );
+
+            //Test Create
+            $data['name'] = 'new name with owner only';
+            // TODO: @Shoaibi/@Ivica: null does not work, empty works. Null doesn't send it.
+            $data['explicitReadWriteModelPermissions'] = array('nonEveryoneGroup' => '', 'type' => '');
+
+            $response = $this->createApiCallWithRelativeUrl('create/', 'POST', $headers, array('data' => $data));
+            $response = json_decode($response, true);
+            $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
+            $this->assertTrue(is_int($response['data']['id']));
+            $this->assertGreaterThan(0, $response['data']['id']);
+            $modelId     = $response['data']['id'];
+
+            $this->assertArrayHasKey('owner', $response['data']);
+            $this->assertCount(2, $response['data']['owner']);
+            $this->assertArrayHasKey('id', $response['data']['owner']);
+            $this->assertEquals($super->id, $response['data']['owner']['id']);
+            $this->assertArrayHasKey('explicitReadWriteModelPermissions', $response['data']);
+            $this->assertCount(2, $response['data']['explicitReadWriteModelPermissions']);
+            $this->assertArrayHasKey('type', $response['data']['explicitReadWriteModelPermissions']);
+            $this->assertEquals('', $response['data']['explicitReadWriteModelPermissions']['type']);
+            // following also works. wonder why.
+            //$this->assertTrue(null === $response['data']['explicitReadWriteModelPermissions']['type']);
+            $this->assertArrayHasKey('nonEveryoneGroup', $response['data']['explicitReadWriteModelPermissions']);
+            $this->assertEquals('', $response['data']['explicitReadWriteModelPermissions']['nonEveryoneGroup']);
 
             $data['owner'] = array(
                 'id' => $super->id,
@@ -96,32 +317,22 @@
             ksort($data);
             ksort($response['data']);
             $this->assertEquals($data, $response['data']);
-        }
 
-        /**
-        * @depends testCreate
-        */
-        public function testGet()
-        {
-            $super = User::getByUsername('super');
-            Yii::app()->user->userModel        = $super;
-
-            $authenticationData = $this->login();
-            $headers = array(
-                'Accept: application/json',
-                'ZURMO_SESSION_ID: ' . $authenticationData['sessionId'],
-                'ZURMO_TOKEN: ' . $authenticationData['token'],
-                'ZURMO_API_REQUEST_TYPE: REST',
-            );
-            $testModels = ApiTestModelItem2::getByName('new name');
-            $this->assertEquals(1, count($testModels));
-            $redBeanModelToApiDataUtil  = new RedBeanModelToApiDataUtil($testModels[0]);
-            $compareData  = $redBeanModelToApiDataUtil->getData();
-
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/api/testModelItem2/api/read/' . $compareData['id'], 'GET', $headers);
+            $response = $this->createApiCallWithRelativeUrl('read/' . $modelId, 'GET', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
-            $this->assertEquals($compareData, $response['data']);
+            $this->assertArrayHasKey('data', $response);
+            $this->assertArrayHasKey('owner', $response['data']);
+            $this->assertCount(2, $response['data']['owner']);
+            $this->assertArrayHasKey('id', $response['data']['owner']);
+            $this->assertEquals($super->id, $response['data']['owner']['id']);
+
+            $this->assertArrayHasKey('explicitReadWriteModelPermissions', $response['data']);
+            $this->assertCount(2, $response['data']['explicitReadWriteModelPermissions']);
+            $this->assertArrayHasKey('type', $response['data']['explicitReadWriteModelPermissions']);
+            $this->assertEquals('', $response['data']['explicitReadWriteModelPermissions']['type']);
+            $this->assertArrayHasKey('nonEveryoneGroup', $response['data']['explicitReadWriteModelPermissions']);
+            $this->assertEquals('', $response['data']['explicitReadWriteModelPermissions']['nonEveryoneGroup']);
         }
 
         /**
@@ -140,26 +351,28 @@
                 'ZURMO_API_REQUEST_TYPE: REST',
             );
 
-            $testModels = ApiTestModelItem2::getByName('new name');
+            $testModels = ApiTestModelItem2::getByName('new name with just owner');
             $this->assertEquals(1, count($testModels));
-            $redBeanModelToApiDataUtil  = new RedBeanModelToApiDataUtil($testModels[0]);
-            $compareData  = $redBeanModelToApiDataUtil->getData();
+            $compareData  = $this->getModelToApiDataUtilData($testModels[0]);
+            $data['name'] = 'new name 2 with just owner';
+            $compareData['name'] = 'new name 2 with just owner';
+            $group  = RandomDataUtil::getRandomValueFromArray(Group::getAll());
+            $explicitReadWriteModelPermissions = array('type' => 2, 'nonEveryoneGroup' => $group->id);
+            $data['explicitReadWriteModelPermissions']    = $explicitReadWriteModelPermissions;
+            $compareData['explicitReadWriteModelPermissions']   = $explicitReadWriteModelPermissions;
             $testModels[0]->forget();
-
-            $data = array('name' => 'new name 2');
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/api/testModelItem2/api/update/' . $compareData['id'], 'PUT', $headers, array('data' => $data));
+            $response = $this->createApiCallWithRelativeUrl('update/' . $compareData['id'], 'PUT', $headers, array('data' => $data));
             $response = json_decode($response, true);
             unset($response['data']['modifiedDateTime']);
             unset($compareData['modifiedDateTime']);
-            $compareData['name'] = 'new name 2';
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
             $this->assertEquals($compareData, $response['data']);
 
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/api/testModelItem2/api/read/' . $compareData['id'], 'GET', $headers);
+            $response = $this->createApiCallWithRelativeUrl('read/' . $compareData['id'], 'GET', $headers);
             $response = json_decode($response, true);
             unset($response['data']['modifiedDateTime']);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
-            $this->assertEquals('new name 2', $response['data']['name']);
+            $this->assertEquals('new name 2 with just owner', $response['data']['name']);
             $this->assertEquals($compareData, $response['data']);
         }
 
@@ -179,23 +392,21 @@
                 'ZURMO_API_REQUEST_TYPE: REST',
             );
 
-            $testModels = ApiTestModelItem2::getByName('new name 2');
+            $testModels = ApiTestModelItem2::getByName('new name 2 with just owner');
             $this->assertEquals(1, count($testModels));
-            $redBeanModelToApiDataUtil  = new RedBeanModelToApiDataUtil($testModels[0]);
-            $compareData  = $redBeanModelToApiDataUtil->getData();
+            $compareData  = $this->getModelToApiDataUtilData($testModels[0]);
 
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/api/testModelItem2/api/list/', 'GET', $headers);
+            $response = $this->createApiCallWithRelativeUrl('list/', 'GET', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
-            $this->assertEquals(1, count($response['data']['items']));
-            $this->assertEquals(1, $response['data']['totalCount']);
+            $this->assertEquals(3, count($response['data']['items']));
+            $this->assertEquals(3, $response['data']['totalCount']);
             $this->assertEquals(1, $response['data']['currentPage']);
-            $this->assertEquals(array($compareData), $response['data']['items']);
+            $this->assertEquals($compareData, $response['data']['items'][1]);
         }
 
         public function testListModelAttributes()
         {
-            RedBeanModel::forgetAll();
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
 
@@ -208,39 +419,10 @@
             );
             $allAttributes      = ApiRestTestHelper::getModelAttributes(new ApiTestModelItem2());
 
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/api/testModelItem2/api/listAttributes/' , 'GET', $headers);
+            $response = $this->createApiCallWithRelativeUrl('listAttributes/' , 'GET', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
             $this->assertEquals($allAttributes, $response['data']['items']);
-        }
-
-        /**
-        * @depends testList
-        */
-        public function testDelete()
-        {
-            $super = User::getByUsername('super');
-            Yii::app()->user->userModel        = $super;
-
-            $authenticationData = $this->login();
-            $headers = array(
-                'Accept: application/json',
-                'ZURMO_SESSION_ID: ' . $authenticationData['sessionId'],
-                'ZURMO_TOKEN: ' . $authenticationData['token'],
-                'ZURMO_API_REQUEST_TYPE: REST',
-            );
-
-            $testModels = ApiTestModelItem2::getByName('new name 2');
-            $this->assertEquals(1, count($testModels));
-
-            //Test Delete
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/api/testModelItem2/api/delete/' . $testModels[0]->id, 'DELETE', $headers);
-            $response = json_decode($response, true);
-            $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
-
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/api/testModelItem2/api/read/' . $testModels[0]->id, 'GET', $headers);
-            $response = json_decode($response, true);
-            $this->assertEquals(ApiResponse::STATUS_FAILURE, $response['status']);
         }
 
         public function testLogout()
@@ -255,6 +437,17 @@
             $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/zurmo/api/logout', 'GET', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
+        }
+
+        protected function getApiControllerClassName()
+        {
+            Yii::import('application.modules.api.controllers.TestModelItem2ApiController', true);
+            return 'ApiTestModelItem2ApiController';
+        }
+
+        protected function getModuleBaseApiUrl()
+        {
+            return 'api/testModelItem2/api/';
         }
     }
 ?>

@@ -150,9 +150,13 @@
 
         protected function listDefaultPermissionsForCurrentUser($headers)
         {
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl .
-                                                        '/test.php/zurmo/permission/api/listDefault/', 'GET', $headers);
+            $response = $this->createApiCallWithRelativeUrl('listDefault/', 'GET', $headers);
             return $response;
+        }
+
+        protected function getModuleBaseApiUrl()
+        {
+            return 'zurmo/permission/api/';
         }
     }
 ?>
