@@ -1,0 +1,875 @@
+<!DOCTYPE html><!--[if IE 8]>
+<html class="zurmo ie8" lang="en"><![endif]--><!--[if gt IE 8]><!-->
+<html class="zurmo" lang="en"><!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <link rel="apple-touch-icon" sizes="144x144" href="/Zurmo/app/themes/default/images/touch-icon-iphone4.png"/>
+    <style>@font-face {
+        font-family: 'zurmo_gamification_symbly_rRg';
+        src: url('app/protected/core/views/assets/zurmogamificationsymblyregular-regular-webfont.eot');
+        src: url('app/protected/core/views/assets/zurmogamificationsymblyregular-regular-webfont.eot?#iefix') format('embedded-opentype'),
+        url('app/protected/core/views/assets/zurmogamificationsymblyregular-regular-webfont.woff') format('woff'),
+        url('app/protected/core/views/assets/zurmogamificationsymblyregular-regular-webfont.ttf') format('truetype'),
+        url('app/protected/core/views/assets/zurmogamificationsymblyregular-regular-webfont.svg#zurmo_gamification_symbly_rRg') format('svg');
+        font-weight: normal;
+        font-style: normal;
+        unicode-range: U+00-FFFF;
+    }</style>
+    <link rel="shortcut icon" href="/Zurmo/app/themes/default/ico/favicon.ico"/>
+    <link rel="stylesheet" type="text/css" href="/Zurmo/app/themes/default/css/keyframes.css"/>
+    <link rel="stylesheet" type="text/css" href="/Zurmo/app/themes/default/css/zurmo.css"/>
+    <link rel="stylesheet" type="text/css" href="/Zurmo/app/assets/569e74c9/jquery-ui-timepicker-addon.css"/>
+    <title>ZurmoCRM - Merge Entries</title></head>
+<body class="blue">
+<div id="ContactsPageView" class="ZurmoDefaultPageView ZurmoPageView PageView">
+<div id="ZurmoDefaultView">
+<div class="GridView">
+<div id="HeaderView">
+    <!-- Start of themes/default/templates/HeaderView.xhtml -->
+    <div id="MainLogo" class="zurmo-logo"></div>
+    <div class="GridView">
+        <div id="HeaderLinksView">
+            <div class="clearfix"><a href="#" id="nav-trigger" title="Toggle Navigation">&rsaquo;</a>
+
+                <div id="corp-logo"><a href="/Zurmo/app/index.php/home/default"><img
+                        src="/Zurmo/app/themes/default/images/Zurmo_logo.png" alt="Zurmo Logo" height="32"
+                        width="107"/></a><span>Demo Company Inc.</span></div>
+                <div id="user-toolbar" class="clearfix">
+                    <div id="header-game-dashboard-link-wrapper" class="user-menu-item"><a
+                            id="header-game-dashboard-link" href="#">∂</a></div>
+                    <ul id="user-header-menu" class="user-menu-item nav">
+                        <li class="parent last"><a href="javascript:void(0);"><span>super</span></a>
+                            <ul>
+                                <li>
+                                    <a href="/Zurmo/app/index.php/users/default/profile"><span>My Profile</span></a>
+                                </li>
+                                <li><a href="/Zurmo/app/index.php/gamification/default/leaderboard"><span>Leaderboard</span></a>
+                                </li>
+                                <li><a href="/Zurmo/app/index.php/emailMessages/default/matchingList"><span>Data Cleanup</span></a>
+                                </li>
+                                <li class="last"><a href="/Zurmo/app/index.php/zurmo/default/logout"><span>Sign out</span></a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <ul id="settings-header-menu" class="user-menu-item nav">
+                        <li class="parent last"><a
+                                href="javascript:void(0);"><span>Administration</span></a>
+                            <ul>
+                                <li><a href="/Zurmo/app/index.php/configuration"><span>Administration</span></a>
+                                </li>
+                                <li>
+                                    <a href="/Zurmo/app/index.php/designer/default"><span>Designer</span></a>
+                                </li>
+                                <li><a href="/Zurmo/app/index.php/import/default"><span>Import</span></a>
+                                </li>
+                                <li><a href="/Zurmo/app/index.php/users/default"><span>Users</span></a></li>
+                                <li>
+                                    <a href="http://www.zurmo.com/needSupport.php"><span>Need Support?</span></a>
+                                </li>
+                                <li class="last"><a href="/Zurmo/app/index.php/zurmo/default/about"><span>About Zurmo</span></a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="GridView">
+            <div id="GlobalSearchAndShortcutsCreateMenuView">
+                <div id="app-search" class="clearfix"><select class="ignore-style" id="globalSearchScope"
+                                                              multiple="multiple" style="display:none;"
+                                                              size="4" name="globalSearchScope[]">
+                    <option value="All" selected="selected">All</option>
+                    <option value="accounts">Accounts</option>
+                    <option value="contacts">Contacts</option>
+                    <option value="leads">Leads</option>
+                    <option value="opportunities">Opportunities</option>
+                </select><input class="global-search global-search-hint"
+                                onfocus="$(this).removeClass(&quot;global-search-hint&quot;); $(this).val(&quot;&quot;);"
+                                onblur="$(this).val(&quot;&quot;)" id="globalSearchInput" type="text"
+                                value="Search by name, phone, or e-mail" name="globalSearchInput"/><span
+                        class="z-spinner"></span></div>
+                <ul id="ShortcutsMenu" class="nav">
+                    <li class="parent last active"><a href="javascript:void(0);"><span>Create</span></a>
+                        <ul>
+                            <li><a href="/Zurmo/app/index.php/accounts/default/create"><span>Account</span></a>
+                            </li>
+                            <li><a href="/Zurmo/app/index.php/contacts/default/create"><span>Contact</span></a>
+                            </li>
+                            <li><a href="/Zurmo/app/index.php/conversations/default/create"><span>Conversation</span></a>
+                            </li>
+                            <li><a href="/Zurmo/app/index.php/leads/default/create"><span>Lead</span></a>
+                            </li>
+                            <li><a href="/Zurmo/app/index.php/missions/default/create"><span>Mission</span></a>
+                            </li>
+                            <li><a href="/Zurmo/app/index.php/opportunities/default/create"><span>Opportunity</span></a>
+                            </li>
+                            <li>
+                                <a href="/Zurmo/app/index.php/reports/default/selectType"><span>Report</span></a>
+                            </li>
+                            <li class="last"><a href="#" id="yt0"><span>Task</span></a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- End of themes/default/templates/HeaderView.xhtml --></div>
+<div class="AppContainer clearfix GridView">
+<div class="AppNavigation clearfix GridView">
+    <div id="MenuView">
+        <ul class="nav">
+            <li id="home"><a
+                    href="/Zurmo/app/index.php/home/default"><span></span><em></em><span>Home</span></a>
+            </li>
+            <li id="mashableInbox"><a
+                    href="/Zurmo/app/index.php/mashableInbox/default"><span></span><em></em><span>Inbox<span
+                    class="unread-inbox-count">8</span></span></a></li>
+            <li id="accounts"><a
+                    href="/Zurmo/app/index.php/accounts/default"><span></span><em></em><span>Accounts</span></a>
+            </li>
+            <li id="leads"><a href="/Zurmo/app/index.php/leads/default"><span></span><em></em><span>Leads</span></a>
+            </li>
+            <li id="contacts" class="active"><a
+                    href="/Zurmo/app/index.php/contacts/default"><span></span><em></em><span>Contacts</span></a>
+            </li>
+            <li id="opportunities"><a
+                    href="/Zurmo/app/index.php/opportunities/default"><span></span><em></em><span>Opportunities</span></a>
+            </li>
+            <li id="marketing" class="hidden-nav-item"><a
+                    href="/Zurmo/app/index.php/marketing/default/dashboardDetails"><span></span><em></em><span>Marketing</span></a>
+            </li>
+            <li id="projects" class="hidden-nav-item"><a
+                    href="/Zurmo/app/index.php/projects/default/dashboardDetails"><span></span><em></em><span>Projects</span></a>
+            </li>
+            <li id="products" class="hidden-nav-item"><a
+                    href="/Zurmo/app/index.php/products/default"><span></span><em></em><span>Products</span></a>
+            </li>
+            <li id="reports" class="hidden-nav-item last"><a
+                    href="/Zurmo/app/index.php/reports/default"><span></span><em></em><span>Reports</span></a>
+            </li>
+        </ul>
+        <a class="toggle-hidden-nav-items"></a></div>
+    <div id="RecentlyViewedView"><h3>Recently Viewed</h3>
+        <ul class="nav">
+
+        </ul>
+    </div>
+</div>
+<div id="ContactEditAndDetailsView"
+     class="AppContent SecuredEditAndDetailsView EditAndDetailsView DetailsView ModelView ConfigurableMetadataView MetadataView">
+
+<div class="wrapper">
+
+<h1><span class="truncated-title"><span class="ellipsis-content">Merge Contacts</span></span></h1>
+
+<div class="wide double-column form">
+
+<form id="edit-form" action="/Zurmo/app/index.php/contacts/default/create" method="post">
+
+
+
+
+
+<!-- new layout -->
+<link rel="stylesheet" type="text/css" href="/Zurmo/detail-edit-view.css"/>
+
+<style>
+    .merge-view{
+        width: 100% !important;
+        margin: 0 auto !important;
+        float: none;
+        padding: 0;
+    }
+    .details-item-editable{
+        margin-bottom: 0px;
+        padding: 15px;
+    }
+
+    .chosen-entries{
+        top: 0;
+        right: 0;
+        padding: 15px;
+        position: relative;
+        margin-bottom: 30px;
+        border-bottom: 1px solid #dfdfdf;
+        height: 229px;
+    }
+
+    .chosen-entries label{
+        display: block;
+        padding: 4px 10px;
+        border-radius: 0;
+        margin: 0 0 3px 0;
+        position: relative;
+        left: -15px;
+    }
+
+
+    #card{
+        position: absolute;
+        top: 0;
+        right: 0;
+        border-bottom: 1px solid #dfdfdf;
+    }
+
+
+    .turquoise { background: #1abc9c; }
+    .emerland { background: #2ecc71; }
+    .peterriver { background: #3498db; }
+    .amethyst { background: #9b59b6; }
+    .wetasphalt { background: #34495e; }
+    .greensea { background: #16a085; }
+    .nephritis { background: #27ae60; }
+    .belizehole { background: #2980b9; }
+    .wisteria { background: #8e44ad; }
+    .midnightblue { background: #2c3e50; }
+    .sunflower { background: #f1c40f; }
+    .carrot { background: #e67e22; }
+    .alizarin { background: #e74c3c; }
+    .clouds { background: #ecf0f1; color: #999; }
+    .concrete { background: #95a5a6; }
+    .orange { background: #f39c12; }
+    .pumpkin { background: #d35400; }
+    .pomegranate { background: #c0392b; }
+    .silver { background: #bdc3c7; }
+    .asbestos { background: #7f8c8d; }
+
+    .color1{ border:2px dotted #315AB0; color: #315AB0 !important;}
+    .color2{ border:2px dotted #66367b; color: #66367b !important;}
+    .color3{ border:2px dotted #2c3e50; color: #2c3e50 !important;}
+    .color4{ border:2px dotted #269a55; color: #269a55 !important;}
+    .color5{ border:2px dotted #c0392b; color: #c0392b !important;}
+
+    .chosen-entries .color1:hover, .color1.checked{ border:2px solid #315AB0; background: #315AB0; color: #fff !important;}
+    .chosen-entries .color2:hover, .color2.checked{ border:2px solid #66367b; background: #66367b; color: #fff !important;}
+    .chosen-entries .color3:hover, .color3.checked{ border:2px solid #2c3e50; background: #2c3e50; color: #fff !important;}
+    .chosen-entries .color4:hover, .color4.checked{ border:2px solid #269a55; background: #269a55; color: #fff !important;}
+    .chosen-entries .color5:hover, .color5.checked{ border:2px solid #c0392b; background: #c0392b; color: #fff !important;}
+
+
+    .details-item-editable > label{
+        line-height: 1;
+        font-weight: bold !important;
+    }
+
+    .details-item-editable > label strong{
+        /*font-weight: bold !important;*/
+    }
+
+    .details-item-editable:hover{
+
+    }
+
+
+
+    .hasPossibles{
+        display: block;
+        text-indent: 1px;
+        line-height: 1;
+        width: 100%;
+        margin:-3px 0 5px 0 !important;
+    }
+
+    .hasPossibles > input{
+        display: none;
+    }
+
+    .possible{
+        display: inline-block;
+        line-height: 14px;
+        padding:0 6px 0 2px;
+        border-radius: 4px;
+        float: none !important;
+        font-weight: bold !important;
+        text-indent: 0;
+        font-size: 11px !important;
+        background: #fff;
+        cursor: pointer;
+    }
+    .possible input{
+        margin-right: 3px;
+        visibility: hidden;
+        height: 0;
+        width: 0;
+    }
+    .details-item-editable div{
+        position: relative;
+    }
+    .details-item-editable .possible{
+
+    }
+
+    .hasDropDown .possible{
+        position: relative;
+        top: -24px;
+        left:2px
+    }
+
+    .field-group{
+        margin: 15px 0 15px 15px;
+        border-left: 5px solid #dfdfdf;
+    }
+
+    .field-group .details-item-editable.full-row{
+    }
+
+    .field-group .details-item-editable > label{
+        width: calc(15% - 20px) !important;
+    }
+
+    .field-group .details-item-editable > div {
+        margin-left: calc(15% - 20px);
+    }
+
+    .field-group div:last-child{
+        padding-bottom: 0;
+    }
+
+    .field-group h5{
+        padding-left: 15px;
+        font-size: 12px;
+    }
+
+    .stats{
+        position: absolute;
+        bottom: 5px;
+        left: 230px;
+        font-weight: bold;
+        border-top: 1px solid #dfdfdf;
+        padding:4px
+    }
+
+    .stats li{
+        list-style: none;
+        float: left;
+        margin-right: 15px;
+        position: relative;
+    }
+
+    .stats li:last-child{
+        margin-right: 0;
+    }
+
+    #bubble{
+        display: none;
+
+    }
+
+    .bubble-on #bubble{
+        position: absolute;
+        top: -272px;
+        left: -180px;
+        display: block;
+    }
+
+    #chart{
+        position: absolute;
+        top: 0;
+        right: 0;
+        padding: 5px;
+        width: auto;
+        height: 229px;
+        background: #fff;
+        border-left: 1px solid #dfdfdf;
+    }
+
+</style>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script>
+    $(document).ready(function(){
+        $('.hasPossibles .possible, .hasDropDown .possible').click( function(){
+            $(this).siblings().removeClass('checked');
+            $(this).addClass('checked');
+            $('input:text', $(this).parent().parent()).val( $(this).text() );
+        });
+
+        $('.chosen-entries .possible').click( function(){
+            $('.checked').removeClass('checked');
+            $(this).addClass('checked');
+            var colors = this.classList;
+            $('.' + colors[1].toString()).addClass('checked');
+            $('.' + colors[1].toString() + ' input:radio').prop('checked',true);
+            runOnAll();
+        });
+
+        function runOnAll(){
+            $('.details-item-editable').each(function(){
+                var v = $('.checked', this).text();
+                $('input:text', this).val( v.toString() );
+            });
+        }
+        runOnAll();
+    });
+</script>
+
+
+
+<section class="details attributesContainer left-column form-fields merge-view">
+    <div class="panel clearfix _mobile-view">
+
+
+        <div class="chosen-entries">
+            <strong>Set As Primary</strong><br /><br />
+            <label class="possible color1 checked"><input type="radio" name="default" checked>Kirby Davis Company</label>
+            <label class="possible color2"><input type="radio" name="default">Kirby and Sons LTD.</label>
+            <label class="possible color3"><input type="radio" name="default">Kirrbi Logistics</label>
+            <label class="possible color4"><input type="radio" name="default">David Kirrby Logistics</label>
+            <label class="possible color5"><input type="radio" name="default">Davis Logistics</label>
+
+            <img src="card.png" id="card"/>
+
+            <ul class="stats _bubble-on">
+                <li>5 (icon)<a href="">Emails</a></li>
+                <li>1 (icon)<a href="">Meeting</a></li>
+                <li>10 (icon)<a href="">Notes</a></li>
+                <li>4 (icon)<a href="">Tasks</a><img src="bubble.png" id="bubble" /></li>
+            </ul>
+            <img src="chart.png" id="chart" />
+        </div>
+
+        <div class="details-item-editable full-row clearfix">
+            <label><strong>Account/Opp<br/>and ALL MODEL SELECT<span class="required">*</span></strong></label>
+
+            <div class="hasPossibles">
+                <label class="possible color1 checked"><input type="radio" name="Account Activity Date Time" checked>October 1st 2013</label>
+                <label class="possible color2"><input type="radio" name="Account Activity Date Time">1/10/2013</label>
+                <label class="possible color3"><input type="radio" name="Account Activity Date Time">(empty)</label>
+                <label class="possible color4"><input type="radio" name="Account Activity Date Time">1-10-2013</label>
+                <label class="possible color5"><input type="radio" name="Account Activity Date Time">December 2013</label>
+            </div>
+
+            <div class="has-model-select">
+                <input onblur="clearIdFromAutoCompleteField($(this).val(), 'Opportunity_account_id');"
+                    id="Opportunity_account_name" type="text" value="" name="Opportunity_account_name"
+                    class="ui-autocomplete-input" autocomplete="off">
+                <span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span>
+                <a id="Opportunity_account_SelectLink" href="#">
+                    <span class="model-select-icon"></span>
+                    <span class="z-spinner"></span>
+                </a>
+            </div>
+
+        </div>
+
+
+        <div class="details-item-editable full-row clearfix">
+            <label><strong>Latest Activity Date Time<span class="required">*</span></strong></label>
+            <div class="hasPossibles">
+                <label class="possible color1 checked"><input type="radio" name="Latest Activity Date Time" checked>October 1st 2013</label>
+                <label class="possible color2"><input type="radio" name="Latest Activity Date Time">1/10/2013</label>
+                <label class="possible color3"><input type="radio" name="Latest Activity Date Time">(empty)</label>
+                <label class="possible color4"><input type="radio" name="Latest Activity Date Time">1-10-2013</label>
+                <label class="possible color5"><input type="radio" name="Latest Activity Date Time">December 2013</label>
+            </div>
+            <div class="has-date-select">
+                <input id="Account_latestActivityDateTime"
+                       name="Account[latestActivityDateTime]" style="position:relative;z-index:10000;" type="text" class="hasDatepicker">
+                    <button type="button" class="ui-datepicker-trigger"><span><!--Date--></span></button>
+            </div>
+        </div>
+
+
+        <div class="details-item-editable full-row clearfix">
+            <label for="Account_dadsadaCstm_values"><strong>Multi Select Pik List</strong></label>
+            <div class="hasPossibles">
+                <label class="possible color1 checked"><input type="radio" name="Multi" checked>item 1, item 2, item 3</label>
+                <label class="possible color2"><input type="radio" name="Multi">item 1, item 2, item 3</label>
+                <label class="possible color3"><input type="radio" name="Multi">item 1, item 2</label>
+                <label class="possible color4"><input type="radio" name="Multi">item 1, item 2, item 3</label>
+                <label class="possible color5"><input type="radio" name="Multi">item 1, item 2, item 3</label>
+            </div>
+            <div class="hasMultiSelect">
+                <select name="Account[dadsadaCstm][values][]" id="Account_dadsadaCstm_values" multiple="multiple" class="multiple" size="4">
+                    <option value="">(None)</option>
+                    <option value="item 1" selected>item 1</option>
+                    <option value="optionks 2" selected>item 2</option>
+                    <option value="optionks 2">item 3</option>
+                </select>
+            </div>
+        </div>
+
+
+
+        <div class="field-group">
+            <h5>Currency (group name)</h5>
+            <div class="details-item-editable full-row clearfix">
+                <label><strong>Currency Field</strong></label>
+                <div class="hasPossibles">
+                    <label class="possible color1 checked"><input type="radio" name="Currency" checked>CAD</label>
+                    <label class="possible color2"><input type="radio" name="Currency">USD</label>
+                    <label class="possible color3"><input type="radio" name="Currency">USD</label>
+                    <label class="possible color4"><input type="radio" name="Currency">USD</label>
+                    <label class="possible color5"><input type="radio" name="Currency">(empty)</label>
+                </div>
+                <div class="hasDropDown">
+                    <span class="select-arrow"></span>
+                    <select name="Account[kjdsjkdsjkCstm][currency][id]" id="Account_kjdsjkdsjkCstm_currency_id">
+                        <option value="3">CAD</option>
+                        <option value="2">EUR</option>
+                        <option value="4">JPY</option>
+                        <option value="1" selected="selected">USD</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="details-item-editable full-row clearfix">
+                <label><strong>Currency Field - SUM</strong></label>
+                <div class="hasPossibles">
+                    <label class="possible color1 checked"><input type="radio" name="Currency" checked>100K</label>
+                    <label class="possible color2"><input type="radio" name="Currency">1,000,000</label>
+                    <label class="possible color3"><input type="radio" name="Currency">1,000,100</label>
+                    <label class="possible color4"><input type="radio" name="Currency">1,000,000</label>
+                    <label class="possible color5"><input type="radio" name="Currency">(empty)</label>
+                </div>
+                <div><input type="text" maxlength="64"/></div>
+            </div>
+        </div>
+
+
+
+        <div class="details-item-editable full-row clearfix">
+            <label for="Account_checboxTestCstm"><strong>Check Box</strong></label>
+            <div class="hasPossibles">
+                <label class="possible color1 checked"><input type="radio" name="Account_checboxTestCstm Activity Date Time" checked>On</label>
+                <label class="possible color2"><input type="radio" name="Account_checboxTestCstm Activity Date Time">On</label>
+                <label class="possible color3"><input type="radio" name="Account_checboxTestCstm Activity Date Time">On</label>
+                <label class="possible color4"><input type="radio" name="Account_checboxTestCstm Activity Date Time">Off</label>
+                <label class="possible color5"><input type="radio" name="Account_checboxTestCstm Activity Date Time">On</label>
+            </div>
+            <div>
+                <label class="hasCheckBox c_on">
+                    <input id="Account_checboxTestCstm" name="Account[checboxTestCstm]" value="1" checked="checked" type="checkbox">
+                </label>
+            </div>
+        </div>
+
+
+        <div class="details-item-editable full-row clearfix">
+            <label><strong>tag cloud - should be chechboxes</strong></label>
+            <div class="hasPossibles">
+                <label class="possible color1 checked"><input type="radio" name="Multi" checked>item 1, item 2, item 3</label>
+                <label class="possible color2"><input type="radio" name="Multi">item 1, item 2, item 3</label>
+                <label class="possible color3"><input type="radio" name="Multi">item 1, item 2</label>
+                <label class="possible color4"><input type="radio" name="Multi">item 1, item 2, item 3</label>
+                <label class="possible color5"><input type="radio" name="Multi">item 1, item 2, item 3</label>
+            </div>
+            <div>
+                <label class="hasCheckBox">
+                    <input id="Account_checboxTestCstm" name="Account[checboxTestCstm]" value="0"  type="checkbox">
+                </label>value 1<br><br>
+                <label class="hasCheckBox c_on">
+                    <input id="Account_checboxTestCstm" name="Account[checboxTestCstm]" value="1" checked="checked" type="checkbox">
+                </label>value 1<br><br>
+                <label class="hasCheckBox">
+                    <input id="Account_checboxTestCstm" name="Account[checboxTestCstm]" value="0"  type="checkbox">
+                </label>value 1<br><br>
+                <label class="hasCheckBox">
+                    <input id="Account_checboxTestCstm" name="Account[checboxTestCstm]" value="0" type="checkbox">
+                </label>value 1<br><br>
+                <label class="hasCheckBox c_on">
+                    <input id="Account_checboxTestCstm" name="Account[checboxTestCstm]" value="1" checked="checked" type="checkbox">
+                </label>value 1<br><br>
+                <label class="hasCheckBox c_on">
+                    <input id="Account_checboxTestCstm" name="Account[checboxTestCstm]" value="1" checked="checked" type="checkbox">
+                </label>value 1<br><br>
+            </div>
+        </div>
+
+
+
+
+        <div class="details-item-editable full-row clearfix">
+            <label><strong>Radio Pick List</strong></label>
+            <div class="hasPossibles">
+                <label class="possible color1 checked"><input type="radio" name="Afff" checked>(None)</label>
+                <label class="possible color2"><input type="radio" name="Afff">field 1</label>
+                <label class="possible color3"><input type="radio" name="Afff">field 2</label>
+                <label class="possible color4"><input type="radio" name="Afff">field 1</label>
+                <label class="possible color5"><input type="radio" name="Afff">field 1</label>
+            </div>
+            <div>
+                <div class="radio-input"><input id="Account_radioPickLisCstm_value_0" value="" checked="checked" type="radio" name="Account[radioPickLisCstm][value]"><label for="Account_radioPickLisCstm_value_0">(None)</label></div>
+                <div class="radio-input"><input id="Account_radioPickLisCstm_value_1" value="field 1" type="radio" name="Account[radioPickLisCstm][value]"><label for="Account_radioPickLisCstm_value_1">field 1</label></div>
+                <div class="radio-input"><input id="Account_radioPickLisCstm_value_2" value="field 2" type="radio" name="Account[radioPickLisCstm][value]"><label for="Account_radioPickLisCstm_value_2">field 2</label></div>
+            </div>
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <div class="details-item-editable full-row clearfix">
+            <label><strong>Name<span class="required">*</span></strong></label>
+            <div class="hasPossibles">
+                <label class="possible color1 checked"><input type="radio" name="Name" checked>Kirby Davis Company</label>
+                <label class="possible color2"><input type="radio" name="Name">Kirby and Sons LTD.</label>
+                <label class="possible color3"><input type="radio" name="Name">Kirrbi Logistics</label>
+                <label class="possible color4"><input type="radio" name="Name">David Kirrby Logistics</label>
+                <label class="possible color5"><input type="radio" name="Name">Davis Logistics</label>
+            </div>
+            <div><input type="text" maxlength="64"/></div>
+        </div>
+
+        <div class="details-item-editable full-row clearfix">
+            <label><strong>Email<span class="required">*</span></strong></label>
+            <div class="hasPossibles">
+                <label class="possible color1 checked"><input type="radio" name="email" checked>davis@kirrby.com</label>
+                <label class="possible color2"><input type="radio" name="email">info@KIRBY.com</label>
+                <label class="possible color3"><input type="radio" name="email">sales@Kirby.us</label>
+                <label class="possible color4"><input type="radio" name="email">logistics@kirby.com</label>
+                <label class="possible color5"><input type="radio" name="email">logistics@kirby.com</label>
+            </div>
+            <div><input type="text" maxlength="64"/></div>
+        </div>
+
+        <div class="details-item-editable full-row clearfix">
+            <label><strong>Phone Number<span class="required">*</span></strong></label>
+            <div class="hasPossibles">
+                <label class="possible color1 checked"><input type="radio" name="Phone" checked>+1 212 9875 6783 ext. 100</label>
+                <label class="possible color2"><input type="radio" name="Phone">+1 212 9875 6783</label>
+                <label class="possible color3"><input type="radio" name="Phone">( empty )</label>
+                <label class="possible color4"><input type="radio" name="Phone">+1 113 9875 5783</label>
+                <label class="possible color5"><input type="radio" name="Phone">113 9875 5783</label>
+            </div>
+            <div><input type="text" maxlength="64"/></div>
+        </div>
+
+        <div class="details-item-editable full-row clearfix">
+            <label class="req"><strong>Industry</strong></label>
+            <div class="hasPossibles">
+                <label class="possible color1 checked"><input type="radio" name="Industry" checked>Logistics</label>
+                <label class="possible color2"><input type="radio" name="Industry">International transfers</label>
+                <label class="possible color3"><input type="radio" name="Industry">Trucks and Logistics</label>
+                <label class="possible color4"><input type="radio" name="Industry">Logistics</label>
+                <label class="possible color5"><input type="radio" name="Industry">Logistics</label>
+            </div>
+            <div class="hasDropDown">
+                <span class="select-arrow"></span>
+                <select>
+                    <option value="">Logistics</option>
+                    <option value="Self-Generated">International transfers</option>
+                    <option value="Inbound Call">Trucks and Logistics</option>
+                    <option value="Tradeshow">Logistics</option>
+                    <option value="Word of Mouth">International Logistics</option>
+                    <option value="Word of Mouth">International Shipping</option>
+                    <option value="Word of Mouth">International Maritime services</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="field-group">
+            <h5>Address</h5>
+            <div class="details-item-editable full-row clearfix">
+                <label><strong>Address - Street 1</strong></label>
+                <div class="hasPossibles">
+                    <label class="possible color1 checked"><input type="radio" name="Address" checked>123 That St.</label>
+                    <label class="possible color2"><input type="radio" name="Address">123 That St.</label>
+                    <label class="possible color3"><input type="radio" name="Address">123 That St.</label>
+                    <label class="possible color4"><input type="radio" name="Address">Thatt St.</label>
+                    <label class="possible color5"><input type="radio" name="Address">123 That St.</label>
+                </div>
+                <div><input type="text" maxlength="64"/></div>
+            </div>
+
+            <div class="details-item-editable full-row clearfix">
+                <label><strong>Address - Street 2</strong></label>
+                <div class="hasPossibles">
+                    <label class="possible color1 checked"><input type="radio" name="Address2" checked>Suite 206</label>
+                    <label class="possible color2"><input type="radio" name="Address2">Suite #206</label>
+                    <label class="possible color3"><input type="radio" name="Address2">(empty)</label>
+                    <label class="possible color4"><input type="radio" name="Address2">(empty)</label>
+                    <label class="possible color5"><input type="radio" name="Address2">Office 206</label>
+                </div>
+                <div><input type="text" maxlength="64"/></div>
+            </div>
+
+            <div class="details-item-editable full-row clearfix">
+                <label><strong>Address- City</strong></label>
+                <div class="hasPossibles">
+                    <label class="possible color1 checked"><input type="radio" name="Address3" checked>Chicago</label>
+                    <label class="possible color2"><input type="radio" name="Address3">Chicago</label>
+                    <label class="possible color3"><input type="radio" name="Address3">Chicago</label>
+                    <label class="possible color4"><input type="radio" name="Address3">Chicago</label>
+                    <label class="possible color5"><input type="radio" name="Address3">Chicago</label>
+                </div>
+                <div><input type="text" maxlength="64"/></div>
+            </div>
+
+            <div class="details-item-editable full-row clearfix">
+                <label><strong>Address - State</strong></label>
+                <div class="hasPossibles">
+                    <label class="possible color1 checked"><input type="radio" name="Address4" checked>IL</label>
+                    <label class="possible color2"><input type="radio" name="Address4">IL</label>
+                    <label class="possible color3"><input type="radio" name="Address4">(empty)</label>
+                    <label class="possible color4"><input type="radio" name="Address4">IL</label>
+                    <label class="possible color5"><input type="radio" name="Address4">IL</label>
+                </div>
+                <div><input type="text" maxlength="64"/></div>
+            </div>
+
+            <div class="details-item-editable full-row clearfix">
+                <label><strong>Address - Postal Code</strong></label>
+                <div class="hasPossibles">
+                    <label class="possible color1 checked"><input type="radio" name="Address5" checked>12345</label>
+                    <label class="possible color2"><input type="radio" name="Address5">12345</label>
+                    <label class="possible color3"><input type="radio" name="Address5">12345</label>
+                    <label class="possible color4"><input type="radio" name="Address5">12345</label>
+                    <label class="possible color5"><input type="radio" name="Address5">(empty)</label>
+                </div>
+                <div><input type="text" maxlength="64"/></div>
+            </div>
+
+            <div class="details-item-editable full-row clearfix">
+                <label><strong>Address - Country</strong></label>
+                <div class="hasPossibles">
+                    <label class="possible color1 checked"><input type="radio" name="Address6" checked>USA</label>
+                    <label class="possible color2"><input type="radio" name="Address6">USA</label>
+                    <label class="possible color3"><input type="radio" name="Address6">USA</label>
+                    <label class="possible color4"><input type="radio" name="Address6">USA</label>
+                    <label class="possible color5"><input type="radio" name="Address6">USA</label>
+                </div>
+                <div><input type="text" maxlength="64"/></div>
+            </div>
+        </div>
+
+        <div class="details-item-editable full-row clearfix">
+            <label><strong>Opportunity</strong></label>
+            <div class="hasPossibles">
+                <label class="possible color1 checked"><input type="radio" name="Opportunity" checked>Opp Name</label>
+                <label class="possible color2"><input type="radio" name="Opportunity">Opp Name</label>
+                <label class="possible color3"><input type="radio" name="Opportunity">Opp Name 1</label>
+                <label class="possible color4"><input type="radio" name="Opportunity">(empty)</label>
+                <label class="possible color5"><input type="radio" name="Opportunity">Opp Name</label>
+            </div>
+            <div class="has-model-select">
+                <input  type="text" value="Super User" name="Contact_owner_name">
+                <a id="Contact_owner_SelectLink" href="#">
+                    <span class="model-select-icon"></span>
+                    <span class="z-spinner"></span>
+                </a>
+            </div>
+        </div>
+
+
+
+
+    </div>
+</section>
+
+<!-- end new layout -->
+
+
+<div class="right-column" style="display: none">
+    <div class="right-side-edit-view-panel"><h3>Rights and Permissions</h3>
+
+        <div id="owner-box"><label for="Contact_owner_id" class="required">Owner
+            <span class="required">*</span></label><input name="Contact[owner][id]"
+                                                          id="Contact_owner_id"
+                                                          value="1" type="hidden"/>
+
+            <div class="has-model-select"><input
+                    onblur="clearIdFromAutoCompleteField($(this).val(), &#039;Contact_owner_id&#039;);"
+                    id="Contact_owner_name" type="text" value="Super User"
+                    name="Contact_owner_name"/><a id="Contact_owner_SelectLink"
+                                                  href="#"><span
+                    class="model-select-icon"></span><span class="z-spinner"></span></a>
+            </div>
+        </div>
+        <label>Who can read and write</label>
+
+        <div class="radio-input"><input
+                id="Contact_explicitReadWriteModelPermissions_type_0" value=""
+                type="radio"
+                name="Contact[explicitReadWriteModelPermissions][type]"/><label
+                for="Contact_explicitReadWriteModelPermissions_type_0">Owner</label>
+        </div>
+        <div class="radio-input"><input
+                id="Contact_explicitReadWriteModelPermissions_type_1" value="2"
+                type="radio"
+                name="Contact[explicitReadWriteModelPermissions][type]"/><label
+                for="Contact_explicitReadWriteModelPermissions_type_1">Owner and
+            users in</label>&#160;
+            <div class="hasDropDown"><span class="select-arrow"></span><select
+                    id="Contact_explicitReadWriteModelPermissions_nonEveryoneGroup"
+                    onclick="document.getElementById(&quot;Contact_explicitReadWriteModelPermissions_type_1&quot;).checked=&quot;checked&quot;;"
+                    name="Contact[explicitReadWriteModelPermissions][nonEveryoneGroup]">
+                <option value="3">East</option>
+                <option value="5">East Channel Sales</option>
+                <option value="7">East Direct Sales</option>
+                <option value="4">West</option>
+                <option value="6">West Channel Sales</option>
+                <option value="8">West Direct Sales</option>
+            </select></div>
+        </div>
+        <div class="radio-input"><input
+                id="Contact_explicitReadWriteModelPermissions_type_2" value="1"
+                checked="checked" type="radio"
+                name="Contact[explicitReadWriteModelPermissions][type]"/><label
+                for="Contact_explicitReadWriteModelPermissions_type_2">Everyone</label>
+        </div>
+    </div>
+</div>
+
+
+
+
+<div class="float-bar">
+    <div class="view-toolbar-container clearfix dock">
+        <div class="form-toolbar">
+            <a id="saveyt2" name="save"
+               class="attachLoading z-button"
+               onclick="jQuery.yii.submitForm(this, &#039;&#039;, {&#039;save&#039;:&#039;save&#039;}); return false;"
+               href="#">
+                <span class="z-spinner"></span>
+                <span class="z-icon"></span>
+                <span class="z-label">Save</span>
+            </a>
+            <a class="cancel-button" href="/Zurmo/app/index.php/contacts/default">
+                <span class="z-label">Cancel</span>
+            </a>
+        </div>
+    </div>
+</div>
+</form>
+<div id="modalContainer-edit-form"></div>
+</div>
+</div>
+</div>
+<div id="FlashMessageView">
+    <div id="FlashMessageBar"></div>
+</div>
+</div>
+<div id="ModalContainerView">
+    <div id="modalContainer"></div>
+</div>
+<div id="ModalGameNotificationContainerView"></div>
+<div id="GameCoinContainerView"></div>
+<div id="FooterView"><a href="http://www.zurmo.com" id="credit-link" class="clearfix"><span>Copyright &#169; Zurmo Inc., 2013. All rights reserved.</span></a>
+
+</div>
+</div>
+</div>
+</div>
+
+</body>
+</html>
