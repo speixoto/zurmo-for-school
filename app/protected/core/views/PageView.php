@@ -284,8 +284,8 @@
                                   "</style>";
             if (!MINIFY_SCRIPTS && Yii::app()->isApplicationInstalled())
             {
-                $specialCssContent .= '<link rel="stylesheet/less" type="text/css" id="zurmo" href="' .
-                                                                                $themeBaseUrl . '/less/zurmo.less?version='.rand() .'"/>';
+                $specialCssContent .= '<link rel="stylesheet/less" type="text/css" id="default-theme" href="' .
+                                                                                $themeBaseUrl . '/less/default-theme.less"/>';
                 if (Yii::app()->userInterface->isMobile())
                 {
                     $specialCssContent .= '<link rel="stylesheet/less" type="text/css" id="mobile" href="' .
