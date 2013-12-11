@@ -113,7 +113,12 @@
          * @param $formatterName
          * @return lessc
          */
-        protected function initializeLessCompiler($formatterName)
+        protected function initializeLessCompiler($formatterName,
+                                                  $z_textColor,
+                                                  $z_themeColor,
+                                                  $z_themeColor2,
+                                                  $z_themeColorBtn,
+                                                  $z_themeColorHeader)
         {
             $lessCompiler = new lessc;
             $lessCompiler->setPreserveComments(true);
@@ -135,12 +140,42 @@
          */
         public function compile()
         {
+            $themes = array(
+                array(
+                    "name"                => "BLUE_THEME_EXAMPLE",
+                    "z_textColor"         => "#545454",
+                    "z_themeColor"        => "#282A76",
+                    "z_themeColor2"       => "#7CB830",
+                    "z_themeColorBtn"     => "#97c43d",
+                    "z_themeColorHeader"  => "#464646"
+                ),
+                array(
+                    "name"                => "RED_THEME_EXAMPLE",
+                    "z_textColor"         => "#ff0000",
+                    "z_themeColor"        => "#282A76",
+                    "z_themeColor2"       => "#7CB830",
+                    "z_themeColorBtn"     => "#97c43d",
+                    "z_themeColorHeader"  => "#464646"
+                ),
+            );
+
+            foreach ($themes as $theme){
+                //put compiler here, use name for for teh file name and pass teh colors into "initializeLessCompiler()"
+                /*$lessCompiler = $this->initializeLessCompiler($this->formatterName,
+                        $theme['z_textColor'],
+                        $theme['z_themeColor'],
+                        $theme['z_themeColor2'],
+                        $theme['z_themeColorBtn'],
+                        $theme['z_themeColorHeader']);*/
+            }
+
+
             if (is_array($this->lessFilesToCompile) && !empty($this->lessFilesToCompile))
             {
                 foreach ($this->lessFilesToCompile as $lessFile)
                 {
                      // We need to construct new less compiler for each file, otherwise compliler doesn't work as expected
-                    $lessCompiler = $this->initializeLessCompiler($this->formatterName);
+                    $lessCompiler = $this->initializeLessCompiler($this->formatterName, null, null, null, null, null);
                     $lessFilePath = $this->getLessFilesPath() . DIRECTORY_SEPARATOR . $lessFile;
                     $cssFileName = str_replace('less', 'css', $lessFile);
                     $cssFilePath = $this->getCompiledCssPath() . DIRECTORY_SEPARATOR . $cssFileName;
