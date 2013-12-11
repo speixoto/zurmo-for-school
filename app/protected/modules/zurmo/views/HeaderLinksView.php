@@ -267,8 +267,6 @@
         protected function registerScripts()
         {
             $id     = static::USER_GAME_DASHBOARD_LINK_ID;
-
-
             $script = "$('#".static::CLAIM_ITEM_LINK_ID."').on('click', function(event){
                                event.preventDefault();
                                $(this).off('click');
