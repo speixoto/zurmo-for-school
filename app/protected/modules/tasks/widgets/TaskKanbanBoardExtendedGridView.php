@@ -303,17 +303,17 @@
                             var idParts = id.split('_');
                             var taskId = parseInt(idParts[1]);
                             var columnType = parseInt(ulidParts[3]);
-                            if(parseInt('{$targetKanbanItemType}') != columnType)
+                            if (parseInt('{$targetKanbanItemType}') != columnType)
                             {
                                 $('#task-sortable-rows-{$targetKanbanItemType}').append(element);
                                 $('#task-sortable-rows-' + columnType).remove('#' + id);
                             }
-                            if('{$targetStatus}' != '{$completedStatus}')
+                            if ('{$targetStatus}' != '{$completedStatus}')
                             {
                                 var linkTag = $(element).find('.{$sourceActionButtonClass}');
                                 $(linkTag).find('.button-label').html('" . $label . "');
                                 $(linkTag).removeClass('" . $sourceActionButtonClass . "').addClass('" . $targetButtonClass . "');
-                                if('{$sourceActionButtonClass}' == 'action-type-reject')
+                                if ('{$sourceActionButtonClass}' == 'action-type-reject')
                                 {
                                     $(element).find('.action-type-accept').remove();
                                     $(element).find('.task-status').html('{$rejectStatusLabel}');
@@ -323,11 +323,11 @@
                                 {
                                     $(element).find('.task-status').parent().removeClass('{$rejectedStatusClass}');
                                 }
-                                if('{$sourceActionButtonClass}' == 'action-type-restart')
+                                if ('{$sourceActionButtonClass}' == 'action-type-restart')
                                 {
                                     $(element).find('.task-status').html('{$inProgressStatusLabel}');
                                 }
-                                if('{$sourceActionButtonClass}' == 'action-type-start')
+                                if ('{$sourceActionButtonClass}' == 'action-type-start')
                                 {
                                     $(element).find('h4 .task-owner').html('{$currentUserLoggedInName}');
                                 }
