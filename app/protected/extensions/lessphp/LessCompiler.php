@@ -40,6 +40,8 @@
     {
         public $formatterName = 'lessjs';
 
+        public $mainLessFileToCompile;
+
         public $lessFilesToCompile;
 
         protected $compiledCssPath;
@@ -47,6 +49,8 @@
         protected $lessFilesPath;
 
         protected $lessCompiler;
+
+        protected $themeColors;
 
         /**
          * Initialize component
@@ -56,6 +60,7 @@
             parent::init();
             $this->setCompiledCssPath();
             $this->setLessFilesPath();
+            $this->setThemeColors();
         }
 
         /**
@@ -109,6 +114,26 @@
         }
 
         /**
+         * Set the themes color array to compile
+         */
+        protected function setThemeColors()
+        {
+            $this->themeColors =  Yii::app()->themeManager->getThemeColorNamesAndColors();
+        }
+
+        protected function getThemeColors()
+        {
+            if (isset($this->themeColors) && !empty($this->themeColors))
+            {
+                return $this->themeColors;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        /**
          * Initialize less compiler
          * @param $formatterName
          * @return lessc
@@ -122,14 +147,14 @@
         {
             $lessCompiler = new lessc;
             $lessCompiler->setPreserveComments(true);
-            $lessCompiler->setFormatter($this->formatterName);
+            $lessCompiler->setFormatter($formatterName);
             $lessCompiler->setImportDir($this->getLessFilesPath());
             $lessCompiler->setVariables(array(
-                "z_textColor"         => "#545454", //text color all around
-                "z_themeColor"        => "#282A76", //main color for links/titles/top-bar (blue in the original theme)
-                "z_themeColor2"       => "#7CB830", //secondary color used for hovers and emphasizing (green in the original theme)
-                "z_themeColorBtn"     => "#97c43d", //<-- this is suggested so buttons would always be green and not maybe red/purple etc.
-                "z_themeColorHeader"  => "#464646"  //used to create the top dark bar gradient (top)
+                "z_textColor"         => $z_textColor, //text color all around
+                "z_themeColor"        => $z_themeColor, //main color for links/titles/top-bar (blue in the original theme)
+                "z_themeColor2"       => $z_themeColor2, //secondary color used for hovers and emphasizing (green in the original theme)
+                "z_themeColorBtn"     => $z_themeColorBtn, //<-- this is suggested so buttons would always be green and not maybe red/purple etc.
+                "z_themeColorHeader"  => $z_themeColorHeader  //used to create the top dark bar gradient (top)
                 //"z_themeColorHeader2" => "#333535", //used to create the top dark bar gradient (bottom)
             ));
             return $lessCompiler;
@@ -140,42 +165,32 @@
          */
         public function compile()
         {
-            $themes = array(
-                array(
-                    "name"                => "BLUE_THEME_EXAMPLE",
-                    "z_textColor"         => "#545454",
-                    "z_themeColor"        => "#282A76",
-                    "z_themeColor2"       => "#7CB830",
-                    "z_themeColorBtn"     => "#97c43d",
-                    "z_themeColorHeader"  => "#464646"
-                ),
-                array(
-                    "name"                => "RED_THEME_EXAMPLE",
-                    "z_textColor"         => "#ff0000",
-                    "z_themeColor"        => "#282A76",
-                    "z_themeColor2"       => "#7CB830",
-                    "z_themeColorBtn"     => "#97c43d",
-                    "z_themeColorHeader"  => "#464646"
-                ),
-            );
-
-            foreach ($themes as $theme){
-                //put compiler here, use name for for teh file name and pass teh colors into "initializeLessCompiler()"
-                /*$lessCompiler = $this->initializeLessCompiler($this->formatterName,
-                        $theme['z_textColor'],
-                        $theme['z_themeColor'],
-                        $theme['z_themeColor2'],
-                        $theme['z_themeColorBtn'],
-                        $theme['z_themeColorHeader']);*/
+            if (isset($this->mainLessFileToCompile))
+            {
+                foreach ($this->getThemeColors() as $colorName => $themeColors)
+                {
+                    if (is_string($colorName) && count($themeColors) == 5)
+                    {
+                        $lessCompiler = $this->initializeLessCompiler($this->formatterName,
+                                                                      $themeColors[0],
+                                                                      $themeColors[1],
+                                                                      $themeColors[2],
+                                                                      $themeColors[3],
+                                                                      $themeColors[4]);
+                        $lessFilePath = $this->getLessFilesPath() . DIRECTORY_SEPARATOR . $this->mainLessFileToCompile;
+                        $cssFileName  = str_replace('.less', '', $this->mainLessFileToCompile) . '-' . $colorName . '.css';
+                        $cssFilePath  = $this->getCompiledCssPath() . DIRECTORY_SEPARATOR . $cssFileName;
+                        $lessCompiler->compileFile($lessFilePath, $cssFilePath);
+                    }
+                }
             }
-
 
             if (is_array($this->lessFilesToCompile) && !empty($this->lessFilesToCompile))
             {
                 foreach ($this->lessFilesToCompile as $lessFile)
                 {
                      // We need to construct new less compiler for each file, otherwise compliler doesn't work as expected
-                    $lessCompiler = $this->initializeLessCompiler($this->formatterName, null, null, null, null, null);
+                    $lessCompiler = $this->initializeLessCompiler($this->formatterName, '#545454', '#282A76', '#7CB830', '#97c43d', '#464646');
                     $lessFilePath = $this->getLessFilesPath() . DIRECTORY_SEPARATOR . $lessFile;
                     $cssFileName = str_replace('less', 'css', $lessFile);
                     $cssFilePath = $this->getCompiledCssPath() . DIRECTORY_SEPARATOR . $cssFileName;

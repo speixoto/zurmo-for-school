@@ -325,12 +325,12 @@
                 'class' => 'application.modules.workflows.observers.WorkflowsObserver',
             ),
             'lessCompiler' => array(
-                'class'        => 'application.extensions.lessphp.LessCompiler',
-                'formatterName'    => 'lessjs',
+                'class'                 => 'application.extensions.lessphp.LessCompiler',
+                'formatterName'         => 'lessjs',
+                'mainLessFileToCompile' => 'zurmo.less',
                 'lessFilesToCompile'    => array(
                     'ie.less',
                     'mobile.less',
-                    'zurmo.less'
                 ),
             ),
         ),

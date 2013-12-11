@@ -65,8 +65,6 @@
 
         public function render()
         {
-            if(isset($_GET['less'])){ Yii::app()->lessCompiler->compile(); }
-
             if (SHOW_PERFORMANCE)
             {
                 $startTime = microtime(true);
@@ -297,6 +295,10 @@
             else
             {
                 $cs->registerCssFile($themeBaseUrl . '/css/zurmo.css');
+                foreach (Yii::app()->themeManager->getThemeColorNamesAndLabels() as $themeLabel => $notUsed)
+                {
+                    $cs->registerCssFile($themeBaseUrl . '/css/zurmo-' . $themeLabel . '.css');
+                }
                 if (file_exists("themes/$themeName/css/commercial.css"))
                 {
                     $cs->registerCssFile($themeBaseUrl . '/css/commercial.css');
