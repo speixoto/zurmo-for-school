@@ -54,7 +54,8 @@
         public static function sanitizeValueBySanitizerTypes($sanitizerUtilTypes, $modelClassName,
                                                              $attributeName, $value, $columnName, $columnMappingData,
                                                              ImportSanitizeResultsUtil $importSanitizeResultsUtil,
-                                                             $penultimateModelClassName, $penultimateAttributeName
+                                                             $penultimateModelClassName = null,
+                                                             $penultimateAttributeName = null
                                                              )
         {
             assert('is_array($sanitizerUtilTypes)');

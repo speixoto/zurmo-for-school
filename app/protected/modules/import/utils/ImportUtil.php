@@ -126,7 +126,7 @@
                 $skippedColumns[] = $idColumnName;
             }
             //Process the dedupe fields
-            foreach($importRules->getDedupeFields() as $dedupeField)
+            foreach($importRules->getDedupeAttributes() as $dedupeField)
             {
                 static::processMappedColumnsToCheckForMatchedModelByColumnName($importRules,
                                                                                $model,
@@ -691,9 +691,9 @@
                                                                     $columnMappingData,
                                                                     $rowBean,
                                                                     $importSanitizeResultsUtil);
-                if($importSanitizeResultsUtil->getMatchedModel() != null)
+                if(null != $matchedModel = $importSanitizeResultsUtil->getMatchedModel())
                 {
-                    $model = $importSanitizeResultsUtil->getMatchedModel();
+                    $model = $matchedModel;
                 }
                 $skippedColumns[] = $sourceColumnName;
             }

@@ -48,7 +48,7 @@
          * Get matched models
          * @return array
          */
-        protected static function getMatchedModels()
+        protected function getMatchedModels()
         {
             $matchedModels = array();
             $penultimateModelClassName = $this->penultimateModelClassName;

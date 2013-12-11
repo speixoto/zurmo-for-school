@@ -73,7 +73,7 @@
         protected function checkIfRowToBeSkippedAndSetAnalysisMessages($value)
         {
             assert('is_string($value)');
-            $matchedModels  = static::getMatchedModels();
+            $matchedModels  = $this->getMatchedModels();
             if(count($matchedModels) > 0)
             {
                 if($this->mappingRuleData["dedupeRule"]["value"] == ImportDedupeRulesRadioDropDownElement::SKIP_ROW_ON_MATCH_FOUND)
@@ -102,7 +102,7 @@
          * Gets matched models
          * @return array
          */
-        protected static function getMatchedModels()
+        protected function getMatchedModels()
         {
             return array();
         }

@@ -41,7 +41,7 @@
     {
         public static function make($attributeValueSanitizerUtilType, $modelClassName, $attributeName, $columnName,
                                     $columnMappingData, ImportSanitizeResultsUtil $importSanitizeResultsUtil = null,
-                                    $penultimateModelClassName, $penultimateAttributeName)
+                                    $penultimateModelClassName = null, $penultimateAttributeName = null)
         {
             assert('is_string($attributeValueSanitizerUtilType)');
             assert('is_string($modelClassName)');

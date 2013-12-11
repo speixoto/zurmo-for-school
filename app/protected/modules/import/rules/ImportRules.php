@@ -352,7 +352,7 @@
          * Get fields for which dedupe ruled would be executed
          * @return array
          */
-        public static function getDedupeFields()
+        public static function getDedupeAttributes()
         {
             return array();
         }
