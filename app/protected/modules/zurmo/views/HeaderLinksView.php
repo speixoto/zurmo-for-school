@@ -206,22 +206,21 @@
             {
                 $gameCollectionRules = GameCollectionRulesFactory::createByType($collectionAndItemKey[0]->type);
                 $collectionItemTypesAndLabels = $gameCollectionRules::getItemTypesAndLabels();
-                $claimRewardLink   = ZurmoHtml::ajaxLink(Zurmo::t('GamificationModule', 'Get this item'), $gameBoardUrl,
-                    static::resolveAjaxOptionsForGameDashboardModel(static::CLAIM_ITEM_LINK_ID),
-                    array('id' => static::CLAIM_ITEM_LINK_ID));
+                $claimRewardLink = ZurmoHtml::ajaxLink(Zurmo::t('GamificationModule', 'Get this item'), $gameBoardUrl,
+                                   static::resolveAjaxOptionsForGameDashboardModel(static::CLAIM_ITEM_LINK_ID),
+                                   array('id' => static::CLAIM_ITEM_LINK_ID, 'class' => 'mini-button'));
                 $closeLink       = ZurmoHtml::link(Zurmo::t('Core', 'Close'), '#', array('id' => 'close-game-notification-link'));
                 $collectionItemImagePath = $gameCollectionRules::makeMediumCOllectionItemImagePath($collectionAndItemKey[1]);
                 $outerContent  = ZurmoHtml::tag('h5', array(), Zurmo::t('Core', 'Congratulations!'));
-                $rewardIcon = ZurmoHtml::tag('i', array('class' => 'animate-spin'), '');
-                $content  = ZurmoHtml::tag('span', array('class' => 'collection-item-image'), ZurmoHtml::image($collectionItemImagePath) . $rewardIcon);
+                $content  = ZurmoHtml::tag('span', array('class' => 'collection-item-image'), ZurmoHtml::image($collectionItemImagePath));
                 $content .= Zurmo::t('GamificationModule', 'You discovered the {name}',
-                    array('{name}' => $collectionItemTypesAndLabels[$collectionAndItemKey[1]]));
+                            array('{name}' => $collectionItemTypesAndLabels[$collectionAndItemKey[1]]));
                 $content .= '<br/>';
-                $content .= Zurmo::t('GamificationModule', '{dashboardLink} or {closeLink}',
-                    array('{dashboardLink}' => $claimRewardLink,
-                        '{closeLink}' => $closeLink));
-                $content = $outerContent . ZurmoHtml::tag('p', array(), $content);
-                $content =  ZurmoHtml::tag('div', array('id' => 'game-notification'), $content);
+                $content .= Zurmo::t('GamificationModule', '{claimLink} or {closeLink}',
+                            array('{claimLink}' => $claimRewardLink, '{closeLink}' => $closeLink));
+                $content  = $outerContent . ZurmoHtml::tag('p', array(), $content);
+                $content  = ZurmoHtml::tag('div', array('id' => 'game-notification'), $content);
+                $content .= static::renderAudioContent();
                 return $content;
             }
         }
@@ -243,6 +242,23 @@
             // End Not Coding Standard
         }
 
+        protected static function renderAudioContent()
+        {
+            $collectionAndItemKey = Yii::app()->gameHelper->resolveNewCollectionItems();
+            if (null != $collectionAndItemKey)
+            {
+                $publishedAssetsPath = Yii::app()->assetManager->publish(
+                    Yii::getPathOfAlias("application.modules.gamification.views.assets.audio"));
+                $MP3AudioFilePath = $publishedAssetsPath . '/magic.mp3';
+                $OGGAudioFilePath = $publishedAssetsPath . '/magic.ogg';
+                $WAVAudioFilePath = $publishedAssetsPath . '/magic.wav';
+                $content  = ZurmoHtml::tag('source', array('src' => $MP3AudioFilePath, 'type' => 'audio/mpeg'), '');
+                $content .= ZurmoHtml::tag('source', array('src' => $OGGAudioFilePath, 'type' => 'audio/ogg'), '');
+                $content .= ZurmoHtml::tag('source', array('src' => $WAVAudioFilePath, 'type' => 'audio/wav'), '');
+                return ZurmoHtml::tag('audio', array('id' => 'collection-item-claimed'), $content);
+            }
+        }
+
         protected static function getModalContainerId($id)
         {
             return self::MODAL_CONTAINER_PREFIX . '-' . $id;
@@ -255,10 +271,15 @@
 
             $script = "$('#".static::CLAIM_ITEM_LINK_ID."').on('click', function(event){
                                event.preventDefault();
-                               $('#game-notification img').animate({opacity:0, top:10}, 350);
-                               $('#game-notification i').delay(100).animate({opacity:100, top:'50%'}, 250);
-                               //var audio = document.getElementById('game-coin-chime');
-                               //audio.play();
+                               $(this).off('click');
+                               $('#game-notification img').addClass('animate-spin');
+                               var magicAudio = document.getElementById('collection-item-claimed');
+                               magicAudio.play();
+                               setTimeout(function(){
+                                   $('#game-notification').fadeOut(300, function(){
+                                       $('#game-notification').remove();
+                                   });
+                               }, 5000);
                                return false;
                            });";
             // End Not Coding Standard
@@ -287,11 +308,7 @@
                                $('#" . $id . "').html('∂').toggleClass('highlighted');
                            }";
             // End Not Coding Standard
-            Yii::app()->clientScript->registerScript(
-                'closeGamificationScript',
-                $script,
-                CClientScript::POS_END
-            );
+            Yii::app()->clientScript->registerScript('closeGamificationScript', $script, CClientScript::POS_END);
         }
     }
 ?>

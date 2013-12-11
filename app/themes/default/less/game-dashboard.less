@@ -781,7 +781,7 @@
 		color:#EFEFEF;
 		.t-shadow(none);
 		font-size: 14px;
-		margin-bottom: 10px;
+		margin-bottom: 15px;
 	}
 	img{
 		//float: left;
@@ -812,7 +812,7 @@
 	overflow: hidden;
 	margin-right: 15px;
 	margin-bottom: 15px;
-	height: 70px;
+	height: 85px;
 	min-width: 45px;
 	width: auto;
 	text-align: center;
@@ -820,26 +820,25 @@
 		position: relative;
 		top:0;
 	}
-	i{
-		position: absolute;
-		top:70%;
-		left: 50%;
-		margin-left: -23px;
-		margin-top: -25px;
-		text-align: center;
-		display: block;
-		width: 45px;
-		height: 38px;
-		background: url(../images/game-dashboard/i-won.png) center bottom no-repeat;
-		background-size: 100%;
-		opacity: 0;
-	}
+}
+
+a#claim-item-link{
+	//display: inline-block;
+	.smaller();
+	font-weight:bold;
+	text-decoration: none;
+	color: #545454;
+	line-height: 1;
+	padding: 2px 6px;
+	position: relative;
+	top:2px;
+	z-index: 5;
 }
 
 .animate-spin{
-	-webkit-animation: spinCoin 2s linear infinite;
-	-moz-animation: spinCoin 2s linear infinite;
-	-o-animation: spinCoin 2s linear infinite;
-	-ms-animation: spinCoin 2s linear infinite;
-	animation: spinCoin 2s linear infinite;
+	-webkit-animation: spinCoin 1.2s linear infinite;
+	   -moz-animation: spinCoin 1.2s linear infinite;
+	     -o-animation: spinCoin 1.2s linear infinite;
+	    -ms-animation: spinCoin 1.2s linear infinite;
+	        animation: spinCoin 1.2s linear infinite;
 }
