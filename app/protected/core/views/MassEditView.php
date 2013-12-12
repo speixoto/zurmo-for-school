@@ -112,7 +112,7 @@
                                         $params['disabled'] = true;
                                         //The reason for adding the following loop is that in case of mass edit
                                         //calendar need not be disabled but hidden as it is controlled using checkbox click
-                                        if($elementInformation['type'] == 'DateTime' || $elementInformation['type'] == 'Date')
+                                        if ($elementInformation['type'] == 'DateTime' || $elementInformation['type'] == 'Date')
                                         {
                                             $params['datePickerDisabled'] = false;
                                         }
@@ -142,7 +142,7 @@
         protected function renderActiveAttributesCheckBox($elementIds, $elementInformation, $checked, $realAttributeName)
         {
             $checkBoxHtmlOptions         = array();
-            if($elementInformation['type'] == 'DateTime' || $elementInformation['type'] == 'Date')
+            if ($elementInformation['type'] == 'DateTime' || $elementInformation['type'] == 'Date')
             {
                 $checkBoxHtmlOptions['class'] = 'dateOrDateTime';
             }

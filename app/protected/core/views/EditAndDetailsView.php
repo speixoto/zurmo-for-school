@@ -56,7 +56,7 @@
          */
         public function __construct($renderType, $controllerId, $moduleId, $model)
         {
-            assert('$model instanceof RedBeanModel || $model instanceof CFormModel');
+            assert('$model instanceof RedBeanModel || $model instanceof CFormModel || $model instanceof ModelForm');
             assert('$renderType == "Edit" || $renderType == "Details"');
             $this->renderType = $renderType;
             parent::__construct($controllerId, $moduleId, $model);
