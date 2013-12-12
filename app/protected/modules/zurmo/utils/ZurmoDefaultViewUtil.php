@@ -143,14 +143,10 @@
             {
                 $verticalColumns = 1;
             }
-            $aVerticalGridView   = new GridView(2, 1);
+            $aVerticalGridView   = new GridView($verticalColumns, 1);
 
             $aVerticalGridView->setCssClasses( array('AppNavigation', 'clearfix')); //navigation left column
-
-            $v = '<a href="#" id="nav-trigger" title="Toggle Navigation">›</a>';
-
-
-            $aVerticalGridView->setView(static::makeMenuView($controller), 1, 0);
+            $aVerticalGridView->setView(static::makeMenuView($controller), 0, 0);
             if (static::$showRecentlyViewed)
             {
                 $aVerticalGridView->setView(static::makeRecentlyViewedView(), 1, 0);
