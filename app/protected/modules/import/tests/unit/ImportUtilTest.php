@@ -624,7 +624,7 @@
             $testModels                        = ImportDedupeModelTestItem::getAll();
             $this->assertEquals(0, count($testModels));
             $import                                = new Import();
-            $serializedData['importRulesType']     = 'ImportDedupeModelTestItem';
+            $serializedData['importRulesType']     = 'Accounts';
             $serializedData['firstRowIsHeaderRow'] = true;
             $import->serializedData                = serialize($serializedData);
             $this->assertTrue($import->save());
@@ -661,6 +661,9 @@
             $this->assertEquals(2, count($testModels));
         }
 
+        /**
+         * @depends testCreateImportDataForEmailDedupe
+         */
         //On inport of new set containing duplicate data
         public function testVerifyNewlyImportedDataForEmailDedupe()
         {
@@ -674,7 +677,7 @@
             $testModels                        = Account::getAll();
             $this->assertEquals(2, count($testModels));
             $import                                = new Import();
-            $serializedData['importRulesType']     = 'ImportDedupeModelTestItem';
+            $serializedData['importRulesType']     = 'Accounts';
             $serializedData['firstRowIsHeaderRow'] = true;
             $import->serializedData                = serialize($serializedData);
             $this->assertTrue($import->save());
@@ -712,6 +715,9 @@
             $this->assertEquals(3, count($testModels));
         }
 
+        /**
+         * @depends testVerifyNewlyImportedDataForEmailDedupe
+         */
         //On inport of new set containing duplicate data
         public function testNewlyImportedDataForUpdateEmailDedupe()
         {
@@ -731,12 +737,12 @@
             $testModels                        = Account::getByName('dear');
             $this->assertEquals(0, count($testModels));
             $import                                = new Import();
-            $serializedData['importRulesType']     = 'ImportDedupeModelTestItem';
+            $serializedData['importRulesType']     = 'Accounts';
             $serializedData['firstRowIsHeaderRow'] = true;
             $import->serializedData                = serialize($serializedData);
             $this->assertTrue($import->save());
 
-            ImportTestHelper::createTempTableByFileNameAndTableName('importEmailDedupeTest.csv', $import->getTempTableName(), true);
+            ImportTestHelper::createTempTableByFileNameAndTableName('importEmailUpdateDedupeTest.csv', $import->getTempTableName(), true);
 
             $this->assertEquals(3, ImportDatabaseUtil::getCount($import->getTempTableName())); // includes header rows.
 
@@ -776,6 +782,121 @@
             $this->assertEquals(1, count($testModels));
             $testModels                        = Account::getByName('dear');
             $this->assertEquals(1, count($testModels));
+        }
+
+        /**
+         * @depends testNewlyImportedDataForUpdateEmailDedupe
+         */
+        //On inport of new set containing duplicate data for name
+        public function testImportedDataForNameSkipDedupe()
+        {
+            $jim   = User::getByUsername('jim');
+            Yii::app()->user->userModel = $jim;
+
+            //Confirm Jim can can only view ImportModelTestItems he owns.
+            $item       = NamedSecurableItem::getByName('ImportModule');
+            $this->assertEquals(Permission::NONE, $item->getEffectivePermissions($jim));
+
+            $testModels                        = Account::getByName('hello');
+            $this->assertEquals(1, count($testModels));
+            $import                                = new Import();
+            $serializedData['importRulesType']     = 'Accounts';
+            $serializedData['firstRowIsHeaderRow'] = true;
+            $import->serializedData                = serialize($serializedData);
+            $this->assertTrue($import->save());
+
+            ImportTestHelper::createTempTableByFileNameAndTableName('importDedupeNameTest.csv', $import->getTempTableName(), true);
+
+            $this->assertEquals(2, ImportDatabaseUtil::getCount($import->getTempTableName())); // includes header rows.
+
+            $emailMappingData = ImportMappingUtil::makeEmailColumnMappingData      ('primaryEmail__emailAddress');
+            $emailMappingData['mappingRulesData']['EmailModelAttributeDedupeMappingRuleForm']
+                                            = array('dedupeRule' =>
+                                                        array('value' => ImportDedupeRulesRadioDropDownElement::DO_NOT_DEDUPE));
+            $nameMappingData = ImportMappingUtil::makeEmailColumnMappingData      ('name');
+            $nameMappingData['mappingRulesData']['NameModelAttributeDedupeMappingRuleForm']
+                                            = array('dedupeRule' =>
+                                                        array('value' => ImportDedupeRulesRadioDropDownElement::SKIP_ROW_ON_MATCH_FOUND));
+            $mappingData = array(
+                'column_0'  => $nameMappingData,
+                'column_1'  => $emailMappingData
+            );
+
+            $importRules  = ImportRulesUtil::makeImportRulesByType('Accounts');
+            $page         = 0;
+            $config       = array('pagination' => array('pageSize' => 50)); //This way all rows are processed.
+            $dataProvider = new ImportDataProvider($import->getTempTableName(), true, $config);
+            $dataProvider->getPagination()->setCurrentPage($page);
+            $importResultsUtil = new ImportResultsUtil($import);
+            $messageLogger     = new ImportMessageLogger();
+            ImportUtil::importByDataProvider($dataProvider,
+                                             $importRules,
+                                             $mappingData,
+                                             $importResultsUtil,
+                                             new ExplicitReadWriteModelPermissions(),
+                                             $messageLogger);
+            $importResultsUtil->processStatusAndMessagesForEachRow();
+
+            $testModels        = Account::getByName('hello');
+            $this->assertEquals(1, count($testModels));
+            $this->assertEquals('a@a.com', $testModels[0]->primaryEmail->emailAddress);
+        }
+
+        /**
+         * @depends testNewlyImportedDataForUpdateEmailDedupe
+         */
+        public function testImportedDataForNameUpdateDedupe()
+        {
+            $jim   = User::getByUsername('jim');
+            Yii::app()->user->userModel = $jim;
+
+            //Confirm Jim can can only view ImportModelTestItems he owns.
+            $item       = NamedSecurableItem::getByName('ImportModule');
+            $this->assertEquals(Permission::NONE, $item->getEffectivePermissions($jim));
+
+            $testModels                        = Account::getByName('hello');
+            $this->assertEquals(1, count($testModels));
+            $import                                = new Import();
+            $serializedData['importRulesType']     = 'Accounts';
+            $serializedData['firstRowIsHeaderRow'] = true;
+            $import->serializedData                = serialize($serializedData);
+            $this->assertTrue($import->save());
+
+            ImportTestHelper::createTempTableByFileNameAndTableName('importDedupeNameTest.csv', $import->getTempTableName(), true);
+
+            $this->assertEquals(2, ImportDatabaseUtil::getCount($import->getTempTableName())); // includes header rows.
+
+            $emailMappingData = ImportMappingUtil::makeEmailColumnMappingData      ('primaryEmail__emailAddress');
+            $emailMappingData['mappingRulesData']['EmailModelAttributeDedupeMappingRuleForm']
+                                            = array('dedupeRule' =>
+                                                        array('value' => ImportDedupeRulesRadioDropDownElement::DO_NOT_DEDUPE));
+            $nameMappingData = ImportMappingUtil::makeEmailColumnMappingData      ('name');
+            $nameMappingData['mappingRulesData']['NameModelAttributeDedupeMappingRuleForm']
+                                            = array('dedupeRule' =>
+                                                        array('value' => ImportDedupeRulesRadioDropDownElement::UPDATE_ROW_ON_MATCH_FOUND));
+            $mappingData = array(
+                'column_0'  => $nameMappingData,
+                'column_1'  => $emailMappingData
+            );
+
+            $importRules  = ImportRulesUtil::makeImportRulesByType('Accounts');
+            $page         = 0;
+            $config       = array('pagination' => array('pageSize' => 50)); //This way all rows are processed.
+            $dataProvider = new ImportDataProvider($import->getTempTableName(), true, $config);
+            $dataProvider->getPagination()->setCurrentPage($page);
+            $importResultsUtil = new ImportResultsUtil($import);
+            $messageLogger     = new ImportMessageLogger();
+            ImportUtil::importByDataProvider($dataProvider,
+                                             $importRules,
+                                             $mappingData,
+                                             $importResultsUtil,
+                                             new ExplicitReadWriteModelPermissions(),
+                                             $messageLogger);
+            $importResultsUtil->processStatusAndMessagesForEachRow();
+
+            $testModels        = Account::getByName('hello');
+            $this->assertEquals(1, count($testModels));
+            $this->assertEquals('test@a.com', $testModels[0]->primaryEmail->emailAddress);
         }
     }
 ?>
