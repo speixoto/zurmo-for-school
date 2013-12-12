@@ -294,11 +294,7 @@
             }
             else
             {
-                $cs->registerCssFile($themeBaseUrl . '/css/zurmo.css');
-                foreach (Yii::app()->themeManager->getThemeColorNamesAndLabels() as $themeLabel => $notUsed)
-                {
-                    $cs->registerCssFile($themeBaseUrl . '/css/zurmo-' . $themeLabel . '.css');
-                }
+                $cs->registerCssFile($themeBaseUrl . '/css/zurmo-' . Yii::app()->themeManager->getActiveThemeColor() . '.css');
                 if (file_exists("themes/$themeName/css/commercial.css"))
                 {
                     $cs->registerCssFile($themeBaseUrl . '/css/commercial.css');
